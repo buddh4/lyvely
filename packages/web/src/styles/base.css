@@ -1,0 +1,21 @@
+@tailwind base;
+
+body {
+    background-color: rgb(252 252 252) !important;
+    overflow: auto;
+    color: var(--color-text-base);
+    height: 100%;
+}
+
+#main {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+
+    margin-top: 60px;
+}
+
+a {
+    text-decoration: none;
+}

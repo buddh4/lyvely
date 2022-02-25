@@ -1,0 +1,30 @@
+<script lang="ts" setup>
+import Dialog from '@/modules/ui/components/dialog/Dialog.vue';
+import TopNavigation from '@/modules/ui/components/layout/TopNavigation.vue';
+import MobileFooterNavigation from '@/modules/ui/components/layout/MobileFooterNavigation.vue';
+import SidebarNavigation from '@/modules/ui/components/layout/MainViewNavigation.vue';
+import { ref, toRefs } from 'vue'
+import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
+
+const sidebar = ref<SidebarNavigation|null>(null);
+
+function toggleNav() {
+  sidebar.value?.toggleNav();
+}
+
+const { visible, icon, iconColor, iconClass, title, message,  } = toRefs(useGlobalDialogStore());
+</script>
+
+<template>
+  <div class="flex items-stretch">
+    <SidebarNavigation ref="sidebar" />
+
+    <div class="overflow-hidden flex w-full min-h-screen flex-col">
+      <TopNavigation @toggle-nav="toggleNav" />
+      <router-view></router-view>
+    </div>
+
+  </div>
+  <MobileFooterNavigation />
+  <Dialog v-model="visible" :icon="icon" :icon-color="iconColor" :icon-class="iconClass" :title="title" :message="message" />
+</template>

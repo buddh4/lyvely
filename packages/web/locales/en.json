@@ -1,0 +1,41 @@
+{
+  "message": {
+    "hello": "hello world"
+  },
+  "activities": {
+    "labels": {
+      "main_nav": "Activities"
+    }
+  },
+  "journals": {
+    "labels": {
+      "main_nav": "Journals"
+    }
+  },
+  "statistics": {
+    "labels": {
+      "main_nav": "Statistics"
+    }
+  },
+  "users": {
+    "labels": {
+      "logout": "Logout",
+      "sign_in": "Sign in",
+      "sign_up": "Sign up",
+      "remember_me": "Remember me",
+      "forgot_password": "Forgot password?",
+      "username": "Username",
+      "password": "Password",
+      "email": "Email"
+    },
+    "texts": {
+      "not_a_member": "Not a member?"
+    }
+  },
+  "error":{
+    "network": {
+      "title": "Network Error",
+      "message": "The request failed due to a network issue, please make sure you are connected to the internet."
+    }
+  }
+}

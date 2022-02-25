@@ -1,0 +1,5 @@
+{
+  "prettier.disableLanguages": ["html"],
+  "htmlWhitespaceSensitivity": "ignore",
+  "jsxBracketSameLine": true
+}

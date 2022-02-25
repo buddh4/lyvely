@@ -1,0 +1,185 @@
+import { assureObjectId, EntityData, EntityIdentity } from './db.utils';
+import { FilterQuery, HydratedDocument, Model, QueryWithHelpers } from 'mongoose';
+import { BaseEntity } from './base.entity';
+import { Inject } from '@nestjs/common';
+import { ModelCreateEvent } from './dao.events';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
+
+interface Pagination {
+  page: number,
+  limit: number
+}
+type ContainsDot = `${string}.${string}`;
+
+export type UpdateQuery<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & {[key:ContainsDot]: any};
+
+type QuerySort<T extends BaseEntity<T>> = { [P in keyof UpdateQuery<T>]: 1 | -1 | 'asc' | 'desc' };
+
+type EntityQuery<T extends BaseEntity<T>> = QueryWithHelpers<
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  Array<HydratedDocument<T, any, any>>,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  HydratedDocument<T, any, any>,
+  any,
+  T>
+
+export interface FetchQueryFilterOptions<T extends BaseEntity<T>> {
+  excludeIds?: EntityIdentity<T>[] | EntityIdentity<T>
+}
+
+export interface FetchQueryOptions<T extends BaseEntity<T>> extends FetchQueryFilterOptions<T>{
+  pagination?: Pagination,
+  sort?: QuerySort<T>,
+}
+
+export const defaultFetchOptions = {
+  pagination: {
+    page: 1,
+    limit: 100
+  }
+}
+
+export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
+
+export abstract class AbstractDao<T extends BaseEntity<T>> {
+  protected model: Model<BaseEntity>;
+
+  @Inject()
+  private eventEmitter: EventEmitter2;
+
+  abstract getModelConstructor(): Constructor<T>;
+  abstract getModuleId(): string;
+
+  protected getModelName() {
+    return this.model.modelName;
+  }
+
+  protected getModelType() : string|null {
+    return null;
+  }
+
+  protected createEventName(event: string) {
+    const type = this.getModelType() ? `${this.getModelType()}.` : '';
+    return `model.${type}${this.getModelName().toLowerCase()}.${event}`;
+  }
+
+  protected emit(event: string, ...values: any[]) {
+    return this.eventEmitter.emit(this.createEventName(event), values)
+  }
+
+  async create(entityData: T): Promise<T> {
+    await this.beforeCreate(entityData);
+    this.emit('create.pre', new ModelCreateEvent(this, entityData, this.getModelName()));
+    const result = <any> await new this.model(entityData).save();
+    const model = this.createModel(result.toObject({ virtuals: true, aliases: true, getters: true }));
+    this.emit(`create.post`, new ModelCreateEvent(this, model, this.getModelName()));
+    return await this.afterCreate(model);
+  }
+
+  protected createModel(lean?: Partial<T>): T {
+    if(!lean) return null;
+
+    const ModelType = this.getModelConstructor();
+    return new ModelType(lean);
+  }
+
+  protected async beforeCreate(create: T): Promise<PartialEntityData<T>> {
+    return Promise.resolve(create);
+  }
+
+  protected async afterCreate(model: T): Promise<T> {
+    return Promise.resolve(model);
+  }
+
+  async findById(id: EntityIdentity<T>): Promise<T|null> {
+    return this.createModel(await this.model.findById(assureObjectId(id)).lean());
+  }
+
+  protected createModels(leanArr?: Partial<T>[]): T[] {
+    return leanArr.map(lean => this.createModel(lean));
+  }
+
+  async findAllByIds(ids: T['_id'][], options: FetchQueryOptions<T> = defaultFetchOptions): Promise<T[]> {
+    return this.findAll({ '_id': { $in: ids } }, options);
+  }
+
+  async findAll<C = T>(filter: FilterQuery<C>, options: FetchQueryOptions<T> = defaultFetchOptions): Promise<T[]> {
+    const query = this.model.find(filter);
+    const fetchFilter = this.getFetchQueryFilter(options);
+    if(fetchFilter) {
+      query.where(fetchFilter);
+    }
+    return this.createModels(await this.applyFetchQueryOptions(query, options).lean());
+  }
+
+  protected async findOne<C = T>(filter: FilterQuery<C>): Promise<T|null> {
+    return this.createModel(await this.model.findOne(filter).lean());
+  }
+
+  protected getFetchQueryFilter(options: FetchQueryFilterOptions<T>): FilterQuery<any> {
+    const { excludeIds } = options;
+
+    if(!excludeIds) {
+      return;
+    }
+
+    return {
+      '_id':  Array.isArray(excludeIds)
+        ? { $nin: excludeIds.map(assureObjectId) }
+        : { $ne: assureObjectId(excludeIds) }
+    }
+  }
+
+  protected applyFetchQueryOptions(query: EntityQuery<T>, options: FetchQueryOptions<T>): EntityQuery<T> {
+    const { sort, pagination } = options;
+
+    if(sort) {
+      query.sort(sort)
+    }
+
+    if(pagination) {
+      query.limit(pagination.limit)
+      query.skip((pagination.page -1) * pagination.limit)
+    }
+
+    return query;
+  }
+
+  async updateOneSet(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<number> {
+    if(!this.beforeUpdate(id, update)) return 0;
+    // TODO: try to merge update into id, if id is a model
+    return (await this.model.updateOne({ _id: assureObjectId(id) }, { $set: update }).exec()).modifiedCount;
+  }
+
+  protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<PartialEntityData<T>|boolean> {
+    return Promise.resolve(update);
+  }
+
+  async updateBulkSet(updates: { id: EntityIdentity<T>, update: UpdateQuery<T> }[]): Promise<number> {
+    return (await this.model.bulkWrite(
+      updates.map(update => ({
+          updateOne: {
+            filter: { _id: assureObjectId(update.id) },
+            update: { $set: update.update },
+          }
+        })
+      ))).modifiedCount;
+  }
+
+  async reload(id: EntityIdentity<T>): Promise<T> {
+    return this.findById(id);
+  }
+
+  async deleteAll() {
+    return this.deleteMany({});
+  }
+
+  async deleteMany(filter: FilterQuery<T>) {
+    return this.model.deleteMany(filter);
+  }
+
+  async deleteOne(filter: FilterQuery<T>) {
+    return this.model.deleteOne(filter);
+  }
+}

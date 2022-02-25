@@ -1,0 +1,147 @@
+.button.disabled, .button:disabled {
+    cursor: not-allowed;
+}
+
+.button.primary {
+    @apply border border-primary bg-primary text-inverted;
+}
+
+.button.primary.outlined {
+    @apply border border-primary bg-transparent text-primary;
+}
+
+.button.primary:hover, .button.primary.active  {
+    @apply border-primary-dark bg-primary-dark;
+}
+
+.button.primary:disabled, .button.primary.disabled {
+    @apply border-primary-light bg-primary-light;
+}
+
+.button.primary.outlined:hover, .button.primary.outlined.active {
+    @apply border border-primary bg-primary text-inverted;
+}
+
+.button.secondary {
+    @apply border border-secondary bg-secondary text-inverted;
+}
+
+.button.secondary.outlined {
+    @apply border border-secondary bg-transparent text-secondary;
+}
+
+.button.secondary:hover, .button.secondary.active {
+    @apply border-secondary-dark bg-secondary-dark;
+}
+
+.button.secondary:disabled, .button.secondary.disabled {
+    @apply border-secondary-light bg-secondary-light;
+}
+
+.button.secondary.outlined:hover, .button.secondary.outlined.active {
+    @apply border border-secondary bg-secondary text-inverted;
+}
+
+.button.info {
+    @apply border border-info bg-info text-inverted;
+}
+
+.button.info.outlined {
+    @apply border border-info bg-transparent text-info;
+}
+
+.button.info:hover, .button.info.active {
+    @apply border-info-dark bg-info-dark;
+}
+
+.button.info:disabled, .button.info.disabled {
+    @apply border-info-light bg-info-light
+}
+
+.button.info.outlined:hover, .button.info.outlined.active {
+    @apply border border-info bg-info text-inverted;
+}
+
+.button.success {
+    @apply border border-success bg-success text-inverted;
+}
+
+.button.success.outlined {
+    @apply border border-success bg-transparent text-success;
+}
+
+.button.success:hover, .button.success.active {
+    @apply border-success-dark bg-success-dark;
+}
+
+.button.success:disabled, .button.success.disabled {
+    @apply border-success-light bg-success-light;
+}
+
+.button.success.outlined:hover, .button.success.outlined.active {
+    @apply border border-success bg-success text-inverted;
+}
+
+.button.warning {
+    @apply border border-warning bg-warning text-inverted;
+}
+
+.button.warning.outlined {
+    @apply border border-warning bg-transparent text-warning;
+}
+
+.button.warning:hover, .button.warning.active  {
+    @apply border-warning-dark bg-warning-dark;
+}
+
+.button.warning:disabled, .button.warning.disabled  {
+    @apply border-warning-light bg-warning-light;
+}
+
+.button.warning.outlined:hover, .button.warning.outlined.active {
+    @apply border border-warning bg-warning text-inverted;
+}
+
+.button.danger {
+    @apply border border-danger bg-danger text-inverted;
+}
+
+.button.danger.outlined {
+    @apply border border-danger bg-transparent text-danger;
+}
+
+.button.danger:hover, .button.danger.active {
+    @apply border-danger-dark bg-danger-dark;
+}
+
+.button.danger:disabled, .button.danger.disabled {
+    @apply border-danger-light bg-danger-light;
+}
+
+.button.danger.outlined:hover, .button.danger.outlined.active {
+    @apply border border-danger bg-danger text-inverted;
+}
+
+.active.outlined.text-secondary,
+.outlined.text-secondary:hover {
+    @apply bg-secondary text-white !important;
+}
+
+.button-group .button:not(:first-child) {
+    border-left: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.button-group .button:not(:last-child) {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.button-group .button:first-child {
+    @apply rounded-l;
+}
+
+.button-group .button:last-child {
+    @apply rounded-r;
+}

@@ -1,0 +1,40 @@
+.timing-list {
+    @apply flex flex-col p-0 rounded;
+}
+
+.timing-list-item {
+    @apply py-2 px-3;
+}
+
+.timing-list-header-item {
+    @apply text-center border;
+}
+
+.timing-list-item:not(.timing-list-header-item) {
+    @apply bg-content;
+}
+
+.timing-list-header-item:first-child {
+    @apply rounded-t;
+}
+
+.timing-list-item:last-child {
+    @apply rounded-b;
+}
+
+.timing_unscheduled[data-count="0"] {
+    @apply rounded-b;
+}
+
+.timing-list ul {
+    padding:0;
+}
+
+.timing-list-entry-root .list-group-item:first-child {
+    border-top:0;
+}
+
+.timing-title {
+    @apply inline-block my-0 mx-2 cursor-pointer;
+    min-width: 110px;
+}

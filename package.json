@@ -1,0 +1,8 @@
+{
+  "name": "lyvely-app",
+  "version": "0.0.1",
+  "author": "Julian Harrer",
+  "workspaces": [
+    "./packages/*"
+  ]
+}

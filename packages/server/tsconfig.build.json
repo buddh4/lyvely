@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "cypress",
+    "test",
+    "**/tests",
+    "dist",
+    "**/*spec.ts",
+    "mongoose-test-util.ts",
+    "jest.setup.ts",
+    "migrations",
+    "migrate-mongo-config.ts"
+  ],
+}

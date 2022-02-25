@@ -1,0 +1,28 @@
+.alert {
+    @apply px-4 py-3 rounded relative;
+}
+
+.alert.primary {
+    @apply bg-primary-light border border-primary-dark;
+}
+
+
+.alert.secondary {
+    @apply bg-secondary-light border border-secondary-dark;
+}
+
+.alert.info {
+    @apply bg-info-light border border-info-dark;
+}
+
+.alert.success {
+    @apply bg-success-light border border-success-dark;
+}
+
+.alert.warning {
+    @apply bg-warning-light border border-warning-dark;
+}
+
+.alert.danger {
+    @apply bg-danger-light border border-danger-dark;
+}
