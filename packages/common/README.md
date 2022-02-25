@@ -25,3 +25,6 @@ This is required in order to prevent typescript transform conflicts since typesc
 
 `npm rm --global lively-common`
 
+## Troubleshooting
+
+If build fails, delete `tsconfig.tsbuildinfo` and try again...
