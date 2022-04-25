@@ -1,5 +1,3 @@
-import { Error } from 'mongoose';
-
 export class ServiceException extends Error {
   protected defaultMessage = 'Unknown service error';
 

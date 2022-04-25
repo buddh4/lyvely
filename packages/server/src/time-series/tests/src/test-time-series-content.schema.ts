@@ -1,13 +1,13 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import {
-  TimeSeriesContent, TimeSeriesContentSchemaFactory, TimeSeriesDataPointConfig,
+  TimeSeries, TimeSeriesContentSchemaFactory, TimeSeriesDataPointConfig,
   TimeSeriesDataPointConfigSchema
 } from '../../schemas';
 import * as mongoose from 'mongoose';
 import { DataPointInputStrategy } from 'lyvely-common';
 
 @Schema()
-export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {
+export class TestTimeSeriesContent extends TimeSeries<TestTimeSeriesContent> {
   @Prop()
   someTestField: string;
 
@@ -15,7 +15,7 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
   dataPointConfig: TimeSeriesDataPointConfig;
 }
 
-export type TestTimeableContentDocument = TestTimeSeriesContent & mongoose.Document;
+export type TestTimeSeriesContentDocument = TestTimeSeriesContent & mongoose.Document;
 export const TestTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(TestTimeSeriesContent, [
   DataPointInputStrategy.CheckboxNumber,
   DataPointInputStrategy.TextareaText,

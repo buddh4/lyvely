@@ -1,10 +1,10 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPointInputType, DataPointInputStrategy, NumberDataPointSettings } from 'lyvely-common';
-import { AbstractNumberDataPointConfig } from './abstract-number-data-point-config.schema';
+import { AbstractNumberDataPointConfigSchema } from './abstract-number-data-point-config.schema';
 import { DataPointConfigSchemaFactory } from './data-point-config-schema.factory';
 
 @Schema()
-export class RangeNumberDataPointConfig extends AbstractNumberDataPointConfig {
+export class RangeNumberDataPointConfig extends AbstractNumberDataPointConfigSchema {
 
   strategy = DataPointInputStrategy.RangeNumber;
 

@@ -77,7 +77,7 @@ describe('ProfilePermissionsService', () => {
     const profileRelations = new UserProfileRelations({
       user: user,
       profile: profile,
-      relations: [new Membership({role: role})]
+      relations: [new Membership({ role: role })]
     });
 
     return { user, profile, profileRelations };

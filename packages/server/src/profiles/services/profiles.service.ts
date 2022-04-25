@@ -1,20 +1,26 @@
-import { Injectable } from '@nestjs/common';
-import { User } from '../../users/schemas/users.schema';
-import { Profile, } from '../schemas/profiles.schema';
-import { Category } from '../../categories/schemas/categories.schema';
-import { EntityIdentity } from '../../db/db.utils';
-import { ProfileType } from 'lyvely-common';
-import { ProfileDao } from '../daos/profile.dao';
-import { BaseMembershipRole } from '../schemas/user-profile-relations.schema';
-import { MembershipsDao } from '../daos/memberships.dao';
-import { Membership } from '../schemas/profile-memberships.schema';
-import { UserProfileRelations } from '../models/profile-relations.model';
-import { UserProfileRelationsDao } from '../daos/user-profile-relations.dao';
+import {Injectable} from '@nestjs/common';
+import {User} from '../../users/schemas/users.schema';
+import {Profile,} from '../schemas/profiles.schema';
+import {Category} from '../../categories/schemas/categories.schema';
+import {EntityIdentity} from '../../db/db.utils';
+import {ProfileType} from 'lyvely-common';
+import {ProfileDao} from '../daos/profile.dao';
+import {BaseMembershipRole} from '../schemas/user-profile-relations.schema';
+import {MembershipsDao} from '../daos/memberships.dao';
+import {Membership} from '../schemas/profile-memberships.schema';
+import {UserProfileRelations} from '../models/profile-relations.model';
+import {UserProfileRelationsDao} from '../daos/user-profile-relations.dao';
 
 export interface ProfileMembership {
   user: User,
   membership: Membership,
   profile: Profile
+}
+
+export interface CreateProfileOptions {
+  name?: string,
+  locale?: string,
+  type?: ProfileType
 }
 
 @Injectable()
@@ -34,14 +40,18 @@ export class ProfilesService {
    * another profile with the given name already exists with the same owner.
    *
    * @param owner
-   * @param name
-   * @param type
+   * @param options
    */
-  async createProfile(owner: User, name?: string, type: ProfileType = ProfileType.User): Promise<Profile> {
-    name = name || owner.username;
-    const profile = await this.profileDao.upsert({ createdBy: owner._id, name: name, type: type });
-    await this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner);
-    return profile;
+  async createProfile(owner: User, options: CreateProfileOptions = {}): Promise<UserProfileRelations> {
+    // TODO: validate locale!
+    const profile = await this.profileDao.upsert({
+      createdBy: owner._id,
+      name: options.name || owner.username,
+      locale: options.locale || owner.locale,
+      type: options.type || ProfileType.User
+    });
+    const membership = await this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner);
+    return new UserProfileRelations({ user: owner, profile: profile, relations: [membership] });
   }
 
   async findUserProfileRelations(user: User, identity: EntityIdentity<Profile>): Promise<UserProfileRelations> {

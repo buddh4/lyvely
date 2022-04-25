@@ -30,6 +30,7 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
   @Prop({ required: true, default: DEFAULT_PROFILE_NAME })
   name: string;
 
+  // TODO: validate locale!
   @Prop({ default: getDefaultLocale() })
   locale: string;
 

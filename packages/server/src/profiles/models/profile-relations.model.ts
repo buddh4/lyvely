@@ -1,4 +1,4 @@
-import { BaseUserProfileRelationType, UserProfileRelation, Profile, Membership} from '../schemas';
+import { BaseUserProfileRelationType, UserProfileRelation, Profile, Membership } from '../schemas';
 import { User } from '../../users/schemas/users.schema';
 
 export class UserProfileRelations {

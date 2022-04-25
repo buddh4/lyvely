@@ -3,11 +3,10 @@ import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createTestingModule, getObjectId } from '../../test/utils/test.utils';
 import {
-  toTimingId,
   TestNumberTimingDataPoint,
   TestNumberTimingDataPointPointSchema
 } from './src/test-data-point.schema';
-import { CalendarDateTime, CalendarIntervalEnum, dateTime, formatDate, getFullDayDate } from 'lyvely-common/src';
+import { CalendarDateTime, CalendarIntervalEnum, dateTime, formatDate, getFullDayDate, toTimingId } from 'lyvely-common';
 import { TestNumberDataPointDao, TimingDataPointIntervalFilter } from './src/test-data-point.dao';
 
 const DataPointModelDefinition = [

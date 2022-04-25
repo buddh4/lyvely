@@ -1,29 +1,27 @@
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 import {
   CalendarDate,
   TimeSeriesRangeFilter,
-  getTimingIdsByRange, Calendar,
-  ITimeSeriesDataPoint
+  getTimingIdsByRange, Calendar, DeepPartial, dateTime
 } from 'lyvely-common';
 import { Model } from 'mongoose';
-import { TimeSeriesContent, TimeSeriesDataPointConstructor, TimeSeriesDataPointDocument } from '../schemas';
+import { TimeSeries, TimeSeriesDataPointConstructor, DataPointDocument, DataPoint } from '../schemas';
 import { Profile , ProfilesService } from '../../profiles';
-
 import { assureObjectId } from '../../db/db.utils';
 
-export abstract class TimeSeriesDataPointService<
-  Doc extends TimeSeriesDataPointDocument,
-  LogModel extends ITimeSeriesDataPoint,
-  MainModel extends TimeSeriesContent,
-> {
-  protected LogModel: Model<TimeSeriesDataPointDocument>;
+export abstract class DataPointService<
+  Doc extends DataPointDocument,
+  LogModel extends DataPoint,
+  MainModel extends TimeSeries> {
+
+  protected LogModel: Model<DataPointDocument>;
 
   protected profileService: ProfilesService;
 
   abstract getLogModelConstructor(): TimeSeriesDataPointConstructor<MainModel>;
   abstract updateLogValue(profile: Profile, log: LogModel, model: MainModel, value: any): Promise<LogModel>;
 
-  createModel(raw: ITimeSeriesDataPoint): LogModel {
+  constructModel(raw: DeepPartial<LogModel>): LogModel {
     const ModelConstructor = this.getLogModelConstructor();
     return <LogModel> new ModelConstructor(raw);
   }
@@ -41,7 +39,7 @@ export abstract class TimeSeriesDataPointService<
       timingId: { $in: timingIds },
     }).lean()) as LogModel[];
 
-    return logs.map((log: LogModel) => this.createModel(log));
+    return logs.map((log: LogModel) => this.constructModel(log));
   }
 
   async updateLog(user: User, profile: Profile, timingModel: MainModel, date: CalendarDate, update: any): Promise<LogModel> {
@@ -55,11 +53,20 @@ export abstract class TimeSeriesDataPointService<
 
     if (!log) {
       // TODO: Move to dao
-      const doc = await new this.LogModel(this.getLogModelConstructor().create(user, profile, timingModel, date)).save();
-      return this.createModel(doc.toObject());
+      const model = this.constructModel({
+        meta: {
+          uid: user._id,
+          pid: profile._id,
+          cid: timingModel._id,
+          interval: timingModel.interval
+        },
+        date: dateTime(date).toDate()
+      });
+      const doc = await new this.LogModel(model).save();
+      return this.constructModel(doc);
     }
 
-    return this.createModel(log);
+    return this.constructModel(log);
   }
 
   // TODO: Move to dao

@@ -5,9 +5,9 @@ import {
   NumberDataPointSettings,
   SupporedLogValueInputTypes
 } from 'lyvely-common';
-import { AbstractTimeSeriesDataPointConfig } from './abstract-time-series-data-point.config';
+import { AbstractDataPointConfigSchema } from './abstract-data-point-config.schema';
 
-export abstract class AbstractNumberDataPointConfig extends AbstractTimeSeriesDataPointConfig<NumberDataPointSettings> {
+export abstract class AbstractNumberDataPointConfigSchema extends AbstractDataPointConfigSchema<NumberDataPointSettings> {
 
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;

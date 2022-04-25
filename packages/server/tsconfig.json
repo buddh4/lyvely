@@ -13,5 +13,8 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "removeComments": true,
-  }
+  },
+  "references": [
+    { "path":  "../common/tsconfig.build.json" }
+  ]
 }

@@ -32,7 +32,7 @@ describe('ActivitylogsService', () => {
 
       const logs = await activityLogsService.findLogsByRange(
         profile,
-        new TimeSeriesRangeFilter({from: '2021-04-03', to: '2021-04-04'}),
+        new TimeSeriesRangeFilter({ from: '2021-04-03', to: '2021-04-04' }),
       );
 
       expect(logs.length).toEqual(0);
@@ -43,7 +43,7 @@ describe('ActivitylogsService', () => {
     it('update non existing log', async () => {
       const { user, profile } = await testData.createUserAndProfile();
 
-      const habit = await testData.createHabit(user, profile, 'test', {  max: 2, value: 5 });
+      const habit = await testData.createHabit(user, profile, {  title: 'test',  max: 2, score: 5 });
 
       const log = await activityLogsService.updateLog(
         user,
@@ -57,7 +57,7 @@ describe('ActivitylogsService', () => {
       expect(log.value).toEqual(2);
       expect(log.score).toEqual(10);
 
-      const logs = await ActivityLogModel.find({timingModel: habit._id}).exec();
+      const logs = await ActivityLogModel.find({ timingModel: habit._id }).exec();
       expect(logs.length).toEqual(1);
     });
   });

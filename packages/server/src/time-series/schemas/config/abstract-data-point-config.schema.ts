@@ -1,7 +1,7 @@
 import { Prop } from '@nestjs/mongoose';
 import { getStringEnumValues, ITimeSeriesDataPointConfig, DataPointInputType, DataPointValueType } from 'lyvely-common';
 
-export abstract class AbstractTimeSeriesDataPointConfig<S = any> implements ITimeSeriesDataPointConfig {
+export abstract class AbstractDataPointConfigSchema<S = any> implements ITimeSeriesDataPointConfig {
 
   @Prop({ enum: getStringEnumValues(DataPointValueType), required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType;

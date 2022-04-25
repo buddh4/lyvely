@@ -22,6 +22,6 @@ export abstract class AbstractUserProfileRelationsDao<T extends UserProfileRelat
   }
 
   async findByUserAndProfile(user: EntityIdentity<User>, profile: EntityIdentity<Profile>): Promise<T|null> {
-    return this.findOne<UserProfileRelation>({uid: assureObjectId(user), pid: assureObjectId(profile)});
+    return this.findOne<UserProfileRelation>({ uid: assureObjectId(user), pid: assureObjectId(profile) });
   }
 }

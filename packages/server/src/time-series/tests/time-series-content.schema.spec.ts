@@ -6,7 +6,7 @@ import { INestApplication } from '@nestjs/common';
 import { Content, ContentSchema } from '../../content';
 import {
   TestTimeSeriesContent,
-  TestTimeableContentDocument,
+  TestTimeSeriesContentDocument,
   TestTimeSeriesContentSchema
 } from './src/test-time-series-content.schema';
 import { Model } from 'mongoose';
@@ -28,14 +28,14 @@ describe('TimeableContentSchema', () => {
   let testingModule: TestingModule;
   let testData: TestDataUtils;
   let app: INestApplication;
-  let TestTimeSeriesContentModel: Model<TestTimeableContentDocument>;
+  let TestTimeSeriesContentModel: Model<TestTimeSeriesContentDocument>;
 
   const TEST_KEY = 'TimeableContentSchema';
 
   beforeEach(async () => {
     testingModule = await createTestingModule(TEST_KEY, [], ContentModels).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    TestTimeSeriesContentModel = testingModule.get<Model<TestTimeableContentDocument>>('TestTimeSeriesContentModel');
+    TestTimeSeriesContentModel = testingModule.get<Model<TestTimeSeriesContentDocument>>('TestTimeSeriesContentModel');
     app = testingModule.createNestApplication();
     await app.init();
   });
@@ -54,8 +54,11 @@ describe('TimeableContentSchema', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(user, profile, {
         someTestField: 'Testing...',
-        interval: CalendarIntervalEnum.Daily
+        interval: CalendarIntervalEnum.Daily,
+        dataPointConfig: new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 })
       });
+
+      delete model.dataPointConfig;
 
       const entity = new TestTimeSeriesContentModel(model);
 

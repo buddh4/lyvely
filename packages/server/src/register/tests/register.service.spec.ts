@@ -1,27 +1,26 @@
 import { expect } from '@jest/globals';
-import { Test, TestingModule } from '@nestjs/testing';
-import { rootMongooseTestModule } from '../../test/utils/mongoose-test.utils';
+import { TestingModule } from '@nestjs/testing';
 import { RegisterService } from '../register.service';
-import { UsersModule } from '../../users/users.module';
-import { ProfilesModule } from '../../profiles/profiles.module';
 import { RegisterDto } from 'lyvely-common';
+import { createTestingModule } from "../../test/utils/test.utils";
+import { TestDataUtils } from "../../test/utils/test-data.utils";
 
 describe('RegisterService', () => {
   let testingModule: TestingModule;
   let registerService: RegisterService;
+  let testData: TestDataUtils;
+
+  const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await Test.createTestingModule({
-      imports: [
-        rootMongooseTestModule('users service'),
-        UsersModule,
-        ProfilesModule,
-      ],
-      providers: [RegisterService],
-    }).compile();
-
+    testingModule = await createTestingModule(TEST_KEY, [RegisterService]).compile();
     registerService = testingModule.get<RegisterService>(RegisterService);
+    testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
+
+  afterEach(async () => {
+    return testData.reset(TEST_KEY);
+  })
 
   it('should be defined', () => {
     expect(registerService).toBeDefined();
@@ -40,6 +39,7 @@ describe('RegisterService', () => {
       expect(profile.createdBy).toBeDefined();
       expect(profile.createdBy).toEqual(user._id);
       expect(profile.name).toEqual('Tester');
+      expect(profile.locale).toEqual('de');
     });
 
     it('register user with invalid email', async () => {

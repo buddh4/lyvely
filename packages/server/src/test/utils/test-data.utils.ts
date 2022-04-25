@@ -35,7 +35,7 @@ export class TestDataUtils {
   async createUserAndProfile(username = 'test', password = 'test', email?: string): Promise<{user: User, profile: Profile}> {
     const user = await this.createUser(username, password, email);
     const profile = await this.createProfile(user);
-    return {user: user, profile: profile}
+    return { user: user, profile: profile }
   }
 
   async createUser(username = 'test', password = 'test', email?: string): Promise<User> {

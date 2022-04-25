@@ -5,6 +5,7 @@ import { Inject } from '@nestjs/common';
 import { ModelCreateEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
+import { DeepPartial } from "lyvely-common";
 
 interface Pagination {
   page: number,
@@ -72,12 +73,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     await this.beforeCreate(entityData);
     this.emit('create.pre', new ModelCreateEvent(this, entityData, this.getModelName()));
     const result = <any> await new this.model(entityData).save();
-    const model = this.createModel(result.toObject({ virtuals: true, aliases: true, getters: true }));
+    const model = this.constructModel(result.toObject({ virtuals: true, aliases: true, getters: true }));
     this.emit(`create.post`, new ModelCreateEvent(this, model, this.getModelName()));
     return await this.afterCreate(model);
   }
 
-  protected createModel(lean?: Partial<T>): T {
+  constructModel(lean?: DeepPartial<T>): T {
     if(!lean) return null;
 
     const ModelType = this.getModelConstructor();
@@ -93,11 +94,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   async findById(id: EntityIdentity<T>): Promise<T|null> {
-    return this.createModel(await this.model.findById(assureObjectId(id)).lean());
+    return this.constructModel(await this.model.findById(assureObjectId(id)).lean());
   }
 
   protected createModels(leanArr?: Partial<T>[]): T[] {
-    return leanArr.map(lean => this.createModel(lean));
+    return leanArr.map(lean => this.constructModel(lean));
   }
 
   async findAllByIds(ids: T['_id'][], options: FetchQueryOptions<T> = defaultFetchOptions): Promise<T[]> {
@@ -114,7 +115,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   protected async findOne<C = T>(filter: FilterQuery<C>): Promise<T|null> {
-    return this.createModel(await this.model.findOne(filter).lean());
+    return this.constructModel(await this.model.findOne(filter).lean());
   }
 
   protected getFetchQueryFilter(options: FetchQueryFilterOptions<T>): FilterQuery<any> {
@@ -171,15 +172,15 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.findById(id);
   }
 
-  async deleteAll() {
-    return this.deleteMany({});
+  async deleteAll(): Promise<number> {
+    return await this.deleteMany({});
   }
 
-  async deleteMany(filter: FilterQuery<T>) {
-    return this.model.deleteMany(filter);
+  async deleteMany(filter: FilterQuery<T>): Promise<number> {
+    return (await this.model.deleteMany(filter)).deletedCount;
   }
 
-  async deleteOne(filter: FilterQuery<T>) {
-    return this.model.deleteOne(filter);
+  async deleteOne(filter: FilterQuery<T>): Promise<boolean> {
+    return (await this.model.deleteOne(filter)).deletedCount === 1;
   }
 }

@@ -1,42 +1,81 @@
-import { BaseEntity } from '../../db/base.entity';
-import { CalendarDate, Calendar, ITimeSeriesDataPoint } from 'lyvely-common';
-import { Prop, Schema } from '@nestjs/mongoose';
-import mongoose  from 'mongoose';
-import { User } from '../../users/schemas/users.schema';
-import { Profile } from '../../profiles';
-import { Timing, TimingSchema } from '../../calendar/schemas/timing.schema';
-import { assureObjectId } from '../../db/db.utils';
+import { assignEntityData, BaseEntity, EntityType } from '../../db/base.entity';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Document }  from 'mongoose';
+import {
+  DeepPartial,
+  CalendarIntervalEnum,
+  getFullDayDate,
+  getNumberEnumValues,
+  toTimingId,
+} from "lyvely-common";
+import { TimeSeries } from "./time-series-content.schema";
 
-
-import { TimeSeriesContent } from './time-series-content.schema';
-
-export interface TimeSeriesDataPointConstructor<Model extends TimeSeriesContent> {
-  new (obj?: Partial<ITimeSeriesDataPoint>): ITimeSeriesDataPoint;
-  create(user: User, profile: Profile, model: Model, date: CalendarDate): TimeSeriesDataPoint;
+export interface TimeSeriesDataPointConstructor<Model extends TimeSeries> {
+  new (obj?: DeepPartial<IDataPoint>): IDataPoint;
 }
 
-/**
- * Base schema for time series data point types.
- */
-@Schema({ timestamps: true })
-export abstract class TimeSeriesDataPoint extends BaseEntity<TimeSeriesDataPoint> implements ITimeSeriesDataPoint {
-  @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
-  contentId: mongoose.Types.ObjectId;
+export interface IDataPoint {
+  meta: {
+    pid: mongoose.Types.ObjectId,
+    cid: mongoose.Types.ObjectId,
+    uid?: mongoose.Types.ObjectId,
+    interval: CalendarIntervalEnum,
+  }
+  date: Date,
+  tid: string,
+}
 
-  @Prop({ type: TimingSchema, required: true })
-  timing: Timing;
+@Schema({ _id: false })
+export class DataPointMeta {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  pid: mongoose.Types.ObjectId;
 
-  @Prop({ required: true })
-  timingId: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  cid: mongoose.Types.ObjectId;
 
-  static pupulate<LogModel extends TimeSeriesDataPoint>(log: LogModel, profile: Profile, model: TimeSeriesContent, date: CalendarDate): LogModel {
-    const timing = Calendar.createTiming(model.interval, date, profile.getLocale());
-    log.contentId = assureObjectId(model);
-    log.timing = timing;
-    log.timingId = timing._id;
-    return log;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
+  uid?: mongoose.Types.ObjectId;
+
+  @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
+  interval: CalendarIntervalEnum;
+
+  constructor(obj?: DeepPartial<DataPointMeta>) {
+    assignEntityData(this, obj);
   }
 }
 
-export type TimeSeriesDataPointDocument = mongoose.Document<mongoose.Types.ObjectId> & TimeSeriesDataPoint;
+
+const DataPointMetaSchema = SchemaFactory.createForClass(DataPointMeta);
+
+export abstract class DataPoint<T extends EntityType<IDataPoint> = EntityType<IDataPoint>> extends BaseEntity<T> implements IDataPoint {
+  @Prop({ type: DataPointMetaSchema, required: true })
+  meta: DataPointMeta;
+
+  @Prop( { type: String, required: true, match: /^Y:[0-9]{4};Q:[0-4];M:(?:[1-9]|1[0-2]);W:(?:[1-9]|[1-4][0-9]|5[0-3]);D:(?:[1-9]|[1-2][0-9]|3[0-1])$/ })
+  tid: string;
+
+  /**
+   * Contains a full day (no time) utc date with the same date described by tid.
+   * date.toISOString() should always return a date string in the format '2020-02-20T00:00:00.000Z'
+   * If a date with timezone information is given in the constructor, we simply translate the given date to utc without
+   * respecting timezone differences.
+   */
+  @Prop( { type: Date, required: true })
+  date: Date;
+
+  afterInit() {
+    super.afterInit();
+
+    if(!this.date) {
+      return;
+    }
+
+    this.date = getFullDayDate(this.date);
+    this.tid = toTimingId(this.date);
+  }
+}
+
+export type DataPointDocument = DataPoint & Document;
+
+
 

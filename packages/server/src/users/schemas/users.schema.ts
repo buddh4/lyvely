@@ -6,6 +6,7 @@ import { BaseEntity } from '../../db/base.entity';
 import { Length } from 'class-validator';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import crypto from 'crypto';
+import {UserDto} from "lyvely-common";
 
 export type UserDocument = User & mongoose.Document;
 
@@ -53,7 +54,7 @@ export class User extends BaseEntity<User> {
 
   getImageHash() {
     if(!this.imageHash && this.lowercaseEmail) {
-      this.imageHash = crypto.createHash('md5').update(this.lowercaseEmail).digest('hex');
+      this.imageHash = crypto.createHash('sha256').update(this.lowercaseEmail).digest('hex');
     }
 
     return this.imageHash;

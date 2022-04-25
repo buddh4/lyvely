@@ -2,14 +2,14 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Activity, ActivityDataPoint, ActivityDataPointDocument } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TimeSeriesDataPointService, TimeSeriesDataPointConstructor } from '../../time-series';
+import { DataPointService, TimeSeriesDataPointConstructor } from '../../time-series';
 import { CalendarDate } from 'lyvely-common';
 import { ProfilesService, Profile } from '../../profiles';
 import { User } from '../../users/schemas/users.schema';
 import { assureObjectId } from '../../db/db.utils';
 
 @Injectable()
-export class ActivityDataPointService extends TimeSeriesDataPointService<ActivityDataPointDocument, ActivityDataPoint, Activity> {
+export class ActivityDataPointService extends DataPointService<ActivityDataPointDocument, ActivityDataPoint, Activity> {
 
   @Inject()
   protected profileService: ProfilesService;
