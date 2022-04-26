@@ -1,17 +1,17 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
-import { Profile, ProfileDocument } from '../../profiles/schemas/profiles.schema';
 import { Model } from 'mongoose';
-import { User, UserDocument } from '../../users/schemas/users.schema';
+import { User, UserDocument } from '../../users';
 import { ProfileType, ProfileVisibilityLevel } from 'lyvely-common';
 import { closeInMongodConnection, rootMongooseTestModule } from './mongoose-test.utils';
 import {
+  Profile, ProfileDocument,
   BaseMembershipRole,
   UserProfileRelation,
-  UserProfileRelationDocument
-} from '../../profiles/schemas/user-profile-relations.schema';
-import { Membership, MembershipDocument } from '../../profiles/schemas/profile-memberships.schema';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+  UserProfileRelationDocument,
+  Membership, MembershipDocument
+} from '../../profiles';
+import { EventEmitter2, EventEmitterModule  } from '@nestjs/event-emitter';
 
 @Injectable()
 export class TestDataUtils {
@@ -54,7 +54,7 @@ export class TestDataUtils {
 
     await this.addProfileMember(profile, member);
 
-    return {owner, member, profile };
+    return { owner, member, profile };
   }
 
   async createGroupProfile(owner: User, name?: string, visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<Profile> {
@@ -102,6 +102,10 @@ export class TestDataUtils {
 
   static getMongooseTestModule(key: string, options: MongooseModuleOptions = {}) {
     return rootMongooseTestModule(key, options)
+  }
+
+  static getEventEmitterModule() {
+    return EventEmitterModule.forRoot({ wildcard: true });
   }
 
   async reset(key: string) {

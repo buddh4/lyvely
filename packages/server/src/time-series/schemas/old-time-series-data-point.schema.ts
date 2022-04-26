@@ -8,9 +8,9 @@ import { Timing, TimingSchema } from '../../calendar/schemas/timing.schema';
 import { assureObjectId } from '../../db/db.utils';
 
 
-import { TimeSeries } from './time-series-content.schema';
+import { TimeSeriesContent } from './time-series-content.schema';
 
-export interface TimeSeriesDataPointConstructor<Model extends TimeSeries> {
+export interface TimeSeriesDataPointConstructor<Model extends TimeSeriesContent> {
   new (obj?: Partial<ITimeSeriesDataPoint>): ITimeSeriesDataPoint;
   create(user: User, profile: Profile, model: Model, date: CalendarDate): TimeSeriesDataPoint;
 }
@@ -29,7 +29,7 @@ export abstract class TimeSeriesDataPoint extends BaseEntity<TimeSeriesDataPoint
   @Prop({ required: true })
   timingId: string;
 
-  static pupulate<LogModel extends TimeSeriesDataPoint>(log: LogModel, profile: Profile, model: TimeSeries, date: CalendarDate): LogModel {
+  static pupulate<LogModel extends TimeSeriesDataPoint>(log: LogModel, profile: Profile, model: TimeSeriesContent, date: CalendarDate): LogModel {
     const timing = Calendar.createTiming(model.interval, date, profile.getLocale());
     log.contentId = assureObjectId(model);
     log.timing = timing;

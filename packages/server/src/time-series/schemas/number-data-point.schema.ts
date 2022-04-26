@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { dateTime, isToday } from "lyvely-common/src";
-import { DataPoint } from "./time-series-data-point.schema";
+import { DataPoint } from "./data-point.schema";
 
 @Schema({ _id: false })
 export class DataPointTiming {
@@ -18,7 +18,7 @@ export class DataPointTiming {
 
 const DataPointTimingSchema = SchemaFactory.createForClass(DataPointTiming);
 
-export abstract class NumberDataPoint extends DataPoint {
+export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
 
   @Prop( { type: Number, required: true })
   value: number;

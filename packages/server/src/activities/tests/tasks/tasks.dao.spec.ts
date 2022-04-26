@@ -2,10 +2,9 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
-import { CalendarIntervalEnum , buildTimingId } from 'lyvely-common';
+import { CalendarIntervalEnum, toTimingId } from 'lyvely-common';
 import { TaskDocument, } from '../../schemas';
 import { TasksDao } from '../../daos/tasks.dao';
-
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 
 describe('Tasks DAO', () => {
@@ -36,9 +35,9 @@ describe('Tasks DAO', () => {
 
   describe('setDone', () => {
     it('complete a task', async () => {
-      const {user, profile} = await testData.createUserAndProfile();
+      const { user, profile } = await testData.createUserAndProfile();
       const task = await activityData.createTask(user, profile, 't1');
-      const todayTimingId = buildTimingId(CalendarIntervalEnum.Daily, new Date(), profile.getLocale());
+      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
       await tasksDao.setDone(task, todayTimingId);
       const updated = await tasksDao.reload(task);
       expect(updated.done).toEqual(todayTimingId);
@@ -47,8 +46,8 @@ describe('Tasks DAO', () => {
 
   describe('setUndone', () => {
     it('reset a task to undone', async () => {
-      const {user, profile} = await testData.createUserAndProfile();
-      const todayTimingId = buildTimingId(CalendarIntervalEnum.Daily, new Date(), profile.getLocale());
+      const { user, profile } = await testData.createUserAndProfile();
+      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
       const task = await activityData.createTask(user, profile, 't1', { done: todayTimingId });
       expect(task.done).toEqual(todayTimingId);
       await tasksDao.setUndone(task);

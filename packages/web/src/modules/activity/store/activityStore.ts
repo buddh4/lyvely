@@ -1,21 +1,23 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
 import {
+  CalendarPlanEnum,
+  TimeableStore,
+  toTimingId,
+  getTimingIdsByRange,
+  formatDate
   ActivityFilter,
   ActivityLogStore,
-  ITask
-} from 'lyvely-common';
-import { CalendarPlanEnum, TimeableStore, buildTimingId, getTimingIdsByRange, formatDate } from 'lyvely-common';
-import { useProfileStore } from '@/modules/user/store/profile.store';
-import { useTimingStore } from '@/modules/timing/store';
-import activityRepository from '@/modules/activity/repositories/activity.repository';
-import {
+  ITask,
   ActivityLogDto,
   HabitDto, IActivity,
   IActivityLog,
   IHabit, isTask,
   TaskDto
 } from 'lyvely-common';
+import { useProfileStore } from '@/modules/user/store/profile.store';
+import { useTimingStore } from '@/modules/timing/store';
+import activityRepository from '@/modules/activity/repositories/activity.repository';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
@@ -106,14 +108,8 @@ export const useActivityStore = defineStore('activity', {
       activity.archived = false;
     },
     async getActivityLog(activity: IActivity) {
-      const { profile } = useProfileStore();
-
-      if(!profile) {
-        return;
-      }
-
       const { date } = useTimingStore();
-      const timingId = buildTimingId(activity.plan, date, profile.locale);
+      const timingId = toTimingId(date, activity.plan);
 
       let log = this.cache.getLog(activity, timingId);
 

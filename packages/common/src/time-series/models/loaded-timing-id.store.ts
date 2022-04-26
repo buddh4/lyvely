@@ -1,8 +1,8 @@
-import {TimeSeriesRangeFilter, getTimingIdsByRange } from './time-series-range-filter.model';
+import { TimeSeriesRangeFilter, getTimingIdsByRange } from './time-series-range-filter.model';
 import { CalendarDate, subtractDays } from '../../calendar';
 
 export class LoadedTimingIdStore {
-  private loadedTimingIds: Set<String> = new Set<String>();
+  private loadedTimingIds: Set<string> = new Set<string>();
 
   addLoadedTimingIds(ids: string[]) {
     if(!ids || !ids.length) {
@@ -18,11 +18,11 @@ export class LoadedTimingIdStore {
     return requiredTimingIds.filter(requiredId => !this.loadedTimingIds.has(requiredId));
   }
 
-  getCalendarFilter(date: CalendarDate, locale: string, range: number = 3): TimeSeriesRangeFilter | false {
+  getCalendarFilter(date: CalendarDate, range = 3): TimeSeriesRangeFilter | false {
     const from = subtractDays(date, range);
 
     const filter = TimeSeriesRangeFilter.createForRange(from, date);
-    const requiredTimingIds = getTimingIdsByRange(filter, locale);
+    const requiredTimingIds = getTimingIdsByRange(filter);
     const filteredTimingIds = this.filterOutLoadedTimingIds(requiredTimingIds);
 
     if(!filteredTimingIds.length) {

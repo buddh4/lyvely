@@ -6,7 +6,7 @@ import { ContentLog, ContentLogSchema } from './content.log.schema';
 import { ContentVisibilityLevel } from '../../permissions/interfaces/profile-permissions.interface';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, ContentAuthorSchema, Author } from './content-author-info.schema';
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 import { implementsAssertContentMetadata } from '../interfaces';
 import { Profile } from '../../profiles';
 
@@ -82,6 +82,8 @@ export class Content<T extends EntityType<ContentEntity> = EntityType<ContentEnt
       obj = author;
       author = undefined;
     }
+
+    obj = obj || {};
 
     if(author instanceof User) {
       obj.createdBy = author._id;

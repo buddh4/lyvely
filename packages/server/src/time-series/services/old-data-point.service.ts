@@ -2,17 +2,17 @@ import { User } from '../../users';
 import {
   CalendarDate,
   TimeSeriesRangeFilter,
-  getTimingIdsByRange, Calendar, DeepPartial, dateTime
+  getTimingIdsByRange, Calendar, DeepPartial, dateTime, toDate
 } from 'lyvely-common';
 import { Model } from 'mongoose';
-import { TimeSeries, TimeSeriesDataPointConstructor, DataPointDocument, DataPoint } from '../schemas';
+import { TimeSeriesContent, TimeSeriesDataPointConstructor, DataPointDocument, DataPoint } from '../schemas';
 import { Profile , ProfilesService } from '../../profiles';
 import { assureObjectId } from '../../db/db.utils';
 
 export abstract class DataPointService<
   Doc extends DataPointDocument,
   LogModel extends DataPoint,
-  MainModel extends TimeSeries> {
+  MainModel extends TimeSeriesContent> {
 
   protected LogModel: Model<DataPointDocument>;
 
@@ -60,7 +60,7 @@ export abstract class DataPointService<
           cid: timingModel._id,
           interval: timingModel.interval
         },
-        date: dateTime(date).toDate()
+        date: toDate(date)
       });
       const doc = await new this.LogModel(model).save();
       return this.constructModel(doc);

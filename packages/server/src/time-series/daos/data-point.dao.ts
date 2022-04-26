@@ -2,13 +2,17 @@ import { CalendarDateTime, CalendarIntervalEnum } from "lyvely-common/src";
 import { AbstractDao, PartialEntityData, UpdateQuery } from "../../db/abstract.dao";
 import { assureObjectId, EntityIdentity } from "../../db/db.utils";
 import { Profile } from "../../profiles";
-import { User } from "../../users/schemas/users.schema";
+import { User } from "../../users";
 import { Injectable } from '@nestjs/common';
-import { DataPoint, TimeSeries } from "../schemas";
-import { CalendarDate, getTimingLevelIds, toTimingId } from "lyvely-common";
+import { DataPoint, TimeSeriesContent } from "../schemas";
+import { CalendarDate, getTimingIds, toTimingId } from "lyvely-common";
 
 export class DataPointIntervalFilter {
     constructor(public search: CalendarDateTime, public level: CalendarIntervalEnum = CalendarIntervalEnum.Unscheduled) {}
+
+    getTid() {
+        return toTimingId(this.search);
+    }
 }
 
 type InterValFilter = { 'meta.interval': CalendarIntervalEnum, tid?: string | { $regex: RegExp } };
@@ -16,7 +20,7 @@ type InterValFilter = { 'meta.interval': CalendarIntervalEnum, tid?: string | { 
 @Injectable()
 export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao<T> {
 
-    async findLogByDate(cid: EntityIdentity<TimeSeries>, date: CalendarDate) {
+    async findLogByDate(cid: EntityIdentity<TimeSeriesContent>, date: CalendarDate) {
         return this.findOne({
             'meta.cid': assureObjectId(cid),
             tid: toTimingId(date),
@@ -40,7 +44,7 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
     }
 
     private buildTimingIntervalFilter(filter: DataPointIntervalFilter) {
-        const timingIds = getTimingLevelIds(filter.search);
+        const timingIds = getTimingIds(filter.search);
         const dailyFilter = { 'meta.interval': CalendarIntervalEnum.Daily, tid: timingIds[CalendarIntervalEnum.Daily] };
 
         if(filter.level === CalendarIntervalEnum.Daily ) {
@@ -53,7 +57,7 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
             if(filter.level <= i) {
                 const filter = i === CalendarIntervalEnum.Unscheduled
                     ? { 'meta.interval': i }
-                    : { 'meta.interval': i, tid: { $regex: new RegExp(`^${timingIds[i] }`) } };
+                    : { 'meta.interval': i, tid: { $regex: new RegExp(`^${timingIds[i]}`) } };
                 intervalFilter.push(filter);
             }
         }

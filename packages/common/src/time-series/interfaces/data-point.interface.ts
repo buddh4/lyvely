@@ -1,6 +1,6 @@
 export interface ITimeSeriesDataPoint {
   id?: string;
-  contentId: any;
+  contentId: string;
   timingId: string;
 }
 

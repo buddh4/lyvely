@@ -1,9 +1,21 @@
 import {
-  addDays, addMonth, addQuarter, addWeek, addYear, getDayNameByIndex,
-  getIsoWeekOfYear, getMonthNameByIndex,
+  addDays,
+  addMonth,
+  addQuarter,
+  addWeek,
+  addYear,
+  getDayNameByIndex,
+  getIsoWeekOfYear,
+  getMonthNameByIndex,
   getQuarter,
-  getWeekOfYear,
-  getYearAndWeekOfYear, isCurrentYear, subtractDays, subtractMonth, subtractQuarter, subtractWeek, subtractYear
+  getYearAndWeekOfYear,
+  isCurrentYear,
+  subtractDays,
+  subtractMonth,
+  subtractQuarter,
+  subtractWeek,
+  subtractYear,
+  toTimingId
 } from '../utils';
 import { CalendarDate, dateTime, getFullDayDate,  ITiming } from '../interfaces';
 import { TimingModel } from './timing.model';
@@ -13,7 +25,7 @@ export abstract class CalendarPlan {
   protected abstract id: CalendarIntervalEnum;
   private static _instances: Map<CalendarIntervalEnum, CalendarPlan> = new Map();
 
-  abstract createTimingInstance(date: CalendarDate, locale: string): ITiming;
+  abstract createTimingInstance(date: CalendarDate): ITiming;
   abstract getLabel(): string;
   abstract getTitle(date: Date, locale: string): string;
   abstract getLabelById(id: any): string;
@@ -24,13 +36,13 @@ export abstract class CalendarPlan {
     return this.id;
   }
 
-  getTimingUniqueId(date: CalendarDate, locale: string): string {
-    return buildTimingId(this.getPlan(), date, locale);
+  getTimingUniqueId(date: CalendarDate): string {
+    return toTimingId(date, this.getPlan());
   }
 
   public static getInstance(interval: CalendarIntervalEnum): CalendarPlan {
     if (!CalendarPlan._instances[interval]) {
-      let planClass = PlanFactory[interval];
+      const planClass = PlanFactory[interval];
       if (!planClass) {
         throw new Error('Plan not found!');
       }
@@ -45,8 +57,8 @@ export abstract class CalendarPlan {
 export class UnscheduledPlan extends CalendarPlan {
   protected id = CalendarIntervalEnum.Unscheduled;
 
-  createTimingInstance(date: CalendarDate, locale: string): ITiming {
-    return new TimingModel(this.getTimingUniqueId(date, locale), this.getPlan());
+  createTimingInstance(date: CalendarDate): ITiming {
+    return new TimingModel(this.getTimingUniqueId(date), this.getPlan());
   }
 
   getLabel(): string {
@@ -73,9 +85,9 @@ export class UnscheduledPlan extends CalendarPlan {
 export class YearlyPlan extends UnscheduledPlan {
   protected id = CalendarIntervalEnum.Yearly;
 
-  createTimingInstance(date: CalendarDate, locale: string): ITiming {
+  createTimingInstance(date: CalendarDate): ITiming {
     date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date, locale);
+    const timing = super.createTimingInstance(date);
     timing.year = date.getUTCFullYear();
     return timing;
   }
@@ -100,9 +112,9 @@ export class YearlyPlan extends UnscheduledPlan {
 export class QuarterlyPlan extends YearlyPlan {
   protected id = CalendarIntervalEnum.Quarterly;
 
-  createTimingInstance(date: CalendarDate, locale: string): ITiming {
+  createTimingInstance(date: CalendarDate): ITiming {
     date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date, locale);
+    const timing = super.createTimingInstance(date);
     timing.quarter = getQuarter(date);
     return timing;
   }
@@ -112,7 +124,7 @@ export class QuarterlyPlan extends YearlyPlan {
   }
 
   getTitle(date: Date, locale: string): string {
-    let momentDate = dateTime(date);
+    const momentDate = dateTime(date);
     return 'Q' + momentDate.quarter()
       + (!isCurrentYear(date) ? momentDate.format(' · YYYY') : '');
   }
@@ -129,9 +141,9 @@ export class QuarterlyPlan extends YearlyPlan {
 export class MonthlyPlan extends QuarterlyPlan {
   protected id = CalendarIntervalEnum.Monthly;
 
-  createTimingInstance(date: CalendarDate, locale: string): ITiming {
+  createTimingInstance(date: CalendarDate): ITiming {
     date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date, locale);
+    const timing = super.createTimingInstance(date);
     timing.monthOfYear = date.getUTCMonth();
     return timing;
   }
@@ -145,7 +157,7 @@ export class MonthlyPlan extends QuarterlyPlan {
   }
 
   getTitle(date: Date, locale: string): string {
-    let format = isCurrentYear(date) ? 'MMM' : 'MMM · YYYY';
+    const format = isCurrentYear(date) ? 'MMM' : 'MMM · YYYY';
     return dateTime(date).format(format);
   }
 
@@ -163,10 +175,9 @@ export class MonthlyPlan extends QuarterlyPlan {
 export class WeeklyPlan extends MonthlyPlan {
   protected id = CalendarIntervalEnum.Weekly;
 
-  createTimingInstance(date: CalendarDate, locale: string): ITiming {
+  createTimingInstance(date: CalendarDate): ITiming {
     date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date, locale);
-    timing.weekOfYear = getWeekOfYear(date, locale);
+    const timing = super.createTimingInstance(date);
     timing.isoWeekOfYear = getIsoWeekOfYear(date);
     return timing;
   }
@@ -176,9 +187,9 @@ export class WeeklyPlan extends MonthlyPlan {
   }
 
   getTitle(date: Date, locale: string): string {
-    let {weekOfYear, year} = getYearAndWeekOfYear(date, locale);
-    let dateMoment = dateTime(date);
-    let showYear = (dateMoment.year() !== year) || !isCurrentYear(date);
+    const { weekOfYear, year } = getYearAndWeekOfYear(date, locale);
+    const dateMoment = dateTime(date);
+    const showYear = (dateMoment.year() !== year) || !isCurrentYear(date);
     return `Week ${weekOfYear}` +  (showYear ? ` · ${year}` : '');
   }
 
@@ -194,10 +205,9 @@ export class WeeklyPlan extends MonthlyPlan {
 export class DailyPlan extends WeeklyPlan {
   protected id = CalendarIntervalEnum.Daily;
 
-  createTimingInstance(date: CalendarDate, locale: string): ITiming {
+  createTimingInstance(date: CalendarDate): ITiming {
     date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date, locale);
-    timing.weekOfYear = getWeekOfYear(date, locale);
+    const timing = super.createTimingInstance(date);
     timing.isoWeekOfYear = getIsoWeekOfYear(date);
     timing.date = date;
     timing.dayOfMonth = date.getUTCDate();
@@ -214,7 +224,7 @@ export class DailyPlan extends WeeklyPlan {
   }
 
   getTitle(date: Date, locale: string): string {
-    let format = isCurrentYear(date) ? 'ddd, MMM Do' : 'ddd, MMM Do · YYYY';
+    const format = isCurrentYear(date) ? 'ddd, MMM Do' : 'ddd, MMM Do · YYYY';
     return dateTime(date).format(format);
   }
 
@@ -237,35 +247,13 @@ export function getCalendarPlanArray(): CalendarIntervalEnum[] {
 
 export function getCalendarPlanOptions(): { value: CalendarIntervalEnum, label: string }[] {
   return  [
-    {value: CalendarIntervalEnum.Daily, label: 'Daily'},
-    {value: CalendarIntervalEnum.Weekly, label: 'Weekly'},
-    {value: CalendarIntervalEnum.Monthly, label: 'Monthly'},
-    {value: CalendarIntervalEnum.Quarterly, label: 'Quarterly'},
-    {value: CalendarIntervalEnum.Yearly, label: 'Yearly'},
-    {value: CalendarIntervalEnum.Unscheduled, label: 'Unscheduled'},
+    { value: CalendarIntervalEnum.Daily, label: 'Daily' },
+    { value: CalendarIntervalEnum.Weekly, label: 'Weekly' },
+    { value: CalendarIntervalEnum.Monthly, label: 'Monthly' },
+    { value: CalendarIntervalEnum.Quarterly, label: 'Quarterly' },
+    { value: CalendarIntervalEnum.Yearly, label: 'Yearly' },
+    { value: CalendarIntervalEnum.Unscheduled, label: 'Unscheduled' },
   ];
-}
-
-export function buildTimingId(interval: CalendarIntervalEnum, date: CalendarDate, locale: string): string {
-  date = getFullDayDate(date);
-  switch (interval) {
-    case CalendarIntervalEnum.Unscheduled:
-      return interval + ':unscheduled';
-    case CalendarIntervalEnum.Yearly:
-      return interval + ':Y:' + date.getUTCFullYear();
-    case CalendarIntervalEnum.Quarterly:
-      return interval + ':Y:' + date.getUTCFullYear() + ':Q:' + getQuarter(date);
-    case CalendarIntervalEnum.Monthly:
-      return interval + ':Y:' + date.getUTCFullYear() + ':M:' + date.getUTCMonth();
-    case CalendarIntervalEnum.Weekly:
-      let {year, weekOfYear} = getYearAndWeekOfYear(date, locale)
-      return interval + ':Y:' + year + ':W:' + weekOfYear;
-    case CalendarIntervalEnum.Daily:
-      return interval
-        + ':Y:' + date.getUTCFullYear()
-        + ':M:' + date.getUTCMonth()
-        + ':D:' + date.getUTCDate();
-  }
 }
 
 const PlanFactory = {

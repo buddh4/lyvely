@@ -1,12 +1,11 @@
 import { Db } from 'mongodb'
-import { ProfileDocument, Profile } from '../src/profiles';
-import { Membership, MembershipDocument } from '../src/profiles';
-import { BaseMembershipRole, BaseUserProfileRelationType } from '../src/profiles';
+import { ProfileDocument, Profile , Membership, MembershipDocument , BaseMembershipRole, BaseUserProfileRelationType } from '../src/profiles';
 import mongoose from 'mongoose';
 
 module.exports = {
   async up(db: Db) {
-    const profiles = await db.collection<ProfileDocument>('profiles').find({}, { projection: {owner: 1} });
+    // @ts-ignore
+    const profiles = await db.collection<ProfileDocument>('profiles').find({}, { projection: { owner: 1 } });
 
     while(await profiles.hasNext()) {
       const profile = await profiles.next() as Profile & {owner ?: mongoose.Types.ObjectId};
@@ -25,7 +24,7 @@ module.exports = {
       console.log(`Upserting owner membership of profile: ${profile._id}`);
 
       await db.collection<MembershipDocument>('userprofilerelations')
-        .updateOne(membership, { $set: membership }, {upsert: true})
+        .updateOne(membership, { $set: membership }, { upsert: true })
     }
   },
 

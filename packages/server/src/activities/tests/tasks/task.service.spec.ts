@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { buildTimingId, CalendarIntervalEnum, TimeSeriesRangeFilter , ActivityType } from 'lyvely-common';
+import { CalendarIntervalEnum, TimeSeriesRangeFilter, ActivityType, toTimingId } from 'lyvely-common';
 
 import { TasksService } from '../../services/tasks.service';
 import { ActivityDataPointService } from '../../services/activity-data-point.service';
@@ -32,7 +32,7 @@ describe('TaskService', () => {
 
   describe('Task service', () => {
     it('create', async () => {
-      const {user, profile} = await testDataUtils.createUserAndProfile();
+      const { user, profile } = await testDataUtils.createUserAndProfile();
       const task = await taskService.createContent(profile, Task.create(user, profile, {
         title: 'Do something!',
         value: 5,
@@ -52,19 +52,19 @@ describe('TaskService', () => {
 
     describe('setDone', () => {
       it('no logs available', async () => {
-        const {user, profile} = await testDataUtils.createUserAndProfile();
+        const { user, profile } = await testDataUtils.createUserAndProfile();
         const task = await testDataUtils.createTask(user, profile);
         await taskService.setDone(user, profile, task, '2021-04-03');
         const search = await testDataUtils.findTaskById(task.id);
         expect(search.done).toEqual(
-          buildTimingId(task.interval, '2021-04-03', profile.locale),
+          toTimingId('2021-04-03', task.interval),
         );
       });
     });
 
     describe('setUnDone', () => {
       it('no logs available', async () => {
-        const {user, profile} = await testDataUtils.createUserAndProfile();
+        const { user, profile } = await testDataUtils.createUserAndProfile();
         const task = await testDataUtils.createTask(user, profile);
         await taskService.setDone(user, profile, task, '2021-04-03');
         await taskService.setUnDone(user, profile, task, '2021-04-03');
@@ -75,9 +75,9 @@ describe('TaskService', () => {
 
     describe('findTasksByRange', () => {
       it('no logs available', async () => {
-        const {profile} = await testDataUtils.createUserAndProfile();
+        const { profile } = await testDataUtils.createUserAndProfile();
 
-        const { logs } = await activityService.findByRangeFilter(
+        const { logs } = await activityService.findByFilter(
           profile,
           new TimeSeriesRangeFilter({
             from: '2021-04-03',
@@ -89,12 +89,12 @@ describe('TaskService', () => {
       });
 
       it('single undone task', async () => {
-        const {user, profile} = await testDataUtils.createUserAndProfile();
+        const { user, profile } = await testDataUtils.createUserAndProfile();
         const task =  await testDataUtils.createTask(user, profile);
 
-        const { activities } = await activityService.findByRangeFilter(
+        const { activities } = await activityService.findByFilter(
           profile,
-          new TimeSeriesRangeFilter({from: '2021-04-03', to: '2021-04-04'}),
+          new TimeSeriesRangeFilter({ from: '2021-04-03', to: '2021-04-04' }),
         );
 
         expect(activities.length).toEqual(1);
@@ -102,12 +102,12 @@ describe('TaskService', () => {
       });
 
       it('single done task within timing', async () => {
-        const {user, profile} = await testDataUtils.createUserAndProfile();
+        const { user, profile } = await testDataUtils.createUserAndProfile();
         const task = await testDataUtils.createTask(user, profile);
 
         await taskService.setDone(user, profile, task, '2021-04-03');
 
-        const { activities } = await activityService.findByRangeFilter(
+        const { activities } = await activityService.findByFilter(
           profile,
           new TimeSeriesRangeFilter({
             from: '2021-04-03',
@@ -120,12 +120,12 @@ describe('TaskService', () => {
       });
 
       it('single done task outside of search timing', async () => {
-        const {user, profile} = await testDataUtils.createUserAndProfile();
+        const { user, profile } = await testDataUtils.createUserAndProfile();
         const task = await testDataUtils.createTask(user, profile);
 
         await taskService.setDone(user, profile, task, '2021-04-02');
 
-        const { activities } = await activityService.findByRangeFilter(
+        const { activities } = await activityService.findByFilter(
           profile,
           new TimeSeriesRangeFilter({
             from: '2021-04-03',

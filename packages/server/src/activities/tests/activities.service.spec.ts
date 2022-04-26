@@ -39,26 +39,26 @@ describe('ActivityService', () => {
   describe('sort', () => {
     const createHabits = async (user: User, profile: Profile) => {
       return [
-        await testData.createHabit(user, profile, 'h0', {sortOrder: 0}),
-        await testData.createHabit(user, profile, 'h1', {sortOrder: 1}),
-        await testData.createHabit(user, profile, 'h2', {sortOrder: 2}),
-        await testData.createHabit(user, profile, 'h3', {sortOrder: 3}),
-        await testData.createHabit(user, profile, 'h4', {sortOrder: 4})
+        await testData.createHabit(user, profile, { title: 'h0' }, { sortOrder: 0 }),
+        await testData.createHabit(user, profile, { title: 'h1' }, { sortOrder: 1 }),
+        await testData.createHabit(user, profile, { title: 'h2' }, { sortOrder: 2 }),
+        await testData.createHabit(user, profile, { title: 'h3' }, { sortOrder: 3 }),
+        await testData.createHabit(user, profile, { title: 'h4' }, { sortOrder: 4 })
       ];
     }
 
     it('sort unsorted activities', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      await testData.createHabit(user, profile, 'h0');
-      await testData.createHabit(user, profile, 'h1');
-      await testData.createHabit(user, profile, 'h2');
-      const h3 = await testData.createHabit(user, profile, 'h3');
-      await testData.createHabit(user, profile, 'h4');
+      await testData.createHabit(user, profile, { title: 'h0' });
+      await testData.createHabit(user, profile, { title: 'h1' });
+      await testData.createHabit(user, profile, { title: 'h2' });
+      const h3 = await testData.createHabit(user, profile, { title: 'h3' });
+      await testData.createHabit(user, profile, { title: 'h4' });
 
       await activitiesService.sort(user, h3, 1);
 
       const filter = new TimeSeriesRangeFilter({ pid: profile.id, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
-      const { activities } = await activitiesService.findByRangeFilter(profile, filter);
+      const { activities } = await activitiesService.findByFilter(profile, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
       expect(activities[0].title).toEqual('h0')
@@ -75,8 +75,8 @@ describe('ActivityService', () => {
 
       await activitiesService.sort(user, habits[3], 0);
 
-      const filter = new TimeSeriesRangeFilter({pid: profile.name, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
-      const { activities } = await activitiesService.findByRangeFilter(profile, filter);
+      const filter = new TimeSeriesRangeFilter({ pid: profile.name, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
+      const { activities } = await activitiesService.findByFilter(profile, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
       expect(activities[0].title).toEqual('h3')
@@ -92,8 +92,8 @@ describe('ActivityService', () => {
 
       await activitiesService.sort(user, habits[3], 0);
 
-      const filter = new TimeSeriesRangeFilter({pid: profile.name, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
-      const { activities } = await activitiesService.findByRangeFilter(profile, filter);
+      const filter = new TimeSeriesRangeFilter({ pid: profile.name, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
+      const { activities } = await activitiesService.findByFilter(profile, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
       expect(activities[0].title).toEqual('h3')
@@ -109,8 +109,8 @@ describe('ActivityService', () => {
 
       await activitiesService.sort(user, habits[1], 4);
 
-      const filter = new TimeSeriesRangeFilter({pid: profile.name, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
-      const { activities } = await activitiesService.findByRangeFilter(profile, filter);
+      const filter = new TimeSeriesRangeFilter({ pid: profile.name, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
+      const { activities } = await activitiesService.findByFilter(profile, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
       expect(activities[0].title).toEqual('h0')
@@ -126,8 +126,8 @@ describe('ActivityService', () => {
 
       await activitiesService.sort(user, habits[2], 2);
 
-      const filter = new TimeSeriesRangeFilter({pid: profile.name, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
-      const { activities } = await activitiesService.findByRangeFilter(profile, filter);
+      const filter = new TimeSeriesRangeFilter({ pid: profile.name, from: new Date(), to: ActivityTestDataUtil.getDateTomorrow() });
+      const { activities } = await activitiesService.findByFilter(profile, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
       expect(activities[0].title).toEqual('h0')
@@ -141,72 +141,72 @@ describe('ActivityService', () => {
   describe('Activities service', () => {
     describe('findByRangeFilter', () => {
       it('find undone task', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
+        const { user, profile } = await testData.createUserAndProfile('user1');
         const task = await testData.createTask(user, profile);
-        const filter = new TimeSeriesRangeFilter({pid: DEFAULT_PROFILE_NAME, from: '2021-01-01', to: '2021-01-03' });
-        const { activities } = await activitiesService.findByRangeFilter(profile, filter);
+        const filter = new TimeSeriesRangeFilter({ pid: DEFAULT_PROFILE_NAME, from: '2021-01-01', to: '2021-01-03' });
+        const { activities } = await activitiesService.findByFilter(profile, filter);
         expect(activities.length).toEqual(1);
         expect(activities[0].id).toEqual(task.id);
       });
 
       it('find task done today within filter range', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
-        const task = await testData.createTask(user, profile, 't1',{done: ActivityTestDataUtil.getTodayTimingId(profile.getLocale())});
-        const filter = new TimeSeriesRangeFilter({pid: DEFAULT_PROFILE_NAME, from: new Date(), to:  ActivityTestDataUtil.getDateTomorrow() });
-        const {activities} = await activitiesService.findByRangeFilter(profile, filter);
+        const { user, profile } = await testData.createUserAndProfile('user1');
+        const task = await testData.createTask(user, profile, { title: 't1' },{ done: ActivityTestDataUtil.getTodayTimingId(profile.getLocale()) });
+        const filter = new TimeSeriesRangeFilter({ pid: DEFAULT_PROFILE_NAME, from: new Date(), to:  ActivityTestDataUtil.getDateTomorrow() });
+        const { activities } = await activitiesService.findByFilter(profile, filter);
         expect(activities.length).toEqual(1);
         expect(activities[0].id).toEqual(task.id);
       });
 
       it('find task done tomorrow within filter range', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
-        const task = await testData.createTask(user, profile, 't1',{done: ActivityTestDataUtil.getTomorrowTimingId(profile.getLocale())});
-        const filter = new TimeSeriesRangeFilter({pid: DEFAULT_PROFILE_NAME, from: new Date(), to:  ActivityTestDataUtil.getDateTomorrow() });
-        const {activities} = await activitiesService.findByRangeFilter(profile, filter);
+        const { user, profile } = await testData.createUserAndProfile('user1');
+        const task = await testData.createTask(user, profile,{ title: 't1' },{ done: ActivityTestDataUtil.getTomorrowTimingId(profile.getLocale()) });
+        const filter = new TimeSeriesRangeFilter({ pid: DEFAULT_PROFILE_NAME, from: new Date(), to:  ActivityTestDataUtil.getDateTomorrow() });
+        const { activities } = await activitiesService.findByFilter(profile, filter);
         expect(activities.length).toEqual(1);
         expect(activities[0].id).toEqual(task.id);
       });
 
       it('do not include tasks done outside of filter range', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
-        await testData.createTask(user, profile, 't1',{done: ActivityTestDataUtil.getTomorrowTimingId(profile.getLocale())});
-        const filter = new TimeSeriesRangeFilter({pid: DEFAULT_PROFILE_NAME, from: ActivityTestDataUtil.getDateYesterday(), to: new Date() });
-        const {activities} = await activitiesService.findByRangeFilter(profile, filter);
+        const { user, profile } = await testData.createUserAndProfile('user1');
+        await testData.createTask(user, profile, { title: 't1' },{ done: ActivityTestDataUtil.getTomorrowTimingId(profile.getLocale()) });
+        const filter = new TimeSeriesRangeFilter({ pid: DEFAULT_PROFILE_NAME, from: ActivityTestDataUtil.getDateYesterday(), to: new Date() });
+        const { activities } = await activitiesService.findByFilter(profile, filter);
         expect(activities.length).toEqual(0);
       });
 
       it('find habit', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
+        const { user, profile } = await testData.createUserAndProfile('user1');
         const habit = await testData.createHabit(user, profile);
         const filter = new TimeSeriesRangeFilter({ from: '2021-01-01', to: '2021-01-03' });
-        const { activities } = await activitiesService.findByRangeFilter(profile, filter);
+        const { activities } = await activitiesService.findByFilter(profile, filter);
         expect(activities.length).toEqual(1);
         expect(activities[0].id).toEqual(habit.id);
       });
 
       it('find habit log within filter range', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
+        const { user, profile } = await testData.createUserAndProfile('user1');
         const habit = await testData.createHabit(user, profile);
         const log = await testData.createLog(user, profile, habit, new Date());
         const filter = new TimeSeriesRangeFilter({ from: new Date(), to:  ActivityTestDataUtil.getDateTomorrow() });
-        const { logs } = await activitiesService.findByRangeFilter(profile, filter);
+        const { logs } = await activitiesService.findByFilter(profile, filter);
         expect(logs.length).toEqual(1);
         expect(logs[0].id).toEqual(log.id);
       });
 
       it('do not find habit log outside of filter range', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
+        const { user, profile } = await testData.createUserAndProfile('user1');
         const habit = await testData.createHabit(user, profile);
         await testData.createLog(user, profile, habit, ActivityTestDataUtil.getDateTomorrow());
-        const filter = new TimeSeriesRangeFilter({pid: DEFAULT_PROFILE_NAME, from: ActivityTestDataUtil.getDateYesterday(), to:  new Date() });
-        const { logs } = await activitiesService.findByRangeFilter(profile, filter);
+        const filter = new TimeSeriesRangeFilter({ pid: DEFAULT_PROFILE_NAME, from: ActivityTestDataUtil.getDateYesterday(), to:  new Date() });
+        const { logs } = await activitiesService.findByFilter(profile, filter);
         expect(logs.length).toEqual(0);
       });
     });
 
     describe('findByRangeFilter', () => {
       it('find activity by profile and ObjectId', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
+        const { user, profile } = await testData.createUserAndProfile('user1');
         const habit = await testData.createHabit(user, profile);
         const search = await activitiesService.findByProfileAndId(profile, habit._id);
         expect(search).toBeDefined();
@@ -214,7 +214,7 @@ describe('ActivityService', () => {
       });
 
       it('find activity by profile and string id', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
+        const { user, profile } = await testData.createUserAndProfile('user1');
         const habit = await testData.createHabit(user, profile);
         const search = await activitiesService.findByProfileAndId(profile, assureStringId(habit._id));
         expect(search).toBeDefined();
@@ -222,7 +222,7 @@ describe('ActivityService', () => {
       });
 
       it('do not find activity of another profile', async () => {
-        const {user, profile} = await testData.createUserAndProfile('user1');
+        const { user, profile } = await testData.createUserAndProfile('user1');
         const profile2 = await testData.createProfile(user, 'profile2');
         const habit = await testData.createHabit(user, profile);
         const search = await activitiesService.findByProfileAndId(profile2, assureStringId(habit._id));
@@ -232,7 +232,7 @@ describe('ActivityService', () => {
 
     describe('archive', () => {
       it('owner can archive habit', async () => {
-        const {user, profile} = await testData.createUserAndProfile();
+        const { user, profile } = await testData.createUserAndProfile();
         const habit = await testData.createHabit(user, profile);
         const archived = await activitiesService.archive(user, habit);
         expect(archived).toEqual(true);
@@ -244,8 +244,8 @@ describe('ActivityService', () => {
 
     describe('unarchive', () => {
       it('owner can un-archive habit', async () => {
-        const {user, profile} = await testData.createUserAndProfile();
-        const habit = await testData.createHabit(user, profile, 'h1', { archived: true });
+        const { user, profile } = await testData.createUserAndProfile();
+        const habit = await testData.createHabit(user, profile, { title: 't1' }, { archived: true });
         expect(habit.archived).toEqual(true);
 
         const unarchived = await activitiesService.unarchive(user, habit);

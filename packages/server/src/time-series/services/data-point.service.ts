@@ -1,13 +1,13 @@
 import { User } from '../../users';
-import { CalendarDate, dateTime } from 'lyvely-common';
-import { TimeSeries, DataPoint } from '../schemas';
+import { CalendarDate, toDate } from 'lyvely-common';
+import { TimeSeriesContent, DataPoint, DataPointMeta } from '../schemas';
 import { Profile , ProfilesService } from '../../profiles';
 import { EntityIdentity } from '../../db/db.utils';
 import { DataPointDao, DataPointIntervalFilter } from "../daos/data-point.dao";
 import { Inject } from '@nestjs/common';
 
 export abstract class DataPointService<
-    TimeSeriesModel extends TimeSeries,
+    TimeSeriesModel extends TimeSeriesContent,
     DataPointModel extends DataPoint,
     Value = any> {
 
@@ -35,13 +35,8 @@ export abstract class DataPointService<
     }
 
     const modelData = this.dataPointDao.constructModel({
-      meta: {
-        uid: user._id,
-        pid: profile._id,
-        cid: content._id,
-        interval: content.interval
-      },
-      date: dateTime(date).toDate()
+      meta: DataPointMeta.create(user, profile, content),
+      date: toDate(date)
     });
 
     return await this.dataPointDao.create(modelData);

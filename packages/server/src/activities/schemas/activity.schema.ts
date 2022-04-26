@@ -10,7 +10,7 @@ import {
 } from 'lyvely-common';
 import {
   CheckboxNumberDataPointConfig, SpinnerNumberDataPointConfig,
-  TimeSeries,
+  TimeSeriesContent,
   TimeSeriesContentSchemaFactory,
   TimeSeriesDataPointConfigSchema,
   DataPointConfigFactory
@@ -23,7 +23,7 @@ type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberData
  * Base Activity content class.
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Activity extends TimeSeries<Activity> implements IActivity {
+export class Activity extends TimeSeriesContent<Activity> implements IActivity {
 
   @Prop({ required: true })
   title: string;

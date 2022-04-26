@@ -8,9 +8,11 @@ import {
   getNumberEnumValues,
   toTimingId,
 } from "lyvely-common";
-import { TimeSeries } from "./time-series-content.schema";
+import { TimeSeriesContent } from "./time-series-content.schema";
+import { User } from "../../users";
+import { Profile } from "../../profiles";
 
-export interface TimeSeriesDataPointConstructor<Model extends TimeSeries> {
+export interface TimeSeriesDataPointConstructor<Model extends TimeSeriesContent> {
   new (obj?: DeepPartial<IDataPoint>): IDataPoint;
 }
 
@@ -42,6 +44,15 @@ export class DataPointMeta {
   constructor(obj?: DeepPartial<DataPointMeta>) {
     assignEntityData(this, obj);
   }
+
+  static create(user: User, profile: Profile, content: TimeSeriesContent) {
+    return new DataPointMeta({
+      uid: user._id,
+      pid: profile._id,
+      cid: content._id,
+      interval: content.interval
+    });
+  }
 }
 
 
@@ -51,7 +62,7 @@ export abstract class DataPoint<T extends EntityType<IDataPoint> = EntityType<ID
   @Prop({ type: DataPointMetaSchema, required: true })
   meta: DataPointMeta;
 
-  @Prop( { type: String, required: true, match: /^Y:[0-9]{4};Q:[0-4];M:(?:[1-9]|1[0-2]);W:(?:[1-9]|[1-4][0-9]|5[0-3]);D:(?:[1-9]|[1-2][0-9]|3[0-1])$/ })
+  @Prop( { type: String, required: true, match: /^Y:\d{4};Q:[0-4];M:(?:[1-9]|1[0-2]);W:(?:[1-9]|[1-4]\d|5[0-3]);D:(?:[1-9]|[1-2]\d|3[0-1])$/ })
   tid: string;
 
   /**

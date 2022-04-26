@@ -1,8 +1,8 @@
 import { IsArray, IsOptional, IsString, Matches } from "class-validator";
 import { Transform, Type } from "class-transformer";
 import {
-    getCalendarPlanArray, buildTimingId, CalendarDate,
-    DayIterator, formatDate, REGEX_DATE_FORMAT
+    getCalendarPlanArray, CalendarDate,
+    DayIterator, formatDate, REGEX_DATE_FORMAT, toTimingId
 } from '../../calendar';
 
 export class TimeSeriesRangeFilter {
@@ -70,7 +70,7 @@ export class TimeSeriesRangeFilter {
     }
 }
 
-export function getTimingIdsByRange(filter: TimeSeriesRangeFilter, locale: string): string[] {
+export function getTimingIdsByRange(filter: TimeSeriesRangeFilter): string[] {
     if(!filter.from) {
         return filter.includes || [];
     }
@@ -79,7 +79,7 @@ export function getTimingIdsByRange(filter: TimeSeriesRangeFilter, locale: strin
 
     for (const date of new DayIterator(filter.from, filter.to)) {
         for(const interval of getCalendarPlanArray()) {
-            const timingId = buildTimingId(interval, date, locale);
+            const timingId = toTimingId(date, interval);
 
             if((!filter.includes || filter.includes.includes(timingId))
               && (!filter.excludes || !filter.excludes.includes(timingId))) {

@@ -1,26 +1,31 @@
 
 import { Injectable } from '@nestjs/common';
 import { Activity, ActivityDataPoint } from '../schemas';
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 import { Profile } from '../../profiles';
-import { TimeSeriesRangeFilter, getTimingIdsByRange } from 'lyvely-common';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { EntityIdentity } from '../../db/db.utils';
-import { AbstractContentService } from '../../content/services/abstract-content.service';
+import { AbstractContentService } from '../../content';
 import { ActivityDataPointService } from './activity-data-point.service';
+import { DataPointIntervalFilter } from "../../time-series/daos/data-point.dao";
+import { getTimingIds } from "lyvely-common/src";
+
+interface ActivitySearchResult {
+  activities: Activity[],
+  dataPoints: ActivityDataPoint[]
+}
 
 @Injectable()
 export class ActivitiesService extends AbstractContentService<Activity> {
 
   constructor(
     protected contentDao: ActivitiesDao,
-    protected activityLogService: ActivityDataPointService) {
+    protected activityDataPointService: ActivityDataPointService) {
     super(contentDao);
   }
 
   /**
-   * Finds all activities and logs of a given user matching the given range filter,
-   * only if this user has the required write permission on the profile.
+   * Finds all activities (tasks and habits) and habit data points of a given user matching the given filter.
    *
    * This function will return task activities only if they are undone or where done within the given range of the
    * range filter.
@@ -28,20 +33,17 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    * Note: By default this function will include archived activities.
    *
    * @param profile
+   * @param user
    * @param filter
    * @throws EntityNotFoundException
    * @throws ForbiddenServiceException
    */
-  async findByRangeFilter(profile: Profile, filter: TimeSeriesRangeFilter): Promise<{activities: Activity[], logs: ActivityDataPoint[]}> {
-    const timingIds = getTimingIdsByRange(filter, profile.getLocale());
-
-    // Includes undone tasks;
-    timingIds.push(undefined);
-
-    const activities = await this.contentDao.findByProfileAndTimingIds(profile, timingIds);
-    const logs = await this.activityLogService.findLogsByRange(profile, filter);
-
-    return {activities: activities, logs: logs};
+  async findByFilter(profile: Profile, user: User, filter: DataPointIntervalFilter): Promise<ActivitySearchResult> {
+    // Find all timing ids for the given search date and filter out by filter level
+    const tIds = getTimingIds(filter.search).splice(0, filter.level);
+    const activities = await this.contentDao.findByProfileAndTimingIds(profile, tIds);
+    const dataPoints = await this.activityDataPointService.findByIntervalLevel(profile, user, filter);
+    return { activities, dataPoints };
   }
 
   /**
@@ -78,7 +80,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
     const updates:  {id: EntityIdentity<Activity>, update: unknown}[] = [];
     const activities = await this.contentDao.findByProfileAndInterval(profile, activity.type, activity.interval, {
       excludeIds: activity._id,
-      sort: { sortOrder: 1}
+      sort: { sortOrder: 1 }
     });
 
     newIndex = ActivitiesService.validateIndex(newIndex, activities);
@@ -91,7 +93,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
 
     activities.forEach((activity, index) => {
       if(activity.sortOrder !== index) {
-        updates.push({id: activity._id, update: { sortOrder: index }});
+        updates.push({ id: activity._id, update: { sortOrder: index } });
       }
     });
 

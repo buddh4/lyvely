@@ -43,7 +43,7 @@ export class ActivitiesController extends AbstractContentController<Activity> {
     @Query(new ValidationPipe({ transform: true })) filter: TimeSeriesRangeFilter,
   ): Promise<IActivityRangeResponse> {
     const { profile } = req;
-    const {activities, logs} = await this.contentService.findByRangeFilter(profile, filter);
+    const { activities, logs } = await this.contentService.findByFilter(profile, filter);
 
     const result = new ActivityRangeResponseDto();
     result.addActivities(activities);

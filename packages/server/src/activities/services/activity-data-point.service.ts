@@ -9,7 +9,7 @@ import { User } from '../../users/schemas/users.schema';
 import { assureObjectId } from '../../db/db.utils';
 
 @Injectable()
-export class ActivityDataPointService extends DataPointService<ActivityDataPointDocument, ActivityDataPoint, Activity> {
+export class ActivityDataPointService extends DataPointService<Activity, ActivityDataPoint> {
 
   @Inject()
   protected profileService: ProfilesService;

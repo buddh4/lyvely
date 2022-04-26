@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { assureObjectId, EntityIdentity } from '../../db/db.utils';
-import { ActivityType , CalendarIntervalEnum, Constructor } from 'lyvely-common';
+import {
+  ActivityType,
+  CalendarDateTime,
+  CalendarIntervalEnum,
+  Constructor, getTimingIds
+} from 'lyvely-common';
 import { Profile } from '../../profiles';
 import { AbstractContentDao } from '../../content';
 
@@ -41,19 +46,19 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
   }
 
   /**
-   * Finds all habits and all tasks done within the given timing of a given profile. By adding an `undefined` timingId, this
-   * function will also include undone tasks.
+   * Finds all Habits and all Tasks which are undone or done within given tIds.
    *
    * @param profile
-   * @param timingIds
+   * @param tIds
    * @param options
    */
-  async findByProfileAndTimingIds(profile: Profile, timingIds: string[], options?: FetchQueryOptions<Activity>): Promise<Activity[]> {
+  async findByProfileAndTimingIds(profile: Profile, tIds: string[], options?: FetchQueryOptions<Activity>): Promise<Activity[]> {
     return this.findAll({
       pid: assureObjectId(profile._id),
       $or: [
         { type: ActivityType.Habit },
-        { type: ActivityType.Task, done: { $in: timingIds } },
+          // undefined will include undone tasks
+        { type: ActivityType.Task, done: { $in: [undefined, ...tIds] } },
       ],
     }, options);
   }

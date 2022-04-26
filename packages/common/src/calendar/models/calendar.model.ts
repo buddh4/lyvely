@@ -10,7 +10,7 @@ export class Calendar {
     return CalendarPlan.getInstance(interval);
   }
 
-  static createTiming(interval: CalendarIntervalEnum, date: CalendarDate, locale: string) {
-    return CalendarPlan.getInstance(interval).createTimingInstance(date, locale);
+  static createTiming(interval: CalendarIntervalEnum, date: CalendarDate) {
+    return CalendarPlan.getInstance(interval).createTimingInstance(date);
   }
 }

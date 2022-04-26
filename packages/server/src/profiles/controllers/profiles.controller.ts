@@ -39,7 +39,7 @@ export class ProfilesController {
   @Post()
   async create(@Request() req, @Body() dto: CreateProfileDto): Promise<ProfileDto> {
     // TODO: (TEAM) check if user is allowed to create team profiles
-    const { profile } = await this.profilesService.createProfile(req.user, dto.name, dto.type);
+    const { profile } = await this.profilesService.createProfile(req.user, { name: dto.name, type: dto.type });
     return new ProfileDto(profile);
   }
 

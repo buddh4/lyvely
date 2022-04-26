@@ -10,7 +10,7 @@ import {  EntityType } from '../../db/base.entity';
 
 type TimeSeriesContentEntity = ContentEntity & EntityType<ITimeSeriesContent>;
 
-export abstract class TimeSeries<T extends TimeSeriesContentEntity = TimeSeriesContentEntity> extends Content<T> implements ITimeSeriesContent {
+export abstract class TimeSeriesContent<T extends TimeSeriesContentEntity = TimeSeriesContentEntity> extends Content<T> implements ITimeSeriesContent {
 
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;

@@ -4,7 +4,7 @@ import { closeInMongodConnection } from '../../test/utils/mongoose-test.utils';
 import { Model } from 'mongoose';
 import { ProfileDocument } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
-import { UserDocument } from '../../users/schemas/users.schema';
+import { UserDocument } from '../../users';
 import { ActivityType, HabitDto, CalendarIntervalEnum, CreateHabitDto, IHabit } from 'lyvely-common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit } from '../schemas';

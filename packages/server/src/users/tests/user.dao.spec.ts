@@ -2,8 +2,8 @@ import { expect } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { UserDao } from '../daos/user.dao';
-import { User, UserDocument, UserSchema } from '../schemas/users.schema';
+import { UserDao } from '../daos';
+import { User, UserDocument, UserSchema } from '../schemas';
 import { Model } from 'mongoose';
 
 describe('UserDao', () => {
@@ -17,6 +17,7 @@ describe('UserDao', () => {
     testingModule = await Test.createTestingModule({
       imports: [
         TestDataUtils.getMongooseTestModule(TEST_KEY),
+        TestDataUtils.getEventEmitterModule(),
         MongooseModule.forFeature([
           { name: User.name, schema: UserSchema },
         ]),

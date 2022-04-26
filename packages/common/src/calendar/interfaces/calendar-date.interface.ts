@@ -33,6 +33,10 @@ export function implementsIDateTime(obj: any): obj is IDateTime {
   return obj && (<IDateTime> obj).isDateTime === true;
 }
 
+export function toDate(date: CalendarDateTime) {
+  return dateTime(date).toDate();
+}
+
 export function dateTime(date?: CalendarDateTime, utc = false, locale?: string, timezone?: string): IDateTime {
   if(implementsIDateTime(date)) {
     return date;

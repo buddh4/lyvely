@@ -6,7 +6,6 @@ export interface ITiming {
     year: number;
     date: Date;
     dayOfWeek: number; // note Su = 0
-    weekOfYear: number;
     isoWeekOfYear: number;
     interval: number;
     quarter: number;

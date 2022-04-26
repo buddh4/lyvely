@@ -1,5 +1,5 @@
 import { Injectable, Provider } from '@nestjs/common';
-import { User } from '../../../users/schemas/users.schema';
+import { User } from '../../../users';
 import { Profile } from '../../../profiles';
 import {
   Activity, ActivityDataPoint, ActivityDataPointDocument, ActivityDataPointSchema,
@@ -12,10 +12,10 @@ import {
   TaskSchema
 } from '../../schemas';
 import {
-  buildTimingId,
+  toTimingId,
   CalendarDate,
   CalendarIntervalEnum,
-  CreateHabitDto, CreateTaskDto, IHabit, ITask
+  CreateHabitDto, CreateTaskDto, IHabit, ITask, toDate
 } from 'lyvely-common';
 
 import { InjectModel } from '@nestjs/mongoose';
@@ -29,6 +29,7 @@ import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-refe
 import { createTestingModule } from '../../../test/utils/test.utils';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { assureObjectId, EntityIdentity } from '../../../db/db.utils';
+import { DataPointMeta } from "../../../time-series";
 
 @Injectable()
 export class ActivityTestDataUtil extends TestDataUtils {
@@ -55,16 +56,16 @@ export class ActivityTestDataUtil extends TestDataUtils {
     return new Date(new Date().setDate(new Date().getDate() + 1))
   }
 
-  static getTodayTimingId(locale: string) {
-    return buildTimingId(CalendarIntervalEnum.Daily, ActivityTestDataUtil.getDateToday(), locale);
+  static getTodayTimingId() {
+    return toTimingId(ActivityTestDataUtil.getDateToday(), CalendarIntervalEnum.Daily);
   }
 
-  static getTomorrowTimingId(locale: string) {
-    return buildTimingId(CalendarIntervalEnum.Daily, ActivityTestDataUtil.getDateTomorrow(), locale);
+  static getTomorrowTimingId() {
+    return toTimingId(ActivityTestDataUtil.getDateTomorrow(), CalendarIntervalEnum.Daily);
   }
 
-  static getYesterdayTimingId(locale: string) {
-    return buildTimingId(CalendarIntervalEnum.Daily, ActivityTestDataUtil.getDateYesterday(), locale);
+  static getYesterdayTimingId() {
+    return toTimingId(ActivityTestDataUtil.getDateYesterday(), CalendarIntervalEnum.Daily);
   }
 
   async findTaskById(id: EntityIdentity<Task>) {
@@ -76,7 +77,10 @@ export class ActivityTestDataUtil extends TestDataUtils {
   }
 
   async createLog(user: User, profile: Profile, activity: Activity, date: CalendarDate): Promise<ActivityDataPoint> {
-    const log = new this.ActivityLogModel(ActivityDataPoint.create(user, profile, activity, date))
+    const log = new this.ActivityLogModel(new ActivityDataPoint({
+      meta: DataPointMeta.create(user, profile, activity),
+      date: toDate(date)
+    }));
     await log.save();
     return new ActivityDataPoint(log.toObject());
   }

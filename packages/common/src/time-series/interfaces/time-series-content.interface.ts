@@ -1,7 +1,7 @@
 import { IContent } from '../../content';
 import { Sortable } from '../../model';
 import { CalendarIntervalEnum } from '../../calendar';
-import { DataPointInputType, DataPointValueType } from './time-series-data-point.interface';
+import { DataPointInputType, DataPointValueType } from './data-point.interface';
 
 export interface ITimeSeriesContent extends IContent, Sortable {
   interval: CalendarIntervalEnum;

@@ -4,10 +4,9 @@ import { closeInMongodConnection } from '../../test/utils/mongoose-test.utils';
 import { Model } from 'mongoose';
 import { ProfileDocument } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
-import { UserDocument } from '../../users/schemas/users.schema';
-import { ActivityType , buildTimingId, CalendarIntervalEnum } from 'lyvely-common';
+import { UserDocument } from '../../users';
+import { ActivityType , CalendarIntervalEnum, toTimingId } from 'lyvely-common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-
 import { ActivityDocument, Task } from '../schemas';
 import { ActivityTestDataUtil,  createActivityTestingModule } from './utils/activities.test.utils';
 
@@ -80,7 +79,7 @@ describe('Activities DAO', () => {
 
     it('find task done today', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const todayTimingId = buildTimingId(CalendarIntervalEnum.Daily, new Date(), profile.getLocale());
+      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
       const task = await activityData.createTask(user, profile, null, { done: todayTimingId });
       const search = <Task[]> await activitiesDao.findByProfileAndTimingIds(profile, [todayTimingId]);
       expect(search.length).toEqual(1);
@@ -90,9 +89,9 @@ describe('Activities DAO', () => {
 
     it('do not find task not done today', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const todayTimingId = buildTimingId(CalendarIntervalEnum.Daily, new Date(), profile.getLocale());
+      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
       const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1));
-      const tomorrowTimingId = buildTimingId(CalendarIntervalEnum.Daily, tomorrow, profile.getLocale());
+      const tomorrowTimingId = toTimingId(tomorrow, CalendarIntervalEnum.Daily);
       await activityData.createTask(user, profile, null, { done: tomorrowTimingId });
       const search = await activitiesDao.findByProfileAndTimingIds(profile, [todayTimingId]);
       expect(search.length).toEqual(0);

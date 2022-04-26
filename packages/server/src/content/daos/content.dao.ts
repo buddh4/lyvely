@@ -16,7 +16,7 @@ export class ContentDao extends AbstractContentDao<Content> {
     super();
   }
 
-  protected constructModel(lean?: Partial<Content>): Content {
+  constructModel(lean?: Partial<Content>): Content {
     if(!lean) return null;
 
     const Constructor = this.contentTypeRegistry.isRegisteredType(lean.type)

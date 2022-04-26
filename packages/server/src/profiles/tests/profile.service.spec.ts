@@ -31,7 +31,7 @@ describe('ProfileService', () => {
   describe('createProfile()', () => {
     it('create default profile', async () => {
       const user = await testData.createUser('User1');
-      const profile = await profileService.createProfile(user);
+      const { profile } = await profileService.createProfile(user);
       expect(profile).toBeDefined();
       expect(profile.name).toEqual('User1');
       expect(profile.type).toEqual(ProfileType.User);
@@ -41,7 +41,7 @@ describe('ProfileService', () => {
 
     it('create named profile', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       expect(profile).toBeDefined();
       expect(profile.name).toEqual('superProfile');
       expect(profile._id).toBeDefined();
@@ -50,15 +50,15 @@ describe('ProfileService', () => {
 
     it('create duplicate profile', async () => {
       const user = await testData.createUser();
-      const profile1 = await profileService.createProfile(user, 'superProfile');
-      const profile2 = await profileService.createProfile(user, 'superProfile');
+      const { profile: profile1 } = await profileService.createProfile(user, { name: 'superProfile' });
+      const { profile: profile2 } = await profileService.createProfile(user, { name:'superProfile' });
       expect(profile1._id.toString()).toEqual(profile2._id.toString());
     });
   });
 
   describe('findUserProfileRelations()', () => {
     it('find owner membership', async () => {
-      const {user, profile} = await testData.createUserAndProfile();
+      const { user, profile } = await testData.createUserAndProfile();
       const relations = await profileService.findUserProfileRelations(user, profile);
       const membership = relations.getMembership();
       expect(membership).toBeDefined();
@@ -68,7 +68,7 @@ describe('ProfileService', () => {
     });
 
     it('find by profile id', async () => {
-      const {user, profile} = await testData.createUserAndProfile();
+      const { user, profile } = await testData.createUserAndProfile();
       const relations = await profileService.findUserProfileRelations(user, profile.id);
       expect(relations.profile).toBeDefined();
       expect(relations.profile._id).toEqual(profile._id);
@@ -86,7 +86,7 @@ describe('ProfileService', () => {
   describe('update score', () => {
     it('increment positive', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const  { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       const newScore = await profileService.updateScore(profile, 5);
       expect(newScore).toEqual(5);
       expect(profile.score).toEqual(5);
@@ -94,7 +94,7 @@ describe('ProfileService', () => {
 
     it('increment negative', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       await profileService.updateScore(profile, 5);
       const updated = await profileService.updateScore(profile, -2);
       expect(updated).toEqual(3);
@@ -103,7 +103,7 @@ describe('ProfileService', () => {
 
     it('assert min 0 score', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const  { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       await profileService.updateScore(profile, 5);
       const updated = await profileService.updateScore(profile, -10);
       expect(updated).toEqual(0);
@@ -114,7 +114,7 @@ describe('ProfileService', () => {
   describe('mergeCategories', () => {
     it('create from empty', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       await profileService.mergeCategories(profile, ['health', 'social']);
       expect(profile.categories.length).toEqual(2);
       expect(profile.categories[0].name).toEqual('health');
@@ -123,7 +123,7 @@ describe('ProfileService', () => {
 
     it('add to existing set', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       await profileService.mergeCategories(profile, ['social']);
       await profileService.mergeCategories(profile, ['health']);
       expect(profile.categories.length).toEqual(2);
@@ -133,7 +133,7 @@ describe('ProfileService', () => {
 
     it('add duplicate set', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       await profileService.mergeCategories(profile, ['social']);
       await profileService.mergeCategories(profile, [
         'health',
@@ -147,7 +147,7 @@ describe('ProfileService', () => {
 
     it('add empty set to existing', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       await profileService.mergeCategories(profile, ['social']);
       await profileService.mergeCategories(profile, []);
       expect(profile.categories.length).toEqual(1);
@@ -156,14 +156,14 @@ describe('ProfileService', () => {
 
     it('add empty set to empty', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       await profileService.mergeCategories(profile, []);
       expect(profile.categories.length).toEqual(0);
     });
 
     it('do not accept empty category name string', async () => {
       const user = await testData.createUser();
-      const profile = await profileService.createProfile(user, 'superProfile');
+      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
       await profileService.mergeCategories(profile, ['']);
       expect(profile.categories.length).toEqual(0);
     });

@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
-import { buildTimingId, TimeableCalendarPlan, CalendarPlanEnum } from 'lyvely-common';
-import { useProfileStore } from '@/modules/user/store/profile.store';
+import { toTimingId, TimeableCalendarPlan, CalendarPlanEnum } from 'lyvely-common';
 
 export const useTimingStore = defineStore('timing', {
   state: () => ({
@@ -12,8 +11,7 @@ export const useTimingStore = defineStore('timing', {
   },
   actions: {
     getTimingId(plan: CalendarPlanEnum) {
-      const { locale } = useProfileStore();
-      return buildTimingId(plan, this.date, locale);
+      return toTimingId(this.date, plan);
     },
     setDragActive(drag: boolean) {
       this.dragActive = drag;
