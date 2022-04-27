@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractUserProfileActionDao, ProfileDao } from '../daos';
-import { Profile, ProfileAction } from '../schemas';
+import { ProfileScoreActionDao, ProfileDao } from '../daos';
+import { Profile, ProfileScoreAction } from '../schemas';
 
 @Injectable()
-export class AbstractUserProfileActionService<E extends ProfileAction> {
+export abstract class ProfileScoreActionService<E extends ProfileScoreAction> {
 
-  protected userProfileActionDao: AbstractUserProfileActionDao<E>;
+  protected profileScoreActionDao: ProfileScoreActionDao<E>;
 
   constructor(protected profileDao: ProfileDao) {}
 
@@ -14,8 +14,8 @@ export class AbstractUserProfileActionService<E extends ProfileAction> {
    * @param profile
    * @param action
    */
-  async createUserProfileAction(profile: Profile, action: E): Promise<E> {
-    const model = await this.userProfileActionDao.create(action);
+  async saveProfileScoreAction(profile: Profile, action: E): Promise<E> {
+    const model = await this.profileScoreActionDao.save(action);
 
     if(model.score !== 0) {
       const newProfileScore = Math.max(profile.score + model.score, 0);

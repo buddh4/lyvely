@@ -19,7 +19,7 @@ export class RegisterService {
    */
   async register(registerDto: RegisterDto): Promise<UserProfileRelations> {
     try {
-      const user = await this.userDao.create(new User({
+      const user = await this.userDao.save(new User({
         username: registerDto.username,
         email: registerDto.email,
         locale: registerDto.locale,

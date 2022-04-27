@@ -6,7 +6,7 @@ import { CalendarIntervalEnum , ActivityType, CreateHabitDto, EditHabitDto } fro
 import { Profile, ProfileDocument } from '../../../profiles';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitsDao } from '../../daos/habits.dao';
-import { User } from '../../../users/schemas/users.schema';
+import { User } from '../../../users';
 
 describe('HabitService', () => {
   let habitService: HabitsService;
@@ -88,7 +88,7 @@ describe('HabitService', () => {
       const habit = await testData.createHabit(user,profile);
 
       await habitService.updateContent(
-        <ProfileDocument>profile,
+        profile,
         habit,
         Habit.create(
           user,

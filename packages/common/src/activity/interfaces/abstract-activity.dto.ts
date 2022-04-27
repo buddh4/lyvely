@@ -9,10 +9,11 @@ import {
     Length,
 } from 'class-validator';
 import { CalendarIntervalEnum } from '../../calendar';
-import { ITimeSeriesDataPointConfig, TimeSeriesUserStrategy } from '../../time-series';
+import { ITimeSeriesDataPointConfig } from '../../time-series';
 import { DocumentDto } from '../../model';
 import { ActivityType, IActivity } from './activity.interface';
 import { Exclude, Expose } from 'class-transformer';
+import { UserAssignmentStrategy } from "../../user";
 
 @Exclude()
 export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implements IActivity {
@@ -62,8 +63,8 @@ export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implem
     score: number;
 
     @Expose()
-    @IsEnum(TimeSeriesUserStrategy)
-    userStrategy: TimeSeriesUserStrategy;
+    @IsEnum(UserAssignmentStrategy)
+    userStrategy: UserAssignmentStrategy;
 
     constructor(obj?: Partial<T> & { _id?: any }) {
         super(obj);

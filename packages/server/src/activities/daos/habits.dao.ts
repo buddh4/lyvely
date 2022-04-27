@@ -4,6 +4,7 @@ import { HabitDocument, Habit } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
+import module from "../activities.meta";
 
 @Injectable()
 export class HabitsDao extends AbstractContentDao<Habit> {
@@ -16,6 +17,6 @@ export class HabitsDao extends AbstractContentDao<Habit> {
   }
 
   getModuleId(): string {
-    return 'activities';
+    return module.id;
   }
 }

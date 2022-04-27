@@ -1,4 +1,4 @@
-import { CalendarIntervalEnum, TimeSeriesUserStrategy, ITimeSeriesContent, getNumberEnumValues } from 'lyvely-common';
+import { CalendarIntervalEnum, UserAssignmentStrategy, ITimeSeriesContent, getNumberEnumValues } from 'lyvely-common';
 import { Prop } from '@nestjs/mongoose';
 import { Content, ContentEntity } from '../../content';
 import {
@@ -23,8 +23,8 @@ export abstract class TimeSeriesContent<T extends TimeSeriesContentEntity = Time
 
   // TODO: implement dataPointConfigHistory
 
-  @Prop({ enum: getNumberEnumValues(TimeSeriesUserStrategy), default: TimeSeriesUserStrategy.Shared, required: true })
-  userStrategy: TimeSeriesUserStrategy;
+  @Prop({ enum: getNumberEnumValues(UserAssignmentStrategy), default: UserAssignmentStrategy.Shared, required: true })
+  userStrategy: UserAssignmentStrategy;
 
   afterInit() {
     // in case plain object is given we create a class instance

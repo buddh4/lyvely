@@ -32,6 +32,14 @@ export class TestDataUtils {
   @Inject()
   private eventEmitter: EventEmitter2;
 
+  async createSmallGroup(): Promise<{owner: User, user: User, group: Profile}> {
+    const { user: owner } = await this.createUserAndProfile();
+    const { user } = await this.createUserAndProfile('user2');
+    const group = await this.createGroupProfile(user);
+    await this.addProfileMember(group, user);
+    return { owner, user, group };
+  }
+
   async createUserAndProfile(username = 'test', password = 'test', email?: string): Promise<{user: User, profile: Profile}> {
     const user = await this.createUser(username, password, email);
     const profile = await this.createProfile(user);

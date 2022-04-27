@@ -3,7 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createTestingModule } from '../../test/utils/test.utils';
 import { Calendar, CalendarIntervalEnum } from 'lyvely-common';
-import { ProfileAction, UserProfileLogSchema } from '../schemas';
+import { ProfileScoreAction, ProfileScoreActionSchema } from '../schemas';
 import { TestProfileAction, TestScoreSchema } from './src/test-score.schema';
 import { TestProfileActionDao } from './src/test-profile-action.dao';
 import { INestApplication } from '@nestjs/common';
@@ -11,8 +11,8 @@ import { TestProfileActionService } from './src/test-profile-action.service';
 import { ProfileDao } from '../daos';
 
 const testScoreModelDef = {
-  name: ProfileAction.name,
-  schema: UserProfileLogSchema,
+  name: ProfileScoreAction.name,
+  schema: ProfileScoreActionSchema,
   discriminators: [
     { name: TestProfileAction.name, schema: TestScoreSchema }
   ],
@@ -48,9 +48,9 @@ describe('AbstractUserProfileActionService', () => {
   describe('createUserProfileAction()', () => {
     it('model creation', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const model = await testProfileActionService.createUserProfileAction(profile,
+      const model = await testProfileActionService.saveProfileScoreAction(profile,
         new TestProfileAction({ user: user, profile: profile, score: 5, text: 'test' }));
-      const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date(), profile.getLocale());
+      const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date());
 
       expect(model).toBeDefined();
       expect(model.id).toBeDefined();
@@ -68,7 +68,7 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(0);
 
-      await testProfileActionService.createUserProfileAction(profile,
+      await testProfileActionService.saveProfileScoreAction(profile,
         new TestProfileAction({ user: user, profile: profile, score: 5, text: 'test' }));
 
       expect(profile.score).toEqual(5);
@@ -81,10 +81,10 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(0);
 
-      await testProfileActionService.createUserProfileAction(profile,
+      await testProfileActionService.saveProfileScoreAction(profile,
         new TestProfileAction({ user: user, profile: profile, score: 5, text: 'test' }));
 
-      await testProfileActionService.createUserProfileAction(profile,
+      await testProfileActionService.saveProfileScoreAction(profile,
         new TestProfileAction({ user: user, profile: profile, score: -2, text: 'test2' }));
 
       expect(profile.score).toEqual(3);
@@ -97,7 +97,7 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(0);
 
-      await testProfileActionService.createUserProfileAction(profile,
+      await testProfileActionService.saveProfileScoreAction(profile,
         new TestProfileAction({ user: user, profile: profile, score: -10, text: 'test' }));
 
       expect(profile.score).toEqual(0);
@@ -110,7 +110,7 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(0);
 
-      const model = await testProfileActionService.createUserProfileAction(profile,
+      const model = await testProfileActionService.saveProfileScoreAction(profile,
         new TestProfileAction({ user: user, profile: profile, text: 'test' }));
 
       expect(model.score).toEqual(0);

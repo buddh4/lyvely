@@ -1,28 +1,30 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { ActivityDataPointService } from '../services/activity-data-point.service';
+import { HabitDataPointService } from '../services/habit-data-point.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
-import { TimeSeriesRangeFilter } from 'lyvely-common';
 import { Model } from 'mongoose';
-import { ActivityDataPointDocument } from '../schemas';
+import { HabitDataPointDocument } from '../schemas';
+import { DataPointIntervalFilter, toTimingId } from "lyvely-common/src";
+import { HabitDataPointDao } from "../daos/habit-data-point.dao";
 
-describe('ActivitylogsService', () => {
+describe('HabitDataPointService', () => {
   let testingModule: TestingModule;
-  let activityLogsService: ActivityDataPointService;
+  let activityLogsService: HabitDataPointService;
   let testData: ActivityTestDataUtil;
-  let ActivityLogModel: Model<ActivityDataPointDocument>;
+  let HabitDataPointModel: Model<HabitDataPointDocument>;
 
-  const TEST_KEY = 'acitivty_logs_service';
+  const TEST_KEY = 'habit_data_point_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY, [ActivityDataPointService]).compile();
-    activityLogsService = testingModule.get<ActivityDataPointService>(ActivityDataPointService);
+    testingModule = await createActivityTestingModule(TEST_KEY, [HabitDataPointService, HabitDataPointDao]).compile();
+    activityLogsService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
-    ActivityLogModel = testingModule.get<Model<ActivityDataPointDocument>>('ActivityLogModel');
+    HabitDataPointModel = testingModule.get<Model<HabitDataPointDocument>>('HabitDataPointModel');
   });
 
   afterEach(async () => {
     await testData.reset(TEST_KEY);
+    HabitDataPointModel.deleteMany({});
   });
 
   describe('findLogsByRange', () => {
@@ -30,9 +32,10 @@ describe('ActivitylogsService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       await testData.createHabit(user, profile);
 
-      const logs = await activityLogsService.findLogsByRange(
+      const logs = await activityLogsService.findByIntervalLevel(
         profile,
-        new TimeSeriesRangeFilter({ from: '2021-04-03', to: '2021-04-04' }),
+        user,
+        new DataPointIntervalFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(0);
@@ -45,7 +48,7 @@ describe('ActivitylogsService', () => {
 
       const habit = await testData.createHabit(user, profile, {  title: 'test',  max: 2, score: 5 });
 
-      const log = await activityLogsService.updateLog(
+      const log = await activityLogsService.updateOrCreateDataPoint(
         user,
         profile,
         habit,
@@ -53,11 +56,11 @@ describe('ActivitylogsService', () => {
         2,
       );
 
-      expect(log.timing).toBeDefined();
+      expect(log.tid).toEqual(toTimingId('2021-01-01'));
       expect(log.value).toEqual(2);
       expect(log.score).toEqual(10);
 
-      const logs = await ActivityLogModel.find({ timingModel: habit._id }).exec();
+      const logs = await HabitDataPointModel.find({ timingModel: habit._id }).exec();
       expect(logs.length).toEqual(1);
     });
   });

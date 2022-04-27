@@ -1,5 +1,5 @@
 export * from './profile-memberships.schema'
 export * from './profile-permissions.schema'
 export * from './profiles.schema'
-export * from './profile-action.schema'
+export * from './profile-score-action.schema'
 export * from './user-profile-relations.schema'

@@ -5,7 +5,7 @@ import { EntityIdentity } from '../../db/db.utils';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Constructor } from 'lyvely-common';
-import { string } from 'joi';
+import module from "../activities.meta";
 
 @Injectable()
 export class TasksDao extends AbstractContentDao<Task> {
@@ -26,6 +26,6 @@ export class TasksDao extends AbstractContentDao<Task> {
   }
 
   getModuleId(): string {
-    return 'activities';
+    return module.id;
   }
 }

@@ -2,17 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { assureObjectId, EntityIdentity } from '../../db/db.utils';
 import {
   ActivityType,
-  CalendarDateTime,
   CalendarIntervalEnum,
-  Constructor, getTimingIds
+  Constructor
 } from 'lyvely-common';
 import { Profile } from '../../profiles';
 import { AbstractContentDao } from '../../content';
-
 import { Activity, ActivityDocument } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FetchQueryOptions } from '../../db/abstract.dao';
+import module from "../activities.meta";
 
 @Injectable()
 export class ActivitiesDao extends AbstractContentDao<Activity> {
@@ -53,12 +52,13 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
    * @param options
    */
   async findByProfileAndTimingIds(profile: Profile, tIds: string[], options?: FetchQueryOptions<Activity>): Promise<Activity[]> {
+    // TODO: content visibility?
     return this.findAll({
       pid: assureObjectId(profile._id),
       $or: [
         { type: ActivityType.Habit },
           // undefined will include undone tasks
-        { type: ActivityType.Task, done: { $in: [undefined, ...tIds] } },
+         { type: ActivityType.Task, done: { $in: [undefined, ...tIds] } },
       ],
     }, options);
   }
@@ -95,7 +95,7 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
   }
 
   getModuleId(): string {
-    return 'activities';
+    return module.id;
   }
 }
 

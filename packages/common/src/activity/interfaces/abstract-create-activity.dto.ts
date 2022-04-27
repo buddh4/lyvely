@@ -4,6 +4,7 @@ import { Gte, Lte } from '../../model';
 import { IActivity, isActivity } from './activity.interface';
 import { Exclude } from 'class-transformer';
 import { DataPointNumberInputStrategy } from '../../time-series';
+import { UserAssignmentStrategy } from "../../user";
 
 @Exclude()
 export abstract class AbstractCreateActivityDto {
@@ -44,8 +45,11 @@ export abstract class AbstractCreateActivityDto {
     @IsEnum(DataPointNumberInputStrategy)
     strategy?: DataPointNumberInputStrategy;
 
+    @IsEnum(UserAssignmentStrategy)
+    userStrategy?: UserAssignmentStrategy;
+
     @IsArray()
-    @MaxLength(20, {each:true})
+    @MaxLength(20, { each:true })
     categories: string[] = [];
 
     constructor(model?: IActivity | Partial<AbstractCreateActivityDto>) {

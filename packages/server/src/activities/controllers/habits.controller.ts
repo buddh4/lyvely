@@ -13,7 +13,7 @@ import {
   UpdateHabitResultDto,
 } from 'lyvely-common';
 import { HabitsService } from '../services/habits.service';
-import { ActivityDataPointService } from '../services/activity-data-point.service';
+import { HabitDataPointService } from '../services/habit-data-point.service';
 import { AbstractContentController } from '../../content/controllers/abstract-content.controller';
 import { UserProfileRequest } from '../../core/types';
 import { ProfileContentRequest } from '../../content/controllers/profile-content-request.type';
@@ -34,7 +34,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   constructor(
     protected contentService: HabitsService,
-    protected activitiesLogsService: ActivityDataPointService) {
+    protected activitiesLogsService: HabitDataPointService) {
     super(contentService);
   }
 
@@ -70,7 +70,7 @@ export class HabitsController extends AbstractContentController<Habit> {
   async updateLog(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateActivityLogModel,) {
     const { profile, user, content } = req;
     const habit = new Habit(content);
-    const log = await this.activitiesLogsService.updateLog(user, profile, habit, dto.date, dto.value);
+    const log = await this.activitiesLogsService.updateOrCreateDataPoint(user, profile, habit, dto.date, dto.value);
 
     return new UpdateHabitResultDto({
       score: profile.score,

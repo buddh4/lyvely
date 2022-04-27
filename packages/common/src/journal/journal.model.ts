@@ -1,4 +1,4 @@
-import {IJournal, IJournalLog} from "./journal.interface";
+import { IJournal, IJournalLog } from "./journal.interface";
 import {
     IsArray,
     IsBoolean,
@@ -15,17 +15,17 @@ import {
     MaxLength,
     Min
 } from "class-validator";
-import {Exclude, Expose, Type} from "class-transformer";
+import { Exclude, Expose, Type } from "class-transformer";
 import { DocumentDto, Gte, Lte, sortBySortOrder } from '../model';
 import { IContent } from '../content';
 import {
     ITimeSeriesDataPointConfig,
-    TimeSeriesUserStrategy,
     DataPointValueType,
     DataPointInputType,
     TimeSeriesDataPointStore
 } from '../time-series';
 import { CalendarIntervalEnum, REGEX_DATE_FORMAT } from '../calendar';
+import { UserAssignmentStrategy } from "../user";
 
 export class JournalDto extends DocumentDto<JournalDto> implements IJournal {
     id: IJournal['id'];
@@ -34,11 +34,11 @@ export class JournalDto extends DocumentDto<JournalDto> implements IJournal {
     categories: string[];
    // rating: IRating;
     dataPointConfig: ITimeSeriesDataPointConfig;
-    userStrategy: TimeSeriesUserStrategy;
+    userStrategy: UserAssignmentStrategy;
     description?: string;
     interval: CalendarIntervalEnum;
     sortOrder: number;
-    type: string = 'Journal';
+    type = 'Journal';
     visibility: number;
 
     constructor(obj?: Partial<JournalDto>) {
@@ -105,7 +105,7 @@ export class EditJournalDto {
     @IsEnum(DataPointInputType)
     inputType: DataPointInputType;
 
-    type: string = 'Journal';
+    type = 'Journal';
 
     @IsString()
     @Length(0, 2000)
@@ -138,7 +138,7 @@ export class EditJournalDto {
     profile: string;
 
     @IsArray()
-    @MaxLength(20, {each: true})
+    @MaxLength(20, { each: true })
     categories: string[] = [];
 
     constructor(obj: Partial<EditJournalDto>) {
@@ -164,7 +164,7 @@ export class EditJournalDto {
     }
 
     public static createEdit(model: IJournal, profile: string) {
-        let result = new EditJournalDto(model);
+        const result = new EditJournalDto(model);
      /*   result.inputType = model.rating.inputType;
         result.DataPointValueType = model.rating.type;
         result.type = 'Journal';

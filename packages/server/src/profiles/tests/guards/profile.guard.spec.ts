@@ -146,10 +146,10 @@ describe('ProfileGuard', () => {
     });
 
     it('guest can not access protected profile', async () => {
-      const {profile} = await testData.createSimpleGroup(ProfileVisibilityLevel.User);
+      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.User);
 
       const executionContext = createTestExecutionContext({
-        query: {pid: profile._id.toString()},
+        query: { pid: profile._id.toString() },
       });
 
       const result = await profileGuard.canActivate(executionContext);
@@ -157,10 +157,10 @@ describe('ProfileGuard', () => {
     });
 
     it('guest can not access members only profile', async () => {
-      const {profile} = await testData.createSimpleGroup(ProfileVisibilityLevel.Member);
+      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Member);
 
       const executionContext = createTestExecutionContext({
-        query: {pid: profile._id.toString()},
+        query: { pid: profile._id.toString() },
       });
 
       const result = await profileGuard.canActivate(executionContext);

@@ -1,7 +1,7 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { Profile } from '../../profiles';
 import * as mongoose from 'mongoose';
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 import {
   IActivity,
   DataPointInputStrategy,
@@ -16,6 +16,7 @@ import {
   DataPointConfigFactory
 } from '../../time-series';
 import { ContentConstructor } from '../../content';
+import { UserAssignmentStrategy } from "lyvely-common/src";
 
 type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 
@@ -51,6 +52,7 @@ export class Activity extends TimeSeriesContent<Activity> implements IActivity {
       interval: dto.interval,
       categories: dto.categories,
       score: dto.score,
+      userStrategy: dto.userStrategy ?? UserAssignmentStrategy.Shared,
       dataPointConfig: DataPointConfigFactory.createConfig<ActivityDataPointConfig>(dto.strategy, {
         min: dto.min,
         max: dto.max,

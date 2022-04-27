@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Task } from '../schemas';
 import { Profile } from '../../profiles/schemas/profiles.schema';
 import { Calendar, CalendarDate } from 'lyvely-common';
-import { ActivityDataPointService } from './activity-data-point.service';
+import { HabitDataPointService } from './habit-data-point.service';
 import { User } from '../../users/schemas/users.schema';
 import { TasksDao } from '../daos/tasks.dao';
 import { AbstractContentService } from '../../content/services/abstract-content.service';
@@ -11,7 +11,7 @@ import { AbstractContentService } from '../../content/services/abstract-content.
 export class TasksService extends AbstractContentService<Task> {
   constructor(
     private tasksDao: TasksDao,
-    private activityLogsService: ActivityDataPointService
+    private activityLogsService: HabitDataPointService
   ) {
     super(tasksDao);
   }
@@ -21,7 +21,7 @@ export class TasksService extends AbstractContentService<Task> {
 
     task.done = timing._id;
     await this.tasksDao.setDone(task, timing._id);
-    await this.activityLogsService.updateLog(user, profile, task, date, 1);
+    await this.activityLogsService.updateOrCreateDataPoint(user, profile, task, date, 1);
 
     return task;
   }

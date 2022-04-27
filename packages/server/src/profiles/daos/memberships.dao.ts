@@ -14,7 +14,7 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership>{
   }
 
   async addMembership(profile: Profile, user: User, role: string = BaseMembershipRole.Member): Promise<Membership> {
-    return this.create(Membership.create({ profile, user, role }));
+    return this.save(Membership.create({ profile, user, role }));
   }
 
   async findByUserAndProfileRole(user: EntityIdentity<User>, profile: EntityIdentity<Profile>, role: string): Promise<Membership|null> {

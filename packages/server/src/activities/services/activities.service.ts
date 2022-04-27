@@ -1,18 +1,18 @@
 
 import { Injectable } from '@nestjs/common';
-import { Activity, ActivityDataPoint } from '../schemas';
+import { Activity, HabitDataPoint } from '../schemas';
 import { User } from '../../users';
 import { Profile } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { EntityIdentity } from '../../db/db.utils';
 import { AbstractContentService } from '../../content';
-import { ActivityDataPointService } from './activity-data-point.service';
-import { DataPointIntervalFilter } from "../../time-series/daos/data-point.dao";
-import { getTimingIds } from "lyvely-common/src";
+import { HabitDataPointService } from './habit-data-point.service';
+import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum } from "lyvely-common";
+import { UpdateQuery } from "../../db/abstract.dao";
 
 interface ActivitySearchResult {
   activities: Activity[],
-  dataPoints: ActivityDataPoint[]
+  dataPoints: HabitDataPoint[]
 }
 
 @Injectable()
@@ -20,7 +20,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
 
   constructor(
     protected contentDao: ActivitiesDao,
-    protected activityDataPointService: ActivityDataPointService) {
+    protected activityDataPointService: HabitDataPointService) {
     super(contentDao);
   }
 
@@ -40,7 +40,11 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    */
   async findByFilter(profile: Profile, user: User, filter: DataPointIntervalFilter): Promise<ActivitySearchResult> {
     // Find all timing ids for the given search date and filter out by filter level
-    const tIds = getTimingIds(filter.search).splice(0, filter.level);
+    const tIds = getTimingIds(filter.search);
+    if(filter.level > 0) {
+      tIds.splice(0, filter.level);
+    }
+
     const activities = await this.contentDao.findByProfileAndTimingIds(profile, tIds);
     const dataPoints = await this.activityDataPointService.findByIntervalLevel(profile, user, filter);
     return { activities, dataPoints };
@@ -77,7 +81,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
 
     //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex
 
-    const updates:  {id: EntityIdentity<Activity>, update: unknown}[] = [];
+    const updates:  { id: EntityIdentity<Activity>, update: UpdateQuery<Activity> }[] = [];
     const activities = await this.contentDao.findByProfileAndInterval(profile, activity.type, activity.interval, {
       excludeIds: activity._id,
       sort: { sortOrder: 1 }

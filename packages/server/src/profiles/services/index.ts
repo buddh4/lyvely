@@ -1,2 +1,2 @@
-export * from './abstract-user-profile-action.service'
+export * from './profile-score-action.service'
 export * from './profiles.service'

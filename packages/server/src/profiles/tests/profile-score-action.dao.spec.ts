@@ -3,14 +3,14 @@ import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createTestingModule } from '../../test/utils/test.utils';
 import { Calendar, CalendarIntervalEnum } from 'lyvely-common';
-import { ProfileAction, UserProfileLogSchema } from '../schemas';
+import { ProfileScoreAction, ProfileScoreActionSchema } from '../schemas';
 import { TestProfileAction, TestScoreSchema } from './src/test-score.schema';
 import { TestProfileActionDao } from './src/test-profile-action.dao';
 import { INestApplication } from '@nestjs/common';
 
 const testScoreModelDef = {
-  name: ProfileAction.name,
-  schema: UserProfileLogSchema,
+  name: ProfileScoreAction.name,
+  schema: ProfileScoreActionSchema,
   discriminators: [
     { name: TestProfileAction.name, schema: TestScoreSchema }
   ],
@@ -44,7 +44,7 @@ describe('AbstractUserProfileActionDao', () => {
   describe('create()', () => {
     it('create test score instance', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const scoreLog = await testScoreDao.create(new TestProfileAction({ user: user, profile: profile, score: 5, text: 'test' }));
+      const scoreLog = await testScoreDao.save(new TestProfileAction({ user: user, profile: profile, score: 5, text: 'test' }));
       const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date(), profile.getLocale());
 
       expect(scoreLog).toBeDefined();

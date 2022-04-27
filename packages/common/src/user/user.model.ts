@@ -16,3 +16,8 @@ export class UserDto extends DocumentDto<UserDto> implements IUser {
   @Expose()
   locale: string;
 }
+
+export enum UserAssignmentStrategy {
+  Shared,
+  PerUser
+}

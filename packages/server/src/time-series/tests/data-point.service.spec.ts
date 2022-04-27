@@ -7,15 +7,12 @@ import {
   TestNumberTimingDataPointPointSchema
 } from './src/test-data-point.schema';
 import {
-  CalendarDateTime,
   CalendarIntervalEnum,
-  dateTime,
   DeepPartial,
-  formatDate,
-  getFullDayDate,
+ DataPointIntervalFilter,
   toTimingId
 } from 'lyvely-common';
-import { TestNumberDataPointDao, TimingDataPointIntervalFilter } from './src/test-data-point.dao';
+import { TestNumberDataPointDao } from './src/test-data-point.dao';
 import { TestNumberDataPointService } from "./src/test-data-point.service";
 import {
   TestTimeSeriesContent,
@@ -27,8 +24,6 @@ import { Model } from 'mongoose';
 import { CheckboxNumberDataPointConfig } from "../schemas";
 import { User } from "../../users";
 import { Profile } from "../../profiles";
-import exp from "constants";
-
 
 const Models = [
   { name: TestNumberTimingDataPoint.name, schema: TestNumberTimingDataPointPointSchema },
@@ -87,7 +82,7 @@ describe('DataPointService', () => {
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      const log = await service.updateLog(user, profile, content, date, 5);
+      const log = await service.updateOrCreateDataPoint(user, profile, content, date, 5);
       expect(log._id).toBeDefined();
       expect(log.tid).toEqual(toTimingId(date));
       expect(log.value).toEqual(5);
@@ -98,8 +93,8 @@ describe('DataPointService', () => {
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      await service.updateLog(user, profile, content, date, 5);
-      await service.updateLog(user, profile, content, date, 3);
+      await service.updateOrCreateDataPoint(user, profile, content, date, 5);
+      await service.updateOrCreateDataPoint(user, profile, content, date, 3);
       const log = await service.findOrCreateLogByDay(user, profile, content, date);
       expect(log.value).toEqual(3);
     });

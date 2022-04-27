@@ -1,28 +1,27 @@
-import { CalendarDateTime, CalendarIntervalEnum } from "lyvely-common/src";
 import { AbstractDao, PartialEntityData, UpdateQuery } from "../../db/abstract.dao";
 import { assureObjectId, EntityIdentity } from "../../db/db.utils";
 import { Profile } from "../../profiles";
 import { User } from "../../users";
 import { Injectable } from '@nestjs/common';
 import { DataPoint, TimeSeriesContent } from "../schemas";
-import { CalendarDate, getTimingIds, toTimingId } from "lyvely-common";
-
-export class DataPointIntervalFilter {
-    constructor(public search: CalendarDateTime, public level: CalendarIntervalEnum = CalendarIntervalEnum.Unscheduled) {}
-
-    getTid() {
-        return toTimingId(this.search);
-    }
-}
+import { CalendarDate, getTimingIds, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum  } from "lyvely-common";
 
 type InterValFilter = { 'meta.interval': CalendarIntervalEnum, tid?: string | { $regex: RegExp } };
 
 @Injectable()
 export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao<T> {
 
-    async findLogByDate(cid: EntityIdentity<TimeSeriesContent>, date: CalendarDate) {
+    async findDataPointByDate(cid: EntityIdentity<TimeSeriesContent>, date: CalendarDate) {
         return this.findOne({
             'meta.cid': assureObjectId(cid),
+            tid: toTimingId(date),
+        })
+    }
+
+    async findUserDataPointByDate(cid: EntityIdentity<TimeSeriesContent>, uid: EntityIdentity<User>, date: CalendarDate) {
+        return this.findOne({
+            'meta.cid': assureObjectId(cid),
+            'meta.uid': assureObjectId(uid),
             tid: toTimingId(date),
         })
     }

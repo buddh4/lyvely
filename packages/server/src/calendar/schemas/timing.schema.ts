@@ -29,9 +29,6 @@ export class Timing implements ITiming {
   dayOfWeek: number; // note Su = 0
 
   @Prop()
-  weekOfYear: number;
-
-  @Prop()
   isoWeekOfYear: number;
 
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })

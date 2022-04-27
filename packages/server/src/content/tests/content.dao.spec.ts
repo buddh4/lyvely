@@ -25,7 +25,7 @@ describe('content dao', () => {
       collection: Content.collectionName(),
       schema: ContentSchema,
       discriminators: [
-        {name: TestContent.name, schema: TestContentSchema},
+        { name: TestContent.name, schema: TestContentSchema },
       ],
     }
   ];
@@ -43,7 +43,7 @@ describe('content dao', () => {
   });
 
   async function createTestContent(user: User, profile: Profile, testData = 'Testing...') {
-    const testContent = new TestContent(user, profile, { data: { testData: testData }});
+    const testContent = new TestContent(user, profile, { data: { testData: testData } });
     return new TestContent((await testContentModel.create(testContent)).toObject());
   }
 

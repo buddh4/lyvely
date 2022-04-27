@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractDao } from '../../db/abstract.dao';
-import { ProfileAction } from '../schemas/profile-action.schema';
+import { ProfileScoreAction } from '../schemas';
 
 @Injectable()
-export abstract class AbstractUserProfileActionDao<T extends ProfileAction = ProfileAction> extends AbstractDao<T>{
+export abstract class ProfileScoreActionDao<T extends ProfileScoreAction = ProfileScoreAction> extends AbstractDao<T>{
   protected getModelType(): string | null {
     return 'userprofileaction';
   }

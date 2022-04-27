@@ -5,27 +5,27 @@ import { TasksService } from './services/tasks.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   ActivityDataPointSchema,
-  ActivityDataPoint,
+  HabitDataPoint,
   Habit,
   HabitSchema,
   Task,
   TaskSchema, Activity, ActivitySchema,
 } from './schemas';
 import { CalendarModule } from '../calendar/calendar.module';
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '../users';
 import { HabitsController } from './controllers/habits.controller';
 import { HabitsService } from './services/habits.service';
 import { TasksController } from './controllers/tasks.controller';
-import { ActivityDataPointService } from './services/activity-data-point.service';
-import { Content } from '../content/schemas/content.schema';
-import { ProfilesModule } from '../profiles/profiles.module';
+import { HabitDataPointService } from './services/habit-data-point.service';
+import { Content, ContentModule } from '../content';
+import { ProfilesModule } from '../profiles';
 import { ActivitiesDao } from './daos/activities.dao';
 import { TasksDao } from './daos/tasks.dao';
 import { PoliciesModule } from '../policies/policies.module';
-import { ContentModule } from '../content/content.module';
 import { HabitsDao } from './daos/habits.dao';
 import { ActivityEvents } from './activities.events';
 import { CoreModule } from '../core/core.module';
+import { HabitDataPointDao } from "./daos/habit-data-point.dao";
 
 @Module({
   imports: [
@@ -45,7 +45,7 @@ import { CoreModule } from '../core/core.module';
           { name: Task.name, schema: TaskSchema },
         ],
       },
-      { name: ActivityDataPoint.name, schema: ActivityDataPointSchema },
+      { name: HabitDataPoint.name, schema: ActivityDataPointSchema },
     ]),
   ],
   controllers: [ActivitiesController, HabitsController, TasksController],
@@ -54,8 +54,9 @@ import { CoreModule } from '../core/core.module';
     ActivitiesDao,
     TasksDao,
     HabitsDao,
+    HabitDataPointDao,
     ActivitiesService,
-    ActivityDataPointService,
+    HabitDataPointService,
     HabitsService,
     TasksService
   ],

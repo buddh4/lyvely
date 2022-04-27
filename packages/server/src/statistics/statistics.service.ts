@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ActivityDataPoint, ActivityDataPointDocument } from '../activities/schemas';
+import { HabitDataPoint, HabitDataPointDocument } from '../activities/schemas';
 import { Model } from 'mongoose';
 import { ScoreStatistics , CalendarIntervalEnum } from 'lyvely-common';
 
@@ -8,8 +8,8 @@ import { User } from '../users/schemas/users.schema';
 
 @Injectable()
 export class StatisticsService {
-  @InjectModel(ActivityDataPoint.name)
-  protected ActivityLogModel: Model<ActivityDataPointDocument>;
+  @InjectModel(HabitDataPoint.name)
+  protected ActivityLogModel: Model<HabitDataPointDocument>;
 
   async getMonthlyScoreStatistics(
     user: User,

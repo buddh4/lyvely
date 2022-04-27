@@ -41,6 +41,10 @@ export const defaultFetchOptions = {
   }
 }
 
+export interface UpsertQueryOptions {
+  new?: boolean;
+}
+
 export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
 
 export abstract class AbstractDao<T extends BaseEntity<T>> {
@@ -69,13 +73,13 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.eventEmitter.emit(this.createEventName(event), values)
   }
 
-  async create(entityData: T): Promise<T> {
-    await this.beforeCreate(entityData);
+  async save(entityData: T): Promise<T> {
+    await this.beforeSave(entityData);
     this.emit('create.pre', new ModelCreateEvent(this, entityData, this.getModelName()));
     const result = <any> await new this.model(entityData).save();
     const model = this.constructModel(result.toObject({ virtuals: true, aliases: true, getters: true }));
     this.emit(`create.post`, new ModelCreateEvent(this, model, this.getModelName()));
-    return await this.afterCreate(model);
+    return await this.afterSave(model);
   }
 
   constructModel(lean?: DeepPartial<T>): T {
@@ -85,11 +89,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return new ModelType(lean);
   }
 
-  protected async beforeCreate(create: T): Promise<PartialEntityData<T>> {
+  protected async beforeSave(create: T): Promise<PartialEntityData<T>> {
     return Promise.resolve(create);
   }
 
-  protected async afterCreate(model: T): Promise<T> {
+  protected async afterSave(model: T): Promise<T> {
     return Promise.resolve(model);
   }
 
@@ -114,9 +118,14 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.createModels(await this.applyFetchQueryOptions(query, options).lean());
   }
 
-  protected async findOne<C = T>(filter: FilterQuery<C>): Promise<T|null> {
+  async findOne<C = T>(filter: FilterQuery<C>): Promise<T|null> {
     return this.constructModel(await this.model.findOne(filter).lean());
   }
+
+  // TODO: Implement + Test
+  /*protected async upsert(filter: FilterQuery<T>, update: UpdateQuery<T>, options: UpsertQueryOptions = {}): Promise<T|null> {
+    return this.constructModel(await this.model.findOneAndUpdate(filter, update, { upsert: true, ...options }).lean());
+  }*/
 
   protected getFetchQueryFilter(options: FetchQueryFilterOptions<T>): FilterQuery<any> {
     const { excludeIds } = options;
@@ -148,9 +157,19 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   async updateOneSet(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<number> {
-    if(!this.beforeUpdate(id, update)) return 0;
-    // TODO: try to merge update into id, if id is a model
-    return (await this.model.updateOne({ _id: assureObjectId(id) }, { $set: update }).exec()).modifiedCount;
+    if(!await this.beforeUpdate(id, update)) return 0;
+    const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, { $set: update }).exec()).modifiedCount;
+
+    // TODO: DeepCopy
+    if(modifiedCount && typeof id === 'object') {
+      Object.keys(update).forEach(key => {
+        if(id.hasOwnProperty(key)) {
+          id[key] = update[key];
+        }
+      });
+    }
+
+    return modifiedCount;
   }
 
   protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<PartialEntityData<T>|boolean> {

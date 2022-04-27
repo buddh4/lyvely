@@ -1,8 +1,8 @@
 import { Injectable, Provider } from '@nestjs/common';
 import { User } from '../../../users';
-import { Profile } from '../../../profiles';
+import { Profile, ProfileScoreAction, ProfileScoreActionSchema } from '../../../profiles';
 import {
-  Activity, ActivityDataPoint, ActivityDataPointDocument, ActivityDataPointSchema,
+  Activity, HabitDataPoint, HabitDataPointDocument, ActivityDataPointSchema,
   ActivitySchema,
   Habit,
   HabitDocument,
@@ -30,6 +30,7 @@ import { createTestingModule } from '../../../test/utils/test.utils';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { assureObjectId, EntityIdentity } from '../../../db/db.utils';
 import { DataPointMeta } from "../../../time-series";
+import { ActivityScoreAction, ActivityScoreActionSchema } from "../../schemas/activity-score-action.schema";
 
 @Injectable()
 export class ActivityTestDataUtil extends TestDataUtils {
@@ -40,8 +41,8 @@ export class ActivityTestDataUtil extends TestDataUtils {
   @InjectModel(Task.name)
   protected TaskModel: Model<TaskDocument>;
 
-  @InjectModel(ActivityDataPoint.name)
-  protected ActivityLogModel: Model<ActivityDataPointDocument>
+  @InjectModel(HabitDataPoint.name)
+  protected HabitDataPointModel: Model<HabitDataPointDocument>;
 
 
   static getDateToday(): Date {
@@ -53,7 +54,7 @@ export class ActivityTestDataUtil extends TestDataUtils {
   }
 
   static getDateYesterday(): Date {
-    return new Date(new Date().setDate(new Date().getDate() + 1))
+    return new Date(new Date().setDate(new Date().getDate() - 1))
   }
 
   static getTodayTimingId() {
@@ -76,13 +77,13 @@ export class ActivityTestDataUtil extends TestDataUtils {
     return this.HabitModel.findById(assureObjectId(id)).lean();
   }
 
-  async createLog(user: User, profile: Profile, activity: Activity, date: CalendarDate): Promise<ActivityDataPoint> {
-    const log = new this.ActivityLogModel(new ActivityDataPoint({
+  async createLog(user: User, profile: Profile, activity: Activity, date: CalendarDate): Promise<HabitDataPoint> {
+    const log = new this.HabitDataPointModel(new HabitDataPoint({
       meta: DataPointMeta.create(user, profile, activity),
       date: toDate(date)
     }));
     await log.save();
-    return new ActivityDataPoint(log.toObject());
+    return new HabitDataPoint(log.toObject());
   }
 
   async createTask(user: User, profile: Profile, data?: Partial<CreateTaskDto>, overwrite?: Partial<ITask>): Promise<Task> {
@@ -105,7 +106,7 @@ export class ActivityTestDataUtil extends TestDataUtils {
   }
 
   async delete() {
-    await this.ActivityLogModel.deleteMany({});
+    await this.HabitDataPointModel.deleteMany({});
   }
 }
 
@@ -120,6 +121,14 @@ export function createActivityTestingModule(key: string, providers: Provider[] =
         { name: Task.name, schema: TaskSchema },
       ],
     },
-    { name: ActivityDataPoint.name, schema: ActivityDataPointSchema });
+    { name: HabitDataPoint.name, schema: ActivityDataPointSchema },
+    {
+      name: ProfileScoreAction.name,
+      schema: ProfileScoreActionSchema,
+      discriminators: [
+        { name: ActivityScoreAction.name, schema: ActivityScoreActionSchema }
+      ],
+    },
+   );
   return createTestingModule(key, providers, models, modules);
 }

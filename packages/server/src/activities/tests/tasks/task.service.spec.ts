@@ -3,7 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { CalendarIntervalEnum, TimeSeriesRangeFilter, ActivityType, toTimingId } from 'lyvely-common';
 
 import { TasksService } from '../../services/tasks.service';
-import { ActivityDataPointService } from '../../services/activity-data-point.service';
+import { HabitDataPointService } from '../../services/habit-data-point.service';
 import { ActivitiesService } from '../../services/activities.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { TasksDao } from '../../daos/tasks.dao';
@@ -20,7 +20,7 @@ describe('TaskService', () => {
 
   beforeEach(async () => {
     testingModule = await createActivityTestingModule(TEST_KEY,
-      [TasksDao, ActivitiesDao, TasksService, ActivitiesService, ActivityDataPointService]).compile();
+      [TasksDao, ActivitiesDao, TasksService, ActivitiesService, HabitDataPointService]).compile();
     activityService = testingModule.get<ActivitiesService>(ActivitiesService);
     taskService = testingModule.get<TasksService>(TasksService);
     testDataUtils = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);

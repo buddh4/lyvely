@@ -116,8 +116,8 @@ describe('MembershipDao', () => {
     });
 
     it('do not find non related membership', async () => {
-      const {user: user1,} = await testData.createUserAndProfile('user1');
-      const {profile: profile2,} = await testData.createUserAndProfile('user2');
+      const { user: user1, } = await testData.createUserAndProfile('user1');
+      const { profile: profile2, } = await testData.createUserAndProfile('user2');
       const membership = await membershipDao.findByUserAndProfile(user1, profile2);
       expect(membership).toBeNull();
     });

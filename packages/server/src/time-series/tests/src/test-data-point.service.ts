@@ -11,7 +11,7 @@ export class TestNumberDataPointService extends DataPointService<TestTimeSeriesC
   @Inject()
   protected dataPointDao: TestNumberDataPointDao;
 
-  async updateLogValue(profile: Profile, log: TestNumberTimingDataPoint, model: TestTimeSeriesContent, value: number): Promise<TestNumberTimingDataPoint> {
+  async updateDataPointValue(profile: Profile, log: TestNumberTimingDataPoint, model: TestTimeSeriesContent, value: number): Promise<TestNumberTimingDataPoint> {
     await this.dataPointDao.updateOneSet(log, { value: value });
     log.value = value;
     return log;

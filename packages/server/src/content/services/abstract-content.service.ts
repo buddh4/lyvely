@@ -1,14 +1,12 @@
 
-import { ProfilesService } from '../../profiles';
+import { ProfilesService , Profile } from '../../profiles';
 import { AbstractContentDao } from '../daos';
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 import { assureObjectId, EntityIdentity } from '../../db/db.utils';
 import { Content } from '../schemas';
-import { Profile } from '../../profiles';
 import { EntityNotFoundException } from '../../core/exceptions';
 import { Inject } from '@nestjs/common';
 import { UpdateQuery } from '../../db/abstract.dao';
-import { Plain } from 'lyvely-common/src';
 
 export abstract class AbstractContentService<T extends Content> {
 
@@ -23,7 +21,7 @@ export abstract class AbstractContentService<T extends Content> {
 
   async createContent(profile: Profile, model: T): Promise<T> {
     await this.profileService.mergeCategories(profile, model.categories);
-    return this.contentDao.create(model);
+    return this.contentDao.save(model);
   }
 
   async updateContent(profile: Profile, id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<any> {
@@ -92,7 +90,7 @@ export abstract class AbstractContentService<T extends Content> {
       throw new EntityNotFoundException();
     }
 
-    return {content: content, profile: profile};
+    return { content: content, profile: profile };
   }
 
 }

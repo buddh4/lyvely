@@ -1,4 +1,4 @@
-import { Membership , ProfileAction } from '../../schemas';
+import { Membership , ProfileScoreAction } from '../../schemas';
 import mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
@@ -6,7 +6,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 export type TestScoreDocument = Membership & mongoose.Document;
 
 @Schema({ timestamps: true })
-export class TestProfileAction extends ProfileAction<TestProfileAction> {
+export class TestProfileAction extends ProfileScoreAction<TestProfileAction> {
   @Prop()
   text: string;
 }

@@ -25,10 +25,10 @@ describe('ProfilePermissionsService', () => {
   const rolesDefinitionProvider = {
     provide: TOKEN_PROFILE_ROLES_DEFINITION,
     useFactory: () => ([
-      { role: BaseProfilePermissionRole.Owner, label:'Owner',  visibility: ContentVisibilityLevel.Owner},
+      { role: BaseProfilePermissionRole.Owner, label:'Owner',  visibility: ContentVisibilityLevel.Owner },
       { role: BaseProfilePermissionRole.Admin, label:'Admin', visibility: ContentVisibilityLevel.Admin, assignable: true,  extendable: true },
       { extends: BaseProfilePermissionRole.Admin, role: 'UserManager', label:'User Manager', visibility: ContentVisibilityLevel.Admin, assignable: true,  extendable: true },
-      { role: 'moderator', label: 'Moderator', visibility: ContentVisibilityLevel.Moderator, assignable: true, extendable: true},
+      { role: 'moderator', label: 'Moderator', visibility: ContentVisibilityLevel.Moderator, assignable: true, extendable: true },
       { extends: BaseProfilePermissionRole.Moderator, role: 'newsbot', label: 'NewsBot', visibility: ContentVisibilityLevel.Moderator, assignable: false },
       { role: BaseProfilePermissionRole.Member, label: 'Member', visibility: ContentVisibilityLevel.Member, assignable: true, extendable: true },
       { extends: BaseProfilePermissionRole.Member, role: 'newbie', label: 'NewMember', visibility: ContentVisibilityLevel.Member },
@@ -80,7 +80,7 @@ describe('ProfilePermissionsService', () => {
       relations: [new Membership({ role: role })]
     });
 
-    return { user, profile, profileRelations };
+    return { owner: user, profile, profileRelations };
   }
   describe('default permissions', () => {
     it('admin inherits configured default moderator permission', async () => {

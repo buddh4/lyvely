@@ -39,7 +39,7 @@ describe('UserDao', () => {
 
   describe('insert()', () => {
     it('create user', async () => {
-      const user = await userDao.create(new User({
+      const user = await userDao.save(new User({
         username: 'Test',
         email: 'test@test.de',
         locale: 'de',
@@ -59,7 +59,7 @@ describe('UserDao', () => {
 
     it('can not create user without password', async () => {
       try {
-        await userDao.create(new User({
+        await userDao.save(new User({
           username: 'Test',
           email: 'test@test.de',
           locale: 'de'
