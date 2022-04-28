@@ -34,7 +34,6 @@ import { HabitDataPointDao } from "./daos/habit-data-point.dao";
     PoliciesModule,
     ProfilesModule,
     ContentModule,
-    CalendarModule,
     MongooseModule.forFeature([
       {
         name: Activity.name,

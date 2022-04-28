@@ -22,7 +22,7 @@ export class TestNumberDataPointDao extends DataPointDao<TestNumberTimingDataPoi
   @InjectModel(TestNumberTimingDataPoint.name)
   model: Model<TestNumberTimingDataPointDocument>;
 
-  getModelConstructor(): Constructor<TestNumberTimingDataPoint> {
+  getModelConstructor() {
     return TestNumberTimingDataPoint;
   }
 

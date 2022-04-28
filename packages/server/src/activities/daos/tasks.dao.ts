@@ -21,7 +21,7 @@ export class TasksDao extends AbstractContentDao<Task> {
     return this.updateOneSet(id, { done: null });
   }
 
-  getModelConstructor(): Constructor<Task> {
+  getModelConstructor() {
     return Task;
   }
 

@@ -1,6 +1,6 @@
 export interface ITiming {
     _id: string;
-    timingId: string;
+    tid: string;
     dayOfMonth: number;
     monthOfYear: number;
     year: number;

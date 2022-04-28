@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createTestingModule } from '../../test/utils/test.utils';
+import { createContentTestingModule } from '../../test/utils/test.utils';
 import { Model } from 'mongoose';
 import {
   TestNumberTimingDataPoint,
@@ -23,7 +23,7 @@ describe('NumberTimingDataPointSchema', () => {
   const TEST_KEY = 'TimeableContentSchema';
 
   beforeEach(async () => {
-    testingModule = await createTestingModule(TEST_KEY, [], DataPointModelDefinition).compile();
+    testingModule = await createContentTestingModule(TEST_KEY, [], DataPointModelDefinition).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     TestNumberTimingDataPointModel = testingModule.get<Model<TestNumberTimingDataPointDocument>>('TestNumberTimingDataPointModel');
   });

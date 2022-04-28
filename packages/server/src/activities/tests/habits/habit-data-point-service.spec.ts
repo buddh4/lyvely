@@ -4,27 +4,26 @@ import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/acti
 import { HabitDataPointService } from "../../services/habit-data-point.service";
 import { HabitDataPointDao } from "../../daos/habit-data-point.dao";
 import { UserAssignmentStrategy, toTimingId } from "lyvely-common";
-import { ActivityScoreActionService } from "../../services/activity-score-action.service";
-import { ActivityScoreActionDao } from "../../daos/activity-score-action.dao";
+import { ContentScoreDao, ContentScoreService } from "../../../content";
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
   let testingModule: TestingModule;
   let testData: ActivityTestDataUtil;
-  let activityScoreDao: ActivityScoreActionDao;
+  let activityScoreDao: ContentScoreDao;
 
   const TEST_KEY = 'habit_data_point_service';
 
   beforeEach(async () => {
     testingModule = await createActivityTestingModule(TEST_KEY, [
-        HabitDataPointService,
+      HabitDataPointService,
       HabitDataPointDao,
-      ActivityScoreActionService,
-      ActivityScoreActionDao
+      ContentScoreService,
+      ContentScoreDao
     ] ).compile();
     habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
-    activityScoreDao = testingModule.get<ActivityScoreActionDao>(ActivityScoreActionDao);
+    activityScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
   });
 
   afterEach(async () => {

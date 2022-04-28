@@ -64,7 +64,6 @@ const configSchema = Joi.object({
     UsersModule,
     ProfilesModule,
     PoliciesModule,
-    CalendarModule,
     ContentModule,
     ActivitiesModule,
     //StatisticsModule,

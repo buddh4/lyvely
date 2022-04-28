@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { getDefaultLocale, UserDocument } from '../schemas/users.schema';
 import { Model } from 'mongoose';
-import { createTestingModule } from '../../test/utils/test.utils';
+import { createContentTestingModule } from '../../test/utils/test.utils';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 
 describe('Users schema', () => {
@@ -13,7 +13,7 @@ describe('Users schema', () => {
   const TEST_KEY = 'user_schema';
 
   beforeEach(async () => {
-    testingModule = await createTestingModule(TEST_KEY).compile();
+    testingModule = await createContentTestingModule(TEST_KEY).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     UserModel = testingModule.get<Model<UserDocument>>('UserModel');
   });

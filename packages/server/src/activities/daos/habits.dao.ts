@@ -12,7 +12,7 @@ export class HabitsDao extends AbstractContentDao<Habit> {
     super();
   }
 
-  getModelConstructor(): Constructor<Habit> {
+  getModelConstructor() {
     return Habit;
   }
 

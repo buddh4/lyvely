@@ -1,6 +1,6 @@
 import { Injectable, Provider } from '@nestjs/common';
 import { User } from '../../../users';
-import { Profile, ProfileScoreAction, ProfileScoreActionSchema } from '../../../profiles';
+import { Profile, ProfileScore } from '../../../profiles';
 import {
   Activity, HabitDataPoint, HabitDataPointDocument, ActivityDataPointSchema,
   ActivitySchema,
@@ -20,17 +20,18 @@ import {
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Content } from '../../../content';
+import { Content, ContentScore, ContentScoreSchema } from '../../../content';
 import { TestingModuleBuilder } from '@nestjs/testing/testing-module.builder';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
-import { createTestingModule } from '../../../test/utils/test.utils';
+import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { assureObjectId, EntityIdentity } from '../../../db/db.utils';
 import { DataPointMeta } from "../../../time-series";
 import { ActivityScoreAction, ActivityScoreActionSchema } from "../../schemas/activity-score-action.schema";
+import { createBaseEntityInstance } from "../../../db/base.entity";
 
 @Injectable()
 export class ActivityTestDataUtil extends TestDataUtils {
@@ -94,7 +95,7 @@ export class ActivityTestDataUtil extends TestDataUtils {
 
     await task.save();
 
-    return new Task(task.toObject());
+    return createBaseEntityInstance(Task, task.toObject());
   }
 
   async createHabit(user: User, profile: Profile, data?: Partial<CreateHabitDto>, overwrite?: Partial<IHabit>): Promise<Habit> {
@@ -102,7 +103,7 @@ export class ActivityTestDataUtil extends TestDataUtils {
     const habit = new this.HabitModel(Habit.create(user, profile, initData));
     Object.assign(habit, overwrite);
     await habit.save();
-    return new Habit(habit.toObject());
+    return createBaseEntityInstance(Habit, habit.toObject());
   }
 
   async delete() {
@@ -123,12 +124,13 @@ export function createActivityTestingModule(key: string, providers: Provider[] =
     },
     { name: HabitDataPoint.name, schema: ActivityDataPointSchema },
     {
-      name: ProfileScoreAction.name,
-      schema: ProfileScoreActionSchema,
+      name: ContentScore.name,
+      collection: ProfileScore.collectionName(),
+      schema: ContentScoreSchema,
       discriminators: [
         { name: ActivityScoreAction.name, schema: ActivityScoreActionSchema }
       ],
     },
    );
-  return createTestingModule(key, providers, models, modules);
+  return createContentTestingModule(key, providers, models, modules);
 }

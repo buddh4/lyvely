@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createTestingModule, getObjectId } from '../../test/utils/test.utils';
+import { createContentTestingModule, getObjectId } from '../../test/utils/test.utils';
 import {
   TestNumberTimingDataPoint,
   TestNumberTimingDataPointPointSchema
@@ -47,7 +47,7 @@ describe('DataPointService', () => {
   const TEST_KEY = 'DataPointService';
 
   beforeEach(async () => {
-    testingModule = await createTestingModule(TEST_KEY, [TestNumberDataPointService, TestNumberDataPointDao], Models).compile();
+    testingModule = await createContentTestingModule(TEST_KEY, [TestNumberDataPointService, TestNumberDataPointDao], Models).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     service = testingModule.get<TestNumberDataPointService>(TestNumberDataPointService);
     dao = testingModule.get<TestNumberDataPointDao>(TestNumberDataPointDao);
@@ -69,7 +69,7 @@ describe('DataPointService', () => {
     const model = new TestTimeSeriesContent(user, profile, data);
     const entity = new TestTimeSeriesContentModel(model);
     await entity.save();
-    return new TestTimeSeriesContent(entity);
+    return new TestTimeSeriesContent(user, profile, entity);
   }
 
   it('should be defined', () => {
@@ -82,7 +82,7 @@ describe('DataPointService', () => {
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      const log = await service.updateOrCreateDataPoint(user, profile, content, date, 5);
+      const log = await service.updateOrCreateDataPoint(profile, user, content, date, 5);
       expect(log._id).toBeDefined();
       expect(log.tid).toEqual(toTimingId(date));
       expect(log.value).toEqual(5);
@@ -93,9 +93,9 @@ describe('DataPointService', () => {
       const content = await createTimeSeriesContent(user, profile);
       const date = new Date();
 
-      await service.updateOrCreateDataPoint(user, profile, content, date, 5);
-      await service.updateOrCreateDataPoint(user, profile, content, date, 3);
-      const log = await service.findOrCreateLogByDay(user, profile, content, date);
+      await service.updateOrCreateDataPoint(profile, user, content, date, 5);
+      await service.updateOrCreateDataPoint(profile, user, content, date, 3);
+      const log = await service.findOrCreateLogByDay(profile, user, content, date);
       expect(log.value).toEqual(3);
     });
   });
@@ -104,6 +104,5 @@ describe('DataPointService', () => {
 
   // TODO: Add log (merge times, validate value)
   // TODO: Test change content interval (align intervals of data point buckets)
-  // TODO: Test different locales (weekofyear translation)
   // TODO: Test cid access
 });

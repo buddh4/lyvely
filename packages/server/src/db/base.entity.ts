@@ -3,6 +3,8 @@ import mongoose  from 'mongoose';
 import { DeepPartial } from 'lyvely-common';
 import { assureStringId } from "./db.utils";
 
+type Constructor<T> = new (...args: any[]) => T;
+
 export type EntityType<C, ID = mongoose.Types.ObjectId> = C & IEntity<ID>;
 
 interface IEntity<ID = mongoose.Types.ObjectId> {
@@ -11,18 +13,30 @@ interface IEntity<ID = mongoose.Types.ObjectId> {
 
 export abstract class BaseEntity<C extends IEntity<ID> = IEntity<any>, ID = mongoose.Types.ObjectId> implements IEntity<ID> {
 
-  constructor(obj?: DeepPartial<C>) {
+  constructor(obj?: DeepPartial<C> | false) {
+    if(obj !== false) {
+      this.init(obj);
+    }
+  }
+
+  init(obj?: DeepPartial<C> | false) {
     assignEntityData(this, obj);
     this.afterInit();
   }
 
-  afterInit() {/* Nothing todo */}
+  protected afterInit() {/* Nothing todo */}
 
   @Exclude()
   public _id: ID;
 
   @Expose()
   public id: string;
+}
+
+export function createBaseEntityInstance<T extends BaseEntity>(constructor: Constructor<T>, data: DeepPartial<T>) {
+  const model = Object.create(constructor.prototype);
+  model.init(data);
+  return model;
 }
 
 // Todo: Proper typing...

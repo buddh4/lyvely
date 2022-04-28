@@ -3,7 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from '../../services/habits.service';
 import { Habit } from '../../schemas';
 import { CalendarIntervalEnum , ActivityType, CreateHabitDto, EditHabitDto } from 'lyvely-common';
-import { Profile, ProfileDocument } from '../../../profiles';
+import { Profile } from '../../../profiles';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitsDao } from '../../daos/habits.dao';
 import { User } from '../../../users';
@@ -87,10 +87,7 @@ describe('HabitService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user,profile);
 
-      await habitService.updateContent(
-        profile,
-        habit,
-        Habit.create(
+      await habitService.updateContent(profile, habit, Habit.create(
           user,
           profile,
           new EditHabitDto({

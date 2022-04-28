@@ -90,7 +90,7 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
     return 'content.activity';
   }
 
-  getModelConstructor(): Constructor<Activity> {
+  getModelConstructor() {
     return Activity;
   }
 

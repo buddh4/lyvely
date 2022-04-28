@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from '../../users';
 import { ProfileType, ProfileVisibilityLevel } from 'lyvely-common';
 import { closeInMongodConnection, rootMongooseTestModule } from './mongoose-test.utils';
@@ -12,6 +12,7 @@ import {
   Membership, MembershipDocument
 } from '../../profiles';
 import { EventEmitter2, EventEmitterModule  } from '@nestjs/event-emitter';
+import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 
 @Injectable()
 export class TestDataUtils {
@@ -75,7 +76,7 @@ export class TestDataUtils {
 
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 
-    return new Profile(profile.toObject());
+    return new Profile(profile);
   }
 
   async createProfile(owner: User, name?: string, type: ProfileType = ProfileType.User, visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<Profile> {
@@ -88,7 +89,7 @@ export class TestDataUtils {
 
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 
-    return new Profile(profile.toObject());
+    return new Profile(profile);
   }
 
   async addProfileRelation(profile: Profile, user: User, type: string, role: string): Promise<UserProfileRelation> {
@@ -116,6 +117,28 @@ export class TestDataUtils {
     return EventEmitterModule.forRoot({ wildcard: true });
   }
 
+  static createDummyUserAndProfile(userData: Partial<User> = {}) {
+    const user = this.createDummyUser(userData);
+    const profile = this.createDummyProfile(user);
+    return { user, profile }
+  }
+
+  static createDummyUser(data: Partial<User> = {}) {
+    data.username = data.username || 'User1';
+    data._id = getObjectId(data.username);
+    data.email = data.email || `${data.username}@test.de`;
+    data.password = data.password || 'testPassword';
+    return new User(data);
+  }
+
+  static createDummyProfile(owner: User, data: Partial<Profile> = {}) {
+    data.createdBy = owner._id;
+    data.name = data.name || `${owner.username}Profile`;
+    data._id = getObjectId(data.name);
+    data.type = data.type ?? ProfileType.User;
+    return new Profile(data);
+  }
+
   async reset(key: string) {
     await this.delete();
     if(this.eventEmitter) {
@@ -134,4 +157,9 @@ export class TestDataUtils {
   async closeDBConnection(key: string) {
     return closeInMongodConnection(key);
   }
+}
+
+// We use this to prevent circular dependency
+function getObjectId(id: string) {
+  return <mongoose.Types.ObjectId> new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
 }

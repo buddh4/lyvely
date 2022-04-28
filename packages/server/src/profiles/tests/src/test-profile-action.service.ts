@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { TestProfileAction } from './test-score.schema';
-import { ProfileScoreActionService } from '../../services';
+import { TestProfileScore } from './test-profile-score.schema';
+import { ProfileScoreService } from '../../services';
 import { TestProfileActionDao } from './test-profile-action.dao';
 
 @Injectable()
-export class TestProfileActionService extends ProfileScoreActionService<TestProfileAction> {
+export class TestProfileActionService extends ProfileScoreService<TestProfileScore> {
 
   @Inject()
-  profileScoreActionDao: TestProfileActionDao;
+  profileScoreDao: TestProfileActionDao;
 }

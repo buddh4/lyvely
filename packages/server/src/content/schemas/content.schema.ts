@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { DeepPartial, IContent, getNumberEnumValues } from 'lyvely-common';
 import { BaseEntity, EntityType } from '../../db/base.entity';
-import { ContentLog, ContentLogSchema } from './content.log.schema';
+import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentVisibilityLevel } from '../../permissions/interfaces/profile-permissions.interface';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, ContentAuthorSchema, Author } from './content-author-info.schema';
@@ -75,25 +75,10 @@ export class Content<T extends EntityType<ContentEntity> = EntityType<ContentEnt
 
   updatedAt: Date;
 
-  constructor(obj?: DeepPartial<T>);
-  constructor(author: User, profile: Profile, obj?: DeepPartial<T>);
-  constructor(author?: User|DeepPartial<T>, profile?: Profile, obj?: DeepPartial<T>) {
-    if(author && !(author instanceof User) && !obj) {
-      obj = author;
-      author = undefined;
-    }
-
-    obj = obj || {};
-
-    if(author instanceof User) {
-      obj.createdBy = author._id;
-      obj.createdAs = new CreatedAs(author);
-    }
-
-    if(profile) {
-      obj.pid = profile._id;
-    }
-
+  constructor(author: User, profile: Profile, obj: DeepPartial<T> = {}) {
+    obj.createdBy = author._id;
+    obj.createdAs = new CreatedAs(author);
+    obj.pid = profile._id;
     super(obj);
   }
 

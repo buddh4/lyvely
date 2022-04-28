@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { TestProfileAction, TestScoreDocument } from './test-score.schema';
-import { ProfileScoreActionDao } from '../../daos';
+import { TestProfileScore, TestProfileScoreDocument } from './test-profile-score.schema';
+import { ProfileScoreDao } from '../../daos';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Constructor } from 'lyvely-common';
 
 @Injectable()
-export class TestProfileActionDao extends ProfileScoreActionDao<TestProfileAction> {
+export class TestProfileActionDao extends ProfileScoreDao<TestProfileScore> {
 
-  @InjectModel(TestProfileAction.name)
-  model: Model<TestScoreDocument>;
+  @InjectModel(TestProfileScore.name)
+  model: Model<TestProfileScoreDocument>;
 
-  getModelConstructor(): Constructor<TestProfileAction> {
-    return TestProfileAction;
+  getModelConstructor(): Constructor<TestProfileScore> {
+    return TestProfileScore;
   }
 
   getModuleId(): string {

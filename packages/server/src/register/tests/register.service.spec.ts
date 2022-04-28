@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { RegisterService } from '../register.service';
 import { RegisterDto } from 'lyvely-common';
-import { createTestingModule } from "../../test/utils/test.utils";
+import { createContentTestingModule } from "../../test/utils/test.utils";
 import { TestDataUtils } from "../../test/utils/test-data.utils";
 
 describe('RegisterService', () => {
@@ -13,7 +13,7 @@ describe('RegisterService', () => {
   const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await createTestingModule(TEST_KEY, [RegisterService]).compile();
+    testingModule = await createContentTestingModule(TEST_KEY, [RegisterService]).compile();
     registerService = testingModule.get<RegisterService>(RegisterService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });

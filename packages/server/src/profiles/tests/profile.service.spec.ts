@@ -4,7 +4,7 @@ import { ProfilesService } from '../services';
 import { ProfileType } from 'lyvely-common';
 import { BaseMembershipRole } from '../schemas';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createTestingModule } from '../../test/utils/test.utils';
+import { createContentTestingModule } from '../../test/utils/test.utils';
 
 describe('ProfileService', () => {
   let testingModule: TestingModule;
@@ -14,7 +14,7 @@ describe('ProfileService', () => {
   const TEST_KEY = 'profile_service';
 
   beforeEach(async () => {
-    testingModule = await createTestingModule(TEST_KEY).compile();
+    testingModule = await createContentTestingModule(TEST_KEY).compile();
 
     profileService = testingModule.get<ProfilesService>(ProfilesService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);

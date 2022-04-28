@@ -1,18 +1,18 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createTestingModule } from '../../test/utils/test.utils';
+import { createContentTestingModule } from '../../test/utils/test.utils';
 import { Calendar, CalendarIntervalEnum } from 'lyvely-common';
-import { ProfileScoreAction, ProfileScoreActionSchema } from '../schemas';
-import { TestProfileAction, TestScoreSchema } from './src/test-score.schema';
+import { ProfileScore, ProfileScoreSchema } from '../schemas';
+import { TestProfileScore, TestProfileScoreSchema } from './src/test-profile-score.schema';
 import { TestProfileActionDao } from './src/test-profile-action.dao';
 import { INestApplication } from '@nestjs/common';
 
 const testScoreModelDef = {
-  name: ProfileScoreAction.name,
-  schema: ProfileScoreActionSchema,
+  name: ProfileScore.name,
+  schema: ProfileScoreSchema,
   discriminators: [
-    { name: TestProfileAction.name, schema: TestScoreSchema }
+    { name: TestProfileScore.name, schema: TestProfileScoreSchema }
   ],
 };
 
@@ -25,7 +25,7 @@ describe('AbstractUserProfileActionDao', () => {
   const TEST_KEY = 'abstract_user_profile_action_dao';
 
   beforeEach(async () => {
-    testingModule = await createTestingModule(TEST_KEY, [TestProfileActionDao], [testScoreModelDef]).compile();
+    testingModule = await createContentTestingModule(TEST_KEY, [TestProfileActionDao], [testScoreModelDef]).compile();
     testScoreDao = testingModule.get<TestProfileActionDao>(TestProfileActionDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     app = testingModule.createNestApplication();
@@ -44,8 +44,8 @@ describe('AbstractUserProfileActionDao', () => {
   describe('create()', () => {
     it('create test score instance', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const scoreLog = await testScoreDao.save(new TestProfileAction({ user: user, profile: profile, score: 5, text: 'test' }));
-      const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date(), profile.getLocale());
+      const scoreLog = await testScoreDao.save(new TestProfileScore({ user: user, profile: profile, score: 5 },{ text: 'test' }));
+      const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date());
 
       expect(scoreLog).toBeDefined();
       expect(scoreLog.id).toBeDefined();
@@ -54,7 +54,7 @@ describe('AbstractUserProfileActionDao', () => {
       expect(scoreLog.score).toEqual(5);
       expect(scoreLog.text).toEqual('test');
       expect(scoreLog.timing).toBeDefined();
-      expect(scoreLog.timing.timingId).toEqual(timing.timingId);
+      expect(scoreLog.timing.tid).toEqual(timing.tid);
     });
   });
 });

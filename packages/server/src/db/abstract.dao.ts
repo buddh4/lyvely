@@ -1,6 +1,6 @@
 import { assureObjectId, EntityData, EntityIdentity } from './db.utils';
 import { FilterQuery, HydratedDocument, Model, QueryWithHelpers } from 'mongoose';
-import { BaseEntity } from './base.entity';
+import { assignEntityData, BaseEntity, createBaseEntityInstance } from './base.entity';
 import { Inject } from '@nestjs/common';
 import { ModelCreateEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -13,7 +13,8 @@ interface Pagination {
 }
 type ContainsDot = `${string}.${string}`;
 
-export type UpdateQuery<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & {[key:ContainsDot]: any};
+export type UpdateQuery<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> | UpdateSubQuery<T>;
+type UpdateSubQuery<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & { [key:ContainsDot]: any };
 
 type QuerySort<T extends BaseEntity<T>> = { [P in keyof UpdateQuery<T>]: 1 | -1 | 'asc' | 'desc' };
 
@@ -53,7 +54,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   @Inject()
   private eventEmitter: EventEmitter2;
 
-  abstract getModelConstructor(): Constructor<T>;
+  abstract getModelConstructor(model?: DeepPartial<T>): Constructor<T>;
   abstract getModuleId(): string;
 
   protected getModelName() {
@@ -83,10 +84,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   constructModel(lean?: DeepPartial<T>): T {
-    if(!lean) return null;
-
-    const ModelType = this.getModelConstructor();
-    return new ModelType(lean);
+    return lean ? createBaseEntityInstance(this.getModelConstructor(lean), lean) : null;
   }
 
   protected async beforeSave(create: T): Promise<PartialEntityData<T>> {

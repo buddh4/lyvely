@@ -7,7 +7,6 @@ export class ServiceException extends Error {
       this.message = this.defaultMessage;
     }
   }
-
 }
 
 export class EntityNotFoundException extends ServiceException {
@@ -20,4 +19,8 @@ export class UnauthenticatedServiceException extends ServiceException {
 
 export class ForbiddenServiceException extends ServiceException {
   protected defaultMessage = 'Service action forbidden.';
+}
+
+export class IntegrityException extends ServiceException {
+  protected defaultMessage = 'An integrity exception occurred.';
 }

@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '../../profiles';
 import { AbstractCreateActivityDto, DataPointNumberInputStrategy, ITask as ITask } from 'lyvely-common';
 import mongoose from 'mongoose';
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 import { Activity } from './activity.schema';
 import { DataPointConfigFactory } from '../../time-series';
 

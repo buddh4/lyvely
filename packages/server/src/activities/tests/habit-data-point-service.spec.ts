@@ -9,7 +9,7 @@ import { HabitDataPointDao } from "../daos/habit-data-point.dao";
 
 describe('HabitDataPointService', () => {
   let testingModule: TestingModule;
-  let activityLogsService: HabitDataPointService;
+  let habitDataPointService: HabitDataPointService;
   let testData: ActivityTestDataUtil;
   let HabitDataPointModel: Model<HabitDataPointDocument>;
 
@@ -17,7 +17,7 @@ describe('HabitDataPointService', () => {
 
   beforeEach(async () => {
     testingModule = await createActivityTestingModule(TEST_KEY, [HabitDataPointService, HabitDataPointDao]).compile();
-    activityLogsService = testingModule.get<HabitDataPointService>(HabitDataPointService);
+    habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
     HabitDataPointModel = testingModule.get<Model<HabitDataPointDocument>>('HabitDataPointModel');
   });
@@ -32,7 +32,7 @@ describe('HabitDataPointService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       await testData.createHabit(user, profile);
 
-      const logs = await activityLogsService.findByIntervalLevel(
+      const logs = await habitDataPointService.findByIntervalLevel(
         profile,
         user,
         new DataPointIntervalFilter('2021-04-03'),
@@ -48,9 +48,9 @@ describe('HabitDataPointService', () => {
 
       const habit = await testData.createHabit(user, profile, {  title: 'test',  max: 2, score: 5 });
 
-      const log = await activityLogsService.updateOrCreateDataPoint(
-        user,
+      const log = await habitDataPointService.updateOrCreateDataPoint(
         profile,
+        user,
         habit,
         '2021-01-01',
         2,
@@ -58,7 +58,6 @@ describe('HabitDataPointService', () => {
 
       expect(log.tid).toEqual(toTimingId('2021-01-01'));
       expect(log.value).toEqual(2);
-      expect(log.score).toEqual(10);
 
       const logs = await HabitDataPointModel.find({ timingModel: habit._id }).exec();
       expect(logs.length).toEqual(1);

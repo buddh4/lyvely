@@ -4,7 +4,6 @@ import { ActivitiesService } from '../services/activities.service';
 import { Model } from 'mongoose';
 import { HabitDataPointDocument, } from '../schemas';
 import { HabitDataPointService } from '../services/habit-data-point.service';
-import { ContentDocument } from '../../content';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { DataPointIntervalFilter, sortActivities } from 'lyvely-common';
@@ -12,6 +11,7 @@ import { Profile } from '../../profiles';
 import { assureStringId } from '../../db/db.utils';
 import { User } from '../../users';
 import { HabitDataPointDao } from "../daos/habit-data-point.dao";
+import { ContentDocument, ContentScoreService, ContentScoreDao } from "../../content";
 
 describe('ActivityService', () => {
   let testingModule: TestingModule;
@@ -23,7 +23,14 @@ describe('ActivityService', () => {
   const TEST_KEY = 'activities_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY,[ActivitiesDao, ActivitiesService, HabitDataPointService, HabitDataPointDao]).compile();
+    testingModule = await createActivityTestingModule(TEST_KEY,[
+        ActivitiesDao,
+      ActivitiesService,
+      HabitDataPointService,
+      HabitDataPointDao,
+      ContentScoreService,
+      ContentScoreDao
+    ]).compile();
     ContentModel = testingModule.get<Model<ContentDocument>>('ContentModel');
     HabitDataPointModel = testingModule.get<Model<HabitDataPointDocument>>('HabitDataPointModel');
     activitiesService = testingModule.get<ActivitiesService>(ActivitiesService);

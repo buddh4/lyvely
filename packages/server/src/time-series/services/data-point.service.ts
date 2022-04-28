@@ -29,7 +29,7 @@ export abstract class DataPointService<
     return await this.updateDataPointValue(profile, user, log, model, value);
   }
 
-  private async findOrCreateLogByDay(profile: Profile, user: User, content: TimeSeriesModel, date: CalendarDate): Promise<DataPointModel> {
+  async findOrCreateLogByDay(profile: Profile, user: User, content: TimeSeriesModel, date: CalendarDate): Promise<DataPointModel> {
     const log = content.userStrategy === UserAssignmentStrategy.PerUser
         ? await this.dataPointDao.findUserDataPointByDate(content, user, date)
         : await this.dataPointDao.findDataPointByDate(content, date);

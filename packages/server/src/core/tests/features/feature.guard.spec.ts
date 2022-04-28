@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createTestExecutionContext } from '../../../test/utils/test-execution-context.util';
 import { FeatureGuard } from '../../features/feature.guard';
-import { createTestingModule } from '../../../test/utils/test.utils';
+import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { ExecutionContext } from '@nestjs/common';
 import { Feature } from '../../features/feature.decorator';
 import { FeatureRegistry } from '../../features/feature.registry';
@@ -30,7 +30,7 @@ describe('ProfileGuard', () => {
   const TEST_KEY = 'feature-guard';
 
   beforeEach(async () => {
-    testingModule = await createTestingModule(TEST_KEY).compile();
+    testingModule = await createContentTestingModule(TEST_KEY).compile();
     featureGuard = testingModule.get<FeatureGuard>(FeatureGuard);
     featureRegistry = testingModule.get<FeatureRegistry>(FeatureRegistry);
 

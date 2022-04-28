@@ -11,7 +11,7 @@ export class Timing implements ITiming {
   _id: string;
 
   @Prop({ required: true })
-  timingId: string;
+  tid: string;
 
   @Prop()
   dayOfMonth: number;
@@ -39,7 +39,7 @@ export class Timing implements ITiming {
 
   constructor(id: string, plan: number) {
     this._id = id;
-    this.timingId = id;
+    this.tid = id;
     this.interval = plan;
   }
 }

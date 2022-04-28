@@ -6,7 +6,7 @@ import { Profile } from '../../profiles';
 import { User } from '../../users';
 import { HabitDataPointDao } from "../daos/habit-data-point.dao";
 import { ActivityScoreAction } from "../schemas/activity-score-action.schema";
-import { ActivityScoreActionService } from "./activity-score-action.service";
+import { ContentScoreService } from "../../content";
 
 @Injectable()
 export class HabitDataPointService extends DataPointService<Habit, HabitDataPoint, number> {
@@ -15,7 +15,7 @@ export class HabitDataPointService extends DataPointService<Habit, HabitDataPoin
   protected dataPointDao: HabitDataPointDao;
 
   @Inject()
-  protected scoreService: ActivityScoreActionService;
+  protected scoreService: ContentScoreService;
 
   getDataPointConstructor(): TimeSeriesDataPointConstructor<Habit> {
     return HabitDataPoint;
@@ -31,10 +31,10 @@ export class HabitDataPointService extends DataPointService<Habit, HabitDataPoin
     const oldScore = HabitDataPointService.calculateLogScore(activity, oldValue);
     const newScore = HabitDataPointService.calculateLogScore(activity, newValue);
 
-    await this.scoreService.saveProfileScoreAction(profile, new ActivityScoreAction({
+    await this.scoreService.saveScore(profile, new ActivityScoreAction({
       profile,
-      activity,
       user,
+      content: activity,
       userStrategy: activity.userStrategy,
       score: newScore - oldScore,
       date: dataPoint.date

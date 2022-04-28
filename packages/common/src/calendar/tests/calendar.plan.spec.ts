@@ -24,7 +24,7 @@ describe('CalendarPlan', () => {
         it('createTimingInstance', async () => {
             const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Unscheduled);
             const timing = plan.createTimingInstance(new Date());
-            expect(timing.timingId).toEqual('U');
+            expect(timing.tid).toEqual('U');
             expect(timing.interval).toEqual(CalendarIntervalEnum.Unscheduled);
             expect(timing.year).toBeUndefined();
             expect(timing.quarter).toBeUndefined();
@@ -58,7 +58,7 @@ describe('CalendarPlan', () => {
         it('createTimingInstance', async () => {
             const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Yearly);
             const timing = plan.createTimingInstance('2021-01-01');
-            expect(timing.timingId).toEqual('Y:2021');
+            expect(timing.tid).toEqual('Y:2021');
             expect(timing.interval).toEqual(CalendarIntervalEnum.Yearly);
             expect(timing.year).toEqual(2021);
             expect(timing.quarter).toBeUndefined();
@@ -111,7 +111,7 @@ describe('CalendarPlan', () => {
         it('createTimingInstance', async () => {
             const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Quarterly);
             const timing = plan.createTimingInstance('2021-01-01');
-            expect(timing.timingId).toEqual('Y:2021;Q:1');
+            expect(timing.tid).toEqual('Y:2021;Q:1');
             expect(timing.interval).toEqual(CalendarIntervalEnum.Quarterly);
             expect(timing.year).toEqual(2021);
             expect(timing.quarter).toEqual(1);
@@ -164,7 +164,7 @@ describe('CalendarPlan', () => {
         it('createTimingInstance', async () => {
             const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Monthly);
             const timing = plan.createTimingInstance('2021-01-01');
-            expect(timing.timingId).toEqual('Y:2021;Q:1;M:1');
+            expect(timing.tid).toEqual('Y:2021;Q:1;M:1');
             expect(timing.interval).toEqual(CalendarIntervalEnum.Monthly);
             expect(timing.year).toEqual(2021);
             expect(timing.quarter).toEqual(1);
@@ -217,7 +217,7 @@ describe('CalendarPlan', () => {
         it('createTimingInstance', async () => {
             const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Weekly);
             const timing = plan.createTimingInstance('2021-01-01');
-            expect(timing.timingId).toEqual('Y:2021;Q:1;M:1;W:53');
+            expect(timing.tid).toEqual('Y:2021;Q:1;M:1;W:53');
             expect(timing.interval).toEqual(CalendarIntervalEnum.Weekly);
             expect(timing.year).toEqual(2021);
             expect(timing.quarter).toEqual(1);
@@ -270,7 +270,7 @@ describe('CalendarPlan', () => {
         it('createTimingInstance', async () => {
             const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Daily);
             const timing = plan.createTimingInstance('2021-01-01');
-            expect(timing.timingId).toEqual('Y:2021;Q:1;M:1;W:53;D:1');
+            expect(timing.tid).toEqual('Y:2021;Q:1;M:1;W:53;D:1');
             expect(timing.interval).toEqual(CalendarIntervalEnum.Daily);
             expect(timing.year).toEqual(2021);
             expect(timing.quarter).toEqual(1);

@@ -2,7 +2,7 @@ import { ITiming } from '../interfaces';
 
 export class TimingModel implements ITiming {
     _id: string;
-    timingId: string;
+    tid: string;
     dayOfMonth: number;
     monthOfYear: number;
     year: number;
@@ -14,7 +14,7 @@ export class TimingModel implements ITiming {
 
     constructor(id: string, interval: number) {
         this._id = id;
-        this.timingId = id;
+        this.tid = id;
         this.interval = interval;
     }
 }

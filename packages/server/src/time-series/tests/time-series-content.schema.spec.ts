@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createTestingModule } from '../../test/utils/test.utils';
+import { createContentTestingModule } from '../../test/utils/test.utils';
 import { INestApplication } from '@nestjs/common';
 import { Content, ContentSchema } from '../../content';
 import {
@@ -33,7 +33,7 @@ describe('TimeableContentSchema', () => {
   const TEST_KEY = 'TimeableContentSchema';
 
   beforeEach(async () => {
-    testingModule = await createTestingModule(TEST_KEY, [], ContentModels).compile();
+    testingModule = await createContentTestingModule(TEST_KEY, [], ContentModels).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     TestTimeSeriesContentModel = testingModule.get<Model<TestTimeSeriesContentDocument>>('TestTimeSeriesContentModel');
     app = testingModule.createNestApplication();
@@ -101,7 +101,7 @@ describe('TimeableContentSchema', () => {
       const entity = new TestTimeSeriesContentModel(model);
       await entity.save();
 
-      const newModel = new TestTimeSeriesContent(entity);
+      const newModel = new TestTimeSeriesContent(user, profile, entity);
 
       expect(newModel.id).toBeDefined();
       const dataPointConfig = <CheckboxNumberDataPointConfig> newModel.dataPointConfig;
