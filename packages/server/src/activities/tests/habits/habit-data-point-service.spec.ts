@@ -34,7 +34,7 @@ describe('HabitDataPointService', () => {
     it('create new data point', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared  });
-      const dataPoint = await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 2);
+      const dataPoint = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       expect(dataPoint._id).toBeDefined();
       expect(dataPoint.meta.uid).not.toBeDefined();
       expect(dataPoint.tid).toEqual(toTimingId(new Date));
@@ -44,8 +44,8 @@ describe('HabitDataPointService', () => {
     it('update existing data point value', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared });
-      const dataPoint1 = await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 2);
-      const dataPoint2 = await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 3);
+      const dataPoint1 = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
+      const dataPoint2 = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 3);
       expect(dataPoint2._id).toEqual(dataPoint1._id);
       expect(dataPoint2.value).toEqual(3);
     });
@@ -55,11 +55,11 @@ describe('HabitDataPointService', () => {
       expect(profile.score).toEqual(0);
 
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared, score: 5 });
-      await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 2);
+      await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
 
       expect(profile.score).toEqual(10);
 
-      await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 0);
+      await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 0);
 
       expect(profile.score).toEqual(0);
     });
@@ -67,8 +67,8 @@ describe('HabitDataPointService', () => {
     it('activity score action is created', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared, score: 5 });
-      await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 2);
-      await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 0);
+      await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
+      await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 0);
 
       const scores = await activityScoreDao.findAll({});
       expect(scores.length).toEqual(2);
@@ -83,7 +83,7 @@ describe('HabitDataPointService', () => {
     it('create new data point', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.PerUser  });
-      const dataPoint = await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 2);
+      const dataPoint = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       expect(dataPoint._id).toBeDefined();
       expect(dataPoint.meta.uid).toEqual(user._id);
       expect(dataPoint.tid).toEqual(toTimingId(new Date));
@@ -93,8 +93,8 @@ describe('HabitDataPointService', () => {
     it('update existing data point value', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.PerUser });
-      const dataPoint1 = await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 2);
-      const dataPoint2 = await habitDataPointService.updateOrCreateDataPoint(profile, user, habit, new Date(), 3);
+      const dataPoint1 = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
+      const dataPoint2 = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 3);
       expect(dataPoint2._id).toEqual(dataPoint1._id);
       expect(dataPoint2.value).toEqual(3);
     });
@@ -103,8 +103,8 @@ describe('HabitDataPointService', () => {
       const { owner, user, group } = await testData.createSmallGroup();
 
       const habit = await testData.createHabit(owner, group, { max: 3, userStrategy: UserAssignmentStrategy.PerUser });
-      const dataPoint1 = await habitDataPointService.updateOrCreateDataPoint(group, owner, habit, new Date(), 2);
-      const dataPoint2 = await habitDataPointService.updateOrCreateDataPoint(group, user, habit, new Date(), 3);
+      const dataPoint1 = await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 2);
+      const dataPoint2 = await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 3);
       expect(dataPoint2._id).not.toEqual(dataPoint1._id);
       expect(dataPoint2.value).toEqual(3);
     });
@@ -115,12 +115,12 @@ describe('HabitDataPointService', () => {
       expect(group.score).toEqual(0);
 
       const habit = await testData.createHabit(owner, group, { max: 3, userStrategy: UserAssignmentStrategy.PerUser, score: 5 });
-      await habitDataPointService.updateOrCreateDataPoint(group, owner, habit, new Date(), 2);
-      await habitDataPointService.updateOrCreateDataPoint(group, user, habit, new Date(), 1);
+      await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 2);
+      await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 1);
       expect(group.score).toEqual(15);
 
-      await habitDataPointService.updateOrCreateDataPoint(group, owner, habit, new Date(), 1);
-      await habitDataPointService.updateOrCreateDataPoint(group, user, habit, new Date(), 0);
+      await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 1);
+      await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 0);
       expect(group.score).toEqual(5);
     });
 
@@ -130,12 +130,12 @@ describe('HabitDataPointService', () => {
       expect(group.score).toEqual(0);
 
       const habit = await testData.createHabit(owner, group, { max: 3, userStrategy: UserAssignmentStrategy.PerUser, score: 5 });
-      await habitDataPointService.updateOrCreateDataPoint(group, owner, habit, new Date(), 2);
-      await habitDataPointService.updateOrCreateDataPoint(group, user, habit, new Date(), 1);
+      await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 2);
+      await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 1);
       expect(group.score).toEqual(15);
 
-      await habitDataPointService.updateOrCreateDataPoint(group, owner, habit, new Date(), 1);
-      await habitDataPointService.updateOrCreateDataPoint(group, user, habit, new Date(), 0);
+      await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 1);
+      await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 0);
       expect(group.score).toEqual(5);
     });
 
@@ -145,8 +145,8 @@ describe('HabitDataPointService', () => {
       expect(group.score).toEqual(0);
 
       const habit = await testData.createHabit(owner, group, { max: 3, userStrategy: UserAssignmentStrategy.PerUser, score: 5 });
-      await habitDataPointService.updateOrCreateDataPoint(group, owner, habit, new Date(), 2);
-      await habitDataPointService.updateOrCreateDataPoint(group, user, habit, new Date(), 1);
+      await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 2);
+      await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 1);
 
       const scores = await activityScoreDao.findAll({});
       expect(scores.length).toEqual(2);

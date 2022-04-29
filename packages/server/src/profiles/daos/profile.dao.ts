@@ -28,7 +28,7 @@ export class ProfileDao extends AbstractDao<Profile> {
     if(typeof newScore !== 'number') {
       return;
     }
-    return this.updateOneSet(identity, { score: Math.max(newScore, 0) });
+    return this.updateOneByIdSet(identity, { score: Math.max(newScore, 0) });
   }
 
   getModuleId(): string {

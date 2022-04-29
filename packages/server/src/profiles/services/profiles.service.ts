@@ -129,14 +129,14 @@ export class ProfilesService {
       profile.categories.push(Category.create({ name: name })),
     );
 
-    await this.profileDao.updateOneSet(profile, {categories: profile.categories});
+    await this.profileDao.updateOneByIdSet(profile, {categories: profile.categories});
 
     return profile;
   }
 
   async updateScore(profile: Profile, inc: number): Promise<number> {
     const newScore = Math.max(profile.score + inc, 0);
-    await this.profileDao.updateOneSet(profile, {score: newScore});
+    await this.profileDao.updateOneByIdSet(profile, {score: newScore});
     profile.score = newScore;
     return newScore;
   }

@@ -30,7 +30,7 @@ import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { assureObjectId, EntityIdentity } from '../../../db/db.utils';
 import { DataPointMeta } from "../../../time-series";
-import { ActivityScoreAction, ActivityScoreActionSchema } from "../../schemas/activity-score-action.schema";
+import { ActivityScore, ActivityScoreSchema } from "../../schemas/activity-score.schema";
 import { createBaseEntityInstance } from "../../../db/base.entity";
 
 @Injectable()
@@ -128,7 +128,7 @@ export function createActivityTestingModule(key: string, providers: Provider[] =
       collection: ProfileScore.collectionName(),
       schema: ContentScoreSchema,
       discriminators: [
-        { name: ActivityScoreAction.name, schema: ActivityScoreActionSchema }
+        { name: ActivityScore.name, schema: ActivityScoreSchema }
       ],
     },
    );

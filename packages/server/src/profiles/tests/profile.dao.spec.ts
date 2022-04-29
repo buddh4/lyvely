@@ -105,7 +105,7 @@ describe('ProfileDao', () => {
       const user = await testData.createUser();
       const profile = await profileDao.upsert({ createdBy: user._id });
       profile.name = 'overwritten';
-      await profileDao.updateOneSet(profile, { name: 'overwritten' });
+      await profileDao.updateOneByIdSet(profile, { name: 'overwritten' });
       const updated = await profileDao.reload(profile);
       expect(updated.name).toEqual('overwritten');
     });
@@ -115,7 +115,7 @@ describe('ProfileDao', () => {
     it('update the score of a profile', async () => {
       const user = await testData.createUser();
       let profile = await profileDao.upsert({ createdBy: user._id });
-      await profileDao.updateOneSet(profile, { score: 10 });
+      await profileDao.updateOneByIdSet(profile, { score: 10 });
       profile = await profileDao.reload(profile);
       expect(profile.score).toEqual(10);
     });

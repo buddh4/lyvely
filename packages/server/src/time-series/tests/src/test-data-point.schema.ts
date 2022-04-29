@@ -1,12 +1,24 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { NumberDataPoint } from "../../schemas/number-data-point.schema";
-
+import { NumberDataPoint, TimedNumberDataPoint } from "../../schemas/number-data-point.schema";
+import { DataPoint } from "../../schemas";
 
 @Schema()
-export class TestNumberTimingDataPoint extends NumberDataPoint {}
+export class TestDataPoint extends DataPoint {}
 
-export const TestNumberTimingDataPointPointSchema = SchemaFactory.createForClass(TestNumberTimingDataPoint);
-export type TestNumberTimingDataPointDocument = TestNumberTimingDataPoint & mongoose.Document;
+export const TestDataPointPointSchema = SchemaFactory.createForClass(TestDataPoint);
+export type TestDataPointDocument = TestDataPoint & mongoose.Document;
+
+@Schema()
+export class TestNumberDataPoint extends NumberDataPoint {}
+
+export const TestNumberDataPointPointSchema = SchemaFactory.createForClass(TestNumberDataPoint);
+export type TestNumberDataPointDocument = TestNumberDataPoint & mongoose.Document;
+
+@Schema()
+export class TestTimedNumberDataPoint extends TimedNumberDataPoint {}
+
+export const TestTimedNumberDataPointPointSchema = SchemaFactory.createForClass(TestTimedNumberDataPoint);
+export type TestTimedNumberDataPointDocument = TestTimedNumberDataPoint & mongoose.Document;
 
 

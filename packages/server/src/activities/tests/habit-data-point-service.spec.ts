@@ -4,7 +4,7 @@ import { HabitDataPointService } from '../services/habit-data-point.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { Model } from 'mongoose';
 import { HabitDataPointDocument } from '../schemas';
-import { DataPointIntervalFilter, toTimingId } from "lyvely-common/src";
+import { DataPointIntervalFilter, toTimingId } from "lyvely-common";
 import { HabitDataPointDao } from "../daos/habit-data-point.dao";
 
 describe('HabitDataPointService', () => {
@@ -48,7 +48,7 @@ describe('HabitDataPointService', () => {
 
       const habit = await testData.createHabit(user, profile, {  title: 'test',  max: 2, score: 5 });
 
-      const log = await habitDataPointService.updateOrCreateDataPoint(
+      const log = await habitDataPointService.upsertDataPoint(
         profile,
         user,
         habit,

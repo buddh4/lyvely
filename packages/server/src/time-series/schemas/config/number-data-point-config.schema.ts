@@ -1,4 +1,4 @@
-import { Prop } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import {
   DataPointInputType,
   DataPointValueType,
@@ -7,7 +7,7 @@ import {
 } from 'lyvely-common';
 import { AbstractDataPointConfigSchema } from './abstract-data-point-config.schema';
 
-export abstract class AbstractNumberDataPointConfigSchema extends AbstractDataPointConfigSchema<NumberDataPointSettings> {
+export class NumberDataPointConfig extends AbstractDataPointConfigSchema<NumberDataPointSettings> {
 
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;
@@ -39,3 +39,5 @@ export abstract class AbstractNumberDataPointConfigSchema extends AbstractDataPo
     return { min, max, optimal };
   }
 }
+
+export const NumberDataPointConfigSchema = SchemaFactory.createForClass(NumberDataPointConfig);

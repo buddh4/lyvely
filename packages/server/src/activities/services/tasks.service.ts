@@ -21,7 +21,7 @@ export class TasksService extends AbstractContentService<Task> {
 
     task.done = timing._id;
     await this.tasksDao.setDone(task, timing._id);
-    await this.activityLogsService.updateOrCreateDataPoint(user, profile, task, date, 1);
+    await this.activityLogsService.upsertDataPoint(user, profile, task, date, 1);
 
     return task;
   }

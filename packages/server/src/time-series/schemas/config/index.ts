@@ -1,4 +1,4 @@
-export * from './abstract-number-data-point-config.schema'
+export * from './number-data-point-config.schema'
 export * from './textarea-text-data-point-config.schema'
 export * from './time-series-data-point-config.schema'
 export * from './checkbox-number-data-point-config.schema'

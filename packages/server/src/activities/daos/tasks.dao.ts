@@ -14,11 +14,11 @@ export class TasksDao extends AbstractContentDao<Task> {
   }
 
   async setDone(id: EntityIdentity<Task>, timingId: string) {
-    return this.updateOneSet(id, { done: timingId });
+    return this.updateOneByIdSet(id, { done: timingId });
   }
 
   async setUndone(id: EntityIdentity<Task>) {
-    return this.updateOneSet(id, { done: null });
+    return this.updateOneByIdSet(id, { done: null });
   }
 
   getModelConstructor() {

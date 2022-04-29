@@ -6,7 +6,7 @@ import { assureObjectId, EntityIdentity } from '../../db/db.utils';
 import { Content } from '../schemas';
 import { EntityNotFoundException } from '../../core/exceptions';
 import { Inject } from '@nestjs/common';
-import { UpdateQuery } from '../../db/abstract.dao';
+import { UpdateQuerySet } from '../../db/abstract.dao';
 
 export abstract class AbstractContentService<T extends Content> {
 
@@ -24,9 +24,9 @@ export abstract class AbstractContentService<T extends Content> {
     return this.contentDao.save(model);
   }
 
-  async updateContent(profile: Profile, id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<any> {
+  async updateContent(profile: Profile, id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<any> {
     await this.profileService.mergeCategories(profile, update.categories);
-    return this.contentDao.updateOneSet(id, update)
+    return this.contentDao.updateOneByIdSet(id, update)
   }
 
 

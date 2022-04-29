@@ -70,7 +70,7 @@ export class HabitsController extends AbstractContentController<Habit> {
   async updateLog(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateActivityLogModel,) {
     const { profile, user, content } = req;
     const habit = new Habit(content);
-    const log = await this.activitiesLogsService.updateOrCreateDataPoint(user, profile, habit, dto.date, dto.value);
+    const log = await this.activitiesLogsService.upsertDataPoint(user, profile, habit, dto.date, dto.value);
 
     return new UpdateHabitResultDto({
       score: profile.score,

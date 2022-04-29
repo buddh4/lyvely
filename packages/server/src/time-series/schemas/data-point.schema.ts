@@ -11,7 +11,7 @@ import {
 import { TimeSeriesContent } from "./time-series-content.schema";
 import { User } from "../../users";
 import { Profile } from "../../profiles";
-import { UserAssignmentStrategy } from "lyvely-common/src";
+import { UserAssignmentStrategy } from "lyvely-common";
 
 export interface TimeSeriesDataPointConstructor<Model extends TimeSeriesContent> {
   new (obj?: DeepPartial<IDataPoint>): IDataPoint;
@@ -48,7 +48,7 @@ export class DataPointMeta {
 
   static create(user: User, profile: Profile, content: TimeSeriesContent) {
     return new DataPointMeta({
-      uid: content.userStrategy === UserAssignmentStrategy.PerUser ? user._id : undefined,
+      uid: content.userStrategy === UserAssignmentStrategy.PerUser ? user._id : null,
       pid: profile._id,
       cid: content._id,
       interval: content.interval

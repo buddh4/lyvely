@@ -13,7 +13,7 @@ import { Model } from 'mongoose';
 import { expect } from "@jest/globals";
 import { ContentScoreService } from "../services";
 import { ContentScoreDao } from "../daos";
-import { toTimingId } from "lyvely-common/src";
+import { toTimingId } from "lyvely-common";
 import { TestContent } from "./src/test-content.schema";
 
 describe('ContentScoreService', () => {

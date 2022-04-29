@@ -8,7 +8,7 @@ import { EntityIdentity } from '../../db/db.utils';
 import { AbstractContentService } from '../../content';
 import { HabitDataPointService } from './habit-data-point.service';
 import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum } from "lyvely-common";
-import { UpdateQuery } from "../../db/abstract.dao";
+import { UpdateQuerySet } from "../../db/abstract.dao";
 
 interface ActivitySearchResult {
   activities: Activity[],
@@ -81,7 +81,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
 
     //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex
 
-    const updates:  { id: EntityIdentity<Activity>, update: UpdateQuery<Activity> }[] = [];
+    const updates:  { id: EntityIdentity<Activity>, update: UpdateQuerySet<Activity> }[] = [];
     const activities = await this.contentDao.findByProfileAndInterval(profile, activity.type, activity.interval, {
       excludeIds: activity._id,
       sort: { sortOrder: 1 }

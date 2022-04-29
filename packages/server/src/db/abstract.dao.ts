@@ -1,5 +1,5 @@
 import { assureObjectId, EntityData, EntityIdentity } from './db.utils';
-import { FilterQuery, HydratedDocument, Model, QueryWithHelpers } from 'mongoose';
+import { FilterQuery, HydratedDocument, Model, QueryWithHelpers, UpdateQuery } from 'mongoose';
 import { assignEntityData, BaseEntity, createBaseEntityInstance } from './base.entity';
 import { Inject } from '@nestjs/common';
 import { ModelCreateEvent } from './dao.events';
@@ -13,10 +13,10 @@ interface Pagination {
 }
 type ContainsDot = `${string}.${string}`;
 
-export type UpdateQuery<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> | UpdateSubQuery<T>;
-type UpdateSubQuery<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & { [key:ContainsDot]: any };
+export type UpdateQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> | UpdateSubQuerySet<T>;
+type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & { [key:ContainsDot]: any };
 
-type QuerySort<T extends BaseEntity<T>> = { [P in keyof UpdateQuery<T>]: 1 | -1 | 'asc' | 'desc' };
+type QuerySort<T extends BaseEntity<T>> = { [P in keyof UpdateQuerySet<T>]: 1 | -1 | 'asc' | 'desc' };
 
 type EntityQuery<T extends BaseEntity<T>> = QueryWithHelpers<
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -154,15 +154,31 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return query;
   }
 
-  async updateOneSet(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<number> {
-    if(!await this.beforeUpdate(id, update)) return 0;
-    const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, { $set: update }).exec()).modifiedCount;
+  async updateOneByIdSet(id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<number> {
+    return this.updateOneById(id, { $set: <any> update });
+  }
+
+  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>) {
+    if(!await this.beforeUpdate(id, update['$set'])) return 0;
+    const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, update).exec()).modifiedCount;
 
     // TODO: DeepCopy
-    if(modifiedCount && typeof id === 'object') {
-      Object.keys(update).forEach(key => {
+    if(modifiedCount && typeof id === 'object' && '$set' in update) {
+      Object.keys(update['$set']).forEach(key => {
         if(id.hasOwnProperty(key)) {
-          id[key] = update[key];
+          id[key] = update['$set'][key];
+        }
+      });
+    }
+
+    // TODO: DeepCopy
+    if(modifiedCount && typeof id === 'object' && '$push' in update) {
+      Object.keys(update['$push']).forEach(key => {
+        if(id.hasOwnProperty(key) && Array.isArray(id[key])) {
+          id[key] = id[key] ?? [];
+          if(Array.isArray(id[key])) {
+            id[key].push(update['$push'][key]);
+          }
         }
       });
     }
@@ -170,11 +186,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return modifiedCount;
   }
 
-  protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<PartialEntityData<T>|boolean> {
+  protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<PartialEntityData<T>|boolean> {
     return Promise.resolve(update);
   }
 
-  async updateBulkSet(updates: { id: EntityIdentity<T>, update: UpdateQuery<T> }[]): Promise<number> {
+  async updateBulkSet(updates: { id: EntityIdentity<T>, update: UpdateQuerySet<T> }[]): Promise<number> {
     return (await this.model.bulkWrite(
       updates.map(update => ({
           updateOne: {

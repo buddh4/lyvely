@@ -10,7 +10,7 @@ import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit } from '../schemas';
 import { ActivityTestDataUtil,  createActivityTestingModule } from './utils/activities.test.utils';
 import { instanceToPlain } from 'class-transformer';
-import { AbstractNumberDataPointConfigSchema } from '../../time-series';
+import { NumberDataPointConfig } from '../../time-series';
 
 
 describe('Activities DAO', () => {
@@ -90,7 +90,7 @@ describe('Activities DAO', () => {
       });
 
       const dto = instanceToPlain(new HabitDto(search)) as HabitDto;
-      const dataPointConfig = dto.dataPointConfig as AbstractNumberDataPointConfigSchema;
+      const dataPointConfig = dto.dataPointConfig as NumberDataPointConfig;
       expect(dataPointConfig).toBeDefined();
       expect(dataPointConfig.min).toEqual(2);
       expect(dataPointConfig.max).toEqual(3);

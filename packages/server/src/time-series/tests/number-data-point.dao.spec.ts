@@ -3,8 +3,8 @@ import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule, getObjectId } from '../../test/utils/test.utils';
 import {
-  TestNumberTimingDataPoint,
-  TestNumberTimingDataPointPointSchema
+  TestNumberDataPoint,
+  TestNumberDataPointPointSchema
 } from './src/test-data-point.schema';
 import {
   CalendarDateTime,
@@ -14,18 +14,18 @@ import {
   getFullDayDate,
   toTimingId,
   DataPointIntervalFilter } from 'lyvely-common';
-import { TestNumberDataPointDao } from './src/test-data-point.dao';
+import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
 
 const DataPointModelDefinition = [
-  { name: TestNumberTimingDataPoint.name, schema: TestNumberTimingDataPointPointSchema }
+  { name: TestNumberDataPoint.name, schema: TestNumberDataPointPointSchema }
 ];
 
-describe('NumberTimingDataPointDao', () => {
+describe('NumberDataPointDao', () => {
   let testingModule: TestingModule;
   let testData: TestDataUtils;
   let dao: TestNumberDataPointDao;
 
-  const TEST_KEY = 'TimeableContentSchema';
+  const TEST_KEY = 'NumberDataPointDao';
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(TEST_KEY, [TestNumberDataPointDao], DataPointModelDefinition).compile();
@@ -67,7 +67,7 @@ describe('NumberTimingDataPointDao', () => {
     const cid = getObjectId(options.cid || 'c1');
     const uid = getObjectId(options.uid || 'u1');
 
-    const dataPoint = await dao.save(new TestNumberTimingDataPoint({
+    const dataPoint = await dao.save(new TestNumberDataPoint({
       meta: { pid: pid, cid: cid, interval: interval },
       date: date.toDate(),
       value: 2
@@ -82,18 +82,14 @@ describe('NumberTimingDataPointDao', () => {
       const date = new Date();
       const { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
       expect(dataPoint.id).toBeDefined();
-      expect(dataPoint.tid).toBeDefined();
       expect(dataPoint.value).toEqual(2);
       expect(dataPoint.tid).toEqual(toTimingId(date));
-      expect(dataPoint.times?.length).toEqual(1);
-      expect(dataPoint.times[0].ts ).toEqual(dateTime(date).unixTs());
       expect(dataPoint.date.toISOString()).toEqual(getFullDayDate(date).toISOString());
     });
 
     it('timestamp of past events is set to 23:59:59 on the same day', async () => {
       const date = new Date('2022-02-20');
       const { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
-      expect(dataPoint.times[0].ts ).toEqual(dateTime(date).time(23, 59, 59).unixTs());
     })
 
     it('create data point with timezone', async () => {
@@ -101,7 +97,6 @@ describe('NumberTimingDataPointDao', () => {
       const date = new Date(`${formatDate(today)}T23:00:00.000+08:00`);
       const { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
       expect(dataPoint.date.toISOString()).toEqual(`${formatDate(today)}T00:00:00.000Z`);
-      expect(dataPoint.times[0].ts).toEqual(dateTime(`${formatDate(today)}T23:00:00.000+08:00`).unixTs());
     })
   });
 
@@ -109,7 +104,7 @@ describe('NumberTimingDataPointDao', () => {
     it('update value', async () => {
       const date = new Date('2022-02-20');
       let { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
-      await dao.updateOneSet(dataPoint._id, { value: 3 })
+      await dao.updateOneByIdSet(dataPoint._id, { value: 3 })
       dataPoint = await dao.reload(dataPoint);
       expect(dataPoint.value).toEqual(3);
     });
@@ -117,7 +112,7 @@ describe('NumberTimingDataPointDao', () => {
     it('update interval', async () => {
       const date = new Date('2022-02-20');
       let { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
-      await dao.updateOneSet(dataPoint._id, { 'meta.interval' : CalendarIntervalEnum.Monthly })
+      await dao.updateOneByIdSet(dataPoint._id, { 'meta.interval' : CalendarIntervalEnum.Monthly })
       dataPoint = await dao.reload(dataPoint);
       expect(dataPoint.meta.interval).toEqual(CalendarIntervalEnum.Monthly );
     });
@@ -126,7 +121,7 @@ describe('NumberTimingDataPointDao', () => {
     it('assure date is not updatable', async () => {
       const date = new Date('2022-02-20');
       let { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
-      await dao.updateOneSet(dataPoint._id, { value: 3, date: new Date() })
+      await dao.updateOneByIdSet(dataPoint._id, { value: 3, date: new Date() })
       dataPoint = await dao.reload(dataPoint);
       expect(dataPoint.date.toISOString()).toEqual(getFullDayDate(date).toISOString());
     });
@@ -134,7 +129,7 @@ describe('NumberTimingDataPointDao', () => {
     it('assure tid is not updatable', async () => {
       const date = new Date('2022-02-20');
       let { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
-      await dao.updateOneSet(dataPoint._id, { value: 3, tid: toTimingId(Date()) });
+      await dao.updateOneByIdSet(dataPoint._id, { value: 3, tid: toTimingId(Date()) });
       dataPoint = await dao.reload(dataPoint);
       expect(dataPoint.tid).toEqual(toTimingId(date));
     })
@@ -142,7 +137,7 @@ describe('NumberTimingDataPointDao', () => {
     it('assure meta pid,uid,cid is not updatable', async () => {
       const date = new Date('2022-02-20');
       const { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
-      await dao.updateOneSet(dataPoint._id, {
+      await dao.updateOneByIdSet(dataPoint._id, {
         value: 3,
         'meta.pid': getObjectId('p2'),
         'meta.cid': getObjectId('c2'),
