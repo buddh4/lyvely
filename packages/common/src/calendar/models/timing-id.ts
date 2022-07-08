@@ -1,5 +1,5 @@
 import { CalendarDate, CalendarDateTime, dateTime } from "../interfaces";
-import { CalendarIntervalEnum } from "../models";
+import { CalendarIntervalEnum } from "./calendar-interval.enum";
 
 export function toTimingId(cd: CalendarDateTime, level: CalendarIntervalEnum = CalendarIntervalEnum.Daily) {
     const dt = dateTime(cd);

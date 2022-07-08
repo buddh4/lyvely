@@ -76,6 +76,7 @@ export abstract class AbstractCreateActivityDto {
         this.min = Math.min(this.min ?? 0, this.max);
         this.optimal = Math.min(this.optimal ?? this.max, this.max);
         this.score = this.score ?? 0;
-        this.strategy = this.strategy || DataPointNumberInputStrategy.CheckboxNumber;
+        this.strategy = this.strategy ?? DataPointNumberInputStrategy.CheckboxNumber;
+        this.userStrategy = this.userStrategy ??  UserAssignmentStrategy.Shared;
     }
 }

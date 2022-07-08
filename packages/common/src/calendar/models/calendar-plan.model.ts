@@ -14,12 +14,12 @@ import {
   subtractMonth,
   subtractQuarter,
   subtractWeek,
-  subtractYear,
-  toTimingId
+  subtractYear
 } from '../utils';
 import { CalendarDate, dateTime, getFullDayDate,  ITiming } from '../interfaces';
 import { TimingModel } from './timing.model';
 import { CalendarIntervalEnum } from './calendar-interval.enum';
+import { toTimingId } from "./timing-id";
 
 export abstract class CalendarPlan {
   protected abstract id: CalendarIntervalEnum;

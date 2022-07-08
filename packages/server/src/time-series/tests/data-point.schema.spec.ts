@@ -6,40 +6,40 @@ import { Model } from 'mongoose';
 import {
   TestNumberDataPoint,
   TestNumberDataPointDocument,
-  TestNumberDataPointPointSchema
+  TestNumberDataPointSchema
 } from './src/test-data-point.schema';
 import { getObjectId } from 'mongo-seeding';
 import { CalendarIntervalEnum } from 'lyvely-common';
 
 const DataPointModelDefinition = [
-  { name: TestNumberDataPoint.name, schema: TestNumberDataPointPointSchema }
+  { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }
 ];
 
 describe('NumberTimingDataPointSchema', () => {
   let testingModule: TestingModule;
   let testData: TestDataUtils;
-  let TestNumberTimingDataPointModel: Model<TestNumberDataPointDocument>;
+  let TestNumberDataPointModel: Model<TestNumberDataPointDocument>;
 
-  const TEST_KEY = 'TimeableContentSchema';
+  const TEST_KEY = 'NumberTimingDataPointSchema';
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(TEST_KEY, [], DataPointModelDefinition).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    TestNumberTimingDataPointModel = testingModule.get<Model<TestNumberDataPointDocument>>('TestNumberTimingDataPointModel');
+    TestNumberDataPointModel = testingModule.get<Model<TestNumberDataPointDocument>>('TestNumberDataPointModel');
   });
 
   afterEach(async () => {
-    TestNumberTimingDataPointModel.deleteMany({});
+    TestNumberDataPointModel.deleteMany({});
     await testData.reset(TEST_KEY);
   });
 
   it('should be defined', () => {
-    expect(TestNumberTimingDataPointModel).toBeDefined();
+    expect(TestNumberDataPointModel).toBeDefined();
   });
   // mongoose.set('debug', true);
   describe('save()', () => {
     it('save simple data point', async () => {
-      const entity = new TestNumberTimingDataPointModel(new TestNumberDataPoint({
+      const entity = new TestNumberDataPointModel(new TestNumberDataPoint({
         meta: {
           pid: getObjectId('p1'),
           cid: getObjectId('p2'),
@@ -48,7 +48,6 @@ describe('NumberTimingDataPointSchema', () => {
         },
         date: new Date(),
         value: 2,
-        times: [{ ts: Date.now(), value: 2 }]
       }));
 
       await entity.save();

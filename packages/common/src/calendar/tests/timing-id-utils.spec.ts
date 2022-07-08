@@ -1,4 +1,4 @@
-import { getTimingIds, toTimingId } from "../utils";
+import { getTimingIds, toTimingId } from "../models";
 import { CalendarIntervalEnum } from "../index";
 
 describe('time series utils',() => {

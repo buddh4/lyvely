@@ -11,13 +11,11 @@ export type TestDataPointDocument = TestDataPoint & mongoose.Document;
 
 @Schema()
 export class TestNumberDataPoint extends NumberDataPoint {}
-
-export const TestNumberDataPointPointSchema = SchemaFactory.createForClass(TestNumberDataPoint);
+export const TestNumberDataPointSchema = SchemaFactory.createForClass(TestNumberDataPoint);
 export type TestNumberDataPointDocument = TestNumberDataPoint & mongoose.Document;
 
 @Schema()
 export class TestTimedNumberDataPoint extends TimedNumberDataPoint {}
-
 export const TestTimedNumberDataPointPointSchema = SchemaFactory.createForClass(TestTimedNumberDataPoint);
 export type TestTimedNumberDataPointDocument = TestTimedNumberDataPoint & mongoose.Document;
 

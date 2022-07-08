@@ -1,35 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from '../schemas';
-import { Profile } from '../../profiles/schemas/profiles.schema';
+import { Profile } from '../../profiles';
 import { Calendar, CalendarDate } from 'lyvely-common';
 import { HabitDataPointService } from './habit-data-point.service';
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 import { TasksDao } from '../daos/tasks.dao';
-import { AbstractContentService } from '../../content/services/abstract-content.service';
+import { AbstractContentService, ContentScoreService } from '../../content';
+import { toTimingId } from "lyvely-common/src";
+import { ActivityScore } from "../schemas/activity-score.schema";
 
 @Injectable()
 export class TasksService extends AbstractContentService<Task> {
   constructor(
     private tasksDao: TasksDao,
-    private activityLogsService: HabitDataPointService
+    private scoreService: ContentScoreService
   ) {
     super(tasksDao);
   }
 
   async setDone(user: User, profile: Profile, task: Task, date: CalendarDate): Promise<Task> {
-    const timing = Calendar.createTiming(task.interval, date, profile.getLocale());
-
-    task.done = timing._id;
-    await this.tasksDao.setDone(task, timing._id);
-    await this.activityLogsService.upsertDataPoint(user, profile, task, date, 1);
+    await this.tasksDao.setDone(task, toTimingId(date, task.interval));
+    await this.scoreService.saveScore(profile, new ActivityScore({
+      profile,
+      user,
+      content: task,
+      userStrategy: task.userStrategy,
+      score: task.score,
+      date: date
+    }));
 
     return task;
   }
 
   async setUnDone(user: User, profile: Profile, task: Task, date: CalendarDate): Promise<Task> {
-    task.done = undefined;
     await this.tasksDao.setUndone(task);
-    await this.activityLogsService.deleteLog(user, profile, task, date);
+    await this.scoreService.saveScore(profile, new ActivityScore({
+      profile,
+      user,
+      content: task,
+      userStrategy: task.userStrategy,
+      score: task.score,
+      date: date
+    }));
     return task;
   }
 }

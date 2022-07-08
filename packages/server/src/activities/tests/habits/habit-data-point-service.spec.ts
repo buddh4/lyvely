@@ -3,14 +3,17 @@ import { TestingModule } from '@nestjs/testing';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitDataPointService } from "../../services/habit-data-point.service";
 import { HabitDataPointDao } from "../../daos/habit-data-point.dao";
-import { UserAssignmentStrategy, toTimingId } from "lyvely-common";
+import { UserAssignmentStrategy, toTimingId, DataPointIntervalFilter } from "lyvely-common";
 import { ContentScoreDao, ContentScoreService } from "../../../content";
+import { HabitDataPointDocument } from "../../schemas";
+import { Model } from 'mongoose';
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
   let testingModule: TestingModule;
   let testData: ActivityTestDataUtil;
   let activityScoreDao: ContentScoreDao;
+  let HabitDataPointModel: Model<HabitDataPointDocument>;
 
   const TEST_KEY = 'habit_data_point_service';
 
@@ -24,10 +27,48 @@ describe('HabitDataPointService', () => {
     habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
     activityScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
+    HabitDataPointModel = testingModule.get<Model<HabitDataPointDocument>>('HabitDataPointModel');
   });
 
   afterEach(async () => {
     await testData.reset(TEST_KEY);
+  });
+
+  describe('findLogsByRange', () => {
+    it('no logs available', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      await testData.createHabit(user, profile);
+
+      const logs = await habitDataPointService.findByIntervalLevel(
+        profile,
+        user,
+        new DataPointIntervalFilter('2021-04-03'),
+      );
+
+      expect(logs.length).toEqual(0);
+    });
+  });
+
+  describe('updateLog', () => {
+    it('update non existing log', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+
+      const habit = await testData.createHabit(user, profile, {  title: 'test',  max: 2, score: 5 });
+
+      const log = await habitDataPointService.upsertDataPoint(
+        profile,
+        user,
+        habit,
+        '2021-01-01',
+        2,
+      );
+
+      expect(log.tid).toEqual(toTimingId('2021-01-01'));
+      expect(log.value).toEqual(2);
+
+      const logs = await HabitDataPointModel.find({ timingModel: habit._id }).exec();
+      expect(logs.length).toEqual(1);
+    });
   });
 
   describe('update shared habit', () => {
@@ -36,7 +77,7 @@ describe('HabitDataPointService', () => {
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared  });
       const dataPoint = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       expect(dataPoint._id).toBeDefined();
-      expect(dataPoint.meta.uid).not.toBeDefined();
+      expect(dataPoint.meta.uid).toBeNull();
       expect(dataPoint.tid).toEqual(toTimingId(new Date));
       expect(dataPoint.value).toEqual(2);
     });

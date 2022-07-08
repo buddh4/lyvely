@@ -37,7 +37,7 @@ export class DayJsDateTime implements IDateTime {
   }
 
   add(value: number, unit?: UnitType): IDateTime {
-    return new DayJsDateTime(this.instance.add(value, unit));
+    return new DayJsDateTime(this.instance.add(value, unit as dayjs.ManipulateType));
   }
 
   time(h = 0, m = 0, s = 0, ms = 0) {
@@ -49,7 +49,7 @@ export class DayJsDateTime implements IDateTime {
   }
 
   subtract(value: number, unit?: UnitType): IDateTime {
-    return new DayJsDateTime(this.instance.subtract(value, unit));
+    return new DayJsDateTime(this.instance.subtract(value, unit as dayjs.ManipulateType));
   }
 
   utc(preserveTime?: boolean): IDateTime {

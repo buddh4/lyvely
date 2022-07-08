@@ -42,6 +42,8 @@ export class ProfileScore<C extends IProfileScoreAction = IProfileScoreAction> e
     const strategy = options.userStrategy ?? UserAssignmentStrategy.PerUser;
     if(strategy === UserAssignmentStrategy.PerUser) {
       data.uid = user._id;
+    } else {
+      data.uid = null;
     }
 
     data.timing = data.timing || Calendar.createTiming(CalendarIntervalEnum.Daily, toDate(options.date ?? new Date()));

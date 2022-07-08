@@ -11,7 +11,7 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
 
   // TODO: Implement update interval of data points
 
-  abstract updateDataPointValue(uid: EntityIdentity<User>, dataPoint: T, newValue: any);
+  abstract updateDataPointValue(uid: EntityIdentity<User>, dataPoint: T, newValue: any): Promise<boolean>;
 
   async findDataPointByDate(cid: EntityIdentity<TimeSeriesContent>, date: CalendarDate) {
     return this.findOne({

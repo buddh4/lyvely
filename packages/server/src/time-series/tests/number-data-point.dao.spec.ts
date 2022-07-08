@@ -4,7 +4,7 @@ import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule, getObjectId } from '../../test/utils/test.utils';
 import {
   TestNumberDataPoint,
-  TestNumberDataPointPointSchema
+  TestNumberDataPointSchema
 } from './src/test-data-point.schema';
 import {
   CalendarDateTime,
@@ -17,7 +17,7 @@ import {
 import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
 
 const DataPointModelDefinition = [
-  { name: TestNumberDataPoint.name, schema: TestNumberDataPointPointSchema }
+  { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }
 ];
 
 describe('NumberDataPointDao', () => {

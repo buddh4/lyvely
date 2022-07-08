@@ -20,7 +20,7 @@
     "chartjs": "^0.3.24",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
-    "dayjs": "^1.10.7",
+    "dayjs": "^1.11.3",
     "lodash": "^4.17.21",
     "mini-svg-data-uri": "^1.4.3",
     "mitt": "^3.0.0",

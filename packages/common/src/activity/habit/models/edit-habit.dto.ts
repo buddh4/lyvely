@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IActivity, AbstractEditActivityDto } from '../../interfaces';
+import { AbstractEditActivityDto, IActivity } from '../../interfaces';
 
 @Exclude()
 export class EditHabitDto extends AbstractEditActivityDto {

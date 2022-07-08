@@ -16,17 +16,19 @@ export class ProfileScoreService<E extends ProfileScore> {
    * @param model
    */
   async saveScore<T extends E = E>(profile: Profile, model: T): Promise<T> {
-
     // Here we set the discriminator field manually since the profile score dao may not be aware of the used type
     model.type = model.constructor.name;
     const contentScore = await this.profileScoreDao.save(model);
-
-    if(contentScore.score !== 0) {
-      const newProfileScore = Math.max(profile.score + contentScore.score, 0);
-      await this.profileDao.updateScore(profile, newProfileScore);
-      profile.score = newProfileScore;
-    }
-
+    await this.updateProfileScore(profile, contentScore.score);
     return createBaseEntityInstance(model.constructor as any, contentScore);
+  }
+
+  // TODO: Implement deleteScore and overwriteScore
+
+  protected async updateProfileScore(profile: Profile, score: number) {
+    if(score !== 0) {
+      const newProfileScore = Math.max(profile.score + score, 0);
+      await this.profileDao.updateScore(profile, newProfileScore);
+    }
   }
 }

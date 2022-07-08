@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Habit } from '../schemas';
-import { AbstractContentService } from '../../content/services/abstract-content.service';
+import { AbstractContentService } from '../../content';
 import { HabitsDao } from '../daos/habits.dao';
 
 @Injectable()

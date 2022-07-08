@@ -4,7 +4,7 @@ import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
 import {
   TestNumberDataPoint,
-  TestNumberDataPointPointSchema
+  TestNumberDataPointSchema
 } from './src/test-data-point.schema';
 import {
   CalendarIntervalEnum,
@@ -27,7 +27,7 @@ import { Profile } from "../../profiles";
 import { UserAssignmentStrategy } from "lyvely-common";
 
 const Models = [
-  { name: TestNumberDataPoint.name, schema: TestNumberDataPointPointSchema },
+  { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema },
   {
     name: Content.name,
     collection: Content.collectionName(),
