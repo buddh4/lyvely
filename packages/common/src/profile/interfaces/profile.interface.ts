@@ -6,6 +6,15 @@ export enum ProfileType {
 }
 
 /**
+ * Determines if this profile supports group functionality as collaborative content
+ * (e.g. UserAssignmentStrategy.PerUser)
+ * @param profile
+ */
+export function isGroupProfile(profile: IProfile) {
+  return profile.type === ProfileType.Group;
+}
+
+/**
  * The level a profile itself is visible and accessible by different types of user relation.
  */
 export enum ProfileVisibilityLevel {

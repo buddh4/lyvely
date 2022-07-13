@@ -27,7 +27,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
   /**
    * Finds all activities (tasks and habits) and habit data points of a given user matching the given filter.
    *
-   * This function will return task activities only if they are undone or where done within the given range of the
+   * This function will return tasks only if they are undone or where done within the given range of the
    * range filter.
    *
    * Note: By default this function will include archived activities.
@@ -45,7 +45,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
       tIds.splice(0, filter.level);
     }
 
-    const activities = await this.contentDao.findByProfileAndTimingIds(profile, tIds);
+    const activities = await this.contentDao.findByProfileAndTimingIds(profile, user, tIds);
     const dataPoints = await this.activityDataPointService.findByIntervalLevel(profile, user, filter);
     return { activities, dataPoints };
   }

@@ -1,5 +1,5 @@
 import { assureObjectId, EntityData, EntityIdentity } from './db.utils';
-import { FilterQuery, HydratedDocument, Model, QueryWithHelpers, UpdateQuery } from 'mongoose';
+import { FilterQuery, HydratedDocument, Model, QueryWithHelpers, UpdateQuery, QueryOptions } from 'mongoose';
 import { assignEntityData, BaseEntity, createBaseEntityInstance } from './base.entity';
 import { Inject } from '@nestjs/common';
 import { ModelCreateEvent } from './dao.events';
@@ -154,13 +154,17 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return query;
   }
 
-  async updateOneByIdSet(id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<number> {
-    return this.updateOneById(id, { $set: <any> update });
+  async updateOneByIdSet(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>): Promise<number> {
+    return this.updateOneById(id, { $set: <any> updateSet });
   }
 
-  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>) {
-    if(!await this.beforeUpdate(id, update['$set'])) return 0;
-    const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, update).exec()).modifiedCount;
+  async updateOneByIdPull(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>): Promise<number> {
+    return this.updateOneById(id, { $pull: <any> updateSet });
+  }
+
+  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: QueryOptions) {
+    if(!await this.beforeUpdate(id, update)) return 0;
+    const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, update, options).exec()).modifiedCount;
 
     // TODO: DeepCopy
     if(modifiedCount && typeof id === 'object' && '$set' in update) {
@@ -186,8 +190,8 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return modifiedCount;
   }
 
-  protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<PartialEntityData<T>|boolean> {
-    return Promise.resolve(update);
+  protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: QueryOptions): Promise<PartialEntityData<T>|boolean> {
+    return Promise.resolve(true);
   }
 
   async updateBulkSet(updates: { id: EntityIdentity<T>, update: UpdateQuerySet<T> }[]): Promise<number> {

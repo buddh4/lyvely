@@ -19,7 +19,7 @@ export class TasksService extends AbstractContentService<Task> {
   }
 
   async setDone(user: User, profile: Profile, task: Task, date: CalendarDate): Promise<Task> {
-    await this.tasksDao.setDone(task, toTimingId(date, task.interval));
+    await this.tasksDao.setDone(task, user, toTimingId(date, task.interval));
     await this.scoreService.saveScore(profile, new ActivityScore({
       profile,
       user,
@@ -32,14 +32,14 @@ export class TasksService extends AbstractContentService<Task> {
     return task;
   }
 
-  async setUnDone(user: User, profile: Profile, task: Task, date: CalendarDate): Promise<Task> {
-    await this.tasksDao.setUndone(task);
+  async setUndone(user: User, profile: Profile, task: Task, date: CalendarDate): Promise<Task> {
+    await this.tasksDao.setUndone(task, user);
     await this.scoreService.saveScore(profile, new ActivityScore({
       profile,
       user,
       content: task,
       userStrategy: task.userStrategy,
-      score: task.score,
+      score: -task.score,
       date: date
     }));
     return task;

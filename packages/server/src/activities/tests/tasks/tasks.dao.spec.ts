@@ -36,11 +36,11 @@ describe('Tasks DAO', () => {
   describe('setDone', () => {
     it('complete a task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const task = await activityData.createTask(user, profile, 't1');
+      const task = await activityData.createTask(user, profile);
       const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
       await tasksDao.setDone(task, todayTimingId);
       const updated = await tasksDao.reload(task);
-      expect(updated.done).toEqual(todayTimingId);
+      expect(updated.doneBy).toEqual(todayTimingId);
     });
   });
 
@@ -48,11 +48,11 @@ describe('Tasks DAO', () => {
     it('reset a task to undone', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
-      const task = await activityData.createTask(user, profile, 't1', { done: todayTimingId });
-      expect(task.done).toEqual(todayTimingId);
+      const task = await activityData.createTask(user, profile, null, { done: todayTimingId });
+      expect(task.doneBy).toEqual(todayTimingId);
       await tasksDao.setUndone(task);
       const updated = await tasksDao.reload(task);
-      expect(updated.done).toBeNull();
+      expect(updated.doneBy).toBeNull();
     });
   });
 });

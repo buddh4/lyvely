@@ -7,11 +7,12 @@ import {
   getFullDayDate,
   getNumberEnumValues,
   toTimingId,
+  UserAssignmentStrategy,
+  REGEX_TID
 } from "lyvely-common";
 import { TimeSeriesContent } from "./time-series-content.schema";
 import { User } from "../../users";
 import { Profile } from "../../profiles";
-import { UserAssignmentStrategy } from "lyvely-common";
 
 export interface TimeSeriesDataPointConstructor<Model extends TimeSeriesContent> {
   new (obj?: DeepPartial<IDataPoint>): IDataPoint;
@@ -63,7 +64,7 @@ export abstract class DataPoint<T extends EntityType<IDataPoint> = EntityType<ID
   @Prop({ type: DataPointMetaSchema, required: true })
   meta: DataPointMeta;
 
-  @Prop( { type: String, required: true, match: /^Y:\d{4};Q:[0-4];M:(?:[1-9]|1[0-2]);W:(?:[1-9]|[1-4]\d|5[0-3]);D:(?:[1-9]|[1-2]\d|3[0-1])$/ })
+  @Prop( { type: String, required: true, match: REGEX_TID })
   tid: string;
 
   /**
