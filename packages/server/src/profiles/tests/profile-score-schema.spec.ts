@@ -57,7 +57,7 @@ describe('ProfileScore', () => {
     it('Construct with per shared user strategy', async () => {
       const { user, profile } = await testDataUtils.createUserAndProfile();
       const model = new TestProfileScore({ user, profile, score: 5, userStrategy: UserAssignmentStrategy.Shared });
-      expect(model.uid).toBeUndefined();
+      expect(model.uid).toBeNull();
       expect(model.createdBy).toEqual(user._id);
     })
 

@@ -22,10 +22,10 @@ export class UserDone {
   @Prop({ type: Date, required: true })
   date: Date;
 
-  constructor(uid: EntityIdentity<User>, tid: string, date: Date) {
+  constructor(uid: EntityIdentity<User>, tid: string, date?: Date) {
     this.uid = assureObjectId(uid);
     this.tid = tid;
-    this.date = date;
+    this.date = date || new Date();
   }
 }
 

@@ -1,4 +1,4 @@
-import { AbstractDao, PartialEntityData, UpdateQuerySet } from "../../db/abstract.dao";
+import { AbstractDao } from "../../db/abstract.dao";
 import { assureObjectId, EntityIdentity } from "../../db/db.utils";
 import { Profile } from "../../profiles";
 import { User } from "../../users";
@@ -68,16 +68,5 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
     }
 
     return { $or: intervalFilter };
-  }
-
-  protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<PartialEntityData<T> | boolean> {
-    // Prevent updates of the following fields...
-    // TODO: maybe solve through decorator or static getter
-    delete update.date;
-    delete update.tid;
-    delete update['meta.pid'];
-    delete update['meta.cid'];
-    delete update['meta.uid'];
-    return super.beforeUpdate(id, update);
   }
 }

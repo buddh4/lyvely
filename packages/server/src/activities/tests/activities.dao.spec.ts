@@ -52,7 +52,7 @@ describe('Activities DAO', () => {
       expect(content instanceof Habit).toEqual(true);
     });
 
-    it('find activity with strict activity type', async () => {
+    it('find activity with type filter', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const content = await activityData.createHabit(user, profile);
       const search = await activitiesDao.findByProfileAndId(profile, content._id, ActivityType.Habit);

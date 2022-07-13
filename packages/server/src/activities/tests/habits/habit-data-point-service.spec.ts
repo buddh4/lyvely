@@ -114,9 +114,9 @@ describe('HabitDataPointService', () => {
       const scores = await activityScoreDao.findAll({});
       expect(scores.length).toEqual(2);
       expect(scores[0].score).toEqual(10);
-      expect(scores[0].uid).not.toBeDefined();
+      expect(scores[0].uid).toBeNull();
       expect(scores[1].score).toEqual(-10);
-      expect(scores[1].uid).not.toBeDefined();
+      expect(scores[1].uid).toBeNull();
     });
   });
 

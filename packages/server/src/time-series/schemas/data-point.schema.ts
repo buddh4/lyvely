@@ -31,13 +31,13 @@ export interface IDataPoint {
 
 @Schema({ _id: false })
 export class DataPointMeta {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true })
   pid: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true  })
   cid: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
   uid?: mongoose.Types.ObjectId;
 
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
@@ -64,7 +64,7 @@ export abstract class DataPoint<T extends EntityType<IDataPoint> = EntityType<ID
   @Prop({ type: DataPointMetaSchema, required: true })
   meta: DataPointMeta;
 
-  @Prop( { type: String, required: true, match: REGEX_TID })
+  @Prop( { type: String, required: true, match: REGEX_TID, immutable: true })
   tid: string;
 
   /**
@@ -73,7 +73,7 @@ export abstract class DataPoint<T extends EntityType<IDataPoint> = EntityType<ID
    * If a date with timezone information is given in the constructor, we simply translate the given date to utc without
    * respecting timezone differences.
    */
-  @Prop( { type: Date, required: true })
+  @Prop( { type: Date, required: true, immutable: true })
   date: Date;
 
   afterInit() {

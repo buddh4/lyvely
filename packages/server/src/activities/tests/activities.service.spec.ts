@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { ActivitiesService } from '../services/activities.service';
 import { Model } from 'mongoose';
-import { HabitDataPointDocument, } from '../schemas';
+import { HabitDataPointDocument, UserDone, } from '../schemas';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { ActivitiesDao } from '../daos/activities.dao';
@@ -158,7 +158,7 @@ describe('ActivityService', () => {
 
       it('find task done today within filter range', async () => {
         const { user, profile } = await testData.createUserAndProfile('user1');
-        const task = await testData.createTask(user, profile, { title: 't1' },{ done: ActivityTestDataUtil.getTodayTimingId() });
+        const task = await testData.createTask(user, profile, { title: 't1' }, { doneBy: [new UserDone(user, ActivityTestDataUtil.getTodayTimingId())] });
         const filter = new DataPointIntervalFilter(new Date());
         const { activities } = await activitiesService.findByFilter(profile, user, filter);
         expect(activities.length).toEqual(1);
@@ -167,7 +167,7 @@ describe('ActivityService', () => {
 
       it('find task done tomorrow within filter range', async () => {
         const { user, profile } = await testData.createUserAndProfile('user1');
-        const task = await testData.createTask(user, profile,{ title: 't1' },{ done: ActivityTestDataUtil.getTomorrowTimingId() });
+        const task = await testData.createTask(user, profile,{ title: 't1' },{ doneBy: [new UserDone(user, ActivityTestDataUtil.getTomorrowTimingId())] });
         const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
         const { activities } = await activitiesService.findByFilter(profile, user, filter);
         expect(activities.length).toEqual(1);
@@ -176,7 +176,7 @@ describe('ActivityService', () => {
 
       it('do not include tasks done outside of filter range', async () => {
         const { user, profile } = await testData.createUserAndProfile('user1');
-        await testData.createTask(user, profile, { title: 't1' },{ done: ActivityTestDataUtil.getTomorrowTimingId() });
+        await testData.createTask(user, profile, { title: 't1' },{ doneBy: [new UserDone(user, ActivityTestDataUtil.getTomorrowTimingId())] });
         const filter = new DataPointIntervalFilter(new Date());
         const { activities } = await activitiesService.findByFilter(profile, user, filter);
         expect(activities.length).toEqual(0);

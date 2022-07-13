@@ -68,7 +68,7 @@ describe('NumberDataPointDao', () => {
     const uid = getObjectId(options.uid || 'u1');
 
     const dataPoint = await dao.save(new TestNumberDataPoint({
-      meta: { pid: pid, cid: cid, interval: interval },
+      meta: { pid, cid, uid, interval },
       date: date.toDate(),
       value: 2
     }));
@@ -145,6 +145,7 @@ describe('NumberDataPointDao', () => {
       });
       const updated = await dao.reload(dataPoint);
       expect(updated.meta.pid).toEqual(dataPoint.meta.pid);
+      expect(updated.meta.cid).toEqual(dataPoint.meta.cid);
       expect(updated.meta.uid).toEqual(dataPoint.meta.uid);
       expect(updated.meta.interval).toEqual(dataPoint.meta.interval);
     })

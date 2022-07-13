@@ -1,6 +1,6 @@
 import { assureObjectId, EntityData, EntityIdentity } from './db.utils';
 import { FilterQuery, HydratedDocument, Model, QueryWithHelpers, UpdateQuery, QueryOptions } from 'mongoose';
-import { assignEntityData, BaseEntity, createBaseEntityInstance } from './base.entity';
+import { BaseEntity, createBaseEntityInstance } from './base.entity';
 import { Inject } from '@nestjs/common';
 import { ModelCreateEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
