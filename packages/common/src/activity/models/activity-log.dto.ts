@@ -20,7 +20,7 @@ export class ActivityDataPointDto extends DocumentDto<ActivityDataPointDto> impl
 
   @Expose()
   @IsDefined()
-  contentId: string;
+  cid: string;
 
   @Expose()
   @IsInt()
@@ -29,7 +29,7 @@ export class ActivityDataPointDto extends DocumentDto<ActivityDataPointDto> impl
 
   public static createForActivity(activity: IActivity, timingId: string) {
     return new ActivityDataPointDto({
-      contentId: activity.id,
+      cid: activity.id,
       timingId:timingId,
       score: 0,
       value: 0

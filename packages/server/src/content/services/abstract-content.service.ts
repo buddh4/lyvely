@@ -19,14 +19,22 @@ export abstract class AbstractContentService<T extends Content> {
     return this.contentDao.findById(id)
   }
 
-  async createContent(profile: Profile, model: T): Promise<T> {
+  async createContent(profile: Profile, user: User, model: T): Promise<T> {
     await this.profileService.mergeCategories(profile, model.categories);
+    model.createdBy = assureObjectId(user);
     return this.contentDao.save(model);
   }
 
-  async updateContent(profile: Profile, id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<any> {
+  async findContentAndUpdate(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<any> {
     await this.profileService.mergeCategories(profile, update.categories);
-    return this.contentDao.updateOneByIdSet(id, update)
+    // TODO: set updatedBy on content
+    return this.contentDao.findOneAndUpdateByIdSet(id, update);
+  }
+
+  async updateContent(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>): Promise<any> {
+    await this.profileService.mergeCategories(profile, update.categories);
+    // TODO: set updatedBy on content
+    return this.contentDao.updateOneByIdSet(id, update);
   }
 
 

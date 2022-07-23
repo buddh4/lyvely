@@ -73,7 +73,7 @@ export class JournalLogDto extends DocumentDto<IJournalLog> implements IJournalL
     content: IJournal;
 
     @Expose()
-    contentId: string;
+    cid: string;
 
     static createFor(journal: IJournal, timingId: string) {
         return null;

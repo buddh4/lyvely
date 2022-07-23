@@ -5,11 +5,10 @@ import {
     DayIterator, formatDate, REGEX_DATE_FORMAT, toTimingId
 } from '../../calendar';
 
+/**
+ * Note: In an earlier implementation TimeSeriesRangeFilter was used instead of DataPointIntervalFilter
+ */
 export class TimeSeriesRangeFilter {
-
-    @IsOptional()
-    @IsString()
-    pid: string;
 
     @IsOptional()
     @IsString()
@@ -60,10 +59,6 @@ export class TimeSeriesRangeFilter {
 
         if(this.excludes) {
             result.excludes = this.excludes;
-        }
-
-        if(this.pid) {
-            result.pid = this.pid;
         }
 
         return result;

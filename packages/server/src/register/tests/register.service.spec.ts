@@ -43,7 +43,7 @@ describe('RegisterService', () => {
     });
 
     it('register user with invalid email', async () => {
-      let profile;
+      let profile, error;
 
       try {
         profile = await registerService.register(new RegisterDto({
@@ -53,9 +53,35 @@ describe('RegisterService', () => {
           locale: 'de',
         }));
       } catch (err) {
-        // Nothing todo
+        error = err;
       }
 
+      expect(error).toBeDefined();
+      expect(profile).toBeUndefined();
+    });
+
+    it('register already existing email', async () => {
+      await registerService.register(new RegisterDto({
+        username: 'TesterNew',
+        email: 'tester@test.de',
+        password: 'testpw',
+        locale: 'de',
+      }));
+
+      let profile, error;
+
+      try {
+        profile = await registerService.register(new RegisterDto({
+          username: 'Tester',
+          email: 'tester@test.de',
+          password: 'testpw',
+          locale: 'de',
+        }));
+      } catch (err) {
+        error = err;
+      }
+
+      expect(error).toBeDefined();
       expect(profile).toBeUndefined();
     });
   });

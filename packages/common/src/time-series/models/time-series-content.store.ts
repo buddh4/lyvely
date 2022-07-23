@@ -1,15 +1,18 @@
-import { ITimeSeriesContent, ITimeSeriesDataPoint} from '../interfaces';
+import { ITimeSeriesContent, ITimeSeriesDataPoint } from '../interfaces';
 
-type TimeableModelIdentity = ITimeSeriesContent | string;
+type TimeSeriesContentIdentity = ITimeSeriesContent | string;
 
-export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent, LogModel extends ITimeSeriesDataPoint> {
+/**
+ * This class is used to store time series content and related data points.
+ */
+export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent, DataPointModel extends ITimeSeriesDataPoint> {
   models: Map<string, Model> = new Map();
-  logs: Map<string, Map<string, LogModel>> = new Map();
+  logs: Map<string, Map<string, DataPointModel>> = new Map();
 
   abstract sort(models: Model[]);
-  abstract createLog(model: Model, timingId: string): LogModel;
+  abstract createLog(model: Model, timingId: string): DataPointModel;
 
-  protected getId(model: TimeableModelIdentity) {
+  protected getId(model: TimeSeriesContentIdentity) {
     if(typeof model === "string") {
       return model;
     }
@@ -21,8 +24,8 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
     this.models.set(this.getId(model), model);
   }
 
-  addLog(log: LogModel) {
-    let modelId = log.contentId;
+  addDataPoint(log: DataPointModel) {
+    const modelId = log.cid;
 
     if(!modelId) {
       console.error('tried to add log without content id', log);
@@ -36,16 +39,16 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
     this.logs.get(modelId).set(log.timingId, log);
   }
 
-  addLogs(logs: LogModel[]) {
-    logs.forEach((log) => this.addLog(log));
+  addDataPoints(logs: DataPointModel[]) {
+    logs.forEach((log) => this.addDataPoint(log));
   }
 
-  hasModel(model: TimeableModelIdentity) {
+  hasModel(model: TimeSeriesContentIdentity) {
     return this.models.has(this.getId(model));
   }
 
-  hasLog(identity: TimeableModelIdentity, timingId: string) {
-    let modelId = this.getId(identity);
+  hasDataPoint(identity: TimeSeriesContentIdentity, timingId: string) {
+    const modelId = this.getId(identity);
     if (!this.logs.has(modelId)) {
       return false;
     }
@@ -57,7 +60,7 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
     return this.sort(Array.from(this.models.values()).filter(filter));
   }
 
-  getModel(model: TimeableModelIdentity): Model {
+  getModel(model: TimeSeriesContentIdentity): Model {
     if (!this.hasModel(model)) {
       return null;
     }
@@ -65,21 +68,21 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
     return this.models.get(this.getId(model));
   }
 
-  getLog(identity: TimeableModelIdentity, timingId: string, create: boolean = false): LogModel {
-    let modelId = this.getId(identity);
-    if (!this.hasLog(modelId, timingId)) {
+  getDataPoint(identity: TimeSeriesContentIdentity, timingId: string, create = false): DataPointModel {
+    const modelId = this.getId(identity);
+    if (!this.hasDataPoint(modelId, timingId)) {
       if(!create) {
         return;
       }
 
-      let model = this.getModel(modelId);
+      const model = this.getModel(modelId);
       if(!model) {
         return;
       }
 
       // Add and fetch log in order to return a reactive instance
-      this.addLog(this.createLog(model, timingId));
-      return this.getLog(model, timingId);
+      this.addDataPoint(this.createLog(model, timingId));
+      return this.getDataPoint(model, timingId);
     }
 
     return this.logs.get(modelId).get(timingId);

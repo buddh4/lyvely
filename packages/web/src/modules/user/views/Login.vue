@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Status } from "@/store/status";
-import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredlayoutContainer.vue';
+import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayoutContainer.vue';
 import TextInput from '@/modules/ui/components/form/TextInput.vue';
 import Checkbox from '@/modules/ui/components/form/Checkbox.vue';
 import Button from '@/modules/ui/components/button/Button.vue';

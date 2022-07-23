@@ -17,7 +17,7 @@ import { ContentScoreService } from "../services";
 import { ContentScoreDao } from "../daos";
 import { toTimingId } from "lyvely-common";
 import { TestContent } from "./src/test-content.schema";
-import { UserAssignmentStrategy } from "lyvely-common/src";
+import { UserAssignmentStrategy } from "lyvely-common";
 
 describe('ContentScoreService', () => {
   let testingApp: TestingModule;

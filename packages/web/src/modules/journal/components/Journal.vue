@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import ActivityFilterNavigation from "@/modules/activity/components/ActivityFilterNavigation.vue";
 import JournalList from "@/modules/journal/components/JournalList.vue";
-import { CalendarPlanEnum } from "lyvely-common";
+import { CalendarIntervalEnum, EditJournalDto, IJournal  } from "lyvely-common";
 import TimingList from "@/modules/timing/components/TimingList.vue";
 import Loader from "@/modules/ui/components/loader/Loader.vue";
 import EditJournalModal from "@/modules/journal/components/EditJournalModal.vue";
-import { EditJournalDto, IJournal } from "lyvely-common";
 import { useJournalStore } from '@/modules/journal/store';
 import { useProfileStore } from '@/modules/user/store/profile.store';
 import { computed } from 'vue';
@@ -27,7 +26,7 @@ function createInitialModel(profile: string): EditJournalDto {
 }
 
 function getPlans() {
-  return [CalendarPlanEnum.Daily];
+  return [CalendarIntervalEnum.Daily];
 }
 
 const loaded = computed(() => useJournalStore().isStatusSuccess())

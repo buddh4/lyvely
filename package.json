@@ -11,6 +11,9 @@
     "build-server": "npm run build -w lyvely-server",
     "build-web": "npm run build -w lyvely-web",
     "test-common": "npm run test -w lyvely-common",
-    "test-server": "npm run test -w lyvely-server"
+    "test-server": "npm run test -w lyvely-server",
+    "run-server": "npm run start:dev -w lyvely-server",
+    "debug-server": "npm run start:debug -w lyvely-server",
+    "run-web": "npm run dev -w lyvely-web"
   }
 }

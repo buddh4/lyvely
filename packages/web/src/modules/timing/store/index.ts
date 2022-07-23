@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { toTimingId, TimeableCalendarPlan, CalendarPlanEnum } from 'lyvely-common';
+import { toTimingId, CalendarPlan, CalendarIntervalEnum } from 'lyvely-common';
 
 export const useTimingStore = defineStore('timing', {
   state: () => ({
@@ -10,7 +10,7 @@ export const useTimingStore = defineStore('timing', {
     date: (state) => <Date> state.currentDate
   },
   actions: {
-    getTimingId(plan: CalendarPlanEnum) {
+    getTimingId(plan: CalendarIntervalEnum) {
       return toTimingId(this.date, plan);
     },
     setDragActive(drag: boolean) {
@@ -19,16 +19,16 @@ export const useTimingStore = defineStore('timing', {
     setCurrentDate(date: Date) {
       this.currentDate = date;
     },
-    decrementTiming(plan: CalendarPlanEnum) {
-      const calendarPlan = TimeableCalendarPlan.getInstance(plan);
+    decrementTiming(plan: CalendarIntervalEnum) {
+      const calendarPlan = CalendarPlan.getInstance(plan);
       // not sure why we need to cast here...
       this.setCurrentDate(calendarPlan.decrement(<Date> this.date));
     },
     isInFurure(): boolean {
       return this.date > new Date();
     },
-    incrementTiming(plan: CalendarPlanEnum) {
-      const calendarPlan = TimeableCalendarPlan.getInstance(plan);
+    incrementTiming(plan: CalendarIntervalEnum) {
+      const calendarPlan = CalendarPlan.getInstance(plan);
       // not sure why we need to cast here...
       this.currentDate = calendarPlan.increment(<Date> this.date);
     }

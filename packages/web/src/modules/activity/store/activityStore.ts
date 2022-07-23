@@ -1,17 +1,17 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
 import {
-  CalendarPlanEnum,
-  TimeableStore,
+  CalendarIntervalEnum,
+  ActivityDataPointStore,
   toTimingId,
   getTimingIdsByRange,
-  formatDate
+  formatDate,
   ActivityFilter,
-  ActivityLogStore,
+  LoadedTimingIdStore,
   ITask,
-  ActivityLogDto,
+  ActivityDataPointDto,
   HabitDto, IActivity,
-  IActivityLog,
+  IActivityDataPoint,
   IHabit, isTask,
   TaskDto
 } from 'lyvely-common';
@@ -31,18 +31,18 @@ export interface MoveActivityEvent {
 export const useActivityStore = defineStore('activity', {
   state: () => ({
     status: Status.INIT,
-    cache: new ActivityLogStore(),
-    timingStore: new TimeableStore(),
+    cache: new ActivityDataPointStore(),
+    timingStore: new LoadedTimingIdStore(),
     filter: new ActivityFilter(),
   }),
   getters: {
-    habits: (state) => (plan: CalendarPlanEnum) => state.cache.getHabitsByCalendarPlan(plan, state.filter),
-    tasks: (state) => (plan: CalendarPlanEnum) => state.cache.getTasksByCalendarPlan(plan, useTimingStore().getTimingId(plan), state.filter),
+    habits: (state) => (plan: CalendarIntervalEnum) => state.cache.getHabitsByCalendarPlan(plan, state.filter),
+    tasks: (state) => (plan: CalendarIntervalEnum) => state.cache.getTasksByCalendarPlan(plan, useTimingStore().getTimingId(plan), state.filter),
   },
   actions: {
-    getLog(activity: IActivity, timingId?: string) {
-      timingId = timingId || useTimingStore().getTimingId(activity.plan);
-      return this.cache.getLog(activity, timingId, true);
+    getHabitDataPoint(habit: IHabit, timingId?: string) {
+      timingId = timingId || useTimingStore().getTimingId(habit.interval);
+      return this.cache.getDataPoint(habit, timingId, true);
     },
     async loadActivities() {
       const { profile } = useProfileStore();
@@ -51,7 +51,7 @@ export const useActivityStore = defineStore('activity', {
 
       const { date } = useTimingStore();
 
-      const datesToBeLoaded = this.timingStore.getCalendarFilter(date, profile.locale);
+      const datesToBeLoaded = this.timingStore.getDataPointIntervalFilter(date);
 
       if(!datesToBeLoaded) {
         this.setStatus(Status.SUCCESS);
@@ -59,26 +59,26 @@ export const useActivityStore = defineStore('activity', {
       }
 
       // Only show loader if we need to load the current date
-      if(!this.timingStore.getCalendarFilter(date, profile.locale, 1)) {
+      if(!this.timingStore.getDataPointIntervalFilter(date, profile.locale, 1)) {
         this.setStatus(Status.LOADING);
       }
 
       try {
-        const { data: {habits, tasks, logs} } = await activityRepository.getByRange(datesToBeLoaded);
+        const { data: {habits, tasks, dataPoints} } = await activityRepository.getByRange(datesToBeLoaded);
         habits.forEach(habit => this.addHabit(habit));
         tasks.forEach(task => this.addTask(task));
-        logs.forEach(log => this.addLog(log));
-        this.timingStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded, profile.locale));
+        dataPoints.forEach(dataPoint => this.addLog(dataPoint));
+        this.timingStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded));
         this.setStatus(Status.SUCCESS);
       } catch(e) {
         DialogExceptionHandler('An unknown error occurred while loading activities.', this)(e);
       }
     },
-    async updateLog(log: IActivityLog, value: number) {
+    async updateLog(log: IActivityDataPoint, value: number) {
       const { date } = useTimingStore();
       const profileStore = useProfileStore();
       try {
-        const { data } = await habitsRepository.updateLog(log.contentId, {
+        const { data } = await habitsRepository.updateLog(log.cid, {
           date: formatDate(date),
           value: value
         });
@@ -96,8 +96,8 @@ export const useActivityStore = defineStore('activity', {
     addHabit(habit: IHabit) {
       this.cache.addModel(new HabitDto(habit))
     },
-    addLog(log: IActivityLog) {
-      this.cache.addLog(new ActivityLogDto(log))
+    addLog(log: IActivityDataPoint) {
+      this.cache.addLog(new ActivityDataPointDto(log))
     },
     async archiveActivity(activity: IActivity) {
       await activityRepository.archive(activity.id);
@@ -109,13 +109,13 @@ export const useActivityStore = defineStore('activity', {
     },
     async getActivityLog(activity: IActivity) {
       const { date } = useTimingStore();
-      const timingId = toTimingId(date, activity.plan);
+      const timingId = toTimingId(date, activity.interval);
 
       let log = this.cache.getLog(activity, timingId);
 
       if(!log) {
         // We assume the log should have already been loaded for the given timingId
-        log = ActivityLogDto.createFor(activity, timingId);
+        log = ActivityDataPointDto.createForActivity(activity, timingId);
         this.cache.addLog(log);
       }
 
@@ -148,8 +148,8 @@ export const useActivityStore = defineStore('activity', {
         await activityRepository.sort(moveEvent);
         const activity = this.cache.getModel(moveEvent.id);
         const activities = (isTask(activity)
-          ? this.tasks(activity.plan)
-          : this.habits(activity.plan)
+          ? this.tasks(activity.interval)
+          : this.habits(activity.interval)
         ).filter((search: IActivity) => search.id !== activity.id);
         activities.splice(moveEvent.newIndex, 0, activity);
         activities.forEach((current: IActivity, index: number) => {

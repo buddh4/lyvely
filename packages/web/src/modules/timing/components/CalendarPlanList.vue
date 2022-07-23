@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {
-  TimeableCalendarPlan,
-  CalendarPlanEnum,
+  CalendarPlan,
+  CalendarIntervalEnum,
   isToday
 } from "lyvely-common";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
@@ -10,7 +10,7 @@ import { useTimingStore } from "../store";
 import { computed, ref } from 'vue';
 
 interface Props {
-  plan: CalendarPlanEnum,
+  plan: CalendarIntervalEnum,
   count: number
 }
 
@@ -21,7 +21,7 @@ const emit = defineEmits(['changed']);
 const props = defineProps<Props>();
 
 const collapsed = ref(false);
-const title = computed(() => TimeableCalendarPlan.getInstance(props.plan).getTitle(timingStore.date, profileStore.locale));
+const title = computed(() => CalendarPlan.getInstance(props.plan).getTitle(timingStore.date, profileStore.locale));
 const titleSuffix = computed(() => !props.count ? "" : ` · (${props.count})`);
 const isEmpty = computed(() => !props.count);
 
@@ -29,12 +29,12 @@ function switchToToday() {
   timingStore.setCurrentDate(new Date());
 }
 
-const showTodayIcon = computed(() => props.plan === CalendarPlanEnum.Daily && !isToday(timingStore.date));
-const rightCaret = computed(() => (props.plan === CalendarPlanEnum.Unscheduled) ? false : "▸");
-const leftCaret = computed(() => (props.plan === CalendarPlanEnum.Unscheduled) ? false : "◂");
+const showTodayIcon = computed(() => props.plan === CalendarIntervalEnum.Daily && !isToday(timingStore.date));
+const rightCaret = computed(() => (props.plan === CalendarIntervalEnum.Unscheduled) ? false : "▸");
+const leftCaret = computed(() => (props.plan === CalendarIntervalEnum.Unscheduled) ? false : "◂");
 
 const headerCssClass = computed(() => {
-  const timingClass = `timing-${TimeableCalendarPlan.getInstance(props.plan).getLabel().toLocaleLowerCase()}`;
+  const timingClass = `timing-${CalendarPlan.getInstance(props.plan).getLabel().toLocaleLowerCase()}`;
 
   return [
     "border-divide",

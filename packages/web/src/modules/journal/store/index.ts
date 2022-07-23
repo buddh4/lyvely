@@ -9,10 +9,10 @@ import {
   JournalLogStore,
 } from 'lyvely-common';
 import {
-  CalendarPlanEnum,
+  CalendarIntervalEnum,
   formatDate,
   getTimingIdsByRange,
-  TimeableStore
+  LoadedTimingIdStore
 } from 'lyvely-common';
 import { useTimingStore } from '@/modules/timing/store';
 import { useProfileStore } from '@/modules/user/store/profile.store';
@@ -24,26 +24,26 @@ export const useJournalStore = defineStore('journal', {
   state: () => ({
     status: Status.INIT,
     store: new JournalLogStore(),
-    timingStore: new TimeableStore(),
+    timingStore: new LoadedTimingIdStore(),
     filter: new JournalFilter(),
     dragActive: false
   }),
   getters: {
-    journals: (state) => (plan: CalendarPlanEnum) =>
-      state.store.filterModels((journal: IJournal) => journal.plan === plan && (!state.filter || state.filter.run(journal)))
+    journals: (state) => (plan: CalendarIntervalEnum) =>
+      state.store.filterModels((journal: IJournal) => journal.interval === plan && (!state.filter || state.filter.run(journal)))
   },
   actions: {
     async loadJournals() {
       const profileStore = useProfileStore();
       const timingStore = useTimingStore();
-      const datesToBeLoaded = this.timingStore.getCalendarFilter(timingStore.date, profileStore.locale);
+      const datesToBeLoaded = this.timingStore.getDataPointIntervalFilter(timingStore.date, profileStore.locale);
 
       if(!datesToBeLoaded) {
         this.setStatus(Status.SUCCESS);
         return;
       }
 
-      const needToLoadCurrentDate = this.timingStore.getCalendarFilter(timingStore.date, profileStore.locale, 1);
+      const needToLoadCurrentDate = this.timingStore.getDataPointIntervalFilter(timingStore.date, profileStore.locale, 1);
 
       if(needToLoadCurrentDate) {
         this.setStatus(Status.LOADING);
@@ -53,7 +53,7 @@ export const useJournalStore = defineStore('journal', {
         const {data: {journals, logs}} = await journalRepository.getByRange(datesToBeLoaded);
         journals.forEach(journal => this.addJournal(journal));
         logs.forEach(log => this.addLog(log));
-        this.timingStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded, profileStore.locale))
+        this.timingStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded))
         this.setStatus(Status.SUCCESS);
       } catch(e) {
         // TODO: Implement
@@ -70,7 +70,7 @@ export const useJournalStore = defineStore('journal', {
     async updateLog(update: UpdateLogEvent) {
       const timingStore = useTimingStore();
       const {log, value, text} = update;
-      const { data: updateResult } = await journalRepository.updateLog(log.contentId, {
+      const { data: updateResult } = await journalRepository.updateLog(log.cid, {
         date: formatDate(timingStore.date),
         value,
         text

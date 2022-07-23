@@ -1,5 +1,6 @@
-import { TimeSeriesRangeFilter, getTimingIdsByRange } from './time-series-range-filter.model';
-import { CalendarDate, subtractDays } from '../../calendar';
+import { CalendarDate, toTimingId } from '../../calendar';
+import { DataPointIntervalFilter } from "./data-point.model";
+import { getTimingIdsByRange, TimeSeriesRangeFilter } from "./time-series-range-filter.model";
 
 export class LoadedTimingIdStore {
   private loadedTimingIds: Set<string> = new Set<string>();
@@ -18,21 +19,19 @@ export class LoadedTimingIdStore {
     return requiredTimingIds.filter(requiredId => !this.loadedTimingIds.has(requiredId));
   }
 
-  getCalendarFilter(date: CalendarDate, range = 3): TimeSeriesRangeFilter | false {
-    const from = subtractDays(date, range);
+  getDataPointIntervalFilter(date: CalendarDate): DataPointIntervalFilter | false {
+    const tid = toTimingId(date);
 
-    const filter = TimeSeriesRangeFilter.createForRange(from, date);
-    const requiredTimingIds = getTimingIdsByRange(filter);
-    const filteredTimingIds = this.filterOutLoadedTimingIds(requiredTimingIds);
-
-    if(!filteredTimingIds.length) {
+    if(this.loadedTimingIds.has(tid)) {
       return false;
     }
 
-    if(requiredTimingIds.length !== filteredTimingIds.length) {
-      filter.includes = filteredTimingIds;
-    }
+    // Note: In an earlier implementation TimeSeriesRangeFilter was used instead of DataPointIntervalFilter
+    const tids = getTimingIdsByRange(new TimeSeriesRangeFilter({ from: date, to: date }));
 
-    return filter;
+    // TODO: Filter out already loaded levels
+    // If we've already loaded today, we do not need to lead this year again so level is daily (unless week changed)
+
+    return new DataPointIntervalFilter(date);
   }
 }

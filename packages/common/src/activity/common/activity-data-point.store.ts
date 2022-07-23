@@ -1,9 +1,8 @@
 import { CalendarIntervalEnum } from '../../calendar';
 import { ActivityType, IActivity, IActivityDataPoint } from '../interfaces';
-import { ActivityFilter } from '../models';
 import { IHabit } from '../habit';
 import { ITask } from '../task';
-import { ActivityDataPointDto } from '../models';
+import { ActivityDataPointDto, ActivityFilter } from '../models';
 import { TimeSeriesDataPointStore } from '../../time-series';
 import { sortActivities } from './activities.sort';
 

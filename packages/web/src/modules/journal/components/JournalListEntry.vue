@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { IJournal } from 'lyvely-common';
 import ListEntry from "@/modules/timing/components/TimingListEntry.vue";
-import { LogValueInputType } from "lyvely-common";
+import { DataPointInputType } from "lyvely-common";
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
 import RangeInput from '@/modules/ui/components/form/RangeInput.vue';
 import { useTimingStore } from '@/modules/timing/store';
@@ -21,10 +21,10 @@ const log = computed(() => {
 });
 
 const isRangeInput = computed(() => {
-    return props.model.rating.inputType === LogValueInputType.Range;
+    return props.model.rating.inputType === DataPointInputType.Range;
 });
 
-const isTextInput = computed(() => props.model.rating.inputType === LogValueInputType.Text);
+const isTextInput = computed(() => props.model.rating.inputType === DataPointInputType.Textarea);
 
 const selection = computed({
   get: () => isRangeInput.value ? -log.value.value : log.value.text,

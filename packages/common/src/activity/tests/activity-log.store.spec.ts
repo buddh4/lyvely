@@ -20,7 +20,7 @@ describe('ActivityLogStore', () => {
     store = new ActivityDataPointStore();
     model = new HabitDto({ id: 'test', title: 'test task' });
     timingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
-    logModel = new ActivityDataPointDto({ id: 'test-log', contentId: 'test', score: 2, value: 2, timingId });
+    logModel = new ActivityDataPointDto({ id: 'test-log', cid: 'test', score: 2, value: 2, timingId });
   });
 
   describe('addModel', function () {
@@ -66,32 +66,32 @@ describe('ActivityLogStore', () => {
 
   describe('addLog', function () {
     it('get a task by model id', async () => {
-      store.addLog(logModel);
-      expect(store.hasLog('test', timingId)).toEqual(true);
+      store.addDataPoint(logModel);
+      expect(store.hasDataPoint('test', timingId)).toEqual(true);
     });
   });
 
   describe('getLog', function () {
     it('get non existing log of non existing model', async () => {
-      expect(store.getLog(model, timingId)).not.toBeDefined();
+      expect(store.getDataPoint(model, timingId)).not.toBeDefined();
     });
 
     it('get non existing log of existing model', async () => {
       store.addModel(model);
-      expect(store.getLog(model, timingId)).not.toBeDefined();
+      expect(store.getDataPoint(model, timingId)).not.toBeDefined();
     });
 
     it('get existing log without create', async () => {
       store.addModel(model);
-      store.addLog(logModel);
-      expect(store.getLog(model, timingId)).toBeDefined();
+      store.addDataPoint(logModel);
+      expect(store.getDataPoint(model, timingId)).toBeDefined();
     });
 
     it('get non existing log with create', async () => {
       store.addModel(model);
-      const search = store.getLog(model, timingId, true);
+      const search = store.getDataPoint(model, timingId, true);
       expect(search).toBeDefined();
-      expect(search.contentId).toEqual(model.id);
+      expect(search.cid).toEqual(model.id);
       expect(search.timingId).toEqual(timingId);
       expect(search.score).toEqual(0);
       expect(search.value).toEqual(0);

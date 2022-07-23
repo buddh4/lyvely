@@ -6,7 +6,7 @@ import { User } from '../../users';
 import { Activity } from './activity.schema';
 import { DataPointConfigFactory } from '../../time-series';
 import { assureObjectId, EntityIdentity } from "../../db/db.utils";
-import { UserAssignmentStrategy } from "lyvely-common/src";
+import { UserAssignmentStrategy } from "lyvely-common";
 
 export type TaskDocument = Task & mongoose.Document;
 
@@ -53,6 +53,14 @@ export class Task extends Activity implements ITaskWithUsers {
 
   isDoneByUser(uid: EntityIdentity<User>) {
     return !!this.doneBy?.find(d => d.uid.equals(assureObjectId(uid)));
+  }
+
+  isDone(uid: EntityIdentity<User>) {
+    if(this.userStrategy === UserAssignmentStrategy.Shared) {
+      return !!this.doneBy.length;
+    }
+
+    return this.isDoneByUser(uid);
   }
 
   setUndoneBy(uid: EntityIdentity<User>) {

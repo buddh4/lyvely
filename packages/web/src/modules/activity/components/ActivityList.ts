@@ -1,8 +1,8 @@
-import { ActivityType, CalendarPlanEnum } from 'lyvely-common';
+import { ActivityType, CalendarIntervalEnum } from 'lyvely-common';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed } from 'vue';
 
-export function useActivityList(plan: CalendarPlanEnum, type: ActivityType) {
+export function useActivityList(plan: CalendarIntervalEnum, type: ActivityType) {
   const activityStore = useActivityStore();
 
   const activities = (type === ActivityType.Habit)

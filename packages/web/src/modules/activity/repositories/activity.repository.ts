@@ -1,14 +1,14 @@
 import repository from "@/repository";
-import { ActivityRangeResponseDto, MoveActivityDto, TimeableRangeFilter } from "lyvely-common";
+import { ActivityRangeResponseDto, MoveActivityDto, DataPointIntervalFilter } from "lyvely-common";
 import { AxiosResponse } from "axios";
 import { MoveActivityEvent } from '@/modules/activity/store/activityStore';
 
 const resource = "activities";
 
 export default {
-  async getByRange(filter: TimeableRangeFilter): Promise<AxiosResponse<ActivityRangeResponseDto>> {
+  async getByRange(filter: DataPointIntervalFilter): Promise<AxiosResponse<ActivityRangeResponseDto>> {
     return repository.get(`${resource}`, {
-      params: filter.getAsParams()
+      params: filter
     });
   },
 

@@ -122,8 +122,8 @@
     @apply border border-danger bg-danger text-inverted;
 }
 
-.active.outlined.text-secondary,
-.outlined.text-secondary:hover {
+.active.outlined.secondary,
+.outlined.secondary:hover {
     @apply bg-secondary text-white !important;
 }
 

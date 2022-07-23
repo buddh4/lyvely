@@ -18,7 +18,6 @@ async function bootstrap() {
 
   logInitConfig(configService, logger);
 
-
   initMongoose(configService);
   initCors(app, configService, logger);
   initGuards(app);

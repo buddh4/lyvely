@@ -3,7 +3,7 @@ import Modal from '@/modules/ui/components/modal/Modal.vue';
 import SelectInput from '@/modules/ui/components/form/SelectInput.vue';
 import Multiselect from '@vueform/multiselect';
 import { EditJournalDto } from 'lyvely-common';
-import { LogValueInputType, LogValueType } from 'lyvely-common';
+import { DataPointInputType } from 'lyvely-common';
 import TextInput from '@/modules/ui/components/form/TextInput.vue';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
@@ -20,18 +20,18 @@ const emit = defineEmits(['update:modelValue', 'success']);
 
 function getJournalTypeOptions() {
   return [
-    {value: LogValueInputType.Text, label: 'Note'},
-    {value: LogValueInputType.Range, label: 'Range'}
+    {value: DataPointInputType.Textarea, label: 'Note'},
+    {value: DataPointInputType.Range, label: 'Range'}
   ];
 }
 
 function changeInputType() {
   switch (props.model.inputType) {
-    case LogValueInputType.Range:
-      props.model.logValueType = LogValueType.Number;
+    case DataPointInputType.Range:
+      props.model.logValueType = DataPointInputType.Range;
       break;
-    case LogValueInputType.Text:
-      props.model.logValueType = LogValueType.Text;
+    case DataPointInputType.Textarea:
+      props.model.logValueType = DataPointInputType.Textarea;
       break;
   }
 
@@ -39,8 +39,8 @@ function changeInputType() {
 }
 
 
-const isInputTypeNumber = computed(() => [LogValueInputType.Range].includes(props.model.inputType));
-const isInputTypeRange = computed(() => props.model.inputType === LogValueInputType.Range);
+const isInputTypeNumber = computed(() => [DataPointInputType.Range].includes(props.model.inputType));
+const isInputTypeRange = computed(() => props.model.inputType === DataPointInputType.Range);
 const title = computed(() => props.create ? 'Add journal' : 'Edit journal');
 </script>
 

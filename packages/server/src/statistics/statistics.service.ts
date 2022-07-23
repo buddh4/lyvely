@@ -11,7 +11,7 @@ export class StatisticsService {
   @InjectModel(HabitDataPoint.name)
   protected ActivityLogModel: Model<HabitDataPointDocument>;
 
-  async getMonthlyScoreStatistics(
+  /*async getMonthlyScoreStatistics(
     user: User,
     year: number,
   ): Promise<ScoreStatistics> {
@@ -59,5 +59,5 @@ export class StatisticsService {
       plan: CalendarIntervalEnum.Monthly,
       data: data,
     });
-  }
+  }*/
 }

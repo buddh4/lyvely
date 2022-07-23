@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CalendarPlanEnum } from "lyvely-common";
+import { CalendarIntervalEnum } from "lyvely-common";
 import { VueDraggableNext } from "vue-draggable-next";
 import { IJournal } from "lyvely-common";
 import CalendarPlanList from "@/modules/timing/components/CalendarPlanList.vue";
@@ -8,7 +8,7 @@ import { useJournalStore } from '@/modules/journal/store';
 import { computed } from 'vue';
 
 interface Props {
-  plan: CalendarPlanEnum
+  plan: CalendarIntervalEnum
 }
 
 const props = defineProps<Props>();

@@ -18,7 +18,7 @@ import { FetchQueryOptions } from '../../db/abstract.dao';
 import module from "../activities.meta";
 import { User } from "../../users";
 import { ProfileType } from "lyvely-common/.rollup.cache/home/buddha/codebase/projects/lyvely/app/packages/common/src";
-import { isGroupProfile } from "lyvely-common/src";
+import { isGroupProfile } from "lyvely-common";
 
 @Injectable()
 export class ActivitiesDao extends AbstractContentDao<Activity> {

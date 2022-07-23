@@ -10,18 +10,18 @@ import {
   Param,
   Body,
 } from '@nestjs/common';
-import { TimeSeriesRangeFilter ,
+import {
   ActivityRangeResponseDto,
   IActivityRangeResponse,
   MoveActivityDto,
+  DataPointIntervalFilter
 } from 'lyvely-common';
 
 import { ActivitiesService } from '../services/activities.service';
-import { AbstractContentController } from '../../content';
+import { AbstractContentController, ContentController } from '../../content';
 import { Activity } from '../schemas';
 import { UserProfileRequest } from '../../core/types';
 import { Feature } from '../../core/features/feature.decorator';
-import { ContentController } from '../../profiles';
 
 @ContentController('activities')
 @Feature('activities')
@@ -40,14 +40,15 @@ export class ActivitiesController extends AbstractContentController<Activity> {
   @Get()
   async findByRange(
     @Request() req: UserProfileRequest,
-    @Query(new ValidationPipe({ transform: true })) filter: TimeSeriesRangeFilter,
+    @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
   ): Promise<IActivityRangeResponse> {
-    const { profile } = req;
-    const { activities, logs } = await this.contentService.findByFilter(profile, filter);
+    const { profile, user } = req;
+    // TODO: (Optimization) Currently we only need to load habits and undone tasks on first load
+    const { activities, dataPoints } = await this.contentService.findByFilter(profile, user, filter);
 
     const result = new ActivityRangeResponseDto();
     result.addActivities(activities);
-    result.addActivityLogs(logs);
+   // result.addActivityLogs(logs);
     return result;
   }
 

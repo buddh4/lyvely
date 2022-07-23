@@ -33,7 +33,7 @@ describe('HabitService', () => {
       interval: CalendarIntervalEnum.Daily,
     };
 
-    return habitService.createContent(profile, Habit.create(user, profile, dto));
+    return habitService.createContent(profile, user, Habit.create(user, profile, dto));
   };
 
   describe('create Habit', () => {
@@ -87,7 +87,7 @@ describe('HabitService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user,profile);
 
-      await habitService.updateContent(profile, habit, Habit.create(
+      await habitService.updateContent(profile, user, habit, Habit.create(
           user,
           profile,
           new EditHabitDto({

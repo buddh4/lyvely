@@ -158,11 +158,26 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.updateOneById(id, { $set: <any> updateSet });
   }
 
-  async updateOneByIdPull(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>): Promise<number> {
-    return this.updateOneById(id, { $pull: <any> updateSet });
+  async findOneAndUpdateByIdSet(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>): Promise<T|null> {
+    return this.findOneAndUpdateById(id, { $set: <any> updateSet });
   }
 
-  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: QueryOptions) {
+  async findOneAndUpdateById(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<T|null> {
+    if(!await this.beforeUpdate(id, update)) return null;
+    const data = await this.model.findOneAndUpdate({ _id: assureObjectId(id) }, update).lean();
+
+    if(!data) {
+      return null;
+    }
+
+    return this.constructModel(data);
+  }
+
+  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>) {
+    return this._updateOneById(id, update);
+  }
+
+  protected async _updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: QueryOptions) {
     if(!await this.beforeUpdate(id, update)) return 0;
     const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, update, options).exec()).modifiedCount;
 

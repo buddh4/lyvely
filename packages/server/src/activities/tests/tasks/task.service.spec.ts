@@ -1,12 +1,11 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { CalendarIntervalEnum, ActivityType, toTimingId } from 'lyvely-common';
+import { CalendarIntervalEnum, ActivityType, toTimingId, UserAssignmentStrategy } from 'lyvely-common';
 import { TasksService } from '../../services/tasks.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { TasksDao } from '../../daos/tasks.dao';
 import { ActivitiesDao } from '../../daos/activities.dao';
 import { Task } from '../../schemas';
-import { UserAssignmentStrategy } from "lyvely-common/src";
 
 describe('TaskService', () => {
   let testingModule: TestingModule;
@@ -29,7 +28,7 @@ describe('TaskService', () => {
   describe('Task service', () => {
     it('create', async () => {
       const { user, profile } = await testDataUtils.createUserAndProfile();
-      const task = await taskService.createContent(profile, Task.create(user, profile, {
+      const task = await taskService.createContent(profile, user, Task.create(user, profile, {
         title: 'Do something!',
         score: 5,
         interval: CalendarIntervalEnum.Monthly,
@@ -49,7 +48,7 @@ describe('TaskService', () => {
       it('set done on shared task', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
 
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, owner, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,
@@ -57,6 +56,7 @@ describe('TaskService', () => {
         }));
 
         await taskService.setDone(owner, profile, task, '2021-04-03');
+
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
         expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.interval));
@@ -65,12 +65,14 @@ describe('TaskService', () => {
         expect(task.doneBy.length).toEqual(1);
         expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
+
+        expect(profile.score).toEqual(5);
       });
 
       it('set multiple done on shared task', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
 
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, member, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,
@@ -85,15 +87,13 @@ describe('TaskService', () => {
         expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.interval));
         expect(search.doneBy[0].uid).toEqual(member._id);
 
-        expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.interval));
-        expect(task.doneBy[0].uid).toEqual(member._id);
+        expect(profile.score).toEqual(5);
       });
 
       it('set done on per-user task', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
 
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, owner, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,
@@ -114,7 +114,7 @@ describe('TaskService', () => {
       it('set multiple done by on per-user task', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
 
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, owner, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,
@@ -141,7 +141,7 @@ describe('TaskService', () => {
       it('set multiple done by single user on per-user task', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
 
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, owner, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,
@@ -165,7 +165,7 @@ describe('TaskService', () => {
     describe('setUndone', () => {
       it('set undone on shared task', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, owner, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,
@@ -182,7 +182,7 @@ describe('TaskService', () => {
 
       it('set undone by another user on shared task', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, owner, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,
@@ -199,7 +199,7 @@ describe('TaskService', () => {
 
       it('set undone on per user task', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, owner, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,
@@ -216,7 +216,7 @@ describe('TaskService', () => {
 
       it('set undone on per user task with multiple doneBy', async () => {
         const { owner, member, profile } = await testDataUtils.createSimpleGroup();
-        const task = await taskService.createContent(profile, Task.create(owner, profile, {
+        const task = await taskService.createContent(profile, owner, Task.create(owner, profile, {
           title: 'Do something!',
           score: 5,
           interval: CalendarIntervalEnum.Monthly,

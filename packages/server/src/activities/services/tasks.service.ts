@@ -6,7 +6,7 @@ import { HabitDataPointService } from './habit-data-point.service';
 import { User } from '../../users';
 import { TasksDao } from '../daos/tasks.dao';
 import { AbstractContentService, ContentScoreService } from '../../content';
-import { toTimingId } from "lyvely-common/src";
+import { toTimingId } from "lyvely-common";
 import { ActivityScore } from "../schemas/activity-score.schema";
 
 @Injectable()
@@ -19,15 +19,18 @@ export class TasksService extends AbstractContentService<Task> {
   }
 
   async setDone(user: User, profile: Profile, task: Task, date: CalendarDate): Promise<Task> {
+    const wasDone = task.isDone(user);
     await this.tasksDao.setDone(task, user, toTimingId(date, task.interval));
-    await this.scoreService.saveScore(profile, new ActivityScore({
-      profile,
-      user,
-      content: task,
-      userStrategy: task.userStrategy,
-      score: task.score,
-      date: date
-    }));
+    if(!wasDone) {
+      await this.scoreService.saveScore(profile, new ActivityScore({
+        profile,
+        user,
+        content: task,
+        userStrategy: task.userStrategy,
+        score: task.score,
+        date: date
+      }));
+    }
 
     return task;
   }

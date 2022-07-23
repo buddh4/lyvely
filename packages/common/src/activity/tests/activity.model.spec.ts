@@ -64,7 +64,7 @@ describe('Activity Model', () => {
     });
   });
 
-  describe('UpdateActivityLogDto', function () {
+  describe('UpdateActivityDataPointDto', function () {
     it('validate valid dto', async () => {
       const dto = new UpdateActivityLogModel({
         date: '2021-01-01',

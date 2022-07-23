@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import TextInput from '@/modules/ui/components/form/TextInput.vue';
 import Alert from '@/modules/ui/components/alert/Alert.vue';
-import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredlayoutContainer.vue';
+import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayoutContainer.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
 import { computed } from 'vue';
 import { useRegisterStore } from '@/modules/user/store/register.store';

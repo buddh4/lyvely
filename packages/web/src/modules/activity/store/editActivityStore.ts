@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ActivityType, getCreateModelByActivityType, EditHabitDto,
-  EditTaskModel, getEditModelByActivity, IActivity, ModelValidator} from 'lyvely-common';
+  EditTaskDto, getEditModelByActivity, IActivity, ModelValidator} from 'lyvely-common';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
@@ -8,7 +8,7 @@ import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler
 
 export const useActivityEditStore = defineStore('activityEdit', {
   state: () => ({
-    model: undefined as EditTaskModel | EditHabitDto | undefined,
+    model: undefined as EditTaskDto | EditHabitDto | undefined,
     modelId: undefined as string | undefined,
     validator: undefined as ModelValidator | undefined,
     isCreate: false,
@@ -16,7 +16,7 @@ export const useActivityEditStore = defineStore('activityEdit', {
   getters: {
     showModal: (state) => !!state.model,
     modalTitle: (state) => {
-      return (state.model instanceof EditTaskModel)
+      return (state.model instanceof EditTaskDto)
         ? (state.isCreate) ? "Add task" : "Edit task"
         : (state.isCreate) ? "Add activity" : "Edit activity";
     }
@@ -53,7 +53,7 @@ export const useActivityEditStore = defineStore('activityEdit', {
     async createActivity() {
       try {
         const activityStore = useActivityStore();
-        if (this.model instanceof EditTaskModel) {
+        if (this.model instanceof EditTaskDto) {
           activityStore.addTask((await tasksRepository.create(this.model)).data);
         } else {
           activityStore.addHabit((await habitsRepository.create(this.model)).data);
@@ -74,7 +74,7 @@ export const useActivityEditStore = defineStore('activityEdit', {
       const activityStore = useActivityStore();
 
       try {
-        if (this.model instanceof EditTaskModel) {
+        if (this.model instanceof EditTaskDto) {
           activityStore.addTask((await tasksRepository.update(this.model)).data);
         } else {
           activityStore.addHabit((await habitsRepository.update(this.modelId, this.model)).data);

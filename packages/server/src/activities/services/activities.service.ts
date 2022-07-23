@@ -7,7 +7,7 @@ import { ActivitiesDao } from '../daos/activities.dao';
 import { EntityIdentity } from '../../db/db.utils';
 import { AbstractContentService } from '../../content';
 import { HabitDataPointService } from './habit-data-point.service';
-import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum } from "lyvely-common";
+import { getTimingIds, DataPointIntervalFilter } from "lyvely-common";
 import { UpdateQuerySet } from "../../db/abstract.dao";
 
 interface ActivitySearchResult {
