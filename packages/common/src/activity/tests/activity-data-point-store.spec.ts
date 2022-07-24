@@ -1,26 +1,24 @@
 import {
-  ActivityDataPointDto,
   CalendarIntervalEnum,
   HabitDto,
-  IActivityDataPoint,
-  IHabit,
+  IHabit, ITimeSeriesNumberDataPoint, NumberDataPointDto,
   TaskDto,
   toTimingId
 } from '../../index';
 import { ActivityDataPointStore } from '../common';
 
-describe('ActivityLogStore', () => {
+describe('ActivityDataPointStore', () => {
 
   let store: ActivityDataPointStore;
   let model: IHabit;
-  let logModel: IActivityDataPoint;
+  let logModel: ITimeSeriesNumberDataPoint;
   let timingId: string;
 
   beforeEach(() => {
     store = new ActivityDataPointStore();
     model = new HabitDto({ id: 'test', title: 'test task' });
     timingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
-    logModel = new ActivityDataPointDto({ id: 'test-log', cid: 'test', score: 2, value: 2, timingId });
+    logModel = new NumberDataPointDto({ id: 'test-log', cid: 'test', value: 2, tid: timingId });
   });
 
   describe('addModel', function () {
@@ -92,8 +90,7 @@ describe('ActivityLogStore', () => {
       const search = store.getDataPoint(model, timingId, true);
       expect(search).toBeDefined();
       expect(search.cid).toEqual(model.id);
-      expect(search.timingId).toEqual(timingId);
-      expect(search.score).toEqual(0);
+      expect(search.tid).toEqual(timingId);
       expect(search.value).toEqual(0);
     });
   });

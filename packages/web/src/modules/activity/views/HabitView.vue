@@ -15,7 +15,7 @@ function createEntry() {
   useActivityEditStore().setCreateActivity(type);
 }
 
-const plans = computed(() => getCalendarPlanArray());
+const intervals = computed(() => getCalendarPlanArray());
 
 onBeforeMount(async () => {
   return useActivityStore().loadActivities().catch(DialogExceptionHandler('Could not load activities.'));
@@ -24,7 +24,7 @@ onBeforeMount(async () => {
 
 <template>
     <TimingList>
-      <ActivityPlanList v-for="plan in plans" :key="plan" :plan="plan" :type="type" />
+      <ActivityPlanList v-for="interval in intervals" :key="interval" :interval="interval" :type="type" />
     </TimingList>
 
     <EditHabitModal />

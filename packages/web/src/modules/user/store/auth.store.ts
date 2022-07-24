@@ -98,7 +98,9 @@ export const useAuthStore = defineStore('auth', {
     },
     async setUser(user: IUser) {
       this.user = user;
-      await setI18nLanguage(user.locale);
+      if(user.locale) {
+        await setI18nLanguage(user.locale);
+      }
     },
     ...useStatus(),
     ...useAsEmitter<AuthStoreEvents>()

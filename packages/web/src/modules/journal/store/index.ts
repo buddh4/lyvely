@@ -81,7 +81,7 @@ export const useJournalStore = defineStore('journal', {
     addJournal(journal: IJournal) {
       this.store.addModel(new JournalDto(journal));
     },
-    addLog(log: IJournalLog) {
+    addDataPoint(log: IJournalLog) {
       this.store.addLog(new JournalLogDto(log));
     },
     ...useStatus()

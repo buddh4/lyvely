@@ -2,7 +2,7 @@ import { Injectable, Provider } from '@nestjs/common';
 import { User } from '../../../users';
 import { Profile, ProfileScore } from '../../../profiles';
 import {
-  Activity, HabitDataPoint, HabitDataPointDocument, ActivityDataPointSchema,
+  Activity, HabitDataPoint, HabitDataPointDocument, HabitDataPointSchema,
   ActivitySchema,
   Habit,
   HabitDocument,
@@ -122,7 +122,7 @@ export function createActivityTestingModule(key: string, providers: Provider[] =
         { name: Task.name, schema: TaskSchema },
       ],
     },
-    { name: HabitDataPoint.name, schema: ActivityDataPointSchema },
+    { name: HabitDataPoint.name, schema: HabitDataPointSchema },
     {
       name: ContentScore.name,
       collection: ProfileScore.collectionName(),

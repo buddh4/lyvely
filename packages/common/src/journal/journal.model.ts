@@ -19,7 +19,7 @@ import { Exclude, Expose, Type } from "class-transformer";
 import { DocumentDto, Gte, Lte, sortBySortOrder } from '../model';
 import { IContent } from '../content';
 import {
-    ITimeSeriesDataPointConfig,
+    IDataPointConfig,
     DataPointValueType,
     DataPointInputType,
     TimeSeriesDataPointStore
@@ -33,7 +33,7 @@ export class JournalDto extends DocumentDto<JournalDto> implements IJournal {
     archived: boolean;
     categories: string[];
    // rating: IRating;
-    dataPointConfig: ITimeSeriesDataPointConfig;
+    dataPointConfig: IDataPointConfig;
     userStrategy: UserAssignmentStrategy;
     description?: string;
     interval: CalendarIntervalEnum;
@@ -56,7 +56,7 @@ export class JournalDto extends DocumentDto<JournalDto> implements IJournal {
 }
 
 @Exclude()
-export class JournalLogDto extends DocumentDto<IJournalLog> implements IJournalLog {
+export class JournalLogDto {
     @Expose()
     id: IContent['id'];
 
@@ -232,11 +232,11 @@ export class JournalRangeResponseDto implements JournalRangeResponse {
     }
 
     addLog(log: IJournalLog) {
-        this.logs.push(new JournalLogDto(log));
+       // this.logs.push(new JournalLogDto(log));
     }
 
     addLogs(logs: IJournalLog[]) {
-        logs.forEach((log) => this.addLog(log));
+       // logs.forEach((log) => this.addDataPoint(log));
     }
 }
 

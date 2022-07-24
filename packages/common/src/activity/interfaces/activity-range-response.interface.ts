@@ -1,9 +1,9 @@
 import { IHabit } from '../habit';
-import { IActivityDataPoint } from './activity-data-point.interface';
 import { ITask } from '../task';
+import { NumberDataPointDto } from "../../time-series";
 
 export interface IActivityRangeResponse {
     habits: IHabit[];
-    dataPoints: IActivityDataPoint[];
+    dataPoints: NumberDataPointDto[];
     tasks: ITask[];
 }

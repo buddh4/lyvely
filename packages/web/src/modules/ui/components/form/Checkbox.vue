@@ -1,5 +1,5 @@
 <template>
-  <label class="inline-flex items-center">
+  <label class="inline-flex items-center" >
     <input
       type="checkbox"
       :disabled="disabled"
@@ -17,13 +17,14 @@ import { BaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/
 import { computed, SetupContext } from 'vue';
 
 interface Props extends BaseInputProps {
-  checked: boolean
+  checked: boolean,
+  value: number
 }
 
 export default {
   props: {
     ...useBaseInputProps(),
-    checked: {type: Boolean},
+    checked: { type: Boolean },
   },
   emits: ['change', 'update:modelValue'],
   setup(props: Props, context: SetupContext) {
@@ -44,7 +45,7 @@ export default {
       }
     })
     return {
-      ...useBaseInputSetup<boolean>(props, context, {cssClass: 'border rounded ml-1 ring-0'}),
+      ...useBaseInputSetup<boolean>(props, context, { cssClass: 'border rounded ml-1 ring-0' }),
       isChecked
     }
   }

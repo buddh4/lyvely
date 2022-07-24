@@ -1,11 +1,11 @@
-import { ITimeSeriesContent } from '../../time-series';
+import { ITimeSeriesContent, INumberDataPointConfig } from '../../time-series';
 
 export enum ActivityType {
     Task = 'Task',
     Habit = 'Habit'
 }
 
-export interface IActivity extends ITimeSeriesContent {
+export interface IActivity extends ITimeSeriesContent<INumberDataPointConfig> {
     title: string;
     score: number;
 }

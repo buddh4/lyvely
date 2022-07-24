@@ -55,7 +55,7 @@ function updateValue(evt: any) {
       <div v-for="unit in count" :key="unit">
         <Checkbox
           :disabled="props.disabled"
-          :value="unit"
+          :modelValue="unit"
           :checked="unit <= props.selection"
           :css-class="cssClasses(unit)"
           @change="updateValue" />
@@ -64,7 +64,7 @@ function updateValue(evt: any) {
     <template v-else>
       <Checkbox
         :disabled="props.disabled"
-        :value="1"
+        :modelValue="1"
         :checked="props.selection"
         :css-class="cssClasses(0)"
         @change="updateValue" />

@@ -9,11 +9,10 @@ import {
   ActivityFilter,
   LoadedTimingIdStore,
   ITask,
-  ActivityDataPointDto,
   HabitDto, IActivity,
-  IActivityDataPoint,
   IHabit, isTask,
-  TaskDto
+  TaskDto, ITimeSeriesNumberDataPoint,
+  NumberDataPointDto
 } from 'lyvely-common';
 import { useProfileStore } from '@/modules/user/store/profile.store';
 import { useTimingStore } from '@/modules/timing/store';
@@ -36,8 +35,8 @@ export const useActivityStore = defineStore('activity', {
     filter: new ActivityFilter(),
   }),
   getters: {
-    habits: (state) => (plan: CalendarIntervalEnum) => state.cache.getHabitsByCalendarPlan(plan, state.filter),
-    tasks: (state) => (plan: CalendarIntervalEnum) => state.cache.getTasksByCalendarPlan(plan, useTimingStore().getTimingId(plan), state.filter),
+    habits: (state) => (interval: CalendarIntervalEnum) => state.cache.getHabitsByCalendarPlan(interval, state.filter),
+    tasks: (state) => (interval: CalendarIntervalEnum) => state.cache.getTasksByCalendarPlan(interval, useTimingStore().getTimingId(interval), state.filter),
   },
   actions: {
     getHabitDataPoint(habit: IHabit, timingId?: string) {
@@ -67,14 +66,15 @@ export const useActivityStore = defineStore('activity', {
         const { data: {habits, tasks, dataPoints} } = await activityRepository.getByRange(datesToBeLoaded);
         habits.forEach(habit => this.addHabit(habit));
         tasks.forEach(task => this.addTask(task));
-        dataPoints.forEach(dataPoint => this.addLog(dataPoint));
+        dataPoints.forEach(dataPoint => this.addDataPoint(dataPoint));
         this.timingStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded));
         this.setStatus(Status.SUCCESS);
       } catch(e) {
         DialogExceptionHandler('An unknown error occurred while loading activities.', this)(e);
       }
     },
-    async updateLog(log: IActivityDataPoint, value: number) {
+    async updateLog(log: ITimeSeriesNumberDataPoint, value: number) {
+      debugger;
       const { date } = useTimingStore();
       const profileStore = useProfileStore();
       try {
@@ -82,8 +82,8 @@ export const useActivityStore = defineStore('activity', {
           date: formatDate(date),
           value: value
         });
-        log.value = data.value;
-        log.score = data.value;
+
+        log.value = data.units;
         // TODO: assure setting score for the right profile
         profileStore.updateScore(data.score);
       } catch (e) {
@@ -96,8 +96,8 @@ export const useActivityStore = defineStore('activity', {
     addHabit(habit: IHabit) {
       this.cache.addModel(new HabitDto(habit))
     },
-    addLog(log: IActivityDataPoint) {
-      this.cache.addLog(new ActivityDataPointDto(log))
+    addDataPoint(log: ITimeSeriesNumberDataPoint) {
+      this.cache.addDataPoint(new NumberDataPointDto(log))
     },
     async archiveActivity(activity: IActivity) {
       await activityRepository.archive(activity.id);
@@ -107,19 +107,19 @@ export const useActivityStore = defineStore('activity', {
       await activityRepository.unarchive(activity.id);
       activity.archived = false;
     },
-    async getActivityLog(activity: IActivity) {
+    getDataPoint(activity: IActivity) {
       const { date } = useTimingStore();
       const timingId = toTimingId(date, activity.interval);
 
-      let log = this.cache.getLog(activity, timingId);
+      let dataPoint = this.cache.getDataPoint(activity, timingId);
 
-      if(!log) {
+      if(!dataPoint) {
         // We assume the log should have already been loaded for the given timingId
-        log = ActivityDataPointDto.createForActivity(activity, timingId);
-        this.cache.addLog(log);
+        dataPoint = new NumberDataPointDto({ cid: activity.id, tid: timingId });
+        this.cache.addDataPoint(dataPoint);
       }
 
-      return log;
+      return dataPoint;
     },
     async setTaskDone(task: ITask) {
       const { date } = useTimingStore();

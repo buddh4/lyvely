@@ -34,11 +34,11 @@ const {
         :error="getError('title')"/>
 
       <SelectInput
-        v-model="model.plan"
-        data-habit-plan
+        v-model="model.interval"
+        data-habit-interval
         label="Plan"
         :options="calendarPlanOptions"
-        :error="getError('plan')"/>
+        :error="getError('interval')"/>
 
       <Multiselect
         v-model="model.categories"

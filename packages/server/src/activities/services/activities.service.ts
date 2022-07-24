@@ -1,4 +1,3 @@
-
 import { Injectable } from '@nestjs/common';
 import { Activity, HabitDataPoint } from '../schemas';
 import { User } from '../../users';

@@ -10,7 +10,7 @@ import { useTimingStore } from "../store";
 import { computed, ref } from 'vue';
 
 interface Props {
-  plan: CalendarIntervalEnum,
+  interval: CalendarIntervalEnum,
   count: number
 }
 
@@ -21,7 +21,7 @@ const emit = defineEmits(['changed']);
 const props = defineProps<Props>();
 
 const collapsed = ref(false);
-const title = computed(() => CalendarPlan.getInstance(props.plan).getTitle(timingStore.date, profileStore.locale));
+const title = computed(() => CalendarPlan.getInstance(props.interval).getTitle(timingStore.date, profileStore.locale));
 const titleSuffix = computed(() => !props.count ? "" : ` · (${props.count})`);
 const isEmpty = computed(() => !props.count);
 
@@ -29,12 +29,12 @@ function switchToToday() {
   timingStore.setCurrentDate(new Date());
 }
 
-const showTodayIcon = computed(() => props.plan === CalendarIntervalEnum.Daily && !isToday(timingStore.date));
-const rightCaret = computed(() => (props.plan === CalendarIntervalEnum.Unscheduled) ? false : "▸");
-const leftCaret = computed(() => (props.plan === CalendarIntervalEnum.Unscheduled) ? false : "◂");
+const showTodayIcon = computed(() => props.interval === CalendarIntervalEnum.Daily && !isToday(timingStore.date));
+const rightCaret = computed(() => (props.interval === CalendarIntervalEnum.Unscheduled) ? false : "▸");
+const leftCaret = computed(() => (props.interval === CalendarIntervalEnum.Unscheduled) ? false : "◂");
 
 const headerCssClass = computed(() => {
-  const timingClass = `timing-${CalendarPlan.getInstance(props.plan).getLabel().toLocaleLowerCase()}`;
+  const timingClass = `timing-${CalendarPlan.getInstance(props.interval).getLabel().toLocaleLowerCase()}`;
 
   return [
     "border-divide",
@@ -46,12 +46,12 @@ const headerCssClass = computed(() => {
 });
 
 function incrementTiming() {
-  useTimingStore().incrementTiming(props.plan);
+  useTimingStore().incrementTiming(props.interval);
   emit("changed", timingStore.date);
 }
 
 function decrementTiming() {
-  useTimingStore().decrementTiming(props.plan);
+  useTimingStore().decrementTiming(props.interval);
   emit("changed", timingStore.date);
 }
 </script>

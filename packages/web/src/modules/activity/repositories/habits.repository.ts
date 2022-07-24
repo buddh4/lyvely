@@ -13,6 +13,6 @@ export default {
   },
 
   async updateLog(habitId: string, dto: UpdateActivityLogModel) {
-    return repository.post<UpdateHabitResultDto>(`${resource}/${habitId}/update-log`, dto);
+    return repository.post<UpdateHabitResultDto>(`${resource}/${habitId}/update-log`, dto, { params: { cid: habitId } });
   }
 };

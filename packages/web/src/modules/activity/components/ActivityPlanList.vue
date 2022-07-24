@@ -6,16 +6,16 @@ import { useActivityList } from '@/modules/activity/components/ActivityList';
 import { ActivityType } from 'lyvely-common';
 
 interface Props {
-  plan: number,
+  interval: number,
   type: ActivityType
 }
 
 const props = defineProps<Props>();
-const { activities, activityCount, dragEnd, onDateChanged } = useActivityList(props.plan, props.type);
+const { activities, activityCount, dragEnd, onDateChanged } = useActivityList(props.interval, props.type);
 </script>
 
 <template>
-  <CalendarPlanList :plan="props.plan" :count="activityCount" @changed="onDateChanged">
+  <CalendarPlanList :interval="props.interval" :count="activityCount" @changed="onDateChanged">
     <VueDraggableNext
       tag="ul"
       group="habits"

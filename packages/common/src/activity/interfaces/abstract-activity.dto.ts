@@ -9,7 +9,7 @@ import {
     Length,
 } from 'class-validator';
 import { CalendarIntervalEnum } from '../../calendar';
-import { ITimeSeriesDataPointConfig } from '../../time-series';
+import { INumberDataPointConfig } from '../../time-series';
 import { DocumentDto } from '../../model';
 import { ActivityType, IActivity } from './activity.interface';
 import { Exclude, Expose } from 'class-transformer';
@@ -26,7 +26,7 @@ export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implem
     interval: CalendarIntervalEnum;
 
     @Expose()
-    dataPointConfig: ITimeSeriesDataPointConfig;
+    dataPointConfig: INumberDataPointConfig;
 
     @Expose()
     @IsString()

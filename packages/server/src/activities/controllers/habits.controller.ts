@@ -23,10 +23,10 @@ import { ActivityPermissions } from '../permissions';
 import { Feature } from '../../core/features/feature.decorator';
 import { EntityNotFoundException } from "../../core/exceptions";
 
-@UseClassSerializer()
 @ContentController('habits')
 @Feature('content.activities.habits')
 @ContentType(Habit)
+@UseClassSerializer()
 export class HabitsController extends AbstractContentController<Habit> {
 
   constructor(
@@ -64,7 +64,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Post(':id/update-log')
   @Policies(ContentWritePolicy)
-  async updateLog(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateActivityLogModel) {
+  async updateDataPoint(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateActivityLogModel) {
     const { profile, user, content } = req;
 
     if(!isHabit(content)) {

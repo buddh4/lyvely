@@ -15,10 +15,10 @@ const props = defineProps<Props>();
 const initialized = ref(false);
 const activityStore = useActivityStore();
 const timingStore = useTimingStore();
-const log = computed(() => activityStore.getLog(props.model));
+const log = computed(() => activityStore.getDataPoint(props.model));
 
 onMounted(async () => {
-  await activityStore.getActivityLog(props.model);
+  await activityStore.getDataPoint(props.model);
   initialized.value = true;
 });
 
@@ -36,7 +36,6 @@ function archiveEntry() {
 }
 
 function editEntry() {
-  debugger;
   useActivityEditStore().setEditActivity(props.model);
 }
 
@@ -60,9 +59,9 @@ const { model } = toRefs(props);
     <template v-if="isHabit" #rating>
       <ItemCheckboxList
         v-model:selection="selection"
-        :min="props.model.rating.min"
-        :max="props.model.rating.max"
-        :optimal="props.model.rating.optimal"
+        :min="props.model.dataPointConfig.min"
+        :max="props.model.dataPointConfig.max"
+        :optimal="props.model.dataPointConfig.optimal"
         :disabled="isDisabled"/>
     </template>
 

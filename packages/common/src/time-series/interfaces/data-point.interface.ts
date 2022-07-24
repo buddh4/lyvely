@@ -1,7 +1,11 @@
+import { CalendarIntervalEnum } from "../../calendar";
+
 export interface ITimeSeriesDataPoint {
-  id?: string;
-  cid: string;
-  timingId: string;
+  cid: string,
+  uid?: string,
+  interval: CalendarIntervalEnum,
+  date: Date,
+  tid: string,
 }
 
 export interface ITimeSeriesNumberDataPoint extends ITimeSeriesDataPoint {

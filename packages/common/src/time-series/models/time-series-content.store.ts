@@ -36,7 +36,7 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
       this.logs.set(modelId, new Map());
     }
 
-    this.logs.get(modelId).set(log.timingId, log);
+    this.logs.get(modelId).set(log.tid, log);
   }
 
   addDataPoints(logs: DataPointModel[]) {

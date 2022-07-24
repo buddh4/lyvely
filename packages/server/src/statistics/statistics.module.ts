@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { StatisticsController } from './statistics.controller';
 import { StatisticsService } from './statistics.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { HabitDataPoint, ActivityDataPointSchema } from '../activities/schemas';
+import { HabitDataPoint, HabitDataPointSchema } from '../activities/schemas';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: HabitDataPoint.name, schema: ActivityDataPointSchema },
+      { name: HabitDataPoint.name, schema: HabitDataPointSchema },
     ]),
   ],
   controllers: [StatisticsController],

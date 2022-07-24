@@ -6,8 +6,9 @@ export const CONTENT_ID_PARAM_KEY = 'contentIdParam';
 export const DEFAULT_CONTENT_ID_PARAM_KEY = 'cid';
 export const ContentIdParam = (contentIdParamName: string) => SetMetadata(CONTENT_ID_PARAM_KEY, contentIdParamName);
 
-export function getContentIdFromRequest(request: Request, context: ExecutionContext, reflector: Reflector) {
-  return request.params[getContentIdParamFromContext(context, reflector)];
+export function getContentIdFromRequest(request: Request, context: ExecutionContext, reflector: Reflector): string {
+  const name = getContentIdParamFromContext(context, reflector);
+  return request.params[name] || request.query[name] as string;
 }
 
 export function getContentIdParamFromContext(context: ExecutionContext, reflector: Reflector) {

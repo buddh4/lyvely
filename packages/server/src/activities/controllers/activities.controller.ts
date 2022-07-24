@@ -38,17 +38,18 @@ export class ActivitiesController extends AbstractContentController<Activity> {
    * @param filter
    */
   @Get()
-  async findByRange(
+  async findByFilter(
     @Request() req: UserProfileRequest,
-    @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
+    @Query(new ValidationPipe({ transform: false })) filter: DataPointIntervalFilter,
   ): Promise<IActivityRangeResponse> {
     const { profile, user } = req;
+
     // TODO: (Optimization) Currently we only need to load habits and undone tasks on first load
     const { activities, dataPoints } = await this.contentService.findByFilter(profile, user, filter);
 
     const result = new ActivityRangeResponseDto();
     result.addActivities(activities);
-   // result.addActivityLogs(logs);
+    result.addDataPoints(dataPoints.map((value) => value.createDto()));
     return result;
   }
 

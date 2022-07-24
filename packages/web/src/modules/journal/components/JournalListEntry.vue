@@ -16,7 +16,7 @@ const props = defineProps<Props>();
 defineEmits(["edit", "archive"]);
 
 const log = computed(() => {
-  const timingId = useTimingStore().getTimingId(props.model.plan);
+  const timingId = useTimingStore().getTimingId(props.model.interval);
   return useJournalStore().store.getLog(props.model, timingId, true);
 });
 

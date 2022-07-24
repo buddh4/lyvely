@@ -1,17 +1,9 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { DataPoint } from "../../time-series";
+import { NumberDataPoint } from "../../time-series";
 
 @Schema({ timestamps: true })
-export class HabitDataPoint extends DataPoint<HabitDataPoint> {
-  @Prop({ required: true })
-  value: number;
+export class HabitDataPoint extends NumberDataPoint {}
 
-  afterInit() {
-    super.afterInit();
-    this.value = this.value || 0;
-  }
-}
-
-export const ActivityDataPointSchema = SchemaFactory.createForClass(HabitDataPoint);
+export const HabitDataPointSchema = SchemaFactory.createForClass(HabitDataPoint);
 export type HabitDataPointDocument = HabitDataPoint & mongoose.Document;

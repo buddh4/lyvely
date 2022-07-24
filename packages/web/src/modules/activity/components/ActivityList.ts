@@ -2,12 +2,12 @@ import { ActivityType, CalendarIntervalEnum } from 'lyvely-common';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed } from 'vue';
 
-export function useActivityList(plan: CalendarIntervalEnum, type: ActivityType) {
+export function useActivityList(interval: CalendarIntervalEnum, type: ActivityType) {
   const activityStore = useActivityStore();
 
   const activities = (type === ActivityType.Habit)
-    ? computed(() => activityStore.habits(plan))
-    : computed(() => activityStore.tasks(plan));
+    ? computed(() => activityStore.habits(interval))
+    : computed(() => activityStore.tasks(interval));
 
   const activityCount = computed(() => activities.value.length);
 

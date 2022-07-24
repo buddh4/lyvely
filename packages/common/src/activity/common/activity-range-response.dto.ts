@@ -1,25 +1,28 @@
-import { Exclude, Type } from 'class-transformer';
+import { Exclude, Type, Expose } from 'class-transformer';
 import { IsArray } from 'class-validator';
 import { HabitDto } from '../habit';
 import { TaskDto } from '../task';
-import { IActivityRangeResponse, ActivityType, IActivity, IActivityDataPoint } from '../interfaces';
-import { ActivityDataPointDto } from '../models';
+import { IActivityRangeResponse, ActivityType, IActivity } from '../interfaces';
 import { BaseDto } from '../../model';
+import { ITimeSeriesNumberDataPoint, NumberDataPointDto } from "../../time-series";
 
 @Exclude()
 export class ActivityRangeResponseDto extends BaseDto<ActivityRangeResponseDto> implements IActivityRangeResponse {
 
+  @Expose()
   @IsArray()
   @Type(() => HabitDto)
   habits: HabitDto[] = [];
 
+  @Expose()
   @IsArray()
   @Type(() => TaskDto)
   tasks: TaskDto[] = [];
 
+  @Expose()
   @IsArray()
-  @Type(() => ActivityDataPointDto)
-  dataPoints: ActivityDataPointDto[] = [];
+  @Type(() => NumberDataPointDto)
+  dataPoints: NumberDataPointDto[] = [];
 
   addActivity(activity: IActivity) {
     switch (activity.type) {
@@ -36,11 +39,11 @@ export class ActivityRangeResponseDto extends BaseDto<ActivityRangeResponseDto> 
     activities.forEach((activity) => this.addActivity(activity));
   }
 
-  addActivityLog(activityLog: IActivityDataPoint) {
-    this.dataPoints.push(new ActivityDataPointDto(activityLog));
+  addDataPoint(activityLog: ITimeSeriesNumberDataPoint) {
+    this.dataPoints.push(new NumberDataPointDto(activityLog));
   }
 
-  addActivityLogs(activityLogs: IActivityDataPoint[]) {
-    activityLogs.forEach((log) => this.addActivityLog(log));
+  addDataPoints(activityLogs: ITimeSeriesNumberDataPoint[]) {
+    activityLogs.forEach((log) => this.addDataPoint(log));
   }
 }

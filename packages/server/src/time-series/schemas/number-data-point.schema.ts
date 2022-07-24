@@ -1,8 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DataPoint } from "./data-point.schema";
 import mongoose from 'mongoose';
-import { assureObjectId, EntityIdentity } from "../../db/db.utils";
+import { assureObjectId, assureStringId, EntityIdentity } from "../../db/db.utils";
 import { User } from "../../users";
+import { NumberDataPointDto } from "lyvely-common";
 
 export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
   @Prop( { type: Number, required: true, default: 0 })
@@ -12,10 +13,22 @@ export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
     this.value = this.value ?? 0;
     super.afterInit();
   }
+
+  createDto(): NumberDataPointDto {
+    return new NumberDataPointDto({
+      id: this.id,
+      cid: assureStringId(this.meta.cid),
+      uid: assureStringId(this.meta.uid),
+      interval: this.meta.interval,
+      date: this.date,
+      tid: this.tid,
+      value: this.value
+    });
+  }
 }
 
 @Schema({ _id: false })
-export class DataPointUpdate {
+export class NumberDataPointUpdate {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
   uid?: mongoose.Types.ObjectId;
 
@@ -32,15 +45,15 @@ export class DataPointUpdate {
   }
 
   static createByDataPointUpdate(uid: EntityIdentity<User>, dataPoint: NumberDataPoint, newValue: number) {
-    return new DataPointUpdate(uid,newValue - dataPoint.value);
+    return new NumberDataPointUpdate(uid,newValue - dataPoint.value);
   }
 }
 
-const DataPointTimingSchema = SchemaFactory.createForClass(DataPointUpdate);
+const DataPointTimingSchema = SchemaFactory.createForClass(NumberDataPointUpdate);
 
 export abstract class TimedNumberDataPoint extends NumberDataPoint {
   @Prop({ type: [DataPointTimingSchema] })
-  history?: DataPointUpdate[];
+  history?: NumberDataPointUpdate[];
 
   afterInit() {
     this.history = this.history || [];
