@@ -52,7 +52,7 @@ describe('TimeableContentSchema', () => {
   describe('save()', () => {
     it('create content without logging config should fail', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const model = new TestTimeSeriesContent(user, profile, {
+      const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
         interval: CalendarIntervalEnum.Daily,
         dataPointConfig: new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 })
@@ -71,7 +71,7 @@ describe('TimeableContentSchema', () => {
 
     it('create content with valid data point config', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const model = new TestTimeSeriesContent(user, profile, {
+      const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
         interval: CalendarIntervalEnum.Daily,
         dataPointConfig: new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 })
@@ -92,7 +92,7 @@ describe('TimeableContentSchema', () => {
   describe('save()', () => {
     it('construct data series content model from entity', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const model = new TestTimeSeriesContent(user, profile, {
+      const model = new TestTimeSeriesContent(profile, user,{
         someTestField: 'Testing...',
         interval: CalendarIntervalEnum.Daily,
         dataPointConfig: new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 })
@@ -101,7 +101,7 @@ describe('TimeableContentSchema', () => {
       const entity = new TestTimeSeriesContentModel(model);
       await entity.save();
 
-      const newModel = new TestTimeSeriesContent(user, profile, entity);
+      const newModel = new TestTimeSeriesContent(profile, user, entity);
 
       expect(newModel.id).toBeDefined();
       const dataPointConfig = <CheckboxNumberDataPointConfig> newModel.dataPointConfig;
@@ -114,7 +114,7 @@ describe('TimeableContentSchema', () => {
 
     it('construct data series content model from entity', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const model = new TestTimeSeriesContent(user, profile, {
+      const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
         interval: CalendarIntervalEnum.Daily,
         dataPointConfig: <CheckboxNumberDataPointConfig> { strategy: DataPointInputStrategy.RangeNumber, min: 0, max: 5, optimal: 3 }

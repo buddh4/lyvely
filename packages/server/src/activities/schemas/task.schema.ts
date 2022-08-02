@@ -1,12 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '../../profiles';
-import { AbstractCreateActivityDto, DataPointNumberInputStrategy, ITaskWithUsers, REGEX_TID } from 'lyvely-common';
+import { AbstractCreateActivityDto, DataPointNumberInputStrategy, ITaskWithUsers, REGEX_TID, UserAssignmentStrategy } from 'lyvely-common';
 import mongoose from 'mongoose';
 import { User } from '../../users';
 import { Activity } from './activity.schema';
 import { DataPointConfigFactory } from '../../time-series';
 import { assureObjectId, EntityIdentity } from "../../db/db.utils";
-import { UserAssignmentStrategy } from "lyvely-common";
 
 export type TaskDocument = Task & mongoose.Document;
 
@@ -88,12 +87,12 @@ export class Task extends Activity implements ITaskWithUsers {
 
   }
 
-  public static create(owner: User, profile: Profile, data: AbstractCreateActivityDto): Task {
+  public static create( profile: Profile, owner: User, data: AbstractCreateActivityDto): Task {
     data.strategy = DataPointNumberInputStrategy.CheckboxNumber;
     data.max = 1;
     data.optimal = 1;
     data.categories = data.categories || [];
-    return Activity.createActivityType(owner, profile, data, Task);
+    return Activity.createActivityType(profile, owner, data, Task);
   }
 }
 

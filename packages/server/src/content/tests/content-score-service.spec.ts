@@ -15,9 +15,8 @@ import { Model } from 'mongoose';
 import { expect } from "@jest/globals";
 import { ContentScoreService } from "../services";
 import { ContentScoreDao } from "../daos";
-import { toTimingId } from "lyvely-common";
+import { toTimingId , UserAssignmentStrategy } from "lyvely-common";
 import { TestContent } from "./src/test-content.schema";
-import { UserAssignmentStrategy } from "lyvely-common";
 
 describe('ContentScoreService', () => {
   let testingApp: TestingModule;
@@ -52,7 +51,7 @@ describe('ContentScoreService', () => {
 
   async function createGroupAndContent() {
     const { owner, member, profile } = await testDataUtils.createSimpleGroup();
-    const content = new TestContent(owner, profile, { _id: getObjectId('TestContent') });
+    const content = new TestContent(profile, owner, { _id: getObjectId('TestContent') });
     return { owner, member, profile, content };
   }
 
@@ -213,7 +212,7 @@ describe('ContentScoreService', () => {
   describe('Extended Content Score', () => {
     it('assure validation of discriminator type works', async () => {
       const { user, profile } = await testDataUtils.createUserAndProfile();
-      const content = new TestContent(user, profile,{ _id: getObjectId('TestContent') });
+      const content = new TestContent(profile, user,{ _id: getObjectId('TestContent') });
 
       const testScore = new ExtendedTestContentScore({
         user,
@@ -227,7 +226,7 @@ describe('ContentScoreService', () => {
     })
     it('save test score', async () => {
       const { user, profile } = await testDataUtils.createUserAndProfile();
-      const content = new TestContent(user, profile,{ _id: getObjectId('TestContent') });
+      const content = new TestContent(profile, user,{ _id: getObjectId('TestContent') });
 
       const testScore = new ExtendedTestContentScore({
         user,
@@ -255,7 +254,7 @@ describe('ContentScoreService', () => {
 
     it('assure discriminator is working', async () => {
       const { user, profile } = await testDataUtils.createUserAndProfile();
-      const content = new TestContent(user, profile,{ _id: getObjectId('TestContent') });
+      const content = new TestContent(profile, user,{ _id: getObjectId('TestContent') });
 
       const testScore = new ExtendedTestContentScore({
         user,

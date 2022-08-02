@@ -15,13 +15,13 @@ describe('Content Model', () => {
   describe('AssertContentMetadata', () => {
     it('assertion is set by default', async() => {
       const { user, profile } = TestDataUtils.createDummyUserAndProfile();
-      const content = new AssertMetadataContent(user, profile);
+      const content = new AssertMetadataContent(profile, user);
       expect(content.metaData.isArchivable).toEqual(false);
     });
 
     it('constructor can not overwrite assertion', async() => {
       const { user, profile } = TestDataUtils.createDummyUserAndProfile();
-      const content = new AssertMetadataContent(user, profile, { metaData: { isArchivable: true }});
+      const content = new AssertMetadataContent(profile, user, { metaData: { isArchivable: true } });
       expect(content.metaData.isArchivable).toEqual(false);
     });
   });

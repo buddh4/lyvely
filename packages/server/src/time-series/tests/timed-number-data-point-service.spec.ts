@@ -60,10 +60,10 @@ describe('NumberDataPointService', () => {
     data.interval = data.interval ?? CalendarIntervalEnum.Daily;
     data.dataPointConfig = data.dataPointConfig || new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 });
 
-    const model = new TestNumberTimeSeriesContent(user, profile, data);
+    const model = new TestNumberTimeSeriesContent(profile, user, data);
     const entity = new TestNumberTimeSeriesContentModel(model);
     await entity.save();
-    return new TestNumberTimeSeriesContent(user, profile, entity);
+    return new TestNumberTimeSeriesContent(profile, user, entity);
   }
 
   it('should be defined', () => {

@@ -9,7 +9,7 @@ describe('Task', () => {
   describe('setDoneBy', () => {
     it('set done by user on shared task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.Shared
       });
 
@@ -28,7 +28,7 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.Shared
       });
 
@@ -48,7 +48,7 @@ describe('Task', () => {
 
     it('set done by user on per user task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.PerUser
       });
 
@@ -67,7 +67,7 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.PerUser
       });
 
@@ -93,7 +93,7 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.PerUser
       });
 
@@ -120,7 +120,7 @@ describe('Task', () => {
   describe('setUndoneBy', () => {
     it('set undone by user on shared task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1,{
         userStrategy: UserAssignmentStrategy.Shared
       });
 
@@ -137,7 +137,7 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.Shared
       });
 
@@ -154,7 +154,7 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.PerUser
       });
 
@@ -175,7 +175,7 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
       const user3 = new User({ _id: getObjectId('user3') });
 
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.PerUser
       });
 
@@ -197,7 +197,7 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.Shared
       });
 
@@ -216,7 +216,7 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const user2 = new User({ _id: getObjectId('user2') });
 
-      const task = new Task(user1, new Profile(), {
+      const task = new Task(new Profile(), user1, {
         userStrategy: UserAssignmentStrategy.PerUser
       });
 

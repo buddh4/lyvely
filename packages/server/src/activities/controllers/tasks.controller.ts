@@ -26,7 +26,7 @@ import { Feature } from '../../core/features/feature.decorator';
 import { ContentType } from '../../content/decorators/content-type.decorator';
 
 @Controller('tasks')
-@Feature('content.activities.tasks')
+// TODO: implement feature registration @Feature('content.activities.tasks')
 @ContentType(Habit)
 @UseInterceptors(ClassSerializerInterceptor)
 export class TasksController {

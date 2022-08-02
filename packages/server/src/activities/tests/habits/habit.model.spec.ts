@@ -1,5 +1,5 @@
 import { Profile } from '../../../profiles';
-import { User } from '../../../users/schemas/users.schema';
+import { User } from '../../../users';
 import { Habit } from '../../schemas';
 import { CalendarIntervalEnum, DataPointInputStrategy } from 'lyvely-common';
 import { expect } from '@jest/globals';
@@ -18,7 +18,7 @@ describe('Content Model', () => {
 
   describe('Habit', () => {
     it('create', async() => {
-      const habit = Habit.create(user, profile, {
+      const habit = Habit.create(profile, user, {
         title: 'Test',
         text: 'Some Test Habit',
         score: 5,

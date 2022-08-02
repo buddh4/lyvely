@@ -28,9 +28,10 @@ export abstract class TimeSeriesContent<T extends TimeSeriesContentEntity = Time
 
   afterInit() {
     // in case plain object is given we create a class instance
-    if(!this.dataPointConfig.getSettings) {
+    if(this.dataPointConfig && !this.dataPointConfig.getSettings) {
       this.dataPointConfig = DataPointConfigFactory.createConfig(this.dataPointConfig.strategy, this.dataPointConfig);
     }
+
     super.afterInit();
   }
 }

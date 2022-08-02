@@ -9,8 +9,8 @@ export type HabitDocument = Habit & ContentDocument;
 
 @Schema()
 export class Habit extends Activity implements IHabit {
-  public static create(owner: User, profile: Profile, dto: AbstractCreateActivityDto): Habit {
-    return Activity.createActivityType(owner, profile, dto, Habit);
+  public static create(profile: Profile, owner: User, dto: AbstractCreateActivityDto): Habit {
+    return Activity.createActivityType(profile, owner, dto, Habit);
   }
 }
 

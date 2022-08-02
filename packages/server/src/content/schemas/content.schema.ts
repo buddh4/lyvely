@@ -13,7 +13,7 @@ import { Profile } from '../../profiles';
 export type ContentDocument = Content & mongoose.Document<mongoose.Types.ObjectId>;
 
 export interface ContentConstructor<T extends Content = any> extends Function {
-  new (author?: User, profile?: Profile, obj?: Partial<T>): T;
+  new (profile?: Profile, author?: User, obj?: Partial<T>): T;
 }
 
 export interface ContentEntity {
@@ -75,7 +75,7 @@ export class Content<T extends EntityType<ContentEntity> = EntityType<ContentEnt
 
   updatedAt: Date;
 
-  constructor(author: User, profile: Profile, obj: DeepPartial<T> = {}) {
+  constructor(profile: Profile, author: User, obj: DeepPartial<T> = {}) {
     obj.createdBy = author._id;
     obj.createdAs = new CreatedAs(author);
     obj.pid = profile._id;

@@ -24,7 +24,7 @@ import { UserProfileRequest } from '../../core/types';
 import { Feature } from '../../core/features/feature.decorator';
 
 @ContentController('activities')
-@Feature('activities')
+// TODO: implement feature registration @Feature('activities')
 @UseInterceptors(ClassSerializerInterceptor)
 export class ActivitiesController extends AbstractContentController<Activity> {
 

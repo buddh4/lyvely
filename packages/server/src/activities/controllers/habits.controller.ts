@@ -24,7 +24,7 @@ import { Feature } from '../../core/features/feature.decorator';
 import { EntityNotFoundException } from "../../core/exceptions";
 
 @ContentController('habits')
-@Feature('content.activities.habits')
+// TODO: implement feature registration @Feature('content.activities.habits')
 @ContentType(Habit)
 @UseClassSerializer()
 export class HabitsController extends AbstractContentController<Habit> {

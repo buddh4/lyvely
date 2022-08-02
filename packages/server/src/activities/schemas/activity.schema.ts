@@ -7,7 +7,7 @@ import {
   DataPointInputStrategy,
   AbstractCreateActivityDto,
   DataPointNumberInputStrategy
-} from 'lyvely-common';
+, UserAssignmentStrategy } from 'lyvely-common';
 import {
   CheckboxNumberDataPointConfig, SpinnerNumberDataPointConfig,
   NumberTimeSeriesContent,
@@ -16,7 +16,6 @@ import {
   DataPointConfigFactory
 } from '../../time-series';
 import { ContentConstructor } from '../../content';
-import { UserAssignmentStrategy } from "lyvely-common";
 
 type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 
@@ -41,12 +40,12 @@ export class Activity extends NumberTimeSeriesContent<Activity> implements IActi
   type: string;
 
   static createActivityType<T extends Activity>(
-    user: User, profile: Profile, dto: AbstractCreateActivityDto, type: ContentConstructor<Activity>
+    profile: Profile, user: User, dto: AbstractCreateActivityDto, type: ContentConstructor<Activity>
   ): T {
 
     dto.strategy = dto.strategy || DataPointNumberInputStrategy.CheckboxNumber;
 
-    return new type(user, profile, {
+    return new type(profile, user, {
       title: dto.title,
       text: dto.text,
       interval: dto.interval,

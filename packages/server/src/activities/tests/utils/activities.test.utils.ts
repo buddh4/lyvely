@@ -15,7 +15,7 @@ import {
   toTimingId,
   CalendarDate,
   CalendarIntervalEnum,
-  CreateHabitDto, CreateTaskDto, IHabit, ITask, toDate, ITaskWithUsers
+  CreateHabitDto, CreateTaskDto, IHabit, toDate, ITaskWithUsers
 } from 'lyvely-common';
 
 import { InjectModel } from '@nestjs/mongoose';
@@ -29,9 +29,8 @@ import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-refe
 import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { assureObjectId, EntityIdentity } from '../../../db/db.utils';
-import { DataPointMeta } from "../../../time-series";
 import { ActivityScore, ActivityScoreSchema } from "../../schemas/activity-score.schema";
-import { createBaseEntityInstance } from "../../../db/base.entity";
+import { assignEntityData, createBaseEntityInstance } from "../../../db/base.entity";
 
 @Injectable()
 export class ActivityTestDataUtil extends TestDataUtils {
@@ -79,17 +78,14 @@ export class ActivityTestDataUtil extends TestDataUtils {
   }
 
   async createLog(user: User, profile: Profile, activity: Activity, date: CalendarDate): Promise<HabitDataPoint> {
-    const log = new this.HabitDataPointModel(new HabitDataPoint({
-      meta: DataPointMeta.create(user, profile, activity),
-      date: toDate(date)
-    }));
+    const log = new this.HabitDataPointModel(new HabitDataPoint(profile, user, activity, { date: toDate(date) }));
     await log.save();
-    return new HabitDataPoint(log.toObject());
+    return createBaseEntityInstance(HabitDataPoint, log.toObject());
   }
 
   async createTask(user: User, profile: Profile, data?: Partial<CreateTaskDto>, overwrite?: Partial<ITaskWithUsers>): Promise<Task> {
     const initData = <CreateTaskDto> Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {});
-    const task = new this.TaskModel(Task.create(user, profile, initData));
+    const task = new this.TaskModel(Task.create(profile, user, initData));
 
     Object.assign(task, overwrite);
 
@@ -100,7 +96,7 @@ export class ActivityTestDataUtil extends TestDataUtils {
 
   async createHabit(user: User, profile: Profile, data?: Partial<CreateHabitDto>, overwrite?: Partial<IHabit>): Promise<Habit> {
     const initData = <CreateHabitDto> Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {});
-    const habit = new this.HabitModel(Habit.create(user, profile, initData));
+    const habit = new this.HabitModel(Habit.create(profile, user, initData));
     Object.assign(habit, overwrite);
     await habit.save();
     return createBaseEntityInstance(Habit, habit.toObject());

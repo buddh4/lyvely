@@ -74,7 +74,6 @@ export const useActivityStore = defineStore('activity', {
       }
     },
     async updateLog(log: ITimeSeriesNumberDataPoint, value: number) {
-      debugger;
       const { date } = useTimingStore();
       const profileStore = useProfileStore();
       try {

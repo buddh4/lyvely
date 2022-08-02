@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from '../../services/habits.service';
 import { Habit } from '../../schemas';
-import { CalendarIntervalEnum , ActivityType, CreateHabitDto, EditHabitDto } from 'lyvely-common';
+import { CalendarIntervalEnum, ActivityType, CreateHabitDto, EditHabitDto } from 'lyvely-common';
 import { Profile } from '../../../profiles';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitsDao } from '../../daos/habits.dao';
@@ -16,7 +16,7 @@ describe('HabitService', () => {
   const TEST_KEY = 'habit_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY, [HabitsDao, HabitsService] ).compile();
+    testingModule = await createActivityTestingModule(TEST_KEY, [HabitsDao, HabitsService]).compile();
     habitService = testingModule.get<HabitsService>(HabitsService);
     testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
   });
@@ -33,7 +33,7 @@ describe('HabitService', () => {
       interval: CalendarIntervalEnum.Daily,
     };
 
-    return habitService.createContent(profile, user, Habit.create(user, profile, dto));
+    return habitService.createContent(profile, user, Habit.create(profile, user, dto));
   };
 
   describe('create Habit', () => {
@@ -56,7 +56,7 @@ describe('HabitService', () => {
       await testData.createHabit(user, profile);
 
       try {
-        await testData.createHabit(user,profile);
+        await testData.createHabit(user, profile);
         expect(true).toBeFalsy();
       } catch (err) {
         expect(err).toBeDefined();
@@ -85,11 +85,11 @@ describe('HabitService', () => {
   describe('update Habit', () => {
     it('find activity by object id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await testData.createHabit(user,profile);
+      const habit = await testData.createHabit(user, profile);
 
       await habitService.updateContent(profile, user, habit, Habit.create(
-          user,
           profile,
+          user,
           new EditHabitDto({
             title: 'Test',
             text: 'Test description',

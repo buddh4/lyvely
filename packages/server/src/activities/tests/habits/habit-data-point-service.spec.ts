@@ -7,6 +7,7 @@ import { UserAssignmentStrategy, toTimingId, DataPointIntervalFilter } from "lyv
 import { ContentScoreDao, ContentScoreService } from "../../../content";
 import { HabitDataPointDocument } from "../../schemas";
 import { Model } from 'mongoose';
+import { CalendarIntervalEnum } from "lyvely-common/src";
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
@@ -35,17 +36,54 @@ describe('HabitDataPointService', () => {
   });
 
   describe('findLogsByRange', () => {
-    it('no logs available', async () => {
+    it('no dataPoint available', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       await testData.createHabit(user, profile);
 
       const logs = await habitDataPointService.findByIntervalLevel(
-        profile,
-        user,
+        profile, user,
         new DataPointIntervalFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(0);
+    });
+
+    it('find existing data point', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habit = await testData.createHabit(user, profile);
+
+      const log = await habitDataPointService.upsertDataPoint(
+        profile,
+        user,
+        habit,
+        '2021-04-03',
+        2,
+      );
+
+      const logs = await habitDataPointService.findByIntervalLevel(
+        profile, user, new DataPointIntervalFilter('2021-04-03'),
+      );
+
+      expect(logs.length).toEqual(1);
+    });
+
+    it('find existing data point for unscheduled habit', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habit = await testData.createHabit(user, profile, { interval: CalendarIntervalEnum.Unscheduled });
+
+      const log = await habitDataPointService.upsertDataPoint(
+        profile,
+        user,
+        habit,
+        '2021-04-03',
+        2,
+      );
+
+      const logs = await habitDataPointService.findByIntervalLevel(
+        profile, user, new DataPointIntervalFilter('2021-04-03'),
+      );
+
+      expect(logs.length).toEqual(1);
     });
   });
 
@@ -77,7 +115,7 @@ describe('HabitDataPointService', () => {
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared  });
       const dataPoint = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       expect(dataPoint._id).toBeDefined();
-      expect(dataPoint.meta.uid).toBeNull();
+      expect(dataPoint.uid).toBeNull();
       expect(dataPoint.tid).toEqual(toTimingId(new Date));
       expect(dataPoint.value).toEqual(2);
     });
@@ -126,7 +164,7 @@ describe('HabitDataPointService', () => {
       const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.PerUser  });
       const dataPoint = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       expect(dataPoint._id).toBeDefined();
-      expect(dataPoint.meta.uid).toEqual(user._id);
+      expect(dataPoint.uid).toEqual(user._id);
       expect(dataPoint.tid).toEqual(toTimingId(new Date));
       expect(dataPoint.value).toEqual(2);
     });

@@ -12,6 +12,17 @@ export interface ITimeSeriesContent<E extends IDataPointConfig = IDataPointConfi
   sortOrder: number;
 }
 
+export interface IDataPoint<TID> {
+  id: string,
+  pid: TID,
+  cid: TID,
+  uid?: TID,
+  interval: CalendarIntervalEnum,
+  tid: string,
+  date: Date,
+}
+
+
 export interface IDataPointConfig {
   strategy: string;
   valueType: DataPointValueType;

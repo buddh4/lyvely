@@ -43,7 +43,7 @@ describe('ContentScore', () => {
         const { user, profile } = await testDataUtils.createUserAndProfile();
         profile.oid = getObjectId('MyOrg');
         const cid = getObjectId('MyContent');
-        const content = new TestContent(user, profile, { _id: cid });
+        const content = new TestContent(profile, user, { _id: cid });
         const model = new ExtendedTestContentScore({
           user,
           profile,

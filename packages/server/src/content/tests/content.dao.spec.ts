@@ -39,9 +39,9 @@ describe('content dao', () => {
   });
 
   async function createTestContent(user: User, profile: Profile, testData = 'Testing...') {
-    const testContent = new TestContent(user, profile, { data: { testData: testData } });
+    const testContent = new TestContent(profile, user, { data: { testData: testData } });
     const entity = await testContentModel.create(testContent);
-    return new TestContent(user, profile, entity.toObject());
+    return new TestContent(profile, user, entity.toObject());
   }
 
   describe('findById', () => {

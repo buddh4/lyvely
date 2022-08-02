@@ -15,6 +15,9 @@ import {
   toTimingId,
   DataPointIntervalFilter } from 'lyvely-common';
 import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
+import { Profile } from "../../profiles";
+import { User } from "../../users";
+import { TestTimeSeriesContent } from "./src/test-time-series-content.schema";
 
 const DataPointModelDefinition = [
   { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }
@@ -46,6 +49,7 @@ describe('NumberDataPointDao', () => {
     uid?: string,
     cid?: string,
     pid?: string,
+    value?: number
   }
 
   interface ExtendedPointTestOptions extends DataPointTestOptions {
@@ -63,24 +67,26 @@ describe('NumberDataPointDao', () => {
 
   async function createEntity(d: CalendarDateTime, interval: CalendarIntervalEnum, options: DataPointTestOptions = {}) {
     const date = dateTime(d);
-    const pid = getObjectId(options.pid || 'p1');
-    const cid = getObjectId(options.cid || 'c1');
-    const uid = getObjectId(options.uid || 'u1');
+    const profile = new Profile({ _id: getObjectId(options.pid || 'p1'), oid: getObjectId(options.pid || 'o1') });
+    const user = new User({ _id: getObjectId(options.uid || 'u1') });
+    const content = new TestTimeSeriesContent(profile, user, {
+      _id: getObjectId(options.uid || 'c1'),
+      interval: interval
+    });
 
-    const dataPoint = await dao.save(new TestNumberDataPoint({
-      meta: { pid, cid, uid, interval },
+    const dataPoint = await dao.save(new TestNumberDataPoint(profile, user, content, {
       date: date.toDate(),
-      value: 2
+      value: options.value ?? 2
     }));
 
-    return { pid, cid, uid, date, dataPoint }
+    return { pid: profile._id, cid: content._id, uid: user._id, date, dataPoint }
   }
 
   // mongoose.set('debug', true);
   describe('create()', () => {
     it('save data point today', async () => {
       const date = new Date();
-      const { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
+      const { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily );
       expect(dataPoint.id).toBeDefined();
       expect(dataPoint.value).toEqual(2);
       expect(dataPoint.tid).toEqual(toTimingId(date));
@@ -112,9 +118,9 @@ describe('NumberDataPointDao', () => {
     it('update interval', async () => {
       const date = new Date('2022-02-20');
       let { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
-      await dao.updateOneByIdSet(dataPoint._id, { 'meta.interval' : CalendarIntervalEnum.Monthly })
+      await dao.updateOneByIdSet(dataPoint._id, { 'interval' : CalendarIntervalEnum.Monthly })
       dataPoint = await dao.reload(dataPoint);
-      expect(dataPoint.meta.interval).toEqual(CalendarIntervalEnum.Monthly );
+      expect(dataPoint.interval).toEqual(CalendarIntervalEnum.Monthly );
     });
 
 
@@ -139,15 +145,15 @@ describe('NumberDataPointDao', () => {
       const { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
       await dao.updateOneByIdSet(dataPoint._id, {
         value: 3,
-        'meta.pid': getObjectId('p2'),
-        'meta.cid': getObjectId('c2'),
-        'meta.uid': getObjectId('u2'),
+        'pid': getObjectId('p2'),
+        'cid': getObjectId('c2'),
+        'uid': getObjectId('u2'),
       });
       const updated = await dao.reload(dataPoint);
-      expect(updated.meta.pid).toEqual(dataPoint.meta.pid);
-      expect(updated.meta.cid).toEqual(dataPoint.meta.cid);
-      expect(updated.meta.uid).toEqual(dataPoint.meta.uid);
-      expect(updated.meta.interval).toEqual(dataPoint.meta.interval);
+      expect(updated.pid).toEqual(dataPoint.pid);
+      expect(updated.cid).toEqual(dataPoint.cid);
+      expect(updated.uid).toEqual(dataPoint.uid);
+      expect(updated.interval).toEqual(dataPoint.interval);
     })
   });
 

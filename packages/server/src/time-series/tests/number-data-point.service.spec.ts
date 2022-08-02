@@ -9,8 +9,9 @@ import {
 import {
   CalendarIntervalEnum,
   DeepPartial,
- DataPointIntervalFilter,
-  toTimingId
+  DataPointIntervalFilter,
+  toTimingId,
+  UserAssignmentStrategy
 } from 'lyvely-common';
 import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
 import { TestNumberDataPointService } from "./src/test-number-data-point.service";
@@ -24,7 +25,6 @@ import { Model } from 'mongoose';
 import { CheckboxNumberDataPointConfig } from "../schemas";
 import { User } from "../../users";
 import { Profile } from "../../profiles";
-import { UserAssignmentStrategy } from "lyvely-common";
 
 const Models = [
   { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema },
@@ -65,10 +65,10 @@ describe('NumberDataPointService', () => {
     data.interval = data.interval ?? CalendarIntervalEnum.Daily;
     data.dataPointConfig = data.dataPointConfig || new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 });
 
-    const model = new TestNumberTimeSeriesContent(user, profile, data);
+    const model = new TestNumberTimeSeriesContent(profile, user, data);
     const entity = new TestNumberTimeSeriesContentModel(model);
     await entity.save();
-    return new TestNumberTimeSeriesContent(user, profile, entity);
+    return new TestNumberTimeSeriesContent(profile, user, entity);
   }
 
   it('should be defined', () => {
@@ -83,8 +83,8 @@ describe('NumberDataPointService', () => {
 
       const dataPoint = await service.upsertDataPoint(profile, user, content, date, 5);
       expect(dataPoint._id).toBeDefined();
-      expect(dataPoint.meta.pid).toEqual(profile._id);
-      expect(dataPoint.meta.pid).toEqual(profile._id);
+      expect(dataPoint.pid).toEqual(profile._id);
+      expect(dataPoint.pid).toEqual(profile._id);
       expect(dataPoint.tid).toEqual(toTimingId(date));
       expect(dataPoint.value).toEqual(5);
     });
@@ -96,7 +96,7 @@ describe('NumberDataPointService', () => {
 
       await service.upsertDataPoint(profile, user, content, date, 5);
       await service.upsertDataPoint(profile, user, content, date, 3);
-      const dataPoint = await service.findOrCreateLogByDay(profile, user, content, date);
+      const dataPoint = await service.findDataPointByDate(profile, user, content, date);
       expect(dataPoint.value).toEqual(3);
     });
   });
@@ -144,8 +144,4 @@ describe('NumberDataPointService', () => {
       expect(memberDataPoints[0]._id).toEqual(ownerDataPoints[0]._id);
     });
   })
-
-  // TODO: Add log (merge times, validate value)
-  // TODO: Test change content interval (align intervals of data point buckets)
-  // TODO: Test cid access
 });

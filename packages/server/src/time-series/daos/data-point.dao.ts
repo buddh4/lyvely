@@ -5,7 +5,7 @@ import { User } from "../../users";
 import { DataPoint, TimeSeriesContent } from "../schemas";
 import { CalendarDate, getTimingIds, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from "lyvely-common";
 
-type InterValFilter = { 'meta.interval': CalendarIntervalEnum, tid?: string | { $regex: RegExp } };
+type InterValFilter = { 'interval': CalendarIntervalEnum, tid?: string | { $regex: RegExp } };
 
 export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao<T> {
 
@@ -13,31 +13,53 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
 
   abstract updateDataPointValue(uid: EntityIdentity<User>, dataPoint: T, newValue: any): Promise<boolean>;
 
-  async findDataPointByDate(cid: EntityIdentity<TimeSeriesContent>, date: CalendarDate) {
+  async findDataPointByDate(content: TimeSeriesContent, date: CalendarDate) {
+    // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
-      'meta.cid': assureObjectId(cid),
-      tid: toTimingId(date),
+      'cid': assureObjectId(content),
+      tid: toTimingId(date, content.interval),
     })
   }
 
-  async findUserDataPointByDate(cid: EntityIdentity<TimeSeriesContent>, uid: EntityIdentity<User>, date: CalendarDate) {
+  async findUserDataPointByDate(content: TimeSeriesContent, uid: EntityIdentity<User>, date: CalendarDate) {
+    // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
-      'meta.cid': assureObjectId(cid),
-      'meta.uid': assureObjectId(uid),
-      tid: toTimingId(date),
+      'cid': assureObjectId(content),
+      'uid': assureObjectId(uid),
+      tid: toTimingId(date, content.interval),
     })
   }
 
+  /**
+   * Finds all data point of a profile filtered by a data point interval filter. Note, this may include multiple data
+   * points of the same content which may need to be merged in presentation layer.
+   *
+   * The interval filter is used to exclude data points which may already be loaded, e.g. on initial load we include
+   * data points of unscheduled content. On next load, we do not want to load them again. The filter also includes
+   * a day tid to query for data points within a specific interval e.g:
+   *
+   * The following filter will include daily + weekly data points of week of year 14 and day of month 5
+   *
+   * tid: Y:2021;Q:2;M:4;W:14;D:5
+   * interval: Weekly
+   *
+   *
+   * An empty uid should only be given for visitor roles.
+   * // TODO: (visitor) implement and test visitor view
+   * @param pid
+   * @param uid
+   * @param filter
+   */
   async findByIntervalLevel(pid: EntityIdentity<Profile>, uid: EntityIdentity<User> | null, filter: DataPointIntervalFilter) {
     // If no uid is given we assume visitor role
     const uidFilter = uid
       ? {
           $or: [
-            { 'meta.uid': assureObjectId(uid) },
-            { 'meta.uid': null }
+            { 'uid': assureObjectId(uid) },
+            { 'uid': null }
           ]
       }
-      : { 'meta.uid': null };
+      : { 'uid': null };
 
     return this.findAll({
       $and: [
@@ -48,9 +70,17 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
     });
   }
 
+  /**
+   * This functions builds a query filter from the given interval filter. Depending on the interval level of the given filter
+   * it will include all data points within the interval filter e.g:
+   *
+   * If the given filter is set to weekly, it will create a query only include weekly and daily data points.
+   * @param filter
+   * @private
+   */
   private buildTimingIntervalFilter(filter: DataPointIntervalFilter) {
     const timingIds = getTimingIds(filter.search);
-    const dailyFilter = { 'meta.interval': CalendarIntervalEnum.Daily, tid: timingIds[CalendarIntervalEnum.Daily] };
+    const dailyFilter = { 'interval': CalendarIntervalEnum.Daily, tid: timingIds[CalendarIntervalEnum.Daily] };
 
     if (filter.level === CalendarIntervalEnum.Daily) {
       return dailyFilter;
@@ -61,8 +91,8 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
     for (let i = CalendarIntervalEnum.Weekly; i >= 0; i--) {
       if (filter.level <= i) {
         const filter = i === CalendarIntervalEnum.Unscheduled
-          ? { 'meta.interval': i }
-          : { 'meta.interval': i, tid: { $regex: new RegExp(`^${timingIds[i]}`) } };
+          ? { 'interval': i }
+          : { 'interval': i, tid: { $regex: new RegExp(`^${timingIds[i]}`) } };
         intervalFilter.push(filter);
       }
     }

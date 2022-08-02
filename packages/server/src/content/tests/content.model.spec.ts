@@ -28,7 +28,7 @@ describe('Content Model', () => {
 
   describe('constructor', () => {
     it('constructor with user, profile ', async() => {
-      const content = new Content(user, profile);
+      const content = new Content(profile, user,);
       expect(content.createdBy).toEqual(user._id);
       expect(content.createdAs).toBeDefined();
       expect(content.createdAs.authorId).toEqual(user._id);
@@ -39,7 +39,7 @@ describe('Content Model', () => {
     });
 
     it('constructor with user, profile and data object', async() => {
-      const content = new Content(user, profile, { title: 'test title' });
+      const content = new Content(profile, user, { title: 'test title' });
       expect(content.createdBy).toEqual(user._id);
       expect(content.title).toEqual('test title');
       expect(content.createdAs).toBeDefined();
@@ -50,21 +50,21 @@ describe('Content Model', () => {
     });
 
     it('constructor with metadata', async() => {
-      const content = new Content(user, profile,{ metaData: { isArchivable: false } });
+      const content = new Content(profile, user, { metaData: { isArchivable: false } });
       expect(content.metaData).not.toBeNull();
       expect(content.metaData.isArchivable).toEqual(false);
       expect(content.metaData instanceof ContentMetadata).toEqual(true);
     });
 
     it('constructor with logs', async() => {
-      const content = new Content(user, profile,{ logs: [{ kind: 'test' }] });
+      const content = new Content(profile, user,{ logs: [{ kind: 'test' }] });
       expect(content.logs).toBeTruthy();
       expect(content.logs.length).toEqual(1);
       expect(content.logs[0] instanceof ContentLog).toEqual(true);
     });
 
     it('constructor with createdAs', async() => {
-      const content = new Content(user, profile,{ createdAs: { name: 'test' } });
+      const content = new Content(profile, user,{ createdAs: { name: 'test' } });
       expect(content.createdAs).toBeTruthy();
       expect(content.createdAs instanceof CreatedAs).toEqual(true);
       expect(content.createdAs.name).toEqual('test');

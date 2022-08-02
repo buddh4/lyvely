@@ -36,22 +36,4 @@ describe('NumberTimingDataPointSchema', () => {
   it('should be defined', () => {
     expect(TestNumberDataPointModel).toBeDefined();
   });
-  // mongoose.set('debug', true);
-  describe('save()', () => {
-    it('save simple data point', async () => {
-      const entity = new TestNumberDataPointModel(new TestNumberDataPoint({
-        meta: {
-          pid: getObjectId('p1'),
-          cid: getObjectId('p2'),
-          uid: getObjectId('u1'),
-          interval: CalendarIntervalEnum.Daily
-        },
-        date: new Date(),
-        value: 2,
-      }));
-
-      await entity.save();
-      expect(entity.id).toBeDefined();
-    });
-  });
 });

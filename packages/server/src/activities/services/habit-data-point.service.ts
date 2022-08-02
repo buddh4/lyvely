@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Activity, Habit, HabitDataPoint } from '../schemas';
-import { TimeSeriesDataPointConstructor, NumberDataPointService } from '../../time-series';
+import { NumberDataPointService } from '../../time-series';
 import { CalendarDate } from 'lyvely-common';
 import { Profile } from '../../profiles';
 import { User } from '../../users';
@@ -16,10 +16,6 @@ export class HabitDataPointService extends NumberDataPointService<Habit, HabitDa
 
   @Inject()
   protected scoreService: ContentScoreService;
-
-  getDataPointConstructor(): TimeSeriesDataPointConstructor<Habit> {
-    return HabitDataPoint;
-  }
 
   protected async updateDataPointValue(profile, user, dataPoint: HabitDataPoint, habit: Habit, newValue: number) {
     const oldValue = dataPoint.value || 0;

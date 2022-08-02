@@ -1,36 +1,35 @@
 import { assignEntityData, BaseEntity, EntityType } from '../../db/base.entity';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop } from '@nestjs/mongoose';
 import mongoose, { Document }  from 'mongoose';
 import {
-  DeepPartial,
   CalendarIntervalEnum,
   getFullDayDate,
   getNumberEnumValues,
   toTimingId,
   UserAssignmentStrategy,
-  REGEX_TID
+  REGEX_TID,
+  DeepPartial,
+  IDataPoint
 } from "lyvely-common";
 import { TimeSeriesContent } from "./time-series-content.schema";
 import { User } from "../../users";
 import { Profile } from "../../profiles";
+import { assureObjectId } from "../../db/db.utils";
 
-export interface TimeSeriesDataPointConstructor<Model extends TimeSeriesContent> {
-  new (obj?: DeepPartial<IDataPoint>): IDataPoint;
-}
+type DataPointEntity = IDataPoint<mongoose.Types.ObjectId> & { _id: mongoose.Types.ObjectId }
 
-export interface IDataPoint {
-  meta: {
-    pid: mongoose.Types.ObjectId,
-    cid: mongoose.Types.ObjectId,
-    uid?: mongoose.Types.ObjectId,
-    interval: CalendarIntervalEnum,
-  }
-  date: Date,
-  tid: string,
-}
+/**
+ * This represents a datapoint bucket of given interval.
+ */
+export abstract class DataPoint<
+  T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>
+  > extends BaseEntity<T & { _id: mongoose.Types.ObjectId }> implements DataPointEntity {
 
-@Schema({ _id: false })
-export class DataPointMeta {
+  meta: any;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, immutable: true })
+  oid: mongoose.Types.ObjectId;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true })
   pid: mongoose.Types.ObjectId;
 
@@ -42,27 +41,6 @@ export class DataPointMeta {
 
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;
-
-  constructor(obj?: DeepPartial<DataPointMeta>) {
-    assignEntityData(this, obj);
-  }
-
-  static create(user: User, profile: Profile, content: TimeSeriesContent) {
-    return new DataPointMeta({
-      uid: content.userStrategy === UserAssignmentStrategy.PerUser ? user._id : null,
-      pid: profile._id,
-      cid: content._id,
-      interval: content.interval
-    });
-  }
-}
-
-
-const DataPointMetaSchema = SchemaFactory.createForClass(DataPointMeta);
-
-export abstract class DataPoint<T extends EntityType<IDataPoint> = EntityType<IDataPoint>> extends BaseEntity<T> implements IDataPoint {
-  @Prop({ type: DataPointMetaSchema, required: true })
-  meta: DataPointMeta;
 
   @Prop( { type: String, required: true, match: REGEX_TID, immutable: true })
   tid: string;
@@ -76,8 +54,17 @@ export abstract class DataPoint<T extends EntityType<IDataPoint> = EntityType<ID
   @Prop( { type: Date, required: true, immutable: true })
   date: Date;
 
-  afterInit() {
-    super.afterInit();
+  constructor(profile: Profile, user: User, content: TimeSeriesContent, obj?: DeepPartial<T>) {
+    super(false);
+
+    if(obj) {
+      assignEntityData(this, obj);
+    }
+
+    this.pid = assureObjectId(profile._id);
+    this.uid = content.userStrategy === UserAssignmentStrategy.PerUser ? assureObjectId(user._id) : null;
+    this.cid = assureObjectId(content._id);
+    this.interval = content.interval;
 
     if(!this.date) {
       return;
@@ -85,6 +72,8 @@ export abstract class DataPoint<T extends EntityType<IDataPoint> = EntityType<ID
 
     this.date = getFullDayDate(this.date);
     this.tid = toTimingId(this.date);
+
+    this.afterInit();
   }
 }
 
