@@ -18,15 +18,18 @@ export class UserDao extends AbstractDao<User> {
   }
 
   async createRefreshToken(identity: EntityIdentity<User>, token: RefreshToken) {
-    return !!(await this.model.updateOne({ "_id": assureObjectId(identity) },
+    this.updateOneById(identity, {  })
+    return !!(await this.updateOneById(identity,
       { "$push":
-          { 'refreshTokens': {
+          {
+            'refreshTokens': new RefreshToken({
               'vid': token.vid,
               'hash': token.hash,
               'expiration': token.expiration
-            } }
+            })
+          }
       }
-    )).modifiedCount;
+    ));
   }
 
   async updateRefreshToken(identity: EntityIdentity<User>, token: RefreshToken): Promise<boolean> {

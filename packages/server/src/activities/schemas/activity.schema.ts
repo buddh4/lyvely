@@ -12,7 +12,7 @@ import {
   CheckboxNumberDataPointConfig, SpinnerNumberDataPointConfig,
   NumberTimeSeriesContent,
   TimeSeriesContentSchemaFactory,
-  TimeSeriesDataPointConfigSchema,
+  DefaultDataPointConfigSchema,
   DataPointConfigFactory
 } from '../../time-series';
 import { ContentConstructor } from '../../content';
@@ -34,7 +34,7 @@ export class Activity extends NumberTimeSeriesContent<Activity> implements IActi
   @Prop({ type: Number, default: 0 })
   score: number;
 
-  @Prop({ type: TimeSeriesDataPointConfigSchema, required: true })
+  @Prop({ type: DefaultDataPointConfigSchema, required: true })
   dataPointConfig: ActivityDataPointConfig;
 
   type: string;
@@ -48,13 +48,13 @@ export class Activity extends NumberTimeSeriesContent<Activity> implements IActi
     return new type(profile, user, {
       title: dto.title,
       text: dto.text,
-      interval: dto.interval,
       categories: dto.categories,
       score: dto.score,
       userStrategy: dto.userStrategy ?? UserAssignmentStrategy.Shared,
       dataPointConfig: DataPointConfigFactory.createConfig<ActivityDataPointConfig>(dto.strategy, {
         min: dto.min,
         max: dto.max,
+        interval: dto.interval,
         optimal: dto.optimal
       })
     }) as T;

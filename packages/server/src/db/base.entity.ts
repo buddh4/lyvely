@@ -52,4 +52,6 @@ export function assignEntityData<T extends Record<string, any>, U>(instance: T, 
   if(instance instanceof BaseEntity && instance._id && !instance.id) {
     instance.id = assureStringId(instance._id);
   }
+
+  return instance;
 }

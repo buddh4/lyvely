@@ -1,9 +1,11 @@
 import { IsArray, IsOptional, IsString, Matches } from "class-validator";
 import { Transform, Type } from "class-transformer";
 import {
-    getCalendarPlanArray, CalendarDate,
+    getCalendarPlanArray,
     DayIterator, formatDate, REGEX_DATE_FORMAT, toTimingId
 } from '../../calendar';
+
+import type { CalendarDate } from '../../calendar';
 
 /**
  * Note: In an earlier implementation TimeSeriesRangeFilter was used instead of DataPointIntervalFilter

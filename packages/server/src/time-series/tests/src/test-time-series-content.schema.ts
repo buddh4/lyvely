@@ -2,7 +2,7 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import {
   CheckboxNumberDataPointConfig, NumberTimeSeriesContent, SpinnerNumberDataPointConfig,
   TimeSeriesContent, TimeSeriesContentSchemaFactory,
-  TimeSeriesDataPointConfigSchema
+  DefaultDataPointConfigSchema
 } from '../../schemas';
 import * as mongoose from 'mongoose';
 import { DataPointInputStrategy } from 'lyvely-common';
@@ -11,6 +11,10 @@ import { DataPointInputStrategy } from 'lyvely-common';
 export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {
   @Prop()
   someTestField: string;
+
+  pushRevision(rev: TestTimeSeriesContent) {
+    // Not implemented
+  }
 }
 
 export type TestTimeSeriesContentDocument = TestTimeSeriesContent & mongoose.Document;
@@ -21,11 +25,11 @@ export const TestTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.create
 
 
 @Schema()
-export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestTimeSeriesContent> {
+export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNumberTimeSeriesContent> {
   @Prop()
   someTestField: string;
 
-  @Prop({ type: TimeSeriesDataPointConfigSchema, required: true })
+  @Prop({ type: DefaultDataPointConfigSchema, required: true })
   dataPointConfig: CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 }
 

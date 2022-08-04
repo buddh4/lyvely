@@ -54,8 +54,7 @@ describe('TimeableContentSchema', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
-        interval: CalendarIntervalEnum.Daily,
-        dataPointConfig: new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 })
+        dataPointConfig: new CheckboxNumberDataPointConfig({ interval: CalendarIntervalEnum.Daily, min: 0, max: 5, optimal: 3 })
       });
 
       delete model.dataPointConfig;
@@ -73,8 +72,7 @@ describe('TimeableContentSchema', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
-        interval: CalendarIntervalEnum.Daily,
-        dataPointConfig: new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 })
+        dataPointConfig: new CheckboxNumberDataPointConfig({ interval: CalendarIntervalEnum.Daily, min: 0, max: 5, optimal: 3 })
       });
 
       const entity = new TestTimeSeriesContentModel(model);
@@ -94,8 +92,7 @@ describe('TimeableContentSchema', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user,{
         someTestField: 'Testing...',
-        interval: CalendarIntervalEnum.Daily,
-        dataPointConfig: new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 })
+        dataPointConfig: new CheckboxNumberDataPointConfig({ interval: CalendarIntervalEnum.Daily, min: 0, max: 5, optimal: 3 })
       });
 
       const entity = new TestTimeSeriesContentModel(model);
@@ -116,8 +113,8 @@ describe('TimeableContentSchema', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
-        interval: CalendarIntervalEnum.Daily,
-        dataPointConfig: <CheckboxNumberDataPointConfig> { strategy: DataPointInputStrategy.RangeNumber, min: 0, max: 5, optimal: 3 }
+        dataPointConfig: <CheckboxNumberDataPointConfig> { interval: CalendarIntervalEnum.Daily,
+          strategy: DataPointInputStrategy.RangeNumber, min: 0, max: 5, optimal: 3 }
       });
 
       const dataPointConfig = <CheckboxNumberDataPointConfig> model.dataPointConfig;

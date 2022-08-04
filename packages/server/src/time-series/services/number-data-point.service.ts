@@ -1,8 +1,7 @@
 import { User } from '../../users';
 import { Profile  } from '../../profiles';
 import { DataPointService } from "./data-point.service";
-import { NumberDataPoint } from "../schemas/number-data-point.schema";
-import { NumberTimeSeriesContent } from "../schemas";
+import { NumberDataPoint, NumberTimeSeriesContent } from "../schemas";
 
 export abstract class NumberDataPointService<
     TimeSeriesModel extends NumberTimeSeriesContent,

@@ -1,15 +1,7 @@
-import {
-    IsArray,
-    IsBoolean,
-    IsDefined,
-    IsEnum,
-    IsNotEmpty,
-    IsNumber,
-    IsString,
-    Length,
-} from 'class-validator';
+import { IsArray, IsBoolean, IsDefined, IsEnum, IsNotEmpty, IsNumber, IsString, Length, } from 'class-validator';
 import { CalendarIntervalEnum } from '../../calendar';
-import { INumberDataPointConfig } from '../../time-series';
+import type { INumberDataPointConfig } from '../../time-series';
+import { DataPointInputStrategy, DataPointInputType, DataPointValueType } from "../../time-series";
 import { DocumentDto } from '../../model';
 import { ActivityType, IActivity } from './activity.interface';
 import { Exclude, Expose } from 'class-transformer';
@@ -71,6 +63,13 @@ export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implem
 
         this.archived = !!this.archived;
         this.categories = this.categories || [];
+        this.dataPointConfig = this.dataPointConfig || {
+          interval: CalendarIntervalEnum.Daily,
+          inputType: DataPointInputType.Checkbox,
+          valueType: DataPointValueType.Number,
+          strategy: DataPointInputStrategy.CheckboxNumber,
+          history: []
+        };
 
     }
 }

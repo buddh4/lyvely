@@ -62,10 +62,14 @@ describe('NumberDataPointService', () => {
 
   async function createTimeSeriesContent(user: User, profile: Profile, data: DeepPartial<TestTimeSeriesContent> = {}) {
     data.someTestField = data.someTestField || 'Testing...';
-    data.interval = data.interval ?? CalendarIntervalEnum.Daily;
-    data.dataPointConfig = data.dataPointConfig || new CheckboxNumberDataPointConfig({ min: 0, max: 5, optimal: 3 });
+    data.dataPointConfig = data.dataPointConfig || new CheckboxNumberDataPointConfig({
+      min: 0,
+      max: 5,
+      optimal: 3,
+      interval:  data.dataPointConfig?.interval ?? CalendarIntervalEnum.Daily
+    });
 
-    const model = new TestNumberTimeSeriesContent(profile, user, data);
+    const model = new TestNumberTimeSeriesContent(profile, user, data as any);
     const entity = new TestNumberTimeSeriesContentModel(model);
     await entity.save();
     return new TestNumberTimeSeriesContent(profile, user, entity);

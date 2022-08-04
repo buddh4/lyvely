@@ -37,11 +37,13 @@ export class Task extends Activity implements ITaskWithUsers {
   doneBy?: UserDone[];
 
   afterInit() {
-    this.dataPointConfig = DataPointConfigFactory.createConfig(DataPointNumberInputStrategy.CheckboxNumber, {
-      min: 1,
-      max: 1,
-      optimal: 1
-    });
+    if(!this.dataPointConfig) {
+      this.dataPointConfig = DataPointConfigFactory.createConfig(DataPointNumberInputStrategy.CheckboxNumber, {});
+    }
+
+    this.dataPointConfig.min = 1;
+    this.dataPointConfig.max = 1;
+    this.dataPointConfig.optimal = 1;
 
     if(!this.doneBy) {
       this.doneBy = [];

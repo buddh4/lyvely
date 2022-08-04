@@ -14,6 +14,10 @@ export interface IDateTime {
   subtract(value: number, unit?: UnitType): IDateTime;
   add(value: number, unit?: UnitType): IDateTime;
   utc(preserveTime?: boolean): IDateTime;
+  date(): number;
+  date(value : number): IDateTime;
+  day(): number;
+  day(value : number): IDateTime;
   week(): number;
   week(value : number): IDateTime;
   isoWeek(): number

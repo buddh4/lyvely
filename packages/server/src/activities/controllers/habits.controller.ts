@@ -10,7 +10,6 @@ import {
   HabitDto,
   UpdateActivityLogModel,
   UpdateHabitResultDto,
-  isHabit,
 } from 'lyvely-common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
@@ -20,8 +19,8 @@ import { Permissions } from '../../permissions/decorators/permissions.decorator'
 import { UseClassSerializer } from '../../core/decorators/use-class-serializer.decorator';
 import { Policies } from '../../policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
-import { Feature } from '../../core/features/feature.decorator';
 import { EntityNotFoundException } from "../../core/exceptions";
+import { isHabitContent } from "../utils/activity.utils";
 
 @ContentController('habits')
 // TODO: implement feature registration @Feature('content.activities.habits')
@@ -40,7 +39,7 @@ export class HabitsController extends AbstractContentController<Habit> {
   async create(@Request() req: UserProfileRequest, @Body() dto: EditHabitDto) {
     const { profile, user } = req;
 
-    const habitModel = await this.contentService.createContent(profile, user, Habit.create(user, profile, dto));
+    const habitModel = await this.contentService.createContent(profile, user, Habit.create(profile, user, dto));
 
     if (!habitModel) {
       throw new EntityNotFoundException();
@@ -54,11 +53,14 @@ export class HabitsController extends AbstractContentController<Habit> {
   async update(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: EditHabitDto) {
     const { profile, user, content } = req;
 
-    if(!isHabit(content)) {
+    if(!isHabitContent(content)) {
       throw new EntityNotFoundException();
     }
 
-    const updated = await this.contentService.findContentAndUpdate(profile, user, content as Habit, Habit.create(user, profile, dto));
+    const habit = Habit.create(profile, user, dto);
+    habit.pushRevision(content);
+
+    const updated = await this.contentService.findContentAndUpdate(profile, user, content, habit);
     return new HabitDto(updated);
   }
 
@@ -67,7 +69,7 @@ export class HabitsController extends AbstractContentController<Habit> {
   async updateDataPoint(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateActivityLogModel) {
     const { profile, user, content } = req;
 
-    if(!isHabit(content)) {
+    if(!isHabitContent(content)) {
       throw new EntityNotFoundException();
     }
 

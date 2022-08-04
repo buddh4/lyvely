@@ -50,9 +50,10 @@ export enum DataPointValueType {
 // RangeValueStrategy extends NumberValueStrategy
 
 export interface NumberDataPointSettings {
-  min: number;
-  max: number;
-  optimal: number;
+  min?: number;
+  max?: number;
+  optimal?: number;
+  interval: CalendarIntervalEnum;
 }
 
 export const SupporedLogValueInputTypes = {

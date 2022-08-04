@@ -82,12 +82,12 @@ describe('HabitService', () => {
     });
   });
 
-  describe('update Habit', () => {
+  describe('updateHabit', () => {
     it('find activity by object id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
 
-      await habitService.updateContent(profile, user, habit, Habit.create(
+      await habitService.updateHabit(profile, user, habit, Habit.create(
           profile,
           user,
           new EditHabitDto({
@@ -107,7 +107,7 @@ describe('HabitService', () => {
       expect(search).toBeDefined();
       expect(search.title).toEqual('Test');
       expect(search.text).toEqual('Test description');
-      expect(search.interval).toEqual(CalendarIntervalEnum.Weekly);
+      expect(search.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
       expect(search.dataPointConfig.min).toEqual(1);
       expect(search.dataPointConfig.max).toEqual(2);
       expect(search.dataPointConfig.optimal).toEqual(2);
@@ -116,6 +116,91 @@ describe('HabitService', () => {
       expect(profile.categories.length).toEqual(1);
       expect(profile.categories[0].name).toEqual('SomeCategory');
     });
+
+    it('update data point config creates revision', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habit = await testData.createHabit(user, profile, new CreateHabitDto({
+        title: 'Test',
+        interval: CalendarIntervalEnum.Daily,
+        max: 2,
+        min: 1,
+        optimal: 1,
+        score: 2,
+      }));
+
+      await habitService.updateHabit(profile, user, habit, Habit.create(
+          profile,
+          user,
+          new EditHabitDto({
+            title: 'Test',
+            interval: CalendarIntervalEnum.Weekly,
+            max: 3,
+            min: 1,
+            optimal: 2,
+            score: 2,
+          }),
+        ),
+      );
+
+      const search = await habitService.findById(habit._id);
+      expect(search).toBeDefined();
+      expect(search.dataPointConfig.history).toBeDefined();
+      expect(search.dataPointConfig.history.length).toEqual(1);
+      expect(search.dataPointConfig.history[0].max).toEqual(2);
+      expect(search.dataPointConfig.history[0].min).toEqual(1);
+      expect(search.dataPointConfig.history[0].optimal).toEqual(1);
+      expect(search.dataPointConfig.history[0].interval).toEqual(CalendarIntervalEnum.Daily);
+    });
+  });
+
+  it('daily revision is not overwritten on same day', async () => {
+    const { user, profile } = await testData.createUserAndProfile();
+    let habit = await testData.createHabit(user, profile, new CreateHabitDto({
+      title: 'Test',
+      interval: CalendarIntervalEnum.Daily,
+      max: 2,
+      min: 1,
+      optimal: 1,
+      score: 2,
+    }));
+
+    const update = Habit.create(
+      profile,
+      user,
+      new EditHabitDto({
+        title: 'Test',
+        interval: CalendarIntervalEnum.Weekly,
+        max: 3,
+        min: 1,
+        optimal: 2,
+        score: 2,
+      }),
+    );
+
+    habit = await habitService.updateHabit(profile, user, habit, update);
+
+    const update2 = Habit.create(
+      profile,
+      user,
+      new EditHabitDto({
+        title: 'Test',
+        interval: CalendarIntervalEnum.Weekly,
+        max: 4,
+        min: 1,
+        optimal: 2,
+        score: 2,
+      }),
+    );
+
+    update.dataPointConfig.max = 2;
+    habit = await habitService.updateHabit(profile, user, habit, update2);
+
+    const search = await habitService.findById(habit._id);
+    expect(search).toBeDefined();
+    expect(search.dataPointConfig.history).toBeDefined();
+    expect(search.dataPointConfig.history.length).toEqual(1);
+    expect(search.dataPointConfig.history[0].max).toEqual(2);
+    expect(search.dataPointConfig.max).toEqual(4);
   });
 
   describe('findUserActivityById', () => {

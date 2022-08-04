@@ -8,8 +8,6 @@ import {
   TestNumberDataPointDocument,
   TestNumberDataPointSchema
 } from './src/test-data-point.schema';
-import { getObjectId } from 'mongo-seeding';
-import { CalendarIntervalEnum } from 'lyvely-common';
 
 const DataPointModelDefinition = [
   { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }

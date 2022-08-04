@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseDto } from '../../model';
-import { IMembership } from '../interfaces/profile-membership.interface';
-import { IProfile } from '../interfaces';
+import type { IMembership } from '../interfaces/profile-membership.interface';
+import type { IProfile } from '../interfaces';
 import { ProfileRelationDto } from './profile-relation.dto';
 
 @Exclude()

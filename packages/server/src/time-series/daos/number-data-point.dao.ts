@@ -1,4 +1,4 @@
-import { NumberDataPoint } from "../schemas/number-data-point.schema";
+import { NumberDataPoint } from "../schemas";
 import { DataPointDao } from "./data-point.dao";
 import { EntityIdentity } from "../../db/db.utils";
 import { User } from "../../users";

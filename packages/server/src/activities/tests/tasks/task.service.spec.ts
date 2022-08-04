@@ -28,6 +28,12 @@ describe('TaskService', () => {
   describe('Task service', () => {
     it('create', async () => {
       const { user, profile } = await testDataUtils.createUserAndProfile();
+      const t = Task.create(profile, user,{
+        title: 'Do something!',
+        score: 5,
+        interval: CalendarIntervalEnum.Monthly,
+        userStrategy: UserAssignmentStrategy.Shared,
+      });
       const task = await taskService.createContent(profile, user, Task.create(profile, user,{
         title: 'Do something!',
         score: 5,
@@ -38,7 +44,7 @@ describe('TaskService', () => {
       expect(task.type).toBe(ActivityType.Task);
       expect(task.createdAt).toBeDefined();
       expect(task.updatedAt).toBeDefined();
-      expect(task.interval).toEqual(CalendarIntervalEnum.Monthly);
+      expect(task.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
       expect(task.score).toEqual(5);
       expect(task.title).toEqual('Do something!');
       expect(task.doneBy).toEqual([]);
@@ -59,11 +65,11 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.interval));
+        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
 
         expect(profile.score).toEqual(5);
@@ -84,7 +90,7 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
         expect(search.doneBy[0].uid).toEqual(member._id);
 
         expect(profile.score).toEqual(5);
@@ -103,11 +109,11 @@ describe('TaskService', () => {
         await taskService.setDone(owner, profile, task, '2021-04-03');
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.interval));
+        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
       });
 
@@ -126,15 +132,15 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(2);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
         expect(search.doneBy[0].uid).toEqual(owner._id);
-        expect(search.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.interval));
+        expect(search.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
         expect(search.doneBy[1].uid).toEqual(member._id);
 
         expect(task.doneBy.length).toEqual(2);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.interval));
+        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
-        expect(task.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.interval));
+        expect(task.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
         expect(task.doneBy[1].uid).toEqual(member._id);
       });
 
@@ -153,11 +159,11 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.interval));
+        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
       });
     });

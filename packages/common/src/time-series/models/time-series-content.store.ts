@@ -56,7 +56,7 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
     return this.logs.get(modelId).has(timingId);
   }
 
-  filterModels(filter): Model[] {
+  filterModels(filter: (entry: Model, index: number, arr: Model[]) => boolean): Model[] {
     return this.sort(Array.from(this.models.values()).filter(filter));
   }
 

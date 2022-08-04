@@ -39,8 +39,8 @@
     "@types/randomcolor": "^0.5.6",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
-    "@vitejs/plugin-vue": "^1.10.2",
-    "@vue/compiler-sfc": "^3.2.24",
+    "@vitejs/plugin-vue": "^3.0.1",
+    "@vue/compiler-sfc": "^3.2.37",
     "@vue/eslint-config-typescript": "^9.1.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^7.32.0",
@@ -59,9 +59,8 @@
     "tailwind": "^4.0.0",
     "tailwindcss": "^3.1.6",
     "typescript": "~4.5.3",
-    "vite": "^2.7.1",
-    "vite-tsconfig-paths": "^3.3.17",
-    "vue-loader": "^15.9.8",
-    "vue-template-compiler": "^2.6.14"
+    "vite": "^3.0.4",
+    "vite-tsconfig-paths": "^3.5.0",
+    "vue-template-compiler": "^2.7.8"
   }
 }

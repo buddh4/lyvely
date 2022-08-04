@@ -184,7 +184,8 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     // TODO: DeepCopy
     if(modifiedCount && typeof id === 'object' && '$set' in update) {
       Object.keys(update['$set']).forEach(key => {
-        if(id.hasOwnProperty(key)) {
+        // We do not support objects here since we could only transfer plain objects
+        if(id.hasOwnProperty(key) && update['$set'][key] !== 'object') {
           id[key] = update['$set'][key];
         }
       });

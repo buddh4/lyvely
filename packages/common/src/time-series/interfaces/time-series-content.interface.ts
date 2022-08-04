@@ -5,12 +5,13 @@ import { DataPointInputType, DataPointValueType } from './data-point.interface';
 import { UserAssignmentStrategy } from "../../user";
 
 export interface ITimeSeriesContent<E extends IDataPointConfig = IDataPointConfig> extends IContent, Sortable {
-  interval: CalendarIntervalEnum;
   dataPointConfig: E;
   dataPointConfigHistory?: IDataPointConfigRevision[]
   userStrategy: UserAssignmentStrategy;
   sortOrder: number;
 }
+
+export type INumberTimeSeriesContent = ITimeSeriesContent<INumberDataPointConfig>;
 
 export interface IDataPoint<TID> {
   id: string,
@@ -24,6 +25,15 @@ export interface IDataPoint<TID> {
 
 
 export interface IDataPointConfig {
+  interval: CalendarIntervalEnum,
+  strategy: string;
+  history: IDataPointConfigRevision[];
+  valueType: DataPointValueType;
+  inputType?: DataPointInputType;
+}
+
+export interface IDataPointConfigRevision {
+  validUntil: Date;
   strategy: string;
   valueType: DataPointValueType;
   inputType?: DataPointInputType;
@@ -34,9 +44,4 @@ export interface INumberDataPointConfig extends IDataPointConfig {
   min?: number;
   max?: number;
   optimal?: number;
-}
-
-export interface IDataPointConfigRevision {
-  updatedAt: Date,
-  config: IDataPointConfig;
 }

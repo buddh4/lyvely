@@ -1,8 +1,8 @@
-import { TestDataPoint, TestNumberDataPoint, TestTimedNumberDataPoint } from './test-data-point.schema';
+import { TestDataPoint, TestNumberDataPoint } from './test-data-point.schema';
 import { Injectable , Inject } from '@nestjs/common';
 import { DataPointService, NumberDataPointService } from "../../services";
 import { TestNumberTimeSeriesContent, TestTimeSeriesContent } from "./test-time-series-content.schema";
-import { TestNumberDataPointDao, TestTimedNumberDataPointDao } from "./test-number-data-point.dao";
+import { TestNumberDataPointDao } from "./test-number-data-point.dao";
 import { Profile } from "../../../profiles";
 import { User } from "../../../users";
 
@@ -22,11 +22,4 @@ export class TestNumberDataPointService extends NumberDataPointService<TestNumbe
 
   @Inject()
   protected dataPointDao: TestNumberDataPointDao;
-}
-
-@Injectable()
-export class TestTimedNumberDataPointService extends NumberDataPointService<TestNumberTimeSeriesContent, TestTimedNumberDataPoint> {
-
-  @Inject()
-  protected dataPointDao: TestTimedNumberDataPointDao;
 }

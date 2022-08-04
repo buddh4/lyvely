@@ -111,9 +111,9 @@ describe('ActivityDataPointStore', () => {
 
   describe('getHabitsByCalendarPlan', function () {
     it('filter by interval', async () => {
-      store.addModel(new HabitDto({ id: 't3', interval: CalendarIntervalEnum.Daily, sortOrder: 3 }));
-      store.addModel(new HabitDto({ id: 't2', interval: CalendarIntervalEnum.Daily, sortOrder: 2 }));
-      store.addModel(new HabitDto({ id: 't1', interval: CalendarIntervalEnum.Weekly }));
+      store.addModel(new HabitDto({ id: 't3', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, sortOrder: 3 }));
+      store.addModel(new HabitDto({ id: 't2', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, sortOrder: 2 }));
+      store.addModel(new HabitDto({ id: 't1', dataPointConfig: <any> { interval: CalendarIntervalEnum.Weekly } }));
       const result = store.getHabitsByCalendarPlan(CalendarIntervalEnum.Daily);
       expect(result.length).toEqual(2);
       expect(result[0].id).toEqual('t2');
@@ -123,11 +123,11 @@ describe('ActivityDataPointStore', () => {
 
   describe('getTasksByCalendarPlan', function () {
     it('only include done task which where done at the searched timingId', async () => {
-      store.addModel(new TaskDto({ id: 't4', interval: CalendarIntervalEnum.Daily, sortOrder: 3 }));
-      store.addModel(new TaskDto({ id: 't3', interval: CalendarIntervalEnum.Daily, sortOrder: 2 }));
-      store.addModel(new TaskDto({ id: 't2', interval: CalendarIntervalEnum.Daily, sortOrder: 0, done: timingId }));
-      store.addModel(new TaskDto({ id: 't1', interval: CalendarIntervalEnum.Daily, done: 'anotherday...' }));
-      store.addModel(new TaskDto({ id: 't0', interval: CalendarIntervalEnum.Weekly }));
+      store.addModel(new TaskDto({ id: 't4', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, sortOrder: 3 }));
+      store.addModel(new TaskDto({ id: 't3', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, sortOrder: 2 }));
+      store.addModel(new TaskDto({ id: 't2', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, sortOrder: 0, done: timingId }));
+      store.addModel(new TaskDto({ id: 't1', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, done: 'anotherday...' }));
+      store.addModel(new TaskDto({ id: 't0', dataPointConfig: <any> { interval: CalendarIntervalEnum.Weekly } }));
       const result = store.getTasksByCalendarPlan(CalendarIntervalEnum.Daily, timingId);
       expect(result.length).toEqual(3);
       expect(result[0].id).toEqual('t3');

@@ -66,7 +66,7 @@ describe('Activities DAO', () => {
       });
 
       const model = instanceToPlain(new HabitDto(search));
-      expect(model.interval).toEqual(CalendarIntervalEnum.Monthly);
+      expect(model.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
       expect(model.title).toEqual('c1');
       expect(model.text).toEqual('Test description');
       expect(model.type).toEqual(ActivityType.Habit);

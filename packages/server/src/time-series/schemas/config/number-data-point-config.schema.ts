@@ -5,9 +5,30 @@ import {
   NumberDataPointSettings,
   SupporedLogValueInputTypes
 } from 'lyvely-common';
-import { AbstractDataPointConfigSchema } from './abstract-data-point-config.schema';
+import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
+import { INumberDataPointConfig } from "lyvely-common/src";
 
-export class NumberDataPointConfig extends AbstractDataPointConfigSchema<NumberDataPointSettings> {
+export class NumberDataPointConfigRevision extends DataPointConfigRevision implements NumberDataPointSettings {
+  @Prop()
+  min?: number;
+
+  @Prop()
+  max?: number;
+
+  @Prop()
+  optimal?: number;
+
+  constructor(config: INumberDataPointConfig) {
+    super(config);
+    this.min = config.min;
+    this.max = config.max;
+    this.optimal = config.optimal;
+  }
+}
+
+export const NumberDataPointConfigRevisionSchema = SchemaFactory.createForClass(NumberDataPointConfigRevision);
+
+export class NumberDataPointConfig extends DataPointConfig<NumberDataPointSettings> implements NumberDataPointSettings {
 
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;
@@ -15,29 +36,34 @@ export class NumberDataPointConfig extends AbstractDataPointConfigSchema<NumberD
   @Prop({ enum: SupporedLogValueInputTypes[DataPointValueType.Number] })
   inputType?: DataPointInputType;
 
-  @Prop({ default: 0, required: true })
+  @Prop()
   min?: number;
 
-  @Prop({ default: 5, required: true })
+  @Prop()
   max?: number;
 
-  @Prop({ default: 5, required: true })
+  @Prop()
   optimal?: number;
+
+  @Prop({ type: [ NumberDataPointConfigRevisionSchema ], default: [] })
+  history: NumberDataPointConfigRevision[];
 
   constructor(inputType?: DataPointInputType, settings?: NumberDataPointSettings) {
     super(DataPointValueType.Number, inputType, settings);
   }
 
   setSettings(settings?: NumberDataPointSettings) {
-    this.min = settings?.min ?? 0;
-    this.max = settings?.max ?? 1;
-    this.optimal = settings?.optimal ?? 0;
+    this.min = settings?.min;
+    this.max = settings?.max;
+    this.optimal = settings?.optimal;
   }
 
   getSettings() {
-    const { min, max, optimal } = this;
-    return { min, max, optimal };
+    const { min, max, optimal, interval } = this;
+    return { min, max, optimal, interval };
   }
 }
 
 export const NumberDataPointConfigSchema = SchemaFactory.createForClass(NumberDataPointConfig);
+
+

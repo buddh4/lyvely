@@ -303,7 +303,7 @@ describe('Activities DAO', () => {
      it('assure we do not include an entry of another plan', async () => {
        const { user, profile } = await testData.createUserAndProfile();
        const habit = await activityData.createHabit(user, profile,{ interval: CalendarIntervalEnum.Daily });
-        await activityData.createHabit(user, profile,{ interval: CalendarIntervalEnum.Weekly });
+       await activityData.createHabit(user, profile,{ interval: CalendarIntervalEnum.Weekly });
 
        const result = await activitiesDao.findByProfileAndInterval(profile, ActivityType.Habit, CalendarIntervalEnum.Daily);
        expect(result).toBeDefined();

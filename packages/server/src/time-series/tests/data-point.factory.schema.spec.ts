@@ -5,11 +5,11 @@ import {
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig, TextareaTextDataPointConfig
 } from '../schemas';
-import { DataPointInputStrategy, DataPointInputType, DataPointValueType, NumberDataPointSettings } from 'lyvely-common';
+import { DataPointInputStrategy, DataPointInputType, DataPointValueType, NumberDataPointSettings, CalendarIntervalEnum } from 'lyvely-common';
 
 describe('TimeSeriesDataPointConfigFactory', () => {
   describe('createConfig()', () => {
-    it('create checkbox config with default settings', async () => {
+    it('create checkbox config without settings', async () => {
       const config =
         DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(DataPointInputStrategy.CheckboxNumber);
 
@@ -18,19 +18,20 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       expect(config.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.valueType).toEqual(DataPointValueType.Number);
-      expect(config.min).toEqual(0);
-      expect(config.max).toEqual(1);
-      expect(config.optimal).toEqual(0);
-      expect(config.getSettings().min).toEqual(0);
-      expect(config.getSettings().max).toEqual(1);
-      expect(config.getSettings().optimal).toEqual(0);
+      expect(config.min).toBeUndefined();
+      expect(config.max).toBeUndefined();
+      expect(config.optimal).toBeUndefined();
+      expect(config.getSettings().min).toBeUndefined();
+      expect(config.getSettings().max).toBeUndefined();
+      expect(config.getSettings().optimal).toBeUndefined();
     });
 
     it('create checkbox config', async () => {
       const settings: NumberDataPointSettings = {
         min: 0,
         max: 2,
-        optimal: 1
+        optimal: 1,
+        interval: CalendarIntervalEnum.Daily
       };
       const config =
         DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(DataPointInputStrategy.CheckboxNumber, settings);
@@ -52,7 +53,8 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       const settings: NumberDataPointSettings = {
         min: 0,
         max: 2,
-        optimal: 1
+        optimal: 1,
+        interval: CalendarIntervalEnum.Daily
       };
       const config =
         DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(DataPointInputStrategy.RangeNumber, settings);
@@ -74,7 +76,8 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       const settings: NumberDataPointSettings = {
         min: 0,
         max: 2,
-        optimal: 1
+        optimal: 1,
+        interval: CalendarIntervalEnum.Daily
       };
       const config =
         DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(DataPointInputStrategy.SpinnerNumber, settings);

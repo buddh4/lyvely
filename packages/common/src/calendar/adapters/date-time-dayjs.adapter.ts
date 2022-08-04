@@ -60,6 +60,22 @@ export class DayJsDateTime implements IDateTime {
     return this.instance.toDate();
   }
 
+  date(): number;
+  date(value: number): IDateTime;
+  date(value?: number): number | IDateTime {
+    return value
+      ? new DayJsDateTime(this.instance.date(value))
+      : this.instance.date();
+  }
+
+  day(): number;
+  day(value: number): IDateTime;
+  day(value?: number): number | IDateTime {
+    return value
+      ? new DayJsDateTime(this.instance.day(value))
+      : this.instance.day();
+  }
+
   week(): number;
   week(value: number): IDateTime;
   week(value?: number): number | IDateTime {

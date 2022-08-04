@@ -81,7 +81,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
     //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex
 
     const updates:  { id: EntityIdentity<Activity>, update: UpdateQuerySet<Activity> }[] = [];
-    const activities = await this.contentDao.findByProfileAndInterval(profile, activity.type, activity.interval, {
+    const activities = await this.contentDao.findByProfileAndInterval(profile, activity.type, activity.dataPointConfig.interval, {
       excludeIds: activity._id,
       sort: { sortOrder: 1 }
     });

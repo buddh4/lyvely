@@ -1,4 +1,4 @@
-import { IJournal, IJournalLog } from "./journal.interface";
+import type { IJournal, IJournalLog } from "./journal.interface";
 import {
     IsArray,
     IsBoolean,

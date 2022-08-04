@@ -59,7 +59,7 @@ export abstract class AbstractCreateActivityDto {
 
   @Expose()
   @IsArray()
-  @MaxLength(20, {each: true})
+  @MaxLength(20, { each: true })
   categories?: string[];
 
   constructor(model?: IActivity | Partial<AbstractCreateActivityDto>) {
@@ -72,7 +72,7 @@ export abstract class AbstractCreateActivityDto {
     if (isActivity(model)) {
       this.title = model.title;
       this.text = model.text;
-      this.interval = model.interval;
+      this.interval = model.dataPointConfig.interval;
       /* this.max = model.rating.max;
        this.min = model.rating.min || 0;
        this.categories = model.categories || [];

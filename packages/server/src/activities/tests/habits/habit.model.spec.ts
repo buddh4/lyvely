@@ -42,7 +42,7 @@ describe('Content Model', () => {
       expect(habit.dataPointConfig.min).toEqual(2);
       expect(habit.dataPointConfig.optimal).toEqual(2);
       expect(habit.dataPointConfig.getSettings()).toBeDefined();
-      expect(habit.interval).toEqual(CalendarIntervalEnum.Monthly);
+      expect(habit.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
       expect(habit.text).toEqual( 'Some Test Habit');
       expect(habit.categories.length).toEqual( 1);
       expect(habit.categories[0]).toEqual( 'Test1');

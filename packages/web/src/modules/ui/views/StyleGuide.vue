@@ -11,7 +11,7 @@ import DropdownLink from '@/modules/ui/components/menu/DropdownLink.vue';
 import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 import { DialogType, useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 
-const numberInput1 = 0,
+let numberInput1 = 0,
     numberInput2=3,
     numberInput3=0,
     numberInput4 = 0,

@@ -18,6 +18,7 @@ import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
 import { Profile } from "../../profiles";
 import { User } from "../../users";
 import { TestTimeSeriesContent } from "./src/test-time-series-content.schema";
+import { CheckboxNumberDataPointConfig, DefaultDataPointConfig, NumberDataPointConfig } from "../schemas";
 
 const DataPointModelDefinition = [
   { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }
@@ -71,7 +72,7 @@ describe('NumberDataPointDao', () => {
     const user = new User({ _id: getObjectId(options.uid || 'u1') });
     const content = new TestTimeSeriesContent(profile, user, {
       _id: getObjectId(options.uid || 'c1'),
-      interval: interval
+      dataPointConfig: new CheckboxNumberDataPointConfig({ interval: interval })
     });
 
     const dataPoint = await dao.save(new TestNumberDataPoint(profile, user, content, {

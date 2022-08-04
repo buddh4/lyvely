@@ -64,7 +64,7 @@ export abstract class DataPoint<
     this.pid = assureObjectId(profile._id);
     this.uid = content.userStrategy === UserAssignmentStrategy.PerUser ? assureObjectId(user._id) : null;
     this.cid = assureObjectId(content._id);
-    this.interval = content.interval;
+    this.interval = content.dataPointConfig.interval;
 
     if(!this.date) {
       return;

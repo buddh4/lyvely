@@ -13,7 +13,7 @@
       {{ $t(error) }}
     </div>
 
-    <label :for="id" :class="-">{{ $t(label) }}</label>
+    <label :for="id" :class="labelClass">{{ $t(label) }}</label>
   </div>
 </template>
 
