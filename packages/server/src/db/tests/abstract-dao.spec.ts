@@ -314,6 +314,15 @@ describe('AbstractDao', () => {
         const result = await dao.findOneAndUpdateByIdSet(getObjectId('whatever'), { requiredField: 'upserted' }, { upsert: true, new: false });
         expect(result).toBeNull();
       });
+
+      it('update without apply update', async () => {
+        const model = new TestEntity({ requiredField: '1', numberField: 4 });
+        await dao.save(model);
+
+        const result = await dao.findOneAndUpdateByIdSet(model, { requiredField: 'updated' }, { apply: false });
+        expect(model.requiredField).toEqual('1');
+        expect(result.requiredField).toEqual('updated');
+      });
     });
   })
 })

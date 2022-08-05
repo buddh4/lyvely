@@ -40,11 +40,15 @@ export interface BaseQueryOptions {
   session?: ClientSession
 }
 
+export interface UpdateQueryOptions extends BaseQueryOptions {
+  apply?: boolean
+}
+
 export interface BaseFetchQueryOptions<T extends BaseEntity<T>> extends BaseQueryOptions {
   projection?: ProjectionType<T>;
 }
 
-export interface FindAndUpdateQueryOptions<T extends BaseEntity<T>> extends BaseFetchQueryOptions<T> {
+export interface FindAndUpdateQueryOptions<T extends BaseEntity<T>> extends BaseFetchQueryOptions<T>, UpdateQueryOptions {
   new?: boolean;
   upsert?: boolean;
   raw?: boolean;
@@ -231,12 +235,14 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
       return null;
     }
 
-    applyUpdateTo(id, update);
+    if(options.apply !== false) {
+      applyUpdateTo(id, update);
+    }
 
     return this.constructModel(data);
   }
 
-  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: BaseQueryOptions) {
+  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: UpdateQueryOptions) {
     return this._updateOneById(id, update, options);
   }
 
@@ -248,7 +254,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
 
     const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, clonedUpdate, options).exec()).modifiedCount;
 
-    if(modifiedCount) {
+    if(modifiedCount && options.apply !== false) {
       applyUpdateTo(id, update);
     }
 
