@@ -24,13 +24,13 @@ const ContentModels = [
   }
 ];
 
-describe('TimeableContentSchema', () => {
+describe('TimeSeriesContentSchema', () => {
   let testingModule: TestingModule;
   let testData: TestDataUtils;
   let app: INestApplication;
   let TestTimeSeriesContentModel: Model<TestTimeSeriesContentDocument>;
 
-  const TEST_KEY = 'TimeableContentSchema';
+  const TEST_KEY = 'TimeSeriesContentSchema';
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(TEST_KEY, [], ContentModels).compile();

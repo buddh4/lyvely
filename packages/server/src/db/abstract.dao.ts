@@ -1,4 +1,4 @@
-import { assureObjectId, EntityData, EntityIdentity } from './db.utils';
+import { applyUpdateTo, assureObjectId, EntityData, EntityIdentity } from './db.utils';
 import { FilterQuery, HydratedDocument, Model, QueryWithHelpers, UpdateQuery, QueryOptions } from 'mongoose';
 import { BaseEntity, createBaseEntityInstance } from './base.entity';
 import { Inject } from '@nestjs/common';
@@ -6,6 +6,7 @@ import { ModelCreateEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
 import { DeepPartial } from "lyvely-common";
+import { cloneDeep } from "lodash";
 
 interface Pagination {
   page: number,
@@ -164,7 +165,8 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
 
   async findOneAndUpdateById(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<T|null> {
     if(!await this.beforeUpdate(id, update)) return null;
-    const data = await this.model.findOneAndUpdate({ _id: assureObjectId(id) }, update).lean();
+
+    const data = await this.model.findOneAndUpdate({ _id: assureObjectId(id) }, cloneDeep(update)).lean();
 
     if(!data) {
       return null;
@@ -178,29 +180,14 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   protected async _updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: QueryOptions) {
-    if(!await this.beforeUpdate(id, update)) return 0;
-    const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, update, options).exec()).modifiedCount;
+    const clonedUpdate = cloneDeep(update);
 
-    // TODO: DeepCopy
-    if(modifiedCount && typeof id === 'object' && '$set' in update) {
-      Object.keys(update['$set']).forEach(key => {
-        // We do not support objects here since we could only transfer plain objects
-        if(id.hasOwnProperty(key) && update['$set'][key] !== 'object') {
-          id[key] = update['$set'][key];
-        }
-      });
-    }
+    if(!await this.beforeUpdate(id, clonedUpdate)) return 0;
 
-    // TODO: DeepCopy
-    if(modifiedCount && typeof id === 'object' && '$push' in update) {
-      Object.keys(update['$push']).forEach(key => {
-        if(id.hasOwnProperty(key) && Array.isArray(id[key])) {
-          id[key] = id[key] ?? [];
-          if(Array.isArray(id[key])) {
-            id[key].push(update['$push'][key]);
-          }
-        }
-      });
+    const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, clonedUpdate, options).exec()).modifiedCount;
+
+    if(modifiedCount) {
+      applyUpdateTo(id, update);
     }
 
     return modifiedCount;

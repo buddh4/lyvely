@@ -35,7 +35,11 @@ export abstract class BaseEntity<C extends IEntity<ID> = IEntity<any>, ID = mong
 
 export function createBaseEntityInstance<T extends BaseEntity>(constructor: Constructor<T>, data: DeepPartial<T>) {
   const model = Object.create(constructor.prototype);
-  model.init(data);
+  if(typeof model.init === 'function') {
+    model.init(data);
+  } else {
+    assignEntityData(model, data);
+  }
   return model;
 }
 
