@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { DeepPartial, IContent, getNumberEnumValues } from 'lyvely-common';
+import { DeepPartial, IContent, getNumberEnumValues } from '@lyvely/common';
 import { BaseEntity, EntityType } from '../../db/base.entity';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentVisibilityLevel } from '../../permissions/interfaces/profile-permissions.interface';
@@ -8,7 +8,7 @@ import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schem
 import { CreatedAs, ContentAuthorSchema, Author } from './content-author-info.schema';
 import { User } from '../../users';
 import { implementsAssertContentMetadata } from '../interfaces';
-import { Profile } from '../../profiles';
+import { Profile, BaseProfileModel } from '../../profiles';
 
 export type ContentDocument = Content & mongoose.Document<mongoose.Types.ObjectId>;
 
@@ -17,6 +17,7 @@ export interface ContentConstructor<T extends Content = any> extends Function {
 }
 
 export interface ContentEntity {
+  _id: mongoose.Types.ObjectId
   createdBy: mongoose.Types.ObjectId;
   createdAs?: CreatedAs;
   pid: mongoose.Types.ObjectId;
@@ -34,7 +35,7 @@ export interface ContentEntity {
 }
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Content<T extends EntityType<ContentEntity> = EntityType<ContentEntity>> extends BaseEntity<T> implements IContent {
+export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> extends BaseProfileModel<T> implements IContent {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Types.ObjectId;
@@ -42,11 +43,11 @@ export class Content<T extends EntityType<ContentEntity> = EntityType<ContentEnt
   @Prop({ type: ContentAuthorSchema, required: true })
   createdAs?: CreatedAs;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
+  oid: mongoose.Types.ObjectId;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   pid: mongoose.Types.ObjectId;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-  oid?: mongoose.Types.ObjectId;
 
   @Prop({ type: [ContentLogSchema], default: [] })
   logs: ContentLog[];
@@ -76,10 +77,13 @@ export class Content<T extends EntityType<ContentEntity> = EntityType<ContentEnt
   updatedAt: Date;
 
   constructor(profile: Profile, author: User, obj: DeepPartial<T> = {}) {
-    obj.createdBy = author._id;
-    obj.createdAs = new CreatedAs(author);
-    obj.pid = profile._id;
-    super(obj);
+    const additionalData = {
+      createdBy: author._id,
+      createdAs: new CreatedAs(author),
+      pid: profile._id,
+      oid: profile.oid
+    }
+    super({ ...obj, ...additionalData });
   }
 
   afterInit() {

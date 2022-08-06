@@ -10,7 +10,7 @@ import {
   HabitDto,
   UpdateActivityLogModel,
   UpdateHabitResultDto,
-} from 'lyvely-common';
+} from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import { AbstractContentController, ProfileContentRequest,  ContentController, ContentType, ContentWritePolicy } from '../../content';

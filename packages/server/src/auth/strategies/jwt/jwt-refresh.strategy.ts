@@ -6,7 +6,7 @@ import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { JwtRefreshTokenPayload } from './jwt-payload.interface';
 import { Cookies } from '../../../core/web';
-import { Headers } from 'lyvely-common';
+import { Headers } from '@lyvely/common';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {

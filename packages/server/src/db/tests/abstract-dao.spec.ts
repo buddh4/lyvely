@@ -52,7 +52,7 @@ const TEST_KEY = 'abstract_dao';
 
 describe('AbstractDao', () => {
   let testingModule: TestingModule;
-  let TestEntityModel: Model<TestEntity>;
+  let TestEntityModel: Model<TestEntityDocument>;
   let dao: TestEntityDao;
   let eventTester: EventTester;
 
@@ -272,7 +272,7 @@ describe('AbstractDao', () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         await dao.save(model);
 
-        await dao.updateOneByIdSet(model, { requiredField: 'updated' });
+        await dao.updateOneSetById(model, { requiredField: 'updated' });
         expect(model.requiredField).toEqual('updated');
 
         const search = await dao.reload(model);
@@ -285,7 +285,7 @@ describe('AbstractDao', () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         await dao.save(model);
 
-        const result = await dao.findOneAndUpdateByIdSet(model, { requiredField: 'updated' });
+        const result = await dao.findOneAndSetById(model, { requiredField: 'updated' });
         expect(model.requiredField).toEqual('updated');
         expect(result.requiredField).toEqual('updated');
       });
@@ -294,24 +294,24 @@ describe('AbstractDao', () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         await dao.save(model);
 
-        const result = await dao.findOneAndUpdateByIdSet(model, { requiredField: 'updated' }, { new: false });
+        const result = await dao.findOneAndSetById(model, { requiredField: 'updated' }, { new: false });
         expect(model.requiredField).toEqual('updated');
         expect(result.requiredField).toEqual('1');
       });
 
       it('update non existing entity', async () => {
-        const result = await dao.findOneAndUpdateByIdSet(getObjectId('whatever'), { requiredField: 'updated' });
+        const result = await dao.findOneAndSetById(getObjectId('whatever'), { requiredField: 'updated' });
         expect(result).toBeNull();
       });
 
       it('upsert non existing entity', async () => {
-        const result = await dao.findOneAndUpdateByIdSet(getObjectId('whatever'), { requiredField: 'upserted' }, { upsert: true });
+        const result = await dao.findOneAndSetById(getObjectId('whatever'), { requiredField: 'upserted' }, { upsert: true });
         expect(result).toBeDefined();
         expect(result.requiredField).toEqual('upserted');
       });
 
       it('upsert non existing entity with new: false', async () => {
-        const result = await dao.findOneAndUpdateByIdSet(getObjectId('whatever'), { requiredField: 'upserted' }, { upsert: true, new: false });
+        const result = await dao.findOneAndSetById(getObjectId('whatever'), { requiredField: 'upserted' }, { upsert: true, new: false });
         expect(result).toBeNull();
       });
 
@@ -319,7 +319,7 @@ describe('AbstractDao', () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         await dao.save(model);
 
-        const result = await dao.findOneAndUpdateByIdSet(model, { requiredField: 'updated' }, { apply: false });
+        const result = await dao.findOneAndSetById(model, { requiredField: 'updated' }, { apply: false });
         expect(model.requiredField).toEqual('1');
         expect(result.requiredField).toEqual('updated');
       });

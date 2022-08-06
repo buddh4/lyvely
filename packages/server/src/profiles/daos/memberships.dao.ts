@@ -5,7 +5,7 @@ import { Membership, MembershipDocument, Profile, BaseMembershipRole } from '../
 import { User } from '../../users/schemas/users.schema';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
 import { assureObjectId, EntityIdentity } from '../../db/db.utils';
-import { Constructor } from 'lyvely-common';
+import { Constructor } from '@lyvely/common';
 
 @Injectable()
 export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership>{

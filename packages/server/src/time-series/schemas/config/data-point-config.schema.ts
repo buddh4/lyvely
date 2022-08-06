@@ -5,7 +5,7 @@ import {
   DataPointInputType,
   DataPointValueType,
   IDataPointConfigRevision,
-  getNumberEnumValues, CalendarIntervalEnum } from 'lyvely-common';
+  getNumberEnumValues, CalendarIntervalEnum } from '@lyvely/common';
 import { isEqual } from "lodash";
 
 export interface DataPointSettings {

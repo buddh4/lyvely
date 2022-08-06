@@ -20,6 +20,7 @@ import activityRepository from '@/modules/activity/repositories/activity.reposit
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
+import { ActivityFilterOptions } from "lyvely-common/src";
 
 export interface MoveActivityEvent {
   id: string;
@@ -40,7 +41,7 @@ export const useActivityStore = defineStore('activity', {
   },
   actions: {
     getHabitDataPoint(habit: IHabit, timingId?: string) {
-      timingId = timingId || useTimingStore().getTimingId(habit.interval);
+      timingId = timingId || useTimingStore().getTimingId(habit.dataPointConfig.interval);
       return this.cache.getDataPoint(habit, timingId, true);
     },
     async loadActivities() {
@@ -108,7 +109,7 @@ export const useActivityStore = defineStore('activity', {
     },
     getDataPoint(activity: IActivity) {
       const { date } = useTimingStore();
-      const timingId = toTimingId(date, activity.interval);
+      const timingId = toTimingId(date, activity.dataPointConfig.interval);
 
       let dataPoint = this.cache.getDataPoint(activity, timingId);
 
@@ -147,8 +148,8 @@ export const useActivityStore = defineStore('activity', {
         await activityRepository.sort(moveEvent);
         const activity = this.cache.getModel(moveEvent.id);
         const activities = (isTask(activity)
-          ? this.tasks(activity.interval)
-          : this.habits(activity.interval)
+          ? this.tasks(activity.dataPointConfig.interval)
+          : this.habits(activity.dataPointConfig.interval)
         ).filter((search: IActivity) => search.id !== activity.id);
         activities.splice(moveEvent.newIndex, 0, activity);
         activities.forEach((current: IActivity, index: number) => {
@@ -158,7 +159,7 @@ export const useActivityStore = defineStore('activity', {
         // Todo: handle error...
       }
     },
-    updateFilter(update: ActivityFilter) {
+    updateFilter(update: ActivityFilterOptions) {
       this.filter.update(update);
     },
     closeModals() {

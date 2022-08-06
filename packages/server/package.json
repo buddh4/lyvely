@@ -1,5 +1,5 @@
 {
-  "name": "lyvely-server",
+  "name": "@lyvely/server",
   "type": "commonjs",
   "version": "0.0.1",
   "description": "",
@@ -76,6 +76,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",
+    "@lyvely/common": "*",
     "babel-jest": "^28.1.2",
     "cross-env": "^7.0.3",
     "cypress": "^9.3.1",
@@ -119,7 +120,7 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "transformIgnorePatterns": [
-      "/node_modules/(?!lyvely-common/.*)"
+      "/node_modules/(?!@lyvely/common/.*)"
     ]
   }
 }

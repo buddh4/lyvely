@@ -9,7 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfilesDto, ProfileDto , CategoryDto , UserDto , CreateProfileDto } from 'lyvely-common';
+import { ProfilesDto, ProfileDto , CategoryDto , UserDto , CreateProfileDto } from '@lyvely/common';
 
 
 

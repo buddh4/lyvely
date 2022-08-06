@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { ProfileDocument } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { UserDocument } from '../../users';
-import { ActivityType, HabitDto, CalendarIntervalEnum, CreateHabitDto, IHabit } from 'lyvely-common';
+import { ActivityType, HabitDto, CalendarIntervalEnum, CreateHabitDto, IHabit } from '@lyvely/common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit } from '../schemas';
 import { ActivityTestDataUtil,  createActivityTestingModule } from './utils/activities.test.utils';

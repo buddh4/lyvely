@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../db/base.entity';
-import { DeepPartial, getStringEnumValues } from 'lyvely-common';
+import { DeepPartial, getStringEnumValues } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '../../users/schemas/users.schema';
 import { Profile } from '../../profiles';
@@ -26,7 +26,7 @@ export class CreatedAs extends BaseEntity<CreatedAs> {
     }
   }
 
-  @Prop( { type: String, enum: getStringEnumValues(CreatedAsType), required: true})
+  @Prop( { type: String, enum: getStringEnumValues(CreatedAsType), required: true })
   type: CreatedAsType;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })

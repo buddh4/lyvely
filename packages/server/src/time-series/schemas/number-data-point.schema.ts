@@ -1,7 +1,7 @@
 import { Prop } from '@nestjs/mongoose';
 import { DataPoint } from "./data-point.schema";
 import { assureStringId } from "../../db/db.utils";
-import { NumberDataPointDto } from "lyvely-common";
+import { NumberDataPointDto } from "@lyvely/common";
 
 export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
   @Prop( { type: Number, required: true, default: 0 })

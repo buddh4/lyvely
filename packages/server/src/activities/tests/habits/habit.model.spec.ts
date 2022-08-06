@@ -1,7 +1,7 @@
 import { Profile } from '../../../profiles';
 import { User } from '../../../users';
 import { Habit } from '../../schemas';
-import { CalendarIntervalEnum, DataPointInputStrategy } from 'lyvely-common';
+import { CalendarIntervalEnum, DataPointInputStrategy } from '@lyvely/common';
 import { expect } from '@jest/globals';
 import { CreatedAsType } from '../../../content';
 import mongoose from 'mongoose';

@@ -1,4 +1,4 @@
-import { ActivityType, IContent } from "lyvely-common";
+import { ActivityType, IContent } from "@lyvely/common";
 import { Content } from "../../content";
 import { Habit } from "../schemas";
 

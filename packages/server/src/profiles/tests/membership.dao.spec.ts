@@ -6,7 +6,7 @@ import {
   BaseMembershipRole,
   BaseUserProfileRelationType
 } from '../schemas';
-import { ProfileType } from 'lyvely-common';
+import { ProfileType } from '@lyvely/common';
 import { createActivityTestingModule } from '../../activities/tests/utils/activities.test.utils';
 
 describe('MembershipDao', () => {

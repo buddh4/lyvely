@@ -3,7 +3,7 @@ import { assureObjectId, EntityIdentity } from "../../db/db.utils";
 import { Profile } from "../../profiles";
 import { User } from "../../users";
 import { DataPoint, TimeSeriesContent } from "../schemas";
-import { CalendarDate, getTimingIds, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from "lyvely-common";
+import { CalendarDate, getTimingIds, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from "@lyvely/common";
 
 type InterValFilter = { 'interval': CalendarIntervalEnum, tid?: string | { $regex: RegExp } };
 

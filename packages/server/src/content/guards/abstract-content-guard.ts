@@ -4,7 +4,7 @@ import { Reflector } from '@nestjs/core';
 import { ContentService } from '../services/content.service';
 import { ProfileContentRequest } from '../controllers/profile-content-request.type';
 import { getContentIdFromRequest } from '../decorators/content-id-param.decorator';
-import { isValidObjectId } from 'lyvely-common';
+import { isValidObjectId } from '@lyvely/common';
 import { Content } from '../schemas/content.schema';
 import { validateContentTypeFromContext } from '../decorators/content-type.decorator';
 import { getPolicyHandlerFromContext } from '../../policies/decorators/policies.decorator';

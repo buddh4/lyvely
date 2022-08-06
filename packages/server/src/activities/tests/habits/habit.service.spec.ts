@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from '../../services/habits.service';
 import { Habit } from '../../schemas';
-import { CalendarIntervalEnum, ActivityType, CreateHabitDto, EditHabitDto } from 'lyvely-common';
+import { CalendarIntervalEnum, ActivityType, CreateHabitDto, EditHabitDto } from '@lyvely/common';
 import { Profile } from '../../../profiles';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitsDao } from '../../daos/habits.dao';

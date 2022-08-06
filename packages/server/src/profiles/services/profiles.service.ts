@@ -1,15 +1,15 @@
-import {Injectable} from '@nestjs/common';
-import {User} from '../../users/schemas/users.schema';
-import {Profile,} from '../schemas/profiles.schema';
-import {Category} from '../../categories/schemas/categories.schema';
-import {EntityIdentity} from '../../db/db.utils';
-import {ProfileType} from 'lyvely-common';
-import {ProfileDao} from '../daos/profile.dao';
-import {BaseMembershipRole} from '../schemas/user-profile-relations.schema';
-import {MembershipsDao} from '../daos/memberships.dao';
-import {Membership} from '../schemas/profile-memberships.schema';
-import {UserProfileRelations} from '../models/profile-relations.model';
-import {UserProfileRelationsDao} from '../daos/user-profile-relations.dao';
+import { Injectable } from '@nestjs/common';
+import { User } from '../../users/schemas/users.schema';
+import { Profile, } from '../schemas/profiles.schema';
+import { Category } from '../../categories/schemas/categories.schema';
+import { EntityIdentity } from '../../db/db.utils';
+import { ProfileType } from '@lyvely/common';
+import { ProfileDao } from '../daos/profile.dao';
+import { BaseMembershipRole } from '../schemas/user-profile-relations.schema';
+import { MembershipsDao } from '../daos/memberships.dao';
+import { Membership } from '../schemas/profile-memberships.schema';
+import { UserProfileRelations } from '../models/profile-relations.model';
+import { UserProfileRelationsDao } from '../daos/user-profile-relations.dao';
 
 export interface ProfileMembership {
   user: User,
@@ -109,7 +109,7 @@ export class ProfilesService {
       return null;
     }
 
-    return {user, membership, profile };
+    return { user, membership, profile };
   }
 
   async mergeCategories(profile: Profile, categories?: string[]): Promise<Profile> {
@@ -129,14 +129,14 @@ export class ProfilesService {
       profile.categories.push(Category.create({ name: name })),
     );
 
-    await this.profileDao.updateOneByIdSet(profile, {categories: profile.categories});
+    await this.profileDao.updateOneSetById(profile, { categories: profile.categories });
 
     return profile;
   }
 
   async updateScore(profile: Profile, inc: number): Promise<number> {
     const newScore = Math.max(profile.score + inc, 0);
-    await this.profileDao.updateOneByIdSet(profile, {score: newScore});
+    await this.profileDao.updateOneSetById(profile, { score: newScore });
     profile.score = newScore;
     return newScore;
   }

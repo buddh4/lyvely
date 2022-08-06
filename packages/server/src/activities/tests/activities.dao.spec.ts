@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { ProfileDocument } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { UserDocument } from '../../users';
-import { ActivityType , CalendarIntervalEnum, toTimingId, addDays, UserAssignmentStrategy } from 'lyvely-common';
+import { ActivityType , CalendarIntervalEnum, toTimingId, addDays, UserAssignmentStrategy } from '@lyvely/common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit, Task, UserDone } from '../schemas';
 import { ActivityTestDataUtil,  createActivityTestingModule } from './utils/activities.test.utils';
@@ -50,21 +50,6 @@ describe('Activities DAO', () => {
       expect(search).not.toBeNull();
       expect(search._id).toEqual(content._id);
       expect(content instanceof Habit).toEqual(true);
-    });
-
-    it('find activity with type filter', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const content = await activityData.createHabit(user, profile);
-      const search = await activitiesDao.findByProfileAndId(profile, content._id, ActivityType.Habit);
-      expect(search).toBeDefined();
-      expect(search._id).toEqual(content._id);
-    });
-
-    it('do not find activity with wrong activity type', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const content = await activityData.createHabit(user, profile);
-      const search = await activitiesDao.findByProfileAndId(profile, content._id, ActivityType.Task);
-      expect(search).toBeNull();
     });
   });
 
@@ -216,7 +201,7 @@ describe('Activities DAO', () => {
        const task1 =  await activityData.createTask(user, profile);
        const task2 = await activityData.createTask(user, profile);
 
-       await activitiesDao.updateBulkSet([
+       await activitiesDao.updateSetBulk([
          { id: task1._id, update: { sortOrder: 1 } },
          { id: task2._id, update: { sortOrder: 2 } }
        ]);

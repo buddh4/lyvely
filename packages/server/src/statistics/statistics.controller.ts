@@ -7,7 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
-import { ScoreStatistics } from 'lyvely-common';
+import { ScoreStatistics } from '@lyvely/common';
 
 @Controller('statistics')
 export class StatisticsController {

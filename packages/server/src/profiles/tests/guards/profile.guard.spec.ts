@@ -6,7 +6,7 @@ import { createTestExecutionContext } from '../../../test/utils/test-execution-c
 import { ProfileGuard } from '../../guards';
 import { UserProfileRequest } from '../../../core/types';
 import { BaseMembershipRole } from '../../schemas';
-import { ProfileVisibilityLevel } from 'lyvely-common';
+import { ProfileVisibilityLevel } from '@lyvely/common';
 
 describe('ProfileGuard', () => {
   let testingModule: TestingModule;

@@ -3,7 +3,7 @@ import { TestProfileScore, TestProfileScoreDocument } from './test-profile-score
 import { ProfileScoreDao } from '../../daos';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Constructor } from 'lyvely-common';
+import { Constructor } from '@lyvely/common';
 
 @Injectable()
 export class TestProfileActionDao extends ProfileScoreDao<TestProfileScore> {

@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from '../users/schemas/users.schema';
 import { MongoError } from 'mongodb';
-import { RegisterDto } from 'lyvely-common';
+import { RegisterDto } from '@lyvely/common';
 import { UserDao } from '../users/daos/user.dao';
 import { UserProfileRelations, ProfilesService } from "../profiles";
 

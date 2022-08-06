@@ -1,5 +1,5 @@
 {
-  "name": "lyvely-common",
+  "name": "@lyvely/common",
   "version": "0.0.1",
   "description": "Shared lively library",
   "type": "commonjs",

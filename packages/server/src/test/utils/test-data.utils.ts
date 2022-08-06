@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from '../../users';
-import { ProfileType, ProfileVisibilityLevel } from 'lyvely-common';
+import { ProfileType, ProfileVisibilityLevel } from '@lyvely/common';
 import { closeInMongodConnection, rootMongooseTestModule } from './mongoose-test.utils';
 import {
   Profile, ProfileDocument,

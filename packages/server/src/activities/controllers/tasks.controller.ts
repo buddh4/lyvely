@@ -17,7 +17,7 @@ import { Habit, Task, TaskDocument } from '../schemas';
   DoneTaskResultModel,
   EditTaskModel,
   TaskDto,
-} from 'lyvely-common';*/
+} from '@lyvely/common';*/
 import { User } from '../../users/schemas/users.schema';
 import { TasksService } from '../services/tasks.service';
 import { EntityIdentity } from '../../db/db.utils';

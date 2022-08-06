@@ -10,7 +10,7 @@ import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { AuthService } from '../services/auth.service';
 import { Public } from '../decorators/public.decorator';
 import { UserRequest } from '../../core/types';
-import { addMilliSeconds , UserDto , Headers } from 'lyvely-common';
+import { addMilliSeconds , UserDto , Headers } from '@lyvely/common';
 
 import { Cookies } from '../../core/web';
 
@@ -61,7 +61,9 @@ export class AuthController {
     }
     res.clearCookie(Cookies.REFRESH);
     res.clearCookie(Cookies.AUTHENTICATION);
-    req.logout();
+    req.user = undefined;
+    // TODO: trigger event
+    //req.logout();
   }
 
   @Get('user')

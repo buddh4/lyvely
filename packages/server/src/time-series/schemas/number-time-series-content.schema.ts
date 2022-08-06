@@ -1,4 +1,4 @@
-import { ITimeSeriesContent } from 'lyvely-common';
+import { ITimeSeriesContent } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { ContentEntity } from '../../content';
 import {

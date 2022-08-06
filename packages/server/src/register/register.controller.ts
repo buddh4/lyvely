@@ -4,7 +4,7 @@ import {
   UseInterceptors,
  Post, Body } from '@nestjs/common';
 
-import { RegisterDto } from 'lyvely-common';
+import { RegisterDto } from '@lyvely/common';
 import { RegisterService } from './register.service';
 import { Public } from '../auth/decorators/public.decorator';
 

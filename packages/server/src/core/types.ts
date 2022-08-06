@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { User } from '../users/schemas/users.schema';
+import { User } from '../users';
 import { Profile, UserProfileRelations } from '../profiles';
 
 export type UserRequest = Request & { user: User };

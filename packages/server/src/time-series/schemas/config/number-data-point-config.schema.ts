@@ -3,10 +3,10 @@ import {
   DataPointInputType,
   DataPointValueType,
   NumberDataPointSettings,
-  SupporedLogValueInputTypes
-} from 'lyvely-common';
+  SupporedLogValueInputTypes,
+  INumberDataPointConfig
+} from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
-import { INumberDataPointConfig } from "lyvely-common/src";
 
 export class NumberDataPointConfigRevision extends DataPointConfigRevision implements NumberDataPointSettings {
   @Prop()

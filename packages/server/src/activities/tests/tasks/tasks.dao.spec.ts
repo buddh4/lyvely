@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { Model } from 'mongoose';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
-import { CalendarIntervalEnum, toTimingId } from 'lyvely-common';
+import { CalendarIntervalEnum, toTimingId } from '@lyvely/common';
 import { TaskDocument, } from '../../schemas';
 import { TasksDao } from '../../daos/tasks.dao';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';

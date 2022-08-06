@@ -4,7 +4,7 @@ import { BaseEntity } from '../../db/base.entity';
 import { Timing, TimingSchema } from '../../calendar/schemas/timing.schema';
 import { User } from '../../users';
 import { Profile } from './profiles.schema';
-import { DeepPartial, toDate, UserAssignmentStrategy, Calendar, CalendarDate, CalendarIntervalEnum } from "lyvely-common";
+import { DeepPartial, toDate, UserAssignmentStrategy, Calendar, CalendarDate, CalendarIntervalEnum } from "@lyvely/common";
 
 export interface IProfileScoreAction {
   _id: mongoose.Types.ObjectId;

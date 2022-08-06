@@ -6,8 +6,8 @@ export interface ContentFilterOptions {
 }
 
 export class ContentFilter<Model extends IContent> {
-  category: string;
-  archived: boolean = false;
+  category?: string;
+  archived = false;
 
   constructor(filter?: ContentFilterOptions) {
     if(filter) {

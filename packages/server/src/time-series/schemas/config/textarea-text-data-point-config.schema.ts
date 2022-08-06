@@ -1,5 +1,5 @@
 import { Prop, Schema } from '@nestjs/mongoose';
-import { DataPointInputType, DataPointInputStrategy, DataPointValueType } from 'lyvely-common';
+import { DataPointInputType, DataPointInputStrategy, DataPointValueType } from '@lyvely/common';
 import { DataPointConfigSchemaFactory } from './data-point-config-schema.factory';
 import { DefaultDataPointConfig } from './default-data-point-config.schema';
 

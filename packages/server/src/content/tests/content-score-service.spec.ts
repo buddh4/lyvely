@@ -15,7 +15,7 @@ import { Model } from 'mongoose';
 import { expect } from "@jest/globals";
 import { ContentScoreService } from "../services";
 import { ContentScoreDao } from "../daos";
-import { toTimingId , UserAssignmentStrategy } from "lyvely-common";
+import { toTimingId , UserAssignmentStrategy } from "@lyvely/common";
 import { TestContent } from "./src/test-content.schema";
 
 describe('ContentScoreService', () => {
@@ -72,7 +72,7 @@ describe('ContentScoreService', () => {
         expect(model._id).toBeDefined();
         expect(model.cid).toEqual(content._id);
         expect(model.pid).toEqual(profile._id);
-        expect(model.oid).toBeUndefined();
+        expect(model.oid).toEqual(model.pid);
         expect(model.score).toEqual(5);
         expect(model.timing).toBeDefined();
         expect(model.timing.tid).toEqual(toTimingId(new Date()));
@@ -243,7 +243,7 @@ describe('ContentScoreService', () => {
       expect(model.special).toEqual('TestValue');
       expect(model.getSpecialValue()).toEqual('_TestValue_');
       expect(model.pid).toEqual(profile._id);
-      expect(model.oid).toBeUndefined();
+      expect(model.oid).toEqual(model.pid);
       expect(model.uid).toEqual(user._id);
       expect(model.score).toEqual(5);
       expect(model.timing).toBeDefined();

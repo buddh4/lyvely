@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { ProfilesService } from '../services';
-import { ProfileType } from 'lyvely-common';
+import { ProfileType } from '@lyvely/common';
 import { BaseMembershipRole } from '../schemas';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';

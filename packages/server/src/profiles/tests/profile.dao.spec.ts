@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DEFAULT_PROFILE_NAME, Profile, ProfileSchema } from '../schemas';
-import { ProfileType } from 'lyvely-common';
+import { ProfileType } from '@lyvely/common';
 import { ProfileDao } from '../daos';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { UsersModule } from '../../users/users.module';
@@ -105,7 +105,7 @@ describe('ProfileDao', () => {
       const user = await testData.createUser();
       const profile = await profileDao.upsert({ createdBy: user._id });
       profile.name = 'overwritten';
-      await profileDao.updateOneByIdSet(profile, { name: 'overwritten' });
+      await profileDao.updateOneSetById(profile, { name: 'overwritten' });
       const updated = await profileDao.reload(profile);
       expect(updated.name).toEqual('overwritten');
     });
@@ -115,7 +115,7 @@ describe('ProfileDao', () => {
     it('update the score of a profile', async () => {
       const user = await testData.createUser();
       let profile = await profileDao.upsert({ createdBy: user._id });
-      await profileDao.updateOneByIdSet(profile, { score: 10 });
+      await profileDao.updateOneSetById(profile, { score: 10 });
       profile = await profileDao.reload(profile);
       expect(profile.score).toEqual(10);
     });

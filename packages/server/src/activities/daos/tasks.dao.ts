@@ -6,7 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import module from "../activities.meta";
 import { User } from "../../users";
-import { UserAssignmentStrategy } from "lyvely-common";
+import { UserAssignmentStrategy } from "@lyvely/common";
 
 @Injectable()
 export class TasksDao extends AbstractContentDao<Task> {
@@ -27,11 +27,11 @@ export class TasksDao extends AbstractContentDao<Task> {
 
     let result;
     if(task.userStrategy === UserAssignmentStrategy.Shared) {
-      result = await this.updateOneByIdSet(id, { doneBy: [doneBy] });
+      result = await this.updateOneSetById(id, { doneBy: [doneBy] });
     } else {
       result = !isDoneByUser
         ? await this.updateOneById(id, { $push: { doneBy: doneBy } })
-        : await this._updateOneById(id, { $set: { "doneBy.$[elem].tid": doneBy.tid, "doneBy.$[elem].date": doneBy.date } }, {
+        : await this._updateOneByFilter(id, { $set: { "doneBy.$[elem].tid": doneBy.tid, "doneBy.$[elem].date": doneBy.date } }, {}, {
           arrayFilters: [{ 'elem.uid': assureObjectId(user) }]
         } );
     }
@@ -51,7 +51,7 @@ export class TasksDao extends AbstractContentDao<Task> {
     }
 
     const result = task.userStrategy === UserAssignmentStrategy.Shared
-      ? await this.updateOneByIdSet(id, { doneBy: [] })
+      ? await this.updateOneSetById(id, { doneBy: [] })
       : await this.updateOneById(id, { $pull: { doneBy: { uid: assureObjectId(user) } } })
 
     if(result) {

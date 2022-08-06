@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
-import { Calendar, CalendarIntervalEnum } from 'lyvely-common';
+import { Calendar, CalendarIntervalEnum } from '@lyvely/common';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import { TestProfileScore, TestProfileScoreSchema } from './src/test-profile-score.schema';
 import { TestProfileActionDao } from './src/test-profile-action.dao';
@@ -20,7 +20,6 @@ describe('AbstractUserProfileActionDao', () => {
   let testingModule: TestingModule;
   let testScoreDao: TestProfileActionDao;
   let testData: TestDataUtils;
-  let app: INestApplication;
 
   const TEST_KEY = 'abstract_user_profile_action_dao';
 
@@ -28,13 +27,7 @@ describe('AbstractUserProfileActionDao', () => {
     testingModule = await createContentTestingModule(TEST_KEY, [TestProfileActionDao], [testScoreModelDef]).compile();
     testScoreDao = testingModule.get<TestProfileActionDao>(TestProfileActionDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    app = testingModule.createNestApplication();
-    await app.init();
-  });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
-    await app.close();
   });
 
   it('should be defined', () => {

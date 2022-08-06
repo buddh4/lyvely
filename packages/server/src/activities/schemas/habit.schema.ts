@@ -1,6 +1,6 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '../../users';
-import { AbstractCreateActivityDto, IHabit } from 'lyvely-common';
+import { AbstractCreateActivityDto, IHabit } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { Activity } from './activity.schema';
 import { ContentDocument } from '../../content';

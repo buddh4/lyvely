@@ -3,7 +3,7 @@ import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relatio
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Constructor } from 'lyvely-common';
+import { Constructor } from '@lyvely/common';
 
 @Injectable()
 export class UserProfileRelationsDao extends AbstractUserProfileRelationsDao {

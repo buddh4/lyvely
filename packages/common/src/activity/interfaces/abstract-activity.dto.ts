@@ -9,8 +9,6 @@ import { UserAssignmentStrategy } from "../../user";
 
 @Exclude()
 export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implements IActivity {
-    @Expose()
-    id: IActivity['id'];
 
     @Expose()
     @IsEnum(CalendarIntervalEnum)

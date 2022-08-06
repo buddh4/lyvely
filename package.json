@@ -2,18 +2,19 @@
   "name": "lyvely-app",
   "version": "0.0.1",
   "author": "Julian Harrer",
+  "private": true,
   "workspaces": [
     "./packages/*"
   ],
   "scripts": {
-    "watch-common": "npm run watch -w lyvely-common",
-    "build-common": "npm run build -w lyvely-common",
-    "build-server": "npm run build -w lyvely-server",
-    "build-web": "npm run build -w lyvely-web",
-    "test-common": "npm run test -w lyvely-common",
-    "test-server": "npm run test -w lyvely-server",
-    "run-server": "npm run start:dev -w lyvely-server",
-    "debug-server": "npm run start:debug -w lyvely-server",
-    "run-web": "npm run dev -w lyvely-web"
+    "watch-common": "npm run watch -w @lyvely/common",
+    "build-common": "npm run build -w @lyvely/common",
+    "build-server": "npm run build -w @lyvely/server",
+    "build-web": "npm run build -w @lyvely/web",
+    "test-common": "npm run test -w @lyvely/common",
+    "test-server": "npm run test -w @lyvely/server",
+    "run-server": "npm run start:dev -w @lyvely/server",
+    "debug-server": "npm run start:debug -w @lyvely/server",
+    "run-web": "npm run dev -w @lyvely/web"
   }
 }

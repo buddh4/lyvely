@@ -5,7 +5,7 @@ import {
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig, TextareaTextDataPointConfig
 } from '../schemas';
-import { DataPointInputStrategy, DataPointInputType, DataPointValueType, NumberDataPointSettings, CalendarIntervalEnum } from 'lyvely-common';
+import { DataPointInputStrategy, DataPointInputType, DataPointValueType, NumberDataPointSettings, CalendarIntervalEnum } from '@lyvely/common';
 
 describe('TimeSeriesDataPointConfigFactory', () => {
   describe('createConfig()', () => {

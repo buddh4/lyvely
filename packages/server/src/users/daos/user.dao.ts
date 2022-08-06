@@ -5,7 +5,7 @@ import { User, UserDocument } from '../schemas/users.schema';
 import { AbstractDao } from '../../db/abstract.dao';
 import { RefreshToken } from '../schemas/refresh.tokens.schema';
 import { assureObjectId, EntityIdentity } from '../../db/db.utils';
-import { Constructor } from 'lyvely-common';
+import { Constructor } from '@lyvely/common';
 
 @Injectable()
 export class UserDao extends AbstractDao<User> {

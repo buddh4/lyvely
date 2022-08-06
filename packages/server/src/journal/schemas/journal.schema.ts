@@ -2,15 +2,15 @@
 import mongoose from 'mongoose';
 import { User } from '../../users/schemas/users.schema';
 import { Profile, } from '../../profiles';
-import { IJournal } from 'lyvely-common';
-import { IJournalLog, EditJournalDto } from 'lyvely-common';
+import { IJournal } from '@lyvely/common';
+import { IJournalLog, EditJournalDto } from '@lyvely/common';
 import { TimeableContentLog, TimeableContent } from '../../calendar/timeable/schemas/timeable-content.schema';
-import { CalendarIntervalEnum } from 'lyvely-common';
+import { CalendarIntervalEnum } from '@lyvely/common';
 import { Timing, TimingSchema } from '../../calendar/schemas/timing.schema';
 import { Rating, RatingSchema } from '../../calendar/timeable/schemas/rating.schema';
 import { assureObjectId } from '../../db/db.utils';
-import { CalendarDate } from 'lyvely-common';
-import { getNumberEnumValues } from 'lyvely-common';
+import { CalendarDate } from '@lyvely/common';
+import { getNumberEnumValues } from '@lyvely/common';
 
 @Schema({ timestamps: true })
 export class Journal extends TimeableContent implements IJournal {

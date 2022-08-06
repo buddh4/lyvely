@@ -3,7 +3,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Content, ContentScore } from "../schemas";
 import { ContentScoreDao } from "../daos";
 import { assureObjectId, EntityIdentity } from "../../db/db.utils";
-import { UserAssignmentStrategy } from "lyvely-common";
+import { UserAssignmentStrategy } from "@lyvely/common";
 import { User } from "../../users";
 
 @Injectable()

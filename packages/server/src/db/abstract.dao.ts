@@ -14,7 +14,7 @@ import { Inject } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
-import { DeepPartial } from "lyvely-common";
+import { DeepPartial } from "@lyvely/common";
 import { cloneDeep } from "lodash";
 
 interface Pagination {
@@ -80,7 +80,7 @@ export interface UpsertQueryOptions  extends BaseQueryOptions {
 export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
 
 export abstract class AbstractDao<T extends BaseEntity<T>> {
-  protected model: Model<BaseEntity>;
+  protected model: Model<any>;
 
   @Inject()
   private eventEmitter: EventEmitter2;
@@ -156,21 +156,29 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
    */
   async findById(identity: EntityIdentity<T>, options?: BaseFetchQueryOptions<T>): Promise<T|null> {
     // TODO: trigger events
-    return this.constructModel(await this.model.findById(assureObjectId(identity), options?.projection, options).lean());
+    return this.constructModel(await this.model.findById(this.assureEntityId(identity), options?.projection, options).lean());
   }
 
-  async findAllByIds(ids: EntityIdentity<T>[], options: FetchQueryOptions<T> = defaultFetchOptions): Promise<T[]> {
-    return this.findAll({ '_id': { $in: ids.map(id => assureObjectId(id)) } }, options);
+  async findAllByIds(ids: EntityIdentity<T>[], options?: FetchQueryOptions<T>): Promise<T[]> {
+    return this.findAll({ '_id': { $in: ids.map(id => this.assureEntityId(id)) } }, options);
   }
 
-  async findAll<C = T>(filter: FilterQuery<C>, options: FetchQueryOptions<T> = defaultFetchOptions): Promise<T[]> {
+  async findAll<C = T>(filter: FilterQuery<C>, options?: FetchQueryOptions<T>): Promise<T[]> {
     // TODO: trigger events
+
+    options = options || {};
+    options.pagination = options.pagination || defaultFetchOptions.pagination;
+
     const query = this.model.find(filter, options?.projection, options);
     const fetchFilter = this.getFetchQueryFilter(options);
     if(fetchFilter) {
       query.where(fetchFilter);
     }
     return this.constructModels(await this.applyFetchQueryOptions(query, options).lean());
+  }
+
+  protected assureEntityId(identity: EntityIdentity<T>) : T['_id'] {
+    return assureObjectId(identity);
   }
 
   async findOne<C = T>(filter: FilterQuery<C>, options?: BaseFetchQueryOptions<T>): Promise<T|null> {
@@ -192,8 +200,8 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
 
     return {
       '_id':  Array.isArray(excludeIds)
-        ? { $nin: excludeIds.map(assureObjectId) }
-        : { $ne: assureObjectId(excludeIds) }
+        ? { $nin: excludeIds.map(identity => this.assureEntityId(identity)) }
+        : { $ne: this.assureEntityId(excludeIds) }
     }
   }
 
@@ -212,15 +220,15 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return query;
   }
 
-  async updateOneByIdSet(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>, options?: BaseQueryOptions): Promise<number> {
-    return this.updateOneById(id, { $set: <any> updateSet }, options);
-  }
-
-  async findOneAndUpdateByIdSet(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>, options?: FindAndUpdateQueryOptions<T>): Promise<T|null> {
+  async findOneAndSetById(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>, options?: FindAndUpdateQueryOptions<T>): Promise<T|null> {
     return this.findOneAndUpdateById(id, { $set: <any> updateSet }, options);
   }
 
   async findOneAndUpdateById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: FindAndUpdateQueryOptions<T>): Promise<T|null> {
+    return this.findOneAndUpdateByFilter(id, update, {}, options);
+  }
+
+  async findOneAndUpdateByFilter(id: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: FindAndUpdateQueryOptions<T>): Promise<T|null> {
     // TODO: trigger events
     if(!await this.beforeUpdate(id, update)) return null;
 
@@ -229,33 +237,47 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
       options.new = true;
     }
 
-    const data = await this.model.findOneAndUpdate({ _id: assureObjectId(id) }, cloneDeep(update), options).lean();
+    filter = filter || {};
+    filter._id = this.assureEntityId(id);
+
+    const data = await this.model.findOneAndUpdate(filter, cloneDeep(update), options).lean();
 
     if(!data) {
       return null;
     }
 
-    if(options.apply !== false) {
+    if(!options || options.apply !== false) {
       applyUpdateTo(id, update);
     }
 
     return this.constructModel(data);
   }
 
-  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: UpdateQueryOptions) {
-    return this._updateOneById(id, update, options);
+  async updateOneSetById(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>, options?: BaseQueryOptions): Promise<number> {
+    return this.updateOneById(id, { $set: <any> updateSet }, options);
   }
 
-  protected async _updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: QueryOptions) {
+  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: UpdateQueryOptions) {
+    return this.updateOneByFilter(id, update, {}, options);
+  }
+
+  protected async updateOneByFilter(identity: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: BaseQueryOptions) {
+    return this._updateOneByFilter(identity, update, filter, options);
+  }
+
+  protected async _updateOneByFilter(identity: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: QueryOptions) {
     // TODO: trigger events
     const clonedUpdate = cloneDeep(update);
 
-    if(!await this.beforeUpdate(id, clonedUpdate)) return 0;
+    if(!await this.beforeUpdate(identity, clonedUpdate)) return 0;
 
-    const modifiedCount = (await this.model.updateOne({ _id: assureObjectId(id) }, clonedUpdate, options).exec()).modifiedCount;
+    filter = filter || {};
+    filter._id = this.assureEntityId(identity);
 
-    if(modifiedCount && options.apply !== false) {
-      applyUpdateTo(id, update);
+    const modifiedCount = (await this.model.updateOne(filter, clonedUpdate, options).exec()).modifiedCount;
+
+    if(modifiedCount && (!options || options.apply !== false)) {
+      applyUpdateTo(identity, update);
     }
 
     return modifiedCount;
@@ -265,23 +287,23 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return Promise.resolve(true);
   }
 
-  async updateBulkSet(updates: { id: EntityIdentity<T>, update: UpdateQuerySet<T> }[]): Promise<number> {
-    return (await this.model.bulkWrite(
-      updates.map(update => ({
-          updateOne: {
-            filter: { _id: assureObjectId(update.id) },
-            update: { $set: update.update },
-          }
-        })
-      ))).modifiedCount;
+  async updateSetBulk(updates: { id: EntityIdentity<T>, update: UpdateQuerySet<T>}[], options?: BaseQueryOptions) {
+     await this.model.bulkWrite(
+        updates.map(update => ({
+            updateOne: {
+              filter: { _id: this.assureEntityId(update.id) },
+              update: { $set: update.update },
+            }
+          })
+      ), options);
   }
 
   async reload(id: EntityIdentity<T>): Promise<T> {
     return this.findById(id);
   }
 
-  async deleteAll(): Promise<number> {
-    return await this.deleteMany({});
+  async deleteAll(options?: DeleteOptions): Promise<number> {
+    return this.deleteMany({});
   }
 
   async deleteMany(filter: FilterQuery<T>, options?: DeleteOptions): Promise<number> {

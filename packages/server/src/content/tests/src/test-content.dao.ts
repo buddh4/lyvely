@@ -1,6 +1,6 @@
 import { AbstractContentDao } from '../../daos';
 import { TestContent } from './test-content.schema';
-import { Constructor } from 'lyvely-common';
+import { Constructor } from '@lyvely/common';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

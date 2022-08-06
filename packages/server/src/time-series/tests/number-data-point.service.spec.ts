@@ -12,7 +12,7 @@ import {
   DataPointIntervalFilter,
   toTimingId,
   UserAssignmentStrategy
-} from 'lyvely-common';
+} from '@lyvely/common';
 import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
 import { TestNumberDataPointService } from "./src/test-number-data-point.service";
 import {
@@ -72,7 +72,7 @@ describe('NumberDataPointService', () => {
     const model = new TestNumberTimeSeriesContent(profile, user, data as any);
     const entity = new TestNumberTimeSeriesContentModel(model);
     await entity.save();
-    return new TestNumberTimeSeriesContent(profile, user, entity);
+    return new TestNumberTimeSeriesContent(profile, user, entity.toObject());
   }
 
   it('should be defined', () => {

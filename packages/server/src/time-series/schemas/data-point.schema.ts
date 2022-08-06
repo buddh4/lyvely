@@ -10,7 +10,7 @@ import {
   REGEX_TID,
   DeepPartial,
   IDataPoint
-} from "lyvely-common";
+} from "@lyvely/common";
 import { TimeSeriesContent } from "./time-series-content.schema";
 import { User } from "../../users";
 import { Profile } from "../../profiles";

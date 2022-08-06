@@ -1,25 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { getDefaultLocale, UserDocument } from '../../users/schemas/users.schema';
+import { getDefaultLocale, UserDocument } from '../../users';
 import  mongoose from 'mongoose';
 import { BaseEntity } from '../../db/base.entity';
 import { Category, CategorySchema, } from '../../categories/schemas/categories.schema';
-import { IProfile, ProfileType, ProfileVisibilityLevel , getNumberEnumValues } from 'lyvely-common';
+import { IProfile, ProfileType, ProfileVisibilityLevel , getNumberEnumValues } from '@lyvely/common';
 
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-permissions.schema';
+import { Organization } from "../../organization";
+import { assureObjectId } from "../../db/db.utils";
 
 export type ProfileDocument = Profile & mongoose.Document;
 export const DEFAULT_PROFILE_NAME = 'default';
 
 @Schema({ timestamps: true })
 export class Profile extends BaseEntity<Profile> implements IProfile {
-
-  constructor(obj?: Partial<Profile>) {
-    super(obj);
-
-    // https://mongoosejs.com/docs/tutorials/lean.html#plugins
-    this.visibility = this.visibility ?? ProfileVisibilityLevel.Member;
-    this.type = this.type ?? ProfileType.User;
-  }
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Types.ObjectId;
@@ -49,7 +43,7 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
   @Prop({ type: Number, required: true, enum: getNumberEnumValues(ProfileVisibilityLevel), default: ProfileVisibilityLevel.Member })
   visibility: ProfileVisibilityLevel;
 
-  @Prop( {type: [ProfileRolePermissionSchema], default: []})
+  @Prop( { type: [ProfileRolePermissionSchema], default: [] })
   permissions: ProfileRolePermission[];
 
   @Prop({ type: [CategorySchema], default: [] })
@@ -58,6 +52,32 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
   createdAt: Date;
 
   updatedAt: Date;
+
+  constructor(obj?: Partial<Profile>)
+  constructor(organization?: Organization | Partial<Profile>, obj?: Partial<Profile>){
+    if(organization && !(organization instanceof Organization)) {
+      obj = organization;
+      organization = undefined;
+    }
+
+    super(obj);
+
+    this.visibility = this.visibility ?? ProfileVisibilityLevel.Member;
+    this.type = this.type ?? ProfileType.User;
+
+    if(!this._id) {
+      this._id = new mongoose.Types.ObjectId();
+    }
+
+    if(organization) {
+      this.oid = assureObjectId(organization as Organization);
+    }
+
+    // We need to assign an oid even if this profile is not connected to an organization for sharding and query index.
+    if(!this.oid) {
+      this.oid = this._id;
+    }
+  }
 
   public getPermissionsByRole(role: string) {
     if(!this.permissions) {

@@ -7,6 +7,6 @@
   },
   "include": ["**/*.ts"],
   "paths": {
-    "@common/*": ["node_modules/lyvely-common/dist/lib/*"]
+    "@common/*": ["node_modules/@lyvely/common/dist/lib/*"]
   }
 }

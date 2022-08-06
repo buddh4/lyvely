@@ -15,13 +15,12 @@ import {
   IActivityRangeResponse,
   MoveActivityDto,
   DataPointIntervalFilter
-} from 'lyvely-common';
+} from '@lyvely/common';
 
 import { ActivitiesService } from '../services/activities.service';
 import { AbstractContentController, ContentController } from '../../content';
 import { Activity } from '../schemas';
 import { UserProfileRequest } from '../../core/types';
-import { Feature } from '../../core/features/feature.decorator';
 
 @ContentController('activities')
 // TODO: implement feature registration @Feature('activities')

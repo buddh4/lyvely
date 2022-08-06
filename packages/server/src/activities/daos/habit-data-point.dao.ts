@@ -22,7 +22,7 @@ export class HabitDataPointDao extends DataPointDao<HabitDataPoint> {
     }
 
   async updateDataPointValue(uid: EntityIdentity<User>, dataPoint: HabitDataPoint, newValue: any): Promise<boolean> {
-      const result = await this.updateOneByIdSet(dataPoint, { value: newValue });
+      const result = await this.updateOneSetById(dataPoint, { value: newValue });
       return result === 1;
   }
 }

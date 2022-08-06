@@ -1,4 +1,4 @@
-import { isSameDay, UserAssignmentStrategy, ITimeSeriesContent, getNumberEnumValues   } from 'lyvely-common';
+import { isSameDay, UserAssignmentStrategy, ITimeSeriesContent, getNumberEnumValues   } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { Content, ContentEntity } from '../../content';
 import {

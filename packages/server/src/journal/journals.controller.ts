@@ -20,13 +20,13 @@ import {
   JournalDto,
   JournalRangeResponse,
   JournalRangeResponseDto,
-} from 'lyvely-common';
-import { TimeSeriesRangeFilter } from 'lyvely-common';
+} from '@lyvely/common';
+import { TimeSeriesRangeFilter } from '@lyvely/common';
 import { Journal, JournalDocument } from './schemas/journal.schema';
 import {
   UpdateJournalLogDto,
   UpdateJournalLogResultDto,
-} from 'lyvely-common';
+} from '@lyvely/common';
 import { User } from '../users/schemas/users.schema';
 import { JournalLogsService } from './journallogs.service';
 

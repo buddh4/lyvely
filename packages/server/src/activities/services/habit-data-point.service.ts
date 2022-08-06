@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Activity, Habit, HabitDataPoint } from '../schemas';
 import { NumberDataPointService } from '../../time-series';
-import { CalendarDate } from 'lyvely-common';
+import { CalendarDate } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { User } from '../../users';
 import { HabitDataPointDao } from "../daos/habit-data-point.dao";

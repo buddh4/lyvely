@@ -10,7 +10,7 @@ import {
   TestTimeSeriesContentSchema
 } from './src/test-time-series-content.schema';
 import { Model } from 'mongoose';
-import { CalendarIntervalEnum, DataPointInputStrategy } from 'lyvely-common';
+import { CalendarIntervalEnum, DataPointInputStrategy } from '@lyvely/common';
 import { CheckboxNumberDataPointConfig, RangeNumberDataPointConfig } from '../schemas';
 
 const ContentModels = [
@@ -98,7 +98,7 @@ describe('TimeSeriesContentSchema', () => {
       const entity = new TestTimeSeriesContentModel(model);
       await entity.save();
 
-      const newModel = new TestTimeSeriesContent(profile, user, entity);
+      const newModel = new TestTimeSeriesContent(profile, user, entity.toObject());
 
       expect(newModel.id).toBeDefined();
       const dataPointConfig = <CheckboxNumberDataPointConfig> newModel.dataPointConfig;

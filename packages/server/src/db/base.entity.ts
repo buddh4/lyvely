@@ -1,13 +1,13 @@
 import { Exclude, Expose } from 'class-transformer';
 import mongoose  from 'mongoose';
-import { DeepPartial } from 'lyvely-common';
+import { DeepPartial } from '@lyvely/common';
 import { assureStringId } from "./db.utils";
 
 type Constructor<T> = new (...args: any[]) => T;
 
 export type EntityType<C, ID = mongoose.Types.ObjectId> = C & IEntity<ID>;
 
-interface IEntity<ID = mongoose.Types.ObjectId> {
+export interface IEntity<ID = mongoose.Types.ObjectId> {
   _id: ID;
 }
 

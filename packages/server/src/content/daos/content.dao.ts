@@ -1,10 +1,10 @@
 import { Content, ContentDocument } from '../schemas';
-import { AbstractContentDao } from './abstract-content.dao';
 import { Injectable } from '@nestjs/common';
 import { ContentTypeRegistry } from '../components';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { DeepPartial } from "lyvely-common";
+import { DeepPartial } from "@lyvely/common";
+import { AbstractContentDao } from "./abstract-content.dao";
 
 @Injectable()
 export class ContentDao extends AbstractContentDao<Content> {

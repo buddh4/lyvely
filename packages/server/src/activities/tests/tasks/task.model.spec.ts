@@ -1,6 +1,6 @@
 import { getObjectId } from "../../../test/utils/test.utils";
 import { Task } from '../../schemas';
-import { toTimingId, UserAssignmentStrategy } from "lyvely-common";
+import { toTimingId, UserAssignmentStrategy } from "@lyvely/common";
 import { User } from "../../../users";
 import { Profile } from "../../../profiles";
 import { expect } from "@jest/globals";

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '../../profiles';
-import { AbstractCreateActivityDto, DataPointNumberInputStrategy, ITaskWithUsers, REGEX_TID, UserAssignmentStrategy } from 'lyvely-common';
+import { AbstractCreateActivityDto, DataPointNumberInputStrategy, ITaskWithUsers, REGEX_TID, UserAssignmentStrategy } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '../../users';
 import { Activity } from './activity.schema';

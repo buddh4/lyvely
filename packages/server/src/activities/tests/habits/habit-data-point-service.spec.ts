@@ -3,11 +3,10 @@ import { TestingModule } from '@nestjs/testing';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitDataPointService } from "../../services/habit-data-point.service";
 import { HabitDataPointDao } from "../../daos/habit-data-point.dao";
-import { UserAssignmentStrategy, toTimingId, DataPointIntervalFilter } from "lyvely-common";
+import { UserAssignmentStrategy, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from "@lyvely/common";
 import { ContentScoreDao, ContentScoreService } from "../../../content";
 import { HabitDataPointDocument } from "../../schemas";
 import { Model } from 'mongoose';
-import { CalendarIntervalEnum } from "lyvely-common/src";
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
@@ -41,8 +40,7 @@ describe('HabitDataPointService', () => {
       await testData.createHabit(user, profile);
 
       const logs = await habitDataPointService.findByIntervalLevel(
-        profile, user,
-        new DataPointIntervalFilter('2021-04-03'),
+        profile, user, new DataPointIntervalFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(0);

@@ -1,4 +1,4 @@
-import { DataPointInputStrategy } from 'lyvely-common';
+import { DataPointInputStrategy } from '@lyvely/common';
 import { Logger } from '@nestjs/common';
 import { DataPointConfig } from './data-point-config.schema';
 import { assignEntityData } from "../../../db/base.entity";

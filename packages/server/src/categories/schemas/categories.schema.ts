@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../db/base.entity';
-import { ICategory } from 'lyvely-common';
+import { ICategory } from '@lyvely/common';
 
 export type CategoryDocument = Category & mongoose.Document;
 

@@ -16,7 +16,7 @@ import {
   CalendarDate,
   CalendarIntervalEnum,
   CreateHabitDto, CreateTaskDto, IHabit, toDate, ITaskWithUsers
-} from 'lyvely-common';
+} from '@lyvely/common';
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';

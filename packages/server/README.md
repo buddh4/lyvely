@@ -1,22 +1,5 @@
 ## Development environment
 
-In a development environment you should use a npm link to the common library instead of
-including the package:
-
-1. Create common link
-
-Run the following within your common project folder:
-```
-npm link
-```
-
-2. Link the common library
-
-Run the following within your web and server project folder:
-```
-npm link lyvely-common
-```
-
 ## Modules
 
 ### Create new module

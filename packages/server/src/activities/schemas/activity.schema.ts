@@ -7,7 +7,7 @@ import {
   DataPointInputStrategy,
   AbstractCreateActivityDto,
   DataPointNumberInputStrategy
-, UserAssignmentStrategy } from 'lyvely-common';
+, UserAssignmentStrategy } from '@lyvely/common';
 import {
   CheckboxNumberDataPointConfig, SpinnerNumberDataPointConfig,
   NumberTimeSeriesContent,

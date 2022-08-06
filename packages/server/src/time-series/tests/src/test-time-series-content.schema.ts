@@ -5,7 +5,7 @@ import {
   DefaultDataPointConfigSchema
 } from '../../schemas';
 import * as mongoose from 'mongoose';
-import { DataPointInputStrategy } from 'lyvely-common';
+import { DataPointInputStrategy } from '@lyvely/common';
 
 @Schema()
 export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {

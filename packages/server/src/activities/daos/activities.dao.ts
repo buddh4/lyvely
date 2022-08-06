@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId, EntityIdentity } from '../../db/db.utils';
+import { assureObjectId } from '../../db/db.utils';
 import {
   ActivityType,
   CalendarIntervalEnum,
@@ -8,7 +8,7 @@ import {
   isTask,
   isHabit,
   IActivity,
- isGroupProfile } from 'lyvely-common';
+ isGroupProfile } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { AbstractContentDao } from '../../content';
 import { Activity, ActivityDocument, Habit, Task } from '../schemas';
@@ -26,30 +26,6 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
   }
 
   /**
-   * Finds a single activity by given profile and id. If type parameter is given, the search also validates the
-   * type of the content against the given activity type, otherwise all types of activities will be searched.
-   *
-   * @param profile
-   * @param id
-   * @param type
-   */
-  async findByProfileAndId(profile: Profile, id: EntityIdentity<Activity>, type?: ActivityType): Promise<Activity> {
-    const query = type
-      ? {
-          _id: assureObjectId(id),
-          pid: assureObjectId(profile._id),
-          type: type,
-        }
-      : {
-          _id: assureObjectId(id),
-          pid: assureObjectId(profile._id),
-          $or: [{ type: ActivityType.Habit }, { type: ActivityType.Task }],
-        };
-
-    return this.findOne(query);
-  }
-
-  /**
    * Finds all Habits and all Tasks which are undone or done within given tIds.
    *
    * @param profile
@@ -59,12 +35,10 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
    */
   async findByProfileAndTimingIds(profile: Profile, user: User, tIds: string[], options?: FetchQueryOptions<Activity>): Promise<Activity[]> {
     // TODO: content visibility and state?
-    const uid = assureObjectId(user);
 
     if(!isGroupProfile(profile)) {
       // Just a small optimization for non group profiles
-      return this.findAll({
-        pid: assureObjectId(profile._id),
+      return this.findAllByProfile(profile,{
         $or: [
           { type: ActivityType.Habit },
           {
@@ -78,8 +52,9 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
       }, options);
     }
 
-    return this.findAll({
-      pid: assureObjectId(profile._id),
+    const uid = assureObjectId(user);
+
+    return this.findAllByProfile(profile, {
       $or: [
         { type: ActivityType.Habit },
         {
@@ -116,8 +91,7 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
     options: FetchQueryOptions<Activity> = {},
   ): Promise<Activity[]> {
 
-    return this.findAll({
-      pid: assureObjectId(profile._id),
+    return this.findAllByProfile(profile, {
       type: type,
       'dataPointConfig.interval': plan,
     }, options);

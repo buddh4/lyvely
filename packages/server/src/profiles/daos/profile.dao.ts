@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { assureObjectId, EntityData, EntityIdentity } from '../../db/db.utils';
 import { User } from '../../users/schemas/users.schema';
 import { AbstractDao } from '../../db/abstract.dao';
-import { Constructor } from 'lyvely-common';
+import { Constructor } from '@lyvely/common';
 
 type UpsertProfile = { createdBy: EntityIdentity<User> } & Partial<EntityData<Profile>>;
 
@@ -28,7 +28,7 @@ export class ProfileDao extends AbstractDao<Profile> {
     if(typeof newScore !== 'number') {
       return;
     }
-    return this.updateOneByIdSet(identity, { score: Math.max(newScore, 0) });
+    return this.updateOneSetById(identity, { score: Math.max(newScore, 0) });
   }
 
   getModuleId(): string {

@@ -28,13 +28,13 @@ export abstract class AbstractContentService<T extends Content> {
   async findContentAndUpdate(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>) {
     await this.profileService.mergeCategories(profile, update.categories);
     // TODO: set updatedBy on content
-    return this.contentDao.findOneAndUpdateByIdSet(id, update);
+    return this.contentDao.findOneAndSetById(id, update);
   }
 
   async updateContent(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>) {
     await this.profileService.mergeCategories(profile, update.categories);
     // TODO: set updatedBy on content
-    return this.contentDao.updateOneByIdSet(id, update);
+    return this.contentDao.updateOneSetById(id, update);
   }
 
 

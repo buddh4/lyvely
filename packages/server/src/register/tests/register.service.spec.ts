@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { RegisterService } from '../register.service';
-import { RegisterDto } from 'lyvely-common';
+import { RegisterDto } from '@lyvely/common';
 import { createContentTestingModule } from "../../test/utils/test.utils";
 import { TestDataUtils } from "../../test/utils/test-data.utils";
 

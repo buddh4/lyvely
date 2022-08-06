@@ -6,7 +6,7 @@ import { BaseEntity } from '../../db/base.entity';
 import { Length } from 'class-validator';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import crypto from 'crypto';
-import {UserDto} from "lyvely-common";
+import { UserDto } from "@lyvely/common";
 
 export type UserDocument = User & mongoose.Document;
 

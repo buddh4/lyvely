@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../../users/users.service';
+import { UsersService, User, RefreshToken } from '../../users';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../users/schemas/users.schema';
-import { JwtAccessTokenPayload, JwtRefreshTokenPayload } from '../strategies/jwt/jwt-payload.interface';
+import { JwtAccessTokenPayload, JwtRefreshTokenPayload } from '../strategies';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import { RefreshToken } from '../../users/schemas/refresh.tokens.schema';
 import { ConfigService } from '@nestjs/config';
-import { addMilliSeconds } from 'lyvely-common';
+import { addMilliSeconds } from '@lyvely/common';
 import ms from 'ms';
 
 // https://stackoverflow.com/questions/38897514/what-to-store-in-a-jwt

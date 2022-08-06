@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { expect } from "@jest/globals";
 import { TestDataUtils } from "../../test/utils/test-data.utils";
 import { TestProfileScore, TestProfileScoreDocument, TestProfileScoreSchema } from "./src/test-profile-score.schema";
-import { addDays, toTimingId, UserAssignmentStrategy } from "lyvely-common";
+import { addDays, toTimingId, UserAssignmentStrategy } from "@lyvely/common";
 
 describe('ProfileScore', () => {
   let testingModule: TestingModule;

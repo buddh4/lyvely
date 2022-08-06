@@ -1,5 +1,5 @@
 import { User } from '../../users';
-import { CalendarDate, toDate, DataPointIntervalFilter, UserAssignmentStrategy } from 'lyvely-common';
+import { CalendarDate, toDate, DataPointIntervalFilter, UserAssignmentStrategy } from '@lyvely/common';
 import { TimeSeriesContent, DataPoint } from '../schemas';
 import { Profile , ProfilesService } from '../../profiles';
 import { EntityIdentity } from '../../db/db.utils';

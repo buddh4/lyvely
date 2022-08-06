@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { CalendarIntervalEnum, ActivityType, toTimingId, UserAssignmentStrategy } from 'lyvely-common';
+import { CalendarIntervalEnum, ActivityType, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
 import { TasksService } from '../../services/tasks.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { TasksDao } from '../../daos/tasks.dao';

@@ -31,13 +31,13 @@ export default {
   refresh(visitorId?: string|null) {
     return repository.post<TokenRefreshResponse>(`/auth/refresh`,{}, {
       skipAuthRefresh: true,
-      headers: { [Headers.X_VISITOR_ID]: visitorId }
+      headers: { [Headers.X_VISITOR_ID]: visitorId || '' }
     });
   },
   logout(visitorId?: string|null) {
     return repository.post<LoginResponse>(`${resource}/logout`, {}, {
       skipAuthRefresh: true,
-      headers: { [Headers.X_VISITOR_ID]: visitorId }
+      headers: { [Headers.X_VISITOR_ID]: visitorId || '' }
     });
   }
 };

@@ -10,7 +10,7 @@ import { Model } from 'mongoose';
 import { expect } from "@jest/globals";
 import { TestDataUtils } from "../../test/utils/test-data.utils";
 import { TestContent } from "./src/test-content.schema";
-import { toTimingId } from "lyvely-common";
+import { toTimingId } from "@lyvely/common";
 
 describe('ContentScore', () => {
     let testingModule: TestingModule;

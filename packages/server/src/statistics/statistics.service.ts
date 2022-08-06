@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { HabitDataPoint, HabitDataPointDocument } from '../activities/schemas';
 import { Model } from 'mongoose';
-import { ScoreStatistics , CalendarIntervalEnum } from 'lyvely-common';
+import { ScoreStatistics , CalendarIntervalEnum } from '@lyvely/common';
 
 import { User } from '../users/schemas/users.schema';
 

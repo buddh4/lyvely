@@ -2,7 +2,7 @@ import { CreateProfileScore, IProfileScoreAction, ProfileScore } from "../../pro
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Content } from "./content.schema";
-import { DeepPartial } from "lyvely-common";
+import { DeepPartial } from "@lyvely/common";
 import { IntegrityException } from "../../core/exceptions";
 
 interface CreateContentScore extends CreateProfileScore {

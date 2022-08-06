@@ -8,7 +8,7 @@ import {
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfileDto, ProfileMembershipDto, MembershipDto , CategoryDto, CreateProfileDto } from 'lyvely-common';
+import { ProfileDto, ProfileMembershipDto, MembershipDto , CategoryDto, CreateProfileDto } from '@lyvely/common';
 
 import { ProfilesService } from '../services/profiles.service';
 
