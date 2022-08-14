@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
-import { RegisterDto, ModelValidator } from 'lyvely-common';
+import { RegisterDto, ModelValidator } from '@lyvely/common';
 import registerRepository from '../repositories/register.repository';
 
 export const useRegisterStore = defineStore('register', {

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { toTimingId, CalendarPlan, CalendarIntervalEnum } from 'lyvely-common';
+import { toTimingId, CalendarPlan, CalendarIntervalEnum } from '@lyvely/common';
 
 export const useTimingStore = defineStore('timing', {
   state: () => ({

@@ -1,6 +1,5 @@
 import repository from "@/repository";
-import { UpdateTaskStateModel, EditTaskModel, ITask, DoneTaskResultModel } from 'lyvely-common';
-import { CalendarDate, formatDate } from "lyvely-common";
+import { UpdateTaskStateModel, EditTaskModel, ITask, DoneTaskResultModel , CalendarDate, formatDate } from '@lyvely/common';
 
 const resource = "tasks";
 

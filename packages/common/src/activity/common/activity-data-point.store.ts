@@ -16,10 +16,11 @@ export class ActivityDataPointStore extends TimeSeriesDataPointStore<IActivity, 
     }
 
     getHabitsByCalendarPlan(interval: CalendarIntervalEnum, filter?: ActivityFilter): IHabit[] {
-        return this.filterModels(entry =>
-          entry.type === ActivityType.Habit
+        return this.filterModels(entry => {
+          return entry.type === ActivityType.Habit
           && entry.dataPointConfig.interval === interval
-          && (!filter || filter.run(entry)));
+          && (!filter || filter.run(entry));
+        })
     }
 
     getTasksByCalendarPlan(interval: CalendarIntervalEnum, timingId: string, filter?: ActivityFilter): ITask[] {

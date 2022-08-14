@@ -2,8 +2,9 @@
 import { VueDraggableNext } from "vue-draggable-next";
 import ActivityPlanListEntry from "@/modules/activity/components/ActivityPlanListEntry.vue";
 import CalendarPlanList from "@/modules/timing/components/CalendarPlanList.vue";
-import { useActivityList } from '@/modules/activity/components/ActivityList';
-import { ActivityType } from 'lyvely-common';
+import { ActivityType } from '@lyvely/common';
+import { useActivityStore } from "@/modules/activity/store/activityStore";
+import { computed } from 'vue';
 
 interface Props {
   interval: number,
@@ -11,7 +12,26 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const { activities, activityCount, dragEnd, onDateChanged } = useActivityList(props.interval, props.type);
+
+const activityStore = useActivityStore();
+
+const activities = (props.type === ActivityType.Habit)
+    ? computed(() => activityStore.habits(props.interval))
+    : computed(() => activityStore.tasks(props.interval));
+
+const activityCount = computed(() => activities.value.length);
+
+function dragEnd(evt: any) {
+  activityStore.move( {
+    id: evt.item.dataset.activityId,
+    newIndex: evt.newIndex,
+    oldIndex: evt.oldIndex
+  });
+}
+
+function onDateChanged() {
+  activityStore.loadActivities();
+}
 </script>
 
 <template>

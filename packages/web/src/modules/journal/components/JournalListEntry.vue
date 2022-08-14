@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { IJournal } from 'lyvely-common';
+import { IJournal , DataPointInputType } from '@lyvely/common';
 import ListEntry from "@/modules/timing/components/TimingListEntry.vue";
-import { DataPointInputType } from "lyvely-common";
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
 import RangeInput from '@/modules/ui/components/form/RangeInput.vue';
 import { useTimingStore } from '@/modules/timing/store';

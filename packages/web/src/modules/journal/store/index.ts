@@ -7,13 +7,12 @@ import {
   JournalFilter,
   JournalLogDto,
   JournalLogStore,
-} from 'lyvely-common';
-import {
+
   CalendarIntervalEnum,
   formatDate,
   getTimingIdsByRange,
   LoadedTimingIdStore
-} from 'lyvely-common';
+} from '@lyvely/common';
 import { useTimingStore } from '@/modules/timing/store';
 import { useProfileStore } from '@/modules/user/store/profile.store';
 import journalRepository from '@/modules/journal/repositories/journal.repository';

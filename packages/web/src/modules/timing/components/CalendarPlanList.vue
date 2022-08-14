@@ -3,7 +3,7 @@ import {
   CalendarPlan,
   CalendarIntervalEnum,
   isToday
-} from "lyvely-common";
+} from "@lyvely/common";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
 import { useProfileStore } from "@/modules/user/store/profile.store";
 import { useTimingStore } from "../store";

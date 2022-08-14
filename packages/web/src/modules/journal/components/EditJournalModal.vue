@@ -2,8 +2,7 @@
 import Modal from '@/modules/ui/components/modal/Modal.vue';
 import SelectInput from '@/modules/ui/components/form/SelectInput.vue';
 import Multiselect from '@vueform/multiselect';
-import { EditJournalDto } from 'lyvely-common';
-import { DataPointInputType } from 'lyvely-common';
+import { EditJournalDto , DataPointInputType } from '@lyvely/common';
 import TextInput from '@/modules/ui/components/form/TextInput.vue';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
 import Textarea from '@/modules/ui/components/form/Textarea.vue';

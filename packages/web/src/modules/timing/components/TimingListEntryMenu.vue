@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import Dropdown from '@/modules/ui/components/menu/Dropdown.vue';
 import DropdownLink from '@/modules/ui/components/menu/DropdownLink.vue';
-import { TimeableContent } from 'lyvely-common';
+import { ITimeSeriesContent } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
 
 interface Props {
-  model: TimeableContent
+  model: ITimeSeriesContent
 }
 
 const props = defineProps<Props>();

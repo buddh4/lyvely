@@ -6,7 +6,6 @@ import { Calendar, CalendarIntervalEnum } from '@lyvely/common';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import { TestProfileScore, TestProfileScoreSchema } from './src/test-profile-score.schema';
 import { TestProfileActionDao } from './src/test-profile-action.dao';
-import { INestApplication } from '@nestjs/common';
 
 const testScoreModelDef = {
   name: ProfileScore.name,

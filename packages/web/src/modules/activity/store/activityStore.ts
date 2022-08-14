@@ -13,14 +13,13 @@ import {
   IHabit, isTask,
   TaskDto, ITimeSeriesNumberDataPoint,
   NumberDataPointDto
-} from 'lyvely-common';
+, ActivityFilterOptions } from '@lyvely/common';
 import { useProfileStore } from '@/modules/user/store/profile.store';
 import { useTimingStore } from '@/modules/timing/store';
 import activityRepository from '@/modules/activity/repositories/activity.repository';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
-import { ActivityFilterOptions } from "lyvely-common/src";
 
 export interface MoveActivityEvent {
   id: string;

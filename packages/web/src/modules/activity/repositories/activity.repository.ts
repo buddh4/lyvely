@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { ActivityRangeResponseDto, MoveActivityDto, DataPointIntervalFilter } from "lyvely-common";
+import { ActivityRangeResponseDto, MoveActivityDto, DataPointIntervalFilter } from "@lyvely/common";
 import { AxiosResponse } from "axios";
 import { MoveActivityEvent } from '@/modules/activity/store/activityStore';
 

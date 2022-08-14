@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ActivityType, getCreateModelByActivityType, EditHabitDto,
-  EditTaskDto, getEditModelByActivity, IActivity, ModelValidator} from 'lyvely-common';
+  EditTaskDto, getEditModelByActivity, IActivity, ModelValidator} from '@lyvely/common';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { useActivityStore } from '@/modules/activity/store/activityStore';

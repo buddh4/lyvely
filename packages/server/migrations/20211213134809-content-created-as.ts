@@ -1,9 +1,9 @@
-import { createUserAuthor } from '../src/content/schemas/content-author-info.schema';
+import { createUserAuthor } from '../src/content';
 import crypto from 'crypto';
 
 module.exports = {
   async up(db, client) {
-    const contents = await db.collection('contents').find({}, { projection: {createdBy: 1, createdAs: 1} });
+    const contents = await db.collection('contents').find({}, { projection: { createdBy: 1, createdAs: 1 } });
 
     while(await contents.hasNext()) {
       const content = await contents.next();
@@ -12,7 +12,7 @@ module.exports = {
         continue;
       }
 
-      const user = await db.collection('users').findOne({_id: content.createdBy});
+      const user = await db.collection('users').findOne({ _id: content.createdBy });
 
       if(!user) {
         continue;
@@ -27,7 +27,7 @@ module.exports = {
 
       console.log(`Addin createdAs to content: ${content._id}`);
 
-      await db.collection('contents').updateOne({_id: content._id}, {$set: {createdAs: createdAs}});
+      await db.collection('contents').updateOne({ _id: content._id }, { $set: { createdAs: createdAs } });
     }
   },
 

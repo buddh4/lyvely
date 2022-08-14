@@ -2,11 +2,10 @@
 import EditHabitModal from '@/modules/activity/components/habits/EditHabitModal.vue';
 import ActivityPlanList from '@/modules/activity/components/ActivityPlanList.vue';
 import TimingList from '@/modules/timing/components/TimingList.vue';
-import { ActivityType } from 'lyvely-common';
+import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed, onBeforeMount } from 'vue';
-import { getCalendarPlanArray } from 'lyvely-common';
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
 
 const type = ActivityType.Habit;

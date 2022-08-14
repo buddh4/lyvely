@@ -1,13 +1,13 @@
 import { nextTick } from "vue";
-import { createI18n } from "vue-i18n";
+import { createI18n, I18n } from "vue-i18n";
 
 export const SUPPORT_LOCALES = ["en", "de"];
 
-let i18n: any;
+let i18n: I18n;
 
 export function setupI18n(options = { locale: "en" }) {
   options.locale = transformLocale(options.locale);
-  i18n = createI18n();
+  i18n = createI18n({});
   setI18nLanguage(options.locale);
   return i18n;
 }
@@ -23,7 +23,7 @@ export async function setI18nLanguage(locale: string) {
     await loadLocaleMessages(locale);
   }
 
-  if (i18n.mode === "legacy") {
+  if (i18n.mode === "legacy" || typeof i18n.global.locale === 'string') {
     i18n.global.locale = locale;
   } else {
     i18n.global.locale.value = locale;
@@ -44,5 +44,5 @@ export async function loadLocaleMessages(locale: string) {
   return fetch(`/locales/${locale}.json`)
     .then(response => response.json())
     .then(data => i18n.global.setLocaleMessage(locale, data))
-    .then(nextTick);
+    .then(nextTick as any);
 }

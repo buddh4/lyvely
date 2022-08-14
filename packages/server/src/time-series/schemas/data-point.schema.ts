@@ -42,7 +42,7 @@ export abstract class DataPoint<
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;
 
-  @Prop( { type: String, required: true, match: REGEX_TID, immutable: true })
+  @Prop( { type: String, required: true, immutable: true })
   tid: string;
 
   /**
@@ -71,7 +71,7 @@ export abstract class DataPoint<
     }
 
     this.date = getFullDayDate(this.date);
-    this.tid = toTimingId(this.date);
+    this.tid = toTimingId(this.date, this.interval);
 
     this.afterInit();
   }

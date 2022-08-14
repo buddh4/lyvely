@@ -1,6 +1,5 @@
 import repository from "@/repository";
-import { CategoryDto } from 'lyvely-common';
-import { ProfileMembershipDto } from 'lyvely-common';
+import { CategoryDto , ProfileMembershipDto } from '@lyvely/common';
 const resource = "profiles";
 
 export default {

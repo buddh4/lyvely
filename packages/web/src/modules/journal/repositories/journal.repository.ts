@@ -1,14 +1,11 @@
 import repository from "@/repository";
-import { TimeableRangeFilter } from "lyvely-common";
-import { MoveActivityEvent } from '@/modules/activity/store/activityStore';
-import { MoveActivityDto } from "lyvely-common";
-import { AxiosResponse } from "axios";
-import {
+import { TimeableRangeFilter , MoveActivityDto ,
   IJournal,
   JournalRangeResponse,
   UpdateJournalLogDto, UpdateJournalLogResultDto
-} from 'lyvely-common';
-import { EditJournalDto } from "lyvely-common";
+, EditJournalDto } from "@lyvely/common";
+import { MoveActivityEvent } from '@/modules/activity/store/activityStore';
+import { AxiosResponse } from "axios";
 
 const resource = "journals";
 

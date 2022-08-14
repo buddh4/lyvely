@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from "@/modules/activity/components/ItemCheckboxList.vue";
-import { IActivity, ActivityType } from 'lyvely-common';
+import { IActivity, ActivityType } from '@lyvely/common';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useTimingStore } from '@/modules/timing/store';

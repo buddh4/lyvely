@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ActivityFilterNavigation from "@/modules/activity/components/ActivityFilterNavigation.vue";
 import JournalList from "@/modules/journal/components/JournalList.vue";
-import { CalendarIntervalEnum, EditJournalDto, IJournal  } from "lyvely-common";
+import { CalendarIntervalEnum, EditJournalDto, IJournal  } from "@lyvely/common";
 import TimingList from "@/modules/timing/components/TimingList.vue";
 import Loader from "@/modules/ui/components/loader/Loader.vue";
 import EditJournalModal from "@/modules/journal/components/EditJournalModal.vue";

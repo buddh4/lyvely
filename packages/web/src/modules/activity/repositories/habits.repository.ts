@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { EditHabitDto, IHabit, UpdateActivityLogModel, UpdateHabitResultDto } from 'lyvely-common';
+import { EditHabitDto, IHabit, UpdateActivityLogModel, UpdateHabitResultDto } from '@lyvely/common';
 
 const resource = "habits";
 

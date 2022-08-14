@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { IUser, Headers } from 'lyvely-common';
+import { IUser, Headers } from '@lyvely/common';
 
 const resource = "auth";
 

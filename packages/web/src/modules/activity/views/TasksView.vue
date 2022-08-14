@@ -2,12 +2,11 @@
 import EditTaskModal from "@/modules/activity/components/tasks/EditTaskModal.vue";
 import ActivityPlanList from '@/modules/activity/components/ActivityPlanList.vue';
 import TimingList from '@/modules/timing/components/TimingList.vue';
-import { ActivityType } from 'lyvely-common';
+import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
 import { computed, onBeforeMount } from 'vue';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
-import { getCalendarPlanArray } from 'lyvely-common';
 
 const type = ActivityType.Task;
 

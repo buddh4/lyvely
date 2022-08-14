@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
-import { Membership, Profile } from 'lyvely-common';
+import { Membership, Profile } from '@lyvely/common';
 
 import profileRepository from '@/modules/user/repositories/profile.repository';
 import { localStorageManager } from '@/util/storage';

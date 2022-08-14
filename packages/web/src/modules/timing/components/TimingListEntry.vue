@@ -3,7 +3,7 @@ import CategoryList from '@/modules/timing/components/CategoryList.vue';
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import TimingListEntryMenu from '@/modules/timing/components/TimingListEntryMenu.vue';
 import { useTimingStore } from '@/modules/timing/store';
-import { TimingModel } from 'lyvely-common';
+import { TimingModel } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
 
 interface Props {

@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsDefined, IsEnum, IsNotEmpty, IsNumber, IsString, Length, } from 'class-validator';
+import { IsArray, IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsString, Length, } from 'class-validator';
 import { CalendarIntervalEnum } from '../../calendar';
 import type { INumberDataPointConfig } from '../../time-series';
 import { DataPointInputStrategy, DataPointInputType, DataPointValueType } from "../../time-series";
@@ -9,11 +9,6 @@ import { UserAssignmentStrategy } from "../../user";
 
 @Exclude()
 export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implements IActivity {
-
-    @Expose()
-    @IsEnum(CalendarIntervalEnum)
-    @IsDefined()
-    interval: CalendarIntervalEnum;
 
     @Expose()
     dataPointConfig: INumberDataPointConfig;

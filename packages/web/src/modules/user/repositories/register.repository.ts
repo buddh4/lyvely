@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { RegisterDto } from 'lyvely-common';
+import { RegisterDto } from '@lyvely/common';
 
 const resource = "register";
 

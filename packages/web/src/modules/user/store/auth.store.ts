@@ -1,12 +1,11 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
 import authRepository from '@/modules/user/repositories/auth.repository';
-import { IUser } from 'lyvely-common';
+import { IUser , Headers } from '@lyvely/common';
 import { setI18nLanguage } from '@/i18n';
 import { localStorageManager, sessionStorageManager } from '@/util/storage';
 import { useAsEmitter } from '@/util/emitter';
 import mitt from 'mitt';
-import { Headers } from 'lyvely-common';
 import repository from '@/repository';
 
 export const visitorId = localStorageManager.getStoredValue('visitorId');
@@ -46,7 +45,7 @@ export const useAuthStore = defineStore('auth', {
         } else {
           this.setStatus(Status.ERROR);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.log(err);
         this.setStatus(Status.ERROR);
         this.setError((err?.response?.status === 401)
