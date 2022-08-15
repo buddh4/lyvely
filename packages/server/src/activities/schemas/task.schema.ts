@@ -64,6 +64,14 @@ export class Task extends Activity implements ITaskWithUsers {
     return this.isDoneByUser(uid);
   }
 
+  getDoneBy(uid: EntityIdentity<User>) {
+    if(this.userStrategy === UserAssignmentStrategy.Shared) {
+      return this.doneBy[0];
+    }
+
+    return this.doneBy?.find(d => d.uid.equals(assureObjectId(uid)))
+  }
+
   setUndoneBy(uid: EntityIdentity<User>) {
     if(this.userStrategy === UserAssignmentStrategy.Shared) {
       this.doneBy = [];
@@ -89,7 +97,7 @@ export class Task extends Activity implements ITaskWithUsers {
 
   }
 
-  public static create( profile: Profile, owner: User, data: AbstractCreateActivityDto): Task {
+  public static create(profile: Profile, owner: User, data: AbstractCreateActivityDto): Task {
     data.strategy = DataPointNumberInputStrategy.CheckboxNumber;
     data.max = 1;
     data.optimal = 1;

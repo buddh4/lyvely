@@ -1,43 +1,40 @@
 import {
-  Controller,
   Post,
   Param,
   Body,
   Request,
-  UseGuards,
   UseInterceptors,
   ClassSerializerInterceptor,
-  NotFoundException,
   Inject,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Habit, Task, TaskDocument } from '../schemas';
-/*import {
+import { Task } from '../schemas';
+import {
   UpdateTaskStateModel,
   DoneTaskResultModel,
-  EditTaskModel,
+  EditTaskDto,
   TaskDto,
-} from '@lyvely/common';*/
-import { User } from '../../users/schemas/users.schema';
+  ITask
+} from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
-import { EntityIdentity } from '../../db/db.utils';
-import { Profile } from '../../profiles/schemas/profiles.schema';
-import { Feature } from '../../core/features/feature.decorator';
-import { ContentType } from '../../content/decorators/content-type.decorator';
+import { ContentController, ContentType, ProfileContentRequest } from '../../content';
+import { ProfileRequest } from "../../core/types";
+import { isTaskContent } from "../utils/activity.utils";
+import { EntityNotFoundException } from "../../core/exceptions";
 
-@Controller('tasks')
+@ContentController('tasks')
 // TODO: implement feature registration @Feature('content.activities.tasks')
-@ContentType(Habit)
+@ContentType(Task)
 @UseInterceptors(ClassSerializerInterceptor)
 export class TasksController {
   @Inject()
   private readonly tasksService: TasksService;
 
-  /*@Post()
-  async create(@Request() req, @Body() dto: EditTaskDto): Promise<TaskDto> {
-    const user = req.user;
-    const profile = await this.findProfileByUserAndName(user, dto.profile);
-    const activity = await this.tasksService.create(user, Task.create(user, profile, dto));
+  @Post()
+  async create(@Request() req: ProfileRequest, @Body() dto: EditTaskDto): Promise<TaskDto> {
+    const { profile, user } = req;
+
+    const activity = await this.tasksService.createContent(profile, user, Task.create(profile, user, dto));
 
     if (!activity) {
       throw new InternalServerErrorException();
@@ -46,56 +43,52 @@ export class TasksController {
     return new TaskDto(activity);
   }
 
-  @Post(':id')
+  @Post(':cid')
   async update(
-    @Request() req,
-    @Param('id') id,
+    @Request() req: ProfileContentRequest,
+    @Param('cid') id,
     @Body() dto: EditTaskDto,
   ): Promise<{ success: boolean } | ITask> {
-    const task = await this.findTaskById(req.user, id);
-    const profile = await this.findProfileByUserAndId(req.user, <EntityIdentity<Profile>>(<unknown>task.profile));
-    const updated = Task.create(req.user, profile, dto);
-    await this.tasksService.update(profile, task, updated);
-    updated._id = id;
-    return new TaskDto(updated);
+    const { profile, user, content } = req;
+
+    if(!isTaskContent(content)) {
+      throw new EntityNotFoundException();
+    }
+
+    await this.tasksService.updateContent(profile, user, content as Task, Task.create(profile, user, dto));
+    return new TaskDto(content);
   }
 
-  @Post(':id/done')
+  @Post(':cid/done')
   async setDone(
-    @Request() req,
-    @Param('id') id,
-    @Body() dto: UpdateTaskStateDto,
-  ): Promise<DoneTaskResultDto> {
-    const task = await this.findTaskById(req.user, id);
-    const profile = await this.findProfileByUserAndId(req.user, <any>task.profile);
-    await this.tasksService.setDone(profile, task, dto.date);
-    return new DoneTaskResultDto({
+    @Request() req: ProfileContentRequest<Task>,
+    @Body() dto: UpdateTaskStateModel,
+  ): Promise<DoneTaskResultModel> {
+    const { profile, user, content } = req;
+
+    if(!isTaskContent(content)) {
+      throw new EntityNotFoundException();
+    }
+
+    await this.tasksService.setDone(profile, user, content, dto.date);
+    return new DoneTaskResultModel({
       score: profile.score,
-      done: task.done.toString(),
+      done: content.getDoneBy(user)?.tid
     });
   }
 
-  @Post(':id/undone')
-  async setUndone(
-    @Request() req,
-    @Param('id') id,
-    @Body() dto: UpdateTaskStateDto,
-  ): Promise<DoneTaskResultDto> {
-    const task = await this.findTaskById(req.user, id);
-    const profile = await this.findProfileByUserAndId(req.user, <any>task.profile);
-    await this.tasksService.setUnDone(profile, task, dto.date);
-    return new DoneTaskResultDto({ score: profile.score, done: undefined });
-  }
+    @Post(':cid/undone')
+    async setUndone(
+      @Request() req: ProfileContentRequest<Task>,
+      @Body() dto: UpdateTaskStateModel,
+    ): Promise<DoneTaskResultModel> {
+      const { profile, user, content } = req;
 
-  private async findTaskById(user: User, id: string): Promise<TaskDocument> {
-    const habit = await this.tasksService.findByOwnerAndId(user, id);
+      if(!isTaskContent(content)) {
+        throw new EntityNotFoundException();
+      }
 
-    if (!habit) {
-      throw new NotFoundException();
+      await this.tasksService.setUndone(profile, user, content, dto.date);
+      return new DoneTaskResultModel({ score: profile.score, done: undefined });
     }
-
-    return habit;
-  }
-
-   */
 }

@@ -1,6 +1,6 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { ProfilesService } from '../services/profiles.service';
-import { UserProfileRequest } from '../../core/types';
+import { ProfileRequest } from '../../core/types';
 import { isValidObjectId } from '@lyvely/common';
 import { UserProfileRelations } from '../models/profile-relations.model';
 import { ProfileVisibilityPolicy } from '../policies/profile-visibility.policy';
@@ -43,7 +43,7 @@ export class ProfileGuard implements CanActivate {
   protected reflector: Reflector;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<UserProfileRequest>();
+    const request = context.switchToHttp().getRequest<ProfileRequest>();
 
     if(!isValidObjectId(request.query.pid)) return false;
 

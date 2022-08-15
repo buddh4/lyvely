@@ -1,10 +1,10 @@
 import repository from "@/repository";
-import { UpdateTaskStateModel, EditTaskModel, ITask, DoneTaskResultModel , CalendarDate, formatDate } from '@lyvely/common';
+import { UpdateTaskStateModel, EditTaskDto, ITask, DoneTaskResultModel , CalendarDate, formatDate } from '@lyvely/common';
 
 const resource = "tasks";
 
 export default {
-  async create(activitiy: EditTaskModel) {
+  async create(activitiy: EditTaskDto) {
     return repository.post<ITask>(`${resource}`, activitiy);
   },
 
@@ -26,7 +26,7 @@ export default {
     );
   },
 
-  async update(model: EditTaskModel) {
-    return repository.post<ITask>(`${resource}/${model.id}`, model);
+  async update(taskId: string, model: EditTaskDto) {
+    return repository.post<ITask>(`${resource}/${taskId}`, model);
   }
 };

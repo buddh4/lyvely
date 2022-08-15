@@ -224,7 +224,7 @@ export class DailyPlan extends WeeklyPlan {
   }
 
   getTitle(date: Date, locale: string): string {
-    const format = isCurrentYear(date) ? 'ddd, MMM Do' : 'ddd, MMM Do · YYYY';
+    const format = isCurrentYear(date) ? 'ddd, MMM D' : 'ddd, MMM D · YYYY';
     return dateTime(date).format(format);
   }
 

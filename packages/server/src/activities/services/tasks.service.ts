@@ -17,7 +17,7 @@ export class TasksService extends AbstractContentService<Task> {
     super(tasksDao);
   }
 
-  async setDone(user: User, profile: Profile, task: Task, date: CalendarDate): Promise<Task> {
+  async setDone(profile: Profile, user: User, task: Task, date: CalendarDate): Promise<Task> {
     const wasDone = task.isDone(user);
     await this.tasksDao.setDone(task, user, toTimingId(date, task.dataPointConfig.interval));
     if(!wasDone) {
@@ -34,7 +34,7 @@ export class TasksService extends AbstractContentService<Task> {
     return task;
   }
 
-  async setUndone(user: User, profile: Profile, task: Task, date: CalendarDate): Promise<Task> {
+  async setUndone(profile: Profile, user: User, task: Task, date: CalendarDate): Promise<Task> {
     await this.tasksDao.setUndone(task, user);
     await this.scoreService.saveScore(profile, new ActivityScore({
       profile,

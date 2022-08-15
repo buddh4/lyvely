@@ -75,7 +75,7 @@ export const useActivityEditStore = defineStore('activityEdit', {
 
       try {
         if (this.model instanceof EditTaskDto) {
-          activityStore.addTask((await tasksRepository.update(this.model)).data);
+          activityStore.addTask((await tasksRepository.update(this.modelId, this.model)).data);
         } else {
           activityStore.addHabit((await habitsRepository.update(this.modelId, this.model)).data);
         }

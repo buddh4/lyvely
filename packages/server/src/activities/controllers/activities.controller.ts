@@ -14,13 +14,16 @@ import {
   ActivityRangeResponseDto,
   IActivityRangeResponse,
   MoveActivityDto,
-  DataPointIntervalFilter
+  DataPointIntervalFilter,
+  TaskDto,
+  HabitDto
 } from '@lyvely/common';
 
 import { ActivitiesService } from '../services/activities.service';
 import { AbstractContentController, ContentController } from '../../content';
 import { Activity } from '../schemas';
-import { UserProfileRequest } from '../../core/types';
+import { ProfileRequest } from '../../core/types';
+import { isTaskContent } from "../utils/activity.utils";
 
 @ContentController('activities')
 // TODO: implement feature registration @Feature('activities')
@@ -38,7 +41,7 @@ export class ActivitiesController extends AbstractContentController<Activity> {
    */
   @Get()
   async findByFilter(
-    @Request() req: UserProfileRequest,
+    @Request() req: ProfileRequest,
     @Query(new ValidationPipe({ transform: false })) filter: DataPointIntervalFilter,
   ): Promise<IActivityRangeResponse> {
     const { profile, user } = req;
@@ -47,7 +50,16 @@ export class ActivitiesController extends AbstractContentController<Activity> {
     const { activities, dataPoints } = await this.contentService.findByFilter(profile, user, filter);
 
     const result = new ActivityRangeResponseDto();
-    result.addActivities(activities);
+    activities.forEach(activity => {
+      let dto;
+      if(isTaskContent(activity)) {
+        dto = new TaskDto(activity);
+        dto.done = activity.getDoneBy(user)?.tid;
+      } else {
+        dto = new HabitDto(activity);
+      }
+      result.addActivity(dto);
+    });
     result.addDataPoints(dataPoints.map((value) => value.createDto()));
     return result;
   }

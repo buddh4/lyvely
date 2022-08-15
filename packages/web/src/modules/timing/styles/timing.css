@@ -22,8 +22,28 @@
     @apply rounded-b;
 }
 
-.timing_unscheduled[data-count="0"] {
+[data-timing-header] + [data-timing-header] {
+    border-top:0;
+}
+
+[data-timing-header][data-count="0"] + [data-timing-item-container] + [data-timing-header] {
+    border-top:0;
+}
+
+.timing-list-items {
+    @apply divide-y divide-divide border-l border-l border-r border-divide
+}
+
+.timing-unscheduled[data-count="0"] {
     @apply rounded-b;
+}
+
+.timing-unscheduled + li {
+    @apply rounded-b border-b
+}
+
+.timing-unscheduled + li .timing-list-items {
+    @apply rounded-b
 }
 
 .timing-list ul {

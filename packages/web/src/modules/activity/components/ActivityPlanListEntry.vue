@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from "@/modules/activity/components/ItemCheckboxList.vue";
-import { IActivity, ActivityType } from '@lyvely/common';
+import { IActivity, ActivityType , TaskDto } from '@lyvely/common';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useTimingStore } from '@/modules/timing/store';
@@ -23,8 +23,16 @@ onMounted(async () => {
 });
 
 const selection = computed({
-  get: () => log.value.value,
-  set: (selection: number) => activityStore.updateLog(log.value, selection)
+  get: () => (props.model instanceof TaskDto)
+        ? +!!props.model.done
+        : log.value.value,
+  set: (selection: number) => {
+    if(props.model.type === ActivityType.Habit) {
+      activityStore.updateLog(log.value, selection)
+    } else {
+      activityStore.setTaskSelection(props.model, !!selection);
+    }
+  }
 })
 
 function archiveEntry() {
@@ -51,18 +59,18 @@ const { model } = toRefs(props);
   <TimingListEntry v-if="initialized" :model="model" @archive="archiveEntry" @edit="editEntry">
 
     <template v-if="isTask" #pre-title>
-      <div class="me-1">
+      <div class="mr-1 mt-1">
         <ItemCheckboxList v-model:selection="selection" :max="1" :is-task="true" :disabled="isDisabled"/>
       </div>
     </template>
 
     <template v-if="isHabit" #rating>
       <ItemCheckboxList
-        v-model:selection="selection"
-        :min="props.model.dataPointConfig.min"
-        :max="props.model.dataPointConfig.max"
-        :optimal="props.model.dataPointConfig.optimal"
-        :disabled="isDisabled"/>
+          v-model:selection="selection"
+          :min="model.dataPointConfig.min"
+          :max="model.dataPointConfig.max"
+          :optimal="model.dataPointConfig.optimal"
+          :disabled="isDisabled"/>
     </template>
 
   </TimingListEntry>

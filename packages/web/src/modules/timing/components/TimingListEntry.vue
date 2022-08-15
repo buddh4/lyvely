@@ -34,10 +34,8 @@ const { model } = toRefs(props);
     <Icon v-if="dragActive" name="drag" class="mr-2 text-secondary fill-current my-auto w-5 cursor-pointer"/>
 
     <div class="mr-auto">
-      <div class="entry-title-bar">
-        <div class="float-left">
-          <slot name="pre-title"></slot>
-        </div>
+      <div class="entry-title-bar flex items-center justify-center">
+        <slot name="pre-title"></slot>
         <div class="whitespace-nowrap overflow-hidden overflow-ellipsis cursor-pointer" @click="$emit('details')">
           <slot name="title">{{ model.title }}</slot>
         </div>
@@ -45,7 +43,7 @@ const { model } = toRefs(props);
       <CategoryList :categories="model.categories"/>
     </div>
 
-    <div class="self-end">
+    <div>
       <div class="flex flex-col">
         <slot name="menu">
           <TimingListEntryMenu :model="model" @edit="$emit('edit')" @archive="$emit('archive')"/>

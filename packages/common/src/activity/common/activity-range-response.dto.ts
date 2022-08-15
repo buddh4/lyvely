@@ -27,10 +27,10 @@ export class ActivityRangeResponseDto extends BaseDto<ActivityRangeResponseDto> 
   addActivity(activity: IActivity) {
     switch (activity.type) {
       case ActivityType.Habit:
-        this.habits.push(new HabitDto(activity));
+        this.habits.push(activity instanceof HabitDto ? activity : new HabitDto(activity));
         break;
       case ActivityType.Task:
-        this.tasks.push(new TaskDto(activity));
+        this.tasks.push(activity instanceof TaskDto ? activity : new TaskDto(activity));
         break;
     }
   }

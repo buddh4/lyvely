@@ -4,7 +4,7 @@ import { createActivityTestingModule } from '../../../activities/tests/utils/act
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { createTestExecutionContext } from '../../../test/utils/test-execution-context.util';
 import { ProfileGuard } from '../../guards';
-import { UserProfileRequest } from '../../../core/types';
+import { ProfileRequest } from '../../../core/types';
 import { BaseMembershipRole } from '../../schemas';
 import { ProfileVisibilityLevel } from '@lyvely/common';
 
@@ -40,7 +40,7 @@ describe('ProfileGuard', () => {
       const result = await profileGuard.canActivate(executionContext);
       expect(result).toEqual(true);
 
-      const request = executionContext.switchToHttp().getRequest<UserProfileRequest>();
+      const request = executionContext.switchToHttp().getRequest<ProfileRequest>();
 
       expect(request.profile).toBeDefined();
       expect(request.profile._id).toEqual(profile._id);
@@ -63,7 +63,7 @@ describe('ProfileGuard', () => {
       const result = await profileGuard.canActivate(executionContext);
       expect(result).toEqual(true);
 
-      const request = executionContext.switchToHttp().getRequest<UserProfileRequest>();
+      const request = executionContext.switchToHttp().getRequest<ProfileRequest>();
 
       expect(request.profile).toBeDefined();
       expect(request.profile._id).toEqual(profile._id);
@@ -87,7 +87,7 @@ describe('ProfileGuard', () => {
       const result = await profileGuard.canActivate(executionContext);
       expect(result).toEqual(true);
 
-      const request = executionContext.switchToHttp().getRequest<UserProfileRequest>();
+      const request = executionContext.switchToHttp().getRequest<ProfileRequest>();
 
       expect(request.profile).toBeDefined();
       expect(request.profile._id).toEqual(profile._id);
@@ -134,7 +134,7 @@ describe('ProfileGuard', () => {
       const result = await profileGuard.canActivate(executionContext);
       expect(result).toEqual(true);
 
-      const request = executionContext.switchToHttp().getRequest<UserProfileRequest>();
+      const request = executionContext.switchToHttp().getRequest<ProfileRequest>();
 
       expect(request.profile).toBeDefined();
       expect(request.profile._id).toEqual(profile._id);

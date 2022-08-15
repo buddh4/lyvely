@@ -39,7 +39,7 @@ function onDateChanged() {
     <VueDraggableNext
       tag="ul"
       group="habits"
-      class="divide-y divide-divide border-l-1 border-l border-r border-divide"
+      class="timing-list-items"
       :list="activities"
       handle=".icon-drag"
       @end="dragEnd">

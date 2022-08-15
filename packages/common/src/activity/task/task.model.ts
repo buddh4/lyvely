@@ -26,6 +26,7 @@ export class DoneTaskResultModel {
 
 @Exclude()
 export class UpdateTaskStateModel {
+  @Expose()
   @Matches(REGEX_DATE_FORMAT)
   date: string;
 

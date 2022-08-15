@@ -120,6 +120,9 @@ export const useActivityStore = defineStore('activity', {
 
       return dataPoint;
     },
+    async setTaskSelection(task: ITask, val: boolean) {
+      return val ? this.setTaskDone(task) : this.setTaskUndone(task);
+    },
     async setTaskDone(task: ITask) {
       const { date } = useTimingStore();
       const profileStore = useProfileStore();

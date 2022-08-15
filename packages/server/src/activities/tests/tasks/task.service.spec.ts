@@ -61,7 +61,7 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.Shared,
         }));
 
-        await taskService.setDone(owner, profile, task, '2021-04-03');
+        await taskService.setDone(profile, owner, task, '2021-04-03');
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
@@ -85,8 +85,8 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.Shared,
         }));
 
-        await taskService.setDone(owner, profile, task, '2021-04-03');
-        await taskService.setDone(member, profile, task, '2021-04-05');
+        await taskService.setDone(profile, owner, task, '2021-04-03');
+        await taskService.setDone(profile, member, task, '2021-04-05');
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
@@ -106,7 +106,7 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.PerUser,
         }));
 
-        await taskService.setDone(owner, profile, task, '2021-04-03');
+        await taskService.setDone(profile, owner, task, '2021-04-03');
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
         expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
@@ -127,8 +127,8 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.PerUser,
         }));
 
-        await taskService.setDone(owner, profile, task, '2021-04-03');
-        await taskService.setDone(member, profile, task, '2021-04-05');
+        await taskService.setDone(profile, owner, task, '2021-04-03');
+        await taskService.setDone(profile, member, task, '2021-04-05');
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(2);
@@ -154,8 +154,8 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.PerUser,
         }));
 
-        await taskService.setDone(owner, profile, task, '2021-04-03');
-        await taskService.setDone(owner, profile, task, '2021-04-05');
+        await taskService.setDone(profile, owner, task, '2021-04-03');
+        await taskService.setDone(profile, owner, task, '2021-04-05');
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
@@ -178,8 +178,8 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.Shared,
         }));
 
-        await taskService.setDone(member, profile, task, '2021-04-03');
-        await taskService.setUndone(member, profile, task, '2021-04-03');
+        await taskService.setDone(profile, member, task, '2021-04-03');
+        await taskService.setUndone(profile, member, task, '2021-04-03');
 
         const search = await testDataUtils.findTaskById(task.id);
         expect(search.doneBy).toEqual([]);
@@ -195,8 +195,8 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.Shared,
         }));
 
-        await taskService.setDone(member, profile, task, '2021-04-03');
-        await taskService.setUndone(owner, profile, task, '2021-04-03');
+        await taskService.setDone(profile, member, task, '2021-04-03');
+        await taskService.setUndone(profile, owner, task, '2021-04-03');
 
         const search = await testDataUtils.findTaskById(task.id);
         expect(search.doneBy).toEqual([]);
@@ -212,8 +212,8 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.PerUser,
         }));
 
-        await taskService.setDone(member, profile, task, '2021-04-03');
-        await taskService.setUndone(member, profile, task, '2021-04-03');
+        await taskService.setDone(profile, member, task, '2021-04-03');
+        await taskService.setUndone(profile, member, task, '2021-04-03');
 
         const search = await testDataUtils.findTaskById(task.id);
         expect(search.doneBy).toEqual([]);
@@ -229,9 +229,9 @@ describe('TaskService', () => {
           userStrategy: UserAssignmentStrategy.PerUser,
         }));
 
-        await taskService.setDone(member, profile, task, '2021-04-03');
-        await taskService.setDone(owner, profile, task, '2021-04-03');
-        await taskService.setUndone(member, profile, task, '2021-04-03');
+        await taskService.setDone(profile, member, task, '2021-04-03');
+        await taskService.setDone(profile, owner, task, '2021-04-03');
+        await taskService.setUndone(profile, member, task, '2021-04-03');
 
         const search = await testDataUtils.findTaskById(task.id);
         expect(search.doneBy.length).toEqual(1);
