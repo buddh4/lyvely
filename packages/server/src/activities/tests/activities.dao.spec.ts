@@ -218,7 +218,7 @@ describe('Activities DAO', () => {
      it('archive task', async () => {
        const { user, profile } = await testData.createUserAndProfile();
        const task = await activityData.createTask(user, profile);
-       const result = await activitiesDao.archive(task);
+       const result = await activitiesDao.archive(profile, task);
        expect(result).toEqual(true);
        const refresh = await activitiesDao.reload(task);
        expect(refresh.archived).toEqual(true);
@@ -227,7 +227,7 @@ describe('Activities DAO', () => {
      it('archive already archived task', async () => {
        const { user, profile } = await testData.createUserAndProfile();
        const task = await activityData.createTask(user, profile, null,{ archived: true });
-       const result = await activitiesDao.archive(task);
+       const result = await activitiesDao.archive(profile, task);
        expect(result).toEqual(true);
        const refresh = await activitiesDao.reload(task);
        expect(refresh.archived).toEqual(true);
@@ -236,7 +236,7 @@ describe('Activities DAO', () => {
      it('archive habit', async () => {
        const { user, profile } = await testData.createUserAndProfile();
        const habit = await activityData.createHabit(user, profile);
-       const result = await activitiesDao.archive(habit);
+       const result = await activitiesDao.archive(profile, habit);
        expect(result).toEqual(true);
        const refresh = await activitiesDao.reload(habit);
        expect(refresh.archived).toEqual(true);
@@ -247,7 +247,7 @@ describe('Activities DAO', () => {
      it('un-archive task', async () => {
        const { user, profile } = await testData.createUserAndProfile();
        const task = await activityData.createTask(user, profile, null, { archived: true });
-       const result = await activitiesDao.unarchive(task);
+       const result = await activitiesDao.unarchive(profile, task);
        expect(result).toEqual(true);
        const refresh = await activitiesDao.reload(task);
        expect(refresh.archived).toEqual(false);
@@ -256,7 +256,7 @@ describe('Activities DAO', () => {
      it('un-archive already un-archive task', async () => {
        const { user, profile } = await testData.createUserAndProfile();
        const task = await activityData.createTask(user, profile);
-       const result = await activitiesDao.unarchive(task);
+       const result = await activitiesDao.unarchive(profile, task);
        expect(result).toEqual(true);
        const refresh = await activitiesDao.reload(task);
        expect(refresh.archived).toEqual(false);
@@ -265,7 +265,7 @@ describe('Activities DAO', () => {
      it('un-archive habit', async () => {
        const { user, profile } = await testData.createUserAndProfile();
        const habit = await activityData.createTask(user, profile,null, { archived: true });
-       const result = await activitiesDao.unarchive(habit);
+       const result = await activitiesDao.unarchive(profile, habit);
        expect(result).toEqual(true);
        const refresh = await activitiesDao.reload(habit);
        expect(refresh.archived).toEqual(false);

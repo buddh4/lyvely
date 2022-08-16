@@ -7,10 +7,18 @@ import {
 import { BaseProfileModel } from "./base-profile-model.schema";
 import { Profile } from "../schemas";
 import { assureObjectId, EntityIdentity } from "../../db/db.utils";
-import { FilterQuery, QueryOptions, UpdateQuery } from "mongoose";
+import { FilterQuery, QueryOptions, UpdateQuery, Types } from "mongoose";
 
-export type ProfileRelation = Profile | BaseProfileModel<any>;
+/**
+ * This type is used as compound type for different kinds of profile relation on DAO level.
+ * The BaseProfileModelDao at least requires an oid and pid for most of its queries.
+ */
+export type ProfileRelation = Profile | BaseProfileModel<any> | { oid: Types.ObjectId, pid: Types.ObjectId };
 
+/**
+ * This Dao class serves as base class for profile related models.
+ * Profile related models need to include an oid and pid field which should be used in all queries.
+ */
 export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends AbstractDao<T> {
 
   async findByProfileAndId(profileRelation: ProfileRelation, identity: EntityIdentity<T>, options?: BaseFetchQueryOptions<T>) {

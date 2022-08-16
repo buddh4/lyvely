@@ -1,11 +1,11 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
-import { ProfilesService } from '../services/profiles.service';
+import { ProfilesService } from '../services';
 import { ProfileRequest } from '../../core/types';
 import { isValidObjectId } from '@lyvely/common';
-import { UserProfileRelations } from '../models/profile-relations.model';
-import { ProfileVisibilityPolicy } from '../policies/profile-visibility.policy';
+import { UserProfileRelations } from '../models';
+import { ProfileVisibilityPolicy } from '../policies';
 import { PolicyService } from '../../policies/services/policy.service';
-import { ProfileDao } from '../daos/profile.dao';
+import { ProfileDao } from '../daos';
 import { ProfilePermissionsService } from '../../permissions/services/profile-permissions.service';
 import { PERMISSIONS_KEY } from '../../permissions/decorators/permissions.decorator';
 import { Reflector } from '@nestjs/core';

@@ -7,8 +7,4 @@ export class ContentService extends AbstractContentService<Content>{
 
   @Inject()
   protected contentDao: ContentDao;
-
-  public async findContentById(id: string): Promise<Content> {
-    return this.contentDao.findById(id);
-  }
 }

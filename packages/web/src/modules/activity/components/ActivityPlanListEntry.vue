@@ -23,9 +23,7 @@ onMounted(async () => {
 });
 
 const selection = computed({
-  get: () => (props.model instanceof TaskDto)
-        ? +!!props.model.done
-        : log.value.value,
+  get: () => (props.model instanceof TaskDto) ? +!!props.model.done : log.value.value,
   set: (selection: number) => {
     if(props.model.type === ActivityType.Habit) {
       activityStore.updateLog(log.value, selection)

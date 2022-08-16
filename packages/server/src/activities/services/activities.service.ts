@@ -69,14 +69,14 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    * @throws ForbiddenServiceException
    */
   async sort(user: User, identity: EntityIdentity<Activity>, newIndex: number): Promise<boolean> {
-    const { content: activity, profile } = await this.findWritableContentAndProfile(user, identity);
+    /*const { content: activity, profile } = await this.findWritableContentAndProfile(user, identity);
 
-    /**
+    **
      *  TODO: add some optimizations e.g.:
      *  newIndex < oldIndex => skip if currentIndex > oldIndex
      *  newIndex < oldIndex => skip indexes < newIndex
      *  ...
-     */
+     *
 
     //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex
 
@@ -101,7 +101,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
     });
 
     await this.contentDao.updateSetBulk(updates);
-
+*/
     return true;
   }
 

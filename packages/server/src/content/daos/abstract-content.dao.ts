@@ -1,7 +1,6 @@
 import { Content } from '../schemas';
-import { assureObjectId, EntityIdentity } from '../../db/db.utils';
-import { BaseProfileModelDao } from "../../profiles";
-import { AbstractDao } from "../../db/abstract.dao";
+import { EntityIdentity } from '../../db/db.utils';
+import { BaseProfileModelDao, ProfileRelation } from "../../profiles";
 
 export abstract class AbstractContentDao<T extends Content> extends BaseProfileModelDao<T> {
 
@@ -9,11 +8,11 @@ export abstract class AbstractContentDao<T extends Content> extends BaseProfileM
     return 'content';
   }
 
-  async archive(entity: EntityIdentity<T>): Promise<boolean> {
-    return !!(await this.model.updateOne({ _id: assureObjectId(entity) }, { archived: true })).modifiedCount;
+  async archive(profileRelation: ProfileRelation, identity: EntityIdentity<T>): Promise<boolean> {
+    return !!(await this.updateOneByProfileAndIdSet(profileRelation, identity, <any> { archived: true }));
   }
 
-  async unarchive(entity: EntityIdentity<T>): Promise<boolean> {
-    return !!(await this.model.updateOne({ _id: assureObjectId(entity) }, { archived: false })).modifiedCount;
+  async unarchive(profileRelation: ProfileRelation, identity: EntityIdentity<T>): Promise<boolean> {
+    return !!(await this.updateOneByProfileAndIdSet(profileRelation, identity, <any> { archived: false }));
   }
 }

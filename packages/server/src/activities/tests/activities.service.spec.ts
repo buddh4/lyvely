@@ -239,9 +239,9 @@ describe('ActivityService', () => {
 
     describe('archive', () => {
       it('owner can archive habit', async () => {
-        const { user, profile } = await testData.createUserAndProfile();
+        const { user, profile, profileRelations } = await testData.createUserAndProfile();
         const habit = await testData.createHabit(user, profile);
-        const archived = await activitiesService.archive(user, habit);
+        const archived = await activitiesService.archive(profileRelations, habit);
         expect(archived).toEqual(true);
         expect(habit.archived).toEqual(true);
         const updated = await activitiesService.findByProfileAndId(profile, habit);
@@ -251,11 +251,11 @@ describe('ActivityService', () => {
 
     describe('unarchive', () => {
       it('owner can un-archive habit', async () => {
-        const { user, profile } = await testData.createUserAndProfile();
+        const { user, profile, profileRelations } = await testData.createUserAndProfile();
         const habit = await testData.createHabit(user, profile, { title: 't1' }, { archived: true });
         expect(habit.archived).toEqual(true);
 
-        const unarchived = await activitiesService.unarchive(user, habit);
+        const unarchived = await activitiesService.unarchive(profileRelations, habit);
         expect(unarchived).toEqual(true);
         expect(habit.archived).toEqual(false);
         const updated = await activitiesService.findByProfileAndId(profile, habit);

@@ -1,5 +1,5 @@
 
-import { ProfilesService , Profile } from '../../profiles';
+import { ProfilesService, Profile, UserProfileRelations, ProfileRelation } from '../../profiles';
 import { AbstractContentDao } from '../daos';
 import { User } from '../../users';
 import { assureObjectId, EntityIdentity } from '../../db/db.utils';
@@ -15,7 +15,7 @@ export abstract class AbstractContentService<T extends Content> {
 
   constructor(protected contentDao: AbstractContentDao<T>) {}
 
-  async findById(id: EntityIdentity<T>): Promise<T|null> {
+  async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T|null> {
     return this.contentDao.findById(id)
   }
 
@@ -39,66 +39,43 @@ export abstract class AbstractContentService<T extends Content> {
 
 
   /**
-   * Archives an content, only if the user has the required write permissions.
+   * Archives a content, only if the user has the required write permissions.
    *
-   * @param user
+   * @param profileRelations
    * @param identity
    * @throws EntityNotFoundException
-   * @throws ForbiddenServiceException
    */
-  async archive(user: User, identity: EntityIdentity<T>): Promise<boolean> {
-    const { content } = await this.findWritableContentAndProfile(user, identity);
-    const success = await this.contentDao.archive(content);
-
-    if(success && typeof identity === 'object') {
-      (<T> identity).archived = true;
-    }
-
-    return success;
+  async archive(profileRelations: UserProfileRelations, identity: EntityIdentity<T>): Promise<boolean> {
+    return this.contentDao.archive(profileRelations, identity);
   }
 
   /**
-   * Un-archives an content, only if the user has the required write permissions.
+   * Un-archives a content, only if the user has the required write permissions.
    *
-   * @param user
+   * @param profileRelations
    * @param identity
    * @throws EntityNotFoundException
-   * @throws ForbiddenServiceException
    */
-  async unarchive(user: User, identity: EntityIdentity<T>): Promise<boolean> {
-    const { content } = await this.findWritableContentAndProfile(user, identity);
-    const success = await this.contentDao.unarchive(content);
-
-    if(success && typeof identity === 'object') {
-      (<T> identity).archived = false;
-    }
-
-    return success;
+  async unarchive(profileRelations: UserProfileRelations, identity: EntityIdentity<T>): Promise<boolean> {
+    return this.contentDao.unarchive(profileRelations, identity);
   }
 
   /**
-   * Finds a single content by id, only if its writable by the given user
+   * Finds a single content by id related to the given profile and throws a EntityNotFoundException in case the content was not found.
    *
-   * @param user
+   * @param profileRelation
    * @param id
    * @private
    * @throws EntityNotFoundException
-   * @throws ForbiddenServiceException
    */
-  protected async findWritableContentAndProfile(user: User, id: EntityIdentity<T>): Promise<{content: T, profile: Profile}> {
-    const content = await this.contentDao.findById(id);
+  public async findContentByProfileAndId(profileRelation: ProfileRelation, id: EntityIdentity<T>, throwException = true): Promise<T> {
+    const content = await this.contentDao.findByProfileAndId(profileRelation, id);
 
-    if(!content) {
+    if(!content && throwException) {
       throw new EntityNotFoundException();
     }
 
-    const { profile } = await this.profileService.findProfileMembershipByUserAndId(user, assureObjectId(content.pid));
-
-    if(!profile) {
-      throw new EntityNotFoundException();
-    }
-
-    return { content: content, profile: profile };
+    return content;
   }
 
 }

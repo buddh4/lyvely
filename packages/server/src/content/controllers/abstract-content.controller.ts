@@ -1,18 +1,25 @@
-import { Param, Post, Request } from '@nestjs/common';
+import { Post, Request } from '@nestjs/common';
 import { Content } from '../schemas';
-import { AbstractContentService } from '../services/abstract-content.service';
+import { AbstractContentService } from '../services';
+import { ProfileContentRequest } from "./profile-content-request.type";
+import { Policies } from "../../policies/decorators/policies.decorator";
+import { ContentWritePolicy } from "../policies";
 
 export abstract class AbstractContentController<T extends Content> {
   constructor(protected contentService: AbstractContentService<T>) {}
 
-  @Post(':id/archive')
-  async archive(@Request() req, @Param('id') id) {
-    return { success: await this.contentService.archive(req.user, id) };
+  @Post(':cid/archive')
+  @Policies(ContentWritePolicy)
+  async archive(@Request() req: ProfileContentRequest<T>) {
+    const { profileRelations, content } = req;
+    return { success: await this.contentService.archive(profileRelations, content) };
   }
 
-  @Post(':id/unarchive')
-  async unArchive(@Request() req, @Param('id') id) {
-    return { success: await this.contentService.unarchive(req.user, id) };
+  @Post(':cid/unarchive')
+  @Policies(ContentWritePolicy)
+  async unArchive(@Request() req: ProfileContentRequest<T>) {
+    const { profileRelations, content } = req;
+    return { success: await this.contentService.unarchive(profileRelations, content) };
   }
 
 }

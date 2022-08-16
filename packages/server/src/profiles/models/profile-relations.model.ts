@@ -1,10 +1,22 @@
 import { BaseUserProfileRelationType, UserProfileRelation, Profile, Membership } from '../schemas';
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 
+/**
+ * This composite class holds information about the relation between a user and a profile and provides some utility
+ * access functions. This class is mainly used in the controller and service layer for access and permission checks.
+ */
 export class UserProfileRelations {
   user?: User;
   profile: Profile;
   relations: UserProfileRelation[] = [];
+
+  get oid() {
+    return this.profile.oid;
+  }
+
+  get pid() {
+    return this.profile._id;
+  }
 
   constructor(obj: Partial<UserProfileRelations>) {
     Object.assign(this, obj);

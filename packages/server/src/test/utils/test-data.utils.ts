@@ -9,7 +9,7 @@ import {
   BaseMembershipRole,
   UserProfileRelation,
   UserProfileRelationDocument,
-  Membership, MembershipDocument
+  Membership, MembershipDocument, UserProfileRelations
 } from '../../profiles';
 import { EventEmitter2, EventEmitterModule  } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
@@ -33,10 +33,15 @@ export class TestDataUtils {
   @Inject()
   private eventEmitter: EventEmitter2;
 
-  async createUserAndProfile(username = 'test', password = 'test', email?: string): Promise<{user: User, profile: Profile}> {
+  async createUserAndProfile(username = 'test', password = 'test', email?: string): Promise<{user: User, profile: Profile, profileRelations: UserProfileRelations }> {
     const user = await this.createUser(username, password, email);
     const profile = await this.createProfile(user);
-    return { user: user, profile: profile }
+    const profileRelations = new UserProfileRelations({
+      user,
+      profile,
+      relations: [Membership.create({ user, profile, role: BaseMembershipRole.Owner })]
+    });
+    return { user, profile, profileRelations }
   }
 
   async createUser(username = 'test', password = 'test', email?: string): Promise<User> {
@@ -48,7 +53,7 @@ export class TestDataUtils {
     return new User(user.toObject());
   }
 
-  async createSimpleGroup(visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<{owner: User, member: User, profile: Profile}> {
+  async createSimpleGroup(visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<{owner: User, member: User, profile: Profile }> {
     const { user: owner } = await this.createUserAndProfile('owner');
     const { user: member } = await this.createUserAndProfile('member');
     const profile = await this.createGroupProfile(owner, 'TestGroup', visibility);

@@ -103,7 +103,7 @@ describe('HabitService', () => {
         ),
       );
 
-      const search = await habitService.findById(habit._id);
+      const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
       expect(search.title).toEqual('Test');
       expect(search.text).toEqual('Test description');
@@ -142,7 +142,7 @@ describe('HabitService', () => {
         ),
       );
 
-      const search = await habitService.findById(habit._id);
+      const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
       expect(search.dataPointConfig.history).toBeDefined();
       expect(search.dataPointConfig.history.length).toEqual(1);
@@ -195,7 +195,7 @@ describe('HabitService', () => {
     update.dataPointConfig.max = 2;
     habit = await habitService.updateHabit(profile, user, habit, update2);
 
-    const search = await habitService.findById(habit._id);
+    const search = await habitService.findByProfileAndId(profile, habit._id);
     expect(search).toBeDefined();
     expect(search.dataPointConfig.history).toBeDefined();
     expect(search.dataPointConfig.history.length).toEqual(1);
@@ -207,14 +207,14 @@ describe('HabitService', () => {
     it('find activity by object id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const activity = await testData.createHabit(user, profile);
-      const search = await habitService.findById(activity._id);
+      const search = await habitService.findByProfileAndId(profile, activity._id);
       expect(search._id).toEqual(activity._id);
     });
 
     it('find activity by string id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const activity = await testData.createHabit(user, profile);
-      const search = await habitService.findById(activity._id.toString());
+      const search = await habitService.findByProfileAndId(profile, activity._id.toString());
       expect(search._id).toEqual(activity._id);
     });
   });
