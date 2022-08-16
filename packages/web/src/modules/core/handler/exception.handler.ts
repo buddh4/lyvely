@@ -3,22 +3,17 @@ import { Status } from '@/store/status';
 
 type StatusSetter = {setStatus: {(s: Status): void}} & any;
 
-export function LogExceptionHandler(msg: string, context?: StatusSetter) {
-  return (err: any) => {
+export function LogExceptionHandler(msg: string, status?: boolean, context?: StatusSetter) {
+  return (err?: any) => {
     console.error(msg, err);
-    if(status) {
-      context.setStatus(Status.ERROR);
-    }
+    if(status) context.setStatus(Status.ERROR);
   }
 }
 
 export function DialogExceptionHandler(options: ShowAlertOptions | string, context?: StatusSetter) {
-  return (err: any) => {
+  return (err?: any) => {
     options = typeof options === 'string' ?  { message: options } : options;
     useGlobalDialogStore().showError(options);
-    LogExceptionHandler(options.message)(err);
-    if(status) {
-      context.setStatus(Status.ERROR);
-    }
+    LogExceptionHandler(options.message, options.status, context)(err);
   }
 }

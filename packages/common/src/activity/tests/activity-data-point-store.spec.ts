@@ -114,7 +114,7 @@ describe('ActivityDataPointStore', () => {
       store.addModel(new HabitDto({ id: 't3', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, sortOrder: 3 }));
       store.addModel(new HabitDto({ id: 't2', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, sortOrder: 2 }));
       store.addModel(new HabitDto({ id: 't1', dataPointConfig: <any> { interval: CalendarIntervalEnum.Weekly } }));
-      const result = store.getHabitsByCalendarPlan(CalendarIntervalEnum.Daily);
+      const result = store.getHabitsByCalendarInterval(CalendarIntervalEnum.Daily);
       expect(result.length).toEqual(2);
       expect(result[0].id).toEqual('t2');
       expect(result[1].id).toEqual('t3');
@@ -128,7 +128,7 @@ describe('ActivityDataPointStore', () => {
       store.addModel(new TaskDto({ id: 't2', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, sortOrder: 0, done: timingId }));
       store.addModel(new TaskDto({ id: 't1', dataPointConfig: <any> { interval: CalendarIntervalEnum.Daily }, done: 'anotherday...' }));
       store.addModel(new TaskDto({ id: 't0', dataPointConfig: <any> { interval: CalendarIntervalEnum.Weekly } }));
-      const result = store.getTasksByCalendarPlan(CalendarIntervalEnum.Daily, timingId);
+      const result = store.getTasksByCalendarInterval(CalendarIntervalEnum.Daily, timingId);
       expect(result.length).toEqual(3);
       expect(result[0].id).toEqual('t3');
       expect(result[1].id).toEqual('t4');

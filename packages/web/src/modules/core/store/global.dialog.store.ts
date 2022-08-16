@@ -4,6 +4,7 @@ export interface ShowAlertOptions {
   title?: string,
   message: string,
   icon?: string,
+  status?: boolean,
   iconColor?: string,
   iconClass?: string,
 }

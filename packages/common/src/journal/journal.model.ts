@@ -241,7 +241,7 @@ export class JournalRangeResponseDto implements JournalRangeResponse {
 }
 
 export class JournalLogStore extends TimeSeriesDataPointStore<IJournal, IJournalLog> {
-    createLog(model: IJournal, timingId: string): IJournalLog {
+    createDataPoint(model: IJournal, timingId: string): IJournalLog {
         return JournalLogDto.createFor(model, timingId);
     }
 

@@ -12,7 +12,7 @@ export default {
     return repository.post<IHabit>(`${resource}/${habitId}`, activitiy);
   },
 
-  async updateLog(habitId: string, dto: UpdateActivityLogModel) {
+  async updateDataPoint(habitId: string, dto: UpdateActivityLogModel) {
     return repository.post<UpdateHabitResultDto>(`${resource}/${habitId}/update-log`, dto, { params: { cid: habitId } });
   }
 };

@@ -10,7 +10,7 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
   logs: Map<string, Map<string, DataPointModel>> = new Map();
 
   abstract sort(models: Model[]);
-  abstract createLog(model: Model, timingId: string): DataPointModel;
+  abstract createDataPoint(model: Model, timingId: string): DataPointModel;
 
   protected getId(model: TimeSeriesContentIdentity) {
     if(typeof model === "string") {
@@ -81,7 +81,7 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
       }
 
       // Add and fetch log in order to return a reactive instance
-      this.addDataPoint(this.createLog(model, timingId));
+      this.addDataPoint(this.createDataPoint(model, timingId));
       return this.getDataPoint(model, timingId);
     }
 

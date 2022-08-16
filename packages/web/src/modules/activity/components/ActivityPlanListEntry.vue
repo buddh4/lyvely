@@ -6,6 +6,8 @@ import { computed, onMounted, ref, toRefs } from 'vue';
 import { useTimingStore } from '@/modules/timing/store';
 import TimingListEntry from "@/modules/timing/components/TimingListEntry.vue";
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
+import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
+import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 
 interface Props {
   model: IActivity
@@ -14,21 +16,23 @@ interface Props {
 const props = defineProps<Props>();
 const initialized = ref(false);
 const activityStore = useActivityStore();
+const habitStore = useHabitPlanStore();
+const taskStore = useTaskPlanStore();
 const timingStore = useTimingStore();
-const log = computed(() => activityStore.getDataPoint(props.model));
+const dataPoint = computed(() => habitStore.getDataPoint(props.model));
 
 onMounted(async () => {
-  await activityStore.getDataPoint(props.model);
+  await habitStore.getDataPoint(props.model);
   initialized.value = true;
 });
 
 const selection = computed({
-  get: () => (props.model instanceof TaskDto) ? +!!props.model.done : log.value.value,
+  get: () => (props.model instanceof TaskDto) ? +!!props.model.done : dataPoint.value.value,
   set: (selection: number) => {
     if(props.model.type === ActivityType.Habit) {
-      activityStore.updateLog(log.value, selection)
+      habitStore.updateDataPoint(dataPoint.value, selection)
     } else {
-      activityStore.setTaskSelection(props.model, !!selection);
+      taskStore.setTaskSelection(props.model, !!selection);
     }
   }
 })

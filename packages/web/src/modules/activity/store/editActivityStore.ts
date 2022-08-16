@@ -5,6 +5,8 @@ import habitsRepository from '@/modules/activity/repositories/habits.repository'
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
+import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
+import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 
 export const useActivityEditStore = defineStore('activityEdit', {
   state: () => ({
@@ -54,9 +56,11 @@ export const useActivityEditStore = defineStore('activityEdit', {
       try {
         const activityStore = useActivityStore();
         if (this.model instanceof EditTaskDto) {
-          activityStore.addTask((await tasksRepository.create(this.model)).data);
+          const taskStore = useTaskPlanStore();
+          taskStore.addTask((await tasksRepository.create(this.model)).data);
         } else {
-          activityStore.addHabit((await habitsRepository.create(this.model)).data);
+          const habitStore = useHabitPlanStore();
+          habitStore.addHabit((await habitsRepository.create(this.model)).data);
         }
       } catch(err) {
         DialogExceptionHandler('An unexpected error occurred while editing the activity', this)(err);
@@ -71,13 +75,13 @@ export const useActivityEditStore = defineStore('activityEdit', {
         return false;
       }
 
-      const activityStore = useActivityStore();
-
       try {
         if (this.model instanceof EditTaskDto) {
-          activityStore.addTask((await tasksRepository.update(this.modelId, this.model)).data);
+          const taskStore = useTaskPlanStore();
+          taskStore.addTask((await tasksRepository.update(this.modelId, this.model)).data);
         } else {
-          activityStore.addHabit((await habitsRepository.update(this.modelId, this.model)).data);
+          const habitStore = useHabitPlanStore();
+          habitStore.addHabit((await habitsRepository.update(this.modelId, this.model)).data);
         }
       } catch(err) {
         DialogExceptionHandler('An unexpected error occurred while creating the activity', this)(err);

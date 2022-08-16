@@ -1,3 +1,5 @@
+import { Ref, ref } from 'vue';
+
 export enum Status {
   INIT,
   LOADING,
@@ -6,7 +8,7 @@ export enum Status {
 }
 
 type StatusStorePlugin = {
-  status?: Status,
+  status?: Ref<Status>,
   setStatus(status: Status): void,
   getStatus(): Status,
   isStatus(status: Status): boolean,
@@ -16,13 +18,18 @@ type StatusStorePlugin = {
   isStatusSuccess(): boolean,
 }
 
-export function useStatus(): StatusStorePlugin {
+export function useStatus(status?: Ref<Status>): StatusStorePlugin {
+
+  const s = status || ref(Status.INIT);
+
   return {
+    status: s,
+
     setStatus(status: Status) {
-      this.status = status;
+      s.value = status;
     },
     getStatus(): Status {
-      return this.status || Status.INIT;
+      return s.value ?? Status.INIT;
     },
     isStatus(status: Status) {
       return this.getStatus() === status;

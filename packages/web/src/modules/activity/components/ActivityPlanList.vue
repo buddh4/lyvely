@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { VueDraggableNext } from "vue-draggable-next";
 import ActivityPlanListEntry from "@/modules/activity/components/ActivityPlanListEntry.vue";
 import CalendarPlanList from "@/modules/timing/components/CalendarPlanList.vue";
 import { ActivityType } from '@lyvely/common';
-import { useActivityStore } from "@/modules/activity/store/activityStore";
 import { computed } from 'vue';
+import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
+import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
+import { useActivityStore } from "@/modules/activity/store/activityStore";
+import draggable from "vuedraggable";
 
 interface Props {
   interval: number,
@@ -14,19 +16,24 @@ interface Props {
 const props = defineProps<Props>();
 
 const activityStore = useActivityStore();
+const taskPlanStore = useTaskPlanStore();
+const habitPlanStore = useHabitPlanStore();
 
 const activities = (props.type === ActivityType.Habit)
-    ? computed(() => activityStore.habits(props.interval))
-    : computed(() => activityStore.tasks(props.interval));
+    ? habitPlanStore.getHabitsByCalendarInterval(props.interval)
+    : taskPlanStore.getTasksByCalendarInterval(props.interval);
 
-const activityCount = computed(() => activities.value.length);
+console.log(activities);
+
+const activityCount = computed(() => activities?.value.length ?? 0);
 
 function dragEnd(evt: any) {
-  activityStore.move( {
+  const store = (props.type === ActivityType.Habit) ? habitPlanStore : taskPlanStore;
+  /*store.move(activities.value, {
     id: evt.item.dataset.activityId,
     newIndex: evt.newIndex,
     oldIndex: evt.oldIndex
-  });
+  });*/
 }
 
 function onDateChanged() {
@@ -35,18 +42,21 @@ function onDateChanged() {
 </script>
 
 <template>
-  <CalendarPlanList :interval="props.interval" :count="activityCount" @changed="onDateChanged">
-    <VueDraggableNext
-      tag="ul"
-      group="habits"
-      class="timing-list-items"
-      :list="activities"
-      handle=".icon-drag"
-      @end="dragEnd">
+  <CalendarPlanList :interval="props.interval" :count="activities.length" @changed="onDateChanged">
+    <draggable
+        :list="activities"
+        tag="ul"
+        class="timing-list-items"
+        group="habits"
+        handle=".icon-drag"
+        item-key="id"
+        @end="dragEnd">
 
-      <ActivityPlanListEntry v-for="activity in activities" :key="activity.id" :model="activity"/>
+      <template #item="{element}">
+        <ActivityPlanListEntry :model="element"/>
+      </template>
 
-    </VueDraggableNext>
+    </draggable>
   </CalendarPlanList>
 </template>
 
