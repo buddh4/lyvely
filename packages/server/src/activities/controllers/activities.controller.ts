@@ -7,23 +7,22 @@ import {
   Query,
   ValidationPipe,
   Post,
-  Param,
   Body,
 } from '@nestjs/common';
 import {
   ActivityRangeResponseDto,
   IActivityRangeResponse,
-  MoveActivityDto,
   DataPointIntervalFilter,
   TaskDto,
   HabitDto
-} from '@lyvely/common';
+, MoveAction, SortResult } from '@lyvely/common';
 
 import { ActivitiesService } from '../services/activities.service';
-import { AbstractContentController, ContentController } from '../../content';
+import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '../../content';
 import { Activity } from '../schemas';
 import { ProfileRequest } from '../../core/types';
 import { isTaskContent } from "../utils/activity.utils";
+import { Policies } from "../../policies/decorators/policies.decorator";
 
 @ContentController('activities')
 // TODO: implement feature registration @Feature('activities')
@@ -65,8 +64,9 @@ export class ActivitiesController extends AbstractContentController<Activity> {
   }
 
   @Post(':cid/sort')
-  async sort(@Request() req, @Param('id') activityId, @Body() dto: MoveActivityDto) {
-    await this.contentService.sort(req.user, activityId, dto.newIndex);
-    return;
+  @Policies(ContentWritePolicy)
+  async sort(@Request() req: ProfileContentRequest<Activity>, @Body() dto: MoveAction): Promise<SortResult[]> {
+    const { profile, user, content } = req;
+    return await this.contentService.sort(profile, user, content, dto.interval, dto.attachToId);
   }
 }

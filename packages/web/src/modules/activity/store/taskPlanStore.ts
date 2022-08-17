@@ -7,7 +7,7 @@ import {
 import { useProfileStore } from '@/modules/user/store/profile.store';
 import { useTimingStore } from '@/modules/timing/store';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
-import { useActivityStore } from "@/modules/activity/store/activityStore";
+import { MoveActivityEvent, useActivityStore } from "@/modules/activity/store/activityStore";
 import { ComputedRef, computed } from "vue";
 
 export const useTaskPlanStore = defineStore('taskPlan', () => {
@@ -20,6 +20,10 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
   getCalendarPlanOptions().forEach((option: { value: CalendarIntervalEnum }) => {
     tasksByInterval[option.value] = computed(() => activityStore.cache.getTasksByCalendarInterval(option.value, timingStore.getTimingId(option.value),  activityStore.filter))
   });
+
+  async function move(moveEvent: MoveActivityEvent) {
+
+  };
 
   function getTasksByCalendarInterval(interval: CalendarIntervalEnum) {
     return tasksByInterval[interval];
@@ -53,5 +57,5 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
     return val ? setTaskDone(task) : setTaskUndone(task);
   }
 
-  return { addTask, setTaskSelection, getTasksByCalendarInterval };
+  return { addTask, setTaskSelection, move, getTasksByCalendarInterval };
 });

@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { TimeableRangeFilter , MoveActivityDto ,
+import { MoveAction,
   IJournal,
   JournalRangeResponse,
   UpdateJournalLogDto, UpdateJournalLogResultDto
@@ -10,17 +10,17 @@ import { AxiosResponse } from "axios";
 const resource = "journals";
 
 export default {
-  async getByRange(filter: TimeableRangeFilter): Promise<AxiosResponse<JournalRangeResponse>> {
+  async getByRange(filter: any): Promise<AxiosResponse<JournalRangeResponse>> {
     return repository.get<JournalRangeResponse>(`${resource}`, {
       params: filter.getAsParams()
     });
   },
 
   sort(event: MoveActivityEvent) {
-    return repository.post(
-      `${resource}/${event.id}/sort`,
-      new MoveActivityDto(event)
-    );
+   /* return repository.post(
+     // `${resource}/${event.id}/sort`,
+     // new MoveAction(event)
+    );*/
   },
 
   archive(journalId: string) {

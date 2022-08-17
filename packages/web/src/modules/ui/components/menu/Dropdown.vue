@@ -2,6 +2,7 @@
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import { ref, toRefs } from 'vue';
 import { uniqueId } from 'lodash';
+import { onClickOutside } from '@vueuse/core'
 
 interface Props {
   label?: string,
@@ -17,15 +18,19 @@ const props = withDefaults(defineProps<Props>(), {
 
 const open = ref(false);
 
+const root = ref(null);
+
+onClickOutside(root, (event) => open.value = false);
+
 const className = ['flex','dropdown'];
 const buttonClassName = ['inline-flex justify-center  leading-5 z-10 block rounded-md bg-white p-3 focus:outline-none', props.buttonClass];
 
 const id = uniqueId('dropdown-');
-const { icon, label} = toRefs(props);
+const { icon, label } = toRefs(props);
 </script>
 
 <template>
-  <div :class="className">
+  <div ref="root" :class="className">
     <div class="relative">
       <span class="rounded-md shadow-sm">
         <button :id="id" :class="buttonClassName" :aria-expanded="open.toString()" @click="open = !open">
@@ -33,9 +38,8 @@ const { icon, label} = toRefs(props);
           <Icon v-if="icon" :name="icon" />
         </button>
       </span>
-      <div v-if="open" class="fixed inset-0 h-full w-full z-10" @click="open = false"></div>
 
-      <div v-if="open" :aria-labelledby="id" class="absolute right-0 py-2 w-48 bg-white rounded-md shadow-lg border border-gray-100 z-20">
+      <div v-if="open" :aria-labelledby="id" class="absolute right-0 py-2 w-48 bg-white rounded-md shadow-lg border border-gray-100 z-20" @click="open = false">
         <slot></slot>
       </div>
     </div>

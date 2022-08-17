@@ -42,6 +42,7 @@ describe('HabitService', () => {
       const habit = await createHabit(user, profile);
 
       expect(habit.type).toBe(ActivityType.Habit);
+      expect(habit.sortOrder).toEqual(0);
       expect(habit.createdAt).toBeDefined();
       expect(habit.updatedAt).toBeDefined();
       expect(habit.dataPointConfig.min).toEqual(0);
@@ -49,6 +50,15 @@ describe('HabitService', () => {
       expect(habit.score).toEqual(5);
       expect(habit.title).toEqual('Do something!');
       expect(habit.categories.length).toEqual(0);
+    });
+
+    it('sortOrder creation', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habit1 = await createHabit(user, profile);
+      const habit2 = await createHabit(user, profile);
+
+      expect(habit1.sortOrder).toEqual(0);
+      expect(habit2.sortOrder).toEqual(1);
     });
 
     it('create duplicate', async () => {

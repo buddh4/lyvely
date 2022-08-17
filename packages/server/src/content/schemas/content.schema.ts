@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { DeepPartial, IContent, getNumberEnumValues } from '@lyvely/common';
-import { BaseEntity, EntityType } from '../../db/base.entity';
+import { BaseEntity } from '../../db/base.entity';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentVisibilityLevel } from '../../permissions/interfaces/profile-permissions.interface';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';

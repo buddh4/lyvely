@@ -13,6 +13,11 @@ export class HabitsService extends AbstractContentService<Habit> {
     super(contentDao);
   }
 
+  async createContent(profile: Profile, user: User, model: Habit): Promise<Habit> {
+    model.sortOrder = await this.contentDao.getNextSortOrder(profile);
+    return super.createContent(profile, user, model);
+  }
+
   async updateHabit(profile: Profile, user: User, oldHabit: Habit, update: Habit): Promise<Habit> {
     update.dataPointConfig.history = oldHabit.dataPointConfig.history;
 

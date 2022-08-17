@@ -5,7 +5,8 @@ import {
   ActivityFilter,
   ActivityFilterOptions,
   IActivity,
-  LoadedTimingIdStore
+  LoadedTimingIdStore,
+  CalendarIntervalEnum
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/user/store/profile.store';
 import { useTimingStore } from '@/modules/timing/store';
@@ -16,9 +17,11 @@ import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 
 export interface MoveActivityEvent {
-  id: string;
+  cid: string;
   newIndex: number;
   oldIndex: number;
+  fromInterval: CalendarIntervalEnum,
+  toInterval: CalendarIntervalEnum
 }
 
 export const useActivityStore = defineStore('activity', () => {
@@ -36,7 +39,7 @@ export const useActivityStore = defineStore('activity', () => {
     if(!profile) {
       status.setStatus(Status.ERROR);
       DialogExceptionHandler('No profile selected.', this)();
-    };
+    }
 
     const intervalFilter = tidCache.getDataPointIntervalFilter(timingStore.date);
 

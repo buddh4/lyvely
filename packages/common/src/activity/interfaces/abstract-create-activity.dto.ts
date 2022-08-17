@@ -73,16 +73,16 @@ export abstract class AbstractCreateActivityDto {
       this.title = model.title;
       this.text = model.text;
       this.interval = model.dataPointConfig.interval;
-      /* this.max = model.rating.max;
-       this.min = model.rating.min || 0;
-       this.categories = model.categories || [];
-       this.optimal = model.rating.optimal || 0;
-       this.score = model.rating.value || 0;*/
+      this.max = model.dataPointConfig.max;
+      this.min = model.dataPointConfig.min || 0;
+      this.optimal = model.dataPointConfig.optimal || 0;
+      this.score = model.score || 0;
+      this.categories = model.categories || [];
     } else {
       Object.assign(this, model);
     }
 
-    this.interval = this.interval ?? 0;
+    this.interval = this.interval ?? CalendarIntervalEnum.Daily;
     this.min = Math.min(this.min ?? 0, this.max);
     this.optimal = Math.min(this.optimal ?? this.max, this.max);
     this.score = this.score ?? 0;

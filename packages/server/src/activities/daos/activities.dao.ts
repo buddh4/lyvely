@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId } from '../../db/db.utils';
+import { assureObjectId, EntityIdentity } from '../../db/db.utils';
 import {
   ActivityType,
   CalendarIntervalEnum,
@@ -8,13 +8,15 @@ import {
   isTask,
   isHabit,
   IActivity,
- isGroupProfile } from '@lyvely/common';
+ isGroupProfile,
+  SortResult
+} from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { AbstractContentDao } from '../../content';
 import { Activity, ActivityDocument, Habit, Task } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { FetchQueryOptions } from '../../db/abstract.dao';
+import { FetchQueryOptions, UpdateQuerySet } from '../../db/abstract.dao';
 import module from "../activities.meta";
 import { User } from "../../users";
 
@@ -95,6 +97,27 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
       type: type,
       'dataPointConfig.interval': plan,
     }, options);
+  }
+
+  /**
+   * Updates the sortOrder by array index
+   * @param activities
+   */
+  async updateSortOrder(activities: Activity[]): Promise<SortResult[]> {
+    const updates:  { id: EntityIdentity<Activity>, update: UpdateQuerySet<Activity> }[] = [];
+    const result: { id: string, sortOrder: number }[] = [];
+
+
+    activities.forEach((activity, index) => {
+      if(activity.sortOrder !== index) {
+        updates.push({ id: activity._id, update: { sortOrder: index } });
+        activity.sortOrder = index;
+        result.push( new SortResult({ id: activity.id, sortOrder: index }))
+      }
+    });
+
+    await this.updateSetBulk(updates);
+    return result;
   }
 
   protected getModelType(): string | null {

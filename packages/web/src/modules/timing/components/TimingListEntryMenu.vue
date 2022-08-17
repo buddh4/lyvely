@@ -18,7 +18,7 @@ const { model } = toRefs(props);
 
 <template>
   <Dropdown class="ml-auto" button-class="pt-0 pr-0 item-menu-button">
-    <DropdownLink v-if="!model.archived" icon="edit" label="Edit" @click="$emit('edit')"></DropdownLink>
+    <DropdownLink v-if="!model.archived" icon="edit" label="Edit" :close-on-click="false" @click="$emit('edit')"></DropdownLink>
     <DropdownLink :label="archiveLabel" icon="archive" @click="$emit('archive')"></DropdownLink>
     <slot></slot>
   </Dropdown>

@@ -1,13 +1,11 @@
 import repository from "@/repository";
-import { ActivityRangeResponseDto, MoveActivityDto, DataPointIntervalFilter } from "@lyvely/common";
-import { AxiosResponse } from "axios";
-import { MoveActivityEvent } from '@/modules/activity/store/activityStore';
+import { ActivityRangeResponseDto, DataPointIntervalFilter, CalendarIntervalEnum, MoveAction , SortResult } from "@lyvely/common";
 
 const resource = "activities";
 
 export default {
-  async getByRange(filter: DataPointIntervalFilter): Promise<AxiosResponse<ActivityRangeResponseDto>> {
-    return repository.get(`${resource}`, {
+  async getByRange(filter: DataPointIntervalFilter) {
+    return repository.get<ActivityRangeResponseDto>(`${resource}`, {
       params: filter
     });
   },
@@ -16,8 +14,11 @@ export default {
     return repository.get(`${resource}/${id}`);
   },
 
-  sort(event: MoveActivityEvent) {
-    return repository.post(`${resource}/${event.id}/sort`, new MoveActivityDto(event));
+  sort(cid: string, interval: CalendarIntervalEnum, attachToId?: string) {
+    return repository.post<SortResult[]>(`${resource}/${cid}/sort`, new MoveAction({
+      interval: interval,
+      attachToId: attachToId
+    }));
   },
 
   archive(activityId: string) {

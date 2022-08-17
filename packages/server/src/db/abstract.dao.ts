@@ -46,6 +46,7 @@ export interface UpdateQueryOptions extends BaseQueryOptions {
 
 export interface BaseFetchQueryOptions<T extends BaseEntity<T>> extends BaseQueryOptions {
   projection?: ProjectionType<T>;
+  sort?: QuerySort<T>;
 }
 
 export interface FindAndUpdateQueryOptions<T extends BaseEntity<T>> extends BaseFetchQueryOptions<T>, UpdateQueryOptions {
@@ -63,7 +64,7 @@ export interface FetchQueryFilterOptions<T extends BaseEntity<T>> extends BaseFe
 
 export interface FetchQueryOptions<T extends BaseEntity<T>> extends FetchQueryFilterOptions<T> {
   pagination?: Pagination,
-  sort?: QuerySort<T>,
+  limit?: number
 }
 
 export const defaultFetchOptions = {
@@ -261,11 +262,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.updateOneByFilter(id, update, {}, options);
   }
 
-  protected async updateOneByFilter(identity: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: BaseQueryOptions) {
-    return this._updateOneByFilter(identity, update, filter, options);
-  }
-
-  protected async _updateOneByFilter(identity: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: QueryOptions) {
+  protected async updateOneByFilter(identity: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: QueryOptions) {
     // TODO: trigger events
     const clonedUpdate = cloneDeep(update);
 

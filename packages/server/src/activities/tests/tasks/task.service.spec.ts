@@ -42,6 +42,7 @@ describe('TaskService', () => {
       }));
 
       expect(task.type).toBe(ActivityType.Task);
+      expect(task.sortOrder).toEqual(0);
       expect(task.createdAt).toBeDefined();
       expect(task.updatedAt).toBeDefined();
       expect(task.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
@@ -50,9 +51,30 @@ describe('TaskService', () => {
       expect(task.doneBy).toEqual([]);
     });
 
+    it('sortOrder creation', async () => {
+      const { user, profile } = await testDataUtils.createUserAndProfile();
+
+      const task1 = await taskService.createContent(profile, user, Task.create(profile, user,{
+        title: 'Do something!',
+        score: 5,
+        interval: CalendarIntervalEnum.Monthly,
+        userStrategy: UserAssignmentStrategy.Shared,
+      }));
+
+      const task2 = await taskService.createContent(profile, user, Task.create(profile, user,{
+        title: 'Do something!',
+        score: 5,
+        interval: CalendarIntervalEnum.Monthly,
+        userStrategy: UserAssignmentStrategy.Shared,
+      }));
+
+      expect(task1.sortOrder).toEqual(0);
+      expect(task2.sortOrder).toEqual(1);
+    });
+
     describe('setDone', () => {
       it('set done on shared task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, profile } = await testDataUtils.createSimpleGroup();
 
         const task = await taskService.createContent(profile, owner, Task.create(profile, owner, {
           title: 'Do something!',

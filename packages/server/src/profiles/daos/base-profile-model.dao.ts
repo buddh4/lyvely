@@ -45,7 +45,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     return this.updateOneByFilter(id, update, applyProfileFilter(profileRelation), options);
   }
 
-  async updateOneByProfileAndFilter(profileRelation: ProfileRelation, identity: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: QueryOptions) {
+  protected async updateOneByProfileAndFilter(profileRelation: ProfileRelation, identity: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: QueryOptions) {
     return this.updateOneByFilter(identity, update, applyProfileFilter(profileRelation, filter), options)
   }
 

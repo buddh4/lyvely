@@ -3,91 +3,111 @@ import { ActivityType, getCreateModelByActivityType, EditHabitDto,
   EditTaskDto, getEditModelByActivity, IActivity, ModelValidator} from '@lyvely/common';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
-import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
+import { ref, computed, Ref} from 'vue';
 
-export const useActivityEditStore = defineStore('activityEdit', {
-  state: () => ({
-    model: undefined as EditTaskDto | EditHabitDto | undefined,
-    modelId: undefined as string | undefined,
-    validator: undefined as ModelValidator | undefined,
-    isCreate: false,
-  }),
-  getters: {
-    showModal: (state) => !!state.model,
-    modalTitle: (state) => {
-      return (state.model instanceof EditTaskDto)
-        ? (state.isCreate) ? "Add task" : "Edit task"
-        : (state.isCreate) ? "Add activity" : "Edit activity";
+export const useActivityEditStore = defineStore('activityEdit', () => {
+  const model = ref(undefined) as Ref<EditHabitDto|EditTaskDto|undefined>;
+  const modelId = ref(undefined) as Ref<string|undefined>;
+  const validator = ref(undefined) as Ref<ModelValidator|undefined>;
+  const showModal = ref(false);
+  const isCreate = ref(false);
+
+  const modalTitle = computed(() => (model.value instanceof EditTaskDto)
+    ? (isCreate.value) ? "Add task" : "Edit task"
+    : (isCreate.value) ? "Add activity" : "Edit activity")
+
+  function setEditActivity(activity: IActivity) {
+    isCreate.value = false;
+    _setModel(getEditModelByActivity(activity), activity.id);
+  }
+
+  function setCreateActivity(type: ActivityType) {
+    isCreate.value = true;
+    _setModel(getCreateModelByActivityType(type));
+  }
+
+  function _setModel(newModel?: EditHabitDto|EditTaskDto, cid = undefined as undefined|string) {
+    if(newModel) {
+      model.value = newModel;
+      modelId.value = cid;
+      validator.value = new ModelValidator(model);
+      showModal.value = true;
+    } else {
+      model.value = undefined;
+      modelId.value = undefined;
+      validator.value = undefined;
+      showModal.value = false;
     }
-  },
-  actions: {
-    setEditActivity(model: IActivity) {
-      this.isCreate = false;
-      this.model = getEditModelByActivity(model);
-      this.modelId = model.id;
-      this.validator = new ModelValidator(this.model);
-    },
-    setCreateActivity(type: ActivityType) {
-      this.isCreate = true;
-      this.model = getCreateModelByActivityType(type);
-      this.validator = new ModelValidator(this.model);
-    },
-    async submit() {
-      if (!await this.validator.validate()) {
-        return;
-      }
+  }
 
-      if(this.isCreate) {
-        await this.createActivity()
+  function reset() {
+    _setModel(undefined);
+  }
+
+  async function submit() {
+    if (!validator.value || !await validator.value.validate()) {
+      return;
+    }
+
+    return isCreate.value ? await _createActivity() : await _editActivity();
+  }
+
+  function getError(field: string) {
+    return validator?.value?.getError(field);
+  }
+
+  async function _createActivity() {
+    const modelInstance = model.value;
+    try {
+      if (modelInstance instanceof EditTaskDto) {
+        useTaskPlanStore().addTask((await tasksRepository.create(modelInstance)).data);
+      } else if(modelInstance instanceof EditHabitDto) {
+        useHabitPlanStore().addHabit((await habitsRepository.create(modelInstance)).data);
+      }
+    } catch(err) {
+      DialogExceptionHandler('An unexpected error occurred while editing the activity', this)(err);
+    } finally {
+      reset()
+    }
+  }
+
+  async function _editActivity() {
+    const cid = modelId.value;
+    const modelInstance = model.value;
+
+    if(!cid || !modelInstance) {
+      console.assert(typeof cid === 'undefined', 'Can not edit activity without given modelId.');
+      console.assert(typeof modelInstance === 'undefined', 'Can not edit activity without model instance.');
+      return;
+    }
+
+    try {
+      if (modelInstance instanceof EditTaskDto) {
+        useTaskPlanStore().addTask((await tasksRepository.update(cid, modelInstance)).data);
       } else {
-        await this.editActivity()
+        useHabitPlanStore().addHabit((await habitsRepository.update(cid, modelInstance)).data);
       }
-    },
-    getError(field: string) {
-      return this.validator.getError(field);
-    },
-    reset() {
-       this.$reset();
-    },
-    async createActivity() {
-      try {
-        const activityStore = useActivityStore();
-        if (this.model instanceof EditTaskDto) {
-          const taskStore = useTaskPlanStore();
-          taskStore.addTask((await tasksRepository.create(this.model)).data);
-        } else {
-          const habitStore = useHabitPlanStore();
-          habitStore.addHabit((await habitsRepository.create(this.model)).data);
-        }
-      } catch(err) {
-        DialogExceptionHandler('An unexpected error occurred while editing the activity', this)(err);
-      } finally {
-        this.reset()
-      }
-    },
-    async editActivity() {
-      debugger;
-      if(!this.modelId) {
-        console.error('Try to edit activity without given modelId');
-        return false;
-      }
+    } catch(err) {
+      DialogExceptionHandler('An unexpected error occurred while creating the activity', this)(err);
+    } finally {
+      reset();
+    }
+  }
 
-      try {
-        if (this.model instanceof EditTaskDto) {
-          const taskStore = useTaskPlanStore();
-          taskStore.addTask((await tasksRepository.update(this.modelId, this.model)).data);
-        } else {
-          const habitStore = useHabitPlanStore();
-          habitStore.addHabit((await habitsRepository.update(this.modelId, this.model)).data);
-        }
-      } catch(err) {
-        DialogExceptionHandler('An unexpected error occurred while creating the activity', this)(err);
-      } finally {
-        this.reset();
-      }
-    },
+  return {
+    model,
+    modelId,
+    validator,
+    showModal,
+    isCreate,
+    modalTitle,
+    setEditActivity,
+    setCreateActivity,
+    submit,
+    getError,
+    reset
   }
 });

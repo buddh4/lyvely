@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Activity, HabitDataPoint } from '../schemas';
+import { Activity, Habit, HabitDataPoint } from '../schemas';
 import { User } from '../../users';
 import { Profile } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { EntityIdentity } from '../../db/db.utils';
 import { AbstractContentService } from '../../content';
 import { HabitDataPointService } from './habit-data-point.service';
-import { getTimingIds, DataPointIntervalFilter } from "@lyvely/common";
-import { UpdateQuerySet } from "../../db/abstract.dao";
+import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum, SortResult } from "@lyvely/common";
+import { IntegrityException } from "../../core/exceptions";
 
 interface ActivitySearchResult {
   activities: Activity[],
@@ -63,12 +63,47 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    * Re-sorts the given activity by means of the new index and updates the sortOrder of other activities with the same
    * calendar plan accordingly.
    *
+   * @param profile
    * @param user
-   * @param identity
-   * @param newIndex
+   * @param activity
+   * @param attachToId
+   * @param interval
    * @throws ForbiddenServiceException
    */
-  async sort(user: User, identity: EntityIdentity<Activity>, newIndex: number): Promise<boolean> {
+  async sort(profile: Profile, user: User, activity: Activity, interval?: CalendarIntervalEnum, attachToId?: string): Promise<SortResult[]> {
+    interval = interval ?? activity.dataPointConfig.interval;
+
+    const attachTo = attachToId ? await this.contentDao.findByProfileAndId(profile, attachToId) : undefined;
+
+    if(attachTo && activity.type !== attachTo.type) {
+      throw new IntegrityException('Can not merge habit with task');
+    }
+
+    if(interval !== activity.dataPointConfig.interval) {
+      // Create new revision for activity in case the latest revision was not today
+      const update = { 'dataPointConfig.interval': interval };
+
+      if(activity instanceof Habit && !activity.getRevisionUpdatedAt(new Date())) {
+        activity.pushRevision(activity);
+        update['dataPointConfig.history'] = activity.dataPointConfig.history;
+      }
+
+      await this.contentDao.updateOneByProfileAndIdSet(profile, activity, update);
+      activity.dataPointConfig.interval = interval;
+    }
+
+    const activitiesByInterval = await this.contentDao.findByProfileAndInterval(profile, activity.type, interval, {
+      excludeIds: activity._id,
+      sort: { sortOrder: 1 }
+    });
+
+    const newIndex = attachTo ? attachTo.sortOrder + 1 : 0;
+    activitiesByInterval.splice(newIndex, 0, activity);
+
+    return await this.contentDao.updateSortOrder(activitiesByInterval);
+
+
+
     /*const { content: activity, profile } = await this.findWritableContentAndProfile(user, identity);
 
     **
@@ -78,39 +113,6 @@ export class ActivitiesService extends AbstractContentService<Activity> {
      *  ...
      *
 
-    //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex
-
-    const updates:  { id: EntityIdentity<Activity>, update: UpdateQuerySet<Activity> }[] = [];
-    const activities = await this.contentDao.findByProfileAndInterval(profile, activity.type, activity.dataPointConfig.interval, {
-      excludeIds: activity._id,
-      sort: { sortOrder: 1 }
-    });
-
-    newIndex = ActivitiesService.validateIndex(newIndex, activities);
-
-    if (activity.sortOrder === newIndex) {
-      return true;
-    }
-
-    activities.splice(newIndex, 0, activity);
-
-    activities.forEach((activity, index) => {
-      if(activity.sortOrder !== index) {
-        updates.push({ id: activity._id, update: { sortOrder: index } });
-      }
-    });
-
-    await this.contentDao.updateSetBulk(updates);
-*/
-    return true;
-  }
-
-  private static validateIndex(newIndex: number, itemsToSort: Activity[]): number {
-    newIndex = Math.max(newIndex, 0);
-    if (newIndex >= itemsToSort.length + 1) {
-      newIndex = itemsToSort.length - 1;
-    }
-
-    return newIndex;
+    //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex */
   }
 }
