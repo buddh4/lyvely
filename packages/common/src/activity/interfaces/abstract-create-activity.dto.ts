@@ -60,7 +60,7 @@ export abstract class AbstractCreateActivityDto {
   @Expose()
   @IsArray()
   @MaxLength(20, { each: true })
-  categories?: string[];
+  tagNames?: string[];
 
   constructor(model?: IActivity | Partial<AbstractCreateActivityDto>) {
     // Defaults
@@ -77,7 +77,6 @@ export abstract class AbstractCreateActivityDto {
       this.min = model.dataPointConfig.min || 0;
       this.optimal = model.dataPointConfig.optimal || 0;
       this.score = model.score || 0;
-      this.categories = model.categories || [];
     } else {
       Object.assign(this, model);
     }
@@ -88,6 +87,6 @@ export abstract class AbstractCreateActivityDto {
     this.score = this.score ?? 0;
     this.strategy = this.strategy ?? DataPointNumberInputStrategy.CheckboxNumber;
     this.userStrategy = this.userStrategy ?? UserAssignmentStrategy.Shared;
-    this.categories = this.categories || [];
+    this.tagNames = this.tagNames || [];
   }
 }

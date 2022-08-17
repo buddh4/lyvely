@@ -29,7 +29,7 @@ export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implem
 
     @Expose()
     @IsArray()
-    categories: string[];
+    tagNames: string[];
 
     @Expose()
     @IsNumber()
@@ -51,11 +51,15 @@ export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implem
     @IsEnum(UserAssignmentStrategy)
     userStrategy: UserAssignmentStrategy;
 
+    @Expose()
+    tagIds: string[]
+
     constructor(obj?: Partial<T> & { _id?: any }) {
         super(obj);
 
+        this.tagIds = this.tagIds ? this.tagIds.map(tagId => tagId.toString()) : [];
         this.archived = !!this.archived;
-        this.categories = this.categories || [];
+        this.tagNames = this.tagNames || [];
         this.dataPointConfig = this.dataPointConfig || {
           interval: CalendarIntervalEnum.Daily,
           inputType: DataPointInputType.Checkbox,

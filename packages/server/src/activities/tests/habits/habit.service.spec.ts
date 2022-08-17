@@ -86,9 +86,9 @@ describe('HabitService', () => {
       expect(habit.categories.length).toEqual(2);
       expect(habit.categories[0]).toEqual('Category1');
       expect(habit.categories[1]).toEqual('Category2');
-      expect(profile.categories.length).toEqual(2);
-      expect(profile.categories[0].name).toEqual('Category1');
-      expect(profile.categories[1].name).toEqual('Category2');
+      expect(profile.tags.length).toEqual(2);
+      expect(profile.tags[0].name).toEqual('Category1');
+      expect(profile.tags[1].name).toEqual('Category2');
     });
   });
 
@@ -123,8 +123,8 @@ describe('HabitService', () => {
       expect(search.dataPointConfig.optimal).toEqual(2);
       expect(search.categories.length).toEqual(1);
       expect(search.categories[0]).toEqual('SomeCategory');
-      expect(profile.categories.length).toEqual(1);
-      expect(profile.categories[0].name).toEqual('SomeCategory');
+      expect(profile.tags.length).toEqual(1);
+      expect(profile.tags[0].name).toEqual('SomeCategory');
     });
 
     it('update data point config creates revision', async () => {

@@ -31,5 +31,5 @@ export interface IProfile {
   visibility: ProfileVisibilityLevel,
   score: number;
   locale: string;
-  categories: ICategory[];
+  tags: ICategory[];
 }

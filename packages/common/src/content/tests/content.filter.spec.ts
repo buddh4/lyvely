@@ -7,7 +7,7 @@ describe('Content Filter', () => {
     it('filter by category success', async () => {
       const filter = new ContentFilter();
       filter.update({ category: 'test' });
-      const result = filter.run(new TestContent({ categories: ['test'] }));
+      const result = filter.run(new TestContent({ tagNames: ['test'] }));
       expect(result).toEqual(true);
     });
 

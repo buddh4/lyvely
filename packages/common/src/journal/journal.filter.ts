@@ -1,12 +1,12 @@
-import {isBoolean} from "class-validator";
+import { isBoolean } from "class-validator";
 import { IJournal } from './journal.interface';
 
 export class JournalFilter {
     category: string;
-    archived: boolean = false;
+    archived = false;
 
     run(journal: IJournal) {
-        if(this.category && !journal.categories.includes(this.category)) {
+        if(this.category && !journal.tagNames.includes(this.category)) {
             return false;
         }
 

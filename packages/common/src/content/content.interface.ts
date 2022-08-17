@@ -1,9 +1,9 @@
-export interface IContent {
+export interface IContent<TID = string> {
     id: string;
     type: string;
     title?: string;
     visibility: number;
     text?: string;
     archived: boolean;
-    categories: string[];
+    tagIds: TID[];
 }

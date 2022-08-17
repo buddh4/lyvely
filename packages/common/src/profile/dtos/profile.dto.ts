@@ -31,5 +31,5 @@ export class ProfileDto extends DocumentDto<ProfileDto> implements IProfile {
   @Expose()
   @Type(() => CategoryDto)
   @IsArray()
-  categories: ICategory[];
+  tags: ICategory[];
 }

@@ -19,20 +19,45 @@ export abstract class AbstractContentService<T extends Content> {
     return this.contentDao.findById(id)
   }
 
-  async createContent(profile: Profile, user: User, model: T): Promise<T> {
-    await this.profileService.mergeCategories(profile, model.categories);
+  protected async mergeCategories(profile, model: T, tagNames?: string[]) {
+    if(!tagNames) {
+      return;
+    }
+
+    model.tagIds = [];
+    await this.profileService.mergeCategories(profile, tagNames);
+    tagNames.forEach(tagName => model.addTag(profile.getTagByName(tagName)));
+  }
+
+  async createContent(profile: Profile, user: User, model: T, tagNames?: string[]): Promise<T> {
+    await this.mergeCategories(profile, model, tagNames);
     model.createdBy = assureObjectId(user);
     return this.contentDao.save(model);
   }
 
-  async findContentAndUpdate(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>) {
-    await this.profileService.mergeCategories(profile, update.categories);
-    // TODO: set updatedBy on content
+  protected async mergeCategoriesForUpdate(profile: Profile, update: UpdateQuerySet<T>, tagNames?: string[]) {
+    if(!tagNames) {
+      return;
+    }
+
+    await this.profileService.mergeCategories(profile, tagNames);
+    update.tagIds = [];
+    tagNames.forEach(tagName => {
+      const tag = profile.getTagByName(tagName);
+      if(tag) {
+        update.tagIds.push(tag._id)
+      }
+    });
+  }
+
+  async findContentAndUpdate(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>, tagNames?: string[]) {
+    await this.mergeCategoriesForUpdate(profile, update, tagNames);
+        // TODO: set updatedBy on content
     return this.contentDao.findOneAndSetById(id, update);
   }
 
-  async updateContent(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>) {
-    await this.profileService.mergeCategories(profile, update.categories);
+  async updateContent(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>, tagNames?: string[]) {
+    await this.mergeCategoriesForUpdate(profile, update, tagNames);
     // TODO: set updatedBy on content
     return this.contentDao.updateOneSetById(id, update);
   }

@@ -10,6 +10,6 @@ export class TestContent implements IContent {
   text?: string;
   title?: string;
   archived: boolean;
-  categories: string[];
+  tagNames: string[];
   visibility: number;
 }

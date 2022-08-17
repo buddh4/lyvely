@@ -11,7 +11,6 @@ import {
   Task,
   TaskSchema, Activity, ActivitySchema,
 } from './schemas';
-import { CalendarModule } from '../calendar/calendar.module';
 import { UsersModule } from '../users';
 import { HabitsController } from './controllers/habits.controller';
 import { HabitsService } from './services/habits.service';

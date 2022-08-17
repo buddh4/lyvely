@@ -9,6 +9,7 @@ import { CreatedAs, ContentAuthorSchema, Author } from './content-author-info.sc
 import { User } from '../../users';
 import { implementsAssertContentMetadata } from '../interfaces';
 import { Profile, BaseProfileModel } from '../../profiles';
+import { Tag } from "../../categories";
 
 export type ContentDocument = Content & mongoose.Document<mongoose.Types.ObjectId>;
 
@@ -35,7 +36,7 @@ export interface ContentEntity {
 }
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> extends BaseProfileModel<T> implements IContent {
+export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> extends BaseProfileModel<T> implements IContent<mongoose.Types.ObjectId> {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Types.ObjectId;
@@ -67,8 +68,8 @@ export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> 
   @Prop({ default: false })
   archived: boolean;
 
-  @Prop({ type: [String], default: [] })
-  categories: string[];
+  @Prop({ type: [mongoose.Types.ObjectId], default: [] })
+  tagIds: mongoose.Types.ObjectId[];
 
   type: string;
 
@@ -101,6 +102,10 @@ export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> 
     }
 
     super.afterInit();
+  }
+
+  addTag(tag: Tag) {
+    if(tag) this.tagIds.push(tag._id);
   }
 
   setAuthor(author: Author) {

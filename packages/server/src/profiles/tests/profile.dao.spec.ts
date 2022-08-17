@@ -5,8 +5,9 @@ import { DEFAULT_PROFILE_NAME, Profile, ProfileSchema } from '../schemas';
 import { ProfileType } from '@lyvely/common';
 import { ProfileDao } from '../daos';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { UsersModule } from '../../users/users.module';
+import { UsersModule } from '../../users';
 import { TestModule } from '../../test/test.module';
+import { Tag } from '../../categories';
 
 describe('ProfileDao', () => {
   let testingModule: TestingModule;
@@ -51,8 +52,8 @@ describe('ProfileDao', () => {
       expect(profile._id).toBeDefined();
       expect(profile.name).toEqual(DEFAULT_PROFILE_NAME);
       expect(profile.type).toEqual(ProfileType.User);
-      expect(profile.categories).toBeDefined();
-      expect(profile.categories.length).toEqual(0);
+      expect(profile.tags).toBeDefined();
+      expect(profile.tags.length).toEqual(0);
       expect(profile.score).toEqual(0);
       expect(profile.createdAt).toBeDefined();
       expect(profile.updatedAt).toBeDefined();
@@ -109,9 +110,7 @@ describe('ProfileDao', () => {
       const updated = await profileDao.reload(profile);
       expect(updated.name).toEqual('overwritten');
     });
-  });
 
-  describe('update()', () => {
     it('update the score of a profile', async () => {
       const user = await testData.createUser();
       let profile = await profileDao.upsert({ createdBy: user._id });
@@ -120,4 +119,20 @@ describe('ProfileDao', () => {
       expect(profile.score).toEqual(10);
     });
   });
+
+  describe('addCategories()', () => {
+    it('add single category', async () => {
+      const user = await testData.createUser();
+      const profile = await profileDao.upsert({ createdBy: user._id });
+      await profileDao.addCategories(profile, [Tag.create({ name: 'Test1' })]);
+      const update = await profileDao.reload(profile);
+      expect(profile.tags.length).toEqual(1);
+      expect(update.tags.length).toEqual(1);
+      expect(profile.tags[0].name).toEqual('Test1');
+      expect(update.tags[0].name).toEqual('Test1');
+      expect(profile.tags[0].isNew).toEqual(true);
+      expect(update.tags[0].isNew).toEqual(false);
+    });
+  });
+
 });

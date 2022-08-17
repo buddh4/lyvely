@@ -3,17 +3,23 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../db/base.entity';
 import { ICategory } from '@lyvely/common';
 
-export type CategoryDocument = Category & mongoose.Document;
+export type CategoryDocument = Tag & mongoose.Document;
 
 @Schema()
-export class Category extends BaseEntity<Category> implements ICategory {
+export class Tag extends BaseEntity<Tag> implements ICategory {
   @Prop({ required: true })
   name: string;
 
-  public static create(obj: Partial<Category>) {
-    const model = new Category();
-    return Object.assign(model, obj);
+  isNew: boolean;
+
+  static create(obj: Partial<Tag>) {
+    return new Tag({ isNew: true, ...obj });
+  }
+
+  protected afterInit() {
+    super.afterInit();
+    this.isNew = this.isNew ?? false;
   }
 }
 
-export const CategorySchema = SchemaFactory.createForClass(Category);
+export const CategorySchema = SchemaFactory.createForClass(Tag);

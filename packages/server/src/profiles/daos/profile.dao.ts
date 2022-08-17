@@ -3,9 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Profile, DEFAULT_PROFILE_NAME, ProfileDocument } from '../schemas';
 import { Model } from 'mongoose';
 import { assureObjectId, EntityData, EntityIdentity } from '../../db/db.utils';
-import { User } from '../../users/schemas/users.schema';
+import { User } from '../../users';
 import { AbstractDao } from '../../db/abstract.dao';
 import { Constructor } from '@lyvely/common';
+import { Tag } from "../../categories/schemas/categories.schema";
 
 type UpsertProfile = { createdBy: EntityIdentity<User> } & Partial<EntityData<Profile>>;
 
@@ -22,6 +23,10 @@ export class ProfileDao extends AbstractDao<Profile> {
         { upsert: true, new: true },
       )
       .exec();
+  }
+
+  async addCategories(profile: Profile, categories: Tag[]) {
+    return this.updateOneById(profile, { $push: { categories: { $each: categories } } })
   }
 
   async updateScore(identity: EntityIdentity<Profile>, newScore) {

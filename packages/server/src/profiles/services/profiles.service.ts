@@ -1,15 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../../users/schemas/users.schema';
-import { Profile, } from '../schemas/profiles.schema';
-import { Category } from '../../categories/schemas/categories.schema';
+import { User } from '../../users';
+import { Tag } from '../../categories';
 import { EntityIdentity } from '../../db/db.utils';
 import { ProfileType } from '@lyvely/common';
-import { ProfileDao } from '../daos/profile.dao';
-import { BaseMembershipRole } from '../schemas/user-profile-relations.schema';
-import { MembershipsDao } from '../daos/memberships.dao';
-import { Membership } from '../schemas/profile-memberships.schema';
-import { UserProfileRelations } from '../models/profile-relations.model';
-import { UserProfileRelationsDao } from '../daos/user-profile-relations.dao';
+import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
+import { Membership, BaseMembershipRole, Profile } from '../schemas';
+import { UserProfileRelations } from '../models';
 
 export interface ProfileMembership {
   user: User,
@@ -117,19 +113,22 @@ export class ProfilesService {
       return profile;
     }
 
-    const namesToAdd = categories.filter(
-      (name) =>
-        name.length &&
-        !profile.categories.find((category) => category.name === name),
-    );
+    const newCategoryNames = new Set<string>();
+    const categoriesToPush = [];
 
-    const namesToAddSet = new Set<string>(namesToAdd);
+    categories.forEach((categoryName) => {
+      if(!categoryName.length || newCategoryNames.has(categoryName)) {
+        return;
 
-    namesToAddSet.forEach((name) =>
-      profile.categories.push(Category.create({ name: name })),
-    );
+      }
 
-    await this.profileDao.updateOneSetById(profile, { categories: profile.categories });
+      if(!profile.tags.find((category) => category.name === categoryName)) {
+        newCategoryNames.add(categoryName);
+        categoriesToPush.push(Tag.create({ name: categoryName }));
+      }
+    });
+
+    await this.profileDao.updateOneSetById(profile, { tags: profile.tags });
 
     return profile;
   }

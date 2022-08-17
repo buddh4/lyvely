@@ -31,7 +31,7 @@ export class JournalDto extends DocumentDto<JournalDto> implements IJournal {
     id: IJournal['id'];
     title: string;
     archived: boolean;
-    categories: string[];
+    tagNames: string[];
    // rating: IRating;
     dataPointConfig: IDataPointConfig;
     userStrategy: UserAssignmentStrategy;
@@ -47,8 +47,8 @@ export class JournalDto extends DocumentDto<JournalDto> implements IJournal {
             this.archived = false;
         }
 
-        if (!this.categories) {
-            this.categories = [];
+        if (!this.tagNames) {
+            this.tagNames = [];
         }
     }
 
