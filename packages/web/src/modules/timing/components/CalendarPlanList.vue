@@ -57,7 +57,7 @@ function decrementTiming() {
 </script>
 
 <template>
-  <li ref="header" data-timing-header :data-count="props.count" :class="headerCssClass">
+  <div ref="header" data-timing-header :data-count="props.count" :class="headerCssClass">
     <Icon v-if="showTodayIcon" name="today" @click="switchToToday" />
     <a v-if="leftCaret" class="switch-timing text-body no-underline" @click="decrementTiming">{{ leftCaret }}</a>
     <span class="timing-title text-body" @click="collapsed = !isEmpty && !collapsed">
@@ -65,7 +65,7 @@ function decrementTiming() {
       <small v-if="collapsed">{{ titleSuffix }}</small>
     </span>
     <a v-if="rightCaret" class="switch-timing text-body no-underline" @click="incrementTiming">{{ rightCaret }}</a>
-  </li>
+  </div>
 
   <li v-if="!collapsed" data-timing-item-container class="p-0 border-0">
     <slot></slot>

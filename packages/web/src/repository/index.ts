@@ -86,7 +86,6 @@ repository.interceptors.response.use(undefined, error => {
     console.error(error);
     if (!error.response) {
       console.log(error);
-      debugger;
       useGlobalDialogStore().showError({
         icon: Icons.error_network.name,
         title: 'error.network.title',

@@ -15,7 +15,6 @@ import { useTimingStore } from '@/modules/timing/store';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import { MoveActivityEvent, useActivityStore } from "@/modules/activity/store/activityStore";
 import { computed, ComputedRef } from 'vue';
-import activityRepository from "@/modules/activity/repositories/activity.repository";
 
 export const useHabitPlanStore = defineStore('habitPlan', () => {
   const activityStore = useActivityStore();

@@ -32,10 +32,9 @@ interface DragEvent {
 }
 
 function dragEnd(evt: DragEvent) {
-  debugger;
   const store = (props.type === ActivityType.Habit) ? habitPlanStore : taskPlanStore;
   store.move({
-    cid: evt.item.dataset.entryId as string,
+    cid: evt.item.dataset.cid as string,
     fromInterval: parseInt(evt.from.dataset.calendarInterval as string),
     toInterval: parseInt(evt.to.dataset.calendarInterval as string),
     newIndex: evt.newIndex,
@@ -52,7 +51,7 @@ function onDateChanged() {
   <CalendarPlanList :interval="interval" :count="activities.length" @changed="onDateChanged">
     <draggable
         :list="activities"
-        tag="ul"
+        tag="div"
         class="timing-list-items"
         :data-calendar-interval="interval"
         group="habits"
@@ -61,9 +60,11 @@ function onDateChanged() {
         @end="dragEnd">
 
       <template #item="{element}">
-        <ActivityPlanListEntry :model="element"/>
+        <div :data-cid="element.id">
+          <ActivityPlanListEntry :model="element" />
+        </div>
       </template>
-
+q
     </draggable>
   </CalendarPlanList>
 </template>

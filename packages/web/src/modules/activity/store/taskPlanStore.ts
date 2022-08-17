@@ -16,21 +16,16 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
   const timingStore = useTimingStore();
   const profileStore = useProfileStore();
 
-  const tasksByInterval: { [key in CalendarIntervalEnum]?: ComputedRef<ITask[]>} = {};
-  getCalendarPlanOptions().forEach((option: { value: CalendarIntervalEnum }) => {
-    tasksByInterval[option.value] = computed(() => activityStore.cache.getTasksByCalendarInterval(option.value, timingStore.getTimingId(option.value),  activityStore.filter))
-  });
-
   async function move(moveEvent: MoveActivityEvent) {
     await activityStore.move(
       moveEvent,
-      tasksByInterval[moveEvent.fromInterval]?.value,
-      tasksByInterval[moveEvent.toInterval]?.value
+      getTasksByCalendarInterval(moveEvent.fromInterval),
+        getTasksByCalendarInterval(moveEvent.toInterval)
     );
   }
 
   function getTasksByCalendarInterval(interval: CalendarIntervalEnum) {
-    return tasksByInterval[interval];
+    return activityStore.cache.getTasksByCalendarInterval(interval, timingStore.getTimingId(interval), activityStore.filter);
   }
 
   function addTask(task: ITask) {

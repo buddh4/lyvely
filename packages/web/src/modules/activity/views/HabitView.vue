@@ -15,10 +15,6 @@ function createEntry() {
 }
 
 const intervals = computed(() => getCalendarPlanArray());
-
-onBeforeMount(async () => {
-  return useActivityStore().loadActivities().catch(DialogExceptionHandler('Could not load activities.'));
-});
 </script>
 
 <template>

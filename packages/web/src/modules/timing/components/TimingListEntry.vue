@@ -30,7 +30,7 @@ const { model } = toRefs(props);
 </script>
 
 <template>
-  <li :data-entry-id="model.id" :class="classNames">
+  <div :data-entry-id="model.id" :class="classNames">
     <Icon v-if="dragActive" name="drag" class="mr-2 text-secondary fill-current my-auto w-5 cursor-pointer"/>
 
     <div class="mr-auto">
@@ -51,7 +51,7 @@ const { model } = toRefs(props);
         <slot name="rating"></slot>
       </div>
     </div>
-  </li>
+  </div>
 </template>
 
 <style scoped>
