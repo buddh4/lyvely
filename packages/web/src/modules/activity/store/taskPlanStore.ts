@@ -22,8 +22,12 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
   });
 
   async function move(moveEvent: MoveActivityEvent) {
-
-  };
+    await activityStore.move(
+      moveEvent,
+      tasksByInterval[moveEvent.fromInterval]?.value,
+      tasksByInterval[moveEvent.toInterval]?.value
+    );
+  }
 
   function getTasksByCalendarInterval(interval: CalendarIntervalEnum) {
     return tasksByInterval[interval];

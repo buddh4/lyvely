@@ -76,18 +76,28 @@ export const useActivityStore = defineStore('activity', () => {
     activity.archived = false;
   }
 
-  async function move(moveEvent: MoveActivityEvent) {
+  async function move(moveEvent: MoveActivityEvent, from?: IActivity[], to?: IActivity[]) {
+    if(!from || !to) {
+      console.assert(!!from && !!to, 'Unknown interval set on move event');
+      return;
+    }
+
     try {
-      /*await activityRepository.sort(moveEvent);
-      const activity = this.cache.getModel(moveEvent.id);
-      const activities = (isTask(activity)
-          ? this.tasks(activity.dataPointConfig.interval)
-          : this.habits(activity.dataPointConfig.interval)
-      ).filter((search: IActivity) => search.id !== activity.id);
-      activities.splice(moveEvent.newIndex, 0, activity);
-      activities.forEach((current: IActivity, index: number) => {
-        current.sortOrder = index;
-      });*/
+      const activity = cache.getModel(moveEvent.cid);
+      const attachTo = (moveEvent.newIndex > 0) ? to[moveEvent.newIndex - 1] : undefined;
+
+      if(moveEvent.fromInterval !== moveEvent.toInterval) {
+        activity.dataPointConfig.interval = moveEvent.toInterval;
+      }
+
+      const { data } = await activityRepository.sort(activity.id, moveEvent.toInterval, attachTo?.id);
+
+      data.forEach(update => {
+        const entry = cache.getModel(update.id);
+        if(entry) {
+          entry.sortOrder = update.sortOrder;
+        }
+      });
     } catch(e) {
       // Todo: handle error...
     }

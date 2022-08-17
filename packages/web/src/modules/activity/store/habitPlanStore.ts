@@ -28,34 +28,12 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   });
 
   async function move(moveEvent: MoveActivityEvent) {
-    const activity = activityStore.cache.getModel(moveEvent.cid);
-    let attachTo = undefined as IActivity|undefined;
-    const toHabitList = habitsByInterval[moveEvent.toInterval];
-    const fromHabitList = habitsByInterval[moveEvent.fromInterval];
-
-    if(!fromHabitList || !toHabitList) {
-      console.assert(!!fromHabitList && !!toHabitList, 'Unknown interval set on move event');
-      return;
-    }
-
-    if(moveEvent.newIndex > 0) {
-      if(!toHabitList) return;
-      attachTo = toHabitList.value[moveEvent.newIndex - 1];
-    }
-
-    if(moveEvent.fromInterval !== moveEvent.toInterval) {
-      activity.dataPointConfig.interval = moveEvent.toInterval;
-    }
-
-    const { data } = await activityRepository.sort(activity.id, moveEvent.toInterval, attachTo?.id);
-
-    data.forEach(update => {
-      const entry = activityStore.cache.getModel(update.id);
-      if(entry) {
-        entry.sortOrder = update.sortOrder;
-      }
-    });
-  };
+    await activityStore.move(
+      moveEvent,
+      habitsByInterval[moveEvent.fromInterval]?.value,
+      habitsByInterval[moveEvent.toInterval]?.value
+    );
+  }
 
   function getHabitsByCalendarInterval(interval: CalendarIntervalEnum) {
     return habitsByInterval[interval];

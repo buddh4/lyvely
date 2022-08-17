@@ -61,7 +61,7 @@ const { model } = toRefs(props);
   <TimingListEntry v-if="initialized" :model="model" @archive="archiveEntry" @edit="editEntry">
 
     <template v-if="isTask" #pre-title>
-      <div class="mr-1 mt-1">
+      <div class="mr-1 mt-1 mr-2">
         <ItemCheckboxList v-model:selection="selection" :max="1" :is-task="true" :disabled="isDisabled"/>
       </div>
     </template>
