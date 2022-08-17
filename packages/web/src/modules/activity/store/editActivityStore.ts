@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ActivityType, getCreateModelByActivityType, EditHabitDto,
-  EditTaskDto, getEditModelByActivity, IActivity, ModelValidator} from '@lyvely/common';
+  EditTaskDto, getEditModelByActivity, IActivity, ModelValidator,
+  CalendarIntervalEnum   } from '@lyvely/common';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
@@ -24,9 +25,11 @@ export const useActivityEditStore = defineStore('activityEdit', () => {
     _setModel(getEditModelByActivity(activity), activity.id);
   }
 
-  function setCreateActivity(type: ActivityType) {
+  function setCreateActivity(type: ActivityType, interval = CalendarIntervalEnum.Daily) {
     isCreate.value = true;
-    _setModel(getCreateModelByActivityType(type));
+    const model = getCreateModelByActivityType(type);
+    model.interval = interval;
+    _setModel(model);
   }
 
   function _setModel(newModel?: EditHabitDto|EditTaskDto, cid = undefined as undefined|string) {

@@ -38,16 +38,12 @@
     @apply rounded-b;
 }
 
-.timing-unscheduled + li {
+.timing-unscheduled + div {
     @apply rounded-b border-b
 }
 
-.timing-unscheduled + li .timing-list-items {
+.timing-unscheduled + div .timing-list-items {
     @apply rounded-b
-}
-
-.timing-list ul {
-    padding:0;
 }
 
 .timing-list-entry-root .list-group-item:first-child {

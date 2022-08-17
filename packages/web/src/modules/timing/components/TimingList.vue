@@ -1,9 +1,9 @@
 <script lang="ts" setup></script>
 
 <template>
-  <ul class="timing-list">
+  <div class="timing-list">
     <slot></slot>
-  </ul>
+  </div>
 </template>
 
 <style lang="postcss">

@@ -51,11 +51,11 @@ const { label } = toRefs(props);
 </script>
 
 <template>
-  <button v-if="!props.route" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="props.disabled" @click="$emit('click')">
+  <button v-if="!route" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="$emit('click')">
     <slot>{{ $t(label) }}</slot>
   </button>
-  <router-link v-if="props.route" v-slot="{ navigate, isActive }" :to="props.route" custom>
-    <button :class="getClassNames($attrs.class, isActive)" v-bind="$attrs" :type="buttonType" :disabled="props.disabled" @click="navigate">
+  <router-link v-if="route" v-slot="{ navigate, isActive }" :to="route" custom>
+    <button :class="getClassNames($attrs.class, isActive)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="navigate">
       <slot>{{ $t(label) }}</slot>
     </button>
   </router-link>

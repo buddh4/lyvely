@@ -6,6 +6,7 @@ import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { useActivityStore } from "@/modules/activity/store/activityStore";
 import draggable from "vuedraggable";
+import { useActivityEditStore } from "@/modules/activity/store/editActivityStore";
 
 interface Props {
   interval: number,
@@ -42,13 +43,18 @@ function dragEnd(evt: DragEvent) {
   });
 }
 
+function addEntry() {
+  console.log('TEST');
+  useActivityEditStore().setCreateActivity(props.type, props.interval);
+}
+
 function onDateChanged() {
   activityStore.loadActivities();
 }
 </script>
 
 <template>
-  <CalendarPlanList :interval="interval" :count="activities.length" @changed="onDateChanged">
+  <CalendarPlanList :interval="interval" :count="activities.length" @changed="onDateChanged" @create="addEntry">
     <draggable
         :list="activities"
         tag="div"

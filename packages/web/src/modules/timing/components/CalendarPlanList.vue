@@ -4,10 +4,12 @@ import {
   CalendarIntervalEnum,
   isToday
 } from "@lyvely/common";
+import Button from "@/modules/ui/components/button/Button.vue";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
 import { useProfileStore } from "@/modules/user/store/profile.store";
 import { useTimingStore } from "../store";
 import { computed, ref } from 'vue';
+import { onClickOutside } from '@vueuse/core'
 
 interface Props {
   interval: CalendarIntervalEnum,
@@ -17,7 +19,7 @@ interface Props {
 const timingStore = useTimingStore();
 const profileStore = useProfileStore();
 
-const emit = defineEmits(['changed']);
+const emit = defineEmits(['changed', 'create']);
 const props = defineProps<Props>();
 
 const collapsed = ref(false);
@@ -54,10 +56,15 @@ function decrementTiming() {
   useTimingStore().decrementTiming(props.interval);
   emit("changed", timingStore.date);
 }
+
+const showCreateButton = ref(false);
+const header = ref(null);
+onClickOutside(header, (event) => showCreateButton.value = false);
+
 </script>
 
 <template>
-  <div ref="header" data-timing-header :data-count="props.count" :class="headerCssClass">
+  <div ref="header" tabindex="0" data-timing-header :data-count="count" :class="headerCssClass" @focusin="showCreateButton = true">
     <Icon v-if="showTodayIcon" name="today" @click="switchToToday" />
     <a v-if="leftCaret" class="switch-timing text-body no-underline" @click="decrementTiming">{{ leftCaret }}</a>
     <span class="timing-title text-body" @click="collapsed = !isEmpty && !collapsed">
@@ -65,11 +72,13 @@ function decrementTiming() {
       <small v-if="collapsed">{{ titleSuffix }}</small>
     </span>
     <a v-if="rightCaret" class="switch-timing text-body no-underline" @click="incrementTiming">{{ rightCaret }}</a>
+
+    <Button v-if="showCreateButton" class="secondary outlined absolute right-2 mr-0.5 mt-1 inline-flex items-center text-xs py-0 px-1 text-xs" @click="showCreateButton = false;$emit('create')">+</Button>
   </div>
 
-  <li v-if="!collapsed" data-timing-item-container class="p-0 border-0">
+  <div v-if="!collapsed" data-timing-item-container class="p-0 border-0">
     <slot></slot>
-  </li>
+  </div>
 </template>
 
 <style scoped>
