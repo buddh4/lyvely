@@ -27,6 +27,13 @@ const buttonClassName = ['inline-flex justify-center  leading-5 z-10 block round
 
 const id = uniqueId('dropdown-');
 const { icon, label } = toRefs(props);
+
+function onClickContent(evt: { target: HTMLElement }) {
+  if(!evt.target.classList.contains('prev-close')) {
+    open.value = false;
+  }
+  console.log(evt);
+}
 </script>
 
 <template>
@@ -39,7 +46,7 @@ const { icon, label } = toRefs(props);
         </button>
       </span>
 
-      <div v-if="open" :aria-labelledby="id" class="absolute right-0 py-2 w-48 bg-white rounded-md shadow-lg border border-gray-100 z-20" @click="open = false">
+      <div v-if="open" :aria-labelledby="id" class="absolute right-0 py-2 w-48 bg-white rounded-md shadow-lg border border-gray-100 z-20" @click="onClickContent">
         <slot></slot>
       </div>
     </div>
