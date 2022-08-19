@@ -16,11 +16,11 @@ export class StatisticsService {
     year: number,
   ): Promise<ScoreStatistics> {
     const data = await this.ActivityLogModel.aggregate([
-      { $match: { user: user._id, timing: { $exists: true }, 'timing.year': 2021 } },
+      { $match: { user: user._id, calendar: { $exists: true }, 'calendar.year': 2021 } },
     ])
-      .unwind('$timing')
+      .unwind('$calendar')
       .group({
-        _id: '$timing.monthOfYear',
+        _id: '$calendar.monthOfYear',
         score: { $sum: '$value' },
       })
       .exec();
@@ -38,7 +38,7 @@ export class StatisticsService {
     categories: string[],
   ): Promise<ScoreStatistics> {
     const data = await this.ActivityLogModel.aggregate([
-      { $match: { user: user._id, timing: { $exists: true }, 'timing.year': 2021 } },
+      { $match: { user: user._id, calendar: { $exists: true }, 'calendar.year': 2021 } },
     ])
       .lookup({
         from: 'activities',
@@ -47,9 +47,9 @@ export class StatisticsService {
         as: 'activity_info',
       })
       .match({ 'activity_info.categories': { $in: categories } })
-      .unwind('$timing')
+      .unwind('$calendar')
       .group({
-        _id: '$timing.monthOfYear',
+        _id: '$calendar.monthOfYear',
         score: { $sum: '$value' },
       })
       .exec();

@@ -96,11 +96,11 @@ Cypress.Commands.add('activityShouldExists', (title, plan?: Plan) => {
   if (plan) {
     cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
       .contains(title)
-      .closest('[data-timing-item-container]')
-      .prev('[data-timing-header]')
+      .closest('[data-calendar-item-container]')
+      .prev('[data-calendar-header]')
       .should('have.class', `timing-${plan}`);
   } else {
-    cy.get('.timing-list').contains(title).should('exist');
+    cy.get('.calendar-list').contains(title).should('exist');
   }
 });
 
@@ -108,8 +108,8 @@ Cypress.Commands.add('activityShouldNotExists', (title, plan?: Plan) => {
   if (plan) {
     cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
       .contains(title)
-      .closest('[data-timing-item-container]')
-      .prev('[data-timing-header]')
+      .closest('[data-calendar-item-container]')
+      .prev('[data-calendar-header]')
       .should('not.have.class', `timing-${plan}`);
   } else {
     cy.get(ACTIVITY_GROUP_ITEM_SELECTOR).contains(title).should('not.exist');
@@ -123,7 +123,7 @@ Cypress.Commands.add('getActivity', (title: string, plan?: Plan) => {
     selector += `.timing-${plan}`;
   }
 
-  return cy.get(selector).contains(title).closest('.timing-list-item');
+  return cy.get(selector).contains(title).closest('.calendar-list-item');
 });
 
 Cypress.Commands.add('activityClickMenuItem', (title, label) => {

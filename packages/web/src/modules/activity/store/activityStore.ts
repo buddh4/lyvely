@@ -9,7 +9,7 @@ import {
   CalendarIntervalEnum
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/user/store/profile.store';
-import { useTimingStore } from '@/modules/timing/store';
+import { useTimingStore } from '@/modules/calendar/store';
 import activityRepository from '@/modules/activity/repositories/activity.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 import { reactive } from 'vue';

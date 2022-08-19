@@ -16,7 +16,7 @@ export class ContentFilter<Model extends IContent> {
   }
 
   run(model: Model) {
-    if(this.category && !model.tagNames?.includes(this.category)) {
+    if(this.category && !model.tagIds?.includes(this.category)) {
       return false;
     }
 

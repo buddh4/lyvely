@@ -6,7 +6,7 @@ export class JournalFilter {
     archived = false;
 
     run(journal: IJournal) {
-        if(this.category && !journal.tagNames.includes(this.category)) {
+        if(this.category && !journal.tagIds.includes(this.category)) {
             return false;
         }
 

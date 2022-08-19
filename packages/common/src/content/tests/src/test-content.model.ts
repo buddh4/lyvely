@@ -12,4 +12,5 @@ export class TestContent implements IContent {
   archived: boolean;
   tagNames: string[];
   visibility: number;
+  tagIds: string[];
 }

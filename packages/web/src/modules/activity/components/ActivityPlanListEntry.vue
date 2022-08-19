@@ -3,8 +3,8 @@ import ItemCheckboxList from "@/modules/activity/components/ItemCheckboxList.vue
 import { IActivity, ActivityType , TaskDto } from '@lyvely/common';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed, onMounted, ref, toRefs } from 'vue';
-import { useTimingStore } from '@/modules/timing/store';
-import TimingListEntry from "@/modules/timing/components/TimingListEntry.vue";
+import { useTimingStore } from '@/modules/calendar/store';
+import TimingListEntry from "@/modules/calendar/components/TimingListEntry.vue";
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";

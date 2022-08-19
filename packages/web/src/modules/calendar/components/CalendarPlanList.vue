@@ -40,8 +40,8 @@ const headerCssClass = computed(() => {
 
   return [
     "border-divide",
-    "timing-list-item",
-    "timing-list-header-item",
+    "calendar-list-item",
+    "calendar-list-header-item",
     "relative",
     timingClass
   ];

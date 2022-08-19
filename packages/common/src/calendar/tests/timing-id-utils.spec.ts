@@ -2,7 +2,7 @@ import { CalendarIntervalEnum, getTimingIds, toTimingId } from "../models";
 
 describe('time series utils', () => {
   describe('getTimingIds', () => {
-    it('get timing ids', () => {
+    it('get calendar ids', () => {
       const date = new Date('2022-02-20');
       const tIds = getTimingIds(date);
       expect(tIds[CalendarIntervalEnum.Unscheduled]).toEqual('U');

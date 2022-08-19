@@ -26,7 +26,7 @@ export interface Goal {
     activityId: string;
     units: number;
     progress: number;
-    logs: string[]; // log successes by timing will be updated on acitivity update if units is reached for a timing
+    logs: string[]; // log successes by calendar will be updated on acitivity update if units is reached for a calendar
 }
 
 /*export interface Challenge extends TimeableContentLog {

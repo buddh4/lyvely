@@ -2,7 +2,7 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { DocumentDto } from '../../model';
 import { IProfile, ProfileType, ProfileVisibilityLevel } from '../interfaces';
 import { IsArray, IsEnum, IsInt, IsString, Min } from 'class-validator';
-import { CategoryDto, ICategory } from '../../category';
+import { CategoryDto, ITag } from '../../category';
 
 @Exclude()
 export class ProfileDto extends DocumentDto<ProfileDto> implements IProfile {
@@ -31,5 +31,5 @@ export class ProfileDto extends DocumentDto<ProfileDto> implements IProfile {
   @Expose()
   @Type(() => CategoryDto)
   @IsArray()
-  tags: ICategory[];
+  tags: ITag[];
 }

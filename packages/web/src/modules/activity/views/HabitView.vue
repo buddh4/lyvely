@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import EditHabitModal from '@/modules/activity/components/habits/EditHabitModal.vue';
 import ActivityPlanList from '@/modules/activity/components/ActivityPlanList.vue';
-import TimingList from '@/modules/timing/components/TimingList.vue';
+import TimingList from '@/modules/calendar/components/TimingList.vue';
 import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 import { useActivityStore } from '@/modules/activity/store/activityStore';

@@ -1,8 +1,8 @@
 import { DocumentDto } from '../model';
 import { Expose } from 'class-transformer';
-import { ICategory } from './category.interface';
+import { ITag } from './category.interface';
 
-export class CategoryDto extends DocumentDto<CategoryDto> implements ICategory {
+export class CategoryDto extends DocumentDto<CategoryDto> implements ITag {
   @Expose()
   name: string;
 }

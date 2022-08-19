@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../db/base.entity';
-import { ICategory } from '@lyvely/common';
+import { ITag } from '@lyvely/common';
 
 export type CategoryDocument = Tag & mongoose.Document;
 
 @Schema()
-export class Tag extends BaseEntity<Tag> implements ICategory {
+export class Tag extends BaseEntity<Tag> implements ITag {
   @Prop({ required: true })
   name: string;
 

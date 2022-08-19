@@ -5,7 +5,7 @@ import {
   getCalendarPlanOptions,
   CalendarIntervalEnum} from '@lyvely/common';
 import { useProfileStore } from '@/modules/user/store/profile.store';
-import { useTimingStore } from '@/modules/timing/store';
+import { useTimingStore } from '@/modules/calendar/store';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { MoveActivityEvent, useActivityStore } from "@/modules/activity/store/activityStore";
 import { ComputedRef, computed } from "vue";

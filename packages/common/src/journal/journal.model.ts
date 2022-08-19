@@ -40,6 +40,7 @@ export class JournalDto extends DocumentDto<JournalDto> implements IJournal {
     sortOrder: number;
     type = 'Journal';
     visibility: number;
+    tagIds: string[];
 
     constructor(obj?: Partial<JournalDto>) {
         super(obj);

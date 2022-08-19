@@ -1,4 +1,4 @@
-import { ICategory } from '../../category';
+import { ITag } from '../../category';
 
 export enum ProfileType {
   User,
@@ -31,5 +31,5 @@ export interface IProfile {
   visibility: ProfileVisibilityLevel,
   score: number;
   locale: string;
-  tags: ICategory[];
+  tags: ITag[];
 }

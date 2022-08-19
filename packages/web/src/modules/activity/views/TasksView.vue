@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import EditTaskModal from "@/modules/activity/components/tasks/EditTaskModal.vue";
 import ActivityPlanList from '@/modules/activity/components/ActivityPlanList.vue';
-import TimingList from '@/modules/timing/components/TimingList.vue';
+import TimingList from '@/modules/calendar/components/TimingList.vue';
 import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
 import { computed, onBeforeMount } from 'vue';

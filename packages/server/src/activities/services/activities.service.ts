@@ -38,7 +38,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    * @throws ForbiddenServiceException
    */
   async findByFilter(profile: Profile, user: User, filter: DataPointIntervalFilter): Promise<ActivitySearchResult> {
-    // Find all timing ids for the given search date and filter out by filter level
+    // Find all calendar ids for the given search date and filter out by filter level
     const tIds = getTimingIds(filter.search);
     if(filter.level > 0) {
       tIds.splice(0, filter.level);

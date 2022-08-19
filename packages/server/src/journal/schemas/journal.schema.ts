@@ -6,7 +6,7 @@ import { IJournal } from '@lyvely/common';
 import { IJournalLog, EditJournalDto } from '@lyvely/common';
 import { TimeableContentLog, TimeableContent } from '../../calendar/timeable/schemas/timeable-content.schema';
 import { CalendarIntervalEnum } from '@lyvely/common';
-import { Timing, TimingSchema } from '../../calendar/schemas/timing.schema';
+import { Timing, TimingSchema } from '../../calendar/schemas/calendar.schema';
 import { Rating, RatingSchema } from '../../calendar/timeable/schemas/rating.schema';
 import { assureObjectId } from '../../db/db.utils';
 import { CalendarDate } from '@lyvely/common';
@@ -80,7 +80,7 @@ export class JournalLog extends TimeableContentLog implements IJournalLog {
   pid: mongoose.Types.ObjectId;
 
   @Prop({ type: TimingSchema, required: true })
-  timing: Timing;
+  calendar: Timing;
 
   @Prop({ required: true })
   timingId: string;

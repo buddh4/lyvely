@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { CalendarIntervalEnum , IJournal } from "@lyvely/common";
 import { VueDraggableNext } from "vue-draggable-next";
-import CalendarPlanList from "@/modules/timing/components/CalendarPlanList.vue";
+import CalendarPlanList from "@/modules/calendar/components/CalendarPlanList.vue";
 import JournalListEntry from "@/modules/journal/components/JournalListEntry.vue";
 import { useJournalStore } from '@/modules/journal/store';
 import { computed } from 'vue';

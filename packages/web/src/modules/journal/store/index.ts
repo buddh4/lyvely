@@ -13,7 +13,7 @@ import {
   getTimingIdsByRange,
   LoadedTimingIdStore
 } from '@lyvely/common';
-import { useTimingStore } from '@/modules/timing/store';
+import { useTimingStore } from '@/modules/calendar/store';
 import { useProfileStore } from '@/modules/user/store/profile.store';
 import journalRepository from '@/modules/journal/repositories/journal.repository';
 

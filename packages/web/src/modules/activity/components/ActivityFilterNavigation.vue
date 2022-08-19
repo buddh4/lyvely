@@ -3,7 +3,7 @@ import Icon from '@/modules/ui/components/icon/Icon.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
 import { useProfileStore } from '@/modules/user/store/profile.store';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
-import { useTimingStore } from '@/modules/timing/store';
+import { useTimingStore } from '@/modules/calendar/store';
 import { computed } from 'vue';
 
 const activityStore = useActivityStore();
@@ -59,7 +59,8 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
 
 
       <template v-for="category in categories" :key="category">
-        <Button :class="pillButton"
+        <Button
+:class="pillButton"
                 :active="isChecked(category)"
                 @click="setCategoryFilter(category)">
           {{ category }}
@@ -70,7 +71,8 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
     <div class="ml-auto flex flex-nowrap">
 
 
-    <Button data-filter-button :class="[roundButton, 'ml-auto']"
+    <Button
+data-filter-button :class="[roundButton, 'ml-auto']"
             :active="archiveFilterActive"
             @click="toggleArchiveFilter()">
       <Icon name="filter" />

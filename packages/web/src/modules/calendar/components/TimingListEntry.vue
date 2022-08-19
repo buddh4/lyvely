@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import CategoryList from '@/modules/timing/components/CategoryList.vue';
+import CategoryList from '@/modules/calendar/components/TagList.vue';
 import Icon from '@/modules/ui/components/icon/Icon.vue';
-import TimingListEntryMenu from '@/modules/timing/components/TimingListEntryMenu.vue';
-import { useTimingStore } from '@/modules/timing/store';
+import TimingListEntryMenu from '@/modules/calendar/components/TimingListEntryMenu.vue';
+import { useTimingStore } from '@/modules/calendar/store';
 import { TimingModel } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
 
@@ -21,7 +21,7 @@ const dragActive = computed(() => props.draggable && timingStore.dragActive);
 const classNames = computed(() => [
   'flex',
   'justify-between',
-  'timing-list-item',
+  'calendar-list-item',
   {'list-group-item-draggable': dragActive.value},
   'align-items-start'
 ]);
@@ -40,7 +40,7 @@ const { model } = toRefs(props);
           <slot name="title">{{ model.title }}</slot>
         </div>
       </div>
-      <CategoryList :categories="model.categories"/>
+      <CategoryList :categories="model.tagIds"/>
     </div>
 
     <div>

@@ -2,9 +2,10 @@
 import Badge from "@/modules/ui/components/badge/Badge.vue";
 import randomcolor from "randomcolor";
 import { toRefs } from 'vue';
+import {useProfileStore} from "@/modules/user/store/profile.store";
 
 interface Props {
-  categories: string[]
+  tagIds: string[]
 }
 
 const props = defineProps<Props>();
@@ -26,13 +27,13 @@ function select(category: string) {
   emit('selected', category);
 }
 
-const { categories } = toRefs(props);
+const tags = useProfileStore().
 </script>
 
 <template>
   <div v-if="categories.length">
-    <Badge v-for="category in categories"
-           :key="category"
+    <Badge v-for="tag in tagIds"
+           :key="tag"
            :color="color(category)"
            @click="select(category)">
       {{ category }}
