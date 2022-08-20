@@ -10,13 +10,13 @@ interface CreateContentScore extends CreateProfileScore {
 }
 
 interface IContentScore extends IProfileScoreAction {
-  cid: mongoose.Types.ObjectId;
+  cid: TObjectId;
 }
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class ContentScore<T extends IContentScore = IContentScore> extends ProfileScore<T> {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
-  cid: mongoose.Types.ObjectId;
+  cid: TObjectId;
 
   constructor(options: CreateContentScore, data: DeepPartial<T> = {}) {
     data.cid = options.content._id;

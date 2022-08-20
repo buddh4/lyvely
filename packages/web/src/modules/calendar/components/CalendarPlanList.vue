@@ -36,12 +36,12 @@ const rightCaret = computed(() => (props.interval === CalendarIntervalEnum.Unsch
 const leftCaret = computed(() => (props.interval === CalendarIntervalEnum.Unscheduled) ? false : "◂");
 
 const headerCssClass = computed(() => {
-  const timingClass = `timing-${CalendarPlan.getInstance(props.interval).getLabel().toLocaleLowerCase()}`;
+  const timingClass = `calendar-plan-${CalendarPlan.getInstance(props.interval).getLabel().toLocaleLowerCase()}`;
 
   return [
     "border-divide",
-    "calendar-list-item",
-    "calendar-list-header-item",
+    "calendar-plan-item",
+    "calendar-plan-header-item",
     "relative",
     timingClass
   ];
@@ -64,10 +64,10 @@ onClickOutside(header, (event) => showCreateButton.value = false);
 </script>
 
 <template>
-  <div ref="header" tabindex="0" data-timing-header :data-count="count" :class="headerCssClass" @focusin="showCreateButton = true">
+  <div ref="header" tabindex="0" data-calendar-plan-header :data-count="count" :class="headerCssClass" @focusin="showCreateButton = true">
     <Icon v-if="showTodayIcon" name="today" @click="switchToToday" />
     <a v-if="leftCaret" class="switch-timing text-body no-underline" @click="decrementTiming">{{ leftCaret }}</a>
-    <span class="timing-title text-body" @click="collapsed = !isEmpty && !collapsed">
+    <span class="calendar-plan-title text-body" @click="collapsed = !isEmpty && !collapsed">
       {{ title }}
       <small v-if="collapsed">{{ titleSuffix }}</small>
     </span>
@@ -76,7 +76,7 @@ onClickOutside(header, (event) => showCreateButton.value = false);
     <Button v-if="showCreateButton" class="secondary outlined absolute right-2 mr-0.5 mt-1 inline-flex items-center text-xs py-0 px-1 text-xs" @click="showCreateButton = false;$emit('create')">+</Button>
   </div>
 
-  <div v-if="!collapsed" data-timing-item-container class="p-0 border-0">
+  <div v-if="!collapsed" data-calendar-plan-item-container class="p-0 border-0">
     <slot></slot>
   </div>
 </template>
@@ -93,7 +93,7 @@ onClickOutside(header, (event) => showCreateButton.value = false);
   user-select: none;
 }
 
-.timing-list-entry-root ul .list-group-item:first-child {
+.calendar-plan-entry-root ul .list-group-item:first-child {
   border-top: 0;
 }
 

@@ -25,7 +25,7 @@ export abstract class AbstractContentService<T extends Content> {
     }
 
     model.tagIds = [];
-    await this.profileService.mergeCategories(profile, tagNames);
+    await this.profileService.mergeTags(profile, tagNames);
     tagNames.forEach(tagName => model.addTag(profile.getTagByName(tagName)));
   }
 
@@ -40,7 +40,7 @@ export abstract class AbstractContentService<T extends Content> {
       return;
     }
 
-    await this.profileService.mergeCategories(profile, tagNames);
+    await this.profileService.mergeTags(profile, tagNames);
     update.tagIds = [];
     tagNames.forEach(tagName => {
       const tag = profile.getTagByName(tagName);

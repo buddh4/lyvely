@@ -3,17 +3,17 @@ import { TestContent } from './src/test-content.model';
 
 describe('Content Filter', () => {
 
-  describe('category filter', function () {
-    it('filter by category success', async () => {
+  describe('tags filter', function () {
+    it('filter by tags success', async () => {
       const filter = new ContentFilter();
-      filter.update({ category: 'test' });
+      filter.update({ tagId: 'test' });
       const result = filter.run(new TestContent({ tagNames: ['test'] }));
       expect(result).toEqual(true);
     });
 
-    it('filter by category fails', async () => {
+    it('filter by tags fails', async () => {
       const filter = new ContentFilter();
-      filter.update({ category: 'test' });
+      filter.update({ tagId: 'test' });
       const result = filter.run(new TestContent());
       expect(result).toEqual(false);
     });

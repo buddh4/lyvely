@@ -6,9 +6,9 @@ export class JournalFilter {
     archived = false;
 
     run(journal: IJournal) {
-        if(this.category && !journal.tagIds.includes(this.category)) {
+       /* if(this.category && !journal.tagIds.includes(this.category)) {
             return false;
-        }
+        }*/
 
         if(this.archived !== journal.archived) {
             return false
@@ -18,9 +18,9 @@ export class JournalFilter {
     }
 
     update(update: Partial<JournalFilter>) {
-        if(typeof update.category !== 'undefined') {
+        /*if(typeof update.category !== 'undefined') {
             this.category = update.category;
-        }
+        }*/
 
         if(isBoolean(update.archived)) {
             this.archived = update.archived;

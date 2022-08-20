@@ -58,7 +58,7 @@ function onDateChanged() {
     <draggable
         :list="activities"
         tag="div"
-        class="timing-list-items"
+        class="calendar-plan-items"
         :data-calendar-interval="interval"
         group="habits"
         handle=".icon-drag"

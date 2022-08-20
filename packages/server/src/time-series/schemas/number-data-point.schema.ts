@@ -16,7 +16,7 @@ export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
     return new NumberDataPointDto({
       id: this.id,
       cid: assureStringId(this.cid),
-      uid: assureStringId(this.uid),
+      uid: this.uid ? assureStringId(this.uid) : undefined,
       interval: this.interval,
       date: this.date,
       tid: this.tid,

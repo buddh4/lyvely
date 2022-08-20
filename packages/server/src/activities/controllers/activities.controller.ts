@@ -11,11 +11,8 @@ import {
 } from '@nestjs/common';
 import {
   ActivityRangeResponseDto,
-  IActivityRangeResponse,
   DataPointIntervalFilter,
-  TaskDto,
-  HabitDto
-, MoveAction, SortResult } from '@lyvely/common';
+  TaskDto, MoveAction, SortResult } from '@lyvely/common';
 
 import { ActivitiesService } from '../services/activities.service';
 import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '../../content';
@@ -42,7 +39,7 @@ export class ActivitiesController extends AbstractContentController<Activity> {
   async findByFilter(
     @Request() req: ProfileRequest,
     @Query(new ValidationPipe({ transform: false })) filter: DataPointIntervalFilter,
-  ): Promise<IActivityRangeResponse> {
+  ): Promise<ActivityRangeResponseDto> {
     const { profile, user } = req;
 
     // TODO: (Optimization) Currently we only need to load habits and undone tasks on first load
@@ -50,15 +47,16 @@ export class ActivitiesController extends AbstractContentController<Activity> {
 
     const result = new ActivityRangeResponseDto();
     activities.forEach(activity => {
-      let dto;
       if(isTaskContent(activity)) {
-        dto = new TaskDto(activity);
+        const dto = new TaskDto(activity);
         dto.done = activity.getDoneBy(user)?.tid;
+        result.addActivity(dto);
       } else {
-        dto = new HabitDto(activity);
+        result.addActivity(activity);
       }
-      result.addActivity(dto);
+
     });
+
     result.addDataPoints(dataPoints.map((value) => value.createDto()));
     return result;
   }

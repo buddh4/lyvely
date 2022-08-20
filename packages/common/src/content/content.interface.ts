@@ -1,4 +1,4 @@
-export interface IContent<TID = string> {
+export interface IContent<TID = any> {
     id: string;
     type: string;
     title?: string;

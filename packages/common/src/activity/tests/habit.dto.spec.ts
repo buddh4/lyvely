@@ -1,12 +1,4 @@
-import {
-  ActivityFilter,
-  ActivityType,
-  DataPointNumberInputStrategy,
-  EditHabitDto,
-  HabitDto,
-  TaskDto,
-  UserAssignmentStrategy
-} from '../../index';
+import { EditHabitDto } from '../habit';
 
 import { plainToClass } from 'class-transformer';
 
@@ -27,8 +19,6 @@ describe('EditHabitDto', () => {
           plan: 3,
           text: 'asdfasdf'
         });
-
-      console.log(test);
     });
   });
 });

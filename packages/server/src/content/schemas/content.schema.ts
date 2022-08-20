@@ -11,44 +11,44 @@ import { implementsAssertContentMetadata } from '../interfaces';
 import { Profile, BaseProfileModel } from '../../profiles';
 import { Tag } from "../../categories";
 
-export type ContentDocument = Content & mongoose.Document<mongoose.Types.ObjectId>;
+export type ContentDocument = Content & mongoose.Document;
 
 export interface ContentConstructor<T extends Content = any> extends Function {
   new (profile?: Profile, author?: User, obj?: Partial<T>): T;
 }
 
 export interface ContentEntity {
-  _id: mongoose.Types.ObjectId
-  createdBy: mongoose.Types.ObjectId;
+  _id: TObjectId;
+  createdBy: TObjectId;
   createdAs?: CreatedAs;
-  pid: mongoose.Types.ObjectId;
-  oid?: mongoose.Types.ObjectId;
+  pid: TObjectId;
+  oid?: TObjectId;
   logs: ContentLog[];
   metaData: ContentMetadata;
   visibility: number;
   title?: string;
   text?: string;
   archived: boolean;
-  categories: string[];
+  tagIds: TObjectId[];
   type: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> extends BaseProfileModel<T> implements IContent<mongoose.Types.ObjectId> {
+export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> extends BaseProfileModel<T> implements IContent {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  createdBy: mongoose.Types.ObjectId;
+  createdBy: TObjectId;
 
   @Prop({ type: ContentAuthorSchema, required: true })
   createdAs?: CreatedAs;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-  oid: mongoose.Types.ObjectId;
+  oid: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: mongoose.Types.ObjectId;
+  pid: TObjectId;
 
   @Prop({ type: [ContentLogSchema], default: [] })
   logs: ContentLog[];
@@ -69,7 +69,7 @@ export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> 
   archived: boolean;
 
   @Prop({ type: [mongoose.Types.ObjectId], default: [] })
-  tagIds: mongoose.Types.ObjectId[];
+  tagIds: TObjectId[];
 
   type: string;
 

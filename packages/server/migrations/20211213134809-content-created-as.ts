@@ -18,8 +18,6 @@ module.exports = {
         continue;
       }
 
-      console.log(user);
-
       user.getDisplayName = () => user.name;
       user.getImageHash = () => crypto.createHash('md5').update(user.email.toLowerCase()).digest('hex');
 

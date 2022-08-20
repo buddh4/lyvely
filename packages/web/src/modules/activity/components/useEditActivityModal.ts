@@ -6,7 +6,7 @@ import { useActivityEditStore } from '@/modules/activity/store/editActivityStore
 export default function() {
   const profileStore = useProfileStore();
   const activityEditStore = useActivityEditStore();
-  const categoryOptions = computed(() => profileStore.categoryOptions);
+  const tagOptions = computed(() => profileStore.tagOptions);
   const calendarPlanOptions = computed(() => getCalendarPlanOptions());
   const { model, modalTitle } = toRefs(activityEditStore);
 
@@ -34,7 +34,7 @@ export default function() {
     getError,
     onHide,
     onSubmit,
-    categoryOptions,
+    tagOptions,
     calendarPlanOptions,
   };
 }

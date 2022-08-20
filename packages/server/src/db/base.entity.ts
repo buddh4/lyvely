@@ -5,13 +5,13 @@ import { assureStringId } from "./db.utils";
 
 type Constructor<T> = new (...args: any[]) => T;
 
-export type EntityType<C, ID = mongoose.Types.ObjectId> = C & IEntity<ID>;
+export type EntityType<C, ID = TObjectId> = C & IEntity<ID>;
 
-export interface IEntity<ID = mongoose.Types.ObjectId> {
+export interface IEntity<ID = TObjectId> {
   _id: ID;
 }
 
-export abstract class BaseEntity<C extends IEntity<ID> = IEntity<any>, ID = mongoose.Types.ObjectId> implements IEntity<ID> {
+export abstract class BaseEntity<C extends IEntity<ID> = IEntity<any>, ID = TObjectId> implements IEntity<ID> {
 
   constructor(obj?: DeepPartial<C> | false) {
     if(obj !== false) {

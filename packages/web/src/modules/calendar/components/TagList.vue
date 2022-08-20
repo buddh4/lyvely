@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import Badge from "@/modules/ui/components/badge/Badge.vue";
 import randomcolor from "randomcolor";
-import { toRefs } from 'vue';
 import {useProfileStore} from "@/modules/user/store/profile.store";
 
 interface Props {
-  tagIds: string[]
+  tagIds: string[],
+  feature?: string
 }
 
 const props = defineProps<Props>();
@@ -22,21 +22,26 @@ function color(category: string) {
   return colors[category];
 }
 
-function select(category: string) {
-  // TODO: maybe use timingstore or a category store to filter categories
-  emit('selected', category);
+function select(tagId: string) {
+  emit('selected', tagId);
 }
 
-const tags = useProfileStore().
+if(props.tagIds.length) {
+  console.log(props.tagIds);
+  console.log(useProfileStore().getTags(props.feature))
+}
+
+const tags = useProfileStore().getTags(props.feature).filter(tag => props.tagIds.includes(tag.id));
 </script>
 
 <template>
-  <div v-if="categories.length">
-    <Badge v-for="tag in tagIds"
-           :key="tag"
-           :color="color(category)"
-           @click="select(category)">
-      {{ category }}
+  <div v-if="tags.length">
+    <Badge
+v-for="tag in tags"
+           :key="tag.name"
+           :color="color(tag.name)"
+           @click="select(tag.id)">
+      {{ tag.name }}
     </Badge>
   </div>
   <div v-else>

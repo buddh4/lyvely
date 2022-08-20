@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import EditHabitModal from '@/modules/activity/components/habits/EditHabitModal.vue';
-import ActivityPlanList from '@/modules/activity/components/ActivityPlanList.vue';
+import ActivityPlanList from '@/modules/activity/components/ActivityCalendarPlan.vue';
 import TimingList from '@/modules/calendar/components/TimingList.vue';
 import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
@@ -28,7 +28,7 @@ const intervals = computed(() => getCalendarPlanArray());
 </template>
 
 <style scoped>
-.timing-list {
+.calendar-plan-list {
   animation: fade-1 500ms 1;
 }
 

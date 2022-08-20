@@ -1,4 +1,4 @@
-import { ITag } from '../../category';
+import { ITag } from '../../tags';
 
 export enum ProfileType {
   User,

@@ -13,7 +13,7 @@ export type TaskDocument = Task & mongoose.Document;
 export class UserDone {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  uid: mongoose.Types.ObjectId;
+  uid: TObjectId;
 
   @Prop( { type: String, required: true, match: REGEX_TID })
   tid: string;
@@ -101,7 +101,7 @@ export class Task extends Activity implements ITaskWithUsers {
     data.strategy = DataPointNumberInputStrategy.CheckboxNumber;
     data.max = 1;
     data.optimal = 1;
-    data.categories = data.categories || [];
+    data.tagNames = data.tagNames || [];
     return Activity.createActivityType(profile, owner, data, Task);
   }
 }

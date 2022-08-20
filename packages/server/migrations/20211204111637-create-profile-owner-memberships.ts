@@ -8,7 +8,7 @@ module.exports = {
     const profiles = await db.collection<ProfileDocument>('profiles').find({}, { projection: { owner: 1 } });
 
     while(await profiles.hasNext()) {
-      const profile = await profiles.next() as Profile & {owner ?: mongoose.Types.ObjectId};
+      const profile = await profiles.next() as Profile & {owner ?: TObjectId};
 
       if(!profile.owner) {
         continue;

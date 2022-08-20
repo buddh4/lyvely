@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import EditTaskModal from "@/modules/activity/components/tasks/EditTaskModal.vue";
-import ActivityPlanList from '@/modules/activity/components/ActivityPlanList.vue';
+import ActivityPlanList from '@/modules/activity/components/ActivityCalendarPlan.vue';
 import TimingList from '@/modules/calendar/components/TimingList.vue';
 import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
@@ -26,17 +26,3 @@ const intervals = computed(() => getCalendarPlanArray());
 
     <a class="btn-add" @click="createEntry">+</a>
 </template>
-<style scoped>
-.timing-list {
-  animation: fade-1 500ms 1;
-}
-
-@keyframes fade-1 {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-</style>

@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="timing-list">
+  <div class="calendar-plan">
     <slot></slot>
   </div>
 </template>

@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { CategoryDto , ProfileMembershipDto } from '@lyvely/common';
+import { TagDto , ProfileMembershipDto } from '@lyvely/common';
 const resource = "profiles";
 
 export default {
@@ -13,7 +13,7 @@ export default {
       : this.getDefaultProfile();
   },
 
-  async getCategories(profile: string) {
-    return repository.get<{categories: CategoryDto[]}>(`${resource}/${profile}/categories`);
+  async getTags(profile: string) {
+    return repository.get<{categories: TagDto[]}>(`${resource}/${profile}/categories`);
   }
 };

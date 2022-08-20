@@ -23,9 +23,9 @@ export interface CreateProfileRelation {
 }
 
 type UserRelation = {
-  _id: mongoose.Types.ObjectId;
-  uid: mongoose.Types.ObjectId;
-  pid: mongoose.Types.ObjectId;
+  _id: TObjectId;
+  uid: TObjectId;
+  pid: TObjectId;
   type: string;
   role: string;
 }
@@ -38,10 +38,10 @@ type UserRelation = {
 export class UserProfileRelation<C extends UserRelation = UserRelation> extends BaseEntity<C> {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  uid: mongoose.Types.ObjectId;
+  uid: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: mongoose.Types.ObjectId;
+  pid: TObjectId;
 
   type: string;
 

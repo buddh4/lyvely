@@ -108,27 +108,26 @@ export class ProfilesService {
     return { user, membership, profile };
   }
 
-  async mergeCategories(profile: Profile, categories?: string[]): Promise<Profile> {
-    if (!categories || !categories.length) {
+  async mergeTags(profile: Profile, tagsNames?: string[]): Promise<Profile> {
+    if (!tagsNames || !tagsNames.length) {
       return profile;
     }
 
-    const newCategoryNames = new Set<string>();
-    const categoriesToPush = [];
+    const newTagNames = new Set<string>();
+    const tagsToPush = [];
 
-    categories.forEach((categoryName) => {
-      if(!categoryName.length || newCategoryNames.has(categoryName)) {
+    tagsNames.forEach((tagName) => {
+      if(!tagName.length || newTagNames.has(tagName)) {
         return;
-
       }
 
-      if(!profile.tags.find((category) => category.name === categoryName)) {
-        newCategoryNames.add(categoryName);
-        categoriesToPush.push(Tag.create({ name: categoryName }));
+      if(!profile.tags.find((tag) => tag.name === tagName)) {
+        newTagNames.add(tagName);
+        tagsToPush.push(Tag.create({ name: tagName }));
       }
     });
 
-    await this.profileDao.updateOneSetById(profile, { tags: profile.tags });
+    await this.profileDao.addTags(profile, tagsToPush);
 
     return profile;
   }

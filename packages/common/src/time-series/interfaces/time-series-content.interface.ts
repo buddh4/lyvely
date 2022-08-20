@@ -4,20 +4,20 @@ import { CalendarIntervalEnum } from '../../calendar';
 import { DataPointInputType, DataPointValueType } from './data-point.interface';
 import { UserAssignmentStrategy } from "../../user";
 
-export interface ITimeSeriesContent<E extends IDataPointConfig = IDataPointConfig> extends IContent, Sortable {
+export interface ITimeSeriesContent<E extends IDataPointConfig = IDataPointConfig, TID = any> extends IContent<TID>, Sortable {
   dataPointConfig: E;
   dataPointConfigHistory?: IDataPointConfigRevision[]
   userStrategy: UserAssignmentStrategy;
   sortOrder: number;
 }
 
-export type INumberTimeSeriesContent = ITimeSeriesContent<INumberDataPointConfig>;
+export type INumberTimeSeriesContent<TID = TObjectId> = ITimeSeriesContent<INumberDataPointConfig, TID>;
 
-export interface IDataPoint<TID> {
+export interface IDataPoint {
   id: string,
-  pid: TID,
-  cid: TID,
-  uid?: TID,
+  pid: TObjectId,
+  cid: TObjectId,
+  uid?: TObjectId,
   interval: CalendarIntervalEnum,
   tid: string,
   date: Date,

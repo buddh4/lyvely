@@ -7,28 +7,33 @@ import {
   DefaultDataPointConfigSchema,
 } from './config';
 import { EntityType } from '../../db/base.entity';
+import { IDataPointConfig } from "@lyvely/common/src";
 
 type TimeSeriesContentEntity = ContentEntity & EntityType<TimeSeriesContent>;
+export type ITimeSeriesContentEntity<TDataPointConfig extends IDataPointConfig = DefaultDataPointConfig> = ITimeSeriesContent<TDataPointConfig>
 
 /**
  * This class serves as base class for all time series content types and schemas. A subclass usually overwrites the
  * `dataPointConfig` schema type either with a custom or a predefined one as NumberDataPointConfig as well as overwriting
  * `dataPointConfigHistory` schema.
  */
-export abstract class TimeSeriesContent<T extends TimeSeriesContentEntity = TimeSeriesContentEntity> extends Content<T> implements ITimeSeriesContent {
+export abstract class TimeSeriesContent<
+  TContent extends TimeSeriesContentEntity = TimeSeriesContentEntity,
+  TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig>
+    extends Content<TContent>  implements ITimeSeriesContentEntity<TDataPointConfig> {
 
   @Prop({ type: Number, min: 0 })
   sortOrder: number;
 
   @Prop({ type: DefaultDataPointConfigSchema, required: true })
-  dataPointConfig: DefaultDataPointConfig;
+  dataPointConfig: TDataPointConfig;
 
   @Prop({ enum: getNumberEnumValues(UserAssignmentStrategy), default: UserAssignmentStrategy.Shared, required: true })
   userStrategy: UserAssignmentStrategy;
 
-  abstract pushRevision(rev: T);
+  abstract pushRevision(rev: TContent);
 
-  revisionCheck(update: T) {
+  revisionCheck(update: TContent) {
     return !this.dataPointConfig.isEqualTo(update.dataPointConfig) && !this.getRevisionUpdatedAt(new Date());
   }
 

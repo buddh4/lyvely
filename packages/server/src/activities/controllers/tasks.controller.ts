@@ -48,7 +48,7 @@ export class TasksController {
     @Request() req: ProfileContentRequest,
     @Param('cid') id,
     @Body() dto: EditTaskDto,
-  ): Promise<{ success: boolean } | ITask> {
+  ): Promise<{ success: boolean } | TaskDto> {
     const { profile, user, content } = req;
 
     if(!isTaskContent(content)) {

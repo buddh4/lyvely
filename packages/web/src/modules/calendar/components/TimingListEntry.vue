@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import CategoryList from '@/modules/calendar/components/TagList.vue';
+import TagList from '@/modules/calendar/components/TagList.vue';
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import TimingListEntryMenu from '@/modules/calendar/components/TimingListEntryMenu.vue';
 import { useTimingStore } from '@/modules/calendar/store';
@@ -21,7 +21,7 @@ const dragActive = computed(() => props.draggable && timingStore.dragActive);
 const classNames = computed(() => [
   'flex',
   'justify-between',
-  'calendar-list-item',
+  'calendar-plan-item',
   {'list-group-item-draggable': dragActive.value},
   'align-items-start'
 ]);
@@ -40,7 +40,7 @@ const { model } = toRefs(props);
           <slot name="title">{{ model.title }}</slot>
         </div>
       </div>
-      <CategoryList :categories="model.tagIds"/>
+      <TagList :tag-ids="model.tagIds"/>
     </div>
 
     <div>

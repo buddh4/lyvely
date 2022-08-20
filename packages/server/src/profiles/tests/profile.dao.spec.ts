@@ -121,10 +121,10 @@ describe('ProfileDao', () => {
   });
 
   describe('addCategories()', () => {
-    it('add single category', async () => {
+    it('add single tags', async () => {
       const user = await testData.createUser();
       const profile = await profileDao.upsert({ createdBy: user._id });
-      await profileDao.addCategories(profile, [Tag.create({ name: 'Test1' })]);
+      await profileDao.addTags(profile, [Tag.create({ name: 'Test1' })]);
       const update = await profileDao.reload(profile);
       expect(profile.tags.length).toEqual(1);
       expect(update.tags.length).toEqual(1);

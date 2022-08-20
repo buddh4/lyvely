@@ -5,7 +5,7 @@ export enum ActivityType {
     Habit = 'Habit'
 }
 
-export interface IActivity extends ITimeSeriesContent<INumberDataPointConfig> {
+export interface IActivity<TID = any> extends ITimeSeriesContent<INumberDataPointConfig, TID> {
     title: string;
     score: number;
 }

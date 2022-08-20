@@ -1,12 +1,12 @@
 import { IContent } from './content.interface';
 
 export interface ContentFilterOptions {
-  category?: string;
+  tagId?: string;
   archived?: boolean;
 }
 
-export class ContentFilter<Model extends IContent> {
-  category?: string;
+export class ContentFilter<Model extends IContent<string>> {
+  tagId?: string;
   archived = false;
 
   constructor(filter?: ContentFilterOptions) {
@@ -16,7 +16,7 @@ export class ContentFilter<Model extends IContent> {
   }
 
   run(model: Model) {
-    if(this.category && !model.tagIds?.includes(this.category)) {
+    if(this.tagId && !model.tagIds?.includes(this.tagId)) {
       return false;
     }
 
@@ -24,8 +24,8 @@ export class ContentFilter<Model extends IContent> {
   }
 
   update(update: ContentFilterOptions) {
-    if(update?.category) {
-      this.category = update.category;
+    if(update?.tagId) {
+      this.tagId = update.tagId;
     }
 
     if(update?.archived === true) {

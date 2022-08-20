@@ -1,4 +1,3 @@
-import { ITimeSeriesContent } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { ContentEntity } from '../../content';
 import {
@@ -10,7 +9,10 @@ import { TimeSeriesContent } from "./time-series-content.schema";
 
 type NumberTimeSeriesContentEntity = ContentEntity & EntityType<NumberTimeSeriesContent>;
 
-export abstract class NumberTimeSeriesContent<T extends NumberTimeSeriesContentEntity = NumberTimeSeriesContentEntity> extends TimeSeriesContent<T> implements ITimeSeriesContent {
+export abstract class NumberTimeSeriesContent<
+  T extends NumberTimeSeriesContentEntity = NumberTimeSeriesContentEntity
+  > extends TimeSeriesContent<T, NumberDataPointConfig> {
+
   @Prop({ type: NumberDataPointConfigSchema, required: true })
   dataPointConfig: NumberDataPointConfig;
 

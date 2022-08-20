@@ -5,7 +5,7 @@ export interface ActivityFilterOptions extends ContentFilterOptions {
   type?: ActivityType;
 }
 
-export class ActivityFilter extends ContentFilter<IActivity> {
+export class ActivityFilter extends ContentFilter<IActivity<string>> {
   type?: ActivityType;
 
   constructor(filter?: ActivityFilterOptions) {

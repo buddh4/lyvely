@@ -11,7 +11,7 @@ export interface ITaskWithUsers extends IActivity {
   doneBy?: UserDone[];
 }
 
-export interface ITask extends IActivity {
+export interface ITask<TID = any> extends IActivity<TID> {
   done?: string;
 }
 

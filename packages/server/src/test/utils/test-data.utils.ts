@@ -169,5 +169,5 @@ export class TestDataUtils {
 
 // We use this to prevent circular dependency
 function getObjectId(id: string) {
-  return <mongoose.Types.ObjectId> new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
+  return <TObjectId> new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
 }

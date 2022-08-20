@@ -115,7 +115,7 @@ describe('ProfileService', () => {
     it('create from empty', async () => {
       const user = await testData.createUser();
       const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeCategories(profile, ['health', 'social']);
+      await profileService.mergeTags(profile, ['health', 'social']);
       expect(profile.tags.length).toEqual(2);
       expect(profile.tags[0].name).toEqual('health');
       expect(profile.tags[1].name).toEqual('social');
@@ -124,8 +124,8 @@ describe('ProfileService', () => {
     it('add to existing set', async () => {
       const user = await testData.createUser();
       const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeCategories(profile, ['social']);
-      await profileService.mergeCategories(profile, ['health']);
+      await profileService.mergeTags(profile, ['social']);
+      await profileService.mergeTags(profile, ['health']);
       expect(profile.tags.length).toEqual(2);
       expect(profile.tags[0].name).toEqual('social');
       expect(profile.tags[1].name).toEqual('health');
@@ -134,8 +134,8 @@ describe('ProfileService', () => {
     it('add duplicate set', async () => {
       const user = await testData.createUser();
       const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeCategories(profile, ['social']);
-      await profileService.mergeCategories(profile, [
+      await profileService.mergeTags(profile, ['social']);
+      await profileService.mergeTags(profile, [
         'health',
         'social',
         'health',
@@ -148,8 +148,8 @@ describe('ProfileService', () => {
     it('add empty set to existing', async () => {
       const user = await testData.createUser();
       const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeCategories(profile, ['social']);
-      await profileService.mergeCategories(profile, []);
+      await profileService.mergeTags(profile, ['social']);
+      await profileService.mergeTags(profile, []);
       expect(profile.tags.length).toEqual(1);
       expect(profile.tags[0].name).toEqual('social');
     });
@@ -157,14 +157,14 @@ describe('ProfileService', () => {
     it('add empty set to empty', async () => {
       const user = await testData.createUser();
       const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeCategories(profile, []);
+      await profileService.mergeTags(profile, []);
       expect(profile.tags.length).toEqual(0);
     });
 
-    it('do not accept empty category name string', async () => {
+    it('do not accept empty tags name string', async () => {
       const user = await testData.createUser();
       const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeCategories(profile, ['']);
+      await profileService.mergeTags(profile, ['']);
       expect(profile.tags.length).toEqual(0);
     });
   });

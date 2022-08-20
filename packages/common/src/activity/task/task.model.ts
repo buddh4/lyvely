@@ -1,11 +1,11 @@
 import { Exclude, Expose } from 'class-transformer';
-import { ActivityType, IActivity, AbstractActivity, AbstractEditActivityDto } from '../interfaces';
+import { ActivityType, IActivity, AbstractActivityDto, AbstractEditActivityDto } from '../interfaces';
 import { ITask } from './task.interface';
 import { Equals, IsEnum, IsOptional, Matches } from 'class-validator';
 import { REGEX_DATE_FORMAT } from '../../calendar';
 
 @Exclude()
-export class TaskDto extends AbstractActivity<ITask> implements ITask {
+export class TaskDto extends AbstractActivityDto<ITask> implements ITask {
   @Expose()
   done?: string;
 

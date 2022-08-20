@@ -9,7 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfilesDto, ProfileDto , CategoryDto , UserDto , CreateProfileDto } from '@lyvely/common';
+import { ProfilesDto, ProfileDto , TagDto , UserDto , CreateProfileDto } from '@lyvely/common';
 
 
 
@@ -35,12 +35,12 @@ export class MembershipController {
   }
 
   @Get(':profile/categories')
-  async getCategories(@Request() req, @Param('profile') pid: string): Promise<CategoryDto[]> {
+  async getCategories(@Request() req, @Param('profile') pid: string): Promise<TagDto[]> {
     const profile = await this.findProfileByUserAndId(req.user, pid);
     if (!profile) {
       throw new NotFoundException();
     }
 
-    return profile.categories.map((category) => new CategoryDto(category));
+    return profile.categories.map((tags) => new TagDto(tags));
   }*/
 }

@@ -6,6 +6,8 @@ import { expect } from '@jest/globals';
 import { CreatedAsType } from '../../../content';
 import mongoose from 'mongoose';
 import { CheckboxNumberDataPointConfig } from '../../../time-series';
+import { Tag } from "../../../categories";
+import { getObjectId } from "../../../test/utils/test.utils";
 
 describe('Content Model', () => {
   let user: User;
@@ -14,6 +16,7 @@ describe('Content Model', () => {
   beforeEach(async () => {
     user = new User({ _id: new mongoose.Types.ObjectId() });
     profile = new Profile({ _id: new mongoose.Types.ObjectId() });
+    profile.tags = [new Tag({ _id: getObjectId('Test1'), name: 'Test1' })]
   });
 
   describe('Habit', () => {
@@ -26,7 +29,7 @@ describe('Content Model', () => {
         min: 2,
         optimal: 2,
         interval: CalendarIntervalEnum.Monthly,
-        categories: ['Test1']
+        tagNames: ['Test1']
       });
 
       expect(habit.pid).toEqual(profile._id);
@@ -44,8 +47,8 @@ describe('Content Model', () => {
       expect(habit.dataPointConfig.getSettings()).toBeDefined();
       expect(habit.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
       expect(habit.text).toEqual( 'Some Test Habit');
-      expect(habit.categories.length).toEqual( 1);
-      expect(habit.categories[0]).toEqual( 'Test1');
+      expect(habit.tagIds.length).toEqual( 1);
+      expect(habit.tagIds[0]).toEqual( profile.tags[0]._id);
     });
   });
 });

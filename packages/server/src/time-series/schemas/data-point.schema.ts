@@ -16,28 +16,28 @@ import { User } from "../../users";
 import { Profile } from "../../profiles";
 import { assureObjectId } from "../../db/db.utils";
 
-type DataPointEntity = IDataPoint<mongoose.Types.ObjectId> & { _id: mongoose.Types.ObjectId }
+type DataPointEntity = IDataPoint & { _id: TObjectId }
 
 /**
  * This represents a datapoint bucket of given interval.
  */
 export abstract class DataPoint<
   T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>
-  > extends BaseEntity<T & { _id: mongoose.Types.ObjectId }> implements DataPointEntity {
+  > extends BaseEntity<T & { _id: TObjectId }> implements DataPointEntity {
 
   meta: any;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, immutable: true })
-  oid: mongoose.Types.ObjectId;
+  oid: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true })
-  pid: mongoose.Types.ObjectId;
+  pid: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true  })
-  cid: mongoose.Types.ObjectId;
+  cid: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
-  uid?: mongoose.Types.ObjectId;
+  uid?: TObjectId;
 
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;

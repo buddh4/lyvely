@@ -35,7 +35,7 @@ export class StatisticsService {
   async getMonthlyCategoryScoreStatistics(
     user: User,
     year: number,
-    categories: string[],
+    tagsIds: string[],
   ): Promise<ScoreStatistics> {
     const data = await this.ActivityLogModel.aggregate([
       { $match: { user: user._id, calendar: { $exists: true }, 'calendar.year': 2021 } },

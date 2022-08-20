@@ -4,11 +4,11 @@ import type { INumberDataPointConfig } from '../../time-series';
 import { DataPointInputStrategy, DataPointInputType, DataPointValueType } from "../../time-series";
 import { DocumentDto } from '../../model';
 import { ActivityType, IActivity } from './activity.interface';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 import { UserAssignmentStrategy } from "../../user";
 
 @Exclude()
-export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implements IActivity {
+export class AbstractActivityDto<T extends IActivity> extends DocumentDto<T> implements IActivity {
 
     @Expose()
     dataPointConfig: INumberDataPointConfig;
@@ -29,6 +29,7 @@ export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implem
 
     @Expose()
     @IsArray()
+    @Transform(({ value, obj }) => obj.tagIds?.map(id => id.toString()) || [])
     tagIds: string[];
 
     @Expose()
@@ -53,8 +54,6 @@ export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implem
 
     constructor(obj?: Partial<T> & { _id?: any }) {
         super(obj);
-
-        this.tagIds = this.tagIds ? this.tagIds.map(tagId => tagId.toString()) : [];
         this.archived = !!this.archived;
         this.dataPointConfig = this.dataPointConfig || {
           interval: CalendarIntervalEnum.Daily,
@@ -63,6 +62,5 @@ export class AbstractActivity<T extends IActivity> extends DocumentDto<T> implem
           strategy: DataPointInputStrategy.CheckboxNumber,
           history: []
         };
-
     }
 }

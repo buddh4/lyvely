@@ -17,12 +17,12 @@ export class Journal extends TimeableContent implements IJournal {
   @Prop({
     type: mongoose.Schema.Types.ObjectId, required: true,
   })
-  createdBy: mongoose.Types.ObjectId;
+  createdBy: TObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId, required: true,
   })
-  pid: mongoose.Types.ObjectId;
+  pid: TObjectId;
 
   @Prop({ required: true })
   title: string;
@@ -74,10 +74,10 @@ export const JournalSchema = SchemaFactory.createForClass(Journal);
 @Schema({ timestamps: true })
 export class JournalLog extends TimeableContentLog implements IJournalLog {
   @Prop({type: mongoose.Schema.Types.ObjectId, required: true,})
-  uid: mongoose.Types.ObjectId;
+  uid: TObjectId;
 
   @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
-  pid: mongoose.Types.ObjectId;
+  pid: TObjectId;
 
   @Prop({ type: TimingSchema, required: true })
   calendar: Timing;
@@ -86,7 +86,7 @@ export class JournalLog extends TimeableContentLog implements IJournalLog {
   timingId: string;
 
   @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
-  contentId: mongoose.Types.ObjectId;
+  contentId: TObjectId;
 
   @Prop()
   value: number;

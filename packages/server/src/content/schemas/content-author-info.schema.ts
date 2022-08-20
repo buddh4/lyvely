@@ -30,7 +30,7 @@ export class CreatedAs extends BaseEntity<CreatedAs> {
   type: CreatedAsType;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  authorId: mongoose.Types.ObjectId;
+  authorId: TObjectId;
 
   @Prop()
   imageHash?: string;

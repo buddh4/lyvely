@@ -2,12 +2,12 @@ import { Exclude, Type, Expose } from 'class-transformer';
 import { IsArray } from 'class-validator';
 import { HabitDto } from '../habit';
 import { TaskDto } from '../task';
-import { IActivityRangeResponse, ActivityType, IActivity } from '../interfaces';
+import { ActivityType, IActivity } from '../interfaces';
 import { BaseDto } from '../../model';
 import { ITimeSeriesNumberDataPoint, NumberDataPointDto } from "../../time-series";
 
 @Exclude()
-export class ActivityRangeResponseDto extends BaseDto<ActivityRangeResponseDto> implements IActivityRangeResponse {
+export class ActivityRangeResponseDto extends BaseDto<ActivityRangeResponseDto> {
 
   @Expose()
   @IsArray()

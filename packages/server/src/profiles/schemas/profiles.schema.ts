@@ -16,10 +16,10 @@ export const DEFAULT_PROFILE_NAME = 'default';
 export class Profile extends BaseEntity<Profile> implements IProfile {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  createdBy: mongoose.Types.ObjectId;
+  createdBy: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-  oid?: mongoose.Types.ObjectId;
+  oid?: TObjectId;
 
   @Prop({ required: true, default: DEFAULT_PROFILE_NAME })
   name: string;
@@ -83,10 +83,13 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
     return this.tags.find(tag => tag.name === name);
   }
 
+  getTagsByName(tagNames: string[]) {
+    return this.tags.filter(tag => tagNames.includes(tag.name));
+  }
+
   protected afterInit() {
     super.afterInit();
-    this.tags = this.tags
-        .map(category => (category instanceof Tag) ? category : new Tag(category))
+    this.tags = this.tags?.map(category => (category instanceof Tag) ? category : new Tag(category)) || [];
   }
 
   public getPermissionsByRole(role: string) {

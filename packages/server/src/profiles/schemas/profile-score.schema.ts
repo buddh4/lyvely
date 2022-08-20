@@ -7,11 +7,11 @@ import { Profile } from './profiles.schema';
 import { DeepPartial, toDate, UserAssignmentStrategy, Calendar, CalendarDate, CalendarIntervalEnum } from "@lyvely/common";
 
 export interface IProfileScoreAction {
-  _id: mongoose.Types.ObjectId;
-  oid?: mongoose.Types.ObjectId,
-  pid: mongoose.Types.ObjectId,
-  uid?: mongoose.Types.ObjectId,
-  createdBy: mongoose.Types.ObjectId,
+  _id: TObjectId;
+  oid?: TObjectId,
+  pid: TObjectId,
+  uid?: TObjectId,
+  createdBy: TObjectId,
   timing: Timing,
   type: string,
   score: number
@@ -52,16 +52,16 @@ export class ProfileScore<C extends IProfileScoreAction = IProfileScoreAction> e
   }
 
   @Prop({ type: mongoose.Schema.Types.ObjectId })
-  oid?: mongoose.Types.ObjectId;
+  oid?: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: mongoose.Types.ObjectId;
+  pid: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId })
-  uid?: mongoose.Types.ObjectId;
+  uid?: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId,  required: true  })
-  createdBy: mongoose.Types.ObjectId;
+  createdBy: TObjectId;
 
   @Prop({ type: TimingSchema, required: true })
   timing: Timing;

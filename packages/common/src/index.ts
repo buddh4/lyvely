@@ -4,7 +4,7 @@ export * from "./content";
 export * from "./activity";
 export * from "./statistics";
 export * from "./journal";
-export * from "./category";
+export * from "./tags";
 export * from "./profile";
 export * from "./util";
 export * from "./web";

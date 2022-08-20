@@ -8,9 +8,10 @@ import {
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfileDto, ProfileMembershipDto, MembershipDto , CategoryDto, CreateProfileDto } from '@lyvely/common';
+import { ProfileDto, ProfileMembershipDto, MembershipDto , TagDto, CreateProfileDto } from '@lyvely/common';
 
-import { ProfilesService } from '../services/profiles.service';
+import { ProfilesService } from '../services';
+import { ProfileRequest } from "../../core/types";
 
 @Controller('profiles')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -43,14 +44,9 @@ export class ProfilesController {
     return new ProfileDto(profile);
   }
 
-  @Get(':profile/categories')
-  async getCategories(@Request() req, @Param('profile') pid: string): Promise<CategoryDto[]> {
-    return;
-    /*const membership = await this.findProfileMembershipByUserAndId(req.user, pid);
-    if (!membership) {
-      throw new NotFoundException();
-    }
-
-    return membership.profile.categories.map((category) => new CategoryDto(category));*/
+  @Get(':cid/categories')
+  async getCategories(@Request() req: ProfileRequest): Promise<TagDto[]> {
+    const { profile } = req;
+    return profile.tags.map((category) => new TagDto(category));
   }
 }

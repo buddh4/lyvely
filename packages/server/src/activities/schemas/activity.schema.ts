@@ -16,6 +16,7 @@ import {
   DataPointConfigFactory
 } from '../../time-series';
 import { ContentConstructor } from '../../content';
+import { assureObjectId } from "../../db/db.utils";
 
 type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 
@@ -48,7 +49,7 @@ export class Activity extends NumberTimeSeriesContent<Activity> implements IActi
     return new type(profile, user, {
       title: dto.title,
       text: dto.text,
-      categories: dto.categories,
+      tagIds: profile.getTagsByName(dto.tagNames).map(tag => assureObjectId(tag.id)),
       score: dto.score,
       userStrategy: dto.userStrategy ?? UserAssignmentStrategy.Shared,
       dataPointConfig: DataPointConfigFactory.createConfig<ActivityDataPointConfig>(dto.strategy, {

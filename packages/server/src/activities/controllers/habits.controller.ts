@@ -39,7 +39,7 @@ export class HabitsController extends AbstractContentController<Habit> {
   async create(@Request() req: ProfileRequest, @Body() dto: EditHabitDto) {
     const { profile, user } = req;
 
-    const habitModel = await this.contentService.createContent(profile, user, Habit.create(profile, user, dto));
+    const habitModel = await this.contentService.createContent(profile, user, Habit.create(profile, user, dto), dto.tagNames);
 
     if (!habitModel) {
       throw new EntityNotFoundException();
@@ -60,7 +60,7 @@ export class HabitsController extends AbstractContentController<Habit> {
     const habit = Habit.create(profile, user, dto);
     habit.pushRevision(content);
 
-    const updated = await this.contentService.findContentAndUpdate(profile, user, content, habit);
+    const updated = await this.contentService.updateHabit(profile, user, content, habit, dto.tagNames);
     return new HabitDto(updated);
   }
 
