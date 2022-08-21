@@ -7,6 +7,7 @@ import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { useActivityStore } from "@/modules/activity/store/activityStore";
 import draggable from "vuedraggable";
 import { useActivityEditStore } from "@/modules/activity/store/editActivityStore";
+import { computed } from 'vue';
 
 interface Props {
   interval: number,
@@ -19,9 +20,9 @@ const activityStore = useActivityStore();
 const taskPlanStore = useTaskPlanStore();
 const habitPlanStore = useHabitPlanStore();
 
-const activities = (props.type === ActivityType.Habit)
+const activities = computed(() => (props.type === ActivityType.Habit)
     ? habitPlanStore.getHabitsByCalendarInterval(props.interval)
-    : taskPlanStore.getTasksByCalendarInterval(props.interval);
+    : taskPlanStore.getTasksByCalendarInterval(props.interval));
 
 
 interface DragEvent {

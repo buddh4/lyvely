@@ -10,17 +10,14 @@ import { ITimeSeriesNumberDataPoint, NumberDataPointDto } from "../../time-serie
 export class ActivityRangeResponseDto extends BaseDto<ActivityRangeResponseDto> {
 
   @Expose()
-  @IsArray()
   @Type(() => HabitDto)
   habits: HabitDto[] = [];
 
   @Expose()
-  @IsArray()
   @Type(() => TaskDto)
   tasks: TaskDto[] = [];
 
   @Expose()
-  @IsArray()
   @Type(() => NumberDataPointDto)
   dataPoints: NumberDataPointDto[] = [];
 

@@ -11,7 +11,7 @@ const profileStore = useProfileStore();
 const timingStore = useTimingStore();
 const tags = computed(() => profileStore.getTags('activity.filter'));
 const activeTagId = computed(() => activityStore.filter.tagId);
-const archiveFilterActive = computed(() => activityStore.filter.tagId);
+const archiveFilterActive = computed(() => activityStore.filter.archived);
 const dragActive = computed({
   get: () => timingStore.dragActive,
   set: (val: boolean) => timingStore.setDragActive(val)
@@ -68,7 +68,7 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
 
     <div class="ml-auto flex flex-nowrap">
       <Button
-data-filter-button :class="[roundButton, 'ml-auto']"
+              data-filter-button :class="[roundButton, 'ml-auto']"
               :active="archiveFilterActive"
               @click="toggleArchiveFilter()">
         <Icon name="filter" />

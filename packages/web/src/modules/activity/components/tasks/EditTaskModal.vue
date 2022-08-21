@@ -14,7 +14,7 @@ const {
   getError,
   onHide,
   onSubmit,
-  categoryOptions,
+  tagOptions,
   calendarPlanOptions,
 } = useEditActivityModal();
 
@@ -35,13 +35,17 @@ const {
         :error="getError('interval')"/>
 
       <Multiselect
-        v-model="model.categories"
-        class="mb-3"
-        mode="tags"
-        placeholder="Categories..."
-        :searchable="true"
-        :create-tag="true"
-        :options="categoryOptions"/>
+          v-model="model.tagNames"
+          data-habit-categories
+          class="mb-3"
+          mode="tags"
+          placeholder="Add Tags"
+          :classes="{
+          containerActive: 'ring ring-blue-200 border-blue-300 ring-opacity-50',
+          tag: 'bg-success text-white text-sm py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap'}"
+          :searchable="true"
+          :create-tag="true"
+          :options="tagOptions"/>
 
       <NumberInput
         v-model="model.value"

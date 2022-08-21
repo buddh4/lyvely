@@ -1,8 +1,8 @@
 import { Exclude, Expose } from 'class-transformer';
-import { ActivityType, IActivity, AbstractActivityDto, AbstractEditActivityDto } from '../interfaces';
-import { ITask } from './task.interface';
+import { ActivityType, IActivity, AbstractActivityDto, AbstractEditActivityDto } from '../../interfaces';
+import { ITask } from '../interfaces/task.interface';
 import { Equals, IsEnum, IsOptional, Matches } from 'class-validator';
-import { REGEX_DATE_FORMAT } from '../../calendar';
+import { REGEX_DATE_FORMAT } from '../../../calendar';
 
 @Exclude()
 export class TaskDto extends AbstractActivityDto<ITask> implements ITask {

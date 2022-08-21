@@ -45,7 +45,7 @@ const {
         data-habit-categories
         class="mb-3"
         mode="tags"
-        placeholder="Tags..."
+        placeholder="Add Tags"
         :classes="{
           containerActive: 'ring ring-blue-200 border-blue-300 ring-opacity-50',
           tag: 'bg-success text-white text-sm py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap',

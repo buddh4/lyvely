@@ -2,7 +2,7 @@
 import Badge from "@/modules/ui/components/badge/Badge.vue";
 import randomcolor from "randomcolor";
 import {useProfileStore} from "@/modules/user/store/profile.store";
-import { TagDto } from "@lyvely/common/src";
+import { TagDto } from "@lyvely/common";
 import { computed } from 'vue';
 
 interface Props {

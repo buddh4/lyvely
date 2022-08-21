@@ -87,6 +87,14 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
     return this.tags.filter(tag => tagNames.includes(tag.name));
   }
 
+  getTagById(id: TObjectId) {
+    return this.tags.find(tag => tag._id === id);
+  }
+
+  getTagsById(tagIds: TObjectId[]) {
+    return this.tags.filter(tag => tagIds.includes(tag._id));
+  }
+
   protected afterInit() {
     super.afterInit();
     this.tags = this.tags?.map(category => (category instanceof Tag) ? category : new Tag(category)) || [];

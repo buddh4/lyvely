@@ -82,6 +82,24 @@ export const useProfileStore = defineStore('profile', () => {
     }
   }
 
+  async function updateTags(tags: ITag[], profileToEdit?: IProfile|string) {
+    const selectedProfile = (profileToEdit ? getProfile(profileToEdit) : profile.value);
+
+    if(!selectedProfile) {
+      console.warn('Called updateTags for non existing profile');
+      return;
+    }
+
+    tags.forEach(tag => {
+      const index = selectedProfile.tags.findIndex(profileTag  => profileTag.id === tag.id);
+      if(index >= 0) {
+        selectedProfile.tags[index] = tag;
+      } else {
+        selectedProfile.tags.push(tag);
+      }
+    });
+  }
+
   function getTags(feature?: string) {
     //TODO: feature filter and other filters
     return profile?.value?.tags || [];
@@ -95,6 +113,7 @@ export const useProfileStore = defineStore('profile', () => {
     updateScore,
     tagOptions,
     getTags,
+    updateTags,
     updateProfileCategories,
     ...status
   };

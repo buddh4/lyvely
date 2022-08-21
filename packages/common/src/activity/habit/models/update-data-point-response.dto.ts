@@ -3,7 +3,7 @@ import { BaseDto } from '../../../model';
 import { IsNumber } from 'class-validator';
 
 @Exclude()
-export class UpdateHabitResultDto extends BaseDto<UpdateHabitResultDto> {
+export class UpdateDataPointResultDto extends BaseDto<UpdateDataPointResultDto> {
   @Expose()
   @IsNumber()
   score: number;

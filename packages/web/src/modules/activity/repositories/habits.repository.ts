@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { EditHabitDto, IHabit, UpdateActivityLogModel, UpdateHabitResultDto } from '@lyvely/common';
+import { EditHabitDto, IHabit, UpdateDataPointDto, UpdateDataPointResultDto, EditHabitResponseDto } from '@lyvely/common';
 
 const resource = "habits";
 
@@ -9,10 +9,10 @@ export default {
   },
 
   async update(habitId: string, activitiy: EditHabitDto) {
-    return repository.post<IHabit>(`${resource}/${habitId}`, activitiy);
+    return repository.post<EditHabitResponseDto>(`${resource}/${habitId}`, activitiy);
   },
 
-  async updateDataPoint(habitId: string, dto: UpdateActivityLogModel) {
-    return repository.post<UpdateHabitResultDto>(`${resource}/${habitId}/update-log`, dto, { params: { cid: habitId } });
+  async updateDataPoint(habitId: string, dto: UpdateDataPointDto) {
+    return repository.post<UpdateDataPointResultDto>(`${resource}/${habitId}/update-log`, dto, { params: { cid: habitId } });
   }
 };

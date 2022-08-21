@@ -75,11 +75,15 @@ function _applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, level 
   }
 
   Object.keys(data).forEach(key => {
-    if(!model.hasOwnProperty(key)) {
+    if(!Array.isArray(model) && !model.hasOwnProperty(key)) {
       return;
     }
 
-    if(typeof data[key] === 'object' && typeof model[key] === 'object') {
+    if(Array.isArray(data[key])) {
+      model[key] = _applyRawDataTo([], data[key], level + 1, maxDepth);
+    } else if(data[key] instanceof Types.ObjectId) {
+      model[key] = data[key];
+    } else if(typeof data[key] === 'object' && typeof model[key] === 'object') {
       model[key] = _applyRawDataTo(model[key], data[key], level + 1, maxDepth);
     } else {
       model[key] = data[key];

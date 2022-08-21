@@ -93,9 +93,13 @@ export const useActivityEditStore = defineStore('activityEdit', () => {
 
     try {
       if (modelInstance instanceof EditTaskDto) {
-        useTaskPlanStore().addTask((await tasksRepository.update(cid, modelInstance)).data);
+        const { data: { model: task, tags: tags } } = await tasksRepository.update(cid, modelInstance);
+        useProfileStore().updateTags(tags);
+        useTaskPlanStore().addTask(task);
       } else {
-        useHabitPlanStore().addHabit((await habitsRepository.update(cid, modelInstance)).data);
+        const { data: { model: habit, tags: tags } } = await habitsRepository.update(cid, modelInstance);
+        useProfileStore().updateTags(tags);
+        useHabitPlanStore().addHabit(habit);
       }
     } catch(err) {
       DialogExceptionHandler('An unexpected error occurred while creating the activity', this)(err);

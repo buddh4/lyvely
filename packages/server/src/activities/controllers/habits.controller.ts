@@ -8,9 +8,10 @@ import { Habit } from '../schemas';
 import {
   EditHabitDto,
   HabitDto,
-  UpdateActivityLogModel,
-  UpdateHabitResultDto,
-} from '@lyvely/common';
+  UpdateDataPointDto,
+  UpdateDataPointResultDto,
+  EditHabitResponseDto
+, TagDto } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import { AbstractContentController, ProfileContentRequest,  ContentController, ContentType, ContentWritePolicy } from '../../content';
@@ -61,12 +62,16 @@ export class HabitsController extends AbstractContentController<Habit> {
     habit.pushRevision(content);
 
     const updated = await this.contentService.updateHabit(profile, user, content, habit, dto.tagNames);
-    return new HabitDto(updated);
+
+    return new EditHabitResponseDto({
+      model: new HabitDto(updated),
+      tags: profile.tags.filter(tag => tag.isNew).map(tag => new TagDto(tag))
+    });
   }
 
   @Post(':id/update-log')
   @Policies(ContentWritePolicy)
-  async updateDataPoint(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateActivityLogModel) {
+  async updateDataPoint(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateDataPointDto) {
     const { profile, user, content } = req;
 
     if(!isHabitContent(content)) {
@@ -75,7 +80,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
     const dataPoint = await this.habitDataPointService.upsertDataPoint(profile, user, content as Habit, dto.date, dto.value);
 
-    return new UpdateHabitResultDto({
+    return new UpdateDataPointResultDto({
       score: profile.score,
       units: dataPoint.value,
     });

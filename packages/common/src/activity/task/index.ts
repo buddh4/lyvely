@@ -1,3 +1,2 @@
-export * from './task.model'
-export * from './task.interface'
-export * from './create-task.dto'
+export * from './interfaces'
+export * from './models'

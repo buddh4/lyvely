@@ -1,4 +1,4 @@
-import { EditHabitDto, UpdateActivityLogModel, CalendarIntervalEnum } from '../../index';
+import { EditHabitDto, UpdateDataPointDto, CalendarIntervalEnum } from '../../index';
 import { validate } from "class-validator";
 
 describe('Activity Model', () => {
@@ -66,7 +66,7 @@ describe('Activity Model', () => {
 
   describe('UpdateActivityDataPointDto', function () {
     it('validate valid dto', async () => {
-      const dto = new UpdateActivityLogModel({
+      const dto = new UpdateDataPointDto({
         date: '2021-01-01',
         value: 5
       });
@@ -76,7 +76,7 @@ describe('Activity Model', () => {
     });
 
     it('validate invalid date', async () => {
-      const dto = new UpdateActivityLogModel({
+      const dto = new UpdateDataPointDto({
         date: '01-01-2021',
         value: 5
       });

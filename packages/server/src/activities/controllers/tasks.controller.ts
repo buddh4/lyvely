@@ -14,8 +14,7 @@ import {
   DoneTaskResultModel,
   EditTaskDto,
   TaskDto,
-  ITask
-} from '@lyvely/common';
+ EditTaskResponseDto, TagDto } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
 import { ContentController, ContentType, ProfileContentRequest } from '../../content';
 import { ProfileRequest } from "../../core/types";
@@ -44,26 +43,23 @@ export class TasksController {
   }
 
   @Post(':cid')
-  async update(
-    @Request() req: ProfileContentRequest,
-    @Param('cid') id,
-    @Body() dto: EditTaskDto,
-  ): Promise<{ success: boolean } | TaskDto> {
+  async update(@Request() req: ProfileContentRequest, @Body() dto: EditTaskDto) {
     const { profile, user, content } = req;
 
     if(!isTaskContent(content)) {
       throw new EntityNotFoundException();
     }
 
-    await this.tasksService.updateContent(profile, user, content as Task, Task.create(profile, user, dto));
-    return new TaskDto(content);
+    await this.tasksService.updateContent(profile, user, content, Task.create(profile, user, dto), dto.tagNames);
+
+    return new EditTaskResponseDto({
+      model: new TaskDto(content),
+      tags: profile.tags.filter(tag => tag.isNew).map(tag => new TagDto(tag))
+    });
   }
 
   @Post(':cid/done')
-  async setDone(
-    @Request() req: ProfileContentRequest<Task>,
-    @Body() dto: UpdateTaskStateModel,
-  ): Promise<DoneTaskResultModel> {
+  async setDone(@Request() req: ProfileContentRequest<Task>, @Body() dto: UpdateTaskStateModel,) {
     const { profile, user, content } = req;
 
     if(!isTaskContent(content)) {
@@ -71,17 +67,11 @@ export class TasksController {
     }
 
     await this.tasksService.setDone(profile, user, content, dto.date);
-    return new DoneTaskResultModel({
-      score: profile.score,
-      done: content.getDoneBy(user)?.tid
-    });
+    return new DoneTaskResultModel({ score: profile.score, done: content.getDoneBy(user)?.tid });
   }
 
     @Post(':cid/undone')
-    async setUndone(
-      @Request() req: ProfileContentRequest<Task>,
-      @Body() dto: UpdateTaskStateModel,
-    ): Promise<DoneTaskResultModel> {
+    async setUndone(@Request() req: ProfileContentRequest<Task>, @Body() dto: UpdateTaskStateModel) {
       const { profile, user, content } = req;
 
       if(!isTaskContent(content)) {

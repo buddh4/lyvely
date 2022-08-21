@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { AbstractCreateActivityDto, IActivity } from '../interfaces';
-import { EditTaskDto } from './task.model';
+import { AbstractCreateActivityDto, IActivity } from '../../interfaces';
+import { EditTaskDto } from './task.dto';
 
 @Exclude()
 export class CreateTaskDto extends AbstractCreateActivityDto {

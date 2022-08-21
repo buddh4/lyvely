@@ -20,7 +20,7 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
     await activityStore.move(
       moveEvent,
       getTasksByCalendarInterval(moveEvent.fromInterval),
-        getTasksByCalendarInterval(moveEvent.toInterval)
+      getTasksByCalendarInterval(moveEvent.toInterval)
     );
   }
 

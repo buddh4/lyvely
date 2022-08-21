@@ -28,6 +28,12 @@ describe('DbUtils', () => {
       expect(model.value).toEqual('NewTestValue');
     });
 
+    it('apply array values', () => {
+      const model = new TestModel({ arr: ['a', 'b'] });
+      applyRawDataTo(model, { arr: ['c', 'd', 'e'] });
+      expect(model.arr).toEqual( ['c', 'd', 'e']);
+    });
+
     it('sub level field is applied', () => {
       const model = new TestModel({ sub: new SubModel({ fieldA: 'a' }) });
       applyRawDataTo(model, { sub: { fieldA: 'NewA' } });

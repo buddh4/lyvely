@@ -1,5 +1,5 @@
-import { ActivityType, IActivity } from '../interfaces';
-import { IContent } from "../../content";
+import { ActivityType, IActivity } from '../../interfaces';
+import { IContent } from "../../../content";
 
 export interface UserDone {
   uid: any,

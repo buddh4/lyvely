@@ -14,28 +14,22 @@ import { useProfileStore } from '@/modules/user/store/profile.store';
 import { useTimingStore } from '@/modules/calendar/store';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import { MoveActivityEvent, useActivityStore } from "@/modules/activity/store/activityStore";
-import { computed, ComputedRef } from 'vue';
 
 export const useHabitPlanStore = defineStore('habitPlan', () => {
   const activityStore = useActivityStore();
   const timingStore = useTimingStore();
   const profileStore = useProfileStore();
 
-  const habitsByInterval: { [key in CalendarIntervalEnum]?: ComputedRef<IHabit[]>} = {};
-  getCalendarPlanOptions().forEach((option: { value: CalendarIntervalEnum }) => {
-    habitsByInterval[option.value] = computed(() => activityStore.cache.getHabitsByCalendarInterval(option.value, activityStore.filter))
-  });
-
   async function move(moveEvent: MoveActivityEvent) {
     await activityStore.move(
       moveEvent,
-      habitsByInterval[moveEvent.fromInterval]?.value,
-      habitsByInterval[moveEvent.toInterval]?.value
+      getHabitsByCalendarInterval(moveEvent.fromInterval),
+      getHabitsByCalendarInterval(moveEvent.toInterval),
     );
   }
 
   function getHabitsByCalendarInterval(interval: CalendarIntervalEnum) {
-    return habitsByInterval[interval];
+    return activityStore.cache.getHabitsByCalendarInterval(interval, activityStore.filter);
   }
 
   function addHabit(habit: IHabit) {
