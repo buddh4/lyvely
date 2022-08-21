@@ -9,9 +9,9 @@ import { computed } from 'vue';
 const activityStore = useActivityStore();
 const profileStore = useProfileStore();
 const timingStore = useTimingStore();
-const categories = computed(() => profileStore.categoryOptions);
-const activeCategory = computed(() => activityStore.filter.category);
-const archiveFilterActive = computed(() => activityStore.filter.category);
+const tags = computed(() => profileStore.getTags('activity.filter'));
+const activeTagId = computed(() => activityStore.filter.tagId);
+const archiveFilterActive = computed(() => activityStore.filter.tagId);
 const dragActive = computed({
   get: () => timingStore.dragActive,
   set: (val: boolean) => timingStore.setDragActive(val)
@@ -22,11 +22,11 @@ function isChecked(filter: string): boolean {
     return activityStore.filter.archived;
   }
 
-  return activeCategory.value === filter;
+  return activeTagId.value === filter;
 }
 
-function setCategoryFilter(category: string) {
-  activityStore.updateFilter({ category: category });
+function setTagFilter(tagId: string) {
+  activityStore.updateFilter({ tagId });
 }
 
 function toggleArchiveFilter() {
@@ -47,36 +47,32 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
       <Icon name="drag"/>
     </Button>
 
-
-
     <div class="flex overflow-auto mr-1">
       <Button
         :class="pillButton"
-        :active="!activeCategory"
-        @click="setCategoryFilter(null)">
+        :active="!activeTagId"
+        @click="setTagFilter(null)">
         All
       </Button>
 
-
-      <template v-for="category in categories" :key="category">
+      <template v-for="tag in tags" :key="tag.id">
         <Button
-:class="pillButton"
-                :active="isChecked(category)"
-                @click="setCategoryFilter(category)">
-          {{ category }}
+          :class="pillButton"
+          :active="isChecked(tag.id)"
+          :data-tag-id="tag.id"
+           @click="setTagFilter(tag.id)">
+          {{ tag.name }}
         </Button>
       </template>
     </div>
 
     <div class="ml-auto flex flex-nowrap">
-
-
-    <Button
+      <Button
 data-filter-button :class="[roundButton, 'ml-auto']"
-            :active="archiveFilterActive"
-            @click="toggleArchiveFilter()">
-      <Icon name="filter" />
-    </Button>
+              :active="archiveFilterActive"
+              @click="toggleArchiveFilter()">
+        <Icon name="filter" />
+      </Button>
     </div>
   </div>
 </template>

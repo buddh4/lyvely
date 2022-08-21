@@ -4,7 +4,7 @@ import { IActivity, ActivityType , TaskDto } from '@lyvely/common';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useTimingStore } from '@/modules/calendar/store';
-import TimingListEntry from "@/modules/calendar/components/TimingListEntry.vue";
+import TimingListEntry from "@/modules/calendar/components/CalendarPlanEntry.vue";
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
@@ -49,6 +49,10 @@ function editEntry() {
   useActivityEditStore().setEditActivity(props.model);
 }
 
+function selectTag(tagId: string) {
+  useActivityStore().filter.update({ tagId });
+}
+
 const isFuture = computed(() => timingStore.date > new Date());
 const isDisabled = computed(() => props.model.archived || isFuture.value);
 const isTask = computed(() => props.model.type === ActivityType.Task);
@@ -58,7 +62,7 @@ const { model } = toRefs(props);
 </script>
 
 <template>
-  <TimingListEntry v-if="initialized" :model="model" @archive="archiveEntry" @edit="editEntry">
+  <TimingListEntry v-if="initialized" :model="model" @archive="archiveEntry" @edit="editEntry" @select-tag="selectTag">
 
     <template v-if="isTask" #pre-title>
       <div class="mr-1 mt-1 mr-2">

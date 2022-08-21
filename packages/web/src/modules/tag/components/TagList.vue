@@ -2,6 +2,8 @@
 import Badge from "@/modules/ui/components/badge/Badge.vue";
 import randomcolor from "randomcolor";
 import {useProfileStore} from "@/modules/user/store/profile.store";
+import { TagDto } from "@lyvely/common/src";
+import { computed } from 'vue';
 
 interface Props {
   tagIds: string[],
@@ -10,7 +12,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const emit = defineEmits(['selected']);
+const emit = defineEmits(['select']);
 
 const colors: { [key: string]: string } = {};
 
@@ -23,23 +25,20 @@ function color(category: string) {
 }
 
 function select(tagId: string) {
-  emit('selected', tagId);
+  emit('select', tagId);
 }
 
-if(props.tagIds.length) {
-  console.log(props.tagIds);
-  console.log(useProfileStore().getTags(props.feature))
-}
-
-const tags = useProfileStore().getTags(props.feature).filter(tag => props.tagIds.includes(tag.id));
+const tags = computed( () => useProfileStore().getTags(props.feature).filter((tag: TagDto) => props.tagIds.includes(tag.id)));
 </script>
 
 <template>
   <div v-if="tags.length">
     <Badge
-v-for="tag in tags"
+           v-for="tag in tags"
            :key="tag.name"
            :color="color(tag.name)"
+            :data-tag-id="tag.id"
+            class="mr-0.5"
            @click="select(tag.id)">
       {{ tag.name }}
     </Badge>

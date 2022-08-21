@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<Props>(), {
 defineEmits(['click']);
 
 const classNames = computed<CssClassDefinition>(() =>
-  ['badge inline-block px-1.5 py-0.5 text-xs leading-3 rounded', {'cursor-pointer': props.clickable}]);
+  ['badge inline-block px-1.5 py-0.5 text-xs leading-3 rounded select-none', {'cursor-pointer': props.clickable}]);
 
 const styleObject = computed<StyleDefinition>(() => {
   let result: StyleDefinition = {};

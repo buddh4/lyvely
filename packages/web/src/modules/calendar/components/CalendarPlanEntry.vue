@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import TagList from '@/modules/calendar/components/TagList.vue';
+import TagList from '@/modules/tag/components/TagList.vue';
 import Icon from '@/modules/ui/components/icon/Icon.vue';
-import TimingListEntryMenu from '@/modules/calendar/components/TimingListEntryMenu.vue';
+import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanEntryMenu.vue';
 import { useTimingStore } from '@/modules/calendar/store';
 import { TimingModel } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
@@ -13,7 +13,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {draggable: true,});
 
-defineEmits(['details', 'edit', 'archive']);
+const emit = defineEmits(['details', 'edit', 'archive', 'selectTag']);
 
 const timingStore = useTimingStore();
 
@@ -26,6 +26,10 @@ const classNames = computed(() => [
   'align-items-start'
 ]);
 
+function selectTag(tagId: string) {
+  emit('selectTag', tagId);
+}
+
 const { model } = toRefs(props);
 </script>
 
@@ -34,13 +38,13 @@ const { model } = toRefs(props);
     <Icon v-if="dragActive" name="drag" class="mr-2 text-secondary fill-current my-auto w-5 cursor-pointer"/>
 
     <div class="mr-auto">
-      <div class="entry-title-bar flex items-center justify-center">
+      <div class="entry-title-bar flex items-center">
         <slot name="pre-title"></slot>
         <div class="whitespace-nowrap overflow-hidden overflow-ellipsis cursor-pointer" @click="$emit('details')">
           <slot name="title">{{ model.title }}</slot>
         </div>
       </div>
-      <TagList :tag-ids="model.tagIds"/>
+      <TagList :tag-ids="model.tagIds" @select="selectTag"/>
     </div>
 
     <div>

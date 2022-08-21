@@ -2,7 +2,7 @@
 import ActivityFilterNavigation from "@/modules/activity/components/ActivityFilterNavigation.vue";
 import JournalList from "@/modules/journal/components/JournalList.vue";
 import { CalendarIntervalEnum, EditJournalDto, IJournal  } from "@lyvely/common";
-import TimingList from "@/modules/calendar/components/TimingList.vue";
+import TimingList from "@/modules/calendar/components/CalendarPlan.vue";
 import Loader from "@/modules/ui/components/loader/Loader.vue";
 import EditJournalModal from "@/modules/journal/components/EditJournalModal.vue";
 import { useJournalStore } from '@/modules/journal/store';

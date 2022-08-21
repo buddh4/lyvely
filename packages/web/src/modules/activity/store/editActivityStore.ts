@@ -8,6 +8,7 @@ import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { ref, computed, Ref} from 'vue';
+import { useProfileStore } from "@/modules/user/store/profile.store";
 
 export const useActivityEditStore = defineStore('activityEdit', () => {
   const model = ref(undefined) as Ref<EditHabitDto|EditTaskDto|undefined>;
@@ -21,8 +22,11 @@ export const useActivityEditStore = defineStore('activityEdit', () => {
     : (isCreate.value) ? "Add activity" : "Edit activity")
 
   function setEditActivity(activity: IActivity) {
+    const profileStore = useProfileStore();
     isCreate.value = false;
-    _setModel(getEditModelByActivity(activity), activity.id);
+    const model = getEditModelByActivity(activity);
+    model.tagNames = profileStore.getTags().filter(tag => activity.tagIds.includes(tag.id)).map(tag => tag.name);
+    _setModel(model, activity.id);
   }
 
   function setCreateActivity(type: ActivityType, interval = CalendarIntervalEnum.Daily) {

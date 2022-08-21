@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ActivityPlanListEntry from "@/modules/activity/components/ActivityPlanListEntry.vue";
-import CalendarPlanList from "@/modules/calendar/components/CalendarPlanList.vue";
+import CalendarPlanList from "@/modules/calendar/components/CalendarPlanSection.vue";
 import { ActivityType } from '@lyvely/common';
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";

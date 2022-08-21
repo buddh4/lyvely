@@ -8,10 +8,6 @@ export interface ActivityFilterOptions extends ContentFilterOptions {
 export class ActivityFilter extends ContentFilter<IActivity<string>> {
   type?: ActivityType;
 
-  constructor(filter?: ActivityFilterOptions) {
-    super(filter);
-  }
-
   run(model: IActivity) {
     if(this.type && this.type !== model.type) {
       return false;

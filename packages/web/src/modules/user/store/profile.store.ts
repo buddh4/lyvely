@@ -6,14 +6,14 @@ import profileRepository from '@/modules/user/repositories/profile.repository';
 import { localStorageManager } from '@/util/storage';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 
-import { ref, computed, WritableComputedRef } from 'vue';
+import { ref, computed, Ref } from 'vue';
 
 const DEFAULT_PROFILE_KEY = 'default_profile';
 
 export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_KEY);
 
 export const useProfileStore = defineStore('profile', () => {
-  const profile = ref(undefined) as WritableComputedRef<ProfileDto|undefined>;
+  const profile = ref(undefined) as Ref<ProfileDto|undefined>;
   const membership = ref(undefined);
   const profiles = ref(new Array<ProfileDto>());
 
@@ -25,6 +25,13 @@ export const useProfileStore = defineStore('profile', () => {
 
   async function loadProfile(id?: string|null) {
     this.status = Status.LOADING;
+
+    /**
+     * TODO: If latestProfileId is an invalid one we need to redirect to default profile
+     * otherwise
+      */
+
+    //
     id = id || latestProfileId.getValue();
 
     if(profile.value?.id === id) {

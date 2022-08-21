@@ -33,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 function getClassNames(attrClasses: any, isActive?: boolean) {
   return {
+    'select-none': true,
     'button': true,
     'no-underline': true,
     'text-center': true,

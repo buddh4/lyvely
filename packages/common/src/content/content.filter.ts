@@ -24,7 +24,7 @@ export class ContentFilter<Model extends IContent<string>> {
   }
 
   update(update: ContentFilterOptions) {
-    if(update?.tagId) {
+    if(update?.tagId || update?.tagId === null) {
       this.tagId = update.tagId;
     }
 
