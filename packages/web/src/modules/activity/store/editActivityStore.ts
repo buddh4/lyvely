@@ -1,124 +1,57 @@
 import { defineStore } from 'pinia';
 import { ActivityType, getCreateModelByActivityType, EditHabitDto,
-  EditTaskDto, getEditModelByActivity, IActivity, ModelValidator,
-  CalendarIntervalEnum   } from '@lyvely/common';
+  EditTaskDto, getEditModelByActivity, IActivity,
+  CalendarIntervalEnum   , EditHabitResponseDto, EditTaskResponseDto, isTask } from '@lyvely/common';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
-import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
-import { ref, computed, Ref} from 'vue';
+import { computed } from 'vue';
 import { useProfileStore } from "@/modules/user/store/profile.store";
+import useEditModelStore from "@/modules/common/stores/editModelStore";
+
+type EditModel = EditHabitDto|EditTaskDto;
+type EditResponseModel = EditTaskResponseDto|EditHabitResponseDto;
 
 export const useActivityEditStore = defineStore('activityEdit', () => {
-  const model = ref(undefined) as Ref<EditHabitDto|EditTaskDto|undefined>;
-  const modelId = ref(undefined) as Ref<string|undefined>;
-  const validator = ref(undefined) as Ref<ModelValidator|undefined>;
-  const showModal = ref(false);
-  const isCreate = ref(false);
+  const state = useEditModelStore<EditModel, EditResponseModel>({
+    repository: (editModel: EditModel) => {
+      return editModel instanceof EditTaskDto ? tasksRepository : habitsRepository;
+    },
+    onSubmitSuccess: (response?: EditResponseModel) => {
+      if(response) {
+        useProfileStore().updateTags(response.tags);
+        if(isTask(response.model)) {
+          useTaskPlanStore().addTask(response.model);
+        } else {
+          useHabitPlanStore().addHabit(response.model);
+        }
+      }
 
-  const modalTitle = computed(() => (model.value instanceof EditTaskDto)
-    ? (isCreate.value) ? "Add task" : "Edit task"
-    : (isCreate.value) ? "Add activity" : "Edit activity")
+    },
+  })
+
+  const modalTitle = computed(() => {
+    const type = ((state.model.value instanceof EditTaskDto) ? ActivityType.Task : ActivityType.Habit).toLowerCase();
+    return (state.isCreate.value) ? `activities.${type}s.create.title` : `activities.${type}s.edit.title`
+  });
 
   function setEditActivity(activity: IActivity) {
-    const profileStore = useProfileStore();
-    isCreate.value = false;
     const model = getEditModelByActivity(activity);
-    model.tagNames = profileStore.getTags().filter(tag => activity.tagIds.includes(tag.id)).map(tag => tag.name);
-    _setModel(model, activity.id);
+    model.tagNames = useProfileStore().getTags().filter(tag => activity.tagIds.includes(tag.id)).map(tag => tag.name);
+    state.setEditModel(activity.id, model);
   }
 
   function setCreateActivity(type: ActivityType, interval = CalendarIntervalEnum.Daily) {
-    isCreate.value = true;
     const model = getCreateModelByActivityType(type);
     model.interval = interval;
-    _setModel(model);
-  }
-
-  function _setModel(newModel?: EditHabitDto|EditTaskDto, cid = undefined as undefined|string) {
-    if(newModel) {
-      model.value = newModel;
-      modelId.value = cid;
-      validator.value = new ModelValidator(model);
-      showModal.value = true;
-    } else {
-      model.value = undefined;
-      modelId.value = undefined;
-      validator.value = undefined;
-      showModal.value = false;
-    }
-  }
-
-  function reset() {
-    _setModel(undefined);
-  }
-
-  async function submit() {
-    if (!validator.value || !await validator.value.validate()) {
-      return;
-    }
-
-    return isCreate.value ? await _createActivity() : await _editActivity();
-  }
-
-  function getError(field: string) {
-    return validator?.value?.getError(field);
-  }
-
-  async function _createActivity() {
-    const modelInstance = model.value;
-    try {
-      if (modelInstance instanceof EditTaskDto) {
-        useTaskPlanStore().addTask((await tasksRepository.create(modelInstance)).data);
-      } else if(modelInstance instanceof EditHabitDto) {
-        useHabitPlanStore().addHabit((await habitsRepository.create(modelInstance)).data);
-      }
-    } catch(err) {
-      DialogExceptionHandler('An unexpected error occurred while editing the activity', this)(err);
-    } finally {
-      reset()
-    }
-  }
-
-  async function _editActivity() {
-    const cid = modelId.value;
-    const modelInstance = model.value;
-
-    if(!cid || !modelInstance) {
-      console.assert(typeof cid === 'undefined', 'Can not edit activity without given modelId.');
-      console.assert(typeof modelInstance === 'undefined', 'Can not edit activity without model instance.');
-      return;
-    }
-
-    try {
-      if (modelInstance instanceof EditTaskDto) {
-        const { data: { model: task, tags: tags } } = await tasksRepository.update(cid, modelInstance);
-        useProfileStore().updateTags(tags);
-        useTaskPlanStore().addTask(task);
-      } else {
-        const { data: { model: habit, tags: tags } } = await habitsRepository.update(cid, modelInstance);
-        useProfileStore().updateTags(tags);
-        useHabitPlanStore().addHabit(habit);
-      }
-    } catch(err) {
-      DialogExceptionHandler('An unexpected error occurred while creating the activity', this)(err);
-    } finally {
-      reset();
-    }
+    state.setCreateModel(model);
   }
 
   return {
-    model,
-    modelId,
-    validator,
-    showModal,
-    isCreate,
     modalTitle,
     setEditActivity,
     setCreateActivity,
-    submit,
-    getError,
-    reset
+    ...state
   }
 });

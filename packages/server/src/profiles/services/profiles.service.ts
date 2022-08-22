@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../users';
-import { Tag } from '../../categories';
-import { EntityIdentity } from '../../db/db.utils';
+import { Tag } from '../../tags';
+import { assureObjectId, EntityIdentity } from '../../db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { Membership, BaseMembershipRole, Profile } from '../schemas';
@@ -130,6 +130,16 @@ export class ProfilesService {
     await this.profileDao.addTags(profile, tagsToPush);
 
     return profile;
+  }
+
+  async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
+    const tag = profile.getTagById(assureObjectId(identity));
+
+    if(!tag) {
+      return false;
+    }
+
+    return !!await this.profileDao.updateTag(profile, identity, update);
   }
 
   async updateScore(profile: Profile, inc: number): Promise<number> {

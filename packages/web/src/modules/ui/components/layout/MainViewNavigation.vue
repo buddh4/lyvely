@@ -32,6 +32,11 @@ const menuItems: MenuItem[] = [
     label: 'statistics.labels.main_nav'
   },
   {
+    to: { name: 'Tags' },
+    icon: 'tags',
+    label: 'tags.labels.main_nav'
+  },
+  {
     click: () => authStore.logout().then(() => location.reload()),
     icon: 'logout',
     label: 'users.labels.logout'

@@ -13,9 +13,9 @@ export class TasksService extends AbstractContentService<Task> {
     super(contentDao);
   }
 
-  async createContent(profile: Profile, user: User, model: Task): Promise<Task> {
+  async createContent(profile: Profile, user: User, model: Task, tagNames?: string[]): Promise<Task> {
     model.sortOrder = await this.contentDao.getNextSortOrder(profile);
-    return super.createContent(profile, user, model);
+    return super.createContent(profile, user, model, tagNames);
   }
 
   async setDone(profile: Profile, user: User, task: Task, date: CalendarDate): Promise<Task> {

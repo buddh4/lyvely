@@ -73,7 +73,7 @@ describe('HabitService', () => {
       }
     });
 
-    it('create with categories', async () => {
+    it('create with tags', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await createHabit(user, profile, {
         title: 'test',

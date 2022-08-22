@@ -30,16 +30,19 @@ export class TasksController {
   private readonly tasksService: TasksService;
 
   @Post()
-  async create(@Request() req: ProfileRequest, @Body() dto: EditTaskDto): Promise<TaskDto> {
+  async create(@Request() req: ProfileRequest, @Body() dto: EditTaskDto) {
     const { profile, user } = req;
 
-    const activity = await this.tasksService.createContent(profile, user, Task.create(profile, user, dto));
+    const activity = await this.tasksService.createContent(profile, user, Task.create(profile, user, dto), dto.tagNames);
 
     if (!activity) {
       throw new InternalServerErrorException();
     }
 
-    return new TaskDto(activity);
+    return new EditTaskResponseDto({
+      model: new TaskDto(activity),
+      tags: profile.getNewTags().map(tag => new TagDto(tag))
+    });
   }
 
   @Post(':cid')
@@ -54,7 +57,7 @@ export class TasksController {
 
     return new EditTaskResponseDto({
       model: new TaskDto(content),
-      tags: profile.tags.filter(tag => tag.isNew).map(tag => new TagDto(tag))
+      tags: profile.getNewTags().map(tag => new TagDto(tag))
     });
   }
 

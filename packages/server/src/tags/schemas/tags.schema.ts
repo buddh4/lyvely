@@ -1,14 +1,15 @@
-import mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../db/base.entity';
-import { ITag } from '@lyvely/common';
-
-export type CategoryDocument = Tag & mongoose.Document;
+import { ITag, REGEX_HEX_COLOR } from '@lyvely/common';
+import randomColor from "randomcolor";
 
 @Schema()
 export class Tag extends BaseEntity<Tag> implements ITag {
   @Prop({ required: true })
   name: string;
+
+  @Prop({ type: String, required: true, match: REGEX_HEX_COLOR })
+  color: string;
 
   isNew: boolean;
 
@@ -19,7 +20,8 @@ export class Tag extends BaseEntity<Tag> implements ITag {
   protected afterInit() {
     super.afterInit();
     this.isNew = this.isNew ?? false;
+    this.color = this.color || randomColor({ luminosity: 'dark' })
   }
 }
 
-export const CategorySchema = SchemaFactory.createForClass(Tag);
+export const TagSchema = SchemaFactory.createForClass(Tag);

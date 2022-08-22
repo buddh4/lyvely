@@ -4,7 +4,8 @@ import { ProfilesService } from '../services';
 import { ProfileType } from '@lyvely/common';
 import { BaseMembershipRole } from '../schemas';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createContentTestingModule } from '../../test/utils/test.utils';
+import { createContentTestingModule, getObjectId } from '../../test/utils/test.utils';
+import { Tag } from "../../tags";
 
 describe('ProfileService', () => {
   let testingModule: TestingModule;
@@ -111,10 +112,30 @@ describe('ProfileService', () => {
     });
   });
 
-  describe('mergeCategories', () => {
+  describe('updateTag', () => {
+    it('update existing tag', async () => {
+      const { profile } = await testData.createUserAndProfile();
+      await profileService.mergeTags(profile, ['health']);
+      const tag = profile.getTagByName('health');
+      const result = await profileService.updateTag(profile, tag, { name: 'healthy' });
+      expect(result).toEqual(true);
+      expect(tag.name).toEqual('healthy');
+      expect(profile.getTagByName('healthy')).toBeDefined();
+       const reloaded = await profileService.findProfileById(profile);
+       expect(reloaded.getTagByName('healthy').name).toBeDefined()
+    });
+
+    it('update non existing tag', async () => {
+      const { profile } = await testData.createUserAndProfile();
+      const tag = new Tag({ _id: getObjectId('testtag'), name: 'Test' });
+      const result = await profileService.updateTag(profile, tag, { name: 'healthy' });
+      expect(result).toEqual(false);
+    });
+  });
+
+  describe('mergeTags', () => {
     it('create from empty', async () => {
-      const user = await testData.createUser();
-      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
+      const { profile } = await testData.createUserAndProfile();
       await profileService.mergeTags(profile, ['health', 'social']);
       expect(profile.tags.length).toEqual(2);
       expect(profile.tags[0].name).toEqual('health');

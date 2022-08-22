@@ -5,7 +5,7 @@ const resource = "habits";
 
 export default {
   async create(activitiy: EditHabitDto) {
-    return repository.post<IHabit>(`${resource}`, activitiy);
+    return repository.post<EditHabitResponseDto>(`${resource}`, activitiy);
   },
 
   async update(habitId: string, activitiy: EditHabitDto) {

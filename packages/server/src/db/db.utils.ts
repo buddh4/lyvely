@@ -1,6 +1,6 @@
 import { Document, Types, UpdateQuery } from 'mongoose';
 import { InternalServerErrorException } from '@nestjs/common';
-import { BaseEntity, createBaseEntityInstance } from './base.entity';
+import { BaseEntity } from './base.entity';
 import { isValidObjectId } from '@lyvely/common';
 
 export type EntityIdentity<T extends BaseEntity<any>> = T | Types.ObjectId | string | Document & T;

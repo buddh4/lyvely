@@ -11,7 +11,7 @@ export default function() {
   const { model, modalTitle } = toRefs(activityEditStore);
 
   const showModal = computed( {
-    get: () => activityEditStore.showModal,
+    get: () => activityEditStore.isActive,
     set: (value) => !value ? activityEditStore.reset() : undefined
   });
 

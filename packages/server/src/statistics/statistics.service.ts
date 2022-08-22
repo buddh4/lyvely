@@ -46,7 +46,7 @@ export class StatisticsService {
         foreignField: '_id',
         as: 'activity_info',
       })
-      .match({ 'activity_info.categories': { $in: categories } })
+      .match({ 'activity_info.tags': { $in: tags } })
       .unwind('$calendar')
       .group({
         _id: '$calendar.monthOfYear',

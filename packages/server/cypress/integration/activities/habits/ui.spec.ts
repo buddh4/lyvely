@@ -13,6 +13,6 @@ describe('Test Register Users', function () {
       'Test Habit',
     );
 
-    // TODO: categories
+    // TODO: tags
   });
 });

@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { getDefaultLocale, UserDocument } from '../../users';
 import  mongoose from 'mongoose';
 import { BaseEntity } from '../../db/base.entity';
-import { Tag, CategorySchema, } from '../../categories';
+import { Tag, TagSchema, } from '../../tags';
 import { IProfile, ProfileType, ProfileVisibilityLevel , getNumberEnumValues } from '@lyvely/common';
 
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-permissions.schema';
@@ -46,7 +46,7 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
   @Prop( { type: [ProfileRolePermissionSchema], default: [] })
   permissions: ProfileRolePermission[];
 
-  @Prop({ type: [CategorySchema], default: [] })
+  @Prop({ type: [TagSchema], default: [] })
   tags: Tag[];
 
   createdAt: Date;
@@ -88,11 +88,15 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
   }
 
   getTagById(id: TObjectId) {
-    return this.tags.find(tag => tag._id === id);
+    return this.tags.find(tag => tag._id.equals(id));
   }
 
   getTagsById(tagIds: TObjectId[]) {
     return this.tags.filter(tag => tagIds.includes(tag._id));
+  }
+
+  getNewTags() {
+    return this.tags.filter(tag => tag.isNew);
   }
 
   protected afterInit() {

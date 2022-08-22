@@ -34,13 +34,13 @@ export class MembershipController {
     return new ProfileDto(await this.profilesService.createProfile(req.user, dto.name, dto.type));
   }
 
-  @Get(':profile/categories')
+  @Get(':profile/tags')
   async getCategories(@Request() req, @Param('profile') pid: string): Promise<TagDto[]> {
     const profile = await this.findProfileByUserAndId(req.user, pid);
     if (!profile) {
       throw new NotFoundException();
     }
 
-    return profile.categories.map((tags) => new TagDto(tags));
+    return profile.tags.map((tags) => new TagDto(tags));
   }*/
 }

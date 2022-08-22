@@ -46,7 +46,10 @@ export class HabitsController extends AbstractContentController<Habit> {
       throw new EntityNotFoundException();
     }
 
-    return new HabitDto(habitModel);
+    return new EditHabitResponseDto({
+      model: new HabitDto(habitModel),
+      tags: profile.getNewTags().map(tag => new TagDto(tag))
+    });
   }
 
   @Post(':cid')
@@ -65,7 +68,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
     return new EditHabitResponseDto({
       model: new HabitDto(updated),
-      tags: profile.tags.filter(tag => tag.isNew).map(tag => new TagDto(tag))
+      tags: profile.getNewTags().map(tag => new TagDto(tag))
     });
   }
 

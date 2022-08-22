@@ -63,7 +63,7 @@ export class ActivitiesController extends AbstractContentController<Activity> {
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Request() req: ProfileContentRequest<Activity>, @Body() dto: MoveAction): Promise<SortResult[]> {
+  async sort(@Request() req: ProfileContentRequest<Activity>, @Body() dto: MoveAction) {
     const { profile, user, content } = req;
     return await this.contentService.sort(profile, user, content, dto.interval, dto.attachToId);
   }

@@ -9,7 +9,7 @@ import { CreatedAs, ContentAuthorSchema, Author } from './content-author-info.sc
 import { User } from '../../users';
 import { implementsAssertContentMetadata } from '../interfaces';
 import { Profile, BaseProfileModel } from '../../profiles';
-import { Tag } from "../../categories";
+import { Tag } from "../../tags";
 
 export type ContentDocument = Content & mongoose.Document;
 

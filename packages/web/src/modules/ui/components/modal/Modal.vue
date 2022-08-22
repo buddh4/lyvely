@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<ModalProps>(), {
   cancelButtonText: 'Cancel',
   cancelButtonClass: 'secondary',
   submitButton: true,
-  submitButtonText: 'Send',
+  submitButtonText: 'common.submit',
   iconColor: undefined,
   iconClass: undefined,
 });

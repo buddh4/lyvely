@@ -8,7 +8,7 @@ export default [
     name: 'Activities',
     path: "/activities",
     component: ActivityView,
-    redirect: {name: 'Habits'},
+    redirect: { name: 'Habits' },
     beforeEnter:  [ifAuthenticated, loadProfile],
     children: [
       {

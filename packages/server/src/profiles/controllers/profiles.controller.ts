@@ -44,7 +44,7 @@ export class ProfilesController {
     return new ProfileDto(profile);
   }
 
-  @Get(':cid/categories')
+  @Get(':cid/tags')
   async getCategories(@Request() req: ProfileRequest): Promise<TagDto[]> {
     const { profile } = req;
     return profile.tags.map((category) => new TagDto(category));

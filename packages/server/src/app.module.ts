@@ -10,7 +10,7 @@ import { CalendarModule } from './calendar/calendar.module';
 import { StatisticsModule } from './statistics/statistics.module';
 //import { JournalModule } from './journal/journal.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CategoriesModule } from './categories/categories.module';
+import { TagsModule } from './tags/tags.module';
 import { ProfilesModule } from './profiles/profiles.module';
 import { RegisterModule } from './register/register.module';
 import { UserDao } from './users/daos/user.dao';
@@ -66,9 +66,9 @@ const configSchema = Joi.object({
     PoliciesModule,
     ContentModule,
     ActivitiesModule,
+    TagsModule,
     //StatisticsModule,
     //JournalModule,
-    //CategoriesModule,
   ],
   providers: [UserDao],
   controllers: [AppController],

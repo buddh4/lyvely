@@ -37,7 +37,7 @@ export class Journal extends TimeableContent implements IJournal {
   archived: boolean;
 
   @Prop({ type: [String], default: [] })
-  categories: string[];
+  tags: string[];
 
   @Prop({ type: Number })
   sortOrder: number;
@@ -51,7 +51,7 @@ export class Journal extends TimeableContent implements IJournal {
     model.pid = profile._id;
     model.title = dto.title;
     model.text = dto.description;
-    model.categories = dto.categories;
+    model.tags = dto.tags;
     model.plan = dto.plan;
     model.rating = Journal.createRating(dto);
     return model;

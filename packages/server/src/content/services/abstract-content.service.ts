@@ -19,7 +19,7 @@ export abstract class AbstractContentService<T extends Content> {
     return this.contentDao.findById(id)
   }
 
-  protected async mergeCategories(profile, model: T, tagNames?: string[]) {
+  protected async mergeTags(profile, model: T, tagNames?: string[]) {
     if(!tagNames) {
       return;
     }
@@ -30,12 +30,12 @@ export abstract class AbstractContentService<T extends Content> {
   }
 
   async createContent(profile: Profile, user: User, model: T, tagNames?: string[]): Promise<T> {
-    await this.mergeCategories(profile, model, tagNames);
+    await this.mergeTags(profile, model, tagNames);
     model.createdBy = assureObjectId(user);
     return this.contentDao.save(model);
   }
 
-  protected async mergeCategoriesForUpdate(profile: Profile, update: UpdateQuerySet<T>, tagNames?: string[]) {
+  protected async mergeTagsForUpdate(profile: Profile, update: UpdateQuerySet<T>, tagNames?: string[]) {
     if(!tagNames) {
       return;
     }
@@ -51,13 +51,13 @@ export abstract class AbstractContentService<T extends Content> {
   }
 
   async findContentAndUpdate(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>, tagNames?: string[]) {
-    await this.mergeCategoriesForUpdate(profile, update, tagNames);
+    await this.mergeTagsForUpdate(profile, update, tagNames);
         // TODO: set updatedBy on content
     return this.contentDao.findOneAndSetById(id, update);
   }
 
   async updateContent(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>, tagNames?: string[]) {
-    await this.mergeCategoriesForUpdate(profile, update, tagNames);
+    await this.mergeTagsForUpdate(profile, update, tagNames);
     // TODO: set updatedBy on content
     return this.contentDao.updateOneSetById(id, update);
   }
@@ -90,6 +90,7 @@ export abstract class AbstractContentService<T extends Content> {
    *
    * @param profileRelation
    * @param id
+   * @param throwException
    * @private
    * @throws EntityNotFoundException
    */

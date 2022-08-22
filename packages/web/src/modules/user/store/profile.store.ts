@@ -100,7 +100,7 @@ export const useProfileStore = defineStore('profile', () => {
     });
   }
 
-  function getTags(feature?: string) {
+  function getTags(feature?: string): Array<ITag> {
     //TODO: feature filter and other filters
     return profile?.value?.tags || [];
   }

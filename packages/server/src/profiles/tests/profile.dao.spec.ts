@@ -7,7 +7,7 @@ import { ProfileDao } from '../daos';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { UsersModule } from '../../users';
 import { TestModule } from '../../test/test.module';
-import { Tag } from '../../categories';
+import { Tag } from '../../tags';
 
 describe('ProfileDao', () => {
   let testingModule: TestingModule;

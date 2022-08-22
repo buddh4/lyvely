@@ -5,7 +5,7 @@ const resource = "tasks";
 
 export default {
   async create(activitiy: EditTaskDto) {
-    return repository.post<ITask>(`${resource}`, activitiy);
+    return repository.post<EditTaskResponseDto>(`${resource}`, activitiy);
   },
 
   async setDone(task: ITask, date: CalendarDate) {

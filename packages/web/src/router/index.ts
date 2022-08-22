@@ -6,8 +6,8 @@ import journalRoutes from "@/modules/journal/routes";
 import statisticRoutes from "@/modules/statistics/routes";
 import NotFound from "@/modules/ui/components/error/NotFound.vue";
 import uiRoutes from "@/modules/ui/routes";
+import tagRoutes from "@/modules/tag/routes";
 import { useAuthStore } from '@/modules/user/store/auth.store';
-import { useProfileStore } from '@/modules/user/store/profile.store';
 
 const routes: Array<RouteRecordRaw> = [];
 
@@ -22,7 +22,7 @@ register(activityRoutes);
 register(journalRoutes);
 register(statisticRoutes);
 register(uiRoutes);
-
+register(tagRoutes);
 register([{ path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound }]);
 
 const history = createWebHistory();

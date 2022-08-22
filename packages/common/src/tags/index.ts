@@ -1,2 +1,3 @@
 export * from "./tag.interface";
-export * from "./tag.model";
+export * from "./tag.dto";
+export * from "./edit-tag.dto";

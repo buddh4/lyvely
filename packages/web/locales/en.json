@@ -1,8 +1,32 @@
 {
+  "filter": {
+    "all": "All"
+  },
   "message": {
     "hello": "hello world"
   },
+  "common": {
+    "close": "Close",
+    "submit": "Submit",
+    "save": "Save"
+  },
   "activities": {
+    "tasks": {
+      "create" : {
+        "title": "Create task"
+      },
+      "edit" : {
+        "title": "Edit task"
+      }
+    },
+    "habits": {
+      "create" : {
+        "title": "Create activity"
+      },
+      "edit" : {
+        "title": "Edit activity"
+      }
+    },
     "labels": {
       "main_nav": "Activities"
     }
@@ -10,6 +34,21 @@
   "journals": {
     "labels": {
       "main_nav": "Journals"
+    }
+  },
+  "tags": {
+    "labels": {
+      "main_nav": "Tags"
+    },
+    "create": {
+      "title": "Create Tag"
+    },
+    "edit": {
+      "title": "Edit Tag"
+    },
+    "fields": {
+      "name": "Name",
+      "desc": "Description"
     }
   },
   "statistics": {

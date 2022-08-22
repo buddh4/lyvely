@@ -6,7 +6,7 @@ import { expect } from '@jest/globals';
 import { CreatedAsType } from '../../../content';
 import mongoose from 'mongoose';
 import { CheckboxNumberDataPointConfig } from '../../../time-series';
-import { Tag } from "../../../categories";
+import { Tag } from "../../../tags";
 import { getObjectId } from "../../../test/utils/test.utils";
 
 describe('Content Model', () => {

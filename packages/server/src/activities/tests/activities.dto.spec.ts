@@ -74,8 +74,8 @@ describe('Activities DAO', () => {
       expect(model.sortOrder).toEqual(3);
     });
 
-    // TODO: test categories
-    it('empty categories', async () => {
+    // TODO: test tags
+    it('empty tags', async () => {
       const search = await createHabit();
       const dto = instanceToPlain(new HabitDto(search));
       expect(dto.categories).toEqual([]);
