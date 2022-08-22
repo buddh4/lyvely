@@ -24,6 +24,7 @@ export interface ModalProps {
   cancelButtonClass?: string,
   submitButton?: boolean,
   submitButtonText?: string,
+  submitOnEnter?: boolean,
 }
 
 const props = withDefaults(defineProps<ModalProps>(), {
@@ -37,6 +38,7 @@ const props = withDefaults(defineProps<ModalProps>(), {
   submitButtonText: 'common.submit',
   iconColor: undefined,
   iconClass: undefined,
+  submitOnEnter: true
 });
 
 const cancelButtonClass = computed(() => [props.cancelButtonClass, 'm-1']);
@@ -48,6 +50,12 @@ function close() {
 function cancel() {
   close();
   emit('cancel');
+}
+
+function submitOnEnter() {
+  if(props.submitOnEnter) {
+    emit('submit')
+  }
 }
 </script>
 
@@ -66,7 +74,7 @@ function cancel() {
     fixed
     left-0 top-0 flex justify-center items-center inset-0
      z-50 outline-none focus:outline-none bg-no-repeat bg-center
-     bg-cover overflow-y-auto" tabindex="-1" @keyup.esc="close">
+     bg-cover overflow-y-auto" tabindex="-1" @keyup.esc="close" @keyup.enter="submitOnEnter">
 
       <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
       <div

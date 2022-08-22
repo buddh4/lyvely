@@ -45,7 +45,6 @@ function dragEnd(evt: DragEvent) {
 }
 
 function addEntry() {
-  console.log('TEST');
   useActivityEditStore().setCreateActivity(props.type, props.interval);
 }
 

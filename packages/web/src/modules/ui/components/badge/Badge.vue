@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, toRefs } from 'vue';
 import { CssClassDefinition, StyleDefinition } from '@/util/component.types';
+import { getContrast, includesUtilityClass } from "@/modules/ui/utils";
 
 interface Props {
   text?: string,
@@ -18,8 +19,19 @@ const props = withDefaults(defineProps<Props>(), {
 
 defineEmits(['click']);
 
-const classNames = computed<CssClassDefinition>(() =>
-  ['badge inline-block px-1.5 py-0.5 text-xs leading-3 rounded select-none', {'cursor-pointer': props.clickable}]);
+function getClassNames(attrClasses: any) {
+  const textContrast = getContrast(props.color);
+
+  return  ['badge inline-block text-xs leading-3 rounded select-none', {
+    'cursor-pointer': props.clickable,
+    [textContrast]: true,
+    'badge-dark': textContrast === 'white',
+    'badge-light': textContrast === 'black',
+    'py-0.5' : !includesUtilityClass(attrClasses, 'py'),
+    'px-1.5': !includesUtilityClass(attrClasses, 'px'),
+    'text-xs': !includesUtilityClass(attrClasses, 'text'),
+  }]
+}
 
 const styleObject = computed<StyleDefinition>(() => {
   let result: StyleDefinition = {};
@@ -32,7 +44,7 @@ const { text } = toRefs(props);
 </script>
 
 <template>
-  <span :class="classNames" :style="styleObject" @click="$emit('click')">
+  <span :class="getClassNames($attrs.class)" :style="styleObject" @click="$emit('click')">
     <small>
         <slot>{{ text }}</slot>
     </small>
@@ -40,7 +52,10 @@ const { text } = toRefs(props);
 </template>
 
 <style lang="postcss">
-.badge {
+.badge-dark {
   color: var(--color-inverted);
+}
+.badge-light {
+  color: #000000;
 }
 </style>

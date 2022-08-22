@@ -5,7 +5,7 @@ import tagsRepository from "@/modules/tag/repositories/tags.repository";
 import useEditModelStore from "@/modules/common/stores/editModelStore";
 import { useProfileStore } from "@/modules/user/store/profile.store";
 
-export const useEditTagStore = defineStore('activityEdit', () => {
+export const useEditTagStore = defineStore('tagEdit', () => {
 
   const state = useEditModelStore<EditTagDto, ITag>({
     repository: tagsRepository,

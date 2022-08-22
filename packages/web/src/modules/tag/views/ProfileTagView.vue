@@ -30,7 +30,7 @@ const setEditTag = (tag: ITag) => {
 
         <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-content items-center">
           <div class="align-middle">
-            <Tag :tag="tag" />
+            <Tag :tag="tag" class="px-3 py-2 text-sm" />
           </div>
           <div class="mr-auto"></div>
           <div class="align-middle">
