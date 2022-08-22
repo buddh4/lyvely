@@ -10,10 +10,10 @@ import { useEditTagStore } from "@/modules/tag/stores/editTagStore";
 import { ITag, EditTagDto } from "@lyvely/common";
 import ListPage from "@/modules/ui/components/layout/ListPage.vue";
 import { Size } from '@/modules/ui/types';
-import TextInput from "@/modules/ui/components/form/TextInput.vue";
 
 class TagFilter {
   query: string;
+  archived: boolean;
 
   check(tag: ITag): boolean {
     if(this.query?.length && !tag.name.match(new RegExp(this.query, 'i'))) {
@@ -57,12 +57,12 @@ function focusSearch() {
       <div class="py-1">
         <div class="relative inline-block">
           <input
-                  ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')"
-                 class="border-l-0 pl-2 border-slate-300 text-sm focus:border-blue-300 focus:ring placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1" />
+ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')"
+            class="border-l-0 pl-2 border-slate-300 text-sm focus:border-blue-300 focus:ring placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1" />
           <Icon name="search" class="absolute right-2.5 top-2 text-slate-300 cursor-pointer" @click="focusSearch" />
         </div>
       </div>
-      <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-content items-center">
+      <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-content items-center hover:bg-slate-100">
         <div class="align-middle">
           <Tag :tag="tag" class="px-3 py-2 text-sm" @click="setEditTag(tag)" />
         </div>
