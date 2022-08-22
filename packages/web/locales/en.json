@@ -1,9 +1,13 @@
 {
   "filter": {
-    "all": "All"
+    "all": "All",
+    "empty": "No entries found for given filter."
   },
   "message": {
     "hello": "hello world"
+  },
+  "list": {
+    "empty": "No entries found."
   },
   "common": {
     "close": "Close",
@@ -37,6 +41,10 @@
     }
   },
   "tags": {
+    "view": {
+      "title": "Tags",
+      "search": "Search tags"
+    },
     "labels": {
       "main_nav": "Tags"
     },
