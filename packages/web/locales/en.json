@@ -10,6 +10,7 @@
   },
   "filter": {
     "all": "All",
+    "archive": "Show archived entries",
     "empty": "No entries found for given filter."
   },
   "message": {
@@ -22,6 +23,9 @@
     "close": "Close",
     "cancel": "Cancel",
     "submit": "Submit",
+    "archived": "Archived",
+    "archive": "Archive",
+    "unarchive": "Add from archive",
     "save": "Save"
   },
   "activities": {
@@ -54,6 +58,11 @@
     "archive": {
       "confirm": {
         "text": "Do you really want to archive this tag?"
+      }
+    },
+    "unarchive": {
+      "confirm": {
+        "text": "Do you really want to add this tag from archive?"
       }
     },
     "view": {

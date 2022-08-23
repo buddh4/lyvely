@@ -12,6 +12,7 @@ import ListPage from "@/modules/ui/components/layout/ListPage.vue";
 import { Size } from '@/modules/ui/types';
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import { ConfirmOptions } from "@/modules/ui/components/modal/ConfirmOptions";
+import Badge from "@/modules/ui/components/badge/Badge.vue";
 
 class TagFilter {
   query: string;
@@ -21,7 +22,6 @@ class TagFilter {
     Object.assign(this, obj);
     this.archived = this.archived ?? false;
   }
-
 
   check(tag: ITag): boolean {
     if(this.query?.length && !tag.name.match(new RegExp(this.query, 'i'))) {
@@ -78,8 +78,9 @@ function unArchive(tag: ITag) {
   editTagStore.unArchiveModel(tag.id, tag);
 }
 
-const confirmArchive: ConfirmOptions = {
-  'text': 'tags.archive.confirm.text'
+function confirmArchive(tag: ITag) {
+  return tag.archived ? { 'text': 'tags.unarchive.confirm.text' } : {  'text': 'tags.archive.confirm.text' };
+
 }
 
 </script>
@@ -92,20 +93,30 @@ const confirmArchive: ConfirmOptions = {
       </template>
       <div class="py-1">
         <div class="relative inline-block">
-          <input
-ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')"
-            class="border-l-0 pl-2 border-slate-300 text-sm focus:border-blue-300 focus:ring placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1" />
+          <input ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')" class="border-l-0 pl-2 border-slate-300 text-sm focus:border-blue-300 focus:ring placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1" />
           <Icon name="search" class="absolute right-2.5 top-2 text-slate-300 cursor-pointer" @click="focusSearch" />
+        </div>
+        <div class="float-right">
+          <Button :active="filter.archived" class="secondary outlined text-xs px-0.5 py-0.5 mr-3" :title="$t('filter.archive')" @click="filter.archived = !filter.archived">
+            <Icon name="archive" class="p-0.5"></Icon>
+          </Button>
+
         </div>
       </div>
       <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-content items-center hover:bg-slate-100">
         <div class="align-middle">
           <Tag :tag="tag" class="px-3 py-2 text-sm" @click="setEditTag(tag)" />
+          <Badge v-if="tag.archived" class="bg-danger ml-2">{{ $t('common.archived') }}</Badge>
         </div>
         <div class="mr-auto"></div>
         <div class="align-middle">
           <Button @click="setEditTag(tag)"><Icon name="edit" /></Button>
-          <Button :confirm="confirmArchive" @click="archive(tag)"><Icon name="archive" /></Button>
+          <Button v-if="tag.archived" :confirm="confirmArchive(tag)" :title="$t('common.unarchive')" @click="unArchive(tag)">
+            <Icon name="unarchive" />
+          </Button>
+          <Button v-else :confirm="confirmArchive(tag)" :title="$t('common.archive')" @click="archive(tag)">
+            <Icon name="archive" />
+          </Button>
         </div>
       </div>
       <div v-if="!tags.length" class="p-5">

@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 defineEmits(['click']);
 
 function getClassNames(attrClasses: any) {
-  const textContrast = getContrast(props.color);
+  const textContrast = props.color ? getContrast(props.color) : 'white';
 
   return  ['badge inline-block text-xs leading-3 rounded select-none', {
     'cursor-pointer': props.clickable,

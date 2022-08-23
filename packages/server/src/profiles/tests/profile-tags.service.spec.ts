@@ -41,6 +41,21 @@ describe('ProfileService', () => {
     });
   });
 
+  describe('unarchiveTag', () => {
+    it('archive tag', async () => {
+      const { profile } = await testData.createUserAndProfile();
+      await profileTagsService.mergeTags(profile, ['health']);
+      let tag = profile.getTagByName('health');
+      expect(await profileTagsService.archiveTag(profile, tag)).toEqual(true);
+      expect(tag.archived).toEqual(true);
+      expect(await profileTagsService.unArchiveTag(profile, tag)).toEqual(true);
+      expect(tag.archived).toEqual(false);
+      const reload = await profileService.findProfileById(profile);
+      tag = profile.getTagByName('health');
+      expect(tag.archived).toEqual(false);
+    });
+  });
+
   describe('updateTag', () => {
     it('update existing tag', async () => {
       const { profile } = await testData.createUserAndProfile();
