@@ -4,7 +4,7 @@ import {
   CalendarIntervalEnum,
   isToday
 } from "@lyvely/common";
-import Button from "@/modules/ui/components/button/Button.vue";
+import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
 import { useProfileStore } from "@/modules/user/store/profile.store";
 import { useTimingStore } from "../store";
@@ -59,7 +59,7 @@ function decrementTiming() {
 
 const showCreateButton = ref(false);
 const header = ref(null);
-onClickOutside(header, (event) => showCreateButton.value = false);
+onClickOutside(header, () => showCreateButton.value = false);
 
 </script>
 
@@ -73,7 +73,7 @@ onClickOutside(header, (event) => showCreateButton.value = false);
     </span>
     <a v-if="rightCaret" class="switch-timing text-body no-underline" @click="incrementTiming">{{ rightCaret }}</a>
 
-    <Button v-if="showCreateButton" class="secondary outlined absolute right-2 mr-0.5 mt-1 inline-flex items-center text-xs py-0 px-1 text-xs" @click="showCreateButton = false;$emit('create')">+</Button>
+    <AddButton v-if="showCreateButton" class="absolute right-2 " @click="showCreateButton = false;$emit('create')">+</AddButton>
   </div>
 
   <div v-if="!collapsed" data-calendar-plan-item-container class="p-0 border-0">

@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { Constructor } from '@lyvely/common';
 
 @Injectable()
-export class TestProfileActionDao extends ProfileScoreDao<TestProfileScore> {
+export class TestProfileScoreDao extends ProfileScoreDao<TestProfileScore> {
 
   @InjectModel(TestProfileScore.name)
   model: Model<TestProfileScoreDocument>;

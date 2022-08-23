@@ -1,3 +1,9 @@
+export const SELECTOR_FORM_FIELD = 'input,textarea,select';
+
+export function findInput(root?: HTMLElement|null) {
+  return <HTMLElement|undefined> root?.querySelector(SELECTOR_FORM_FIELD);
+}
+
 export function includesUtilityClass(classNames: string, prefix: string) {
   return new RegExp(`^.*${prefix}-\\d`).test(classNames);
 }

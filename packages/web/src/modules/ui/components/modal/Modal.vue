@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
-import { computed } from 'vue';
+import { computed, toRefs, ref, Ref, watch } from 'vue';
+import { findInput } from "@/modules/ui/utils";
 
 const emit = defineEmits([
   'submit',
@@ -25,6 +26,7 @@ export interface ModalProps {
   submitButton?: boolean,
   submitButtonText?: string,
   submitOnEnter?: boolean,
+  prevAutoFocus?: boolean,
 }
 
 const props = withDefaults(defineProps<ModalProps>(), {
@@ -32,13 +34,14 @@ const props = withDefaults(defineProps<ModalProps>(), {
   icon: '',
   backButton: true,
   cancelButton: true,
-  cancelButtonText: 'Cancel',
+  cancelButtonText: 'common.cancel',
+  submitButtonText: 'common.submit',
   cancelButtonClass: 'secondary',
   submitButton: true,
-  submitButtonText: 'common.submit',
   iconColor: undefined,
   iconClass: undefined,
-  submitOnEnter: true
+  submitOnEnter: true,
+  prevAutoFocus: false
 });
 
 const cancelButtonClass = computed(() => [props.cancelButtonClass, 'm-1']);
@@ -57,6 +60,22 @@ function submitOnEnter() {
     emit('submit')
   }
 }
+
+const rootEl = ref(null) as Ref<HTMLElement|null>;
+const { modelValue } = toRefs(props);
+
+if(!props.prevAutoFocus) {
+  watch([modelValue], () => {
+    setTimeout(() => {
+      if(rootEl.value) {
+        findInput(rootEl.value)?.focus();
+      }
+    },0)
+
+  });
+}
+
+const counter = ref(0);
 </script>
 
 <template>
@@ -67,7 +86,8 @@ function submitOnEnter() {
       leave-active-class="animate__animated animate__fadeOut animate__faster">
 
     <div
-        v-if="props.modelValue"
+        v-if="modelValue"
+        ref="rootEl"
         class="min-w-screen
     h-screen animated
     fadeIn faster
@@ -78,13 +98,13 @@ function submitOnEnter() {
 
       <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
       <div
-v-if="props.modelValue"
+v-if="modelValue"
            class="w-full max-w-lg absolute mx-auto md:rounded-sm shadow-lg bg-white top-0 md:top-1/4 h-full md:h-auto">
         <div>
           <div class="flex items-center px-5 pt-5 pb-3 rounded-t-sm bg-white" data-modal-header>
             <slot name="header">
               <button
-                  v-if="props.backButton"
+                  v-if="backButton"
                   role="button"
                   data-bs-dismiss="modal"
                   aria-label="Back"
@@ -95,17 +115,17 @@ v-if="props.modelValue"
 
               <h5 class="text-lg inline-block align-middle flex align-items-center">
                 <Icon
-v-if="icon" class="w-6 mr-2" :name="icon" :class="props.iconClass"
-                      :color="props.iconColor"></Icon>
-                {{ $t(props.title) }}
+v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass"
+                      :color="iconColor"></Icon>
+                {{ $t(title) }}
               </h5>
             </slot>
 
             <Button
-v-if="props.submitButton" data-modal-submit
+v-if="submitButton" data-modal-submit
                     class="primary rounded-full text-xs float-right align-middle ml-auto md:invisible px-2 py-0.5"
                     @click="$emit('submit')">
-              {{ $t(props.submitButtonText) }}
+              {{ $t(submitButtonText) }}
             </Button>
 
           </div>
@@ -117,11 +137,11 @@ v-if="props.submitButton" data-modal-submit
           <div class="flex px-5 pt-3 pb-5 justify-end invisible md:visible" data-modal-footer>
             <slot name="footer">
 
-              <Button v-if="props.cancelButton" :class="cancelButtonClass" @click="cancel">
-                {{ $t(props.cancelButtonText) }}
+              <Button v-if="cancelButton" :class="cancelButtonClass" @click="cancel">
+                {{ $t(cancelButtonText) }}
               </Button>
 
-              <Button v-if="props.submitButton" data-modal-submit class="m-1 primary" @click="$emit('submit')">
+              <Button v-if="submitButton" data-modal-submit class="m-1 primary" @click="$emit('submit')">
                 {{ $t(submitButtonText) }}
               </Button>
 

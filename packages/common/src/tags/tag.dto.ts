@@ -14,6 +14,9 @@ export class TagDto extends DocumentDto<TagDto> implements ITag {
   @Expose()
   description?: string;
 
+  @Expose()
+  archived?: boolean;
+
   constructor(obj?: Partial<TagDto>) {
     super(obj);
     this.color = this.color || randomColor({ luminosity: 'dark' })

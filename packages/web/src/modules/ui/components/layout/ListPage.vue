@@ -12,8 +12,11 @@ defineProps<Props>();
 
 <template>
     <div class="list-page-root border border-divide rounded divide-y">
-      <div class="prose py-2 px-3 ">
-        <h4><Icon v-if="icon" :name="icon" class="mr-2" /> {{ $t(title) }}</h4>
+      <div class="prose max-w-none py-2 px-3 ">
+        <h4 class="inline-block m-0"><Icon v-if="icon" :name="icon" class="mr-2" /> {{ $t(title) }}</h4>
+        <div class="float-right inline-block">
+          <slot name="header-right"></slot>
+        </div>
       </div>
 
       <slot></slot>

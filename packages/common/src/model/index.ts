@@ -1,3 +1,4 @@
 export * from "./base.dto";
-export * from "./sortable.interface";
+export * from "./interfaces/sortable.interface";
 export * from "./validation";
+export * from './interfaces';

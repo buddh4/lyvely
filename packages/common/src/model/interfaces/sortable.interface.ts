@@ -1,4 +1,4 @@
-import { CalendarIntervalEnum } from "../calendar";
+import { CalendarIntervalEnum } from "../../calendar";
 import { Exclude, Expose } from 'class-transformer';
 
 export interface Sortable {

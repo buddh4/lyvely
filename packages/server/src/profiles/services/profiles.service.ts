@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../users';
-import { Tag } from '../../tags';
-import { assureObjectId, EntityIdentity } from '../../db/db.utils';
+import { EntityIdentity } from '../../db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { Membership, BaseMembershipRole, Profile } from '../schemas';
 import { UserProfileRelations } from '../models';
+import { EntityNotFoundException } from "../../core/exceptions";
 
 export interface ProfileMembership {
   user: User,
@@ -108,50 +108,24 @@ export class ProfilesService {
     return { user, membership, profile };
   }
 
-  async mergeTags(profile: Profile, tagsNames?: string[]): Promise<Profile> {
-    if (!tagsNames || !tagsNames.length) {
-      return profile;
+  async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {
+    if(inc === 0) {
+      return;
     }
 
-    const newTagNames = new Set<string>();
-    const tagsToPush = [];
-
-    tagsNames.forEach((tagName) => {
-      if(!tagName.length || newTagNames.has(tagName)) {
-        return;
-      }
-
-      if(!profile.tags.find((tag) => tag.name === tagName)) {
-        newTagNames.add(tagName);
-        tagsToPush.push(Tag.create({ name: tagName }));
-      }
-    });
-
-    await this.profileDao.addTags(profile, tagsToPush);
-
-    return profile;
-  }
-
-  async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
-    const tag = profile.getTagById(assureObjectId(identity));
-
-    if(!tag) {
-      return false;
-    }
-
-    return !!await this.profileDao.updateTag(profile, identity, update);
-  }
-
-  async updateScore(profile: Profile, inc: number): Promise<number> {
+    const profile = await this.findProfileById(identity, true);
     const newScore = Math.max(profile.score + inc, 0);
     await this.profileDao.updateOneSetById(profile, { score: newScore });
-    profile.score = newScore;
     return newScore;
   }
 
-  async findProfileById(identity: EntityIdentity<Profile>): Promise<Profile|undefined> {
-    return identity instanceof Profile
-      ? identity
-      : this.profileDao.findById(identity);
+  async findProfileById(identity: EntityIdentity<Profile>, throwsException = false): Promise<Profile|undefined> {
+    const result = identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+
+    if(!result && throwsException) {
+      throw new EntityNotFoundException('Profile not found.');
+    }
+
+    return result;
   }
 }

@@ -1,5 +1,5 @@
 
-import { ProfilesService, Profile, UserProfileRelations, ProfileRelation } from '../../profiles';
+import { ProfilesService, Profile, UserProfileRelations, ProfileRelation, ProfileTagsService } from '../../profiles';
 import { AbstractContentDao } from '../daos';
 import { User } from '../../users';
 import { assureObjectId, EntityIdentity } from '../../db/db.utils';
@@ -13,6 +13,9 @@ export abstract class AbstractContentService<T extends Content> {
   @Inject()
   protected profileService: ProfilesService;
 
+  @Inject()
+  protected profileTagsService: ProfileTagsService;
+
   constructor(protected contentDao: AbstractContentDao<T>) {}
 
   async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T|null> {
@@ -25,7 +28,7 @@ export abstract class AbstractContentService<T extends Content> {
     }
 
     model.tagIds = [];
-    await this.profileService.mergeTags(profile, tagNames);
+    await this.profileTagsService.mergeTags(profile, tagNames);
     tagNames.forEach(tagName => model.addTag(profile.getTagByName(tagName)));
   }
 
@@ -40,7 +43,7 @@ export abstract class AbstractContentService<T extends Content> {
       return;
     }
 
-    await this.profileService.mergeTags(profile, tagNames);
+    await this.profileTagsService.mergeTags(profile, tagNames);
     update.tagIds = [];
     tagNames.forEach(tagName => {
       const tag = profile.getTagByName(tagName);

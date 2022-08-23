@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Profile, DEFAULT_PROFILE_NAME, ProfileDocument } from '../schemas';
 import mongoose, { Model } from 'mongoose';
-import { applyRawDataTo, applyUpdateTo, assureObjectId, EntityData, EntityIdentity } from '../../db/db.utils';
+import { applyRawDataTo, assureObjectId, EntityData, EntityIdentity } from '../../db/db.utils';
 import { User } from '../../users';
 import { AbstractDao } from '../../db/abstract.dao';
 import { Constructor } from '@lyvely/common';

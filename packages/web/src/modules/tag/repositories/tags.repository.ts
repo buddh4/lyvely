@@ -10,5 +10,13 @@ export default {
 
   async update(tagId: string, model: EditTagDto) {
     return repository.post<ITag>(`${resource}/${tagId}`, model);
+  },
+
+  async archive(tagId: string) {
+    return repository.post<boolean>(`${resource}/${tagId}/archive`);
+  },
+
+  async unArchive(tagId: string) {
+    return repository.post<boolean>(`${resource}/${tagId}/unarchive`);
   }
 };

@@ -1,4 +1,13 @@
 {
+  "modal": {
+    "confirm": {
+      "default": {
+        "title": "Confirm action",
+        "text": "Do you really want to perform this action?",
+        "confirm": "Confirm"
+      }
+    }
+  },
   "filter": {
     "all": "All",
     "empty": "No entries found for given filter."
@@ -11,6 +20,7 @@
   },
   "common": {
     "close": "Close",
+    "cancel": "Cancel",
     "submit": "Submit",
     "save": "Save"
   },
@@ -41,6 +51,11 @@
     }
   },
   "tags": {
+    "archive": {
+      "confirm": {
+        "text": "Do you really want to archive this tag?"
+      }
+    },
     "view": {
       "title": "Tags",
       "search": "Search tags"

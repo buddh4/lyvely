@@ -2,7 +2,7 @@
 import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 import Tag from '@/modules/tag/components/Tag.vue';
 import { useProfileStore } from "@/modules/user/store/profile.store";
-import { computed, ref, Ref } from 'vue';
+import { computed, ref, Ref, toRefs } from 'vue';
 import Button from "@/modules/ui/components/button/Button.vue";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
 import EditTagModal from "@/modules/tag/components/EditTagModal.vue";
@@ -10,13 +10,25 @@ import { useEditTagStore } from "@/modules/tag/stores/editTagStore";
 import { ITag, EditTagDto } from "@lyvely/common";
 import ListPage from "@/modules/ui/components/layout/ListPage.vue";
 import { Size } from '@/modules/ui/types';
+import AddButton from "@/modules/ui/components/button/AddButton.vue";
+import { ConfirmOptions } from "@/modules/ui/components/modal/ConfirmOptions";
 
 class TagFilter {
   query: string;
   archived: boolean;
 
+  constructor(obj?: Partial<TagFilter>) {
+    Object.assign(this, obj);
+    this.archived = this.archived ?? false;
+  }
+
+
   check(tag: ITag): boolean {
     if(this.query?.length && !tag.name.match(new RegExp(this.query, 'i'))) {
+      return false;
+    }
+
+    if(this.archived !== !!tag.archived) {
       return false;
     }
 
@@ -28,6 +40,10 @@ class TagFilter {
       return true;
     }
 
+    if(this.archived) {
+      return true;
+    }
+
     return false;
   }
 }
@@ -35,12 +51,17 @@ class TagFilter {
 const filter = ref(new TagFilter());
 
 const profileStore = useProfileStore();
-const { setEditModel } = useEditTagStore();
+const editTagStore = useEditTagStore();
+const { setEditModel, setCreateModel } = editTagStore;
 const tags = computed(() => profileStore.profile?.tags.filter(tag => filter.value.check(tag)) || []);
-const model = computed(() => useEditTagStore().model);
+const { model } = toRefs(editTagStore);
 
 const setEditTag = (tag: ITag) => {
   setEditModel(tag.id, new EditTagDto(tag))
+}
+
+const setCreateTag = () => {
+  setCreateModel(new EditTagDto())
 }
 
 const search = ref(null) as Ref<HTMLElement|null>;
@@ -49,11 +70,26 @@ function focusSearch() {
   search.value?.focus();
 }
 
+function archive(tag: ITag) {
+  editTagStore.archiveModel(tag.id, tag);
+}
+
+function unArchive(tag: ITag) {
+  editTagStore.unArchiveModel(tag.id, tag);
+}
+
+const confirmArchive: ConfirmOptions = {
+  'text': 'tags.archive.confirm.text'
+}
+
 </script>
 
 <template>
   <MainContainer id="activity-overview" :width="Size.LG">
     <ListPage title="tags.view.title" icon="tags">
+      <template #header-right>
+        <AddButton @click="setCreateTag"/>
+      </template>
       <div class="py-1">
         <div class="relative inline-block">
           <input
@@ -69,7 +105,7 @@ ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.sear
         <div class="mr-auto"></div>
         <div class="align-middle">
           <Button @click="setEditTag(tag)"><Icon name="edit" /></Button>
-          <Button><Icon name="archive" /></Button>
+          <Button :confirm="confirmArchive" @click="archive(tag)"><Icon name="archive" /></Button>
         </div>
       </div>
       <div v-if="!tags.length" class="p-5">

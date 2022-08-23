@@ -13,6 +13,7 @@ export interface BaseInputProps {
   readonly?: boolean,
   cssClass?: string,
   wrapperClass?: string,
+  autocomplete?: boolean,
   error?: string
 }
 
@@ -24,6 +25,7 @@ export function useBaseInputProps() {
     disabled: {type: Boolean, default: false},
     readonly: {type: Boolean, default: false},
     required: {type: Boolean, default: false},
+    autocomplete: {type: Boolean, default: false},
     modelValue: {},
     cssClass: {},
     wrapperClass: {},

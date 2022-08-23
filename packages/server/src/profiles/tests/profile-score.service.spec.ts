@@ -5,9 +5,9 @@ import { createContentTestingModule } from '../../test/utils/test.utils';
 import { Calendar, CalendarIntervalEnum } from '@lyvely/common';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import { TestProfileScore, TestProfileScoreSchema } from './src/test-profile-score.schema';
-import { TestProfileActionDao } from './src/test-profile-action.dao';
+import { TestProfileScoreDao } from './src/test-profile-score-dao.service';
 import { INestApplication } from '@nestjs/common';
-import { TestProfileActionService } from './src/test-profile-action.service';
+import { TestProfileScoreService } from './src/test-profile-score.service';
 import { ProfileDao } from '../daos';
 
 const testScoreModelDef = {
@@ -20,7 +20,7 @@ const testScoreModelDef = {
 
 describe('AbstractUserProfileActionService', () => {
   let testingModule: TestingModule;
-  let testProfileActionService: TestProfileActionService;
+  let testProfileActionService: TestProfileScoreService;
   let testData: TestDataUtils;
   let profileDao: ProfileDao;
   let app: INestApplication;
@@ -28,8 +28,8 @@ describe('AbstractUserProfileActionService', () => {
   const TEST_KEY = 'abstract_user_profile_action_service';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [TestProfileActionDao, TestProfileActionService], [testScoreModelDef]).compile();
-    testProfileActionService = testingModule.get<TestProfileActionService>(TestProfileActionService);
+    testingModule = await createContentTestingModule(TEST_KEY, [TestProfileScoreDao, TestProfileScoreService], [testScoreModelDef]).compile();
+    testProfileActionService = testingModule.get<TestProfileScoreService>(TestProfileScoreService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     profileDao = testingModule.get<ProfileDao>(ProfileDao);
     app = testingModule.createNestApplication();

@@ -63,11 +63,11 @@ export function applyPush<T>(model: T, pushData: { [ key in keyof T ]?: any }): 
   return model;
 }
 
-export function applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, maxDepth = 100): T {
-  return _applyRawDataTo(model, data, 0 , maxDepth);
+export function applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, { maxDepth, strict } = { maxDepth: 100, strict: true }): T {
+  return _applyRawDataTo(model, data, 0 , { maxDepth, strict });
 }
 
-function _applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, level = 0, maxDepth = 100): T {
+function _applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, level = 0, { maxDepth, strict } = { maxDepth: 100, strict: true }): T {
   // TODO: support path
 
   if(level > maxDepth) {
@@ -75,16 +75,16 @@ function _applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, level 
   }
 
   Object.keys(data).forEach(key => {
-    if(!Array.isArray(model) && !model.hasOwnProperty(key)) {
+    if(!Array.isArray(model) && (strict && !model.hasOwnProperty(key))) {
       return;
     }
 
     if(Array.isArray(data[key])) {
-      model[key] = _applyRawDataTo([], data[key], level + 1, maxDepth);
+      model[key] = _applyRawDataTo([], data[key], level + 1, { maxDepth, strict });
     } else if(data[key] instanceof Types.ObjectId) {
       model[key] = data[key];
     } else if(typeof data[key] === 'object' && typeof model[key] === 'object') {
-      model[key] = _applyRawDataTo(model[key], data[key], level + 1, maxDepth);
+      model[key] = _applyRawDataTo(model[key], data[key], level + 1, { maxDepth, strict });
     } else {
       model[key] = data[key];
     }

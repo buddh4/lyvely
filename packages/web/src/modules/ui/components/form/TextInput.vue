@@ -5,6 +5,7 @@
       v-model="value"
       :disabled="disabled"
       :readonly="readonly"
+      :autocomplete="autocomplete ? 'on' : 'off'"
       :type="type"
       :class="cssClasses"
       @change="$emit('change', $event)"/>

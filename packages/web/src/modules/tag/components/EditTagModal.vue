@@ -38,11 +38,11 @@ const color = computed({
   set: (val: any) => model.value!.color = val.hex
 })
 
-const { getError } = tagEditStore;
+const { getError, modalTitle } = tagEditStore;
 </script>
 
 <template>
-    <Modal v-model="showModal" title="tags.edit.title" @submit="submit">
+    <Modal v-model="showModal" :title="modalTitle" @submit="submit">
       <template #body>
         <div>
           <div class="flex w-32 space-x-2 mb-2 p-2 cursor-pointer rounded-md border border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50" @click="clickColorBox">

@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { toRefs } from 'vue';
+import { toRefs, ref } from 'vue';
 import { includesUtilityClass } from '@/modules/ui/utils';
 import { RouteRecord } from 'vue-router';
-
-defineEmits(['click']);
+import { ConfirmOptions } from "@/modules/ui/components/modal/ConfirmOptions";
+import ConfirmModal from "@/modules/ui/components/modal/ConfirmModal.vue";
 
 interface Props {
   submit?: boolean,
@@ -18,7 +18,8 @@ interface Props {
   border?: boolean,
   disabled?: boolean,
   rounded?: boolean,
-  route?: RouteRecord
+  route?: RouteRecord,
+  confirm?: ConfirmOptions
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   rounded: true,
   route: undefined,
+  confirm: undefined,
 });
 
 function getClassNames(attrClasses: any, isActive?: boolean) {
@@ -48,11 +50,23 @@ function getClassNames(attrClasses: any, isActive?: boolean) {
 
 const buttonType = props.submit ? 'submit' : 'button';
 
+const emit = defineEmits(['click']);
+
+const showConfirm = ref(false);
+
+function onClick() {
+  if(props.confirm) {
+    showConfirm.value = true;
+  } else {
+    emit('click');
+  }
+}
+
 const { label } = toRefs(props);
 </script>
 
 <template>
-  <button v-if="!route" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="$emit('click')">
+  <button v-if="!route" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
     <slot>{{ $t(label) }}</slot>
   </button>
   <router-link v-if="route" v-slot="{ navigate, isActive }" :to="route" custom>
@@ -60,6 +74,10 @@ const { label } = toRefs(props);
       <slot>{{ $t(label) }}</slot>
     </button>
   </router-link>
+
+  <ConfirmModal v-if="confirm"  v-model="showConfirm" :options="confirm" @submit="$emit('click')">
+    <slot name="confirmBody"></slot>
+  </ConfirmModal>
 </template>
 
 <style lang="postcss">

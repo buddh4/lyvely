@@ -274,6 +274,10 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     const modifiedCount = (await this.model.updateOne(filter, clonedUpdate, options).exec()).modifiedCount;
 
     if(modifiedCount && (!options || options.apply !== false)) {
+      /**
+       *  TODO: Note that applyUpdateTo does not set values which are not part of the model already (hasOwnProperty),
+       *  this should be documented, a workaround is to set a default in the schema, maybe make the strict setting configurable
+        */
       applyUpdateTo(identity, update);
     }
 

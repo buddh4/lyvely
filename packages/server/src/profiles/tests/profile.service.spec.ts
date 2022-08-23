@@ -4,8 +4,7 @@ import { ProfilesService } from '../services';
 import { ProfileType } from '@lyvely/common';
 import { BaseMembershipRole } from '../schemas';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createContentTestingModule, getObjectId } from '../../test/utils/test.utils';
-import { Tag } from "../../tags";
+import { createContentTestingModule } from '../../test/utils/test.utils';
 
 describe('ProfileService', () => {
   let testingModule: TestingModule;
@@ -88,7 +87,7 @@ describe('ProfileService', () => {
     it('increment positive', async () => {
       const user = await testData.createUser();
       const  { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      const newScore = await profileService.updateScore(profile, 5);
+      const newScore = await profileService.incrementScore(profile, 5);
       expect(newScore).toEqual(5);
       expect(profile.score).toEqual(5);
     });
@@ -96,8 +95,8 @@ describe('ProfileService', () => {
     it('increment negative', async () => {
       const user = await testData.createUser();
       const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.updateScore(profile, 5);
-      const updated = await profileService.updateScore(profile, -2);
+      await profileService.incrementScore(profile, 5);
+      const updated = await profileService.incrementScore(profile, -2);
       expect(updated).toEqual(3);
       expect(profile.score).toEqual(3);
     });
@@ -105,88 +104,10 @@ describe('ProfileService', () => {
     it('assert min 0 score', async () => {
       const user = await testData.createUser();
       const  { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.updateScore(profile, 5);
-      const updated = await profileService.updateScore(profile, -10);
+      await profileService.incrementScore(profile, 5);
+      const updated = await profileService.incrementScore(profile, -10);
       expect(updated).toEqual(0);
       expect(profile.score).toEqual(0);
-    });
-  });
-
-  describe('updateTag', () => {
-    it('update existing tag', async () => {
-      const { profile } = await testData.createUserAndProfile();
-      await profileService.mergeTags(profile, ['health']);
-      const tag = profile.getTagByName('health');
-      const result = await profileService.updateTag(profile, tag, { name: 'healthy' });
-      expect(result).toEqual(true);
-      expect(tag.name).toEqual('healthy');
-      expect(profile.getTagByName('healthy')).toBeDefined();
-       const reloaded = await profileService.findProfileById(profile);
-       expect(reloaded.getTagByName('healthy').name).toBeDefined()
-    });
-
-    it('update non existing tag', async () => {
-      const { profile } = await testData.createUserAndProfile();
-      const tag = new Tag({ _id: getObjectId('testtag'), name: 'Test' });
-      const result = await profileService.updateTag(profile, tag, { name: 'healthy' });
-      expect(result).toEqual(false);
-    });
-  });
-
-  describe('mergeTags', () => {
-    it('create from empty', async () => {
-      const { profile } = await testData.createUserAndProfile();
-      await profileService.mergeTags(profile, ['health', 'social']);
-      expect(profile.tags.length).toEqual(2);
-      expect(profile.tags[0].name).toEqual('health');
-      expect(profile.tags[1].name).toEqual('social');
-    });
-
-    it('add to existing set', async () => {
-      const user = await testData.createUser();
-      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeTags(profile, ['social']);
-      await profileService.mergeTags(profile, ['health']);
-      expect(profile.tags.length).toEqual(2);
-      expect(profile.tags[0].name).toEqual('social');
-      expect(profile.tags[1].name).toEqual('health');
-    });
-
-    it('add duplicate set', async () => {
-      const user = await testData.createUser();
-      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeTags(profile, ['social']);
-      await profileService.mergeTags(profile, [
-        'health',
-        'social',
-        'health',
-      ]);
-      expect(profile.tags.length).toEqual(2);
-      expect(profile.tags[0].name).toEqual('social');
-      expect(profile.tags[1].name).toEqual('health');
-    });
-
-    it('add empty set to existing', async () => {
-      const user = await testData.createUser();
-      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeTags(profile, ['social']);
-      await profileService.mergeTags(profile, []);
-      expect(profile.tags.length).toEqual(1);
-      expect(profile.tags[0].name).toEqual('social');
-    });
-
-    it('add empty set to empty', async () => {
-      const user = await testData.createUser();
-      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeTags(profile, []);
-      expect(profile.tags.length).toEqual(0);
-    });
-
-    it('do not accept empty tags name string', async () => {
-      const user = await testData.createUser();
-      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
-      await profileService.mergeTags(profile, ['']);
-      expect(profile.tags.length).toEqual(0);
     });
   });
 });

@@ -5,7 +5,7 @@ import { createContentTestingModule } from '../../test/utils/test.utils';
 import { Calendar, CalendarIntervalEnum } from '@lyvely/common';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import { TestProfileScore, TestProfileScoreSchema } from './src/test-profile-score.schema';
-import { TestProfileActionDao } from './src/test-profile-action.dao';
+import { TestProfileScoreDao } from './src/test-profile-score-dao.service';
 
 const testScoreModelDef = {
   name: ProfileScore.name,
@@ -17,14 +17,14 @@ const testScoreModelDef = {
 
 describe('AbstractUserProfileActionDao', () => {
   let testingModule: TestingModule;
-  let testScoreDao: TestProfileActionDao;
+  let testScoreDao: TestProfileScoreDao;
   let testData: TestDataUtils;
 
   const TEST_KEY = 'abstract_user_profile_action_dao';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [TestProfileActionDao], [testScoreModelDef]).compile();
-    testScoreDao = testingModule.get<TestProfileActionDao>(TestProfileActionDao);
+    testingModule = await createContentTestingModule(TEST_KEY, [TestProfileScoreDao], [testScoreModelDef]).compile();
+    testScoreDao = testingModule.get<TestProfileScoreDao>(TestProfileScoreDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
 
   });

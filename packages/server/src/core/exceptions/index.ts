@@ -13,6 +13,10 @@ export class EntityNotFoundException extends ServiceException {
   protected defaultMessage = 'Entity not found';
 }
 
+export class EntityValidationException extends ServiceException {
+  protected defaultMessage = 'Entity validation failed.';
+}
+
 export class UnauthenticatedServiceException extends ServiceException {
   protected defaultMessage = 'Service action forbidden.';
 }

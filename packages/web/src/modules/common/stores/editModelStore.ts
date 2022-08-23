@@ -49,7 +49,6 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
   }
 
   async function submit() {
-    debugger;
     if (!validator.value || !(await validator.value.validate())) {
       return;
     }
@@ -100,6 +99,7 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
 
   return {
     model,
+    modelId,
     validator,
     isActive,
     isCreate,
