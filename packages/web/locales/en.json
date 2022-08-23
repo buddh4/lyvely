@@ -31,6 +31,7 @@
   },
   "activities": {
     "tasks": {
+      "title": "Tasks",
       "create" : {
         "title": "Create task"
       },
@@ -39,6 +40,7 @@
       }
     },
     "habits": {
+      "title": "Activities",
       "create" : {
         "title": "Create activity"
       },
@@ -56,6 +58,7 @@
     }
   },
   "tags": {
+    "title": "Tags",
     "archive": {
       "confirm": {
         "text": "Do you really want to archive this tag?"
@@ -103,6 +106,12 @@
     "texts": {
       "not_a_member": "Not a member?"
     }
+  },
+  "register": {
+    "title": "Register"
+  },
+  "login": {
+    "title": "Login"
   },
   "error":{
     "network": {

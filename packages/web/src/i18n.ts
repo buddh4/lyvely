@@ -5,6 +5,14 @@ export const SUPPORT_LOCALES = ["en", "de"];
 
 let i18n: I18n;
 
+export function getI18n() {
+  return i18n;
+}
+
+export function translate(key: string) {
+  return (<any> getI18n().global).t(key);
+}
+
 export function setupI18n(options = { locale: "en" }) {
   options.locale = transformLocale(options.locale);
   i18n = createI18n({});

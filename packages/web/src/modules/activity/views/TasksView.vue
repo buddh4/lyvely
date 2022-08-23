@@ -7,6 +7,7 @@ import { useActivityEditStore } from '@/modules/activity/store/editActivityStore
 import { computed, onBeforeMount } from 'vue';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
+import { usePageStore } from "@/modules/core/store/page.store";
 
 const type = ActivityType.Task;
 
@@ -15,6 +16,9 @@ function createEntry() {
 }
 
 const intervals = computed(() => getCalendarPlanArray());
+
+usePageStore().setTitle(['Tasks']);
+
 </script>
 
 <template>
