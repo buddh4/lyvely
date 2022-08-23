@@ -14,7 +14,6 @@ import ConfirmModal from "@/modules/ui/components/modal/ConfirmModal.vue";
 interface Props {
   submit?: boolean,
   label?: string,
-  title?: string,
   active?: boolean,
   border?: boolean,
   disabled?: boolean,
@@ -68,10 +67,10 @@ const { label } = toRefs(props);
 </script>
 
 <template>
-  <button v-if="!route" :class="getClassNames($attrs.class)" v-bind="$attrs" :title="title" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
+  <button v-if="!route" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
     <slot>{{ $t(label) }}</slot>
   </button>
-  <router-link v-if="route" v-slot="{ navigate, isActive }" :title="title" :to="route" custom>
+  <router-link v-if="route" v-slot="{ navigate, isActive }" :to="route" custom>
     <button :class="getClassNames($attrs.class, isActive)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="navigate">
       <slot>{{ $t(label) }}</slot>
     </button>

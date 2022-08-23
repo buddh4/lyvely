@@ -11,7 +11,6 @@ import { ITag, EditTagDto } from "@lyvely/common";
 import ListPage from "@/modules/ui/components/layout/ListPage.vue";
 import { Size } from '@/modules/ui/types';
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
-import { ConfirmOptions } from "@/modules/ui/components/modal/ConfirmOptions";
 import Badge from "@/modules/ui/components/badge/Badge.vue";
 
 class TagFilter {
@@ -91,13 +90,13 @@ function confirmArchive(tag: ITag) {
       <template #header-right>
         <AddButton @click="setCreateTag"/>
       </template>
-      <div class="py-1">
+      <div class="py-1 pr-3">
         <div class="relative inline-block">
           <input ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')" class="border-l-0 pl-2 border-slate-300 text-sm focus:border-blue-300 focus:ring placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1" />
           <Icon name="search" class="absolute right-2.5 top-2 text-slate-300 cursor-pointer" @click="focusSearch" />
         </div>
         <div class="float-right">
-          <Button :active="filter.archived" class="secondary outlined text-xs px-0.5 py-0.5 mr-3" :title="$t('filter.archive')" @click="filter.archived = !filter.archived">
+          <Button :active="filter.archived" class="secondary outlined text-xs px-0.5 py-0.5" :title="$t('filter.archive')" @click="filter.archived = !filter.archived">
             <Icon name="archive" class="p-0.5"></Icon>
           </Button>
 
@@ -110,7 +109,7 @@ function confirmArchive(tag: ITag) {
         </div>
         <div class="mr-auto"></div>
         <div class="align-middle">
-          <Button @click="setEditTag(tag)"><Icon name="edit" /></Button>
+          <Button :title="$t('common.edit')" @click="setEditTag(tag)"><Icon name="edit" /></Button>
           <Button v-if="tag.archived" :confirm="confirmArchive(tag)" :title="$t('common.unarchive')" @click="unArchive(tag)">
             <Icon name="unarchive" />
           </Button>
