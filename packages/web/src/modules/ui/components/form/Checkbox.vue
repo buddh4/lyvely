@@ -7,14 +7,15 @@
       :checked="isChecked"
       :class="cssClasses"
       :readonly="readonly"
-      @change="$emit('change', $event)"/>
+      @keydown.enter="toggle"
+      @change="$emit('change', $event.target.checked, $event.target.value)"/>
       <span v-if="label" class="label ml-2">{{ $t(label) }}</span>
   </label>
 </template>
 
 <script lang="ts">
 import { BaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
-import { computed, SetupContext } from 'vue';
+import { computed, SetupContext, defineEmits } from 'vue';
 
 interface Props extends BaseInputProps {
   checked: boolean,
@@ -43,10 +44,16 @@ export default {
           context.emit('update:modelValue', val);
         }
       }
-    })
+    });
+
+    function toggle() {
+      context.emit('change', !isChecked.value, props.value || props.modelValue);
+    }
+
     return {
       ...useBaseInputSetup<boolean>(props, context, { cssClass: 'border rounded ml-1 ring-0' }),
-      isChecked
+      isChecked,
+      toggle
     }
   }
 }

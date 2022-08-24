@@ -9,10 +9,6 @@ import AriaLiveStatus from "@/modules/accessibility/components/AriaLiveStatus.vu
 
 const sidebar = ref<SidebarNavigation|null>(null);
 
-function toggleNav() {
-  sidebar.value?.toggleNav();
-}
-
 const { visible, icon, iconColor, iconClass, title, message,  } = toRefs(useGlobalDialogStore());
 </script>
 
@@ -21,7 +17,7 @@ const { visible, icon, iconColor, iconClass, title, message,  } = toRefs(useGlob
     <SidebarNavigation ref="sidebar" />
 
     <div class="overflow-hidden flex w-full min-h-screen flex-col">
-      <TopNavigation @toggle-nav="toggleNav" />
+      <TopNavigation />
       <router-view></router-view>
     </div>
 

@@ -43,9 +43,9 @@ function cssClasses(unitIndex: number) {
 
 const count = computed(() => Math.max(props.max, props.selection));
 
-function updateValue(evt: any) {
-  let value = parseInt(evt.target.value);
-  emit("update:selection", evt.target.checked ? value : --value);
+function updateValue(isChecked: boolean, value: string) {
+  let intVal = parseInt(value);
+  emit("update:selection", isChecked ? intVal : --intVal);
 }
 </script>
 
@@ -55,7 +55,7 @@ function updateValue(evt: any) {
       <div v-for="unit in count" :key="unit">
         <Checkbox
           :disabled="props.disabled"
-          :modelValue="unit"
+          :model-value="unit"
           :checked="unit <= props.selection"
           :css-class="cssClasses(unit)"
           @change="updateValue" />
@@ -64,7 +64,7 @@ function updateValue(evt: any) {
     <template v-else>
       <Checkbox
         :disabled="props.disabled"
-        :modelValue="1"
+        :model-value="1"
         :checked="props.selection"
         :css-class="cssClasses(0)"
         @change="updateValue" />

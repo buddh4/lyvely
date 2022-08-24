@@ -19,6 +19,7 @@ interface Props {
   border?: boolean,
   disabled?: boolean,
   rounded?: boolean,
+  isToggle?: boolean,
   route?: RouteRecord,
   confirm?: ConfirmOptions
 }
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   rounded: true,
   route: undefined,
+  isToggle: false,
   confirm: undefined,
 });
 
@@ -79,11 +81,31 @@ if(isDevelopEnvironment()) {
   })
 }
 
+function getAriaSelected($attrs: any) {
+  if($attrs['aria-selected']) {
+    return $attrs['aria-selected'];
+  }
+
+  if($attrs['role'] && ['tab', 'option', 'menuitemradio', 'treeitem', 'gridcell', 'row', 'rowheader', 'columnheader'].includes($attrs['role'])) {
+    return props.active ? 'yes' : 'no';
+  }
+}
+
+function getAriaPressed($attrs: any) {
+  if($attrs['aria-pressed']) {
+    return $attrs['aria-pressed'];
+  }
+
+  if(props.isToggle) {
+    return props.active ? 'yes' : 'no';
+  }
+}
+
 const { label } = toRefs(props);
 </script>
 
 <template>
-  <button v-if="!route" ref="button" :aria-selected="$attrs['aria-selected'] || (active) ? 'true' : 'false'" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
+  <button v-if="!route" ref="button" :aria-pressed="getAriaPressed($attrs)" :aria-selected="getAriaSelected($attrs)" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
     <slot>{{ $t(label) }}</slot>
   </button>
   <router-link v-if="route"  v-slot="{ navigate, isActive }" :to="route" custom>

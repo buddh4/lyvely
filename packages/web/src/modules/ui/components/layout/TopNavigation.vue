@@ -3,17 +3,20 @@ import Icon from '@/modules/ui/components/icon/Icon.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
 import { useAuthStore } from '@/modules/user/store/auth.store';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
-import { computed } from 'vue';
+import { computed, toRefs } from 'vue';
+import { usePageStore } from "@/modules/core/store/page.store";
 
-defineEmits(['toggleNav']);
+const pageSotre = usePageStore();
+const { toggleSidebar } = pageSotre;
+const { showSidebar } = toRefs(pageSotre);
 
 const authenticated = computed(() => useAuthStore().isAuthenticated);
 const score = computed(() => useProfileStore().profile?.score);
 </script>
 
 <template>
-  <nav v-if="authenticated" id="topNav">
-    <Button class="py-1.5 px-2.5" @click="$emit('toggleNav')">
+  <nav v-if="authenticated" id="topNav" :aria-label="$t('layout.aria.top-nav')">
+    <Button class="py-1.5 px-2.5" :is-toggle="true" :active="!showSidebar" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
       <Icon name="menu" />
     </Button>
 

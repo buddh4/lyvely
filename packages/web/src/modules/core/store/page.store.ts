@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
+import { ref } from 'vue';
 
 export function setPageTitle(title: Array<string>|string) {
   let profile;
@@ -25,6 +26,8 @@ export function setPageTitle(title: Array<string>|string) {
 
 export const usePageStore = defineStore('page', () => {
 
+  const showSidebar = ref(true);
+
   function setTitle(title: Array<string>|string) {
     setPageTitle(title);
   }
@@ -43,8 +46,15 @@ export const usePageStore = defineStore('page', () => {
     }, { once: true });
   }
 
+  function toggleSidebar() {
+    showSidebar.value = !showSidebar.value;
+  }
+
+
   return {
+    showSidebar,
+    toggleSidebar,
     setTitle,
-      accessibilityFocus
+    accessibilityFocus
   }
 });

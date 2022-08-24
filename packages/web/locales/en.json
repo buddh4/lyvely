@@ -140,6 +140,17 @@
   "login": {
     "title": "Login"
   },
+  "layout": {
+    "aria": {
+      "top-nav": "Top navigation",
+      "toggle-sidebar": "Hides the sidebar if pressed"
+    }
+  },
+  "profile": {
+    "aria": {
+      "sidebar": "Navigation of profile {profile}"
+    }
+  },
   "error":{
     "network": {
       "title": "Network Error",

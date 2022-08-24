@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import { useAuthStore } from '@/modules/user/store/auth.store';
-import { computed, ref } from 'vue';
+import { computed, ref, toRefs, watch } from 'vue';
 import { RouteLocation } from 'vue-router';
+import { translate } from "@/i18n";
+import { useProfileStore } from "@/modules/profile/stores/profile.store";
+import { usePageStore } from "@/modules/core/store/page.store";
 
 interface MenuItem {
   to?: Partial<RouteLocation> | string;
@@ -45,9 +48,15 @@ const menuItems: MenuItem[] = [
 
 const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer'];
 
-function toggleNav() {
-  setMinNavMargin( (getMainNavMargin() === '0px') ? '-260px' : '0px');
-}
+const { showSidebar } = toRefs(usePageStore());
+
+watch(showSidebar, () => {
+  if(showSidebar.value) {
+    setMinNavMargin('0px');
+  } else {
+    setMinNavMargin('-260px');
+  }
+});
 
 function getMainNavMargin(): string {
   return sidebar.value ? window.getComputedStyle(sidebar.value).marginLeft : '0px';
@@ -59,11 +68,11 @@ function setMinNavMargin(val: string) {
   }
 }
 
-defineExpose({ toggleNav });
+const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: useProfileStore()?.profile?.name}))
 </script>
 
 <template>
-  <nav v-if="isAuthenticated" ref="sidebar" class="sidebar">
+  <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
     <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <a class="sidebar-brand">
         <Icon name="lyvely" class="fill-current text-lyvely mr-2 " /> <img class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg" />
