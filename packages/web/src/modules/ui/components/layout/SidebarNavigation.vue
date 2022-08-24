@@ -48,7 +48,8 @@ const menuItems: MenuItem[] = [
 
 const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer'];
 
-const { showSidebar } = toRefs(usePageStore());
+const { toggleDark } = usePageStore();
+const { showSidebar, isDark } = toRefs(usePageStore());
 
 watch(showSidebar, () => {
   if(showSidebar.value) {
@@ -74,11 +75,11 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
 <template>
   <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
     <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
-      <a class="sidebar-brand">
-        <Icon name="lyvely" class="fill-current text-lyvely mr-2 " /> <img class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg" />
-      </a>
-
-      <hr class="sidebar-divider my-0 mx-3" />
+      <div>
+        <a class="sidebar-brand">
+          <Icon name="lyvely" class="fill-current text-lyvely mr-2 " /> <img class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg" />
+        </a>
+      </div>
 
       <ul class="nav flex-column">
         <li>
@@ -94,6 +95,11 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
           </template>
         </li>
       </ul>
+
+      <button class="inline-flex justify-center border border-white rounded py-1 px-2 mx-4 my-4" @click="toggleDark()">
+        <Icon v-if="isDark" name="light-mode"/>
+        <Icon v-else name="dark-mode"/>
+      </button>
     </div>
   </nav>
 </template>
@@ -104,21 +110,16 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
 }
 
 .sidebar {
+  @apply bg-sidebar;
   min-width: 260px;
   max-width: 260px;
   transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out, margin-right 0.35s ease-in-out,
     right 0.35s ease-in-out;
   direction: ltr;
-  background: var(--color-bg-sidbar);
-  color: var(--color-fg-sidebar);
 }
 
 .sidebar-brand {
   @apply flex items-center no-underline text-base font-extrabold uppercase tracking-wider h-12 px-3;
-}
-
-.sidebar .sidebar-divider {
-  color: var(--color-fg-sidebar);
 }
 
 .sidebar a {

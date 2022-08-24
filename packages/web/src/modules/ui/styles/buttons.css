@@ -129,10 +129,6 @@
     @apply border border-danger bg-danger text-inverted;
 }
 
-.active.outlined.secondary {
-    @apply bg-secondary text-white !important;
-}
-
 .button-group .button:not(:first-child) {
     border-left: 0 !important;
     border-top-left-radius: 0 !important;

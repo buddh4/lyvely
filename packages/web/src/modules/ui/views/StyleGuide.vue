@@ -60,7 +60,8 @@ function getColorBoxClass(color: string) {
 
 <template>
   <MainContainer>
-  <div class="prose">
+
+  <div class="prose dark:prose-invert">
     <h1>Style Guide</h1>
 
     <h2>Colors</h2>

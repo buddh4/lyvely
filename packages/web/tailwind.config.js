@@ -2,6 +2,7 @@ const colors = require("tailwindcss/colors");
 const svgToDataUri = require('mini-svg-data-uri');
 
 module.exports = {
+  darkMode: 'class',
   // purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   content: [
     "./index.html",
@@ -27,6 +28,8 @@ module.exports = {
         'base': "var(--color-text-base)"
       },
       colors: {
+        topbar: "var(--color-bg-topbar)",
+        sidebar: "var(--color-bg-sidebar)",
         lyvely: "var(--color-lyvely)",
         inverted: "var(--color-inverted)",
         divide: "var(--color-divide)",

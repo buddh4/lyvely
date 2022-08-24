@@ -15,7 +15,7 @@ const score = computed(() => useProfileStore().profile?.score);
 </script>
 
 <template>
-  <nav v-if="authenticated" id="topNav" :aria-label="$t('layout.aria.top-nav')">
+  <nav v-if="authenticated" id="topNav" class="bg-topbar" :aria-label="$t('layout.aria.top-nav')">
     <Button class="py-1.5 px-2.5" :is-toggle="true" :active="!showSidebar" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
       <Icon name="menu" />
     </Button>
@@ -46,7 +46,7 @@ const score = computed(() => useProfileStore().profile?.score);
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #topNav {
-  @apply flex items-center justify-between flex-wrap overflow-hidden h-12 px-4 z-40 shadow;
+  @apply flex items-center justify-between flex-wrap overflow-hidden h-12 px-4 z-40 shadow dark:shadow-slate-800;
 }
 
 .btn-main-menu {

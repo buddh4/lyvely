@@ -1,9 +1,9 @@
 @tailwind base;
 
 body {
-    background-color: rgb(252 252 252) !important;
+    @apply bg-gray-100 text-base dark:text-slate-100;
+    background-color: var(--color-bg-body);
     overflow: auto;
-    color: var(--color-text-base);
     height: 100%;
 }
 

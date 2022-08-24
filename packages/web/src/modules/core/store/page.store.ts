@@ -1,32 +1,13 @@
 import { defineStore } from 'pinia';
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
+import { useDark, useToggle } from '@vueuse/core'
 import { ref } from 'vue';
-
-export function setPageTitle(title: Array<string>|string) {
-  let profile;
-  try {
-    profile = useProfileStore().profile;
-  } catch (err) {}
-
-  title = Array.isArray(title) ? title : [title];
-  let pageTitle = title.join(' - ');
-
-  if(pageTitle.length) pageTitle += ' | ';
-
-  if(profile) {
-    pageTitle += profile.name;
-  }
-
-  if(pageTitle.length) pageTitle += ' | ';
-
-  pageTitle += import.meta.env.VITE_APP_BASEURL || window.location.hostname;
-
-  document.title = pageTitle;
-}
 
 export const usePageStore = defineStore('page', () => {
 
   const showSidebar = ref(true);
+  const isDark = useDark();
+  const toggleDark = useToggle(isDark);
 
   function setTitle(title: Array<string>|string) {
     setPageTitle(title);
@@ -52,9 +33,33 @@ export const usePageStore = defineStore('page', () => {
 
 
   return {
+    isDark,
     showSidebar,
     toggleSidebar,
+    toggleDark,
     setTitle,
     accessibilityFocus
   }
 });
+
+export function setPageTitle(title: Array<string>|string) {
+  let profile;
+  try {
+    profile = useProfileStore().profile;
+  } catch (err) {}
+
+  title = Array.isArray(title) ? title : [title];
+  let pageTitle = title.join(' - ');
+
+  if(pageTitle.length) pageTitle += ' | ';
+
+  if(profile) {
+    pageTitle += profile.name;
+  }
+
+  if(pageTitle.length) pageTitle += ' | ';
+
+  pageTitle += import.meta.env.VITE_APP_BASEURL || window.location.hostname;
+
+  document.title = pageTitle;
+}

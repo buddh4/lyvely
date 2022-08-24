@@ -31,8 +31,18 @@
     --color-success-dark: #047857;
     --color-success-light: #10B981;
 
-    --color-bg-sidbar: #293042;
+    --color-bg-sidebar: #293042;
+    --color-bg-topbar: transparent;
     --color-fg-sidebar: #ffffff;
+    --color-bg-body: rgb(243 244 246);
 
     --color-highlight: #48ce48;
+}
+
+.dark {
+    --color-bg-body: #1C2039;
+    --color-bg-sidebar: #252C47;
+    --color-bg-content: #293042;
+    --color-secondary: #dcdcdc;
+    --color-inverted: rgba(0, 0, 0, 0.80);
 }

@@ -2,7 +2,7 @@
 import Dialog from '@/modules/ui/components/dialog/Dialog.vue';
 import TopNavigation from '@/modules/ui/components/layout/TopNavigation.vue';
 import MobileFooterNavigation from '@/modules/ui/components/layout/MobileFooterNavigation.vue';
-import SidebarNavigation from '@/modules/ui/components/layout/MainViewNavigation.vue';
+import SidebarNavigation from '@/modules/ui/components/layout/SidebarNavigation.vue';
 import { ref, toRefs } from 'vue'
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import AriaLiveStatus from "@/modules/accessibility/components/AriaLiveStatus.vue";
