@@ -1,14 +1,16 @@
 import { NavigationGuardNext, RouteLocation } from "vue-router";
 import { useAuthStore } from '@/modules/user/store/auth.store';
-import { useProfileStore } from '@/modules/user/store/profile.store';
+import { useProfileStore } from '@/modules/profile/stores/profile.store';
+import { isDevelopEnvironment } from "@/modules/core/environment";
 
-// TODO: GUEST - needs to be aligned for guest mode feature
+// TODO: (GUESTS) - needs to be aligned for guest mode feature
 
 export const loadProfile = async (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
   const profileStore = useProfileStore();
 
   if(!to.query.pid) {
-    to.query.pid = (await profileStore.loadProfile()).id;
+    // TODO: (stability) Handle error
+    to.query.pid = (await profileStore.loadProfile())!.id;
     next(to);
     return;
   }
@@ -34,7 +36,7 @@ export const ifAuthenticated = (to: RouteLocation, from: RouteLocation, next: Na
 };
 
 export const ifDevelopEnvironment = (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext): void => {
-  if (import.meta.env.MODE === 'development') {
+  if (isDevelopEnvironment()) {
     next();
     return;
   }

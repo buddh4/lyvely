@@ -15,11 +15,8 @@ export declare global {
   export interface ImportMeta {
     env: {
       VITE_APP_API_URL: string;
-      BASE_URL: string;
-      NODE_ENV: 'development' | 'production';
-      MONGOOSE_DEBUG: boolean;
-      PORT?: string;
-      PWD: string;
+      VITE_APP_ENV: 'development' | 'production';
+      VITE_APP_BASEURL: string;
       MODE: 'development' | 'production';
     }
   }

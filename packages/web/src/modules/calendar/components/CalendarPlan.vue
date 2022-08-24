@@ -1,13 +1,13 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="calendar-plan">
+  <div id="calendar-plan" :aria-label="$t('calendar.plan.aria.root')">
     <slot></slot>
   </div>
 </template>
 
 <style lang="postcss">
 
-@import "../styles/timing.css";
+@import "../styles/calendar-plan.css";
 
 </style>

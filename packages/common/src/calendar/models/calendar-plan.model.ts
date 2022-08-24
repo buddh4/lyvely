@@ -28,6 +28,7 @@ export abstract class CalendarPlan {
   abstract createTimingInstance(date: CalendarDate): ITiming;
   abstract getLabel(): string;
   abstract getTitle(date: Date, locale: string): string;
+  abstract getAccessibleTitle(date: Date, locale: string): string;
   abstract getLabelById(id: any): string;
   abstract increment(date: Date): Date;
   abstract decrement(date: Date): Date;
@@ -69,6 +70,10 @@ export class UnscheduledPlan extends CalendarPlan {
     return 'Unscheduled';
   }
 
+  getAccessibleTitle(date: Date, locale: string): string {
+    return this.getTitle(date, locale);
+  }
+
   increment(date: Date): Date {
     return date;
   }
@@ -100,6 +105,10 @@ export class YearlyPlan extends UnscheduledPlan {
     return dateTime(date).format('YYYY');
   }
 
+  getAccessibleTitle(date: Date, locale: string): string {
+    return this.getTitle(date, locale);
+  }
+
   increment(date: Date): Date {
     return addYear(date, 1);
   }
@@ -127,6 +136,10 @@ export class QuarterlyPlan extends YearlyPlan {
     const momentDate = dateTime(date);
     return 'Q' + momentDate.quarter()
       + (!isCurrentYear(date) ? momentDate.format(' · YYYY') : '');
+  }
+
+  getAccessibleTitle(date: Date, locale: string): string {
+    return this.getTitle(date, locale);
   }
 
   increment(date: Date): Date {
@@ -157,8 +170,12 @@ export class MonthlyPlan extends QuarterlyPlan {
   }
 
   getTitle(date: Date, locale: string): string {
-    const format = isCurrentYear(date) ? 'MMM' : 'MMM · YYYY';
+    const format = isCurrentYear(date) ? 'MMMM' : 'MMM · YYYY';
     return dateTime(date).format(format);
+  }
+
+  getAccessibleTitle(date: Date, locale: string): string {
+    return this.getTitle(date, locale);
   }
 
   increment(date: Date): Date {
@@ -193,6 +210,10 @@ export class WeeklyPlan extends MonthlyPlan {
     return `Week ${weekOfYear}` +  (showYear ? ` · ${year}` : '');
   }
 
+  getAccessibleTitle(date: Date, locale: string): string {
+    return this.getTitle(date, locale);
+  }
+
   increment(date: Date): Date {
     return addWeek(date, 1);
   }
@@ -224,7 +245,12 @@ export class DailyPlan extends WeeklyPlan {
   }
 
   getTitle(date: Date, locale: string): string {
-    const format = isCurrentYear(date) ? 'ddd, MMM D' : 'ddd, MMM D · YYYY';
+    const format = isCurrentYear(date) ? 'ddd D MMM ' : 'ddd D MMM  · YYYY';
+    return dateTime(date).format(format);
+  }
+
+  getAccessibleTitle(date: Date, locale: string): string {
+    const format = isCurrentYear(date) ? 'dddd D MMMM ' : 'dddd D MMMM  · YYYY';
     return dateTime(date).format(format);
   }
 

@@ -6,7 +6,7 @@ import TimingList from "@/modules/calendar/components/CalendarPlan.vue";
 import Loader from "@/modules/ui/components/loader/Loader.vue";
 import EditJournalModal from "@/modules/journal/components/EditJournalModal.vue";
 import { useJournalStore } from '@/modules/journal/store';
-import { useProfileStore } from '@/modules/user/store/profile.store';
+import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { computed } from 'vue';
 
 function created() {

@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import tagsRepository from "@/modules/tag/repositories/tags.repository";
 import useEditModelStore from "@/modules/common/stores/editModelStore";
 import useArchiveModelStore from "@/modules/common/stores/archiveModelStore";
-import { useProfileStore } from "@/modules/user/store/profile.store";
+import { useProfileStore } from "@/modules/profile/stores/profile.store";
 
 export const useEditTagStore = defineStore('tagEdit', () => {
 

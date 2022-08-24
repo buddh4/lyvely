@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import ActivityPlanListEntry from "@/modules/activity/components/ActivityPlanListEntry.vue";
-import CalendarPlanList from "@/modules/calendar/components/CalendarPlanSection.vue";
+import ActivityPlanListEntry from "@/modules/activity/components/ActivityPlanEntry.vue";
+import CalendarPlanSection from "@/modules/calendar/components/CalendarPlanSection.vue";
 import { ActivityType } from '@lyvely/common';
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
@@ -48,13 +48,11 @@ function addEntry() {
   useActivityEditStore().setCreateActivity(props.type, props.interval);
 }
 
-function onDateChanged() {
-  activityStore.loadActivities();
-}
+const createTitle = computed(() => (props.type === ActivityType.Habit) ? 'activities.habits.create.title' : 'activities.tasks.create.title' );
 </script>
 
 <template>
-  <CalendarPlanList :interval="interval" :count="activities.length" @changed="onDateChanged" @create="addEntry">
+  <CalendarPlanSection :interval="interval" :count="activities.length" :create-button-title="$t(createTitle)" @create="addEntry">
     <draggable
         :list="activities"
         tag="div"
@@ -72,7 +70,7 @@ function onDateChanged() {
       </template>
 q
     </draggable>
-  </CalendarPlanList>
+  </CalendarPlanSection>
 </template>
 
 <style scoped></style>

@@ -19,3 +19,11 @@ body {
 a {
     text-decoration: none;
 }
+
+.focus-hidden {
+   outline: none;
+}
+
+:focus:not(.focus-hidden), :focus-visible:not(.focus-hidden) {
+    @apply outline-1 outline-blue-400;
+}

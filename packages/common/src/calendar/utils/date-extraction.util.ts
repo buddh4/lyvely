@@ -38,9 +38,15 @@ export function isCurrentYear(date: CalendarDate): boolean {
   return dateTime(date).year() === dateTime().year();
 }
 
-export function isToday(someDate: Date) {
+export function isToday(cDate: CalendarDate) {
   const today = new Date();
-  return someDate.getDate() == today.getDate() &&
-    someDate.getMonth() == today.getMonth() &&
-    someDate.getFullYear() == today.getFullYear();
+  const date =  cDate instanceof Date ? cDate : dateTime(cDate).toDate();
+  return date.getDate() == today.getDate() &&
+    date.getMonth() == today.getMonth() &&
+    date.getFullYear() == today.getFullYear();
+}
+
+export function isInFuture(cDate: CalendarDate) {
+  const date =  cDate instanceof Date ? cDate : dateTime(cDate).toDate();
+  return date > new Date();
 }

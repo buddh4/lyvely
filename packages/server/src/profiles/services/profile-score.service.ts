@@ -2,7 +2,9 @@ import { ProfileScoreDao } from '../daos';
 import { Profile, ProfileScore } from '../schemas';
 import { createBaseEntityInstance } from "../../db/base.entity";
 import { ProfilesService } from "./profiles.service";
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export abstract class ProfileScoreService<E extends ProfileScore> {
 
   protected profileScoreDao: ProfileScoreDao<E>;

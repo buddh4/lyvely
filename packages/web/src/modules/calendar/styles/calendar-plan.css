@@ -1,4 +1,4 @@
-.calendar-plan {
+#calendar-plan {
     @apply flex flex-col p-0 rounded;
 }
 
@@ -34,23 +34,19 @@
     @apply divide-y divide-divide border-l border-l border-r border-divide
 }
 
-.calendar-plan-unscheduled[data-count="0"] {
+#calendar-plan-unscheduled[data-count="0"] {
     @apply rounded-b;
 }
 
-.calendar-plan-unscheduled + div {
+#calendar-plan-unscheduled + section {
     @apply rounded-b border-b
 }
 
-.calendar-plan-unscheduled + div .calendar-plan-list-items {
+#calendar-plan-unscheduled + section .calendar-plan-list-items {
     @apply rounded-b
 }
 
-.calendar-plan-list-entry-root .list-group-item:first-child {
-    border-top:0;
-}
-
 .calendar-plan-title {
-    @apply inline-block my-0 mx-2 cursor-pointer;
+    @apply inline-block my-0 cursor-pointer;
     min-width: 110px;
 }

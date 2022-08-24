@@ -2,83 +2,135 @@
 import {
   CalendarPlan,
   CalendarIntervalEnum,
-  isToday
+    isToday as isTodayUtil
 } from "@lyvely/common";
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
-import { useProfileStore } from "@/modules/user/store/profile.store";
-import { useTimingStore } from "../store";
-import { computed, ref } from 'vue';
+import { useProfileStore } from "@/modules/profile/stores/profile.store";
+import { useCalendarPlanStore } from "../store";
+import { computed, ref, toRefs } from 'vue';
 import { onClickOutside } from '@vueuse/core'
+import Button from "@/modules/ui/components/button/Button.vue";
+import { translate } from "@/i18n";
+import { useAuthStore } from "@/modules/user/store/auth.store";
 
 interface Props {
   interval: CalendarIntervalEnum,
+  createButtonTitle: string,
   count: number
 }
 
-const timingStore = useTimingStore();
-const profileStore = useProfileStore();
+const calendarPlanStore = useCalendarPlanStore();
+const { locale: userLocale } = useAuthStore();
+const { locale: profileLocale } = useProfileStore();
 
-const emit = defineEmits(['changed', 'create']);
+const { switchToToday, getNextDate, getPreviousDate } = calendarPlanStore;
+const {
+  date,
+  isToday,
+} = toRefs(calendarPlanStore);
+
+const emit = defineEmits(['create']);
 const props = defineProps<Props>();
 
 const collapsed = ref(false);
-const title = computed(() => CalendarPlan.getInstance(props.interval).getTitle(timingStore.date, profileStore.locale));
-const titleSuffix = computed(() => !props.count ? "" : ` · (${props.count})`);
+const calendarPlan = CalendarPlan.getInstance(props.interval);
+
 const isEmpty = computed(() => !props.count);
+const isDaily = props.interval === CalendarIntervalEnum.Daily;
+const isWeekly = props.interval === CalendarIntervalEnum.Weekly;
+const isUnscheduled = props.interval === CalendarIntervalEnum.Unscheduled;
 
-function switchToToday() {
-  timingStore.setCurrentDate(new Date());
+
+function getAccessibleTitle(d: Date) {
+  let title = calendarPlan.getAccessibleTitle(d, isWeekly ? profileLocale : userLocale );
+
+  if(isDaily && isTodayUtil(d)) {
+    title = translate('calendar.today') + ' ' +title;
+  }
+
+  return title;
 }
 
-const showTodayIcon = computed(() => props.interval === CalendarIntervalEnum.Daily && !isToday(timingStore.date));
-const rightCaret = computed(() => (props.interval === CalendarIntervalEnum.Unscheduled) ? false : "▸");
-const leftCaret = computed(() => (props.interval === CalendarIntervalEnum.Unscheduled) ? false : "◂");
+/**
+ * In case of weekly title we use the locale of the profile, since the profile may use another week format
+ * TODO: (week of day) make this configurable in profile independently of locale
+ */
+const title = computed(() => calendarPlan.getTitle(date.value, isWeekly ? profileLocale : userLocale ));
+const accessibleTitle = computed(() => getAccessibleTitle(date.value));
+const showTodayIcon = computed(() => isDaily && !isToday.value);
+const rightCaret = computed(() => isUnscheduled ? false : "▸");
+const leftCaret = computed(() => isUnscheduled ? false : "◂");
+const nextTitle = computed(() => getAccessibleTitle(getNextDate(calendarPlan)));
+const prevTitle = computed(() => getAccessibleTitle(getPreviousDate(calendarPlan)));
 
-const headerCssClass = computed(() => {
-  const timingClass = `calendar-plan-${CalendarPlan.getInstance(props.interval).getLabel().toLocaleLowerCase()}`;
-
-  return [
-    "border-divide",
-    "calendar-plan-item",
-    "calendar-plan-header-item",
-    "relative",
-    timingClass
-  ];
-});
-
-function incrementTiming() {
-  useTimingStore().incrementTiming(props.interval);
-  emit("changed", timingStore.date);
-}
-
-function decrementTiming() {
-  useTimingStore().decrementTiming(props.interval);
-  emit("changed", timingStore.date);
-}
+const label = CalendarPlan.getInstance(props.interval).getLabel().toLocaleLowerCase();
+const headerId = `calendar-plan-${label}`;
+const itemsId = `calendar-plan-items-${label}`;
 
 const showCreateButton = ref(false);
 const header = ref(null);
 onClickOutside(header, () => showCreateButton.value = false);
 
+function toggleContent() {
+  return collapsed.value = !isEmpty.value && !collapsed.value;
+}
+
+function open() {
+  return collapsed.value = !isEmpty.value && false;
+}
+
+function incrementTiming() {
+  calendarPlanStore.incrementTiming(props.interval);
+}
+
+function decrementTiming() {
+  calendarPlanStore.decrementTiming(props.interval);
+}
 </script>
 
 <template>
-  <div ref="header" tabindex="0" data-calendar-plan-header :data-count="count" :class="headerCssClass" @focusin="showCreateButton = true">
-    <Icon v-if="showTodayIcon" name="today" @click="switchToToday" />
-    <a v-if="leftCaret" class="switch-timing text-body no-underline" @click="decrementTiming">{{ leftCaret }}</a>
-    <span class="calendar-plan-title text-body" @click="collapsed = !isEmpty && !collapsed">
-      {{ title }}
-      <small v-if="collapsed">{{ titleSuffix }}</small>
+  <div
+      :id="headerId"
+      ref="header" tabindex="0"
+      role="button"
+      :aria-label="$t('calendar.plan.aria.header', { 'time': accessibleTitle })"
+      :aria-controls="itemsId"
+      data-calendar-plan-header
+      :data-count="count"
+      class="border-divide calendar-plan-item calendar-plan-header-item relative"
+      @keyup.enter="toggleContent"
+      @dragenter="open"
+      @focusin="showCreateButton = true">
+
+    <button v-if="showTodayIcon" class="today-button" :title="$t('calendar.plan.nav-today')" :aria-controls="itemsId" @click="switchToToday">
+      <Icon role="button" name="today" />
+    </button>
+
+    <Button
+        v-if="leftCaret" tabindex="0" :aria-label="$t('calendar.plan.aria.nav-back', { time: prevTitle })"
+        class="switch-timing text-body no-underline py-0" :aria-controls="itemsId"  @click="decrementTiming">
+      {{ leftCaret }}
+    </Button>
+
+    <span class="calendar-plan-title text-body select-none" @click="toggleContent">
+      <span aria-hidden="true">{{ title }} <small v-if="collapsed && !isEmpty">{{ ` (${count})` }}</small></span>
     </span>
-    <a v-if="rightCaret" class="switch-timing text-body no-underline" @click="incrementTiming">{{ rightCaret }}</a>
 
-    <AddButton v-if="showCreateButton" class="absolute right-2 " @click="showCreateButton = false;$emit('create')">+</AddButton>
+    <Button
+        v-if="rightCaret" tabindex="0" :aria-label="$t('calendar.plan.aria.nav-next', { time: nextTitle })"
+        class="switch-timing text-body no-underline py-0" :aria-controls="itemsId" @click="incrementTiming">
+      {{ rightCaret }}
+    </Button>
+
+    <AddButton v-if="showCreateButton" class="absolute right-2" :title="createButtonTitle" @click="showCreateButton = false;$emit('create')">
+      +
+    </AddButton>
   </div>
 
-  <div v-if="!collapsed" data-calendar-plan-item-container class="p-0 border-0">
+  <section :id="itemsId" role="list" data-calendar-plan-item-container :class="['p-0 border-0', {'hidden': collapsed}]">
     <slot></slot>
-  </div>
+  </section>
 </template>
 
 <style scoped>
@@ -97,13 +149,16 @@ onClickOutside(header, () => showCreateButton.value = false);
   border-top: 0;
 }
 
-.icon-today {
+.today-button {
   position: absolute;
   left: 10px;
-  width: 20px;
   float: left;
-  margin-top: 3px;
-  fill: var(--color-secondary);
   cursor: pointer;
+}
+
+.today-button svg {
+  margin-top: 3px;
+  width: 20px;
+  fill: var(--color-secondary);
 }
 </style>

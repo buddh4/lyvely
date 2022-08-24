@@ -3,7 +3,7 @@ import { IJournal , DataPointInputType } from '@lyvely/common';
 import ListEntry from "@/modules/calendar/components/CalendarPlanEntry.vue";
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
 import RangeInput from '@/modules/ui/components/form/RangeInput.vue';
-import { useTimingStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
 import { useJournalStore } from '@/modules/journal/store';
 import { computed } from 'vue';
 
@@ -15,7 +15,7 @@ const props = defineProps<Props>();
 defineEmits(["edit", "archive"]);
 
 const log = computed(() => {
-  const timingId = useTimingStore().getTimingId(props.model.interval);
+  const timingId = useCalendarPlanStore().getTimingId(props.model.interval);
   return useJournalStore().store.getLog(props.model, timingId, true);
 });
 
@@ -36,11 +36,11 @@ const selection = computed({
 
     // Todo: delay in case of range with cancel timeout
     // Todo: delay in case of journal + blur
-    //this.$store.dispatch(JournalActions.UPDATE_LOG, update);
+    //this.$stores.dispatch(JournalActions.UPDATE_LOG, update);
   }
 });
 
-const isFuture = computed(() => useTimingStore().date > new Date());
+const isFuture = computed(() => useCalendarPlanStore().date > new Date());
 const isDisabled = computed(() => isFuture.value || props.model.archived);
 </script>
 

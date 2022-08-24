@@ -1,20 +1,20 @@
 <script lang="ts" setup>
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
-import { useProfileStore } from '@/modules/user/store/profile.store';
+import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
-import { useTimingStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
 import { computed, ref, Ref } from 'vue';
 
 const activityStore = useActivityStore();
 const profileStore = useProfileStore();
-const timingStore = useTimingStore();
+const calendarPlanStore = useCalendarPlanStore();
 const tags = computed(() => profileStore.getTags('activity.filter'));
 const activeTagId = computed(() => activityStore.filter.tagId);
 const archiveFilterActive = computed(() => activityStore.filter.archived);
 const dragActive = computed({
-  get: () => timingStore.dragActive,
-  set: (val: boolean) => timingStore.setDragActive(val)
+  get: () => calendarPlanStore.dragActive,
+  set: (val: boolean) => calendarPlanStore.setDragActive(val)
 });
 
 function isChecked(filter: string): boolean {
@@ -99,12 +99,13 @@ const sliderStyle = computed(() => {
     <Button
       :class="[roundButton]"
       :active="dragActive"
+      :aria-label="$t('calendar.plan.aria.drag-toggle-button')"
       @click="dragActive = !dragActive">
       <Icon name="drag"/>
     </Button>
 
-    <div ref="container" class="flex tag-filter-selection overflow-hidden whitespace-nowrap relative mr-1">
-      <div ref="slider" :style="sliderStyle" class="slider-nav touch-pan-y" @mousedown="beginSlide" @touchstart="beginSlide" >
+    <div ref="container" class="flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
+      <div ref="slider" :style="sliderStyle" class="slider-nav  touch-pan-y" @mousedown="beginSlide" @touchstart="beginSlide" >
         <Button
           :class="pillButton"
           :active="!activeTagId"
@@ -116,6 +117,8 @@ const sliderStyle = computed(() => {
           <Button
             :class="pillButton"
             :active="isChecked(tag.id)"
+            role="tab"
+            aria-controls="calendar-plan"
             :data-tag-id="tag.id"
              @click="setTagFilter(tag.id)">
             {{ tag.name }}

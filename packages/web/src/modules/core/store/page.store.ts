@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useProfileStore } from "@/modules/user/store/profile.store";
+import { useProfileStore } from "@/modules/profile/stores/profile.store";
 
 export function setPageTitle(title: Array<string>|string) {
   let profile;
@@ -18,7 +18,7 @@ export function setPageTitle(title: Array<string>|string) {
 
   if(pageTitle.length) pageTitle += ' | ';
 
-  pageTitle += window.location.hostname;
+  pageTitle += import.meta.env.VITE_APP_BASEURL || window.location.hostname;
 
   document.title = pageTitle;
 }
@@ -29,7 +29,22 @@ export const usePageStore = defineStore('page', () => {
     setPageTitle(title);
   }
 
+  function accessibilityFocus(elem: string | HTMLElement) {
+    const element: HTMLElement|null = elem instanceof HTMLElement ? elem : document.querySelector(elem);
+
+    if(!element) {
+      console.warn('Tried to focus non existing element');
+    }
+
+    element?.classList.add('focus-hidden');
+    element?.focus();
+    element?.addEventListener('blur', () => {
+      element?.classList.remove('focus-hidden');
+    }, { once: true });
+  }
+
   return {
-    setTitle
+    setTitle,
+      accessibilityFocus
   }
 });

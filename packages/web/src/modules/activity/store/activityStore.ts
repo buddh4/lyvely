@@ -8,8 +8,8 @@ import {
   LoadedTimingIdStore,
   CalendarIntervalEnum
 } from '@lyvely/common';
-import { useProfileStore } from '@/modules/user/store/profile.store';
-import { useTimingStore } from '@/modules/calendar/store';
+import { useProfileStore } from '@/modules/profile/stores/profile.store';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
 import activityRepository from '@/modules/activity/repositories/activity.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 import { reactive } from 'vue';
@@ -28,7 +28,7 @@ export const useActivityStore = defineStore('activity', () => {
   const status = useStatus();
   const habitPlanStore = useHabitPlanStore();
   const taskPlanStore = useTaskPlanStore();
-  const timingStore = useTimingStore();
+  const calendarPlanStore = useCalendarPlanStore();
   const cache = reactive(new ActivityDataPointStore());
   const tidCache = reactive(new LoadedTimingIdStore());
   const filter = reactive(new ActivityFilter());
@@ -41,7 +41,7 @@ export const useActivityStore = defineStore('activity', () => {
       DialogExceptionHandler('No profile selected.', this)();
     }
 
-    const intervalFilter = tidCache.getDataPointIntervalFilter(timingStore.date);
+    const intervalFilter = tidCache.getDataPointIntervalFilter(calendarPlanStore.date);
 
     if(intervalFilter === false) {
       status.setStatus(Status.SUCCESS);
@@ -50,7 +50,7 @@ export const useActivityStore = defineStore('activity', () => {
 
     // TODO: Check if date already loaded + implement interval level query
     // Only show loader if we need to load the current date
-    //if(!timingStore.getDataPointIntervalFilter(date)) {
+    //if(!calendarPlanStore.getDataPointIntervalFilter(date)) {
       status.setStatus(Status.LOADING);
     //}
 
@@ -59,7 +59,7 @@ export const useActivityStore = defineStore('activity', () => {
       tasks.forEach(task => taskPlanStore.addTask(task));
       habits.forEach(habit => habitPlanStore.addHabit(habit));
       dataPoints.forEach(dataPoint => habitPlanStore.addDataPoint(dataPoint));
-      //timingStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded));
+      //calendarPlanStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded));
       status.setStatus(Status.SUCCESS);
     } catch(e) {
       DialogExceptionHandler('An unknown error occurred while loading activities.', this)(e);

@@ -1,5 +1,5 @@
 import { getCalendarPlanOptions } from '@lyvely/common';
-import { useProfileStore } from '@/modules/user/store/profile.store';
+import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { computed, toRefs } from 'vue';
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
 

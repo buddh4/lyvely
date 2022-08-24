@@ -1,36 +1,68 @@
 import { defineStore } from 'pinia';
-import { toTimingId, CalendarPlan, CalendarIntervalEnum } from '@lyvely/common';
+import { toTimingId, CalendarPlan, CalendarIntervalEnum, isToday as isTodayUtil, isInFuture as isInFutureUtil } from '@lyvely/common';
+import { ref, computed, watch} from 'vue';
+import { useActivityStore } from "@/modules/activity/store/activityStore";
 
-export const useTimingStore = defineStore('timing', {
-  state: () => ({
-    currentDate: new Date(),
-    dragActive: false
-  }),
-  getters: {
-    date: (state) => <Date> state.currentDate
-  },
-  actions: {
-    getTimingId(plan: CalendarIntervalEnum) {
-      return toTimingId(this.date, plan);
-    },
-    setDragActive(drag: boolean) {
-      this.dragActive = drag;
-    },
-    setCurrentDate(date: Date) {
-      this.currentDate = date;
-    },
-    decrementTiming(plan: CalendarIntervalEnum) {
-      const calendarPlan = CalendarPlan.getInstance(plan);
-      // not sure why we need to cast here...
-      this.setCurrentDate(calendarPlan.decrement(<Date> this.date));
-    },
-    isInFurure(): boolean {
-      return this.date > new Date();
-    },
-    incrementTiming(plan: CalendarIntervalEnum) {
-      const calendarPlan = CalendarPlan.getInstance(plan);
-      // not sure why we need to cast here...
-      this.currentDate = calendarPlan.increment(<Date> this.date);
-    }
+export const useCalendarPlanStore = defineStore('timing', () => {
+
+  const date = ref(new Date());
+  const dragActive = ref(false);
+
+  watch(date, () => {
+    useActivityStore().loadActivities();
+  })
+
+  function getTimingId(interval: CalendarIntervalEnum) {
+    return toTimingId(date.value, interval);
+  }
+
+  function setDragActive(drag: boolean) {
+    dragActive.value = drag;
+  }
+
+  function switchToToday() {
+    date.value = new Date();
+  }
+
+  function _setCurrentDate(d: Date) {
+    date.value = d;
+  }
+
+  function decrementTiming(plan: CalendarIntervalEnum|CalendarPlan) {
+    _setCurrentDate(getPreviousDate(plan));
+  }
+
+  function incrementTiming(plan: CalendarIntervalEnum|CalendarPlan) {
+    _setCurrentDate(getNextDate(plan));
+  }
+
+  function getCalendarPlan(plan: CalendarIntervalEnum|CalendarPlan) {
+    return plan instanceof CalendarPlan ? plan : CalendarPlan.getInstance(plan);
+  }
+
+  function getNextDate(plan: CalendarIntervalEnum|CalendarPlan) {
+    return getCalendarPlan(plan).increment(date.value);
+  }
+
+  function getPreviousDate(plan: CalendarIntervalEnum|CalendarPlan) {
+    return getCalendarPlan(plan).decrement(date.value);
+  }
+
+  const isInFuture = computed(() => isInFutureUtil(date.value));
+  const isToday = computed(() => isTodayUtil(date.value));
+
+  return {
+    date,
+    dragActive,
+    getTimingId,
+    setDragActive,
+    switchToToday,
+    decrementTiming,
+    incrementTiming,
+    getNextDate,
+    getPreviousDate,
+    isInFuture,
+    isToday
+
   }
 });

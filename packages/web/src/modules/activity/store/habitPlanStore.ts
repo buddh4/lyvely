@@ -5,19 +5,18 @@ import {
   IActivity,
   ITimeSeriesNumberDataPoint,
   CalendarIntervalEnum,
-  getCalendarPlanOptions,
   IHabit,
   HabitDto,
   NumberDataPointDto
 } from '@lyvely/common';
-import { useProfileStore } from '@/modules/user/store/profile.store';
-import { useTimingStore } from '@/modules/calendar/store';
+import { useProfileStore } from '@/modules/profile/stores/profile.store';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import { MoveActivityEvent, useActivityStore } from "@/modules/activity/store/activityStore";
 
 export const useHabitPlanStore = defineStore('habitPlan', () => {
   const activityStore = useActivityStore();
-  const timingStore = useTimingStore();
+  const calendarPlanStore = useCalendarPlanStore();
   const profileStore = useProfileStore();
 
   async function move(moveEvent: MoveActivityEvent) {
@@ -41,14 +40,14 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   }
 
   function getDataPoint(activity: IActivity) {
-    const timingId = toTimingId(timingStore.date, activity.dataPointConfig.interval);
+    const timingId = toTimingId(calendarPlanStore.date, activity.dataPointConfig.interval);
     return activityStore.cache.getDataPoint(activity, timingId, true);
   }
 
   async function updateDataPoint(log: ITimeSeriesNumberDataPoint, value: number) {
     try {
       const { data } = await habitsRepository.updateDataPoint(log.cid, {
-        date: formatDate(timingStore.date),
+        date: formatDate(calendarPlanStore.date),
         value: value
       });
 

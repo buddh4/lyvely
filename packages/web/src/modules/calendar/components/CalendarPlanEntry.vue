@@ -2,7 +2,7 @@
 import TagList from '@/modules/tag/components/TagList.vue';
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanEntryMenu.vue';
-import { useTimingStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
 import { TimingModel } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
 
@@ -13,11 +13,11 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {draggable: true,});
 
-const emit = defineEmits(['details', 'edit', 'archive', 'selectTag']);
+const emit = defineEmits(['details', 'edit', 'archive', 'selectTag', 'moveUp', 'moveDown']);
 
-const timingStore = useTimingStore();
+const calendarPlanStore = useCalendarPlanStore();
 
-const dragActive = computed(() => props.draggable && timingStore.dragActive);
+const dragActive = computed(() => props.draggable && calendarPlanStore.dragActive);
 const classNames = computed(() => [
   'flex',
   'justify-between',
@@ -34,8 +34,13 @@ const { model } = toRefs(props);
 </script>
 
 <template>
-  <div :data-entry-id="model.id" :class="classNames">
-    <Icon v-if="dragActive" name="drag" class="mr-2 text-secondary fill-current my-auto w-5 cursor-pointer"/>
+  <div role="listitem" :data-entry-id="model.id" :class="classNames">
+    <button
+        v-if="dragActive" class="item-drag-button mr-2 my-auto w-5 cursor-move text-secondary"
+        @keyup.shift.up="$emit('moveUp', model, $el)"
+        @keyup.shift.down="$emit('moveDown', model, $el)">
+      <Icon  name="drag" class="fill-current w-5 "/>
+    </button>
 
     <div class="mr-auto">
       <div class="entry-title-bar flex items-center">

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Tag from "./Tag.vue";
-import { useProfileStore } from "@/modules/user/store/profile.store";
+import { useProfileStore } from "@/modules/profile/stores/profile.store";
 import { computed } from 'vue';
 
 interface Props {

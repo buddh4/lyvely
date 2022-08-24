@@ -7,7 +7,7 @@ import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { computed } from 'vue';
-import { useProfileStore } from "@/modules/user/store/profile.store";
+import { useProfileStore } from "@/modules/profile/stores/profile.store";
 import useEditModelStore from "@/modules/common/stores/editModelStore";
 
 type EditModel = EditHabitDto|EditTaskDto;

@@ -8,6 +8,30 @@
       }
     }
   },
+  "calendar": {
+    "today": "Today",
+    "interval": {
+      "0": "Unscheduled",
+      "1": "Yearly",
+      "2": "Quarterly",
+      "3": "Monthly",
+      "4": "Weekly",
+      "5": "Daily"
+    },
+    "plan": {
+      "nav-today": "Switch to today",
+      "aria": {
+        "move-success": "Item was successfully moved from index {from} to {to}",
+        "move-boundary": "Item cannot be moved further",
+        "drag-button": "Change order of current item {title}",
+        "nav-back": "Navigate back to {time}",
+        "nav-next": "Navigate forward to {time}",
+        "root": "Calendar plan accordion",
+        "header": "Calendar plan for {time}",
+        "drag-toggle-button": "Activates draggable buttons in calendar plan list items"
+      }
+    }
+  },
   "filter": {
     "all": "All",
     "archive": "Show archived entries",
@@ -71,6 +95,9 @@
     },
     "view": {
       "title": "Tags",
+      "aria": {
+        "title": "Tag overview list"
+      },
       "search": "Search tags"
     },
     "labels": {

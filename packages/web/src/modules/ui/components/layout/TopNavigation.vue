@@ -2,7 +2,7 @@
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
 import { useAuthStore } from '@/modules/user/store/auth.store';
-import { useProfileStore } from '@/modules/user/store/profile.store';
+import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { computed } from 'vue';
 
 defineEmits(['toggleNav']);

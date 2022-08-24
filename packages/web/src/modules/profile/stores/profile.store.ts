@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
 import { ProfileDto, ITag, IProfile } from '@lyvely/common';
 
-import profileRepository from '@/modules/user/repositories/profile.repository';
+import profileRepository from '@/modules/profile/repositories/profile.repository';
 import { localStorageManager } from '@/util/storage';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 
@@ -113,6 +113,7 @@ export const useProfileStore = defineStore('profile', () => {
     updateScore,
     tagOptions,
     getTags,
+    locale,
     updateTags,
     updateProfileCategories,
     ...status

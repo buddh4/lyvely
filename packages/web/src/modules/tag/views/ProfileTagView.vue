@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 import Tag from '@/modules/tag/components/Tag.vue';
-import { useProfileStore } from "@/modules/user/store/profile.store";
-import { computed, ref, Ref, toRefs } from 'vue';
+import { useProfileStore } from "@/modules/profile/stores/profile.store";
+import { computed, ref, Ref, toRefs, onMounted } from 'vue';
 import Button from "@/modules/ui/components/button/Button.vue";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
 import EditTagModal from "@/modules/tag/components/EditTagModal.vue";
@@ -12,6 +12,7 @@ import ListPage from "@/modules/ui/components/layout/ListPage.vue";
 import { Size } from '@/modules/ui/types';
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import Badge from "@/modules/ui/components/badge/Badge.vue";
+import { usePageStore } from "@/modules/core/store/page.store";
 
 class TagFilter {
   query: string;
@@ -82,11 +83,12 @@ function confirmArchive(tag: ITag) {
 
 }
 
+onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
 </script>
 
 <template>
   <MainContainer id="activity-overview" :width="Size.LG">
-    <ListPage title="tags.view.title" icon="tags">
+    <ListPage title="tags.view.title" aria-label="tags.view.aria.title" icon="tags">
       <template #header-right>
         <AddButton @click="setCreateTag"/>
       </template>

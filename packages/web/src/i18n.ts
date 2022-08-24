@@ -9,8 +9,8 @@ export function getI18n() {
   return i18n;
 }
 
-export function translate(key: string) {
-  return (<any> getI18n().global).t(key);
+export function translate(key: string, options?: any) {
+  return (<any> getI18n().global).t(key, options);
 }
 
 export function setupI18n(options = { locale: "en" }) {

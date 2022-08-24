@@ -3,7 +3,7 @@ import { ITimeSeriesContent, ITimeSeriesDataPoint } from '../interfaces';
 type TimeSeriesContentIdentity = ITimeSeriesContent | string;
 
 /**
- * This class is used to store time series content and related data points.
+ * This class is used to stores time series content and related data points.
  */
 export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent, DataPointModel extends ITimeSeriesDataPoint> {
   models: Map<string, Model> = new Map();

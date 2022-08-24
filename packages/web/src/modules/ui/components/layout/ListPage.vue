@@ -3,6 +3,7 @@ import Icon from "@/modules/ui/components/icon/Icon.vue";
 
 interface Props {
   title: string,
+  ariaLabel?: string,
   icon?: string
 }
 
@@ -12,8 +13,8 @@ defineProps<Props>();
 
 <template>
     <div class="list-page-root border border-divide rounded divide-y">
-      <div class="prose max-w-none py-2 px-3 ">
-        <h4 class="inline-block m-0"><Icon v-if="icon" :name="icon" class="mr-2" /> {{ $t(title) }}</h4>
+      <div class="max-w-none py-2 px-3 ">
+        <h1 class=" list-page-headline inline-block font-medium m-0" tabindex="-1" :aria-label="$t(ariaLabel || title)"><Icon v-if="icon" :name="icon" class="mr-1" /> {{ $t(title) }}</h1>
         <div class="float-right inline-block">
           <slot name="header-right"></slot>
         </div>

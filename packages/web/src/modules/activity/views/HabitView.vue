@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import EditHabitModal from '@/modules/activity/components/habits/EditHabitModal.vue';
 import ActivityPlanList from '@/modules/activity/components/ActivityCalendarPlan.vue';
-import TimingList from '@/modules/calendar/components/CalendarPlan.vue';
+import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
-import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
-import { useActivityStore } from '@/modules/activity/store/activityStore';
-import { computed, onBeforeMount } from 'vue';
+import { computed } from 'vue';
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
 
 const type = ActivityType.Habit;
@@ -18,9 +16,9 @@ const intervals = computed(() => getCalendarPlanArray());
 </script>
 
 <template>
-    <TimingList>
+    <CalendarPlan>
       <ActivityPlanList v-for="interval in intervals" :key="interval" :interval="interval" :type="type" />
-    </TimingList>
+    </CalendarPlan>
 
     <EditHabitModal />
 

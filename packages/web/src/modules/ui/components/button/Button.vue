@@ -5,11 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { toRefs, ref } from 'vue';
+import { toRefs, ref, onMounted, Ref } from 'vue';
 import { includesUtilityClass } from '@/modules/ui/utils';
 import { RouteRecord } from 'vue-router';
 import { ConfirmOptions } from "@/modules/ui/components/modal/ConfirmOptions";
 import ConfirmModal from "@/modules/ui/components/modal/ConfirmModal.vue";
+import { isDevelopEnvironment } from "@/modules/core/environment";
 
 interface Props {
   submit?: boolean,
@@ -27,7 +28,6 @@ const props = withDefaults(defineProps<Props>(), {
   label: undefined,
   active: false,
   border: true,
-  title: undefined,
   disabled: false,
   rounded: true,
   route: undefined,
@@ -63,15 +63,31 @@ function onClick() {
   }
 }
 
+const button = ref(null) as Ref<HTMLElement | null>;
+
+if(isDevelopEnvironment()) {
+  onMounted(() => {
+    if (!button.value) return;
+    const buttonEl = button.value;
+    if (!buttonEl.getAttribute('label')
+        && !buttonEl.getAttribute('aria-label')
+        && !buttonEl.textContent
+        && buttonEl.getAttribute('aria-hidden') !== 'true') {
+      console.warn('Button without aria information detected')
+      console.log({ariaMissingIn: buttonEl})
+    }
+  })
+}
+
 const { label } = toRefs(props);
 </script>
 
 <template>
-  <button v-if="!route" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
+  <button v-if="!route" ref="button" :aria-selected="$attrs['aria-selected'] || (active) ? 'true' : 'false'" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
     <slot>{{ $t(label) }}</slot>
   </button>
-  <router-link v-if="route" v-slot="{ navigate, isActive }" :to="route" custom>
-    <button :class="getClassNames($attrs.class, isActive)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="navigate">
+  <router-link v-if="route"  v-slot="{ navigate, isActive }" :to="route" custom>
+    <button ref="button" :class="getClassNames($attrs.class, isActive)" :aria-selected="isActive ? 'true' : 'false'" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="navigate">
       <slot>{{ $t(label) }}</slot>
     </button>
   </router-link>

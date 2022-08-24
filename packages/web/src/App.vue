@@ -5,6 +5,7 @@ import MobileFooterNavigation from '@/modules/ui/components/layout/MobileFooterN
 import SidebarNavigation from '@/modules/ui/components/layout/MainViewNavigation.vue';
 import { ref, toRefs } from 'vue'
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
+import AriaLiveStatus from "@/modules/accessibility/components/AriaLiveStatus.vue";
 
 const sidebar = ref<SidebarNavigation|null>(null);
 
@@ -26,5 +27,6 @@ const { visible, icon, iconColor, iconClass, title, message,  } = toRefs(useGlob
 
   </div>
   <MobileFooterNavigation />
+  <AriaLiveStatus />
   <Dialog v-model="visible" :icon="icon" :icon-color="iconColor" :icon-class="iconClass" :title="title" :message="message" />
 </template>

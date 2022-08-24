@@ -55,10 +55,10 @@ router.beforeEach((to, from, next) => {
   Promise.all(promises)
     .then(() => next())
     .catch(err => {
-    console.error(err);
-    if(err?.response?.status === 401) {
-      next('/login');
-    }
+      console.error(err);
+      if(err?.response?.status === 401) {
+        next('/login');
+      }
   });
 })
 

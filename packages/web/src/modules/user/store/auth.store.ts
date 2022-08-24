@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
 import authRepository from '@/modules/user/repositories/auth.repository';
-import { IUser , Headers } from '@lyvely/common';
+import { IUser  } from '@lyvely/common';
 import { setI18nLanguage } from '@/i18n';
 import { localStorageManager, sessionStorageManager } from '@/util/storage';
 import { useAsEmitter } from '@/util/emitter';
 import mitt from 'mitt';
-import repository from '@/repository';
+import { useProfileStore } from "@/modules/profile/stores/profile.store";
 
 export const visitorId = localStorageManager.getStoredValue('visitorId');
 
@@ -29,6 +29,8 @@ export const useAuthStore = defineStore('auth', {
   getters: {
     emitter: () => emitter,
     isAuthenticated: (state) => !!state.visitorId,
+    locale: (state) => state.user?.locale || ((navigator.languages && navigator.languages.length) ? navigator.languages[0] : navigator.language)
+
   },
   actions: {
     async login(username: string, password: string): Promise<boolean> {
