@@ -95,7 +95,7 @@ const sliderStyle = computed(() => {
 </script>
 
 <template>
-  <div id="filter-nav" class="flex flex-row content-left clearfix ms-2 me-2 mb-2">
+  <nav id="filter-nav" class="flex flex-row content-left clearfix ms-2 me-2 mb-2">
     <Button
       :class="[roundButton]"
       :active="dragActive"
@@ -135,7 +135,7 @@ const sliderStyle = computed(() => {
         <Icon name="filter" />
       </Button>
     </div>
-  </div>
+  </nav>
 </template>
 
 <style scoped>

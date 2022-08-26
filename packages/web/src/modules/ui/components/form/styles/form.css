@@ -3,6 +3,29 @@
     padding:0 !important;
 }
 
+.multiselect input {
+    border:0 !important;
+    padding:0 !important;
+    background-color: transparent;
+}
+
+.dark .multiselect {
+    --tw-border-opacity: 0.25;
+    background-color: rgb(30 41 59) !important;
+}
+
+.dark .multiselect .multiselect-dropdown {
+    background-color: rgb(30 41 59) !important;
+}
+
+.dark .multiselect .multiselect-dropdown li:hover {
+    background-color: rgb(30 41 59) !important;
+}
+
+.dark .multiselect .multiselect-clear-icon {
+    fill: white !important;
+}
+
 .multiselect input:focus {
     border:0 !important;
     --tw-ring-shadow: none !important;
@@ -234,7 +257,7 @@ input[type=range]:focus::-moz-range-thumb {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
     height:calc(3.5rem + 2px);
-    @apply block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50;
+    @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-slate-800 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50;
 }
 
 textarea.floating-input {

@@ -19,6 +19,10 @@ export default function() {
     return activityEditStore.getError(field);
   }
 
+  function getErrors(field: string) {
+    return activityEditStore.getErrors();
+  }
+
   function onHide() {
     return activityEditStore.reset();
   }
@@ -32,6 +36,7 @@ export default function() {
     modalTitle,
     showModal,
     getError,
+    getErrors,
     onHide,
     onSubmit,
     tagOptions,

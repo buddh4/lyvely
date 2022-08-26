@@ -73,10 +73,10 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
 </script>
 
 <template>
-  <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
+  <nav v-if="isAuthenticated" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
     <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div>
-        <a class="sidebar-brand">
+        <a class="flex items-center no-underline text-base font-extrabold uppercase tracking-wider h-12 px-3">
           <Icon name="lyvely" class="fill-current text-lyvely mr-2 " /> <img class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg" />
         </a>
       </div>
@@ -85,11 +85,11 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
         <li>
           <template v-for="menuItem in menuItems" :key="menuItem.label">
             <a v-if="menuItem.click" :class="menuItemClasses" @click="menuItem.click">
-              <Icon :name="menuItem.icon" class="fill-current mr-2 opacity-50" />
+              <Icon :name="menuItem.icon" />
               {{ $t(menuItem.label) }}
             </a>
             <router-link v-else :class="menuItemClasses" :to="menuItem.to">
-              <Icon :name="menuItem.icon" class="fill-current mr-2 opacity-50" />
+              <Icon :name="menuItem.icon" />
               {{ $t(menuItem.label) }}
             </router-link>
           </template>
@@ -110,30 +110,11 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
 }
 
 .sidebar {
-  @apply bg-sidebar;
   min-width: 260px;
   max-width: 260px;
   transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out, margin-right 0.35s ease-in-out,
     right 0.35s ease-in-out;
   direction: ltr;
-}
-
-.sidebar-brand {
-  @apply flex items-center no-underline text-base font-extrabold uppercase tracking-wider h-12 px-3;
-}
-
-.sidebar a {
-  border-left: 4px solid transparent;
-  color: var(--color-fg-sidebar);
-}
-
-.sidebar .nav a.router-link-active {
-  font-weight: 700;
-  border-left: 4px solid var(--color-highlight);
-}
-
-.sidebar .nav a.router-link-active .icon {
-  opacity: 1;
 }
 
 @media (max-width: 991.98px) {

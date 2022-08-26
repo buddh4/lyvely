@@ -1,6 +1,12 @@
 {
   "modal": {
+    "aria": {
+      "root": "This is a modal window. To close this window use the cancel button or press escape or submit the modal by using the submit button."
+    },
     "confirm": {
+      "aria": {
+        "root": "This is a confirm modal. You can either confirm or cancel your last action."
+      },
       "default": {
         "title": "Confirm action",
         "text": "Do you really want to perform this action?",
@@ -44,8 +50,10 @@
     "empty": "No entries found."
   },
   "common": {
+    "create-new": "Create new",
     "close": "Close",
     "cancel": "Cancel",
+    "back": "Back",
     "submit": "Submit",
     "archived": "Archived",
     "archive": "Archive",

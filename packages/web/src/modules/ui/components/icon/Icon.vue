@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { IconName } from '@/modules/ui/components/icon/Icons';
-import { getIconByName } from '@/modules/ui/components/icon/Icons';
+import { IconName , getIconByName } from '@/modules/ui/components/icon/Icons';
 import { computed } from 'vue';
 import { CssClassDefinition, StyleDefinition } from '@/util/component.types';
 import { IconOptions } from '@/modules/ui/types';
@@ -50,7 +49,7 @@ function getClassNames(attrClasses: any) {
 </script>
 
 <template>
-  <svg v-if="definition" :class="getClassNames($attrs.class)" :style="styleObject" :viewBox="definition.viewBox">
+  <svg v-if="definition" aria-hidden="true" :class="getClassNames($attrs.class)" :style="styleObject" :viewBox="definition.viewBox">
     <path v-for="path in definition.paths" :key="path" :d="path"></path>
   </svg>
 </template>

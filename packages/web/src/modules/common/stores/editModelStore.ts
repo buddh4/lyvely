@@ -97,6 +97,10 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
     return validator?.value?.getError(field);
   }
 
+  function getErrors() {
+    return validator?.value?.getErrors();
+  }
+
   return {
     model,
     modelId,
@@ -107,6 +111,7 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
     setCreateModel,
     submit,
     getError,
+    getErrors,
     reset
   }
 }

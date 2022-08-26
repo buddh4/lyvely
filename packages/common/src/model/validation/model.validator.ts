@@ -24,6 +24,10 @@ export class ModelValidator {
     this.errorArr = [];
   }
 
+  getErrors() {
+    return Object.values(this.errors);
+  }
+
   getError(field: string) {
     return this.errors[field];
   }

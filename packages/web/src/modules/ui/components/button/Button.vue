@@ -14,7 +14,7 @@ import { isDevelopEnvironment } from "@/modules/core/environment";
 
 interface Props {
   submit?: boolean,
-  label?: string,
+  text?: string,
   active?: boolean,
   border?: boolean,
   disabled?: boolean,
@@ -29,6 +29,7 @@ const props = withDefaults(defineProps<Props>(), {
   label: undefined,
   active: false,
   border: true,
+  text: '',
   disabled: false,
   rounded: true,
   route: undefined,
@@ -106,11 +107,11 @@ const { label } = toRefs(props);
 
 <template>
   <button v-if="!route" ref="button" :aria-pressed="getAriaPressed($attrs)" :aria-selected="getAriaSelected($attrs)" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
-    <slot>{{ $t(label) }}</slot>
+    <slot>{{ $t(text) }}</slot>
   </button>
   <router-link v-if="route"  v-slot="{ navigate, isActive }" :to="route" custom>
     <button ref="button" :class="getClassNames($attrs.class, isActive)" :aria-selected="isActive ? 'true' : 'false'" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="navigate">
-      <slot>{{ $t(label) }}</slot>
+      <slot>{{ $t(text) }}</slot>
     </button>
   </router-link>
 

@@ -5,6 +5,7 @@ import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
 import { computed } from 'vue';
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
+import FloatingAddButton from "@/modules/ui/components/button/FloatingAddButton.vue";
 
 const type = ActivityType.Habit;
 
@@ -22,7 +23,7 @@ const intervals = computed(() => getCalendarPlanArray());
 
     <EditHabitModal />
 
-    <a class="btn-add" @click="createEntry">+</a>
+    <FloatingAddButton @click="createEntry" />
 </template>
 
 <style scoped>

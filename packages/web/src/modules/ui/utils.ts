@@ -1,7 +1,26 @@
 export const SELECTOR_FORM_FIELD = 'input,textarea,select';
+export const SELECTOR_FOCUSABLE = SELECTOR_FORM_FIELD+',button,object,[href],[tabindex]';
 
-export function findInput(root?: HTMLElement|null) {
+export function findFirstInput(root?: HTMLElement|null) {
   return <HTMLElement|undefined> root?.querySelector(SELECTOR_FORM_FIELD);
+}
+
+export function isFocusable(root?: HTMLElement|null) {
+  return !!root?.matches(SELECTOR_FOCUSABLE);
+}
+
+export function findFocusable(root?: HTMLElement|null) {
+  debugger;
+  return _ifFocusable(root) || root?.querySelector<HTMLElement>(SELECTOR_FOCUSABLE);
+}
+
+export function suggestFocusElement(root?: HTMLElement|null) {
+  return findFirstInput(root) || _ifFocusable(root, 'h1') || _ifFocusable(root);
+}
+
+function _ifFocusable(root?: HTMLElement|null, selector?: string) {
+  const elem = selector ? root?.querySelector<HTMLElement>(selector) : root;
+  return isFocusable(elem) ? elem : null;
 }
 
 export function includesUtilityClass(classNames: string, prefix: string) {

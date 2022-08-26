@@ -45,7 +45,7 @@ function cancel() {
 </script>
 
 <template>
-<Modal v-model="showModal" :title="confirmTitle" :cancel-button-text="confirmCancel" :submit-button-text="confirmConfirm" @submit="confirm" @cancel="cancel">
+<Modal v-model="showModal" :aria-label="$t('modal.confirm.aria.root')" :title="confirmTitle" :cancel-button-text="confirmCancel" :submit-button-text="confirmConfirm" @submit="confirm" @cancel="cancel">
  <template #body>
    <slot>{{ $t(confirmText) }}</slot>
  </template>

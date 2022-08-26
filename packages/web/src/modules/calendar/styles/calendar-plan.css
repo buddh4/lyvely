@@ -7,11 +7,11 @@
 }
 
 .calendar-plan-header-item {
-    @apply text-center border;
+    @apply text-center border dark:bg-gray-700;
 }
 
 .calendar-plan-item:not(.calendar-plan-header-item) {
-    @apply bg-content;
+    @apply dark:bg-gray-800;
 }
 
 .calendar-plan-header-item:first-child {
@@ -38,12 +38,8 @@
     @apply rounded-b;
 }
 
-#calendar-plan-unscheduled + section {
-    @apply rounded-b border-b
-}
-
-#calendar-plan-unscheduled + section .calendar-plan-list-items {
-    @apply rounded-b
+#calendar-plan-items-unscheduled .calendar-plan-items {
+    @apply rounded-b border-b border-divide
 }
 
 .calendar-plan-title {

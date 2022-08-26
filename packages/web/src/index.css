@@ -11,24 +11,4 @@ html {
   height: 100%;
 }
 
-.btn-add {
-  position: fixed;
-  cursor: pointer;
-  bottom: 20px;
-  right: 20px;
-  width: 35px;
-  height: 35px;
-  background-color: var(--color-inverted);
-  color: var(--color-primary);
-  border-radius: 50%;
-  font-size: 1.8em;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.1;
-  z-index: 2;
-  text-decoration: none;
-  box-shadow: rgba(182, 182, 182, 0.66) 0 2px 5px 1px;
-  @apply md:right-16
-}
-
 

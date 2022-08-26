@@ -2,7 +2,9 @@
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
 import { computed, toRefs, ref, Ref, watch } from 'vue';
-import { findInput } from "@/modules/ui/utils";
+import { suggestFocusElement } from "@/modules/ui/utils";
+import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibilityStore";
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
 const emit = defineEmits([
   'submit',
@@ -12,14 +14,13 @@ const emit = defineEmits([
   'update:modelValue'
 ]);
 
-export interface ModalProps {
+interface ModalProps {
   modelValue: boolean,
   footerVisibility?: string,
   title: string,
   icon?: string,
   iconColor?: string,
   iconClass?: string,
-  backButton?: boolean,
   cancelButton?: boolean,
   cancelButtonText?: string,
   cancelButtonClass?: string,
@@ -27,6 +28,7 @@ export interface ModalProps {
   submitButtonText?: string,
   submitOnEnter?: boolean,
   prevAutoFocus?: boolean,
+  ariaLabel?: string,
 }
 
 const props = withDefaults(defineProps<ModalProps>(), {
@@ -41,7 +43,8 @@ const props = withDefaults(defineProps<ModalProps>(), {
   iconColor: undefined,
   iconClass: undefined,
   submitOnEnter: true,
-  prevAutoFocus: false
+  prevAutoFocus: false,
+  ariaLabel: undefined
 });
 
 const cancelButtonClass = computed(() => [props.cancelButtonClass, 'm-1']);
@@ -63,22 +66,30 @@ function submitOnEnter() {
 
 const rootEl = ref(null) as Ref<HTMLElement|null>;
 const { modelValue } = toRefs(props);
+const { activate, deactivate } = useFocusTrap(rootEl);
 
 if(!props.prevAutoFocus) {
   watch([modelValue], () => {
+    console.log('Modal state: '+modelValue.value);
+
+    if(!modelValue.value) {
+      deactivate();
+    }
+
+    useAccessibilityStore().setAriaHiddenApp(modelValue.value);
     setTimeout(() => {
       if(rootEl.value) {
-        findInput(rootEl.value)?.focus();
+        activate();
+        suggestFocusElement(rootEl.value)?.focus();
       }
-    },0)
-
+    },100);
   });
 }
 
-const counter = ref(0);
 </script>
 
 <template>
+  <Teleport to="body">
   <transition
       name="modal-transition"
       mode="out-in"
@@ -88,44 +99,49 @@ const counter = ref(0);
     <div
         v-if="modelValue"
         ref="rootEl"
-        class="min-w-screen
-    h-screen animated
-    fadeIn faster
-    fixed
-    left-0 top-0 flex justify-center items-center inset-0
-     z-50 outline-none focus:outline-none bg-no-repeat bg-center
-     bg-cover overflow-y-auto" tabindex="-1" @keyup.esc="close" @keyup.enter="submitOnEnter">
+        class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0
+        z-50 outline-none focus:outline-none bg-no-repeat bg-center
+        bg-cover overflow-y-auto"
+        tabindex="1"
+        aria-hidden="false"
+        :aria-label="ariaLabel || $t('modal.aria.root')"
+        @keyup.esc="close"
+        @keyup.enter="submitOnEnter">
 
       <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
       <div
-v-if="modelValue"
-           class="w-full max-w-lg absolute mx-auto md:rounded-sm shadow-lg bg-white top-0 md:top-1/4 h-full md:h-auto">
+          v-if="modelValue"
+          class="w-full max-w-lg absolute mx-auto md:rounded-sm shadow-lg bg-white dark:bg-slate-800 top-0 md:top-1/4 h-full md:h-auto">
         <div>
-          <div class="flex items-center px-5 pt-5 pb-3 rounded-t-sm bg-white" data-modal-header>
+          <div class="flex items-center px-5 pt-5 pb-3 rounded-t-sm" data-modal-header>
             <slot name="header">
               <button
-                  v-if="backButton"
+                  v-if="cancelButton"
+                  aria-hidden="true"
                   role="button"
-                  data-bs-dismiss="modal"
-                  aria-label="Back"
-                  class="align-middle inline-block mr-2"
+                  class="align-middle inline-block mr-2 md:hidden"
                   @click="cancel">
                 <Icon name="back" css-class="w-3.5"/>
               </button>
 
-              <h5 class="text-lg inline-block align-middle flex align-items-center">
+              <h1 class="text-lg inline-block align-middle flex align-items-center" tabindex="-1">
                 <Icon
-v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass"
-                      :color="iconColor"></Icon>
-                {{ $t(title) }}
-              </h5>
+                    v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass"
+                    :color="iconColor" />
+                   {{ $t(title) }}
+              </h1>
             </slot>
 
             <Button
-v-if="submitButton" data-modal-submit
-                    class="primary rounded-full text-xs float-right align-middle ml-auto md:invisible px-2 py-0.5"
+v-if="submitButton"
+                    aria-hidden="true"
+                    class="primary rounded-full text-xs float-right align-middle ml-auto md:hidden px-2 py-0.5"
                     @click="$emit('submit')">
               {{ $t(submitButtonText) }}
+            </Button>
+
+            <Button class="float-right align-middle font-bold ml-auto hidden md:inline-block px-2 py-0.5" @click="cancel">
+              x
             </Button>
 
           </div>
@@ -151,6 +167,7 @@ v-if="submitButton" data-modal-submit
       </div>
     </div>
   </transition>
+  </Teleport>
 </template>
 
 

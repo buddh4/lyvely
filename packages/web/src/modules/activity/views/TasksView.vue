@@ -4,10 +4,9 @@ import ActivityPlanList from '@/modules/activity/components/ActivityCalendarPlan
 import TimingList from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType , getCalendarPlanArray } from '@lyvely/common';
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
-import { computed, onBeforeMount } from 'vue';
-import { useActivityStore } from '@/modules/activity/store/activityStore';
-import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
+import { computed } from 'vue';
 import { usePageStore } from "@/modules/core/store/page.store";
+import FloatingAddButton from "@/modules/ui/components/button/FloatingAddButton.vue";
 
 const type = ActivityType.Task;
 
@@ -28,5 +27,5 @@ usePageStore().setTitle(['Tasks']);
 
     <EditTaskModal />
 
-    <a class="btn-add" @click="createEntry">+</a>
+    <FloatingAddButton @click="createEntry" />
 </template>

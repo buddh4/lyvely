@@ -32,6 +32,7 @@ module.exports = {
         sidebar: "var(--color-bg-sidebar)",
         lyvely: "var(--color-lyvely)",
         inverted: "var(--color-inverted)",
+        pop: "var(--color-pop)",
         divide: "var(--color-divide)",
         primary: {
           light: "var(--color-primary-light)",

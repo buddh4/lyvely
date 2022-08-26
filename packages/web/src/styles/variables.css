@@ -36,12 +36,13 @@
     --color-fg-sidebar: #ffffff;
     --color-bg-body: rgb(243 244 246);
 
-    --color-highlight: #48ce48;
+    --color-pop: #48ce48;
 }
 
 .dark {
-    --color-bg-body: #1C2039;
-    --color-bg-sidebar: #252C47;
+    --color-divide: rgba(255,255,255,0.125);
+    --color-bg-sidebar: #293042;
+    --color-bg-body: #333b52;;
     --color-bg-content: #293042;
     --color-secondary: #dcdcdc;
     --color-inverted: rgba(0, 0, 0, 0.80);

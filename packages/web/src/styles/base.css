@@ -1,10 +1,39 @@
 @tailwind base;
 
 body {
-    @apply bg-gray-100 text-base dark:text-slate-100;
-    background-color: var(--color-bg-body);
+    @apply bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-100;
     overflow: auto;
     height: 100%;
+}
+
+#sidebar {
+    @apply bg-slate-900
+}
+
+#sidebar a {
+    @apply text-slate-100;
+    border-left: 4px solid transparent;
+}
+
+#sidebar .nav a .icon {
+    @apply fill-current mr-2 opacity-50;
+    border-left: 4px solid transparent;
+}
+
+#sidebar .nav a.router-link-active {
+    @apply font-bold border-l-4 border-pop;
+}
+
+#sidebar .nav a:hover:not(.router-link-active) {
+    @apply border-l-4 border-slate-600;
+}
+
+#sidebar .nav a.router-link-active .icon {
+    opacity: 1;
+}
+
+#top-navigation {
+    @apply flex items-center justify-between flex-wrap overflow-hidden h-12 px-4 z-40 shadow dark:shadow-slate-900;
 }
 
 #main {
@@ -21,7 +50,7 @@ a {
 }
 
 .focus-hidden {
-   outline: none;
+    outline: none;
 }
 
 :focus:not(.focus-hidden), :focus-visible:not(.focus-hidden) {

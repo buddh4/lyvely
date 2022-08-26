@@ -25,8 +25,8 @@ function getClassNames(attrClasses: any) {
   return  ['badge inline-block text-xs leading-3 rounded select-none', {
     'cursor-pointer': props.clickable,
     [textContrast]: true,
-    'badge-dark': textContrast === 'white',
-    'badge-light': textContrast === 'black',
+    'text-slate-900': textContrast === 'black',
+    'text-slate-100': textContrast === 'white',
     'py-0.5' : !includesUtilityClass(attrClasses, 'py'),
     'px-1.5': !includesUtilityClass(attrClasses, 'px'),
     'text-xs': !includesUtilityClass(attrClasses, 'text'),

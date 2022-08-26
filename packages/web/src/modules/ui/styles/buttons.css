@@ -26,11 +26,11 @@
 }
 
 .button.secondary {
-    @apply border border-secondary bg-secondary text-inverted;
+    @apply border border-secondary bg-secondary text-inverted dark:border-gray-700 dark:bg-gray-700 dark:text-gray-300;
 }
 
-.button.secondary:hover, .button.secondary.active {
-    @apply border-secondary-dark bg-secondary-dark;
+.button.secondary:hover:not([disabled]), .button.secondary.active:not([disabled]) {
+    @apply border-secondary-dark bg-secondary-dark dark:bg-gray-600;
 }
 
 .button.secondary:disabled, .button.secondary.disabled {
@@ -38,15 +38,15 @@
 }
 
 .button.secondary.outlined {
-    @apply border border-secondary bg-transparent text-secondary;
-}
-
-.button.secondary.outlined:hover {
-    @apply border border-secondary bg-gray-200 text-secondary;
+    @apply border border-secondary bg-transparent text-secondary dark:border-gray-600;
 }
 
 .button.secondary.outlined.active {
-    @apply border border-secondary bg-secondary text-inverted;
+    @apply bg-secondary text-inverted dark:bg-gray-600 dark:text-gray-300;
+}
+
+.button.secondary.outlined:hover {
+    @apply bg-gray-200 text-secondary dark:bg-gray-700 dark:text-gray-300;
 }
 
 .button.info {

@@ -51,7 +51,7 @@ async function register() {
          {{ $t(errorMsg) }}
        </Alert>
 
-       <Button :submit="true" class="primary mb-4 float-right" label="users.labels.sign_up"></Button>
+       <Button :submit="true" class="primary mb-4 float-right" text="users.labels.sign_up"></Button>
      </form>
    </CenteredLayoutContainer>
 </template>

@@ -68,7 +68,6 @@ const createTitle = computed(() => (props.type === ActivityType.Habit) ? 'activi
           <ActivityPlanListEntry :model="element" />
         </div>
       </template>
-q
     </draggable>
   </CalendarPlanSection>
 </template>

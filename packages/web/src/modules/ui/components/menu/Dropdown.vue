@@ -23,7 +23,7 @@ const root = ref<HTMLElement|null>(null);
 onClickOutside(root, (event) => open.value = false);
 
 const className = ['flex','dropdown'];
-const buttonClassName = ['inline-flex justify-center  leading-5 z-10 block rounded-md bg-white p-3', props.buttonClass];
+const buttonClassName = ['inline-flex justify-center  leading-5 z-10 block rounded-md p-3', props.buttonClass];
 
 const id = uniqueId('dropdown-');
 const { icon, label } = toRefs(props);
@@ -63,7 +63,7 @@ function navigateUp(evt: KeyboardEvent) {
         </button>
       </span>
 
-      <div v-if="open" :aria-labelledby="id" class="absolute dropdown-items right-0 py-2 w-48 bg-white rounded-md shadow-lg border border-gray-100 z-20" @click="onClickContent">
+      <div v-if="open" :aria-labelledby="id" class="absolute dropdown-items right-0 py-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-100 dark:border-gray-700 z-20" @click="onClickContent">
         <slot></slot>
       </div>
     </div>

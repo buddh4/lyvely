@@ -11,7 +11,7 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
   <footer
     v-if="isAuthenticated"
     id="page-footer"
-    class="footer mt-auto py-2 bg-white md:hidden">
+    class="footer mt-auto py-2 bg-white dark:bg-slate-800 md:hidden">
     <div class="">
       <div class="navbar-nav flex flex-row justify-content-center">
         <router-link class="nav-link" to="/activities">
@@ -61,7 +61,6 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
 #page-footer .navbar-nav .nav-link {
   @apply mx-7;
   padding: 0;
-  color: var(--bs-gray);
 }
 
 #page-footer .router-link-active {

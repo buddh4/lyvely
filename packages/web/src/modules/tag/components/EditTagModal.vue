@@ -60,7 +60,7 @@ const { getError, modalTitle } = tagEditStore;
     </Modal>
     <div v-if="showColorPicker" ref="colorPicker" class="absolute z-50 bg-content rounded" :style="colorPickerStyle">
       <Sketch v-model="color" :disable-alpha="true" />
-      <Button class="primary px-1 py-0.5 m-1 float-right" label="common.close" @click="showColorPicker = false" />
+      <Button class="primary px-1 py-0.5 m-1 float-right" text="common.close" @click="showColorPicker = false" />
     </div>
 </template>
 

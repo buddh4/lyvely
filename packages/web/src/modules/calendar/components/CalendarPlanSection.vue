@@ -92,14 +92,12 @@ function decrementTiming() {
 <template>
   <div
       :id="headerId"
-      ref="header" tabindex="0"
-      role="button"
-      :aria-label="$t('calendar.plan.aria.header', { 'time': accessibleTitle })"
-      :aria-controls="itemsId"
+      ref="header"
       data-calendar-plan-header
+      tabindex="0"
+      :aria-label="$t('calendar.plan.aria.header', { 'time': accessibleTitle })"
       :data-count="count"
       class="border-divide calendar-plan-item calendar-plan-header-item relative"
-      @keyup.enter="toggleContent"
       @dragenter="open"
       @focusin="showCreateButton = true">
 
@@ -113,9 +111,14 @@ function decrementTiming() {
       {{ leftCaret }}
     </Button>
 
-    <span class="calendar-plan-title text-body select-none" @click="toggleContent">
+    <button
+        class="calendar-plan-title text-body select-none"
+        :aria-controls="itemsId"
+        :aria-label="accessibleTitle"
+        :aria-expanded="collapsed ?  'no' : 'yes'"
+        @click="toggleContent">
       <span aria-hidden="true">{{ title }} <small v-if="collapsed && !isEmpty">{{ ` (${count})` }}</small></span>
-    </span>
+    </button>
 
     <Button
         v-if="rightCaret" tabindex="0" :aria-label="$t('calendar.plan.aria.nav-next', { time: nextTitle })"
@@ -128,9 +131,9 @@ function decrementTiming() {
     </AddButton>
   </div>
 
-  <section :id="itemsId" role="list" data-calendar-plan-item-container :class="['p-0 border-0', {'hidden': collapsed}]">
+  <div :id="itemsId" role="list" data-calendar-plan-item-container :class="['p-0 border-0', {'hidden': collapsed}]">
     <slot></slot>
-  </section>
+  </div>
 </template>
 
 <style scoped>

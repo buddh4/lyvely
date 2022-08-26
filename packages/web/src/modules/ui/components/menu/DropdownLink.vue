@@ -26,7 +26,7 @@ defineEmits(['click']);
 const evt = props.closeOnClick ? 'click': 'click.stop';
 // TODO: implement switch
 
-const classNames = 'block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-gray-200 no-underline';
+const classNames = 'block px-4 py-2 text-sm capitalize hover:bg-gray-200 hover:dark:bg-gray-700 no-underline';
 const {route, label, icon} = toRefs(props);
 </script>
 

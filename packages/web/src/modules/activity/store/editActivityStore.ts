@@ -9,6 +9,7 @@ import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { computed } from 'vue';
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
 import useEditModelStore from "@/modules/common/stores/editModelStore";
+import { findFocusable } from "@/modules/ui/utils";
 
 type EditModel = EditHabitDto|EditTaskDto;
 type EditResponseModel = EditTaskResponseDto|EditHabitResponseDto;
@@ -26,8 +27,12 @@ export const useActivityEditStore = defineStore('activityEdit', () => {
         } else {
           useHabitPlanStore().addHabit(response.model);
         }
-      }
 
+        setTimeout(() => {
+          // TODO: move to view...
+          findFocusable(document.querySelector<HTMLElement>(`.calendar-plan-items [data-cid="${response.model.id}"]`))?.focus()
+        })
+      }
     },
   })
 
