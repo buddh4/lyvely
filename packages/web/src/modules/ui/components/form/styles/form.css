@@ -36,6 +36,11 @@
     opacity: 0.3;
 }
 
+.dark [type="checkbox"]:not(:checked),
+[type="radio"]:not(:checked) {
+    opacity: 0.4;
+}
+
 [type="checkbox"]:disabled,
 [type="radio"]:disabled {
     opacity: 0.3;

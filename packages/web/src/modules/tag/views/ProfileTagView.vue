@@ -92,9 +92,13 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
       <template #header-right>
         <AddButton @click="setCreateTag"/>
       </template>
-      <div class="py-1 pr-3">
+      <div class="py-1 pr-3 border-divide">
         <div class="relative inline-block">
-          <input ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')" class="border-l-0 pl-2 border-slate-300 text-sm focus:border-blue-300 focus:ring placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1" />
+          <input
+              ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')"
+              class="border-l-0 pl-2 border-divide text-sm focus:border-blue-300 focus:ring
+              placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1
+              bg-white dark:bg-slate-700" />
           <Icon name="search" class="absolute right-2.5 top-2 text-slate-300 cursor-pointer" @click="focusSearch" />
         </div>
         <div class="float-right">
@@ -104,7 +108,7 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
 
         </div>
       </div>
-      <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-content items-center hover:bg-slate-100">
+      <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-content items-center border-divide hover:bg-slate-100 dark:hover:bg-slate-700">
         <div class="align-middle">
           <Tag :tag="tag" class="px-3 py-2 text-sm" @click="setEditTag(tag)" />
           <Badge v-if="tag.archived" class="bg-danger ml-2">{{ $t('common.archived') }}</Badge>
