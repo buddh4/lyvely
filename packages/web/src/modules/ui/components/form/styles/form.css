@@ -1,9 +1,18 @@
 .multiselect .multiselect__tags, .multiselect .multiselect__content-wrapper {
-    @apply bg-highlight border-divide text-main;
+    @apply bg-main border-divide text-main;
+}
+
+.dark .multiselect .multiselect__tags, .multiselect .multiselect__content-wrapper {
+    @apply bg-highlight;
 }
 
 .multiselect .multiselect__tags input {
-    @apply bg-highlight border-none shadow-none;
+    @apply bg-main;
+    box-shadow: none;
+}
+
+.dark .multiselect .multiselect__tags input {
+    @apply bg-highlight;
     box-shadow: none;
 }
 
@@ -11,7 +20,11 @@
     @apply text-dimmed;
 }
 
-.multiselect .multiselect__option--selected {
+.dark .multiselect .multiselect__option:not(.multiselect__option--highlight, .multiselect__option--selected) {
+    @apply bg-main text-main;
+}
+
+.dark .multiselect .multiselect__option--selected:not(.multiselect__option--highlight) {
     @apply bg-main text-main;
 }
 
