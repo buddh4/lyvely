@@ -71,7 +71,7 @@ function addTag (newTag: string) {
             :create-tag="true"
             :options="tagOptions"/ -->
 
-        <div class="grid grid-flow-col grid-cols-2 grid-rows-2 gap-2 mb-3 p-3 border border-divide rounded bg-gray-50 dark:bg-slate-900">
+        <div class="grid grid-flow-col grid-cols-2 grid-rows-2 gap-2 mb-3 p-3 border border-divide rounded bg-highlight dark:bg-main">
           <div>
             <NumberInput
                 v-model="model.max"

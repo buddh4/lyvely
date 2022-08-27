@@ -1,34 +1,18 @@
-.multiselect input {
-    border:0 !important;
-    padding:0 !important;
+.multiselect .multiselect__tags, .multiselect .multiselect__content-wrapper {
+    @apply bg-highlight border-divide text-main;
 }
 
-.multiselect input {
-    border:0 !important;
-    padding:0 !important;
-    background-color: transparent;
+.multiselect .multiselect__tags input {
+    @apply bg-highlight border-none shadow-none;
+    box-shadow: none;
 }
 
-.dark .multiselect {
-    --tw-border-opacity: 0.25;
-    background-color: rgb(30 41 59) !important;
+.multiselect .multiselect__tags input::placeholder {
+    @apply text-dimmed;
 }
 
-.dark .multiselect .multiselect-dropdown {
-    background-color: rgb(30 41 59) !important;
-}
-
-.dark .multiselect .multiselect-dropdown li:hover {
-    background-color: rgb(30 41 59) !important;
-}
-
-.dark .multiselect .multiselect-clear-icon {
-    fill: white !important;
-}
-
-.multiselect input:focus {
-    border:0 !important;
-    --tw-ring-shadow: none !important;
+.multiselect .multiselect__option--selected {
+    @apply bg-main text-main;
 }
 
 [type="checkbox"]:not(:checked),
@@ -153,7 +137,7 @@ input[type=range]:focus {
     outline: none;
 }
 input[type=range]::-webkit-slider-runnable-track {
-    @apply bg-gray-200 rounded;
+    @apply bg-highlight rounded;
     width: 100%;
     height: .5rem;
     cursor: pointer;
@@ -188,7 +172,7 @@ input[type=range]:disabled::-webkit-slider-thumb {
 }
 
 input[type=range]:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 0 1px var(--color-bg-content), 0 0 0 4px rgba(191, 219, 254, 0.8);
+    box-shadow: 0 0 0 1px white, 0 0 0 4px rgba(191, 219, 254, 0.8);
 }
 input[type=range]::-moz-range-track {
     @apply bg-gray-200 rounded;
@@ -226,7 +210,7 @@ input[type=range]:disabled::-moz-range-thumb {
 }
 
 input[type=range]:focus::-moz-range-thumb {
-    box-shadow: 0 0 0 1px var(--color-bg-content), 0 0 0 4px rgba(191, 219, 254, 0.8);
+    box-shadow: 0 0 0 1px white, 0 0 0 4px rgba(191, 219, 254, 0.8);
 }
 
 .form-input:not(:last-child) {
@@ -262,7 +246,21 @@ input[type=range]:focus::-moz-range-thumb {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
     height:calc(3.5rem + 2px);
-    @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-slate-800 focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50;
+    @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-highlight focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50;
+}
+
+.form-input .number-slider {
+    position: absolute;
+    top: 28px;
+    right: 10px;
+    display: flex;
+}
+
+.form-input .number-slider {
+    position: absolute;
+    top: 28px;
+    right: 10px;
+    display: flex;
 }
 
 textarea.floating-input {

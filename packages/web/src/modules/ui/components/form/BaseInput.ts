@@ -40,7 +40,7 @@ export interface BaseInputSetupOptions {
 export function useBaseInputSetup<T = unknown>(props: BaseInputProps, { emit, }: SetupContext, options: BaseInputSetupOptions = {} ) {
   const root = ref<HTMLElement|null>(null);
 
-  const editable = computed(() => props.disabled && !props.readonly);
+  const editable = computed(() => !props.disabled && !props.readonly);
 
   const value = computed({
     get: () => props.modelValue,

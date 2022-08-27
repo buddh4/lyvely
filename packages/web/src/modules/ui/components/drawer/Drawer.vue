@@ -56,7 +56,7 @@ defineExpose({ toggleNav });
   bottom:0;
   min-width: 260px;
   max-width: 260px;
-  background: var(--color-bg-content);
+  background: var(--elements-main);
   border: 1px solid var(--color-secondary-light);
   border-right:0;
   opacity: 0;

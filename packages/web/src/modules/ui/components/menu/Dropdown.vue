@@ -63,7 +63,7 @@ function navigateUp(evt: KeyboardEvent) {
         </button>
       </span>
 
-      <div v-if="open" :aria-labelledby="id" class="absolute dropdown-items right-0 py-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg border border-gray-100 dark:border-gray-700 z-20" @click="onClickContent">
+      <div v-if="open" :aria-labelledby="id" class="absolute dropdown-items right-0 py-2 w-48 bg-main dark:bg-shadow rounded-md shadow-lg border border-gray-100 dark:border-gray-700 z-20" @click="onClickContent">
         <slot></slot>
       </div>
     </div>
@@ -76,6 +76,6 @@ function navigateUp(evt: KeyboardEvent) {
 }
 
 .dropdown a:focus {
-  @apply bg-gray-200;
+  background-color: var(--elements-highlight);
 }
 </style>

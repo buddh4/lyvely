@@ -1,9 +1,5 @@
 :root {
-    --color-text-base: rgba(75, 85, 99, 1);
-    --color-inverted: #ffffff;
     --color-divide: rgba(0, 0, 0, 0.125);
-
-    --color-bg-content: #ffffff;
 
     --color-lyvely: #48cd48;
 
@@ -31,19 +27,28 @@
     --color-success-dark: #047857;
     --color-success-light: #10B981;
 
-    --color-bg-sidebar: #293042;
-    --color-bg-topbar: transparent;
-    --color-fg-sidebar: #ffffff;
-    --color-bg-body: rgb(243 244 246);
+    --elements-main: #ffffff;
+    --elements-shadow: #f3f4f6;
+    --elements-highlight: #f1f5f9;
 
     --color-pop: #48ce48;
+
+    --text-main: #4b5563;
+    --text-dimmed: #6b7280;
+    --text-inverted: #f3f4f6;
 }
 
 .dark {
+    --elements-main: #1f2937;
+    --elements-shadow: #374151;
+    --elements-highlight: #334155;
+
+    --text-main: #f3f4f6;
+    --text-dimmed: #d1d5db;
+    --text-inverted: #1e293b;
+
+
     --color-divide: rgba(255,255,255,0.125);
-    --color-bg-sidebar: #293042;
-    --color-bg-body: #333b52;;
-    --color-bg-content: #293042;
     --color-secondary: #dcdcdc;
     --color-inverted: rgba(0, 0, 0, 0.80);
 }

@@ -65,7 +65,7 @@ export default {
       baseInput.value.value = baseInput.value.value - props.steps;
     }
 
-    const buttonClass = 'secondary w-5 h-5 mr-2 text-gray-700 rounded-full flex justify-center items-center text-sm p0';
+    const buttonClass = 'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0';
 
     return {
       ...baseInput,
@@ -102,10 +102,4 @@ export default {
 </template>
 
 <style scoped>
-.number-slider {
-  position: absolute;
-  top: 28px;
-  right: 10px;
-  display: flex;
-}
 </style>

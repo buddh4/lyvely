@@ -12,21 +12,16 @@ interface Props {
   label: string,
   route?: string,
   icon?: string,
-  closeOnClick?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   route: undefined,
   icon: undefined,
-  closeOnClick: true,
 });
 
 defineEmits(['click']);
 
-const evt = props.closeOnClick ? 'click': 'click.stop';
-// TODO: implement switch
-
-const classNames = 'block px-4 py-2 text-sm capitalize hover:bg-gray-200 hover:dark:bg-gray-700 no-underline';
+const classNames = 'block px-4 py-2 text-sm capitalize hover:bg-main dark:hover:bg-main no-underline';
 const {route, label, icon} = toRefs(props);
 </script>
 

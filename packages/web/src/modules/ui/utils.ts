@@ -10,7 +10,6 @@ export function isFocusable(root?: HTMLElement|null) {
 }
 
 export function findFocusable(root?: HTMLElement|null) {
-  debugger;
   return _ifFocusable(root) || root?.querySelector<HTMLElement>(SELECTOR_FOCUSABLE);
 }
 

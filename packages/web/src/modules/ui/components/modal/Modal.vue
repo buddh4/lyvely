@@ -111,7 +111,7 @@ if(!props.prevAutoFocus) {
       <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
       <div
           v-if="modelValue"
-          class="w-full max-w-lg absolute mx-auto md:rounded-sm shadow-lg bg-white dark:bg-slate-800 top-0 md:top-1/4 h-full md:h-auto">
+          class="w-full max-w-lg absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto">
         <div>
           <div class="flex items-center px-5 pt-5 pb-3 rounded-t-sm" data-modal-header>
             <slot name="header">
@@ -119,7 +119,7 @@ if(!props.prevAutoFocus) {
                   v-if="cancelButton"
                   aria-hidden="true"
                   role="button"
-                  class="align-middle inline-block mr-2 md:hidden"
+                  class="align-middle inline-block mr-2 md:hidden border-none"
                   @click="cancel">
                 <Icon name="back" css-class="w-3.5"/>
               </button>
@@ -133,14 +133,14 @@ if(!props.prevAutoFocus) {
             </slot>
 
             <Button
-v-if="submitButton"
-                    aria-hidden="true"
-                    class="primary rounded-full text-xs float-right align-middle ml-auto md:hidden px-2 py-0.5"
-                    @click="$emit('submit')">
+                v-if="submitButton"
+                aria-hidden="true"
+                class="primary rounded-full text-xs float-right align-middle ml-auto md:hidden px-2 py-0.5"
+                @click="$emit('submit')">
               {{ $t(submitButtonText) }}
             </Button>
 
-            <Button class="float-right align-middle font-bold ml-auto hidden md:inline-block px-2 py-0.5" @click="cancel">
+            <Button class="float-right align-middle font-bold ml-auto hidden md:inline-block px-2 py-0.5 border-none" @click="cancel">
               x
             </Button>
 

@@ -76,7 +76,7 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
   <nav v-if="isAuthenticated" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
     <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div>
-        <a class="flex items-center no-underline text-base font-extrabold uppercase tracking-wider h-12 px-3">
+        <a class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3">
           <Icon name="lyvely" class="fill-current text-lyvely mr-2 " /> <img class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg" />
         </a>
       </div>

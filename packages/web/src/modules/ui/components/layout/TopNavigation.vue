@@ -15,8 +15,8 @@ const score = computed(() => useProfileStore().profile?.score);
 </script>
 
 <template>
-  <nav v-if="authenticated" id="top-navigation" class="bg-topbar" :aria-label="$t('layout.aria.top-nav')">
-    <Button class="py-1.5 px-2.5" :is-toggle="true" :active="!showSidebar" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
+  <nav v-if="authenticated" id="top-navigation" :aria-label="$t('layout.aria.top-nav')">
+    <Button class="py-1.5 px-2.5 border-none" :is-toggle="true" :active="!showSidebar" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
       <Icon name="menu" />
     </Button>
 

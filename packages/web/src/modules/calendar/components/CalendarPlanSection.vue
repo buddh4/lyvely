@@ -97,7 +97,7 @@ function decrementTiming() {
       tabindex="0"
       :aria-label="$t('calendar.plan.aria.header', { 'time': accessibleTitle })"
       :data-count="count"
-      class="border-divide calendar-plan-item calendar-plan-header-item relative"
+      class="calendar-plan-item calendar-plan-header-item first:rounded-t border-divide bg-shadow text-center border relative"
       @dragenter="open"
       @focusin="showCreateButton = true">
 
@@ -107,7 +107,7 @@ function decrementTiming() {
 
     <Button
         v-if="leftCaret" tabindex="0" :aria-label="$t('calendar.plan.aria.nav-back', { time: prevTitle })"
-        class="switch-timing text-body no-underline py-0" :aria-controls="itemsId"  @click="decrementTiming">
+        class="switch-timing no-underline py-0" :aria-controls="itemsId"  @click="decrementTiming">
       {{ leftCaret }}
     </Button>
 
@@ -122,7 +122,7 @@ function decrementTiming() {
 
     <Button
         v-if="rightCaret" tabindex="0" :aria-label="$t('calendar.plan.aria.nav-next', { time: nextTitle })"
-        class="switch-timing text-body no-underline py-0" :aria-controls="itemsId" @click="incrementTiming">
+        class="switch-timing no-underline py-0" :aria-controls="itemsId" @click="incrementTiming">
       {{ rightCaret }}
     </Button>
 

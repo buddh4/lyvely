@@ -93,13 +93,13 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
       <template #header-right>
         <AddButton @click="setCreateTag"/>
       </template>
-      <div class="py-1 pr-3 border-divide">
+      <div class="py-1 pr-3 border-divide bg-highlight dark:bg-main">
         <div class="relative inline-block">
           <input
               ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')"
               class="border-l-0 pl-2 border-divide text-sm focus:border-blue-300 focus:ring
               placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1
-              bg-white dark:bg-gray-800" />
+              bg-main dark:bg-highlight" />
           <Icon name="search" class="absolute right-2.5 top-2 text-slate-300 cursor-pointer" @click="focusSearch" />
         </div>
         <div class="float-right">
@@ -109,23 +109,23 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
 
         </div>
       </div>
-      <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-content dark:bg-gray-800 items-center border-divide hover:bg-slate-100 dark:hover:bg-slate-700">
+      <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-main items-center border-divide">
         <div class="align-middle">
           <Tag :tag="tag" class="px-3 py-2 text-sm" @click="setEditTag(tag)" />
           <Badge v-if="tag.archived" class="bg-danger ml-2">{{ $t('common.archived') }}</Badge>
         </div>
         <div class="mr-auto"></div>
         <div class="align-middle">
-          <Button :title="$t('common.edit')" @click="setEditTag(tag)"><Icon name="edit" /></Button>
-          <Button v-if="tag.archived" :confirm="confirmArchive(tag)" :title="$t('common.unarchive')" @click="unArchive(tag)">
+          <Button class="secondary outlined mr-1" :title="$t('common.edit')" @click="setEditTag(tag)"><Icon name="edit" /></Button>
+          <Button v-if="tag.archived" class="secondary outlined" :confirm="confirmArchive(tag)" :title="$t('common.unarchive')" @click="unArchive(tag)">
             <Icon name="unarchive" />
           </Button>
-          <Button v-else :confirm="confirmArchive(tag)" :title="$t('common.archive')" @click="archive(tag)">
+          <Button v-else class="secondary outlined" :confirm="confirmArchive(tag)" :title="$t('common.archive')" @click="archive(tag)">
             <Icon name="archive" />
           </Button>
         </div>
       </div>
-      <div v-if="!tags.length" class="p-5">
+      <div v-if="!tags.length" class="p-5 border-divide">
         <span v-if="filter.isActive">{{ $t('filter.empty') }}</span>
         <span v-else>{{ $t('list.empty') }}</span>
       </div>

@@ -22,14 +22,16 @@ module.exports = {
         )}")`,
       }),
       backgroundColor: theme => ({
-        'content': "var(--color-bg-content)"
+        'main': "var(--elements-main)",
+        'shadow': "var(--elements-shadow)",
+        'highlight': "var(--elements-highlight)",
       }),
       textColor: {
-        'base': "var(--color-text-base)"
+        'main': "var(--text-main)",
+        'dimmed': "var(--text-main)",
+        'inverted': "var(--text-inverted)"
       },
       colors: {
-        topbar: "var(--color-bg-topbar)",
-        sidebar: "var(--color-bg-sidebar)",
         lyvely: "var(--color-lyvely)",
         inverted: "var(--color-inverted)",
         pop: "var(--color-pop)",

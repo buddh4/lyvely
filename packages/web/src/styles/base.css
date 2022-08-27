@@ -1,7 +1,7 @@
 @tailwind base;
 
 body {
-    @apply bg-gray-100 text-gray-600 dark:bg-slate-800 dark:text-slate-100;
+    @apply bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-100;
     overflow: auto;
     height: 100%;
 }

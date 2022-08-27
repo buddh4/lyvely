@@ -22,6 +22,8 @@ const classNames = computed(() => [
   'flex',
   'justify-between',
   'calendar-plan-item',
+  'bg-main',
+  'last:rounded-b',
   {'list-group-item-draggable': dragActive.value},
   'align-items-start'
 ]);

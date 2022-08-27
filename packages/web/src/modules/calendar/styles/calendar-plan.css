@@ -6,36 +6,12 @@
     @apply py-2 px-3;
 }
 
-.calendar-plan-header-item {
-    @apply text-center border dark:bg-gray-700;
-}
-
-.calendar-plan-item:not(.calendar-plan-header-item) {
-    @apply dark:bg-gray-800;
-}
-
-.calendar-plan-header-item:first-child {
-    @apply rounded-t;
-}
-
-.calendar-plan-item:last-child {
-    @apply rounded-b;
-}
-
-[data-calendar-plan-header] + [data-calendar-plan-header] {
-    border-top:0;
-}
-
-[data-calendar-plan-header][data-count="0"] + [data-calendar-plan-item-container] + [data-calendar-plan-header] {
-    border-top:0;
-}
-
-.calendar-plan-items {
-    @apply divide-y divide-divide border-l border-l border-r border-divide
-}
-
 #calendar-plan-unscheduled[data-count="0"] {
     @apply rounded-b;
+}
+
+#calendar-plan-unscheduled[data-count="0"] + [data-calendar-plan-item-container] .calendar-plan-items {
+    @apply border-none;
 }
 
 #calendar-plan-items-unscheduled .calendar-plan-items {

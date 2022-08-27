@@ -56,7 +56,7 @@ const createTitle = computed(() => (props.type === ActivityType.Habit) ? 'activi
     <draggable
         :list="activities"
         tag="div"
-        class="calendar-plan-items"
+        class="calendar-plan-items divide-y divide-divide border-l border-l border-r border-divide"
         :data-calendar-interval="interval"
         group="habits"
         handle=".icon-drag"
