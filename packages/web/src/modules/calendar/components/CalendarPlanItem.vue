@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import TagList from '@/modules/tag/components/TagList.vue';
 import Icon from '@/modules/ui/components/icon/Icon.vue';
-import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanEntryMenu.vue';
+import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanItemMenu.vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import { TimingModel } from '@lyvely/common';
 import { computed, toRefs } from 'vue';

@@ -4,7 +4,7 @@ import { IActivity, ActivityType, TaskDto } from '@lyvely/common';
 import { MoveActivityEvent, useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
-import CalendarPlanEntry from "@/modules/calendar/components/CalendarPlanEntry.vue";
+import CalendarPlanItem from "@/modules/calendar/components/CalendarPlanItem.vue";
 import { useActivityEditStore } from '@/modules/activity/store/editActivityStore';
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
@@ -62,7 +62,7 @@ function selectTag(tagId: string) {
   useActivityStore().filter.update({tagId});
 }
 
-const root = ref<InstanceType<typeof CalendarPlanEntry>|null>(null);
+const root = ref<InstanceType<typeof CalendarPlanItem>|null>(null);
 
 function prepareMoveEvent(model: IActivity, element: HTMLElement, newIndex: (current:number) => number) {
   const draggableElement = element.closest('[data-draggable]')!;
@@ -117,7 +117,7 @@ function afterMove(evt: MoveActivityEvent) {
 </script>
 
 <template>
-  <CalendarPlanEntry
+  <CalendarPlanItem
       v-if="initialized"
       ref="root"
       :model="model"
@@ -142,7 +142,7 @@ function afterMove(evt: MoveActivityEvent) {
           :disabled="isDisabled"/>
     </template>
 
-  </CalendarPlanEntry>
+  </CalendarPlanItem>
 </template>
 
 <style scoped></style>

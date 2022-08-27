@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ActivityPlanListEntry from "@/modules/activity/components/ActivityPlanEntry.vue";
+import ActivityPlanItem from "@/modules/activity/components/ActivityPlanItem.vue";
 import CalendarPlanSection from "@/modules/calendar/components/CalendarPlanSection.vue";
 import { ActivityType } from '@lyvely/common';
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
@@ -65,7 +65,7 @@ const createTitle = computed(() => (props.type === ActivityType.Habit) ? 'activi
 
       <template #item="{element}">
         <div :data-cid="element.id">
-          <ActivityPlanListEntry :model="element" />
+          <ActivityPlanItem :model="element" />
         </div>
       </template>
     </draggable>

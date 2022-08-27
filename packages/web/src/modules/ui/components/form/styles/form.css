@@ -1,7 +1,3 @@
-.multiselect {
-
-}
-
 .multiselect .multiselect__tags, .multiselect .multiselect__content-wrapper {
     @apply bg-main border-divide text-main;
 }
