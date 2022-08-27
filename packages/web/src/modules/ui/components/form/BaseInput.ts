@@ -6,6 +6,7 @@ import { CssClassDefinition } from '@/util/component.types';
 export interface BaseInputProps {
   id?: string,
   label?: string,
+  helpText?: string,
   name?: string,
   modelValue?: any,
   required?: boolean,
@@ -21,6 +22,7 @@ export function useBaseInputProps() {
   return {
     id: {type: String, default: uniqueId()},
     label: {type: String},
+    helpText: {type: String},
     name: {type: String},
     disabled: {type: Boolean, default: false},
     readonly: {type: Boolean, default: false},

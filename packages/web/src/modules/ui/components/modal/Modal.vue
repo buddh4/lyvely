@@ -105,8 +105,7 @@ if(!props.prevAutoFocus) {
         tabindex="1"
         aria-hidden="false"
         :aria-label="ariaLabel || $t('modal.aria.root')"
-        @keyup.esc="close"
-        @keyup.enter="submitOnEnter">
+        @keyup.esc="close">
 
       <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
       <div

@@ -28,7 +28,7 @@ module.exports = {
       }),
       textColor: {
         'main': "var(--text-main)",
-        'dimmed': "var(--text-main)",
+        'dimmed': "var(--text-dimmed)",
         'inverted': "var(--text-inverted)"
       },
       colors: {

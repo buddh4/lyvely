@@ -1,3 +1,15 @@
+.vc-sketch {
+    @apply bg-highlight text-main;
+}
+
+.vc-sketch-field .vc-input__label {
+    @apply text-main;
+}
+
+.vc-sketch-field .vc-input__input {
+    @apply bg-highlight;
+}
+
 .multiselect .multiselect__tags, .multiselect .multiselect__content-wrapper {
     @apply bg-main border-divide text-main;
 }

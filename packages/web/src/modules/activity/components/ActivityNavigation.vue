@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import Button from '@/modules/ui/components/button/Button.vue';
-
-function onClick(whateva: any) {
-  console.log(whateva);
-}
 </script>
 
 <template>

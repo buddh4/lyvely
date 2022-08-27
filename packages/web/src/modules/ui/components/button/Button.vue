@@ -72,7 +72,7 @@ if(isDevelopEnvironment()) {
   onMounted(() => {
     if (!button.value) return;
     const buttonEl = button.value;
-    if (!buttonEl.getAttribute('label')
+    if (!buttonEl.getAttribute('title')
         && !buttonEl.getAttribute('aria-label')
         && !buttonEl.textContent
         && buttonEl.getAttribute('aria-hidden') !== 'true') {

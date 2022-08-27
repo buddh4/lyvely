@@ -5,11 +5,12 @@ import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import { computed, ref, Ref } from 'vue';
+import { TagFilter } from "@lyvely/common/src/tags/tag.filter";
 
 const activityStore = useActivityStore();
 const profileStore = useProfileStore();
 const calendarPlanStore = useCalendarPlanStore();
-const tags = computed(() => profileStore.getTags('activity.filter'));
+const tags = computed(() => new TagFilter({ archived: false }).apply(profileStore.getTags()));
 const activeTagId = computed(() => activityStore.filter.tagId);
 const archiveFilterActive = computed(() => activityStore.filter.archived);
 const dragActive = computed({

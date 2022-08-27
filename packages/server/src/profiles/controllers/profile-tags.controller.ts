@@ -1,4 +1,4 @@
-import { ProfileController, ProfileDao, ProfilesService, ProfileTagsService } from "../index";
+import { ProfileController, ProfilesService, ProfileTagsService } from "../index";
 import { UseClassSerializer } from "../../core/decorators/use-class-serializer.decorator";
 import {
   Request,

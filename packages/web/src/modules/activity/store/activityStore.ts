@@ -28,10 +28,21 @@ export const useActivityStore = defineStore('activity', () => {
   const status = useStatus();
   const habitPlanStore = useHabitPlanStore();
   const taskPlanStore = useTaskPlanStore();
+  const profileStore = useProfileStore();
   const calendarPlanStore = useCalendarPlanStore();
   const cache = reactive(new ActivityDataPointStore());
   const tidCache = reactive(new LoadedTimingIdStore());
-  const filter = reactive(new ActivityFilter());
+  const filter = reactive(new ActivityFilter({ additions: [
+      (model: IActivity, filter: ActivityFilter) => {
+        const includeOnlyOnFilterTags = profileStore.profile.tags.filter(tag => tag.includeOnFilter && model.tagIds.includes(tag.id));
+        debugger;
+        if(filter.isEmpty() && includeOnlyOnFilterTags.length) {
+          return false;
+        }
+
+        return true;
+      }
+    ] }));
 
   async function loadActivities() {
     const { profile } = useProfileStore();

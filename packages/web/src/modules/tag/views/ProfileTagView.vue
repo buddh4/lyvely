@@ -14,48 +14,14 @@ import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import FloatingAddButton from "@/modules/ui/components/button/FloatingAddButton.vue";
 import Badge from "@/modules/ui/components/badge/Badge.vue";
 import { usePageStore } from "@/modules/core/store/page.store";
+import { TagFilter } from "@lyvely/common/src/tags/tag.filter";
 
-class TagFilter {
-  query: string;
-  archived: boolean;
-
-  constructor(obj?: Partial<TagFilter>) {
-    Object.assign(this, obj);
-    this.archived = this.archived ?? false;
-  }
-
-  check(tag: ITag): boolean {
-    if(this.query?.length && !tag.name.match(new RegExp(this.query, 'i'))) {
-      return false;
-    }
-
-    if(this.archived !== !!tag.archived) {
-      return false;
-    }
-
-    return true;
-  }
-
-  isActive() {
-    if(this.query.length) {
-      return true;
-    }
-
-    if(this.archived) {
-      return true;
-    }
-
-    return false;
-  }
-}
-
-const filter = ref(new TagFilter());
+const filter = ref(new TagFilter({ archived: false }));
 
 const profileStore = useProfileStore();
 const editTagStore = useEditTagStore();
 const { setEditModel, setCreateModel } = editTagStore;
-const tags = computed(() => profileStore.profile?.tags.filter(tag => filter.value.check(tag)) || []);
-const { model } = toRefs(editTagStore);
+const tags = computed(() => filter.value.apply(profileStore.profile?.tags));
 
 const setEditTag = (tag: ITag) => {
   setEditModel(tag.id, new EditTagDto(tag))

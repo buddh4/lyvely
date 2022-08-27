@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Checkbox from '@/modules/ui/components/form/Checkbox.vue';
-import { computed, withDefaults } from 'vue';
+import { computed, withDefaults, ref, Ref, watch } from 'vue';
+import { parseInt } from "lodash";
 
 interface Props {
   max: number,
@@ -43,23 +44,30 @@ function cssClasses(unitIndex: number) {
 
 const count = computed(() => Math.max(props.max, props.selection));
 
-function updateValue(isChecked: boolean, value: string) {
-  let intVal = parseInt(value);
-  emit("update:selection", isChecked ? intVal : --intVal);
+const values = computed(() => {
+  const result = [];
+  for(let i = 1;i <= count.value;i++) {
+    if(i <= props.selection) {
+      result.push(i);
+    }
+  }
+  return result;
+})
+
+
+function updateValue(checked: boolean, value: string) {
+  let intValue = parseInt(value);
+  emit("update:selection", checked ? intValue : --intValue);
 }
+
 </script>
 
 <template>
   <div class="flex flex-row-reverse">
-    <template v-if="!props.single">
-      <div v-for="unit in count" :key="unit">
-        <Checkbox
-          :disabled="props.disabled"
-          :model-value="unit"
-          :checked="unit <= props.selection"
-          :css-class="cssClasses(unit)"
-          @change="updateValue" />
-      </div>
+    <template v-if="!single">
+    <div v-for="unit in count" :key="unit">
+       <Checkbox v-model="values" :css-class="cssClasses(unit)" :value="unit" @change="updateValue" />
+    </div>
     </template>
     <template v-else>
       <Checkbox

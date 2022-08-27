@@ -119,7 +119,11 @@
     },
     "fields": {
       "name": "Name",
-      "desc": "Description"
+      "description": "Description",
+      "includeOnFilter": "Only include items on filter"
+    },
+    "help": {
+      "includeOnFilter": "This option will hide tagged items in some views unless a matching filter is selected."
     }
   },
   "statistics": {

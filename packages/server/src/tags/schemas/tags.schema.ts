@@ -11,8 +11,14 @@ export class Tag extends BaseEntity<Tag> implements ITag {
   @Prop({ type: String, required: true, match: REGEX_HEX_COLOR })
   color: string;
 
+  @Prop( { type: String })
+  description: string;
+
   @Prop( { type: Boolean })
   archived?: boolean;
+
+  @Prop( { type: Boolean })
+  includeOnFilter: boolean;
 
   isNew: boolean;
 
@@ -22,8 +28,11 @@ export class Tag extends BaseEntity<Tag> implements ITag {
 
   protected afterInit() {
     super.afterInit();
+    // TODO: currently we need to add all new default values since missing values won't be updated at the moment
     this.archived = this.archived ?? false;
+    this.description = this.description || '';
     this.isNew = this.isNew ?? false;
+    this.includeOnFilter = this.includeOnFilter ?? false;
     this.color = this.color || randomColor({ luminosity: 'dark' })
   }
 }

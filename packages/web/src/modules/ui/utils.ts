@@ -1,5 +1,8 @@
+import { escapeRegExp } from "lodash";
+
 export const SELECTOR_FORM_FIELD = 'input,textarea,select';
 export const SELECTOR_FOCUSABLE = SELECTOR_FORM_FIELD+',button,object,[href],[tabindex]';
+
 
 export function findFirstInput(root?: HTMLElement|null) {
   return <HTMLElement|undefined> root?.querySelector(SELECTOR_FORM_FIELD);
@@ -23,7 +26,7 @@ function _ifFocusable(root?: HTMLElement|null, selector?: string) {
 }
 
 export function includesUtilityClass(classNames: string, prefix: string) {
-  return new RegExp(`^.*${prefix}-\\d`).test(classNames);
+  return new RegExp(`^.*${escapeRegExp(prefix)}-\\d`).test(classNames);
 }
 
 /*!

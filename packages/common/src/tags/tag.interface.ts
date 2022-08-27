@@ -3,5 +3,6 @@ export interface ITag {
   name: string;
   color: string;
   archived?: boolean;
+  includeOnFilter?: boolean;
   description?: string;
 }

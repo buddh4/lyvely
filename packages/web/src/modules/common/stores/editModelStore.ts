@@ -21,6 +21,7 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
   const isCreate = ref(false);
 
   function setEditModel(id: TID, model: TUpdateModel) {
+    debugger;
     isCreate.value = false;
     _setModel(model, id);
   }
