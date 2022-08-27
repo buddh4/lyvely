@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ref } from "vue";
 import Button from '@/modules/ui/components/button/Button.vue';
 import Checkbox from '@/modules/ui/components/form/Checkbox.vue';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
@@ -56,6 +57,7 @@ function getColorBoxClass(color: string) {
   return `bg-${color} w-3.5 h-3.5 inline-block rounded-full my-2 mr-2 border border-secondary`;
 }
 
+const checkboxTrue = ref(true);
 </script>
 
 <template>
@@ -145,7 +147,7 @@ function getColorBoxClass(color: string) {
 
     <div class="flex flex-col">
       <Checkbox label="Checkbox with label" />
-      <Checkbox label="Disabled checked" :disabled="true" :checked="true" />
+      <Checkbox v-model="checkboxTrue" label="Disabled checked" :disabled="true" />
       <Checkbox label="Disabled unchecked" :disabled="true" :checked="false" />
       <Checkbox css-class="success" label="Success colored checkbox" />
     </div>

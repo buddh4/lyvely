@@ -59,9 +59,14 @@
     opacity: 0.4;
 }
 
+.dark [type="checkbox"]:disabled:not(:checked),
+.dark [type="radio"]:disabled:not(:checked) {
+    opacity: 0.1 !important;
+}
+
 [type="checkbox"]:disabled,
 [type="radio"]:disabled {
-    opacity: 0.3;
+    opacity: 0.3 !important;
     cursor: not-allowed;
 }
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import Checkbox from '@/modules/ui/components/form/Checkbox.vue';
-import { computed, withDefaults, ref, Ref, watch } from 'vue';
+import { computed, withDefaults } from 'vue';
 import { parseInt } from "lodash";
 
 interface Props {
@@ -66,12 +66,12 @@ function updateValue(checked: boolean, value: string) {
   <div class="flex flex-row-reverse">
     <template v-if="!single">
     <div v-for="unit in count" :key="unit">
-       <Checkbox v-model="values" :css-class="cssClasses(unit)" :value="unit" @change="updateValue" />
+       <Checkbox v-model="values" :disabled="props.disabled" :css-class="cssClasses(unit)" :value="unit" @change="updateValue" />
     </div>
     </template>
     <template v-else>
       <Checkbox
-        :disabled="props.disabled"
+
         :model-value="1"
         :checked="props.selection"
         :css-class="cssClasses(0)"
