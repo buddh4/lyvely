@@ -13,7 +13,6 @@
     "@ckpack/vue-color": "^1.2.0",
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/typography": "^0.5.0",
-    "@vueform/multiselect": "^2.2.1",
     "@vueuse/core": "^9.1.0",
     "@vueuse/integrations": "^9.1.1",
     "animate.css": "^4.1.1",

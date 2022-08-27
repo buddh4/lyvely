@@ -1,5 +1,18 @@
+.multiselect {
+
+}
+
 .multiselect .multiselect__tags, .multiselect .multiselect__content-wrapper {
     @apply bg-main border-divide text-main;
+}
+
+.multiselect--active .multiselect__tags {
+    @apply border-blue-300 ring ring-blue-200 ring-opacity-50;
+}
+
+.multiselect .multiselect__content-wrapper {
+    @apply border-b-0 border-blue-300 ring ring-blue-200 ring-opacity-50;
+    border-color: var(--color-divide) !important;
 }
 
 .dark .multiselect .multiselect__tags, .multiselect .multiselect__content-wrapper {
