@@ -66,6 +66,8 @@ export function getFullDayDate(date: CalendarDate): Date {
     } else {
       date = new Date(date);
     }
+  } else if(date instanceof Date) {
+    date = new Date(date);
   }
 
   if (!(date instanceof Date)) {

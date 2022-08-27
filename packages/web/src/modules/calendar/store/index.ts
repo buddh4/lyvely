@@ -9,6 +9,7 @@ export const useCalendarPlanStore = defineStore('timing', () => {
   const dragActive = ref(false);
 
   watch(date, () => {
+    console.log('change',date.value);
     useActivityStore().loadActivities();
   })
 
@@ -22,9 +23,11 @@ export const useCalendarPlanStore = defineStore('timing', () => {
 
   function switchToToday() {
     date.value = new Date();
+    console.log('switchToToday', date.value);
   }
 
   function _setCurrentDate(d: Date) {
+    console.log('_setCurrentDate', date.value);
     date.value = d;
   }
 
@@ -49,7 +52,10 @@ export const useCalendarPlanStore = defineStore('timing', () => {
   }
 
   const isInFuture = computed(() => isInFutureUtil(date.value));
-  const isToday = computed(() => isTodayUtil(date.value));
+  const isToday = computed(() => {
+    console.log('isToday', date.value);
+    return isTodayUtil(date.value)
+  });
 
   return {
     date,

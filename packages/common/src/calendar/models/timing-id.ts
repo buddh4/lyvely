@@ -34,7 +34,7 @@ export function toTimingId(cd: CalendarDateTime, level: CalendarIntervalEnum = C
         return result;
     }
 
-    return result + `;D:${d.getUTCDate()}`;
+    return result + `;D:${d.getDate()}`;
 }
 
 export function getTimingIds(d: CalendarDateTime) {

@@ -1,5 +1,4 @@
-import { CalendarDate } from '../interfaces';
-import { getFullDayDate } from '../interfaces';
+import { CalendarDate, getFullDayDate } from '../interfaces';
 import { addDays } from '../utils';
 
 export class DayIterator implements Iterable<Date> {
@@ -14,17 +13,17 @@ export class DayIterator implements Iterable<Date> {
 
   [Symbol.iterator]() {
     let currentDate = this.currentDate;
-    let toDate = this.toDate;
+    const toDate = this.toDate;
 
     return {
       next(): IteratorResult<Date> {
         if (currentDate <= toDate) {
-          let result = {value: currentDate , done: false};
+          const result = { value: currentDate , done: false };
           currentDate = addDays(currentDate, 1);
           return result;
         }
 
-        return {value: null, done: true};
+        return { value: null, done: true };
       }
     }
   }
