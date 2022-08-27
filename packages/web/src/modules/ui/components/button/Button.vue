@@ -72,9 +72,12 @@ if(isDevelopEnvironment()) {
   onMounted(() => {
     if (!button.value) return;
     const buttonEl = button.value;
-    if (!buttonEl.getAttribute('title')
-        && !buttonEl.getAttribute('aria-label')
-        && !buttonEl.textContent
+    const title = buttonEl.getAttribute('title') || '';
+    const ariaLabel = buttonEl.getAttribute('aria-label') || '';
+    const textContent = buttonEl.textContent || ''
+    if (title.length <= 3
+        && ariaLabel.length <= 3
+        && textContent.length <= 3
         && buttonEl.getAttribute('aria-hidden') !== 'true') {
       console.warn('Button without aria information detected')
       console.log({ariaMissingIn: buttonEl})
