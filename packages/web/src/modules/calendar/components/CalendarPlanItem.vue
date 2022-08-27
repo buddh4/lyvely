@@ -5,6 +5,7 @@ import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanItemM
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import { TimingModel } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
+import Badge from "@/modules/ui/components/badge/Badge.vue";
 
 interface Props {
   model: TimingModel,
@@ -48,7 +49,12 @@ const { model } = toRefs(props);
       <div class="entry-title-bar flex items-center">
         <slot name="pre-title"></slot>
         <div class="whitespace-nowrap overflow-hidden overflow-ellipsis cursor-pointer" @click="$emit('details')">
-          <slot name="title">{{ model.title }}</slot>
+          <slot name="title">
+            <div class="flex items-center">
+              {{ model.title }}
+              <Badge v-if="model.archived" class="bg-danger ml-2">{{ $t('common.archived') }}</Badge>
+            </div>
+          </slot>
         </div>
       </div>
       <TagList :tag-ids="model.tagIds" @select="selectTag"/>
