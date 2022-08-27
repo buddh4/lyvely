@@ -5,7 +5,7 @@ export function useFloatingInputSetup<T = unknown>(props: BaseInputProps, contex
   return  {
     wrapperClass: ['form-input relative', {'required': props.required}],
     labelClass: 'absolute inline-block inset-0 h-full opacity-60 pointer-events-none text-xs px-3 py-2',
-    ...useBaseInputSetup<T>(props, context, {cssClass: 'floating-input'})
+    ...useBaseInputSetup<T>(props, context, { cssClass: 'floating-input' })
   }
 }
 

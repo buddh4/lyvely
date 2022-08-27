@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
+import Drawer from '@/modules/ui/components/drawer/Drawer.vue';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
-import { computed, ref, Ref } from 'vue';
+import { computed, ref, Ref, defineEmits } from 'vue';
 import { TagFilter } from "@lyvely/common/src/tags/tag.filter";
+import Checkbox from "@/modules/ui/components/form/Checkbox.vue";
+import TextInput from "@/modules/ui/components/form/TextInput.vue";
+import Index from "../../../../index.html";
 
 const activityStore = useActivityStore();
 const profileStore = useProfileStore();
@@ -13,10 +17,13 @@ const calendarPlanStore = useCalendarPlanStore();
 const tags = computed(() => new TagFilter({ archived: false }).apply(profileStore.getTags()));
 const activeTagId = computed(() => activityStore.filter.tagId);
 const archiveFilterActive = computed(() => activityStore.filter.archived);
+const { filter } = activityStore;
 const dragActive = computed({
   get: () => calendarPlanStore.dragActive,
   set: (val: boolean) => calendarPlanStore.setDragActive(val)
 });
+
+defineEmits(['openDrawer']);
 
 function isChecked(filter: string): boolean {
   if (filter === 'archive') {
@@ -28,10 +35,6 @@ function isChecked(filter: string): boolean {
 
 function setTagFilter(tagId: string) {
   activityStore.updateFilter({ tagId });
-}
-
-function toggleArchiveFilter() {
-  activityStore.updateFilter({ archived: !archiveFilterActive.value })
 }
 
 const commonButtonClassNames = 'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
@@ -93,6 +96,13 @@ const sliderStyle = computed(() => {
   return { transform: `translateX(${slideTransformX.value}px)`, 'pointer-events': slideActive.value ? 'none' : 'all' };
 });
 
+const showFilterDrawer = ref(false);
+
+const search = ref(null) as Ref<HTMLElement|null>;
+
+function focusSearch() {
+  search.value?.focus();
+}
 </script>
 
 <template>
@@ -130,13 +140,24 @@ const sliderStyle = computed(() => {
 
     <div class="ml-auto flex flex-nowrap">
       <Button
-              data-filter-button :class="[roundButton, 'ml-auto']"
-              :active="archiveFilterActive"
-              @click="toggleArchiveFilter()">
+          class="relative"
+          data-filter-button :class="[roundButton, 'ml-auto']"
+          :active="showFilterDrawer"
+          @click="showFilterDrawer = !showFilterDrawer">
         <Icon name="filter" />
+        <div v-if="!filter.isEmpty()" class="absolute w-1.5 h-1.5 bg-pop right-1 bottom-1.5 rounded-full">&nbsp;</div>
       </Button>
     </div>
   </nav>
+
+  <Drawer v-model="showFilterDrawer" title="common.filter.title">
+    <div class="relative inline-block">
+      <input ref="search" v-model="filter.query" class="search w-full mb-4 py-1" :placeholder="$t('common.filter.search')" type="text" />
+      <Icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none"  />
+    </div>
+
+    <Checkbox v-model="filter.archived" label="common.filter.archive" />
+  </Drawer>
 </template>
 
 <style scoped>

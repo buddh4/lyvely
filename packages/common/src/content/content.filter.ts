@@ -1,14 +1,17 @@
 import { IContent } from './content.interface';
+import { escapeRegExp } from "lodash";
 
 export interface ContentFilterOptions<Model extends IContent<string> = IContent<string>> {
   tagId?: string;
   archived?: boolean;
+  query?: string;
   additions?: ((model: Model, filter: ContentFilter<Model>) => boolean)[];
 }
 
 export class ContentFilter<Model extends IContent<string> = IContent<string>> {
   tagId?: string;
   archived = false;
+  query?: string;
   additions: ((model: Model, filter: ContentFilter<Model>) => boolean)[] = [];
 
   constructor(filter?: ContentFilterOptions<Model>) {
@@ -18,7 +21,7 @@ export class ContentFilter<Model extends IContent<string> = IContent<string>> {
   }
 
   isEmpty() {
-    return !this.tagId && !this.archived;
+    return !this.tagId && !this.archived && !this.query?.length;
   }
 
   run(model: Model) {
@@ -26,9 +29,11 @@ export class ContentFilter<Model extends IContent<string> = IContent<string>> {
       return false;
     }
 
-    debugger;
-
     if(!this.runAdditions(model)) {
+      return false;
+    }
+
+    if(this.query?.length && !(model.title + model.text).match(new RegExp(escapeRegExp(this.query), 'i'))) {
       return false;
     }
 

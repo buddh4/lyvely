@@ -70,10 +70,10 @@ const { activate, deactivate } = useFocusTrap(rootEl);
 
 if(!props.prevAutoFocus) {
   watch([modelValue], () => {
-    console.log('Modal state: '+modelValue.value);
 
     if(!modelValue.value) {
       deactivate();
+      return;
     }
 
     useAccessibilityStore().setAriaHiddenApp(modelValue.value);
@@ -129,20 +129,18 @@ if(!props.prevAutoFocus) {
                     :color="iconColor" />
                    {{ $t(title) }}
               </h1>
+              <Button
+                  v-if="submitButton"
+                  aria-hidden="true"
+                  class="primary rounded-full text-xs float-right align-middle ml-auto md:hidden px-2 py-0.5"
+                  @click="$emit('submit')">
+                {{ $t(submitButtonText) }}
+              </Button>
+
+              <Button class="float-right align-middle font-bold ml-auto hidden md:inline-block px-2 py-0.5 border-none" @click="cancel">
+                x
+              </Button>
             </slot>
-
-            <Button
-                v-if="submitButton"
-                aria-hidden="true"
-                class="primary rounded-full text-xs float-right align-middle ml-auto md:hidden px-2 py-0.5"
-                @click="$emit('submit')">
-              {{ $t(submitButtonText) }}
-            </Button>
-
-            <Button class="float-right align-middle font-bold ml-auto hidden md:inline-block px-2 py-0.5 border-none" @click="cancel">
-              x
-            </Button>
-
           </div>
 
           <div class="px-5 py-6" data-modal-body>

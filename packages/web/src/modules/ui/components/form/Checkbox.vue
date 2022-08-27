@@ -44,7 +44,7 @@ export default {
       if(isArray(props.modelValue)) {
         context.emit('update:modelValue', props.modelValue.filter(val => val !== evt.target.value));
       } else {
-        context.emit('update:modelValue', evt.target.checked);
+        context.emit('update:modelValue', !evt.target.checked);
       }
     }
 

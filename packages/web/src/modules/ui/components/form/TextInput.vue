@@ -1,5 +1,5 @@
 <template>
-  <div :class="wrapperClass">
+  <fieldset :class="wrapperClass">
     <input
       :id="id"
       v-model="value"
@@ -14,8 +14,8 @@
       {{ $t(error) }}
     </div>
 
-    <label :for="id" :class="labelClass">{{ $t(label) }}</label>
-  </div>
+    <label v-if="label" :for="id" :class="labelClass">{{ $t(label) }}</label>
+  </fieldset>
 </template>
 
 <script lang="ts">

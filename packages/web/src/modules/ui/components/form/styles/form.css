@@ -81,6 +81,15 @@
     transition: all 0.6s ease;
 }
 
+[type="text"],
+textarea {
+    @apply bg-main border-divide w-full rounded-md border-divide shadow-sm bg-white dark:bg-highlight focus:ring focus:ring-blue-200 focus:ring-opacity-50
+}
+
+input.search {
+    @apply rounded-full
+}
+
 @keyframes wave {
     50% {
         transform: scale(0.9);
@@ -280,7 +289,7 @@ input[type=range]:focus::-moz-range-thumb {
     padding-top: 1.625rem;
     padding-bottom: 0.625rem;
     height:calc(3.5rem + 2px);
-    @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-highlight focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50;
+    @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-highlight focus:border-divide focus:ring focus:ring-blue-200 focus:ring-opacity-50;
 }
 
 .form-input .number-slider {

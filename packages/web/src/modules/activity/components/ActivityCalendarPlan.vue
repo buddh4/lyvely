@@ -16,7 +16,6 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const activityStore = useActivityStore();
 const taskPlanStore = useTaskPlanStore();
 const habitPlanStore = useHabitPlanStore();
 

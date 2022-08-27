@@ -11,6 +11,7 @@ import "animate.css/animate.css";
 import { setupI18n } from "./i18n";
 import { createPinia } from 'pinia';
 import { eventBus } from '@/modules/core/events/global.emitter';
+import { focus } from "@/directives/focus";
 
 console.log("Starting...");
 
@@ -27,6 +28,8 @@ eventBus.emit('app.create.post', app);
 app.use(createPinia());
 app.use(router);
 app.use(setupI18n());
+
+app.directive('focus', focus);
 
 eventBus.emit('app.mount.pre', app);
 

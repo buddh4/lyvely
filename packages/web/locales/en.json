@@ -58,6 +58,11 @@
     "archived": "Archived",
     "archive": "Archive",
     "unarchive": "Add from archive",
+    "filter": {
+      "search": "Search",
+      "title": "Filter View",
+      "archive": "Archived items"
+    },
     "edit": "Edit",
     "save": "Save"
   },

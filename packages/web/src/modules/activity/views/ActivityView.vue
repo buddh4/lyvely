@@ -8,12 +8,13 @@ import { usePageStore } from "@/modules/core/store/page.store";
 
 onBeforeMount(() => useActivityStore().loadActivities());
 onMounted(() => usePageStore().accessibilityFocus('#activity-navigation > button.active'));
+
 </script>
 
 <template>
   <MainContainer id="activity-overview">
     <ActivityNavigation />
-    <ActivityFilterNavigation />
+    <ActivityFilterNavigation @toggle-drawer="showFilterDrawer = !showFilterDrawer" />
     <router-view></router-view>
   </MainContainer>
 </template>

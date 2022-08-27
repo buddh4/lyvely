@@ -59,14 +59,14 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
       <template #header-right>
         <AddButton @click="setCreateTag"/>
       </template>
-      <div class="py-1 pr-3 border-divide bg-highlight dark:bg-main">
+      <div class="py-3 pr-3 border-divide bg-highlight dark:bg-main">
         <div class="relative inline-block">
           <input
               ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')"
-              class="border-l-0 pl-2 border-divide text-sm focus:border-blue-300 focus:ring
+              class="search pl-2 ml-1 border-divide text-sm focus:border-blue-300 focus:ring
               placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1
               bg-main dark:bg-highlight" />
-          <Icon name="search" class="absolute right-2.5 top-2 text-slate-300 cursor-pointer" @click="focusSearch" />
+          <Icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
         </div>
         <div class="float-right">
           <Button :active="filter.archived" class="secondary outlined text-xs px-0.5 py-0.5" :title="$t('filter.archive')" @click="filter.archived = !filter.archived">
