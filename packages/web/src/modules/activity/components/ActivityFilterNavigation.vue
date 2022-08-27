@@ -156,7 +156,9 @@ function focusSearch() {
       <Icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none"  />
     </div>
 
-    <Checkbox v-model="filter.archived" label="common.filter.archive" />
+    <Checkbox v-model="filter.archived" class="mb-4" label="common.filter.archive" />
+
+    <Button class="secondary float-right text-xs" text="common.filter.clear" @click="filter.reset()"/>
   </Drawer>
 </template>
 

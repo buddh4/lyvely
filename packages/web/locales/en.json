@@ -60,7 +60,8 @@
     "unarchive": "Add from archive",
     "filter": {
       "search": "Search",
-      "title": "Filter View",
+      "clear": "Reset",
+      "title": "Filter view",
       "archive": "Archived items"
     },
     "edit": "Edit",

@@ -24,6 +24,12 @@ export class ContentFilter<Model extends IContent<string> = IContent<string>> {
     return !this.tagId && !this.archived && !this.query?.length;
   }
 
+  reset() {
+    this.tagId = undefined;
+    this.archived = false;
+    this.query = undefined;
+  }
+
   run(model: Model) {
     if(this.tagId && !model.tagIds?.includes(this.tagId)) {
       return false;

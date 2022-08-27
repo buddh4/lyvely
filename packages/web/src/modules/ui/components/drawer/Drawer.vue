@@ -73,7 +73,7 @@ function close() {
 
 <style scoped lang="postcss">
 .drawer {
-  @apply p-4 shadow-lg;
+  @apply p-4 shadow-lg bg-highlight;
   position: absolute;
   top:60px;
   height: calc(100vh - 70px);
