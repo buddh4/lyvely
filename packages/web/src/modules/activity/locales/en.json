@@ -1,0 +1,25 @@
+{
+  "activities": {
+    "tasks": {
+      "title": "Tasks",
+      "create" : {
+        "title": "Create task"
+      },
+      "edit" : {
+        "title": "Edit task"
+      }
+    },
+    "habits": {
+      "title": "Activities",
+      "create" : {
+        "title": "Create activity"
+      },
+      "edit" : {
+        "title": "Edit activity"
+      }
+    },
+    "labels": {
+      "main_nav": "Activities"
+    }
+  }
+}

@@ -4,7 +4,7 @@ import vuePlugin from "@vitejs/plugin-vue";
 import path from 'path';
 
 export default defineConfig({
-  plugins: [vuePlugin(), tsconfigPaths()],
+  plugins: [vuePlugin(), tsconfigPaths(), ],
   server: {
     port: 3000
   },
@@ -13,4 +13,17 @@ export default defineConfig({
       {find: /^@(?=\/)/, replacement: path.resolve(__dirname, './src')},
     ],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'activities': [
+            './src/modules/activity/views/ActivityView.vue',
+            './src/modules/activity/views/HabitPlanView.vue',
+            './src/modules/activity/views/TaskPlanView.vue',
+          ]
+        }
+      }
+    }
+  }
 })

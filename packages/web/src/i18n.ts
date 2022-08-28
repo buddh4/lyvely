@@ -5,6 +5,11 @@ export const SUPPORT_LOCALES = ["en", "de"];
 
 let i18n: I18n;
 
+export const LOCALES_AVAILABLE = {
+  'en': 'English',
+  'de': 'Deutsch',
+}
+
 export function getI18n() {
   return i18n;
 }
@@ -15,8 +20,11 @@ export function translate(key: string, options?: any) {
 
 export function setupI18n(options = { locale: "en" }) {
   options.locale = transformLocale(options.locale);
-  i18n = createI18n({});
-  setI18nLanguage(options.locale);
+  i18n = createI18n({
+    legacy: false,
+    fallbackLocale: 'en'
+  });
+  setLocale(options.locale);
   return i18n;
 }
 
@@ -24,10 +32,41 @@ function transformLocale(locale: string) {
   return locale.split("-")[0];
 }
 
-export async function setI18nLanguage(locale: string) {
+const loadedModules: Record<string, Record<string, boolean>>  = {};
+
+export function isModuleMessagesLoaded(locale: string, module: string) {
+  return loadedModules[module] && loadedModules[module][locale];
+}
+
+function setModuleMessagesLoaded(locale: string, module: string) {
+  loadedModules[module] = loadedModules[module] || {};
+  loadedModules[module][locale] = true;
+}
+
+export function loadModuleMessages(locale: string, module: string) {
+  locale = transformLocale(locale);
+  return import(`./modules/${module}/locales/${locale}.json`)
+    .then(data => mergeMessages(locale, data))
+    .then(() => setModuleMessagesLoaded(locale, module))
+    .then(() => nextTick());
+}
+
+export function setMessages(locale: string, data: any) {
+  i18n.global.mergeLocaleMessage(locale, data);
+}
+
+export function mergeMessages(locale: string, data: any) {
+  i18n.global.mergeLocaleMessage(locale, data);
+}
+
+export function isGlobalMessagesLoaded(locale: string) {
+  return i18n.global.availableLocales.includes(locale);
+}
+
+export async function setLocale(locale: string) {
   locale = transformLocale(locale);
 
-  if (!i18n.global.availableLocales.includes(locale)) {
+  if (!isGlobalMessagesLoaded(locale)) {
     await loadLocaleMessages(locale);
   }
 
@@ -49,8 +88,7 @@ export async function setI18nLanguage(locale: string) {
 
 export async function loadLocaleMessages(locale: string) {
   // load locale messages with dynamic import
-  return fetch(`/locales/${locale}.json`)
-    .then(response => response.json())
-    .then(data => i18n.global.setLocaleMessage(locale, data))
-    .then(nextTick as any);
+  return import(`../locales/${locale}.json`)
+    .then(data => mergeMessages(locale, data))
+    .then(() => nextTick());
 }

@@ -6,11 +6,14 @@ import Sidebar from '@/modules/ui/components/layout/Sidebar.vue';
 import { toRefs } from 'vue'
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import AriaLiveStatus from "@/modules/accessibility/components/AriaLiveStatus.vue";
+import AppLoader from "@/modules/ui/components/loader/AppLoader.vue";
 
 const { visible, icon, iconColor, iconClass, title, message,  } = toRefs(useGlobalDialogStore());
+
 </script>
 
 <template>
+
   <div class="flex items-stretch">
     <Sidebar id="sidebar" />
 
@@ -21,6 +24,7 @@ const { visible, icon, iconColor, iconClass, title, message,  } = toRefs(useGlob
 
   </div>
   <MobileFooterNavigation />
+  <AppLoader />
   <AriaLiveStatus />
   <Dialog v-model="visible" :icon="icon" :icon-color="iconColor" :icon-class="iconClass" :title="title" :message="message" />
 </template>

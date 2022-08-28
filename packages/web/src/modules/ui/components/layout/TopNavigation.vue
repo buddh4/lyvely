@@ -6,9 +6,9 @@ import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { computed, toRefs } from 'vue';
 import { usePageStore } from "@/modules/core/store/page.store";
 
-const pageSotre = usePageStore();
-const { toggleSidebar } = pageSotre;
-const { showSidebar } = toRefs(pageSotre);
+const pageStore = usePageStore();
+const { toggleSidebar } = pageStore;
+const { showSidebar } = toRefs(pageStore);
 
 const authenticated = computed(() => useAuthStore().isAuthenticated);
 const score = computed(() => useProfileStore().profile?.score);

@@ -1,4 +1,6 @@
 /* eslint-disable */
+import 'vue-router'
+
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>
@@ -6,7 +8,6 @@ declare module '*.vue' {
 }
 
 export declare global {
-
   interface Window {
     app: any;
     Cypress: any
@@ -19,5 +20,12 @@ export declare global {
       VITE_APP_BASEURL: string;
       MODE: 'development' | 'production';
     }
+  }
+}
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    // is optional
+    i18n?: { module?: string }
   }
 }

@@ -8,6 +8,7 @@ export const usePageStore = defineStore('page', () => {
   const showSidebar = ref(true);
   const isDark = useDark();
   const toggleDark = useToggle(isDark);
+  const showAppLoader = ref(true);
 
   function setTitle(title: Array<string>|string) {
     setPageTitle(title);
@@ -37,6 +38,7 @@ export const usePageStore = defineStore('page', () => {
     showSidebar,
     toggleSidebar,
     toggleDark,
+    showAppLoader,
     setTitle,
     accessibilityFocus
   }

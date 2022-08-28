@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
 import authRepository from '@/modules/user/repositories/auth.repository';
 import { IUser  } from '@lyvely/common';
-import { setI18nLanguage } from '@/i18n';
+import { setLocale } from '@/i18n';
 import { localStorageManager, sessionStorageManager } from '@/util/storage';
 import { useAsEmitter } from '@/util/emitter';
 import mitt from 'mitt';
@@ -100,7 +100,7 @@ export const useAuthStore = defineStore('auth', {
     async setUser(user: IUser) {
       this.user = user;
       if(user.locale) {
-        await setI18nLanguage(user.locale);
+        await setLocale(user.locale);
       }
     },
     ...useStatus(),
