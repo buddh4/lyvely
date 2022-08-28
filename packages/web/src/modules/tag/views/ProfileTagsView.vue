@@ -64,7 +64,7 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
           <input
               ref="search" v-model="filter.query" type="text" :placeholder="$t('tags.view.search')"
               class="search pl-2 ml-2 border-divide text-sm focus:border-blue-300 focus:ring
-              placeholder:text-slate-300 focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1
+               focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1
               bg-main dark:bg-highlight" />
           <Icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
         </div>
