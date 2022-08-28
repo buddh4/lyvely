@@ -36,6 +36,12 @@
     --text-main: #4b5563;
     --text-dimmed: #6b7280;
     --text-inverted: #f3f4f6;
+
+    --media-min-sm: 640px;
+    --media-min-md: 768px;
+    --media-min-lg: 1024px;
+    --media-min-xl: 1280px;
+    --media-min-2xl: 1536px;
 }
 
 .dark {

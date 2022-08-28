@@ -7,12 +7,14 @@ import { onClickOutside } from '@vueuse/core'
 interface Props {
   label?: string,
   icon?: string,
+  position?: 'left' | 'right',
   buttonClass?:string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   icon: 'dropdown',
   label: '',
+  position: 'left',
   buttonClass: ''
 });
 
@@ -51,19 +53,29 @@ function navigateUp(evt: KeyboardEvent) {
     (<HTMLElement> activeElement.previousElementSibling).focus()
   }
 }
+
+function toggle() {
+  open.value = !open.value;
+}
 </script>
 
 <template>
   <div ref="root" :class="className" @keydown.prevent.down="navigateDown" @keydown.prevent.up="navigateUp" @keydown.esc="open = false">
     <div class="relative">
       <span class="rounded-md shadow-sm">
-        <button :id="id" :class="buttonClassName" :aria-expanded="open.toString()" @click="open = !open" >
-          <span v-if="label" class="label">{{ $t(label) }}</span>
-          <Icon v-if="icon" :name="icon" />
-        </button>
+        <slot name="trigger" :toggle="toggle">
+          <button :id="id" :class="buttonClassName" :aria-expanded="open.toString()" @click="toggle">
+            <span v-if="label" class="label">{{ $t(label) }}</span>
+            <Icon v-if="icon" :name="icon" />
+          </button>
+        </slot>
       </span>
 
-      <div v-if="open" :aria-labelledby="id" class="absolute dropdown-items right-0 py-2 w-48 bg-main dark:bg-shadow rounded-md shadow-lg border border-gray-100 dark:border-gray-700 z-20" @click="onClickContent">
+      <div
+v-if="open" :aria-labelledby="id"
+           :class="[
+               'absolute dropdown-items  py-2 w-48 bg-main dark:bg-shadow rounded-md shadow-lg border border-gray-100 dark:border-gray-700 z-20',
+               position === 'left' ? 'right-0.5' : 'left-0.5'  ]" @click="onClickContent">
         <slot></slot>
       </div>
     </div>

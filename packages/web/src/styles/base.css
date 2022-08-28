@@ -32,10 +32,6 @@ body {
     opacity: 1;
 }
 
-#top-navigation {
-    @apply flex items-center justify-between flex-wrap overflow-hidden h-12 px-4 z-40 shadow dark:shadow-slate-900;
-}
-
 #main {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

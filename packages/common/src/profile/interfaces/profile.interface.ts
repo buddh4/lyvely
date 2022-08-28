@@ -31,5 +31,6 @@ export interface IProfile {
   visibility: ProfileVisibilityLevel,
   score: number;
   locale: string;
+  imageHash?: string;
   tags: ITag[];
 }

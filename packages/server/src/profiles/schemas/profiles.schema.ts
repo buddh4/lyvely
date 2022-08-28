@@ -49,6 +49,9 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
   @Prop({ type: [TagSchema], default: [] })
   tags: Tag[];
 
+  @Prop({ type: String })
+  imageHash?: string;
+
   createdAt: Date;
 
   updatedAt: Date;

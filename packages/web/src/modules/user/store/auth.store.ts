@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
 import authRepository from '@/modules/user/repositories/auth.repository';
-import { IUser  } from '@lyvely/common';
+import { IUser } from '@lyvely/common';
 import { setLocale } from '@/i18n';
 import { localStorageManager, sessionStorageManager } from '@/util/storage';
 import { useAsEmitter } from '@/util/emitter';

@@ -1,7 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { DocumentDto } from '../../model';
 import { IProfile, ProfileType, ProfileVisibilityLevel } from '../interfaces';
-import { IsArray, IsEnum, IsInt, IsString, Min } from 'class-validator';
+import { IsArray, IsEnum, IsInt, IsString, Min, IsOptional } from 'class-validator';
 import { TagDto, ITag } from '../../tags';
 
 @Exclude()
@@ -27,6 +27,11 @@ export class ProfileDto extends DocumentDto<ProfileDto> implements IProfile {
   @Expose()
   @IsString()
   locale: string;
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  imageHash: string;
 
   @Expose()
   @Type(() => TagDto)

@@ -6,6 +6,7 @@ import { RouteLocation } from 'vue-router';
 import { translate } from "@/i18n";
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
 import { usePageStore } from "@/modules/core/store/page.store";
+import { watchMaxSize, isMaxViewSize } from "@/util/media";
 
 interface MenuItem {
   to?: Partial<RouteLocation> | string;
@@ -53,21 +54,19 @@ const { showSidebar, isDark } = toRefs(usePageStore());
 
 watch(showSidebar, () => {
   if(showSidebar.value) {
-    setMinNavMargin('0px');
+    sidebar.value?.classList.remove('toggled')
   } else {
-    setMinNavMargin('-260px');
+    sidebar.value?.classList.add('toggled')
   }
 });
 
-function getMainNavMargin(): string {
-  return sidebar.value ? window.getComputedStyle(sidebar.value).marginLeft : '0px';
-}
+const isSmallView = ref(isMaxViewSize('sm'));
+watchMaxSize('sm', (value) => {
+  isSmallView.value = value
+  console.log(value);
+});
 
-function setMinNavMargin(val: string) {
-  if(sidebar.value) {
-    sidebar.value.style.marginLeft = val;
-  }
-}
+const showLabels = computed(() => isSmallView.value || showSidebar.value);
 
 const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: useProfileStore()?.profile?.name}))
 </script>
@@ -75,22 +74,29 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
 <template>
   <nav v-if="isAuthenticated" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
     <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
-      <div>
+      <div class="py-2">
         <a class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3">
-          <Icon name="lyvely" class="fill-current text-lyvely mr-2 w-5" /> <img class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg" />
+          <Icon name="lyvely" class="fill-current text-lyvely mr-2 w-5" />
+          <transition name="fade">
+            <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg" />
+          </transition>
         </a>
       </div>
 
       <ul class="nav flex-column">
         <li>
           <template v-for="menuItem in menuItems" :key="menuItem.label">
-            <a v-if="menuItem.click" :class="menuItemClasses" @click="menuItem.click">
+            <a v-if="menuItem.click" :class="menuItemClasses" class="flex no-wrap items-center h-12" @click="menuItem.click">
               <Icon :name="menuItem.icon" class="w-5" />
-              {{ $t(menuItem.label) }}
+              <transition name="fade">
+                <span v-if="showLabels" class="menu-item">{{ $t(menuItem.label) }}</span>
+              </transition>
             </a>
-            <router-link v-else :class="menuItemClasses" :to="menuItem.to">
+            <router-link v-else :class="menuItemClasses" class="flex no-wrap items-center h-12" :to="menuItem.to">
               <Icon :name="menuItem.icon" class="w-5" />
-              {{ $t(menuItem.label) }}
+              <transition name="fade">
+                <span v-if="showLabels" class="menu-item">{{ $t(menuItem.label) }}</span>
+              </transition>
             </router-link>
           </template>
         </li>
@@ -109,17 +115,42 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
   height: 20px;
 }
 
+.sidebar.toggled {
+  min-width: 60px;
+  max-width: 60px;
+}
+
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-active {
+  transition: opacity 2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .sidebar {
   min-width: 260px;
   max-width: 260px;
-  transition: margin-left 0.35s ease-in-out, left 0.35s ease-in-out, margin-right 0.35s ease-in-out,
-    right 0.35s ease-in-out;
+  transition: all 0.35s ease-in-out;
   direction: ltr;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 767px) {
   .sidebar {
+    min-width: 260px;
+    max-width: 260px;
     margin-left: -260px;
+  }
+
+  .sidebar.toggled {
+    min-width: 260px;
+    max-width: 260px;
+    margin-left: 0;
   }
 }
 </style>

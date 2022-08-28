@@ -35,6 +35,7 @@ function transformLocale(locale: string) {
 const loadedModules: Record<string, Record<string, boolean>>  = {};
 
 export function isModuleMessagesLoaded(locale: string, module: string) {
+  locale = transformLocale(locale);
   return loadedModules[module] && loadedModules[module][locale];
 }
 

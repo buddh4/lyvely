@@ -5,39 +5,79 @@ import { useAuthStore } from '@/modules/user/store/auth.store';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { computed, toRefs } from 'vue';
 import { usePageStore } from "@/modules/core/store/page.store";
+import ProfileImage from "@/modules/profile/components/ProfileAvatar.vue";
+import ProfileBreadcumb from "@/modules/profile/components/ProfileBreadcumb.vue";
+import UserAvatar from "@/modules/user/components/UserAvatar.vue";
+import Dropdown from "@/modules/ui/components/menu/Dropdown.vue";
 
 const pageStore = usePageStore();
-const { toggleSidebar } = pageStore;
-const { showSidebar } = toRefs(pageStore);
+const {toggleSidebar} = pageStore;
 
 const authenticated = computed(() => useAuthStore().isAuthenticated);
 const score = computed(() => useProfileStore().profile?.score);
 </script>
 
 <template>
-  <nav v-if="authenticated" id="top-navigation" :aria-label="$t('layout.aria.top-nav')">
-    <Button class="py-1.5 px-2.5 border-none" :is-toggle="true" :active="!showSidebar" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
-      <Icon name="menu" />
-    </Button>
+  <nav
+v-if="authenticated" id="top-navigation"
+       class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible"
+       :aria-label="$t('layout.aria.top-nav')">
+    <Dropdown position="right">
+      <template #trigger="{ toggle }">
+        <div class="flex justify-center items-center py-1">
+          <div role="button" class="border-none px-0" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
+            <div class="border border-divide px-2 p-2 rounded-l-2xl flex justify-center items-center gap-2">
+              <ProfileImage/>
 
-    <div v-if="score" class="score inline-block float-right">
+              <div class="flex justify-center items-center text-xs">
+                <transition
+                    name="score-icon"
+                    mode="out-in"
+                    enter-active-class="animate__animated animate_svg_flip" leave-active-class="">
+                  <Icon :key="score" name="score" class="text-success"/>
+                </transition>
 
-      <transition
-        name="score-icon"
-        mode="out-in"
-        enter-active-class="animate__animated animate_svg_flip" leave-active-class="">
-        <Icon :key="score" name="score" class="text-success" />
-      </transition>
-
-      <transition
-        name="score"
-        mode="out-in"
-        enter-active-class="animate__animated animate__faster animate__bounceIn"
-        leave-active-class="animate__animated animate__faster animate__bounceOut">
-        <div :key="score" class="inline-block score-value">
-          {{ score }}
+                <transition
+                    name="score"
+                    mode="out-in"
+                    enter-active-class="animate__animated animate__faster animate__bounceIn"
+                    leave-active-class="animate__animated animate__faster animate__bounceOut">
+                  <div :key="score" class="inline-block score-value">
+                    {{ score }}
+                  </div>
+                </transition>
+              </div>
+            </div>
+          </div>
+          <div class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center">
+            <Button class="px-1 py-2" @click="toggle"><Icon style="margin-top:-1px" name="caret-down" /></Button>
+          </div>
         </div>
-      </transition>
+      </template>
+
+      <template #default>
+        asdf
+      </template>
+    </Dropdown>
+
+    <div class="border border-divide px-2 p-2 rounded-2xl text-sm hidden sm:flex">
+      <ProfileBreadcumb/>
+    </div>
+
+    <div v-if="score" class="flex items-center justify-center score inline-block float-right">
+      <Button>
+        <Icon name="bell" class="w-3.5"/>
+      </Button>
+      <Dropdown
+class="border-none" :is-toggle="true" :aria-label="$t('layout.aria.toggle-sidebar')"
+                aria-controls="sidebar">
+        <template #trigger>
+          <div class="px-2 p-2 rounded-xl flex justify-center items-center gap-2 cursor-pointer text-sm">
+            <UserAvatar/>
+            <Icon name="caret-down"/>
+          </div>
+        </template>
+      </Dropdown>
 
     </div>
   </nav>
