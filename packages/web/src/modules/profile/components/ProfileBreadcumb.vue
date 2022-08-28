@@ -19,7 +19,7 @@ const path = computed(() => {
 </script>
 
 <template>
-  <router-link to="/">{{ profileName }}</router-link>
+  <router-link to="/"><span class="text-pop">@</span> {{ profileName }}</router-link>
   <template v-for="sub in path" :key="sub.path">
     <span class="mx-0.5">/</span>
     <router-link :to="sub.path">{{ sub.name }}</router-link>

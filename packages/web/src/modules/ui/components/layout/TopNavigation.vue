@@ -26,7 +26,7 @@ v-if="authenticated" id="top-navigation"
       <template #trigger="{ toggle }">
         <div class="flex justify-center items-center py-1">
           <div role="button" class="border-none px-0" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
-            <div class="border border-divide px-2 p-2 rounded-l-2xl flex justify-center items-center gap-2">
+            <div class="border border-divide px-3 p-2 rounded-l-2xl flex justify-center items-center gap-2">
               <ProfileImage/>
 
               <div class="flex justify-center items-center text-xs">
@@ -50,7 +50,7 @@ v-if="authenticated" id="top-navigation"
             </div>
           </div>
           <div class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center">
-            <Button class="px-1 py-2" @click="toggle"><Icon style="margin-top:-1px" name="caret-down" /></Button>
+            <Button class="px-2 py-2" @click="toggle"><Icon style="margin-top:-1px" name="caret-down" /></Button>
           </div>
         </div>
       </template>
@@ -60,7 +60,7 @@ v-if="authenticated" id="top-navigation"
       </template>
     </Dropdown>
 
-    <div class="border border-divide px-2 p-2 rounded-2xl text-sm hidden sm:flex">
+    <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:flex">
       <ProfileBreadcumb/>
     </div>
 
@@ -69,7 +69,7 @@ v-if="authenticated" id="top-navigation"
         <Icon name="bell" class="w-3.5"/>
       </Button>
       <Dropdown
-class="border-none" :is-toggle="true" :aria-label="$t('layout.aria.toggle-sidebar')"
+        class="border-none" :is-toggle="true" :aria-label="$t('layout.aria.toggle-sidebar')"
                 aria-controls="sidebar">
         <template #trigger>
           <div class="px-2 p-2 rounded-xl flex justify-center items-center gap-2 cursor-pointer text-sm">
