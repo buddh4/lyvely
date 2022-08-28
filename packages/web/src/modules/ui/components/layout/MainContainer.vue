@@ -26,7 +26,7 @@ const widthClass = computed(() => ({
 const show = computed(() => props.requireAuth ? useAuthStore().isAuthenticated : true);
 
 const classNames = computed(() => {
-  return ['container mx-auto p-0.5 pb-5 pt-2 md:p-6 mb-6 md:mb-0', widthClass.value];
+  return ['container main-container mx-auto p-0.5 pb-5 pt-2 md:p-6 mb-6 md:mb-0', widthClass.value];
 })
 
 </script>
@@ -37,7 +37,13 @@ const classNames = computed(() => {
   </main>
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+@media (max-width: 767px) {
+  .main-container {
+    min-width: 100vw;
+  }
+}
 
 </style>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
