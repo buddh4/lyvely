@@ -4,10 +4,10 @@ import CalendarPlanSection from "@/modules/calendar/components/CalendarPlanSecti
 import { ActivityType } from '@lyvely/common';
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
-import { useActivityStore } from "@/modules/activity/store/activityStore";
-import draggable from "vuedraggable";
 import { useActivityEditStore } from "@/modules/activity/store/editActivityStore";
 import { computed } from 'vue';
+import { useActivityStore } from "@/modules/activity/store/activityStore";
+import draggable from "vuedraggable";
 
 interface Props {
   interval: number,
@@ -16,13 +16,13 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const activityStore = useActivityStore();
 const taskPlanStore = useTaskPlanStore();
 const habitPlanStore = useHabitPlanStore();
 
-const activities = computed(() => (props.type === ActivityType.Habit)
-    ? habitPlanStore.getHabitsByCalendarInterval(props.interval)
-    : taskPlanStore.getTasksByCalendarInterval(props.interval));
+//const activities = computed(() => activityStore.getActivities(props.type, props.interval));
 
+const activities = computed(() => activityStore.getActivities(props.type, props.interval));
 
 interface DragEvent {
   from: HTMLElement,

@@ -17,10 +17,6 @@ export const useCalendarPlanStore = defineStore('timing', () => {
     return toTimingId(date.value, interval);
   }
 
-  function setDragActive(drag: boolean) {
-    dragActive.value = drag;
-  }
-
   function switchToToday() {
     date.value = new Date();
     console.log('switchToToday', date.value);
@@ -52,16 +48,12 @@ export const useCalendarPlanStore = defineStore('timing', () => {
   }
 
   const isInFuture = computed(() => isInFutureUtil(date.value));
-  const isToday = computed(() => {
-    console.log('isToday', date.value);
-    return isTodayUtil(date.value)
-  });
+  const isToday = computed(() => isTodayUtil(date.value));
 
   return {
     date,
     dragActive,
     getTimingId,
-    setDragActive,
     switchToToday,
     decrementTiming,
     incrementTiming,

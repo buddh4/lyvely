@@ -3,10 +3,10 @@ import { Status, useStatus } from '@/store/status';
 import {
   ActivityDataPointStore,
   ActivityFilter,
-  ActivityFilterOptions,
   IActivity,
   LoadedTimingIdStore,
-  CalendarIntervalEnum
+  CalendarIntervalEnum,
+  ActivityType
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -32,16 +32,12 @@ export const useActivityStore = defineStore('activity', () => {
   const calendarPlanStore = useCalendarPlanStore();
   const cache = reactive(new ActivityDataPointStore());
   const tidCache = reactive(new LoadedTimingIdStore());
-  const filter = reactive(new ActivityFilter({ additions: [
-      (model: IActivity, filter: ActivityFilter) => {
-        const includeOnlyOnFilterTags = profileStore.profile.tags.filter(tag => tag.includeOnFilter && model.tagIds.includes(tag.id));
-        if(filter.isEmpty() && includeOnlyOnFilterTags.length) {
-          return false;
-        }
+  const filter = reactive(new ActivityFilter({ tagProvider: () => profileStore.profile.tags }));
 
-        return true;
-      }
-    ] }));
+  function getActivities(type: ActivityType, interval: CalendarIntervalEnum) {
+    filter.setOption('type', type);
+    return cache.getModelsByIntervalFilter(interval, filter);
+  }
 
   async function loadActivities() {
     const { profile } = useProfileStore();
@@ -113,10 +109,6 @@ export const useActivityStore = defineStore('activity', () => {
     }
   }
 
-  function updateFilter(update: ActivityFilterOptions) {
-    filter.update(update);
-  }
 
-
-  return { cache, loadActivities, archiveActivity, unarchiveActivity, move, updateFilter, filter,  ...status };
+  return { cache, getActivities, loadActivities, archiveActivity, unarchiveActivity, move, filter,  ...status };
 });

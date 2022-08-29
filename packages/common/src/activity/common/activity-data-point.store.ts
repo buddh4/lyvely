@@ -19,7 +19,7 @@ export class ActivityDataPointStore extends TimeSeriesDataPointStore<IActivity, 
         return this.filterModels(entry => {
           return entry.type === ActivityType.Habit
           && entry.dataPointConfig.interval === interval
-          && (!filter || filter.run(entry));
+          && (!filter || filter.check(entry));
         })
     }
 
@@ -28,7 +28,7 @@ export class ActivityDataPointStore extends TimeSeriesDataPointStore<IActivity, 
             return isTask(entry)
               && entry.dataPointConfig.interval === interval
               && (!entry.done || entry.done === timingId)
-              && (!filter || filter.run(entry));
+              && (!filter || filter.check(entry));
         });
     }
 }

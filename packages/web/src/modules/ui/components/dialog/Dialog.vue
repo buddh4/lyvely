@@ -2,7 +2,7 @@
 import Modal from "../modal/Modal.vue";
 import { computed } from 'vue';
 
-const emit = defineEmits(["show", 'update:modelValue']);
+const emit = defineEmits(['update:modelValue']);
 
 interface Props {
   icon?: string,
@@ -11,11 +11,9 @@ interface Props {
   modelValue: boolean,
   title: string,
   message: string,
-  closeButtonText?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  closeButtonText: 'Close',
   icon: undefined,
   iconColor: undefined,
   iconClass: undefined,
@@ -31,12 +29,13 @@ const visible = computed({
   <Modal
     v-model="visible"
     v-bind="props"
+    :title="title"
     cancel-button-class="primary"
-    cancel-button-text="Close"
+    cancel-button-text="common.close"
     :back-button="false"
     :submit-button="false">
     <template #body>
-      {{ $t(props.message) }}
+      {{ $t(message) }}
     </template>
   </Modal>
 </template>

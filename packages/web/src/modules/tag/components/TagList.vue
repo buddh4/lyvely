@@ -15,7 +15,7 @@ function select(tagId: string) {
   emit('select', tagId);
 }
 
-const tags = computed(() => useProfileStore().getTags(props.feature).filter(tag => props.tagIds.includes(tag.id)));
+const tags = computed(() => useProfileStore().getTags().filter(tag => !tag.archived && props.tagIds.includes(tag.id)));
 </script>
 
 <template>

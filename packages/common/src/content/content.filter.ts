@@ -1,72 +1,64 @@
 import { IContent } from './content.interface';
 import { escapeRegExp } from "lodash";
+import { Filter, FilterConstructorOptions } from "../model/filter";
+import { ITag } from "../tags";
 
-export interface ContentFilterOptions<Model extends IContent<string> = IContent<string>> {
+export interface ContentFilterOptions {
   tagId?: string;
   archived?: boolean;
   query?: string;
-  additions?: ((model: Model, filter: ContentFilter<Model>) => boolean)[];
+  type?: string;
+  includeOnFilter?: boolean;
 }
 
-export class ContentFilter<Model extends IContent<string> = IContent<string>> {
-  tagId?: string;
-  archived = false;
-  query?: string;
-  additions: ((model: Model, filter: ContentFilter<Model>) => boolean)[] = [];
+type TagProvider = (() => ITag[]);
 
-  constructor(filter?: ContentFilterOptions<Model>) {
-    if(filter) {
-      this.update(filter);
+export class ContentFilter<
+      TModel extends IContent<string> = IContent<string>,
+      TOptions extends ContentFilterOptions = ContentFilterOptions
+    > extends Filter<TModel, TOptions> {
+
+  tagProvider?: (() => ITag[]);
+
+  constructor(options?: FilterConstructorOptions<TModel, TOptions> & { tagProvider?: TagProvider }) {
+    const tagProvider = options?.tagProvider;
+    delete options?.tagProvider;
+
+    super(options);
+
+    this.tagProvider = tagProvider;
+
+
+    if(this.tagProvider) {
+      this.additions.push((model: TModel, filter: ContentFilter<TModel, TOptions>) => {
+        const includeOnlyOnFilterTags = filter.tagProvider().filter(tag => tag.includeOnFilter && model.tagIds.includes(tag.id));
+        return !(filter.isEmpty() && includeOnlyOnFilterTags.length);
+      })
     }
+  }
+
+  protected getDefaultOptions(): TOptions {
+    return <any> { archived: false };
+  }
+
+
+  protected checkModel(model: TModel) {
+    if(this.options.type && this.options.type !== model.type) {
+      return false;
+    }
+
+    if(this.options.tagId && !model.tagIds?.includes(this.options.tagId)) {
+      return false;
+    }
+
+    if(this.options.query?.length && !(model.title + model.text).match(new RegExp(escapeRegExp(this.options.query), 'i'))) {
+      return false;
+    }
+
+    return !!this.options.archived === !!model.archived;
   }
 
   isEmpty() {
-    return !this.tagId && !this.archived && !this.query?.length;
-  }
-
-  reset() {
-    this.tagId = undefined;
-    this.archived = false;
-    this.query = undefined;
-  }
-
-  run(model: Model) {
-    if(this.tagId && !model.tagIds?.includes(this.tagId)) {
-      return false;
-    }
-
-    if(!this.runAdditions(model)) {
-      return false;
-    }
-
-    if(this.query?.length && !(model.title + model.text).match(new RegExp(escapeRegExp(this.query), 'i'))) {
-      return false;
-    }
-
-    return !!this.archived === !!model.archived;
-  }
-
-  private runAdditions(model: Model) {
-    let result = true;
-    this.additions.forEach(addition => {
-      if(!addition(model, this)) {
-        result = false;
-      }
-    });
-    return result;
-  }
-
-  update(update: ContentFilterOptions<Model>) {
-    if(update?.tagId || update?.tagId === null) {
-      this.tagId = update.tagId;
-    }
-
-    if(update?.archived !== undefined) {
-      this.archived = update.archived;
-    }
-
-    if(update?.additions) {
-      this.additions = update.additions;
-    }
+    return !this.options.tagId && !this.options.archived && !this.options.query?.length;
   }
 }

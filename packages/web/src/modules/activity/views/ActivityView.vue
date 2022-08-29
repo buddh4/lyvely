@@ -14,7 +14,7 @@ onMounted(() => usePageStore().accessibilityFocus('#activity-navigation > button
 <template>
   <MainContainer id="activity-overview">
     <ActivityNavigation />
-    <ActivityFilterNavigation @toggle-drawer="showFilterDrawer = !showFilterDrawer" />
+    <ActivityFilterNavigation />
     <router-view></router-view>
   </MainContainer>
 </template>

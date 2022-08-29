@@ -1,4 +1,6 @@
 import { ITimeSeriesContent, ITimeSeriesDataPoint } from '../interfaces';
+import { CalendarIntervalEnum } from "../../calendar";
+import { Filter } from "../../model/filter";
 
 type TimeSeriesContentIdentity = ITimeSeriesContent | string;
 
@@ -66,6 +68,12 @@ export abstract class TimeSeriesDataPointStore<Model extends ITimeSeriesContent,
     }
 
     return this.models.get(this.getId(model));
+  }
+
+  getModelsByIntervalFilter(interval: CalendarIntervalEnum, filter?: Filter<Model, any>) {
+    return this.filterModels(entry => {
+      return entry.dataPointConfig.interval === interval && (!filter || filter.check(entry));
+    })
   }
 
   getDataPoint(identity: TimeSeriesContentIdentity, timingId: string, create = false): DataPointModel {

@@ -31,6 +31,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dayjs": "^1.11.3",
+    "mitt": "^3.0.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
@@ -42,18 +43,24 @@
     "eslint-config-prettier": "7.1.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^28.1.2",
     "npm-watch": "^0.11.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.61.1",
-    "jest": "^28.1.2",
     "ts-jest": "^28.0.5",
     "typescript": "^4.5.4"
   },
   "jest": {
     "rootDir": ".",
-    "setupFiles": ["<rootDir>/jest-setup.ts"],
+    "setupFiles": [
+      "<rootDir>/jest-setup.ts"
+    ],
     "testRegex": ".*\\.spec\\.ts$",
-    "moduleFileExtensions": ["js", "json", "ts"],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
@@ -83,7 +90,9 @@
   },
   "watch": {
     "build": {
-      "patterns": ["src/**"],
+      "patterns": [
+        "src/**"
+      ],
       "ignore": "src/**/test",
       "extensions": "ts"
     }

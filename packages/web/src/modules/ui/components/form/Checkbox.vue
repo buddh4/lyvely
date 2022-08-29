@@ -26,7 +26,7 @@ import { isArray } from "lodash";
 
 interface Props extends BaseInputProps {
   checked: boolean,
-  value: number
+  value: number|string
 }
 
 export default {
@@ -34,7 +34,7 @@ export default {
   props: {
     ...useBaseInputProps(),
     checked: { type: Boolean },
-    value: { type: String },
+    value: { },
   },
   emits: ['change', 'update:modelValue'],
   setup(props: Props, context: SetupContext) {

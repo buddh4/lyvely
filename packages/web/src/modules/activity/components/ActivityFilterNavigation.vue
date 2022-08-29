@@ -5,138 +5,82 @@ import Drawer from '@/modules/ui/components/drawer/Drawer.vue';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
-import { computed, ref, Ref, defineEmits } from 'vue';
-import { TagFilter } from "@lyvely/common/src/tags/tag.filter";
+import { computed, ref, toRefs, watch } from 'vue';
+import { TagFilter } from "@lyvely/common";
 import Checkbox from "@/modules/ui/components/form/Checkbox.vue";
-import TextInput from "@/modules/ui/components/form/TextInput.vue";
-import Index from "../../../../index.html";
+import { useRouter } from "vue-router";
+import SliderNavigation from "@/modules/ui/components/slider/SliderNavigation.vue";
 
-const activityStore = useActivityStore();
 const profileStore = useProfileStore();
-const calendarPlanStore = useCalendarPlanStore();
+const { dragActive } = toRefs(useCalendarPlanStore());
+const { filter } = useActivityStore();
 const tags = computed(() => new TagFilter({ archived: false }).apply(profileStore.getTags()));
-const activeTagId = computed(() => activityStore.filter.tagId);
-const archiveFilterActive = computed(() => activityStore.filter.archived);
-const { filter } = activityStore;
-const dragActive = computed({
-  get: () => calendarPlanStore.dragActive,
-  set: (val: boolean) => calendarPlanStore.setDragActive(val)
-});
+const activeTagId = computed(() => filter.option('tagId'));
+const router = useRouter();
+const showFilterDrawer = ref(false);
 
-defineEmits(['openDrawer']);
+watch(filter, () => {
+  const currentRoute = router.currentRoute.value;
+  const query = { ...currentRoute.query, ...filter.getOptionsWithStringValues() };
 
-function isChecked(filter: string): boolean {
-  if (filter === 'archive') {
-    return activityStore.filter.archived;
+  delete query.type;
+  if(query.archived === false) {
+    delete query.archived;
   }
 
-  return activeTagId.value === filter;
+  router.replace({ path: currentRoute.path, query: query })
+});
+
+function setFilterFromRoute() {
+  const currentRoute = router.currentRoute.value;
+  filter.setOptions(currentRoute.query);
 }
 
-function setTagFilter(tagId: string) {
-  activityStore.updateFilter({ tagId });
+setFilterFromRoute();
+
+function setTagFilter(tagId?: string) {
+  filter.setOptions({ tagId });
 }
+
+const isArchivedFilter = computed({
+  get: () => !!filter.option('archived'),
+  set: (val: boolean) => filter.setOption('archived', val)
+});
 
 const commonButtonClassNames = 'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
-
-const slideActive = ref(false);
-const slideX = ref(0);
-const slideTransformX = ref(0);
-const slider = ref(null) as Ref<HTMLElement|null>;
-const container = ref(null) as Ref<HTMLElement|null>;
-
-const getX = (evt: MouseEvent|TouchEvent) => evt instanceof MouseEvent ? evt.clientX : evt.touches[0].clientX;
-
-function beginSlide(evt: MouseEvent|TouchEvent) {
-  if(!container.value || !slider.value) {
-    return;
-  }
-
-  const overflow = slider.value.offsetWidth - container.value.offsetWidth - 2;
-
-  if(overflow <= 0) {
-    return;
-  }
-
-  slideX.value= getX(evt);
-
-  const slideHandler = (evt: MouseEvent|TouchEvent) => slide(evt, overflow);
-  const endSlide = () => {
-    slideActive.value = false;
-    document.removeEventListener('mousemove', slideHandler);
-    document.removeEventListener('touchmove', slideHandler);
-  }
-
-  document.addEventListener('mouseup', endSlide, { once: true });
-  document.addEventListener('touchend', endSlide, { once: true });
-  document.addEventListener('mousemove', slideHandler);
-  document.addEventListener('touchmove', slideHandler);
-}
-
-function slide(evt: MouseEvent|TouchEvent, overflow: number) {
-  const clientX = getX(evt);
-  const diff = Math.abs(slideX.value - clientX);
-
-  if(diff < 5) {
-    return;
-  } else if(!slideActive.value) {
-    slideActive.value = true;
-  }
-
-  slideTransformX.value =(slideX.value > clientX)
-      ? Math.max(slideTransformX.value - diff, -(overflow))
-      : Math.min(0, slideTransformX.value + diff);
-
-  slideX.value = clientX;
-}
-
-const sliderStyle = computed(() => {
-  return { transform: `translateX(${slideTransformX.value}px)`, 'pointer-events': slideActive.value ? 'none' : 'all' };
-});
-
-const showFilterDrawer = ref(false);
-
-const search = ref(null) as Ref<HTMLElement|null>;
-
-function focusSearch() {
-  search.value?.focus();
-}
 </script>
 
 <template>
   <nav id="filter-nav" class="flex flex-row content-left clearfix ms-2 me-2 mb-2">
     <Button
-      :class="[roundButton]"
+      :class="roundButton"
       :active="dragActive"
       :aria-label="$t('calendar.plan.aria.drag-toggle-button')"
       @click="dragActive = !dragActive">
       <Icon name="drag"/>
     </Button>
 
-    <div ref="container" class="flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
-      <div ref="slider" :style="sliderStyle" class="slider-nav  touch-pan-y" @mousedown="beginSlide" @touchstart="beginSlide" >
-        <Button
+    <SliderNavigation class="tag-filter-selection">
+      <Button
           :class="pillButton"
           :active="!activeTagId"
           @click="setTagFilter(null)">
-          {{ $t('filter.all') }}
-        </Button>
+        {{ $t('filter.all') }}
+      </Button>
 
-        <template v-for="tag in tags" :key="tag.id">
-          <Button
-            :class="pillButton"
-            :active="isChecked(tag.id)"
-            role="tab"
-            aria-controls="calendar-plan"
-            :data-tag-id="tag.id"
-             @click="setTagFilter(tag.id)">
-            {{ tag.name }}
-          </Button>
-        </template>
-      </div>
-    </div>
+      <Button
+          v-for="tag in tags" :key="tag.id"
+          :class="pillButton"
+          :active="filter.option('tagId') === tag.id"
+          role="tab"
+          aria-controls="calendar-plan"
+          :data-tag-id="tag.id"
+          @click="setTagFilter(tag.id)">
+        {{ tag.name }}
+      </Button>
+    </SliderNavigation>
 
     <div class="ml-auto flex flex-nowrap">
       <Button
@@ -156,9 +100,9 @@ function focusSearch() {
       <Icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none"  />
     </div>
 
-    <Checkbox v-model="filter.archived" class="mb-4" label="common.filter.archive" />
+    <Checkbox v-model="isArchivedFilter" class="mb-4" label="common.filter.archive" />
 
-    <Button class="primary float-right text-xs" text="common.filter.clear" @click="filter.reset()"/>
+    <Button class="primary float-right text-xs" text="common.filter.clear" @click="filter.reset()" />
   </Drawer>
 </template>
 
@@ -170,6 +114,4 @@ function focusSearch() {
   display: inline-block;
   white-space: nowrap;
 }
-
-
 </style>

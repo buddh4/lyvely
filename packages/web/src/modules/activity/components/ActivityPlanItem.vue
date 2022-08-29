@@ -59,7 +59,7 @@ function editEntry() {
 }
 
 function selectTag(tagId: string) {
-  useActivityStore().filter.update({tagId});
+  useActivityStore().filter.setOption('tagId', tagId);
 }
 
 const root = ref<InstanceType<typeof CalendarPlanItem>|null>(null);
