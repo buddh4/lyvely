@@ -24,13 +24,23 @@ export enum ProfileVisibilityLevel {
   Visitor // Users + guests
 }
 
+export interface IUserToProfileRelation {
+  id: string;
+  name: string;
+  type: ProfileType;
+  imageHash?: string;
+  score: number;
+  relationType: string;
+  role?: string;
+}
+
 export interface IProfile {
   id: string;
   name: string;
   type: ProfileType;
-  visibility: ProfileVisibilityLevel,
   score: number;
-  locale: string;
   imageHash?: string;
+  visibility: ProfileVisibilityLevel,
+  locale: string;
   tags: ITag[];
 }

@@ -31,10 +31,7 @@ export class ProfilesController {
       throw new NotFoundException();
     }
 
-    return new ProfileMembershipDto({
-      membership: new MembershipDto(membership),
-      profile: new ProfileDto(profile)
-    });
+    return new ProfileMembershipDto({ ...profile, membership: new MembershipDto(membership) });
   }
 
   @Post()

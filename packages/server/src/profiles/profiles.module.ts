@@ -14,6 +14,7 @@ import { ProfilePermissionsService } from '../permissions/services/profile-permi
 import { ProfileEvents } from './profile.events';
 import { CoreModule } from '../core/core.module';
 import { ProfileTagsController } from "./controllers/profile-tags.controller";
+import { ProfileRelationsController } from "./controllers/profile-relations.controller";
 
 export const ProfileModel = MongooseModule.forFeature([
   { name: Profile.name, schema: ProfileSchema },
@@ -55,7 +56,8 @@ export const ProfileModel = MongooseModule.forFeature([
   ],
   controllers: [
     ProfilesController,
-    ProfileTagsController
+    ProfileTagsController,
+    ProfileRelationsController
   ],
 })
 export class ProfilesModule {}

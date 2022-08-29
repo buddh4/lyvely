@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { createApp } from "vue";
+import { createApp, markRaw } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import defineLocales from "./util/locales";
@@ -25,7 +25,12 @@ const app = createApp(App);
 
 eventBus.emit('app.create.post', app);
 
-app.use(createPinia());
+const pinia = createPinia();
+pinia.use(({ store }) => {
+  store.router = markRaw(router);
+})
+
+app.use(pinia);
 app.use(router);
 app.use(setupI18n());
 

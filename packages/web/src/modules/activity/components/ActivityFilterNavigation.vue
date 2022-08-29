@@ -10,6 +10,7 @@ import { TagFilter } from "@lyvely/common";
 import Checkbox from "@/modules/ui/components/form/Checkbox.vue";
 import { useRouter } from "vue-router";
 import SliderNavigation from "@/modules/ui/components/slider/SliderNavigation.vue";
+import useFilterOption from "@/util/composables/useFilterOption";
 
 const profileStore = useProfileStore();
 const { dragActive } = toRefs(useCalendarPlanStore());
@@ -18,21 +19,43 @@ const tags = computed(() => new TagFilter({ archived: false }).apply(profileStor
 const activeTagId = computed(() => filter.option('tagId'));
 const router = useRouter();
 const showFilterDrawer = ref(false);
+let fullPath: string|undefined = undefined;
 
 watch(filter, () => {
   const currentRoute = router.currentRoute.value;
   const query = { ...currentRoute.query, ...filter.getOptionsWithStringValues() };
 
-  delete query.type;
-  if(query.archived === false) {
+  if(!filter.option('archived')) {
     delete query.archived;
   }
 
-  router.replace({ path: currentRoute.path, query: query })
+  if(!filter.option('tagId')) {
+    delete query.tagId;
+  }
+
+  delete query.type;
+
+  const route = router.resolve({ path: currentRoute.path, query: query });
+
+  if(route.fullPath !== fullPath) {
+    // Prevent update loops
+    fullPath = route.fullPath;
+    router.replace({ path: currentRoute.path, query: query })
+  }
+
+});
+
+watch(router.currentRoute, (to, from) => {
+  if(to.fullPath !== fullPath) {
+    // Prevent update loops
+    fullPath = to.fullPath;
+    setFilterFromRoute();
+  }
 });
 
 function setFilterFromRoute() {
   const currentRoute = router.currentRoute.value;
+  filter.reset();
   filter.setOptions(currentRoute.query);
 }
 
@@ -42,10 +65,8 @@ function setTagFilter(tagId?: string) {
   filter.setOptions({ tagId });
 }
 
-const isArchivedFilter = computed({
-  get: () => !!filter.option('archived'),
-  set: (val: boolean) => filter.setOption('archived', val)
-});
+const archiveFilter = useFilterOption(filter, 'archived');
+const queryFilter = useFilterOption(filter, 'query');
 
 const commonButtonClassNames = 'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
@@ -96,11 +117,11 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
 
   <Drawer v-model="showFilterDrawer" title="common.filter.title">
     <div class="relative inline-block">
-      <input ref="search" v-model="filter.query" class="search w-full mb-4 py-1" :placeholder="$t('common.filter.search')" type="text" />
+      <input ref="search" v-model="queryFilter" class="search w-full mb-4 py-1" :placeholder="$t('common.filter.search')" type="text" />
       <Icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none"  />
     </div>
 
-    <Checkbox v-model="isArchivedFilter" class="mb-4" label="common.filter.archive" />
+    <Checkbox v-model="archiveFilter" class="mb-4" label="common.filter.archive" />
 
     <Button class="primary float-right text-xs" text="common.filter.clear" @click="filter.reset()" />
   </Drawer>

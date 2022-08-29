@@ -5,7 +5,7 @@ import { IProfileRelation } from '../interfaces';
 @Exclude()
 export class ProfileRelationDto<T = any> extends BaseDto<T & { pid: any }> implements IProfileRelation {
   @Expose()
-  @Transform(({value, obj}) => obj.pid?.toString() || value)
+  @Transform(({ value, obj }) => obj.pid?.toString() || value)
   pid: string;
 
   @Expose()

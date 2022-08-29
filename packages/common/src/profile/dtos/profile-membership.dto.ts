@@ -3,6 +3,7 @@ import { BaseDto } from '../../model';
 import type { IMembership } from '../interfaces/profile-membership.interface';
 import type { IProfile } from '../interfaces';
 import { ProfileRelationDto } from './profile-relation.dto';
+import { ProfileDto } from "./profile.dto";
 
 @Exclude()
 export class MembershipDto extends ProfileRelationDto<MembershipDto> {
@@ -11,10 +12,11 @@ export class MembershipDto extends ProfileRelationDto<MembershipDto> {
 }
 
 @Exclude()
-export class ProfileMembershipDto extends BaseDto<ProfileMembershipDto> {
+export class ProfileMembershipDto extends ProfileDto {
   @Expose()
   readonly membership: IMembership;
 
-  @Expose()
-  readonly profile: IProfile;
+  constructor(obj?: Partial<ProfileMembershipDto>) {
+    super(obj);
+  }
 }

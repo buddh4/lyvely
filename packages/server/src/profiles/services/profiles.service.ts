@@ -3,9 +3,15 @@ import { User } from '../../users';
 import { EntityIdentity } from '../../db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
-import { Membership, BaseMembershipRole, Profile } from '../schemas';
+import { Membership, BaseMembershipRole, Profile, UserProfileRelation } from '../schemas';
 import { UserProfileRelations } from '../models';
 import { EntityNotFoundException } from "../../core/exceptions";
+
+export interface UserToProfileRelation {
+  user: User,
+  relation: UserProfileRelation,
+  profile: Profile
+}
 
 export interface ProfileMembership {
   user: User,
@@ -54,6 +60,25 @@ export class ProfilesService {
     const relations = await this.profileRelationsDao.findAllByUserAndProfile(user, identity);
     const profile =  identity instanceof Profile ? identity : await this.profileDao.findById(identity);
     return new UserProfileRelations({ user, profile, relations });
+  }
+
+  async findProfileRelationsByUser(user: User): Promise<UserToProfileRelation[]> {
+    const userRelations = await this.profileRelationsDao.findAllByUser(user);
+
+    if(!userRelations.length) return null;
+
+    const profiles = await this.profileDao.findAllByIds(userRelations.map(relation => relation.pid));
+
+    const result = [];
+
+    userRelations.forEach((relation) => {
+      const profile = profiles.find(profile => profile._id.equals(relation.pid));
+      if(profile) {
+        result.push({ user, relation, profile })
+      }
+    });
+
+    return result;
   }
 
   /**

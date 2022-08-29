@@ -1,11 +1,23 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div class="d-flex justify-center mt-5">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+  <div class="w-full h-full flex justify-center align-center my-5">
+    <span class="animate-spin spinner border-divide border-t-pop"></span>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.overlay__inner {
+  width: 100%;
+  height: 100%;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  border-width: 2px;
+  border-radius: 100%;
+  border-style: solid;
+}
+</style>

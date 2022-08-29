@@ -1,5 +1,6 @@
 /* eslint-disable */
-import 'vue-router'
+import 'vue-router';
+import {Router} from "vue-router";
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
@@ -27,5 +28,11 @@ declare module 'vue-router' {
   interface RouteMeta {
     // is optional
     i18n?: { module?: string }
+  }
+}
+
+declare module 'pinia' {
+  export interface PiniaCustomProperties {
+    router: Router
   }
 }

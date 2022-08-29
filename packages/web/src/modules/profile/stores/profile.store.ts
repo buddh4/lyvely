@@ -1,21 +1,21 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
-import { ProfileDto, ITag, IProfile } from '@lyvely/common';
+import { ITag, IProfile } from '@lyvely/common';
 
 import profileRepository from '@/modules/profile/repositories/profile.repository';
 import { localStorageManager } from '@/util/storage';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 
 import { ref, computed, Ref } from 'vue';
+import { ProfileMembershipDto } from "@lyvely/common/src";
 
 const DEFAULT_PROFILE_KEY = 'default_profile';
 
 export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_KEY);
 
 export const useProfileStore = defineStore('profile', () => {
-  const profile = ref(undefined) as Ref<ProfileDto|undefined>;
+  const profile = ref(undefined) as Ref<ProfileMembershipDto|undefined>;
   const membership = ref(undefined);
-  const profiles = ref(new Array<ProfileDto>());
 
   // TODO: (i18n) validate defaultLocale
   const defaultLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
@@ -39,63 +39,41 @@ export const useProfileStore = defineStore('profile', () => {
     }
 
     try {
-      const { data: { profile: p } } = await profileRepository.getProfile(id);
-      await setActiveProfile(p);
+      const { data } = await profileRepository.getProfile(id);
+      await setActiveProfile(data);
     } catch (err) {
-      const { data: { profile: p } } = await profileRepository.getDefaultProfile();
-      await setActiveProfile(p);
+      const { data } = await profileRepository.getDefaultProfile();
+      await setActiveProfile(data);
       DialogExceptionHandler('Profile could not be loaded...', this)(err);
     }
 
     return profile.value;
   }
 
-  async function setActiveProfile(activeProfile: ProfileDto) {
+  async function setActiveProfile(activeProfile: ProfileMembershipDto) {
     profile.value = activeProfile;
     latestProfileId.setValue(activeProfile.id);
     status.setStatus(Status.SUCCESS);
   }
 
-  function getProfile(profileSearch: IProfile|string) {
-    const profileId = typeof profileSearch === 'string' ? profileSearch : profileSearch.id;
-    return profiles.value.find(p => p.id === profileId);
-  }
-
-  function updateScore(value: number, profileToEdit?: IProfile|string) {
-    profileToEdit = profileToEdit ? getProfile(profileToEdit) : profile.value;
-
-    if(profileToEdit) {
-      profileToEdit.score = value;
+  function updateScore(value: number) {
+    if(profile.value) {
+      profile.value.score = value;
     }
   }
 
-  async function updateProfileCategories(profileToEdit?: IProfile|string) {
-    profileToEdit = profileToEdit ? getProfile(profileToEdit) : profile.value;
-
-    try {
-      if(profileToEdit) {
-        const { data: { categories } } = await profileRepository.getTags(profileToEdit.name);
-        profileToEdit.tags = categories;
-      }
-    } catch(e) {
-      // TODO: Implement
-    }
-  }
-
-  async function updateTags(tags: ITag[], profileToEdit?: IProfile|string) {
-    const selectedProfile = (profileToEdit ? getProfile(profileToEdit) : profile.value);
-
-    if(!selectedProfile) {
+  async function updateTags(tags: ITag[]) {
+    if(!profile.value) {
       console.warn('Called updateTags for non existing profile');
       return;
     }
 
     tags.forEach(tag => {
-      const index = selectedProfile.tags.findIndex(profileTag  => profileTag.id === tag.id);
+      const index = profile.value!.tags.findIndex(profileTag  => profileTag.id === tag.id);
       if(index >= 0) {
-        selectedProfile.tags[index] = tag;
+        profile.value!.tags[index] = tag;
       } else {
-        selectedProfile.tags.push(tag);
+        profile.value!.tags.push(tag);
       }
     });
   }
@@ -107,14 +85,12 @@ export const useProfileStore = defineStore('profile', () => {
   return {
     profile,
     membership,
-    profiles,
     loadProfile,
     updateScore,
     tagOptions,
     getTags,
     locale,
     updateTags,
-    updateProfileCategories,
     ...status
   };
 })

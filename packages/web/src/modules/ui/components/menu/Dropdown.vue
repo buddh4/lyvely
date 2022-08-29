@@ -63,7 +63,7 @@ function toggle() {
   <div ref="root" :class="className" @keydown.prevent.down="navigateDown" @keydown.prevent.up="navigateUp" @keydown.esc="open = false">
     <div class="relative">
       <span class="rounded-md shadow-sm">
-        <slot name="trigger" :toggle="toggle">
+        <slot name="trigger" :toggle="toggle" :state="open">
           <button :id="id" :class="buttonClassName" :aria-expanded="open.toString()" @click="toggle">
             <span v-if="label" class="label">{{ $t(label) }}</span>
             <Icon v-if="icon" :name="icon" />
@@ -72,11 +72,11 @@ function toggle() {
       </span>
 
       <div
-v-if="open" :aria-labelledby="id"
-           :class="[
-               'absolute dropdown-items  py-2 w-48 bg-main dark:bg-shadow rounded-md shadow-lg border border-gray-100 dark:border-gray-700 z-20',
+          v-if="open" :aria-labelledby="id"
+          :class="[
+               'absolute dropdown-items py-2 bg-main dark:bg-shadow rounded-md shadow-lg border border-gray-100 dark:border-gray-700 z-20',
                position === 'left' ? 'right-0.5' : 'left-0.5'  ]" @click="onClickContent">
-        <slot></slot>
+        <slot :toggle="toggle" :state="open"></slot>
       </div>
     </div>
   </div>

@@ -3,11 +3,11 @@ import { TagDto , ProfileMembershipDto } from '@lyvely/common';
 const resource = "profiles";
 
 export default {
-  getDefaultProfile() {
+  async getDefaultProfile() {
     return repository.get<ProfileMembershipDto>(`${resource}/default`);
   },
 
-  getProfile(id?: string|null) {
+  async getProfile(id?: string|null) {
     return id
       ? repository.get<ProfileMembershipDto>(`${resource}/${id}`)
       : this.getDefaultProfile();

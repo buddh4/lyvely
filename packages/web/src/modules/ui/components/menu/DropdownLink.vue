@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 defineEmits(['click']);
 
-const classNames = 'block px-4 py-2 text-sm capitalize hover:bg-main dark:hover:bg-main no-underline';
+const classNames = 'dropdown-link block px-4 py-2 text-sm capitalize hover:bg-main dark:hover:bg-main no-underline flex no-wrap min-w-48';
 const {route, label, icon} = toRefs(props);
 </script>
 
@@ -41,6 +41,11 @@ const {route, label, icon} = toRefs(props);
 </template>
 
 <style scoped>
+
+.dropdown-link {
+  min-width: 8rem;
+}
+
 a {
   text-decoration: none !important;
 }
