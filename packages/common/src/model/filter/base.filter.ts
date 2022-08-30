@@ -106,8 +106,6 @@ export abstract class Filter<TModel, TOptions> {
     return result;
   }
 
-
-
   protected getDefaultOptions(): TOptions {
     return <any> {};
   }

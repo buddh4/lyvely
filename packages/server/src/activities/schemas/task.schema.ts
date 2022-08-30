@@ -1,11 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '../../profiles';
-import { AbstractCreateActivityDto, DataPointNumberInputStrategy, ITaskWithUsers, REGEX_TID, UserAssignmentStrategy } from '@lyvely/common';
+import { DataPointNumberInputStrategy, ITaskWithUsers, REGEX_TID, UserAssignmentStrategy } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '../../users';
 import { Activity } from './activity.schema';
-import { DataPointConfigFactory } from '../../time-series';
-import { assureObjectId, EntityIdentity } from "../../db/db.utils";
+import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../time-series';
+import { applyRawDataTo, assureObjectId, EntityIdentity } from "../../db/db.utils";
+import { CreateTaskDto, UpdateTaskDto } from "@lyvely/common/src";
+import { cloneDeep } from "lodash";
 
 export type TaskDocument = Task & mongoose.Document;
 
@@ -94,16 +96,38 @@ export class Task extends Activity implements ITaskWithUsers {
         this.doneBy.push(new UserDone(uid, tid, date))
       }
     }
-
   }
 
-  public static create(profile: Profile, owner: User, data: AbstractCreateActivityDto): Task {
-    data.strategy = DataPointNumberInputStrategy.CheckboxNumber;
-    data.max = 1;
-    data.optimal = 1;
-    data.tagNames = data.tagNames || [];
-    return Activity.createActivityType(profile, owner, data, Task);
+  public static applyUpdate(model: Task, update: UpdateTaskDto) {
+    const updatedDataPointConfig = cloneDeep(model.dataPointConfig);
+    updatedDataPointConfig.interval = update.interval ?? model.dataPointConfig.interval;
+
+    if (model.dataPointConfigRevisionCheck(updatedDataPointConfig)) {
+      model.pushDataPointConfigRevision(model.dataPointConfig);
+      model.dataPointConfig = updatedDataPointConfig;
+    }
+
+    applyRawDataTo(model, update, { strict: true });
   }
+
+  public static create(profile: Profile, owner: User, update: CreateTaskDto): Task {
+    return new Task(profile, owner, {
+      ...update,
+      tagIds: profile.getTagsByName(update.tagNames).map(tag => assureObjectId(tag.id)),
+      dataPointConfig: _createDataPointConfigFromUpdate(update)
+    });
+  }
+}
+
+function _createDataPointConfigFromUpdate(update: UpdateTaskDto) {
+  return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
+    DataPointNumberInputStrategy.CheckboxNumber,
+    {
+      min: 0,
+      max: 1,
+      interval: update.interval,
+      optimal: 0
+    });
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

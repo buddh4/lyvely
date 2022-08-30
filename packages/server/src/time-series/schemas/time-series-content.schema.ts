@@ -30,10 +30,10 @@ export abstract class TimeSeriesContent<
   @Prop({ enum: getNumberEnumValues(UserAssignmentStrategy), default: UserAssignmentStrategy.Shared, required: true })
   userStrategy: UserAssignmentStrategy;
 
-  abstract pushRevision(rev: TContent);
+  abstract pushDataPointConfigRevision(rev: TDataPointConfig);
 
-  revisionCheck(update: TContent) {
-    return !this.dataPointConfig.isEqualTo(update.dataPointConfig) && !this.getRevisionUpdatedAt(new Date());
+  dataPointConfigRevisionCheck(update: TDataPointConfig) {
+    return !this.dataPointConfig.isEqualTo(update) && !this.getRevisionUpdatedAt(new Date());
   }
 
   getRevisionUpdatedAt(date: Date) {

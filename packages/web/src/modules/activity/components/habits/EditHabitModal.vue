@@ -5,8 +5,8 @@ import SelectInput from "@/modules/ui/components/form/SelectInput.vue";
 import Multiselect from "@vueform/multiselect";
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
-import VueMultiselect from 'vue-multiselect'
 import useEditActivityModal from '../useEditActivityModal';
+import VueMultiselect from 'vue-multiselect'
 
 const {
   model,
@@ -55,21 +55,6 @@ function addTag (newTag: string) {
             :taggable="true"
             tag-placeholder="Add this as new tag" placeholder="Search or add a tag"
             @tag="addTag" />
-
-
-        <!--Multiselect
-            v-model="model.tagNames"
-            data-habit-categories
-            class="mb-3 border-divide"
-            mode="tags"
-            placeholder="Add Tags"
-            :classes="{
-          containerActive: 'ring ring-blue-200 border-blue-300 ring-opacity-50',
-          tag: 'bg-success text-white text-sm py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap',
-        }"
-            :searchable="true"
-            :create-tag="true"
-            :options="tagOptions"/ -->
 
         <div class="grid grid-flow-col grid-cols-2 grid-rows-2 gap-2 mb-3 p-3 border border-divide rounded bg-highlight dark:bg-main">
           <div>

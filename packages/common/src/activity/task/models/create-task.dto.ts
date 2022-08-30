@@ -1,16 +1,27 @@
-import { Exclude } from 'class-transformer';
-import { AbstractCreateActivityDto, IActivity } from '../../interfaces';
-import { EditTaskDto } from './task.dto';
+import { Exclude, Expose } from 'class-transformer';
+import { UpdateTaskDto } from "./update-task.dto";
+import { IsNotEmpty, IsString, Length, IsEnum } from 'class-validator';
+import { CalendarIntervalEnum } from "../../../calendar";
 
 @Exclude()
-export class CreateTaskDto extends AbstractCreateActivityDto {
-  constructor(model?: IActivity | Partial<EditTaskDto>) {
-    super(model);
+export class CreateTaskDto extends UpdateTaskDto {
 
-    if(!model) {
-      this.max = 1;
-      this.min = 1;
-      this.optimal = 1;
-    }
+  @Expose()
+  @IsString()
+  @IsNotEmpty()
+  @Length(0, 100)
+  title?: string;
+
+  @Expose()
+  @IsEnum(CalendarIntervalEnum)
+  interval?: CalendarIntervalEnum;
+
+  constructor(obj?: Partial<CreateTaskDto>) {
+    super(obj);
+
+    this.interval = this.interval ?? CalendarIntervalEnum.Daily;
+    this.score = this.score ?? 2;
+    this.tagNames = this.tagNames || [];
   }
+
 }

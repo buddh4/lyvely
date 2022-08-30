@@ -84,7 +84,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
       const update = { 'dataPointConfig.interval': interval };
 
       if(activity instanceof Habit && !activity.getRevisionUpdatedAt(new Date())) {
-        activity.pushRevision(activity);
+        activity.pushDataPointConfigRevision(activity.dataPointConfig);
         update['dataPointConfig.history'] = activity.dataPointConfig.history;
       }
 

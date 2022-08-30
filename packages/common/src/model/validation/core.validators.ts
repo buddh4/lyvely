@@ -45,6 +45,13 @@ export class LteConstraint implements ValidatorConstraintInterface {
     validate(value: any, args: ValidationArguments) {
         const [relatedPropertyName] = args.constraints;
         const relatedValue = (args.object as any)[relatedPropertyName];
+
+      if(relatedValue === null || relatedValue === undefined) {
+        return true;
+      } else if(typeof relatedValue !== 'number') {
+        return false;
+      }
+
         return value <= relatedValue;
     }
 
@@ -72,6 +79,13 @@ export class GteConstraint implements ValidatorConstraintInterface {
     validate(value: any, args: ValidationArguments) {
         const [relatedPropertyName] = args.constraints;
         const relatedValue = (args.object as any)[relatedPropertyName];
+
+        if(relatedValue === null || relatedValue === undefined) {
+          return true;
+        } else if(typeof relatedValue !== 'number') {
+          return false;
+        }
+
         return value >= relatedValue;
     }
 

@@ -1,6 +1,6 @@
 import {
   Post,
-  Param,
+  Put,
   Body,
   Request,
   UseInterceptors,
@@ -11,8 +11,8 @@ import {
 import { Task } from '../schemas';
 import {
   UpdateTaskStateModel,
-  DoneTaskResultModel,
-  EditTaskDto,
+  UpdateTaskStateResultDto,
+  UpdateTaskDto,
   TaskDto,
  EditTaskResponseDto, TagDto } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
@@ -30,7 +30,7 @@ export class TasksController {
   private readonly tasksService: TasksService;
 
   @Post()
-  async create(@Request() req: ProfileRequest, @Body() dto: EditTaskDto) {
+  async create(@Request() req: ProfileRequest, @Body() dto: UpdateTaskDto) {
     const { profile, user } = req;
 
     const activity = await this.tasksService.createContent(profile, user, Task.create(profile, user, dto), dto.tagNames);
@@ -45,8 +45,8 @@ export class TasksController {
     });
   }
 
-  @Post(':cid')
-  async update(@Request() req: ProfileContentRequest, @Body() dto: EditTaskDto) {
+  @Put(':cid')
+  async update(@Request() req: ProfileContentRequest, @Body() dto: UpdateTaskDto) {
     const { profile, user, content } = req;
 
     if(!isTaskContent(content)) {
@@ -70,7 +70,7 @@ export class TasksController {
     }
 
     await this.tasksService.setDone(profile, user, content, dto.date);
-    return new DoneTaskResultModel({ score: profile.score, done: content.getDoneBy(user)?.tid });
+    return new UpdateTaskStateResultDto({ score: profile.score, done: content.getDoneBy(user)?.tid });
   }
 
     @Post(':cid/undone')
@@ -82,6 +82,6 @@ export class TasksController {
       }
 
       await this.tasksService.setUndone(profile, user, content, dto.date);
-      return new DoneTaskResultModel({ score: profile.score, done: undefined });
+      return new UpdateTaskStateResultDto({ score: profile.score, done: undefined });
     }
 }

@@ -1,13 +1,12 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
-import { ITag, IProfile } from '@lyvely/common';
+import { ITag, IProfile , ProfileMembershipDto } from '@lyvely/common';
 
 import profileRepository from '@/modules/profile/repositories/profile.repository';
 import { localStorageManager } from '@/util/storage';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 
 import { ref, computed, Ref } from 'vue';
-import { ProfileMembershipDto } from "@lyvely/common/src";
 
 const DEFAULT_PROFILE_KEY = 'default_profile';
 

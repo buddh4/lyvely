@@ -1,12 +1,13 @@
 import { Exclude, Expose } from 'class-transformer';
-import { DocumentDto, ObjectId } from "../../model";
+import { IsMongoId } from 'class-validator';
+import { DocumentDto } from "../../model";
 import { ITimeSeriesDataPoint, ITimeSeriesNumberDataPoint, ITimeSeriesTextDataPoint } from "../interfaces";
 import { CalendarIntervalEnum } from "../../calendar";
 
 @Exclude()
 export abstract class DataPointDto<E> extends DocumentDto<E> implements ITimeSeriesDataPoint {
   @Expose()
-  @ObjectId()
+  @IsMongoId()
   cid: string;
 
   @Expose()
@@ -16,11 +17,11 @@ export abstract class DataPointDto<E> extends DocumentDto<E> implements ITimeSer
   interval: CalendarIntervalEnum;
 
   @Expose()
-  @ObjectId()
+  @IsMongoId()
   tid: string;
 
   @Expose()
-  @ObjectId()
+  @IsMongoId()
   uid: string;
 }
 

@@ -3,10 +3,11 @@ import {
   Param,
   Body,
   Request,
+  Put
 } from '@nestjs/common';
 import { Habit } from '../schemas';
 import {
-  EditHabitDto,
+  UpdateHabitDto,
   HabitDto,
   UpdateDataPointDto,
   UpdateDataPointResultDto,
@@ -37,7 +38,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Post()
   @Permissions(ActivityPermissions.CREATE)
-  async create(@Request() req: ProfileRequest, @Body() dto: EditHabitDto) {
+  async create(@Request() req: ProfileRequest, @Body() dto: UpdateHabitDto) {
     const { profile, user } = req;
 
     const habitModel = await this.contentService.createContent(profile, user, Habit.create(profile, user, dto), dto.tagNames);
@@ -52,22 +53,21 @@ export class HabitsController extends AbstractContentController<Habit> {
     });
   }
 
-  @Post(':cid')
+  @Put(':cid')
   @Policies(ContentWritePolicy)
-  async update(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: EditHabitDto) {
+  async update(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() update: UpdateHabitDto) {
     const { profile, user, content } = req;
 
     if(!isHabitContent(content)) {
       throw new EntityNotFoundException();
     }
 
-    const habit = Habit.create(profile, user, dto);
-    habit.pushRevision(content);
+    Habit.applyUpdate(content, update);
 
-    const updated = await this.contentService.updateHabit(profile, user, content, habit, dto.tagNames);
+    await this.contentService.updateContent(profile, user, content, content, update.tagNames);
 
     return new EditHabitResponseDto({
-      model: new HabitDto(updated),
+      model: new HabitDto(content),
       tags: profile.getNewTags().map(tag => new TagDto(tag))
     });
   }

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { ActivityType, getCreateModelByActivityType, EditHabitDto,
-  EditTaskDto, getEditModelByActivity, IActivity,
+import { ActivityType, getCreateModelByActivityType, UpdateHabitDto,
+  UpdateTaskDto, getEditModelByActivity, IActivity,
   CalendarIntervalEnum   , EditHabitResponseDto, EditTaskResponseDto, isTask } from '@lyvely/common';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
@@ -11,14 +11,12 @@ import { useProfileStore } from "@/modules/profile/stores/profile.store";
 import useEditModelStore from "@/modules/common/stores/editModelStore";
 import { findFocusable } from "@/modules/ui/utils";
 
-type EditModel = EditHabitDto|EditTaskDto;
+type EditModel = UpdateHabitDto|UpdateTaskDto;
 type EditResponseModel = EditTaskResponseDto|EditHabitResponseDto;
 
 export const useActivityEditStore = defineStore('activityEdit', () => {
   const state = useEditModelStore<EditModel, EditResponseModel>({
-    repository: (editModel: EditModel) => {
-      return editModel instanceof EditTaskDto ? tasksRepository : habitsRepository;
-    },
+    repository: (editModel: EditModel) => editModel instanceof UpdateTaskDto ? tasksRepository : habitsRepository,
     onSubmitSuccess: (response?: EditResponseModel) => {
       if(response) {
         useProfileStore().updateTags(response.tags);
@@ -37,7 +35,7 @@ export const useActivityEditStore = defineStore('activityEdit', () => {
   })
 
   const modalTitle = computed(() => {
-    const type = ((state.model.value instanceof EditTaskDto) ? ActivityType.Task : ActivityType.Habit).toLowerCase();
+    const type = ((state.model.value instanceof UpdateTaskDto) ? ActivityType.Task : ActivityType.Habit).toLowerCase();
     return (state.isCreate.value) ? `activities.${type}s.create.title` : `activities.${type}s.edit.title`
   });
 

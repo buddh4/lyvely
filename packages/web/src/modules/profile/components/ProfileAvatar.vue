@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { IProfile, IUserToProfileRelation } from "@lyvely/common/src";
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
 import { computed } from "vue";
 import { createFileUrl } from "@/repository";

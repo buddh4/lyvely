@@ -5,5 +5,5 @@
     "rootDir": "src",
     "outDir": "dist/lib"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*"]
 }

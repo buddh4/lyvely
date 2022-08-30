@@ -64,7 +64,7 @@ function initCors(app: INestApplication, configService: ConfigService, logger: L
   app.enableCors({
     origin: cors_origin,
     credentials: true,
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'PUT'],
     exposedHeaders: ['set-cookie'],
     allowedHeaders: [
       'x-visitor-id',

@@ -32,7 +32,7 @@ export const useActivityStore = defineStore('activity', () => {
   const calendarPlanStore = useCalendarPlanStore();
   const cache = reactive(new ActivityDataPointStore());
   const tidCache = reactive(new LoadedTimingIdStore());
-  const filter = reactive(new ActivityFilter({ tagProvider: () => profileStore.profile.tags }));
+  const filter = reactive(new ActivityFilter({ tagProvider: () => profileStore.profile?.tags || [] }));
 
   function getActivities(type: ActivityType, interval: CalendarIntervalEnum) {
     filter.setOption('type', type);

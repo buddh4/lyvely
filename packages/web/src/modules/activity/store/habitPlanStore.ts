@@ -8,7 +8,7 @@ import {
   IHabit,
   HabitDto,
   NumberDataPointDto
-} from '@lyvely/common';
+, ActivityType } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
@@ -22,13 +22,13 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   async function move(moveEvent: MoveActivityEvent) {
     await activityStore.move(
       moveEvent,
-      getHabitsByCalendarInterval(moveEvent.fromInterval),
-      getHabitsByCalendarInterval(moveEvent.toInterval),
+      _getHabitsByCalendarInterval(moveEvent.fromInterval),
+      _getHabitsByCalendarInterval(moveEvent.toInterval),
     );
   }
 
-  function getHabitsByCalendarInterval(interval: CalendarIntervalEnum) {
-    return activityStore.cache.getHabitsByCalendarInterval(interval, activityStore.filter);
+  function _getHabitsByCalendarInterval(interval: CalendarIntervalEnum) {
+    return activityStore.getActivities(ActivityType.Habit, interval);
   }
 
   function addHabit(habit: IHabit) {
@@ -59,5 +59,5 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
     }
   }
 
-  return { addHabit, addDataPoint, move, getDataPoint, updateDataPoint, getHabitsByCalendarInterval};
+  return { addHabit, addDataPoint, move, getDataPoint, updateDataPoint };
 });

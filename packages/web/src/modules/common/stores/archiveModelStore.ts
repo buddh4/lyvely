@@ -1,5 +1,5 @@
 import { AxiosResponse} from 'axios';
-import { Archivable } from "@lyvely/common/src/model/interfaces/archivable.interface";
+import { Archivable } from "@lyvely/common";
 
 export interface ArchiveModelRepository<TUpdateModel extends Archivable, TID = string> {
   archive: (id: TID) => Promise<AxiosResponse<boolean>>

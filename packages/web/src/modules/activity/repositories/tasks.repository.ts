@@ -1,15 +1,15 @@
 import repository from "@/repository";
-import { UpdateTaskStateModel, EditTaskDto, ITask, DoneTaskResultModel , CalendarDate, formatDate , EditTaskResponseDto } from '@lyvely/common';
+import { UpdateTaskStateModel, UpdateTaskDto, ITask, UpdateTaskStateResultDto , CalendarDate, formatDate , EditTaskResponseDto } from '@lyvely/common';
 
 const resource = "tasks";
 
 export default {
-  async create(activitiy: EditTaskDto) {
+  async create(activitiy: UpdateTaskDto) {
     return repository.post<EditTaskResponseDto>(`${resource}`, activitiy);
   },
 
   async setDone(task: ITask, date: CalendarDate) {
-    return repository.post<DoneTaskResultModel>(
+    return repository.post<UpdateTaskStateResultDto>(
       `${resource}/${task.id}/done`,
       new UpdateTaskStateModel({
         date: formatDate(date)
@@ -18,7 +18,7 @@ export default {
   },
 
   async setUndone(task: ITask, date: CalendarDate) {
-    return repository.post<DoneTaskResultModel>(
+    return repository.post<UpdateTaskStateResultDto>(
       `${resource}/${task.id}/undone`,
       new UpdateTaskStateModel({
         date: formatDate(date)
@@ -26,7 +26,7 @@ export default {
     );
   },
 
-  async update(taskId: string, model: EditTaskDto) {
+  async update(taskId: string, model: Partial<UpdateTaskDto>) {
     return repository.post<EditTaskResponseDto>(`${resource}/${taskId}`, model);
   }
 };

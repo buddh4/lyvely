@@ -2,6 +2,8 @@
   "name": "@lyvely/common",
   "version": "0.0.1",
   "description": "Shared lively library",
+  "author": "",
+  "license": "ISC",
   "type": "commonjs",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -21,8 +23,6 @@
     "type": "git",
     "url": "git+https://github.com/buddh4/lively-common.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/buddh4/lively-common/issues"
   },
@@ -51,7 +51,7 @@
     "typescript": "^4.5.4"
   },
   "jest": {
-    "rootDir": ".",
+    "rootDir": "./",
     "setupFiles": [
       "<rootDir>/jest-setup.ts"
     ],

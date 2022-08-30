@@ -1,4 +1,4 @@
-import { Filter } from "@lyvely/common/src/model/filter";
+import { Filter } from "@lyvely/common";
 import { computed} from 'vue';
 
 export default <TOptions = any>(filter: Pick<Filter<any, TOptions>, 'option'|'setOption'>, key: keyof TOptions) => {

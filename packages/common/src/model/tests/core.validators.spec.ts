@@ -1,9 +1,9 @@
 import { Gte, Lte, Match, ObjectId } from '../../index';
-import { IsNumber, IsOptional, IsString, validate } from 'class-validator';
+import { IsNumber, IsOptional, IsString, validate, IsMongoId } from 'class-validator';
 
 
 class ObjectIdModel {
-  @ObjectId()
+  @IsMongoId()
   @IsOptional()
   id?: string;
 

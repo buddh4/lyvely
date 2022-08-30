@@ -1,12 +1,13 @@
-import { EditHabitDto } from '../habit';
+import { UpdateHabitDto } from '../habit';
 
 import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
 
-describe('EditHabitDto', () => {
+describe('UpdateHabitDto', () => {
 
   describe('transform', function () {
     it('filter by habit type success', async () => {
-      const test = plainToClass(EditHabitDto, {
+      plainToClass(UpdateHabitDto, {
           optimal: 3,
           max: 3,
           min: 3,
@@ -19,6 +20,14 @@ describe('EditHabitDto', () => {
           plan: 3,
           text: 'asdfasdf'
         });
+    });
+  });
+
+  describe('validate', function () {
+    it('test', async () => {
+      const model = plainToClass(UpdateHabitDto, { title: 'test' });
+      const validation = await validate(model);
+      expect(validation.length).toEqual(0);
     });
   });
 });

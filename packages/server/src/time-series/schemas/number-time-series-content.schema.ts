@@ -16,11 +16,11 @@ export abstract class NumberTimeSeriesContent<
   @Prop({ type: NumberDataPointConfigSchema, required: true })
   dataPointConfig: NumberDataPointConfig;
 
-  pushRevision(rev: T) {
+  pushDataPointConfigRevision(rev: NumberDataPointConfig) {
     if(!this.dataPointConfig.history) {
       this.dataPointConfig.history = [];
     }
 
-    this.dataPointConfig.history.push(new NumberDataPointConfigRevision(rev.dataPointConfig))
+    this.dataPointConfig.history.push(new NumberDataPointConfigRevision(rev))
   }
 }

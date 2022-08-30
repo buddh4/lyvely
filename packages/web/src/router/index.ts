@@ -12,6 +12,7 @@ import * as i18n from "@/i18n";
 import { usePageStore } from "@/modules/core/store/page.store";
 import { toRefs, nextTick } from 'vue';
 
+
 const routes: Array<RouteRecordRaw> = [];
 
 function register(registerRoutes: Array<RouteRecordRaw>) {

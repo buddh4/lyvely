@@ -53,6 +53,9 @@ async function setProfile(pid: string) {
         <AddButton class="m-auto" />
       </div>
     </li>
+    <li class="py-3 px-4 text-dimmed text-sm">
+      You are not a member of any organization.
+    </li>
   </ul>
 </template>
 

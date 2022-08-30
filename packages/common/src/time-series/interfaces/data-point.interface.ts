@@ -29,6 +29,12 @@ export enum DataPointInputStrategy {
   TextareaText = 'TextareaText',
 }
 
+export enum DataPointNumberInputType {
+  Checkbox = 'checkbox',
+  Range = 'range',
+  Spinner = 'spinner',
+}
+
 export enum DataPointInputType {
   Checkbox = 'checkbox',
   Range = 'range',

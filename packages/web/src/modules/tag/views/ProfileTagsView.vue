@@ -7,14 +7,13 @@ import Button from "@/modules/ui/components/button/Button.vue";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
 import EditTagModal from "@/modules/tag/components/EditTagModal.vue";
 import { useEditTagStore } from "@/modules/tag/stores/editTagStore";
-import { ITag, EditTagDto } from "@lyvely/common";
+import { ITag, EditTagDto , TagFilter } from "@lyvely/common";
 import ListPage from "@/modules/ui/components/layout/ListPage.vue";
 import { Size } from '@/modules/ui/types';
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import FloatingAddButton from "@/modules/ui/components/button/FloatingAddButton.vue";
 import Badge from "@/modules/ui/components/badge/Badge.vue";
 import { usePageStore } from "@/modules/core/store/page.store";
-import { TagFilter } from "@lyvely/common/src/tags/tag.filter";
 
 const filter = ref(new TagFilter({ archived: false }));
 

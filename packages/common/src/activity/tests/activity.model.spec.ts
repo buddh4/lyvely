@@ -1,11 +1,11 @@
-import { EditHabitDto, UpdateDataPointDto, CalendarIntervalEnum } from '../../index';
+import { UpdateHabitDto, UpdateDataPointDto, CalendarIntervalEnum } from '../../index';
 import { validate } from "class-validator";
 
 describe('Activity Model', () => {
 
-  describe('EditHabitDto', function () {
+  describe('UpdateHabitDto', function () {
     it('validate valid dto', async () => {
-      const dto = new EditHabitDto({
+      const dto = new UpdateHabitDto({
         title: 'Test activity',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
@@ -20,8 +20,8 @@ describe('Activity Model', () => {
       expect(result.length).toEqual(0);
     });
 
-    it('validate EditHabitDto with empty title', async () => {
-      const dto = new EditHabitDto({
+    it('validate UpdateHabitDto with empty title', async () => {
+      const dto = new UpdateHabitDto({
         title: '',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
@@ -34,8 +34,8 @@ describe('Activity Model', () => {
       expect(result[0].property).toEqual('title');
     });
 
-    it('validate EditHabitDto with negative units', async () => {
-      const dto = new EditHabitDto({
+    it('validate UpdateHabitDto with negative units', async () => {
+      const dto = new UpdateHabitDto({
         title: 'Test',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
@@ -48,8 +48,8 @@ describe('Activity Model', () => {
       expect(result[0].property).toEqual('max');
     });
 
-    it('validate EditHabitDto with min > units', async () => {
-      const dto = new EditHabitDto({
+    it('validate UpdateHabitDto with min > units', async () => {
+      const dto = new UpdateHabitDto({
         title: 'Test',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,

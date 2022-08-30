@@ -12,7 +12,7 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
   @Prop()
   someTestField: string;
 
-  pushRevision(rev: TestTimeSeriesContent) {
+  pushDataPointConfigRevision(rev: TestTimeSeriesContent) {
     // Not implemented
   }
 }

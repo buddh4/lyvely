@@ -2,10 +2,11 @@ import { ref, Ref } from 'vue';
 import { ModelValidator } from "@lyvely/common";
 import { AxiosResponse} from 'axios';
 import { DialogExceptionHandler } from "@/modules/core/handler/exception.handler";
+import { cloneDeep, isEqual } from "lodash";
 
 export interface EditModelRepository<TUpdateModel, TResponse,  TID = string> {
   create: (model: TUpdateModel ) => Promise<AxiosResponse<TResponse>>
-  update: (id: TID, model: TUpdateModel) => Promise<AxiosResponse<TResponse>>
+  update: (id: TID, model: Partial<TUpdateModel>) => Promise<AxiosResponse<TResponse>>
 }
 
 export interface EditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
@@ -14,7 +15,8 @@ export interface EditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
   onSubmitError?: ((err: any) => void) | false
 }
 export default function<TUpdateModel, TResponse, TID = string>(options: EditModelStoreOptions<TUpdateModel, TResponse, TID>) {
-  const model = ref(undefined) as Ref<TUpdateModel|undefined>;
+  const model = ref<TUpdateModel|undefined>(undefined) as Ref<TUpdateModel|undefined>;
+  let original: TUpdateModel|undefined = undefined;
   const modelId = ref(undefined) as Ref<TID|undefined>;
   const validator = ref(undefined) as Ref<ModelValidator|undefined>;
   const isActive = ref(false);
@@ -37,10 +39,12 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
   function _setModel(newModel?: TUpdateModel, id?: TID) {
     if(newModel) {
       model.value = newModel;
+      original = cloneDeep(newModel);
       modelId.value = id;
       validator.value = new ModelValidator(model);
       isActive.value = true;
     } else {
+      original = undefined;
       model.value = undefined;
       modelId.value = undefined;
       validator.value = undefined;
@@ -55,7 +59,7 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
 
     try {
       const response = isCreate.value ? await _createModel() : await _editModel();
-      if(typeof options.onSubmitSuccess === 'function') {
+      if(response !== false && typeof options.onSubmitSuccess === 'function') {
         options.onSubmitSuccess(response?.data);
       }
 
@@ -78,11 +82,24 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
   }
 
   async function _editModel() {
-    if(!model.value || !modelId.value) {
+    if(!model.value || !modelId.value || !original) {
+      console.warn('Could not edit model due to inconsistent state.');
       return;
     }
 
-    return await _getRepository(model.value).update(modelId.value, model.value)
+    const update: Partial<TUpdateModel> = {};
+    for(const field in model.value) {
+      if(!isEqual(model.value[field], original[field])) {
+        // @ts-ignore
+        update[field] = model.value[field];
+      }
+    }
+
+    if(Object.keys(update).length === 0) {
+      return false;
+    }
+
+    return await _getRepository(model.value).update(modelId.value, update)
   }
 
   function _getRepository(m: TUpdateModel) {

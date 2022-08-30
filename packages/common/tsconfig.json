@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "es2017",
     "module": "ESNext",
     "moduleResolution": "Node",
     "removeComments": true,
@@ -7,12 +8,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
     "sourceMap": true,
-    "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "typeRoots": ["./node_modules/@types", "../../node_modules/@types", "./src/types"]
+    "typeRoots": ["./node_modules/@types", "../../node_modules/@types", "./src/types"],
+    "baseUrl": "./",
   },
 }

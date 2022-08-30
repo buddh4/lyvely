@@ -2,11 +2,12 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from '../../services/habits.service';
 import { Habit } from '../../schemas';
-import { CalendarIntervalEnum, ActivityType, CreateHabitDto, EditHabitDto } from '@lyvely/common';
+import { CalendarIntervalEnum, ActivityType, CreateHabitDto, UpdateHabitDto } from '@lyvely/common';
 import { Profile } from '../../../profiles';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitsDao } from '../../daos/habits.dao';
 import { User } from '../../../users';
+import { getObjectId } from "../../../test/utils/test.utils";
 
 describe('HabitService', () => {
   let habitService: HabitsService;
@@ -29,7 +30,7 @@ describe('HabitService', () => {
     dto = dto || {
       title: 'Do something!',
       score: 5,
-      categories: [],
+      tagIds: [],
       interval: CalendarIntervalEnum.Daily,
     };
 
@@ -49,7 +50,7 @@ describe('HabitService', () => {
       expect(habit.dataPointConfig.max).toEqual(1);
       expect(habit.score).toEqual(5);
       expect(habit.title).toEqual('Do something!');
-      expect(habit.categories.length).toEqual(0);
+      expect(habit.tagIds.length).toEqual(0);
     });
 
     it('sortOrder creation', async () => {
@@ -72,24 +73,6 @@ describe('HabitService', () => {
         expect(err).toBeDefined();
       }
     });
-
-    it('create with tags', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const habit = await createHabit(user, profile, {
-        title: 'test',
-        score: 5,
-        max: 5,
-        categories: ['Category1', 'Category2'],
-        interval: CalendarIntervalEnum.Daily,
-      });
-
-      expect(habit.categories.length).toEqual(2);
-      expect(habit.categories[0]).toEqual('Category1');
-      expect(habit.categories[1]).toEqual('Category2');
-      expect(profile.tags.length).toEqual(2);
-      expect(profile.tags[0].name).toEqual('Category1');
-      expect(profile.tags[1].name).toEqual('Category2');
-    });
   });
 
   describe('updateHabit', () => {
@@ -100,7 +83,7 @@ describe('HabitService', () => {
       await habitService.updateHabit(profile, user, habit, Habit.create(
           profile,
           user,
-          new EditHabitDto({
+          new UpdateHabitDto({
             title: 'Test',
             text: 'Test description',
             interval: CalendarIntervalEnum.Weekly,
@@ -108,7 +91,7 @@ describe('HabitService', () => {
             score: 2,
             min: 1,
             optimal: 2,
-            categories: ['SomeCategory'],
+            tagNames: ['SomeCategory'],
           }),
         ),
       );
@@ -121,8 +104,8 @@ describe('HabitService', () => {
       expect(search.dataPointConfig.min).toEqual(1);
       expect(search.dataPointConfig.max).toEqual(2);
       expect(search.dataPointConfig.optimal).toEqual(2);
-      expect(search.categories.length).toEqual(1);
-      expect(search.categories[0]).toEqual('SomeCategory');
+      expect(search.tagIds.length).toEqual(1);
+      expect(search.tagIds[0]).toEqual(profile.tags[0]._id);
       expect(profile.tags.length).toEqual(1);
       expect(profile.tags[0].name).toEqual('SomeCategory');
     });
@@ -141,7 +124,7 @@ describe('HabitService', () => {
       await habitService.updateHabit(profile, user, habit, Habit.create(
           profile,
           user,
-          new EditHabitDto({
+          new UpdateHabitDto({
             title: 'Test',
             interval: CalendarIntervalEnum.Weekly,
             max: 3,
@@ -177,7 +160,7 @@ describe('HabitService', () => {
     const update = Habit.create(
       profile,
       user,
-      new EditHabitDto({
+      new UpdateHabitDto({
         title: 'Test',
         interval: CalendarIntervalEnum.Weekly,
         max: 3,
@@ -192,7 +175,7 @@ describe('HabitService', () => {
     const update2 = Habit.create(
       profile,
       user,
-      new EditHabitDto({
+      new UpdateHabitDto({
         title: 'Test',
         interval: CalendarIntervalEnum.Weekly,
         max: 4,
