@@ -2,7 +2,7 @@
 import Modal from "@/modules/ui/components/modal/Modal.vue";
 import TextInput from "@/modules/ui/components/form/TextInput.vue";
 import SelectInput from "@/modules/ui/components/form/SelectInput.vue";
-import Multiselect from "@vueform/multiselect";
+import VueMultiselect from 'vue-multiselect';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
 import useEditActivityModal from '../useEditActivityModal';
@@ -36,23 +36,19 @@ const {
             :options="calendarPlanOptions"
             :error="getError('interval')"/>
 
-        <Multiselect
+        <VueMultiselect
             v-model="model.tagNames"
-            data-habit-categories
-            class="mb-3"
-            mode="tags"
-            placeholder="Add Tags"
-            :classes="{
-          containerActive: 'ring ring-blue-200 border-blue-300 ring-opacity-50',
-          tag: 'bg-success text-white text-sm py-0.5 pl-2 rounded mr-1 mb-1 flex items-center whitespace-nowrap'}"
-            :searchable="true"
-            :create-tag="true"
-            :options="tagOptions"/>
+            class="form-input"
+            :options="tagOptions"
+            :multiple="true"
+            :taggable="true"
+            tag-placeholder="Add this as new tag" placeholder="Search or add a tag"
+            @tag="addTag" />
 
         <NumberInput
-            v-model="model.value"
+            v-model="model.score"
             label="★ Score"
-            :error="getError('value')"
+            :error="getError('score')"
             :steps="2"
             :max="100"
             :min="-100"/>

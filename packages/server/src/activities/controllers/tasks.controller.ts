@@ -46,14 +46,15 @@ export class TasksController {
   }
 
   @Put(':cid')
-  async update(@Request() req: ProfileContentRequest, @Body() dto: UpdateTaskDto) {
+  async update(@Request() req: ProfileContentRequest, @Body() update: UpdateTaskDto) {
     const { profile, user, content } = req;
 
     if(!isTaskContent(content)) {
       throw new EntityNotFoundException();
     }
 
-    await this.tasksService.updateContent(profile, user, content, Task.create(profile, user, dto), dto.tagNames);
+    Task.applyUpdate(content, update);
+    await this.tasksService.updateContent(profile, user, content, content, update.tagNames);
 
     return new EditTaskResponseDto({
       model: new TaskDto(content),

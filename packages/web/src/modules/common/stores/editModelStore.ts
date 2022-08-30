@@ -10,17 +10,20 @@ export interface EditModelRepository<TUpdateModel, TResponse,  TID = string> {
 }
 
 export interface EditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
+  partialUpdate?: boolean,
   repository: EditModelRepository<TUpdateModel, TResponse, TID> | ((editModel: TUpdateModel) => EditModelRepository<TUpdateModel, TResponse, TID>),
   onSubmitSuccess?: (response?: TResponse) => void
   onSubmitError?: ((err: any) => void) | false
 }
-export default function<TUpdateModel, TResponse, TID = string>(options: EditModelStoreOptions<TUpdateModel, TResponse, TID>) {
+export default function<TUpdateModel, TResponse,  TID = string>(options: EditModelStoreOptions<TUpdateModel, TResponse, TID>) {
   const model = ref<TUpdateModel|undefined>(undefined) as Ref<TUpdateModel|undefined>;
   let original: TUpdateModel|undefined = undefined;
   const modelId = ref(undefined) as Ref<TID|undefined>;
   const validator = ref(undefined) as Ref<ModelValidator|undefined>;
   const isActive = ref(false);
   const isCreate = ref(false);
+
+  options.partialUpdate = options.partialUpdate ?? true;
 
   function setEditModel(id: TID, model: TUpdateModel) {
     isCreate.value = false;
@@ -87,16 +90,19 @@ export default function<TUpdateModel, TResponse, TID = string>(options: EditMode
       return;
     }
 
-    const update: Partial<TUpdateModel> = {};
-    for(const field in model.value) {
-      if(!isEqual(model.value[field], original[field])) {
-        // @ts-ignore
-        update[field] = model.value[field];
-      }
-    }
+    let update: Partial<TUpdateModel> = {};
 
-    if(Object.keys(update).length === 0) {
-      return false;
+    if(options.partialUpdate) {
+      for(const field in model.value) {
+        if(!isEqual(model.value[field], original[field])) {
+          // @ts-ignore
+          update[field] = model.value[field];
+        }
+      }
+
+      if(Object.keys(update).length === 0) return false;
+    } else {
+      update = model.value;
     }
 
     return await _getRepository(model.value).update(modelId.value, update)

@@ -2,7 +2,6 @@
 import Modal from "@/modules/ui/components/modal/Modal.vue";
 import TextInput from "@/modules/ui/components/form/TextInput.vue";
 import SelectInput from "@/modules/ui/components/form/SelectInput.vue";
-import Multiselect from "@vueform/multiselect";
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
 import useEditActivityModal from '../useEditActivityModal';
@@ -49,7 +48,7 @@ function addTag (newTag: string) {
 
         <VueMultiselect
             v-model="model.tagNames"
-            class="mb-3"
+            class="form-input"
             :options="tagOptions"
             :multiple="true"
             :taggable="true"

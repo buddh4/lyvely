@@ -7,7 +7,7 @@ import Button from "@/modules/ui/components/button/Button.vue";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
 import EditTagModal from "@/modules/tag/components/EditTagModal.vue";
 import { useEditTagStore } from "@/modules/tag/stores/editTagStore";
-import { ITag, EditTagDto , TagFilter } from "@lyvely/common";
+import { ITag, UpdateTagDto, CreateTagDto, TagFilter } from "@lyvely/common";
 import ListPage from "@/modules/ui/components/layout/ListPage.vue";
 import { Size } from '@/modules/ui/types';
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
@@ -23,11 +23,11 @@ const { setEditModel, setCreateModel } = editTagStore;
 const tags = computed(() => filter.value.apply(profileStore.profile?.tags));
 
 const setEditTag = (tag: ITag) => {
-  setEditModel(tag.id, new EditTagDto(tag))
+  setEditModel(tag.id, new UpdateTagDto(tag))
 }
 
 const setCreateTag = () => {
-  setCreateModel(new EditTagDto())
+  setCreateModel(new CreateTagDto())
 }
 
 const search = ref(null) as Ref<HTMLElement|null>;

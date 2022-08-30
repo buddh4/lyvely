@@ -7,10 +7,11 @@ import {
   Body,
   Inject,
   ForbiddenException,
-  NotFoundException
+  NotFoundException,
+  Put
 } from '@nestjs/common';
 import { ProfileRequest } from "../../core/types";
-import { EditTagDto, TagDto } from "@lyvely/common";
+import { UpdateTagDto, TagDto, CreateTagDto } from "@lyvely/common";
 import { assureObjectId, EntityIdentity } from "../../db/db.utils";
 import { ServiceException } from "../../core/exceptions";
 import { Tag } from "../../tags";
@@ -27,7 +28,7 @@ export class ProfileTagsController {
   private tagService: ProfileTagsService;
 
   @Post()
-  async create(@Request() req: ProfileRequest, @Body() dto: EditTagDto) {
+  async create(@Request() req: ProfileRequest, @Body() dto: CreateTagDto) {
     const profile = this._getMemberProfile(req);
 
     if(!await this.tagService.addTag(profile, dto)) {
@@ -37,10 +38,12 @@ export class ProfileTagsController {
     return new TagDto(profile.getTagByName(dto.name));
   }
 
-  @Post(':id')
-  async update(@Request() req: ProfileRequest, @Param('id') id, @Body() dto: EditTagDto) {
+  @Put(':id')
+  async update(@Request() req: ProfileRequest, @Param('id') id, @Body() dto: UpdateTagDto) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
+
+    if(!tag) throw new NotFoundException();
 
     await this.tagService.updateTag(profile, tag, dto);
     return new TagDto(tag);

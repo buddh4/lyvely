@@ -63,7 +63,6 @@ export class HabitsController extends AbstractContentController<Habit> {
     }
 
     Habit.applyUpdate(content, update);
-
     await this.contentService.updateContent(profile, user, content, content, update.tagNames);
 
     return new EditHabitResponseDto({

@@ -27,6 +27,6 @@ export default {
   },
 
   async update(taskId: string, model: Partial<UpdateTaskDto>) {
-    return repository.post<EditTaskResponseDto>(`${resource}/${taskId}`, model);
+    return repository.put<EditTaskResponseDto>(`${resource}/${taskId}`, model);
   }
 };
