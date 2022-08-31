@@ -37,7 +37,7 @@ export class ProfileDao extends AbstractDao<Profile> {
       return 0;
     }
 
-    applyRawDataTo(tag, update);
+    applyRawDataTo(tag, update, { strict: false });
 
     return this.updateOneByFilter(profile, { $set: { 'tags.$[tag]': tag } }, {}, {
       arrayFilters: [ { 'tag._id': assureObjectId(identity) } ]

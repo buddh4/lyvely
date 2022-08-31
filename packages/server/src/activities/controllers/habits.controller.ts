@@ -11,7 +11,7 @@ import {
   HabitDto,
   UpdateDataPointDto,
   UpdateDataPointResultDto,
-  EditHabitResponseDto
+  UpdateHabitResponseDto
 , TagDto } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
@@ -47,7 +47,7 @@ export class HabitsController extends AbstractContentController<Habit> {
       throw new EntityNotFoundException();
     }
 
-    return new EditHabitResponseDto({
+    return new UpdateHabitResponseDto({
       model: new HabitDto(habitModel),
       tags: profile.getNewTags().map(tag => new TagDto(tag))
     });
@@ -65,7 +65,7 @@ export class HabitsController extends AbstractContentController<Habit> {
     Habit.applyUpdate(content, update);
     await this.contentService.updateContent(profile, user, content, content, update.tagNames);
 
-    return new EditHabitResponseDto({
+    return new UpdateHabitResponseDto({
       model: new HabitDto(content),
       tags: profile.getNewTags().map(tag => new TagDto(tag))
     });

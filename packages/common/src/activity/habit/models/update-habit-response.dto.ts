@@ -4,7 +4,7 @@ import { TagDto } from "../../../tags";
 import { BaseDto } from "../../../model";
 
 @Exclude()
-export class EditHabitResponseDto extends BaseDto<EditHabitResponseDto> {
+export class UpdateHabitResponseDto extends BaseDto<UpdateHabitResponseDto> {
   @Expose()
   @Type(() => HabitDto)
   model: HabitDto;

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ActivityType, getCreateModelByActivityType, UpdateHabitDto,
   UpdateTaskDto, getEditModelByActivity, IActivity,
-  CalendarIntervalEnum   , EditHabitResponseDto, EditTaskResponseDto, isTask } from '@lyvely/common';
+  CalendarIntervalEnum, UpdateHabitResponseDto, EditTaskResponseDto, isTask } from '@lyvely/common';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
@@ -12,7 +12,7 @@ import useEditModelStore from "@/modules/common/stores/editModelStore";
 import { findFocusable } from "@/modules/ui/utils";
 
 type EditModel = UpdateHabitDto|UpdateTaskDto;
-type EditResponseModel = EditTaskResponseDto|EditHabitResponseDto;
+type EditResponseModel = EditTaskResponseDto|UpdateHabitResponseDto;
 
 export const useActivityEditStore = defineStore('activityEdit', () => {
   const state = useEditModelStore<EditModel, EditResponseModel>({

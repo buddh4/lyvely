@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/buddh4/lively-common#readme",
   "dependencies": {
+    "@buddh4/mapped-types": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dayjs": "^1.11.3",
@@ -48,7 +49,7 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.61.1",
     "ts-jest": "^28.0.5",
-    "typescript": "^4.5.4"
+    "typescript": "^4.8.2"
   },
   "jest": {
     "rootDir": "./",

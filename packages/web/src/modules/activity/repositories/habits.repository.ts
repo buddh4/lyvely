@@ -1,15 +1,15 @@
 import repository from "@/repository";
-import { UpdateHabitDto, IHabit, UpdateDataPointDto, UpdateDataPointResultDto, EditHabitResponseDto } from '@lyvely/common';
+import { UpdateHabitDto, IHabit, UpdateDataPointDto, UpdateDataPointResultDto, UpdateHabitResponseDto } from '@lyvely/common';
 
 const resource = "habits";
 
 export default {
   async create(activitiy: UpdateHabitDto) {
-    return repository.post<EditHabitResponseDto>(`${resource}`, activitiy);
+    return repository.post<UpdateHabitResponseDto>(`${resource}`, activitiy);
   },
 
   async update(habitId: string, activitiy: Partial<UpdateHabitDto>) {
-    return repository.put<EditHabitResponseDto>(`${resource}/${habitId}`, activitiy);
+    return repository.put<UpdateHabitResponseDto>(`${resource}/${habitId}`, activitiy);
   },
 
   async updateDataPoint(habitId: string, dto: UpdateDataPointDto) {

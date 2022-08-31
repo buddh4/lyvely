@@ -14,6 +14,8 @@ import {
   DataPointIntervalFilter,
   TaskDto, MoveAction, SortResult } from '@lyvely/common';
 
+import { Type } from '@nestjs/common'
+
 import { ActivitiesService } from '../services/activities.service';
 import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '../../content';
 import { Activity } from '../schemas';

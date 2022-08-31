@@ -1,10 +1,10 @@
 import { Expose, Exclude } from 'class-transformer';
 import { IsNotEmpty, IsHexColor, IsString, IsOptional, IsBoolean } from 'class-validator';
 import randomColor from "randomcolor";
-import { UpdateTagDto } from "./update-tag.dto";
+import { BaseDto } from "../model";
 
 @Exclude()
-export class CreateTagDto extends UpdateTagDto {
+export class CreateTagDto extends BaseDto<CreateTagDto>{
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -25,7 +25,7 @@ export class CreateTagDto extends UpdateTagDto {
   @IsOptional()
   includeOnFilter?: boolean;
 
-  constructor(obj?: Partial<UpdateTagDto>) {
+  constructor(obj?: Partial<CreateTagDto>) {
     super(obj);
     this.includeOnFilter = this.includeOnFilter ?? false;
     this.color = this.color || randomColor({ luminosity: 'dark' });
