@@ -18,8 +18,12 @@ const { visible, icon, iconColor, iconClass, title, message,  } = toRefs(useGlob
     <Sidebar id="sidebar" />
 
     <div class="overflow-hidden flex w-full min-h-screen flex-col">
+      <div class="flex items-stretch flex-col h-screen">
       <TopNavigation />
-      <router-view></router-view>
+        <div class="overflow-auto">
+          <router-view></router-view>
+        </div>
+      </div>
     </div>
 
   </div>
