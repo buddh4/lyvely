@@ -30,8 +30,14 @@ const score = computed(() => profileStore.profile?.score);
     <Dropdown position="right">
       <template #trigger="{ toggle }">
         <div class="flex justify-center items-center py-1">
+          <div class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center">
+            <Button class="px-3 py-2" @click="toggleSidebar">
+              <Icon name="menu" style="margin-top:-3px" />
+            </Button>
+          </div>
           <div role="button" class="border-none px-0" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
-            <div class="border border-divide px-3 p-2 rounded-l-2xl flex justify-center items-center gap-2">
+
+            <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">
 
               <ProfileAvatar />
 
@@ -56,7 +62,7 @@ const score = computed(() => profileStore.profile?.score);
             </div>
           </div>
           <div class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center">
-            <Button class="px-2 py-2" @click="toggle"><Icon style="margin-top:-1px" name="caret-down" /></Button>
+            <Button class="px-3 py-2" @click="toggle"><Icon style="margin-top:-1px" name="caret-down" /></Button>
           </div>
         </div>
       </template>
