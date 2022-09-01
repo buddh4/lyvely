@@ -58,11 +58,12 @@ export class HabitsController extends AbstractContentController<Habit> {
   async update(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() update: UpdateHabitDto) {
     const { profile, user, content } = req;
 
+
     if(!isHabitContent(content)) {
       throw new EntityNotFoundException();
     }
 
-    Habit.applyUpdate(content, update);
+    Habit.applyUpdate(content, new UpdateHabitDto(update));
     await this.contentService.updateContent(profile, user, content, content, update.tagNames);
 
     return new UpdateHabitResponseDto({

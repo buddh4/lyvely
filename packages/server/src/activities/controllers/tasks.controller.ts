@@ -53,7 +53,7 @@ export class TasksController {
       throw new EntityNotFoundException();
     }
 
-    Task.applyUpdate(content, update);
+    Task.applyUpdate(content, new UpdateTaskDto(update));
     await this.tasksService.updateContent(profile, user, content, content, update.tagNames);
 
     return new EditTaskResponseDto({

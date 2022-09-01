@@ -5,16 +5,19 @@ import SelectInput from "@/modules/ui/components/form/SelectInput.vue";
 import VueMultiselect from 'vue-multiselect';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
+import Alert from "@/modules/ui/components/alert/Alert.vue";
 import useEditActivityModal from '../useEditActivityModal';
+import ScreenReaderValidationError from "@/modules/ui/components/error/ScreenReaderValidationError.vue";
 
 const {
   model,
   modalTitle,
   showModal,
-  getError,
-  getErrors,
-  onHide,
-  onSubmit,
+  validator,
+  addTag,
+  error,
+  reset,
+  submit,
   tagOptions,
   calendarPlanOptions,
 } = useEditActivityModal();
@@ -22,19 +25,19 @@ const {
 </script>
 
 <template>
-  <Modal v-model="showModal" :title="modalTitle" @submit="onSubmit" @hide="onHide">
+  <Modal v-model="showModal" :title="modalTitle" @submit="submit" @hide="reset">
     <template #body>
       <fieldset>
         <TextInput
             v-model="model.title"
             label="Title"
-            :error="getError('title')"/>
+            :error="validator.getError('title')"/>
 
         <SelectInput
             v-model="model.interval"
             label="Plan"
             :options="calendarPlanOptions"
-            :error="getError('interval')"/>
+            :error="validator.getError('interval')"/>
 
         <VueMultiselect
             v-model="model.tagNames"
@@ -48,21 +51,18 @@ const {
         <NumberInput
             v-model="model.score"
             label="★ Score"
-            :error="getError('score')"
+            :error="validator.getError('score')"
             :steps="2"
             :max="100"
             :min="-100"/>
 
         <Textarea
-            v-model="model.description"
+            v-model="model.text"
             label="Description"/>
       </fieldset>
 
-      <div class="sr-only">
-        <ul>
-          <li v-for="error in getErrors()" :key="error">{{ error }}</li>
-        </ul>
-      </div>
+      <Alert :message="error" class="mt-2" />
+      <ScreenReaderValidationError :errors="validator.getErrors()" />
     </template>
   </Modal>
 </template>

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import Modal from '@/modules/ui/components/modal/Modal.vue';
 import SelectInput from '@/modules/ui/components/form/SelectInput.vue';
-import Multiselect from '@vueform/multiselect';
 import { EditJournalDto , DataPointInputType } from '@lyvely/common';
 import TextInput from '@/modules/ui/components/form/TextInput.vue';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
@@ -60,15 +59,6 @@ const title = computed(() => props.create ? 'Add journal' : 'Edit journal');
         @change="validate"
       />
 
-      <Multiselect
-        v-model="props.model.categories"
-        class="mb-3"
-        mode="tags"
-        placeholder="Categories..."
-        :searchable="true"
-        :create-tag="true"
-        :options="categoryOptions"
-      />
 
       <SelectInput
         v-model="props.model.inputType"

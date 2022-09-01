@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/buddh4/lively-common#readme",
   "dependencies": {
-    "@buddh4/mapped-types": "^1.0.0",
+    "@buddh4/mapped-types": "^1.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dayjs": "^1.11.3",

@@ -20,6 +20,7 @@ export default function<TUpdateModel, TResponse,  TID = string>(options: EditMod
   let original: TUpdateModel|undefined = undefined;
   const modelId = ref(undefined) as Ref<TID|undefined>;
   const validator = ref(undefined) as Ref<ModelValidator|undefined>;
+  const error = ref('');
   const isActive = ref(false);
   const isCreate = ref(false);
 
@@ -52,6 +53,7 @@ export default function<TUpdateModel, TResponse,  TID = string>(options: EditMod
       modelId.value = undefined;
       validator.value = undefined;
       isActive.value = false;
+      error.value = '';
     }
   }
 
@@ -71,9 +73,13 @@ export default function<TUpdateModel, TResponse,  TID = string>(options: EditMod
       if(typeof options.onSubmitError === 'function') {
         options.onSubmitError(err);
       } else if(options.onSubmitError !== false) {
-        DialogExceptionHandler('An unexpected error occurred, please try again later')(err);
+        error.value = 'error.default';
       }
     }
+  }
+
+  async function hasError() {
+    return !!error.value?.length;
   }
 
   async function _createModel() {
@@ -116,25 +122,16 @@ export default function<TUpdateModel, TResponse,  TID = string>(options: EditMod
     return options.repository;
   }
 
-  function getError(field: string) {
-    return validator?.value?.getError(field);
-  }
-
-  function getErrors() {
-    return validator?.value?.getErrors();
-  }
-
   return {
     model,
     modelId,
     validator,
+    error,
     isActive,
     isCreate,
     setEditModel,
     setCreateModel,
     submit,
-    getError,
-    getErrors,
     reset
   }
 }

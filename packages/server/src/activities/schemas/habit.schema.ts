@@ -11,6 +11,7 @@ import {
 } from "../../time-series";
 import { applyRawDataTo, assureObjectId } from "../../db/db.utils";
 import { cloneDeep } from "lodash";
+import { applyValidationProperties } from "@lyvely/common";
 
 export type HabitDocument = Habit & ContentDocument;
 
@@ -30,7 +31,7 @@ export class Habit extends Activity implements IHabit {
       model.dataPointConfig = updatedDataPointConfig;
     }
 
-    applyRawDataTo(model, update, {strict: true});
+    applyValidationProperties(model, update);
   }
 
   public static create(profile: Profile, owner: User, update: UpdateHabitDto, history?: NumberDataPointConfigRevision[]): Habit {

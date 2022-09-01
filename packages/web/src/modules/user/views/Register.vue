@@ -47,9 +47,7 @@ async function register() {
          :error="getError('password')"
          label="users.labels.password"></TextInput>
 
-       <Alert v-if="isError" data-register-error class="danger my-2">
-         {{ $t(errorMsg) }}
-       </Alert>
+       <Alert v-if="isError" :message="errorMsg" data-register-error class="danger my-2" />
 
        <Button :submit="true" class="primary mb-4 float-right" text="users.labels.sign_up"></Button>
      </form>

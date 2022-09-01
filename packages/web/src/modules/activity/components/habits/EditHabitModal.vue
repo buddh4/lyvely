@@ -5,46 +5,43 @@ import SelectInput from "@/modules/ui/components/form/SelectInput.vue";
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
 import Textarea from '@/modules/ui/components/form/Textarea.vue';
 import useEditActivityModal from '../useEditActivityModal';
-import VueMultiselect from 'vue-multiselect'
+import VueMultiselect from 'vue-multiselect';
+import Alert from "@/modules/ui/components/alert/Alert.vue";
 
 const {
   model,
   modalTitle,
   showModal,
-  getError,
-  getErrors,
-  onHide,
-  onSubmit,
+  validator,
+  addTag,
+  error,
+  reset,
+  submit,
   tagOptions,
   calendarPlanOptions,
 } = useEditActivityModal();
-
-function addTag (newTag: string) {
-  model.value!.tagNames!.push(newTag);
-}
-
 </script>
 
 <template>
   <Modal
       v-model="showModal"
       :title="modalTitle"
-      @submit="onSubmit"
-      @hide="onHide">
+      @submit="submit"
+      @hide="reset">
     <template #body>
       <fieldset>
         <TextInput
             v-model="model.title"
             data-habit-title
             label="Title"
-            :error="getError('title')"/>
+            :error="validator.getError('title')"/>
 
         <SelectInput
             v-model="model.interval"
             data-habit-interval
             label="Plan"
             :options="calendarPlanOptions"
-            :error="getError('interval')"/>
+            :error="validator.getError('interval')"/>
 
         <VueMultiselect
             v-model="model.tagNames"
@@ -61,7 +58,7 @@ function addTag (newTag: string) {
                 v-model="model.max"
                 data-habit-rating-max
                 label="Max"
-                :error="getError('max')"
+                :error="validator.getError('max')"
                 :min="1"/>
           </div>
           <div>
@@ -70,7 +67,7 @@ function addTag (newTag: string) {
                 data-habit-rating-value
                 label="Score ★"
                 :mb="0"
-                :error="getError('score')"
+                :error="validator.getError('score')"
                 :steps="2"
                 :max="100"
                 :min="-100"/>
@@ -83,7 +80,7 @@ function addTag (newTag: string) {
                 label="Min"
                 :min="0"
                 :max="model.max"
-                :error="getError('min')"/>
+                :error="validator.getError('min')"/>
           </div>
           <div>
             <NumberInput
@@ -92,7 +89,7 @@ function addTag (newTag: string) {
                 label="Optimal"
                 :min="model.min"
                 :max="model.max"
-                :error="getError('optimal')"/>
+                :error="validator.getError('optimal')"/>
           </div>
         </div>
 
@@ -101,12 +98,9 @@ function addTag (newTag: string) {
             data-habit-description
             label="Description"/>
       </fieldset>
-      <div class="sr-only">
-        <ul>
-          <li v-for="error in getErrors()" :key="error">{{ error }}</li>
-        </ul>
-      </div>
 
+      <Alert :message="error" class="mt-2" />
+      <ScreenReaderValidationError :errors="validator.getErrors()" />
     </template>
   </Modal>
 </template>

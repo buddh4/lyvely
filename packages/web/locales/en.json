@@ -147,6 +147,7 @@
     }
   },
   "error":{
+    "default": "An unexpected error occurred, please try again later.",
     "network": {
       "title": "Network Error",
       "message": "The request failed due to a network issue, please make sure you are connected to the internet."

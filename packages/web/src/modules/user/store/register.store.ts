@@ -28,7 +28,7 @@ export const useRegisterStore = defineStore('register', {
         this.setStatus(Status.ERROR);
       }
     },
-    getError(field: string) {
+    getValidationError(field: string) {
       return this.validator.getError(field);
     },
     ...useStatus()

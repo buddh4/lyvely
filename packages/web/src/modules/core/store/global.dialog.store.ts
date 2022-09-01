@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { nextTick } from 'vue';
 
 export interface ShowAlertOptions {
   title?: string,
@@ -54,12 +55,14 @@ export const useGlobalDialogStore = defineStore('global.dialog', {
     },
 
     show(type: DialogType, options: ShowAlertOptions) {
-      this.icon = options.icon || type;
-      this.iconColor = options.iconColor || undefined;
-      this.iconClass = options.iconColor || iconClassMapping[type];
-      this.title = options.title;
-      this.message = options.message;
-      this.visible = true;
+      nextTick(() => {
+        this.icon = options.icon || type;
+        this.iconColor = options.iconColor || undefined;
+        this.iconClass = options.iconColor || iconClassMapping[type];
+        this.title = options.title;
+        this.message = options.message;
+        this.visible = true;
+      })
     },
   }
 });

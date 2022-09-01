@@ -73,9 +73,7 @@ function validate(): boolean {
 
       </div>
 
-      <Alert v-if="isLoginErrorState" data-login-error class="danger my-2">
-        {{ $t(errorMsg) }}
-      </Alert>
+      <Alert v-if="isLoginErrorState" :message="errorMsg" data-login-error class="danger my-2" />
 
       <Button class="primary w-full" :submit="true">{{ $t('users.labels.sign_in') }}</Button>
     </form>

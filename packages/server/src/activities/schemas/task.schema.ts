@@ -5,8 +5,8 @@ import mongoose from 'mongoose';
 import { User } from '../../users';
 import { Activity } from './activity.schema';
 import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../time-series';
-import { applyRawDataTo, assureObjectId, EntityIdentity } from "../../db/db.utils";
-import { CreateTaskDto, UpdateTaskDto } from "@lyvely/common/src";
+import { assureObjectId, EntityIdentity } from "../../db/db.utils";
+import { applyValidationProperties, CreateTaskDto, UpdateTaskDto } from "@lyvely/common";
 import { cloneDeep } from "lodash";
 
 export type TaskDocument = Task & mongoose.Document;
@@ -107,7 +107,7 @@ export class Task extends Activity implements ITaskWithUsers {
       model.dataPointConfig = updatedDataPointConfig;
     }
 
-    applyRawDataTo(model, update, { strict: true });
+    applyValidationProperties(model, update);
   }
 
   public static create(profile: Profile, owner: User, update: CreateTaskDto): Task {
