@@ -17,6 +17,7 @@ const isLoginErrorState = computed(() => authStore.status === Status.ERROR);
 const errorMsg = computed(() => authStore.errorMsg);
 
 async function login() {
+  debugger;
   authStore.errorMsg = '';
   if (!validate()) {
     return;
@@ -54,7 +55,7 @@ function validate(): boolean {
 <template>
   <CenteredLayoutContainer title="users.labels.sign_in">
 
-    <form class="min-w-max" novalidate @submit.prevent="login">
+    <form class="min-w-max" novalidate>
       <!-- Email input -->
       <div class="mb-4">
         <TextInput id="login-username" v-model="input.username" :error="userNameError" label="users.labels.username" :required="true"></TextInput>
@@ -75,7 +76,7 @@ function validate(): boolean {
 
       <Alert v-if="isLoginErrorState" :message="errorMsg" data-login-error class="danger my-2" />
 
-      <Button class="primary w-full" :submit="true">{{ $t('users.labels.sign_in') }}</Button>
+      <Button class="primary w-full" :submit="true" @click="login">{{ $t('users.labels.sign_in') }}</Button>
     </form>
 
     <!-- Register buttons -->

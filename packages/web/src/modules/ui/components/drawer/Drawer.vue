@@ -9,13 +9,11 @@ import Icon from '@/modules/ui/components/icon/Icon.vue';
 interface Props {
   modelValue: boolean
   title?: string,
-  right?: boolean,
   prevAutoFocus?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   title: undefined,
-  right: true,
   prevAutoFocus: false
 });
 
@@ -36,7 +34,7 @@ function autoFocus() {
 <template>
   <Teleport to="body">
     <Transition name="slide-fade" @after-enter="autoFocus">
-      <section v-if="modelValue" ref="root" :class="['drawer', right ? 'rtl' : 'ltr', 'hidden z-20 min-w-screen']" @keyup.esc="close">
+      <section v-if="modelValue" ref="root" :class="['drawer', 'z-20']" @keyup.esc="close">
         <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
           <div data-drawer-header class="mb-4 flex items-center pb-3 rounded-t-sm">
             <slot name="headerheader">
@@ -57,7 +55,7 @@ function autoFocus() {
 
 <style scoped lang="postcss">
 .drawer {
-  @apply p-4 shadow-lg bg-highlight;
+  @apply p-4 shadow-lg bg-highlight rounded-l;
   position: absolute;
   display: block;
   top:60px;
@@ -69,6 +67,8 @@ function autoFocus() {
   border: 1px solid var(--color-divide);
   border-right:0;
   transition: all 0.3s ease-out;
+  margin-right:0;
+  right: 0;
 }
 
 /*
@@ -89,37 +89,8 @@ function autoFocus() {
   opacity: 0.9;
 }
 
-.drawer.ltr {
-  @apply rounded-r;
-}
-
-.drawer.rtl {
-  @apply rounded-l;
-  margin-right:0;
-}
-
-.drawer.ltr {
-  left:0;
-  margin-left: 0;
-}
-
-.drawer.rtl {
-  right: 0;
-  margin-right: 0;
-}
-
 @media (max-width: 768px) {
-  .drawer {
-    max-width: 95vw;
-    width: 95vw;
-  }
 
-  .drawer.ltr {
-    margin-left: -95vw;
-  }
-
-  .drawer.rtl {
-    margin-right: -95vw;
-  }
 }
+
 </style>

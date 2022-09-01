@@ -265,6 +265,18 @@ input[type=range]:focus::-moz-range-thumb {
     @apply mb-2;
 }
 
+/* Chrome, Safari, Edge, Opera */
+.form-input input::-webkit-outer-spin-button,
+.form-input input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.form-input input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .form-input input:disabled,
 .form-input input[readonly],
 .form-input select:disabled,

@@ -32,9 +32,11 @@ const classNames = computed(() => {
 </script>
 
 <template>
-  <main v-if="show" :class="classNames">
-    <slot></slot>
-  </main>
+  <div class="overflow-auto">
+    <main v-if="show" :class="classNames">
+      <slot></slot>
+    </main>
+  </div>
 </template>
 
 <style>

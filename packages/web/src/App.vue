@@ -19,10 +19,8 @@ const { visible, icon, iconColor, iconClass, title, message,  } = toRefs(useGlob
 
     <div class="overflow-hidden flex w-full min-h-screen flex-col">
       <div class="flex items-stretch flex-col h-screen">
-      <TopNavigation />
-        <div class="overflow-auto">
-          <router-view></router-view>
-        </div>
+        <TopNavigation />
+        <router-view></router-view>
       </div>
     </div>
 

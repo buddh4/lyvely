@@ -32,12 +32,14 @@ const {
       <fieldset>
         <TextInput
             v-model="model.title"
+            :required="true"
             data-habit-title
             label="Title"
             :error="validator.getError('title')"/>
 
         <SelectInput
             v-model="model.interval"
+            :required="true"
             data-habit-interval
             label="Plan"
             :options="calendarPlanOptions"
