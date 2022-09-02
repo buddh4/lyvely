@@ -11,6 +11,9 @@ export class UserDto extends DocumentDto<UserDto> implements IUser {
   username: string;
 
   @Expose()
+  imageHash: string;
+
+  @Expose()
   email: string;
 
   @Expose()

@@ -7,15 +7,15 @@ import { useAuthStore } from "@/modules/user/store/auth.store";
 import { getContrast } from "@/modules/ui/utils";
 
 interface Props {
-  modelValue?: IUser;
+  user?: Pick<IUser, 'id'|'imageHash'|'username'>;
 }
 
 const props = defineProps<Props>();
 
-const user = computed(() => props.modelValue || useAuthStore().user) ;
-const url = computed(() => user.value?.imageHash ? createFileUrl(user.value.imageHash) : undefined);
-const initials = computed(() => user.value?.username.substring(0,2));
-const color = computed(() => randomColor({ seed: user.value?.username + '_user' || '' }));
+const avatarUser = computed(() => props.user || useAuthStore().user) ;
+const url = computed(() => avatarUser.value?.imageHash ? createFileUrl(avatarUser.value.imageHash) : undefined);
+const initials = computed(() => avatarUser.value?.username.substring(0,2));
+const color = computed(() => randomColor({ seed: avatarUser.value?.username + '_user' || '' }));
 const textClass = computed(() => {
   return getContrast(color.value) === 'black' ? 'text-slate-900' : 'text-slate-100';
 })

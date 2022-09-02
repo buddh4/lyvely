@@ -3,20 +3,21 @@ import ActivityNavigation from "@/modules/activity/components/ActivityNavigation
 import ActivityFilterNavigation from "@/modules/activity/components/ActivityFilterNavigation.vue";
 import { onBeforeMount, onMounted } from 'vue';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
-import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 import { usePageStore } from "@/modules/core/store/page.store";
+import ProfileViewLayout from "@/modules/profile/components/layout/ProfileViewLayout.vue";
 
 onBeforeMount(() => useActivityStore().loadActivities());
 onMounted(() => usePageStore().accessibilityFocus('#activity-navigation > button.active'));
 
+
 </script>
 
 <template>
-  <MainContainer id="activity-overview">
+  <ProfileViewLayout>
     <ActivityNavigation />
     <ActivityFilterNavigation />
     <router-view></router-view>
-  </MainContainer>
+  </ProfileViewLayout>
 </template>
 
 <style scoped></style>

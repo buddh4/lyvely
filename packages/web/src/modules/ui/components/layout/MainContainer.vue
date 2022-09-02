@@ -4,7 +4,7 @@ import { Size } from '@/modules/ui/types';
 import { useAuthStore } from '@/modules/user/store/auth.store';
 
 interface Props {
-  width?: Size,
+  width?: 'xs'|'sm'|'lg'|'xl'|'full',
   // TODO: GUEST - check guest access config
   requireAuth?: boolean
 }

@@ -64,7 +64,6 @@ watch(showSidebar, () => {
 const isSmallView = ref(isMaxViewSize('sm'));
 watchMaxSize('sm', (value) => {
   isSmallView.value = value
-  console.log(value);
 });
 
 const showLabels = computed(() => isSmallView.value || showSidebar.value);
@@ -73,7 +72,7 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
 </script>
 
 <template>
-  <nav v-if="isAuthenticated" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
+  <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
     <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
         <a class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer" @click="toggleSidebar">

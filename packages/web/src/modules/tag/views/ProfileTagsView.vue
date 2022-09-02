@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 import Tag from '@/modules/tag/components/Tag.vue';
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
 import { computed, ref, Ref, toRefs, onMounted } from 'vue';
@@ -9,11 +8,11 @@ import EditTagModal from "@/modules/tag/components/EditTagModal.vue";
 import { useEditTagStore } from "@/modules/tag/stores/editTagStore";
 import { ITag, UpdateTagDto, CreateTagDto, TagFilter } from "@lyvely/common";
 import ListPage from "@/modules/ui/components/layout/ListPage.vue";
-import { Size } from '@/modules/ui/types';
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import FloatingAddButton from "@/modules/ui/components/button/FloatingAddButton.vue";
 import Badge from "@/modules/ui/components/badge/Badge.vue";
 import { usePageStore } from "@/modules/core/store/page.store";
+import ProfileViewLayout from "@/modules/profile/components/layout/ProfileViewLayout.vue";
 
 const filter = ref(new TagFilter({ archived: false }));
 
@@ -53,7 +52,7 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
 </script>
 
 <template>
-  <MainContainer id="activity-overview" :width="Size.LG">
+  <ProfileViewLayout>
     <ListPage title="tags.view.title" aria-label="tags.view.aria.title" icon="tags">
       <template #header-right>
         <AddButton @click="setCreateTag"/>
@@ -97,7 +96,7 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
     </ListPage>
     <EditTagModal />
     <FloatingAddButton @click="setCreateTag" />
-  </MainContainer>
+  </ProfileViewLayout>
 </template>
 
 <style scoped></style>

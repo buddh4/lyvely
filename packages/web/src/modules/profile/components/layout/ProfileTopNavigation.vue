@@ -9,7 +9,7 @@ import ProfileBreadcumb from "@/modules/profile/components/ProfileBreadcumb.vue"
 import UserAvatar from "@/modules/user/components/UserAvatar.vue";
 import Dropdown from "@/modules/ui/components/menu/Dropdown.vue";
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
-import UserRelationsChooser from "@/modules/ui/components/layout/UserRelationsChooser.vue";
+import UserRelationsChooser from "@/modules/profile/components/UserRelationsChooser.vue";
 import Loader from "@/modules/ui/components/loader/Loader.vue";
 
 const profileStore = useProfileStore();
@@ -17,13 +17,12 @@ const pageStore = usePageStore();
 
 const { toggleSidebar } = pageStore;
 
-const authenticated = computed(() => useAuthStore().isAuthenticated);
 const score = computed(() => profileStore.profile?.score);
 </script>
 
 <template>
   <nav
-      v-if="authenticated" id="top-navigation"
+      id="top-navigation"
       class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible"
       :aria-label="$t('layout.aria.top-nav')">
 

@@ -31,7 +31,7 @@ async function setProfile(pid: string) {
       </div>
     </li>
     <li v-for="profileRelation in profileRelations" :key="profileRelation.pid" :class="['hover:bg-highlight dark:hover:bg-main  cursor-pointer']" @click="setProfile(profileRelation.pid)">
-      <div :class="['p-4 border-l-4', profile.id === profileRelation.id ? 'border-pop' : 'border-transparent']">
+      <div role="button" :class="['p-4 border-l-4', profile.id === profileRelation.id ? 'border-pop' : 'border-transparent']">
         <div class="flex items-center space-x-4">
           <div class="flex-shrink-0">
             <ProfileAvatar :profile="profileRelation" />
