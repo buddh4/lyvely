@@ -44,7 +44,6 @@ const title = computed(() => props.create ? 'Add journal' : 'Edit journal');
 
 <template>
   <Modal v-if="model" v-model="state" :title="title" @submit="submit">
-    <template #body>
       <TextInput
         v-model="props.model.title"
         label="Title"
@@ -95,7 +94,6 @@ const title = computed(() => props.create ? 'Add journal' : 'Edit journal');
         label="Description"
         @change="validate"
       />
-    </template>
   </Modal>
 </template>
 

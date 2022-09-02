@@ -34,9 +34,9 @@ const visible = computed({
     cancel-button-text="common.close"
     :back-button="false"
     :submit-button="false">
-    <template #body>
-      {{ $t(message) }}
-    </template>
+
+    {{ $t(message) }}
+
   </Modal>
 </template>
 

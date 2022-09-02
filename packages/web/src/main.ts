@@ -12,6 +12,7 @@ import { setupI18n } from "./i18n";
 import { createPinia } from 'pinia';
 import { eventBus } from '@/modules/core/events/global.emitter';
 import { focus } from "@/directives/focus";
+import { UiPlugin } from "@/modules/ui/ui.plugin";
 
 console.log("Starting...");
 
@@ -22,6 +23,8 @@ console.log("Initializing app...");
 eventBus.emit('app.create.pre');
 
 const app = createApp(App);
+
+app.use(UiPlugin);
 
 eventBus.emit('app.create.post', app);
 

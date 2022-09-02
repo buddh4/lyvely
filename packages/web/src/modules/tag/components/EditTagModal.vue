@@ -47,7 +47,6 @@ const {getError, modalTitle} = tagEditStore;
 
 <template>
   <Modal v-model="showModal" :title="modalTitle" @submit="submit">
-    <template #body>
       <div>
         <div
           ref="colorInput"
@@ -78,7 +77,6 @@ const {getError, modalTitle} = tagEditStore;
         <Button class="primary px-1 py-0.5 m-1 float-right" text="common.close" @click="showColorPicker = false"/>
       </div>
 
-    </template>
   </Modal>
 </template>
 

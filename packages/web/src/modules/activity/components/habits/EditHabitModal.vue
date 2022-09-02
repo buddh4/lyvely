@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import Modal from "@/modules/ui/components/modal/Modal.vue";
 import TextInput from "@/modules/ui/components/form/TextInput.vue";
 import SelectInput from "@/modules/ui/components/form/SelectInput.vue";
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
@@ -28,7 +27,6 @@ const {
       :title="modalTitle"
       @submit="submit"
       @hide="reset">
-    <template #body>
       <fieldset>
         <TextInput
             v-model="model.title"
@@ -103,7 +101,6 @@ const {
 
       <Alert :message="error" class="mt-2" />
       <ScreenReaderValidationError :errors="validator.getErrors()" />
-    </template>
   </Modal>
 </template>
 

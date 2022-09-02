@@ -144,7 +144,7 @@ if(!props.prevAutoFocus) {
           </div>
 
           <div class="px-5 py-6" data-modal-body>
-            <slot name="body"></slot>
+            <slot></slot>
           </div>
 
           <div class="flex px-5 pt-3 pb-5 justify-end invisible md:visible" data-modal-footer>

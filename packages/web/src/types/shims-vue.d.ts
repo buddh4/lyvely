@@ -28,6 +28,7 @@ declare module 'vue-router' {
   interface RouteMeta {
     // is optional
     i18n?: { module?: string }
+    layout?: string
   }
 }
 

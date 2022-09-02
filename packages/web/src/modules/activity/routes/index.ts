@@ -8,7 +8,8 @@ export default [
     path: "/activities",
     component: () => import('../views/ActivityView.vue'),
     meta: {
-      i18n: { module: 'activity' }
+      i18n: { module: 'activity' },
+      layout: 'profile'
     },
     redirect: { name: 'Habits' },
     beforeEnter:  [ifAuthenticated, loadProfile],

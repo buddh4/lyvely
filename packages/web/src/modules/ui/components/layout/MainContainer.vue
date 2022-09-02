@@ -23,8 +23,6 @@ const widthClass = computed(() => ({
   } as Record<string, string>)[props.width] || 'max-w-screen-lg'
 );
 
-const show = computed(() => props.requireAuth ? useAuthStore().isAuthenticated : true);
-
 const classNames = computed(() => {
   return ['container main-container mx-auto p-0.5 pb-5 pt-2 md:p-6 mb-6 md:mb-0', widthClass.value];
 })
@@ -33,7 +31,7 @@ const classNames = computed(() => {
 
 <template>
   <div class="overflow-auto">
-    <main v-if="show" :class="classNames">
+    <main :class="classNames">
       <slot></slot>
     </main>
   </div>

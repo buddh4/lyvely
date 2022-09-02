@@ -142,6 +142,9 @@
     }
   },
   "profile": {
+    "create": {
+      "title": "Create Profile"
+    },
     "aria": {
       "sidebar": "Navigation of profile {profile}"
     }

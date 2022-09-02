@@ -26,7 +26,6 @@ const {
 
 <template>
   <Modal v-model="showModal" :title="modalTitle" @submit="submit" @hide="reset">
-    <template #body>
       <fieldset>
         <TextInput
             v-model="model.title"
@@ -63,7 +62,6 @@ const {
 
       <Alert :message="error" class="mt-2" />
       <ScreenReaderValidationError :errors="validator.getErrors()" />
-    </template>
   </Modal>
 </template>
 

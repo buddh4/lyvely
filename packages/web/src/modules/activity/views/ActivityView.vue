@@ -4,20 +4,16 @@ import ActivityFilterNavigation from "@/modules/activity/components/ActivityFilt
 import { onBeforeMount, onMounted } from 'vue';
 import { useActivityStore } from '@/modules/activity/store/activityStore';
 import { usePageStore } from "@/modules/core/store/page.store";
-import ProfileViewLayout from "@/modules/profile/components/layout/ProfileViewLayout.vue";
 
 onBeforeMount(() => useActivityStore().loadActivities());
 onMounted(() => usePageStore().accessibilityFocus('#activity-navigation > button.active'));
 
-
 </script>
 
 <template>
-  <ProfileViewLayout>
-    <ActivityNavigation />
-    <ActivityFilterNavigation />
-    <router-view></router-view>
-  </ProfileViewLayout>
+  <ActivityNavigation />
+  <ActivityFilterNavigation />
+  <router-view></router-view>
 </template>
 
 <style scoped></style>

@@ -17,7 +17,6 @@ const isLoginErrorState = computed(() => authStore.status === Status.ERROR);
 const errorMsg = computed(() => authStore.errorMsg);
 
 async function login() {
-  debugger;
   authStore.errorMsg = '';
   if (!validate()) {
     return;

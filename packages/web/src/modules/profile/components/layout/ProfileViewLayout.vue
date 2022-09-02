@@ -3,10 +3,11 @@ import { Size } from "@/modules/ui/types";
 import ProfileSidebar from "@/modules/profile/components/layout/ProfileSidebar.vue";
 import MainProfileContainer from "@/modules/profile/components/layout/MainProfileContainer.vue";
 import { computed } from 'vue';
+import { useAuthStore } from "@/modules/user/store/auth.store";
+import CreateProfileModal from "@/modules/profile/components/modals/CreateProfileModal.vue";
 
 interface Props {
   containerWidth?: 'xs'|'sm'|'lg'|'xl'|'full',
-  // TODO: GUEST - check guest access config
   requireAuth?: boolean
 }
 
@@ -17,13 +18,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const containerProps = computed(() => ({
   width: props.containerWidth
-}))
+}));
+
+const show = computed(() => props.requireAuth ? useAuthStore().isAuthenticated : true);
 
 </script>
 
 <template>
-  <ProfileSidebar />
-  <div class="overflow-hidden flex w-full min-h-screen flex-col">
+  <ProfileSidebar v-if="show" />
+  <div v-if="show" class="overflow-hidden flex w-full min-h-screen flex-col">
     <div class="flex items-stretch flex-col h-screen">
       <MainProfileContainer v-bind="containerProps">
         <slot>
@@ -32,6 +35,7 @@ const containerProps = computed(() => ({
       </MainProfileContainer>
     </div>
   </div>
+  <CreateProfileModal />
 </template>
 
 <style scoped>
