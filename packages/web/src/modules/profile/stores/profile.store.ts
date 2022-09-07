@@ -24,6 +24,7 @@ export const useProfileStore = defineStore('profile', () => {
 
   async function loadProfile(id?: string|null) {
     this.status = Status.LOADING;
+    debugger;
 
     /**
      * TODO: If latestProfileId is an invalid one we need to redirect to default profile
@@ -38,6 +39,7 @@ export const useProfileStore = defineStore('profile', () => {
     }
 
     try {
+      debugger;
       const { data } = await profileRepository.getProfile(id);
       await setActiveProfile(data);
     } catch (err) {

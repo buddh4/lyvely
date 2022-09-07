@@ -2,7 +2,7 @@
   <div :class="wrapperClass">
     <select
       :id="id"
-      v-model="value"
+      v-model="inputValue"
       :disabled="disabled"
       :class="cssClasses">
       <option v-for="option in options" :key="option.value" :value="option.value">{{ $t(option.label) }}</option>

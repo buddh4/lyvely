@@ -3,7 +3,7 @@
     <label v-if="label" :for="id" class="form-label">{{ $t(label) }}</label>
     <input
       :id="id"
-      v-model="value"
+      v-model="inputValue"
       :disabled="disabled"
       :step="step"
       :readonly="readonly"
@@ -41,12 +41,12 @@ export default {
   setup(props: Props, context: SetupContext) {
     const baseInput = useBaseInputSetup<number>(props, context);
 
-    baseInput.value = computed({
+    baseInput.inputValue = computed({
       get: () => {
         let allowed = getAllowedVal(props.modelValue);
         if (props.modelValue !== allowed) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          baseInput.value.value = allowed;
+          baseInput.inputValue.value = allowed;
         }
         return props.modelValue;
       },

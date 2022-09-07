@@ -10,6 +10,14 @@ export class CreateProfileDto extends BaseDto<CreateProfileDto> {
   name: string;
 
   @Expose()
+  @IsString()
+  description: string;
+
+  @Expose()
   @IsEnum(ProfileType)
   type: ProfileType;
+
+  afterInit() {
+    this.type = this.type ?? ProfileType.User;
+  }
 }

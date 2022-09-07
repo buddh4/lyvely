@@ -16,7 +16,9 @@ const router = useRouter();
 
 async function setProfile(pid: string) {
   await useProfileStore().loadProfile(pid);
-  router.push('/');
+  router.push({ name: 'Activities', query: { pid } });
+//
+ // router.push('/');
 
 }
 
@@ -29,11 +31,10 @@ async function setProfile(pid: string) {
     <li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">Profiles</span>
-        {{ showCreateProfile }}
         <AddButton class="m-auto" @click="showCreateProfile = true" />
       </div>
     </li>
-    <li v-for="profileRelation in profileRelations" :key="profileRelation.pid" :class="['hover:bg-highlight dark:hover:bg-main  cursor-pointer']" @click="setProfile(profileRelation.pid)">
+    <li v-for="profileRelation in profileRelations" :key="profileRelation.pid" :class="['hover:bg-highlight dark:hover:bg-main  cursor-pointer']" @click="setProfile(profileRelation.id)">
       <div role="button" :class="['p-4 border-l-4', profile.id === profileRelation.id ? 'border-pop' : 'border-transparent']">
         <div class="flex items-center space-x-4">
           <div class="flex-shrink-0">

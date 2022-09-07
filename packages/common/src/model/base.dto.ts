@@ -8,9 +8,9 @@ export type DocumentMock<T> = {
 
 export abstract class BaseModel<T> {
     constructor(obj?: Partial<T>) {
-        if(!obj) return;
-
-        Object.assign(this, obj);
+        if(obj) {
+          Object.assign(this, obj);
+        }
 
         if('afterInit' in this) {
             (<this & { afterInit: (() => void)}> this).afterInit();
@@ -20,9 +20,9 @@ export abstract class BaseModel<T> {
 
 export abstract class BaseDto<T> {
     constructor(obj?: Partial<T>, options?: { sanitize: boolean }) {
-        if(!obj) return;
-
-        Object.assign(this, obj);
+        if(obj) {
+          Object.assign(this, obj);
+        }
 
         if('afterInit' in this) {
             (<this & { afterInit: (() => void)}> this).afterInit();

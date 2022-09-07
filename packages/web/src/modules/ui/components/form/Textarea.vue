@@ -2,7 +2,7 @@
   <div :class="wrapperClass">
     <textarea
       :id="id"
-      v-model="value"
+      v-model="inputValue"
       :rows="rows"
       :disabled="disabled"
       :readonly="readonly"
@@ -10,10 +10,10 @@
     </textarea>
 
     <div v-if="hasError()" :class="errorClass">
-      {{ $t(error) }}
+      {{ inputError }}
     </div>
 
-    <label v-if="label" :for="id" :class="labelClass">{{ $t(label) }}</label>
+    <label v-if="inputLabel" :for="id" :class="labelClass">{{ $t(inputLabel) }}</label>
   </div>
 </template>
 
@@ -27,6 +27,7 @@ interface Props extends BaseInputProps {
 }
 
 export default {
+  inject: ['model', 'validator'],
   props: {
     ...useBaseInputProps(),
     rows: {type: Number, default: 3},

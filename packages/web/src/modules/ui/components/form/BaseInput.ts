@@ -1,7 +1,7 @@
-import { ComponentOptions, computed, ref, SetupContext } from 'vue';
+import { ComponentOptions, computed, ref, SetupContext, inject } from 'vue';
 import { merge, uniqueId } from 'lodash';
-import { ErrorState } from '@/modules/ui/components/error/Error';
 import { CssClassDefinition } from '@/util/component.types';
+import { ModelValidator } from "@lyvely/common/src";
 
 export interface BaseInputProps {
   id?: string,
@@ -9,6 +9,8 @@ export interface BaseInputProps {
   helpText?: string,
   name?: string,
   modelValue?: any,
+  value?: string,
+  property?: string,
   required?: boolean,
   disabled?: boolean,
   readonly?: boolean,
@@ -20,10 +22,12 @@ export interface BaseInputProps {
 
 export function useBaseInputProps() {
   return {
-    id: {type: String, default: uniqueId()},
+    id: {type: String, default: uniqueId('input')},
     label: {type: String},
     helpText: {type: String},
     name: {type: String},
+    value: {type: String},
+    property: { type: String },
     disabled: {type: Boolean, default: false},
     readonly: {type: Boolean, default: false},
     required: {type: Boolean, default: false},
@@ -44,9 +48,24 @@ export function useBaseInputSetup<T = unknown>(props: BaseInputProps, { emit, }:
 
   const editable = computed(() => !props.disabled && !props.readonly);
 
-  const value = computed({
+  const model = <any> inject('model', undefined);
+  const property = props.property || '';
+
+  const inputValue = props.modelValue
+    ? computed({
     get: () => props.modelValue,
     set: (val:T) => emit("update:modelValue", val)
+  }) : computed({
+    get: () => model[property],
+    set: (val:T) => model[property] = val
+  });
+
+  const labelKey = <any> inject('labelKey', undefined);
+
+  const inputLabel = computed(() => {
+    if(props.label) return props.label;
+    if(labelKey && props.property) return labelKey+'.'+property;
+    return '';
   });
 
   const cssClasses = computed(() => {
@@ -63,11 +82,17 @@ export function useBaseInputSetup<T = unknown>(props: BaseInputProps, { emit, }:
     }
 
     return result;
-  })
+  });
+
+  const validator = <ModelValidator|undefined> inject('validator', undefined);
 
   function hasError() {
-    return !!props.error;
+    return validator && props.property ? !!validator.getError(props.property) : !!props.error;
   }
+
+  const inputError = computed(() => {
+    return validator && props.property ? validator.getError(props.property) : props.error;
+  });
 
   function hasFocus() {
     if (!root.value) {
@@ -79,11 +104,13 @@ export function useBaseInputSetup<T = unknown>(props: BaseInputProps, { emit, }:
 
   return {
     errorClass: 'text-danger text-sm pl-1 pt-1',
-    value,
+    inputValue,
+    inputError,
     cssClasses,
     editable,
     hasError,
     hasFocus,
+    inputLabel
   }
 }
 

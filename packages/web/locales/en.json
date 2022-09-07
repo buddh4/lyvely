@@ -143,7 +143,13 @@
   },
   "profile": {
     "create": {
-      "title": "Create Profile"
+      "title": "Create Profile",
+      "properties": {
+        "name": "Name",
+        "description": "Description",
+        "user": "Just for me",
+        "group": "Group profile"
+      }
     },
     "aria": {
       "sidebar": "Navigation of profile {profile}"

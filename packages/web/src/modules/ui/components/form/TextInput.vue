@@ -2,7 +2,7 @@
   <fieldset :class="wrapperClass">
     <input
       :id="id"
-      v-model="value"
+      v-model="inputValue"
       :disabled="disabled"
       :readonly="readonly"
       :autocomplete="autocomplete ? 'on' : 'off'"
@@ -11,10 +11,10 @@
       @change="$emit('change', $event)"/>
 
     <div v-if="hasError()" :class="errorClass">
-      {{ $t(error) }}
+      {{ inputError }}
     </div>
 
-    <label v-if="label" :for="id" :class="labelClass">{{ $t(label) }}</label>
+    <label v-if="inputLabel" :for="id" :class="labelClass">{{ $t(inputLabel) }}</label>
   </fieldset>
 </template>
 

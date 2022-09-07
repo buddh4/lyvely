@@ -24,7 +24,7 @@ export default {
   setup(props: Props, context: SetupContext) {
     const baseInput = useFloatingInputSetup<number>(props, context);
 
-    baseInput.value = computed({
+    baseInput.inputValue = computed({
       get: () => {
         let allowed = getAllowedVal(props.modelValue);
         if (props.modelValue !== allowed) {
@@ -58,11 +58,11 @@ export default {
     }
 
     function increment() {
-      baseInput.value.value = baseInput.value.value + props.steps;
+      baseInput.inputValue.value = baseInput.inputValue.value + props.steps;
     }
 
     function decrement() {
-      baseInput.value.value = baseInput.value.value - props.steps;
+      baseInput.inputValue.value = baseInput.inputValue.value - props.steps;
     }
 
     const buttonClass = 'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0';
@@ -81,7 +81,7 @@ export default {
   <div :class="wrapperClass">
     <input
       :id="id"
-      v-model.number="value"
+      v-model.number="inputValue"
       :disabled="disabled"
       :readonly="readonly"
       :class="cssClasses"

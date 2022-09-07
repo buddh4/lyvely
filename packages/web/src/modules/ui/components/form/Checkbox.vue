@@ -6,7 +6,7 @@
         v-model="state"
         type="checkbox"
         :disabled="disabled"
-        :value="value"
+        :value="inputValue"
         :class="cssClasses"
         :readonly="readonly"
         @keydown.enter.stop="toggle"
@@ -26,7 +26,7 @@ import { isArray } from "lodash";
 
 interface Props extends BaseInputProps {
   checked: boolean,
-  value: number|string
+  value: string
 }
 
 export default {
