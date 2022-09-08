@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Modal from "@/modules/ui/components/modal/Modal.vue";
 import { computed, ref, Ref, toRefs } from 'vue';
+import { storeToRefs } from 'pinia';
 import { Sketch } from '@ckpack/vue-color'
 import { onClickOutside } from '@vueuse/core'
 import TextInput from "@/modules/ui/components/form/TextInput.vue";
@@ -42,7 +43,8 @@ const color = computed({
   set: (val: any) => model.value!.color = val.hex
 })
 
-const {getError, modalTitle} = tagEditStore;
+const { modalTitle} = tagEditStore;
+const { validator } = storeToRefs(tagEditStore);
 </script>
 
 <template>
@@ -59,12 +61,12 @@ const {getError, modalTitle} = tagEditStore;
         <TextInput
             v-model="model.name"
             label="tags.fields.name"
-            :error="getError('name')"/>
+            :error="validator.getError('name')"/>
 
         <Textarea
             v-model="model.description"
             label="tags.fields.description"
-            :error="getError('description')"/>
+            :error="validator.getError('description')"/>
 
         <Checkbox
           v-model="model.includeOnFilter"
