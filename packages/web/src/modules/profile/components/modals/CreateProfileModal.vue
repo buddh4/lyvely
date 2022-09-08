@@ -21,7 +21,7 @@ const groupType = ProfileType.Group;
   <Modal v-model="show" title="profile.create.title" @cancel="reset" @submit="submit">
     <FormModel v-model="model" label-key="profile.create.properties" :validator="validator">
       <TextInput property="name" :required="true" />
-      <Textarea  property="description" :required="true" />
+      <Textarea  property="description" />
       <RadioInput property="type" label="profile.create.properties.user" :value="userType" />
       <RadioInput property="type" label="profile.create.properties.group" :value="groupType" />
     </FormModel>

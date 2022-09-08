@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { provide } from 'vue';
-import { ModelValidator } from "@lyvely/common/src";
+import { ModelValidator } from "@lyvely/common";
 
 interface Props {
   modelValue: object,

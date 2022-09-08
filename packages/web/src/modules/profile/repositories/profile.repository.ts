@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { TagDto , ProfileMembershipDto, CreateProfileDto, ProfileDto } from '@lyvely/common';
+import { TagDto , ProfileMembershipDto, CreateProfileDto, UserToProfileRelationDto } from '@lyvely/common';
 const resource = "profiles";
 
 export default {
@@ -8,7 +8,7 @@ export default {
   },
 
   async createProfile(model: CreateProfileDto) {
-    return repository.post<ProfileDto>(`${resource}`, model)
+    return repository.post<UserToProfileRelationDto>(`${resource}`, model)
   },
 
   async getProfile(id?: string|null) {

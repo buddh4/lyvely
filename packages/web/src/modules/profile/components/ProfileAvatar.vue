@@ -4,7 +4,7 @@ import { computed } from "vue";
 import { createFileUrl } from "@/repository";
 import randomColor from "randomcolor";
 import { getContrast } from "@/modules/ui/utils";
-import { IProfile } from "@lyvely/common/src";
+import { IProfile } from "@lyvely/common";
 
 interface Props {
   profile?: Pick<IProfile, 'id'|'imageHash'|'name'>;

@@ -52,6 +52,7 @@ export class ProfilesService {
       locale: options.locale || owner.locale,
       type: options.type || ProfileType.User
     });
+
     const membership = await this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner);
     return new UserProfileRelations({ user: owner, profile: profile, relations: [membership] });
   }

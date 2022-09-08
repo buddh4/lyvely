@@ -2,7 +2,6 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
-  Param,
   Request,
   UseInterceptors,
 } from '@nestjs/common';
@@ -21,11 +20,6 @@ export class ProfileRelationsController {
   async getUserProfileInfos(@Request() req: UserRequest): Promise<UserToProfileRelationDto[]> {
     // TODO (performance) We maybe should embed short profile info into profile-relations to skip profile query
     const relations = await this.profilesService.findProfileRelationsByUser(req.user);
-
-    return relations.map(relation => new UserToProfileRelationDto({
-      ...relation.profile,
-      relationType: relation.relation.type,
-      role: relation.relation.role,
-    }))
+    return relations.map(relation => UserToProfileRelationDto.create(relation.profile, relation.relation));
   }
 }

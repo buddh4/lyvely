@@ -46,7 +46,7 @@ async function setProfile(pid: string) {
               {{ profileRelation.name }}
             </p>
             <p class="text-sm truncate text-dimmed">
-              Some other text...
+              {{ profileRelation.description }}
             </p>
           </div>
         </div>

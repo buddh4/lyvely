@@ -80,13 +80,12 @@ const score = computed(() => profileStore.profile?.score);
       <ProfileBreadcumb/>
     </div>
 
-    <div v-if="score" class="flex items-center justify-center score inline-block float-right">
+    <div class="flex items-center justify-center score inline-block float-right">
       <Button>
         <Icon name="bell" class="w-3.5"/>
       </Button>
       <Dropdown
-        class="border-none" :is-toggle="true" :aria-label="$t('layout.aria.toggle-sidebar')"
-                aria-controls="sidebar">
+        class="border-none" :is-toggle="true" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar">
         <template #trigger>
           <div class="px-2 p-2 rounded-xl flex justify-center items-center gap-2 cursor-pointer text-sm">
             <UserAvatar/>

@@ -1,7 +1,7 @@
 import { ComponentOptions, computed, ref, SetupContext, inject } from 'vue';
 import { merge, uniqueId } from 'lodash';
 import { CssClassDefinition } from '@/util/component.types';
-import { ModelValidator } from "@lyvely/common/src";
+import { ModelValidator } from "@lyvely/common";
 
 export interface BaseInputProps {
   id?: string,
@@ -51,7 +51,7 @@ export function useBaseInputSetup<T = unknown>(props: BaseInputProps, { emit, }:
   const model = <any> inject('model', undefined);
   const property = props.property || '';
 
-  const inputValue = model && model[property]
+  const inputValue = model
     ? computed({
       get: () => model[property],
       set: (val:T) => model[property] = val

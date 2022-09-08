@@ -1,6 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseDto } from '../../model';
 import {
+  IProfile,
   IUserToProfileRelation,
   ProfileType,
 } from '../interfaces';
@@ -17,6 +18,10 @@ export class UserToProfileRelationDto extends BaseDto<UserToProfileRelationDto> 
   @Expose()
   @IsString()
   name: string;
+
+  @Expose()
+  @IsString()
+  description: string;
 
   @Expose()
   @IsInt()
@@ -40,4 +45,12 @@ export class UserToProfileRelationDto extends BaseDto<UserToProfileRelationDto> 
   @IsString()
   @IsOptional()
   role?: string;
+
+  static create(profile: IProfile, relation: { type: string, role?: string }) {
+    return new UserToProfileRelationDto({
+      ...profile,
+      relationType: relation.type,
+      role: relation.role,
+    });
+  }
 }

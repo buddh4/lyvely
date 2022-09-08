@@ -16,13 +16,11 @@ export class ProfileDao extends AbstractDao<Profile> {
 
   async upsert(insert: UpsertProfile): Promise<Profile> {
     insert.name = insert.name || DEFAULT_PROFILE_NAME;
-    return this.model
-      .findOneAndUpdate(
-        { createdBy: assureObjectId<User>(insert.createdBy), name: insert.name },
-        { $setOnInsert: insert },
-        { upsert: true, new: true },
-      )
-      .exec();
+    return this.constructModel(await this.model.findOneAndUpdate(
+      { createdBy: assureObjectId<User>(insert.createdBy), name: insert.name },
+      { $setOnInsert: insert },
+      { upsert: true, new: true },
+    ).lean());
   }
 
   async addTags(profile: Profile, tags: Tag[]) {

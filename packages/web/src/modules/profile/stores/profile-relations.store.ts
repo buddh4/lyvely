@@ -25,9 +25,14 @@ export const useProfileRelationsStore = defineStore('profile-relations', () => {
     return relations;
   }
 
+  function addRelation(relation: UserToProfileRelationDto) {
+    relations.value.push(relation);
+  }
+
   return {
     ...status,
     getRelations,
+    addRelation,
     loadRelations
   }
 });
