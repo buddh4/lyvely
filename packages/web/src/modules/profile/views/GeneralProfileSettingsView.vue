@@ -22,9 +22,9 @@ function rename() {
   <div class="bg-main flex flex-col p-4 rounded shadow-md mb-4">
     <div class="flex items-center mb-2 flex-row items-stretch">
       <div class="w-full">
-        <TextInput v-model="name" label="profile.settings.user.name" />
+        <TextInput v-model="name" label="profile.settings.general.name" />
       </div>
-      <div class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide">
+      <div class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer">
         <ProfileAvatar class="m-3" />
       </div>
     </div>

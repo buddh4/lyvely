@@ -12,7 +12,7 @@ import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import activityRepository from '@/modules/activity/repositories/activity.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
-import { ref, watch,toRefs } from 'vue';
+import { ref, watch,toRefs, nextTick } from 'vue';
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 
@@ -41,11 +41,20 @@ export const useActivityStore = defineStore('activity', () => {
     return cache.value.getModelsByIntervalFilter(interval, filter.value);
   }
 
-  watch(profile, async () => {
-    cache.value = new ActivityDataPointStore();
-    tidCache.value = new LoadedTimingIdStore();
-    filter.value = new ActivityFilter({ tagProvider: () => profileStore.profile?.tags || [] });
-    await loadActivities();
+  watch(profile, async (newProfile, oldProfile) => {
+    if(newProfile?.id !== oldProfile?.id) {
+      cache.value = new ActivityDataPointStore();
+      tidCache.value = new LoadedTimingIdStore();
+      // TODO: we should find a better way for managing the type filter here...
+      const type = filter.value.option('type');
+      filter.value.reset();
+      filter.value.setOption('type', type);
+      await loadActivities();
+    }
+  });
+
+  watch(filter, async (newProfile, oldProfile) => {
+    debugger;
   });
 
   async function loadActivities() {

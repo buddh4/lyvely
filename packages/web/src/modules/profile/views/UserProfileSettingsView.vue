@@ -6,7 +6,7 @@ import Textarea from "@/modules/ui/components/form/Textarea.vue";
 import Button from "@/modules/ui/components/button/Button.vue";
 import UserAvatar from "@/modules/user/components/UserAvatar.vue";
 
-const name = ref('');
+const displayName = ref('');
 const description = ref('')
 
 </script>
@@ -16,9 +16,9 @@ const description = ref('')
   <div class="bg-main flex flex-col p-4 rounded shadow-md mb-4">
     <div class="flex items-center mb-2 flex-row items-stretch">
       <div class="w-full">
-        <TextInput v-model="name" label="profile.settings.user.name" />
+        <TextInput v-model="displayName" label="profile.settings.user.displayName" />
       </div>
-      <div class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide">
+      <div class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer">
         <UserAvatar class="m-3" />
       </div>
     </div>

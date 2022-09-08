@@ -147,7 +147,7 @@
       "user": {
         "title": "User profile settings",
         "label": "User",
-        "name": "My username in this profile",
+        "displayName": "My display name in this profile",
         "toDefault": "Reset to default",
         "description": "My user description in this profile",
         "archive": "Archive Membership"
