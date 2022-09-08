@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 
-import { ref, watch, toRefs, defineEmits, nextTick } from 'vue';
+import { ref, toRefs } from 'vue';
 import { suggestFocusElement } from "@/modules/ui/utils";
 import Button from "@/modules/ui/components/button/Button.vue";
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import Icon from '@/modules/ui/components/icon/Icon.vue';
 
 interface Props {
   modelValue: boolean

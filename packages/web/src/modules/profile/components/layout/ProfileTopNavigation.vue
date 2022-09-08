@@ -26,6 +26,7 @@ const score = computed(() => profileStore.profile?.score);
       class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible"
       :aria-label="$t('layout.aria.top-nav')">
 
+    <div class="w-1/3">
     <Dropdown position="right">
       <template #trigger="{ toggle }">
         <div class="flex justify-center items-center py-1">
@@ -75,12 +76,15 @@ const score = computed(() => profileStore.profile?.score);
         </Suspense>
       </template>
     </Dropdown>
-
-    <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:flex">
-      <ProfileBreadcumb/>
     </div>
 
-    <div class="flex items-center justify-center score inline-block float-right">
+    <div class="w-1/3 flex justify-center">
+      <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
+        <ProfileBreadcumb/>
+      </div>
+    </div>
+
+    <div class="w-1/3 flex items-center justify-end score inline-block float-right">
       <Button>
         <Icon name="bell" class="w-3.5"/>
       </Button>
@@ -93,7 +97,6 @@ const score = computed(() => profileStore.profile?.score);
           </div>
         </template>
       </Dropdown>
-
     </div>
   </nav>
 </template>
