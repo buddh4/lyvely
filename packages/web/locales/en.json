@@ -57,6 +57,7 @@
     "submit": "Submit",
     "update": "Update",
     "archived": "Archived",
+    "restore": "Restore default",
     "archive": "Archive",
     "unarchive": "Add from archive",
     "filter": {
@@ -148,7 +149,6 @@
         "title": "User profile settings",
         "label": "User",
         "displayName": "My display name in this profile",
-        "toDefault": "Reset to default",
         "description": "My user description in this profile",
         "archive": "Archive Membership"
       },

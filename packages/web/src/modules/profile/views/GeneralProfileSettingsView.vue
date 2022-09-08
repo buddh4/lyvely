@@ -19,7 +19,7 @@ function rename() {
 
 <template>
 
-  <div class="bg-main flex flex-col p-4 rounded shadow-md mb-4">
+  <div class="bg-main flex flex-col p-4 rounded shadow-sm mb-2 border border-divide">
     <div class="flex items-center mb-2 flex-row items-stretch">
       <div class="w-full">
         <TextInput v-model="name" label="profile.settings.general.name" />
@@ -35,7 +35,7 @@ function rename() {
 
   </div>
 
-  <div class="bg-main p-4 rounded shadow-md mb-4 flex flex-col">
+  <div class="bg-main p-4 rounded shadow-sm mb-4 flex flex-col border border-divide">
     <div>
       <Button class="danger float-right" :confirm="{'text': 'profile.settings.archive.confirm'}">{{ $t('common.archive') }}</Button>
     </div>
