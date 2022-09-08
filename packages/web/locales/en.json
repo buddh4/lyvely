@@ -148,7 +148,7 @@
         "title": "User profile settings",
         "label": "User",
         "name": "My username in this profile",
-        "toDefault": "Use default",
+        "toDefault": "Reset to default",
         "description": "My user description in this profile",
         "archive": "Archive Membership"
       },

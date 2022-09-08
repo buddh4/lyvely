@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import Textarea from "@/modules/ui/components/form/Textarea.vue";
 import Button from "@/modules/ui/components/button/Button.vue";
 import ProfileSettingsNavigation from "@/modules/profile/components/layout/ProfileSettingsNavigation.vue";
+import ProfileAvatar from "@/modules/profile/components/ProfileAvatar.vue";
 
 const profileStore = useProfileStore();
 const name = ref(profileStore.profile?.name);
@@ -18,8 +19,15 @@ function rename() {
 
 <template>
 
-  <div class="bg-main flex flex-col p-4 rounded shadow-lg mb-4">
-    <TextInput v-model="name" label="profile.settings.general.name" />
+  <div class="bg-main flex flex-col p-4 rounded shadow-md mb-4">
+    <div class="flex items-center mb-2 flex-row items-stretch">
+      <div class="w-full">
+        <TextInput v-model="name" label="profile.settings.user.name" />
+      </div>
+      <div class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide">
+        <ProfileAvatar class="m-3" />
+      </div>
+    </div>
     <Textarea v-model="description" label="profile.settings.description"/>
     <div>
       <Button class="primary float-right">{{ $t('common.update') }}</Button>
@@ -27,7 +35,7 @@ function rename() {
 
   </div>
 
-  <div class="bg-main p-4 rounded shadow-lg mb-4 flex flex-col">
+  <div class="bg-main p-4 rounded shadow-md mb-4 flex flex-col">
     <div>
       <Button class="danger float-right" :confirm="{'text': 'profile.settings.archive.confirm'}">{{ $t('common.archive') }}</Button>
     </div>
