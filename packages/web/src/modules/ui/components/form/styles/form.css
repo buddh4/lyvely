@@ -309,6 +309,14 @@ input[type=range]:focus::-moz-range-thumb {
     @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-highlight focus:border-divide focus:ring focus:ring-blue-200 focus:ring-opacity-50;
 }
 
+.floating-input.attachment-r {
+    @apply rounded-r-none;
+}
+
+.floating-input.attachment-l {
+    @apply rounded-l-none;
+}
+
 .form-input .number-slider {
     position: absolute;
     top: 28px;

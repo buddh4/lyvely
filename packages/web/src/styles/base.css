@@ -52,3 +52,12 @@ a {
 :focus:not(.focus-hidden), :focus-visible:not(.focus-hidden) {
     @apply outline-1 outline-blue-400;
 }
+
+.attachment-r {
+    @apply rounded-r-none;
+}
+
+.attachment-l {
+    @apply rounded-r-none;
+}
+

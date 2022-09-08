@@ -18,6 +18,14 @@
     @apply text-main
 }
 
+.button.attachment-l {
+    @apply rounded-l-none;
+}
+
+.button.attachment-r {
+    @apply rounded-r-none;
+}
+
 .dark .button.outlined.active, .dark .button.outlined:hover {
     color: var(--text-main) !important;
 }

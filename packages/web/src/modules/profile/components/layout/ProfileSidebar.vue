@@ -41,11 +41,11 @@ const menuItems: MenuItem[] = [
     icon: 'tags',
     label: 'tags.labels.main_nav'
   },
- /* {
-    to: { name: 'Settings' },
+  {
+    to: { name: 'ProfileSettings' },
     icon: 'settings',
-    label: 'tags.labels.main_nav'
-  },*/
+    label: 'profile.settings.label'
+  },
   {
     click: () => authStore.logout().then(() => location.reload()),
     icon: 'logout',

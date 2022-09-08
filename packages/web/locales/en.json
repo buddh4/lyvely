@@ -55,6 +55,7 @@
     "cancel": "Cancel",
     "back": "Back",
     "submit": "Submit",
+    "update": "Update",
     "archived": "Archived",
     "archive": "Archive",
     "unarchive": "Add from archive",
@@ -143,7 +144,25 @@
   },
   "profile": {
     "settings": {
-      "title": "Profile Settings"
+      "user": {
+        "title": "User profile settings",
+        "label": "User",
+        "name": "My username in this profile",
+        "toDefault": "Use default",
+        "description": "My user description in this profile",
+        "archive": "Archive Membership"
+      },
+      "general": {
+        "name": "Profile Name"
+      },
+      "archive": {
+        "confirm": "Do you really want to archive this profile?"
+      },
+      "title": "Profile Settings",
+      "name": "Name",
+      "description": "Description",
+      "rename": "Rename",
+      "label": "Settings"
     },
     "create": {
       "title": "Create Profile",
