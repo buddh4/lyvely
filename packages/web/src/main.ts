@@ -13,6 +13,7 @@ import { createPinia } from 'pinia';
 import { eventBus } from '@/modules/core/events/global.emitter';
 import { focus } from "@/directives/focus";
 import { UiPlugin } from "@/modules/ui/ui.plugin";
+import { ModuleLoader } from "@/module.loader";
 
 console.log("Starting...");
 
@@ -22,20 +23,19 @@ console.log("Initializing app...");
 
 eventBus.emit('app.create.pre');
 
-const app = createApp(App);
-
-app.use(UiPlugin);
-
-eventBus.emit('app.create.post', app);
-
 const pinia = createPinia();
 pinia.use(({ store }) => {
   store.router = markRaw(router);
 })
 
+const app = createApp(App);
 app.use(pinia);
 app.use(router);
+app.use(ModuleLoader);
 app.use(setupI18n());
+app.use(UiPlugin);
+
+eventBus.emit('app.create.post', app);
 
 app.directive('focus', focus);
 
@@ -44,8 +44,6 @@ eventBus.emit('app.mount.pre', app);
 app.mount("#app");
 
 eventBus.emit('app.mount.post', app);
-
-
 
 if (window.Cypress) {
   // only available during E2E tests

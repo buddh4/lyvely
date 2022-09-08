@@ -6,6 +6,7 @@ import Textarea from '@/modules/ui/components/form/Textarea.vue';
 import useEditActivityModal from '../useEditActivityModal';
 import VueMultiselect from 'vue-multiselect';
 import Alert from "@/modules/ui/components/alert/Alert.vue";
+import ScreenReaderValidationError from "@/modules/ui/components/error/ScreenReaderValidationError.vue";
 
 const {
   model,

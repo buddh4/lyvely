@@ -11,6 +11,7 @@ import Dropdown from '@/modules/ui/components/menu/Dropdown.vue';
 import DropdownLink from '@/modules/ui/components/menu/DropdownLink.vue';
 import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 import { DialogType, useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
+import RadioInput from "@/modules/ui/components/form/RadioInput.vue";
 
 let numberInput1 = 0,
     numberInput2=3,
@@ -42,7 +43,7 @@ let numberInput1 = 0,
     selectValue2 = 0,
     selectValue3 = 0,
     selectValue4 = 0,
-    colors = ['lyvely', 'inverted', 'primary', 'secondary', 'info', 'success', 'warning', 'danger'];
+    colors = ['bg-pop', 'bg-lyvely', 'bg-primary', 'bg-secondary', 'bg-info', 'bg-success', 'bg-warning', 'bg-danger'];
 
 function showAlert(text: string) {
   alert(text);
@@ -54,10 +55,12 @@ function showDialog(type: DialogType) {
 }
 
 function getColorBoxClass(color: string) {
-  return `bg-${color} w-3.5 h-3.5 inline-block rounded-full my-2 mr-2 border border-secondary`;
+  return `${color} w-3.5 h-3.5 inline-block rounded-full my-2 mr-2 border border-secondary`;
 }
 
 const checkboxTrue = ref(true);
+const radioValue = ref('1');
+const radioValue2 = ref('2');
 </script>
 
 <template>
@@ -72,7 +75,7 @@ const checkboxTrue = ref(true);
       <template v-for="color in colors" :key="color">
         <div class="flex rounded-full py-1 px-2 text-center border border-secondary-light mr-1">
           <div :class="getColorBoxClass(color)"></div>
-          <small class="mt-1">{{ color }}</small>
+          <small class="mt-1">{{ color.split('-')[1] }}</small>
         </div>
       </template>
     </div>
@@ -143,13 +146,22 @@ const checkboxTrue = ref(true);
     </p>
 
     <h2>Forms</h2>
-    <h3>Checkboxes</h3>
 
+    <h3>Checkboxes</h3>
     <div class="flex flex-col">
       <Checkbox label="Checkbox with label" />
       <Checkbox v-model="checkboxTrue" label="Disabled checked" :disabled="true" />
       <Checkbox label="Disabled unchecked" :disabled="true" :checked="false" />
       <Checkbox css-class="success" label="Success colored checkbox" />
+    </div>
+
+    <h3>Radio</h3>
+    <div class="flex flex-col">
+      <RadioInput v-model="radioValue" value="1" label="Checked" />
+      <RadioInput v-model="radioValue" value="2" label="Unchecked" />
+      <RadioInput v-model="radioValue" value="1" label="Disabled checked" :disabled="true" />
+      <RadioInput v-model="radioValue2" value="1" label="Disabled unchecked" :disabled="true" />
+      <RadioInput v-model="radioValue2" value="2" css-class="success" label="Success colored checkbox" />
     </div>
 
     <h3>Text Input</h3>

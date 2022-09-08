@@ -1,6 +1,7 @@
 /* eslint-disable */
 import 'vue-router';
 import {Router} from "vue-router";
+import { Module } from "@/modules/core/modules/interfaces/module.interface";
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
@@ -15,6 +16,7 @@ export declare global {
   }
 
   export interface ImportMeta {
+    glob: <T = any> (path: string) => (() => Promise<T>)[],
     env: {
       VITE_APP_API_URL: string;
       VITE_APP_ENV: 'development' | 'production';

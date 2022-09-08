@@ -51,13 +51,14 @@ export function useBaseInputSetup<T = unknown>(props: BaseInputProps, { emit, }:
   const model = <any> inject('model', undefined);
   const property = props.property || '';
 
-  const inputValue = props.modelValue
+  const inputValue = model && model[property]
     ? computed({
+      get: () => model[property],
+      set: (val:T) => model[property] = val
+    })
+    : computed({
     get: () => props.modelValue,
     set: (val:T) => emit("update:modelValue", val)
-  }) : computed({
-    get: () => model[property],
-    set: (val:T) => model[property] = val
   });
 
   const labelKey = <any> inject('labelKey', undefined);

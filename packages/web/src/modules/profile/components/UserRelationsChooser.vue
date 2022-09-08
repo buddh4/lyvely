@@ -16,6 +16,7 @@ const router = useRouter();
 
 async function setProfile(pid: string) {
   await useProfileStore().loadProfile(pid);
+  // TODO: (use home route)
   router.push({ name: 'Activities', query: { pid } });
 //
  // router.push('/');

@@ -4,7 +4,10 @@ import vuePlugin from "@vitejs/plugin-vue";
 import path from 'path';
 
 export default defineConfig({
-  plugins: [vuePlugin(), tsconfigPaths(), ],
+  plugins: [
+    vuePlugin(),
+    tsconfigPaths(),
+  ],
   server: {
     port: 3000
   },

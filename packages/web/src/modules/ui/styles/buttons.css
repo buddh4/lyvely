@@ -87,7 +87,7 @@
 }
 
 .button.success {
-    @apply border-success bg-success text-inverted;
+    @apply border border-success bg-success text-inverted;
 }
 
 .button.success.outlined {

@@ -80,7 +80,7 @@ if(isDevelopEnvironment()) {
         && textContent.length <= 3
         && buttonEl.getAttribute('aria-hidden') !== 'true') {
       console.warn('Button without aria information detected')
-      console.log({ariaMissingIn: buttonEl})
+      console.warn({ariaMissingIn: buttonEl})
     }
   })
 }
