@@ -53,10 +53,6 @@ export const useActivityStore = defineStore('activity', () => {
     }
   });
 
-  watch(filter, async (newProfile, oldProfile) => {
-    debugger;
-  });
-
   async function loadActivities() {
     if(!profile) {
       status.setStatus(Status.ERROR);
