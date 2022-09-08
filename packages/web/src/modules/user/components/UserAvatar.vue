@@ -23,7 +23,7 @@ const textClass = computed(() => {
 
 <template>
   <img v-if="url" src="url">
-  <div :class="['rounded-full uppercase text-xs p-1', textClass]" :style="{ 'background-color': color  }">{{ initials }}</div>
+  <div :class="['rounded-full w-6 h-6 uppercase flex justify-center items-center text-xs p-1', textClass]" :style="{ 'background-color': color  }">{{ initials }}</div>
 </template>
 
 <style scoped>
