@@ -142,6 +142,9 @@
     }
   },
   "profile": {
+    "settings": {
+      "title": "Profile Settings"
+    },
     "create": {
       "title": "Create Profile",
       "properties": {

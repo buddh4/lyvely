@@ -10,7 +10,7 @@ import { watchMaxSize, isMaxViewSize } from "@/util/media";
 
 interface MenuItem {
   to?: Partial<RouteLocation> | string;
-  click?: {(): void},
+  click?: { (): void },
   icon: string;
   label: string;
 }
@@ -18,29 +18,34 @@ interface MenuItem {
 const pageStore = usePageStore();
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
-const sidebar = ref<HTMLElement|null>(null);
+const sidebar = ref<HTMLElement | null>(null);
 
 const menuItems: MenuItem[] = [
   {
-    to: { name: 'Activities' },
+    to: {name: 'Activities'},
     icon: 'activity',
     label: 'activities.labels.main_nav'
   },
   {
-    to: { name: 'Journal' },
+    to: {name: 'Journal'},
     icon: 'journal',
     label: 'journals.labels.main_nav'
   },
   {
-    to: { name: 'Statistics' },
+    to: {name: 'Statistics'},
     icon: 'statistics',
     label: 'statistics.labels.main_nav'
   },
   {
-    to: { name: 'Tags' },
+    to: {name: 'Tags'},
     icon: 'tags',
     label: 'tags.labels.main_nav'
   },
+ /* {
+    to: { name: 'Settings' },
+    icon: 'settings',
+    label: 'tags.labels.main_nav'
+  },*/
   {
     click: () => authStore.logout().then(() => location.reload()),
     icon: 'logout',
@@ -50,11 +55,11 @@ const menuItems: MenuItem[] = [
 
 const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer'];
 
-const { toggleDark, toggleSidebar } = pageStore;
-const { showSidebar, isDark } = toRefs(pageStore);
+const {toggleDark, toggleSidebar} = pageStore;
+const {showSidebar, isDark} = toRefs(pageStore);
 
 watch(showSidebar, () => {
-  if(showSidebar.value) {
+  if (showSidebar.value) {
     sidebar.value?.classList.remove('toggled')
   } else {
     sidebar.value?.classList.add('toggled')
@@ -75,10 +80,11 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
   <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
     <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
-        <a class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer" @click="toggleSidebar">
-          <Icon name="lyvely" class="fill-current text-lyvely mr-2 w-5 " />
+        <a class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer"
+           @click="toggleSidebar">
+          <Icon name="lyvely" class="fill-current text-lyvely mr-2 w-5 "/>
           <transition name="fade">
-            <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg" />
+            <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" src="/images/logo_white_bold.svg"/>
           </transition>
         </a>
       </div>
@@ -86,14 +92,15 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
       <ul class="nav flex-column">
         <li>
           <template v-for="menuItem in menuItems" :key="menuItem.label">
-            <a v-if="menuItem.click" :class="menuItemClasses" class="flex no-wrap items-center h-12" @click="menuItem.click">
-              <Icon :name="menuItem.icon" class="w-5" />
+            <a v-if="menuItem.click" :class="menuItemClasses" class="flex no-wrap items-center h-12"
+               @click="menuItem.click">
+              <Icon :name="menuItem.icon" class="w-5"/>
               <transition name="fade">
                 <span v-if="showLabels" class="menu-item">{{ $t(menuItem.label) }}</span>
               </transition>
             </a>
             <router-link v-else :class="menuItemClasses" class="flex no-wrap items-center h-12" :to="menuItem.to">
-              <Icon :name="menuItem.icon" class="w-5" />
+              <Icon :name="menuItem.icon" class="w-5"/>
               <transition name="fade">
                 <span v-if="showLabels" class="menu-item">{{ $t(menuItem.label) }}</span>
               </transition>

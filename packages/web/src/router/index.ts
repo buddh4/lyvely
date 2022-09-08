@@ -1,16 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-import userRoutes from "@/modules/user/routes";
-import activityRoutes from "@/modules/activity/routes";
-import journalRoutes from "@/modules/journal/routes";
-import statisticRoutes from "@/modules/statistics/routes";
 import NotFound from "@/modules/ui/components/error/NotFound.vue";
-import uiRoutes from "@/modules/ui/routes";
-import tagRoutes from "@/modules/tag/routes";
 import { useAuthStore } from '@/modules/user/store/auth.store';
 import * as i18n from "@/i18n";
 import { usePageStore } from "@/modules/core/store/page.store";
-import { toRefs, nextTick } from 'vue';
+import { toRefs } from 'vue';
 
 
 const routes: Array<RouteRecordRaw> = [];
@@ -19,14 +13,21 @@ function register(registerRoutes: Array<RouteRecordRaw>) {
   registerRoutes.forEach(route => routes.push(route));
 }
 
-// TODO: Make configurable
+
+
+// TODO: Make home configurable per profile
 register([{ path: "/", redirect: "/activities/habits" }]);
-register(userRoutes);
-register(activityRoutes);
-register(journalRoutes);
-register(statisticRoutes);
-register(uiRoutes);
-register(tagRoutes);
+
+const moduleRoutes = <{ default: Array<RouteRecordRaw> }[]> import.meta.glob('../modules/**/routes/index.ts', { eager: true });
+
+for (const path in moduleRoutes) {
+  const route = moduleRoutes[path];
+  console.log(`Register module route ${path}`);
+  if(route.default) {
+    register(route.default);
+  }
+}
+
 register([{ path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound }]);
 
 const history = createWebHistory();

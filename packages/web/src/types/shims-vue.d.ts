@@ -16,7 +16,7 @@ export declare global {
   }
 
   export interface ImportMeta {
-    glob: <T = any> (path: string) => (() => Promise<T>)[],
+    glob: <T = any> (path: string, options?: { eager?: boolean }) => (() => T)[]|T[],
     env: {
       VITE_APP_API_URL: string;
       VITE_APP_ENV: 'development' | 'production';
