@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Shared lively library",
   "author": "",
-  "license": "ISC",
   "type": "commonjs",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

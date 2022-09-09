@@ -1,0 +1,17 @@
+{
+  "name": "@lyvely/demo-server",
+  "version": "1.0.0",
+  "description": "A lyvely demo application",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rimraf packages/server/dist",
+    "build": "nest build",
+    "start:debug": "nest start --debug --watch",
+    "start:demo": "nest start"
+  },
+  "author": "Julian Harrer",
+  "dependencies": {
+    "@lyvely/server": "^0.0.1",
+    "typescript": "^4.8.3"
+  }
+}

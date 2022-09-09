@@ -1,13 +1,13 @@
 import fs from 'fs';
 import typescript from '@rollup/plugin-typescript';
 
-const excludes = ['tests', 'index.ts'];
+const excludes = ['tests', 'main.ts'];
 const modules = fs.readdirSync('./src').filter(d => !excludes.includes(d));
 const bundles = modules.reduce((bundles, module) => {
   bundles[module] = `src/${module}/index.ts`;
   return bundles;
 }, {
-   'index': 'src/index.ts'
+   'index': 'src/main.ts'
 });
 
 const production = !process.env.ROLLUP_WATCH;

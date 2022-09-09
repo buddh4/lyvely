@@ -69,7 +69,7 @@ npx madge --circular --extensions ts ./
 ```
 ## Security
 
-Set a `JWT_ACCESS_TOKEN_SECRET` in your environment. The secret must be at least 64 characters long.
+Set a `jwt-access-token-secret` in your environment. The secret must be at least 64 characters long.
 You can generate a random secret with:
 
 ```

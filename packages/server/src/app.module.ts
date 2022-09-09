@@ -3,8 +3,9 @@ import { AppController } from './app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ActivitiesModule } from './activities/activities.module';
 import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
+import { UsersModule } from './users';
 import { ConfigModule , ConfigService } from '@nestjs/config';
+import configuration from './config/configuration'
 
 import { CalendarModule } from './calendar/calendar.module';
 import { StatisticsModule } from './statistics/statistics.module';
@@ -44,10 +45,8 @@ const configSchema = Joi.object({
       rootPath: join(__dirname, '..', 'client'),
     }),
     ConfigModule.forRoot({
-      validationSchema: configSchema,
-      load: [],
+      load: [configuration],
       isGlobal: true,
-      envFilePath: `${process.env.NODE_ENV ? '.' + process.env.NODE_ENV : ''}.env`,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -70,7 +69,7 @@ const configSchema = Joi.object({
     //StatisticsModule,
     //JournalModule,
   ],
-  providers: [UserDao],
-  controllers: [AppController],
 })
 export class AppModule {}
+
+

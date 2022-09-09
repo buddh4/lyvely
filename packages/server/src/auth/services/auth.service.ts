@@ -38,15 +38,15 @@ export class AuthService {
 
   public createAccessToken(user: User): string {
     return this.jwtService.sign({ sub: user._id.toString() }, {
-      secret: this.configService.get('JWT_ACCESS_TOKEN_SECRET'),
-      expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')
+      secret: this.configService.get('auth.jwt.access.secret'),
+      expiresIn: this.configService.get('auth.jwt.access.expiration')
     });
   }
 
   public async createRefreshToken(user: User, visitorId: string): Promise<string> {
     const token = this.jwtService.sign({ sub: user._id.toString() },{
-      secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
-      expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')
+      secret: this.configService.get('auth.jwt.refresh.secret'),
+      expiresIn: this.configService.get('auth.jwt.refresh.expiration')
     });
 
     const expiration = addMilliSeconds(new Date(), ms(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')), false);

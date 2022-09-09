@@ -26,7 +26,7 @@ eventBus.emit('app.create.pre');
 const pinia = createPinia();
 pinia.use(({ store }) => {
   store.router = markRaw(router);
-})
+});
 
 const app = createApp(App);
 app.use(pinia);
