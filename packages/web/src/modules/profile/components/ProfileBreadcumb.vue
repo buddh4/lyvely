@@ -9,9 +9,12 @@ const path = computed(() => {
   const path = useRouter().currentRoute.value.path.split('/').filter((p) => p?.length)
   const result: { path: string, name: string}[] = [];
   let curr = '';
-  path.forEach((sub, i) => {
-    curr = curr + '/' + sub;
-    result[i] = { path: curr, name: sub };
+  path.forEach((subPath, i) => {
+    curr = curr + '/' + subPath;
+
+    if(i > 1) { // We ignore /p/:pid
+      result.push({ path: curr, name: subPath });
+    }
   })
   return result;
 })

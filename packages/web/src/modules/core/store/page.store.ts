@@ -28,15 +28,9 @@ export const usePageStore = defineStore('page', () => {
     }, { once: true });
   }
 
-  function toggleSidebar() {
-    showSidebar.value = !showSidebar.value;
-  }
-
-
   return {
     isDark,
     showSidebar,
-    toggleSidebar,
     toggleDark,
     showAppLoader,
     setTitle,

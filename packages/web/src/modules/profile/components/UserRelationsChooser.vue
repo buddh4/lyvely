@@ -7,6 +7,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import { useCreateProfileStore } from "@/modules/profile/stores/create-profile.store";
+import { profileRoute } from "@/modules/profile/routes/profile-route.util";
 
 const profileRelations = ref(await useProfileRelationsStore().getRelations());
 const profile = ref(useProfileStore().profile);
@@ -15,16 +16,12 @@ const { show: showCreateProfile } = storeToRefs(useCreateProfileStore());
 const router = useRouter();
 
 async function setProfile(pid: string) {
-  await useProfileStore().loadProfile(pid);
-  // TODO: (use home route)
-  router.push({ name: 'Activities', query: { pid } });
-//
- // router.push('/');
-
+  router.push(profileRoute('/', pid));
 }
 
-// TODO: A user might have multile relations with a single profile...
-// TODO: Can create organization, profile policy
+// TODO: A user might have multiple relations with a single profile...
+// TODO: (permissions) "Can create organization" policy
+// TODO: (permissions) "Can create profile" policy
 </script>
 
 <template>

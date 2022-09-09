@@ -21,7 +21,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'activities': [
-            './src/modules/activity/views/ActivityView.vue',
+            './src/modules/activity/views/ActivityLayout.vue',
             './src/modules/activity/views/HabitPlanView.vue',
             './src/modules/activity/views/TaskPlanView.vue',
           ]

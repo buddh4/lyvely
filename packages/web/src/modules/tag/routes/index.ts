@@ -1,10 +1,11 @@
 import { ifAuthenticated, loadProfile } from "@/router/utils";
 import { usePageStore } from "@/modules/core/store/page.store";
 import { translate } from "@/i18n";
+import { profileRoute } from "@/modules/profile/routes/profile-route.util";
 
 export default [
   {
-    path: "/tags",
+    path: profileRoute('/tags'),
     name: "Tags",
     meta: {
       layout: 'profile'

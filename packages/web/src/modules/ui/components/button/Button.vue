@@ -112,8 +112,8 @@ const { label } = toRefs(props);
   <button v-if="!route" ref="button" :aria-pressed="getAriaPressed($attrs)" :aria-selected="getAriaSelected($attrs)" :class="getClassNames($attrs.class)" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click.prevent="onClick">
     <slot>{{ $t(text) }}</slot>
   </button>
-  <router-link v-if="route"  v-slot="{ navigate, isActive }" :to="route" custom>
-    <button ref="button" :class="getClassNames($attrs.class, isActive)" :aria-selected="isActive ? 'true' : 'false'" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="navigate">
+  <router-link v-if="route"  v-slot="{ navigate, isExactActive  }" :to="route" custom>
+    <button ref="button" :class="getClassNames($attrs.class, isExactActive)" :aria-selected="isExactActive ? 'true' : 'false'" v-bind="$attrs" :type="buttonType" :disabled="disabled" @click="navigate">
       <slot>{{ $t(text) }}</slot>
     </button>
   </router-link>

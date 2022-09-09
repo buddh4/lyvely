@@ -1,8 +1,22 @@
-import { ifAuthenticated, loadProfile } from "@/router/utils";
+import { ifAuthenticated, loadProfile, toProfileHome } from "@/router/utils";
 import { usePageStore } from "@/modules/core/store/page.store";
 import { translate } from "@/i18n";
+import { profileRoot, profileRoute } from "@/modules/profile/routes/profile-route.util";
 
 export default [
+  {
+    path: profileRoot(),
+    name: "ProfileRoot",
+    beforeEnter:  [ifAuthenticated, loadProfile, toProfileHome],
+  },
+  {
+    path: profileRoute(),
+    name: "ProfileHome",
+    meta: {
+      layout: 'profile'
+    },
+    beforeEnter:  [ifAuthenticated, loadProfile, toProfileHome],
+  },
   {
     path: "/settings",
     name: "ProfileSettings",
