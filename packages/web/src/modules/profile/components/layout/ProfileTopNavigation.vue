@@ -23,7 +23,7 @@ const score = computed(() => profileStore.profile?.score);
 <template>
   <nav
       id="top-navigation"
-      class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible"
+      class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible min-w-"
       :aria-label="$t('layout.aria.top-nav')">
 
     <div class="w-1/3">
