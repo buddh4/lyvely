@@ -23,7 +23,7 @@ const score = computed(() => profileStore.profile?.score);
 <template>
   <nav
       id="top-navigation"
-      class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible min-w-"
+      class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible"
       :aria-label="$t('layout.aria.top-nav')">
 
     <div class="w-1/3">
@@ -137,11 +137,9 @@ const score = computed(() => profileStore.profile?.score);
   width: 15px;
 }
 
-@media (max-width: 991.98px) {
-  .navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
+@media (max-width: 767px) {
+  #top-navigation {
+    min-width: 100vw;
   }
 }
 

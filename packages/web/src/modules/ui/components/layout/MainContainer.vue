@@ -30,7 +30,7 @@ const classNames = computed(() => {
 </script>
 
 <template>
-  <div class="overflow-auto">
+  <div class="overflow-y-auto overflow-x-hidden">
     <main :class="classNames">
       <slot></slot>
     </main>
