@@ -18,7 +18,7 @@ export default [
     beforeEnter:  [ifAuthenticated, loadProfile, toProfileHome],
   },
   {
-    path: "/settings",
+    path: profileRoute("/settings"),
     name: "ProfileSettings",
     meta: {
       layout: 'profile'
@@ -29,13 +29,13 @@ export default [
     children: [
       {
         name: "UserProfileSettings",
-        path: "/settings/user",
+        path: profileRoute("/settings/user"),
         beforeEnter:  [ifAuthenticated, loadProfile, () => usePageStore().setTitle(translate('profile.settings.user.title'))],
         component: () => import('../views/UserProfileSettingsView.vue')
       },
       {
         name: "GeneralProfileSettings",
-        path: "/settings/general",
+        path: profileRoute("/settings/general"),
         beforeEnter:  [ifAuthenticated, loadProfile, () => usePageStore().setTitle(translate('profile.settings.general.title'))],
         component: () => import('../views/GeneralProfileSettingsView.vue')
       }

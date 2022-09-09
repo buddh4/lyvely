@@ -29,14 +29,15 @@ const score = computed(() => profileStore.profile?.score);
     <div class="w-1/3">
     <Dropdown position="right">
       <template #trigger="{ toggle }">
+
         <div class="flex justify-center items-center py-1">
           <div class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center">
             <Button class="px-3 py-2" @click="toggleSidebar">
               <Icon name="menu" style="margin-top:-3px" />
             </Button>
           </div>
-          <div role="button" class="border-none px-0" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
 
+          <div role="button" class="border-none px-0" :aria-label="$t('layout.aria.toggle-sidebar')" aria-controls="sidebar" @click="toggleSidebar">
             <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">
 
               <ProfileAvatar />
@@ -54,7 +55,7 @@ const score = computed(() => profileStore.profile?.score);
                     mode="out-in"
                     enter-active-class="animate__animated animate__faster animate__bounceIn"
                     leave-active-class="animate__animated animate__faster animate__bounceOut">
-                  <div :key="score" class="inline-block score-value">
+                  <div :key="score" class="inline-block score-value ml-0.5">
                     {{ score }}
                   </div>
                 </transition>
@@ -112,6 +113,7 @@ const score = computed(() => profileStore.profile?.score);
 }
 
 .score-value {
+  min-width: 1em;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
