@@ -5,6 +5,7 @@ import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import createAuthRefreshInterceptor  from 'axios-auth-refresh';
 import { eventBus } from '@/modules/core/events/global.emitter';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
+import { useAppConfigStore } from "@/modules/core/store/app.config.store";
 
 declare module 'axios' {
   export interface AxiosRequestConfig {
@@ -44,6 +45,13 @@ repository.interceptors.request.use(function (config) {
     }
 
   }
+  return config;
+});
+
+repository.interceptors.request.use(function (config) {
+  const appConfigStore = useAppConfigStore();
+  config.headers = config.headers || {};
+  config.headers['csrf-token'] = appConfigStore.get('csrf_token') || '';
   return config;
 });
 

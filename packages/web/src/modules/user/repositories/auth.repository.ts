@@ -22,6 +22,9 @@ export default {
   loadUser() {
     return repository.get<LoadUserResponse>(`${resource}/user`, { withCredentials:true });
   },
+  loadConfig() {
+    return repository.get<any>(`${resource}/config`);
+  },
   login(username: string, password: string) {
     return repository.post<LoginResponse>(`${resource}/login`, {
       username: username,

@@ -12,6 +12,7 @@ import { CoreModule } from './core/core.module';
 import { FeatureGuard } from './core/features/feature.guard';
 import { AppModuleBuilder } from "./app-module.builder";
 import helmet from "helmet";
+import csurf from 'csurf';
 import { HelmetOptions } from "helmet";
 
 interface LyvelyServerOptions {
@@ -36,10 +37,12 @@ export class LyvelyServer {
     this.initMongoose();
     this.initCors();
     this.initGuards();
+    this.initCookieParser();
+    this.initCsurf();
 
-    this.nestApp.useGlobalPipes(new ValidationPipe());
-    this.nestApp.useGlobalFilters(new AllExceptionsFilter());
-    this.nestApp.use(cookieParser());
+    this.initGlobalPipes();
+    this.initGlobalFilters();
+
     await this.nestApp.listen(this.configService.get('http.port'));
   }
 
@@ -54,6 +57,24 @@ export class LyvelyServer {
     if(helmetConfig !== false) {
       this.nestApp.use(helmet(helmetConfig));
     }
+  }
+
+  private initCsurf() {
+    this.nestApp.use(csurf({
+      cookie: true
+    }));
+  }
+
+  private initCookieParser() {
+    this.nestApp.use(cookieParser());
+  }
+
+  private initGlobalPipes() {
+    this.nestApp.useGlobalPipes(new ValidationPipe());
+  }
+
+  private initGlobalFilters() {
+    this.nestApp.useGlobalFilters(new AllExceptionsFilter());
   }
 
   private initMongoose() {
@@ -96,6 +117,7 @@ export class LyvelyServer {
       exposedHeaders: ['set-cookie'],
       allowedHeaders: [
         'x-visitor-id',
+        'csrf-token',
         'access-control-allow-origin',
         'content-type',
         'cookie'

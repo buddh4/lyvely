@@ -44,6 +44,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
     "dayjs": "^1.11.3",
     "helmet": "^6.0.0",
     "joi": "^17.5.0",

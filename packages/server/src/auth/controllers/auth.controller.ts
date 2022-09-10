@@ -39,6 +39,15 @@ export class AuthController {
     };
   }
 
+  // TODO: Maybe move to app controller...
+  @Public()
+  @Get('config')
+  async config(@Req() req: UserRequest) {
+    return {
+      csrf_token: req.csrfToken()
+    }
+  }
+
   @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
@@ -68,6 +77,7 @@ export class AuthController {
 
   @Get('user')
   async loadUser(@Req() req: UserRequest) {
+    console.log(req.csrfToken());
     return {
       user: new UserDto(req.user),
       token_expiration: ms(this.configService.get('auth.jwt.access.expiration'))

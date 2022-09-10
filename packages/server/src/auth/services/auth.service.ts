@@ -49,7 +49,7 @@ export class AuthService {
       expiresIn: this.configService.get('auth.jwt.refresh.expiration')
     });
 
-    const expiration = addMilliSeconds(new Date(), ms(this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')), false);
+    const expiration = addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiration')), false);
 
     // TODO: there should be a limit of refresh tokens...
     await this.setVisitorRefreshToken(user, visitorId, token, expiration);
