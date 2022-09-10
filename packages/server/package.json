@@ -45,6 +45,7 @@
     "class-validator": "^0.13.2",
     "cookie-parser": "^1.4.6",
     "dayjs": "^1.11.3",
+    "helmet": "^6.0.0",
     "joi": "^17.5.0",
     "js-yaml": "^4.1.0",
     "jwt-decode": "^3.1.2",

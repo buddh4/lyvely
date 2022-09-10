@@ -11,6 +11,8 @@ import mongoose from 'mongoose';
 import { CoreModule } from './core/core.module';
 import { FeatureGuard } from './core/features/feature.guard';
 import { AppModuleBuilder } from "./app-module.builder";
+import helmet from "helmet";
+import { HelmetOptions } from "helmet";
 
 interface LyvelyServerOptions {
   appModule?: Type<any>;
@@ -20,13 +22,16 @@ export class LyvelyServer {
   private logger: Logger;
   private nestApp: INestApplication;
   private configService: ConfigService;
+  private options: LyvelyServerOptions;
 
   async bootstrap(options: LyvelyServerOptions = {}) {
-    this.nestApp = await this.initNestApp(options);
+    this.options = options;
+    this.nestApp = await this.initNestApp();
 
     this.logger = new Logger('main');
     this.configService = this.nestApp.get(ConfigService);
 
+    this.initHelmet();
     this.logInitConfig();
     this.initMongoose();
     this.initCors();
@@ -38,9 +43,17 @@ export class LyvelyServer {
     await this.nestApp.listen(this.configService.get('http.port'));
   }
 
-  private async initNestApp(options: LyvelyServerOptions) {
-    const appModule = options.appModule || new AppModuleBuilder().build();
+  private async initNestApp() {
+    const appModule = this.options.appModule || new AppModuleBuilder().build();
     return await NestFactory.create(appModule);
+  }
+
+  private initHelmet() {
+    const helmetConfig = this.configService.get<HelmetOptions|false>('helmet', {});
+    this.logger.log('Using helmet options:', helmetConfig);
+    if(helmetConfig !== false) {
+      this.nestApp.use(helmet(helmetConfig));
+    }
   }
 
   private initMongoose() {
