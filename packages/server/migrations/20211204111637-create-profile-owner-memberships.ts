@@ -1,5 +1,5 @@
 import { Db } from 'mongodb'
-import { ProfileDocument, Profile , Membership, MembershipDocument , BaseMembershipRole, BaseUserProfileRelationType } from '../src/profiles';
+import { ProfileDocument, Profile , Membership, MembershipDocument , BaseMembershipRole, BaseUserProfileRelationType } from '../src/modules/profiles';
 import mongoose from 'mongoose';
 
 module.exports = {

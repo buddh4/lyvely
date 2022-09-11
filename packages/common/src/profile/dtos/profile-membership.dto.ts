@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import type { IMembership } from '../interfaces';
 import { ProfileRelationDto } from './profile-relation.dto';
-import { ProfileDto } from "./profile.dto";
+import { ProfileModel } from "../models/profile.model";
 
 @Exclude()
 export class MembershipDto extends ProfileRelationDto<MembershipDto> implements IMembership {
@@ -10,7 +10,7 @@ export class MembershipDto extends ProfileRelationDto<MembershipDto> implements 
 }
 
 @Exclude()
-export class ProfileMembershipDto extends ProfileDto {
+export class ProfileMembershipDto extends ProfileModel {
   @Expose()
   readonly membership: MembershipDto;
 

@@ -1,19 +1,19 @@
 import { Type, DynamicModule, ForwardReference } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CoreModule } from "./core/core.module";
-import { AuthModule } from "./auth/auth.module";
-import { RegisterModule } from "./register/register.module";
-import { UsersModule } from "./users";
-import { ProfilesModule } from "./profiles";
-import { PoliciesModule } from "./policies/policies.module";
-import { ContentModule } from "./content";
-import { ActivitiesModule } from "./activities/activities.module";
-import { TagsModule } from "./tags/tags.module";
+import { AuthModule } from "./modules/auth/auth.module";
+import { RegisterModule } from "./modules/register/register.module";
+import { UsersModule } from "./modules/users";
+import { ProfilesModule } from "./modules/profiles";
+import { PoliciesModule } from "./modules/policies/policies.module";
+import { ContentModule } from "./modules/content";
+import { ActivitiesModule } from "./modules/activities/activities.module";
+import { TagsModule } from "./modules/tags/tags.module";
 import { Module } from '@nestjs/common';
 import { ConfigModule , ConfigService } from '@nestjs/config';
 import { ServeStaticModule, ServeStaticModuleOptions } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
-import configuration from "./config/configuration";
+import configuration from "./core/config/configuration";
 
 type Import =  Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 

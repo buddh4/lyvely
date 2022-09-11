@@ -20,7 +20,7 @@ async function setProfile(pid: string) {
 }
 
 // TODO: A user might have multiple relations with a single profile...
-// TODO: (permissions) "Can create organization" policy
+// TODO: (permissions) "Can create organizations" policy
 // TODO: (permissions) "Can create profile" policy
 </script>
 

@@ -1,11 +1,11 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsMongoId } from 'class-validator';
-import { DocumentDto } from "../../model";
+import { DocumentModel } from "../../model";
 import { ITimeSeriesDataPoint, ITimeSeriesNumberDataPoint, ITimeSeriesTextDataPoint } from "../interfaces";
 import { CalendarIntervalEnum } from "../../calendar";
 
 @Exclude()
-export abstract class DataPointDto<E> extends DocumentDto<E> implements ITimeSeriesDataPoint {
+export abstract class DataPointDto<E> extends DocumentModel<E> implements ITimeSeriesDataPoint {
   @Expose()
   @IsMongoId()
   cid: string;

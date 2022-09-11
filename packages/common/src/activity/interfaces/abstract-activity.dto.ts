@@ -2,13 +2,13 @@ import { IsArray, IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsString, Length, } f
 import { CalendarIntervalEnum } from '../../calendar';
 import type { INumberDataPointConfig } from '../../time-series';
 import { DataPointInputStrategy, DataPointInputType, DataPointValueType } from "../../time-series";
-import { DocumentDto } from '../../model';
+import { DocumentModel } from '../../model';
 import { ActivityType, IActivity } from './activity.interface';
 import { Exclude, Expose, Transform } from 'class-transformer';
 import { UserAssignmentStrategy } from "../../user";
 
 @Exclude()
-export class AbstractActivityDto<T extends IActivity> extends DocumentDto<T> implements IActivity {
+export class AbstractActivityDto<T extends IActivity> extends DocumentModel<T> implements IActivity {
 
     @Expose()
     dataPointConfig: INumberDataPointConfig;

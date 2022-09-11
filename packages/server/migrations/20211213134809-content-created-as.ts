@@ -1,4 +1,4 @@
-import { createUserAuthor } from '../src/content';
+import { createUserAuthor } from '../src/modules/content';
 import crypto from 'crypto';
 
 module.exports = {

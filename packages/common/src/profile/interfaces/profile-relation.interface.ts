@@ -1,4 +1,5 @@
-import { IProfile } from "./profile.interface";
+import { PropertiesOf } from "../../util";
+import { ProfileModel } from "../dtos";
 
 export interface IProfileRelationUserInfo {
   displayName: string;
@@ -21,6 +22,6 @@ export interface IMembership extends IProfileRelation {
 }
 
 export interface IProfileMembership {
-  profile: IProfile;
+  profile: PropertiesOf<ProfileModel>;
   membership: IMembership;
 }

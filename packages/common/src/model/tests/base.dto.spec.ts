@@ -1,4 +1,4 @@
-import { DocumentDto } from '../../index';
+import { DocumentModel } from '../../index';
 import { Exclude, Expose, Transform } from 'class-transformer';
 
 class MockObjectId {
@@ -19,7 +19,7 @@ interface ITestBaseDto {
 }
 
 @Exclude()
-class TestBaseDto extends DocumentDto<ITestBaseDto> {
+class TestBaseDto extends DocumentModel<ITestBaseDto> {
   @Expose()
   value: number;
 
@@ -27,7 +27,7 @@ class TestBaseDto extends DocumentDto<ITestBaseDto> {
 }
 
 @Exclude()
-class TestDocumentDto extends DocumentDto<TestDocumentDto> {
+class TestDocumentDto extends DocumentModel<TestDocumentDto> {
   @Expose()
   stringValue?: string;
 

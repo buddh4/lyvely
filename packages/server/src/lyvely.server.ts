@@ -4,8 +4,8 @@ import { INestApplication, ValidationPipe , Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 import { AllExceptionsFilter } from './core/filters/AllExceptionsFilter';
-import { AuthModule } from './auth/auth.module';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { AuthModule } from './modules/auth/auth.module';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { CoreModule } from './core/core.module';

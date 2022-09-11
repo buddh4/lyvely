@@ -4,10 +4,10 @@ import { CalendarIntervalEnum } from "../../../calendar";
 import { DataPointNumberInputStrategy } from "../../../time-series";
 import { UserAssignmentStrategy } from "../../../user";
 import { IsEnum, IsInt, IsNotEmpty, IsString, Length, Min, Max, IsOptional, IsArray, MaxLength } from 'class-validator';
-import { BaseDto, Gte, Lte } from "../../../model";
+import { BaseModel, Gte, Lte } from "../../../model";
 
 @Exclude()
-export class CreateHabitDto extends BaseDto<CreateHabitDto> {
+export class CreateHabitDto extends BaseModel<CreateHabitDto> {
 
   @Expose()
   @IsString()

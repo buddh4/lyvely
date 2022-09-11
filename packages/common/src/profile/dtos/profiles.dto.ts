@@ -1,9 +1,9 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseDto } from '../../model';
-import { IProfile } from '../interfaces';
+import { BaseModel } from '../../model';
+import { ProfileModel } from "../models/profile.model";
 
 @Exclude()
-export class ProfilesDto extends BaseDto<ProfilesDto> {
+export class ProfilesDto extends BaseModel<ProfilesDto> {
   @Expose()
-  profiles: IProfile[];
+  profiles: ProfileModel[];
 }

@@ -1,9 +1,9 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseDto } from '../../../model';
+import { BaseModel } from '../../../model';
 import { IsNumber } from 'class-validator';
 
 @Exclude()
-export class UpdateDataPointResultDto extends BaseDto<UpdateDataPointResultDto> {
+export class UpdateDataPointResultDto extends BaseModel<UpdateDataPointResultDto> {
   @Expose()
   @IsNumber()
   score: number;

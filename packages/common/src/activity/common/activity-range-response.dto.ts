@@ -3,11 +3,11 @@ import { IsArray } from 'class-validator';
 import { HabitDto } from '../habit';
 import { TaskDto } from '../task';
 import { ActivityType, IActivity } from '../interfaces';
-import { BaseDto } from '../../model';
+import { BaseModel } from '../../model';
 import { ITimeSeriesNumberDataPoint, NumberDataPointDto } from "../../time-series";
 
 @Exclude()
-export class ActivityRangeResponseDto extends BaseDto<ActivityRangeResponseDto> {
+export class ActivityRangeResponseDto extends BaseModel<ActivityRangeResponseDto> {
 
   @Expose()
   @Type(() => HabitDto)

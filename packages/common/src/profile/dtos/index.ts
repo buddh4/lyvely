@@ -1,4 +1,4 @@
-export * from './profile.dto'
+export * from '../models/profile.model'
 export * from './profiles.dto'
 export * from './create-profile.dto'
 export * from './profile-relation.dto'

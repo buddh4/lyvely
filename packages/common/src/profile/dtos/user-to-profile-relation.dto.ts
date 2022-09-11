@@ -1,15 +1,16 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseDto } from '../../model';
+import { BaseModel } from '../../model';
 import {
-  IProfile,
   IUserToProfileRelation,
   ProfileType,
 } from '../interfaces';
 import { IsEnum, IsInt, IsString, Min, IsOptional } from 'class-validator';
+import { PropertiesOf } from "../../util";
+import { ProfileModel } from "../models";
 
 
 @Exclude()
-export class UserToProfileRelationDto extends BaseDto<UserToProfileRelationDto> implements IUserToProfileRelation {
+export class UserToProfileRelationDto extends BaseModel<UserToProfileRelationDto> implements IUserToProfileRelation {
 
   @Expose()
   @IsString()
@@ -46,7 +47,7 @@ export class UserToProfileRelationDto extends BaseDto<UserToProfileRelationDto> 
   @IsOptional()
   role?: string;
 
-  static create(profile: IProfile, relation: { type: string, role?: string }) {
+  static create(profile: PropertiesOf<ProfileModel>, relation: { type: string, role?: string }) {
     return new UserToProfileRelationDto({
       ...profile,
       relationType: relation.type,

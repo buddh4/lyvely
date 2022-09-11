@@ -4,10 +4,10 @@ import { computed } from "vue";
 import { createFileUrl } from "@/repository";
 import randomColor from "randomcolor";
 import { getContrast } from "@/modules/ui/utils";
-import { IProfile } from "@lyvely/common";
+import { ProfileModel } from "@lyvely/common";
 
 interface Props {
-  profile?: Pick<IProfile, 'id'|'imageHash'|'name'>;
+  profile?: Pick<ProfileModel, 'id'|'imageHash'|'name'>;
 }
 
 const props = defineProps<Props>();

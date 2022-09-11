@@ -1,9 +1,8 @@
-import { DocumentDto } from "../model";
+import { DocumentModel } from "../model";
 import { Exclude, Expose } from "class-transformer";
-import { IUser } from './user.interface';
 
 @Exclude()
-export class UserDto extends DocumentDto<UserDto> implements IUser {
+export class UserModel extends DocumentModel<UserModel> {
   @Expose()
   id: string;
 
@@ -12,9 +11,6 @@ export class UserDto extends DocumentDto<UserDto> implements IUser {
 
   @Expose()
   imageHash: string;
-
-  @Expose()
-  email: string;
 
   @Expose()
   locale: string;

@@ -16,7 +16,7 @@ import {
     Min
 } from "class-validator";
 import { Exclude, Expose, Type } from "class-transformer";
-import { DocumentDto, Gte, Lte, sortBySortOrder } from '../model';
+import { DocumentModel, Gte, Lte, sortBySortOrder } from '../model';
 import { IContent } from '../content';
 import {
     IDataPointConfig,
@@ -27,7 +27,7 @@ import {
 import { CalendarIntervalEnum, REGEX_DATE_FORMAT } from '../calendar';
 import { UserAssignmentStrategy } from "../user";
 
-export class JournalDto extends DocumentDto<JournalDto> implements IJournal {
+export class JournalDto extends DocumentModel<JournalDto> implements IJournal {
     id: IJournal['id'];
     title: string;
     archived: boolean;

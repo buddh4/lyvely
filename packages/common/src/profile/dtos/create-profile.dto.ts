@@ -1,10 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseDto } from '../../model';
+import { BaseModel } from '../../model';
 import { IsEnum, IsString, IsOptional } from 'class-validator';
 import { ProfileType } from '../interfaces';
 
 @Exclude()
-export class CreateProfileDto extends BaseDto<CreateProfileDto> {
+export class CreateProfileDto extends BaseModel<CreateProfileDto> {
   @Expose()
   @IsString()
   name: string;

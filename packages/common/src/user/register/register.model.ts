@@ -7,9 +7,9 @@ import {
   MaxLength,
   MinLength,
 } from "class-validator";
-import { BaseDto } from '../../model';
+import { BaseModel } from '../../model';
 
-export class RegisterDto extends BaseDto<RegisterDto>{
+export class RegisterDto extends BaseModel<RegisterDto>{
   @IsString()
   @Length(2, 40)
   @IsNotEmpty()
