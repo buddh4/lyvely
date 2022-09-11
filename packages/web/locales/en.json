@@ -144,6 +144,10 @@
     }
   },
   "profile": {
+    "users": {
+      "title": "Profile Users",
+      "label": "Users"
+    },
     "settings": {
       "user": {
         "title": "User profile settings",

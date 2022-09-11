@@ -37,7 +37,7 @@ export interface IUserToProfileRelation {
 export interface IProfile {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   type: ProfileType;
   score: number;
   imageHash?: string;

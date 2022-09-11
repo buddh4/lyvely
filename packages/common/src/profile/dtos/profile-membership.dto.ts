@@ -1,12 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseDto } from '../../model';
-import type { IMembership } from '../interfaces/profile-membership.interface';
-import type { IProfile } from '../interfaces';
+import type { IMembership } from '../interfaces';
 import { ProfileRelationDto } from './profile-relation.dto';
 import { ProfileDto } from "./profile.dto";
 
 @Exclude()
-export class MembershipDto extends ProfileRelationDto<MembershipDto> {
+export class MembershipDto extends ProfileRelationDto<MembershipDto> implements IMembership {
   @Expose()
   readonly role: string;
 }
@@ -14,7 +12,10 @@ export class MembershipDto extends ProfileRelationDto<MembershipDto> {
 @Exclude()
 export class ProfileMembershipDto extends ProfileDto {
   @Expose()
-  readonly membership: IMembership;
+  readonly membership: MembershipDto;
+
+  @Expose()
+  readonly relations: ProfileRelationDto[];
 
   constructor(obj?: Partial<ProfileMembershipDto>) {
     super(obj);

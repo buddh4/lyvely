@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { assureObjectId, EntityIdentity } from '../../db/db.utils';
 import { AbstractDao, defaultFetchOptions, FetchQueryOptions } from '../../db/abstract.dao';
-import { UserProfileRelation } from '../schemas/user-profile-relations.schema';
-import { User } from '../../users/schemas/users.schema';
-import { Profile } from '../schemas/profiles.schema';
+import { Profile, UserProfileRelation } from '../schemas';
+import { User } from '../../users';
 
 @Injectable()
 export abstract class AbstractUserProfileRelationsDao<T extends UserProfileRelation = UserProfileRelation> extends AbstractDao<T>{
@@ -19,6 +18,10 @@ export abstract class AbstractUserProfileRelationsDao<T extends UserProfileRelat
       { uid: assureObjectId(user), pid: assureObjectId(profile) },
       options
     );
+  }
+
+  async findAllByProfile(profile: EntityIdentity<Profile>): Promise<T[]> {
+    return this.findAll<UserProfileRelation>({ pid: assureObjectId(profile) });
   }
 
   async findByUserAndProfile(user: EntityIdentity<User>, profile: EntityIdentity<Profile>): Promise<T|null> {

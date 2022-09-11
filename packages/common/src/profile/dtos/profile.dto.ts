@@ -12,6 +12,11 @@ export class ProfileDto extends DocumentDto<ProfileDto> implements IProfile {
   name: string;
 
   @Expose()
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @Expose()
   @IsInt()
   @Min(0)
   score: number;

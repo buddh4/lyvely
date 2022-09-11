@@ -1,13 +1,43 @@
-import { Exclude, Expose, Transform } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { BaseDto } from '../../model';
-import { IProfileRelation } from '../interfaces';
+import { IProfileRelation, IProfileRelationUserInfo } from '../interfaces';
 
 @Exclude()
-export class ProfileRelationDto<T = any> extends BaseDto<T & { pid: any }> implements IProfileRelation {
+export class ProfileRelationUserInfoDto implements IProfileRelationUserInfo {
+  @Expose()
+  displayName: string;
+
+  @Expose()
+  description?: string;
+
+  @Exclude()
+  email?: string;
+
+  @Expose()
+  imageHash?: string;
+}
+
+@Exclude()
+export class ProfileRelationDto<T extends IProfileRelation = IProfileRelation> extends BaseDto<T & { pid: any, oid: any, uid: any }> implements IProfileRelation {
+  @Expose()
+  @Transform(({ value, obj }) => obj.oid?.toString() || value)
+  oid: TObjectId;
+
   @Expose()
   @Transform(({ value, obj }) => obj.pid?.toString() || value)
-  pid: string;
+  pid: TObjectId;
+
+  @Expose()
+  @Transform(({ value, obj }) => obj.uid?.toString() || value)
+  uid: TObjectId;
 
   @Expose()
   type: string;
+
+  @Expose()
+  @Type(() => ProfileRelationUserInfoDto)
+  userInfo: ProfileRelationUserInfoDto;
+
+  @Expose()
+  role?: string;
 }

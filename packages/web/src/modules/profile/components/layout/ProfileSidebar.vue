@@ -42,6 +42,11 @@ const menuItems: MenuItem[] = [
     label: 'tags.labels.main_nav'
   },
   {
+    to: { name: 'ProfileUsers' },
+    icon: 'users',
+    label: 'profile.users.label'
+  },
+  {
     to: { name: 'ProfileSettings' },
     icon: 'settings',
     label: 'profile.settings.label'

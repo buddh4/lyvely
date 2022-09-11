@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {
   BaseMembershipRole,
-  UserProfileRelation, CreateProfileRelation
+  UserProfileRelation, CreateProfileRelation, ProfileRelationUserInfo
 } from './user-profile-relations.schema';
 import { assureObjectId } from '../../db/db.utils';
 
@@ -22,7 +22,10 @@ export class Membership extends UserProfileRelation<Membership> {
     return new Membership({
       uid: assureObjectId(data.user),
       pid: assureObjectId(data.profile),
-      role: data.role,
+      oid: assureObjectId(data.profile.oid),
+      userInfo: ProfileRelationUserInfo.create(data),
+      type: data.type,
+      role: data.role
     });
   }
 }

@@ -11,7 +11,7 @@ export interface IEntity<ID = TObjectId> {
   _id: ID;
 }
 
-export abstract class BaseEntity<C extends IEntity<ID> = IEntity<any>, ID = TObjectId> implements IEntity<ID> {
+export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
 
   constructor(obj?: DeepPartial<C> | false) {
     if(obj !== false) {
@@ -24,7 +24,7 @@ export abstract class BaseEntity<C extends IEntity<ID> = IEntity<any>, ID = TObj
     this.afterInit();
   }
 
-  protected afterInit() {/* Nothing todo */}
+  afterInit() {/* Nothing todo */}
 
   @Exclude()
   public _id: ID;
@@ -33,7 +33,7 @@ export abstract class BaseEntity<C extends IEntity<ID> = IEntity<any>, ID = TObj
   public id: string;
 }
 
-export function createBaseEntityInstance<T extends BaseEntity>(constructor: Constructor<T>, data: DeepPartial<T>) {
+export function createBaseEntityInstance<T>(constructor: Constructor<T>, data: DeepPartial<T>) {
   const model = Object.create(constructor.prototype);
   if(typeof model.init === 'function') {
     model.init(data);

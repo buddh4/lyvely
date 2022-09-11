@@ -18,26 +18,35 @@ export default [
     beforeEnter:  [ifAuthenticated, loadProfile, toProfileHome],
   },
   {
+    path: profileRoute("/users"),
+    name: "ProfileUsers",
+    meta: {
+      layout: 'profile'
+    },
+    component: () => import('../views/users/ProfileUsers.vue'),
+    beforeEnter:  [ifAuthenticated, loadProfile],
+  },
+  {
     path: profileRoute("/settings"),
     name: "ProfileSettings",
     meta: {
       layout: 'profile'
     },
     redirect: { name: 'UserProfileSettings' },
-    component: () => import('../views/ProfileSettingsView.vue'),
+    component: () => import('../views/settings/ProfileSettings.vue'),
     beforeEnter:  [ifAuthenticated, loadProfile],
     children: [
       {
         name: "UserProfileSettings",
         path: profileRoute("/settings/user"),
         beforeEnter:  [ifAuthenticated, loadProfile, () => usePageStore().setTitle(translate('profile.settings.user.title'))],
-        component: () => import('../views/UserProfileSettingsView.vue')
+        component: () => import('../views/settings/UserProfileSettings.vue')
       },
       {
         name: "GeneralProfileSettings",
         path: profileRoute("/settings/general"),
         beforeEnter:  [ifAuthenticated, loadProfile, () => usePageStore().setTitle(translate('profile.settings.general.title'))],
-        component: () => import('../views/GeneralProfileSettingsView.vue')
+        component: () => import('../views/settings/GeneralProfileSettings.vue')
       }
     ]
   },

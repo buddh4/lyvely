@@ -26,7 +26,7 @@ export class Tag extends BaseEntity<Tag> implements ITag {
     return new Tag({ isNew: true, ...obj });
   }
 
-  protected afterInit() {
+  afterInit() {
     super.afterInit();
     // TODO: currently we need to add all new default values since missing values won't be updated at the moment
     this.archived = this.archived ?? false;

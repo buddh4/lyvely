@@ -8,11 +8,10 @@ import {
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfileDto, ProfileMembershipDto, MembershipDto , TagDto, CreateProfileDto } from '@lyvely/common';
-
+import { ProfileMembershipDto, MembershipDto , TagDto, CreateProfileDto, UserToProfileRelationDto } from "@lyvely/common";
 import { ProfilesService } from '../services';
 import { ProfileRequest } from "../../core/types";
-import { UserToProfileRelationDto } from "@lyvely/common";
+import { ProfileRelationDto } from "@lyvely/common";
 
 @Controller('profiles')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -23,8 +22,8 @@ export class ProfilesController {
   @Get(':id')
   async getProfile(@Request() req, @Param('id') id: string): Promise<ProfileMembershipDto> {
     const { profile, membership } = ((id === 'default')
-    ? await this.profilesService.findDefaultProfileMembershipByUser(req.user)
-    : await this.profilesService.findProfileMembershipByUserAndId(req.user, id)) || {};
+      ? await this.profilesService.findDefaultProfileMembershipByUser(req.user)
+      : await this.profilesService.findProfileMembershipByUserAndId(req.user, id)) || {};
 
     // TODO: currently only member profiles are supported
 
@@ -32,7 +31,13 @@ export class ProfilesController {
       throw new NotFoundException();
     }
 
-    return new ProfileMembershipDto({ ...profile, membership: new MembershipDto(membership) });
+    const relations = await this.profilesService.findAllUserProfileRelations(profile);
+
+    return new ProfileMembershipDto({
+      ...profile,
+      membership: new MembershipDto(membership),
+      relations: relations.map(relation => new ProfileRelationDto(relation))
+    });
   }
 
   @Post()

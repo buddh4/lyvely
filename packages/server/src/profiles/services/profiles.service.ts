@@ -46,15 +46,19 @@ export class ProfilesService {
    */
   async createProfile(owner: User, options: CreateProfileOptions = {}): Promise<UserProfileRelations> {
     // TODO: validate locale!
-    const profile = await this.profileDao.upsert({
+    const profile = await this.profileDao.upsert(new Profile({
       createdBy: owner._id,
       name: options.name || owner.username,
       locale: options.locale || owner.locale,
       type: options.type || ProfileType.User
-    });
+    }));
 
     const membership = await this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner);
     return new UserProfileRelations({ user: owner, profile: profile, relations: [membership] });
+  }
+
+  async findAllUserProfileRelations(profile: EntityIdentity<Profile>): Promise<UserProfileRelation[]> {
+    return this.profileRelationsDao.findAllByProfile(profile);
   }
 
   async findUserProfileRelations(user: User, identity: EntityIdentity<Profile>): Promise<UserProfileRelations> {

@@ -6,7 +6,7 @@ import { BaseEntity } from '../../db/base.entity';
 import { Length } from 'class-validator';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import crypto from 'crypto';
-import { UserDto } from "@lyvely/common";
+import { validateEmail } from "../../db/field.validator.util";
 
 export type UserDocument = User & mongoose.Document;
 
@@ -24,7 +24,7 @@ export class User extends BaseEntity<User> {
   @Prop({ required: true, unique: true })
   username: string;
 
-  @Prop()
+  @Prop( { type: String } )
   imageHash: string;
 
   @Prop({ required: true })
@@ -182,9 +182,3 @@ export function getDefaultLocale() {
 UserSchema.statics.validateEmail = function (email: string): boolean {
   return validateEmail(email);
 };
-
-function validateEmail(email: string) {
-  // tslint:disable-next-line:max-line-length
-  const expression = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-  return expression.test(email);
-}

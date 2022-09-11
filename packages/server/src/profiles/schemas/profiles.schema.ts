@@ -102,7 +102,7 @@ export class Profile extends BaseEntity<Profile> implements IProfile {
     return this.tags.filter(tag => tag.isNew);
   }
 
-  protected afterInit() {
+  afterInit() {
     super.afterInit();
     this.tags = this.tags?.map(category => (category instanceof Tag) ? category : new Tag(category)) || [];
   }
