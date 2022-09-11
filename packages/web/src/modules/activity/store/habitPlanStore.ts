@@ -2,13 +2,11 @@ import { defineStore } from 'pinia';
 import {
   toTimingId,
   formatDate,
-  IActivity,
-  ITimeSeriesNumberDataPoint,
+  ActivityModel,
+  NumberDataPointModel,
   CalendarIntervalEnum,
-  IHabit,
-  HabitDto,
-  NumberDataPointDto
-, ActivityType } from '@lyvely/common';
+  HabitModel,
+  ActivityType } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
@@ -31,20 +29,20 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
     return activityStore.getActivities(ActivityType.Habit, interval);
   }
 
-  function addHabit(habit: IHabit) {
-    activityStore.cache.addModel(new HabitDto(habit))
+  function addHabit(habit: HabitModel) {
+    activityStore.cache.addModel(new HabitModel(habit))
   }
 
-  function addDataPoint(dataPoint: ITimeSeriesNumberDataPoint) {
-    activityStore.cache.addDataPoint(new NumberDataPointDto(dataPoint))
+  function addDataPoint(dataPoint: NumberDataPointModel) {
+    activityStore.cache.addDataPoint(new NumberDataPointModel(dataPoint))
   }
 
-  function getDataPoint(activity: IActivity) {
+  function getDataPoint(activity: ActivityModel) {
     const timingId = toTimingId(calendarPlanStore.date, activity.dataPointConfig.interval);
     return activityStore.cache.getDataPoint(activity, timingId, true);
   }
 
-  async function updateDataPoint(log: ITimeSeriesNumberDataPoint, value: number) {
+  async function updateDataPoint(log: NumberDataPointModel, value: number) {
     try {
       const { data } = await habitsRepository.updateDataPoint(log.cid, {
         date: formatDate(calendarPlanStore.date),

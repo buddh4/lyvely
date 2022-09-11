@@ -15,7 +15,7 @@ import {
   toTimingId,
   CalendarDate,
   CalendarIntervalEnum,
-  CreateHabitDto, CreateTaskDto, IHabit, toDate, ITaskWithUsers
+  CreateHabitDto, CreateTaskDto, HabitModel, toDate, TaskWithUsersModel
 } from '@lyvely/common';
 
 import { InjectModel } from '@nestjs/mongoose';
@@ -83,7 +83,7 @@ export class ActivityTestDataUtil extends TestDataUtils {
     return createBaseEntityInstance(HabitDataPoint, log.toObject());
   }
 
-  async createTask(user: User, profile: Profile, data?: Partial<CreateTaskDto>, overwrite?: Partial<ITaskWithUsers>): Promise<Task> {
+  async createTask(user: User, profile: Profile, data?: Partial<CreateTaskDto>, overwrite?: Partial<TaskWithUsersModel>): Promise<Task> {
     const initData = <CreateTaskDto> Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {});
     const task = new this.TaskModel(Task.create(profile, user, initData));
 
@@ -94,7 +94,7 @@ export class ActivityTestDataUtil extends TestDataUtils {
     return createBaseEntityInstance(Task, task.toObject());
   }
 
-  async createHabit(user: User, profile: Profile, data?: Partial<CreateHabitDto>, overwrite?: Partial<IHabit>): Promise<Habit> {
+  async createHabit(user: User, profile: Profile, data?: Partial<CreateHabitDto>, overwrite?: Partial<HabitModel>): Promise<Habit> {
     const initData = <CreateHabitDto> Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {});
     const habit = new this.HabitModel(Habit.create(profile, user, initData));
     Object.assign(habit, overwrite);

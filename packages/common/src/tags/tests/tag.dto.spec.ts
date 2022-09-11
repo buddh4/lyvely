@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { validate } from 'class-validator';
-import { CreateTagDto } from "../create-tag.dto";
+import { CreateTagDto } from "../dtos/create-tag.dto";
 import { UpdateHabitDto } from "../../activity";
 
 describe('UpdateHabitDto', () => {

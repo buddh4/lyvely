@@ -1,22 +1,21 @@
 import { assignEntityData, BaseEntity, EntityType } from '../../../core/db/base.entity';
 import { Prop } from '@nestjs/mongoose';
-import mongoose, { Document }  from 'mongoose';
+import mongoose   from 'mongoose';
 import {
   CalendarIntervalEnum,
   getFullDayDate,
   getNumberEnumValues,
   toTimingId,
   UserAssignmentStrategy,
-  REGEX_TID,
   DeepPartial,
-  IDataPoint
 } from "@lyvely/common";
 import { TimeSeriesContent } from "./time-series-content.schema";
 import { User } from "../../../modules/users";
 import { Profile } from "../../../modules/profiles";
 import { assureObjectId } from "../../../core/db/db.utils";
+import { DataPointModel } from "@lyvely/common/src";
 
-type DataPointEntity = IDataPoint & { _id: TObjectId }
+type DataPointEntity = DataPointModel & { _id: TObjectId }
 
 /**
  * This represents a datapoint bucket of given interval.
@@ -76,8 +75,5 @@ export abstract class DataPoint<
     this.afterInit();
   }
 }
-
-export type DataPointDocument = DataPoint & Document;
-
 
 

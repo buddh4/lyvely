@@ -1,46 +1,46 @@
 import { Exclude, Type, Expose } from 'class-transformer';
-import { IsArray } from 'class-validator';
-import { HabitDto } from '../habit';
-import { TaskDto } from '../task';
-import { ActivityType, IActivity } from '../interfaces';
+import { HabitModel } from '../habit';
+import { TaskModel } from '../task';
+import { ActivityType } from "../models";
 import { BaseModel } from '../../model';
-import { ITimeSeriesNumberDataPoint, NumberDataPointDto } from "../../time-series";
+import { NumberDataPointModel } from "../../time-series";
+import { ActivityModel } from "../models";
 
 @Exclude()
 export class ActivityRangeResponseDto extends BaseModel<ActivityRangeResponseDto> {
 
   @Expose()
-  @Type(() => HabitDto)
-  habits: HabitDto[] = [];
+  @Type(() => HabitModel)
+  habits: HabitModel[] = [];
 
   @Expose()
-  @Type(() => TaskDto)
-  tasks: TaskDto[] = [];
+  @Type(() => TaskModel)
+  tasks: TaskModel[] = [];
 
   @Expose()
-  @Type(() => NumberDataPointDto)
-  dataPoints: NumberDataPointDto[] = [];
+  @Type(() => NumberDataPointModel)
+  dataPoints: NumberDataPointModel[] = [];
 
-  addActivity(activity: IActivity) {
+  addActivity(activity: ActivityModel) {
     switch (activity.type) {
       case ActivityType.Habit:
-        this.habits.push(activity instanceof HabitDto ? activity : new HabitDto(activity));
+        this.habits.push(activity instanceof HabitModel ? activity : new HabitModel(activity));
         break;
       case ActivityType.Task:
-        this.tasks.push(activity instanceof TaskDto ? activity : new TaskDto(activity));
+        this.tasks.push(activity instanceof TaskModel ? activity : new TaskModel(activity));
         break;
     }
   }
 
-  addActivities(activities: IActivity[]) {
+  addActivities(activities: ActivityModel[]) {
     activities.forEach((activity) => this.addActivity(activity));
   }
 
-  addDataPoint(activityLog: ITimeSeriesNumberDataPoint) {
-    this.dataPoints.push(new NumberDataPointDto(activityLog));
+  addDataPoint(activityLog: NumberDataPointModel) {
+    this.dataPoints.push(new NumberDataPointModel(activityLog));
   }
 
-  addDataPoints(activityLogs: ITimeSeriesNumberDataPoint[]) {
+  addDataPoints(activityLogs: NumberDataPointModel[]) {
     activityLogs.forEach((log) => this.addDataPoint(log));
   }
 }

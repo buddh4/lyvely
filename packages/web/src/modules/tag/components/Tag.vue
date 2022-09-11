@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import Badge from "@/modules/ui/components/badge/Badge.vue";
-import { ITag } from "@lyvely/common";
+import { TagModel } from "@lyvely/common";
 
 interface Props {
-  tag: ITag
+  tag: TagModel
 }
 
 const props = defineProps<Props>();

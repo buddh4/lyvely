@@ -62,7 +62,7 @@ describe('ActivityService', () => {
       const h3 = await testData.createHabit(user, profile, { title: 'h3' });
       await testData.createHabit(user, profile, { title: 'h4' });
 
-      await activitiesService.sort(user, h3, 1);
+      await activitiesService.sort(profile, user, h3, 1);
 
       const filter = new DataPointIntervalFilter(new Date());
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
@@ -80,7 +80,7 @@ describe('ActivityService', () => {
 
       const habits = await createHabits(user, profile);
 
-      await activitiesService.sort(user, habits[3], 0);
+      await activitiesService.sort(profile, user, habits[3], 0);
 
       const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
@@ -97,7 +97,7 @@ describe('ActivityService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habits = await createHabits(user, profile);
 
-      await activitiesService.sort(user, habits[3], 0);
+      await activitiesService.sort(profile, user, habits[3], 0);
 
       const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
@@ -114,7 +114,7 @@ describe('ActivityService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habits = await createHabits(user, profile);
 
-      await activitiesService.sort(user, habits[1], 4);
+      await activitiesService.sort(profile, user, habits[1], 4);
 
       const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
@@ -131,7 +131,7 @@ describe('ActivityService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habits = await createHabits(user, profile);
 
-      await activitiesService.sort(user, habits[2], 2);
+      await activitiesService.sort(profile, user, habits[2], 2);
 
       const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
       const { activities } = await activitiesService.findByFilter(profile, user, filter);

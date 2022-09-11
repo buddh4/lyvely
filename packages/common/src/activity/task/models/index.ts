@@ -1,6 +1,1 @@
-export * from './edit-task-response.dto'
-export * from './create-task.dto'
-export * from './update-task.dto'
-export * from './update-task-state.dto'
-export * from './update-task-state-result.dto'
-export * from './task.dto'
+export * from './task.model';

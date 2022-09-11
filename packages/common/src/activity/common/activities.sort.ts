@@ -1,12 +1,12 @@
-import { IActivity } from '../interfaces';
-import { isTask, ITask } from '../task';
+import { ActivityModel } from '../models';
+import { isTask, TaskModel } from '../task';
 import { sortBySortOrder } from '../../model';
 
-export function sortActivities(activities: IActivity[]) {
-  return activities.sort((a: IActivity, b: IActivity) => {
+export function sortActivities(activities: ActivityModel[]) {
+  return activities.sort((a: ActivityModel, b: ActivityModel) => {
     if(isTask(a) && isTask(b)) {
-      let aDone = (<ITask> a).done;
-      let bDone =  (<ITask> b).done;
+      let aDone = (<TaskModel> a).done;
+      let bDone =  (<TaskModel> b).done;
 
       if(aDone && !bDone) {
         return 1;

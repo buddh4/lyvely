@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
-import { ITag , ProfileMembershipDto } from '@lyvely/common';
+import { ProfileMembershipDto, TagModel } from '@lyvely/common';
 
 import profileRepository from '@/modules/profile/repositories/profile.repository';
 import { localStorageManager } from '@/util/storage';
@@ -19,7 +19,7 @@ export const useProfileStore = defineStore('profile', () => {
   // TODO: (i18n) validate defaultLocale
   const defaultLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
   const locale = computed(() => profile.value?.locale || defaultLocale);
-  const tagOptions = computed(() => profile.value?.tags?.map((tag: ITag) => tag.name) || []);
+  const tagOptions = computed(() => profile.value?.tags?.map((tag: TagModel) => tag.name) || []);
   const status = useStatus();
 
   async function loadProfile(id?: string|null) {
@@ -61,7 +61,7 @@ export const useProfileStore = defineStore('profile', () => {
     }
   }
 
-  async function updateTags(tags: ITag[]) {
+  async function updateTags(tags: TagModel[]) {
     if(!profile.value) {
       console.warn('Called updateTags for non existing profile');
       return;
@@ -77,7 +77,7 @@ export const useProfileStore = defineStore('profile', () => {
     });
   }
 
-  function getTags(): Array<ITag> {
+  function getTags(): Array<TagModel> {
     return profile?.value?.tags || [];
   }
 

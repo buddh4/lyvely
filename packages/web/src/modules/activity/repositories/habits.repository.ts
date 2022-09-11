@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { UpdateHabitDto, IHabit, UpdateDataPointDto, UpdateDataPointResultDto, UpdateHabitResponseDto } from '@lyvely/common';
+import { UpdateHabitDto, UpdateDataPointDto, UpdateDataPointResultDto, UpdateHabitResponseDto } from '@lyvely/common';
 
 const resource = "habits";
 

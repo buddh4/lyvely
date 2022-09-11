@@ -1,6 +1,6 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '../../users';
-import { IHabit, DataPointNumberInputStrategy, UpdateHabitDto } from '@lyvely/common';
+import { HabitModel, DataPointNumberInputStrategy, UpdateHabitDto } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { Activity } from './activity.schema';
 import { ContentDocument } from '../../content';
@@ -9,14 +9,15 @@ import {
   DataPointConfigFactory,
   NumberDataPointConfigRevision
 } from "../../../interfaces/time-series";
-import { applyRawDataTo, assureObjectId } from "../../../core/db/db.utils";
+import { assureObjectId } from "../../../core/db/db.utils";
 import { cloneDeep } from "lodash";
 import { applyValidationProperties } from "@lyvely/common";
+import { PropertiesOf } from "@lyvely/common/src";
 
 export type HabitDocument = Habit & ContentDocument;
 
 @Schema()
-export class Habit extends Activity implements IHabit {
+export class Habit extends Activity implements PropertiesOf<HabitModel> {
   static applyUpdate(model: Habit, update: UpdateHabitDto) {
     const updatedDataPointConfig = cloneDeep(model.dataPointConfig);
     updatedDataPointConfig.min = update.min ?? model.dataPointConfig.min;

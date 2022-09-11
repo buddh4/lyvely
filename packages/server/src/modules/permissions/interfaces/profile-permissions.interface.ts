@@ -1,3 +1,5 @@
+import { ContentVisibilityLevel } from '@lyvely/common';
+
 export enum BaseProfilePermissionRole {
   Owner = 'owner',
   Admin = 'admin',
@@ -8,21 +10,6 @@ export enum BaseProfilePermissionRole {
   Follower = 'follower',
   User = 'user',
   Visitor = 'visitor'
-}
-
-/**
- * A role is assigned with a specific content visibility level, which defines the level of visible and accessible content
- * of a given role. A role can only view content which a visibility level >= the roles visibility level.
- */
-export enum ContentVisibilityLevel {
-  Owner,
-  Admin,
-  Moderator,
-  Member,
-  Guest, // External explicitely invited guests
-  Organization,
-  User, // Registered users
-  Public, // Unregistered users
 }
 
 export type RoleName = string;

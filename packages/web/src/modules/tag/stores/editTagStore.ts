@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ITag, UpdateTagDto, CreateTagDto } from '@lyvely/common';
+import { TagModel, UpdateTagDto } from '@lyvely/common';
 import { computed } from 'vue';
 import tagsRepository from "@/modules/tag/repositories/tags.repository";
 import useEditModelStore from "@/modules/common/stores/editModelStore";
@@ -8,9 +8,9 @@ import { useProfileStore } from "@/modules/profile/stores/profile.store";
 
 export const useEditTagStore = defineStore('tagEdit', () => {
 
-  const editState = useEditModelStore<UpdateTagDto, ITag>({
+  const editState = useEditModelStore<UpdateTagDto, TagModel>({
     repository: tagsRepository,
-    onSubmitSuccess: (tag?: ITag) => {
+    onSubmitSuccess: (tag?: TagModel) => {
       if(tag) {
         useProfileStore().updateTags([tag]);
       }
@@ -19,7 +19,7 @@ export const useEditTagStore = defineStore('tagEdit', () => {
 
   const modalTitle = computed(() => (editState.isCreate.value) ? "tags.create.title" : "tags.edit.title");
 
-  const archiveState = useArchiveModelStore<ITag>({
+  const archiveState = useArchiveModelStore<TagModel>({
     repository: tagsRepository,
     onSubmitSuccess: (tag) => {
       useProfileStore().updateTags([tag])

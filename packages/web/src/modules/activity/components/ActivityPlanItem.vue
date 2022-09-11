@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from "@/modules/activity/components/ItemCheckboxList.vue";
-import { IActivity, ActivityType, TaskDto } from '@lyvely/common';
+import { ActivityModel, ActivityType, TaskDto } from '@lyvely/common';
 import { MoveActivityEvent, useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -12,7 +12,7 @@ import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibil
 import { translate } from "@/i18n";
 
 interface Props {
-  model: IActivity
+  model: ActivityModel
 }
 
 const props = defineProps<Props>();
@@ -64,7 +64,7 @@ function selectTag(tagId: string) {
 
 const root = ref<InstanceType<typeof CalendarPlanItem>|null>(null);
 
-function prepareMoveEvent(model: IActivity, element: HTMLElement, newIndex: (current:number) => number) {
+function prepareMoveEvent(model: ActivityModel, element: HTMLElement, newIndex: (current:number) => number) {
   const draggableElement = element.closest('[data-draggable]')!;
   const currentIndex = Array.from(draggableElement.parentNode!.children).indexOf(draggableElement);
 
@@ -83,7 +83,7 @@ function prepareMoveEvent(model: IActivity, element: HTMLElement, newIndex: (cur
 
 
 
-async function moveUp(model: IActivity, element: HTMLElement) {
+async function moveUp(model: ActivityModel, element: HTMLElement) {
   const { store, event } = prepareMoveEvent(model, element, (currentIndex) => currentIndex - 1);
 
   if(event.oldIndex === 0) {
@@ -95,7 +95,7 @@ async function moveUp(model: IActivity, element: HTMLElement) {
   afterMove(event);
 }
 
-async function moveDown(model: IActivity, element: HTMLElement) {
+async function moveDown(model: ActivityModel, element: HTMLElement) {
   const { store, event, draggable } = prepareMoveEvent(model, element, (currentIndex) => currentIndex + 1);
 
   if(draggable.parentNode!.children.length === event.newIndex) {

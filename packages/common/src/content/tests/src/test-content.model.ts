@@ -1,15 +1,3 @@
-import { IContent } from '../../../index';
+import { ContentModel } from '../../models';
 
-export class TestContent implements IContent {
-  constructor(obj?: Partial<TestContent>) {
-    Object.assign(this, obj);
-  }
-
-  id: string;
-  type: string;
-  text?: string;
-  title?: string;
-  archived: boolean;
-  visibility: number;
-  tagIds: string[];
-}
+export class TestContent extends ContentModel<TestContent> {}

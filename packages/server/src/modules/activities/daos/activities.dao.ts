@@ -7,7 +7,7 @@ import {
   UserAssignmentStrategy,
   isTask,
   isHabit,
-  IActivity,
+  ActivityModel,
   SortResult
 } from '@lyvely/common';
 import { Profile } from '../../profiles';
@@ -124,11 +124,11 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
   }
 
   getModelConstructor(model?: DeepPartial<Activity>) {
-    if(isTask(model as IActivity)) {
+    if(isTask(model as ActivityModel)) {
       return Task;
     }
 
-    if(isHabit(model as IActivity)) {
+    if(isHabit(model as ActivityModel)) {
       return Habit;
     }
 

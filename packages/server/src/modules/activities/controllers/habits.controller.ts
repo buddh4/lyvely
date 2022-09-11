@@ -8,11 +8,11 @@ import {
 import { Habit } from '../schemas';
 import {
   UpdateHabitDto,
-  HabitDto,
   UpdateDataPointDto,
   UpdateDataPointResultDto,
-  UpdateHabitResponseDto
-, TagDto } from '@lyvely/common';
+  UpdateHabitResponseDto,
+  HabitModel,
+  TagModel } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import { AbstractContentController, ProfileContentRequest,  ContentController, ContentType, ContentWritePolicy } from '../../content';
@@ -48,8 +48,8 @@ export class HabitsController extends AbstractContentController<Habit> {
     }
 
     return new UpdateHabitResponseDto({
-      model: new HabitDto(habitModel),
-      tags: profile.getNewTags().map(tag => new TagDto(tag))
+      model: new HabitModel(habitModel),
+      tags: profile.getNewTags().map(tag => new TagModel(tag))
     });
   }
 
@@ -67,8 +67,8 @@ export class HabitsController extends AbstractContentController<Habit> {
     await this.contentService.updateContent(profile, user, content, content, update.tagNames);
 
     return new UpdateHabitResponseDto({
-      model: new HabitDto(content),
-      tags: profile.getNewTags().map(tag => new TagDto(tag))
+      model: new HabitModel(content),
+      tags: profile.getNewTags().map(tag => new TagModel(tag))
     });
   }
 

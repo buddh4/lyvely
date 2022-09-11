@@ -1,9 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { DeepPartial, IContent, getNumberEnumValues } from '@lyvely/common';
+import { DeepPartial, IContent, getNumberEnumValues, ContentVisibilityLevel } from '@lyvely/common';
 import { BaseEntity } from '../../../core/db/base.entity';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
-import { ContentVisibilityLevel } from '../../permissions/interfaces/profile-permissions.interface';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, ContentAuthorSchema, Author } from './content-author-info.schema';
 import { User } from '../../users';
@@ -12,10 +11,6 @@ import { Profile, BaseProfileModel } from '../../profiles';
 import { Tag } from "../../tags";
 
 export type ContentDocument = Content & mongoose.Document;
-
-export interface ContentConstructor<T extends Content = any> extends Function {
-  new (profile?: Profile, author?: User, obj?: Partial<T>): T;
-}
 
 export interface ContentEntity {
   _id: TObjectId;
@@ -60,10 +55,10 @@ export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> 
   visibility: number;
 
   @Prop()
-  title?: string;
+  title: string;
 
   @Prop()
-  text?: string;
+  text: string;
 
   @Prop({ default: false })
   archived: boolean;

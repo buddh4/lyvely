@@ -1,21 +1,21 @@
 import { CalendarIntervalEnum } from '../../calendar';
-import { ActivityType, IActivity } from '../interfaces';
-import { IHabit } from '../habit';
-import { isTask, ITask } from '../task';
-import { ActivityFilter } from '../models';
-import { ITimeSeriesNumberDataPoint, NumberDataPointDto, TimeSeriesDataPointStore } from '../../time-series';
+import { ActivityType } from "../models";
+import { HabitModel } from '../habit';
+import { isTask, TaskModel } from '../task';
+import { ActivityFilter, ActivityModel } from '../models';
+import { NumberDataPointModel, TimeSeriesDataPointStore } from '../../time-series';
 import { sortActivities } from './activities.sort';
 
-export class ActivityDataPointStore extends TimeSeriesDataPointStore<IActivity, ITimeSeriesNumberDataPoint> {
-    sort(models: IActivity[]) {
+export class ActivityDataPointStore extends TimeSeriesDataPointStore<ActivityModel, NumberDataPointModel> {
+    sort(models: ActivityModel[]) {
         return sortActivities(models);
     }
 
-    createDataPoint(model: IActivity, timingId: string): ITimeSeriesNumberDataPoint {
-      return new NumberDataPointDto({ cid: model.id, interval: model.dataPointConfig.interval, tid: timingId });
+    createDataPoint(model: ActivityModel, timingId: string): NumberDataPointModel {
+      return new NumberDataPointModel({ cid: model.id, interval: model.dataPointConfig.interval, tid: timingId });
     }
 
-    getHabitsByCalendarInterval(interval: CalendarIntervalEnum, filter?: ActivityFilter): IHabit[] {
+    getHabitsByCalendarInterval(interval: CalendarIntervalEnum, filter?: ActivityFilter): HabitModel[] {
         return this.filterModels(entry => {
           return entry.type === ActivityType.Habit
           && entry.dataPointConfig.interval === interval
@@ -23,8 +23,8 @@ export class ActivityDataPointStore extends TimeSeriesDataPointStore<IActivity, 
         })
     }
 
-    getTasksByCalendarInterval(interval: CalendarIntervalEnum, timingId: string, filter?: ActivityFilter): ITask[] {
-        return <ITask[]> this.filterModels(entry => {
+    getTasksByCalendarInterval(interval: CalendarIntervalEnum, timingId: string, filter?: ActivityFilter): TaskModel[] {
+        return <TaskModel[]> this.filterModels(entry => {
             return isTask(entry)
               && entry.dataPointConfig.interval === interval
               && (!entry.done || entry.done === timingId)

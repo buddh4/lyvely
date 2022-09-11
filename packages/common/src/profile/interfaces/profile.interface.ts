@@ -1,5 +1,3 @@
-import { ITag } from '../../tags';
-
 export enum ProfileType {
   User,
   Group,

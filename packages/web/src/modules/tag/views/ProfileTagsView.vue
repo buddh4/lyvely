@@ -6,7 +6,7 @@ import Button from "@/modules/ui/components/button/Button.vue";
 import Icon from "@/modules/ui/components/icon/Icon.vue";
 import EditTagModal from "@/modules/tag/components/EditTagModal.vue";
 import { useEditTagStore } from "@/modules/tag/stores/editTagStore";
-import { ITag, UpdateTagDto, CreateTagDto, TagFilter } from "@lyvely/common";
+import { TagModel, UpdateTagDto, CreateTagDto, TagFilter } from "@lyvely/common";
 import ListPage from "@/modules/ui/components/layout/ListPage.vue";
 import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import FloatingAddButton from "@/modules/ui/components/button/FloatingAddButton.vue";
@@ -20,7 +20,7 @@ const editTagStore = useEditTagStore();
 const {setEditModel, setCreateModel} = editTagStore;
 const tags = computed(() => filter.value.apply(profileStore.profile?.tags));
 
-const setEditTag = (tag: ITag) => {
+const setEditTag = (tag: TagModel) => {
   setEditModel(tag.id, new UpdateTagDto(tag))
 }
 
@@ -34,15 +34,15 @@ function focusSearch() {
   search.value?.focus();
 }
 
-function archive(tag: ITag) {
+function archive(tag: TagModel) {
   editTagStore.archiveModel(tag.id, tag);
 }
 
-function unArchive(tag: ITag) {
+function unArchive(tag: TagModel) {
   editTagStore.unArchiveModel(tag.id, tag);
 }
 
-function confirmArchive(tag: ITag) {
+function confirmArchive(tag: TagModel) {
   return tag.archived ? {'text': 'tags.unarchive.confirm.text'} : {'text': 'tags.archive.confirm.text'};
 
 }

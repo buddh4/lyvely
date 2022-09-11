@@ -1,28 +1,5 @@
-import { IContent } from '../../content';
-import { Sortable } from '../../model';
 import { CalendarIntervalEnum } from '../../calendar';
-import { DataPointInputType, DataPointValueType } from './data-point.interface';
-import { UserAssignmentStrategy } from "../../user";
-
-export interface ITimeSeriesContent<E extends IDataPointConfig = IDataPointConfig, TID = any> extends IContent<TID>, Sortable {
-  dataPointConfig: E;
-  dataPointConfigHistory?: IDataPointConfigRevision[]
-  userStrategy: UserAssignmentStrategy;
-  sortOrder: number;
-}
-
-export type INumberTimeSeriesContent<TID = TObjectId> = ITimeSeriesContent<INumberDataPointConfig, TID>;
-
-export interface IDataPoint {
-  id: string,
-  pid: TObjectId,
-  cid: TObjectId,
-  uid?: TObjectId,
-  interval: CalendarIntervalEnum,
-  tid: string,
-  date: Date,
-}
-
+import { DataPointInputType, DataPointValueType } from "../models";
 
 export interface IDataPointConfig {
   interval: CalendarIntervalEnum,

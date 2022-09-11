@@ -1,2 +1,2 @@
-export * from './content.interface'
-export * from './content.filter'
+export * from './interfaces'
+export * from './models'

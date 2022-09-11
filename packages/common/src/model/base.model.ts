@@ -7,7 +7,7 @@ export type DocumentMock<T> = {
 }
 
 export abstract class BaseModel<T> {
-    constructor(obj?: Partial<T>, options?: { sanitize: boolean }) {
+    constructor(obj?: Partial<T>) {
         if(obj) {
           Object.assign(this, obj);
         }
@@ -23,10 +23,10 @@ export abstract class DocumentModel<T extends DocumentMock<T>> extends BaseModel
     @Transform(({ value, obj }) => obj._id?.toString() || value)
     id: string;
 
-    constructor(obj?: Partial<T>, options?: { sanitize: boolean }) {
+    constructor(obj?: Partial<T>) {
         if (obj && 'toJSON' in obj  && typeof obj.toJSON === 'function') {
             obj = obj.toJSON();
         }
-        super(obj, options);
+        super(obj);
     }
 }

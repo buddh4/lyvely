@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { ProfileDocument } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { UserDocument } from '../../users';
-import { ActivityType, HabitDto, CalendarIntervalEnum, CreateHabitDto, IHabit } from '@lyvely/common';
+import { ActivityType, CalendarIntervalEnum, CreateHabitDto, HabitModel } from '@lyvely/common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit } from '../schemas';
 import { ActivityTestDataUtil,  createActivityTestingModule } from './utils/activities.test.utils';
@@ -41,16 +41,16 @@ describe('Activities DAO', () => {
     await closeInMongodConnection('activities service');
   });
 
-  async function createHabit(data?: Partial<CreateHabitDto>, overwrite?: Partial<IHabit>): Promise<Habit> {
+  async function createHabit(data?: Partial<CreateHabitDto>, overwrite?: Partial<HabitModel>): Promise<Habit> {
     const { user, profile } = await testData.createUserAndProfile();
     const content = await activityData.createHabit(user, profile, data, overwrite);
     return await activitiesDao.findByProfileAndId(profile, content._id);
   }
 
-  describe('HabitDto', () => {
+  describe('HabitModel', () => {
     it('object id translation', async () => {
       const search = await createHabit();
-      const dto = instanceToPlain(new HabitDto(search));
+      const dto = instanceToPlain(new HabitModel(search));
       expect(dto.id).not.toBeFalsy();
       expect(dto.id).toEqual(search._id.toString());
     });
@@ -65,7 +65,7 @@ describe('Activities DAO', () => {
         sortOrder: 3
       });
 
-      const model = instanceToPlain(new HabitDto(search));
+      const model = instanceToPlain(new HabitModel(search));
       expect(model.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
       expect(model.title).toEqual('c1');
       expect(model.text).toEqual('Test description');
@@ -77,7 +77,7 @@ describe('Activities DAO', () => {
     // TODO: test tags
     it('empty tags', async () => {
       const search = await createHabit();
-      const dto = instanceToPlain(new HabitDto(search));
+      const dto = instanceToPlain(new HabitModel(search));
       expect(dto.categories).toEqual([]);
     });
 
@@ -89,7 +89,7 @@ describe('Activities DAO', () => {
         score: 5
       });
 
-      const dto = instanceToPlain(new HabitDto(search)) as HabitDto;
+      const dto = instanceToPlain(new HabitModel(search)) as HabitModel;
       const dataPointConfig = dto.dataPointConfig as NumberDataPointConfig;
       expect(dataPointConfig).toBeDefined();
       expect(dataPointConfig.min).toEqual(2);

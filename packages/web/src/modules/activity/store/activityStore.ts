@@ -3,16 +3,16 @@ import { Status, useStatus } from '@/store/status';
 import {
   ActivityDataPointStore,
   ActivityFilter,
-  IActivity,
   LoadedTimingIdStore,
   CalendarIntervalEnum,
+  ActivityModel,
   ActivityType
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import activityRepository from '@/modules/activity/repositories/activity.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
-import { ref, watch,toRefs, nextTick } from 'vue';
+import { ref, watch,toRefs } from 'vue';
 import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
 import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
 
@@ -38,7 +38,7 @@ export const useActivityStore = defineStore('activity', () => {
 
   function getActivities(type: ActivityType, interval: CalendarIntervalEnum) {
     filter.value.setOption('type', type);
-    return cache.value.getModelsByIntervalFilter(interval, filter.value);
+    return cache.value.getModelsByIntervalFilter(interval, filter.value as ActivityFilter);
   }
 
   watch(profile, async (newProfile, oldProfile) => {
@@ -84,17 +84,17 @@ export const useActivityStore = defineStore('activity', () => {
     }
   }
 
-  async function archiveActivity(activity: IActivity) {
+  async function archiveActivity(activity: ActivityModel) {
     await activityRepository.archive(activity.id);
     activity.archived = true;
   }
 
-  async function unarchiveActivity(activity: IActivity) {
+  async function unarchiveActivity(activity: ActivityModel) {
     await activityRepository.unarchive(activity.id);
     activity.archived = false;
   }
 
-  async function move(moveEvent: MoveActivityEvent, from?: IActivity[], to?: IActivity[]) {
+  async function move(moveEvent: MoveActivityEvent, from?: ActivityModel[], to?: ActivityModel[]) {
     if(!from || !to) {
       console.assert(!!from && !!to, 'Unknown interval set on move event');
       return;

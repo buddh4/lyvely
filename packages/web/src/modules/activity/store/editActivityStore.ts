@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ActivityType, getCreateModelByActivityType, UpdateHabitDto,
-  UpdateTaskDto, getEditModelByActivity, IActivity,
+  UpdateTaskDto, getEditModelByActivity, ActivityModel,
   CalendarIntervalEnum, UpdateHabitResponseDto, EditTaskResponseDto, isTask } from '@lyvely/common';
 import habitsRepository from '@/modules/activity/repositories/habits.repository';
 import tasksRepository from '@/modules/activity/repositories/tasks.repository';
@@ -39,7 +39,7 @@ export const useActivityEditStore = defineStore('activityEdit', () => {
     return (state.isCreate.value) ? `activities.${type}s.create.title` : `activities.${type}s.edit.title`
   });
 
-  function setEditActivity(activity: IActivity) {
+  function setEditActivity(activity: ActivityModel) {
     const model = getEditModelByActivity(activity);
     model.tagNames = useProfileStore().getTags().filter(tag => activity.tagIds.includes(tag.id)).map(tag => tag.name);
     state.setEditModel(activity.id, model);

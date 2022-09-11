@@ -95,8 +95,8 @@ describe('Base Model', () => {
         subModel: new TestBaseDto({
           value: 10,
           secret: 'Test'
-        }, { sanitize: false })
-      }, { sanitize: false });
+        })
+      });
       expect(baseModel.subModel.secret).toBeDefined()
     });
 
@@ -140,7 +140,7 @@ describe('Base Model', () => {
     });
 
     it('include exposed field if sanitize is false', async () => {
-      const baseModel = new TestDocumentDto({ secret: 'Test' }, { sanitize: false });
+      const baseModel = new TestDocumentDto({ secret: 'Test' });
       expect(baseModel.secret).toBeDefined();
     });
 

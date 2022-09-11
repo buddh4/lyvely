@@ -3,7 +3,7 @@ import typescript from '@rollup/plugin-typescript';
 
 const excludes = ['tests', 'index.ts'];
 const modules = fs.readdirSync('./src').filter(d => !excludes.includes(d));
-const bundles = modules.reduce((bundles, module) => {
+let bundles = modules.reduce((bundles, module) => {
   bundles[module] = `src/${module}/index.ts`;
   return bundles;
 }, {

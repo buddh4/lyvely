@@ -2,7 +2,7 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { DocumentModel } from '../../model';
 import { ProfileType, ProfileVisibilityLevel } from '../interfaces';
 import { IsArray, IsEnum, IsInt, IsString, Min, IsOptional } from 'class-validator';
-import { TagDto, ITag } from '../../tags';
+import { TagModel } from '../../tags';
 
 @Exclude()
 export class ProfileModel extends DocumentModel<ProfileModel> {
@@ -39,7 +39,7 @@ export class ProfileModel extends DocumentModel<ProfileModel> {
   imageHash?: string;
 
   @Expose()
-  @Type(() => TagDto)
+  @Type(() => TagModel)
   @IsArray()
-  tags: ITag[];
+  tags: TagModel[];
 }

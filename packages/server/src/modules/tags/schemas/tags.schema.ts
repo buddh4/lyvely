@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../../core/db/base.entity';
-import { ITag, REGEX_HEX_COLOR } from '@lyvely/common';
+import { TagModel, REGEX_HEX_COLOR } from '@lyvely/common';
 import randomColor from "randomcolor";
+import { PropertiesOf } from "@lyvely/common/src";
 
 @Schema()
-export class Tag extends BaseEntity<Tag> implements ITag {
+export class Tag extends BaseEntity<Tag> implements PropertiesOf<TagModel> {
   @Prop({ required: true })
   name: string;
 

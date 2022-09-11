@@ -1,5 +1,5 @@
 import { PropertiesOf } from "../../util";
-import { ProfileModel } from "../dtos";
+import { ProfileModel } from "../models";
 
 export interface IProfileRelationUserInfo {
   displayName: string;
