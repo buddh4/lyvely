@@ -31,5 +31,6 @@ export class ContentModel<T extends IContent = IContent> extends DocumentModel<T
     super(obj);
     // Not sure in which case we need this, was taken from activity dto...
     this.archived = !!this.archived;
+    this.tagIds = this.tagIds || [];
   }
 }

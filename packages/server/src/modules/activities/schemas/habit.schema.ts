@@ -12,7 +12,7 @@ import {
 import { assureObjectId } from "../../../core/db/db.utils";
 import { cloneDeep } from "lodash";
 import { applyValidationProperties } from "@lyvely/common";
-import { PropertiesOf } from "@lyvely/common/src";
+import { PropertiesOf } from "@lyvely/common";
 
 export type HabitDocument = Habit & ContentDocument;
 

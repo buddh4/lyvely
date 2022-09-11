@@ -8,12 +8,12 @@ import { IsMongoId, IsOptional } from 'class-validator';
 export abstract class DataPointModel<E extends DataPointModel = any> extends DocumentModel<E> {
   @Expose()
   @IsMongoId()
-  cid: TObjectId;
+  cid: string|TObjectId;
 
   @Expose()
   @IsMongoId()
   @IsOptional()
-  uid?: TObjectId;
+  uid?: string|TObjectId;
 
   @Expose()
   date: Date;

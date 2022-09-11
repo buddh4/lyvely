@@ -1,4 +1,4 @@
-import { isSameDay, UserAssignmentStrategy, ITimeSeriesContent, getNumberEnumValues   , IDataPointConfig } from '@lyvely/common';
+import { isSameDay, UserAssignmentStrategy, getNumberEnumValues   , IDataPointConfig } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { Content, ContentEntity } from '../../../modules/content';
 import {
@@ -7,9 +7,10 @@ import {
   DefaultDataPointConfigSchema,
 } from './config';
 import { EntityType } from '../../../core/db/base.entity';
+import { TimeSeriesContentModel } from "@lyvely/common";
 
 type TimeSeriesContentEntity = ContentEntity & EntityType<TimeSeriesContent>;
-export type ITimeSeriesContentEntity<TDataPointConfig extends IDataPointConfig = DefaultDataPointConfig> = ITimeSeriesContent<TDataPointConfig>
+export type ITimeSeriesContentEntity<TDataPointConfig extends IDataPointConfig = DefaultDataPointConfig> = TimeSeriesContentModel<TDataPointConfig>
 
 /**
  * This class serves as base class for all time series content types and schemas. A subclass usually overwrites the

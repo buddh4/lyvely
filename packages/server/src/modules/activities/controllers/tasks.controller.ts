@@ -13,13 +13,13 @@ import {
   UpdateTaskStateModel,
   UpdateTaskStateResultDto,
   UpdateTaskDto,
-  TaskDto,
- EditTaskResponseDto, TagDto } from '@lyvely/common';
+ EditTaskResponseDto, TaskModel } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
 import { ContentController, ContentType, ProfileContentRequest } from '../../content';
 import { ProfileRequest } from "../../../core/types";
 import { isTaskContent } from "../utils/activity.utils";
 import { EntityNotFoundException } from "../../../core/exceptions";
+import { TagModel } from "@lyvely/common";
 
 @ContentController('tasks')
 // TODO: implement feature registration @Feature('content.activities.tasks')
@@ -40,8 +40,8 @@ export class TasksController {
     }
 
     return new EditTaskResponseDto({
-      model: new TaskDto(activity),
-      tags: profile.getNewTags().map(tag => new TagDto(tag))
+      model: new TaskModel(activity),
+      tags: profile.getNewTags().map(tag => new TagModel(tag))
     });
   }
 
@@ -57,8 +57,8 @@ export class TasksController {
     await this.tasksService.updateContent(profile, user, content, content, update.tagNames);
 
     return new EditTaskResponseDto({
-      model: new TaskDto(content),
-      tags: profile.getNewTags().map(tag => new TagDto(tag))
+      model: new TaskModel(content),
+      tags: profile.getNewTags().map(tag => new TagModel(tag))
     });
   }
 

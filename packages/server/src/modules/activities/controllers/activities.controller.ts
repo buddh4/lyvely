@@ -12,16 +12,14 @@ import {
 import {
   ActivityRangeResponseDto,
   DataPointIntervalFilter,
-  TaskDto, MoveAction, SortResult } from '@lyvely/common';
-
-import { Type } from '@nestjs/common'
-
+  MoveAction, SortResult } from '@lyvely/common';
 import { ActivitiesService } from '../services/activities.service';
 import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '../../content';
 import { Activity } from '../schemas';
 import { ProfileRequest } from '../../../core/types';
 import { isTaskContent } from "../utils/activity.utils";
 import { Policies } from "../../policies/decorators/policies.decorator";
+import { TaskModel } from "@lyvely/common";
 
 @ContentController('activities')
 // TODO: implement feature registration @Feature('activities')
@@ -50,13 +48,12 @@ export class ActivitiesController extends AbstractContentController<Activity> {
     const result = new ActivityRangeResponseDto();
     activities.forEach(activity => {
       if(isTaskContent(activity)) {
-        const dto = new TaskDto(activity);
+        const dto = new TaskModel(activity);
         dto.done = activity.getDoneBy(user)?.tid;
         result.addActivity(dto);
       } else {
         result.addActivity(activity);
       }
-
     });
 
     result.addDataPoints(dataPoints.map((value) => value.createDto()));

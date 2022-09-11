@@ -13,7 +13,7 @@ import { TimeSeriesContent } from "./time-series-content.schema";
 import { User } from "../../../modules/users";
 import { Profile } from "../../../modules/profiles";
 import { assureObjectId } from "../../../core/db/db.utils";
-import { DataPointModel } from "@lyvely/common/src";
+import { DataPointModel } from "@lyvely/common";
 
 type DataPointEntity = DataPointModel & { _id: TObjectId }
 

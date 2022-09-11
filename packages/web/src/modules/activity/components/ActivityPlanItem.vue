@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from "@/modules/activity/components/ItemCheckboxList.vue";
-import { ActivityModel, ActivityType, TaskDto } from '@lyvely/common';
+import { ActivityModel, ActivityType, TaskModel } from '@lyvely/common';
 import { MoveActivityEvent, useActivityStore } from '@/modules/activity/store/activityStore';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -36,7 +36,7 @@ onMounted(async () => {
 });
 
 const selection = computed({
-  get: () => (props.model instanceof TaskDto) ? +!!props.model.done : dataPoint.value.value,
+  get: () => (props.model instanceof TaskModel) ? +!!props.model.done : dataPoint.value.value,
   set: (selection: number) => {
     if (props.model.type === ActivityType.Habit) {
       habitStore.updateDataPoint(dataPoint.value, selection)

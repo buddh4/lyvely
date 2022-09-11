@@ -11,7 +11,7 @@ import {
   Put
 } from '@nestjs/common';
 import { ProfileRequest } from "../../../core/types";
-import { UpdateTagDto, TagDto, CreateTagDto } from "@lyvely/common";
+import { UpdateTagDto, TagModel, CreateTagDto } from "@lyvely/common";
 import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
 import { ServiceException } from "../../../core/exceptions";
 import { Tag } from "../../tags";
@@ -35,7 +35,7 @@ export class ProfileTagsController {
       throw new ServiceException();
     }
 
-    return new TagDto(profile.getTagByName(dto.name));
+    return new TagModel(profile.getTagByName(dto.name));
   }
 
   @Put(':id')
@@ -46,7 +46,7 @@ export class ProfileTagsController {
     if(!tag) throw new NotFoundException();
 
     await this.tagService.updateTag(profile, tag, dto);
-    return new TagDto(tag);
+    return new TagModel(tag);
   }
 
   @Post(':id/archive')

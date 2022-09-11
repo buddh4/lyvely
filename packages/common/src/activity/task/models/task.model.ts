@@ -4,19 +4,16 @@ import { IsEnum } from 'class-validator';
 import { ActivityModel } from "../../models";
 import { ContentModel } from "../../../content";
 
-@Exclude()
+@Expose()
 export class TaskModel extends ActivityModel<TaskModel> {
-  @Expose()
   done?: string;
 
-  @Expose()
   @IsEnum(ActivityType)
   type: string = ActivityType.Task;
 }
 
-@Exclude()
+@Expose()
 export class TaskWithUsersModel extends TaskModel {
-  @Expose()
   doneBy?: UserDoneModel[];
 }
 

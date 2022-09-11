@@ -8,7 +8,7 @@ import {
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfileMembershipDto, MembershipDto , TagDto, CreateProfileDto, UserToProfileRelationDto } from "@lyvely/common";
+import { ProfileMembershipDto, MembershipDto , TagModel, CreateProfileDto, UserToProfileRelationDto } from "@lyvely/common";
 import { ProfilesService } from '../services';
 import { ProfileRequest } from "../../../core/types";
 import { ProfileRelationDto } from "@lyvely/common";
@@ -48,8 +48,8 @@ export class ProfilesController {
   }
 
   @Get(':cid/tags')
-  async getCategories(@Request() req: ProfileRequest): Promise<TagDto[]> {
+  async getCategories(@Request() req: ProfileRequest): Promise<TagModel[]> {
     const { profile } = req;
-    return profile.tags.map((category) => new TagDto(category));
+    return profile.tags.map((category) => new TagModel(category));
   }
 }

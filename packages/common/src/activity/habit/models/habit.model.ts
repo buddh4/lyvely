@@ -1,12 +1,11 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { ActivityType } from "../../models";
 import { IsEnum } from 'class-validator';
 import { ContentModel } from "../../../content";
 import { ActivityModel } from "../../models";
 
-@Exclude()
+@Expose()
 export class HabitModel extends ActivityModel<HabitModel> {
-  @Expose()
   @IsEnum(ActivityType)
   type: string = ActivityType.Habit;
 }

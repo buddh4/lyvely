@@ -1,9 +1,8 @@
 import { IsEnum, IsNumber, } from 'class-validator';
 import { CalendarIntervalEnum } from '../../calendar';
 import type { INumberDataPointConfig } from '../../time-series';
-import { DataPointInputStrategy, DataPointInputType, DataPointValueType } from "../../time-series";
+import { DataPointInputStrategy, DataPointInputType, DataPointValueType, TimeSeriesContentModel } from "../../time-series";
 import { Expose } from 'class-transformer';
-import { TimeSeriesContentModel } from "../../time-series/models/time-series-content.model";
 
 export enum ActivityType {
   Task = 'Task',

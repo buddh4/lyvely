@@ -8,7 +8,7 @@ import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../../
 import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
 import { applyValidationProperties, CreateTaskDto, UpdateTaskDto } from "@lyvely/common";
 import { cloneDeep } from "lodash";
-import { PropertiesOf, TaskWithUsersModel } from "@lyvely/common/src";
+import { PropertiesOf, TaskWithUsersModel } from "@lyvely/common";
 
 export type TaskDocument = Task & mongoose.Document;
 

@@ -1,5 +1,5 @@
 import repository from "@/repository";
-import { UpdateTaskStateModel, UpdateTaskDto, ITask, UpdateTaskStateResultDto , CalendarDate, formatDate , EditTaskResponseDto } from '@lyvely/common';
+import { UpdateTaskStateModel, UpdateTaskDto, TaskModel, UpdateTaskStateResultDto , CalendarDate, formatDate , EditTaskResponseDto } from '@lyvely/common';
 
 const resource = "tasks";
 
@@ -8,7 +8,7 @@ export default {
     return repository.post<EditTaskResponseDto>(`${resource}`, activitiy);
   },
 
-  async setDone(task: ITask, date: CalendarDate) {
+  async setDone(task: TaskModel, date: CalendarDate) {
     return repository.post<UpdateTaskStateResultDto>(
       `${resource}/${task.id}/done`,
       new UpdateTaskStateModel({
@@ -17,7 +17,7 @@ export default {
     );
   },
 
-  async setUndone(task: ITask, date: CalendarDate) {
+  async setUndone(task: TaskModel, date: CalendarDate) {
     return repository.post<UpdateTaskStateResultDto>(
       `${resource}/${task.id}/undone`,
       new UpdateTaskStateModel({
