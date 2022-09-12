@@ -2,6 +2,7 @@ import { Document, Types, UpdateQuery } from 'mongoose';
 import { InternalServerErrorException } from '@nestjs/common';
 import { BaseEntity } from './base.entity';
 import { isValidObjectId, assignRawDataTo } from '@lyvely/common';
+import { isObjectId } from "@lyvely/common";
 
 export type EntityIdentity<T extends BaseEntity<any>> = T | Types.ObjectId | string | Document & T;
 
@@ -66,9 +67,7 @@ export function applyPush<T>(model: T, pushData: { [ key in keyof T ]?: any }): 
 type ApplyOptions = { maxDepth?: number, strict?: boolean }
 
 export function applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, { maxDepth = 100, strict = false } = {}): T {
-  return assignRawDataTo(model, data, { maxDepth, strict, transform: (value) => {
-    return value instanceof Types.ObjectId ? value : undefined;
-  }});
+  return assignRawDataTo(model, data, { maxDepth, strict });
 }
 
 export function assureStringId(obj: any): string {

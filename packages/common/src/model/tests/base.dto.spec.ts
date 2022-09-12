@@ -1,5 +1,5 @@
 import { DocumentModel } from '../../index';
-import { Exclude, Expose, Transform } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 class MockObjectId {
   constructor(value) {

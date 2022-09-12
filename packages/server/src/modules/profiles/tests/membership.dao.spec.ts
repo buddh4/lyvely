@@ -4,7 +4,7 @@ import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { MembershipsDao } from '../daos';
 import {
   BaseMembershipRole,
-  BaseUserProfileRelationType
+  BaseUserProfileRelationType, ProfileRelationUserInfo
 } from '../schemas';
 import { ProfileType } from '@lyvely/common';
 import { createActivityTestingModule } from '../../activities/tests/utils/activities.test.utils';
@@ -36,7 +36,12 @@ describe('MembershipDao', () => {
 
       const membership = await membershipDao.addMembership(profile, member);
       expect(membership).toBeDefined();
+      expect(membership.userInfo).toBeDefined();
+      expect(membership.userInfo.displayName).toEqual(member.username);
+      expect(membership.userInfo.email).toEqual(member.email);
+      expect(membership.userInfo instanceof ProfileRelationUserInfo).toEqual(true);
       expect(membership.uid).toEqual(member._id);
+      expect(membership.oid).toEqual(profile.oid);
       expect(membership.pid).toEqual(profile._id);
       expect(membership.type).toEqual(BaseUserProfileRelationType.Membership);
       expect(membership.role).toEqual(BaseMembershipRole.Member);
@@ -61,7 +66,6 @@ describe('MembershipDao', () => {
       expect(memberships.length).toEqual(1);
 
       const [membership] = memberships;
-
       expect(membership.uid.toString()).toEqual(user.id);
       expect(membership.pid.toString()).toEqual(profile.id);
       expect(membership.type).toEqual(BaseUserProfileRelationType.Membership);

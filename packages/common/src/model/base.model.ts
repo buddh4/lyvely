@@ -1,5 +1,5 @@
-import { Transform, Expose } from "class-transformer";
-import { assignRawDataTo } from "../util/object.util";
+import { Transform, Expose, Exclude } from "class-transformer";
+import { assignRawDataTo, isObjectId } from "../util";
 
 export type DocumentMock<T> = {
     _id?: any
@@ -24,6 +24,9 @@ export abstract class DocumentModel<T extends DocumentMock<T>> extends BaseModel
     @Transform(({ value, obj }) => obj._id?.toString() || value)
     id: string;
 
+    @Exclude()
+    _id?: TObjectId;
+
     constructor(obj?: Partial<T>) {
         if(!obj) {
           super();
@@ -39,7 +42,5 @@ export abstract class DocumentModel<T extends DocumentMock<T>> extends BaseModel
         }
 
         super(obj);
-
-        delete this['_id'];
     }
 }

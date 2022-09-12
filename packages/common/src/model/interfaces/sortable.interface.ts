@@ -18,7 +18,6 @@ export class SortResult {
       this.id = obj.id;
       this.sortOrder = obj.sortOrder;
     }
-
   }
 }
 
