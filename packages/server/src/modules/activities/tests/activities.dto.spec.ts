@@ -78,7 +78,7 @@ describe('Activities DAO', () => {
     it('empty tags', async () => {
       const search = await createHabit();
       const dto = instanceToPlain(new HabitModel(search));
-      expect(dto.categories).toEqual([]);
+      expect(dto.tagIds).toEqual([]);
     });
 
     it('dataPointConfig', async () => {

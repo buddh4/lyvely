@@ -3,7 +3,7 @@ import { Activity, Habit, HabitDataPoint } from '../schemas';
 import { User } from '../../users';
 import { Profile } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
-import { EntityIdentity } from '../../../core/db/db.utils';
+import { assureObjectId, EntityIdentity } from '../../../core/db/db.utils';
 import { AbstractContentService } from '../../content';
 import { HabitDataPointService } from './habit-data-point.service';
 import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum, SortResult } from "@lyvely/common";
@@ -70,14 +70,25 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    * @param interval
    * @throws ForbiddenServiceException
    */
-  async sort(profile: Profile, user: User, activity: Activity, interval?: CalendarIntervalEnum, attachToId?: string): Promise<SortResult[]> {
+  async sort(profile: Profile, user: User, activity: Activity, interval?: CalendarIntervalEnum, attachToId?: EntityIdentity<Activity>): Promise<SortResult[]> {
     interval = interval ?? activity.dataPointConfig.interval;
 
-    const attachTo = attachToId ? await this.contentDao.findByProfileAndId(profile, attachToId) : undefined;
+    const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
+
+    if(attachToObjectId && activity._id.equals(attachToObjectId)) {
+      return Promise.resolve([]);
+    }
+
+    const attachTo = attachToObjectId ? await this.contentDao.findByProfileAndId(profile, attachToObjectId) : undefined;
 
     if(attachTo && activity.type !== attachTo.type) {
       throw new IntegrityException('Can not merge habit with task');
     }
+
+    interval = attachTo
+      ? attachTo.dataPointConfig.interval
+      : interval ? interval
+      : activity.dataPointConfig.interval;
 
     if(interval !== activity.dataPointConfig.interval) {
       // Create new revision for activity in case the latest revision was not today

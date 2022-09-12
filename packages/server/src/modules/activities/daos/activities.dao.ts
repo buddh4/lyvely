@@ -106,7 +106,6 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
     const updates:  { id: EntityIdentity<Activity>, update: UpdateQuerySet<Activity> }[] = [];
     const result: { id: string, sortOrder: number }[] = [];
 
-
     activities.forEach((activity, index) => {
       if(activity.sortOrder !== index) {
         updates.push({ id: activity._id, update: { sortOrder: index } });
