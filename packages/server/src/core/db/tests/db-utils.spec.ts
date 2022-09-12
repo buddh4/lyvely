@@ -48,9 +48,9 @@ describe('DbUtils', () => {
       expect(model.sub.sub instanceof SubModel).toEqual(true);
     });
 
-    it('do not apply unknown field', () => {
+    it('do not apply unknown field if strict = true', () => {
       const model = new TestModel({ sub: new SubModel({ sub: new SubModel({ fieldA: 'subA' }) }) });
-      applyRawDataTo(model, <any> { doesNotExist: 'whatever' });
+      applyRawDataTo(model, <any> { doesNotExist: 'whatever' }, { strict: true });
       expect((<any> model).doesNotExist).toBeUndefined();
     });
   });

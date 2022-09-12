@@ -4,6 +4,7 @@ import { CalendarIntervalEnum } from "../../../calendar";
 import { BaseModel } from "../../../model";
 import { isActivity } from "../../models";
 import { ActivityModel } from "../../models";
+import { UserAssignmentStrategy } from "../../../user";
 
 @Exclude()
 export class UpdateTaskDto extends BaseModel<UpdateTaskDto> {
@@ -25,6 +26,11 @@ export class UpdateTaskDto extends BaseModel<UpdateTaskDto> {
   @IsOptional()
   @IsEnum(CalendarIntervalEnum)
   interval?: CalendarIntervalEnum;
+
+  @Expose()
+  @IsOptional()
+  @IsEnum(UserAssignmentStrategy)
+  userStrategy?: UserAssignmentStrategy;
 
   @Expose()
   @IsInt()

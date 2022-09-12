@@ -13,6 +13,7 @@ import {
 } from '../../profiles';
 import { EventEmitter2, EventEmitterModule  } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
+import { createBaseEntityInstance } from "../../../core/db/base.entity";
 
 @Injectable()
 export class TestDataUtils {
@@ -75,25 +76,29 @@ export class TestDataUtils {
   }
 
   async createGroupProfile(owner: User, name?: string, visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<Profile> {
-    const profile = await new this.ProfileModel({
+    const profile = await this._createProfile(new Profile({
       createdBy: owner._id,
       name: name || owner.username,
       visibility: visibility,
       type: ProfileType.Group
-    }).save();
+    }));
 
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 
     return new Profile(profile);
   }
 
+  private async _createProfile(profile: Profile) {
+    return createBaseEntityInstance(Profile, await new this.ProfileModel(profile).save());
+  }
+
   async createProfile(owner: User, name?: string, type: ProfileType = ProfileType.User, visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<Profile> {
-    const profile = await new this.ProfileModel({
+    const profile = await this._createProfile(new Profile({
       createdBy: owner._id,
       name: name || owner.username,
       visibility: visibility,
       type: type
-    }).save();
+    }));
 
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 

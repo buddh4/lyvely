@@ -7,15 +7,12 @@ import {
   TOKEN_PROFILE_ROLES_DEFINITION,
   ProfilePermissionsService
 } from '../services/profile-permissions.service';
-import { UserProfileRelations } from '../../profiles/models/profile-relations.model';
-import { Membership } from '../../profiles/schemas/profile-memberships.schema';
-import { BaseMembershipRole } from '../../profiles/schemas/user-profile-relations.schema';
-import { ProfileRolePermission } from '../../profiles/schemas/profile-permissions.schema';
+import { UserProfileRelations, Membership, BaseMembershipRole, ProfileRolePermission } from '../../profiles';
 import {
-  BaseProfilePermissionRole,
-  ContentVisibilityLevel
+  BaseProfilePermissionRole
 } from '../interfaces/profile-permissions.interface';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
+import { ContentVisibilityLevel } from '@lyvely/common'
 
 describe('ProfilePermissionsService', () => {
   let testingModule: TestingModule;

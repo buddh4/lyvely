@@ -1,4 +1,5 @@
 import { Transform, Expose } from "class-transformer";
+import { assignRawDataTo } from "../util/object.util";
 
 export type DocumentMock<T> = {
     _id?: any
@@ -9,7 +10,7 @@ export type DocumentMock<T> = {
 export abstract class BaseModel<T> {
     constructor(obj?: Partial<T>) {
         if(obj) {
-          Object.assign(this, obj);
+          assignRawDataTo(this, obj);
         }
 
         if('afterInit' in this) {
@@ -24,9 +25,21 @@ export abstract class DocumentModel<T extends DocumentMock<T>> extends BaseModel
     id: string;
 
     constructor(obj?: Partial<T>) {
+        if(!obj) {
+          super();
+          return;
+        }
+
         if (obj && 'toJSON' in obj  && typeof obj.toJSON === 'function') {
             obj = obj.toJSON();
         }
+
+        if('_id' in obj && typeof obj['_id'] === 'object') {
+          obj.id = obj['_id'].toString();
+        }
+
         super(obj);
+
+        delete this['_id'];
     }
 }

@@ -28,7 +28,10 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
     //model.dataPointConfig.strategy = update.inputStrategy ?? model.dataPointConfig.strategy;
 
     if (model.dataPointConfigRevisionCheck(updatedDataPointConfig)) {
-      model.pushDataPointConfigRevision(model.dataPointConfig);
+      const oldDataPointConfig = model.dataPointConfig;
+      model.dataPointConfig = updatedDataPointConfig;
+      model.pushDataPointConfigRevision(oldDataPointConfig);
+    } else {
       model.dataPointConfig = updatedDataPointConfig;
     }
 

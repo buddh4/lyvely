@@ -19,7 +19,6 @@ export const toProfileHome = async (to: RouteLocation, from: RouteLocation, next
 }
 
 export const loadProfile = async (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
-  console.log('asdfasdfasfasdf');
   const profileStore = useProfileStore();
 
   // params.pid === ':pid: when profile root or main root path is accessed

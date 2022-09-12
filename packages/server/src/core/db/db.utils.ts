@@ -1,7 +1,7 @@
 import { Document, Types, UpdateQuery } from 'mongoose';
 import { InternalServerErrorException } from '@nestjs/common';
 import { BaseEntity } from './base.entity';
-import { isValidObjectId } from '@lyvely/common';
+import { isValidObjectId, assignRawDataTo } from '@lyvely/common';
 
 export type EntityIdentity<T extends BaseEntity<any>> = T | Types.ObjectId | string | Document & T;
 
@@ -65,36 +65,11 @@ export function applyPush<T>(model: T, pushData: { [ key in keyof T ]?: any }): 
 
 type ApplyOptions = { maxDepth?: number, strict?: boolean }
 
-export function applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, { maxDepth = 100, strict = true } = {}): T {
-  return _applyRawDataTo(model, data, 0 , { maxDepth, strict });
+export function applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, { maxDepth = 100, strict = false } = {}): T {
+  return assignRawDataTo(model, data, { maxDepth, strict, transform: (value) => {
+    return value instanceof Types.ObjectId ? value : undefined;
+  }});
 }
-
-function _applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, level = 0, { maxDepth = 100, strict = true } = {}): T {
-  // TODO: support path
-
-  if(level > maxDepth) {
-    return model;
-  }
-
-  Object.keys(data).forEach(key => {
-    if(!Array.isArray(model) && (strict && !model.hasOwnProperty(key))) {
-      return;
-    }
-
-    if(Array.isArray(data[key])) {
-      model[key] = _applyRawDataTo([], data[key], level + 1, { maxDepth, strict });
-    } else if(data[key] instanceof Types.ObjectId) {
-      model[key] = data[key];
-    } else if(typeof data[key] === 'object' && typeof model[key] === 'object') {
-      model[key] = _applyRawDataTo(model[key], data[key], level + 1, { maxDepth, strict });
-    } else {
-      model[key] = data[key];
-    }
-  });
-
-  return model;
-}
-
 
 export function assureStringId(obj: any): string {
   if (!obj) {

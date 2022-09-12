@@ -7,7 +7,6 @@ import { Profile } from '../../../profiles';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitsDao } from '../../daos/habits.dao';
 import { User } from '../../../users';
-import { getObjectId } from "../../../test/utils/test.utils";
 
 describe('HabitService', () => {
   let habitService: HabitsService;
@@ -28,9 +27,10 @@ describe('HabitService', () => {
 
   const createHabit = async (user: User, profile: Profile, dto?: CreateHabitDto) => {
     dto = dto || {
+      max: 1,
       title: 'Do something!',
       score: 5,
-      tagIds: [],
+      tagNames: [],
       interval: CalendarIntervalEnum.Daily,
     };
 
@@ -80,21 +80,16 @@ describe('HabitService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
 
-      await habitService.updateHabit(profile, user, habit, Habit.create(
-          profile,
-          user,
-          new UpdateHabitDto({
-            title: 'Test',
-            text: 'Test description',
-            interval: CalendarIntervalEnum.Weekly,
-            max: 2,
-            score: 2,
-            min: 1,
-            optimal: 2,
-            tagNames: ['SomeCategory'],
-          }),
-        ),
-      );
+      await habitService.updateHabit(profile, user, habit, new UpdateHabitDto({
+        title: 'Test',
+        text: 'Test description',
+        interval: CalendarIntervalEnum.Weekly,
+        max: 2,
+        score: 2,
+        min: 1,
+        optimal: 2,
+        tagNames: ['SomeCategory']
+      }));
 
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
@@ -121,19 +116,14 @@ describe('HabitService', () => {
         score: 2,
       }));
 
-      await habitService.updateHabit(profile, user, habit, Habit.create(
-          profile,
-          user,
-          new UpdateHabitDto({
-            title: 'Test',
-            interval: CalendarIntervalEnum.Weekly,
-            max: 3,
-            min: 1,
-            optimal: 2,
-            score: 2,
-          }),
-        ),
-      );
+      await habitService.updateHabit(profile, user, habit, new UpdateHabitDto({
+        title: 'Test',
+        interval: CalendarIntervalEnum.Weekly,
+        max: 3,
+        min: 1,
+        optimal: 2,
+        score: 2,
+      }));
 
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
@@ -157,38 +147,25 @@ describe('HabitService', () => {
       score: 2,
     }));
 
-    const update = Habit.create(
-      profile,
-      user,
-      new UpdateHabitDto({
-        title: 'Test',
-        interval: CalendarIntervalEnum.Weekly,
-        max: 3,
-        min: 1,
-        optimal: 2,
-        score: 2,
-      }),
-    );
+    await habitService.updateHabit(profile, user, habit, new UpdateHabitDto({
+      title: 'Test',
+      interval: CalendarIntervalEnum.Weekly,
+      max: 3,
+      min: 1,
+      optimal: 2,
+      score: 2,
+    }));
 
-    habit = await habitService.updateHabit(profile, user, habit, update);
+    await habitService.updateHabit(profile, user, habit, new UpdateHabitDto({
+      title: 'Test',
+      interval: CalendarIntervalEnum.Weekly,
+      max: 4,
+      min: 1,
+      optimal: 2,
+      score: 2,
+    }));
 
-    const update2 = Habit.create(
-      profile,
-      user,
-      new UpdateHabitDto({
-        title: 'Test',
-        interval: CalendarIntervalEnum.Weekly,
-        max: 4,
-        min: 1,
-        optimal: 2,
-        score: 2,
-      }),
-    );
-
-    update.dataPointConfig.max = 2;
-    habit = await habitService.updateHabit(profile, user, habit, update2);
-
-    const search = await habitService.findByProfileAndId(profile, habit._id);
+    const search = await habitService.findByProfileAndId(profile, habit);
     expect(search).toBeDefined();
     expect(search.dataPointConfig.history).toBeDefined();
     expect(search.dataPointConfig.history.length).toEqual(1);

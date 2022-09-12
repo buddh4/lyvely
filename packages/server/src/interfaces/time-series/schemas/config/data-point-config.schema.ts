@@ -27,6 +27,14 @@ export abstract class DataPointConfig<TSettings extends DataPointSettings = Data
 
   history: TRevision[];
 
+  pushRevision(rev: TRevision) {
+    if(!this.history) {
+      this.history = [];
+    }
+
+    this.history.push(rev);
+  }
+
 
 
   /**

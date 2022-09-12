@@ -63,8 +63,7 @@ export class HabitsController extends AbstractContentController<Habit> {
       throw new EntityNotFoundException();
     }
 
-    Habit.applyUpdate(content, new UpdateHabitDto(update));
-    await this.contentService.updateContent(profile, user, content, content, update.tagNames);
+    await this.contentService.updateHabit(profile, user, content, update);
 
     return new UpdateHabitResponseDto({
       model: new HabitModel(content),

@@ -2,7 +2,7 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import {
   CheckboxNumberDataPointConfig, NumberTimeSeriesContent, SpinnerNumberDataPointConfig,
   TimeSeriesContent, TimeSeriesContentSchemaFactory,
-  DefaultDataPointConfigSchema
+  DefaultDataPointConfigSchema, DefaultDataPointConfig
 } from '../../schemas';
 import * as mongoose from 'mongoose';
 import { DataPointInputStrategy } from '@lyvely/common';
@@ -12,8 +12,8 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
   @Prop()
   someTestField: string;
 
-  pushDataPointConfigRevision(rev: TestTimeSeriesContent) {
-    // Not implemented
+  pushDataPointConfigRevision(rev: DefaultDataPointConfig) {
+    // Nothing todo
   }
 }
 
