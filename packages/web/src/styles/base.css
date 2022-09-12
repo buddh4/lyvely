@@ -1,5 +1,11 @@
 @tailwind base;
 
+html {
+    overflow: hidden;
+    overscroll-behavior-y:none;
+    height: 100%;
+}
+
 body {
     @apply bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-100;
     overflow: auto;
@@ -59,5 +65,25 @@ a {
 
 .attachment-l {
     @apply rounded-r-none;
+}
+
+.scrollbar-thin {
+    scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+    width:5px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: var(--elements-highlight);
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--color-secondary);
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--elements-main);
 }
 

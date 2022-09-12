@@ -5,10 +5,4 @@
 @import "modules/ui/components/form/styles/form.css";
 @import "styles/multiselect.css";
 
-html {
-  overflow: hidden;
-  overscroll-behavior-y:none;
-  height: 100%;
-}
-
 
