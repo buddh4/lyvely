@@ -9,7 +9,8 @@ import {
   ClientSession,
   ProjectionType
 } from 'mongoose';
-import { BaseEntity, createBaseEntityInstance } from './base.entity';
+import { BaseEntity } from './base.entity';
+import { createBaseEntityInstance } from "./db.utils";
 import { Inject } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';

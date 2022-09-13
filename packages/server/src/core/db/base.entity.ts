@@ -1,9 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
-import mongoose  from 'mongoose';
+import { Document } from 'mongoose';
 import { DeepPartial } from '@lyvely/common';
-import { assureStringId } from "./db.utils";
-
-type Constructor<T> = new (...args: any[]) => T;
 
 export type EntityType<C, ID = TObjectId> = C & IEntity<ID>;
 
@@ -33,20 +30,10 @@ export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
   public id: string;
 }
 
-export function createBaseEntityInstance<T>(constructor: Constructor<T>, data: DeepPartial<T>) {
-  const model = Object.create(constructor.prototype);
-  if(typeof model.init === 'function') {
-    model.init(data);
-  } else {
-    assignEntityData(model, data);
-  }
-  return model;
-}
-
-// Todo: Proper typing...
+// Note: We do not use db.utils.ts to prevent circular dependency...
 export function assignEntityData<T extends Record<string, any>, U>(instance: T, obj?: U) {
   if(obj) {
-    if(obj instanceof mongoose.Document) {
+    if(obj instanceof Document) {
       Object.assign(instance, obj.toObject());
     } else {
       Object.assign(instance, obj);
@@ -54,7 +41,7 @@ export function assignEntityData<T extends Record<string, any>, U>(instance: T, 
   }
 
   if(instance instanceof BaseEntity && instance._id && !instance.id) {
-    instance.id = assureStringId(instance._id);
+    instance.id = instance._id.toString();
   }
 
   return instance;

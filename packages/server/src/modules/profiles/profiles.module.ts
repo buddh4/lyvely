@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Profile, ProfileSchema,
+import {
+  Profile, ProfileSchema,
   UserProfileRelation, UserProfileRelationSchema,
-  Membership, MembershipSchema } from './schemas';
+  Membership, MembershipSchema, UserProfileSchema, GroupProfileSchema, OrganizationSchema
+} from './schemas';
 import { ProfilesService, ProfileTagsService } from './services';
 import { ProfilesController } from './controllers';
 import { UsersModule } from '../users';
@@ -15,9 +17,18 @@ import { ProfileEvents } from './profile.events';
 import { CoreModule } from '../../core/core.module';
 import { ProfileTagsController } from "./controllers/profile-tags.controller";
 import { ProfileRelationsController } from "./controllers/profile-relations.controller";
+import { ProfileType } from "@lyvely/common";
 
 export const ProfileModel = MongooseModule.forFeature([
-  { name: Profile.name, schema: ProfileSchema },
+  {
+    name: Profile.name,
+    schema: ProfileSchema,
+    discriminators: [
+      { name: ProfileType.User, schema: UserProfileSchema },
+      { name: ProfileType.Group, schema: GroupProfileSchema },
+      { name: ProfileType.Organization, schema: OrganizationSchema },
+    ]
+  },
   {
     name: UserProfileRelation.name,
     schema: UserProfileRelationSchema,

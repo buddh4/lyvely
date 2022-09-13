@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel } from '../../model';
-import { IsEnum, IsString, IsOptional } from 'class-validator';
+import { IsEnum, IsString, IsOptional, IsIn } from 'class-validator';
 import { ProfileType } from '../interfaces';
 
 @Exclude()

@@ -30,7 +30,7 @@ import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { assureObjectId, EntityIdentity } from '../../../../core/db/db.utils';
 import { ActivityScore, ActivityScoreSchema } from "../../schemas/activity-score.schema";
-import { assignEntityData, createBaseEntityInstance } from "../../../../core/db/base.entity";
+import { createBaseEntityInstance } from "../../../../core/db/db.utils";
 
 @Injectable()
 export class ActivityTestDataUtil extends TestDataUtils {

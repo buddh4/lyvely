@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Profile, DEFAULT_PROFILE_NAME, ProfileDocument } from '../schemas';
+import { Profile, ProfileDocument } from '../schemas';
 import mongoose, { Model } from 'mongoose';
 import { applyRawDataTo, assureObjectId, EntityData, EntityIdentity } from '../../../core/db/db.utils';
 import { User } from '../../users';
@@ -13,15 +13,6 @@ type UpsertProfile = { createdBy: EntityIdentity<User> } & Partial<EntityData<Pr
 @Injectable()
 export class ProfileDao extends AbstractDao<Profile> {
   @InjectModel(Profile.name) protected model: Model<ProfileDocument>;
-
-  async upsert(insert: UpsertProfile): Promise<Profile> {
-    insert.name = insert.name || DEFAULT_PROFILE_NAME;
-    return this.constructModel(await this.model.findOneAndUpdate(
-      { createdBy: assureObjectId<User>(insert.createdBy), name: insert.name },
-      { $setOnInsert: insert },
-      { upsert: true, new: true },
-    ).lean());
-  }
 
   async addTags(profile: Profile, tags: Tag[]) {
     tags.forEach(tag => { tag._id = tag._id || new mongoose.Types.ObjectId(); })

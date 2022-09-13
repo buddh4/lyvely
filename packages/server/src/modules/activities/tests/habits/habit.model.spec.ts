@@ -15,7 +15,7 @@ describe('Content Model', () => {
 
   beforeEach(async () => {
     user = new User({ _id: new mongoose.Types.ObjectId() });
-    profile = new Profile({ _id: new mongoose.Types.ObjectId() });
+    profile = new Profile(user, { _id: new mongoose.Types.ObjectId() });
     profile.tags = [new Tag({ _id: getObjectId('Test1'), name: 'Test1' })]
   });
 

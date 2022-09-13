@@ -1,49 +1,52 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { getDefaultLocale, UserDocument } from '../../users';
+import { getDefaultLocale, User } from '../../users';
 import  mongoose from 'mongoose';
 import { BaseEntity } from '../../../core/db/base.entity';
 import { Tag, TagSchema, } from '../../tags';
 import {
-  ProfileType,
   ProfileVisibilityLevel ,
   getNumberEnumValues,
   PropertiesOf,
-  ProfileModel
+  ProfileModel,
+  MIN_PROFILE_NAME_LENGTH,
+  MAX_PROFILE_NAME_LENGTH,
+  MAX_PROFILE_DESCRIPTION_LENGTH
 } from '@lyvely/common';
 
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-permissions.schema';
-import { Organization } from "../../organizations";
-import { assureObjectId } from "../../../core/db/db.utils";
+import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
+import { ProfileType } from "@lyvely/common";
 
 export type ProfileDocument = Profile & mongoose.Document;
-export const DEFAULT_PROFILE_NAME = 'default';
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Profile extends BaseEntity<Profile> implements PropertiesOf<ProfileModel> {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: TObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   oid?: TObjectId;
 
-  @Prop({ required: true, default: DEFAULT_PROFILE_NAME })
+  @Prop({ min: MIN_PROFILE_NAME_LENGTH, max: MAX_PROFILE_NAME_LENGTH, required: true })
   name: string;
 
-  // TODO: validate locale!
+  @Prop({ max: MAX_PROFILE_DESCRIPTION_LENGTH })
+  description: string;
+
+  // TODO: (integrity) validate locale!
   @Prop({ default: getDefaultLocale() })
   locale: string;
-
-  @Prop()
-  description: string;
 
   @Prop({ default: false })
   archived: boolean;
 
+  @Prop({ default: false })
+  hasOrg: boolean;
+
   @Prop({ required: true, default: 0 })
   score: number;
 
-  @Prop({ type: Number, required: true, enum: getNumberEnumValues(ProfileType), default: ProfileType.User })
   type: ProfileType;
 
   @Prop({ type: Number, required: true, enum: getNumberEnumValues(ProfileVisibilityLevel), default: ProfileVisibilityLevel.Member })
@@ -62,39 +65,31 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   updatedAt: Date;
 
-  constructor(obj?: Partial<Profile>)
-  constructor(organization?: Organization | Partial<Profile>, obj?: Partial<Profile>){
-    if(organization && !(organization instanceof Organization)) {
-      obj = organization;
-      organization = undefined;
-    }
-
+  constructor(createdBy: EntityIdentity<User>, obj?: Partial<Profile>){
     super(obj);
 
+    this.createdBy = assureObjectId(createdBy);
     this.visibility = this.visibility ?? ProfileVisibilityLevel.Member;
-    this.type = this.type ?? ProfileType.User;
-
-    if(!this._id) {
-      this._id = new mongoose.Types.ObjectId();
-    }
-
-    if(organization) {
-      this.oid = assureObjectId(organization as Organization);
-    }
 
     // We need to assign an oid even if this profile is not connected to an organizations for sharding and query index.
+    // This OID can later be used to create an organization out of this profile
     if(!this.oid) {
-      this.oid = this._id;
+      this.oid = new mongoose.Types.ObjectId();
+      this.hasOrg = false;
+    } else {
+      this.hasOrg = true;
     }
+
+    this.locale = this.locale || getDefaultLocale();
+  }
+
+  isOfType(type: ProfileType) {
+    return this.type === type;
   }
 
   afterInit() {
     super.afterInit();
     this.tags = this.tags?.map(category => (category instanceof Tag) ? category : new Tag(category)) || [];
-  }
-
-  isGroupProfile() {
-    return this.type === ProfileType.Group;
   }
 
   getTagByName(name: string) {
@@ -124,24 +119,6 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
     return this.permissions.filter((rolePermission) => rolePermission.role === role);
   }
-
-  public getLocale() {
-    if (!this.locale) {
-      this.locale = getDefaultLocale();
-    }
-
-    return this.locale;
-  }
 }
 
 export const ProfileSchema = SchemaFactory.createForClass(Profile);
-
-ProfileSchema.methods.getLocale = function (): string {
-  const user = <UserDocument>this;
-
-  if (!user.locale) {
-    user.locale = getDefaultLocale();
-  }
-
-  return user.locale;
-};

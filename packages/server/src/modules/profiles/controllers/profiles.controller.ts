@@ -12,6 +12,7 @@ import { ProfileMembershipDto, MembershipDto , TagModel, CreateProfileDto, UserT
 import { ProfilesService } from '../services';
 import { ProfileRequest } from "../../../core/types";
 import { ProfileRelationDto } from "@lyvely/common";
+import { ProfileType } from "@lyvely/common";
 
 @Controller('profiles')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -43,8 +44,16 @@ export class ProfilesController {
   @Post()
   async create(@Request() req, @Body() dto: CreateProfileDto): Promise<UserToProfileRelationDto> {
     // TODO: (TEAM) check if user is allowed to create team profiles
-    const profileRelations = await this.profilesService.createProfile(req.user, { name: dto.name, type: dto.type });
-    return UserToProfileRelationDto.create(profileRelations.profile, profileRelations.getMembership());
+    let profileRelation;
+    if(dto.type === ProfileType.User) {
+      profileRelation = await this.profilesService.createUserProfile(req.user, dto);
+    } else if(dto.type === ProfileType.Group) {
+      profileRelation = await this.profilesService.createGroupProfile(req.user, dto)
+    } else if(dto.type === ProfileType.Organization) {
+      profileRelation = await this.profilesService.createOrganization(req.user, dto)
+    }
+
+    return UserToProfileRelationDto.create(profileRelation.profile, profileRelation.getMembership());
   }
 
   @Get(':cid/tags')

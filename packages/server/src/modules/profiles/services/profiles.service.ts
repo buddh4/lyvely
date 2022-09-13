@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../../users';
+import { User, UsersService } from '../../users';
 import { EntityIdentity } from '../../../core/db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
-import { Membership, BaseMembershipRole, Profile, UserProfileRelation } from '../schemas';
+import { Membership, BaseMembershipRole, Profile, UserProfileRelation, Organization } from '../schemas';
 import { UserProfileRelations } from '../models';
 import { EntityNotFoundException } from "../../../core/exceptions";
 
@@ -20,18 +20,56 @@ export interface ProfileMembership {
 }
 
 export interface CreateProfileOptions {
-  name?: string,
+  organization?: Organization,
+  name: string,
+  description?: string,
   locale?: string,
-  type?: ProfileType
+}
+
+export interface CreateProfileTypeOptions extends CreateProfileOptions {
+  type: ProfileType
 }
 
 @Injectable()
 export class ProfilesService {
   constructor(
-    public profileDao: ProfileDao,
+    private profileDao: ProfileDao,
+    private usersService: UsersService,
     private membershipDao: MembershipsDao,
     private profileRelationsDao: UserProfileRelationsDao
   ) {}
+
+  async createDefaultUserProfile(owner: User): Promise<UserProfileRelations> {
+    return this.createProfile(owner,{
+      name: owner.username,
+      locale: owner.locale,
+      type: ProfileType.User
+    });
+  }
+
+  async createGroupProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
+    return this.createProfile(owner,{
+      name: owner.username,
+      locale: owner.locale,
+      type: ProfileType.Group
+    });
+  }
+
+  async createUserProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
+    return this.createProfile(owner,{
+      name: owner.username,
+      locale: options.locale || owner.locale,
+      type: ProfileType.User
+    });
+  }
+
+  async createOrganization(owner: User, options: Omit<CreateProfileOptions, 'organization'>): Promise<UserProfileRelations> {
+    return this.createProfile(owner,{
+      name: owner.username,
+      locale: owner.locale,
+      type: ProfileType.Organization
+    });
+  }
 
   /**
    * Creates a new profile for the given user and with the given profile name and type.
@@ -44,16 +82,18 @@ export class ProfilesService {
    * @param owner
    * @param options
    */
-  async createProfile(owner: User, options: CreateProfileOptions = {}): Promise<UserProfileRelations> {
-    // TODO: validate locale!
-    const profile = await this.profileDao.upsert(new Profile({
-      createdBy: owner._id,
+  protected async createProfile(owner: User, options: CreateProfileTypeOptions): Promise<UserProfileRelations> {
+    const profile = await this.profileDao.save(new Profile(owner,{
       name: options.name || owner.username,
       locale: options.locale || owner.locale,
       type: options.type || ProfileType.User
     }));
 
-    const membership = await this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner);
+    const [ membership ] = await Promise.all([
+      this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner),
+      this.usersService.incProfileCount(owner, profile.type)
+    ])
+
     return new UserProfileRelations({ user: owner, profile: profile, relations: [membership] });
   }
 

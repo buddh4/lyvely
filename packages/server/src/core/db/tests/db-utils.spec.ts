@@ -1,4 +1,4 @@
-import { applyPush, applyRawDataTo } from "../db.utils";
+import { applyInc, applyPush, applyRawDataTo, findByPath } from "../db.utils";
 import { expect } from '@jest/globals';
 
 class SubModel {
@@ -52,6 +52,32 @@ describe('DbUtils', () => {
       const model = new TestModel({ sub: new SubModel({ sub: new SubModel({ fieldA: 'subA' }) }) });
       applyRawDataTo(model, <any> { doesNotExist: 'whatever' }, { strict: true });
       expect((<any> model).doesNotExist).toBeUndefined();
+    });
+  });
+
+  describe('applyInc', function () {
+    it('apply root path inc', () => {
+      const model = { field: 0 };
+      applyInc(model, { 'field': 1 });
+      expect(model.field).toEqual(1);
+    });
+
+    it('apply sub path inc', () => {
+      const model = { sub: { sub: { field: 0 }} };
+      applyInc(model, { 'sub.sub.field': 1 });
+      expect(model.sub.sub.field).toEqual(1);
+    });
+
+    it('apply negative sub path inc', () => {
+      const model = { sub: { sub: { field: 0 }} };
+      applyInc(model, { 'sub.sub.field': -1 });
+      expect(model.sub.sub.field).toEqual(-1);
+    });
+
+    it('apply invalid inc path', () => {
+      const model = { sub: { sub: { field: 0 }} };
+      applyInc(model, { 'sub.sub.field.': 1 });
+      expect(model.sub.sub.field).toEqual(0);
     });
   });
 

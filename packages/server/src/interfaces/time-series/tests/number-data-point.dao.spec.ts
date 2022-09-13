@@ -68,8 +68,8 @@ describe('NumberDataPointDao', () => {
 
   async function createEntity(d: CalendarDateTime, interval: CalendarIntervalEnum, options: DataPointTestOptions = {}) {
     const date = dateTime(d);
-    const profile = new Profile({ _id: getObjectId(options.pid || 'p1'), oid: getObjectId(options.pid || 'o1') });
     const user = new User({ _id: getObjectId(options.uid || 'u1') });
+    const profile = new Profile(user, { _id: getObjectId(options.pid || 'p1'), oid: getObjectId(options.pid || 'o1') });
     const content = new TestTimeSeriesContent(profile, user, {
       _id: getObjectId(options.uid || 'c1'),
       dataPointConfig: new CheckboxNumberDataPointConfig({ interval: interval })

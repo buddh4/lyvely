@@ -28,20 +28,20 @@ describe('ProfileService', () => {
     expect(profileService).toBeDefined();
   });
 
-  describe('createProfile()', () => {
-    it('create default profile', async () => {
+  describe('createDefaultProfile()', () => {
+    it('create default user profile', async () => {
       const user = await testData.createUser('User1');
-      const { profile } = await profileService.createProfile(user);
-      expect(profile).toBeDefined();
-      expect(profile.name).toEqual('User1');
+      const { profile } = await profileService.createDefaultUserProfile(user);
+      expect(profile.name).toEqual(user.username);
+      expect(profile.locale).toEqual(user.locale);
       expect(profile.type).toEqual(ProfileType.User);
-      expect(profile.tags).toBeDefined();
-      expect(profile.tags.length).toEqual(0);
     });
+  });
 
+  describe('createProfile()', () => {
     it('create named profile', async () => {
       const user = await testData.createUser();
-      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
+      const { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
       expect(profile).toBeDefined();
       expect(profile.name).toEqual('superProfile');
       expect(profile._id).toBeDefined();
@@ -50,8 +50,8 @@ describe('ProfileService', () => {
 
     it('create duplicate profile', async () => {
       const user = await testData.createUser();
-      const { profile: profile1 } = await profileService.createProfile(user, { name: 'superProfile' });
-      const { profile: profile2 } = await profileService.createProfile(user, { name:'superProfile' });
+      const { profile: profile1 } = await profileService.createUserProfile(user, { name: 'superProfile' });
+      const { profile: profile2 } = await profileService.createUserProfile(user, { name:'superProfile' });
       expect(profile1._id.toString()).toEqual(profile2._id.toString());
     });
   });
@@ -86,7 +86,7 @@ describe('ProfileService', () => {
   describe('update score', () => {
     it('increment positive', async () => {
       const user = await testData.createUser();
-      const  { profile } = await profileService.createProfile(user, { name: 'superProfile' });
+      const  { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
       const newScore = await profileService.incrementScore(profile, 5);
       expect(newScore).toEqual(5);
       expect(profile.score).toEqual(5);
@@ -94,7 +94,7 @@ describe('ProfileService', () => {
 
     it('increment negative', async () => {
       const user = await testData.createUser();
-      const { profile } = await profileService.createProfile(user, { name: 'superProfile' });
+      const { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
       await profileService.incrementScore(profile, 5);
       const updated = await profileService.incrementScore(profile, -2);
       expect(updated).toEqual(3);
@@ -103,7 +103,7 @@ describe('ProfileService', () => {
 
     it('assert min 0 score', async () => {
       const user = await testData.createUser();
-      const  { profile } = await profileService.createProfile(user, { name: 'superProfile' });
+      const  { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
       await profileService.incrementScore(profile, 5);
       const updated = await profileService.incrementScore(profile, -10);
       expect(updated).toEqual(0);

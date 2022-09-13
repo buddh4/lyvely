@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { assignEntityData, BaseEntity } from '../../../core/db/base.entity';
+import { BaseEntity } from '../../../core/db/base.entity';
+import { assignEntityData } from "../../../core/db/db.utils";
 import { assureObjectId } from '../../../core/db/db.utils';
 import { Profile } from './profiles.schema';
 import { User } from '../../users';

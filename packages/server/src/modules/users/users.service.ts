@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './schemas/users.schema';
-import { UserDao } from './daos/user.dao';
-import { RefreshToken } from './schemas/refresh.tokens.schema';
+import { User } from './schemas';
+import { UserDao } from './daos';
+import { RefreshToken } from './schemas';
+import { ProfileType } from "@lyvely/common";
+import { EntityIdentity } from "../../core/db/db.utils";
 
 @Injectable()
 export class UsersService {
@@ -34,6 +36,10 @@ export class UsersService {
     }
 
     return this.userDao.findById(id);
+  }
+
+  async incProfileCount(owner: User, type: ProfileType) {
+    return this.userDao.incrementProfileCount(owner, type)
   }
 
   async setVisitorRefreshTokenHash(user: User, visitorId: string, token: RefreshToken) {

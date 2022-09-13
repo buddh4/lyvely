@@ -13,7 +13,7 @@ import {
 } from '../../profiles';
 import { EventEmitter2, EventEmitterModule  } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { createBaseEntityInstance } from "../../../core/db/base.entity";
+import { createBaseEntityInstance } from "../../../core/db/db.utils";
 
 @Injectable()
 export class TestDataUtils {
@@ -76,8 +76,7 @@ export class TestDataUtils {
   }
 
   async createGroupProfile(owner: User, name?: string, visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<Profile> {
-    const profile = await this._createProfile(new Profile({
-      createdBy: owner._id,
+    const profile = await this._createProfile(new Profile(owner,{
       name: name || owner.username,
       visibility: visibility,
       type: ProfileType.Group
@@ -85,7 +84,7 @@ export class TestDataUtils {
 
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 
-    return new Profile(profile);
+    return new Profile(owner, profile);
   }
 
   private async _createProfile(profile: Profile) {
@@ -93,8 +92,7 @@ export class TestDataUtils {
   }
 
   async createProfile(owner: User, name?: string, type: ProfileType = ProfileType.User, visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<Profile> {
-    const profile = await this._createProfile(new Profile({
-      createdBy: owner._id,
+    const profile = await this._createProfile(new Profile(owner,{
       name: name || owner.username,
       visibility: visibility,
       type: type
@@ -102,7 +100,7 @@ export class TestDataUtils {
 
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 
-    return new Profile(profile);
+    return new Profile(owner, profile);
   }
 
   async addProfileRelation(profile: Profile, user: User, type: string, role: string): Promise<UserProfileRelation> {
@@ -149,7 +147,7 @@ export class TestDataUtils {
     data.name = data.name || `${owner.username}Profile`;
     data._id = getObjectId(data.name);
     data.type = data.type ?? ProfileType.User;
-    return new Profile(data);
+    return new Profile(owner, data);
   }
 
   async reset(key: string) {

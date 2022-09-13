@@ -1,6 +1,7 @@
 export enum ProfileType {
-  User,
-  Group,
+  User = 'UserProfile',
+  Group = 'GroupProfile',
+  Organization = 'Organization'
 }
 
 /**
@@ -8,9 +9,9 @@ export enum ProfileType {
  */
 export enum ProfileVisibilityLevel {
   Member, // User/Group
-  Organization, // Members of related orga if there is
-  User, // Users only
-  Visitor // Users + guests
+  Organization, // Members of related organization if there is
+  User, // All users of the network
+  Visitor // All users + guests
 }
 
 export interface IUserToProfileRelation {

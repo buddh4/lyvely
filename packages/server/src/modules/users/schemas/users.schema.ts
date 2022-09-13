@@ -8,6 +8,27 @@ import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import crypto from 'crypto';
 import { validateEmail } from "../../../core/db/field.validator.util";
 import { PropertiesOf, UserModel } from "@lyvely/common";
+import { getNumberEnumValues, UserStatus } from "@lyvely/common";
+
+@Schema({ id: false })
+class ProfilesCount {
+  @Prop({ required: true, min: 0, default: 0 })
+  user: number;
+
+  @Prop({ required: true, min: 0, default: 0 })
+  group: number;
+
+  @Prop({ required: true, min: 0, default: 0 })
+  organization: number;
+
+  constructor(obj: Partial<ProfilesCount> = {}) {
+    this.user = obj.user || 0;
+    this.group = obj.group || 0;
+    this.organization = obj.organization || 0;
+  }
+}
+
+const ProfilesCountSchema = SchemaFactory.createForClass(ProfilesCount);
 
 export type UserDocument = User & mongoose.Document;
 
@@ -48,6 +69,25 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel>{
 
   @Prop( { type: [RefreshTokenSchema], default: [] } )
   refreshTokens: RefreshToken[];
+
+  @Prop( { enum: getNumberEnumValues(UserStatus), required: true })
+  status: UserStatus;
+
+  @Prop({ type: ProfilesCountSchema, required: true })
+  profilesCount: ProfilesCount;
+
+  afterInit() {
+    this.profilesCount = this.profilesCount || new ProfilesCount();
+    this.status = this.status ?? UserStatus.Disabled;
+  }
+
+  isAcitve() {
+    return this.hasStatus(UserStatus.Active);
+  }
+
+  hasStatus(status: UserStatus) {
+    return this.status === status;
+  }
 
   getDisplayName() {
     return this.username;

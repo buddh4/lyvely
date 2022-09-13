@@ -67,6 +67,20 @@ npx cypress open
 ```
 npx madge --circular --extensions ts ./
 ```
+
+## Use depcruise to create dependency graph
+
+```
+npm i -g dependency-cruiser
+npm i -g typescript
+```
+
+> Note: Typescript needs to be installed alongside dependency cruise
+
+```
+depcruise --include-only "^src" --output-type dot src | dot -T svg > dependencygraph.svg
+```
+
 ## Security
 
 Set a `jwt-access-token-secret` in your environment. The secret must be at least 64 characters long.

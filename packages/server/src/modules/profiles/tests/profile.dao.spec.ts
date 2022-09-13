@@ -1,7 +1,13 @@
 import { expect } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DEFAULT_PROFILE_NAME, Profile, ProfileSchema } from '../schemas';
+import {
+  Profile,
+  ProfileSchema,
+  UserProfileSchema,
+  GroupProfileSchema,
+  OrganizationSchema
+} from '../schemas';
 import { ProfileType } from '@lyvely/common';
 import { ProfileDao } from '../daos';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
@@ -17,7 +23,15 @@ describe('ProfileDao', () => {
   const TEST_KEY = 'profile_dao';
 
   const ProfileModel = MongooseModule.forFeature([
-    { name: Profile.name, schema: ProfileSchema },
+    {
+      name: Profile.name,
+      schema: ProfileSchema,
+      discriminators: [
+        { name: ProfileType.User, schema: UserProfileSchema },
+        { name: ProfileType.Group, schema: GroupProfileSchema },
+        { name: ProfileType.Organization, schema: OrganizationSchema },
+      ]
+    },
   ]);
 
   beforeEach(async () => {
@@ -44,49 +58,10 @@ describe('ProfileDao', () => {
     expect(profileDao).toBeDefined();
   });
 
-  describe('insert()', () => {
-    it('create default profile', async () => {
-      const user = await testData.createUser();
-      const profile = await profileDao.upsert({ createdBy: user._id });
-      expect(profile).toBeDefined();
-      expect(profile._id).toBeDefined();
-      expect(profile.name).toEqual(DEFAULT_PROFILE_NAME);
-      expect(profile.type).toEqual(ProfileType.User);
-      expect(profile.tags).toBeDefined();
-      expect(profile.tags.length).toEqual(0);
-      expect(profile.score).toEqual(0);
-      expect(profile.createdAt).toBeDefined();
-      expect(profile.updatedAt).toBeDefined();
-      expect(profile.createdAt).toEqual(profile.updatedAt);
-    });
-
-    it('create named profile', async () => {
-      const user = await testData.createUser();
-      const profile =  await profileDao.upsert({ createdBy: user._id, name: 'superProfile' })
-      expect(profile).toBeDefined();
-      expect(profile.name).toEqual('superProfile');
-    });
-
-    it('assure profile name uniqueness per owner', async () => {
-      const user = await testData.createUser();
-      const profile1 = await profileDao.upsert({ createdBy: user._id, name: 'superProfile' });
-      const profile2 = await profileDao.upsert({ createdBy: user._id, name: 'superProfile' });
-      expect(profile1._id.toString()).toEqual(profile2._id.toString());
-    });
-
-    it('assure profile names do not need to be unique between users', async () => {
-      const user = await testData.createUser();
-      const user2 = await testData.createUser('user2');
-      const profile1 = await profileDao.upsert({ createdBy: user._id, name: 'superProfile' });
-      const profile2 = await profileDao.upsert({ createdBy: user2._id, name: 'superProfile' });
-      expect(profile1._id.toString()).not.toEqual(profile2._id.toString());
-    });
-  });
-
   describe('findById()', () => {
     it('find profile by ObjectId', async () => {
       const user = await testData.createUser();
-      const profile = await profileDao.upsert({ createdBy: user._id });
+      const profile = await profileDao.save(new Profile(user, { name: 'test' }));
       const search = await profileDao.findById(profile._id);
       expect(search).toBeDefined();
       expect(profile._id.toString()).toEqual(search._id.toString());
@@ -94,7 +69,7 @@ describe('ProfileDao', () => {
 
     it('find profile by string id', async () => {
       const user = await testData.createUser();
-      const profile = await profileDao.upsert({ createdBy: user._id });
+      const profile = await profileDao.save(new Profile(user, { name: 'test' }));
       const search = await profileDao.findById(profile._id);
       expect(search).toBeDefined();
       expect(profile._id.toString()).toEqual(search._id.toString());
@@ -104,7 +79,7 @@ describe('ProfileDao', () => {
   describe('update()', () => {
     it('save profile with updated name', async () => {
       const user = await testData.createUser();
-      const profile = await profileDao.upsert({ createdBy: user._id });
+      const profile = await profileDao.save(new Profile(user, { name: 'test' }));
       profile.name = 'overwritten';
       await profileDao.updateOneSetById(profile, { name: 'overwritten' });
       const updated = await profileDao.reload(profile);
@@ -113,7 +88,7 @@ describe('ProfileDao', () => {
 
     it('update the score of a profile', async () => {
       const user = await testData.createUser();
-      let profile = await profileDao.upsert({ createdBy: user._id });
+      let profile = await profileDao.save(new Profile(user, { name: 'test' }));
       await profileDao.updateOneSetById(profile, { score: 10 });
       profile = await profileDao.reload(profile);
       expect(profile.score).toEqual(10);
@@ -123,7 +98,7 @@ describe('ProfileDao', () => {
   describe('addCategories()', () => {
     it('add single tags', async () => {
       const user = await testData.createUser();
-      const profile = await profileDao.upsert({ createdBy: user._id });
+      const profile = await profileDao.save(new Profile(user, { name: 'test' }));
       await profileDao.addTags(profile, [Tag.create({ name: 'Test1' })]);
       const update = await profileDao.reload(profile);
       expect(profile.tags.length).toEqual(1);

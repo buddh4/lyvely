@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserDocument } from '../schemas/users.schema';
+import { User, UserDocument, RefreshToken } from '../schemas';
 import { AbstractDao } from '../../../core/db/abstract.dao';
-import { RefreshToken } from '../schemas/refresh.tokens.schema';
 import { assureObjectId, EntityIdentity } from '../../../core/db/db.utils';
-import { Constructor } from '@lyvely/common';
+import { Constructor, ProfileType } from '@lyvely/common';
 
 @Injectable()
 export class UserDao extends AbstractDao<User> {
@@ -15,6 +14,24 @@ export class UserDao extends AbstractDao<User> {
 
   async findByUsername(username: string): Promise<User|null> {
     return this.findOne({ lowercaseUsername: username.toLowerCase() });
+  }
+
+  async incrementProfileCount(user: User, type: ProfileType, amount = 1) {
+    let path = 'profilesCount.';
+    let count;
+
+    if(type === ProfileType.Organization) {
+      path += 'organization';
+      count = user.profilesCount.organization + amount;
+    } else if(type === ProfileType.Group) {
+      path += 'group';
+      count = user.profilesCount.group + amount;
+    } else {
+      path += 'user';
+      count = user.profilesCount.user + amount;
+    }
+
+    return this.updateOneSetById(user, { [path]: Math.max(0, count) });
   }
 
   async createRefreshToken(identity: EntityIdentity<User>, token: RefreshToken) {

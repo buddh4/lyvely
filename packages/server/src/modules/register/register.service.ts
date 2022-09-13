@@ -25,7 +25,7 @@ export class RegisterService {
         locale: registerDto.locale,
         password: registerDto.password
       }));
-      return await this.profileService.createProfile(user);
+      return await this.profileService.createDefaultUserProfile(user);
     } catch (error) {
       throw this.evaluateMongoRegistrationError(error, registerDto);
     }

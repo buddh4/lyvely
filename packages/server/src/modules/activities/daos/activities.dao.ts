@@ -18,6 +18,7 @@ import { Model } from 'mongoose';
 import { FetchQueryOptions, UpdateQuerySet } from '../../../core/db/abstract.dao';
 import module from "../activities.meta";
 import { User } from "../../users";
+import { ProfileType } from "@lyvely/common";
 
 @Injectable()
 export class ActivitiesDao extends AbstractContentDao<Activity> {
@@ -37,7 +38,7 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
   async findByProfileAndTimingIds(profile: Profile, user: User, tIds: string[], options?: FetchQueryOptions<Activity>): Promise<Activity[]> {
     // TODO: content visibility and state?
 
-    if(!profile.isGroupProfile()) {
+    if(!profile.isOfType(ProfileType.Group)) {
       // Just a small optimization for non group profiles
       return this.findAllByProfile(profile,{
         $or: [

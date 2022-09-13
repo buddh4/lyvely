@@ -1,8 +1,7 @@
 import { Document, Types, UpdateQuery } from 'mongoose';
 import { InternalServerErrorException } from '@nestjs/common';
 import { BaseEntity } from './base.entity';
-import { isValidObjectId, assignRawDataTo } from '@lyvely/common';
-import { isObjectId } from "@lyvely/common";
+import { isValidObjectId, assignRawDataTo, DeepPartial, Type } from '@lyvely/common';
 
 export type EntityIdentity<T extends BaseEntity<any>> = T | Types.ObjectId | string | Document & T;
 
@@ -37,6 +36,10 @@ export function applyUpdateTo<T extends BaseEntity<any>>(identity: EntityIdentit
     return;
   }
 
+  if('$inc' in update) {
+    applyInc(identity, update['$inc']);
+  }
+
   if('$set' in update) {
     applyRawDataTo(identity, update['$set']);
   }
@@ -44,6 +47,38 @@ export function applyUpdateTo<T extends BaseEntity<any>>(identity: EntityIdentit
   if('$push' in update) {
     applyPush(identity, update['$push']);
   }
+}
+
+export function applyInc<T>(model: T, incData: Record<string, number>) {
+  Object.keys(incData).forEach(path => {
+    if(typeof incData[path] !== 'number') {
+      return;
+    }
+
+    let modelToInc = model;
+    let fieldToInc = path;
+
+    if(path.includes('.') && path.lastIndexOf('.') !== path.length - 1) {
+      fieldToInc = path.slice(path.lastIndexOf(".") + 1);
+      modelToInc = findByPath(model, path, true);
+    }
+
+    if(modelToInc && typeof modelToInc[fieldToInc] === 'number') {
+      modelToInc[fieldToInc] += incData[path]
+    }
+  });
+}
+
+export function findByPath<T>(model: T, path: string, parent = false) {
+  if(!path.includes('.')) {
+    return parent ? model : model[path];
+  }
+
+  path = parent ? path.replace(/\.[^/.]+$/, "") : path;
+
+  let result = model;
+  path.split('.').forEach(sub => result = result || result[sub] ? result[sub] : undefined);
+  return result;
 }
 
 export function applyPush<T>(model: T, pushData: { [ key in keyof T ]?: any }): T {
@@ -63,8 +98,6 @@ export function applyPush<T>(model: T, pushData: { [ key in keyof T ]?: any }): 
 
   return model;
 }
-
-type ApplyOptions = { maxDepth?: number, strict?: boolean }
 
 export function applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, { maxDepth = 100, strict = false } = {}): T {
   return assignRawDataTo(model, data, { maxDepth, strict });
@@ -89,4 +122,31 @@ export function assureStringId(obj: any): string {
   }
 
   throw new InternalServerErrorException('Use of invalid object id detected.');
+}
+
+// Todo: Proper typing...
+export function assignEntityData<T extends Record<string, any>, U>(instance: T, obj?: U) {
+  if(obj) {
+    if(obj instanceof Document) {
+      Object.assign(instance, obj.toObject());
+    } else {
+      Object.assign(instance, obj);
+    }
+  }
+
+  if(instance instanceof BaseEntity && instance._id && !instance.id) {
+    instance.id = assureStringId(instance._id);
+  }
+
+  return instance;
+}
+
+export function createBaseEntityInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {
+  const model = Object.create(constructor.prototype);
+  if(typeof model.init === 'function') {
+    model.init(data);
+  } else {
+    assignEntityData(model, data);
+  }
+  return model;
 }
