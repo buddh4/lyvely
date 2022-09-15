@@ -46,12 +46,14 @@ export class TestDataUtils {
   }
 
   async createUser(username = 'test', password = 'test', email?: string): Promise<User> {
-    const user = new this.UserModel();
-    user.username = username;
-    user.password = password;
-    user.email = email ?? `${username}@test.de`;
+    email = email || `${username}@test.de`;
+    const user = new this.UserModel(new User({
+      username,
+      password,
+      email
+    }));
     await user.save();
-    return new User(user.toObject());
+    return new User(user);
   }
 
   async createSimpleGroup(visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<{owner: User, member: User, profile: Profile }> {
@@ -143,7 +145,7 @@ export class TestDataUtils {
   }
 
   static createDummyProfile(owner: User, data: Partial<Profile> = {}) {
-    data.createdBy = owner._id;
+    data.ownerId = owner._id;
     data.name = data.name || `${owner.username}Profile`;
     data._id = getObjectId(data.name);
     data.type = data.type ?? ProfileType.User;

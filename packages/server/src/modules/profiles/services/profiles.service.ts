@@ -3,9 +3,10 @@ import { User, UsersService } from '../../users';
 import { EntityIdentity } from '../../../core/db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
-import { Membership, BaseMembershipRole, Profile, UserProfileRelation, Organization } from '../schemas';
+import { Membership, BaseMembershipRole, Profile, UserProfileRelation } from '../schemas';
 import { UserProfileRelations } from '../models';
-import { EntityNotFoundException } from "../../../core/exceptions";
+import { EntityNotFoundException, UniqueIntegrityExistsException } from "../../../core/exceptions";
+import { CreateProfileOptions, CreateProfileTypeOptions, ProfilesFactory } from "../schemas/profiles.factory";
 
 export interface UserToProfileRelation {
   user: User,
@@ -19,17 +20,6 @@ export interface ProfileMembership {
   profile: Profile
 }
 
-export interface CreateProfileOptions {
-  organization?: Organization,
-  name: string,
-  description?: string,
-  locale?: string,
-}
-
-export interface CreateProfileTypeOptions extends CreateProfileOptions {
-  type: ProfileType
-}
-
 @Injectable()
 export class ProfilesService {
   constructor(
@@ -40,6 +30,12 @@ export class ProfilesService {
   ) {}
 
   async createDefaultUserProfile(owner: User): Promise<UserProfileRelations> {
+    const profile = await this.profileDao.findOneByOwnerAndName(owner, owner.username);
+
+    if(profile) {
+      return this.findUserProfileRelations(owner, profile);
+    }
+
     return this.createProfile(owner,{
       name: owner.username,
       locale: owner.locale,
@@ -47,7 +43,33 @@ export class ProfilesService {
     });
   }
 
+  /**
+   * @param owner
+   * @param options
+   * @throws UniqueIntegrityExistsException
+   */
+  async createUserProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
+    const profile = options.organization
+      ? await this.profileDao.findOneByOrganizationAndName(options.organization, options.name)
+      : await this.profileDao.findOneByOwnerAndName(owner, options.name);
+
+    if(profile) {
+      if(options.organization) {
+        throw new UniqueIntegrityExistsException('Can not create user profile since name already exists in organization');
+      }
+      throw new UniqueIntegrityExistsException('Can not create user profile since user already owns a profile with this name');
+    }
+
+    return this.createProfile(owner,{
+      name: options.name,
+      locale: options.locale || owner.locale,
+      type: ProfileType.User
+    });
+  }
+
   async createGroupProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
+    // Todo: check if profile with name already exists for this owner
+    // Todo: check if profile with name already exists for this organization
     return this.createProfile(owner,{
       name: owner.username,
       locale: owner.locale,
@@ -55,15 +77,10 @@ export class ProfilesService {
     });
   }
 
-  async createUserProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
-    return this.createProfile(owner,{
-      name: owner.username,
-      locale: options.locale || owner.locale,
-      type: ProfileType.User
-    });
-  }
+
 
   async createOrganization(owner: User, options: Omit<CreateProfileOptions, 'organization'>): Promise<UserProfileRelations> {
+    // Todo: check if organization with this name already exists globally
     return this.createProfile(owner,{
       name: owner.username,
       locale: owner.locale,
@@ -83,11 +100,7 @@ export class ProfilesService {
    * @param options
    */
   protected async createProfile(owner: User, options: CreateProfileTypeOptions): Promise<UserProfileRelations> {
-    const profile = await this.profileDao.save(new Profile(owner,{
-      name: options.name || owner.username,
-      locale: options.locale || owner.locale,
-      type: options.type || ProfileType.User
-    }));
+    const profile = await this.profileDao.save(ProfilesFactory.createProfile(owner, options));
 
     const [ membership ] = await Promise.all([
       this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner),

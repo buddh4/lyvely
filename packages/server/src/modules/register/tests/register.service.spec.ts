@@ -36,8 +36,8 @@ describe('RegisterService', () => {
       }));
 
       expect(profile).toBeDefined();
-      expect(profile.createdBy).toBeDefined();
-      expect(profile.createdBy).toEqual(user._id);
+      expect(profile.ownerId).toBeDefined();
+      expect(profile.ownerId).toEqual(user._id);
       expect(profile.name).toEqual('Tester');
       expect(profile.locale).toEqual('de');
     });

@@ -50,7 +50,7 @@ describe('HabitDataPointService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
 
-      const log = await habitDataPointService.upsertDataPoint(
+      await habitDataPointService.upsertDataPoint(
         profile,
         user,
         habit,

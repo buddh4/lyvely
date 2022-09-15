@@ -9,6 +9,7 @@ import crypto from 'crypto';
 import { validateEmail } from "../../../core/db/field.validator.util";
 import { PropertiesOf, UserModel } from "@lyvely/common";
 import { getNumberEnumValues, UserStatus } from "@lyvely/common";
+import { PropertyType } from "@lyvely/common";
 
 @Schema({ id: false })
 class ProfilesCount {
@@ -70,16 +71,13 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel>{
   @Prop( { type: [RefreshTokenSchema], default: [] } )
   refreshTokens: RefreshToken[];
 
+  @PropertyType(Number, { default: UserStatus.Disabled })
   @Prop( { enum: getNumberEnumValues(UserStatus), required: true })
   status: UserStatus;
 
+  @PropertyType(ProfilesCount, { default: () => new ProfilesCount() })
   @Prop({ type: ProfilesCountSchema, required: true })
   profilesCount: ProfilesCount;
-
-  afterInit() {
-    this.profilesCount = this.profilesCount || new ProfilesCount();
-    this.status = this.status ?? UserStatus.Disabled;
-  }
 
   isAcitve() {
     return this.hasStatus(UserStatus.Active);

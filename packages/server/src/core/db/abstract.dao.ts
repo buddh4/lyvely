@@ -143,11 +143,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
 
   /**
    * Can be overwritten by subclasses for additional checks, manipulation after saving the data etc.
-   * @param crated
+   * @param created
    * @protected
    */
-  protected async afterSave(crated: T): Promise<T> {
-    return Promise.resolve(crated);
+  protected async afterSave(created: T): Promise<T> {
+    return Promise.resolve(created);
   }
 
   /**

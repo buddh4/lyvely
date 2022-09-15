@@ -1,5 +1,66 @@
+import { getPropertyTypeDefinition, getPropertyTypeDefinitions } from "../model";
+import { Type } from "../util";
 
 type WithTransformation = ((any, string) => undefined|any)|undefined;
+interface AssignOptions {
+  maxDepth?: number,
+  strict?: boolean,
+  transform?: WithTransformation
+}
+
+interface InitPropertiesOptions {
+  maxDepth?: number,
+}
+
+export function assignRawDataToAndInitProps<T>(model: T, data: { [ key in keyof T ]?: any } & any, options: AssignOptions = {}) {
+  assignRawDataTo(model, data, options);
+  initPropertyTypes(model);
+}
+
+export function initPropertyTypes<T>(model: T, options: InitPropertiesOptions = {}) {
+  return _initPropertyTypes<T>(model, 0, options)
+}
+
+const primitivePrototypes = [
+  String.prototype,
+  Number.prototype,
+  Boolean.prototype,
+  Symbol.prototype
+];
+
+const primitiveDefaults = new Map();
+primitiveDefaults.set(String, '');
+primitiveDefaults.set(Number, 0);
+primitiveDefaults.set(Boolean, false);
+primitiveDefaults.set(Symbol, null);
+
+function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {} ) {
+  if(level > maxDepth) {
+    return model;
+  }
+
+  if(model && typeof model === 'object') {
+    const propertyDefinitions = getPropertyTypeDefinitions(model.constructor as Type);
+    Object.keys(propertyDefinitions).forEach(propertyKey => {
+      const propertyDefinition = propertyDefinitions[propertyKey];
+      if((!model[propertyKey] && !propertyDefinition.optional) || (model[propertyKey] && !(model[propertyKey] instanceof propertyDefinition.type))) {
+        if(propertyDefinition.default) {
+          model[propertyKey] = typeof propertyDefinition.default === 'function' ? propertyDefinition.default() : propertyDefinition.default;
+        } else if(!primitivePrototypes.includes(propertyDefinition.type.prototype)) {
+          model[propertyKey] = Object.assign(Object.create(propertyDefinition.type.prototype), model[propertyKey]);
+          if(!propertyDefinition.default && 'afterInit' in model[propertyKey] && typeof model[propertyKey]['afterInit'] === 'function') {
+            model[propertyKey].afterInit();
+          }
+        } else {
+          model[propertyKey] = primitiveDefaults.get(propertyDefinition.type);
+        }
+      }
+      _initPropertyTypes(model[propertyKey], level + 1, { maxDepth });
+    });
+  }
+
+  return model;
+}
 
 export function assignRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any } & any,
                              { maxDepth = 100, strict = false, transform = undefined as WithTransformation } = {}): T {
@@ -8,7 +69,7 @@ export function assignRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any } 
 
 function _assignRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any } & any, level = 0,
                                    { maxDepth = 100, strict = false, transform = undefined as WithTransformation } = {}): T {
-  if(level > maxDepth) {
+  if(!data || level > maxDepth) {
     return model;
   }
 
@@ -35,13 +96,22 @@ function _assignRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any } & any,
     } else if(isObjectId(data[path])) {
       // Todo: We can not clone an ObjectId by Object.create, maybe implement another clone method in the future.
       model[path] = data[path];
-    } else if(typeof data[path] === 'object' && !(data[path] instanceof Date)) {
-      if(!model[path]) {
-        model[path] = Object.create(data[path].constructor.prototype);
-      } else if(model[path].constructor !== data[path].constructor) {
-        model[path] = Object.assign(Object.create(getSpecificConstructor(model[path], data[path]).prototype), model[path]);
+    } else if(data[path] && typeof data[path] === 'object' && !(data[path] instanceof Date)) {
+      // Try to get model type by ModelType decorator, or otherwise try to determine the type from model or data
+      let modelType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
+      if(!modelType) {
+        modelType = !model[path] ? data[path].constructor : getSpecificConstructor(model[path], data[path]);
       }
-      model[path] = _assignRawDataTo(model[path], data[path], level + 1, { maxDepth, strict, transform });
+
+      model[path] = _assignRawDataTo(
+        Object.assign(Object.create(modelType.prototype), model[path]),
+        data[path],
+        level + 1,
+        { maxDepth, strict, transform });
+
+      if('afterInit' in model[path] && typeof model[path]['afterInit'] === 'function') {
+        model[path].afterInit();
+      }
     } else if(typeof data[path] !== 'function') {
       model[path] = data[path];
     }
@@ -77,4 +147,15 @@ function getSpecificConstructor(a: any, b: any) {
 
 export function isObjectId(value: any) {
   return value && typeof value === 'object' && value._bsontype && value._bsontype === "ObjectID";
+}
+
+export function getPrototypeTree(type: Type): Array<Type> {
+  const prototypeTree = [type];
+
+  for(let curr = Object.getPrototypeOf(type.prototype); curr && curr !== Object.prototype; curr = Object.getPrototypeOf(curr)) {
+    prototypeTree.push(curr.constructor)
+    curr = Object.getPrototypeOf(curr);
+  }
+
+  return prototypeTree;
 }

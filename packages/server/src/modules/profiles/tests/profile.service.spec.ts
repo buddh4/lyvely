@@ -15,7 +15,6 @@ describe('ProfileService', () => {
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(TEST_KEY).compile();
-
     profileService = testingModule.get<ProfilesService>(ProfilesService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
@@ -26,16 +25,6 @@ describe('ProfileService', () => {
 
   it('should be defined', () => {
     expect(profileService).toBeDefined();
-  });
-
-  describe('createDefaultProfile()', () => {
-    it('create default user profile', async () => {
-      const user = await testData.createUser('User1');
-      const { profile } = await profileService.createDefaultUserProfile(user);
-      expect(profile.name).toEqual(user.username);
-      expect(profile.locale).toEqual(user.locale);
-      expect(profile.type).toEqual(ProfileType.User);
-    });
   });
 
   describe('createProfile()', () => {
@@ -51,7 +40,7 @@ describe('ProfileService', () => {
     it('create duplicate profile', async () => {
       const user = await testData.createUser();
       const { profile: profile1 } = await profileService.createUserProfile(user, { name: 'superProfile' });
-      const { profile: profile2 } = await profileService.createUserProfile(user, { name:'superProfile' });
+      const { profile: profile2 } = await profileService.createUserProfile(user, { name: 'superProfile' });
       expect(profile1._id.toString()).toEqual(profile2._id.toString());
     });
   });

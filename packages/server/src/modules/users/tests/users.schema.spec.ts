@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { getDefaultLocale, UserDocument } from '../schemas/users.schema';
+import { getDefaultLocale, User, UserDocument } from '../schemas';
 import { Model } from 'mongoose';
 import { createContentTestingModule } from '../../test/utils/test.utils';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
@@ -24,11 +24,11 @@ describe('Users schema', () => {
 
   describe('create', () => {
     it('initial user data', async () => {
-      const user = await UserModel.create({
+      const user = await UserModel.create(new User({
         username: 'Test',
         password: 'Password',
         email: 'Tester@test.de',
-      });
+      }));
 
       expect(user.username).toEqual('Test');
       expect(user.lowercaseUsername).toEqual('test');
@@ -43,11 +43,11 @@ describe('Users schema', () => {
 
   describe('toJSON', () => {
     it('make sure password is not exposed', async () => {
-      const user = await UserModel.create({
+      const user = await UserModel.create(new User({
         username: 'Test',
         password: 'Password',
         email: 'Tester@test.de',
-      });
+      }));
 
       const json = user.toJSON();
       expect(json.password).toBeUndefined();

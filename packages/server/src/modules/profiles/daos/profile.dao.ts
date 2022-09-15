@@ -1,18 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Profile, ProfileDocument } from '../schemas';
+import { Organization, Profile, ProfileDocument } from '../schemas';
 import mongoose, { Model } from 'mongoose';
-import { applyRawDataTo, assureObjectId, EntityData, EntityIdentity } from '../../../core/db/db.utils';
+import { applyRawDataTo, assureObjectId, EntityIdentity } from '../../../core/db/db.utils';
 import { User } from '../../users';
 import { AbstractDao } from '../../../core/db/abstract.dao';
 import { Constructor } from '@lyvely/common';
 import { Tag } from "../../tags";
-
-type UpsertProfile = { createdBy: EntityIdentity<User> } & Partial<EntityData<Profile>>;
+import { DeepPartial } from "@lyvely/common";
+import { getProfileConstructorByType } from "../schemas";
+import { IntegrityException } from "../../../core/exceptions";
 
 @Injectable()
 export class ProfileDao extends AbstractDao<Profile> {
   @InjectModel(Profile.name) protected model: Model<ProfileDocument>;
+
+  async findOneByOwnerAndName(owner: EntityIdentity<User>, name: string) {
+    return this.findOne({ ownerId:  assureObjectId(owner) , name });
+  }
+
+  async findOneByOrganizationAndName(organization: EntityIdentity<Organization>, name: string) {
+    return this.findOne({ oid: assureObjectId(organization), name });
+  }
 
   async addTags(profile: Profile, tags: Tag[]) {
     tags.forEach(tag => { tag._id = tag._id || new mongoose.Types.ObjectId(); })
@@ -44,7 +53,11 @@ export class ProfileDao extends AbstractDao<Profile> {
     return 'profiles';
   }
 
-  getModelConstructor(): Constructor<Profile> {
-    return Profile;
+  getModelConstructor(model?: DeepPartial<Profile>): Constructor<Profile> {
+    const ProfileType = getProfileConstructorByType(model.type);
+    if(!ProfileType) {
+      throw new IntegrityException('Could not construct profile model due to invalid type: ' + model.type);
+    }
+    return ProfileType;
   }
 }

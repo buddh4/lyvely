@@ -15,15 +15,26 @@ import {
 
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-permissions.schema';
 import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
-import { ProfileType } from "@lyvely/common";
+import { ProfileType, BaseModel, PropertyType } from "@lyvely/common";
 
-export type ProfileDocument = Profile & mongoose.Document;
+@Schema({ _id: false })
+class ProfileMetadata extends BaseModel<ProfileMetadata> {
+  @PropertyType(Boolean, { default: true })
+  @Prop({ required: true })
+  archivable: boolean;
+
+  @PropertyType(Boolean, { default: true })
+  @Prop({ required: true })
+  deletable: boolean;
+}
+
+const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Profile extends BaseEntity<Profile> implements PropertiesOf<ProfileModel> {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  createdBy: TObjectId;
+  ownerId: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   oid?: TObjectId;
@@ -33,6 +44,10 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   @Prop({ max: MAX_PROFILE_DESCRIPTION_LENGTH })
   description: string;
+
+  @Prop({ type: ProfileMetadataSchema })
+  @PropertyType(ProfileMetadata)
+  meta: ProfileMetadata;
 
   // TODO: (integrity) validate locale!
   @Prop({ default: getDefaultLocale() })
@@ -65,10 +80,10 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   updatedAt: Date;
 
-  constructor(createdBy: EntityIdentity<User>, obj?: Partial<Profile>){
+  constructor(owner: EntityIdentity<User>, obj?: Partial<Profile>){
     super(obj);
 
-    this.createdBy = assureObjectId(createdBy);
+    this.ownerId = assureObjectId(owner);
     this.visibility = this.visibility ?? ProfileVisibilityLevel.Member;
 
     // We need to assign an oid even if this profile is not connected to an organizations for sharding and query index.
@@ -122,3 +137,4 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 }
 
 export const ProfileSchema = SchemaFactory.createForClass(Profile);
+export type ProfileDocument = Profile & mongoose.Document;

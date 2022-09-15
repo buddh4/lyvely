@@ -28,3 +28,7 @@ export class ForbiddenServiceException extends ServiceException {
 export class IntegrityException extends ServiceException {
   protected defaultMessage = 'An integrity exception occurred.';
 }
+
+export class UniqueIntegrityExistsException extends IntegrityException {
+  protected defaultMessage = 'Selected name already exists.';
+}

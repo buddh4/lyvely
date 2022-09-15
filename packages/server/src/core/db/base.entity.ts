@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Document } from 'mongoose';
-import { DeepPartial } from '@lyvely/common';
+import { DeepPartial, assignRawDataToAndInitProps} from '@lyvely/common';
 
 export type EntityType<C, ID = TObjectId> = C & IEntity<ID>;
 
@@ -34,9 +34,9 @@ export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
 export function assignEntityData<T extends Record<string, any>, U>(instance: T, obj?: U) {
   if(obj) {
     if(obj instanceof Document) {
-      Object.assign(instance, obj.toObject());
+      assignRawDataToAndInitProps(instance, obj.toObject());
     } else {
-      Object.assign(instance, obj);
+      assignRawDataToAndInitProps(instance, obj);
     }
   }
 

@@ -88,7 +88,7 @@ export function applyPush<T>(model: T, pushData: { [ key in keyof T ]?: any }): 
       model[key] = [];
     }
 
-    if(typeof pushData[key] === 'object' && '$each' in pushData[key] && Array.isArray(pushData[key][`$each`])) {
+    if(pushData[key] && typeof pushData[key] === 'object' && '$each' in pushData[key] && Array.isArray(pushData[key][`$each`])) {
       model[key] = [...model[key], ...pushData[key][`$each`]];
     } else {
       model[key].push(pushData[key]);

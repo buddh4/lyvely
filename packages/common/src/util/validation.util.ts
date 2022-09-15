@@ -1,6 +1,5 @@
 export const REGEX_HEX_COLOR = /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
 import { getMetadataStorage } from "class-validator";
-import { uniq } from "lodash";
 
 export type Type<T = any> = new (...args: any[]) => T;
 
@@ -16,7 +15,7 @@ export function applyValidationProperties<T>(model: T, data: { [ key in keyof T 
 
     if(Array.isArray(data[property])) {
       model[property] = applyValidationProperties([], data[property], level + 1, { maxDepth });
-    } else if(typeof data[property] === 'object' && typeof model[property] === 'object') {
+    } else if(data[property] && typeof data[property] === 'object' && model[property] && typeof model[property] === 'object') {
       model[property] = applyValidationProperties(model[property], data[property], level + 1, { maxDepth });
     } else {
       model[property] = data[property];

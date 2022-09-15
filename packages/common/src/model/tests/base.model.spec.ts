@@ -1,5 +1,5 @@
 import { DocumentModel } from '../../index';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, instanceToPlain } from 'class-transformer';
 
 class MockObjectId {
   constructor(value) {
@@ -106,7 +106,7 @@ describe('Base Model', () => {
       };
 
       const baseModel = new TestDocumentDto(obj);
-      expect((<any> baseModel)._id).toBeUndefined();
+      expect(instanceToPlain((baseModel))._id).toBeUndefined();
     });
   });
 });

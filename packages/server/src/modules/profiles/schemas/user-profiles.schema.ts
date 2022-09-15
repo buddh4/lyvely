@@ -1,18 +1,16 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
-import  mongoose from 'mongoose';
 import { Profile } from "./profiles.schema";
 import { ProfileType } from "@lyvely/common";
 import { User } from "../../users";
+import { EntityIdentity } from "../../../core/db/db.utils";
 
 @Schema({ timestamps: true })
 export class UserProfile extends Profile {
 
-  constructor(createdBy: User, obj?: Partial<UserProfile>) {
-    super(createdBy, obj);
+  constructor(owner: EntityIdentity<User>, obj?: Partial<UserProfile>) {
+    super(owner, obj);
     this.type = ProfileType.User;
   }
 }
-
-export type UserProfileDocument = UserProfile & mongoose.Document;
 
 export const UserProfileSchema = SchemaFactory.createForClass(Profile);
