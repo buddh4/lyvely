@@ -52,8 +52,6 @@ describe('ProfileService (User)', () => {
     });
   });
 
-
-
   describe('createUserProfile()', () => {
     it('create default user profile', async () => {
       const user = await testData.createUser('User1');

@@ -12,7 +12,7 @@ interface InitPropertiesOptions {
   maxDepth?: number,
 }
 
-export function assignRawDataToAndInitProps<T>(model: T, data: { [ key in keyof T ]?: any } & any, options: AssignOptions = {}) {
+export function assignRawDataToAndInitProps<T>(model: T, data?: { [ key in keyof T ]?: any } & any, options: AssignOptions = {}) {
   assignRawDataTo(model, data, options);
   initPropertyTypes(model);
 }

@@ -3,10 +3,10 @@ import { User, UsersService } from '../../users';
 import { EntityIdentity } from '../../../core/db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
-import { Membership, BaseMembershipRole, Profile, UserProfileRelation } from '../schemas';
 import { UserProfileRelations } from '../models';
 import { EntityNotFoundException, UniqueIntegrityExistsException } from "../../../core/exceptions";
-import { CreateProfileOptions, CreateProfileTypeOptions, ProfilesFactory } from "../schemas/profiles.factory";
+import { Membership, BaseMembershipRole, Profile, UserProfileRelation,
+  CreateProfileOptions, CreateProfileTypeOptions, ProfilesFactory } from "../schemas";
 
 export interface UserToProfileRelation {
   user: User,

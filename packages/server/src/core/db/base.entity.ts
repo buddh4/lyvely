@@ -38,6 +38,8 @@ export function assignEntityData<T extends Record<string, any>, U>(instance: T, 
     } else {
       assignRawDataToAndInitProps(instance, obj);
     }
+  } else {
+    assignRawDataToAndInitProps(instance);
   }
 
   if(instance instanceof BaseEntity && instance._id && !instance.id) {

@@ -5,6 +5,7 @@ import { ProfileType } from '@lyvely/common';
 import { BaseMembershipRole } from '../schemas';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
+import { UniqueIntegrityExistsException } from "../../../core/exceptions";
 
 describe('ProfileService', () => {
   let testingModule: TestingModule;
@@ -25,24 +26,6 @@ describe('ProfileService', () => {
 
   it('should be defined', () => {
     expect(profileService).toBeDefined();
-  });
-
-  describe('createProfile()', () => {
-    it('create named profile', async () => {
-      const user = await testData.createUser();
-      const { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
-      expect(profile).toBeDefined();
-      expect(profile.name).toEqual('superProfile');
-      expect(profile._id).toBeDefined();
-      expect(profile.score).toEqual(0);
-    });
-
-    it('create duplicate profile', async () => {
-      const user = await testData.createUser();
-      const { profile: profile1 } = await profileService.createUserProfile(user, { name: 'superProfile' });
-      const { profile: profile2 } = await profileService.createUserProfile(user, { name: 'superProfile' });
-      expect(profile1._id.toString()).toEqual(profile2._id.toString());
-    });
   });
 
   describe('findUserProfileRelations()', () => {

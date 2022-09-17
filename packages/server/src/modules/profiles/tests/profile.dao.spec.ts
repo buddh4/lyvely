@@ -1,19 +1,12 @@
 import { expect } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongooseModule } from '@nestjs/mongoose';
-import {
-  Profile,
-  ProfileSchema,
-  UserProfileSchema,
-  GroupProfileSchema,
-  OrganizationSchema
-} from '../schemas';
-import { ProfileType } from '@lyvely/common';
+import { UserProfile } from '../schemas';
 import { ProfileDao } from '../daos';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { UsersModule } from '../../users';
 import { TestModule } from '../../test/test.module';
 import { Tag } from '../../tags';
+import { ProfilesModule } from "../profiles.module";
 
 describe('ProfileDao', () => {
   let testingModule: TestingModule;
@@ -22,25 +15,13 @@ describe('ProfileDao', () => {
 
   const TEST_KEY = 'profile_dao';
 
-  const ProfileModel = MongooseModule.forFeature([
-    {
-      name: Profile.name,
-      schema: ProfileSchema,
-      discriminators: [
-        { name: ProfileType.User, schema: UserProfileSchema },
-        { name: ProfileType.Group, schema: GroupProfileSchema },
-        { name: ProfileType.Organization, schema: OrganizationSchema },
-      ]
-    },
-  ]);
-
   beforeEach(async () => {
     testingModule = await Test.createTestingModule({
       imports: [
         TestDataUtils.getMongooseTestModule(TEST_KEY),
         TestDataUtils.getEventEmitterModule(),
-        ProfileModel,
         TestModule,
+        ProfilesModule,
         UsersModule
       ],
       providers: [ProfileDao],
@@ -50,10 +31,6 @@ describe('ProfileDao', () => {
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
-  });
-
   it('should be defined', () => {
     expect(profileDao).toBeDefined();
   });
@@ -61,7 +38,7 @@ describe('ProfileDao', () => {
   describe('findById()', () => {
     it('find profile by ObjectId', async () => {
       const user = await testData.createUser();
-      const profile = await profileDao.save(new Profile(user, { name: 'test' }));
+      const profile = await profileDao.save(new UserProfile(user, { name: 'test' }));
       const search = await profileDao.findById(profile._id);
       expect(search).toBeDefined();
       expect(profile._id.toString()).toEqual(search._id.toString());
@@ -69,7 +46,7 @@ describe('ProfileDao', () => {
 
     it('find profile by string id', async () => {
       const user = await testData.createUser();
-      const profile = await profileDao.save(new Profile(user, { name: 'test' }));
+      const profile = await profileDao.save(new UserProfile(user, { name: 'test' }));
       const search = await profileDao.findById(profile._id);
       expect(search).toBeDefined();
       expect(profile._id.toString()).toEqual(search._id.toString());
@@ -79,7 +56,7 @@ describe('ProfileDao', () => {
   describe('update()', () => {
     it('save profile with updated name', async () => {
       const user = await testData.createUser();
-      const profile = await profileDao.save(new Profile(user, { name: 'test' }));
+      const profile = await profileDao.save(new UserProfile(user, { name: 'test' }));
       profile.name = 'overwritten';
       await profileDao.updateOneSetById(profile, { name: 'overwritten' });
       const updated = await profileDao.reload(profile);
@@ -88,17 +65,17 @@ describe('ProfileDao', () => {
 
     it('update the score of a profile', async () => {
       const user = await testData.createUser();
-      let profile = await profileDao.save(new Profile(user, { name: 'test' }));
+      let profile = await profileDao.save(new UserProfile(user, { name: 'test' }));
       await profileDao.updateOneSetById(profile, { score: 10 });
       profile = await profileDao.reload(profile);
       expect(profile.score).toEqual(10);
     });
   });
 
-  describe('addCategories()', () => {
+  describe('addTag()', () => {
     it('add single tags', async () => {
       const user = await testData.createUser();
-      const profile = await profileDao.save(new Profile(user, { name: 'test' }));
+      const profile = await profileDao.save(new UserProfile(user, { name: 'test' }));
       await profileDao.addTags(profile, [Tag.create({ name: 'Test1' })]);
       const update = await profileDao.reload(profile);
       expect(profile.tags.length).toEqual(1);
@@ -109,5 +86,4 @@ describe('ProfileDao', () => {
       expect(update.tags[0].isNew).toEqual(false);
     });
   });
-
 });

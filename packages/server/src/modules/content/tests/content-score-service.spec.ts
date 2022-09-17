@@ -72,7 +72,7 @@ describe('ContentScoreService', () => {
         expect(model._id).toBeDefined();
         expect(model.cid).toEqual(content._id);
         expect(model.pid).toEqual(profile._id);
-        expect(model.oid).toEqual(model.pid);
+        expect(model.oid).toEqual(profile.oid);
         expect(model.score).toEqual(5);
         expect(model.timing).toBeDefined();
         expect(model.timing.tid).toEqual(toTimingId(new Date()));
@@ -243,7 +243,7 @@ describe('ContentScoreService', () => {
       expect(model.special).toEqual('TestValue');
       expect(model.getSpecialValue()).toEqual('_TestValue_');
       expect(model.pid).toEqual(profile._id);
-      expect(model.oid).toEqual(model.pid);
+      expect(model.oid).toEqual(profile.oid);
       expect(model.uid).toEqual(user._id);
       expect(model.score).toEqual(5);
       expect(model.timing).toBeDefined();
