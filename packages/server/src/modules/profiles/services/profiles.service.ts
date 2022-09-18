@@ -4,7 +4,7 @@ import { EntityIdentity } from '../../../core/db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { UserProfileRelations } from '../models';
-import { EntityNotFoundException, UniqueIntegrityExistsException } from "../../../core/exceptions";
+import { EntityNotFoundException, UniqueConstraintException } from "../../../core/exceptions";
 import { Membership, BaseMembershipRole, Profile, UserProfileRelation,
   CreateProfileOptions, CreateProfileTypeOptions, ProfilesFactory } from "../schemas";
 
@@ -46,46 +46,42 @@ export class ProfilesService {
   /**
    * @param owner
    * @param options
-   * @throws UniqueIntegrityExistsException
+   * @throws UniqueConstraintException
    */
   async createUserProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
+    await this.checkProfileNameUniqueness(owner, options);
+    options.locale = options.locale || options.organization?.locale || owner.locale;
+    return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.User }));
+  }
+
+  async createGroupProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
+    await this.checkProfileNameUniqueness(owner, options);
+    options.locale = options.locale || options.organization?.locale || owner.locale;
+    return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.Group }));
+  }
+
+  private async checkProfileNameUniqueness(owner: User, options: CreateProfileOptions) {
     const profile = options.organization
       ? await this.profileDao.findOneByOrganizationAndName(options.organization, options.name)
       : await this.profileDao.findOneByOwnerAndName(owner, options.name);
 
-    if(profile) {
-      if(options.organization) {
-        throw new UniqueIntegrityExistsException('Can not create user profile since name already exists in organization');
-      }
-      throw new UniqueIntegrityExistsException('Can not create user profile since user already owns a profile with this name');
+    if(profile) this.throwUniqueConstraintExceptionOnCreate(options);
+  }
+
+  private throwUniqueConstraintExceptionOnCreate(options: CreateProfileOptions) {
+    if(options.organization) {
+      throw new UniqueConstraintException('Can not create user profile, profile name already exists in organization', 'name');
     }
-
-    return this.createProfile(owner,{
-      name: options.name,
-      locale: options.locale || owner.locale,
-      type: ProfileType.User
-    });
+    throw new UniqueConstraintException('Can not create user profile, user already owns a profile with this name', 'name');
   }
-
-  async createGroupProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
-    // Todo: check if profile with name already exists for this owner
-    // Todo: check if profile with name already exists for this organization
-    return this.createProfile(owner,{
-      name: owner.username,
-      locale: owner.locale,
-      type: ProfileType.Group
-    });
-  }
-
 
 
   async createOrganization(owner: User, options: Omit<CreateProfileOptions, 'organization'>): Promise<UserProfileRelations> {
-    // Todo: check if organization with this name already exists globally
-    return this.createProfile(owner,{
-      name: owner.username,
-      locale: owner.locale,
-      type: ProfileType.Organization
-    });
+    if(await this.profileDao.findOneByOwnerOrOrganizationName(owner, options.name))
+      throw new UniqueConstraintException('Can not create organization, name is already in use', 'name');
+
+    options.locale = options.locale || owner.locale;
+    return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.Organization }));
   }
 
   /**

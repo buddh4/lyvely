@@ -9,6 +9,9 @@ export class Organization extends Profile {
   constructor(owner: EntityIdentity<User>, obj?: Partial<Organization>) {
     super(owner, obj);
     this.type = ProfileType.Organization;
+    // OID is set in super constructor
+    this._id = this.oid;
+    this.hasOrg = false;
   }
 }
 

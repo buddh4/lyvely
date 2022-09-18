@@ -8,7 +8,7 @@ import { Profile } from '../../profiles';
 export enum CreatedAsType {
   User = 'user',
   Profile = 'profile',
-  Organization = 'orga'
+  Organization = 'organization'
 }
 
 export type Author = Profile | User;

@@ -29,6 +29,16 @@ export class IntegrityException extends ServiceException {
   protected defaultMessage = 'An integrity exception occurred.';
 }
 
-export class UniqueIntegrityExistsException extends IntegrityException {
+export class UniqueConstraintException extends IntegrityException {
   protected defaultMessage = 'Selected name already exists.';
+  protected field: string;
+
+  constructor(msg: string, field?: string) {
+    super(msg);
+    this.field = field;
+  }
+
+  getField() {
+    return this.field;
+  }
 }

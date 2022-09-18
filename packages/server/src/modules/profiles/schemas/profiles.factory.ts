@@ -28,9 +28,9 @@ export function getProfileConstructorByType(type: ProfileType) {
 
 export class ProfilesFactory {
   static createProfile(owner: User, options: CreateProfileTypeOptions) {
-    let ProfileType = getProfileConstructorByType(options.type);
+    let ProfileTypeClass = getProfileConstructorByType(options.type);
 
-    if (!ProfileType) {
+    if (!ProfileTypeClass) {
       throw new IntegrityException('Could not create profile, invalid profile due to invalid profile type');
     }
 
@@ -38,11 +38,11 @@ export class ProfilesFactory {
       throw new IntegrityException('Could not create a profile due to invalid organization profile type');
     }
 
-    return new ProfileType(owner, {
+    return new ProfileTypeClass(owner, {
       name: options.name,
       locale: options.locale,
       type: options.type,
-      oid: options.organization?._id
+      oid: (options.type === ProfileType.Organization) ? undefined : options.organization?._id
     })
   }
 }

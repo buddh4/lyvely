@@ -10,6 +10,7 @@ import { Tag } from "../../tags";
 import { DeepPartial } from "@lyvely/common";
 import { getProfileConstructorByType } from "../schemas";
 import { IntegrityException } from "../../../core/exceptions";
+import { ProfileType } from "@lyvely/common";
 
 @Injectable()
 export class ProfileDao extends AbstractDao<Profile> {
@@ -23,6 +24,17 @@ export class ProfileDao extends AbstractDao<Profile> {
     return this.findOne({ oid: assureObjectId(organization), name });
   }
 
+  async findOrganizationByName(name: string) {
+    return this.findOne({ type: ProfileType.Organization, name });
+  }
+
+  async findOneByOwnerOrOrganizationName(owner: EntityIdentity<User>, name: string) {
+    return this.findOne({$or: [
+      { ownerId:  assureObjectId(owner) , name },
+      { type: ProfileType.Organization, name }
+    ]});
+  }
+
   async addTags(profile: Profile, tags: Tag[]) {
     tags.forEach(tag => { tag._id = tag._id || new mongoose.Types.ObjectId(); })
     return this.updateOneById(profile, { $push: { tags: { $each: tags } } })
@@ -31,9 +43,7 @@ export class ProfileDao extends AbstractDao<Profile> {
   async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
     const tag = profile.getTagById(assureObjectId(identity));
 
-    if(!tag) {
-      return 0;
-    }
+    if(!tag) return 0;
 
     applyRawDataTo(tag, update, { strict: false });
 

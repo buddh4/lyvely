@@ -5,7 +5,7 @@ import { ProfileType } from '@lyvely/common';
 import { BaseMembershipRole } from '../schemas';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
-import { UniqueIntegrityExistsException } from "../../../core/exceptions";
+import { UniqueConstraintException } from "../../../core/exceptions";
 
 describe('ProfileService', () => {
   let testingModule: TestingModule;

@@ -4,8 +4,14 @@ import { ProfilesService } from '../services';
 import { ProfileType } from '@lyvely/common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
-import { BaseMembershipRole, BaseUserProfileRelationType, UserProfile, UserProfileRelation } from "../schemas";
-import { UniqueIntegrityExistsException } from "../../../core/exceptions";
+import {
+  BaseMembershipRole,
+  BaseUserProfileRelationType,
+  GroupProfile,
+  UserProfile,
+  UserProfileRelation
+} from "../schemas";
+import { UniqueConstraintException } from "../../../core/exceptions";
 
 describe('ProfileService (Group)', () => {
   let testingModule: TestingModule;
@@ -28,23 +34,64 @@ describe('ProfileService (Group)', () => {
     expect(profileService).toBeDefined();
   });
 
-  describe('createUserProfile()', () => {
-    it('create default user profile', async () => {
+  describe('createGroupProfile()', () => {
+    it('create named group profile', async () => {
       const user = await testData.createUser('User1');
-      const { profile, relations } = await profileService.createUserProfile(user, { name: 'SomeProfile' });
+      const { profile, relations } = await profileService.createGroupProfile(user, { name: 'SomeGroupProfile' });
       expect(profile).toBeDefined();
-      expect(profile instanceof UserProfile).toEqual(true);
-      expect(profile.type).toEqual(ProfileType.User);
+      expect(profile instanceof GroupProfile).toEqual(true);
+      expect(profile.type).toEqual(ProfileType.Group);
       expectOwnerRelationship(relations);
     });
 
-    it('can not create user profile with already existing name', async () => {
-      const user = await testData.createUser('User1');
-      await profileService.createUserProfile(user, { name: 'Some Profile' });
+    it('create organization group profile', async () => {
+      const { owner, organization } = await testData.createSimpleOrganization();
+      const { profile, relations } = await profileService
+        .createGroupProfile(owner, { name: 'OwnerProfile', organization: organization });
 
-      expect.assertions(1);
-      return profileService.createUserProfile(user, { name: 'Some Profile' }).catch(e => {
-        expect(e instanceof UniqueIntegrityExistsException).toEqual(true);
+      expect(profile.name).toEqual('OwnerProfile');
+      expect(profile.locale).toEqual(organization.locale);
+      expect(profile.ownerId).toEqual(owner._id);
+      expect(profile.type).toEqual(ProfileType.Group);
+      expect(profile.hasOrg).toEqual(true);
+      expect(profile.oid).not.toEqual(profile._id);
+      expect(profile.oid).toEqual(organization._id);
+      expect(profile.meta).toBeDefined();
+      expect(profile.meta.archivable).toEqual(true);
+      expect(profile.meta.deletable).toEqual(true);
+      expectOwnerRelationship(relations);
+    });
+
+    it('PRO_PO04: group profile name is unique per user', async () => {
+      const user = await testData.createUser('User1');
+      await profileService.createGroupProfile(user, { name: 'Some Profile' });
+
+      expect.assertions(2);
+      return profileService.createGroupProfile(user, { name: 'Some Profile' }).catch(e => {
+        expect(e instanceof UniqueConstraintException).toEqual(true);
+        expect(e.getField()).toEqual('name');
+      });
+    });
+
+    it('PRO_PO05: group profile name is unique per organization', async () => {
+      const { owner, member, organization }  = await testData.createSimpleOrganization();
+
+      await profileService.createGroupProfile(owner, { organization: organization, name: 'UniqueGroupProfileName' });
+
+      expect.assertions(2);
+      return profileService.createGroupProfile(member, { organization: organization, name: 'UniqueGroupProfileName' }).catch(e => {
+        expect(e instanceof UniqueConstraintException).toEqual(true);
+        expect(e.getField()).toEqual('name');
+      });
+    })
+
+    it('PRO_PO06: organization group profile can not have same name as organization', async () => {
+      const { member, organization }  = await testData.createSimpleOrganization('MyOrganization');
+
+      expect.assertions(2);
+      return profileService.createGroupProfile(member, { organization: organization, name: 'MyOrganization' }).catch(e => {
+        expect(e instanceof UniqueConstraintException).toEqual(true);
+        expect(e.getField()).toEqual('name');
       });
     })
   });
