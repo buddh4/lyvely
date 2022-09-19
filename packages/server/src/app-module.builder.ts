@@ -93,7 +93,6 @@ export class AppModuleBuilder {
     if(this.options.configFiles) {
       configs.push(...this.options.configFiles.map(file => configuration(file)));
     }
-    configs.push(configuration());
 
     return this.importModules(ConfigModule.forRoot({
       load: configs,
