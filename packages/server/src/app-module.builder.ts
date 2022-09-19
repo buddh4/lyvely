@@ -13,6 +13,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule , ConfigService } from '@nestjs/config';
 import { ServeStaticModule, ServeStaticModuleOptions } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import configuration from "./core/config/configuration";
 
 type Import =  Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
@@ -36,6 +38,7 @@ export class AppModuleBuilder {
         .initConfigModule()
         .initServeStaticModule()
         .initMongooseModule()
+        .initMailModule()
         .initRecommendedModules()
         .initFeatureModules();
   }
@@ -57,6 +60,32 @@ export class AppModuleBuilder {
       }),
       inject: [ConfigService],
     }))
+  }
+
+  private initMailModule() {
+    // https://nest-modules.github.io/mailer/docs/mailer
+    const module = MailerModule.forRootAsync({
+      useFactory: () => ({
+        transport: {
+          jsonTransport: true
+        },
+        defaults: {
+          from: '"No Reply" <no-reply@localhost>',
+        },
+        preview: true,
+        template: {
+          dir: process.cwd() + '/template/',
+          adapter: new PugAdapter(),
+          options: {
+            strict: true,
+          },
+        }
+      })
+    });
+
+    module.global = true;
+
+    return this.importModules(module);
   }
 
   private initConfigModule() {

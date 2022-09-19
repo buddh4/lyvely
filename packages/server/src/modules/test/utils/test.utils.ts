@@ -16,6 +16,8 @@ import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-refe
 import { CoreModule } from '../../../core/core.module';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import mongoose from 'mongoose';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 
 export function createCoreTestingModule(key: string, providers: Provider[] = [], models: ModelDefinition[] = [], modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = []): TestingModuleBuilder {
   return Test.createTestingModule({
@@ -24,6 +26,24 @@ export function createCoreTestingModule(key: string, providers: Provider[] = [],
       MongooseModule.forFeature([...models]),
       EventEmitterModule.forRoot({ wildcard: true }),
       CoreModule,
+      MailerModule.forRootAsync({
+        useFactory: () => ({
+          transport: {
+            jsonTransport: true
+          },
+          defaults: {
+            from: '"No Reply" <no-reply@localhost>',
+          },
+          preview: true,
+          template: {
+            dir: process.cwd() + '/template/',
+            adapter: new PugAdapter(),
+            options: {
+              strict: true,
+            },
+          }
+        })
+      }),
       ...modules
     ],
     providers: [...providers],

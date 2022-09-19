@@ -1,13 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { User } from '../users/schemas/users.schema';
+import { User } from '../users';
 import { MongoError } from 'mongodb';
 import { RegisterDto } from '@lyvely/common';
-import { UserDao } from '../users/daos/user.dao';
+import { UserDao } from '../users';
 import { UserProfileRelations, ProfilesService } from "../profiles";
+import { MailerService } from '@nestjs-modules/mailer';
+import { SentMessageInfo } from 'nodemailer';
 
 @Injectable()
 export class RegisterService {
-  constructor(private userDao: UserDao, private profileService: ProfilesService) {}
+  constructor(private userDao: UserDao, private profileService: ProfilesService, private mailerService: MailerService) {}
 
   /**
    * Creates a user
@@ -25,7 +27,15 @@ export class RegisterService {
         locale: registerDto.locale,
         password: registerDto.password
       }));
-      return await this.profileService.createDefaultUserProfile(user);
+      const result = await this.profileService.createDefaultUserProfile(user);
+      this.mailerService.sendMail({
+        to: registerDto.email,
+        subject: 'Testing...',
+        html: '<b>Testing...</b>'
+      }).then((info: SentMessageInfo) => {
+        const test = info;
+      });
+      return result;
     } catch (error) {
       throw this.evaluateMongoRegistrationError(error, registerDto);
     }
