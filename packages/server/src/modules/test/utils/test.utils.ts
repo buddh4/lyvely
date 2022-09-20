@@ -34,7 +34,7 @@ export function createCoreTestingModule(key: string, providers: Provider[] = [],
           defaults: {
             from: '"No Reply" <no-reply@localhost>',
           },
-          preview: true,
+          preview: false,
           template: {
             dir: process.cwd() + '/template/',
             adapter: new PugAdapter(),

@@ -16,6 +16,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import configuration from "./core/config/configuration";
+import { LyvelyConfigurationGetter } from "./core";
 
 type Import =  Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -54,25 +55,27 @@ export class AppModuleBuilder {
   private initMongooseModule() {
     return this.importModules(MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService<LyvelyConfigurationGetter>) => ({
         uri: configService.get<string>('mongodb.uri'),
         autoIndex: true,
       }),
-      inject: [ConfigService],
     }))
   }
 
   private initMailModule() {
     // https://nest-modules.github.io/mailer/docs/mailer
     const module = MailerModule.forRootAsync({
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService<LyvelyConfigurationGetter>) => (configService.get('mail', {
         transport: {
           jsonTransport: true
         },
         defaults: {
           from: '"No Reply" <no-reply@localhost>',
         },
-        preview: true,
+        preview: false,
         template: {
           dir: process.cwd() + '/template/',
           adapter: new PugAdapter(),
@@ -80,7 +83,7 @@ export class AppModuleBuilder {
             strict: true,
           },
         }
-      })
+      }))
     });
 
     module.global = true;

@@ -14,6 +14,7 @@ import { AppModuleBuilder } from "./app-module.builder";
 import helmet from "helmet";
 import csurf from 'csurf';
 import { HelmetOptions } from "helmet";
+import { LyvelyConfigurationGetter } from "./core";
 
 interface LyvelyServerOptions {
   appModule?: Type<any>;
@@ -22,7 +23,7 @@ interface LyvelyServerOptions {
 export class LyvelyServer {
   private logger: Logger;
   private nestApp: INestApplication;
-  private configService: ConfigService;
+  private configService: ConfigService<LyvelyConfigurationGetter>;
   private options: LyvelyServerOptions;
 
   async bootstrap(options: LyvelyServerOptions = {}) {
@@ -90,9 +91,6 @@ export class LyvelyServer {
     this.logger.log(`Using mongodb uri '${mongodb_uri}'`);
 
     this.logger.log(`Using NODE_ENV '${process.env.NODE_ENV}'`);
-    this.logger.log(
-      `Using env file '${this.configService.get('NODE_ENV') ? '.' + this.configService.get('NODE_ENV') : ''}.env'`,
-    );
   }
 
   private initGuards() {

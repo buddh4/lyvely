@@ -7,13 +7,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controllers/auth.controller';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ConfigService } from '@nestjs/config';
+import { LyvelyConfigurationGetter } from "../../core";
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
     JwtModule.registerAsync({
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: async (configService: ConfigService<LyvelyConfigurationGetter>) => ({
         secret: configService.get('auth.jwt.access.secret'),
         signOptions: { expiresIn: '15m' },
       }),

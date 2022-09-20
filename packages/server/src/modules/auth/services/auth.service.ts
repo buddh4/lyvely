@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import { addMilliSeconds } from '@lyvely/common';
 import ms from 'ms';
+import { LyvelyConfigurationGetter } from "../../../core";
 
 // https://stackoverflow.com/questions/38897514/what-to-store-in-a-jwt
 
@@ -15,7 +16,7 @@ export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
-    private configService: ConfigService
+    private configService: ConfigService<LyvelyConfigurationGetter>
   ) {}
 
   async validateUser(username: string, pass: string): Promise<any> {

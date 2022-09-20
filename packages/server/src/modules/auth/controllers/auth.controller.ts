@@ -17,11 +17,12 @@ import { Cookies } from '../../../core/web';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import JwtRefreshGuard from '../guards/jwt-refresh.guard';
+import { LyvelyConfigurationGetter } from "../../../core";
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(private authService: AuthService, private configService: ConfigService) {}
+  constructor(private authService: AuthService, private configService: ConfigService<LyvelyConfigurationGetter>) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)

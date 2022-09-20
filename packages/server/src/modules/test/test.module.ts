@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TestDataUtils } from './utils/test-data.utils';
-import { UsersModule } from '../users/users.module';
-import { ProfilesModule } from '../profiles/profiles.module';
+import { UsersModule } from '../users';
+import { ProfilesModule } from '../profiles';
 
 @Module({
   imports: [

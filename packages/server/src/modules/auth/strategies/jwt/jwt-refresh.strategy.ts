@@ -7,10 +7,11 @@ import { ConfigService } from '@nestjs/config';
 import { JwtRefreshTokenPayload } from './jwt-payload.interface';
 import { Cookies } from '../../../../core/web';
 import { Headers } from '@lyvely/common';
+import { LyvelyConfigurationGetter } from "../../../../core";
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-token') {
-  constructor(private authService: AuthService, private configService: ConfigService) {
+  constructor(private authService: AuthService, private configService: ConfigService<LyvelyConfigurationGetter>) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         ExtractJwt.fromExtractors([(req: Request) => {
