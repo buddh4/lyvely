@@ -3,7 +3,7 @@ import { User } from '../users';
 import { MongoError } from 'mongodb';
 import { RegisterDto } from '@lyvely/common';
 import { UserDao } from '../users';
-import { UserProfileRelations, ProfilesService } from "../profiles";
+import { UserWithProfileAndRelations, ProfilesService } from "../profiles";
 import { MailerService } from '@nestjs-modules/mailer';
 import { SentMessageInfo } from 'nodemailer';
 
@@ -19,7 +19,7 @@ export class RegisterService {
    * @returns {Promise<UserDocument>} or throws an error
    * @memberof UsersService
    */
-  async register(registerDto: RegisterDto): Promise<UserProfileRelations> {
+  async register(registerDto: RegisterDto): Promise<UserWithProfileAndRelations> {
     try {
       const user = await this.userDao.save(new User({
         username: registerDto.username,

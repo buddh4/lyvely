@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import { UserToProfileRelationDto } from "@lyvely/common";
+import { ProfileRelationInfo } from "@lyvely/common";
 import { ref } from 'vue';
 import { Status, useStatus } from "@/store/status";
 import profileRelationsRepository from '@/modules/profile/repositories/profile-relations.repository';
 
 export const useProfileRelationsStore = defineStore('profile-relations', () => {
-  const relations = ref<UserToProfileRelationDto[]>([]);
+  const relations = ref<ProfileRelationInfo[]>([]);
   const status = useStatus();
 
   async function getRelations() {
@@ -25,7 +25,7 @@ export const useProfileRelationsStore = defineStore('profile-relations', () => {
     return relations;
   }
 
-  function addRelation(relation: UserToProfileRelationDto) {
+  function addRelation(relation: ProfileRelationInfo) {
     relations.value.push(relation);
   }
 

@@ -9,3 +9,4 @@ export * from "./time-series";
 export * from "./util";
 export * from "./user";
 export * from "./web";
+export * from "./mapping";

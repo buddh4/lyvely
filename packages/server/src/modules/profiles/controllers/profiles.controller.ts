@@ -8,11 +8,10 @@ import {
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfileMembershipDto, MembershipDto , TagModel, CreateProfileDto, UserToProfileRelationDto } from "@lyvely/common";
+import { ProfileWithRelationsDto , TagModel, CreateProfileDto, ProfileType, mapType } from "@lyvely/common";
 import { ProfilesService } from '../services';
 import { ProfileRequest } from "../../../core/types";
-import { ProfileRelationDto } from "@lyvely/common";
-import { ProfileType } from "@lyvely/common";
+import { UserWithProfileAndRelations } from "../models";
 
 @Controller('profiles')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -21,39 +20,32 @@ export class ProfilesController {
   constructor(private profilesService: ProfilesService) {}
 
   @Get(':id')
-  async getProfile(@Request() req, @Param('id') id: string): Promise<ProfileMembershipDto> {
-    const { profile, membership } = ((id === 'default')
+  async getProfile(@Request() req, @Param('id') id: string): Promise<ProfileWithRelationsDto> {
+    const profileRelations = ((id === 'default')
       ? await this.profilesService.findDefaultProfileMembershipByUser(req.user)
-      : await this.profilesService.findProfileMembershipByUserAndId(req.user, id)) || {};
+      : await this.profilesService.findUserProfileRelations(req.user, id));
 
-    // TODO: currently only member profiles are supported
-
-    if(!profile || !membership) {
+    // TODO: (profile visibility) currently only member profiles are supported
+    if(!profileRelations.getMembership()) {
       throw new NotFoundException();
     }
 
-    const relations = await this.profilesService.findAllUserProfileRelations(profile);
-
-    return new ProfileMembershipDto({
-      ...profile,
-      membership: new MembershipDto(membership),
-      relations: relations.map(relation => new ProfileRelationDto(relation))
-    });
+    return mapType(UserWithProfileAndRelations, ProfileWithRelationsDto, profileRelations);
   }
 
   @Post()
-  async create(@Request() req, @Body() dto: CreateProfileDto): Promise<UserToProfileRelationDto> {
+  async create(@Request() req, @Body() dto: CreateProfileDto): Promise<ProfileWithRelationsDto> {
     // TODO: (TEAM) check if user is allowed to create team profiles
-    let profileRelation;
+    let profileRelations;
     if(dto.type === ProfileType.User) {
-      profileRelation = await this.profilesService.createUserProfile(req.user, dto);
+      profileRelations = await this.profilesService.createUserProfile(req.user, dto);
     } else if(dto.type === ProfileType.Group) {
-      profileRelation = await this.profilesService.createGroupProfile(req.user, dto)
+      profileRelations = await this.profilesService.createGroupProfile(req.user, dto)
     } else if(dto.type === ProfileType.Organization) {
-      profileRelation = await this.profilesService.createOrganization(req.user, dto)
+      profileRelations = await this.profilesService.createOrganization(req.user, dto)
     }
 
-    return UserToProfileRelationDto.create(profileRelation.profile, profileRelation.getMembership());
+    return mapType(UserWithProfileAndRelations, ProfileWithRelationsDto, profileRelations);
   }
 
   @Get(':cid/tags')

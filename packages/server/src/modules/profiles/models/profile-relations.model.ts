@@ -1,14 +1,17 @@
 import { BaseUserProfileRelationType, UserProfileRelation, Profile, Membership } from '../schemas';
 import { User } from '../../users';
+import { BaseModel, PropertyType } from "@lyvely/common";
 
 /**
  * This composite class holds information about the relation between a user and a profile and provides some utility
  * access functions. This class is mainly used in the controller and service layer for access and permission checks.
  */
-export class UserProfileRelations {
+export class UserWithProfileAndRelations extends BaseModel<UserWithProfileAndRelations>{
   user?: User;
   profile: Profile;
-  relations: UserProfileRelation[] = [];
+
+  @PropertyType([UserProfileRelation])
+  relations: UserProfileRelation[];
 
   get oid() {
     return this.profile.oid;
@@ -16,11 +19,6 @@ export class UserProfileRelations {
 
   get pid() {
     return this.profile._id;
-  }
-
-  constructor(obj: Partial<UserProfileRelations>) {
-    Object.assign(this, obj);
-    this.relations = this.relations || [];
   }
 
   isGuest(): boolean {
@@ -53,5 +51,4 @@ export class UserProfileRelations {
   getAllRelationsOfType(type: string): UserProfileRelation[] {
     return this.relations.filter(r => r.type === type);
   }
-
 }

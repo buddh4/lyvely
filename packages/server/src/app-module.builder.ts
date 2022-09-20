@@ -16,6 +16,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import configuration from "./core/config/configuration";
+import { AutomapperModule } from '@automapper/nestjs';
+import { classes } from '@automapper/classes';
 import { LyvelyConfigurationGetter } from "./core";
 
 type Import =  Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
@@ -40,6 +42,7 @@ export class AppModuleBuilder {
         .initServeStaticModule()
         .initMongooseModule()
         .initMailModule()
+        .initAutomapperModule()
         .initRecommendedModules()
         .initFeatureModules();
   }
@@ -50,6 +53,12 @@ export class AppModuleBuilder {
     }
 
     return this.importModules(ServeStaticModule.forRoot(this.options.serveStatic));
+  }
+
+  private initAutomapperModule() {
+    return this.importModules(AutomapperModule.forRoot({
+      strategyInitializer: classes(),
+    }))
   }
 
   private initMongooseModule() {

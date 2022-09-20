@@ -29,6 +29,9 @@
     "migrate:up": "ts-node node_modules/migrate-mongo/bin/migrate-mongo up -f migrate-mongo-config.ts"
   },
   "dependencies": {
+    "@automapper/classes": "^8.7.6",
+    "@automapper/core": "^8.7.6",
+    "@automapper/nestjs": "^8.7.6",
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^8.4.7",
     "@nestjs/config": "^2.1.0",

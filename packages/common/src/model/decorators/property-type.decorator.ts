@@ -19,7 +19,7 @@ export function PropertyType<
   TTarget,
   TProperty extends Extract<keyof TTarget, string>,
   TValue = TTarget[TProperty]>
-    (type: Type<TValue>, options: PropertyDefinitionOption<TValue> = {}): PropertyDecorator {
+    (type: Type<TValue>|Array<Type<TValue>>, options: PropertyDefinitionOption<TValue> = {}): PropertyDecorator {
   return function (target: TTarget, propertyKey: TProperty) {
     const targetConstructor = target.constructor as Type;
     if(!modelPropertyTypes.has(targetConstructor)) modelPropertyTypes.set(targetConstructor, {});

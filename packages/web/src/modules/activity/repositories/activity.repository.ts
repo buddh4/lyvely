@@ -1,11 +1,11 @@
 import repository from "@/repository";
-import { ActivityRangeResponseDto, DataPointIntervalFilter, CalendarIntervalEnum, MoveAction , SortResult } from "@lyvely/common";
+import { ActivityRangeResponse, DataPointIntervalFilter, CalendarIntervalEnum, MoveAction , SortResult } from "@lyvely/common";
 
 const resource = "activities";
 
 export default {
   async getByRange(filter: DataPointIntervalFilter) {
-    return repository.get<ActivityRangeResponseDto>(`${resource}`, {
+    return repository.get<ActivityRangeResponse>(`${resource}`, {
       params: filter
     });
   },

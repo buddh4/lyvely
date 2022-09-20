@@ -9,7 +9,7 @@ import {
   BaseMembershipRole,
   UserProfileRelation,
   UserProfileRelationDocument,
-  Membership, MembershipDocument, UserProfileRelations, ProfilesFactory, Organization, UserProfile, GroupProfile
+  Membership, MembershipDocument, UserWithProfileAndRelations, ProfilesFactory, Organization, UserProfile, GroupProfile
 } from '../../profiles';
 import { EventEmitter2, EventEmitterModule  } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
@@ -34,10 +34,10 @@ export class TestDataUtils {
   @Inject()
   private eventEmitter: EventEmitter2;
 
-  async createUserAndProfile(username = 'test', password = 'test', email?: string): Promise<{user: User, profile: UserProfile, profileRelations: UserProfileRelations }> {
+  async createUserAndProfile(username = 'test', password = 'test', email?: string): Promise<{user: User, profile: UserProfile, profileRelations: UserWithProfileAndRelations }> {
     const user = await this.createUser(username, password, email);
     const profile = await this.createProfile(user);
-    const profileRelations = new UserProfileRelations({
+    const profileRelations = new UserWithProfileAndRelations({
       user,
       profile,
       relations: [Membership.create({ user, profile, role: BaseMembershipRole.Owner })]

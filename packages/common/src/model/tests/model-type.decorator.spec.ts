@@ -215,4 +215,50 @@ describe('ModelType Decorator', () => {
     const model = new SubModel();
     expect(model.field).toEqual('Child');
   });
+
+  it('test array without default', async () => {
+    class PlainSubModel extends BaseModel<PlainSubModel> {
+      @PropertyType(Array)
+      arr: string[];
+    }
+
+    const model = new PlainSubModel();
+    expect(model.arr).toBeDefined();
+    expect(model.arr.length).toEqual(0);
+  });
+
+  it('test array default', async () => {
+    class PlainSubModel extends BaseModel<PlainSubModel> {
+      @PropertyType(Array,{ default: ['test'] })
+      arr: string[];
+    }
+
+    const model = new PlainSubModel();
+    expect(model.arr).toBeDefined();
+    expect(model.arr.length).toEqual(1);
+    expect(model.arr[0]).toEqual('test');
+  });
+
+  it('test typed array', async () => {
+    class SubModel {
+      value: string;
+    }
+
+    class PlainSubModel extends BaseModel<PlainSubModel> {
+      @PropertyType([SubModel])
+      arr: SubModel[];
+    }
+
+    const model = new PlainSubModel({ arr: [
+        { value: 'v1' },
+        { value: 'v2' },
+    ] });
+
+    expect(model.arr).toBeDefined();
+    expect(model.arr.length).toEqual(2);
+    expect(model.arr[0].value).toEqual('v1');
+    expect(model.arr[0] instanceof SubModel).toEqual(true);
+    expect(model.arr[1].value).toEqual('v2');
+    expect(model.arr[1] instanceof SubModel).toEqual(true);
+  });
 });

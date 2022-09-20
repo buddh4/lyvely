@@ -2,14 +2,14 @@ import { ContextType, ExecutionContext, Type } from '@nestjs/common';
 import { HttpArgumentsHost, RpcArgumentsHost, WsArgumentsHost } from '@nestjs/common/interfaces';
 import { User } from '../../users/schemas/users.schema';
 import { Profile } from '../../profiles/schemas/profiles.schema';
-import { UserProfileRelations } from '../../profiles/models/profile-relations.model';
+import { UserWithProfileAndRelations } from '../../profiles/models/profile-relations.model';
 
 interface TestExecutionContextOptions {
   params?: Record<string, string>;
   query?: Record<string, string>;
   user?: User,
   profile?: Profile,
-  profileRelations?: UserProfileRelations,
+  profileRelations?: UserWithProfileAndRelations,
   class?: any,
   // eslint-disable-next-line @typescript-eslint/ban-types
   handler?: Function,

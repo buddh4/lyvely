@@ -8,7 +8,7 @@ import { isValidObjectId } from '@lyvely/common';
 import { Content } from '../schemas';
 import { getPolicyHandlerFromContext } from '../../policies/decorators/policies.decorator';
 import { PolicyService } from '../../policies/services/policy.service';
-import { UserProfileRelations } from "../../profiles";
+import { UserWithProfileAndRelations } from "../../profiles";
 
 /**
  * If the request contains a cid parameter, this guard will try to fetch and validate the given content id
@@ -32,7 +32,7 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
   @Inject()
   protected policyService: PolicyService
 
-  abstract canActivateContent(profileRelations: UserProfileRelations, content: C, context: ExecutionContext): Promise<boolean>;
+  abstract canActivateContent(profileRelations: UserWithProfileAndRelations, content: C, context: ExecutionContext): Promise<boolean>;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = <ProfileContentRequest> context.switchToHttp().getRequest<Request>();

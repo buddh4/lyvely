@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { UserProfileRelations } from '../../profiles/models/profile-relations.model';
+import { UserWithProfileAndRelations } from '../../profiles/models/profile-relations.model';
 import minimatch from 'minimatch';
 import { BaseMembershipRole } from '../../profiles/schemas/user-profile-relations.schema';
 import {
@@ -36,17 +36,17 @@ export class ProfilePermissionsService {
     }
   }
 
-  async checkEveryPermission(profileRelations: UserProfileRelations, ...permissions: string[]): Promise<boolean>  {
+  async checkEveryPermission(profileRelations: UserWithProfileAndRelations, ...permissions: string[]): Promise<boolean>  {
     const promises = permissions.map(permission => this.checkPermission(profileRelations, permission));
     return !(await Promise.all(promises)).includes(false);
   }
 
-  async checkSomePermission(profileRelations: UserProfileRelations, ...permissions: string[]): Promise<boolean>  {
+  async checkSomePermission(profileRelations: UserWithProfileAndRelations, ...permissions: string[]): Promise<boolean>  {
     const promises = permissions.map(permission => this.checkPermission(profileRelations, permission));
     return (await Promise.all(promises)).includes(true);
   }
 
-  async checkPermission(profileRelations: UserProfileRelations, permission: string): Promise<boolean>  {
+  async checkPermission(profileRelations: UserWithProfileAndRelations, permission: string): Promise<boolean>  {
     const { profile } = profileRelations;
 
     if(!profile) {
@@ -78,7 +78,7 @@ export class ProfilePermissionsService {
     return this.checkDefaultPermission(permission, profileRelations);
   }
 
-  private checkDefaultPermission(permission: string, profileRelations: UserProfileRelations): boolean {
+  private checkDefaultPermission(permission: string, profileRelations: UserWithProfileAndRelations): boolean {
     for(const defaultPermission in this.defaultPermissions) {
       if(minimatch(permission, defaultPermission) && this.userInheritsRole(this.defaultPermissions[defaultPermission], profileRelations)) {
         return true;
@@ -88,7 +88,7 @@ export class ProfilePermissionsService {
     return false;
   }
 
-  private userInheritsRole(role: string, profileRelations: UserProfileRelations) {
+  private userInheritsRole(role: string, profileRelations: UserWithProfileAndRelations) {
     for(let i = 0;i < this.rolesDefinition.length;i++) {
       const roleDef =  this.rolesDefinition[i];
       if(profileRelations.getRelationByRole(roleDef.role)) {

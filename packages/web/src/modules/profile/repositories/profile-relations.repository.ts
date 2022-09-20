@@ -1,11 +1,11 @@
 import repository from "@/repository";
-import { UserToProfileRelationDto } from "@lyvely/common";
+import { ProfileRelationInfo } from "@lyvely/common";
 
 
 const resource = "profile-relations";
 
 export default {
   async getRelations() {
-    return repository.get<UserToProfileRelationDto[]>(`${resource}`);
+    return repository.get<ProfileRelationInfo[]>(`${resource}`);
   },
 };

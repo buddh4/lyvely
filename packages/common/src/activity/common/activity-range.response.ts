@@ -7,7 +7,7 @@ import { NumberDataPointModel } from "../../time-series";
 import { ActivityModel } from "../models";
 
 @Exclude()
-export class ActivityRangeResponseDto extends BaseModel<ActivityRangeResponseDto> {
+export class ActivityRangeResponse extends BaseModel<ActivityRangeResponse> {
 
   @Expose()
   @Type(() => HabitModel)

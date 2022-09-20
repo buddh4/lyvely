@@ -13,13 +13,3 @@ export enum ProfileVisibilityLevel {
   User, // All users of the network
   Visitor // All users + guests
 }
-
-export interface IUserToProfileRelation {
-  id: string;
-  name: string;
-  type: ProfileType;
-  imageHash?: string;
-  score: number;
-  relationType: string;
-  role?: string;
-}

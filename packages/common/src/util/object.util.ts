@@ -25,7 +25,8 @@ const primitivePrototypes = [
   String.prototype,
   Number.prototype,
   Boolean.prototype,
-  Symbol.prototype
+  Symbol.prototype,
+  Array.prototype,
 ];
 
 const primitiveDefaults = new Map();
@@ -33,6 +34,7 @@ primitiveDefaults.set(String, '');
 primitiveDefaults.set(Number, 0);
 primitiveDefaults.set(Boolean, false);
 primitiveDefaults.set(Symbol, null);
+primitiveDefaults.set(Array, []);
 
 function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {} ) {
   if(level > maxDepth) {
@@ -43,7 +45,8 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {} ) {
     const propertyDefinitions = getPropertyTypeDefinitions(model.constructor as Type);
     Object.keys(propertyDefinitions).forEach(propertyKey => {
       const propertyDefinition = propertyDefinitions[propertyKey];
-      if((!model[propertyKey] && !propertyDefinition.optional) || (model[propertyKey] && !(model[propertyKey] instanceof propertyDefinition.type))) {
+      // Instantiate empty non optional properties or if the type does not match the configured type
+      if((!model[propertyKey] && !propertyDefinition.optional)) {
         if(propertyDefinition.default) {
           model[propertyKey] = typeof propertyDefinition.default === 'function' ? propertyDefinition.default() : propertyDefinition.default;
         } else if(!primitivePrototypes.includes(propertyDefinition.type.prototype)) {
@@ -92,7 +95,12 @@ function _assignRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any } & any,
     if(transformed !== undefined) {
       model[path] = transformed;
     } else if(Array.isArray(data[path])) {
-      model[path] = _assignRawDataTo([], data[path], level + 1, {maxDepth, strict, transform});
+      let arrayData = data[path];
+      const arrayType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
+      if(arrayType && Array.isArray(arrayType) && arrayType.length) {
+        arrayData = data[path].map(entry => entry instanceof arrayType[0] ? entry : Object.assign(Object.create(arrayType[0].prototype), entry))
+      }
+      model[path] = _assignRawDataTo([], arrayData, level + 1, {maxDepth, strict, transform});
     } else if(isObjectId(data[path])) {
       // Todo: We can not clone an ObjectId by Object.create, maybe implement another clone method in the future.
       model[path] = data[path];

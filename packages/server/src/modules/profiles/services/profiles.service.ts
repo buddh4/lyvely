@@ -3,7 +3,7 @@ import { User, UsersService } from '../../users';
 import { EntityIdentity } from '../../../core/db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
-import { UserProfileRelations } from '../models';
+import { UserWithProfileAndRelations } from '../models';
 import { EntityNotFoundException, UniqueConstraintException } from "../../../core/exceptions";
 import { Membership, BaseMembershipRole, Profile, UserProfileRelation,
   CreateProfileOptions, CreateProfileTypeOptions, ProfilesFactory } from "../schemas";
@@ -29,7 +29,7 @@ export class ProfilesService {
     private profileRelationsDao: UserProfileRelationsDao
   ) {}
 
-  async createDefaultUserProfile(owner: User): Promise<UserProfileRelations> {
+  async createDefaultUserProfile(owner: User): Promise<UserWithProfileAndRelations> {
     const profile = await this.profileDao.findOneByOwnerAndName(owner, owner.username);
 
     if(profile) {
@@ -48,13 +48,13 @@ export class ProfilesService {
    * @param options
    * @throws UniqueConstraintException
    */
-  async createUserProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
+  async createUserProfile(owner: User, options: CreateProfileOptions): Promise<UserWithProfileAndRelations> {
     await this.checkProfileNameUniqueness(owner, options);
     options.locale = options.locale || options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.User }));
   }
 
-  async createGroupProfile(owner: User, options: CreateProfileOptions): Promise<UserProfileRelations> {
+  async createGroupProfile(owner: User, options: CreateProfileOptions): Promise<UserWithProfileAndRelations> {
     await this.checkProfileNameUniqueness(owner, options);
     options.locale = options.locale || options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.Group }));
@@ -76,7 +76,7 @@ export class ProfilesService {
   }
 
 
-  async createOrganization(owner: User, options: Omit<CreateProfileOptions, 'organization'>): Promise<UserProfileRelations> {
+  async createOrganization(owner: User, options: Omit<CreateProfileOptions, 'organization'>): Promise<UserWithProfileAndRelations> {
     if(await this.profileDao.findOneByOwnerOrOrganizationName(owner, options.name))
       throw new UniqueConstraintException('Can not create organization, name is already in use', 'name');
 
@@ -95,7 +95,7 @@ export class ProfilesService {
    * @param owner
    * @param options
    */
-  protected async createProfile(owner: User, options: CreateProfileTypeOptions): Promise<UserProfileRelations> {
+  protected async createProfile(owner: User, options: CreateProfileTypeOptions): Promise<UserWithProfileAndRelations> {
     const profile = await this.profileDao.save(ProfilesFactory.createProfile(owner, options));
 
     const [ membership ] = await Promise.all([
@@ -103,60 +103,30 @@ export class ProfilesService {
       this.usersService.incProfileCount(owner, profile.type)
     ])
 
-    return new UserProfileRelations({ user: owner, profile: profile, relations: [membership] });
+    return new UserWithProfileAndRelations({ user: owner, profile: profile, relations: [membership] });
   }
 
   async findAllUserProfileRelations(profile: EntityIdentity<Profile>): Promise<UserProfileRelation[]> {
     return this.profileRelationsDao.findAllByProfile(profile);
   }
 
-  async findUserProfileRelations(user: User, identity: EntityIdentity<Profile>): Promise<UserProfileRelations> {
+  async findUserProfileRelations(user: User, identity: EntityIdentity<Profile>): Promise<UserWithProfileAndRelations> {
     const relations = await this.profileRelationsDao.findAllByUserAndProfile(user, identity);
     const profile =  identity instanceof Profile ? identity : await this.profileDao.findById(identity);
-    return new UserProfileRelations({ user, profile, relations });
+    return new UserWithProfileAndRelations({ user, profile, relations });
   }
 
-  async findProfileRelationsByUser(user: User): Promise<UserToProfileRelation[]> {
+  async findProfileRelationsByUser(user: User): Promise<UserWithProfileAndRelations[]> {
     const userRelations = await this.profileRelationsDao.findAllByUser(user);
 
-    if(!userRelations.length) return null;
+    if(!userRelations.length) return [];
 
     const profiles = await this.profileDao.findAllByIds(userRelations.map(relation => relation.pid));
-
-    const result = [];
-
-    userRelations.forEach((relation) => {
-      const profile = profiles.find(profile => profile._id.equals(relation.pid));
-      if(profile) {
-        result.push({ user, relation, profile })
-      }
-    });
-
-    return result;
-  }
-
-  /**
-   * Returns a single profile with membership model in case the given user is member of this profile else null.
-   *
-   * @param user
-   * @param identity
-   * @deprecated
-   */
-  async findProfileMembershipByUserAndId(user: User, identity: EntityIdentity<Profile>): Promise<ProfileMembership|null> {
-    const membership = await this.membershipDao.findByUserAndProfile(user, identity);
-
-    if(!membership) {
-      return null;
-    }
-
-    const profile = identity instanceof Profile ? identity : await this.profileDao.findById(identity);
-
-    if(!profile) {
-      console.warn(`Membership without profile: ${membership.id}`);
-      return null;
-    }
-
-    return { user, membership, profile };
+    return profiles.map(profile => new UserWithProfileAndRelations({
+      user,
+      profile,
+      relations: userRelations.filter(relation => relation.pid.equals(profile._id))
+    }));
   }
 
   /**
@@ -165,8 +135,7 @@ export class ProfilesService {
    *
    * @param user
    */
-  async findDefaultProfileMembershipByUser(user: User): Promise<ProfileMembership|null> {
-    // TODO: implement other strategies here
+  async findDefaultProfileMembershipByUser(user: User): Promise<UserWithProfileAndRelations|null> {
     // TODO: make sure not to return an archived profile
     const memberships = await this.membershipDao.findAllByUser(user);
 
@@ -175,16 +144,7 @@ export class ProfilesService {
       return null;
     }
 
-    const membership = memberships[0];
-
-    const profile = await this.profileDao.findById(membership.pid);
-
-    if(!profile) {
-      console.warn(`Membership without profile: ${membership.id}`);
-      return null;
-    }
-
-    return { user, membership, profile };
+    return this.findUserProfileRelations(user, memberships[0].pid);
   }
 
   async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {
