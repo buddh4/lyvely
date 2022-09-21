@@ -65,3 +65,16 @@ export function useStatus(status?: Ref<Status>): StatusStorePlugin {
     }
   }
 }
+
+export async function loadingStatus<T = any, R = T|void>(promise: Promise<T>, status: StatusStorePlugin, resolve: (result: T) => R, reject?: (e: any) => any): Promise<R extends void|undefined ? T : R> {
+  status.setStatus(Status.LOADING);
+  return promise.then(result => {
+    status.setStatus(Status.SUCCESS);
+    const successResult = resolve(result);
+    return successResult !== undefined  ? successResult : result;
+  }).catch(e => {
+    console.error(e);
+    if(reject) reject(e);
+    else status.setError('error.unknown');
+  }) as Promise<R extends void|undefined ? T : R>;
+}

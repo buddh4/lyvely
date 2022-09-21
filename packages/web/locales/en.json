@@ -144,6 +144,13 @@
     }
   },
   "profile": {
+    "labels": {
+      "organizations": "Organizations",
+      "profiles": "Profiles"
+    },
+    "messages": {
+      "no-organization-relation": "You are not a member of any organization."
+    },
     "users": {
       "title": "Profile Users",
       "label": "Users"

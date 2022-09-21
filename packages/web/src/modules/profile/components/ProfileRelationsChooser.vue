@@ -38,7 +38,7 @@ async function setProfile(pid: string) {
   <ul v-else class="divide-y divide-divide w-96">
     <li class="py-3 px-4">
       <div class="flex items-center">
-        <span class="text-sm font-bold">Profiles</span>
+        <span class="text-sm font-bold">{{ $t('profile.labels.profiles') }}</span>
         <AddButton class="m-auto" @click="showCreateProfile = true" />
       </div>
     </li>
@@ -65,12 +65,12 @@ async function setProfile(pid: string) {
     </li>
     <li class="py-3 px-4">
       <div class="flex items-center">
-        <span class="text-sm font-bold">Organizations</span>
+        <span class="text-sm font-bold">{{ $t('profile.labels.organizations') }}</span>
         <AddButton class="m-auto" />
       </div>
     </li>
     <li class="py-3 px-4 text-dimmed text-sm">
-      You are not a member of any organization.
+      {{ $t('profile.messages.no-organization-relation') }}
     </li>
   </ul>
 </template>
