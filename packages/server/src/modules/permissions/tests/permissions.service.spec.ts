@@ -72,8 +72,8 @@ describe('ProfilePermissionsService', () => {
   async function createMembership(role: BaseProfilePermissionRole) {
     const { user, profile } = await testDataUtils.createUserAndProfile();
     const profileRelations = new UserWithProfileAndRelations({
-      user: user,
-      profile: profile,
+      user,
+      profile,
       relations: [new Membership({ role: role })]
     });
 

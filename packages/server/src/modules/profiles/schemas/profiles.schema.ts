@@ -128,7 +128,7 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
   }
 
   getPermissionsByRole(role: string) {
-    if(!this.permissions) {
+    if(!this.permissions?.length) {
       return [];
     }
 

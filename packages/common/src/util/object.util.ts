@@ -26,7 +26,6 @@ const primitivePrototypes = [
   Number.prototype,
   Boolean.prototype,
   Symbol.prototype,
-  Array.prototype,
 ];
 
 const primitiveDefaults = new Map();
@@ -34,7 +33,6 @@ primitiveDefaults.set(String, '');
 primitiveDefaults.set(Number, 0);
 primitiveDefaults.set(Boolean, false);
 primitiveDefaults.set(Symbol, null);
-primitiveDefaults.set(Array, []);
 
 function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {} ) {
   if(level > maxDepth) {
@@ -49,6 +47,8 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {} ) {
       if((!model[propertyKey] && !propertyDefinition.optional)) {
         if(propertyDefinition.default) {
           model[propertyKey] = typeof propertyDefinition.default === 'function' ? propertyDefinition.default() : propertyDefinition.default;
+        } else if(Array.isArray(propertyDefinition.type)) {
+          model[propertyKey] = [];
         } else if(!primitivePrototypes.includes(propertyDefinition.type.prototype)) {
           model[propertyKey] = Object.assign(Object.create(propertyDefinition.type.prototype), model[propertyKey]);
           if(!propertyDefinition.default && 'afterInit' in model[propertyKey] && typeof model[propertyKey]['afterInit'] === 'function') {
@@ -111,11 +111,16 @@ function _assignRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any } & any,
         modelType = !model[path] ? data[path].constructor : getSpecificConstructor(model[path], data[path]);
       }
 
-      model[path] = _assignRawDataTo(
-        Object.assign(Object.create(modelType.prototype), model[path]),
-        data[path],
-        level + 1,
-        { maxDepth, strict, transform });
+      // Only create a new instance if the type is not the expected, otherwise just use the given value
+      if(data[path] instanceof modelType) {
+        model[path] = data[path];
+      } else {
+        model[path] = _assignRawDataTo(
+          Object.assign(Object.create(modelType.prototype), model[path]),
+          data[path],
+          level + 1,
+          { maxDepth, strict, transform });
+      }
 
       if('afterInit' in model[path] && typeof model[path]['afterInit'] === 'function') {
         model[path].afterInit();

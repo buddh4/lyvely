@@ -54,7 +54,7 @@ describe('UserDao', () => {
       expect(user).toBeDefined();
       expect(user._id).toBeDefined();
       expect(user.id).toEqual(user._id.toString());
-      expect(user.status).toEqual(UserStatus.Disabled);
+      expect(user.status).toEqual(UserStatus.Active);
       expect(user.profilesCount).toBeDefined();
       expect(user.profilesCount.user).toEqual(0);
       expect(user.profilesCount.group).toEqual(0);

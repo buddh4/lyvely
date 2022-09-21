@@ -20,14 +20,14 @@ describe('object util', () => {
       expect(model.testFunc).toBeUndefined();
     });
 
-    it('assign constructor of field', async () => {
+    it('assign by reference if the right type is provided', async () => {
       const model = {} as any;
       const obj = { test: new TestClass('testValue') };
       assignRawDataTo(model, obj);
       expect(model.test).toBeDefined();
       expect(model.test.field).toEqual('testValue');
       expect(model.test instanceof TestClass).toEqual(true);
-      expect(model.test !== obj.test).toEqual(true);
+      expect(model.test === obj.test).toEqual(true);
     });
 
     it('assign constructor of deep field', async () => {
