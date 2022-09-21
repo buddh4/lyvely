@@ -5,6 +5,7 @@ import MainProfileContainer from "@/modules/profile/components/layout/MainProfil
 import { computed } from 'vue';
 import { useAuthStore } from "@/modules/user/store/auth.store";
 import CreateProfileModal from "@/modules/profile/components/modals/CreateProfileModal.vue";
+import InviteUsersModal from "@/modules/profile/components/modals/InviteUsersModal.vue";
 
 interface Props {
   containerWidth?: 'xs'|'sm'|'lg'|'xl'|'full',
@@ -36,6 +37,7 @@ const show = computed(() => props.requireAuth ? useAuthStore().isAuthenticated :
     </div>
   </div>
   <CreateProfileModal />
+  <InviteUsersModal />
 </template>
 
 <style scoped>

@@ -9,9 +9,8 @@ import {
 import { ProfilesService } from '../services';
 import { UserRequest } from "../../../core/types";
 import { ProfileRelationInfos } from "@lyvely/common";
-import { mapType, ENDPOINT_PROFILE_RELATION_INFOS } from "@lyvely/common";
+import { mapType, ENDPOINT_PROFILE_RELATION_INFOS, ProfileRelationInfosEndpoint } from "@lyvely/common";
 import { UserWithProfileAndRelations } from "../models";
-import { ProfileRelationInfosEndpoint } from "@lyvely/common/src/profile/interfaces/profile-relation-infos.endpoint";
 
 @Controller(ENDPOINT_PROFILE_RELATION_INFOS)
 @UseInterceptors(ClassSerializerInterceptor)

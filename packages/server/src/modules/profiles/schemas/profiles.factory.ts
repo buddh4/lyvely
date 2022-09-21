@@ -4,9 +4,11 @@ import { UserProfile } from "./user-profiles.schema";
 import { GroupProfile } from "./group-profiles.schema";
 import { Organization } from "./organization.schema";
 import { IntegrityException } from "../../../core/exceptions";
+import { ProfileUsage } from "@lyvely/common";
 
 export interface CreateProfileOptions {
   organization?: Organization,
+  usage?: ProfileUsage[],
   name: string,
   description?: string,
   locale?: string,
@@ -41,6 +43,8 @@ export class ProfilesFactory {
     return new ProfileTypeClass(owner, {
       name: options.name,
       locale: options.locale,
+      description: options.description,
+      usage: options.usage,
       type: options.type,
       oid: (options.type === ProfileType.Organization) ? undefined : options.organization?._id
     })

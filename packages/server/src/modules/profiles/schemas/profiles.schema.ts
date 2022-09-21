@@ -15,7 +15,7 @@ import {
 
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-permissions.schema';
 import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
-import { ProfileType, BaseModel, PropertyType } from "@lyvely/common";
+import { ProfileType, BaseModel, PropertyType, ProfileUsage } from "@lyvely/common";
 
 @Schema({ _id: false })
 class ProfileMetadata extends BaseModel<ProfileMetadata> {
@@ -61,6 +61,9 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   @Prop({ required: true, default: 0 })
   score: number;
+
+  @Prop({ type: [String] })
+  usage: ProfileUsage[];
 
   type: ProfileType;
 

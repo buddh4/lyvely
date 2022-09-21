@@ -7,16 +7,19 @@ import { translate } from "@/i18n";
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
 import { usePageStore } from "@/modules/core/store/page.store";
 import { watchMaxSize, isMaxViewSize } from "@/util/media";
+import { isMultiUserProfile } from "@lyvely/common";
 
 interface MenuItem {
   to?: Partial<RouteLocation> | string;
   click?: { (): void },
   icon: string;
   label: string;
+  condition?: () => boolean
 }
 
 const pageStore = usePageStore();
 const authStore = useAuthStore();
+const profileStore = useProfileStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 const sidebar = ref<HTMLElement | null>(null);
 
@@ -44,7 +47,8 @@ const menuItems: MenuItem[] = [
   {
     to: { name: 'ProfileUsers' },
     icon: 'users',
-    label: 'profile.users.label'
+    label: 'profile.users.label',
+    condition: () => isMultiUserProfile(profileStore.profile)
   },
   {
     to: { name: 'ProfileSettings' },
@@ -97,6 +101,7 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
       <ul class="nav flex-column">
         <li>
           <template v-for="menuItem in menuItems" :key="menuItem.label">
+            <template v-if="!menuItem.condition || menuItem.condition()">
             <a v-if="menuItem.click" :class="menuItemClasses" class="flex no-wrap items-center h-12"
                @click="menuItem.click">
               <Icon :name="menuItem.icon" class="w-5"/>
@@ -110,6 +115,7 @@ const ariaLabel = computed(() => translate('profile.aria.sidebar', {profile: use
                 <span v-if="showLabels" class="menu-item">{{ $t(menuItem.label) }}</span>
               </transition>
             </router-link>
+            </template>
           </template>
         </li>
       </ul>

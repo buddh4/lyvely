@@ -1,9 +1,8 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { DocumentModel } from '../../model';
 import { ProfileType, ProfileVisibilityLevel } from '../interfaces';
-import { IsArray, IsEnum, IsInt, IsString, Min, IsOptional, Length } from 'class-validator';
+import { IsArray, IsEnum, IsInt, IsOptional, IsString, Length, Min } from 'class-validator';
 import { TagModel } from '../../tags';
-import { PropertiesOf } from "../../util";
 
 export const MIN_PROFILE_NAME_LENGTH = 1;
 export const MAX_PROFILE_NAME_LENGTH = 100;
@@ -49,4 +48,19 @@ export class ProfileModel extends DocumentModel<ProfileModel> {
   @Type(() => TagModel)
   @IsArray()
   tags: TagModel[];
+}
+
+export enum ProfileUsage {
+  Business = 'Business',
+  Private = 'Private',
+  Health = 'Health',
+  School = 'School',
+  Family = 'Family',
+  Improvement = 'Improvement'
+}
+
+const multiUserProfiles = [ProfileType.Group, ProfileType.Organization];
+
+export function isMultiUserProfile(model?: ProfileModel) {
+  return model && multiUserProfiles.includes(model.type);
 }

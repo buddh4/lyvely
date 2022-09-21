@@ -18,6 +18,7 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
   }
 
   async function submit() {
+    debugger;
     if(await validator.value.validate()) {
       const { data: relation } = await profileRepository.createProfile(model.value);
       useProfileStore().loadProfile(relation.id);

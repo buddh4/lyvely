@@ -12,6 +12,7 @@ export type LyvelyHttpOptions = {
 export type LyvelyMongoDBOptions = {
   uri: string,
   debug?: boolean,
+  transactions?: boolean
 }
 
 export type LyvelyAuthOptions = {

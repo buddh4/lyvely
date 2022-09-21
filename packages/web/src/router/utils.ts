@@ -3,6 +3,7 @@ import { useAuthStore } from '@/modules/user/store/auth.store';
 import { useProfileStore } from '@/modules/profile/stores/profile.store';
 import { isDevelopEnvironment } from "@/modules/core/environment";
 import { profileRoute } from "@/modules/profile/routes/profile-route.util";
+import { isMultiUserProfile } from "@lyvely/common";
 
 // TODO: (GUESTS) - needs to be aligned for guest mode feature
 
@@ -30,6 +31,15 @@ export const loadProfile = async (to: RouteLocation, from: RouteLocation, next: 
   }
 
   await useProfileStore().loadProfile(<string> to.params.pid);
+  next();
+};
+
+export const ifIsMultiUserProfile = async (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
+  if(!isMultiUserProfile(useProfileStore().profile)) {
+    next(profileRoute());
+    return;
+  }
+
   next();
 };
 

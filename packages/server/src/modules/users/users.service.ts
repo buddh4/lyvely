@@ -4,6 +4,7 @@ import { UserDao } from './daos';
 import { RefreshToken } from './schemas';
 import { ProfileType } from "@lyvely/common";
 import { EntityIdentity } from "../../core/db/db.utils";
+import { BaseQueryOptions } from "../../core/db/abstract.dao";
 
 @Injectable()
 export class UsersService {
@@ -38,8 +39,8 @@ export class UsersService {
     return this.userDao.findById(id);
   }
 
-  async incProfileCount(owner: User, type: ProfileType) {
-    return this.userDao.incrementProfileCount(owner, type)
+  async incProfileCount(owner: User, type: ProfileType, options?: BaseQueryOptions) {
+    return this.userDao.incrementProfileCount(owner, type, 1, options)
   }
 
   async setVisitorRefreshTokenHash(user: User, visitorId: string, token: RefreshToken) {

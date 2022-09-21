@@ -1,5 +1,5 @@
 export const REGEX_HEX_COLOR = /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
-import { getMetadataStorage } from "class-validator";
+import { getMetadataStorage, isEmail } from "class-validator";
 
 export type Type<T = any> = new (...args: any[]) => T;
 
@@ -29,4 +29,8 @@ export function getValidationFields<T>(model: T) {
   if(Array.isArray(model) || !model?.constructor?.name) return new Set();
   const validationMetas = getMetadataStorage().getTargetValidationMetadatas(model.constructor, model.constructor.name, true, false);
   return new Set(validationMetas?.map(meta => meta.propertyName) || []);
+}
+
+export function validateEmail(email: string) {
+  return isEmail(email);
 }

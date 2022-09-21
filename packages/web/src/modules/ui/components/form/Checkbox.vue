@@ -41,7 +41,6 @@ export default {
     const showHelpText = ref(false);
 
     function toggle(evt: any) {
-      debugger;
       if(isArray(props.modelValue)) {
         context.emit('update:modelValue', props.modelValue.filter(val => val !== evt.target.value));
       } else {

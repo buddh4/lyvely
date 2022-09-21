@@ -20,8 +20,3 @@ export interface IProfileRelation {
 export interface IMembership extends IProfileRelation {
   role: string;
 }
-
-export interface IProfileMembership {
-  profile: PropertiesOf<ProfileModel>;
-  membership: IMembership;
-}

@@ -1,4 +1,3 @@
-export * from './profiles.dto'
 export * from './create-profile.dto'
 export * from './profile-relation.dto'
 export * from './profile-with-relations.dto'

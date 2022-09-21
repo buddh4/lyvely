@@ -5,8 +5,14 @@ import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { UserWithProfileAndRelations } from '../models';
 import { EntityNotFoundException, UniqueConstraintException } from "../../../core/exceptions";
-import { BaseMembershipRole, Profile, UserProfileRelation,
+import { BaseMembershipRole, Profile,
   CreateProfileOptions, CreateProfileTypeOptions, ProfilesFactory } from "../schemas";
+import { ProfileUsage } from "@lyvely/common";
+import {
+  withTransaction
+} from "../../../core/db/transaction.util";
+import { InjectConnection } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class ProfilesService {
@@ -14,7 +20,8 @@ export class ProfilesService {
     private profileDao: ProfileDao,
     private usersService: UsersService,
     private membershipDao: MembershipsDao,
-    private profileRelationsDao: UserProfileRelationsDao
+    private profileRelationsDao: UserProfileRelationsDao,
+    @InjectConnection() private readonly connection: mongoose.Connection
   ) {}
 
   async createDefaultUserProfile(owner: User): Promise<UserWithProfileAndRelations> {
@@ -27,6 +34,7 @@ export class ProfilesService {
     return this.createProfile(owner,{
       name: owner.username,
       locale: owner.locale,
+      usage: [ProfileUsage.Private],
       type: ProfileType.User
     });
   }
@@ -84,14 +92,16 @@ export class ProfilesService {
    * @param options
    */
   protected async createProfile(owner: User, options: CreateProfileTypeOptions): Promise<UserWithProfileAndRelations> {
-    const profile = await this.profileDao.save(ProfilesFactory.createProfile(owner, options));
+    return withTransaction(this.connection, async (transaction) => {
+      const profile = await this.profileDao.save(ProfilesFactory.createProfile(owner, options), transaction);
 
-    const [ membership ] = await Promise.all([
-      this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner),
-      this.usersService.incProfileCount(owner, profile.type)
-    ])
+      const [membership] = await Promise.all([
+        this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner, transaction),
+        this.usersService.incProfileCount(owner, profile.type, transaction)
+      ]);
 
-    return new UserWithProfileAndRelations({ user: owner, profile: profile, relations: [membership] });
+      return new UserWithProfileAndRelations({user: owner, profile: profile, relations: [membership]});
+    });
   }
 
   async findUserProfileRelations(user: User, identity: EntityIdentity<Profile>): Promise<UserWithProfileAndRelations> {

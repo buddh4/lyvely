@@ -1,4 +1,4 @@
-import { ifAuthenticated, loadProfile, toProfileHome } from "@/router/utils";
+import { ifAuthenticated, ifIsMultiUserProfile, loadProfile, toProfileHome } from "@/router/utils";
 import { usePageStore } from "@/modules/core/store/page.store";
 import { translate } from "@/i18n";
 import { profileRoot, profileRoute } from "@/modules/profile/routes/profile-route.util";
@@ -24,7 +24,7 @@ export default [
       layout: 'profile'
     },
     component: () => import('../views/users/ProfileUsers.vue'),
-    beforeEnter:  [ifAuthenticated, loadProfile],
+    beforeEnter:  [ifAuthenticated, loadProfile, ifIsMultiUserProfile],
   },
   {
     path: profileRoute("/settings"),

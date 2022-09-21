@@ -19,6 +19,7 @@ import configuration from "./core/config/configuration";
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { LyvelyConfigurationGetter } from "./core";
+import { setTransactionSupport } from "./core/db/transaction.util";
 
 type Import =  Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -65,10 +66,13 @@ export class AppModuleBuilder {
     return this.importModules(MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService<LyvelyConfigurationGetter>) => ({
-        uri: configService.get<string>('mongodb.uri'),
-        autoIndex: true,
-      }),
+      useFactory: async (configService: ConfigService<LyvelyConfigurationGetter>) => {
+        setTransactionSupport(configService.get<boolean>('mongodb.transactions', false))
+        return {
+          uri: configService.get<string>('mongodb.uri'),
+          autoIndex: true
+        }
+      },
     }))
   }
 
