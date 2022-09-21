@@ -8,7 +8,9 @@ export enum Status {
 }
 
 type StatusStorePlugin = {
-  status?: Ref<Status>,
+  status: Ref<Status>,
+  statusError: Ref<string|undefined>,
+  setError(msg: string): void,
   setStatus(status: Status): void,
   getStatus(): Status,
   isStatus(status: Status): boolean,
@@ -24,25 +26,40 @@ export function useStatus(status?: Ref<Status>): StatusStorePlugin {
 
   return {
     status: s,
+    statusError: ref(),
+
+    setError(msg: string) {
+      this.setStatus(Status.ERROR);
+      this.statusError.value = msg;
+    },
 
     setStatus(status: Status) {
       s.value = status;
+      if(status === Status.ERROR) {
+        this.statusError.value = undefined;
+      }
     },
+
     getStatus(): Status {
       return s.value ?? Status.INIT;
     },
+
     isStatus(status: Status) {
       return this.getStatus() === status;
     },
+
     isStatusInit() {
       return this.isStatus(Status.INIT);
     },
+
     isStatusError() {
       return this.isStatus(Status.ERROR);
     },
+
     isStatusLoading() {
       return this.isStatus(Status.LOADING);
     },
+
     isStatusSuccess() {
       return this.isStatus(Status.SUCCESS);
     }

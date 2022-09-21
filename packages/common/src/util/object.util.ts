@@ -167,3 +167,14 @@ export function getPrototypeTree(type: Type): Array<Type> {
 
   return prototypeTree;
 }
+
+export function useSingleton<T>(create?: () => T) {
+  let instance: T;
+  return () => {
+    if(!instance) {
+      instance = create();
+    }
+
+    return instance;
+  }
+}

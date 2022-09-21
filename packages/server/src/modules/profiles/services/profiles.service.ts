@@ -5,20 +5,8 @@ import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { UserWithProfileAndRelations } from '../models';
 import { EntityNotFoundException, UniqueConstraintException } from "../../../core/exceptions";
-import { Membership, BaseMembershipRole, Profile, UserProfileRelation,
+import { BaseMembershipRole, Profile, UserProfileRelation,
   CreateProfileOptions, CreateProfileTypeOptions, ProfilesFactory } from "../schemas";
-
-export interface UserToProfileRelation {
-  user: User,
-  relation: UserProfileRelation,
-  profile: Profile
-}
-
-export interface ProfileMembership {
-  user: User,
-  membership: Membership,
-  profile: Profile
-}
 
 @Injectable()
 export class ProfilesService {
@@ -106,10 +94,6 @@ export class ProfilesService {
     return new UserWithProfileAndRelations({ user: owner, profile: profile, relations: [membership] });
   }
 
-  async findAllUserProfileRelations(profile: EntityIdentity<Profile>): Promise<UserProfileRelation[]> {
-    return this.profileRelationsDao.findAllByProfile(profile);
-  }
-
   async findUserProfileRelations(user: User, identity: EntityIdentity<Profile>): Promise<UserWithProfileAndRelations> {
     const relations = await this.profileRelationsDao.findAllByUserAndProfile(user, identity);
     const profile =  identity instanceof Profile ? identity : await this.profileDao.findById(identity);
@@ -135,16 +119,18 @@ export class ProfilesService {
    *
    * @param user
    */
-  async findDefaultProfileMembershipByUser(user: User): Promise<UserWithProfileAndRelations|null> {
+  async findDefaultProfileMembershipByUser(user: User): Promise<UserWithProfileAndRelations> {
     // TODO: make sure not to return an archived profile
     const memberships = await this.membershipDao.findAllByUser(user);
 
     if(!memberships.length) {
-      // Todo: maybe create a default profile here?
-      return null;
+      return this.createDefaultUserProfile(user);
     }
 
-    return this.findUserProfileRelations(user, memberships[0].pid);
+    const relation = await this.findUserProfileRelations(user, memberships[0].pid);
+
+    // TODO: handle integrity issue if !relation, at least do some logging here...
+    return relation ? relation : this.createDefaultUserProfile(user);
   }
 
   async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {

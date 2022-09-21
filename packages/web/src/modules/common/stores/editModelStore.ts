@@ -73,7 +73,7 @@ export default function<TUpdateModel, TResponse,  TID = string>(options: EditMod
       if(typeof options.onSubmitError === 'function') {
         options.onSubmitError(err);
       } else if(options.onSubmitError !== false) {
-        error.value = 'error.default';
+        error.value = 'error.unknown';
       }
     }
   }

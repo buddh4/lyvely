@@ -1,23 +1,16 @@
 import repository from "@/repository";
-import { TagDto , ProfileMembershipDto, CreateProfileDto, ProfileRelationInfo } from '@lyvely/common';
-const resource = "profiles";
+import { CreateProfileDto, ENDPOINT_PROFILES, ProfileWithRelationsDto } from '@lyvely/common';
 
 export default {
   async getDefaultProfile() {
-    return repository.get<ProfileMembershipDto>(`${resource}/default`);
+    return repository.get<ProfileWithRelationsDto>(`${ENDPOINT_PROFILES}/default`);
   },
 
   async createProfile(model: CreateProfileDto) {
-    return repository.post<ProfileRelationInfo>(`${resource}`, model)
+    return repository.post<ProfileWithRelationsDto>(`${ENDPOINT_PROFILES}`, model)
   },
 
   async getProfile(id?: string|null) {
-    return id
-      ? repository.get<ProfileMembershipDto>(`${resource}/${id}`)
-      : this.getDefaultProfile();
-  },
-
-  async getTags(profile: string) {
-    return repository.get<{categories: TagDto[]}>(`${resource}/${profile}/categories`);
+    return id ? repository.get<ProfileWithRelationsDto>(`${ENDPOINT_PROFILES}/${id}`) : this.getDefaultProfile();
   }
 };

@@ -1,55 +1,40 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store/status';
-import { ProfileMembershipDto, TagModel } from '@lyvely/common';
-
-import profileRepository from '@/modules/profile/repositories/profile.repository';
+import { ProfileWithRelationsDto, TagModel } from '@lyvely/common';
 import { localStorageManager } from '@/util/storage';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 
-import { ref, computed, Ref } from 'vue';
+import { computed, ref, Ref } from 'vue';
+import { useProfileService } from "@/modules/profile/services/profiles.service";
 
-const DEFAULT_PROFILE_KEY = 'default_profile';
-
-export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_KEY);
+const DEFAULT_PROFILE_ID = 'latest_profile_id';
+export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_ID);
 
 export const useProfileStore = defineStore('profile', () => {
-  const profile = ref(undefined) as Ref<ProfileMembershipDto|undefined>;
-  const membership = ref(undefined);
-
-  // TODO: (i18n) validate defaultLocale
-  const defaultLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
-  const locale = computed(() => profile.value?.locale || defaultLocale);
+  const profile = ref<ProfileWithRelationsDto>();
   const tagOptions = computed(() => profile.value?.tags?.map((tag: TagModel) => tag.name) || []);
   const status = useStatus();
+  const profileService = useProfileService();
 
-  async function loadProfile(id?: string|null) {
-    this.status = Status.LOADING;
+  async function loadProfile(id?: string) {
+    status.setStatus(Status.LOADING);
 
-    /**
-     * TODO: If latestProfileId is an invalid one we need to redirect to default profile
-     * otherwise
-      */
+    id = id || latestProfileId.getValue() || 'default';
 
-    //
-    id = id || latestProfileId.getValue();
-
-    if(profile.value?.id === id) {
-      return Promise.resolve(profile.value);
-    }
+    if(profile.value?.id === id) return Promise.resolve(profile.value);
 
     try {
-      const { data } = await profileRepository.getProfile(id);
-      await setActiveProfile(data);
+      await setActiveProfile(await profileService.getProfile(id));
+      status.setStatus(Status.SUCCESS);
     } catch (err) {
-      const { data } = await profileRepository.getDefaultProfile();
-      await setActiveProfile(data);
+      status.setStatus(Status.ERROR);
       DialogExceptionHandler('Profile could not be loaded...', this)(err);
     }
 
     return profile.value;
   }
 
-  async function setActiveProfile(activeProfile: ProfileMembershipDto) {
+  async function setActiveProfile(activeProfile: ProfileWithRelationsDto) {
     profile.value = activeProfile;
     latestProfileId.setValue(activeProfile.id);
     status.setStatus(Status.SUCCESS);
@@ -83,12 +68,10 @@ export const useProfileStore = defineStore('profile', () => {
 
   return {
     profile,
-    membership,
     loadProfile,
     updateScore,
     tagOptions,
     getTags,
-    locale,
     updateTags,
     ...status
   };

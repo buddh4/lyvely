@@ -8,19 +8,19 @@ import {
   Request,
   UseInterceptors,
 } from '@nestjs/common';
-import { ProfileWithRelationsDto , TagModel, CreateProfileDto, ProfileType, mapType } from "@lyvely/common";
+import { ProfileWithRelationsDto, CreateProfileDto, ProfileType, mapType } from "@lyvely/common";
 import { ProfilesService } from '../services';
-import { ProfileRequest } from "../../../core/types";
 import { UserWithProfileAndRelations } from "../models";
+import { ProfilesEndpoint, ENDPOINT_PROFILES } from "@lyvely/common";
 
-@Controller('profiles')
+@Controller(ENDPOINT_PROFILES)
 @UseInterceptors(ClassSerializerInterceptor)
-export class ProfilesController {
+export class ProfilesController implements ProfilesEndpoint  {
 
   constructor(private profilesService: ProfilesService) {}
 
   @Get(':id')
-  async getProfile(@Request() req, @Param('id') id: string): Promise<ProfileWithRelationsDto> {
+  async getProfile(@Param('id') id: string, @Request() req): Promise<ProfileWithRelationsDto> {
     const profileRelations = ((id === 'default')
       ? await this.profilesService.findDefaultProfileMembershipByUser(req.user)
       : await this.profilesService.findUserProfileRelations(req.user, id));
@@ -34,7 +34,7 @@ export class ProfilesController {
   }
 
   @Post()
-  async create(@Request() req, @Body() dto: CreateProfileDto): Promise<ProfileWithRelationsDto> {
+  async create(@Body() dto: CreateProfileDto, @Request() req): Promise<ProfileWithRelationsDto> {
     // TODO: (TEAM) check if user is allowed to create team profiles
     let profileRelations;
     if(dto.type === ProfileType.User) {
@@ -46,11 +46,5 @@ export class ProfilesController {
     }
 
     return mapType(UserWithProfileAndRelations, ProfileWithRelationsDto, profileRelations);
-  }
-
-  @Get(':cid/tags')
-  async getCategories(@Request() req: ProfileRequest): Promise<TagModel[]> {
-    const { profile } = req;
-    return profile.tags.map((category) => new TagModel(category));
   }
 }

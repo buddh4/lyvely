@@ -1,11 +1,8 @@
 import repository from "@/repository";
-import { ProfileRelationInfo } from "@lyvely/common";
-
-
-const resource = "profile-relations";
+import { ProfileRelationInfos, ENDPOINT_PROFILE_RELATION_INFOS } from "@lyvely/common";
 
 export default {
   async getRelations() {
-    return repository.get<ProfileRelationInfo[]>(`${resource}`);
+    return repository.get<ProfileRelationInfos>(`${ENDPOINT_PROFILE_RELATION_INFOS}`);
   },
 };

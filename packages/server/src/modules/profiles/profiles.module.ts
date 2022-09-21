@@ -16,8 +16,9 @@ import { ProfilePermissionsService } from '../permissions/services/profile-permi
 import { ProfileEvents } from './profile.events';
 import { CoreModule } from '../../core/core.module';
 import { ProfileTagsController } from "./controllers/profile-tags.controller";
-import { ProfileRelationsController } from "./controllers/profile-relations.controller";
+import { ProfileRelationInfosController } from "./controllers/profile-relation-infos.controller";
 import { ProfileType } from "@lyvely/common";
+import { useProfileMappings } from "./mappings";
 
 export const ProfileModel = MongooseModule.forFeature([
   {
@@ -37,6 +38,8 @@ export const ProfileModel = MongooseModule.forFeature([
     ],
   },
 ]);
+
+useProfileMappings();
 
 @Module({
   imports: [
@@ -68,7 +71,7 @@ export const ProfileModel = MongooseModule.forFeature([
   controllers: [
     ProfilesController,
     ProfileTagsController,
-    ProfileRelationsController
+    ProfileRelationInfosController
   ],
 })
 export class ProfilesModule {}

@@ -18,7 +18,6 @@ const path = computed(() => {
   })
   return result;
 })
-
 </script>
 
 <template>

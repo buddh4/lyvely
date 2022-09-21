@@ -12,7 +12,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const profile = computed(() => props.profile || useProfileStore().profile) ;
+const profile = computed(() => props.profile || useProfileStore().profile);
 const url = computed(() => profile.value?.imageHash ? createFileUrl(profile.value.imageHash) : undefined);
 const hasUrl = computed(() => url.value?.length);
 const initials = computed(() => profile.value?.name.substring(0,2));

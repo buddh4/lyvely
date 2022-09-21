@@ -1,1 +1,1 @@
-export * from './profile-relation.mapping';
+export * from './profile.mappings';

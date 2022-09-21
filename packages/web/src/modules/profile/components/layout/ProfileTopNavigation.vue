@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import Icon from '@/modules/ui/components/icon/Icon.vue';
 import Button from '@/modules/ui/components/button/Button.vue';
-import { useAuthStore } from '@/modules/user/store/auth.store';
 import { computed } from 'vue';
 import { usePageStore } from "@/modules/core/store/page.store";
 import ProfileAvatar from "@/modules/profile/components/ProfileAvatar.vue";
-import ProfileBreadcumb from "@/modules/profile/components/ProfileBreadcumb.vue";
+import ProfileBreadcrumb from "@/modules/profile/components/ProfileBreadcrumb.vue";
 import UserAvatar from "@/modules/user/components/UserAvatar.vue";
 import Dropdown from "@/modules/ui/components/menu/Dropdown.vue";
 import { useProfileStore } from "@/modules/profile/stores/profile.store";
-import UserRelationsChooser from "@/modules/profile/components/UserRelationsChooser.vue";
+import ProfileRelationsChooser from "@/modules/profile/components/ProfileRelationsChooser.vue";
 import Loader from "@/modules/ui/components/loader/Loader.vue";
 
 const profileStore = useProfileStore();
@@ -70,7 +69,7 @@ const score = computed(() => profileStore.profile?.score);
 
       <template #default>
         <Suspense>
-          <UserRelationsChooser />
+          <ProfileRelationsChooser />
           <template #fallback>
             <Loader />
           </template>
@@ -81,7 +80,7 @@ const score = computed(() => profileStore.profile?.score);
 
     <div class="w-1/3 flex justify-center">
       <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
-        <ProfileBreadcumb/>
+        <ProfileBreadcrumb/>
       </div>
     </div>
 

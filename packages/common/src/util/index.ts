@@ -1,4 +1,4 @@
 export * from './enum.util';
-export * from './type.util';
+export * from './util.types';
 export * from './validation.util';
 export * from './object.util';
