@@ -1,6 +1,6 @@
 import { Prop } from '@nestjs/mongoose';
 import { DataPoint } from "./data-point.schema";
-import { assureStringId } from "../../../core/db/db.utils";
+import { assureStringId } from "../../../modules/core/db/db.utils";
 import { NumberDataPointModel } from "@lyvely/common";
 
 export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {

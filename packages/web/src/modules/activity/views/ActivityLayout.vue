@@ -7,7 +7,6 @@ import { usePageStore } from "@/modules/core/store/page.store";
 
 onBeforeMount(() => useActivityStore().loadActivities());
 onMounted(() => usePageStore().accessibilityFocus('#activity-navigation > button.active'));
-
 </script>
 
 <template>

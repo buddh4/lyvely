@@ -5,12 +5,12 @@ import { AuthService } from '../../services/auth.service';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { JwtAccessTokenPayload } from './jwt-payload.interface';
-import { Cookies } from '../../../../core/web';
-import { LyvelyConfigurationGetter } from "../../../../core";
+import { Cookies } from '../../../core/web';
+import { ConfigurationPath } from "../../../core";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private authService: AuthService, private configService: ConfigService<LyvelyConfigurationGetter>) {
+  constructor(private authService: AuthService, private configService: ConfigService<ConfigurationPath>) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([(req: Request) => {
         return req.cookies && req.cookies[Cookies.AUTHENTICATION];

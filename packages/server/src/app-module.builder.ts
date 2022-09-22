@@ -1,6 +1,6 @@
 import { Type, DynamicModule, ForwardReference } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule } from "./core/core.module";
+import { CoreModule } from "./modules/core/core.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { RegisterModule } from "./modules/register/register.module";
 import { UsersModule } from "./modules/users";
@@ -11,15 +11,13 @@ import { ActivitiesModule } from "./modules/activities/activities.module";
 import { TagsModule } from "./modules/tags/tags.module";
 import { Module } from '@nestjs/common';
 import { ConfigModule , ConfigService } from '@nestjs/config';
-import { ServeStaticModule, ServeStaticModuleOptions } from '@nestjs/serve-static';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-import configuration from "./core/config/configuration";
-import { AutomapperModule } from '@automapper/nestjs';
-import { classes } from '@automapper/classes';
-import { LyvelyConfigurationGetter } from "./core";
-import { setTransactionSupport } from "./core/db/transaction.util";
+
+import configuration from "./modules/core/config/configuration";
+import { ConfigurationPath } from "./modules/core";
+import { setTransactionSupport } from "./modules/core/db/transaction.util";
+import { MailsModule } from "./modules/mails/mails.module";
 
 type Import =  Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -27,7 +25,7 @@ interface AppModuleBuilderOptions {
   useRecommended?: boolean,
   useFeatures?: boolean,
   configFiles?: Array<string>,
-  serveStatic?: ServeStaticModuleOptions
+  serveStatic?: boolean
 }
 
 export class AppModuleBuilder {
@@ -42,8 +40,6 @@ export class AppModuleBuilder {
         .initConfigModule()
         .initServeStaticModule()
         .initMongooseModule()
-        .initMailModule()
-        .initAutomapperModule()
         .initRecommendedModules()
         .initFeatureModules();
   }
@@ -53,55 +49,28 @@ export class AppModuleBuilder {
       return this;
     }
 
-    return this.importModules(ServeStaticModule.forRoot(this.options.serveStatic));
-  }
-
-  private initAutomapperModule() {
-    return this.importModules(AutomapperModule.forRoot({
-      strategyInitializer: classes(),
-    }))
+    return this.importModules(ServeStaticModule.forRootAsync(({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService<ConfigurationPath>) => {
+        // TODO (serveStatic) provide some defaults...
+        return configService.get('serveStatic');
+      }
+    })));
   }
 
   private initMongooseModule() {
     return this.importModules(MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService<LyvelyConfigurationGetter>) => {
-        setTransactionSupport(configService.get<boolean>('mongodb.transactions', false))
+      useFactory: async (configService: ConfigService<ConfigurationPath>) => {
+        setTransactionSupport(configService.get('mongodb.transactions', false))
         return {
-          uri: configService.get<string>('mongodb.uri'),
+          uri: configService.get('mongodb.uri'),
           autoIndex: true
         }
       },
     }))
-  }
-
-  private initMailModule() {
-    // https://nest-modules.github.io/mailer/docs/mailer
-    const module = MailerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService<LyvelyConfigurationGetter>) => (configService.get('mail', {
-        transport: {
-          jsonTransport: true
-        },
-        defaults: {
-          from: '"No Reply" <no-reply@localhost>',
-        },
-        preview: false,
-        template: {
-          dir: process.cwd() + '/template/',
-          adapter: new PugAdapter(),
-          options: {
-            strict: true,
-          },
-        }
-      }))
-    });
-
-    module.global = true;
-
-    return this.importModules(module);
   }
 
   private initConfigModule() {
@@ -119,6 +88,7 @@ export class AppModuleBuilder {
   private initCoreModules() {
     return this.importModules(
       EventEmitterModule.forRoot({ wildcard: true }),
+      MailsModule.fromConfig(),
       CoreModule,
       PoliciesModule,
       UsersModule,

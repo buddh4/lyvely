@@ -9,7 +9,7 @@ import {
   DataPointConfigFactory,
   NumberDataPointConfigRevision
 } from "../../../interfaces/time-series";
-import { assureObjectId } from "../../../core/db/db.utils";
+import { assureObjectId } from "../../core/db/db.utils";
 import { cloneDeep } from "lodash";
 import { applyValidationProperties } from "@lyvely/common";
 import { PropertiesOf } from "@lyvely/common";

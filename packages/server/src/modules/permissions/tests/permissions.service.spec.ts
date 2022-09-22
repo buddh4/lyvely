@@ -7,12 +7,9 @@ import {
   TOKEN_PROFILE_ROLES_DEFINITION,
   ProfilePermissionsService
 } from '../services/profile-permissions.service';
-import { UserWithProfileAndRelations, Membership, BaseMembershipRole, ProfileRolePermission } from '../../profiles';
-import {
-  BaseProfilePermissionRole
-} from '../interfaces/profile-permissions.interface';
+import { UserWithProfileAndRelations, Membership, ProfileRolePermission } from '../../profiles';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
-import { ContentVisibilityLevel } from '@lyvely/common'
+import { ContentVisibilityLevel, BaseMembershipRole, BaseProfileRelationRole } from '@lyvely/common'
 
 describe('ProfilePermissionsService', () => {
   let testingModule: TestingModule;
@@ -22,25 +19,25 @@ describe('ProfilePermissionsService', () => {
   const rolesDefinitionProvider = {
     provide: TOKEN_PROFILE_ROLES_DEFINITION,
     useFactory: () => ([
-      { role: BaseProfilePermissionRole.Owner, label:'Owner',  visibility: ContentVisibilityLevel.Owner },
-      { role: BaseProfilePermissionRole.Admin, label:'Admin', visibility: ContentVisibilityLevel.Admin, assignable: true,  extendable: true },
-      { extends: BaseProfilePermissionRole.Admin, role: 'UserManager', label:'User Manager', visibility: ContentVisibilityLevel.Admin, assignable: true,  extendable: true },
+      { role: BaseProfileRelationRole.Owner, label:'Owner',  visibility: ContentVisibilityLevel.Owner },
+      { role: BaseProfileRelationRole.Admin, label:'Admin', visibility: ContentVisibilityLevel.Admin, assignable: true,  extendable: true },
+      { extends: BaseProfileRelationRole.Admin, role: 'UserManager', label:'User Manager', visibility: ContentVisibilityLevel.Admin, assignable: true,  extendable: true },
       { role: 'moderator', label: 'Moderator', visibility: ContentVisibilityLevel.Moderator, assignable: true, extendable: true },
-      { extends: BaseProfilePermissionRole.Moderator, role: 'newsbot', label: 'NewsBot', visibility: ContentVisibilityLevel.Moderator, assignable: false },
-      { role: BaseProfilePermissionRole.Member, label: 'Member', visibility: ContentVisibilityLevel.Member, assignable: true, extendable: true },
-      { extends: BaseProfilePermissionRole.Member, role: 'newbie', label: 'NewMember', visibility: ContentVisibilityLevel.Member },
-      { role: BaseProfilePermissionRole.Follower, label: 'Follower', visibility: ContentVisibilityLevel.User },
-      { role: BaseProfilePermissionRole.User, label:'User', visibility: ContentVisibilityLevel.User },
-      { role: BaseProfilePermissionRole.Visitor, label:'Visitor', visibility: ContentVisibilityLevel.Public }
+      { extends: BaseProfileRelationRole.Moderator, role: 'newsbot', label: 'NewsBot', visibility: ContentVisibilityLevel.Moderator, assignable: false },
+      { role: BaseProfileRelationRole.Member, label: 'Member', visibility: ContentVisibilityLevel.Member, assignable: true, extendable: true },
+      { extends: BaseProfileRelationRole.Member, role: 'newbie', label: 'NewMember', visibility: ContentVisibilityLevel.Member },
+      { role: BaseProfileRelationRole.Follower, label: 'Follower', visibility: ContentVisibilityLevel.User },
+      { role: BaseProfileRelationRole.User, label:'User', visibility: ContentVisibilityLevel.User },
+      { role: BaseProfileRelationRole.Visitor, label:'Visitor', visibility: ContentVisibilityLevel.Public }
     ])
   };
 
   const defaultPermissionsProvider = {
     provide: TOKEN_DEFAULT_PROFILE_PERMISSIONS,
     useFactory: () => ({
-      'test.*': BaseProfilePermissionRole.Admin,
-      'test.administrate': BaseProfilePermissionRole.Moderator,
-      'moderate.*': BaseProfilePermissionRole.Moderator,
+      'test.*': BaseProfileRelationRole.Admin,
+      'test.administrate': BaseProfileRelationRole.Moderator,
+      'moderate.*': BaseProfileRelationRole.Moderator,
     })
   };
 
@@ -69,7 +66,7 @@ describe('ProfilePermissionsService', () => {
 
   // TODO: Seperate between default permission tests and configured permission test
 
-  async function createMembership(role: BaseProfilePermissionRole) {
+  async function createMembership(role: BaseProfileRelationRole) {
     const { user, profile } = await testDataUtils.createUserAndProfile();
     const profileRelations = new UserWithProfileAndRelations({
       user,
@@ -81,13 +78,13 @@ describe('ProfilePermissionsService', () => {
   }
   describe('default permissions', () => {
     it('admin inherits configured default moderator permission', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Admin);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Admin);
       const result = await permissionsService.checkPermission(profileRelations, 'moderate.announce');
       expect(result).toEqual(true);
     });
 
     it('default permission for member matches', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
 
       permissionsService.registerDefaultPermissions([
         { role: BaseMembershipRole.Member, permission: 'special.write' }
@@ -98,7 +95,7 @@ describe('ProfilePermissionsService', () => {
     });
 
     it('member does not inherit default admin permissions', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
 
       permissionsService.registerDefaultPermissions([
         { role: BaseMembershipRole.Admin, permission: 'special.write' }
@@ -109,7 +106,7 @@ describe('ProfilePermissionsService', () => {
     });
 
     it('admin inherits default member permissions', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Admin);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Admin);
 
       permissionsService.registerDefaultPermissions([
         { role: BaseMembershipRole.Member, permission: 'special.write' }
@@ -120,10 +117,10 @@ describe('ProfilePermissionsService', () => {
     });
 
     it('member inherits default permission from visitor role', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
 
       permissionsService.registerDefaultPermissions([
-        { role: BaseProfilePermissionRole.Visitor, permission: 'special.write' }
+        { role: BaseProfileRelationRole.Visitor, permission: 'special.write' }
       ]);
 
       const result = await permissionsService.checkPermission(profileRelations, 'special.write');
@@ -131,10 +128,10 @@ describe('ProfilePermissionsService', () => {
     });
 
     it('default permission pattern matches specific permission', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
 
       permissionsService.registerDefaultPermissions([
-        { role: BaseProfilePermissionRole.Member, permission: 'special.*' }
+        { role: BaseProfileRelationRole.Member, permission: 'special.*' }
       ]);
 
       const result = await permissionsService.checkPermission(profileRelations, 'special.write' );
@@ -142,10 +139,10 @@ describe('ProfilePermissionsService', () => {
     });
 
     it('default permission pattern matches specific permission with 3 levels', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
 
       permissionsService.registerDefaultPermissions([
-        { role: BaseProfilePermissionRole.Member, permission: 'special.*' }
+        { role: BaseProfileRelationRole.Member, permission: 'special.*' }
       ]);
 
       const result = await permissionsService.checkPermission(profileRelations, 'special.major.write');
@@ -153,10 +150,10 @@ describe('ProfilePermissionsService', () => {
     });
 
     it('default permission pattern matches pattern permission with 3 levels', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
 
       permissionsService.registerDefaultPermissions([
-        { role: BaseProfilePermissionRole.Member, permission: 'special.*' }
+        { role: BaseProfileRelationRole.Member, permission: 'special.*' }
       ]);
 
       const result = await permissionsService.checkPermission(profileRelations, 'special.*.write');
@@ -164,10 +161,10 @@ describe('ProfilePermissionsService', () => {
     });
 
     it('specific default permission does not match pattern permission', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
 
       permissionsService.registerDefaultPermissions([
-        { role: BaseProfilePermissionRole.Member, permission: 'special.write' }
+        { role: BaseProfileRelationRole.Member, permission: 'special.write' }
       ]);
 
       const result = await permissionsService.checkPermission(profileRelations, 'special.*');
@@ -177,26 +174,26 @@ describe('ProfilePermissionsService', () => {
 
   describe('checkPermissionByUserRelation', () => {
     it('owner has all permissions', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Owner);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Owner);
       const result = await permissionsService.checkPermission(profileRelations, '*');
       expect(result).toEqual(true);
     });
 
     it('member does not have all permissions', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
       const result = await permissionsService.checkPermission(profileRelations, '*');
       expect(result).toEqual(false);
     });
 
     it('member has configured permission', async () => {
-      const { profile, profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profile, profileRelations } = await createMembership(BaseProfileRelationRole.Member);
       profile.permissions = [new ProfileRolePermission({ role: BaseMembershipRole.Member, permission: 'special.write' })];
       const result = await permissionsService.checkPermission(profileRelations, 'special.write');
       expect(result).toEqual(true);
     });
 
     it('member permission check without default fails', async () => {
-      const { profileRelations } = await createMembership(BaseProfilePermissionRole.Member);
+      const { profileRelations } = await createMembership(BaseProfileRelationRole.Member);
       const result = await permissionsService.checkPermission(profileRelations, 'special.write' );
       expect(result).toEqual(false);
     });

@@ -1,6 +1,6 @@
-import { BaseUserProfileRelationType, UserProfileRelation, Profile, Membership } from '../schemas';
+import { UserProfileRelation, Profile, Membership } from '../schemas';
 import { User } from '../../users';
-import { BaseModel, PropertyType } from "@lyvely/common";
+import { BaseModel, PropertyType, BaseUserProfileRelationType } from "@lyvely/common";
 
 /**
  * This composite class holds information about the relation between a user and a profile and provides some utility

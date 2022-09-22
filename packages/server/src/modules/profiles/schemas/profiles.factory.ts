@@ -3,7 +3,7 @@ import { ProfileType } from "@lyvely/common";
 import { UserProfile } from "./user-profiles.schema";
 import { GroupProfile } from "./group-profiles.schema";
 import { Organization } from "./organization.schema";
-import { IntegrityException } from "../../../core/exceptions";
+import { IntegrityException } from "../../core/exceptions";
 import { ProfileUsage } from "@lyvely/common";
 
 export interface CreateProfileOptions {

@@ -17,7 +17,7 @@ export enum ContentVisibilityLevel {
   Admin,
   Moderator,
   Member,
-  Guest, // External explicitely invited guests
+  Guest, // External explicitly invited guests
   Organization,
   User, // Registered users
   Public, // Unregistered users

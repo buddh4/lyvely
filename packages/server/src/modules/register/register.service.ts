@@ -4,12 +4,12 @@ import { MongoError } from 'mongodb';
 import { RegisterDto } from '@lyvely/common';
 import { UserDao } from '../users';
 import { UserWithProfileAndRelations, ProfilesService } from "../profiles";
-import { MailerService } from '@nestjs-modules/mailer';
 import { SentMessageInfo } from 'nodemailer';
+import { MailService } from "../mails/services/mail.service";
 
 @Injectable()
 export class RegisterService {
-  constructor(private userDao: UserDao, private profileService: ProfilesService, private mailerService: MailerService) {}
+  constructor(private userDao: UserDao, private profileService: ProfilesService, private mailerService: MailService) {}
 
   /**
    * Creates a user
@@ -32,8 +32,6 @@ export class RegisterService {
         to: registerDto.email,
         subject: 'Testing...',
         html: '<b>Testing...</b>'
-      }).then((info: SentMessageInfo) => {
-        const test = info;
       });
       return result;
     } catch (error) {

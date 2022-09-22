@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId, EntityIdentity } from '../../../core/db/db.utils';
-import { AbstractDao, defaultFetchOptions, FetchQueryOptions } from '../../../core/db/abstract.dao';
+import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { AbstractDao, defaultFetchOptions, FetchQueryOptions } from '../../core/db/abstract.dao';
 import { Profile, UserProfileRelation } from '../schemas';
 import { User } from '../../users';
 

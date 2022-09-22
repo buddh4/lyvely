@@ -2,7 +2,7 @@ import { User } from '../../../modules/users';
 import { CalendarDate, toDate, DataPointIntervalFilter, UserAssignmentStrategy } from '@lyvely/common';
 import { TimeSeriesContent, DataPoint } from '../schemas';
 import { Profile , ProfilesService } from '../../../modules/profiles';
-import { EntityIdentity } from '../../../core/db/db.utils';
+import { EntityIdentity } from '../../../modules/core/db/db.utils';
 import { DataPointDao } from "../daos";
 import { Inject } from '@nestjs/common';
 

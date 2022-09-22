@@ -16,12 +16,12 @@ import {
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import { AbstractContentController, ProfileContentRequest,  ContentController, ContentType, ContentWritePolicy } from '../../content';
-import { ProfileRequest } from '../../../core/types';
+import { ProfileRequest } from '../../core/types';
 import { Permissions } from '../../permissions/decorators/permissions.decorator';
-import { UseClassSerializer } from '../../../core/decorators/use-class-serializer.decorator';
+import { UseClassSerializer } from '../../core';
 import { Policies } from '../../policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
-import { EntityNotFoundException } from "../../../core/exceptions";
+import { EntityNotFoundException } from "../../core/exceptions";
 import { isHabitContent } from "../utils/activity.utils";
 
 @ContentController('habits')

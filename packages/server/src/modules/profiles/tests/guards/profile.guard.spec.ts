@@ -4,9 +4,8 @@ import { createActivityTestingModule } from '../../../activities/tests/utils/act
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { createTestExecutionContext } from '../../../test/utils/test-execution-context.util';
 import { ProfileGuard } from '../../guards';
-import { ProfileRequest } from '../../../../core/types';
-import { BaseMembershipRole } from '../../schemas';
-import { ProfileVisibilityLevel } from '@lyvely/common';
+import { ProfileRequest } from '../../../core/types';
+import { ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/common';
 
 describe('ProfileGuard', () => {
   let testingModule: TestingModule;

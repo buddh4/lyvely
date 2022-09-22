@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { User } from '../modules/users';
-import { Profile, UserWithProfileAndRelations } from '../modules/profiles';
+import { User } from '../users';
+import { Profile, UserWithProfileAndRelations } from '../profiles';
 
 type RequestAdditions = { csrfToken: (() => string) };
 

@@ -59,8 +59,34 @@ export enum ProfileUsage {
   Improvement = 'Improvement'
 }
 
+export enum BaseUserProfileRelationType {
+  Membership = 'Membership',
+}
+
+export enum BaseMembershipRole {
+  Owner = 'owner',
+  Member = 'member',
+  Moderator = 'moderator',
+  Admin = 'admin',
+}
+
+export enum BaseProfileRelationRole {
+  Owner = 'owner',
+  Admin = 'admin',
+  Moderator = 'moderator',
+  Member = 'member',
+  Guest = 'guest',
+  Organization = 'organization',
+  InvitedMember = 'member_invited',
+  RequestedMember = 'member_requested',
+  Follower = 'follower',
+  User = 'user',
+  Visitor = 'visitor'
+}
+
 const multiUserProfiles = [ProfileType.Group, ProfileType.Organization];
 
-export function isMultiUserProfile(model?: ProfileModel) {
-  return model && multiUserProfiles.includes(model.type);
+export function isMultiUserProfile(modelOrType?: ProfileModel|ProfileType) {
+  const type = modelOrType instanceof ProfileModel ? modelOrType.type : modelOrType;
+  return type && multiUserProfiles.includes(type);
 }

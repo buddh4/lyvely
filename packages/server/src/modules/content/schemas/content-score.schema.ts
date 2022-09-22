@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Content } from "./content.schema";
 import { DeepPartial } from "@lyvely/common";
-import { IntegrityException } from "../../../core/exceptions";
+import { IntegrityException } from "../../core/exceptions";
 
 interface CreateContentScore extends CreateProfileScore {
   content: Content

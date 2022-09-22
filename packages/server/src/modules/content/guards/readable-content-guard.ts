@@ -1,7 +1,7 @@
 import { Injectable, ExecutionContext, Inject } from '@nestjs/common';
 import { ContentGuard } from './content.guard';
 import { PolicyService } from '../../policies/services/policy.service';
-import { ContentReadPolicy } from '../policies/content-read.policy';
+import { ContentReadPolicy } from '../policies';
 
 @Injectable()
 export class ReadableContentGuard extends ContentGuard {

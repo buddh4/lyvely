@@ -1,17 +1,14 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { ProfilesService } from '../services';
-import { ProfileType } from '@lyvely/common';
+import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
 import {
-  BaseMembershipRole,
-  BaseUserProfileRelationType,
   GroupProfile,
-  UserProfile,
   UserProfileRelation
 } from "../schemas";
-import { UniqueConstraintException } from "../../../core/exceptions";
+import { UniqueConstraintException } from "../../core/exceptions";
 
 describe('ProfileService (Group)', () => {
   let testingModule: TestingModule;

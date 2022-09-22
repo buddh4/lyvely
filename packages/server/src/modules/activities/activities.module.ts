@@ -23,7 +23,7 @@ import { TasksDao } from './daos/tasks.dao';
 import { PoliciesModule } from '../policies/policies.module';
 import { HabitsDao } from './daos/habits.dao';
 import { ActivityEvents } from './activities.events';
-import { CoreModule } from '../../core/core.module';
+import { CoreModule } from '../core/core.module';
 import { HabitDataPointDao } from "./daos/habit-data-point.dao";
 
 @Module({

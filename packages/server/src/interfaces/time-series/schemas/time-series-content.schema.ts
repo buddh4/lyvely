@@ -6,7 +6,7 @@ import {
   DefaultDataPointConfig,
   DefaultDataPointConfigSchema,
 } from './config';
-import { EntityType } from '../../../core/db/base.entity';
+import { EntityType } from '../../../modules/core/db/base.entity';
 import { TimeSeriesContentModel } from "@lyvely/common";
 
 type TimeSeriesContentEntity = ContentEntity & EntityType<TimeSeriesContent>;

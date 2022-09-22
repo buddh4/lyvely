@@ -1,20 +1,19 @@
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Get,
   NotFoundException,
   Param, Post,
   Request,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ProfileWithRelationsDto, CreateProfileDto, ProfileType, mapType } from "@lyvely/common";
 import { ProfilesService } from '../services';
 import { UserWithProfileAndRelations } from "../models";
 import { ProfilesEndpoint, ENDPOINT_PROFILES } from "@lyvely/common";
+import { UseClassSerializer } from "../../core";
 
 @Controller(ENDPOINT_PROFILES)
-@UseInterceptors(ClassSerializerInterceptor)
+@UseClassSerializer()
 export class ProfilesController implements ProfilesEndpoint  {
 
   constructor(private profilesService: ProfilesService) {}

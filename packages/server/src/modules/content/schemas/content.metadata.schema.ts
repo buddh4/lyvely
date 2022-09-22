@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '../../../core/db/base.entity';
+import { BaseEntity } from '../../core/db/base.entity';
 
 /**
  * Other ideas:

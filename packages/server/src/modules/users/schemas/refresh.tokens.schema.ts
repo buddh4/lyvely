@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
 import mongoose  from 'mongoose';
-import { BaseEntity } from '../../../core/db/base.entity';
+import { BaseEntity } from '../../core/db/base.entity';
 
 export type RefreshTokenDocument = RefreshToken & mongoose.Document;
 

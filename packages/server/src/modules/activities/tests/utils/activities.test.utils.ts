@@ -28,9 +28,9 @@ import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
 import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
-import { assureObjectId, EntityIdentity } from '../../../../core/db/db.utils';
+import { assureObjectId, EntityIdentity } from '../../../core/db/db.utils';
 import { ActivityScore, ActivityScoreSchema } from "../../schemas/activity-score.schema";
-import { createBaseEntityInstance } from "../../../../core/db/db.utils";
+import { createBaseEntityInstance } from "../../../core/db/db.utils";
 
 @Injectable()
 export class ActivityTestDataUtil extends TestDataUtils {

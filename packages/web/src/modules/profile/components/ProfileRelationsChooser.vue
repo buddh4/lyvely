@@ -12,6 +12,7 @@ import AddButton from "@/modules/ui/components/button/AddButton.vue";
 import { useCreateProfileStore } from "@/modules/profile/stores/create-profile.store";
 import { profileRoute } from "@/modules/profile/routes/profile-route.util";
 import Alert from "@/modules/ui/components/alert/Alert.vue";
+import { ProfileRelationInfo } from "@lyvely/common";
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileStore = useProfileStore();
@@ -26,6 +27,10 @@ const router = useRouter();
 
 async function setProfile(pid: string) {
   router.push(profileRoute('/', pid));
+}
+
+function getProfileIcon(relation: ProfileRelationInfo) {
+  return relation.isMultiUserProfile() ? 'group' : 'private';
 }
 
 // TODO: A user might have multiple relations with a single profile...
@@ -47,16 +52,19 @@ async function setProfile(pid: string) {
     </li>
     <li>
       <divided-list>
-        <list-item v-for="profileRelation in profileRelations.profiles" :active="profile.id === profileRelation.id" :key="profileRelation.pid" @click="setProfile(profileRelation.id)">
+        <list-item v-for="relation in profileRelations.profiles" :active="profile.id === relation.id" :key="relation.pid" @click="setProfile(relation.id)">
           <div class="flex items-center space-x-4">
             <div class="flex-shrink-0">
-              <profile-avatar :profile="profileRelation" />
+              <profile-avatar :profile="relation" />
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium truncate">
-                {{ profileRelation.name }}
+                {{ relation.name }}
               </p>
-              <text-dimmed :text="profileRelation.description" />
+              <text-dimmed :text="relation.description" />
+            </div>
+            <div>
+              <icon :name="getProfileIcon(relation)" />
             </div>
           </div>
         </list-item>

@@ -16,9 +16,9 @@ import {
  EditTaskResponseDto, TaskModel } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
 import { ContentController, ContentType, ProfileContentRequest } from '../../content';
-import { ProfileRequest } from "../../../core/types";
+import { ProfileRequest } from "../../core/types";
 import { isTaskContent } from "../utils/activity.utils";
-import { EntityNotFoundException } from "../../../core/exceptions";
+import { EntityNotFoundException } from "../../core/exceptions";
 import { TagModel } from "@lyvely/common";
 
 @ContentController('tasks')

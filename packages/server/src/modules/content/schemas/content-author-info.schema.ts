@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '../../../core/db/base.entity';
+import { BaseEntity } from '../../core/db/base.entity';
 import { DeepPartial, getStringEnumValues } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '../../users/schemas/users.schema';

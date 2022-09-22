@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId, EntityIdentity } from '../../../core/db/db.utils';
+import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
 import {
   ActivityType,
   CalendarIntervalEnum,
@@ -15,7 +15,7 @@ import { AbstractContentDao } from '../../content';
 import { Activity, ActivityDocument, Habit, Task } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { FetchQueryOptions, UpdateQuerySet } from '../../../core/db/abstract.dao';
+import { FetchQueryOptions, UpdateQuerySet } from '../../core/db/abstract.dao';
 import module from "../activities.meta";
 import { User } from "../../users";
 import { ProfileType } from "@lyvely/common";

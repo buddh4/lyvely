@@ -3,18 +3,18 @@ import { Type } from '@nestjs/common';
 import { INestApplication, ValidationPipe , Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { AllExceptionsFilter } from './core/filters/AllExceptionsFilter';
+import { AllExceptionsFilter } from './modules/core/filters/AllExceptionsFilter';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { CoreModule } from './core/core.module';
-import { FeatureGuard } from './core/features/feature.guard';
+import { CoreModule } from './modules/core/core.module';
+import { FeatureGuard } from './modules/core/features/feature.guard';
 import { AppModuleBuilder } from "./app-module.builder";
 import helmet from "helmet";
 import csurf from 'csurf';
 import { HelmetOptions } from "helmet";
-import { LyvelyConfigurationGetter } from "./core";
+import { ConfigurationPath } from "./modules/core";
 
 interface LyvelyServerOptions {
   appModule?: Type<any>;
@@ -23,7 +23,7 @@ interface LyvelyServerOptions {
 export class LyvelyServer {
   private logger: Logger;
   private nestApp: INestApplication;
-  private configService: ConfigService<LyvelyConfigurationGetter>;
+  private configService: ConfigService<ConfigurationPath>;
   private options: LyvelyServerOptions;
 
   async bootstrap(options: LyvelyServerOptions = {}) {

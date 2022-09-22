@@ -2,18 +2,24 @@ import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from '../../users';
-import { ProfileType, ProfileVisibilityLevel } from '@lyvely/common';
+import { ProfileType, ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/common';
 import { closeInMongodConnection, rootMongooseTestModule } from './mongoose-test.utils';
 import {
-  Profile, ProfileDocument,
-  BaseMembershipRole,
+  Profile,
+  ProfileDocument,
   UserProfileRelation,
   UserProfileRelationDocument,
-  Membership, MembershipDocument, UserWithProfileAndRelations, ProfilesFactory, Organization, UserProfile, GroupProfile
+  Membership,
+  MembershipDocument,
+  UserWithProfileAndRelations,
+  ProfilesFactory,
+  Organization,
+  UserProfile,
+  GroupProfile
 } from '../../profiles';
 import { EventEmitter2, EventEmitterModule  } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { createBaseEntityInstance } from "../../../core/db/db.utils";
+import { createBaseEntityInstance } from "../../core/db/db.utils";
 
 @Injectable()
 export class TestDataUtils {

@@ -1,4 +1,10 @@
-import { ContentVisibilityLevel } from '@lyvely/common';
+import { ContentVisibilityLevel, BaseProfileRelationRole } from '@lyvely/common';
+
+export enum BaseMembershipRole {
+  Owner = 'owner',
+  Member = 'member',
+  Admin = 'admin',
+}
 
 export enum BaseProfilePermissionRole {
   Owner = 'owner',
@@ -7,6 +13,8 @@ export enum BaseProfilePermissionRole {
   Member = 'member',
   Guest = 'guest',
   Organization = 'organization',
+  InvitedMember = 'member_invited',
+  RequestedMember = 'member_requested',
   Follower = 'follower',
   User = 'user',
   Visitor = 'visitor'
@@ -36,12 +44,14 @@ export interface ProfileRoleDefinition {
 }
 
 export const defaultProfileRolesDefinition: ProfileRoleDefinition[] = [
-  { role: BaseProfilePermissionRole.Owner, label:'Owner', visibility: ContentVisibilityLevel.Owner },
-  { role: BaseProfilePermissionRole.Admin, label:'Admin', visibility: ContentVisibilityLevel.Admin, assignable: true, extendable: true },
-  { role: BaseProfilePermissionRole.Moderator, label:'Moderator', visibility: ContentVisibilityLevel.Moderator, assignable: true, extendable: true },
-  { role: BaseProfilePermissionRole.Member, label: 'Member', visibility: ContentVisibilityLevel.Member, assignable: true, extendable: true,},
-  { role: BaseProfilePermissionRole.Guest, label: 'Guest', visibility: ContentVisibilityLevel.Member, extendable: true },
-  { role: BaseProfilePermissionRole.Organization, label: 'Guest', visibility: ContentVisibilityLevel.Organization },
-  { role: BaseProfilePermissionRole.User, label: 'User', visibility: ContentVisibilityLevel.User },
-  { role: BaseProfilePermissionRole.Visitor, label: 'Visitor', visibility: ContentVisibilityLevel.Public }
+  { role: BaseProfileRelationRole.Owner, label:'Owner', visibility: ContentVisibilityLevel.Owner },
+  { role: BaseProfileRelationRole.Admin, label:'Admin', visibility: ContentVisibilityLevel.Admin, assignable: true, extendable: true },
+  { role: BaseProfileRelationRole.Moderator, label:'Moderator', visibility: ContentVisibilityLevel.Moderator, assignable: true, extendable: true },
+  { role: BaseProfileRelationRole.Member, label: 'Member', visibility: ContentVisibilityLevel.Member, assignable: true, extendable: true},
+  { role: BaseProfileRelationRole.Guest, label: 'Guest', visibility: ContentVisibilityLevel.Member, extendable: true },
+  { role: BaseProfileRelationRole.Organization, label: 'Guest', visibility: ContentVisibilityLevel.Organization },
+  { role: BaseProfileRelationRole.InvitedMember, label: 'Invited users', visibility: ContentVisibilityLevel.User },
+  { role: BaseProfileRelationRole.RequestedMember, label: 'Membership requested', visibility: ContentVisibilityLevel.User },
+  { role: BaseProfileRelationRole.User, label: 'User', visibility: ContentVisibilityLevel.User },
+  { role: BaseProfileRelationRole.Visitor, label: 'Visitor', visibility: ContentVisibilityLevel.Public }
 ];

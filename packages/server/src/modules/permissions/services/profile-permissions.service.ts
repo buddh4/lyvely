@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { UserWithProfileAndRelations } from '../../profiles/models/profile-relations.model';
+import { UserProfileRelation, UserWithProfileAndRelations } from '../../profiles';
 import minimatch from 'minimatch';
-import { BaseMembershipRole } from '../../profiles/schemas/user-profile-relations.schema';
+import { BaseMembershipRole } from '@lyvely/common';
 import {
   defaultProfileRolesDefinition, DefaultRolePermissions,
   ProfileRoleDefinition,
@@ -80,7 +80,7 @@ export class ProfilePermissionsService {
 
   private checkDefaultPermission(permission: string, profileRelations: UserWithProfileAndRelations): boolean {
     for(const defaultPermission in this.defaultPermissions) {
-      if(minimatch(permission, defaultPermission) && this.userInheritsRole(this.defaultPermissions[defaultPermission], profileRelations)) {
+      if(minimatch(permission, defaultPermission) && this.userInheritsRole(profileRelations, this.defaultPermissions[defaultPermission])) {
         return true;
       }
     }
@@ -88,7 +88,9 @@ export class ProfilePermissionsService {
     return false;
   }
 
-  private userInheritsRole(role: string, profileRelations: UserWithProfileAndRelations) {
+  public userInheritsRole(profileRelations: UserWithProfileAndRelations, role: string) {
+    if(!role) return false;
+
     for(let i = 0;i < this.rolesDefinition.length;i++) {
       const roleDef =  this.rolesDefinition[i];
       if(profileRelations.getRelationByRole(roleDef.role)) {
@@ -104,7 +106,8 @@ export class ProfilePermissionsService {
     return false;
   }
 
-  private getPermissionLevel(role: string) {
+  private getPermissionLevel(relationOrRole: UserProfileRelation|string) {
+    const role = typeof relationOrRole === 'string' ? relationOrRole : relationOrRole.role;
     const index = this.rolesDefinition.findIndex((roleDef) => roleDef.role === role);
     return index > 0 ? index : this.rolesDefinition.length -1;
   }

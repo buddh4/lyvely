@@ -3,10 +3,10 @@ import {
   BaseFetchQueryOptions, BaseQueryOptions, DeleteOptions,
   FetchQueryOptions, FindAndUpdateQueryOptions, UpdateQueryOptions,
   UpdateQuerySet
-} from "../../../core/db/abstract.dao";
+} from "../../core/db/abstract.dao";
 import { BaseProfileModel } from "./base-profile-model.schema";
 import { Profile } from "../schemas";
-import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
+import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
 import { FilterQuery, QueryOptions, UpdateQuery, Types } from "mongoose";
 
 /**

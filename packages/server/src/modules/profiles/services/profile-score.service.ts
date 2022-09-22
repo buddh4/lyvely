@@ -1,6 +1,6 @@
 import { ProfileScoreDao } from '../daos';
 import { Profile, ProfileScore } from '../schemas';
-import { createBaseEntityInstance } from "../../../core/db/db.utils";
+import { createBaseEntityInstance } from "../../core/db/db.utils";
 import { ProfilesService } from "./profiles.service";
 import { Injectable } from '@nestjs/common'
 

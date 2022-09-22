@@ -32,8 +32,8 @@ export const useInviteUsersStore = defineStore('invite-user', () => {
   }
 
   function submit() {
-    debugger;
     if(validate()) {
+
       reset();
     }
   }

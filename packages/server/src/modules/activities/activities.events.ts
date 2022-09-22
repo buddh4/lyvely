@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Habit, Task } from './schemas';
 import { ContentTypeDefinition, ContentModuleEvents } from '../content';
-import { Feature } from '../../core/features/feature.interface';
+import { Feature } from '../core/features/feature.interface';
 
 @Injectable()
 export class ActivityEvents extends ContentModuleEvents {

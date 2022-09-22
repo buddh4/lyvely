@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import { User } from '../../users';
 import { Activity } from './activity.schema';
 import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../../interfaces/time-series';
-import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
+import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
 import { applyValidationProperties, CreateTaskDto, UpdateTaskDto } from "@lyvely/common";
 import { cloneDeep } from "lodash";
 import { PropertiesOf, TaskWithUsersModel } from "@lyvely/common";

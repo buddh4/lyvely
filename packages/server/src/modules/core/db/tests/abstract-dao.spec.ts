@@ -4,7 +4,7 @@ import { BaseEntity } from "../base.entity";
 import { Model, Document } from "mongoose";
 import { AbstractDao } from "../abstract.dao";
 import { TestingModule } from "@nestjs/testing";
-import { createBasicTestingModule, getObjectId } from "../../../modules/test/utils/test.utils";
+import { createBasicTestingModule, getObjectId } from "../../../test/utils/test.utils";
 import { ModelDefinition } from "@nestjs/mongoose/dist/interfaces";
 import { Inject, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";

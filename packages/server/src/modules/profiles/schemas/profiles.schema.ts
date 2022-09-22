@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { getDefaultLocale, User } from '../../users';
 import  mongoose from 'mongoose';
-import { BaseEntity } from '../../../core/db/base.entity';
+import { BaseEntity } from '../../core/db/base.entity';
 import { Tag, TagSchema, } from '../../tags';
 import {
   ProfileVisibilityLevel ,
@@ -14,7 +14,7 @@ import {
 } from '@lyvely/common';
 
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-permissions.schema';
-import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
+import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
 import { ProfileType, BaseModel, PropertyType, ProfileUsage } from "@lyvely/common";
 
 @Schema({ _id: false })

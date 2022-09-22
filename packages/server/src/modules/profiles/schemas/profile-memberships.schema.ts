@@ -1,10 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {
-  BaseMembershipRole,
-  UserProfileRelation, CreateProfileRelation, ProfileRelationUserInfo
+  UserProfileRelation,
+  CreateProfileRelation,
+  ProfileRelationUserInfo
 } from './user-profile-relations.schema';
-import { assureObjectId } from '../../../core/db/db.utils';
+import { assureObjectId } from '../../core/db/db.utils';
+import { BaseMembershipRole } from '@lyvely/common';
 
 export interface CreateMembership extends CreateProfileRelation {
   role: string

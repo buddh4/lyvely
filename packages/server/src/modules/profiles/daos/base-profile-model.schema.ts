@@ -1,4 +1,4 @@
-import { BaseEntity } from "../../../core/db/base.entity";
+import { BaseEntity } from "../../core/db/base.entity";
 import mongoose from "mongoose";
 import { Prop } from "@nestjs/mongoose";
 

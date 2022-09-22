@@ -1,5 +1,5 @@
-import { AbstractDao } from "../../../core/db/abstract.dao";
-import { assureObjectId, EntityIdentity } from "../../../core/db/db.utils";
+import { AbstractDao } from "../../../modules/core/db/abstract.dao";
+import { assureObjectId, EntityIdentity } from "../../../modules/core/db/db.utils";
 import { Profile } from "../../../modules/profiles";
 import { User } from "../../../modules/users";
 import { DataPoint, TimeSeriesContent } from "../schemas";

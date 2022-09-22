@@ -1,5 +1,5 @@
-import { BaseEntity, EntityType } from '../../../core/db/base.entity';
-import { assignEntityData } from "../../../core/db/db.utils";
+import { BaseEntity, EntityType } from '../../../modules/core/db/base.entity';
+import { assignEntityData } from "../../../modules/core/db/db.utils";
 import { Prop } from '@nestjs/mongoose';
 import mongoose   from 'mongoose';
 import {
@@ -13,7 +13,7 @@ import {
 import { TimeSeriesContent } from "./time-series-content.schema";
 import { User } from "../../../modules/users";
 import { Profile } from "../../../modules/profiles";
-import { assureObjectId } from "../../../core/db/db.utils";
+import { assureObjectId } from "../../../modules/core/db/db.utils";
 import { DataPointModel } from "@lyvely/common";
 
 type DataPointEntity = DataPointModel & { _id: TObjectId }

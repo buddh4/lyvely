@@ -1,6 +1,6 @@
 import { NumberDataPoint } from "../schemas";
 import { DataPointDao } from "./data-point.dao";
-import { EntityIdentity } from "../../../core/db/db.utils";
+import { EntityIdentity } from "../../../modules/core/db/db.utils";
 import { User } from "../../../modules/users";
 
 export abstract class NumberDataPointDao<T extends NumberDataPoint> extends DataPointDao<T> {

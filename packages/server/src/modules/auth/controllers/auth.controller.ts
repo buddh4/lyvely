@@ -9,20 +9,20 @@ import {
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { AuthService } from '../services/auth.service';
 import { Public } from '../decorators/public.decorator';
-import { UserRequest } from '../../../core/types';
+import { UserRequest } from '../../core/types';
 import { addMilliSeconds , UserModel , Headers } from '@lyvely/common';
 
-import { Cookies } from '../../../core/web';
+import { Cookies } from '../../core/web';
 
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import JwtRefreshGuard from '../guards/jwt-refresh.guard';
-import { LyvelyConfigurationGetter } from "../../../core";
+import { ConfigurationPath } from "../../core";
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(private authService: AuthService, private configService: ConfigService<LyvelyConfigurationGetter>) {}
+  constructor(private authService: AuthService, private configService: ConfigService<ConfigurationPath>) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)

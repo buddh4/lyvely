@@ -2,11 +2,11 @@
 import { ProfilesService, Profile, UserWithProfileAndRelations, ProfileRelation, ProfileTagsService } from '../../profiles';
 import { AbstractContentDao } from '../daos';
 import { User } from '../../users';
-import { assureObjectId, EntityIdentity } from '../../../core/db/db.utils';
+import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
 import { Content } from '../schemas';
-import { EntityNotFoundException } from '../../../core/exceptions';
+import { EntityNotFoundException } from '../../core/exceptions';
 import { Inject } from '@nestjs/common';
-import { UpdateQuerySet } from '../../../core/db/abstract.dao';
+import { UpdateQuerySet } from '../../core/db/abstract.dao';
 
 export abstract class AbstractContentService<T extends Content> {
 

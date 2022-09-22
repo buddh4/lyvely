@@ -4,7 +4,7 @@ import {
   NumberDataPointConfig, NumberDataPointConfigRevision,
   NumberDataPointConfigSchema
 } from './config';
-import {  EntityType } from '../../../core/db/base.entity';
+import {  EntityType } from '../../../modules/core/db/base.entity';
 import { TimeSeriesContent } from "./time-series-content.schema";
 
 type NumberTimeSeriesContentEntity = ContentEntity & EntityType<NumberTimeSeriesContent>;

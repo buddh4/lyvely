@@ -13,11 +13,13 @@ import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
-import { CoreModule } from '../../../core/core.module';
+import { ConfigModule } from '@nestjs/config';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import mongoose from 'mongoose';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { ConfigService } from '@nestjs/config';
+import { MailsModule } from "../../mails/mails.module";
+import { CoreModule } from "../../core/core.module";
+import { ConfigurationPath } from "../../core";
 
 export function createCoreTestingModule(key: string, providers: Provider[] = [], models: ModelDefinition[] = [], modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = []): TestingModuleBuilder {
   return Test.createTestingModule({
@@ -26,24 +28,11 @@ export function createCoreTestingModule(key: string, providers: Provider[] = [],
       MongooseModule.forFeature([...models]),
       EventEmitterModule.forRoot({ wildcard: true }),
       CoreModule,
-      MailerModule.forRootAsync({
-        useFactory: () => ({
-          transport: {
-            jsonTransport: true
-          },
-          defaults: {
-            from: '"No Reply" <no-reply@localhost>',
-          },
-          preview: false,
-          template: {
-            dir: process.cwd() + '/template/',
-            adapter: new PugAdapter(),
-            options: {
-              strict: true,
-            },
-          }
-        })
+      ConfigModule.forRoot({
+        load: [() => import('./test.config').then(module => module.default)],
+        isGlobal: true
       }),
+      MailsModule.fromConfig(),
       ...modules
     ],
     providers: [...providers],

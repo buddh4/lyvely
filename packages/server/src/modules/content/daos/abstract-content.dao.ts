@@ -1,5 +1,5 @@
 import { Content } from '../schemas';
-import { EntityIdentity } from '../../../core/db/db.utils';
+import { EntityIdentity } from '../../core/db/db.utils';
 import { BaseProfileModelDao, ProfileRelation } from "../../profiles";
 
 export abstract class AbstractContentDao<T extends Content> extends BaseProfileModelDao<T> {

@@ -1,6 +1,6 @@
 import { Db } from 'mongodb'
-import { ProfileDocument, Profile , Membership, MembershipDocument , BaseMembershipRole, BaseUserProfileRelationType } from '../src/modules/profiles';
-import mongoose from 'mongoose';
+import { ProfileDocument, Profile , Membership, MembershipDocument } from '../src/modules/profiles';
+import { BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
 
 module.exports = {
   async up(db: Db) {

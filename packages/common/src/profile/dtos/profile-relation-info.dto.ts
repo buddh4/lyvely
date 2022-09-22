@@ -1,6 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel, PropertyType } from '../../model';
 import { ProfileType } from '../interfaces';
+import { BaseUserProfileRelationType, isMultiUserProfile } from "../models";
 
 @Exclude()
 export class ProfileRelationSummary {
@@ -34,6 +35,16 @@ export class ProfileRelationInfo extends BaseModel<ProfileRelationInfo> {
 
   @PropertyType([ProfileRelationSummary])
   relations: ProfileRelationSummary[];
+
+  isMultiUserProfile() {
+    return isMultiUserProfile(this.type);
+  }
+
+  isMember(role?: string) {
+    return !!this.relations.find(
+      relation => relation.type === BaseUserProfileRelationType.Membership
+        && (!role || relation.role === role));
+  }
 }
 
 @Exclude()

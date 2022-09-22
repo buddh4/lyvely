@@ -16,7 +16,7 @@ import {
 import { ActivitiesService } from '../services/activities.service';
 import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '../../content';
 import { Activity } from '../schemas';
-import { ProfileRequest } from '../../../core/types';
+import { ProfileRequest } from '../../core/types';
 import { isTaskContent } from "../utils/activity.utils";
 import { Policies } from "../../policies/decorators/policies.decorator";
 import { TaskModel } from "@lyvely/common";

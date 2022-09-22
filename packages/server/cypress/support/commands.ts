@@ -23,7 +23,7 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import { Cookies } from '../../src/core/web';
+import { Cookies } from '../../src/modules/core/web';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {

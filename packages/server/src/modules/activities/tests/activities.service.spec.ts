@@ -8,7 +8,7 @@ import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activ
 import { ActivitiesDao } from '../daos/activities.dao';
 import { DataPointIntervalFilter, sortActivities } from '@lyvely/common';
 import { Profile } from '../../profiles';
-import { assureStringId } from '../../../core/db/db.utils';
+import { assureStringId } from '../../core/db/db.utils';
 import { User } from '../../users';
 import { HabitDataPointDao } from "../daos/habit-data-point.dao";
 import { ContentDocument, ContentScoreService, ContentScoreDao } from "../../content";

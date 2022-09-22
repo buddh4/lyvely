@@ -2,11 +2,8 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { MembershipsDao } from '../daos';
-import {
-  BaseMembershipRole,
-  BaseUserProfileRelationType, ProfileRelationUserInfo
-} from '../schemas';
-import { ProfileType } from '@lyvely/common';
+import { ProfileRelationUserInfo } from '../schemas';
+import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
 import { createActivityTestingModule } from '../../activities/tests/utils/activities.test.utils';
 
 describe('MembershipDao', () => {
