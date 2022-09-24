@@ -16,10 +16,8 @@ import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-refe
 import { ConfigModule } from '@nestjs/config';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import mongoose from 'mongoose';
-import { ConfigService } from '@nestjs/config';
 import { MailsModule } from "../../mails/mails.module";
 import { CoreModule } from "../../core/core.module";
-import { ConfigurationPath } from "../../core";
 
 export function createCoreTestingModule(key: string, providers: Provider[] = [], models: ModelDefinition[] = [], modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = []): TestingModuleBuilder {
   return Test.createTestingModule({

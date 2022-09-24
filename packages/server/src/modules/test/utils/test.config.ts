@@ -5,7 +5,7 @@ const testConfig: LyvelyAppConfiguration = {
     createMessageFiles: true,
     messagesPath: `${process.cwd()}/mail/messages/test`,
     transport: {
-      jsonTransport: true
+      streamTransport: true
     },
     defaults: {
       from: '"No Reply" <no-reply@test>',

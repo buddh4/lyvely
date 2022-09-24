@@ -2,6 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule } from "../../test/utils/test.utils";
 import { MailService } from "../services/mail.service";
+import fs from 'fs';
 
 describe('MailService', () => {
   let testingModule: TestingModule;
@@ -37,7 +38,14 @@ describe('MailService', () => {
     });
 
     it('assure test mail file is created', async () => {
+      const info = await mailService.sendMail({
+        to: 'test@test.de',
+        subject: 'Testing...',
+        html: '<b>Testing...</b>'
+      });
 
+      await new Promise((resolve) => info.message.on('end', () => resolve(info)));
+      expect(fs.existsSync(mailService.getMessageFilePath(info))).toEqual(true);
     })
   })
 });
