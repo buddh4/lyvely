@@ -29,6 +29,10 @@ export class IntegrityException extends ServiceException {
   protected defaultMessage = 'An integrity exception occurred.';
 }
 
+export class MisconfigurationException extends ServiceException {
+  protected defaultMessage = 'An error due to misconfiguration occurred.';
+}
+
 export class UniqueConstraintException extends IntegrityException {
   protected defaultMessage = 'Selected name already exists.';
   protected field: string;

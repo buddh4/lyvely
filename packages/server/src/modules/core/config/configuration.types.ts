@@ -10,9 +10,10 @@ export type LyvelyMailOptions = MailerOptions & {
 }
 
 export type LyvelyHttpOptions = {
+  appUrl?: string,
   host: string,
   port: number,
-  cors: {
+  cors?: {
     origin: string
   }
 }

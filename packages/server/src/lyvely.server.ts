@@ -100,13 +100,24 @@ export class LyvelyServer {
   }
 
   private initCors() {
-    const cors_origin = this.configService.get('http.cors.origin');
+    // Cors not required if staticServe is used
+    let cors_origin = this.configService.get('http.cors.origin');
+    const staticServe = !!this.configService.get('serveStatic');
 
-    if(cors_origin) {
-      this.logger.log(`Using cors origin '${cors_origin}'`);
-    } else {
-      this.logger.log(`No cors mode`);
+    if(!cors_origin && !staticServe) {
+      cors_origin = this.configService.get('http.appUrl');
     }
+
+    if(!cors_origin && !staticServe) {
+      this.logger.warn('Not cors origin and no serve static configuration set, this is probably a misconfiguration.')
+    }
+
+    if(!cors_origin) {
+      this.logger.log(`No cors mode configured.`);
+      return;
+    }
+
+    this.logger.log(`Using cors origin '${cors_origin}'`);
 
     this.nestApp.enableCors({
       origin: cors_origin,

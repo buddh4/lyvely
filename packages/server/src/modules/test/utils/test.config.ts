@@ -1,6 +1,11 @@
 import { LyvelyAppConfiguration } from "../../core";
 
 const testConfig: LyvelyAppConfiguration = {
+  http: {
+    host: 'localhost',
+    port: 8080,
+    appUrl: 'https://test.com'
+  },
   mail: {
     createMessageFiles: true,
     messagesPath: `${process.cwd()}/mail/messages/test`,

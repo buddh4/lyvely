@@ -27,6 +27,14 @@ export class UsersService {
     return this.userDao.findByUsername(username);
   }
 
+  async findUserByEmail(email: string): Promise<User | null> {
+    if(!email) {
+      return null;
+    }
+
+    return this.userDao.findByEmail(email);
+  }
+
   /**
    * Returns a single user with the given id or null.
    * @param id

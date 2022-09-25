@@ -1,14 +1,13 @@
 import { Module, Global, DynamicModule } from '@nestjs/common';
 import { MailService } from "./services/mail.service";
 import { MailerModule, MailerOptions,  } from '@nestjs-modules/mailer';
-import { MailerAsyncOptions } from '@nestjs-modules/mailer/dist/interfaces/mailer-async-options.interface';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 import { ConfigurationPath } from "../core";
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 
 const DEFAULT_MAIL_CONFIG: MailerOptions =  {
   transport: {
-    jsonTransport: true
+    streamTransport: true
   },
   defaults: {
     from: '"No Reply" <no-reply@localhost>',

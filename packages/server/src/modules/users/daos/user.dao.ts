@@ -16,6 +16,10 @@ export class UserDao extends AbstractDao<User> {
     return this.findOne({ lowercaseUsername: username.toLowerCase() });
   }
 
+  async findByEmail(email: string): Promise<User|null> {
+    return this.findOne({ lowercaseEmail: email.toLowerCase() });
+  }
+
   async incrementProfileCount(user: User, type: ProfileType, amount = 1, options?: BaseQueryOptions) {
     let path = 'profilesCount.';
     let count;
