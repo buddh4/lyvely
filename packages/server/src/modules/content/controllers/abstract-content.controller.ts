@@ -1,7 +1,7 @@
 import { Post, Request } from '@nestjs/common';
 import { Content } from '../schemas';
 import { AbstractContentService } from '../services';
-import { ProfileContentRequest } from "./profile-content-request.type";
+import { ProfileContentRequest } from "../types";
 import { Policies } from "../../policies/decorators/policies.decorator";
 import { ContentWritePolicy } from "../policies";
 

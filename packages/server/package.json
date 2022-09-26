@@ -26,9 +26,11 @@
     "migrate:create": "sh -c 'ts-node node_modules/migrate-mongo/bin/migrate-mongo create $0 -f migrate-mongo-config.ts' ",
     "migrate:status": "ts-node node_modules/migrate-mongo/bin/migrate-mongo status -f migrate-mongo-config.ts",
     "migrate:undo-last": "ts-node node_modules/migrate-mongo/bin/migrate-mongo down -f migrate-mongo-config.ts && npm run migrate:status",
-    "migrate:up": "ts-node node_modules/migrate-mongo/bin/migrate-mongo up -f migrate-mongo-config.ts"
+    "migrate:up": "ts-node node_modules/migrate-mongo/bin/migrate-mongo up -f migrate-mongo-config.ts",
+    "depcruise": "npx depcruise --config .dependency-cruiser.js src"
   },
   "dependencies": {
+    "@lyvely/common": "*",
     "@automapper/classes": "^8.7.6",
     "@automapper/core": "^8.7.6",
     "@automapper/nestjs": "^8.7.6",
@@ -41,6 +43,7 @@
     "@nestjs/mongoose": "^9.2.0",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.4.7",
+    "express": "*",
     "@nestjs/serve-static": "^2.2.2",
     "@types/minimatch": "^3.0.5",
     "bcrypt": "^5.0.1",
@@ -73,7 +76,6 @@
     "@babel/core": "^7.13.10",
     "@babel/preset-env": "^7.13.12",
     "@babel/preset-typescript": "^7.13.0",
-    "@lyvely/common": "*",
     "@nestjs/cli": "^8.1.5",
     "@nestjs/schematics": "^8.0.5",
     "@nestjs/testing": "^8.2.3",

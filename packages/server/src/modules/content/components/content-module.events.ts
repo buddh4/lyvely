@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { ContentTypeDefinition } from './content-type.interface';
-import { ContentTypeRegistry } from '../components/content-type.registry';
+import { ContentTypeDefinition } from "../interfaces";
+import { ContentTypeRegistry } from './content-type.registry';
 import { ModuleEvents } from '../../core/modules/module.events';
 
 export abstract class ContentModuleEvents extends ModuleEvents {

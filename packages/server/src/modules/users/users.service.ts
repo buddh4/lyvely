@@ -3,7 +3,6 @@ import { User } from './schemas';
 import { UserDao } from './daos';
 import { RefreshToken } from './schemas';
 import { ProfileType } from "@lyvely/common";
-import { EntityIdentity } from "../core/db/db.utils";
 import { BaseQueryOptions } from "../core/db/abstract.dao";
 
 @Injectable()

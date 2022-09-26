@@ -1,4 +1,4 @@
-import { Type, DynamicModule, ForwardReference } from '@nestjs/common';
+import { Type, DynamicModule, ForwardReference, Provider, Global } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CoreModule } from "./modules/core/core.module";
 import { AuthModule } from "./modules/auth/auth.module";
@@ -18,18 +18,55 @@ import configuration from "./modules/core/config/configuration";
 import { ConfigurationPath } from "./modules/core";
 import { setTransactionSupport } from "./modules/core/db/transaction.util";
 import { MailsModule } from "./modules/mails/mails.module";
+import {
+  ConfigUserPermissionsService,
+  UserPermissionsServiceInjectionToken,
+  UserPermissionsServiceProvider
+} from "./modules/user-permissions";
 
 type Import =  Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
-interface AppModuleBuilderOptions {
+export interface AppModuleBuilderOptions {
   useRecommended?: boolean,
   useFeatures?: boolean,
   configFiles?: Array<string>,
+  providers?: LyvelyProviderOptions
   serveStatic?: boolean
+}
+
+type ProviderOption<T = any> = { useClass: Type<T> } | { useValue: T } | Provider<T>;
+type ProviderToken = string|symbol;
+
+interface CoreLyvelyProviderOptions {
+  [UserPermissionsServiceInjectionToken]?: ProviderOption<UserPermissionsServiceProvider>;
+}
+
+const defaultProviders: Required<CoreLyvelyProviderOptions> = {
+  [UserPermissionsServiceInjectionToken]: { useClass: ConfigUserPermissionsService }
+}
+
+export type LyvelyProviderOptions = CoreLyvelyProviderOptions & Record<ProviderToken, ProviderOption>;
+
+function getDefaultProvider<T>(token: ProviderToken): Provider<T>|undefined {
+  return defaultProviders[token];
+}
+
+function getProvider<T>(options: AppModuleBuilderOptions, token: ProviderToken): Provider<T>|undefined {
+  options.providers = options.providers || {};
+  const providerOption = options.providers[token] || getDefaultProvider(token);
+  if(!providerOption) return undefined;
+  return getProviderFromOption(token, providerOption);
+}
+
+function getProviderFromOption<T>(token: ProviderToken, option: ProviderOption): Provider<T> {
+  return ('provide' in option)
+    ? option
+    : Object.assign({ provide: token }, option);
 }
 
 export class AppModuleBuilder {
   private readonly imports: Array<Import>;
+  private readonly providers: Array<Provider>;
   private options: AppModuleBuilderOptions;
 
   constructor(options: AppModuleBuilderOptions = {}) {
@@ -37,11 +74,28 @@ export class AppModuleBuilder {
     this.options = options;
 
     this.initCoreModules()
+        .initCoreProviders()
         .initConfigModule()
         .initServeStaticModule()
         .initMongooseModule()
         .initRecommendedModules()
         .initFeatureModules();
+  }
+
+  private initCoreModules() {
+    return this.importModules(
+      EventEmitterModule.forRoot({ wildcard: true }),
+      MailsModule.fromConfig(),
+      CoreModule,
+      PoliciesModule,
+      UsersModule,
+      AuthModule,
+    )
+  }
+
+  private initCoreProviders() {
+    const providers = Object.keys(defaultProviders).map(token => getProvider(this.options, token)).filter(provider => !!provider);
+    return this.useProviders(...providers);
   }
 
   private initServeStaticModule() {
@@ -85,17 +139,6 @@ export class AppModuleBuilder {
     }));
   }
 
-  private initCoreModules() {
-    return this.importModules(
-      EventEmitterModule.forRoot({ wildcard: true }),
-      MailsModule.fromConfig(),
-      CoreModule,
-      PoliciesModule,
-      UsersModule,
-      AuthModule,
-    )
-  }
-
   private initRecommendedModules() {
     if(this.options.useRecommended === false) {
       return this;
@@ -106,7 +149,6 @@ export class AppModuleBuilder {
       TagsModule,
       RegisterModule,
       ContentModule,
-      ActivitiesModule,
       TagsModule
     )
   }
@@ -126,8 +168,17 @@ export class AppModuleBuilder {
     return this;
   }
 
+  public useProviders(...providers: Array<Provider>) {
+    this.providers.push(...providers);
+    return this;
+  }
+
   public build() {
-    @Module({imports: this.imports})
+    @Global()
+    @Module({
+      imports: this.imports,
+      providers: this.providers
+    })
     class AppModule {}
     return AppModule;
   }

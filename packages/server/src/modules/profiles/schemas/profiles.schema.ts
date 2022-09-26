@@ -13,7 +13,7 @@ import {
   MAX_PROFILE_DESCRIPTION_LENGTH
 } from '@lyvely/common';
 
-import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-permissions.schema';
+import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-role-permissions.schema';
 import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
 import { ProfileType, BaseModel, PropertyType, ProfileUsage } from "@lyvely/common";
 

@@ -1,16 +1,16 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '../../services/auth.service';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { JwtAccessTokenPayload } from './jwt-payload.interface';
 import { Cookies } from '../../../core/web';
 import { ConfigurationPath } from "../../../core";
+import { User, UsersService } from "../../../users";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private authService: AuthService, private configService: ConfigService<ConfigurationPath>) {
+  constructor(private usersService: UsersService, private configService: ConfigService<ConfigurationPath>) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([(req: Request) => {
         return req.cookies && req.cookies[Cookies.AUTHENTICATION];
@@ -21,12 +21,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtAccessTokenPayload) {
-    const user = await this.authService.validateUserByJwtAccessToken(payload);
+    const user = await this.validateUserByJwtAccessToken(payload);
 
     if (!user) {
       throw new UnauthorizedException();
     }
 
     return user;
+  }
+
+  async validateUserByJwtAccessToken(payload: JwtAccessTokenPayload): Promise<User|null> {
+    return await this.usersService.findUserById(payload.sub);
   }
 }

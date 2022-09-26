@@ -12,11 +12,11 @@ import { ProfileDao , MembershipsDao, UserProfileRelationsDao } from './daos';
 
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '../policies/policies.module';
-import { ProfilePermissionsService } from '../permissions/services/profile-permissions.service';
+import { ProfilePermissionsService } from "./services";
 import { ProfileEvents } from './profile.events';
 import { CoreModule } from '../core/core.module';
-import { ProfileTagsController } from "./controllers/profile-tags.controller";
-import { ProfileRelationInfosController } from "./controllers/profile-relation-infos.controller";
+import { ProfileTagsController } from "./controllers";
+import { ProfileRelationInfosController } from "./controllers";
 import { ProfileType } from "@lyvely/common";
 import { useProfileMappings } from "./mappings";
 

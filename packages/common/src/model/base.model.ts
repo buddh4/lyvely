@@ -1,5 +1,5 @@
 import { Transform, Expose, Exclude } from "class-transformer";
-import { assignRawDataToAndInitProps, assignRawDataTo } from "../util";
+import { assignRawDataToAndInitProps } from "./util";
 
 export type DocumentMock<T> = {
   _id?: any

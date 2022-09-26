@@ -1,5 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import { ProfileGuard } from '../guards/profile.guard';
+import { ProfileGuard } from "../guards";
 import { CanActivate } from '@nestjs/common/interfaces';
 
 // eslint-disable-next-line @typescript-eslint/ban-types

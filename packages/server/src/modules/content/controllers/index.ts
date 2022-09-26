@@ -1,2 +1,2 @@
 export * from './abstract-content.controller'
-export * from './profile-content-request.type'
+export * from '../types/profile-content-request.type'

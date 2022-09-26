@@ -1,4 +1,4 @@
-import { ProfilePolicyContext } from '../guards';
+import { ProfilePolicyContext } from "./profile-policy.context";
 import { ProfilePolicy } from './profile.policy';
 import { ProfileVisibilityLevel } from '@lyvely/common';
 import { Injectable } from '@nestjs/common';

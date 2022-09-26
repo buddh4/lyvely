@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ProfileMemberMailInvite } from "@lyvely/common";
-import { ProfilePermissionsService } from "../../permissions/services/profile-permissions.service";
+import { ProfilePermissionsService } from "./profile-permissions.service";
 import { UserWithProfileAndRelations } from "../models";
 import { validateEmail } from "../../core/db/field.validator.util";
 import { UsersService } from "../../users";

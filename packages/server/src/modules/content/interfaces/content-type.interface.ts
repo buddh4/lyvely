@@ -1,10 +1,10 @@
 import { Type } from '@nestjs/common';
-import { Content } from '../schemas';
+import { IContent } from '@lyvely/common';
 
 export interface ContentTypeDefinition {
   type: string;
   moduleId: string,
   name: string;
-  constructor: Type<Content>;
+  constructor: Type<IContent>;
   description: string;
 }

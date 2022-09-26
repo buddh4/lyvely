@@ -7,9 +7,9 @@ import {
   UseInterceptors, ClassSerializerInterceptor
 } from '@nestjs/common';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
-import { AuthService } from '../services/auth.service';
+import { JwtAuthService } from '../services/jwt-auth.service';
 import { Public } from '../decorators/public.decorator';
-import { UserRequest } from '../../core/types';
+import { UserRequest } from "../../users";
 import { addMilliSeconds , UserModel , Headers } from '@lyvely/common';
 
 import { Cookies } from '../../core/web';
@@ -22,7 +22,7 @@ import { ConfigurationPath } from "../../core";
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(private authService: AuthService, private configService: ConfigService<ConfigurationPath>) {}
+  constructor(private authService: JwtAuthService, private configService: ConfigService<ConfigurationPath>) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)

@@ -15,7 +15,8 @@
     "test-server": "npm run test -w @lyvely/server",
     "dev-server": "npm run start:dev -w @lyvely/server",
     "dev-web": "npm run dev -w @lyvely/web",
-    "debug-server": "npm run start:debug -w @lyvely/server"
+    "debug-server": "npm run start:debug -w @lyvely/server",
+    "depcruise-server": "npm run depcruise -w @lyvely/server"
   },
   "devDependencies": {
     "@types/node": "^18.7.14",
@@ -24,6 +25,8 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
-    "typescript": "^4.8.2"
+    "@types/uuid": "^8.3.4",
+    "typescript": "^4.8.2",
+    "uuid": "^9.0.0"
   }
 }

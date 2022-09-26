@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 
 import { ProfilesService } from '../services';
-import { UserRequest } from "../../core/types";
+import { UserRequest } from "../../users";
 import { ProfileRelationInfos } from "@lyvely/common";
 import { mapType, ENDPOINT_PROFILE_RELATION_INFOS, ProfileRelationInfosEndpoint } from "@lyvely/common";
 import { UserWithProfileAndRelations } from "../models";

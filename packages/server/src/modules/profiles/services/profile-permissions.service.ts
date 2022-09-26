@@ -1,23 +1,25 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { UserProfileRelation, UserWithProfileAndRelations } from '../../profiles';
+import { UserWithProfileAndRelations } from '../models';
 import minimatch from 'minimatch';
 import { BaseMembershipRole } from '@lyvely/common';
 import {
-  defaultProfileRolesDefinition, DefaultRolePermissions,
-  ProfileRoleDefinition,
-  ProfileRolePermission
-} from '../interfaces/profile-permissions.interface';
+  defaultProfileRolesDefinition, IDefaultRolePermissions,
+  IProfileRoleDefinition,
+  IProfileRolePermission
+} from "../interfaces";
+import { PermissionsService } from "../../permissions";
 
 export const TOKEN_PROFILE_ROLES_DEFINITION = 'PROFILE_ROLES_DEFINITION';
 export const TOKEN_DEFAULT_PROFILE_PERMISSIONS = 'DEFAULT_PROFILE_PERMISSIONS';
 
 @Injectable()
-export class ProfilePermissionsService {
+export class ProfilePermissionsService extends PermissionsService<UserWithProfileAndRelations>{
 
   constructor(
-    @Optional() @Inject(TOKEN_PROFILE_ROLES_DEFINITION) private rolesDefinition: ProfileRoleDefinition[],
-    @Optional() @Inject(TOKEN_DEFAULT_PROFILE_PERMISSIONS) private defaultPermissions: DefaultRolePermissions
+    @Optional() @Inject(TOKEN_PROFILE_ROLES_DEFINITION) private rolesDefinition: IProfileRoleDefinition[],
+    @Optional() @Inject(TOKEN_DEFAULT_PROFILE_PERMISSIONS) private defaultPermissions: IDefaultRolePermissions
   ) {
+    super();
     this.rolesDefinition = this.rolesDefinition || defaultProfileRolesDefinition;
     this.defaultPermissions = this.defaultPermissions || {};
 
@@ -30,20 +32,10 @@ export class ProfilePermissionsService {
     //  - do not change the index of sub roles
   }
 
-  registerDefaultPermissions(permissions: ProfileRolePermission[]) {
+  registerDefaultPermissions(permissions: IProfileRolePermission[]) {
     for(const permission of permissions) {
       this.defaultPermissions[permission.permission] = permission.role;
     }
-  }
-
-  async checkEveryPermission(profileRelations: UserWithProfileAndRelations, ...permissions: string[]): Promise<boolean>  {
-    const promises = permissions.map(permission => this.checkPermission(profileRelations, permission));
-    return !(await Promise.all(promises)).includes(false);
-  }
-
-  async checkSomePermission(profileRelations: UserWithProfileAndRelations, ...permissions: string[]): Promise<boolean>  {
-    const promises = permissions.map(permission => this.checkPermission(profileRelations, permission));
-    return (await Promise.all(promises)).includes(true);
   }
 
   async checkPermission(profileRelations: UserWithProfileAndRelations, permission: string): Promise<boolean>  {
@@ -105,12 +97,5 @@ export class ProfilePermissionsService {
 
     return false;
   }
-
-  private getPermissionLevel(relationOrRole: UserProfileRelation|string) {
-    const role = typeof relationOrRole === 'string' ? relationOrRole : relationOrRole.role;
-    const index = this.rolesDefinition.findIndex((roleDef) => roleDef.role === role);
-    return index > 0 ? index : this.rolesDefinition.length -1;
-  }
-
   // TODO: assemble all permissions of a user in auth
 }

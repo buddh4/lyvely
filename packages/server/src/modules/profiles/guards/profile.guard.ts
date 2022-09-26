@@ -1,14 +1,16 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { ProfilesService } from '../services';
-import { ProfileRequest } from '../../core/types';
+import { ProfileRequest } from "../types";
 import { isValidObjectId } from '@lyvely/common';
 import { UserWithProfileAndRelations } from '../models';
 import { ProfileVisibilityPolicy } from '../policies';
 import { PolicyService } from '../../policies/services/policy.service';
 import { ProfileDao } from '../daos';
-import { ProfilePermissionsService } from '../../permissions/services/profile-permissions.service';
-import { PERMISSIONS_KEY_SOME, PERMISSIONS_KEY_STRICT } from '../../permissions/decorators/permissions.decorator';
+import { ProfilePermissionsService } from "../services";
 import { Reflector } from '@nestjs/core';
+
+export const PROFILE_PERMISSIONS_KEY_STRICT = 'permissions_strict';
+export const PROFILE_PERMISSIONS_KEY_SOME = 'permissions_some';
 
 /**
  * This guard is responsible for setting the `request.profile` and `request.profileRelations` fields for a given profile id.
@@ -70,13 +72,13 @@ export class ProfileGuard implements CanActivate {
   }
 
   private validatePermissions(profileRelations: UserWithProfileAndRelations, context: ExecutionContext) {
-    const strictPermissions = this.getPermissionsFromContext(context, PERMISSIONS_KEY_STRICT);
+    const strictPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_STRICT);
 
     if(strictPermissions.length) {
       return this.profilePermissionService.checkEveryPermission(profileRelations, ...strictPermissions);
     }
 
-    const anyPermissions = this.getPermissionsFromContext(context, PERMISSIONS_KEY_SOME);
+    const anyPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_SOME);
 
     return anyPermissions.length ? this.profilePermissionService.checkSomePermission(profileRelations, ...anyPermissions) : true;
   }

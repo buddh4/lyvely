@@ -1,7 +1,9 @@
 import { Controller, UseGuards } from '@nestjs/common';
 import { ProfileGuard } from '../../profiles';
 import { CanActivate } from '@nestjs/common/interfaces';
-import { ContentGuard, Content, ContentType } from '../index';
+import { ContentType } from "./content-type.decorator";
+import { Content } from '../schemas';
+import { ContentGuard } from '../guards';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 
 // eslint-disable-next-line @typescript-eslint/ban-types

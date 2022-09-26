@@ -23,16 +23,16 @@ export enum BaseProfilePermissionRole {
 export type RoleName = string;
 export type Permission = string;
 
-export interface DefaultRolePermissions {
+export interface IDefaultRolePermissions {
   [key: RoleName]: Permission
 }
 
-export interface ProfileRolePermission {
+export interface IProfileRolePermission {
   permission: Permission
   role: RoleName,
 }
 
-export interface ProfileRoleDefinition {
+export interface IProfileRoleDefinition {
   role: RoleName,
   extends?: string,
   visibility: ContentVisibilityLevel,
@@ -43,7 +43,7 @@ export interface ProfileRoleDefinition {
   extendable?: boolean
 }
 
-export const defaultProfileRolesDefinition: ProfileRoleDefinition[] = [
+export const defaultProfileRolesDefinition: IProfileRoleDefinition[] = [
   { role: BaseProfileRelationRole.Owner, label:'Owner', visibility: ContentVisibilityLevel.Owner },
   { role: BaseProfileRelationRole.Admin, label:'Admin', visibility: ContentVisibilityLevel.Admin, assignable: true, extendable: true },
   { role: BaseProfileRelationRole.Moderator, label:'Moderator', visibility: ContentVisibilityLevel.Moderator, assignable: true, extendable: true },

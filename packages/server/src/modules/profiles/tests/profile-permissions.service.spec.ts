@@ -6,8 +6,8 @@ import {
   TOKEN_DEFAULT_PROFILE_PERMISSIONS,
   TOKEN_PROFILE_ROLES_DEFINITION,
   ProfilePermissionsService
-} from '../services/profile-permissions.service';
-import { UserWithProfileAndRelations, Membership, ProfileRolePermission } from '../../profiles';
+} from "../index";
+import { UserWithProfileAndRelations, Membership, ProfileRolePermission } from '../index';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { ContentVisibilityLevel, BaseMembershipRole, BaseProfileRelationRole } from '@lyvely/common'
 

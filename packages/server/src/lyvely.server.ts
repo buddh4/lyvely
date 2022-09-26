@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { Type } from '@nestjs/common';
+import { Type, Provider, InjectionToken } from '@nestjs/common';
 import { INestApplication, ValidationPipe , Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
@@ -10,14 +10,14 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { CoreModule } from './modules/core/core.module';
 import { FeatureGuard } from './modules/core/features/feature.guard';
-import { AppModuleBuilder } from "./app-module.builder";
+import { AppModuleBuilder, AppModuleBuilderOptions } from "./app-module.builder";
 import helmet from "helmet";
 import csurf from 'csurf';
 import { HelmetOptions } from "helmet";
 import { ConfigurationPath } from "./modules/core";
 
-interface LyvelyServerOptions {
-  appModule?: Type<any>;
+interface LyvelyServerOptions extends AppModuleBuilderOptions {
+  appModule?: Type;
 }
 
 export class LyvelyServer {
@@ -48,7 +48,7 @@ export class LyvelyServer {
   }
 
   private async initNestApp() {
-    const appModule = this.options.appModule || new AppModuleBuilder().build();
+    const appModule = this.options.appModule || new AppModuleBuilder(this.options).build();
     return await NestFactory.create(appModule);
   }
 

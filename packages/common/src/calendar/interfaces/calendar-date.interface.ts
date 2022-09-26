@@ -1,5 +1,3 @@
-import { dateTimeFactory } from '../adapters/date-time-dayjs.adapter';
-
 export type CalendarDate = string | number | Date;
 export type CalendarDateTime = CalendarDate | IDateTime;
 
@@ -41,7 +39,19 @@ export function toDate(date: CalendarDateTime) {
   return dateTime(date).toDate();
 }
 
+export type DateTimeFactory = ((date?: CalendarDateTime, utc?: boolean, locale?: string, timezone?: string) => IDateTime)
+
+let dateTimeFactory: DateTimeFactory;
+
+export function setDateTimeFactory(factory: DateTimeFactory) {
+  dateTimeFactory = factory;
+}
+
 export function dateTime(date?: CalendarDateTime, utc = false, locale?: string, timezone?: string): IDateTime {
+  if(!dateTimeFactory) {
+    throw new Error('No dateTimeFactory set');
+  }
+
   if(implementsIDateTime(date)) {
     return date;
   }

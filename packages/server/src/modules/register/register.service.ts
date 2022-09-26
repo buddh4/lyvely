@@ -4,7 +4,6 @@ import { MongoError } from 'mongodb';
 import { RegisterDto } from '@lyvely/common';
 import { UserDao } from '../users';
 import { UserWithProfileAndRelations, ProfilesService } from "../profiles";
-import { SentMessageInfo } from 'nodemailer';
 import { MailService } from "../mails/services/mail.service";
 
 @Injectable()

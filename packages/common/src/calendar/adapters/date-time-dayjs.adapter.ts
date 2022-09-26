@@ -4,7 +4,7 @@ import utc  from 'dayjs/plugin/utc';
 import timezone  from 'dayjs/plugin/timezone';
 import quarterOfYear  from 'dayjs/plugin/quarterOfYear';
 import isoWeek  from 'dayjs/plugin/isoWeek';
-import { CalendarDate, IDateTime, UnitType } from '../interfaces';
+import { CalendarDate, IDateTime, setDateTimeFactory, UnitType } from '../interfaces';
 
 dayjs.extend(weekOfYear);
 dayjs.extend(utc);
@@ -125,4 +125,8 @@ export function dateTimeFactory(date?: CalendarDate, utc = false, locale?: strin
   date = date || new Date();
   const dateTime = new DayJsDateTime(date, locale, timezone);
   return utc ? dateTime.utc() : dateTime;
+}
+
+export function useDayJsDateTimeAdapter() {
+  setDateTimeFactory(dateTimeFactory);
 }

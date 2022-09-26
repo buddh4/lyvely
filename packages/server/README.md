@@ -70,6 +70,9 @@ npx madge --circular --extensions ts ./
 
 ## Use depcruise to create dependency graph
 
+
+### Install depcruise
+
 ```
 npm i -g dependency-cruiser
 npm i -g typescript
@@ -77,9 +80,13 @@ npm i -g typescript
 
 > Note: Typescript needs to be installed alongside dependency cruise
 
+### Create dependency graph
+
 ```
 depcruise --include-only "^src" --output-type dot src | dot -T svg > dependencygraph.svg
 ```
+
+### Run depcruise checks
 
 ## Security
 

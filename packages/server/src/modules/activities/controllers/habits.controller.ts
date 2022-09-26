@@ -16,8 +16,8 @@ import {
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import { AbstractContentController, ProfileContentRequest,  ContentController, ContentType, ContentWritePolicy } from '../../content';
-import { ProfileRequest } from '../../core/types';
-import { Permissions } from '../../permissions/decorators/permissions.decorator';
+import { ProfileRequest } from "../../profiles";
+import { ProfilePermissions } from "../../profiles";
 import { UseClassSerializer } from '../../core';
 import { Policies } from '../../policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
@@ -37,7 +37,7 @@ export class HabitsController extends AbstractContentController<Habit> {
   }
 
   @Post()
-  @Permissions(ActivityPermissions.CREATE)
+  @ProfilePermissions(ActivityPermissions.CREATE)
   async create(@Request() req: ProfileRequest, @Body() dto: UpdateHabitDto) {
     const { profile, user } = req;
 

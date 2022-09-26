@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../core/db/base.entity';
+import { IContentMetadata } from "../interfaces";
 
 /**
  * Other ideas:
@@ -10,7 +11,7 @@ import { BaseEntity } from '../../core/db/base.entity';
  */
 
 @Schema()
-export class ContentMetadata extends BaseEntity<ContentMetadata> {
+export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {
   @Prop()
   isArchivable?: boolean;
 

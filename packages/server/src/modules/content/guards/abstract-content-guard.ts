@@ -2,13 +2,17 @@ import { CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { ContentService } from '../services';
-import { ProfileContentRequest } from '../controllers';
-import { getContentIdFromRequest , validateContentTypeFromContext } from '../decorators';
+import { ProfileContentRequest } from "../types";
 import { isValidObjectId } from '@lyvely/common';
 import { Content } from '../schemas';
 import { getPolicyHandlerFromContext } from '../../policies/decorators/policies.decorator';
 import { PolicyService } from '../../policies/services/policy.service';
 import { UserWithProfileAndRelations } from "../../profiles";
+import { Type } from "@nestjs/common/interfaces/type.interface";
+
+export const CONTENT_ID_PARAM_KEY = 'contentIdParam';
+export const DEFAULT_CONTENT_ID_PARAM_KEY = 'cid';
+export const CONTENT_TYPE_KEY = 'contentType';
 
 /**
  * If the request contains a cid parameter, this guard will try to fetch and validate the given content id
@@ -57,4 +61,37 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
   private async validateContentPolicies(context: ExecutionContext) {
     return this.policyService.checkEvery(context, ...getPolicyHandlerFromContext(context, this.reflector));
   }
+}
+
+function validateContentTypeFromContext(content: Content, context: ExecutionContext, reflector: Reflector) {
+  const contentType = getContentTypeFromContext(context, reflector);
+
+  if(!contentType) {
+    return true;
+  }
+
+  if(typeof contentType === 'string') {
+    return content.type === contentType;
+  }
+
+  if(contentType instanceof Function) {
+    return content instanceof contentType;
+  }
+
+  return false;
+}
+
+function getContentTypeFromContext(context: ExecutionContext, reflector: Reflector) {
+  return reflector
+    .getAllAndOverride<string|Type<Content>>(CONTENT_TYPE_KEY,  [context.getHandler(), context.getClass()]);
+}
+
+function getContentIdFromRequest(request: Request, context: ExecutionContext, reflector: Reflector): string {
+  const name = getContentIdParamFromContext(context, reflector);
+  return request.params[name] || request.query[name] as string;
+}
+
+function getContentIdParamFromContext(context: ExecutionContext, reflector: Reflector) {
+  return reflector.getAllAndOverride<string>(CONTENT_ID_PARAM_KEY, [context.getHandler(), context.getClass()])
+    || DEFAULT_CONTENT_ID_PARAM_KEY;
 }

@@ -2,7 +2,7 @@ import { HelmetOptions } from 'helmet';
 import { MailerOptions } from '@nestjs-modules/mailer';
 import { ServeStaticModuleOptions } from '@nestjs/serve-static';
 import { NestedPaths } from "@lyvely/common";
-import { TypeFromPath } from "@lyvely/common/src";
+import { TypeFromPath } from "@lyvely/common";
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean
@@ -40,6 +40,8 @@ export type LyvelyAuthOptions = {
   }
 }
 
+export type UserPermissionOptions = Record<string, string[]>;
+
 type ModulesConfiguration = {[k:string]: object}
 
 export type LyvelyAppConfiguration = {
@@ -49,6 +51,7 @@ export type LyvelyAppConfiguration = {
   helmet?: HelmetOptions,
   mail?: LyvelyMailOptions,
   modules?: ModulesConfiguration,
+  'user-permissions'?: UserPermissionOptions,
   serveStatic?: ServeStaticModuleOptions
 }
 
