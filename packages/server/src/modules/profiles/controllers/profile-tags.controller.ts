@@ -11,7 +11,7 @@ import {
   NotFoundException,
   Put
 } from '@nestjs/common';
-import { ProfileRequest } from "../../core/types";
+import { ProfileRequest } from "../types";
 import { UpdateTagDto, TagModel, CreateTagDto } from "@lyvely/common";
 import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
 import { ServiceException } from "../../core/exceptions";

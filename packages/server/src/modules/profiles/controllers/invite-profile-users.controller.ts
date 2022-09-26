@@ -3,7 +3,7 @@ import { ENDPOINT_INVITE_PROFILE_USERS, InviteProfileMembers, InviteProfileUsers
 import { UseClassSerializer } from "../../core";
 import { SomeProfilePermissions } from "../decorators";
 import { Body, Post, HttpCode, HttpStatus, Request } from "@nestjs/common"
-import { ProfileRequest } from "../../core/types";
+import { ProfileRequest } from "../types";
 import { ProfilePermissions } from "../permissions";
 import { InviteProfileUsersService } from "../services/invite-profile-users.service";
 

@@ -9,8 +9,8 @@ import { ProfileDao } from '../daos';
 import { ProfilePermissionsService } from "../services";
 import { Reflector } from '@nestjs/core';
 
-export const PROFILE_PERMISSIONS_KEY_STRICT = 'permissions_strict';
-export const PROFILE_PERMISSIONS_KEY_SOME = 'permissions_some';
+export const PROFILE_PERMISSIONS_KEY_STRICT = 'profile_permissions_strict';
+export const PROFILE_PERMISSIONS_KEY_SOME = 'profile_permissions_some';
 
 /**
  * This guard is responsible for setting the `request.profile` and `request.profileRelations` fields for a given profile id.
@@ -74,13 +74,13 @@ export class ProfileGuard implements CanActivate {
   private validatePermissions(profileRelations: UserWithProfileAndRelations, context: ExecutionContext) {
     const strictPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_STRICT);
 
-    if(strictPermissions.length) {
+    if(strictPermissions?.length) {
       return this.profilePermissionService.checkEveryPermission(profileRelations, ...strictPermissions);
     }
 
     const anyPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_SOME);
 
-    return anyPermissions.length ? this.profilePermissionService.checkSomePermission(profileRelations, ...anyPermissions) : true;
+    return anyPermissions?.length ? this.profilePermissionService.checkSomePermission(profileRelations, ...anyPermissions) : true;
   }
 
   private getPermissionsFromContext(context: ExecutionContext, key: string) {

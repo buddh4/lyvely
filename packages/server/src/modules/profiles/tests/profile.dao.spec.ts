@@ -6,7 +6,7 @@ import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { UsersModule } from '../../users';
 import { TestModule } from '../../test/test.module';
 import { Tag } from '../../tags';
-import { ProfilesModule } from "../profiles.module";
+import { createBasicTestingModule } from "../../test/utils/test.utils";
 
 describe('ProfileDao', () => {
   let testingModule: TestingModule;
@@ -16,17 +16,7 @@ describe('ProfileDao', () => {
   const TEST_KEY = 'profile_dao';
 
   beforeEach(async () => {
-    testingModule = await Test.createTestingModule({
-      imports: [
-        TestDataUtils.getMongooseTestModule(TEST_KEY),
-        TestDataUtils.getEventEmitterModule(),
-        TestModule,
-        ProfilesModule,
-        UsersModule
-      ],
-      providers: [ProfileDao],
-    }).compile();
-
+    testingModule = await createBasicTestingModule(TEST_KEY).compile();
     profileDao = testingModule.get<ProfileDao>(ProfileDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
