@@ -1,5 +1,5 @@
-import App from "@/App.vue";
-import { Module } from "@/modules/core/modules/interfaces/module.interface";
+import App from "@server/App.vue";
+import { Module } from "@server/modules/core/modules/interfaces/module.interface";
 
 export default () => {
   return {

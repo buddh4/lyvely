@@ -4,8 +4,8 @@
   "version": "0.0.1",
   "description": "",
   "author": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "private": true,
   "scripts": {
     "prebuild": "rimraf dist",
@@ -27,13 +27,13 @@
     "migrate:status": "ts-node node_modules/migrate-mongo/bin/migrate-mongo status -f migrate-mongo-config.ts",
     "migrate:undo-last": "ts-node node_modules/migrate-mongo/bin/migrate-mongo down -f migrate-mongo-config.ts && npm run migrate:status",
     "migrate:up": "ts-node node_modules/migrate-mongo/bin/migrate-mongo up -f migrate-mongo-config.ts",
-    "depcruise": "npx depcruise --config .dependency-cruiser.js src"
+    "deps": "npx depcruise --config .dependency-cruiser.js src"
   },
   "dependencies": {
-    "@lyvely/common": "*",
     "@automapper/classes": "^8.7.6",
     "@automapper/core": "^8.7.6",
     "@automapper/nestjs": "^8.7.6",
+    "@lyvely/common": "*",
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^8.4.7",
     "@nestjs/config": "^2.1.0",
@@ -43,7 +43,6 @@
     "@nestjs/mongoose": "^9.2.0",
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.4.7",
-    "express": "*",
     "@nestjs/serve-static": "^2.2.2",
     "@types/minimatch": "^3.0.5",
     "bcrypt": "^5.0.1",
@@ -52,6 +51,7 @@
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",
     "dayjs": "^1.11.3",
+    "express": "*",
     "helmet": "^6.0.0",
     "joi": "^17.5.0",
     "js-yaml": "^4.1.0",
@@ -88,17 +88,10 @@
     "@types/passport-jwt": "^3.0.5",
     "@types/passport-local": "^1.0.33",
     "@types/supertest": "^2.0.11",
-    "@typescript-eslint/eslint-plugin": "^4.21.0",
-    "@typescript-eslint/parser": "^4.21.0",
     "babel-jest": "^28.1.2",
     "cross-env": "^7.0.3",
     "cypress": "^9.3.1",
-    "dependency-cruiser": "^11.15.0",
     "dotenv": "^8.2.0",
-    "eslint": "^7.23.0",
-    "eslint-config-prettier": "7.1.0",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-prettier": "^3.3.1",
     "jest": "^28.1.2",
     "migrate-mongo": "^8.2.3",
     "mongo-seeding": "^3.7.0",
@@ -109,6 +102,7 @@
     "ts-loader": "^8.1.0",
     "ts-node": "^9.0.0",
     "tsconfig-paths": "^3.9.0",
+    "tscpaths": "^0.0.9",
     "typescript": "^4.5.2"
   },
   "jest": {
@@ -123,7 +117,7 @@
       "ts"
     ],
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
+      "^@server/(.*)$": "<rootDir>/src/$1"
     },
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

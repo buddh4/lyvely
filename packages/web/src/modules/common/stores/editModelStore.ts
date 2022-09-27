@@ -1,7 +1,7 @@
 import { ref, Ref } from 'vue';
 import { ModelValidator } from "@lyvely/common";
 import { AxiosResponse} from 'axios';
-import { DialogExceptionHandler } from "@/modules/core/handler/exception.handler";
+import { DialogExceptionHandler } from "@server/modules/core/handler/exception.handler";
 import { cloneDeep, isEqual } from "lodash";
 
 export interface EditModelRepository<TUpdateModel, TResponse,  TID = string> {

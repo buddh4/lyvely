@@ -1,5 +1,5 @@
 import { IProfileRelationInfosEndpoint, ProfileRelationInfos, useSingleton } from "@lyvely/common";
-import profileRelationsRepository from "@/modules/profile/repositories/profile-relations.repository";
+import profileRelationsRepository from "@server/modules/profile/repositories/profile-relations.repository";
 
 class ProfileRelationInfosService implements IProfileRelationInfosEndpoint  {
   async getUserProfileInfos(): Promise<ProfileRelationInfos> {

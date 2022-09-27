@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useProfileStore } from "@/modules/profile/stores/profile.store";
+import { useProfileStore } from "@server/modules/profile/stores/profile.store";
 import { useDark, useToggle } from '@vueuse/core'
 import { ref } from 'vue';
 

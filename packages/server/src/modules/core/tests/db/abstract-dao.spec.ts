@@ -1,9 +1,9 @@
 import { expect } from '@jest/globals';
 import { InjectModel, Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { BaseEntity, AbstractDao, ModelSaveEvent } from "@/modules/core";
+import { BaseEntity, AbstractDao, ModelSaveEvent } from "@server/modules/core";
 import { Model, Document } from "mongoose";
 import { TestingModule } from "@nestjs/testing";
-import { createBasicTestingModule, getObjectId } from "@/modules/test/utils/test.utils";
+import { createBasicTestingModule, getObjectId } from "@server/modules/test/utils/test.utils";
 import { ModelDefinition } from "@nestjs/mongoose/dist/interfaces";
 import { Inject, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";

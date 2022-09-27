@@ -4,7 +4,7 @@
   "description": "A lyvely demo application",
   "main": "index.js",
   "scripts": {
-    "prebuild": "rimraf packages/server/dist",
+    "prebuild": "rimraf dist",
     "build": "nest build",
     "start:debug": "nest start --debug --watch",
     "start:demo": "nest start"

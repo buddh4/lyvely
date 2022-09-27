@@ -94,7 +94,7 @@ export class MailService {
 
   private initMessageFilePath(info: SentMessageInfo) {
     const messagePath = this.getMessageFileDir();
-    if (!fs.existsSync(messagePath)) fs.mkdirSync(messagePath, {recursive: true});
+    if (!fs.existsSync(messagePath)) fs.mkdirSync(messagePath, { recursive: true });
     return this.getMessageFilePath(info);
   }
 }

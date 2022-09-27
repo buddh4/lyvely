@@ -1,7 +1,7 @@
-import { ifAuthenticated, ifIsMultiUserProfile, loadProfile, toProfileHome } from "@/router/utils";
-import { usePageStore } from "@/modules/core/store/page.store";
-import { translate } from "@/i18n";
-import { profileRoot, profileRoute } from "@/modules/profile/routes/profile-route.util";
+import { ifAuthenticated, ifIsMultiUserProfile, loadProfile, toProfileHome } from "@server/router/utils";
+import { usePageStore } from "@server/modules/core/store/page.store";
+import { translate } from "@server/i18n";
+import { profileRoot, profileRoute } from "@server/modules/profile/routes/profile-route.util";
 
 export default [
   {

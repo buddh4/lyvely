@@ -1,5 +1,5 @@
-import { ShowAlertOptions, useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
-import { Status } from '@/store/status';
+import { ShowAlertOptions, useGlobalDialogStore } from '@server/modules/core/store/global.dialog.store';
+import { Status } from '@server/store/status';
 
 type StatusSetter = {setStatus: {(s: Status): void}} & any;
 

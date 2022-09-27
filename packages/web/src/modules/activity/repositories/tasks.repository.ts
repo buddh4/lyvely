@@ -1,4 +1,4 @@
-import repository from "@/repository";
+import repository from "@server/repository";
 import { UpdateTaskStateModel, UpdateTaskDto, TaskModel, UpdateTaskStateResultDto , CalendarDate, formatDate , EditTaskResponseDto } from '@lyvely/common';
 
 const resource = "tasks";

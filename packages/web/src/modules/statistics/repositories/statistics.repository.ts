@@ -1,4 +1,4 @@
-import repository from "@/repository";
+import repository from "@server/repository";
 
 const resource = "statistics";
 

@@ -1,4 +1,4 @@
-import { DelegateEmitter } from '@/util/emitter';
+import { DelegateEmitter } from '@server/util/emitter';
 
 export enum Scope {
   Locale = 'localStorage',

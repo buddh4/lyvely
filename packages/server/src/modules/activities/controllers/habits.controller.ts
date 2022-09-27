@@ -18,10 +18,9 @@ import { HabitDataPointService } from '../services/habit-data-point.service';
 import { AbstractContentController, ProfileContentRequest,  ContentController, ContentType, ContentWritePolicy } from '../../content';
 import { ProfileRequest } from "../../profiles";
 import { ProfilePermissions } from "../../profiles";
-import { UseClassSerializer } from '../../core';
 import { Policies } from '../../policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
-import { EntityNotFoundException } from "../../core/exceptions";
+import { EntityNotFoundException, UseClassSerializer } from "@server/modules/core";
 import { isHabitContent } from "../utils/activity.utils";
 
 @ContentController('habits')

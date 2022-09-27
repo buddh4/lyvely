@@ -1,7 +1,7 @@
 import { Expose, Exclude } from 'class-transformer';
 import { IsNotEmpty, IsHexColor, IsString, IsOptional, IsBoolean } from 'class-validator';
 import randomColor from "randomcolor";
-import { BaseModel } from "../../model";
+import { BaseModel } from "@/models";
 
 @Exclude()
 export class CreateTagDto extends BaseModel<CreateTagDto>{

@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
-import { Status, useStatus } from '@/store/status';
-import authRepository from '@/modules/user/repositories/auth.repository';
+import { Status, useStatus } from '@server/store/status';
+import authRepository from '@server/modules/user/repositories/auth.repository';
 import { IUser } from '@lyvely/common';
-import { setLocale } from '@/i18n';
-import { localStorageManager, sessionStorageManager } from '@/util/storage';
-import { useAsEmitter } from '@/util/emitter';
+import { setLocale } from '@server/i18n';
+import { localStorageManager, sessionStorageManager } from '@server/util/storage';
+import { useAsEmitter } from '@server/util/emitter';
 import mitt from 'mitt';
-import { useProfileStore } from "@/modules/profile/stores/profile.store";
+import { useProfileStore } from "@server/modules/profile/stores/profile.store";
 
 export const visitorId = localStorageManager.getStoredValue('visitorId');
 

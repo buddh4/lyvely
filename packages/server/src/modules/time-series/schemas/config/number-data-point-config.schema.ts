@@ -2,13 +2,13 @@ import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import {
   DataPointInputType,
   DataPointValueType,
-  NumberDataPointSettings,
+  INumberDataPointSettings,
   SupporedLogValueInputTypes,
   INumberDataPointConfig
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 
-export class NumberDataPointConfigRevision extends DataPointConfigRevision implements NumberDataPointSettings {
+export class NumberDataPointConfigRevision extends DataPointConfigRevision implements INumberDataPointSettings {
   @Prop()
   min?: number;
 
@@ -28,7 +28,7 @@ export class NumberDataPointConfigRevision extends DataPointConfigRevision imple
 
 export const NumberDataPointConfigRevisionSchema = SchemaFactory.createForClass(NumberDataPointConfigRevision);
 
-export class NumberDataPointConfig extends DataPointConfig<NumberDataPointSettings> implements NumberDataPointSettings {
+export class NumberDataPointConfig extends DataPointConfig<INumberDataPointSettings> implements INumberDataPointSettings {
 
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;
@@ -48,11 +48,11 @@ export class NumberDataPointConfig extends DataPointConfig<NumberDataPointSettin
   @Prop({ type: [ NumberDataPointConfigRevisionSchema ], default: [] })
   history: NumberDataPointConfigRevision[];
 
-  constructor(inputType?: DataPointInputType, settings?: NumberDataPointSettings) {
+  constructor(inputType?: DataPointInputType, settings?: INumberDataPointSettings) {
     super(DataPointValueType.Number, inputType, settings);
   }
 
-  setSettings(settings?: NumberDataPointSettings) {
+  setSettings(settings?: INumberDataPointSettings) {
     this.min = settings?.min;
     this.max = settings?.max;
     this.optimal = settings?.optimal;

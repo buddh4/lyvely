@@ -1,7 +1,7 @@
-import { ifAuthenticated, loadProfile } from '@/router/utils';
-import { usePageStore } from "@/modules/core/store/page.store";
-import { translate } from "@/i18n";
-import { profileRoute } from "@/modules/profile/routes/profile-route.util";
+import { ifAuthenticated, loadProfile } from '@server/router/utils';
+import { usePageStore } from "@server/modules/core/store/page.store";
+import { translate } from "@server/i18n";
+import { profileRoute } from "@server/modules/profile/routes/profile-route.util";
 
 export default [
   {

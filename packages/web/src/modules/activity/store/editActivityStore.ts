@@ -2,14 +2,14 @@ import { defineStore } from 'pinia';
 import { ActivityType, getCreateModelByActivityType, UpdateHabitDto,
   UpdateTaskDto, getEditModelByActivity, ActivityModel,
   CalendarIntervalEnum, UpdateHabitResponseDto, EditTaskResponseDto, isTask } from '@lyvely/common';
-import habitsRepository from '@/modules/activity/repositories/habits.repository';
-import tasksRepository from '@/modules/activity/repositories/tasks.repository';
-import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
-import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
+import habitsRepository from '@server/modules/activity/repositories/habits.repository';
+import tasksRepository from '@server/modules/activity/repositories/tasks.repository';
+import { useTaskPlanStore } from "@server/modules/activity/store/taskPlanStore";
+import { useHabitPlanStore } from "@server/modules/activity/store/habitPlanStore";
 import { computed } from 'vue';
-import { useProfileStore } from "@/modules/profile/stores/profile.store";
-import useEditModelStore from "@/modules/common/stores/editModelStore";
-import { findFocusable } from "@/modules/ui/utils";
+import { useProfileStore } from "@server/modules/profile/stores/profile.store";
+import useEditModelStore from "@server/modules/common/stores/editModelStore";
+import { findFocusable } from "@server/modules/ui/utils";
 
 type EditModel = UpdateHabitDto|UpdateTaskDto;
 type EditResponseModel = EditTaskResponseDto|UpdateHabitResponseDto;

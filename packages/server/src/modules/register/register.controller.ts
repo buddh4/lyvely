@@ -1,7 +1,7 @@
 import { Controller, HttpCode, HttpStatus, Post, Body } from '@nestjs/common';
 import { RegisterDto } from '@lyvely/common';
 import { RegisterService } from './register.service';
-import { Public, UseClassSerializer } from "@/modules/core";
+import { Public, UseClassSerializer } from "@server/modules/core";
 
 @Public()
 @Controller('register')

@@ -1,4 +1,4 @@
-import repository from "@/repository";
+import repository from "@server/repository";
 import { CreateProfileDto, ENDPOINT_PROFILES, ProfileWithRelationsDto } from '@lyvely/common';
 
 export default {

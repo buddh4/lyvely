@@ -1,7 +1,7 @@
 /* eslint-disable */
 import 'vue-router';
 import {Router} from "vue-router";
-import { Module } from "@/modules/core/modules/interfaces/module.interface";
+import { Module } from "@server/modules/core/modules/interfaces/module.interface";
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'

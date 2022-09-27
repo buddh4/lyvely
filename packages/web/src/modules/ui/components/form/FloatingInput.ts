@@ -1,4 +1,4 @@
-import { BaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
+import { BaseInputProps, useBaseInputSetup } from '@server/modules/ui/components/form/BaseInput';
 import { SetupContext } from 'vue';
 
 export function useFloatingInputSetup<T = unknown>(props: BaseInputProps, context: SetupContext) {

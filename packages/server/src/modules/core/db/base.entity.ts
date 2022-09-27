@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Document } from 'mongoose';
-import { DeepPartial, assignRawDataToAndInitProps} from '@lyvely/common';
+import { DeepPartial, assignRawDataToAndInitProps } from '@lyvely/common';
 
 export type EntityType<C, ID = TObjectId> = C & IEntity<ID>;
 

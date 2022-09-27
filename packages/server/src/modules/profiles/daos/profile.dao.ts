@@ -29,10 +29,10 @@ export class ProfileDao extends AbstractDao<Profile> {
   }
 
   async findOneByOwnerOrOrganizationName(owner: EntityIdentity<User>, name: string) {
-    return this.findOne({$or: [
+    return this.findOne({ $or: [
       { ownerId:  assureObjectId(owner) , name },
       { type: ProfileType.Organization, name }
-    ]});
+    ] });
   }
 
   async addTags(profile: Profile, tags: Tag[]) {

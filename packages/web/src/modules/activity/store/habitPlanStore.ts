@@ -7,10 +7,10 @@ import {
   CalendarIntervalEnum,
   HabitModel,
   ActivityType } from '@lyvely/common';
-import { useProfileStore } from '@/modules/profile/stores/profile.store';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
-import habitsRepository from '@/modules/activity/repositories/habits.repository';
-import { MoveActivityEvent, useActivityStore } from "@/modules/activity/store/activityStore";
+import { useProfileStore } from '@server/modules/profile/stores/profile.store';
+import { useCalendarPlanStore } from '@server/modules/calendar/store';
+import habitsRepository from '@server/modules/activity/repositories/habits.repository';
+import { MoveActivityEvent, useActivityStore } from "@server/modules/activity/store/activityStore";
 
 export const useHabitPlanStore = defineStore('habitPlan', () => {
   const activityStore = useActivityStore();

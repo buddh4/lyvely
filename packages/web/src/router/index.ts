@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-import NotFound from "@/modules/ui/components/error/NotFound.vue";
+import NotFound from "@server/modules/ui/components/error/NotFound.vue";
 import autoMessageLoaderGuard from './auto-message-loader.guard';
 import authenticationGuard from './authentication.guard';
 import moduleRouteLoader from './module-route-loader.util';
 import appConfigLoader from './config.loader.guard';
-import { profileRoute } from "@/modules/profile/routes/profile-route.util";
+import { profileRoute } from "@server/modules/profile/routes/profile-route.util";
 
 
 const routes: Array<RouteRecordRaw> = [];

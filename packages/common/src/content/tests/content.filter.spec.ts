@@ -1,4 +1,4 @@
-import { ContentFilter } from '../../index';
+import { ContentFilter } from '@/content';
 import { TestContent } from './src/test-content.model';
 
 describe('Content Filter', () => {

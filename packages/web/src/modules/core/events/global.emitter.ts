@@ -1,5 +1,5 @@
 import mitt from 'mitt';
-import { App } from '@vue/runtime-core';
+import { App } from 'vue';
 
 type GlobalEvents = {
   'app.create.pre': void,

@@ -1,8 +1,8 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { PolicyService } from '../services/policy.service';
-import { createBasicTestingModule, createTestExecutionContext } from "@/modules/test";
-import { TestDataUtils } from "@/modules/test";
+import { createBasicTestingModule, createTestExecutionContext } from "@server/modules/test";
+import { TestDataUtils } from "@server/modules/test";
 import { Policy } from '../interfaces/policy.interface';
 import { Request } from 'express';
 import { Injectable } from '@nestjs/common';

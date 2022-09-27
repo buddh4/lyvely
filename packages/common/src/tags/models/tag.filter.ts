@@ -1,5 +1,5 @@
 import { escapeRegExp } from "lodash";
-import { TagModel } from "./index";
+import { TagModel } from "./tag.model";
 
 export interface TagFilterOptions {
   archived?: boolean;

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Status, useStatus } from '@/store/status';
+import { Status, useStatus } from '@server/store/status';
 import { RegisterDto, ModelValidator } from '@lyvely/common';
 import registerRepository from '../repositories/register.repository';
 

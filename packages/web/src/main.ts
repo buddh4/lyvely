@@ -10,10 +10,10 @@ import "animate.css/animate.css";
 
 import { setupI18n } from "./i18n";
 import { createPinia } from 'pinia';
-import { eventBus } from '@/modules/core/events/global.emitter';
-import { focus } from "@/directives/focus";
-import { UiPlugin } from "@/modules/ui/ui.plugin";
-import { ModuleLoader } from "@/module.loader";
+import { eventBus } from '@server/modules/core/events/global.emitter';
+import { focus } from "@server/directives/focus";
+import { UiPlugin } from "@server/modules/ui/ui.plugin";
+import { ModuleLoader } from "@server/module.loader";
 
 console.log("Starting...");
 

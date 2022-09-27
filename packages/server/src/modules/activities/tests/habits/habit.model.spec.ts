@@ -7,7 +7,7 @@ import { CreatedAsType } from '../../../content';
 import mongoose from 'mongoose';
 import { CheckboxNumberDataPointConfig } from '../../../time-series';
 import { Tag } from "../../../tags";
-import { getObjectId } from "../../../test/utils/test.utils";
+import { getObjectId } from "@server/modules/test";
 
 describe('Content Model', () => {
   let user: User;

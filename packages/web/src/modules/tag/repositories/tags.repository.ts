@@ -1,4 +1,4 @@
-import repository from "@/repository";
+import repository from "@server/repository";
 import { UpdateTagDto, CreateTagDto, TagModel } from "@lyvely/common";
 
 const resource = "tags";

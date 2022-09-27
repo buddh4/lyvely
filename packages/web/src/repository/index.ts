@@ -1,11 +1,11 @@
 import Axios from "axios";
-import { Icons } from '@/modules/ui/components/icon/Icons';
-import { useAuthStore } from '@/modules/user/store/auth.store';
-import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
+import { Icons } from '@server/modules/ui/components/icon/Icons';
+import { useAuthStore } from '@server/modules/user/store/auth.store';
+import { useGlobalDialogStore } from '@server/modules/core/store/global.dialog.store';
 import createAuthRefreshInterceptor  from 'axios-auth-refresh';
-import { eventBus } from '@/modules/core/events/global.emitter';
-import { useProfileStore } from '@/modules/profile/stores/profile.store';
-import { useAppConfigStore } from "@/modules/core/store/app.config.store";
+import { eventBus } from '@server/modules/core/events/global.emitter';
+import { useProfileStore } from '@server/modules/profile/stores/profile.store';
+import { useAppConfigStore } from "@server/modules/core/store/app.config.store";
 
 declare module 'axios' {
   export interface AxiosRequestConfig {

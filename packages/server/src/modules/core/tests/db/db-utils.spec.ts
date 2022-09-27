@@ -63,19 +63,19 @@ describe('DbUtils', () => {
     });
 
     it('apply sub path inc', () => {
-      const model = { sub: { sub: { field: 0 }} };
+      const model = { sub: { sub: { field: 0 } } };
       applyInc(model, { 'sub.sub.field': 1 });
       expect(model.sub.sub.field).toEqual(1);
     });
 
     it('apply negative sub path inc', () => {
-      const model = { sub: { sub: { field: 0 }} };
+      const model = { sub: { sub: { field: 0 } } };
       applyInc(model, { 'sub.sub.field': -1 });
       expect(model.sub.sub.field).toEqual(-1);
     });
 
     it('apply invalid inc path', () => {
-      const model = { sub: { sub: { field: 0 }} };
+      const model = { sub: { sub: { field: 0 } } };
       applyInc(model, { 'sub.sub.field.': 1 });
       expect(model.sub.sub.field).toEqual(0);
     });

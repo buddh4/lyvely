@@ -138,7 +138,7 @@ describe('HabitService', () => {
 
   it('daily revision is not overwritten on same day', async () => {
     const { user, profile } = await testData.createUserAndProfile();
-    let habit = await testData.createHabit(user, profile, new CreateHabitDto({
+    const habit = await testData.createHabit(user, profile, new CreateHabitDto({
       title: 'Test',
       interval: CalendarIntervalEnum.Daily,
       max: 2,

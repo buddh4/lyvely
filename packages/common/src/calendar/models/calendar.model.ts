@@ -1,4 +1,4 @@
-import { CalendarIntervalEnum } from './calendar-interval.enum';
+import { CalendarIntervalEnum } from "./calendar-interval.enum";
 import { CalendarDate } from '../interfaces';
 import { CalendarPlan } from './calendar-plan.model';
 

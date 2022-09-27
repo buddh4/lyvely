@@ -1,4 +1,4 @@
-import { IconDefinition, IconName } from '@/modules/ui/components/icon/Icons';
+import { IconDefinition, IconName } from '@server/modules/ui/components/icon/Icons';
 
 export enum Color {
   Primary = 'primary',

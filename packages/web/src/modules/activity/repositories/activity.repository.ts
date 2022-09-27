@@ -1,4 +1,4 @@
-import repository from "@/repository";
+import repository from "@server/repository";
 import { ActivityRangeResponse, DataPointIntervalFilter, CalendarIntervalEnum, MoveAction , SortResult } from "@lyvely/common";
 
 const resource = "activities";

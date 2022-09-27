@@ -100,7 +100,7 @@ export class ProfilesService {
         this.usersService.incProfileCount(owner, profile.type, transaction)
       ]);
 
-      return new UserWithProfileAndRelations({user: owner, profile: profile, relations: [membership]});
+      return new UserWithProfileAndRelations({ user: owner, profile: profile, relations: [membership] });
     });
   }
 

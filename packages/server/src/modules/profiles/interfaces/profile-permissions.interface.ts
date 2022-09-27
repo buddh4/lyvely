@@ -47,7 +47,7 @@ export const defaultProfileRolesDefinition: IProfileRoleDefinition[] = [
   { role: BaseProfileRelationRole.Owner, label:'Owner', visibility: ContentVisibilityLevel.Owner },
   { role: BaseProfileRelationRole.Admin, label:'Admin', visibility: ContentVisibilityLevel.Admin, assignable: true, extendable: true },
   { role: BaseProfileRelationRole.Moderator, label:'Moderator', visibility: ContentVisibilityLevel.Moderator, assignable: true, extendable: true },
-  { role: BaseProfileRelationRole.Member, label: 'Member', visibility: ContentVisibilityLevel.Member, assignable: true, extendable: true},
+  { role: BaseProfileRelationRole.Member, label: 'Member', visibility: ContentVisibilityLevel.Member, assignable: true, extendable: true },
   { role: BaseProfileRelationRole.Guest, label: 'Guest', visibility: ContentVisibilityLevel.Member, extendable: true },
   { role: BaseProfileRelationRole.Organization, label: 'Guest', visibility: ContentVisibilityLevel.Organization },
   { role: BaseProfileRelationRole.InvitedMember, label: 'Invited users', visibility: ContentVisibilityLevel.User },

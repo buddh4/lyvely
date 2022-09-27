@@ -10,12 +10,15 @@ import {
   FeatureGuard,
   CoreModule,
   AllExceptionsFilter,
-} from "@/modules/core";
+} from "@server/modules/core";
 import { AppModuleBuilder, AppModuleBuilderOptions } from "./app-module.builder";
 import helmet from "helmet";
 import csurf from 'csurf';
 import { HelmetOptions } from "helmet";
 import { ConfigurationPath } from "./modules/core";
+import { useDayJsDateTimeAdapter } from "@lyvely/common"
+
+useDayJsDateTimeAdapter();
 
 interface LyvelyServerOptions extends AppModuleBuilderOptions {
   appModule?: Type;

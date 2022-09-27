@@ -1,6 +1,6 @@
 import { escapeRegExp } from "lodash";
-import { Filter, FilterConstructorOptions } from "../../model/filter";
-import { TagModel } from "../../tags";
+import { Filter, FilterConstructorOptions } from "@/models";
+import { TagModel } from "@/tags";
 import { IContent } from "../interfaces";
 
 export interface ContentFilterOptions {

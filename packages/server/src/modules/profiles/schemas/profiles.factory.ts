@@ -30,7 +30,7 @@ export function getProfileConstructorByType(type: ProfileType) {
 
 export class ProfilesFactory {
   static createProfile(owner: User, options: CreateProfileTypeOptions) {
-    let ProfileTypeClass = getProfileConstructorByType(options.type);
+    const ProfileTypeClass = getProfileConstructorByType(options.type);
 
     if (!ProfileTypeClass) {
       throw new IntegrityException('Could not create profile, invalid profile due to invalid profile type');

@@ -41,7 +41,10 @@ export default [
     ],
     plugins: [typescript({
       sourceMap: !production,
-      inlineSources: !production
+      inlineSources: !production,
+      paths: {
+        "@/*": ["src/*"],
+      }
     })],
     watch: {
       clearScreen: false

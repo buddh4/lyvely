@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createTestExecutionContext, createBasicTestingModule } from "@/modules/test";
+import { TestDataUtils, createTestExecutionContext, createBasicTestingModule } from "@server/modules/test";
 import { ProfileGuard } from '../../guards';
 import { ProfileRequest } from "../../types";
 import { ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/common';

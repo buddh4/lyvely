@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Status, useStatus } from '@/store/status';
+import { Status, useStatus } from '@server/store/status';
 import {
   ActivityDataPointStore,
   ActivityFilter,
@@ -8,13 +8,13 @@ import {
   ActivityModel,
   ActivityType
 } from '@lyvely/common';
-import { useProfileStore } from '@/modules/profile/stores/profile.store';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
-import activityRepository from '@/modules/activity/repositories/activity.repository';
-import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
+import { useProfileStore } from '@server/modules/profile/stores/profile.store';
+import { useCalendarPlanStore } from '@server/modules/calendar/store';
+import activityRepository from '@server/modules/activity/repositories/activity.repository';
+import { DialogExceptionHandler } from '@server/modules/core/handler/exception.handler';
 import { ref, watch,toRefs } from 'vue';
-import { useHabitPlanStore } from "@/modules/activity/store/habitPlanStore";
-import { useTaskPlanStore } from "@/modules/activity/store/taskPlanStore";
+import { useHabitPlanStore } from "@server/modules/activity/store/habitPlanStore";
+import { useTaskPlanStore } from "@server/modules/activity/store/taskPlanStore";
 
 export interface MoveActivityEvent {
   cid: string;

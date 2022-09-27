@@ -1,7 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ArrayNotEmpty, IsArray, IsMongoId, IsOptional, IsString } from 'class-validator';
-import { PropertyType } from "../../model";
-import { BaseMembershipRole } from "../../profile";
+import { PropertyType } from "@/models";
+import { BaseMembershipRole } from "@/profiles";
 
 @Exclude()
 export class UserInvite {

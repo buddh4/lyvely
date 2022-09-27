@@ -1,5 +1,5 @@
-import { CalendarDateTime, CalendarIntervalEnum } from "../../calendar";
-import { DocumentModel } from "../../model";
+import { CalendarDateTime, CalendarIntervalEnum } from "@/calendar";
+import { DocumentModel } from "@/models";
 import { Exclude, Expose } from 'class-transformer';
 import { IsMongoId, IsOptional } from 'class-validator';
 

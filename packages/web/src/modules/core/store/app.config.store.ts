@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { Status, useStatus } from "@/store/status";
-import authRepository from "@/modules/user/repositories/auth.repository";
+import { Status, useStatus } from "@server/store/status";
+import authRepository from "@server/modules/user/repositories/auth.repository";
 
 interface AppConfig {
   csrf_token?: string;

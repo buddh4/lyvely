@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import { Status, useStatus } from '@/store/status';
+import { Status, useStatus } from '@server/store/status';
 import { ProfileWithRelationsDto, TagModel } from '@lyvely/common';
-import { localStorageManager } from '@/util/storage';
-import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
+import { localStorageManager } from '@server/util/storage';
+import { DialogExceptionHandler } from '@server/modules/core/handler/exception.handler';
 
 import { computed, ref, Ref } from 'vue';
-import { useProfileService } from "@/modules/profile/services/profiles.service";
+import { useProfileService } from "@server/modules/profile/services/profiles.service";
 
 const DEFAULT_PROFILE_ID = 'latest_profile_id';
 export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_ID);

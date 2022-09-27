@@ -1,7 +1,7 @@
 import { nextTick } from "vue";
 import { createI18n, I18n } from "vue-i18n";
 import type { LocaleMessage } from '@intlify/core-base';
-import { getModules } from "@/module.loader";
+import { getModules } from "@server/module.loader";
 
 export const SUPPORT_LOCALES = ["en", "de"];
 

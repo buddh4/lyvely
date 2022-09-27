@@ -1,6 +1,6 @@
-import { ifNotAuthenticated } from "@/router/utils";
-import { translate } from "@/i18n";
-import { setPageTitle } from "@/modules/core/store/page.store";
+import { ifNotAuthenticated } from "@server/router/utils";
+import { translate } from "@server/i18n";
+import { setPageTitle } from "@server/modules/core/store/page.store";
 
 export default [
   {

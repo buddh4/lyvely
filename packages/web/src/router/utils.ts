@@ -1,8 +1,8 @@
 import { NavigationGuardNext, RouteLocation } from "vue-router";
-import { useAuthStore } from '@/modules/user/store/auth.store';
-import { useProfileStore } from '@/modules/profile/stores/profile.store';
-import { isDevelopEnvironment } from "@/modules/core/environment";
-import { profileRoute } from "@/modules/profile/routes/profile-route.util";
+import { useAuthStore } from '@server/modules/user/store/auth.store';
+import { useProfileStore } from '@server/modules/profile/stores/profile.store';
+import { isDevelopEnvironment } from "@server/modules/core/environment";
+import { profileRoute } from "@server/modules/profile/routes/profile-route.util";
 import { isMultiUserProfile } from "@lyvely/common";
 
 // TODO: (GUESTS) - needs to be aligned for guest mode feature

@@ -1,4 +1,4 @@
-import { DocumentModel } from '../../model';
+import { DocumentModel } from "@/models";
 import { Expose, Exclude } from 'class-transformer';
 import randomColor from "randomcolor";
 

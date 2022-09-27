@@ -1,4 +1,4 @@
-import { CalendarDate, toTimingId } from '../../calendar';
+import { CalendarDate, toTimingId } from '@/calendar';
 import { DataPointIntervalFilter } from "./data-point.model";
 import { getTimingIdsByRange, TimeSeriesRangeFilter } from "./time-series-range-filter.model";
 

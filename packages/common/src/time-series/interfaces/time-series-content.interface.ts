@@ -1,5 +1,40 @@
-import { CalendarIntervalEnum } from '../../calendar';
-import { DataPointInputType, DataPointValueType } from "../models";
+import { CalendarIntervalEnum } from '@/calendar';
+
+export enum DataPointNumberInputStrategy {
+  CheckboxNumber = 'checkbox_number',
+  RangeNumber = 'range_number',
+  SpinnerNumber = 'spinner_number'
+}
+
+export enum DataPointInputStrategy {
+  CheckboxNumber = 'checkbox_number',
+  RangeNumber = 'range_number',
+  SpinnerNumber = 'spinner_number',
+  TextareaText = 'TextareaText',
+}
+
+export enum DataPointNumberInputType {
+  Checkbox = 'checkbox',
+  Range = 'range',
+  Spinner = 'spinner',
+}
+
+export enum DataPointValueType {
+  Number = 'number',
+  Boolean = 'boolean',
+  Text = 'text',
+  //File = 'file',
+  //Time = 'time',
+}
+
+export enum DataPointInputType {
+  Checkbox = 'checkbox',
+  Range = 'range',
+  Spinner = 'spinner',
+  Textarea = 'textarea',
+  Provider = 'provider'
+  //Richtext = 'richtext'
+}
 
 export interface IDataPointConfig {
   interval: CalendarIntervalEnum,
@@ -21,4 +56,11 @@ export interface INumberDataPointConfig extends IDataPointConfig {
   min?: number;
   max?: number;
   optimal?: number;
+}
+
+export interface INumberDataPointSettings {
+  min?: number;
+  max?: number;
+  optimal?: number;
+  interval: CalendarIntervalEnum;
 }

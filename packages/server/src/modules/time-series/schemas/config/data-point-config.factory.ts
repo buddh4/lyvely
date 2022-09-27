@@ -1,7 +1,7 @@
 import { DataPointInputStrategy } from '@lyvely/common';
 import { Logger } from '@nestjs/common';
 import { DataPointConfig } from './data-point-config.schema';
-import { assignEntityData } from "@/modules/core";
+import { assignEntityData } from "@server/modules/core";
 
 type StrategyId = DataPointInputStrategy | string;
 

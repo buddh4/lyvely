@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule, TestDataUtils } from "@/modules/test";
+import { createBasicTestingModule, TestDataUtils } from "@server/modules/test";
 import {
   TOKEN_DEFAULT_PROFILE_PERMISSIONS,
   TOKEN_PROFILE_ROLES_DEFINITION,

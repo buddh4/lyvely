@@ -1,6 +1,6 @@
 import { ComponentOptions, computed, ref, SetupContext, inject } from 'vue';
 import { merge, uniqueId } from 'lodash';
-import { CssClassDefinition } from '@/util/component.types';
+import { CssClassDefinition } from '@server/util/component.types';
 import { ModelValidator } from "@lyvely/common";
 
 export interface BaseInputProps {

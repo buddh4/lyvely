@@ -1,4 +1,4 @@
-import { assignEntityData, BaseEntity, EntityType } from "@/modules/core";
+import { assignEntityData, BaseEntity, EntityType } from "@server/modules/core";
 import { Prop } from '@nestjs/mongoose';
 import mongoose   from 'mongoose';
 import {

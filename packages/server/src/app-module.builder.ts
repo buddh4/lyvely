@@ -65,8 +65,8 @@ function getProviderFromOption<T>(token: ProviderToken, option: ProviderOption):
 }
 
 export class AppModuleBuilder {
-  private readonly imports: Array<Import>;
-  private readonly providers: Array<Provider>;
+  private readonly imports: Array<Import> = [];
+  private readonly providers: Array<Provider> = [];
   private options: AppModuleBuilderOptions;
 
   constructor(options: AppModuleBuilderOptions = {}) {

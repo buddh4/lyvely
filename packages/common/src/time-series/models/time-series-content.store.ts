@@ -1,5 +1,5 @@
-import { CalendarIntervalEnum } from "../../calendar";
-import { Filter } from "../../model";
+import { CalendarIntervalEnum } from "@/calendar";
+import { Filter } from "@/models";
 import { DataPointModel } from "./data-point.model";
 import { TimeSeriesContentModel } from "./time-series-content.model";
 

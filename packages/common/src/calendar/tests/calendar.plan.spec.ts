@@ -7,7 +7,7 @@ import {
     WeeklyPlan, YearlyPlan,
     CalendarIntervalEnum,
     Days, getFullDayDate
-} from '../../index';
+} from '@/calendar';
 
 describe('CalendarPlan', () => {
     describe('UnscheduledPlan', function () {

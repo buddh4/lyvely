@@ -1,6 +1,6 @@
-import { ContentModel } from '../../content';
-import { Sortable } from '../../model';
-import { UserAssignmentStrategy } from "../../user";
+import { ContentModel } from "@/content";
+import { Sortable } from "@/models";
+import { UserAssignmentStrategy } from "@/collab";
 import { IDataPointConfig, IDataPointConfigRevision } from "../interfaces";
 import { IsNumber, Min, IsEnum } from 'class-validator';
 import { Expose } from 'class-transformer';

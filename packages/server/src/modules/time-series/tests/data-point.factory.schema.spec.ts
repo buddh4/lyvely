@@ -5,7 +5,7 @@ import {
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig, TextareaTextDataPointConfig
 } from '../schemas';
-import { DataPointInputStrategy, DataPointInputType, DataPointValueType, NumberDataPointSettings, CalendarIntervalEnum } from '@lyvely/common';
+import { DataPointInputStrategy, DataPointInputType, DataPointValueType, INumberDataPointSettings, CalendarIntervalEnum } from '@lyvely/common';
 
 describe('TimeSeriesDataPointConfigFactory', () => {
   describe('createConfig()', () => {
@@ -27,7 +27,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
     });
 
     it('create checkbox config', async () => {
-      const settings: NumberDataPointSettings = {
+      const settings: INumberDataPointSettings = {
         min: 0,
         max: 2,
         optimal: 1,
@@ -50,7 +50,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
     });
 
     it('create range config', async () => {
-      const settings: NumberDataPointSettings = {
+      const settings: INumberDataPointSettings = {
         min: 0,
         max: 2,
         optimal: 1,
@@ -73,7 +73,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
     });
 
     it('create spinner config', async () => {
-      const settings: NumberDataPointSettings = {
+      const settings: INumberDataPointSettings = {
         min: 0,
         max: 2,
         optimal: 1,

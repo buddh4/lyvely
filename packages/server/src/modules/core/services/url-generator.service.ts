@@ -36,7 +36,7 @@ export class UrlGenerator {
   }
 
   private getBaseAppUrl() {
-    let appUrl = this.configService.get('http.appUrl');
+    const appUrl = this.configService.get('http.appUrl');
 
     if(!appUrl) {
       throw new MisconfigurationException('Could not generate app url, no http.appUrl setting configured');

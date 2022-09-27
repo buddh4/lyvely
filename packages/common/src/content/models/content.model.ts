@@ -1,4 +1,4 @@
-import { DocumentModel } from "../../model";
+import { DocumentModel } from "@/models";
 import { Expose, Transform } from "class-transformer";
 import { IsNotEmpty, IsString, Length, IsArray, IsNumber, IsBoolean, IsEnum } from "class-validator";
 import { ContentVisibilityLevel, IContent } from "../interfaces";

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { toTimingId, CalendarPlan, CalendarIntervalEnum, isToday as isTodayUtil, isInFuture as isInFutureUtil } from '@lyvely/common';
 import { ref, computed, watch} from 'vue';
-import { useActivityStore } from "@/modules/activity/store/activityStore";
+import { useActivityStore } from "@server/modules/activity/store/activityStore";
 
 export const useCalendarPlanStore = defineStore('timing', () => {
 
