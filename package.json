@@ -16,11 +16,13 @@
     "dev-server": "npm run start:dev -w @lyvely/server",
     "dev-web": "npm run dev -w @lyvely/web",
     "debug-server": "npm run start:debug -w @lyvely/server",
-    "depcruise-server": "npm run depcruise -w @lyvely/server"
+    "depcruise-server": "npm run depcruise -w @lyvely/server",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/node": "^18.7.14",
     "@types/nodemailer": "^6.4.5",
+    "husky": "^8.0.1",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1"
   },
