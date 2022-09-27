@@ -1,4 +1,4 @@
-export interface Feature {
+export interface IFeature {
   id: string;
   moduleId: string;
   name: string;

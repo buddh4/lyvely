@@ -1,7 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createActivityTestingModule } from '../../activities/tests/utils/activities.test.utils';
+import { createBasicTestingModule, TestDataUtils } from "@/modules/test";
 import {
   TOKEN_DEFAULT_PROFILE_PERMISSIONS,
   TOKEN_PROFILE_ROLES_DEFINITION,
@@ -55,7 +54,7 @@ describe('ProfilePermissionsService', () => {
   const TEST_KEY = 'profile_permissions_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY, [], [], [PermissionConfigModule.register()] ).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY, [], [], [PermissionConfigModule.register()] ).compile();
     permissionsService = testingModule.get<ProfilePermissionsService>(ProfilePermissionsService);
     testDataUtils = testingModule.get<TestDataUtils>(TestDataUtils);
   });

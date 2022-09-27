@@ -8,7 +8,7 @@ import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
   NumberDataPointConfigRevision
-} from "../../../interfaces/time-series";
+} from "../../time-series";
 import { assureObjectId } from "../../core/db/db.utils";
 import { cloneDeep } from "lodash";
 import { applyValidationProperties } from "@lyvely/common";

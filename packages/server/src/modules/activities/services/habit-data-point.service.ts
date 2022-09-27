@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Activity, Habit, HabitDataPoint } from '../schemas';
-import { NumberDataPointService } from '../../../interfaces/time-series';
+import { NumberDataPointService } from '../../time-series';
 import { CalendarDate } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { User } from '../../users';

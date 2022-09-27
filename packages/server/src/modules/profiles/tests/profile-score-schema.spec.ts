@@ -41,8 +41,7 @@ describe('ProfileScore', () => {
       expect(model.pid).toEqual(profile._id);
       expect(model.uid).toEqual(user._id);
       expect(model.oid).toEqual(profile.oid);
-      expect(model.timing).toBeDefined();
-      expect(model.timing.tid).toEqual(toTimingId(new Date()));
+      expect(model.tid).toEqual(toTimingId(new Date()));
       expect(model.createdBy).toEqual(user._id);
       expect(model.text).toEqual('Test!');
     })
@@ -51,7 +50,7 @@ describe('ProfileScore', () => {
       const { user, profile } = await testDataUtils.createUserAndProfile();
       const tomorrow = addDays(new Date(), 1);
       const model = new TestProfileScore({ user, profile, score: 5, date: tomorrow });
-      expect(model.timing.tid).toEqual(toTimingId(tomorrow));
+      expect(model.tid).toEqual(toTimingId(tomorrow));
     })
 
     it('Construct with per shared user strategy', async () => {

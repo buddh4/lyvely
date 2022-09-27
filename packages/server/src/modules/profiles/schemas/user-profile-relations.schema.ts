@@ -1,11 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { BaseEntity } from '../../core/db/base.entity';
-import { assignEntityData } from "../../core/db/db.utils";
-import { assureObjectId } from '../../core/db/db.utils';
+import { assignEntityData, BaseEntity, validateEmail, assureObjectId } from "@/modules/core";
 import { Profile } from './profiles.schema';
 import { User } from '../../users';
-import { validateEmail } from "../../core/db/field.validator.util";
 import { IProfileRelationUserInfo, ProfileRelationUserInfoDto } from "@lyvely/common";
 
 export interface CreateProfileRelation {

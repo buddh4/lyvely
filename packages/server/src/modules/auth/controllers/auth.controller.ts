@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { JwtAuthService } from '../services/jwt-auth.service';
-import { Public } from '../decorators/public.decorator';
+import { Public } from '../../core/decorators/public.decorator';
 import { UserRequest } from "../../users";
 import { addMilliSeconds , UserModel , Headers } from '@lyvely/common';
 

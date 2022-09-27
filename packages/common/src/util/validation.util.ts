@@ -1,8 +1,6 @@
 export const REGEX_HEX_COLOR = /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
 import { getMetadataStorage, isEmail } from "class-validator";
 
-export type Type<T = any> = new (...args: any[]) => T;
-
 export function applyValidationProperties<T>(model: T, data: { [ key in keyof T ]?: any }, level = 0, { maxDepth = 100 } = {}): T {
   if(level > maxDepth) return model;
 

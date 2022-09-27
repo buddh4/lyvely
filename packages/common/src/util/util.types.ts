@@ -1,3 +1,5 @@
+export type Type<T = any> = new (...args: any[]) => T;
+
 export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };

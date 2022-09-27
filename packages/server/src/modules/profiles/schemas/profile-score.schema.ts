@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { BaseEntity } from '../../core/db/base.entity';
-import { Timing, TimingSchema } from '../../../interfaces/calendar/schemas/timing.schema';
+import { BaseEntity } from "@/modules/core";
 import { User } from '../../users';
 import { Profile } from './profiles.schema';
-import { DeepPartial, toDate, UserAssignmentStrategy, Calendar, CalendarDate, CalendarIntervalEnum } from "@lyvely/common";
+import { DeepPartial, toDate, UserAssignmentStrategy, CalendarDate } from "@lyvely/common";
+import { toTimingId } from "@lyvely/common";
 
 export interface IProfileScoreAction {
   _id: TObjectId;
@@ -12,7 +12,7 @@ export interface IProfileScoreAction {
   pid: TObjectId,
   uid?: TObjectId,
   createdBy: TObjectId,
-  timing: Timing,
+  tid: string,
   type: string,
   score: number
 }
@@ -46,7 +46,7 @@ export class ProfileScore<C extends IProfileScoreAction = IProfileScoreAction> e
       data.uid = null;
     }
 
-    data.timing = data.timing || Calendar.createTiming(CalendarIntervalEnum.Daily, toDate(options.date ?? new Date()));
+    data.tid = data.tid || toTimingId(toDate(options.date ?? new Date()));
 
     super(data);
   }
@@ -63,13 +63,15 @@ export class ProfileScore<C extends IProfileScoreAction = IProfileScoreAction> e
   @Prop({ type: mongoose.Schema.Types.ObjectId,  required: true  })
   createdBy: TObjectId;
 
-  @Prop({ type: TimingSchema, required: true })
-  timing: Timing;
+  @Prop({ type: String, required: true })
+  tid: string;
 
   @Prop({ required: true, default: 0 })
   score: number;
 
   type: string;
+
+  timing: any;
 
   createdAt: Date;
 

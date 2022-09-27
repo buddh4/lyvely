@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createTestExecutionContext } from '../../../test/utils/test-execution-context.util';
+import { createTestExecutionContext } from '@/modules/test/utils/test-execution-context.util';
 import { FeatureGuard } from '../../features/feature.guard';
 import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { ExecutionContext } from '@nestjs/common';

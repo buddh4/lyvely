@@ -1,17 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Feature } from './feature.interface';
+import { IFeature } from './feature.interface';
 
 @Injectable()
 export class FeatureRegistry {
-  private featureMap: Record<string, Feature> = {};
+  private featureMap: Record<string, IFeature> = {};
   private readonly logger = new Logger(FeatureRegistry.name);
 
-  registerFeature(feature: Feature) {
+  registerFeature(feature: IFeature) {
     this.logger.log(`Register feature ${feature.id}`);
     this.featureMap[feature.id] = feature;
   }
 
-  registerFeatures(definitions: Feature[]) {
+  registerFeatures(definitions: IFeature[]) {
     definitions.forEach((def) => this.registerFeature(def));
   }
 
@@ -30,7 +30,7 @@ export class FeatureRegistry {
     return result;
   }
 
-  getFeature(id: string): Feature | undefined {
+  getFeature(id: string): IFeature | undefined {
     const result = this.featureMap[id];
     if(!result) {
       this.logger.warn(`Feature ${id} without content type definition requested`);

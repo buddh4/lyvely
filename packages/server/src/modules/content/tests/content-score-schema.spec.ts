@@ -55,8 +55,7 @@ describe('ContentScore', () => {
         expect(model.uid).toEqual(user._id);
         expect(model.oid).toEqual(profile.oid);
         expect(model.cid).toEqual(cid);
-        expect(model.timing).toBeDefined();
-        expect(model.timing.tid).toEqual(toTimingId(new Date()));
+        expect(model.tid).toEqual(toTimingId(new Date()));
         expect(model.createdBy).toEqual(user._id);
       })
     })

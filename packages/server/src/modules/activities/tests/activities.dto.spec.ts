@@ -10,7 +10,7 @@ import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit } from '../schemas';
 import { ActivityTestDataUtil,  createActivityTestingModule } from './utils/activities.test.utils';
 import { instanceToPlain } from 'class-transformer';
-import { NumberDataPointConfig } from '../../../interfaces/time-series';
+import { NumberDataPointConfig } from '../../time-series';
 
 
 describe('Activities DAO', () => {

@@ -1,11 +1,10 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { PolicyService } from '../services/policy.service';
-import { createActivityTestingModule } from '../../activities/tests/utils/activities.test.utils';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
+import { createBasicTestingModule, createTestExecutionContext } from "@/modules/test";
+import { TestDataUtils } from "@/modules/test";
 import { Policy } from '../interfaces/policy.interface';
 import { Request } from 'express';
-import { createTestExecutionContext } from '../../test/utils/test-execution-context.util';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -30,7 +29,7 @@ describe('PolicyService', () => {
   const TEST_KEY = 'policy-service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY,[PolicyService, TruePolicy, FalsePolicy]).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY,[PolicyService, TruePolicy, FalsePolicy]).compile();
     policyService = testingModule.get<PolicyService>(PolicyService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });

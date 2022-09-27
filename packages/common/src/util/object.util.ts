@@ -1,4 +1,4 @@
-import { Type } from "../util";
+import { Type } from "./util.types";
 
 export function findByPath<T>(model: T, path: string, parent = false, create = true) {
   if(!path.includes('.')) {

@@ -6,7 +6,7 @@ import {
   NumberTimeSeriesContent,
   TimeSeriesContentSchemaFactory,
   DefaultDataPointConfigSchema,
-} from '../../../interfaces/time-series';
+} from '../../time-series';
 import { PropertiesOf } from "@lyvely/common";
 
 type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;

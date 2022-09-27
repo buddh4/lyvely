@@ -4,7 +4,7 @@ import { DataPointNumberInputStrategy, REGEX_TID, UserAssignmentStrategy } from 
 import mongoose from 'mongoose';
 import { User } from '../../users';
 import { Activity } from './activity.schema';
-import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../../interfaces/time-series';
+import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../time-series';
 import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
 import { applyValidationProperties, CreateTaskDto, UpdateTaskDto } from "@lyvely/common";
 import { cloneDeep } from "lodash";

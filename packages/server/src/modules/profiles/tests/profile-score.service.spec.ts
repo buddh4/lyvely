@@ -58,8 +58,7 @@ describe('AbstractUserProfileActionService', () => {
       expect(model.uid).toEqual(user._id);
       expect(model.score).toEqual(5);
       expect(model.text).toEqual('test');
-      expect(model.timing).toBeDefined();
-      expect(model.timing.tid).toEqual(timing.tid);
+      expect(model.tid).toEqual(timing.tid);
       expect(profile.score).toEqual(5);
     });
 

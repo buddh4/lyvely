@@ -45,8 +45,7 @@ describe('AbstractUserProfileActionDao', () => {
       expect(scoreLog.uid).toEqual(user._id);
       expect(scoreLog.score).toEqual(5);
       expect(scoreLog.text).toEqual('test');
-      expect(scoreLog.timing).toBeDefined();
-      expect(scoreLog.timing.tid).toEqual(timing.tid);
+      expect(scoreLog.tid).toEqual(timing.tid);
     });
   });
 });

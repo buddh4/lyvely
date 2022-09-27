@@ -5,7 +5,7 @@ import { CalendarIntervalEnum, DataPointInputStrategy } from '@lyvely/common';
 import { expect } from '@jest/globals';
 import { CreatedAsType } from '../../../content';
 import mongoose from 'mongoose';
-import { CheckboxNumberDataPointConfig } from '../../../../interfaces/time-series';
+import { CheckboxNumberDataPointConfig } from '../../../time-series';
 import { Tag } from "../../../tags";
 import { getObjectId } from "../../../test/utils/test.utils";
 

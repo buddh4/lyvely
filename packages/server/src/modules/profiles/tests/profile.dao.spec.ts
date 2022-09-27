@@ -1,10 +1,8 @@
 import { expect } from '@jest/globals';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { UserProfile } from '../schemas';
 import { ProfileDao } from '../daos';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { UsersModule } from '../../users';
-import { TestModule } from '../../test/test.module';
 import { Tag } from '../../tags';
 import { createBasicTestingModule } from "../../test/utils/test.utils";
 

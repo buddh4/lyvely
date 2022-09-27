@@ -1,6 +1,6 @@
 import { Document, Types, UpdateQuery } from 'mongoose';
 import { InternalServerErrorException } from '@nestjs/common';
-import { BaseEntity } from './base.entity';
+import { BaseEntity, assignEntityData } from './base.entity';
 import { isValidObjectId, assignRawDataTo, DeepPartial, Type } from '@lyvely/common';
 
 export type EntityIdentity<T extends BaseEntity<any>> = T | Types.ObjectId | string | Document & T;
@@ -122,23 +122,6 @@ export function assureStringId(obj: any): string {
   }
 
   throw new InternalServerErrorException('Use of invalid object id detected.');
-}
-
-// Todo: Proper typing...
-export function assignEntityData<T extends Record<string, any>, U>(instance: T, obj?: U) {
-  if(obj) {
-    if(obj instanceof Document) {
-      Object.assign(instance, obj.toObject());
-    } else {
-      Object.assign(instance, obj);
-    }
-  }
-
-  if(instance instanceof BaseEntity && instance._id && !instance.id) {
-    instance.id = assureStringId(instance._id);
-  }
-
-  return instance;
 }
 
 export function createBaseEntityInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {

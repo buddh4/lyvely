@@ -1,4 +1,4 @@
-import { DataPointDao } from "../../../interfaces/time-series";
+import { DataPointDao } from "../../time-series";
 import { HabitDataPoint } from "../schemas";
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';

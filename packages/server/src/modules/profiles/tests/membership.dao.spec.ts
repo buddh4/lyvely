@@ -1,10 +1,10 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
+import { TestDataUtils } from "@/modules/test";
 import { MembershipsDao } from '../daos';
 import { ProfileRelationUserInfo } from '../schemas';
 import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
-import { createActivityTestingModule } from '../../activities/tests/utils/activities.test.utils';
+import { createBasicTestingModule } from "@/modules/test";
 
 describe('MembershipDao', () => {
   let testingModule: TestingModule;
@@ -14,7 +14,7 @@ describe('MembershipDao', () => {
   const TEST_KEY = 'membership_dao';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY,[MembershipsDao]).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY,[MembershipsDao]).compile();
     membershipDao = testingModule.get<MembershipsDao>(MembershipsDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });

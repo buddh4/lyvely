@@ -74,8 +74,7 @@ describe('ContentScoreService', () => {
         expect(model.pid).toEqual(profile._id);
         expect(model.oid).toEqual(profile.oid);
         expect(model.score).toEqual(5);
-        expect(model.timing).toBeDefined();
-        expect(model.timing.tid).toEqual(toTimingId(new Date()));
+        expect(model.tid).toEqual(toTimingId(new Date()));
         expect(model.constructor.name).toEqual(TestContentScore.name);
         expect(model.type).toEqual(TestContentScore.name);
         expect(profile.score).toEqual(5);
@@ -246,8 +245,7 @@ describe('ContentScoreService', () => {
       expect(model.oid).toEqual(profile.oid);
       expect(model.uid).toEqual(user._id);
       expect(model.score).toEqual(5);
-      expect(model.timing).toBeDefined();
-      expect(model.timing.tid).toEqual(toTimingId(new Date()));
+      expect(model.tid).toEqual(toTimingId(new Date()));
       expect(model.constructor.name).toEqual(ExtendedTestContentScore.name);
       expect(model.type).toEqual(ExtendedTestContentScore.name);
     })

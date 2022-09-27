@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Habit, Task } from './schemas';
 import { ContentTypeDefinition, ContentModuleEvents } from '../content';
-import { Feature } from '../core/features/feature.interface';
+import { IFeature } from '../core/features/feature.interface';
 
 @Injectable()
 export class ActivityEvents extends ContentModuleEvents {
 
-  getFeatures(): Feature[] {
+  getFeatures(): IFeature[] {
     return [
       {
         id: 'content.activities',
