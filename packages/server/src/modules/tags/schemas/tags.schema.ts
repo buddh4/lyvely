@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../core/db/base.entity';
 import { TagModel, REGEX_HEX_COLOR } from '@lyvely/common';
-import randomColor from "randomcolor";
-import { PropertiesOf } from "@lyvely/common";
+import randomColor from 'randomcolor';
+import { PropertiesOf } from '@lyvely/common';
 
 @Schema()
 export class Tag extends BaseEntity<Tag> implements PropertiesOf<TagModel> {
@@ -12,13 +12,13 @@ export class Tag extends BaseEntity<Tag> implements PropertiesOf<TagModel> {
   @Prop({ type: String, required: true, match: REGEX_HEX_COLOR })
   color: string;
 
-  @Prop( { type: String })
+  @Prop({ type: String })
   description: string;
 
-  @Prop( { type: Boolean })
+  @Prop({ type: Boolean })
   archived?: boolean;
 
-  @Prop( { type: Boolean })
+  @Prop({ type: Boolean })
   includeOnFilter: boolean;
 
   isNew: boolean;
@@ -34,7 +34,7 @@ export class Tag extends BaseEntity<Tag> implements PropertiesOf<TagModel> {
     this.description = this.description || '';
     this.isNew = this.isNew ?? false;
     this.includeOnFilter = this.includeOnFilter ?? false;
-    this.color = this.color || randomColor({ luminosity: 'dark' })
+    this.color = this.color || randomColor({ luminosity: 'dark' });
   }
 }
 

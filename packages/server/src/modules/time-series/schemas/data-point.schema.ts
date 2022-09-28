@@ -1,6 +1,6 @@
-import { assignEntityData, BaseEntity, EntityType } from "@server/modules/core";
+import { assignEntityData, BaseEntity, EntityType } from '@/modules/core';
 import { Prop } from '@nestjs/mongoose';
-import mongoose   from 'mongoose';
+import mongoose from 'mongoose';
 import {
   CalendarIntervalEnum,
   getFullDayDate,
@@ -8,22 +8,22 @@ import {
   toTimingId,
   UserAssignmentStrategy,
   DeepPartial,
-} from "@lyvely/common";
-import { TimeSeriesContent } from "./time-series-content.schema";
-import { User } from "../../users";
-import { Profile } from "../../profiles";
-import { assureObjectId } from "../../core/db/db.utils";
-import { DataPointModel } from "@lyvely/common";
+} from '@lyvely/common';
+import { TimeSeriesContent } from './time-series-content.schema';
+import { User } from '../../users';
+import { Profile } from '../../profiles';
+import { assureObjectId } from '../../core/db/db.utils';
+import { DataPointModel } from '@lyvely/common';
 
-type DataPointEntity = DataPointModel & { _id: TObjectId }
+type DataPointEntity = DataPointModel & { _id: TObjectId };
 
 /**
  * This represents a datapoint bucket of given interval.
  */
-export abstract class DataPoint<
-  T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>
-  > extends BaseEntity<T & { _id: TObjectId }> implements DataPointEntity {
-
+export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>>
+  extends BaseEntity<T & { _id: TObjectId }>
+  implements DataPointEntity
+{
   meta: any;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, immutable: true })
@@ -32,7 +32,7 @@ export abstract class DataPoint<
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true })
   pid: TObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true  })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true })
   cid: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
@@ -41,7 +41,7 @@ export abstract class DataPoint<
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;
 
-  @Prop( { type: String, required: true, immutable: true })
+  @Prop({ type: String, required: true, immutable: true })
   tid: string;
 
   /**
@@ -50,13 +50,13 @@ export abstract class DataPoint<
    * If a date with timezone information is given in the constructor, we simply translate the given date to utc without
    * respecting timezone differences.
    */
-  @Prop( { type: Date, required: true, immutable: true })
+  @Prop({ type: Date, required: true, immutable: true })
   date: Date;
 
   constructor(profile: Profile, user: User, content: TimeSeriesContent, obj?: DeepPartial<T>) {
     super(false);
 
-    if(obj) {
+    if (obj) {
       assignEntityData(this, obj);
     }
 
@@ -65,7 +65,7 @@ export abstract class DataPoint<
     this.cid = assureObjectId(content._id);
     this.interval = content.dataPointConfig.interval;
 
-    if(!this.date) {
+    if (!this.date) {
       return;
     }
 
@@ -75,5 +75,3 @@ export abstract class DataPoint<
     this.afterInit();
   }
 }
-
-

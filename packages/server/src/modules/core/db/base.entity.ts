@@ -9,9 +9,8 @@ export interface IEntity<ID = TObjectId> {
 }
 
 export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
-
   constructor(obj?: DeepPartial<C> | false) {
-    if(obj !== false) {
+    if (obj !== false) {
       this.init(obj);
     }
   }
@@ -21,7 +20,9 @@ export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
     this.afterInit();
   }
 
-  afterInit() {/* Nothing todo */}
+  afterInit() {
+    /* Nothing todo */
+  }
 
   @Exclude()
   public _id: ID;
@@ -32,8 +33,8 @@ export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
 
 // Note: We do not use db.utils.ts to prevent circular dependency...
 export function assignEntityData<T extends Record<string, any>, U>(instance: T, obj?: U) {
-  if(obj) {
-    if(obj instanceof Document) {
+  if (obj) {
+    if (obj instanceof Document) {
       assignRawDataToAndInitProps(instance, obj.toObject());
     } else {
       assignRawDataToAndInitProps(instance, obj);
@@ -42,7 +43,7 @@ export function assignEntityData<T extends Record<string, any>, U>(instance: T, 
     assignRawDataToAndInitProps(instance);
   }
 
-  if(instance instanceof BaseEntity && instance._id && !instance.id) {
+  if (instance instanceof BaseEntity && instance._id && !instance.id) {
     instance.id = instance._id.toString();
   }
 

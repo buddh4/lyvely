@@ -1,4 +1,4 @@
-import { DocumentModel } from "@/models";
+import { DocumentModel } from '@/models';
 import { Exclude, Expose, instanceToPlain } from 'class-transformer';
 
 class MockObjectId {
@@ -6,10 +6,10 @@ class MockObjectId {
     this.value = value;
   }
 
-  value: string
+  value: string;
   toString() {
     return this.value;
-}
+  }
 }
 
 interface ITestBaseDto {
@@ -23,7 +23,7 @@ class TestBaseDto extends DocumentModel<ITestBaseDto> {
   @Expose()
   value: number;
 
-  secret: 'string'
+  secret: 'string';
 }
 
 @Exclude()
@@ -59,7 +59,7 @@ describe('Base Model', () => {
 
     it('do not overwrite functions', async () => {
       const baseModel = new TestDocumentDto({
-        someFunction: () => 'no'
+        someFunction: () => 'no',
       });
 
       expect(baseModel.someFunction()).toEqual('yes');
@@ -68,8 +68,8 @@ describe('Base Model', () => {
     it('basic constructor with sub model', async () => {
       const baseModel = new TestDocumentDto({
         subModel: new TestBaseDto({
-          value: 10
-        })
+          value: 10,
+        }),
       });
       expect(baseModel.subModel).toBeDefined();
       expect(baseModel.subModel.value).toEqual(10);
@@ -77,21 +77,20 @@ describe('Base Model', () => {
 
     it('transform sub document _id to model string id', async () => {
       const obj = {
-        _id: <any> new MockObjectId('test'),
+        _id: <any>new MockObjectId('test'),
         value: 10,
       };
 
       const baseModel = new TestDocumentDto({ subModel: new TestBaseDto(obj) });
 
       expect(baseModel.subModel).toBeDefined();
-      expect(baseModel.subModel.id).toEqual('test')
+      expect(baseModel.subModel.id).toEqual('test');
     });
-
 
     it('test transform document _id to model string id', async () => {
       const obj = {
         _id: new MockObjectId('test'),
-        secret: 'asdf'
+        secret: 'asdf',
       };
 
       const baseModel = new TestDocumentDto(obj);
@@ -102,11 +101,11 @@ describe('Base Model', () => {
     it('test exclude _id', async () => {
       const obj = {
         _id: new MockObjectId('test'),
-        secret: 'asdf'
+        secret: 'asdf',
       };
 
       const baseModel = new TestDocumentDto(obj);
-      expect(instanceToPlain((baseModel))._id).toBeUndefined();
+      expect(instanceToPlain(baseModel)._id).toBeUndefined();
     });
   });
 });

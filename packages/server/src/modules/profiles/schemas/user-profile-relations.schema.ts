@@ -1,19 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { assignEntityData, BaseEntity, validateEmail, assureObjectId } from "@server/modules/core";
+import { assignEntityData, BaseEntity, validateEmail, assureObjectId } from '@/modules/core';
 import { Profile } from './profiles.schema';
 import { User } from '../../users';
-import { IProfileRelationUserInfo, ProfileRelationUserInfoDto } from "@lyvely/common";
+import { IProfileRelationUserInfo, ProfileRelationUserInfoDto } from '@lyvely/common';
 
-export interface CreateProfileRelation {
-  profile: Profile,
-  user: User,
-  type?: string, // Usually given by sub types
+export interface ICreateProfileRelation {
+  profile: Profile;
+  user: User;
+  type?: string; // Usually given by sub types
   displayName?: string;
   imageHash?: string;
   email?: string;
   description?: string;
-  role: string,
+  role: string;
 }
 
 @Schema({ id: false })
@@ -34,7 +34,7 @@ export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
     assignEntityData(this, obj);
   }
 
-  static create(data: CreateProfileRelation) {
+  static create(data: ICreateProfileRelation) {
     return new ProfileRelationUserInfo({
       displayName: data.displayName || data.user.username,
       email: data.email || data.user.email,
@@ -54,14 +54,13 @@ type UserRelation = {
   userInfo: ProfileRelationUserInfo;
   type: string;
   role: string;
-}
+};
 
 /**
  * TODO: also include oid? Only problematic if we move a profile from one orga to another...
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class UserProfileRelation<C extends UserRelation = UserRelation> extends BaseEntity<C> {
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   uid: TObjectId;
 
@@ -84,20 +83,20 @@ export class UserProfileRelation<C extends UserRelation = UserRelation> extends 
   updatedAt: Date;
 
   afterInit() {
-    if(!(this.userInfo instanceof ProfileRelationUserInfoDto)) {
+    if (!(this.userInfo instanceof ProfileRelationUserInfoDto)) {
       this.userInfo = new ProfileRelationUserInfo(this.userInfo);
     }
     super.afterInit();
   }
 
-  static create(data: CreateProfileRelation & any): UserProfileRelation {
+  static create(data: ICreateProfileRelation & any): UserProfileRelation {
     return new UserProfileRelation({
       uid: assureObjectId(data.user),
       pid: assureObjectId(data.profile),
       oid: assureObjectId(data.profile.oid),
       userInfo: ProfileRelationUserInfo.create(data),
       type: data.type,
-      role: data.role
+      role: data.role,
     });
   }
 }

@@ -13,9 +13,7 @@ import { ProfileDao } from '../daos';
 const testScoreModelDef = {
   name: ProfileScore.name,
   schema: ProfileScoreSchema,
-  discriminators: [
-    { name: TestProfileScore.name, schema: TestProfileScoreSchema }
-  ],
+  discriminators: [{ name: TestProfileScore.name, schema: TestProfileScoreSchema }],
 };
 
 describe('AbstractUserProfileActionService', () => {
@@ -28,7 +26,11 @@ describe('AbstractUserProfileActionService', () => {
   const TEST_KEY = 'abstract_user_profile_action_service';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [TestProfileScoreDao, TestProfileScoreService], [testScoreModelDef]).compile();
+    testingModule = await createContentTestingModule(
+      TEST_KEY,
+      [TestProfileScoreDao, TestProfileScoreService],
+      [testScoreModelDef],
+    ).compile();
     testProfileActionService = testingModule.get<TestProfileScoreService>(TestProfileScoreService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     profileDao = testingModule.get<ProfileDao>(ProfileDao);
@@ -48,8 +50,10 @@ describe('AbstractUserProfileActionService', () => {
   describe('createUserProfileAction()', () => {
     it('model creation', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const model = await testProfileActionService.saveScore(profile,
-        new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }));
+      const model = await testProfileActionService.saveScore(
+        profile,
+        new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
+      );
       const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date());
 
       expect(model).toBeDefined();
@@ -67,8 +71,10 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(0);
 
-      await testProfileActionService.saveScore(profile,
-        new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }));
+      await testProfileActionService.saveScore(
+        profile,
+        new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
+      );
 
       expect(profile.score).toEqual(5);
       const profileInDB = await profileDao.reload(profile);
@@ -80,11 +86,15 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(0);
 
-      await testProfileActionService.saveScore(profile,
-        new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }));
+      await testProfileActionService.saveScore(
+        profile,
+        new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
+      );
 
-      await testProfileActionService.saveScore(profile,
-        new TestProfileScore({ user: user, profile: profile, score: -2 }, { text: 'test2' }));
+      await testProfileActionService.saveScore(
+        profile,
+        new TestProfileScore({ user: user, profile: profile, score: -2 }, { text: 'test2' }),
+      );
 
       expect(profile.score).toEqual(3);
       const profileInDB = await profileDao.reload(profile);
@@ -96,8 +106,10 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(0);
 
-      await testProfileActionService.saveScore(profile,
-        new TestProfileScore({ user: user, profile: profile, score: -10 }, { text: 'test' }));
+      await testProfileActionService.saveScore(
+        profile,
+        new TestProfileScore({ user: user, profile: profile, score: -10 }, { text: 'test' }),
+      );
 
       expect(profile.score).toEqual(0);
       const profileInDB = await profileDao.reload(profile);

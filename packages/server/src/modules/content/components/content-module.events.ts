@@ -1,13 +1,12 @@
 import { Inject } from '@nestjs/common';
-import { ContentTypeDefinition } from "../interfaces";
+import { ContentTypeDefinition } from '../interfaces';
 import { ContentTypeRegistry } from './content-type.registry';
 import { ModuleEvents } from '../../core/modules/module.events';
-import { Content } from "../schemas";
+import { Content } from '../schemas';
 
 export abstract class ContentModuleEvents extends ModuleEvents {
-
   @Inject()
-  private contentTypeRegistry: ContentTypeRegistry
+  private contentTypeRegistry: ContentTypeRegistry;
 
   abstract getContentTypes(): ContentTypeDefinition<Content>[];
 
@@ -18,7 +17,7 @@ export abstract class ContentModuleEvents extends ModuleEvents {
 
   private registerContentTypes() {
     const contentTypes = this.getContentTypes();
-    if(contentTypes && contentTypes.length) {
+    if (contentTypes && contentTypes.length) {
       this.contentTypeRegistry.registerContentTypes(contentTypes);
     }
   }

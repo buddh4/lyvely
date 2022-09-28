@@ -1,1 +1,1 @@
-export type RequestAdditions = { csrfToken: (() => string) };
+export type RequestAdditions = { csrfToken: () => string };

@@ -1,3 +1,3 @@
 export interface Archivable {
-    archived?: boolean;
+  archived?: boolean;
 }

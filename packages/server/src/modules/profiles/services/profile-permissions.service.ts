@@ -3,21 +3,21 @@ import { UserWithProfileAndRelations } from '../models';
 import minimatch from 'minimatch';
 import { BaseMembershipRole } from '@lyvely/common';
 import {
-  defaultProfileRolesDefinition, IDefaultRolePermissions,
+  defaultProfileRolesDefinition,
+  IDefaultRolePermissions,
   IProfileRoleDefinition,
-  IProfileRolePermission
-} from "../interfaces";
-import { PermissionsService } from "../../permissions";
+  IProfileRolePermission,
+} from '../interfaces';
+import { PermissionsService } from '../../permissions';
 
 export const TOKEN_PROFILE_ROLES_DEFINITION = 'PROFILE_ROLES_DEFINITION';
 export const TOKEN_DEFAULT_PROFILE_PERMISSIONS = 'DEFAULT_PROFILE_PERMISSIONS';
 
 @Injectable()
-export class ProfilePermissionsService extends PermissionsService<UserWithProfileAndRelations>{
-
+export class ProfilePermissionsService extends PermissionsService<UserWithProfileAndRelations> {
   constructor(
     @Optional() @Inject(TOKEN_PROFILE_ROLES_DEFINITION) private rolesDefinition: IProfileRoleDefinition[],
-    @Optional() @Inject(TOKEN_DEFAULT_PROFILE_PERMISSIONS) private defaultPermissions: IDefaultRolePermissions
+    @Optional() @Inject(TOKEN_DEFAULT_PROFILE_PERMISSIONS) private defaultPermissions: IDefaultRolePermissions,
   ) {
     super();
     this.rolesDefinition = this.rolesDefinition || defaultProfileRolesDefinition;
@@ -33,35 +33,35 @@ export class ProfilePermissionsService extends PermissionsService<UserWithProfil
   }
 
   registerDefaultPermissions(permissions: IProfileRolePermission[]) {
-    for(const permission of permissions) {
+    for (const permission of permissions) {
       this.defaultPermissions[permission.permission] = permission.role;
     }
   }
 
-  async checkPermission(profileRelations: UserWithProfileAndRelations, permission: string): Promise<boolean>  {
+  async checkPermission(profileRelations: UserWithProfileAndRelations, permission: string): Promise<boolean> {
     const { profile } = profileRelations;
 
-    if(!profile) {
+    if (!profile) {
       return false;
     }
 
-    if(profileRelations.getRelationByRole(BaseMembershipRole.Owner)) {
+    if (profileRelations.getRelationByRole(BaseMembershipRole.Owner)) {
       return true;
     }
 
     let userInheritsRole = false;
-    for(let i = 0;i < this.rolesDefinition.length;i++) {
-      const roleDef =  this.rolesDefinition[i];
-      if(profileRelations.getRelationByRole(roleDef.role)) {
+    for (let i = 0; i < this.rolesDefinition.length; i++) {
+      const roleDef = this.rolesDefinition[i];
+      if (profileRelations.getRelationByRole(roleDef.role)) {
         userInheritsRole = true;
       }
 
-      if(!userInheritsRole) {
+      if (!userInheritsRole) {
         continue;
       }
 
-      for(const rolePermission of profile.getPermissionsByRole(roleDef.role)) {
-        if(minimatch(permission, rolePermission.permission)) {
+      for (const rolePermission of profile.getPermissionsByRole(roleDef.role)) {
+        if (minimatch(permission, rolePermission.permission)) {
           return true;
         }
       }
@@ -71,8 +71,11 @@ export class ProfilePermissionsService extends PermissionsService<UserWithProfil
   }
 
   private checkDefaultPermission(permission: string, profileRelations: UserWithProfileAndRelations): boolean {
-    for(const defaultPermission in this.defaultPermissions) {
-      if(minimatch(permission, defaultPermission) && this.userInheritsRole(profileRelations, this.defaultPermissions[defaultPermission])) {
+    for (const defaultPermission in this.defaultPermissions) {
+      if (
+        minimatch(permission, defaultPermission) &&
+        this.userInheritsRole(profileRelations, this.defaultPermissions[defaultPermission])
+      ) {
         return true;
       }
     }
@@ -81,15 +84,15 @@ export class ProfilePermissionsService extends PermissionsService<UserWithProfil
   }
 
   public userInheritsRole(profileRelations: UserWithProfileAndRelations, role: string) {
-    if(!role) return false;
+    if (!role) return false;
 
-    for(let i = 0;i < this.rolesDefinition.length;i++) {
-      const roleDef =  this.rolesDefinition[i];
-      if(profileRelations.getRelationByRole(roleDef.role)) {
+    for (let i = 0; i < this.rolesDefinition.length; i++) {
+      const roleDef = this.rolesDefinition[i];
+      if (profileRelations.getRelationByRole(roleDef.role)) {
         return true;
       }
 
-      if(roleDef.role === role) {
+      if (roleDef.role === role) {
         // We are sure the user does not have a role with the required permission level
         break;
       }

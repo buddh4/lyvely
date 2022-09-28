@@ -8,8 +8,12 @@ import { DataPointConfig, DataPointConfigRevision } from './data-point-config.sc
  */
 @Schema({ _id: false, timestamps: true, discriminatorKey: 'strategy' })
 export class DefaultDataPointConfig extends DataPointConfig {
-  setSettings() {/* Nothing todo here...*/}
-  getSettings(): any {return;}
+  setSettings() {
+    /* Nothing todo here...*/
+  }
+  getSettings(): any {
+    return;
+  }
 }
 
 export const DefaultDataPointConfigSchema = SchemaFactory.createForClass(DefaultDataPointConfig);
@@ -18,7 +22,3 @@ export const DefaultDataPointConfigSchema = SchemaFactory.createForClass(Default
 export class DefaultDataPointConfigRevision extends DataPointConfigRevision {}
 
 export const DefaultDataPointConfigRevisionSchema = SchemaFactory.createForClass(DefaultDataPointConfigRevision);
-
-
-
-

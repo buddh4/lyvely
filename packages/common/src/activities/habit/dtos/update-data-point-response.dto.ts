@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel } from "@/models";
+import { BaseModel } from '@/models';
 import { IsNumber } from 'class-validator';
 
 @Exclude()

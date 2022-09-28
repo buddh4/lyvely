@@ -27,8 +27,8 @@ describe('Content Model', () => {
   });
 
   describe('constructor', () => {
-    it('constructor with user, profile ', async() => {
-      const content = new Content(profile, user,);
+    it('constructor with user, profile ', async () => {
+      const content = new Content(profile, user);
       expect(content.createdBy).toEqual(user._id);
       expect(content.createdAs).toBeDefined();
       expect(content.createdAs.authorId).toEqual(user._id);
@@ -38,7 +38,7 @@ describe('Content Model', () => {
       expect(content.pid).toEqual(profile._id);
     });
 
-    it('constructor with user, profile and data object', async() => {
+    it('constructor with user, profile and data object', async () => {
       const content = new Content(profile, user, { title: 'test title' });
       expect(content.createdBy).toEqual(user._id);
       expect(content.title).toEqual('test title');
@@ -49,22 +49,22 @@ describe('Content Model', () => {
       expect(content.createdAs.imageHash).toEqual(user.getImageHash());
     });
 
-    it('constructor with metadata', async() => {
+    it('constructor with metadata', async () => {
       const content = new Content(profile, user, { metaData: { isArchivable: false } });
       expect(content.metaData).not.toBeNull();
       expect(content.metaData.isArchivable).toEqual(false);
       expect(content.metaData instanceof ContentMetadata).toEqual(true);
     });
 
-    it('constructor with logs', async() => {
-      const content = new Content(profile, user,{ logs: [{ kind: 'test' }] });
+    it('constructor with logs', async () => {
+      const content = new Content(profile, user, { logs: [{ kind: 'test' }] });
       expect(content.logs).toBeTruthy();
       expect(content.logs.length).toEqual(1);
       expect(content.logs[0] instanceof ContentLog).toEqual(true);
     });
 
-    it('constructor with createdAs', async() => {
-      const content = new Content(profile, user,{ createdAs: { name: 'test' } });
+    it('constructor with createdAs', async () => {
+      const content = new Content(profile, user, { createdAs: { name: 'test' } });
       expect(content.createdAs).toBeTruthy();
       expect(content.createdAs instanceof CreatedAs).toEqual(true);
       expect(content.createdAs.name).toEqual('test');

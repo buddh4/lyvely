@@ -4,7 +4,7 @@ import { UserProfile } from '../schemas';
 import { ProfileDao } from '../daos';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { Tag } from '../../tags';
-import { createBasicTestingModule } from "../../test/utils/test.utils";
+import { createBasicTestingModule } from '../../test/utils/test.utils';
 
 describe('ProfileDao', () => {
   let testingModule: TestingModule;

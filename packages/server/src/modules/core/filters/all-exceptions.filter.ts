@@ -3,8 +3,11 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-  InternalServerErrorException, NotFoundException, ForbiddenException, Logger,
-  BadRequestException
+  InternalServerErrorException,
+  NotFoundException,
+  ForbiddenException,
+  Logger,
+  BadRequestException,
 } from '@nestjs/common';
 import { ForbiddenServiceException, EntityNotFoundException, EntityValidationException } from '../exceptions';
 
@@ -27,19 +30,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
   }
 
   mapException(exception: unknown): HttpException {
-    if(exception instanceof HttpException) {
+    if (exception instanceof HttpException) {
       return exception;
     }
 
-    if(exception instanceof EntityValidationException) {
+    if (exception instanceof EntityValidationException) {
       return new BadRequestException();
     }
 
-    if(exception instanceof EntityNotFoundException) {
+    if (exception instanceof EntityNotFoundException) {
       return new NotFoundException();
     }
 
-    if(exception instanceof ForbiddenServiceException) {
+    if (exception instanceof ForbiddenServiceException) {
       return new ForbiddenException();
     }
 

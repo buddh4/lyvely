@@ -6,10 +6,10 @@ import { BaseEntity } from '../../core/db/base.entity';
 import { Length } from 'class-validator';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import crypto from 'crypto';
-import { validateEmail } from "../../core/db/field.validator.util";
-import { PropertiesOf, UserModel } from "@lyvely/common";
-import { getNumberEnumValues, UserStatus } from "@lyvely/common";
-import { PropertyType } from "@lyvely/common";
+import { validateEmail } from '../../core/db/field.validator.util';
+import { PropertiesOf, UserModel } from '@lyvely/common';
+import { getNumberEnumValues, UserStatus } from '@lyvely/common';
+import { PropertyType } from '@lyvely/common';
 
 @Schema({ id: false })
 class ProfilesCount {
@@ -38,7 +38,7 @@ export type UserDocument = User & mongoose.Document;
 
 @Exclude()
 @Schema({ timestamps: true })
-export class User extends BaseEntity<User> implements PropertiesOf<UserModel>{
+export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @Prop({
     unique: true,
     required: true,
@@ -50,7 +50,7 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel>{
   @Prop({ required: true, unique: true })
   username: string;
 
-  @Prop( { type: String } )
+  @Prop({ type: String })
   imageHash: string;
 
   @Prop({ required: true })
@@ -71,11 +71,11 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel>{
   @Prop({ default: getDefaultLocale() })
   locale: string;
 
-  @Prop( { type: [RefreshTokenSchema], default: [] } )
+  @Prop({ type: [RefreshTokenSchema], default: [] })
   refreshTokens: RefreshToken[];
 
   @PropertyType(Number, { default: UserStatus.Disabled })
-  @Prop( { enum: getNumberEnumValues(UserStatus), required: true })
+  @Prop({ enum: getNumberEnumValues(UserStatus), required: true })
   status: UserStatus;
 
   @PropertyType(ProfilesCount, { default: () => new ProfilesCount() })
@@ -95,7 +95,7 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel>{
   }
 
   getImageHash() {
-    if(!this.imageHash && this.lowercaseEmail) {
+    if (!this.imageHash && this.lowercaseEmail) {
       this.imageHash = crypto.createHash('sha256').update(this.lowercaseEmail).digest('hex');
     }
 
@@ -103,11 +103,11 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel>{
   }
 
   getRefreshTokenByVisitorId(vid: string): RefreshToken | undefined {
-    if(!vid) {
+    if (!vid) {
       return undefined;
     }
 
-    return this.refreshTokens?.find(token => token.vid === vid);
+    return this.refreshTokens?.find((token) => token.vid === vid);
   }
 
   async validatePassword(password: string) {
@@ -172,17 +172,11 @@ UserSchema.pre('findOneAndUpdate', function (next) {
   const updateFields = this.getUpdate() as UpdateQuery<User>;
 
   if (updateFields.username) {
-    this.update(
-      {},
-      { $set: { lowercaseUsername: updateFields.username.toLowerCase() } },
-    );
+    this.update({}, { $set: { lowercaseUsername: updateFields.username.toLowerCase() } });
   }
 
   if (updateFields.email) {
-    this.update(
-      {},
-      { $set: { lowercaseEmail: updateFields.email.toLowerCase() } },
-    );
+    this.update({}, { $set: { lowercaseEmail: updateFields.email.toLowerCase() } });
   }
 
   // Generate a salt and use it to hash the user's password

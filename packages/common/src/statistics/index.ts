@@ -1,1 +1,1 @@
-export * from "./statistics.model";
+export * from './statistics.model';

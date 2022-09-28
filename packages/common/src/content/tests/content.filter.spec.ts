@@ -2,7 +2,6 @@ import { ContentFilter } from '@/content';
 import { TestContent } from './src/test-content.model';
 
 describe('Content Filter', () => {
-
   describe('tags filter', function () {
     it('filter by tags success', async () => {
       const filter = new ContentFilter({ tagId: 'test' });

@@ -4,33 +4,47 @@ module.exports = {
     node: true,
     jest: true,
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
-  parserOptions: {
-    project: ['tsconfig.json', './packages/*/tsconfig.json'],
-    sourceType: 'module',
-  },
+  plugins: ['vue', 'prettier', '@typescript-eslint/eslint-plugin'],
   extends: [
     'plugin:@typescript-eslint/recommended',
-    'prettier',
+    "plugin:vue/vue3-recommended",
+    'plugin:prettier/recommended',
   ],
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', '*.d.ts'],
   overrides: [
     {
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
-        project: ['./packages/web/tsconfig.json', './packages/*/tsconfig.json'],
+        project: [
+          './packages/web/tsconfig.json',
+          './packages/common/tsconfig.json',
+          './packages/server/tsconfig.json',
+          './packages/demo-web/tsconfig.json',
+          './packages/demo-server/tsconfig.json',
+        ],
         sourceType: 'module',
+        extraFileExtensions: [ ".vue" ]
       },
       rules: {
-        '@typescript-eslint/interface-name-prefix': 'off',
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          {
+            "selector": "interface",
+            "format": ["PascalCase"],
+            "custom": {
+              "regex": "^I[A-Z]\\s*|[a-z](IF|Interface)$",
+              "match": true
+            }
+          }
+        ],
+        "@typescript-eslint/no-non-null-assertion": "off",
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/ban-types': 'off',
         'object-curly-spacing': ["error", "always"],
-        'import/no-cycle': 2,
         'import/named': 'off',
         'import/no-unresolved': 'off',
         "function-call-argument-newline":  ['error', 'consistent']

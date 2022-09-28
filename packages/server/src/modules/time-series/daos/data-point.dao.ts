@@ -1,14 +1,13 @@
-import { AbstractDao } from "../../core/db/abstract.dao";
-import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
-import { Profile } from "../../profiles";
-import { User } from "../../users";
-import { DataPoint, TimeSeriesContent } from "../schemas";
-import { CalendarDate, getTimingIds, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from "@lyvely/common";
+import { AbstractDao } from '../../core/db/abstract.dao';
+import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { Profile } from '../../profiles';
+import { User } from '../../users';
+import { DataPoint, TimeSeriesContent } from '../schemas';
+import { CalendarDate, getTimingIds, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from '@lyvely/common';
 
-type InterValFilter = { 'interval': CalendarIntervalEnum, tid?: string | { $regex: RegExp } };
+type InterValFilter = { interval: CalendarIntervalEnum; tid?: string | { $regex: RegExp } };
 
 export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao<T> {
-
   // TODO: Implement update interval of data points
 
   abstract updateDataPointValue(uid: EntityIdentity<User>, dataPoint: T, newValue: any): Promise<boolean>;
@@ -16,18 +15,18 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
   async findDataPointByDate(content: TimeSeriesContent, date: CalendarDate) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
-      'cid': assureObjectId(content),
+      cid: assureObjectId(content),
       tid: toTimingId(date, content.dataPointConfig.interval),
-    })
+    });
   }
 
   async findUserDataPointByDate(content: TimeSeriesContent, uid: EntityIdentity<User>, date: CalendarDate) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
-      'cid': assureObjectId(content),
-      'uid': assureObjectId(uid),
+      cid: assureObjectId(content),
+      uid: assureObjectId(uid),
       tid: toTimingId(date, content.dataPointConfig.interval),
-    })
+    });
   }
 
   /**
@@ -50,23 +49,20 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
    * @param uid
    * @param filter
    */
-  async findByIntervalLevel(pid: EntityIdentity<Profile>, uid: EntityIdentity<User> | null, filter: DataPointIntervalFilter) {
+  async findByIntervalLevel(
+    pid: EntityIdentity<Profile>,
+    uid: EntityIdentity<User> | null,
+    filter: DataPointIntervalFilter,
+  ) {
     // If no uid is given we assume visitor role
     const uidFilter = uid
       ? {
-          $or: [
-            { 'uid': assureObjectId(uid) },
-            { 'uid': null }
-          ]
-      }
-      : { 'uid': null };
+          $or: [{ uid: assureObjectId(uid) }, { uid: null }],
+        }
+      : { uid: null };
 
     return this.findAll({
-      $and: [
-        { pid: assureObjectId(pid) },
-        uidFilter,
-        this.buildTimingIntervalFilter(filter)
-      ]
+      $and: [{ pid: assureObjectId(pid) }, uidFilter, this.buildTimingIntervalFilter(filter)],
     });
   }
 
@@ -80,7 +76,7 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
    */
   private buildTimingIntervalFilter(filter: DataPointIntervalFilter) {
     const timingIds = getTimingIds(filter.search);
-    const dailyFilter = { 'interval': CalendarIntervalEnum.Daily, tid: timingIds[CalendarIntervalEnum.Daily] };
+    const dailyFilter = { interval: CalendarIntervalEnum.Daily, tid: timingIds[CalendarIntervalEnum.Daily] };
 
     if (filter.level === CalendarIntervalEnum.Daily) {
       return dailyFilter;
@@ -90,9 +86,10 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
 
     for (let i = CalendarIntervalEnum.Weekly; i >= 0; i--) {
       if (filter.level <= i) {
-        const filter = i === CalendarIntervalEnum.Unscheduled
-          ? { 'interval': i }
-          : { 'interval': i, tid: { $regex: new RegExp(`^${timingIds[i]}`) } };
+        const filter =
+          i === CalendarIntervalEnum.Unscheduled
+            ? { interval: i }
+            : { interval: i, tid: { $regex: new RegExp(`^${timingIds[i]}`) } };
         intervalFilter.push(filter);
       }
     }

@@ -1,22 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { Type } from '@nestjs/common';
-import { INestApplication, ValidationPipe , Logger } from '@nestjs/common';
+import { INestApplication, ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import {
-  FeatureGuard,
-  CoreModule,
-  AllExceptionsFilter,
-} from "@server/modules/core";
-import { AppModuleBuilder, AppModuleBuilderOptions } from "./app-module.builder";
-import helmet from "helmet";
+import { FeatureGuard, CoreModule, AllExceptionsFilter } from '@/modules/core';
+import { AppModuleBuilder, AppModuleBuilderOptions } from './app-module.builder';
+import helmet from 'helmet';
 import csurf from 'csurf';
-import { HelmetOptions } from "helmet";
-import { ConfigurationPath } from "./modules/core";
-import { useDayJsDateTimeAdapter } from "@lyvely/common"
+import { HelmetOptions } from 'helmet';
+import { ConfigurationPath } from './modules/core';
+import { useDayJsDateTimeAdapter } from '@lyvely/common';
 
 useDayJsDateTimeAdapter();
 
@@ -57,17 +53,19 @@ export class LyvelyServer {
   }
 
   private initHelmet() {
-    const helmetConfig = this.configService.get<HelmetOptions|false>('helmet', {});
+    const helmetConfig = this.configService.get<HelmetOptions | false>('helmet', {});
     this.logger.log('Using helmet options:', helmetConfig);
-    if(helmetConfig !== false) {
+    if (helmetConfig !== false) {
       this.nestApp.use(helmet(helmetConfig));
     }
   }
 
   private initCsurf() {
-    this.nestApp.use(csurf({
-      cookie: true
-    }));
+    this.nestApp.use(
+      csurf({
+        cookie: true,
+      }),
+    );
   }
 
   private initCookieParser() {
@@ -108,15 +106,15 @@ export class LyvelyServer {
     let cors_origin = this.configService.get('http.cors.origin');
     const staticServe = !!this.configService.get('serveStatic');
 
-    if(!cors_origin && !staticServe) {
+    if (!cors_origin && !staticServe) {
       cors_origin = this.configService.get('http.appUrl');
     }
 
-    if(!cors_origin && !staticServe) {
-      this.logger.warn('Not cors origin and no serve static configuration set, this is probably a misconfiguration.')
+    if (!cors_origin && !staticServe) {
+      this.logger.warn('Not cors origin and no serve static configuration set, this is probably a misconfiguration.');
     }
 
-    if(!cors_origin) {
+    if (!cors_origin) {
       this.logger.log(`No cors mode configured.`);
       return;
     }
@@ -128,13 +126,7 @@ export class LyvelyServer {
       credentials: true,
       methods: ['GET', 'POST', 'PUT'],
       exposedHeaders: ['set-cookie'],
-      allowedHeaders: [
-        'x-visitor-id',
-        'csrf-token',
-        'access-control-allow-origin',
-        'content-type',
-        'cookie'
-      ],
+      allowedHeaders: ['x-visitor-id', 'csrf-token', 'access-control-allow-origin', 'content-type', 'cookie'],
       //allowedHeaders: 'access-control-allow-originaccept,Accept-Language,Content-Language,Content-Type,Authorization,Cookie,X-Requested-With,Origin,Host'
     });
   }

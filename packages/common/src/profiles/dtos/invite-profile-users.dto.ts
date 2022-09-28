@@ -1,7 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsArray, IsOptional, IsString } from 'class-validator';
-import { BaseModel, PropertyType } from "@/models";
-import { BaseMembershipRole } from "../models";
+import { BaseModel, PropertyType } from '@/models';
+import { BaseMembershipRole } from '../models';
 
 @Exclude()
 export class ProfileMemberMailInvite extends BaseModel<ProfileMemberMailInvite> {

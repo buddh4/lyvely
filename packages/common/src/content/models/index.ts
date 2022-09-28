@@ -1,2 +1,2 @@
-export * from './content.model'
-export * from './content.filter'
+export * from './content.model';
+export * from './content.filter';

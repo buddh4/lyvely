@@ -1,11 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
-import { UpdateTaskDto } from "./update-task.dto";
+import { UpdateTaskDto } from './update-task.dto';
 import { IsNotEmpty, IsString, Length, IsEnum } from 'class-validator';
-import { CalendarIntervalEnum } from "@/calendar";
+import { CalendarIntervalEnum } from '@/calendar';
 
 @Exclude()
 export class CreateTaskDto extends UpdateTaskDto {
-
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -23,5 +22,4 @@ export class CreateTaskDto extends UpdateTaskDto {
     this.score = this.score ?? 2;
     this.tagNames = this.tagNames || [];
   }
-
 }

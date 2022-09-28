@@ -2,8 +2,8 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule, getObjectId } from '../../test/utils/test.utils';
-import { Tag } from "../../tags";
-import { ProfileTagsService, ProfilesService } from "../services";
+import { Tag } from '../../tags';
+import { ProfileTagsService, ProfilesService } from '../services';
 
 describe('ProfileService', () => {
   let testingModule: TestingModule;
@@ -65,8 +65,8 @@ describe('ProfileService', () => {
       expect(result).toEqual(true);
       expect(tag.name).toEqual('healthy');
       expect(profile.getTagByName('healthy')).toBeDefined();
-       const reloaded = await profileService.findProfileById(profile);
-       expect(reloaded.getTagByName('healthy').name).toBeDefined()
+      const reloaded = await profileService.findProfileById(profile);
+      expect(reloaded.getTagByName('healthy').name).toBeDefined();
     });
 
     it('update non existing tag', async () => {
@@ -98,11 +98,7 @@ describe('ProfileService', () => {
     it('add duplicate set', async () => {
       const { profile } = await testData.createUserAndProfile();
       await profileTagsService.mergeTags(profile, ['social']);
-      await profileTagsService.mergeTags(profile, [
-        'health',
-        'social',
-        'health',
-      ]);
+      await profileTagsService.mergeTags(profile, ['health', 'social', 'health']);
       expect(profile.tags.length).toEqual(2);
       expect(profile.tags[0].name).toEqual('social');
       expect(profile.tags[1].name).toEqual('health');

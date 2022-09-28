@@ -11,7 +11,6 @@ export const MAX_PROFILE_DESCRIPTION_LENGTH = 200;
 
 @Exclude()
 export class ProfileModel extends DocumentModel<ProfileModel> {
-
   @Expose()
   @IsString()
   @Length(MIN_PROFILE_NAME_LENGTH, MAX_PROFILE_NAME_LENGTH)
@@ -56,7 +55,7 @@ export enum ProfileUsage {
   Health = 'Health',
   School = 'School',
   Family = 'Family',
-  Improvement = 'Improvement'
+  Improvement = 'Improvement',
 }
 
 export enum BaseUserProfileRelationType {
@@ -81,12 +80,12 @@ export enum BaseProfileRelationRole {
   RequestedMember = 'member_requested',
   Follower = 'follower',
   User = 'user',
-  Visitor = 'visitor'
+  Visitor = 'visitor',
 }
 
 const multiUserProfiles = [ProfileType.Group, ProfileType.Organization];
 
-export function isMultiUserProfile(modelOrType?: ProfileModel|ProfileType) {
+export function isMultiUserProfile(modelOrType?: ProfileModel | ProfileType) {
   const type = modelOrType instanceof ProfileModel ? modelOrType.type : modelOrType;
   return type && multiUserProfiles.includes(type);
 }

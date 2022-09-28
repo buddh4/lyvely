@@ -1,28 +1,28 @@
 import { CalendarDate, toTimingId } from '@/calendar';
-import { DataPointIntervalFilter } from "./data-point.model";
-import { getTimingIdsByRange, TimeSeriesRangeFilter } from "./time-series-range-filter.model";
+import { DataPointIntervalFilter } from './data-point.model';
+import { getTimingIdsByRange, TimeSeriesRangeFilter } from './time-series-range-filter.model';
 
 export class LoadedTimingIdStore {
   private loadedTimingIds: Set<string> = new Set<string>();
 
   addLoadedTimingIds(ids: string[]) {
-    if(!ids || !ids.length) {
+    if (!ids || !ids.length) {
       return;
     }
 
-    for(const timingId of ids) {
+    for (const timingId of ids) {
       this.loadedTimingIds.add(timingId);
     }
   }
 
   filterOutLoadedTimingIds(requiredTimingIds: string[]) {
-    return requiredTimingIds.filter(requiredId => !this.loadedTimingIds.has(requiredId));
+    return requiredTimingIds.filter((requiredId) => !this.loadedTimingIds.has(requiredId));
   }
 
   getDataPointIntervalFilter(date: CalendarDate): DataPointIntervalFilter | false {
     const tid = toTimingId(date);
 
-    if(this.loadedTimingIds.has(tid)) {
+    if (this.loadedTimingIds.has(tid)) {
       return false;
     }
 

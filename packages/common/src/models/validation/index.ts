@@ -1,2 +1,2 @@
-export * from "./core.validators";
-export * from "./model.validator";
+export * from './core.validators';
+export * from './model.validator';

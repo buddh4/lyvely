@@ -1,6 +1,5 @@
 import { IsDefined, IsNumber } from 'class-validator';
-import { ModelValidator } from "@/models";
-
+import { ModelValidator } from '@/models';
 
 class TestIdModel {
   @IsNumber()

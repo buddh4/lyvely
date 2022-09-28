@@ -1,16 +1,13 @@
-import { isSameDay, UserAssignmentStrategy, getNumberEnumValues   , IDataPointConfig } from '@lyvely/common';
+import { isSameDay, UserAssignmentStrategy, getNumberEnumValues, IDataPointConfig } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
-import { Content, ContentEntity } from '../../content';
-import {
-  DataPointConfigFactory,
-  DefaultDataPointConfig,
-  DefaultDataPointConfigSchema,
-} from './config';
+import { Content, IContentEntity } from '../../content';
+import { DataPointConfigFactory, DefaultDataPointConfig, DefaultDataPointConfigSchema } from './config';
 import { EntityType } from '../../core/db/base.entity';
-import { TimeSeriesContentModel } from "@lyvely/common";
+import { TimeSeriesContentModel } from '@lyvely/common';
 
-type TimeSeriesContentEntity = ContentEntity & EntityType<TimeSeriesContent>;
-export type ITimeSeriesContentEntity<TDataPointConfig extends IDataPointConfig = DefaultDataPointConfig> = TimeSeriesContentModel<TDataPointConfig>
+type TimeSeriesContentEntity = IContentEntity & EntityType<TimeSeriesContent>;
+export type ITimeSeriesContentEntity<TDataPointConfig extends IDataPointConfig = DefaultDataPointConfig> =
+  TimeSeriesContentModel<TDataPointConfig>;
 
 /**
  * This class serves as base class for all time series content types and schemas. A subclass usually overwrites the
@@ -18,10 +15,12 @@ export type ITimeSeriesContentEntity<TDataPointConfig extends IDataPointConfig =
  * `dataPointConfigHistory` schema.
  */
 export abstract class TimeSeriesContent<
-  TContent extends TimeSeriesContentEntity = TimeSeriesContentEntity,
-  TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig>
-    extends Content<TContent>  implements ITimeSeriesContentEntity<TDataPointConfig> {
-
+    TContent extends TimeSeriesContentEntity = TimeSeriesContentEntity,
+    TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
+  >
+  extends Content<TContent>
+  implements ITimeSeriesContentEntity<TDataPointConfig>
+{
   @Prop({ type: Number, min: 0 })
   sortOrder: number;
 
@@ -38,21 +37,19 @@ export abstract class TimeSeriesContent<
   }
 
   getRevisionUpdatedAt(date: Date) {
-    if(!this.dataPointConfig?.history.length) {
+    if (!this.dataPointConfig?.history.length) {
       return false;
     }
 
-    return this.dataPointConfig.history.find(rev => isSameDay(rev.validUntil, date))
+    return this.dataPointConfig.history.find((rev) => isSameDay(rev.validUntil, date));
   }
 
   afterInit() {
     // in case plain object is given we create a class instance
-    if(this.dataPointConfig && !this.dataPointConfig.getSettings) {
+    if (this.dataPointConfig && !this.dataPointConfig.getSettings) {
       this.dataPointConfig = DataPointConfigFactory.createInstance(this.dataPointConfig.strategy, this.dataPointConfig);
     }
 
     super.afterInit();
   }
 }
-
-

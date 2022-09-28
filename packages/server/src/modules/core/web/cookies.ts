@@ -1,4 +1,4 @@
-export const Cookies =  {
+export const Cookies = {
   AUTHENTICATION: 'Authentication',
   REFRESH: 'Refresh',
 };

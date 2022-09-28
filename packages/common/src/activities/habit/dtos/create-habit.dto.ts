@@ -1,14 +1,13 @@
 import { Exclude, Expose } from 'class-transformer';
-import { CalendarIntervalEnum } from "@/calendar";
-import { DataPointNumberInputStrategy } from "@/time-series";
-import { UserAssignmentStrategy } from "@/collab";
+import { CalendarIntervalEnum } from '@/calendar';
+import { DataPointNumberInputStrategy } from '@/time-series';
+import { UserAssignmentStrategy } from '@/collab';
 import { IsEnum, IsInt, IsNotEmpty, IsString, Length, Min, Max, IsOptional, IsArray, MaxLength } from 'class-validator';
-import { BaseModel, Gte, Lte } from "@/models";
-import { ActivityModel } from "../../models";
+import { BaseModel, Gte, Lte } from '@/models';
+import { ActivityModel } from '../../models';
 
 @Exclude()
 export class CreateHabitDto extends BaseModel<CreateHabitDto> {
-
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -77,6 +76,6 @@ export class CreateHabitDto extends BaseModel<CreateHabitDto> {
     this.optimal = Math.min(this.optimal ?? this.min, this.max);
     this.strategy = this.strategy ?? DataPointNumberInputStrategy.CheckboxNumber;
     this.userStrategy = this.userStrategy ?? UserAssignmentStrategy.Shared;
-    this.tagNames = this.tagNames || []
+    this.tagNames = this.tagNames || [];
   }
 }

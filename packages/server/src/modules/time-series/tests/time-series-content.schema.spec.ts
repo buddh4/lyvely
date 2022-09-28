@@ -7,7 +7,7 @@ import { Content, ContentSchema } from '../../content';
 import {
   TestTimeSeriesContent,
   TestTimeSeriesContentDocument,
-  TestTimeSeriesContentSchema
+  TestTimeSeriesContentSchema,
 } from './src/test-time-series-content.schema';
 import { Model } from 'mongoose';
 import { CalendarIntervalEnum, DataPointInputStrategy } from '@lyvely/common';
@@ -18,10 +18,8 @@ const ContentModels = [
     name: Content.name,
     collection: Content.collectionName(),
     schema: ContentSchema,
-    discriminators: [
-      { name: TestTimeSeriesContent.name, schema: TestTimeSeriesContentSchema },
-    ],
-  }
+    discriminators: [{ name: TestTimeSeriesContent.name, schema: TestTimeSeriesContentSchema }],
+  },
 ];
 
 describe('TimeSeriesContentSchema', () => {
@@ -54,7 +52,12 @@ describe('TimeSeriesContentSchema', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
-        dataPointConfig: new CheckboxNumberDataPointConfig({ interval: CalendarIntervalEnum.Daily, min: 0, max: 5, optimal: 3 })
+        dataPointConfig: new CheckboxNumberDataPointConfig({
+          interval: CalendarIntervalEnum.Daily,
+          min: 0,
+          max: 5,
+          optimal: 3,
+        }),
       });
 
       delete model.dataPointConfig;
@@ -72,14 +75,19 @@ describe('TimeSeriesContentSchema', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
-        dataPointConfig: new CheckboxNumberDataPointConfig({ interval: CalendarIntervalEnum.Daily, min: 0, max: 5, optimal: 3 })
+        dataPointConfig: new CheckboxNumberDataPointConfig({
+          interval: CalendarIntervalEnum.Daily,
+          min: 0,
+          max: 5,
+          optimal: 3,
+        }),
       });
 
       const entity = new TestTimeSeriesContentModel(model);
       await entity.save();
 
       expect(entity._id).toBeDefined();
-      const dataPointConfig = <CheckboxNumberDataPointConfig> entity.dataPointConfig;
+      const dataPointConfig = <CheckboxNumberDataPointConfig>entity.dataPointConfig;
       expect(dataPointConfig.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
       expect(dataPointConfig.min).toEqual(0);
       expect(dataPointConfig.max).toEqual(5);
@@ -90,9 +98,14 @@ describe('TimeSeriesContentSchema', () => {
   describe('save()', () => {
     it('construct data series content model from entity', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const model = new TestTimeSeriesContent(profile, user,{
+      const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
-        dataPointConfig: new CheckboxNumberDataPointConfig({ interval: CalendarIntervalEnum.Daily, min: 0, max: 5, optimal: 3 })
+        dataPointConfig: new CheckboxNumberDataPointConfig({
+          interval: CalendarIntervalEnum.Daily,
+          min: 0,
+          max: 5,
+          optimal: 3,
+        }),
       });
 
       const entity = new TestTimeSeriesContentModel(model);
@@ -101,7 +114,7 @@ describe('TimeSeriesContentSchema', () => {
       const newModel = new TestTimeSeriesContent(profile, user, entity.toObject());
 
       expect(newModel.id).toBeDefined();
-      const dataPointConfig = <CheckboxNumberDataPointConfig> newModel.dataPointConfig;
+      const dataPointConfig = <CheckboxNumberDataPointConfig>newModel.dataPointConfig;
       expect(dataPointConfig instanceof CheckboxNumberDataPointConfig).toEqual(true);
       expect(dataPointConfig.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
       expect(dataPointConfig.min).toEqual(0);
@@ -113,11 +126,16 @@ describe('TimeSeriesContentSchema', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
-        dataPointConfig: <CheckboxNumberDataPointConfig> { interval: CalendarIntervalEnum.Daily,
-          strategy: DataPointInputStrategy.RangeNumber, min: 0, max: 5, optimal: 3 }
+        dataPointConfig: <CheckboxNumberDataPointConfig>{
+          interval: CalendarIntervalEnum.Daily,
+          strategy: DataPointInputStrategy.RangeNumber,
+          min: 0,
+          max: 5,
+          optimal: 3,
+        },
       });
 
-      const dataPointConfig = <CheckboxNumberDataPointConfig> model.dataPointConfig;
+      const dataPointConfig = <CheckboxNumberDataPointConfig>model.dataPointConfig;
       expect(dataPointConfig instanceof RangeNumberDataPointConfig).toEqual(true);
       expect(dataPointConfig.strategy).toEqual(DataPointInputStrategy.RangeNumber);
       expect(dataPointConfig.min).toEqual(0);

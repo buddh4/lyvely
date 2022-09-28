@@ -1,21 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { getDefaultLocale, User } from '../../users';
-import  mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { BaseEntity } from '../../core/db/base.entity';
-import { Tag, TagSchema, } from '../../tags';
+import { Tag, TagSchema } from '../../tags';
 import {
-  ProfileVisibilityLevel ,
+  ProfileVisibilityLevel,
   getNumberEnumValues,
   PropertiesOf,
   ProfileModel,
   MIN_PROFILE_NAME_LENGTH,
   MAX_PROFILE_NAME_LENGTH,
-  MAX_PROFILE_DESCRIPTION_LENGTH
+  MAX_PROFILE_DESCRIPTION_LENGTH,
 } from '@lyvely/common';
 
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-role-permissions.schema';
-import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
-import { ProfileType, BaseModel, PropertyType, ProfileUsage } from "@lyvely/common";
+import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { ProfileType, BaseModel, PropertyType, ProfileUsage } from '@lyvely/common';
 
 @Schema({ _id: false })
 class ProfileMetadata extends BaseModel<ProfileMetadata> {
@@ -32,7 +32,6 @@ const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Profile extends BaseEntity<Profile> implements PropertiesOf<ProfileModel> {
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   ownerId: TObjectId;
 
@@ -67,10 +66,15 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   type: ProfileType;
 
-  @Prop({ type: Number, required: true, enum: getNumberEnumValues(ProfileVisibilityLevel), default: ProfileVisibilityLevel.Member })
+  @Prop({
+    type: Number,
+    required: true,
+    enum: getNumberEnumValues(ProfileVisibilityLevel),
+    default: ProfileVisibilityLevel.Member,
+  })
   visibility: ProfileVisibilityLevel;
 
-  @Prop( { type: [ProfileRolePermissionSchema], default: [] })
+  @Prop({ type: [ProfileRolePermissionSchema], default: [] })
   permissions: ProfileRolePermission[];
 
   @Prop({ type: [TagSchema], default: [] })
@@ -83,7 +87,7 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   updatedAt: Date;
 
-  constructor(owner: EntityIdentity<User>, obj?: Partial<Profile>){
+  constructor(owner: EntityIdentity<User>, obj?: Partial<Profile>) {
     super(obj);
 
     this.ownerId = assureObjectId(owner);
@@ -91,7 +95,7 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
     // We need to assign an oid even if this profile is not connected to an organizations for sharding and query index.
     // This OID can later be used to create an organization out of this profile
-    if(!this.oid) {
+    if (!this.oid) {
       this.oid = new mongoose.Types.ObjectId();
       this.hasOrg = false;
     } else {
@@ -107,31 +111,31 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   afterInit() {
     super.afterInit();
-    this.tags = this.tags?.map(category => (category instanceof Tag) ? category : new Tag(category)) || [];
+    this.tags = this.tags?.map((category) => (category instanceof Tag ? category : new Tag(category))) || [];
   }
 
   getTagByName(name: string) {
-    return this.tags.find(tag => tag.name === name);
+    return this.tags.find((tag) => tag.name === name);
   }
 
   getTagsByName(tagNames: string[]) {
-    return this.tags.filter(tag => tagNames.includes(tag.name));
+    return this.tags.filter((tag) => tagNames.includes(tag.name));
   }
 
   getTagById(id: TObjectId) {
-    return this.tags.find(tag => tag._id.equals(id));
+    return this.tags.find((tag) => tag._id.equals(id));
   }
 
   getTagsById(tagIds: TObjectId[]) {
-    return this.tags.filter(tag => tagIds.includes(tag._id));
+    return this.tags.filter((tag) => tagIds.includes(tag._id));
   }
 
   getNewTags() {
-    return this.tags.filter(tag => tag.isNew);
+    return this.tags.filter((tag) => tag.isNew);
   }
 
   getPermissionsByRole(role: string) {
-    if(!this.permissions?.length) {
+    if (!this.permissions?.length) {
       return [];
     }
 

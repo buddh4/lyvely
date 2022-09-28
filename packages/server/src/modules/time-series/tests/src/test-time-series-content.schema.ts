@@ -1,8 +1,12 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import {
-  CheckboxNumberDataPointConfig, NumberTimeSeriesContent, SpinnerNumberDataPointConfig,
-  TimeSeriesContent, TimeSeriesContentSchemaFactory,
-  DefaultDataPointConfigSchema, DefaultDataPointConfig
+  CheckboxNumberDataPointConfig,
+  NumberTimeSeriesContent,
+  SpinnerNumberDataPointConfig,
+  TimeSeriesContent,
+  TimeSeriesContentSchemaFactory,
+  DefaultDataPointConfigSchema,
+  DefaultDataPointConfig,
 } from '../../schemas';
 import * as mongoose from 'mongoose';
 import { DataPointInputStrategy } from '@lyvely/common';
@@ -23,7 +27,6 @@ export const TestTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.create
   DataPointInputStrategy.TextareaText,
 ]);
 
-
 @Schema()
 export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNumberTimeSeriesContent> {
   @Prop()
@@ -34,7 +37,7 @@ export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNum
 }
 
 export type TestNumberTimeSeriesContentDocument = TestNumberTimeSeriesContent & mongoose.Document;
-export const TestNumberTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(TestNumberTimeSeriesContent, [
-  DataPointInputStrategy.CheckboxNumber,
-  DataPointInputStrategy.TextareaText,
-]);
+export const TestNumberTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(
+  TestNumberTimeSeriesContent,
+  [DataPointInputStrategy.CheckboxNumber, DataPointInputStrategy.TextareaText],
+);

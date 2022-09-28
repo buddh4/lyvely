@@ -2,14 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { User } from './schemas';
 import { UserDao } from './daos';
 import { RefreshToken } from './schemas';
-import { ProfileType } from "@lyvely/common";
-import { BaseQueryOptions } from "../core/db/abstract.dao";
+import { ProfileType } from '@lyvely/common';
+import { IBaseQueryOptions } from '../core/db/abstract.dao';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private userDao: UserDao,
-  ) {}
+  constructor(private userDao: UserDao) {}
 
   /**
    * Returns a user by their unique username or null.
@@ -19,7 +17,7 @@ export class UsersService {
    * @memberof UsersService
    */
   async findUserByUsername(username: string): Promise<User | null> {
-    if(!username) {
+    if (!username) {
       return null;
     }
 
@@ -27,7 +25,7 @@ export class UsersService {
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
-    if(!email) {
+    if (!email) {
       return null;
     }
 
@@ -39,20 +37,20 @@ export class UsersService {
    * @param id
    */
   async findUserById(id: string): Promise<User | null> {
-    if(!id) {
+    if (!id) {
       return null;
     }
 
     return this.userDao.findById(id);
   }
 
-  async incProfileCount(owner: User, type: ProfileType, options?: BaseQueryOptions) {
-    return this.userDao.incrementProfileCount(owner, type, 1, options)
+  async incProfileCount(owner: User, type: ProfileType, options?: IBaseQueryOptions) {
+    return this.userDao.incrementProfileCount(owner, type, 1, options);
   }
 
   async setVisitorRefreshTokenHash(user: User, visitorId: string, token: RefreshToken) {
     // TODO: check if the user already has a token with the given vid, then either create or updae one
-    if(user.getRefreshTokenByVisitorId(visitorId)) {
+    if (user.getRefreshTokenByVisitorId(visitorId)) {
       await this.userDao.updateRefreshToken(user, token);
     } else {
       await this.userDao.createRefreshToken(user, token);

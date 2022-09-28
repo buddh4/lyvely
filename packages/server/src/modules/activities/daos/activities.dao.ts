@@ -8,21 +8,20 @@ import {
   isTask,
   isHabit,
   ActivityModel,
-  SortResult
+  SortResult,
 } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { AbstractContentDao } from '../../content';
 import { Activity, ActivityDocument, Habit, Task } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { FetchQueryOptions, UpdateQuerySet } from '../../core/db/abstract.dao';
-import module from "../activities.meta";
-import { User } from "../../users";
-import { ProfileType } from "@lyvely/common";
+import { IFetchQueryOptions, UpdateQuerySet } from '../../core/db/abstract.dao';
+import module from '../activities.meta';
+import { User } from '../../users';
+import { ProfileType } from '@lyvely/common';
 
 @Injectable()
 export class ActivitiesDao extends AbstractContentDao<Activity> {
-
   constructor(@InjectModel(Activity.name) protected model: Model<ActivityDocument>) {
     super();
   }
@@ -35,46 +34,58 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
    * @param tIds
    * @param options
    */
-  async findByProfileAndTimingIds(profile: Profile, user: User, tIds: string[], options?: FetchQueryOptions<Activity>): Promise<Activity[]> {
+  async findByProfileAndTimingIds(
+    profile: Profile,
+    user: User,
+    tIds: string[],
+    options?: IFetchQueryOptions<Activity>,
+  ): Promise<Activity[]> {
     // TODO: content visibility and state?
 
-    if(!profile.isOfType(ProfileType.Group)) {
+    if (!profile.isOfType(ProfileType.Group)) {
       // Just a small optimization for non group profiles
-      return this.findAllByProfile(profile,{
+      return this.findAllByProfile(
+        profile,
+        {
+          $or: [
+            { type: ActivityType.Habit },
+            {
+              type: ActivityType.Task,
+              $or: [{ doneBy: [] }, { doneBy: { $elemMatch: { tid: { $in: tIds } } } }],
+            },
+          ],
+        },
+        options,
+      );
+    }
+
+    const uid = assureObjectId(user);
+
+    return this.findAllByProfile(
+      profile,
+      {
         $or: [
           { type: ActivityType.Habit },
           {
             type: ActivityType.Task,
             $or: [
               { doneBy: [] },
-              { doneBy: { $elemMatch: { tid: { $in: tIds } } } },
-            ]
+              // We ignore which user done the task on shared tasks
+              { userStrategy: UserAssignmentStrategy.Shared, doneBy: { $elemMatch: { tid: { $in: tIds } } } },
+              // On per user tasks we only include tasks not done by the given user or done by the given user within the given tid
+              {
+                userStrategy: UserAssignmentStrategy.PerUser,
+                $or: [
+                  { doneBy: { $elemMatch: { uid: uid, tid: { $in: tIds } } } },
+                  { doneBy: { $not: { $elemMatch: { uid: uid } } } },
+                ],
+              },
+            ],
           },
         ],
-      }, options);
-    }
-
-    const uid = assureObjectId(user);
-
-    return this.findAllByProfile(profile, {
-      $or: [
-        { type: ActivityType.Habit },
-        {
-          type: ActivityType.Task,
-          $or: [
-            { doneBy: [] },
-            // We ignore which user done the task on shared tasks
-            { userStrategy: UserAssignmentStrategy.Shared, 'doneBy': { $elemMatch: { tid: { $in: tIds } } } },
-            // On per user tasks we only include tasks not done by the given user or done by the given user within the given tid
-            { userStrategy: UserAssignmentStrategy.PerUser,
-              $or: [
-                { 'doneBy': { $elemMatch: { uid: uid, tid: { $in: tIds } } } },
-                { 'doneBy': { $not: { $elemMatch: { uid: uid } } } },
-              ] },
-          ]
-        },
-      ],
-    }, options);
+      },
+      options,
+    );
   }
 
   /**
@@ -90,13 +101,16 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
     profile: Profile,
     type: string,
     plan: CalendarIntervalEnum,
-    options: FetchQueryOptions<Activity> = {},
+    options: IFetchQueryOptions<Activity> = {},
   ): Promise<Activity[]> {
-
-    return this.findAllByProfile(profile, {
-      type: type,
-      'dataPointConfig.interval': plan,
-    }, options);
+    return this.findAllByProfile(
+      profile,
+      {
+        type: type,
+        'dataPointConfig.interval': plan,
+      },
+      options,
+    );
   }
 
   /**
@@ -104,14 +118,14 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
    * @param activities
    */
   async updateSortOrder(activities: Activity[]): Promise<SortResult[]> {
-    const updates:  { id: EntityIdentity<Activity>, update: UpdateQuerySet<Activity> }[] = [];
-    const result: { id: string, sortOrder: number }[] = [];
+    const updates: { id: EntityIdentity<Activity>; update: UpdateQuerySet<Activity> }[] = [];
+    const result: { id: string; sortOrder: number }[] = [];
 
     activities.forEach((activity, index) => {
-      if(activity.sortOrder !== index) {
+      if (activity.sortOrder !== index) {
         updates.push({ id: activity._id, update: { sortOrder: index } });
         activity.sortOrder = index;
-        result.push( new SortResult({ id: activity.id, sortOrder: index }))
+        result.push(new SortResult({ id: activity.id, sortOrder: index }));
       }
     });
 
@@ -124,11 +138,11 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
   }
 
   getModelConstructor(model?: DeepPartial<Activity>) {
-    if(isTask(model as ActivityModel)) {
+    if (isTask(model as ActivityModel)) {
       return Task;
     }
 
-    if(isHabit(model as ActivityModel)) {
+    if (isHabit(model as ActivityModel)) {
       return Habit;
     }
 
@@ -139,4 +153,3 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
     return module.id;
   }
 }
-

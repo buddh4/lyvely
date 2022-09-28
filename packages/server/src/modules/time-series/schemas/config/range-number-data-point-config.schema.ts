@@ -5,7 +5,6 @@ import { DataPointConfigSchemaFactory } from './data-point-config-schema.factory
 
 @Schema()
 export class RangeNumberDataPointConfig extends NumberDataPointConfig {
-
   strategy = DataPointInputStrategy.RangeNumber;
 
   @Prop({ enum: [DataPointInputType.Range] })
@@ -16,5 +15,7 @@ export class RangeNumberDataPointConfig extends NumberDataPointConfig {
   }
 }
 
-export const RangeNumberDataPointConfigSchema
-  = DataPointConfigSchemaFactory.createForClass(DataPointInputStrategy.RangeNumber, RangeNumberDataPointConfig);
+export const RangeNumberDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
+  DataPointInputStrategy.RangeNumber,
+  RangeNumberDataPointConfig,
+);

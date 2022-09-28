@@ -1,28 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { BaseEntity } from "@server/modules/core";
+import { BaseEntity } from '@/modules/core';
 import { User } from '../../users';
 import { Profile } from './profiles.schema';
-import { DeepPartial, toDate, UserAssignmentStrategy, CalendarDate } from "@lyvely/common";
-import { toTimingId } from "@lyvely/common";
+import { DeepPartial, toDate, UserAssignmentStrategy, CalendarDate } from '@lyvely/common';
+import { toTimingId } from '@lyvely/common';
 
 export interface IProfileScoreAction {
   _id: TObjectId;
-  oid?: TObjectId,
-  pid: TObjectId,
-  uid?: TObjectId,
-  createdBy: TObjectId,
-  tid: string,
-  type: string,
-  score: number
+  oid?: TObjectId;
+  pid: TObjectId;
+  uid?: TObjectId;
+  createdBy: TObjectId;
+  tid: string;
+  type: string;
+  score: number;
 }
 
-export interface CreateProfileScore {
-  user: User,
-  profile: Profile,
-  score: number,
-  date?: CalendarDate,
-  userStrategy?: UserAssignmentStrategy
+export interface ICreateProfileScore {
+  user: User;
+  profile: Profile;
+  score: number;
+  date?: CalendarDate;
+  userStrategy?: UserAssignmentStrategy;
 }
 
 /**
@@ -31,8 +31,7 @@ export interface CreateProfileScore {
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class ProfileScore<C extends IProfileScoreAction = IProfileScoreAction> extends BaseEntity<C> {
-
-  constructor(options: CreateProfileScore, data: DeepPartial<C> = {}) {
+  constructor(options: ICreateProfileScore, data: DeepPartial<C> = {}) {
     const { user, profile } = options;
     data.createdBy = data.createdBy || user._id;
     data.score = options.score;
@@ -40,7 +39,7 @@ export class ProfileScore<C extends IProfileScoreAction = IProfileScoreAction> e
     data.oid = profile.oid;
 
     const strategy = options.userStrategy ?? UserAssignmentStrategy.PerUser;
-    if(strategy === UserAssignmentStrategy.PerUser) {
+    if (strategy === UserAssignmentStrategy.PerUser) {
       data.uid = user._id;
     } else {
       data.uid = null;
@@ -60,7 +59,7 @@ export class ProfileScore<C extends IProfileScoreAction = IProfileScoreAction> e
   @Prop({ type: mongoose.Schema.Types.ObjectId })
   uid?: TObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId,  required: true  })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: TObjectId;
 
   @Prop({ type: String, required: true })

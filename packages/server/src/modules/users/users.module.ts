@@ -4,9 +4,7 @@ import { User, UserSchema } from './schemas/users.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserDao } from './daos/user.dao';
 
-const UserModel = MongooseModule.forFeature([
-  { name: User.name, schema: UserSchema },
-]);
+const UserModel = MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]);
 
 @Module({
   imports: [UserModel],

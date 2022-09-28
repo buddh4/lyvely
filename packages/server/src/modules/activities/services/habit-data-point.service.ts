@@ -4,13 +4,12 @@ import { NumberDataPointService } from '../../time-series';
 import { CalendarDate } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { User } from '../../users';
-import { HabitDataPointDao } from "../daos/habit-data-point.dao";
-import { ActivityScore } from "../schemas/activity-score.schema";
-import { ContentScoreService } from "../../content";
+import { HabitDataPointDao } from '../daos/habit-data-point.dao';
+import { ActivityScore } from '../schemas/activity-score.schema';
+import { ContentScoreService } from '../../content';
 
 @Injectable()
 export class HabitDataPointService extends NumberDataPointService<Habit, HabitDataPoint> {
-
   @Inject()
   protected dataPointDao: HabitDataPointDao;
 
@@ -25,14 +24,17 @@ export class HabitDataPointService extends NumberDataPointService<Habit, HabitDa
     const oldScore = HabitDataPointService.calculateLogScore(habit, oldValue);
     const newScore = HabitDataPointService.calculateLogScore(habit, newValue);
 
-    await this.scoreService.saveScore(profile, new ActivityScore({
+    await this.scoreService.saveScore(
       profile,
-      user,
-      content: habit,
-      userStrategy: habit.userStrategy,
-      score: newScore - oldScore,
-      date: dataPoint.date
-    }));
+      new ActivityScore({
+        profile,
+        user,
+        content: habit,
+        userStrategy: habit.userStrategy,
+        score: newScore - oldScore,
+        date: dataPoint.date,
+      }),
+    );
   }
 
   private static calculateLogScore(activity: Activity, units: number): number {

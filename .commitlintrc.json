@@ -4,8 +4,14 @@
     "subject-case": [
       2,
       "always",
+      ["sentence-case", "start-case", "pascal-case", "upper-case", "lower-case"]
+    ],
+    "type-enum": [
+      2,
+      "always",
       [
         "build",
+        "chore",
         "docs",
         "ci",
         "feat",
@@ -20,6 +26,7 @@
       1,
       "always",
       [
+        "mixed",
         "common",
         "web",
         "server"

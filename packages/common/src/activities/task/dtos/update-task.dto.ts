@@ -1,14 +1,12 @@
 import { IsArray, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Length, Max, MaxLength, Min } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
-import { CalendarIntervalEnum } from "@/calendar";
-import { BaseModel } from "@/models";
-import { isActivity } from "../../models";
-import { ActivityModel } from "../../models";
-import { UserAssignmentStrategy } from "@/collab";
+import { CalendarIntervalEnum } from '@/calendar';
+import { BaseModel } from '@/models';
+import { isActivity, ActivityModel } from '../../models';
+import { UserAssignmentStrategy } from '@/collab';
 
 @Exclude()
 export class UpdateTaskDto extends BaseModel<UpdateTaskDto> {
-
   @Expose()
   @IsOptional()
   @IsString()

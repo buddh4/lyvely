@@ -1,5 +1,10 @@
-
-import { ProfilesService, Profile, UserWithProfileAndRelations, ProfileRelation, ProfileTagsService } from '../../profiles';
+import {
+  ProfilesService,
+  Profile,
+  UserWithProfileAndRelations,
+  ProfileRelation,
+  ProfileTagsService,
+} from '../../profiles';
 import { AbstractContentDao } from '../daos';
 import { User } from '../../users';
 import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
@@ -9,7 +14,6 @@ import { Inject } from '@nestjs/common';
 import { UpdateQuerySet } from '../../core/db/abstract.dao';
 
 export abstract class AbstractContentService<T extends Content> {
-
   @Inject()
   protected profileService: ProfilesService;
 
@@ -18,18 +22,18 @@ export abstract class AbstractContentService<T extends Content> {
 
   constructor(protected contentDao: AbstractContentDao<T>) {}
 
-  async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T|null> {
-    return this.contentDao.findById(id)
+  async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T | null> {
+    return this.contentDao.findById(id);
   }
 
   protected async mergeTags(profile, model: T, tagNames?: string[]) {
-    if(!tagNames) {
+    if (!tagNames) {
       return;
     }
 
     model.tagIds = [];
     await this.profileTagsService.mergeTags(profile, tagNames);
-    tagNames.forEach(tagName => model.addTag(profile.getTagByName(tagName)));
+    tagNames.forEach((tagName) => model.addTag(profile.getTagByName(tagName)));
   }
 
   async createContent(profile: Profile, user: User, model: T, tagNames?: string[]): Promise<T> {
@@ -39,32 +43,43 @@ export abstract class AbstractContentService<T extends Content> {
   }
 
   protected async mergeTagsForUpdate(profile: Profile, update: UpdateQuerySet<T>, tagNames?: string[]) {
-    if(!tagNames) {
+    if (!tagNames) {
       return;
     }
 
     await this.profileTagsService.mergeTags(profile, tagNames);
     update.tagIds = [];
-    tagNames.forEach(tagName => {
+    tagNames.forEach((tagName) => {
       const tag = profile.getTagByName(tagName);
-      if(tag) {
-        update.tagIds.push(tag._id)
+      if (tag) {
+        update.tagIds.push(tag._id);
       }
     });
   }
 
-  async findContentAndUpdate(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>, tagNames?: string[]) {
+  async findContentAndUpdate(
+    profile: Profile,
+    user: User,
+    id: EntityIdentity<T>,
+    update: UpdateQuerySet<T>,
+    tagNames?: string[],
+  ) {
     await this.mergeTagsForUpdate(profile, update, tagNames);
-        // TODO: set updatedBy on content
+    // TODO: set updatedBy on content
     return this.contentDao.findOneAndSetById(id, update);
   }
 
-  async updateContent(profile: Profile, user: User, id: EntityIdentity<T>, update: UpdateQuerySet<T>, tagNames?: string[]) {
+  async updateContent(
+    profile: Profile,
+    user: User,
+    id: EntityIdentity<T>,
+    update: UpdateQuerySet<T>,
+    tagNames?: string[],
+  ) {
     await this.mergeTagsForUpdate(profile, update, tagNames);
     // TODO: set updatedBy on content
     return this.contentDao.updateOneSetById(id, update);
   }
-
 
   /**
    * Archives a content, only if the user has the required write permissions.
@@ -97,14 +112,17 @@ export abstract class AbstractContentService<T extends Content> {
    * @private
    * @throws EntityNotFoundException
    */
-  public async findContentByProfileAndId(profileRelation: ProfileRelation, id: EntityIdentity<T>, throwException = true): Promise<T> {
+  public async findContentByProfileAndId(
+    profileRelation: ProfileRelation,
+    id: EntityIdentity<T>,
+    throwException = true,
+  ): Promise<T> {
     const content = await this.contentDao.findByProfileAndId(profileRelation, id);
 
-    if(!content && throwException) {
+    if (!content && throwException) {
       throw new EntityNotFoundException();
     }
 
     return content;
   }
-
 }

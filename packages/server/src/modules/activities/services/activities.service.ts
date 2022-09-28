@@ -6,20 +6,17 @@ import { ActivitiesDao } from '../daos/activities.dao';
 import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
 import { AbstractContentService } from '../../content';
 import { HabitDataPointService } from './habit-data-point.service';
-import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum, SortResult } from "@lyvely/common";
-import { IntegrityException } from "../../core/exceptions";
+import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum, SortResult } from '@lyvely/common';
+import { IntegrityException } from '../../core/exceptions';
 
 interface ActivitySearchResult {
-  activities: Activity[],
-  dataPoints: HabitDataPoint[]
+  activities: Activity[];
+  dataPoints: HabitDataPoint[];
 }
 
 @Injectable()
 export class ActivitiesService extends AbstractContentService<Activity> {
-
-  constructor(
-    protected contentDao: ActivitiesDao,
-    protected activityDataPointService: HabitDataPointService) {
+  constructor(protected contentDao: ActivitiesDao, protected activityDataPointService: HabitDataPointService) {
     super(contentDao);
   }
 
@@ -40,7 +37,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
   async findByFilter(profile: Profile, user: User, filter: DataPointIntervalFilter): Promise<ActivitySearchResult> {
     // Find all calendar ids for the given search date and filter out by filter level
     const tIds = getTimingIds(filter.search);
-    if(filter.level > 0) {
+    if (filter.level > 0) {
       tIds.splice(0, filter.level);
     }
 
@@ -70,31 +67,34 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    * @param interval
    * @throws ForbiddenServiceException
    */
-  async sort(profile: Profile, user: User, activity: Activity, interval?: CalendarIntervalEnum, attachToId?: EntityIdentity<Activity>): Promise<SortResult[]> {
+  async sort(
+    profile: Profile,
+    user: User,
+    activity: Activity,
+    interval?: CalendarIntervalEnum,
+    attachToId?: EntityIdentity<Activity>,
+  ): Promise<SortResult[]> {
     interval = interval ?? activity.dataPointConfig.interval;
 
     const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
 
-    if(attachToObjectId && activity._id.equals(attachToObjectId)) {
+    if (attachToObjectId && activity._id.equals(attachToObjectId)) {
       return Promise.resolve([]);
     }
 
     const attachTo = attachToObjectId ? await this.contentDao.findByProfileAndId(profile, attachToObjectId) : undefined;
 
-    if(attachTo && activity.type !== attachTo.type) {
+    if (attachTo && activity.type !== attachTo.type) {
       throw new IntegrityException('Can not merge habit with task');
     }
 
-    interval = attachTo
-      ? attachTo.dataPointConfig.interval
-      : interval ? interval
-      : activity.dataPointConfig.interval;
+    interval = attachTo ? attachTo.dataPointConfig.interval : interval ? interval : activity.dataPointConfig.interval;
 
-    if(interval !== activity.dataPointConfig.interval) {
+    if (interval !== activity.dataPointConfig.interval) {
       // Create new revision for activity in case the latest revision was not today
       const update = { 'dataPointConfig.interval': interval };
 
-      if(activity instanceof Habit && !activity.getRevisionUpdatedAt(new Date())) {
+      if (activity instanceof Habit && !activity.getRevisionUpdatedAt(new Date())) {
         activity.pushDataPointConfigRevision(activity.dataPointConfig);
         update['dataPointConfig.history'] = activity.dataPointConfig.history;
       }
@@ -105,15 +105,13 @@ export class ActivitiesService extends AbstractContentService<Activity> {
 
     const activitiesByInterval = await this.contentDao.findByProfileAndInterval(profile, activity.type, interval, {
       excludeIds: activity._id,
-      sort: { sortOrder: 1 }
+      sort: { sortOrder: 1 },
     });
 
     const newIndex = attachTo ? attachTo.sortOrder + 1 : 0;
     activitiesByInterval.splice(newIndex, 0, activity);
 
     return await this.contentDao.updateSortOrder(activitiesByInterval);
-
-
 
     /*const { content: activity, profile } = await this.findWritableContentAndProfile(user, identity);
 

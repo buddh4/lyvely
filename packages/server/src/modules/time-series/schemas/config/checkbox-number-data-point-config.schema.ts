@@ -5,7 +5,6 @@ import { DataPointConfigSchemaFactory } from './data-point-config-schema.factory
 
 @Schema()
 export class CheckboxNumberDataPointConfig extends NumberDataPointConfig {
-
   strategy = DataPointInputStrategy.CheckboxNumber;
 
   @Prop({ enum: [DataPointInputType.Checkbox] })
@@ -16,5 +15,7 @@ export class CheckboxNumberDataPointConfig extends NumberDataPointConfig {
   }
 }
 
-export const CheckboxNumberDataPointConfigSchema
-  = DataPointConfigSchemaFactory.createForClass(DataPointInputStrategy.CheckboxNumber, CheckboxNumberDataPointConfig);
+export const CheckboxNumberDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
+  DataPointInputStrategy.CheckboxNumber,
+  CheckboxNumberDataPointConfig,
+);

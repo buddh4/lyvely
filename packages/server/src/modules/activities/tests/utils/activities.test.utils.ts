@@ -2,20 +2,27 @@ import { Injectable, Provider } from '@nestjs/common';
 import { User } from '../../../users';
 import { Profile, ProfileScore } from '../../../profiles';
 import {
-  Activity, HabitDataPoint, HabitDataPointDocument, HabitDataPointSchema,
+  Activity,
+  HabitDataPoint,
+  HabitDataPointDocument,
+  HabitDataPointSchema,
   ActivitySchema,
   Habit,
   HabitDocument,
   HabitSchema,
   Task,
   TaskDocument,
-  TaskSchema
+  TaskSchema,
 } from '../../schemas';
 import {
   toTimingId,
   CalendarDate,
   CalendarIntervalEnum,
-  CreateHabitDto, CreateTaskDto, HabitModel, toDate, TaskWithUsersModel
+  CreateHabitDto,
+  CreateTaskDto,
+  HabitModel,
+  toDate,
+  TaskWithUsersModel,
 } from '@lyvely/common';
 
 import { InjectModel } from '@nestjs/mongoose';
@@ -29,12 +36,11 @@ import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-refe
 import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { TestDataUtils } from '../../../test/utils/test-data.utils';
 import { assureObjectId, EntityIdentity } from '../../../core/db/db.utils';
-import { ActivityScore, ActivityScoreSchema } from "../../schemas/activity-score.schema";
-import { createBaseEntityInstance } from "../../../core/db/db.utils";
+import { ActivityScore, ActivityScoreSchema } from '../../schemas/activity-score.schema';
+import { createBaseEntityInstance } from '../../../core/db/db.utils';
 
 @Injectable()
 export class ActivityTestDataUtil extends TestDataUtils {
-
   @InjectModel(Habit.name)
   protected HabitModel: Model<HabitDocument>;
 
@@ -44,17 +50,16 @@ export class ActivityTestDataUtil extends TestDataUtils {
   @InjectModel(HabitDataPoint.name)
   protected HabitDataPointModel: Model<HabitDataPointDocument>;
 
-
   static getDateToday(): Date {
     return new Date();
   }
 
   static getDateTomorrow(): Date {
-    return new Date(new Date().setDate(new Date().getDate() + 1))
+    return new Date(new Date().setDate(new Date().getDate() + 1));
   }
 
   static getDateYesterday(): Date {
-    return new Date(new Date().setDate(new Date().getDate() - 1))
+    return new Date(new Date().setDate(new Date().getDate() - 1));
   }
 
   static getTodayTimingId() {
@@ -83,8 +88,15 @@ export class ActivityTestDataUtil extends TestDataUtils {
     return createBaseEntityInstance(HabitDataPoint, log.toObject());
   }
 
-  async createTask(user: User, profile: Profile, data?: Partial<CreateTaskDto>, overwrite?: Partial<TaskWithUsersModel>): Promise<Task> {
-    const initData = <CreateTaskDto> Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {});
+  async createTask(
+    user: User,
+    profile: Profile,
+    data?: Partial<CreateTaskDto>,
+    overwrite?: Partial<TaskWithUsersModel>,
+  ): Promise<Task> {
+    const initData = <CreateTaskDto>(
+      Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {})
+    );
     const task = new this.TaskModel(Task.create(profile, user, initData));
 
     Object.assign(task, overwrite);
@@ -94,8 +106,15 @@ export class ActivityTestDataUtil extends TestDataUtils {
     return createBaseEntityInstance(Task, task.toObject());
   }
 
-  async createHabit(user: User, profile: Profile, data?: Partial<CreateHabitDto>, overwrite?: Partial<HabitModel>): Promise<Habit> {
-    const initData = <CreateHabitDto> Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {});
+  async createHabit(
+    user: User,
+    profile: Profile,
+    data?: Partial<CreateHabitDto>,
+    overwrite?: Partial<HabitModel>,
+  ): Promise<Habit> {
+    const initData = <CreateHabitDto>(
+      Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {})
+    );
     const habit = new this.HabitModel(Habit.create(profile, user, initData));
     Object.assign(habit, overwrite);
     await habit.save();
@@ -107,9 +126,15 @@ export class ActivityTestDataUtil extends TestDataUtils {
   }
 }
 
-export function createActivityTestingModule(key: string, providers: Provider[] = [], models: ModelDefinition[] = [], modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = []): TestingModuleBuilder {
+export function createActivityTestingModule(
+  key: string,
+  providers: Provider[] = [],
+  models: ModelDefinition[] = [],
+  modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+): TestingModuleBuilder {
   providers.push(ActivityTestDataUtil);
-  models.push({
+  models.push(
+    {
       name: Activity.name,
       collection: Content.collectionName(),
       schema: ActivitySchema,
@@ -123,10 +148,8 @@ export function createActivityTestingModule(key: string, providers: Provider[] =
       name: ContentScore.name,
       collection: ProfileScore.collectionName(),
       schema: ContentScoreSchema,
-      discriminators: [
-        { name: ActivityScore.name, schema: ActivityScoreSchema }
-      ],
+      discriminators: [{ name: ActivityScore.name, schema: ActivityScoreSchema }],
     },
-   );
+  );
   return createContentTestingModule(key, providers, models, modules);
 }

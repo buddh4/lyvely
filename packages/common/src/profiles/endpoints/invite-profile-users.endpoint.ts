@@ -1,5 +1,5 @@
-import { StrictEndPoint } from "@/utils";
-import { InviteProfileMembers } from "../dtos";
+import { StrictEndPoint } from '@/utils';
+import { InviteProfileMembers } from '../dtos';
 
 export interface IInviteProfileUsersEndpoint {
   inviteMembers(users: InviteProfileMembers);

@@ -3,8 +3,8 @@ import { User } from '../users';
 import { MongoError } from 'mongodb';
 import { RegisterDto } from '@lyvely/common';
 import { UserDao } from '../users';
-import { UserWithProfileAndRelations, ProfilesService } from "../profiles";
-import { MailService } from "../mails/services/mail.service";
+import { UserWithProfileAndRelations, ProfilesService } from '../profiles';
+import { MailService } from '../mails/services/mail.service';
 
 @Injectable()
 export class RegisterService {
@@ -20,17 +20,19 @@ export class RegisterService {
    */
   async register(registerDto: RegisterDto): Promise<UserWithProfileAndRelations> {
     try {
-      const user = await this.userDao.save(new User({
-        username: registerDto.username,
-        email: registerDto.email,
-        locale: registerDto.locale,
-        password: registerDto.password
-      }));
+      const user = await this.userDao.save(
+        new User({
+          username: registerDto.username,
+          email: registerDto.email,
+          locale: registerDto.locale,
+          password: registerDto.password,
+        }),
+      );
       const result = await this.profileService.createDefaultUserProfile(user);
       this.mailerService.sendMail({
         to: registerDto.email,
         subject: 'Testing...',
-        html: '<b>Testing...</b>'
+        html: '<b>Testing...</b>',
       });
       return result;
     } catch (error) {

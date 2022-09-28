@@ -1,21 +1,21 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { PolicyService } from '../services/policy.service';
-import { createBasicTestingModule, createTestExecutionContext } from "@server/modules/test";
-import { TestDataUtils } from "@server/modules/test";
-import { Policy } from '../interfaces/policy.interface';
+import { createBasicTestingModule, createTestExecutionContext } from '@/modules/test';
+import { TestDataUtils } from '@/modules/test';
+import { IPolicy } from '../interfaces/policy.interface';
 import { Request } from 'express';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-class TruePolicy implements Policy<Request> {
+class TruePolicy implements IPolicy<Request> {
   validate(): Promise<boolean> {
     return Promise.resolve(true);
   }
 }
 
 @Injectable()
-class FalsePolicy implements Policy<Request> {
+class FalsePolicy implements IPolicy<Request> {
   validate(): Promise<boolean> {
     return Promise.resolve(false);
   }
@@ -29,7 +29,7 @@ describe('PolicyService', () => {
   const TEST_KEY = 'policy-service';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY,[PolicyService, TruePolicy, FalsePolicy]).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY, [PolicyService, TruePolicy, FalsePolicy]).compile();
     policyService = testingModule.get<PolicyService>(PolicyService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });

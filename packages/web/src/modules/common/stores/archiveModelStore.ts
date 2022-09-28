@@ -1,19 +1,28 @@
-import { AxiosResponse} from 'axios';
+import { AxiosResponse } from "axios";
 import { Archivable } from "@lyvely/common";
 
-export interface ArchiveModelRepository<TUpdateModel extends Archivable, TID = string> {
-  archive: (id: TID) => Promise<AxiosResponse<boolean>>
-  unArchive: (id: TID) => Promise<AxiosResponse<boolean>>
+export interface IArchiveModelRepository<
+  TUpdateModel extends Archivable,
+  TID = string
+> {
+  archive: (id: TID) => Promise<AxiosResponse<boolean>>;
+  unArchive: (id: TID) => Promise<AxiosResponse<boolean>>;
 }
 
-export interface ArchiveModelStoreOptions<TModel extends Archivable, TID = string> {
-  repository: ArchiveModelRepository<TModel, TID> | ((editModel: TModel) => ArchiveModelRepository<TModel, TID>),
-  onSubmitSuccess?: (model: TModel, val: boolean) => void
-  onSubmitError?: ((err: any) => void) | false
+export interface IArchiveModelStoreOptions<
+  TModel extends Archivable,
+  TID = string
+> {
+  repository:
+    | IArchiveModelRepository<TModel, TID>
+    | ((editModel: TModel) => IArchiveModelRepository<TModel, TID>);
+  onSubmitSuccess?: (model: TModel, val: boolean) => void;
+  onSubmitError?: ((err: any) => void) | false;
 }
-export default function<TModel extends Archivable, TID = string>(options: ArchiveModelStoreOptions<TModel, TID>) {
-
-  async  function archiveModel(modelId: TID, model: TModel) {
+export default function <TModel extends Archivable, TID = string>(
+  options: IArchiveModelStoreOptions<TModel, TID>
+) {
+  async function archiveModel(modelId: TID, model: TModel) {
     return _handleUpdate(modelId, model, true);
   }
 
@@ -22,13 +31,13 @@ export default function<TModel extends Archivable, TID = string>(options: Archiv
   }
 
   async function _handleUpdate(modelId: TID, model: TModel, archive: boolean) {
-    const { data } = (archive)
+    const { data } = archive
       ? await _getRepository(model).archive(modelId)
       : await _getRepository(model).unArchive(modelId);
 
-    if(data === true) {
+    if (data === true) {
       model.archived = archive;
-      if(typeof options.onSubmitSuccess === 'function') {
+      if (typeof options.onSubmitSuccess === "function") {
         options.onSubmitSuccess(model, data);
       }
     }
@@ -37,7 +46,7 @@ export default function<TModel extends Archivable, TID = string>(options: Archiv
   }
 
   function _getRepository(m: TModel) {
-    if(typeof options.repository === "function") {
+    if (typeof options.repository === "function") {
       return options.repository(m);
     }
 
@@ -46,6 +55,6 @@ export default function<TModel extends Archivable, TID = string>(options: Archiv
 
   return {
     archiveModel,
-    unArchiveModel
-  }
+    unArchiveModel,
+  };
 }

@@ -3,28 +3,35 @@ import { InternalServerErrorException } from '@nestjs/common';
 import { BaseEntity, assignEntityData } from './base.entity';
 import { isValidObjectId, assignRawDataTo, DeepPartial, Type } from '@lyvely/common';
 
-export type EntityIdentity<T extends BaseEntity<any>> = T | Types.ObjectId | string | Document & T;
+export type EntityIdentity<T extends BaseEntity<any>> = T | Types.ObjectId | string | (Document & T);
 
 export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 
 // We use any here since we need to use this when defining sub documents
-export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(identity: EntityIdentity<T>): Types.ObjectId {
+export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
+  identity: EntityIdentity<T>,
+): Types.ObjectId {
   if (typeof identity === 'string') {
-    if(isValidObjectId(identity)) {
+    if (isValidObjectId(identity)) {
       return new Types.ObjectId(identity as string);
     }
     throw new InternalServerErrorException('Use of invalid object id detected.');
   }
 
-  if (identity instanceof Types.ObjectId) { // Somehow type guards are not working here...
+  if (identity instanceof Types.ObjectId) {
+    // Somehow type guards are not working here...
     return identity as Types.ObjectId;
   }
 
-  if (identity && '_id' in identity && (typeof identity['_id'] === 'string' || identity['_id'] instanceof Types.ObjectId)) {
+  if (
+    identity &&
+    '_id' in identity &&
+    (typeof identity['_id'] === 'string' || identity['_id'] instanceof Types.ObjectId)
+  ) {
     return assureObjectId(identity['_id']);
   }
 
-  if (identity && 'id' in identity && (typeof identity['id'] === 'string')) {
+  if (identity && 'id' in identity && typeof identity['id'] === 'string') {
     return assureObjectId(identity['id']);
   }
 
@@ -32,63 +39,68 @@ export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(iden
 }
 
 export function applyUpdateTo<T extends BaseEntity<any>>(identity: EntityIdentity<T>, update: UpdateQuery<T>) {
-  if(typeof identity !== 'object') {
+  if (typeof identity !== 'object') {
     return;
   }
 
-  if('$inc' in update) {
+  if ('$inc' in update) {
     applyInc(identity, update['$inc']);
   }
 
-  if('$set' in update) {
+  if ('$set' in update) {
     applyRawDataTo(identity, update['$set']);
   }
 
-  if('$push' in update) {
+  if ('$push' in update) {
     applyPush(identity, update['$push']);
   }
 }
 
 export function applyInc<T>(model: T, incData: Record<string, number>) {
-  Object.keys(incData).forEach(path => {
-    if(typeof incData[path] !== 'number') {
+  Object.keys(incData).forEach((path) => {
+    if (typeof incData[path] !== 'number') {
       return;
     }
 
     let modelToInc = model;
     let fieldToInc = path;
 
-    if(path.includes('.') && path.lastIndexOf('.') !== path.length - 1) {
-      fieldToInc = path.slice(path.lastIndexOf(".") + 1);
+    if (path.includes('.') && path.lastIndexOf('.') !== path.length - 1) {
+      fieldToInc = path.slice(path.lastIndexOf('.') + 1);
       modelToInc = findByPath(model, path, true);
     }
 
-    if(modelToInc && typeof modelToInc[fieldToInc] === 'number') {
-      modelToInc[fieldToInc] += incData[path]
+    if (modelToInc && typeof modelToInc[fieldToInc] === 'number') {
+      modelToInc[fieldToInc] += incData[path];
     }
   });
 }
 
 export function findByPath<T>(model: T, path: string, parent = false) {
-  if(!path.includes('.')) {
+  if (!path.includes('.')) {
     return parent ? model : model[path];
   }
 
-  path = parent ? path.replace(/\.[^/.]+$/, "") : path;
+  path = parent ? path.replace(/\.[^/.]+$/, '') : path;
 
   let result = model;
-  path.split('.').forEach(sub => result = result || result[sub] ? result[sub] : undefined);
+  path.split('.').forEach((sub) => (result = result || result[sub] ? result[sub] : undefined));
   return result;
 }
 
-export function applyPush<T>(model: T, pushData: { [ key in keyof T ]?: any }): T {
+export function applyPush<T>(model: T, pushData: { [key in keyof T]?: any }): T {
   // TODO: support path
-  Object.keys(pushData).forEach(key => {
-    if(typeof model[key] === 'undefined') {
+  Object.keys(pushData).forEach((key) => {
+    if (typeof model[key] === 'undefined') {
       model[key] = [];
     }
 
-    if(pushData[key] && typeof pushData[key] === 'object' && '$each' in pushData[key] && Array.isArray(pushData[key][`$each`])) {
+    if (
+      pushData[key] &&
+      typeof pushData[key] === 'object' &&
+      '$each' in pushData[key] &&
+      Array.isArray(pushData[key][`$each`])
+    ) {
       model[key] = [...model[key], ...pushData[key][`$each`]];
     } else {
       model[key].push(pushData[key]);
@@ -99,7 +111,11 @@ export function applyPush<T>(model: T, pushData: { [ key in keyof T ]?: any }): 
   return model;
 }
 
-export function applyRawDataTo<T>(model: T, data: { [ key in keyof T ]?: any }, { maxDepth = 100, strict = false } = {}): T {
+export function applyRawDataTo<T>(
+  model: T,
+  data: { [key in keyof T]?: any },
+  { maxDepth = 100, strict = false } = {},
+): T {
   return assignRawDataTo(model, data, { maxDepth, strict });
 }
 
@@ -126,7 +142,7 @@ export function assureStringId(obj: any): string {
 
 export function createBaseEntityInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {
   const model = Object.create(constructor.prototype);
-  if(typeof model.init === 'function') {
+  if (typeof model.init === 'function') {
     model.init(data);
   } else {
     assignEntityData(model, data);

@@ -24,11 +24,13 @@ describe('Users schema', () => {
 
   describe('create', () => {
     it('initial user data', async () => {
-      const user = await UserModel.create(new User({
-        username: 'Test',
-        password: 'Password',
-        email: 'Tester@test.de',
-      }));
+      const user = await UserModel.create(
+        new User({
+          username: 'Test',
+          password: 'Password',
+          email: 'Tester@test.de',
+        }),
+      );
 
       expect(user.username).toEqual('Test');
       expect(user.lowercaseUsername).toEqual('test');
@@ -43,11 +45,13 @@ describe('Users schema', () => {
 
   describe('toJSON', () => {
     it('make sure password is not exposed', async () => {
-      const user = await UserModel.create(new User({
-        username: 'Test',
-        password: 'Password',
-        email: 'Tester@test.de',
-      }));
+      const user = await UserModel.create(
+        new User({
+          username: 'Test',
+          password: 'Password',
+          email: 'Tester@test.de',
+        }),
+      );
 
       const json = user.toJSON();
       expect(json.password).toBeUndefined();

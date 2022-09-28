@@ -3,7 +3,7 @@ import { IContent } from '@lyvely/common';
 
 export interface ContentTypeDefinition<T extends IContent = IContent> {
   type: string;
-  moduleId: string,
+  moduleId: string;
   name: string;
   constructor: Type<T>;
   description: string;

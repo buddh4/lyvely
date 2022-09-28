@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsInt, Matches, Min } from 'class-validator';
-import { REGEX_DATE_FORMAT } from "@/calendar";
+import { REGEX_DATE_FORMAT } from '@/calendar';
 
 @Exclude()
 export class UpdateDataPointDto {

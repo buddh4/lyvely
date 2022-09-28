@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '../../core/db/base.entity';
-import { IContentMetadata } from "../interfaces";
+import { IContentMetadata } from '../interfaces';
 
 /**
  * Other ideas:
@@ -32,7 +32,6 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
 
   @Prop()
   isIssue?: boolean;
-
 }
 
 export const ContentMetadataSchema = SchemaFactory.createForClass(ContentMetadata);

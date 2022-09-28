@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TestContentDao extends AbstractContentDao<TestContent> {
-
   getModelConstructor(): Constructor<any> {
     return TestContent;
   }

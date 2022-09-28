@@ -3,13 +3,11 @@ import { Tag } from '../../tags';
 import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
 import { ProfileDao } from '../daos';
 import { Profile } from '../schemas';
-import { EntityValidationException } from "../../core/exceptions";
+import { EntityValidationException } from '../../core/exceptions';
 
 @Injectable()
 export class ProfileTagsService {
-  constructor(
-    public profileDao: ProfileDao,
-  ) {}
+  constructor(public profileDao: ProfileDao) {}
 
   async mergeTags(profile: Profile, tagsNames?: string[]): Promise<Profile> {
     if (!tagsNames || !tagsNames.length) {
@@ -20,11 +18,11 @@ export class ProfileTagsService {
     const tagsToPush = [];
 
     tagsNames.forEach((tagName) => {
-      if(!tagName.length || newTagNames.has(tagName)) {
+      if (!tagName.length || newTagNames.has(tagName)) {
         return;
       }
 
-      if(!profile.tags.find((tag) => tag.name === tagName)) {
+      if (!profile.tags.find((tag) => tag.name === tagName)) {
         newTagNames.add(tagName);
         tagsToPush.push(Tag.create({ name: tagName }));
       }
@@ -38,26 +36,26 @@ export class ProfileTagsService {
   async addTag(profile: Profile, data: Partial<Tag>) {
     const tag = profile.getTagByName(data.name);
 
-    if(tag) {
+    if (tag) {
       throw new EntityValidationException('A tag with the same name already exists');
     }
 
-    return !!await this.profileDao.addTags(profile, [Tag.create(data)]);
+    return !!(await this.profileDao.addTags(profile, [Tag.create(data)]));
   }
 
   async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
     const tag = profile.getTagById(assureObjectId(identity));
 
-    if(!tag) return false;
+    if (!tag) return false;
 
-    return !!await this.profileDao.updateTag(profile, identity, update);
+    return !!(await this.profileDao.updateTag(profile, identity, update));
   }
 
   async archiveTag(profile: Profile, identity: EntityIdentity<Tag>) {
-    return this.updateTag(profile, identity, { archived: true })
+    return this.updateTag(profile, identity, { archived: true });
   }
 
   async unArchiveTag(profile: Profile, identity: EntityIdentity<Tag>) {
-    return this.updateTag(profile, identity, { archived: false })
+    return this.updateTag(profile, identity, { archived: false });
   }
 }

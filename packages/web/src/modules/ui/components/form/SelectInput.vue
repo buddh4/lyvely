@@ -4,8 +4,15 @@
       :id="id"
       v-model="inputValue"
       :disabled="disabled"
-      :class="cssClasses">
-      <option v-for="option in options" :key="option.value" :value="option.value">{{ $t(option.label) }}</option>
+      :class="cssClasses"
+    >
+      <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+      >
+        {{ $t(option.label) }}
+      </option>
     </select>
 
     <div v-if="hasError()" :class="errorClass">
@@ -17,25 +24,27 @@
 </template>
 
 <script lang="ts">
-import { BaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
-import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
-import { SetupContext } from 'vue';
+import {
+  IBaseInputProps,
+  useBaseInputProps,
+} from "@/modules/ui/components/form/BaseInput";
+import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
+import { SetupContext } from "vue";
 
-interface Props extends BaseInputProps {
-  type: string
+interface Props extends IBaseInputProps {
+  type: string;
 }
 
 export default {
   props: {
     ...useBaseInputProps(),
-    options: {type: Array, required: true }
+    options: { type: Array, required: true },
   },
-  emits: ['change', 'update:modelValue'],
+  emits: ["change", "update:modelValue"],
   setup(props: Props, context: SetupContext) {
-    return useFloatingInputSetup(props, context)
-  }
-}
+    return useFloatingInputSetup(props, context);
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

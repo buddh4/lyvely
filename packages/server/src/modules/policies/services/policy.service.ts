@@ -1,6 +1,6 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { ModuleRef, Reflector } from '@nestjs/core';
-import { Policy, PolicyHandler } from '../interfaces/policy.interface';
+import { IPolicy, PolicyHandler } from '../interfaces/policy.interface';
 import { PolicyContext } from '../guards/policy-context';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class PolicyService {
   }
 
   async checkEvery(executionContext: ExecutionContext, ...policies: PolicyHandler<any>[]): Promise<boolean> {
-    if(!policies?.length) {
+    if (!policies?.length) {
       return true;
     }
 
@@ -22,7 +22,7 @@ export class PolicyService {
   }
 
   async checkSome(executionContext: ExecutionContext, ...policies: PolicyHandler<any>[]): Promise<boolean> {
-    if(!policies?.length) {
+    if (!policies?.length) {
       return true;
     }
 
@@ -32,8 +32,9 @@ export class PolicyService {
   }
 
   private async runHandler(handler: PolicyHandler<any>, context: PolicyContext): Promise<boolean> {
-    const policy = <Policy<any>> (handler instanceof Function ? this.moduleRef.get(handler,  { strict: false }) : handler);
+    const policy = <IPolicy<any>>(
+      (handler instanceof Function ? this.moduleRef.get(handler, { strict: false }) : handler)
+    );
     return policy.validate(context);
   }
-
 }

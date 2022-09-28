@@ -1,10 +1,4 @@
-import {
-  Post,
-  Param,
-  Body,
-  Request,
-  Put
-} from '@nestjs/common';
+import { Post, Param, Body, Request, Put } from '@nestjs/common';
 import { Habit } from '../schemas';
 import {
   UpdateHabitDto,
@@ -12,26 +6,30 @@ import {
   UpdateDataPointResultDto,
   UpdateHabitResponseDto,
   HabitModel,
-  TagModel } from '@lyvely/common';
+  TagModel,
+} from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
-import { AbstractContentController, ProfileContentRequest,  ContentController, ContentType, ContentWritePolicy } from '../../content';
-import { ProfileRequest } from "../../profiles";
-import { ProfilePermissions } from "../../profiles";
+import {
+  AbstractContentController,
+  ProfileContentRequest,
+  ContentController,
+  ContentType,
+  ContentWritePolicy,
+} from '../../content';
+import { ProfileRequest } from '../../profiles';
+import { ProfilePermissions } from '../../profiles';
 import { Policies } from '../../policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
-import { EntityNotFoundException, UseClassSerializer } from "@server/modules/core";
-import { isHabitContent } from "../utils/activity.utils";
+import { EntityNotFoundException, UseClassSerializer } from '@/modules/core';
+import { isHabitContent } from '../utils/activity.utils';
 
 @ContentController('habits')
 // TODO: implement feature registration @Feature('content.activities.habits')
 @ContentType(Habit)
 @UseClassSerializer()
 export class HabitsController extends AbstractContentController<Habit> {
-
-  constructor(
-    protected contentService: HabitsService,
-    protected habitDataPointService: HabitDataPointService) {
+  constructor(protected contentService: HabitsService, protected habitDataPointService: HabitDataPointService) {
     super(contentService);
   }
 
@@ -40,7 +38,12 @@ export class HabitsController extends AbstractContentController<Habit> {
   async create(@Request() req: ProfileRequest, @Body() dto: UpdateHabitDto) {
     const { profile, user } = req;
 
-    const habitModel = await this.contentService.createContent(profile, user, Habit.create(profile, user, dto), dto.tagNames);
+    const habitModel = await this.contentService.createContent(
+      profile,
+      user,
+      Habit.create(profile, user, dto),
+      dto.tagNames,
+    );
 
     if (!habitModel) {
       throw new EntityNotFoundException();
@@ -48,7 +51,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
     return new UpdateHabitResponseDto({
       model: new HabitModel(habitModel),
-      tags: profile.getNewTags().map(tag => new TagModel(tag))
+      tags: profile.getNewTags().map((tag) => new TagModel(tag)),
     });
   }
 
@@ -57,8 +60,7 @@ export class HabitsController extends AbstractContentController<Habit> {
   async update(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() update: UpdateHabitDto) {
     const { profile, user, content } = req;
 
-
-    if(!isHabitContent(content)) {
+    if (!isHabitContent(content)) {
       throw new EntityNotFoundException();
     }
 
@@ -66,7 +68,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
     return new UpdateHabitResponseDto({
       model: new HabitModel(content),
-      tags: profile.getNewTags().map(tag => new TagModel(tag))
+      tags: profile.getNewTags().map((tag) => new TagModel(tag)),
     });
   }
 
@@ -75,11 +77,17 @@ export class HabitsController extends AbstractContentController<Habit> {
   async updateDataPoint(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateDataPointDto) {
     const { profile, user, content } = req;
 
-    if(!isHabitContent(content)) {
+    if (!isHabitContent(content)) {
       throw new EntityNotFoundException();
     }
 
-    const dataPoint = await this.habitDataPointService.upsertDataPoint(profile, user, content as Habit, dto.date, dto.value);
+    const dataPoint = await this.habitDataPointService.upsertDataPoint(
+      profile,
+      user,
+      content as Habit,
+      dto.date,
+      dto.value,
+    );
 
     return new UpdateDataPointResultDto({
       score: profile.score,

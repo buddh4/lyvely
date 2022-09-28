@@ -2,29 +2,27 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
-import {
-  TestNumberDataPoint,
-  TestNumberDataPointSchema
-} from './src/test-data-point.schema';
+import { TestNumberDataPoint, TestNumberDataPointSchema } from './src/test-data-point.schema';
 import {
   CalendarIntervalEnum,
   DeepPartial,
   DataPointIntervalFilter,
   toTimingId,
-  UserAssignmentStrategy
+  UserAssignmentStrategy,
 } from '@lyvely/common';
 import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
-import { TestNumberDataPointService } from "./src/test-number-data-point.service";
+import { TestNumberDataPointService } from './src/test-number-data-point.service';
 import {
   TestNumberTimeSeriesContent,
-  TestNumberTimeSeriesContentDocument, TestNumberTimeSeriesContentSchema,
+  TestNumberTimeSeriesContentDocument,
+  TestNumberTimeSeriesContentSchema,
   TestTimeSeriesContent,
-} from "./src/test-time-series-content.schema";
-import { Content, ContentSchema } from "../../content";
+} from './src/test-time-series-content.schema';
+import { Content, ContentSchema } from '../../content';
 import { Model } from 'mongoose';
-import { CheckboxNumberDataPointConfig } from "../schemas";
-import { User } from "../../users";
-import { Profile } from "../../profiles";
+import { CheckboxNumberDataPointConfig } from '../schemas';
+import { User } from '../../users';
+import { Profile } from '../../profiles';
 
 const Models = [
   { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema },
@@ -32,10 +30,8 @@ const Models = [
     name: Content.name,
     collection: Content.collectionName(),
     schema: ContentSchema,
-    discriminators: [
-      { name: TestNumberTimeSeriesContent.name, schema: TestNumberTimeSeriesContentSchema },
-    ],
-  }
+    discriminators: [{ name: TestNumberTimeSeriesContent.name, schema: TestNumberTimeSeriesContentSchema }],
+  },
 ];
 
 describe('NumberDataPointService', () => {
@@ -48,11 +44,17 @@ describe('NumberDataPointService', () => {
   const TEST_KEY = 'NumberDataPointService';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [TestNumberDataPointService, TestNumberDataPointDao], Models).compile();
+    testingModule = await createContentTestingModule(
+      TEST_KEY,
+      [TestNumberDataPointService, TestNumberDataPointDao],
+      Models,
+    ).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     service = testingModule.get<TestNumberDataPointService>(TestNumberDataPointService);
     dao = testingModule.get<TestNumberDataPointDao>(TestNumberDataPointDao);
-    TestNumberTimeSeriesContentModel = testingModule.get<Model<TestNumberTimeSeriesContentDocument>>('TestNumberTimeSeriesContentModel');
+    TestNumberTimeSeriesContentModel = testingModule.get<Model<TestNumberTimeSeriesContentDocument>>(
+      'TestNumberTimeSeriesContentModel',
+    );
   });
 
   afterEach(async () => {
@@ -62,12 +64,14 @@ describe('NumberDataPointService', () => {
 
   async function createTimeSeriesContent(user: User, profile: Profile, data: DeepPartial<TestTimeSeriesContent> = {}) {
     data.someTestField = data.someTestField || 'Testing...';
-    data.dataPointConfig = data.dataPointConfig || new CheckboxNumberDataPointConfig({
-      min: 0,
-      max: 5,
-      optimal: 3,
-      interval:  data.dataPointConfig?.interval ?? CalendarIntervalEnum.Daily
-    });
+    data.dataPointConfig =
+      data.dataPointConfig ||
+      new CheckboxNumberDataPointConfig({
+        min: 0,
+        max: 5,
+        optimal: 3,
+        interval: data.dataPointConfig?.interval ?? CalendarIntervalEnum.Daily,
+      });
 
     const model = new TestNumberTimeSeriesContent(profile, user, data as any);
     const entity = new TestNumberTimeSeriesContentModel(model);
@@ -147,5 +151,5 @@ describe('NumberDataPointService', () => {
       expect(memberDataPoints.length).toEqual(1);
       expect(memberDataPoints[0]._id).toEqual(ownerDataPoints[0]._id);
     });
-  })
+  });
 });

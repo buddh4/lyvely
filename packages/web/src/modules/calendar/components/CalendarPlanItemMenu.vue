@@ -1,27 +1,38 @@
 <script lang="ts" setup>
-import Dropdown from '@/modules/ui/components/menu/Dropdown.vue';
-import DropdownLink from '@/modules/ui/components/menu/DropdownLink.vue';
-import { ITimeSeriesContent } from '@lyvely/common';
-import { computed, toRefs } from 'vue';
+import { ITimeSeriesContent } from "@lyvely/common";
+import { computed, toRefs } from "vue";
+import LyDropdown from "@/modules/ui/components/menu/DropdownMenu.vue";
+import LyDropdownLink from "@/modules/ui/components/menu/DropdownLink.vue";
 
 interface Props {
-  model: ITimeSeriesContent
+  model: ITimeSeriesContent;
 }
 
 const props = defineProps<Props>();
 defineEmits(["edit", "archive"]);
 
-const archiveLabel = computed(() => props.model.archived ? "Restore" : "Archive");
+const archiveLabel = computed(() =>
+  props.model.archived ? "Restore" : "Archive"
+);
 
 const { model } = toRefs(props);
 </script>
 
 <template>
-  <Dropdown class="ml-auto" button-class="pt-0 pr-0 item-menu-button">
-    <DropdownLink v-if="!model.archived" icon="edit" label="Edit" @click="$emit('edit')"></DropdownLink>
-    <DropdownLink :label="archiveLabel" icon="archive" @click="$emit('archive')"></DropdownLink>
+  <ly-dropdown class="ml-auto" button-class="pt-0 pr-0 item-menu-button">
+    <ly-dropdown-link
+      v-if="!model.archived"
+      icon="edit"
+      label="Edit"
+      @click="$emit('edit')"
+    ></ly-dropdown-link>
+    <dropdown-link
+      :label="archiveLabel"
+      icon="archive"
+      @click="$emit('archive')"
+    ></dropdown-link>
     <slot></slot>
-  </Dropdown>
+  </ly-dropdown>
 </template>
 
 <style>

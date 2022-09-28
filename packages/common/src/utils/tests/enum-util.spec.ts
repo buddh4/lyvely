@@ -1,15 +1,15 @@
-import { getNumberEnumKeys, getStringEnumKeys, getNumberEnumValues, getStringEnumValues } from "@/utils";
+import { getNumberEnumKeys, getStringEnumKeys, getNumberEnumValues, getStringEnumValues } from '@/utils';
 
 enum NumEnum {
   T1,
   T2,
-  T3
+  T3,
 }
 
 enum StringEnum {
   T1 = 't1',
   T2 = 't2',
-  T3 = 't3'
+  T3 = 't3',
 }
 
 describe('enum util', () => {

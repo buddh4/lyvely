@@ -1,1 +1,1 @@
-export * from './profile-request.type'
+export * from './profile-request.type';

@@ -3,15 +3,23 @@ import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
   RangeNumberDataPointConfig,
-  SpinnerNumberDataPointConfig, TextareaTextDataPointConfig
+  SpinnerNumberDataPointConfig,
+  TextareaTextDataPointConfig,
 } from '../schemas';
-import { DataPointInputStrategy, DataPointInputType, DataPointValueType, INumberDataPointSettings, CalendarIntervalEnum } from '@lyvely/common';
+import {
+  DataPointInputStrategy,
+  DataPointInputType,
+  DataPointValueType,
+  INumberDataPointSettings,
+  CalendarIntervalEnum,
+} from '@lyvely/common';
 
 describe('TimeSeriesDataPointConfigFactory', () => {
   describe('createConfig()', () => {
     it('create checkbox config without settings', async () => {
-      const config =
-        DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(DataPointInputStrategy.CheckboxNumber);
+      const config = DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
+        DataPointInputStrategy.CheckboxNumber,
+      );
 
       expect(config).toBeDefined();
       expect(config instanceof CheckboxNumberDataPointConfig).toEqual(true);
@@ -31,10 +39,12 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         min: 0,
         max: 2,
         optimal: 1,
-        interval: CalendarIntervalEnum.Daily
+        interval: CalendarIntervalEnum.Daily,
       };
-      const config =
-        DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(DataPointInputStrategy.CheckboxNumber, settings);
+      const config = DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
+        DataPointInputStrategy.CheckboxNumber,
+        settings,
+      );
 
       expect(config).toBeDefined();
       expect(config instanceof CheckboxNumberDataPointConfig).toEqual(true);
@@ -54,10 +64,12 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         min: 0,
         max: 2,
         optimal: 1,
-        interval: CalendarIntervalEnum.Daily
+        interval: CalendarIntervalEnum.Daily,
       };
-      const config =
-        DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(DataPointInputStrategy.RangeNumber, settings);
+      const config = DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(
+        DataPointInputStrategy.RangeNumber,
+        settings,
+      );
 
       expect(config).toBeDefined();
       expect(config instanceof RangeNumberDataPointConfig).toEqual(true);
@@ -77,10 +89,12 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         min: 0,
         max: 2,
         optimal: 1,
-        interval: CalendarIntervalEnum.Daily
+        interval: CalendarIntervalEnum.Daily,
       };
-      const config =
-        DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(DataPointInputStrategy.SpinnerNumber, settings);
+      const config = DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(
+        DataPointInputStrategy.SpinnerNumber,
+        settings,
+      );
 
       expect(config).toBeDefined();
       expect(config instanceof SpinnerNumberDataPointConfig).toEqual(true);
@@ -96,8 +110,9 @@ describe('TimeSeriesDataPointConfigFactory', () => {
     });
 
     it('create text config', async () => {
-      const config =
-        DataPointConfigFactory.createConfig<TextareaTextDataPointConfig>(DataPointInputStrategy.TextareaText);
+      const config = DataPointConfigFactory.createConfig<TextareaTextDataPointConfig>(
+        DataPointInputStrategy.TextareaText,
+      );
 
       expect(config).toBeDefined();
       expect(config instanceof TextareaTextDataPointConfig).toEqual(true);

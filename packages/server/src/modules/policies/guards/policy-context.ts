@@ -12,7 +12,7 @@ export class PolicyContext<R = Request> implements IPolicyContext {
   constructor(
     protected executionContext: ExecutionContext,
     protected reflector: Reflector,
-    protected moduleRef: ModuleRef
+    protected moduleRef: ModuleRef,
   ) {}
 
   getExecutionContext(): ExecutionContext {

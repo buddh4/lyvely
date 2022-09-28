@@ -4,8 +4,8 @@ import { ProfilesService } from '../services';
 import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
-import { Organization, UserProfileRelation } from "../schemas";
-import { UniqueConstraintException } from "../../core/exceptions";
+import { Organization, UserProfileRelation } from '../schemas';
+import { UniqueConstraintException } from '../../core/exceptions';
 
 describe('ProfileService (Organization)', () => {
   let testingModule: TestingModule;
@@ -47,10 +47,10 @@ describe('ProfileService (Organization)', () => {
 
     it('assure organization can not have an organization', async () => {
       const { owner, organization } = await testData.createSimpleOrganization();
-      const { profile, relations } = await profileService.createOrganization(owner, <any> {
+      const { profile, relations } = await profileService.createOrganization(owner, <any>{
         name: 'SomeOrganization',
         oid: organization._id,
-        organization: organization
+        organization: organization,
       });
 
       expect(profile).toBeDefined();
@@ -69,7 +69,7 @@ describe('ProfileService (Organization)', () => {
 
       const user2 = await testData.createUser('User2');
       expect.assertions(2);
-      return profileService.createOrganization(user2, { name: 'SomeOrganization' }).catch(e => {
+      return profileService.createOrganization(user2, { name: 'SomeOrganization' }).catch((e) => {
         expect(e instanceof UniqueConstraintException).toEqual(true);
         expect(e.getField()).toEqual('name');
       });
@@ -80,7 +80,7 @@ describe('ProfileService (Organization)', () => {
       await profileService.createUserProfile(user, { name: 'SomeOrganization' });
 
       expect.assertions(2);
-      return profileService.createOrganization(user, { name: 'SomeOrganization' }).catch(e => {
+      return profileService.createOrganization(user, { name: 'SomeOrganization' }).catch((e) => {
         expect(e instanceof UniqueConstraintException).toEqual(true);
         expect(e.getField()).toEqual('name');
       });

@@ -17,7 +17,6 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest --forceExit",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage --no-cache",
@@ -33,7 +32,6 @@
     "@automapper/classes": "^8.7.6",
     "@automapper/core": "^8.7.6",
     "@automapper/nestjs": "^8.7.6",
-    "@lyvely/common": "*",
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^8.4.7",
     "@nestjs/config": "^2.1.0",
@@ -117,7 +115,7 @@
       "ts"
     ],
     "moduleNameMapper": {
-      "^@server/(.*)$": "<rootDir>/src/$1"
+      "^@/(.*)$": "<rootDir>/src/$1"
     },
     "transform": {
       "^.+\\.tsx?$": "ts-jest"

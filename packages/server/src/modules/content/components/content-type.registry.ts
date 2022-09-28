@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ContentTypeDefinition } from '../interfaces';
-import { Content } from "../schemas";
+import { Content } from '../schemas';
 
 @Injectable()
 export class ContentTypeRegistry {
@@ -22,7 +22,7 @@ export class ContentTypeRegistry {
 
   getTypeDefinition(type: string): ContentTypeDefinition<Content> | undefined {
     const result = this.contentTypeMapping[type];
-    if(!result) {
+    if (!result) {
       this.logger.warn(`Content type ${type} without content type definition requested`);
     }
     return result;

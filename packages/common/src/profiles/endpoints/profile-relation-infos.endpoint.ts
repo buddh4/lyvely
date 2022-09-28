@@ -1,5 +1,5 @@
-import { StrictEndPoint } from "@/utils";
-import { ProfileRelationInfos } from "../dtos";
+import { StrictEndPoint } from '@/utils';
+import { ProfileRelationInfos } from '../dtos';
 
 export interface IProfileRelationInfosEndpoint {
   getUserProfileInfos(): Promise<ProfileRelationInfos>;

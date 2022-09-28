@@ -1,7 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { TagModel } from "@/tags";
-import { BaseModel } from "@/models";
-import { TaskModel } from "../models";
+import { TagModel } from '@/tags';
+import { BaseModel } from '@/models';
+import { TaskModel } from '../models';
 
 @Exclude()
 export class EditTaskResponseDto extends BaseModel<EditTaskResponseDto> {

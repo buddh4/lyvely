@@ -8,10 +8,10 @@ export interface IContentMetadata {
   isIssue?: boolean;
 }
 
-export interface AssertContentMetadata {
+export interface IAssertContentMetadata {
   assertContentMetadata(metadata: IContentMetadata): IContentMetadata;
 }
 
-export function implementsAssertContentMetadata(content: any): content is AssertContentMetadata {
-  return typeof (content as AssertContentMetadata).assertContentMetadata === 'function';
+export function implementsAssertContentMetadata(content: any): content is IAssertContentMetadata {
+  return typeof (content as IAssertContentMetadata).assertContentMetadata === 'function';
 }

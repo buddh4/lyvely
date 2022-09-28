@@ -13,13 +13,15 @@ import {
   UpdateTaskStateModel,
   UpdateTaskStateResultDto,
   UpdateTaskDto,
- EditTaskResponseDto, TaskModel } from '@lyvely/common';
+  EditTaskResponseDto,
+  TaskModel,
+} from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
 import { ContentController, ContentType, ProfileContentRequest } from '../../content';
-import { ProfileRequest } from "../../profiles";
-import { isTaskContent } from "../utils/activity.utils";
-import { EntityNotFoundException } from "../../core/exceptions";
-import { TagModel } from "@lyvely/common";
+import { ProfileRequest } from '../../profiles';
+import { isTaskContent } from '../utils/activity.utils';
+import { EntityNotFoundException } from '../../core/exceptions';
+import { TagModel } from '@lyvely/common';
 
 @ContentController('tasks')
 // TODO: implement feature registration @Feature('content.activities.tasks')
@@ -33,7 +35,12 @@ export class TasksController {
   async create(@Request() req: ProfileRequest, @Body() dto: UpdateTaskDto) {
     const { profile, user } = req;
 
-    const activity = await this.tasksService.createContent(profile, user, Task.create(profile, user, dto), dto.tagNames);
+    const activity = await this.tasksService.createContent(
+      profile,
+      user,
+      Task.create(profile, user, dto),
+      dto.tagNames,
+    );
 
     if (!activity) {
       throw new InternalServerErrorException();
@@ -41,7 +48,7 @@ export class TasksController {
 
     return new EditTaskResponseDto({
       model: new TaskModel(activity),
-      tags: profile.getNewTags().map(tag => new TagModel(tag))
+      tags: profile.getNewTags().map((tag) => new TagModel(tag)),
     });
   }
 
@@ -49,7 +56,7 @@ export class TasksController {
   async update(@Request() req: ProfileContentRequest, @Body() update: UpdateTaskDto) {
     const { profile, user, content } = req;
 
-    if(!isTaskContent(content)) {
+    if (!isTaskContent(content)) {
       throw new EntityNotFoundException();
     }
 
@@ -58,15 +65,15 @@ export class TasksController {
 
     return new EditTaskResponseDto({
       model: new TaskModel(content),
-      tags: profile.getNewTags().map(tag => new TagModel(tag))
+      tags: profile.getNewTags().map((tag) => new TagModel(tag)),
     });
   }
 
   @Post(':cid/done')
-  async setDone(@Request() req: ProfileContentRequest<Task>, @Body() dto: UpdateTaskStateModel,) {
+  async setDone(@Request() req: ProfileContentRequest<Task>, @Body() dto: UpdateTaskStateModel) {
     const { profile, user, content } = req;
 
-    if(!isTaskContent(content)) {
+    if (!isTaskContent(content)) {
       throw new EntityNotFoundException();
     }
 
@@ -74,15 +81,15 @@ export class TasksController {
     return new UpdateTaskStateResultDto({ score: profile.score, done: content.getDoneBy(user)?.tid });
   }
 
-    @Post(':cid/undone')
-    async setUndone(@Request() req: ProfileContentRequest<Task>, @Body() dto: UpdateTaskStateModel) {
-      const { profile, user, content } = req;
+  @Post(':cid/undone')
+  async setUndone(@Request() req: ProfileContentRequest<Task>, @Body() dto: UpdateTaskStateModel) {
+    const { profile, user, content } = req;
 
-      if(!isTaskContent(content)) {
-        throw new EntityNotFoundException();
-      }
-
-      await this.tasksService.setUndone(profile, user, content, dto.date);
-      return new UpdateTaskStateResultDto({ score: profile.score, done: undefined });
+    if (!isTaskContent(content)) {
+      throw new EntityNotFoundException();
     }
+
+    await this.tasksService.setUndone(profile, user, content, dto.date);
+    return new UpdateTaskStateResultDto({ score: profile.score, done: undefined });
+  }
 }

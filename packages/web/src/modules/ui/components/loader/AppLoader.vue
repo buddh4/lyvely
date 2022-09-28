@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { usePageStore } from "@/modules/core/store/page.store";
-import Icon from "@/modules/ui/components/icon/Icon.vue";
 import { toRefs } from "vue";
 
 const { showAppLoader } = toRefs(usePageStore());
@@ -8,12 +7,16 @@ const { showAppLoader } = toRefs(usePageStore());
 
 <template>
   <transition name="fade">
-  <div v-if="showAppLoader" class="overlay bg-main">
-    <div class="overlay__inner">
-      <div class="overlay__content"><span class="spinner border-divide border-t-pop"></span></div>
-      <div class="overlay__content"><Icon name="lyvely" class="text-lyvely w-8" /></div>
+    <div v-if="showAppLoader" class="overlay bg-main">
+      <div class="overlay__inner">
+        <div class="overlay__content">
+          <span class="spinner border-divide border-t-pop"></span>
+        </div>
+        <div class="overlay__content">
+          <ly-icon name="lyvely" class="text-lyvely w-8" />
+        </div>
+      </div>
     </div>
-  </div>
   </transition>
 </template>
 

@@ -1,10 +1,10 @@
-import { Days, Months, CalendarDate, dateTime  } from '../interfaces';
+import { Days, Months, CalendarDate, dateTime } from '../interfaces';
 
-export function getMonthNameByIndex(id: number, short: boolean = false) {
+export function getMonthNameByIndex(id: number, short = false) {
   return short ? Months[id] : Months[id].substr(0, 3);
 }
 
-export function getMonthNames(short: boolean = false) {
+export function getMonthNames(short = false) {
   return [
     getMonthNameByIndex(0),
     getMonthNameByIndex(1),
@@ -17,14 +17,14 @@ export function getMonthNames(short: boolean = false) {
     getMonthNameByIndex(8),
     getMonthNameByIndex(9),
     getMonthNameByIndex(10),
-    getMonthNameByIndex(11)
-  ]
+    getMonthNameByIndex(11),
+  ];
 }
 
 export function getDayNameByIndex(id: number) {
   return Days[id];
 }
 
-export function formatDate(date: CalendarDate, format: string = 'YYYY-MM-DD') {
+export function formatDate(date: CalendarDate, format = 'YYYY-MM-DD') {
   return dateTime(date).format(format);
 }

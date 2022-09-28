@@ -1,1 +1,1 @@
-export * from './data-point.dao'
+export * from './data-point.dao';

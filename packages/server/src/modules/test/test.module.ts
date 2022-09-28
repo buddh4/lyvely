@@ -4,12 +4,9 @@ import { UsersModule } from '../users';
 import { ProfilesModule } from '../profiles';
 
 @Module({
-  imports: [
-    UsersModule,
-    ProfilesModule
-  ],
+  imports: [UsersModule, ProfilesModule],
   controllers: [],
   providers: [TestDataUtils],
-  exports: [TestDataUtils]
+  exports: [TestDataUtils],
 })
 export class TestModule {}

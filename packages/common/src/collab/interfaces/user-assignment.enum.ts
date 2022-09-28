@@ -1,4 +1,4 @@
 export enum UserAssignmentStrategy {
   Shared,
-  PerUser
+  PerUser,
 }

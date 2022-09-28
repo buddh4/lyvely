@@ -8,25 +8,24 @@ import { Profile } from '../../profiles';
 export enum CreatedAsType {
   User = 'user',
   Profile = 'profile',
-  Organization = 'organization'
+  Organization = 'organization',
 }
 
 export type Author = Profile | User;
 
 @Schema()
 export class CreatedAs extends BaseEntity<CreatedAs> {
-
-  constructor(obj?: Author | DeepPartial<CreatedAs> ) {
-    if(obj instanceof User) {
+  constructor(obj?: Author | DeepPartial<CreatedAs>) {
+    if (obj instanceof User) {
       super(createUserAuthor(obj));
-    } else if(obj instanceof Profile) {
+    } else if (obj instanceof Profile) {
       super(createProfileAuthor(obj));
     } else {
       super(obj);
     }
   }
 
-  @Prop( { type: String, enum: getStringEnumValues(CreatedAsType), required: true })
+  @Prop({ type: String, enum: getStringEnumValues(CreatedAsType), required: true })
   type: CreatedAsType;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
@@ -46,7 +45,7 @@ export function createUserAuthor(author: User) {
     type: CreatedAsType.User,
     authorId: author._id,
     name: author.getDisplayName(),
-    imageHash: author.getImageHash()
+    imageHash: author.getImageHash(),
   });
 }
 

@@ -1,14 +1,14 @@
-import { BaseModel, PropertyType } from "@/models";
+import { BaseModel, PropertyType } from '@/models';
 
 describe('ModelType Decorator', () => {
   it('test primitive value', async () => {
     class PlainSubModel extends BaseModel<PlainSubModel> {
-      @PropertyType(String,{ default: 'defaultValue' })
+      @PropertyType(String, { default: 'defaultValue' })
       value: string;
     }
 
     const model = new PlainSubModel();
-    expect(model.value).toEqual('defaultValue')
+    expect(model.value).toEqual('defaultValue');
   });
 
   it('test string default value', async () => {
@@ -18,7 +18,7 @@ describe('ModelType Decorator', () => {
     }
 
     const model = new PlainSubModel();
-    expect(model.value).toEqual('')
+    expect(model.value).toEqual('');
   });
 
   it('test number default value', async () => {
@@ -28,7 +28,7 @@ describe('ModelType Decorator', () => {
     }
 
     const model = new PlainSubModel();
-    expect(model.value).toEqual(0)
+    expect(model.value).toEqual(0);
   });
 
   it('test boolean default value', async () => {
@@ -38,7 +38,7 @@ describe('ModelType Decorator', () => {
     }
 
     const model = new PlainSubModel();
-    expect(model.value).toEqual(false)
+    expect(model.value).toEqual(false);
   });
 
   it('basic constructor', async () => {
@@ -52,7 +52,7 @@ describe('ModelType Decorator', () => {
 
       secret: 'string';
     }
-    const model = new TestModel({ sub: { value: 'test'} });
+    const model = new TestModel({ sub: { value: 'test' } });
     expect(model.sub instanceof PlainSubModel).toEqual(true);
   });
 
@@ -70,7 +70,7 @@ describe('ModelType Decorator', () => {
       @PropertyType(PlainSubModel)
       sub: PlainSubModel;
     }
-    const model = new TestModel({ sub: { sub: { value: 'test' }} });
+    const model = new TestModel({ sub: { sub: { value: 'test' } } });
     expect(model.sub instanceof PlainSubModel).toEqual(true);
     expect(model.sub.sub instanceof ValueModel).toEqual(true);
   });
@@ -80,7 +80,7 @@ describe('ModelType Decorator', () => {
       value: string;
 
       afterInit() {
-        this.value = this.value || 'default'
+        this.value = this.value || 'default';
       }
     }
 
@@ -93,7 +93,7 @@ describe('ModelType Decorator', () => {
       @PropertyType(PlainSubModel)
       sub: PlainSubModel;
     }
-    const model = new TestModel({ sub: { sub: <any> { }} });
+    const model = new TestModel({ sub: { sub: <any>{} } });
     expect(model.sub.sub.value).toEqual('default');
   });
 
@@ -109,7 +109,7 @@ describe('ModelType Decorator', () => {
 
     const model = new TestModel();
     expect(model.sub).toBeUndefined();
-  })
+  });
 
   it('assure non optional property is initialized by default', async () => {
     class ValueModel {
@@ -162,12 +162,12 @@ describe('ModelType Decorator', () => {
       sub: PlainSubModel;
     }
 
-    const model = new TestModel({ sub: <any> { } });
+    const model = new TestModel({ sub: <any>{} });
     expect(model.sub.sub.value).toEqual('defaultValue');
   });
 
   it('assure properties are inherited', async () => {
-    class MyModel extends BaseModel<MyModel>{
+    class MyModel extends BaseModel<MyModel> {
       @PropertyType(String, { default: 'Test' })
       field: string;
     }
@@ -179,12 +179,12 @@ describe('ModelType Decorator', () => {
   });
 
   it('assure property types are overwritten by parent', async () => {
-    class GrandParent extends BaseModel<GrandParent>{
+    class GrandParent extends BaseModel<GrandParent> {
       @PropertyType(String, { default: 'GrandParent' })
       field: string;
     }
 
-    class Parent extends BaseModel<Parent>{
+    class Parent extends BaseModel<Parent> {
       @PropertyType(String, { default: 'Parent' })
       field: string;
     }
@@ -196,12 +196,12 @@ describe('ModelType Decorator', () => {
   });
 
   it('assure property types are overwritten by child', async () => {
-    class GrandParent extends BaseModel<GrandParent>{
+    class GrandParent extends BaseModel<GrandParent> {
       @PropertyType(String, { default: 'GrandParent' })
       field: string;
     }
 
-    class Parent extends BaseModel<Parent>{
+    class Parent extends BaseModel<Parent> {
       @PropertyType(String, { default: 'Parent' })
       field: string;
     }
@@ -228,7 +228,7 @@ describe('ModelType Decorator', () => {
 
   it('test array default', async () => {
     class PlainSubModel extends BaseModel<PlainSubModel> {
-      @PropertyType(Array,{ default: ['test'] })
+      @PropertyType(Array, { default: ['test'] })
       arr: string[];
     }
 
@@ -248,10 +248,7 @@ describe('ModelType Decorator', () => {
       arr: SubModel[];
     }
 
-    const model = new PlainSubModel({ arr: [
-        { value: 'v1' },
-        { value: 'v2' },
-    ] });
+    const model = new PlainSubModel({ arr: [{ value: 'v1' }, { value: 'v2' }] });
 
     expect(model.arr).toBeDefined();
     expect(model.arr.length).toEqual(2);

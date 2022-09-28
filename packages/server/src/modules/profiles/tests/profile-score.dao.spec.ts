@@ -10,9 +10,7 @@ import { TestProfileScoreDao } from './src/test-profile-score-dao.service';
 const testScoreModelDef = {
   name: ProfileScore.name,
   schema: ProfileScoreSchema,
-  discriminators: [
-    { name: TestProfileScore.name, schema: TestProfileScoreSchema }
-  ],
+  discriminators: [{ name: TestProfileScore.name, schema: TestProfileScoreSchema }],
 };
 
 describe('AbstractUserProfileActionDao', () => {
@@ -26,7 +24,6 @@ describe('AbstractUserProfileActionDao', () => {
     testingModule = await createContentTestingModule(TEST_KEY, [TestProfileScoreDao], [testScoreModelDef]).compile();
     testScoreDao = testingModule.get<TestProfileScoreDao>(TestProfileScoreDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
-
   });
 
   it('should be defined', () => {
@@ -36,7 +33,9 @@ describe('AbstractUserProfileActionDao', () => {
   describe('create()', () => {
     it('create test score instance', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const scoreLog = await testScoreDao.save(new TestProfileScore({ user: user, profile: profile, score: 5 },{ text: 'test' }));
+      const scoreLog = await testScoreDao.save(
+        new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
+      );
       const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date());
 
       expect(scoreLog).toBeDefined();

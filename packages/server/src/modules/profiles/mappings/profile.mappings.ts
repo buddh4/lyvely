@@ -1,5 +1,5 @@
-import { UserWithProfileAndRelations } from "../models";
-import { ProfileRelationInfo, ProfileRelationInfos, ProfileWithRelationsDto, registerMapping } from "@lyvely/common";
+import { UserWithProfileAndRelations } from '../models';
+import { ProfileRelationInfo, ProfileRelationInfos, ProfileWithRelationsDto, registerMapping } from '@lyvely/common';
 
 export function useProfileMappings() {
   registerMapping(UserWithProfileAndRelations, ProfileRelationInfo, (relations) => {
@@ -10,7 +10,7 @@ export function useProfileMappings() {
       description,
       score,
       type,
-      relations: relations.relations.map(({ type, role }) => ({ type, role }))
+      relations: relations.relations.map(({ type, role }) => ({ type, role })),
     });
   });
 
@@ -20,16 +20,16 @@ export function useProfileMappings() {
         const { name, description, score, type, imageHash, id } = relation.profile;
         return new ProfileRelationInfo({
           ...{ name, description, score, type, imageHash, id },
-          relations: relation.relations.map(({ type, role }) => ({ type, role }))
-        })
-      })
+          relations: relation.relations.map(({ type, role }) => ({ type, role })),
+        });
+      }),
     });
   });
 
   registerMapping(UserWithProfileAndRelations, ProfileWithRelationsDto, (relations) => {
     return new ProfileWithRelationsDto({
       ...relations.profile,
-      relations: relations.relations
+      relations: relations.relations,
     });
   });
 }

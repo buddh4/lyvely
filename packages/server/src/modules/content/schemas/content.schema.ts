@@ -1,18 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { DeepPartial, IContent, getNumberEnumValues, ContentVisibilityLevel } from '@lyvely/common';
-import { BaseEntity } from '../../core/db/base.entity';
+import { BaseEntity } from '@/modules/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, ContentAuthorSchema, Author } from './content-author-info.schema';
 import { User } from '../../users';
 import { implementsAssertContentMetadata } from '../interfaces';
 import { Profile, BaseProfileModel } from '../../profiles';
-import { Tag } from "../../tags";
+import { Tag } from '../../tags';
 
 export type ContentDocument = Content & mongoose.Document;
 
-export interface ContentEntity {
+export interface IContentEntity {
   _id: TObjectId;
   createdBy: TObjectId;
   createdAs?: CreatedAs;
@@ -31,8 +31,10 @@ export interface ContentEntity {
 }
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> extends BaseProfileModel<T> implements IContent {
-
+export class Content<T extends IContentEntity & BaseEntity<IContentEntity> = any>
+  extends BaseProfileModel<T>
+  implements IContent
+{
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: TObjectId;
 
@@ -48,10 +50,10 @@ export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> 
   @Prop({ type: [ContentLogSchema], default: [] })
   logs: ContentLog[];
 
-  @Prop({ type: ContentMetadataSchema,  })
+  @Prop({ type: ContentMetadataSchema })
   metaData: ContentMetadata;
 
-  @Prop( { enum: getNumberEnumValues(ContentVisibilityLevel), default: ContentVisibilityLevel.Member })
+  @Prop({ enum: getNumberEnumValues(ContentVisibilityLevel), default: ContentVisibilityLevel.Member })
   visibility: number;
 
   @Prop()
@@ -77,22 +79,22 @@ export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> 
       createdBy: author._id,
       createdAs: new CreatedAs(author),
       pid: profile._id,
-      oid: profile.oid
-    }
+      oid: profile.oid,
+    };
     super({ ...obj, ...additionalData });
   }
 
   afterInit() {
     this.metaData = new ContentMetadata(this.metaData);
-    if(implementsAssertContentMetadata(this)) {
+    if (implementsAssertContentMetadata(this)) {
       this.assertContentMetadata(this.metaData);
     }
 
-    if(this.logs?.length) {
-      this.logs = this.logs.map(log => new ContentLog(log));
+    if (this.logs?.length) {
+      this.logs = this.logs.map((log) => new ContentLog(log));
     }
 
-    if(this.createdAs && !(this.createdAs instanceof CreatedAs)) {
+    if (this.createdAs && !(this.createdAs instanceof CreatedAs)) {
       this.createdAs = new CreatedAs(this.createdAs);
     }
 
@@ -100,7 +102,7 @@ export class Content<T extends ContentEntity & BaseEntity<ContentEntity> = any> 
   }
 
   addTag(tag: Tag) {
-    if(tag) this.tagIds.push(tag._id);
+    if (tag) this.tagIds.push(tag._id);
   }
 
   setAuthor(author: Author) {

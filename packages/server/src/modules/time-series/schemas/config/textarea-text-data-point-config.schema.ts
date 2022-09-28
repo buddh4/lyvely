@@ -5,7 +5,6 @@ import { DefaultDataPointConfig } from './default-data-point-config.schema';
 
 @Schema()
 export class TextareaTextDataPointConfig extends DefaultDataPointConfig {
-
   strategy = DataPointInputStrategy.TextareaText;
 
   @Prop({ enum: [DataPointInputType.Textarea] })
@@ -16,6 +15,7 @@ export class TextareaTextDataPointConfig extends DefaultDataPointConfig {
   }
 }
 
-export const TextareaTextDataPointConfigSchema
-  = DataPointConfigSchemaFactory.createForClass(DataPointInputStrategy.TextareaText, TextareaTextDataPointConfig);
-
+export const TextareaTextDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
+  DataPointInputStrategy.TextareaText,
+  TextareaTextDataPointConfig,
+);

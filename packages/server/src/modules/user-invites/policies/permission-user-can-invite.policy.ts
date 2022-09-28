@@ -1,6 +1,6 @@
-import { UserPolicyContext } from "../../users";
-import { ConfigService } from "@nestjs/config";
-import { UserCanInvitePolicy } from "./user-can-invite.policy";
+import { UserPolicyContext } from '../../users';
+import { ConfigService } from '@nestjs/config';
+import { UserCanInvitePolicy } from './user-can-invite.policy';
 
 export class PermissionUserCanInvitePolicy extends UserCanInvitePolicy {
   constructor(private readonly configService: ConfigService) {

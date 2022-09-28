@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CalendarIntervalEnum, ITiming , getNumberEnumValues } from '@lyvely/common';
-
+import { CalendarIntervalEnum, ITiming, getNumberEnumValues } from '@lyvely/common';
 
 @Schema()
 export class Timing implements ITiming {

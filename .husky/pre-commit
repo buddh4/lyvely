@@ -3,3 +3,5 @@
 
 npm run deps-common
 npm run deps-server
+npm run deps-web
+npm run lint

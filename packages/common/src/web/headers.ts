@@ -1,3 +1,3 @@
-export const Headers =  {
-  X_VISITOR_ID: 'X-Visitor-Id'
+export const Headers = {
+  X_VISITOR_ID: 'X-Visitor-Id',
 };

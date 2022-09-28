@@ -1,27 +1,17 @@
-import { ProfileController } from "../decorators";
-import { ProfilesService, ProfileTagsService } from "../services";
-import { UseClassSerializer } from "../../core/decorators/use-class-serializer.decorator";
-import {
-  Request,
-  Param,
-  Post,
-  Body,
-  Inject,
-  ForbiddenException,
-  NotFoundException,
-  Put
-} from '@nestjs/common';
-import { ProfileRequest } from "../types";
-import { UpdateTagDto, TagModel, CreateTagDto } from "@lyvely/common";
-import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
-import { ServiceException } from "../../core/exceptions";
-import { Tag } from "../../tags";
+import { ProfileController } from '../decorators';
+import { ProfilesService, ProfileTagsService } from '../services';
+import { UseClassSerializer } from '../../core/decorators/use-class-serializer.decorator';
+import { Request, Param, Post, Body, Inject, ForbiddenException, NotFoundException, Put } from '@nestjs/common';
+import { ProfileRequest } from '../types';
+import { UpdateTagDto, TagModel, CreateTagDto } from '@lyvely/common';
+import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { ServiceException } from '../../core/exceptions';
+import { Tag } from '../../tags';
 
 // TODO feature check
 @ProfileController('tags')
 @UseClassSerializer()
 export class ProfileTagsController {
-
   @Inject()
   private profilesService: ProfilesService;
 
@@ -32,7 +22,7 @@ export class ProfileTagsController {
   async create(@Request() req: ProfileRequest, @Body() dto: CreateTagDto) {
     const profile = this._getMemberProfile(req);
 
-    if(!await this.tagService.addTag(profile, dto)) {
+    if (!(await this.tagService.addTag(profile, dto))) {
       throw new ServiceException();
     }
 
@@ -44,7 +34,7 @@ export class ProfileTagsController {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
 
-    if(!tag) throw new NotFoundException();
+    if (!tag) throw new NotFoundException();
 
     await this.tagService.updateTag(profile, tag, dto);
     return new TagModel(tag);
@@ -68,7 +58,7 @@ export class ProfileTagsController {
     const { profile, profileRelations } = req;
 
     // TODO: Implement ManageTagsPolicy
-    if(!profileRelations.getMembership()) {
+    if (!profileRelations.getMembership()) {
       throw new ForbiddenException();
     }
 
@@ -78,11 +68,10 @@ export class ProfileTagsController {
   _getTagById(profile, id: EntityIdentity<Tag>) {
     const tag = profile.getTagById(assureObjectId(id));
 
-    if(!tag) {
+    if (!tag) {
       throw new NotFoundException();
     }
 
     return tag;
   }
-
 }

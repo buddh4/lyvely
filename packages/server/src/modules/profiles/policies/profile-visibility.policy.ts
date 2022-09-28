@@ -1,4 +1,4 @@
-import { ProfilePolicyContext } from "./profile-policy.context";
+import { ProfilePolicyContext } from './profile-policy.context';
 import { ProfilePolicy } from './profile.policy';
 import { ProfileVisibilityLevel } from '@lyvely/common';
 import { Injectable } from '@nestjs/common';
@@ -8,7 +8,7 @@ export class ProfileVisibilityPolicy implements ProfilePolicy {
   async validate(context: ProfilePolicyContext): Promise<boolean> {
     const { profile, profileRelations } = context.getRequest();
 
-    if(!profile) {
+    if (!profile) {
       return false;
     }
 

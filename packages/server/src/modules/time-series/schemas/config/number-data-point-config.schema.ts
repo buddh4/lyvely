@@ -4,7 +4,7 @@ import {
   DataPointValueType,
   INumberDataPointSettings,
   SupporedLogValueInputTypes,
-  INumberDataPointConfig
+  INumberDataPointConfig,
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 
@@ -28,8 +28,10 @@ export class NumberDataPointConfigRevision extends DataPointConfigRevision imple
 
 export const NumberDataPointConfigRevisionSchema = SchemaFactory.createForClass(NumberDataPointConfigRevision);
 
-export class NumberDataPointConfig extends DataPointConfig<INumberDataPointSettings> implements INumberDataPointSettings {
-
+export class NumberDataPointConfig
+  extends DataPointConfig<INumberDataPointSettings>
+  implements INumberDataPointSettings
+{
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;
 
@@ -45,7 +47,7 @@ export class NumberDataPointConfig extends DataPointConfig<INumberDataPointSetti
   @Prop()
   optimal?: number;
 
-  @Prop({ type: [ NumberDataPointConfigRevisionSchema ], default: [] })
+  @Prop({ type: [NumberDataPointConfigRevisionSchema], default: [] })
   history: NumberDataPointConfigRevision[];
 
   constructor(inputType?: DataPointInputType, settings?: INumberDataPointSettings) {
@@ -65,5 +67,3 @@ export class NumberDataPointConfig extends DataPointConfig<INumberDataPointSetti
 }
 
 export const NumberDataPointConfigSchema = SchemaFactory.createForClass(NumberDataPointConfig);
-
-

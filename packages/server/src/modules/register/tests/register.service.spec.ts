@@ -2,8 +2,8 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { RegisterService } from '../register.service';
 import { RegisterDto } from '@lyvely/common';
-import { createContentTestingModule } from "../../test/utils/test.utils";
-import { TestDataUtils } from "../../test/utils/test-data.utils";
+import { createContentTestingModule } from '../../test/utils/test.utils';
+import { TestDataUtils } from '../../test/utils/test-data.utils';
 
 describe('RegisterService', () => {
   let testingModule: TestingModule;
@@ -20,7 +20,7 @@ describe('RegisterService', () => {
 
   afterEach(async () => {
     return testData.reset(TEST_KEY);
-  })
+  });
 
   it('should be defined', () => {
     expect(registerService).toBeDefined();
@@ -28,12 +28,14 @@ describe('RegisterService', () => {
 
   describe('register', () => {
     it('register valid user', async () => {
-      const { user, profile } = await registerService.register(new RegisterDto({
-        username: 'Tester',
-        email: 'tester@test.de',
-        password: 'testpw',
-        locale: 'de',
-      }));
+      const { user, profile } = await registerService.register(
+        new RegisterDto({
+          username: 'Tester',
+          email: 'tester@test.de',
+          password: 'testpw',
+          locale: 'de',
+        }),
+      );
 
       expect(profile).toBeDefined();
       expect(profile.ownerId).toBeDefined();
@@ -46,12 +48,14 @@ describe('RegisterService', () => {
       let profile, error;
 
       try {
-        profile = await registerService.register(new RegisterDto({
-          username: 'Tester',
-          email: 'testertest.de',
-          password: 'testpw',
-          locale: 'de',
-        }));
+        profile = await registerService.register(
+          new RegisterDto({
+            username: 'Tester',
+            email: 'testertest.de',
+            password: 'testpw',
+            locale: 'de',
+          }),
+        );
       } catch (err) {
         error = err;
       }
@@ -61,22 +65,26 @@ describe('RegisterService', () => {
     });
 
     it('register already existing email', async () => {
-      await registerService.register(new RegisterDto({
-        username: 'TesterNew',
-        email: 'tester@test.de',
-        password: 'testpw',
-        locale: 'de',
-      }));
+      await registerService.register(
+        new RegisterDto({
+          username: 'TesterNew',
+          email: 'tester@test.de',
+          password: 'testpw',
+          locale: 'de',
+        }),
+      );
 
       let profile, error;
 
       try {
-        profile = await registerService.register(new RegisterDto({
-          username: 'Tester',
-          email: 'tester@test.de',
-          password: 'testpw',
-          locale: 'de',
-        }));
+        profile = await registerService.register(
+          new RegisterDto({
+            username: 'Tester',
+            email: 'tester@test.de',
+            password: 'testpw',
+            locale: 'de',
+          }),
+        );
       } catch (err) {
         error = err;
       }

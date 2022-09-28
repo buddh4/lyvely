@@ -3,10 +3,9 @@ interface Props {
   text: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   text: undefined,
 });
-
 </script>
 
 <template>
@@ -15,6 +14,4 @@ const props = withDefaults(defineProps<Props>(), {
   </p>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

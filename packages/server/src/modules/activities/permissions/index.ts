@@ -4,4 +4,4 @@ export const ActivityPermissions = {
   UPDATE: 'content.habits.update',
   DELETE: 'content.habits.delete',
   MANAGE: 'content.habits.*',
-}
+};

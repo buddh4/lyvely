@@ -4,7 +4,6 @@ import { IFeature } from '../core/features/feature.interface';
 
 @Injectable()
 export class ProfileEvents extends ModuleEvents {
-
   getFeatures(): IFeature[] {
     return [];
   }

@@ -1,9 +1,8 @@
 import { UpdateHabitDto, UpdateDataPointDto } from '@/activities';
 import { CalendarIntervalEnum } from '@/calendar';
-import { validate } from "class-validator";
+import { validate } from 'class-validator';
 
 describe('Activity Model', () => {
-
   describe('UpdateHabitDto', function () {
     it('validate valid dto', async () => {
       const dto = new UpdateHabitDto({
@@ -54,7 +53,7 @@ describe('Activity Model', () => {
         title: 'Test',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
-        max: 5
+        max: 5,
       });
 
       dto.min = 10;
@@ -69,7 +68,7 @@ describe('Activity Model', () => {
     it('validate valid dto', async () => {
       const dto = new UpdateDataPointDto({
         date: '2021-01-01',
-        value: 5
+        value: 5,
       });
 
       const result = await validate(dto);
@@ -79,7 +78,7 @@ describe('Activity Model', () => {
     it('validate invalid date', async () => {
       const dto = new UpdateDataPointDto({
         date: '01-01-2021',
-        value: 5
+        value: 5,
       });
 
       const result = await validate(dto);

@@ -1,8 +1,8 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Mapper, createMap } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
-import { Task } from "../schemas";
-import { TaskModel, TaskWithUsersModel } from "@lyvely/common";
+import { Task } from '../schemas';
+import { TaskModel, TaskWithUsersModel } from '@lyvely/common';
 
 @Injectable()
 export class UserProfile extends AutomapperProfile {

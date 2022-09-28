@@ -18,15 +18,19 @@
 </template>
 
 <script lang="ts">
-import { BaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
-import { computed, SetupContext } from 'vue';
+import {
+  IBaseInputProps,
+  useBaseInputProps,
+  useBaseInputSetup,
+} from "@/modules/ui/components/form/BaseInput";
+import { computed, SetupContext } from "vue";
 
-interface Props extends BaseInputProps {
-  type: string,
-  min: number,
-  max: number,
-  step: number,
-  width: string
+interface Props extends IBaseInputProps {
+  type: string;
+  min: number;
+  max: number;
+  step: number;
+  width: string;
 }
 
 export default {
@@ -35,9 +39,9 @@ export default {
     min: { type: Number, default: undefined },
     max: { type: Number, default: undefined },
     step: { type: Number, default: 1 },
-    width: { type: String, default: '' }
+    width: { type: String, default: "" },
   },
-  emits: ['change', 'update:modelValue'],
+  emits: ["change", "update:modelValue"],
   setup(props: Props, context: SetupContext) {
     const baseInput = useBaseInputSetup<number>(props, context);
 
@@ -55,8 +59,8 @@ export default {
         val = parseInt(val);
         context.emit("change");
         context.emit("update:modelValue", getAllowedVal(val));
-      }
-    })
+      },
+    });
 
     function getAllowedVal(val: number): number {
       if (typeof props.min !== "undefined") {
@@ -79,10 +83,10 @@ export default {
 
     return {
       ...baseInput,
-      inputStyle
-    }
-  }
-}
+      inputStyle,
+    };
+  },
+};
 </script>
 
 <style scoped></style>

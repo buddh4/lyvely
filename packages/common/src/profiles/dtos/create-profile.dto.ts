@@ -2,7 +2,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { BaseModel } from '@/models';
 import { IsEnum, IsString, IsOptional, IsArray } from 'class-validator';
 import { ProfileType } from '../interfaces';
-import { ProfileUsage } from "../models";
+import { ProfileUsage } from '../models';
 
 @Exclude()
 export class CreateProfileDto extends BaseModel<CreateProfileDto> {

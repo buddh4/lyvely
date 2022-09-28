@@ -1,8 +1,7 @@
 import { Expose } from 'class-transformer';
-import { ActivityType } from "../../models";
+import { ActivityType, ActivityModel } from '../../models';
 import { IsEnum } from 'class-validator';
-import { ContentModel } from "@/content";
-import { ActivityModel } from "../../models";
+import { ContentModel } from '@/content';
 
 @Expose()
 export class HabitModel extends ActivityModel<HabitModel> {

@@ -1,1 +1,1 @@
-export * from './habit.model'
+export * from './habit.model';

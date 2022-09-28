@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ProfileMemberMailInvite } from "@lyvely/common";
-import { ProfilePermissionsService } from "./profile-permissions.service";
-import { UserWithProfileAndRelations } from "../models";
-import { validateEmail } from "../../core/db/field.validator.util";
-import { UsersService } from "../../users";
-import { MailService } from "../../mails/services/mail.service";
+import { ProfileMemberMailInvite } from '@lyvely/common';
+import { ProfilePermissionsService } from './profile-permissions.service';
+import { UserWithProfileAndRelations } from '../models';
+import { validateEmail } from '../../core/db/field.validator.util';
+import { UsersService } from '../../users';
+import { MailService } from '../../mails/services/mail.service';
 
 @Injectable()
 export class InviteProfileUsersService {
@@ -14,8 +14,14 @@ export class InviteProfileUsersService {
     private readonly mailService: MailService,
   ) {}
 
-  async inviteUserByMail(userWithRelations: UserWithProfileAndRelations, invite: ProfileMemberMailInvite): Promise<boolean> {
-    if(!this.profilePermissionsService.userInheritsRole(userWithRelations, invite.role) || !validateEmail(invite.email)) {
+  async inviteUserByMail(
+    userWithRelations: UserWithProfileAndRelations,
+    invite: ProfileMemberMailInvite,
+  ): Promise<boolean> {
+    if (
+      !this.profilePermissionsService.userInheritsRole(userWithRelations, invite.role) ||
+      !validateEmail(invite.email)
+    ) {
       return false;
     }
 
@@ -23,8 +29,7 @@ export class InviteProfileUsersService {
 
     // Create invite token
 
-
-    if(existingUser) {
+    if (existingUser) {
       // TODO: Send notification to existing user
       // Create invitation url with token
       /**
@@ -32,13 +37,12 @@ export class InviteProfileUsersService {
        * this.notificationService.push(new UserProfileInvite({
        *    ....
        * }))
-        */
+       */
     } else {
       // Create registration url with invitation token
       this.mailService.sendMail({
         to: invite.email,
       });
     }
-
   }
 }

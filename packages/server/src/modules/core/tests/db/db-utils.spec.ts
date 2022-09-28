@@ -1,4 +1,4 @@
-import { applyInc, applyPush, applyRawDataTo, findByPath } from "../../db/db.utils";
+import { applyInc, applyPush, applyRawDataTo, findByPath } from '../../db/db.utils';
 import { expect } from '@jest/globals';
 
 class SubModel {
@@ -31,7 +31,7 @@ describe('DbUtils', () => {
     it('apply array values', () => {
       const model = new TestModel({ arr: ['a', 'b'] });
       applyRawDataTo(model, { arr: ['c', 'd', 'e'] });
-      expect(model.arr).toEqual( ['c', 'd', 'e']);
+      expect(model.arr).toEqual(['c', 'd', 'e']);
     });
 
     it('sub level field is applied', () => {
@@ -50,15 +50,15 @@ describe('DbUtils', () => {
 
     it('do not apply unknown field if strict = true', () => {
       const model = new TestModel({ sub: new SubModel({ sub: new SubModel({ fieldA: 'subA' }) }) });
-      applyRawDataTo(model, <any> { doesNotExist: 'whatever' }, { strict: true });
-      expect((<any> model).doesNotExist).toBeUndefined();
+      applyRawDataTo(model, <any>{ doesNotExist: 'whatever' }, { strict: true });
+      expect((<any>model).doesNotExist).toBeUndefined();
     });
   });
 
   describe('applyInc', function () {
     it('apply root path inc', () => {
       const model = { field: 0 };
-      applyInc(model, { 'field': 1 });
+      applyInc(model, { field: 1 });
       expect(model.field).toEqual(1);
     });
 

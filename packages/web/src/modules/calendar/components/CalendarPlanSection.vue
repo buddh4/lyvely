@@ -2,22 +2,20 @@
 import {
   CalendarPlan,
   CalendarIntervalEnum,
-    isToday as isTodayUtil
+  isToday as isTodayUtil,
 } from "@lyvely/common";
-import AddButton from "@/modules/ui/components/button/AddButton.vue";
-import Icon from "@/modules/ui/components/icon/Icon.vue";
-import { useProfileStore } from "@/modules/profile/stores/profile.store";
+import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import { useCalendarPlanStore } from "../store";
-import { computed, ref, toRefs } from 'vue';
-import { onClickOutside } from '@vueuse/core'
+import { computed, ref, toRefs } from "vue";
+import { onClickOutside } from "@vueuse/core";
 import Button from "@/modules/ui/components/button/Button.vue";
 import { translate } from "@/i18n";
-import { useAuthStore } from "@/modules/user/store/auth.store";
+import { useAuthStore } from "@/modules/users/store/auth.store";
 
 interface Props {
-  interval: CalendarIntervalEnum,
-  createButtonTitle: string,
-  count: number
+  interval: CalendarIntervalEnum;
+  createButtonTitle: string;
+  count: number;
 }
 
 const calendarPlanStore = useCalendarPlanStore();
@@ -25,12 +23,9 @@ const { locale: userLocale } = useAuthStore();
 const { locale: profileLocale } = useProfileStore();
 
 const { switchToToday, getNextDate, getPreviousDate } = calendarPlanStore;
-const {
-  date,
-  isToday,
-} = toRefs(calendarPlanStore);
+const { date, isToday } = toRefs(calendarPlanStore);
 
-const emit = defineEmits(['create']);
+const emit = defineEmits(["create"]);
 const props = defineProps<Props>();
 
 const collapsed = ref(false);
@@ -41,12 +36,14 @@ const isDaily = props.interval === CalendarIntervalEnum.Daily;
 const isWeekly = props.interval === CalendarIntervalEnum.Weekly;
 const isUnscheduled = props.interval === CalendarIntervalEnum.Unscheduled;
 
-
 function getAccessibleTitle(d: Date) {
-  let title = calendarPlan.getAccessibleTitle(d, isWeekly ? profileLocale : userLocale );
+  let title = calendarPlan.getAccessibleTitle(
+    d,
+    isWeekly ? profileLocale : userLocale
+  );
 
-  if(isDaily && isTodayUtil(d)) {
-    title = translate('calendar.today') + ' ' +title;
+  if (isDaily && isTodayUtil(d)) {
+    title = translate("calendar.today") + " " + title;
   }
 
   return title;
@@ -56,28 +53,34 @@ function getAccessibleTitle(d: Date) {
  * In case of weekly title we use the locale of the profile, since the profile may use another week format
  * TODO: (week of day) make this configurable in profile independently of locale
  */
-const title = computed(() => calendarPlan.getTitle(date.value, isWeekly ? profileLocale : userLocale ));
+const title = computed(() =>
+  calendarPlan.getTitle(date.value, isWeekly ? profileLocale : userLocale)
+);
 const accessibleTitle = computed(() => getAccessibleTitle(date.value));
 const showTodayIcon = computed(() => isDaily && !isToday.value);
-const rightCaret = computed(() => isUnscheduled ? false : "▸");
-const leftCaret = computed(() => isUnscheduled ? false : "◂");
+const rightCaret = computed(() => (isUnscheduled ? false : "▸"));
+const leftCaret = computed(() => (isUnscheduled ? false : "◂"));
 const nextTitle = computed(() => getAccessibleTitle(getNextDate(calendarPlan)));
-const prevTitle = computed(() => getAccessibleTitle(getPreviousDate(calendarPlan)));
+const prevTitle = computed(() =>
+  getAccessibleTitle(getPreviousDate(calendarPlan))
+);
 
-const label = CalendarPlan.getInstance(props.interval).getLabel().toLocaleLowerCase();
+const label = CalendarPlan.getInstance(props.interval)
+  .getLabel()
+  .toLocaleLowerCase();
 const headerId = `calendar-plan-${label}`;
 const itemsId = `calendar-plan-items-${label}`;
 
 const showCreateButton = ref(false);
 const header = ref(null);
-onClickOutside(header, () => showCreateButton.value = false);
+onClickOutside(header, () => (showCreateButton.value = false));
 
 function toggleContent() {
-  return collapsed.value = !isEmpty.value && !collapsed.value;
+  return (collapsed.value = !isEmpty.value && !collapsed.value);
 }
 
 function open() {
-  return collapsed.value = !isEmpty.value && false;
+  return (collapsed.value = !isEmpty.value && false);
 }
 
 function incrementTiming() {
@@ -91,47 +94,80 @@ function decrementTiming() {
 
 <template>
   <div
-      :id="headerId"
-      ref="header"
-      data-calendar-plan-header
-      tabindex="0"
-      :aria-label="$t('calendar.plan.aria.header', { 'time': accessibleTitle })"
-      :data-count="count"
-      class="calendar-plan-item calendar-plan-header-item first:rounded-t border-divide bg-shadow text-center border relative"
-      @dragenter="open"
-      @focusin="showCreateButton = true">
-
-    <button v-if="showTodayIcon" class="today-button" :title="$t('calendar.plan.nav-today')" :aria-controls="itemsId" @click="switchToToday">
-      <Icon role="button" name="today" />
+    :id="headerId"
+    ref="header"
+    data-calendar-plan-header
+    tabindex="0"
+    :aria-label="$t('calendar.plan.aria.header', { time: accessibleTitle })"
+    :data-count="count"
+    class="calendar-plan-item calendar-plan-header-item first:rounded-t border-divide bg-shadow text-center border relative"
+    @dragenter="open"
+    @focusin="showCreateButton = true"
+  >
+    <button
+      v-if="showTodayIcon"
+      class="today-button"
+      :title="$t('calendar.plan.nav-today')"
+      :aria-controls="itemsId"
+      @click="switchToToday"
+    >
+      <ly-icon role="button" name="today" />
     </button>
 
-    <Button
-        v-if="leftCaret" tabindex="0" :aria-label="$t('calendar.plan.aria.nav-back', { time: prevTitle })"
-        class="switch-timing no-underline py-0" :aria-controls="itemsId"  @click="decrementTiming">
+    <ly-button
+      v-if="leftCaret"
+      tabindex="0"
+      :aria-label="$t('calendar.plan.aria.nav-back', { time: prevTitle })"
+      class="switch-timing no-underline py-0"
+      :aria-controls="itemsId"
+      @click="decrementTiming"
+    >
       {{ leftCaret }}
-    </Button>
+    </ly-button>
 
     <button
-        class="calendar-plan-title text-body select-none"
-        :aria-controls="itemsId"
-        :aria-label="accessibleTitle"
-        :aria-expanded="collapsed ?  'no' : 'yes'"
-        @click="toggleContent">
-      <span aria-hidden="true">{{ title }} <small v-if="collapsed && !isEmpty">{{ ` (${count})` }}</small></span>
+      class="calendar-plan-title text-body select-none"
+      :aria-controls="itemsId"
+      :aria-label="accessibleTitle"
+      :aria-expanded="collapsed ? 'no' : 'yes'"
+      @click="toggleContent"
+    >
+      <span aria-hidden="true">
+        {{ title }}
+        <small v-if="collapsed && !isEmpty">{{ ` (${count})` }}</small>
+      </span>
     </button>
 
-    <Button
-        v-if="rightCaret" tabindex="0" :aria-label="$t('calendar.plan.aria.nav-next', { time: nextTitle })"
-        class="switch-timing no-underline py-0" :aria-controls="itemsId" @click="incrementTiming">
+    <ly-button
+      v-if="rightCaret"
+      tabindex="0"
+      :aria-label="$t('calendar.plan.aria.nav-next', { time: nextTitle })"
+      class="switch-timing no-underline py-0"
+      :aria-controls="itemsId"
+      @click="incrementTiming"
+    >
       {{ rightCaret }}
-    </Button>
+    </ly-button>
 
-    <AddButton v-if="showCreateButton" class="absolute right-2" :title="createButtonTitle" @click="showCreateButton = false;$emit('create')">
+    <ly-add-button
+      v-if="showCreateButton"
+      class="absolute right-2"
+      :title="createButtonTitle"
+      @click="
+        showCreateButton = false;
+        $emit('create');
+      "
+    >
       +
-    </AddButton>
+    </ly-add-button>
   </div>
 
-  <div :id="itemsId" role="list" data-calendar-plan-item-container :class="['p-0 border-0', {'hidden': collapsed}]">
+  <div
+    :id="itemsId"
+    role="list"
+    data-calendar-plan-item-container
+    :class="['p-0 border-0', { hidden: collapsed }]"
+  >
     <slot></slot>
   </div>
 </template>

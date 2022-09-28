@@ -1,15 +1,7 @@
-import {
-  IsEmail,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Length,
-  MaxLength,
-  MinLength,
-} from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, MaxLength, MinLength } from 'class-validator';
 import { BaseModel } from '@/models';
 
-export class RegisterDto extends BaseModel<RegisterDto>{
+export class RegisterDto extends BaseModel<RegisterDto> {
   @IsString()
   @Length(2, 40)
   @IsNotEmpty()
@@ -24,7 +16,7 @@ export class RegisterDto extends BaseModel<RegisterDto>{
   readonly locale?: string;
 
   @IsNotEmpty()
-  @MinLength(5, { message: " The min length of password is 8 " })
+  @MinLength(5, { message: ' The min length of password is 8 ' })
   @MaxLength(20, {
     message: " The password can't accept more than 20 characters ",
   })

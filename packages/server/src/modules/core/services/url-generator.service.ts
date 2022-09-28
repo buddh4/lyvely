@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from "../config";
-import { MisconfigurationException } from "../exceptions";
+import { ConfigurationPath } from '../config';
+import { MisconfigurationException } from '../exceptions';
 
 @Injectable()
 export class UrlGenerator {
@@ -11,24 +11,24 @@ export class UrlGenerator {
   public getAppUrl(path: string): URL;
   public getAppUrl(path: Record<string, string>): URL;
   public getAppUrl(path: string, params: Record<string, string>): URL;
-  public getAppUrl(path?: string|Record<string, string>, params?: Record<string, string>): URL {
-    if(path && typeof path === 'object') {
+  public getAppUrl(path?: string | Record<string, string>, params?: Record<string, string>): URL {
+    if (path && typeof path === 'object') {
       params = path;
       path = undefined;
     }
 
     const url = new URL(this.getBaseAppUrl());
-    url.pathname = this.getPathString(<string> path);
+    url.pathname = this.getPathString(<string>path);
 
-    if(params) {
-      Object.keys(params).forEach(name => url.searchParams.append(name, params[name]))
+    if (params) {
+      Object.keys(params).forEach((name) => url.searchParams.append(name, params[name]));
     }
 
     return url;
   }
 
   private getPathString(path?: string) {
-    if(!path) {
+    if (!path) {
       return '';
     }
 
@@ -38,7 +38,7 @@ export class UrlGenerator {
   private getBaseAppUrl() {
     const appUrl = this.configService.get('http.appUrl');
 
-    if(!appUrl) {
+    if (!appUrl) {
       throw new MisconfigurationException('Could not generate app url, no http.appUrl setting configured');
     }
 

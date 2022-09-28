@@ -6,12 +6,10 @@ import { Model } from 'mongoose';
 import {
   TestNumberDataPoint,
   TestNumberDataPointDocument,
-  TestNumberDataPointSchema
+  TestNumberDataPointSchema,
 } from './src/test-data-point.schema';
 
-const DataPointModelDefinition = [
-  { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }
-];
+const DataPointModelDefinition = [{ name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }];
 
 describe('NumberTimingDataPointSchema', () => {
   let testingModule: TestingModule;

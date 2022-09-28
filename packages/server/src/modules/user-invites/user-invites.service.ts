@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ProfilesService } from "../profiles";
-import { MailService } from "../mails/services/mail.service";
-import { UserInvites } from "@lyvely/common";
-import { User } from "../users";
+import { ProfilesService } from '../profiles';
+import { MailService } from '../mails/services/mail.service';
+import { UserInvites } from '@lyvely/common';
+import { User } from '../users';
 
 @Injectable()
 export class UserInvitesService {

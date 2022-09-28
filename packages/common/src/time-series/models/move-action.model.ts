@@ -1,5 +1,5 @@
-import { Exclude, Expose } from "class-transformer";
-import { CalendarIntervalEnum } from "@/calendar";
+import { Exclude, Expose } from 'class-transformer';
+import { CalendarIntervalEnum } from '@/calendar';
 
 @Exclude()
 export class MoveAction {
@@ -7,11 +7,10 @@ export class MoveAction {
   attachToId?: string;
 
   @Expose()
-  interval: CalendarIntervalEnum
-
+  interval: CalendarIntervalEnum;
 
   constructor(obj?: Partial<MoveAction>) {
-    if(obj) {
+    if (obj) {
       this.attachToId = obj.attachToId;
       this.interval = obj.interval;
     }

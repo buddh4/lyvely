@@ -1,11 +1,11 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
-import { HabitDataPointService } from "../../services/habit-data-point.service";
-import { HabitDataPointDao } from "../../daos/habit-data-point.dao";
-import { UserAssignmentStrategy, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from "@lyvely/common";
-import { ContentScoreDao, ContentScoreService } from "../../../content";
-import { HabitDataPointDocument } from "../../schemas";
+import { HabitDataPointService } from '../../services/habit-data-point.service';
+import { HabitDataPointDao } from '../../daos/habit-data-point.dao';
+import { UserAssignmentStrategy, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from '@lyvely/common';
+import { ContentScoreDao, ContentScoreService } from '../../../content';
+import { HabitDataPointDocument } from '../../schemas';
 import { Model } from 'mongoose';
 
 describe('HabitDataPointService', () => {
@@ -22,8 +22,8 @@ describe('HabitDataPointService', () => {
       HabitDataPointService,
       HabitDataPointDao,
       ContentScoreService,
-      ContentScoreDao
-    ] ).compile();
+      ContentScoreDao,
+    ]).compile();
     habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
     activityScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
@@ -40,7 +40,9 @@ describe('HabitDataPointService', () => {
       await testData.createHabit(user, profile);
 
       const logs = await habitDataPointService.findByIntervalLevel(
-        profile, user, new DataPointIntervalFilter('2021-04-03'),
+        profile,
+        user,
+        new DataPointIntervalFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(0);
@@ -50,16 +52,12 @@ describe('HabitDataPointService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
 
-      await habitDataPointService.upsertDataPoint(
-        profile,
-        user,
-        habit,
-        '2021-04-03',
-        2,
-      );
+      await habitDataPointService.upsertDataPoint(profile, user, habit, '2021-04-03', 2);
 
       const logs = await habitDataPointService.findByIntervalLevel(
-        profile, user, new DataPointIntervalFilter('2021-04-03'),
+        profile,
+        user,
+        new DataPointIntervalFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(1);
@@ -69,16 +67,12 @@ describe('HabitDataPointService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, { interval: CalendarIntervalEnum.Unscheduled });
 
-      const log = await habitDataPointService.upsertDataPoint(
-        profile,
-        user,
-        habit,
-        '2021-04-03',
-        2,
-      );
+      const log = await habitDataPointService.upsertDataPoint(profile, user, habit, '2021-04-03', 2);
 
       const logs = await habitDataPointService.findByIntervalLevel(
-        profile, user, new DataPointIntervalFilter('2021-04-03'),
+        profile,
+        user,
+        new DataPointIntervalFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(1);
@@ -89,15 +83,9 @@ describe('HabitDataPointService', () => {
     it('update non existing log', async () => {
       const { user, profile } = await testData.createUserAndProfile();
 
-      const habit = await testData.createHabit(user, profile, {  title: 'test',  max: 2, score: 5 });
+      const habit = await testData.createHabit(user, profile, { title: 'test', max: 2, score: 5 });
 
-      const log = await habitDataPointService.upsertDataPoint(
-        profile,
-        user,
-        habit,
-        '2021-01-01',
-        2,
-      );
+      const log = await habitDataPointService.upsertDataPoint(profile, user, habit, '2021-01-01', 2);
 
       expect(log.tid).toEqual(toTimingId('2021-01-01'));
       expect(log.value).toEqual(2);
@@ -110,11 +98,11 @@ describe('HabitDataPointService', () => {
   describe('update shared habit', () => {
     it('create new data point', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared  });
+      const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared });
       const dataPoint = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       expect(dataPoint._id).toBeDefined();
       expect(dataPoint.uid).toBeNull();
-      expect(dataPoint.tid).toEqual(toTimingId(new Date));
+      expect(dataPoint.tid).toEqual(toTimingId(new Date()));
       expect(dataPoint.value).toEqual(2);
     });
 
@@ -131,7 +119,11 @@ describe('HabitDataPointService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       expect(profile.score).toEqual(0);
 
-      const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared, score: 5 });
+      const habit = await testData.createHabit(user, profile, {
+        max: 3,
+        userStrategy: UserAssignmentStrategy.Shared,
+        score: 5,
+      });
       await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
 
       expect(profile.score).toEqual(10);
@@ -143,7 +135,11 @@ describe('HabitDataPointService', () => {
 
     it('activity score action is created', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.Shared, score: 5 });
+      const habit = await testData.createHabit(user, profile, {
+        max: 3,
+        userStrategy: UserAssignmentStrategy.Shared,
+        score: 5,
+      });
       await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 0);
 
@@ -159,11 +155,11 @@ describe('HabitDataPointService', () => {
   describe('update per user habit', () => {
     it('create new data point', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.PerUser  });
+      const habit = await testData.createHabit(user, profile, { max: 3, userStrategy: UserAssignmentStrategy.PerUser });
       const dataPoint = await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       expect(dataPoint._id).toBeDefined();
       expect(dataPoint.uid).toEqual(user._id);
-      expect(dataPoint.tid).toEqual(toTimingId(new Date));
+      expect(dataPoint.tid).toEqual(toTimingId(new Date()));
       expect(dataPoint.value).toEqual(2);
     });
 
@@ -191,7 +187,11 @@ describe('HabitDataPointService', () => {
 
       expect(group.score).toEqual(0);
 
-      const habit = await testData.createHabit(owner, group, { max: 3, userStrategy: UserAssignmentStrategy.PerUser, score: 5 });
+      const habit = await testData.createHabit(owner, group, {
+        max: 3,
+        userStrategy: UserAssignmentStrategy.PerUser,
+        score: 5,
+      });
       await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 2);
       await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 1);
       expect(group.score).toEqual(15);
@@ -206,7 +206,11 @@ describe('HabitDataPointService', () => {
 
       expect(group.score).toEqual(0);
 
-      const habit = await testData.createHabit(owner, group, { max: 3, userStrategy: UserAssignmentStrategy.PerUser, score: 5 });
+      const habit = await testData.createHabit(owner, group, {
+        max: 3,
+        userStrategy: UserAssignmentStrategy.PerUser,
+        score: 5,
+      });
       await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 2);
       await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 1);
       expect(group.score).toEqual(15);
@@ -221,7 +225,11 @@ describe('HabitDataPointService', () => {
 
       expect(group.score).toEqual(0);
 
-      const habit = await testData.createHabit(owner, group, { max: 3, userStrategy: UserAssignmentStrategy.PerUser, score: 5 });
+      const habit = await testData.createHabit(owner, group, {
+        max: 3,
+        userStrategy: UserAssignmentStrategy.PerUser,
+        score: 5,
+      });
       await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 2);
       await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 1);
 

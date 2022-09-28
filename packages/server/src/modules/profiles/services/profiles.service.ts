@@ -4,13 +4,10 @@ import { EntityIdentity } from '../../core/db/db.utils';
 import { ProfileType } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { UserWithProfileAndRelations } from '../models';
-import { EntityNotFoundException, UniqueConstraintException } from "../../core/exceptions";
-import { Profile,
-  CreateProfileOptions, CreateProfileTypeOptions, ProfilesFactory } from "../schemas";
-import { ProfileUsage, BaseMembershipRole } from "@lyvely/common";
-import {
-  withTransaction
-} from "../../core/db/transaction.util";
+import { EntityNotFoundException, UniqueConstraintException } from '../../core/exceptions';
+import { Profile, ICreateProfileOptions, ICreateProfileTypeOptions, ProfilesFactory } from '../schemas';
+import { ProfileUsage, BaseMembershipRole } from '@lyvely/common';
+import { withTransaction } from '../../core/db/transaction.util';
 import { InjectConnection } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 
@@ -21,21 +18,21 @@ export class ProfilesService {
     private usersService: UsersService,
     private membershipDao: MembershipsDao,
     private profileRelationsDao: UserProfileRelationsDao,
-    @InjectConnection() private readonly connection: mongoose.Connection
+    @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
 
   async createDefaultUserProfile(owner: User): Promise<UserWithProfileAndRelations> {
     const profile = await this.profileDao.findOneByOwnerAndName(owner, owner.username);
 
-    if(profile) {
+    if (profile) {
       return this.findUserProfileRelations(owner, profile);
     }
 
-    return this.createProfile(owner,{
+    return this.createProfile(owner, {
       name: owner.username,
       locale: owner.locale,
       usage: [ProfileUsage.Private],
-      type: ProfileType.User
+      type: ProfileType.User,
     });
   }
 
@@ -44,36 +41,44 @@ export class ProfilesService {
    * @param options
    * @throws UniqueConstraintException
    */
-  async createUserProfile(owner: User, options: CreateProfileOptions): Promise<UserWithProfileAndRelations> {
+  async createUserProfile(owner: User, options: ICreateProfileOptions): Promise<UserWithProfileAndRelations> {
     await this.checkProfileNameUniqueness(owner, options);
     options.locale = options.locale || options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.User }));
   }
 
-  async createGroupProfile(owner: User, options: CreateProfileOptions): Promise<UserWithProfileAndRelations> {
+  async createGroupProfile(owner: User, options: ICreateProfileOptions): Promise<UserWithProfileAndRelations> {
     await this.checkProfileNameUniqueness(owner, options);
     options.locale = options.locale || options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.Group }));
   }
 
-  private async checkProfileNameUniqueness(owner: User, options: CreateProfileOptions) {
+  private async checkProfileNameUniqueness(owner: User, options: ICreateProfileOptions) {
     const profile = options.organization
       ? await this.profileDao.findOneByOrganizationAndName(options.organization, options.name)
       : await this.profileDao.findOneByOwnerAndName(owner, options.name);
 
-    if(profile) this.throwUniqueConstraintExceptionOnCreate(options);
+    if (profile) this.throwUniqueConstraintExceptionOnCreate(options);
   }
 
-  private throwUniqueConstraintExceptionOnCreate(options: CreateProfileOptions) {
-    if(options.organization) {
-      throw new UniqueConstraintException('Can not create user profile, profile name already exists in organization', 'name');
+  private throwUniqueConstraintExceptionOnCreate(options: ICreateProfileOptions) {
+    if (options.organization) {
+      throw new UniqueConstraintException(
+        'Can not create user profile, profile name already exists in organization',
+        'name',
+      );
     }
-    throw new UniqueConstraintException('Can not create user profile, user already owns a profile with this name', 'name');
+    throw new UniqueConstraintException(
+      'Can not create user profile, user already owns a profile with this name',
+      'name',
+    );
   }
 
-
-  async createOrganization(owner: User, options: Omit<CreateProfileOptions, 'organization'>): Promise<UserWithProfileAndRelations> {
-    if(await this.profileDao.findOneByOwnerOrOrganizationName(owner, options.name))
+  async createOrganization(
+    owner: User,
+    options: Omit<ICreateProfileOptions, 'organization'>,
+  ): Promise<UserWithProfileAndRelations> {
+    if (await this.profileDao.findOneByOwnerOrOrganizationName(owner, options.name))
       throw new UniqueConstraintException('Can not create organization, name is already in use', 'name');
 
     options.locale = options.locale || owner.locale;
@@ -91,13 +96,13 @@ export class ProfilesService {
    * @param owner
    * @param options
    */
-  protected async createProfile(owner: User, options: CreateProfileTypeOptions): Promise<UserWithProfileAndRelations> {
+  protected async createProfile(owner: User, options: ICreateProfileTypeOptions): Promise<UserWithProfileAndRelations> {
     return withTransaction(this.connection, async (transaction) => {
       const profile = await this.profileDao.save(ProfilesFactory.createProfile(owner, options), transaction);
 
       const [membership] = await Promise.all([
         this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner, transaction),
-        this.usersService.incProfileCount(owner, profile.type, transaction)
+        this.usersService.incProfileCount(owner, profile.type, transaction),
       ]);
 
       return new UserWithProfileAndRelations({ user: owner, profile: profile, relations: [membership] });
@@ -106,21 +111,24 @@ export class ProfilesService {
 
   async findUserProfileRelations(user: User, identity: EntityIdentity<Profile>): Promise<UserWithProfileAndRelations> {
     const relations = await this.profileRelationsDao.findAllByUserAndProfile(user, identity);
-    const profile =  identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+    const profile = identity instanceof Profile ? identity : await this.profileDao.findById(identity);
     return new UserWithProfileAndRelations({ user, profile, relations });
   }
 
   async findProfileRelationsByUser(user: User): Promise<UserWithProfileAndRelations[]> {
     const userRelations = await this.profileRelationsDao.findAllByUser(user);
 
-    if(!userRelations.length) return [];
+    if (!userRelations.length) return [];
 
-    const profiles = await this.profileDao.findAllByIds(userRelations.map(relation => relation.pid));
-    return profiles.map(profile => new UserWithProfileAndRelations({
-      user,
-      profile,
-      relations: userRelations.filter(relation => relation.pid.equals(profile._id))
-    }));
+    const profiles = await this.profileDao.findAllByIds(userRelations.map((relation) => relation.pid));
+    return profiles.map(
+      (profile) =>
+        new UserWithProfileAndRelations({
+          user,
+          profile,
+          relations: userRelations.filter((relation) => relation.pid.equals(profile._id)),
+        }),
+    );
   }
 
   /**
@@ -133,7 +141,7 @@ export class ProfilesService {
     // TODO: make sure not to return an archived profile
     const memberships = await this.membershipDao.findAllByUser(user);
 
-    if(!memberships.length) {
+    if (!memberships.length) {
       return this.createDefaultUserProfile(user);
     }
 
@@ -144,7 +152,7 @@ export class ProfilesService {
   }
 
   async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {
-    if(inc === 0) {
+    if (inc === 0) {
       return;
     }
 
@@ -154,10 +162,10 @@ export class ProfilesService {
     return newScore;
   }
 
-  async findProfileById(identity: EntityIdentity<Profile>, throwsException = false): Promise<Profile|undefined> {
+  async findProfileById(identity: EntityIdentity<Profile>, throwsException = false): Promise<Profile | undefined> {
     const result = identity instanceof Profile ? identity : await this.profileDao.findById(identity);
 
-    if(!result && throwsException) {
+    if (!result && throwsException) {
       throw new EntityNotFoundException('Profile not found.');
     }
 

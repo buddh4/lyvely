@@ -9,5 +9,7 @@ export default function init(): void {
 
 export function getDefaultLocale() {
   // TODO: validate locale if supported
-  return navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language;
+  return navigator.languages && navigator.languages.length
+    ? navigator.languages[0]
+    : navigator.language;
 }

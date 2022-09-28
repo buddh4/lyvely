@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { UsersModule } from '../users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ContentService , ContentScoreService } from './services';
+import { ContentService, ContentScoreService } from './services';
 import { ProfileScore, ProfilesModule, ProfileTagsService } from '../profiles';
-import { ContentDao , ContentScoreDao } from './daos';
-import { ContentReadPolicy , ContentWritePolicy } from './policies';
+import { ContentDao, ContentScoreDao } from './daos';
+import { ContentReadPolicy, ContentWritePolicy } from './policies';
 import { ContentTypeRegistry } from './components';
 
 const ContentModel = MongooseModule.forFeature([
@@ -24,12 +24,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
 ]);
 
 @Module({
-  imports: [
-    UsersModule,
-    ProfilesModule,
-    ContentModel,
-    ContentScoreActionModel
-  ],
+  imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel],
   controllers: [],
   providers: [
     ContentService,
@@ -38,7 +33,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
     ContentReadPolicy,
     ContentWritePolicy,
     ContentScoreService,
-    ContentScoreDao
+    ContentScoreDao,
   ],
   exports: [
     ContentModel,
@@ -47,7 +42,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
     ContentDao,
     ContentTypeRegistry,
     ContentReadPolicy,
-    ContentWritePolicy
-  ]
+    ContentWritePolicy,
+  ],
 })
 export class ContentModule {}

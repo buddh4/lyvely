@@ -14,12 +14,12 @@ import {
   subtractMonth,
   subtractQuarter,
   subtractWeek,
-  subtractYear
+  subtractYear,
 } from '../utils';
-import { CalendarDate, dateTime, getFullDayDate,  ITiming } from '../interfaces';
+import { CalendarDate, dateTime, getFullDayDate, ITiming } from '../interfaces';
 import { TimingModel } from './timing.model';
 import { CalendarIntervalEnum } from './calendar-interval.enum';
-import { toTimingId } from "./timing-id";
+import { toTimingId } from './timing-id';
 
 export abstract class CalendarPlan {
   protected abstract id: CalendarIntervalEnum;
@@ -63,7 +63,7 @@ export class UnscheduledPlan extends CalendarPlan {
   }
 
   getLabel(): string {
-    return "Unscheduled";
+    return 'Unscheduled';
   }
 
   getTitle(date: Date, locale: string): string {
@@ -98,7 +98,7 @@ export class YearlyPlan extends UnscheduledPlan {
   }
 
   getLabel(): string {
-    return "Yearly";
+    return 'Yearly';
   }
 
   getTitle(date: Date, locale: string): string {
@@ -129,13 +129,12 @@ export class QuarterlyPlan extends YearlyPlan {
   }
 
   getLabel(): string {
-    return "Quarterly";
+    return 'Quarterly';
   }
 
   getTitle(date: Date, locale: string): string {
     const momentDate = dateTime(date);
-    return 'Q' + momentDate.quarter()
-      + (!isCurrentYear(date) ? momentDate.format(' · YYYY') : '');
+    return 'Q' + momentDate.quarter() + (!isCurrentYear(date) ? momentDate.format(' · YYYY') : '');
   }
 
   getAccessibleTitle(date: Date, locale: string): string {
@@ -162,7 +161,7 @@ export class MonthlyPlan extends QuarterlyPlan {
   }
 
   getLabel(): string {
-    return "Monthly";
+    return 'Monthly';
   }
 
   getLabelById(id: any): string {
@@ -185,8 +184,6 @@ export class MonthlyPlan extends QuarterlyPlan {
   decrement(date: Date): Date {
     return subtractMonth(date, 1);
   }
-
-
 }
 
 export class WeeklyPlan extends MonthlyPlan {
@@ -200,14 +197,14 @@ export class WeeklyPlan extends MonthlyPlan {
   }
 
   getLabel(): string {
-    return "Weekly";
+    return 'Weekly';
   }
 
   getTitle(date: Date, locale: string): string {
     const { weekOfYear, year } = getYearAndWeekOfYear(date, locale);
     const dateMoment = dateTime(date);
-    const showYear = (dateMoment.year() !== year) || !isCurrentYear(date);
-    return `Week ${weekOfYear}` +  (showYear ? ` · ${year}` : '');
+    const showYear = dateMoment.year() !== year || !isCurrentYear(date);
+    return `Week ${weekOfYear}` + (showYear ? ` · ${year}` : '');
   }
 
   getAccessibleTitle(date: Date, locale: string): string {
@@ -237,7 +234,7 @@ export class DailyPlan extends WeeklyPlan {
   }
 
   getLabel(): string {
-    return "Daily";
+    return 'Daily';
   }
 
   getLabelById(id: any): string {
@@ -258,7 +255,6 @@ export class DailyPlan extends WeeklyPlan {
     return addDays(date, 1);
   }
 
-
   decrement(date: Date): Date {
     return subtractDays(date, 1);
   }
@@ -266,13 +262,13 @@ export class DailyPlan extends WeeklyPlan {
 
 export function getCalendarPlanArray(): CalendarIntervalEnum[] {
   return Object.keys(CalendarIntervalEnum)
-    .filter(value => isNaN(Number(value)) === false)
-    .map(key => parseInt(key))
+    .filter((value) => isNaN(Number(value)) === false)
+    .map((key) => parseInt(key))
     .reverse();
 }
 
-export function getCalendarPlanOptions(): { value: CalendarIntervalEnum, label: string }[] {
-  return  [
+export function getCalendarPlanOptions(): { value: CalendarIntervalEnum; label: string }[] {
+  return [
     { value: CalendarIntervalEnum.Daily, label: 'Daily' },
     { value: CalendarIntervalEnum.Weekly, label: 'Weekly' },
     { value: CalendarIntervalEnum.Monthly, label: 'Monthly' },
@@ -289,4 +285,4 @@ const PlanFactory = {
   [CalendarIntervalEnum.Monthly]: MonthlyPlan,
   [CalendarIntervalEnum.Weekly]: WeeklyPlan,
   [CalendarIntervalEnum.Daily]: DailyPlan,
-}
+};

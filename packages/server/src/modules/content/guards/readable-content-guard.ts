@@ -5,7 +5,6 @@ import { ContentReadPolicy } from '../policies';
 
 @Injectable()
 export class ReadableContentGuard extends ContentGuard {
-
   @Inject()
   protected policyService: PolicyService;
 
@@ -13,7 +12,7 @@ export class ReadableContentGuard extends ContentGuard {
   protected readPolicy: ContentReadPolicy;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    if(!await super.canActivate(context)) {
+    if (!(await super.canActivate(context))) {
       return false;
     }
 

@@ -1,5 +1,5 @@
 import { validate, ValidationError } from 'class-validator';
-type ValidationErrors = Record<string, string|boolean>;
+type ValidationErrors = Record<string, string | boolean>;
 
 export class ModelValidator {
   private errors = {} as ValidationErrors;
@@ -40,10 +40,7 @@ export class ModelValidator {
     for (const error of this.errorArr) {
       const constraints = error.constraints as Record<string, string>;
 
-      const firstError =
-        constraints?.isNotEmpty ||
-        constraints?.isDefined ||
-        constraints[Object.keys(constraints)[0]];
+      const firstError = constraints?.isNotEmpty || constraints?.isDefined || constraints[Object.keys(constraints)[0]];
 
       if (firstError) {
         this.errors[error.property] = firstError;

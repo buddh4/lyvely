@@ -8,7 +8,7 @@ describe('RegisterDto', () => {
         username: 'MyUser',
         email: 'test@mail.de',
         locale: 'de',
-        password: 'password'
+        password: 'password',
       });
 
       expect(model.username).toEqual('MyUser');
@@ -22,7 +22,7 @@ describe('RegisterDto', () => {
         username: 'MyUser',
         email: 'test@mail.de',
         locale: 'de',
-        password: 'password'
+        password: 'password',
       });
 
       const errors = await validate(model);
@@ -34,7 +34,7 @@ describe('RegisterDto', () => {
         username: 'MyUser',
         email: 'test@mail',
         locale: 'de',
-        password: 'password'
+        password: 'password',
       });
 
       const errors = await validate(model);
@@ -46,7 +46,7 @@ describe('RegisterDto', () => {
       const model = new RegisterDto({
         username: 'MyUser',
         email: 'test@mail.de',
-        password: 'password'
+        password: 'password',
       });
 
       const errors = await validate(model);
@@ -58,7 +58,7 @@ describe('RegisterDto', () => {
         username: 'A',
         email: 'test@mail.de',
         locale: 'de',
-        password: 'password'
+        password: 'password',
       });
 
       const errors = await validate(model);

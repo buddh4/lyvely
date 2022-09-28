@@ -1,8 +1,7 @@
 import { Expose } from 'class-transformer';
-import { ActivityType } from "../../models";
+import { ActivityType, ActivityModel } from '../../models';
 import { IsEnum } from 'class-validator';
-import { ActivityModel } from "../../models";
-import { ContentModel } from "@/content";
+import { ContentModel } from '@/content';
 
 @Expose()
 export class TaskModel extends ActivityModel<TaskModel> {
@@ -27,5 +26,3 @@ export class UserDoneModel {
 export function isTask(content: ContentModel): content is TaskModel {
   return content.type === ActivityType.Task;
 }
-
-

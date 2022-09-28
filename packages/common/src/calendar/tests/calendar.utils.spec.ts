@@ -1,14 +1,6 @@
-import {
-  CalendarIntervalEnum,
-  DayIterator,
-  getFullDayDate,
-  getWeekOfYear,
-  toTimingId
-} from '@/calendar';
-
+import { CalendarIntervalEnum, DayIterator, getFullDayDate, getWeekOfYear, toTimingId } from '@/calendar';
 
 describe('CalendarUtils', () => {
-
   describe('getFullDayDate', function () {
     it('from string with time without tz', async () => {
       const date = getFullDayDate('2021-03-01T12:00:00');
@@ -43,8 +35,8 @@ describe('CalendarUtils', () => {
     });
 
     it('monday first dow', async () => {
-      const sunday = getWeekOfYear('2021-02-28',  'de');
-      const monday = getWeekOfYear('2021-03-01',  'de');
+      const sunday = getWeekOfYear('2021-02-28', 'de');
+      const monday = getWeekOfYear('2021-03-01', 'de');
       expect(sunday).toEqual(8);
       expect(monday).toEqual(9);
     });
@@ -73,7 +65,6 @@ describe('CalendarUtils', () => {
     });
 
     describe('QuarterlyPlan', function () {
-
       it('Begin of first quarter', async () => {
         const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:1');
@@ -142,11 +133,10 @@ describe('CalendarUtils', () => {
 
   describe('DayIterator', function () {
     it('iterate equal day', async () => {
-
       const iterator = new DayIterator('2021-01-01', '2021-01-01');
       const result = [];
 
-      for(const date of iterator) {
+      for (const date of iterator) {
         result.push(date);
       }
 
@@ -155,12 +145,11 @@ describe('CalendarUtils', () => {
     });
 
     it('iterate day with daylight saving', async () => {
-
       // Daylight saving at 28.03 2:00 am
       const iterator = new DayIterator('2021-03-24', '2021-03-31');
       const result = [];
 
-      for(const date of iterator) {
+      for (const date of iterator) {
         result.push(date);
       }
 
@@ -172,7 +161,7 @@ describe('CalendarUtils', () => {
       const iterator = new DayIterator('2021-01-01', '2021-01-02');
       const result = [];
 
-      for(const date of iterator) {
+      for (const date of iterator) {
         result.push(date);
       }
 
@@ -185,7 +174,7 @@ describe('CalendarUtils', () => {
       const iterator = new DayIterator('2021-01-02', '2021-01-01');
       const result = [];
 
-      for(const date of iterator) {
+      for (const date of iterator) {
         result.push(date);
       }
 

@@ -15,15 +15,14 @@ import {
   ProfilesFactory,
   Organization,
   UserProfile,
-  GroupProfile
+  GroupProfile,
 } from '../../profiles';
-import { EventEmitter2, EventEmitterModule  } from '@nestjs/event-emitter';
+import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { createBaseEntityInstance } from "../../core/db/db.utils";
+import { createBaseEntityInstance } from '../../core/db/db.utils';
 
 @Injectable()
 export class TestDataUtils {
-
   @InjectModel(Profile.name)
   protected ProfileModel: Model<ProfileDocument>;
 
@@ -40,39 +39,49 @@ export class TestDataUtils {
   @Inject()
   private eventEmitter: EventEmitter2;
 
-  async createUserAndProfile(username = 'test', password = 'test', email?: string): Promise<{user: User, profile: UserProfile, profileRelations: UserWithProfileAndRelations }> {
+  async createUserAndProfile(
+    username = 'test',
+    password = 'test',
+    email?: string,
+  ): Promise<{ user: User; profile: UserProfile; profileRelations: UserWithProfileAndRelations }> {
     const user = await this.createUser(username, password, email);
     const profile = await this.createProfile(user);
     const profileRelations = new UserWithProfileAndRelations({
       user,
       profile,
-      relations: [Membership.create({ user, profile, role: BaseMembershipRole.Owner })]
+      relations: [Membership.create({ user, profile, role: BaseMembershipRole.Owner })],
     });
-    return { user, profile, profileRelations }
+    return { user, profile, profileRelations };
   }
 
-  async createSimpleOrganization(name = 'TestOrganization'): Promise<{owner: User, member: User, organization: Profile }> {
+  async createSimpleOrganization(
+    name = 'TestOrganization',
+  ): Promise<{ owner: User; member: User; organization: Profile }> {
     const { user: owner } = await this.createUserAndProfile('owner');
     const { user: member } = await this.createUserAndProfile('member');
 
     const organization = await this.createProfile(owner, name, ProfileType.Organization);
     await this.addProfileMember(organization, member);
 
-    return { owner, member, organization }
+    return { owner, member, organization };
   }
 
   async createUser(username = 'test', password = 'test', email?: string): Promise<User> {
     email = email || `${username}@test.de`;
-    const user = new this.UserModel(new User({
-      username,
-      password,
-      email
-    }));
+    const user = new this.UserModel(
+      new User({
+        username,
+        password,
+        email,
+      }),
+    );
     await user.save();
     return new User(user);
   }
 
-  async createSimpleGroup(visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<{owner: User, member: User, profile: GroupProfile }> {
+  async createSimpleGroup(
+    visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member,
+  ): Promise<{ owner: User; member: User; profile: GroupProfile }> {
     const { user: owner } = await this.createUserAndProfile('owner');
     const { user: member } = await this.createUserAndProfile('member');
     const profile = await this.createGroupProfile(owner, 'TestGroup', visibility);
@@ -85,7 +94,7 @@ export class TestDataUtils {
   /**
    * @deprecated use createSimpleGroup instead
    */
-  async createSmallGroup(): Promise<{owner: User, user: User, group: Profile}> {
+  async createSmallGroup(): Promise<{ owner: User; user: User; group: Profile }> {
     const { user: owner } = await this.createUserAndProfile();
     const { user } = await this.createUserAndProfile('user2');
     const group = await this.createGroupProfile(user);
@@ -93,23 +102,36 @@ export class TestDataUtils {
     return { owner, user, group };
   }
 
-  async createGroupProfile(owner: User, name?: string, visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<Profile> {
-    const profile = await this._createProfile(new Profile(owner,{
-      name: name || owner.username,
-      visibility: visibility,
-      type: ProfileType.Group
-    }));
+  async createGroupProfile(
+    owner: User,
+    name?: string,
+    visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member,
+  ): Promise<Profile> {
+    const profile = await this._createProfile(
+      new Profile(owner, {
+        name: name || owner.username,
+        visibility: visibility,
+        type: ProfileType.Group,
+      }),
+    );
 
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 
     return new Profile(owner, profile);
   }
 
-  async createProfile(owner: User, name?: string, type: ProfileType = ProfileType.User, visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member): Promise<Profile> {
-    const profile = await this._createProfile(ProfilesFactory.createProfile(owner, {
-      type,
-      name: name || owner.username
-    }));
+  async createProfile(
+    owner: User,
+    name?: string,
+    type: ProfileType = ProfileType.User,
+    visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member,
+  ): Promise<Profile> {
+    const profile = await this._createProfile(
+      ProfilesFactory.createProfile(owner, {
+        type,
+        name: name || owner.username,
+      }),
+    );
 
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 
@@ -129,26 +151,29 @@ export class TestDataUtils {
     return createBaseEntityInstance(Profile, await new this.ProfileModel(profile).save());
   }
 
-
   async addProfileRelation(profile: Profile, user: User, type: string, role: string): Promise<UserProfileRelation> {
-    return new this.UserProfileRelationModel(UserProfileRelation.create({
-      user: user,
-      profile: profile,
-      type: type,
-      role: role
-    })).save();
+    return new this.UserProfileRelationModel(
+      UserProfileRelation.create({
+        user: user,
+        profile: profile,
+        type: type,
+        role: role,
+      }),
+    ).save();
   }
 
   async addProfileMember(profile: Profile, user: User, role: string = BaseMembershipRole.Member): Promise<Membership> {
-    return new this.MembershipModel(Membership.create({
-      user: user,
-      profile: profile,
-      role: role,
-    })).save();
+    return new this.MembershipModel(
+      Membership.create({
+        user: user,
+        profile: profile,
+        role: role,
+      }),
+    ).save();
   }
 
   static getMongooseTestModule(key: string, options: MongooseModuleOptions = {}) {
-    return rootMongooseTestModule(key, options)
+    return rootMongooseTestModule(key, options);
   }
 
   static getEventEmitterModule() {
@@ -158,7 +183,7 @@ export class TestDataUtils {
   static createDummyUserAndProfile(userData: Partial<User> = {}) {
     const user = this.createDummyUser(userData);
     const profile = this.createDummyProfile(user);
-    return { user, profile }
+    return { user, profile };
   }
 
   static createDummyUser(data: Partial<User> = {}) {
@@ -179,7 +204,7 @@ export class TestDataUtils {
 
   async reset(key: string) {
     await this.delete();
-    if(this.eventEmitter) {
+    if (this.eventEmitter) {
       this.eventEmitter.removeAllListeners();
     }
     await this.closeDBConnection(key);
@@ -199,5 +224,5 @@ export class TestDataUtils {
 
 // We use this to prevent circular dependency
 function getObjectId(id: string) {
-  return <TObjectId> new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
+  return <TObjectId>new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
 }

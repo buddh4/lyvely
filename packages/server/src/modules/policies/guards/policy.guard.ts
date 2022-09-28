@@ -5,7 +5,6 @@ import { PolicyService } from '../services/policy.service';
 
 @Injectable()
 export abstract class PolicyGuard implements CanActivate {
-
   @Inject()
   protected reflector: Reflector;
 
@@ -13,6 +12,6 @@ export abstract class PolicyGuard implements CanActivate {
   protected policyService: PolicyService;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    return this.policyService.checkEvery(context, ...getPolicyHandlerFromContext(context, this.reflector))
+    return this.policyService.checkEvery(context, ...getPolicyHandlerFromContext(context, this.reflector));
   }
 }

@@ -7,15 +7,15 @@ import { Constructor } from '@lyvely/common';
 
 @Injectable()
 export class UserProfileRelationsDao extends AbstractUserProfileRelationsDao {
-    constructor(@InjectModel(UserProfileRelation.name) protected model: Model<UserProfileRelationDocument>) {
-        super();
-    }
+  constructor(@InjectModel(UserProfileRelation.name) protected model: Model<UserProfileRelationDocument>) {
+    super();
+  }
 
-    getModelConstructor(): Constructor<UserProfileRelation> {
-        return UserProfileRelation;
-    }
+  getModelConstructor(): Constructor<UserProfileRelation> {
+    return UserProfileRelation;
+  }
 
-    getModuleId(): string {
-        return 'profiles';
-    }
+  getModuleId(): string {
+    return 'profiles';
+  }
 }

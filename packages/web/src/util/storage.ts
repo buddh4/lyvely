@@ -1,15 +1,15 @@
-import { DelegateEmitter } from '@server/util/emitter';
+import { DelegateEmitter } from "@/util/emitter";
 
 export enum Scope {
-  Locale = 'localStorage',
-  Session = 'sessionStorage'
+  Locale = "localStorage",
+  Session = "sessionStorage",
 }
 
 type StorageValueEvents = {
   update: string | undefined;
-}
+};
 
-class StoredValue extends DelegateEmitter<StorageValueEvents>{
+class StoredValue extends DelegateEmitter<StorageValueEvents> {
   private readonly storage: StorageWrapper;
   readonly key: string;
   private cache?: string;
@@ -18,22 +18,27 @@ class StoredValue extends DelegateEmitter<StorageValueEvents>{
     super();
     this.storage = storage;
     this.key = key;
-    this.storage.on('update', (update) => {
-      if(update.key === this.key) {
-        this.emit('update', update.value);
+    this.storage.on("update", (update) => {
+      if (update.key === this.key) {
+        this.emit("update", update.value);
       }
     });
   }
 
   getValue() {
-    if(!this.storage.isAvailable()) {
+    if (!this.storage.isAvailable()) {
       return this.cache;
     }
     return this.storage.get(this.key);
   }
 
-  setValue(value: string) {
-    if(!this.storage.isAvailable()) {
+  setValue(value?: string) {
+    if (value === undefined) {
+      this.removeFromStorage();
+      return;
+    }
+
+    if (!this.storage.isAvailable()) {
       this.cache = value;
     }
     return this.storage.set(this.key, value);
@@ -51,11 +56,10 @@ class StoredValue extends DelegateEmitter<StorageValueEvents>{
 
 type StorageEvents = {
   update: {
-    key: string,
-    value: string | undefined
+    key: string;
+    value: string | undefined;
   };
 };
-
 
 class StorageWrapper extends DelegateEmitter<StorageEvents> {
   readonly instance: Storage;
@@ -68,16 +72,16 @@ class StorageWrapper extends DelegateEmitter<StorageEvents> {
     this.scope = scope;
     this.valueStore = new Map<string, StoredValue>();
 
-    if(instance) {
+    if (instance) {
       this.instance = instance;
-    } else if(this.isAvailable()) {
+    } else if (this.isAvailable()) {
       this.instance = this.getInstanceFromWindow();
     }
   }
 
   getStoredValue(key: string) {
     let result = this.valueStore.get(key);
-    if(!result) {
+    if (!result) {
       result = new StoredValue(this, key);
       this.valueStore.set(key, result);
     }
@@ -85,8 +89,8 @@ class StorageWrapper extends DelegateEmitter<StorageEvents> {
   }
 
   get(key: string, defaultValue: string | null = null): string | null {
-    if(this.isAvailable()) {
-      return this.instance.getItem(key)
+    if (this.isAvailable()) {
+      return this.instance.getItem(key);
     }
 
     // If there is no storage support we get a StoredValue and use the value cache.
@@ -94,8 +98,8 @@ class StorageWrapper extends DelegateEmitter<StorageEvents> {
   }
 
   set(key: string, value: string): string {
-    if(this.isAvailable()) {
-      if(!value) {
+    if (this.isAvailable()) {
+      if (!value) {
         this.remove(key);
       } else {
         this.instance.setItem(key, value);
@@ -105,31 +109,34 @@ class StorageWrapper extends DelegateEmitter<StorageEvents> {
       this.getStoredValue(key).setValue(value);
     }
 
-    this.emitter.emit('update', {key, value});
+    this.emitter.emit("update", { key, value });
     return value;
   }
 
   remove(key: string): string | null {
-    if(!this.isAvailable()) {
+    if (!this.isAvailable()) {
       return null;
     }
 
     const value = this.get(key);
     this.instance.removeItem(key);
-    this.emitter.emit('update', { key, value: undefined });
+    this.emitter.emit("update", { key, value: undefined });
     return value;
   }
 
   clear() {
-    if(!this.isAvailable()) {
+    if (!this.isAvailable()) {
       return;
     }
-    this.valueStore.forEach((value) => value.emit('update', undefined));
+    this.valueStore.forEach((value) => value.emit("update", undefined));
     this.instance.clear();
   }
 
   isAvailable() {
-    return this.instance || (this.scope in window && this.getInstanceFromWindow() !== null);
+    return (
+      this.instance ||
+      (this.scope in window && this.getInstanceFromWindow() !== null)
+    );
   }
 
   private getInstanceFromWindow() {

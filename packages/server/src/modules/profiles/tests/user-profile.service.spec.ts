@@ -4,8 +4,8 @@ import { ProfilesService } from '../services';
 import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { createContentTestingModule } from '../../test/utils/test.utils';
-import { UserProfile, UserProfileRelation } from "../schemas";
-import { UniqueConstraintException } from "../../core/exceptions";
+import { UserProfile, UserProfileRelation } from '../schemas';
+import { UniqueConstraintException } from '../../core/exceptions';
 
 describe('ProfileService (User)', () => {
   let testingModule: TestingModule;
@@ -57,8 +57,10 @@ describe('ProfileService (User)', () => {
   describe('createUserProfile()', () => {
     it('create organization user profile', async () => {
       const { owner, organization } = await testData.createSimpleOrganization();
-      const { profile, relations } = await profileService
-        .createUserProfile(owner, { name: 'OwnerProfile', organization: organization });
+      const { profile, relations } = await profileService.createUserProfile(owner, {
+        name: 'OwnerProfile',
+        organization: organization,
+      });
 
       expect(profile.name).toEqual('OwnerProfile');
       expect(profile.locale).toEqual(organization.locale);
@@ -87,33 +89,37 @@ describe('ProfileService (User)', () => {
       await profileService.createUserProfile(user, { name: 'Some Profile' });
 
       expect.assertions(2);
-      return profileService.createUserProfile(user, { name: 'Some Profile' }).catch(e => {
+      return profileService.createUserProfile(user, { name: 'Some Profile' }).catch((e) => {
         expect(e instanceof UniqueConstraintException).toEqual(true);
         expect(e.getField()).toEqual('name');
       });
     });
 
     it('PRO_PO02: user profile name is unique per organization', async () => {
-      const { owner, member, organization }  = await testData.createSimpleOrganization();
+      const { owner, member, organization } = await testData.createSimpleOrganization();
 
       await profileService.createUserProfile(owner, { organization: organization, name: 'UniqueProfileName' });
 
       expect.assertions(2);
-      return profileService.createUserProfile(member, { organization: organization, name: 'UniqueProfileName' }).catch(e => {
-        expect(e instanceof UniqueConstraintException).toEqual(true);
-        expect(e.getField()).toEqual('name');
-      });
-    })
+      return profileService
+        .createUserProfile(member, { organization: organization, name: 'UniqueProfileName' })
+        .catch((e) => {
+          expect(e instanceof UniqueConstraintException).toEqual(true);
+          expect(e.getField()).toEqual('name');
+        });
+    });
 
     it('PRO_PO03: organization user profile can not have same name as organization', async () => {
-      const { member, organization }  = await testData.createSimpleOrganization('MyOrganization');
+      const { member, organization } = await testData.createSimpleOrganization('MyOrganization');
 
       expect.assertions(2);
-      return profileService.createUserProfile(member, { organization: organization, name: 'MyOrganization' }).catch(e => {
-        expect(e instanceof UniqueConstraintException).toEqual(true);
-        expect(e.getField()).toEqual('name');
-      });
-    })
+      return profileService
+        .createUserProfile(member, { organization: organization, name: 'MyOrganization' })
+        .catch((e) => {
+          expect(e instanceof UniqueConstraintException).toEqual(true);
+          expect(e.getField()).toEqual('name');
+        });
+    });
   });
 
   function expectOwnerRelationship(relations: UserProfileRelation[]) {

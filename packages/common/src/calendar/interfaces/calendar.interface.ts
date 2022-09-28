@@ -1,4 +1,4 @@
-export const REGEX_DATE_FORMAT = "^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$";
+export const REGEX_DATE_FORMAT = '^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$';
 
 export enum Months {
   January,
@@ -12,7 +12,7 @@ export enum Months {
   September,
   October,
   November,
-  December
+  December,
 }
 
 export enum Days {
@@ -22,10 +22,10 @@ export enum Days {
   Wednesday,
   Thursday,
   Friday,
-  Saturday
+  Saturday,
 }
 
 export interface WeekOfYear {
-  year: number,
-  weekOfYear: number
+  year: number;
+  weekOfYear: number;
 }

@@ -7,17 +7,19 @@
     "./packages/*"
   ],
   "scripts": {
-    "lint": "eslint \"packages/*/src/**/*.ts\" --fix",
+    "lint": "eslint -c .eslintrc.js \"packages/*/src/**/*.{ts,vue}\" --fix",
     "watch-common": "npm run watch -w @lyvely/common",
     "build-common": "npm run build -w @lyvely/common",
     "build-server": "npm run build -w @lyvely/server",
     "build-web": "npm run build -w @lyvely/web",
+    "test-all": "npm run test -w @lyvely/common && npm run test -w @lyvely/server",
     "test-common": "npm run test -w @lyvely/common",
     "test-server": "npm run test -w @lyvely/server",
     "dev-server": "npm run start:dev -w @lyvely/server",
     "dev-web": "npm run dev -w @lyvely/web",
     "debug-server": "npm run start:debug -w @lyvely/server",
     "deps-server": "npm run deps -w @lyvely/server",
+    "deps-web": "npm run deps -w @lyvely/web",
     "deps-common": "npm run deps -w @lyvely/common",
     "prepare": "husky install"
   },
@@ -29,12 +31,16 @@
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
     "eslint": "^8.24.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.5.1",
     "husky": "^8.0.1",
+    "prettier": "2.7.1",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1"
   },
   "dependencies": {
     "@types/uuid": "^8.3.4",
+    "eslint-config-prettier": "^8.5.0",
     "typescript": "^4.8.2",
     "uuid": "^9.0.0"
   }

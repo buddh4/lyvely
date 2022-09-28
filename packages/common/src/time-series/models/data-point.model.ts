@@ -1,19 +1,18 @@
-import { CalendarDateTime, CalendarIntervalEnum } from "@/calendar";
-import { DocumentModel } from "@/models";
+import { CalendarDateTime, CalendarIntervalEnum } from '@/calendar';
+import { DocumentModel } from '@/models';
 import { Exclude, Expose } from 'class-transformer';
 import { IsMongoId, IsOptional } from 'class-validator';
-
 
 @Exclude()
 export abstract class DataPointModel<E extends DataPointModel = any> extends DocumentModel<E> {
   @Expose()
   @IsMongoId()
-  cid: string|TObjectId;
+  cid: string | TObjectId;
 
   @Expose()
   @IsMongoId()
   @IsOptional()
-  uid?: string|TObjectId;
+  uid?: string | TObjectId;
 
   @Expose()
   date: Date;
@@ -45,5 +44,5 @@ export class TextDataPointModel extends DataPointModel<TextDataPointModel> {
 }
 
 export class DataPointIntervalFilter {
-    constructor(public search: CalendarDateTime, public level: CalendarIntervalEnum = CalendarIntervalEnum.Unscheduled) {}
+  constructor(public search: CalendarDateTime, public level: CalendarIntervalEnum = CalendarIntervalEnum.Unscheduled) {}
 }

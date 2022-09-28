@@ -1,16 +1,16 @@
-import { getObjectId } from "../../../test/utils/test.utils";
+import { getObjectId } from '../../../test/utils/test.utils';
 import { Task } from '../../schemas';
-import { toTimingId, UserAssignmentStrategy } from "@lyvely/common";
-import { User } from "../../../users";
-import { Profile } from "../../../profiles";
-import { expect } from "@jest/globals";
+import { toTimingId, UserAssignmentStrategy } from '@lyvely/common';
+import { User } from '../../../users';
+import { Profile } from '../../../profiles';
+import { expect } from '@jest/globals';
 
 describe('Task', () => {
   describe('setDoneBy', () => {
     it('set done by user on shared task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared
+        userStrategy: UserAssignmentStrategy.Shared,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -29,7 +29,7 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared
+        userStrategy: UserAssignmentStrategy.Shared,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -49,7 +49,7 @@ describe('Task', () => {
     it('set done by user on per user task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser
+        userStrategy: UserAssignmentStrategy.PerUser,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -68,7 +68,7 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser
+        userStrategy: UserAssignmentStrategy.PerUser,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -94,7 +94,7 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser
+        userStrategy: UserAssignmentStrategy.PerUser,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -120,8 +120,8 @@ describe('Task', () => {
   describe('setUndoneBy', () => {
     it('set undone by user on shared task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
-      const task = new Task(new Profile(user1), user1,{
-        userStrategy: UserAssignmentStrategy.Shared
+      const task = new Task(new Profile(user1), user1, {
+        userStrategy: UserAssignmentStrategy.Shared,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -138,7 +138,7 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared
+        userStrategy: UserAssignmentStrategy.Shared,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -155,7 +155,7 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser
+        userStrategy: UserAssignmentStrategy.PerUser,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -176,7 +176,7 @@ describe('Task', () => {
       const user3 = new User({ _id: getObjectId('user3') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser
+        userStrategy: UserAssignmentStrategy.PerUser,
       });
 
       const tid = toTimingId('2021-04-03');
@@ -198,7 +198,7 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared
+        userStrategy: UserAssignmentStrategy.Shared,
       });
 
       expect(task.isDoneByUser(user1)).toEqual(false);
@@ -217,7 +217,7 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser
+        userStrategy: UserAssignmentStrategy.PerUser,
       });
 
       expect(task.isDoneByUser(user1)).toEqual(false);
@@ -235,7 +235,6 @@ describe('Task', () => {
 
       expect(task.isDoneByUser(user1)).toEqual(true);
       expect(task.isDoneByUser(user2)).toEqual(true);
-
     });
   });
 });

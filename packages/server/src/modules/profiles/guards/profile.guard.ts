@@ -1,12 +1,12 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { ProfilesService } from '../services';
-import { ProfileRequest } from "../types";
+import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
 import { UserWithProfileAndRelations } from '../models';
 import { ProfileVisibilityPolicy } from '../policies';
 import { PolicyService } from '../../policies/services/policy.service';
 import { ProfileDao } from '../daos';
-import { ProfilePermissionsService } from "../services";
+import { ProfilePermissionsService } from '../services';
 import { Reflector } from '@nestjs/core';
 
 export const PROFILE_PERMISSIONS_KEY_STRICT = 'profile_permissions_strict';
@@ -25,7 +25,6 @@ export const PROFILE_PERMISSIONS_KEY_SOME = 'profile_permissions_some';
  */
 @Injectable()
 export class ProfileGuard implements CanActivate {
-
   @Inject()
   protected policyService: PolicyService;
 
@@ -47,23 +46,23 @@ export class ProfileGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<ProfileRequest>();
 
-    if(!isValidObjectId(request.query.pid)) return false;
+    if (!isValidObjectId(request.query.pid)) return false;
 
     const user = request.user;
 
-    if(user) {
+    if (user) {
       request.profileRelations = await this.profileService.findUserProfileRelations(user, request.query.pid);
       request.profile = request.profileRelations.profile;
     } else {
       request.profile = await this.profileService.findProfileById(request.query.pid);
-      request.profileRelations = new UserWithProfileAndRelations({ profile: request.profile })
+      request.profileRelations = new UserWithProfileAndRelations({ profile: request.profile });
     }
 
-    if(!request.profile) {
+    if (!request.profile) {
       return false;
     }
 
-    if(!await this.policyService.checkEvery(context, this.profileVisibilityPolicy)) {
+    if (!(await this.policyService.checkEvery(context, this.profileVisibilityPolicy))) {
       return false;
     }
 
@@ -74,19 +73,18 @@ export class ProfileGuard implements CanActivate {
   private validatePermissions(profileRelations: UserWithProfileAndRelations, context: ExecutionContext) {
     const strictPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_STRICT);
 
-    if(strictPermissions?.length) {
+    if (strictPermissions?.length) {
       return this.profilePermissionService.checkEveryPermission(profileRelations, ...strictPermissions);
     }
 
     const anyPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_SOME);
 
-    return anyPermissions?.length ? this.profilePermissionService.checkSomePermission(profileRelations, ...anyPermissions) : true;
+    return anyPermissions?.length
+      ? this.profilePermissionService.checkSomePermission(profileRelations, ...anyPermissions)
+      : true;
   }
 
   private getPermissionsFromContext(context: ExecutionContext, key: string) {
-    return this.reflector.getAllAndOverride<string[]>(key, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    return this.reflector.getAllAndOverride<string[]>(key, [context.getHandler(), context.getClass()]);
   }
 }

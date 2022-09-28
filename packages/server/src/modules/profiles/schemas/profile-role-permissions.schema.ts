@@ -7,13 +7,11 @@ export type ProfileRolePermissionDocument = Profile & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class ProfileRolePermission extends BaseEntity<ProfileRolePermission> {
-
-  @Prop( { required: true })
+  @Prop({ required: true })
   role: string;
 
   @Prop({ required: true })
   permission: string;
-
 }
 
 export const ProfileRolePermissionSchema = SchemaFactory.createForClass(ProfileRolePermission);

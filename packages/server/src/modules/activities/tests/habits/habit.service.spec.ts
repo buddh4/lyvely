@@ -80,16 +80,21 @@ describe('HabitService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
 
-      await habitService.updateHabit(profile, user, habit, new UpdateHabitDto({
-        title: 'Test',
-        text: 'Test description',
-        interval: CalendarIntervalEnum.Weekly,
-        max: 2,
-        score: 2,
-        min: 1,
-        optimal: 2,
-        tagNames: ['SomeCategory']
-      }));
+      await habitService.updateHabit(
+        profile,
+        user,
+        habit,
+        new UpdateHabitDto({
+          title: 'Test',
+          text: 'Test description',
+          interval: CalendarIntervalEnum.Weekly,
+          max: 2,
+          score: 2,
+          min: 1,
+          optimal: 2,
+          tagNames: ['SomeCategory'],
+        }),
+      );
 
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
@@ -107,23 +112,32 @@ describe('HabitService', () => {
 
     it('update data point config creates revision', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await testData.createHabit(user, profile, new CreateHabitDto({
-        title: 'Test',
-        interval: CalendarIntervalEnum.Daily,
-        max: 2,
-        min: 1,
-        optimal: 1,
-        score: 2,
-      }));
+      const habit = await testData.createHabit(
+        user,
+        profile,
+        new CreateHabitDto({
+          title: 'Test',
+          interval: CalendarIntervalEnum.Daily,
+          max: 2,
+          min: 1,
+          optimal: 1,
+          score: 2,
+        }),
+      );
 
-      await habitService.updateHabit(profile, user, habit, new UpdateHabitDto({
-        title: 'Test',
-        interval: CalendarIntervalEnum.Weekly,
-        max: 3,
-        min: 1,
-        optimal: 2,
-        score: 2,
-      }));
+      await habitService.updateHabit(
+        profile,
+        user,
+        habit,
+        new UpdateHabitDto({
+          title: 'Test',
+          interval: CalendarIntervalEnum.Weekly,
+          max: 3,
+          min: 1,
+          optimal: 2,
+          score: 2,
+        }),
+      );
 
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
@@ -138,32 +152,46 @@ describe('HabitService', () => {
 
   it('daily revision is not overwritten on same day', async () => {
     const { user, profile } = await testData.createUserAndProfile();
-    const habit = await testData.createHabit(user, profile, new CreateHabitDto({
-      title: 'Test',
-      interval: CalendarIntervalEnum.Daily,
-      max: 2,
-      min: 1,
-      optimal: 1,
-      score: 2,
-    }));
+    const habit = await testData.createHabit(
+      user,
+      profile,
+      new CreateHabitDto({
+        title: 'Test',
+        interval: CalendarIntervalEnum.Daily,
+        max: 2,
+        min: 1,
+        optimal: 1,
+        score: 2,
+      }),
+    );
 
-    await habitService.updateHabit(profile, user, habit, new UpdateHabitDto({
-      title: 'Test',
-      interval: CalendarIntervalEnum.Weekly,
-      max: 3,
-      min: 1,
-      optimal: 2,
-      score: 2,
-    }));
+    await habitService.updateHabit(
+      profile,
+      user,
+      habit,
+      new UpdateHabitDto({
+        title: 'Test',
+        interval: CalendarIntervalEnum.Weekly,
+        max: 3,
+        min: 1,
+        optimal: 2,
+        score: 2,
+      }),
+    );
 
-    await habitService.updateHabit(profile, user, habit, new UpdateHabitDto({
-      title: 'Test',
-      interval: CalendarIntervalEnum.Weekly,
-      max: 4,
-      min: 1,
-      optimal: 2,
-      score: 2,
-    }));
+    await habitService.updateHabit(
+      profile,
+      user,
+      habit,
+      new UpdateHabitDto({
+        title: 'Test',
+        interval: CalendarIntervalEnum.Weekly,
+        max: 4,
+        min: 1,
+        optimal: 2,
+        score: 2,
+      }),
+    );
 
     const search = await habitService.findByProfileAndId(profile, habit);
     expect(search).toBeDefined();

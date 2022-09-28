@@ -19,7 +19,7 @@ export function getYearAndWeekOfYear(date: CalendarDate, locale: string): WeekOf
 
 export function getSecondsSinceStartOfDay(d: CalendarDate): number {
   const date = d instanceof Date ? d : dateTime(d).toDate();
-  return date.getSeconds() + (60 * (date.getMinutes() + (60 * date.getHours())));
+  return date.getSeconds() + 60 * (date.getMinutes() + 60 * date.getHours());
 }
 
 export function getWeekOfYear(date: CalendarDate, locale: string): number {
@@ -40,13 +40,15 @@ export function isCurrentYear(date: CalendarDate): boolean {
 
 export function isToday(cDate: CalendarDate) {
   const today = new Date();
-  const date =  cDate instanceof Date ? cDate : dateTime(cDate).toDate();
-  return date.getDate() == today.getDate() &&
+  const date = cDate instanceof Date ? cDate : dateTime(cDate).toDate();
+  return (
+    date.getDate() == today.getDate() &&
     date.getMonth() == today.getMonth() &&
-    date.getFullYear() == today.getFullYear();
+    date.getFullYear() == today.getFullYear()
+  );
 }
 
 export function isInFuture(cDate: CalendarDate) {
-  const date =  cDate instanceof Date ? cDate : dateTime(cDate).toDate();
+  const date = cDate instanceof Date ? cDate : dateTime(cDate).toDate();
   return date > new Date();
 }

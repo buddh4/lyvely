@@ -6,7 +6,6 @@ import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class FeatureGuard implements CanActivate {
-
   @Inject()
   private featureRegistry: FeatureRegistry;
 
@@ -16,11 +15,10 @@ export class FeatureGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const features = getFeaturesFromContext(context, this.reflector);
 
-    if(!features?.length) {
+    if (!features?.length) {
       return true;
     }
 
-    return features.reduce(
-      (prev, current) => prev && !!this.featureRegistry.isEnabledFeature(current), true);
+    return features.reduce((prev, current) => prev && !!this.featureRegistry.isEnabledFeature(current), true);
   }
 }

@@ -7,7 +7,5 @@
 </template>
 
 <style lang="postcss">
-
 @import "../styles/calendar-plan.css";
-
 </style>

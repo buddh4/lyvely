@@ -1,6 +1,7 @@
-export interface JwtAccessTokenPayload {
+export interface JwtAccessTokenPayloadIF {
   sub: string;
 }
 
-export interface JwtRefreshTokenPayload {
-  sub: string;}
+export interface JwtRefreshTokenPayloadIF {
+  sub: string;
+}

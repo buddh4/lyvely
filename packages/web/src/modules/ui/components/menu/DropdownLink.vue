@@ -1,17 +1,16 @@
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <script lang="ts" setup>
-import Icon from '@/modules/ui/components/icon/Icon.vue';
-import { toRefs } from 'vue';
+import { toRefs } from "vue";
 
 interface Props {
-  label: string,
-  route?: string,
-  icon?: string,
+  label: string;
+  route?: string;
+  icon?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,21 +18,35 @@ const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
 });
 
-defineEmits(['click']);
+defineEmits(["click"]);
 
-const classNames = 'dropdown-link block px-4 py-2 text-sm capitalize hover:bg-main dark:hover:bg-main no-underline flex no-wrap min-w-48';
-const {route, label, icon} = toRefs(props);
+const classNames =
+  "dropdown-link block px-4 py-2 text-sm capitalize hover:bg-main dark:hover:bg-main no-underline flex no-wrap min-w-48";
+const { route, label, icon } = toRefs(props);
 </script>
 
 <template>
-  <router-link v-if="route" v-bind="$attrs" :to="route" :class="classNames" active-class="active" @click="$emit('click')">
-    <Icon v-if="icon" :name="icon" class="align-middle"></Icon>
+  <router-link
+    v-if="route"
+    v-bind="$attrs"
+    :to="route"
+    :class="classNames"
+    active-class="active"
+    @click="$emit('click')"
+  >
+    <ly-icon v-if="icon" :name="icon" class="align-middle"></ly-icon>
     <span class="align-middle">
       <slot>{{ $t(label) }}</slot>
     </span>
   </router-link>
-  <a v-if="!route" v-bind="$attrs" href="#" :class="classNames" @click="$emit('click')">
-    <Icon v-if="icon" :name="icon" class="align-middle"></Icon>
+  <a
+    v-if="!route"
+    v-bind="$attrs"
+    href="#"
+    :class="classNames"
+    @click="$emit('click')"
+  >
+    <ly-icon v-if="icon" :name="icon" class="align-middle"></ly-icon>
     <span class="align-middle">
       <slot>{{ $t(label) }}</slot>
     </span>
@@ -41,7 +54,6 @@ const {route, label, icon} = toRefs(props);
 </template>
 
 <style scoped>
-
 .dropdown-link {
   min-width: 8rem;
 }
@@ -51,6 +63,6 @@ a {
 }
 
 svg {
-  @apply mr-2
+  @apply mr-2;
 }
 </style>

@@ -1,22 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import {
-  UserProfileRelation,
-  CreateProfileRelation,
-  ProfileRelationUserInfo
-} from './user-profile-relations.schema';
+import { UserProfileRelation, ICreateProfileRelation, ProfileRelationUserInfo } from './user-profile-relations.schema';
 import { assureObjectId } from '../../core/db/db.utils';
 import { BaseMembershipRole } from '@lyvely/common';
 
-export interface CreateMembership extends CreateProfileRelation {
-  role: string
+export interface CreateMembership extends ICreateProfileRelation {
+  role: string;
 }
 
 export type MembershipDocument = Membership & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class Membership extends UserProfileRelation<Membership> {
-
   @Prop({ required: true, default: BaseMembershipRole.Member })
   role: string;
 
@@ -27,7 +22,7 @@ export class Membership extends UserProfileRelation<Membership> {
       oid: assureObjectId(data.profile.oid),
       userInfo: ProfileRelationUserInfo.create(data),
       type: data.type,
-      role: data.role
+      role: data.role,
     });
   }
 }

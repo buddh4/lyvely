@@ -1,12 +1,12 @@
-import { defineStore } from 'pinia';
-import statisticsRepository from '@server/modules/statistics/repositories/statistics.repository';
-import { ScoreStatistics } from '@lyvely/common';
+import { defineStore } from "pinia";
+import statisticsRepository from "@/modules/statistics/repositories/statistics.repository";
+import { ScoreStatistics } from "@lyvely/common";
 
-export const useStatisticsStore = defineStore('statistics', {
+export const useStatisticsStore = defineStore("statistics", {
   state: () => ({
     loaded: false,
     year: new Date().getFullYear(),
-    monthly: new ScoreStatistics({})
+    monthly: new ScoreStatistics({}),
   }),
   actions: {
     async loadStatistics() {
@@ -14,9 +14,9 @@ export const useStatisticsStore = defineStore('statistics', {
         const { data } = await statisticsRepository.getMonthly();
         this.monthly = new ScoreStatistics(data);
         return this.monthly;
-      } catch(e) {
+      } catch (e) {
         //TODO: Implement
       }
-    }
-  }
-})
+    },
+  },
+});

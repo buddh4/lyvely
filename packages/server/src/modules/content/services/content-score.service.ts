@@ -1,10 +1,10 @@
-import { Profile, ProfileScoreService } from "../../profiles";
-import { Inject, Injectable } from "@nestjs/common";
-import { Content, ContentScore } from "../schemas";
-import { ContentScoreDao } from "../daos";
-import { assureObjectId, EntityIdentity } from "../../core/db/db.utils";
-import { UserAssignmentStrategy } from "@lyvely/common";
-import { User } from "../../users";
+import { Profile, ProfileScoreService } from '../../profiles';
+import { Inject, Injectable } from '@nestjs/common';
+import { Content, ContentScore } from '../schemas';
+import { ContentScoreDao } from '../daos';
+import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { UserAssignmentStrategy } from '@lyvely/common';
+import { User } from '../../users';
 
 @Injectable()
 export class ContentScoreService extends ProfileScoreService<ContentScore> {
@@ -25,7 +25,12 @@ export class ContentScoreService extends ProfileScoreService<ContentScore> {
   }
   */
 
-  async findScoresByContent(profile: Profile, user: User, content: EntityIdentity<Content>, strategy: UserAssignmentStrategy): Promise<ContentScore[]> {
+  async findScoresByContent(
+    profile: Profile,
+    user: User,
+    content: EntityIdentity<Content>,
+    strategy: UserAssignmentStrategy,
+  ): Promise<ContentScore[]> {
     return strategy === UserAssignmentStrategy.Shared
       ? await this.profileScoreDao.findAll({ cid: assureObjectId(content) })
       : await this.profileScoreDao.findAll({ cid: assureObjectId(content), uid: assureObjectId(user) });

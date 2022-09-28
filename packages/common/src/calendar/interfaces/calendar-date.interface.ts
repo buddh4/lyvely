@@ -3,7 +3,16 @@ export type CalendarDateTime = CalendarDate | IDateTime;
 
 type UnitTypeShort = 'd' | 'M' | 'y' | 'h' | 'm' | 's' | 'ms';
 type UnitTypeLong = 'millisecond' | 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';
-type UnitTypeLongPlural = 'milliseconds' | 'seconds' | 'minutes' | 'hours' | 'days' | 'weeks' |'months' | 'quarters' | 'years';
+type UnitTypeLongPlural =
+  | 'milliseconds'
+  | 'seconds'
+  | 'minutes'
+  | 'hours'
+  | 'days'
+  | 'weeks'
+  | 'months'
+  | 'quarters'
+  | 'years';
 export type UnitType = UnitTypeLong | UnitTypeLongPlural | UnitTypeShort;
 
 export interface IDateTime {
@@ -13,33 +22,33 @@ export interface IDateTime {
   add(value: number, unit?: UnitType): IDateTime;
   utc(preserveTime?: boolean): IDateTime;
   date(): number;
-  date(value : number): IDateTime;
+  date(value: number): IDateTime;
   day(): number;
-  day(value : number): IDateTime;
+  day(value: number): IDateTime;
   week(): number;
-  week(value : number): IDateTime;
-  isoWeek(): number
+  week(value: number): IDateTime;
+  isoWeek(): number;
   isoWeek(value: number): IDateTime;
-  quarter(): number
+  quarter(): number;
   quarter(value: number): IDateTime;
-  month(): number
+  month(): number;
   month(value: number): IDateTime;
-  year(): number
+  year(): number;
   year(value: number): IDateTime;
-  time(h?: number,m?: number,s?: number,ms?:number): IDateTime;
+  time(h?: number, m?: number, s?: number, ms?: number): IDateTime;
   unixTs(): number;
   format(template: string): string;
 }
 
 export function implementsIDateTime(obj: any): obj is IDateTime {
-  return obj && (<IDateTime> obj).isDateTime === true;
+  return obj && (<IDateTime>obj).isDateTime === true;
 }
 
 export function toDate(date: CalendarDateTime) {
   return dateTime(date).toDate();
 }
 
-export type DateTimeFactory = ((date?: CalendarDateTime, utc?: boolean, locale?: string, timezone?: string) => IDateTime)
+export type DateTimeFactory = (date?: CalendarDateTime, utc?: boolean, locale?: string, timezone?: string) => IDateTime;
 
 let dateTimeFactory: DateTimeFactory;
 
@@ -48,15 +57,15 @@ export function setDateTimeFactory(factory: DateTimeFactory) {
 }
 
 export function dateTime(date?: CalendarDateTime, utc = false, locale?: string, timezone?: string): IDateTime {
-  if(!dateTimeFactory) {
+  if (!dateTimeFactory) {
     throw new Error('No dateTimeFactory set');
   }
 
-  if(implementsIDateTime(date)) {
+  if (implementsIDateTime(date)) {
     return date;
   }
 
-  if(typeof date === 'string' && (/^([0-9]{4}-[0-9]{2}-[0-9]{2})$/.test(date))) {
+  if (typeof date === 'string' && /^([0-9]{4}-[0-9]{2}-[0-9]{2})$/.test(date)) {
     date = getFullDayDate(date);
   }
 
@@ -76,7 +85,7 @@ export function getFullDayDate(date: CalendarDate): Date {
     } else {
       date = new Date(date);
     }
-  } else if(date instanceof Date) {
+  } else if (date instanceof Date) {
     date = new Date(date);
   }
 
@@ -91,4 +100,3 @@ export function getFullDayDate(date: CalendarDate): Date {
 
   return date;
 }
-

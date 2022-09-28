@@ -1,13 +1,13 @@
 import { Module, Global, DynamicModule } from '@nestjs/common';
-import { MailService } from "./services/mail.service";
-import { MailerModule, MailerOptions,  } from '@nestjs-modules/mailer';
+import { MailService } from './services/mail.service';
+import { MailerModule, MailerOptions } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-import { ConfigurationPath } from "../core";
+import { ConfigurationPath } from '../core';
 import { ConfigService } from '@nestjs/config';
 
-const DEFAULT_MAIL_CONFIG: MailerOptions =  {
+const DEFAULT_MAIL_CONFIG: MailerOptions = {
   transport: {
-    streamTransport: true
+    streamTransport: true,
   },
   defaults: {
     from: '"No Reply" <no-reply@localhost>',
@@ -19,7 +19,7 @@ const DEFAULT_MAIL_CONFIG: MailerOptions =  {
     options: {
       strict: true,
     },
-  }
+  },
 };
 
 @Global()
@@ -31,8 +31,8 @@ export class MailsModule {
   static forRoot(options?: MailerOptions): DynamicModule {
     return {
       module: MailsModule,
-      imports: [MailerModule.forRoot(setDefaults(options))]
-    }
+      imports: [MailerModule.forRoot(setDefaults(options))],
+    };
   }
 
   static fromConfig(): DynamicModule {
@@ -42,13 +42,15 @@ export class MailsModule {
   private static forRootAsync(): DynamicModule {
     return {
       module: MailsModule,
-      imports: [MailerModule.forRootAsync({
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService<ConfigurationPath>) => {
-          return setDefaults(configService.get('mail'));
-        }
-      })]
-    }
+      imports: [
+        MailerModule.forRootAsync({
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService<ConfigurationPath>) => {
+            return setDefaults(configService.get('mail'));
+          },
+        }),
+      ],
+    };
   }
 }
 
@@ -59,5 +61,3 @@ function setDefaults(options?: MailerOptions) {
   options.template.dir = options.template.dir || DEFAULT_MAIL_CONFIG.template.dir;
   return options || DEFAULT_MAIL_CONFIG;
 }
-
-

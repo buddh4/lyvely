@@ -1,7 +1,7 @@
 export interface IUser {
-  id: string,
-  username: string,
-  imageHash: string,
-  email: string,
-  locale: string
+  id: string;
+  username: string;
+  imageHash: string;
+  email: string;
+  locale: string;
 }

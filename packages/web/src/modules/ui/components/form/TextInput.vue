@@ -8,35 +8,41 @@
       :autocomplete="autocomplete ? 'on' : 'off'"
       :type="type"
       :class="cssClasses"
-      @change="$emit('change', $event)"/>
+      @change="$emit('change', $event)"
+    />
 
     <div v-if="hasError()" :class="errorClass">
       {{ inputError }}
     </div>
 
-    <label v-if="inputLabel" :for="id" :class="labelClass">{{ $t(inputLabel) }}</label>
+    <label v-if="inputLabel" :for="id" :class="labelClass">
+      {{ $t(inputLabel) }}
+    </label>
   </fieldset>
 </template>
 
 <script lang="ts">
-import { BaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
-import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
-import { SetupContext } from 'vue';
+import {
+  IBaseInputProps,
+  useBaseInputProps,
+} from "@/modules/ui/components/form/BaseInput";
+import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
+import { SetupContext } from "vue";
 
-interface Props extends BaseInputProps {
-  type: string
+interface Props extends IBaseInputProps {
+  type: string;
 }
 
 export default {
   props: {
     ...useBaseInputProps(),
-    type: {type: String, default: 'text'}
+    type: { type: String, default: "text" },
   },
-  emits: ['change', 'update:modelValue'],
+  emits: ["change", "update:modelValue"],
   setup(props: Props, context: SetupContext) {
-    return useFloatingInputSetup(props, context)
-  }
-}
+    return useFloatingInputSetup(props, context);
+  },
+};
 </script>
 
 <style scoped></style>

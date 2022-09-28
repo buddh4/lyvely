@@ -3,10 +3,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const mongods = new Map<string, MongoMemoryServer>();
 
-export const rootMongooseTestModule = (
-  key?: string,
-  options: MongooseModuleOptions = {},
-) =>
+export const rootMongooseTestModule = (key?: string, options: MongooseModuleOptions = {}) =>
   MongooseModule.forRootAsync({
     useFactory: async () => {
       const mongod = await MongoMemoryServer.create();

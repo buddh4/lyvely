@@ -1,9 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
-import {
-  createBasicTestingModule,
-} from '../../test/utils/test.utils';
+import { createBasicTestingModule } from '../../test/utils/test.utils';
 import { ContentDao } from '../daos';
 import { Content, ContentSchema } from '../schemas';
 import { TestContent, TestContentDocument, TestContentSchema } from './src/test-content.schema';
@@ -25,10 +23,8 @@ describe('content dao', () => {
       name: Content.name,
       collection: Content.collectionName(),
       schema: ContentSchema,
-      discriminators: [
-        { name: TestContent.name, schema: TestContentSchema },
-      ],
-    }
+      discriminators: [{ name: TestContent.name, schema: TestContentSchema }],
+    },
   ];
 
   beforeEach(async () => {
@@ -45,16 +41,16 @@ describe('content dao', () => {
   }
 
   describe('findById', () => {
-    it('search unregistered content', async() => {
+    it('search unregistered content', async () => {
       const { user, profile } = TestDataUtils.createDummyUserAndProfile();
       const content = await createTestContent(user, profile, 'Hello World');
-      const search = <TestContent> await contentDao.findById(content._id);
+      const search = <TestContent>await contentDao.findById(content._id);
       expect(search instanceof Content).toEqual(true);
       expect(search instanceof TestContent).toEqual(false);
       expect(search.data.testData).toEqual('Hello World');
     });
 
-    it('search registered content', async() => {
+    it('search registered content', async () => {
       const { user, profile } = TestDataUtils.createDummyUserAndProfile();
 
       contentTypeRegistry.registerContentType({
@@ -62,14 +58,14 @@ describe('content dao', () => {
         name: 'Test Content',
         moduleId: 'test',
         constructor: TestContent,
-        description: 'Just a content model to test things'
+        description: 'Just a content model to test things',
       });
 
       const content = await createTestContent(user, profile, 'Hello World');
-      const search = <TestContent> await contentDao.findById(content._id);
+      const search = <TestContent>await contentDao.findById(content._id);
       expect(search instanceof Content).toEqual(true);
       expect(search instanceof TestContent).toEqual(true);
       expect(search.data.testData).toEqual('Hello World');
-    })
+    });
   });
 });

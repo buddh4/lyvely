@@ -1,7 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { HabitModel } from "../models";
-import { TagModel } from "@/tags";
-import { BaseModel } from "@/models";
+import { HabitModel } from '../models';
+import { TagModel } from '@/tags';
+import { BaseModel } from '@/models';
 
 @Exclude()
 export class UpdateHabitResponseDto extends BaseModel<UpdateHabitResponseDto> {

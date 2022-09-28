@@ -16,10 +16,15 @@ import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-refe
 import { ConfigModule } from '@nestjs/config';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import mongoose from 'mongoose';
-import { MailsModule } from "../../mails/mails.module";
-import { CoreModule } from "../../core/core.module";
+import { MailsModule } from '../../mails/mails.module';
+import { CoreModule } from '../../core/core.module';
 
-export function createCoreTestingModule(key: string, providers: Provider[] = [], models: ModelDefinition[] = [], modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = []): TestingModuleBuilder {
+export function createCoreTestingModule(
+  key: string,
+  providers: Provider[] = [],
+  models: ModelDefinition[] = [],
+  modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [
       TestDataUtils.getMongooseTestModule(key),
@@ -27,26 +32,36 @@ export function createCoreTestingModule(key: string, providers: Provider[] = [],
       EventEmitterModule.forRoot({ wildcard: true }),
       CoreModule,
       ConfigModule.forRoot({
-        load: [() => import('./test.config').then(module => module.default)],
-        isGlobal: true
+        load: [() => import('./test.config').then((module) => module.default)],
+        isGlobal: true,
       }),
       MailsModule.fromConfig(),
-      ...modules
+      ...modules,
     ],
     providers: [...providers],
   });
 }
 
-export function createBasicTestingModule(key: string, providers: Provider[] = [], models: ModelDefinition[] = [], modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = []): TestingModuleBuilder {
-  modules.push(UsersModule, ProfilesModule, PoliciesModule, TestModule)
+export function createBasicTestingModule(
+  key: string,
+  providers: Provider[] = [],
+  models: ModelDefinition[] = [],
+  modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+): TestingModuleBuilder {
+  modules.push(UsersModule, ProfilesModule, PoliciesModule, TestModule);
   return createCoreTestingModule(key, providers, models, modules);
 }
 
-export function createContentTestingModule(key: string, providers: Provider[] = [], models: ModelDefinition[] = [], modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = []): TestingModuleBuilder {
+export function createContentTestingModule(
+  key: string,
+  providers: Provider[] = [],
+  models: ModelDefinition[] = [],
+  modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+): TestingModuleBuilder {
   modules.push(ContentModule);
   return createBasicTestingModule(key, providers, models, modules);
 }
 
 export function getObjectId(id: string) {
-  return <TObjectId> new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
+  return <TObjectId>new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
 }

@@ -5,7 +5,6 @@ import { DataPointConfigSchemaFactory } from './data-point-config-schema.factory
 
 @Schema()
 export class SpinnerNumberDataPointConfig extends NumberDataPointConfig {
-
   strategy = DataPointInputStrategy.SpinnerNumber;
 
   @Prop({ enum: [DataPointInputType.Spinner] })
@@ -16,6 +15,7 @@ export class SpinnerNumberDataPointConfig extends NumberDataPointConfig {
   }
 }
 
-export const SpinnerNumberDataPointConfigSchema
-  = DataPointConfigSchemaFactory.createForClass(DataPointInputStrategy.SpinnerNumber, SpinnerNumberDataPointConfig);
-
+export const SpinnerNumberDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
+  DataPointInputStrategy.SpinnerNumber,
+  SpinnerNumberDataPointConfig,
+);

@@ -76,9 +76,10 @@ npx madge --circular --extensions ts ./
 ```
 npm i -g dependency-cruiser
 npm i -g typescript
+npm i -g vue-template-compiler
 ```
 
-> Note: Typescript needs to be installed alongside dependency cruise
+> Note: Typescript and vue compiler needs to be installed alongside dependency cruise
 
 ### Create dependency graph
 

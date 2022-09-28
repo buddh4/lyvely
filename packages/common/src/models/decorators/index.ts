@@ -1,1 +1,1 @@
-export * from './property-type.decorator'
+export * from './property-type.decorator';

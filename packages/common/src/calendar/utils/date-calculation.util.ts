@@ -67,7 +67,5 @@ export function subtractYear(date: CalendarDate, count: number, fullDay = true):
 export function isSameDay(date1: CalendarDate, date2: CalendarDate) {
   const d1 = dateTime(date1);
   const d2 = dateTime(date2);
-  return d1.year() === d2.year() &&
-         d1.month() === d2.month() &&
-         d1.date() === d2.date()
+  return d1.year() === d2.year() && d1.month() === d2.month() && d1.date() === d2.date();
 }

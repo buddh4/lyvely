@@ -1,26 +1,27 @@
 <script lang="ts">
-import { BaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
-import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
-import { computed, SetupContext } from 'vue';
-import Button from '@/modules/ui/components/button/Button.vue';
+import {
+  IBaseInputProps,
+  useBaseInputProps,
+} from "@/modules/ui/components/form/BaseInput";
+import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
+import { computed, SetupContext } from "vue";
 
-interface Props extends BaseInputProps {
-  steps: number,
-  slider: boolean,
-  min?: number,
-  max?: number
+interface Props extends IBaseInputProps {
+  steps: number;
+  slider: boolean;
+  min?: number;
+  max?: number;
 }
 
 export default {
-  components: { Button },
   props: {
     ...useBaseInputProps(),
     steps: { type: Number, default: 1 },
-    slider: {type: Boolean, default: true},
+    slider: { type: Boolean, default: true },
     min: { type: Number, default: undefined },
     max: { type: Number, default: undefined },
   },
-  emits: ['change', 'update:modelValue'],
+  emits: ["change", "update:modelValue"],
   setup(props: Props, context: SetupContext) {
     const baseInput = useFloatingInputSetup<number>(props, context);
 
@@ -33,17 +34,17 @@ export default {
         return props.modelValue;
       },
       set: (val: number) => {
-        if(!baseInput.editable) {
+        if (!baseInput.editable) {
           return;
         }
 
         val = val || 0;
-        val = parseInt(val+'');
+        val = parseInt(val + "");
 
         context.emit("change", val);
         const setValue = baseInput.hasFocus() ? val : getAllowedVal(val);
         context.emit("update:modelValue", setValue);
-      }
+      },
     });
 
     function getAllowedVal(val: number): number {
@@ -65,16 +66,17 @@ export default {
       baseInput.inputValue.value = baseInput.inputValue.value - props.steps;
     }
 
-    const buttonClass = 'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0';
+    const buttonClass =
+      "w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0";
 
     return {
       ...baseInput,
       increment,
       decrement,
-      buttonClass
-    }
-  }
-}
+      buttonClass,
+    };
+  },
+};
 </script>
 
 <template>
@@ -86,11 +88,12 @@ export default {
       :readonly="readonly"
       :class="cssClasses"
       type="number"
-      @change="$emit('change')"/>
+      @change="$emit('change')"
+    />
 
     <div v-if="slider && editable" class="number-slider">
-      <Button :class="buttonClass" @click="increment">+</Button>
-      <Button :class="buttonClass" @click="decrement">-</Button>
+      <ly-button :class="buttonClass" @click="increment">+</ly-button>
+      <ly-button :class="buttonClass" @click="decrement">-</ly-button>
     </div>
 
     <div v-if="hasError()" :class="errorClass">
@@ -101,5 +104,4 @@ export default {
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

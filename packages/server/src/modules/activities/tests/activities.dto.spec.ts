@@ -8,10 +8,9 @@ import { UserDocument } from '../../users';
 import { ActivityType, CalendarIntervalEnum, CreateHabitDto, HabitModel } from '@lyvely/common';
 import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit } from '../schemas';
-import { ActivityTestDataUtil,  createActivityTestingModule } from './utils/activities.test.utils';
+import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { instanceToPlain } from 'class-transformer';
 import { NumberDataPointConfig } from '../../time-series';
-
 
 describe('Activities DAO', () => {
   let testingModule: TestingModule;
@@ -56,14 +55,17 @@ describe('Activities DAO', () => {
     });
 
     it('habit data', async () => {
-      const search = await createHabit({
-        title: 'c1',
-        interval: CalendarIntervalEnum.Monthly,
-        text: 'Test description'
-      }, {
-        archived: true,
-        sortOrder: 3
-      });
+      const search = await createHabit(
+        {
+          title: 'c1',
+          interval: CalendarIntervalEnum.Monthly,
+          text: 'Test description',
+        },
+        {
+          archived: true,
+          sortOrder: 3,
+        },
+      );
 
       const model = instanceToPlain(new HabitModel(search));
       expect(model.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
@@ -86,7 +88,7 @@ describe('Activities DAO', () => {
         min: 2,
         max: 3,
         optimal: 3,
-        score: 5
+        score: 5,
       });
 
       const dto = instanceToPlain(new HabitModel(search)) as HabitModel;

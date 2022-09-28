@@ -1,2 +1,2 @@
-export * from './utils'
-export * from './test.module'
+export * from './utils';
+export * from './test.module';

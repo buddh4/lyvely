@@ -1,12 +1,12 @@
-import { mapType, registerMapping } from "@/mappings";
-import { BaseModel, PropertyType } from "@/models";
+import { mapType, registerMapping } from '@/mappings';
+import { BaseModel, PropertyType } from '@/models';
 
-class User extends BaseModel<User>{
+class User extends BaseModel<User> {
   forename: string;
   lastname: string;
 }
 
-class UserInfos extends BaseModel<UserInfos>{
+class UserInfos extends BaseModel<UserInfos> {
   @PropertyType([User])
   userInfos: User[];
 }
@@ -14,13 +14,18 @@ class UserInfos extends BaseModel<UserInfos>{
 describe('object mapping', () => {
   describe('mapType()', function () {
     it('simple object mapping', async () => {
-      class UserInfo extends BaseModel<UserInfo>{
+      class UserInfo extends BaseModel<UserInfo> {
         fullName: string;
       }
 
-      registerMapping(User, UserInfo, (user) => new UserInfo({
-        fullName: `${user.forename} ${user.lastname}`
-      }))
+      registerMapping(
+        User,
+        UserInfo,
+        (user) =>
+          new UserInfo({
+            fullName: `${user.forename} ${user.lastname}`,
+          }),
+      );
 
       const userInfo = mapType(User, UserInfo, { forename: 'Michael', lastname: 'Jackson' });
       expect(userInfo instanceof UserInfo).toEqual(true);
@@ -28,13 +33,18 @@ describe('object mapping', () => {
     });
 
     it('array to single object mapping', async () => {
-      registerMapping([User], UserInfos, (users) => new UserInfos({
-        userInfos: users.map(({ forename, lastname }) => ({ forename, lastname }))
-      }))
+      registerMapping(
+        [User],
+        UserInfos,
+        (users) =>
+          new UserInfos({
+            userInfos: users.map(({ forename, lastname }) => ({ forename, lastname })),
+          }),
+      );
 
       const userInfo = mapType([User], UserInfos, [
-        {forename: 'Michael', lastname: 'Jackson'},
-        {forename: 'Jimmy', lastname: 'Hendrix'},
+        { forename: 'Michael', lastname: 'Jackson' },
+        { forename: 'Jimmy', lastname: 'Hendrix' },
       ]);
 
       expect(userInfo.userInfos).toBeDefined();
@@ -44,9 +54,14 @@ describe('object mapping', () => {
     });
 
     it('empty array to single object mapping', async () => {
-      registerMapping([User], UserInfos, (users) => new UserInfos({
-        userInfos: users.map(({ forename, lastname }) => ({ forename, lastname }))
-      }))
+      registerMapping(
+        [User],
+        UserInfos,
+        (users) =>
+          new UserInfos({
+            userInfos: users.map(({ forename, lastname }) => ({ forename, lastname })),
+          }),
+      );
 
       const userInfo = mapType([User], UserInfos, []);
 
@@ -55,13 +70,18 @@ describe('object mapping', () => {
     });
 
     it('single to array object mapping', async () => {
-      registerMapping(UserInfos,[User], (userInfo) => userInfo.userInfos.map(user => new User(user)))
+      registerMapping(UserInfos, [User], (userInfo) => userInfo.userInfos.map((user) => new User(user)));
 
-      const users = mapType(UserInfos,[User], new UserInfos({
-        userInfos: [
-          {forename: 'Michael', lastname: 'Jackson'},
-          {forename: 'Jimmy', lastname: 'Hendrix'},
-        ]}));
+      const users = mapType(
+        UserInfos,
+        [User],
+        new UserInfos({
+          userInfos: [
+            { forename: 'Michael', lastname: 'Jackson' },
+            { forename: 'Jimmy', lastname: 'Hendrix' },
+          ],
+        }),
+      );
 
       expect(Array.isArray(users)).toEqual(true);
       expect(users.length).toEqual(2);
@@ -70,9 +90,9 @@ describe('object mapping', () => {
     });
 
     it('single with empty array to array object mapping', async () => {
-      registerMapping(UserInfos,[User], (userInfo) => userInfo.userInfos.map(user => new User(user)))
+      registerMapping(UserInfos, [User], (userInfo) => userInfo.userInfos.map((user) => new User(user)));
 
-      const users = mapType(UserInfos,[User], new UserInfos({userInfos: []}));
+      const users = mapType(UserInfos, [User], new UserInfos({ userInfos: [] }));
 
       expect(Array.isArray(users)).toEqual(true);
       expect(users.length).toEqual(0);

@@ -1,8 +1,8 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createTestExecutionContext, createBasicTestingModule } from "@server/modules/test";
+import { TestDataUtils, createTestExecutionContext, createBasicTestingModule } from '@/modules/test';
 import { ProfileGuard } from '../../guards';
-import { ProfileRequest } from "../../types";
+import { ProfileRequest } from '../../types';
 import { ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/common';
 
 describe('ProfileGuard', () => {
@@ -13,7 +13,7 @@ describe('ProfileGuard', () => {
   const TEST_KEY = 'profile-guard';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY,[ProfileGuard]).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY, [ProfileGuard]).compile();
     profileGuard = testingModule.get<ProfileGuard>(ProfileGuard);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
@@ -163,6 +163,5 @@ describe('ProfileGuard', () => {
       const result = await profileGuard.canActivate(executionContext);
       expect(result).toEqual(false);
     });
-
   });
 });

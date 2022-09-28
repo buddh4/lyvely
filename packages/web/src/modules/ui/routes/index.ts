@@ -1,5 +1,5 @@
-import { ifDevelopEnvironment } from '@server/router/utils';
-import StyleGuide from '@server/modules/ui/views/StyleGuide.vue';
+import { ifDevelopEnvironment } from "@/router/utils";
+import StyleGuide from "@/modules/ui/views/StyleGuide.vue";
 
 export default [
   {
@@ -7,8 +7,8 @@ export default [
     name: "StyleGuide",
     component: StyleGuide,
     meta: {
-      layout: 'profile'
+      layout: "profile",
     },
-    beforeEnter: ifDevelopEnvironment
-  }
+    beforeEnter: ifDevelopEnvironment,
+  },
 ];

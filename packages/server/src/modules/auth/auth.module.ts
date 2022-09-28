@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { JwtAuthService } from './services/jwt-auth.service';
 import { LocalStrategy, JwtStrategy, JwtRefreshStrategy } from './strategies';
-import { UsersModule } from "../users";
+import { UsersModule } from '../users';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controllers/auth.controller';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from "../core";
+import { ConfigurationPath } from '../core';
 
 @Module({
   imports: [
@@ -18,16 +18,10 @@ import { ConfigurationPath } from "../core";
         secret: configService.get('auth.jwt.access.secret'),
         signOptions: { expiresIn: '15m' },
       }),
-      inject: [ConfigService]
-    })
+      inject: [ConfigService],
+    }),
   ],
-  providers: [
-    JwtAuthService,
-    LocalStrategy,
-    JwtStrategy,
-    JwtRefreshStrategy,
-    JwtAuthGuard
-  ],
+  providers: [JwtAuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, JwtAuthGuard],
   controllers: [AuthController],
   exports: [JwtAuthService, JwtAuthGuard],
 })

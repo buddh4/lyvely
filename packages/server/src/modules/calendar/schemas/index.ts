@@ -1,1 +1,1 @@
-export * from './timing.schema'
+export * from './timing.schema';

@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { ActivitiesService } from '../services/activities.service';
 import { Model } from 'mongoose';
-import { HabitDataPointDocument, UserDone, } from '../schemas';
+import { HabitDataPointDocument, UserDone } from '../schemas';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { ActivitiesDao } from '../daos/activities.dao';
@@ -10,9 +10,9 @@ import { DataPointIntervalFilter, sortActivities } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { assureStringId } from '../../core/db/db.utils';
 import { User } from '../../users';
-import { HabitDataPointDao } from "../daos/habit-data-point.dao";
-import { ContentDocument, ContentScoreService, ContentScoreDao } from "../../content";
-import { CalendarIntervalEnum } from "@lyvely/common";
+import { HabitDataPointDao } from '../daos/habit-data-point.dao';
+import { ContentDocument, ContentScoreService, ContentScoreDao } from '../../content';
+import { CalendarIntervalEnum } from '@lyvely/common';
 
 describe('ActivityService', () => {
   let testingModule: TestingModule;
@@ -24,13 +24,13 @@ describe('ActivityService', () => {
   const TEST_KEY = 'activities_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY,[
-        ActivitiesDao,
+    testingModule = await createActivityTestingModule(TEST_KEY, [
+      ActivitiesDao,
       ActivitiesService,
       HabitDataPointService,
       HabitDataPointDao,
       ContentScoreService,
-      ContentScoreDao
+      ContentScoreDao,
     ]).compile();
     ContentModel = testingModule.get<Model<ContentDocument>>('ContentModel');
     HabitDataPointModel = testingModule.get<Model<HabitDataPointDocument>>('HabitDataPointModel');
@@ -51,9 +51,9 @@ describe('ActivityService', () => {
         await testData.createHabit(user, profile, { title: 'h1' }, { sortOrder: 1 }),
         await testData.createHabit(user, profile, { title: 'h2' }, { sortOrder: 2 }),
         await testData.createHabit(user, profile, { title: 'h3' }, { sortOrder: 3 }),
-        await testData.createHabit(user, profile, { title: 'h4' }, { sortOrder: 4 })
+        await testData.createHabit(user, profile, { title: 'h4' }, { sortOrder: 4 }),
       ];
-    }
+    };
 
     it('sort to top', async () => {
       const { user, profile } = await testData.createUserAndProfile();
@@ -66,11 +66,11 @@ describe('ActivityService', () => {
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
-      expect(activities[0].title).toEqual('h3')
-      expect(activities[1].title).toEqual('h0')
-      expect(activities[2].title).toEqual('h1')
-      expect(activities[3].title).toEqual('h2')
-      expect(activities[4].title).toEqual('h4')
+      expect(activities[0].title).toEqual('h3');
+      expect(activities[1].title).toEqual('h0');
+      expect(activities[2].title).toEqual('h1');
+      expect(activities[3].title).toEqual('h2');
+      expect(activities[4].title).toEqual('h4');
     });
 
     it('sort to bottom', async () => {
@@ -83,11 +83,11 @@ describe('ActivityService', () => {
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
-      expect(activities[0].title).toEqual('h0')
-      expect(activities[1].title).toEqual('h2')
-      expect(activities[2].title).toEqual('h3')
-      expect(activities[3].title).toEqual('h4')
-      expect(activities[4].title).toEqual('h1')
+      expect(activities[0].title).toEqual('h0');
+      expect(activities[1].title).toEqual('h2');
+      expect(activities[2].title).toEqual('h3');
+      expect(activities[3].title).toEqual('h4');
+      expect(activities[4].title).toEqual('h1');
     });
 
     it('sort to same index', async () => {
@@ -100,21 +100,46 @@ describe('ActivityService', () => {
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
-      expect(activities[0].title).toEqual('h0')
-      expect(activities[1].title).toEqual('h1')
-      expect(activities[2].title).toEqual('h2')
-      expect(activities[3].title).toEqual('h3')
-      expect(activities[4].title).toEqual('h4')
+      expect(activities[0].title).toEqual('h0');
+      expect(activities[1].title).toEqual('h1');
+      expect(activities[2].title).toEqual('h2');
+      expect(activities[3].title).toEqual('h3');
+      expect(activities[4].title).toEqual('h4');
     });
 
     it('sort to another interval', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habits = [
-        await testData.createHabit(user, profile, { title: 'h0', interval: CalendarIntervalEnum.Daily }, { sortOrder: 0 }),
-        await testData.createHabit(user, profile, { title: 'h1', interval: CalendarIntervalEnum.Daily }, { sortOrder: 1 }),
-        await testData.createHabit(user, profile, { title: 'h2', interval: CalendarIntervalEnum.Weekly }, { sortOrder: 0 }),
-        await testData.createHabit(user, profile, { title: 'h3', interval: CalendarIntervalEnum.Weekly }, { sortOrder: 1 }),
-        await testData.createHabit(user, profile, { title: 'h4', interval: CalendarIntervalEnum.Weekly }, { sortOrder: 2 })
+        await testData.createHabit(
+          user,
+          profile,
+          { title: 'h0', interval: CalendarIntervalEnum.Daily },
+          { sortOrder: 0 },
+        ),
+        await testData.createHabit(
+          user,
+          profile,
+          { title: 'h1', interval: CalendarIntervalEnum.Daily },
+          { sortOrder: 1 },
+        ),
+        await testData.createHabit(
+          user,
+          profile,
+          { title: 'h2', interval: CalendarIntervalEnum.Weekly },
+          { sortOrder: 0 },
+        ),
+        await testData.createHabit(
+          user,
+          profile,
+          { title: 'h3', interval: CalendarIntervalEnum.Weekly },
+          { sortOrder: 1 },
+        ),
+        await testData.createHabit(
+          user,
+          profile,
+          { title: 'h4', interval: CalendarIntervalEnum.Weekly },
+          { sortOrder: 2 },
+        ),
       ];
 
       await activitiesService.sort(profile, user, habits[0], habits[2].dataPointConfig.interval, habits[2]);
@@ -145,7 +170,12 @@ describe('ActivityService', () => {
 
       it('find task done today within filter range', async () => {
         const { user, profile } = await testData.createUserAndProfile('user1');
-        const task = await testData.createTask(user, profile, { title: 't1' }, { doneBy: [new UserDone(user, ActivityTestDataUtil.getTodayTimingId())] });
+        const task = await testData.createTask(
+          user,
+          profile,
+          { title: 't1' },
+          { doneBy: [new UserDone(user, ActivityTestDataUtil.getTodayTimingId())] },
+        );
         const filter = new DataPointIntervalFilter(new Date());
         const { activities } = await activitiesService.findByFilter(profile, user, filter);
         expect(activities.length).toEqual(1);
@@ -154,7 +184,12 @@ describe('ActivityService', () => {
 
       it('find task done tomorrow within filter range', async () => {
         const { user, profile } = await testData.createUserAndProfile('user1');
-        const task = await testData.createTask(user, profile,{ title: 't1' },{ doneBy: [new UserDone(user, ActivityTestDataUtil.getTomorrowTimingId())] });
+        const task = await testData.createTask(
+          user,
+          profile,
+          { title: 't1' },
+          { doneBy: [new UserDone(user, ActivityTestDataUtil.getTomorrowTimingId())] },
+        );
         const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
         const { activities } = await activitiesService.findByFilter(profile, user, filter);
         expect(activities.length).toEqual(1);
@@ -163,7 +198,12 @@ describe('ActivityService', () => {
 
       it('do not include tasks done outside of filter range', async () => {
         const { user, profile } = await testData.createUserAndProfile('user1');
-        await testData.createTask(user, profile, { title: 't1' },{ doneBy: [new UserDone(user, ActivityTestDataUtil.getTomorrowTimingId())] });
+        await testData.createTask(
+          user,
+          profile,
+          { title: 't1' },
+          { doneBy: [new UserDone(user, ActivityTestDataUtil.getTomorrowTimingId())] },
+        );
         const filter = new DataPointIntervalFilter(new Date());
         const { activities } = await activitiesService.findByFilter(profile, user, filter);
         expect(activities.length).toEqual(0);

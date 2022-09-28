@@ -1,11 +1,6 @@
-import { BaseEntity } from "../../core/db/base.entity";
-import mongoose from "mongoose";
-import { Prop } from "@nestjs/mongoose";
-
-export interface BaseProfileModelEntity {
-  pid: TObjectId;
-  oid?: TObjectId;
-}
+import { BaseEntity } from '@/modules/core';
+import mongoose from 'mongoose';
+import { Prop } from '@nestjs/mongoose';
 
 export class BaseProfileModel<C extends BaseEntity<C>> extends BaseEntity<C> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })

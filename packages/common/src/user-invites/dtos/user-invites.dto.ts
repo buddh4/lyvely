@@ -1,7 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ArrayNotEmpty, IsArray, IsMongoId, IsOptional, IsString } from 'class-validator';
-import { PropertyType } from "@/models";
-import { BaseMembershipRole } from "@/profiles";
+import { PropertyType } from '@/models';
+import { BaseMembershipRole } from '@/profiles';
 
 @Exclude()
 export class UserInvite {
@@ -21,7 +21,6 @@ export class MailInvite extends UserInvite {
 
 @Exclude()
 export class UserInvites {
-
   @Expose()
   @IsArray()
   @ArrayNotEmpty()

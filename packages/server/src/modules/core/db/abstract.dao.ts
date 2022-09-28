@@ -7,25 +7,25 @@ import {
   UpdateQuery,
   QueryOptions,
   ClientSession,
-  ProjectionType
+  ProjectionType,
 } from 'mongoose';
 import { BaseEntity } from './base.entity';
-import { createBaseEntityInstance } from "./db.utils";
+import { createBaseEntityInstance } from './db.utils';
 import { Inject } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
-import { DeepPartial } from "@lyvely/common";
-import { cloneDeep } from "lodash";
+import { DeepPartial } from '@lyvely/common';
+import { cloneDeep } from 'lodash';
 
-interface Pagination {
-  page: number,
-  limit: number
+interface IPagination {
+  page: number;
+  limit: number;
 }
 type ContainsDot = `${string}.${string}`;
 
 export type UpdateQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> | UpdateSubQuerySet<T>;
-type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & { [key:ContainsDot]: any };
+type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & { [key: ContainsDot]: any };
 
 type QuerySort<T extends BaseEntity<T>> = { [P in keyof UpdateQuerySet<T>]: 1 | -1 | 'asc' | 'desc' };
 
@@ -35,47 +35,50 @@ type EntityQuery<T extends BaseEntity<T>> = QueryWithHelpers<
   // eslint-disable-next-line @typescript-eslint/ban-types
   HydratedDocument<T, any, any>,
   any,
-  T>
+  T
+>;
 
-export interface BaseQueryOptions {
-  session?: ClientSession
+export interface IBaseQueryOptions {
+  session?: ClientSession;
 }
 
-export interface UpdateQueryOptions extends BaseQueryOptions {
-  apply?: boolean
+export interface IUpdateQueryOptions extends IBaseQueryOptions {
+  apply?: boolean;
 }
 
-export interface BaseFetchQueryOptions<T extends BaseEntity<T>> extends BaseQueryOptions {
+export interface IBaseFetchQueryOptions<T extends BaseEntity<T>> extends IBaseQueryOptions {
   projection?: ProjectionType<T>;
   sort?: QuerySort<T>;
 }
 
-export interface FindAndUpdateQueryOptions<T extends BaseEntity<T>> extends BaseFetchQueryOptions<T>, UpdateQueryOptions {
+export interface IFindAndUpdateQueryOptions<T extends BaseEntity<T>>
+  extends IBaseFetchQueryOptions<T>,
+    IUpdateQueryOptions {
   new?: boolean;
   upsert?: boolean;
   raw?: boolean;
 }
 
-export type SaveOptions = BaseQueryOptions;
-export type DeleteOptions = BaseQueryOptions;
+export type SaveOptions = IBaseQueryOptions;
+export type DeleteOptions = IBaseQueryOptions;
 
-export interface FetchQueryFilterOptions<T extends BaseEntity<T>> extends BaseFetchQueryOptions<T> {
-  excludeIds?: EntityIdentity<T>[] | EntityIdentity<T>
+export interface IFetchQueryFilterOptions<T extends BaseEntity<T>> extends IBaseFetchQueryOptions<T> {
+  excludeIds?: EntityIdentity<T>[] | EntityIdentity<T>;
 }
 
-export interface FetchQueryOptions<T extends BaseEntity<T>> extends FetchQueryFilterOptions<T> {
-  pagination?: Pagination,
-  limit?: number
+export interface IFetchQueryOptions<T extends BaseEntity<T>> extends IFetchQueryFilterOptions<T> {
+  pagination?: IPagination;
+  limit?: number;
 }
 
 export const defaultFetchOptions = {
   pagination: {
     page: 1,
-    limit: 100
-  }
-}
+    limit: 100,
+  },
+};
 
-export interface UpsertQueryOptions  extends BaseQueryOptions {
+export interface IUpsertQueryOptions extends IBaseQueryOptions {
   new?: boolean;
 }
 
@@ -101,7 +104,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
    *
    * @protected
    */
-  protected getModelType() : string|null {
+  protected getModelType(): string | null {
     return null;
   }
 
@@ -114,17 +117,17 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   protected constructModels(leanArr?: Partial<T>[]): T[] {
-    return leanArr.map(lean => this.constructModel(lean));
+    return leanArr.map((lean) => this.constructModel(lean));
   }
 
   protected emit(event: string, data: any) {
-    return this.eventEmitter.emit(this.createEventName(event), data)
+    return this.eventEmitter.emit(this.createEventName(event), data);
   }
 
   async save(entityData: T, options?: SaveOptions): Promise<T> {
     await this.beforeSave(entityData);
     this.emit('save.pre', new ModelSaveEvent(this, entityData, this.getModelName()));
-    const result = <any> await new this.model(entityData).save(options);
+    const result = <any>await new this.model(entityData).save(options);
     const model = this.constructModel(result.toObject({ virtuals: true, aliases: true, getters: true }));
     entityData._id = model._id;
     entityData.id = model.id;
@@ -156,16 +159,18 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
    * @param identity
    * @param options
    */
-  async findById(identity: EntityIdentity<T>, options?: BaseFetchQueryOptions<T>): Promise<T|null> {
+  async findById(identity: EntityIdentity<T>, options?: IBaseFetchQueryOptions<T>): Promise<T | null> {
     // TODO: trigger events
-    return this.constructModel(await this.model.findById(this.assureEntityId(identity), options?.projection, options).lean());
+    return this.constructModel(
+      await this.model.findById(this.assureEntityId(identity), options?.projection, options).lean(),
+    );
   }
 
-  async findAllByIds(ids: EntityIdentity<T>[], options?: FetchQueryOptions<T>): Promise<T[]> {
-    return this.findAll({ '_id': { $in: ids.map(id => this.assureEntityId(id)) } }, options);
+  async findAllByIds(ids: EntityIdentity<T>[], options?: IFetchQueryOptions<T>): Promise<T[]> {
+    return this.findAll({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
 
-  async findAll<C = T>(filter: FilterQuery<C>, options?: FetchQueryOptions<T>): Promise<T[]> {
+  async findAll<C = T>(filter: FilterQuery<C>, options?: IFetchQueryOptions<T>): Promise<T[]> {
     // TODO: trigger events
 
     options = options || {};
@@ -173,17 +178,17 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
 
     const query = this.model.find(filter, options?.projection, options);
     const fetchFilter = this.getFetchQueryFilter(options);
-    if(fetchFilter) {
+    if (fetchFilter) {
       query.where(fetchFilter);
     }
     return this.constructModels(await this.applyFetchQueryOptions(query, options).lean());
   }
 
-  protected assureEntityId(identity: EntityIdentity<T>) : T['_id'] {
+  protected assureEntityId(identity: EntityIdentity<T>): T['_id'] {
     return assureObjectId(identity);
   }
 
-  async findOne<C = T>(filter: FilterQuery<C>, options?: BaseFetchQueryOptions<T>): Promise<T|null> {
+  async findOne<C = T>(filter: FilterQuery<C>, options?: IBaseFetchQueryOptions<T>): Promise<T | null> {
     // TODO: trigger events
     return this.constructModel(await this.model.findOne(filter, options?.projection, options).lean());
   }
@@ -193,49 +198,62 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.constructModel(await this.model.findOneAndUpdate(filter, update, { upsert: true, ...options }).lean());
   }*/
 
-  protected getFetchQueryFilter(options: FetchQueryFilterOptions<T>): FilterQuery<any> {
+  protected getFetchQueryFilter(options: IFetchQueryFilterOptions<T>): FilterQuery<any> {
     const { excludeIds } = options;
 
-    if(!excludeIds) {
+    if (!excludeIds) {
       return;
     }
 
     return {
-      '_id':  Array.isArray(excludeIds)
-        ? { $nin: excludeIds.map(identity => this.assureEntityId(identity)) }
-        : { $ne: this.assureEntityId(excludeIds) }
-    }
+      _id: Array.isArray(excludeIds)
+        ? { $nin: excludeIds.map((identity) => this.assureEntityId(identity)) }
+        : { $ne: this.assureEntityId(excludeIds) },
+    };
   }
 
-  protected applyFetchQueryOptions(query: EntityQuery<T>, options: FetchQueryOptions<T>): EntityQuery<T> {
+  protected applyFetchQueryOptions(query: EntityQuery<T>, options: IFetchQueryOptions<T>): EntityQuery<T> {
     const { sort, pagination } = options;
 
-    if(sort) {
-      query.sort(sort)
+    if (sort) {
+      query.sort(sort);
     }
 
-    if(pagination) {
-      query.limit(pagination.limit)
-      query.skip((pagination.page -1) * pagination.limit)
+    if (pagination) {
+      query.limit(pagination.limit);
+      query.skip((pagination.page - 1) * pagination.limit);
     }
 
     return query;
   }
 
-  async findOneAndSetById(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>, options?: FindAndUpdateQueryOptions<T>): Promise<T|null> {
-    return this.findOneAndUpdateById(id, { $set: <any> updateSet }, options);
+  async findOneAndSetById(
+    id: EntityIdentity<T>,
+    updateSet: UpdateQuerySet<T>,
+    options?: IFindAndUpdateQueryOptions<T>,
+  ): Promise<T | null> {
+    return this.findOneAndUpdateById(id, { $set: <any>updateSet }, options);
   }
 
-  async findOneAndUpdateById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: FindAndUpdateQueryOptions<T>): Promise<T|null> {
+  async findOneAndUpdateById(
+    id: EntityIdentity<T>,
+    update: UpdateQuery<T>,
+    options?: IFindAndUpdateQueryOptions<T>,
+  ): Promise<T | null> {
     return this.findOneAndUpdateByFilter(id, update, {}, options);
   }
 
-  async findOneAndUpdateByFilter(id: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: FindAndUpdateQueryOptions<T>): Promise<T|null> {
+  async findOneAndUpdateByFilter(
+    id: EntityIdentity<T>,
+    update: UpdateQuery<T>,
+    filter?: FilterQuery<T>,
+    options?: IFindAndUpdateQueryOptions<T>,
+  ): Promise<T | null> {
     // TODO: trigger events
-    if(!await this.beforeUpdate(id, update)) return null;
+    if (!(await this.beforeUpdate(id, update))) return null;
 
     options = options || {};
-    if(typeof options.new === 'undefined') {
+    if (typeof options.new === 'undefined') {
       options.new = true;
     }
 
@@ -244,60 +262,70 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
 
     const data = await this.model.findOneAndUpdate(filter, cloneDeep(update), options).lean();
 
-    if(!data) {
+    if (!data) {
       return null;
     }
 
-    if(!options || options.apply !== false) {
+    if (!options || options.apply !== false) {
       applyUpdateTo(id, update);
     }
 
     return this.constructModel(data);
   }
 
-  async updateOneSetById(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>, options?: BaseQueryOptions): Promise<number> {
-    return this.updateOneById(id, { $set: <any> updateSet }, options);
+  async updateOneSetById(
+    id: EntityIdentity<T>,
+    updateSet: UpdateQuerySet<T>,
+    options?: IBaseQueryOptions,
+  ): Promise<number> {
+    return this.updateOneById(id, { $set: <any>updateSet }, options);
   }
 
-  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: UpdateQueryOptions) {
+  async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: IUpdateQueryOptions) {
     return this.updateOneByFilter(id, update, {}, options);
   }
 
-  protected async updateOneByFilter(identity: EntityIdentity<T>, update: UpdateQuery<T>, filter?: FilterQuery<T>, options?: QueryOptions) {
+  protected async updateOneByFilter(
+    identity: EntityIdentity<T>,
+    update: UpdateQuery<T>,
+    filter?: FilterQuery<T>,
+    options?: QueryOptions,
+  ) {
     // TODO: trigger events
     const clonedUpdate = cloneDeep(update);
 
-    if(!await this.beforeUpdate(identity, clonedUpdate)) return 0;
+    if (!(await this.beforeUpdate(identity, clonedUpdate))) return 0;
 
     filter = filter || {};
     filter._id = this.assureEntityId(identity);
 
     const modifiedCount = (await this.model.updateOne(filter, clonedUpdate, options).exec()).modifiedCount;
 
-    if(modifiedCount && (!options || options.apply !== false)) {
+    if (modifiedCount && (!options || options.apply !== false)) {
       /**
        *  TODO: Note that applyUpdateTo does not set values which are not part of the model already (hasOwnProperty),
        *  this should be documented, a workaround is to set a default in the schema, maybe make the strict setting configurable
-        */
+       */
       applyUpdateTo(identity, update);
     }
 
     return modifiedCount;
   }
 
-  protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<PartialEntityData<T>|boolean> {
+  protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<PartialEntityData<T> | boolean> {
     return Promise.resolve(true);
   }
 
-  async updateSetBulk(updates: { id: EntityIdentity<T>, update: UpdateQuerySet<T>}[], options?: BaseQueryOptions) {
-     await this.model.bulkWrite(
-        updates.map(update => ({
-            updateOne: {
-              filter: { _id: this.assureEntityId(update.id) },
-              update: { $set: update.update },
-            }
-          })
-      ), options);
+  async updateSetBulk(updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[], options?: IBaseQueryOptions) {
+    await this.model.bulkWrite(
+      updates.map((update) => ({
+        updateOne: {
+          filter: { _id: this.assureEntityId(update.id) },
+          update: { $set: update.update },
+        },
+      })),
+      options,
+    );
   }
 
   async reload(id: EntityIdentity<T>): Promise<T> {

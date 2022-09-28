@@ -9,23 +9,19 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
-import {
-  ActivityRangeResponse,
-  DataPointIntervalFilter,
-  MoveAction } from '@lyvely/common';
+import { ActivityRangeResponse, DataPointIntervalFilter, MoveAction } from '@lyvely/common';
 import { ActivitiesService } from '../services/activities.service';
 import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '../../content';
 import { Activity } from '../schemas';
-import { ProfileRequest } from "../../profiles";
-import { isTaskContent } from "../utils/activity.utils";
-import { Policies } from "../../policies/decorators/policies.decorator";
-import { TaskModel } from "@lyvely/common";
+import { ProfileRequest } from '../../profiles';
+import { isTaskContent } from '../utils/activity.utils';
+import { Policies } from '../../policies/decorators/policies.decorator';
+import { TaskModel } from '@lyvely/common';
 
 @ContentController('activities')
 // TODO: implement feature registration @Feature('activities')
 @UseInterceptors(ClassSerializerInterceptor)
 export class ActivitiesController extends AbstractContentController<Activity> {
-
   @Inject()
   protected contentService: ActivitiesService;
 
@@ -46,8 +42,8 @@ export class ActivitiesController extends AbstractContentController<Activity> {
     const { activities, dataPoints } = await this.contentService.findByFilter(profile, user, filter);
 
     const result = new ActivityRangeResponse();
-    activities.forEach(activity => {
-      if(isTaskContent(activity)) {
+    activities.forEach((activity) => {
+      if (isTaskContent(activity)) {
         const dto = new TaskModel(activity);
         dto.done = activity.getDoneBy(user)?.tid;
         result.addActivity(dto);

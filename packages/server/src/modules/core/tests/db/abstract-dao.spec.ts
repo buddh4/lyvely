@@ -1,16 +1,15 @@
 import { expect } from '@jest/globals';
-import { InjectModel, Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { BaseEntity, AbstractDao, ModelSaveEvent } from "@server/modules/core";
-import { Model, Document } from "mongoose";
-import { TestingModule } from "@nestjs/testing";
-import { createBasicTestingModule, getObjectId } from "@server/modules/test/utils/test.utils";
-import { ModelDefinition } from "@nestjs/mongoose/dist/interfaces";
-import { Inject, Injectable } from "@nestjs/common";
-import { EventEmitter2 } from "@nestjs/event-emitter";
+import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { BaseEntity, AbstractDao, ModelSaveEvent } from '@/modules/core';
+import { Model, Document } from 'mongoose';
+import { TestingModule } from '@nestjs/testing';
+import { createBasicTestingModule, getObjectId } from '@/modules/test/utils/test.utils';
+import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
+import { Inject, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Schema()
 class TestEntity extends BaseEntity<TestEntity> {
-
   @Prop({ type: String, required: true })
   requiredField: string;
 
@@ -24,11 +23,10 @@ const TestEntitySchema = SchemaFactory.createForClass(TestEntity);
 const TestEntityModelDefinition: ModelDefinition = {
   name: TestEntity.name,
   schema: TestEntitySchema,
-}
+};
 
 @Injectable()
 class TestEntityDao extends AbstractDao<TestEntity> {
-
   @InjectModel(TestEntity.name) protected model: Model<TestEntityDocument>;
 
   getModelConstructor() {
@@ -36,7 +34,7 @@ class TestEntityDao extends AbstractDao<TestEntity> {
   }
 
   getModuleId(): string {
-    return "test";
+    return 'test';
   }
 }
 
@@ -55,7 +53,11 @@ describe('AbstractDao', () => {
   let eventTester: EventTester;
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [TestEntityDao, EventTester], [TestEntityModelDefinition]).compile();
+    testingModule = await createBasicTestingModule(
+      TEST_KEY,
+      [TestEntityDao, EventTester],
+      [TestEntityModelDefinition],
+    ).compile();
     TestEntityModel = testingModule.get<Model<TestEntityDocument>>('TestEntityModel');
     dao = testingModule.get<TestEntityDao>(TestEntityDao);
     eventTester = testingModule.get<EventTester>(EventTester);
@@ -73,7 +75,7 @@ describe('AbstractDao', () => {
       expect(entity).toBeDefined();
       expect(entity instanceof TestEntity).toEqual(true);
       expect(entity.requiredField).toEqual('We need this...');
-      expect(entity._id).toBeDefined()
+      expect(entity._id).toBeDefined();
       expect(model._id).toEqual(entity._id);
       expect(model.id).toEqual(entity.id);
     });
@@ -112,7 +114,7 @@ describe('AbstractDao', () => {
       });
       await dao.save(model);
       expect(wasCalled).toEqual(true);
-    })
+    });
 
     describe('findById', () => {
       it('find existing entity by model', async () => {
@@ -154,7 +156,7 @@ describe('AbstractDao', () => {
       it('find existing entities', async () => {
         const model = new TestEntity({ requiredField: '1' });
         const model2 = new TestEntity({ requiredField: '2' });
-        const model3 = new TestEntity({ requiredField: '3'  });
+        const model3 = new TestEntity({ requiredField: '3' });
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
@@ -167,7 +169,7 @@ describe('AbstractDao', () => {
       it('find existing and non existing entities', async () => {
         const model = new TestEntity({ requiredField: '1' });
         const model2 = new TestEntity({ requiredField: '2' });
-        const model3 = new TestEntity({ requiredField: '3'  });
+        const model3 = new TestEntity({ requiredField: '3' });
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
@@ -180,7 +182,7 @@ describe('AbstractDao', () => {
       it('find entity with sort', async () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         const model2 = new TestEntity({ requiredField: '2', numberField: 2 });
-        const model3 = new TestEntity({ requiredField: '3', numberField: 100  });
+        const model3 = new TestEntity({ requiredField: '3', numberField: 100 });
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
@@ -194,11 +196,14 @@ describe('AbstractDao', () => {
       it('find entity with sort and projection', async () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         const model2 = new TestEntity({ requiredField: '2', numberField: 2 });
-        const model3 = new TestEntity({ requiredField: '3', numberField: 100  });
+        const model3 = new TestEntity({ requiredField: '3', numberField: 100 });
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
-        const result = await dao.findAllByIds([model, model2, model3], { projection: { requiredField: 1 }, sort: { numberField: 1 } });
+        const result = await dao.findAllByIds([model, model2, model3], {
+          projection: { requiredField: 1 },
+          sort: { numberField: 1 },
+        });
         expect(result.length).toEqual(3);
         expect(result[0]._id).toEqual(model2._id);
         expect(result[1]._id).toEqual(model._id);
@@ -214,7 +219,7 @@ describe('AbstractDao', () => {
       it('find all without filter', async () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         const model2 = new TestEntity({ requiredField: '2', numberField: 2 });
-        const model3 = new TestEntity({ requiredField: '3', numberField: 100  });
+        const model3 = new TestEntity({ requiredField: '3', numberField: 100 });
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
@@ -228,7 +233,7 @@ describe('AbstractDao', () => {
       it('find all with sort', async () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         const model2 = new TestEntity({ requiredField: '2', numberField: 2 });
-        const model3 = new TestEntity({ requiredField: '3', numberField: 100  });
+        const model3 = new TestEntity({ requiredField: '3', numberField: 100 });
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
@@ -242,7 +247,7 @@ describe('AbstractDao', () => {
       it('find all with excludeIds array', async () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         const model2 = new TestEntity({ requiredField: '2', numberField: 2 });
-        const model3 = new TestEntity({ requiredField: '3', numberField: 100  });
+        const model3 = new TestEntity({ requiredField: '3', numberField: 100 });
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
@@ -254,7 +259,7 @@ describe('AbstractDao', () => {
       it('find all with single excludeId', async () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         const model2 = new TestEntity({ requiredField: '2', numberField: 2 });
-        const model3 = new TestEntity({ requiredField: '3', numberField: 100  });
+        const model3 = new TestEntity({ requiredField: '3', numberField: 100 });
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
@@ -303,13 +308,21 @@ describe('AbstractDao', () => {
       });
 
       it('upsert non existing entity', async () => {
-        const result = await dao.findOneAndSetById(getObjectId('whatever'), { requiredField: 'upserted' }, { upsert: true });
+        const result = await dao.findOneAndSetById(
+          getObjectId('whatever'),
+          { requiredField: 'upserted' },
+          { upsert: true },
+        );
         expect(result).toBeDefined();
         expect(result.requiredField).toEqual('upserted');
       });
 
       it('upsert non existing entity with new: false', async () => {
-        const result = await dao.findOneAndSetById(getObjectId('whatever'), { requiredField: 'upserted' }, { upsert: true, new: false });
+        const result = await dao.findOneAndSetById(
+          getObjectId('whatever'),
+          { requiredField: 'upserted' },
+          { upsert: true, new: false },
+        );
         expect(result).toBeNull();
       });
 
@@ -322,8 +335,8 @@ describe('AbstractDao', () => {
         expect(result.requiredField).toEqual('updated');
       });
     });
-  })
-})
+  });
+});
 
 // TODO: Test validation functions
 // TODO: Test defaults

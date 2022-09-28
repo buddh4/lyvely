@@ -1,3 +1,3 @@
-import { LyvelyServer } from "@lyvely/server";
+import { LyvelyServer } from '@lyvely/server';
 
 new LyvelyServer().bootstrap();

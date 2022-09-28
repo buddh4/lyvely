@@ -9,7 +9,9 @@ import {
   Habit,
   HabitSchema,
   Task,
-  TaskSchema, Activity, ActivitySchema,
+  TaskSchema,
+  Activity,
+  ActivitySchema,
 } from './schemas';
 import { UsersModule } from '../users';
 import { HabitsController } from './controllers/habits.controller';
@@ -24,7 +26,7 @@ import { PoliciesModule } from '../policies/policies.module';
 import { HabitsDao } from './daos/habits.dao';
 import { ActivityEvents } from './activities.events';
 import { CoreModule } from '../core/core.module';
-import { HabitDataPointDao } from "./daos/habit-data-point.dao";
+import { HabitDataPointDao } from './daos/habit-data-point.dao';
 
 @Module({
   imports: [
@@ -56,7 +58,7 @@ import { HabitDataPointDao } from "./daos/habit-data-point.dao";
     ActivitiesService,
     HabitDataPointService,
     HabitsService,
-    TasksService
+    TasksService,
   ],
 })
 export class ActivitiesModule {}

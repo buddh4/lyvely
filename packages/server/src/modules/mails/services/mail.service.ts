@@ -1,19 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MailerService, ISendMailOptions } from '@nestjs-modules/mailer';
-import { SentMessageInfo } from "nodemailer";
-import { ConfigurationPath, LyvelyMailOptions } from "../../core";
+import { SentMessageInfo } from 'nodemailer';
+import { ConfigurationPath, LyvelyMailOptions } from '../../core';
 import { ConfigService } from '@nestjs/config';
 import fs from 'fs';
-import { Stream } from "stream";
+import { Stream } from 'stream';
+import { noop } from '@lyvely/common';
 
-export interface MessageInfo {
-  messageId: string,
-  message: unknown,
+export interface IMessageInfo {
+  messageId: string;
+  message: unknown;
 }
 
-export interface StreamMessageInfo extends MessageInfo {
-  messageId: string
-  message: Stream
+export interface IStreamMessageInfo extends IMessageInfo {
+  messageId: string;
+  message: Stream;
 }
 
 @Injectable()
@@ -22,9 +23,8 @@ export class MailService {
 
   constructor(
     private readonly mailerService: MailerService,
-    private readonly configService: ConfigService<ConfigurationPath>
-  ) {
-  }
+    private readonly configService: ConfigService<ConfigurationPath>,
+  ) {}
 
   async sendMail(sendMailOptions: ISendMailOptions): Promise<SentMessageInfo> {
     return this.mailerService.sendMail(sendMailOptions).then((info: SentMessageInfo) => {
@@ -63,20 +63,24 @@ export class MailService {
     return this.configService.get<LyvelyMailOptions>('mail').createMessageFiles;
   }
 
-  private isStreamTransport(info: SentMessageInfo): info is StreamMessageInfo {
+  private isStreamTransport(info: SentMessageInfo): info is IStreamMessageInfo {
     const mailConfig = this.configService.get<LyvelyMailOptions>('mail');
-    return typeof mailConfig.transport === 'object'
-      && 'streamTransport' in mailConfig.transport
-      && mailConfig.transport.streamTransport
-      && info.message instanceof Stream;
+    return (
+      typeof mailConfig.transport === 'object' &&
+      'streamTransport' in mailConfig.transport &&
+      mailConfig.transport.streamTransport &&
+      info.message instanceof Stream
+    );
   }
 
   private isJsonTransport(info: SentMessageInfo) {
     const mailConfig = this.configService.get<LyvelyMailOptions>('mail');
-    return typeof mailConfig.transport === 'object'
-      && 'jsonTransport' in mailConfig.transport
-      && mailConfig.transport.jsonTransport
-      && typeof info.message === 'string';
+    return (
+      typeof mailConfig.transport === 'object' &&
+      'jsonTransport' in mailConfig.transport &&
+      mailConfig.transport.jsonTransport &&
+      typeof info.message === 'string'
+    );
   }
 
   private getMessageId(rawIdOrMessageInfo: string | SentMessageInfo) {
@@ -84,12 +88,12 @@ export class MailService {
     return rawId.replace(/[<>]/g, '');
   }
 
-  private saveStreamMessageToFile(info: StreamMessageInfo) {
+  private saveStreamMessageToFile(info: IStreamMessageInfo) {
     info.message.pipe(fs.createWriteStream(this.initMessageFilePath(info)));
   }
 
   private saveJsonMessageToFile(info: SentMessageInfo) {
-    fs.writeFile(this.initMessageFilePath(info), info.message, 'utf8', () => {});
+    fs.writeFile(this.initMessageFilePath(info), info.message, 'utf8', noop);
   }
 
   private initMessageFilePath(info: SentMessageInfo) {

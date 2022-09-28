@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { computed } from "vue";
 
 interface Props {
-  errors: string[],
+  errors: string[];
 }
 
 const props = defineProps<Props>();
@@ -10,7 +10,6 @@ const props = defineProps<Props>();
 const show = computed(() => {
   return props.errors.length;
 });
-
 </script>
 
 <template>

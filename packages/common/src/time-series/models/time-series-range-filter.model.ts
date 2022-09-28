@@ -1,9 +1,6 @@
-import { IsArray, IsOptional, IsString, Matches } from "class-validator";
-import { Transform, Type } from "class-transformer";
-import {
-  getCalendarPlanArray,
-  DayIterator, formatDate, REGEX_DATE_FORMAT, toTimingId
-} from '@/calendar';
+import { IsArray, IsOptional, IsString, Matches } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { getCalendarPlanArray, DayIterator, formatDate, REGEX_DATE_FORMAT, toTimingId } from '@/calendar';
 
 import type { CalendarDate } from '@/calendar';
 
@@ -11,7 +8,6 @@ import type { CalendarDate } from '@/calendar';
  * Note: In an earlier implementation TimeSeriesRangeFilter was used instead of DataPointIntervalFilter
  */
 export class TimeSeriesRangeFilter {
-
   @IsOptional()
   @IsString()
   @Matches(REGEX_DATE_FORMAT)
@@ -25,13 +21,13 @@ export class TimeSeriesRangeFilter {
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  @Transform(({value}) => value.split(','))
+  @Transform(({ value }) => value.split(','))
   includes?: string[];
 
   @IsOptional()
   @IsArray()
   @Type(() => String)
-  @Transform(({value}) => value.split(','))
+  @Transform(({ value }) => value.split(','))
   excludes?: string[];
 
   constructor(obj: Partial<TimeSeriesRangeFilter>) {
@@ -41,7 +37,7 @@ export class TimeSeriesRangeFilter {
   static createForRange(from: CalendarDate, to: CalendarDate) {
     return new TimeSeriesRangeFilter({
       from: from,
-      to: to
+      to: to,
     });
   }
 
@@ -78,8 +74,10 @@ export function getTimingIdsByRange(filter: TimeSeriesRangeFilter): string[] {
     for (const interval of getCalendarPlanArray()) {
       const timingId = toTimingId(date, interval);
 
-      if ((!filter.includes || filter.includes.includes(timingId))
-        && (!filter.excludes || !filter.excludes.includes(timingId))) {
+      if (
+        (!filter.includes || filter.includes.includes(timingId)) &&
+        (!filter.excludes || !filter.excludes.includes(timingId))
+      ) {
         timingSet.add(timingId);
       }
     }

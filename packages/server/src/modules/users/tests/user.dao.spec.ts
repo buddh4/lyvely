@@ -5,7 +5,7 @@ import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { UserDao } from '../daos';
 import { User, UserDocument, UserSchema } from '../schemas';
 import { Model } from 'mongoose';
-import { ProfileType, UserStatus } from "@lyvely/common";
+import { ProfileType, UserStatus } from '@lyvely/common';
 
 describe('UserDao', () => {
   let testingModule: TestingModule;
@@ -19,9 +19,7 @@ describe('UserDao', () => {
       imports: [
         TestDataUtils.getMongooseTestModule(TEST_KEY),
         TestDataUtils.getEventEmitterModule(),
-        MongooseModule.forFeature([
-          { name: User.name, schema: UserSchema },
-        ]),
+        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
       ],
       providers: [UserDao],
     }).compile();
@@ -39,13 +37,15 @@ describe('UserDao', () => {
   });
 
   async function createTestUser() {
-    return await userDao.save(new User({
-      username: 'Test',
-      email: 'test@test.de',
-      status: UserStatus.Active,
-      locale: 'de',
-      password: 'testPasswort'
-    }));
+    return await userDao.save(
+      new User({
+        username: 'Test',
+        email: 'test@test.de',
+        status: UserStatus.Active,
+        locale: 'de',
+        password: 'testPasswort',
+      }),
+    );
   }
 
   describe('insert()', () => {
@@ -69,12 +69,14 @@ describe('UserDao', () => {
 
     it('can not create user without password', async () => {
       try {
-        await userDao.save(new User({
-          username: 'Test',
-          email: 'test@test.de',
-          status: UserStatus.Active,
-          locale: 'de'
-        }));
+        await userDao.save(
+          new User({
+            username: 'Test',
+            email: 'test@test.de',
+            status: UserStatus.Active,
+            locale: 'de',
+          }),
+        );
         expect(true).toEqual(false);
       } catch (e) {
         expect(e.errors).toBeDefined();
@@ -86,7 +88,7 @@ describe('UserDao', () => {
 
   describe('incrementProfileCount()', () => {
     it('increment user profile count', async () => {
-      const user = await createTestUser()
+      const user = await createTestUser();
       await userDao.incrementProfileCount(user, ProfileType.User);
       expect(user.profilesCount.user).toEqual(1);
       expect(user.profilesCount.group).toEqual(0);
@@ -99,7 +101,7 @@ describe('UserDao', () => {
     });
 
     it('increment group profile count', async () => {
-      const user = await createTestUser()
+      const user = await createTestUser();
       await userDao.incrementProfileCount(user, ProfileType.Group);
       expect(user.profilesCount.user).toEqual(0);
       expect(user.profilesCount.group).toEqual(1);
@@ -112,7 +114,7 @@ describe('UserDao', () => {
     });
 
     it('increment organization profile count', async () => {
-      const user = await createTestUser()
+      const user = await createTestUser();
       await userDao.incrementProfileCount(user, ProfileType.Organization);
       expect(user.profilesCount.user).toEqual(0);
       expect(user.profilesCount.group).toEqual(0);
@@ -125,7 +127,7 @@ describe('UserDao', () => {
     });
 
     it('assure count >= 0', async () => {
-      const user = await createTestUser()
+      const user = await createTestUser();
       await userDao.incrementProfileCount(user, ProfileType.User, -2);
       expect(user.profilesCount.user).toEqual(0);
       expect(user.profilesCount.group).toEqual(0);

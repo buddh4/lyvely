@@ -1,10 +1,10 @@
 import { Prop } from '@nestjs/mongoose';
-import { DataPoint } from "./data-point.schema";
-import { assureStringId } from "@server/modules/core";
-import { NumberDataPointModel } from "@lyvely/common";
+import { DataPoint } from './data-point.schema';
+import { assureStringId } from '@/modules/core';
+import { NumberDataPointModel } from '@lyvely/common';
 
 export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
-  @Prop( { type: Number, required: true, default: 0 })
+  @Prop({ type: Number, required: true, default: 0 })
   value: number;
 
   afterInit() {
@@ -20,10 +20,7 @@ export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
       interval: this.interval,
       date: this.date,
       tid: this.tid,
-      value: this.value
+      value: this.value,
     });
   }
 }
-
-
-

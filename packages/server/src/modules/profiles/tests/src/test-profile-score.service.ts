@@ -5,7 +5,6 @@ import { TestProfileScoreDao } from './test-profile-score-dao.service';
 
 @Injectable()
 export class TestProfileScoreService extends ProfileScoreService<TestProfileScore> {
-
   @Inject()
   profileScoreDao: TestProfileScoreDao;
 }

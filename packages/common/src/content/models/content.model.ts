@@ -1,7 +1,7 @@
-import { DocumentModel } from "@/models";
-import { Expose, Transform } from "class-transformer";
-import { IsNotEmpty, IsString, Length, IsArray, IsNumber, IsBoolean, IsEnum } from "class-validator";
-import { ContentVisibilityLevel, IContent } from "../interfaces";
+import { DocumentModel } from '@/models';
+import { Expose, Transform } from 'class-transformer';
+import { IsNotEmpty, IsString, Length, IsArray, IsNumber, IsBoolean, IsEnum } from 'class-validator';
+import { ContentVisibilityLevel, IContent } from '../interfaces';
 
 @Expose()
 export class ContentModel<T extends IContent = IContent> extends DocumentModel<T> implements IContent {
@@ -17,7 +17,7 @@ export class ContentModel<T extends IContent = IContent> extends DocumentModel<T
   text: string;
 
   @IsArray()
-  @Transform(({ obj }) => obj.tagIds?.map(id => id.toString()) || [])
+  @Transform(({ obj }) => obj.tagIds?.map((id) => id.toString()) || [])
   tagIds: TObjectId[];
 
   @IsNumber()

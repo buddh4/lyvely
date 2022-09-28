@@ -3,7 +3,7 @@ export class ServiceException extends Error {
 
   constructor(msg?: string) {
     super(msg);
-    if(!msg) {
+    if (!msg) {
       this.message = this.defaultMessage;
     }
   }

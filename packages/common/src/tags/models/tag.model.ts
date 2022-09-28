@@ -1,6 +1,6 @@
-import { DocumentModel } from "@/models";
+import { DocumentModel } from '@/models';
 import { Expose, Exclude } from 'class-transformer';
-import randomColor from "randomcolor";
+import randomColor from 'randomcolor';
 
 @Exclude()
 export class TagModel extends DocumentModel<TagModel> {
@@ -21,6 +21,6 @@ export class TagModel extends DocumentModel<TagModel> {
 
   constructor(obj?: Partial<TagModel>) {
     super(obj);
-    this.color = this.color || randomColor({ luminosity: 'dark' })
+    this.color = this.color || randomColor({ luminosity: 'dark' });
   }
 }

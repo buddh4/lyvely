@@ -1,11 +1,4 @@
-import {
-  ClassSerializerInterceptor,
-  Controller,
-  Get,
-  Inject,
-  Request,
-  UseInterceptors,
-} from '@nestjs/common';
+import { ClassSerializerInterceptor, Controller, Get, Inject, Request, UseInterceptors } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
 import { ScoreStatistics } from '@lyvely/common';
 

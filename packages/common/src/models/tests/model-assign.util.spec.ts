@@ -1,5 +1,5 @@
-import { expect } from "@jest/globals";
-import { assignRawDataTo } from "../util";
+import { expect } from '@jest/globals';
+import { assignRawDataTo } from '../util';
 
 class TestClass {
   constructor(public field: string, public sub?: TestClass) {}
@@ -34,7 +34,7 @@ describe('model assign util', () => {
       const model = {} as any;
       assignRawDataTo(model, { test: new TestClass('testValue', new TestClass('testValue2')) });
       expect(model.test).toBeDefined();
-      expect(model.test.sub).toBeDefined()
+      expect(model.test.sub).toBeDefined();
       expect(model.test.sub.field).toEqual('testValue2');
       expect(model.test.sub instanceof TestClass).toEqual(true);
     });
@@ -47,8 +47,8 @@ describe('model assign util', () => {
     });
 
     it('assign array value', async () => {
-      const obj = { arr: ['v1', 'v2']};
-      const result = <any> assignRawDataTo({}, { arr: ['v1', 'v2']});
+      const obj = { arr: ['v1', 'v2'] };
+      const result = <any>assignRawDataTo({}, { arr: ['v1', 'v2'] });
       expect(result.arr).toBeDefined();
       expect(Array.isArray(result.arr)).toEqual(true);
       expect(result.arr.length).toEqual(2);
@@ -58,8 +58,8 @@ describe('model assign util', () => {
     });
 
     it('assign array value', async () => {
-      const obj = { arr: [new TestClass('testValue')]};
-      const result = <any> assignRawDataTo({}, obj);
+      const obj = { arr: [new TestClass('testValue')] };
+      const result = <any>assignRawDataTo({}, obj);
       expect(result?.arr[0].field).toEqual('testValue');
       expect(result.arr[0] instanceof TestClass).toEqual(true);
       expect(result.arr[0] === obj.arr[0]).toEqual(true);

@@ -1,17 +1,16 @@
-import { defineStore } from 'pinia';
-import { toTimingId, CalendarPlan, CalendarIntervalEnum, isToday as isTodayUtil, isInFuture as isInFutureUtil } from '@lyvely/common';
-import { ref, computed, watch} from 'vue';
-import { useActivityStore } from "@server/modules/activity/store/activityStore";
+import { defineStore } from "pinia";
+import {
+  toTimingId,
+  CalendarPlan,
+  CalendarIntervalEnum,
+  isToday as isTodayUtil,
+  isInFuture as isInFutureUtil,
+} from "@lyvely/common";
+import { ref, computed } from "vue";
 
-export const useCalendarPlanStore = defineStore('timing', () => {
-
+export const useCalendarPlanStore = defineStore("timing", () => {
   const date = ref(new Date());
   const dragActive = ref(false);
-
-  watch(date, () => {
-    console.log('change',date.value);
-    useActivityStore().loadActivities();
-  })
 
   function getTimingId(interval: CalendarIntervalEnum) {
     return toTimingId(date.value, interval);
@@ -19,31 +18,31 @@ export const useCalendarPlanStore = defineStore('timing', () => {
 
   function switchToToday() {
     date.value = new Date();
-    console.log('switchToToday', date.value);
+    console.log("switchToToday", date.value);
   }
 
   function _setCurrentDate(d: Date) {
-    console.log('_setCurrentDate', date.value);
+    console.log("_setCurrentDate", date.value);
     date.value = d;
   }
 
-  function decrementTiming(plan: CalendarIntervalEnum|CalendarPlan) {
+  function decrementTiming(plan: CalendarIntervalEnum | CalendarPlan) {
     _setCurrentDate(getPreviousDate(plan));
   }
 
-  function incrementTiming(plan: CalendarIntervalEnum|CalendarPlan) {
+  function incrementTiming(plan: CalendarIntervalEnum | CalendarPlan) {
     _setCurrentDate(getNextDate(plan));
   }
 
-  function getCalendarPlan(plan: CalendarIntervalEnum|CalendarPlan) {
+  function getCalendarPlan(plan: CalendarIntervalEnum | CalendarPlan) {
     return plan instanceof CalendarPlan ? plan : CalendarPlan.getInstance(plan);
   }
 
-  function getNextDate(plan: CalendarIntervalEnum|CalendarPlan) {
+  function getNextDate(plan: CalendarIntervalEnum | CalendarPlan) {
     return getCalendarPlan(plan).increment(date.value);
   }
 
-  function getPreviousDate(plan: CalendarIntervalEnum|CalendarPlan) {
+  function getPreviousDate(plan: CalendarIntervalEnum | CalendarPlan) {
     return getCalendarPlan(plan).decrement(date.value);
   }
 
@@ -60,7 +59,6 @@ export const useCalendarPlanStore = defineStore('timing', () => {
     getNextDate,
     getPreviousDate,
     isInFuture,
-    isToday
-
-  }
+    isToday,
+  };
 });

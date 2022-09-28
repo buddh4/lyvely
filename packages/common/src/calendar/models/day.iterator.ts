@@ -2,7 +2,6 @@ import { CalendarDate, getFullDayDate } from '../interfaces';
 import { addDays } from '../utils';
 
 export class DayIterator implements Iterable<Date> {
-
   private readonly currentDate: Date;
   private readonly toDate: Date;
 
@@ -18,13 +17,13 @@ export class DayIterator implements Iterable<Date> {
     return {
       next(): IteratorResult<Date> {
         if (currentDate <= toDate) {
-          const result = { value: currentDate , done: false };
+          const result = { value: currentDate, done: false };
           currentDate = addDays(currentDate, 1);
           return result;
         }
 
         return { value: null, done: true };
-      }
-    }
+      },
+    };
   }
 }

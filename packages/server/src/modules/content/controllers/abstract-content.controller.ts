@@ -1,9 +1,9 @@
 import { Post, Request } from '@nestjs/common';
 import { Content } from '../schemas';
 import { AbstractContentService } from '../services';
-import { ProfileContentRequest } from "../types";
-import { Policies } from "../../policies/decorators/policies.decorator";
-import { ContentWritePolicy } from "../policies";
+import { ProfileContentRequest } from '../types';
+import { Policies } from '../../policies/decorators/policies.decorator';
+import { ContentWritePolicy } from '../policies';
 
 export abstract class AbstractContentController<T extends Content> {
   constructor(protected contentService: AbstractContentService<T>) {}
@@ -21,5 +21,4 @@ export abstract class AbstractContentController<T extends Content> {
     const { profileRelations, content } = req;
     return { success: await this.contentService.unarchive(profileRelations, content) };
   }
-
 }

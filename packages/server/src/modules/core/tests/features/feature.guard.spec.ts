@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createTestExecutionContext } from '@server/modules/test/utils/test-execution-context.util';
+import { createTestExecutionContext } from '@/modules/test/utils/test-execution-context.util';
 import { FeatureGuard } from '../../features/feature.guard';
 import { createContentTestingModule } from '../../../test/utils/test.utils';
 import { ExecutionContext } from '@nestjs/common';
@@ -9,7 +9,6 @@ import { FeatureRegistry } from '../../features/feature.registry';
 
 @Feature('test')
 class TestController {
-
   @Feature('test.sub')
   testHandler() {
     return null;
@@ -34,28 +33,28 @@ describe('ProfileGuard', () => {
     featureGuard = testingModule.get<FeatureGuard>(FeatureGuard);
     featureRegistry = testingModule.get<FeatureRegistry>(FeatureRegistry);
 
-    featureRegistry.registerFeatures( [
+    featureRegistry.registerFeatures([
       {
         id: 'test',
         name: 'Test',
         moduleId: 'test',
         enabled: true,
-        description: 'Some test feature'
+        description: 'Some test feature',
       },
       {
         id: 'test.sub',
         name: 'Test sub feature',
         moduleId: 'test',
         enabled: false,
-        description: 'Some test sub feature'
+        description: 'Some test sub feature',
       },
       {
         id: 'test.sub.specific',
         name: 'Test specific sub feature',
         moduleId: 'test',
         enabled: true,
-        description: 'Specific test sub feature'
-      }
+        description: 'Specific test sub feature',
+      },
     ]);
   });
 
@@ -74,7 +73,7 @@ describe('ProfileGuard', () => {
     it('can not access disabled feature', async () => {
       context = createTestExecutionContext({
         class: TestController,
-        handler:(new TestController()).testHandler
+        handler: new TestController().testHandler,
       });
       const result = await featureGuard.canActivate(context);
       expect(result).toEqual(false);
@@ -83,7 +82,7 @@ describe('ProfileGuard', () => {
     it('can not access sub feature if main feature is disabled', async () => {
       context = createTestExecutionContext({
         class: TestController,
-        handler:(new TestController()).specificHandler
+        handler: new TestController().specificHandler,
       });
 
       const result = await featureGuard.canActivate(context);
@@ -93,7 +92,7 @@ describe('ProfileGuard', () => {
     it('can access manually enabled feature', async () => {
       context = createTestExecutionContext({
         class: TestController,
-        handler:(new TestController()).testHandler
+        handler: new TestController().testHandler,
       });
 
       featureRegistry.getFeature('test.sub').enabled = true;

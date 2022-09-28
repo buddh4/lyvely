@@ -1,14 +1,12 @@
 import { Exclude, Type, Expose } from 'class-transformer';
 import { HabitModel } from '../habit';
 import { TaskModel } from '../task';
-import { ActivityType } from "../models";
-import { BaseModel } from "@/models";
-import { NumberDataPointModel } from "@/time-series";
-import { ActivityModel } from "../models";
+import { ActivityType, ActivityModel } from '../models';
+import { BaseModel } from '@/models';
+import { NumberDataPointModel } from '@/time-series';
 
 @Exclude()
 export class ActivityRangeResponse extends BaseModel<ActivityRangeResponse> {
-
   @Expose()
   @Type(() => HabitModel)
   habits: HabitModel[] = [];

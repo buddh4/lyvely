@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import Icon from "@/modules/ui/components/icon/Icon.vue";
-import { computed } from 'vue';
-import { useAuthStore } from '@/modules/user/store/auth.store';
+import { computed } from "vue";
+import { useAuthStore } from "@/modules/users/store/auth.store";
 
 const authStore = useAuthStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
@@ -11,19 +10,20 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
   <footer
     v-if="isAuthenticated"
     id="page-footer"
-    class="footer mt-auto py-2 bg-main md:hidden">
+    class="footer mt-auto py-2 bg-main md:hidden"
+  >
     <div class="">
       <div class="navbar-nav flex flex-row justify-content-center">
         <router-link class="nav-link" to="/activities">
-          <Icon name="activity" />
+          <ly-icon name="activity" />
         </router-link>
 
         <router-link class="nav-link" to="/journal">
-          <Icon name="journal" />
+          <ly-icon name="journal" />
         </router-link>
 
         <router-link class="nav-link" to="/statistics">
-          <Icon name="statistics" />
+          <ly-icon name="statistics" />
         </router-link>
       </div>
     </div>

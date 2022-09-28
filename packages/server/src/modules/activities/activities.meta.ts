@@ -1,3 +1,3 @@
 export default {
-    id: 'activities'
-}
+  id: 'activities',
+};

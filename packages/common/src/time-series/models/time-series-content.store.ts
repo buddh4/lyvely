@@ -1,14 +1,17 @@
-import { CalendarIntervalEnum } from "@/calendar";
-import { Filter } from "@/models";
-import { DataPointModel } from "./data-point.model";
-import { TimeSeriesContentModel } from "./time-series-content.model";
+import { CalendarIntervalEnum } from '@/calendar';
+import { Filter } from '@/models';
+import { DataPointModel } from './data-point.model';
+import { TimeSeriesContentModel } from './time-series-content.model';
 
 type TimeSeriesContentIdentity = TimeSeriesContentModel | string;
 
 /**
  * This class is used to stores time series content and related data points.
  */
-export abstract class TimeSeriesDataPointStore<Model extends TimeSeriesContentModel, TDataPointModel extends DataPointModel> {
+export abstract class TimeSeriesDataPointStore<
+  Model extends TimeSeriesContentModel,
+  TDataPointModel extends DataPointModel,
+> {
   models: Map<string, Model> = new Map();
   logs: Map<string, Map<string, TDataPointModel>> = new Map();
 
@@ -16,7 +19,7 @@ export abstract class TimeSeriesDataPointStore<Model extends TimeSeriesContentMo
   abstract createDataPoint(model: Model, timingId: string): TDataPointModel;
 
   protected getId(model: TimeSeriesContentIdentity) {
-    if(typeof model === "string") {
+    if (typeof model === 'string') {
       return model;
     }
 
@@ -30,7 +33,7 @@ export abstract class TimeSeriesDataPointStore<Model extends TimeSeriesContentMo
   addDataPoint(log: TDataPointModel) {
     const modelId = log.cid;
 
-    if(!modelId) {
+    if (!modelId) {
       console.error('tried to add log without content id', log);
       return;
     }
@@ -72,20 +75,20 @@ export abstract class TimeSeriesDataPointStore<Model extends TimeSeriesContentMo
   }
 
   getModelsByIntervalFilter(interval: CalendarIntervalEnum, filter?: Filter<Model, any>) {
-    return this.filterModels(entry => {
+    return this.filterModels((entry) => {
       return entry.dataPointConfig.interval === interval && (!filter || filter.check(entry));
-    })
+    });
   }
 
   getDataPoint(identity: TimeSeriesContentIdentity, timingId: string, create = false): TDataPointModel {
     const modelId = this.getId(identity);
     if (!this.hasDataPoint(modelId, timingId)) {
-      if(!create) {
+      if (!create) {
         return;
       }
 
       const model = this.getModel(modelId);
-      if(!model) {
+      if (!model) {
         return;
       }
 

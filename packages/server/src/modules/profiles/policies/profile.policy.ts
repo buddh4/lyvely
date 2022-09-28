@@ -1,4 +1,4 @@
-import { ProfilePolicyContext } from "./profile-policy.context";
-import { Policy } from '../../policies/interfaces/policy.interface';
+import { ProfilePolicyContext } from './profile-policy.context';
+import { IPolicy } from '../../policies/interfaces/policy.interface';
 
-export type ProfilePolicy = Policy<ProfilePolicyContext>
+export type ProfilePolicy = IPolicy<ProfilePolicyContext>;

@@ -1,6 +1,4 @@
-<script lang="ts" setup>
-
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <ul class="scrollbar-thin divide-y divide-divide max-h-60 overflow-auto">
@@ -8,6 +6,4 @@
   </ul>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

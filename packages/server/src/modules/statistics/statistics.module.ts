@@ -5,11 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { HabitDataPoint, HabitDataPointSchema } from '../activities/schemas';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: HabitDataPoint.name, schema: HabitDataPointSchema },
-    ]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: HabitDataPoint.name, schema: HabitDataPointSchema }])],
   controllers: [StatisticsController],
   providers: [StatisticsService],
 })

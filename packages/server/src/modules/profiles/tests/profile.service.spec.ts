@@ -56,7 +56,7 @@ describe('ProfileService', () => {
   describe('update score', () => {
     it('increment positive', async () => {
       const user = await testData.createUser();
-      const  { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
+      const { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
       const newScore = await profileService.incrementScore(profile, 5);
       expect(newScore).toEqual(5);
       expect(profile.score).toEqual(5);
@@ -73,7 +73,7 @@ describe('ProfileService', () => {
 
     it('assert min 0 score', async () => {
       const user = await testData.createUser();
-      const  { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
+      const { profile } = await profileService.createUserProfile(user, { name: 'superProfile' });
       await profileService.incrementScore(profile, 5);
       const updated = await profileService.incrementScore(profile, -10);
       expect(updated).toEqual(0);

@@ -4,10 +4,10 @@ import { Task, TaskDocument } from '../schemas';
 import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import module from "../activities.meta";
-import { User } from "../../users";
-import { UserAssignmentStrategy } from "@lyvely/common";
-import { Profile } from "../../profiles";
+import module from '../activities.meta';
+import { User } from '../../users';
+import { UserAssignmentStrategy } from '@lyvely/common';
+import { Profile } from '../../profiles';
 
 @Injectable()
 export class TasksDao extends AbstractContentDao<Task> {
@@ -20,10 +20,15 @@ export class TasksDao extends AbstractContentDao<Task> {
     return maxSortOrderEntry.length ? maxSortOrderEntry[0].sortOrder + 1 : 0;
   }
 
-  async setDone(profile: Profile, id: EntityIdentity<Task>, user: EntityIdentity<User>, timingId: string): Promise<boolean> {
+  async setDone(
+    profile: Profile,
+    id: EntityIdentity<Task>,
+    user: EntityIdentity<User>,
+    timingId: string,
+  ): Promise<boolean> {
     const task = id instanceof Task ? id : await this.findById(id);
 
-    if(!task) {
+    if (!task) {
       return false;
     }
 
@@ -31,17 +36,23 @@ export class TasksDao extends AbstractContentDao<Task> {
     const isDoneByUser = task.isDoneByUser(user);
 
     let result;
-    if(task.userStrategy === UserAssignmentStrategy.Shared) {
+    if (task.userStrategy === UserAssignmentStrategy.Shared) {
       result = await this.updateOneSetById(id, { doneBy: [doneBy] });
     } else {
       result = !isDoneByUser
         ? await this.updateOneByProfileAndId(profile, id, { $push: { doneBy: doneBy } })
-        : await this.updateOneByProfileAndFilter(profile, id, { $set: { "doneBy.$[elem].tid": doneBy.tid, "doneBy.$[elem].date": doneBy.date } }, {}, {
-          arrayFilters: [{ 'elem.uid': assureObjectId(user) }]
-        } );
+        : await this.updateOneByProfileAndFilter(
+            profile,
+            id,
+            { $set: { 'doneBy.$[elem].tid': doneBy.tid, 'doneBy.$[elem].date': doneBy.date } },
+            {},
+            {
+              arrayFilters: [{ 'elem.uid': assureObjectId(user) }],
+            },
+          );
     }
 
-    if(result) {
+    if (result) {
       task.setDoneBy(user, doneBy.tid, doneBy.date);
     }
 
@@ -51,15 +62,16 @@ export class TasksDao extends AbstractContentDao<Task> {
   async setUndone(profile: Profile, id: EntityIdentity<Task>, user: EntityIdentity<User>): Promise<boolean> {
     const task = id instanceof Task ? id : await this.findById(id);
 
-    if(!task) {
+    if (!task) {
       return false;
     }
 
-    const result = task.userStrategy === UserAssignmentStrategy.Shared
-      ? await this.updateOneByProfileAndIdSet(profile, id, { doneBy: [] })
-      : await this.updateOneByProfileAndId(profile, id, { $pull: { doneBy: { uid: assureObjectId(user) } } })
+    const result =
+      task.userStrategy === UserAssignmentStrategy.Shared
+        ? await this.updateOneByProfileAndIdSet(profile, id, { doneBy: [] })
+        : await this.updateOneByProfileAndId(profile, id, { $pull: { doneBy: { uid: assureObjectId(user) } } });
 
-    if(result) {
+    if (result) {
       task.setUndoneBy(user);
     }
 

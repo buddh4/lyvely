@@ -1,1 +1,1 @@
-export * from './profile-permissions.interface'
+export * from './profile-permissions.interface';

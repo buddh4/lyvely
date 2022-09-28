@@ -6,8 +6,8 @@ import { expect } from '@jest/globals';
 import { CreatedAsType } from '../../../content';
 import mongoose from 'mongoose';
 import { CheckboxNumberDataPointConfig } from '../../../time-series';
-import { Tag } from "../../../tags";
-import { getObjectId } from "@server/modules/test";
+import { Tag } from '../../../tags';
+import { getObjectId } from '@/modules/test';
 
 describe('Content Model', () => {
   let user: User;
@@ -16,11 +16,11 @@ describe('Content Model', () => {
   beforeEach(async () => {
     user = new User({ _id: new mongoose.Types.ObjectId() });
     profile = new Profile(user, { _id: new mongoose.Types.ObjectId() });
-    profile.tags = [new Tag({ _id: getObjectId('Test1'), name: 'Test1' })]
+    profile.tags = [new Tag({ _id: getObjectId('Test1'), name: 'Test1' })];
   });
 
   describe('Habit', () => {
-    it('create', async() => {
+    it('create', async () => {
       const habit = Habit.create(profile, user, {
         title: 'Test',
         text: 'Some Test Habit',
@@ -29,7 +29,7 @@ describe('Content Model', () => {
         min: 2,
         optimal: 2,
         interval: CalendarIntervalEnum.Monthly,
-        tagNames: ['Test1']
+        tagNames: ['Test1'],
       });
 
       expect(habit.pid).toEqual(profile._id);
@@ -46,9 +46,9 @@ describe('Content Model', () => {
       expect(habit.dataPointConfig.optimal).toEqual(2);
       expect(habit.dataPointConfig.getSettings()).toBeDefined();
       expect(habit.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
-      expect(habit.text).toEqual( 'Some Test Habit');
-      expect(habit.tagIds.length).toEqual( 1);
-      expect(habit.tagIds[0]).toEqual( profile.tags[0]._id);
+      expect(habit.text).toEqual('Some Test Habit');
+      expect(habit.tagIds.length).toEqual(1);
+      expect(habit.tagIds[0]).toEqual(profile.tags[0]._id);
     });
   });
 });

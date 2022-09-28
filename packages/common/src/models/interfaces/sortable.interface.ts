@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 
 export interface Sortable {
-    sortOrder?: number;
+  sortOrder?: number;
 }
 
 @Exclude()
@@ -13,7 +13,7 @@ export class SortResult {
   sortOrder: number;
 
   constructor(obj?: Partial<SortResult>) {
-    if(obj) {
+    if (obj) {
       this.id = obj.id;
       this.sortOrder = obj.sortOrder;
     }
@@ -21,17 +21,17 @@ export class SortResult {
 }
 
 export function sortBySortOrder(a: Sortable, b: Sortable) {
-    if(a.sortOrder === b.sortOrder) {
-        return 0;
-    }
+  if (a.sortOrder === b.sortOrder) {
+    return 0;
+  }
 
-    if(typeof a.sortOrder === 'undefined') {
-        return 1;
-    }
+  if (typeof a.sortOrder === 'undefined') {
+    return 1;
+  }
 
-    if(typeof b.sortOrder === 'undefined') {
-        return -1;
-    }
+  if (typeof b.sortOrder === 'undefined') {
+    return -1;
+  }
 
-    return a.sortOrder - b.sortOrder;
+  return a.sortOrder - b.sortOrder;
 }

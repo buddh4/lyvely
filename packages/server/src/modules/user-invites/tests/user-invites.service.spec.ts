@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createContentTestingModule } from "../../test/utils/test.utils";
-import { TestDataUtils } from "../../test/utils/test-data.utils";
+import { createContentTestingModule } from '../../test/utils/test.utils';
+import { TestDataUtils } from '../../test/utils/test-data.utils';
 
 describe('RegisterService', () => {
   let testingModule: TestingModule;
@@ -18,13 +18,11 @@ describe('RegisterService', () => {
 
   afterEach(async () => {
     return testData.reset(TEST_KEY);
-  })
+  });
 
   it('should be defined', () => {
     expect(registerService).toBeDefined();
   });
 
-  describe('register', () => {
-
-  });
+  describe('register', () => {});
 });

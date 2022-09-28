@@ -1,10 +1,10 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from "@server/modules/test";
+import { TestDataUtils } from '@/modules/test';
 import { MembershipsDao } from '../daos';
 import { ProfileRelationUserInfo } from '../schemas';
 import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
-import { createBasicTestingModule } from "@server/modules/test";
+import { createBasicTestingModule } from '@/modules/test';
 
 describe('MembershipDao', () => {
   let testingModule: TestingModule;
@@ -14,7 +14,7 @@ describe('MembershipDao', () => {
   const TEST_KEY = 'membership_dao';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY,[MembershipsDao]).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY, [MembershipsDao]).compile();
     membershipDao = testingModule.get<MembershipsDao>(MembershipsDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
@@ -87,12 +87,7 @@ describe('MembershipDao', () => {
       const owner = await testData.createUser('user1');
       const follower = await testData.createUser('user2');
       const profile = await testData.createProfile(owner, 'myTeam');
-      const savedModel = await testData.addProfileRelation(
-        profile,
-        follower,
-        'Followership',
-        'Follower'
-      );
+      const savedModel = await testData.addProfileRelation(profile, follower, 'Followership', 'Follower');
 
       // Just make sure the model actually was saved
       expect(savedModel).toBeDefined();
@@ -107,18 +102,15 @@ describe('MembershipDao', () => {
   describe('findByUserAndProfile()', () => {
     it('find owner relation', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const membership = await membershipDao.findByUserAndProfile(
-        user,
-        profile,
-      );
+      const membership = await membershipDao.findByUserAndProfile(user, profile);
       expect(membership).toBeDefined();
       expect(membership.uid).toEqual(user._id);
       expect(membership.pid).toEqual(profile._id);
     });
 
     it('do not find non related membership', async () => {
-      const { user: user1, } = await testData.createUserAndProfile('user1');
-      const { profile: profile2, } = await testData.createUserAndProfile('user2');
+      const { user: user1 } = await testData.createUserAndProfile('user1');
+      const { profile: profile2 } = await testData.createUserAndProfile('user2');
       const membership = await membershipDao.findByUserAndProfile(user1, profile2);
       expect(membership).toBeNull();
     });

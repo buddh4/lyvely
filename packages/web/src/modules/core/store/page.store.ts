@@ -1,37 +1,40 @@
-import { defineStore } from 'pinia';
-import { useProfileStore } from "@server/modules/profile/stores/profile.store";
-import { useDark, useToggle } from '@vueuse/core'
-import { ref } from 'vue';
+import { defineStore } from "pinia";
+import { useProfileStore } from "@/modules/profiles/stores/profile.store";
+import { useDark, useToggle } from "@vueuse/core";
+import { ref } from "vue";
 
-export const usePageStore = defineStore('page', () => {
-
+export const usePageStore = defineStore("page", () => {
   const showSidebar = ref(true);
   const isDark = useDark();
   const toggleDark = useToggle(isDark);
   const showAppLoader = ref(true);
 
-  function setTitle(title: Array<string>|string) {
+  function setTitle(title: Array<string> | string) {
     setPageTitle(title);
   }
 
   function accessibilityFocus(elem: string | HTMLElement) {
-    const element: HTMLElement|null = elem instanceof HTMLElement ? elem : document.querySelector(elem);
+    const element: HTMLElement | null =
+      elem instanceof HTMLElement ? elem : document.querySelector(elem);
 
-    if(!element) {
-      console.warn('Tried to focus non existing element');
+    if (!element) {
+      console.warn("Tried to focus non existing element");
     }
 
-    element?.classList.add('focus-hidden');
+    element?.classList.add("focus-hidden");
     element?.focus();
-    element?.addEventListener('blur', () => {
-      element?.classList.remove('focus-hidden');
-    }, { once: true });
+    element?.addEventListener(
+      "blur",
+      () => {
+        element?.classList.remove("focus-hidden");
+      },
+      { once: true }
+    );
   }
 
   function toggleSidebar() {
     showSidebar.value = !showSidebar.value;
   }
-
 
   return {
     isDark,
@@ -40,26 +43,26 @@ export const usePageStore = defineStore('page', () => {
     toggleDark,
     showAppLoader,
     setTitle,
-    accessibilityFocus
-  }
+    accessibilityFocus,
+  };
 });
 
-export function setPageTitle(title: Array<string>|string) {
+export function setPageTitle(title: Array<string> | string) {
   let profile;
   try {
     profile = useProfileStore().profile;
   } catch (err) {}
 
   title = Array.isArray(title) ? title : [title];
-  let pageTitle = title.join(' - ');
+  let pageTitle = title.join(" - ");
 
-  if(pageTitle.length) pageTitle += ' | ';
+  if (pageTitle.length) pageTitle += " | ";
 
-  if(profile) {
+  if (profile) {
     pageTitle += profile.name;
   }
 
-  if(pageTitle.length) pageTitle += ' | ';
+  if (pageTitle.length) pageTitle += " | ";
 
   pageTitle += import.meta.env.VITE_APP_BASEURL || window.location.hostname;
 
