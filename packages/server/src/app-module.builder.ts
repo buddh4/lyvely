@@ -1,6 +1,6 @@
 import { Type, DynamicModule, ForwardReference, Provider, Global } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule } from './modules/core/core.module';
+import { CoreModule } from '@/modules/core';
 import { AuthModule } from './modules/auth/auth.module';
 import { RegisterModule } from './modules/register/register.module';
 import { UsersModule } from './modules/users';
@@ -16,7 +16,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import configuration from './modules/core/config/configuration';
 import { ConfigurationPath } from './modules/core';
-import { setTransactionSupport } from './modules/core/db/transaction.util';
+import { setTransactionSupport } from '@/modules/core';
 import { MailsModule } from './modules/mails/mails.module';
 import {
   ConfigUserPermissionsService,
@@ -26,7 +26,7 @@ import {
 
 type Import = Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
-export interface AppModuleBuilderOptions {
+export interface IAppModuleBuilderOptions {
   useRecommended?: boolean;
   useFeatures?: boolean;
   configFiles?: Array<string>;
@@ -37,21 +37,21 @@ export interface AppModuleBuilderOptions {
 type ProviderOption<T = any> = { useClass: Type<T> } | { useValue: T } | Provider<T>;
 type ProviderToken = string | symbol;
 
-interface CoreLyvelyProviderOptions {
+interface ICoreLyvelyProviderOptions {
   [UserPermissionsServiceInjectionToken]?: ProviderOption<UserPermissionsServiceProvider>;
 }
 
-const defaultProviders: Required<CoreLyvelyProviderOptions> = {
+const defaultProviders: Required<ICoreLyvelyProviderOptions> = {
   [UserPermissionsServiceInjectionToken]: { useClass: ConfigUserPermissionsService },
 };
 
-export type LyvelyProviderOptions = CoreLyvelyProviderOptions & Record<ProviderToken, ProviderOption>;
+export type LyvelyProviderOptions = ICoreLyvelyProviderOptions & Record<ProviderToken, ProviderOption>;
 
 function getDefaultProvider<T>(token: ProviderToken): Provider<T> | undefined {
   return defaultProviders[token];
 }
 
-function getProvider<T>(options: AppModuleBuilderOptions, token: ProviderToken): Provider<T> | undefined {
+function getProvider<T>(options: IAppModuleBuilderOptions, token: ProviderToken): Provider<T> | undefined {
   options.providers = options.providers || {};
   const providerOption = options.providers[token] || getDefaultProvider(token);
   if (!providerOption) return undefined;
@@ -65,9 +65,9 @@ function getProviderFromOption<T>(token: ProviderToken, option: ProviderOption):
 export class AppModuleBuilder {
   private readonly imports: Array<Import> = [];
   private readonly providers: Array<Provider> = [];
-  private options: AppModuleBuilderOptions;
+  private options: IAppModuleBuilderOptions;
 
-  constructor(options: AppModuleBuilderOptions = {}) {
+  constructor(options: IAppModuleBuilderOptions = {}) {
     this.imports = [];
     this.options = options;
 

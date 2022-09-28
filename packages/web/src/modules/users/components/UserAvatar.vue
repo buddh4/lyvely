@@ -6,11 +6,11 @@ import { IUser } from "@lyvely/common";
 import { useAuthStore } from "@/modules/users/store/auth.store";
 import { getContrast } from "@/modules/ui/utils";
 
-interface Props {
+interface IProps {
   user?: Pick<IUser, "id" | "imageHash" | "username">;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const avatarUser = computed(() => props.user || useAuthStore().user);
 const url = computed(() =>

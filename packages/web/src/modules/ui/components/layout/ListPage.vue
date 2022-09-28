@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-interface Props {
+interface IProps {
   title: string;
   ariaLabel?: string;
   icon?: string;
 }
 
-defineProps<Props>();
+defineProps<IProps>();
 </script>
 
 <template>

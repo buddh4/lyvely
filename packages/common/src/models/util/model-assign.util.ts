@@ -3,7 +3,7 @@ import { initPropertyTypes } from './model-property-type.util';
 import { getPropertyTypeDefinition } from '../decorators';
 
 type WithTransformation = ((any, string) => undefined | any) | undefined;
-interface AssignOptions {
+interface IAssignOptions {
   maxDepth?: number;
   strict?: boolean;
   transform?: WithTransformation;
@@ -12,7 +12,7 @@ interface AssignOptions {
 export function assignRawDataToAndInitProps<T>(
   model: T,
   data?: { [key in keyof T]?: any } & any,
-  options: AssignOptions = {},
+  options: IAssignOptions = {},
 ) {
   assignRawDataTo(model, data, options);
   initPropertyTypes(model);

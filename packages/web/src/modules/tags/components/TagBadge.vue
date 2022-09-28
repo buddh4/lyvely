@@ -2,11 +2,11 @@
 import { TagModel } from "@lyvely/common";
 import LyBadge from "@/modules/ui/components/badge/BadgeText.vue";
 
-interface Props {
+interface IProps {
   tag: TagModel;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 </script>
 
 <template>

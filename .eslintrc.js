@@ -5,11 +5,30 @@ module.exports = {
     jest: true,
   },
   plugins: ['vue', 'prettier', '@typescript-eslint/eslint-plugin'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    "plugin:vue/vue3-recommended",
-    'plugin:prettier/recommended',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'plugin:vue/vue3-recommended', 'plugin:prettier/recommended'],
+  rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/naming-convention': [
+      'warn',
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+        custom: {
+          regex: '^I[A-Z]\\s*|[a-z](IF|Interface)$',
+          match: true,
+        },
+      },
+    ],
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/ban-types': 'off',
+    'object-curly-spacing': ['error', 'always'],
+    'import/named': 'off',
+    'import/no-unresolved': 'off',
+    'function-call-argument-newline': ['error', 'consistent'],
+  },
   ignorePatterns: ['.eslintrc.js', '*.d.ts'],
   overrides: [
     {
@@ -24,30 +43,7 @@ module.exports = {
           './packages/demo-server/tsconfig.json',
         ],
         sourceType: 'module',
-        extraFileExtensions: [ ".vue" ]
-      },
-      rules: {
-        "@typescript-eslint/naming-convention": [
-          "warn",
-          {
-            "selector": "interface",
-            "format": ["PascalCase"],
-            "custom": {
-              "regex": "^I[A-Z]\\s*|[a-z](IF|Interface)$",
-              "match": true
-            }
-          }
-        ],
-        "@typescript-eslint/no-non-null-assertion": "off",
-        '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
-        '@typescript-eslint/ban-types': 'off',
-        'object-curly-spacing': ["error", "always"],
-        'import/named': 'off',
-        'import/no-unresolved': 'off',
-        "function-call-argument-newline":  ['error', 'consistent']
+        extraFileExtensions: ['.vue'],
       },
     },
     {
@@ -57,15 +53,6 @@ module.exports = {
         project: 'tsconfig.spec.json',
         sourceType: 'module',
       },
-      rules: {
-        '@typescript-eslint/interface-name-prefix': 'off',
-        '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
-        '@typescript-eslint/ban-types': 'off',
-        '@typescript-eslint/no-empty-function': 'off',
-      },
-    }
+    },
   ],
 };

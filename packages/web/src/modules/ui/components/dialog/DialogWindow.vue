@@ -3,7 +3,7 @@ import { computed } from "vue";
 
 const emit = defineEmits(["update:modelValue"]);
 
-interface Props {
+interface IProps {
   icon?: string;
   iconColor?: string;
   iconClass?: string;
@@ -12,7 +12,7 @@ interface Props {
   message: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   icon: undefined,
   iconColor: undefined,
   iconClass: undefined,

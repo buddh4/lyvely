@@ -7,12 +7,12 @@ import { useAuthStore } from "@/modules/users/store/auth.store";
 import CreateProfileModal from "@/modules/profiles/components/modals/CreateProfileModal.vue";
 import InviteUsersModal from "@/modules/profiles/components/modals/InviteUsersModal.vue";
 
-interface Props {
+interface IProps {
   containerWidth?: "xs" | "sm" | "lg" | "xl" | "full";
   requireAuth?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   containerWidth: Size.LG,
   requireAuth: true,
 });

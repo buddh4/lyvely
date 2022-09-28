@@ -6,7 +6,7 @@ import {
 import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
 import { computed, SetupContext } from "vue";
 
-interface Props extends IBaseInputProps {
+interface IProps extends IBaseInputProps {
   steps: number;
   slider: boolean;
   min?: number;
@@ -22,7 +22,7 @@ export default {
     max: { type: Number, default: undefined },
   },
   emits: ["change", "update:modelValue"],
-  setup(props: Props, context: SetupContext) {
+  setup(props: IProps, context: SetupContext) {
     const baseInput = useFloatingInputSetup<number>(props, context);
 
     baseInput.inputValue = computed({

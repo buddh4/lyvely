@@ -12,7 +12,7 @@ const emit = defineEmits([
   "update:modelValue",
 ]);
 
-interface ModalProps {
+interface IModalProps {
   modelValue: boolean;
   footerVisibility?: string;
   title: string;
@@ -29,7 +29,7 @@ interface ModalProps {
   ariaLabel?: string;
 }
 
-const props = withDefaults(defineProps<ModalProps>(), {
+const props = withDefaults(defineProps<IModalProps>(), {
   footerVisibility: "d-none d-sm-flex",
   icon: "",
   backButton: true,

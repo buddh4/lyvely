@@ -3,7 +3,7 @@ import { Filter, FilterConstructorOptions } from '@/models';
 import { TagModel } from '@/tags';
 import { IContent } from '../interfaces';
 
-export interface ContentFilterOptions {
+export interface IContentFilterOptions {
   tagId?: string;
   archived?: boolean;
   query?: string;
@@ -15,7 +15,7 @@ type TagProvider = () => TagModel[];
 
 export class ContentFilter<
   TModel extends IContent<string> = IContent<string>,
-  TOptions extends ContentFilterOptions = ContentFilterOptions,
+  TOptions extends IContentFilterOptions = IContentFilterOptions,
 > extends Filter<TModel, TOptions> {
   tagProvider?: () => TagModel[];
 

@@ -99,15 +99,15 @@ const radioValue2 = ref("2");
       <p>
         <ly-button class="primary">Primary</ly-button>
         {{ " " }}
-       <ly-button class="secondary">Secondary</ly-button>
+        <ly-button class="secondary">Secondary</ly-button>
         {{ " " }}
-       <ly-button class="info">Info</ly-button>
+        <ly-button class="info">Info</ly-button>
         {{ " " }}
-       <ly-button class="success">Success</ly-button>
+        <ly-button class="success">Success</ly-button>
         {{ " " }}
-       <ly-button class="warning">Warning</ly-button>
+        <ly-button class="warning">Warning</ly-button>
         {{ " " }}
-       <ly-button class="danger">Danger</ly-button>
+        <ly-button class="danger">Danger</ly-button>
         {{ " " }}
       </p>
 
@@ -194,7 +194,10 @@ const radioValue2 = ref("2");
           :disabled="true"
           :checked="false"
         />
-        <ly-input-checkbox css-class="success" label="Success colored checkbox" />
+        <ly-input-checkbox
+          css-class="success"
+          label="Success colored checkbox"
+        />
       </div>
 
       <h3>Radio</h3>
@@ -234,8 +237,16 @@ const radioValue2 = ref("2");
             label="With error"
             error="Error message..."
           />
-          <ly-input-text v-model="textInput3" label="Disabled" :disabled="true" />
-          <ly-input-text v-model="textInput4" label="Readonly" :readonly="true" />
+          <ly-input-text
+            v-model="textInput3"
+            label="Disabled"
+            :disabled="true"
+          />
+          <ly-input-text
+            v-model="textInput4"
+            label="Readonly"
+            :readonly="true"
+          />
         </div>
       </div>
 

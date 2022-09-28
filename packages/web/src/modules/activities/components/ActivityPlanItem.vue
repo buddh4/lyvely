@@ -14,11 +14,11 @@ import { useTaskPlanStore } from "@/modules/activities/store/task-plan.store";
 import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibilityStore";
 import { translate } from "@/i18n";
 
-interface Props {
+interface IProps {
   model: ActivityModel;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 const initialized = ref(false);
 const activityStore = useActivityStore();
 const habitStore = useHabitPlanStore();

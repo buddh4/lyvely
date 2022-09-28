@@ -30,7 +30,9 @@ watch(emailInput, (value) => {
         css-class="attachment-r"
         label="profile.invite.email-help"
       />
-      <ly-button class="primary attachment-l w-12" @click="addEmails">+</ly-button>
+      <ly-button class="primary attachment-l w-12" @click="addEmails">
+        +
+      </ly-button>
     </div>
     <ly-alert :message="statusError" />
     <div v-for="email in emails" :key="email" class="flex mb-2">

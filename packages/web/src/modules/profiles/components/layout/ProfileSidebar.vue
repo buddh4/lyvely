@@ -8,7 +8,7 @@ import { usePageStore } from "@/modules/core/store/page.store";
 import { watchMaxSize, isMaxViewSize } from "@/util/media";
 import { isMultiUserProfile } from "@lyvely/common";
 
-interface MenuItem {
+interface IMenuItem {
   to?: Partial<RouteLocation> | string;
   click?: { (): void };
   icon: string;
@@ -22,7 +22,7 @@ const profileStore = useProfileStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 const sidebar = ref<HTMLElement | null>(null);
 
-const menuItems: MenuItem[] = [
+const menuItems: IMenuItem[] = [
   {
     to: { name: "Activities" },
     icon: "activity",

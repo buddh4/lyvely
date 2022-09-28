@@ -18,7 +18,12 @@ const {
 </script>
 
 <template>
-  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit" @hide="reset">
+  <ly-modal
+    v-model="showModal"
+    :title="modalTitle"
+    @submit="submit"
+    @hide="reset"
+  >
     <fieldset>
       <ly-input-text
         v-model="model.title"

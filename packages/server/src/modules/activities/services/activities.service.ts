@@ -3,13 +3,13 @@ import { Activity, Habit, HabitDataPoint } from '../schemas';
 import { User } from '../../users';
 import { Profile } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { assureObjectId, EntityIdentity } from '@/modules/core';
 import { AbstractContentService } from '../../content';
 import { HabitDataPointService } from './habit-data-point.service';
 import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum, SortResult } from '@lyvely/common';
-import { IntegrityException } from '../../core/exceptions';
+import { IntegrityException } from '@/modules/core';
 
-interface ActivitySearchResult {
+interface IActivitySearchResult {
   activities: Activity[];
   dataPoints: HabitDataPoint[];
 }
@@ -34,7 +34,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    * @throws EntityNotFoundException
    * @throws ForbiddenServiceException
    */
-  async findByFilter(profile: Profile, user: User, filter: DataPointIntervalFilter): Promise<ActivitySearchResult> {
+  async findByFilter(profile: Profile, user: User, filter: DataPointIntervalFilter): Promise<IActivitySearchResult> {
     // Find all calendar ids for the given search date and filter out by filter level
     const tIds = getTimingIds(filter.search);
     if (filter.level > 0) {

@@ -28,7 +28,7 @@ export const useInviteUsersStore = defineStore("invite-user", () => {
     if (invalidEmailsArr.length) {
       status.setError("profile.invite.email-invalid");
     } else {
-      status.reset();
+      status.resetStatus();
     }
   }
 
@@ -53,7 +53,7 @@ export const useInviteUsersStore = defineStore("invite-user", () => {
   function reset() {
     emails.value = [];
     showModal.value = false;
-    status.reset();
+    status.resetStatus();
   }
 
   return {

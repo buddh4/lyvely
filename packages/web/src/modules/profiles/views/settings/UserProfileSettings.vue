@@ -42,7 +42,9 @@ const description = ref("");
     </div>
 
     <div>
-      <ly-button class="primary float-right">{{ $t("common.update") }}</ly-button>
+      <ly-button class="primary float-right">
+        {{ $t("common.update") }}
+      </ly-button>
     </div>
   </div>
 

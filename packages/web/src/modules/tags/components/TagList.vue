@@ -1,14 +1,13 @@
 <script lang="ts" setup>
-
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import { computed } from "vue";
 
-interface Props {
+interface IProps {
   tagIds: string[];
   feature?: string;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 const emit = defineEmits(["select"]);
 
 function select(tagId: string) {
@@ -24,7 +23,12 @@ const tags = computed(() =>
 
 <template>
   <div v-if="tags.length">
-    <ly-tag v-for="tag in tags" :key="tag.id" :tag="tag" @click="select(tag.id)" />
+    <ly-tag
+      v-for="tag in tags"
+      :key="tag.id"
+      :tag="tag"
+      @click="select(tag.id)"
+    />
   </div>
   <div v-else>
     <br />

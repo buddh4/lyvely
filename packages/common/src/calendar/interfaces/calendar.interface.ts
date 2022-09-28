@@ -25,7 +25,7 @@ export enum Days {
   Saturday,
 }
 
-export interface WeekOfYear {
+export interface IWeekOfYear {
   year: number;
   weekOfYear: number;
 }

@@ -23,7 +23,9 @@ const score = computed(() => profileStore.profile?.score);
       <ly-dropdown position="right">
         <template #trigger="{ toggle }">
           <div class="flex justify-center items-center py-1">
-            <div class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center">
+            <div
+              class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center"
+            >
               <ly-button class="px-3 py-2" @click="toggleSidebar">
                 <ly-icon name="menu" style="margin-top: -3px" />
               </ly-button>
@@ -86,12 +88,16 @@ const score = computed(() => profileStore.profile?.score);
     </div>
 
     <div class="w-1/3 flex justify-center">
-      <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
+      <div
+        class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block"
+      >
         <profile-breadcrumb />
       </div>
     </div>
 
-    <div class="w-1/3 flex items-center justify-end score inline-block float-right">
+    <div
+      class="w-1/3 flex items-center justify-end score inline-block float-right"
+    >
       <ly-button>
         <ly-icon name="bell" class="w-3.5" />
       </ly-button>

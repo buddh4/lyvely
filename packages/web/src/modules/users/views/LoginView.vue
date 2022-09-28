@@ -11,13 +11,11 @@ const router = useRouter();
 const input = reactive({ username: "", password: "" });
 
 const isLoginErrorState = computed(() => authStore.status === Status.ERROR);
-const { statusError }  = storeToRefs(authStore);
+const { statusError } = storeToRefs(authStore);
 
 async function login() {
-  authStore.errorMsg = "";
-  if (!validate()) {
-    return;
-  }
+  authStore.resetStatus();
+  if (!validate()) return;
 
   if (await authStore.login(input.username, input.password)) {
     await router.replace({ path: "/" });
@@ -87,7 +85,7 @@ function validate(): boolean {
 
       <ly-alert
         v-if="isLoginErrorState"
-        :message="errorMsg"
+        :message="statusError"
         data-login-error
         class="danger my-2"
       />

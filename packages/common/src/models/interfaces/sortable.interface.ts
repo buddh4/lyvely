@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 
-export interface Sortable {
+export interface ISortable {
   sortOrder?: number;
 }
 
@@ -20,7 +20,7 @@ export class SortResult {
   }
 }
 
-export function sortBySortOrder(a: Sortable, b: Sortable) {
+export function sortBySortOrder(a: ISortable, b: ISortable) {
   if (a.sortOrder === b.sortOrder) {
     return 0;
   }

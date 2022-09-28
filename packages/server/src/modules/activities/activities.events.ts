@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Habit, Task } from './schemas';
-import { ContentTypeDefinition, ContentModuleEvents, Content } from '../content';
+import { IContentTypeDefinition, ContentModuleEvents, Content } from '../content';
 import { IFeature } from '@/modules/core';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class ActivityEvents extends ContentModuleEvents {
     ];
   }
 
-  getContentTypes(): ContentTypeDefinition<Content>[] {
+  getContentTypes(): IContentTypeDefinition<Content>[] {
     return [
       {
         type: Habit.name,

@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { UserProfileRelation, ICreateProfileRelation, ProfileRelationUserInfo } from './user-profile-relations.schema';
-import { assureObjectId } from '../../core/db/db.utils';
+import { assureObjectId } from '@/modules/core';
 import { BaseMembershipRole } from '@lyvely/common';
 
-export interface CreateMembership extends ICreateProfileRelation {
+export interface ICreateMembership extends ICreateProfileRelation {
   role: string;
 }
 
@@ -15,7 +15,7 @@ export class Membership extends UserProfileRelation<Membership> {
   @Prop({ required: true, default: BaseMembershipRole.Member })
   role: string;
 
-  static create(data: CreateMembership): Membership {
+  static create(data: ICreateMembership): Membership {
     return new Membership({
       uid: assureObjectId(data.user),
       pid: assureObjectId(data.profile),

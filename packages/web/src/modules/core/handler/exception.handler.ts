@@ -1,5 +1,5 @@
 import {
-  ShowAlertOptions,
+  IShowAlertOptions,
   useGlobalDialogStore,
 } from "@/modules/core/store/global.dialog.store";
 import { Status } from "@/store/status";
@@ -18,7 +18,7 @@ export function LogExceptionHandler(
 }
 
 export function DialogExceptionHandler(
-  options: ShowAlertOptions | string,
+  options: IShowAlertOptions | string,
   context?: StatusSetter
 ) {
   return (err?: any) => {

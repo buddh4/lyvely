@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { IConfirmOptions } from "@/modules/ui/components/modal/IConfirmOptions";
 
-interface Props {
+interface IProps {
   modelValue: boolean;
   title?: string;
   text?: string;
@@ -11,7 +11,7 @@ interface Props {
   options?: IConfirmOptions;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   title: "modal.confirm.default.title",
   text: "modal.confirm.default.text",
   confirm: "modal.confirm.default.confirm",

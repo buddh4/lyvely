@@ -16,7 +16,7 @@ import { ModuleLoader } from "@/module.loader";
 import ModalWindow from "@/modules/ui/components/modal/ModalWindow.vue";
 import DrawerMenu from "@/modules/ui/components/drawer/DrawerMenu.vue";
 import ConfirmModal from "@/modules/ui/components/modal/ConfirmModal.vue";
-import Icon from "@/modules/ui/components/icon/Icon.vue";
+import Icon from "@/modules/ui/components/icon/UIIcon.vue";
 import StyledButton from "@/modules/ui/components/button/StyledButton.vue";
 import TextInput from "@/modules/ui/components/form/TextInput.vue";
 import CheckboxInput from "@/modules/ui/components/form/CheckboxInput.vue";

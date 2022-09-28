@@ -2,13 +2,13 @@
 import { provide } from "vue";
 import { ModelValidator } from "@lyvely/common";
 
-interface Props {
+interface IProps {
   modelValue: object;
   validator?: ModelValidator;
   labelKey?: string;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 provide("model", props.modelValue);
 provide("labelKey", props.labelKey);

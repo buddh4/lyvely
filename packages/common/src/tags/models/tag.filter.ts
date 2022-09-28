@@ -1,7 +1,7 @@
 import { escapeRegExp } from 'lodash';
 import { TagModel } from './tag.model';
 
-export interface TagFilterOptions {
+export interface ITagFilterOptions {
   archived?: boolean;
   idSelection?: string[];
   nameSelection?: string[];
@@ -14,7 +14,7 @@ export class TagFilter {
   nameSelection?: string[];
   query?: string;
 
-  constructor(obj?: TagFilterOptions) {
+  constructor(obj?: ITagFilterOptions) {
     Object.assign(this, obj);
   }
 

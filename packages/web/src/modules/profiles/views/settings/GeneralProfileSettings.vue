@@ -10,7 +10,7 @@ const profileStore = useProfileStore();
 const name = ref(profileStore.profile?.name);
 const description = ref(profileStore.profile?.description);
 
-function rename() {}
+//function rename() {}
 </script>
 
 <template>
@@ -27,9 +27,14 @@ function rename() {}
         <ly-profile-avatar class="m-3" />
       </div>
     </div>
-    <ly-input-textarea v-model="description" label="profile.settings.description" />
+    <ly-input-textarea
+      v-model="description"
+      label="profile.settings.description"
+    />
     <div>
-      <ly-button class="primary float-right">{{ $t("common.update") }}</ly-button>
+      <ly-button class="primary float-right">
+        {{ $t("common.update") }}
+      </ly-button>
     </div>
   </div>
 

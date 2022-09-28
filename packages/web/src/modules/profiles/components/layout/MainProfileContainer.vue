@@ -3,13 +3,13 @@ import { Size } from "@/modules/ui/types";
 import ProfileTopNavigation from "@/modules/profiles/components/layout/ProfileTopNavigation.vue";
 import MainContainer from "@/modules/ui/components/layout/MainContainer.vue";
 
-interface Props {
+interface IProps {
   width?: "xs" | "sm" | "lg" | "xl" | "full";
   // TODO: GUEST - check guest access config
   requireAuth?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   width: Size.LG,
   requireAuth: true,
 });

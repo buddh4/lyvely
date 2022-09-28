@@ -2,13 +2,6 @@ import Axios from "axios";
 import { Icons } from "@/modules/ui/components/icon/Icons";
 import { useGlobalDialogStore } from "@/modules/core/store/global.dialog.store";
 
-declare module "axios" {
-  export interface AxiosRequestConfig {
-    skipAuthRefresh?: boolean;
-    skipProfileIdParam?: boolean;
-  }
-}
-
 // TODO: abstract this away in config or something..
 const apiURL = import.meta.env.VITE_APP_API_URL || "http://localhost:8080";
 const repository = Axios.create({ baseURL: apiURL });

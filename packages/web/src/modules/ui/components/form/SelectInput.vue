@@ -31,7 +31,7 @@ import {
 import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
 import { SetupContext } from "vue";
 
-interface Props extends IBaseInputProps {
+interface IProps extends IBaseInputProps {
   type: string;
 }
 
@@ -41,7 +41,7 @@ export default {
     options: { type: Array, required: true },
   },
   emits: ["change", "update:modelValue"],
-  setup(props: Props, context: SetupContext) {
+  setup(props: IProps, context: SetupContext) {
     return useFloatingInputSetup(props, context);
   },
 };

@@ -7,7 +7,8 @@
     "./packages/*"
   ],
   "scripts": {
-    "lint": "eslint -c .eslintrc.js \"packages/*/src/**/*.{ts,vue}\" --fix",
+    "lint": "eslint -c .eslintrc.js \"packages/*/src/**/*.{ts,vue}\"",
+    "lint:fix": "eslint -c .eslintrc.js \"packages/*/src/**/*.{ts,vue}\" --fix",
     "watch-common": "npm run watch -w @lyvely/common",
     "build-common": "npm run build -w @lyvely/common",
     "build-server": "npm run build -w @lyvely/server",

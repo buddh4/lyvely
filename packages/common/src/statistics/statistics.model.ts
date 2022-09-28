@@ -5,13 +5,13 @@ abstract class Statistics {
   data: any[];
 }
 
-export interface ScoreStatisticsDataset {
+export interface IScoreStatisticsDataset {
   id: string;
   score: number;
 }
 
 export class ScoreStatistics extends Statistics {
-  data: ScoreStatisticsDataset[];
+  data: IScoreStatisticsDataset[];
   interval: CalendarIntervalEnum;
 
   constructor(obj: Partial<ScoreStatistics>) {

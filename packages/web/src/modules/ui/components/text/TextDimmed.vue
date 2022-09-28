@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-interface Props {
+interface IProps {
   text: string;
 }
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<IProps>(), {
   text: undefined,
 });
 </script>

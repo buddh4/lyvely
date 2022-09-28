@@ -25,7 +25,7 @@ import {
 } from "@/modules/ui/components/form/BaseInput";
 import { computed, SetupContext } from "vue";
 
-interface Props extends IBaseInputProps {
+interface IProps extends IBaseInputProps {
   type: string;
   min: number;
   max: number;
@@ -42,7 +42,7 @@ export default {
     width: { type: String, default: "" },
   },
   emits: ["change", "update:modelValue"],
-  setup(props: Props, context: SetupContext) {
+  setup(props: IProps, context: SetupContext) {
     const baseInput = useBaseInputSetup<number>(props, context);
 
     baseInput.inputValue = computed({

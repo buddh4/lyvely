@@ -12,7 +12,7 @@ import Button from "@/modules/ui/components/button/Button.vue";
 import { translate } from "@/i18n";
 import { useAuthStore } from "@/modules/users/store/auth.store";
 
-interface Props {
+interface IProps {
   interval: CalendarIntervalEnum;
   createButtonTitle: string;
   count: number;
@@ -26,7 +26,7 @@ const { switchToToday, getNextDate, getPreviousDate } = calendarPlanStore;
 const { date, isToday } = toRefs(calendarPlanStore);
 
 const emit = defineEmits(["create"]);
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const collapsed = ref(false);
 const calendarPlan = CalendarPlan.getInstance(props.interval);

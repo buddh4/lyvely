@@ -7,7 +7,7 @@ import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { FeatureGuard, CoreModule, AllExceptionsFilter } from '@/modules/core';
-import { AppModuleBuilder, AppModuleBuilderOptions } from './app-module.builder';
+import { AppModuleBuilder, IAppModuleBuilderOptions } from './app-module.builder';
 import helmet from 'helmet';
 import csurf from 'csurf';
 import { HelmetOptions } from 'helmet';
@@ -16,7 +16,7 @@ import { useDayJsDateTimeAdapter } from '@lyvely/common';
 
 useDayJsDateTimeAdapter();
 
-interface LyvelyServerOptions extends AppModuleBuilderOptions {
+interface ILyvelyServerOptions extends IAppModuleBuilderOptions {
   appModule?: Type;
 }
 
@@ -24,9 +24,9 @@ export class LyvelyServer {
   private logger: Logger;
   private nestApp: INestApplication;
   private configService: ConfigService<ConfigurationPath>;
-  private options: LyvelyServerOptions;
+  private options: ILyvelyServerOptions;
 
-  async bootstrap(options: LyvelyServerOptions = {}) {
+  async bootstrap(options: ILyvelyServerOptions = {}) {
     this.options = options;
     this.nestApp = await this.initNestApp();
 

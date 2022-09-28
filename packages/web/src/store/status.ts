@@ -11,7 +11,7 @@ type StatusStorePlugin = {
   status: Ref<Status>;
   statusError: Ref<string | undefined>;
   setError(msg: string): void;
-  reset(): void;
+  resetStatus(): void;
   setStatus(status: Status): void;
   getStatus(): Status;
   isStatus(status: Status): boolean;
@@ -33,7 +33,7 @@ export function useStatus(status?: Ref<Status>): StatusStorePlugin {
       this.statusError.value = msg;
     },
 
-    reset() {
+    resetStatus() {
       this.setStatus(Status.INIT);
     },
 

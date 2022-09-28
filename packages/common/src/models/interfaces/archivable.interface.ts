@@ -1,3 +1,3 @@
-export interface Archivable {
+export interface IArchivable {
   archived?: boolean;
 }

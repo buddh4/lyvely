@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-interface Props {
+interface IProps {
   title?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   title: undefined,
 });
 </script>

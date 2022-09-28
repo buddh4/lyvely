@@ -1,7 +1,7 @@
 import { Type } from '@/utils';
 import { getPropertyTypeDefinitions } from '../decorators';
 
-interface InitPropertiesOptions {
+interface InitPropertiesOptionsIF {
   maxDepth?: number;
 }
 
@@ -13,7 +13,7 @@ primitiveDefaults.set(Number, 0);
 primitiveDefaults.set(Boolean, false);
 primitiveDefaults.set(Symbol, null);
 
-export function initPropertyTypes<T>(model: T, options: InitPropertiesOptions = {}) {
+export function initPropertyTypes<T>(model: T, options: InitPropertiesOptionsIF = {}) {
   return _initPropertyTypes<T>(model, 0, options);
 }
 

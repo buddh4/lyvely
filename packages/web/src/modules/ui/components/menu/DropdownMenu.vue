@@ -3,14 +3,14 @@ import { ref, toRefs } from "vue";
 import { uniqueId } from "lodash";
 import { onClickOutside } from "@vueuse/core";
 
-interface Props {
+interface IProps {
   label?: string;
   icon?: string;
   position?: "left" | "right";
   buttonClass?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   icon: "dropdown",
   label: "",
   position: "left",

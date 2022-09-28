@@ -1,6 +1,6 @@
-import { Months, WeekOfYear, CalendarDate, dateTime, getFullDayDate } from '../interfaces';
+import { Months, IWeekOfYear, CalendarDate, dateTime, getFullDayDate } from '../interfaces';
 
-export function getYearAndWeekOfYear(date: CalendarDate, locale: string): WeekOfYear {
+export function getYearAndWeekOfYear(date: CalendarDate, locale: string): IWeekOfYear {
   date = getFullDayDate(date);
   let year = date.getUTCFullYear();
   const weekOfYear = getWeekOfYear(date, locale);

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { nextTick } from "vue";
 
-export interface ShowAlertOptions {
+export interface IShowAlertOptions {
   title?: string;
   message: string;
   icon?: string;
@@ -34,27 +34,27 @@ export const useGlobalDialogStore = defineStore("global.dialog", {
     visible: false,
   }),
   actions: {
-    showSuccess(options: ShowAlertOptions) {
+    showSuccess(options: IShowAlertOptions) {
       options.title = options.title || "Success";
       this.show(DialogType.Success, options);
     },
 
-    showInfo(options: ShowAlertOptions) {
+    showInfo(options: IShowAlertOptions) {
       options.title = options.title || "Info";
       this.show(DialogType.Info, options);
     },
 
-    showWarning(options: ShowAlertOptions) {
+    showWarning(options: IShowAlertOptions) {
       options.title = options.title || "Warning";
       this.show(DialogType.Warning, options);
     },
 
-    showError(options: ShowAlertOptions) {
+    showError(options: IShowAlertOptions) {
       options.title = options.title || "Error";
       this.show(DialogType.Error, options);
     },
 
-    show(type: DialogType, options: ShowAlertOptions) {
+    show(type: DialogType, options: IShowAlertOptions) {
       nextTick(() => {
         this.icon = options.icon || type;
         this.iconColor = options.iconColor || undefined;

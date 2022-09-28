@@ -11,7 +11,7 @@ import { RouteRecord } from "vue-router";
 import { IConfirmOptions } from "@/modules/ui/components/modal/IConfirmOptions";
 import { isDevelopEnvironment } from "@/modules/core/environment";
 
-interface Props {
+interface IProps {
   submit?: boolean;
   text?: string;
   active?: boolean;
@@ -23,7 +23,7 @@ interface Props {
   confirm?: IConfirmOptions;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   submit: false,
   label: undefined,
   active: false,

@@ -6,12 +6,12 @@ import { TimingModel } from "@lyvely/common";
 import { computed, toRefs } from "vue";
 import LyBadge from "@/modules/ui/components/badge/BadgeText.vue";
 
-interface Props {
+interface IProps {
   model: TimingModel;
   draggable?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), { draggable: true });
+const props = withDefaults(defineProps<IProps>(), { draggable: true });
 
 const emit = defineEmits([
   "details",

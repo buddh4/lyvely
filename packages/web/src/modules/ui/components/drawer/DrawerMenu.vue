@@ -2,13 +2,13 @@
 import { ref, toRefs } from "vue";
 import { suggestFocusElement } from "@/modules/ui/utils";
 
-interface Props {
+interface IProps {
   modelValue: boolean;
   title?: string;
   prevAutoFocus?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   title: undefined,
   prevAutoFocus: false,
 });

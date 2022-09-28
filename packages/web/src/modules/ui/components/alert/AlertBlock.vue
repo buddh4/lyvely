@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
-interface Props {
+interface IProps {
   message?: string;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const show = computed(() => {
   return typeof props.message === "string" && props.message.length;

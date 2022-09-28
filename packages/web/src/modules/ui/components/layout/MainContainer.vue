@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { Size } from "@/modules/ui/types";
-import { useAuthStore } from "@/modules/users/store/auth.store";
 
-interface Props {
+interface IProps {
   width?: "xs" | "sm" | "lg" | "xl" | "full";
   // TODO: GUEST - check guest access config
   requireAuth?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   width: Size.LG,
   requireAuth: true,
 });

@@ -4,11 +4,11 @@ import { computed, toRefs } from "vue";
 import LyDropdown from "@/modules/ui/components/menu/DropdownMenu.vue";
 import LyDropdownLink from "@/modules/ui/components/menu/DropdownLink.vue";
 
-interface Props {
+interface IProps {
   model: ITimeSeriesContent;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 defineEmits(["edit", "archive"]);
 
 const archiveLabel = computed(() =>

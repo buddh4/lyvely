@@ -5,12 +5,12 @@ import { CssClassDefinition, StyleDefinition } from "@/util/component.types";
 import { IconOptionsIF } from "@/modules/ui/types";
 import { includesUtilityClass } from "@/modules/ui/utils";
 
-interface Props {
+interface IProps {
   name?: IconName;
   options?: IconOptionsIF;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   name: "",
   options: undefined,
 });

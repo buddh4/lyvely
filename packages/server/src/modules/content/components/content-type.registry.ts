@@ -1,18 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ContentTypeDefinition } from '../interfaces';
+import { IContentTypeDefinition } from '../interfaces';
 import { Content } from '../schemas';
 
 @Injectable()
 export class ContentTypeRegistry {
-  private contentTypeMapping: Record<string, ContentTypeDefinition<Content>> = {};
+  private contentTypeMapping: Record<string, IContentTypeDefinition<Content>> = {};
   private readonly logger = new Logger(ContentTypeRegistry.name);
 
-  registerContentType(definition: ContentTypeDefinition<Content>) {
+  registerContentType(definition: IContentTypeDefinition<Content>) {
     this.logger.log(`Register content type ${definition.type}`);
     this.contentTypeMapping[definition.type] = definition;
   }
 
-  registerContentTypes(definitions: ContentTypeDefinition<Content>[]) {
+  registerContentTypes(definitions: IContentTypeDefinition<Content>[]) {
     definitions.forEach((def) => this.registerContentType(def));
   }
 
@@ -20,7 +20,7 @@ export class ContentTypeRegistry {
     return !!this.getTypeDefinition(type);
   }
 
-  getTypeDefinition(type: string): ContentTypeDefinition<Content> | undefined {
+  getTypeDefinition(type: string): IContentTypeDefinition<Content> | undefined {
     const result = this.contentTypeMapping[type];
     if (!result) {
       this.logger.warn(`Content type ${type} without content type definition requested`);

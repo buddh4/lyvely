@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { computed, withDefaults } from "vue";
 import { parseInt } from "lodash";
-import LyCheckbox from "@/modules/ui/components/form/CheckboxInput.vue";
 
-interface Props {
+interface IProps {
   max: number;
   selection?: number;
   min?: number;
@@ -12,7 +11,7 @@ interface Props {
   single?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   selection: 0,
   optimal: 0,
   min: 0,

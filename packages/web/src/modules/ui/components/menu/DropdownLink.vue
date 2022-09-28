@@ -7,13 +7,13 @@ export default {
 <script lang="ts" setup>
 import { toRefs } from "vue";
 
-interface Props {
+interface IProps {
   label: string;
   route?: string;
   icon?: string;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   route: undefined,
   icon: undefined,
 });

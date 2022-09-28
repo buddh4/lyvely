@@ -4,4 +4,4 @@
 npm run deps-common
 npm run deps-server
 npm run deps-web
-npm run lint
+npm run lint:fix

@@ -6,11 +6,11 @@ import randomColor from "randomcolor";
 import { getContrast } from "@/modules/ui/utils";
 import { ProfileModel } from "@lyvely/common";
 
-interface Props {
+interface IProps {
   profile?: Pick<ProfileModel, "id" | "imageHash" | "name">;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const profile = computed(() => props.profile || useProfileStore().profile);
 const url = computed(() =>

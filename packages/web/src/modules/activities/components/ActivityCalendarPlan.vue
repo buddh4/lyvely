@@ -9,12 +9,12 @@ import { computed } from "vue";
 import { useActivityStore } from "@/modules/activities/store/activity.store";
 import draggable from "vuedraggable";
 
-interface Props {
+interface IProps {
   interval: number;
   type: ActivityType;
 }
 
-const props = defineProps<Props>();
+const props = defineProps<IProps>();
 
 const activityStore = useActivityStore();
 const taskPlanStore = useTaskPlanStore();
@@ -26,7 +26,7 @@ const activities = computed(() =>
   activityStore.getActivities(props.type, props.interval)
 );
 
-interface DragEvent {
+interface IDragEvent {
   from: HTMLElement;
   to: HTMLElement;
   item: HTMLElement;
@@ -34,7 +34,7 @@ interface DragEvent {
   newIndex: number;
 }
 
-function dragEnd(evt: DragEvent) {
+function dragEnd(evt: IDragEvent) {
   const store =
     props.type === ActivityType.Habit ? habitPlanStore : taskPlanStore;
   store.move({

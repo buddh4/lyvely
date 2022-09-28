@@ -48,7 +48,6 @@ const usageLabel = (usage: ProfileUsage) =>
         :options="usageOptions"
         :multiple="true"
         tag-placeholder="Add this as new tag"
-        placeholder="Search or add a tag"
       />
       <ly-input-radio
         property="type"

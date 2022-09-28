@@ -36,7 +36,7 @@ import {
 import { computed, SetupContext, ref } from "vue";
 import { isArray } from "lodash";
 
-interface Props extends IBaseInputProps {
+interface IProps extends IBaseInputProps {
   checked: boolean;
   value: string;
 }
@@ -45,10 +45,10 @@ export default {
   props: {
     ...useBaseInputProps(),
     checked: { type: Boolean },
-    value: {},
+    value: { type: String, default: "" },
   },
   emits: ["change", "update:modelValue"],
-  setup(props: Props, context: SetupContext) {
+  setup(props: IProps, context: SetupContext) {
     const showHelpText = ref(false);
 
     function toggle(evt: any) {

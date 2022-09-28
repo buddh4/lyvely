@@ -1,41 +1,50 @@
 /* eslint-disable */
-import 'vue-router';
-import {Router} from "vue-router";
-import { IModule } from "@/modules/core/modules/interfaces/module.interface";
+import "vue-router";
+import { Router } from "vue-router";
 
-declare module '*.vue' {
-  import type { DefineComponent } from 'vue'
-  const component: DefineComponent<{}, {}, any>
-  export default component
+declare module "*.vue" {
+  import type { DefineComponent } from "vue";
+  const component: DefineComponent<{}, {}, any>;
+  export default component;
+}
+
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    skipAuthRefresh?: boolean;
+    skipProfileIdParam?: boolean;
+  }
 }
 
 export declare global {
   interface Window {
     app: any;
-    Cypress: any
+    Cypress: any;
   }
 
   export interface ImportMeta {
-    glob: <T = any> (path: string, options?: { eager?: boolean }) => (() => T)[]|T[],
+    glob: <T = any>(
+      path: string,
+      options?: { eager?: boolean }
+    ) => (() => T)[] | T[];
     env: {
       VITE_APP_API_URL: string;
-      VITE_APP_ENV: 'development' | 'production';
+      VITE_APP_ENV: "development" | "production";
       VITE_APP_BASEURL: string;
-      MODE: 'development' | 'production';
-    }
+      MODE: "development" | "production";
+    };
   }
 }
 
-declare module 'vue-router' {
+declare module "vue-router" {
   interface RouteMeta {
     // is optional
-    i18n?: { module?: string }
-    layout?: string
+    i18n?: { module?: string };
+    layout?: string;
   }
 }
 
-declare module 'pinia' {
+declare module "pinia" {
   export interface PiniaCustomProperties {
-    router: Router
+    router: Router;
   }
 }
