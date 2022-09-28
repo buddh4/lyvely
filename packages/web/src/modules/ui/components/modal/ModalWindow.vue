@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, toRefs, ref, Ref, watch } from "vue";
 import { suggestFocusElement } from "@/modules/ui/utils";
-import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibilityStore";
+import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibility.store";
 import { useFocusTrap } from "@vueuse/integrations/useFocusTrap";
 
 const emit = defineEmits([
@@ -24,7 +24,6 @@ interface IModalProps {
   cancelButtonClass?: string;
   submitButton?: boolean;
   submitButtonText?: string;
-  submitOnEnter?: boolean;
   prevAutoFocus?: boolean;
   ariaLabel?: string;
 }
@@ -40,7 +39,6 @@ const props = withDefaults(defineProps<IModalProps>(), {
   submitButton: true,
   iconColor: undefined,
   iconClass: undefined,
-  submitOnEnter: true,
   prevAutoFocus: false,
   ariaLabel: undefined,
 });
@@ -54,12 +52,6 @@ function close() {
 function cancel() {
   close();
   emit("cancel");
-}
-
-function submitOnEnter() {
-  if (props.submitOnEnter) {
-    emit("submit");
-  }
 }
 
 const rootEl = ref(null) as Ref<HTMLElement | null>;

@@ -1,4 +1,4 @@
-import { applyInc, applyPush, applyRawDataTo, findByPath } from '../../db/db.utils';
+import { applyInc, applyPush, applyRawDataTo } from '@/modules/core';
 import { expect } from '@jest/globals';
 
 class SubModel {

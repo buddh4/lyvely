@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import { TagModel, UpdateTagDto } from "@lyvely/common";
 import { computed } from "vue";
 import tagsRepository from "@/modules/tags/repositories/tags.repository";
-import useEditModelStore from "@/modules/common/stores/editModelStore";
-import useArchiveModelStore from "@/modules/common/stores/archiveModelStore";
+import useEditModelStore from "@/modules/common/stores/edit-model.store";
+import useArchiveModelStore from "@/modules/common/stores/archive-model.store";
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 
 export const useEditTagStore = defineStore("tagEdit", () => {

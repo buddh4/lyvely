@@ -1,7 +1,6 @@
-import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { TestingModule } from '@nestjs/testing';
 import { ProfileScore } from '../../profiles';
-import { createBasicTestingModule, getObjectId } from '../../test/utils/test.utils';
+import { createBasicTestingModule, getObjectId, TestDataUtils } from '@/modules/test';
 import { ContentScore, ContentScoreSchema } from '../schemas';
 import {
   ExtendedTestContentScore,
@@ -62,7 +61,7 @@ describe('ContentScoreService', () => {
   describe('Simple Content Score', () => {
     describe('saveScore', () => {
       it('initial data', async () => {
-        const { owner, member, profile, content } = await createGroupAndContent();
+        const { owner, profile, content } = await createGroupAndContent();
 
         const ownerScore = new TestContentScore({
           user: owner,

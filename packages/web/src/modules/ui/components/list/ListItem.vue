@@ -3,7 +3,7 @@ interface IProps {
   active: boolean;
 }
 
-const props = withDefaults(defineProps<IProps>(), {
+withDefaults(defineProps<IProps>(), {
   active: false,
 });
 </script>

@@ -1,6 +1,12 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '../../users';
-import { HabitModel, DataPointNumberInputStrategy, UpdateHabitDto } from '@lyvely/common';
+import {
+  HabitModel,
+  DataPointNumberInputStrategy,
+  UpdateHabitDto,
+  applyValidationProperties,
+  PropertiesOf,
+} from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { Activity } from './activity.schema';
 import { ContentDocument } from '../../content';
@@ -11,8 +17,6 @@ import {
 } from '../../time-series';
 import { assureObjectId } from '../../core/db/db.utils';
 import { cloneDeep } from 'lodash';
-import { applyValidationProperties } from '@lyvely/common';
-import { PropertiesOf } from '@lyvely/common';
 
 export type HabitDocument = Habit & ContentDocument;
 

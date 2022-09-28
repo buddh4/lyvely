@@ -17,8 +17,7 @@ import {
   ContentType,
   ContentWritePolicy,
 } from '../../content';
-import { ProfileRequest } from '../../profiles';
-import { ProfilePermissions } from '../../profiles';
+import { ProfileRequest, ProfilePermissions } from '../../profiles';
 import { Policies } from '../../policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
 import { EntityNotFoundException, UseClassSerializer } from '@/modules/core';

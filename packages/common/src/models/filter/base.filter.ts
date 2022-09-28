@@ -68,7 +68,6 @@ export abstract class Filter<TModel, TOptions> {
 
     let hasChanged = false;
     for (const key in update) {
-      const val = update[key];
       if (this.options[key] !== update[key]) {
         this.options[key] = update[key];
         hasChanged = true;

@@ -1,10 +1,7 @@
 import { AxiosResponse } from "axios";
 import { Archivable } from "@lyvely/common";
 
-export interface IArchiveModelRepository<
-  TUpdateModel extends Archivable,
-  TID = string
-> {
+interface IArchiveModelRepository<TID = string> {
   archive: (id: TID) => Promise<AxiosResponse<boolean>>;
   unArchive: (id: TID) => Promise<AxiosResponse<boolean>>;
 }
@@ -14,8 +11,8 @@ export interface IArchiveModelStoreOptions<
   TID = string
 > {
   repository:
-    | IArchiveModelRepository<TModel, TID>
-    | ((editModel: TModel) => IArchiveModelRepository<TModel, TID>);
+    | IArchiveModelRepository<TID>
+    | ((editModel: TModel) => IArchiveModelRepository<TID>);
   onSubmitSuccess?: (model: TModel, val: boolean) => void;
   onSubmitError?: ((err: any) => void) | false;
 }

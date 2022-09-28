@@ -104,6 +104,11 @@ export function isValidObjectId(identity: string): boolean {
   return identity && OBJECT_ID_REGEX.test(identity);
 }
 
+/**
+ * @param validationOptions
+ * @constructor
+ * @deprecated use class-validator IsMongoId
+ */
 export function ObjectId(validationOptions?: ValidationOptions) {
   return (object: any, propertyName: string) => {
     registerDecorator({
@@ -117,7 +122,7 @@ export function ObjectId(validationOptions?: ValidationOptions) {
 
 @ValidatorConstraint({ name: 'ObjectId' })
 export class ObjectIdConstraint implements ValidatorConstraintInterface {
-  validate(value: any, args: ValidationArguments) {
+  validate(value: any) {
     return isValidObjectId(value);
   }
 

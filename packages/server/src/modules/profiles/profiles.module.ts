@@ -11,18 +11,15 @@ import {
   GroupProfileSchema,
   OrganizationSchema,
 } from './schemas';
-import { ProfilesService, ProfileTagsService } from './services';
-import { ProfilesController } from './controllers';
+import { ProfilesService, ProfileTagsService, ProfilePermissionsService } from './services';
+import { ProfilesController, ProfileTagsController, ProfileRelationInfosController } from './controllers';
 import { UsersModule } from '../users';
 import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
 
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '../policies/policies.module';
-import { ProfilePermissionsService } from './services';
 import { ProfileEvents } from './profile.events';
 import { CoreModule } from '../core/core.module';
-import { ProfileTagsController } from './controllers';
-import { ProfileRelationInfosController } from './controllers';
 import { ProfileType } from '@lyvely/common';
 import { useProfileMappings } from './mappings';
 

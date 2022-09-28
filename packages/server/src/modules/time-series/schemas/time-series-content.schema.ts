@@ -1,9 +1,14 @@
-import { isSameDay, UserAssignmentStrategy, getNumberEnumValues, IDataPointConfig } from '@lyvely/common';
+import {
+  isSameDay,
+  UserAssignmentStrategy,
+  getNumberEnumValues,
+  IDataPointConfig,
+  TimeSeriesContentModel,
+} from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { Content, IContentEntity } from '../../content';
 import { DataPointConfigFactory, DefaultDataPointConfig, DefaultDataPointConfigSchema } from './config';
-import { EntityType } from '../../core/db/base.entity';
-import { TimeSeriesContentModel } from '@lyvely/common';
+import { EntityType } from '@/modules/core';
 
 type TimeSeriesContentEntity = IContentEntity & EntityType<TimeSeriesContent>;
 export type ITimeSeriesContentEntity<TDataPointConfig extends IDataPointConfig = DefaultDataPointConfig> =

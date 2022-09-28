@@ -1,8 +1,14 @@
 import { Body, Controller, Get, NotFoundException, Param, Post, Request } from '@nestjs/common';
-import { ProfileWithRelationsDto, CreateProfileDto, ProfileType, mapType } from '@lyvely/common';
+import {
+  ProfileWithRelationsDto,
+  CreateProfileDto,
+  ProfileType,
+  mapType,
+  ProfilesEndpoint,
+  ENDPOINT_PROFILES,
+} from '@lyvely/common';
 import { ProfilesService } from '../services';
 import { UserWithProfileAndRelations } from '../models';
-import { ProfilesEndpoint, ENDPOINT_PROFILES } from '@lyvely/common';
 import { UseClassSerializer } from '../../core';
 
 @Controller(ENDPOINT_PROFILES)

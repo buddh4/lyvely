@@ -1,17 +1,14 @@
 import { NestFactory } from '@nestjs/core';
-import { Type } from '@nestjs/common';
-import { INestApplication, ValidationPipe, Logger } from '@nestjs/common';
+import { Type, INestApplication, ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { FeatureGuard, CoreModule, AllExceptionsFilter } from '@/modules/core';
+import { FeatureGuard, CoreModule, AllExceptionsFilter, ConfigurationPath } from '@/modules/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from './app-module.builder';
-import helmet from 'helmet';
+import helmet, { HelmetOptions } from 'helmet';
 import csurf from 'csurf';
-import { HelmetOptions } from 'helmet';
-import { ConfigurationPath } from './modules/core';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
 
 useDayJsDateTimeAdapter();

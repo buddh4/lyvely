@@ -116,7 +116,9 @@ export const useAuthStore = defineStore("profile", () => {
     tokenExpiration,
     isAuthenticated,
     login,
+    logout,
     refreshToken,
+    loadUser,
   };
 });
 
@@ -158,7 +160,7 @@ const authRepositoryPlugin = () => {
   });
 
   // Automatic refresh token call on failed request (401)
-  createAuthRefreshInterceptor(repository, (failedRequest) => {
+  createAuthRefreshInterceptor(repository, () => {
     const visitorId = useAuthStore().visitorId;
 
     if (!visitorId) {

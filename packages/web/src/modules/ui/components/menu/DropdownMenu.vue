@@ -21,7 +21,7 @@ const open = ref(false);
 
 const root = ref<HTMLElement | null>(null);
 
-onClickOutside(root, (event) => (open.value = false));
+onClickOutside(root, () => (open.value = false));
 
 const className = ["flex", "dropdown"];
 const buttonClassName = [
@@ -38,7 +38,7 @@ function onClickContent(evt: { target: HTMLElement }) {
   }
 }
 
-function navigateDown(evt: KeyboardEvent) {
+function navigateDown() {
   const activeElement = document.activeElement;
   if (!activeElement || !activeElement.closest(".dropdown-items")) {
     root.value
@@ -50,7 +50,7 @@ function navigateDown(evt: KeyboardEvent) {
   }
 }
 
-function navigateUp(evt: KeyboardEvent) {
+function navigateUp() {
   const activeElement = document.activeElement;
   if (!activeElement || !activeElement.closest(".dropdown-items")) {
     open.value = false;

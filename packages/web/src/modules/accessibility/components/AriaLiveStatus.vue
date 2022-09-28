@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibilityStore";
+import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibility.store";
 import { toRefs } from "vue";
 
 const { messages } = toRefs(useAccessibilityStore());

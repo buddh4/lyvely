@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { IconName, getIconByName } from "@/modules/ui/components/icon/Icons";
 import { computed } from "vue";
-import { CssClassDefinition, StyleDefinition } from "@/util/component.types";
+import { StyleDefinition } from "@/util/component.types";
 import { IconOptionsIF } from "@/modules/ui/types";
 import { includesUtilityClass } from "@/modules/ui/utils";
 
@@ -21,19 +21,6 @@ const styleObject = computed(
   (): StyleDefinition =>
     props.options?.fill ? { fill: props.options.fill } : {}
 );
-const cssObject = computed((): CssClassDefinition => {
-  const result = {
-    icon: true,
-    "w-4": true,
-    inline: true,
-    [`icon-${name.value}`]: true,
-  };
-
-  if (props.options?.color) {
-    result[props.options.color.toString()] = true;
-  }
-  return result;
-});
 
 function getClassNames(attrClasses: any) {
   const result = {

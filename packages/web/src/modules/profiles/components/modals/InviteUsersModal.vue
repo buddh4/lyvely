@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { ref, watch } from "vue";
+import { watch } from "vue";
 import { useInviteUsersStore } from "@/modules/profiles/stores/invite-users.store";
 import LyInputText from "@/modules/ui/components/form/TextInput.vue";
 import LyAlert from "@/modules/ui/components/alert/AlertBlock.vue";

@@ -90,10 +90,6 @@ export default function <TUpdateModel, TResponse, TID = string>(
     }
   }
 
-  async function hasError() {
-    return !!error.value?.length;
-  }
-
   async function _createModel() {
     if (!model.value) {
       return;

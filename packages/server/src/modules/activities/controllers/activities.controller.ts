@@ -9,14 +9,13 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
-import { ActivityRangeResponse, DataPointIntervalFilter, MoveAction } from '@lyvely/common';
+import { ActivityRangeResponse, DataPointIntervalFilter, MoveAction, TaskModel } from '@lyvely/common';
 import { ActivitiesService } from '../services/activities.service';
 import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '../../content';
 import { Activity } from '../schemas';
 import { ProfileRequest } from '../../profiles';
 import { isTaskContent } from '../utils/activity.utils';
 import { Policies } from '../../policies/decorators/policies.decorator';
-import { TaskModel } from '@lyvely/common';
 
 @ContentController('activities')
 // TODO: implement feature registration @Feature('activities')

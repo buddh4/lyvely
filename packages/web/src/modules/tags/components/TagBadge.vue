@@ -6,7 +6,7 @@ interface IProps {
   tag: TagModel;
 }
 
-const props = defineProps<IProps>();
+defineProps<IProps>();
 </script>
 
 <template>

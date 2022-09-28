@@ -3,7 +3,7 @@ import { UsersModule } from '../users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ContentService, ContentScoreService } from './services';
-import { ProfileScore, ProfilesModule, ProfileTagsService } from '../profiles';
+import { ProfileScore, ProfilesModule } from '../profiles';
 import { ContentDao, ContentScoreDao } from './daos';
 import { ContentReadPolicy, ContentWritePolicy } from './policies';
 import { ContentTypeRegistry } from './components';

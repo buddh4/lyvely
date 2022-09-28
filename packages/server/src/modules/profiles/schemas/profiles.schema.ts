@@ -11,11 +11,14 @@ import {
   MIN_PROFILE_NAME_LENGTH,
   MAX_PROFILE_NAME_LENGTH,
   MAX_PROFILE_DESCRIPTION_LENGTH,
+  ProfileType,
+  BaseModel,
+  PropertyType,
+  ProfileUsage,
 } from '@lyvely/common';
 
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-role-permissions.schema';
 import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
-import { ProfileType, BaseModel, PropertyType, ProfileUsage } from '@lyvely/common';
 
 @Schema({ _id: false })
 class ProfileMetadata extends BaseModel<ProfileMetadata> {

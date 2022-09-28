@@ -1,4 +1,4 @@
-import { assignEntityData, BaseEntity, EntityType } from '@/modules/core';
+import { assignEntityData, BaseEntity, EntityType, assureObjectId } from '@/modules/core';
 import { Prop } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {
@@ -8,12 +8,11 @@ import {
   toTimingId,
   UserAssignmentStrategy,
   DeepPartial,
+  DataPointModel,
 } from '@lyvely/common';
 import { TimeSeriesContent } from './time-series-content.schema';
 import { User } from '../../users';
 import { Profile } from '../../profiles';
-import { assureObjectId } from '../../core/db/db.utils';
-import { DataPointModel } from '@lyvely/common';
 
 type DataPointEntity = DataPointModel & { _id: TObjectId };
 

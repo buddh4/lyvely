@@ -2,14 +2,11 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import mongoose, { UpdateQuery } from 'mongoose';
-import { BaseEntity } from '../../core/db/base.entity';
+import { BaseEntity, validateEmail } from '@/modules/core';
 import { Length } from 'class-validator';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import crypto from 'crypto';
-import { validateEmail } from '../../core/db/field.validator.util';
-import { PropertiesOf, UserModel } from '@lyvely/common';
-import { getNumberEnumValues, UserStatus } from '@lyvely/common';
-import { PropertyType } from '@lyvely/common';
+import { PropertiesOf, UserModel, getNumberEnumValues, UserStatus, PropertyType } from '@lyvely/common';
 
 @Schema({ id: false })
 class ProfilesCount {

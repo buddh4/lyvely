@@ -48,7 +48,6 @@ const TEST_KEY = 'abstract_dao';
 
 describe('AbstractDao', () => {
   let testingModule: TestingModule;
-  let TestEntityModel: Model<TestEntityDocument>;
   let dao: TestEntityDao;
   let eventTester: EventTester;
 
@@ -58,7 +57,6 @@ describe('AbstractDao', () => {
       [TestEntityDao, EventTester],
       [TestEntityModelDefinition],
     ).compile();
-    TestEntityModel = testingModule.get<Model<TestEntityDocument>>('TestEntityModel');
     dao = testingModule.get<TestEntityDao>(TestEntityDao);
     eventTester = testingModule.get<EventTester>(EventTester);
   });

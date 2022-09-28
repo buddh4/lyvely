@@ -11,5 +11,4 @@ export * from './users';
 export * from './web';
 export * from './mappings';
 export * from './user-invites';
-export * from './types';
 export * from './collab';

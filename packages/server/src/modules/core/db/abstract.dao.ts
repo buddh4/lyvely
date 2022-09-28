@@ -1,4 +1,4 @@
-import { applyUpdateTo, assureObjectId, EntityData, EntityIdentity } from './db.utils';
+import { applyUpdateTo, assureObjectId, EntityData, EntityIdentity, createBaseEntityInstance } from './db.utils';
 import {
   FilterQuery,
   HydratedDocument,
@@ -10,7 +10,6 @@ import {
   ProjectionType,
 } from 'mongoose';
 import { BaseEntity } from './base.entity';
-import { createBaseEntityInstance } from './db.utils';
 import { Inject } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -77,10 +76,6 @@ export const defaultFetchOptions = {
     limit: 100,
   },
 };
-
-export interface IUpsertQueryOptions extends IBaseQueryOptions {
-  new?: boolean;
-}
 
 export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
 
@@ -312,6 +307,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return modifiedCount;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected async beforeUpdate(id: EntityIdentity<T>, update: UpdateQuery<T>): Promise<PartialEntityData<T> | boolean> {
     return Promise.resolve(true);
   }
@@ -333,7 +329,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   async deleteAll(options?: DeleteOptions): Promise<number> {
-    return this.deleteMany({});
+    return this.deleteMany({}, options);
   }
 
   async deleteMany(filter: FilterQuery<T>, options?: DeleteOptions): Promise<number> {

@@ -179,11 +179,6 @@ describe('ModelType Decorator', () => {
   });
 
   it('assure property types are overwritten by parent', async () => {
-    class GrandParent extends BaseModel<GrandParent> {
-      @PropertyType(String, { default: 'GrandParent' })
-      field: string;
-    }
-
     class Parent extends BaseModel<Parent> {
       @PropertyType(String, { default: 'Parent' })
       field: string;
@@ -196,11 +191,6 @@ describe('ModelType Decorator', () => {
   });
 
   it('assure property types are overwritten by child', async () => {
-    class GrandParent extends BaseModel<GrandParent> {
-      @PropertyType(String, { default: 'GrandParent' })
-      field: string;
-    }
-
     class Parent extends BaseModel<Parent> {
       @PropertyType(String, { default: 'Parent' })
       field: string;

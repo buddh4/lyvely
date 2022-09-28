@@ -1,6 +1,6 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { ActivityModel, DataPointInputStrategy } from '@lyvely/common';
+import { ActivityModel, DataPointInputStrategy, PropertiesOf } from '@lyvely/common';
 import {
   CheckboxNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
@@ -8,7 +8,6 @@ import {
   TimeSeriesContentSchemaFactory,
   DefaultDataPointConfigSchema,
 } from '../../time-series';
-import { PropertiesOf } from '@lyvely/common';
 
 type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 

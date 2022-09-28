@@ -1,12 +1,11 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
-import { ProfilesService } from '../services';
+import { ProfilesService, ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
 import { UserWithProfileAndRelations } from '../models';
 import { ProfileVisibilityPolicy } from '../policies';
 import { PolicyService } from '../../policies/services/policy.service';
 import { ProfileDao } from '../daos';
-import { ProfilePermissionsService } from '../services';
 import { Reflector } from '@nestjs/core';
 
 export const PROFILE_PERMISSIONS_KEY_STRICT = 'profile_permissions_strict';

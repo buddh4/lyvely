@@ -1,10 +1,10 @@
 import { Days, Months, CalendarDate, dateTime } from '../interfaces';
 
 export function getMonthNameByIndex(id: number, short = false) {
-  return short ? Months[id] : Months[id].substr(0, 3);
+  return short ? Months[id] : Months[id].substring(0, 3);
 }
 
-export function getMonthNames(short = false) {
+export function getMonthNames() {
   return [
     getMonthNameByIndex(0),
     getMonthNameByIndex(1),

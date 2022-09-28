@@ -1,8 +1,7 @@
 import { HelmetOptions } from 'helmet';
 import { MailerOptions } from '@nestjs-modules/mailer';
 import { ServeStaticModuleOptions } from '@nestjs/serve-static';
-import { NestedPaths } from '@lyvely/common';
-import { TypeFromPath } from '@lyvely/common';
+import { NestedPaths, TypeFromPath } from '@lyvely/common';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;

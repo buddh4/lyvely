@@ -23,7 +23,7 @@ module.exports = {
   },
   "plugins": [
     "vue",
-    "@typescript-eslint"
+    "@typescript-eslint",
   ],
   "rules": {
     "prettier/prettier": 0,

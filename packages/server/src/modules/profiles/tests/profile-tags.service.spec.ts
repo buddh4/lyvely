@@ -1,7 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createContentTestingModule, getObjectId } from '../../test/utils/test.utils';
+import { TestDataUtils, createContentTestingModule, getObjectId } from '@/modules/test';
 import { Tag } from '../../tags';
 import { ProfileTagsService, ProfilesService } from '../services';
 
@@ -35,7 +34,6 @@ describe('ProfileService', () => {
       let tag = profile.getTagByName('health');
       expect(await profileTagsService.archiveTag(profile, tag)).toEqual(true);
       expect(tag.archived).toEqual(true);
-      const reload = await profileService.findProfileById(profile);
       tag = profile.getTagByName('health');
       expect(tag.archived).toEqual(true);
     });
@@ -50,7 +48,6 @@ describe('ProfileService', () => {
       expect(tag.archived).toEqual(true);
       expect(await profileTagsService.unArchiveTag(profile, tag)).toEqual(true);
       expect(tag.archived).toEqual(false);
-      const reload = await profileService.findProfileById(profile);
       tag = profile.getTagByName('health');
       expect(tag.archived).toEqual(false);
     });

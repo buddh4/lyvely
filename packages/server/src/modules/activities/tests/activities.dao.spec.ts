@@ -1,12 +1,11 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { closeInMongodConnection } from '../../test/utils/mongoose-test.utils';
+import { closeInMongodConnection, TestDataUtils } from '@/modules/test';
 import { Model } from 'mongoose';
 import { ProfileDocument } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { UserDocument } from '../../users';
 import { ActivityType, CalendarIntervalEnum, toTimingId, addDays, UserAssignmentStrategy } from '@lyvely/common';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit, Task, UserDone } from '../schemas';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 
@@ -99,7 +98,7 @@ describe('Activities DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
 
-      const task = await activityData.createTask(
+      await activityData.createTask(
         owner,
         profile,
         {
@@ -118,7 +117,7 @@ describe('Activities DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
 
-      const task = await activityData.createTask(
+      await activityData.createTask(
         owner,
         profile,
         {
@@ -138,7 +137,7 @@ describe('Activities DAO', () => {
       const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
       const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarIntervalEnum.Daily);
 
-      const task = await activityData.createTask(
+      await activityData.createTask(
         owner,
         profile,
         {
@@ -156,7 +155,7 @@ describe('Activities DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
 
-      const task = await activityData.createTask(owner, profile, {
+      await activityData.createTask(owner, profile, {
         userStrategy: UserAssignmentStrategy.PerUser,
       });
 
@@ -169,7 +168,7 @@ describe('Activities DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
 
-      const task = await activityData.createTask(
+      await activityData.createTask(
         owner,
         profile,
         {
@@ -187,7 +186,7 @@ describe('Activities DAO', () => {
       const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
       const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarIntervalEnum.Daily);
 
-      const task = await activityData.createTask(
+      await activityData.createTask(
         owner,
         profile,
         {
@@ -206,7 +205,7 @@ describe('Activities DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
 
-      const task = await activityData.createTask(
+      await activityData.createTask(
         owner,
         profile,
         {

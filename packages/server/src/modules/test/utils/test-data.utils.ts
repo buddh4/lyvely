@@ -19,7 +19,7 @@ import {
 } from '../../profiles';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { createBaseEntityInstance } from '../../core/db/db.utils';
+import { createBaseEntityInstance } from '@/modules/core';
 
 @Injectable()
 export class TestDataUtils {
@@ -130,6 +130,7 @@ export class TestDataUtils {
       ProfilesFactory.createProfile(owner, {
         type,
         name: name || owner.username,
+        visibility: visibility,
       }),
     );
 

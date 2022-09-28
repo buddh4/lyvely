@@ -66,6 +66,7 @@ export class UnscheduledPlan extends CalendarPlan {
     return 'Unscheduled';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTitle(date: Date, locale: string): string {
     return 'Unscheduled';
   }
@@ -101,6 +102,7 @@ export class YearlyPlan extends UnscheduledPlan {
     return 'Yearly';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTitle(date: Date, locale: string): string {
     return dateTime(date).format('YYYY');
   }
@@ -132,6 +134,7 @@ export class QuarterlyPlan extends YearlyPlan {
     return 'Quarterly';
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTitle(date: Date, locale: string): string {
     const momentDate = dateTime(date);
     return 'Q' + momentDate.quarter() + (!isCurrentYear(date) ? momentDate.format(' · YYYY') : '');
@@ -168,6 +171,7 @@ export class MonthlyPlan extends QuarterlyPlan {
     return getMonthNameByIndex(id);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTitle(date: Date, locale: string): string {
     const format = isCurrentYear(date) ? 'MMMM' : 'MMM · YYYY';
     return dateTime(date).format(format);
@@ -241,11 +245,13 @@ export class DailyPlan extends WeeklyPlan {
     return getDayNameByIndex(id);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTitle(date: Date, locale: string): string {
     const format = isCurrentYear(date) ? 'ddd D MMM ' : 'ddd D MMM  · YYYY';
     return dateTime(date).format(format);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   getAccessibleTitle(date: Date, locale: string): string {
     const format = isCurrentYear(date) ? 'dddd D MMMM ' : 'dddd D MMMM  · YYYY';
     return dateTime(date).format(format);

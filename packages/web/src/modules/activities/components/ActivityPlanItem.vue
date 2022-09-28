@@ -11,7 +11,7 @@ import CalendarPlanItem from "@/modules/calendar/components/CalendarPlanItem.vue
 import { useActivityEditStore } from "@/modules/activities/store/edit-activity.store";
 import { useHabitPlanStore } from "@/modules/activities/store/habit-plan.store";
 import { useTaskPlanStore } from "@/modules/activities/store/task-plan.store";
-import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibilityStore";
+import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibility.store";
 import { translate } from "@/i18n";
 
 interface IProps {

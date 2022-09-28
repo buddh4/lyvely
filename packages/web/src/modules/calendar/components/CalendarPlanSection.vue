@@ -8,7 +8,6 @@ import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import { useCalendarPlanStore } from "../store";
 import { computed, ref, toRefs } from "vue";
 import { onClickOutside } from "@vueuse/core";
-import Button from "@/modules/ui/components/button/Button.vue";
 import { translate } from "@/i18n";
 import { useAuthStore } from "@/modules/users/store/auth.store";
 
@@ -25,7 +24,7 @@ const { locale: profileLocale } = useProfileStore();
 const { switchToToday, getNextDate, getPreviousDate } = calendarPlanStore;
 const { date, isToday } = toRefs(calendarPlanStore);
 
-const emit = defineEmits(["create"]);
+defineEmits(["create"]);
 const props = defineProps<IProps>();
 
 const collapsed = ref(false);

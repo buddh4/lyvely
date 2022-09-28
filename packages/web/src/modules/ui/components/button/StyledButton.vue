@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { toRefs, ref, onMounted, Ref } from "vue";
+import { ref, onMounted, Ref } from "vue";
 import { includesUtilityClass } from "@/modules/ui/utils";
 import { RouteRecord } from "vue-router";
 import { IConfirmOptions } from "@/modules/ui/components/modal/IConfirmOptions";
@@ -25,7 +25,6 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   submit: false,
-  label: undefined,
   active: false,
   border: true,
   text: "",
@@ -117,8 +116,6 @@ function getAriaPressed($attrs: any) {
     return props.active ? "yes" : "no";
   }
 }
-
-const { label } = toRefs(props);
 </script>
 
 <template>

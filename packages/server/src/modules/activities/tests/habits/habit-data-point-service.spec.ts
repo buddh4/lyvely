@@ -67,7 +67,7 @@ describe('HabitDataPointService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, { interval: CalendarIntervalEnum.Unscheduled });
 
-      const log = await habitDataPointService.upsertDataPoint(profile, user, habit, '2021-04-03', 2);
+      await habitDataPointService.upsertDataPoint(profile, user, habit, '2021-04-03', 2);
 
       const logs = await habitDataPointService.findByIntervalLevel(
         profile,

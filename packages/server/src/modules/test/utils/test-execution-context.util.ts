@@ -1,8 +1,7 @@
 import { ContextType, ExecutionContext, Type } from '@nestjs/common';
 import { HttpArgumentsHost, RpcArgumentsHost, WsArgumentsHost } from '@nestjs/common/interfaces';
 import { User } from '@/modules/users';
-import { Profile } from '@/modules/profiles';
-import { UserWithProfileAndRelations } from '@/modules/profiles';
+import { UserWithProfileAndRelations, Profile } from '@/modules/profiles';
 
 interface ITestExecutionContextOptions {
   params?: Record<string, string>;

@@ -69,7 +69,7 @@ export class ScoreStatistics extends Statistics {
   getChartLabels() {
     switch (this.interval) {
       case CalendarIntervalEnum.Monthly:
-        return getMonthNames(true);
+        return getMonthNames();
     }
 
     return [];

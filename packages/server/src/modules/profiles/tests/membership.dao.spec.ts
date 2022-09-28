@@ -1,10 +1,9 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '@/modules/test';
 import { MembershipsDao } from '../daos';
 import { ProfileRelationUserInfo } from '../schemas';
 import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
-import { createBasicTestingModule } from '@/modules/test';
+import { createBasicTestingModule, TestDataUtils } from '@/modules/test';
 
 describe('MembershipDao', () => {
   let testingModule: TestingModule;

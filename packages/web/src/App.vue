@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import DialogWindow from "@/modules/ui/components/dialog/DialogWindow.vue";
 import MobileFooterNavigation from "@/modules/ui/components/layout/MobileFooterNavigation.vue";
-import { toRefs } from "vue";
 import { useGlobalDialogStore } from "@/modules/core/store/global.dialog.store";
 import AriaLiveStatus from "@/modules/accessibility/components/AriaLiveStatus.vue";
 import ProfileViewLayout from "@/modules/profiles/components/layout/ProfileViewLayout.vue";
 import AppLoader from "@/modules/ui/components/loader/AppLoader.vue";
 import { useRouter } from "vue-router";
-import { watch, ref, computed } from "vue";
+import { watch, ref, computed, toRefs } from "vue";
 
 const { visible, icon, iconColor, iconClass, title, message } = toRefs(
   useGlobalDialogStore()
@@ -16,7 +15,7 @@ const { visible, icon, iconColor, iconClass, title, message } = toRefs(
 const layout = ref<string | undefined>();
 const router = useRouter();
 
-watch(router.currentRoute, (to, from) => {
+watch(router.currentRoute, (to) => {
   layout.value = to.meta?.layout;
 });
 

@@ -37,7 +37,7 @@ export async function withTransaction<T>(
   options?: TransactionOptions,
 ): Promise<T> {
   return new Promise<T>(async (resolve, reject) => {
-    const transaction = await startTransaction(connection);
+    const transaction = await startTransaction(connection, options);
     try {
       const result = await handler(transaction);
       await commitTransaction(transaction);

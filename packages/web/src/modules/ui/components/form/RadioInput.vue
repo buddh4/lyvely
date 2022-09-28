@@ -27,7 +27,6 @@ import {
   useBaseInputProps,
   useBaseInputSetup,
 } from "@/modules/ui/components/form/BaseInput";
-import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
 import { SetupContext } from "vue";
 
 type Props = IBaseInputProps;

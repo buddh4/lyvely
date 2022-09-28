@@ -26,7 +26,7 @@ const colorStyle = computed(() => ({
 }));
 const colorPickerStyle = ref({ top: "0", left: "0" });
 
-function clickColorBox(evt: { clientX: number; clientY: number }) {
+function clickColorBox() {
   showColorPicker.value = true;
   colorPickerStyle.value.top =
     colorInput.value!.offsetTop + 2 + colorInput.value!.offsetHeight + "px";

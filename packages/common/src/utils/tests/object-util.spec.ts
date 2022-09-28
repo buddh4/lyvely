@@ -1,10 +1,6 @@
 import { findByPath } from '@/utils';
 import { expect } from '@jest/globals';
 
-class TestClass {
-  constructor(public field: string, public sub?: TestClass) {}
-}
-
 describe('object util', () => {
   describe('findByPath', function () {
     it('find sub field', () => {

@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Tag } from '../../tags';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { assureObjectId, EntityIdentity, EntityValidationException } from '@/modules/core';
 import { ProfileDao } from '../daos';
 import { Profile } from '../schemas';
-import { EntityValidationException } from '../../core/exceptions';
 
 @Injectable()
 export class ProfileTagsService {

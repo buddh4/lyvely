@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './schemas';
 import { UserDao } from './daos';
-import { RefreshToken } from './schemas';
+import { RefreshToken, User } from './schemas';
 import { ProfileType } from '@lyvely/common';
-import { IBaseQueryOptions } from '../core/db/abstract.dao';
+import { IBaseQueryOptions } from '@/modules/core';
 
 @Injectable()
 export class UsersService {

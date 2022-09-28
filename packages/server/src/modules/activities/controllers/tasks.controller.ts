@@ -15,13 +15,13 @@ import {
   UpdateTaskDto,
   EditTaskResponseDto,
   TaskModel,
+  TagModel,
 } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
 import { ContentController, ContentType, ProfileContentRequest } from '../../content';
 import { ProfileRequest } from '../../profiles';
 import { isTaskContent } from '../utils/activity.utils';
 import { EntityNotFoundException } from '../../core/exceptions';
-import { TagModel } from '@lyvely/common';
 
 @ContentController('tasks')
 // TODO: implement feature registration @Feature('content.activities.tasks')

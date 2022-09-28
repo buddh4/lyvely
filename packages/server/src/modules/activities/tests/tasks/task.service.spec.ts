@@ -27,7 +27,7 @@ describe('TaskService', () => {
   describe('Task service', () => {
     it('create', async () => {
       const { user, profile } = await testDataUtils.createUserAndProfile();
-      const t = Task.create(profile, user, {
+      Task.create(profile, user, {
         title: 'Do something!',
         score: 5,
         interval: CalendarIntervalEnum.Monthly,
@@ -138,7 +138,7 @@ describe('TaskService', () => {
       });
 
       it('set done on per-user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, profile } = await testDataUtils.createSimpleGroup();
 
         const task = await taskService.createContent(
           profile,
@@ -194,7 +194,7 @@ describe('TaskService', () => {
       });
 
       it('set multiple done by single user on per-user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, profile } = await testDataUtils.createSimpleGroup();
 
         const task = await taskService.createContent(
           profile,

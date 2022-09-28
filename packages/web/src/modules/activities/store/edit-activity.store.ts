@@ -17,7 +17,7 @@ import { useTaskPlanStore } from "@/modules/activities/store/task-plan.store";
 import { useHabitPlanStore } from "@/modules/activities/store/habit-plan.store";
 import { computed } from "vue";
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import useEditModelStore from "@/modules/common/stores/editModelStore";
+import useEditModelStore from "@/modules/common/stores/edit-model.store";
 import { findFocusable } from "@/modules/ui/utils";
 
 type EditModel = UpdateHabitDto | UpdateTaskDto;

@@ -14,6 +14,7 @@ export const latestProfileId =
 
 export const useProfileStore = defineStore("profile", () => {
   const profile = ref<ProfileWithRelationsDto>();
+  const locale = computed(() => profile.value?.locale);
   const tagOptions = computed(
     () => profile.value?.tags?.map((tag: TagModel) => tag.name) || []
   );
@@ -74,6 +75,7 @@ export const useProfileStore = defineStore("profile", () => {
 
   return {
     profile,
+    locale,
     loadProfile,
     updateScore,
     tagOptions,

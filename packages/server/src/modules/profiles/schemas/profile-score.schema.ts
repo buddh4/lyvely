@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 import { BaseEntity } from '@/modules/core';
 import { User } from '../../users';
 import { Profile } from './profiles.schema';
-import { DeepPartial, toDate, UserAssignmentStrategy, CalendarDate } from '@lyvely/common';
-import { toTimingId } from '@lyvely/common';
+import { DeepPartial, toDate, UserAssignmentStrategy, CalendarDate, toTimingId } from '@lyvely/common';
 
 export interface IProfileScoreAction {
   _id: TObjectId;

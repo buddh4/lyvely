@@ -45,7 +45,7 @@ watch(filter, () => {
   }
 });
 
-watch(router.currentRoute, (to, from) => {
+watch(router.currentRoute, (to) => {
   if (to.fullPath !== fullPath) {
     // Prevent update loops
     fullPath = to.fullPath;

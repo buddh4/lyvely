@@ -1,8 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { User } from '../users';
 import { MongoError } from 'mongodb';
 import { RegisterDto } from '@lyvely/common';
-import { UserDao } from '../users';
+import { UserDao, User } from '../users';
 import { UserWithProfileAndRelations, ProfilesService } from '../profiles';
 import { MailService } from '../mails/services/mail.service';
 

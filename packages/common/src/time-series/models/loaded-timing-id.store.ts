@@ -1,6 +1,5 @@
 import { CalendarDate, toTimingId } from '@/calendar';
 import { DataPointIntervalFilter } from './data-point.model';
-import { getTimingIdsByRange, TimeSeriesRangeFilter } from './time-series-range-filter.model';
 
 export class LoadedTimingIdStore {
   private loadedTimingIds: Set<string> = new Set<string>();
@@ -27,7 +26,7 @@ export class LoadedTimingIdStore {
     }
 
     // Note: In an earlier implementation TimeSeriesRangeFilter was used instead of DataPointIntervalFilter
-    const tids = getTimingIdsByRange(new TimeSeriesRangeFilter({ from: date, to: date }));
+    //const tids = getTimingIdsByRange(new TimeSeriesRangeFilter({ from: date, to: date }));
 
     // TODO: Filter out already loaded levels
     // If we've already loaded today, we do not need to lead this year again so level is daily (unless week changed)

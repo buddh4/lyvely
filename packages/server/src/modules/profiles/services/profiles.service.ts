@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { User, UsersService } from '../../users';
-import { EntityIdentity } from '../../core/db/db.utils';
-import { ProfileType } from '@lyvely/common';
+import { ProfileType, ProfileUsage, BaseMembershipRole, ProfileVisibilityLevel } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { UserWithProfileAndRelations } from '../models';
-import { EntityNotFoundException, UniqueConstraintException } from '../../core/exceptions';
+import { EntityNotFoundException, UniqueConstraintException, EntityIdentity, withTransaction } from '@/modules/core';
 import { Profile, ICreateProfileOptions, ICreateProfileTypeOptions, ProfilesFactory } from '../schemas';
-import { ProfileUsage, BaseMembershipRole } from '@lyvely/common';
-import { withTransaction } from '../../core/db/transaction.util';
 import { InjectConnection } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 
@@ -98,6 +95,8 @@ export class ProfilesService {
    */
   protected async createProfile(owner: User, options: ICreateProfileTypeOptions): Promise<UserWithProfileAndRelations> {
     return withTransaction(this.connection, async (transaction) => {
+      // TODO (profile visibility) implement max profile visibility in configuration (default member)
+      options.visibility = ProfileVisibilityLevel.Member;
       const profile = await this.profileDao.save(ProfilesFactory.createProfile(owner, options), transaction);
 
       const [membership] = await Promise.all([

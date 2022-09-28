@@ -1,4 +1,4 @@
-import { CalendarDate, CalendarDateTime, dateTime } from '../interfaces';
+import { CalendarDateTime, dateTime } from '../interfaces';
 import { CalendarIntervalEnum } from './calendar-interval.enum';
 
 export const REGEX_TID = /^Y:\d{4};Q:[0-4];M:(?:[1-9]|1[0-2]);W:(?:[1-9]|[1-4]\d|5[0-3]);D:(?:[1-9]|[1-2]\d|3[0-1])$/;

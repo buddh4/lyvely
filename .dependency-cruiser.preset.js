@@ -31,7 +31,6 @@ module.exports = {
         orphan: true,
         pathNot: [
           '(^|/)\\.[^/]+\\.(js|cjs|mjs|ts|json)$', // dot files
-          '\\.vue$', // currently does not seem to work with vue sfc
           '\\.d\\.ts$', // TypeScript declaration files
           '(^|/)tsconfig\\.json$', // TypeScript config
           '(^|/)(babel|webpack)\\.config\\.(js|cjs|mjs|ts|json)$', // other configs
@@ -95,7 +94,6 @@ module.exports = {
         pathNot: ['\\.(spec|test)\\.(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee\\.md)$', '/dist/'],
       },
       to: {
-        pathNot: ['/common/dist/cjs/index.js'],
         dependencyTypes: ['npm-no-pkg', 'npm-unknown'],
       },
     },

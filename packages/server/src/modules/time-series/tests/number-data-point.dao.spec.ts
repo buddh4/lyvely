@@ -100,11 +100,6 @@ describe('NumberDataPointDao', () => {
       expect(dataPoint.date.toISOString()).toEqual(getFullDayDate(date).toISOString());
     });
 
-    it('timestamp of past events is set to 23:59:59 on the same day', async () => {
-      const date = new Date('2022-02-20');
-      const { dataPoint } = await createEntity(date, CalendarIntervalEnum.Daily);
-    });
-
     it('create data point with timezone', async () => {
       const today = new Date();
       const date = new Date(`${formatDate(today)}T23:00:00.000+08:00`);

@@ -1,8 +1,5 @@
 import { useAuthStore } from "@/modules/users/store/auth.store";
-import { usePageStore } from "@/modules/core/store/page.store";
 import { NavigationGuardWithThis } from "vue-router";
-import { toRefs } from "vue";
-import * as i18n from "@/i18n";
 
 const publicRoutes = ["/login", "/register"];
 

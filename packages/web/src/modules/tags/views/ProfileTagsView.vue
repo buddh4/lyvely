@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { computed, ref, Ref, toRefs, onMounted } from "vue";
+import { computed, ref, onMounted } from "vue";
 import EditTagModal from "@/modules/tags/components/EditTagModal.vue";
 import { useEditTagStore } from "@/modules/tags/stores/editTagStore";
 import {
@@ -28,12 +28,6 @@ const setEditTag = (tag: TagModel) => {
 const setCreateTag = () => {
   setCreateModel(new CreateTagDto());
 };
-
-const search = ref(null) as Ref<HTMLElement | null>;
-
-function focusSearch() {
-  search.value?.focus();
-}
 
 function archive(tag: TagModel) {
   editTagStore.archiveModel(tag.id, tag);

@@ -9,6 +9,7 @@ import {
   isHabit,
   ActivityModel,
   SortResult,
+  ProfileType,
 } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { AbstractContentDao } from '../../content';
@@ -18,7 +19,6 @@ import { Model } from 'mongoose';
 import { IFetchQueryOptions, UpdateQuerySet } from '../../core/db/abstract.dao';
 import module from '../activities.meta';
 import { User } from '../../users';
-import { ProfileType } from '@lyvely/common';
 
 @Injectable()
 export class ActivitiesDao extends AbstractContentDao<Activity> {

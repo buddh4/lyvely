@@ -6,13 +6,12 @@ import { HabitDataPointDocument, UserDone } from '../schemas';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { ActivitiesDao } from '../daos/activities.dao';
-import { DataPointIntervalFilter, sortActivities } from '@lyvely/common';
+import { DataPointIntervalFilter, sortActivities, CalendarIntervalEnum } from '@lyvely/common';
 import { Profile } from '../../profiles';
 import { assureStringId } from '../../core/db/db.utils';
 import { User } from '../../users';
 import { HabitDataPointDao } from '../daos/habit-data-point.dao';
 import { ContentDocument, ContentScoreService, ContentScoreDao } from '../../content';
-import { CalendarIntervalEnum } from '@lyvely/common';
 
 describe('ActivityService', () => {
   let testingModule: TestingModule;

@@ -1,14 +1,14 @@
 import { User } from '../../users';
-import { ProfileType } from '@lyvely/common';
+import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '@lyvely/common';
 import { UserProfile } from './user-profiles.schema';
 import { GroupProfile } from './group-profiles.schema';
 import { Organization } from './organization.schema';
 import { IntegrityException } from '../../core/exceptions';
-import { ProfileUsage } from '@lyvely/common';
 
 export interface ICreateProfileOptions {
   organization?: Organization;
   usage?: ProfileUsage[];
+  visibility?: ProfileVisibilityLevel;
   name: string;
   description?: string;
   locale?: string;
@@ -43,6 +43,7 @@ export class ProfilesFactory {
     return new ProfileTypeClass(owner, {
       name: options.name,
       locale: options.locale,
+      visibility: options.visibility || ProfileVisibilityLevel.Member,
       description: options.description,
       usage: options.usage,
       type: options.type,

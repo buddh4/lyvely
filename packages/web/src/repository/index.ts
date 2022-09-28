@@ -1,10 +1,10 @@
-import Axios from "axios";
+import axios from "axios";
 import { Icons } from "@/modules/ui/components/icon/Icons";
 import { useGlobalDialogStore } from "@/modules/core/store/global.dialog.store";
 
 // TODO: abstract this away in config or something..
 const apiURL = import.meta.env.VITE_APP_API_URL || "http://localhost:8080";
-const repository = Axios.create({ baseURL: apiURL });
+const repository = axios.create({ baseURL: apiURL });
 
 export function createApiUrl(path: string) {
   path = path.charAt(0) === "/" ? path : "/" + path;

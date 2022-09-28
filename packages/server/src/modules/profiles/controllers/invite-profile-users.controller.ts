@@ -1,7 +1,6 @@
-import { ProfileController } from '../decorators';
+import { ProfileController, SomeProfilePermissions } from '../decorators';
 import { ENDPOINT_INVITE_PROFILE_USERS, InviteProfileMembers, InviteProfileUsersEndpoint } from '@lyvely/common';
 import { UseClassSerializer } from '../../core';
-import { SomeProfilePermissions } from '../decorators';
 import { Body, Post, HttpCode, HttpStatus, Request } from '@nestjs/common';
 import { ProfileRequest } from '../types';
 import { ProfilePermissions } from '../permissions';
@@ -16,7 +15,7 @@ export class InviteProfileUsersController implements InviteProfileUsersEndpoint 
   @HttpCode(HttpStatus.NO_CONTENT)
   @SomeProfilePermissions(ProfilePermissions.INVITE_MEMBER)
   async inviteMembers(@Body() inviteUsers: InviteProfileMembers, @Request() req: ProfileRequest) {
-    const { user, profileRelations } = req;
+    const { profileRelations } = req;
     const mailInvites = inviteUsers.mailInvites.map((invite) =>
       this.inviteProfileUsersService.inviteUserByMail(profileRelations, invite),
     );

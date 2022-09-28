@@ -1,6 +1,6 @@
-import { Type, DynamicModule, ForwardReference, Provider, Global } from '@nestjs/common';
+import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule } from '@/modules/core';
+import { CoreModule, ConfigurationPath, setTransactionSupport } from '@/modules/core';
 import { AuthModule } from './modules/auth/auth.module';
 import { RegisterModule } from './modules/register/register.module';
 import { UsersModule } from './modules/users';
@@ -9,14 +9,11 @@ import { PoliciesModule } from './modules/policies/policies.module';
 import { ContentModule } from './modules/content';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { TagsModule } from './modules/tags/tags.module';
-import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import configuration from './modules/core/config/configuration';
-import { ConfigurationPath } from './modules/core';
-import { setTransactionSupport } from '@/modules/core';
 import { MailsModule } from './modules/mails/mails.module';
 import {
   ConfigUserPermissionsService,

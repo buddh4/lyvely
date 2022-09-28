@@ -1,8 +1,14 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/modules/test';
-import { TOKEN_DEFAULT_PROFILE_PERMISSIONS, TOKEN_PROFILE_ROLES_DEFINITION, ProfilePermissionsService } from '../index';
-import { UserWithProfileAndRelations, Membership, ProfileRolePermission } from '../index';
+import {
+  TOKEN_DEFAULT_PROFILE_PERMISSIONS,
+  TOKEN_PROFILE_ROLES_DEFINITION,
+  ProfilePermissionsService,
+  UserWithProfileAndRelations,
+  Membership,
+  ProfileRolePermission,
+} from '../index';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { ContentVisibilityLevel, BaseMembershipRole, BaseProfileRelationRole } from '@lyvely/common';
 

@@ -1,14 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '../../profiles';
-import { DataPointNumberInputStrategy, REGEX_TID, UserAssignmentStrategy } from '@lyvely/common';
+import {
+  DataPointNumberInputStrategy,
+  REGEX_TID,
+  UserAssignmentStrategy,
+  applyValidationProperties,
+  CreateTaskDto,
+  UpdateTaskDto,
+  PropertiesOf,
+  TaskWithUsersModel,
+} from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '../../users';
 import { Activity } from './activity.schema';
 import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../time-series';
 import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
-import { applyValidationProperties, CreateTaskDto, UpdateTaskDto } from '@lyvely/common';
 import { cloneDeep } from 'lodash';
-import { PropertiesOf, TaskWithUsersModel } from '@lyvely/common';
 
 export type TaskDocument = Task & mongoose.Document;
 

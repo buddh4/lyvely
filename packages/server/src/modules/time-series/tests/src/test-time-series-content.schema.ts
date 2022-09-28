@@ -6,7 +6,6 @@ import {
   TimeSeriesContent,
   TimeSeriesContentSchemaFactory,
   DefaultDataPointConfigSchema,
-  DefaultDataPointConfig,
 } from '../../schemas';
 import * as mongoose from 'mongoose';
 import { DataPointInputStrategy } from '@lyvely/common';
@@ -16,8 +15,8 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
   @Prop()
   someTestField: string;
 
-  pushDataPointConfigRevision(rev: DefaultDataPointConfig) {
-    // Nothing todo
+  pushDataPointConfigRevision() {
+    /* Nothing to-do */
   }
 }
 
