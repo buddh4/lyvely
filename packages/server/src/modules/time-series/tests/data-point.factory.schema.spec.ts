@@ -2,6 +2,7 @@ import { expect } from '@jest/globals';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
+  NumberDataPointConfig,
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
@@ -13,6 +14,7 @@ import {
   INumberDataPointSettings,
   CalendarIntervalEnum,
 } from '@lyvely/common';
+import { DataPointConfig } from '@/modules/time-series/schemas/config/data-point-config.schema';
 
 describe('TimeSeriesDataPointConfigFactory', () => {
   describe('createConfig()', () => {
@@ -46,17 +48,10 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         settings,
       );
 
-      expect(config).toBeDefined();
-      expect(config instanceof CheckboxNumberDataPointConfig).toEqual(true);
+      expectConfig(config, 0, 2, 1);
       expect(config.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.valueType).toEqual(DataPointValueType.Number);
-      expect(config.min).toEqual(0);
-      expect(config.max).toEqual(2);
-      expect(config.optimal).toEqual(1);
-      expect(config.getSettings().min).toEqual(0);
-      expect(config.getSettings().max).toEqual(2);
-      expect(config.getSettings().optimal).toEqual(1);
     });
 
     it('create range config', async () => {
@@ -71,17 +66,10 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         settings,
       );
 
-      expect(config).toBeDefined();
-      expect(config instanceof RangeNumberDataPointConfig).toEqual(true);
+      expectConfig(config, 0, 2, 1);
       expect(config.strategy).toEqual(DataPointInputStrategy.RangeNumber);
       expect(config.inputType).toEqual(DataPointInputType.Range);
       expect(config.valueType).toEqual(DataPointValueType.Number);
-      expect(config.min).toEqual(0);
-      expect(config.max).toEqual(2);
-      expect(config.optimal).toEqual(1);
-      expect(config.getSettings().min).toEqual(0);
-      expect(config.getSettings().max).toEqual(2);
-      expect(config.getSettings().optimal).toEqual(1);
     });
 
     it('create spinner config', async () => {
@@ -96,17 +84,10 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         settings,
       );
 
-      expect(config).toBeDefined();
-      expect(config instanceof SpinnerNumberDataPointConfig).toEqual(true);
+      expectConfig(config, 0, 2, 1);
       expect(config.strategy).toEqual(DataPointInputStrategy.SpinnerNumber);
       expect(config.inputType).toEqual(DataPointInputType.Spinner);
       expect(config.valueType).toEqual(DataPointValueType.Number);
-      expect(config.min).toEqual(0);
-      expect(config.max).toEqual(2);
-      expect(config.optimal).toEqual(1);
-      expect(config.getSettings().min).toEqual(0);
-      expect(config.getSettings().max).toEqual(2);
-      expect(config.getSettings().optimal).toEqual(1);
     });
 
     it('create text config', async () => {
@@ -121,5 +102,15 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       expect(config.valueType).toEqual(DataPointValueType.Text);
       expect(config.getSettings()).toBeUndefined();
     });
+
+    function expectConfig(config: NumberDataPointConfig, min: number, max: number, optimal: number) {
+      expect(config instanceof RangeNumberDataPointConfig).toEqual(true);
+      expect(config.min).toEqual(min);
+      expect(config.max).toEqual(max);
+      expect(config.optimal).toEqual(optimal);
+      expect(config.getSettings().min).toEqual(min);
+      expect(config.getSettings().max).toEqual(max);
+      expect(config.getSettings().optimal).toEqual(optimal);
+    }
   });
 });

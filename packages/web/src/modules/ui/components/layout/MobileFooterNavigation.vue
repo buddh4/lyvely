@@ -67,7 +67,7 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
   border-bottom: 2px solid #48ce48;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 992px) {
   #page-footer {
     position: fixed;
     bottom: 0;

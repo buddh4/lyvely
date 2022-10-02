@@ -4,12 +4,12 @@ import { setPageTitle } from "@/modules/core/store/page.store";
 
 export default [
   {
-    path: "/login",
-    name: "Login",
-    component: () => import("../views/LoginView.vue"),
+    path: "/register",
+    name: "Register",
+    component: () => import("../views/UserRegistrationView.vue"),
     beforeEnter: [
       ifNotAuthenticated,
-      () => setPageTitle(translate("login.title")),
+      () => setPageTitle(translate("user-registration.title")),
     ],
   },
 ];

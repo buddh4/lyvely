@@ -1,23 +1,23 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { MongoError } from 'mongodb';
-import { RegisterDto } from '@lyvely/common';
+import { UserRegistrationDto } from '@lyvely/common';
 import { UserDao, User } from '../users';
 import { UserWithProfileAndRelations, ProfilesService } from '../profiles';
 import { MailService } from '../mails/services/mail.service';
 
 @Injectable()
-export class RegisterService {
+export class UserRegistrationService {
   constructor(private userDao: UserDao, private profileService: ProfilesService, private mailerService: MailService) {}
 
   /**
    * Creates a user
    *
-   * @param {RegisterDto} registerDto username, email, and password. Username and email must be
+   * @param {UserRegistrationDto} registerDto username, email, and password. Username and email must be
    * unique, will throw an email with a description if either are duplicates
    * @returns {Promise<UserDocument>} or throws an error
    * @memberof UsersService
    */
-  async register(registerDto: RegisterDto): Promise<UserWithProfileAndRelations> {
+  async register(registerDto: UserRegistrationDto): Promise<UserWithProfileAndRelations> {
     try {
       const user = await this.userDao.save(
         new User({
@@ -39,7 +39,7 @@ export class RegisterService {
     }
   }
 
-  private evaluateMongoRegistrationError(error: MongoError, createUserInput: RegisterDto): Error {
+  private evaluateMongoRegistrationError(error: MongoError, createUserInput: UserRegistrationDto): Error {
     if (error.code === 11000) {
       if (error.message.toLowerCase().includes(createUserInput.email.toLowerCase())) {
         return new BadRequestException(`e-mail ${createUserInput.email} is already registered`);

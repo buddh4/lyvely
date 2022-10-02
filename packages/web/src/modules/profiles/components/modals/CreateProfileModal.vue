@@ -61,7 +61,6 @@ const usageLabel = (usage: ProfileUsage) =>
       />
     </ly-form-model>
     <ly-alert :message="error" class="mt-2" />
-    <ly-screen-reader-validation-error :errors="validator.getErrors()" />
   </ly-modal>
 </template>
 

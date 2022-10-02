@@ -39,18 +39,26 @@ import LoaderBlock from "@/modules/ui/components/loader/LoaderBlock.vue";
 import FormModel from "@/modules/ui/components/form/FormModel.vue";
 import TagBadge from "@/modules/tags/components/TagBadge.vue";
 import ScreenReaderValidationError from "@/modules/ui/components/error/ScreenReaderValidationError.vue";
+import { useDayJsDateTimeAdapter } from "@lyvely/common";
+import resetStore from "@/util/reset-store.plugin";
 
 console.log("Starting...");
 
 defineLocales();
+useDayJsDateTimeAdapter();
 
 console.log("Initializing app...");
 
 eventBus.emit("app.create.pre");
 
 const pinia = createPinia();
+pinia.use(resetStore);
 pinia.use(({ store }) => {
   store.router = markRaw(router);
+});
+
+eventBus.on("auth.logout", () => {
+  console.log("logout");
 });
 
 const app = createApp(App);

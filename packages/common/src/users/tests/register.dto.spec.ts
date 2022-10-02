@@ -1,10 +1,10 @@
-import { RegisterDto } from '@/users';
+import { UserRegistrationDto } from '@/users';
 import { validate } from 'class-validator';
 
 describe('RegisterDto', () => {
   describe('validation', function () {
     it('initialization', async () => {
-      const model = new RegisterDto({
+      const model = new UserRegistrationDto({
         username: 'MyUser',
         email: 'test@mail.de',
         locale: 'de',
@@ -18,7 +18,7 @@ describe('RegisterDto', () => {
     });
 
     it('validation succeeds', async () => {
-      const model = new RegisterDto({
+      const model = new UserRegistrationDto({
         username: 'MyUser',
         email: 'test@mail.de',
         locale: 'de',
@@ -30,7 +30,7 @@ describe('RegisterDto', () => {
     });
 
     it('validation fails due to wrong email', async () => {
-      const model = new RegisterDto({
+      const model = new UserRegistrationDto({
         username: 'MyUser',
         email: 'test@mail',
         locale: 'de',
@@ -43,7 +43,7 @@ describe('RegisterDto', () => {
     });
 
     it('locale is optional', async () => {
-      const model = new RegisterDto({
+      const model = new UserRegistrationDto({
         username: 'MyUser',
         email: 'test@mail.de',
         password: 'password',
@@ -54,7 +54,7 @@ describe('RegisterDto', () => {
     });
 
     it('validation fails due to short username', async () => {
-      const model = new RegisterDto({
+      const model = new UserRegistrationDto({
         username: 'A',
         email: 'test@mail.de',
         locale: 'de',

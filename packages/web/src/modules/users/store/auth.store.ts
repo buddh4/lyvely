@@ -14,12 +14,12 @@ import { getDefaultLocale } from "@/util";
 export const vid = localStorageManager.getStoredValue("visitorId");
 
 type AuthStoreEvents = {
-  logout: undefined;
+  "auth.logout": undefined;
 };
 
 let refreshPromise: Promise<void> | undefined = undefined;
 
-export const useAuthStore = defineStore("profile", () => {
+export const useAuthStore = defineStore("user-auth", () => {
   const status = useStatus();
   const user = ref<IUser>();
   const emitter = useAsEmitter<AuthStoreEvents>();
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore("profile", () => {
   });
   const tokenExpiration = ref(0);
 
-  const isAuthenticated = computed(() => !!vid.getValue());
+  const isAuthenticated = computed(() => !!visitorId.value);
   // TODO: set locale from user..
   const locale = ref(getDefaultLocale());
 
@@ -75,22 +75,23 @@ export const useAuthStore = defineStore("profile", () => {
     await authRepository
       .logout(visitorId.value)
       .catch((err) => console.log(err));
-    await clear();
-    emitter.emit("logout");
+    clear();
+    emitter.emit("auth.logout");
+    eventBus.emit("auth.logout");
+    this.router.push("/login");
   }
 
-  async function clear() {
+  function clear() {
     useAuthStore().$reset();
     visitorId.value = undefined;
     localStorageManager.clear();
     sessionStorageManager.clear();
-    emitter.emit("clear");
   }
 
-  async function setUser(user: IUser) {
-    this.user = user;
-    if (user.locale) {
-      await setLocale(user.locale);
+  async function setUser(authUser: IUser) {
+    user.value = authUser;
+    if (user.value.locale) {
+      await setLocale(user.value.locale);
     }
   }
 
@@ -155,19 +156,25 @@ const authRepositoryPlugin = () => {
   };
 
   repository.interceptors.request.use(function (config) {
-    config.skipAuthRefresh = !useAuthStore().isAuthenticated;
+    if (typeof config.skipAuthRefresh !== "boolean") {
+      config.skipAuthRefresh = !useAuthStore().isAuthenticated;
+    }
     return config;
   });
 
   // Automatic refresh token call on failed request (401)
-  createAuthRefreshInterceptor(repository, () => {
+  createAuthRefreshInterceptor(repository, (options) => {
     const visitorId = useAuthStore().visitorId;
 
-    if (!visitorId) {
+    if (!visitorId || options?.config?.skipAuthRefresh) {
       return Promise.reject();
     }
 
-    return requestToken();
+    return Promise.resolve();
+
+    return requestToken().catch((err) => {
+      console.log(err);
+    });
   });
 
   eventBus.on("app.mount.post", () => {

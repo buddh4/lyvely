@@ -8,7 +8,8 @@
       :autocomplete="autocomplete ? 'on' : 'off'"
       :type="type"
       :class="cssClasses"
-      @change="$emit('change', $event)"
+      @change="onChange"
+      @focusout="onFocusOut"
     />
 
     <div v-if="hasError()" :class="errorClass">
@@ -37,6 +38,11 @@ export default {
   props: {
     ...useBaseInputProps(),
     type: { type: String, default: "text" },
+  },
+  methods: {
+    change: function(evt: any) {
+      this.$emit('change', evt);
+    }
   },
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {

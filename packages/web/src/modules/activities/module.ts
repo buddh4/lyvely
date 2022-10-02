@@ -2,7 +2,7 @@ import { IModule } from "@/modules/core/modules/interfaces/module.interface";
 
 export default () => {
   return {
-    getId: () => "activity",
+    getId: () => "activities",
     init: () => {
       console.log("works...");
     },

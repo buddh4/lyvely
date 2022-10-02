@@ -41,12 +41,8 @@ describe('Test Register Users', function () {
     cy.activityMenuItemShouldNotExist('Archived Habit', 'Archive');
     cy.activityMenuItemShouldNotExist('Archived Habit', 'Edit');
     cy.activityMenuItemShouldExist('Archived Habit', 'Restore');
-    cy.getActivity('Archived Habit')
-      .find('.form-check-input:not(:disabled)')
-      .should('have.length', 0);
+    cy.getActivity('Archived Habit').find('.form-check-input:not(:disabled)').should('have.length', 0);
 
-    cy.getActivity('Archived Habit')
-      .find('[type="checkbox"]:disabled')
-      .should('have.length', 5);
+    cy.getActivity('Archived Habit').find('[type="checkbox"]:disabled').should('have.length', 5);
   });
 });

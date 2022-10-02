@@ -95,6 +95,20 @@ export function useBaseInputSetup<T = unknown>(
 
   const validator = <ModelValidator | undefined>inject("validator", undefined);
 
+  function onChange(evt: any) {
+    if (validator && property?.length) {
+      validator.validate({ skipMissingProperties: true });
+    }
+
+    emit("change", evt);
+  }
+
+  function onFocusOut(evt: any) {
+    if (validator && property?.length) {
+      //validator.validateField(property);
+    }
+  }
+
   function hasError() {
     return validator && props.property
       ? !!validator.getError(props.property)
@@ -125,6 +139,8 @@ export function useBaseInputSetup<T = unknown>(
     editable,
     hasError,
     hasFocus,
+    onChange,
+    onFocusOut,
     inputLabel,
   };
 }

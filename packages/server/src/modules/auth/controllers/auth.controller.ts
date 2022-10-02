@@ -1,7 +1,7 @@
 import { Controller, Req, Post, UseGuards, Get, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { JwtAuthService } from '../services/jwt-auth.service';
-import { Public } from '../../core/decorators/public.decorator';
+import { Public } from '../../core';
 import { UserRequest } from '../../users';
 import { addMilliSeconds, UserModel, Headers } from '@lyvely/common';
 
@@ -56,10 +56,11 @@ export class AuthController {
     };
   }
 
+  @Public()
   @Post('logout')
   async logout(@Req() req: UserRequest) {
     const { user, res } = req;
-    if (req.header(Headers.X_VISITOR_ID)) {
+    if (user && req.header(Headers.X_VISITOR_ID)) {
       await this.authService.destroyRefreshToken(user, req.header(Headers.X_VISITOR_ID));
     }
     res.clearCookie(Cookies.REFRESH);

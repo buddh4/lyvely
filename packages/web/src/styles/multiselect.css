@@ -203,8 +203,7 @@ fieldset[disabled] .multiselect {
 .multiselect__current {
     min-height: 40px;
     overflow: hidden;
-    padding: 8px 12px 0;
-    padding-right: 30px;
+    padding: 8px 30px 0 12px;
     white-space: nowrap;
     border-radius: 5px;
     border: 1px solid #e8e8e8
@@ -279,10 +278,7 @@ fieldset[disabled] .multiselect {
 
 .multiselect--above .multiselect__content-wrapper {
     bottom: 100%;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
+    border-radius: 5px 5px 0 0;
     border-bottom: none;
     border-top: 1px solid #e8e8e8
 }

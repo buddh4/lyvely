@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, MaxLength, MinLength } from 'class-validator';
 import { BaseModel } from '@/models';
 
-export class RegisterDto extends BaseModel<RegisterDto> {
+export class UserRegistrationDto extends BaseModel<UserRegistrationDto> {
   @IsString()
   @Length(2, 40)
   @IsNotEmpty()

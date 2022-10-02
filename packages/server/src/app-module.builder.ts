@@ -2,7 +2,7 @@ import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from 
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CoreModule, ConfigurationPath, setTransactionSupport } from '@/modules/core';
 import { AuthModule } from './modules/auth/auth.module';
-import { RegisterModule } from './modules/register/register.module';
+import { UserRegistrationModule } from './modules/user-registration/user-registration.module';
 import { UsersModule } from './modules/users';
 import { ProfilesModule } from './modules/profiles';
 import { PoliciesModule } from './modules/policies/policies.module';
@@ -147,7 +147,7 @@ export class AppModuleBuilder {
       return this;
     }
 
-    return this.importModules(ProfilesModule, TagsModule, RegisterModule, ContentModule, TagsModule);
+    return this.importModules(ProfilesModule, TagsModule, UserRegistrationModule, ContentModule, TagsModule);
   }
 
   private initFeatureModules() {

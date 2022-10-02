@@ -1,11 +1,13 @@
 import { useAuthStore } from "@/modules/users/store/auth.store";
 import { NavigationGuardWithThis } from "vue-router";
 
-const publicRoutes = ["/login", "/register"];
+const publicRoutes = ["/", "/login", "/register"];
 
 const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
   const promises: Promise<any>[] = [];
   const authStore = useAuthStore();
+
+  debugger;
 
   // TODO: GUEST - needs to be aligned for guest mode feature
   if (!authStore.isAuthenticated && !publicRoutes.includes(to.path)) {
@@ -28,7 +30,7 @@ const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
     .catch((err) => {
       console.error(err);
       if (err?.response?.status === 401) {
-        next("/login");
+        authStore.logout();
       }
     });
 };

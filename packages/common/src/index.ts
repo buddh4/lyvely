@@ -8,6 +8,7 @@ export * from './tags';
 export * from './time-series';
 export * from './utils';
 export * from './users';
+export * from './user-registration';
 export * from './web';
 export * from './mappings';
 export * from './user-invites';

@@ -131,8 +131,15 @@
       "not_a_member": "Not a member?"
     }
   },
-  "register": {
-    "title": "Register"
+  "user_registration": {
+    "title": "Register",
+    "form": {
+      "fields": {
+        "username": "Username",
+        "password": "Password",
+        "email": "Email"
+      }
+    }
   },
   "login": {
     "title": "Login"

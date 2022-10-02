@@ -41,7 +41,7 @@ export type LyvelyAuthOptions = {
 
 export type UserPermissionOptions = Record<string, string[]>;
 
-type ModulesConfiguration = { [k: string]: object };
+type ModulesConfiguration = {} & { [k: string]: object };
 
 export type LyvelyAppConfiguration = {
   http?: LyvelyHttpOptions;

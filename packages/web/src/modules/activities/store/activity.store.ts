@@ -24,7 +24,7 @@ export interface IMoveActivityEvent {
   toInterval: CalendarIntervalEnum;
 }
 
-export const useActivityStore = defineStore("activity", () => {
+export const useActivityStore = defineStore("activities", () => {
   const status = useStatus();
   const habitPlanStore = useHabitPlanStore();
   const taskPlanStore = useTaskPlanStore();
