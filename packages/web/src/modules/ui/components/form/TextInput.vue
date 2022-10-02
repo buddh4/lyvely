@@ -39,14 +39,14 @@ export default {
     ...useBaseInputProps(),
     type: { type: String, default: "text" },
   },
-  methods: {
-    change: function(evt: any) {
-      this.$emit('change', evt);
-    }
-  },
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {
     return useFloatingInputSetup(props, context);
+  },
+  methods: {
+    change: function (evt: any) {
+      this.$emit("change", evt);
+    },
   },
 };
 </script>

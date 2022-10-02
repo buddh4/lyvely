@@ -11,10 +11,10 @@ const router = useRouter();
 const { model, validator, status } = storeToRefs(userRegistrationStore);
 
 watch(status, () => {
-  if(userRegistrationStore.isStatusSuccess()) {
+  if (userRegistrationStore.isStatusSuccess()) {
     router.push("/");
   }
-})
+});
 
 async function register() {
   userRegistrationStore.register();
@@ -24,10 +24,16 @@ async function register() {
 <template>
   <centered-layout-container>
     <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />{{ $t('users.labels.sign_up') }}
+      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
+      {{ $t("users.labels.sign_up") }}
     </template>
 
-    <ly-form-model v-model="model" :validator="validator" :status="status" label-key="user_registration.form.fields" >
+    <ly-form-model
+      v-model="model"
+      :validator="validator"
+      :status="status"
+      label-key="user_registration.form.fields"
+    >
       <ly-input-text property="username" :required="true" />
       <ly-input-text property="email" type="email" :required="true" />
       <ly-input-text property="password" type="password" :required="true" />

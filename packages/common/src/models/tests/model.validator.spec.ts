@@ -3,7 +3,6 @@ import { ModelValidator } from '@/models';
 
 class TestIdModel {
   @IsNumber()
-  @IsDefined()
   someNumber?: number;
 
   constructor(obj: Partial<TestIdModel>) {
@@ -13,12 +12,10 @@ class TestIdModel {
 
 class MultiFieldModel {
   @IsNumber()
-  @IsDefined()
   someNumber?: number;
 
-  @IsNumber()
   @IsString()
-  someString?: number;
+  someString?: string;
 
   constructor(obj: Partial<MultiFieldModel>) {
     Object.assign(this, obj);
@@ -34,6 +31,14 @@ describe('ModelValidator', () => {
 
     it('test validation succeeds', async () => {
       const validator = new ModelValidator(new TestIdModel({ someNumber: 3 }));
+      expect(await validator.validate()).toEqual(true);
+    });
+
+    it('fix validation', async () => {
+      const model = new MultiFieldModel({ someNumber: 3 });
+      const validator = new ModelValidator(model);
+      expect(await validator.validate()).toEqual(false);
+      model.someString = 'value';
       expect(await validator.validate()).toEqual(true);
     });
   });
@@ -71,7 +76,9 @@ describe('ModelValidator', () => {
       const validator = new ModelValidator(new TestIdModel({}));
       await validator.validate();
       expect(validator.getError('someNumber')).toBeDefined();
-      expect(validator.getError('someNumber')).toEqual('someNumber should not be null or undefined');
+      expect(validator.getError('someNumber')).toEqual(
+        'someNumber must be a number conforming to the specified constraints',
+      );
     });
   });
 

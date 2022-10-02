@@ -1,4 +1,4 @@
-import { UserRegistrationDto } from '@/users';
+import { UserRegistrationDto } from '@/user-registration';
 import { validate } from 'class-validator';
 
 describe('RegisterDto', () => {

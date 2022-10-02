@@ -48,7 +48,8 @@ function validate(): boolean {
 <template>
   <centered-layout-container>
     <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />{{ $t('users.labels.sign_in') }}
+      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
+      {{ $t("users.labels.sign_in") }}
     </template>
 
     <!-- Email input -->
@@ -94,7 +95,6 @@ function validate(): boolean {
     <ly-button class="primary w-full" :submit="true" @click="login">
       {{ $t("users.labels.sign_in") }}
     </ly-button>
-
 
     <!-- Register buttons -->
     <div class="text-center pt-4">

@@ -7,7 +7,7 @@ interface IProps {
   modelValue: object;
   validator?: ModelValidator;
   labelKey?: string;
-  status?: StatusStorePlugin
+  status?: StatusStorePlugin;
 }
 
 const props = defineProps<IProps>();
@@ -19,7 +19,10 @@ provide("validator", props.validator);
 
 <template>
   <slot></slot>
-  <ly-screen-reader-validation-error v-if="validator" :errors="validator.getErrors()" />
+  <ly-screen-reader-validation-error
+    v-if="validator"
+    :errors="validator.getErrors()"
+  />
   <ly-alert :message="status?.statusError?.value" />
 </template>
 
