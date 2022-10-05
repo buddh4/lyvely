@@ -2,8 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { getDefaultLocale, User, UserDocument } from '../schemas';
 import { Model } from 'mongoose';
-import { createContentTestingModule } from '../../test/utils/test.utils';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
+import { createContentTestingModule, TestDataUtils } from '@/modules/test';
 
 describe('Users schema', () => {
   let testingModule: TestingModule;
@@ -36,10 +35,14 @@ describe('Users schema', () => {
       expect(user.lowercaseUsername).toEqual('test');
       expect(user.password).toBeDefined();
       expect(user.password).not.toEqual('Password');
-      expect(user.email).toEqual('Tester@test.de');
-      expect(user.lowercaseEmail).toEqual('tester@test.de');
+      expect(user.email).toEqual('tester@test.de');
       expect(user.enabled).toEqual(true);
       expect(user.locale).toEqual(getDefaultLocale());
+
+      expect(user.emails).toBeDefined();
+      expect(user.emails[0].lowercaseEmail).toEqual(user.email);
+      expect(user.emails[0].email).toEqual('Tester@test.de');
+      expect(user.emails[0].verified).toEqual(false);
     });
   });
 

@@ -22,6 +22,12 @@ export const useUserRegistrationStore = defineStore("user-registration", () => {
     validator.value.setModel(model.value);
   }
 
+  async function validateEmail() {
+    validator.value.validateField('email').then((value) => {
+      userRegistrationService.
+    })
+  }
+
   return {
     ...status,
     model,

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { useStatus } from "@/store/status";
 import { ref } from "vue";
-import { validateEmail } from "@lyvely/common";
+import { isValidEmail } from "@lyvely/common";
 
 export const useInviteUsersStore = defineStore("invite-user", () => {
   const status = useStatus();
@@ -14,8 +14,8 @@ export const useInviteUsersStore = defineStore("invite-user", () => {
       .split(",")
       .map((email) => email.trim())
       .filter((email) => email?.length && !emails.value.includes(email));
-    const invalidEmailsArr = emailsArr.filter((email) => !validateEmail(email));
-    const validEmailsArr = emailsArr.filter(validateEmail);
+    const invalidEmailsArr = emailsArr.filter((email) => !isValidEmail(email));
+    const validEmailsArr = emailsArr.filter(isValidEmail);
 
     if (validEmailsArr.length) {
       emails.value.push(...validEmailsArr);

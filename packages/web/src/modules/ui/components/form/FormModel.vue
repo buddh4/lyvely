@@ -2,6 +2,7 @@
 import { provide, watch } from "vue";
 import { ModelValidator } from "@lyvely/common";
 import { StatusStorePlugin } from "@/store/status";
+import { FormModelData } from "@/modules/ui/components/form/BaseInput";
 
 interface IProps {
   modelValue: object;
@@ -12,9 +13,11 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-provide("model", props.modelValue);
-provide("labelKey", props.labelKey);
-provide("validator", props.validator);
+provide("formModelData", {
+  model: props.modelValue,
+  labelKey: props.labelKey,
+  validator: props.validator
+} as FormModelData);
 </script>
 
 <template>

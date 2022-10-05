@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ProfileMemberMailInvite } from '@lyvely/common';
 import { ProfilePermissionsService } from './profile-permissions.service';
 import { UserWithProfileAndRelations } from '../models';
-import { validateEmail } from '../../core/db/field.validator.util';
+import { validateEmail } from '@/modules/core';
 import { UsersService } from '../../users';
 import { MailService } from '../../mails/services/mail.service';
 

@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import bcrypt from 'bcrypt';
-import { Exclude } from 'class-transformer';
 import mongoose, { UpdateQuery } from 'mongoose';
 import { BaseEntity, validateEmail } from '@/modules/core';
 import { Length } from 'class-validator';
@@ -33,7 +32,26 @@ const ProfilesCountSchema = SchemaFactory.createForClass(ProfilesCount);
 
 export type UserDocument = User & mongoose.Document;
 
-@Exclude()
+@Schema({ _id: false })
+class UserEmail {
+  @Prop({ required: true, validate: { validator: validateEmail } })
+  email: string;
+
+  @Prop({ required: true, validate: { validator: validateEmail } })
+  lowercaseEmail: string;
+
+  @Prop({ type: Boolean })
+  verified: boolean;
+
+  constructor(email: string) {
+    this.email = email;
+    this.lowercaseEmail = email.toLowerCase();
+    this.verified = false;
+  }
+}
+
+const UserEmailSchema = SchemaFactory.createForClass(UserEmail);
+
 @Schema({ timestamps: true })
 export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @Prop({
@@ -43,21 +61,26 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   })
   email: string;
 
+  /**
+   * The main email address of the user used for authentication and default email address.
+   * Note: This email address is saved in lower case, the original email is available in the emails array.
+   */
+  @Prop({ type: [UserEmailSchema], required: true })
+  @PropertyType([UserEmail])
+  emails: UserEmail[];
+
   @Length(2, 40)
   @Prop({ required: true, unique: true })
   username: string;
+
+  @Prop({ required: true, unique: true })
+  lowercaseUsername: string;
 
   @Prop({ type: String })
   imageHash: string;
 
   @Prop({ required: true })
   password: string;
-
-  @Prop({ required: true, unique: true })
-  lowercaseUsername: string;
-
-  @Prop({ required: true, unique: true })
-  lowercaseEmail: string;
 
   @Prop({ default: true })
   enabled: boolean;
@@ -79,6 +102,17 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @Prop({ type: ProfilesCountSchema, required: true })
   profilesCount: ProfilesCount;
 
+  afterInit() {
+    if (this.email && !this.getUserEmail(this.email)) {
+      this.emails.push(new UserEmail(this.email));
+    }
+    this.email = this.email?.toLowerCase();
+  }
+
+  getUserEmail(email: string) {
+    return this.emails.find((userEmail) => userEmail.lowercaseEmail === email.toLowerCase());
+  }
+
   isAcitve() {
     return this.hasStatus(UserStatus.Active);
   }
@@ -92,8 +126,8 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   }
 
   getImageHash() {
-    if (!this.imageHash && this.lowercaseEmail) {
-      this.imageHash = crypto.createHash('sha256').update(this.lowercaseEmail).digest('hex');
+    if (!this.imageHash && this.email) {
+      this.imageHash = crypto.createHash('sha256').update(this.email).digest('hex');
     }
 
     return this.imageHash;
@@ -141,8 +175,8 @@ UserSchema.method('toJSON', function () {
 UserSchema.pre('validate', function (next) {
   const user = <UserDocument>this;
 
-  user.lowercaseUsername = user.username.toLowerCase();
-  user.lowercaseEmail = user.email.toLowerCase();
+  this.email = this.email?.toLowerCase();
+  this.lowercaseUsername = this.username.toLowerCase();
 
   // Make sure not to rehash the password if it is already hashed
   if (!user.isModified('password')) {
@@ -150,18 +184,10 @@ UserSchema.pre('validate', function (next) {
   }
 
   // Generate a salt and use it to hash the user's password
-  bcrypt.genSalt(10, (genSaltError, salt) => {
-    if (genSaltError) {
-      return next(genSaltError);
-    }
-
-    bcrypt.hash(user.password, salt, (err, hash) => {
-      if (err) {
-        return next(err);
-      }
-      user.password = hash;
-      next();
-    });
+  bcrypt.hash(user.password, 10, (err, hash) => {
+    if (err) return next(err);
+    user.password = hash;
+    next();
   });
 });
 
@@ -172,46 +198,19 @@ UserSchema.pre('findOneAndUpdate', function (next) {
     this.update({}, { $set: { lowercaseUsername: updateFields.username.toLowerCase() } });
   }
 
-  if (updateFields.email) {
-    this.update({}, { $set: { lowercaseEmail: updateFields.email.toLowerCase() } });
-  }
-
   // Generate a salt and use it to hash the user's password
   if (updateFields.password) {
-    bcrypt.genSalt(10, (genSaltError, salt) => {
-      if (genSaltError) {
-        return next(genSaltError);
-      }
-
-      bcrypt.hash(updateFields.password, salt, (err, hash) => {
-        if (err) {
-          return next(err);
-        }
-        updateFields.password = hash;
-        next(null);
-      });
+    bcrypt.hash(updateFields.password, 10, (err, hash) => {
+      if (err) return next(err);
+      updateFields.password = hash;
+      next(null);
     });
   } else {
     next(null);
   }
 });
 
-UserSchema.methods.getLocale = function (): string {
-  const user = <UserDocument>this;
-
-  if (!user.locale) {
-    user.locale = getDefaultLocale();
-  }
-
-  return user.locale;
-};
-
 export function getDefaultLocale() {
   return Intl.DateTimeFormat().resolvedOptions().locale;
   //return process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || process.env.LANGUAGE;
 }
-
-// Mongoose Static Method - added so a service can validate an email with the same criteria the schema is using
-UserSchema.statics.validateEmail = function (email: string): boolean {
-  return validateEmail(email);
-};

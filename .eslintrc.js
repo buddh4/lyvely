@@ -73,13 +73,5 @@ module.exports = {
         extraFileExtensions: ['.vue'],
       },
     },
-    {
-      files: ['**/*.spec.ts', 'integration/**/*.ts'],
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        project: 'tsconfig.spec.json',
-        sourceType: 'module',
-      },
-    },
   ],
 };

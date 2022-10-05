@@ -1,4 +1,4 @@
-import { Gte, Lte, Match } from '@/models';
+import { Gte, Lte, Match } from '@/validation';
 import { IsNumber, IsOptional, IsString, validate, IsMongoId } from 'class-validator';
 
 class ObjectIdModel {

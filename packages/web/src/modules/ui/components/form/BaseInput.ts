@@ -3,6 +3,12 @@ import { merge, uniqueId } from "lodash";
 import { CssClassDefinition } from "@/util/component.types";
 import { ModelValidator } from "@lyvely/common";
 
+export interface FormModelData<T extends object = any> {
+  model: T;
+  labelKey?: string;
+  validator?: ModelValidator<T>;
+}
+
 export interface IBaseInputProps {
   id?: string;
   label?: string;
@@ -18,6 +24,7 @@ export interface IBaseInputProps {
   wrapperClass?: string;
   autocomplete?: boolean;
   error?: string;
+  autoValidation: boolean;
 }
 
 export function useBaseInputProps() {
@@ -32,6 +39,7 @@ export function useBaseInputProps() {
     readonly: { type: Boolean, default: false },
     required: { type: Boolean, default: false },
     autocomplete: { type: Boolean, default: false },
+    autoValidation: { type: Boolean, default: true },
     modelValue: {},
     cssClass: {},
     wrapperClass: {},
@@ -43,19 +51,15 @@ export interface IBaseInputSetupOptions {
   cssClass?: string;
 }
 
-export function useBaseInputSetup<T = unknown>(
+function getComputedInputValue<T>(
   props: IBaseInputProps,
-  { emit }: SetupContext,
-  options: IBaseInputSetupOptions = {}
+  emit: any,
+  formModelData?: FormModelData
 ) {
-  const root = ref<HTMLElement | null>(null);
+  const model = formModelData?.model;
+  const property = props.property;
 
-  const editable = computed(() => !props.disabled && !props.readonly);
-
-  const model = <any>inject("model", undefined);
-  const property = props.property || "";
-
-  const inputValue = model
+  return model && property
     ? computed({
         get: () => model[property],
         set: (val: T) => (model[property] = val),
@@ -64,16 +68,28 @@ export function useBaseInputSetup<T = unknown>(
         get: () => props.modelValue,
         set: (val: T) => emit("update:modelValue", val),
       });
+}
 
-  const labelKey = <any>inject("labelKey", undefined);
+function getComputedInputLabel(
+  props: IBaseInputProps,
+  formModelData?: FormModelData
+) {
+  const labelKey = formModelData?.labelKey;
+  const property = props.property;
 
-  const inputLabel = computed(() => {
+  return computed(() => {
     if (props.label) return props.label;
     if (labelKey && props.property) return labelKey + "." + property;
     return "";
   });
+}
 
-  const cssClasses = computed(() => {
+function getComputedCssClasses(
+  props: IBaseInputProps,
+  options: IBaseInputSetupOptions,
+  hasError: () => boolean
+) {
+  return computed(() => {
     let result: CssClassDefinition = [];
 
     result.push({ "is-invalid": hasError() });
@@ -92,56 +108,63 @@ export function useBaseInputSetup<T = unknown>(
 
     return result;
   });
+}
 
-  const validator = <ModelValidator | undefined>inject("validator", undefined);
+function getComputedInputError(
+  props: IBaseInputProps,
+  formModelData?: FormModelData<any>
+) {
+  return computed(() =>
+    formModelData?.validator && props.property
+      ? formModelData.validator.getError(props.property)
+      : props.error
+  );
+}
 
-  function onChange(evt: any) {
-    if (validator && property?.length) {
-      validator.validate({ skipMissingProperties: true });
-    }
+export function useBaseInputSetup<T = unknown>(
+  props: IBaseInputProps,
+  { emit }: SetupContext,
+  options: IBaseInputSetupOptions = {}
+) {
+  const root = ref<HTMLElement | null>(null);
+  const formModelData = inject<FormModelData<any>>("formModelData");
+  const validator = formModelData?.validator;
+  const useAutoValidation =
+    props.autoValidation && validator && props.property?.length;
 
-    emit("change", evt);
-  }
-
-  function onFocusOut(evt: any) {
-    if (validator && property?.length) {
-      //validator.validateField(property);
-    }
-  }
-
-  function hasError() {
-    return validator && props.property
+  const hasError = () =>
+    validator && props.property
       ? !!validator.getError(props.property)
       : !!props.error;
-  }
-
-  const inputError = computed(() => {
-    return validator && props.property
-      ? validator.getError(props.property)
-      : props.error;
-  });
-
-  function hasFocus() {
-    if (!root.value) {
-      return false;
-    }
-
-    return (
-      document.activeElement && root.value.contains(document.activeElement)
-    );
-  }
 
   return {
+    inputValue: getComputedInputValue<T>(props, emit, formModelData),
+    cssClasses: getComputedCssClasses(props, options, hasError),
     errorClass: "text-danger text-sm pl-1 pt-1",
-    inputValue,
-    inputError,
-    cssClasses,
-    editable,
+    inputError: getComputedInputError(props, formModelData),
+    inputLabel: getComputedInputLabel(props, formModelData),
+    editable: computed(() => !props.disabled && !props.readonly),
+    hasFocus: computed(
+      () =>
+        root.value &&
+        document.activeElement &&
+        root.value.contains(document.activeElement)
+    ),
     hasError,
-    hasFocus,
-    onChange,
-    onFocusOut,
-    inputLabel,
+    onChange: (evt: any) => {
+      if (useAutoValidation) {
+        validator.validateField(props.property!).then(() => {
+          emit("change", evt);
+        });
+      } else {
+        emit("change", evt);
+      }
+    },
+    onFocusOut: (evt: any) => {
+      if (useAutoValidation) {
+        validator.validateField(props.property!);
+      }
+    },
   };
 }
 

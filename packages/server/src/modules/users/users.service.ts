@@ -28,7 +28,7 @@ export class UsersService {
       return null;
     }
 
-    return this.userDao.findByEmail(email);
+    return this.userDao.findByMainEmail(email);
   }
 
   /**

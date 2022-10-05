@@ -1,9 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { MongoError } from 'mongodb';
-import { UserRegistrationDto } from '@lyvely/common';
+import { UserRegistrationDto, isValidEmail } from '@lyvely/common';
 import { UserDao, User } from '../users';
 import { UserWithProfileAndRelations, ProfilesService } from '../profiles';
 import { MailService } from '../mails/services/mail.service';
+import { IFieldValidationResult } from '@lyvely/common/src';
 
 @Injectable()
 export class UserRegistrationService {
@@ -37,6 +38,20 @@ export class UserRegistrationService {
     } catch (error) {
       throw this.evaluateMongoRegistrationError(error, registerDto);
     }
+  }
+
+  async validateEmail(email: string): Promise<IFieldValidationResult> {
+    const result: IFieldValidationResult = { property: 'email', isError: false };
+    if (!isValidEmail(email)) {
+      result.isError = true;
+      result.errors = ['user_registration.invalid_email'];
+      return result;
+    }
+
+    if (this.userDao.emailExists()) {
+    }
+
+    return result;
   }
 
   private evaluateMongoRegistrationError(error: MongoError, createUserInput: UserRegistrationDto): Error {

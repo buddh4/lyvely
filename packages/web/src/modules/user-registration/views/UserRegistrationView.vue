@@ -9,6 +9,7 @@ const userRegistrationStore = useUserRegistrationStore();
 const router = useRouter();
 
 const { model, validator, status } = storeToRefs(userRegistrationStore);
+const { isStatusLoading } = userRegistrationStore;
 
 watch(status, () => {
   if (userRegistrationStore.isStatusSuccess()) {
@@ -18,6 +19,14 @@ watch(status, () => {
 
 async function register() {
   userRegistrationStore.register();
+}
+
+function validateEmail() {
+  validator.value.validateField('email').then((value) => {
+    if(value) {
+      console.log('validate email');
+    }
+  })
 }
 </script>
 
@@ -35,13 +44,14 @@ async function register() {
       label-key="user_registration.form.fields"
     >
       <ly-input-text property="username" :required="true" />
-      <ly-input-text property="email" type="email" :required="true" />
+      <ly-input-text property="email" type="email" :required="true" @change="validateEmail" />
       <ly-input-text property="password" type="password" :required="true" />
     </ly-form-model>
 
     <ly-button
       class="primary mb-4 float-right"
       text="users.labels.sign_up"
+      :disabled="isStatusLoading()"
       @click="register"
     />
   </centered-layout-container>
