@@ -3,30 +3,22 @@ import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayo
 import { useUserRegistrationStore } from "@/modules/user-registration/stores/user-registration.store";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { watch } from "vue";
+import { PATH_VERIFY_EMAIL } from "../routes";
+import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 
 const userRegistrationStore = useUserRegistrationStore();
+const verifyEmailStore = useVerifyEmailStore();
 const router = useRouter();
 
-const { model, validator, status } = storeToRefs(userRegistrationStore);
-const { isStatusLoading } = userRegistrationStore;
-
-watch(status, () => {
-  if (userRegistrationStore.isStatusSuccess()) {
-    router.push("/");
-  }
-});
+const { model, validator } = storeToRefs(userRegistrationStore);
+const { status } = userRegistrationStore;
 
 async function register() {
-  userRegistrationStore.register();
-}
-
-function validateEmail() {
-  validator.value.validateField('email').then((value) => {
-    if(value) {
-      console.log('validate email');
+  userRegistrationStore.register().then(() => {
+    if(verifyEmailStore.isAwaiting()) {
+      router.push(PATH_VERIFY_EMAIL);
     }
-  })
+  });
 }
 </script>
 
@@ -37,23 +29,33 @@ function validateEmail() {
       {{ $t("users.labels.sign_up") }}
     </template>
 
-    <ly-form-model
-      v-model="model"
-      :validator="validator"
-      :status="status"
-      label-key="user_registration.form.fields"
-    >
-      <ly-input-text property="username" :required="true" />
-      <ly-input-text property="email" type="email" :required="true" @change="validateEmail" />
-      <ly-input-text property="password" type="password" :required="true" />
-    </ly-form-model>
+    <template #body>
+      <ly-form-model
+        v-model="model"
+        :validator="validator"
+        :status="status"
+        label-key="user_registration.form.fields"
+      >
+        <ly-input-text property="username" :required="true" />
+        <ly-input-text
+          property="email"
+          type="email"
+          :required="true"
+        />
+        <ly-input-text property="password" type="password" :required="true" />
+        <ly-input-text property="passwordRepeat" type="password" :required="true" />
+      </ly-form-model>
+    </template>
 
-    <ly-button
-      class="primary mb-4 float-right"
-      text="users.labels.sign_up"
-      :disabled="isStatusLoading()"
-      @click="register"
-    />
+    <template #footer>
+      <ly-button
+        class="primary mb-4 float-right"
+        text="users.labels.sign_up"
+        :disabled="status.isStatusLoading()"
+        @click="register"
+      />
+    </template>
+
   </centered-layout-container>
 </template>
 

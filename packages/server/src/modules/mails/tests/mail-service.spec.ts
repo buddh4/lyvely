@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule } from '../../test/utils/test.utils';
+import { createBasicTestingModule } from '@/modules/test';
 import { MailService } from '../services/mail.service';
 import fs from 'fs';
 

@@ -5,8 +5,4 @@ export class UserRegistrationService implements IUserRegistrationService {
   async register(model: UserRegistrationDto) {
     return registerRepository.register(model);
   }
-
-  async validateEmail(email: string): Promise<boolean> {
-    return registerRepository.validateEmail(email);
-  }
 }

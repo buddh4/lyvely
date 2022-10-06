@@ -9,24 +9,33 @@ interface IProps {
   validator?: ModelValidator;
   labelKey?: string;
   status?: StatusStorePlugin;
+  autoValidation?: boolean;
 }
 
-const props = defineProps<IProps>();
+const props = withDefaults(defineProps<IProps>(), {
+  validator: undefined,
+  labelKey: undefined,
+  status: undefined,
+  autoValidation: true
+});
 
 provide("formModelData", {
   model: props.modelValue,
   labelKey: props.labelKey,
-  validator: props.validator
+  validator: props.validator,
+  autoValidation: props.autoValidation
 } as FormModelData);
 </script>
 
 <template>
-  <slot></slot>
-  <ly-screen-reader-validation-error
-    v-if="validator"
-    :errors="validator.getErrors()"
-  />
-  <ly-alert :message="status?.statusError?.value" />
+  <div>
+    <slot></slot>
+    <ly-screen-reader-validation-error
+      v-if="validator"
+      :errors="validator.getErrors()"
+    />
+    <ly-alert :message="status?.statusError" />
+  </div>
 </template>
 
 <style scoped></style>

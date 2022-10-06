@@ -29,7 +29,8 @@
         "mixed",
         "common",
         "web",
-        "server"
+        "server",
+        "user"
       ]
     ]
   }

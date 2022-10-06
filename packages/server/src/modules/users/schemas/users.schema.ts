@@ -33,7 +33,7 @@ const ProfilesCountSchema = SchemaFactory.createForClass(ProfilesCount);
 export type UserDocument = User & mongoose.Document;
 
 @Schema({ _id: false })
-class UserEmail {
+export class UserEmail {
   @Prop({ required: true, validate: { validator: validateEmail } })
   email: string;
 
@@ -69,11 +69,14 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @PropertyType([UserEmail])
   emails: UserEmail[];
 
+  @Prop({ default: true })
+  enabled: boolean;
+
   @Length(2, 40)
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   username: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   lowercaseUsername: string;
 
   @Prop({ type: String })
@@ -81,9 +84,6 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
 
   @Prop({ required: true })
   password: string;
-
-  @Prop({ default: true })
-  enabled: boolean;
 
   @Prop({ default: Date.now })
   lastSeenAt: Date;

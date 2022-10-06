@@ -1,12 +1,24 @@
 import { Module } from '@nestjs/common';
-import { UserRegistrationController } from './user-registration.controller';
+import { UserRegistrationController } from './controllers/user-registration.controller';
 import { ProfilesModule } from '../profiles';
-import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema, UsersModule } from '../users';
-import { UserRegistrationService } from './user-registration.service';
+import { UsersModule } from '../users';
+import { UserRegistrationService } from './services/user-registration.service';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { ConfigurationPath } from '@/modules/core';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), UsersModule, ProfilesModule],
+  imports: [
+    UsersModule,
+    ProfilesModule,
+    JwtModule.registerAsync({
+      useFactory: async (configService: ConfigService<ConfigurationPath>) => ({
+        secret: configService.get('auth.jwt.token.secret'),
+        signOptions: { expiresIn: configService.get('auth.jwt.token.expiration', '1d') },
+      }),
+      inject: [ConfigService],
+    }),
+  ],
   controllers: [UserRegistrationController],
   providers: [UserRegistrationService],
 })

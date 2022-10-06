@@ -133,10 +133,14 @@
   },
   "user_registration": {
     "title": "Register",
+    "verify_email_title": "Verify your email",
+    "verify_email_text": "We've sent a verification email to: {email}",
+    "verify_email_subtext": "Click the link in your email to activate your account.",
     "form": {
       "fields": {
         "username": "Username",
         "password": "Password",
+        "passwordRepeat": "Repeat password",
         "email": "Email"
       }
     }
@@ -215,6 +219,9 @@
   },
   "error":{
     "unknown": "An unexpected error occurred, please try again later.",
+    "500": "A problem occurred while handling your request, please try again later.",
+    "403": "Your access to the requested service was denied.",
+    "404": "The requested service could not be found.",
     "network": {
       "title": "Network Error",
       "message": "The request failed due to a network issue, please make sure you are connected to the internet."

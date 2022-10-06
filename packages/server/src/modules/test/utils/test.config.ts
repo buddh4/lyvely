@@ -1,6 +1,8 @@
 import { LyvelyAppConfiguration } from '../../core';
 
 const testConfig: LyvelyAppConfiguration = {
+  appName: 'lyvely.test.app',
+  contactMail: 'test@test.de',
   http: {
     host: 'localhost',
     port: 8080,

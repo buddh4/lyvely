@@ -5,7 +5,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { FeatureGuard, CoreModule, AllExceptionsFilter, ConfigurationPath } from '@/modules/core';
+import { FeatureGuard, CoreModule, ServiceExceptionsFilter, ConfigurationPath } from '@/modules/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from './app-module.builder';
 import helmet, { HelmetOptions } from 'helmet';
 import csurf from 'csurf';
@@ -74,7 +74,7 @@ export class LyvelyServer {
   }
 
   private initGlobalFilters() {
-    this.nestApp.useGlobalFilters(new AllExceptionsFilter());
+    this.nestApp.useGlobalFilters(new ServiceExceptionsFilter());
   }
 
   private initMongoose() {

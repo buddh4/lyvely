@@ -2,7 +2,7 @@ import { Module, Global, DynamicModule } from '@nestjs/common';
 import { MailService } from './services/mail.service';
 import { MailerModule, MailerOptions } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-import { ConfigurationPath } from '../core';
+import { ConfigurationPath, ModuleMeta } from '../core';
 import { ConfigService } from '@nestjs/config';
 
 const DEFAULT_MAIL_CONFIG: MailerOptions = {
@@ -14,7 +14,6 @@ const DEFAULT_MAIL_CONFIG: MailerOptions = {
   },
   preview: false,
   template: {
-    dir: process.cwd() + '/mail/templates/',
     adapter: new PugAdapter(),
     options: {
       strict: true,
@@ -24,7 +23,18 @@ const DEFAULT_MAIL_CONFIG: MailerOptions = {
 
 @Global()
 @Module({
-  providers: [MailService],
+  providers: [
+    MailService,
+    {
+      provide: 'modules.mails.meta',
+      useValue: new ModuleMeta({
+        id: 'mails',
+        path: __dirname,
+        name: 'Mails',
+        description: 'Mails module used to sent emails',
+      }),
+    },
+  ],
   exports: [MailService],
 })
 export class MailsModule {
@@ -56,8 +66,9 @@ export class MailsModule {
 
 function setDefaults(options?: MailerOptions) {
   options = options || DEFAULT_MAIL_CONFIG;
+  options.template = options.template || {};
   // TODO: use better merge...
   options.template.adapter = options.template.adapter || DEFAULT_MAIL_CONFIG.template.adapter;
-  options.template.dir = options.template.dir || DEFAULT_MAIL_CONFIG.template.dir;
+  options.template.dir = options.template.dir || __dirname + '/templates';
   return options || DEFAULT_MAIL_CONFIG;
 }

@@ -19,6 +19,7 @@ export const useProfileRelationInfosStore = defineStore(
       return loadingStatus(
         profilesRelationInfosService.getUserProfileInfos(),
         status,
+        undefined,
         (result) => {
           relations.value = result;
         }

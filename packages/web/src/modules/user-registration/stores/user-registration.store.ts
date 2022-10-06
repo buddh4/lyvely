@@ -3,17 +3,25 @@ import { loadingStatus, useStatus } from "@/store/status";
 import { UserRegistrationDto, ModelValidator } from "@lyvely/common";
 import { ref } from "vue";
 import { UserRegistrationService } from "@/modules/user-registration/services/user-registration.service";
+import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 
 export const useUserRegistrationStore = defineStore("user-registration", () => {
   const status = useStatus();
+  const userRegistrationService = new UserRegistrationService();
+  const verifyEmailStore = useVerifyEmailStore();
   const model = ref(new UserRegistrationDto());
   const validator = ref(new ModelValidator(model.value));
-  const userRegistrationService = new UserRegistrationService();
 
   async function register() {
     if (!(await this.validator.validate())) return;
-
-    return loadingStatus(userRegistrationService.register(model.value), status);
+    return loadingStatus(
+      userRegistrationService.register(model.value),
+      status,
+      validator.value as ModelValidator
+    ).then(() => {
+      verifyEmailStore.setAwaiting(model.value.email);
+      reset();
+    });
   }
 
   function reset() {
@@ -22,14 +30,8 @@ export const useUserRegistrationStore = defineStore("user-registration", () => {
     validator.value.setModel(model.value);
   }
 
-  async function validateEmail() {
-    validator.value.validateField('email').then((value) => {
-      userRegistrationService.
-    })
-  }
-
   return {
-    ...status,
+    status,
     model,
     validator,
     register,

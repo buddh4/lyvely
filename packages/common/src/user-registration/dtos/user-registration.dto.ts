@@ -1,10 +1,12 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, MaxLength, MinLength } from 'class-validator';
 import { BaseModel } from '@/models';
+import { Match, NotMatch } from '@/validation';
 
 export class UserRegistrationDto extends BaseModel<UserRegistrationDto> {
   @IsString()
   @Length(2, 40)
   @IsNotEmpty()
+  @NotMatch('email')
   readonly username: string;
 
   @IsEmail()
@@ -24,4 +26,8 @@ export class UserRegistrationDto extends BaseModel<UserRegistrationDto> {
   //     { message: " A password at least contains one numeric digit, one supercase char and one lowercase char" }
   // )
   readonly password: string;
+
+  @IsNotEmpty()
+  @Match('password')
+  readonly passwordRepeat: string;
 }

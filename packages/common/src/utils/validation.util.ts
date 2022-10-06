@@ -44,6 +44,24 @@ export function getValidationFields<T>(model: T) {
   return new Set(validationMetas?.map((meta) => meta.propertyName) || []);
 }
 
-export function validateEmail(email: string) {
+export function isValidEmail(email: string) {
   return isEmail(email);
 }
+
+export const escapeHTML = (str: string) => {
+  if (!str) {
+    return;
+  }
+
+  return str.replace(
+    /[&<>'"]/g,
+    (tag) =>
+      ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;',
+      }[tag]),
+  );
+};

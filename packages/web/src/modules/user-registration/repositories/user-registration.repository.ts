@@ -10,9 +10,4 @@ export default {
   register(data: UserRegistrationDto) {
     return repository.post(`${endpoint}/`, data);
   },
-  validateEmail(email: string) {
-    return repository.post(`${endpoint}/validate-email`, {
-      params: { email: email },
-    });
-  },
 };

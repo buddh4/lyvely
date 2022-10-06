@@ -1,5 +1,5 @@
-import { Gte, Lte, Match } from '@/validation';
-import { IsNumber, IsOptional, IsString, validate, IsMongoId } from 'class-validator';
+import { Gte, Lte, Match, NotMatch } from '@/validation';
+import { IsNumber, IsOptional, IsString, validate, IsMongoId, IsEmail } from 'class-validator';
 
 class ObjectIdModel {
   @IsMongoId()
@@ -19,6 +19,19 @@ class PasswordModel {
   passwordRepeat: string;
 
   constructor(obj: Partial<PasswordModel>) {
+    Object.assign(this, obj);
+  }
+}
+
+class EmailModel {
+  @IsString()
+  @NotMatch('email')
+  username: string;
+
+  @IsEmail()
+  email: string;
+
+  constructor(obj: Partial<EmailModel>) {
     Object.assign(this, obj);
   }
 }
@@ -83,6 +96,16 @@ describe('Core Validators', () => {
       const baseModel = new PasswordModel({ password: 'xxx', passwordRepeat: 'xxx' });
       const result = await validate(baseModel);
       expect(result.length).toEqual(0);
+    });
+  });
+
+  describe('NotMatch', function () {
+    it('username should not match email', async () => {
+      const baseModel = new EmailModel({ username: 'test@test.de', email: 'test@test.de' });
+      const result = await validate(baseModel);
+      expect(result.length).toEqual(1);
+      expect(result[0].property).toEqual('username');
+      expect(result[0].constraints['NotMatch']).toEqual('username can not match with email');
     });
   });
 

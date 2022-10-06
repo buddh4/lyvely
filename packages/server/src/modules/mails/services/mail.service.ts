@@ -1,11 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { MailerService, ISendMailOptions } from '@nestjs-modules/mailer';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { MailerService, ISendMailOptions as MailerSendMailOptions } from '@nestjs-modules/mailer';
 import { SentMessageInfo } from 'nodemailer';
-import { ConfigurationPath, LyvelyMailOptions } from '../../core';
+import { ConfigurationPath, LyvelyAppConfiguration, LyvelyMailOptions, ModuleMeta, UrlGenerator } from '../../core';
 import { ConfigService } from '@nestjs/config';
 import fs from 'fs';
 import { Stream } from 'stream';
 import { noop } from '@lyvely/common';
+import pug from 'pug';
 
 export interface IMessageInfo {
   messageId: string;
@@ -17,19 +18,60 @@ export interface IStreamMessageInfo extends IMessageInfo {
   message: Stream;
 }
 
+export interface ISendMailOptions extends MailerSendMailOptions {
+  partials?: { [n: string]: string | { template: string; context: { [n: string]: any } } };
+}
+
 @Injectable()
 export class MailService {
   private readonly logger = new Logger(MailService.name);
 
   constructor(
     private readonly mailerService: MailerService,
-    private readonly configService: ConfigService<ConfigurationPath>,
+    private readonly configService: ConfigService<LyvelyAppConfiguration>,
+    private readonly urlGenerator: UrlGenerator,
   ) {}
 
   async sendMail(sendMailOptions: ISendMailOptions): Promise<SentMessageInfo> {
+    sendMailOptions.template = sendMailOptions.template || 'main';
+    this.setDefaultContext(sendMailOptions);
+    this.renderPartials(sendMailOptions);
+    console.log(sendMailOptions);
     return this.mailerService.sendMail(sendMailOptions).then((info: SentMessageInfo) => {
       return this.handleSentMessageInfo(info);
     });
+  }
+
+  private setDefaultContext(sendMailOptions: ISendMailOptions) {
+    const mailConfig = this.configService.get('mail');
+    sendMailOptions.context = sendMailOptions.context || {};
+    sendMailOptions.context['footerText'] = mailConfig.footerText || this.configService.get('appName');
+    sendMailOptions.context['footerSubText'] = mailConfig.footerSubtext || '';
+    sendMailOptions.context['logoImageUrl'] =
+      mailConfig.logoImageUrl || this.urlGenerator.getAppUrl('/images/mail_default_logo.png').href;
+    sendMailOptions.context['headerImageUrl'] =
+      mailConfig.headerImageUrl || this.urlGenerator.getAppUrl('/images/mail_default_header.png').href;
+    // TODO: translate...
+    sendMailOptions.context['unsubscribeLabel'] = mailConfig.unsubscribeLabel || 'unsubscribe';
+  }
+
+  private renderPartials(sendMailOptions: ISendMailOptions) {
+    if (!sendMailOptions.partials) {
+      return;
+    }
+
+    for (const variable in sendMailOptions.partials) {
+      const value = sendMailOptions.partials[variable];
+      if (typeof value === 'string') {
+        sendMailOptions.context[variable] = value;
+      } else if (value.template) {
+        const compileFunction = pug.compileFile(value.template, { cache: true });
+        sendMailOptions.context[variable] = compileFunction(value.context);
+        if (variable === 'body') {
+          sendMailOptions.context['rawBody'] = true;
+        }
+      }
+    }
   }
 
   public getMessageFileDir() {

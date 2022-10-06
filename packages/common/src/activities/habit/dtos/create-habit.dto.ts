@@ -3,7 +3,8 @@ import { CalendarIntervalEnum } from '@/calendar';
 import { DataPointNumberInputStrategy } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import { IsEnum, IsInt, IsNotEmpty, IsString, Length, Min, Max, IsOptional, IsArray, MaxLength } from 'class-validator';
-import { BaseModel, Gte, Lte } from '@/models';
+import { BaseModel } from '@/models';
+import { Gte, Lte } from '@/validation';
 import { ActivityModel } from '../../models';
 
 @Exclude()

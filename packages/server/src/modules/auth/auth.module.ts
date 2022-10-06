@@ -8,6 +8,7 @@ import { AuthController } from './controllers/auth.controller';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '../core';
+import { ModuleMeta } from '@/modules/core/modules/module.meta';
 
 @Module({
   imports: [
@@ -16,12 +17,27 @@ import { ConfigurationPath } from '../core';
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService<ConfigurationPath>) => ({
         secret: configService.get('auth.jwt.access.secret'),
-        signOptions: { expiresIn: '15m' },
+        signOptions: { expiresIn: configService.get('auth.jwt.access.expiration', '15m') },
       }),
       inject: [ConfigService],
     }),
   ],
-  providers: [JwtAuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy, JwtAuthGuard],
+  providers: [
+    JwtAuthService,
+    LocalStrategy,
+    JwtStrategy,
+    JwtRefreshStrategy,
+    JwtAuthGuard,
+    {
+      provide: 'modules.auth.meta',
+      useValue: new ModuleMeta({
+        id: 'auth',
+        path: __dirname,
+        name: 'Auth',
+        description: 'Lyvely user authentication module',
+      }),
+    },
+  ],
   controllers: [AuthController],
   exports: [JwtAuthService, JwtAuthGuard],
 })

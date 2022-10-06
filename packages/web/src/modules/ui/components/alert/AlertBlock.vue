@@ -15,11 +15,11 @@ const show = computed(() => {
 <template>
   <div
     v-if="show"
-    class="bg-red-100 border border-danger text-danger px-4 py-3 rounded relative dark:bg-main"
+    class="bg-red-100 border border-danger text-danger px-4 py-3 rounded relative dark:bg-main mb-1"
   >
     <slot>
       <ly-icon name="error" />
-      <span v-if="message && message.length">{{ $t(message) }}</span>
+      <span v-if="message && message.length" class="ml-1">{{ $t(message) }}</span>
     </slot>
   </div>
 </template>

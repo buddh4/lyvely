@@ -1,9 +1,8 @@
 import { StrictEndPoint } from '@/utils';
-import { UserRegistrationDto } from '../dtos/register.dto';
+import { UserRegistrationDto } from '../dtos/user-registration.dto';
 
 export interface IUserRegistrationService {
   register(model: UserRegistrationDto);
-  validateEmail(email: string): Promise<boolean>;
 }
 
 export type UserRegistrationEndpoint = StrictEndPoint<IUserRegistrationService>;

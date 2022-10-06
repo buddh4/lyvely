@@ -1,7 +1,11 @@
 import { useAuthStore } from "@/modules/users/store/auth.store";
-import { NavigationGuardWithThis } from "vue-router";
+import { NavigationGuardWithThis, RouteLocationNormalized } from "vue-router";
 
-const publicRoutes = ["/", "/login", "/register"];
+const publicRoutes = ["/", "/login"];
+
+function isPublicRoue(route: RouteLocationNormalized) {
+  return route.meta?.isPublic || publicRoutes.includes(route.path);
+}
 
 const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
   const promises: Promise<any>[] = [];
@@ -10,7 +14,7 @@ const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
   debugger;
 
   // TODO: GUEST - needs to be aligned for guest mode feature
-  if (!authStore.isAuthenticated && !publicRoutes.includes(to.path)) {
+  if (!authStore.isAuthenticated && !isPublicRoue(to)) {
     next("/login");
     return;
   }
@@ -20,7 +24,7 @@ const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
     return;
   }
 
-  if (!publicRoutes.includes(to.path) && !authStore.user) {
+  if (!isPublicRoue(to) && !authStore.user) {
     // Load user data if not in state, e.g. manual on page reload
     promises.push(authStore.loadUser());
   }

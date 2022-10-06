@@ -1,7 +1,15 @@
-import { Controller, Req, Post, UseGuards, Get, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import {
+  Controller,
+  Req,
+  Post,
+  UseGuards,
+  Get,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+  Inject,
+} from '@nestjs/common';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { JwtAuthService } from '../services/jwt-auth.service';
-import { Public, ConfigurationPath } from '../../core';
 import { UserRequest } from '../../users';
 import { addMilliSeconds, UserModel, Headers } from '@lyvely/common';
 
@@ -10,11 +18,18 @@ import { Cookies } from '../../core/web';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import JwtRefreshGuard from '../guards/jwt-refresh.guard';
+import { MailService } from '@/modules/mails';
+import { ModuleMeta, Public, ConfigurationPath } from '@/modules/core';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
-  constructor(private authService: JwtAuthService, private configService: ConfigService<ConfigurationPath>) {}
+  constructor(
+    private authService: JwtAuthService,
+    private configService: ConfigService<ConfigurationPath>,
+    private mailerService: MailService,
+    @Inject('modules.auth.meta') private meta: ModuleMeta,
+  ) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)
@@ -36,6 +51,16 @@ export class AuthController {
   @Public()
   @Get('config')
   async config(@Req() req: UserRequest) {
+    await this.mailerService.sendMail({
+      subject: 'Test',
+      partials: {
+        headline: 'This is a test',
+        body: {
+          template: this.meta.buildPath('/mails/test.pug'),
+          context: { name: 'world' },
+        },
+      },
+    });
     return {
       csrf_token: req.csrfToken(),
     };

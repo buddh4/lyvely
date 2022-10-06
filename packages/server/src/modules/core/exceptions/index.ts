@@ -1,3 +1,5 @@
+import { IFieldValidationResult } from '@lyvely/common';
+
 export class ServiceException extends Error {
   protected defaultMessage = 'Unknown service error';
 
@@ -7,6 +9,10 @@ export class ServiceException extends Error {
       this.message = this.defaultMessage;
     }
   }
+
+  public getResponse() {
+    return undefined;
+  }
 }
 
 export class EntityNotFoundException extends ServiceException {
@@ -15,6 +21,18 @@ export class EntityNotFoundException extends ServiceException {
 
 export class EntityValidationException extends ServiceException {
   protected defaultMessage = 'Entity validation failed.';
+  private readonly fields?: IFieldValidationResult[];
+
+  constructor(msgOrFields: IFieldValidationResult[] | string) {
+    super(typeof msgOrFields === 'string' ? msgOrFields : undefined);
+    if (Array.isArray(msgOrFields)) {
+      this.fields = msgOrFields;
+    }
+  }
+
+  public getResponse() {
+    return { fields: this.fields || [] };
+  }
 }
 
 export class UnauthenticatedServiceException extends ServiceException {

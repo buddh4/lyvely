@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TestDataUtils } from '@/modules/test';
 import { UserDao } from '../daos';
-import { User, UserDocument, UserSchema } from '../schemas';
+import { User, UserDocument, UserEmail, UserSchema } from '../schemas';
 import { Model } from 'mongoose';
 import { ProfileType, UserStatus } from '@lyvely/common';
 
@@ -125,7 +125,9 @@ describe('UserDao', () => {
 
     it('find user by any email address', async () => {
       const user = await createTestUser('test@test.de');
-      const searchUser = await userDao.findByAnyEmail('test@test.de');
+      user.emails.push(new UserEmail('test2@test.de'));
+      await userDao.updateOneById(user, user);
+      const searchUser = await userDao.findByAnyEmail('test2@test.de');
       expect(searchUser).toBeDefined();
       expect(searchUser instanceof User).toEqual(true);
       expect(searchUser._id.equals(user._id)).toBeDefined();

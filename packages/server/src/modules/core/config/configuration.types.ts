@@ -6,6 +6,8 @@ import { NestedPaths, TypeFromPath } from '@lyvely/common';
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
   messagesPath?: string;
+  footerText?: string;
+  footerSubtext?: string;
 };
 
 export type LyvelyHttpOptions = {
@@ -36,6 +38,10 @@ export type LyvelyAuthOptions = {
       expiration: string;
       samesite: string;
     };
+    token: {
+      secret: string;
+      expiration: string;
+    };
   };
 };
 
@@ -44,6 +50,8 @@ export type UserPermissionOptions = Record<string, string[]>;
 type ModulesConfiguration = {} & { [k: string]: object };
 
 export type LyvelyAppConfiguration = {
+  appName: string;
+  contactMail: string;
   http?: LyvelyHttpOptions;
   mongodb?: LyvelyMongoDBOptions;
   auth?: LyvelyAuthOptions;
@@ -55,6 +63,6 @@ export type LyvelyAppConfiguration = {
 };
 
 // TODO: This is not working for some types
-export type ConfigurationPath = LyvelyAppConfiguration & {
+export type ConfigurationPath = {
   [key in NestedPaths<LyvelyAppConfiguration>]: TypeFromPath<LyvelyAppConfiguration, key>;
 };

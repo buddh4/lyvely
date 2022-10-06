@@ -1,5 +1,5 @@
-import { IsDefined, IsNumber, IsString } from 'class-validator';
-import { ModelValidator } from '@/validation';
+import { IsNumber, IsString } from 'class-validator';
+import { IFieldValidationResult, ModelValidator } from '@/validation';
 
 class TestIdModel {
   @IsNumber()
@@ -89,6 +89,26 @@ describe('ModelValidator', () => {
       expect(isValid).toEqual(false);
       expect(validator.getError('someString')).toBeDefined();
       expect(validator.getError('someNumber')).toBeUndefined();
+    });
+  });
+
+  describe('custom rules', function () {
+    it('custom validation rule validation', async () => {
+      const validator = new ModelValidator(new MultiFieldModel({ someNumber: 2, someString: 'test' }), {
+        rules: {
+          someNumber: [
+            (val: number, result: IFieldValidationResult) => {
+              if (val < 3) {
+                result.errors.push('lower than 3');
+              }
+              return result;
+            },
+          ],
+        },
+      });
+
+      expect(await validator.validate()).toEqual(false);
+      expect(validator.getError('someNumber')).toEqual('lower than 3');
     });
   });
 });

@@ -307,6 +307,28 @@ input[type=range]:focus::-moz-range-thumb {
     @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-highlight focus:border-divide focus:ring focus:ring-blue-200 focus:ring-opacity-50;
 }
 
+.floating-input.loading {
+    animation-duration: 1.8s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeHolderShimmer;
+    animation-timing-function: linear;
+    background: #f6f7f8;
+    background: linear-gradient(to right, #fafafa 8%, #f4f4f4 38%, #fafafa 54%);
+    background-size: 1000px 640px;
+    position: relative;
+}
+
+@keyframes placeHolderShimmer{
+    0%{
+        background-position: -468px 0
+    }
+    100%{
+        background-position: 468px 0
+    }
+}
+
+
 .floating-input.attachment-r {
     @apply rounded-r-none;
 }

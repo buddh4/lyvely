@@ -7,6 +7,6 @@ import { UrlGenerator } from './services/url-generator.service';
 @Module({
   controllers: [],
   providers: [FeatureRegistry, FeatureGuard, UrlGenerator],
-  exports: [FeatureRegistry],
+  exports: [FeatureRegistry, FeatureGuard, UrlGenerator],
 })
 export class CoreModule {}

@@ -7,6 +7,7 @@ export interface FormModelData<T extends object = any> {
   model: T;
   labelKey?: string;
   validator?: ModelValidator<T>;
+  autoValidation: boolean;
 }
 
 export interface IBaseInputProps {
@@ -24,6 +25,7 @@ export interface IBaseInputProps {
   wrapperClass?: string;
   autocomplete?: boolean;
   error?: string;
+  loading?: boolean;
   autoValidation: boolean;
 }
 
@@ -40,6 +42,7 @@ export function useBaseInputProps() {
     required: { type: Boolean, default: false },
     autocomplete: { type: Boolean, default: false },
     autoValidation: { type: Boolean, default: true },
+    loading: { type: Boolean, default: false },
     modelValue: {},
     cssClass: {},
     wrapperClass: {},
@@ -106,6 +109,10 @@ function getComputedCssClasses(
       );
     }
 
+    if (props.loading) {
+      result.push("loading");
+    }
+
     return result;
   });
 }
@@ -130,7 +137,10 @@ export function useBaseInputSetup<T = unknown>(
   const formModelData = inject<FormModelData<any>>("formModelData");
   const validator = formModelData?.validator;
   const useAutoValidation =
-    props.autoValidation && validator && props.property?.length;
+    formModelData?.autoValidation !== false &&
+    props.autoValidation &&
+    validator &&
+    props.property?.length;
 
   const hasError = () =>
     validator && props.property

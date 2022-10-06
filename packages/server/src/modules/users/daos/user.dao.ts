@@ -20,7 +20,7 @@ export class UserDao extends AbstractDao<User> {
   }
 
   async findByAnyEmail(email: string): Promise<User | null> {
-    return this.findOne({ 'emails.lowercaseEmail': email.toLowerCase() });
+    return this.findOne({ $or: [{ email: email.toLowerCase() }, { 'emails.lowercaseEmail': email.toLowerCase() }] });
   }
 
   async incrementProfileCount(user: User, type: ProfileType, amount = 1, options?: IBaseQueryOptions) {
