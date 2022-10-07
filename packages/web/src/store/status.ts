@@ -163,8 +163,6 @@ function getFieldError(err: AxiosError) {
   if (err?.response?.status !== 400 || !err?.response?.data?.fields) {
     return undefined;
   }
-
-  if (!err?.response?.data?.fields) debugger;
 }
 
 function getErrorMessageByStatusCode(status: number) {

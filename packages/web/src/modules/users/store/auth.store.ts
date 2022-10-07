@@ -1,7 +1,5 @@
 import { defineStore } from "pinia";
-import { Status, useStatus } from "@/store/status";
-import authRepository from "@/modules/users/repositories/auth.repository";
-import { IUser } from "@lyvely/common";
+import { loadingStatus, useStatus } from "@/store/status";
 import { setLocale } from "@/i18n";
 import { localStorageManager, sessionStorageManager } from "@/util/storage";
 import { useAsEmitter } from "@/util/emitter";
@@ -10,6 +8,8 @@ import createAuthRefreshInterceptor from "axios-auth-refresh";
 import repository from "@/repository";
 import { eventBus } from "@/modules/core/events/global.emitter";
 import { getDefaultLocale } from "@/util";
+import { AuthService } from "@/modules/users/services/auth.service";
+import { ILoginResponse, UserModel, queuePromise } from "@lyvely/common";
 
 export const vid = localStorageManager.getStoredValue("visitorId");
 
@@ -20,61 +20,35 @@ type AuthStoreEvents = {
 let refreshPromise: Promise<void> | undefined = undefined;
 
 export const useAuthStore = defineStore("user-auth", () => {
-  const status = useStatus();
-  const user = ref<IUser>();
+  const user = ref<UserModel>();
+  const authService = new AuthService();
   const emitter = useAsEmitter<AuthStoreEvents>();
+  const tokenExpiration = ref(0);
+  const locale = ref(getDefaultLocale());
   const visitorId = computed<string | undefined>({
     get: () => vid.getValue() as string | undefined,
     set: (value: string | undefined) => vid.setValue(value),
   });
-  const tokenExpiration = ref(0);
-
   const isAuthenticated = computed(() => !!visitorId.value);
-  // TODO: set locale from user..
-  const locale = ref(getDefaultLocale());
 
-  async function login(username: string, password: string): Promise<boolean> {
-    try {
-      await clear();
-      status.setStatus(Status.LOADING);
-      const {
-        data: { user, vid, token_expiration },
-      } = await authRepository.login(username, password);
-
-      if (user && vid) {
-        await setUser(user);
-        status.setStatus(Status.SUCCESS);
-        visitorId.value = vid;
-        tokenExpiration.value = token_expiration;
-      } else {
-        status.setStatus(Status.ERROR);
-      }
-    } catch (err: any) {
-      console.log(err);
-      status.setStatus(Status.ERROR);
-      status.setError(
-        err?.response?.status === 401
-          ? "Invalid username or password."
-          : "User could not be authenticated."
-      );
-    }
-
+  async function handleLogin(result: ILoginResponse) {
+    clear();
+    const { user, vid, token_expiration } = result;
+    await setUser(user);
+    visitorId.value = vid;
+    tokenExpiration.value = token_expiration;
     return isAuthenticated.value;
   }
 
   async function loadUser() {
-    const {
-      data: { user, token_expiration },
-    } = await authRepository.loadUser();
+    const { user, token_expiration } = await authService.loadUser();
     await setUser(user);
     tokenExpiration.value = token_expiration;
     return user;
   }
 
   async function logout() {
-    await authRepository
-      .logout(visitorId.value)
-      .catch((err) => console.log(err));
+    await authService.logout(visitorId.value).catch(console.error);
     clear();
     emitter.emit("auth.logout");
     eventBus.emit("auth.logout");
@@ -88,7 +62,7 @@ export const useAuthStore = defineStore("user-auth", () => {
     sessionStorageManager.clear();
   }
 
-  async function setUser(authUser: IUser) {
+  async function setUser(authUser: UserModel) {
     user.value = authUser;
     if (user.value.locale) {
       await setLocale(user.value.locale);
@@ -96,27 +70,23 @@ export const useAuthStore = defineStore("user-auth", () => {
   }
 
   async function refreshToken() {
-    if (!isAuthenticated.value) return Promise.reject();
+    if (!isAuthenticated.value || !visitorId.value) return Promise.reject();
 
-    return (refreshPromise = refreshPromise
-      ? refreshPromise
-      : authRepository
-          .refresh(this.visitorId)
-          .then(({ data: { token_expiration } }) => {
-            refreshPromise = undefined;
-            tokenExpiration.value = token_expiration;
-          }));
+    return queuePromise("auth-store-refresh", () =>
+      authService.refresh(visitorId.value!)
+    ).then(({ token_expiration }) => {
+      refreshPromise = undefined;
+      tokenExpiration.value = token_expiration;
+    });
   }
 
   return {
-    ...status,
-    ...emitter,
     user,
     locale,
     visitorId,
     tokenExpiration,
     isAuthenticated,
-    login,
+    handleLogin,
     logout,
     refreshToken,
     loadUser,

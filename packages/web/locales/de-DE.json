@@ -1,5 +1,231 @@
 {
+  "modal": {
+    "aria": {
+      "root": "This is a modal window. To close this window use the cancel button or press escape or submit the modal by using the submit button."
+    },
+    "confirm": {
+      "aria": {
+        "root": "This is a confirm modal. You can either confirm or cancel your last action."
+      },
+      "default": {
+        "title": "Confirm action",
+        "text": "Do you really want to perform this action?",
+        "confirm": "Confirm"
+      }
+    }
+  },
+  "calendar": {
+    "today": "Today",
+    "interval": {
+      "0": "Unscheduled",
+      "1": "Yearly",
+      "2": "Quarterly",
+      "3": "Monthly",
+      "4": "Weekly",
+      "5": "Daily"
+    },
+    "plan": {
+      "nav-today": "Switch to today",
+      "aria": {
+        "move-success": "Item was successfully moved from index {from} to {to}",
+        "move-boundary": "Item cannot be moved further",
+        "drag-button": "Change order of current item {title}",
+        "nav-back": "Navigate back to {time}",
+        "nav-next": "Navigate forward to {time}",
+        "root": "Calendar plan accordion",
+        "header": "Calendar plan for {time}",
+        "drag-toggle-button": "Activates draggable buttons in calendar plan list items"
+      }
+    }
+  },
+  "filter": {
+    "all": "All",
+    "archive": "Show archived entries",
+    "empty": "No entries found for given filter."
+  },
   "message": {
-    "hello": "Hallo Welt"
+    "hello": "hello world"
+  },
+  "list": {
+    "empty": "No entries found."
+  },
+  "common": {
+    "create-new": "Create new",
+    "close": "Close",
+    "cancel": "Cancel",
+    "back": "Back",
+    "submit": "Submit",
+    "update": "Update",
+    "archived": "Archived",
+    "restore": "Restore default",
+    "archive": "Archive",
+    "unarchive": "Add from archive",
+    "filter": {
+      "search": "Search",
+      "clear": "Reset",
+      "title": "Filter view",
+      "archive": "Archived items"
+    },
+    "edit": "Edit",
+    "save": "Save"
+  },
+  "journals": {
+    "labels": {
+      "main_nav": "Journals"
+    }
+  },
+  "tags": {
+    "title": "Tags",
+    "archive": {
+      "confirm": {
+        "text": "Do you really want to archive this tag?"
+      }
+    },
+    "unarchive": {
+      "confirm": {
+        "text": "Do you really want to add this tag from archive?"
+      }
+    },
+    "view": {
+      "title": "Tags",
+      "aria": {
+        "title": "Tag overview list"
+      },
+      "search": "Search tags"
+    },
+    "labels": {
+      "main_nav": "Tags"
+    },
+    "create": {
+      "title": "Create Tag"
+    },
+    "edit": {
+      "title": "Edit Tag"
+    },
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "includeOnFilter": "Only include items on filter"
+    },
+    "help": {
+      "includeOnFilter": "This option will hide tagged items in some views unless a matching filter is selected."
+    }
+  },
+  "statistics": {
+    "labels": {
+      "main_nav": "Statistics"
+    }
+  },
+  "users": {
+    "logout": {
+      "logout": "Logout"
+    },
+    "login": {
+      "title": "Anmelden",
+      "sign_in": "Anmelden",
+      "not_a_member": "Du bist noch keinen Mitglied?",
+      "forgot_password": "Passwort vergessen?",
+      "remember_me": "Login speichern",
+      "fields": {
+        "email": "Email",
+        "password": "Passwort"
+      }
+    }
+  },
+  "user_registration": {
+    "title": "Registrieren",
+    "sign_up": "Registrieren",
+    "create_account": "Erstelle einen Account",
+    "is_member": "Du hast bereits einen Account?",
+    "verify_email": {
+      "title": "Verifiziere deine Email-Addresse",
+      "text": "Wir haben dir eine Email geschickt, um die folgende Email-Addresse zu verifizieren: {email}",
+      "subtext": "Klicke auf den Link in der E-Mail um deinen Account zu aktivieren."
+    },
+    "fields": {
+      "username": "Benutzername",
+      "password": "Passwort",
+      "passwordRepeat": "Passwort wiederholen",
+      "email": "Email"
+    }
+  },
+  "layout": {
+    "aria": {
+      "top-nav": "Top navigation",
+      "toggle-sidebar": "Hides the sidebar if pressed"
+    }
+  },
+  "profile": {
+    "labels": {
+      "organizations": "Organizations",
+      "profiles": "Profiles"
+    },
+    "messages": {
+      "no-organization-relation": "You are not a member of any organization."
+    },
+    "users": {
+      "title": "Profile Users",
+      "label": "Users"
+    },
+    "settings": {
+      "user": {
+        "title": "User profile settings",
+        "label": "User",
+        "displayName": "My display name in this profile",
+        "description": "My user description in this profile",
+        "archive": "Archive Membership"
+      },
+      "general": {
+        "name": "Profile Name"
+      },
+      "archive": {
+        "confirm": "Do you really want to archive this profile?"
+      },
+      "title": "Profile Settings",
+      "name": "Name",
+      "description": "Description",
+      "rename": "Rename",
+      "label": "Settings"
+    },
+    "usage": {
+      "private": "Private",
+      "family": "Family",
+      "business": "Business",
+      "school": "School",
+      "health": "Health",
+      "improvement": "Self-Improvement"
+    },
+    "invite": {
+      "title": "Invite Users",
+      "email": "Add emails",
+      "email-invalid": "The given email is not valid.",
+      "email-empty": "Please select at least one email",
+      "email-help": "Add multiple comma seperated emails"
+    },
+    "create": {
+      "title": "Create Profile",
+      "placeholders": {
+        "usage": "What is the purpose of this profile?"
+      },
+      "properties": {
+        "name": "Name",
+        "description": "Description",
+        "user": "Just for me",
+        "group": "For me and invited users"
+      }
+    },
+    "aria": {
+      "sidebar": "Navigation of profile {profile}"
+    }
+  },
+  "error":{
+    "unknown": "An unexpected error occurred, please try again later.",
+    "500": "A problem occurred while handling your request, please try again later.",
+    "403": "Your access to the requested service was denied.",
+    "404": "The requested service could not be found.",
+    "network": {
+      "title": "Network Error",
+      "message": "The request failed due to a network issue, please make sure you are connected to the internet."
+    }
   }
 }

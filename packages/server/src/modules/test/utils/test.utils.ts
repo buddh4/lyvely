@@ -17,8 +17,9 @@ import { ConfigModule } from '@nestjs/config';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import mongoose from 'mongoose';
 import { MailsModule } from '../../mails/mails.module';
-import { CoreModule } from '../../core/core.module';
+import { CoreModule } from '@/modules/core';
 import { AppConfigModule } from '@/modules/app-config';
+import { I18nModule } from '@/modules/i18n';
 
 export function createCoreTestingModule(
   key: string,
@@ -33,6 +34,7 @@ export function createCoreTestingModule(
       EventEmitterModule.forRoot({ wildcard: true }),
       CoreModule,
       AppConfigModule,
+      I18nModule,
       ConfigModule.forRoot({
         load: [() => import('./test.config').then((module) => module.default)],
         isGlobal: true,

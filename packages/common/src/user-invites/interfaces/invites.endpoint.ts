@@ -1,5 +1,5 @@
 import { UserInvites } from '../dtos';
-import { StrictEndPoint } from '@/utils';
+import { StrictEndPoint } from '@/endpoints';
 
 export interface IUserInvitesService {
   inviteUsers(model: UserInvites);

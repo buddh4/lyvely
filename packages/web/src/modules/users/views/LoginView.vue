@@ -5,19 +5,16 @@ import { useAuthStore } from "../store/auth.store";
 import { computed, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
+import LyFormModel from "@/modules/ui/components/form/FormModel.vue";
+import { useLoginStore } from "@/modules/users/store/login.store";
 
-const authStore = useAuthStore();
+const loginStore = useLoginStore();
 const router = useRouter();
-const input = reactive({ username: "", password: "" });
 
-const isLoginErrorState = computed(() => authStore.status === Status.ERROR);
-const { statusError } = storeToRefs(authStore);
+const { loginModel, validator } = storeToRefs(loginStore);
 
 async function login() {
-  authStore.resetStatus();
-  if (!validate()) return;
-
-  if (await authStore.login(input.username, input.password)) {
+  if (await loginStore.login()) {
     await router.replace({ path: "/" });
   }
 }
@@ -25,24 +22,6 @@ async function login() {
 const userNameError = ref("");
 const passwordError = ref("");
 
-function validate(): boolean {
-  passwordError.value = "";
-  userNameError.value = "";
-
-  if (input.username && input.password) {
-    return true;
-  }
-
-  if (!input.password) {
-    passwordError.value = "Password is required.";
-  }
-
-  if (!input.username) {
-    userNameError.value = "Username is required.";
-  }
-
-  return false;
-}
 </script>
 
 <template>
@@ -51,40 +30,26 @@ function validate(): boolean {
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       {{ $t("users.login.sign_in") }}
     </template>
-    <template #body>
-      <!-- Email input -->
-      <div class="mb-4">
-        <ly-input-text
-          id="login-username"
-          v-model="input.username"
-          :error="userNameError"
-          label="users.login.fields.username"
-          :required="true"
-        ></ly-input-text>
-      </div>
 
-      <!-- Password input -->
-      <div class="mb-4">
+    <template #body>
+      <ly-form-model id="login" v-model="loginModel" :validator="validator" :status="loginStore.status" label-key="users.login.fields" class="mb-4">
         <ly-input-text
-          id="login-password"
-          v-model="input.password"
-          :error="passwordError"
-          label="users.login.fields.password"
-          :required="true"
-          type="password"
-        ></ly-input-text>
-      </div>
+            property="email"
+            :required="true"
+        />
+        <ly-input-text
+            property="password"
+            type="password"
+            :required="true"
+        />
+      </ly-form-model>
 
       <!-- 2 column grid layout for inline styling -->
-      <div
-        class="flex justify-center items-center justify-between clearfix pb-2"
-      >
-        <ly-input-checkbox label="users.login.remember_me"></ly-input-checkbox>
-        <small class="float-right align-center">
-          <a href="#" class="no-underline font-bold">
+      <div class="flex justify-center items-center justify-between clearfix pb-2">
+        <ly-input-checkbox class="text-sm" label="users.login.remember_me" />
+          <a href="#" class="float-right align-center no-underline font-bold text-xs">
             {{ $t("users.login.forgot_password") }}
           </a>
-        </small>
       </div>
 
       <ly-alert

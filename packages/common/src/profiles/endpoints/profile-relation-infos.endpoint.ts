@@ -1,4 +1,4 @@
-import { StrictEndPoint } from '@/utils';
+import { StrictEndPoint } from '@/endpoints';
 import { ProfileRelationInfos } from '../dtos';
 
 export interface IProfileRelationInfosService {

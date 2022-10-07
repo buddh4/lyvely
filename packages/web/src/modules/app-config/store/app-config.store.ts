@@ -17,8 +17,8 @@ export const useAppConfigStore = defineStore("app-config", () => {
     loadingStatus(appConfigService.getConfig(), status).then(setConfig);
   }
 
-  function setConfig(config: AppConfig) {
-    config.value = config;
+  function setConfig(cfg: AppConfig) {
+    config.value = cfg;
   }
 
   function get<T extends ConfigKey>(
@@ -31,6 +31,7 @@ export const useAppConfigStore = defineStore("app-config", () => {
 
   return {
     get,
+    config,
     loadConfig,
     ...status,
   };

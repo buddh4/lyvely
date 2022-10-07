@@ -11,7 +11,7 @@ import {
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { JwtAuthService } from '../services/jwt-auth.service';
 import { UserRequest } from '../../users';
-import { addMilliSeconds, UserModel, Headers } from '@lyvely/common';
+import { addMilliSeconds, UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint } from '@lyvely/common';
 import { Cookies } from '../../core/web';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
@@ -20,9 +20,9 @@ import { MailService } from '@/modules/mails';
 import { ModuleMeta, Public } from '@/modules/core';
 import { ConfigurationPath } from '@/modules/app-config';
 
-@Controller('auth')
+@Controller(ENDPOINT_AUTH)
 @UseInterceptors(ClassSerializerInterceptor)
-export class AuthController {
+export class AuthController implements AuthEndpoint {
   constructor(
     private authService: JwtAuthService,
     private configService: ConfigService<ConfigurationPath>,
@@ -49,7 +49,7 @@ export class AuthController {
   @Public()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  refresh(@Req() req: UserRequest) {
+  async refresh(@Req() req: UserRequest) {
     const newAccessCookie = this.authService.createAccessToken(req.user);
     this.setAuthenticationCookie(req, newAccessCookie);
 
@@ -64,8 +64,10 @@ export class AuthController {
   @Post('logout')
   async logout(@Req() req: UserRequest) {
     const { user, res } = req;
-    if (user && req.header(Headers.X_VISITOR_ID)) {
-      await this.authService.destroyRefreshToken(user, req.header(Headers.X_VISITOR_ID));
+    let vid: string | string[] = req.header(Headers.X_VISITOR_ID);
+    if (user && vid) {
+      vid = Array.isArray(vid) ? vid[0] : vid;
+      await this.authService.destroyRefreshToken(user, vid as string);
     }
     res.clearCookie(Cookies.REFRESH);
     res.clearCookie(Cookies.AUTHENTICATION);
@@ -76,7 +78,6 @@ export class AuthController {
 
   @Get('user')
   async loadUser(@Req() req: UserRequest) {
-    console.log(req.csrfToken());
     return {
       user: new UserModel(req.user),
       token_expiration: ms(this.configService.get('auth.jwt.access.expiration')),

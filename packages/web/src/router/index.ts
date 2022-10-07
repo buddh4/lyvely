@@ -25,7 +25,7 @@ function registerRoutes() {
 registerRoutes();
 
 const router = createRouter({ routes, history: createWebHistory() });
-router.beforeEach(autoMessageLoaderGuard);
 router.beforeEach(appConfigLoader);
+router.beforeEach(autoMessageLoaderGuard);
 router.beforeEach(authenticationGuard);
 export default router;

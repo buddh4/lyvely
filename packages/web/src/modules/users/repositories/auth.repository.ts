@@ -1,41 +1,32 @@
 import repository from "@/repository";
-import { IUser, Headers } from "@lyvely/common";
+import {
+  Headers,
+  ILoadUserResponse,
+  ILoginResponse,
+  IRefreshTokenResponse,
+  ENDPOINT_AUTH,
+} from "@lyvely/common";
 
-const resource = "auth";
-
-interface ILoadUserResponse {
-  user: IUser;
-  token_expiration: number;
-}
-
-interface ILoginResponse extends ILoadUserResponse {
-  user: IUser;
-  vid: string;
-  token_expiration: number;
-}
-
-interface ITokenRefreshResponse {
-  token_expiration: number;
-}
+const resource = ENDPOINT_AUTH;
 
 export default {
-  loadUser() {
+  async loadUser() {
     return repository.get<ILoadUserResponse>(`${resource}/user`, {
       withCredentials: true,
     });
   },
-  loadConfig() {
+  async loadConfig() {
     return repository.get<any>(`${resource}/config`);
   },
-  login(username: string, password: string) {
+  async login(email: string, password: string) {
     return repository.post<ILoginResponse>(`${resource}/login`, {
-      username: username,
+      email: email,
       password: password,
     });
   },
-  refresh(visitorId?: string | null) {
-    return repository.post<ITokenRefreshResponse>(
-      `/auth/refresh`,
+  async refresh(visitorId?: string | null) {
+    return repository.post<IRefreshTokenResponse>(
+      `${resource}/refresh`,
       {},
       {
         skipAuthRefresh: true,
@@ -43,7 +34,7 @@ export default {
       }
     );
   },
-  logout(visitorId?: string | null) {
+  async logout(visitorId?: string | null) {
     return repository.post<ILoginResponse>(
       `${resource}/logout`,
       {},

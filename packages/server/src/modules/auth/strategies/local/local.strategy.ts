@@ -6,7 +6,7 @@ import { JwtAuthService } from '../../services/jwt-auth.service';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: JwtAuthService) {
-    super({ usernameField: 'username', passwordField: 'password' });
+    super({ usernameField: 'email', passwordField: 'password' });
   }
 
   async validate(username: string, password: string): Promise<any> {

@@ -7,17 +7,19 @@ function getModulePath(name) {
 }
 
 const MODULE_CORE = getModulePath('core');
-const MODULE_POLICIES =  getModulePath('policies');
-const MODULE_PERMISSIONS =  getModulePath('permissions');
-const MODULE_PROFILES =  getModulePath('profiles');
-const MODULE_CONTENT =  getModulePath('content');
-const MODULE_CALENDAR =  getModulePath('calendar');
-const MODULE_MAILS =  getModulePath('mail');
-const MODULE_TEST =  getModulePath('test');
-const MODULE_USERS =  getModulePath('users');
-const MODULE_TAGS =  getModulePath('tags');
-const MODULE_TIME_SERIES =  getModulePath('time-series');
-const MODULE_ACTIVITIES =  getModulePath('activities');
+const MODULE_I18N = getModulePath('i18n');
+const MODULE_APP_CONFIG = getModulePath('app-config');
+const MODULE_POLICIES = getModulePath('policies');
+const MODULE_PERMISSIONS = getModulePath('permissions');
+const MODULE_PROFILES = getModulePath('profiles');
+const MODULE_CONTENT = getModulePath('content');
+const MODULE_CALENDAR = getModulePath('calendar');
+const MODULE_MAILS = getModulePath('mail');
+const MODULE_TEST = getModulePath('test');
+const MODULE_USERS = getModulePath('users');
+const MODULE_TAGS = getModulePath('tags');
+const MODULE_TIME_SERIES = getModulePath('time-series');
+const MODULE_ACTIVITIES = getModulePath('activities');
 const NODE_MODULES = 'node_modules';
 const LYVELY_COMMON = '/common/dist';
 const NODE_CORE = '^((?!\\/).)*$';
@@ -34,14 +36,14 @@ function createModuleDeps(name, allowedDeps, extendDefaultDeps) {
   const self = getModulePath(name);
   allowedDeps = allowedDeps || [];
   extendDefaultDeps = extendDefaultDeps ?? true;
-  if(extendDefaultDeps) {
+  if (extendDefaultDeps) {
     allowedDeps = extendDefaults(allowedDeps);
   }
   return {
     name: `module-${name}-deps`,
     from: { path: self },
-    to: { pathNot: [self, ...allowedDeps] }
-  }
+    to: { pathNot: [self, ...allowedDeps] },
+  };
 }
 
 module.exports = {
@@ -54,63 +56,37 @@ module.exports = {
       MODULE_USERS,
       MODULE_PROFILES,
       MODULE_TAGS,
-      MODULE_TIME_SERIES]),
+      MODULE_TIME_SERIES,
+    ]),
+    createModuleDeps('app-config', [MODULE_I18N]),
     createModuleDeps('auth', [MODULE_USERS]),
-    createModuleDeps('calendar', ),
-    createModuleDeps('content', [
-      MODULE_PROFILES,
-      MODULE_USERS,
-      MODULE_POLICIES,
-      MODULE_TAGS]),
-    createModuleDeps('core', ),
-    createModuleDeps('mails', ),
-    createModuleDeps('permissions', ),
-    createModuleDeps('policies', ),
+    createModuleDeps('calendar'),
+    createModuleDeps('content', [MODULE_PROFILES, MODULE_USERS, MODULE_POLICIES, MODULE_TAGS]),
+    createModuleDeps('core'),
+    createModuleDeps('i18n'),
+    createModuleDeps('mails'),
+    createModuleDeps('permissions'),
+    createModuleDeps('policies'),
     createModuleDeps('profiles', [
       MODULE_USERS,
       MODULE_PERMISSIONS,
       MODULE_MAILS,
       MODULE_POLICIES,
       MODULE_CALENDAR,
-      MODULE_TAGS]),
-    createModuleDeps('register', [
-      MODULE_USERS,
-      MODULE_PROFILES,
-      MODULE_MAILS
+      MODULE_TAGS,
     ]),
+    createModuleDeps('register', [MODULE_USERS, MODULE_PROFILES, MODULE_MAILS]),
     createModuleDeps('statistics', [
       MODULE_USERS,
-      MODULE_ACTIVITIES // TODO: reverse this dependency...
+      MODULE_ACTIVITIES, // TODO: reverse this dependency...
     ]),
-    createModuleDeps('tags', [
-      MODULE_PROFILES,
-      MODULE_POLICIES
-    ]),
-    createModuleDeps('test', [
-      MODULE_USERS,
-      MODULE_PROFILES,
-      MODULE_POLICIES,
-      MODULE_MAILS,
-      MODULE_CONTENT
-    ]),
-    createModuleDeps('time-series', [
-      MODULE_CONTENT,
-      MODULE_USERS,
-      MODULE_PROFILES
-    ]),
-    createModuleDeps('user-invites', [
-      MODULE_USERS,
-      MODULE_PROFILES,
-      MODULE_POLICIES,
-      MODULE_MAILS,
-    ]),
-    createModuleDeps('user-permissions', [
-      MODULE_USERS,
-      MODULE_PERMISSIONS
-    ]),
+    createModuleDeps('tags', [MODULE_PROFILES, MODULE_POLICIES]),
+    createModuleDeps('test', [MODULE_USERS, MODULE_PROFILES, MODULE_POLICIES, MODULE_MAILS, MODULE_CONTENT]),
+    createModuleDeps('time-series', [MODULE_CONTENT, MODULE_USERS, MODULE_PROFILES]),
+    createModuleDeps('user-invites', [MODULE_USERS, MODULE_PROFILES, MODULE_POLICIES, MODULE_MAILS]),
+    createModuleDeps('user-permissions', [MODULE_USERS, MODULE_PERMISSIONS]),
     createModuleDeps('users', [MODULE_POLICIES]),
     /* rules from the 'recommended' preset: */
-
   ],
-  options: preset.options
+  options: preset.options,
 };

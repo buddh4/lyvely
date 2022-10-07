@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<IProps>(), {
 defineEmits(["click"]);
 
 const classNames =
-  "dropdown-link block px-4 py-2 text-sm capitalize hover:bg-main dark:hover:bg-main no-underline flex no-wrap min-w-48";
+  "dropdown-link block px-4 py-2 text-sm capitalize hover:bg-highlight dark:hover:bg-main no-underline flex no-wrap min-w-48";
 const { route, label, icon } = toRefs(props);
 </script>
 

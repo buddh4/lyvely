@@ -20,8 +20,8 @@ export class JwtAuthService {
     private configService: ConfigService<ConfigurationPath>,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findUserByUsername(username);
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersService.findUserByMainEmail(email);
     if (!user) {
       return false;
     }

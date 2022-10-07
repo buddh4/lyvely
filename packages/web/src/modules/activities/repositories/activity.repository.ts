@@ -16,11 +16,11 @@ export default {
     });
   },
 
-  getActivity(id: string) {
+  async getActivity(id: string) {
     return repository.get(`${resource}/${id}`);
   },
 
-  sort(cid: string, interval: CalendarIntervalEnum, attachToId?: string) {
+  async sort(cid: string, interval: CalendarIntervalEnum, attachToId?: string) {
     return repository.post<SortResult[]>(
       `${resource}/${cid}/sort`,
       new MoveAction({

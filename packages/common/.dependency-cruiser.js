@@ -19,6 +19,8 @@ const MODULE_TYPES = getModulePath('types');
 const MODULE_USER_INVITES = getModulePath('user-invites');
 const MODULE_USERS = getModulePath('users');
 const MODULE_UTILS = getModulePath('utils');
+const MODULE_ENDPOINTS = getModulePath('endpoints');
+const MODULE_VALIDATION = getModulePath('validation');
 const MODULE_WEB = getModulePath('web');
 const MODULE_COLLAB = getModulePath('collab');
 
@@ -58,19 +60,21 @@ module.exports = {
       MODULE_MODELS,
       MODULE_TAGS,
       MODULE_COLLAB,
+      MODULE_VALIDATION,
     ]),
+    createModuleDeps('app-config', [MODULE_ENDPOINTS]),
+    createModuleDeps('auth', [MODULE_ENDPOINTS]),
     createModuleDeps('calendar'),
     createModuleDeps('collab'),
-    createModuleDeps('app-config'),
     createModuleDeps('content', [MODULE_MODELS, MODULE_TAGS]),
     createModuleDeps('mappings', [MODULE_MODELS, MODULE_UTILS]),
     createModuleDeps('models', [MODULE_UTILS]),
-    createModuleDeps('profiles', [MODULE_TAGS, MODULE_MODELS, MODULE_UTILS]),
+    createModuleDeps('profiles', [MODULE_TAGS, MODULE_MODELS, MODULE_ENDPOINTS]),
     createModuleDeps('statistics', [MODULE_CALENDAR]),
     createModuleDeps('tags', [MODULE_MODELS]),
     createModuleDeps('time-series', [MODULE_CALENDAR, MODULE_MODELS, MODULE_CONTENT, MODULE_COLLAB]),
     createModuleDeps('types'),
-    createModuleDeps('user-invites', [MODULE_UTILS, MODULE_PROFILES, MODULE_MODELS]),
+    createModuleDeps('user-invites', [MODULE_ENDPOINTS, MODULE_PROFILES, MODULE_MODELS]),
     createModuleDeps('users', [MODULE_MODELS]),
     createModuleDeps('utils'),
     createModuleDeps('validation'),

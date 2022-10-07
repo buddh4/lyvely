@@ -1,4 +1,4 @@
-import { StrictEndPoint } from '@/utils';
+import { StrictEndPoint } from '@/endpoints';
 import { AppConfig } from './app-config.type';
 
 export interface IAppConfigService {

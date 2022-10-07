@@ -13,7 +13,7 @@ const { awaiting, email } = storeToRefs(verifyEmailStore);
   <centered-layout-container v-if="awaiting">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      {{ $t("user_registration.verify_email_title") }}
+      {{ $t("user_registration.verify_email.title") }}
     </template>
     <template #body>
       <div class="text-center">
@@ -21,7 +21,7 @@ const { awaiting, email } = storeToRefs(verifyEmailStore);
       </div>
 
       <i18n-t
-        keypath="user_registration.verify_email_text"
+        keypath="user_registration.verify_email.text"
         tag="p"
         class="text-center text-dimmed mb-5"
       >
@@ -31,7 +31,7 @@ const { awaiting, email } = storeToRefs(verifyEmailStore);
       </i18n-t>
 
       <ly-text-dimmed class="text-sm text-center">
-        {{ $t("user_registration.verify_email_subtext") }}
+        {{ $t("user_registration.verify_email_.subtext") }}
       </ly-text-dimmed>
     </template>
   </centered-layout-container>

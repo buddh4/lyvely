@@ -25,6 +25,10 @@ export type LyvelyMongoDBOptions = {
   transactions?: boolean;
 };
 
+export type I18NOptions = {
+  locales: string[];
+};
+
 export type LyvelyAuthOptions = {
   jwt: {
     'secure-cookies': boolean;
@@ -52,6 +56,7 @@ type ModulesConfiguration = {} & { [k: string]: object };
 export type LyvelyAppConfiguration = {
   appName: string;
   contactMail: string;
+  i18n?: I18NOptions;
   http?: LyvelyHttpOptions;
   mongodb?: LyvelyMongoDBOptions;
   auth?: LyvelyAuthOptions;

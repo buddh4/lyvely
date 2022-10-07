@@ -25,7 +25,7 @@ export class InviteProfileUsersService {
       return false;
     }
 
-    const existingUser = await this.usersService.findUserByEmail(invite.email);
+    const existingUser = await this.usersService.findUserByMainEmail(invite.email);
 
     // Create invite token
 

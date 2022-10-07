@@ -1,5 +1,5 @@
 import { CreateProfileDto, ProfileWithRelationsDto } from '../dtos';
-import { StrictEndPoint } from '@/utils';
+import { StrictEndPoint } from '@/endpoints';
 
 export interface IProfilesService {
   getProfile(id: string): Promise<ProfileWithRelationsDto>;

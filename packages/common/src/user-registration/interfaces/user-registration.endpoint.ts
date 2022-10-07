@@ -1,4 +1,4 @@
-import { StrictEndPoint } from '@/utils';
+import { StrictEndPoint } from '@/endpoints';
 import { UserRegistrationDto } from '../dtos/user-registration.dto';
 
 export interface IUserRegistrationService {

@@ -23,7 +23,7 @@ export class UsersService {
     return this.userDao.findByUsername(username);
   }
 
-  async findUserByEmail(email: string): Promise<User | null> {
+  async findUserByMainEmail(email: string): Promise<User | null> {
     if (!email) {
       return null;
     }

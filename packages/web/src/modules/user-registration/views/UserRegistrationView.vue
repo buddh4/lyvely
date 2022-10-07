@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { PATH_VERIFY_EMAIL } from "../routes";
 import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
+import LanguageChooser from "@/modules/ui/components/i18n/components/LanguageChooser.vue";
 
 const userRegistrationStore = useUserRegistrationStore();
 const verifyEmailStore = useVerifyEmailStore();
@@ -23,6 +24,10 @@ async function register() {
 </script>
 
 <template>
+  <div class="w-full absolute px-2">
+    <LanguageChooser class="float-right" />
+  </div>
+
   <centered-layout-container>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
@@ -64,6 +69,7 @@ async function register() {
           </router-link>
         </small>
       </div>
+
     </template>
   </centered-layout-container>
 </template>

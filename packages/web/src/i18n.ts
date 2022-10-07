@@ -16,12 +16,10 @@ export function getI18n() {
 }
 
 export function translate(key: string, options?: any) {
-  debugger;
   return (<any>getI18n().global).t(key, options);
 }
 
 export function setupI18n(options = { locale: "en-US" }) {
-  debugger;
   options.locale = options.locale;
   i18n = createI18n({
     legacy: false,
@@ -30,10 +28,6 @@ export function setupI18n(options = { locale: "en-US" }) {
   setLocale(options.locale);
   return i18n;
 }
-
-/*function transformLocale(locale: string) {
-  return locale.split("-")[0];
-}*/
 
 const loadedModules: Record<string, Record<string, boolean>> = {};
 const loadedCoreLocales: string[] = [];
@@ -74,7 +68,8 @@ export function loadModuleBaseMessages(locale: string) {
     return import(`./modules/${module.getId()}/locales/base.${locale}.json`)
       .then((data) => mergeMessages(locale, data))
       .then(() => setModuleMessagesLoaded(locale, module.getId(), "base"))
-      .then(() => nextTick());
+      .then(() => nextTick())
+      .catch(console.error);
   });
 }
 
@@ -110,6 +105,10 @@ export async function setLocale(locale: string) {
    * axios.defaults.headers.common['Accept-Language'] = locale
    */
   document.querySelector("html")?.setAttribute("lang", locale);
+}
+
+export function getLocale() {
+  return i18n.global.locale;
 }
 
 export async function loadLocaleMessages(locale: string) {

@@ -19,6 +19,7 @@ import {
   UserPermissionsServiceInjectionToken,
   UserPermissionsServiceProvider,
 } from './modules/user-permissions';
+import { I18nModule } from '@/modules/i18n/i18n.module';
 
 type Import = Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -82,6 +83,7 @@ export class AppModuleBuilder {
       MailsModule.fromConfig(),
       CoreModule,
       AppConfigModule,
+      I18nModule,
       PoliciesModule,
       UsersModule,
       AuthModule,

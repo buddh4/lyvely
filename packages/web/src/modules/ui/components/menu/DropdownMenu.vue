@@ -81,7 +81,7 @@ function toggle() {
             :aria-expanded="open.toString()"
             @click="toggle"
           >
-            <span v-if="label" class="label">{{ $t(label) }}</span>
+            <span v-if="label" class="label text-sm">{{ $t(label) }}</span>
             <ly-icon v-if="icon" :name="icon" />
           </button>
         </slot>

@@ -127,9 +127,11 @@
       "forgot_password": "Forgot password?",
       "remember_me": "Remember me",
       "fields": {
-        "username": "Username",
         "password": "Password",
         "email": "Email"
+      },
+      "errors": {
+        "invalid_input": "Invalid email or password"
       }
     }
   },
@@ -138,9 +140,11 @@
     "sign_up": "Sign up",
     "create_account": "Create an account",
     "is_member": "Already have an account?",
-    "verify_email_title": "Verify your email",
-    "verify_email_text": "We've sent a verification email to: {email}",
-    "verify_email_subtext": "Click the link in your email to activate your account.",
+    "verify_email": {
+      "title": "Verify your email",
+      "text": "We've sent a verification email to: {email}",
+      "subtext": "Click the link in your email to activate your account."
+    },
     "fields": {
       "username": "Username",
       "password": "Password",

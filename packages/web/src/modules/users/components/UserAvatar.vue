@@ -2,12 +2,12 @@
 import { computed } from "vue";
 import { createFileUrl } from "@/repository";
 import randomColor from "randomcolor";
-import { IUser } from "@lyvely/common";
+import { UserModel } from "@lyvely/common";
 import { useAuthStore } from "@/modules/users/store/auth.store";
 import { getContrast } from "@/modules/ui/utils";
 
 interface IProps {
-  user?: Pick<IUser, "id" | "imageHash" | "username">;
+  user?: Pick<UserModel, "id" | "imageHash" | "username">;
 }
 
 const props = defineProps<IProps>();

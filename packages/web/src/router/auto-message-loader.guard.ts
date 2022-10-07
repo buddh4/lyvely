@@ -10,8 +10,6 @@ const util: NavigationGuardWithThis<undefined> = async (to, from, next) => {
 
   const promises: Promise<any>[] = [];
 
-  debugger;
-
   if (!i18n.isGlobalMessagesLoaded(locale)) {
     showAppLoader.value = true;
     promises.push(i18n.setLocale(locale));

@@ -69,7 +69,6 @@ export default {
     const state = computed({
       get: () => props.modelValue,
       set: (val: any) => {
-        debugger;
         context.emit("update:modelValue", val);
       },
     });
