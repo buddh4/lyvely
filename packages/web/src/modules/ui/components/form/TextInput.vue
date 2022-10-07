@@ -21,7 +21,6 @@
     <label v-if="inputLabel" :for="id" :class="labelClass">
       {{ $t(inputLabel) }}
     </label>
-
   </div>
 </template>
 

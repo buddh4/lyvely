@@ -48,10 +48,7 @@ export const usePageStore = defineStore("page", () => {
 });
 
 export function setPageTitle(title: Array<string> | string) {
-  let profile;
-  try {
-    profile = useProfileStore().profile;
-  } catch (err) {}
+  const profile = useProfileStore().profile;
 
   title = Array.isArray(title) ? title : [title];
   let pageTitle = title.join(" - ");
@@ -59,10 +56,8 @@ export function setPageTitle(title: Array<string> | string) {
   if (pageTitle.length) pageTitle += " | ";
 
   if (profile) {
-    pageTitle += profile.name;
+    pageTitle += profile.name + " | ";
   }
-
-  if (pageTitle.length) pageTitle += " | ";
 
   pageTitle += import.meta.env.VITE_APP_BASEURL || window.location.hostname;
 
