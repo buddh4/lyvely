@@ -9,7 +9,6 @@
           :value="value"
           :class="cssClasses"
           :readonly="readonly"
-
           @change="onChange"
         />
       </label>
@@ -61,7 +60,7 @@ export default {
           props.modelValue.filter((val) => val !== evt.target.value)
         );
       } else {
-        baseInput.inputValue.value = !evt.target.checked
+        baseInput.inputValue.value = !evt.target.checked;
       }
     }
 

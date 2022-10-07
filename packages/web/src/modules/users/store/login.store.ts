@@ -23,7 +23,7 @@ export const useLoginStore = defineStore("user-login", () => {
       .catch(handleLoginError);
   }
 
-  async function handleLoginError(err: any) {
+  async function handleLoginError() {
     status.setError("users.login.errors.invalid_input");
     return false;
   }

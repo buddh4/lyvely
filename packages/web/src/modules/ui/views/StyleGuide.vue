@@ -67,7 +67,8 @@ const radioValue2 = ref("2");
 </script>
 
 <template>
-  <main-container>
+  <div class="flex items-center justify-center">
+  <main-container class="bg-main">
     <div class="prose dark:prose-invert">
       <h1>Style Guide</h1>
 
@@ -109,6 +110,7 @@ const radioValue2 = ref("2");
         {{ " " }}
         <ly-button class="danger">Danger</ly-button>
         {{ " " }}
+        <ly-button class="danger" :loading="true">Danger</ly-button>
       </p>
 
       <h3>Active</h3>
@@ -176,6 +178,23 @@ const radioValue2 = ref("2");
         <ly-button class="warning" :active="true">Warning</ly-button>
         {{ " " }}
         <ly-button class="danger" :active="true">Danger</ly-button>
+        {{ " " }}
+      </p>
+
+      <h3>Loading</h3>
+
+      <p>
+        <ly-button class="primary" :loading="true">Primary</ly-button>
+        {{ " " }}
+        <ly-button class="secondary" :loading="true">Secondary</ly-button>
+        {{ " " }}
+        <ly-button class="info" :loading="true">Info</ly-button>
+        {{ " " }}
+        <ly-button class="success" :loading="true">Success</ly-button>
+        {{ " " }}
+        <ly-button class="warning" :loading="true">Warning</ly-button>
+        {{ " " }}
+        <ly-button class="danger" :loading="true">Danger</ly-button>
         {{ " " }}
       </p>
 
@@ -439,6 +458,7 @@ const radioValue2 = ref("2");
       <br />
     </div>
   </main-container>
+  </div>
 </template>
 
 <style scoped>

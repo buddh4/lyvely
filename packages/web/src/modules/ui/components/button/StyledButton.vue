@@ -17,6 +17,7 @@ interface IProps {
   active?: boolean;
   border?: boolean;
   disabled?: boolean;
+  loading?: boolean;
   rounded?: boolean;
   isToggle?: boolean;
   route?: RouteRecord;
@@ -29,16 +30,18 @@ const props = withDefaults(defineProps<IProps>(), {
   border: true,
   text: "",
   disabled: false,
+  loading: false,
   rounded: true,
   route: undefined,
   isToggle: false,
   confirm: undefined,
 });
 
-function getClassNames(attrClasses: any, isActive?: boolean) {
+function getClassNames(attrClasses: any, isActive?: boolean, loading?: boolean) {
   return {
     "select-none": true,
     button: true,
+    loading: loading,
     "no-underline": true,
     "text-center": true,
     rounded: props.rounded,
@@ -124,10 +127,11 @@ function getAriaPressed($attrs: any) {
     ref="button"
     :aria-pressed="getAriaPressed($attrs)"
     :aria-selected="getAriaSelected($attrs)"
-    :class="getClassNames($attrs.class)"
+    :class="getClassNames($attrs.class, false, loading)"
     v-bind="$attrs"
     :type="buttonType"
-    :disabled="disabled"
+    :disabled="disabled || loading"
+    :data-loading="loading"
     @click.prevent="onClick"
   >
     <slot>{{ $t(text) }}</slot>
