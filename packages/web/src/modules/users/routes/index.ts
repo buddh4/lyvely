@@ -9,7 +9,7 @@ export default [
     component: () => import("../views/LoginView.vue"),
     beforeEnter: [
       ifNotAuthenticated,
-      () => setPageTitle(translate("login.title")),
+      () => setPageTitle(translate("users.login.title")),
     ],
   },
 ];

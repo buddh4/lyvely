@@ -2,9 +2,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserRegistrationDto, isValidEmail, IFieldValidationResult, escapeHTML } from '@lyvely/common';
 import { UserDao, User } from '../../users';
 import { ProfilesService } from '../../profiles';
-import { MailService } from '../../mails/services/mail.service';
+import { MailService } from '@/modules/mails';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, UrlGenerator } from '@/modules/core';
+import { UrlGenerator } from '@/modules/core';
+import { ConfigurationPath } from '@/modules/app-config';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

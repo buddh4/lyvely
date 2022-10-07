@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { UserRegistrationController } from './controllers/user-registration.controller';
-import { ProfilesModule } from '../profiles';
-import { UsersModule } from '../users';
+import { ProfilesModule } from '@/modules/profiles';
+import { UsersModule } from '@/modules/users';
 import { UserRegistrationService } from './services/user-registration.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/modules/core';
+import { ConfigurationPath } from '@/modules/app-config';
 
 @Module({
   imports: [

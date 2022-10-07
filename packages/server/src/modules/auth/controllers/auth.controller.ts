@@ -12,14 +12,13 @@ import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { JwtAuthService } from '../services/jwt-auth.service';
 import { UserRequest } from '../../users';
 import { addMilliSeconds, UserModel, Headers } from '@lyvely/common';
-
 import { Cookies } from '../../core/web';
-
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import JwtRefreshGuard from '../guards/jwt-refresh.guard';
 import { MailService } from '@/modules/mails';
-import { ModuleMeta, Public, ConfigurationPath } from '@/modules/core';
+import { ModuleMeta, Public } from '@/modules/core';
+import { ConfigurationPath } from '@/modules/app-config';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -44,25 +43,6 @@ export class AuthController {
       user: new UserModel(user),
       vid: vid,
       token_expiration: ms(this.configService.get('auth.jwt.access.expiration')),
-    };
-  }
-
-  // TODO: Maybe move to app controller...
-  @Public()
-  @Get('config')
-  async config(@Req() req: UserRequest) {
-    await this.mailerService.sendMail({
-      subject: 'Test',
-      partials: {
-        headline: 'This is a test',
-        body: {
-          template: this.meta.buildPath('/mails/test.pug'),
-          context: { name: 'world' },
-        },
-      },
-    });
-    return {
-      csrf_token: req.csrfToken(),
     };
   }
 

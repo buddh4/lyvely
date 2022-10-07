@@ -1,4 +1,5 @@
 export * from './activities';
+export * from './app-config';
 export * from './calendar';
 export * from './content';
 export * from './models';

@@ -1,7 +1,6 @@
 import { Module, Global } from '@nestjs/common';
-import { FeatureRegistry } from './features/feature.registry';
-import { FeatureGuard } from './features/feature.guard';
-import { UrlGenerator } from './services/url-generator.service';
+import { FeatureRegistry, FeatureGuard } from './features';
+import { UrlGenerator } from './services';
 
 @Global()
 @Module({

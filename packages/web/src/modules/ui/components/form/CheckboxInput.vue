@@ -1,5 +1,5 @@
 <template>
-  <fieldset>
+  <div>
     <div class="flex">
       <label class="inline-flex items-center">
         <input
@@ -24,7 +24,7 @@
     <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
       {{ $t(helpText) }}
     </span>
-  </fieldset>
+  </div>
 </template>
 
 <script lang="ts">

@@ -5,6 +5,7 @@ import { StatusStorePlugin } from "@/store/status";
 import { FormModelData } from "@/modules/ui/components/form/BaseInput";
 
 interface IProps {
+  id?: string;
   modelValue: object;
   validator?: ModelValidator;
   labelKey?: string;
@@ -13,29 +14,31 @@ interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  id: undefined,
   validator: undefined,
   labelKey: undefined,
   status: undefined,
-  autoValidation: true
+  autoValidation: true,
 });
 
 provide("formModelData", {
+  id: props.id,
   model: props.modelValue,
   labelKey: props.labelKey,
   validator: props.validator,
-  autoValidation: props.autoValidation
+  autoValidation: props.autoValidation,
 } as FormModelData);
 </script>
 
 <template>
-  <div>
+  <form :id="id" @submit.prevent="">
     <slot></slot>
     <ly-screen-reader-validation-error
       v-if="validator"
       :errors="validator.getErrors()"
     />
     <ly-alert :message="status?.statusError" />
-  </div>
+  </form>
 </template>
 
 <style scoped></style>

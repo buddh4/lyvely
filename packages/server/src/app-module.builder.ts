@@ -1,6 +1,7 @@
 import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule, ConfigurationPath, setTransactionSupport } from '@/modules/core';
+import { CoreModule, setTransactionSupport } from '@/modules/core';
+import { ConfigurationPath, loadConfig, AppConfigModule } from '@/modules/app-config';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserRegistrationModule } from './modules/user-registration/user-registration.module';
 import { UsersModule } from './modules/users';
@@ -12,8 +13,6 @@ import { TagsModule } from './modules/tags/tags.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
-
-import configuration from './modules/core/config/configuration';
 import { MailsModule } from './modules/mails/mails.module';
 import {
   ConfigUserPermissionsService,
@@ -82,6 +81,7 @@ export class AppModuleBuilder {
       EventEmitterModule.forRoot({ wildcard: true }),
       MailsModule.fromConfig(),
       CoreModule,
+      AppConfigModule,
       PoliciesModule,
       UsersModule,
       AuthModule,
@@ -129,9 +129,9 @@ export class AppModuleBuilder {
   }
 
   private initConfigModule() {
-    const configs = [configuration()];
+    const configs = [loadConfig()];
     if (this.options.configFiles) {
-      configs.push(...this.options.configFiles.map((file) => configuration(file)));
+      configs.push(...this.options.configFiles.map((file) => loadConfig(file)));
     }
 
     return this.importModules(

@@ -11,8 +11,6 @@ const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
   const promises: Promise<any>[] = [];
   const authStore = useAuthStore();
 
-  debugger;
-
   // TODO: GUEST - needs to be aligned for guest mode feature
   if (!authStore.isAuthenticated && !isPublicRoue(to)) {
     next("/login");

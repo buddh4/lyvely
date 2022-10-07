@@ -1,5 +1,5 @@
 <template>
-  <fieldset :class="wrapperClass">
+  <div :class="wrapperClass">
     <input
       :id="id"
       v-model="inputValue"
@@ -12,14 +12,17 @@
       @focusout="onFocusOut"
     />
 
-    <div v-if="hasError()" :class="errorClass">
-      {{ inputError }}
-    </div>
+    <transition name="fade">
+      <div v-if="hasError()" :class="errorClass">
+        {{ inputError }}
+      </div>
+    </transition>
 
     <label v-if="inputLabel" :for="id" :class="labelClass">
       {{ $t(inputLabel) }}
     </label>
-  </fieldset>
+
+  </div>
 </template>
 
 <script lang="ts">
@@ -51,4 +54,17 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

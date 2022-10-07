@@ -4,9 +4,9 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { JwtAccessTokenPayloadIF } from './jwt-payload.interface';
-import { Cookies } from '../../../core/web';
-import { ConfigurationPath } from '../../../core';
-import { User, UsersService } from '../../../users';
+import { Cookies } from '@/modules/core';
+import { ConfigurationPath } from '@/modules/app-config';
+import { User, UsersService } from '@/modules/users';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

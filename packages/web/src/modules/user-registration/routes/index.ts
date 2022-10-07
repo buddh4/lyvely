@@ -30,7 +30,7 @@ export default [
     },
     beforeEnter: [
       ifNotAuthenticated,
-      () => setPageTitle(translate("user-registration.title")),
+      () => setPageTitle(translate("user_registration.title")),
     ],
   },
   {

@@ -117,36 +117,36 @@
     }
   },
   "users": {
-    "labels": {
-      "logout": "Logout",
-      "sign_in": "Sign in",
-      "sign_up": "Sign up",
-      "remember_me": "Remember me",
-      "forgot_password": "Forgot password?",
-      "username": "Username",
-      "password": "Password",
-      "email": "Email"
+    "logout": {
+      "logout": "Logout"
     },
-    "texts": {
-      "not_a_member": "Not a member?"
-    }
-  },
-  "user_registration": {
-    "title": "Register",
-    "verify_email_title": "Verify your email",
-    "verify_email_text": "We've sent a verification email to: {email}",
-    "verify_email_subtext": "Click the link in your email to activate your account.",
-    "form": {
+    "login": {
+      "title": "Login",
+      "sign_in": "Sign in",
+      "not_a_member": "Not a member?",
+      "forgot_password": "Forgot password?",
+      "remember_me": "Remember me",
       "fields": {
         "username": "Username",
         "password": "Password",
-        "passwordRepeat": "Repeat password",
         "email": "Email"
       }
     }
   },
-  "login": {
-    "title": "Login"
+  "user_registration": {
+    "title": "Sign up",
+    "sign_up": "Sign up",
+    "create_account": "Create an account",
+    "is_member": "Already have an account?",
+    "verify_email_title": "Verify your email",
+    "verify_email_text": "We've sent a verification email to: {email}",
+    "verify_email_subtext": "Click the link in your email to activate your account.",
+    "fields": {
+      "username": "Username",
+      "password": "Password",
+      "passwordRepeat": "Repeat password",
+      "email": "Email"
+    }
   },
   "layout": {
     "aria": {

@@ -1,4 +1,4 @@
-import { LyvelyAppConfiguration } from '../../core';
+import { LyvelyAppConfiguration } from '../../app-config';
 
 const testConfig: LyvelyAppConfiguration = {
   appName: 'lyvely.test.app',

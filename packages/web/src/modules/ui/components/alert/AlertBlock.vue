@@ -19,7 +19,9 @@ const show = computed(() => {
   >
     <slot>
       <ly-icon name="error" />
-      <span v-if="message && message.length" class="ml-1">{{ $t(message) }}</span>
+      <span v-if="message && message.length" class="ml-1">
+        {{ $t(message) }}
+      </span>
     </slot>
   </div>
 </template>

@@ -2,13 +2,13 @@ import { nextTick } from "vue";
 import { createI18n, I18n } from "vue-i18n";
 import { getModules } from "@/module.loader";
 
-export const SUPPORT_LOCALES = ["en", "de"];
+export const SUPPORT_LOCALES = ["en-US", "de-DE"];
 
 let i18n: I18n;
 
 export const LOCALES_AVAILABLE = {
-  en: "English",
-  de: "Deutsch",
+  "en-US": "English",
+  "de-DE": "Deutsch",
 };
 
 export function getI18n() {
@@ -16,31 +16,33 @@ export function getI18n() {
 }
 
 export function translate(key: string, options?: any) {
+  debugger;
   return (<any>getI18n().global).t(key, options);
 }
 
-export function setupI18n(options = { locale: "en" }) {
-  options.locale = transformLocale(options.locale);
+export function setupI18n(options = { locale: "en-US" }) {
+  debugger;
+  options.locale = options.locale;
   i18n = createI18n({
     legacy: false,
-    fallbackLocale: "en",
+    fallbackLocale: "en-US",
   });
   setLocale(options.locale);
   return i18n;
 }
 
-function transformLocale(locale: string) {
+/*function transformLocale(locale: string) {
   return locale.split("-")[0];
-}
+}*/
 
 const loadedModules: Record<string, Record<string, boolean>> = {};
+const loadedCoreLocales: string[] = [];
 
 export function isModuleMessagesLoaded(
   locale: string,
   module: string,
   prefix?: string
 ) {
-  locale = transformLocale(locale);
   return (
     loadedModules[module] &&
     loadedModules[module][prefix ? prefix + "." + locale : locale]
@@ -52,13 +54,11 @@ function setModuleMessagesLoaded(
   module: string,
   prefix?: string
 ) {
-  locale = transformLocale(locale);
   loadedModules[module] = loadedModules[module] || {};
   loadedModules[module][prefix ? prefix + "." + locale : locale] = true;
 }
 
 export function loadModuleMessages(locale: string, module: string) {
-  locale = transformLocale(locale);
   return import(`./modules/${module}/locales/${locale}.json`)
     .then((data) => mergeMessages(locale, data))
     .then(() => setModuleMessagesLoaded(locale, module))
@@ -66,8 +66,6 @@ export function loadModuleMessages(locale: string, module: string) {
 }
 
 export function loadModuleBaseMessages(locale: string) {
-  locale = transformLocale(locale);
-
   // TODO: here we assume all modules have base message files
   getModules().forEach((module) => {
     console.log("Load base module messages for " + module.getId());
@@ -89,12 +87,10 @@ export function mergeMessages(locale: string, data: any) {
 }
 
 export function isGlobalMessagesLoaded(locale: string) {
-  return i18n.global.availableLocales.includes(locale);
+  return loadedCoreLocales.includes(locale);
 }
 
 export async function setLocale(locale: string) {
-  locale = transformLocale(locale);
-
   if (!isGlobalMessagesLoaded(locale)) {
     await loadLocaleMessages(locale);
     await loadModuleBaseMessages(locale);
@@ -118,7 +114,9 @@ export async function setLocale(locale: string) {
 
 export async function loadLocaleMessages(locale: string) {
   // load locale messages with dynamic import
+  console.log("Load core locales");
   return import(`../locales/${locale}.json`)
     .then((data) => mergeMessages(locale, data))
+    .then(() => loadedCoreLocales.push(locale))
     .then(() => nextTick());
 }

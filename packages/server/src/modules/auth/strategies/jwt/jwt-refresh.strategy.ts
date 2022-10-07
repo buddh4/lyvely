@@ -4,10 +4,10 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { JwtRefreshTokenPayloadIF } from './jwt-payload.interface';
-import { Cookies } from '../../../core/web';
+import { Cookies } from '@/modules/core';
 import { Headers } from '@lyvely/common';
-import { ConfigurationPath } from '../../../core';
-import { User, UsersService } from '../../../users';
+import { ConfigurationPath } from '@/modules/app-config';
+import { User, UsersService } from '@/modules/users';
 import bcrypt from 'bcrypt';
 
 @Injectable()

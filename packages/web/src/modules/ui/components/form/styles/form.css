@@ -304,6 +304,7 @@ input[type=range]:focus::-moz-range-thumb {
 .floating-input {
     padding: 1.625rem 0.75rem 0.625rem;
     height:calc(3.5rem + 2px);
+    transition: border-color 0.5s;
     @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-highlight focus:border-divide focus:ring focus:ring-blue-200 focus:ring-opacity-50;
 }
 

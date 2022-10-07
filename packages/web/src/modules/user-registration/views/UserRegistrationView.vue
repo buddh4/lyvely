@@ -15,7 +15,7 @@ const { status } = userRegistrationStore;
 
 async function register() {
   userRegistrationStore.register().then(() => {
-    if(verifyEmailStore.isAwaiting()) {
+    if (verifyEmailStore.isAwaiting()) {
       router.push(PATH_VERIFY_EMAIL);
     }
   });
@@ -26,36 +26,45 @@ async function register() {
   <centered-layout-container>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      {{ $t("users.labels.sign_up") }}
+      {{ $t("user_registration.sign_up") }}
     </template>
 
     <template #body>
       <ly-form-model
+        id="user-registration"
         v-model="model"
         :validator="validator"
         :status="status"
-        label-key="user_registration.form.fields"
+        label-key="user_registration.fields"
       >
         <ly-input-text property="username" :required="true" />
+        <ly-input-text property="email" type="email" :required="true" />
+        <ly-input-text property="password" type="password" :required="true" />
         <ly-input-text
-          property="email"
-          type="email"
+          property="passwordRepeat"
+          type="password"
           :required="true"
         />
-        <ly-input-text property="password" type="password" :required="true" />
-        <ly-input-text property="passwordRepeat" type="password" :required="true" />
       </ly-form-model>
     </template>
 
     <template #footer>
       <ly-button
-        class="primary mb-4 float-right"
-        text="users.labels.sign_up"
+        class="primary w-full mb-4 float-right"
+        text="user_registration.create_account"
         :disabled="status.isStatusLoading()"
         @click="register"
       />
-    </template>
 
+      <div class="text-center pt-4">
+        <small>
+          {{ $t("user_registration.is_member") }}
+          <router-link to="/login" class="no-underline font-bold">
+            {{ $t("users.login.sign_in") }}
+          </router-link>
+        </small>
+      </div>
+    </template>
   </centered-layout-container>
 </template>
 

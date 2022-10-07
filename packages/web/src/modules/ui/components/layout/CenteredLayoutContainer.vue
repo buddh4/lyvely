@@ -10,7 +10,9 @@ const props = withDefaults(defineProps<IProps>(), {
 
 <template>
   <section class="flex p-4 justify-center rounded h-screen w-full">
-    <div class="bg-main main w-full max-w-sm p-4 border border-divide rounded shadow-xl m-auto">
+    <div
+      class="bg-main main w-full max-w-sm p-4 border border-divide rounded shadow-xl m-auto"
+    >
       <slot name="header">
         <h1 class="text-center text-xl">
           <slot name="title">{{ $t(props.title) }}</slot>

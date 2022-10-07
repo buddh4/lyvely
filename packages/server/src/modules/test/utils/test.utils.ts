@@ -18,6 +18,7 @@ import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import mongoose from 'mongoose';
 import { MailsModule } from '../../mails/mails.module';
 import { CoreModule } from '../../core/core.module';
+import { AppConfigModule } from '@/modules/app-config';
 
 export function createCoreTestingModule(
   key: string,
@@ -31,6 +32,7 @@ export function createCoreTestingModule(
       MongooseModule.forFeature([...models]),
       EventEmitterModule.forRoot({ wildcard: true }),
       CoreModule,
+      AppConfigModule,
       ConfigModule.forRoot({
         load: [() => import('./test.config').then((module) => module.default)],
         isGlobal: true,

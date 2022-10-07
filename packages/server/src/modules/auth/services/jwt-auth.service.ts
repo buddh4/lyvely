@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import { addMilliSeconds } from '@lyvely/common';
 import ms from 'ms';
-import { ConfigurationPath } from '../../core';
+import { ConfigurationPath } from '@/modules/app-config';
 
 // https://stackoverflow.com/questions/38897514/what-to-store-in-a-jwt
 

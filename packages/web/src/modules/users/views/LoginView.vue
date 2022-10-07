@@ -49,60 +49,62 @@ function validate(): boolean {
   <centered-layout-container>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      {{ $t("users.labels.sign_in") }}
+      {{ $t("users.login.sign_in") }}
     </template>
     <template #body>
       <!-- Email input -->
       <div class="mb-4">
         <ly-input-text
-            id="login-username"
-            v-model="input.username"
-            :error="userNameError"
-            label="users.labels.username"
-            :required="true"
+          id="login-username"
+          v-model="input.username"
+          :error="userNameError"
+          label="users.login.fields.username"
+          :required="true"
         ></ly-input-text>
       </div>
 
       <!-- Password input -->
       <div class="mb-4">
         <ly-input-text
-            id="login-password"
-            v-model="input.password"
-            :error="passwordError"
-            label="users.labels.password"
-            :required="true"
-            type="password"
+          id="login-password"
+          v-model="input.password"
+          :error="passwordError"
+          label="users.login.fields.password"
+          :required="true"
+          type="password"
         ></ly-input-text>
       </div>
 
       <!-- 2 column grid layout for inline styling -->
-      <div class="flex justify-center items-center justify-between clearfix pb-2">
-        <ly-input-checkbox label="users.labels.remember_me"></ly-input-checkbox>
+      <div
+        class="flex justify-center items-center justify-between clearfix pb-2"
+      >
+        <ly-input-checkbox label="users.login.remember_me"></ly-input-checkbox>
         <small class="float-right align-center">
           <a href="#" class="no-underline font-bold">
-            {{ $t("users.labels.forgot_password") }}
+            {{ $t("users.login.forgot_password") }}
           </a>
         </small>
       </div>
 
       <ly-alert
-          v-if="isLoginErrorState"
-          :message="statusError"
-          data-login-error
-          class="danger my-2"
+        v-if="isLoginErrorState"
+        :message="statusError"
+        data-login-error
+        class="danger my-2"
       />
     </template>
     <template #footer>
       <ly-button class="primary w-full" :submit="true" @click="login">
-        {{ $t("users.labels.sign_in") }}
+        {{ $t("users.login.sign_in") }}
       </ly-button>
 
       <!-- Register buttons -->
       <div class="text-center pt-4">
         <small>
-          {{ $t("users.texts.not_a_member") }}
+          {{ $t("users.login.not_a_member") }}
           <router-link to="/register" class="no-underline font-bold">
-            {{ $t("users.labels.sign_up") }}
+            {{ $t("user_registration.sign_up") }}
           </router-link>
         </small>
       </div>

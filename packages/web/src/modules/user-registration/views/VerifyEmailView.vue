@@ -17,17 +17,21 @@ const { awaiting, email } = storeToRefs(verifyEmailStore);
     </template>
     <template #body>
       <div class="text-center">
-        <ly-icon name="envelop" class="w-16 text-pop m-2"/>
+        <ly-icon name="envelop" class="w-16 text-pop m-2" />
       </div>
 
-      <i18n-t keypath="user_registration.verify_email_text" tag="p" class="text-center text-dimmed mb-5">
-        <template v-slot:email>
+      <i18n-t
+        keypath="user_registration.verify_email_text"
+        tag="p"
+        class="text-center text-dimmed mb-5"
+      >
+        <template #email>
           <b>{{ email }}</b>
         </template>
       </i18n-t>
 
       <ly-text-dimmed class="text-sm text-center">
-        {{ $t('user_registration.verify_email_subtext') }}
+        {{ $t("user_registration.verify_email_subtext") }}
       </ly-text-dimmed>
     </template>
   </centered-layout-container>

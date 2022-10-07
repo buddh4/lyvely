@@ -2,8 +2,10 @@ import { ComponentOptions, computed, ref, SetupContext, inject } from "vue";
 import { merge, uniqueId } from "lodash";
 import { CssClassDefinition } from "@/util/component.types";
 import { ModelValidator } from "@lyvely/common";
+import slugify from "slugify";
 
 export interface FormModelData<T extends object = any> {
+  id?: string;
   model: T;
   labelKey?: string;
   validator?: ModelValidator<T>;
@@ -31,7 +33,7 @@ export interface IBaseInputProps {
 
 export function useBaseInputProps() {
   return {
-    id: { type: String, default: uniqueId("input") },
+    id: { type: String },
     label: { type: String },
     helpText: { type: String },
     name: { type: String },
@@ -128,13 +130,28 @@ function getComputedInputError(
   );
 }
 
+function getId(props: IBaseInputProps, formModelData?: FormModelData) {
+  if (props.id) {
+    return props.id;
+  }
+
+  if (formModelData?.id && props.property) {
+    return slugify(`${formModelData.id}-${props.property}`, { lower: true });
+  }
+
+  return uniqueId("input");
+}
+
 export function useBaseInputSetup<T = unknown>(
   props: IBaseInputProps,
   { emit }: SetupContext,
   options: IBaseInputSetupOptions = {}
 ) {
   const root = ref<HTMLElement | null>(null);
-  const formModelData = inject<FormModelData<any>>("formModelData");
+  const formModelData = inject<FormModelData | undefined>(
+    "formModelData",
+    undefined
+  );
   const validator = formModelData?.validator;
   const useAutoValidation =
     formModelData?.autoValidation !== false &&
@@ -148,6 +165,7 @@ export function useBaseInputSetup<T = unknown>(
       : !!props.error;
 
   return {
+    id: getId(props, formModelData),
     inputValue: getComputedInputValue<T>(props, emit, formModelData),
     cssClasses: getComputedCssClasses(props, options, hasError),
     errorClass: "text-danger text-sm pl-1 pt-1",
