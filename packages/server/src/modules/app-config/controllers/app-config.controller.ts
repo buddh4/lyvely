@@ -1,6 +1,5 @@
 import { ClassSerializerInterceptor, Controller, Get, Req, UseInterceptors } from '@nestjs/common';
-import { Public } from '@/modules/core';
-import { UserRequest } from '@/modules/users';
+import { LyvelyRequest, Public } from '@/modules/core';
 import { AppConfigEndpoint, ENDPOINT_APP_CONFIG } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import { I18nService } from '@/modules/i18n/services/i18n.service';
@@ -12,7 +11,7 @@ export class AppConfigController implements AppConfigEndpoint {
 
   @Public()
   @Get()
-  async getConfig(@Req() req: UserRequest) {
+  async getConfig(@Req() req: LyvelyRequest) {
     return {
       csrf_token: req.csrfToken(),
       locales: this.i18nService.getEnabledLocaleDefinitions(),

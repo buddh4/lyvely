@@ -11,7 +11,7 @@ import { getDefaultLocale } from "@/util";
 import { AuthService } from "@/modules/users/services/auth.service";
 import { ILoginResponse, UserModel, queuePromise } from "@lyvely/common";
 
-export const vid = localStorageManager.getStoredValue("visitorId");
+export const storedVid = localStorageManager.getStoredValue("visitorId");
 
 type AuthStoreEvents = {
   "auth.logout": undefined;
@@ -25,19 +25,22 @@ export const useAuthStore = defineStore("user-auth", () => {
   const emitter = useAsEmitter<AuthStoreEvents>();
   const tokenExpiration = ref(0);
   const locale = ref(getDefaultLocale());
-  const visitorId = computed<string | undefined>({
-    get: () => vid.getValue() as string | undefined,
-    set: (value: string | undefined) => vid.setValue(value),
-  });
+  const visitorId = ref<string | undefined>(
+    <string | undefined>storedVid.getValue()
+  );
+
   const isAuthenticated = computed(() => !!visitorId.value);
 
   async function handleLogin(result: ILoginResponse) {
     clear();
     const { user, vid, token_expiration } = result;
     await setUser(user);
-    visitorId.value = vid;
+    setVid(vid);
+    const test = isAuthenticated.value;
+    const test2 = storedVid.getValue();
+    const test3 = visitorId.value;
+    debugger;
     tokenExpiration.value = token_expiration;
-    return isAuthenticated.value;
   }
 
   async function loadUser() {
@@ -50,16 +53,23 @@ export const useAuthStore = defineStore("user-auth", () => {
   async function logout() {
     await authService.logout(visitorId.value).catch(console.error);
     clear();
-    emitter.emit("auth.logout");
-    eventBus.emit("auth.logout");
     this.router.push("/login");
   }
 
   function clear() {
     useAuthStore().$reset();
-    visitorId.value = undefined;
+    setVid(undefined);
     localStorageManager.clear();
     sessionStorageManager.clear();
+  }
+
+  function setVid(vid?: string) {
+    visitorId.value = vid;
+    storedVid.setValue(vid);
+  }
+
+  function getVid() {
+    return visitorId.value;
   }
 
   async function setUser(authUser: UserModel) {
@@ -83,7 +93,7 @@ export const useAuthStore = defineStore("user-auth", () => {
   return {
     user,
     locale,
-    visitorId,
+    getVid,
     tokenExpiration,
     isAuthenticated,
     handleLogin,
@@ -134,7 +144,7 @@ const authRepositoryPlugin = () => {
 
   // Automatic refresh token call on failed request (401)
   createAuthRefreshInterceptor(repository, (options) => {
-    const visitorId = useAuthStore().visitorId;
+    const visitorId = useAuthStore().getVid();
 
     if (!visitorId || options?.config?.skipAuthRefresh) {
       return Promise.reject();

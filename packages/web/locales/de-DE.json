@@ -117,9 +117,7 @@
     }
   },
   "users": {
-    "logout": {
-      "logout": "Logout"
-    },
+    "logout": "Ausloggen",
     "login": {
       "title": "Anmelden",
       "sign_in": "Anmelden",

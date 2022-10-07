@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
-import { UrlGenerator } from '../../services/url-generator.service';
-import { createBasicTestingModule } from '../../../test/utils/test.utils';
+import { UrlGenerator } from '@/modules/core';
+import { createBasicTestingModule } from '@/modules/test';
 import { TestingModule } from '@nestjs/testing';
 
 describe('UrlGenrator', () => {

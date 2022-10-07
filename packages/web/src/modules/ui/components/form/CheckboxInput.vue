@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div @keydown.enter.stop="toggle">
     <div class="flex">
       <label class="inline-flex items-center">
         <input
-          v-model="state"
+          v-model="inputValue"
           type="checkbox"
           :disabled="disabled"
           :value="value"
           :class="cssClasses"
           :readonly="readonly"
-          @keydown.enter.stop="toggle"
+
           @change="onChange"
         />
       </label>
@@ -50,6 +50,9 @@ export default {
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {
     const showHelpText = ref(false);
+    const baseInput = useBaseInputSetup<boolean>(props, context, {
+      cssClass: "border rounded ml-1 ring-0",
+    });
 
     function toggle(evt: any) {
       if (isArray(props.modelValue)) {
@@ -58,7 +61,7 @@ export default {
           props.modelValue.filter((val) => val !== evt.target.value)
         );
       } else {
-        context.emit("update:modelValue", !evt.target.checked);
+        baseInput.inputValue.value = !evt.target.checked
       }
     }
 
@@ -66,20 +69,10 @@ export default {
       context.emit("change", evt.target.checked, evt.target.value);
     }
 
-    const state = computed({
-      get: () => props.modelValue,
-      set: (val: any) => {
-        context.emit("update:modelValue", val);
-      },
-    });
-
     return {
-      ...useBaseInputSetup<boolean>(props, context, {
-        cssClass: "border rounded ml-1 ring-0",
-      }),
+      ...baseInput,
       showHelpText,
       toggle,
-      state,
       onChange,
     };
   },

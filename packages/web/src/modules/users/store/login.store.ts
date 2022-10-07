@@ -17,16 +17,15 @@ export const useLoginStore = defineStore("user-login", () => {
       return false;
     }
 
-    return await loadingStatus(
-      authService.login(loginModel.value.email, loginModel.value.password),
-      status
-    )
+    return loadingStatus(authService.login(loginModel.value), status)
       .then(authStore.handleLogin)
+      .then(() => true)
       .catch(handleLoginError);
   }
 
   async function handleLoginError(err: any) {
     status.setError("users.login.errors.invalid_input");
+    return false;
   }
 
   return {

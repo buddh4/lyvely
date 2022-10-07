@@ -33,6 +33,7 @@ class StoredValue extends DelegateEmitter<StorageValueEvents> {
   }
 
   setValue(value?: string) {
+    debugger;
     if (value === undefined) {
       this.removeFromStorage();
       return;

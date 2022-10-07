@@ -1,10 +1,10 @@
-import { IAuthService, UserModel } from "@lyvely/common";
+import { IAuthService, UserModel, LoginModel } from "@lyvely/common";
 
 import authRepository from "@/modules/users/repositories/auth.repository";
 
 export class AuthService implements IAuthService {
-  async login(email: string, password: string) {
-    const { data: loginResponse } = await authRepository.login(email, password);
+  async login(loginModel: LoginModel) {
+    const { data: loginResponse } = await authRepository.login(loginModel);
     loginResponse.user = new UserModel(loginResponse.user);
     return loginResponse;
   }

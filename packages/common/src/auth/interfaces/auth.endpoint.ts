@@ -1,5 +1,6 @@
 import { EndPoint } from '@/endpoints';
 import { UserModel } from '@/users';
+import { LoginModel } from '../models/login.model';
 
 export interface IRefreshTokenResponse {
   token_expiration: number;
@@ -14,7 +15,7 @@ export interface ILoginResponse extends ILoadUserResponse {
 }
 
 export interface IAuthService {
-  login(email: string, password: string): Promise<ILoginResponse>;
+  login(loginModel: LoginModel): Promise<ILoginResponse>;
   logout(vid?: string): void;
   loadUser(): Promise<ILoadUserResponse>;
   refresh(vid: string): Promise<IRefreshTokenResponse>;

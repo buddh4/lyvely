@@ -1,5 +1,4 @@
-import { Request } from 'express';
 import { User } from '../schemas';
-import { RequestAdditions } from '../../core/types';
+import { LyvelyRequest } from '@/modules/core';
 
-export type UserRequest = Request & { user: User } & RequestAdditions;
+export type UserRequest = LyvelyRequest & { user: User };
