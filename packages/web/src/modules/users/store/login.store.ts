@@ -3,14 +3,19 @@ import { loadingStatus, useStatus } from "@/store/status";
 import { ref } from "vue";
 import { AuthService } from "@/modules/users/services/auth.service";
 import { useAuthStore } from "@/modules/users/store/auth.store";
-import { LoginModel, ModelValidator } from "@lyvely/common";
+import { LoginModel } from "@lyvely/common";
+import { I18nModelValidator } from "@/modules/core/models/i18n-model.validator";
 
 export const useLoginStore = defineStore("user-login", () => {
   const status = useStatus();
   const authStore = useAuthStore();
   const authService = new AuthService();
   const loginModel = ref(new LoginModel());
-  const validator = ref(new ModelValidator(loginModel.value));
+  const validator = ref(
+    new I18nModelValidator(loginModel.value, {
+      translationKey: "users.login.fields",
+    })
+  );
 
   async function login() {
     if (!(await validator.value.validate())) {

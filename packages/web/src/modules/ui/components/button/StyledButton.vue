@@ -37,7 +37,11 @@ const props = withDefaults(defineProps<IProps>(), {
   confirm: undefined,
 });
 
-function getClassNames(attrClasses: any, isActive?: boolean, loading?: boolean) {
+function getClassNames(
+  attrClasses: any,
+  isActive?: boolean,
+  loading?: boolean
+) {
   return {
     "select-none": true,
     button: true,

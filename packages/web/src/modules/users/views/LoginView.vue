@@ -12,7 +12,6 @@ const router = useRouter();
 const { loginModel, validator } = storeToRefs(loginStore);
 
 async function submit() {
-
   loginStore.login().then((success) => {
     if (success) {
       router.replace({ path: "/" });
@@ -29,7 +28,7 @@ async function submit() {
   <centered-layout-container>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      {{ $t("users.login.sign_in") }}
+      <span class="text-base font-bold">{{ $t("users.login.sign_in") }}</span>
     </template>
 
     <template #body>
@@ -47,13 +46,18 @@ async function submit() {
       </ly-form-model>
 
       <ly-form-model id="remember-me" v-model="loginModel">
-        <div class="flex justify-center items-center justify-between clearfix pb-2">
+        <div
+          class="flex justify-center items-center justify-between clearfix pb-2"
+        >
           <ly-input-checkbox
             property="remember"
             class="text-sm"
             label="users.login.remember_me"
           />
-          <a href="#" class="float-right align-center no-underline font-bold text-xs">
+          <a
+            href="#"
+            class="float-right align-center no-underline font-bold text-xs"
+          >
             {{ $t("users.login.forgot_password") }}
           </a>
         </div>
@@ -61,7 +65,12 @@ async function submit() {
     </template>
 
     <template #footer>
-      <ly-button class="primary w-full" :submit="true" :loading="loginStore.status.isStatusLoading()" @click="submit">
+      <ly-button
+        class="primary w-full"
+        :submit="true"
+        :loading="loginStore.status.isStatusLoading()"
+        @click="submit"
+      >
         {{ $t("users.login.sign_in") }}
       </ly-button>
 

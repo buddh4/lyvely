@@ -1,9 +1,17 @@
 import { validate, ValidationError, ValidatorOptions } from 'class-validator';
-import { IFieldValidationResult } from '@/validation/interfaces/validation-result.interface';
+import { IFieldValidationResult } from './interfaces/validation-result.interface';
 
-interface IValidatorOptions<T extends object = object> {
+interface TranslationError {
+  property: string;
+  rule: string;
+  message: string;
+  context: any;
+}
+
+export interface IValidatorOptions<T extends object = object> {
   isFieldValidator?: boolean;
   rules?: Record<keyof T, [(value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>]> | {};
+  translate?: (error: TranslationError) => string | undefined;
 }
 
 interface IValidationOptions<T extends object = object> extends ValidatorOptions {
@@ -13,16 +21,15 @@ interface IValidationOptions<T extends object = object> extends ValidatorOptions
 export class ModelValidator<T extends object = object> {
   private errors = {} as Record<keyof T, string>;
   private model: T;
-  private rules: Record<keyof T, [(value: any, result: IFieldValidationResult) => Promise<boolean>]> | {};
   private readonly fieldValidator;
-  private isFieldValidator = false;
+  private options: IValidatorOptions<T>;
 
-  constructor(model?: T, { isFieldValidator = false, rules = {} } = {} as IValidatorOptions<T>) {
+  constructor(model?: T, options?: IValidatorOptions<T>) {
+    this.options = options || {};
+    this.options.rules = this.options.rules || {};
     this.model = model;
-    this.isFieldValidator = isFieldValidator;
-    this.rules = rules;
-    if (!this.isFieldValidator) {
-      this.fieldValidator = new ModelValidator<T>(model, { isFieldValidator: true, rules });
+    if (!this.options.isFieldValidator) {
+      this.fieldValidator = new ModelValidator<T>(model, Object.assign({}, options, { isFieldValidator: true }));
     }
   }
 
@@ -64,11 +71,11 @@ export class ModelValidator<T extends object = object> {
   }
 
   private async validateRules(options: IValidationOptions<T> = {}) {
-    for (const property of Object.keys(this.rules)) {
+    for (const property of Object.keys(this.options.rules)) {
       if (options.validationField && options.validationField !== property) continue;
       if (this.getError(<keyof T>property)) continue;
 
-      const propRules = this.rules[property] || [];
+      const propRules = this.options.rules[property] || [];
       for (const rule of propRules) {
         const injectedResult: IFieldValidationResult = { property, errors: [] };
         const result = (await rule(this.model[property], injectedResult)) || injectedResult;
@@ -90,14 +97,27 @@ export class ModelValidator<T extends object = object> {
 
   private setFirstError(error: ValidationError) {
     const constraints = error.constraints as Record<string, string>;
-    const firstError = constraints?.isNotEmpty || constraints?.isDefined || constraints[Object.keys(constraints)[0]];
-    if (firstError) {
-      this.errors[error.property] = firstError;
+    const rules = Object.keys(constraints);
+
+    if (!rules.length) return;
+
+    const firstRule = constraints?.isNotEmpty ? 'isNotEmpty' : constraints?.isDefined ? 'isDefined' : rules[0];
+
+    const firstErrorMessage = constraints[firstRule];
+    if (firstErrorMessage) {
+      this.errors[error.property] = this.options.translate
+        ? this.options.translate({
+            property: error.property,
+            message: firstErrorMessage,
+            rule: firstRule,
+            context: error.contexts,
+          }) || firstErrorMessage
+        : firstErrorMessage;
     }
   }
 
   async validateField(field: keyof T, options?: IValidationOptions<T>): Promise<boolean> {
-    if (this.isFieldValidator || !this.fieldValidator) {
+    if (this.options.isFieldValidator || !this.fieldValidator) {
       throw new Error('Call of validateField is not supported for this validator type');
     }
 

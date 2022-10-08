@@ -133,6 +133,9 @@
       }
     }
   },
+  "validation": {
+    "isNotEmpty": "{property} can not be empty"
+  },
   "user_registration": {
     "title": "Sign up",
     "sign_up": "Sign up",
