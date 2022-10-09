@@ -8,7 +8,7 @@ import crypto from 'crypto';
 import { PropertiesOf, UserModel, getNumberEnumValues, UserStatus, PropertyType } from '@lyvely/common';
 
 @Schema({ id: false })
-class ProfilesCount {
+export class ProfilesCount {
   @PropertyType(Number, { default: 0 })
   @Prop({ required: true, min: 0, default: 0 })
   user: number;
@@ -166,8 +166,9 @@ export const UserSchema = SchemaFactory.createForClass(User);
 
 UserSchema.method('toJSON', function () {
   const userDoc = <UserDocument>this;
-  const user = userDoc.toObject();
+  const user = <PropertiesOf<User>>userDoc.toObject();
   delete user.password;
+  delete user.refreshTokens;
   return user;
 });
 

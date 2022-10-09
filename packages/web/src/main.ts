@@ -65,7 +65,10 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 app.use(ModuleLoader);
-app.use(setupI18n());
+
+const i18n = await setupI18n();
+
+app.use(i18n);
 
 /**
  * We register the components here due to:

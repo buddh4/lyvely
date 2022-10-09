@@ -1,6 +1,7 @@
 import { nextTick } from "vue";
 import { createI18n, I18n } from "vue-i18n";
 import { getModules } from "@/module.loader";
+import { isDevelopEnvironment } from "@/modules/core/environment";
 
 export const SUPPORT_LOCALES = ["en-US", "de-DE"];
 
@@ -19,13 +20,14 @@ export function translate(key: string, options?: any) {
   return (<any>getI18n().global).t(key, options);
 }
 
-export function setupI18n(options = { locale: "en-US" }) {
+export async function setupI18n(options = { locale: "en-US" }) {
   options.locale = options.locale;
   i18n = createI18n({
     legacy: false,
     fallbackLocale: "en-US",
+    missingWarn: isDevelopEnvironment(),
   });
-  setLocale(options.locale);
+  await setLocale(options.locale);
   return i18n;
 }
 

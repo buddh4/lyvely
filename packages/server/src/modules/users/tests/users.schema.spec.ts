@@ -1,8 +1,9 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { getDefaultLocale, User, UserDocument } from '../schemas';
+import { getDefaultLocale, RefreshToken, User, UserDocument } from '../schemas';
 import { Model } from 'mongoose';
-import { createContentTestingModule, TestDataUtils } from '@/modules/test';
+import { createBasicTestingModule, TestDataUtils } from '@/modules/test';
+import { addDays } from '@lyvely/common';
 
 describe('Users schema', () => {
   let testingModule: TestingModule;
@@ -12,7 +13,7 @@ describe('Users schema', () => {
   const TEST_KEY = 'user_schema';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     UserModel = testingModule.get<Model<UserDocument>>('UserModel');
   });
@@ -53,11 +54,19 @@ describe('Users schema', () => {
           username: 'Test',
           password: 'Password',
           email: 'Tester@test.de',
+          refreshTokens: [
+            new RefreshToken({
+              vid: 'vid1',
+              hash: 'someHash',
+              expiration: addDays(new Date(), 1),
+            }),
+          ],
         }),
       );
 
       const json = user.toJSON();
       expect(json.password).toBeUndefined();
+      expect(json.refreshTokens).toBeUndefined();
     });
   });
 });

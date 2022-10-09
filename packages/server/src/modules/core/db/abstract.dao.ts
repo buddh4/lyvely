@@ -268,11 +268,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.constructModel(data);
   }
 
-  async updateOneSetById(
-    id: EntityIdentity<T>,
-    updateSet: UpdateQuerySet<T>,
-    options?: IBaseQueryOptions,
-  ): Promise<number> {
+  async updateOneSetById(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>, options?: IBaseQueryOptions) {
     return this.updateOneById(id, { $set: <any>updateSet }, options);
   }
 
@@ -304,7 +300,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
       applyUpdateTo(identity, update);
     }
 
-    return modifiedCount;
+    return !!modifiedCount;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

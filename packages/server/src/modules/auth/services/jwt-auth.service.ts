@@ -70,9 +70,8 @@ export class JwtAuthService {
   }
 
   private async setVisitorRefreshToken(user: User, visitorId: string, token: string, expiration: Date) {
-    return this.usersService.setVisitorRefreshTokenHash(
+    return this.usersService.setRefreshTokenHash(
       user,
-      visitorId,
       new RefreshToken({
         vid: visitorId,
         hash: await bcrypt.hash(token, 10),

@@ -44,7 +44,7 @@ export class TestDataUtils {
     password = 'test',
     email?: string,
   ): Promise<{ user: User; profile: UserProfile; profileRelations: UserWithProfileAndRelations }> {
-    const user = await this.createUser(username, password, email);
+    const user = await this.createUser(username, { password, email });
     const profile = await this.createProfile(user);
     const profileRelations = new UserWithProfileAndRelations({
       user,
@@ -66,15 +66,11 @@ export class TestDataUtils {
     return { owner, member, organization };
   }
 
-  async createUser(username = 'test', password = 'test', email?: string): Promise<User> {
-    email = email || `${username}@test.de`;
-    const user = new this.UserModel(
-      new User({
-        username,
-        password,
-        email,
-      }),
-    );
+  async createUser(username = 'test', userData: Partial<User> = {}): Promise<User> {
+    userData.username = username;
+    userData.email = userData.email || `${username}@test.de`;
+    userData.password = userData.password || `testPassword`;
+    const user = new this.UserModel(new User(userData));
     await user.save();
     return new User(user);
   }

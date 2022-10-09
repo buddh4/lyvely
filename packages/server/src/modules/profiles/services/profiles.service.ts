@@ -101,7 +101,7 @@ export class ProfilesService {
 
       const [membership] = await Promise.all([
         this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner, transaction),
-        this.usersService.incProfileCount(owner, profile.type, transaction),
+        this.usersService.incrementProfileCount(owner, profile.type, transaction),
       ]);
 
       return new UserWithProfileAndRelations({ user: owner, profile: profile, relations: [membership] });

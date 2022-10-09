@@ -61,7 +61,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     id: EntityIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IBaseQueryOptions,
-  ): Promise<number> {
+  ) {
     return this.updateOneByProfileAndId(profileRelation, id, { $set: <any>updateSet }, options);
   }
 

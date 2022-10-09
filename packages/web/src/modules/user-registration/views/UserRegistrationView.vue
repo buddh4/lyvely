@@ -31,7 +31,9 @@ async function register() {
   <centered-layout-container>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">{{ $t("user_registration.sign_up") }}</span>
+      <span class="text-base font-bold">
+        {{ $t("user_registration.sign_up") }}
+      </span>
     </template>
 
     <template #body>

@@ -64,16 +64,20 @@ export class AuthController implements AuthEndpoint {
   @Post('logout')
   async logout(@Req() req: UserRequest) {
     const { user, res } = req;
-    let vid: string | string[] = req.header(Headers.X_VISITOR_ID);
+    const vid = this.getVisitorIdHeader(req);
     if (user && vid) {
-      vid = Array.isArray(vid) ? vid[0] : vid;
-      await this.authService.destroyRefreshToken(user, vid as string);
+      await this.authService.destroyRefreshToken(user, vid);
     }
     res.clearCookie(Cookies.REFRESH);
     res.clearCookie(Cookies.AUTHENTICATION);
     req.user = undefined;
     // TODO: trigger event
     //req.logout();
+  }
+
+  getVisitorIdHeader(req: UserRequest): string {
+    const vid: string | string[] = req.header(Headers.X_VISITOR_ID);
+    return Array.isArray(vid) ? vid[0] : vid;
   }
 
   @Get('user')

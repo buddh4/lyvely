@@ -3,4 +3,4 @@ export * from './guards';
 export * from './schemas';
 export * from './types';
 export * from './users.module';
-export * from './users.service';
+export * from './services/users.service';

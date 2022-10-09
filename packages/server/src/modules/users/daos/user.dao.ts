@@ -42,7 +42,6 @@ export class UserDao extends AbstractDao<User> {
   }
 
   async createRefreshToken(identity: EntityIdentity<User>, token: RefreshToken) {
-    this.updateOneById(identity, {});
     return !!(await this.updateOneById(identity, {
       $push: {
         refreshTokens: new RefreshToken({
@@ -54,26 +53,43 @@ export class UserDao extends AbstractDao<User> {
     }));
   }
 
-  async updateRefreshToken(identity: EntityIdentity<User>, token: RefreshToken): Promise<boolean> {
-    return !!(
-      await this.model.updateOne(
-        { _id: assureObjectId(identity), 'refreshTokens.vid': token.vid },
-        {
-          $set: {
-            'refreshTokens.$.hash': token.hash,
-            'refreshTokens.$.expiration': token.expiration,
-          },
+  async updateRefreshToken(identity: EntityIdentity<User>, token: RefreshToken) {
+    const result = await this.updateOneByFilter(
+      identity,
+      {
+        $set: {
+          'refreshTokens.$.hash': token.hash,
+          'refreshTokens.$.expiration': token.expiration,
         },
-      )
-    ).modifiedCount;
+      },
+      { 'refreshTokens.vid': token.vid },
+    );
+
+    // This is required since we do not support automatic $set updates of array elements
+    if (result && identity instanceof User) {
+      const currentToken = identity.getRefreshTokenByVisitorId(token.vid);
+      if (currentToken) {
+        currentToken.hash = token.hash;
+        currentToken.expiration = token.expiration;
+      }
+    }
+
+    return result;
   }
 
-  async destroyRefreshToken(identity: EntityIdentity<User>, visitorId: string) {
-    return this.model.findByIdAndUpdate(assureObjectId(identity), {
+  async destroyRefreshToken(identity: EntityIdentity<User>, vid: string) {
+    const result = await this.updateOneById(identity, {
       $pull: {
-        refreshTokens: { vid: visitorId },
+        refreshTokens: { vid: vid },
       },
     });
+
+    // This is required since we do not support automatic $pull modifications
+    if (result && identity instanceof User) {
+      identity.refreshTokens = identity.refreshTokens.filter((token) => token.vid !== vid);
+    }
+
+    return result;
   }
 
   getModelConstructor(): Constructor<User> {

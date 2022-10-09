@@ -1,5 +1,4 @@
-import { ModelValidator } from "@lyvely/common";
-import { IValidatorOptions } from "@lyvely/common/src";
+import { ModelValidator, IValidatorOptions } from "@lyvely/common";
 import { translate } from "@/i18n";
 
 export interface I18nModelValidatorOptions<T extends object = object>
