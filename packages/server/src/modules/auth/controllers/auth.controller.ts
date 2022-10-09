@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Inject,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { JwtAuthService } from '../services/jwt-auth.service';
@@ -19,6 +20,7 @@ import JwtRefreshGuard from '../guards/jwt-refresh.guard';
 import { MailService } from '@/modules/mails';
 import { ModuleMeta, Public } from '@/modules/core';
 import { ConfigurationPath } from '@/modules/app-config';
+import { JwtStrategy } from '@/modules/auth/strategies';
 
 @Controller(ENDPOINT_AUTH)
 @UseInterceptors(ClassSerializerInterceptor)
@@ -36,13 +38,14 @@ export class AuthController implements AuthEndpoint {
   async login(@Req() req: UserRequest) {
     const { user } = req;
     const { accessToken, refreshToken, vid } = await this.authService.login(user);
+
     this.setAuthenticationCookie(req, accessToken);
     this.setRefreshCookie(req, refreshToken);
 
     return {
       user: new UserModel(user),
       vid: vid,
-      token_expiration: ms(this.configService.get('auth.jwt.access.expiration')),
+      token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')),
     };
   }
 
@@ -50,14 +53,21 @@ export class AuthController implements AuthEndpoint {
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refresh(@Req() req: UserRequest) {
-    const newAccessCookie = this.authService.createAccessToken(req.user);
-    this.setAuthenticationCookie(req, newAccessCookie);
+    const { user } = req;
+    const vid = this.getVisitorIdHeader(req);
 
-    //TODO: here we could invalidate the old refresh token and return a new one
+    if (!user || !vid) {
+      // Should not happen since we validate everything in jwt guard, but does not hurt...
+      throw new UnauthorizedException();
+    }
+    const newAccessToken = this.authService.createAccessToken(user);
+    this.setAuthenticationCookie(req, newAccessToken);
 
-    return {
-      token_expiration: ms(this.configService.get('auth.jwt.access.expiration')),
-    };
+    // We also refresh the refresh token itself, this allows shorter refresh token expirations
+    await this.authService.destroyRefreshToken(user, vid);
+    this.setRefreshCookie(req, await this.authService.createRefreshToken(user, vid));
+
+    return { token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')) };
   }
 
   @Public()
@@ -84,27 +94,36 @@ export class AuthController implements AuthEndpoint {
   async loadUser(@Req() req: UserRequest) {
     return {
       user: new UserModel(req.user),
-      token_expiration: ms(this.configService.get('auth.jwt.access.expiration')),
+      token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')),
     };
   }
 
   private setAuthenticationCookie(req: UserRequest, token) {
-    req.res.cookie(Cookies.AUTHENTICATION, token, {
+    const secure = this.useSecureCookies();
+    const authCookieName = JwtStrategy.getAuthCookieName(secure);
+    const expirationMS = Math.max(ms(this.configService.get('auth.jwt.access.expiresIn', '15m')), 20_000);
+    req.res.cookie(authCookieName, token, {
       sameSite: this.configService.get('auth.jwt.access.samesite', 'lax'),
       httpOnly: true,
-      secure: this.configService.get('auth.jwt.secure-cookies', true),
-      expires: addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.access.expiration')), false),
+      secure: secure,
+      expires: addMilliSeconds(new Date(), expirationMS, false),
     });
   }
 
   private setRefreshCookie(req: UserRequest, token) {
-    req.res.cookie(Cookies.REFRESH, token, {
+    const isSecure = this.useSecureCookies();
+    const refreshCookieName = isSecure ? Cookies.REFRESH_SECURE : Cookies.REFRESH;
+    req.res.cookie(refreshCookieName, token, {
       sameSite: this.configService.get('auth.jwt.refresh.samesite', 'lax'),
       httpOnly: true,
       // TODO: we need to respect api version or different api path here...
       path: '/auth/refresh',
-      secure: this.configService.get('auth.jwt.secure-cookies', true),
-      expires: addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiration')), false),
+      secure: isSecure,
+      expires: addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiresIn')), false),
     });
+  }
+
+  private useSecureCookies() {
+    return this.configService.get('auth.jwt.secure-cookies', true);
   }
 }

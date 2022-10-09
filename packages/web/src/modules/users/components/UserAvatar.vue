@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { createFileUrl } from "@/repository";
 import randomColor from "randomcolor";
 import { UserModel } from "@lyvely/common";
-import { useAuthStore } from "@/modules/users/store/auth.store";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { getContrast } from "@/modules/ui/utils";
 
 interface IProps {

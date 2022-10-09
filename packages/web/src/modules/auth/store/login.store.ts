@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { loadingStatus, useStatus } from "@/store/status";
 import { ref } from "vue";
-import { AuthService } from "@/modules/users/services/auth.service";
-import { useAuthStore } from "@/modules/users/store/auth.store";
+import { AuthService } from "@/modules/auth/services/auth.service";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { LoginModel } from "@lyvely/common";
 import { I18nModelValidator } from "@/modules/core/models/i18n-model.validator";
 
@@ -28,8 +28,10 @@ export const useLoginStore = defineStore("user-login", () => {
       .catch(handleLoginError);
   }
 
-  async function handleLoginError() {
-    status.setError("users.login.errors.invalid_input");
+  async function handleLoginError(err: any) {
+    if (err?.response?.status === 401) {
+      status.setError("users.login.errors.invalid_input");
+    }
     return false;
   }
 

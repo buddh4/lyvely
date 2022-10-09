@@ -9,7 +9,7 @@ import { useCalendarPlanStore } from "../store";
 import { computed, ref, toRefs } from "vue";
 import { onClickOutside } from "@vueuse/core";
 import { translate } from "@/i18n";
-import { useAuthStore } from "@/modules/users/store/auth.store";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 
 interface IProps {
   interval: CalendarIntervalEnum;

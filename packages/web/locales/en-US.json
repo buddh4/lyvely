@@ -52,6 +52,7 @@
   "common": {
     "create-new": "Create new",
     "close": "Close",
+    "reload": "Reload",
     "cancel": "Cancel",
     "back": "Back",
     "submit": "Submit",
@@ -230,6 +231,10 @@
     "network": {
       "title": "Network Error",
       "message": "The request failed due to a network issue, please make sure you are connected to the internet."
+    },
+    "csrf": {
+      "title": "Invalid application state",
+      "message": "Please reload this site, otherwise some parts of the application may not work as expected."
     }
   }
 }

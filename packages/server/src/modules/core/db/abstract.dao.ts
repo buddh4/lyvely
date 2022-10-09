@@ -281,11 +281,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
     options?: QueryOptions,
-  ) {
+  ): Promise<boolean> {
     // TODO: trigger events
     const clonedUpdate = cloneDeep(update);
 
-    if (!(await this.beforeUpdate(identity, clonedUpdate))) return 0;
+    if (!(await this.beforeUpdate(identity, clonedUpdate))) return false;
 
     filter = filter || {};
     filter._id = this.assureEntityId(identity);

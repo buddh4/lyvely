@@ -1,5 +1,5 @@
 import { NavigationGuardNext, RouteLocation } from "vue-router";
-import { useAuthStore } from "@/modules/users/store/auth.store";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import { isDevelopEnvironment } from "@/modules/core/environment";
 import { profileRoute } from "@/modules/profiles/routes/profile-route.util";

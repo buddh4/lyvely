@@ -32,19 +32,20 @@ export type I18NOptions = {
 export type LyvelyAuthOptions = {
   jwt: {
     'secure-cookies': boolean;
+    issuer?: string;
     access: {
       secret: string;
-      expiration: string;
+      expiresIn: string;
       samesite: string;
     };
     refresh: {
       secret: string;
-      expiration: string;
+      expiresIn: string;
       samesite: string;
     };
     token: {
       secret: string;
-      expiration: string;
+      expiresIn: string;
     };
   };
 };

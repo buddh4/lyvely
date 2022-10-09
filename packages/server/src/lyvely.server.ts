@@ -52,7 +52,6 @@ export class LyvelyServer {
 
   private initHelmet() {
     const helmetConfig = this.configService.get<HelmetOptions | false>('helmet', {});
-    this.logger.log('Using helmet options:', helmetConfig);
     if (helmetConfig !== false) {
       this.nestApp.use(helmet(helmetConfig));
     }

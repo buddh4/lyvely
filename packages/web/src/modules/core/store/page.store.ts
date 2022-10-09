@@ -19,6 +19,7 @@ export const usePageStore = defineStore("page", () => {
 
     if (!element) {
       console.warn("Tried to focus non existing element");
+      return;
     }
 
     element?.classList.add("focus-hidden");
@@ -36,11 +37,24 @@ export const usePageStore = defineStore("page", () => {
     showSidebar.value = !showSidebar.value;
   }
 
+  const loaderContexts = new Set<string>();
+
+  function setShowAppLoader(context: string, show: boolean) {
+    if (show) loaderContexts.add(context);
+    else loaderContexts.delete(context);
+
+    if (show === showAppLoader.value) return;
+    if (!show && loaderContexts.size) return;
+
+    showAppLoader.value = show;
+  }
+
   return {
     isDark,
     showSidebar,
     toggleSidebar,
     toggleDark,
+    setShowAppLoader,
     showAppLoader,
     setTitle,
     accessibilityFocus,

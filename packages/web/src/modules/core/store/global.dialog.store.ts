@@ -5,6 +5,7 @@ export interface IShowAlertOptions {
   title?: string;
   message: string;
   icon?: string;
+  buttonType?: ButtonType;
   status?: boolean;
   iconColor?: string;
   iconClass?: string;
@@ -16,6 +17,8 @@ export enum DialogType {
   Warning = "warning",
   Error = "error",
 }
+
+export type ButtonType = "close" | "reload";
 
 const iconClassMapping = {
   [DialogType.Success]: "success",
@@ -29,6 +32,7 @@ export const useGlobalDialogStore = defineStore("global.dialog", {
     icon: undefined,
     iconClass: undefined,
     iconColor: undefined,
+    buttonType: undefined,
     title: "",
     message: "",
     visible: false,
@@ -59,6 +63,7 @@ export const useGlobalDialogStore = defineStore("global.dialog", {
         this.icon = options.icon || type;
         this.iconColor = options.iconColor || undefined;
         this.iconClass = options.iconColor || iconClassMapping[type];
+        this.buttonType = options.buttonType || "close";
         this.title = options.title;
         this.message = options.message;
         this.visible = true;

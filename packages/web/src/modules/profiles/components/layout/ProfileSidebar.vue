@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAuthStore } from "@/modules/users/store/auth.store";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { computed, ref, toRefs, watch } from "vue";
 import { RouteLocation } from "vue-router";
 import { translate } from "@/i18n";

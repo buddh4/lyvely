@@ -1,7 +1,7 @@
 import { ifNotAuthenticated } from "@/router/utils";
 import { translate } from "@/i18n";
 import { setPageTitle } from "@/modules/core/store/page.store";
-import { useAuthStore } from "@/modules/users/store/auth.store";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { NavigationGuardNext, RouteLocation } from "vue-router";
 import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 

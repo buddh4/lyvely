@@ -6,6 +6,7 @@ function getModulePath(name) {
   return `^src/modules/${name}`;
 }
 
+const MODULE_AUTH = getModulePath("auth");
 const MODULE_ACCESSIBILITY = getModulePath("accessibility");
 const MODULE_ACTIVITIES = getModulePath("activities");
 const MODULE_CALENDAR = getModulePath("calendar");
@@ -63,10 +64,12 @@ function createModuleDeps(name, allowedDeps, extendDefaultDeps) {
   };
 }
 
+// TODO: add modules...
 module.exports = {
   forbidden: [
     ...preset.forbidden,
     /* module dependency restrictions: */
+    createModuleDeps("auth"),
     createModuleDeps("accessibility"),
   ],
   options: preset.options,

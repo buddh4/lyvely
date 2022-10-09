@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/modules/users/store/auth.store";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { NavigationGuardWithThis, RouteLocationNormalized } from "vue-router";
 
 const publicRoutes = ["/", "/login"];

@@ -1,6 +1,6 @@
 import { IAuthService, UserModel, LoginModel } from "@lyvely/common";
 
-import authRepository from "@/modules/users/repositories/auth.repository";
+import authRepository from "@/modules/auth/repositories/auth.repository";
 
 export class AuthService implements IAuthService {
   async login(loginModel: LoginModel) {

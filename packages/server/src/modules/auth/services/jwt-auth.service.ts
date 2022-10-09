@@ -7,10 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { addMilliSeconds } from '@lyvely/common';
 import ms from 'ms';
 import { ConfigurationPath } from '@/modules/app-config';
-
-// https://stackoverflow.com/questions/38897514/what-to-store-in-a-jwt
-
-// TODO: (auth) create interface abstraction
+import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 
 @Injectable()
 export class JwtAuthService {
@@ -22,9 +19,8 @@ export class JwtAuthService {
 
   async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.usersService.findUserByMainEmail(email);
-    if (!user) {
-      return false;
-    }
+
+    if (!user) return false;
 
     return (await user.validatePassword(pass)) ? user : false;
   }
@@ -39,28 +35,37 @@ export class JwtAuthService {
   }
 
   public createAccessToken(user: User): string {
-    return this.jwtService.sign(
-      { sub: user._id.toString() },
-      {
-        secret: this.configService.get('auth.jwt.access.secret'),
-        expiresIn: this.configService.get('auth.jwt.access.expiration'),
-      },
-    );
+    const options = {
+      secret: this.configService.get('auth.jwt.access.secret'),
+      expiresIn: this.configService.get('auth.jwt.access.expiresIn'),
+      algorithm: 'HS256',
+    } as JwtSignOptions;
+
+    const issuer = this.configService.get('auth.jwt.issuer');
+    if (issuer) options.issuer = issuer;
+
+    return this.jwtService.sign({ sub: user._id.toString(), purpose: 'access_token' }, options);
   }
 
   public async createRefreshToken(user: User, visitorId: string): Promise<string> {
-    const token = this.jwtService.sign(
-      { sub: user._id.toString() },
-      {
-        secret: this.configService.get('auth.jwt.refresh.secret'),
-        expiresIn: this.configService.get('auth.jwt.refresh.expiration'),
-      },
-    );
+    const options = {
+      secret: this.configService.get('auth.jwt.refresh.secret'),
+      expiresIn: this.configService.get('auth.jwt.refresh.expiresIn'),
+      algorithm: 'HS256',
+    } as JwtSignOptions;
 
-    const expiration = addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiration')), false);
+    const issuer = this.configService.get('auth.jwt.issuer');
+    if (issuer) options.issuer = issuer;
+
+    const token = this.jwtService.sign({ sub: user._id.toString(), purpose: 'refresh_token' }, options);
 
     // TODO: there should be a limit of refresh tokens...
-    await this.setVisitorRefreshToken(user, visitorId, token, expiration);
+    await this.setVisitorRefreshToken(
+      user,
+      visitorId,
+      token,
+      addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiresIn')), false),
+    );
 
     return token;
   }
@@ -70,7 +75,7 @@ export class JwtAuthService {
   }
 
   private async setVisitorRefreshToken(user: User, visitorId: string, token: string, expiration: Date) {
-    return this.usersService.setRefreshTokenHash(
+    return this.usersService.setRefreshToken(
       user,
       new RefreshToken({
         vid: visitorId,

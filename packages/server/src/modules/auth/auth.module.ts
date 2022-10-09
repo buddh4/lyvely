@@ -17,7 +17,7 @@ import { ModuleMeta } from '@/modules/core/modules/module.meta';
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService<ConfigurationPath>) => ({
         secret: configService.get('auth.jwt.access.secret'),
-        signOptions: { expiresIn: configService.get('auth.jwt.access.expiration', '15m') },
+        signOptions: { expiresIn: configService.get('auth.jwt.access.expiresIn', '15m') },
       }),
       inject: [ConfigService],
     }),

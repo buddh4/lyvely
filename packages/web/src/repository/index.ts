@@ -20,16 +20,23 @@ repository.defaults.withCredentials = true;
 
 repository.interceptors.response.use(undefined, (error) => {
   return new Promise((resolve, reject) => {
-    console.error(error);
     if (!error.response) {
-      console.log(error);
       useGlobalDialogStore().showError({
         icon: Icons.error_network.name,
         title: "error.network.title",
         message: "error.network.message",
+        buttonType: "reload",
       });
-    } else if (error.response.status === 403) {
-      console.warn("Unauthorized request detected...");
+    } else if (
+      error.response.status === 403 &&
+      error.response.data.message === "invalid csrf token"
+    ) {
+      useGlobalDialogStore().showError({
+        icon: Icons.error_network.name,
+        title: "error.csrf.title",
+        message: "error.csrf.message",
+        buttonType: "reload",
+      });
     }
 
     reject(error);

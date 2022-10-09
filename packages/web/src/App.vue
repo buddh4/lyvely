@@ -8,7 +8,7 @@ import AppLoader from "@/modules/ui/components/loader/AppLoader.vue";
 import { useRouter } from "vue-router";
 import { watch, ref, computed, toRefs } from "vue";
 
-const { visible, icon, iconColor, iconClass, title, message } = toRefs(
+const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRefs(
   useGlobalDialogStore()
 );
 
@@ -46,6 +46,7 @@ const layoutComponent = computed(() => {
     :icon-color="iconColor"
     :icon-class="iconClass"
     :title="title"
+    :button-type="buttonType"
     :message="message"
   />
 </template>

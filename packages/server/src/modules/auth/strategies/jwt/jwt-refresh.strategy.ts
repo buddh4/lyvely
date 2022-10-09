@@ -1,9 +1,9 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { JwtRefreshTokenPayloadIF } from './jwt-payload.interface';
+import { JwtRefreshTokenPayloadIF, PURPOSE_REFRESH_TOKEN } from './jwt-payload.interface';
 import { Cookies } from '@/modules/core';
 import { Headers } from '@lyvely/common';
 import { ConfigurationPath } from '@/modules/app-config';
@@ -21,6 +21,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-
           },
         ]),
       ]),
+      jsonWebTokenOptions: {},
       ignoreExpiration: false,
       secretOrKey: configService.get('auth.jwt.refresh.secret'),
       passReqToCallback: true,
@@ -28,12 +29,17 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-
   }
 
   async validate(req: Request, payload: JwtRefreshTokenPayloadIF) {
+    if (payload.purpose !== PURPOSE_REFRESH_TOKEN) {
+      throw new UnauthorizedException('Invalid token purpose used as refresh token.');
+    }
+
     const tokenString = req.cookies && req.cookies[Cookies.REFRESH];
-    const visitorId = req.header(Headers.X_VISITOR_ID);
-    const user = await this.validateUserByJwtRefreshToken(tokenString, visitorId, payload);
+    const vid = req.header(Headers.X_VISITOR_ID);
+
+    const user = await this.validateUserByJwtRefreshToken(tokenString, vid, payload);
 
     if (!user) {
-      throw new ForbiddenException();
+      throw new UnauthorizedException();
     }
 
     return user;

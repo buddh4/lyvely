@@ -42,7 +42,7 @@ export class UsersService {
     return this.userDao.incrementProfileCount(owner, type, -1, options);
   }
 
-  async setRefreshTokenHash(user: User, token: RefreshToken) {
+  async setRefreshToken(user: User, token: RefreshToken) {
     if (!token.vid) {
       throw new IntegrityException('Can not set refresh-token without vid');
     }

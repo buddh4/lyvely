@@ -1,29 +1,22 @@
 import { defineStore } from "pinia";
-import { loadingStatus, useStatus } from "@/store/status";
 import { setLocale } from "@/i18n";
 import { localStorageManager, sessionStorageManager } from "@/util/storage";
-import { useAsEmitter } from "@/util/emitter";
 import { ref, computed } from "vue";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 import repository from "@/repository";
 import { eventBus } from "@/modules/core/events/global.emitter";
 import { getDefaultLocale } from "@/util";
-import { AuthService } from "@/modules/users/services/auth.service";
+import { AuthService } from "@/modules/auth/services/auth.service";
 import { ILoginResponse, UserModel, queuePromise } from "@lyvely/common";
 
 export const storedVid = localStorageManager.getStoredValue("visitorId");
-
-type AuthStoreEvents = {
-  "auth.logout": undefined;
-};
 
 let refreshPromise: Promise<void> | undefined = undefined;
 
 export const useAuthStore = defineStore("user-auth", () => {
   const user = ref<UserModel>();
   const authService = new AuthService();
-  const emitter = useAsEmitter<AuthStoreEvents>();
-  const tokenExpiration = ref(0);
+  const authTokenExpiration = ref(0);
   const locale = ref(getDefaultLocale());
   const visitorId = ref<string | undefined>(
     <string | undefined>storedVid.getValue()
@@ -36,24 +29,22 @@ export const useAuthStore = defineStore("user-auth", () => {
     const { user, vid, token_expiration } = result;
     await setUser(user);
     setVid(vid);
-    const test = isAuthenticated.value;
-    const test2 = storedVid.getValue();
-    const test3 = visitorId.value;
-    debugger;
-    tokenExpiration.value = token_expiration;
+    authTokenExpiration.value = token_expiration;
   }
 
   async function loadUser() {
     const { user, token_expiration } = await authService.loadUser();
     await setUser(user);
-    tokenExpiration.value = token_expiration;
+    authTokenExpiration.value = token_expiration;
     return user;
   }
 
   async function logout() {
     await authService.logout(visitorId.value).catch(console.error);
+    // TODO: If logout request fails we should set an additional header assuring to logout on next valid request
     clear();
-    this.router.push("/login");
+    // We use document.location instead of router here in order to force stores to be cleared
+    document.location = "/";
   }
 
   function clear() {
@@ -86,7 +77,7 @@ export const useAuthStore = defineStore("user-auth", () => {
       authService.refresh(visitorId.value!)
     ).then(({ token_expiration }) => {
       refreshPromise = undefined;
-      tokenExpiration.value = token_expiration;
+      authTokenExpiration.value = token_expiration;
     });
   }
 
@@ -94,7 +85,7 @@ export const useAuthStore = defineStore("user-auth", () => {
     user,
     locale,
     getVid,
-    tokenExpiration,
+    authTokenExpiration,
     isAuthenticated,
     handleLogin,
     logout,
@@ -106,7 +97,7 @@ export const useAuthStore = defineStore("user-auth", () => {
 const authRepositoryPlugin = () => {
   let lastRefresh = Date.now();
   // default expiration, this will be overwritten after login/refresh/initial state loading
-  let tokenExpiration = 30_000;
+  let authTokenExpiration = 30_000;
 
   const requestToken = () => {
     return useAuthStore()
@@ -118,10 +109,13 @@ const authRepositoryPlugin = () => {
 
   const autoRefreshTokenInterval = () => {
     const authStore = useAuthStore();
-    tokenExpiration = authStore.tokenExpiration || tokenExpiration;
+    authTokenExpiration = authStore.authTokenExpiration || authTokenExpiration;
 
-    // The refresh interval uses a of 30 second margin
-    const refreshInterval = Math.max(tokenExpiration - 30_000, 30_000);
+    // This is unstable if authTokenExpiration <= 5s which should not be the case anyways
+    const refreshInterval =
+      authTokenExpiration < 30_000
+        ? Math.max(authTokenExpiration - 5_000, 5_000)
+        : Math.max(authTokenExpiration - 30_000, 30_000);
 
     if (
       authStore.isAuthenticated &&
@@ -150,15 +144,11 @@ const authRepositoryPlugin = () => {
       return Promise.reject();
     }
 
-    return Promise.resolve();
-
-    return requestToken().catch((err) => {
-      console.log(err);
-    });
+    return requestToken();
   });
 
   eventBus.on("app.mount.post", () => {
-    setTimeout(autoRefreshTokenInterval, tokenExpiration);
+    setTimeout(autoRefreshTokenInterval, authTokenExpiration);
   });
 };
 

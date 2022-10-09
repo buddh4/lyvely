@@ -79,7 +79,7 @@ export class UserRegistrationService {
       { sub: user._id.toString(), email: user.email },
       {
         secret: this.configService.get('auth.jwt.token.secret'),
-        expiresIn: this.configService.get('auth.jwt.token.expiration'),
+        expiresIn: this.configService.get('auth.jwt.token.expiresIn'),
       },
     );
 

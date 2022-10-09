@@ -2,8 +2,7 @@ import { expect } from '@jest/globals';
 import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '@/modules/users';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, getObjectId, TestDataUtils } from '@/modules/test';
-import { ProfileType } from '@lyvely/common';
-import { addDays } from '@lyvely/common';
+import { ProfileType, addDays } from '@lyvely/common';
 
 describe('UserService', () => {
   let userService: UsersService;
@@ -122,7 +121,7 @@ describe('UserService', () => {
     it('set new refresh token', async () => {
       const user = await testData.createUser();
       expect(user.refreshTokens.length).toEqual(0);
-      await userService.setRefreshTokenHash(
+      await userService.setRefreshToken(
         user,
         new RefreshToken({
           vid: 'vid1',
@@ -149,7 +148,7 @@ describe('UserService', () => {
       expect(user.refreshTokens.length).toEqual(1);
       expect(user.refreshTokens[0].hash).toEqual('someHash');
 
-      await userService.setRefreshTokenHash(
+      await userService.setRefreshToken(
         user,
         new RefreshToken({
           vid: vid,

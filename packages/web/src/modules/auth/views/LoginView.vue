@@ -3,7 +3,7 @@ import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayo
 import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import LyFormModel from "@/modules/ui/components/form/FormModel.vue";
-import { useLoginStore } from "@/modules/users/store/login.store";
+import { useLoginStore } from "@/modules/auth/store/login.store";
 import LanguageChooser from "@/modules/ui/components/i18n/LanguageChooser.vue";
 
 const loginStore = useLoginStore();

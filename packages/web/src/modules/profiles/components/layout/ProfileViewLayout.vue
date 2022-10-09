@@ -3,7 +3,7 @@ import { Size } from "@/modules/ui/types";
 import ProfileSidebar from "@/modules/profiles/components/layout/ProfileSidebar.vue";
 import MainProfileContainer from "@/modules/profiles/components/layout/MainProfileContainer.vue";
 import { computed } from "vue";
-import { useAuthStore } from "@/modules/users/store/auth.store";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 import CreateProfileModal from "@/modules/profiles/components/modals/CreateProfileModal.vue";
 import InviteUsersModal from "@/modules/profiles/components/modals/InviteUsersModal.vue";
 

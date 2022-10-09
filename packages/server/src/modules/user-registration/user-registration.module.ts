@@ -14,7 +14,7 @@ import { ConfigurationPath } from '@/modules/app-config';
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService<ConfigurationPath>) => ({
         secret: configService.get('auth.jwt.token.secret'),
-        signOptions: { expiresIn: configService.get('auth.jwt.token.expiration', '1d') },
+        signOptions: { expiresIn: configService.get('auth.jwt.token.expiresIn', '1d') },
       }),
       inject: [ConfigService],
     }),

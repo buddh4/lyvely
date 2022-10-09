@@ -88,7 +88,6 @@ export async function loadingState<T = any, R = T | void>(
       return successResult !== undefined ? successResult : result;
     })
     .catch((e) => {
-      console.error(e);
       if (reject) reject(e);
       loading.value = false;
     }) as Promise<R extends void | undefined ? T : R>;
@@ -111,7 +110,6 @@ export async function loadingStatus<T = any, R = T | void>(
       return successResult !== undefined ? successResult : result;
     })
     .catch((e) => {
-      console.error(e);
       if (reject) {
         reject(e);
       } else {
