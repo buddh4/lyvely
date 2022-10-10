@@ -11,4 +11,5 @@ export interface JwtAccessTokenPayloadIF extends JwtTokenPayloadIF {
 
 export interface JwtRefreshTokenPayloadIF extends JwtTokenPayloadIF {
   sub: string;
+  remember: boolean;
 }

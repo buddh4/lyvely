@@ -33,14 +33,14 @@ provide("formModelData", {
 </script>
 
 <template>
-  <form :id="id">
+  <div :id="id" class="form-model">
     <slot></slot>
     <ly-screen-reader-validation-error
       v-if="validator"
       :errors="validator.getErrors()"
     />
     <ly-alert v-if="showAlert" :message="status?.statusError" />
-  </form>
+  </div>
 </template>
 
 <style scoped></style>

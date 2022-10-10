@@ -51,7 +51,12 @@ onBeforeUnmount(() => {
       >
         <ly-input-text property="username" :required="true" />
         <ly-input-text property="email" type="email" :required="true" />
-        <ly-input-text name="new-password" property="password" type="password" :required="true" />
+        <ly-input-text
+          name="new-password"
+          property="password"
+          type="password"
+          :required="true"
+        />
         <ly-input-text
           property="passwordRepeat"
           type="password"

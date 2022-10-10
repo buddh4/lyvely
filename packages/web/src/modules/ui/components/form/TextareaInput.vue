@@ -1,14 +1,20 @@
 <template>
-  <floating-input-layout :wrapper-class="wrapperClass" :input-id="inputId" :label="label" :required="required" :input-error="inputError">
-     <textarea
-         :id="inputId"
-         ref="input"
-         v-model="inputValue"
-         :rows="rows"
-         :disabled="disabled"
-         :readonly="readonly"
-         :class="inputClass"
-     ></textarea>
+  <floating-input-layout
+    :wrapper-class="wrapperClass"
+    :input-id="inputId"
+    :label="label"
+    :required="required"
+    :input-error="inputError"
+  >
+    <textarea
+      :id="inputId"
+      ref="input"
+      v-model="inputValue"
+      :rows="rows"
+      :disabled="disabled"
+      :readonly="readonly"
+      :class="inputClass"
+    ></textarea>
   </floating-input-layout>
 </template>
 
@@ -37,7 +43,7 @@ export default {
     return useFloatingInputSetup(props, context);
   },
   mounted() {
-    if(this.autofocus) this.$refs.input.focus()
+    if (this.autofocus) this.$refs.input.focus();
   },
 };
 </script>

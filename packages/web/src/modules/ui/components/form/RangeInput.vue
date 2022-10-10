@@ -88,7 +88,7 @@ export default {
     };
   },
   mounted() {
-    if(this.autofocus) this.$refs.input.focus()
+    if (this.autofocus) this.$refs.input.focus();
   },
 };
 </script>

@@ -1,10 +1,13 @@
 <template>
-  <div @keydown.enter.stop="toggle" @click="toggle" :class="['cursor-pointer', wrapperClass]">
+  <div
+    :class="['cursor-pointer', wrapperClass]"
+    @keydown.enter="toggle"
+  >
     <div class="flex">
       <label class="inline-flex items-center">
         <input
+          ref="checkbox"
           v-model="inputValue"
-          ref="input"
           type="checkbox"
           :disabled="disabled"
           :value="value"
@@ -13,7 +16,7 @@
           @change="onChange"
         />
       </label>
-      <span v-if="label" class="label ml-2">{{ $t(label) }}</span>
+      <span v-if="label" class="label ml-2"  @click="toggle">{{ $t(label) }}</span>
       <ly-icon
         v-if="showHelpText && helpText"
         name="info"
@@ -33,7 +36,7 @@ import {
   useBaseInputProps,
   useBaseInputSetup,
 } from "@/modules/ui/components/form/BaseInput";
-import { computed, SetupContext, ref } from "vue";
+import { SetupContext, ref } from "vue";
 import { isArray } from "lodash";
 
 interface IProps extends IBaseInputProps {
@@ -50,34 +53,40 @@ export default {
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {
     const showHelpText = ref(false);
+    const checkbox = ref<HTMLInputElement>();
+
     const baseInput = useBaseInputSetup<boolean>(props, context, {
       inputClass: "border rounded ml-1 ring-0",
     });
-
-    function toggle(evt: any) {
-      if (isArray(props.modelValue)) {
-        context.emit(
-          "update:modelValue",
-          props.modelValue.filter((val) => val !== evt.target.value)
-        );
-      } else {
-        baseInput.inputValue.value = !evt.target.checked;
-      }
-    }
 
     function onChange(evt: any) {
       context.emit("change", evt.target.checked, evt.target.value);
     }
 
+    function toggle(evt: KeyboardEvent) {
+      const test = !checkbox.value!.checked;
+      debugger;
+
+      if (isArray(props.modelValue)) {
+        context.emit(
+            "update:modelValue",
+            props.modelValue.filter((val) => val !== checkbox.value!.value)
+        );
+      } else {
+        baseInput.inputValue.value = !checkbox.value!.checked;
+      }
+    }
+
     return {
+      toggle,
       ...baseInput,
       showHelpText,
-      toggle,
+      checkbox,
       onChange,
     };
   },
   mounted() {
-    if(this.autofocus) this.$refs.input.focus()
+    if (this.autofocus) this.$refs.input.focus();
   },
 };
 </script>

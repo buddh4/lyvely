@@ -56,9 +56,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-
 
     const user = await this.usersService.findUserById(payload.sub);
 
-    if (!user) {
-      return null;
-    }
+    if (!user) return null;
 
     const refreshTokenItem = user.getRefreshTokenByVisitorId(visitorId);
 

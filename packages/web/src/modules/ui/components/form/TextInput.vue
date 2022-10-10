@@ -1,19 +1,31 @@
 <template>
-  <floating-input-layout :wrapper-class="wrapperClass" :input-id="inputId" :label="label" :required="required" :input-error="inputError">
+  <floating-input-layout
+    :wrapper-class="wrapperClass"
+    :input-id="inputId"
+    :label="label"
+    :required="required"
+    :input-error="inputError"
+  >
     <input
-        :id="inputId"
-        ref="input"
-        :name="name"
-        v-model="inputValue"
-        :disabled="disabled"
-        :readonly="readonly"
-        :autocomplete="autoCompleteValue"
-        :type="internalType"
-        :class="inputClass"
-        @change="onChange"
-        @focusout="onFocusOut"
+      :id="inputId"
+      ref="input"
+      v-model="inputValue"
+      :name="name"
+      :disabled="disabled"
+      :readonly="readonly"
+      :autocomplete="autoCompleteValue"
+      :type="internalType"
+      :class="inputClass"
+      @change="onChange"
+      @focusout="onFocusOut"
     />
-    <div v-if="isPassword" rolw="button" class="absolute flex top-1 right-2 cursor-pointer" :aria-label="$t(togglePasswordAriaLabel)" @click="togglePassword">
+    <div
+      v-if="isPassword"
+      rolw="button"
+      class="absolute flex top-1 right-2 cursor-pointer"
+      :aria-label="$t(togglePasswordAriaLabel)"
+      @click="togglePassword"
+    >
       <ly-icon :name="togglePasswordIcon" />
     </div>
   </floating-input-layout>
@@ -42,25 +54,28 @@ export default {
   setup(props: IProps, context: SetupContext) {
     const internalType = ref(props.type);
     const togglePasswordIcon = computed(() => {
-      return internalType.value === 'password' ? 'eye' : 'eye-slash'
+      return internalType.value === "password" ? "eye" : "eye-slash";
     });
     const togglePasswordAriaLabel = computed(() => {
-      return internalType.value === 'password' ? 'common.show_password' : 'common.hide_password'
+      return internalType.value === "password"
+        ? "common.show_password"
+        : "common.hide_password";
     });
     return {
-      isPassword: props.type === 'password',
+      isPassword: props.type === "password",
       togglePasswordIcon,
       togglePasswordAriaLabel,
       internalType,
-      ...useFloatingInputSetup(props, context)
-    }
+      ...useFloatingInputSetup(props, context),
+    };
   },
   mounted() {
-    if(this.autofocus) this.$refs.input.focus()
+    if (this.autofocus) this.$refs.input.focus();
   },
   methods: {
     togglePassword() {
-      this.internalType = this.internalType === 'password' ? 'text' : 'password';
+      this.internalType =
+        this.internalType === "password" ? "text" : "password";
     },
     change: function (evt: any) {
       this.$emit("change", evt);
@@ -68,5 +83,3 @@ export default {
   },
 };
 </script>
-
-

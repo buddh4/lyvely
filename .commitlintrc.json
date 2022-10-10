@@ -19,6 +19,7 @@
         "refactor",
         "revert",
         "style",
+        "usability",
         "test"
       ]
     ],

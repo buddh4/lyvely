@@ -1,15 +1,21 @@
 <template>
-  <floating-input-layout :wrapper-class="wrapperClass" :input-id="inputId" :label="label" :required="required" :input-error="inputError">
+  <floating-input-layout
+    :wrapper-class="wrapperClass"
+    :input-id="inputId"
+    :label="label"
+    :required="required"
+    :input-error="inputError"
+  >
     <input
-        :id="inputId"
-        ref="input"
-        v-model.number="inputValue"
-        :disabled="disabled"
-        :readonly="readonly"
-        :class="inputClass"
-        type="text"
-        inputmode="number"
-        @change="$emit('change')"
+      :id="inputId"
+      ref="input"
+      v-model.number="inputValue"
+      :disabled="disabled"
+      :readonly="readonly"
+      :class="inputClass"
+      type="text"
+      inputmode="number"
+      @change="$emit('change')"
     />
     <div v-if="slider && editable" class="number-slider">
       <ly-button :class="buttonClass" @click="increment">+</ly-button>
@@ -89,7 +95,7 @@ export default {
     }
 
     const buttonClass =
-        "w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0";
+      "w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0";
 
     return {
       ...baseInput,
@@ -99,7 +105,7 @@ export default {
     };
   },
   mounted() {
-    if(this.autofocus) this.$refs.input.focus()
+    if (this.autofocus) this.$refs.input.focus();
   },
 };
 </script>

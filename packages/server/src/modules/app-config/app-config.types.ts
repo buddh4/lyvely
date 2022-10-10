@@ -41,6 +41,7 @@ export type LyvelyAuthOptions = {
     refresh: {
       secret: string;
       expiresIn: string;
+      expiresInRemember: string;
       samesite: string;
     };
     token: {

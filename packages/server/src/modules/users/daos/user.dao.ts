@@ -48,6 +48,7 @@ export class UserDao extends AbstractDao<User> {
           vid: token.vid,
           hash: token.hash,
           expiration: token.expiration,
+          remember: token.remember,
         }),
       },
     }));

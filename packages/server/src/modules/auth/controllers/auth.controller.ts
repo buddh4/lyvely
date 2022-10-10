@@ -1,29 +1,19 @@
-import {
-  Controller,
-  Req,
-  Post,
-  UseGuards,
-  Get,
-  UseInterceptors,
-  ClassSerializerInterceptor,
-  Inject,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Controller, Req, Post, UseGuards, Get, Inject, UnauthorizedException, Body } from '@nestjs/common';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { JwtAuthService } from '../services/jwt-auth.service';
 import { UserRequest } from '../../users';
-import { addMilliSeconds, UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint } from '@lyvely/common';
+import { addMilliSeconds, UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/common';
 import { Cookies } from '../../core/web';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import JwtRefreshGuard from '../guards/jwt-refresh.guard';
 import { MailService } from '@/modules/mails';
-import { ModuleMeta, Public } from '@/modules/core';
+import { ModuleMeta, Public, UseClassSerializer } from '@/modules/core';
 import { ConfigurationPath } from '@/modules/app-config';
 import { JwtStrategy } from '@/modules/auth/strategies';
 
 @Controller(ENDPOINT_AUTH)
-@UseInterceptors(ClassSerializerInterceptor)
+@UseClassSerializer()
 export class AuthController implements AuthEndpoint {
   constructor(
     private authService: JwtAuthService,
@@ -35,9 +25,9 @@ export class AuthController implements AuthEndpoint {
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req: UserRequest) {
+  async login(@Body() loginModel: LoginModel, @Req() req: UserRequest) {
     const { user } = req;
-    const { accessToken, refreshToken, vid } = await this.authService.login(user);
+    const { accessToken, refreshToken, vid } = await this.authService.login(user, loginModel.remember);
 
     this.setAuthenticationCookie(req, accessToken);
     this.setRefreshCookie(req, refreshToken);
@@ -55,17 +45,18 @@ export class AuthController implements AuthEndpoint {
   async refresh(@Req() req: UserRequest) {
     const { user } = req;
     const vid = this.getVisitorIdHeader(req);
+    const oldRefreshToken = user.getRefreshTokenByVisitorId(vid);
 
     if (!user || !vid) {
-      // Should not happen since we validate everything in jwt guard, but does not hurt...
+      // Should not happen since we validate everything in the guard, but does not hurt...
       throw new UnauthorizedException();
     }
     const newAccessToken = this.authService.createAccessToken(user);
     this.setAuthenticationCookie(req, newAccessToken);
 
-    // We also refresh the refresh token itself, this allows shorter refresh token expirations
-    await this.authService.destroyRefreshToken(user, vid);
-    this.setRefreshCookie(req, await this.authService.createRefreshToken(user, vid));
+    // Here we also refresh the refresh token itself, this allows shorter refresh token expirations
+    await this.authService.destroyRefreshToken(user, oldRefreshToken.vid);
+    this.setRefreshCookie(req, await this.authService.createRefreshToken(user, vid, oldRefreshToken.remember));
 
     return { token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')) };
   }

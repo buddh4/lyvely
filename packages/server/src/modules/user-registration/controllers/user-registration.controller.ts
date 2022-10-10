@@ -1,4 +1,4 @@
-import { Controller, HttpCode, HttpStatus, Post, Body, BadRequestException } from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus, Post, Body } from '@nestjs/common';
 import { UserRegistrationService } from '../services/user-registration.service';
 import { Public, UseClassSerializer } from '@/modules/core';
 import { UserRegistrationEndpoint, UserRegistrationDto, ENDPOINT_USER_REGISTRATION } from '@lyvely/common';

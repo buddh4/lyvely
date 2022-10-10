@@ -1,16 +1,22 @@
 <template>
-  <floating-input-layout :wrapper-class="wrapperClass" :input-id="inputId" :label="label" :required="required" :input-error="inputError">
+  <floating-input-layout
+    :wrapper-class="wrapperClass"
+    :input-id="inputId"
+    :label="label"
+    :required="required"
+    :input-error="inputError"
+  >
     <select
-        :id="inputId"
-        ref="input"
-        v-model="inputValue"
-        :disabled="disabled"
-        :class="inputClass"
+      :id="inputId"
+      ref="input"
+      v-model="inputValue"
+      :disabled="disabled"
+      :class="inputClass"
     >
       <option
-          v-for="option in options"
-          :key="option.value"
-          :value="option.value"
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
       >
         {{ $t(option.label) }}
       </option>
@@ -42,7 +48,7 @@ export default {
     return useFloatingInputSetup(props, context);
   },
   mounted() {
-    if(this.autofocus) this.$refs.input.focus()
+    if (this.autofocus) this.$refs.input.focus();
   },
 };
 </script>

@@ -25,11 +25,11 @@ export class JwtAuthService {
     return (await user.validatePassword(pass)) ? user : false;
   }
 
-  async login(user: User) {
+  async login(user: User, remember?: boolean) {
     const vid = uuidv4();
     return {
       accessToken: this.createAccessToken(user),
-      refreshToken: await this.createRefreshToken(user, vid),
+      refreshToken: await this.createRefreshToken(user, vid, remember),
       vid: vid,
     };
   }
@@ -47,17 +47,29 @@ export class JwtAuthService {
     return this.jwtService.sign({ sub: user._id.toString(), purpose: 'access_token' }, options);
   }
 
-  public async createRefreshToken(user: User, visitorId: string): Promise<string> {
+  public async createRefreshToken(user: User, visitorId: string, remember?: boolean): Promise<string> {
+    remember = !!remember;
+    const expiresIn = remember
+      ? this.configService.get('auth.jwt.refresh.expiresInRemember')
+      : this.configService.get('auth.jwt.refresh.expiresIn');
+
     const options = {
       secret: this.configService.get('auth.jwt.refresh.secret'),
-      expiresIn: this.configService.get('auth.jwt.refresh.expiresIn'),
+      expiresIn: expiresIn,
       algorithm: 'HS256',
     } as JwtSignOptions;
 
     const issuer = this.configService.get('auth.jwt.issuer');
     if (issuer) options.issuer = issuer;
 
-    const token = this.jwtService.sign({ sub: user._id.toString(), purpose: 'refresh_token' }, options);
+    const token = this.jwtService.sign(
+      {
+        sub: user._id.toString(),
+        purpose: 'refresh_token',
+        remember: remember,
+      },
+      options,
+    );
 
     // TODO: there should be a limit of refresh tokens...
     await this.setVisitorRefreshToken(
@@ -65,6 +77,7 @@ export class JwtAuthService {
       visitorId,
       token,
       addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiresIn')), false),
+      remember,
     );
 
     return token;
@@ -74,13 +87,20 @@ export class JwtAuthService {
     return this.usersService.destroyRefreshToken(user, visitorId);
   }
 
-  private async setVisitorRefreshToken(user: User, visitorId: string, token: string, expiration: Date) {
+  private async setVisitorRefreshToken(
+    user: User,
+    visitorId: string,
+    token: string,
+    expiration: Date,
+    remember: boolean,
+  ) {
     return this.usersService.setRefreshToken(
       user,
       new RefreshToken({
         vid: visitorId,
         hash: await bcrypt.hash(token, 10),
         expiration: expiration,
+        remember: remember,
       }),
     );
   }

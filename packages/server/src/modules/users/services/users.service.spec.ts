@@ -127,10 +127,16 @@ describe('UserService', () => {
           vid: 'vid1',
           hash: 'someHash',
           expiration: addDays(new Date(), 1),
+          remember: true,
         }),
       );
       expect(user.refreshTokens.length).toEqual(1);
-      expect((await userService.findUserById(user)).refreshTokens.length).toEqual(1);
+      const persitedUser = await userService.findUserById(user);
+
+      expect(persitedUser.refreshTokens.length).toEqual(1);
+      expect(persitedUser.refreshTokens[0].remember).toEqual(true);
+      expect(persitedUser.refreshTokens[0].vid).toEqual('vid1');
+      expect(persitedUser.refreshTokens[0].hash).toEqual('someHash');
     });
 
     it('update refresh token', async () => {
@@ -141,6 +147,7 @@ describe('UserService', () => {
             vid: vid,
             hash: 'someHash',
             expiration: addDays(new Date(), 1),
+            remember: true,
           }),
         ],
       });

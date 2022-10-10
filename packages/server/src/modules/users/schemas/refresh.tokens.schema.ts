@@ -16,6 +16,9 @@ export class RefreshToken extends BaseEntity<RefreshToken> {
 
   @Prop({ required: true })
   expiration: Date;
+
+  @Prop()
+  remember?: boolean;
 }
 
 export const RefreshTokenSchema = SchemaFactory.createForClass(RefreshToken);
