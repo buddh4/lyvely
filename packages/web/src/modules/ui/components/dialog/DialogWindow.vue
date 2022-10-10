@@ -8,7 +8,7 @@ interface IProps {
   iconColor?: string;
   iconClass?: string;
   modelValue: boolean;
-  buttonType?: 'close' | 'reload'
+  buttonType?: "close" | "reload";
   title: string;
   message: string;
 }
@@ -16,7 +16,7 @@ interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   icon: undefined,
   iconColor: undefined,
-  buttonType: 'close',
+  buttonType: "close",
   iconClass: undefined,
 });
 
@@ -26,8 +26,8 @@ const visible = computed({
 });
 
 const reload = () => {
-  document.location = '/';
-}
+  document.location = "/";
+};
 </script>
 
 <template>
@@ -41,8 +41,18 @@ const reload = () => {
     {{ $t(message) }}
 
     <template #footer>
-      <ly-button v-if="buttonType === 'reload'" class="danger" text="common.reload" @click="reload" />
-      <ly-button v-if="buttonType === 'close'"  class="primary" text="common.close" @click="visible = false" />
+      <ly-button
+        v-if="buttonType === 'reload'"
+        class="danger"
+        text="common.reload"
+        @click="reload"
+      />
+      <ly-button
+        v-if="buttonType === 'close'"
+        class="primary"
+        text="common.close"
+        @click="visible = false"
+      />
     </template>
   </ly-modal>
 </template>

@@ -1,22 +1,15 @@
 <template>
-  <div :class="wrapperClass">
-    <textarea
-      :id="id"
-      v-model="inputValue"
-      :rows="rows"
-      :disabled="disabled"
-      :readonly="readonly"
-      :class="cssClasses"
-    ></textarea>
-
-    <div v-if="hasError()" :class="errorClass">
-      {{ inputError }}
-    </div>
-
-    <label v-if="inputLabel" :for="id" :class="labelClass">
-      {{ $t(inputLabel) }}
-    </label>
-  </div>
+  <floating-input-layout :wrapper-class="wrapperClass" :input-id="inputId" :label="label" :required="required" :input-error="inputError">
+     <textarea
+         :id="inputId"
+         ref="input"
+         v-model="inputValue"
+         :rows="rows"
+         :disabled="disabled"
+         :readonly="readonly"
+         :class="inputClass"
+     ></textarea>
+  </floating-input-layout>
 </template>
 
 <script lang="ts">
@@ -26,12 +19,14 @@ import {
 } from "@/modules/ui/components/form/BaseInput";
 import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
 import { SetupContext } from "vue";
+import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
 
 interface IProps extends IBaseInputProps {
   type: string;
 }
 
 export default {
+  components: { FloatingInputLayout },
   inject: ["model", "validator"],
   props: {
     ...useBaseInputProps(),
@@ -40,6 +35,9 @@ export default {
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {
     return useFloatingInputSetup(props, context);
+  },
+  mounted() {
+    if(this.autofocus) this.$refs.input.focus()
   },
 };
 </script>

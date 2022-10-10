@@ -60,13 +60,13 @@ function updateValue(checked: boolean, value: string) {
 </script>
 
 <template>
-  <div class="flex flex-row-reverse">
+  <fieldset class="flex flex-row-reverse">
     <template v-if="!single">
       <div v-for="unit in count" :key="unit">
         <ly-input-checkbox
           v-model="values"
           :disabled="props.disabled"
-          :css-class="cssClasses(unit)"
+          :input-class="cssClasses(unit)"
           :value="unit"
           @change="updateValue"
         />
@@ -76,11 +76,11 @@ function updateValue(checked: boolean, value: string) {
       <ly-input-checkbox
         :model-value="1"
         :checked="props.selection"
-        :css-class="cssClasses(0)"
+        :input-class="cssClasses(0)"
         @change="updateValue"
       />
     </template>
-  </div>
+  </fieldset>
 </template>
 
 <style scoped></style>

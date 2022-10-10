@@ -12,6 +12,7 @@ export enum Status {
 export type StatusStorePlugin = {
   status: Ref<Status>;
   statusError: Ref<string | undefined>;
+  toRefs(): { statusState: Ref<Status>; statusError: Ref<string | undefined> };
   setError(msg: string): void;
   resetStatus(): void;
   setStatus(status: Status): void;
@@ -25,14 +26,22 @@ export type StatusStorePlugin = {
 
 export function useStatus(status?: Ref<Status>): StatusStorePlugin {
   const s = status || ref(Status.INIT);
+  const statusError = ref();
 
   return {
     status: s,
-    statusError: ref(),
+    statusError: statusError,
+
+    toRefs() {
+      return {
+        statusState: this.status,
+        statusError: this.statusError,
+      };
+    },
 
     setError(msg: string) {
       this.setStatus(Status.ERROR);
-      this.statusError.value = msg;
+      statusError.value = msg;
     },
 
     resetStatus() {
@@ -42,7 +51,7 @@ export function useStatus(status?: Ref<Status>): StatusStorePlugin {
     setStatus(status: Status) {
       s.value = status;
       if (status !== Status.ERROR) {
-        this.statusError.value = undefined;
+        statusError.value = undefined;
       }
     },
 

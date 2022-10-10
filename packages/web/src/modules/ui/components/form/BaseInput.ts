@@ -1,4 +1,11 @@
-import { ComponentOptions, computed, ref, SetupContext, inject } from "vue";
+import {
+  ComponentOptions,
+  computed,
+  ComputedRef,
+  ref,
+  SetupContext,
+  inject,
+} from "vue";
 import { merge, uniqueId } from "lodash";
 import { CssClassDefinition } from "@/util/component.types";
 import { ModelValidator } from "@lyvely/common";
@@ -23,9 +30,9 @@ export interface IBaseInputProps {
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  cssClass?: string;
+  inputClass?: string;
   wrapperClass?: string;
-  autocomplete?: boolean;
+  autocomplete?: boolean | string;
   error?: string;
   loading?: boolean;
   autoValidation: boolean;
@@ -36,24 +43,25 @@ export function useBaseInputProps() {
     id: { type: String },
     label: { type: String },
     helpText: { type: String },
-    name: { type: String },
+    name: { type: String, default: undefined },
     value: { type: String },
     property: { type: String },
     disabled: { type: Boolean, default: false },
     readonly: { type: Boolean, default: false },
     required: { type: Boolean, default: false },
     autocomplete: { type: Boolean, default: false },
+    autofocus: { type: Boolean, default: undefined },
     autoValidation: { type: Boolean, default: true },
     loading: { type: Boolean, default: false },
     modelValue: {},
-    cssClass: {},
+    inputClass: {},
     wrapperClass: {},
     error: undefined,
   };
 }
 
 export interface IBaseInputSetupOptions {
-  cssClass?: string;
+  inputClass?: string;
 }
 
 function getComputedInputValue<T>(
@@ -92,22 +100,24 @@ function getComputedInputLabel(
 function getComputedCssClasses(
   props: IBaseInputProps,
   options: IBaseInputSetupOptions,
-  hasError: () => boolean
+  inputError: ComputedRef<string | undefined>
 ) {
   return computed(() => {
     let result: CssClassDefinition = [];
 
-    result.push({ "is-invalid": hasError() });
+    result.push({ "is-invalid": !!inputError.value?.length });
 
-    if (props.cssClass) {
+    if (props.inputClass) {
       result = result.concat(
-        Array.isArray(props.cssClass) ? props.cssClass : [props.cssClass]
+        Array.isArray(props.inputClass) ? props.inputClass : [props.inputClass]
       );
     }
 
-    if (options.cssClass) {
+    if (options.inputClass) {
       result = result.concat(
-        Array.isArray(options.cssClass) ? options.cssClass : [options.cssClass]
+        Array.isArray(options.inputClass)
+          ? options.inputClass
+          : [options.inputClass]
       );
     }
 
@@ -142,6 +152,20 @@ function getId(props: IBaseInputProps, formModelData?: FormModelData) {
   return uniqueId("input");
 }
 
+function getComputedAutoCompleteValue(props: IBaseInputProps) {
+  return computed(() => {
+    if (!props.autocomplete || props.autocomplete === "false") {
+      return "off";
+    }
+
+    if (props.autocomplete === true || props.autocomplete === "true") {
+      return "on";
+    }
+
+    return props.autocomplete;
+  });
+}
+
 export function useBaseInputSetup<T = unknown>(
   props: IBaseInputProps,
   { emit }: SetupContext,
@@ -159,18 +183,15 @@ export function useBaseInputSetup<T = unknown>(
     validator &&
     props.property?.length;
 
-  const hasError = () =>
-    validator && props.property
-      ? !!validator.getError(props.property)
-      : !!props.error;
+  const inputError = getComputedInputError(props, formModelData);
 
   return {
-    id: getId(props, formModelData),
+    inputId: getId(props, formModelData),
     inputValue: getComputedInputValue<T>(props, emit, formModelData),
-    cssClasses: getComputedCssClasses(props, options, hasError),
-    errorClass: "text-danger text-sm pl-1 pt-1",
-    inputError: getComputedInputError(props, formModelData),
-    inputLabel: getComputedInputLabel(props, formModelData),
+    inputClass: getComputedCssClasses(props, options, inputError),
+    autoCompleteValue: getComputedAutoCompleteValue(props),
+    inputError: inputError,
+    label: getComputedInputLabel(props, formModelData),
     editable: computed(() => !props.disabled && !props.readonly),
     hasFocus: computed(
       () =>
@@ -178,10 +199,9 @@ export function useBaseInputSetup<T = unknown>(
         document.activeElement &&
         root.value.contains(document.activeElement)
     ),
-    hasError,
     onChange: (evt: any) => {
-      if (useAutoValidation) {
-        validator.validateField(props.property!).then(() => {
+      if (useAutoValidation || inputError.value) {
+        validator!.validateField(props.property!).then(() => {
           emit("change", evt);
         });
       } else {

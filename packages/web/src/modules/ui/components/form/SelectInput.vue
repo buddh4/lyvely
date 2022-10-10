@@ -1,26 +1,21 @@
 <template>
-  <div :class="wrapperClass">
+  <floating-input-layout :wrapper-class="wrapperClass" :input-id="inputId" :label="label" :required="required" :input-error="inputError">
     <select
-      :id="id"
-      v-model="inputValue"
-      :disabled="disabled"
-      :class="cssClasses"
+        :id="inputId"
+        ref="input"
+        v-model="inputValue"
+        :disabled="disabled"
+        :class="inputClass"
     >
       <option
-        v-for="option in options"
-        :key="option.value"
-        :value="option.value"
+          v-for="option in options"
+          :key="option.value"
+          :value="option.value"
       >
         {{ $t(option.label) }}
       </option>
     </select>
-
-    <div v-if="hasError()" :class="errorClass">
-      {{ $t(error) }}
-    </div>
-
-    <label :for="id" :class="labelClass">{{ $t(label) }}</label>
-  </div>
+  </floating-input-layout>
 </template>
 
 <script lang="ts">
@@ -30,12 +25,14 @@ import {
 } from "@/modules/ui/components/form/BaseInput";
 import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
 import { SetupContext } from "vue";
+import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
 
 interface IProps extends IBaseInputProps {
   type: string;
 }
 
 export default {
+  components: { FloatingInputLayout },
   props: {
     ...useBaseInputProps(),
     options: { type: Array, required: true },
@@ -43,6 +40,9 @@ export default {
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {
     return useFloatingInputSetup(props, context);
+  },
+  mounted() {
+    if(this.autofocus) this.$refs.input.focus()
   },
 };
 </script>

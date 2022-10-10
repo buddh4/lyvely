@@ -1,13 +1,14 @@
 <template>
-  <div @keydown.enter.stop="toggle">
+  <div @keydown.enter.stop="toggle" @click="toggle" :class="['cursor-pointer', wrapperClass]">
     <div class="flex">
       <label class="inline-flex items-center">
         <input
           v-model="inputValue"
+          ref="input"
           type="checkbox"
           :disabled="disabled"
           :value="value"
-          :class="cssClasses"
+          :class="inputClass"
           :readonly="readonly"
           @change="onChange"
         />
@@ -50,7 +51,7 @@ export default {
   setup(props: IProps, context: SetupContext) {
     const showHelpText = ref(false);
     const baseInput = useBaseInputSetup<boolean>(props, context, {
-      cssClass: "border rounded ml-1 ring-0",
+      inputClass: "border rounded ml-1 ring-0",
     });
 
     function toggle(evt: any) {
@@ -74,6 +75,9 @@ export default {
       toggle,
       onChange,
     };
+  },
+  mounted() {
+    if(this.autofocus) this.$refs.input.focus()
   },
 };
 </script>

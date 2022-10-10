@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<IProps>(), {
 });
 
 const name = computed(() => props.name || props.options?.name || "");
-const definition = getIconByName(name.value);
+const definition = computed(() => getIconByName(name.value));
 const styleObject = computed(
   (): StyleDefinition =>
     props.options?.fill ? { fill: props.options.fill } : {}

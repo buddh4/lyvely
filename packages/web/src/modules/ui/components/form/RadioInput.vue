@@ -1,14 +1,15 @@
 <template>
-  <div>
+  <div :class="wrapperClass">
     <div class="flex">
       <label class="inline-flex items-center">
         <input
           :id="id"
+          ref="input"
           v-model="inputValue"
           type="radio"
           :disabled="disabled"
           :value="value"
-          :class="cssClasses"
+          :class="inputClass"
           :readonly="readonly"
           @change="onChange"
         />
@@ -38,6 +39,9 @@ export default {
   emits: ["change", "update:modelValue"],
   setup(props: Props, context: SetupContext) {
     return useBaseInputSetup(props, context);
+  },
+  mounted() {
+    if(this.autofocus) this.$refs.input.focus()
   },
 };
 </script>

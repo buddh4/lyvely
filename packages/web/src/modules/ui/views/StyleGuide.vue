@@ -212,7 +212,7 @@ const radioValue2 = ref("2");
             :checked="false"
           />
           <ly-input-checkbox
-            css-class="success"
+            input-class="success"
             label="Success colored checkbox"
           />
         </div>
@@ -236,7 +236,7 @@ const radioValue2 = ref("2");
           <ly-input-radio
             v-model="radioValue2"
             value="2"
-            css-class="success"
+            input-class="success"
             label="Success colored checkbox"
           />
         </div>
@@ -297,7 +297,7 @@ const radioValue2 = ref("2");
             <ly-input-textarea
               v-model="textareaInput4"
               label="Not resizable"
-              css-class="resize-none"
+              input-class="resize-none"
             />
           </div>
         </div>
@@ -405,7 +405,7 @@ const radioValue2 = ref("2");
 
         <h3>Dropdown</h3>
         <div class="clear-both mb-2">
-          <ly-dropdown css-class="float-right">
+          <ly-dropdown input-class="float-right">
             <ly-dropdownLink label="Route" route="/activities" />
             <ly-dropdownLink label="Click" @click="showAlert('Clicked!')" />
             <ly-dropdownLink
@@ -416,7 +416,7 @@ const radioValue2 = ref("2");
           </ly-dropdown>
         </div>
         <div class="clear-both mb-2">
-          <ly-dropdown css-class="float-right" label="With Label">
+          <ly-dropdown input-class="float-right" label="With Label">
             <ly-dropdownLink label="Route" route="/activities" />
             <ly-dropdownLink label="Click" @click="showAlert('Clicked!')" />
             <ly-dropdownLink
@@ -427,7 +427,7 @@ const radioValue2 = ref("2");
           </ly-dropdown>
         </div>
         <div class="clear-both mb-2">
-          <ly-dropdown css-class="float-right" label="With Label">
+          <ly-dropdown input-class="float-right" label="With Label">
             <ly-dropdownLink label="Route" route="/activities" />
             <ly-dropdownLink label="Click" @click="showAlert('Clicked!')" />
             <ly-dropdownLink

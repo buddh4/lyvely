@@ -21,7 +21,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh-
           },
         ]),
       ]),
-      jsonWebTokenOptions: {},
+      algorithms: ['HS256', 'RS256'],
       ignoreExpiration: false,
       secretOrKey: configService.get('auth.jwt.refresh.secret'),
       passReqToCallback: true,

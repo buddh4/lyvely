@@ -27,7 +27,7 @@ watch(emailInput, (value) => {
       <ly-input-text
         v-model="emailInput"
         class="mb-0 grow"
-        css-class="attachment-r"
+        input-class="attachment-r"
         label="profile.invite.email-help"
       />
       <ly-button class="primary attachment-l w-12" @click="addEmails">

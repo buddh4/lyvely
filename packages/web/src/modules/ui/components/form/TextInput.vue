@@ -1,27 +1,22 @@
 <template>
-  <div :class="wrapperClass">
+  <floating-input-layout :wrapper-class="wrapperClass" :input-id="inputId" :label="label" :required="required" :input-error="inputError">
     <input
-      :id="id"
-      v-model="inputValue"
-      :disabled="disabled"
-      :readonly="readonly"
-      :autocomplete="autocomplete ? 'on' : 'off'"
-      :type="type"
-      :class="cssClasses"
-      @change="onChange"
-      @focusout="onFocusOut"
+        :id="inputId"
+        ref="input"
+        :name="name"
+        v-model="inputValue"
+        :disabled="disabled"
+        :readonly="readonly"
+        :autocomplete="autoCompleteValue"
+        :type="internalType"
+        :class="inputClass"
+        @change="onChange"
+        @focusout="onFocusOut"
     />
-
-    <transition name="fade">
-      <div v-if="hasError()" :class="errorClass">
-        {{ inputError }}
-      </div>
-    </transition>
-
-    <label v-if="inputLabel" :for="id" :class="labelClass">
-      {{ $t(inputLabel) }}
-    </label>
-  </div>
+    <div v-if="isPassword" rolw="button" class="absolute flex top-1 right-2 cursor-pointer" :aria-label="$t(togglePasswordAriaLabel)" @click="togglePassword">
+      <ly-icon :name="togglePasswordIcon" />
+    </div>
+  </floating-input-layout>
 </template>
 
 <script lang="ts">
@@ -30,22 +25,43 @@ import {
   useBaseInputProps,
 } from "@/modules/ui/components/form/BaseInput";
 import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
-import { SetupContext } from "vue";
+import { SetupContext, ref, computed } from "vue";
+import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
 
 interface IProps extends IBaseInputProps {
   type: string;
 }
 
 export default {
+  components: { FloatingInputLayout },
   props: {
     ...useBaseInputProps(),
     type: { type: String, default: "text" },
   },
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {
-    return useFloatingInputSetup(props, context);
+    const internalType = ref(props.type);
+    const togglePasswordIcon = computed(() => {
+      return internalType.value === 'password' ? 'eye' : 'eye-slash'
+    });
+    const togglePasswordAriaLabel = computed(() => {
+      return internalType.value === 'password' ? 'common.show_password' : 'common.hide_password'
+    });
+    return {
+      isPassword: props.type === 'password',
+      togglePasswordIcon,
+      togglePasswordAriaLabel,
+      internalType,
+      ...useFloatingInputSetup(props, context)
+    }
+  },
+  mounted() {
+    if(this.autofocus) this.$refs.input.focus()
   },
   methods: {
+    togglePassword() {
+      this.internalType = this.internalType === 'password' ? 'text' : 'password';
+    },
     change: function (evt: any) {
       this.$emit("change", evt);
     },
@@ -53,17 +69,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
 
-.fade-enter-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

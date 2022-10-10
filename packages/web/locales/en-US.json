@@ -54,6 +54,9 @@
     "close": "Close",
     "reload": "Reload",
     "cancel": "Cancel",
+    "next": "Next",
+    "show_password": "Show password as plain text. Warning: this will display your password on the screen.",
+    "hide_password": "Hide password",
     "back": "Back",
     "submit": "Submit",
     "update": "Update",
@@ -124,7 +127,7 @@
       "sign_in": "Sign in",
       "not_a_member": "Not a member?",
       "forgot_password": "Forgot password?",
-      "remember_me": "Remember me",
+      "remember_me": "Keep me signed in.",
       "fields": {
         "password": "Password",
         "email": "Email"

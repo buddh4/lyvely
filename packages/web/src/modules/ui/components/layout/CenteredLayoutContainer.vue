@@ -9,16 +9,16 @@ const props = withDefaults(defineProps<IProps>(), {
 </script>
 
 <template>
-  <section class="flex p-4 justify-center rounded h-screen w-full">
+  <section class="flex md:p-4 justify-center md:rounded md:h-screen  w-full">
     <div
-      class="bg-main main w-full max-w-sm p-4 border border-divide rounded shadow-xl m-auto"
+      class="bg-main main w-full max-w-sm p-4 md:border h-screen md:h-auto border-divide md:rounded shadow-xl m-auto"
     >
       <slot name="header">
-        <h1 class="text-center text-xl">
+        <h1 class="text-center text-xl mb-5">
           <slot name="title">{{ $t(props.title) }}</slot>
         </h1>
       </slot>
-      <div class="my-5">
+      <div>
         <slot name="body"></slot>
       </div>
       <div>

@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 import { PATH_VERIFY_EMAIL } from "../routes";
 import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 import LanguageChooser from "@/modules/ui/components/i18n/LanguageChooser.vue";
+import { onBeforeUnmount } from "vue";
 
 const userRegistrationStore = useUserRegistrationStore();
 const verifyEmailStore = useVerifyEmailStore();
@@ -21,6 +22,10 @@ async function register() {
     }
   });
 }
+
+onBeforeUnmount(() => {
+  userRegistrationStore.reset();
+});
 </script>
 
 <template>
@@ -46,7 +51,7 @@ async function register() {
       >
         <ly-input-text property="username" :required="true" />
         <ly-input-text property="email" type="email" :required="true" />
-        <ly-input-text property="password" type="password" :required="true" />
+        <ly-input-text name="new-password" property="password" type="password" :required="true" />
         <ly-input-text
           property="passwordRepeat"
           type="password"

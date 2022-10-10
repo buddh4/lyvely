@@ -11,6 +11,7 @@ export const useLoginStore = defineStore("user-login", () => {
   const authStore = useAuthStore();
   const authService = new AuthService();
   const loginModel = ref(new LoginModel());
+  const stage = ref<"email" | "password">("email");
   const validator = ref(
     new I18nModelValidator(loginModel.value, {
       translationKey: "users.login.fields",
@@ -28,6 +29,13 @@ export const useLoginStore = defineStore("user-login", () => {
       .catch(handleLoginError);
   }
 
+  function reset() {
+    loginModel.value = new LoginModel();
+    stage.value = "email";
+    validator.value.setModel(loginModel.value);
+    status.resetStatus();
+  }
+
   async function handleLoginError(err: any) {
     if (err?.response?.status === 401) {
       status.setError("users.login.errors.invalid_input");
@@ -38,6 +46,8 @@ export const useLoginStore = defineStore("user-login", () => {
   return {
     status,
     login,
+    reset,
+    stage,
     loginModel,
     validator,
   };

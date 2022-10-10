@@ -11,6 +11,7 @@ interface IProps {
   labelKey?: string;
   status?: StatusStorePlugin;
   autoValidation?: boolean;
+  showAlert?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -19,6 +20,7 @@ const props = withDefaults(defineProps<IProps>(), {
   labelKey: undefined,
   status: undefined,
   autoValidation: true,
+  showAlert: true,
 });
 
 provide("formModelData", {
@@ -31,13 +33,13 @@ provide("formModelData", {
 </script>
 
 <template>
-  <form :id="id" @submit.prevent="">
+  <form :id="id">
     <slot></slot>
     <ly-screen-reader-validation-error
       v-if="validator"
       :errors="validator.getErrors()"
     />
-    <ly-alert :message="status?.statusError" />
+    <ly-alert v-if="showAlert" :message="status?.statusError" />
   </form>
 </template>
 

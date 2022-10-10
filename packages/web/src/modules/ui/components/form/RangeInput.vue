@@ -1,20 +1,21 @@
 <template>
-  <div>
+  <section :class="wrapperClass">
     <label v-if="label" :for="id" class="form-label">{{ $t(label) }}</label>
     <input
       :id="id"
+      ref="input"
       v-model="inputValue"
       :disabled="disabled"
       :step="step"
       :readonly="readonly"
-      :class="cssClasses"
+      :class="inputClass"
       :style="inputStyle"
       :min="min"
       :max="max"
       type="range"
       @change="$emit('change')"
     />
-  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -85,6 +86,9 @@ export default {
       ...baseInput,
       inputStyle,
     };
+  },
+  mounted() {
+    if(this.autofocus) this.$refs.input.focus()
   },
 };
 </script>
