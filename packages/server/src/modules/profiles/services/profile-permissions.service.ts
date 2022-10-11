@@ -1,5 +1,5 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { UserWithProfileAndRelations } from '../models';
+import { ProfileContext } from '../models';
 import minimatch from 'minimatch';
 import { BaseMembershipRole } from '@lyvely/common';
 import {
@@ -14,7 +14,7 @@ export const TOKEN_PROFILE_ROLES_DEFINITION = 'PROFILE_ROLES_DEFINITION';
 export const TOKEN_DEFAULT_PROFILE_PERMISSIONS = 'DEFAULT_PROFILE_PERMISSIONS';
 
 @Injectable()
-export class ProfilePermissionsService extends PermissionsService<UserWithProfileAndRelations> {
+export class ProfilePermissionsService extends PermissionsService<ProfileContext> {
   constructor(
     @Optional() @Inject(TOKEN_PROFILE_ROLES_DEFINITION) private rolesDefinition: IProfileRoleDefinition[],
     @Optional() @Inject(TOKEN_DEFAULT_PROFILE_PERMISSIONS) private defaultPermissions: IDefaultRolePermissions,
@@ -38,7 +38,7 @@ export class ProfilePermissionsService extends PermissionsService<UserWithProfil
     }
   }
 
-  async checkPermission(profileRelations: UserWithProfileAndRelations, permission: string): Promise<boolean> {
+  async checkPermission(profileRelations: ProfileContext, permission: string): Promise<boolean> {
     const { profile } = profileRelations;
 
     if (!profile) {
@@ -70,7 +70,7 @@ export class ProfilePermissionsService extends PermissionsService<UserWithProfil
     return this.checkDefaultPermission(permission, profileRelations);
   }
 
-  private checkDefaultPermission(permission: string, profileRelations: UserWithProfileAndRelations): boolean {
+  private checkDefaultPermission(permission: string, profileRelations: ProfileContext): boolean {
     for (const defaultPermission in this.defaultPermissions) {
       if (
         minimatch(permission, defaultPermission) &&
@@ -83,7 +83,7 @@ export class ProfilePermissionsService extends PermissionsService<UserWithProfil
     return false;
   }
 
-  public userInheritsRole(profileRelations: UserWithProfileAndRelations, role: string) {
+  public userInheritsRole(profileRelations: ProfileContext, role: string) {
     if (!role) return false;
 
     for (let i = 0; i < this.rolesDefinition.length; i++) {

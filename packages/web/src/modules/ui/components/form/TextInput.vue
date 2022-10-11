@@ -12,6 +12,7 @@
       v-model="inputValue"
       :name="name"
       :disabled="disabled"
+      :aria-describedby="ariaDescribedby"
       :readonly="readonly"
       :autocomplete="autoCompleteValue"
       :type="internalType"
@@ -20,7 +21,7 @@
       @focusout="onFocusOut"
     />
     <div
-      v-if="isPassword"
+      v-if="isPassword && passwordToggle"
       rolw="button"
       class="absolute flex top-1 right-2 cursor-pointer"
       :aria-label="$t(togglePasswordAriaLabel)"
@@ -49,8 +50,9 @@ export default {
   props: {
     ...useBaseInputProps(),
     type: { type: String, default: "text" },
+    passwordToggle: { type: Boolean, default: true },
   },
-  emits: ["change", "update:modelValue"],
+  emits: ["change", "update:modelValue", "toggleType"],
   setup(props: IProps, context: SetupContext) {
     const internalType = ref(props.type);
     const togglePasswordIcon = computed(() => {
@@ -69,6 +71,11 @@ export default {
       ...useFloatingInputSetup(props, context),
     };
   },
+  watch: {
+    type(newType: string) {
+      this.internalType = newType;
+    },
+  },
   mounted() {
     if (this.autofocus) this.$refs.input.focus();
   },
@@ -76,6 +83,7 @@ export default {
     togglePassword() {
       this.internalType =
         this.internalType === "password" ? "text" : "password";
+      this.$emit("toggleType", this.internalType);
     },
     change: function (evt: any) {
       this.$emit("change", evt);

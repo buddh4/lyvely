@@ -3,21 +3,22 @@ import { ref } from "vue";
 
 export const useVerifyEmailStore = defineStore("verify-email", () => {
   const email = ref("");
-  const awaiting = ref(false);
 
   const setAwaiting = (awaitingMail: string) => {
     email.value = awaitingMail;
-    awaiting.value = true;
   };
 
-  const isAwaiting = () => {
-    return awaiting.value;
+  const setEmail = (awaitingEmail: string) => {
+    email.value = awaitingEmail;
+  };
+
+  const reset = () => {
+    email.value = "";
   };
 
   return {
     email,
-    awaiting,
-    setAwaiting,
-    isAwaiting,
+    setEmail,
+    reset,
   };
 });

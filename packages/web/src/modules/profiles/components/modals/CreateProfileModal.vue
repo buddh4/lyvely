@@ -5,7 +5,6 @@ import { ProfileUsage, ProfileType } from "@lyvely/common";
 import VueMultiselect from "vue-multiselect";
 import { translate } from "@/i18n";
 import LyInputTextarea from "@/modules/ui/components/form/TextareaInput.vue";
-import LyScreenReaderValidationError from "@/modules/ui/components/error/ScreenReaderValidationError.vue";
 
 const createProfileStore = useCreateProfileStore();
 const { show, model, validator, error } = storeToRefs(createProfileStore);

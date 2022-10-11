@@ -21,7 +21,6 @@ export function translate(key: string, options?: any) {
 }
 
 export async function setupI18n(options = { locale: "en-US" }) {
-  options.locale = options.locale;
   i18n = createI18n({
     legacy: false,
     fallbackLocale: "en-US",

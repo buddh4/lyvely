@@ -261,9 +261,11 @@ input[type=range]:focus::-moz-range-thumb {
     box-shadow: 0 0 0 1px white, 0 0 0 4px rgba(191, 219, 254, 0.8);
 }
 
-.form-input:not(:last-child,.mb-0) {
+.form-input:not(:last-child,.mb-0),
+fieldset:not(:last-child,.mb-0) {
     @apply mb-2;
 }
+
 
 /* Chrome, Safari, Edge, Opera */
 .form-input input::-webkit-outer-spin-button,

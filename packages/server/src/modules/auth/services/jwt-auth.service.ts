@@ -8,6 +8,7 @@ import { addMilliSeconds } from '@lyvely/common';
 import ms from 'ms';
 import { ConfigurationPath } from '@/modules/app-config';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
+import { JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } from '../guards';
 
 @Injectable()
 export class JwtAuthService {
@@ -16,14 +17,6 @@ export class JwtAuthService {
     private jwtService: JwtService,
     private configService: ConfigService<ConfigurationPath>,
   ) {}
-
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findUserByMainEmail(email);
-
-    if (!user) return false;
-
-    return (await user.validatePassword(pass)) ? user : false;
-  }
 
   async login(user: User, remember?: boolean) {
     const vid = uuidv4();
@@ -44,7 +37,7 @@ export class JwtAuthService {
     const issuer = this.configService.get('auth.jwt.issuer');
     if (issuer) options.issuer = issuer;
 
-    return this.jwtService.sign({ sub: user._id.toString(), purpose: 'access_token' }, options);
+    return this.jwtService.sign({ sub: user._id.toString(), purpose: JWT_ACCESS_TOKEN }, options);
   }
 
   public async createRefreshToken(user: User, visitorId: string, remember?: boolean): Promise<string> {
@@ -65,7 +58,7 @@ export class JwtAuthService {
     const token = this.jwtService.sign(
       {
         sub: user._id.toString(),
-        purpose: 'refresh_token',
+        purpose: JWT_REFRESH_TOKEN,
         remember: remember,
       },
       options,

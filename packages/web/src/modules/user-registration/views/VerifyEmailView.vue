@@ -6,15 +6,16 @@ import LyIcon from "@/modules/ui/components/icon/UIIcon.vue";
 import LyTextDimmed from "@/modules/ui/components/text/TextDimmed.vue";
 
 const verifyEmailStore = useVerifyEmailStore();
-const { awaiting, email } = storeToRefs(verifyEmailStore);
+const { email } = storeToRefs(verifyEmailStore);
 </script>
 
 <template>
-  <centered-layout-container v-if="awaiting">
+  <centered-layout-container v-if="email?.length">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       {{ $t("user_registration.verify_email.title") }}
     </template>
+
     <template #body>
       <div class="text-center">
         <ly-icon name="envelop" class="w-16 text-pop m-2" />

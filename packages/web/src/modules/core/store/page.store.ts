@@ -37,16 +37,23 @@ export const usePageStore = defineStore("page", () => {
     showSidebar.value = !showSidebar.value;
   }
 
-  const loaderContexts = new Set<string>();
+  let loaderContexts = new Set<string>();
 
-  function setShowAppLoader(context: string, show: boolean) {
-    if (show) loaderContexts.add(context);
-    else loaderContexts.delete(context);
+  function setShowAppLoader(contextOrShow: string | boolean, show?: boolean) {
+    if (typeof contextOrShow === "boolean") {
+      show = contextOrShow;
+      if (!contextOrShow) loaderContexts = new Set<string>();
+    }
+
+    if (typeof contextOrShow === "string") {
+      if (show) loaderContexts.add(contextOrShow);
+      else loaderContexts.delete(contextOrShow);
+    }
 
     if (show === showAppLoader.value) return;
     if (!show && loaderContexts.size) return;
 
-    showAppLoader.value = show;
+    showAppLoader.value = !!show;
   }
 
   return {

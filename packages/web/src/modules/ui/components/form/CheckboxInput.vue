@@ -1,13 +1,14 @@
 <template>
   <div
     :class="['cursor-pointer', wrapperClass]"
-    @keydown.enter="toggle"
+    @keydown.enter.prevent.stop="toggle"
   >
     <div class="flex">
       <label class="inline-flex items-center">
         <input
           ref="checkbox"
           v-model="inputValue"
+          :aria-describedby="ariaDescribedby"
           type="checkbox"
           :disabled="disabled"
           :value="value"
@@ -16,7 +17,9 @@
           @change="onChange"
         />
       </label>
-      <span v-if="label" class="label ml-2"  @click="toggle">{{ $t(label) }}</span>
+      <span v-if="label" class="label ml-2" @click="toggle">
+        {{ $t(label) }}
+      </span>
       <ly-icon
         v-if="showHelpText && helpText"
         name="info"
@@ -63,14 +66,17 @@ export default {
       context.emit("change", evt.target.checked, evt.target.value);
     }
 
-    function toggle(evt: KeyboardEvent) {
-      const test = !checkbox.value!.checked;
-      debugger;
+    function toggle(evt: KeyboardEvent, stop?: boolean) {
+      if (stop) {
+        evt.stopImmediatePropagation();
+        evt.stopPropagation();
+        evt.preventDefault();
+      }
 
       if (isArray(props.modelValue)) {
         context.emit(
-            "update:modelValue",
-            props.modelValue.filter((val) => val !== checkbox.value!.value)
+          "update:modelValue",
+          props.modelValue.filter((val) => val !== checkbox.value!.value)
         );
       } else {
         baseInput.inputValue.value = !checkbox.value!.checked;

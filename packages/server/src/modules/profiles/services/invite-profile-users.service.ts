@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ProfileMemberMailInvite } from '@lyvely/common';
 import { ProfilePermissionsService } from './profile-permissions.service';
-import { UserWithProfileAndRelations } from '../models';
+import { ProfileContext } from '../models';
 import { validateEmail } from '@/modules/core';
 import { UsersService } from '../../users';
 import { MailService } from '../../mails/services/mail.service';
@@ -14,10 +14,7 @@ export class InviteProfileUsersService {
     private readonly mailService: MailService,
   ) {}
 
-  async inviteUserByMail(
-    userWithRelations: UserWithProfileAndRelations,
-    invite: ProfileMemberMailInvite,
-  ): Promise<boolean> {
+  async inviteUserByMail(userWithRelations: ProfileContext, invite: ProfileMemberMailInvite): Promise<boolean> {
     if (
       !this.profilePermissionsService.userInheritsRole(userWithRelations, invite.role) ||
       !validateEmail(invite.email)

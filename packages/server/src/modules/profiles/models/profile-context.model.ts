@@ -1,4 +1,4 @@
-import { UserProfileRelation, Profile, Membership } from '../schemas';
+import { UserProfileRelation, Profile, Membership, Organization } from '../schemas';
 import { User } from '../../users';
 import { BaseModel, PropertyType, BaseUserProfileRelationType } from '@lyvely/common';
 
@@ -6,9 +6,12 @@ import { BaseModel, PropertyType, BaseUserProfileRelationType } from '@lyvely/co
  * This composite class holds information about the relation between a user and a profile and provides some utility
  * access functions. This class is mainly used in the controller and service layer for access and permission checks.
  */
-export class UserWithProfileAndRelations extends BaseModel<UserWithProfileAndRelations> {
+export class ProfileContext<T extends Profile = Profile> extends BaseModel<ProfileContext> {
   user?: User;
-  profile: Profile;
+  profile: T;
+
+  // TODO: Implement
+  private organizationContext?: ProfileContext<Organization>;
 
   @PropertyType([UserProfileRelation])
   relations: UserProfileRelation[];
@@ -19,6 +22,18 @@ export class UserWithProfileAndRelations extends BaseModel<UserWithProfileAndRel
 
   get pid() {
     return this.profile._id;
+  }
+
+  get organization() {
+    return this.getOrganizationContext()?.profile;
+  }
+
+  getOrganizationContext(): ProfileContext<Organization> {
+    if (this.profile instanceof Organization) {
+      return this;
+    }
+
+    return this.organizationContext;
   }
 
   isGuest(): boolean {

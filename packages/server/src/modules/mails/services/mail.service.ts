@@ -37,7 +37,6 @@ export class MailService {
     sendMailOptions.template = sendMailOptions.template || 'main';
     this.setDefaultContext(sendMailOptions);
     this.renderPartials(sendMailOptions);
-    console.log(sendMailOptions);
     return this.mailerService.sendMail(sendMailOptions).then((info: SentMessageInfo) => {
       return this.handleSentMessageInfo(info);
     });

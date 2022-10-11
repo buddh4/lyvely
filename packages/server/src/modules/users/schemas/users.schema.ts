@@ -141,18 +141,6 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
     return this.refreshTokens?.find((token) => token.vid === vid);
   }
 
-  async validatePassword(password: string) {
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(password, this.password, (error, isMatch) => {
-        if (error) {
-          reject(error);
-        }
-
-        resolve(isMatch);
-      });
-    });
-  }
-
   getLocale() {
     if (!this.locale) {
       this.locale = getDefaultLocale();

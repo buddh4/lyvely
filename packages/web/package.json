@@ -40,7 +40,8 @@
     "vue-multiselect": "^3.0.0-alpha.2",
     "vue-randomcolor": "^1.0.4",
     "vue-router": "^4.1.5",
-    "vuedraggable": "^4.1.0"
+    "vuedraggable": "^4.1.0",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@types/chart.js": "^2.9.34",

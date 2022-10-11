@@ -6,6 +6,7 @@ import authenticationGuard from "./authentication.guard";
 import moduleRouteLoader from "./module-route-loader.util";
 import appConfigLoader from "./config.loader.guard";
 import { profileRoute } from "@/modules/profiles/routes/profile-route.util";
+import { usePageStore } from "@/modules/core/store/page.store";
 
 const routes: Array<RouteRecordRaw> = [];
 
@@ -28,4 +29,7 @@ const router = createRouter({ routes, history: createWebHistory() });
 router.beforeEach(appConfigLoader);
 router.beforeEach(autoMessageLoaderGuard);
 router.beforeEach(authenticationGuard);
+router.afterEach(() => {
+  usePageStore().setShowAppLoader(false);
+});
 export default router;

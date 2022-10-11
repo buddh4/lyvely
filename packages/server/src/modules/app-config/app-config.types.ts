@@ -12,6 +12,7 @@ export type LyvelyMailOptions = MailerOptions & {
 
 export type LyvelyHttpOptions = {
   appUrl?: string;
+  baseUrl: string;
   host: string;
   port: number;
   cors?: {
@@ -44,7 +45,7 @@ export type LyvelyAuthOptions = {
       expiresInRemember: string;
       samesite: string;
     };
-    token: {
+    verify: {
       secret: string;
       expiresIn: string;
     };

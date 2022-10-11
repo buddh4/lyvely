@@ -36,7 +36,7 @@ export function createCoreTestingModule(
       AppConfigModule,
       I18nModule,
       ConfigModule.forRoot({
-        load: [() => import('./test.config').then((module) => module.default)],
+        load: [() => import('./lyvely-test.config').then((module) => module.default)],
         isGlobal: true,
       }),
       MailsModule.fromConfig(),

@@ -3,6 +3,7 @@ import registerRepository from "../repositories/user-registration.repository";
 
 export class UserRegistrationService implements IUserRegistrationService {
   async register(model: UserRegistrationDto) {
-    return registerRepository.register(model);
+    const { data: loginModel } = await registerRepository.register(model);
+    return loginModel;
   }
 }

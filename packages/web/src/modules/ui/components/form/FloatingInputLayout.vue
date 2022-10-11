@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-interface Props {
+interface IProps {
   label?: string;
   inputId: string;
   inputError?: string;
@@ -7,7 +7,7 @@ interface Props {
   required?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<IProps>(), {
   label: undefined,
   inputError: undefined,
   wrapperClass: undefined,
@@ -27,7 +27,7 @@ const wrapperClass = [
       <label
         v-if="label"
         :for="inputId"
-        class="absolute inline-block inset-0 h-full opacity-60 pointer-events-none text-xs px-3 py-2"
+        class="absolute inline-block inset-0 h-full opacity-70 pointer-events-none text-xs px-3 py-2"
       >
         {{ $t(label) }}
       </label>

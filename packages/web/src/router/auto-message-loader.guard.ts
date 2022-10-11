@@ -1,7 +1,6 @@
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { usePageStore } from "@/modules/core/store/page.store";
 import { NavigationGuardWithThis } from "vue-router";
-import { toRefs } from "vue";
 import * as i18n from "@/i18n";
 
 const util: NavigationGuardWithThis<undefined> = async (to, from, next) => {
@@ -11,7 +10,7 @@ const util: NavigationGuardWithThis<undefined> = async (to, from, next) => {
   const promises: Promise<any>[] = [];
 
   if (!i18n.isGlobalMessagesLoaded(locale)) {
-    setShowAppLoader("auto-message-loader", true);
+    setShowAppLoader(true);
     promises.push(i18n.setLocale(locale));
   }
 
@@ -19,14 +18,12 @@ const util: NavigationGuardWithThis<undefined> = async (to, from, next) => {
     to.meta?.i18n?.module &&
     !i18n.isModuleMessagesLoaded(locale, to.meta?.i18n?.module)
   ) {
-    setShowAppLoader("auto-message-loader", true);
+    setShowAppLoader(true);
     promises.push(i18n.loadModuleMessages(locale, to.meta?.i18n?.module));
   }
 
   if (promises.length) {
-    await Promise.all(promises).finally(() =>
-      setShowAppLoader("auto-message-loader", false)
-    );
+    await Promise.all(promises);
   }
 
   next();

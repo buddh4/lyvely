@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UserRegistrationDto, isValidEmail, IFieldValidationResult, escapeHTML } from '@lyvely/common';
+import { UserRegistrationDto, isValidEmail, IFieldValidationResult, escapeHTML, UserStatus } from '@lyvely/common';
 import { UserDao, User } from '../../users';
 import { ProfilesService } from '../../profiles';
 import { MailService } from '@/modules/mails';
 import { ConfigService } from '@nestjs/config';
-import { UrlGenerator } from '@/modules/core';
+import { EntityValidationException, UrlGenerator } from '@/modules/core';
 import { ConfigurationPath } from '@/modules/app-config';
 import { JwtService } from '@nestjs/jwt';
 
@@ -30,25 +30,26 @@ export class UserRegistrationService {
   async register(registerDto: UserRegistrationDto) {
     const emailValidation = await this.validateEmail(registerDto.email);
 
-    if (emailValidation.errors.includes('user_registration.errors.email_unique')) {
+    if (emailValidation.errors?.includes('user_registration.errors.email_unique')) {
       await this.sendEmailAlreadyExistsMail(registerDto.email);
-      return;
-    } else if (emailValidation.errors.length) {
-      throw new BadRequestException(emailValidation.errors);
+      throw new EntityValidationException([emailValidation]);
+    } else if (emailValidation.errors?.length) {
+      throw new EntityValidationException([emailValidation]);
     }
 
     const user = await this.userDao.save(
       new User({
         username: registerDto.username,
         email: registerDto.email,
+        status: UserStatus.EmailVerification,
         locale: registerDto.locale,
         password: registerDto.password,
       }),
     );
 
-    const result = await this.profileService.createDefaultUserProfile(user);
-    await this.sendEmailConfirmationMail(user);
-    return result;
+    await Promise.all([this.profileService.createDefaultUserProfile(user), this.sendEmailConfirmationMail(user)]);
+
+    return user;
   }
 
   private async sendEmailAlreadyExistsMail(email: string) {
@@ -78,24 +79,28 @@ export class UserRegistrationService {
     const token = this.jwtService.sign(
       { sub: user._id.toString(), email: user.email },
       {
-        secret: this.configService.get('auth.jwt.token.secret'),
-        expiresIn: this.configService.get('auth.jwt.token.expiresIn'),
+        secret: this.configService.get('auth.jwt.verify.secret'),
+        expiresIn: this.configService.get('auth.jwt.verify.expiresIn'),
       },
     );
 
-    const verifyHref = escapeHTML(this.urlGenerator.getAppUrl('/users/verify-email', { token }).href);
+    const verifyHref = escapeHTML(this.urlGenerator.getApiUrl('/user-registration/verify-email', { token }).href);
 
     // TODO: (i18n) missing translation
     return this.mailerService.sendMail({
       to: user.email,
       subject: 'Email verification',
       partials: {
-        headline: 'This is a test',
+        headline: 'Confirm Your Email Address',
         body: `<p>Hi, ${username}</p>
-           <p>Welcome to ${appName}</p>
+           <p>Welcome to <b>${appName}</b></p>
            <p>Please click the button below to verify your email address.</p>
-           <p>If you did not sign up to ${appName}, please ignore this email or contact us at <a href="${contactMailHref}">${contactMail}</a></p>
-           <p><a href="${verifyHref}">Verify Email</a></p>`,
+           <p>
+             <a rel="noopener" target="_blank" href="${verifyHref}" style="background-color: #059669; font-size: 14px; font-family: Helvetica, Arial, sans-serif; font-weight: bold; text-decoration: none; padding: 6px 12px; color: #ffffff; border-radius: 5px; display: inline-block; mso-padding-alt: 0;">
+               <span style="mso-text-raise: 15pt;">Verify Email</span>
+             </a>
+           </p>
+           <small>If you did not sign up to ${appName}, please ignore this email or contact us at <a href="${contactMailHref}">${contactMail}</a></small>`,
       },
     });
   }

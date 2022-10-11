@@ -2,7 +2,7 @@
 import { provide } from "vue";
 import { ModelValidator } from "@lyvely/common";
 import { StatusStorePlugin } from "@/store/status";
-import { FormModelData } from "@/modules/ui/components/form/BaseInput";
+import { IFormModelData } from "@/modules/ui/components/form/BaseInput";
 
 interface IProps {
   id?: string;
@@ -29,7 +29,7 @@ provide("formModelData", {
   labelKey: props.labelKey,
   validator: props.validator,
   autoValidation: props.autoValidation,
-} as FormModelData);
+} as IFormModelData);
 </script>
 
 <template>

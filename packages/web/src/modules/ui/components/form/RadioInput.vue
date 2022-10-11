@@ -6,6 +6,7 @@
           :id="id"
           ref="input"
           v-model="inputValue"
+          :aria-describedby="ariaDescribedby"
           type="radio"
           :disabled="disabled"
           :value="value"

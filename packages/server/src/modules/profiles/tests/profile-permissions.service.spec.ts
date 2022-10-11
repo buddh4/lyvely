@@ -5,7 +5,7 @@ import {
   TOKEN_DEFAULT_PROFILE_PERMISSIONS,
   TOKEN_PROFILE_ROLES_DEFINITION,
   ProfilePermissionsService,
-  UserWithProfileAndRelations,
+  ProfileContext,
   Membership,
   ProfileRolePermission,
 } from '../index';
@@ -105,7 +105,7 @@ describe('ProfilePermissionsService', () => {
 
   async function createMembership(role: BaseProfileRelationRole) {
     const { user, profile } = await testDataUtils.createUserAndProfile();
-    const profileRelations = new UserWithProfileAndRelations({
+    const profileRelations = new ProfileContext({
       user,
       profile,
       relations: [new Membership({ role: role })],

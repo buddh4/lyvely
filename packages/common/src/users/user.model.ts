@@ -7,6 +7,9 @@ export class UserModel extends DocumentModel<UserModel> {
   id: string;
 
   @Expose()
+  status: UserStatus;
+
+  @Expose()
   username: string;
 
   @Expose()
@@ -19,7 +22,5 @@ export class UserModel extends DocumentModel<UserModel> {
 export enum UserStatus {
   Disabled, // Manually disabled by system or admin
   Active, // Active state, after successful registration
-  Request, // Requested membership, needs manual activation
   EmailVerification, // Email verification required
-  Invite, // User has been invited, but did not respond
 }

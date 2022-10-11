@@ -1,1 +1,1 @@
-export * from './profile-relations.model';
+export * from './profile-context.model';

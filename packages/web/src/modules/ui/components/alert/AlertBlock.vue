@@ -1,27 +1,37 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, useSlots } from "vue";
 
 interface IProps {
   message?: string;
+  hide?: boolean;
+  type?: "danger" | "info" | "warning";
 }
 
-const props = defineProps<IProps>();
+const props = withDefaults(defineProps<IProps>(), {
+  message: undefined,
+  hide: undefined,
+  type: "danger",
+});
 
-const show = computed(() => {
-  return typeof props.message === "string" && props.message.length;
+const cssClass = [
+  "flex items-center border px-4 py-3 rounded relative mb-1",
+  { "border-danger text-danger": props.type === "danger" },
+  { "border-info text-dimmed": props.type === "info" },
+  { "border-warning text-warning": props.type === "warning" },
+];
+
+const isActive = computed(() => {
+  return !!useSlots().default || props.message?.length;
 });
 </script>
 
 <template>
-  <div
-    v-if="show"
-    class="flex items-center bg-red-100 border border-danger text-danger px-4 py-3 rounded relative dark:bg-main mb-1"
-  >
-    <slot>
-      <span v-if="message && message.length" class="ml-1 text-sm">
+  <div v-if="isActive" :class="cssClass">
+    <span class="text-sm">
+      <slot>
         {{ $t(message) }}
-      </span>
-    </slot>
+      </slot>
+    </span>
   </div>
 </template>
 

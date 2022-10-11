@@ -1,8 +1,8 @@
-import { UserWithProfileAndRelations } from '../models';
+import { ProfileContext } from '../models';
 import { ProfileRelationInfo, ProfileRelationInfos, ProfileWithRelationsDto, registerMapping } from '@lyvely/common';
 
 export function useProfileMappings() {
-  registerMapping(UserWithProfileAndRelations, ProfileRelationInfo, (relations) => {
+  registerMapping(ProfileContext, ProfileRelationInfo, (relations) => {
     const { id, name, description, score, type } = relations.profile;
     return new ProfileRelationInfo({
       id,
@@ -14,7 +14,7 @@ export function useProfileMappings() {
     });
   });
 
-  registerMapping([UserWithProfileAndRelations], ProfileRelationInfos, (relations) => {
+  registerMapping([ProfileContext], ProfileRelationInfos, (relations) => {
     return new ProfileRelationInfos({
       profiles: relations.map((relation) => {
         const { name, description, score, type, imageHash, id } = relation.profile;
@@ -26,7 +26,7 @@ export function useProfileMappings() {
     });
   });
 
-  registerMapping(UserWithProfileAndRelations, ProfileWithRelationsDto, (relations) => {
+  registerMapping(ProfileContext, ProfileWithRelationsDto, (relations) => {
     return new ProfileWithRelationsDto({
       ...relations.profile,
       relations: relations.relations,

@@ -7,7 +7,14 @@ import repository from "@/repository";
 import { eventBus } from "@/modules/core/events/global.emitter";
 import { getDefaultLocale } from "@/util";
 import { AuthService } from "@/modules/auth/services/auth.service";
-import { ILoginResponse, UserModel, queuePromise } from "@lyvely/common";
+import {
+  ILoginResponse,
+  UserModel,
+  queuePromise,
+  UserStatus,
+} from "@lyvely/common";
+import { useAppConfigStore } from "@/modules/app-config/store/app-config.store";
+import { usePageStore } from "@/modules/core/store/page.store";
 
 export const storedVid = localStorageManager.getStoredValue("visitorId");
 
@@ -15,9 +22,14 @@ let refreshPromise: Promise<void> | undefined = undefined;
 
 export const useAuthStore = defineStore("user-auth", () => {
   const user = ref<UserModel>();
+  const appConfigStore = useAppConfigStore();
   const authService = new AuthService();
   const authTokenExpiration = ref(0);
-  const locale = ref(getDefaultLocale());
+  const locale = computed(() => {
+    return (
+      user.value?.locale || getDefaultLocale(appConfigStore.get("locales"))
+    );
+  });
   const visitorId = ref<string | undefined>(
     <string | undefined>storedVid.getValue()
   );
@@ -40,11 +52,16 @@ export const useAuthStore = defineStore("user-auth", () => {
   }
 
   async function logout() {
+    usePageStore().setShowAppLoader(true);
     await authService.logout(visitorId.value).catch(console.error);
     // TODO: If logout request fails we should set an additional header assuring to logout on next valid request
     clear();
     // We use document.location instead of router here in order to force stores to be cleared
     document.location = "/";
+  }
+
+  function isAwaitingEmailVerification() {
+    return user.value?.status === UserStatus.EmailVerification;
   }
 
   function clear() {
@@ -87,6 +104,7 @@ export const useAuthStore = defineStore("user-auth", () => {
     getVid,
     authTokenExpiration,
     isAuthenticated,
+    isAwaitingEmailVerification,
     handleLogin,
     logout,
     refreshToken,

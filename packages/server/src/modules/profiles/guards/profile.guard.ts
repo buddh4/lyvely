@@ -2,7 +2,7 @@ import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/commo
 import { ProfilesService, ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
-import { UserWithProfileAndRelations } from '../models';
+import { ProfileContext } from '../models';
 import { ProfileVisibilityPolicy } from '../policies';
 import { PolicyService } from '../../policies/services/policy.service';
 import { ProfileDao } from '../daos';
@@ -54,7 +54,7 @@ export class ProfileGuard implements CanActivate {
       request.profile = request.profileRelations.profile;
     } else {
       request.profile = await this.profileService.findProfileById(request.query.pid);
-      request.profileRelations = new UserWithProfileAndRelations({ profile: request.profile });
+      request.profileRelations = new ProfileContext({ profile: request.profile });
     }
 
     if (!request.profile) {
@@ -69,7 +69,7 @@ export class ProfileGuard implements CanActivate {
     return this.validatePermissions(request.profileRelations, context);
   }
 
-  private validatePermissions(profileRelations: UserWithProfileAndRelations, context: ExecutionContext) {
+  private validatePermissions(profileRelations: ProfileContext, context: ExecutionContext) {
     const strictPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_STRICT);
 
     if (strictPermissions?.length) {

@@ -1,7 +1,10 @@
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { NavigationGuardWithThis, RouteLocationNormalized } from "vue-router";
+import { PATH_VERIFY_EMAIL } from "@/modules/user-registration/routes";
+import { PATH_LOGIN, PATH_LOGOUT } from "@/modules/auth/routes";
 
-const publicRoutes = ["/", "/login"];
+const PATH_ROOT = "/";
+const publicRoutes = [PATH_ROOT, PATH_LOGIN];
 
 function isPublicRoue(route: RouteLocationNormalized) {
   return route.meta?.isPublic || publicRoutes.includes(route.path);
@@ -11,13 +14,21 @@ const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
   const promises: Promise<any>[] = [];
   const authStore = useAuthStore();
 
-  // TODO: GUEST - needs to be aligned for guest mode feature
-  if (!authStore.isAuthenticated && !isPublicRoue(to)) {
-    next("/login");
+  if (
+    authStore.isAwaitingEmailVerification() &&
+    ![PATH_LOGIN, PATH_LOGOUT, PATH_VERIFY_EMAIL].includes(to.path)
+  ) {
+    next(PATH_VERIFY_EMAIL);
     return;
   }
 
-  if (["/login", "/logout"].includes(to.path)) {
+  // TODO: GUEST - needs to be aligned for guest mode feature
+  if (!authStore.isAuthenticated && !isPublicRoue(to)) {
+    next(PATH_LOGIN);
+    return;
+  }
+
+  if ([PATH_LOGIN, PATH_LOGOUT].includes(to.path)) {
     next();
     return;
   }
@@ -30,7 +41,6 @@ const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
   Promise.all(promises)
     .then(() => next())
     .catch((err) => {
-      console.error(err);
       if (err?.response?.status === 401) {
         authStore.logout();
       }

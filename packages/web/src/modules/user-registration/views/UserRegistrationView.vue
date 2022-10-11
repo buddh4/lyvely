@@ -1,31 +1,23 @@
 <script lang="ts" setup>
 import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayoutContainer.vue";
 import { useUserRegistrationStore } from "@/modules/user-registration/stores/user-registration.store";
-import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
-import { PATH_VERIFY_EMAIL } from "../routes";
-import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 import LanguageChooser from "@/modules/ui/components/i18n/LanguageChooser.vue";
-import { onBeforeUnmount } from "vue";
+import PasswordStrengthMeter from "@/modules/ui/components/form/PasswordStrengthMeter.vue";
+import { onBeforeUnmount, ref } from "vue";
 
 const userRegistrationStore = useUserRegistrationStore();
-const verifyEmailStore = useVerifyEmailStore();
-const router = useRouter();
 
 const { model, validator } = storeToRefs(userRegistrationStore);
 const { status } = userRegistrationStore;
+const showRememberInfo = ref(false);
+const repeatPasswordType = ref("password");
 
 async function register() {
-  userRegistrationStore.register().then(() => {
-    if (verifyEmailStore.isAwaiting()) {
-      router.push(PATH_VERIFY_EMAIL);
-    }
-  });
+  return userRegistrationStore.register();
 }
 
-onBeforeUnmount(() => {
-  userRegistrationStore.reset();
-});
+onBeforeUnmount(userRegistrationStore.reset);
 </script>
 
 <template>
@@ -49,19 +41,65 @@ onBeforeUnmount(() => {
         :status="status"
         label-key="user_registration.fields"
       >
-        <ly-input-text property="username" :required="true" />
-        <ly-input-text property="email" type="email" :required="true" />
-        <ly-input-text
-          name="new-password"
-          property="password"
-          type="password"
-          :required="true"
-        />
-        <ly-input-text
-          property="passwordRepeat"
-          type="password"
-          :required="true"
-        />
+        <fieldset>
+          <ly-input-text
+            autocomplete="username"
+            property="username"
+            :required="true"
+          />
+
+          <ly-input-text
+            autocomplete="email"
+            property="email"
+            type="email"
+            :required="true"
+          />
+        </fieldset>
+
+        <fieldset>
+          <ly-input-text
+            name="new-password"
+            autocomplete="new-password"
+            property="password"
+            type="password"
+            :required="true"
+            @toggle-type="repeatPasswordType = $event"
+          />
+
+          <ly-input-text
+            property="passwordRepeat"
+            autocomplete="new-password"
+            :type="repeatPasswordType"
+            :password-toggle="false"
+            :required="true"
+          />
+          <password-strength-meter v-model="model.password" />
+        </fieldset>
+
+        <fieldset class="my-5">
+          <div class="flex flex-nowrap items-center">
+            <ly-input-checkbox
+              property="remember"
+              class="text-sm"
+              aria-describedby="remember-me-info"
+            />
+            <ly-icon
+              name="info"
+              class="ml-1 text-primary w-4 cursor-pointer"
+              aria-hidden="true"
+              @click="showRememberInfo = !showRememberInfo"
+            />
+          </div>
+          <ly-alert
+            v-show="showRememberInfo"
+            id="remember-me-info"
+            class="mt-2 text-xs"
+            type="info"
+          >
+            <p class="mb-1">{{ $t("users.login.remember_me_info.p1") }}</p>
+            <p>{{ $t("users.login.remember_me_info.p2") }}</p>
+          </ly-alert>
+        </fieldset>
       </ly-form-model>
     </template>
 

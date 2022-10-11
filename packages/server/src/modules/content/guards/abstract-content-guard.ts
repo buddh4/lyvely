@@ -7,7 +7,7 @@ import { isValidObjectId } from '@lyvely/common';
 import { Content } from '../schemas';
 import { getPolicyHandlerFromContext } from '../../policies/decorators/policies.decorator';
 import { PolicyService } from '../../policies/services/policy.service';
-import { UserWithProfileAndRelations } from '../../profiles';
+import { ProfileContext } from '../../profiles';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 
 export const CONTENT_ID_PARAM_KEY = 'contentIdParam';
@@ -36,7 +36,7 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
   protected policyService: PolicyService;
 
   abstract canActivateContent(
-    profileRelations: UserWithProfileAndRelations,
+    profileRelations: ProfileContext,
     content: C,
     context: ExecutionContext,
   ): Promise<boolean>;

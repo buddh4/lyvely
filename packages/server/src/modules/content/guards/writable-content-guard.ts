@@ -2,7 +2,7 @@ import { Injectable, ExecutionContext, Inject } from '@nestjs/common';
 import { ContentWritePolicy } from '../policies';
 import { PolicyService } from '../../policies/services/policy.service';
 import { AbstractContentGuard } from './abstract-content-guard';
-import { UserWithProfileAndRelations } from '../../profiles';
+import { ProfileContext } from '../../profiles';
 import { Content } from '../schemas';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class WritableContentGuard extends AbstractContentGuard {
   protected writePolicy: ContentWritePolicy;
 
   async canActivateContent(
-    profileRelations: UserWithProfileAndRelations,
+    profileRelations: ProfileContext,
     content: Content,
     context: ExecutionContext,
   ): Promise<boolean> {

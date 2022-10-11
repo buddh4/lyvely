@@ -1,10 +1,4 @@
-import {
-  ProfilesService,
-  Profile,
-  UserWithProfileAndRelations,
-  ProfileRelation,
-  ProfileTagsService,
-} from '../../profiles';
+import { ProfilesService, Profile, ProfileContext, ProfileRelation, ProfileTagsService } from '../../profiles';
 import { AbstractContentDao } from '../daos';
 import { User } from '../../users';
 import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
@@ -88,7 +82,7 @@ export abstract class AbstractContentService<T extends Content> {
    * @param identity
    * @throws EntityNotFoundException
    */
-  async archive(profileRelations: UserWithProfileAndRelations, identity: EntityIdentity<T>): Promise<boolean> {
+  async archive(profileRelations: ProfileContext, identity: EntityIdentity<T>): Promise<boolean> {
     return this.contentDao.archive(profileRelations, identity);
   }
 
@@ -99,7 +93,7 @@ export abstract class AbstractContentService<T extends Content> {
    * @param identity
    * @throws EntityNotFoundException
    */
-  async unarchive(profileRelations: UserWithProfileAndRelations, identity: EntityIdentity<T>): Promise<boolean> {
+  async unarchive(profileRelations: ProfileContext, identity: EntityIdentity<T>): Promise<boolean> {
     return this.contentDao.unarchive(profileRelations, identity);
   }
 

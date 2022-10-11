@@ -14,7 +14,9 @@ onBeforeMount(async () => {
     if (ctx) {
       new Chart(ctx, useStatisticsStore().monthly.getChart());
     }
-  } catch (e) {}
+  } catch (e) {
+    // TODO:...
+  }
 });
 </script>
 

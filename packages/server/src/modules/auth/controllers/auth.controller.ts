@@ -1,26 +1,24 @@
 import { Controller, Req, Post, UseGuards, Get, Inject, UnauthorizedException, Body } from '@nestjs/common';
-import { LocalAuthGuard } from '../guards/local-auth.guard';
-import { JwtAuthService } from '../services/jwt-auth.service';
+import { LocalAuthGuard, JwtRefreshGuard, clearAccessCookies, clearRefreshCookies } from '../guards';
+import { JwtAuthService } from '../services';
 import { UserRequest } from '../../users';
-import { addMilliSeconds, UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/common';
-import { Cookies } from '../../core/web';
+import { UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import JwtRefreshGuard from '../guards/jwt-refresh.guard';
-import { MailService } from '@/modules/mails';
 import { ModuleMeta, Public, UseClassSerializer } from '@/modules/core';
 import { ConfigurationPath } from '@/modules/app-config';
-import { JwtStrategy } from '@/modules/auth/strategies';
+import { AbstractAuthController } from '@/modules/auth/controllers/abstract-auth.controller';
 
 @Controller(ENDPOINT_AUTH)
 @UseClassSerializer()
-export class AuthController implements AuthEndpoint {
+export class AuthController extends AbstractAuthController implements AuthEndpoint {
   constructor(
     private authService: JwtAuthService,
-    private configService: ConfigService<ConfigurationPath>,
-    private mailerService: MailService,
+    protected configService: ConfigService<ConfigurationPath>,
     @Inject('modules.auth.meta') private meta: ModuleMeta,
-  ) {}
+  ) {
+    super(configService);
+  }
 
   @Public()
   @UseGuards(LocalAuthGuard)
@@ -28,6 +26,13 @@ export class AuthController implements AuthEndpoint {
   async login(@Body() loginModel: LoginModel, @Req() req: UserRequest) {
     const { user } = req;
     const { accessToken, refreshToken, vid } = await this.authService.login(user, loginModel.remember);
+
+    // TODO: invalidate old expired refresh tokens
+    // TODO: set and validate max refresh tokens
+
+    /*if (user.refreshTokens.length > 40) {
+      throw new ForbiddenException('Too many active sessions');
+    }*/
 
     this.setAuthenticationCookie(req, accessToken);
     this.setRefreshCookie(req, refreshToken);
@@ -69,8 +74,8 @@ export class AuthController implements AuthEndpoint {
     if (user && vid) {
       await this.authService.destroyRefreshToken(user, vid);
     }
-    res.clearCookie(Cookies.REFRESH);
-    res.clearCookie(Cookies.AUTHENTICATION);
+    clearAccessCookies(res);
+    clearRefreshCookies(res);
     req.user = undefined;
     // TODO: trigger event
     //req.logout();
@@ -87,34 +92,5 @@ export class AuthController implements AuthEndpoint {
       user: new UserModel(req.user),
       token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')),
     };
-  }
-
-  private setAuthenticationCookie(req: UserRequest, token) {
-    const secure = this.useSecureCookies();
-    const authCookieName = JwtStrategy.getAuthCookieName(secure);
-    const expirationMS = Math.max(ms(this.configService.get('auth.jwt.access.expiresIn', '15m')), 20_000);
-    req.res.cookie(authCookieName, token, {
-      sameSite: this.configService.get('auth.jwt.access.samesite', 'lax'),
-      httpOnly: true,
-      secure: secure,
-      expires: addMilliSeconds(new Date(), expirationMS, false),
-    });
-  }
-
-  private setRefreshCookie(req: UserRequest, token) {
-    const isSecure = this.useSecureCookies();
-    const refreshCookieName = isSecure ? Cookies.REFRESH_SECURE : Cookies.REFRESH;
-    req.res.cookie(refreshCookieName, token, {
-      sameSite: this.configService.get('auth.jwt.refresh.samesite', 'lax'),
-      httpOnly: true,
-      // TODO: we need to respect api version or different api path here...
-      path: '/auth/refresh',
-      secure: isSecure,
-      expires: addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiresIn')), false),
-    });
-  }
-
-  private useSecureCookies() {
-    return this.configService.get('auth.jwt.secure-cookies', true);
   }
 }

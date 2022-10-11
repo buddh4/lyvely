@@ -14,7 +14,7 @@ export const useAppConfigStore = defineStore("app-config", () => {
   const appConfigService = new AppConfigService();
 
   async function loadConfig() {
-    loadingStatus(appConfigService.getConfig(), status).then(setConfig);
+    return loadingStatus(appConfigService.getConfig(), status).then(setConfig);
   }
 
   function setConfig(cfg: AppConfig) {

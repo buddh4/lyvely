@@ -1,11 +1,13 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { UserRegistrationService } from '../services/user-registration.service';
-import { RegisterDto } from '@lyvely/common';
-import { createContentTestingModule } from '../../test/utils/test.utils';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
+import { UserRegistrationService } from './user-registration.service';
+import { UserRegistrationDto, UserStatus } from '@lyvely/common';
+import { createBasicTestingModule, TestDataUtils } from '@/modules/test';
+import { User } from '@/modules/users';
+import { UserRegistrationModule } from '@/modules/user-registration/user-registration.module';
+import { JwtModule } from '@nestjs/jwt';
 
-describe('RegisterService', () => {
+describe('UserRegistrationService', () => {
   let testingModule: TestingModule;
   let registerService: UserRegistrationService;
   let testData: TestDataUtils;
@@ -13,7 +15,17 @@ describe('RegisterService', () => {
   const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [UserRegistrationService]).compile();
+    testingModule = await createBasicTestingModule(
+      TEST_KEY,
+      [UserRegistrationService],
+      [],
+      [
+        JwtModule.register({
+          secret: 'someTestSecret...',
+          signOptions: { expiresIn: '1d' },
+        }),
+      ],
+    ).compile();
     registerService = testingModule.get<UserRegistrationService>(UserRegistrationService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
@@ -28,20 +40,22 @@ describe('RegisterService', () => {
 
   describe('register', () => {
     it('register valid user', async () => {
-      const { user, profile } = await registerService.register(
-        new RegisterDto({
+      const user = await registerService.register(
+        new UserRegistrationDto({
           username: 'Tester',
           email: 'tester@test.de',
           password: 'testpw',
-          locale: 'de',
+          remember: true,
+          locale: 'de-DE',
         }),
       );
 
-      expect(profile).toBeDefined();
-      expect(profile.ownerId).toBeDefined();
-      expect(profile.ownerId).toEqual(user._id);
-      expect(profile.name).toEqual('Tester');
-      expect(profile.locale).toEqual('de');
+      expect(user).toBeDefined();
+      expect(user instanceof User).toEqual(true);
+      expect(user.username).toEqual('Tester');
+      expect(user.email).toEqual('tester@test.de');
+      expect(user.locale).toEqual('de-DE');
+      expect(user.status).toEqual(UserStatus.EmailVerification);
     });
 
     it('register user with invalid email', async () => {
@@ -49,7 +63,7 @@ describe('RegisterService', () => {
 
       try {
         profile = await registerService.register(
-          new RegisterDto({
+          new UserRegistrationDto({
             username: 'Tester',
             email: 'testertest.de',
             password: 'testpw',
@@ -66,7 +80,7 @@ describe('RegisterService', () => {
 
     it('register already existing email', async () => {
       await registerService.register(
-        new RegisterDto({
+        new UserRegistrationDto({
           username: 'TesterNew',
           email: 'tester@test.de',
           password: 'testpw',
@@ -78,7 +92,7 @@ describe('RegisterService', () => {
 
       try {
         profile = await registerService.register(
-          new RegisterDto({
+          new UserRegistrationDto({
             username: 'Tester',
             email: 'tester@test.de',
             password: 'testpw',

@@ -6,6 +6,7 @@
       ref="input"
       v-model="inputValue"
       :disabled="disabled"
+      :aria-describedby="ariaDescribedby"
       :step="step"
       :readonly="readonly"
       :class="inputClass"

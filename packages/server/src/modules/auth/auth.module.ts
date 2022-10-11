@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { JwtAuthService } from './services/jwt-auth.service';
-import { LocalStrategy, JwtStrategy, JwtRefreshStrategy } from './strategies';
+import { LocalStrategy, JwtAccessStrategy, JwtRefreshStrategy } from './guards/strategies';
 import { UsersModule } from '../users';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controllers/auth.controller';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtAuthGuard } from './guards';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/modules/app-config';
 import { ModuleMeta } from '@/modules/core/modules/module.meta';
@@ -25,7 +25,7 @@ import { ModuleMeta } from '@/modules/core/modules/module.meta';
   providers: [
     JwtAuthService,
     LocalStrategy,
-    JwtStrategy,
+    JwtAccessStrategy,
     JwtRefreshStrategy,
     JwtAuthGuard,
     {

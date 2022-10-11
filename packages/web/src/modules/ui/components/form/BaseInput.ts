@@ -11,7 +11,7 @@ import { CssClassDefinition } from "@/util/component.types";
 import { ModelValidator } from "@lyvely/common";
 import slugify from "slugify";
 
-export interface FormModelData<T extends object = any> {
+export interface IFormModelData<T extends object = any> {
   id?: string;
   model: T;
   labelKey?: string;
@@ -33,6 +33,7 @@ export interface IBaseInputProps {
   inputClass?: string;
   wrapperClass?: string;
   autocomplete?: boolean | string;
+  ariaDescribedby: boolean;
   error?: string;
   loading?: boolean;
   autoValidation: boolean;
@@ -49,10 +50,11 @@ export function useBaseInputProps() {
     disabled: { type: Boolean, default: false },
     readonly: { type: Boolean, default: false },
     required: { type: Boolean, default: false },
-    autocomplete: { type: Boolean, default: false },
+    autocomplete: { type: [Boolean, String], default: false },
     autofocus: { type: Boolean, default: undefined },
     autoValidation: { type: Boolean, default: true },
     loading: { type: Boolean, default: false },
+    ariaDescribedby: { type: String, default: undefined },
     modelValue: {},
     inputClass: {},
     wrapperClass: {},
@@ -67,7 +69,7 @@ export interface IBaseInputSetupOptions {
 function getComputedInputValue<T>(
   props: IBaseInputProps,
   emit: any,
-  formModelData?: FormModelData
+  formModelData?: IFormModelData
 ) {
   const model = formModelData?.model;
   const property = props.property;
@@ -85,7 +87,7 @@ function getComputedInputValue<T>(
 
 function getComputedInputLabel(
   props: IBaseInputProps,
-  formModelData?: FormModelData
+  formModelData?: IFormModelData
 ) {
   const labelKey = formModelData?.labelKey;
   const property = props.property;
@@ -131,7 +133,7 @@ function getComputedCssClasses(
 
 function getComputedInputError(
   props: IBaseInputProps,
-  formModelData?: FormModelData<any>
+  formModelData?: IFormModelData<any>
 ) {
   return computed(() =>
     formModelData?.validator && props.property
@@ -140,7 +142,7 @@ function getComputedInputError(
   );
 }
 
-function getId(props: IBaseInputProps, formModelData?: FormModelData) {
+function getId(props: IBaseInputProps, formModelData?: IFormModelData) {
   if (props.id) {
     return props.id;
   }
@@ -172,7 +174,7 @@ export function useBaseInputSetup<T = unknown>(
   options: IBaseInputSetupOptions = {}
 ) {
   const root = ref<HTMLElement | null>(null);
-  const formModelData = inject<FormModelData | undefined>(
+  const formModelData = inject<IFormModelData | undefined>(
     "formModelData",
     undefined
   );
@@ -208,7 +210,7 @@ export function useBaseInputSetup<T = unknown>(
         emit("change", evt);
       }
     },
-    onFocusOut: (evt: any) => {
+    onFocusOut: () => {
       if (useAutoValidation) {
         validator.validateField(props.property!);
       }

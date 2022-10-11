@@ -8,7 +8,7 @@ import {
   ENDPOINT_PROFILES,
 } from '@lyvely/common';
 import { ProfilesService } from '../services';
-import { UserWithProfileAndRelations } from '../models';
+import { ProfileContext } from '../models';
 import { UseClassSerializer } from '../../core';
 
 @Controller(ENDPOINT_PROFILES)
@@ -28,7 +28,7 @@ export class ProfilesController implements ProfilesEndpoint {
       throw new NotFoundException();
     }
 
-    return mapType(UserWithProfileAndRelations, ProfileWithRelationsDto, profileRelations);
+    return mapType(ProfileContext, ProfileWithRelationsDto, profileRelations);
   }
 
   @Post()
@@ -43,6 +43,6 @@ export class ProfilesController implements ProfilesEndpoint {
       profileRelations = await this.profilesService.createOrganization(req.user, dto);
     }
 
-    return mapType(UserWithProfileAndRelations, ProfileWithRelationsDto, profileRelations);
+    return mapType(ProfileContext, ProfileWithRelationsDto, profileRelations);
   }
 }
