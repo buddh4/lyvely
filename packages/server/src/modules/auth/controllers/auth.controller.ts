@@ -5,8 +5,7 @@ import { UserRequest } from '../../users';
 import { UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { ModuleMeta, Public, UseClassSerializer } from '@/modules/core';
-import { ConfigurationPath } from '@/modules/app-config';
+import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@/modules/core';
 import { AbstractAuthController } from '@/modules/auth/controllers/abstract-auth.controller';
 
 @Controller(ENDPOINT_AUTH)

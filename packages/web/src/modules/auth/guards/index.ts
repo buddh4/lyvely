@@ -1,7 +1,12 @@
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-import { NavigationGuardWithThis, RouteLocationNormalized } from "vue-router";
-import { PATH_VERIFY_EMAIL } from "@/modules/user-registration/routes";
-import { PATH_LOGIN, PATH_LOGOUT } from "@/modules/auth/routes";
+import { useAuthStore } from "../store/auth.store";
+import {
+  NavigationGuardWithThis,
+  RouteLocationNormalized,
+  NavigationGuardNext,
+  RouteLocation,
+} from "vue-router";
+import { PATH_VERIFY_EMAIL } from "@/modules/user-registration/routes/paths";
+import { PATH_LOGIN, PATH_LOGOUT } from "../routes/paths";
 
 const PATH_ROOT = "/";
 const publicRoutes = [PATH_ROOT, PATH_LOGIN];
@@ -10,7 +15,11 @@ function isPublicRoue(route: RouteLocationNormalized) {
   return route.meta?.isPublic || publicRoutes.includes(route.path);
 }
 
-const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
+export const authGuard: NavigationGuardWithThis<undefined> = (
+  to,
+  from,
+  next
+) => {
   const promises: Promise<any>[] = [];
   const authStore = useAuthStore();
 
@@ -47,4 +56,14 @@ const util: NavigationGuardWithThis<undefined> = (to, from, next) => {
     });
 };
 
-export default util;
+export const ifNotAuthenticated = (
+  to: RouteLocation,
+  from: RouteLocation,
+  next: NavigationGuardNext
+): void => {
+  if (!useAuthStore().isAuthenticated) {
+    next();
+    return;
+  }
+  next("/");
+};

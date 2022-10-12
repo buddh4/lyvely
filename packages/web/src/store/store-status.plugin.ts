@@ -9,7 +9,7 @@ export enum Status {
   ERROR,
 }
 
-export type StatusStorePlugin = {
+export type StoreStatusPlugin = {
   status: Ref<Status>;
   statusError: Ref<string | undefined>;
   toRefs(): { statusState: Ref<Status>; statusError: Ref<string | undefined> };
@@ -24,7 +24,7 @@ export type StatusStorePlugin = {
   isStatusSuccess(): boolean;
 };
 
-export function useStatus(status?: Ref<Status>): StatusStorePlugin {
+export function useStatus(status?: Ref<Status>): StoreStatusPlugin {
   const s = status || ref(Status.INIT);
   const statusError = ref();
 
@@ -104,7 +104,7 @@ export async function loadingState<T = any, R = T | void>(
 
 export async function loadingStatus<T = any, R = T | void>(
   promise: Promise<T>,
-  status: StatusStorePlugin,
+  status: StoreStatusPlugin,
   validator?: ModelValidator,
   resolve?: (result: T) => R,
   reject?: (e: any) => any
@@ -130,7 +130,7 @@ export async function loadingStatus<T = any, R = T | void>(
 
 export function handleError(
   err: any,
-  status: StatusStorePlugin,
+  status: StoreStatusPlugin,
   validator?: ModelValidator
 ) {
   status.setStatus(Status.ERROR);

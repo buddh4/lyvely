@@ -1,5 +1,3 @@
-import { noop } from '@/utils';
-
 const promises: Record<string, Promise<any>> = {};
 
 export const getQueuedPromise = (id: string) => {

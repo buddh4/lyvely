@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument, RefreshToken } from '../schemas';
-import { AbstractDao, IBaseQueryOptions, assureObjectId, EntityIdentity } from '@/modules/core';
+import { AbstractDao, IBaseQueryOptions, EntityIdentity } from '@/modules/core';
 import { Constructor, ProfileType } from '@lyvely/common';
 
 @Injectable()

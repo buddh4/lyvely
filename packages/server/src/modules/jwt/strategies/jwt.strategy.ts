@@ -1,10 +1,10 @@
-import { JwtFromRequestFunction, Strategy, StrategyOptions } from 'passport-jwt';
+import { Strategy, StrategyOptions } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Type, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { JwtTokenPayloadIF } from '../interfaces/jwt-payload.interface';
-import { ConfigurationPath } from '@/modules/app-config';
+import { ConfigurationPath } from '@/modules/core';
 import { User, UsersService } from '@/modules/users';
 
 export interface JwtStrategyOptionsIF {

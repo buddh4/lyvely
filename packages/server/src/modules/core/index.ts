@@ -7,4 +7,4 @@ export * from './modules';
 export * from './services';
 export * from './web';
 export * from './core.module';
-export * from './types';
+export * from './config';

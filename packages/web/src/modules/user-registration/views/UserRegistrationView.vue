@@ -2,7 +2,7 @@
 import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayoutContainer.vue";
 import { useUserRegistrationStore } from "@/modules/user-registration/stores/user-registration.store";
 import { storeToRefs } from "pinia";
-import LanguageChooser from "@/modules/ui/components/i18n/LanguageChooser.vue";
+import LanguageChooser from "@/modules/i18n/components/LanguageChooser.vue";
 import PasswordStrengthMeter from "@/modules/ui/components/form/PasswordStrengthMeter.vue";
 import { onBeforeUnmount, ref } from "vue";
 

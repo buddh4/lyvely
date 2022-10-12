@@ -1,6 +1,4 @@
-<script lang="ts" setup>
-import LyButton from "@/modules/ui/components/button/StyledButton.vue";
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <div id="sub-nav" class="flex justify-center md:mx-2 text-sm pb-2 md:pb-5">
@@ -16,7 +14,7 @@ import LyButton from "@/modules/ui/components/button/StyledButton.vue";
         aria-controls="calendar-plan"
         class="secondary outlined grow px-1 py-1"
       >
-        Activities
+        {{ $t("activities.habits.title") }}
       </ly-button>
       <ly-button
         :route="{ name: 'Tasks' }"
@@ -24,7 +22,7 @@ import LyButton from "@/modules/ui/components/button/StyledButton.vue";
         aria-controls="calendar-plan"
         class="secondary outlined grow px-1 py-1"
       >
-        Tasks
+        {{ $t("activities.tasks.title") }}
       </ly-button>
     </div>
   </div>

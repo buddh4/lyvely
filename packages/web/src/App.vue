@@ -7,12 +7,15 @@ import ProfileViewLayout from "@/modules/profiles/components/layout/ProfileViewL
 import AppLoader from "@/modules/ui/components/loader/AppLoader.vue";
 import { useRouter } from "vue-router";
 import { watch, ref, computed, toRefs } from "vue";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/modules/auth/store/auth.store";
 
 const { visible, icon, iconColor, iconClass, title, message, buttonType } =
   toRefs(useGlobalDialogStore());
 
 const layout = ref<string | undefined>();
 const router = useRouter();
+const { isAuthenticated } = storeToRefs(useAuthStore());
 
 watch(router.currentRoute, (to) => {
   layout.value = to.meta?.layout;
@@ -36,7 +39,7 @@ const layoutComponent = computed(() => {
       <router-view></router-view>
     </template>
   </div>
-  <MobileFooterNavigation />
+  <MobileFooterNavigation v-if="isAuthenticated" />
   <AppLoader />
   <AriaLiveStatus />
   <dialog-window

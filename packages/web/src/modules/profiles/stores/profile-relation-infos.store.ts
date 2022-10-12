@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ProfileRelationInfo, ProfileRelationInfos } from "@lyvely/common";
 import { ref } from "vue";
-import { loadingStatus, useStatus } from "@/store/status";
+import { loadingStatus, useStatus } from "@/store";
 import { useProfileRelationInfosService } from "@/modules/profiles/services/profile-relation-infos.service";
 
 export const useProfileRelationInfosStore = defineStore(

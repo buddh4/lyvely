@@ -22,9 +22,11 @@ const profileStore = useProfileStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 const sidebar = ref<HTMLElement | null>(null);
 
+// TODO: make modules register menu items here...
+
 const menuItems: IMenuItem[] = [
   {
-    to: { name: "Activities" },
+    to: { name: "Habits" },
     icon: "activity",
     label: "activities.labels.main_nav",
   },

@@ -3,7 +3,11 @@ import { usePageStore } from "@/modules/core/store/page.store";
 import { NavigationGuardWithThis } from "vue-router";
 import * as i18n from "@/i18n";
 
-const util: NavigationGuardWithThis<undefined> = async (to, from, next) => {
+export const messageLoaderGuard: NavigationGuardWithThis<undefined> = async (
+  to,
+  from,
+  next
+) => {
   const { locale } = useAuthStore();
   const { setShowAppLoader } = usePageStore();
 
@@ -28,5 +32,3 @@ const util: NavigationGuardWithThis<undefined> = async (to, from, next) => {
 
   next();
 };
-
-export default util;

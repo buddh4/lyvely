@@ -1,21 +1,16 @@
-import {
-  ifAuthenticated,
-  ifIsMultiUserProfile,
-  loadProfile,
-  toProfileHome,
-} from "@/router/utils";
-import { usePageStore } from "@/modules/core/store/page.store";
-import { translate } from "@/i18n";
+import { toProfileHome } from "@/modules/profiles";
+import { translation } from "@/i18n";
 import {
   profileRoot,
   profileRoute,
 } from "@/modules/profiles/routes/profile-route.util";
+import { ifIsMultiUserProfile, loadProfile } from "../guards";
 
 export default [
   {
     path: profileRoot(),
     name: "ProfileRoot",
-    beforeEnter: [ifAuthenticated, loadProfile, toProfileHome],
+    beforeEnter: [loadProfile, toProfileHome],
   },
   {
     path: profileRoute(),
@@ -23,7 +18,7 @@ export default [
     meta: {
       layout: "profile",
     },
-    beforeEnter: [ifAuthenticated, loadProfile, toProfileHome],
+    beforeEnter: [loadProfile, toProfileHome],
   },
   {
     path: profileRoute("/users"),
@@ -32,7 +27,7 @@ export default [
       layout: "profile",
     },
     component: () => import("../views/users/ProfileUsers.vue"),
-    beforeEnter: [ifAuthenticated, loadProfile, ifIsMultiUserProfile],
+    beforeEnter: [loadProfile, ifIsMultiUserProfile],
   },
   {
     path: profileRoute("/settings"),
@@ -42,30 +37,24 @@ export default [
     },
     redirect: { name: "UserProfileSettings" },
     component: () => import("../views/settings/ProfileSettings.vue"),
-    beforeEnter: [ifAuthenticated, loadProfile],
+    beforeEnter: [loadProfile],
     children: [
       {
         name: "UserProfileSettings",
         path: profileRoute("/settings/user"),
-        beforeEnter: [
-          ifAuthenticated,
-          loadProfile,
-          () =>
-            usePageStore().setTitle(translate("profile.settings.user.title")),
-        ],
+        meta: {
+          title: translation("profile.settings.user.title"),
+        },
+        beforeEnter: [loadProfile],
         component: () => import("../views/settings/UserProfileSettings.vue"),
       },
       {
         name: "GeneralProfileSettings",
         path: profileRoute("/settings/general"),
-        beforeEnter: [
-          ifAuthenticated,
-          loadProfile,
-          () =>
-            usePageStore().setTitle(
-              translate("profile.settings.general.title")
-            ),
-        ],
+        meta: {
+          title: translation("profile.settings.general.title"),
+        },
+        beforeEnter: [loadProfile],
         component: () => import("../views/settings/GeneralProfileSettings.vue"),
       },
     ],

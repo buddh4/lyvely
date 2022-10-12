@@ -1,20 +1,17 @@
-import { ifNotAuthenticated } from "@/router/utils";
+import { ifNotAuthenticated } from "../guards";
 import { translate } from "@/i18n";
-import { setPageTitle } from "@/modules/core/store/page.store";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
-
-export const PATH_LOGIN = "/login";
-export const PATH_LOGOUT = "/logout";
+import { PATH_LOGIN, PATH_LOGOUT } from "./paths";
 
 export default [
   {
     path: PATH_LOGIN,
     name: "Login",
+    meta: {
+      title: () => translate("users.login.title"),
+    },
     component: () => import("../views/LoginView.vue"),
-    beforeEnter: [
-      ifNotAuthenticated,
-      () => setPageTitle(translate("users.login.title")),
-    ],
+    beforeEnter: [ifNotAuthenticated],
   },
   {
     path: PATH_LOGOUT,

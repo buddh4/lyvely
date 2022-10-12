@@ -1,7 +1,7 @@
 import { validate, ValidationError, ValidatorOptions } from 'class-validator';
 import { IFieldValidationResult } from './interfaces/validation-result.interface';
 
-interface TranslationError {
+interface ITranslationError {
   property: string;
   rule: string;
   message: string;
@@ -11,7 +11,7 @@ interface TranslationError {
 export interface IValidatorOptions<T extends object = object> {
   isFieldValidator?: boolean;
   rules?: Record<keyof T, [(value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>]> | {};
-  translate?: (error: TranslationError) => string | undefined;
+  translate?: (error: ITranslationError) => string | undefined;
 }
 
 interface IValidationOptions<T extends object = object> extends ValidatorOptions {

@@ -63,7 +63,7 @@ module.exports = {
       MODULE_VALIDATION,
     ]),
     createModuleDeps('app-config', [MODULE_ENDPOINTS]),
-    createModuleDeps('auth', [MODULE_ENDPOINTS]),
+    createModuleDeps('auth', [MODULE_ENDPOINTS, MODULE_USERS]),
     createModuleDeps('calendar'),
     createModuleDeps('collab'),
     createModuleDeps('content', [MODULE_MODELS, MODULE_TAGS]),

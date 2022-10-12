@@ -1,1 +1,1 @@
-export * as Headers from './headers';
+export * from './request.types';

@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 import { watch, onBeforeUnmount, ref } from "vue";
 import LyFormModel from "@/modules/ui/components/form/FormModel.vue";
 import { useLoginStore } from "@/modules/auth/store/login.store";
-import LanguageChooser from "@/modules/ui/components/i18n/LanguageChooser.vue";
+import LanguageChooser from "@/modules/i18n/components/LanguageChooser.vue";
 import LyIcon from "@/modules/ui/components/icon/UIIcon.vue";
 import LyAlert from "@/modules/ui/components/alert/AlertBlock.vue";
 
@@ -20,7 +20,7 @@ watch(stage, () => {
   loginStore.status.resetStatus();
 });
 
-async function next(evt: KeyboardEvent) {
+async function next() {
   if (stage.value === "email") {
     return toPasswordStage();
   } else {

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { loadingStatus, useStatus } from "@/store/status";
+import { loadingStatus, useStatus } from "@/store";
 import repository from "@/repository";
 import { AppConfig } from "@lyvely/common";
 import { AppConfigService } from "@/modules/app-config/services/app-config.service";

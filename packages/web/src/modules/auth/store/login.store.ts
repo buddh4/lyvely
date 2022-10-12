@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { loadingStatus, useStatus } from "@/store/status";
+import { loadingStatus, useStatus } from "@/store";
 import { ref } from "vue";
 import { AuthService } from "@/modules/auth/services/auth.service";
 import { useAuthStore } from "@/modules/auth/store/auth.store";

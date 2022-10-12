@@ -1,7 +1,7 @@
 import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule, setTransactionSupport } from '@/modules/core';
-import { ConfigurationPath, loadConfig, AppConfigModule } from '@/modules/app-config';
+import { CoreModule, setTransactionSupport, ConfigurationPath } from '@/modules/core';
+import { loadConfig, AppConfigModule } from '@/modules/app-config';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserRegistrationModule } from './modules/user-registration/user-registration.module';
 import { UsersModule } from './modules/users';

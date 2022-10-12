@@ -1,4 +1,4 @@
-export interface ModuleMetaOptions {
+export interface IModuleMetaOptions {
   id: string;
   path: string;
   name: string;
@@ -11,7 +11,7 @@ export class ModuleMeta {
   private name: string;
   private description?: string;
 
-  constructor(data: ModuleMetaOptions) {
+  constructor(data: IModuleMetaOptions) {
     this.id = data.id;
     this.path = data.path;
     this.name = data.name;

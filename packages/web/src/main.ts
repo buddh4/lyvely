@@ -11,7 +11,6 @@ import "animate.css/animate.css";
 import { setupI18n } from "./i18n";
 import { createPinia } from "pinia";
 import { eventBus } from "@/modules/core/events/global.emitter";
-import { focus } from "@/directives/focus";
 import { ModuleLoader } from "@/module.loader";
 import ModalWindow from "@/modules/ui/components/modal/ModalWindow.vue";
 import DrawerMenu from "@/modules/ui/components/drawer/DrawerMenu.vue";
@@ -65,9 +64,7 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 app.use(ModuleLoader);
-
 const i18n = await setupI18n();
-
 app.use(i18n);
 
 /**
@@ -77,8 +74,6 @@ app.use(i18n);
 setGlobalComponents(app);
 
 eventBus.emit("app.create.post", app);
-
-app.directive("focus", focus);
 
 eventBus.emit("app.mount.pre", app);
 

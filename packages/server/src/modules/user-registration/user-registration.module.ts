@@ -5,7 +5,7 @@ import { UsersModule } from '@/modules/users';
 import { UserRegistrationService } from './services/user-registration.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/modules/app-config';
+import { ConfigurationPath } from '@/modules/core';
 import { AuthModule } from '@/modules/auth/auth.module';
 
 @Module({

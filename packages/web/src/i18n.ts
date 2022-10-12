@@ -16,6 +16,10 @@ export function getI18n() {
   return i18n;
 }
 
+export function translation(key: string, options?: any) {
+  return () => translate(key, options);
+}
+
 export function translate(key: string, options?: any) {
   return (<any>getI18n().global).t(key, options);
 }
@@ -79,7 +83,7 @@ export function setMessages(locale: string, data: any) {
 }
 
 export function mergeMessages(locale: string, data: any) {
-  i18n.global.mergeLocaleMessage(locale, data);
+  i18n.global.mergeLocaleMessage(locale, data.default ? data.default : data);
 }
 
 export function isGlobalMessagesLoaded(locale: string) {
@@ -114,7 +118,6 @@ export function getLocale() {
 
 export async function loadLocaleMessages(locale: string) {
   // load locale messages with dynamic import
-  console.log("Load core locales");
   return import(`../locales/${locale}.json`)
     .then((data) => mergeMessages(locale, data))
     .then(() => loadedCoreLocales.push(locale))

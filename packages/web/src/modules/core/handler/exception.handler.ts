@@ -2,7 +2,7 @@ import {
   IShowAlertOptions,
   useGlobalDialogStore,
 } from "@/modules/core/store/global.dialog.store";
-import { Status } from "@/store/status";
+import { Status } from "@/store";
 
 type StatusSetter = { setStatus: { (s: Status): void } } & any;
 

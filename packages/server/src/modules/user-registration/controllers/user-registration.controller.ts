@@ -1,11 +1,10 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { UserRegistrationService } from '../services/user-registration.service';
-import { Public, UseClassSerializer } from '@/modules/core';
+import { Public, UseClassSerializer, ConfigurationPath } from '@/modules/core';
 import { UserRegistrationEndpoint, UserRegistrationDto, ENDPOINT_USER_REGISTRATION, UserModel } from '@lyvely/common';
 import { AbstractAuthController, JwtAuthService } from '@/modules/auth';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/modules/app-config';
 import ms from 'ms';
 
 @Controller(ENDPOINT_USER_REGISTRATION)

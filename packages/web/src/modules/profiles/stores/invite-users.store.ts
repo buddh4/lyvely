@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { useStatus } from "@/store/status";
+import { useStatus } from "@/store";
 import { ref } from "vue";
 import { isValidEmail } from "@lyvely/common";
 

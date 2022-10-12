@@ -1,7 +1,7 @@
 import { addMilliSeconds } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { ConfigurationPath } from '@/modules/app-config';
+import { ConfigurationPath } from '@/modules/core';
 import { getAuthCookieName, getRefreshCookieName } from '@/modules/auth/guards/strategies';
 import { Request } from 'express';
 

@@ -6,7 +6,7 @@ import { Headers } from '@lyvely/common';
 import { User } from '@/modules/users';
 import bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/modules/app-config';
+import { ConfigurationPath } from '@/modules/core';
 
 const COOKIE_REFRESH = 'Refresh';
 const COOKIE_REFRESH_SECURE = '__Secure-Refresh';

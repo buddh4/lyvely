@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
-import { loadingStatus, useStatus } from "@/store/status";
+import { loadingStatus, useStatus } from "@/store";
 import {
   UserRegistrationDto,
   ModelValidator,
   ILoginResponse,
 } from "@lyvely/common";
 import { ref } from "vue";
-import { UserRegistrationService } from "@/modules/user-registration/services/user-registration.service";
-import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
+import { UserRegistrationService } from "../services/user-registration.service";
+import { useVerifyEmailStore } from "./verify-email.store";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
-import { PATH_VERIFY_EMAIL } from "@/modules/user-registration/routes";
+import { PATH_VERIFY_EMAIL } from "../routes/paths";
 
 export const useUserRegistrationStore = defineStore("user-registration", () => {
   const status = useStatus();

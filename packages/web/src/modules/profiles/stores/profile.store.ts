@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { Status, useStatus } from "@/store/status";
+import { Status, useStatus } from "@/store";
 import { ProfileWithRelationsDto, TagModel } from "@lyvely/common";
 import { localStorageManager } from "@/util/storage";
 import { DialogExceptionHandler } from "@/modules/core/handler/exception.handler";

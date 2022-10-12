@@ -1,7 +1,7 @@
 import { ModelValidator, IValidatorOptions } from "@lyvely/common";
 import { translate } from "@/i18n";
 
-export interface I18nModelValidatorOptions<T extends object = object>
+export interface I18nModelValidatorOptionsIF<T extends object = object>
   extends IValidatorOptions<T> {
   translationKey: string;
 }
@@ -9,7 +9,7 @@ export interface I18nModelValidatorOptions<T extends object = object>
 export class I18nModelValidator<
   T extends object = object
 > extends ModelValidator<T> {
-  constructor(model?: T, options?: I18nModelValidatorOptions<T>) {
+  constructor(model?: T, options?: I18nModelValidatorOptionsIF<T>) {
     if (options?.translationKey) {
       options.translate =
         options.translate ||

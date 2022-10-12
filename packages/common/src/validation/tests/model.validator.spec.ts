@@ -1,4 +1,4 @@
-import { IsNumber, IsString, validate } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { IFieldValidationResult, ModelValidator } from '@/validation';
 
 class TestIdModel {

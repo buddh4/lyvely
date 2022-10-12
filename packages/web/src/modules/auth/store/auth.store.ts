@@ -18,8 +18,6 @@ import { usePageStore } from "@/modules/core/store/page.store";
 
 export const storedVid = localStorageManager.getStoredValue("visitorId");
 
-let refreshPromise: Promise<void> | undefined = undefined;
-
 export const useAuthStore = defineStore("user-auth", () => {
   const user = ref<UserModel>();
   const appConfigStore = useAppConfigStore();
@@ -93,7 +91,6 @@ export const useAuthStore = defineStore("user-auth", () => {
     return queuePromise("auth-store-refresh", () =>
       authService.refresh(visitorId.value!)
     ).then(({ token_expiration }) => {
-      refreshPromise = undefined;
       authTokenExpiration.value = token_expiration;
     });
   }

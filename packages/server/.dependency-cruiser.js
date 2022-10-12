@@ -8,6 +8,7 @@ function getModulePath(name) {
 
 const MODULE_CORE = getModulePath('core');
 const MODULE_I18N = getModulePath('i18n');
+const MODULE_JWT = getModulePath('jwt');
 const MODULE_APP_CONFIG = getModulePath('app-config');
 const MODULE_POLICIES = getModulePath('policies');
 const MODULE_PERMISSIONS = getModulePath('permissions');
@@ -59,11 +60,12 @@ module.exports = {
       MODULE_TIME_SERIES,
     ]),
     createModuleDeps('app-config', [MODULE_I18N]),
-    createModuleDeps('auth', [MODULE_USERS]),
+    createModuleDeps('auth', [MODULE_USERS, MODULE_JWT]),
     createModuleDeps('calendar'),
     createModuleDeps('content', [MODULE_PROFILES, MODULE_USERS, MODULE_POLICIES, MODULE_TAGS]),
     createModuleDeps('core'),
     createModuleDeps('i18n'),
+    createModuleDeps('jwt', [MODULE_USERS]),
     createModuleDeps('mails'),
     createModuleDeps('permissions'),
     createModuleDeps('policies'),
@@ -81,7 +83,15 @@ module.exports = {
       MODULE_ACTIVITIES, // TODO: reverse this dependency...
     ]),
     createModuleDeps('tags', [MODULE_PROFILES, MODULE_POLICIES]),
-    createModuleDeps('test', [MODULE_USERS, MODULE_PROFILES, MODULE_POLICIES, MODULE_MAILS, MODULE_CONTENT]),
+    createModuleDeps('test', [
+      MODULE_USERS,
+      MODULE_PROFILES,
+      MODULE_POLICIES,
+      MODULE_MAILS,
+      MODULE_CONTENT,
+      MODULE_I18N,
+      MODULE_APP_CONFIG,
+    ]),
     createModuleDeps('time-series', [MODULE_CONTENT, MODULE_USERS, MODULE_PROFILES]),
     createModuleDeps('user-invites', [MODULE_USERS, MODULE_PROFILES, MODULE_POLICIES, MODULE_MAILS]),
     createModuleDeps('user-permissions', [MODULE_USERS, MODULE_PERMISSIONS]),

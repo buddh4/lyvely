@@ -1,23 +1,6 @@
-import { ifNotAuthenticated } from "@/router/utils";
-import { translate } from "@/i18n";
-import { setPageTitle } from "@/modules/core/store/page.store";
-import { NavigationGuardNext, RouteLocation } from "vue-router";
-import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
-
-export const PATH_REGISTER = "/register";
-export const PATH_VERIFY_EMAIL = "/verify-email";
-
-const ifAwaitingEmailVerification = (
-  to: RouteLocation,
-  from: RouteLocation,
-  next: NavigationGuardNext
-): void => {
-  if (useVerifyEmailStore().isAwaiting()) {
-    next();
-    return;
-  }
-  next("/");
-};
+import { ifNotAuthenticated } from "@/modules/auth";
+import { translation } from "@/i18n";
+import { PATH_REGISTER, PATH_VERIFY_EMAIL } from "./paths";
 
 export default [
   {
@@ -26,11 +9,9 @@ export default [
     component: () => import("../views/UserRegistrationView.vue"),
     meta: {
       isPublic: true,
+      title: translation("user_registration.title"),
     },
-    beforeEnter: [
-      ifNotAuthenticated,
-      () => setPageTitle(translate("user_registration.title")),
-    ],
+    beforeEnter: [ifNotAuthenticated],
   },
   {
     path: PATH_VERIFY_EMAIL,
@@ -38,12 +19,8 @@ export default [
     component: () => import("../views/VerifyEmailView.vue"),
     meta: {
       isPublic: true,
+      title: translation("user_registration.email_verification.title"),
     },
-    beforeEnter: [
-      ifNotAuthenticated,
-      ifAwaitingEmailVerification,
-      () =>
-        setPageTitle(translate("user_registration.email_verification.title")),
-    ],
+    beforeEnter: [ifNotAuthenticated],
   },
 ];

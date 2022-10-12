@@ -1,12 +1,19 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  RouteRecordRaw,
+  RouteLocation,
+  NavigationGuardNext,
+} from "vue-router";
 
 import NotFound from "@/modules/ui/components/error/NotFound.vue";
-import autoMessageLoaderGuard from "./auto-message-loader.guard";
-import authenticationGuard from "./authentication.guard";
+import { messageLoaderGuard } from "@/modules/i18n";
+import { authGuard } from "@/modules/auth";
 import moduleRouteLoader from "./module-route-loader.util";
-import appConfigLoader from "./config.loader.guard";
+import { appConfigGuard } from "@/modules/app-config";
 import { profileRoute } from "@/modules/profiles/routes/profile-route.util";
 import { usePageStore } from "@/modules/core/store/page.store";
+import { loadProfile } from "@/modules/profiles";
 
 const routes: Array<RouteRecordRaw> = [];
 
@@ -26,10 +33,19 @@ function registerRoutes() {
 registerRoutes();
 
 const router = createRouter({ routes, history: createWebHistory() });
-router.beforeEach(appConfigLoader);
-router.beforeEach(autoMessageLoaderGuard);
-router.beforeEach(authenticationGuard);
-router.afterEach(() => {
-  usePageStore().setShowAppLoader(false);
+router.beforeEach(appConfigGuard);
+router.beforeEach(messageLoaderGuard);
+router.beforeEach(authGuard);
+router.afterEach(() => usePageStore().setShowAppLoader(false));
+router.beforeEach(
+  (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
+    if (to.meta?.layout === "profile") {
+      return loadProfile(to, from, next);
+    }
+    next();
+  }
+);
+router.afterEach((to: RouteLocation) => {
+  if (to.meta?.title) usePageStore().setTitle(to.meta?.title());
 });
 export default router;

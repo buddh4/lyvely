@@ -4,7 +4,6 @@ import { UserRegistrationService } from './user-registration.service';
 import { UserRegistrationDto, UserStatus } from '@lyvely/common';
 import { createBasicTestingModule, TestDataUtils } from '@/modules/test';
 import { User } from '@/modules/users';
-import { UserRegistrationModule } from '@/modules/user-registration/user-registration.module';
 import { JwtModule } from '@nestjs/jwt';
 
 describe('UserRegistrationService', () => {

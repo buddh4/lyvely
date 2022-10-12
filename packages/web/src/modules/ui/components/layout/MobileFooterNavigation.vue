@@ -1,17 +1,7 @@
-<script lang="ts" setup>
-import { computed } from "vue";
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-
-const authStore = useAuthStore();
-const isAuthenticated = computed(() => authStore.isAuthenticated);
-</script>
+<script lang="ts" setup></script>
 
 <template>
-  <footer
-    v-if="isAuthenticated"
-    id="page-footer"
-    class="footer mt-auto py-2 bg-main md:hidden"
-  >
+  <footer id="page-footer" class="footer mt-auto py-2 bg-main md:hidden">
     <div class="">
       <div class="navbar-nav flex flex-row justify-content-center">
         <router-link class="nav-link" to="/activities">

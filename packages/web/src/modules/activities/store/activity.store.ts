@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-import { Status, useStatus } from "@/store/status";
+import { Status, useStatus } from "@/store";
 import {
   ActivityDataPointStore,
   ActivityFilter,

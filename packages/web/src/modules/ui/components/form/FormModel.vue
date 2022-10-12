@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { provide } from "vue";
 import { ModelValidator } from "@lyvely/common";
-import { StatusStorePlugin } from "@/store/status";
+import { StoreStatusPlugin } from "@/store";
 import { IFormModelData } from "@/modules/ui/components/form/BaseInput";
 
 interface IProps {
@@ -9,7 +9,7 @@ interface IProps {
   modelValue: object;
   validator?: ModelValidator;
   labelKey?: string;
-  status?: StatusStorePlugin;
+  status?: StoreStatusPlugin;
   autoValidation?: boolean;
   showAlert?: boolean;
 }
