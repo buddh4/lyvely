@@ -9,6 +9,7 @@ import {
 import NotFound from "@/modules/ui/components/error/NotFound.vue";
 import { messageLoaderGuard } from "@/modules/i18n";
 import { authGuard } from "@/modules/auth";
+import NProgress from "nprogress";
 import moduleRouteLoader from "./module-route-loader.util";
 import { appConfigGuard } from "@/modules/app-config";
 import { profileRoute } from "@/modules/profiles/routes/profile-route.util";
@@ -33,6 +34,14 @@ function registerRoutes() {
 registerRoutes();
 
 const router = createRouter({ routes, history: createWebHistory() });
+router.beforeResolve((to, from, next) => {
+  // If this isn't an initial page load.
+  if (to.name) {
+    // Start the route progress bar.
+    NProgress.start();
+  }
+  next();
+});
 router.beforeEach(appConfigGuard);
 router.beforeEach(messageLoaderGuard);
 router.beforeEach(authGuard);
@@ -47,5 +56,9 @@ router.beforeEach(
 );
 router.afterEach((to: RouteLocation) => {
   if (to.meta?.title) usePageStore().setTitle(to.meta?.title());
+});
+router.afterEach(() => {
+  // Complete the animation of the route progress bar.
+  NProgress.done();
 });
 export default router;

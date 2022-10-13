@@ -22,7 +22,6 @@ export const messageLoaderGuard: NavigationGuardWithThis<undefined> = async (
     to.meta?.i18n?.module &&
     !i18n.isModuleMessagesLoaded(locale, to.meta?.i18n?.module)
   ) {
-    setShowAppLoader(true);
     promises.push(i18n.loadModuleMessages(locale, to.meta?.i18n?.module));
   }
 

@@ -1,1 +1,39 @@
 @tailwind utilities;
+
+@layer utilities {
+    .focus-hidden {
+        outline: none;
+    }
+
+    :focus:not(.focus-hidden), :focus-visible:not(.focus-hidden) {
+        @apply outline-1 outline-blue-400;
+    }
+
+    .attachment-r {
+        @apply rounded-r-none;
+    }
+
+    .attachment-l {
+        @apply rounded-r-none;
+    }
+
+    .scrollbar-thin {
+        scrollbar-width: thin;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: var(--elements-highlight);
+    }
+
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: var(--color-secondary);
+    }
+
+    .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: var(--elements-main);
+    }
+}

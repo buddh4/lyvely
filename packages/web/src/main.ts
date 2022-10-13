@@ -5,8 +5,7 @@ import App from "./App.vue";
 import router from "./router";
 import defineLocales from "./util/locales";
 
-import "./index.css";
-import "animate.css/animate.css";
+import "./styles/index.css";
 
 import { setupI18n } from "./i18n";
 import { createPinia } from "pinia";

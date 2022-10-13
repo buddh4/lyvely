@@ -1,1 +1,52 @@
+@import 'forms.css';
+@import "nprogress/nprogress.css";
+
 @tailwind components;
+
+@layer components {
+    #sidebar {
+        @apply bg-slate-900
+    }
+
+    #sidebar a {
+        @apply text-slate-100;
+        border-left: 4px solid transparent;
+    }
+
+    #sidebar .nav a .icon {
+        @apply fill-current mr-2 opacity-50;
+        border-left: 4px solid transparent;
+    }
+
+    #sidebar .nav a.router-link-active {
+        @apply font-bold border-l-4 border-pop;
+    }
+
+    #sidebar .nav a:hover:not(.router-link-active) {
+        @apply border-l-4 border-slate-600;
+    }
+
+    #sidebar .nav a.router-link-active .icon {
+        opacity: 1;
+    }
+
+    #main {
+        font-family: Avenir, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        margin-top: 60px;
+    }
+}
+
+#nprogress .bar {
+    background: var(--color-lyvely) !important;
+}
+
+#nprogress .peg {
+    box-shadow: 0 0 10px var(--color-lyvely), 0 0 5px var(--color-lyvely);
+}
+
+#nprogress .spinner-icon {
+    display:none;
+}
