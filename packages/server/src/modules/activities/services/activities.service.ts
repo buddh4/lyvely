@@ -3,10 +3,16 @@ import { Activity, Habit, HabitDataPoint } from '../schemas';
 import { User } from '../../users';
 import { Profile } from '../../profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
-import { assureObjectId, EntityIdentity, IntegrityException } from '@/modules/core';
+import { assureObjectId, EntityIdentity } from '@/modules/core';
 import { AbstractContentService } from '../../content';
 import { HabitDataPointService } from './habit-data-point.service';
-import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum, SortResult } from '@lyvely/common';
+import {
+  getTimingIds,
+  DataPointIntervalFilter,
+  CalendarIntervalEnum,
+  SortResult,
+  IntegrityException,
+} from '@lyvely/common';
 
 interface IActivitySearchResult {
   activities: Activity[];

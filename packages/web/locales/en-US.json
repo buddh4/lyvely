@@ -59,6 +59,7 @@
     "hide_password": "Hide password",
     "back": "Back",
     "submit": "Submit",
+    "resend": "Resend",
     "update": "Update",
     "archived": "Archived",
     "restore": "Restore default",
@@ -120,6 +121,14 @@
       "main_nav": "Statistics"
     }
   },
+  "auth": {
+    "otp": {
+      "email": {
+        "text": "Please enter the verification code sent to your email address.",
+        "text_with_address": "Please enter the verification code sent to {email}"
+      }
+    }
+  },
   "users": {
     "logout": "Logout",
     "login": {
@@ -154,6 +163,9 @@
       "title": "Verify your email",
       "text": "We've sent a verification email to: {email}",
       "subtext": "Click the link in your email to activate your account."
+    },
+    "errors": {
+      "email_unique": "asdf"
     },
     "fields": {
       "username": "Username",

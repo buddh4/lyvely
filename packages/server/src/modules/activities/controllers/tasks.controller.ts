@@ -16,12 +16,12 @@ import {
   EditTaskResponseDto,
   TaskModel,
   TagModel,
+  EntityNotFoundException,
 } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
 import { ContentController, ContentType, ProfileContentRequest } from '../../content';
 import { ProfileRequest } from '../../profiles';
 import { isTaskContent } from '../utils/activity.utils';
-import { EntityNotFoundException } from '../../core/exceptions';
 
 @ContentController('tasks')
 // TODO: implement feature registration @Feature('content.activities.tasks')

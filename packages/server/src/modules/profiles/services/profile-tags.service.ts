@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Tag } from '../../tags';
-import { assureObjectId, EntityIdentity, EntityValidationException } from '@/modules/core';
+import { assureObjectId, EntityIdentity } from '@/modules/core';
+import { FieldValidationException } from '@lyvely/common';
 import { ProfileDao } from '../daos';
 import { Profile } from '../schemas';
 
@@ -36,7 +37,7 @@ export class ProfileTagsService {
     const tag = profile.getTagByName(data.name);
 
     if (tag) {
-      throw new EntityValidationException('A tag with the same name already exists');
+      throw new FieldValidationException('A tag with the same name already exists');
     }
 
     return !!(await this.profileDao.addTags(profile, [Tag.create(data)]));

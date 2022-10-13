@@ -12,9 +12,9 @@ import {
 import {
   ForbiddenServiceException,
   EntityNotFoundException,
-  EntityValidationException,
+  FieldValidationException,
   ServiceException,
-} from '../exceptions';
+} from '@lyvely/common';
 
 const exceptionLog = new Logger('exception');
 
@@ -39,7 +39,7 @@ export class ServiceExceptionsFilter implements ExceptionFilter {
         message: responseData,
       });
     } else {
-      response.response.status(httpException.getStatus()).json(responseData);
+      response.status(httpException.getStatus()).json(responseData);
     }
   }
 
@@ -48,7 +48,7 @@ export class ServiceExceptionsFilter implements ExceptionFilter {
       return exception;
     }
 
-    if (exception instanceof EntityValidationException) {
+    if (exception instanceof FieldValidationException) {
       return new BadRequestException(exception.getResponse());
     }
 

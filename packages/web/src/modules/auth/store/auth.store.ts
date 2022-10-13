@@ -37,9 +37,12 @@ export const useAuthStore = defineStore("user-auth", () => {
   async function handleLogin(result: ILoginResponse) {
     clear();
     const { user, vid, token_expiration } = result;
-    await setUser(user);
-    setVid(vid);
-    authTokenExpiration.value = token_expiration;
+    if (user && vid) {
+      await setUser(user);
+      setVid(vid);
+    }
+
+    authTokenExpiration.value = token_expiration || authTokenExpiration.value;
   }
 
   async function loadUser() {

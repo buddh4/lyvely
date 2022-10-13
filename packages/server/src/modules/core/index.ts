@@ -1,6 +1,5 @@
 export * from './db';
 export * from './decorators';
-export * from './exceptions';
 export * from './features';
 export * from './filters';
 export * from './modules';

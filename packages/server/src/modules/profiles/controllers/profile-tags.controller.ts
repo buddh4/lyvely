@@ -1,11 +1,9 @@
 import { ProfileController } from '../decorators';
 import { ProfilesService, ProfileTagsService } from '../services';
-import { UseClassSerializer } from '../../core/decorators/use-class-serializer.decorator';
 import { Request, Param, Post, Body, Inject, ForbiddenException, NotFoundException, Put } from '@nestjs/common';
 import { ProfileRequest } from '../types';
-import { UpdateTagDto, TagModel, CreateTagDto } from '@lyvely/common';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
-import { ServiceException } from '../../core/exceptions';
+import { UpdateTagDto, TagModel, CreateTagDto, ServiceException } from '@lyvely/common';
+import { assureObjectId, EntityIdentity, UseClassSerializer } from '@/modules/core';
 import { Tag } from '../../tags';
 
 // TODO feature check

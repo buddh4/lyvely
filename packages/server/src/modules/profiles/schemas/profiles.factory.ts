@@ -1,9 +1,8 @@
 import { User } from '../../users';
-import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '@lyvely/common';
+import { ProfileType, ProfileUsage, ProfileVisibilityLevel, IntegrityException } from '@lyvely/common';
 import { UserProfile } from './user-profiles.schema';
 import { GroupProfile } from './group-profiles.schema';
 import { Organization } from './organization.schema';
-import { IntegrityException } from '../../core/exceptions';
 
 export interface ICreateProfileOptions {
   organization?: Organization;

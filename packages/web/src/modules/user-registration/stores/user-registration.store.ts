@@ -26,15 +26,10 @@ export const useUserRegistrationStore = defineStore("user-registration", () => {
       userRegistrationService.register(model.value),
       status,
       validator.value as ModelValidator
-    )
-      .then((loginModel: ILoginResponse) => {
-        authStore.handleLogin(loginModel);
-        verifyEmailStore.setEmail(model.value.email);
-        this.$router.push(PATH_VERIFY_EMAIL);
-      })
-      .catch((err) => {
-        // TODO: handle email error etc..
-      });
+    ).then((loginModel: ILoginResponse) => {
+      authStore.handleLogin(loginModel);
+      verifyEmailStore.setEmail(model.value.email);
+    });
   }
 
   function reset() {

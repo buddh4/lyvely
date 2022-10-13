@@ -7,6 +7,7 @@ import {
   UpdateHabitResponseDto,
   HabitModel,
   TagModel,
+  EntityNotFoundException,
 } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
@@ -20,7 +21,7 @@ import {
 import { ProfileRequest, ProfilePermissions } from '../../profiles';
 import { Policies } from '../../policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
-import { EntityNotFoundException, UseClassSerializer } from '@/modules/core';
+import { UseClassSerializer } from '@/modules/core';
 import { isHabitContent } from '../utils/activity.utils';
 
 @ContentController('habits')

@@ -2,12 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Organization, Profile, ProfileDocument, getProfileConstructorByType } from '../schemas';
 import mongoose, { Model } from 'mongoose';
-import { applyRawDataTo, assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { applyRawDataTo, assureObjectId, EntityIdentity, AbstractDao } from '@/modules/core';
 import { User } from '../../users';
-import { AbstractDao } from '../../core/db/abstract.dao';
-import { Constructor, DeepPartial, ProfileType } from '@lyvely/common';
-import { Tag } from '../../tags';
-import { IntegrityException } from '../../core/exceptions';
+import { Constructor, DeepPartial, ProfileType, IntegrityException } from '@lyvely/common';
+import { Tag } from '@/modules/tags';
 
 @Injectable()
 export class ProfileDao extends AbstractDao<Profile> {

@@ -7,6 +7,9 @@ export const SUPPORT_LOCALES = ["en-US", "de-DE"];
 
 let i18n: I18n;
 
+// TODO: make this configurable
+let fallBackLocale = "en-US";
+
 export const LOCALES_AVAILABLE = {
   "en-US": "English",
   "de-DE": "Deutsch",
@@ -24,10 +27,10 @@ export function translate(key: string, options?: any) {
   return (<any>getI18n().global).t(key, options);
 }
 
-export async function setupI18n(options = { locale: "en-US" }) {
+export async function setupI18n(options = { locale: fallBackLocale }) {
   i18n = createI18n({
     legacy: false,
-    fallbackLocale: "en-US",
+    fallbackLocale: fallBackLocale,
     missingWarn: isDevelopEnvironment(),
   });
   await setLocale(options.locale);
@@ -57,11 +60,26 @@ function setModuleMessagesLoaded(
   loadedModules[module][prefix ? prefix + "." + locale : locale] = true;
 }
 
-export function loadModuleMessages(locale: string, module: string) {
-  return import(`./modules/${module}/locales/${locale}.json`)
-    .then((data) => mergeMessages(locale, data))
-    .then(() => setModuleMessagesLoaded(locale, module))
-    .then(() => nextTick());
+export async function loadModuleMessages(
+  locale: string,
+  module: string
+): Promise<any> {
+  const promises = [];
+  if (
+    locale !== fallBackLocale &&
+    !isModuleMessagesLoaded(fallBackLocale, module)
+  ) {
+    promises.push(loadModuleMessages(fallBackLocale, module));
+  }
+
+  promises.push(
+    import(`./modules/${module}/locales/${locale}.json`)
+      .then((data) => mergeMessages(locale, data))
+      .then(() => setModuleMessagesLoaded(locale, module))
+      .then(() => nextTick())
+  );
+
+  return Promise.all(promises);
 }
 
 export function loadModuleBaseMessages(locale: string) {

@@ -1,11 +1,10 @@
 import { ProfilesService, Profile, ProfileContext, ProfileRelation, ProfileTagsService } from '../../profiles';
 import { AbstractContentDao } from '../daos';
 import { User } from '../../users';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@/modules/core';
 import { Content } from '../schemas';
-import { EntityNotFoundException } from '../../core/exceptions';
+import { EntityNotFoundException } from '@lyvely/common';
 import { Inject } from '@nestjs/common';
-import { UpdateQuerySet } from '../../core/db/abstract.dao';
 
 export abstract class AbstractContentService<T extends Content> {
   @Inject()

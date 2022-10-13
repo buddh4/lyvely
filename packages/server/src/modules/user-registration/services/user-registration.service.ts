@@ -1,10 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { UserRegistrationDto, isValidEmail, IFieldValidationResult, escapeHTML, UserStatus } from '@lyvely/common';
+import {
+  FieldValidationException,
+  UserRegistrationDto,
+  isValidEmail,
+  escapeHTML,
+  UserStatus,
+  UniqueConstraintException,
+} from '@lyvely/common';
 import { UserDao, User } from '../../users';
 import { ProfilesService } from '../../profiles';
 import { MailService } from '@/modules/mails';
 import { ConfigService } from '@nestjs/config';
-import { EntityValidationException, UrlGenerator, ConfigurationPath } from '@/modules/core';
+import { UrlGenerator, ConfigurationPath } from '@/modules/core';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -27,28 +34,26 @@ export class UserRegistrationService {
    * @memberof UsersService
    */
   async register(registerDto: UserRegistrationDto) {
-    const emailValidation = await this.validateEmail(registerDto.email);
+    const userModel = new User({
+      username: registerDto.username,
+      email: registerDto.email,
+      status: UserStatus.EmailVerification,
+      locale: registerDto.locale,
+      password: registerDto.password,
+    });
 
-    if (emailValidation.errors?.includes('user_registration.errors.email_unique')) {
-      await this.sendEmailAlreadyExistsMail(registerDto.email);
-      throw new EntityValidationException([emailValidation]);
-    } else if (emailValidation.errors?.length) {
-      throw new EntityValidationException([emailValidation]);
-    }
-
-    const user = await this.userDao.save(
-      new User({
-        username: registerDto.username,
-        email: registerDto.email,
-        status: UserStatus.EmailVerification,
-        locale: registerDto.locale,
-        password: registerDto.password,
-      }),
-    );
-
-    await Promise.all([this.profileService.createDefaultUserProfile(user), this.sendEmailConfirmationMail(user)]);
-
-    return user;
+    return this.validateEmail(registerDto.email)
+      .then(() => this.userDao.save(userModel))
+      .then((user) =>
+        Promise.all([this.profileService.createDefaultUserProfile(user), this.sendEmailConfirmationMail(user)]),
+      )
+      .then(([profileContext]) => profileContext)
+      .catch(async (err) => {
+        if (err instanceof UniqueConstraintException) {
+          await this.sendEmailAlreadyExistsMail(registerDto.email);
+        }
+        throw err;
+      });
   }
 
   private async sendEmailAlreadyExistsMail(email: string) {
@@ -104,18 +109,13 @@ export class UserRegistrationService {
     });
   }
 
-  async validateEmail(email: string): Promise<IFieldValidationResult> {
-    const result: IFieldValidationResult = { property: 'email', errors: [] };
+  async validateEmail(email: string) {
     if (!isValidEmail(email)) {
-      result.errors.push('user_registration.errors.email_invalid');
-      return result;
+      throw new FieldValidationException([{ property: 'email', errors: ['isEmail'] }]);
     }
 
     if (await this.userDao.findByAnyEmail(email)) {
-      result.errors.push('user_registration.errors.email_unique');
-      return result;
+      throw new UniqueConstraintException('Email already in use', 'email');
     }
-
-    return result;
   }
 }

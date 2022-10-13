@@ -1,6 +1,12 @@
 import { Ref, ref } from "vue";
 import { AxiosError } from "axios";
-import { IFieldValidationResult, ModelValidator } from "@lyvely/common";
+import {
+  IFieldValidationResult,
+  ModelValidator,
+  FieldValidationException,
+} from "@lyvely/common";
+import { isFieldValidationError } from "@/util";
+import { translate } from "@/i18n";
 
 export enum Status {
   INIT,
@@ -134,23 +140,20 @@ export function handleError(
   validator?: ModelValidator
 ) {
   status.setStatus(Status.ERROR);
-  if (
-    validator &&
-    err?.isAxiosError &&
-    err?.response?.status === 400 &&
-    err?.response?.data?.fields?.length
-  ) {
-    handleFieldValidationError(validator, err?.response?.data?.fields);
+  if (validator && isFieldValidationError(err)) {
+    validator.setErrors(err.response.data.fields);
+  } else if (validator && err instanceof FieldValidationException) {
+    validator.setErrors(err.getFields());
   } else {
     status.setError(getErrorMessage(err));
   }
 }
 
-function handleFieldValidationError(
-  validator: ModelValidator,
-  fields: IFieldValidationResult[]
-) {
-  validator.setErrors(fields);
+function translateFields(fields: IFieldValidationResult[]) {
+  return fields.map((field) => ({
+    property: field.property,
+    errors: field.errors?.map((err) => translate(err)),
+  }));
 }
 
 export function getErrorMessage(err: any) {

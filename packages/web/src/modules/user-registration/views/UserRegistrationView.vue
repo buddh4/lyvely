@@ -5,16 +5,24 @@ import { storeToRefs } from "pinia";
 import LanguageChooser from "@/modules/i18n/components/LanguageChooser.vue";
 import PasswordStrengthMeter from "@/modules/ui/components/form/PasswordStrengthMeter.vue";
 import { onBeforeUnmount, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
+import { PATH_VERIFY_EMAIL } from "@/modules/user-registration/routes/paths";
 
 const userRegistrationStore = useUserRegistrationStore();
 
+const router = useRouter();
 const { model, validator } = storeToRefs(userRegistrationStore);
 const { status } = userRegistrationStore;
 const showRememberInfo = ref(false);
 const repeatPasswordType = ref("password");
 
 async function register() {
-  return userRegistrationStore.register();
+  return userRegistrationStore.register().then(() => {
+    if(useVerifyEmailStore().email) {
+      router.push(PATH_VERIFY_EMAIL);
+    }
+  });
 }
 
 onBeforeUnmount(userRegistrationStore.reset);

@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { User, UsersService } from '../../users';
-import { ProfileType, ProfileUsage, BaseMembershipRole, ProfileVisibilityLevel } from '@lyvely/common';
+import {
+  ProfileType,
+  ProfileUsage,
+  BaseMembershipRole,
+  ProfileVisibilityLevel,
+  EntityNotFoundException,
+  UniqueConstraintException,
+} from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { ProfileContext } from '../models';
-import { EntityNotFoundException, UniqueConstraintException, EntityIdentity, withTransaction } from '@/modules/core';
+import { EntityIdentity, withTransaction } from '@/modules/core';
 import { Profile, ICreateProfileOptions, ICreateProfileTypeOptions, ProfilesFactory } from '../schemas';
 import { InjectConnection } from '@nestjs/mongoose';
 import mongoose from 'mongoose';

@@ -136,7 +136,7 @@
     "create_account": "Erstelle einen Account",
     "is_member": "Du hast bereits einen Account?",
     "verify_email": {
-      "title": "Verifiziere deine Email-Addresse",
+      "title": "E-Mail verifizierung",
       "text": "Wir haben dir eine Email geschickt, um die folgende Email-Addresse zu verifizieren: {email}",
       "subtext": "Klicke auf den Link in der E-Mail um deinen Account zu aktivieren."
     },
