@@ -281,6 +281,47 @@ describe('AbstractDao', () => {
       });
     });
 
+    describe('upsert', () => {
+      it('upsert non existing entity', async () => {
+        const model = await dao.upsert({ requiredField: 'upserted' }, { requiredField: 'upserted', numberField: 5 });
+        expect(model instanceof TestEntity).toEqual(true);
+        expect(model._id).toBeDefined();
+        expect(model.requiredField).toEqual('upserted');
+        expect(model.numberField).toEqual(5);
+      });
+
+      it('upsert non existing entity with new = false', async () => {
+        const model = await dao.upsert(
+          { requiredField: 'upserted' },
+          { requiredField: 'upserted', numberField: 5 },
+          { new: false },
+        );
+        expect(model).toBeNull();
+      });
+
+      it('upsert existing entity', async () => {
+        const model = await dao.save(new TestEntity({ requiredField: '1', numberField: 4 }));
+        const upserted = await dao.upsert({ requiredField: '1' }, { requiredField: 'upserted', numberField: 5 });
+        expect(upserted instanceof TestEntity).toEqual(true);
+        expect(upserted._id.equals(model._id)).toBeDefined();
+        expect(upserted.requiredField).toEqual('upserted');
+        expect(upserted.numberField).toEqual(5);
+      });
+
+      it('upsert existing entity with new = false', async () => {
+        const model = await dao.save(new TestEntity({ requiredField: '1', numberField: 4 }));
+        const upserted = await dao.upsert(
+          { requiredField: '1' },
+          { requiredField: 'upserted', numberField: 5 },
+          { new: false },
+        );
+        expect(upserted instanceof TestEntity).toEqual(true);
+        expect(upserted._id.equals(model._id)).toBeDefined();
+        expect(upserted.requiredField).toEqual('1');
+        expect(upserted.numberField).toEqual(4);
+      });
+    });
+
     describe('findOneAndUpdateByIdSet', () => {
       it('update single field', async () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });

@@ -12,6 +12,8 @@
       v-model="inputValue"
       :name="name"
       :disabled="disabled"
+      :aria-invalid="!!inputError?.length"
+      :aria-errormessage="inputError"
       :aria-describedby="ariaDescribedby"
       :readonly="readonly"
       :autocomplete="autoCompleteValue"

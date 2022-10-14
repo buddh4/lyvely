@@ -1,18 +1,17 @@
 import {
   IUserRegistrationService,
   UserRegistrationDto,
-  ILoginResponse,
+  VerifyEmailDto,
 } from "@lyvely/common";
 import registerRepository from "../repositories/user-registration.repository";
-import { errorToServiceException } from "@/util";
+import { unwrapEndpointRequest } from "@/modules/core";
 
 export class UserRegistrationService implements IUserRegistrationService {
-  async register(model: UserRegistrationDto): Promise<ILoginResponse> {
-    return registerRepository
-      .register(model)
-      .then(({ data }) => data as ILoginResponse)
-      .catch((err) => {
-        throw errorToServiceException(err);
-      });
+  async register(model: UserRegistrationDto): Promise<void> {
+    return unwrapEndpointRequest(registerRepository.register(model));
+  }
+
+  async verifyEmail(verifyEmail: VerifyEmailDto) {
+    return unwrapEndpointRequest(registerRepository.verifyEmail(verifyEmail));
   }
 }

@@ -8,7 +8,7 @@ export const SUPPORT_LOCALES = ["en-US", "de-DE"];
 let i18n: I18n;
 
 // TODO: make this configurable
-let fallBackLocale = "en-US";
+const fallBackLocale = "en-US";
 
 export const LOCALES_AVAILABLE = {
   "en-US": "English",

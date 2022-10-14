@@ -2,7 +2,7 @@ import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from '../../users';
-import { ProfileType, ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/common';
+import { ProfileType, ProfileVisibilityLevel, BaseMembershipRole, UserStatus } from '@lyvely/common';
 import { closeInMongodConnection, rootMongooseTestModule } from './mongoose-test.utils';
 import {
   Profile,
@@ -70,6 +70,7 @@ export class TestDataUtils {
     userData.username = username;
     userData.email = userData.email || `${username}@test.de`;
     userData.password = userData.password || `testPassword`;
+    userData.status = userData.status ?? UserStatus.Active;
     const user = new this.UserModel(new User(userData));
     await user.save();
     return new User(user);

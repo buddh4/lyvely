@@ -4,7 +4,6 @@ import { UserRegistrationService } from './user-registration.service';
 import { UserRegistrationDto, UserStatus } from '@lyvely/common';
 import { createBasicTestingModule, TestDataUtils } from '@/modules/test';
 import { User } from '@/modules/users';
-import { JwtModule } from '@nestjs/jwt';
 
 describe('UserRegistrationService', () => {
   let testingModule: TestingModule;
@@ -14,17 +13,7 @@ describe('UserRegistrationService', () => {
   const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(
-      TEST_KEY,
-      [UserRegistrationService],
-      [],
-      [
-        JwtModule.register({
-          secret: 'someTestSecret...',
-          signOptions: { expiresIn: '1d' },
-        }),
-      ],
-    ).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY, [UserRegistrationService]).compile();
     registerService = testingModule.get<UserRegistrationService>(UserRegistrationService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UserDao } from '../daos';
 import { RefreshToken, User } from '../schemas';
-import { ProfileType, IntegrityException } from '@lyvely/common';
+import { ProfileType, IntegrityException, UserStatus } from '@lyvely/common';
 import { EntityIdentity, IBaseQueryOptions } from '@/modules/core';
 
 @Injectable()
@@ -56,5 +56,9 @@ export class UsersService {
 
   async destroyRefreshToken(user: User, visitorId: string) {
     return this.userDao.destroyRefreshToken(user, visitorId);
+  }
+
+  async setUserStatus(user: EntityIdentity<User>, status: UserStatus) {
+    return this.userDao.updateOneSetById(user, { status: status });
   }
 }

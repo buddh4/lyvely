@@ -1,10 +1,10 @@
 import { CreateProfileDto, ProfileWithRelationsDto } from '../dtos';
-import { StrictEndPoint } from '@/endpoints';
+import { StrictEndpoint } from '@/endpoints';
 
 export interface IProfilesService {
   getProfile(id: string): Promise<ProfileWithRelationsDto>;
   create(dto: CreateProfileDto): Promise<ProfileWithRelationsDto>;
 }
 
-export type ProfilesEndpoint = StrictEndPoint<IProfilesService>;
+export type ProfilesEndpoint = StrictEndpoint<IProfilesService>;
 export const ENDPOINT_PROFILES = 'profiles';

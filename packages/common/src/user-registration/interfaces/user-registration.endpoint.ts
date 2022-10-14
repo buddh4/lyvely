@@ -1,13 +1,15 @@
-import { StrictEndPoint } from '@/endpoints';
-import { UserRegistrationDto } from '../dtos/user-registration.dto';
+import { StrictEndpoint } from '@/endpoints';
+import { UserRegistrationDto, VerifyEmailDto } from '../dtos';
+import { ILoginResponse } from '@/auth';
 
 export interface IUserRegistrationService {
   /**
    * @throws FieldValidationException
    * @param model
    */
-  register(model: UserRegistrationDto);
+  register(model: UserRegistrationDto): Promise<void>;
+  verifyEmail(otp: VerifyEmailDto): Promise<ILoginResponse>;
 }
 
-export type UserRegistrationEndpoint = StrictEndPoint<IUserRegistrationService>;
+export type UserRegistrationEndpoint = StrictEndpoint<IUserRegistrationService>;
 export const ENDPOINT_USER_REGISTRATION = 'user-registration';

@@ -1,2 +1,2 @@
-export * from './dtos/user-registration.dto';
+export * from './dtos';
 export * from './interfaces/user-registration.endpoint';

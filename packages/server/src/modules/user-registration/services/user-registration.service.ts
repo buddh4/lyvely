@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   FieldValidationException,
   UserRegistrationDto,
@@ -6,110 +6,116 @@ import {
   escapeHTML,
   UserStatus,
   UniqueConstraintException,
+  VerifyEmailDto,
 } from '@lyvely/common';
-import { UserDao, User } from '../../users';
+import { UserDao, User, UsersService } from '../../users';
 import { ProfilesService } from '../../profiles';
 import { MailService } from '@/modules/mails';
 import { ConfigService } from '@nestjs/config';
 import { UrlGenerator, ConfigurationPath } from '@/modules/core';
-import { JwtService } from '@nestjs/jwt';
+import { UserOtpService } from '@/modules/auth/services/user-otp.service';
+
+const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
 
 @Injectable()
 export class UserRegistrationService {
   constructor(
     private userDao: UserDao,
     private profileService: ProfilesService,
+    private userService: UsersService,
     private mailerService: MailService,
     private configService: ConfigService<ConfigurationPath>,
     private urlGenerator: UrlGenerator,
-    private jwtService: JwtService,
+    private userOtpService: UserOtpService,
   ) {}
 
   /**
-   * Creates a user
+   * Creates and returns a new user record. If the user email is already in use this function will return null.
    *
-   * @param {UserRegistrationDto} registerDto username, email, and password. Username and email must be
+   * Note: By default, usernames are not unique.
+   *
+   * @param {UserRegistrationDto} registerDto username, email, and password. Email must be
    * unique, will throw an email with a description if either are duplicates
    * @returns {Promise<UserDocument>} or throws an error
    * @memberof UsersService
    */
-  async register(registerDto: UserRegistrationDto) {
-    const userModel = new User({
-      username: registerDto.username,
-      email: registerDto.email,
-      status: UserStatus.EmailVerification,
-      locale: registerDto.locale,
-      password: registerDto.password,
-    });
+  async register(registerDto: UserRegistrationDto): Promise<User | null> {
+    try {
+      await this.validateEmail(registerDto.email);
+      const user = await this.userDao.save(
+        new User({
+          username: registerDto.username,
+          email: registerDto.email,
+          status: UserStatus.EmailVerification,
+          locale: registerDto.locale,
+          password: registerDto.password,
+        }),
+      );
 
-    return this.validateEmail(registerDto.email)
-      .then(() => this.userDao.save(userModel))
-      .then((user) =>
-        Promise.all([this.profileService.createDefaultUserProfile(user), this.sendEmailConfirmationMail(user)]),
-      )
-      .then(([profileContext]) => profileContext)
-      .catch(async (err) => {
-        if (err instanceof UniqueConstraintException) {
-          await this.sendEmailAlreadyExistsMail(registerDto.email);
-        }
-        throw err;
+      const { otp } = await this.userOtpService.createOrUpdateUserOtp(user, {
+        purpose: OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
       });
+
+      await Promise.all([
+        this.profileService.createDefaultUserProfile(user),
+        this.sendEmailConfirmationMail(user, otp),
+      ]);
+
+      return user;
+    } catch (err: any) {
+      if (err instanceof UniqueConstraintException) {
+        await this.sendEmailAlreadyExistsMail(registerDto.email);
+        return null;
+      }
+      throw err;
+    }
   }
 
   private async sendEmailAlreadyExistsMail(email: string) {
     // TODO: (i18n) missing translation
+    const appName = escapeHTML(this.configService.get('appName'));
+    const forgotPasswordUrl = escapeHTML(encodeURI(this.urlGenerator.getAppUrl('/forgot-password').href));
     return this.mailerService.sendMail({
       to: email,
       subject: `Attempt to register an already existing email`,
       partials: {
-        headline: 'This is a test',
-        body:
-          '<p>An attempt has been made to register a new account with an already registered email address.' +
-          'In case you tried to access your account, but forgot your password, please use the <a href="' +
-          this.urlGenerator.getAppUrl('/forgot-password').href +
-          '">Forgot password</a> feature.' +
-          'Otherwise, just ignore this email.</p>',
+        headline: 'Forgot your password?',
+        body: `<p>An attempt has been made to register a new account on ${appName} with this already registered email address.
+          In case you tried to access your account, but forgot your password, please use the 
+          <a href="${forgotPasswordUrl}">Forgot password</a> feature.
+          Otherwise, just ignore this email.</p>`,
       },
     });
   }
 
-  private async sendEmailConfirmationMail(user: User) {
-    const username = escapeHTML(user.username);
+  private async sendEmailConfirmationMail(user: User, otp: string) {
     const appName = escapeHTML(this.configService.get('appName'));
     const contactMailHref = escapeHTML(encodeURI(`mailto:${this.configService.get('contactMail')}`));
     const contactMail = escapeHTML(this.configService.get('contactMail'));
-
-    // TODO: (security) use one time token
-    const token = this.jwtService.sign(
-      { sub: user._id.toString(), email: user.email },
-      {
-        secret: this.configService.get('auth.jwt.verify.secret'),
-        expiresIn: this.configService.get('auth.jwt.verify.expiresIn'),
-      },
-    );
-
-    const verifyHref = escapeHTML(this.urlGenerator.getApiUrl('/user-registration/verify-email', { token }).href);
 
     // TODO: (i18n) missing translation
     return this.mailerService.sendMail({
       to: user.email,
       subject: 'Email verification',
       partials: {
-        headline: 'Confirm Your Email Address',
-        body: `<p>Hi, ${username}</p>
-           <p>Welcome to <b>${appName}</b></p>
-           <p>Please click the button below to verify your email address.</p>
+        headline: 'Confirm Your email address',
+        body: `<p>Please enter the confirmation code below in the browser window where you've started to sign up for ${appName}</p>
            <p>
-             <a rel="noopener" target="_blank" href="${verifyHref}" style="background-color: #059669; font-size: 14px; font-family: Helvetica, Arial, sans-serif; font-weight: bold; text-decoration: none; padding: 6px 12px; color: #ffffff; border-radius: 5px; display: inline-block; mso-padding-alt: 0;">
-               <span style="mso-text-raise: 15pt;">Verify Email</span>
-             </a>
+             <div style="margin-left:50px;margin-right:50px;margin-bottom:30px">
+               <div style="text-align:center;vertical-align:middle;font-size:30px">${otp}</div>
+             </div>
            </p>
-           <small>If you did not sign up to ${appName}, please ignore this email or contact us at <a href="${contactMailHref}">${contactMail}</a></small>`,
+           <p>
+             <small>If you did not sign up to ${appName}, please ignore this email.</small>
+           </p>
+           <p>
+             <small>In case you have any questions about setting up ${appName}, contact us at <a href="${contactMailHref}">${contactMail}</a></small>
+           </p>`,
       },
     });
   }
 
-  async validateEmail(email: string) {
+  private async validateEmail(email: string) {
     if (!isValidEmail(email)) {
       throw new FieldValidationException([{ property: 'email', errors: ['isEmail'] }]);
     }
@@ -117,5 +123,30 @@ export class UserRegistrationService {
     if (await this.userDao.findByAnyEmail(email)) {
       throw new UniqueConstraintException('Email already in use', 'email');
     }
+  }
+
+  async verifyEmail(verifyEmail: VerifyEmailDto) {
+    const user = await this.userService.findUserByMainEmail(verifyEmail.email);
+
+    if (!user) throw new UnauthorizedException();
+
+    if (user.status !== UserStatus.EmailVerification) throw new ForbiddenException();
+
+    const otpModel = await this.userOtpService.findOtpByUserAndPurpose(user, OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL);
+    const isValid = await this.userOtpService.validateOtp(
+      user,
+      OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
+      verifyEmail.otp,
+      otpModel,
+    );
+
+    if (!isValid) throw new UnauthorizedException();
+
+    await Promise.all([
+      this.userService.setUserStatus(user, UserStatus.Active),
+      this.userOtpService.invalidateOtpByUserAndPurpose(user, OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL),
+    ]);
+
+    return { user, remember: otpModel.remember };
   }
 }

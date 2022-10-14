@@ -1,9 +1,9 @@
 import { UserInvites } from '../dtos';
-import { StrictEndPoint } from '@/endpoints';
+import { StrictEndpoint } from '@/endpoints';
 
 export interface IUserInvitesService {
   inviteUsers(model: UserInvites);
 }
 
-export type UserInvitesEndpoint = StrictEndPoint<IUserInvitesService>;
+export type UserInvitesEndpoint = StrictEndpoint<IUserInvitesService>;
 export const ENDPOINT_USER_INVITES = 'user-invites';

@@ -124,8 +124,11 @@
   "auth": {
     "otp": {
       "email": {
-        "text": "Please enter the verification code sent to your email address.",
-        "text_with_address": "Please enter the verification code sent to {email}"
+        "text": "Please enter the verification code sent to your email address. The code is only valid for a short time, so please enter it soon.",
+        "text_with_address": "Please enter the verification code sent to {email}. The code is only valid for a short time, so please enter it soon."
+      },
+      "aria": {
+        "input_label": "digit {i} of {n}"
       }
     }
   },
@@ -251,7 +254,7 @@
     "404": "The requested service could not be found.",
     "network": {
       "title": "Network Error",
-      "message": "The request failed due to a network issue, please make sure you are connected to the internet."
+      "message": "There seems to be an issue with your network connection, please make sure you are connected to the internet."
     },
     "csrf": {
       "title": "Invalid application state",

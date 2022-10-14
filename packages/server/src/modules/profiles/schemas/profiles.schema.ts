@@ -86,10 +86,6 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
   @Prop({ type: String })
   imageHash?: string;
 
-  createdAt: Date;
-
-  updatedAt: Date;
-
   constructor(owner: EntityIdentity<User>, obj?: Partial<Profile>) {
     super(obj);
 

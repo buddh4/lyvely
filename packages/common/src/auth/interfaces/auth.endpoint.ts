@@ -1,4 +1,4 @@
-import { EndPoint } from '@/endpoints';
+import { Endpoint } from '@/endpoints';
 import { UserModel } from '@/users';
 import { LoginModel } from '../models/login.model';
 
@@ -21,5 +21,5 @@ export interface IAuthService {
   refresh(vid: string): Promise<IRefreshTokenResponse>;
 }
 
-export type AuthEndpoint = EndPoint<IAuthService>;
+export type AuthEndpoint = Endpoint<IAuthService>;
 export const ENDPOINT_AUTH = 'auth';

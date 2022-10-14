@@ -20,14 +20,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   }
 
   protected async validatePassword(user: User, password: string) {
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(password, user.password, (error, isMatch) => {
-        if (error) {
-          reject(error);
-        }
-
-        resolve(isMatch);
-      });
-    });
+    return bcrypt.compare(password, user.password);
   }
 }

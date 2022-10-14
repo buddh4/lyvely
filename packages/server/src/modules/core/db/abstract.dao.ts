@@ -41,6 +41,10 @@ export interface IBaseQueryOptions {
   session?: ClientSession;
 }
 
+export interface IUpsertQueryOptions extends IBaseQueryOptions {
+  new?: boolean;
+}
+
 export interface IUpdateQueryOptions extends IBaseQueryOptions {
   apply?: boolean;
 }
@@ -188,10 +192,10 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.constructModel(await this.model.findOne(filter, options?.projection, options).lean());
   }
 
-  // TODO: Implement + Test
-  /*protected async upsert(filter: FilterQuery<T>, update: UpdateQuery<T>, options: UpsertQueryOptions = {}): Promise<T|null> {
+  async upsert(filter: FilterQuery<T>, update: UpdateQuery<T>, options: IUpsertQueryOptions = {}): Promise<T | null> {
+    options.new = options.new ?? true;
     return this.constructModel(await this.model.findOneAndUpdate(filter, update, { upsert: true, ...options }).lean());
-  }*/
+  }
 
   protected getFetchQueryFilter(options: IFetchQueryFilterOptions<T>): FilterQuery<any> {
     const { excludeIds } = options;
