@@ -2,24 +2,32 @@
 import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayoutContainer.vue";
 import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import { useRouter } from "vue-router";
 import OtpInput from "@/modules/auth/components/OtpInput.vue";
 
 const verifyEmailStore = useVerifyEmailStore();
-const { model } = storeToRefs(verifyEmailStore);
+const { model, errorMsg, attempts } = storeToRefs(verifyEmailStore);
 const router = useRouter();
+
+if(!model.value.email) {
+  document.location = "/";
+}
+
+function resend() {
+  verifyEmailStore.resend();
+}
 
 function verifyEmail() {
   verifyEmailStore.verifyEmail().then((success) => {
     if (success) {
       document.location = "/";
-      //router.replace({ path: "/" });
     }
   });
 }
 
 const isValidOtp = ref(false);
+onBeforeUnmount(verifyEmailStore.reset);
 </script>
 
 <template>
@@ -33,14 +41,18 @@ const isValidOtp = ref(false);
       <OtpInput
         v-model="model.otp"
         v-model:is-valid="isValidOtp"
+        :has-error="!!errorMsg?.length"
         :email="model.email"
       />
+
+      <ly-alert :message="errorMsg" />
     </template>
 
     <template #footer>
       <div class="flex justify-center space-x-1">
-        <ly-button class="secondary" text="common.resend" />
+        <ly-button class="secondary" text="common.resend" @click="resend" />
         <ly-button
+            v-if="attempts !== 0"
           :disabled="!isValidOtp"
           class="primary"
           text="common.submit"

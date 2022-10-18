@@ -2,16 +2,21 @@ import { IModelValidationResult, IFieldValidationResult } from '@/validation';
 
 export class ServiceException extends Error {
   protected defaultMessage = 'Unknown service error';
+  public readonly data?: any;
 
-  constructor(msg?: string) {
-    super(msg);
-    if (!msg) {
+  constructor(msgOrData?: string | any) {
+    super(typeof msgOrData === 'string' ? msgOrData : undefined);
+    if (typeof msgOrData !== 'string') {
       this.message = this.defaultMessage;
+      this.data = msgOrData;
     }
   }
 
+  /**
+   * @deprecated use data directly...
+   */
   public getResponse() {
-    return undefined;
+    return this.data;
   }
 }
 
@@ -21,21 +26,14 @@ export class EntityNotFoundException extends ServiceException {
 
 export class FieldValidationException extends ServiceException {
   protected defaultMessage = 'Field validation failed.';
-  private readonly fields?: IFieldValidationResult[];
+  public readonly data?: { fields: IFieldValidationResult[] };
 
   constructor(msgOrFields: IFieldValidationResult[] | string) {
-    super(typeof msgOrFields === 'string' ? msgOrFields : undefined);
-    if (Array.isArray(msgOrFields)) {
-      this.fields = msgOrFields;
-    }
-  }
-
-  public getResponse() {
-    return { fields: this.fields || [] };
+    super(typeof msgOrFields === 'string' ? msgOrFields : { fields: msgOrFields || [] });
   }
 
   public getFields() {
-    return this.fields;
+    return this.data?.fields || [];
   }
 }
 

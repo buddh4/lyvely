@@ -7,6 +7,7 @@ import {
   ENDPOINT_USER_REGISTRATION,
   VerifyEmailDto,
   UserModel,
+  ResendOtpDto,
 } from '@lyvely/common';
 import { AbstractAuthController, JwtAuthService } from '@/modules/auth';
 import { ConfigService } from '@nestjs/config';
@@ -28,6 +29,12 @@ export class UserRegistrationController extends AbstractAuthController implement
   @Post()
   async register(@Body() registerDto: UserRegistrationDto): Promise<void> {
     await this.registerService.register(registerDto);
+  }
+
+  @Public()
+  @Post('resend-verify-email')
+  async resendVerifyEmail(@Body() dto: ResendOtpDto): Promise<void> {
+    await this.registerService.resendOtp(dto.email);
   }
 
   @Public()

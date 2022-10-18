@@ -7,6 +7,7 @@ import {
   ModelValidationException,
   NetworkException,
   ForbiddenServiceException,
+  UnauthenticatedServiceException,
 } from "@lyvely/common";
 
 export function isAxiosError(error: any): error is AxiosError {
@@ -80,18 +81,16 @@ export function errorToServiceException(
   if (isAxiosErrorWithoutResponseData(error)) {
     result = new NetworkException();
   } else if (isForbiddenError(error)) {
-    result = new ForbiddenServiceException();
+    result = new ForbiddenServiceException(error.response?.data);
   } else if (isUnauthorizedForbidden(error)) {
-    result = new ForbiddenServiceException();
+    result = new UnauthenticatedServiceException(error.response?.data);
   } else if (isFieldValidationError(error)) {
     result = new FieldValidationException(error.response.data.fields);
   } else if (isModelValidationError(error)) {
     result = new ModelValidationException(error.response.data.result);
   }
 
-  if (throws) {
-    throw result;
-  }
+  if (throws) throw result;
 
   return result;
 }

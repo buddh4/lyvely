@@ -52,9 +52,7 @@ export class UserRegistrationService {
         }),
       );
 
-      const { otp } = await this.userOtpService.createOrUpdateUserOtp(user, {
-        purpose: OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
-      });
+      const otp = await this.createOrUpdateEmailVerificationOtp(user);
 
       await Promise.all([
         this.profileService.createDefaultUserProfile(user),
@@ -125,28 +123,42 @@ export class UserRegistrationService {
     }
   }
 
+  async resendOtp(email: string) {
+    const user = await this.findEmailVerificationUserByEmail(email);
+    const otp = await this.createOrUpdateEmailVerificationOtp(user);
+    await this.sendEmailConfirmationMail(user, otp);
+  }
+
+  private async createOrUpdateEmailVerificationOtp(user: User) {
+    const { otp } = await this.userOtpService.createOrUpdateUserOtp(user, {
+      purpose: OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
+    });
+
+    return otp;
+  }
+
   async verifyEmail(verifyEmail: VerifyEmailDto) {
-    const user = await this.userService.findUserByMainEmail(verifyEmail.email);
+    const user = await this.findEmailVerificationUserByEmail(verifyEmail.email);
 
-    if (!user) throw new UnauthorizedException();
-
-    if (user.status !== UserStatus.EmailVerification) throw new ForbiddenException();
-
-    const otpModel = await this.userOtpService.findOtpByUserAndPurpose(user, OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL);
-    const isValid = await this.userOtpService.validateOtp(
+    const { isValid, remember, attempts } = await this.userOtpService.runValidation(
       user,
       OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
       verifyEmail.otp,
-      otpModel,
     );
 
-    if (!isValid) throw new UnauthorizedException();
+    if (!isValid) throw new UnauthorizedException({ attempts });
 
-    await Promise.all([
-      this.userService.setUserStatus(user, UserStatus.Active),
-      this.userOtpService.invalidateOtpByUserAndPurpose(user, OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL),
-    ]);
+    await this.userService.setUserStatus(user, UserStatus.Active);
 
-    return { user, remember: otpModel.remember };
+    return { user, remember };
+  }
+
+  private async findEmailVerificationUserByEmail(email: string) {
+    const user = await this.userService.findUserByMainEmail(email);
+
+    if (!user) throw new UnauthorizedException();
+
+    if (user.status !== UserStatus.EmailVerification) throw new UnauthorizedException();
+    return user;
   }
 }

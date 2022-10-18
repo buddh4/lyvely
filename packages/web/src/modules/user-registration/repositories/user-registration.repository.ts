@@ -5,6 +5,7 @@ import {
   IUserRegistrationService,
   EndpointResult,
   VerifyEmailDto,
+  ResendOtpDto,
 } from "@lyvely/common";
 
 const endpoint = ENDPOINT_USER_REGISTRATION;
@@ -28,5 +29,11 @@ export default {
     return repository.post<
       EndpointResult<IUserRegistrationService["verifyEmail"]>
     >(`${endpoint}/verify-email`, data);
+  },
+
+  resendVerifyEmail(data: ResendOtpDto) {
+    return repository.post<
+      EndpointResult<IUserRegistrationService["resendVerifyEmail"]>
+    >(`${endpoint}/resend-verify-email`, data);
   },
 };

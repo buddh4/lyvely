@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref, computed, watch, watchEffect } from "vue";
 
 interface IProps {
   modelValue: string;
   isValid?: boolean;
+  hasError?: boolean;
   email?: string;
   type?: "email";
 }
@@ -11,12 +12,22 @@ interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   email: undefined,
   isValid: undefined,
+  hasError: false,
   type: "email",
 });
 
 const emit = defineEmits(["update:modelValue", "update:isValid"]);
 
 const otp = ref(Array.from({ length: 6 }, (_, i) => ""));
+
+const isValid = computed(
+    () => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length
+);
+
+watchEffect(() => {
+  otp.value = Array.from({ length: 6 }, (_, i) => props.modelValue?.charAt(i) || '');
+  emit("update:isValid", isValid.value);
+})
 
 function onInput(i: number, evt: InputEvent) {
   evt.preventDefault();
@@ -48,14 +59,34 @@ function onPaste(evt: ClipboardEvent) {
   emitUpdate();
 }
 
+function onDelete(i: number, evt: KeyboardEvent) {
+  if(!otp.value[i].length && i >= 1) {
+      (<HTMLInputElement>(
+          document.querySelector(`[data-otp="${i - 1}"]`)
+      ))?.focus();
+  }
+}
+
+function focusNext() {
+  const active = document.activeElement as HTMLInputElement;
+  const i = parseInt(active?.dataset?.otp || '-1');
+  (<HTMLInputElement>(
+      document.querySelector(`[data-otp="${i + 1}"]`)
+  ))?.focus();
+}
+
+function focusPrev() {
+  const active = document.activeElement as HTMLInputElement;
+  const i = parseInt(active?.dataset?.otp || '7');
+  (<HTMLInputElement>(
+      document.querySelector(`[data-otp="${i - 1}"]`)
+  ))?.focus();
+}
+
 function emitUpdate() {
   emit("update:modelValue", otp.value.join(""));
   emit("update:isValid", isValid.value);
 }
-
-const isValid = computed(
-  () => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length
-);
 
 function getValueToSet(val?: string | null) {
   return typeof val === "string" && /^[0-9]$/.test(val) ? val : "";
@@ -85,11 +116,13 @@ const text = computed(() =>
           type="text"
           :data-otp="i - 1"
           inputmode="number"
-          maxlength="1"
           :aria-label="$t('auth.otp.aria.input_label')"
           aria-invlaid="false"
-          :class="['rounded w-10 border-divide', { 'border-success': isValid }]"
+          :class="['rounded w-10 border-divide', { 'border-success': isValid && !hasError, 'border-danger': hasError }]"
           @paste="onPaste"
+          @keydown.delete="onDelete(i-1, $event)"
+          @keydown.right="focusNext"
+          @keydown.left="focusPrev"
           @input="onInput(i - 1, $event)"
         />
         <div v-if="i === 3" class="flex items-center">

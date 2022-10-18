@@ -23,6 +23,9 @@ export class UserOtp extends BaseEntity<UserOtp> {
   @Prop({ required: true })
   expiresIn: number;
 
+  @Prop({ default: 0 })
+  attempts: 0;
+
   isExpired() {
     return addMilliSeconds(this.issuedAt, this.expiresIn) < new Date();
   }
