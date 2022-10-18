@@ -1,6 +1,14 @@
 <script lang="ts" setup>
-import { ref, toRefs } from "vue";
+import { ref, toRefs, watch } from "vue";
+import { uniqueId } from "lodash";
+import { storeToRefs } from "pinia";
 import { suggestFocusElement } from "@/modules/ui/utils";
+import { usePageStore } from "@/modules/core/store/page.store";
+
+
+const pageStore = usePageStore();
+
+const { activeDrawer } = storeToRefs(pageStore);
 
 interface IProps {
   modelValue: boolean;
@@ -15,9 +23,22 @@ const props = withDefaults(defineProps<IProps>(), {
   prevAutoFocus: false,
 });
 
+const drawerId = uniqueId('drawer');
+const zIndex = ref(20);
+
 const emit = defineEmits(["update:modelValue"]);
 const root = ref<HTMLElement>();
 const { modelValue } = toRefs(props);
+
+watch(modelValue, (value) => {
+  if(value) {
+    activeDrawer.value = drawerId;
+  }
+});
+
+watch<string|undefined>(activeDrawer, (value: string|undefined) => {
+  zIndex.value = (value === drawerId) ? 22 : 21;
+});
 
 function close() {
   emit("update:modelValue", false);
@@ -35,10 +56,13 @@ function autoFocus() {
         v-if="modelValue"
         :id="id"
         ref="root"
-        :class="['drawer', 'z-20']"
+        :class="['drawer']"
+        :style="{ 'z-index': zIndex }"
         @keyup.esc="close"
       >
-        <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
+        <div
+          class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start"
+        >
           <div
             data-drawer-header
             class="mb-4 flex items-center pb-3 rounded-t-sm"
@@ -64,7 +88,7 @@ function autoFocus() {
 
 <style scoped lang="postcss">
 h1 {
-  @apply text-base
+  @apply text-base;
 }
 .drawer {
   @apply p-4 shadow-lg bg-highlight;

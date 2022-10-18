@@ -18,8 +18,7 @@ import AccountMenu from "@/modules/account/components/menus/AccountMenu.vue";
       <profile-breadcrumb />
     </div>
 
-
-    <div class="w-1/3 ">
+    <div class="w-1/3">
       <account-menu />
     </div>
   </nav>

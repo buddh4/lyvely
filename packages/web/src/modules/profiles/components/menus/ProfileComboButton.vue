@@ -16,7 +16,7 @@ const score = computed(() => profileStore.profile?.score);
     <template #trigger="{ toggle }">
       <div class="flex justify-center items-center py-1">
         <div
-            class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center"
+          class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center"
         >
           <ly-button class="px-3 py-2" @click="toggleSidebar">
             <ly-icon name="menu" style="margin-top: -3px" />
@@ -24,32 +24,32 @@ const score = computed(() => profileStore.profile?.score);
         </div>
 
         <div
-            role="button"
-            class="border-none px-0"
-            :aria-label="$t('layout.aria.toggle-sidebar')"
-            aria-controls="sidebar"
-            @click="toggleSidebar"
+          role="button"
+          class="border-none px-0"
+          :aria-label="$t('layout.aria.toggle-sidebar')"
+          aria-controls="sidebar"
+          @click="toggleSidebar"
         >
           <div
-              class="border border-divide px-3 p-2 flex justify-center items-center gap-2"
+            class="border border-divide px-3 p-2 flex justify-center items-center gap-2"
           >
             <ly-profile-avatar />
 
             <div class="flex justify-center items-center text-xs">
               <transition
-                  name="score-icon"
-                  mode="out-in"
-                  enter-active-class="animate__animated animate_svg_flip"
-                  leave-active-class=""
+                name="score-icon"
+                mode="out-in"
+                enter-active-class="animate__animated animate_svg_flip"
+                leave-active-class=""
               >
                 <ly-icon :key="score" name="score" class="text-success" />
               </transition>
 
               <transition
-                  name="score"
-                  mode="out-in"
-                  enter-active-class="animate__animated animate__faster animate__bounceIn"
-                  leave-active-class="animate__animated animate__faster animate__bounceOut"
+                name="score"
+                mode="out-in"
+                enter-active-class="animate__animated animate__faster animate__bounceIn"
+                leave-active-class="animate__animated animate__faster animate__bounceOut"
               >
                 <div :key="score" class="inline-block score-value ml-0.5">
                   {{ score }}
@@ -59,7 +59,7 @@ const score = computed(() => profileStore.profile?.score);
           </div>
         </div>
         <div
-            class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center"
+          class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center"
         >
           <ly-button class="px-3 py-2" @click="toggle">
             <ly-icon style="margin-top: -1px" name="caret-down" />
@@ -101,31 +101,31 @@ const score = computed(() => profileStore.profile?.score);
 @keyframes flip_svg {
   from {
     transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-    rotate3d(0, 1, 0, -360deg);
+      rotate3d(0, 1, 0, -360deg);
     animation-timing-function: ease-out;
   }
 
   40% {
     transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-    rotate3d(0, 1, 0, -190deg);
+      rotate3d(0, 1, 0, -190deg);
     animation-timing-function: ease-out;
   }
 
   50% {
     transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-    rotate3d(0, 1, 0, -170deg);
+      rotate3d(0, 1, 0, -170deg);
     animation-timing-function: ease-in;
   }
 
   80% {
     transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-    rotate3d(0, 1, 0, 0deg);
+      rotate3d(0, 1, 0, 0deg);
     animation-timing-function: ease-in;
   }
 
   to {
     transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-    rotate3d(0, 1, 0, 0deg);
+      rotate3d(0, 1, 0, 0deg);
     animation-timing-function: ease-in;
   }
 }

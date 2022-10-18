@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ProfileSettingsNavigation from "@/modules/profiles/components/layout/ProfileSettingsNavigation.vue";
+import ProfileSettingsNavigation from "@/modules/profiles/components/menus/ProfileSettingsNavigation.vue";
 </script>
 
 <template>
