@@ -4,11 +4,13 @@ import { suggestFocusElement } from "@/modules/ui/utils";
 
 interface IProps {
   modelValue: boolean;
+  id?: string;
   title?: string;
   prevAutoFocus?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  id: undefined,
   title: undefined,
   prevAutoFocus: false,
 });
@@ -31,13 +33,12 @@ function autoFocus() {
     <transition name="slide-fade" @after-enter="autoFocus">
       <section
         v-if="modelValue"
+        :id="id"
         ref="root"
         :class="['drawer', 'z-20']"
         @keyup.esc="close"
       >
-        <div
-          class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start"
-        >
+        <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
           <div
             data-drawer-header
             class="mb-4 flex items-center pb-3 rounded-t-sm"
@@ -62,12 +63,15 @@ function autoFocus() {
 </template>
 
 <style scoped lang="postcss">
+h1 {
+  @apply text-base
+}
 .drawer {
-  @apply p-4 shadow-lg bg-highlight rounded-l;
+  @apply p-4 shadow-lg bg-highlight;
   position: absolute;
   display: block;
-  top: 60px;
-  height: calc(100vh - 70px);
+  top: 56px;
+  height: calc(100vh - 56px);
   bottom: 0;
   min-width: 280px;
   max-width: 280px;

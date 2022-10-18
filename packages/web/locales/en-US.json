@@ -251,6 +251,13 @@
       "sidebar": "Navigation of profile {profile}"
     }
   },
+  "account": {
+    "drawer": {
+      "title": "Account Menu",
+      "myAccount": "My Account",
+      "security": "Security"
+    }
+  },
   "error":{
     "unknown": "An unexpected error occurred, please try again later.",
     "500": "A problem occurred while handling your request, please try again later.",

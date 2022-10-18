@@ -21,13 +21,16 @@ const emit = defineEmits(["update:modelValue", "update:isValid"]);
 const otp = ref(Array.from({ length: 6 }, (_, i) => ""));
 
 const isValid = computed(
-    () => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length
+  () => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length
 );
 
 watchEffect(() => {
-  otp.value = Array.from({ length: 6 }, (_, i) => props.modelValue?.charAt(i) || '');
+  otp.value = Array.from(
+    { length: 6 },
+    (_, i) => props.modelValue?.charAt(i) || ""
+  );
   emit("update:isValid", isValid.value);
-})
+});
 
 function onInput(i: number, evt: InputEvent) {
   evt.preventDefault();
@@ -60,27 +63,23 @@ function onPaste(evt: ClipboardEvent) {
 }
 
 function onDelete(i: number, evt: KeyboardEvent) {
-  if(!otp.value[i].length && i >= 1) {
-      (<HTMLInputElement>(
-          document.querySelector(`[data-otp="${i - 1}"]`)
-      ))?.focus();
+  if (!otp.value[i].length && i >= 1) {
+    (<HTMLInputElement>(
+      document.querySelector(`[data-otp="${i - 1}"]`)
+    ))?.focus();
   }
 }
 
 function focusNext() {
   const active = document.activeElement as HTMLInputElement;
-  const i = parseInt(active?.dataset?.otp || '-1');
-  (<HTMLInputElement>(
-      document.querySelector(`[data-otp="${i + 1}"]`)
-  ))?.focus();
+  const i = parseInt(active?.dataset?.otp || "-1");
+  (<HTMLInputElement>document.querySelector(`[data-otp="${i + 1}"]`))?.focus();
 }
 
 function focusPrev() {
   const active = document.activeElement as HTMLInputElement;
-  const i = parseInt(active?.dataset?.otp || '7');
-  (<HTMLInputElement>(
-      document.querySelector(`[data-otp="${i - 1}"]`)
-  ))?.focus();
+  const i = parseInt(active?.dataset?.otp || "7");
+  (<HTMLInputElement>document.querySelector(`[data-otp="${i - 1}"]`))?.focus();
 }
 
 function emitUpdate() {
@@ -118,9 +117,15 @@ const text = computed(() =>
           inputmode="number"
           :aria-label="$t('auth.otp.aria.input_label')"
           aria-invlaid="false"
-          :class="['rounded w-10 border-divide', { 'border-success': isValid && !hasError, 'border-danger': hasError }]"
+          :class="[
+            'rounded w-10 border-divide',
+            {
+              'border-success': isValid && !hasError,
+              'border-danger': hasError,
+            },
+          ]"
           @paste="onPaste"
-          @keydown.delete="onDelete(i-1, $event)"
+          @keydown.delete="onDelete(i - 1, $event)"
           @keydown.right="focusNext"
           @keydown.left="focusPrev"
           @input="onInput(i - 1, $event)"

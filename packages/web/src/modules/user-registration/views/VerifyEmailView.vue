@@ -10,7 +10,7 @@ const verifyEmailStore = useVerifyEmailStore();
 const { model, errorMsg, attempts } = storeToRefs(verifyEmailStore);
 const router = useRouter();
 
-if(!model.value.email) {
+if (!model.value.email) {
   document.location = "/";
 }
 
@@ -52,7 +52,7 @@ onBeforeUnmount(verifyEmailStore.reset);
       <div class="flex justify-center space-x-1">
         <ly-button class="secondary" text="common.resend" @click="resend" />
         <ly-button
-            v-if="attempts !== 0"
+          v-if="attempts !== 0"
           :disabled="!isValidOtp"
           class="primary"
           text="common.submit"

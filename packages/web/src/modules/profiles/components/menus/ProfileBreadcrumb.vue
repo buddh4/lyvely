@@ -24,14 +24,16 @@ const path = computed(() => {
 </script>
 
 <template>
-  <router-link to="/">
-    <span class="text-pop">@</span>
-    {{ profileName }}
-  </router-link>
-  <template v-for="sub in path" :key="sub.path">
-    <span class="mx-0.5">/</span>
-    <router-link :to="sub.path">{{ sub.name }}</router-link>
-  </template>
+  <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
+    <router-link to="/">
+      <span class="text-pop">@</span>
+      {{ profileName }}
+    </router-link>
+    <template v-for="sub in path" :key="sub.path">
+      <span class="mx-0.5">/</span>
+      <router-link :to="sub.path">{{ sub.name }}</router-link>
+    </template>
+  </div>
 </template>
 
 <style scoped></style>

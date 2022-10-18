@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { Size } from "@/modules/ui/types";
-import ProfileSidebar from "@/modules/profiles/components/layout/ProfileSidebar.vue";
-import MainProfileContainer from "@/modules/profiles/components/layout/MainProfileContainer.vue";
+import ProfileSidebar from "./ProfileSidebar.vue";
+import MainProfileContainer from "./MainProfileContainer.vue";
 import { computed } from "vue";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
-import CreateProfileModal from "@/modules/profiles/components/modals/CreateProfileModal.vue";
-import InviteUsersModal from "@/modules/profiles/components/modals/InviteUsersModal.vue";
+import CreateProfileModal from "../modals/CreateProfileModal.vue";
+import InviteUsersModal from "../modals/InviteUsersModal.vue";
 
 interface IProps {
   containerWidth?: "xs" | "sm" | "lg" | "xl" | "full";
