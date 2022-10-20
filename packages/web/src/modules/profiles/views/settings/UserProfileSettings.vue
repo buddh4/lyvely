@@ -10,9 +10,7 @@ const description = ref("");
 </script>
 
 <template>
-  <div
-    class="bg-main flex flex-col p-4 rounded shadow-sm mb-2 border border-divide"
-  >
+  <ly-content-panel>
     <div class="flex items-center mb-2 flex-row items-stretch">
       <div class="w-full relative">
         <ly-button class="absolute right-0.5 bottom-0.5 text-xs z-10">
@@ -46,11 +44,9 @@ const description = ref("");
         {{ $t("common.update") }}
       </ly-button>
     </div>
-  </div>
+  </ly-content-panel>
 
-  <div
-    class="bg-main p-4 rounded shadow-sm mb-4 flex flex-col border border-divide"
-  >
+  <ly-content-panel>
     <div>
       <ly-button
         class="danger float-right"
@@ -59,7 +55,7 @@ const description = ref("");
         {{ $t("profile.settings.user.archive") }}
       </ly-button>
     </div>
-  </div>
+  </ly-content-panel>
 </template>
 
 <style scoped></style>

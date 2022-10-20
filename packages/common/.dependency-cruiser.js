@@ -62,6 +62,7 @@ module.exports = {
       MODULE_COLLAB,
       MODULE_VALIDATION,
     ]),
+    createModuleDeps('accounts', [MODULE_ENDPOINTS]),
     createModuleDeps('app-config', [MODULE_ENDPOINTS]),
     createModuleDeps('auth', [MODULE_ENDPOINTS, MODULE_USERS]),
     createModuleDeps('calendar'),

@@ -1,5 +1,15 @@
-import { DocumentModel } from '@/models';
-import { Exclude, Expose } from 'class-transformer';
+import { BaseModel, DocumentModel, PropertyType } from '@/models';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { IsArray } from 'class-validator';
+
+@Exclude()
+export class UserEmailModel extends BaseModel<UserEmailModel> {
+  @Expose()
+  email: string;
+
+  @Expose()
+  verified: boolean;
+}
 
 @Exclude()
 export class UserModel extends DocumentModel<UserModel> {
@@ -13,10 +23,27 @@ export class UserModel extends DocumentModel<UserModel> {
   username: string;
 
   @Expose()
+  email: string;
+
+  @Expose()
+  @PropertyType(Date)
+  createdAt: Date;
+
+  @Expose()
   imageHash: string;
 
   @Expose()
   locale: string;
+
+  @Expose()
+  @IsArray()
+  @Type(() => UserEmailModel)
+  @PropertyType([UserEmailModel])
+  emails: UserEmailModel[];
+
+  findEmail(email: string) {
+    return this.emails.find((userEmail) => userEmail.email.toLowerCase() === email);
+  }
 }
 
 export enum UserStatus {

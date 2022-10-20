@@ -28,7 +28,7 @@ function _ifFocusable(root?: HTMLElement | null, selector?: string) {
 }
 
 export function includesUtilityClass(classNames: string, prefix: string) {
-  return new RegExp(`^.*${escapeRegExp(prefix)}-\\d`).test(classNames);
+  return new RegExp(`^.*${escapeRegExp(prefix)}-[a-z0-9]`).test(classNames);
 }
 
 /*!

@@ -206,23 +206,23 @@ describe('ModelType Decorator', () => {
   });
 
   it('test array without default', async () => {
-    class PlainSubModel extends BaseModel<PlainSubModel> {
+    class TestModel extends BaseModel<TestModel> {
       @PropertyType(Array)
       arr: string[];
     }
 
-    const model = new PlainSubModel();
+    const model = new TestModel();
     expect(model.arr).toBeDefined();
     expect(model.arr.length).toEqual(0);
   });
 
   it('test array default', async () => {
-    class PlainSubModel extends BaseModel<PlainSubModel> {
+    class TestModel extends BaseModel<TestModel> {
       @PropertyType(Array, { default: ['test'] })
       arr: string[];
     }
 
-    const model = new PlainSubModel();
+    const model = new TestModel();
     expect(model.arr).toBeDefined();
     expect(model.arr.length).toEqual(1);
     expect(model.arr[0]).toEqual('test');
@@ -233,12 +233,12 @@ describe('ModelType Decorator', () => {
       value: string;
     }
 
-    class PlainSubModel extends BaseModel<PlainSubModel> {
+    class TestModel extends BaseModel<TestModel> {
       @PropertyType([SubModel])
       arr: SubModel[];
     }
 
-    const model = new PlainSubModel({ arr: [{ value: 'v1' }, { value: 'v2' }] });
+    const model = new TestModel({ arr: [{ value: 'v1' }, { value: 'v2' }] });
 
     expect(model.arr).toBeDefined();
     expect(model.arr.length).toEqual(2);
@@ -246,5 +246,18 @@ describe('ModelType Decorator', () => {
     expect(model.arr[0] instanceof SubModel).toEqual(true);
     expect(model.arr[1].value).toEqual('v2');
     expect(model.arr[1] instanceof SubModel).toEqual(true);
+  });
+
+  it('test string to date conversion', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(Date)
+      date: Date;
+    }
+
+    const model = new TestModel({ date: <any>'2022-07-23T15:47:51.518Z' });
+    expect(model.date instanceof Date).toEqual(true);
+    expect(model.date.getFullYear()).toEqual(2022);
+    expect(model.date.getDate()).toEqual(23);
+    expect(model.date.getMonth()).toEqual(6);
   });
 });

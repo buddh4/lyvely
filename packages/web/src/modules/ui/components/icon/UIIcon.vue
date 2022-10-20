@@ -7,12 +7,14 @@ import { includesUtilityClass } from "@/modules/ui/utils";
 
 interface IProps {
   name?: IconName;
+  title?: string;
   options?: IconOptionsIF;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   name: "",
   options: undefined,
+  title: undefined,
 });
 
 const name = computed(() => props.name || props.options?.name || "");
@@ -46,6 +48,7 @@ function getClassNames(attrClasses: any) {
     :style="styleObject"
     :viewBox="definition.viewBox"
   >
+    <title v-if="title">{{ $t(title) }}</title>
     <path v-for="path in definition.paths" :key="path" :d="path"></path>
   </svg>
 </template>

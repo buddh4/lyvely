@@ -1,5 +1,6 @@
 import { StrictEndpoint } from '@/endpoints';
-import { UserRegistrationDto, VerifyEmailDto, ResendOtpDto } from '../dtos';
+import { UserRegistrationDto, ResendOtpDto } from '../dtos';
+import { VerifyEmailDto } from '@/account/dtos';
 import { ILoginResponse } from '@/auth';
 
 export interface IUserRegistrationService {

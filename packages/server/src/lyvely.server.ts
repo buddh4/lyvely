@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { Type, INestApplication, ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AuthModule } from './modules/auth/auth.module';
-import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { FeatureGuard, CoreModule, ServiceExceptionsFilter, ConfigurationPath } from '@/modules/core';
+import { FeatureGuard, CoreModule, ServiceExceptionsFilter, ConfigurationPath } from '@/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from '@/app-module.builder';
 import helmet, { HelmetOptions } from 'helmet';
 import csurf from 'csurf';

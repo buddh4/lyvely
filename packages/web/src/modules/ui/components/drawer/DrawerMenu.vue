@@ -5,7 +5,6 @@ import { storeToRefs } from "pinia";
 import { suggestFocusElement } from "@/modules/ui/utils";
 import { usePageStore } from "@/modules/core/store/page.store";
 
-
 const pageStore = usePageStore();
 
 const { activeDrawer } = storeToRefs(pageStore);
@@ -23,7 +22,7 @@ const props = withDefaults(defineProps<IProps>(), {
   prevAutoFocus: false,
 });
 
-const drawerId = uniqueId('drawer');
+const drawerId = uniqueId("drawer");
 const zIndex = ref(20);
 
 const emit = defineEmits(["update:modelValue"]);
@@ -31,13 +30,13 @@ const root = ref<HTMLElement>();
 const { modelValue } = toRefs(props);
 
 watch(modelValue, (value) => {
-  if(value) {
+  if (value) {
     activeDrawer.value = drawerId;
   }
 });
 
-watch<string|undefined>(activeDrawer, (value: string|undefined) => {
-  zIndex.value = (value === drawerId) ? 22 : 21;
+watch<string | undefined>(activeDrawer, (value: string | undefined) => {
+  zIndex.value = value === drawerId ? 22 : 21;
 });
 
 function close() {
@@ -94,14 +93,16 @@ h1 {
   @apply p-4 shadow-lg bg-highlight;
   position: absolute;
   display: block;
-  top: 56px;
-  height: calc(100vh - 56px);
+  top: 55px;
+  height: calc(100vh - 55px);
   bottom: 0;
   min-width: 280px;
   max-width: 280px;
   background: var(--elements-main);
   border: 1px solid var(--color-divide);
   border-right: 0;
+  border-top:0;
+  border-bottom: 0;
   transition: all 0.3s ease-out;
   margin-right: 0;
   right: 0;

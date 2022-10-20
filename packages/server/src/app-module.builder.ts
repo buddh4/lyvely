@@ -1,25 +1,26 @@
 import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule, setTransactionSupport, ConfigurationPath } from '@/modules/core';
-import { loadConfig, AppConfigModule } from '@/modules/app-config';
-import { AuthModule } from './modules/auth/auth.module';
-import { UserRegistrationModule } from './modules/user-registration/user-registration.module';
-import { UsersModule } from './modules/users';
-import { ProfilesModule } from './modules/profiles';
-import { PoliciesModule } from './modules/policies/policies.module';
-import { ContentModule } from './modules/content';
-import { ActivitiesModule } from './modules/activities/activities.module';
-import { TagsModule } from './modules/tags/tags.module';
+import { CoreModule, setTransactionSupport, ConfigurationPath } from '@/core';
+import { loadConfig, AppConfigModule } from '@/app-config';
+import { AuthModule } from './auth/auth.module';
+import { UserRegistrationModule } from './user-registration/user-registration.module';
+import { UsersModule } from './users';
+import { ProfilesModule } from './profiles';
+import { PoliciesModule } from './policies/policies.module';
+import { ContentModule } from './content';
+import { ActivitiesModule } from './activities/activities.module';
+import { TagsModule } from './tags/tags.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
-import { MailsModule } from './modules/mails/mails.module';
+import { MailsModule } from './mails/mails.module';
 import {
   ConfigUserPermissionsService,
   UserPermissionsServiceInjectionToken,
   UserPermissionsServiceProvider,
-} from './modules/user-permissions';
-import { I18nModule } from '@/modules/i18n/i18n.module';
+} from './user-permissions';
+import { I18nModule } from '@/i18n/i18n.module';
+import { AccountModule } from '@/account/accountModule';
 
 type Import = Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -149,7 +150,14 @@ export class AppModuleBuilder {
       return this;
     }
 
-    return this.importModules(ProfilesModule, TagsModule, UserRegistrationModule, ContentModule, TagsModule);
+    return this.importModules(
+      ProfilesModule,
+      TagsModule,
+      UserRegistrationModule,
+      ContentModule,
+      TagsModule,
+      AccountModule,
+    );
   }
 
   private initFeatureModules() {

@@ -12,6 +12,9 @@ import { createPinia } from "pinia";
 import { eventBus } from "@/modules/core/events/global.emitter";
 import { ModuleLoader } from "@/module.loader";
 import ModalWindow from "@/modules/ui/components/modal/ModalWindow.vue";
+import ContentPanel from "@/modules/ui/components/panels/ContentPanel.vue";
+import TabMenu from "@/modules/ui/components/menu/TabMenu.vue";
+import TabMenuLink from "@/modules/ui/components/menu/TabMenuLink.vue";
 import DrawerMenu from "@/modules/ui/components/drawer/DrawerMenu.vue";
 import ConfirmModal from "@/modules/ui/components/modal/ConfirmModal.vue";
 import Icon from "@/modules/ui/components/icon/UIIcon.vue";
@@ -35,6 +38,7 @@ import ListItem from "@/modules/ui/components/list/ListItem.vue";
 import TextDimmed from "@/modules/ui/components/text/TextDimmed.vue";
 import LoaderBlock from "@/modules/ui/components/loader/LoaderBlock.vue";
 import FormModel from "@/modules/ui/components/form/FormModel.vue";
+import FormattedDate from "@/modules/ui/components/intl/FormattedDate.vue";
 import TagBadge from "@/modules/tags/components/TagBadge.vue";
 import ScreenReaderValidationError from "@/modules/ui/components/error/ScreenReaderValidationError.vue";
 import { useDayJsDateTimeAdapter } from "@lyvely/common";
@@ -111,6 +115,10 @@ function setGlobalComponents(app: App) {
   app.component("LyProfileAvatar", ProfileAvatar);
   app.component("LyUserAvatar", UserAvatar);
   app.component("LyLoader", LoaderBlock);
+  app.component("LyTabMenu", TabMenu);
+  app.component("LyTabMenuLink", TabMenuLink);
+  app.component("LyFormattedDate", FormattedDate);
+  app.component("LyContentPanel", ContentPanel);
   app.component("LyScreenReaderValidationError", ScreenReaderValidationError);
 }
 

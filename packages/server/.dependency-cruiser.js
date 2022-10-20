@@ -3,7 +3,7 @@
 const preset = require('../../.dependency-cruiser.preset');
 
 function getModulePath(name) {
-  return `^src/modules/${name}`;
+  return `^src/${name}`;
 }
 
 const MODULE_CORE = getModulePath('core');
@@ -59,6 +59,7 @@ module.exports = {
       MODULE_TAGS,
       MODULE_TIME_SERIES,
     ]),
+    createModuleDeps('account', [MODULE_USERS]),
     createModuleDeps('app-config', [MODULE_I18N]),
     createModuleDeps('auth', [MODULE_USERS, MODULE_JWT]),
     createModuleDeps('calendar'),

@@ -14,8 +14,9 @@ export class AuthService implements IAuthService {
   }
 
   async loadUser() {
-    const { data: user } = await authRepository.loadUser();
-    return user;
+    const { data: userResponse } = await authRepository.loadUser();
+    userResponse.user = new UserModel(userResponse.user);
+    return userResponse;
   }
 
   async refresh(vid: string) {

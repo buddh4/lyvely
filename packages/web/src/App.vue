@@ -3,7 +3,7 @@ import DialogWindow from "@/modules/ui/components/dialog/DialogWindow.vue";
 import MobileFooterNavigation from "@/modules/ui/components/layout/MobileFooterNavigation.vue";
 import { useGlobalDialogStore } from "@/modules/core/store/global.dialog.store";
 import AriaLiveStatus from "@/modules/accessibility/components/AriaLiveStatus.vue";
-import ProfileViewLayout from "@/modules/profiles/components/layout/ProfileViewLayout.vue";
+import ProfileLayout from "@/modules/profiles/components/layout/ProfileLayout.vue";
 import AppLoader from "@/modules/ui/components/loader/AppLoader.vue";
 import { useRouter } from "vue-router";
 import { watch, ref, computed, toRefs } from "vue";
@@ -27,7 +27,7 @@ const layoutComponent = computed(() => {
   }
 
   return {
-    profile: ProfileViewLayout,
+    profile: ProfileLayout,
   }[layout.value];
 });
 </script>

@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import { useAccountStore } from "@/modules/account/stores/account.store";
 import { storeToRefs } from "pinia";
-import { computed } from "vue";
+import { computed, toRefs } from "vue";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
+import { usePageStore } from "@/modules/core/store/page.store";
 
 const accountStore = useAccountStore();
 const authStore = useAuthStore();
+const pageStore = usePageStore();
 
 function logout() {
   authStore.logout().then(() => location.reload());
@@ -14,12 +16,15 @@ function logout() {
 const { showAccountDrawer } = storeToRefs(accountStore);
 
 const menuItemClass =
-  "block py-3 px-3 no-underline cursor-pointer flex no-wrap items-center h-12";
+  "block py-3 px-3 no-underline cursor-pointer flex no-wrap items-center h-12 menu-item";
 const accountDrawerButtonClass = computed(() => [
   "px-2 p-2 rounded-xl flex justify-center items-center gap-2 cursor-pointer text-sm cursor-pointer",
   { "border border-divide": showAccountDrawer.value },
   { "border border-transparent": !showAccountDrawer.value },
 ]);
+
+const { toggleDark } = pageStore;
+const { isDark } = toRefs(pageStore);
 </script>
 
 <template>
@@ -43,7 +48,7 @@ const accountDrawerButtonClass = computed(() => [
     <nav>
       <ul>
         <li>
-          <router-link to="/" :class="menuItemClass">
+          <router-link :to="{ name: 'MyAccountInfo' }" :class="menuItemClass">
             <ly-icon name="account" />
             {{ $t("account.drawer.myAccount") }}
           </router-link>
@@ -53,6 +58,14 @@ const accountDrawerButtonClass = computed(() => [
             <ly-icon name="security" />
             {{ $t("account.drawer.security") }}
           </router-link>
+        </li>
+        <li>
+          <a :class="menuItemClass" @click="toggleDark()">
+            <ly-icon v-if="isDark" name="light-mode" />
+            <ly-icon v-else name="dark-mode" />
+            <span v-if="isDark">{{ $t("page.toLightMode") }}</span>
+            <span v-else> {{ $t("page.toDarkMode") }} </span>
+          </a>
         </li>
         <li>
           <a :class="menuItemClass" @click="logout">
@@ -66,15 +79,19 @@ const accountDrawerButtonClass = computed(() => [
 </template>
 
 <style scoped>
-#account-drawer nav a {
+nav a {
   @apply border-l-4 border-transparent;
 }
 
-#account-drawer nav a:hover:not(.router-link-active) {
+nav a:hover:not(.router-link-active) {
   @apply border-l-4 border-slate-200 dark:border-slate-600;
 }
 
-#account-drawer nav a .icon {
+nav a .icon {
   @apply mr-2 opacity-80;
+}
+
+nav a.router-link-active {
+  @apply border-l-4 border-pop;
 }
 </style>

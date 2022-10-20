@@ -7,12 +7,14 @@ import { useProfileRelationInfosService } from "@/modules/profiles/services/prof
 export const useProfileRelationInfosStore = defineStore(
   "profile-relation-infos",
   () => {
-    const relations = ref<ProfileRelationInfos>();
+    const relations = ref<ProfileRelationInfos>({ profiles: [] });
     const profilesRelationInfosService = useProfileRelationInfosService();
     const status = useStatus();
 
-    async function getRelations() {
-      return status.isStatusSuccess() ? relations : loadRelations();
+    async function getRelations(): Promise<ProfileRelationInfos> {
+      return status.isStatusSuccess()
+        ? Promise.resolve(relations.value)
+        : loadRelations();
     }
 
     async function loadRelations() {

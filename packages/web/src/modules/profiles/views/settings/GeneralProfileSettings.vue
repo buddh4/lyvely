@@ -14,9 +14,7 @@ const description = ref(profileStore.profile?.description);
 </script>
 
 <template>
-  <div
-    class="bg-main flex flex-col p-4 rounded shadow-sm mb-2 border border-divide"
-  >
+  <div class="bg-main flex flex-col p-4 rounded shadow-sm mb-2 border border-divide">
     <div class="flex items-center mb-2 flex-row items-stretch">
       <div class="w-full">
         <ly-input-text v-model="name" label="profile.settings.general.name" />
@@ -38,14 +36,9 @@ const description = ref(profileStore.profile?.description);
     </div>
   </div>
 
-  <div
-    class="bg-main p-4 rounded shadow-sm mb-4 flex flex-col border border-divide"
-  >
+  <div class="bg-main p-4 rounded shadow-sm mb-4 flex flex-col border border-divide">
     <div>
-      <ly-button
-        class="danger float-right"
-        :confirm="{ text: 'profile.settings.archive.confirm' }"
-      >
+      <ly-button class="danger float-right" :confirm="{ text: 'profile.settings.archive.confirm' }">
         {{ $t("common.archive") }}
       </ly-button>
     </div>

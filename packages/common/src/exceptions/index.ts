@@ -80,7 +80,7 @@ export class NetworkException extends ServiceException {
 export class UniqueConstraintException extends FieldValidationException {
   protected defaultMessage = 'Selected name already exists.';
 
-  constructor(msg: string, field?: string) {
+  constructor(msg?: string, field?: string) {
     super([{ property: field, errors: ['unique'] }]);
   }
 }

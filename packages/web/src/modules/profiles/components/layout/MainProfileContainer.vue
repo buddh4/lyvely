@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Size } from "@/modules/ui/types";
-import ProfileTopNavigation from "./ProfileTopNavigation.vue";
+import ProfileTopNavigation from "./snippets/ProfileTopNavigation.vue";
 import MainContainer from "@/modules/ui/components/layout/MainContainer.vue";
 
 interface IProps {

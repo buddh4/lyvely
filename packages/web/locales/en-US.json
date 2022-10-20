@@ -209,7 +209,8 @@
         "archive": "Archive Membership"
       },
       "general": {
-        "name": "Profile Name"
+        "name": "Profile Name",
+        "label": "Profile"
       },
       "archive": {
         "confirm": "Do you really want to archive this profile?"
@@ -256,7 +257,38 @@
       "title": "Account Menu",
       "myAccount": "My Account",
       "security": "Security"
+    },
+    "my_account": {
+      "info": {
+        "title": "My account info",
+        "label": "Info",
+        "username": "Username",
+        "member_since": "Member since",
+        "locale": "Locale",
+        "emails": "Emails",
+        "main_email": "Main email address",
+        "verified_email": "Verified email address",
+        "unverified_email": "Unverified email address",
+        "add_mail": "Add email address"
+      },
+      "add_email": {
+        "title":  "Add email address",
+        "fields": {
+          "email": "New email address"
+        }
+      },
+      "verify_email": {
+        "title": "Verify email address"
+      },
+      "profiles": {
+        "title": "My account profiles",
+        "label": "Profiles"
+      }
     }
+  },
+  "page": {
+    "toDarkMode": "Switch to dark mode",
+    "toLightMode": "Switch to light mode"
   },
   "error":{
     "unknown": "An unexpected error occurred, please try again later.",

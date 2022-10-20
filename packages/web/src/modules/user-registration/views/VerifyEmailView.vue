@@ -38,7 +38,7 @@ onBeforeUnmount(verifyEmailStore.reset);
     </template>
 
     <template #body>
-      <OtpInput
+      <otp-input
         v-model="model.otp"
         v-model:is-valid="isValidOtp"
         :has-error="!!errorMsg?.length"

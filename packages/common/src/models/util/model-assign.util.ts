@@ -68,17 +68,17 @@ function _assignRawDataTo<T>(
       model[path] = data[path];
     } else if (data[path] && typeof data[path] === 'object' && !(data[path] instanceof Date)) {
       // Try to get model type by ModelType decorator, or otherwise try to determine the type from model or data
-      let modelType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
-      if (!modelType) {
-        modelType = !model[path] ? data[path].constructor : getSpecificConstructor(model[path], data[path]);
+      let propertyType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
+      if (!propertyType) {
+        propertyType = !model[path] ? data[path].constructor : getSpecificConstructor(model[path], data[path]);
       }
 
       // Only create a new instance if the type is not the expected, otherwise just use the given value
-      if (data[path] instanceof modelType) {
+      if (data[path] instanceof propertyType) {
         model[path] = data[path];
       } else {
         model[path] = _assignRawDataTo(
-          Object.assign(Object.create(modelType.prototype), model[path]),
+          Object.assign(Object.create(propertyType.prototype), model[path]),
           data[path],
           level + 1,
           { maxDepth, strict, transform },
@@ -89,7 +89,17 @@ function _assignRawDataTo<T>(
         model[path].afterInit();
       }
     } else if (typeof data[path] !== 'function') {
-      model[path] = data[path];
+      const propertyType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
+      if (typeof data[path] === 'string' && propertyType === Date) {
+        try {
+          model[path] = new Date(data[path]);
+        } catch (err) {
+          console.warn(err, 'Tried to assign invalid string date to model property');
+          model[path] = data[path];
+        }
+      } else {
+        model[path] = data[path];
+      }
     }
   });
 

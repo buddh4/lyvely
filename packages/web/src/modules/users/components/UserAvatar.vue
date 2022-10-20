@@ -4,10 +4,11 @@ import { createFileUrl } from "@/repository";
 import randomColor from "randomcolor";
 import { UserModel } from "@lyvely/common";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
-import { getContrast } from "@/modules/ui/utils";
+import { getContrast, includesUtilityClass } from "@/modules/ui/utils";
 
 interface IProps {
   user?: Pick<UserModel, "id" | "imageHash" | "username">;
+  size?: string,
 }
 
 const props = defineProps<IProps>();
@@ -27,15 +28,24 @@ const textClass = computed(() => {
     ? "text-slate-900"
     : "text-slate-100";
 });
+
+function getClassNames(attrClasses: any, textClass: string) {
+  return {
+    'rounded-full uppercase flex justify-center items-center ': true,
+    'p-1': !includesUtilityClass(attrClasses, "p"),
+    'w-6': !includesUtilityClass(attrClasses, "w"),
+    'h-6': !includesUtilityClass(attrClasses, "h"),
+    'text-xs': !includesUtilityClass(attrClasses, "text"),
+    [attrClasses]: true,
+    [textClass]: true
+  }
+}
 </script>
 
 <template>
-  <img v-if="url" src="url" />
+  <img v-if="url" :src="url" />
   <div
-    :class="[
-      'rounded-full w-6 h-6 uppercase flex justify-center items-center text-xs p-1',
-      textClass,
-    ]"
+    :class="getClassNames($attrs.class, textClass)"
     :style="{ 'background-color': color }"
   >
     {{ initials }}

@@ -1,3 +1,4 @@
+export * from './account';
 export * from './activities';
 export * from './app-config';
 export * from './auth';

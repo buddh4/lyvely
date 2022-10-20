@@ -4,7 +4,9 @@ import ProfileSettingsNavigation from "@/modules/profiles/components/menus/Profi
 
 <template>
   <profile-settings-navigation />
-  <router-view></router-view>
+  <div id="profile-settings-content">
+    <router-view></router-view>
+  </div>
 </template>
 
 <style scoped></style>
