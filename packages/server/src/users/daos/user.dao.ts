@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument, RefreshToken, UserEmail } from '../schemas';
-import { AbstractDao, IBaseQueryOptions, EntityIdentity } from '@/core';
+import { AbstractDao, IBaseQueryOptions, EntityIdentity, assureObjectId } from '@/core';
 import { Constructor, ProfileType } from '@lyvely/common';
 
 @Injectable()
@@ -25,6 +25,33 @@ export class UserDao extends AbstractDao<User> {
    */
   async findByAnyEmail(email: string): Promise<User[]> {
     return this.findAll({ $or: [{ email: email.toLowerCase() }, { 'emails.lowercaseEmail': email.toLowerCase() }] });
+  }
+
+  async setEmailVerification(user: EntityIdentity<User>, email: string, verification = true) {
+    const result = await this.updateOneByFilter(
+      user,
+      { $set: { 'emails.$[userEmail]': new UserEmail(email, verification) } },
+      {},
+      {
+        arrayFilters: [{ 'userEmail.lowercaseEmail': email.toLowerCase() }],
+      },
+    );
+
+    if (user instanceof User && user.getUserEmail(email)) {
+      user.getUserEmail(email).verified = verification;
+    }
+
+    return result;
+  }
+
+  async removeEmail(user: EntityIdentity<User>, email: string) {
+    const result = await this.updateOneById(user, { $pull: { emails: { lowercaseEmail: email.toLowerCase() } } });
+
+    if (user instanceof User) {
+      user.emails = user.emails.filter((userEmail) => userEmail.lowercaseEmail !== email.toLowerCase());
+    }
+
+    return result;
   }
 
   async incrementProfileCount(user: User, type: ProfileType, amount = 1, options?: IBaseQueryOptions) {

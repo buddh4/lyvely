@@ -151,8 +151,8 @@ module.exports = {
         path: '^(src)',
         pathNot: [
           '\\.(spec|test)\\.(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee\\.md)$',
-          '^src/modules/test',
-          '^src/modules/activities/tests',
+          '^src/test',
+          '^src/activities/tests',
         ],
       },
       to: {

@@ -15,5 +15,3 @@ export type StrictEndpoint<T, TNonStrict extends keyof T = never> = {
 export type EndpointResult<T extends (...args: any) => any> = T extends (...args: any) => infer R ? Awaited<R> : any;
 
 type Test = EndpointResult<() => Promise<void>>;
-
-const a: Test = <any>'';

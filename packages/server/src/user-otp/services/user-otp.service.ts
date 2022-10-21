@@ -1,14 +1,14 @@
 import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '@/users';
-import { UserOtp } from '../schemas/user-otp.schema';
-import { UserStatus } from '@lyvely/common';
-import { UserOtpDao } from '@/auth/daos/user-otp.dao';
-import { generateOTP } from '@/auth/utils/otp.generator';
+import { UserOtp } from '../schemas';
+import { UserStatus, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/common';
+import { UserOtpDao } from '../daos';
+import { generateOTP } from '../utils';
 import ms from 'ms';
 import bcrypt from 'bcrypt';
 import { EntityIdentity } from '@/core';
 
-interface GenerateOtpOptions<TContext = any> {
+interface IGenerateOtpOptions<TContext = any> {
   purpose: string;
   context?: TContext;
   remember?: boolean;
@@ -16,11 +16,9 @@ interface GenerateOtpOptions<TContext = any> {
   expiresIn?: string | number;
 }
 
-export const DEFAULT_MAX_OTP_ATTEMPTS = 4;
-
-interface OtpValidationOptions<TContext = any> {
+interface IOtpValidationOptions<TContext = any> {
   max?: number;
-  contextValidator?: (context?: TContext) => Promise<boolean>;
+  contextValidator?: (context?: TContext) => boolean | Promise<boolean>;
 }
 
 @Injectable()
@@ -29,15 +27,15 @@ export class UserOtpService<TContext = any> {
 
   async createOrUpdateUserOtp(
     user: User,
-    options: GenerateOtpOptions<TContext>,
-  ): Promise<{ model: UserOtp<TContext>; otp: string }> {
+    options: IGenerateOtpOptions<TContext>,
+  ): Promise<{ otpModel: UserOtp<TContext>; otp: string }> {
     if (user.status === UserStatus.Disabled) {
       throw new ForbiddenException('Otp creation is forbidden for disabled users.');
     }
 
     const { otp, hashedOtp } = await this.generateOtp(options);
 
-    const model = await this.userOtpDao.upsert(
+    const otpModel = await this.userOtpDao.upsert(
       { uid: user._id, purpose: options.purpose },
       new UserOtp<TContext>({
         uid: user._id,
@@ -50,10 +48,10 @@ export class UserOtpService<TContext = any> {
       }),
     );
 
-    return { model, otp };
+    return { otpModel, otp };
   }
 
-  private async generateOtp(options: GenerateOtpOptions) {
+  private async generateOtp(options: IGenerateOtpOptions) {
     const length = options.length || 6;
     const otp = generateOTP(length);
     const hashedOtp = await bcrypt.hash(otp, 10);
@@ -68,14 +66,14 @@ export class UserOtpService<TContext = any> {
     return this.userOtpDao.findOne({ uid: user._id, purpose });
   }
 
-  async runValidation(user: User, purpose: string, otp: string, options: OtpValidationOptions<TContext> = {}) {
+  async runValidation(user: User, purpose: string, otp: string, options: IOtpValidationOptions<TContext> = {}) {
     options.max = options.max || DEFAULT_MAX_OTP_ATTEMPTS;
     const otpModel = await this.findOtpByUserAndPurpose(user, purpose);
 
     if (!otpModel) throw new UnauthorizedException();
 
     const isExpired = otpModel.isExpired();
-    const isValid = !isExpired && (await this.validateOtp(user, purpose, otp, otpModel));
+    const isValid = !isExpired && (await this.validateOtp(user, purpose, otp, otpModel, options));
     const maxAttempts = otpModel.attempts + 1 >= options.max;
 
     if (isValid || isExpired || maxAttempts) {
@@ -96,7 +94,7 @@ export class UserOtpService<TContext = any> {
     purpose: string,
     otp: string,
     otpModel: UserOtp<TContext>,
-    options: OtpValidationOptions<TContext> = {},
+    options: IOtpValidationOptions<TContext> = {},
   ) {
     options.max = options.max || DEFAULT_MAX_OTP_ATTEMPTS;
     return (
@@ -105,9 +103,16 @@ export class UserOtpService<TContext = any> {
       otpModel.attempts < options.max &&
       otpModel.purpose === purpose &&
       !otpModel.isExpired() &&
-      (!options.contextValidator || (await options.contextValidator(otpModel.context))) &&
+      (await this.runContextValidation(otpModel, options)) &&
       (await bcrypt.compare(otp, otpModel.otp))
     );
+  }
+
+  private async runContextValidation(
+    otpModel: UserOtp<TContext>,
+    options: IOtpValidationOptions<TContext>,
+  ): Promise<boolean> {
+    return options.contextValidator ? options.contextValidator(otpModel.context) : true;
   }
 
   async incrementAttempt(identity: EntityIdentity<UserOtp<TContext>>) {

@@ -43,10 +43,10 @@ export class UserEmail implements PropertiesOf<UserEmailModel> {
   @Prop({ type: Boolean })
   verified: boolean;
 
-  constructor(email: string) {
+  constructor(email: string, verified = false) {
     this.email = email;
     this.lowercaseEmail = email.toLowerCase();
-    this.verified = false;
+    this.verified = verified;
   }
 }
 

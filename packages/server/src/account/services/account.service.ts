@@ -4,11 +4,11 @@ import { escapeHTML, FieldValidationException, VerifyEmailDto, isValidEmail } fr
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
 import { MailService } from '@/mails';
-import { UserOtpService } from '@/auth/services/user-otp.service';
+import { UserOtpService } from '@/user-otp';
 
 const OTP_PURPOSE_VERIFY_SECONDARY_EMAIL = 'verify-secondary-email';
 
-interface OtpEmailVerificationContext {
+interface IOtpEmailVerificationContext {
   email: string;
 }
 
@@ -18,7 +18,7 @@ export class AccountService {
     private userDao: UserDao,
     private configService: ConfigService<ConfigurationPath>,
     private mailService: MailService,
-    private userOtpService: UserOtpService<OtpEmailVerificationContext>,
+    private userOtpService: UserOtpService<IOtpEmailVerificationContext>,
   ) {}
 
   async addEmail(user: User, email: string) {
@@ -98,8 +98,8 @@ export class AccountService {
       { contextValidator: async (context) => context.email === verifyEmail.email },
     );
 
-    if (!isValid) throw new FieldValidationException([{ property: 'otp', errors: ['auth.otp.errors.attempts'] }]);
+    if (!isValid) throw new FieldValidationException([{ property: 'otp', errors: ['otp.errors.invalid'] }]);
 
-    await this.userDao.setEmailVerification(user, verifyEmail);
+    return this.userDao.setEmailVerification(user, verifyEmail.email, true);
   }
 }

@@ -7,13 +7,14 @@ import {
   UserStatus,
   UniqueConstraintException,
   VerifyEmailDto,
+  OtpInfo,
 } from '@lyvely/common';
 import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
 import { UrlGenerator, ConfigurationPath } from '@/core';
-import { UserOtpService } from '@/auth/services/user-otp.service';
+import { UserOtpService } from '@/user-otp';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
 
@@ -39,7 +40,7 @@ export class UserRegistrationService {
    * @returns {Promise<UserDocument>} or throws an error
    * @memberof UsersService
    */
-  async register(registerDto: UserRegistrationDto): Promise<User | null> {
+  async register(registerDto: UserRegistrationDto): Promise<OtpInfo> {
     try {
       await this.validateEmail(registerDto.email);
       const user = await this.userDao.save(
@@ -52,18 +53,17 @@ export class UserRegistrationService {
         }),
       );
 
-      const otp = await this.createOrUpdateEmailVerificationOtp(user);
+      const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user);
 
       await Promise.all([
         this.profileService.createDefaultUserProfile(user),
         this.sendEmailVerificationMail(user, otp),
       ]);
 
-      return user;
+      return otpModel.getOtpClientInfo();
     } catch (err: any) {
       if (err instanceof UniqueConstraintException) {
         await this.sendEmailAlreadyExistsMail(registerDto.email);
-        return null;
       }
       throw err;
     }
@@ -125,28 +125,27 @@ export class UserRegistrationService {
 
   async resendOtp(email: string) {
     const user = await this.findEmailVerificationUserByEmail(email);
-    const otp = await this.createOrUpdateEmailVerificationOtp(user);
+    const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user);
     await this.sendEmailVerificationMail(user, otp);
+    return otpModel.getOtpClientInfo();
   }
 
   private async createOrUpdateEmailVerificationOtp(user: User) {
-    const { otp } = await this.userOtpService.createOrUpdateUserOtp(user, {
+    return this.userOtpService.createOrUpdateUserOtp(user, {
       purpose: OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
     });
-
-    return otp;
   }
 
   async verifyEmail(verifyEmail: VerifyEmailDto) {
     const user = await this.findEmailVerificationUserByEmail(verifyEmail.email);
 
-    const { isValid, remember, attempts } = await this.userOtpService.runValidation(
+    const { isValid, remember } = await this.userOtpService.runValidation(
       user,
       OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
       verifyEmail.otp,
     );
 
-    if (!isValid) throw new UnauthorizedException({ attempts });
+    if (!isValid) throw new UnauthorizedException();
 
     await this.userService.setUserStatus(user, UserStatus.Active);
 

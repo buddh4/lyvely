@@ -18,6 +18,7 @@ const MODULE_CALENDAR = getModulePath('calendar');
 const MODULE_MAILS = getModulePath('mail');
 const MODULE_TEST = getModulePath('test');
 const MODULE_USERS = getModulePath('users');
+const MODULE_USER_OTP = getModulePath('user-otp');
 const MODULE_TAGS = getModulePath('tags');
 const MODULE_TIME_SERIES = getModulePath('time-series');
 const MODULE_ACTIVITIES = getModulePath('activities');
@@ -59,7 +60,7 @@ module.exports = {
       MODULE_TAGS,
       MODULE_TIME_SERIES,
     ]),
-    createModuleDeps('account', [MODULE_USERS]),
+    createModuleDeps('account', [MODULE_USERS, MODULE_USER_OTP]),
     createModuleDeps('app-config', [MODULE_I18N]),
     createModuleDeps('auth', [MODULE_USERS, MODULE_JWT]),
     createModuleDeps('calendar'),
@@ -78,11 +79,8 @@ module.exports = {
       MODULE_CALENDAR,
       MODULE_TAGS,
     ]),
-    createModuleDeps('register', [MODULE_USERS, MODULE_PROFILES, MODULE_MAILS]),
-    createModuleDeps('statistics', [
-      MODULE_USERS,
-      MODULE_ACTIVITIES, // TODO: reverse this dependency...
-    ]),
+    createModuleDeps('user-registration', [MODULE_USERS, MODULE_PROFILES, MODULE_MAILS, MODULE_USER_OTP]),
+    createModuleDeps('statistics', [MODULE_USERS]),
     createModuleDeps('tags', [MODULE_PROFILES, MODULE_POLICIES]),
     createModuleDeps('test', [
       MODULE_USERS,
@@ -95,6 +93,7 @@ module.exports = {
     ]),
     createModuleDeps('time-series', [MODULE_CONTENT, MODULE_USERS, MODULE_PROFILES]),
     createModuleDeps('user-invites', [MODULE_USERS, MODULE_PROFILES, MODULE_POLICIES, MODULE_MAILS]),
+    createModuleDeps('user-otp', [MODULE_USERS]),
     createModuleDeps('user-permissions', [MODULE_USERS, MODULE_PERMISSIONS]),
     createModuleDeps('users', [MODULE_POLICIES]),
     /* rules from the 'recommended' preset: */

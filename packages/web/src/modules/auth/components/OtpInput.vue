@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed, watch, watchEffect } from "vue";
+import { ref, computed, watchEffect } from "vue";
 
 interface IProps {
   modelValue: string;
@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const emit = defineEmits(["update:modelValue", "update:isValid"]);
 
-const otp = ref(Array.from({ length: 6 }, (_, i) => ""));
+const otp = ref(Array.from({ length: 6 }, () => ""));
 
 const isValid = computed(
   () => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length
@@ -62,7 +62,7 @@ function onPaste(evt: ClipboardEvent) {
   emitUpdate();
 }
 
-function onDelete(i: number, evt: KeyboardEvent) {
+function onDelete(i: number) {
   if (!otp.value[i].length && i >= 1) {
     (<HTMLInputElement>(
       document.querySelector(`[data-otp="${i - 1}"]`)
@@ -92,7 +92,7 @@ function getValueToSet(val?: string | null) {
 }
 
 const text = computed(() =>
-  props.email ? "auth.otp.email.text_with_address" : "auth.otp.email.text"
+  props.email ? "otp.email.text_with_address" : "otp.email.text"
 );
 </script>
 
@@ -115,7 +115,7 @@ const text = computed(() =>
           type="text"
           :data-otp="i - 1"
           inputmode="number"
-          :aria-label="$t('auth.otp.aria.input_label')"
+          :aria-label="$t('otp.aria.input_label')"
           aria-invlaid="false"
           :class="[
             'rounded w-10 border-divide',

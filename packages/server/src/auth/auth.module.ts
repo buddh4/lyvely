@@ -9,18 +9,11 @@ import { JwtAuthGuard } from './guards';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
 import { ModuleMeta } from '@/core/modules/module.meta';
-import { UserOtpService } from '@/auth/services/user-otp.service';
-import { UserOtp, UserOtpSchema } from '@/auth/schemas/user-otp.schema';
-import { UserOtpDao } from '@/auth/daos/user-otp.dao';
-import { MongooseModule } from '@nestjs/mongoose';
-
-const UserOtpModel = MongooseModule.forFeature([{ name: UserOtp.name, schema: UserOtpSchema }]);
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
-    UserOtpModel,
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService<ConfigurationPath>) => ({
         secret: configService.get('auth.jwt.access.secret'),
@@ -31,8 +24,6 @@ const UserOtpModel = MongooseModule.forFeature([{ name: UserOtp.name, schema: Us
   ],
   providers: [
     JwtAuthService,
-    UserOtpService,
-    UserOtpDao,
     LocalStrategy,
     JwtAccessStrategy,
     JwtRefreshStrategy,
@@ -48,6 +39,6 @@ const UserOtpModel = MongooseModule.forFeature([{ name: UserOtp.name, schema: Us
     },
   ],
   controllers: [AuthController],
-  exports: [JwtAuthService, UserOtpService, JwtAuthGuard],
+  exports: [JwtAuthService, JwtAuthGuard],
 })
 export class AuthModule {}

@@ -3,12 +3,10 @@ import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayo
 import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 import { storeToRefs } from "pinia";
 import { onBeforeUnmount, ref } from "vue";
-import { useRouter } from "vue-router";
 import OtpInput from "@/modules/auth/components/OtpInput.vue";
 
 const verifyEmailStore = useVerifyEmailStore();
-const { model, errorMsg, attempts } = storeToRefs(verifyEmailStore);
-const router = useRouter();
+const { model, errorMsg, attempts, validator, otpInfo } = storeToRefs(verifyEmailStore);
 
 if (!model.value.email) {
   document.location = "/";
@@ -26,7 +24,6 @@ function verifyEmail() {
   });
 }
 
-const isValidOtp = ref(false);
 onBeforeUnmount(verifyEmailStore.reset);
 </script>
 
@@ -40,11 +37,9 @@ onBeforeUnmount(verifyEmailStore.reset);
     <template #body>
       <otp-input
         v-model="model.otp"
-        v-model:is-valid="isValidOtp"
-        :has-error="!!errorMsg?.length"
+        :has-error="!!validator.getError('otp') || !!errorMsg"
         :email="model.email"
       />
-
       <ly-alert :message="errorMsg" />
     </template>
 
@@ -52,8 +47,7 @@ onBeforeUnmount(verifyEmailStore.reset);
       <div class="flex justify-center space-x-1">
         <ly-button class="secondary" text="common.resend" @click="resend" />
         <ly-button
-          v-if="attempts !== 0"
-          :disabled="!isValidOtp"
+          v-if="!otpInfo?.requiresRefresh()"
           class="primary"
           text="common.submit"
           @click="verifyEmail"

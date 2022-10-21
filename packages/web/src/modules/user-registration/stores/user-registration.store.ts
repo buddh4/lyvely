@@ -19,8 +19,8 @@ export const useUserRegistrationStore = defineStore("user-registration", () => {
       userRegistrationService.register(model.value),
       status,
       validator.value as ModelValidator
-    ).then(() => {
-      verifyEmailStore.setEmail(model.value.email);
+    ).then((otp) => {
+      verifyEmailStore.startVerificationOf(model.value.email, otp);
       return true;
     });
   }

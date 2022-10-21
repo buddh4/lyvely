@@ -6,35 +6,43 @@ import {
   UnauthenticatedServiceException,
   ResendOtpDto,
   ForbiddenServiceException,
+  OtpInfo,
 } from "@lyvely/common";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
+import { I18nModelValidator } from "@/modules/core/models/i18n-model.validator";
 
 export const useVerifyEmailStore = defineStore("verify-email", () => {
   const model = ref(new VerifyEmailDto());
-  const attempts = ref<number | undefined>();
+  const validator = ref(new I18nModelValidator(model.value));
+  const attempts = ref(0);
   const errorMsg = ref<undefined | string>();
   const userRegistrationService = new UserRegistrationService();
+  const otpInfo = ref(new OtpInfo());
   const authStore = useAuthStore();
 
-  const setEmail = (email: string) => {
+  const startVerificationOf = (email: string, otp: OtpInfo) => {
     model.value.email = email;
+    otpInfo.value = otp;
   };
 
   const reset = () => {
     softReset();
     model.value = new VerifyEmailDto();
+    validator.value.setModel(model.value);
   };
 
   const softReset = () => {
     model.value.otp = "";
-    attempts.value = undefined;
+    validator.value.reset();
+    otpInfo.value = new OtpInfo();
+    attempts.value = 0;
     errorMsg.value = undefined;
   };
 
   async function resend() {
     try {
       softReset();
-      await userRegistrationService.resendVerifyEmail(
+      otpInfo.value = await userRegistrationService.resendVerifyEmail(
         new ResendOtpDto({ email: model.value.email })
       );
     } catch (e: any) {
@@ -44,31 +52,50 @@ export const useVerifyEmailStore = defineStore("verify-email", () => {
 
   async function verifyEmail() {
     try {
-      if (attempts.value === 0) return false;
+      if (!(await validate())) return false;
+
       errorMsg.value = undefined;
 
+      otpInfo.value.attempts++;
       const loginModel = await userRegistrationService.verifyEmail(model.value);
-      if (loginModel) {
-        await authStore.handleLogin(loginModel);
-        return true;
+
+      if (!loginModel) {
+        return false;
       }
 
-      return false;
+      await authStore.handleLogin(loginModel);
+      return true;
     } catch (e) {
       handleError(e);
     }
   }
 
+  async function validate() {
+    if (!(await validator.value.validate())) {
+      errorMsg.value = validator.value.getError("otp");
+      return false;
+    }
+
+    if (!otpInfo.value.hasAttemptsLeft()) {
+      errorMsg.value = "otp.errors.maxAttempts";
+      return false;
+    }
+
+    if (otpInfo.value.isExpired()) {
+      errorMsg.value = "otp.errors.expired";
+      return false;
+    }
+
+    return true;
+  }
+
   function handleError(e: any) {
     if (e instanceof UnauthenticatedServiceException) {
-      attempts.value = e.data?.attempts;
-      if (attempts.value === 0) {
-        errorMsg.value = "auth.otp.errors.maxAttempts";
-      } else {
-        errorMsg.value = "auth.otp.errors.attempts";
-      }
-    } else if (e instanceof ForbiddenServiceException) {
-      errorMsg.value = "auth.otp.errors.attempts";
+      errorMsg.value = !otpInfo.value.hasAttemptsLeft()
+        ? "otp.errors.maxAttempts"
+        : otpInfo.value.isExpired()
+        ? "otp.errors.expired"
+        : "otp.errors.invalid";
     } else {
       errorMsg.value = e?.message || "error.unknown";
     }
@@ -77,9 +104,11 @@ export const useVerifyEmailStore = defineStore("verify-email", () => {
   return {
     verifyEmail,
     model,
+    otpInfo,
+    validator,
     attempts,
     errorMsg,
-    setEmail,
+    startVerificationOf,
     reset,
     resend,
   };

@@ -64,7 +64,7 @@ const { isDark } = toRefs(pageStore);
             <ly-icon v-if="isDark" name="light-mode" />
             <ly-icon v-else name="dark-mode" />
             <span v-if="isDark">{{ $t("page.toLightMode") }}</span>
-            <span v-else> {{ $t("page.toDarkMode") }} </span>
+            <span v-else>{{ $t("page.toDarkMode") }}</span>
           </a>
         </li>
         <li>

@@ -101,7 +101,7 @@ h1 {
   background: var(--elements-main);
   border: 1px solid var(--color-divide);
   border-right: 0;
-  border-top:0;
+  border-top: 0;
   border-bottom: 0;
   transition: all 0.3s ease-out;
   margin-right: 0;

@@ -1,5 +1,5 @@
 import { AbstractDao, EntityIdentity } from '@/core';
-import { UserOtp, UserOtpDocument } from '@/auth/schemas/user-otp.schema';
+import { UserOtp, UserOtpDocument } from '@/user-otp/schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 

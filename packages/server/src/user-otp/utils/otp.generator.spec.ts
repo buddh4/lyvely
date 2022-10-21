@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { generateOTP } from '@/auth/utils/otp.generator';
+import { generateOTP } from '@/user-otp';
 
 describe('generateOTP', () => {
   it('default length', () => {

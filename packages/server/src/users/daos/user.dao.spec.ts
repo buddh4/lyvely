@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TestDataUtils } from '@/test';
+import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { UserDao } from '../daos';
 import { User, UserDocument, UserEmail, UserSchema } from '../schemas';
 import { Model } from 'mongoose';
@@ -11,25 +11,15 @@ describe('UserDao', () => {
   let testingModule: TestingModule;
   let userDao: UserDao;
   let userModel: Model<UserDocument>;
+  let testData: TestDataUtils;
 
   const TEST_KEY = 'user_dao';
 
   beforeEach(async () => {
-    testingModule = await Test.createTestingModule({
-      imports: [
-        TestDataUtils.getMongooseTestModule(TEST_KEY),
-        TestDataUtils.getEventEmitterModule(),
-        MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-      ],
-      providers: [UserDao],
-    }).compile();
-
+    testingModule = await createBasicTestingModule('user-dao').compile();
     userDao = testingModule.get<UserDao>(UserDao);
+    testData = testingModule.get<TestDataUtils>(TestDataUtils);
     userModel = testingModule.get<Model<UserDocument>>('UserModel');
-  });
-
-  afterEach(async () => {
-    await userModel.deleteMany({});
   });
 
   it('should be defined', () => {
@@ -193,6 +183,53 @@ describe('UserDao', () => {
       expect(reloaded.profilesCount.user).toEqual(0);
       expect(reloaded.profilesCount.group).toEqual(0);
       expect(reloaded.profilesCount.organization).toEqual(0);
+    });
+  });
+
+  describe('setEmailVerification()', () => {
+    it('set unverified email to verified', async () => {
+      const user = await testData.createUser('tester', { emails: [new UserEmail('secondary@test.de', false)] });
+      expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
+      await userDao.setEmailVerification(user, 'secondary@test.de');
+      expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
+    });
+
+    it('set verified email to unverified', async () => {
+      const user = await testData.createUser('tester', { emails: [new UserEmail('secondary@test.de', true)] });
+      expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
+      await userDao.setEmailVerification(user, 'secondary@test.de', false);
+      expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
+    });
+
+    it('set unknown email to verified does not alter user email', async () => {
+      const user = await testData.createUser('tester');
+      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
+      await userDao.setEmailVerification(user, 'secondary@test.de', true);
+      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser.getUserEmail('secondary@test.de')).toBeUndefined();
+    });
+  });
+
+  describe('removeEmail()', () => {
+    it('remove existing email', async () => {
+      const user = await testData.createUser('tester', { emails: [new UserEmail('secondary@test.de')] });
+      await userDao.removeEmail(user, 'secondary@test.de');
+      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser.getUserEmail('secondary@test.de')).toBeUndefined();
+    });
+
+    it('remove non existing email', async () => {
+      const user = await testData.createUser('tester');
+      await userDao.removeEmail(user, 'secondary@test.de');
+      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser.getUserEmail('secondary@test.de')).toBeUndefined();
     });
   });
 });

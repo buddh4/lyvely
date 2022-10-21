@@ -8,7 +8,7 @@ import { getContrast, includesUtilityClass } from "@/modules/ui/utils";
 
 interface IProps {
   user?: Pick<UserModel, "id" | "imageHash" | "username">;
-  size?: string,
+  size?: string;
 }
 
 const props = defineProps<IProps>();
@@ -31,14 +31,14 @@ const textClass = computed(() => {
 
 function getClassNames(attrClasses: any, textClass: string) {
   return {
-    'rounded-full uppercase flex justify-center items-center ': true,
-    'p-1': !includesUtilityClass(attrClasses, "p"),
-    'w-6': !includesUtilityClass(attrClasses, "w"),
-    'h-6': !includesUtilityClass(attrClasses, "h"),
-    'text-xs': !includesUtilityClass(attrClasses, "text"),
+    "rounded-full uppercase flex justify-center items-center ": true,
+    "p-1": !includesUtilityClass(attrClasses, "p"),
+    "w-6": !includesUtilityClass(attrClasses, "w"),
+    "h-6": !includesUtilityClass(attrClasses, "h"),
+    "text-xs": !includesUtilityClass(attrClasses, "text"),
     [attrClasses]: true,
-    [textClass]: true
-  }
+    [textClass]: true,
+  };
 }
 </script>
 

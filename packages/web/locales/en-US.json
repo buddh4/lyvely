@@ -121,19 +121,17 @@
       "main_nav": "Statistics"
     }
   },
-  "auth": {
-    "otp": {
-      "email": {
-        "text": "Please enter the verification code sent to your email address. The code is only valid for a short time, so please enter it soon.",
-        "text_with_address": "Please enter the verification code sent to {email}. The code is only valid for a short time, so please enter it soon."
-      },
-      "errors": {
-        "attempts": "The given verification code is invalid, please try again.",
-        "maxAttempts": "You have exceeded the maximum number of attempts, please use the resend button to generate a new verification code."
-      },
-      "aria": {
-        "input_label": "digit {i} of {n}"
-      }
+  "otp": {
+    "email": {
+      "text": "Please enter the verification code sent to your email address. The code is only valid for a short time, so please enter it soon.",
+      "text_with_address": "Please enter the verification code sent to {email}. The code is only valid for a short time, so please enter it soon."
+    },
+    "errors": {
+      "invalid": "The given verification code is invalid, please try again.",
+      "maxAttempts": "You have exceeded the maximum number of attempts, please use the resend button to generate a new verification code."
+    },
+    "aria": {
+      "input_label": "digit {i} of {n}"
     }
   },
   "users": {

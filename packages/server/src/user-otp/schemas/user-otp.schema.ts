@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { BaseEntity } from '@/core';
-import { addMilliSeconds } from '@lyvely/common';
+import { addMilliSeconds, OtpInfo, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/common';
 
 @Schema()
 export class UserOtp<TContext = any> extends BaseEntity<UserOtp> {
@@ -28,6 +28,15 @@ export class UserOtp<TContext = any> extends BaseEntity<UserOtp> {
 
   @Prop({ default: 0 })
   attempts: 0;
+
+  getOtpClientInfo(attemptsLeft?: number) {
+    return new OtpInfo({
+      issuedAt: this.issuedAt,
+      expiresIn: this.expiresIn,
+      attempts: this.attempts,
+      maxAttempts: attemptsLeft ?? DEFAULT_MAX_OTP_ATTEMPTS,
+    });
+  }
 
   isExpired() {
     return addMilliSeconds(this.issuedAt, this.expiresIn) < new Date();
