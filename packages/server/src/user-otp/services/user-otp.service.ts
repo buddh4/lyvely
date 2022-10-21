@@ -21,6 +21,8 @@ interface IOtpValidationOptions<TContext = any> {
   contextValidator?: (context?: TContext) => boolean | Promise<boolean>;
 }
 
+const DEFAULT_OTP_EXPIRATION = '2m';
+
 @Injectable()
 export class UserOtpService<TContext = any> {
   constructor(private readonly userOtpDao: UserOtpDao) {}
@@ -29,9 +31,7 @@ export class UserOtpService<TContext = any> {
     user: User,
     options: IGenerateOtpOptions<TContext>,
   ): Promise<{ otpModel: UserOtp<TContext>; otp: string }> {
-    if (user.status === UserStatus.Disabled) {
-      throw new ForbiddenException('Otp creation is forbidden for disabled users.');
-    }
+    if (user.status === UserStatus.Disabled) throw new UnauthorizedException();
 
     const { otp, hashedOtp } = await this.generateOtp(options);
 
@@ -44,7 +44,7 @@ export class UserOtpService<TContext = any> {
         purpose: options.purpose,
         context: options.context as any,
         issuedAt: new Date(),
-        expiresIn: ms(options.expiresIn || '2m'),
+        expiresIn: ms(options.expiresIn || DEFAULT_OTP_EXPIRATION),
       }),
     );
 

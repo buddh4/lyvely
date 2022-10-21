@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument, RefreshToken, UserEmail } from '../schemas';
-import { AbstractDao, IBaseQueryOptions, EntityIdentity, assureObjectId } from '@/core';
-import { Constructor, ProfileType } from '@lyvely/common';
+import { AbstractDao, IBaseQueryOptions, EntityIdentity } from '@/core';
+import { Constructor, ProfileType, UserStatus } from '@lyvely/common';
 
 @Injectable()
 export class UserDao extends AbstractDao<User> {
@@ -25,6 +25,15 @@ export class UserDao extends AbstractDao<User> {
    */
   async findByAnyEmail(email: string): Promise<User[]> {
     return this.findAll({ $or: [{ email: email.toLowerCase() }, { 'emails.lowercaseEmail': email.toLowerCase() }] });
+  }
+
+  async findByVerifiedEmail(email: string): Promise<User[]> {
+    return this.findAll({
+      $or: [
+        { email: email.toLowerCase(), status: { $ne: UserStatus.EmailVerification } },
+        { 'emails.lowercaseEmail': email.toLowerCase(), 'emails.verified': true },
+      ],
+    });
   }
 
   async setEmailVerification(user: EntityIdentity<User>, email: string, verification = true) {

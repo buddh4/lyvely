@@ -106,6 +106,39 @@ describe('UserDao', () => {
     });
   });
 
+  describe('findByVerifiedEmail()', () => {
+    it('find user by verified email', async () => {
+      const user = await testData.createUser('test', { emails: [new UserEmail('secondary@test.de', true)] });
+      const search = await userDao.findByVerifiedEmail('secondary@test.de');
+      expect(search.length).toEqual(1);
+      expect(search[0]._id).toEqual(user._id);
+    });
+
+    it('do not include unverified emails', async () => {
+      await testData.createUser('test', { emails: [new UserEmail('secondary@test.de', false)] });
+      const search = await userDao.findByVerifiedEmail('secondary@test.de');
+      expect(search.length).toEqual(0);
+    });
+
+    it('do not include users with unverified main email', async () => {
+      await testData.createUser('test', {
+        status: UserStatus.EmailVerification,
+        email: 'test@test.de',
+      });
+      const search = await userDao.findByVerifiedEmail('test@test.de');
+      expect(search.length).toEqual(0);
+    });
+
+    it('do include main email', async () => {
+      const user = await testData.createUser('test', {
+        email: 'test@test.de',
+      });
+      const search = await userDao.findByVerifiedEmail('test@test.de');
+      expect(search.length).toEqual(1);
+      expect(search[0]._id).toEqual(user._id);
+    });
+  });
+
   describe('findByAnyEmail()', () => {
     it('failed find user by any email', async () => {
       await createTestUser('test@test.de');

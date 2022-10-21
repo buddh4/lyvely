@@ -8,10 +8,12 @@ import { useLoginStore } from "@/modules/auth/store/login.store";
 import LanguageChooser from "@/modules/i18n/components/LanguageChooser.vue";
 import LyIcon from "@/modules/ui/components/icon/UIIcon.vue";
 import LyAlert from "@/modules/ui/components/alert/AlertBlock.vue";
+import { RequiresEmailVerificationException } from "@/modules/auth/exceptions/RequiresEmailVerificationException";
 
 const loginStore = useLoginStore();
 const router = useRouter();
 const showRememberInfo = ref(false);
+import { RouteLocationRaw } from "vue-router";
 
 const { loginModel, validator, stage } = storeToRefs(loginStore);
 
@@ -29,9 +31,9 @@ async function next() {
 }
 
 async function submit() {
-  loginStore.login().then((success) => {
-    if (success) {
-      router.replace({ path: "/" });
+  loginStore.login().then((route: RouteLocationRaw|false) => {
+    if (route) {
+      router.replace(route);
     }
   });
 }

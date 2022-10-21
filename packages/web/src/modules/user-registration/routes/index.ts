@@ -19,7 +19,7 @@ export default [
     component: () => import("../views/VerifyEmailView.vue"),
     meta: {
       isPublic: true,
-      title: translation("user_registration.email_verification.title"),
+      title: translation("user_registration.verify_email.title"),
     },
     beforeEnter: [ifNotAuthenticated],
   },

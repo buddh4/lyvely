@@ -9,17 +9,16 @@ import {
   UserModel,
   ResendOtpDto,
   OtpInfo,
-  DEFAULT_MAX_OTP_ATTEMPTS,
   UniqueConstraintException,
 } from '@lyvely/common';
-import { AbstractAuthController, JwtAuthService } from '@/auth';
+import { AbstractJwtAuthController, JwtAuthService } from '@/auth';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import ms from 'ms';
 
 @Controller(ENDPOINT_USER_REGISTRATION)
 @UseClassSerializer()
-export class UserRegistrationController extends AbstractAuthController implements UserRegistrationEndpoint {
+export class UserRegistrationController extends AbstractJwtAuthController implements UserRegistrationEndpoint {
   constructor(
     private registerService: UserRegistrationService,
     private authService: JwtAuthService,

@@ -5,7 +5,7 @@ import { ConfigurationPath } from '@/core';
 import { getAuthCookieName, getRefreshCookieName } from '@/auth/guards/strategies';
 import { Request } from 'express';
 
-export abstract class AbstractAuthController {
+export abstract class AbstractJwtAuthController {
   constructor(protected configService: ConfigService<ConfigurationPath>) {}
 
   protected setAuthenticationCookie(req: Request, token: string) {

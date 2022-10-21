@@ -115,24 +115,25 @@ export class UserRegistrationService {
 
   private async validateEmail(email: string) {
     if (!isValidEmail(email)) {
-      throw new FieldValidationException([{ property: 'email', errors: ['isEmail'] }]);
+      throw new FieldValidationException([{ property: 'email', errors: ['validation.isEmail'] }]);
     }
 
-    if ((await this.userDao.findByAnyEmail(email)).length) {
+    if ((await this.userDao.findByVerifiedEmail(email)).length) {
       throw new UniqueConstraintException('Email already in use', 'email');
     }
   }
 
-  async resendOtp(email: string) {
+  async resendOtp(email: string, remember?: boolean) {
     const user = await this.findEmailVerificationUserByEmail(email);
-    const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user);
+    const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user, remember);
     await this.sendEmailVerificationMail(user, otp);
     return otpModel.getOtpClientInfo();
   }
 
-  private async createOrUpdateEmailVerificationOtp(user: User) {
+  private async createOrUpdateEmailVerificationOtp(user: User, remember?: boolean) {
     return this.userOtpService.createOrUpdateUserOtp(user, {
       purpose: OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
+      remember: remember,
     });
   }
 

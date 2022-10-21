@@ -3,12 +3,12 @@ import { loadingStatus, useStatus } from "@/store";
 import { UserRegistrationDto, ModelValidator } from "@lyvely/common";
 import { ref } from "vue";
 import { UserRegistrationService } from "../services/user-registration.service";
-import { useVerifyEmailStore } from "./verify-email.store";
+import { useVerifyRegistrationEmailStore } from "./verify-email.store";
 
 export const useUserRegistrationStore = defineStore("user-registration", () => {
   const status = useStatus();
   const userRegistrationService = new UserRegistrationService();
-  const verifyEmailStore = useVerifyEmailStore();
+  const verifyEmailStore = useVerifyRegistrationEmailStore();
   const model = ref(new UserRegistrationDto());
   const validator = ref(new ModelValidator<UserRegistrationDto>(model.value));
 
@@ -19,8 +19,8 @@ export const useUserRegistrationStore = defineStore("user-registration", () => {
       userRegistrationService.register(model.value),
       status,
       validator.value as ModelValidator
-    ).then((otp) => {
-      verifyEmailStore.startVerificationOf(model.value.email, otp);
+    ).then(async (otp) => {
+      await verifyEmailStore.startVerificationOf(model.value.email, otp);
       return true;
     });
   }

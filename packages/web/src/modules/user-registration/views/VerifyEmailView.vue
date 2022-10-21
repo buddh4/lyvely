@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayoutContainer.vue";
-import { useVerifyEmailStore } from "@/modules/user-registration/stores/verify-email.store";
+import { useVerifyRegistrationEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 import { storeToRefs } from "pinia";
 import { onBeforeUnmount, ref } from "vue";
 import OtpInput from "@/modules/auth/components/OtpInput.vue";
 
-const verifyEmailStore = useVerifyEmailStore();
-const { model, errorMsg, attempts, validator, otpInfo } = storeToRefs(verifyEmailStore);
+const verifyEmailStore = useVerifyRegistrationEmailStore();
+const { model, errorMsg, attempts, validator, otpInfo } =
+  storeToRefs(verifyEmailStore);
 
 if (!model.value.email) {
   document.location = "/";

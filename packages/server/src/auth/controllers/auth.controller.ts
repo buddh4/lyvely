@@ -6,11 +6,12 @@ import { UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@ly
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@/core';
-import { AbstractAuthController } from '@/auth/controllers/abstract-auth.controller';
+import { AbstractJwtAuthController } from '@/auth/controllers/abstract-jwt-auth.controller';
+import { UserStatus } from '@lyvely/common';
 
 @Controller(ENDPOINT_AUTH)
 @UseClassSerializer()
-export class AuthController extends AbstractAuthController implements AuthEndpoint {
+export class AuthController extends AbstractJwtAuthController implements AuthEndpoint {
   constructor(
     private authService: JwtAuthService,
     protected configService: ConfigService<ConfigurationPath>,
@@ -32,6 +33,10 @@ export class AuthController extends AbstractAuthController implements AuthEndpoi
     /*if (user.refreshTokens.length > 40) {
       throw new ForbiddenException('Too many active sessions');
     }*/
+
+    if (user.status === UserStatus.EmailVerification) {
+      throw new UnauthorizedException({ userStatus: UserStatus.EmailVerification });
+    }
 
     this.setAuthenticationCookie(req, accessToken);
     this.setRefreshCookie(req, refreshToken);

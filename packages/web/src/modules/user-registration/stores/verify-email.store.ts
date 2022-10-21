@@ -5,111 +5,122 @@ import {
   VerifyEmailDto,
   UnauthenticatedServiceException,
   ResendOtpDto,
-  ForbiddenServiceException,
   OtpInfo,
 } from "@lyvely/common";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { I18nModelValidator } from "@/modules/core/models/i18n-model.validator";
 
-export const useVerifyEmailStore = defineStore("verify-email", () => {
-  const model = ref(new VerifyEmailDto());
-  const validator = ref(new I18nModelValidator(model.value));
-  const attempts = ref(0);
-  const errorMsg = ref<undefined | string>();
-  const userRegistrationService = new UserRegistrationService();
-  const otpInfo = ref(new OtpInfo());
-  const authStore = useAuthStore();
+export const useVerifyRegistrationEmailStore = defineStore(
+  "verify-user-registration-email",
+  () => {
+    const model = ref(new VerifyEmailDto());
+    const validator = ref(new I18nModelValidator(model.value));
+    const attempts = ref(0);
+    const errorMsg = ref<undefined | string>();
+    const userRegistrationService = new UserRegistrationService();
+    const otpInfo = ref(new OtpInfo());
+    const authStore = useAuthStore();
 
-  const startVerificationOf = (email: string, otp: OtpInfo) => {
-    model.value.email = email;
-    otpInfo.value = otp;
-  };
+    const startVerificationOf = async (
+      email: string,
+      otpOrRemember?: OtpInfo | boolean
+    ) => {
+      model.value.email = email;
+      if (otpOrRemember instanceof OtpInfo) {
+        otpInfo.value = otpOrRemember;
+      } else {
+        await resend(otpOrRemember);
+      }
+    };
 
-  const reset = () => {
-    softReset();
-    model.value = new VerifyEmailDto();
-    validator.value.setModel(model.value);
-  };
-
-  const softReset = () => {
-    model.value.otp = "";
-    validator.value.reset();
-    otpInfo.value = new OtpInfo();
-    attempts.value = 0;
-    errorMsg.value = undefined;
-  };
-
-  async function resend() {
-    try {
+    const reset = () => {
       softReset();
-      otpInfo.value = await userRegistrationService.resendVerifyEmail(
-        new ResendOtpDto({ email: model.value.email })
-      );
-    } catch (e: any) {
-      errorMsg.value = e?.message || "error.unknown";
-    }
-  }
+      model.value = new VerifyEmailDto();
+      validator.value.setModel(model.value);
+    };
 
-  async function verifyEmail() {
-    try {
-      if (!(await validate())) return false;
-
+    const softReset = () => {
+      model.value.otp = "";
+      validator.value.reset();
+      otpInfo.value = new OtpInfo();
+      attempts.value = 0;
       errorMsg.value = undefined;
+    };
 
-      otpInfo.value.attempts++;
-      const loginModel = await userRegistrationService.verifyEmail(model.value);
+    async function resend(remember?: boolean) {
+      try {
+        softReset();
+        otpInfo.value = await userRegistrationService.resendVerifyEmail(
+          new ResendOtpDto({ email: model.value.email, remember: remember })
+        );
+      } catch (e: any) {
+        errorMsg.value = e?.message || "error.unknown";
+      }
+    }
 
-      if (!loginModel) {
+    async function verifyEmail() {
+      try {
+        if (!(await validate())) return false;
+
+        errorMsg.value = undefined;
+
+        otpInfo.value.attempts++;
+        const loginModel = await userRegistrationService.verifyEmail(
+          model.value
+        );
+
+        if (!loginModel) {
+          return false;
+        }
+
+        await authStore.handleLogin(loginModel);
+        return true;
+      } catch (e) {
+        handleError(e);
+      }
+    }
+
+    async function validate() {
+      if (!(await validator.value.validate())) {
+        errorMsg.value = validator.value.getError("otp");
         return false;
       }
 
-      await authStore.handleLogin(loginModel);
+      if (!otpInfo.value.hasAttemptsLeft()) {
+        errorMsg.value = "otp.errors.maxAttempts";
+        return false;
+      }
+
+      if (otpInfo.value.isExpired()) {
+        errorMsg.value = "otp.errors.expired";
+        return false;
+      }
+
       return true;
-    } catch (e) {
-      handleError(e);
     }
+
+    function handleError(e: any) {
+      if (e instanceof UnauthenticatedServiceException) {
+        errorMsg.value = !otpInfo.value.hasAttemptsLeft()
+          ? "otp.errors.maxAttempts"
+          : otpInfo.value.isExpired()
+          ? "otp.errors.expired"
+          : "otp.errors.invalid";
+      } else {
+        errorMsg.value = e?.message || "error.unknown";
+      }
+    }
+
+    return {
+      verifyEmail,
+      model,
+      otpInfo,
+      validator,
+      attempts,
+      errorMsg,
+      startVerificationOf,
+      reset,
+      resend,
+    };
   }
-
-  async function validate() {
-    if (!(await validator.value.validate())) {
-      errorMsg.value = validator.value.getError("otp");
-      return false;
-    }
-
-    if (!otpInfo.value.hasAttemptsLeft()) {
-      errorMsg.value = "otp.errors.maxAttempts";
-      return false;
-    }
-
-    if (otpInfo.value.isExpired()) {
-      errorMsg.value = "otp.errors.expired";
-      return false;
-    }
-
-    return true;
-  }
-
-  function handleError(e: any) {
-    if (e instanceof UnauthenticatedServiceException) {
-      errorMsg.value = !otpInfo.value.hasAttemptsLeft()
-        ? "otp.errors.maxAttempts"
-        : otpInfo.value.isExpired()
-        ? "otp.errors.expired"
-        : "otp.errors.invalid";
-    } else {
-      errorMsg.value = e?.message || "error.unknown";
-    }
-  }
-
-  return {
-    verifyEmail,
-    model,
-    otpInfo,
-    validator,
-    attempts,
-    errorMsg,
-    startVerificationOf,
-    reset,
-    resend,
-  };
-});
+);

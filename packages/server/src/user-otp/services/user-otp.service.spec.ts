@@ -1,8 +1,7 @@
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { TestingModule } from '@nestjs/testing';
 import { expect } from '@jest/globals';
-import { UserOtpService } from '@/user-otp';
-import { AuthModule } from '@/auth/auth.module';
+import { UserOtpModule, UserOtpService } from '@/user-otp';
 import { UserOtp } from '@/user-otp/schemas';
 import ms from 'ms';
 import { subtractSeconds, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/common';
@@ -12,7 +11,7 @@ let testData: TestDataUtils;
 let userOtpService: UserOtpService;
 
 beforeEach(async () => {
-  testingModule = await createBasicTestingModule('user-otp.service', [], [], [AuthModule]).compile();
+  testingModule = await createBasicTestingModule('user-otp.service', [], [], [UserOtpModule]).compile();
   testData = testingModule.get(TestDataUtils);
   userOtpService = testingModule.get(UserOtpService);
 });
@@ -44,6 +43,28 @@ describe('UserOtpService', () => {
       expect(model2.expiresIn).toEqual(model2.expiresIn);
       expect(model2.issuedAt).not.toEqual(model1.issuedAt);
       expect(otp2).not.toEqual(otp1);
+    });
+
+    it('assure remember state is not overwritten by default', async () => {
+      const user = await testData.createUser();
+      await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+        remember: true,
+      });
+      const { otpModel } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test', remember: undefined });
+
+      expect(otpModel.remember).toEqual(true);
+    });
+
+    it('assure remember state is overwritten on update', async () => {
+      const user = await testData.createUser();
+      await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+        remember: true,
+      });
+      const { otpModel } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test', remember: false });
+
+      expect(otpModel.remember).toEqual(false);
     });
   });
 
