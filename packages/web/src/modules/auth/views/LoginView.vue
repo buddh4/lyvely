@@ -127,7 +127,12 @@ onUnmounted(loginStore.reset);
                 @click="showRememberInfo = !showRememberInfo"
               />
             </div>
-            <router-link v-if="stage === 'password'" :to="{ name: 'ForgotPassword',  }" @click="setForgotPassword" class="no-underline font-bold text-xs cursor-pointer">
+            <router-link
+              v-if="stage === 'password'"
+              :to="{ name: 'ForgotPassword' }"
+              class="no-underline font-bold text-xs cursor-pointer"
+              @click="setForgotPassword"
+            >
               {{ $t("auth.login.forgot_password") }}
             </router-link>
           </div>

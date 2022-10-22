@@ -16,16 +16,19 @@ const { email, captcha } = storeToRefs(passwordResetStore);
   <centered-layout-container width="lg">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">{{ $t("auth.forgot_password.title") }}</span>
+      <span class="text-base font-bold">
+        {{ $t("auth.forgot_password.title") }}
+      </span>
     </template>
 
     <template #body>
-      <ly-input-text v-model="email" label="auth.forgot_password.fields.email"  />
+      <ly-input-text
+        v-model="email"
+        label="auth.forgot_password.fields.email"
+      />
       <ly-input-captcha v-model="captcha" purpose="password-reset" />
     </template>
 
-    <template #footer>
-
-    </template>
+    <template #footer></template>
   </centered-layout-container>
 </template>

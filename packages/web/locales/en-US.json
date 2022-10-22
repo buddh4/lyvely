@@ -134,14 +134,18 @@
       "input_label": "digit {i} of {n}"
     }
   },
+  "captcha": {
+    "label": "Please enter the code below"
+  },
   "auth": {
     "logout": "Logout",
     "forgot_password": {
       "title": "Forgot password",
       "fields": {
-        "email": "Enter the email address of your account"
+        "email": "Enter the email address# of your account"
       }
     },
+
     "login": {
       "title": "Login",
       "sign_in": "Sign in",

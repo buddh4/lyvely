@@ -9,27 +9,30 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   title: undefined,
-  width: 'sm'
+  width: "sm",
 });
 
 const widthClass = computed(
-    () =>
-        ((
-            {
-              [Size.SM]: "max-w-sm",
-              [Size.LG]: "max-w-lg",
-              [Size.XL]: "max-w-xl",
-              [Size.XS]: "max-w-xs",
-              [Size.Full]: "max-w-full",
-            } as Record<string, string>
-        )[props.width] || "max-w-sm")
+  () =>
+    ((
+      {
+        [Size.SM]: "max-w-sm",
+        [Size.LG]: "max-w-lg",
+        [Size.XL]: "max-w-xl",
+        [Size.XS]: "max-w-xs",
+        [Size.Full]: "max-w-full",
+      } as Record<string, string>
+    )[props.width] || "max-w-sm")
 );
 </script>
 
 <template>
   <section class="flex md:p-4 justify-center md:rounded md:h-screen w-full">
     <div
-      :class="['bg-main main w-full p-4 md:border h-screen md:h-auto border-divide md:rounded shadow-xl m-auto', widthClass]"
+      :class="[
+        'bg-main main w-full p-4 md:border h-screen md:h-auto border-divide md:rounded shadow-xl m-auto',
+        widthClass,
+      ]"
     >
       <slot name="header">
         <h1 class="text-center text-xl">
