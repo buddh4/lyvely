@@ -134,8 +134,14 @@
       "input_label": "digit {i} of {n}"
     }
   },
-  "users": {
+  "auth": {
     "logout": "Logout",
+    "forgot_password": {
+      "title": "Forgot password",
+      "fields": {
+        "email": "Enter the email address of your account"
+      }
+    },
     "login": {
       "title": "Login",
       "sign_in": "Sign in",

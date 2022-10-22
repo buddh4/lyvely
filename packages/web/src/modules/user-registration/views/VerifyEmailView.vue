@@ -2,7 +2,7 @@
 import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayoutContainer.vue";
 import { useVerifyRegistrationEmailStore } from "@/modules/user-registration/stores/verify-email.store";
 import { storeToRefs } from "pinia";
-import { onBeforeUnmount, ref } from "vue";
+import { onUnmounted } from "vue";
 import OtpInput from "@/modules/auth/components/OtpInput.vue";
 
 const verifyEmailStore = useVerifyRegistrationEmailStore();
@@ -25,7 +25,7 @@ function verifyEmail() {
   });
 }
 
-onBeforeUnmount(verifyEmailStore.reset);
+onUnmounted(verifyEmailStore.reset);
 </script>
 
 <template>

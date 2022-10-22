@@ -64,6 +64,7 @@ module.exports = {
     createModuleDeps('app-config', [MODULE_I18N]),
     createModuleDeps('auth', [MODULE_USERS, MODULE_JWT]),
     createModuleDeps('calendar'),
+    createModuleDeps('captcha'),
     createModuleDeps('content', [MODULE_PROFILES, MODULE_USERS, MODULE_POLICIES, MODULE_TAGS]),
     createModuleDeps('core'),
     createModuleDeps('i18n'),

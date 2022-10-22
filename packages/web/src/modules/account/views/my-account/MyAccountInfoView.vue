@@ -26,7 +26,7 @@ const userEmails = computed(() => {
 
 <template>
   <list-page title="account.my_account.info.label" class="mb-2" icon="info">
-    <table class="border-separate text-sm w-full bg-main">
+    <table class="border-collapse text-sm w-full bg-main rounded">
       <tr>
         <th class="p-3 text-left border-b border-divide">
           {{ $t("account.my_account.info.username") }}

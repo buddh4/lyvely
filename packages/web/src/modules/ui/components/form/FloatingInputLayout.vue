@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<IProps>(), {
   required: false,
 });
 
-const wrapperClass = [
+const wrapperClasses = [
   "form-input relative",
   { required: props.required },
   props.wrapperClass,
@@ -22,7 +22,7 @@ const wrapperClass = [
 </script>
 
 <template>
-  <section :class="wrapperClass">
+  <section :class="wrapperClasses">
     <slot name="label">
       <label
         v-if="label"

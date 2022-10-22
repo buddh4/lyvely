@@ -6,6 +6,10 @@
     :required="required"
     :input-error="inputError"
   >
+    <template #label>
+      <slot name="label"></slot>
+    </template>
+
     <input
       :id="inputId"
       ref="input"
@@ -24,7 +28,7 @@
     />
     <div
       v-if="isPassword && passwordToggle"
-      rolw="button"
+      role="button"
       class="absolute flex top-1 right-2 cursor-pointer"
       :aria-label="$t(togglePasswordAriaLabel)"
       @click="togglePassword"

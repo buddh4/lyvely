@@ -4,7 +4,7 @@ import { useUserRegistrationStore } from "@/modules/user-registration/stores/use
 import { storeToRefs } from "pinia";
 import LanguageChooser from "@/modules/i18n/components/LanguageChooser.vue";
 import PasswordStrengthMeter from "@/modules/ui/components/form/PasswordStrengthMeter.vue";
-import { onBeforeUnmount, ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { PATH_VERIFY_EMAIL } from "@/modules/user-registration/routes/paths";
 
@@ -24,7 +24,7 @@ async function register() {
   });
 }
 
-onBeforeUnmount(userRegistrationStore.reset);
+onUnmounted(userRegistrationStore.reset);
 </script>
 
 <template>
@@ -103,8 +103,8 @@ onBeforeUnmount(userRegistrationStore.reset);
             class="mt-2 text-xs"
             type="info"
           >
-            <p class="mb-1">{{ $t("users.login.remember_me_info.p1") }}</p>
-            <p>{{ $t("users.login.remember_me_info.p2") }}</p>
+            <p class="mb-1">{{ $t("auth.login.remember_me_info.p1") }}</p>
+            <p>{{ $t("auth.login.remember_me_info.p2") }}</p>
           </ly-alert>
         </fieldset>
       </ly-form-model>
@@ -122,7 +122,7 @@ onBeforeUnmount(userRegistrationStore.reset);
         <small>
           {{ $t("user_registration.is_member") }}
           <router-link to="/login" class="no-underline font-bold">
-            {{ $t("users.login.sign_in") }}
+            {{ $t("auth.login.sign_in") }}
           </router-link>
         </small>
       </div>

@@ -59,7 +59,7 @@ const menuItems: IMenuItem[] = [
   {
     click: () => authStore.logout().then(() => location.reload()),
     icon: "logout",
-    label: "users.logout",
+    label: "auth.logout",
   },
 ];
 

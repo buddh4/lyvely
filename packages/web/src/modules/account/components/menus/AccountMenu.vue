@@ -70,7 +70,7 @@ const { isDark } = toRefs(pageStore);
         <li>
           <a :class="menuItemClass" @click="logout">
             <ly-icon name="logout" />
-            {{ $t("users.logout") }}
+            {{ $t("auth.logout") }}
           </a>
         </li>
       </ul>

@@ -313,6 +313,11 @@
         @apply block w-full rounded-md border-divide shadow-sm bg-white dark:bg-highlight focus:border-divide focus:ring focus:ring-blue-200 focus:ring-opacity-50;
     }
 
+    .floating-input.no-label {
+        height: calc(2.5rem + 2px);
+        padding-top: 0.625rem;
+    }
+
     .floating-input.loading {
         animation-duration: 1.8s;
         animation-fill-mode: forwards;

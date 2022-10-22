@@ -8,6 +8,8 @@ export interface IEntity<ID = TObjectId> {
   _id: ID;
 }
 
+export type DocumentType<T> = T & Document;
+
 export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
   constructor(obj?: DeepPartial<C> | false) {
     if (obj !== false) {

@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './guards';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
 import { ModuleMeta } from '@/core/modules/module.meta';
+import { PasswordResetController } from '@/auth/controllers/password-reset.controller';
 
 @Module({
   imports: [
@@ -38,7 +39,7 @@ import { ModuleMeta } from '@/core/modules/module.meta';
       }),
     },
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, PasswordResetController],
   exports: [JwtAuthService, JwtAuthGuard],
 })
 export class AuthModule {}

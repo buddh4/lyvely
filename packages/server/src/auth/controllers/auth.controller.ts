@@ -2,12 +2,11 @@ import { Controller, Req, Post, UseGuards, Get, Inject, UnauthorizedException, B
 import { LocalAuthGuard, JwtRefreshGuard, clearAccessCookies, clearRefreshCookies } from '../guards';
 import { JwtAuthService } from '@/auth/services';
 import { UserRequest } from '@/users';
-import { UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/common';
+import { UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel, UserStatus } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@/core';
 import { AbstractJwtAuthController } from '@/auth/controllers/abstract-jwt-auth.controller';
-import { UserStatus } from '@lyvely/common';
 
 @Controller(ENDPOINT_AUTH)
 @UseClassSerializer()

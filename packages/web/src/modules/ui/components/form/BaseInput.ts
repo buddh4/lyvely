@@ -123,6 +123,10 @@ function getComputedCssClasses(
       );
     }
 
+    if (!props.label) {
+      result.push("no-label");
+    }
+
     if (props.loading) {
       result.push("loading");
     }

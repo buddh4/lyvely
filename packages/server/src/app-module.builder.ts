@@ -21,6 +21,7 @@ import {
 } from './user-permissions';
 import { I18nModule } from '@/i18n/i18n.module';
 import { AccountModule } from '@/account/accountModule';
+import { CaptchaModule } from '@/captcha/captcha.module';
 
 type Import = Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -88,6 +89,7 @@ export class AppModuleBuilder {
       PoliciesModule,
       UsersModule,
       AuthModule,
+      CaptchaModule,
     );
   }
 

@@ -4,7 +4,8 @@
   "compilerOptions": {
     "assets": [
       {"include": "**/*.pug", "outDir": "./dist/src"},
-      {"include": "**/*.css", "outDir": "./dist/src"}
+      {"include": "**/*.css", "outDir": "./dist/src"},
+      {"include": "**/*.ttf", "outDir": "./dist/src"}
     ]
   }
 }

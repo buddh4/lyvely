@@ -20,7 +20,7 @@ export const useLoginStore = defineStore("user-login", () => {
   const stage = ref<"email" | "password">("email");
   const validator = ref(
     new I18nModelValidator(loginModel.value, {
-      translationKey: "users.login.fields",
+      translationKey: "auth.login.fields",
     })
   );
 
@@ -46,7 +46,7 @@ export const useLoginStore = defineStore("user-login", () => {
     }
 
     if (err.data?.userStatus !== UserStatus.EmailVerification) {
-      status.setError("users.login.errors.invalid_input");
+      status.setError("auth.login.errors.invalid_input");
       return false;
     }
 

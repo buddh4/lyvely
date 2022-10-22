@@ -23,10 +23,9 @@ const switchLocale = (locale: string) => {
     <ly-dropdown-link
       v-for="enabledLocale in enabledLocales"
       :key="enabledLocale.locale"
+      :label="enabledLocale.name"
       @click="switchLocale(enabledLocale.locale)"
-    >
-      {{ locale.name }}
-    </ly-dropdown-link>
+    />
   </ly-dropdown>
 </template>
 

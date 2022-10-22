@@ -40,6 +40,7 @@ import LoaderBlock from "@/modules/ui/components/loader/LoaderBlock.vue";
 import FormModel from "@/modules/ui/components/form/FormModel.vue";
 import FormattedDate from "@/modules/ui/components/intl/FormattedDate.vue";
 import TagBadge from "@/modules/tags/components/TagBadge.vue";
+import CaptchaInput from "@/modules/captcha/components/CaptchaInput.vue";
 import ScreenReaderValidationError from "@/modules/ui/components/error/ScreenReaderValidationError.vue";
 import { useDayJsDateTimeAdapter } from "@lyvely/common";
 import resetStore from "@/util/reset-store.plugin";
@@ -111,6 +112,7 @@ function setGlobalComponents(app: App) {
   app.component("LyInputNumber", NumberInput);
   app.component("LyInputTextarea", TextareaInput);
   app.component("LyInputRange", RangeInput);
+  app.component("LyInputCaptcha", CaptchaInput);
   app.component("LyAlert", AlertBlock);
   app.component("LyProfileAvatar", ProfileAvatar);
   app.component("LyUserAvatar", UserAvatar);
