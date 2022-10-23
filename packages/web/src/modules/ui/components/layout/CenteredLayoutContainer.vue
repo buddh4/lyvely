@@ -1,28 +1,28 @@
 <script lang="ts" setup>
-import { computed } from "vue";
-import { Size } from "@/modules/ui/types";
+import { computed } from 'vue';
+import { Size } from '@/modules/ui/types';
 
 export interface IProps {
   title?: string;
-  width?: "xs" | "sm" | "lg" | "xl" | "full";
+  width?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   title: undefined,
-  width: "sm",
+  width: 'sm',
 });
 
 const widthClass = computed(
   () =>
     ((
       {
-        [Size.SM]: "max-w-sm",
-        [Size.LG]: "max-w-lg",
-        [Size.XL]: "max-w-xl",
-        [Size.XS]: "max-w-xs",
-        [Size.Full]: "max-w-full",
+        [Size.SM]: 'max-w-sm',
+        [Size.LG]: 'max-w-lg',
+        [Size.XL]: 'max-w-xl',
+        [Size.XS]: 'max-w-xs',
+        [Size.Full]: 'max-w-full',
       } as Record<string, string>
-    )[props.width] || "max-w-sm")
+    )[props.width] || 'max-w-sm'),
 );
 </script>
 

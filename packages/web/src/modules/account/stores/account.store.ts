@@ -1,7 +1,7 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useAccountStore = defineStore("account-store", () => {
+export const useAccountStore = defineStore('account-store', () => {
   const showAccountDrawer = ref(false);
 
   return {

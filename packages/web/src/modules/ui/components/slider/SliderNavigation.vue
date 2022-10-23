@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
 
 const slider = ref<HTMLElement>();
 const container = ref<HTMLElement>();
@@ -7,8 +7,7 @@ const slideActive = ref(false);
 const slideX = ref(0);
 const slideTransformX = ref(0);
 
-const getX = (evt: MouseEvent | TouchEvent) =>
-  evt instanceof MouseEvent ? evt.clientX : evt.touches[0].clientX;
+const getX = (evt: MouseEvent | TouchEvent) => (evt instanceof MouseEvent ? evt.clientX : evt.touches[0].clientX);
 
 function beginSlide(evt: MouseEvent | TouchEvent) {
   if (!container.value || !slider.value) {
@@ -26,14 +25,14 @@ function beginSlide(evt: MouseEvent | TouchEvent) {
   const slideHandler = (evt: MouseEvent | TouchEvent) => slide(evt, overflow);
   const endSlide = () => {
     slideActive.value = false;
-    document.removeEventListener("mousemove", slideHandler);
-    document.removeEventListener("touchmove", slideHandler);
+    document.removeEventListener('mousemove', slideHandler);
+    document.removeEventListener('touchmove', slideHandler);
   };
 
-  document.addEventListener("mouseup", endSlide, { once: true });
-  document.addEventListener("touchend", endSlide, { once: true });
-  document.addEventListener("mousemove", slideHandler);
-  document.addEventListener("touchmove", slideHandler);
+  document.addEventListener('mouseup', endSlide, { once: true });
+  document.addEventListener('touchend', endSlide, { once: true });
+  document.addEventListener('mousemove', slideHandler);
+  document.addEventListener('touchmove', slideHandler);
 }
 
 function slide(evt: MouseEvent | TouchEvent, overflow: number) {
@@ -57,16 +56,13 @@ function slide(evt: MouseEvent | TouchEvent, overflow: number) {
 const sliderStyle = computed(() => {
   return {
     transform: `translateX(${slideTransformX.value}px)`,
-    "pointer-events": slideActive.value ? "none" : "all" as 'none' | 'all',
+    'pointer-events': slideActive.value ? 'none' : ('all' as 'none' | 'all'),
   };
 });
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1"
-  >
+  <div ref="container" class="flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
     <div
       ref="slider"
       :style="sliderStyle"

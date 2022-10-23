@@ -1,2 +1,2 @@
-export * from "./guards";
-export * from "./routes/paths";
+export * from './guards';
+export * from './routes/paths';

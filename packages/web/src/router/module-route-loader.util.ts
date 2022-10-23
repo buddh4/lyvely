@@ -1,10 +1,8 @@
-import { RouteRecordRaw } from "vue-router";
+import { RouteRecordRaw } from 'vue-router';
 
-export default function (
-  register: (registerRoutes: Array<RouteRecordRaw>) => void
-) {
+export default function (register: (registerRoutes: Array<RouteRecordRaw>) => void) {
   const moduleRoutes = <{ default: Array<RouteRecordRaw> }[]>(
-    import.meta.glob("../modules/**/routes/index.ts", { eager: true })
+    import.meta.glob('../modules/**/routes/index.ts', { eager: true })
   );
 
   for (const path in moduleRoutes) {

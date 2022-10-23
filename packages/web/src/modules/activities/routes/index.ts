@@ -1,31 +1,31 @@
-import { translate } from "@/i18n";
-import { profileRoute } from "@/modules/profiles/routes/profile-route.util";
+import { translate } from '@/i18n';
+import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 
 export default [
   {
-    name: "Activities",
-    path: profileRoute("/activities"),
-    component: () => import("../views/ActivityLayout.vue"),
+    name: 'Activities',
+    path: profileRoute('/activities'),
+    component: () => import('../views/ActivityLayout.vue'),
     meta: {
-      i18n: { module: "activities" },
-      layout: "profile",
+      i18n: { module: 'activities' },
+      layout: 'profile',
     },
     children: [
       {
-        name: "Habits",
-        path: "",
+        name: 'Habits',
+        path: '',
         meta: {
-          title: () => translate("activities.habits.title"),
+          title: () => translate('activities.habits.title'),
         },
-        component: () => import("../views/HabitPlanView.vue"),
+        component: () => import('../views/HabitPlanView.vue'),
       },
       {
-        name: "Tasks",
-        path: "tasks",
+        name: 'Tasks',
+        path: 'tasks',
         meta: {
-          title: () => translate("activities.tasks.title"),
+          title: () => translate('activities.tasks.title'),
         },
-        component: () => import("../views/TaskPlanView.vue"),
+        component: () => import('../views/TaskPlanView.vue'),
       },
     ],
   },

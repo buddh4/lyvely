@@ -1,6 +1,6 @@
-import { ICaptchaService, useSingleton } from "@lyvely/common";
-import captchaRepository from "@/modules/captcha/repositories/captcha.repository";
-import { unwrapEndpointRequest } from "@/modules/core";
+import { ICaptchaService, useSingleton } from '@lyvely/common';
+import captchaRepository from '@/modules/captcha/repositories/captcha.repository';
+import { unwrapEndpointRequest } from '@/modules/core';
 
 export class CaptchaService implements ICaptchaService {
   async challenge() {

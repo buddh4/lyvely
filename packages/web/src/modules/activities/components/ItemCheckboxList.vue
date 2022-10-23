@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed, withDefaults } from "vue";
-import { parseInt } from "lodash";
+import { computed, withDefaults } from 'vue';
+import { parseInt } from 'lodash';
 
 export interface IProps {
   max: number;
@@ -19,23 +19,23 @@ const props = withDefaults(defineProps<IProps>(), {
   single: false,
 });
 
-const emit = defineEmits(["update:selection"]);
+const emit = defineEmits(['update:selection']);
 
 function isChecked(unitIndex: number) {
   return unitIndex <= props.selection;
 }
 
 function cssClasses(unitIndex: number) {
-  let result = ["border rounded ml-1 ring-0"];
+  let result = ['border rounded ml-1 ring-0'];
 
   if (!isChecked(unitIndex) && unitIndex <= props.min) {
-    result.push("warning");
+    result.push('warning');
   } else if (isChecked(unitIndex) && props.selection < props.min) {
-    result.push("warning");
+    result.push('warning');
   } else if (!isChecked(unitIndex) && unitIndex <= props.optimal) {
-    result.push("success");
+    result.push('success');
   } else if (isChecked(unitIndex) && props.selection >= props.optimal) {
-    result.push("success");
+    result.push('success');
   }
 
   return result;
@@ -55,7 +55,7 @@ const values = computed(() => {
 
 function updateValue(checked: boolean, value: string) {
   let intValue = parseInt(value);
-  emit("update:selection", checked ? intValue : --intValue);
+  emit('update:selection', checked ? intValue : --intValue);
 }
 </script>
 

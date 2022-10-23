@@ -1,12 +1,8 @@
-import { Ref, ref } from "vue";
-import { AxiosError } from "axios";
-import {
-  IFieldValidationResult,
-  ModelValidator,
-  FieldValidationException,
-} from "@lyvely/common";
-import { isFieldValidationError } from "@/util";
-import { translate } from "@/i18n";
+import { Ref, ref } from 'vue';
+import { AxiosError } from 'axios';
+import { IFieldValidationResult, ModelValidator, FieldValidationException } from '@lyvely/common';
+import { isFieldValidationError } from '@/util';
+import { translate } from '@/i18n';
 
 export enum Status {
   INIT,
@@ -91,7 +87,7 @@ export async function loadingState<T = any, R = T | void>(
   promise: Promise<T>,
   loading: Ref<boolean>,
   resolve?: (result: T) => R,
-  reject?: (e: any) => any
+  reject?: (e: any) => any,
 ): Promise<R extends void | undefined ? T : R> {
   loading.value = true;
   return promise
@@ -113,7 +109,7 @@ export async function loadingStatus<T = any, R = T | void>(
   status: StoreStatusPlugin,
   validator?: ModelValidator,
   resolve?: (result: T) => R,
-  reject?: (e: any) => any
+  reject?: (e: any) => any,
 ): Promise<R extends void | undefined ? T : R> {
   status.setStatus(Status.LOADING);
   return promise
@@ -134,11 +130,7 @@ export async function loadingStatus<T = any, R = T | void>(
     }) as Promise<R extends void | undefined ? T : R>;
 }
 
-export function handleError(
-  err: any,
-  status: StoreStatusPlugin,
-  validator?: ModelValidator
-) {
+export function handleError(err: any, status: StoreStatusPlugin, validator?: ModelValidator) {
   status.setStatus(Status.ERROR);
   if (validator && isFieldValidationError(err)) {
     validator.setErrors(err.response.data.fields);
@@ -159,14 +151,14 @@ function translateFields(fields: IFieldValidationResult[]) {
 export function getErrorMessage(err: any) {
   if (err?.isAxiosError) {
     if (!err.response) {
-      return "error.network.message";
+      return 'error.network.message';
     } else {
       const fieldError = getFieldError(err);
       return fieldError || getErrorMessageByStatusCode(err.response.status);
     }
   }
 
-  return "error.unknown";
+  return 'error.unknown';
 }
 
 function getFieldError(err: AxiosError) {
@@ -180,12 +172,12 @@ function getErrorMessageByStatusCode(status: number) {
 
   switch (status) {
     case 500:
-      return "error.500";
+      return 'error.500';
     case 403:
-      return "error.403";
+      return 'error.403';
     case 404:
-      return "error.404";
+      return 'error.404';
     default:
-      return "error.unknown";
+      return 'error.unknown';
   }
 }

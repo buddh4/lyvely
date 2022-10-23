@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import ListPage from "@/modules/ui/components/layout/ListPage.vue";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { storeToRefs } from "pinia";
-import { useInviteUsersStore } from "@/modules/profiles/stores/invite-users.store";
+import ListPage from '@/modules/ui/components/layout/ListPage.vue';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { storeToRefs } from 'pinia';
+import { useInviteUsersStore } from '@/modules/profiles/stores/invite-users.store';
 
 const profileStore = useProfileStore();
 const { showModal: showInviteModal } = storeToRefs(useInviteUsersStore());
@@ -25,9 +25,7 @@ const { profile } = storeToRefs(profileStore);
       :key="relation.uid"
       class="flex py-4 px-3 bg-main items-center border-divide"
     >
-      <ly-user-avatar
-        :user="{ id: relation.uid, username: relation.userInfo.displayName }"
-      />
+      <ly-user-avatar :user="{ id: relation.uid, username: relation.userInfo.displayName }" />
       <span class="ml-2">
         {{ relation.userInfo.displayName }}
       </span>

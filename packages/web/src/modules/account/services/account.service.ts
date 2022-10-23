@@ -1,5 +1,5 @@
-import { IAccountService, AddEmailDto, VerifyEmailDto } from "@lyvely/common";
-import accountRepository from "../repositories/account.repository";
+import { IAccountService, AddEmailDto, VerifyEmailDto } from '@lyvely/common';
+import accountRepository from '../repositories/account.repository';
 
 export class AccountService implements IAccountService {
   async addEmail(dto: AddEmailDto) {

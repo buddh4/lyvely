@@ -1,10 +1,5 @@
-import {
-  CreateProfileDto,
-  IProfilesService,
-  ProfileWithRelationsDto,
-  useSingleton,
-} from "@lyvely/common";
-import profileRepository from "@/modules/profiles/repositories/profile.repository";
+import { CreateProfileDto, IProfilesService, ProfileWithRelationsDto, useSingleton } from '@lyvely/common';
+import profileRepository from '@/modules/profiles/repositories/profile.repository';
 
 class ProfilesService implements IProfilesService {
   async getProfile(id: string): Promise<ProfileWithRelationsDto> {

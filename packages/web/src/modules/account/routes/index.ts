@@ -1,22 +1,22 @@
-import { translation } from "@/i18n";
-import { profileRoute } from "@/modules/profiles/routes/profile-route.util";
+import { translation } from '@/i18n';
+import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 
 export default [
   {
-    name: "MyAccount",
-    path: profileRoute("/account"),
-    component: () => import("../views/my-account/MyAccountView.vue"),
+    name: 'MyAccount',
+    path: profileRoute('/account'),
+    component: () => import('../views/my-account/MyAccountView.vue'),
     meta: {
-      layout: "profile",
+      layout: 'profile',
     },
     children: [
       {
-        name: "MyAccountInfo",
-        path: "",
+        name: 'MyAccountInfo',
+        path: '',
         meta: {
-          title: translation("account.myAccountInfo.title"),
+          title: translation('account.myAccountInfo.title'),
         },
-        component: () => import("../views/my-account/MyAccountInfoView.vue"),
+        component: () => import('../views/my-account/MyAccountInfoView.vue'),
       },
     ],
   },

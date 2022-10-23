@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { usePageStore } from "@/modules/core/store/page.store";
-import { toRefs } from "vue";
+import { usePageStore } from '@/modules/core/store/page.store';
+import { toRefs } from 'vue';
 
 const { showAppLoader } = toRefs(usePageStore());
 </script>

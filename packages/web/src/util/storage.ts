@@ -1,8 +1,8 @@
-import { DelegateEmitter } from "@/util/emitter";
+import { DelegateEmitter } from '@/util/emitter';
 
 export enum Scope {
-  Locale = "localStorage",
-  Session = "sessionStorage",
+  Locale = 'localStorage',
+  Session = 'sessionStorage',
 }
 
 type StorageValueEvents = {
@@ -18,9 +18,9 @@ export class StoredValue extends DelegateEmitter<StorageValueEvents> {
     super();
     this.storage = storage;
     this.key = key;
-    this.storage.on("update", (update) => {
+    this.storage.on('update', (update) => {
       if (update.key === this.key) {
-        this.emit("update", update.value);
+        this.emit('update', update.value);
       }
     });
   }
@@ -109,7 +109,7 @@ class StorageWrapper extends DelegateEmitter<StorageEvents> {
       this.getStoredValue(key).setValue(value);
     }
 
-    this.emitter.emit("update", { key, value });
+    this.emitter.emit('update', { key, value });
     return value;
   }
 
@@ -120,7 +120,7 @@ class StorageWrapper extends DelegateEmitter<StorageEvents> {
 
     const value = this.get(key);
     this.instance.removeItem(key);
-    this.emitter.emit("update", { key, value: undefined });
+    this.emitter.emit('update', { key, value: undefined });
     return value;
   }
 
@@ -128,15 +128,12 @@ class StorageWrapper extends DelegateEmitter<StorageEvents> {
     if (!this.isAvailable()) {
       return;
     }
-    this.valueStore.forEach((value) => value.emit("update", undefined));
+    this.valueStore.forEach((value) => value.emit('update', undefined));
     this.instance.clear();
   }
 
   isAvailable() {
-    return (
-      this.instance ||
-      (this.scope in window && this.getInstanceFromWindow() !== null)
-    );
+    return this.instance || (this.scope in window && this.getInstanceFromWindow() !== null);
   }
 
   private getInstanceFromWindow() {

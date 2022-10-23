@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ref, toRefs, watch } from "vue";
-import { uniqueId } from "lodash";
-import { storeToRefs } from "pinia";
-import { suggestFocusElement } from "@/modules/ui/utils";
-import { usePageStore } from "@/modules/core/store/page.store";
+import { ref, toRefs, watch } from 'vue';
+import { uniqueId } from 'lodash';
+import { storeToRefs } from 'pinia';
+import { suggestFocusElement } from '@/modules/ui/utils';
+import { usePageStore } from '@/modules/core/store/page.store';
 
 export interface IProps {
   modelValue: boolean;
@@ -22,10 +22,10 @@ const pageStore = usePageStore();
 
 const { activeDrawer } = storeToRefs(pageStore);
 
-const drawerId = uniqueId("drawer");
+const drawerId = uniqueId('drawer');
 const zIndex = ref(20);
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 const root = ref<HTMLElement>();
 const { modelValue } = toRefs(props);
 
@@ -40,7 +40,7 @@ watch<string | undefined>(activeDrawer, (value: string | undefined) => {
 });
 
 function close() {
-  emit("update:modelValue", false);
+  emit('update:modelValue', false);
 }
 
 function autoFocus() {
@@ -59,19 +59,11 @@ function autoFocus() {
         :style="{ 'z-index': zIndex }"
         @keyup.esc="close"
       >
-        <div
-          class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start"
-        >
-          <div
-            data-drawer-header
-            class="mb-4 flex items-center pb-3 rounded-t-sm"
-          >
+        <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
+          <div data-drawer-header class="mb-4 flex items-center pb-3 rounded-t-sm">
             <slot name="headerheader">
               <h1 v-if="title" class="font-bold">{{ $t(title) }}</h1>
-              <ly-button
-                class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
-                @click="close"
-              >
+              <ly-button class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none" @click="close">
                 x
               </ly-button>
             </slot>

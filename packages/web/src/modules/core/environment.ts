@@ -1,3 +1,3 @@
 export function isDevelopEnvironment() {
-  return import.meta.env.VITE_APP_ENV === "development";
+  return import.meta.env.VITE_APP_ENV === 'development';
 }

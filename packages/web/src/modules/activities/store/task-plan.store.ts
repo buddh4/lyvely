@@ -1,18 +1,11 @@
-import { defineStore } from "pinia";
-import {
-  TaskModel,
-  CalendarIntervalEnum,
-  ActivityFilter,
-} from "@lyvely/common";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { useCalendarPlanStore } from "@/modules/calendar/store";
-import tasksRepository from "@/modules/activities/repositories/tasks.repository";
-import {
-  IMoveActivityEvent,
-  useActivityStore,
-} from "@/modules/activities/store/activity.store";
+import { defineStore } from 'pinia';
+import { TaskModel, CalendarIntervalEnum, ActivityFilter } from '@lyvely/common';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
+import tasksRepository from '@/modules/activities/repositories/tasks.repository';
+import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 
-export const useTaskPlanStore = defineStore("taskPlan", () => {
+export const useTaskPlanStore = defineStore('taskPlan', () => {
   const activityStore = useActivityStore();
   const calendarPlanStore = useCalendarPlanStore();
   const profileStore = useProfileStore();
@@ -21,7 +14,7 @@ export const useTaskPlanStore = defineStore("taskPlan", () => {
     await activityStore.move(
       moveEvent,
       getTasksByCalendarInterval(moveEvent.fromInterval),
-      getTasksByCalendarInterval(moveEvent.toInterval)
+      getTasksByCalendarInterval(moveEvent.toInterval),
     );
   }
 
@@ -29,7 +22,7 @@ export const useTaskPlanStore = defineStore("taskPlan", () => {
     return activityStore.cache.getTasksByCalendarInterval(
       interval,
       calendarPlanStore.getTimingId(interval),
-      activityStore.filter as ActivityFilter
+      activityStore.filter as ActivityFilter,
     );
   }
 
@@ -39,10 +32,7 @@ export const useTaskPlanStore = defineStore("taskPlan", () => {
 
   async function setTaskDone(task: TaskModel) {
     try {
-      const { data } = await tasksRepository.setDone(
-        task,
-        calendarPlanStore.date
-      );
+      const { data } = await tasksRepository.setDone(task, calendarPlanStore.date);
       task.done = data.done;
       profileStore.updateScore(data.score);
     } catch (e) {
@@ -52,10 +42,7 @@ export const useTaskPlanStore = defineStore("taskPlan", () => {
 
   async function setTaskUndone(task: TaskModel) {
     try {
-      const { data } = await tasksRepository.setUndone(
-        task,
-        calendarPlanStore.date
-      );
+      const { data } = await tasksRepository.setUndone(task, calendarPlanStore.date);
       task.done = undefined;
       profileStore.updateScore(data.score);
     } catch (e) {

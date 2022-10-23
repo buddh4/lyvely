@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import { Size } from "@/modules/ui/types";
-import ProfileSidebar from "./snippets/ProfileSidebar.vue";
-import MainProfileContainer from "./MainProfileContainer.vue";
-import { computed } from "vue";
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-import CreateProfileModal from "../modals/CreateProfileModal.vue";
-import InviteUsersModal from "../modals/InviteUsersModal.vue";
+import { Size } from '@/modules/ui/types';
+import ProfileSidebar from './snippets/ProfileSidebar.vue';
+import MainProfileContainer from './MainProfileContainer.vue';
+import { computed } from 'vue';
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+import CreateProfileModal from '../modals/CreateProfileModal.vue';
+import InviteUsersModal from '../modals/InviteUsersModal.vue';
 
 export interface IProps {
-  containerWidth?: "xs" | "sm" | "lg" | "xl" | "full";
+  containerWidth?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
   requireAuth?: boolean;
 }
 
@@ -21,9 +21,7 @@ const containerProps = computed(() => ({
   width: props.containerWidth,
 }));
 
-const show = computed(() =>
-  props.requireAuth ? useAuthStore().isAuthenticated : true
-);
+const show = computed(() => (props.requireAuth ? useAuthStore().isAuthenticated : true));
 </script>
 
 <template>

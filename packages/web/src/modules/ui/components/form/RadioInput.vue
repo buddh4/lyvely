@@ -24,12 +24,8 @@
 </template>
 
 <script lang="ts">
-import {
-  IBaseInputProps,
-  useBaseInputProps,
-  useBaseInputSetup,
-} from "@/modules/ui/components/form/BaseInput";
-import { SetupContext } from "vue";
+import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
+import { SetupContext } from 'vue';
 
 type Props = IBaseInputProps;
 
@@ -37,7 +33,7 @@ export default {
   props: {
     ...useBaseInputProps(),
   },
-  emits: ["change", "update:modelValue"],
+  emits: ['change', 'update:modelValue'],
   setup(props: Props, context: SetupContext) {
     return useBaseInputSetup(props, context);
   },

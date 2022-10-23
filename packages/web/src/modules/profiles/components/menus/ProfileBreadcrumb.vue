@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { computed } from "vue";
-import { useRouter } from "vue-router";
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 
 const profile = computed(() => useProfileStore().profile);
 const profileName = computed(() => profile.value?.name);
 const path = computed(() => {
   const path = useRouter()
-    .currentRoute.value.path.split("/")
+    .currentRoute.value.path.split('/')
     .filter((p) => p?.length);
   const result: { path: string; name: string }[] = [];
-  let curr = "";
+  let curr = '';
   path.forEach((subPath, i) => {
-    curr = curr + "/" + subPath;
+    curr = curr + '/' + subPath;
 
     if (i > 1) {
       // We ignore /p/:pid
@@ -24,9 +24,7 @@ const path = computed(() => {
 </script>
 
 <template>
-  <div
-    class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block"
-  >
+  <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
     <router-link to="/">
       <span class="text-pop">@</span>
       {{ profileName }}

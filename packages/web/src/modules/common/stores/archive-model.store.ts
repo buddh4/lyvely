@@ -1,24 +1,17 @@
-import { AxiosResponse } from "axios";
-import { IArchivable } from "@lyvely/common";
+import { AxiosResponse } from 'axios';
+import { IArchivable } from '@lyvely/common';
 
 interface IArchiveModelRepository<TID = string> {
   archive: (id: TID) => Promise<AxiosResponse<boolean>>;
   unArchive: (id: TID) => Promise<AxiosResponse<boolean>>;
 }
 
-export interface IArchiveModelStoreOptions<
-  TModel extends IArchivable,
-  TID = string
-> {
-  repository:
-    | IArchiveModelRepository<TID>
-    | ((editModel: TModel) => IArchiveModelRepository<TID>);
+export interface IArchiveModelStoreOptions<TModel extends IArchivable, TID = string> {
+  repository: IArchiveModelRepository<TID> | ((editModel: TModel) => IArchiveModelRepository<TID>);
   onSubmitSuccess?: (model: TModel, val: boolean) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
-export default function <TModel extends IArchivable, TID = string>(
-  options: IArchiveModelStoreOptions<TModel, TID>
-) {
+export default function <TModel extends IArchivable, TID = string>(options: IArchiveModelStoreOptions<TModel, TID>) {
   async function archiveModel(modelId: TID, model: TModel) {
     return _handleUpdate(modelId, model, true);
   }
@@ -34,7 +27,7 @@ export default function <TModel extends IArchivable, TID = string>(
 
     if (data === true) {
       model.archived = archive;
-      if (typeof options.onSubmitSuccess === "function") {
+      if (typeof options.onSubmitSuccess === 'function') {
         options.onSubmitSuccess(model, data);
       }
     }
@@ -43,7 +36,7 @@ export default function <TModel extends IArchivable, TID = string>(
   }
 
   function _getRepository(m: TModel) {
-    if (typeof options.repository === "function") {
+    if (typeof options.repository === 'function') {
       return options.repository(m);
     }
 

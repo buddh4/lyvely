@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 import {
   ActivityType,
   getCreateModelByActivityType,
@@ -10,23 +10,22 @@ import {
   UpdateHabitResponseDto,
   EditTaskResponseDto,
   isTask,
-} from "@lyvely/common";
-import habitsRepository from "@/modules/activities/repositories/habits.repository";
-import tasksRepository from "@/modules/activities/repositories/tasks.repository";
-import { useTaskPlanStore } from "@/modules/activities/store/task-plan.store";
-import { useHabitPlanStore } from "@/modules/activities/store/habit-plan.store";
-import { computed } from "vue";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import useEditModelStore from "@/modules/common/stores/edit-model.store";
-import { findFocusable } from "@/modules/ui/utils";
+} from '@lyvely/common';
+import habitsRepository from '@/modules/activities/repositories/habits.repository';
+import tasksRepository from '@/modules/activities/repositories/tasks.repository';
+import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
+import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
+import { computed } from 'vue';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import useEditModelStore from '@/modules/common/stores/edit-model.store';
+import { findFocusable } from '@/modules/ui/utils';
 
 type EditModel = UpdateHabitDto & UpdateTaskDto;
 type EditResponseModel = EditTaskResponseDto | UpdateHabitResponseDto;
 
-export const useActivityEditStore = defineStore("activityEdit", () => {
+export const useActivityEditStore = defineStore('activityEdit', () => {
   const state = useEditModelStore<EditModel, EditResponseModel>({
-    repository: (editModel: EditModel) =>
-      editModel instanceof UpdateTaskDto ? tasksRepository : habitsRepository,
+    repository: (editModel: EditModel) => (editModel instanceof UpdateTaskDto ? tasksRepository : habitsRepository),
     onSubmitSuccess: (response?: EditResponseModel) => {
       if (response) {
         useProfileStore().updateTags(response.tags);
@@ -39,9 +38,7 @@ export const useActivityEditStore = defineStore("activityEdit", () => {
         setTimeout(() => {
           // TODO: move to view...
           findFocusable(
-            document.querySelector<HTMLElement>(
-              `.calendar-plan-items [data-cid="${response.model.id}"]`
-            )
+            document.querySelector<HTMLElement>(`.calendar-plan-items [data-cid="${response.model.id}"]`),
           )?.focus();
         });
       }
@@ -49,14 +46,8 @@ export const useActivityEditStore = defineStore("activityEdit", () => {
   });
 
   const modalTitle = computed(() => {
-    const type = (
-      state.model.value instanceof UpdateTaskDto
-        ? ActivityType.Task
-        : ActivityType.Habit
-    ).toLowerCase();
-    return state.isCreate.value
-      ? `activities.${type}s.create.title`
-      : `activities.${type}s.edit.title`;
+    const type = (state.model.value instanceof UpdateTaskDto ? ActivityType.Task : ActivityType.Habit).toLowerCase();
+    return state.isCreate.value ? `activities.${type}s.create.title` : `activities.${type}s.edit.title`;
   });
 
   function setEditActivity(activity: ActivityModel) {
@@ -68,10 +59,7 @@ export const useActivityEditStore = defineStore("activityEdit", () => {
     state.setEditModel(activity.id, model);
   }
 
-  function setCreateActivity(
-    type: ActivityType,
-    interval = CalendarIntervalEnum.Daily
-  ) {
+  function setCreateActivity(type: ActivityType, interval = CalendarIntervalEnum.Daily) {
     const model = getCreateModelByActivityType(type);
     model.interval = interval;
     state.setCreateModel(model);

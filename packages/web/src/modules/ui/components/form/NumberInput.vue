@@ -26,13 +26,10 @@
 </template>
 
 <script lang="ts">
-import {
-  IBaseInputProps,
-  useBaseInputProps,
-} from "@/modules/ui/components/form/BaseInput";
-import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
-import { computed, SetupContext } from "vue";
-import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
+import { IBaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
+import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
+import { computed, SetupContext } from 'vue';
+import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
 
 export interface IProps extends IBaseInputProps {
   steps?: number;
@@ -50,7 +47,7 @@ export default {
     min: { type: Number, default: undefined },
     max: { type: Number, default: undefined },
   },
-  emits: ["change", "update:modelValue"],
+  emits: ['change', 'update:modelValue'],
   setup(props: IProps, context: SetupContext) {
     const baseInput = useFloatingInputSetup<number>(props, context);
 
@@ -58,7 +55,7 @@ export default {
       get: () => {
         let allowed = getAllowedVal(props.modelValue);
         if (props.modelValue !== allowed) {
-          context.emit("update:modelValue", allowed);
+          context.emit('update:modelValue', allowed);
         }
         return props.modelValue;
       },
@@ -68,11 +65,11 @@ export default {
         }
 
         val = val || 0;
-        val = parseInt(val + "");
+        val = parseInt(val + '');
 
-        context.emit("change", val);
+        context.emit('change', val);
         const setValue = baseInput.hasFocus.value ? val : getAllowedVal(val);
-        context.emit("update:modelValue", setValue);
+        context.emit('update:modelValue', setValue);
       },
     });
 
@@ -96,7 +93,7 @@ export default {
     }
 
     const buttonClass =
-      "w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0";
+      'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0';
 
     return {
       ...baseInput,

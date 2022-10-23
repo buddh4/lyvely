@@ -1,14 +1,14 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { loadingStatus, useStatus } from "@/store";
-import repository from "@/repository";
-import { AppConfig } from "@lyvely/common";
-import { AppConfigService } from "@/modules/app-config/services/app-config.service";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { loadingStatus, useStatus } from '@/store';
+import repository from '@/repository';
+import { AppConfig } from '@lyvely/common';
+import { AppConfigService } from '@/modules/app-config/services/app-config.service';
 
 type ConfigKey = keyof AppConfig;
 type ConfigValue<T extends ConfigKey> = AppConfig[T];
 
-export const useAppConfigStore = defineStore("app-config", () => {
+export const useAppConfigStore = defineStore('app-config', () => {
   const config = ref<AppConfig>();
   const status = useStatus();
   const appConfigService = new AppConfigService();
@@ -21,10 +21,7 @@ export const useAppConfigStore = defineStore("app-config", () => {
     config.value = cfg;
   }
 
-  function get<T extends ConfigKey>(
-    cfg: T,
-    defaultValue?: ConfigValue<T>
-  ): ConfigValue<T> | undefined {
+  function get<T extends ConfigKey>(cfg: T, defaultValue?: ConfigValue<T>): ConfigValue<T> | undefined {
     if (!config.value) return defaultValue;
     return config.value[cfg] ?? defaultValue;
   }
@@ -41,7 +38,7 @@ const configRepositoryPlugin = () => {
   repository.interceptors.request.use(function (config) {
     const appConfigStore = useAppConfigStore();
     config.headers = config.headers || {};
-    config.headers["csrf-token"] = appConfigStore.get("csrf_token") || "";
+    config.headers['csrf-token'] = appConfigStore.get('csrf_token') || '';
     return config;
   });
 };

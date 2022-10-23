@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-import { computed, ref, toRefs, watch } from "vue";
-import { RouteLocationRaw } from "vue-router";
-import { translate } from "@/i18n";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { usePageStore } from "@/modules/core/store/page.store";
-import { watchMaxSize, isMaxViewSize } from "@/util/media";
-import { isMultiUserProfile } from "@lyvely/common";
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+import { computed, ref, toRefs, watch } from 'vue';
+import { RouteLocationRaw } from 'vue-router';
+import { translate } from '@/i18n';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { usePageStore } from '@/modules/core/store/page.store';
+import { watchMaxSize, isMaxViewSize } from '@/util/media';
+import { isMultiUserProfile } from '@lyvely/common';
+import imageUrl from '@/assets/logo_white_bold.svg';
 
 interface IMenuItem {
   to?: RouteLocationRaw | string;
@@ -26,9 +27,9 @@ const sidebar = ref<HTMLElement | null>(null);
 
 const menuItems: IMenuItem[] = [
   {
-    to: { name: "Habits" },
-    icon: "activity",
-    label: "activities.labels.main_nav",
+    to: { name: 'Habits' },
+    icon: 'activity',
+    label: 'activities.labels.main_nav',
   },
   /*{
     to: {name: 'Journal'},
@@ -36,71 +37,64 @@ const menuItems: IMenuItem[] = [
     label: 'journals.labels.main_nav'
   },*/
   {
-    to: { name: "Statistics" },
-    icon: "statistics",
-    label: "statistics.labels.main_nav",
+    to: { name: 'Statistics' },
+    icon: 'statistics',
+    label: 'statistics.labels.main_nav',
   },
   {
-    to: { name: "Tags" },
-    icon: "tags",
-    label: "tags.labels.main_nav",
+    to: { name: 'Tags' },
+    icon: 'tags',
+    label: 'tags.labels.main_nav',
   },
   {
-    to: { name: "ProfileUsers" },
-    icon: "users",
-    label: "profile.users.label",
+    to: { name: 'ProfileUsers' },
+    icon: 'users',
+    label: 'profile.users.label',
     condition: () => isMultiUserProfile(profileStore.profile),
   },
   {
-    to: { name: "ProfileSettings" },
-    icon: "settings",
-    label: "profile.settings.label",
+    to: { name: 'ProfileSettings' },
+    icon: 'settings',
+    label: 'profile.settings.label',
   },
   {
     click: () => authStore.logout().then(() => location.reload()),
-    icon: "logout",
-    label: "auth.logout",
+    icon: 'logout',
+    label: 'auth.logout',
   },
 ];
 
-const menuItemClasses = ["block py-3 px-3 no-underline cursor-pointer"];
+const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer'];
 
 const { toggleSidebar } = pageStore;
 const { showSidebar } = toRefs(pageStore);
 
 watch(showSidebar, () => {
   if (showSidebar.value) {
-    sidebar.value?.classList.remove("toggled");
+    sidebar.value?.classList.remove('toggled');
   } else {
-    sidebar.value?.classList.add("toggled");
+    sidebar.value?.classList.add('toggled');
   }
 });
 
-const isSmallView = ref(isMaxViewSize("sm"));
-watchMaxSize("sm", (value) => {
+const isSmallView = ref(isMaxViewSize('sm'));
+watchMaxSize('sm', (value) => {
   isSmallView.value = value;
 });
 
 const showLabels = computed(() => isSmallView.value || showSidebar.value);
 
 const ariaLabel = computed(() =>
-  translate("profile.aria.sidebar", {
+  translate('profile.aria.sidebar', {
     profile: useProfileStore()?.profile?.name,
-  })
+  }),
 );
+
 </script>
 
 <template>
-  <nav
-    v-if="isAuthenticated"
-    id="sidebar"
-    ref="sidebar"
-    class="sidebar"
-    :aria-label="ariaLabel"
-  >
-    <div
-      class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start"
-    >
+  <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
+    <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
         <a
           class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer"
@@ -108,12 +102,7 @@ const ariaLabel = computed(() =>
         >
           <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-5" />
           <transition name="fade">
-            <img
-              v-if="showLabels"
-              class="lyvely-logo-text"
-              alt="Lyvely Logo"
-              src="/images/logo_white_bold.svg"
-            />
+            <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" :src="imageUrl" />
           </transition>
         </a>
       </div>

@@ -1,9 +1,5 @@
-import {
-  IProfileRelationInfosService,
-  ProfileRelationInfos,
-  useSingleton,
-} from "@lyvely/common";
-import profileRelationsRepository from "@/modules/profiles/repositories/profile-relations.repository";
+import { IProfileRelationInfosService, ProfileRelationInfos, useSingleton } from '@lyvely/common';
+import profileRelationsRepository from '@/modules/profiles/repositories/profile-relations.repository';
 
 class ProfileRelationInfosService implements IProfileRelationInfosService {
   async getUserProfileInfos(): Promise<ProfileRelationInfos> {
@@ -12,7 +8,6 @@ class ProfileRelationInfosService implements IProfileRelationInfosService {
   }
 }
 
-export const useProfileRelationInfosService =
-  useSingleton<ProfileRelationInfosService>(
-    () => new ProfileRelationInfosService()
-  );
+export const useProfileRelationInfosService = useSingleton<ProfileRelationInfosService>(
+  () => new ProfileRelationInfosService(),
+);

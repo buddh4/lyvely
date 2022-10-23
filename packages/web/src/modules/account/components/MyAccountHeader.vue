@@ -1,22 +1,16 @@
 <script lang="ts" setup>
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-import { useProfileRelationInfosStore } from "@/modules/profiles/stores/profile-relation-infos.store";
-import { storeToRefs } from "pinia";
-import { ProfileType } from "@lyvely/common";
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+import { useProfileRelationInfosStore } from '@/modules/profiles/stores/profile-relation-infos.store';
+import { storeToRefs } from 'pinia';
+import { ProfileType } from '@lyvely/common';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileRelations = await profileRelationInfosStore.getRelations();
-const orgCount = profileRelations.profiles.filter(
-  (p) => p.type === ProfileType.Organization
-).length;
-const groupCount = profileRelations.profiles.filter(
-  (p) => p.type === ProfileType.Group
-).length;
-const userProfileCount = profileRelations.profiles.filter(
-  (p) => p.type === ProfileType.User
-).length;
+const orgCount = profileRelations.profiles.filter((p) => p.type === ProfileType.Organization).length;
+const groupCount = profileRelations.profiles.filter((p) => p.type === ProfileType.Group).length;
+const userProfileCount = profileRelations.profiles.filter((p) => p.type === ProfileType.User).length;
 </script>
 
 <template>

@@ -14,11 +14,7 @@ const props = withDefaults(defineProps<IProps>(), {
   required: false,
 });
 
-const wrapperClasses = [
-  "form-input relative",
-  { required: props.required },
-  props.wrapperClass,
-];
+const wrapperClasses = ['form-input relative', { required: props.required }, props.wrapperClass];
 </script>
 
 <template>

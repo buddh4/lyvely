@@ -1,38 +1,29 @@
-import { ref, Ref } from "vue";
-import { ModelValidator } from "@lyvely/common";
-import { AxiosResponse } from "axios";
-import { cloneDeep, isEqual } from "lodash";
+import { ref, Ref } from 'vue';
+import { ModelValidator } from '@lyvely/common';
+import { AxiosResponse } from 'axios';
+import { cloneDeep, isEqual } from 'lodash';
 
 export interface IEditModelRepository<TUpdateModel, TResponse, TID = string> {
   create: (model: TUpdateModel) => Promise<AxiosResponse<TResponse>>;
-  update: (
-    id: TID,
-    model: Partial<TUpdateModel>
-  ) => Promise<AxiosResponse<TResponse>>;
+  update: (id: TID, model: Partial<TUpdateModel>) => Promise<AxiosResponse<TResponse>>;
 }
 
 export interface IEditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
   partialUpdate?: boolean;
   repository:
     | IEditModelRepository<TUpdateModel, TResponse, TID>
-    | ((
-        editModel: TUpdateModel
-      ) => IEditModelRepository<TUpdateModel, TResponse, TID>);
+    | ((editModel: TUpdateModel) => IEditModelRepository<TUpdateModel, TResponse, TID>);
   onSubmitSuccess?: (response?: TResponse) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
 export default function <TUpdateModel extends object, TResponse, TID = string>(
-  options: IEditModelStoreOptions<TUpdateModel, TResponse, TID>
+  options: IEditModelStoreOptions<TUpdateModel, TResponse, TID>,
 ) {
-  const model = ref<TUpdateModel | undefined>(undefined) as Ref<
-    TUpdateModel | undefined
-  >;
+  const model = ref<TUpdateModel | undefined>(undefined) as Ref<TUpdateModel | undefined>;
   let original: TUpdateModel | undefined = undefined;
   const modelId = ref(undefined) as Ref<TID | undefined>;
-  const validator = ref(undefined) as Ref<
-    ModelValidator<TUpdateModel> | undefined
-  >;
-  const error = ref("");
+  const validator = ref(undefined) as Ref<ModelValidator<TUpdateModel> | undefined>;
+  const error = ref('');
   const isActive = ref(false);
   const isCreate = ref(false);
 
@@ -65,7 +56,7 @@ export default function <TUpdateModel extends object, TResponse, TID = string>(
       modelId.value = undefined;
       validator.value = undefined;
       isActive.value = false;
-      error.value = "";
+      error.value = '';
     }
   }
 
@@ -75,19 +66,17 @@ export default function <TUpdateModel extends object, TResponse, TID = string>(
     }
 
     try {
-      const response = isCreate.value
-        ? await _createModel()
-        : await _editModel();
-      if (response !== false && typeof options.onSubmitSuccess === "function") {
+      const response = isCreate.value ? await _createModel() : await _editModel();
+      if (response !== false && typeof options.onSubmitSuccess === 'function') {
         options.onSubmitSuccess(response?.data);
       }
 
       reset();
     } catch (err) {
-      if (typeof options.onSubmitError === "function") {
+      if (typeof options.onSubmitError === 'function') {
         options.onSubmitError(err);
       } else if (options.onSubmitError !== false) {
-        error.value = "error.unknown";
+        error.value = 'error.unknown';
       }
     }
   }
@@ -102,7 +91,7 @@ export default function <TUpdateModel extends object, TResponse, TID = string>(
 
   async function _editModel() {
     if (!model.value || !modelId.value || !original) {
-      console.warn("Could not edit model due to inconsistent state.");
+      console.warn('Could not edit model due to inconsistent state.');
       return;
     }
 
@@ -111,8 +100,7 @@ export default function <TUpdateModel extends object, TResponse, TID = string>(
     if (options.partialUpdate) {
       for (const field in model.value) {
         if (!isEqual(model.value[field], original[field])) {
-          update[field as keyof typeof update] =
-            model.value[field as keyof typeof update];
+          update[field as keyof typeof update] = model.value[field as keyof typeof update];
         }
       }
 
@@ -125,7 +113,7 @@ export default function <TUpdateModel extends object, TResponse, TID = string>(
   }
 
   function _getRepository(m: TUpdateModel) {
-    if (typeof options.repository === "function") {
+    if (typeof options.repository === 'function') {
       return options.repository(m);
     }
 

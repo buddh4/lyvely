@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { computed } from "vue";
-import { IConfirmOptions } from "@/modules/ui/components/modal/IConfirmOptions";
+import { computed } from 'vue';
+import { IConfirmOptions } from '@/modules/ui/components/modal/IConfirmOptions';
 
 export interface IProps {
   modelValue: boolean;
@@ -12,18 +12,18 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  title: "modal.confirm.default.title",
-  text: "modal.confirm.default.text",
-  confirm: "modal.confirm.default.confirm",
-  cancel: "common.cancel",
+  title: 'modal.confirm.default.title',
+  text: 'modal.confirm.default.text',
+  confirm: 'modal.confirm.default.confirm',
+  cancel: 'common.cancel',
   options: undefined,
 });
 
-const emit = defineEmits(["update:modelValue", "confirm", "cancel"]);
+const emit = defineEmits(['update:modelValue', 'confirm', 'cancel']);
 
 const showModal = computed({
   get: () => props.modelValue,
-  set: (val: boolean) => emit("update:modelValue", val),
+  set: (val: boolean) => emit('update:modelValue', val),
 });
 
 const confirmTitle = computed(() => props.options?.title || props.title);
@@ -33,12 +33,12 @@ const confirmText = computed(() => props.options?.text || props.text);
 
 function confirm() {
   showModal.value = false;
-  emit("confirm");
+  emit('confirm');
 }
 
 function cancel() {
   showModal.value = false;
-  emit("cancel");
+  emit('cancel');
 }
 </script>
 

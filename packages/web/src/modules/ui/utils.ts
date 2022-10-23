@@ -1,8 +1,7 @@
-import { escapeRegExp } from "lodash";
+import { escapeRegExp } from 'lodash';
 
-export const SELECTOR_FORM_FIELD = "input,textarea,select";
-export const SELECTOR_FOCUSABLE =
-  SELECTOR_FORM_FIELD + ",button,object,[href],[tabindex]";
+export const SELECTOR_FORM_FIELD = 'input,textarea,select';
+export const SELECTOR_FOCUSABLE = SELECTOR_FORM_FIELD + ',button,object,[href],[tabindex]';
 
 export function findFirstInput(root?: HTMLElement | null) {
   return <HTMLElement | undefined>root?.querySelector(SELECTOR_FORM_FIELD);
@@ -13,13 +12,11 @@ export function isFocusable(root?: HTMLElement | null) {
 }
 
 export function findFocusable(root?: HTMLElement | null) {
-  return (
-    _ifFocusable(root) || root?.querySelector<HTMLElement>(SELECTOR_FOCUSABLE)
-  );
+  return _ifFocusable(root) || root?.querySelector<HTMLElement>(SELECTOR_FOCUSABLE);
 }
 
 export function suggestFocusElement(root?: HTMLElement | null) {
-  return findFirstInput(root) || _ifFocusable(root, "h1") || _ifFocusable(root);
+  return findFirstInput(root) || _ifFocusable(root, 'h1') || _ifFocusable(root);
 }
 
 function _ifFocusable(root?: HTMLElement | null, selector?: string) {
@@ -38,20 +35,20 @@ export function includesUtilityClass(classNames: string, prefix: string) {
  * @param  {String} A hexcolor value
  * @return {String} The contrasting color (black or white)
  */
-export function getContrast(hexcolor: string): "black" | "white" {
+export function getContrast(hexcolor: string): 'black' | 'white' {
   // If a leading # is provided, remove it
-  if (hexcolor.slice(0, 1) === "#") {
+  if (hexcolor.slice(0, 1) === '#') {
     hexcolor = hexcolor.slice(1);
   }
 
   // If a three-character hexcode, make six-character
   if (hexcolor.length === 3) {
     hexcolor = hexcolor
-      .split("")
+      .split('')
       .map(function (hex) {
         return hex + hex;
       })
-      .join("");
+      .join('');
   }
 
   // Convert to RGB value
@@ -63,5 +60,5 @@ export function getContrast(hexcolor: string): "black" | "white" {
   const yiq = (r * 299 + g * 587 + b * 114) / 1000;
 
   // Check contrast
-  return yiq >= 128 ? "black" : "white";
+  return yiq >= 128 ? 'black' : 'white';
 }

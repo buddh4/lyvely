@@ -9,6 +9,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  assetsInclude: ['**/*.svg'],
   resolve: {
     alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],
   },
@@ -20,7 +21,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      input: sync(resolve(__dirname, 'src/**/*.{ts,css}')),
+      input: sync(resolve(__dirname, 'src/**/*.{ts,css,svg,png}')),
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

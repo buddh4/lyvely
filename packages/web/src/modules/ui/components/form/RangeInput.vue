@@ -20,12 +20,8 @@
 </template>
 
 <script lang="ts">
-import {
-  IBaseInputProps,
-  useBaseInputProps,
-  useBaseInputSetup,
-} from "@/modules/ui/components/form/BaseInput";
-import { computed, SetupContext } from "vue";
+import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
+import { computed, SetupContext } from 'vue';
 
 export interface IProps extends IBaseInputProps {
   min?: number;
@@ -40,9 +36,9 @@ export default {
     min: { type: Number, required: true },
     max: { type: Number, required: true },
     step: { type: Number, default: 1 },
-    width: { type: String, default: "" },
+    width: { type: String, default: '' },
   },
-  emits: ["change", "update:modelValue"],
+  emits: ['change', 'update:modelValue'],
   setup(props: IProps, context: SetupContext) {
     const baseInput = useBaseInputSetup<number>(props, context);
 
@@ -58,17 +54,17 @@ export default {
       set: (val) => {
         val = val || 0;
         val = parseInt(val);
-        context.emit("change");
-        context.emit("update:modelValue", getAllowedVal(val));
+        context.emit('change');
+        context.emit('update:modelValue', getAllowedVal(val));
       },
     });
 
     function getAllowedVal(val: number): number {
-      if (typeof props.min !== "undefined") {
+      if (typeof props.min !== 'undefined') {
         val = Math.max(props.min, val);
       }
 
-      if (typeof props.max !== "undefined") {
+      if (typeof props.max !== 'undefined') {
         val = Math.min(props.max, val);
       }
 

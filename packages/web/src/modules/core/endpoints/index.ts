@@ -1,1 +1,1 @@
-export * from "./endpoint.utils";
+export * from './endpoint.utils';

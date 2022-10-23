@@ -1,20 +1,14 @@
-import {
-  createRouter,
-  createWebHistory,
-  RouteRecordRaw,
-  RouteLocation,
-  NavigationGuardNext,
-} from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw, RouteLocation, NavigationGuardNext } from 'vue-router';
 
-import NotFound from "@/modules/ui/components/error/NotFound.vue";
-import { messageLoaderGuard } from "@/modules/i18n";
-import { authGuard } from "@/modules/auth";
-import NProgress from "nprogress";
-import moduleRouteLoader from "./module-route-loader.util";
-import { appConfigGuard } from "@/modules/app-config";
-import { profileRoute } from "@/modules/profiles/routes/profile-route.util";
-import { usePageStore } from "@/modules/core/store/page.store";
-import { loadProfile } from "@/modules/profiles";
+import NotFound from '@/modules/ui/components/error/NotFound.vue';
+import { messageLoaderGuard } from '@/modules/i18n';
+import { authGuard } from '@/modules/auth';
+import NProgress from 'nprogress';
+import moduleRouteLoader from './module-route-loader.util';
+import { appConfigGuard } from '@/modules/app-config';
+import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
+import { usePageStore } from '@/modules/core/store/page.store';
+import { loadProfile } from '@/modules/profiles';
 
 const routes: Array<RouteRecordRaw> = [];
 
@@ -24,11 +18,9 @@ function register(registerRoutes: Array<RouteRecordRaw>) {
 
 function registerRoutes() {
   // TODO: Make home configurable per profile
-  register([{ path: "/", redirect: profileRoute() }]);
+  register([{ path: '/', redirect: profileRoute() }]);
   moduleRouteLoader(register);
-  register([
-    { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
-  ]);
+  register([{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }]);
 }
 
 registerRoutes();
@@ -46,14 +38,12 @@ router.beforeEach(appConfigGuard);
 router.beforeEach(messageLoaderGuard);
 router.beforeEach(authGuard);
 router.afterEach(() => usePageStore().setShowAppLoader(false));
-router.beforeEach(
-  (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
-    if (to.meta?.layout === "profile") {
-      return loadProfile(to, from, next);
-    }
-    next();
+router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
+  if (to.meta?.layout === 'profile') {
+    return loadProfile(to, from, next);
   }
-);
+  next();
+});
 router.afterEach((to: RouteLocation) => {
   if (to.meta?.title) usePageStore().setTitle(to.meta?.title());
 });

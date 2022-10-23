@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { provide } from "vue";
-import { ModelValidator } from "@lyvely/common";
-import { StoreStatusPlugin } from "@/store";
-import { IFormModelData } from "@/modules/ui/components/form/BaseInput";
+import { provide } from 'vue';
+import { ModelValidator } from '@lyvely/common';
+import { StoreStatusPlugin } from '@/store';
+import { IFormModelData } from '@/modules/ui/components/form/BaseInput';
 
 export interface IProps {
   id?: string;
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<IProps>(), {
   showAlert: true,
 });
 
-provide("formModelData", {
+provide('formModelData', {
   id: props.id,
   model: props.modelValue,
   labelKey: props.labelKey,
@@ -35,10 +35,7 @@ provide("formModelData", {
 <template>
   <div :id="id" class="form-model">
     <slot></slot>
-    <ly-screen-reader-validation-error
-      v-if="validator"
-      :errors="validator.getErrors()"
-    />
+    <ly-screen-reader-validation-error v-if="validator" :errors="validator.getErrors()" />
     <ly-alert v-if="showAlert" :message="status?.statusError" />
   </div>
 </template>

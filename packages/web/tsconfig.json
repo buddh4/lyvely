@@ -22,11 +22,13 @@
       "@/*": ["src/*"],
     },
     "types": [
-      "reflect-metadata"
+      "reflect-metadata",
+      "node"
     ],
     "lib": [
       "esnext",
       "dom",
+      "DOM",
       "dom.iterable",
       "scripthost"
     ]

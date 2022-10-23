@@ -1,4 +1,4 @@
-import repository from "@/repository";
+import repository from '@/repository';
 import {
   UpdateTaskStateModel,
   UpdateTaskDto,
@@ -7,9 +7,9 @@ import {
   CalendarDate,
   formatDate,
   EditTaskResponseDto,
-} from "@lyvely/common";
+} from '@lyvely/common';
 
-const resource = "tasks";
+const resource = 'tasks';
 
 export default {
   async create(activitiy: UpdateTaskDto) {
@@ -21,7 +21,7 @@ export default {
       `${resource}/${task.id}/done`,
       new UpdateTaskStateModel({
         date: formatDate(date),
-      })
+      }),
     );
   },
 
@@ -30,7 +30,7 @@ export default {
       `${resource}/${task.id}/undone`,
       new UpdateTaskStateModel({
         date: formatDate(date),
-      })
+      }),
     );
   },
 

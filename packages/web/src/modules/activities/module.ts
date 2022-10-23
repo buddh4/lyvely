@@ -1,10 +1,10 @@
-import { IModule } from "@/modules/core/modules/interfaces/module.interface";
+import { IModule } from '@/modules/core/modules/interfaces/module.interface';
 
 export default () => {
   return {
-    getId: () => "activities",
+    getId: () => 'activities',
     init: () => {
-      console.log("works...");
+      console.log('works...');
     },
   } as IModule;
 };

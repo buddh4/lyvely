@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-import AddButton from "@/modules/ui/components/button/AddButton.vue";
-import ListPage from "@/modules/ui/components/layout/ListPage.vue";
-import { computed } from "vue";
-import { storeToRefs } from "pinia";
-import { useAddEmailStore } from "@/modules/account/stores/add-email.store";
-import AddEmailModal from "@/modules/account/components/modals/AddEmailModal.vue";
-import VerifyEmailModal from "@/modules/account/components/modals/VerifyEmailModal.vue";
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+import AddButton from '@/modules/ui/components/button/AddButton.vue';
+import ListPage from '@/modules/ui/components/layout/ListPage.vue';
+import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useAddEmailStore } from '@/modules/account/stores/add-email.store';
+import AddEmailModal from '@/modules/account/components/modals/AddEmailModal.vue';
+import VerifyEmailModal from '@/modules/account/components/modals/VerifyEmailModal.vue';
 
 const { user } = storeToRefs(useAuthStore());
 const addEmailStore = useAddEmailStore();
@@ -29,7 +29,7 @@ const userEmails = computed(() => {
     <table class="border-collapse text-sm w-full bg-main rounded">
       <tr>
         <th class="p-3 text-left border-b border-divide">
-          {{ $t("account.my_account.info.username") }}
+          {{ $t('account.my_account.info.username') }}
         </th>
         <td class="p-3 text-left border-b border-divide">
           {{ user.username }}
@@ -37,7 +37,7 @@ const userEmails = computed(() => {
       </tr>
       <tr>
         <th class="p-3 text-left border-b border-divide">
-          {{ $t("account.my_account.info.member_since") }}
+          {{ $t('account.my_account.info.member_since') }}
         </th>
         <td class="p-3 text-left border-b border-divide">
           <ly-formatted-date :date="user.createdAt" />
@@ -45,7 +45,7 @@ const userEmails = computed(() => {
       </tr>
       <tr>
         <th class="p-3 text-left">
-          {{ $t("account.my_account.info.locale") }}
+          {{ $t('account.my_account.info.locale') }}
         </th>
         <td class="bg-main p-3 text-left">
           {{ user.locale }}

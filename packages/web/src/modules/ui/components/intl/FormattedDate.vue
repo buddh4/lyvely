@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed } from 'vue';
 
 export interface IProps {
   date: Date | string;
@@ -7,9 +7,7 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 
-const dateObj = computed(() =>
-  typeof props.date === "string" ? new Date(props.date) : props.date
-);
+const dateObj = computed(() => (typeof props.date === 'string' ? new Date(props.date) : props.date));
 </script>
 
 <template>

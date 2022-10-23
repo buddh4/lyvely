@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import EditHabitModal from "@/modules/activities/components/habits/EditHabitModal.vue";
-import ActivityPlanList from "@/modules/activities/components/ActivityCalendarPlan.vue";
-import CalendarPlan from "@/modules/calendar/components/CalendarPlan.vue";
-import { ActivityType, getCalendarPlanArray } from "@lyvely/common";
-import { computed } from "vue";
-import { useActivityEditStore } from "@/modules/activities/store/edit-activity.store";
-import FloatingAddButton from "@/modules/ui/components/button/FloatingAddButton.vue";
+import EditHabitModal from '@/modules/activities/components/habits/EditHabitModal.vue';
+import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlan.vue';
+import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
+import { ActivityType, getCalendarPlanArray } from '@lyvely/common';
+import { computed } from 'vue';
+import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
+import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 
 const type = ActivityType.Habit;
 
@@ -18,12 +18,7 @@ const intervals = computed(() => getCalendarPlanArray());
 
 <template>
   <calendar-plan>
-    <activity-plan-list
-      v-for="interval in intervals"
-      :key="interval"
-      :interval="interval"
-      :type="type"
-    />
+    <activity-plan-list v-for="interval in intervals" :key="interval" :interval="interval" :type="type" />
   </calendar-plan>
 
   <edit-habit-modal />

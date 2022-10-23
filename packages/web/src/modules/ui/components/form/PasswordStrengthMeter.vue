@@ -1,19 +1,16 @@
 <template>
   <div class="Password">
     <div :class="['Password__strength-meter', cssClass]">
-      <div
-        :class="[strengthMeterFillClass]"
-        :data-score="passwordStrength"
-      ></div>
+      <div :class="[strengthMeterFillClass]" :data-score="passwordStrength"></div>
     </div>
   </div>
 </template>
 
 <script>
-import zxcvbn from "zxcvbn";
+import zxcvbn from 'zxcvbn';
 
 export default {
-  name: "PasswordStrengthMeter",
+  name: 'PasswordStrengthMeter',
   inheritAttrs: false,
   props: {
     /**
@@ -44,7 +41,7 @@ export default {
      */
     strengthMeterFillClass: {
       type: String,
-      default: "Password__strength-meter--fill",
+      default: 'Password__strength-meter--fill',
     },
     /**
      * @type String
@@ -54,16 +51,7 @@ export default {
       default: () => [],
     },
   },
-  emits: [
-    "input",
-    "blur",
-    "focus",
-    "score",
-    "hide",
-    "show",
-    "update:modelValue",
-    "feedback",
-  ],
+  emits: ['input', 'blur', 'focus', 'score', 'hide', 'show', 'update:modelValue', 'feedback'],
   data() {
     return {
       password: null,
@@ -76,12 +64,7 @@ export default {
      * @return {Number} Password Strength Score
      */
     passwordStrength() {
-      return this.password
-        ? zxcvbn(
-            this.password,
-            this.userInputs.length >= 1 ? this.userInputs : null
-          ).score
-        : null;
+      return this.password ? zxcvbn(this.password, this.userInputs.length >= 1 ? this.userInputs : null).score : null;
     },
 
     /**
@@ -96,18 +79,18 @@ export default {
 
   watch: {
     modelValue(newValue) {
-      this.emitValue("input", newValue);
-      this.$emit("feedback", zxcvbn(newValue).feedback);
+      this.emitValue('input', newValue);
+      this.$emit('feedback', zxcvbn(newValue).feedback);
     },
     passwordStrength(score) {
-      this.$emit("score", score);
+      this.$emit('score', score);
     },
   },
 
   methods: {
     emitValue(type, value) {
-      if (type == "input") {
-        this.$emit("update:modelValue", value); // Changed in Vue 3
+      if (type == 'input') {
+        this.$emit('update:modelValue', value); // Changed in Vue 3
       } else {
         this.$emit(type, value);
       }
@@ -141,7 +124,7 @@ export default {
 
 .Password__strength-meter:before,
 .Password__strength-meter:after {
-  content: "";
+  content: '';
   height: inherit;
   background: transparent;
   display: block;
@@ -170,27 +153,27 @@ export default {
   transition: width 0.5s ease-in-out, background 0.25s;
 }
 
-.Password__strength-meter--fill[data-score="0"] {
+.Password__strength-meter--fill[data-score='0'] {
   background: darkred;
   width: 20%;
 }
 
-.Password__strength-meter--fill[data-score="1"] {
+.Password__strength-meter--fill[data-score='1'] {
   background: orangered;
   width: 40%;
 }
 
-.Password__strength-meter--fill[data-score="2"] {
+.Password__strength-meter--fill[data-score='2'] {
   background: orange;
   width: 60%;
 }
 
-.Password__strength-meter--fill[data-score="3"] {
+.Password__strength-meter--fill[data-score='3'] {
   background: yellowgreen;
   width: 80%;
 }
 
-.Password__strength-meter--fill[data-score="4"] {
+.Password__strength-meter--fill[data-score='4'] {
   background: green;
   width: 100%;
 }

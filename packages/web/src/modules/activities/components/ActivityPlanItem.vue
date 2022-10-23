@@ -1,18 +1,15 @@
 <script lang="ts" setup>
-import ItemCheckboxList from "@/modules/activities/components/ItemCheckboxList.vue";
-import { ActivityType, TaskModel, ActivityModel } from "@lyvely/common";
-import {
-  IMoveActivityEvent,
-  useActivityStore,
-} from "@/modules/activities/store/activity.store";
-import { computed, onMounted, ref, toRefs } from "vue";
-import { useCalendarPlanStore } from "@/modules/calendar/store";
-import CalendarPlanItem from "@/modules/calendar/components/CalendarPlanItem.vue";
-import { useActivityEditStore } from "@/modules/activities/store/edit-activity.store";
-import { useHabitPlanStore } from "@/modules/activities/store/habit-plan.store";
-import { useTaskPlanStore } from "@/modules/activities/store/task-plan.store";
-import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibility.store";
-import { translate } from "@/i18n";
+import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
+import { ActivityType, TaskModel, ActivityModel } from '@lyvely/common';
+import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
+import { computed, onMounted, ref, toRefs } from 'vue';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
+import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue';
+import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
+import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
+import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
+import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
+import { translate } from '@/i18n';
 
 export interface IProps {
   model: ActivityModel;
@@ -39,10 +36,7 @@ onMounted(async () => {
 });
 
 const selection = computed({
-  get: () =>
-    props.model instanceof TaskModel
-      ? +!!props.model.done
-      : dataPoint.value.value,
+  get: () => (props.model instanceof TaskModel ? +!!props.model.done : dataPoint.value.value),
   set: (selection: number) => {
     if (props.model.type === ActivityType.Habit) {
       habitStore.updateDataPoint(dataPoint.value, selection);
@@ -65,27 +59,18 @@ function editEntry() {
 }
 
 function selectTag(tagId: string) {
-  useActivityStore().filter.setOption("tagId", tagId);
+  useActivityStore().filter.setOption('tagId', tagId);
 }
 
 const root = ref<InstanceType<typeof CalendarPlanItem> | null>(null);
 
-function prepareMoveEvent(
-  model: ActivityModel,
-  element: HTMLElement,
-  newIndex: (current: number) => number
-) {
-  const draggableElement = element.closest("[data-draggable]")!;
-  const currentIndex = Array.from(
-    draggableElement.parentNode!.children
-  ).indexOf(draggableElement);
+function prepareMoveEvent(model: ActivityModel, element: HTMLElement, newIndex: (current: number) => number) {
+  const draggableElement = element.closest('[data-draggable]')!;
+  const currentIndex = Array.from(draggableElement.parentNode!.children).indexOf(draggableElement);
 
   return {
     draggable: draggableElement,
-    store:
-      props.model.type === ActivityType.Habit
-        ? useHabitPlanStore()
-        : useTaskPlanStore(),
+    store: props.model.type === ActivityType.Habit ? useHabitPlanStore() : useTaskPlanStore(),
     event: {
       cid: model.id,
       fromInterval: model.dataPointConfig.interval,
@@ -97,16 +82,10 @@ function prepareMoveEvent(
 }
 
 async function moveUp(model: ActivityModel, element: HTMLElement) {
-  const { store, event } = prepareMoveEvent(
-    model,
-    element,
-    (currentIndex) => currentIndex - 1
-  );
+  const { store, event } = prepareMoveEvent(model, element, (currentIndex) => currentIndex - 1);
 
   if (event.oldIndex === 0) {
-    useAccessibilityStore().addMessage(
-      translate("calendar.plan.aria.move-boundary")
-    );
+    useAccessibilityStore().addMessage(translate('calendar.plan.aria.move-boundary'));
     return;
   }
 
@@ -115,16 +94,10 @@ async function moveUp(model: ActivityModel, element: HTMLElement) {
 }
 
 async function moveDown(model: ActivityModel, element: HTMLElement) {
-  const { store, event, draggable } = prepareMoveEvent(
-    model,
-    element,
-    (currentIndex) => currentIndex + 1
-  );
+  const { store, event, draggable } = prepareMoveEvent(model, element, (currentIndex) => currentIndex + 1);
 
   if (draggable.parentNode!.children.length === event.newIndex) {
-    useAccessibilityStore().addMessage(
-      translate("calendar.plan.aria.move-boundary")
-    );
+    useAccessibilityStore().addMessage(translate('calendar.plan.aria.move-boundary'));
     return;
   }
 
@@ -133,16 +106,12 @@ async function moveDown(model: ActivityModel, element: HTMLElement) {
 }
 
 function afterMove(evt: IMoveActivityEvent) {
-  setTimeout(() =>
-    document
-      .querySelector<HTMLElement>(`[data-cid="${evt.cid}"] .item-drag-button`)
-      ?.focus()
-  );
+  setTimeout(() => document.querySelector<HTMLElement>(`[data-cid="${evt.cid}"] .item-drag-button`)?.focus());
   useAccessibilityStore().addMessage(
-    translate("calendar.plan.aria.move-success", {
+    translate('calendar.plan.aria.move-success', {
       from: evt.oldIndex,
       to: evt.newIndex,
-    })
+    }),
   );
 }
 
@@ -166,23 +135,12 @@ const optimal = computed(() => model.value.dataPointConfig.optimal);
   >
     <template v-if="isTask" #pre-title>
       <div class="mr-1 mt-1 mr-2">
-        <ItemCheckboxList
-          v-model:selection="selection"
-          :max="1"
-          :is-task="true"
-          :disabled="isDisabled"
-        />
+        <ItemCheckboxList v-model:selection="selection" :max="1" :is-task="true" :disabled="isDisabled" />
       </div>
     </template>
 
     <template v-if="isHabit" #rating>
-      <ItemCheckboxList
-        v-model:selection="selection"
-        :min="min"
-        :max="max"
-        :optimal="optimal"
-        :disabled="isDisabled"
-      />
+      <ItemCheckboxList v-model:selection="selection" :min="min" :max="max" :optimal="optimal" :disabled="isDisabled" />
     </template>
   </CalendarPlanItem>
 </template>

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayoutContainer.vue";
-import { useRouter, RouteLocationRaw } from "vue-router";
-import { storeToRefs } from "pinia";
-import { watch, onUnmounted, ref } from "vue";
-import { useLoginStore } from "@/modules/auth/store/login.store";
-import LanguageChooser from "@/modules/i18n/components/LanguageChooser.vue";
-import { usePasswordResetStore } from "@/modules/auth/store/password-reset.store";
+import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayoutContainer.vue';
+import { useRouter, RouteLocationRaw } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { watch, onUnmounted, ref } from 'vue';
+import { useLoginStore } from '@/modules/auth/store/login.store';
+import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
+import { usePasswordResetStore } from '@/modules/auth/store/password-reset.store';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -19,7 +19,7 @@ watch(stage, () => {
 });
 
 async function next() {
-  if (stage.value === "email") {
+  if (stage.value === 'email') {
     return toPasswordStage();
   } else {
     return submit();
@@ -35,8 +35,8 @@ async function submit() {
 }
 
 async function toPasswordStage() {
-  if (await validator.value.validateField("email")) {
-    stage.value = "password";
+  if (await validator.value.validateField('email')) {
+    stage.value = 'password';
   }
 }
 
@@ -59,7 +59,7 @@ onUnmounted(loginStore.reset);
   <centered-layout-container>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">{{ $t("auth.login.sign_in") }}</span>
+      <span class="text-base font-bold">{{ $t('auth.login.sign_in') }}</span>
     </template>
 
     <template #body>
@@ -74,12 +74,7 @@ onUnmounted(loginStore.reset);
         @keydown.enter="next"
       >
         <div v-if="stage === 'email'">
-          <ly-input-text
-            property="email"
-            autocomplete="username"
-            :autofocus="true"
-            :required="true"
-          />
+          <ly-input-text property="email" autocomplete="username" :autofocus="true" :required="true" />
           <ly-alert :message="loginStore.status.statusError" />
         </div>
 
@@ -115,11 +110,7 @@ onUnmounted(loginStore.reset);
 
           <div class="flex items-center justify-between">
             <div class="flex flex-nowrap items-center mt-1">
-              <ly-input-checkbox
-                property="remember"
-                class="text-sm"
-                aria-describedby="remember-me-info"
-              />
+              <ly-input-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
               <ly-icon
                 name="info"
                 class="ml-1 text-primary w-4 cursor-pointer"
@@ -133,18 +124,13 @@ onUnmounted(loginStore.reset);
               class="no-underline font-bold text-xs cursor-pointer"
               @click="setForgotPassword"
             >
-              {{ $t("auth.login.forgot_password") }}
+              {{ $t('auth.login.forgot_password') }}
             </router-link>
           </div>
 
-          <ly-alert
-            v-show="showRememberInfo"
-            id="remember-me-info"
-            class="mt-2 text-xs"
-            type="info"
-          >
-            <p class="mb-1">{{ $t("auth.login.remember_me_info.p1") }}</p>
-            <p>{{ $t("auth.login.remember_me_info.p2") }}</p>
+          <ly-alert v-show="showRememberInfo" id="remember-me-info" class="mt-2 text-xs" type="info">
+            <p class="mb-1">{{ $t('auth.login.remember_me_info.p1') }}</p>
+            <p>{{ $t('auth.login.remember_me_info.p2') }}</p>
           </ly-alert>
         </div>
       </ly-form-model>
@@ -153,14 +139,14 @@ onUnmounted(loginStore.reset);
     <template #footer>
       <div v-if="stage === 'email'">
         <ly-button class="primary w-full" @click="toPasswordStage">
-          {{ $t("common.next") }}
+          {{ $t('common.next') }}
         </ly-button>
 
         <div class="text-center mt-4">
           <small>
-            {{ $t("auth.login.not_a_member") }}
+            {{ $t('auth.login.not_a_member') }}
             <router-link to="/register" class="no-underline font-bold">
-              {{ $t("user_registration.sign_up") }}
+              {{ $t('user_registration.sign_up') }}
             </router-link>
           </small>
         </div>
@@ -173,7 +159,7 @@ onUnmounted(loginStore.reset);
         :loading="loginStore.status.isStatusLoading()"
         @click="submit"
       >
-        {{ $t("auth.login.sign_in") }}
+        {{ $t('auth.login.sign_in') }}
       </ly-button>
     </template>
   </centered-layout-container>

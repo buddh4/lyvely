@@ -1,18 +1,16 @@
 <script lang="ts" setup>
-import { Chart, registerables } from "chart.js";
-import { useStatisticsStore } from "@/modules/statistics/store";
-import MainContainer from "@/modules/ui/components/layout/MainContainer.vue";
-import { onBeforeMount } from "vue";
+import { Chart, registerables } from 'chart.js';
+import { useStatisticsStore } from '@/modules/statistics/store';
+import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
+import { onBeforeMount } from 'vue';
 
 onBeforeMount(async () => {
   Chart.register(...registerables);
   try {
     await useStatisticsStore().loadStatistics();
-    const ctx = (<HTMLCanvasElement>(
-      document.getElementById("monthlyChart")
-    ))?.getContext("2d");
+    const ctx = (<HTMLCanvasElement>document.getElementById('monthlyChart'))?.getContext('2d');
     if (ctx) {
-//      new Chart(ctx, useStatisticsStore().monthly.getChart());
+      //      new Chart(ctx, useStatisticsStore().monthly.getChart());
     }
   } catch (e) {
     // TODO:...

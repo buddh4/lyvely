@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { useProfileRelationInfosStore } from "@/modules/profiles/stores/profile-relation-infos.store";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { storeToRefs } from "pinia";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { useCreateProfileStore } from "@/modules/profiles/stores/create-profile.store";
-import { profileRoute } from "@/modules/profiles/routes/profile-route.util";
-import { ProfileRelationInfo } from "@lyvely/common";
+import { useProfileRelationInfosStore } from '@/modules/profiles/stores/profile-relation-infos.store';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useCreateProfileStore } from '@/modules/profiles/stores/create-profile.store';
+import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
+import { ProfileRelationInfo } from '@lyvely/common';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileStore = useProfileStore();
@@ -20,11 +20,11 @@ const { show: showCreateProfile } = storeToRefs(useCreateProfileStore());
 const router = useRouter();
 
 async function setProfile(pid: string) {
-  router.push(profileRoute("/", pid));
+  router.push(profileRoute('/', pid));
 }
 
 function getProfileIcon(relation: ProfileRelationInfo) {
-  return relation.isMultiUserProfile() ? "group" : "private";
+  return relation.isMultiUserProfile() ? 'group' : 'private';
 }
 
 // TODO: A user might have multiple relations with a single profile...
@@ -41,7 +41,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
     <li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
-          {{ $t("profile.labels.profiles") }}
+          {{ $t('profile.labels.profiles') }}
         </span>
         <ly-add-button class="m-auto" @click="showCreateProfile = true" />
       </div>
@@ -74,7 +74,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
     <li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
-          {{ $t("profile.labels.organizations") }}
+          {{ $t('profile.labels.organizations') }}
         </span>
         <ly-add-button class="m-auto" />
       </div>

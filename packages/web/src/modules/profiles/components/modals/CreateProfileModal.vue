@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useCreateProfileStore } from "@/modules/profiles/stores/create-profile.store";
-import { storeToRefs } from "pinia";
-import { ProfileUsage, ProfileType } from "@lyvely/common";
-import VueMultiselect from "vue-multiselect";
-import { translate } from "@/i18n";
+import { useCreateProfileStore } from '@/modules/profiles/stores/create-profile.store';
+import { storeToRefs } from 'pinia';
+import { ProfileUsage, ProfileType } from '@lyvely/common';
+import VueMultiselect from 'vue-multiselect';
+import { translate } from '@/i18n';
 
 const createProfileStore = useCreateProfileStore();
 const { show, model, validator, error } = storeToRefs(createProfileStore);
@@ -19,22 +19,12 @@ const usageOptions = [
   ProfileUsage.Family,
   ProfileUsage.Improvement,
 ];
-const usageLabel = (usage: ProfileUsage) =>
-  translate("profile.usage." + usage.toLowerCase());
+const usageLabel = (usage: ProfileUsage) => translate('profile.usage.' + usage.toLowerCase());
 </script>
 
 <template>
-  <ly-modal
-    v-model="show"
-    title="profile.create.title"
-    @cancel="reset"
-    @submit="submit"
-  >
-    <ly-form-model
-      v-model="model"
-      label-key="profile.create.properties"
-      :validator="validator"
-    >
+  <ly-modal v-model="show" title="profile.create.title" @cancel="reset" @submit="submit">
+    <ly-form-model v-model="model" label-key="profile.create.properties" :validator="validator">
       <ly-input-text property="name" :required="true" />
       <ly-input-textarea property="description" />
       <VueMultiselect
@@ -47,16 +37,8 @@ const usageLabel = (usage: ProfileUsage) =>
         :multiple="true"
         tag-placeholder="Add this as new tag"
       />
-      <ly-input-radio
-        property="type"
-        label="profile.create.properties.user"
-        :value="userType"
-      />
-      <ly-input-radio
-        property="type"
-        label="profile.create.properties.group"
-        :value="groupType"
-      />
+      <ly-input-radio property="type" label="profile.create.properties.user" :value="userType" />
+      <ly-input-radio property="type" label="profile.create.properties.group" :value="groupType" />
     </ly-form-model>
     <ly-alert :message="error" class="mt-2" />
   </ly-modal>

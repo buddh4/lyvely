@@ -1,7 +1,7 @@
-import repository from "@/repository";
-import { UpdateTagDto, CreateTagDto, TagModel } from "@lyvely/common";
+import repository from '@/repository';
+import { UpdateTagDto, CreateTagDto, TagModel } from '@lyvely/common';
 
-const resource = "tags";
+const resource = 'tags';
 
 export default {
   async create(model: CreateTagDto) {

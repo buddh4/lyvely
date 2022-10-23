@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 import {
   toTimingId,
   formatDate,
@@ -7,16 +7,13 @@ import {
   CalendarIntervalEnum,
   HabitModel,
   ActivityType,
-} from "@lyvely/common";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { useCalendarPlanStore } from "@/modules/calendar/store";
-import habitsRepository from "@/modules/activities/repositories/habits.repository";
-import {
-  IMoveActivityEvent,
-  useActivityStore,
-} from "@/modules/activities/store/activity.store";
+} from '@lyvely/common';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
+import habitsRepository from '@/modules/activities/repositories/habits.repository';
+import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 
-export const useHabitPlanStore = defineStore("habitPlan", () => {
+export const useHabitPlanStore = defineStore('habitPlan', () => {
   const activityStore = useActivityStore();
   const calendarPlanStore = useCalendarPlanStore();
   const profileStore = useProfileStore();
@@ -25,7 +22,7 @@ export const useHabitPlanStore = defineStore("habitPlan", () => {
     await activityStore.move(
       moveEvent,
       _getHabitsByCalendarInterval(moveEvent.fromInterval),
-      _getHabitsByCalendarInterval(moveEvent.toInterval)
+      _getHabitsByCalendarInterval(moveEvent.toInterval),
     );
   }
 
@@ -42,10 +39,7 @@ export const useHabitPlanStore = defineStore("habitPlan", () => {
   }
 
   function getDataPoint(activity: ActivityModel) {
-    const timingId = toTimingId(
-      calendarPlanStore.date,
-      activity.dataPointConfig.interval
-    );
+    const timingId = toTimingId(calendarPlanStore.date, activity.dataPointConfig.interval);
     return activityStore.cache.getDataPoint(activity, timingId, true);
   }
 

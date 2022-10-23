@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import ProfileBreadcrumb from "@/modules/profiles/components/menus/ProfileBreadcrumb.vue";
-import ProfileComboButton from "@/modules/profiles/components/menus/ProfileComboButton.vue";
-import AccountMenu from "@/modules/account/components/menus/AccountMenu.vue";
+import ProfileBreadcrumb from '@/modules/profiles/components/menus/ProfileBreadcrumb.vue';
+import ProfileComboButton from '@/modules/profiles/components/menus/ProfileComboButton.vue';
+import AccountMenu from '@/modules/account/components/menus/AccountMenu.vue';
 </script>
 
 <template>

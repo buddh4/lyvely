@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed, toRefs } from "vue";
-import { StyleDefinition } from "@/util/component.types";
-import { getContrast, includesUtilityClass } from "@/modules/ui/utils";
+import { computed, toRefs } from 'vue';
+import { StyleDefinition } from '@/util/component.types';
+import { getContrast, includesUtilityClass } from '@/modules/ui/utils';
 
 export interface IProps {
   text?: string;
@@ -17,29 +17,29 @@ const props = withDefaults(defineProps<IProps>(), {
   text: undefined,
 });
 
-defineEmits(["click"]);
+defineEmits(['click']);
 
 function getClassNames(attrClasses: any) {
-  const textContrast = props.color ? getContrast(props.color) : "white";
+  const textContrast = props.color ? getContrast(props.color) : 'white';
 
   return [
-    "badge inline-block text-xs leading-3 rounded select-none",
+    'badge inline-block text-xs leading-3 rounded select-none',
     {
-      "cursor-pointer": props.clickable,
+      'cursor-pointer': props.clickable,
       [textContrast]: true,
-      "text-slate-900": textContrast === "black",
-      "text-slate-100": textContrast === "white",
-      "py-0.5": !includesUtilityClass(attrClasses, "py"),
-      "px-1.5": !includesUtilityClass(attrClasses, "px"),
-      "text-xs": !includesUtilityClass(attrClasses, "text"),
+      'text-slate-900': textContrast === 'black',
+      'text-slate-100': textContrast === 'white',
+      'py-0.5': !includesUtilityClass(attrClasses, 'py'),
+      'px-1.5': !includesUtilityClass(attrClasses, 'px'),
+      'text-xs': !includesUtilityClass(attrClasses, 'text'),
     },
   ];
 }
 
 const styleObject = computed<StyleDefinition>(() => {
   let result: StyleDefinition = {};
-  if (props.color) result["background-color"] = props.color;
-  if (props.textColor) result["color"] = props.textColor;
+  if (props.color) result['background-color'] = props.color;
+  if (props.textColor) result['color'] = props.textColor;
   return result;
 });
 
@@ -47,11 +47,7 @@ const { text } = toRefs(props);
 </script>
 
 <template>
-  <span
-    :class="getClassNames($attrs.class)"
-    :style="styleObject"
-    @click="$emit('click')"
-  >
+  <span :class="getClassNames($attrs.class)" :style="styleObject" @click="$emit('click')">
     <small>
       <slot>{{ text }}</slot>
     </small>

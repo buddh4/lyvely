@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { ref, onMounted, Ref } from "vue";
-import { includesUtilityClass } from "@/modules/ui/utils";
-import { RouteRecord } from "vue-router";
-import { IConfirmOptions } from "@/modules/ui/components/modal/IConfirmOptions";
-import { isDevelopEnvironment } from "@/modules/core/environment";
+import { ref, onMounted, Ref } from 'vue';
+import { includesUtilityClass } from '@/modules/ui/utils';
+import { RouteRecord } from 'vue-router';
+import { IConfirmOptions } from '@/modules/ui/components/modal/IConfirmOptions';
+import { isDevelopEnvironment } from '@/modules/core/environment';
 
 export interface IProps {
   submit?: boolean;
@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<IProps>(), {
   submit: false,
   active: false,
   border: true,
-  text: "",
+  text: '',
   disabled: false,
   loading: false,
   rounded: true,
@@ -37,29 +37,25 @@ const props = withDefaults(defineProps<IProps>(), {
   confirm: undefined,
 });
 
-function getClassNames(
-  attrClasses: any,
-  isActive?: boolean,
-  loading?: boolean
-) {
+function getClassNames(attrClasses: any, isActive?: boolean, loading?: boolean) {
   return {
-    "select-none": true,
+    'select-none': true,
     button: true,
     loading: loading,
-    "no-underline": true,
-    "text-center": true,
+    'no-underline': true,
+    'text-center': true,
     rounded: props.rounded,
-    "inline-block": true,
-    "border-0": !props.border,
+    'inline-block': true,
+    'border-0': !props.border,
     active: props.active || isActive,
-    "py-1.5": !includesUtilityClass(attrClasses, "py"),
-    "px-2.5": !includesUtilityClass(attrClasses, "px"),
+    'py-1.5': !includesUtilityClass(attrClasses, 'py'),
+    'px-2.5': !includesUtilityClass(attrClasses, 'px'),
   };
 }
 
-const buttonType: 'submit' | 'button' = props.submit ? "submit" : "button";
+const buttonType: 'submit' | 'button' = props.submit ? 'submit' : 'button';
 
-const emit = defineEmits(["click"]);
+const emit = defineEmits(['click']);
 
 const showConfirm = ref(false);
 
@@ -67,7 +63,7 @@ function onClick() {
   if (props.confirm) {
     showConfirm.value = true;
   } else {
-    emit("click");
+    emit('click');
   }
 }
 
@@ -77,50 +73,43 @@ if (isDevelopEnvironment()) {
   onMounted(() => {
     if (!button.value) return;
     const buttonEl = button.value;
-    const title = buttonEl.getAttribute("title") || "";
-    const ariaLabel = buttonEl.getAttribute("aria-label") || "";
-    const textContent = buttonEl.textContent || "";
+    const title = buttonEl.getAttribute('title') || '';
+    const ariaLabel = buttonEl.getAttribute('aria-label') || '';
+    const textContent = buttonEl.textContent || '';
     if (
       title.length <= 3 &&
       ariaLabel.length <= 3 &&
       textContent.length <= 3 &&
-      buttonEl.getAttribute("aria-hidden") !== "true"
+      buttonEl.getAttribute('aria-hidden') !== 'true'
     ) {
-      console.warn("Button without aria information detected");
+      console.warn('Button without aria information detected');
       console.warn({ ariaMissingIn: buttonEl });
     }
   });
 }
 
 function getAriaSelected($attrs: any) {
-  if ($attrs["aria-selected"]) {
-    return $attrs["aria-selected"];
+  if ($attrs['aria-selected']) {
+    return $attrs['aria-selected'];
   }
 
   if (
-    $attrs["role"] &&
-    [
-      "tab",
-      "option",
-      "menuitemradio",
-      "treeitem",
-      "gridcell",
-      "row",
-      "rowheader",
-      "columnheader",
-    ].includes($attrs["role"])
+    $attrs['role'] &&
+    ['tab', 'option', 'menuitemradio', 'treeitem', 'gridcell', 'row', 'rowheader', 'columnheader'].includes(
+      $attrs['role'],
+    )
   ) {
-    return props.active ? "yes" : "no";
+    return props.active ? 'yes' : 'no';
   }
 }
 
 function getAriaPressed($attrs: any) {
-  if ($attrs["aria-pressed"]) {
-    return $attrs["aria-pressed"];
+  if ($attrs['aria-pressed']) {
+    return $attrs['aria-pressed'];
   }
 
   if (props.isToggle) {
-    return props.active ? "yes" : "no";
+    return props.active ? 'yes' : 'no';
   }
 }
 </script>
@@ -140,12 +129,7 @@ function getAriaPressed($attrs: any) {
   >
     <slot>{{ $t(text) }}</slot>
   </button>
-  <router-link
-    v-if="route"
-    v-slot="{ navigate, isExactActive }"
-    :to="route"
-    custom
-  >
+  <router-link v-if="route" v-slot="{ navigate, isExactActive }" :to="route" custom>
     <button
       ref="button"
       :class="getClassNames($attrs.class, isExactActive)"
@@ -159,16 +143,11 @@ function getAriaPressed($attrs: any) {
     </button>
   </router-link>
 
-  <ly-confirm
-    v-if="confirm"
-    v-model="showConfirm"
-    :options="confirm"
-    @submit="$emit('click')"
-  >
+  <ly-confirm v-if="confirm" v-model="showConfirm" :options="confirm" @submit="$emit('click')">
     <slot name="confirmBody"></slot>
   </ly-confirm>
 </template>
 
 <style lang="postcss">
-@import "../../styles/buttons.css";
+@import '../../styles/buttons.css';
 </style>

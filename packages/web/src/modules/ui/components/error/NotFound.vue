@@ -1,11 +1,14 @@
+<script lang="ts" setup>
+import imgUrl from '@/assets/404.png';
+
+</script>
+
 <template>
   <div class="card error-page">
-    <img alt="Page Not Found" src="/images/404.png" />
+    <img alt="Page Not Found" :src="imgUrl" />
     <router-link to="/" class="btn btn-primary">Take me back home</router-link>
   </div>
 </template>
-
-<script lang="ts" setup></script>
 
 <style lang="scss" scoped>
 .error-page {

@@ -1,16 +1,12 @@
 <script lang="ts" setup>
-import {
-  CalendarPlan,
-  CalendarIntervalEnum,
-  isToday as isTodayUtil,
-} from "@lyvely/common";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { useCalendarPlanStore } from "../store";
-import { computed, ref, toRefs } from "vue";
-import { onClickOutside } from "@vueuse/core";
-import { translate } from "@/i18n";
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-import { getDefaultLocale } from "@/util";
+import { CalendarPlan, CalendarIntervalEnum, isToday as isTodayUtil } from '@lyvely/common';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { useCalendarPlanStore } from '../store';
+import { computed, ref, toRefs } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { translate } from '@/i18n';
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+import { getDefaultLocale } from '@/util';
 
 export interface IProps {
   interval: CalendarIntervalEnum;
@@ -25,7 +21,7 @@ const { locale: profileLocale } = useProfileStore();
 const { switchToToday, getNextDate, getPreviousDate } = calendarPlanStore;
 const { date, isToday } = toRefs(calendarPlanStore);
 
-defineEmits(["create"]);
+defineEmits(['create']);
 const props = defineProps<IProps>();
 
 const collapsed = ref(false);
@@ -37,13 +33,10 @@ const isWeekly = props.interval === CalendarIntervalEnum.Weekly;
 const isUnscheduled = props.interval === CalendarIntervalEnum.Unscheduled;
 
 function getAccessibleTitle(d: Date) {
-  let title = calendarPlan.getAccessibleTitle(
-    d,
-      (isWeekly ? profileLocale : userLocale) || getDefaultLocale()
-  );
+  let title = calendarPlan.getAccessibleTitle(d, (isWeekly ? profileLocale : userLocale) || getDefaultLocale());
 
   if (isDaily && isTodayUtil(d)) {
-    title = translate("calendar.today") + " " + title;
+    title = translate('calendar.today') + ' ' + title;
   }
 
   return title;
@@ -54,20 +47,16 @@ function getAccessibleTitle(d: Date) {
  * TODO: (week of day) make this configurable in profile independently of locale
  */
 const title = computed(() =>
-  calendarPlan.getTitle(date.value, (isWeekly ? profileLocale : userLocale) || getDefaultLocale())
+  calendarPlan.getTitle(date.value, (isWeekly ? profileLocale : userLocale) || getDefaultLocale()),
 );
 const accessibleTitle = computed(() => getAccessibleTitle(date.value));
 const showTodayIcon = computed(() => isDaily && !isToday.value);
-const rightCaret = computed(() => (isUnscheduled ? false : "▸"));
-const leftCaret = computed(() => (isUnscheduled ? false : "◂"));
+const rightCaret = computed(() => (isUnscheduled ? false : '▸'));
+const leftCaret = computed(() => (isUnscheduled ? false : '◂'));
 const nextTitle = computed(() => getAccessibleTitle(getNextDate(calendarPlan)));
-const prevTitle = computed(() =>
-  getAccessibleTitle(getPreviousDate(calendarPlan))
-);
+const prevTitle = computed(() => getAccessibleTitle(getPreviousDate(calendarPlan)));
 
-const label = CalendarPlan.getInstance(props.interval)
-  .getLabel()
-  .toLocaleLowerCase();
+const label = CalendarPlan.getInstance(props.interval).getLabel().toLocaleLowerCase();
 const headerId = `calendar-plan-${label}`;
 const itemsId = `calendar-plan-items-${label}`;
 
@@ -162,12 +151,7 @@ function decrementTiming() {
     </ly-add-button>
   </div>
 
-  <div
-    :id="itemsId"
-    role="list"
-    data-calendar-plan-item-container
-    :class="['p-0 border-0', { hidden: collapsed }]"
-  >
+  <div :id="itemsId" role="list" data-calendar-plan-item-container :class="['p-0 border-0', { hidden: collapsed }]">
     <slot></slot>
   </div>
 </template>

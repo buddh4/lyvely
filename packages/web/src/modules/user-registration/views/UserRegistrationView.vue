@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import CenteredLayoutContainer from "@/modules/ui/components/layout/CenteredLayoutContainer.vue";
-import { useUserRegistrationStore } from "@/modules/user-registration/stores/user-registration.store";
-import { storeToRefs } from "pinia";
-import LanguageChooser from "@/modules/i18n/components/LanguageChooser.vue";
-import PasswordStrengthMeter from "@/modules/ui/components/form/PasswordStrengthMeter.vue";
-import { onUnmounted, ref } from "vue";
-import { useRouter } from "vue-router";
-import { PATH_VERIFY_EMAIL } from "@/modules/user-registration/routes/paths";
+import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayoutContainer.vue';
+import { useUserRegistrationStore } from '@/modules/user-registration/stores/user-registration.store';
+import { storeToRefs } from 'pinia';
+import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
+import PasswordStrengthMeter from '@/modules/ui/components/form/PasswordStrengthMeter.vue';
+import { onUnmounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { PATH_VERIFY_EMAIL } from '@/modules/user-registration/routes/paths';
 
 const userRegistrationStore = useUserRegistrationStore();
 
@@ -14,7 +14,7 @@ const router = useRouter();
 const { model, validator } = storeToRefs(userRegistrationStore);
 const { status } = userRegistrationStore;
 const showRememberInfo = ref(false);
-const repeatPasswordType = ref("password");
+const repeatPasswordType = ref('password');
 
 async function register() {
   return userRegistrationStore.register().then((success) => {
@@ -36,7 +36,7 @@ onUnmounted(userRegistrationStore.reset);
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
-        {{ $t("user_registration.sign_up") }}
+        {{ $t('user_registration.sign_up') }}
       </span>
     </template>
 
@@ -49,18 +49,9 @@ onUnmounted(userRegistrationStore.reset);
         label-key="user_registration.fields"
       >
         <fieldset>
-          <ly-input-text
-            autocomplete="username"
-            property="username"
-            :required="true"
-          />
+          <ly-input-text autocomplete="username" property="username" :required="true" />
 
-          <ly-input-text
-            autocomplete="email"
-            property="email"
-            type="email"
-            :required="true"
-          />
+          <ly-input-text autocomplete="email" property="email" type="email" :required="true" />
         </fieldset>
 
         <fieldset>
@@ -85,11 +76,7 @@ onUnmounted(userRegistrationStore.reset);
 
         <fieldset class="my-5">
           <div class="flex flex-nowrap items-center">
-            <ly-input-checkbox
-              property="remember"
-              class="text-sm"
-              aria-describedby="remember-me-info"
-            />
+            <ly-input-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
             <ly-icon
               name="info"
               class="ml-1 text-primary w-4 cursor-pointer"
@@ -97,14 +84,9 @@ onUnmounted(userRegistrationStore.reset);
               @click="showRememberInfo = !showRememberInfo"
             />
           </div>
-          <ly-alert
-            v-show="showRememberInfo"
-            id="remember-me-info"
-            class="mt-2 text-xs"
-            type="info"
-          >
-            <p class="mb-1">{{ $t("auth.login.remember_me_info.p1") }}</p>
-            <p>{{ $t("auth.login.remember_me_info.p2") }}</p>
+          <ly-alert v-show="showRememberInfo" id="remember-me-info" class="mt-2 text-xs" type="info">
+            <p class="mb-1">{{ $t('auth.login.remember_me_info.p1') }}</p>
+            <p>{{ $t('auth.login.remember_me_info.p2') }}</p>
           </ly-alert>
         </fieldset>
       </ly-form-model>
@@ -120,9 +102,9 @@ onUnmounted(userRegistrationStore.reset);
 
       <div class="text-center pt-4">
         <small>
-          {{ $t("user_registration.is_member") }}
+          {{ $t('user_registration.is_member') }}
           <router-link to="/login" class="no-underline font-bold">
-            {{ $t("auth.login.sign_in") }}
+            {{ $t('auth.login.sign_in') }}
           </router-link>
         </small>
       </div>

@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-import { ref, toRefs } from "vue";
-import { uniqueId } from "lodash";
-import { onClickOutside } from "@vueuse/core";
+import { ref, toRefs } from 'vue';
+import { uniqueId } from 'lodash';
+import { onClickOutside } from '@vueuse/core';
 
 export interface IProps {
   label?: string;
   icon?: string;
-  position?: "left" | "right";
+  position?: 'left' | 'right';
   buttonClass?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  icon: "dropdown",
-  label: "",
-  position: "left",
-  buttonClass: "",
+  icon: 'dropdown',
+  label: '',
+  position: 'left',
+  buttonClass: '',
 });
 
 const open = ref(false);
@@ -23,28 +23,22 @@ const root = ref<HTMLElement | null>(null);
 
 onClickOutside(root, () => (open.value = false));
 
-const className = ["flex", "dropdown"];
-const buttonClassName = [
-  "inline-flex justify-center  leading-5 z-10 block rounded-md p-3",
-  props.buttonClass,
-];
+const className = ['flex', 'dropdown'];
+const buttonClassName = ['inline-flex justify-center  leading-5 z-10 block rounded-md p-3', props.buttonClass];
 
-const id = uniqueId("dropdown-");
+const id = uniqueId('dropdown-');
 const { icon, label } = toRefs(props);
 
 function onClickContent(evt: MouseEvent) {
-  if (evt.target instanceof HTMLElement && !evt.target.classList.contains("prev-close")) {
+  if (evt.target instanceof HTMLElement && !evt.target.classList.contains('prev-close')) {
     open.value = false;
   }
 }
 
 function navigateDown() {
   const activeElement = document.activeElement;
-  if (!activeElement || !activeElement.closest(".dropdown-items")) {
-    root.value
-      ?.querySelector(".dropdown-items")
-      ?.querySelector<HTMLElement>("a,button")
-      ?.focus();
+  if (!activeElement || !activeElement.closest('.dropdown-items')) {
+    root.value?.querySelector('.dropdown-items')?.querySelector<HTMLElement>('a,button')?.focus();
   } else if (activeElement.nextElementSibling) {
     (<HTMLElement>activeElement.nextElementSibling).focus();
   }
@@ -52,7 +46,7 @@ function navigateDown() {
 
 function navigateUp() {
   const activeElement = document.activeElement;
-  if (!activeElement || !activeElement.closest(".dropdown-items")) {
+  if (!activeElement || !activeElement.closest('.dropdown-items')) {
     open.value = false;
   } else if (activeElement.previousElementSibling) {
     (<HTMLElement>activeElement.previousElementSibling).focus();
@@ -75,12 +69,7 @@ function toggle() {
     <div class="relative">
       <span class="rounded-md shadow-sm">
         <slot name="trigger" :toggle="toggle" :state="open">
-          <button
-            :id="id"
-            :class="buttonClassName"
-            :aria-expanded="open ? 'true' : 'false'"
-            @click="toggle"
-          >
+          <button :id="id" :class="buttonClassName" :aria-expanded="open ? 'true' : 'false'" @click="toggle">
             <span v-if="label" class="label text-sm">{{ $t(label) }}</span>
             <ly-icon v-if="icon" :name="icon" />
           </button>

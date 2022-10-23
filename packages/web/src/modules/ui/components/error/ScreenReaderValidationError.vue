@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed } from 'vue';
 
 export interface IProps {
   errors?: string[];

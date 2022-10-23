@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="['cursor-pointer', wrapperClass]"
-    @keydown.enter.prevent.stop="toggle"
-  >
+  <div :class="['cursor-pointer', wrapperClass]" @keydown.enter.prevent.stop="toggle">
     <div class="flex">
       <label class="inline-flex items-center">
         <input
@@ -34,13 +31,9 @@
 </template>
 
 <script lang="ts">
-import {
-  IBaseInputProps,
-  useBaseInputProps,
-  useBaseInputSetup,
-} from "@/modules/ui/components/form/BaseInput";
-import { SetupContext, ref } from "vue";
-import { isArray } from "lodash";
+import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
+import { SetupContext, ref } from 'vue';
+import { isArray } from 'lodash';
 
 export interface IProps extends IBaseInputProps {
   checked?: boolean;
@@ -51,18 +44,18 @@ export default {
   props: {
     ...useBaseInputProps(),
     checked: { type: Boolean, default: undefined },
-    value: { type: String, default: "" },
+    value: { type: String, default: '' },
   },
-  emits: ["change", "update:modelValue"],
+  emits: ['change', 'update:modelValue'],
   setup(props: IProps, context: SetupContext) {
     const checkbox = ref<HTMLInputElement>();
 
     const baseInput = useBaseInputSetup<boolean>(props, context, {
-      inputClass: "border rounded ml-1 ring-0",
+      inputClass: 'border rounded ml-1 ring-0',
     });
 
     function onChange(evt: any) {
-      context.emit("change", evt.target.checked, evt.target.value);
+      context.emit('change', evt.target.checked, evt.target.value);
     }
 
     function toggle(evt: Event, stop?: boolean) {
@@ -74,8 +67,8 @@ export default {
 
       if (isArray(props.modelValue)) {
         context.emit(
-          "update:modelValue",
-          props.modelValue.filter((val) => val !== checkbox.value!.value)
+          'update:modelValue',
+          props.modelValue.filter((val) => val !== checkbox.value!.value),
         );
       } else {
         baseInput.inputValue.value = !checkbox.value!.checked;

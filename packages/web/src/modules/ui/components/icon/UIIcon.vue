@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { IconName, getIconByName } from "@/modules/ui/components/icon/Icons";
-import { computed } from "vue";
-import { StyleDefinition } from "@/util/component.types";
-import { IconOptionsIF } from "@/modules/ui/types";
-import { includesUtilityClass } from "@/modules/ui/utils";
+import { IconName, getIconByName } from '@/modules/ui/components/icon/Icons';
+import { computed } from 'vue';
+import { StyleDefinition } from '@/util/component.types';
+import { IconOptionsIF } from '@/modules/ui/types';
+import { includesUtilityClass } from '@/modules/ui/utils';
 
 export interface IProps {
   name?: IconName;
@@ -12,22 +12,19 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  name: "",
+  name: '',
   options: undefined,
   title: undefined,
 });
 
-const name = computed(() => props.name || props.options?.name || "");
+const name = computed(() => props.name || props.options?.name || '');
 const definition = computed(() => getIconByName(name.value));
-const styleObject = computed(
-  (): StyleDefinition =>
-    props.options?.fill ? { fill: props.options.fill } : {}
-);
+const styleObject = computed((): StyleDefinition => (props.options?.fill ? { fill: props.options.fill } : {}));
 
 function getClassNames(attrClasses: any) {
   const result = {
     icon: true,
-    "w-4": !includesUtilityClass(attrClasses, "w"),
+    'w-4': !includesUtilityClass(attrClasses, 'w'),
     inline: true,
     [`icon-${name.value}`]: true,
   };

@@ -14,11 +14,7 @@
       :disabled="disabled"
       :class="inputClass"
     >
-      <option
-        v-for="option in options"
-        :key="option.value"
-        :value="option.value"
-      >
+      <option v-for="option in options" :key="option.value" :value="option.value">
         {{ $t(option.label) }}
       </option>
     </select>
@@ -26,25 +22,22 @@
 </template>
 
 <script lang="ts">
-import {
-  IBaseInputProps,
-  useBaseInputProps,
-} from "@/modules/ui/components/form/BaseInput";
-import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
-import { PropType, SetupContext } from "vue";
-import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
+import { IBaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
+import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
+import { PropType, SetupContext } from 'vue';
+import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
 
 export interface IProps extends IBaseInputProps {
-  options: Array<{ label: string, value: any }>
+  options: Array<{ label: string; value: any }>;
 }
 
 export default {
   components: { FloatingInputLayout },
   props: {
     ...useBaseInputProps(),
-    options: { type: Array as PropType<Array<{ label: string, value: any }>>, required: true },
+    options: { type: Array as PropType<Array<{ label: string; value: any }>>, required: true },
   },
-  emits: ["change", "update:modelValue"],
+  emits: ['change', 'update:modelValue'],
   setup(props: IProps, context: SetupContext) {
     return useFloatingInputSetup(props, context);
   },

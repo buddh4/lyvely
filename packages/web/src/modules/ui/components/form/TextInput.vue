@@ -16,7 +16,7 @@
       v-model="inputValue"
       :name="name"
       :disabled="disabled"
-      :aria-invalid="!!(inputError?.length)"
+      :aria-invalid="!!inputError?.length"
       :aria-errormessage="inputError"
       :aria-describedby="ariaDescribedby"
       :readonly="readonly"
@@ -39,13 +39,10 @@
 </template>
 
 <script lang="ts">
-import {
-  IBaseInputProps,
-  useBaseInputProps,
-} from "@/modules/ui/components/form/BaseInput";
-import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
-import { SetupContext, ref, computed } from "vue";
-import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
+import { IBaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
+import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
+import { SetupContext, ref, computed } from 'vue';
+import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
 
 export interface IProps extends IBaseInputProps {
   type?: string;
@@ -55,22 +52,20 @@ export default {
   components: { FloatingInputLayout },
   props: {
     ...useBaseInputProps(),
-    type: { type: String, default: "text" },
+    type: { type: String, default: 'text' },
     passwordToggle: { type: Boolean, default: true },
   },
-  emits: ["change", "update:modelValue", "toggleType"],
+  emits: ['change', 'update:modelValue', 'toggleType'],
   setup(props: IProps, context: SetupContext) {
     const internalType = ref(props.type);
     const togglePasswordIcon = computed(() => {
-      return internalType.value === "password" ? "eye" : "eye-slash";
+      return internalType.value === 'password' ? 'eye' : 'eye-slash';
     });
     const togglePasswordAriaLabel = computed(() => {
-      return internalType.value === "password"
-        ? "common.show_password"
-        : "common.hide_password";
+      return internalType.value === 'password' ? 'common.show_password' : 'common.hide_password';
     });
     return {
-      isPassword: props.type === "password",
+      isPassword: props.type === 'password',
       togglePasswordIcon,
       togglePasswordAriaLabel,
       internalType,
@@ -87,12 +82,11 @@ export default {
   },
   methods: {
     togglePassword() {
-      this.internalType =
-        this.internalType === "password" ? "text" : "password";
-      this.$emit("toggleType", this.internalType);
+      this.internalType = this.internalType === 'password' ? 'text' : 'password';
+      this.$emit('toggleType', this.internalType);
     },
     change: function (evt: any) {
-      this.$emit("change", evt);
+      this.$emit('change', evt);
     },
   },
 };

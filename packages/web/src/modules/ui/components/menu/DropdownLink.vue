@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { toRefs } from "vue";
+import { toRefs } from 'vue';
 
 export interface IProps {
   label: string;
@@ -18,10 +18,10 @@ const props = withDefaults(defineProps<IProps>(), {
   icon: undefined,
 });
 
-defineEmits(["click"]);
+defineEmits(['click']);
 
 const classNames =
-  "dropdown-link block px-4 py-2 text-sm capitalize hover:bg-highlight dark:hover:bg-main no-underline flex no-wrap min-w-48";
+  'dropdown-link block px-4 py-2 text-sm capitalize hover:bg-highlight dark:hover:bg-main no-underline flex no-wrap min-w-48';
 const { route, label, icon } = toRefs(props);
 </script>
 
@@ -39,13 +39,7 @@ const { route, label, icon } = toRefs(props);
       <slot>{{ $t(label) }}</slot>
     </span>
   </router-link>
-  <a
-    v-if="!route"
-    v-bind="$attrs"
-    href="#"
-    :class="classNames"
-    @click="$emit('click')"
-  >
+  <a v-if="!route" v-bind="$attrs" href="#" :class="classNames" @click="$emit('click')">
     <ly-icon v-if="icon" :name="icon" class="align-middle"></ly-icon>
     <span class="align-middle">
       <slot>{{ $t(label) }}</slot>

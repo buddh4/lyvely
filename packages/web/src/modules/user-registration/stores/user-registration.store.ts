@@ -1,11 +1,11 @@
-import { defineStore } from "pinia";
-import { loadingStatus, useStatus } from "@/store";
-import { UserRegistrationDto, ModelValidator } from "@lyvely/common";
-import { ref } from "vue";
-import { UserRegistrationService } from "../services/user-registration.service";
-import { useVerifyRegistrationEmailStore } from "./verify-email.store";
+import { defineStore } from 'pinia';
+import { loadingStatus, useStatus } from '@/store';
+import { UserRegistrationDto, ModelValidator } from '@lyvely/common';
+import { ref } from 'vue';
+import { UserRegistrationService } from '../services/user-registration.service';
+import { useVerifyRegistrationEmailStore } from './verify-email.store';
 
-export const useUserRegistrationStore = defineStore("user-registration", () => {
+export const useUserRegistrationStore = defineStore('user-registration', () => {
   const status = useStatus();
   const userRegistrationService = new UserRegistrationService();
   const verifyEmailStore = useVerifyRegistrationEmailStore();
@@ -15,14 +15,12 @@ export const useUserRegistrationStore = defineStore("user-registration", () => {
   async function register() {
     if (!(await this.validator.validate())) return false;
 
-    return loadingStatus(
-      userRegistrationService.register(model.value),
-      status,
-      validator.value as ModelValidator
-    ).then(async (otp) => {
-      await verifyEmailStore.startVerificationOf(model.value.email, otp);
-      return true;
-    });
+    return loadingStatus(userRegistrationService.register(model.value), status, validator.value as ModelValidator).then(
+      async (otp) => {
+        await verifyEmailStore.startVerificationOf(model.value.email, otp);
+        return true;
+      },
+    );
   }
 
   function reset() {

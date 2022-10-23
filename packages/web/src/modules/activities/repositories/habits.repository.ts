@@ -1,12 +1,7 @@
-import repository from "@/repository";
-import {
-  UpdateHabitDto,
-  UpdateDataPointDto,
-  UpdateDataPointResultDto,
-  UpdateHabitResponseDto,
-} from "@lyvely/common";
+import repository from '@/repository';
+import { UpdateHabitDto, UpdateDataPointDto, UpdateDataPointResultDto, UpdateHabitResponseDto } from '@lyvely/common';
 
-const resource = "habits";
+const resource = 'habits';
 
 export default {
   async create(activitiy: UpdateHabitDto) {
@@ -14,17 +9,12 @@ export default {
   },
 
   async update(habitId: string, activitiy: Partial<UpdateHabitDto>) {
-    return repository.put<UpdateHabitResponseDto>(
-      `${resource}/${habitId}`,
-      activitiy
-    );
+    return repository.put<UpdateHabitResponseDto>(`${resource}/${habitId}`, activitiy);
   },
 
   async updateDataPoint(habitId: string, dto: UpdateDataPointDto) {
-    return repository.post<UpdateDataPointResultDto>(
-      `${resource}/${habitId}/update-log`,
-      dto,
-      { params: { cid: habitId } }
-    );
+    return repository.post<UpdateDataPointResultDto>(`${resource}/${habitId}/update-log`, dto, {
+      params: { cid: habitId },
+    });
   },
 };

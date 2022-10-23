@@ -1,29 +1,13 @@
 <script lang="ts" setup>
-import useEditActivityModal from "../useEditActivityModal";
-import VueMultiselect from "vue-multiselect";
+import useEditActivityModal from '../useEditActivityModal';
+import VueMultiselect from 'vue-multiselect';
 
-const {
-  model,
-  modalTitle,
-  showModal,
-  validator,
-  addTag,
-  error,
-  reset,
-  submit,
-  tagOptions,
-  calendarPlanOptions,
-} = useEditActivityModal();
+const { model, modalTitle, showModal, validator, addTag, error, reset, submit, tagOptions, calendarPlanOptions } =
+  useEditActivityModal();
 </script>
 
 <template>
-  <ly-modal
-    v-if="model && validator"
-    v-model="showModal"
-    :title="modalTitle"
-    @submit="submit"
-    @hide="reset"
-  >
+  <ly-modal v-if="model && validator" v-model="showModal" :title="modalTitle" @submit="submit" @hide="reset">
     <fieldset>
       <ly-input-text
         v-model="model.title"
@@ -100,11 +84,7 @@ const {
         </div>
       </div>
 
-      <ly-input-textarea
-        v-model="model.text"
-        data-habit-description
-        label="Description"
-      />
+      <ly-input-textarea v-model="model.text" data-habit-description label="Description" />
     </fieldset>
 
     <ly-alert :message="error" class="mt-2" />

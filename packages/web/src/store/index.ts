@@ -1,1 +1,1 @@
-export * from "./store-status.plugin";
+export * from './store-status.plugin';

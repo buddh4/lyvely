@@ -20,22 +20,19 @@
 </template>
 
 <script lang="ts">
-import {
-  IBaseInputProps,
-  useBaseInputProps,
-} from "@/modules/ui/components/form/BaseInput";
-import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
-import { SetupContext } from "vue";
-import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
+import { IBaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
+import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
+import { SetupContext } from 'vue';
+import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
 
 export default {
   components: { FloatingInputLayout },
-  inject: ["model", "validator"],
+  inject: ['model', 'validator'],
   props: {
     ...useBaseInputProps(),
     rows: { type: Number, default: 3 },
   },
-  emits: ["change", "update:modelValue"],
+  emits: ['change', 'update:modelValue'],
   setup(props: IBaseInputProps, context: SetupContext) {
     return useFloatingInputSetup<string>(props, context);
   },

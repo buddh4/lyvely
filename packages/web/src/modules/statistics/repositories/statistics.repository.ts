@@ -1,6 +1,6 @@
-import repository from "@/repository";
+import repository from '@/repository';
 
-const resource = "statistics";
+const resource = 'statistics';
 
 export default {
   getMonthly() {

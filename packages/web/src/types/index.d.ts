@@ -17,3 +17,13 @@ declare module '@ckpack/vue-color' {
 }
 
 declare module 'vue-multiselect' {}
+
+declare module '*.svg' {
+  const value: any;
+  export = value;
+}
+
+declare module '*.png' {
+  const value: any;
+  export = value;
+}

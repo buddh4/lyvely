@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import ActivityPlanItem from "@/modules/activities/components/ActivityPlanItem.vue";
-import CalendarPlanSection from "@/modules/calendar/components/CalendarPlanSection.vue";
-import { ActivityType } from "@lyvely/common";
-import { useTaskPlanStore } from "@/modules/activities/store/task-plan.store";
-import { useHabitPlanStore } from "@/modules/activities/store/habit-plan.store";
-import { useActivityEditStore } from "@/modules/activities/store/edit-activity.store";
-import { computed } from "vue";
-import { useActivityStore } from "@/modules/activities/store/activity.store";
-import draggable from "vuedraggable";
+import ActivityPlanItem from '@/modules/activities/components/ActivityPlanItem.vue';
+import CalendarPlanSection from '@/modules/calendar/components/CalendarPlanSection.vue';
+import { ActivityType } from '@lyvely/common';
+import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
+import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
+import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
+import { computed } from 'vue';
+import { useActivityStore } from '@/modules/activities/store/activity.store';
+import draggable from 'vuedraggable';
 
 export interface IProps {
   interval: number;
@@ -22,9 +22,7 @@ const habitPlanStore = useHabitPlanStore();
 
 //const activities = computed(() => activityStore.getActivities(props.type, props.interval));
 
-const activities = computed(() =>
-  activityStore.getActivities(props.type, props.interval)
-);
+const activities = computed(() => activityStore.getActivities(props.type, props.interval));
 
 interface IDragEvent {
   from: HTMLElement;
@@ -35,8 +33,7 @@ interface IDragEvent {
 }
 
 function dragEnd(evt: IDragEvent) {
-  const store =
-    props.type === ActivityType.Habit ? habitPlanStore : taskPlanStore;
+  const store = props.type === ActivityType.Habit ? habitPlanStore : taskPlanStore;
   store.move({
     cid: evt.item.dataset.cid as string,
     fromInterval: parseInt(evt.from.dataset.calendarInterval as string),
@@ -51,9 +48,7 @@ function addEntry() {
 }
 
 const createTitle = computed(() =>
-  props.type === ActivityType.Habit
-    ? "activities.habits.create.title"
-    : "activities.tasks.create.title"
+  props.type === ActivityType.Habit ? 'activities.habits.create.title' : 'activities.tasks.create.title',
 );
 </script>
 

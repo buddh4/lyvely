@@ -1,14 +1,14 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 import {
   toTimingId,
   CalendarPlan,
   CalendarIntervalEnum,
   isToday as isTodayUtil,
   isInFuture as isInFutureUtil,
-} from "@lyvely/common";
-import { ref, computed } from "vue";
+} from '@lyvely/common';
+import { ref, computed } from 'vue';
 
-export const useCalendarPlanStore = defineStore("timing", () => {
+export const useCalendarPlanStore = defineStore('timing', () => {
   const date = ref(new Date());
   const dragActive = ref(false);
 
@@ -18,11 +18,11 @@ export const useCalendarPlanStore = defineStore("timing", () => {
 
   function switchToToday() {
     date.value = new Date();
-    console.log("switchToToday", date.value);
+    console.log('switchToToday', date.value);
   }
 
   function _setCurrentDate(d: Date) {
-    console.log("_setCurrentDate", date.value);
+    console.log('_setCurrentDate', date.value);
     date.value = d;
   }
 

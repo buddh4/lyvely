@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { usePageStore } from "@/modules/core/store/page.store";
-import { computed } from "vue";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import ProfileRelationsChooser from "./ProfileRelationsChooser.vue";
+import { usePageStore } from '@/modules/core/store/page.store';
+import { computed } from 'vue';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
 
 const profileStore = useProfileStore();
 const pageStore = usePageStore();
@@ -15,9 +15,7 @@ const score = computed(() => profileStore.profile?.score);
   <ly-dropdown position="right">
     <template #trigger="{ toggle }">
       <div class="flex justify-center items-center py-1">
-        <div
-          class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center"
-        >
+        <div class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center">
           <ly-button class="px-3 py-2" @click="toggleSidebar">
             <ly-icon name="menu" style="margin-top: -3px" />
           </ly-button>
@@ -30,9 +28,7 @@ const score = computed(() => profileStore.profile?.score);
           aria-controls="sidebar"
           @click="toggleSidebar"
         >
-          <div
-            class="border border-divide px-3 p-2 flex justify-center items-center gap-2"
-          >
+          <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">
             <ly-profile-avatar />
 
             <div class="flex justify-center items-center text-xs">
@@ -58,9 +54,7 @@ const score = computed(() => profileStore.profile?.score);
             </div>
           </div>
         </div>
-        <div
-          class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center"
-        >
+        <div class="border border-divide border-l-0 rounded-r-2xl flex justify-center items-center">
           <ly-button class="px-3 py-2" @click="toggle">
             <ly-icon style="margin-top: -1px" name="caret-down" />
           </ly-button>
@@ -100,32 +94,27 @@ const score = computed(() => profileStore.profile?.score);
 
 @keyframes flip_svg {
   from {
-    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-      rotate3d(0, 1, 0, -360deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, -360deg);
     animation-timing-function: ease-out;
   }
 
   40% {
-    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-      rotate3d(0, 1, 0, -190deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, -190deg);
     animation-timing-function: ease-out;
   }
 
   50% {
-    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-      rotate3d(0, 1, 0, -170deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, -170deg);
     animation-timing-function: ease-in;
   }
 
   80% {
-    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-      rotate3d(0, 1, 0, 0deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
     animation-timing-function: ease-in;
   }
 
   to {
-    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0)
-      rotate3d(0, 1, 0, 0deg);
+    transform: perspective(400px) scale3d(1, 1, 1) translate3d(0, 0, 0) rotate3d(0, 1, 0, 0deg);
     animation-timing-function: ease-in;
   }
 }

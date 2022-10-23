@@ -1,7 +1,7 @@
-import { getCalendarPlanOptions } from "@lyvely/common";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { computed, toRefs } from "vue";
-import { useActivityEditStore } from "@/modules/activities/store/edit-activity.store";
+import { getCalendarPlanOptions } from '@lyvely/common';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { computed, toRefs } from 'vue';
+import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
 
 export default function () {
   const profileStore = useProfileStore();

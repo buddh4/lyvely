@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { computed, useSlots } from "vue";
+import { computed, useSlots } from 'vue';
 
 export interface IProps {
   message?: string;
   hide?: boolean;
-  type?: "danger" | "info" | "warning";
+  type?: 'danger' | 'info' | 'warning';
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   message: undefined,
   hide: undefined,
-  type: "danger",
+  type: 'danger',
 });
 
 const cssClass = [
-  "flex items-center border px-4 py-3 rounded relative mb-1",
-  { "border-danger text-danger": props.type === "danger" },
-  { "border-info text-dimmed": props.type === "info" },
-  { "border-warning text-warning": props.type === "warning" },
+  'flex items-center border px-4 py-3 rounded relative mb-1',
+  { 'border-danger text-danger': props.type === 'danger' },
+  { 'border-info text-dimmed': props.type === 'info' },
+  { 'border-warning text-warning': props.type === 'warning' },
 ];
 
 const isActive = computed(() => {
@@ -30,7 +30,7 @@ const isActive = computed(() => {
     <span class="text-sm">
       <slot>
         <template v-if="message">
-            {{ $t(message) }}
+          {{ $t(message) }}
         </template>
       </slot>
     </span>
@@ -38,5 +38,5 @@ const isActive = computed(() => {
 </template>
 
 <style lang="postcss">
-@import "../../styles/alerts.css";
+@import '../../styles/alerts.css';
 </style>

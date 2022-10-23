@@ -1,16 +1,13 @@
 <script lang="ts" setup>
-import { useAppConfigStore } from "@/modules/app-config/store/app-config.store";
-import { getLocale, setLocale } from "@/i18n";
-import { computed, ref } from "vue";
+import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
+import { getLocale, setLocale } from '@/i18n';
+import { computed, ref } from 'vue';
 
 const appConfigStore = useAppConfigStore();
-const enabledLocales = appConfigStore.get("locales");
+const enabledLocales = appConfigStore.get('locales');
 
 const activeLocale = ref(getLocale());
-const locale = computed(
-  () =>
-    enabledLocales?.find((locale) => locale.locale === activeLocale.value)?.name
-);
+const locale = computed(() => enabledLocales?.find((locale) => locale.locale === activeLocale.value)?.name);
 
 const switchLocale = (locale: string) => {
   return setLocale(locale);

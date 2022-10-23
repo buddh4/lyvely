@@ -1,4 +1,4 @@
-import repository from "@/repository";
+import repository from '@/repository';
 import {
   Headers,
   ILoadUserResponse,
@@ -8,7 +8,7 @@ import {
   EndpointResult,
   LoginModel,
   IAuthService,
-} from "@lyvely/common";
+} from '@lyvely/common';
 
 const resource = ENDPOINT_AUTH;
 
@@ -22,10 +22,7 @@ export default {
     return repository.get<any>(`${resource}/config`);
   },
   async login(loginModel: LoginModel) {
-    return repository.post<EndpointResult<IAuthService["login"]>>(
-      `${resource}/login`,
-      loginModel
-    );
+    return repository.post<EndpointResult<IAuthService['login']>>(`${resource}/login`, loginModel);
   },
   async refresh(visitorId?: string | null) {
     return repository.post<IRefreshTokenResponse>(
@@ -33,8 +30,8 @@ export default {
       {},
       {
         skipAuthRefresh: true,
-        headers: { [Headers.X_VISITOR_ID]: visitorId || "" },
-      }
+        headers: { [Headers.X_VISITOR_ID]: visitorId || '' },
+      },
     );
   },
   async logout(visitorId?: string | null) {
@@ -43,8 +40,8 @@ export default {
       {},
       {
         skipAuthRefresh: true,
-        headers: { [Headers.X_VISITOR_ID]: visitorId || "" },
-      }
+        headers: { [Headers.X_VISITOR_ID]: visitorId || '' },
+      },
     );
   },
 };

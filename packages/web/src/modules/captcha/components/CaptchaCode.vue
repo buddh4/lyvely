@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { ref } from "vue";
-import { useCaptchaService } from "../services/captcha.service";
+import { ref } from 'vue';
+import { useCaptchaService } from '../services/captcha.service';
 
 const captchaService = useCaptchaService();
 
@@ -17,7 +17,7 @@ async function refresh() {
   imageUrl.value = challenge.value.imageUrl + `&v=${Date.now()}`;
 }
 
-defineExpose({ refresh })
+defineExpose({ refresh });
 
 await init();
 </script>

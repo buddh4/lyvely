@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import { useDark, useToggle } from "@vueuse/core";
-import { ref } from "vue";
+import { defineStore } from 'pinia';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { useDark, useToggle } from '@vueuse/core';
+import { ref } from 'vue';
 
-export const usePageStore = defineStore("page", () => {
+export const usePageStore = defineStore('page', () => {
   const showSidebar = ref(true);
   const isDark = useDark();
   const toggleDark = useToggle(isDark);
@@ -15,22 +15,21 @@ export const usePageStore = defineStore("page", () => {
   }
 
   function accessibilityFocus(elem: string | HTMLElement) {
-    const element: HTMLElement | null =
-      elem instanceof HTMLElement ? elem : document.querySelector(elem);
+    const element: HTMLElement | null = elem instanceof HTMLElement ? elem : document.querySelector(elem);
 
     if (!element) {
-      console.warn("Tried to focus non existing element");
+      console.warn('Tried to focus non existing element');
       return;
     }
 
-    element?.classList.add("focus-hidden");
+    element?.classList.add('focus-hidden');
     element?.focus();
     element?.addEventListener(
-      "blur",
+      'blur',
       () => {
-        element?.classList.remove("focus-hidden");
+        element?.classList.remove('focus-hidden');
       },
-      { once: true }
+      { once: true },
     );
   }
 
@@ -41,12 +40,12 @@ export const usePageStore = defineStore("page", () => {
   let loaderContexts = new Set<string>();
 
   function setShowAppLoader(contextOrShow: string | boolean, show?: boolean) {
-    if (typeof contextOrShow === "boolean") {
+    if (typeof contextOrShow === 'boolean') {
       show = contextOrShow;
       if (!contextOrShow) loaderContexts = new Set<string>();
     }
 
-    if (typeof contextOrShow === "string") {
+    if (typeof contextOrShow === 'string') {
       if (show) loaderContexts.add(contextOrShow);
       else loaderContexts.delete(contextOrShow);
     }
@@ -74,12 +73,12 @@ export function setPageTitle(title: Array<string> | string) {
   const profile = useProfileStore().profile;
 
   title = Array.isArray(title) ? title : [title];
-  let pageTitle = title.join(" - ");
+  let pageTitle = title.join(' - ');
 
-  if (pageTitle.length) pageTitle += " | ";
+  if (pageTitle.length) pageTitle += ' | ';
 
   if (profile) {
-    pageTitle += profile.name + " | ";
+    pageTitle += profile.name + ' | ';
   }
 
   pageTitle += import.meta.env.VITE_APP_BASEURL || window.location.hostname;

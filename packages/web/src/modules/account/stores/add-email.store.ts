@@ -1,18 +1,13 @@
-import { defineStore, storeToRefs } from "pinia";
-import { ref } from "vue";
-import { useAuthStore } from "@/modules/auth/store/auth.store";
-import {
-  AddEmailDto,
-  IFieldValidationResult,
-  ModelValidator,
-  UserEmailModel,
-} from "@lyvely/common";
-import { I18nModelValidator } from "@/modules/core/models/i18n-model.validator";
-import { AccountService } from "@/modules/account/services/account.service";
-import { loadingStatus, useStatus } from "@/store";
-import { useVerifyEmailStore } from "@/modules/account/stores/verify-email.store";
+import { defineStore, storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useAuthStore } from '@/modules/auth/store/auth.store';
+import { AddEmailDto, IFieldValidationResult, ModelValidator, UserEmailModel } from '@lyvely/common';
+import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
+import { AccountService } from '@/modules/account/services/account.service';
+import { loadingStatus, useStatus } from '@/store';
+import { useVerifyEmailStore } from '@/modules/account/stores/verify-email.store';
 
-export const useAddEmailStore = defineStore("add-email", () => {
+export const useAddEmailStore = defineStore('add-email', () => {
   const { user } = storeToRefs(useAuthStore());
   const verifyEmailStroe = useVerifyEmailStore();
   const accountService = new AccountService();
@@ -22,17 +17,17 @@ export const useAddEmailStore = defineStore("add-email", () => {
 
   const validator = ref(
     new I18nModelValidator(model.value, {
-      translationKey: "account.my_account.add_email.errors",
+      translationKey: 'account.my_account.add_email.errors',
       rules: {
         email: [
           (value: string, result: IFieldValidationResult) => {
             if (user.value?.findEmail(value)) {
-              result.errors!.push("email_exists");
+              result.errors!.push('email_exists');
             }
           },
         ],
       },
-    })
+    }),
   );
 
   async function addEmail() {
@@ -40,11 +35,9 @@ export const useAddEmailStore = defineStore("add-email", () => {
       return;
     }
 
-    return loadingStatus(
-      accountService.addEmail(model.value),
-      status,
-      validator.value as ModelValidator
-    ).then(handleAddEmailSuccess);
+    return loadingStatus(accountService.addEmail(model.value), status, validator.value as ModelValidator).then(
+      handleAddEmailSuccess,
+    );
   }
 
   function handleAddEmailSuccess() {

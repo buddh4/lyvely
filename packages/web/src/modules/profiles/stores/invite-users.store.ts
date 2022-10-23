@@ -1,17 +1,17 @@
-import { defineStore } from "pinia";
-import { useStatus } from "@/store";
-import { ref } from "vue";
-import { isValidEmail } from "@lyvely/common";
+import { defineStore } from 'pinia';
+import { useStatus } from '@/store';
+import { ref } from 'vue';
+import { isValidEmail } from '@lyvely/common';
 
-export const useInviteUsersStore = defineStore("invite-user", () => {
+export const useInviteUsersStore = defineStore('invite-user', () => {
   const status = useStatus();
   const showModal = ref(false);
   const emails = ref<string[]>([]);
-  const emailInput = ref("");
+  const emailInput = ref('');
 
   function addEmails() {
     const emailsArr = emailInput.value
-      .split(",")
+      .split(',')
       .map((email) => email.trim())
       .filter((email) => email?.length && !emails.value.includes(email));
     const invalidEmailsArr = emailsArr.filter((email) => !isValidEmail(email));
@@ -21,12 +21,10 @@ export const useInviteUsersStore = defineStore("invite-user", () => {
       emails.value.push(...validEmailsArr);
     }
 
-    emailInput.value = invalidEmailsArr.length
-      ? invalidEmailsArr.join(", ")
-      : "";
+    emailInput.value = invalidEmailsArr.length ? invalidEmailsArr.join(', ') : '';
 
     if (invalidEmailsArr.length) {
-      status.setError("profile.invite.email-invalid");
+      status.setError('profile.invite.email-invalid');
     } else {
       status.resetStatus();
     }
@@ -44,7 +42,7 @@ export const useInviteUsersStore = defineStore("invite-user", () => {
 
   function validate() {
     if (!emails.value.length) {
-      status.setError("profile.invite.email-empty");
+      status.setError('profile.invite.email-empty');
       return false;
     }
     return true;

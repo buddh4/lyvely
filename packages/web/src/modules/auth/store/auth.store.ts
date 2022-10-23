@@ -1,36 +1,27 @@
-import { defineStore } from "pinia";
-import { setLocale } from "@/i18n";
-import { localStorageManager, sessionStorageManager } from "@/util/storage";
-import { ref, computed } from "vue";
-import createAuthRefreshInterceptor from "axios-auth-refresh";
-import repository from "@/repository";
-import { eventBus } from "@/modules/core/events/global.emitter";
-import { getDefaultLocale } from "@/util";
-import { AuthService } from "@/modules/auth/services/auth.service";
-import {
-  ILoginResponse,
-  UserModel,
-  queuePromise,
-  UserStatus,
-} from "@lyvely/common";
-import { useAppConfigStore } from "@/modules/app-config/store/app-config.store";
-import { usePageStore } from "@/modules/core/store/page.store";
+import { defineStore } from 'pinia';
+import { setLocale } from '@/i18n';
+import { localStorageManager, sessionStorageManager } from '@/util/storage';
+import { ref, computed } from 'vue';
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
+import repository from '@/repository';
+import { eventBus } from '@/modules/core/events/global.emitter';
+import { getDefaultLocale } from '@/util';
+import { AuthService } from '@/modules/auth/services/auth.service';
+import { ILoginResponse, UserModel, queuePromise, UserStatus } from '@lyvely/common';
+import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
+import { usePageStore } from '@/modules/core/store/page.store';
 
-export const storedVid = localStorageManager.getStoredValue("visitorId");
+export const storedVid = localStorageManager.getStoredValue('visitorId');
 
-export const useAuthStore = defineStore("user-auth", () => {
+export const useAuthStore = defineStore('user-auth', () => {
   const user = ref<UserModel>();
   const appConfigStore = useAppConfigStore();
   const authService = new AuthService();
   const authTokenExpiration = ref(0);
   const locale = computed(() => {
-    return (
-      user.value?.locale || getDefaultLocale(appConfigStore.get("locales"))
-    );
+    return user.value?.locale || getDefaultLocale(appConfigStore.get('locales'));
   });
-  const visitorId = ref<string | undefined>(
-    <string | undefined>storedVid.getValue()
-  );
+  const visitorId = ref<string | undefined>(<string | undefined>storedVid.getValue());
 
   const isAuthenticated = computed(() => !!visitorId.value);
 
@@ -58,7 +49,7 @@ export const useAuthStore = defineStore("user-auth", () => {
     // TODO: If logout request fails we should set an additional header assuring to logout on next valid request
     clear();
     // We use document.location instead of router here in order to force stores to be cleared
-    document.location = "/";
+    document.location = '/';
   }
 
   function isAwaitingEmailVerification() {
@@ -91,11 +82,11 @@ export const useAuthStore = defineStore("user-auth", () => {
   async function refreshToken() {
     if (!isAuthenticated.value || !visitorId.value) return Promise.reject();
 
-    return queuePromise("auth-store-refresh", () =>
-      authService.refresh(visitorId.value!)
-    ).then(({ token_expiration }) => {
-      authTokenExpiration.value = token_expiration;
-    });
+    return queuePromise('auth-store-refresh', () => authService.refresh(visitorId.value!)).then(
+      ({ token_expiration }) => {
+        authTokenExpiration.value = token_expiration;
+      },
+    );
   }
 
   return {
@@ -135,20 +126,15 @@ const authRepositoryPlugin = () => {
         ? Math.max(authTokenExpiration - 5_000, 5_000)
         : Math.max(authTokenExpiration - 30_000, 30_000);
 
-    if (
-      authStore.isAuthenticated &&
-      Date.now() - lastRefresh > refreshInterval
-    ) {
-      requestToken().then(() =>
-        setTimeout(autoRefreshTokenInterval, refreshInterval)
-      );
+    if (authStore.isAuthenticated && Date.now() - lastRefresh > refreshInterval) {
+      requestToken().then(() => setTimeout(autoRefreshTokenInterval, refreshInterval));
     } else {
       setTimeout(autoRefreshTokenInterval, refreshInterval);
     }
   };
 
   repository.interceptors.request.use(function (config) {
-    if (typeof config.skipAuthRefresh !== "boolean") {
+    if (typeof config.skipAuthRefresh !== 'boolean') {
       config.skipAuthRefresh = !useAuthStore().isAuthenticated;
     }
     return config;
@@ -165,7 +151,7 @@ const authRepositoryPlugin = () => {
     return requestToken();
   });
 
-  eventBus.on("app.mount.post", () => {
+  eventBus.on('app.mount.post', () => {
     setTimeout(autoRefreshTokenInterval, authTokenExpiration);
   });
 };
