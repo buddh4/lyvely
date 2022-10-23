@@ -57,11 +57,6 @@ const menuItems: IMenuItem[] = [
     icon: 'settings',
     label: 'profile.settings.label',
   },
-  {
-    click: () => authStore.logout().then(() => location.reload()),
-    icon: 'logout',
-    label: 'auth.logout',
-  },
 ];
 
 const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer'];
@@ -89,7 +84,6 @@ const ariaLabel = computed(() =>
     profile: useProfileStore()?.profile?.name,
   }),
 );
-
 </script>
 
 <template>

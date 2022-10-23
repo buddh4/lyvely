@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import imgUrl from '@/assets/404.png';
-
 </script>
 
 <template>
