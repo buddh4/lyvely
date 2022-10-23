@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { toRefs } from "vue";
 
-interface IProps {
+export interface IProps {
   label: string;
   route?: string;
   icon?: string;

@@ -2,7 +2,7 @@
 import { computed, withDefaults } from "vue";
 import { parseInt } from "lodash";
 
-interface IProps {
+export interface IProps {
   max: number;
   selection?: number;
   min?: number;

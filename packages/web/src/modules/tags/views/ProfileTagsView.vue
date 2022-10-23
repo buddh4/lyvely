@@ -121,7 +121,7 @@ onMounted(() => usePageStore().accessibilityFocus(".list-page-headline"));
       </div>
     </div>
     <div v-if="!tags.length" class="p-5 border-divide">
-      <span v-if="filter.isActive">{{ $t("filter.empty") }}</span>
+      <span v-if="filter.isActive()">{{ $t("filter.empty") }}</span>
       <span v-else>{{ $t("list.empty") }}</span>
     </div>
   </list-page>

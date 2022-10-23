@@ -5,7 +5,7 @@ import { StyleDefinition } from "@/util/component.types";
 import { IconOptionsIF } from "@/modules/ui/types";
 import { includesUtilityClass } from "@/modules/ui/utils";
 
-interface IProps {
+export interface IProps {
   name?: IconName;
   title?: string;
   options?: IconOptionsIF;

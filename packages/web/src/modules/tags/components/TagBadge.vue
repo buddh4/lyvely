@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { TagModel } from "@lyvely/common";
-import LyBadge from "@/modules/ui/components/badge/BadgeText.vue";
 
-interface IProps {
+export interface IProps {
   tag: TagModel;
 }
 

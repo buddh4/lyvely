@@ -1,15 +1,10 @@
-import {
-  ComponentOptions,
-  computed,
-  ComputedRef,
-  ref,
-  SetupContext,
-  inject,
-} from "vue";
-import { merge, uniqueId } from "lodash";
-import { CssClassDefinition } from "@/util/component.types";
-import { ModelValidator } from "@lyvely/common";
-import slugify from "slugify";
+import { ComponentOptions, computed, ComputedRef, ref, SetupContext, inject } from 'vue';
+import { merge, uniqueId } from 'lodash';
+import { CssClassDefinition } from '@/util/component.types';
+import { ModelValidator } from '@lyvely/common';
+import slugify from 'slugify';
+
+export type AllowedInputValueTypes = string | number | string[] | boolean | undefined;
 
 export interface IFormModelData<T extends object = any> {
   id?: string;
@@ -33,10 +28,10 @@ export interface IBaseInputProps {
   inputClass?: string;
   wrapperClass?: string;
   autocomplete?: boolean | string;
-  ariaDescribedby: boolean;
+  ariaDescribedby?: string;
   error?: string;
   loading?: boolean;
-  autoValidation: boolean;
+  autoValidation?: boolean;
 }
 
 export function useBaseInputProps() {
@@ -56,9 +51,9 @@ export function useBaseInputProps() {
     loading: { type: Boolean, default: false },
     ariaDescribedby: { type: String, default: undefined },
     modelValue: {},
-    inputClass: {},
-    wrapperClass: {},
-    error: undefined,
+    inputClass: { type: String, default: undefined },
+    wrapperClass: { type: String, default: undefined },
+    error: { type: String, default: undefined },
   };
 }
 
@@ -66,83 +61,69 @@ export interface IBaseInputSetupOptions {
   inputClass?: string;
 }
 
-function getComputedInputValue<T>(
+function getComputedInputValue<T extends AllowedInputValueTypes = any>(
   props: IBaseInputProps,
   emit: any,
-  formModelData?: IFormModelData
+  formModelData?: IFormModelData,
 ) {
   const model = formModelData?.model;
   const property = props.property;
 
   return model && property
-    ? computed({
+    ? computed<T>({
         get: () => model[property],
         set: (val: T) => (model[property] = val),
       })
-    : computed({
+    : computed<T>({
         get: () => props.modelValue,
-        set: (val: T) => emit("update:modelValue", val),
+        set: (val: T) => emit('update:modelValue', val),
       });
 }
 
-function getComputedInputLabel(
-  props: IBaseInputProps,
-  formModelData?: IFormModelData
-) {
+function getComputedInputLabel(props: IBaseInputProps, formModelData?: IFormModelData) {
   const labelKey = formModelData?.labelKey;
   const property = props.property;
 
   return computed(() => {
     if (props.label) return props.label;
-    if (labelKey && props.property) return labelKey + "." + property;
-    return "";
+    if (labelKey && props.property) return labelKey + '.' + property;
+    return '';
   });
 }
 
 function getComputedCssClasses(
   props: IBaseInputProps,
   options: IBaseInputSetupOptions,
-  inputError: ComputedRef<string | undefined>
+  inputError: ComputedRef<string | undefined>,
 ) {
   return computed(() => {
     let result: CssClassDefinition = [];
 
-    result.push({ "is-invalid": !!inputError.value?.length });
+    result.push({ 'is-invalid': !!inputError.value?.length });
 
     if (props.inputClass) {
-      result = result.concat(
-        Array.isArray(props.inputClass) ? props.inputClass : [props.inputClass]
-      );
+      result = result.concat(Array.isArray(props.inputClass) ? props.inputClass : [props.inputClass]);
     }
 
     if (options.inputClass) {
-      result = result.concat(
-        Array.isArray(options.inputClass)
-          ? options.inputClass
-          : [options.inputClass]
-      );
+      result = result.concat(Array.isArray(options.inputClass) ? options.inputClass : [options.inputClass]);
     }
 
-    if (!props.label) {
-      result.push("no-label");
+    if (!props.label && !props.property) {
+      result.push('no-label');
     }
 
     if (props.loading) {
-      result.push("loading");
+      result.push('loading');
     }
 
     return result;
   });
 }
 
-function getComputedInputError(
-  props: IBaseInputProps,
-  formModelData?: IFormModelData<any>
-) {
+function getComputedInputError(props: IBaseInputProps, formModelData?: IFormModelData<any>) {
   return computed(() =>
-    formModelData?.validator && props.property
-      ? formModelData.validator.getError(props.property)
-      : props.error
+    formModelData?.validator && props.property ? formModelData.validator.getError(props.property) : props.error,
   );
 }
 
@@ -155,43 +136,38 @@ function getId(props: IBaseInputProps, formModelData?: IFormModelData) {
     return slugify(`${formModelData.id}-${props.property}`, { lower: true });
   }
 
-  return uniqueId("input");
+  return uniqueId('input');
 }
 
 function getComputedAutoCompleteValue(props: IBaseInputProps) {
   return computed(() => {
-    if (!props.autocomplete || props.autocomplete === "false") {
-      return "off";
+    if (!props.autocomplete || props.autocomplete === 'false') {
+      return 'off';
     }
 
-    if (props.autocomplete === true || props.autocomplete === "true") {
-      return "on";
+    if (props.autocomplete === true || props.autocomplete === 'true') {
+      return 'on';
     }
 
     return props.autocomplete;
   });
 }
 
-export function useBaseInputSetup<T = unknown>(
+export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
   props: IBaseInputProps,
   { emit }: SetupContext,
-  options: IBaseInputSetupOptions = {}
+  options: IBaseInputSetupOptions = {},
 ) {
   const root = ref<HTMLElement | null>(null);
-  const formModelData = inject<IFormModelData | undefined>(
-    "formModelData",
-    undefined
-  );
+  const formModelData = inject<IFormModelData | undefined>('formModelData', undefined);
   const validator = formModelData?.validator;
   const useAutoValidation =
-    formModelData?.autoValidation !== false &&
-    props.autoValidation &&
-    validator &&
-    props.property?.length;
+    formModelData?.autoValidation !== false && props.autoValidation && validator && props.property?.length;
 
   const inputError = getComputedInputError(props, formModelData);
 
   return {
+    showHelpText: ref(false),
     inputId: getId(props, formModelData),
     inputValue: getComputedInputValue<T>(props, emit, formModelData),
     inputClass: getComputedCssClasses(props, options, inputError),
@@ -199,19 +175,14 @@ export function useBaseInputSetup<T = unknown>(
     inputError: inputError,
     label: getComputedInputLabel(props, formModelData),
     editable: computed(() => !props.disabled && !props.readonly),
-    hasFocus: computed(
-      () =>
-        root.value &&
-        document.activeElement &&
-        root.value.contains(document.activeElement)
-    ),
+    hasFocus: computed(() => root.value && document.activeElement && root.value.contains(document.activeElement)),
     onChange: (evt: any) => {
       if (useAutoValidation || inputError.value) {
         validator!.validateField(props.property!).then(() => {
-          emit("change", evt);
+          emit('change', evt);
         });
       } else {
-        emit("change", evt);
+        emit('change', evt);
       }
     },
     onFocusOut: () => {
@@ -234,7 +205,7 @@ export function baseInputDef(def?: ComponentOptions): ComponentOptions {
       wrapperClass: {},
       error: undefined,
     },
-    emits: ["update:modelValue", "change"],
+    emits: ['update:modelValue', 'change'],
   };
 
   return (def ? merge({}, def, baseDef) : baseDef) as ComponentOptions;

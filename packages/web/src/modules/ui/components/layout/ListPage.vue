@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-interface IProps {
+export interface IProps {
   title: string;
   ariaLabel?: string;
   icon?: string;

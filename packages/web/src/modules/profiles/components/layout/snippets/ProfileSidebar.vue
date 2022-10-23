@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { computed, ref, toRefs, watch } from "vue";
-import { RouteLocation } from "vue-router";
+import { RouteLocationRaw } from "vue-router";
 import { translate } from "@/i18n";
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import { usePageStore } from "@/modules/core/store/page.store";
@@ -9,7 +9,7 @@ import { watchMaxSize, isMaxViewSize } from "@/util/media";
 import { isMultiUserProfile } from "@lyvely/common";
 
 interface IMenuItem {
-  to?: Partial<RouteLocation> | string;
+  to?: RouteLocationRaw | string;
   click?: { (): void };
   icon: string;
   label: string;
@@ -136,7 +136,7 @@ const ariaLabel = computed(() =>
                 </transition>
               </a>
               <router-link
-                v-else
+                v-if="menuItem.to"
                 :class="menuItemClasses"
                 class="flex no-wrap items-center h-12"
                 :to="menuItem.to"

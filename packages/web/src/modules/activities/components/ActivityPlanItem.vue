@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from "@/modules/activities/components/ItemCheckboxList.vue";
-import { ActivityModel, ActivityType, TaskModel } from "@lyvely/common";
+import { ActivityType, TaskModel, ActivityModel } from "@lyvely/common";
 import {
   IMoveActivityEvent,
   useActivityStore,
@@ -14,7 +14,7 @@ import { useTaskPlanStore } from "@/modules/activities/store/task-plan.store";
 import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibility.store";
 import { translate } from "@/i18n";
 
-interface IProps {
+export interface IProps {
   model: ActivityModel;
 }
 
@@ -146,6 +146,10 @@ function afterMove(evt: IMoveActivityEvent) {
   );
 }
 
+const min = computed(() => model.value.dataPointConfig.min || 1);
+const max = computed(() => model.value.dataPointConfig.max || 1);
+const optimal = computed(() => model.value.dataPointConfig.optimal);
+
 //TODO: Maybe implement move to next interval with Ctrl + Left/Right
 </script>
 
@@ -174,9 +178,9 @@ function afterMove(evt: IMoveActivityEvent) {
     <template v-if="isHabit" #rating>
       <ItemCheckboxList
         v-model:selection="selection"
-        :min="model.dataPointConfig.min"
-        :max="model.dataPointConfig.max"
-        :optimal="model.dataPointConfig.optimal"
+        :min="min"
+        :max="max"
+        :optimal="optimal"
         :disabled="isDisabled"
       />
     </template>

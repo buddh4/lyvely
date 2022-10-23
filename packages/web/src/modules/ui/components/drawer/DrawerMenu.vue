@@ -5,11 +5,7 @@ import { storeToRefs } from "pinia";
 import { suggestFocusElement } from "@/modules/ui/utils";
 import { usePageStore } from "@/modules/core/store/page.store";
 
-const pageStore = usePageStore();
-
-const { activeDrawer } = storeToRefs(pageStore);
-
-interface IProps {
+export interface IProps {
   modelValue: boolean;
   id?: string;
   title?: string;
@@ -21,6 +17,10 @@ const props = withDefaults(defineProps<IProps>(), {
   title: undefined,
   prevAutoFocus: false,
 });
+
+const pageStore = usePageStore();
+
+const { activeDrawer } = storeToRefs(pageStore);
 
 const drawerId = uniqueId("drawer");
 const zIndex = ref(20);

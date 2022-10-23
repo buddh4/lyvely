@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { Size } from "@/modules/ui/types";
 
-interface IProps {
+export interface IProps {
   title?: string;
   width?: "xs" | "sm" | "lg" | "xl" | "full";
 }

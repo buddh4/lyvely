@@ -31,18 +31,18 @@ import {
   useBaseInputProps,
 } from "@/modules/ui/components/form/BaseInput";
 import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInput";
-import { SetupContext } from "vue";
+import { PropType, SetupContext } from "vue";
 import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
 
-interface IProps extends IBaseInputProps {
-  type: string;
+export interface IProps extends IBaseInputProps {
+  options: Array<{ label: string, value: any }>
 }
 
 export default {
   components: { FloatingInputLayout },
   props: {
     ...useBaseInputProps(),
-    options: { type: Array, required: true },
+    options: { type: Array as PropType<Array<{ label: string, value: any }>>, required: true },
   },
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {

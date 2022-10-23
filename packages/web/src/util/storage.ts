@@ -9,7 +9,7 @@ type StorageValueEvents = {
   update: string | undefined;
 };
 
-class StoredValue extends DelegateEmitter<StorageValueEvents> {
+export class StoredValue extends DelegateEmitter<StorageValueEvents> {
   private readonly storage: StorageWrapper;
   readonly key: string;
   private cache?: string;

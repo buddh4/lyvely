@@ -2,7 +2,7 @@ import { registerFont, createCanvas } from 'canvas';
 import { randomInt } from 'crypto';
 import path from 'path';
 
-console.log(path.resolve(__dirname, './PunctureRegular.ttf'));
+registerFont(path.resolve(__dirname, './PunctureRegular.ttf'), { family: 'PunctureRegular' });
 
 interface CaptchaOptions {
   font?: string;
@@ -43,7 +43,6 @@ export function generateCaptcha(options: CaptchaOptions = {}): { image: Buffer; 
 }
 
 function initCanvas(options: CaptchaOptions) {
-  registerFont(path.resolve(__dirname, './PunctureRegular.ttf'), { family: 'PunctureRegular' });
   const canvas = createCanvas(options.width, options.height);
   const context = canvas.getContext('2d');
   context.fillStyle = getBackgroundColor(options);
@@ -64,7 +63,7 @@ export function generateCaptchaToken(options = {} as CaptchaOptions) {
 
 function drawCaptchaTokenText(context: CanvasRenderingContext2D, options: CaptchaOptions) {
   let x = 0;
-  const y = 20;
+  const y = 0;
 
   context.font = `${options.fontSize} ${options.font}`;
   context.textBaseline = 'top';

@@ -10,8 +10,9 @@ import { computed, ref, toRefs } from "vue";
 import { onClickOutside } from "@vueuse/core";
 import { translate } from "@/i18n";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
+import { getDefaultLocale } from "@/util";
 
-interface IProps {
+export interface IProps {
   interval: CalendarIntervalEnum;
   createButtonTitle: string;
   count: number;
@@ -38,7 +39,7 @@ const isUnscheduled = props.interval === CalendarIntervalEnum.Unscheduled;
 function getAccessibleTitle(d: Date) {
   let title = calendarPlan.getAccessibleTitle(
     d,
-    isWeekly ? profileLocale : userLocale
+      (isWeekly ? profileLocale : userLocale) || getDefaultLocale()
   );
 
   if (isDaily && isTodayUtil(d)) {
@@ -53,7 +54,7 @@ function getAccessibleTitle(d: Date) {
  * TODO: (week of day) make this configurable in profile independently of locale
  */
 const title = computed(() =>
-  calendarPlan.getTitle(date.value, isWeekly ? profileLocale : userLocale)
+  calendarPlan.getTitle(date.value, (isWeekly ? profileLocale : userLocale) || getDefaultLocale())
 );
 const accessibleTitle = computed(() => getAccessibleTitle(date.value));
 const showTodayIcon = computed(() => isDaily && !isToday.value);
@@ -128,7 +129,7 @@ function decrementTiming() {
       class="calendar-plan-title text-body select-none"
       :aria-controls="itemsId"
       :aria-label="accessibleTitle"
-      :aria-expanded="collapsed ? 'no' : 'yes'"
+      :aria-expanded="collapsed ? 'false' : 'true'"
       @click="toggleContent"
     >
       <span aria-hidden="true">

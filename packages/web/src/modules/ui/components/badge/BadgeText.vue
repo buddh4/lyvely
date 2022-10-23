@@ -3,7 +3,7 @@ import { computed, toRefs } from "vue";
 import { StyleDefinition } from "@/util/component.types";
 import { getContrast, includesUtilityClass } from "@/modules/ui/utils";
 
-interface IProps {
+export interface IProps {
   text?: string;
   color?: string;
   textColor?: string;

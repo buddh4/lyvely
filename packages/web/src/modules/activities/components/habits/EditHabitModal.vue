@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import useEditActivityModal from "../useEditActivityModal";
 import VueMultiselect from "vue-multiselect";
-import LyScreenReaderValidationError from "@/modules/ui/components/error/ScreenReaderValidationError.vue";
 
 const {
   model,
@@ -19,6 +18,7 @@ const {
 
 <template>
   <ly-modal
+    v-if="model && validator"
     v-model="showModal"
     :title="modalTitle"
     @submit="submit"
@@ -108,7 +108,7 @@ const {
     </fieldset>
 
     <ly-alert :message="error" class="mt-2" />
-    <ly-screen-reader-validation-error :errors="validator.getErrors()" />
+    <ly-screen-reader-validation-error :errors="validator?.getErrors()" />
   </ly-modal>
 </template>
 

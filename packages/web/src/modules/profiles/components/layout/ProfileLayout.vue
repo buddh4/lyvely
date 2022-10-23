@@ -7,7 +7,7 @@ import { useAuthStore } from "@/modules/auth/store/auth.store";
 import CreateProfileModal from "../modals/CreateProfileModal.vue";
 import InviteUsersModal from "../modals/InviteUsersModal.vue";
 
-interface IProps {
+export interface IProps {
   containerWidth?: "xs" | "sm" | "lg" | "xl" | "full";
   requireAuth?: boolean;
 }

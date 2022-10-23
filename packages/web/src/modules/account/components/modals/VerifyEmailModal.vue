@@ -16,7 +16,6 @@ const { showModal, model, status, validator } = storeToRefs(addEmailStore);
   >
     <otp-input
       v-model="model.otp"
-      v-model:is-valid="isValidOtp"
       :has-error="validator.hasErrors()"
       :email="model.email"
     />

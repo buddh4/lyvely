@@ -2,6 +2,8 @@
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
+    "outDir": "dist",
+    "declaration": true,
     "strict": true,
     "strictPropertyInitialization": false,
     "importHelpers": true,
@@ -16,12 +18,12 @@
     "sourceMap": false,
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types", "../../node_modules/@types", "./src/types"],
-    "types": [
-      "webpack-env"
-    ],
     "paths": {
       "@/*": ["src/*"],
     },
+    "types": [
+      "reflect-metadata"
+    ],
     "lib": [
       "esnext",
       "dom",

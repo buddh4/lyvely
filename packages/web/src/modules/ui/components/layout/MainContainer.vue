@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { Size } from "@/modules/ui/types";
 
-interface IProps {
+export interface IProps {
   width?: "xs" | "sm" | "lg" | "xl" | "full";
   // TODO: GUEST - check guest access config
   requireAuth?: boolean;

@@ -2,7 +2,7 @@
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import { computed } from "vue";
 
-interface IProps {
+export interface IProps {
   tagIds: string[];
   feature?: string;
 }

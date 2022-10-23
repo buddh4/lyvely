@@ -10,7 +10,7 @@ const { profile } = storeToRefs(profileStore);
 </script>
 
 <template>
-  <list-page title="profile.users.title" icon="users">
+  <list-page v-if="profile" title="profile.users.title" icon="users">
     <template #header-right>
       <ly-button
         class="secondary outlined mr-0.5 inline-flex items-center text-xs py-0 px-1"

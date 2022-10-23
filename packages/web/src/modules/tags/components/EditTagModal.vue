@@ -4,9 +4,6 @@ import { storeToRefs } from "pinia";
 import { Sketch } from "@ckpack/vue-color";
 import { onClickOutside } from "@vueuse/core";
 import { useEditTagStore } from "@/modules/tags/stores/editTagStore";
-import LyInputText from "@/modules/ui/components/form/TextInput.vue";
-import LyInputTextarea from "@/modules/ui/components/form/TextareaInput.vue";
-import LyInputCheckbox from "@/modules/ui/components/form/CheckboxInput.vue";
 
 const tagEditStore = useEditTagStore();
 
@@ -50,7 +47,7 @@ const { validator } = storeToRefs(tagEditStore);
 </script>
 
 <template>
-  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit">
+  <ly-modal v-if="model && validator" v-model="showModal" :title="modalTitle" @submit="submit">
     <div>
       <div
         ref="colorInput"

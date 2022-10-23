@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import { ref } from "vue";
-import LyInputText from "@/modules/ui/components/form/TextInput.vue";
-import LyProfileAvatar from "@/modules/profiles/components/ProfileAvatar.vue";
-import LyInputTextarea from "@/modules/ui/components/form/TextareaInput.vue";
-import LyButton from "@/modules/ui/components/button/StyledButton.vue";
 
 const profileStore = useProfileStore();
 const name = ref(profileStore.profile?.name);

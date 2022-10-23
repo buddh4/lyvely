@@ -25,7 +25,7 @@ const userEmails = computed(() => {
 </script>
 
 <template>
-  <list-page title="account.my_account.info.label" class="mb-2" icon="info">
+  <list-page v-if="user" title="account.my_account.info.label" class="mb-2" icon="info">
     <table class="border-collapse text-sm w-full bg-main rounded">
       <tr>
         <th class="p-3 text-left border-b border-divide">
@@ -54,7 +54,7 @@ const userEmails = computed(() => {
     </table>
   </list-page>
 
-  <list-page title="account.my_account.info.emails" icon="email">
+  <list-page v-if="user" title="account.my_account.info.emails" icon="email">
     <template #header-right>
       <add-button @click="showAddEmailModal = true" />
     </template>

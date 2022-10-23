@@ -2,12 +2,11 @@
 import TagList from "@/modules/tags/components/TagList.vue";
 import TimingListEntryMenu from "@/modules/calendar/components/CalendarPlanItemMenu.vue";
 import { useCalendarPlanStore } from "@/modules/calendar/store";
-import { TimingModel } from "@lyvely/common";
+import { TimeSeriesContentModel } from "@lyvely/common";
 import { computed, toRefs } from "vue";
-import LyBadge from "@/modules/ui/components/badge/BadgeText.vue";
 
-interface IProps {
-  model: TimingModel;
+export interface IProps {
+  model: TimeSeriesContentModel;
   draggable?: boolean;
 }
 

@@ -92,7 +92,7 @@ const roundButton = commonButtonClassNames + " px-1 rounded";
       <ly-button
         :class="pillButton"
         :active="!activeTagId"
-        @click="setTagFilter(null)"
+        @click="setTagFilter()"
       >
         {{ $t("filter.all") }}
       </ly-button>

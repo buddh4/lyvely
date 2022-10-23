@@ -15,7 +15,7 @@
       :readonly="readonly"
       :class="inputClass"
       type="text"
-      inputmode="number"
+      inputmode="numeric"
       @change="$emit('change')"
     />
     <div v-if="slider && editable" class="number-slider">
@@ -34,9 +34,9 @@ import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInpu
 import { computed, SetupContext } from "vue";
 import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
 
-interface IProps extends IBaseInputProps {
-  steps: number;
-  slider: boolean;
+export interface IProps extends IBaseInputProps {
+  steps?: number;
+  slider?: boolean;
   min?: number;
   max?: number;
 }
@@ -88,11 +88,11 @@ export default {
     }
 
     function increment() {
-      baseInput.inputValue.value = baseInput.inputValue.value + props.steps;
+      baseInput.inputValue.value = baseInput.inputValue.value + props.steps!;
     }
 
     function decrement() {
-      baseInput.inputValue.value = baseInput.inputValue.value - props.steps;
+      baseInput.inputValue.value = baseInput.inputValue.value - props.steps!;
     }
 
     const buttonClass =

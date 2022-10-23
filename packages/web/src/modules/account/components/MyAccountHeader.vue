@@ -20,7 +20,7 @@ const userProfileCount = profileRelations.profiles.filter(
 </script>
 
 <template>
-  <div class="flex items-center justify-center">
+  <div v-if="user" class="flex items-center justify-center">
     <div class="m-5">
       <ly-user-avatar class="w-16 h-16 text-xl" />
     </div>

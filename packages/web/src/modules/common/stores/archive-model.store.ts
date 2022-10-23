@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { Archivable } from "@lyvely/common";
+import { IArchivable } from "@lyvely/common";
 
 interface IArchiveModelRepository<TID = string> {
   archive: (id: TID) => Promise<AxiosResponse<boolean>>;
@@ -7,7 +7,7 @@ interface IArchiveModelRepository<TID = string> {
 }
 
 export interface IArchiveModelStoreOptions<
-  TModel extends Archivable,
+  TModel extends IArchivable,
   TID = string
 > {
   repository:
@@ -16,7 +16,7 @@ export interface IArchiveModelStoreOptions<
   onSubmitSuccess?: (model: TModel, val: boolean) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
-export default function <TModel extends Archivable, TID = string>(
+export default function <TModel extends IArchivable, TID = string>(
   options: IArchiveModelStoreOptions<TModel, TID>
 ) {
   async function archiveModel(modelId: TID, model: TModel) {

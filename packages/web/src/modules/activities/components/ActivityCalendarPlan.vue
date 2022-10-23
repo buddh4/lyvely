@@ -9,7 +9,7 @@ import { computed } from "vue";
 import { useActivityStore } from "@/modules/activities/store/activity.store";
 import draggable from "vuedraggable";
 
-interface IProps {
+export interface IProps {
   interval: number;
   type: ActivityType;
 }

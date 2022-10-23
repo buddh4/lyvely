@@ -28,10 +28,6 @@ import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInpu
 import { SetupContext } from "vue";
 import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
 
-interface IProps extends IBaseInputProps {
-  type: string;
-}
-
 export default {
   components: { FloatingInputLayout },
   inject: ["model", "validator"],
@@ -40,8 +36,8 @@ export default {
     rows: { type: Number, default: 3 },
   },
   emits: ["change", "update:modelValue"],
-  setup(props: IProps, context: SetupContext) {
-    return useFloatingInputSetup(props, context);
+  setup(props: IBaseInputProps, context: SetupContext) {
+    return useFloatingInputSetup<string>(props, context);
   },
   mounted() {
     if (this.autofocus) this.$refs.input.focus();

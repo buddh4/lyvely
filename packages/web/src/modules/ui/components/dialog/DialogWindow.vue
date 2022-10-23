@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
-const emit = defineEmits(["update:modelValue"]);
-
-interface IProps {
+export interface IProps {
   icon?: string;
   iconColor?: string;
   iconClass?: string;
@@ -20,10 +18,22 @@ const props = withDefaults(defineProps<IProps>(), {
   iconClass: undefined,
 });
 
+const emit = defineEmits(["update:modelValue"]);
+
 const visible = computed({
   get: () => props.modelValue,
   set: (val) => emit("update:modelValue", val),
 });
+
+const modalBinds = computed(() => {
+  return {
+    icon: props.icon,
+    iconColor: props.iconColor,
+    iconClass: props.iconClass,
+    title: props.title,
+    message: props.message,
+  }
+})
 
 const reload = () => {
   document.location = "/";
@@ -33,12 +43,13 @@ const reload = () => {
 <template>
   <ly-modal
     v-model="visible"
-    v-bind="props"
-    :title="title"
+    v-bind="modalBinds"
     :back-button="false"
     :submit-button="false"
   >
-    {{ $t(message) }}
+    <template v-if="message">
+      {{ $t(message) }}
+    </template>
 
     <template #footer>
       <ly-button

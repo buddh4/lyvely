@@ -47,10 +47,10 @@ function getProfileIcon(relation: ProfileRelationInfo) {
       </div>
     </li>
     <li>
-      <ly-divided-list>
+      <ly-divided-list v-if="profile">
         <ly-list-item
           v-for="relation in profileRelations.profiles"
-          :key="relation.pid"
+          :key="relation.id"
           :active="profile.id === relation.id"
           @click="setProfile(relation.id)"
         >

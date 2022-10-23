@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { IConfirmOptions } from "@/modules/ui/components/modal/IConfirmOptions";
 
-interface IProps {
+export interface IProps {
   modelValue: boolean;
   title?: string;
   text?: string;

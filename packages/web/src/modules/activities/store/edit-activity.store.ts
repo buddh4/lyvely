@@ -20,7 +20,7 @@ import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import useEditModelStore from "@/modules/common/stores/edit-model.store";
 import { findFocusable } from "@/modules/ui/utils";
 
-type EditModel = UpdateHabitDto | UpdateTaskDto;
+type EditModel = UpdateHabitDto & UpdateTaskDto;
 type EditResponseModel = EditTaskResponseDto | UpdateHabitResponseDto;
 
 export const useActivityEditStore = defineStore("activityEdit", () => {

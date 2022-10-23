@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-interface IProps {
+export interface IProps {
   label?: string;
   inputId: string;
   inputError?: string;

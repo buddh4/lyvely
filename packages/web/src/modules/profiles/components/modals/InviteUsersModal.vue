@@ -2,8 +2,6 @@
 import { storeToRefs } from "pinia";
 import { watch } from "vue";
 import { useInviteUsersStore } from "@/modules/profiles/stores/invite-users.store";
-import LyInputText from "@/modules/ui/components/form/TextInput.vue";
-import LyAlert from "@/modules/ui/components/alert/AlertBlock.vue";
 
 const inviteUserStore = useInviteUsersStore();
 

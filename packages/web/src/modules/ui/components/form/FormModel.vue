@@ -4,7 +4,7 @@ import { ModelValidator } from "@lyvely/common";
 import { StoreStatusPlugin } from "@/store";
 import { IFormModelData } from "@/modules/ui/components/form/BaseInput";
 
-interface IProps {
+export interface IProps {
   id?: string;
   modelValue: object;
   validator?: ModelValidator;

@@ -84,7 +84,7 @@ export const defaultFetchOptions = {
 export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
 
 export abstract class AbstractDao<T extends BaseEntity<T>> {
-  protected model: Model<any>;
+  protected abstract model: Model<any>;
 
   @Inject()
   private eventEmitter: EventEmitter2;

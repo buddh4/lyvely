@@ -8,9 +8,6 @@ export class Captcha extends BaseEntity<Captcha> {
 
   @Prop()
   token: string;
-
-  @Prop()
-  purpose: string;
 }
 
 export const CaptchaSchema = SchemaFactory.createForClass(Captcha);

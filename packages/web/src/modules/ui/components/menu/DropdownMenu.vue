@@ -3,7 +3,7 @@ import { ref, toRefs } from "vue";
 import { uniqueId } from "lodash";
 import { onClickOutside } from "@vueuse/core";
 
-interface IProps {
+export interface IProps {
   label?: string;
   icon?: string;
   position?: "left" | "right";
@@ -32,8 +32,8 @@ const buttonClassName = [
 const id = uniqueId("dropdown-");
 const { icon, label } = toRefs(props);
 
-function onClickContent(evt: { target: HTMLElement }) {
-  if (!evt.target.classList.contains("prev-close")) {
+function onClickContent(evt: MouseEvent) {
+  if (evt.target instanceof HTMLElement && !evt.target.classList.contains("prev-close")) {
     open.value = false;
   }
 }
@@ -78,7 +78,7 @@ function toggle() {
           <button
             :id="id"
             :class="buttonClassName"
-            :aria-expanded="open.toString()"
+            :aria-expanded="open ? 'true' : 'false'"
             @click="toggle"
           >
             <span v-if="label" class="label text-sm">{{ $t(label) }}</span>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, computed, watchEffect } from "vue";
 
-interface IProps {
+export interface IProps {
   modelValue: string;
   isValid?: boolean;
   hasError?: boolean;
@@ -32,24 +32,26 @@ watchEffect(() => {
   emit("update:isValid", isValid.value);
 });
 
-function onInput(i: number, evt: InputEvent) {
+function onInput(i: number, evt: Event) {
   evt.preventDefault();
-  const value = getValueToSet(evt.data);
-  otp.value[i] = value;
+  if(evt instanceof InputEvent) {
+    const value = getValueToSet(evt.data);
+    otp.value[i] = value;
 
-  if (value?.length) {
-    const target = evt.target as HTMLInputElement;
-    const otpIndex = parseInt(target.dataset.otp!);
-    if (otpIndex < 6) {
-      (<HTMLInputElement>(
-        document.querySelector(`[data-otp="${otpIndex + 1}"]`)
-      ))?.focus();
+    if (value?.length) {
+      const target = evt.target as HTMLInputElement;
+      const otpIndex = parseInt(target.dataset.otp!);
+      if (otpIndex < 6) {
+        (<HTMLInputElement>(
+            document.querySelector(`[data-otp="${otpIndex + 1}"]`)
+        ))?.focus();
+      }
+      if (target.nextSibling instanceof HTMLInputElement) {
+        target.nextSibling.focus();
+      }
     }
-    if (target.nextSibling instanceof HTMLInputElement) {
-      target.nextSibling.focus();
-    }
+    emitUpdate();
   }
-  emitUpdate();
 }
 
 function onPaste(evt: ClipboardEvent) {
@@ -114,7 +116,7 @@ const text = computed(() =>
           v-model="otp[i - 1]"
           type="text"
           :data-otp="i - 1"
-          inputmode="number"
+          inputmode="numeric"
           :aria-label="$t('otp.aria.input_label')"
           aria-invlaid="false"
           :class="[
@@ -125,7 +127,7 @@ const text = computed(() =>
             },
           ]"
           @paste="onPaste"
-          @keydown.delete="onDelete(i - 1, $event)"
+          @keydown.delete="onDelete(i - 1)"
           @keydown.right="focusNext"
           @keydown.left="focusPrev"
           @input="onInput(i - 1, $event)"

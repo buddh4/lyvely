@@ -16,7 +16,7 @@
       v-model="inputValue"
       :name="name"
       :disabled="disabled"
-      :aria-invalid="!!inputError?.length"
+      :aria-invalid="!!(inputError?.length)"
       :aria-errormessage="inputError"
       :aria-describedby="ariaDescribedby"
       :readonly="readonly"
@@ -47,8 +47,8 @@ import { useFloatingInputSetup } from "@/modules/ui/components/form/FloatingInpu
 import { SetupContext, ref, computed } from "vue";
 import FloatingInputLayout from "@/modules/ui/components/form/FloatingInputLayout.vue";
 
-interface IProps extends IBaseInputProps {
-  type: string;
+export interface IProps extends IBaseInputProps {
+  type?: string;
 }
 
 export default {
@@ -74,7 +74,7 @@ export default {
       togglePasswordIcon,
       togglePasswordAriaLabel,
       internalType,
-      ...useFloatingInputSetup(props, context),
+      ...useFloatingInputSetup<string>(props, context),
     };
   },
   watch: {

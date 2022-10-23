@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-import { ITimeSeriesContent } from "@lyvely/common";
+import { TimeSeriesContentModel } from "@lyvely/common";
 import { computed, toRefs } from "vue";
-import LyDropdown from "@/modules/ui/components/menu/DropdownMenu.vue";
-import LyDropdownLink from "@/modules/ui/components/menu/DropdownLink.vue";
 
-interface IProps {
-  model: ITimeSeriesContent;
+export interface IProps {
+  model: TimeSeriesContentModel;
 }
 
 const props = defineProps<IProps>();
@@ -26,11 +24,11 @@ const { model } = toRefs(props);
       label="Edit"
       @click="$emit('edit')"
     ></ly-dropdown-link>
-    <dropdown-link
+    <ly-dropdown-link
       :label="archiveLabel"
       icon="archive"
       @click="$emit('archive')"
-    ></dropdown-link>
+    ></ly-dropdown-link>
     <slot></slot>
   </ly-dropdown>
 </template>

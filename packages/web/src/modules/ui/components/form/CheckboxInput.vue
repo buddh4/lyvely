@@ -42,20 +42,19 @@ import {
 import { SetupContext, ref } from "vue";
 import { isArray } from "lodash";
 
-interface IProps extends IBaseInputProps {
-  checked: boolean;
-  value: string;
+export interface IProps extends IBaseInputProps {
+  checked?: boolean;
+  value?: string;
 }
 
 export default {
   props: {
     ...useBaseInputProps(),
-    checked: { type: Boolean },
+    checked: { type: Boolean, default: undefined },
     value: { type: String, default: "" },
   },
   emits: ["change", "update:modelValue"],
   setup(props: IProps, context: SetupContext) {
-    const showHelpText = ref(false);
     const checkbox = ref<HTMLInputElement>();
 
     const baseInput = useBaseInputSetup<boolean>(props, context, {
@@ -66,7 +65,7 @@ export default {
       context.emit("change", evt.target.checked, evt.target.value);
     }
 
-    function toggle(evt: KeyboardEvent, stop?: boolean) {
+    function toggle(evt: Event, stop?: boolean) {
       if (stop) {
         evt.stopImmediatePropagation();
         evt.stopPropagation();
@@ -86,7 +85,6 @@ export default {
     return {
       toggle,
       ...baseInput,
-      showHelpText,
       checkbox,
       onChange,
     };

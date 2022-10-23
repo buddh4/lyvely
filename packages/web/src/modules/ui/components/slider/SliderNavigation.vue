@@ -57,7 +57,7 @@ function slide(evt: MouseEvent | TouchEvent, overflow: number) {
 const sliderStyle = computed(() => {
   return {
     transform: `translateX(${slideTransformX.value}px)`,
-    "pointer-events": slideActive.value ? "none" : "all",
+    "pointer-events": slideActive.value ? "none" : "all" as 'none' | 'all',
   };
 });
 </script>

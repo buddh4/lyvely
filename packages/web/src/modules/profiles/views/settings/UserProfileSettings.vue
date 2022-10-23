@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import LyInputText from "@/modules/ui/components/form/TextInput.vue";
-import LyUserAvatar from "@/modules/users/components/UserAvatar.vue";
-import LyInputTextarea from "@/modules/ui/components/form/TextareaInput.vue";
-import LyButton from "@/modules/ui/components/button/StyledButton.vue";
 
 const displayName = ref("");
 const description = ref("");

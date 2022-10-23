@@ -21,7 +21,7 @@ export interface IEditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
   onSubmitSuccess?: (response?: TResponse) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
-export default function <TUpdateModel, TResponse, TID = string>(
+export default function <TUpdateModel extends object, TResponse, TID = string>(
   options: IEditModelStoreOptions<TUpdateModel, TResponse, TID>
 ) {
   const model = ref<TUpdateModel | undefined>(undefined) as Ref<
@@ -29,7 +29,9 @@ export default function <TUpdateModel, TResponse, TID = string>(
   >;
   let original: TUpdateModel | undefined = undefined;
   const modelId = ref(undefined) as Ref<TID | undefined>;
-  const validator = ref(undefined) as Ref<ModelValidator | undefined>;
+  const validator = ref(undefined) as Ref<
+    ModelValidator<TUpdateModel> | undefined
+  >;
   const error = ref("");
   const isActive = ref(false);
   const isCreate = ref(false);
@@ -55,7 +57,7 @@ export default function <TUpdateModel, TResponse, TID = string>(
       model.value = newModel;
       original = cloneDeep(newModel);
       modelId.value = id;
-      validator.value = new ModelValidator(model);
+      validator.value = new ModelValidator<TUpdateModel>(model.value);
       isActive.value = true;
     } else {
       original = undefined;

@@ -1,5 +1,9 @@
 import { defineStore } from "pinia";
-import { TaskModel, CalendarIntervalEnum } from "@lyvely/common";
+import {
+  TaskModel,
+  CalendarIntervalEnum,
+  ActivityFilter,
+} from "@lyvely/common";
 import { useProfileStore } from "@/modules/profiles/stores/profile.store";
 import { useCalendarPlanStore } from "@/modules/calendar/store";
 import tasksRepository from "@/modules/activities/repositories/tasks.repository";
@@ -25,7 +29,7 @@ export const useTaskPlanStore = defineStore("taskPlan", () => {
     return activityStore.cache.getTasksByCalendarInterval(
       interval,
       calendarPlanStore.getTimingId(interval),
-      activityStore.filter
+      activityStore.filter as ActivityFilter
     );
   }
 

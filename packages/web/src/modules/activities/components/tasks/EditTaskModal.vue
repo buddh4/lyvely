@@ -1,12 +1,6 @@
 <script lang="ts" setup>
 import VueMultiselect from "vue-multiselect";
 import useEditActivityModal from "../useEditActivityModal";
-import LyModal from "@/modules/ui/components/modal/ModalWindow.vue";
-import LyInputSelect from "@/modules/ui/components/form/SelectInput.vue";
-import LyInputNumber from "@/modules/ui/components/form/NumberInput.vue";
-import LyInputTextarea from "@/modules/ui/components/form/TextareaInput.vue";
-import LyAlert from "@/modules/ui/components/alert/AlertBlock.vue";
-import LyScreenReaderValidationError from "@/modules/ui/components/error/ScreenReaderValidationError.vue";
 
 const {
   model,
@@ -24,50 +18,51 @@ const {
 
 <template>
   <ly-modal
-    v-model="showModal"
-    :title="modalTitle"
-    @submit="submit"
-    @hide="reset"
+      v-if="model && validator"
+      v-model="showModal"
+      :title="modalTitle"
+      @submit="submit"
+      @hide="reset"
   >
     <fieldset>
       <ly-input-text
-        v-model="model.title"
-        label="Title"
-        :error="validator.getError('title')"
+          v-model="model.title"
+          label="Title"
+          :error="validator.getError('title')"
       />
 
       <ly-input-select
-        v-model="model.interval"
-        label="Plan"
-        :options="calendarPlanOptions"
-        :error="validator.getError('interval')"
+          v-model="model.interval"
+          label="Plan"
+          :options="calendarPlanOptions"
+          :error="validator.getError('interval')"
       />
 
       <VueMultiselect
-        v-model="model.tagNames"
-        class="form-input"
-        :options="tagOptions"
-        :multiple="true"
-        :taggable="true"
-        tag-placeholder="Add this as new tag"
-        placeholder="Search or add a tag"
-        @tag="addTag"
+          v-model="model.tagNames"
+          class="form-input"
+          :options="tagOptions"
+          :multiple="true"
+          :taggable="true"
+          tag-placeholder="Add this as new tag"
+          placeholder="Search or add a tag"
+          @tag="addTag"
       />
 
       <ly-input-number
-        v-model="model.score"
-        label="★ Score"
-        :error="validator.getError('score')"
-        :steps="2"
-        :max="100"
-        :min="-100"
+          v-model="model.score"
+          label="★ Score"
+          :error="validator.getError('score')"
+          :steps="2"
+          :max="100"
+          :min="-100"
       />
 
-      <ly-input-textarea v-model="model.text" label="Description" />
+      <ly-input-textarea v-model="model.text" label="Description"/>
     </fieldset>
 
-    <ly-alert :message="error" class="mt-2" />
-    <ly-screen-reader-validation-error :errors="validator.getErrors()" />
+    <ly-alert :message="error" class="mt-2"/>
+    <ly-screen-reader-validation-error :errors="validator.getErrors()"/>
   </ly-modal>
 </template>
 

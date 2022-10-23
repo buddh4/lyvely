@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
-import { createApp, markRaw } from "vue";
-import App from "./App.vue";
+import { createApp, markRaw, App } from "vue";
+import AppComponent from "./App.vue";
 import router from "./router";
 import defineLocales from "./util/locales";
 
@@ -64,7 +64,7 @@ eventBus.on("auth.logout", () => {
   console.log("logout");
 });
 
-const app = createApp(App);
+const app = createApp(AppComponent);
 app.use(pinia);
 app.use(router);
 app.use(ModuleLoader);

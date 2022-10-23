@@ -1,25 +1,26 @@
 <script lang="ts" setup>
 import CaptchaCode from "@/modules/captcha/components/CaptchaCode.vue";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { uniqueId } from "lodash";
 
-interface IProps {
+export interface IProps {
   modelValue: string;
-  purpose: string;
 }
 
 const props = defineProps<IProps>();
 const emit = defineEmits(["update:modelValue"]);
+const version = ref(Date.now());
 
 const inputValue = computed({
   get: () => props.modelValue,
   set: (val: string) => emit("update:modelValue"),
 });
 
-const inputId = uniqueId('captcha');
+const inputId = uniqueId("captcha");
+const captcha = ref<{refresh: () => void}>();
 
 function refresh() {
-  location.reload();
+  captcha.value?.refresh();
 }
 </script>
 
@@ -27,18 +28,25 @@ function refresh() {
   <div class="rounded">
     <div class="flex border border-divide border-b-0 rounded-t">
       <label :for="inputId" class="text-sm opacity-70 px-3 py-2">
-        {{ $t('captcha.label') }}
+        {{ $t("captcha.label") }}
       </label>
 
-      <ly-icon name="refresh" class="ml-auto mx-3 opacity-70 cursor-pointer" @click="refresh"></ly-icon>
-
+      <ly-icon
+        name="refresh"
+        class="ml-auto mx-3 opacity-70 cursor-pointer"
+        @click="refresh"
+      ></ly-icon>
     </div>
     <div class="border border-divide border-b-0">
       <suspense>
-        <captcha-code></captcha-code>
+        <captcha-code ref="captcha" class="border-x border-divide"></captcha-code>
       </suspense>
     </div>
-    <ly-input-text v-model="inputValue" :id="inputId" input-class="rounded-t-none" />
+    <ly-input-text
+      :id="inputId"
+      v-model="inputValue"
+      input-class="rounded-t-none"
+    />
   </div>
 </template>
 

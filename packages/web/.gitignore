@@ -3,6 +3,3 @@ node_modules
 dist
 *.local
 .idea
-
-# storybook
-storybook-static

@@ -6,7 +6,7 @@ import randomColor from "randomcolor";
 import { getContrast } from "@/modules/ui/utils";
 import { ProfileModel } from "@lyvely/common";
 
-interface IProps {
+export interface IProps {
   profile?: Pick<ProfileModel, "id" | "imageHash" | "name">;
 }
 

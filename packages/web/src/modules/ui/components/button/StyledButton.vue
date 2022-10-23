@@ -11,7 +11,7 @@ import { RouteRecord } from "vue-router";
 import { IConfirmOptions } from "@/modules/ui/components/modal/IConfirmOptions";
 import { isDevelopEnvironment } from "@/modules/core/environment";
 
-interface IProps {
+export interface IProps {
   submit?: boolean;
   text?: string;
   active?: boolean;
@@ -57,7 +57,7 @@ function getClassNames(
   };
 }
 
-const buttonType = props.submit ? "submit" : "button";
+const buttonType: 'submit' | 'button' = props.submit ? "submit" : "button";
 
 const emit = defineEmits(["click"]);
 

@@ -12,7 +12,7 @@ onBeforeMount(async () => {
       document.getElementById("monthlyChart")
     ))?.getContext("2d");
     if (ctx) {
-      new Chart(ctx, useStatisticsStore().monthly.getChart());
+//      new Chart(ctx, useStatisticsStore().monthly.getChart());
     }
   } catch (e) {
     // TODO:...

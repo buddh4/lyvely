@@ -4,15 +4,7 @@ import { suggestFocusElement } from "@/modules/ui/utils";
 import { useAccessibilityStore } from "@/modules/accessibility/stores/accessibility.store";
 import { useFocusTrap } from "@vueuse/integrations/useFocusTrap";
 
-const emit = defineEmits([
-  "submit",
-  "show",
-  "hide",
-  "cancel",
-  "update:modelValue",
-]);
-
-interface IModalProps {
+export interface IModalProps {
   modelValue: boolean;
   footerVisibility?: string;
   title: string;
@@ -44,6 +36,14 @@ const props = withDefaults(defineProps<IModalProps>(), {
 });
 
 const cancelButtonClass = computed(() => [props.cancelButtonClass, "m-1"]);
+
+const emit = defineEmits([
+  "submit",
+  "show",
+  "hide",
+  "cancel",
+  "update:modelValue",
+]);
 
 function close() {
   emit("update:modelValue", false);

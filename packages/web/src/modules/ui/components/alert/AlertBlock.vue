@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, useSlots } from "vue";
 
-interface IProps {
+export interface IProps {
   message?: string;
   hide?: boolean;
   type?: "danger" | "info" | "warning";
@@ -29,7 +29,9 @@ const isActive = computed(() => {
   <div v-if="isActive" :class="cssClass">
     <span class="text-sm">
       <slot>
-        {{ $t(message) }}
+        <template v-if="message">
+            {{ $t(message) }}
+        </template>
       </slot>
     </span>
   </div>

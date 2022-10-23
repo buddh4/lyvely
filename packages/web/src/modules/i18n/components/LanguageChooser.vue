@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import LyDropdown from "@/modules/ui/components/menu/DropdownMenu.vue";
 import { useAppConfigStore } from "@/modules/app-config/store/app-config.store";
 import { getLocale, setLocale } from "@/i18n";
 import { computed, ref } from "vue";

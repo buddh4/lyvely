@@ -6,7 +6,7 @@ import { UserModel } from "@lyvely/common";
 import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { getContrast, includesUtilityClass } from "@/modules/ui/utils";
 
-interface IProps {
+export interface IProps {
   user?: Pick<UserModel, "id" | "imageHash" | "username">;
   size?: string;
 }

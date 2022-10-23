@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
-interface IProps {
-  errors: string[];
+export interface IProps {
+  errors?: string[];
 }
 
 const props = defineProps<IProps>();
 
 const show = computed(() => {
-  return props.errors.length;
+  return !!props.errors?.length;
 });
 </script>
 

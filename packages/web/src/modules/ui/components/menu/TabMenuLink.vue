@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { RouteRecord } from "vue-router";
-interface IProps {
+export interface IProps {
   route: RouteRecord;
   ariaControls: string;
   labelKey?: string;
@@ -16,7 +16,11 @@ defineProps<IProps>();
     class="secondary outlined grow px-1 py-1"
     :aria-controls="ariaControls"
   >
-    <slot>{{ $t(labelKey) }}</slot>
+    <slot>
+      <template v-if="labelKey">
+        {{ $t(labelKey) }}
+      </template>
+    </slot>
   </ly-button>
 </template>
 

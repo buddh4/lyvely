@@ -8,6 +8,7 @@ export interface ITagFilterOptions {
   query?: string;
 }
 
+// TODO: Extend Abstract Filter
 export class TagFilter {
   archived?: boolean;
   idSelection?: string[];
@@ -16,6 +17,10 @@ export class TagFilter {
 
   constructor(obj?: ITagFilterOptions) {
     Object.assign(this, obj);
+  }
+
+  isActive() {
+    return this.query?.length || this.nameSelection?.length || this.idSelection?.length || this.archived;
   }
 
   apply(tags?: TagModel[]) {

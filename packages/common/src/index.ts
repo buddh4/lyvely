@@ -18,4 +18,5 @@ export * from './mappings';
 export * from './user-invites';
 export * from './exceptions';
 export * from './collab';
+export * from './captcha';
 export * from './validation';

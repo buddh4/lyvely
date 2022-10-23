@@ -3,7 +3,7 @@ import { Size } from "@/modules/ui/types";
 import ProfileTopNavigation from "./snippets/ProfileTopNavigation.vue";
 import MainContainer from "@/modules/ui/components/layout/MainContainer.vue";
 
-interface IProps {
+export interface IProps {
   width?: "xs" | "sm" | "lg" | "xl" | "full";
   // TODO: GUEST - check guest access config
   requireAuth?: boolean;

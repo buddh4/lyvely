@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 
-interface IProps {
+export interface IProps {
   date: Date | string;
 }
 

@@ -14,18 +14,19 @@ export interface IValidatorOptions<T extends object = object> {
   translate?: (error: ITranslationError) => string | undefined;
 }
 
-interface IValidationOptions<T extends object = object> extends ValidatorOptions {
+export interface IValidationOptions<T extends object = object> extends ValidatorOptions {
   validationField?: keyof T;
 }
 
 export class ModelValidator<T extends object = object> {
-  private errors = {} as Record<keyof T, string>;
+  private errors: { [k in keyof T]?: string };
   private model: T;
   private readonly fieldValidator;
   private options: IValidatorOptions<T>;
 
   constructor(model?: T, options?: IValidatorOptions<T>) {
     this.options = options || {};
+    this.errors = {};
     this.options.rules = this.options.rules || {};
     this.model = model;
     if (!this.options.isFieldValidator) {
@@ -47,7 +48,7 @@ export class ModelValidator<T extends object = object> {
     this.errors = {} as Record<keyof T, string>;
   }
 
-  getErrors() {
+  getErrors(): string[] {
     return Object.values(this.errors);
   }
 

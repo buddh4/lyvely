@@ -27,19 +27,18 @@ import {
 } from "@/modules/ui/components/form/BaseInput";
 import { computed, SetupContext } from "vue";
 
-interface IProps extends IBaseInputProps {
-  type: string;
-  min: number;
-  max: number;
-  step: number;
-  width: string;
+export interface IProps extends IBaseInputProps {
+  min?: number;
+  max?: number;
+  step?: number;
+  width?: string;
 }
 
 export default {
   props: {
     ...useBaseInputProps(),
-    min: { type: Number, default: undefined },
-    max: { type: Number, default: undefined },
+    min: { type: Number, required: true },
+    max: { type: Number, required: true },
     step: { type: Number, default: 1 },
     width: { type: String, default: "" },
   },
