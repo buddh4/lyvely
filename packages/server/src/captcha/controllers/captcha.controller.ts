@@ -18,7 +18,6 @@ export class CaptchaController implements CaptchaEndpoint {
   @Post('refresh')
   @HttpCode(204)
   async refresh(@Body('identity') identity: string) {
-    console.log(identity);
     return this.captchaService.refresh(identity);
   }
 

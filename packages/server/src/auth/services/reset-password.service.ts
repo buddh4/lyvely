@@ -26,7 +26,8 @@ export class ResetPasswordService {
 
     const user = await this.userService.findUserByMainEmail(email);
     if (!user || user.status === UserStatus.Disabled) {
-      throw new UnauthorizedException();
+      // Do not throw any error due to enumeration attacks
+      return;
     }
 
     const appName = this.configService.get('appName');
@@ -34,7 +35,7 @@ export class ResetPasswordService {
     const token = this.createResetPasswordToken(user);
     const resetUrl = this.urlGenerator.getAppUrl('/reset-password/' + token);
 
-    return this.mailService.sendMail({
+    await this.mailService.sendMail({
       to: email,
       subject: `Attempt to register an already existing email`,
       partials: {

@@ -3,7 +3,7 @@ import CaptchaCode from '@/modules/captcha/components/CaptchaCode.vue';
 import { storeToRefs } from 'pinia';
 import { uniqueId } from 'lodash';
 import { computed } from 'vue';
-import { useCaptchaStore } from "@/modules/captcha/stores/captcha.store";
+import { useCaptchaStore } from '@/modules/captcha/stores/captcha.store';
 
 const captchaStore = useCaptchaStore();
 const { captchaModel, validator } = storeToRefs(captchaStore);
@@ -19,9 +19,9 @@ function validate() {
   captchaStore.validate();
 }
 
-const borderColorClass = computed(() => validator.value.getError('captcha') ? 'border-danger' : 'border-divide')
+const borderColorClass = computed(() => (validator.value.getError('captcha') ? 'border-danger' : 'border-divide'));
 
-defineExpose( { validate });
+defineExpose({ validate });
 </script>
 
 <template>
@@ -36,7 +36,13 @@ defineExpose( { validate });
     <div :class="['border border-b-0', borderColorClass]">
       <captcha-code></captcha-code>
     </div>
-    <ly-input-text :id="inputId" v-model="captchaModel.captcha" :error="validator.getError('captcha')" input-class="rounded-t-none" @focusout="validate" />
+    <ly-input-text
+      :id="inputId"
+      v-model="captchaModel.captcha"
+      :error="validator.getError('captcha')"
+      input-class="rounded-t-none"
+      @focusout="validate"
+    />
   </div>
 </template>
 

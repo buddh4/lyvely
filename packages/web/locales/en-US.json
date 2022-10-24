@@ -143,12 +143,12 @@
   "auth": {
     "logout": "Logout",
     "reset_password": {
-      "title": "Forgot password",
+      "title": "Reset your password",
       "sent": {
         "title": "Reset your password",
-        "text": "Check your email for a link to reset your password. If it does not appear within a few minutes check your spam folder",
-        "to_login": "Return to sign in"
+        "text": "Check your email for a link to reset your password. If it does not appear within a few minutes check your spam folder."
       },
+      "to_login": "Return to sign in",
       "submit": "Send password reset email",
       "fields": {
         "email": "Enter the main email address of your account"

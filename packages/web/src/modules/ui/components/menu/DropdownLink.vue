@@ -39,7 +39,7 @@ const { route, label, icon } = toRefs(props);
       <slot>{{ $t(label) }}</slot>
     </span>
   </router-link>
-  <a v-if="!route" v-bind="$attrs" href="#" :class="classNames" @click="$emit('click')">
+  <a v-if="!route" v-bind="$attrs" :class="classNames" @click="$emit('click')">
     <ly-icon v-if="icon" :name="icon" class="align-middle"></ly-icon>
     <span class="align-middle">
       <slot>{{ $t(label) }}</slot>

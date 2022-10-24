@@ -4,22 +4,23 @@ import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayo
 import { useSendResetPasswordMailStore } from '@/modules/auth/store/reset-password.store';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-import { PATH_LOGIN } from "@/modules/auth";
-import { onUnmounted } from "vue";
+import { PATH_LOGIN } from '@/modules/auth';
+import { onUnmounted } from 'vue';
 
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();
 const { model, validator, stage, status } = storeToRefs(sendResetPasswordMailStore);
 const router = useRouter();
+const loginRoute = { path: PATH_LOGIN };
 
 function submit() {
   sendResetPasswordMailStore.sendResetPasswordMail();
 }
 
 function toLogin() {
-  router.replace({ path: PATH_LOGIN })
+  router.replace(loginRoute);
 }
 
-onUnmounted(() => sendResetPasswordMailStore.reset())
+onUnmounted(() => sendResetPasswordMailStore.reset());
 </script>
 
 <template>
@@ -37,13 +38,23 @@ onUnmounted(() => sendResetPasswordMailStore.reset())
 
     <template #body>
       <ly-form-model v-model="model" :validator="validator" label-key="auth.reset_password.fields">
-        <ly-input-text property="email" autocomplete="email" autofocus  />
+        <ly-input-text property="email" autocomplete="email" autofocus />
         <ly-input-captcha />
       </ly-form-model>
     </template>
 
     <template #footer>
-      <ly-button class="primary float-right" :loading="sendResetPasswordMailStore.status.isStatusLoading()" text="auth.reset_password.submit" @click="submit"/>
+      <div class="flex items-center">
+        <router-link :to="loginRoute" class="flex items-center text-sm">
+          {{ $t('auth.reset_password.to_login') }}
+        </router-link>
+        <ly-button
+          class="primary ml-auto"
+          :loading="sendResetPasswordMailStore.status.isStatusLoading()"
+          text="auth.reset_password.submit"
+          @click="submit"
+        />
+      </div>
     </template>
   </centered-layout-container>
 
@@ -62,7 +73,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset())
     </template>
 
     <template #footer>
-      <ly-button class="primary float-right" text="auth.reset_password.sent.to_login" @click="toLogin"/>
+      <ly-button class="primary float-right" text="auth.reset_password.to_login" @click="toLogin" />
     </template>
   </centered-layout-container>
 </template>
