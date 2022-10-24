@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CaptchaDao } from '../daos/captcha.dao';
 import { generateCaptcha, generateCaptchaToken } from '../utils/captcha.generator';
-import { Captcha } from '../schemas/captcha.schema';
+import { Captcha, TOKEN_EXPIRES_IN } from '../schemas/captcha.schema';
 import bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
 import { CaptchaChallenge } from '@lyvely/common';
@@ -15,14 +15,28 @@ export class CaptchaService {
   async createCaptcha(): Promise<CaptchaChallenge> {
     const token = generateCaptchaToken();
     const identity = await bcrypt.hash(randomUUID(), 10);
-    await this.captchaDao.save(new Captcha({ identity, token }));
+    const issuedAt = new Date();
+    await this.captchaDao.save(new Captcha({ identity, token, issuedAt }));
 
     return new CaptchaChallenge({
       identity,
       imageUrl: this.urlGenerator.getApiUrl('/captcha', { identity }).href,
       issuedAt: new Date(),
-      expiresIn: ms('2m'),
+      expiresIn: ms(TOKEN_EXPIRES_IN),
     });
+  }
+
+  async runValidation(identity: string, input: string) {
+    const captcha = await this.captchaDao.findCaptchaByIdentity(identity);
+    if (!captcha) return false;
+
+    const result = captcha.token === input && !captcha.isExpired();
+
+    if (result) {
+      await this.captchaDao.deleteOne({ identity });
+    }
+
+    return result;
   }
 
   async refresh(identity: string) {

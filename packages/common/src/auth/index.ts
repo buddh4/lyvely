@@ -1,2 +1,2 @@
-export * from './interfaces/auth.endpoint';
+export * from './interfaces';
 export * from './models';

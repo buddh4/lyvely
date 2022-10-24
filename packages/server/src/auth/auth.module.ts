@@ -9,11 +9,14 @@ import { JwtAuthGuard } from './guards';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
 import { ModuleMeta } from '@/core/modules/module.meta';
-import { PasswordResetController } from '@/auth/controllers/password-reset.controller';
+import { ResetPasswordController } from '@/auth/controllers/reset-password.controller';
+import { ResetPasswordService } from '@/auth/services/reset-password.service';
+import { CaptchaModule } from '@/captcha/captcha.module';
 
 @Module({
   imports: [
     UsersModule,
+    CaptchaModule,
     PassportModule,
     JwtModule.registerAsync({
       useFactory: async (configService: ConfigService<ConfigurationPath>) => ({
@@ -29,6 +32,7 @@ import { PasswordResetController } from '@/auth/controllers/password-reset.contr
     JwtAccessStrategy,
     JwtRefreshStrategy,
     JwtAuthGuard,
+    ResetPasswordService,
     {
       provide: 'modules.auth.meta',
       useValue: new ModuleMeta({
@@ -39,7 +43,7 @@ import { PasswordResetController } from '@/auth/controllers/password-reset.contr
       }),
     },
   ],
-  controllers: [AuthController, PasswordResetController],
+  controllers: [AuthController, ResetPasswordController],
   exports: [JwtAuthService, JwtAuthGuard],
 })
 export class AuthModule {}

@@ -1,7 +1,7 @@
 import { ifNotAuthenticated } from '../guards';
 import { translate } from '@/i18n';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { PATH_FORGOT_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from './paths';
+import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from './paths';
 
 export default [
   {
@@ -14,13 +14,13 @@ export default [
     beforeEnter: [ifNotAuthenticated],
   },
   {
-    path: PATH_FORGOT_PASSWORD,
-    name: 'ForgotPassword',
+    path: PATH_RESET_PASSWORD,
+    name: 'ResetPassword',
     meta: {
-      title: () => translate('auth.forgot_password.title'),
+      title: () => translate('auth.reset_password.title'),
       isPublic: true,
     },
-    component: () => import('../views/PasswordResetView.vue'),
+    component: () => import('../views/SendResetPasswordMailView.vue'),
     beforeEnter: [ifNotAuthenticated],
   },
   {

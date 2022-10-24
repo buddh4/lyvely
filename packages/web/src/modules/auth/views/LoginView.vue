@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { watch, onUnmounted, ref } from 'vue';
 import { useLoginStore } from '@/modules/auth/store/login.store';
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
-import { usePasswordResetStore } from '@/modules/auth/store/password-reset.store';
+import { useSendResetPasswordMailStore } from '@/modules/auth/store/reset-password.store';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -40,8 +40,8 @@ async function toPasswordStage() {
   }
 }
 
-function setForgotPassword() {
-  usePasswordResetStore().setEmail(loginModel.value.email);
+function setResetPassword() {
+  useSendResetPasswordMailStore().setEmail(loginModel.value.email);
 }
 
 onUnmounted(loginStore.reset);
@@ -120,11 +120,11 @@ onUnmounted(loginStore.reset);
             </div>
             <router-link
               v-if="stage === 'password'"
-              :to="{ name: 'ForgotPassword' }"
+              :to="{ name: 'ResetPassword' }"
               class="no-underline font-bold text-xs cursor-pointer"
-              @click="setForgotPassword"
+              @click="setResetPassword"
             >
-              {{ $t('auth.login.forgot_password') }}
+              {{ $t('auth.login.reset_password') }}
             </router-link>
           </div>
 

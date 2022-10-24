@@ -135,14 +135,23 @@
     }
   },
   "captcha": {
+    "errors": {
+      "invalid": "The code is not valid"
+    },
     "label": "Please enter the code below"
   },
   "auth": {
     "logout": "Logout",
-    "forgot_password": {
+    "reset_password": {
       "title": "Forgot password",
+      "sent": {
+        "title": "Reset your password",
+        "text": "Check your email for a link to reset your password. If it does not appear within a few minutes check your spam folder",
+        "to_login": "Return to sign in"
+      },
+      "submit": "Send password reset email",
       "fields": {
-        "email": "Enter the email address# of your account"
+        "email": "Enter the main email address of your account"
       }
     },
 
@@ -150,7 +159,7 @@
       "title": "Login",
       "sign_in": "Sign in",
       "not_a_member": "Not a member?",
-      "forgot_password": "Forgot password?",
+      "reset_password": "Forgot password?",
       "remember_me": "Keep me signed in.",
       "remember_me_info": {
         "p1": "Choosing this option reduces the number of times you're asked to Sign-In on this device.",
@@ -167,7 +176,8 @@
     }
   },
   "validation": {
-    "isNotEmpty": "{property} can not be empty"
+    "isNotEmpty": "{property} can not be empty",
+    "isCaptcha": "Please enter 5 alphanumeric characters"
   },
   "user_registration": {
     "title": "Sign up",

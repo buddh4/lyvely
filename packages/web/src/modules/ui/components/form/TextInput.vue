@@ -16,6 +16,7 @@
       v-model="inputValue"
       :name="name"
       :disabled="disabled"
+      :placeholder="placeholder"
       :aria-invalid="!!inputError?.length"
       :aria-errormessage="inputError"
       :aria-describedby="ariaDescribedby"

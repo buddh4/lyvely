@@ -3,5 +3,4 @@ import { LyvelyApp } from '@lyvely/web';
 import './style.css';
 
 const app = new LyvelyApp();
-await app.init();
-app.mount('#app');
+app.init().then(() => app.mount('#app'));

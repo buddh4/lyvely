@@ -68,7 +68,7 @@ onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
     </div>
     <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-main items-center border-divide">
       <div class="align-middle">
-        <ly-tag :tag="tag" class="px-3 py-2 text-sm" @click="setEditTag(tag)" />
+        <ly-tag :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
         <ly-badge v-if="tag.archived" class="bg-danger ml-2">
           {{ $t('common.archived') }}
         </ly-badge>

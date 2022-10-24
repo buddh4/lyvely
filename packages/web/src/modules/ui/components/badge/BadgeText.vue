@@ -23,7 +23,7 @@ function getClassNames(attrClasses: any) {
   const textContrast = props.color ? getContrast(props.color) : 'white';
 
   return [
-    'badge inline-block text-xs leading-3 rounded select-none',
+    'badge inline-block leading-3 rounded select-none',
     {
       'cursor-pointer': props.clickable,
       [textContrast]: true,

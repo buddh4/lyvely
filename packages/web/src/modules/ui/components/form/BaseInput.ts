@@ -22,6 +22,7 @@ export interface IBaseInputProps {
   modelValue?: any;
   value?: string;
   property?: string;
+  placeholder?: string;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
@@ -39,6 +40,7 @@ export function useBaseInputProps() {
     id: { type: String },
     label: { type: String },
     helpText: { type: String },
+    placeholder: { type: String, default: undefined },
     name: { type: String, default: undefined },
     value: { type: String },
     property: { type: String },

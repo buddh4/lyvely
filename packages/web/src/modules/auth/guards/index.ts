@@ -1,10 +1,10 @@
 import { useAuthStore } from '../store/auth.store';
 import { NavigationGuardWithThis, RouteLocationNormalized, NavigationGuardNext, RouteLocation } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/modules/user-registration/routes/paths';
-import { PATH_FORGOT_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from '../routes/paths';
+import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from '../routes/paths';
 
 const PATH_ROOT = '/';
-const publicRoutes = [PATH_ROOT, PATH_LOGIN, PATH_FORGOT_PASSWORD];
+const publicRoutes = [PATH_ROOT, PATH_LOGIN];
 
 function isPublicRoue(route: RouteLocationNormalized) {
   return route.meta?.isPublic || publicRoutes.includes(route.path);

@@ -30,18 +30,6 @@ export default defineConfig({
         },
       },
       external: ['lodash'],
-      /*external: [
-        "vue",
-        "vue-router",
-        "pinia",
-        "@lyvely/common",
-        "vue-multiselect",
-      ],
-      output: {
-        globals: {
-          vue: "Vue",
-        },
-      },*/
     },
   },
 });

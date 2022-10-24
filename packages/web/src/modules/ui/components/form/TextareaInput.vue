@@ -10,6 +10,7 @@
       :id="inputId"
       ref="input"
       v-model="inputValue"
+      :placeholder="placeholder"
       :aria-describedby="ariaDescribedby"
       :rows="rows"
       :disabled="disabled"

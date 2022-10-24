@@ -34,7 +34,7 @@ export function isFieldValidationError(error: any): error is AxiosError<IFieldVa
   return (
     isAxiosErrorWithResponseData<IFieldValidationResponse>(error) &&
     error.response.status === 400 &&
-    Array.isArray(error.response.data.fields)
+    Array.isArray(error.response.data?.fields)
   );
 }
 

@@ -36,7 +36,7 @@ const modalBinds = computed(() => {
 });
 
 const reload = () => {
-  document.location = '/';
+  document.location.reload();
 };
 </script>
 

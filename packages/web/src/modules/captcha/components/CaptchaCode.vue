@@ -1,25 +1,10 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useCaptchaService } from '../services/captcha.service';
+import { storeToRefs } from 'pinia';
+import { useCaptchaStore } from "@/modules/captcha/stores/captcha.store";
 
-const captchaService = useCaptchaService();
+const captchaStore = useCaptchaStore();
+const { imageUrl } = storeToRefs(captchaStore);
 
-const challenge = ref();
-const imageUrl = ref();
-
-async function init() {
-  challenge.value = await captchaService.challenge();
-  imageUrl.value = challenge.value.imageUrl;
-}
-
-async function refresh() {
-  await captchaService.refresh(challenge.value.identity);
-  imageUrl.value = challenge.value.imageUrl + `&v=${Date.now()}`;
-}
-
-defineExpose({ refresh });
-
-await init();
 </script>
 
 <template>

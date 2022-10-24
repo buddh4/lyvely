@@ -122,7 +122,7 @@
       "title": "Anmelden",
       "sign_in": "Anmelden",
       "not_a_member": "Du bist noch keinen Mitglied?",
-      "forgot_password": "Passwort vergessen?",
+      "reset_password": "Passwort vergessen?",
       "remember_me": "Login speichern",
       "fields": {
         "email": "Email",

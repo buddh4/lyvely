@@ -1,44 +1,42 @@
 <script lang="ts" setup>
 import CaptchaCode from '@/modules/captcha/components/CaptchaCode.vue';
-import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { uniqueId } from 'lodash';
+import { computed } from 'vue';
+import { useCaptchaStore } from "@/modules/captcha/stores/captcha.store";
 
-export interface IProps {
-  modelValue: string;
-}
-
-const props = defineProps<IProps>();
-const emit = defineEmits(['update:modelValue']);
-const version = ref(Date.now());
-
-const inputValue = computed({
-  get: () => props.modelValue,
-  set: (val: string) => emit('update:modelValue'),
-});
-
+const captchaStore = useCaptchaStore();
+const { captchaModel, validator } = storeToRefs(captchaStore);
 const inputId = uniqueId('captcha');
-const captcha = ref<{ refresh: () => void }>();
+
+captchaStore.createChallenge();
 
 function refresh() {
-  captcha.value?.refresh();
+  captchaStore.refresh();
 }
+
+function validate() {
+  captchaStore.validate();
+}
+
+const borderColorClass = computed(() => validator.value.getError('captcha') ? 'border-danger' : 'border-divide')
+
+defineExpose( { validate });
 </script>
 
 <template>
   <div class="rounded">
-    <div class="flex border border-divide border-b-0 rounded-t">
+    <div :class="['flex border border-b-0 rounded-t', borderColorClass]">
       <label :for="inputId" class="text-sm opacity-70 px-3 py-2">
         {{ $t('captcha.label') }}
       </label>
 
       <ly-icon name="refresh" class="ml-auto mx-3 opacity-70 cursor-pointer" @click="refresh"></ly-icon>
     </div>
-    <div class="border border-divide border-b-0">
-      <suspense>
-        <captcha-code ref="captcha" class="border-x border-divide"></captcha-code>
-      </suspense>
+    <div :class="['border border-b-0', borderColorClass]">
+      <captcha-code></captcha-code>
     </div>
-    <ly-input-text :id="inputId" v-model="inputValue" input-class="rounded-t-none" />
+    <ly-input-text :id="inputId" v-model="captchaModel.captcha" :error="validator.getError('captcha')" input-class="rounded-t-none" @focusout="validate" />
   </div>
 </template>
 

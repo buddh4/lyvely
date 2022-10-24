@@ -122,7 +122,15 @@ export class LyvelyServer {
       credentials: true,
       methods: ['GET', 'POST', 'PUT'],
       exposedHeaders: ['set-cookie'],
-      allowedHeaders: ['x-visitor-id', 'csrf-token', 'access-control-allow-origin', 'content-type', 'cookie'],
+      allowedHeaders: [
+        'x-visitor-id',
+        'x-captcha-identity',
+        'x-captcha-token',
+        'csrf-token',
+        'access-control-allow-origin',
+        'content-type',
+        'cookie',
+      ],
       //allowedHeaders: 'access-control-allow-originaccept,Accept-Language,Content-Language,Content-Type,Authorization,Cookie,X-Requested-With,Origin,Host'
     });
   }
