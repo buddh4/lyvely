@@ -177,7 +177,9 @@
   },
   "validation": {
     "isNotEmpty": "{property} can not be empty",
-    "isCaptcha": "Please enter 5 alphanumeric characters"
+    "isCaptcha": "Please enter 5 alphanumeric characters",
+    "isEmail": "{property} must be an email",
+    "matches": "{property} does not match the expected format"
   },
   "user_registration": {
     "title": "Sign up",

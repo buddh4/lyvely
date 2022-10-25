@@ -1,4 +1,9 @@
 {
+  "validation": {
+    "isNotEmpty": "{property} darf nicht leer sein",
+    "isCaptcha": "Bitte den 5 stelligen alphanumerischen Code eingeben",
+    "isEmail": "{property} muss eine E-Mail sein"
+  },
   "modal": {
     "aria": {
       "root": "This is a modal window. To close this window use the cancel button or press escape or submit the modal by using the submit button."

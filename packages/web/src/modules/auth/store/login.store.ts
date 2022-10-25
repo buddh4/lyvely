@@ -14,11 +14,7 @@ export const useLoginStore = defineStore('user-login', () => {
   const authService = new AuthService();
   const loginModel = ref(new LoginModel());
   const stage = ref<'email' | 'password'>('email');
-  const validator = ref(
-    new I18nModelValidator(loginModel.value, {
-      translationKey: 'auth.login.fields',
-    }),
-  );
+  const validator = ref(new I18nModelValidator(loginModel.value, { translationKey: 'auth.login.fields' }));
 
   async function login(): Promise<RouteLocationRaw | false> {
     if (!(await validator.value.validate())) return false;

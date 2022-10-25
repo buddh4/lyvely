@@ -1,8 +1,10 @@
 import { validate, ValidationError, ValidatorOptions } from 'class-validator';
 import { IFieldValidationResult } from './interfaces/validation-result.interface';
 
-interface ITranslationError {
-  property: string;
+interface ITranslationError<T> {
+  model: T;
+  value: any;
+  property: keyof T & string;
   rule: string;
   message: string;
   context: any;
@@ -11,7 +13,7 @@ interface ITranslationError {
 export interface IValidatorOptions<T extends object = object> {
   isFieldValidator?: boolean;
   rules?: Record<keyof T, [(value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>]> | {};
-  translate?: (error: ITranslationError) => string | undefined;
+  translate?: (error: ITranslationError<T>) => string | undefined;
 }
 
 export interface IValidationOptions<T extends object = object> extends ValidatorOptions {
@@ -19,10 +21,10 @@ export interface IValidationOptions<T extends object = object> extends Validator
 }
 
 export class ModelValidator<T extends object = object> {
-  private errors: { [k in keyof T]?: string };
-  private model: T;
-  private readonly fieldValidator;
-  private options: IValidatorOptions<T>;
+  protected errors: { [k in keyof T]?: string };
+  protected model: T;
+  protected readonly fieldValidator;
+  protected options: IValidatorOptions<T>;
 
   constructor(model?: T, options?: IValidatorOptions<T>) {
     this.options = options || {};
@@ -66,6 +68,7 @@ export class ModelValidator<T extends object = object> {
 
   async validate(options: IValidationOptions<T> = {}): Promise<boolean> {
     options.forbidUnknownValues = options.forbidUnknownValues !== false;
+    options.validationError = { target: true, value: true };
     this.setValidationErrors(await validate(this.model, options));
     await this.validateRules(options);
     return !this.hasErrors();
@@ -108,7 +111,9 @@ export class ModelValidator<T extends object = object> {
     if (firstErrorMessage) {
       this.errors[error.property] = this.options.translate
         ? this.options.translate({
-            property: error.property,
+            model: error.target as T,
+            value: error.value,
+            property: error.property as keyof T & string,
             message: firstErrorMessage,
             rule: firstRule,
             context: error.contexts,

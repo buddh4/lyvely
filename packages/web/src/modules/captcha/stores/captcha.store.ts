@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useCaptchaService } from '@/modules/captcha/services/captcha.service';
-import { Matches } from 'class-validator';
+import { IsNotEmpty, Matches } from 'class-validator';
 import {
   BaseModel,
   PropertyType,
@@ -16,6 +16,7 @@ import repository from '@/repository';
 import { isFieldValidationError } from '@/util';
 
 class CaptchaModel extends BaseModel<CaptchaModel> {
+  @IsNotEmpty()
   @Matches(/^[a-zA-Z0-9]{5}$/, { message: translation('validation.isCaptcha') })
   @PropertyType(String, { default: '' })
   captcha: string;
