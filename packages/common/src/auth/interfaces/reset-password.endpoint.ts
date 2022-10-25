@@ -1,8 +1,9 @@
 import { Endpoint } from '@/endpoints';
-import { SendResetPasswordMailModel } from '@/auth/models/send-reset-password-mail.model';
+import { ResetPassword, SendResetPasswordMail } from '@/auth/models/reset-password.model';
 
 export interface IResetPasswordService {
-  sendMail(model: SendResetPasswordMailModel);
+  sendMail(model: SendResetPasswordMail);
+  resetPassword(model: ResetPassword);
 }
 
 export type ResetPasswordEndpoint = Endpoint<IResetPasswordService>;

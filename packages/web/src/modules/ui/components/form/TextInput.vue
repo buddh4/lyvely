@@ -4,6 +4,7 @@
     :input-id="inputId"
     :label="label"
     :required="required"
+    :help-text="helpText"
     :input-error="inputError"
   >
     <template #label>
@@ -27,6 +28,7 @@
       @change="onChange"
       @focusout="onFocusOut"
     />
+
     <div
       v-if="isPassword && passwordToggle"
       role="button"

@@ -3,6 +3,7 @@ import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '@/users';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, getObjectId, TestDataUtils } from '@/test';
 import { ProfileType, addDays } from '@lyvely/common';
+import bcrypt from 'bcrypt';
 
 describe('UserService', () => {
   let userService: UsersService;
@@ -205,6 +206,37 @@ describe('UserService', () => {
 
       expect(await userService.destroyRefreshToken(user, 'nonExisting')).toEqual(true);
       expect(user.refreshTokens.length).toEqual(1);
+    });
+  });
+
+  describe('setUserPassword', () => {
+    it('reset user password with session reset', async () => {
+      const user = await testData.createUser();
+      const currentPassword = user.password;
+      await userService.setUserPassword(user, 'newPassword', true);
+      expect(user.password).not.toEqual(currentPassword);
+      expect(user.password).not.toEqual('newPassword');
+      const updated = await userService.findUserById(user);
+      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      const now = new Date();
+      expect(updated.sessionResetAt instanceof Date).toEqual(true);
+      expect(updated.sessionResetAt.getDate()).toEqual(now.getDate());
+      expect(updated.sessionResetAt.getMonth()).toEqual(now.getMonth());
+      expect(updated.sessionResetAt.getFullYear()).toEqual(now.getFullYear());
+      expect(updated.sessionResetAt.getHours()).toEqual(now.getHours());
+      expect(updated.sessionResetAt.getMinutes()).toEqual(now.getMinutes());
+    });
+
+    it('reset user password without session reset', async () => {
+      const user = await testData.createUser();
+      const currentPassword = user.password;
+      await userService.setUserPassword(user, 'newPassword', false);
+      expect(user.password).not.toEqual(currentPassword);
+      expect(user.password).not.toEqual('newPassword');
+      const updated = await userService.findUserById(user);
+      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      const now = new Date();
+      expect(updated.sessionResetAt).toBeUndefined();
     });
   });
 });

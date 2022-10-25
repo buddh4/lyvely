@@ -1,7 +1,9 @@
 import { ifNotAuthenticated } from '../guards';
 import { translate } from '@/i18n';
+import { RouteLocation } from 'vue-router';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from './paths';
+import { useResetPasswordStore } from '@/modules/auth/store/reset-password.store';
 
 export default [
   {
@@ -20,8 +22,14 @@ export default [
       title: () => translate('auth.reset_password.title'),
       isPublic: true,
     },
-    component: () => import('../views/SendResetPasswordMailView.vue'),
-    beforeEnter: [ifNotAuthenticated],
+    component: () => import('../views/ResetPasswordView.vue'),
+    beforeEnter: [
+      ifNotAuthenticated,
+      (route: RouteLocation) => {
+        const token = route.query.t || '';
+        useResetPasswordStore().setToken(token as string);
+      },
+    ],
   },
   {
     path: PATH_LOGOUT,

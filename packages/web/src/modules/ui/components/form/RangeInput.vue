@@ -22,6 +22,7 @@
 <script lang="ts">
 import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
 import { computed, SetupContext } from 'vue';
+import { useHelpText } from "@/modules/ui/components/form/help-text.util";
 
 export interface IProps extends IBaseInputProps {
   min?: number;
@@ -80,6 +81,7 @@ export default {
 
     return {
       ...baseInput,
+      ...useHelpText(props.helpText),
       inputStyle,
     };
   },

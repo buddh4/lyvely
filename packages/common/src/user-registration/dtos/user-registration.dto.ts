@@ -17,19 +17,20 @@ export class UserRegistrationDto extends BaseModel<UserRegistrationDto> {
   @IsString()
   readonly locale?: string;
 
-  @IsNotEmpty()
+  @IsString()
   @MinLength(6)
   @MaxLength(64)
   // @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,20}$/,
-  //     { message: " A password at least contains one numeric digit, one supercase char and one lowercase char" }
+  //     { message: " A password at least contains one numeric digit, one uppercase char and one lowercase char" }
   // )
   readonly password: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Match('password')
+  readonly passwordRepeat: string;
 
   @IsOptional()
   @IsBoolean()
   remember?: boolean;
-
-  @IsNotEmpty()
-  @Match('password')
-  readonly passwordRepeat: string;
 }

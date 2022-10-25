@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtTokenPayloadIF } from '../interfaces/jwt-payload.interface';
 import { ConfigurationPath } from '@/core';
 import { User, UsersService } from '@/users';
+import { UserStatus } from '@lyvely/common';
 
 export interface JwtStrategyOptionsIF {
   name: string;
@@ -47,7 +48,10 @@ export function JwtStrategy<TPayload extends JwtTokenPayloadIF = JwtTokenPayload
 
       const user = await this.usersService.findUserById(payload.sub);
 
-      if (!user) throw new UnauthorizedException();
+      if (!user || user.status === UserStatus.Disabled) throw new UnauthorizedException();
+
+      const issuedAt = new Date(payload.iat * 1000);
+      if (user.sessionResetAt && user.sessionResetAt > issuedAt) throw new UnauthorizedException();
 
       await this.validateUser(user, req, payload);
       return user;

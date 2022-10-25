@@ -4,6 +4,7 @@
     :input-id="inputId"
     :label="label"
     :required="required"
+    :help-text="helpText"
     :input-error="inputError"
   >
     <textarea

@@ -16,7 +16,7 @@ function refresh() {
 }
 
 function validate() {
-  captchaStore.validate();
+  return captchaStore.validate();
 }
 
 const borderColorClass = computed(() => (validator.value.getError('captcha') ? 'border-danger' : 'border-divide'));

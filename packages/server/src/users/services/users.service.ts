@@ -68,4 +68,9 @@ export class UsersService {
   async setUserStatus(user: EntityIdentity<User>, status: UserStatus) {
     return this.userDao.updateOneSetById(user, { status: status });
   }
+
+  async setUserPassword(user: EntityIdentity<User>, newPassword: string, resetSession: boolean) {
+    const update = resetSession ? { password: newPassword, sessionResetAt: new Date() } : { password: newPassword };
+    return this.userDao.updateOneSetById(user, update);
+  }
 }

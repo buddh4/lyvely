@@ -43,15 +43,19 @@ export class ModelValidator<T extends object = object> {
   }
 
   hasErrors(): boolean {
-    return !!this.getErrors().length;
+    return !!this.getErrorSummary().length;
   }
 
   reset() {
     this.errors = {} as Record<keyof T, string>;
   }
 
-  getErrors(): string[] {
+  getErrorSummary(): string[] {
     return Object.values(this.errors);
+  }
+
+  getValidationResult(): IFieldValidationResult[] {
+    return Object.keys(this.errors).map((property) => ({ property: property, errors: [this.errors[property]] }));
   }
 
   setErrors(errors: IFieldValidationResult[]) {

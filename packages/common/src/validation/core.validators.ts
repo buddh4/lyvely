@@ -18,7 +18,7 @@ export function Match(property: string, validationOptions?: ValidationOptions) {
   };
 }
 
-@ValidatorConstraint({ name: 'Match' })
+@ValidatorConstraint({ name: 'match' })
 export class MatchConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const [relatedPropertyName] = args.constraints;
@@ -44,7 +44,7 @@ export function NotMatch(property: string, validationOptions?: ValidationOptions
   };
 }
 
-@ValidatorConstraint({ name: 'NotMatch' })
+@ValidatorConstraint({ name: 'notMatch' })
 export class NotMatchConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const [relatedPropertyName] = args.constraints;
@@ -70,7 +70,7 @@ export function Lte(property: string, validationOptions?: ValidationOptions) {
   };
 }
 
-@ValidatorConstraint({ name: 'Lte' })
+@ValidatorConstraint({ name: 'lte' })
 export class LteConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const [relatedPropertyName] = args.constraints;
@@ -103,7 +103,7 @@ export function Gte(property: string, validationOptions?: ValidationOptions) {
   };
 }
 
-@ValidatorConstraint({ name: 'Gte' })
+@ValidatorConstraint({ name: 'gte' })
 export class GteConstraint implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {
     const [relatedPropertyName] = args.constraints;

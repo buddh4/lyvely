@@ -13,7 +13,7 @@ export class I18nModelValidator<T extends object = object> extends ModelValidato
       ((error) => {
         const constraints = getPropertyConstraints(error.model, <any>error.property);
         const translationVars = constraints.reduce((result, value, index) => {
-          result[`c${index}`] = value;
+          result[`c${index + 1}`] = value;
           return result;
         }, {});
         const translationKey = `validation.${error.rule}`;

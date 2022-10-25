@@ -149,12 +149,18 @@
         "text": "Check your email for a link to reset your password. If it does not appear within a few minutes check your spam folder."
       },
       "to_login": "Return to sign in",
-      "submit": "Send password reset email",
+      "submit_send": "Send password reset email",
+      "submit_reset": "Reset password",
       "fields": {
-        "email": "Enter the main email address of your account"
+        "email": "Enter the main email address of your account",
+        "password": "New password",
+        "passwordRepeat": "Repeat new password",
+        "resetSessions": "Invalidate active sessions",
+        "help": {
+          "resetSessions": "Choosing this option will invalidate all of your active login sessions. This is recommended in case you suspect your password has been compromised."
+        }
       }
     },
-
     "login": {
       "title": "Login",
       "sign_in": "Sign in",
@@ -179,7 +185,8 @@
     "isNotEmpty": "{property} can not be empty",
     "isCaptcha": "Please enter 5 alphanumeric characters",
     "isEmail": "{property} must be an email",
-    "matches": "{property} does not match the expected format"
+    "matches": "{property} does not match the expected format",
+    "match": "{property} does not match {c1}"
   },
   "user_registration": {
     "title": "Sign up",

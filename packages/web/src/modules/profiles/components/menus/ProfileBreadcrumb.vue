@@ -25,13 +25,13 @@ const path = computed(() => {
 
 <template>
   <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
-    <router-link to="/">
+    <router-link to="/" class="text-main">
       <span class="text-pop">@</span>
       {{ profileName }}
     </router-link>
     <template v-for="sub in path" :key="sub.path">
       <span class="mx-0.5">/</span>
-      <router-link :to="sub.path">{{ sub.name }}</router-link>
+      <router-link :to="sub.path" class="text-main">{{ sub.name }}</router-link>
     </template>
   </div>
 </template>

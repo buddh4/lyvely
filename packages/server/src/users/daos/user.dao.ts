@@ -11,10 +11,6 @@ export class UserDao extends AbstractDao<User> {
     super();
   }
 
-  async findByUsername(username: string): Promise<User | null> {
-    return this.findOne({ lowercaseUsername: username.toLowerCase() });
-  }
-
   async findByMainEmail(email: string): Promise<User | null> {
     return this.findOne({ email: email.toLowerCase() });
   }

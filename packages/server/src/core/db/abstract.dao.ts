@@ -287,21 +287,20 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     options?: QueryOptions,
   ): Promise<boolean> {
     // TODO: trigger events
-    const clonedUpdate = cloneDeep(update);
-
-    if (!(await this.beforeUpdate(identity, clonedUpdate))) return false;
+    if (!(await this.beforeUpdate(identity, update))) return false;
 
     filter = filter || {};
     filter._id = this.assureEntityId(identity);
 
-    const modifiedCount = (await this.model.updateOne(filter, clonedUpdate, options).exec()).modifiedCount;
+    const query = this.model.updateOne(filter, update, options);
+    const modifiedCount = (await query.exec()).modifiedCount;
 
     if (modifiedCount && (!options || options.apply !== false)) {
       /**
        *  TODO: Note that applyUpdateTo does not set values which are not part of the model already (hasOwnProperty),
        *  this should be documented, a workaround is to set a default in the schema, maybe make the strict setting configurable
        */
-      applyUpdateTo(identity, update);
+      applyUpdateTo(identity, query.getUpdate());
     }
 
     return !!modifiedCount;

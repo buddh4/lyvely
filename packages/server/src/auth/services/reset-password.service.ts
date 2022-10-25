@@ -6,8 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath, UrlGenerator } from '@/core';
 import { JwtService } from '@nestjs/jwt';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
-
-const JWT_PURPOSE_RESET_TOKEN = 'password-reset';
+import { JWT_RESET_PASSWORD_TOKEN } from '@/auth/guards/strategies/jwt-reset-password.strategy';
 
 @Injectable()
 export class ResetPasswordService {
@@ -33,7 +32,7 @@ export class ResetPasswordService {
     const appName = this.configService.get('appName');
     const forgotPasswordUrl = escapeHTML(encodeURI(this.urlGenerator.getAppUrl('/reset-password').href));
     const token = this.createResetPasswordToken(user);
-    const resetUrl = this.urlGenerator.getAppUrl('/reset-password/' + token);
+    const resetUrl = this.urlGenerator.getAppUrl('/reset-password/', { t: token });
 
     await this.mailService.sendMail({
       to: email,
@@ -63,7 +62,7 @@ export class ResetPasswordService {
                   </tr> </table> 
                   <![endif]>
                 </div>
-                <p>This link will only be valid for 3 hours. To get a new password reset link, visit 
+                <p>This link is only valid for 3 hours. To get a new password reset link, visit 
                 <a class="link" href="${forgotPasswordUrl}" target="_blank">${forgotPasswordUrl}</a>
                 </p>`,
       },
@@ -72,14 +71,18 @@ export class ResetPasswordService {
 
   public createResetPasswordToken(user: User): string {
     const options = {
-      secret: this.configService.get('auth.jwt.access.secret'),
-      expiresIn: this.configService.get('auth.jwt.access.expiresIn'),
+      secret: this.configService.get('auth.jwt.verify.secret'),
+      expiresIn: '3h',
       algorithm: 'HS256',
     } as JwtSignOptions;
 
     const issuer = this.configService.get('auth.jwt.issuer');
     if (issuer) options.issuer = issuer;
 
-    return this.jwtService.sign({ sub: user._id.toString(), purpose: JWT_PURPOSE_RESET_TOKEN }, options);
+    return this.jwtService.sign({ sub: user._id.toString(), purpose: JWT_RESET_PASSWORD_TOKEN }, options);
+  }
+
+  async resetPassword(user: User, password: string) {
+    return this.userService.setUserPassword(user, password, true);
   }
 }

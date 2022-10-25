@@ -93,6 +93,17 @@ function getComputedInputLabel(props: IBaseInputProps, formModelData?: IFormMode
   });
 }
 
+function getComputedHelpText(props: IBaseInputProps, formModelData?: IFormModelData) {
+  const labelKey = formModelData?.labelKey;
+  const property = props.property;
+
+  return computed(() => {
+    if (props.helpText) return props.helpText;
+    if (labelKey && props.property) return labelKey + '.help.' + property;
+    return '';
+  });
+}
+
 function getComputedCssClasses(
   props: IBaseInputProps,
   options: IBaseInputSetupOptions,
@@ -176,6 +187,7 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
     autoCompleteValue: getComputedAutoCompleteValue(props),
     inputError: inputError,
     label: getComputedInputLabel(props, formModelData),
+    helpText: getComputedHelpText(props, formModelData),
     editable: computed(() => !props.disabled && !props.readonly),
     hasFocus: computed(() => root.value && document.activeElement && root.value.contains(document.activeElement)),
     onChange: (evt: any) => {

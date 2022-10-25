@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { watch, onUnmounted, ref } from 'vue';
 import { useLoginStore } from '@/modules/auth/store/login.store';
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
-import { useSendResetPasswordMailStore } from '@/modules/auth/store/reset-password.store';
+import { useSendResetPasswordMailStore } from '@/modules/auth/store/send-reset-password-mail.store';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -113,7 +113,7 @@ onUnmounted(loginStore.reset);
               <ly-input-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
               <ly-icon
                 name="info"
-                class="ml-1 text-primary w-4 cursor-pointer"
+                class="ml-1 text-info-dark w-4 cursor-pointer"
                 aria-hidden="true"
                 @click="showRememberInfo = !showRememberInfo"
               />

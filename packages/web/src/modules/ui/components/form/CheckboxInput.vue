@@ -18,15 +18,15 @@
         {{ $t(label) }}
       </span>
       <ly-icon
-        v-if="showHelpText && helpText"
+        v-if="hasHelpText"
         name="info"
-        class="text-info ml-1 cursor-pointer select-none"
+        class="text-info-dark ml-1 cursor-pointer select-none"
         @click="showHelpText = !showHelpText"
       />
     </div>
-    <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
-      {{ $t(helpText) }}
-    </span>
+    <ly-alert v-if="hasHelpText" v-show="showHelpText" :id="helpTextId" class="mt-2 text-xs" type="info">
+      {{ translatedHelpText }}
+    </ly-alert>
   </div>
 </template>
 
@@ -34,6 +34,7 @@
 import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
 import { SetupContext, ref } from 'vue';
 import { isArray } from 'lodash';
+import { useHelpText } from "@/modules/ui/components/form/help-text.util";
 
 export interface IProps extends IBaseInputProps {
   checked?: boolean;
@@ -77,6 +78,7 @@ export default {
 
     return {
       toggle,
+      ...useHelpText(baseInput.helpText.value),
       ...baseInput,
       checkbox,
       onChange,

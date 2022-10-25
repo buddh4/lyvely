@@ -12,6 +12,7 @@ import { ModuleMeta } from '@/core/modules/module.meta';
 import { ResetPasswordController } from '@/auth/controllers/reset-password.controller';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
 import { CaptchaModule } from '@/captcha/captcha.module';
+import { JwtResetPasswordStrategy } from '@/auth/guards/strategies/jwt-reset-password.strategy';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { CaptchaModule } from '@/captcha/captcha.module';
     LocalStrategy,
     JwtAccessStrategy,
     JwtRefreshStrategy,
+    JwtResetPasswordStrategy,
     JwtAuthGuard,
     ResetPasswordService,
     {

@@ -7,6 +7,7 @@ import PasswordStrengthMeter from '@/modules/ui/components/form/PasswordStrength
 import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/modules/user-registration/routes/paths';
+import LyInputCheckbox from "@/modules/ui/components/form/CheckboxInput.vue";
 
 const userRegistrationStore = useUserRegistrationStore();
 
@@ -71,6 +72,9 @@ onUnmounted(userRegistrationStore.reset);
             :password-toggle="false"
             :required="true"
           />
+
+          <ly-input-checkbox property="resetSessions" />
+
           <password-strength-meter v-model="model.password" />
         </fieldset>
 

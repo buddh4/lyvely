@@ -76,9 +76,6 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @Prop({ required: true })
   username: string;
 
-  @Prop({ required: true })
-  lowercaseUsername: string;
-
   @Prop({ type: String })
   imageHash: string;
 
@@ -101,6 +98,9 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @PropertyType(ProfilesCount, { default: () => new ProfilesCount() })
   @Prop({ type: ProfilesCountSchema, required: true })
   profilesCount: ProfilesCount;
+
+  @Prop({ type: Date })
+  sessionResetAt?: Date;
 
   createdAt: Date;
   updatedAt: Date;
@@ -184,39 +184,72 @@ UserSchema.pre('validate', function (next) {
   const user = <UserDocument>this;
 
   this.email = this.email?.toLowerCase();
-  this.lowercaseUsername = this.username.toLowerCase();
 
   // Make sure not to rehash the password if it is already hashed
-  if (!user.isModified('password')) {
-    return next();
-  }
-
-  // Generate a salt and use it to hash the user's password
-  bcrypt.hash(user.password, 10, (err, hash) => {
-    if (err) return next(err);
-    user.password = hash;
+  if (user.isModified('password')) {
+    preUpdateModel(user, next);
+  } else {
     next();
-  });
+  }
 });
 
 UserSchema.pre('findOneAndUpdate', function (next) {
-  const updateFields = this.getUpdate() as UpdateQuery<User>;
+  preUpdateQuery(this.getUpdate() as UpdateQuery<User>, next);
+});
 
-  if (updateFields.username) {
-    this.update({}, { $set: { lowercaseUsername: updateFields.username.toLowerCase() } });
-  }
+UserSchema.pre('findOneAndReplace', function (next) {
+  preUpdateQuery(this.getUpdate() as UpdateQuery<User>, next);
+});
 
-  // Generate a salt and use it to hash the user's password
-  if (updateFields.password) {
-    bcrypt.hash(updateFields.password, 10, (err, hash) => {
+UserSchema.pre('update', function (next) {
+  preUpdateQuery(this.getUpdate() as UpdateQuery<User>, next);
+});
+
+UserSchema.pre('updateOne', function (next) {
+  preUpdateQuery((<UpdateQuery<User>>this).getUpdate(), next);
+});
+
+UserSchema.pre('replaceOne', function (next) {
+  preUpdateQuery((<UpdateQuery<User>>this).getUpdate(), next);
+});
+
+UserSchema.pre('updateMany', function (next) {
+  // Prevent multi password updates
+  const update = (<UpdateQuery<User>>this).getUpdate();
+  if (update.password) delete update.password;
+  if (update.$set.password) delete update.$set.password;
+  next();
+});
+
+function preUpdateQuery(update: UpdateQuery<User>, next) {
+  if (update?.password) {
+    bcrypt.hash(update.password, 10, (err, hash) => {
       if (err) return next(err);
-      updateFields.password = hash;
-      next(null);
+      update.password = hash;
+      next();
+    });
+  } else if (update?.$set?.password) {
+    bcrypt.hash(update?.$set?.password, 10, (err, hash) => {
+      if (err) return next(err);
+      update.$set.password = hash;
+      next();
     });
   } else {
-    next(null);
+    next();
   }
-});
+}
+
+function preUpdateModel(update: UserDocument, next) {
+  if (update?.password) {
+    bcrypt.hash(update.password, 10, (err, hash) => {
+      if (err) return next(err);
+      update.password = hash;
+      next();
+    });
+  } else {
+    next();
+  }
+}
 
 export function getDefaultLocale() {
   return Intl.DateTimeFormat().resolvedOptions().locale;
