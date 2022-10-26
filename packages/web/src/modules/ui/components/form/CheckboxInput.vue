@@ -34,7 +34,7 @@
 import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
 import { SetupContext, ref } from 'vue';
 import { isArray } from 'lodash';
-import { useHelpText } from "@/modules/ui/components/form/help-text.util";
+import { useHelpText } from '@/modules/ui/components/form/help-text.util';
 
 export interface IProps extends IBaseInputProps {
   checked?: boolean;

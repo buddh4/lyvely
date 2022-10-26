@@ -24,7 +24,7 @@ const path = computed(() => {
 </script>
 
 <template>
-  <div class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
+  <div id="profile-breadcrumb" class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
     <router-link to="/" class="text-main">
       <span class="text-pop">@</span>
       {{ profileName }}

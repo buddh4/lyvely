@@ -2,10 +2,15 @@
 import { Size } from '@/modules/ui/types';
 import ProfileSidebar from './snippets/ProfileSidebar.vue';
 import MainProfileContainer from './MainProfileContainer.vue';
-import { computed } from 'vue';
+import { computed, ref, defineAsyncComponent } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import CreateProfileModal from '../modals/CreateProfileModal.vue';
 import InviteUsersModal from '../modals/InviteUsersModal.vue';
+import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
+import HelpModal from '@/modules/help/components/HelpModal.vue';
+
+const { active: showIntroductionTour } = storeToRefs(useIntroductionTourStore());
 
 export interface IProps {
   containerWidth?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
@@ -22,6 +27,8 @@ const containerProps = computed(() => ({
 }));
 
 const show = computed(() => (props.requireAuth ? useAuthStore().isAuthenticated : true));
+
+const IntroductionTour = defineAsyncComponent(() => import('@/modules/help/components/IntroductionTour.vue'));
 </script>
 
 <template>
@@ -35,6 +42,8 @@ const show = computed(() => (props.requireAuth ? useAuthStore().isAuthenticated 
       </main-profile-container>
     </div>
   </div>
+  <introduction-tour v-if="showIntroductionTour" />
+  <help-modal />
   <create-profile-modal />
   <invite-users-modal />
 </template>

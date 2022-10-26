@@ -9,6 +9,8 @@ import { appConfigGuard } from '@/modules/app-config';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { loadProfile } from '@/modules/profiles';
+import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
+import { useHelpStore } from '@/modules/help/stores/help.store';
 
 const routes: Array<RouteRecordRaw> = [];
 
@@ -39,9 +41,14 @@ router.beforeEach(messageLoaderGuard);
 router.beforeEach(authGuard);
 router.afterEach(() => usePageStore().setShowAppLoader(false));
 router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
+  if (to.query.help === '1') {
+    useHelpStore().setShowModal(true);
+  }
+
   if (to.meta?.layout === 'profile') {
     return loadProfile(to, from, next);
   }
+
   next();
 });
 router.afterEach((to: RouteLocation) => {

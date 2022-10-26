@@ -3,6 +3,7 @@ import { UserDao } from '../daos';
 import { RefreshToken, User, UserEmail } from '../schemas';
 import { ProfileType, IntegrityException, UserStatus } from '@lyvely/common';
 import { EntityIdentity, IBaseQueryOptions } from '@/core';
+
 @Injectable()
 export class UsersService {
   constructor(private userDao: UserDao) {}
@@ -70,7 +71,6 @@ export class UsersService {
   }
 
   async setUserPassword(user: EntityIdentity<User>, newPassword: string, resetSession: boolean) {
-    const update = resetSession ? { password: newPassword, sessionResetAt: new Date() } : { password: newPassword };
-    return this.userDao.updateOneSetById(user, update);
+    return this.userDao.updatePassword(user, newPassword, resetSession);
   }
 }

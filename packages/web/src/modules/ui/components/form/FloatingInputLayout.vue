@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useHelpText } from "@/modules/ui/components/form/help-text.util";
+import { useHelpText } from '@/modules/ui/components/form/help-text.util';
 
 export interface IProps {
   label?: string;
@@ -18,13 +18,7 @@ const props = withDefaults(defineProps<IProps>(), {
   required: false,
 });
 
-const {
-    helpTextId,
-    showHelpText,
-    translatedHelpText,
-    hasHelpText,
-    ariaDescribedBy
-} = useHelpText(props.helpText);
+const { helpTextId, showHelpText, translatedHelpText, hasHelpText, ariaDescribedBy } = useHelpText(props.helpText);
 
 const wrapperClasses = ['form-input relative', { required: props.required }, props.wrapperClass];
 </script>
@@ -33,19 +27,19 @@ const wrapperClasses = ['form-input relative', { required: props.required }, pro
   <section :class="wrapperClasses">
     <slot name="label">
       <label
-          v-if="label"
-          :for="inputId"
-          class="absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none"
-          :aria-describedby="ariaDescribedBy"
+        v-if="label"
+        :for="inputId"
+        class="absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none"
+        :aria-describedby="ariaDescribedBy"
       >
         {{ $t(label) }}
       </label>
       <ly-icon
-          v-if="hasHelpText"
-          name="info"
-          class="absolute text-info-dark w-4 cursor-pointer top-2 right-3"
-          aria-hidden="true"
-          @click="showHelpText = !showHelpText"
+        v-if="hasHelpText"
+        name="info"
+        class="absolute text-info-dark w-4 cursor-pointer top-2 right-3"
+        aria-hidden="true"
+        @click="showHelpText = !showHelpText"
       />
     </slot>
     <slot></slot>

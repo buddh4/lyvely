@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument, RefreshToken, UserEmail } from '../schemas';
-import { AbstractDao, IBaseQueryOptions, EntityIdentity } from '@/core';
+import { AbstractDao, IBaseQueryOptions, EntityIdentity, UpdateQuerySet } from '@/core';
 import { Constructor, ProfileType, UserStatus } from '@lyvely/common';
 
 @Injectable()
@@ -127,6 +127,16 @@ export class UserDao extends AbstractDao<User> {
     }
 
     return result;
+  }
+
+  async updatePassword(identity: EntityIdentity<User>, newPassword: string, resetSession: boolean) {
+    const date = new Date();
+    const update = { password: newPassword, passwordResetAt: date } as UpdateQuerySet<User>;
+    if (resetSession) {
+      update.sessionResetAt = date;
+    }
+
+    return this.updateOneById(identity, update);
   }
 
   getModelConstructor(): Constructor<User> {

@@ -58,6 +58,7 @@ type ModulesConfiguration = {} & { [k: string]: object };
 
 export type LyvelyAppConfiguration = {
   appName: string;
+  docUrl?: string;
   contactMail: string;
   i18n?: I18NOptions;
   http?: LyvelyHttpOptions;

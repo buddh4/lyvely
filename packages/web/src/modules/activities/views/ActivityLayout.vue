@@ -4,9 +4,10 @@ import ActivityFilterNavigation from '@/modules/activities/components/menus/Acti
 import { onBeforeMount, onMounted } from 'vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { usePageStore } from '@/modules/core/store/page.store';
+import { accessibilityFocus } from '@/modules/accessibility/utils/accessibility.util';
 
 onBeforeMount(() => useActivityStore().loadActivities());
-onMounted(() => usePageStore().accessibilityFocus('#activity-navigation > button.active'));
+onMounted(() => accessibilityFocus('#activity-navigation > button.active'));
 </script>
 
 <template>

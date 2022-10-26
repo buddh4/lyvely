@@ -8,6 +8,7 @@ import ListPage from '@/modules/ui/components/layout/ListPage.vue';
 import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 import AddButton from '@/modules/ui/components/button/AddButton.vue';
+import { accessibilityFocus } from '@/modules/accessibility';
 
 const filter = ref(new TagFilter({ archived: false }));
 
@@ -36,7 +37,7 @@ function confirmArchive(tag: TagModel) {
   return tag.archived ? { text: 'tags.unarchive.confirm.text' } : { text: 'tags.archive.confirm.text' };
 }
 
-onMounted(() => usePageStore().accessibilityFocus('.list-page-headline'));
+onMounted(() => accessibilityFocus('.list-page-headline'));
 </script>
 
 <template>

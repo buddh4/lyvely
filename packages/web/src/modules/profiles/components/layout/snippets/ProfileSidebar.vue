@@ -73,6 +73,7 @@ watch(showSidebar, () => {
 });
 
 const isSmallView = ref(isMaxViewSize('sm'));
+
 watchMaxSize('sm', (value) => {
   isSmallView.value = value;
 });
@@ -101,7 +102,7 @@ const ariaLabel = computed(() =>
         </a>
       </div>
 
-      <ul class="nav flex-column">
+      <ul id="profile-navigation" class="nav flex-column">
         <li>
           <template v-for="menuItem in menuItems" :key="menuItem.label">
             <template v-if="!menuItem.condition || menuItem.condition()">

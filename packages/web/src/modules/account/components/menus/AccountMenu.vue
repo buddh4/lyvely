@@ -4,6 +4,8 @@ import { storeToRefs } from 'pinia';
 import { computed, toRefs } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { usePageStore } from '@/modules/core/store/page.store';
+import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
+import { useHelpStore } from '@/modules/help/stores/help.store';
 
 const accountStore = useAccountStore();
 const authStore = useAuthStore();
@@ -15,19 +17,23 @@ function logout() {
 
 const { showAccountDrawer } = storeToRefs(accountStore);
 
-const menuItemClass = 'block py-3 px-3 no-underline cursor-pointer flex no-wrap items-center h-12 menu-item';
+const menuItemClass = 'block py-3 px-3 no-underline cursor-pointer flex no-wrap items-center h-12 menu-item text-main';
 const accountDrawerButtonClass = computed(() => [
   'px-2 p-2 rounded-xl flex justify-center items-center gap-2 cursor-pointer text-sm cursor-pointer',
   { 'border border-divide': showAccountDrawer.value },
   { 'border border-transparent': !showAccountDrawer.value },
 ]);
 
+function showHelp() {
+  useHelpStore().setShowModal(true);
+}
+
 const { toggleDark } = pageStore;
 const { isDark } = toRefs(pageStore);
 </script>
 
 <template>
-  <div class="flex items-center justify-end score inline-block float-right">
+  <div id="account-menu" class="flex items-center justify-end score inline-block float-right">
     <ly-button>
       <ly-icon name="bell" class="w-3.5" />
     </ly-button>
@@ -50,6 +56,12 @@ const { isDark } = toRefs(pageStore);
             <ly-icon name="security" />
             {{ $t('account.drawer.security') }}
           </router-link>
+        </li>
+        <li>
+          <a :class="menuItemClass" @click="showHelp">
+            <ly-icon name="help" />
+            {{ $t('help.label') }}
+          </a>
         </li>
         <li>
           <a :class="menuItemClass" @click="toggleDark()">
@@ -76,7 +88,7 @@ nav a {
 }
 
 nav a:hover:not(.router-link-active) {
-  @apply border-l-4 border-slate-200 dark:border-slate-600;
+  @apply border-l-4 border-slate-200 dark:border-slate-600 text-highlight;
 }
 
 nav a .icon {
@@ -84,6 +96,6 @@ nav a .icon {
 }
 
 nav a.router-link-active {
-  @apply border-l-4 border-pop;
+  @apply border-l-4 border-pop text-highlight;
 }
 </style>

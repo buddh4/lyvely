@@ -14,25 +14,6 @@ export const usePageStore = defineStore('page', () => {
     setPageTitle(title);
   }
 
-  function accessibilityFocus(elem: string | HTMLElement) {
-    const element: HTMLElement | null = elem instanceof HTMLElement ? elem : document.querySelector(elem);
-
-    if (!element) {
-      console.warn('Tried to focus non existing element');
-      return;
-    }
-
-    element?.classList.add('focus-hidden');
-    element?.focus();
-    element?.addEventListener(
-      'blur',
-      () => {
-        element?.classList.remove('focus-hidden');
-      },
-      { once: true },
-    );
-  }
-
   function toggleSidebar() {
     showSidebar.value = !showSidebar.value;
   }
@@ -65,7 +46,6 @@ export const usePageStore = defineStore('page', () => {
     setShowAppLoader,
     showAppLoader,
     setTitle,
-    accessibilityFocus,
   };
 });
 

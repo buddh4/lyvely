@@ -102,6 +102,9 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @Prop({ type: Date })
   sessionResetAt?: Date;
 
+  @Prop({ type: Date })
+  passwordResetAt?: Date;
+
   createdAt: Date;
   updatedAt: Date;
 

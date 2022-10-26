@@ -14,7 +14,7 @@ const score = computed(() => profileStore.profile?.score);
 <template>
   <ly-dropdown position="right">
     <template #trigger="{ toggle }">
-      <div class="flex justify-center items-center py-1">
+      <div id="profile-combo-button" class="flex justify-center items-center py-1">
         <div class="border border-divide border-r-0 rounded-l-2xl flex justify-center items-center">
           <ly-button class="px-3 py-2" @click="toggleSidebar">
             <ly-icon name="menu" style="margin-top: -3px" />

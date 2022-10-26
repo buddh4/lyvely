@@ -3,13 +3,13 @@ import { computed, toRefs, ref, Ref, watch } from 'vue';
 import { suggestFocusElement } from '@/modules/ui/utils';
 import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
+import { accessibilityFocus } from '@/modules/accessibility';
 
 export interface IModalProps {
   modelValue: boolean;
   footerVisibility?: string;
   title: string;
   icon?: string;
-  iconColor?: string;
   iconClass?: string;
   cancelButton?: boolean;
   cancelButtonText?: string;
@@ -29,7 +29,6 @@ const props = withDefaults(defineProps<IModalProps>(), {
   submitButtonText: 'common.submit',
   cancelButtonClass: 'secondary',
   submitButton: true,
-  iconColor: undefined,
   iconClass: undefined,
   prevAutoFocus: false,
   ariaLabel: undefined,
@@ -63,7 +62,7 @@ if (!props.prevAutoFocus) {
     setTimeout(() => {
       if (rootEl.value) {
         activate();
-        suggestFocusElement(rootEl.value)?.focus();
+        accessibilityFocus(suggestFocusElement(rootEl.value));
       }
     }, 100);
   });
@@ -106,8 +105,10 @@ if (!props.prevAutoFocus) {
               </button>
 
               <h1 class="text-lg inline-block align-middle flex align-items-center" tabindex="-1">
-                <ly-icon v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass" :color="iconColor" />
-                {{ $t(title) }}
+                <ly-icon v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass" />
+                <slot name="title">
+                  {{ $t(title) }}
+                </slot>
               </h1>
               <ly-button
                 v-if="submitButton"

@@ -1,4 +1,30 @@
 {
+  "help": {
+    "label": "Help",
+    "modal": {
+      "title": "How can we help you?",
+      "title_new": "Welcome to {{ appName }}?",
+      "text_intro": "It seems this is your first day using {appName}. If you wish we can give you a short {introductionLink}, for an in-depth documentation please visit {docLink}.",
+      "introductionLinkText": "introduction tour",
+      "buttons": {
+        "intro": "Start introduction tour",
+        "to_docs": "Read the documentation"
+      }
+    },
+    "intro": {
+      "profile_combo_button_title": "Profile chooser",
+      "profile_combo_button1": "The profile chooser menu indicates the currently active profile. The dropdown menu can be used to create or choose other profiles and organizations.",
+      "profile_combo_button2": "The dropdown menu can be used to create or choose other profiles and organizations.",
+      "profile_combo_button3": "You can create multiple private, group or organization profiles depending on your permissions",
+      "profile_sidebar_title": "Profile navigation",
+      "profile_sidebar1": "The profile sidebar is used to navigate to various features and settings of the currently active profile.",
+      "profile_sidebar2": "The available features may differ depending on profile settings and user permissions.",
+      "profile_breadcrumb_title": "Active feature",
+      "profile_breadcrumb": "Here you can see which feature is currently active.",
+      "account_menu_title": "Account menu",
+      "account_menu": "The account menu provides access for account specific features as account and security settings as well as your personal notifications."
+    }
+  },
   "modal": {
     "aria": {
       "root": "This is a modal window. To close this window use the cancel button or press escape or submit the modal by using the submit button."

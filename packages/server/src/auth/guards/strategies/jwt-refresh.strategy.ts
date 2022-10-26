@@ -2,7 +2,7 @@ import { ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtStrategy, JwtTokenPayloadIF } from '@/jwt';
-import { Headers } from '@lyvely/common';
+import { Headers, UserStatus } from '@lyvely/common';
 import { User } from '@/users';
 import bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
@@ -47,7 +47,9 @@ export class JwtRefreshStrategy extends JwtStrategy<JwtRefreshTokenPayloadIF>({
     super(configService);
   }
 
-  async validateUser(user: User, req: Request) {
+  override async validateUser(user: User, req: Request) {
+    if (user.status !== UserStatus.Active) throw new UnauthorizedException();
+
     const tokenString = extractRefreshCookie(req, this.configService);
     const vid = req.header(Headers.X_VISITOR_ID);
     const refreshTokenModel = user.getRefreshTokenByVisitorId(vid);

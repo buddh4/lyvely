@@ -50,3 +50,17 @@
 #nprogress .spinner-icon {
     display:none;
 }
+
+/* Size < Small */
+@media screen and (max-width: 756px) {
+    .introjs-tooltip {
+        min-width: 300px !important;
+    }
+}
+
+/* Size > Small */
+@media screen and (min-width: 756px) {
+    .introjs-tooltip {
+        min-width: 500px !important;
+    }
+}

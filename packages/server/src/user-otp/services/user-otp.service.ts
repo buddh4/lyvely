@@ -13,7 +13,7 @@ interface IGenerateOtpOptions<TContext = any> {
   context?: TContext;
   remember?: boolean;
   length?: number;
-  expiresIn?: string | number;
+  expiresIn?: string;
 }
 
 interface IOtpValidationOptions<TContext = any> {

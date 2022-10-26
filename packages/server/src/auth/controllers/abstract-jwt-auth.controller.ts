@@ -11,7 +11,7 @@ export abstract class AbstractJwtAuthController {
   protected setAuthenticationCookie(req: Request, token: string) {
     const secure = this.useSecureCookies();
     const authCookieName = getAuthCookieName(this.configService);
-    const expirationMS = Math.max(ms(this.configService.get('auth.jwt.access.expiresIn', '15m')), 20_000);
+    const expirationMS = Math.max(ms(this.configService.get<string>('auth.jwt.access.expiresIn', '15m')), 20_000);
     req.res.cookie(authCookieName, token, {
       sameSite: this.configService.get('auth.jwt.access.samesite', 'lax'),
       httpOnly: true,
@@ -29,7 +29,7 @@ export abstract class AbstractJwtAuthController {
       // TODO: we need to respect api version or different api path here...
       path: '/auth/refresh',
       secure: secure,
-      expires: addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiresIn')), false),
+      expires: addMilliSeconds(new Date(), ms(this.configService.get<string>('auth.jwt.refresh.expiresIn')), false),
     });
   }
 

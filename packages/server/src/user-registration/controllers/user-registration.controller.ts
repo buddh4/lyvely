@@ -69,7 +69,7 @@ export class UserRegistrationController extends AbstractJwtAuthController implem
     return {
       user: new UserModel(user),
       vid: vid,
-      token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')),
+      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')),
     };
   }
 }

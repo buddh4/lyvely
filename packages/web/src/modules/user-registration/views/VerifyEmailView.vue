@@ -19,7 +19,7 @@ function resend() {
 function verifyEmail() {
   verifyEmailStore.verifyEmail().then((success) => {
     if (success) {
-      document.location = '/';
+      document.location = '/?help=1';
     }
   });
 }

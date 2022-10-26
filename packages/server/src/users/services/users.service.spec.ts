@@ -218,8 +218,10 @@ describe('UserService', () => {
       expect(user.password).not.toEqual('newPassword');
       const updated = await userService.findUserById(user);
       expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
-      const now = new Date();
+      expect(updated.passwordResetAt instanceof Date).toEqual(true);
       expect(updated.sessionResetAt instanceof Date).toEqual(true);
+      const now = new Date();
+      expect(updated.passwordResetAt).toEqual(updated.sessionResetAt);
       expect(updated.sessionResetAt.getDate()).toEqual(now.getDate());
       expect(updated.sessionResetAt.getMonth()).toEqual(now.getMonth());
       expect(updated.sessionResetAt.getFullYear()).toEqual(now.getFullYear());
@@ -235,8 +237,14 @@ describe('UserService', () => {
       expect(user.password).not.toEqual('newPassword');
       const updated = await userService.findUserById(user);
       expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
-      const now = new Date();
       expect(updated.sessionResetAt).toBeUndefined();
+      expect(updated.passwordResetAt instanceof Date).toEqual(true);
+      const now = new Date();
+      expect(updated.passwordResetAt.getDate()).toEqual(now.getDate());
+      expect(updated.passwordResetAt.getMonth()).toEqual(now.getMonth());
+      expect(updated.passwordResetAt.getFullYear()).toEqual(now.getFullYear());
+      expect(updated.passwordResetAt.getHours()).toEqual(now.getHours());
+      expect(updated.passwordResetAt.getMinutes()).toEqual(now.getMinutes());
     });
   });
 });

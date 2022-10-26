@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { FieldValidationException, isValidEmail, UserStatus, escapeHTML } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { MailService } from '@/mails';

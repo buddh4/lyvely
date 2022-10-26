@@ -6,14 +6,24 @@ import { storeToRefs } from 'pinia';
 import { useRouter, RouteLocationRaw } from 'vue-router';
 import { PATH_LOGIN } from '@/modules/auth';
 import { onUnmounted, ref } from 'vue';
-import { useResetPasswordStore } from "@/modules/auth/store/reset-password.store";
+import { useResetPasswordStore } from '@/modules/auth/store/reset-password.store';
 import PasswordStrengthMeter from '@/modules/ui/components/form/PasswordStrengthMeter.vue';
-import LyInputCheckbox from "@/modules/ui/components/form/CheckboxInput.vue";
+import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 
 const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();
-const { model: resetModel, validator: resetValidator, stage, status: resetStatus, token } = storeToRefs(resetPasswordStore);
-const { model: sendMailModel, validator: sendMailValidator, status: sendMailStatus } = storeToRefs(sendResetPasswordMailStore);
+const {
+  model: resetModel,
+  validator: resetValidator,
+  stage,
+  status: resetStatus,
+  token,
+} = storeToRefs(resetPasswordStore);
+const {
+  model: sendMailModel,
+  validator: sendMailValidator,
+  status: sendMailStatus,
+} = storeToRefs(sendResetPasswordMailStore);
 const router = useRouter();
 const loginRoute = { path: PATH_LOGIN };
 const captchaInput = ref();
@@ -25,7 +35,7 @@ function sendMail() {
 
 function resetPassword() {
   resetPasswordStore.resetPassword().then((route?: RouteLocationRaw) => {
-    if(route) {
+    if (route) {
       router.replace(route);
     }
   });
@@ -52,7 +62,12 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     </template>
 
     <template #body>
-      <ly-form-model v-model="sendMailModel" :validator="sendMailValidator" :status="sendMailStatus" label-key="auth.reset_password.fields">
+      <ly-form-model
+        v-model="sendMailModel"
+        :validator="sendMailValidator"
+        :status="sendMailStatus"
+        label-key="auth.reset_password.fields"
+      >
         <ly-input-text property="email" autocomplete="email" autofocus />
         <ly-input-captcha ref="captchaInput" />
       </ly-form-model>
@@ -73,7 +88,6 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
           {{ $t('auth.reset_password.to_login') }}
         </router-link>
       </div>
-
     </template>
   </centered-layout-container>
 
@@ -105,23 +119,28 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     </template>
 
     <template #body>
-      <ly-form-model v-model="resetModel" :validator="resetValidator" :status="resetStatus" label-key="auth.reset_password.fields">
+      <ly-form-model
+        v-model="resetModel"
+        :validator="resetValidator"
+        :status="resetStatus"
+        label-key="auth.reset_password.fields"
+      >
         <fieldset>
           <ly-input-text
-              name="new-password"
-              autocomplete="new-password"
-              property="password"
-              type="password"
-              :required="true"
-              @toggle-type="repeatPasswordType = $event"
+            name="new-password"
+            autocomplete="new-password"
+            property="password"
+            type="password"
+            :required="true"
+            @toggle-type="repeatPasswordType = $event"
           />
 
           <ly-input-text
-              property="passwordRepeat"
-              autocomplete="new-password"
-              :type="repeatPasswordType"
-              :password-toggle="false"
-              :required="true"
+            property="passwordRepeat"
+            autocomplete="new-password"
+            :type="repeatPasswordType"
+            :password-toggle="false"
+            :required="true"
           />
           <password-strength-meter v-model="resetModel.password" />
         </fieldset>
@@ -133,10 +152,10 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     <template #footer>
       <div class="flex items-center">
         <ly-button
-            class="primary ml-auto"
-            :loading="resetPasswordStore.status.isStatusLoading()"
-            text="auth.reset_password.submit_reset"
-            @click="resetPassword"
+          class="primary ml-auto"
+          :loading="resetPasswordStore.status.isStatusLoading()"
+          text="auth.reset_password.submit_reset"
+          @click="resetPassword"
         />
       </div>
 
@@ -145,7 +164,6 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
           {{ $t('auth.reset_password.to_login') }}
         </router-link>
       </div>
-
     </template>
   </centered-layout-container>
 </template>

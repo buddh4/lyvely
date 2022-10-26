@@ -1,9 +1,13 @@
+import { LyvelyAppConfiguration } from '@/core';
+
 export default {
   appName: 'lyvely.app',
+  docUrl: 'https://docs.lyvely.app',
   contactMail: 'help@lyvely.app',
   http: {
     host: 'localhost',
     port: 8080,
+    baseUrl: 'http://localhost:8080',
     appUrl: 'http://localhost:3000',
   },
   mongodb: {
@@ -23,18 +27,19 @@ export default {
     jwt: {
       'secure-cookies': false,
       access: {
-        secret: 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
-        expiration: '15m',
+        secret: undefined, // CHANGEME!
+        expiresIn: '2m',
         samesite: 'lax',
       },
       refresh: {
-        secret: 'e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
-        expiration: '200d',
+        secret: undefined, // CHANGEME!
+        expiresIn: '5m',
+        expiresInRemember: '200d',
         samesite: 'lax',
       },
-      token: {
-        secret: 'e5d2ece45d3b7919fc7b7a7f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
-        expiration: '1d',
+      verify: {
+        secret: undefined, // CHANGEME!
+        expiresIn: '1d',
       },
     },
   },
@@ -45,4 +50,4 @@ export default {
       },
     },
   },
-};
+} as LyvelyAppConfiguration;

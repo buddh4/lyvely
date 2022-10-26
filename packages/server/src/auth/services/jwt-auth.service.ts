@@ -69,7 +69,7 @@ export class JwtAuthService {
       user,
       visitorId,
       token,
-      addMilliSeconds(new Date(), ms(this.configService.get('auth.jwt.refresh.expiresIn')), false),
+      addMilliSeconds(new Date(), ms(this.configService.get<string>('auth.jwt.refresh.expiresIn')), false),
       remember,
     );
 

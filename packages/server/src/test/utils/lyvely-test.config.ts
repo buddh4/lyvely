@@ -2,6 +2,7 @@ import { LyvelyAppConfiguration } from '@/core';
 
 const lyvelyTestConfig: LyvelyAppConfiguration = {
   appName: 'lyvely.test.app',
+  docUrl: 'http://docs.lyvely.app',
   contactMail: 'test@test.de',
   http: {
     baseUrl: 'https://api.test.com',

@@ -8,12 +8,9 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
 
 export const JWT_ACCESS_TOKEN = 'jwt-access-token';
+
 const COOKIE_AUTHENTICATION = 'Authentication';
 const COOKIE_AUTHENTICATION_HOST = '__Host-Authentication';
-
-export interface JwtAccessTokenPayloadIF extends JwtTokenPayloadIF {
-  sub: string;
-}
 
 export function getAuthCookieName(configService: ConfigService<ConfigurationPath>) {
   const useSecureCookies = configService.get('auth.jwt.secure-cookies', true);
@@ -30,7 +27,7 @@ export function clearAccessCookies(res: Response) {
 }
 
 @Injectable()
-export class JwtAccessStrategy extends JwtStrategy<JwtAccessTokenPayloadIF>({
+export class JwtAccessStrategy extends JwtStrategy<JwtTokenPayloadIF>({
   name: JWT_ACCESS_TOKEN,
   options: (configService) => {
     return {
@@ -43,9 +40,7 @@ export class JwtAccessStrategy extends JwtStrategy<JwtAccessTokenPayloadIF>({
     super(configService);
   }
 
-  async validateUser(user: User) {
-    if (user.status !== UserStatus.Active) {
-      throw new UnauthorizedException();
-    }
+  override async validateUser(user: User) {
+    if (user.status !== UserStatus.Active) throw new UnauthorizedException();
   }
 }

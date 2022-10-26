@@ -43,7 +43,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     return {
       user: new UserModel(user),
       vid: vid,
-      token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')),
+      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')),
     };
   }
 
@@ -66,7 +66,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     await this.authService.destroyRefreshToken(user, oldRefreshToken.vid);
     this.setRefreshCookie(req, await this.authService.createRefreshToken(user, vid, oldRefreshToken.remember));
 
-    return { token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')) };
+    return { token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')) };
   }
 
   @Public()
@@ -93,7 +93,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   async loadUser(@Req() req: UserRequest) {
     return {
       user: new UserModel(req.user),
-      token_expiration: ms(this.configService.get('auth.jwt.access.expiresIn')),
+      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')),
     };
   }
 }
