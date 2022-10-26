@@ -1,5 +1,5 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
-import { User } from '../../users';
+import { User } from '@/users';
 import {
   HabitModel,
   DataPointNumberInputStrategy,
@@ -7,16 +7,13 @@ import {
   applyValidationProperties,
   PropertiesOf,
 } from '@lyvely/common';
-import { Profile } from '../../profiles';
+import { Profile } from '@/profiles';
 import { Activity } from './activity.schema';
-import { ContentDocument } from '../../content';
-import {
-  CheckboxNumberDataPointConfig,
-  DataPointConfigFactory,
-  NumberDataPointConfigRevision,
-} from '../../time-series';
-import { assureObjectId } from '../../core/db/db.utils';
+import { ContentDocument } from '@/content';
+import { CheckboxNumberDataPointConfig, DataPointConfigFactory, NumberDataPointConfigRevision } from '@/time-series';
+import { assureObjectId } from '@/core';
 import { cloneDeep } from 'lodash';
+import { ContentDataType } from '@/content/schemas/content-data-type.schema';
 
 export type HabitDocument = Habit & ContentDocument;
 
@@ -39,6 +36,9 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
       model.dataPointConfig = updatedDataPointConfig;
     }
 
+    model.data.title = update.title || model.data.title;
+    model.data.textContent = update.text || model.data.textContent;
+
     applyValidationProperties(model, update);
   }
 
@@ -50,6 +50,8 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
   ): Habit {
     const result = new Habit(profile, owner, {
       ...update,
+      score: update.score,
+      data: new ContentDataType({ title: update.title, textContent: update.text }),
       tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
       dataPointConfig: _createDataPointConfigFromUpdate(update),
     });

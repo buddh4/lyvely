@@ -44,7 +44,8 @@ describe('MailService', () => {
         html: '<b>Testing...</b>',
       });
 
-      await new Promise((resolve) => info.message.on('end', () => resolve(info)));
+      expect(info.messageFile).toBeDefined();
+      await info.messageFile;
       expect(fs.existsSync(mailService.getMessageFilePath(info))).toEqual(true);
     });
   });

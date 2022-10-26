@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractContentDao } from '../../content';
+import { AbstractContentDao } from '@/content';
 import { Task, TaskDocument } from '../schemas';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { assureObjectId, EntityIdentity } from '@/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import module from '../activities.meta';
-import { User } from '../../users';
+import { User } from '@/users';
 import { UserAssignmentStrategy } from '@lyvely/common';
-import { Profile } from '../../profiles';
+import { Profile } from '@/profiles';
 
 @Injectable()
 export class TasksDao extends AbstractContentDao<Task> {
@@ -16,8 +16,8 @@ export class TasksDao extends AbstractContentDao<Task> {
   }
 
   async getNextSortOrder(profile: Profile) {
-    const maxSortOrderEntry = await this.findAllByProfile(profile, {}, { sort: { sortOrder: -1 }, limit: 1 });
-    return maxSortOrderEntry.length ? maxSortOrderEntry[0].sortOrder + 1 : 0;
+    const maxSortOrderEntry = await this.findAllByProfile(profile, {}, { sort: { 'meta.sortOrder': -1 }, limit: 1 });
+    return maxSortOrderEntry.length ? maxSortOrderEntry[0].meta.sortOrder + 1 : 0;
   }
 
   async setDone(

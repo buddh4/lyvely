@@ -1,4 +1,4 @@
-import { ContentFilter } from '@/content';
+import { ContentFilter, ContentMetadataModel } from '@/content';
 import { TestContent } from './src/test-content.model';
 
 describe('Content Filter', () => {
@@ -19,19 +19,19 @@ describe('Content Filter', () => {
   describe('archived filter', function () {
     it('archived filter active by default', async () => {
       const filter = new ContentFilter();
-      const result = filter.check(new TestContent({ archived: true }));
+      const result = filter.check(new TestContent({ meta: new ContentMetadataModel({ isArchived: true }) }));
       expect(result).toEqual(false);
     });
 
     it('archive filter success', async () => {
       const filter = new ContentFilter({ archived: true });
-      const result = filter.check(new TestContent({ archived: true }));
+      const result = filter.check(new TestContent({ meta: new ContentMetadataModel({ isArchived: true }) }));
       expect(result).toEqual(true);
     });
 
     it('archive filter fail', async () => {
       const filter = new ContentFilter({ archived: true });
-      const result = filter.check(new TestContent({ archived: false }));
+      const result = filter.check(new TestContent({ meta: new ContentMetadataModel({ isArchived: true }) }));
       expect(result).toEqual(false);
     });
   });

@@ -1,16 +1,16 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { closeInMongodConnection } from '../../test/utils/mongoose-test.utils';
+import { closeInMongodConnection, TestDataUtils } from '@/test';
 import { Model } from 'mongoose';
-import { ProfileDocument } from '../../profiles';
+import { ProfileDocument } from '@/profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
-import { UserDocument } from '../../users';
+import { UserDocument } from '@/users';
 import { ActivityType, CalendarIntervalEnum, CreateHabitDto, HabitModel } from '@lyvely/common';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { ActivityDocument, Habit } from '../schemas';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { instanceToPlain } from 'class-transformer';
-import { NumberDataPointConfig } from '../../time-series';
+import { NumberDataPointConfig } from '@/time-series';
+import { PropertiesOf } from '@lyvely/common';
 
 describe('Activities DAO', () => {
   let testingModule: TestingModule;
@@ -40,7 +40,7 @@ describe('Activities DAO', () => {
     await closeInMongodConnection('activities service');
   });
 
-  async function createHabit(data?: Partial<CreateHabitDto>, overwrite?: Partial<HabitModel>): Promise<Habit> {
+  async function createHabit(data?: Partial<CreateHabitDto>, overwrite?: (model: Habit) => void): Promise<Habit> {
     const { user, profile } = await testData.createUserAndProfile();
     const content = await activityData.createHabit(user, profile, data, overwrite);
     return await activitiesDao.findByProfileAndId(profile, content._id);
@@ -61,19 +61,19 @@ describe('Activities DAO', () => {
           interval: CalendarIntervalEnum.Monthly,
           text: 'Test description',
         },
-        {
-          archived: true,
-          sortOrder: 3,
+        (model) => {
+          model.meta.isArchived = true;
+          model.meta.sortOrder = 3;
         },
       );
 
-      const model = instanceToPlain(new HabitModel(search));
+      const model = instanceToPlain(new HabitModel(search)) as PropertiesOf<HabitModel>;
       expect(model.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
-      expect(model.title).toEqual('c1');
-      expect(model.text).toEqual('Test description');
+      expect(model.data.title).toEqual('c1');
+      expect(model.data.textContent).toEqual('Test description');
       expect(model.type).toEqual(ActivityType.Habit);
-      expect(model.archived).toEqual(true);
-      expect(model.sortOrder).toEqual(3);
+      expect(model.meta.isArchived).toEqual(true);
+      expect(model.meta.sortOrder).toEqual(3);
     });
 
     // TODO: test tags

@@ -1,14 +1,13 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createBasicTestingModule } from '../../test/utils/test.utils';
+import { TestDataUtils, createBasicTestingModule } from '@/test';
 import { ContentDao } from '../daos';
 import { Content, ContentSchema } from '../schemas';
 import { TestContent, TestContentDocument, TestContentSchema } from './src/test-content.schema';
 import { Model } from 'mongoose';
-import { User } from '../../users';
-import { Profile } from '../../profiles';
-import { ContentTypeRegistry } from '../components';
+import { User } from '@/users';
+import { Profile } from '@/profiles';
+import { ContentTypeRegistry } from '@/content';
 
 describe('content dao', () => {
   let testingModule: TestingModule;

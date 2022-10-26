@@ -45,12 +45,12 @@ describe('TaskService', () => {
       );
 
       expect(task.type).toBe(ActivityType.Task);
-      expect(task.sortOrder).toEqual(0);
-      expect(task.createdAt).toBeDefined();
-      expect(task.updatedAt).toBeDefined();
+      expect(task.meta.sortOrder).toEqual(0);
+      expect(task.meta.createdAt).toBeDefined();
+      expect(task.meta.updatedAt).toBeDefined();
       expect(task.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
       expect(task.score).toEqual(5);
-      expect(task.title).toEqual('Do something!');
+      expect(task.data.title).toEqual('Do something!');
       expect(task.doneBy).toEqual([]);
     });
 
@@ -79,8 +79,8 @@ describe('TaskService', () => {
         }),
       );
 
-      expect(task1.sortOrder).toEqual(0);
-      expect(task2.sortOrder).toEqual(1);
+      expect(task1.meta.sortOrder).toEqual(0);
+      expect(task2.meta.sortOrder).toEqual(1);
     });
 
     describe('setDone', () => {

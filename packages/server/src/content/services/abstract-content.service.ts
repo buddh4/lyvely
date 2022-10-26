@@ -1,8 +1,8 @@
-import { ProfilesService, Profile, ProfileContext, ProfileRelation, ProfileTagsService } from '../../profiles';
+import { ProfilesService, Profile, ProfileContext, ProfileRelation, ProfileTagsService } from '@/profiles';
 import { AbstractContentDao } from '../daos';
-import { User } from '../../users';
+import { User } from '@/users';
 import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@/core';
-import { Content } from '../schemas';
+import { Content } from '@/content';
 import { EntityNotFoundException } from '@lyvely/common';
 import { Inject } from '@nestjs/common';
 
@@ -31,7 +31,7 @@ export abstract class AbstractContentService<T extends Content> {
 
   async createContent(profile: Profile, user: User, model: T, tagNames?: string[]): Promise<T> {
     await this.mergeTags(profile, model, tagNames);
-    model.createdBy = assureObjectId(user);
+    model.meta.createdBy = assureObjectId(user);
     return this.contentDao.save(model);
   }
 

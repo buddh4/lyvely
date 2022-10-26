@@ -26,9 +26,6 @@ export abstract class TimeSeriesContent<
   extends Content<TContent>
   implements ITimeSeriesContentEntity<TDataPointConfig>
 {
-  @Prop({ type: Number, min: 0 })
-  sortOrder: number;
-
   @Prop({ type: DefaultDataPointConfigSchema, required: true })
   dataPointConfig: TDataPointConfig;
 

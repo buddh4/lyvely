@@ -110,10 +110,10 @@ export class ActivitiesService extends AbstractContentService<Activity> {
 
     const activitiesByInterval = await this.contentDao.findByProfileAndInterval(profile, activity.type, interval, {
       excludeIds: activity._id,
-      sort: { sortOrder: 1 },
+      sort: { 'meta.sortOrder': 1 },
     });
 
-    const newIndex = attachTo ? attachTo.sortOrder + 1 : 0;
+    const newIndex = attachTo ? attachTo.meta.sortOrder + 1 : 0;
     activitiesByInterval.splice(newIndex, 0, activity);
 
     return await this.contentDao.updateSortOrder(activitiesByInterval);

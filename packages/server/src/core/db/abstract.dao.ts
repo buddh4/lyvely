@@ -14,7 +14,7 @@ import { Inject } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
-import { DeepPartial } from '@lyvely/common';
+import { DeepPartial, PropertiesOf } from '@lyvely/common';
 import { cloneDeep } from 'lodash';
 
 interface IPagination {
@@ -24,9 +24,12 @@ interface IPagination {
 type ContainsDot = `${string}.${string}`;
 
 export type UpdateQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> | UpdateSubQuerySet<T>;
-type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & { [key: ContainsDot]: any };
 
-type QuerySort<T extends BaseEntity<T>> = { [P in keyof UpdateQuerySet<T>]: 1 | -1 | 'asc' | 'desc' };
+type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & {
+  [key: ContainsDot]: any;
+};
+
+type QuerySort<T extends BaseEntity<T>> = { [P in keyof UpdateSubQuerySet<T>]: 1 | -1 | 'asc' | 'desc' };
 
 type EntityQuery<T extends BaseEntity<T>> = QueryWithHelpers<
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -287,20 +290,22 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     options?: QueryOptions,
   ): Promise<boolean> {
     // TODO: trigger events
-    if (!(await this.beforeUpdate(identity, update))) return false;
+    const clonedUpdate = cloneDeep(update);
+
+    if (!(await this.beforeUpdate(identity, clonedUpdate))) return false;
 
     filter = filter || {};
     filter._id = this.assureEntityId(identity);
 
-    const query = this.model.updateOne(filter, update, options);
+    const query = this.model.updateOne(filter, clonedUpdate, options);
     const modifiedCount = (await query.exec()).modifiedCount;
 
     if (modifiedCount && (!options || options.apply !== false)) {
       /**
-       *  TODO: Note that applyUpdateTo does not set values which are not part of the model already (hasOwnProperty),
-       *  this should be documented, a workaround is to set a default in the schema, maybe make the strict setting configurable
+       * TODO: In case a pre or post hook changes the update, this will not be reflected, we could use query.getUpdate()
+       * but the result contains NestedDocs which would overwrite our sub model types at the moment.
        */
-      applyUpdateTo(identity, query.getUpdate());
+      applyUpdateTo(identity, update);
     }
 
     return !!modifiedCount;

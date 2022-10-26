@@ -74,7 +74,7 @@ describe('ProfileService (Organization)', () => {
       expect.assertions(2);
       return profileService.createOrganization(user2, { name: 'SomeOrganization' }).catch((e) => {
         expect(e instanceof UniqueConstraintException).toEqual(true);
-        expect(e.getField()).toEqual('name');
+        expect(e.data.fields[0].property).toEqual('name');
       });
     });
 
@@ -85,7 +85,7 @@ describe('ProfileService (Organization)', () => {
       expect.assertions(2);
       return profileService.createOrganization(user, { name: 'SomeOrganization' }).catch((e) => {
         expect(e instanceof UniqueConstraintException).toEqual(true);
-        expect(e.getField()).toEqual('name');
+        expect(e.data.fields[0].property).toEqual('name');
       });
     });
   });

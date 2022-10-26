@@ -18,12 +18,20 @@ export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
   }
 
   init(obj?: DeepPartial<C> | false) {
+    const defaultValues = this.getDefaults();
+    if (defaultValues) {
+      obj = Object.assign(defaultValues, obj);
+    }
     assignEntityData(this, obj);
     this.afterInit();
   }
 
   afterInit() {
     /* Nothing todo */
+  }
+
+  getDefaults(): DeepPartial<C> | null {
+    return null;
   }
 
   @Exclude()

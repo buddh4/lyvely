@@ -33,9 +33,8 @@ import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
-import { createContentTestingModule } from '../../../test/utils/test.utils';
-import { TestDataUtils } from '../../../test/utils/test-data.utils';
-import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '../../../core/db/db.utils';
+import { createContentTestingModule, TestDataUtils } from '@/test';
+import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@/core';
 import { ActivityScore, ActivityScoreSchema } from '../../schemas/activity-score.schema';
 
 @Injectable()
@@ -91,12 +90,15 @@ export class ActivityTestDataUtil extends TestDataUtils {
     user: User,
     profile: Profile,
     data?: Partial<CreateTaskDto>,
-    overwrite?: Partial<TaskWithUsersModel>,
+    overwrite?: (model: Task) => void,
   ): Promise<Task> {
     const initData = <CreateTaskDto>(
       Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {})
     );
-    const task = new this.TaskModel(Task.create(profile, user, initData));
+
+    const model = Task.create(profile, user, initData);
+    if (overwrite) overwrite(model);
+    const task = new this.TaskModel(model);
 
     Object.assign(task, overwrite);
 
@@ -109,12 +111,14 @@ export class ActivityTestDataUtil extends TestDataUtils {
     user: User,
     profile: Profile,
     data?: Partial<CreateHabitDto>,
-    overwrite?: Partial<HabitModel>,
+    overwrite?: (habit: Habit) => void,
   ): Promise<Habit> {
     const initData = <CreateHabitDto>(
       Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {})
     );
-    const habit = new this.HabitModel(Habit.create(profile, user, initData));
+    const model = Habit.create(profile, user, initData);
+    if (overwrite) overwrite(model);
+    const habit = new this.HabitModel(model);
     Object.assign(habit, overwrite);
     await habit.save();
     return createBaseEntityInstance(Habit, habit.toObject());

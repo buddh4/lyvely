@@ -1,116 +1,66 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { DeepPartial, IContent, getNumberEnumValues, ContentVisibilityLevel } from '@lyvely/common';
+import { DeepPartial, IContent, PropertyType } from '@lyvely/common';
 import { BaseEntity } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
-import { CreatedAs, ContentAuthorSchema, Author } from './content-author-info.schema';
-import { User } from '../../users';
-import { implementsAssertContentMetadata } from '../interfaces';
-import { Profile, BaseProfileModel } from '../../profiles';
-import { Tag } from '../../tags';
+import { CreatedAs, Author } from './content-author.schema';
+import { User } from '@/users';
+import { Profile, BaseProfileModel } from '@/profiles';
+import { Tag } from '@/tags';
+import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
 
 export type ContentDocument = Content & mongoose.Document;
 
-export interface IContentEntity {
+export interface IContentEntity extends IContent<TObjectId> {
   _id: TObjectId;
-  createdBy: TObjectId;
-  createdAs?: CreatedAs;
-  pid: TObjectId;
-  oid?: TObjectId;
-  logs: ContentLog[];
-  metaData: ContentMetadata;
-  visibility: number;
-  title?: string;
-  text?: string;
-  archived: boolean;
-  tagIds: TObjectId[];
-  type: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
-@Schema({ timestamps: true, discriminatorKey: 'type' })
+@Schema({ discriminatorKey: 'type' })
 export class Content<T extends IContentEntity & BaseEntity<IContentEntity> = any>
   extends BaseProfileModel<T>
-  implements IContent
+  implements IContent, BaseProfileModel<T>
 {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  createdBy: TObjectId;
-
-  @Prop({ type: ContentAuthorSchema, required: true })
-  createdAs?: CreatedAs;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-  oid: TObjectId;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: TObjectId;
-
-  @Prop({ type: [ContentLogSchema], default: [] })
-  logs: ContentLog[];
+  @Prop({ type: ContentDataTypeSchema })
+  @PropertyType(ContentDataType)
+  data: ContentDataType;
 
   @Prop({ type: ContentMetadataSchema })
-  metaData: ContentMetadata;
+  @PropertyType(ContentMetadata)
+  meta: ContentMetadata;
 
-  @Prop({ enum: getNumberEnumValues(ContentVisibilityLevel), default: ContentVisibilityLevel.Member })
-  visibility: number;
-
-  @Prop()
-  title: string;
-
-  @Prop()
-  text: string;
-
-  @Prop({ default: false })
-  archived: boolean;
+  @Prop({ type: [ContentLogSchema], default: [] })
+  @PropertyType([ContentLog])
+  logs: ContentLog[];
 
   @Prop({ type: [mongoose.Types.ObjectId], default: [] })
   tagIds: TObjectId[];
 
   type: string;
 
-  createdAt: Date;
-
-  updatedAt: Date;
-
-  constructor(profile: Profile, author: User, obj: DeepPartial<T> = {}) {
-    const additionalData = {
-      createdBy: author._id,
-      createdAs: new CreatedAs(author),
-      pid: profile._id,
-      oid: profile.oid,
-    };
-    super({ ...obj, ...additionalData });
+  constructor(profile: Profile, createdBy: User, obj: DeepPartial<T> = {}) {
+    obj.meta = obj.meta || new ContentMetadata();
+    obj.meta.createdBy = createdBy._id;
+    obj.meta.createdAs = obj.meta.createdAs || new CreatedAs(createdBy);
+    obj.pid = profile._id;
+    obj.oid = profile.oid;
+    super(obj);
   }
 
-  afterInit() {
-    this.metaData = new ContentMetadata(this.metaData);
-    if (implementsAssertContentMetadata(this)) {
-      this.assertContentMetadata(this.metaData);
-    }
-
-    if (this.logs?.length) {
-      this.logs = this.logs.map((log) => new ContentLog(log));
-    }
-
-    if (this.createdAs && !(this.createdAs instanceof CreatedAs)) {
-      this.createdAs = new CreatedAs(this.createdAs);
-    }
-
-    super.afterInit();
+  static collectionName() {
+    return 'contents';
   }
 
   addTag(tag: Tag) {
     if (tag) this.tagIds.push(tag._id);
   }
 
-  setAuthor(author: Author) {
-    this.createdAs = new CreatedAs(author);
+  getSortOrder() {
+    return this.meta.sortOrder;
   }
 
-  static collectionName() {
-    return 'contents';
+  setAuthor(author: Author) {
+    this.setAuthor(author);
   }
 }
 

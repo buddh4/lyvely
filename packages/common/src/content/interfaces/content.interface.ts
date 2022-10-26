@@ -1,11 +1,48 @@
-export interface IContent<TID = any> {
-  id: string;
+import { ISortable } from '@/models';
+
+export interface IContentDataType {
+  title?: string;
+  textContent?: string;
+}
+
+export enum CreatedAsType {
+  User = 'user',
+  Profile = 'profile',
+  Organization = 'organization',
+}
+
+export interface IContentAuthor<TID = any> {
+  type: CreatedAsType;
+  authorId: TID;
+}
+
+export interface IContentMetadata<TID = any> {
+  createdBy: TID;
+  createdAs?: IContentAuthor<TID>;
+  createdAt: Date;
+  updatedAt: Date;
+  streamSort: Date;
+  visibility: ContentVisibilityLevel;
+  isArchived?: boolean;
+  isLocked?: boolean;
+}
+
+export interface IContentLog<TData = any, TID = any> {
+  updatedBy?: TID;
+  updatedAt: Date;
+  data?: TData;
   type: string;
-  title: string;
-  text: string;
-  visibility: number;
-  archived: boolean;
+}
+
+export interface IContent<TID = any> extends ISortable {
+  id: string;
+  oid: TID;
+  pid: TID;
+  type: string;
+  data: IContentDataType;
+  meta: IContentMetadata<TID>;
   tagIds: TID[];
+  logs: Array<IContentLog<any, TID>>;
 }
 
 /**

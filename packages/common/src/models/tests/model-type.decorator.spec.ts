@@ -174,7 +174,9 @@ describe('ModelType Decorator', () => {
 
     class SubModel extends MyModel {}
 
-    const model = new SubModel();
+    class SubSubModel extends MyModel {}
+
+    const model = new SubSubModel();
     expect(model.field).toEqual('Test');
   });
 

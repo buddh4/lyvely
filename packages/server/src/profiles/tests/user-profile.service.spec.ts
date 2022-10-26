@@ -94,7 +94,7 @@ describe('ProfileService (User)', () => {
       expect.assertions(2);
       return profileService.createUserProfile(user, { name: 'Some Profile' }).catch((e) => {
         expect(e instanceof UniqueConstraintException).toEqual(true);
-        expect(e.getField()).toEqual('name');
+        expect(e.data.fields[0].property).toEqual('name');
       });
     });
 
@@ -108,7 +108,7 @@ describe('ProfileService (User)', () => {
         .createUserProfile(member, { organization: organization, name: 'UniqueProfileName' })
         .catch((e) => {
           expect(e instanceof UniqueConstraintException).toEqual(true);
-          expect(e.getField()).toEqual('name');
+          expect(e.data.fields[0].property).toEqual('name');
         });
     });
 
@@ -120,7 +120,7 @@ describe('ProfileService (User)', () => {
         .createUserProfile(member, { organization: organization, name: 'MyOrganization' })
         .catch((e) => {
           expect(e instanceof UniqueConstraintException).toEqual(true);
-          expect(e.getField()).toEqual('name');
+          expect(e.data.fields[0].property).toEqual('name');
         });
     });
   });

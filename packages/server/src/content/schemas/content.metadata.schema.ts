@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '../../core/db/base.entity';
-import { IContentMetadata } from '../interfaces';
+import { BaseEntity } from '@/core';
+import mongoose from 'mongoose';
+import { Author, ContentAuthorSchema, CreatedAs } from '@/content/schemas/content-author.schema';
+import { ContentVisibilityLevel, getNumberEnumValues, PropertyType, IContentMetadata } from '@lyvely/common';
 
 /**
  * Other ideas:
@@ -10,8 +12,46 @@ import { IContentMetadata } from '../interfaces';
  * isMovable
  */
 
-@Schema()
+@Schema({ id: false })
 export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: TObjectId;
+
+  @Prop({ type: ContentAuthorSchema, required: true })
+  createdAs?: CreatedAs;
+
+  @Prop({ type: Date })
+  @PropertyType(Date, { default: new Date() })
+  createdAt: Date;
+
+  @Prop({ type: Date })
+  @PropertyType(Date, { default: new Date() })
+  updatedAt: Date;
+
+  @Prop({ type: Date, required: true })
+  @PropertyType(Date, { default: new Date() })
+  streamSort: Date;
+
+  @Prop({ enum: getNumberEnumValues(ContentVisibilityLevel) })
+  @PropertyType(Number, { default: ContentVisibilityLevel.Member })
+  visibility: ContentVisibilityLevel;
+
+  @Prop({ type: Number, min: 0 })
+  sortOrder?: number;
+
+  @Prop()
+  isArchived?: boolean;
+
+  @Prop()
+  isLocked?: boolean;
+
+  setAuthor(author: Author) {
+    this.createdAs = new CreatedAs(author);
+  }
+
+  /*
+
+   In the future we could make the following meta:
   @Prop()
   isArchivable?: boolean;
 
@@ -22,16 +62,11 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   isEditable?: boolean;
 
   @Prop()
-  isLocked?: boolean;
-
-  @Prop()
   isCommentable?: boolean;
 
   @Prop()
   isReactable?: boolean;
-
-  @Prop()
-  isIssue?: boolean;
+  */
 }
 
 export const ContentMetadataSchema = SchemaFactory.createForClass(ContentMetadata);

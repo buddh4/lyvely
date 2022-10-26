@@ -94,33 +94,15 @@ if (!props.prevAutoFocus) {
         >
           <div class="flex items-center px-5 pt-5 pb-3 rounded-t-sm" data-modal-header>
             <slot name="header">
-              <button
-                v-if="cancelButton"
-                aria-hidden="true"
-                role="button"
-                class="align-middle inline-block mr-2 md:hidden border-none"
-                @click="cancel"
-              >
-                <ly-icon name="back" css-class="w-3.5" />
-              </button>
-
               <h1 class="text-lg inline-block align-middle flex align-items-center" tabindex="-1">
                 <ly-icon v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass" />
                 <slot name="title">
                   {{ $t(title) }}
                 </slot>
               </h1>
-              <ly-button
-                v-if="submitButton"
-                aria-hidden="true"
-                class="primary rounded-full text-xs float-right align-middle ml-auto md:hidden px-2 py-0.5"
-                @click="$emit('submit')"
-              >
-                {{ $t(submitButtonText) }}
-              </ly-button>
 
               <ly-button
-                class="float-right align-middle font-bold ml-auto hidden md:inline-block px-2 py-0.5 border-none"
+                class="float-right align-middle font-bold ml-auto inline-block px-2 py-0.5 border-none"
                 @click="cancel"
               >
                 x
@@ -132,7 +114,7 @@ if (!props.prevAutoFocus) {
             <slot></slot>
           </section>
 
-          <div class="flex px-5 pt-3 pb-5 justify-end invisible md:visible" data-modal-footer>
+          <div class="flex px-5 pt-3 pb-5 justify-end" data-modal-footer>
             <slot name="footer">
               <ly-button v-if="cancelButton" :class="cancelButtonClass" @click="cancel">
                 {{ $t(cancelButtonText) }}

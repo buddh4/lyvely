@@ -1,6 +1,6 @@
 type Primitive = string | number | symbol;
 
-type GenericObject = Record<Primitive, unknown>;
+export type GenericObject = Record<Primitive, unknown>;
 
 type Join<L extends Primitive | undefined, R extends Primitive | undefined> = L extends undefined
   ? R
@@ -28,7 +28,7 @@ type Union<L extends unknown | undefined, R extends unknown | undefined> = L ext
  * // 'a' | 'a.b' | 'a.b.c'
  */
 export type NestedPaths<
-  T extends GenericObject,
+  T extends GenericObject & any,
   Prev extends PropertyKey | undefined = undefined,
   Path extends PropertyKey | undefined = undefined,
 > = T extends infer O

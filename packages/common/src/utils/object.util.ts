@@ -26,16 +26,14 @@ export function isObjectId(value: any) {
 }
 
 export function getPrototypeTree(type: Type): Array<Type> {
+  let curr = type;
   const prototypeTree = [type];
 
-  for (
-    let curr = Object.getPrototypeOf(type.prototype);
-    curr && curr !== Object.prototype;
-    curr = Object.getPrototypeOf(curr)
-  ) {
-    prototypeTree.push(curr.constructor);
+  do {
     curr = Object.getPrototypeOf(curr);
-  }
+    if (Object.getPrototypeOf(curr) === Object.prototype) break;
+    prototypeTree.push(curr);
+  } while (curr);
 
   return prototypeTree;
 }

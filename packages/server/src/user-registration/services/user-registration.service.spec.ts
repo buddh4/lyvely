@@ -3,18 +3,21 @@ import { TestingModule } from '@nestjs/testing';
 import { UserRegistrationService } from './user-registration.service';
 import { UserRegistrationDto, UserStatus } from '@lyvely/common';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
-import { User } from '@/users';
+import { User, UsersService } from '@/users';
+import { UserRegistrationModule } from '@/user-registration/user-registration.module';
 
 describe('UserRegistrationService', () => {
   let testingModule: TestingModule;
   let registerService: UserRegistrationService;
+  let userService: UsersService;
   let testData: TestDataUtils;
 
   const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [UserRegistrationService]).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY, [], [], [UserRegistrationModule]).compile();
     registerService = testingModule.get<UserRegistrationService>(UserRegistrationService);
+    userService = testingModule.get(UsersService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
 
@@ -28,7 +31,7 @@ describe('UserRegistrationService', () => {
 
   describe('register', () => {
     it('register valid user', async () => {
-      const user = await registerService.register(
+      await registerService.register(
         new UserRegistrationDto({
           username: 'Tester',
           email: 'tester@test.de',
@@ -38,6 +41,7 @@ describe('UserRegistrationService', () => {
         }),
       );
 
+      const user = await userService.findUserByMainEmail('tester@test.de');
       expect(user).toBeDefined();
       expect(user instanceof User).toEqual(true);
       expect(user.username).toEqual('Tester');

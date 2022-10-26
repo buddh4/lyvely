@@ -9,14 +9,12 @@ interface IProps {
   steps: Array<introJs.Step>;
 }
 
-
 const props = defineProps<IProps>();
 
-const steps = props.steps.map(step =>  {
+const steps = props.steps.map((step) => {
   step.intro = `<div class="prose">${step.intro}</div>`;
   return step;
-})
-
+});
 
 const emit = defineEmits(['update:modelValue']);
 const tour = introJs().addSteps(props.steps);

@@ -18,7 +18,7 @@ export class HabitsService extends AbstractContentService<Habit> {
   }
 
   async createContent(profile: Profile, user: User, model: Habit, tagNames?: string[]): Promise<Habit> {
-    model.sortOrder = await this.contentDao.getNextSortOrder(profile);
+    model.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
     return super.createContent(profile, user, model, tagNames);
   }
 }

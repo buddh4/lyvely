@@ -7,7 +7,7 @@ import {
   NumberTimeSeriesContent,
   TimeSeriesContentSchemaFactory,
   DefaultDataPointConfigSchema,
-} from '../../time-series';
+} from '@/time-series';
 
 type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 
@@ -16,12 +16,6 @@ type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberData
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Activity extends NumberTimeSeriesContent<Activity> implements PropertiesOf<ActivityModel> {
-  @Prop({ required: true })
-  title: string;
-
-  @Prop({ type: Number })
-  sortOrder: number;
-
   @Prop({ type: Number, default: 0 })
   score: number;
 

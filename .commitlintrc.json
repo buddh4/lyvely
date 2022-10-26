@@ -29,6 +29,7 @@
       [
         "mixed",
         "common",
+        "content",
         "web",
         "server",
         "user"

@@ -1,5 +1,7 @@
 export type Type<T = any> = new (...args: any[]) => T;
 
+type Primitive = string | number | symbol | bigint | boolean | undefined | null;
+
 export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>;
 };

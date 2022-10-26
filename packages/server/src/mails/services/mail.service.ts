@@ -32,7 +32,7 @@ export class MailService {
     private readonly urlGenerator: UrlGenerator,
   ) {}
 
-  async sendMail(sendMailOptions: ISendMailOptions): Promise<SentMessageInfo> {
+  async sendMail(sendMailOptions: ISendMailOptions): Promise<SentMessageInfo & { messageFile?: Promise<void> }> {
     sendMailOptions.template = sendMailOptions.template || 'main';
     this.setDefaultContext(sendMailOptions);
     this.renderPartials(sendMailOptions);
@@ -81,21 +81,23 @@ export class MailService {
     return `${this.getMessageFileDir()}/${messageId}.${extension}`;
   }
 
-  private handleSentMessageInfo(info: SentMessageInfo) {
+  private handleSentMessageInfo(info: SentMessageInfo & { messageFile?: Promise<void> }) {
     if (!this.isCreateMessageFile()) return info;
+
+    const result: SentMessageInfo & { messageFile?: Promise<void> } = info;
 
     try {
       if (this.isStreamTransport(info)) {
-        this.saveStreamMessageToFile(info);
+        result.messageFile = this.saveStreamMessageToFile(info);
       } else if (this.isJsonTransport(info)) {
-        this.saveJsonMessageToFile(info);
+        result.messageFile = this.saveJsonMessageToFile(info);
       }
     } catch (e) {
       this.logger.error('Could not create mail message file.');
       this.logger.error(e);
     }
 
-    return info;
+    return result;
   }
 
   private isCreateMessageFile() {
@@ -128,11 +130,18 @@ export class MailService {
   }
 
   private saveStreamMessageToFile(info: IStreamMessageInfo) {
-    info.message.pipe(fs.createWriteStream(this.initMessageFilePath(info)));
+    return new Promise((resolve, reject) => {
+      info.message
+        .pipe(fs.createWriteStream(this.initMessageFilePath(info)))
+        .on('end', resolve)
+        .on('error', reject);
+    });
   }
 
   private saveJsonMessageToFile(info: SentMessageInfo) {
-    fs.writeFile(this.initMessageFilePath(info), info.message, 'utf8', noop);
+    return new Promise((resolve) => {
+      fs.writeFile(this.initMessageFilePath(info), info.message, 'utf8', resolve);
+    });
   }
 
   private initMessageFilePath(info: SentMessageInfo) {

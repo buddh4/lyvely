@@ -1,5 +1,5 @@
 import { TestingModule } from '@nestjs/testing';
-import { ProfileScore } from '../../profiles';
+import { ProfileScore } from '@/profiles';
 import { createBasicTestingModule, getObjectId, TestDataUtils } from '@/test';
 import { ContentScore, ContentScoreSchema } from '../schemas';
 import {

@@ -1,15 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '../../core/db/base.entity';
-import { DeepPartial, getStringEnumValues } from '@lyvely/common';
+import { BaseEntity } from '@/core';
+import { DeepPartial, getStringEnumValues, CreatedAsType } from '@lyvely/common';
 import mongoose from 'mongoose';
-import { User } from '../../users/schemas/users.schema';
-import { Profile } from '../../profiles';
-
-export enum CreatedAsType {
-  User = 'user',
-  Profile = 'profile',
-  Organization = 'organization',
-}
+import { User } from '@/users';
+import { Organization, Profile } from '@/profiles';
 
 export type Author = Profile | User;
 
@@ -18,6 +12,8 @@ export class CreatedAs extends BaseEntity<CreatedAs> {
   constructor(obj?: Author | DeepPartial<CreatedAs>) {
     if (obj instanceof User) {
       super(createUserAuthor(obj));
+    } else if (obj instanceof Organization) {
+      super(createOrganizationAuthor(obj));
     } else if (obj instanceof Profile) {
       super(createProfileAuthor(obj));
     } else {
@@ -25,17 +21,11 @@ export class CreatedAs extends BaseEntity<CreatedAs> {
     }
   }
 
-  @Prop({ type: String, enum: getStringEnumValues(CreatedAsType), required: true })
+  @Prop({ enum: getStringEnumValues(CreatedAsType), required: true })
   type: CreatedAsType;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   authorId: TObjectId;
-
-  @Prop()
-  imageHash?: string;
-
-  @Prop({ required: true })
-  name: string;
 }
 
 export const ContentAuthorSchema = SchemaFactory.createForClass(CreatedAs);
@@ -44,15 +34,19 @@ export function createUserAuthor(author: User) {
   return new CreatedAs({
     type: CreatedAsType.User,
     authorId: author._id,
-    name: author.getDisplayName(),
-    imageHash: author.getImageHash(),
   });
 }
 
 export function createProfileAuthor(author: Profile) {
   return new CreatedAs({
-    type: CreatedAsType.User,
+    type: CreatedAsType.Profile,
     authorId: author._id,
-    name: author.name,
+  });
+}
+
+export function createOrganizationAuthor(author: Organization) {
+  return new CreatedAs({
+    type: CreatedAsType.Organization,
+    authorId: author._id,
   });
 }

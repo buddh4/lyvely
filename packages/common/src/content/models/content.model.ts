@@ -1,36 +1,92 @@
-import { DocumentModel } from '@/models';
-import { Expose, Transform } from 'class-transformer';
-import { IsNotEmpty, IsString, Length, IsArray, IsNumber, IsBoolean, IsEnum } from 'class-validator';
-import { ContentVisibilityLevel, IContent } from '../interfaces';
+import { BaseModel, DocumentModel } from '@/models';
+import { Expose, Transform, Type } from 'class-transformer';
+import { IsString, Length, IsArray, IsOptional } from 'class-validator';
+import {
+  ContentVisibilityLevel,
+  CreatedAsType,
+  IContent,
+  IContentAuthor,
+  IContentDataType,
+  IContentLog,
+  IContentMetadata,
+} from '../interfaces';
 
-@Expose()
-export class ContentModel<T extends IContent = IContent> extends DocumentModel<T> implements IContent {
-  type: string;
-
+export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
+  extends BaseModel<T>
+  implements IContentDataType
+{
   @IsString()
-  @IsNotEmpty()
   @Length(0, 80)
-  title: string;
+  @IsOptional()
+  title?: string;
 
   @IsString()
   @Length(0, 500)
-  text: string;
+  @IsOptional()
+  textContent?: string;
+}
+
+@Expose()
+export class ContentAuthor extends BaseModel<ContentAuthor> implements IContentAuthor {
+  type: CreatedAsType;
+
+  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  authorId: TObjectId;
+}
+
+@Expose()
+export class ContentMetadataModel extends BaseModel<ContentMetadataModel> implements IContentMetadata<TObjectId> {
+  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  createdBy: TObjectId;
+
+  @Type(() => ContentAuthor)
+  createdAs?: ContentAuthor;
+  createdAt: Date;
+  updatedAt: Date;
+  streamSort: Date;
+  sortOrder?: number;
+  visibility: ContentVisibilityLevel;
+  isArchived?: boolean;
+  isLocked?: boolean;
+}
+
+@Expose()
+export class ContentLogModel<TData = any>
+  extends BaseModel<IContentLog<TData, TObjectId>>
+  implements IContentLog<TData, TObjectId>
+{
+  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  updatedBy?: TObjectId;
+
+  updatedAt: Date;
+  data?: TData;
+  type: string;
+}
+
+@Expose()
+export class ContentModel<T extends IContent = IContent> extends DocumentModel<T> implements IContent<TObjectId> {
+  id: string;
+
+  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  oid: TObjectId;
+
+  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  pid: TObjectId;
+  type: string;
+  data: ContentDataTypeModel;
+
+  @Type(() => ContentMetadataModel)
+  meta: ContentMetadataModel;
 
   @IsArray()
   @Transform(({ obj }) => obj.tagIds?.map((id) => id.toString()) || [])
-  tagIds: TObjectId[];
+  tagIds: Array<TObjectId>;
 
-  @IsNumber()
-  @IsEnum(ContentVisibilityLevel)
-  visibility: number;
+  @IsArray()
+  @Type(() => ContentLogModel)
+  logs: Array<ContentLogModel>;
 
-  @IsBoolean()
-  archived: boolean;
-
-  constructor(obj?: Partial<T>) {
-    super(obj);
-    // Not sure in which case we need this, was taken from activity dto...
-    this.archived = !!this.archived;
-    this.tagIds = this.tagIds || [];
+  getSortOrder(): number {
+    return this.meta.sortOrder;
   }
 }

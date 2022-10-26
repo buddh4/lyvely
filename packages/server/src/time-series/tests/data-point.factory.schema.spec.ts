@@ -4,6 +4,7 @@ import {
   DataPointConfigFactory,
   NumberDataPointConfig,
   RangeNumberDataPointConfig,
+  SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
 } from '../schemas';
 import {
@@ -47,6 +48,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       );
 
       expectConfig(config, 0, 2, 1);
+      expect(config instanceof CheckboxNumberDataPointConfig).toEqual(true);
       expect(config.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.valueType).toEqual(DataPointValueType.Number);
@@ -77,12 +79,13 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         optimal: 1,
         interval: CalendarIntervalEnum.Daily,
       };
-      const config = DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(
+      const config = DataPointConfigFactory.createConfig<SpinnerNumberDataPointConfig>(
         DataPointInputStrategy.SpinnerNumber,
         settings,
       );
 
       expectConfig(config, 0, 2, 1);
+      expect(config instanceof SpinnerNumberDataPointConfig).toEqual(true);
       expect(config.strategy).toEqual(DataPointInputStrategy.SpinnerNumber);
       expect(config.inputType).toEqual(DataPointInputType.Spinner);
       expect(config.valueType).toEqual(DataPointValueType.Number);
@@ -102,7 +105,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
     });
 
     function expectConfig(config: NumberDataPointConfig, min: number, max: number, optimal: number) {
-      expect(config instanceof RangeNumberDataPointConfig).toEqual(true);
+      expect(config instanceof NumberDataPointConfig).toEqual(true);
       expect(config.min).toEqual(min);
       expect(config.max).toEqual(max);
       expect(config.optimal).toEqual(optimal);

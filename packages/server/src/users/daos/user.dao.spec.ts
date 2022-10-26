@@ -1,9 +1,8 @@
 import { expect } from '@jest/globals';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongooseModule } from '@nestjs/mongoose';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { UserDao } from '../daos';
-import { User, UserDocument, UserEmail, UserSchema } from '../schemas';
+import { User, UserDocument, UserEmail } from '../schemas';
 import { Model } from 'mongoose';
 import { ProfileType, UserStatus } from '@lyvely/common';
 
@@ -12,8 +11,6 @@ describe('UserDao', () => {
   let userDao: UserDao;
   let userModel: Model<UserDocument>;
   let testData: TestDataUtils;
-
-  const TEST_KEY = 'user_dao';
 
   beforeEach(async () => {
     testingModule = await createBasicTestingModule('user-dao').compile();
@@ -152,7 +149,7 @@ describe('UserDao', () => {
       await userDao.updateOneById(user, user);
       const searchUser = await userDao.findByAnyEmail('test2@test.de');
       expect(searchUser.length).toEqual(1);
-      expect(searchUser instanceof User).toEqual(true);
+      expect(searchUser[0] instanceof User).toEqual(true);
       expect(searchUser[0]._id.equals(user._id)).toBeDefined();
     });
 
@@ -160,7 +157,7 @@ describe('UserDao', () => {
       const user = await createTestUser('test@test.de');
       const searchUser = await userDao.findByAnyEmail('TEST@TEST.de');
       expect(searchUser.length).toEqual(1);
-      expect(searchUser instanceof User).toEqual(true);
+      expect(searchUser[0] instanceof User).toEqual(true);
       expect(searchUser[0]._id.equals(user._id)).toBeDefined();
     });
   });

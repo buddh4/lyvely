@@ -136,7 +136,13 @@ export class UserDao extends AbstractDao<User> {
       update.sessionResetAt = date;
     }
 
-    return this.updateOneById(identity, update);
+    // This is currently required since the password hash is generated in pre hooks which is not supported by our abstract.dao update assignment
+    const user = await this.findOneAndUpdateById(identity, update);
+    if (!user) return false;
+    if (identity instanceof User) {
+      identity.password = user.password;
+    }
+    return true;
   }
 
   getModelConstructor(): Constructor<User> {

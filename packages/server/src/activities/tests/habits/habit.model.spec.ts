@@ -1,12 +1,11 @@
-import { Profile } from '../../../profiles';
-import { User } from '../../../users';
+import { Profile } from '@/profiles';
+import { User } from '@/users';
 import { Habit } from '../../schemas';
-import { CalendarIntervalEnum, DataPointInputStrategy } from '@lyvely/common';
+import { CalendarIntervalEnum, DataPointInputStrategy, CreatedAsType } from '@lyvely/common';
 import { expect } from '@jest/globals';
-import { CreatedAsType } from '../../../content';
 import mongoose from 'mongoose';
-import { CheckboxNumberDataPointConfig } from '../../../time-series';
-import { Tag } from '../../../tags';
+import { CheckboxNumberDataPointConfig } from '@/time-series';
+import { Tag } from '@/tags';
 import { getObjectId } from '@/test';
 
 describe('Content Model', () => {
@@ -33,11 +32,11 @@ describe('Content Model', () => {
       });
 
       expect(habit.pid).toEqual(profile._id);
-      expect(habit.createdBy).toEqual(user._id);
-      expect(habit.createdAs).toBeDefined();
-      expect(habit.createdAs.type).toEqual(CreatedAsType.User);
-      expect(habit.createdAs.authorId).toEqual(user._id);
-      expect(habit.title).toEqual('Test');
+      expect(habit.meta.createdBy).toEqual(user._id);
+      expect(habit.meta.createdAs).toBeDefined();
+      expect(habit.meta.createdAs.type).toEqual(CreatedAsType.User);
+      expect(habit.meta.createdAs.authorId).toEqual(user._id);
+      expect(habit.data.title).toEqual('Test');
       expect(habit.score).toEqual(5);
       expect(habit.dataPointConfig.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
       expect(habit.dataPointConfig instanceof CheckboxNumberDataPointConfig).toEqual(true);
@@ -46,7 +45,7 @@ describe('Content Model', () => {
       expect(habit.dataPointConfig.optimal).toEqual(2);
       expect(habit.dataPointConfig.getSettings()).toBeDefined();
       expect(habit.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
-      expect(habit.text).toEqual('Some Test Habit');
+      expect(habit.data.textContent).toEqual('Some Test Habit');
       expect(habit.tagIds.length).toEqual(1);
       expect(habit.tagIds[0]).toEqual(profile.tags[0]._id);
     });

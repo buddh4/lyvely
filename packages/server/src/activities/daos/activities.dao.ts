@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { assureObjectId, EntityIdentity, IFetchQueryOptions, UpdateQuerySet } from '@/core';
 import {
   ActivityType,
   CalendarIntervalEnum,
@@ -11,14 +11,13 @@ import {
   SortResult,
   ProfileType,
 } from '@lyvely/common';
-import { Profile } from '../../profiles';
-import { AbstractContentDao } from '../../content';
+import { Profile } from '@/profiles';
+import { AbstractContentDao } from '@/content';
 import { Activity, ActivityDocument, Habit, Task } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IFetchQueryOptions, UpdateQuerySet } from '../../core/db/abstract.dao';
 import module from '../activities.meta';
-import { User } from '../../users';
+import { User } from '@/users';
 
 @Injectable()
 export class ActivitiesDao extends AbstractContentDao<Activity> {
@@ -122,9 +121,9 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
     const result: { id: string; sortOrder: number }[] = [];
 
     activities.forEach((activity, index) => {
-      if (activity.sortOrder !== index) {
-        updates.push({ id: activity._id, update: { sortOrder: index } });
-        activity.sortOrder = index;
+      if (activity.meta.sortOrder !== index) {
+        updates.push({ id: activity._id, update: { 'meta.sortOrder': index } });
+        activity.meta.sortOrder = index;
         result.push(new SortResult({ id: activity.id, sortOrder: index }));
       }
     });

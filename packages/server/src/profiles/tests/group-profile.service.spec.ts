@@ -68,7 +68,7 @@ describe('ProfileService (Group)', () => {
       expect.assertions(2);
       return profileService.createGroupProfile(user, { name: 'Some Profile' }).catch((e) => {
         expect(e instanceof UniqueConstraintException).toEqual(true);
-        expect(e.getField()).toEqual('name');
+        expect(e.data.fields[0].property).toEqual('name');
       });
     });
 
@@ -82,7 +82,7 @@ describe('ProfileService (Group)', () => {
         .createGroupProfile(member, { organization: organization, name: 'UniqueGroupProfileName' })
         .catch((e) => {
           expect(e instanceof UniqueConstraintException).toEqual(true);
-          expect(e.getField()).toEqual('name');
+          expect(e.data.fields[0].property).toEqual('name');
         });
     });
 
@@ -94,7 +94,7 @@ describe('ProfileService (Group)', () => {
         .createGroupProfile(member, { organization: organization, name: 'MyOrganization' })
         .catch((e) => {
           expect(e instanceof UniqueConstraintException).toEqual(true);
-          expect(e.getField()).toEqual('name');
+          expect(e.data.fields[0].property).toEqual('name');
         });
     });
   });

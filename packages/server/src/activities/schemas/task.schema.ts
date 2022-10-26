@@ -16,6 +16,7 @@ import { Activity } from './activity.schema';
 import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../time-series';
 import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
 import { cloneDeep } from 'lodash';
+import { ContentDataType } from '@/content/schemas/content-data-type.schema';
 
 export type TaskDocument = Task & mongoose.Document;
 
@@ -113,12 +114,17 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
       model.dataPointConfig = updatedDataPointConfig;
     }
 
+    model.data.title = update.title || model.data.title;
+    model.data.textContent = update.text || model.data.textContent;
+
     applyValidationProperties(model, update);
   }
 
   public static create(profile: Profile, owner: User, update: CreateTaskDto): Task {
     return new Task(profile, owner, {
       ...update,
+      score: update.score,
+      data: new ContentDataType({ title: update.title, textContent: update.text }),
       tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
       dataPointConfig: _createDataPointConfigFromUpdate(update),
     });

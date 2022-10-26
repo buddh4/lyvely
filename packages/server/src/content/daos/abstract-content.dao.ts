@@ -1,6 +1,7 @@
 import { Content } from '../schemas';
-import { EntityIdentity } from '../../core/db/db.utils';
-import { BaseProfileModelDao, ProfileRelation } from '../../profiles';
+import { EntityIdentity } from '@/core';
+import { BaseProfileModelDao, ProfileRelation } from '@/profiles';
+import { UpdateQuerySet } from '@/core';
 
 export abstract class AbstractContentDao<T extends Content> extends BaseProfileModelDao<T> {
   protected getModelType(): string | null {
@@ -8,10 +9,12 @@ export abstract class AbstractContentDao<T extends Content> extends BaseProfileM
   }
 
   async archive(profileRelation: ProfileRelation, identity: EntityIdentity<T>): Promise<boolean> {
-    return !!(await this.updateOneByProfileAndIdSet(profileRelation, identity, <any>{ archived: true }));
+    const update = { 'meta.isArchived': true } as UpdateQuerySet<Content>;
+    return !!(await this.updateOneByProfileAndIdSet(profileRelation, identity, <any>update));
   }
 
   async unarchive(profileRelation: ProfileRelation, identity: EntityIdentity<T>): Promise<boolean> {
-    return !!(await this.updateOneByProfileAndIdSet(profileRelation, identity, <any>{ archived: false }));
+    const update = { 'meta.isArchived': false } as UpdateQuerySet<Content>;
+    return !!(await this.updateOneByProfileAndIdSet(profileRelation, identity, <any>update));
   }
 }

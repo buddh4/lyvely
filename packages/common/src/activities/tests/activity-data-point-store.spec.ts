@@ -3,6 +3,7 @@ import { CalendarIntervalEnum, toTimingId } from '@/calendar';
 import { NumberDataPointModel } from '@/time-series';
 
 import { ActivityDataPointStore } from '../common';
+import { ContentDataTypeModel, ContentMetadataModel } from '@/content';
 
 describe('ActivityDataPointStore', () => {
   let store: ActivityDataPointStore;
@@ -12,7 +13,7 @@ describe('ActivityDataPointStore', () => {
 
   beforeEach(() => {
     store = new ActivityDataPointStore();
-    model = new HabitModel({ id: 'test', title: 'test task' });
+    model = new HabitModel({ id: 'test', data: new ContentDataTypeModel({ title: 'test task' }) });
     timingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
     logModel = new NumberDataPointModel({ id: 'test-log', cid: 'test', value: 2, tid: timingId });
   });
@@ -93,10 +94,10 @@ describe('ActivityDataPointStore', () => {
 
   describe('sort', function () {
     it('sort done tasks after', async () => {
-      store.addModel(new TaskModel({ id: 't3', sortOrder: 3 }));
-      store.addModel(new TaskModel({ id: 't2', sortOrder: 2 }));
-      store.addModel(new TaskModel({ id: 't1', sortOrder: 1, done: timingId }));
-      store.addModel(new TaskModel({ id: 't0', sortOrder: 0, done: timingId }));
+      store.addModel(new TaskModel({ id: 't3', meta: new ContentMetadataModel({ sortOrder: 3 }) }));
+      store.addModel(new TaskModel({ id: 't2', meta: new ContentMetadataModel({ sortOrder: 2 }) }));
+      store.addModel(new TaskModel({ id: 't1', meta: new ContentMetadataModel({ sortOrder: 1 }), done: timingId }));
+      store.addModel(new TaskModel({ id: 't0', meta: new ContentMetadataModel({ sortOrder: 0 }), done: timingId }));
       const sorted = store.sort(Array.from(store.models.values()));
       expect(sorted[0].id).toEqual('t2');
       expect(sorted[1].id).toEqual('t3');
@@ -108,10 +109,18 @@ describe('ActivityDataPointStore', () => {
   describe('getHabitsByCalendarPlan', function () {
     it('filter by interval', async () => {
       store.addModel(
-        new HabitModel({ id: 't3', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily }, sortOrder: 3 }),
+        new HabitModel({
+          id: 't3',
+          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          meta: new ContentMetadataModel({ sortOrder: 3 }),
+        }),
       );
       store.addModel(
-        new HabitModel({ id: 't2', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily }, sortOrder: 2 }),
+        new HabitModel({
+          id: 't2',
+          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          meta: new ContentMetadataModel({ sortOrder: 2 }),
+        }),
       );
       store.addModel(new HabitModel({ id: 't1', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Weekly } }));
       const result = store.getHabitsByCalendarInterval(CalendarIntervalEnum.Daily);
@@ -124,16 +133,24 @@ describe('ActivityDataPointStore', () => {
   describe('getTasksByCalendarPlan', function () {
     it('only include done task which where done at the searched timingId', async () => {
       store.addModel(
-        new TaskModel({ id: 't4', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily }, sortOrder: 3 }),
+        new TaskModel({
+          id: 't4',
+          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          meta: new ContentMetadataModel({ sortOrder: 3 }),
+        }),
       );
       store.addModel(
-        new TaskModel({ id: 't3', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily }, sortOrder: 2 }),
+        new TaskModel({
+          id: 't3',
+          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          meta: new ContentMetadataModel({ sortOrder: 2 }),
+        }),
       );
       store.addModel(
         new TaskModel({
           id: 't2',
           dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
-          sortOrder: 0,
+          meta: new ContentMetadataModel({ sortOrder: 0 }),
           done: timingId,
         }),
       );

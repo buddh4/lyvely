@@ -1,5 +1,7 @@
-import { Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '../../core/db/base.entity';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { BaseEntity } from '@/core';
+import mongoose from 'mongoose';
+import { PropertyType, IContentLog } from '@lyvely/common';
 
 /**
  * Examples:
@@ -19,10 +21,29 @@ import { BaseEntity } from '../../core/db/base.entity';
  *  - Closed (Poll)
  */
 
-@Schema({ timestamps: { createdAt: true }, discriminatorKey: 'kind' })
-export class ContentLog extends BaseEntity<ContentLog> {
-  createdAt: string;
-  kind: string;
+export enum BaseContentLogTypes {
+  Updated = 'updated',
+  AddedTags = 'addedTags',
+  RemovedTags = 'removedTags',
+  Visibility = 'visibility',
+  Archived = 'archived',
+  Locked = 'locked',
+}
+
+@Schema()
+export class ContentLog<TData = undefined> extends BaseEntity<IContentLog<TData>> {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
+  updatedBy?: TObjectId;
+
+  @Prop({ type: Date, required: true })
+  @PropertyType(Date, { default: new Date() })
+  updatedAt: Date;
+
+  @Prop({ type: mongoose.Schema.Types.Mixed })
+  data: TData;
+
+  @Prop({ required: true })
+  type: string;
 }
 
 export const ContentLogSchema = SchemaFactory.createForClass(ContentLog);

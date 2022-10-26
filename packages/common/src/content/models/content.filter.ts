@@ -52,12 +52,14 @@ export class ContentFilter<
 
     if (
       this.options.query?.length &&
-      !(model.title + model.text).match(new RegExp(escapeRegExp(this.options.query), 'i'))
+      !((model.data.title || '') + (model.data.textContent || '')).match(
+        new RegExp(escapeRegExp(this.options.query), 'i'),
+      )
     ) {
       return false;
     }
 
-    return !!this.options.archived === !!model.archived;
+    return !!this.options.archived === !!model.meta.isArchived;
   }
 
   isEmpty() {

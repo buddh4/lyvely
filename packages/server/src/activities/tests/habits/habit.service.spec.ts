@@ -3,10 +3,10 @@ import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from '../../services/habits.service';
 import { Habit } from '../../schemas';
 import { CalendarIntervalEnum, ActivityType, CreateHabitDto, UpdateHabitDto } from '@lyvely/common';
-import { Profile } from '../../../profiles';
+import { Profile } from '@/profiles';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitsDao } from '../../daos/habits.dao';
-import { User } from '../../../users';
+import { User } from '@/users';
 
 describe('HabitService', () => {
   let habitService: HabitsService;
@@ -43,13 +43,13 @@ describe('HabitService', () => {
       const habit = await createHabit(user, profile);
 
       expect(habit.type).toBe(ActivityType.Habit);
-      expect(habit.sortOrder).toEqual(0);
-      expect(habit.createdAt).toBeDefined();
-      expect(habit.updatedAt).toBeDefined();
+      expect(habit.meta.sortOrder).toEqual(0);
+      expect(habit.meta.createdAt).toBeDefined();
+      expect(habit.meta.updatedAt).toBeDefined();
       expect(habit.dataPointConfig.min).toEqual(0);
       expect(habit.dataPointConfig.max).toEqual(1);
       expect(habit.score).toEqual(5);
-      expect(habit.title).toEqual('Do something!');
+      expect(habit.data.title).toEqual('Do something!');
       expect(habit.tagIds.length).toEqual(0);
     });
 
@@ -58,8 +58,8 @@ describe('HabitService', () => {
       const habit1 = await createHabit(user, profile);
       const habit2 = await createHabit(user, profile);
 
-      expect(habit1.sortOrder).toEqual(0);
-      expect(habit2.sortOrder).toEqual(1);
+      expect(habit1.meta.sortOrder).toEqual(0);
+      expect(habit2.meta.sortOrder).toEqual(1);
     });
 
     it('create duplicate', async () => {
@@ -85,8 +85,8 @@ describe('HabitService', () => {
         user,
         habit,
         new UpdateHabitDto({
-          title: 'Test',
-          text: 'Test description',
+          title: 'Updated Title',
+          text: 'Updated description',
           interval: CalendarIntervalEnum.Weekly,
           max: 2,
           score: 2,
@@ -98,8 +98,8 @@ describe('HabitService', () => {
 
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
-      expect(search.title).toEqual('Test');
-      expect(search.text).toEqual('Test description');
+      expect(search.data.title).toEqual('Updated Title');
+      expect(search.data.textContent).toEqual('Updated description');
       expect(search.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
       expect(search.dataPointConfig.min).toEqual(1);
       expect(search.dataPointConfig.max).toEqual(2);
