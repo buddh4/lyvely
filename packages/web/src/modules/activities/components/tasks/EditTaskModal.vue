@@ -42,7 +42,7 @@ const { model, modalTitle, showModal, validator, addTag, error, reset, submit, t
     </fieldset>
 
     <ly-alert :message="error" class="mt-2" />
-    <ly-screen-reader-validation-error :errors="validator.getErrors()" />
+    <ly-screen-reader-validation-error :errors="validator.getErrorSummary()" />
   </ly-modal>
 </template>
 

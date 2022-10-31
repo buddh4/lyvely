@@ -348,6 +348,7 @@
     "500": "A problem occurred while handling your request, please try again later.",
     "403": "Your access to the requested service was denied.",
     "404": "The requested service could not be found.",
+    "429": "Too many requests. Please wait for a few seconds before submitting another request.",
     "network": {
       "title": "Network Error",
       "message": "There seems to be an issue with your network connection, please make sure you are connected to the internet."

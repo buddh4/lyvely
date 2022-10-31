@@ -3,8 +3,8 @@ import { ENDPOINT_RESET_PASSWORD, ResetPasswordEndpoint, SendResetPasswordMail, 
 import { Public, UseClassSerializer } from '@/core';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
 import { CaptchaGuard } from '@/captcha';
-import { UserRequest } from '@/users';
-import { JwtResetPasswordGuard } from '@/auth/guards/jwt-reset-password.guard';
+import { UserRequest, UserThrottle } from '@/users';
+import { JwtResetPasswordGuard, EmailBodyThrottlerGuard } from '@/auth/guards';
 
 @Controller(ENDPOINT_RESET_PASSWORD)
 @UseClassSerializer()
@@ -20,7 +20,8 @@ export class ResetPasswordController implements ResetPasswordEndpoint {
 
   @Public()
   @Post('send-mail')
-  @UseGuards(CaptchaGuard)
+  @UseGuards(EmailBodyThrottlerGuard, CaptchaGuard)
+  @UserThrottle(2, 60)
   async sendMail(@Body() model: SendResetPasswordMail) {
     await this.resetPasswordService.sendMail(model.email);
   }

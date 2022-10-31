@@ -1,6 +1,5 @@
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '@/test';
-import { createContentTestingModule } from '@/test';
+import { TestDataUtils, createContentTestingModule } from '@/test';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { Content, ContentLog, ContentMetadata, CreatedAs } from '../schemas';

@@ -16,13 +16,10 @@ const {
   model: resetModel,
   validator: resetValidator,
   stage,
-  status: resetStatus,
-  token,
 } = storeToRefs(resetPasswordStore);
 const {
   model: sendMailModel,
   validator: sendMailValidator,
-  status: sendMailStatus,
 } = storeToRefs(sendResetPasswordMailStore);
 const router = useRouter();
 const loginRoute = { path: PATH_LOGIN };
@@ -65,7 +62,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
       <ly-form-model
         v-model="sendMailModel"
         :validator="sendMailValidator"
-        :status="sendMailStatus"
+        :status="sendResetPasswordMailStore.status"
         label-key="auth.reset_password.fields"
       >
         <ly-input-text property="email" autocomplete="email" autofocus />
@@ -122,7 +119,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
       <ly-form-model
         v-model="resetModel"
         :validator="resetValidator"
-        :status="resetStatus"
+        :status="resetPasswordStore.status"
         label-key="auth.reset_password.fields"
       >
         <fieldset>

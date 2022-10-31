@@ -1,8 +1,6 @@
 import { Ref, ref } from 'vue';
-import { AxiosError } from 'axios';
-import { IFieldValidationResult, ModelValidator, FieldValidationException } from '@lyvely/common';
+import { ModelValidator, FieldValidationException } from '@lyvely/common';
 import { isFieldValidationError } from '@/util';
-import { translate } from '@/i18n';
 
 export enum Status {
   INIT,
@@ -146,30 +144,13 @@ export function handleError(err: any, status: StoreStatusPlugin, validator?: Mod
   }
 }
 
-function translateFields(fields: IFieldValidationResult[]) {
-  return fields.map((field) => ({
-    property: field.property,
-    errors: field.errors?.map((err) => translate(err)),
-  }));
-}
-
 export function getErrorMessage(err: any) {
-  if (err?.isAxiosError) {
-    if (!err.response) {
-      return 'error.network.message';
-    } else {
-      const fieldError = getFieldError(err);
-      return fieldError || getErrorMessageByStatusCode(err.response.status);
-    }
+  if (err?.isAxiosError && !err.response) {
+    return 'error.network.message';
   }
 
-  return 'error.unknown';
-}
-
-function getFieldError(err: AxiosError) {
-  if (err?.response?.status !== 400 || !err?.response?.data?.fields) {
-    return undefined;
-  }
+  const errStatus = err.status || err.reponse?.status;
+  return getErrorMessageByStatusCode(errStatus);
 }
 
 function getErrorMessageByStatusCode(status: number) {
@@ -182,6 +163,8 @@ function getErrorMessageByStatusCode(status: number) {
       return 'error.403';
     case 404:
       return 'error.404';
+    case 429:
+      return 'error.429';
     default:
       return 'error.unknown';
   }

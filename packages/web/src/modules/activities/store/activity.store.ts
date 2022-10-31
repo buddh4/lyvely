@@ -90,12 +90,12 @@ export const useActivityStore = defineStore('activities', () => {
 
   async function archiveActivity(activity: ActivityModel) {
     await activityRepository.archive(activity.id);
-    activity.archived = true;
+    activity.meta.isArchived = true;
   }
 
   async function unarchiveActivity(activity: ActivityModel) {
     await activityRepository.unarchive(activity.id);
-    activity.archived = false;
+    activity.meta.isArchived = false;
   }
 
   async function move(moveEvent: IMoveActivityEvent, from?: ActivityModel[], to?: ActivityModel[]) {
@@ -117,7 +117,7 @@ export const useActivityStore = defineStore('activities', () => {
       data.forEach((update) => {
         const entry = cache.value.getModel(update.id);
         if (entry) {
-          entry.sortOrder = update.sortOrder;
+          entry.meta.sortOrder = update.sortOrder;
         }
       });
     } catch (e) {

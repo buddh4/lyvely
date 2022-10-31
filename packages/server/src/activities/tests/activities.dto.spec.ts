@@ -5,12 +5,11 @@ import { Model } from 'mongoose';
 import { ProfileDocument } from '@/profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { UserDocument } from '@/users';
-import { ActivityType, CalendarIntervalEnum, CreateHabitDto, HabitModel } from '@lyvely/common';
+import { ActivityType, CalendarIntervalEnum, CreateHabitDto, HabitModel, PropertiesOf } from '@lyvely/common';
 import { ActivityDocument, Habit } from '../schemas';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { instanceToPlain } from 'class-transformer';
 import { NumberDataPointConfig } from '@/time-series';
-import { PropertiesOf } from '@lyvely/common';
 
 describe('Activities DAO', () => {
   let testingModule: TestingModule;

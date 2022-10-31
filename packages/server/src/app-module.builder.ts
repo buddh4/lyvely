@@ -22,8 +22,11 @@ import {
 import { I18nModule } from '@/i18n/i18n.module';
 import { AccountModule } from '@/account/accountModule';
 import { CaptchaModule } from '@/captcha/captcha.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { ReverseProxyThrottlerGuard } from '@/throttler';
 
-type Import = Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference;
+type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
 export interface IAppModuleBuilderOptions {
   useRecommended?: boolean;
@@ -73,6 +76,7 @@ export class AppModuleBuilder {
     this.initCoreModules()
       .initCoreProviders()
       .initConfigModule()
+      .initRateLimitModule()
       .initServeStaticModule()
       .initMongooseModule()
       .initRecommendedModules()
@@ -145,6 +149,22 @@ export class AppModuleBuilder {
         isGlobal: true,
       }),
     );
+  }
+
+  private initRateLimitModule() {
+    return this.importModules(
+      ThrottlerModule.forRootAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (config: ConfigService<ConfigurationPath>) => ({
+          ttl: config.get('http.rateLimit.ttl') || 60,
+          limit: config.get('http.rateLimit.limit') || 40,
+        }),
+      }),
+    ).useProviders({
+      provide: APP_GUARD,
+      useClass: ReverseProxyThrottlerGuard,
+    });
   }
 
   private initRecommendedModules() {

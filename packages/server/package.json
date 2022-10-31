@@ -43,6 +43,7 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.4.7",
     "@nestjs/serve-static": "^2.2.2",
+    "@nestjs/throttler": "^3.1.0",
     "@types/minimatch": "^3.0.5",
     "bcrypt": "^5.0.1",
     "canvas": "^2.10.1",

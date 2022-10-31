@@ -51,8 +51,8 @@ const { model } = toRefs(props);
         <div class="whitespace-nowrap overflow-hidden overflow-ellipsis cursor-pointer" @click="$emit('details')">
           <slot name="title">
             <div class="flex items-center">
-              {{ model.title }}
-              <ly-badge v-if="model.archived" class="bg-danger ml-2">
+              {{ model.data.title }}
+              <ly-badge v-if="model.meta.isArchived" class="bg-danger ml-2">
                 {{ $t('common.archived') }}
               </ly-badge>
             </div>

@@ -2,7 +2,9 @@ import { IModelValidationResult, IFieldValidationResult } from '@/validation';
 
 export class ServiceException extends Error {
   protected defaultMessage = 'Unknown service error';
+  protected defaultStatus = 500;
   public readonly data?: any;
+  public status?: number;
 
   constructor(msgOrData?: string | any) {
     super(typeof msgOrData === 'string' ? msgOrData : undefined);
@@ -22,6 +24,11 @@ export class ServiceException extends Error {
 
 export class EntityNotFoundException extends ServiceException {
   protected defaultMessage = 'Entity not found';
+
+  constructor(msgOrData?: string | any) {
+    super(msgOrData);
+    this.status = 404;
+  }
 }
 
 export class FieldValidationException extends ServiceException {
@@ -30,6 +37,7 @@ export class FieldValidationException extends ServiceException {
 
   constructor(msgOrFields: IFieldValidationResult[] | string) {
     super(typeof msgOrFields === 'string' ? msgOrFields : { fields: msgOrFields || [] });
+    this.status = 400;
   }
 
   public getFields() {
@@ -46,6 +54,7 @@ export class ModelValidationException extends ServiceException {
     if (Array.isArray(msgOrResult)) {
       this.result = msgOrResult;
     }
+    this.status = 400;
   }
 
   public getResponse() {
@@ -59,14 +68,29 @@ export class ModelValidationException extends ServiceException {
 
 export class UnauthenticatedServiceException extends ServiceException {
   protected defaultMessage = 'Service action forbidden.';
+
+  constructor(msgOrData?: string | any) {
+    super(msgOrData);
+    this.status = 401;
+  }
 }
 
 export class ForbiddenServiceException extends ServiceException {
   protected defaultMessage = 'Service action forbidden.';
+
+  constructor(msgOrData?: string | any) {
+    super(msgOrData);
+    this.status = 403;
+  }
 }
 
 export class IntegrityException extends ServiceException {
   protected defaultMessage = 'An integrity exception occurred.';
+
+  constructor(msgOrData?: string | any) {
+    super(msgOrData);
+    this.status = 400;
+  }
 }
 
 export class MisconfigurationException extends ServiceException {
@@ -82,5 +106,17 @@ export class UniqueConstraintException extends FieldValidationException {
 
   constructor(msg?: string, field?: string) {
     super([{ property: field, errors: ['unique'] }]);
+    this.status = 500;
+  }
+}
+
+export class RateLimitException extends ServiceException {
+  protected defaultMessage = 'Too many requests.';
+  public retryAfter?: number;
+
+  constructor(msgOrData?: string | any, retryAfter?: number) {
+    super(msgOrData);
+    this.status = 429;
+    this.retryAfter = retryAfter;
   }
 }

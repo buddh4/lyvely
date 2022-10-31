@@ -4,7 +4,7 @@ import { onMounted, watch, ref, unref, onUnmounted } from 'vue';
 import introJs from 'intro.js';
 import { translate } from '@/i18n';
 
-interface IProps {
+export interface IProps {
   modelValue: boolean;
   steps: Array<introJs.Step>;
 }

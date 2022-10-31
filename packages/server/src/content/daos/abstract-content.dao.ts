@@ -1,7 +1,6 @@
 import { Content } from '../schemas';
-import { EntityIdentity } from '@/core';
+import { EntityIdentity, UpdateQuerySet } from '@/core';
 import { BaseProfileModelDao, ProfileRelation } from '@/profiles';
-import { UpdateQuerySet } from '@/core';
 
 export abstract class AbstractContentDao<T extends Content> extends BaseProfileModelDao<T> {
   protected getModelType(): string | null {

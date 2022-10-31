@@ -28,7 +28,7 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
   }
 
   async function sendResetPasswordMail() {
-    if (!(await validator.value.validate())) return;
+    if (!(await validate())) return;
     loadingStatus(resetPasswordService.sendMail(model.value), status, validator.value as ModelValidator).then(() =>
       resetPasswordStore.setStage('sent'),
     );

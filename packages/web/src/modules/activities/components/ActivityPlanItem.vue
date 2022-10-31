@@ -24,7 +24,7 @@ const calendarPlanStore = useCalendarPlanStore();
 const dataPoint = computed(() => habitStore.getDataPoint(props.model));
 
 const isFuture = computed(() => calendarPlanStore.date > new Date());
-const isDisabled = computed(() => props.model.archived || isFuture.value);
+const isDisabled = computed(() => props.model.meta.isArchived || isFuture.value);
 const isTask = computed(() => props.model.type === ActivityType.Task);
 const isHabit = computed(() => props.model.type === ActivityType.Habit);
 
@@ -47,7 +47,7 @@ const selection = computed({
 });
 
 function archiveEntry() {
-  if (props.model.archived) {
+  if (props.model.meta.isArchived) {
     activityStore.unarchiveActivity(props.model);
   } else {
     activityStore.archiveActivity(props.model);

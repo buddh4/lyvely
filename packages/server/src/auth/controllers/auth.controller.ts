@@ -1,12 +1,14 @@
 import { Controller, Req, Post, UseGuards, Get, Inject, UnauthorizedException, Body } from '@nestjs/common';
 import { LocalAuthGuard, JwtRefreshGuard, clearAccessCookies, clearRefreshCookies } from '../guards';
 import { JwtAuthService } from '@/auth/services';
-import { UserRequest } from '@/users';
+import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel, UserStatus } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@/core';
 import { AbstractJwtAuthController } from '@/auth/controllers/abstract-jwt-auth.controller';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { EmailBodyThrottlerGuard } from '@/auth/guards/email-body-throttler.guard';
 
 @Controller(ENDPOINT_AUTH)
 @UseClassSerializer()
@@ -20,7 +22,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   }
 
   @Public()
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(EmailBodyThrottlerGuard, LocalAuthGuard)
   @Post('login')
   async login(@Body() loginModel: LoginModel, @Req() req: UserRequest) {
     const { user } = req;
@@ -48,7 +50,8 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   }
 
   @Public()
-  @UseGuards(JwtRefreshGuard)
+  @UseGuards(UserThrottlerGuard, JwtRefreshGuard)
+  @UserThrottle(6, 60)
   @Post('refresh')
   async refresh(@Req() req: UserRequest) {
     const { user } = req;
@@ -90,6 +93,8 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   }
 
   @Get('user')
+  @UseGuards(UserThrottlerGuard)
+  @UserThrottle(30, 60)
   async loadUser(@Req() req: UserRequest) {
     return {
       user: new UserModel(req.user),

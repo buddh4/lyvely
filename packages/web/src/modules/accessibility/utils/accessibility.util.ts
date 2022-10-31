@@ -1,4 +1,4 @@
-export function accessibilityFocus(elem?: string | HTMLElement) {
+export function accessibilityFocus(elem?: string | HTMLElement | null) {
   if (!elem) {
     console.warn('Tried to focus non existing element');
     return;

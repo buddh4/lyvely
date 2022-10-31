@@ -47,7 +47,7 @@ function cancel() {
   emit('cancel');
 }
 
-const rootEl = ref(null) as Ref<HTMLElement | null>;
+const rootEl = ref<HTMLElement>();
 const { modelValue } = toRefs(props);
 const { activate, deactivate } = useFocusTrap(rootEl);
 

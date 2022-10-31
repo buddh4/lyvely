@@ -8,6 +8,7 @@ import {
   NetworkException,
   ForbiddenServiceException,
   UnauthenticatedServiceException,
+  RateLimitException,
 } from '@lyvely/common';
 
 export function isAxiosError(error: any): error is AxiosError {
@@ -56,6 +57,12 @@ export function isModelValidationError(error: any): error is AxiosError<IModelVa
   );
 }
 
+export function isRateLimitError(error: any): error is AxiosError<IModelValidationResponse> & {
+  response: AxiosResponse<IModelValidationResponse>;
+} {
+  return isAxiosErrorWithResponse(error) && error.response.status === 429;
+}
+
 /**
  * @throws ServiceException
  * @param error
@@ -77,6 +84,8 @@ export function errorToServiceException(error: any, throws = false): ServiceExce
     result = new FieldValidationException(error.response.data.fields);
   } else if (isModelValidationError(error)) {
     result = new ModelValidationException(error.response.data.result);
+  } else if (isRateLimitError(error)) {
+    result = new RateLimitException(error, parseInt(error.response.headers['Retry-After'] || '20'));
   }
 
   if (throws) throw result;

@@ -10,8 +10,6 @@ import InviteUsersModal from '../modals/InviteUsersModal.vue';
 import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
 import HelpModal from '@/modules/help/components/HelpModal.vue';
 
-const { active: showIntroductionTour } = storeToRefs(useIntroductionTourStore());
-
 export interface IProps {
   containerWidth?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
   requireAuth?: boolean;
@@ -21,6 +19,8 @@ const props = withDefaults(defineProps<IProps>(), {
   containerWidth: Size.LG,
   requireAuth: true,
 });
+
+const { active: showIntroductionTour } = storeToRefs(useIntroductionTourStore());
 
 const containerProps = computed(() => ({
   width: props.containerWidth,

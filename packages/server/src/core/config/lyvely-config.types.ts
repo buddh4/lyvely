@@ -18,6 +18,10 @@ export type LyvelyHttpOptions = {
   cors?: {
     origin: string;
   };
+  rateLimit?: {
+    ttl: number;
+    limit: number;
+  };
 };
 
 export type LyvelyMongoDBOptions = {
