@@ -55,7 +55,6 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
       reset();
       return result;
     } catch (e) {
-      debugger;
       handleError(e);
     }
   }
@@ -89,7 +88,6 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
   }
 
   function handleError(e: any) {
-    debugger;
     if (e instanceof UnauthenticatedServiceException || FieldValidationException) {
       errorMsg.value = !otpInfo.value.hasAttemptsLeft()
         ? 'otp.errors.maxAttempts'

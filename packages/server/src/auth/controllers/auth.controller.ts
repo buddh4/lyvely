@@ -7,7 +7,6 @@ import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@/core';
 import { AbstractJwtAuthController } from '@/auth/controllers/abstract-jwt-auth.controller';
-import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { EmailBodyThrottlerGuard } from '@/auth/guards/email-body-throttler.guard';
 
 @Controller(ENDPOINT_AUTH)
@@ -28,7 +27,6 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     const { user } = req;
     const { accessToken, refreshToken, vid } = await this.authService.login(user, loginModel.remember);
 
-    // TODO: invalidate old expired refresh tokens
     // TODO: set and validate max refresh tokens
 
     /*if (user.refreshTokens.length > 40) {
@@ -38,6 +36,8 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     if (user.status === UserStatus.EmailVerification) {
       throw new UnauthorizedException({ userStatus: UserStatus.EmailVerification });
     }
+
+    await this.authService.invalidateExpiredRefreshTokens(user);
 
     this.setAuthenticationCookie(req, accessToken);
     this.setRefreshCookie(req, refreshToken);

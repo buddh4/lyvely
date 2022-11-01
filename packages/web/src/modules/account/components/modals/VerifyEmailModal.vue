@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useVerifyEmailStore } from '@/modules/account/stores/verify-email.store';
 import OtpInput from '@/modules/auth/components/OtpInput.vue';
-import { onUnmounted } from "vue";
+import { onUnmounted } from 'vue';
 
 const verifyEmailStore = useVerifyEmailStore();
 const { verifyEmail, resendOtp, reset } = verifyEmailStore;

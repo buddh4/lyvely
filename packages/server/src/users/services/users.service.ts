@@ -58,12 +58,16 @@ export class UsersService {
     if (user.getRefreshTokenByVisitorId(token.vid)) {
       await this.userDao.updateRefreshToken(user, token);
     } else {
-      await this.userDao.createRefreshToken(user, token);
+      await this.userDao.createRefreshToken(user, token, 20);
     }
   }
 
   async destroyRefreshToken(user: User, visitorId: string) {
     return this.userDao.destroyRefreshToken(user, visitorId);
+  }
+
+  async destroyExpiredRefreshTokens(user: User) {
+    return this.userDao.destroyExpiredRefreshTokens(user);
   }
 
   async setUserStatus(user: EntityIdentity<User>, status: UserStatus) {

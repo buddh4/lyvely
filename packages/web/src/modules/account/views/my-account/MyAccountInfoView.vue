@@ -7,9 +7,9 @@ import { storeToRefs } from 'pinia';
 import { useAddEmailStore } from '@/modules/account/stores/add-email.store';
 import AddEmailModal from '@/modules/account/components/modals/AddEmailModal.vue';
 import VerifyEmailModal from '@/modules/account/components/modals/VerifyEmailModal.vue';
-import LyButton from "@/modules/ui/components/button/StyledButton.vue";
-import LyIcon from "@/modules/ui/components/icon/UIIcon.vue";
-import { useVerifyEmailStore } from "@/modules/account/stores/verify-email.store";
+import LyButton from '@/modules/ui/components/button/StyledButton.vue';
+import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
+import { useVerifyEmailStore } from '@/modules/account/stores/verify-email.store';
 
 const { user } = storeToRefs(useAuthStore());
 const addEmailStore = useAddEmailStore();
@@ -48,7 +48,7 @@ const verifyEmail = (email: string) => {
           {{ $t('account.my_account.info.member_since') }}
         </th>
         <td class="p-3 text-left border-b border-divide">
-          <ly-formatted-date :date="user.createdAt"/>
+          <ly-formatted-date :date="user.createdAt" />
         </td>
       </tr>
       <tr>
@@ -64,44 +64,46 @@ const verifyEmail = (email: string) => {
 
   <list-page v-if="user" title="account.my_account.info.emails" icon="email">
     <template #header-right>
-      <add-button @click="showAddEmailModal = true"/>
+      <add-button @click="showAddEmailModal = true" />
     </template>
     <div
-        v-for="userEmail in userEmails"
-        :key="userEmail.email"
-        class="flex py-4 px-3 bg-main items-center border-divide"
+      v-for="userEmail in userEmails"
+      :key="userEmail.email"
+      class="flex py-4 px-3 bg-main items-center border-divide"
     >
       <ly-icon
-          v-if="userEmail.email === user.email"
-          name="star"
-          class="mr-1 text-pop"
-          title="account.my_account.info.main_email"
-          tabindex="0"
+        v-if="userEmail.email === user.email"
+        name="star"
+        class="mr-1 text-pop"
+        title="account.my_account.info.main_email"
+        tabindex="0"
       />
       <ly-icon
-          v-else-if="!userEmail.verified"
-          name="warning"
-          class="mr-1 text-warning"
-          title="account.my_account.info.unverified_email"
-          tabindex="0"
+        v-else-if="!userEmail.verified"
+        name="warning"
+        class="mr-1 text-warning"
+        title="account.my_account.info.unverified_email"
+        tabindex="0"
       />
       <ly-icon
-          v-else
-          name="success"
-          class="mr-1 text-success-light"
-          title="account.my_account.info.verified_email"
-          tabindex="0"
+        v-else
+        name="success"
+        class="mr-1 text-success-light"
+        title="account.my_account.info.verified_email"
+        tabindex="0"
       />
       {{ userEmail.email }}
 
       <div class="ml-auto">
-        <ly-button v-if="!userEmail.verified" class="secondary outlined mr-1" @click="verifyEmail(userEmail.email)"><ly-icon name="send" /></ly-button>
+        <ly-button v-if="!userEmail.verified" class="secondary outlined mr-1" @click="verifyEmail(userEmail.email)"
+          ><ly-icon name="send"
+        /></ly-button>
       </div>
     </div>
   </list-page>
 
-  <add-email-modal/>
-  <verify-email-modal/>
+  <add-email-modal />
+  <verify-email-modal />
 </template>
 
 <style scoped></style>

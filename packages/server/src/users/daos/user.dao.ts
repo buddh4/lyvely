@@ -77,15 +77,21 @@ export class UserDao extends AbstractDao<User> {
     return this.updateOneSetById(user, { [path]: Math.max(0, count) }, options);
   }
 
-  async createRefreshToken(identity: EntityIdentity<User>, token: RefreshToken) {
+  async createRefreshToken(identity: EntityIdentity<User>, token: RefreshToken, limit = 20) {
+    const tokenModel = new RefreshToken({
+      vid: token.vid,
+      hash: token.hash,
+      expiration: token.expiration,
+      remember: token.remember,
+    });
+
     return !!(await this.updateOneById(identity, {
       $push: {
-        refreshTokens: new RefreshToken({
-          vid: token.vid,
-          hash: token.hash,
-          expiration: token.expiration,
-          remember: token.remember,
-        }),
+        refreshTokens: {
+          $each: [tokenModel],
+          $sort: { updatedAt: 1 },
+          $slice: -limit,
+        },
       },
     }));
   }
@@ -124,6 +130,22 @@ export class UserDao extends AbstractDao<User> {
     // This is required since we do not support automatic $pull modifications
     if (result && identity instanceof User) {
       identity.refreshTokens = identity.refreshTokens.filter((token) => token.vid !== vid);
+    }
+
+    return result;
+  }
+
+  async destroyExpiredRefreshTokens(identity: EntityIdentity<User>) {
+    const now = new Date();
+    const result = await this.updateOneById(identity, {
+      $pull: {
+        refreshTokens: { expiration: { $lt: now } },
+      },
+    });
+
+    // This is required since we do not support automatic $pull modifications
+    if (result && identity instanceof User) {
+      identity.refreshTokens = identity.refreshTokens.filter((token) => token.expiration > now);
     }
 
     return result;

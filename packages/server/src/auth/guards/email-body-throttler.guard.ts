@@ -15,7 +15,6 @@ export class EmailBodyThrottlerGuard extends ReverseProxyThrottlerGuard {
     limit = this.reflector.getAllAndOverride<number>(USER_THROTTLER_LIMIT, [handler, classRef]) || 20;
     ttl = this.reflector.getAllAndOverride<number>(USER_THROTTLER_TTL, [handler, classRef]) || 60;
 
-    // Allow 10 attempts per minute for the same email
     return await super.handleRequest(context, limit, ttl);
   }
 

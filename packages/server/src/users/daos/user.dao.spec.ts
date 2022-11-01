@@ -1,10 +1,10 @@
 import { expect } from '@jest/globals';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { UserDao } from '../daos';
-import { User, UserDocument, UserEmail } from '../schemas';
+import { RefreshToken, User, UserDocument, UserEmail } from '../schemas';
 import { Model } from 'mongoose';
-import { ProfileType, UserStatus } from '@lyvely/common';
+import { ProfileType, UserStatus, addMinutes } from '@lyvely/common';
 
 describe('UserDao', () => {
   let testingModule: TestingModule;
@@ -268,6 +268,63 @@ describe('UserDao', () => {
       expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
       const persistedUser = await userDao.reload(user);
       expect(persistedUser.getUserEmail('secondary@test.de')).toBeUndefined();
+    });
+  });
+
+  describe('createRefreshToken', () => {
+    it('refresh token limit', async () => {
+      const user = await testData.createUser('user1', {
+        refreshTokens: [
+          new RefreshToken({ vid: 'vid1', hash: 'someHash1', expiration: addMinutes(new Date(), 1) }),
+          new RefreshToken({ vid: 'vid2', hash: 'someHash2', expiration: addMinutes(new Date(), 1) }),
+          new RefreshToken({ vid: 'vid3', hash: 'someHash3', expiration: addMinutes(new Date(), 1) }),
+          new RefreshToken({ vid: 'vid4', hash: 'someHash4', expiration: addMinutes(new Date(), 1) }),
+          new RefreshToken({ vid: 'vid5', hash: 'someHash5', expiration: addMinutes(new Date(), 1) }),
+          new RefreshToken({ vid: 'vid6', hash: 'someHash6', expiration: addMinutes(new Date(), 1) }),
+        ],
+      });
+
+      await userDao.updateRefreshToken(
+        user,
+        new RefreshToken({ vid: 'vid6', hash: 'someHash6', expiration: addMinutes(new Date(), 1) }),
+      );
+
+      await userDao.updateRefreshToken(
+        user,
+        new RefreshToken({ vid: 'vid5', hash: 'someHash5', expiration: addMinutes(new Date(), 1) }),
+      );
+
+      await userDao.updateRefreshToken(
+        user,
+        new RefreshToken({ vid: 'vid1', hash: 'someHash1', expiration: addMinutes(new Date(), 1) }),
+      );
+
+      await userDao.updateRefreshToken(
+        user,
+        new RefreshToken({ vid: 'vid3', hash: 'someHash1', expiration: addMinutes(new Date(), 1) }),
+      );
+
+      await userDao.updateRefreshToken(
+        user,
+        new RefreshToken({ vid: 'vid2', hash: 'someHash1', expiration: addMinutes(new Date(), 1) }),
+      );
+
+      await userDao.createRefreshToken(
+        user,
+        new RefreshToken({ vid: 'vid7', hash: 'someHash7', expiration: addMinutes(new Date(), 1) }),
+        6,
+      );
+
+      const persistedUser = await userDao.reload(user);
+
+      expect(persistedUser.refreshTokens.length).toEqual(6);
+      expect(persistedUser.refreshTokens.find((token) => token.vid === 'vid1')).toBeDefined();
+      expect(persistedUser.refreshTokens.find((token) => token.vid === 'vid5')).toBeDefined();
+      expect(persistedUser.refreshTokens.find((token) => token.vid === 'vid6')).toBeDefined();
+      expect(persistedUser.refreshTokens.find((token) => token.vid === 'vid7')).toBeDefined();
+      expect(persistedUser.refreshTokens.find((token) => token.vid === 'vid3')).toBeDefined();
+      expect(persistedUser.refreshTokens.find((token) => token.vid === 'vid2')).toBeDefined();
+      expect(persistedUser.refreshTokens.find((token) => token.vid === 'vid4')).toBeUndefined();
     });
   });
 });

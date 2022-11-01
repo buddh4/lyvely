@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '@/users';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, getObjectId, TestDataUtils } from '@/test';
-import { ProfileType, addDays } from '@lyvely/common';
+import { ProfileType, addDays, addMinutes } from '@lyvely/common';
 import bcrypt from 'bcrypt';
 
 describe('UserService', () => {
@@ -206,6 +206,49 @@ describe('UserService', () => {
 
       expect(await userService.destroyRefreshToken(user, 'nonExisting')).toEqual(true);
       expect(user.refreshTokens.length).toEqual(1);
+    });
+  });
+
+  describe('destroyExpiredRefreshToken', () => {
+    it('destroy expired refresh token', async () => {
+      const user = await testData.createUser('user1', {
+        refreshTokens: [
+          new RefreshToken({
+            vid: 'vid1',
+            hash: 'someHash',
+            expiration: addDays(new Date(), -1),
+          }),
+        ],
+      });
+
+      await userService.destroyExpiredRefreshTokens(user);
+      expect(user.refreshTokens.length).toEqual(0);
+      const persistedUser = await userService.findUserById(user);
+      expect(persistedUser.refreshTokens.length).toEqual(0);
+    });
+
+    it('do not destroy non expired refresh token', async () => {
+      const user = await testData.createUser('user1', {
+        refreshTokens: [
+          new RefreshToken({
+            vid: 'vid1',
+            hash: 'someHash1',
+            expiration: addMinutes(new Date(), 1),
+          }),
+          new RefreshToken({
+            vid: 'vid2',
+            hash: 'someHash2',
+            expiration: addMinutes(new Date(), -1),
+          }),
+        ],
+      });
+
+      await userService.destroyExpiredRefreshTokens(user);
+      expect(user.refreshTokens.length).toEqual(1);
+      const persistedUser = await userService.findUserById(user);
+      expect(persistedUser.refreshTokens.length).toEqual(1);
+      expect(persistedUser.refreshTokens[0].vid).toEqual('vid1');
+      expect(persistedUser.refreshTokens[0].hash).toEqual('someHash1');
     });
   });
 

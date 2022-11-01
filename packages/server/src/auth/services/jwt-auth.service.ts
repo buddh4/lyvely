@@ -97,4 +97,8 @@ export class JwtAuthService {
       }),
     );
   }
+
+  public async invalidateExpiredRefreshTokens(user: User) {
+    return this.usersService.destroyExpiredRefreshTokens(user);
+  }
 }
