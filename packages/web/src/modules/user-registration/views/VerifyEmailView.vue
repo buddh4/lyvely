@@ -6,14 +6,11 @@ import { onUnmounted } from 'vue';
 import OtpInput from '@/modules/auth/components/OtpInput.vue';
 
 const verifyEmailStore = useVerifyRegistrationEmailStore();
-const { model, errorMsg, attempts, validator, otpInfo } = storeToRefs(verifyEmailStore);
+const { model, errorMsg, validator, otpInfo } = storeToRefs(verifyEmailStore);
+const { resendOtp } = verifyEmailStore;
 
 if (!model.value.email) {
   document.location = '/';
-}
-
-function resend() {
-  verifyEmailStore.resend();
 }
 
 function verifyEmail() {
@@ -41,7 +38,7 @@ onUnmounted(verifyEmailStore.reset);
 
     <template #footer>
       <div class="flex justify-center space-x-1">
-        <ly-button class="secondary" text="common.resend" @click="resend" />
+        <ly-button class="secondary" text="common.resend" @click="resendOtp" />
         <ly-button v-if="!otpInfo?.requiresRefresh()" class="primary" text="common.submit" @click="verifyEmail" />
       </div>
     </template>

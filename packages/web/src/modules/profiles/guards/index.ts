@@ -16,12 +16,17 @@ export const loadProfile = async (to: RouteLocation, from: RouteLocation, next: 
   const profileStore = useProfileStore();
 
   // params.pid === ':pid: when profile root or main root path is accessed
-  if (!to.params.pid || to.params.pid === ':pid') {
+  if ((!to.params.pid && to.path === '/') || to.params.pid === ':pid') {
     // TODO: (stability) Handle error case if no profile was found
     const profile = await profileStore.loadProfile();
     if (!profile) throw new Error('Profile could not be loaded');
+
     next(profileRoute('/', profile.id));
     return;
+  } else if (!to.params.pid) {
+    const profile = await profileStore.loadProfile();
+    if (!profile) throw new Error('Profile could not be loaded');
+    to.params.pid = profile.id;
   }
 
   await useProfileStore().loadProfile(<string>to.params.pid);

@@ -41,6 +41,7 @@ function _assignRawDataTo<T>(
       const subPathRoot = findByPath(model, path, true, !strict);
       if (subPathRoot) {
         const field = path.slice(path.lastIndexOf('.') + 1);
+        if (field.startsWith('$')) return;
         _assignRawDataTo(subPathRoot, { [field]: data[path] });
       }
       return;

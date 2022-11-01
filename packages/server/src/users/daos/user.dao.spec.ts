@@ -217,6 +217,14 @@ describe('UserDao', () => {
   });
 
   describe('setEmailVerification()', () => {
+    it('verify main email', async () => {
+      const user = await testData.createUser('tester');
+      expect(user.getUnverifiedUserEmail('tester@test.de')).toBeDefined();
+      await userDao.setEmailVerification(user, 'tester@test.de');
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser.getVerifiedUserEmail('tester@test.de')).toBeDefined();
+    });
+
     it('set unverified email to verified', async () => {
       const user = await testData.createUser('tester', { emails: [new UserEmail('secondary@test.de', false)] });
       expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();

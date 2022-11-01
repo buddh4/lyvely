@@ -1,10 +1,9 @@
 import { translation } from '@/i18n';
-import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 
 export default [
   {
     name: 'MyAccount',
-    path: profileRoute('/account'),
+    path: '/account',
     component: () => import('../views/my-account/MyAccountView.vue'),
     meta: {
       layout: 'profile',

@@ -12,15 +12,8 @@ import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 
 const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();
-const {
-  model: resetModel,
-  validator: resetValidator,
-  stage,
-} = storeToRefs(resetPasswordStore);
-const {
-  model: sendMailModel,
-  validator: sendMailValidator,
-} = storeToRefs(sendResetPasswordMailStore);
+const { model: resetModel, validator: resetValidator, stage } = storeToRefs(resetPasswordStore);
+const { model: sendMailModel, validator: sendMailValidator } = storeToRefs(sendResetPasswordMailStore);
 const router = useRouter();
 const loginRoute = { path: PATH_LOGIN };
 const captchaInput = ref();

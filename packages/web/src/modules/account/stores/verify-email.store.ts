@@ -1,59 +1,66 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { IFieldValidationResult, ModelValidator, VerifyEmailDto } from '@lyvely/common';
-import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
+import { IFieldValidationResult, VerifyEmailDto, ResendOtpDto, OtpInfo } from '@lyvely/common';
 import { AccountService } from '@/modules/account/services/account.service';
-import { loadingStatus, useStatus } from '@/store';
+import { useEmailVerificationStore } from '@/modules/account';
 
 export const useVerifyEmailStore = defineStore('verify-email', () => {
-  const { user } = useAuthStore();
+  const { user } = storeToRefs(useAuthStore());
   const accountService = new AccountService();
-  const status = useStatus();
-  const model = ref(new VerifyEmailDto());
   const showModal = ref(false);
 
-  const validator = ref(
-    new I18nModelValidator(model.value, {
-      translationKey: 'account.my_account.info.errors',
+  const {
+    model,
+    validator,
+    errorMsg,
+    verifyEmail,
+    resendOtp,
+    otpInfo,
+    startVerificationOf: startEmailVerificationOf,
+    reset: resetEmailVerification,
+  } = useEmailVerificationStore({
+    verify: async (dto: VerifyEmailDto) => {
+      await accountService.verifyEmail(dto);
+      user.value!.findEmail(dto.email).verified = true;
+      showModal.value = false;
+      return true;
+    },
+    resend: async (dto: ResendOtpDto) => {
+      return await accountService.resendOtp(dto);
+    },
+    validatorOptions: {
       rules: {
         email: [
           (value: string, result: IFieldValidationResult) => {
-            if (!user?.findEmail(value)) {
+            if (!user.value?.findEmail(value)) {
               result.errors!.push('not_exist');
             }
           },
         ],
       },
-    }),
-  );
+    },
+  });
+
+  async function startVerificationOf(email: string, otpInfo?: OtpInfo) {
+    showModal.value = true;
+    return startEmailVerificationOf(email, otpInfo);
+  }
 
   function reset() {
     showModal.value = false;
-    model.value = new VerifyEmailDto();
-    status.resetStatus();
-  }
-
-  async function verifyEmail() {
-    if (!(await validator.value.validate())) {
-      return;
-    }
-
-    return loadingStatus(accountService.addEmail(model.value), status, validator.value as ModelValidator).then(reset);
-  }
-
-  async function startVerificationOf(email: string) {
-    model.value.email = email;
-    model.value.otp = '';
-    showModal.value = true;
+    resetEmailVerification();
   }
 
   return {
-    status,
     model,
+    otpInfo,
+    reset,
     validator,
     showModal,
     startVerificationOf,
+    errorMsg,
     verifyEmail,
+    resendOtp,
   };
 });

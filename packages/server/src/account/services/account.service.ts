@@ -4,7 +4,7 @@ import { escapeHTML, FieldValidationException, VerifyEmailDto, isValidEmail } fr
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
 import { MailService } from '@/mails';
-import { UserOtpService } from '@/user-otp';
+import { InvalidOtpException, UserOtpService } from '@/user-otp';
 
 const OTP_PURPOSE_VERIFY_SECONDARY_EMAIL = 'verify-secondary-email';
 
@@ -36,17 +36,16 @@ export class AccountService {
      */
     await this.userDao.pushEmail(user, new UserEmail(email));
 
-    const otp = await this.createOrUpdateEmailVerificationOtp(user, email);
-    return this.sendEmailVerificationMail(user, otp);
+    const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user, email);
+    await this.sendEmailVerificationMail(user, otp);
+    return otpModel.getOtpClientInfo();
   }
 
   private async createOrUpdateEmailVerificationOtp(user: User, email: string) {
-    const { otp } = await this.userOtpService.createOrUpdateUserOtp(user, {
+    return this.userOtpService.createOrUpdateUserOtp(user, {
       purpose: OTP_PURPOSE_VERIFY_SECONDARY_EMAIL,
       context: { email },
     });
-
-    return otp;
   }
 
   private async sendEmailAlreadyExistsMail(email: string) {
@@ -85,10 +84,16 @@ export class AccountService {
     });
   }
 
+  async resendOtp(user: User, email: string) {
+    const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user, email);
+    await this.sendEmailVerificationMail(user, otp);
+    return otpModel.getOtpClientInfo();
+  }
+
   async verifyEmail(user: User, verifyEmail: VerifyEmailDto) {
     if (!user.getUnverifiedUserEmail(verifyEmail.email)) {
       // Should not happen...
-      throw new FieldValidationException([{ property: 'email', errors: ['Invalid email'] }]);
+      throw new FieldValidationException([{ property: 'email', errors: ['not_exist'] }]);
     }
 
     const { isValid } = await this.userOtpService.runValidation(
@@ -98,7 +103,7 @@ export class AccountService {
       { contextValidator: async (context) => context.email === verifyEmail.email },
     );
 
-    if (!isValid) throw new FieldValidationException([{ property: 'otp', errors: ['otp.errors.invalid'] }]);
+    if (!isValid) throw new InvalidOtpException();
 
     return this.userDao.setEmailVerification(user, verifyEmail.email, true);
   }

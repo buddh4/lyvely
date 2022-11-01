@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { AddEmailDto, IFieldValidationResult, ModelValidator, UserEmailModel } from '@lyvely/common';
+import { AddEmailDto, IFieldValidationResult, ModelValidator, UserEmailModel, OtpInfo } from '@lyvely/common';
 import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
 import { AccountService } from '@/modules/account/services/account.service';
 import { loadingStatus, useStatus } from '@/store';
@@ -9,7 +9,7 @@ import { useVerifyEmailStore } from '@/modules/account/stores/verify-email.store
 
 export const useAddEmailStore = defineStore('add-email', () => {
   const { user } = storeToRefs(useAuthStore());
-  const verifyEmailStroe = useVerifyEmailStore();
+  const verifyEmailStore = useVerifyEmailStore();
   const accountService = new AccountService();
   const status = useStatus();
   const model = ref(new AddEmailDto());
@@ -31,28 +31,25 @@ export const useAddEmailStore = defineStore('add-email', () => {
   );
 
   async function addEmail() {
-    if (!(await validator.value.validate())) {
-      return;
-    }
-
-    return loadingStatus(accountService.addEmail(model.value), status, validator.value as ModelValidator).then(
-      handleAddEmailSuccess,
+    toVerifyEmail(
+      await loadingStatus(() => accountService.addEmail(model.value), status, validator.value as ModelValidator),
     );
   }
 
-  function handleAddEmailSuccess() {
+  function toVerifyEmail(otpInfo: OtpInfo) {
     const userEmail = new UserEmailModel({
       email: model.value.email,
       verified: false,
     });
     user.value?.emails.push(userEmail);
     reset();
-    verifyEmailStroe.startVerificationOf(userEmail.email);
+    verifyEmailStore.startVerificationOf(userEmail.email, otpInfo);
   }
 
   function reset() {
     showModal.value = false;
     model.value = new AddEmailDto();
+    validator.value.setModel(model.value);
     status.resetStatus();
   }
 
