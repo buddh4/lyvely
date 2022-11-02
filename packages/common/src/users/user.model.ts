@@ -12,6 +12,15 @@ export class UserEmailModel extends BaseModel<UserEmailModel> {
 }
 
 @Exclude()
+export class AvatarModel extends BaseModel<AvatarModel> {
+  @Expose()
+  guid: string;
+
+  @Expose()
+  timestamp: number;
+}
+
+@Exclude()
 export class UserModel extends DocumentModel<UserModel> {
   @Expose()
   id: string;
@@ -30,7 +39,11 @@ export class UserModel extends DocumentModel<UserModel> {
   createdAt: Date;
 
   @Expose()
-  imageHash: string;
+  guid: string;
+
+  @Expose()
+  @Type(() => AvatarModel)
+  avatar?: AvatarModel;
 
   @Expose()
   locale: string;

@@ -14,7 +14,7 @@ export class ProfileRelationUserInfoDto implements IProfileRelationUserInfo {
   email?: string;
 
   @Expose()
-  imageHash?: string;
+  guid?: string;
 }
 
 @Exclude()

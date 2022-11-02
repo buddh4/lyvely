@@ -28,7 +28,7 @@ export class ProfileTagsController {
   }
 
   @Put(':id')
-  async update(@Request() req: ProfileRequest, @Param('id') id, @Body() dto: UpdateTagDto) {
+  async update(@Request() req: ProfileRequest, @Param('id') id: string, @Body() dto: UpdateTagDto) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
 
@@ -39,14 +39,14 @@ export class ProfileTagsController {
   }
 
   @Post(':id/archive')
-  async archive(@Request() req: ProfileRequest, @Param('id') id) {
+  async archive(@Request() req: ProfileRequest, @Param('id') id: string) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
     return await this.tagService.archiveTag(profile, tag);
   }
 
   @Post(':id/unarchive')
-  async unArchive(@Request() req: ProfileRequest, @Param('id') id) {
+  async unArchive(@Request() req: ProfileRequest, @Param('id') id: string) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
     return await this.tagService.unArchiveTag(profile, tag);

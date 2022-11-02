@@ -9,22 +9,24 @@ import { ProfilesModule } from './profiles';
 import { PoliciesModule } from './policies/policies.module';
 import { ContentModule } from './content';
 import { ActivitiesModule } from './activities/activities.module';
-import { TagsModule } from './tags/tags.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MailsModule } from './mails/mails.module';
+import path from 'path';
 import {
   ConfigUserPermissionsService,
   UserPermissionsServiceInjectionToken,
   UserPermissionsServiceProvider,
 } from './user-permissions';
 import { I18nModule } from '@/i18n/i18n.module';
-import { AccountModule } from '@/account/accountModule';
+import { AccountModule } from '@/account/account.module';
 import { CaptchaModule } from '@/captcha/captcha.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ReverseProxyThrottlerGuard } from '@/throttler';
+import { MulterModule } from '@nestjs/platform-express';
+import { AvatarsModule } from '@/avatars/avatars.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -76,6 +78,7 @@ export class AppModuleBuilder {
     this.initCoreModules()
       .initCoreProviders()
       .initConfigModule()
+      .initUploadModules()
       .initRateLimitModule()
       .initServeStaticModule()
       .initMongooseModule()
@@ -94,6 +97,22 @@ export class AppModuleBuilder {
       UsersModule,
       AuthModule,
       CaptchaModule,
+    );
+  }
+
+  private initUploadModules() {
+    return this.importModules(
+      MulterModule.registerAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: async (configService: ConfigService<ConfigurationPath>) =>
+          configService.get('file.upload') || {
+            dest: path.join(process.cwd(), 'uploads'),
+            limits: {
+              fileSize: 1_073_741_824, // 1GB
+            },
+          },
+      }),
     );
   }
 
@@ -172,14 +191,7 @@ export class AppModuleBuilder {
       return this;
     }
 
-    return this.importModules(
-      ProfilesModule,
-      TagsModule,
-      UserRegistrationModule,
-      ContentModule,
-      TagsModule,
-      AccountModule,
-    );
+    return this.importModules(ProfilesModule, UserRegistrationModule, ContentModule, AccountModule, AvatarsModule);
   }
 
   private initFeatureModules() {

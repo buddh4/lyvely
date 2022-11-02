@@ -3,14 +3,14 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { AddEmailDto, IFieldValidationResult, ModelValidator, UserEmailModel, OtpInfo } from '@lyvely/common';
 import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
-import { AccountService } from '@/modules/account/services/account.service';
+import { useAccountService } from '@/modules/account/services/account.service';
 import { loadingStatus, useStatus } from '@/store';
 import { useVerifyEmailStore } from '@/modules/account/stores/verify-email.store';
 
 export const useAddEmailStore = defineStore('add-email', () => {
   const { user } = storeToRefs(useAuthStore());
   const verifyEmailStore = useVerifyEmailStore();
-  const accountService = new AccountService();
+  const accountService = useAccountService();
   const status = useStatus();
   const model = ref(new AddEmailDto());
   const showModal = ref(false);

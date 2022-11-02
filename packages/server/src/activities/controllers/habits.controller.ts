@@ -57,7 +57,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Put(':cid')
   @Policies(ContentWritePolicy)
-  async update(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() update: UpdateHabitDto) {
+  async update(@Request() req: ProfileContentRequest, @Param('cid') id: string, @Body() update: UpdateHabitDto) {
     const { profile, user, content } = req;
 
     if (!isHabitContent(content)) {
@@ -74,7 +74,11 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Post(':id/update-log')
   @Policies(ContentWritePolicy)
-  async updateDataPoint(@Request() req: ProfileContentRequest, @Param('cid') id, @Body() dto: UpdateDataPointDto) {
+  async updateDataPoint(
+    @Request() req: ProfileContentRequest,
+    @Param('cid') id: string,
+    @Body() dto: UpdateDataPointDto,
+  ) {
     const { profile, user, content } = req;
 
     if (!isHabitContent(content)) {

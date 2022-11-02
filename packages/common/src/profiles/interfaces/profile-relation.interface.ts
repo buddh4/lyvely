@@ -1,6 +1,6 @@
 export interface IProfileRelationUserInfo {
   displayName: string;
-  imageHash?: string;
+  guid?: string;
   email?: string;
   description?: string;
 }

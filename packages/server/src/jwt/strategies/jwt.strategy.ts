@@ -7,7 +7,7 @@ import { JwtTokenPayloadIF } from '../interfaces/jwt-payload.interface';
 import { ConfigurationPath } from '@/core';
 import { User, UsersService } from '@/users';
 import { UserStatus } from '@lyvely/common';
-import { getIssuedAt } from '@/jwt/utils/jwt.util';
+import { getIssuedAt } from '../utils/jwt.util';
 
 export interface JwtStrategyOptionsIF {
   name: string;

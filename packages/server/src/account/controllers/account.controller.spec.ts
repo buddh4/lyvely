@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AccountController } from './account.controller';
 import { expect } from '@jest/globals';
 import { createBasicTestingModule } from '@/test';
-import { AccountModule } from '@/account/accountModule';
+import { AccountModule } from '@/account/account.module';
 
 describe('AccountController', () => {
   let controller: AccountController;

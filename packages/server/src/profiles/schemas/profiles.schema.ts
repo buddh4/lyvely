@@ -84,7 +84,7 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
   tags: Tag[];
 
   @Prop({ type: String })
-  imageHash?: string;
+  guid?: string;
 
   constructor(owner: EntityIdentity<User>, obj?: Partial<Profile>) {
     super(obj);

@@ -17,9 +17,9 @@ export function useProfileMappings() {
   registerMapping([ProfileContext], ProfileRelationInfos, (relations) => {
     return new ProfileRelationInfos({
       profiles: relations.map((relation) => {
-        const { name, description, score, type, imageHash, id } = relation.profile;
+        const { name, description, score, type, guid, id } = relation.profile;
         return new ProfileRelationInfo({
-          ...{ name, description, score, type, imageHash, id },
+          ...{ name, description, score, type, guid, id },
           relations: relation.relations.map(({ type, role }) => ({ type, role })),
         });
       }),

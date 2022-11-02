@@ -20,3 +20,4 @@ export * from './exceptions';
 export * from './collab';
 export * from './captcha';
 export * from './validation';
+export * from './files';

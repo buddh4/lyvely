@@ -30,7 +30,7 @@ export class ProfileRelationInfo extends BaseModel<ProfileRelationInfo> {
   type: ProfileType;
 
   @Expose()
-  imageHash: string;
+  guid: string;
 
   @PropertyType([ProfileRelationSummary])
   relations: ProfileRelationSummary[];

@@ -2,7 +2,7 @@ import { ProfilesService, Profile, ProfileContext, ProfileRelation, ProfileTagsS
 import { AbstractContentDao } from '../daos';
 import { User } from '@/users';
 import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@/core';
-import { Content } from '@/content';
+import { Content } from '../schemas';
 import { EntityNotFoundException } from '@lyvely/common';
 import { Inject } from '@nestjs/common';
 

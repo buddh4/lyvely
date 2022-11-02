@@ -1,5 +1,5 @@
 import { ReverseProxyThrottlerGuard } from '@/throttler';
-import { UserRequest } from '@/users';
+import { UserRequest } from '../types';
 import { ExecutionContext } from '@nestjs/common';
 import { USER_THROTTLER_LIMIT, USER_THROTTLER_TTL } from '@/users/decorators/user-throttle.decorator';
 

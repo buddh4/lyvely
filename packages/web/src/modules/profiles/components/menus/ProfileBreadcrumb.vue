@@ -2,7 +2,7 @@
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from "@/modules/auth/store/auth.store";
+import { useAuthStore } from '@/modules/auth/store/auth.store';
 
 const profile = computed(() => useProfileStore().profile);
 const userName = computed(() => useAuthStore().user?.username);

@@ -41,7 +41,7 @@ export class ProfileModel extends DocumentModel<ProfileModel> {
   @Expose()
   @IsString()
   @IsOptional()
-  imageHash?: string;
+  guid?: string;
 
   @Expose()
   @Type(() => TagModel)

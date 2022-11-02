@@ -10,7 +10,7 @@ export interface ICreateProfileRelation {
   user: User;
   type?: string; // Usually given by sub types
   displayName?: string;
-  imageHash?: string;
+  guid?: string;
   email?: string;
   description?: string;
   role: string;
@@ -25,7 +25,7 @@ export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
   email: string;
 
   @Prop({ type: String })
-  imageHash: string;
+  guid: string;
 
   @Prop()
   description?: string;
@@ -38,7 +38,7 @@ export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
     return new ProfileRelationUserInfo({
       displayName: data.displayName || data.user.username,
       email: data.email || data.user.email,
-      imageHash: data.imageHash || data.user.imageHash,
+      guid: data.guid || data.user.guid,
       description: data.description,
     });
   }

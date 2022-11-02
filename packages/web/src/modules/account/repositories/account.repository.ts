@@ -22,4 +22,14 @@ export default {
   async resendOtp(model: ResendOtpDto) {
     return repository.post<EndpointResult<IAccountService['resendOtp']>>(`${resource}/resend-otp`, model);
   },
+
+  async updateAvatar(fileData: Blob) {
+    const file = new File([fileData], 'avatar.jpeg');
+    const formData = new FormData();
+    formData.append('file', file, 'avatar.jpeg');
+
+    return repository.post<EndpointResult<IAccountService['updateAvatar']>>(`${resource}/update-avatar`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
 };

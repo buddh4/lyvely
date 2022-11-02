@@ -2,6 +2,7 @@ import { HelmetOptions } from 'helmet';
 import { MailerOptions } from '@nestjs-modules/mailer';
 import { ServeStaticModuleOptions } from '@nestjs/serve-static';
 import { NestedPaths, TypeFromPath } from '@lyvely/common';
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -56,6 +57,13 @@ export type LyvelyAuthOptions = {
   };
 };
 
+export type LyvelyFileOptions = {
+  upload?: MulterOptions;
+  local?: {
+    path?: string;
+  };
+};
+
 export type UserPermissionOptions = Record<string, string[]>;
 
 type ModulesConfiguration = {} & { [k: string]: object };
@@ -69,6 +77,7 @@ export type LyvelyAppConfiguration = {
   mongodb?: LyvelyMongoDBOptions;
   auth?: LyvelyAuthOptions;
   helmet?: HelmetOptions;
+  file?: LyvelyFileOptions;
   mail?: LyvelyMailOptions;
   modules?: ModulesConfiguration;
   'user-permissions'?: UserPermissionOptions;

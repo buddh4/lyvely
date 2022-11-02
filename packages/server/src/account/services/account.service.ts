@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, UserDao, UserEmail } from '@/users';
+import { Avatar, User, UserDao, UserEmail } from '@/users';
 import { escapeHTML, FieldValidationException, VerifyEmailDto, isValidEmail } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
@@ -106,5 +106,11 @@ export class AccountService {
     if (!isValid) throw new InvalidOtpException();
 
     return this.userDao.setEmailVerification(user, verifyEmail.email, true);
+  }
+
+  async updateAvatar(user: User) {
+    const avatar = new Avatar(user.guid);
+    await this.userDao.updateOneSetById(user, { avatar: new Avatar(user.guid) });
+    return avatar;
   }
 }

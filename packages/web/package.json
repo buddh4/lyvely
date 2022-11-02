@@ -29,6 +29,7 @@
     "chartjs": "^0.3.24",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "cropperjs": "^1.5.12",
     "dayjs": "^1.11.3",
     "focus-trap": "^7.0.0",
     "intro.js": "^6.0.0",

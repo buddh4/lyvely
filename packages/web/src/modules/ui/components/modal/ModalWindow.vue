@@ -8,6 +8,7 @@ import { accessibilityFocus } from '@/modules/accessibility';
 export interface IModalProps {
   modelValue: boolean;
   footerVisibility?: string;
+  width: 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full'
   title: string;
   icon?: string;
   iconClass?: string;
@@ -23,6 +24,7 @@ export interface IModalProps {
 const props = withDefaults(defineProps<IModalProps>(), {
   footerVisibility: 'd-none d-sm-flex',
   icon: '',
+  width: 'lg',
   backButton: true,
   cancelButton: true,
   cancelButtonText: 'common.cancel',
@@ -67,6 +69,18 @@ if (!props.prevAutoFocus) {
     }, 100);
   });
 }
+
+const widths = {
+  'md': 'max-w-md',
+  'lg': 'max-w-lg',
+   'xl': 'max-w-xl',
+  '2xl': 'max-w-2xl',
+  '3xl': 'max-w-3xl',
+  '4xl': 'max-w-4xl',
+  'full': 'max-w-full',
+}
+
+const modalWindowClass = `w-full ${widths[props.width]} absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto`;
 </script>
 
 <template>
@@ -88,10 +102,7 @@ if (!props.prevAutoFocus) {
         @keyup.esc="close"
       >
         <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
-        <div
-          v-if="modelValue"
-          class="w-full max-w-lg absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto"
-        >
+        <div :class="modalWindowClass">
           <div class="flex items-center px-5 pt-5 pb-3 rounded-t-sm" data-modal-header>
             <slot name="header">
               <h1 class="text-lg inline-block align-middle flex align-items-center" tabindex="-1">

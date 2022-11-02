@@ -4,8 +4,16 @@ import mongoose, { UpdateQuery } from 'mongoose';
 import { BaseEntity, validateEmail } from '@/core';
 import { Length } from 'class-validator';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
-import crypto from 'crypto';
-import { PropertiesOf, UserModel, UserEmailModel, getNumberEnumValues, UserStatus, PropertyType } from '@lyvely/common';
+import { createHash } from 'crypto';
+import {
+  PropertiesOf,
+  UserModel,
+  AvatarModel,
+  UserEmailModel,
+  getNumberEnumValues,
+  UserStatus,
+  PropertyType,
+} from '@lyvely/common';
 
 @Schema({ id: false })
 export class ProfilesCount {
@@ -52,6 +60,22 @@ export class UserEmail implements PropertiesOf<UserEmailModel> {
 
 const UserEmailSchema = SchemaFactory.createForClass(UserEmail);
 
+@Schema({ _id: false })
+export class Avatar implements PropertiesOf<AvatarModel> {
+  @Prop({ required: true })
+  guid: string;
+
+  @Prop({ required: true })
+  timestamp: number;
+
+  constructor(guid: string) {
+    this.guid = guid;
+    this.timestamp = Date.now();
+  }
+}
+
+const AvatarSchema = SchemaFactory.createForClass(Avatar);
+
 @Schema({ timestamps: true })
 export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @Prop({
@@ -60,6 +84,13 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
     validate: { validator: validateEmail },
   })
   email: string;
+
+  @Prop()
+  guid: string;
+
+  @Prop({ type: AvatarSchema })
+  @PropertyType(Avatar, { default: undefined })
+  avatar?: Avatar;
 
   /**
    * The main email address of the user used for authentication and default email address.
@@ -75,9 +106,6 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @Length(2, 40)
   @Prop({ required: true })
   username: string;
-
-  @Prop({ type: String })
-  imageHash: string;
 
   @Prop({ required: true })
   password: string;
@@ -112,7 +140,14 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
     if (this.email && !this.getUserEmail(this.email)) {
       this.emails.push(new UserEmail(this.email));
     }
+
     this.email = this.email?.toLowerCase();
+
+    if (!this.guid) {
+      this.guid = createHash('sha256')
+        .update(new mongoose.Types.ObjectId().toString() + this.email)
+        .digest('hex');
+    }
   }
 
   getUserEmail(email: string) {
@@ -145,14 +180,6 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
 
   getDisplayName() {
     return this.username;
-  }
-
-  getImageHash() {
-    if (!this.imageHash && this.email) {
-      this.imageHash = crypto.createHash('sha256').update(this.email).digest('hex');
-    }
-
-    return this.imageHash;
   }
 
   getRefreshTokenByVisitorId(vid: string): RefreshToken | undefined {

@@ -1,4 +1,7 @@
 {
+  "cropper": {
+    "title": "Edit Image"
+  },
   "help": {
     "label": "Help",
     "modal": {

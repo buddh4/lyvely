@@ -48,6 +48,10 @@ export function isValidEmail(email: string) {
   return isEmail(email);
 }
 
+export function isGuid(guid: string) {
+  return /^[A-Fa-f0-9]{64}$/.test(guid);
+}
+
 export const escapeHTML = (str: string) => {
   if (!str) {
     return;

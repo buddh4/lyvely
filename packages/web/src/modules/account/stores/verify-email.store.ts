@@ -2,12 +2,12 @@ import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { IFieldValidationResult, VerifyEmailDto, ResendOtpDto, OtpInfo } from '@lyvely/common';
-import { AccountService } from '@/modules/account/services/account.service';
+import { useAccountService } from '@/modules/account/services/account.service';
 import { useEmailVerificationStore } from '@/modules/account';
 
 export const useVerifyEmailStore = defineStore('verify-email', () => {
   const { user } = storeToRefs(useAuthStore());
-  const accountService = new AccountService();
+  const accountService = useAccountService();
   const showModal = ref(false);
 
   const {
