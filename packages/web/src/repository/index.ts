@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Icons } from '@/modules/ui/components/icon/Icons';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
-import { AvatarModel } from '@lyvely/common/src';
+import { AvatarModel } from '@lyvely/common';
 
 // TODO: abstract this away in config or something..
 const apiURL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8080';

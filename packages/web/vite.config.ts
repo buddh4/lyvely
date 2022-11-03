@@ -7,6 +7,7 @@ import { sync } from 'glob';
 export default defineConfig({
   plugins: [vuePlugin(), tsconfigPaths()],
   server: {
+    host: 'lyvely',
     port: 3000,
   },
   assetsInclude: ['**/*.svg'],

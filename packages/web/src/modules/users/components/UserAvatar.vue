@@ -23,7 +23,7 @@ const textClass = computed(() => {
 
 function getClassNames(attrClasses: any, textClass: string) {
   return {
-    'rounded-full uppercase flex justify-center items-center select-none': true,
+    'rounded-full uppercase flex justify-center items-center select-none border border-shadow dark:border-divide': true,
     'p-1': !includesUtilityClass(attrClasses, 'p'),
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),
@@ -35,7 +35,7 @@ function getClassNames(attrClasses: any, textClass: string) {
 
 function getImageClassNames(attrClasses: any) {
   return {
-    'rounded-full uppercase flex justify-center items-center select-none': true,
+    'rounded-full uppercase flex justify-center items-center select-none border border-shadow dark:border-divide': true,
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),
     'text-xs': !includesUtilityClass(attrClasses, 'text'),

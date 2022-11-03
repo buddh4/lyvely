@@ -4,13 +4,16 @@ import { suggestFocusElement } from '@/modules/ui/utils';
 import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
 import { accessibilityFocus } from '@/modules/accessibility';
+import { usePageStore } from '@/modules/core/store/page.store';
+import { uniqueId } from 'lodash';
 
 export interface IModalProps {
   modelValue: boolean;
   footerVisibility?: string;
-  width: 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full'
+  width?: 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full';
   title: string;
   icon?: string;
+  isLoading?: boolean;
   iconClass?: string;
   cancelButton?: boolean;
   cancelButtonText?: string;
@@ -30,6 +33,7 @@ const props = withDefaults(defineProps<IModalProps>(), {
   cancelButtonText: 'common.cancel',
   submitButtonText: 'common.submit',
   cancelButtonClass: 'secondary',
+  isLoading: false,
   submitButton: true,
   iconClass: undefined,
   prevAutoFocus: false,
@@ -39,6 +43,22 @@ const props = withDefaults(defineProps<IModalProps>(), {
 const cancelButtonClass = computed(() => [props.cancelButtonClass, 'm-1']);
 
 const emit = defineEmits(['submit', 'show', 'hide', 'cancel', 'update:modelValue']);
+
+const modalId = uniqueId('modal');
+const zIndex = ref(0);
+
+const { modelValue } = toRefs(props);
+
+const pageStore = usePageStore();
+
+watch(modelValue, (value) => {
+  if (value) {
+    zIndex.value = pageStore.pushModal(modalId) + 1000;
+  } else {
+    pageStore.popModal(modalId);
+    zIndex.value = 1000;
+  }
+});
 
 function close() {
   emit('update:modelValue', false);
@@ -50,7 +70,6 @@ function cancel() {
 }
 
 const rootEl = ref<HTMLElement>();
-const { modelValue } = toRefs(props);
 const { activate, deactivate } = useFocusTrap(rootEl);
 
 if (!props.prevAutoFocus) {
@@ -71,16 +90,18 @@ if (!props.prevAutoFocus) {
 }
 
 const widths = {
-  'md': 'max-w-md',
-  'lg': 'max-w-lg',
-   'xl': 'max-w-xl',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+  xl: 'max-w-xl',
   '2xl': 'max-w-2xl',
   '3xl': 'max-w-3xl',
   '4xl': 'max-w-4xl',
-  'full': 'max-w-full',
-}
+  full: 'max-w-full',
+};
 
-const modalWindowClass = `w-full ${widths[props.width]} absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto`;
+const modalWindowClass = `w-full ${
+  widths[props.width]
+} absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto`;
 </script>
 
 <template>
@@ -98,6 +119,7 @@ const modalWindowClass = `w-full ${widths[props.width]} absolute mx-auto md:roun
         tabindex="1"
         role="dialog"
         aria-hidden="false"
+        :style="{ 'z-index': zIndex }"
         :aria-label="ariaLabel || $t('modal.aria.root')"
         @keyup.esc="close"
       >
@@ -127,11 +149,17 @@ const modalWindowClass = `w-full ${widths[props.width]} absolute mx-auto md:roun
 
           <div class="flex px-5 pt-3 pb-5 justify-end" data-modal-footer>
             <slot name="footer">
-              <ly-button v-if="cancelButton" :class="cancelButtonClass" @click="cancel">
+              <ly-button v-if="cancelButton" :loading="isLoading" :class="cancelButtonClass" @click="cancel">
                 {{ $t(cancelButtonText) }}
               </ly-button>
 
-              <ly-button v-if="submitButton" data-modal-submit class="m-1 primary" @click="$emit('submit')">
+              <ly-button
+                v-if="submitButton"
+                :disabled="isLoading"
+                data-modal-submit
+                class="m-1 primary"
+                @click="$emit('submit')"
+              >
                 {{ $t(submitButtonText) }}
               </ly-button>
             </slot>

@@ -24,10 +24,9 @@ export default {
   },
 
   async updateAvatar(fileData: Blob) {
-    const file = new File([fileData], 'avatar.jpeg');
+    const file = new File([fileData], 'avatar.jpeg', { type: 'image/jpeg' });
     const formData = new FormData();
     formData.append('file', file, 'avatar.jpeg');
-
     return repository.post<EndpointResult<IAccountService['updateAvatar']>>(`${resource}/update-avatar`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });

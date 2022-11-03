@@ -8,7 +8,8 @@ export const usePageStore = defineStore('page', () => {
   const isDark = useDark();
   const toggleDark = useToggle(isDark);
   const showAppLoader = ref(true);
-  const activeDrawer = ref<string | undefined>(undefined);
+  const modalStack = ref<Array<string>>([]);
+  const drawerStack = ref<Array<string>>([]);
 
   function setTitle(title: Array<string> | string) {
     setPageTitle(title);
@@ -37,11 +38,32 @@ export const usePageStore = defineStore('page', () => {
     showAppLoader.value = !!show;
   }
 
+  function pushModal(id: string) {
+    return modalStack.value.push(id);
+  }
+
+  function popModal(id: string) {
+    modalStack.value = modalStack.value.filter((mId) => mId !== id);
+    return modalStack.value.length;
+  }
+
+  function pushDrawer(id: string) {
+    return drawerStack.value.push(id);
+  }
+
+  function popDrawer(id: string) {
+    drawerStack.value = drawerStack.value.filter((mId) => mId !== id);
+    return drawerStack.value.length;
+  }
+
   return {
     isDark,
     showSidebar,
+    pushModal,
+    popModal,
+    pushDrawer,
+    popDrawer,
     toggleSidebar,
-    activeDrawer,
     toggleDark,
     setShowAppLoader,
     showAppLoader,

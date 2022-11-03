@@ -17,9 +17,11 @@ export class AvatarsController {
   public async loadAvatar(@Param('guid') guid, @Res() res: Response) {
     if (!isGuid(guid)) throw new NotFoundException();
 
-    const path = getLocalFilePath(join('avatars', guid), this.configService);
+    const path = getLocalFilePath(this.configService, 'avatars', guid);
     if (!fs.existsSync(path)) throw new NotFoundException();
     const file = fs.createReadStream(path);
+
+    res.set({ 'Content-Type': 'image/jpeg' });
     file.pipe(res);
   }
 }

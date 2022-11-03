@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UploadedFile, UseInterceptors, ParseFilePipeBuilder } from '@nestjs/common';
+import { Body, Controller, Post, Req, UploadedFile, UseInterceptors, UseGuards } from '@nestjs/common';
 import {
   AccountEndpoint,
   AddEmailDto,
@@ -8,16 +8,25 @@ import {
   AvatarModel,
 } from '@lyvely/common';
 import { UseClassSerializer } from '@/core';
-import { UserRequest } from '@/users';
+import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { AccountService } from '@/account/services/account.service';
-import { LocalFilesInterceptor } from '@/files/interceptors';
+import { ParseFilePipeBuilder } from '@/files/pipes/parse-file-pipe.builder';
+import { MimeTypeValidator } from '@/files/validators/mime-type.validator';
 import { ConfigService } from '@nestjs/config';
+import { FileInterceptor } from '@nestjs/platform-express';
+import fs from 'fs/promises';
 import { getLocalFilePath } from '@/files/file-path.utils';
+
+const avatarPipe = new ParseFilePipeBuilder()
+  .addMaxSizeValidator({ maxSize: 1_000_000 })
+  .addFileTypeValidator({ fileType: 'jpeg' })
+  .addValidator(new MimeTypeValidator({ type: ['image/jpeg'] }))
+  .build();
 
 @Controller(ENDPOINT_ACCOUNT)
 @UseClassSerializer()
 export class AccountController implements AccountEndpoint {
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService, private configService: ConfigService) {}
 
   @Post('add-email')
   async addEmail(@Body() dto: AddEmailDto, @Req() req: UserRequest) {
@@ -35,24 +44,11 @@ export class AccountController implements AccountEndpoint {
   }
 
   @Post('update-avatar')
-  @UseInterceptors(
-    LocalFilesInterceptor({
-      fieldName: 'file',
-      configPath: 'file.local.path',
-      destination: (req: UserRequest, configService: ConfigService) => getLocalFilePath('/avatars', configService),
-      filename: (req: UserRequest) => req.user.guid,
-    }),
-  )
-  async updateAvatar(
-    @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addMaxSizeValidator({ maxSize: 1_000_000 })
-        //  .addFileTypeValidator({ fileType: 'jpeg' })
-        .build(),
-    )
-    file: Express.Multer.File,
-    @Req() req: UserRequest,
-  ) {
+  @UseGuards(UserThrottlerGuard)
+  @UserThrottle(20, 60)
+  @UseInterceptors(FileInterceptor('file'))
+  async updateAvatar(@UploadedFile(avatarPipe) file: Express.Multer.File, @Req() req: UserRequest) {
+    await fs.writeFile(getLocalFilePath(this.configService, 'avatars', req.user.guid), file.buffer);
     const avatar = await this.accountService.updateAvatar(req.user);
     return new AvatarModel(avatar);
   }

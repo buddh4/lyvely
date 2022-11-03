@@ -31,7 +31,10 @@ const { modelValue } = toRefs(props);
 
 watch(modelValue, (value) => {
   if (value) {
-    activeDrawer.value = drawerId;
+    zIndex.value = pageStore.pushDrawer(drawerId) + 900;
+  } else {
+    pageStore.popDrawer(drawerId);
+    zIndex.value = 900;
   }
 });
 

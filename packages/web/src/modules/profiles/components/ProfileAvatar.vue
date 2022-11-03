@@ -23,10 +23,17 @@ const textClass = computed(() => {
 </script>
 
 <template>
-  <img v-if="hasUrl" :src="url" />
+  <img
+    v-if="hasUrl"
+    :src="url"
+    class="rounded-full w-6 h-6 uppercase flex justify-center items-center text-xs p-1 select-none border border-shadow dark:border-divide"
+  />
   <div
     v-if="!hasUrl"
-    :class="['rounded-full w-6 h-6 uppercase flex justify-center items-center text-xs p-1 select-none', textClass]"
+    :class="[
+      'rounded-full w-6 h-6 uppercase flex justify-center items-center text-xs p-1 select-none border border-shadow dark:border-divide',
+      textClass,
+    ]"
     :style="{ 'background-color': color }"
   >
     {{ initials }}
