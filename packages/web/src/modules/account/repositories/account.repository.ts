@@ -31,4 +31,8 @@ export default {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
+
+  async updateGravatar() {
+    return repository.post<EndpointResult<IAccountService['updateGravatar']>>(`${resource}/update-gravatar`);
+  },
 };

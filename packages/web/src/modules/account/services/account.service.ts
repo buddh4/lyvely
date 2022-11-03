@@ -18,6 +18,10 @@ export class AccountService implements IAccountService {
   updateAvatar(file: Blob) {
     return unwrapEndpointRequest(accountRepository.updateAvatar(file));
   }
+
+  updateGravatar() {
+    return unwrapEndpointRequest(accountRepository.updateGravatar());
+  }
 }
 
 export const useAccountService = useSingleton(() => new AccountService());

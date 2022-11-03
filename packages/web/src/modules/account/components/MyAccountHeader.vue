@@ -2,15 +2,14 @@
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { useProfileRelationInfosStore } from '@/modules/profiles/stores/profile-relation-infos.store';
 import { storeToRefs } from 'pinia';
-import { ref, nextTick, computed } from 'vue';
-import Cropper from 'cropperjs';
+import { ref } from 'vue';
 import 'cropperjs/dist/cropper.min.css';
 import { ProfileType } from '@lyvely/common';
 import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import LyModal from '@/modules/ui/components/modal/ModalWindow.vue';
-import { useAccountStore } from '@/modules/account/stores/account.store';
-import { useUploadAccountAvatarStore } from '@/modules/account/stores/upload-account-avatar.store';
+import { useAccountAvatarStore } from '@/modules/account/stores/upload-account-avatar.store';
 import LyAlert from '@/modules/ui/components/alert/AlertBlock.vue';
+import LyButton from "@/modules/ui/components/button/StyledButton.vue";
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -20,29 +19,37 @@ const orgCount = profileRelations.profiles.filter((p) => p.type === ProfileType.
 const groupCount = profileRelations.profiles.filter((p) => p.type === ProfileType.Group).length;
 const userProfileCount = profileRelations.profiles.filter((p) => p.type === ProfileType.User).length;
 
-const avatarUploadStore = useUploadAccountAvatarStore();
+const accountAvatarStore = useAccountAvatarStore();
 
-const { showCropImageModal } = storeToRefs(avatarUploadStore);
+const { showCropImageModal, showUpdateAvatarModal } = storeToRefs(accountAvatarStore);
 
 const newAvatarFileInput = ref<HTMLInputElement>();
 
 function selectNewAvatar() {
-  newAvatarFileInput.value?.click();
+  showUpdateAvatarModal.value = false;
+  setTimeout(() => {
+    newAvatarFileInput.value?.click();
+  }, 500);
+
 }
 
 function processNewAvatar(evt: Event) {
   if (!newAvatarFileInput.value?.files?.length) return;
-  avatarUploadStore.cropImageFile(newAvatarFileInput.value.files[0]);
+  accountAvatarStore.cropImageFile(newAvatarFileInput.value.files[0]);
 }
 
 async function uploadAvatar() {
-  avatarUploadStore.updateAvatar();
+  accountAvatarStore.updateAvatar();
+}
+
+function updateGravatar() {
+  accountAvatarStore.updateGravatar();
 }
 </script>
 
 <template>
   <div v-if="user" class="flex items-center justify-center">
-    <div class="m-5 relative cursor-pointer" @click="selectNewAvatar">
+    <div class="m-5 relative cursor-pointer" @click="showUpdateAvatarModal = true">
       <ly-user-avatar class="w-16 h-16 text-xl border border-main" />
       <div class="w-6 h-6 absolute flex justify-center bg-shadow bottom-0 right-0 border border-main rounded-full">
         <ly-icon name="camera" class="p-0.5 color-main" />
@@ -68,11 +75,17 @@ async function uploadAvatar() {
     </div>
   </div>
 
+  <ly-modal v-model="showUpdateAvatarModal" title="avatar.title" :show-footer="false">
+    <div class="flex flex-col items-stretch space-y-1">
+    <ly-button class="primary" text="avatar.upload" @click="selectNewAvatar" />
+    <ly-button class="primary" text="avatar.gravatar" @click="updateGravatar" />
+    </div>
+  </ly-modal>
+
   <ly-modal v-model="showCropImageModal" width="2xl" title="cropper.title" @submit="uploadAvatar">
     <div>
       <img id="imagePreview" src="" alt="Image preview" style="display: block; max-width: 100%" />
-
-      <ly-alert :message="avatarUploadStore?.statusError" class="mt-1" />
+      <ly-alert :message="accountAvatarStore?.statusError" class="mt-1" />
     </div>
   </ly-modal>
 </template>

@@ -46,25 +46,25 @@ const { isDark } = toRefs(pageStore);
     <nav>
       <ul>
         <li>
-          <router-link :to="{ name: 'MyAccountInfo' }" :class="menuItemClass">
+          <router-link :to="{ name: 'MyAccountInfo' }" :class="menuItemClass" draggable="false">
             <ly-icon name="account" />
             {{ $t('account.drawer.myAccount') }}
           </router-link>
         </li>
         <li>
-          <router-link to="/" :class="menuItemClass">
+          <router-link to="/" :class="menuItemClass" draggable="false">
             <ly-icon name="security" />
             {{ $t('account.drawer.security') }}
           </router-link>
         </li>
         <li>
-          <a :class="menuItemClass" @click="showHelp">
+          <a :class="menuItemClass" @click="showHelp" draggable="false">
             <ly-icon name="help" />
             {{ $t('help.label') }}
           </a>
         </li>
         <li>
-          <a :class="menuItemClass" @click="toggleDark()">
+          <a :class="menuItemClass" @click="toggleDark()" draggable="false">
             <ly-icon v-if="isDark" name="light-mode" />
             <ly-icon v-else name="dark-mode" />
             <span v-if="isDark">{{ $t('page.toLightMode') }}</span>
@@ -72,7 +72,7 @@ const { isDark } = toRefs(pageStore);
           </a>
         </li>
         <li>
-          <a :class="menuItemClass" @click="logout">
+          <a :class="menuItemClass" @click="logout" draggable="false">
             <ly-icon name="logout" />
             {{ $t('auth.logout') }}
           </a>

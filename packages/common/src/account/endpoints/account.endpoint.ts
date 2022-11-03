@@ -9,6 +9,7 @@ export interface IAccountService {
   verifyEmail(dto: VerifyEmailDto);
   resendOtp(dto: ResendOtpDto): Promise<OtpInfo>;
   updateAvatar(file: any): Promise<AvatarModel>;
+  updateGravatar(): Promise<AvatarModel>;
 }
 
 export const ENDPOINT_ACCOUNT = 'account';

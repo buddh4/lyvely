@@ -9,7 +9,7 @@ import { uniqueId } from 'lodash';
 
 export interface IModalProps {
   modelValue: boolean;
-  footerVisibility?: string;
+  showFooter?: boolean;
   width?: 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full';
   title: string;
   icon?: string;
@@ -25,7 +25,7 @@ export interface IModalProps {
 }
 
 const props = withDefaults(defineProps<IModalProps>(), {
-  footerVisibility: 'd-none d-sm-flex',
+  showFooter: true,
   icon: '',
   width: 'lg',
   backButton: true,
@@ -147,7 +147,7 @@ const modalWindowClass = `w-full ${
             <slot></slot>
           </section>
 
-          <div class="flex px-5 pt-3 pb-5 justify-end" data-modal-footer>
+          <div v-if="showFooter" class="flex px-5 pt-3 pb-5 justify-end" data-modal-footer>
             <slot name="footer">
               <ly-button v-if="cancelButton" :loading="isLoading" :class="cancelButtonClass" @click="cancel">
                 {{ $t(cancelButtonText) }}

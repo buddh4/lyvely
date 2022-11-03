@@ -1,4 +1,9 @@
 {
+  "avatar": {
+    "title": "Update your avatar",
+    "upload": "Upload new avatar",
+    "gravatar": "Use my gravatar"
+  },
   "cropper": {
     "title": "Edit Image"
   },

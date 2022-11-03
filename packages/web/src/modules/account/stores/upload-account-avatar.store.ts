@@ -4,10 +4,12 @@ import { loadingStatus, useStatus } from '@/store';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { nextTick, ref, watch } from 'vue';
 import Cropper from 'cropperjs';
+import { AvatarModel } from '@lyvely/common/src';
 
-export const useUploadAccountAvatarStore = defineStore('upload-account-avatar', () => {
+export const useAccountAvatarStore = defineStore('upload-account-avatar', () => {
   const status = useStatus();
   const showCropImageModal = ref(false);
+  const showUpdateAvatarModal = ref(false);
   let cropper: Cropper | undefined;
 
   async function updateAvatar() {
@@ -15,9 +17,17 @@ export const useUploadAccountAvatarStore = defineStore('upload-account-avatar', 
     cropper.getCroppedCanvas({ width: 64, height: 64 }).toBlob(uploadAvatar, 'image/jpeg', 1);
   }
 
+  async function updateGravatar() {
+    await setAvatar(loadingStatus(useAccountService().updateGravatar(), status));
+  }
+
   async function uploadAvatar(blob: Blob | null) {
     if (!blob) return;
-    useAuthStore().user!.avatar = await loadingStatus(useAccountService().updateAvatar(blob), status);
+    await setAvatar(loadingStatus(useAccountService().updateAvatar(blob), status));
+  }
+
+  async function setAvatar(promise: Promise<AvatarModel>) {
+    useAuthStore().user!.avatar = await promise;
     reset();
   }
 
@@ -48,13 +58,16 @@ export const useUploadAccountAvatarStore = defineStore('upload-account-avatar', 
     status.resetStatus();
     cropper = undefined;
     showCropImageModal.value = false;
+    showUpdateAvatarModal.value = false;
     const input = document.getElementById('new-avatar') as HTMLInputElement;
     input.value = '';
   }
 
   return {
     updateAvatar,
+    updateGravatar,
     cropImageFile,
+    showUpdateAvatarModal,
     showCropImageModal,
     ...status,
   };

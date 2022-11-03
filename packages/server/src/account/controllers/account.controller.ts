@@ -16,6 +16,7 @@ import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import fs from 'fs/promises';
 import { getLocalFilePath } from '@/files/file-path.utils';
+import { AccountAvatarService } from '@/account/services/account-avatar.service';
 
 const avatarPipe = new ParseFilePipeBuilder()
   .addMaxSizeValidator({ maxSize: 1_000_000 })
@@ -26,7 +27,7 @@ const avatarPipe = new ParseFilePipeBuilder()
 @Controller(ENDPOINT_ACCOUNT)
 @UseClassSerializer()
 export class AccountController implements AccountEndpoint {
-  constructor(private accountService: AccountService, private configService: ConfigService) {}
+  constructor(private accountService: AccountService, private accountAvatarService: AccountAvatarService) {}
 
   @Post('add-email')
   async addEmail(@Body() dto: AddEmailDto, @Req() req: UserRequest) {
@@ -48,8 +49,15 @@ export class AccountController implements AccountEndpoint {
   @UserThrottle(20, 60)
   @UseInterceptors(FileInterceptor('file'))
   async updateAvatar(@UploadedFile(avatarPipe) file: Express.Multer.File, @Req() req: UserRequest) {
-    await fs.writeFile(getLocalFilePath(this.configService, 'avatars', req.user.guid), file.buffer);
-    const avatar = await this.accountService.updateAvatar(req.user);
+    const avatar = await this.accountAvatarService.updateAvatar(req.user, file);
+    return new AvatarModel(avatar);
+  }
+
+  @Post('update-gravatar')
+  @UseGuards(UserThrottlerGuard)
+  @UserThrottle(20, 60)
+  async updateGravatar(@Req() req: UserRequest) {
+    const avatar = await this.accountAvatarService.updateGravatar(req.user);
     return new AvatarModel(avatar);
   }
 }
