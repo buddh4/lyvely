@@ -2,11 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Membership, MembershipDocument, Profile } from '../schemas';
-import { User } from '../../users';
+import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { assureObjectId, EntityIdentity, SaveOptions } from '@/core';
 import { Constructor, BaseMembershipRole } from '@lyvely/common';
-import { SaveOptions } from '../../core/db/abstract.dao';
 
 @Injectable()
 export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> {

@@ -92,12 +92,13 @@ const verifyEmail = (email: string) => {
         title="account.my_account.info.verified_email"
         tabindex="0"
       />
+
       {{ userEmail.email }}
 
       <div class="ml-auto">
-        <ly-button v-if="!userEmail.verified" class="secondary outlined mr-1" @click="verifyEmail(userEmail.email)"
-          ><ly-icon name="send"
-        /></ly-button>
+        <ly-button v-if="!userEmail.verified" class="secondary outlined mr-1" :title="$t('common.resend')" @click="verifyEmail(userEmail.email)">
+          <ly-icon name="send"/>
+        </ly-button>
       </div>
     </div>
   </list-page>

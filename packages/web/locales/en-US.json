@@ -254,6 +254,12 @@
       "organizations": "Organizations",
       "profiles": "Profiles"
     },
+    "roles": {
+      "owner": "owner",
+      "member": "member",
+      "moderator": "moderator",
+      "admin": "administrator"
+    },
     "messages": {
       "no-organization-relation": "You are not a member of any organization."
     },
@@ -262,12 +268,13 @@
       "label": "Users"
     },
     "settings": {
-      "user": {
-        "title": "User profile settings",
-        "label": "User",
+      "membership": {
+        "title": "My membership",
+        "label": "Membership",
         "displayName": "My display name in this profile",
         "description": "My user description in this profile",
-        "archive": "Archive Membership"
+        "archive": "Archive Membership",
+        "your_role": "You are {role} of this profile."
       },
       "general": {
         "name": "Profile Name",

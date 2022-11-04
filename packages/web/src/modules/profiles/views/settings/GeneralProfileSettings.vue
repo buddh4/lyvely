@@ -19,12 +19,17 @@ const description = ref(profileStore.profile?.description);
         <ly-profile-avatar class="m-3" />
       </div>
     </div>
-    <ly-input-textarea v-model="description" label="profile.settings.description" />
-    <div>
+
+    <div class="w-full relative">
+      <ly-input-textarea v-model="description" label="profile.settings.description" />
+    </div>
+
+    <div class="clear-both mt-4">
       <ly-button class="primary float-right">
         {{ $t('common.update') }}
       </ly-button>
     </div>
+
   </div>
 
   <div class="bg-main p-4 rounded shadow-sm mb-4 flex flex-col border border-divide">

@@ -1,16 +1,18 @@
 import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, Length, MaxLength, MinLength } from 'class-validator';
 import { BaseModel } from '@/models';
 import { Match, NotMatch } from '@/validation';
+import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from '@/users';
 
 export class UserRegistrationDto extends BaseModel<UserRegistrationDto> {
   @IsString()
-  @Length(2, 40)
+  @Length(MIN_USER_NAME_LENGTH, MAX_USER_NAME_LENGTH)
   @IsNotEmpty()
   @NotMatch('email')
   readonly username: string;
 
   @IsEmail()
   @IsNotEmpty()
+  @MaxLength(254)
   readonly email: string;
 
   @IsOptional()

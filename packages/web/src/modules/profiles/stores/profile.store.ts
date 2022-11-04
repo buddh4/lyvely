@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus } from '@/store';
-import { ProfileWithRelationsDto, TagModel } from '@lyvely/common';
+import { ProfileWithRelationsModel, TagModel } from '@lyvely/common';
 import { localStorageManager } from '@/util/storage';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 
@@ -12,7 +12,7 @@ const DEFAULT_PROFILE_ID = 'latest_profile_id';
 export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_ID);
 
 export const useProfileStore = defineStore('profile', () => {
-  const profile = ref<ProfileWithRelationsDto>();
+  const profile = ref<ProfileWithRelationsModel>();
   const locale = computed(() => profile.value?.locale);
   const tagOptions = computed(() => profile.value?.tags?.map((tag: TagModel) => tag.name) || []);
   const status = useStatus();
@@ -36,7 +36,7 @@ export const useProfileStore = defineStore('profile', () => {
     return profile.value;
   }
 
-  async function setActiveProfile(activeProfile: ProfileWithRelationsDto) {
+  async function setActiveProfile(activeProfile: ProfileWithRelationsModel) {
     profile.value = activeProfile;
     latestProfileId.setValue(activeProfile.id);
     status.setStatus(Status.SUCCESS);

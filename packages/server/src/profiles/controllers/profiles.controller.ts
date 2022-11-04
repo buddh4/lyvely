@@ -1,6 +1,6 @@
 import { Body, Controller, Get, NotFoundException, Param, Post, Request } from '@nestjs/common';
 import {
-  ProfileWithRelationsDto,
+  ProfileWithRelationsModel,
   CreateProfileDto,
   ProfileType,
   mapType,
@@ -17,7 +17,7 @@ export class ProfilesController implements ProfilesEndpoint {
   constructor(private profilesService: ProfilesService) {}
 
   @Get(':id')
-  async getProfile(@Param('id') id: string, @Request() req): Promise<ProfileWithRelationsDto> {
+  async getProfile(@Param('id') id: string, @Request() req): Promise<ProfileWithRelationsModel> {
     const profileRelations =
       id === 'default'
         ? await this.profilesService.findDefaultProfileMembershipByUser(req.user)
@@ -28,11 +28,11 @@ export class ProfilesController implements ProfilesEndpoint {
       throw new NotFoundException();
     }
 
-    return mapType(ProfileContext, ProfileWithRelationsDto, profileRelations);
+    return mapType(ProfileContext, ProfileWithRelationsModel, profileRelations);
   }
 
   @Post()
-  async create(@Body() dto: CreateProfileDto, @Request() req): Promise<ProfileWithRelationsDto> {
+  async create(@Body() dto: CreateProfileDto, @Request() req): Promise<ProfileWithRelationsModel> {
     // TODO: (TEAM) check if user is allowed to create team profiles
     let profileRelations;
     if (dto.type === ProfileType.User) {
@@ -43,6 +43,6 @@ export class ProfilesController implements ProfilesEndpoint {
       profileRelations = await this.profilesService.createOrganization(req.user, dto);
     }
 
-    return mapType(ProfileContext, ProfileWithRelationsDto, profileRelations);
+    return mapType(ProfileContext, ProfileWithRelationsModel, profileRelations);
   }
 }

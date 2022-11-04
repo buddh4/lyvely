@@ -2,6 +2,7 @@ import { ref, Ref } from 'vue';
 import { ModelValidator } from '@lyvely/common';
 import { AxiosResponse } from 'axios';
 import { cloneDeep, isEqual } from 'lodash';
+import { loadingStatus, useStatus } from '@/store';
 
 export interface IEditModelRepository<TUpdateModel, TResponse, TID = string> {
   create: (model: TUpdateModel) => Promise<AxiosResponse<TResponse>>;
@@ -16,16 +17,17 @@ export interface IEditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
   onSubmitSuccess?: (response?: TResponse) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
-export default function <TUpdateModel extends object, TResponse, TID = string>(
+export function useEditModelStore<TUpdateModel extends object, TResponse, TID = string>(
   options: IEditModelStoreOptions<TUpdateModel, TResponse, TID>,
 ) {
   const model = ref<TUpdateModel | undefined>(undefined) as Ref<TUpdateModel | undefined>;
   let original: TUpdateModel | undefined = undefined;
-  const modelId = ref(undefined) as Ref<TID | undefined>;
-  const validator = ref(undefined) as Ref<ModelValidator<TUpdateModel> | undefined>;
+  const modelId = ref<TID>();
+  const validator = ref<ModelValidator<TUpdateModel>>();
   const error = ref('');
   const isActive = ref(false);
   const isCreate = ref(false);
+  const status = useStatus();
 
   options.partialUpdate = options.partialUpdate ?? true;
 
@@ -66,7 +68,7 @@ export default function <TUpdateModel extends object, TResponse, TID = string>(
     }
 
     try {
-      const response = isCreate.value ? await _createModel() : await _editModel();
+      const response = await loadingStatus(isCreate.value ? _createModel() : _editModel(), status, validator.value);
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
         options.onSubmitSuccess(response?.data);
       }
@@ -124,6 +126,7 @@ export default function <TUpdateModel extends object, TResponse, TID = string>(
     model,
     modelId,
     validator,
+    status,
     error,
     isActive,
     isCreate,

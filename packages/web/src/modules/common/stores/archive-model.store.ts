@@ -11,7 +11,9 @@ export interface IArchiveModelStoreOptions<TModel extends IArchivable, TID = str
   onSubmitSuccess?: (model: TModel, val: boolean) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
-export default function <TModel extends IArchivable, TID = string>(options: IArchiveModelStoreOptions<TModel, TID>) {
+export function useArchiveModelStore<TModel extends IArchivable, TID = string>(
+  options: IArchiveModelStoreOptions<TModel, TID>,
+) {
   async function archiveModel(modelId: TID, model: TModel) {
     return _handleUpdate(modelId, model, true);
   }

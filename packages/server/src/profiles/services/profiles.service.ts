@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, UsersService } from '../../users';
+import { User, UsersService } from '@/users';
 import {
   ProfileType,
   ProfileUsage,

@@ -13,15 +13,17 @@ import {
 } from './schemas';
 import { ProfilesService, ProfileTagsService, ProfilePermissionsService } from './services';
 import { ProfilesController, ProfileTagsController, ProfileRelationInfosController } from './controllers';
-import { UsersModule } from '../users';
+import { UsersModule } from '@/users';
 import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
 
 import { ProfileVisibilityPolicy } from './policies';
-import { PoliciesModule } from '../policies/policies.module';
+import { PoliciesModule } from '@/policies/policies.module';
 import { ProfileEvents } from './profile.events';
-import { CoreModule } from '../core/core.module';
+import { CoreModule } from '@/core';
 import { ProfileType } from '@lyvely/common';
 import { useProfileMappings } from './mappings';
+import { ProfileMembershipController } from '@/profiles/controllers/profile-membership.controller';
+import { ProfileMembershipService } from '@/profiles/services/profile-membership.service';
 
 export const ProfileModel = MongooseModule.forFeature([
   {
@@ -50,6 +52,7 @@ useProfileMappings();
     ProfilePermissionsService,
     UserProfileRelationsDao,
     MembershipsDao,
+    ProfileMembershipService,
     ProfilesService,
     ProfileTagsService,
     ProfileVisibilityPolicy,
@@ -64,6 +67,6 @@ useProfileMappings();
     ProfileVisibilityPolicy,
     MembershipsDao,
   ],
-  controllers: [ProfilesController, ProfileTagsController, ProfileRelationInfosController],
+  controllers: [ProfilesController, ProfileTagsController, ProfileRelationInfosController, ProfileMembershipController],
 })
 export class ProfilesModule {}

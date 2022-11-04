@@ -4,7 +4,7 @@ import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
 import { ProfileContext } from '../models';
 import { ProfileVisibilityPolicy } from '../policies';
-import { PolicyService } from '../../policies/services/policy.service';
+import { PolicyService } from '@/policies/services/policy.service';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
 

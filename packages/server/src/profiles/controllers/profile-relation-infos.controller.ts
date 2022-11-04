@@ -1,7 +1,7 @@
 import { ClassSerializerInterceptor, Controller, Get, Request, UseInterceptors } from '@nestjs/common';
 
 import { ProfilesService } from '../services';
-import { UserRequest } from '../../users';
+import { UserRequest } from '@/users';
 import {
   ProfileRelationInfos,
   mapType,

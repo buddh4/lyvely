@@ -32,18 +32,18 @@ export default [
     meta: {
       layout: 'profile',
     },
-    redirect: { name: 'UserProfileSettings' },
+    redirect: { name: 'ProfileMembershipSettings' },
     component: () => import('../views/settings/ProfileSettings.vue'),
     beforeEnter: [loadProfile],
     children: [
       {
-        name: 'UserProfileSettings',
-        path: profileRoute('/settings/user'),
+        name: 'ProfileMembershipSettings',
+        path: profileRoute('/settings/membership'),
         meta: {
-          title: translation('profile.settings.user.title'),
+          title: translation('profile.settings.membership.title'),
         },
         beforeEnter: [loadProfile],
-        component: () => import('../views/settings/UserProfileSettings.vue'),
+        component: () => import('../views/settings/ProfileMembershipSettings.vue'),
       },
       {
         name: 'GeneralProfileSettings',

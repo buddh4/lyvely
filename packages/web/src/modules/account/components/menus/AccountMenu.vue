@@ -58,13 +58,13 @@ const { isDark } = toRefs(pageStore);
           </router-link>
         </li>
         <li>
-          <a :class="menuItemClass" @click="showHelp" draggable="false">
+          <a :class="menuItemClass" draggable="false" @click="showHelp">
             <ly-icon name="help" />
             {{ $t('help.label') }}
           </a>
         </li>
         <li>
-          <a :class="menuItemClass" @click="toggleDark()" draggable="false">
+          <a :class="menuItemClass" draggable="false" @click="toggleDark()">
             <ly-icon v-if="isDark" name="light-mode" />
             <ly-icon v-else name="dark-mode" />
             <span v-if="isDark">{{ $t('page.toLightMode') }}</span>
@@ -72,7 +72,7 @@ const { isDark } = toRefs(pageStore);
           </a>
         </li>
         <li>
-          <a :class="menuItemClass" @click="logout" draggable="false">
+          <a :class="menuItemClass" draggable="false" @click="logout">
             <ly-icon name="logout" />
             {{ $t('auth.logout') }}
           </a>

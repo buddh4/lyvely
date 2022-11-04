@@ -105,7 +105,7 @@ export async function loadingState<T = any, R = T | void>(
 export async function loadingStatus<T = any, R = T | void>(
   promise: (() => Promise<T>) | Promise<T>,
   status: StoreStatusPlugin,
-  validator?: ModelValidator,
+  validator?: ModelValidator<any>,
   resolve?: (result: T) => R,
   reject?: (e: any) => any,
 ): Promise<R extends void | undefined ? T : R> {

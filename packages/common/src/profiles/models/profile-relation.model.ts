@@ -18,10 +18,13 @@ export class ProfileRelationUserInfoDto implements IProfileRelationUserInfo {
 }
 
 @Exclude()
-export class ProfileRelationDto<T extends IProfileRelation = IProfileRelation>
+export class ProfileRelationModel<T extends IProfileRelation = IProfileRelation>
   extends BaseModel<T & { pid: any; oid: any; uid: any }>
   implements IProfileRelation
 {
+  @Expose()
+  id: string;
+
   @Expose()
   @Transform(({ value, obj }) => obj.oid?.toString() || value)
   oid: TObjectId;

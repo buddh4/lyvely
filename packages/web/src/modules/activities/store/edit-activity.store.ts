@@ -17,16 +17,16 @@ import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import useEditModelStore from '@/modules/common/stores/edit-model.store';
+import { useEditModelStore } from '@/modules/common';
 import { findFocusable } from '@/modules/ui/utils';
 
 type EditModel = UpdateHabitDto & UpdateTaskDto;
-type EditResponseModel = EditTaskResponseDto | UpdateHabitResponseDto;
+type EditActivityResponse = EditTaskResponseDto | UpdateHabitResponseDto;
 
 export const useActivityEditStore = defineStore('activityEdit', () => {
-  const state = useEditModelStore<EditModel, EditResponseModel>({
+  const state = useEditModelStore<EditModel, EditActivityResponse>({
     repository: (editModel: EditModel) => (editModel instanceof UpdateTaskDto ? tasksRepository : habitsRepository),
-    onSubmitSuccess: (response?: EditResponseModel) => {
+    onSubmitSuccess(response?: EditActivityResponse) {
       if (response) {
         useProfileStore().updateTags(response.tags);
         if (isTask(response.model)) {

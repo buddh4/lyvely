@@ -46,24 +46,25 @@ function getImageClassNames(attrClasses: any) {
 
 <template>
   <transition
-      v-if="url"
-      name="fade"
-      mode="out-in"
-      enter-active-class="animate__animated animate__faster animate__bounceIn"
-      leave-active-class="animate__animated animate__faster animate__bounceOut">
+    v-if="url"
+    name="fade"
+    mode="out-in"
+    enter-active-class="animate__animated animate__faster animate__bounceIn"
+    leave-active-class="animate__animated animate__faster animate__bounceOut"
+  >
     <img :key="url" :src="url" :class="getImageClassNames($attrs.class)" />
   </transition>
   <transition
-      v-else
-      name="fade"
-      mode="out-in"
-      enter-active-class="animate__animated animate__faster animate__bounceIn"
-      leave-active-class="animate__animated animate__faster animate__bounceOut">
-  <div :class="getClassNames($attrs.class, textClass)" :style="{ 'background-color': color }">
-    {{ initials }}
-  </div>
+    v-else
+    name="fade"
+    mode="out-in"
+    enter-active-class="animate__animated animate__faster animate__bounceIn"
+    leave-active-class="animate__animated animate__faster animate__bounceOut"
+  >
+    <div :class="getClassNames($attrs.class, textClass)" :style="{ 'background-color': color }">
+      {{ initials }}
+    </div>
   </transition>
-
 </template>
 
 <style scoped>
