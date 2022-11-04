@@ -32,7 +32,8 @@
         "content",
         "web",
         "server",
-        "user"
+        "user",
+        "profiles"
       ]
     ]
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService, User, RefreshToken } from '../../users';
+import { UsersService, User, RefreshToken } from '@/users';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,7 +8,7 @@ import { addMilliSeconds } from '@lyvely/common';
 import ms from 'ms';
 import { ConfigurationPath } from '@/core';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
-import { JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } from '../guards';
+import { getRefreshCookieExpiresIn, JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } from '../guards';
 
 @Injectable()
 export class JwtAuthService {
@@ -42,9 +42,8 @@ export class JwtAuthService {
 
   public async createRefreshToken(user: User, visitorId: string, remember?: boolean): Promise<string> {
     remember = !!remember;
-    const expiresIn = remember
-      ? this.configService.get('auth.jwt.refresh.expiresInRemember')
-      : this.configService.get('auth.jwt.refresh.expiresIn');
+
+    const expiresIn = getRefreshCookieExpiresIn(remember, this.configService);
 
     const options = {
       secret: this.configService.get('auth.jwt.refresh.secret'),
@@ -69,7 +68,7 @@ export class JwtAuthService {
       user,
       visitorId,
       token,
-      addMilliSeconds(new Date(), ms(this.configService.get<string>('auth.jwt.refresh.expiresIn')), false),
+      addMilliSeconds(new Date(), ms(expiresIn), false),
       remember,
     );
 

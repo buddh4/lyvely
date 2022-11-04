@@ -1,1 +1,1 @@
-export * from './webp-image.pipe';
+export * from './parse-file-pipe.builder';

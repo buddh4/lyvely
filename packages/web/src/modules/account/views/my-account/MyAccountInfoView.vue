@@ -96,8 +96,13 @@ const verifyEmail = (email: string) => {
       {{ userEmail.email }}
 
       <div class="ml-auto">
-        <ly-button v-if="!userEmail.verified" class="secondary outlined mr-1" :title="$t('common.resend')" @click="verifyEmail(userEmail.email)">
-          <ly-icon name="send"/>
+        <ly-button
+          v-if="!userEmail.verified"
+          class="secondary outlined mr-1"
+          :title="$t('common.resend')"
+          @click="verifyEmail(userEmail.email)"
+        >
+          <ly-icon name="send" />
         </ly-button>
       </div>
     </div>

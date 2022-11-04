@@ -64,7 +64,7 @@ export class UserRegistrationController extends AbstractJwtAuthController implem
     const { accessToken, refreshToken, vid } = await this.authService.login(user, remember);
 
     this.setAuthenticationCookie(req, accessToken);
-    this.setRefreshCookie(req, refreshToken);
+    this.setRefreshCookie(req, refreshToken, remember);
 
     return {
       user: new UserModel(user),

@@ -26,6 +26,12 @@ export function extractRefreshCookie(req: Request, configService: ConfigService<
   return req.cookies && req.cookies[getRefreshCookieName(configService)];
 }
 
+export function getRefreshCookieExpiresIn(remember: boolean, configService: ConfigService) {
+  return remember
+    ? configService.get<string>('auth.jwt.refresh.expiresInRemember')
+    : configService.get<string>('auth.jwt.refresh.expiresIn');
+}
+
 export function clearRefreshCookies(res: Response) {
   res.clearCookie(COOKIE_REFRESH);
   res.clearCookie(COOKIE_REFRESH_SECURE);

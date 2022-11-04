@@ -29,7 +29,6 @@ const description = ref(profileStore.profile?.description);
         {{ $t('common.update') }}
       </ly-button>
     </div>
-
   </div>
 
   <div class="bg-main p-4 rounded shadow-sm mb-4 flex flex-col border border-divide">

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useProfileStore } from "@/modules/profiles/stores/profile.store";
-import LyIcon from "@/modules/ui/components/icon/UIIcon.vue";
-import { useUpdateProfileMembershipSettingsStore } from "@/modules/profiles/stores/profile-membership-settings.store";
-import LyFormModel from "@/modules/ui/components/form/FormModel.vue";
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
+import { useUpdateProfileMembershipSettingsStore } from '@/modules/profiles/stores/profile-membership-settings.store';
+import LyFormModel from '@/modules/ui/components/form/FormModel.vue';
 
 const profileStore = useProfileStore();
 const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();
@@ -37,7 +37,9 @@ function updateSettings() {
           <div class="w-full relative">
             <ly-input-text property="displayName" class="mb-0" />
           </div>
-          <div class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer">
+          <div
+            class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer"
+          >
             <ly-user-avatar class="m-3" />
           </div>
         </div>

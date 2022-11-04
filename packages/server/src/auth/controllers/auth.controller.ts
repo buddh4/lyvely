@@ -27,12 +27,6 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     const { user } = req;
     const { accessToken, refreshToken, vid } = await this.authService.login(user, loginModel.remember);
 
-    // TODO: set and validate max refresh tokens
-
-    /*if (user.refreshTokens.length > 40) {
-      throw new ForbiddenException('Too many active sessions');
-    }*/
-
     if (user.status === UserStatus.EmailVerification) {
       throw new UnauthorizedException({ userStatus: UserStatus.EmailVerification });
     }
@@ -40,7 +34,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     await this.authService.invalidateExpiredRefreshTokens(user);
 
     this.setAuthenticationCookie(req, accessToken);
-    this.setRefreshCookie(req, refreshToken);
+    this.setRefreshCookie(req, refreshToken, loginModel.remember);
 
     return {
       user: new UserModel(user),
@@ -67,7 +61,11 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
 
     // Here we also refresh the refresh token itself, this allows shorter refresh token expirations
     await this.authService.destroyRefreshToken(user, oldRefreshToken.vid);
-    this.setRefreshCookie(req, await this.authService.createRefreshToken(user, vid, oldRefreshToken.remember));
+    this.setRefreshCookie(
+      req,
+      await this.authService.createRefreshToken(user, vid, oldRefreshToken.remember),
+      oldRefreshToken.remember,
+    );
 
     return { token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')) };
   }
