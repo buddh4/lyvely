@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import EditTaskModal from '@/modules/activities/components/tasks/EditTaskModal.vue';
+import EditTaskModal from '@/modules/activities/components/modals/EditTaskModal.vue';
 import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlan.vue';
 import TimingList from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType, getCalendarPlanArray } from '@lyvely/common';

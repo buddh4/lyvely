@@ -1,12 +1,6 @@
 import { IsEnum, IsNumber } from 'class-validator';
 import { CalendarIntervalEnum } from '@/calendar';
-import {
-  INumberDataPointConfig,
-  DataPointInputStrategy,
-  DataPointInputType,
-  DataPointValueType,
-  TimeSeriesContentModel,
-} from '@/time-series';
+import { INumberDataPointConfig, DataPointInputType, DataPointValueType, TimeSeriesContentModel } from '@/time-series';
 import { Expose } from 'class-transformer';
 
 export enum ActivityType {
@@ -30,7 +24,6 @@ export abstract class ActivityModel<
       interval: CalendarIntervalEnum.Daily,
       inputType: DataPointInputType.Checkbox,
       valueType: DataPointValueType.Number,
-      strategy: DataPointInputStrategy.CheckboxNumber,
       history: [],
     };
   }

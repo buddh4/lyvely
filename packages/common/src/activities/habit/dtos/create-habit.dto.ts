@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { CalendarIntervalEnum } from '@/calendar';
-import { DataPointNumberInputStrategy } from '@/time-series';
+import { DataPointNumberInputType } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import { IsEnum, IsInt, IsNotEmpty, IsString, Length, Min, Max, IsOptional, IsArray, MaxLength } from 'class-validator';
 import { BaseModel } from '@/models';
@@ -52,9 +52,9 @@ export class CreateHabitDto extends BaseModel<CreateHabitDto> {
   optimal?: number;
 
   @Expose()
-  @IsEnum(DataPointNumberInputStrategy)
+  @IsEnum(DataPointNumberInputType)
   @IsOptional()
-  strategy?: DataPointNumberInputStrategy;
+  inputType?: DataPointNumberInputType;
 
   @Expose()
   @IsEnum(UserAssignmentStrategy)
@@ -75,7 +75,7 @@ export class CreateHabitDto extends BaseModel<CreateHabitDto> {
     this.max = this.max ?? 3;
     this.min = Math.min(this.min ?? 0, this.max);
     this.optimal = Math.min(this.optimal ?? this.min, this.max);
-    this.strategy = this.strategy ?? DataPointNumberInputStrategy.CheckboxNumber;
+    this.inputType = this.inputType ?? DataPointNumberInputType.Checkbox;
     this.userStrategy = this.userStrategy ?? UserAssignmentStrategy.Shared;
     this.tagNames = this.tagNames || [];
   }

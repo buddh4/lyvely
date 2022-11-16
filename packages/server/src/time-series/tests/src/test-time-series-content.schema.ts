@@ -6,9 +6,10 @@ import {
   TimeSeriesContent,
   TimeSeriesContentSchemaFactory,
   DefaultDataPointConfigSchema,
+  DataPointConfigFactory,
 } from '../../schemas';
 import * as mongoose from 'mongoose';
-import { DataPointInputStrategy } from '@lyvely/common';
+import { DataPointInputType, DataPointNumberInputType, DataPointValueType } from '@lyvely/common';
 
 @Schema()
 export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {
@@ -22,8 +23,8 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
 
 export type TestTimeSeriesContentDocument = TestTimeSeriesContent & mongoose.Document;
 export const TestTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(TestTimeSeriesContent, [
-  DataPointInputStrategy.CheckboxNumber,
-  DataPointInputStrategy.TextareaText,
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Checkbox),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
 ]);
 
 @Schema()
@@ -38,5 +39,8 @@ export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNum
 export type TestNumberTimeSeriesContentDocument = TestNumberTimeSeriesContent & mongoose.Document;
 export const TestNumberTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(
   TestNumberTimeSeriesContent,
-  [DataPointInputStrategy.CheckboxNumber, DataPointInputStrategy.TextareaText],
+  [
+    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Checkbox),
+    DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
+  ],
 );

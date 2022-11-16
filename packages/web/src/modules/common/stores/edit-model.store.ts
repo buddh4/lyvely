@@ -24,7 +24,6 @@ export function useEditModelStore<TUpdateModel extends object, TResponse, TID = 
   let original: TUpdateModel | undefined = undefined;
   const modelId = ref<TID>();
   const validator = ref<ModelValidator<TUpdateModel>>();
-  const error = ref('');
   const isActive = ref(false);
   const isCreate = ref(false);
   const status = useStatus();
@@ -58,7 +57,6 @@ export function useEditModelStore<TUpdateModel extends object, TResponse, TID = 
       modelId.value = undefined;
       validator.value = undefined;
       isActive.value = false;
-      error.value = '';
     }
   }
 
@@ -77,8 +75,6 @@ export function useEditModelStore<TUpdateModel extends object, TResponse, TID = 
     } catch (err) {
       if (typeof options.onSubmitError === 'function') {
         options.onSubmitError(err);
-      } else if (options.onSubmitError !== false) {
-        error.value = 'error.unknown';
       }
     }
   }
@@ -88,7 +84,7 @@ export function useEditModelStore<TUpdateModel extends object, TResponse, TID = 
       return;
     }
 
-    return await _getRepository(model.value).create(model.value);
+    return loadingStatus(_getRepository(model.value).create(model.value), status, validator.value);
   }
 
   async function _editModel() {
@@ -111,7 +107,7 @@ export function useEditModelStore<TUpdateModel extends object, TResponse, TID = 
       update = model.value;
     }
 
-    return await _getRepository(model.value).update(modelId.value, update);
+    return loadingStatus(_getRepository(model.value).update(modelId.value, update), status, validator.value);
   }
 
   function _getRepository(m: TUpdateModel) {
@@ -127,7 +123,6 @@ export function useEditModelStore<TUpdateModel extends object, TResponse, TID = 
     modelId,
     validator,
     status,
-    error,
     isActive,
     isCreate,
     setEditModel,

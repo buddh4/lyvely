@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Profile } from '../../profiles';
+import { Profile } from '@/profiles';
 import {
-  DataPointNumberInputStrategy,
   REGEX_TID,
   UserAssignmentStrategy,
   applyValidationProperties,
@@ -9,14 +8,16 @@ import {
   UpdateTaskDto,
   PropertiesOf,
   TaskWithUsersModel,
+  DataPointInputType,
+  DataPointValueType,
 } from '@lyvely/common';
 import mongoose from 'mongoose';
-import { User } from '../../users';
+import { User } from '@/users';
 import { Activity } from './activity.schema';
-import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '../../time-series';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '@/time-series';
+import { assureObjectId, EntityIdentity } from '@/core';
 import { cloneDeep } from 'lodash';
-import { ContentDataType } from '@/content/schemas/content-data-type.schema';
+import { ContentDataType } from '@/content';
 
 export type TaskDocument = Task & mongoose.Document;
 
@@ -47,7 +48,10 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
 
   afterInit() {
     if (!this.dataPointConfig) {
-      this.dataPointConfig = DataPointConfigFactory.createConfig(DataPointNumberInputStrategy.CheckboxNumber, {});
+      this.dataPointConfig = DataPointConfigFactory.createConfig(
+        DataPointValueType.Number,
+        DataPointInputType.Checkbox,
+      );
     }
 
     this.dataPointConfig.min = 1;
@@ -133,7 +137,8 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
 
 function _createDataPointConfigFromUpdate(update: UpdateTaskDto) {
   return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
-    DataPointNumberInputStrategy.CheckboxNumber,
+    DataPointValueType.Number,
+    DataPointInputType.Checkbox,
     {
       min: 0,
       max: 1,

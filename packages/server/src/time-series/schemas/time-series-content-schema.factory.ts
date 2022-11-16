@@ -12,10 +12,15 @@ export class TimeSeriesContentSchemaFactory {
   static createForClass<TClass = any>(target: Type<TClass>, valueConfigStrategies: string[]) {
     const Schema = SchemaFactory.createForClass(target);
     valueConfigStrategies.forEach((configStrategy) => {
-      Schema.path<mongoose.Schema.Types.Subdocument>('dataPointConfig').discriminator(
-        configStrategy,
-        SchemaMapping[configStrategy],
-      );
+      const schema = SchemaMapping[configStrategy];
+      if (schema) {
+        Schema.path<mongoose.Schema.Types.Subdocument>('dataPointConfig').discriminator(
+          configStrategy,
+          SchemaMapping[configStrategy],
+        );
+      } else {
+        console.warn(`Unknown datapoint strategy ${configStrategy}`);
+      }
     });
     return Schema;
   }

@@ -33,7 +33,8 @@
         "web",
         "server",
         "user",
-        "profiles"
+        "profiles",
+        "activities"
       ]
     ]
   }

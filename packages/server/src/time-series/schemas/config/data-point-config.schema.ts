@@ -23,12 +23,12 @@ export abstract class DataPointConfig<
   valueType: DataPointValueType;
 
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
-  inputType?: DataPointInputType;
+  inputType: DataPointInputType;
+
+  strategy: string;
 
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;
-
-  strategy: string;
 
   history: TRevision[];
 
@@ -76,9 +76,6 @@ export abstract class DataPointConfigRevision implements IDataPointConfigRevisio
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
   inputType?: DataPointInputType;
 
-  @Prop({ type: String, required: true })
-  strategy: string;
-
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;
 
@@ -86,7 +83,6 @@ export abstract class DataPointConfigRevision implements IDataPointConfigRevisio
     this.validUntil = new Date();
     this.valueType = config.valueType;
     this.inputType = config.inputType;
-    this.strategy = config.strategy;
     this.interval = config.interval;
   }
 }

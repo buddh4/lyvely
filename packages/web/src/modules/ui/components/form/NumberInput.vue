@@ -53,25 +53,23 @@ export default {
   setup(props: IProps, context: SetupContext) {
     const baseInput = useFloatingInputSetup<number>(props, context);
 
+    const baseInputValue = baseInput.inputValue;
     baseInput.inputValue = computed({
       get: () => {
-        let allowed = getAllowedVal(props.modelValue);
-        if (props.modelValue !== allowed) {
+        let allowed = getAllowedVal(baseInputValue.value);
+        if (baseInputValue.value !== allowed) {
           context.emit('update:modelValue', allowed);
         }
-        return props.modelValue;
+        return baseInputValue.value;
       },
       set: (val: number) => {
-        if (!baseInput.editable) {
-          return;
-        }
+        if (!baseInput.editable) return;
 
         val = val || 0;
         val = parseInt(val + '');
 
         context.emit('change', val);
-        const setValue = baseInput.hasFocus.value ? val : getAllowedVal(val);
-        context.emit('update:modelValue', setValue);
+        baseInputValue.value = baseInput.hasFocus.value ? val : getAllowedVal(val);
       },
     });
 

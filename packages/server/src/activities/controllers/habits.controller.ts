@@ -8,6 +8,7 @@ import {
   HabitModel,
   TagModel,
   EntityNotFoundException,
+  CreateHabitDto,
 } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
@@ -17,9 +18,9 @@ import {
   ContentController,
   ContentType,
   ContentWritePolicy,
-} from '../../content';
-import { ProfileRequest, ProfilePermissions } from '../../profiles';
-import { Policies } from '../../policies/decorators/policies.decorator';
+} from '@/content';
+import { ProfileRequest, ProfilePermissions } from '@/profiles';
+import { Policies } from '@/policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
 import { UseClassSerializer } from '@/core';
 import { isHabitContent } from '../utils/activity.utils';
@@ -35,19 +36,10 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Post()
   @ProfilePermissions(ActivityPermissions.CREATE)
-  async create(@Request() req: ProfileRequest, @Body() dto: UpdateHabitDto) {
+  async create(@Request() req: ProfileRequest, @Body() dto: CreateHabitDto) {
     const { profile, user } = req;
 
-    const habitModel = await this.contentService.createContent(
-      profile,
-      user,
-      Habit.create(profile, user, dto),
-      dto.tagNames,
-    );
-
-    if (!habitModel) {
-      throw new EntityNotFoundException();
-    }
+    const habitModel = await this.contentService.createHabit(profile, user, dto);
 
     return new UpdateHabitResponseDto({
       model: new HabitModel(habitModel),

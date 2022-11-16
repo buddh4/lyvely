@@ -12,7 +12,7 @@ interface ITranslationError<T> {
 
 export interface IValidatorOptions<T extends object = object> {
   isFieldValidator?: boolean;
-  rules?: Record<keyof T, [(value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>]> | {};
+  rules?: Record<keyof T, [(value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>]> | any;
   translate?: (error: ITranslationError<T>) => string | undefined;
 }
 
@@ -29,10 +29,21 @@ export class ModelValidator<T extends object = object> {
   constructor(model?: T, options?: IValidatorOptions<T>) {
     this.options = options || {};
     this.errors = {};
-    this.options.rules = this.options.rules || {};
+    this.options.rules = this.options.rules || <any>{};
     this.model = model;
     if (!this.options.isFieldValidator) {
       this.fieldValidator = new ModelValidator<T>(model, Object.assign({}, options, { isFieldValidator: true }));
+    }
+  }
+
+  addRule(
+    property: keyof T,
+    validator: (value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>,
+  ) {
+    if (!this.options.rules[property]) {
+      this.options.rules[property] = [validator];
+    } else {
+      this.options.rules[property].push(validator);
     }
   }
 

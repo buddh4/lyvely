@@ -1,9 +1,6 @@
-import { DataPointInputStrategy } from '@lyvely/common';
 import { Logger } from '@nestjs/common';
 import { DataPointConfig } from './data-point-config.schema';
 import { assignEntityData } from '@/core';
-
-type StrategyId = DataPointInputStrategy | string;
 
 const register = {};
 const logger = new Logger('DataPointStrategyFactory');
@@ -13,15 +10,19 @@ export interface IDataPointStrategyType<T extends DataPointConfig> extends Funct
 }
 
 export function registerDataPointStrategy<TClass extends DataPointConfig>(
-  strategy: StrategyId,
+  strategy: string,
   type: IDataPointStrategyType<TClass>,
 ) {
-  logger.log(`Registered data point strategy '${strategy}'`);
   register[strategy] = type;
 }
 
 export class DataPointConfigFactory {
-  static createConfig<T extends DataPointConfig = DataPointConfig>(strategy: StrategyId, settings?: any): T {
+  static createConfig<T extends DataPointConfig = DataPointConfig>(
+    valueType: string,
+    inputType: string,
+    settings?: any,
+  ): T {
+    const strategy = DataPointConfigFactory.getStrategyName(valueType, inputType);
     const ConfigType = register[strategy];
     if (ConfigType) {
       return new ConfigType(settings);
@@ -30,7 +31,12 @@ export class DataPointConfigFactory {
     return null;
   }
 
-  static createInstance<T extends DataPointConfig = DataPointConfig>(strategy: StrategyId, config: T): T {
+  static getStrategyName(valueType: string, inputType: string) {
+    return `${valueType}_${inputType}`;
+  }
+
+  static createInstance<T extends DataPointConfig = DataPointConfig>(config: T): T {
+    const strategy = DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);
     const ConfigType = register[strategy];
     if (ConfigType) {
       return assignEntityData(new ConfigType(), config);
@@ -39,7 +45,7 @@ export class DataPointConfigFactory {
     return null;
   }
 
-  static getConstructorByStrategy(stratgy: StrategyId) {
-    return register[stratgy];
+  static getConstructorByStrategy(strategy: string) {
+    return register[strategy];
   }
 }

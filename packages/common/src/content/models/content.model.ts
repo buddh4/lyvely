@@ -1,6 +1,6 @@
-import { BaseModel, DocumentModel } from '@/models';
-import { Expose, Transform, Type } from 'class-transformer';
-import { IsString, Length, IsArray, IsOptional } from 'class-validator';
+import { BaseModel, DocumentModel, PropertyType } from '@/models';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
+import { IsString, Length, IsArray, IsOptional, IsNotEmpty, MaxLength } from 'class-validator';
 import {
   ContentVisibilityLevel,
   CreatedAsType,
@@ -10,6 +10,7 @@ import {
   IContentLog,
   IContentMetadata,
 } from '../interfaces';
+import { CreateHabitDto } from '@/activities';
 
 export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   extends BaseModel<T>

@@ -7,24 +7,24 @@ import {
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
 } from '../schemas';
-import {
-  DataPointInputStrategy,
-  DataPointInputType,
-  DataPointValueType,
-  INumberDataPointSettings,
-  CalendarIntervalEnum,
-} from '@lyvely/common';
+import { DataPointInputType, DataPointValueType, INumberDataPointSettings, CalendarIntervalEnum } from '@lyvely/common';
+
+const CheckboxNumberStrategy = DataPointConfigFactory.getStrategyName(
+  DataPointValueType.Number,
+  DataPointInputType.Checkbox,
+);
 
 describe('TimeSeriesDataPointConfigFactory', () => {
   describe('createConfig()', () => {
     it('create checkbox config without settings', async () => {
       const config = DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
-        DataPointInputStrategy.CheckboxNumber,
+        DataPointValueType.Number,
+        DataPointInputType.Checkbox,
       );
 
       expect(config).toBeDefined();
       expect(config instanceof CheckboxNumberDataPointConfig).toEqual(true);
-      expect(config.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
+      expect(config.strategy).toEqual(CheckboxNumberStrategy);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.valueType).toEqual(DataPointValueType.Number);
       expect(config.min).toBeUndefined();
@@ -43,13 +43,14 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         interval: CalendarIntervalEnum.Daily,
       };
       const config = DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
-        DataPointInputStrategy.CheckboxNumber,
+        DataPointValueType.Number,
+        DataPointInputType.Checkbox,
         settings,
       );
 
       expectConfig(config, 0, 2, 1);
       expect(config instanceof CheckboxNumberDataPointConfig).toEqual(true);
-      expect(config.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
+      expect(config.strategy).toEqual(CheckboxNumberStrategy);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.valueType).toEqual(DataPointValueType.Number);
     });
@@ -62,12 +63,15 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         interval: CalendarIntervalEnum.Daily,
       };
       const config = DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(
-        DataPointInputStrategy.RangeNumber,
+        DataPointValueType.Number,
+        DataPointInputType.Range,
         settings,
       );
 
       expectConfig(config, 0, 2, 1);
-      expect(config.strategy).toEqual(DataPointInputStrategy.RangeNumber);
+      expect(config.strategy).toEqual(
+        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
+      );
       expect(config.inputType).toEqual(DataPointInputType.Range);
       expect(config.valueType).toEqual(DataPointValueType.Number);
     });
@@ -80,25 +84,31 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         interval: CalendarIntervalEnum.Daily,
       };
       const config = DataPointConfigFactory.createConfig<SpinnerNumberDataPointConfig>(
-        DataPointInputStrategy.SpinnerNumber,
+        DataPointValueType.Number,
+        DataPointInputType.Spinner,
         settings,
       );
 
       expectConfig(config, 0, 2, 1);
       expect(config instanceof SpinnerNumberDataPointConfig).toEqual(true);
-      expect(config.strategy).toEqual(DataPointInputStrategy.SpinnerNumber);
+      expect(config.strategy).toEqual(
+        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
+      );
       expect(config.inputType).toEqual(DataPointInputType.Spinner);
       expect(config.valueType).toEqual(DataPointValueType.Number);
     });
 
     it('create text config', async () => {
       const config = DataPointConfigFactory.createConfig<TextareaTextDataPointConfig>(
-        DataPointInputStrategy.TextareaText,
+        DataPointValueType.Text,
+        DataPointInputType.Textarea,
       );
 
       expect(config).toBeDefined();
       expect(config instanceof TextareaTextDataPointConfig).toEqual(true);
-      expect(config.strategy).toEqual(DataPointInputStrategy.TextareaText);
+      expect(config.strategy).toEqual(
+        DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
+      );
       expect(config.inputType).toEqual(DataPointInputType.Textarea);
       expect(config.valueType).toEqual(DataPointValueType.Text);
       expect(config.getSettings()).toBeUndefined();

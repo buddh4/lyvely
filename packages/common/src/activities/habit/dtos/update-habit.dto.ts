@@ -13,6 +13,8 @@ export class UpdateHabitDto extends PartialType(CreateHabitDto) {
       this.max = model.dataPointConfig.max;
       this.min = model.dataPointConfig.min;
       this.optimal = model.dataPointConfig.optimal;
+      this.text = model.data.textContent;
+      this.title = model.data.title;
     }
   }
 }

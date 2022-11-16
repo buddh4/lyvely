@@ -17,6 +17,7 @@
       :disabled="disabled"
       :readonly="readonly"
       :class="inputClass"
+      :maxlength="maxlength"
     ></textarea>
   </floating-input-layout>
 </template>
@@ -33,6 +34,7 @@ export default {
   props: {
     ...useBaseInputProps(),
     rows: { type: Number, default: 3 },
+    maxlength: { type: Number, default: undefined },
   },
   emits: ['change', 'update:modelValue'],
   setup(props: IBaseInputProps, context: SetupContext) {

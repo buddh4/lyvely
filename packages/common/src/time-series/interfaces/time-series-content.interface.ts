@@ -1,22 +1,17 @@
 import { CalendarIntervalEnum } from '@/calendar';
 
-export enum DataPointNumberInputStrategy {
-  CheckboxNumber = 'checkbox_number',
-  RangeNumber = 'range_number',
-  SpinnerNumber = 'spinner_number',
-}
-
-export enum DataPointInputStrategy {
+/*export enum DataPointInputStrategy {
   CheckboxNumber = 'checkbox_number',
   RangeNumber = 'range_number',
   SpinnerNumber = 'spinner_number',
   TextareaText = 'TextareaText',
-}
+}*/
 
 export enum DataPointNumberInputType {
   Checkbox = 'checkbox',
   Range = 'range',
   Spinner = 'spinner',
+  Time = 'time',
 }
 
 export enum DataPointValueType {
@@ -31,14 +26,14 @@ export enum DataPointInputType {
   Checkbox = 'checkbox',
   Range = 'range',
   Spinner = 'spinner',
+  Time = 'time',
   Textarea = 'textarea',
-  Provider = 'provider',
+  //Provider = 'provider',
   //Richtext = 'richtext'
 }
 
 export interface IDataPointConfig {
   interval: CalendarIntervalEnum;
-  strategy: string;
   history: IDataPointConfigRevision[];
   valueType: DataPointValueType;
   inputType?: DataPointInputType;
@@ -46,7 +41,6 @@ export interface IDataPointConfig {
 
 export interface IDataPointConfigRevision {
   validUntil: Date;
-  strategy: string;
   valueType: DataPointValueType;
   inputType?: DataPointInputType;
 }

@@ -2,10 +2,11 @@ import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '@/users';
 import {
   HabitModel,
-  DataPointNumberInputStrategy,
   UpdateHabitDto,
   applyValidationProperties,
   PropertiesOf,
+  CreateHabitDto,
+  DataPointValueType,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
 import { Activity } from './activity.schema';
@@ -45,7 +46,7 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
   public static create(
     profile: Profile,
     owner: User,
-    update: UpdateHabitDto,
+    update: CreateHabitDto,
     history?: NumberDataPointConfigRevision[],
   ): Habit {
     const result = new Habit(profile, owner, {
@@ -68,15 +69,12 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
 }
 
 function _createDataPointConfigFromUpdate(dto: UpdateHabitDto) {
-  return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
-    dto.strategy || DataPointNumberInputStrategy.CheckboxNumber,
-    {
-      min: dto.min,
-      max: dto.max,
-      interval: dto.interval,
-      optimal: dto.optimal,
-    },
-  );
+  return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(DataPointValueType.Number, dto.inputType, {
+    min: dto.min,
+    max: dto.max,
+    interval: dto.interval,
+    optimal: dto.optimal,
+  });
 }
 
 export const HabitSchema = SchemaFactory.createForClass(Habit);

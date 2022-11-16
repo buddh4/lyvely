@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import EditHabitModal from '@/modules/activities/components/habits/EditHabitModal.vue';
+import EditHabitModal from '@/modules/activities/components/modals/EditHabitModal.vue';
 import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlan.vue';
 import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType, getCalendarPlanArray } from '@lyvely/common';

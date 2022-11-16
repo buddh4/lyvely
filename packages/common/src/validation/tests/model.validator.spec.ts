@@ -97,7 +97,7 @@ describe('ModelValidator', () => {
       const validator = new ModelValidator(new MultiFieldModel({ someNumber: 2, someString: 'test' }), {
         rules: {
           someNumber: [
-            (val: number, result: IFieldValidationResult) => {
+            (val: any, result: IFieldValidationResult) => {
               if (val < 3) {
                 result.errors.push('lower than 3');
               }

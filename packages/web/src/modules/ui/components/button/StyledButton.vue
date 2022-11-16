@@ -44,7 +44,7 @@ function getClassNames(attrClasses: any, isActive?: boolean, loading?: boolean) 
     loading: loading,
     'no-underline': true,
     'text-center': true,
-    rounded: props.rounded,
+    rounded: props.rounded && !includesUtilityClass(attrClasses, 'rounded'),
     'inline-block': true,
     'border-0': !props.border,
     active: props.active || isActive,

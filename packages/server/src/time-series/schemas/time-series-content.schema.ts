@@ -6,7 +6,7 @@ import {
   TimeSeriesContentModel,
 } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
-import { Content, IContentEntity } from '../../content';
+import { Content, IContentEntity } from '@/content';
 import { DataPointConfigFactory, DefaultDataPointConfig, DefaultDataPointConfigSchema } from './config';
 import { EntityType } from '@/core';
 
@@ -49,7 +49,7 @@ export abstract class TimeSeriesContent<
   afterInit() {
     // in case plain object is given we create a class instance
     if (this.dataPointConfig && !this.dataPointConfig.getSettings) {
-      this.dataPointConfig = DataPointConfigFactory.createInstance(this.dataPointConfig.strategy, this.dataPointConfig);
+      this.dataPointConfig = DataPointConfigFactory.createInstance(this.dataPointConfig);
     }
 
     super.afterInit();

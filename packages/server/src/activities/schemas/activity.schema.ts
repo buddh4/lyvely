@@ -1,13 +1,14 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { ActivityModel, DataPointInputStrategy, PropertiesOf } from '@lyvely/common';
 import {
   CheckboxNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   NumberTimeSeriesContent,
   TimeSeriesContentSchemaFactory,
   DefaultDataPointConfigSchema,
+  DataPointConfigFactory,
 } from '@/time-series';
+import { DataPointNumberInputType, ActivityModel, PropertiesOf, DataPointValueType } from '@lyvely/common';
 
 type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 
@@ -27,7 +28,8 @@ export class Activity extends NumberTimeSeriesContent<Activity> implements Prope
 
 export type ActivityDocument = Activity & mongoose.Document;
 export const ActivitySchema = TimeSeriesContentSchemaFactory.createForClass(Activity, [
-  DataPointInputStrategy.CheckboxNumber,
-  DataPointInputStrategy.RangeNumber,
-  DataPointInputStrategy.SpinnerNumber,
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Checkbox),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Range),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Spinner),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Time),
 ]);

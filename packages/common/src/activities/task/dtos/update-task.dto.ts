@@ -48,6 +48,8 @@ export class UpdateTaskDto extends BaseModel<UpdateTaskDto> {
 
     if (isActivity(model)) {
       this.interval = model.dataPointConfig.interval;
+      this.title = model.data.title;
+      this.text = model.data.textContent;
     }
   }
 }

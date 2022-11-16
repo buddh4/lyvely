@@ -1,11 +1,14 @@
 import { Prop, Schema } from '@nestjs/mongoose';
-import { DataPointInputType, DataPointInputStrategy, INumberDataPointSettings } from '@lyvely/common';
+import { DataPointInputType, INumberDataPointSettings, DataPointValueType } from '@lyvely/common';
 import { NumberDataPointConfig } from './number-data-point-config.schema';
 import { DataPointConfigSchemaFactory } from './data-point-config-schema.factory';
+import { DataPointConfigFactory } from './data-point-config.factory';
+
+const strategy = DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner);
 
 @Schema()
 export class SpinnerNumberDataPointConfig extends NumberDataPointConfig {
-  strategy = DataPointInputStrategy.SpinnerNumber;
+  strategy = strategy;
 
   @Prop({ enum: [DataPointInputType.Spinner] })
   inputType: DataPointInputType;
@@ -16,6 +19,6 @@ export class SpinnerNumberDataPointConfig extends NumberDataPointConfig {
 }
 
 export const SpinnerNumberDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(
-  DataPointInputStrategy.SpinnerNumber,
+  strategy,
   SpinnerNumberDataPointConfig,
 );

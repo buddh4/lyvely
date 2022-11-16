@@ -45,7 +45,7 @@ const cancelButtonClass = computed(() => [props.cancelButtonClass, 'm-1']);
 const emit = defineEmits(['submit', 'show', 'hide', 'cancel', 'update:modelValue']);
 
 const modalId = uniqueId('modal');
-const zIndex = ref(0);
+const zIndex = ref(1000);
 
 const { modelValue } = toRefs(props);
 
@@ -121,7 +121,6 @@ const modalWindowClass = `w-full ${
         aria-hidden="false"
         :style="{ 'z-index': zIndex }"
         :aria-label="ariaLabel || $t('modal.aria.root')"
-        @keyup.esc="close"
       >
         <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
         <div :class="modalWindowClass">

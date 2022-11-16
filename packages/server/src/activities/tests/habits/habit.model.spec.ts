@@ -38,7 +38,7 @@ describe('Content Model', () => {
       expect(habit.meta.createdAs.authorId).toEqual(user._id);
       expect(habit.data.title).toEqual('Test');
       expect(habit.score).toEqual(5);
-      expect(habit.dataPointConfig.strategy).toEqual(DataPointInputStrategy.CheckboxNumber);
+      expect(habit.dataPointConfig.inputStrategy).toEqual(DataPointInputStrategy.CheckboxNumber);
       expect(habit.dataPointConfig instanceof CheckboxNumberDataPointConfig).toEqual(true);
       expect(habit.dataPointConfig.max).toEqual(3);
       expect(habit.dataPointConfig.min).toEqual(2);

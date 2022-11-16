@@ -36,7 +36,7 @@ export class NumberDataPointConfig
   valueType: DataPointValueType.Number = DataPointValueType.Number;
 
   @Prop({ enum: SupporedLogValueInputTypes[DataPointValueType.Number] })
-  inputType?: DataPointInputType;
+  inputType: DataPointInputType;
 
   @Prop()
   min?: number;

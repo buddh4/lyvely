@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { getDefaultLocale, User } from '../../users';
+import { getDefaultLocale, User } from '@/users';
 import mongoose from 'mongoose';
-import { BaseEntity } from '../../core/db/base.entity';
-import { Tag, TagSchema } from '../../tags';
+import { BaseEntity, assureObjectId, EntityIdentity } from '@/core';
+import { Tag, TagSchema } from '@/tags';
 import {
   ProfileVisibilityLevel,
   getNumberEnumValues,
@@ -17,8 +17,7 @@ import {
   ProfileUsage,
 } from '@lyvely/common';
 
-import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-role-permissions.schema';
-import { assureObjectId, EntityIdentity } from '../../core/db/db.utils';
+import { ProfileRolePermission, ProfileRolePermissionSchema } from '@/profiles';
 
 @Schema({ _id: false })
 class ProfileMetadata extends BaseModel<ProfileMetadata> {

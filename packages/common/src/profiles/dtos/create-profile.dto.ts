@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel } from '@/models';
+import { BaseModel, PropertyType } from '@/models';
 import { IsEnum, IsString, IsOptional, IsArray } from 'class-validator';
-import { ProfileType, ProfileVisibilityLevel } from '../interfaces';
+import { ProfileType } from '../interfaces';
 import { ProfileUsage } from '../models';
 
 @Exclude()
@@ -20,16 +20,14 @@ export class CreateProfileDto extends BaseModel<CreateProfileDto> {
   @IsEnum(ProfileUsage, { each: true })
   usage: ProfileUsage[];
 
-  @Expose()
+  /*@Expose()
   @IsString()
   @IsEnum(ProfileVisibilityLevel)
-  visibility: ProfileVisibilityLevel;
+  @PropertyType(Number, { default: ProfileVisibilityLevel.Member })
+  visibility: ProfileVisibilityLevel;*/
 
   @Expose()
   @IsEnum(ProfileType)
+  @PropertyType(String, { default: ProfileType.User })
   type: ProfileType;
-
-  afterInit() {
-    this.type = this.type ?? ProfileType.User;
-  }
 }
