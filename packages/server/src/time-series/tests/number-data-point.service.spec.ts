@@ -1,7 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createContentTestingModule } from '../../test/utils/test.utils';
+import { createContentTestingModule, TestDataUtils } from '@/test';
 import { TestNumberDataPoint, TestNumberDataPointSchema } from './src/test-data-point.schema';
 import {
   CalendarIntervalEnum,
@@ -18,11 +17,11 @@ import {
   TestNumberTimeSeriesContentSchema,
   TestTimeSeriesContent,
 } from './src/test-time-series-content.schema';
-import { Content, ContentSchema } from '../../content';
+import { Content, ContentSchema } from '@/content';
 import { Model } from 'mongoose';
 import { CheckboxNumberDataPointConfig } from '../schemas';
-import { User } from '../../users';
-import { Profile } from '../../profiles';
+import { User } from '@/users';
+import { Profile } from '@/profiles';
 
 const Models = [
   { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema },
@@ -150,6 +149,32 @@ describe('NumberDataPointService', () => {
 
       expect(memberDataPoints.length).toEqual(1);
       expect(memberDataPoints[0]._id).toEqual(ownerDataPoints[0]._id);
+    });
+  });
+
+  describe('startTimer()', () => {
+    it('start new timer', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const content = await createTimeSeriesContent(user, profile);
+      const date = new Date();
+
+      const dataPoint = await service.startTimer(profile, user, content, date);
+      expect(dataPoint.timer).toBeDefined();
+      expect(dataPoint.timer.spans.length).toEqual(1);
+      expect(dataPoint.timer.isStarted()).toEqual(true);
+    });
+
+    it('start already started timer', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const content = await createTimeSeriesContent(user, profile);
+      const date = new Date();
+
+      await service.startTimer(profile, user, content, date);
+      const dataPoint = await service.startTimer(profile, user, content, date);
+
+      expect(dataPoint.timer).toBeDefined();
+      expect(dataPoint.timer.spans.length).toEqual(1);
+      expect(dataPoint.timer.isStarted()).toEqual(true);
     });
   });
 });

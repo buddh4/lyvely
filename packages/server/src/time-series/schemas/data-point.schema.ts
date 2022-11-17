@@ -11,8 +11,8 @@ import {
   DataPointModel,
 } from '@lyvely/common';
 import { TimeSeriesContent } from './time-series-content.schema';
-import { User } from '../../users';
-import { Profile } from '../../profiles';
+import { User } from '@/users';
+import { Profile } from '@/profiles';
 
 type DataPointEntity = DataPointModel & { _id: TObjectId };
 

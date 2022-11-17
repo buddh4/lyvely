@@ -138,5 +138,10 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!@lyvely/common/.*)"
     ]
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "5.0.9"
+    }
   }
 }

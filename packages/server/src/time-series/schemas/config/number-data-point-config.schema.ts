@@ -3,7 +3,6 @@ import {
   DataPointInputType,
   DataPointValueType,
   INumberDataPointSettings,
-  SupporedLogValueInputTypes,
   INumberDataPointConfig,
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
@@ -28,6 +27,14 @@ export class NumberDataPointConfigRevision extends DataPointConfigRevision imple
 
 export const NumberDataPointConfigRevisionSchema = SchemaFactory.createForClass(NumberDataPointConfigRevision);
 
+const SupportedNumberDataPointInputTypes = [
+  DataPointInputType.Time,
+  DataPointInputType.Spinner,
+  DataPointInputType.Range,
+  DataPointInputType.Checkbox,
+  DataPointInputType.Textarea,
+];
+
 export class NumberDataPointConfig
   extends DataPointConfig<INumberDataPointSettings>
   implements INumberDataPointSettings
@@ -35,7 +42,7 @@ export class NumberDataPointConfig
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;
 
-  @Prop({ enum: SupporedLogValueInputTypes[DataPointValueType.Number] })
+  @Prop({ enum: SupportedNumberDataPointInputTypes })
   inputType: DataPointInputType;
 
   @Prop()

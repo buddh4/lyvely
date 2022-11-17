@@ -66,16 +66,31 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Post(':id/update-log')
   @Policies(ContentWritePolicy)
-  async updateDataPoint(
-    @Request() req: ProfileContentRequest,
-    @Param('cid') id: string,
-    @Body() dto: UpdateDataPointDto,
-  ) {
+  async updateDataPoint(@Request() req: ProfileContentRequest, @Body() dto: UpdateDataPointDto) {
     const { profile, user, content } = req;
 
-    if (!isHabitContent(content)) {
-      throw new EntityNotFoundException();
-    }
+    if (!isHabitContent(content)) throw new EntityNotFoundException();
+
+    const dataPoint = await this.habitDataPointService.upsertDataPoint(
+      profile,
+      user,
+      content as Habit,
+      dto.date,
+      dto.value,
+    );
+
+    return new UpdateDataPointResultDto({
+      score: profile.score,
+      units: dataPoint.value,
+    });
+  }
+
+  @Post(':id/start-timer')
+  @Policies(ContentWritePolicy)
+  async startTimer(@Request() req: ProfileContentRequest, @Body() dto: UpdateDataPointDto) {
+    const { profile, user, content } = req;
+
+    if (!isHabitContent(content)) throw new EntityNotFoundException();
 
     const dataPoint = await this.habitDataPointService.upsertDataPoint(
       profile,

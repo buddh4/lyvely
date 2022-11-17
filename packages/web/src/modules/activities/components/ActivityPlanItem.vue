@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { ActivityType, TaskModel, ActivityModel, DataPointInputType } from '@lyvely/common';
+import { ActivityType, TaskModel, ActivityModel, DataPointInputType, secondsToTime, formatTime } from '@lyvely/common';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -10,7 +10,8 @@ import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
 import { translate } from '@/i18n';
-import { useDebounceFn } from '@vueuse/core'
+import { useDebounceFn } from '@vueuse/core';
+import LyIcon from "@/modules/ui/components/icon/UIIcon.vue";
 
 export interface IProps {
   model: ActivityModel;
@@ -126,36 +127,56 @@ const max = computed(() => model.value.dataPointConfig.max || 1);
 const optimal = computed(() => model.value.dataPointConfig.optimal);
 
 const inputBorderColorClass = computed(() => {
-  if(model.value?.dataPointConfig.min && selection.value <= model.value.dataPointConfig.min) {
+  if (model.value?.dataPointConfig.min && selection.value <= model.value.dataPointConfig.min) {
     return 'border-warning';
   }
 
-  if(model.value?.dataPointConfig.optimal && selection.value >= model.value.dataPointConfig.optimal!) {
+  if (model.value?.dataPointConfig.optimal && selection.value >= model.value.dataPointConfig.optimal!) {
     return 'border-success';
   }
 
-  if(selection.value) {
-    return 'border-info'
+  if (selection.value) {
+    return 'border-info';
   }
 
   return '';
-})
+});
 
 const inputColorClass = computed(() => {
-  if(model.value?.dataPointConfig.min && selection.value <= model.value.dataPointConfig.min) {
+  if (model.value?.dataPointConfig.min && selection.value <= model.value.dataPointConfig.min) {
     return 'warning';
   }
 
-  if(model.value?.dataPointConfig.optimal && selection.value >= model.value.dataPointConfig.optimal!) {
+  if (model.value?.dataPointConfig.optimal && selection.value >= model.value.dataPointConfig.optimal!) {
     return 'success';
   }
 
-  if(selection.value) {
-    return 'info'
+  if (selection.value) {
+    return 'info';
   }
 
   return '';
-})
+});
+
+const t = ref(0);
+const timerActive = ref(false);
+
+const timeValue = computed(() => {
+  return formatTime(secondsToTime(t.value));
+});
+
+let timerInterval: ReturnType<typeof setInterval>;
+function startTimer() {
+  timerActive.value = true;
+  timerInterval = setInterval(() => {
+    t.value += 1;
+  }, 1000)
+}
+
+function stopTimer() {
+  timerActive.value = false;
+  clearInterval(timerInterval);
+}
 //TODO: Maybe implement move to next interval with Ctrl + Left/Right
 </script>
 
@@ -177,22 +198,40 @@ const inputColorClass = computed(() => {
     </template>
 
     <template v-if="isHabit" #rating>
-      <ItemCheckboxList v-if="model.dataPointConfig.inputType === DataPointInputType.Checkbox" v-model:selection="selection" :min="min" :max="max" :optimal="optimal" :disabled="isDisabled" />
+      <ItemCheckboxList
+        v-if="model.dataPointConfig.inputType === DataPointInputType.Checkbox"
+        v-model:selection="selection"
+        :min="min"
+        :max="max"
+        :optimal="optimal"
+        :disabled="isDisabled"
+      />
       <ly-input-number
-          v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
-          v-model="selection"
-          :input-class="['spinner-input text-sm', inputBorderColorClass]"
-          :min="0"
-          :max="max"
-          :disabled="isDisabled" />
+        v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
+        v-model="selection"
+        :input-class="['spinner-input text-sm', inputBorderColorClass]"
+        :min="0"
+        :max="max"
+        :disabled="isDisabled"
+      />
       <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Range" class="flex items-center gap-2">
         <span class="text-sm">{{ selection }}</span>
         <ly-input-range
-            v-model="selection"
-            :input-class="['range-input', inputColorClass]"
-            :min="0"
-            :max="max"
-            :disabled="isDisabled" />
+          v-model="selection"
+          :input-class="['range-input', inputColorClass]"
+          :min="0"
+          :max="max"
+          :disabled="isDisabled"
+        />
+      </div>
+      <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time" class="flex items-center gap-2">
+        <span class="text-sm">{{ timeValue }}</span>
+        <ly-button v-if="!timerActive" class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0" @click="startTimer">
+          <ly-icon name="play" class="w-3" />
+        </ly-button>
+        <ly-button v-else="timerActive" class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0" @click="stopTimer">
+          <ly-icon name="stop" class="w-3" />
+        </ly-button>
       </div>
     </template>
   </CalendarPlanItem>
@@ -201,14 +240,14 @@ const inputColorClass = computed(() => {
 <style>
 .spinner-input {
   max-width: 130px;
-  float:right;
-  clear:both;
+  float: right;
+  clear: both;
 }
 
 .range-input {
   max-width: 130px;
   direction: rtl;
-  float:right;
-  clear:both;
+  float: right;
+  clear: both;
 }
 </style>

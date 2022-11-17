@@ -89,7 +89,7 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   guid: string;
 
   @Prop({ type: AvatarSchema })
-  @PropertyType(Avatar, { default: undefined })
+  //@PropertyType(Avatar, { default: undefined })
   avatar?: Avatar;
 
   /**

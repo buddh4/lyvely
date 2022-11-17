@@ -23,7 +23,7 @@ interface IPagination {
 }
 type ContainsDot = `${string}.${string}`;
 
-export type UpdateQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> | UpdateSubQuerySet<T>;
+export type UpdateQuerySet<T extends BaseEntity<T>> = UpdateQuery<T>['$set'];
 
 type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & {
   [key: ContainsDot]: any;

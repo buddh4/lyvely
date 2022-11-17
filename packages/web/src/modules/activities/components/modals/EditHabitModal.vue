@@ -9,7 +9,7 @@ const { model, modalTitle, showModal, validator, addTag, reset, submit, tagOptio
 function setInputType(inputType: DataPointInputType) {
   if (model.value) {
     model.value.inputType = inputType;
-    if(model.value.inputType === DataPointInputType.Checkbox && model.value.max! > 8) {
+    if (model.value.inputType === DataPointInputType.Checkbox && model.value.max! > 8) {
       model.value.max = 8;
     }
   }

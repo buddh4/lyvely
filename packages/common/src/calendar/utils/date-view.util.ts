@@ -28,3 +28,28 @@ export function getDayNameByIndex(id: number) {
 export function formatDate(date: CalendarDate, format = 'YYYY-MM-DD') {
   return dateTime(date).format(format);
 }
+
+export function msToTime(ms: number) {
+  return secondsToTime(ms / 1000);
+}
+
+export function secondsToTime(seconds: number) {
+  const hours = Math.trunc(seconds / 3600); // 3,600 seconds per hour
+  seconds = seconds % 3600; // seconds remaining after extracting hours
+  const minutes = Math.trunc(seconds / 60); // 60 seconds per minute
+  seconds = seconds % 60; // Keep only seconds not extracted to minutes
+  return {
+    hours,
+    minutes,
+    seconds,
+  };
+}
+
+function pad(num) {
+  const s = '0' + num;
+  return s.substring(s.length - 2);
+}
+
+export function formatTime({ hours, minutes, seconds }) {
+  return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+}
