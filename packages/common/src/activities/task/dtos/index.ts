@@ -1,4 +1,4 @@
-export * from './edit-task-response.dto';
+export * from './update-task-response.dto';
 export * from './create-task.dto';
 export * from './update-task.dto';
 export * from './update-task-state.dto';

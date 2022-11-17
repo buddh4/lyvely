@@ -8,7 +8,7 @@ import {
   DefaultDataPointConfigSchema,
   DataPointConfigFactory,
 } from '@/time-series';
-import { DataPointNumberInputType, ActivityModel, PropertiesOf, DataPointValueType } from '@lyvely/common';
+import { DataPointInputType, ActivityModel, PropertiesOf, DataPointValueType } from '@lyvely/common';
 
 type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 
@@ -28,8 +28,8 @@ export class Activity extends NumberTimeSeriesContent<Activity> implements Prope
 
 export type ActivityDocument = Activity & mongoose.Document;
 export const ActivitySchema = TimeSeriesContentSchemaFactory.createForClass(Activity, [
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Checkbox),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Range),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Spinner),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Time),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Time),
 ]);

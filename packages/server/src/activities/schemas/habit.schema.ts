@@ -26,6 +26,7 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
     updatedDataPointConfig.max = update.max ?? model.dataPointConfig.max;
     updatedDataPointConfig.optimal = update.optimal ?? model.dataPointConfig.optimal;
     updatedDataPointConfig.interval = update.interval ?? model.dataPointConfig.interval;
+    updatedDataPointConfig.inputType = update.inputType || model.dataPointConfig.inputType;
     // TODO: implement input strategy edit
     //model.dataPointConfig.strategy = update.inputStrategy ?? model.dataPointConfig.strategy;
 

@@ -1,22 +1,15 @@
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed, toRefs } from 'vue';
-import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
-import { DataPointNumberInputType, IFieldValidationResult, getCalendarPlanOptions } from '@lyvely/common';
+import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
+import { getCalendarPlanOptions } from '@lyvely/common';
 
 export default function () {
   const profileStore = useProfileStore();
-  const activityEditStore = useActivityEditStore();
+  const activityEditStore = useUpdateActivityStore();
   const tagOptions = computed(() => profileStore.tagOptions);
   const calendarPlanOptions = computed(() => getCalendarPlanOptions());
   const { model, modalTitle, validator, status } = toRefs(activityEditStore);
 
-  /*validator.value?.addRule('max', (value: any, result: IFieldValidationResult) => {
-    debugger;
-    if (model.value!.inputType === DataPointNumberInputType.Checkbox && value > 8) {
-      result.errors!.push('max');
-    }
-  });
-*/
   const { submit, reset } = activityEditStore;
 
   const showModal = computed({

@@ -3,7 +3,7 @@ import EditTaskModal from '@/modules/activities/components/modals/EditTaskModal.
 import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlan.vue';
 import TimingList from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType, getCalendarPlanArray } from '@lyvely/common';
-import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
+import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { computed } from 'vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
@@ -11,7 +11,7 @@ import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.
 const type = ActivityType.Task;
 
 function createEntry() {
-  useActivityEditStore().setCreateActivity(type);
+  useUpdateActivityStore().setCreateActivity(type);
 }
 
 const intervals = computed(() => getCalendarPlanArray());

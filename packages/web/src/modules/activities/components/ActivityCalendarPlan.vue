@@ -4,7 +4,7 @@ import CalendarPlanSection from '@/modules/calendar/components/CalendarPlanSecti
 import { ActivityType } from '@lyvely/common';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
-import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
+import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { computed } from 'vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import draggable from 'vuedraggable';
@@ -44,7 +44,7 @@ function dragEnd(evt: IDragEvent) {
 }
 
 function addEntry() {
-  useActivityEditStore().setCreateActivity(props.type, props.interval);
+  useUpdateActivityStore().setCreateActivity(props.type, props.interval);
 }
 
 const createTitle = computed(() =>

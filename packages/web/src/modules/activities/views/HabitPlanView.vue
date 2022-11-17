@@ -4,13 +4,13 @@ import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPl
 import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType, getCalendarPlanArray } from '@lyvely/common';
 import { computed } from 'vue';
-import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
+import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 
 const type = ActivityType.Habit;
 
 function createEntry() {
-  useActivityEditStore().setCreateActivity(type);
+  useUpdateActivityStore().setCreateActivity(type);
 }
 
 const intervals = computed(() => getCalendarPlanArray());

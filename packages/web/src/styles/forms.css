@@ -213,8 +213,40 @@
         transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
 
+    input[type=range].success::-webkit-slider-thumb {
+        background-color: var(--color-success);
+    }
+
+    input[type=range].warning::-webkit-slider-thumb {
+        background-color: var(--color-warning);
+    }
+
+    input[type=range].info::-webkit-slider-thumb {
+        background-color: var(--color-info);
+    }
+
+    input[type=range].danger::-webkit-slider-thumb {
+        background-color: var(--color-danger);
+    }
+
     input[type=range]:active::-webkit-slider-thumb {
         background-color: var(--color-primary-light);
+    }
+
+    input[type=range].success:active::-webkit-slider-thumb {
+        background-color: var(--color-success-light);
+    }
+
+    input[type=range].warning:active::-webkit-slider-thumb {
+        background-color: var(--color-warning-light);
+    }
+
+    input[type=range].info:active::-webkit-slider-thumb {
+        background-color: var(--color-info-light);
+    }
+
+    input[type=range].danger:active::-webkit-slider-thumb {
+        background-color: var(--color-danger-light);
     }
 
     input[type=range]:disabled::-webkit-slider-thumb {
@@ -252,8 +284,40 @@
         transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
 
+    input[type=range].success::-moz-range-thumb {
+        background-color: var(--color-success);
+    }
+
+    input[type=range].warning::-moz-range-thumb {
+        background-color: var(--color-warning);
+    }
+
+    input[type=range].info::-moz-range-thumb {
+        background-color: var(--color-info);
+    }
+
+    input[type=range].danger::-moz-range-thumb {
+        background-color: var(--color-danger);
+    }
+
     input[type=range]:active::-moz-range-thumb {
         background-color: var(--color-primary-light);
+    }
+
+    input[type=range].success:active::-moz-range-thumb {
+        background-color: var(--color-success-light);
+    }
+
+    input[type=range].warning:active::-moz-range-thumb {
+        background-color: var(--color-warning-light);
+    }
+
+    input[type=range].info:active::-moz-range-thumb {
+        background-color: var(--color-info-light);
+    }
+
+    input[type=range].danger:active::-moz-range-thumb {
+        background-color: var(--color-danger-light);
     }
 
     input[type=range]:disabled::-moz-range-thumb {
@@ -349,12 +413,12 @@
 
     .form-input .number-slider {
         position: absolute;
-        top: 28px;
+        top: 11px;
         right: 10px;
         display: flex;
     }
 
-    .form-input .number-slider {
+    .form-input label ~ .number-slider {
         position: absolute;
         top: 28px;
         right: 10px;

@@ -44,16 +44,19 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   }
 
   async function updateDataPoint(log: NumberDataPointModel, value: number) {
+    const oldValue = log.value;
+
     try {
+      log.value = value;
       const { data } = await habitsRepository.updateDataPoint(log.cid, {
         date: formatDate(calendarPlanStore.date),
         value: value,
       });
 
       log.value = data.units;
-      // TODO: (Integirty) assure setting score for the right profile
       profileStore.updateScore(data.score);
     } catch (e) {
+      log.value = oldValue;
       //TODO: (Error Handling) reset units + handle error
     }
   }

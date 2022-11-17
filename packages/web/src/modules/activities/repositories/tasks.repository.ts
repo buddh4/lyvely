@@ -6,14 +6,14 @@ import {
   UpdateTaskStateResultDto,
   CalendarDate,
   formatDate,
-  EditTaskResponseDto,
+  UpdateTaskResponseDto,
 } from '@lyvely/common';
 
 const resource = 'tasks';
 
 export default {
   async create(activitiy: UpdateTaskDto) {
-    return repository.post<EditTaskResponseDto>(`${resource}`, activitiy);
+    return repository.post<UpdateTaskResponseDto>(`${resource}`, activitiy);
   },
 
   async setDone(task: TaskModel, date: CalendarDate) {
@@ -35,6 +35,6 @@ export default {
   },
 
   async update(taskId: string, model: Partial<UpdateTaskDto>) {
-    return repository.put<EditTaskResponseDto>(`${resource}/${taskId}`, model);
+    return repository.put<UpdateTaskResponseDto>(`${resource}/${taskId}`, model);
   },
 };

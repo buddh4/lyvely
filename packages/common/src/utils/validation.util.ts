@@ -9,7 +9,7 @@ export function applyValidationProperties<T>(
 ): T {
   if (level > maxDepth) return model;
 
-  const validationFields = getValidationFields(data);
+  const validationFields = getValidationFields(model);
 
   Object.keys(data).forEach((property) => {
     if (!Array.isArray(model) && !validationFields.has(property)) {

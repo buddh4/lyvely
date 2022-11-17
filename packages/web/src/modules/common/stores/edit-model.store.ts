@@ -17,7 +17,7 @@ export interface IEditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
   onSubmitSuccess?: (response?: TResponse) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
-export function useEditModelStore<TUpdateModel extends object, TResponse, TID = string>(
+export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID = string>(
   options: IEditModelStoreOptions<TUpdateModel, TResponse, TID>,
 ) {
   const model = ref<TUpdateModel | undefined>(undefined) as Ref<TUpdateModel | undefined>;

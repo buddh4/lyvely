@@ -9,7 +9,7 @@ import {
   DataPointConfigFactory,
 } from '../../schemas';
 import * as mongoose from 'mongoose';
-import { DataPointInputType, DataPointNumberInputType, DataPointValueType } from '@lyvely/common';
+import { DataPointInputType, DataPointValueType } from '@lyvely/common';
 
 @Schema()
 export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {
@@ -23,7 +23,7 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
 
 export type TestTimeSeriesContentDocument = TestTimeSeriesContent & mongoose.Document;
 export const TestTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(TestTimeSeriesContent, [
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Checkbox),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
 ]);
 
@@ -40,7 +40,7 @@ export type TestNumberTimeSeriesContentDocument = TestNumberTimeSeriesContent & 
 export const TestNumberTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(
   TestNumberTimeSeriesContent,
   [
-    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointNumberInputType.Checkbox),
+    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
     DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
   ],
 );

@@ -228,6 +228,7 @@ const radioValue2 = ref('2');
           <ly-input-number v-model="numberInput1" label="Simple Input" wrapper-class="max-w-sm" />
           <ly-input-number v-model="numberInput2" :min="3" :max="6" label="With Min/Max" wrapper-class="max-w-sm" />
           <ly-input-number v-model="numberInput3" :steps="5" :min="0" label="Width steps" wrapper-class="max-w-sm" />
+          <ly-input-number v-model="numberInput7" wrapper-class="max-w-sm" />
           <ly-input-number v-model="numberInput4" label="No slider" :slider="false" wrapper-class="max-w-sm" />
           <ly-input-number
             v-model="numberInput5"

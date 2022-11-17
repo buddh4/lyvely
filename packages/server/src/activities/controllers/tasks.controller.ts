@@ -13,7 +13,7 @@ import {
   UpdateTaskStateModel,
   UpdateTaskStateResultDto,
   UpdateTaskDto,
-  EditTaskResponseDto,
+  UpdateTaskResponseDto,
   TaskModel,
   TagModel,
   EntityNotFoundException,
@@ -46,7 +46,7 @@ export class TasksController {
       throw new InternalServerErrorException();
     }
 
-    return new EditTaskResponseDto({
+    return new UpdateTaskResponseDto({
       model: new TaskModel(activity),
       tags: profile.getNewTags().map((tag) => new TagModel(tag)),
     });
@@ -63,7 +63,7 @@ export class TasksController {
     Task.applyUpdate(content, new UpdateTaskDto(update));
     await this.tasksService.updateContent(profile, user, content, content, update.tagNames);
 
-    return new EditTaskResponseDto({
+    return new UpdateTaskResponseDto({
       model: new TaskModel(content),
       tags: profile.getNewTags().map((tag) => new TagModel(tag)),
     });

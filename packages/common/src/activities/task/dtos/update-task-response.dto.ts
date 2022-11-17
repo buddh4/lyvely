@@ -4,7 +4,7 @@ import { BaseModel } from '@/models';
 import { TaskModel } from '../models';
 
 @Exclude()
-export class EditTaskResponseDto extends BaseModel<EditTaskResponseDto> {
+export class UpdateTaskResponseDto extends BaseModel<UpdateTaskResponseDto> {
   @Expose()
   @Type(() => TaskModel)
   model: TaskModel;

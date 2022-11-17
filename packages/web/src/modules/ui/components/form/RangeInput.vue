@@ -43,20 +43,23 @@ export default {
   setup(props: IProps, context: SetupContext) {
     const baseInput = useBaseInputSetup<number>(props, context);
 
+    const baseInputValue = baseInput.inputValue;
     baseInput.inputValue = computed({
       get: () => {
-        let allowed = getAllowedVal(props.modelValue);
-        if (props.modelValue !== allowed) {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          baseInput.inputValue.value = allowed;
+        let allowed = getAllowedVal(baseInputValue.value);
+        if (baseInputValue.value !== allowed) {
+          context.emit('update:modelValue', allowed);
         }
-        return props.modelValue;
+        return baseInputValue.value;
       },
-      set: (val) => {
+      set: (val: number) => {
+        if (!baseInput.editable) return;
+
         val = val || 0;
-        val = parseInt(val);
-        context.emit('change');
-        context.emit('update:modelValue', getAllowedVal(val));
+        val = parseInt(val + '');
+
+        context.emit('change', val);
+        baseInputValue.value = baseInput.hasFocus.value ? val : getAllowedVal(val);
       },
     });
 

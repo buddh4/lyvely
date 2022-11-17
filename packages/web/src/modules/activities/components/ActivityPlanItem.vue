@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { ActivityType, TaskModel, ActivityModel } from '@lyvely/common';
+import { ActivityType, TaskModel, ActivityModel, DataPointInputType } from '@lyvely/common';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue';
-import { useActivityEditStore } from '@/modules/activities/store/edit-activity.store';
+import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
 import { translate } from '@/i18n';
+import { useDebounceFn } from '@vueuse/core'
 
 export interface IProps {
   model: ActivityModel;
@@ -35,11 +36,16 @@ onMounted(async () => {
   initialized.value = true;
 });
 
+const updateSelection = useDebounceFn((selection: number) => {
+  habitStore.updateDataPoint(dataPoint.value, selection);
+}, 600);
+
 const selection = computed({
   get: () => (props.model instanceof TaskModel ? +!!props.model.done : dataPoint.value.value),
   set: (selection: number) => {
     if (props.model.type === ActivityType.Habit) {
-      habitStore.updateDataPoint(dataPoint.value, selection);
+      dataPoint.value.value = selection;
+      updateSelection(selection);
     } else {
       taskStore.setTaskSelection(props.model, !!selection);
     }
@@ -55,7 +61,7 @@ function archiveEntry() {
 }
 
 function editEntry() {
-  useActivityEditStore().setEditActivity(props.model);
+  useUpdateActivityStore().setEditActivity(props.model);
 }
 
 function selectTag(tagId: string) {
@@ -119,6 +125,37 @@ const min = computed(() => model.value.dataPointConfig.min || 1);
 const max = computed(() => model.value.dataPointConfig.max || 1);
 const optimal = computed(() => model.value.dataPointConfig.optimal);
 
+const inputBorderColorClass = computed(() => {
+  if(model.value?.dataPointConfig.min && selection.value <= model.value.dataPointConfig.min) {
+    return 'border-warning';
+  }
+
+  if(model.value?.dataPointConfig.optimal && selection.value >= model.value.dataPointConfig.optimal!) {
+    return 'border-success';
+  }
+
+  if(selection.value) {
+    return 'border-info'
+  }
+
+  return '';
+})
+
+const inputColorClass = computed(() => {
+  if(model.value?.dataPointConfig.min && selection.value <= model.value.dataPointConfig.min) {
+    return 'warning';
+  }
+
+  if(model.value?.dataPointConfig.optimal && selection.value >= model.value.dataPointConfig.optimal!) {
+    return 'success';
+  }
+
+  if(selection.value) {
+    return 'info'
+  }
+
+  return '';
+})
 //TODO: Maybe implement move to next interval with Ctrl + Left/Right
 </script>
 
@@ -140,9 +177,38 @@ const optimal = computed(() => model.value.dataPointConfig.optimal);
     </template>
 
     <template v-if="isHabit" #rating>
-      <ItemCheckboxList v-model:selection="selection" :min="min" :max="max" :optimal="optimal" :disabled="isDisabled" />
+      <ItemCheckboxList v-if="model.dataPointConfig.inputType === DataPointInputType.Checkbox" v-model:selection="selection" :min="min" :max="max" :optimal="optimal" :disabled="isDisabled" />
+      <ly-input-number
+          v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
+          v-model="selection"
+          :input-class="['spinner-input text-sm', inputBorderColorClass]"
+          :min="0"
+          :max="max"
+          :disabled="isDisabled" />
+      <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Range" class="flex items-center gap-2">
+        <span class="text-sm">{{ selection }}</span>
+        <ly-input-range
+            v-model="selection"
+            :input-class="['range-input', inputColorClass]"
+            :min="0"
+            :max="max"
+            :disabled="isDisabled" />
+      </div>
     </template>
   </CalendarPlanItem>
 </template>
 
-<style scoped></style>
+<style>
+.spinner-input {
+  max-width: 130px;
+  float:right;
+  clear:both;
+}
+
+.range-input {
+  max-width: 130px;
+  direction: rtl;
+  float:right;
+  clear:both;
+}
+</style>

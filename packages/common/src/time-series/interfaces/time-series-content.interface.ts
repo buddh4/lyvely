@@ -7,19 +7,19 @@ import { CalendarIntervalEnum } from '@/calendar';
   TextareaText = 'TextareaText',
 }*/
 
-export enum DataPointNumberInputType {
-  Checkbox = 'checkbox',
-  Range = 'range',
-  Spinner = 'spinner',
-  Time = 'time',
-}
-
 export enum DataPointValueType {
   Number = 'number',
   Boolean = 'boolean',
   Text = 'text',
   //File = 'file',
   //Time = 'time',
+}
+
+export enum DataPointNumberInputType {
+  Checkbox = 'checkbox',
+  Range = 'range',
+  Spinner = 'spinner',
+  Time = 'time',
 }
 
 export enum DataPointInputType {

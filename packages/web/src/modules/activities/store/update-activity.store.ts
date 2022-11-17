@@ -8,7 +8,7 @@ import {
   ActivityModel,
   CalendarIntervalEnum,
   UpdateHabitResponseDto,
-  EditTaskResponseDto,
+  UpdateTaskResponseDto,
   isTask,
 } from '@lyvely/common';
 import habitsRepository from '@/modules/activities/repositories/habits.repository';
@@ -17,16 +17,16 @@ import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useEditModelStore } from '@/modules/common';
+import { useUpdateModelStore } from '@/modules/common';
 import { findFocusable } from '@/modules/ui/utils';
 
 type EditModel = UpdateHabitDto & UpdateTaskDto;
-type EditActivityResponse = EditTaskResponseDto | UpdateHabitResponseDto;
+type UpdateActivityResponse = UpdateTaskResponseDto | UpdateHabitResponseDto;
 
-export const useActivityEditStore = defineStore('activityEdit', () => {
-  const state = useEditModelStore<EditModel, EditActivityResponse>({
+export const useUpdateActivityStore = defineStore('update-activity', () => {
+  const state = useUpdateModelStore<EditModel, UpdateActivityResponse>({
     repository: (editModel: EditModel) => (editModel instanceof UpdateTaskDto ? tasksRepository : habitsRepository),
-    onSubmitSuccess(response?: EditActivityResponse) {
+    onSubmitSuccess(response?: UpdateActivityResponse) {
       if (response) {
         useProfileStore().updateTags(response.tags);
         if (isTask(response.model)) {
