@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from '../schemas';
-import { Profile } from '../../profiles';
+import { Profile } from '@/profiles';
 import { CalendarDate, toTimingId } from '@lyvely/common';
-import { User } from '../../users';
+import { User } from '@/users';
 import { TasksDao } from '../daos/tasks.dao';
-import { AbstractContentService, ContentScoreService } from '../../content';
+import { AbstractContentService, ContentScoreService } from '@/content';
 import { ActivityScore } from '../schemas/activity-score.schema';
 
 @Injectable()

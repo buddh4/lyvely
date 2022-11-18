@@ -17,22 +17,24 @@ import {
   TaskModel,
   TagModel,
   EntityNotFoundException,
+  TasksEndpoint,
+  CreateTaskDto,
 } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
-import { ContentController, ContentType, ProfileContentRequest } from '../../content';
-import { ProfileRequest } from '../../profiles';
+import { ContentController, ContentType, ProfileContentRequest } from '@/content';
+import { ProfileRequest } from '@/profiles';
 import { isTaskContent } from '../utils/activity.utils';
 
 @ContentController('tasks')
 // TODO: implement feature registration @Feature('content.activities.tasks')
 @ContentType(Task)
 @UseInterceptors(ClassSerializerInterceptor)
-export class TasksController {
+export class TasksController implements TasksEndpoint {
   @Inject()
   private readonly tasksService: TasksService;
 
   @Post()
-  async create(@Request() req: ProfileRequest, @Body() dto: UpdateTaskDto) {
+  async create(@Body() dto: CreateTaskDto, @Request() req: ProfileRequest) {
     const { profile, user } = req;
 
     const activity = await this.tasksService.createContent(
@@ -53,7 +55,7 @@ export class TasksController {
   }
 
   @Put(':cid')
-  async update(@Request() req: ProfileContentRequest, @Body() update: UpdateTaskDto) {
+  async update(@Body() update: UpdateTaskDto, @Request() req: ProfileContentRequest) {
     const { profile, user, content } = req;
 
     if (!isTaskContent(content)) {
@@ -70,7 +72,7 @@ export class TasksController {
   }
 
   @Post(':cid/done')
-  async setDone(@Request() req: ProfileContentRequest<Task>, @Body() dto: UpdateTaskStateModel) {
+  async setDone(@Body() dto: UpdateTaskStateModel, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
 
     if (!isTaskContent(content)) {
@@ -82,7 +84,7 @@ export class TasksController {
   }
 
   @Post(':cid/undone')
-  async setUndone(@Request() req: ProfileContentRequest<Task>, @Body() dto: UpdateTaskStateModel) {
+  async setUndone(@Body() dto: UpdateTaskStateModel, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
 
     if (!isTaskContent(content)) {

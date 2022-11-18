@@ -1,5 +1,5 @@
 export * from './models';
 export * from './helpers';
-export * from './habit';
-export * from './task';
+export * from './habits';
+export * from './tasks';
 export * from './common';

@@ -1,6 +1,6 @@
 import { ActivityType, ActivityModel } from '../models';
-import { CreateHabitDto, UpdateHabitDto } from '../habit';
-import { CreateTaskDto, UpdateTaskDto } from '../task';
+import { CreateHabitDto, UpdateHabitDto } from '../habits';
+import { CreateTaskDto, UpdateTaskDto } from '../tasks';
 
 export function getEditModelByActivity(activity: ActivityModel) {
   return activity.type === ActivityType.Task ? new UpdateTaskDto(activity) : new UpdateHabitDto(activity);

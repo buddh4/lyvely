@@ -4,16 +4,16 @@ import { AxiosResponse } from 'axios';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus } from '@/store';
 
-export interface IEditModelRepository<TUpdateModel, TResponse, TID = string> {
-  create: (model: TUpdateModel) => Promise<AxiosResponse<TResponse>>;
-  update: (id: TID, model: Partial<TUpdateModel>) => Promise<AxiosResponse<TResponse>>;
+export interface IEditModelService<TUpdateModel, TResponse, TID = string> {
+  create: (model: TUpdateModel) => Promise<TResponse>;
+  update: (id: TID, model: Partial<TUpdateModel>) => Promise<TResponse>;
 }
 
 export interface IEditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
   partialUpdate?: boolean;
-  repository:
-    | IEditModelRepository<TUpdateModel, TResponse, TID>
-    | ((editModel: TUpdateModel) => IEditModelRepository<TUpdateModel, TResponse, TID>);
+  service:
+    | IEditModelService<TUpdateModel, TResponse, TID>
+    | ((editModel: TUpdateModel) => IEditModelService<TUpdateModel, TResponse, TID>);
   onSubmitSuccess?: (response?: TResponse) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
@@ -67,8 +67,9 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
 
     try {
       const response = await loadingStatus(isCreate.value ? _createModel() : _editModel(), status, validator.value);
+
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
-        options.onSubmitSuccess(response?.data);
+        options.onSubmitSuccess(<TResponse>response);
       }
 
       reset();
@@ -79,18 +80,17 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
     }
   }
 
-  async function _createModel() {
+  async function _createModel(): Promise<TResponse> {
     if (!model.value) {
-      return;
+      throw new Error('Could not create model without value');
     }
 
-    return loadingStatus(_getRepository(model.value).create(model.value), status, validator.value);
+    return loadingStatus(_getService(model.value).create(model.value), status, validator.value);
   }
 
-  async function _editModel() {
+  async function _editModel(): Promise<TResponse | false> {
     if (!model.value || !modelId.value || !original) {
-      console.warn('Could not edit model due to inconsistent state.');
-      return;
+      throw new Error('Could not edit model without value');
     }
 
     let update: Partial<TUpdateModel> = {};
@@ -107,15 +107,15 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
       update = model.value;
     }
 
-    return loadingStatus(_getRepository(model.value).update(modelId.value, update), status, validator.value);
+    return loadingStatus(_getService(model.value).update(modelId.value, update), status, validator.value);
   }
 
-  function _getRepository(m: TUpdateModel) {
-    if (typeof options.repository === 'function') {
-      return options.repository(m);
+  function _getService(m: TUpdateModel) {
+    if (typeof options.service === 'function') {
+      return options.service(m);
     }
 
-    return options.repository;
+    return options.service;
   }
 
   return {

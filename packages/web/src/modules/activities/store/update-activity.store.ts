@@ -2,30 +2,35 @@ import { defineStore } from 'pinia';
 import {
   ActivityType,
   getCreateModelByActivityType,
-  UpdateHabitDto,
   UpdateTaskDto,
+  CreateHabitDto,
   getEditModelByActivity,
   ActivityModel,
   CalendarIntervalEnum,
   UpdateHabitResponseDto,
   UpdateTaskResponseDto,
   isTask,
+  CreateTaskDto,
 } from '@lyvely/common';
-import habitsRepository from '@/modules/activities/repositories/habits.repository';
-import tasksRepository from '@/modules/activities/repositories/tasks.repository';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useUpdateModelStore } from '@/modules/common';
 import { findFocusable } from '@/modules/ui/utils';
+import { useHabitsService } from '@/modules/activities/services/habits.service';
+import { useTasksService } from '@/modules/activities/services/tasks.service';
 
-type EditModel = UpdateHabitDto & UpdateTaskDto;
+type EditModel = CreateTaskDto & CreateHabitDto;
 type UpdateActivityResponse = UpdateTaskResponseDto | UpdateHabitResponseDto;
 
 export const useUpdateActivityStore = defineStore('update-activity', () => {
+  const habitsService = useHabitsService();
+  const tasksService = useTasksService();
+
   const state = useUpdateModelStore<EditModel, UpdateActivityResponse>({
-    repository: (editModel: EditModel) => (editModel instanceof UpdateTaskDto ? tasksRepository : habitsRepository),
+    service: (editModel: CreateTaskDto | CreateHabitDto) =>
+      editModel instanceof UpdateTaskDto ? tasksService : habitsService,
     onSubmitSuccess(response?: UpdateActivityResponse) {
       if (response) {
         useProfileStore().updateTags(response.tags);
@@ -56,13 +61,13 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
       .getTags()
       .filter((tag) => activity.tagIds.includes(tag.id))
       .map((tag) => tag.name);
-    state.setEditModel(activity.id, model);
+    state.setEditModel(activity.id, model as EditModel);
   }
 
   function setCreateActivity(type: ActivityType, interval = CalendarIntervalEnum.Daily) {
     const model = getCreateModelByActivityType(type);
     model.interval = interval;
-    state.setCreateModel(model);
+    state.setCreateModel(model as EditModel);
   }
 
   return {

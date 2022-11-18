@@ -2,10 +2,11 @@ import { Post, Request } from '@nestjs/common';
 import { Content } from '../schemas';
 import { AbstractContentService } from '../services';
 import { ProfileContentRequest } from '../types';
-import { Policies } from '../../policies/decorators/policies.decorator';
+import { Policies } from '@/policies';
 import { ContentWritePolicy } from '../policies';
+import { AbstractContentEndpoint } from '@lyvely/common';
 
-export abstract class AbstractContentController<T extends Content> {
+export abstract class AbstractContentController<T extends Content> implements AbstractContentEndpoint {
   constructor(protected contentService: AbstractContentService<T>) {}
 
   @Post(':cid/archive')

@@ -1,32 +1,35 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { PropertyType } from '@lyvely/common';
+import { PropertyType, TimerModel, ITimeSpan } from '@lyvely/common';
+import { assureObjectId, EntityIdentity } from '@/core';
+import { User } from '@/users';
 
 @Schema({ id: false })
-export class TimeSpan {
+export class TimeSpan implements ITimeSpan {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
+  uid?: TObjectId;
+
   @Prop({ required: true })
   from: number;
 
   @Prop()
   to?: number;
 
-  constructor() {
+  constructor(userIdentity?: EntityIdentity<User>) {
     if (!this.from) {
       this.from = Date.now();
+    }
+
+    if (userIdentity) {
+      this.uid = assureObjectId(userIdentity);
     }
   }
 }
 
 export const TimeSpanSchema = SchemaFactory.createForClass(TimeSpan);
 
-function compareSpans(a: TimeSpan, b: TimeSpan) {
-  if (a.from < b.from) return -1;
-  if (a.from > b.from) return 1;
-  return 0;
-}
-
 @Schema({ id: false })
-export class Timer {
+export class Timer extends TimerModel {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
   uid?: TObjectId;
 
@@ -34,37 +37,26 @@ export class Timer {
   @PropertyType([TimeSpan])
   spans: TimeSpan[] = [];
 
-  constructor(uid?: TObjectId) {
-    this.uid = uid;
-  }
-
-  getLatestSpan() {
-    if (!this.spans?.length) return;
-    return this.spans.sort(compareSpans)[this.spans.length - 1];
+  constructor(userIdentity?: EntityIdentity<User>) {
+    super();
+    if (userIdentity) {
+      this.uid = assureObjectId(userIdentity);
+    }
   }
 
   clearSpans() {
     this.spans = [];
   }
 
-  isStarted() {
-    const span = this.getLatestSpan();
-    return span && !span.to;
-  }
-
-  calculateTotalSpan() {
-    return this.spans?.reduce((val, curr) => (curr.to ? val + (curr.to - curr.from) : val), 0) || 0;
+  start(userIdentity?: EntityIdentity<User>) {
+    if (this.getLatestSpan()) return;
+    this.spans.push(new TimeSpan(userIdentity));
   }
 
   stop() {
     const span = this.getLatestSpan();
     if (!span) return;
     span.to = Date.now();
-  }
-
-  start() {
-    if (this.getLatestSpan()) return;
-    this.spans.push(new TimeSpan());
   }
 }
 

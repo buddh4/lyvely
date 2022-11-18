@@ -1,5 +1,5 @@
 import { ActivityModel } from '../models';
-import { isTask, TaskModel } from '../task';
+import { isTask, TaskModel } from '../tasks';
 import { sortBySortOrder } from '@/models';
 
 export function sortActivities(activities: ActivityModel[]) {

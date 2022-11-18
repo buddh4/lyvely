@@ -11,11 +11,11 @@ import {
 } from '@nestjs/common';
 import { ActivityRangeResponse, DataPointIntervalFilter, MoveAction, TaskModel } from '@lyvely/common';
 import { ActivitiesService } from '../services/activities.service';
-import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '../../content';
+import { AbstractContentController, ContentController, ContentWritePolicy, ProfileContentRequest } from '@/content';
 import { Activity } from '../schemas';
-import { ProfileRequest } from '../../profiles';
+import { ProfileRequest } from '@/profiles';
 import { isTaskContent } from '../utils/activity.utils';
-import { Policies } from '../../policies/decorators/policies.decorator';
+import { Policies } from '@/policies';
 
 @ContentController('activities')
 // TODO: implement feature registration @Feature('activities')

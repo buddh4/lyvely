@@ -11,7 +11,6 @@ import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
 import { translate } from '@/i18n';
 import { useDebounceFn } from '@vueuse/core';
-import LyIcon from "@/modules/ui/components/icon/UIIcon.vue";
 
 export interface IProps {
   model: ActivityModel;
@@ -170,7 +169,7 @@ function startTimer() {
   timerActive.value = true;
   timerInterval = setInterval(() => {
     t.value += 1;
-  }, 1000)
+  }, 1000);
 }
 
 function stopTimer() {
@@ -226,11 +225,19 @@ function stopTimer() {
       </div>
       <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time" class="flex items-center gap-2">
         <span class="text-sm">{{ timeValue }}</span>
-        <ly-button v-if="!timerActive" class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0" @click="startTimer">
-          <ly-icon name="play" class="w-3" />
+        <ly-button
+          v-if="!timerActive"
+          class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0"
+          @click="startTimer"
+        >
+          <ly-icon name="play" class="w-3 text-primary" />
         </ly-button>
-        <ly-button v-else="timerActive" class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0" @click="stopTimer">
-          <ly-icon name="stop" class="w-3" />
+        <ly-button
+          v-else
+          class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0"
+          @click="stopTimer"
+        >
+          <ly-icon name="stop" class="w-3 text-danger" />
         </ly-button>
       </div>
     </template>

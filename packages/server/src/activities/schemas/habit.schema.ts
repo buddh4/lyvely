@@ -7,6 +7,7 @@ import {
   PropertiesOf,
   CreateHabitDto,
   DataPointValueType,
+  DataPointInputType,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
 import { Activity } from './activity.schema';
@@ -29,6 +30,11 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
     updatedDataPointConfig.inputType = update.inputType || model.dataPointConfig.inputType;
     // TODO: implement input strategy edit
     //model.dataPointConfig.strategy = update.inputStrategy ?? model.dataPointConfig.strategy;
+
+    // TODO: find better solution for this policy, e.g. in dataPointConfig itself
+    if (updatedDataPointConfig.inputType === DataPointInputType.Checkbox) {
+      updatedDataPointConfig.max = Math.min(8, updatedDataPointConfig.max);
+    }
 
     if (model.dataPointConfigRevisionCheck(updatedDataPointConfig)) {
       const oldDataPointConfig = model.dataPointConfig;
@@ -65,6 +71,11 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
   afterInit() {
     this.dataPointConfig.min = this.dataPointConfig.min ?? 0;
     this.dataPointConfig.max = this.dataPointConfig.max ?? 1;
+
+    if (this.dataPointConfig.inputType === DataPointInputType.Checkbox) {
+      this.dataPointConfig.max = Math.min(8, this.dataPointConfig.max);
+    }
+
     super.afterInit();
   }
 }

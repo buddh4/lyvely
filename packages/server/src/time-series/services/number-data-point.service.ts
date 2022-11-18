@@ -25,12 +25,13 @@ export abstract class NumberDataPointService<
 
   async startTimer(profile: Profile, user: User, model: TimeSeriesModel, date: CalendarDate) {
     const dataPoint = await this.findOrCreateDataPointByDate(profile, user, model, date);
+
     if (!dataPoint.timer) {
       dataPoint.timer = new Timer();
     }
 
     if (!dataPoint.timer.isStarted()) {
-      dataPoint.timer.start();
+      dataPoint.timer.start(user);
       await this.dataPointDao.updateOneSetById(dataPoint, { timer: dataPoint.timer });
     }
 

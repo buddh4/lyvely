@@ -1,3 +1,5 @@
+import { PropertiesOf } from '@/utils';
+
 export type Endpoint<T> = {
   [k in keyof T]: T[k] extends (...args: any) => any ? (...args: any[]) => ReturnType<T[k]> : never;
 };
@@ -12,6 +14,6 @@ export type StrictEndpoint<T, TNonStrict extends keyof T = never> = {
     : never;
 };
 
-export type EndpointResult<T extends (...args: any) => any> = T extends (...args: any) => infer R ? Awaited<R> : any;
-
-type Test = EndpointResult<() => Promise<void>>;
+export type EndpointResult<T extends (...args: any) => any> = T extends (...args: any) => infer R
+  ? PropertiesOf<Awaited<R>>
+  : any;

@@ -1,40 +1,22 @@
 import repository from '@/repository';
-import {
-  UpdateTaskStateModel,
-  UpdateTaskDto,
-  TaskModel,
-  UpdateTaskStateResultDto,
-  CalendarDate,
-  formatDate,
-  UpdateTaskResponseDto,
-} from '@lyvely/common';
+import { UpdateTaskStateModel, UpdateTaskDto, EndpointResult, ITasksEndpointService } from '@lyvely/common';
 
 const resource = 'tasks';
 
 export default {
   async create(activitiy: UpdateTaskDto) {
-    return repository.post<UpdateTaskResponseDto>(`${resource}`, activitiy);
+    return repository.post<EndpointResult<ITasksEndpointService['create']>>(`${resource}`, activitiy);
   },
 
-  async setDone(task: TaskModel, date: CalendarDate) {
-    return repository.post<UpdateTaskStateResultDto>(
-      `${resource}/${task.id}/done`,
-      new UpdateTaskStateModel({
-        date: formatDate(date),
-      }),
-    );
+  async setDone(id: string, dto: UpdateTaskStateModel) {
+    return repository.post<EndpointResult<ITasksEndpointService['setDone']>>(`${resource}/${id}/done`, dto);
   },
 
-  async setUndone(task: TaskModel, date: CalendarDate) {
-    return repository.post<UpdateTaskStateResultDto>(
-      `${resource}/${task.id}/undone`,
-      new UpdateTaskStateModel({
-        date: formatDate(date),
-      }),
-    );
+  async setUndone(id: string, dto: UpdateTaskStateModel) {
+    return repository.post<EndpointResult<ITasksEndpointService['setUndone']>>(`${resource}/${id}/undone`, dto);
   },
 
   async update(taskId: string, model: Partial<UpdateTaskDto>) {
-    return repository.put<UpdateTaskResponseDto>(`${resource}/${taskId}`, model);
+    return repository.put<EndpointResult<ITasksEndpointService['update']>>(`${resource}/${taskId}`, model);
   },
 };

@@ -9,6 +9,8 @@ import {
   TagModel,
   EntityNotFoundException,
   CreateHabitDto,
+  HabitsEndpoint,
+  TimerUpdate,
 } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
@@ -29,14 +31,12 @@ import { isHabitContent } from '../utils/activity.utils';
 // TODO: implement feature registration @Feature('content.activities.habits')
 @ContentType(Habit)
 @UseClassSerializer()
-export class HabitsController extends AbstractContentController<Habit> {
-  constructor(protected contentService: HabitsService, protected habitDataPointService: HabitDataPointService) {
-    super(contentService);
-  }
+export class HabitsController implements HabitsEndpoint {
+  constructor(protected contentService: HabitsService, protected habitDataPointService: HabitDataPointService) {}
 
   @Post()
   @ProfilePermissions(ActivityPermissions.CREATE)
-  async create(@Request() req: ProfileRequest, @Body() dto: CreateHabitDto) {
+  async create(@Body() dto: CreateHabitDto, @Request() req: ProfileRequest) {
     const { profile, user } = req;
 
     const habitModel = await this.contentService.createHabit(profile, user, dto);
@@ -49,7 +49,7 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Put(':cid')
   @Policies(ContentWritePolicy)
-  async update(@Request() req: ProfileContentRequest, @Param('cid') id: string, @Body() update: UpdateHabitDto) {
+  async update(@Body() update: UpdateHabitDto, @Request() req: ProfileContentRequest, @Param('cid') id: string) {
     const { profile, user, content } = req;
 
     if (!isHabitContent(content)) {
@@ -66,18 +66,12 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Post(':id/update-log')
   @Policies(ContentWritePolicy)
-  async updateDataPoint(@Request() req: ProfileContentRequest, @Body() dto: UpdateDataPointDto) {
+  async updateDataPoint(@Body() dto: UpdateDataPointDto, @Request() req: ProfileContentRequest) {
     const { profile, user, content } = req;
 
     if (!isHabitContent(content)) throw new EntityNotFoundException();
 
-    const dataPoint = await this.habitDataPointService.upsertDataPoint(
-      profile,
-      user,
-      content as Habit,
-      dto.date,
-      dto.value,
-    );
+    const dataPoint = await this.habitDataPointService.upsertDataPoint(profile, user, content, dto.date, dto.value);
 
     return new UpdateDataPointResultDto({
       score: profile.score,
@@ -87,22 +81,23 @@ export class HabitsController extends AbstractContentController<Habit> {
 
   @Post(':id/start-timer')
   @Policies(ContentWritePolicy)
-  async startTimer(@Request() req: ProfileContentRequest, @Body() dto: UpdateDataPointDto) {
+  async startTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest) {
     const { profile, user, content } = req;
 
     if (!isHabitContent(content)) throw new EntityNotFoundException();
 
-    const dataPoint = await this.habitDataPointService.upsertDataPoint(
-      profile,
-      user,
-      content as Habit,
-      dto.date,
-      dto.value,
-    );
+    const dataPoint = await this.habitDataPointService.startTimer(profile, user, content, dto.date);
+    return dataPoint.createDto();
+  }
 
-    return new UpdateDataPointResultDto({
-      score: profile.score,
-      units: dataPoint.value,
-    });
+  @Post(':id/stop-timer')
+  @Policies(ContentWritePolicy)
+  async stopTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest) {
+    const { profile, user, content } = req;
+
+    if (!isHabitContent(content)) throw new EntityNotFoundException();
+
+    const dataPoint = await this.habitDataPointService.stopTimer(profile, user, content, dto.date);
+    return dataPoint.createDto();
   }
 }

@@ -1,5 +1,6 @@
 import { errorToServiceException } from '@/util';
 import { AxiosResponse } from 'axios';
+import { Type } from '@lyvely/common';
 
 type UnwrappedResponse<T extends Promise<AxiosResponse>> = T extends null | undefined
   ? T // special case for `null | undefined` when not in `--strictNullChecks` mode
@@ -13,4 +14,13 @@ export function unwrapEndpointRequest<T extends Promise<AxiosResponse>>(promise:
     .catch((err) => {
       throw errorToServiceException(err);
     });
+}
+
+export function unwrapAndCastEndpointRequest<T extends Promise<AxiosResponse>, R extends UnwrappedResponse<T>>(
+  promise: T,
+  type: Type<R>,
+): Promise<R> {
+  return unwrapEndpointRequest(promise).then((response) => {
+    return new type(response);
+  });
 }
