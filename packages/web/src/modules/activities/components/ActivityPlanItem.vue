@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { ActivityType, TaskModel, ActivityModel, DataPointInputType, secondsToTime, formatTime } from '@lyvely/common';
+import {
+  ActivityType,
+  TaskModel,
+  ActivityModel,
+  DataPointInputType,
+  isHabit,
+} from '@lyvely/common';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -11,6 +17,7 @@ import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
 import { translate } from '@/i18n';
 import { useDebounceFn } from '@vueuse/core';
+import TimerInput from '@/modules/calendar/components/TimerInput.vue';
 
 export interface IProps {
   model: ActivityModel;
@@ -26,8 +33,6 @@ const dataPoint = computed(() => habitStore.getDataPoint(props.model));
 
 const isFuture = computed(() => calendarPlanStore.date > new Date());
 const isDisabled = computed(() => props.model.meta.isArchived || isFuture.value);
-const isTask = computed(() => props.model.type === ActivityType.Task);
-const isHabit = computed(() => props.model.type === ActivityType.Habit);
 
 const { model } = toRefs(props);
 
@@ -51,6 +56,8 @@ const selection = computed({
     }
   },
 });
+
+const timer = computed(() => dataPoint.value.timer);
 
 function archiveEntry() {
   if (props.model.meta.isArchived) {
@@ -157,30 +164,26 @@ const inputColorClass = computed(() => {
   return '';
 });
 
-const t = ref(0);
-const timerActive = ref(false);
-
-const timeValue = computed(() => {
-  return formatTime(secondsToTime(t.value));
-});
-
-let timerInterval: ReturnType<typeof setInterval>;
-function startTimer() {
-  timerActive.value = true;
-  timerInterval = setInterval(() => {
-    t.value += 1;
-  }, 1000);
+async function startTimer() {
+  if (isHabit(model.value) && !dataPoint.value.timer?.isStarted()) {
+    await useHabitPlanStore().startTimer(model.value);
+  }
 }
 
-function stopTimer() {
-  timerActive.value = false;
-  clearInterval(timerInterval);
+async function stopTimer() {
+  if (isHabit(model.value) && dataPoint.value.timer?.isStarted()) {
+    await useHabitPlanStore().stopTimer(model.value);
+  }
 }
+
+const isPresentInterval = computed(() =>
+  useCalendarPlanStore().isPresentInterval(model.value.dataPointConfig.interval),
+);
 //TODO: Maybe implement move to next interval with Ctrl + Left/Right
 </script>
 
 <template>
-  <CalendarPlanItem
+  <calendar-plan-item
     v-if="initialized"
     ref="root"
     :model="model"
@@ -192,12 +195,12 @@ function stopTimer() {
   >
     <template v-if="isTask" #pre-title>
       <div class="mr-1 mt-1 mr-2">
-        <ItemCheckboxList v-model:selection="selection" :max="1" :is-task="true" :disabled="isDisabled" />
+        <item-checkbox-list v-model:selection="selection" :max="1" :is-task="true" :disabled="isDisabled" />
       </div>
     </template>
 
     <template v-if="isHabit" #rating>
-      <ItemCheckboxList
+      <item-checkbox-list
         v-if="model.dataPointConfig.inputType === DataPointInputType.Checkbox"
         v-model:selection="selection"
         :min="min"
@@ -223,25 +226,16 @@ function stopTimer() {
           :disabled="isDisabled"
         />
       </div>
-      <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time" class="flex items-center gap-2">
-        <span class="text-sm">{{ timeValue }}</span>
-        <ly-button
-          v-if="!timerActive"
-          class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0"
-          @click="startTimer"
-        >
-          <ly-icon name="play" class="w-3 text-primary" />
-        </ly-button>
-        <ly-button
-          v-else
-          class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0"
-          @click="stopTimer"
-        >
-          <ly-icon name="stop" class="w-3 text-danger" />
-        </ly-button>
-      </div>
+      <timer-input
+        v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time"
+        :key="dataPoint.id"
+        v-model="timer"
+        :runnable="isPresentInterval"
+        @start="startTimer"
+        @stop="stopTimer"
+      />
     </template>
-  </CalendarPlanItem>
+  </calendar-plan-item>
 </template>
 
 <style>

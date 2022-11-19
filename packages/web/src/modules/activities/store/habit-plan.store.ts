@@ -2,21 +2,23 @@ import { defineStore } from 'pinia';
 import {
   toTimingId,
   formatDate,
-  ActivityModel,
   NumberDataPointModel,
   CalendarIntervalEnum,
   HabitModel,
   ActivityType,
+  TimerUpdate,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import habitsRepository from '@/modules/activities/repositories/habits.repository';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
+import { useHabitsService } from '@/modules/activities/services/habits.service';
 
 export const useHabitPlanStore = defineStore('habitPlan', () => {
   const activityStore = useActivityStore();
   const calendarPlanStore = useCalendarPlanStore();
   const profileStore = useProfileStore();
+  const habitsService = useHabitsService();
 
   async function move(moveEvent: IMoveActivityEvent) {
     await activityStore.move(
@@ -31,14 +33,14 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   }
 
   function addHabit(habit: HabitModel) {
-    activityStore.cache.addModel(new HabitModel(habit));
+    activityStore.cache.setModel(new HabitModel(habit));
   }
 
   function addDataPoint(dataPoint: NumberDataPointModel) {
-    activityStore.cache.addDataPoint(new NumberDataPointModel(dataPoint));
+    activityStore.cache.setDataPoint(new NumberDataPointModel(dataPoint));
   }
 
-  function getDataPoint(activity: ActivityModel) {
+  function getDataPoint(activity: HabitModel) {
     const timingId = toTimingId(calendarPlanStore.date, activity.dataPointConfig.interval);
     return activityStore.cache.getDataPoint(activity, timingId, true);
   }
@@ -61,5 +63,15 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
     }
   }
 
-  return { addHabit, addDataPoint, move, getDataPoint, updateDataPoint };
+  async function startTimer(activity: HabitModel) {
+    const updatedDataPoint = await habitsService.startTimer(activity.id, new TimerUpdate(calendarPlanStore.date));
+    activityStore.cache.setDataPoint(updatedDataPoint);
+  }
+
+  async function stopTimer(activity: HabitModel) {
+    const updatedDataPoint = await habitsService.stopTimer(activity.id, new TimerUpdate(calendarPlanStore.date));
+    activityStore.cache.setDataPoint(updatedDataPoint);
+  }
+
+  return { addHabit, addDataPoint, move, getDataPoint, updateDataPoint, startTimer, stopTimer };
 });

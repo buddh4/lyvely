@@ -30,7 +30,7 @@ export function formatDate(date: CalendarDate, format = 'YYYY-MM-DD') {
 }
 
 export function msToTime(ms: number) {
-  return secondsToTime(ms / 1000);
+  return secondsToTime(Math.trunc(ms / 1000));
 }
 
 export function secondsToTime(seconds: number) {

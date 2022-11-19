@@ -33,7 +33,7 @@ export class ActivitiesController extends AbstractContentController<Activity> {
   @Get()
   async findByFilter(
     @Request() req: ProfileRequest,
-    @Query(new ValidationPipe({ transform: false })) filter: DataPointIntervalFilter,
+    @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
   ): Promise<ActivityRangeResponse> {
     const { profile, user } = req;
 

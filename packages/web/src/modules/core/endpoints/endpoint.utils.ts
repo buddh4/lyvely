@@ -8,7 +8,7 @@ type UnwrappedResponse<T extends Promise<AxiosResponse>> = T extends null | unde
   ? V
   : never; // non-object or non-thenable
 
-export function unwrapEndpointRequest<T extends Promise<AxiosResponse>>(promise: T): Promise<UnwrappedResponse<T>> {
+export function unwrapResponse<T extends Promise<AxiosResponse>>(promise: T): Promise<UnwrappedResponse<T>> {
   return promise
     .then(({ data }) => data)
     .catch((err) => {
@@ -16,11 +16,11 @@ export function unwrapEndpointRequest<T extends Promise<AxiosResponse>>(promise:
     });
 }
 
-export function unwrapAndCastEndpointRequest<T extends Promise<AxiosResponse>, R extends UnwrappedResponse<T>>(
+export function unwrapAndCastResponse<T extends Promise<AxiosResponse>, R extends UnwrappedResponse<T>>(
   promise: T,
   type: Type<R>,
 ): Promise<R> {
-  return unwrapEndpointRequest(promise).then((response) => {
+  return unwrapResponse(promise).then((response) => {
     return new type(response);
   });
 }

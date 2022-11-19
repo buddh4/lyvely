@@ -18,11 +18,13 @@ export const useCalendarPlanStore = defineStore('timing', () => {
 
   function switchToToday() {
     date.value = new Date();
-    console.log('switchToToday', date.value);
+  }
+
+  function isPresentInterval(interval: CalendarIntervalEnum) {
+    return toTimingId(new Date(), interval) === toTimingId(date.value, interval);
   }
 
   function _setCurrentDate(d: Date) {
-    console.log('_setCurrentDate', date.value);
     date.value = d;
   }
 
@@ -60,5 +62,6 @@ export const useCalendarPlanStore = defineStore('timing', () => {
     getPreviousDate,
     isInFuture,
     isToday,
+    isPresentInterval,
   };
 });

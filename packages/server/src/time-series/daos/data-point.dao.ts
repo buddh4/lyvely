@@ -75,7 +75,7 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
    * @private
    */
   private buildTimingIntervalFilter(filter: DataPointIntervalFilter) {
-    const timingIds = getTimingIds(filter.search);
+    const timingIds = getTimingIds(filter.date);
     const dailyFilter = { interval: CalendarIntervalEnum.Daily, tid: timingIds[CalendarIntervalEnum.Daily] };
 
     if (filter.level === CalendarIntervalEnum.Daily) {

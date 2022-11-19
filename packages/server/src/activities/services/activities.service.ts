@@ -41,7 +41,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    */
   async findByFilter(profile: Profile, user: User, filter: DataPointIntervalFilter): Promise<IActivitySearchResult> {
     // Find all calendar ids for the given search date and filter out by filter level
-    const tIds = getTimingIds(filter.search);
+    const tIds = getTimingIds(filter.date);
     if (filter.level > 0) {
       tIds.splice(0, filter.level);
     }

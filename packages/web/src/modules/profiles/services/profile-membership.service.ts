@@ -5,11 +5,11 @@ import {
   UpdateProfileMembershipSettingsDto,
 } from '@lyvely/common';
 import profileMembershipRepository from '@/modules/profiles/repositories/profile-membership.repository';
-import { unwrapEndpointRequest } from '@/modules/core';
+import { unwrapResponse } from '@/modules/core';
 
 class ProfileMembershipService implements IProfileMembershipService {
   async update(dto: UpdateProfileMembershipSettingsDto): Promise<MembershipModel> {
-    return unwrapEndpointRequest(profileMembershipRepository.update(dto)).then(
+    return unwrapResponse(profileMembershipRepository.update(dto)).then(
       (membership) => new MembershipModel(membership),
     );
   }

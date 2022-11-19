@@ -1,20 +1,35 @@
 import { BaseModel } from '@/models';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { TransformObjectId } from '@/utils';
 
-export interface ITimeSpan {
-  uid?: TObjectId;
-  from: number;
-  to?: number;
-}
-
-function compareSpans(a: ITimeSpan, b: ITimeSpan) {
+function compareSpans(a: TimeSpanModel, b: TimeSpanModel) {
   if (a.from < b.from) return -1;
   if (a.from > b.from) return 1;
   return 0;
 }
 
-export class TimerModel extends BaseModel<TimerModel> {
+@Exclude()
+export class TimeSpanModel extends BaseModel<TimeSpanModel> {
+  @Expose()
+  @TransformObjectId()
   uid?: TObjectId;
-  spans: ITimeSpan[];
+
+  @Expose()
+  from: number;
+
+  @Expose()
+  to?: number;
+}
+
+@Exclude()
+export class TimerModel extends BaseModel<TimerModel> {
+  @Expose()
+  @TransformObjectId()
+  uid?: TObjectId;
+
+  @Expose()
+  @Type(() => TimeSpanModel)
+  spans: TimeSpanModel[];
 
   getLatestSpan() {
     if (!this.spans?.length) return;
@@ -27,6 +42,9 @@ export class TimerModel extends BaseModel<TimerModel> {
   }
 
   calculateTotalSpan() {
-    return this.spans?.reduce((val, curr) => (curr.to ? val + (curr.to - curr.from) : val), 0) || 0;
+    return (
+      this.spans?.reduce((val, curr) => (curr.to ? val + (curr.to - curr.from) : val + (Date.now() - curr.from)), 0) ??
+      0
+    );
   }
 }

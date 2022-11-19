@@ -26,11 +26,11 @@ export abstract class TimeSeriesDataPointStore<
     return model.id.toString();
   }
 
-  addModel(model: Model) {
+  setModel(model: Model) {
     this.models.set(this.getId(model), model);
   }
 
-  addDataPoint(log: TDataPointModel) {
+  setDataPoint(log: TDataPointModel) {
     const modelId = log.cid;
 
     if (!modelId) {
@@ -45,8 +45,8 @@ export abstract class TimeSeriesDataPointStore<
     this.logs.get(modelId).set(log.tid, log);
   }
 
-  addDataPoints(logs: TDataPointModel[]) {
-    logs.forEach((log) => this.addDataPoint(log));
+  setDataPoints(logs: TDataPointModel[]) {
+    logs.forEach((log) => this.setDataPoint(log));
   }
 
   hasModel(model: TimeSeriesContentIdentity) {
@@ -93,7 +93,7 @@ export abstract class TimeSeriesDataPointStore<
       }
 
       // Add and fetch log in order to return a reactive instance
-      this.addDataPoint(this.createDataPoint(model, timingId));
+      this.setDataPoint(this.createDataPoint(model, timingId));
       return this.getDataPoint(model, timingId);
     }
 

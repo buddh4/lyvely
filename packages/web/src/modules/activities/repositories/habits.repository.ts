@@ -28,14 +28,14 @@ export default {
   },
 
   async startTimer(habitId: string, dto: TimerUpdate) {
-    return repository.put<EndpointResult<IHabitsEndpointService['startTimer']>>(
+    return repository.post<EndpointResult<IHabitsEndpointService['startTimer']>>(
       `${resource}/${habitId}/start-timer`,
       dto,
     );
   },
 
   async stopTimer(habitId: string, dto: TimerUpdate) {
-    return repository.put<EndpointResult<IHabitsEndpointService['startTimer']>>(
+    return repository.post<EndpointResult<IHabitsEndpointService['stopTimer']>>(
       `${resource}/${habitId}/stop-timer`,
       dto,
     );

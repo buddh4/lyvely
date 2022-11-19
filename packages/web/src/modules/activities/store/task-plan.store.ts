@@ -27,7 +27,7 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
   }
 
   function addTask(task: TaskModel) {
-    activityStore.cache.addModel(new TaskModel(task));
+    activityStore.cache.setModel(new TaskModel(task));
   }
 
   async function setTaskDone(task: TaskModel) {

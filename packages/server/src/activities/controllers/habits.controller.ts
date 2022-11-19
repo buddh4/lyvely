@@ -64,7 +64,7 @@ export class HabitsController implements HabitsEndpoint {
     });
   }
 
-  @Post(':id/update-log')
+  @Post(':cid/update-log')
   @Policies(ContentWritePolicy)
   async updateDataPoint(@Body() dto: UpdateDataPointDto, @Request() req: ProfileContentRequest) {
     const { profile, user, content } = req;
@@ -79,7 +79,7 @@ export class HabitsController implements HabitsEndpoint {
     });
   }
 
-  @Post(':id/start-timer')
+  @Post(':cid/start-timer')
   @Policies(ContentWritePolicy)
   async startTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest) {
     const { profile, user, content } = req;
@@ -90,7 +90,7 @@ export class HabitsController implements HabitsEndpoint {
     return dataPoint.createDto();
   }
 
-  @Post(':id/stop-timer')
+  @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
   async stopTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest) {
     const { profile, user, content } = req;

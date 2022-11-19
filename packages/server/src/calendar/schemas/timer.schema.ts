@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { PropertyType, TimerModel, ITimeSpan } from '@lyvely/common';
+import { PropertyType, TimerModel, TimeSpanModel, PropertiesOf } from '@lyvely/common';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { User } from '@/users';
 
 @Schema({ id: false })
-export class TimeSpan implements ITimeSpan {
+export class TimeSpan implements PropertiesOf<TimeSpanModel> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
   uid?: TObjectId;
 
@@ -49,7 +49,7 @@ export class Timer extends TimerModel {
   }
 
   start(userIdentity?: EntityIdentity<User>) {
-    if (this.getLatestSpan()) return;
+    if (this.isStarted()) return;
     this.spans.push(new TimeSpan(userIdentity));
   }
 

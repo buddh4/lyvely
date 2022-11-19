@@ -1,26 +1,26 @@
 import { IAccountService, AddEmailDto, VerifyEmailDto, OtpInfo, ResendOtpDto, useSingleton } from '@lyvely/common';
 import accountRepository from '../repositories/account.repository';
-import { unwrapEndpointRequest } from '@/modules/core';
+import { unwrapResponse } from '@/modules/core';
 
 export class AccountService implements IAccountService {
   async addEmail(dto: AddEmailDto) {
-    return unwrapEndpointRequest(accountRepository.addEmail(dto));
+    return unwrapResponse(accountRepository.addEmail(dto));
   }
 
   async verifyEmail(dto: VerifyEmailDto) {
-    return unwrapEndpointRequest(accountRepository.verifyEmail(dto));
+    return unwrapResponse(accountRepository.verifyEmail(dto));
   }
 
   async resendOtp(dto: ResendOtpDto) {
-    return unwrapEndpointRequest(accountRepository.resendOtp(dto)).then((otpInfo) => new OtpInfo(otpInfo));
+    return unwrapResponse(accountRepository.resendOtp(dto)).then((otpInfo) => new OtpInfo(otpInfo));
   }
 
   updateAvatar(file: Blob) {
-    return unwrapEndpointRequest(accountRepository.updateAvatar(file));
+    return unwrapResponse(accountRepository.updateAvatar(file));
   }
 
   updateGravatar() {
-    return unwrapEndpointRequest(accountRepository.updateGravatar());
+    return unwrapResponse(accountRepository.updateGravatar());
   }
 }
 

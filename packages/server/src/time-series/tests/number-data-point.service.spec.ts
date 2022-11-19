@@ -176,5 +176,19 @@ describe('NumberDataPointService', () => {
       expect(dataPoint.timer.spans.length).toEqual(1);
       expect(dataPoint.timer.isStarted()).toEqual(true);
     });
+
+    it('restart stopped timer', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const content = await createTimeSeriesContent(user, profile);
+      const date = new Date();
+
+      await service.startTimer(profile, user, content, date);
+      await service.stopTimer(profile, user, content, date);
+      const dataPoint = await service.startTimer(profile, user, content, date);
+
+      expect(dataPoint.timer).toBeDefined();
+      expect(dataPoint.timer.spans.length).toEqual(2);
+      expect(dataPoint.timer.isStarted()).toEqual(true);
+    });
   });
 });

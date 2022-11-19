@@ -18,9 +18,9 @@ describe('ActivityDataPointStore', () => {
     logModel = new NumberDataPointModel({ id: 'test-log', cid: 'test', value: 2, tid: timingId });
   });
 
-  describe('addModel', function () {
+  describe('setModel', function () {
     it('add a model', async () => {
-      store.addModel(model);
+      store.setModel(model);
       const search = store.getModel('test');
       expect(search).toBeTruthy();
       expect(search.id).toEqual('test');
@@ -29,7 +29,7 @@ describe('ActivityDataPointStore', () => {
 
   describe('getModel', function () {
     it('get a model by id', async () => {
-      store.addModel(model);
+      store.setModel(model);
 
       const search = store.getModel('test');
 
@@ -38,7 +38,7 @@ describe('ActivityDataPointStore', () => {
     });
 
     it('get a model by instance', async () => {
-      store.addModel(model);
+      store.setModel(model);
 
       const search = store.getModel(model);
 
@@ -49,19 +49,19 @@ describe('ActivityDataPointStore', () => {
 
   describe('hasModel', function () {
     it('hasModel by id', async () => {
-      store.addModel(model);
+      store.setModel(model);
       expect(store.hasModel('test')).toEqual(true);
     });
 
     it('hasModel by model', async () => {
-      store.addModel(model);
+      store.setModel(model);
       expect(store.hasModel(model)).toEqual(true);
     });
   });
 
   describe('addLog', function () {
     it('get a task by model id', async () => {
-      store.addDataPoint(logModel);
+      store.setDataPoint(logModel);
       expect(store.hasDataPoint('test', timingId)).toEqual(true);
     });
   });
@@ -72,18 +72,18 @@ describe('ActivityDataPointStore', () => {
     });
 
     it('get non existing log of existing model', async () => {
-      store.addModel(model);
+      store.setModel(model);
       expect(store.getDataPoint(model, timingId)).not.toBeDefined();
     });
 
     it('get existing log without create', async () => {
-      store.addModel(model);
-      store.addDataPoint(logModel);
+      store.setModel(model);
+      store.setDataPoint(logModel);
       expect(store.getDataPoint(model, timingId)).toBeDefined();
     });
 
     it('get non existing log with create', async () => {
-      store.addModel(model);
+      store.setModel(model);
       const search = store.getDataPoint(model, timingId, true);
       expect(search).toBeDefined();
       expect(search.cid).toEqual(model.id);
@@ -94,10 +94,10 @@ describe('ActivityDataPointStore', () => {
 
   describe('sort', function () {
     it('sort done tasks after', async () => {
-      store.addModel(new TaskModel({ id: 't3', meta: new ContentMetadataModel({ sortOrder: 3 }) }));
-      store.addModel(new TaskModel({ id: 't2', meta: new ContentMetadataModel({ sortOrder: 2 }) }));
-      store.addModel(new TaskModel({ id: 't1', meta: new ContentMetadataModel({ sortOrder: 1 }), done: timingId }));
-      store.addModel(new TaskModel({ id: 't0', meta: new ContentMetadataModel({ sortOrder: 0 }), done: timingId }));
+      store.setModel(new TaskModel({ id: 't3', meta: new ContentMetadataModel({ sortOrder: 3 }) }));
+      store.setModel(new TaskModel({ id: 't2', meta: new ContentMetadataModel({ sortOrder: 2 }) }));
+      store.setModel(new TaskModel({ id: 't1', meta: new ContentMetadataModel({ sortOrder: 1 }), done: timingId }));
+      store.setModel(new TaskModel({ id: 't0', meta: new ContentMetadataModel({ sortOrder: 0 }), done: timingId }));
       const sorted = store.sort(Array.from(store.models.values()));
       expect(sorted[0].id).toEqual('t2');
       expect(sorted[1].id).toEqual('t3');
@@ -108,21 +108,21 @@ describe('ActivityDataPointStore', () => {
 
   describe('getHabitsByCalendarPlan', function () {
     it('filter by interval', async () => {
-      store.addModel(
+      store.setModel(
         new HabitModel({
           id: 't3',
           dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
           meta: new ContentMetadataModel({ sortOrder: 3 }),
         }),
       );
-      store.addModel(
+      store.setModel(
         new HabitModel({
           id: 't2',
           dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
           meta: new ContentMetadataModel({ sortOrder: 2 }),
         }),
       );
-      store.addModel(new HabitModel({ id: 't1', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Weekly } }));
+      store.setModel(new HabitModel({ id: 't1', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Weekly } }));
       const result = store.getHabitsByCalendarInterval(CalendarIntervalEnum.Daily);
       expect(result.length).toEqual(2);
       expect(result[0].id).toEqual('t2');
@@ -132,21 +132,21 @@ describe('ActivityDataPointStore', () => {
 
   describe('getTasksByCalendarPlan', function () {
     it('only include done task which where done at the searched timingId', async () => {
-      store.addModel(
+      store.setModel(
         new TaskModel({
           id: 't4',
           dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
           meta: new ContentMetadataModel({ sortOrder: 3 }),
         }),
       );
-      store.addModel(
+      store.setModel(
         new TaskModel({
           id: 't3',
           dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
           meta: new ContentMetadataModel({ sortOrder: 2 }),
         }),
       );
-      store.addModel(
+      store.setModel(
         new TaskModel({
           id: 't2',
           dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
@@ -154,14 +154,14 @@ describe('ActivityDataPointStore', () => {
           done: timingId,
         }),
       );
-      store.addModel(
+      store.setModel(
         new TaskModel({
           id: 't1',
           dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
           done: 'anotherday...',
         }),
       );
-      store.addModel(new TaskModel({ id: 't0', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Weekly } }));
+      store.setModel(new TaskModel({ id: 't0', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Weekly } }));
       const result = store.getTasksByCalendarInterval(CalendarIntervalEnum.Daily, timingId);
       expect(result.length).toEqual(3);
       expect(result[0].id).toEqual('t3');

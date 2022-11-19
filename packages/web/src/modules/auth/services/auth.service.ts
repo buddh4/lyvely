@@ -1,11 +1,11 @@
 import { IAuthService, UserModel, LoginModel } from '@lyvely/common';
 
 import authRepository from '@/modules/auth/repositories/auth.repository';
-import { unwrapEndpointRequest } from '@/modules/core';
+import { unwrapResponse } from '@/modules/core';
 
 export class AuthService implements IAuthService {
   async login(loginModel: LoginModel) {
-    return unwrapEndpointRequest(authRepository.login(loginModel)).then((loginResponse) => {
+    return unwrapResponse(authRepository.login(loginModel)).then((loginResponse) => {
       loginResponse.user = new UserModel(loginResponse.user);
       return loginResponse;
     });

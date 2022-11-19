@@ -11,6 +11,7 @@ import {
   UpdateTaskResponseDto,
   isTask,
   CreateTaskDto,
+  TimerUpdate,
 } from '@lyvely/common';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
@@ -20,6 +21,7 @@ import { useUpdateModelStore } from '@/modules/common';
 import { findFocusable } from '@/modules/ui/utils';
 import { useHabitsService } from '@/modules/activities/services/habits.service';
 import { useTasksService } from '@/modules/activities/services/tasks.service';
+import { useCalendarPlanStore } from '@/modules/calendar/store';
 
 type EditModel = CreateTaskDto & CreateHabitDto;
 type UpdateActivityResponse = UpdateTaskResponseDto | UpdateHabitResponseDto;
@@ -27,6 +29,7 @@ type UpdateActivityResponse = UpdateTaskResponseDto | UpdateHabitResponseDto;
 export const useUpdateActivityStore = defineStore('update-activity', () => {
   const habitsService = useHabitsService();
   const tasksService = useTasksService();
+  const calendarPlanStore = useCalendarPlanStore();
 
   const state = useUpdateModelStore<EditModel, UpdateActivityResponse>({
     service: (editModel: CreateTaskDto | CreateHabitDto) =>
@@ -62,6 +65,14 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
       .filter((tag) => activity.tagIds.includes(tag.id))
       .map((tag) => tag.name);
     state.setEditModel(activity.id, model as EditModel);
+  }
+
+  async function startTimer(activity: ActivityModel) {
+    if (isTask(activity)) {
+      // TODO
+    } else {
+      const updatedDataPoint = await habitsService.startTimer(activity.id, new TimerUpdate(calendarPlanStore.date));
+    }
   }
 
   function setCreateActivity(type: ActivityType, interval = CalendarIntervalEnum.Daily) {
