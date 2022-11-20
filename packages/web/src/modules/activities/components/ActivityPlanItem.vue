@@ -171,7 +171,8 @@ const isPresentInterval = computed(() =>
     @edit="editEntry"
     @move-up="moveUp"
     @move-down="moveDown"
-    @select-tag="selectTag">
+    @select-tag="selectTag"
+  >
     <template v-if="isTask(model)" #pre-title>
       <div class="mr-1 mt-1 mr-2">
         <item-checkbox-list v-model:selection="selection" :max="1" :is-task="true" :disabled="isDisabled" />
@@ -185,14 +186,16 @@ const isPresentInterval = computed(() =>
         :min="min"
         :max="max"
         :optimal="optimal"
-        :disabled="isDisabled" />
+        :disabled="isDisabled"
+      />
       <ly-input-number
         v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
         v-model="selection"
         :input-class="['spinner-input text-sm', inputBorderColorClass]"
         :min="0"
         :max="max"
-        :disabled="isDisabled" />
+        :disabled="isDisabled"
+      />
       <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Range" class="flex items-center gap-2">
         <span class="text-sm">{{ selection }}</span>
         <ly-input-range
@@ -200,7 +203,8 @@ const isPresentInterval = computed(() =>
           :input-class="['range-input', inputColorClass]"
           :min="0"
           :max="max"
-          :disabled="isDisabled" />
+          :disabled="isDisabled"
+        />
       </div>
       <timer-input
         v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time"
@@ -211,7 +215,8 @@ const isPresentInterval = computed(() =>
         :optimal="model.dataPointConfig.optimal"
         :startable="isPresentInterval"
         @start="startTimer"
-        @stop="stopTimer" />
+        @stop="stopTimer"
+      />
     </template>
   </calendar-plan-item>
 </template>

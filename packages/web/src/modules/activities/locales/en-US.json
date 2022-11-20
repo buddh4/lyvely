@@ -16,7 +16,8 @@
       },
       "edit" : {
         "title": "Edit activity"
-      }
+      },
+      "timer_score_info": "The score is awarded for each achieved min, optimal, max result."
     },
     "input_types": {
       "checkbox": "Checkboxes",

@@ -7,23 +7,38 @@
     :help-text="helpText"
     :input-error="inputError"
   >
-    <div class="floating-input h-auto">
+    <div class="floating-input h-auto border border-divide">
       <div class="flex justify-center items-center gap-2">
         <div class="flex flex-col">
           <ly-button @click="increment('hours')"><ly-icon name="caret-up"></ly-icon></ly-button>
-          <input v-model="hourValue" inputmode="numeric" class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm " />
+          <input
+            v-model="hourValue"
+            inputmode="numeric"
+            @focus="onFocus"
+            class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+          />
           <ly-button @click="decrement('hours')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
         <span>:</span>
         <div class="flex flex-col">
           <ly-button @click="increment('minutes')"><ly-icon name="caret-up"></ly-icon></ly-button>
-          <input v-model="minuteValue" inputmode="numeric" class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm " />
+          <input
+            v-model="minuteValue"
+            inputmode="numeric"
+            @focus="onFocus"
+            class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+          />
           <ly-button @click="decrement('minutes')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
         <span>:</span>
         <div class="flex flex-col">
           <ly-button @click="increment('seconds')"><ly-icon name="caret-up"></ly-icon></ly-button>
-          <input v-model="secondValue" inputmode="numeric" class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm " />
+          <input
+            v-model="secondValue"
+            inputmode="numeric"
+            @focus="onFocus"
+            class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+          />
           <ly-button @click="decrement('seconds')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
       </div>
@@ -36,7 +51,7 @@ import { IBaseInputProps, useBaseInputProps } from '@/modules/ui/components/form
 import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
 import { computed, SetupContext, ref } from 'vue';
 import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
-import { msToTime, timeToMs, padTime } from "@lyvely/common";
+import { msToTime, timeToMs, padTime } from '@lyvely/common';
 
 export interface IProps extends IBaseInputProps {
   steps?: number;
@@ -45,7 +60,7 @@ export interface IProps extends IBaseInputProps {
   max?: number;
 }
 
-type TimerInterval = 'hours'|'minutes'|'seconds';
+type TimerInterval = 'hours' | 'minutes' | 'seconds';
 
 export default {
   components: { FloatingInputLayout },
@@ -95,57 +110,57 @@ export default {
 
     const hourValue = computed({
       get: () => {
-        return padTime(msToTime(baseInput.inputValue.value).hours)
+        return padTime(msToTime(baseInput.inputValue.value).hours);
       },
       set: (val: string) => {
-        val = val.replace(/\D/g,'');
-        if(val.startsWith(time.value.hours+'')) {
+        val = val.replace(/\D/g, '');
+        if (val.startsWith(time.value.hours + '')) {
           val = val.charAt(val.length - 1);
         }
         time.value.hours = Math.min(Math.max(0, parseInt(val, 10)), 24);
         baseInput.inputValue.value = 1;
         baseInput.inputValue.value = timeToMs(time.value);
-      }
+      },
     });
 
     const minuteValue = computed({
       get: () => {
-        return padTime(msToTime(baseInput.inputValue.value).minutes)
+        return padTime(msToTime(baseInput.inputValue.value).minutes);
       },
       set: (val: string) => {
-        val = val.replace(/\D/g,'');
-        if(val.startsWith(time.value.minutes+'')) {
+        val = val.replace(/\D/g, '');
+        if (val.startsWith(time.value.minutes + '')) {
           val = val.charAt(val.length - 1);
         }
         time.value.minutes = Math.min(Math.max(0, parseInt(val, 10)), 59);
         baseInput.inputValue.value = 1;
         baseInput.inputValue.value = timeToMs(time.value);
-      }
+      },
     });
 
     const secondValue = computed({
       get: () => {
-        return padTime(msToTime(baseInput.inputValue.value).seconds)
+        return padTime(msToTime(baseInput.inputValue.value).seconds);
       },
       set: (val: string) => {
-        val = val.replace(/\D/g,'');
-        if(val.startsWith(time.value.seconds+'')) {
+        val = val.replace(/\D/g, '');
+        if (val.startsWith(time.value.seconds + '')) {
           val = val.charAt(val.length - 1);
         }
         time.value.seconds = Math.min(Math.max(0, parseInt(val, 10)), 59);
         baseInput.inputValue.value = 1;
         baseInput.inputValue.value = timeToMs(time.value);
-      }
-    })
+      },
+    });
 
     function increment(interval: TimerInterval, steps?: number) {
       const timerValue = getTimerValueByInterval(interval);
       steps = steps ?? getStepsByInterval(interval);
       const newValue = parseInt(timerValue.value) + steps;
-      if(newValue > getMaxByInterval(interval) && getNextIntervalByInterval(interval)) {
+      if (newValue > getMaxByInterval(interval) && getNextIntervalByInterval(interval)) {
         timerValue.value = padTime(0);
       } else {
-        timerValue.value = padTime(newValue)
+        timerValue.value = padTime(newValue);
       }
     }
 
@@ -153,11 +168,16 @@ export default {
       const timerValue = getTimerValueByInterval(interval);
       steps = steps ?? getStepsByInterval(interval);
       const newValue = parseInt(timerValue.value) - steps;
-      if(newValue < 0 && getPrevIntervalByInterval(interval)) {
-        timerValue.value = padTime(getMaxByInterval(interval) + 1 - steps)
+      if (newValue < 0 && getPrevIntervalByInterval(interval)) {
+        timerValue.value = padTime(getMaxByInterval(interval) + 1 - steps);
       } else {
-        timerValue.value = padTime(newValue)
+        timerValue.value = padTime(newValue);
       }
+    }
+
+    function onFocus(evt: FocusEvent) {
+      const target = evt.target as HTMLInputElement;
+      target.select();
     }
 
     function getTimerValueByInterval(interval: TimerInterval) {
@@ -187,6 +207,7 @@ export default {
       ...baseInput,
       increment,
       decrement,
+      onFocus,
       hourValue,
       minuteValue,
       secondValue,
