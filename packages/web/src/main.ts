@@ -23,6 +23,7 @@ import TextInput from '@/modules/ui/components/form/TextInput.vue';
 import CheckboxInput from '@/modules/ui/components/form/CheckboxInput.vue';
 import SelectInput from '@/modules/ui/components/form/SelectInput.vue';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
+import TimeNumberInput from '@/modules/ui/components/form/TimeNumberInput.vue';
 import TextareaInput from '@/modules/ui/components/form/TextareaInput.vue';
 import RadioInput from '@/modules/ui/components/form/RadioInput.vue';
 import RangeInput from '@/modules/ui/components/form/RangeInput.vue';
@@ -110,6 +111,7 @@ function setGlobalComponents(app: App) {
   app.component('LyInputText', TextInput);
   app.component('LyInputSelect', SelectInput);
   app.component('LyInputNumber', NumberInput);
+  app.component('LyInputTimeNumber', TimeNumberInput);
   app.component('LyInputTextarea', TextareaInput);
   app.component('LyInputRange', RangeInput);
   app.component('LyInputCaptcha', CaptchaInput);

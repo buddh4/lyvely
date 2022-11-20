@@ -1,12 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import {
-  ActivityType,
-  TaskModel,
-  ActivityModel,
-  DataPointInputType,
-  isHabit,
-} from '@lyvely/common';
+import { ActivityType, TaskModel, ActivityModel, DataPointInputType, isHabit, isTask } from '@lyvely/common';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -75,8 +69,6 @@ function selectTag(tagId: string) {
   useActivityStore().filter.setOption('tagId', tagId);
 }
 
-const root = ref<InstanceType<typeof CalendarPlanItem> | null>(null);
-
 function prepareMoveEvent(model: ActivityModel, element: HTMLElement, newIndex: (current: number) => number) {
   const draggableElement = element.closest('[data-draggable]')!;
   const currentIndex = Array.from(draggableElement.parentNode!.children).indexOf(draggableElement);
@@ -133,19 +125,8 @@ const max = computed(() => model.value.dataPointConfig.max || 1);
 const optimal = computed(() => model.value.dataPointConfig.optimal);
 
 const inputBorderColorClass = computed(() => {
-  if (model.value?.dataPointConfig.min && selection.value <= model.value.dataPointConfig.min) {
-    return 'border-warning';
-  }
-
-  if (model.value?.dataPointConfig.optimal && selection.value >= model.value.dataPointConfig.optimal!) {
-    return 'border-success';
-  }
-
-  if (selection.value) {
-    return 'border-info';
-  }
-
-  return '';
+  const color = inputColorClass.value;
+  return color.length ? `border-${color}` : color;
 });
 
 const inputColorClass = computed(() => {
@@ -185,15 +166,13 @@ const isPresentInterval = computed(() =>
 <template>
   <calendar-plan-item
     v-if="initialized"
-    ref="root"
     :model="model"
     @archive="archiveEntry"
     @edit="editEntry"
     @move-up="moveUp"
     @move-down="moveDown"
-    @select-tag="selectTag"
-  >
-    <template v-if="isTask" #pre-title>
+    @select-tag="selectTag">
+    <template v-if="isTask(model)" #pre-title>
       <div class="mr-1 mt-1 mr-2">
         <item-checkbox-list v-model:selection="selection" :max="1" :is-task="true" :disabled="isDisabled" />
       </div>
@@ -206,16 +185,14 @@ const isPresentInterval = computed(() =>
         :min="min"
         :max="max"
         :optimal="optimal"
-        :disabled="isDisabled"
-      />
+        :disabled="isDisabled" />
       <ly-input-number
         v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
         v-model="selection"
         :input-class="['spinner-input text-sm', inputBorderColorClass]"
         :min="0"
         :max="max"
-        :disabled="isDisabled"
-      />
+        :disabled="isDisabled" />
       <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Range" class="flex items-center gap-2">
         <span class="text-sm">{{ selection }}</span>
         <ly-input-range
@@ -223,17 +200,18 @@ const isPresentInterval = computed(() =>
           :input-class="['range-input', inputColorClass]"
           :min="0"
           :max="max"
-          :disabled="isDisabled"
-        />
+          :disabled="isDisabled" />
       </div>
       <timer-input
         v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time"
         :key="dataPoint.id"
         v-model="timer"
-        :runnable="isPresentInterval"
+        :min="model.dataPointConfig.min"
+        :max="model.dataPointConfig.max"
+        :optimal="model.dataPointConfig.optimal"
+        :startable="isPresentInterval"
         @start="startTimer"
-        @stop="stopTimer"
-      />
+        @stop="stopTimer" />
     </template>
   </calendar-plan-item>
 </template>

@@ -34,6 +34,6 @@
     }
 
     .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-        background: var(--elements-main);
+        background: var(--color-secondary-dark);
     }
 }

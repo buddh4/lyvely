@@ -101,7 +101,9 @@ const widths = {
 
 const modalWindowClass = `w-full ${
   widths[props.width]
-} absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto`;
+} flex flex-col max-h-full relative md:rounded-sm shadow-lg bg-main md:h-auto`;
+
+// absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto
 </script>
 
 <template>
@@ -124,7 +126,7 @@ const modalWindowClass = `w-full ${
       >
         <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
         <div :class="modalWindowClass">
-          <div class="flex items-center px-5 pt-5 pb-3 rounded-t-sm" data-modal-header>
+          <div class="flex items-center p-5 md:rounded-t-sm shadow z-10" data-modal-header>
             <slot name="header">
               <h1 class="text-lg inline-block align-middle flex align-items-center" tabindex="-1">
                 <ly-icon v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass" />
@@ -142,11 +144,11 @@ const modalWindowClass = `w-full ${
             </slot>
           </div>
 
-          <section class="px-5 py-6" data-modal-body>
+          <section class="p-5 pb-0 overflow-auto scrollbar-thin" data-modal-body>
             <slot></slot>
           </section>
 
-          <div v-if="showFooter" class="flex px-5 pt-3 pb-5 justify-end" data-modal-footer>
+          <div v-if="showFooter" class="flex p-5 justify-end shadow z-10" data-modal-footer>
             <slot name="footer">
               <ly-button v-if="cancelButton" :loading="isLoading" :class="cancelButtonClass" @click="cancel">
                 {{ $t(cancelButtonText) }}

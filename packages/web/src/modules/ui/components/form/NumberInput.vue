@@ -93,7 +93,7 @@ export default {
     }
 
     const buttonClass =
-      'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm p0';
+      'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm px-0 py-0';
 
     return {
       ...baseInput,

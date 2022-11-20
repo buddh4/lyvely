@@ -53,7 +53,7 @@ const createTitle = computed(() =>
 </script>
 
 <template>
-  <CalendarPlanSection
+  <calendar-plan-section
     :interval="interval"
     :count="activities.length"
     :create-button-title="$t(createTitle)"
@@ -75,7 +75,7 @@ const createTitle = computed(() =>
         </div>
       </template>
     </draggable>
-  </CalendarPlanSection>
+  </calendar-plan-section>
 </template>
 
 <style scoped></style>

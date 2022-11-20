@@ -33,6 +33,10 @@ export function msToTime(ms: number) {
   return secondsToTime(Math.trunc(ms / 1000));
 }
 
+export function timeToMs({ hours, minutes, seconds }) {
+  return seconds * 1000 + minutes * 1000 * 60 + hours * 1000 * 60 * 60;
+}
+
 export function secondsToTime(seconds: number) {
   const hours = Math.trunc(seconds / 3600); // 3,600 seconds per hour
   seconds = seconds % 3600; // seconds remaining after extracting hours
@@ -45,11 +49,11 @@ export function secondsToTime(seconds: number) {
   };
 }
 
-function pad(num) {
+export function padTime(num) {
   const s = '0' + num;
   return s.substring(s.length - 2);
 }
 
 export function formatTime({ hours, minutes, seconds }) {
-  return pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+  return padTime(hours) + ':' + padTime(minutes) + ':' + padTime(seconds);
 }
