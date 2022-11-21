@@ -372,5 +372,10 @@
       "title": "Invalid application state",
       "message": "Please reload this site, otherwise some parts of the application may not work as expected."
     }
+  },
+  "timer": {
+    "edit": {
+      "title": "Edit time"
+    }
   }
 }

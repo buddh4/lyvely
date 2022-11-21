@@ -14,8 +14,10 @@
           <input
             v-model="hourValue"
             inputmode="numeric"
-            @focus="onFocus"
             class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+            @focus="onFocus"
+            @keyup.up="increment('hours')"
+            @keyup.down="decrement('hours')"
           />
           <ly-button @click="decrement('hours')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
@@ -25,8 +27,10 @@
           <input
             v-model="minuteValue"
             inputmode="numeric"
-            @focus="onFocus"
             class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+            @focus="onFocus"
+            @keyup.up="increment('minutes')"
+            @keyup.down="decrement('minutes')"
           />
           <ly-button @click="decrement('minutes')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
@@ -36,8 +40,10 @@
           <input
             v-model="secondValue"
             inputmode="numeric"
-            @focus="onFocus"
             class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+            @focus="onFocus"
+            @keyup.up="increment('seconds')"
+            @keyup.down="decrement('seconds')"
           />
           <ly-button @click="decrement('seconds')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>

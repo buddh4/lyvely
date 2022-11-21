@@ -1,6 +1,14 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { ActivityType, TaskModel, ActivityModel, DataPointInputType, isHabit, isTask } from '@lyvely/common';
+import {
+  ActivityType,
+  TaskModel,
+  ActivityModel,
+  DataPointInputType,
+  isHabit,
+  isTask,
+  HabitModel
+} from '@lyvely/common';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -11,7 +19,7 @@ import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
 import { translate } from '@/i18n';
 import { useDebounceFn } from '@vueuse/core';
-import TimerInput from '@/modules/calendar/components/TimerInput.vue';
+import TimerState from '@/modules/calendar/components/TimerState.vue';
 
 export interface IProps {
   model: ActivityModel;
@@ -24,6 +32,7 @@ const habitStore = useHabitPlanStore();
 const taskStore = useTaskPlanStore();
 const calendarPlanStore = useCalendarPlanStore();
 const dataPoint = computed(() => habitStore.getDataPoint(props.model));
+
 
 const isFuture = computed(() => calendarPlanStore.date > new Date());
 const isDisabled = computed(() => props.model.meta.isArchived || isFuture.value);
@@ -51,7 +60,11 @@ const selection = computed({
   },
 });
 
-const timer = computed(() => dataPoint.value.timer);
+function updateTimer(value: number) {
+  if (props.model.type === ActivityType.Habit) {
+    updateSelection(value);
+  }
+}
 
 function archiveEntry() {
   if (props.model.meta.isArchived) {
@@ -191,7 +204,7 @@ const isPresentInterval = computed(() =>
       <ly-input-number
         v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
         v-model="selection"
-        :input-class="['spinner-input text-sm', inputBorderColorClass]"
+        :input-class="['spinner-input text-sm bg-main', inputBorderColorClass]"
         :min="0"
         :max="max"
         :disabled="isDisabled"
@@ -206,16 +219,17 @@ const isPresentInterval = computed(() =>
           :disabled="isDisabled"
         />
       </div>
-      <timer-input
+      <timer-state
         v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time"
-        :key="dataPoint.id"
-        v-model="timer"
+        :key="dataPoint.timer.calculateTotalSpan()"
+        v-model="dataPoint.timer"
         :min="model.dataPointConfig.min"
         :max="model.dataPointConfig.max"
         :optimal="model.dataPointConfig.optimal"
         :startable="isPresentInterval"
         @start="startTimer"
         @stop="stopTimer"
+        @update="updateSelection"
       />
     </template>
   </calendar-plan-item>

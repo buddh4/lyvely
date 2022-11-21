@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Activity, Habit, HabitDataPoint } from '../schemas';
-import { NumberDataPointService } from '../../time-series';
-import { CalendarDate } from '@lyvely/common';
-import { Profile } from '../../profiles';
-import { User } from '../../users';
+import { NumberDataPointService } from '@/time-series';
+import { CalendarDate, DataPointInputType } from '@lyvely/common';
+import { Profile } from '@/profiles';
+import { User } from '@/users';
 import { HabitDataPointDao } from '../daos/habit-data-point.dao';
 import { ActivityScore } from '../schemas/activity-score.schema';
-import { ContentScoreService } from '../../content';
+import { ContentScoreService } from '@/content';
 
 @Injectable()
 export class HabitDataPointService extends NumberDataPointService<Habit, HabitDataPoint> {
@@ -38,7 +38,34 @@ export class HabitDataPointService extends NumberDataPointService<Habit, HabitDa
   }
 
   private static calculateLogScore(activity: Activity, units: number): number {
-    return Math.min(units, activity.dataPointConfig.max) * activity.score;
+    let result = 0;
+
+    if (activity.dataPointConfig.inputType === DataPointInputType.Time) {
+      if (activity.dataPointConfig.min && units >= activity.dataPointConfig.min) {
+        result += activity.score;
+      }
+
+      if (
+        activity.dataPointConfig.optimal &&
+        activity.dataPointConfig.optimal !== activity.dataPointConfig.min &&
+        units >= activity.dataPointConfig.optimal
+      ) {
+        result += activity.score;
+      }
+
+      if (
+        activity.dataPointConfig.max &&
+        activity.dataPointConfig.max !== activity.dataPointConfig.min &&
+        activity.dataPointConfig.max !== activity.dataPointConfig.optimal &&
+        units >= activity.dataPointConfig.max
+      ) {
+        result += activity.score;
+      }
+    } else {
+      result = Math.min(units, activity.dataPointConfig.max) * activity.score;
+    }
+
+    return result;
   }
 
   async deleteLog(user: User, profile: Profile, timingModel: Activity, date: CalendarDate) {

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Activity, Habit, HabitDataPoint } from '../schemas';
-import { User } from '../../users';
-import { Profile } from '../../profiles';
+import { User } from '@/users';
+import { Profile } from '@/profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { assureObjectId, EntityIdentity } from '@/core';
-import { AbstractContentService } from '../../content';
+import { AbstractContentService } from '@/content';
 import { HabitDataPointService } from './habit-data-point.service';
 import {
   getTimingIds,

@@ -24,6 +24,7 @@ interface IPagination {
 type ContainsDot = `${string}.${string}`;
 
 export type UpdateQuerySet<T extends BaseEntity<T>> = UpdateQuery<T>['$set'];
+export type UpdateQueryUnset<T extends BaseEntity<T>> = UpdateQuery<T>['$unset'];
 
 type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & {
   [key: ContainsDot]: any;
@@ -129,7 +130,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   async save(entityData: T, options?: SaveOptions): Promise<T> {
     await this.beforeSave(entityData);
     this.emit('save.pre', new ModelSaveEvent(this, entityData, this.getModelName()));
-    const result = <any>await new this.model(entityData).save(options);
+    const result = await new this.model(entityData).save(options);
     const model = this.constructModel(result.toObject({ virtuals: true, aliases: true, getters: true }));
     entityData._id = model._id;
     entityData.id = model.id;
@@ -234,7 +235,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     updateSet: UpdateQuerySet<T>,
     options?: IFindAndUpdateQueryOptions<T>,
   ): Promise<T | null> {
-    return this.findOneAndUpdateById(id, { $set: <any>updateSet }, options);
+    return this.findOneAndUpdateById(id, { $set: updateSet }, options);
   }
 
   async findOneAndUpdateById(
@@ -276,7 +277,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   async updateOneSetById(id: EntityIdentity<T>, updateSet: UpdateQuerySet<T>, options?: IBaseQueryOptions) {
-    return this.updateOneById(id, { $set: <any>updateSet }, options);
+    return this.updateOneById(id, { $set: updateSet }, options);
+  }
+
+  async updateOneUnsetById(id: EntityIdentity<T>, updateUnset: UpdateQueryUnset<T>, options?: IBaseQueryOptions) {
+    return this.updateOneById(id, { $unset: updateUnset }, options);
   }
 
   async updateOneById(id: EntityIdentity<T>, update: UpdateQuery<T>, options?: IUpdateQueryOptions) {

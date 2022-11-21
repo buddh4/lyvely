@@ -3,7 +3,7 @@ import { Habit } from '../schemas';
 import {
   UpdateHabitDto,
   UpdateDataPointDto,
-  UpdateDataPointResultDto,
+  UpdateHabitDataPointResultDto,
   UpdateHabitResponseDto,
   HabitModel,
   TagModel,
@@ -14,13 +14,7 @@ import {
 } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
-import {
-  AbstractContentController,
-  ProfileContentRequest,
-  ContentController,
-  ContentType,
-  ContentWritePolicy,
-} from '@/content';
+import { ProfileContentRequest, ContentController, ContentType, ContentWritePolicy } from '@/content';
 import { ProfileRequest, ProfilePermissions } from '@/profiles';
 import { Policies } from '@/policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
@@ -73,9 +67,9 @@ export class HabitsController implements HabitsEndpoint {
 
     const dataPoint = await this.habitDataPointService.upsertDataPoint(profile, user, content, dto.date, dto.value);
 
-    return new UpdateDataPointResultDto({
+    return new UpdateHabitDataPointResultDto({
       score: profile.score,
-      units: dataPoint.value,
+      dataPoint: dataPoint.createDto(),
     });
   }
 
@@ -98,6 +92,10 @@ export class HabitsController implements HabitsEndpoint {
     if (!isHabitContent(content)) throw new EntityNotFoundException();
 
     const dataPoint = await this.habitDataPointService.stopTimer(profile, user, content, dto.date);
-    return dataPoint.createDto();
+
+    return new UpdateHabitDataPointResultDto({
+      score: profile.score,
+      dataPoint: dataPoint.createDto(),
+    });
   }
 }

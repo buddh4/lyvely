@@ -10,7 +10,6 @@ import {
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
-import habitsRepository from '@/modules/activities/repositories/habits.repository';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 import { useHabitsService } from '@/modules/activities/services/habits.service';
 
@@ -50,16 +49,16 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
 
     try {
       log.value = value;
-      const { data } = await habitsRepository.updateDataPoint(log.cid, {
+      const result = await habitsService.updateDataPoint(log.cid, {
         date: formatDate(calendarPlanStore.date),
         value: value,
       });
 
-      log.value = data.units;
-      profileStore.updateScore(data.score);
+      activityStore.cache.setDataPoint(result.dataPoint);
+      profileStore.updateScore(result.score);
     } catch (e) {
       log.value = oldValue;
-      //TODO: (Error Handling) reset units + handle error
+      //TODO: handle error
     }
   }
 
@@ -69,8 +68,9 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   }
 
   async function stopTimer(activity: HabitModel) {
-    const updatedDataPoint = await habitsService.stopTimer(activity.id, new TimerUpdate(calendarPlanStore.date));
-    activityStore.cache.setDataPoint(updatedDataPoint);
+    const result = await habitsService.stopTimer(activity.id, new TimerUpdate(calendarPlanStore.date));
+    activityStore.cache.setDataPoint(result.dataPoint);
+    profileStore.updateScore(result.score);
   }
 
   return { addHabit, addDataPoint, move, getDataPoint, updateDataPoint, startTimer, stopTimer };

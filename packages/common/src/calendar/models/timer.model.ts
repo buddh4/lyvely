@@ -41,10 +41,17 @@ export class TimerModel extends BaseModel<TimerModel> {
     return span && !span.to;
   }
 
-  calculateTotalSpan() {
-    return (
-      this.spans?.reduce((val, curr) => (curr.to ? val + (curr.to - curr.from) : val + (Date.now() - curr.from)), 0) ??
-      0
-    );
+  calculateTotalSpan(includeOpenSpan = true) {
+    return this.spans?.reduce((val, curr) => val + this.calculateSpan(curr, includeOpenSpan), 0) ?? 0;
+  }
+
+  calculateSpan(span: TimeSpanModel, includeOpenSpan = true) {
+    if (span.to) {
+      return span.to - span.from;
+    } else if (includeOpenSpan) {
+      return Date.now() - span.from;
+    }
+
+    return 0;
   }
 }

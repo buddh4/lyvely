@@ -3,7 +3,7 @@ import useEditActivityModal from '../useEditActivityModal';
 import VueMultiselect from 'vue-multiselect';
 import { DataPointInputType } from '@lyvely/common';
 import LyInputTimeNumber from '@/modules/ui/components/form/TimeNumberInput.vue';
-import LyIcon from "@/modules/ui/components/icon/UIIcon.vue";
+import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 
 const { model, modalTitle, showModal, validator, addTag, reset, submit, tagOptions, calendarPlanOptions, status } =
   useEditActivityModal();
@@ -90,11 +90,13 @@ function setInputType(inputType: DataPointInputType) {
                 :max="model.max"
               />
               <ly-input-number v-else property="optimal" :min="model.min" :max="model.max" />
-
             </div>
             <div class="flex flex-col">
               <ly-input-number property="score" :mb="0" :steps="2" :max="100" :min="-100" />
-              <div v-if="model.inputType === DataPointInputType.Time" class="flex border border-divide bg-highlight rounded h-full p-2 text-xs text-dimmed gap-2">
+              <div
+                v-if="model.inputType === DataPointInputType.Time"
+                class="flex border border-divide bg-highlight rounded h-full p-2 text-xs text-dimmed gap-2"
+              >
                 <div>
                   <ly-icon name="info" class="text-info-light" />
                 </div>

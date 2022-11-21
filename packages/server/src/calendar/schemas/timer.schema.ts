@@ -44,19 +44,53 @@ export class Timer extends TimerModel {
     }
   }
 
-  clearSpans() {
-    this.spans = [];
-  }
-
   start(userIdentity?: EntityIdentity<User>) {
     if (this.isStarted()) return;
-    this.spans.push(new TimeSpan(userIdentity));
+    const span = new TimeSpan(userIdentity);
+    this.spans.push(span);
+    return span;
   }
 
   stop() {
     const span = this.getLatestSpan();
     if (!span) return;
     span.to = Date.now();
+  }
+
+  overwrite(newValue: number, userIdentity?: EntityIdentity<User>) {
+    const currentValueWithoutOpenSpan = this.calculateTotalSpan(false);
+    const latestSpan = this.getLatestSpan();
+    if (newValue > currentValueWithoutOpenSpan) {
+      const diff = newValue - currentValueWithoutOpenSpan;
+      if (!this.isStarted()) {
+        if (latestSpan) {
+          latestSpan.to += diff;
+        } else {
+          const newSpan = this.start(userIdentity);
+          // Todo: This could be a problem when editing old dataPoints without any time spans
+          newSpan.from = Date.now() - diff; // This could be a problem when editing old dataPoints without spans
+          newSpan.to = newSpan.from + diff;
+        }
+      } else {
+        latestSpan.to = latestSpan.from + diff;
+      }
+    } else {
+      let currentValue = 0;
+      const newSpans = [];
+      for (let i = 0; i < this.spans.length; i++) {
+        const currSpan = this.spans[i];
+        const timeSpan = this.calculateSpan(this.spans[i], false);
+        if (currentValue + timeSpan >= newValue) {
+          currSpan.to = currSpan.from + (newValue - currentValue);
+          newSpans.push(currSpan);
+          break;
+        } else {
+          newSpans.push(currSpan);
+          currentValue += timeSpan;
+        }
+      }
+      this.spans = newSpans;
+    }
   }
 }
 

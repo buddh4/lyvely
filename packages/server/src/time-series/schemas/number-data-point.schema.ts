@@ -29,4 +29,12 @@ export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
       value: this.value,
     });
   }
+
+  getTimer() {
+    if (!this.timer) {
+      this.timer = new Timer();
+    }
+
+    return this.timer;
+  }
 }
