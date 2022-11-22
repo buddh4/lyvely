@@ -16,14 +16,16 @@ import {
   UpdateTaskResponseDto,
   TaskModel,
   TagModel,
-  EntityNotFoundException,
   TasksEndpoint,
   CreateTaskDto,
+  TimerUpdate,
+  TimerValueUpdate,
+  TimerModel,
 } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
-import { ContentController, ContentType, ProfileContentRequest } from '@/content';
+import { ContentController, ContentType, ContentWritePolicy, ProfileContentRequest } from '@/content';
 import { ProfileRequest } from '@/profiles';
-import { isTaskContent } from '../utils/activity.utils';
+import { Policies } from '@/policies';
 
 @ContentController('tasks')
 // TODO: implement feature registration @Feature('content.activities.tasks')
@@ -55,12 +57,9 @@ export class TasksController implements TasksEndpoint {
   }
 
   @Put(':cid')
-  async update(@Body() update: UpdateTaskDto, @Request() req: ProfileContentRequest) {
+  @Policies(ContentWritePolicy)
+  async update(@Body() update: UpdateTaskDto, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
-
-    if (!isTaskContent(content)) {
-      throw new EntityNotFoundException();
-    }
 
     Task.applyUpdate(content, new UpdateTaskDto(update));
     await this.tasksService.updateContent(profile, user, content, content, update.tagNames);
@@ -72,26 +71,47 @@ export class TasksController implements TasksEndpoint {
   }
 
   @Post(':cid/done')
+  @Policies(ContentWritePolicy)
   async setDone(@Body() dto: UpdateTaskStateModel, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
-
-    if (!isTaskContent(content)) {
-      throw new EntityNotFoundException();
-    }
 
     await this.tasksService.setDone(profile, user, content, dto.date);
     return new UpdateTaskStateResultDto({ score: profile.score, done: content.getDoneBy(user)?.tid });
   }
 
   @Post(':cid/undone')
+  @Policies(ContentWritePolicy)
   async setUndone(@Body() dto: UpdateTaskStateModel, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
 
-    if (!isTaskContent(content)) {
-      throw new EntityNotFoundException();
-    }
-
     await this.tasksService.setUndone(profile, user, content, dto.date);
     return new UpdateTaskStateResultDto({ score: profile.score, done: undefined });
+  }
+
+  @Post(':cid/start-timer')
+  @Policies(ContentWritePolicy)
+  async startTimer(@Request() req: ProfileContentRequest<Task>) {
+    const { profile, user, content } = req;
+
+    const timer = await this.tasksService.startTimer(profile, user, content);
+    return new TimerModel(timer);
+  }
+
+  @Post(':cid/stop-timer')
+  @Policies(ContentWritePolicy)
+  async stopTimer(@Request() req: ProfileContentRequest<Task>) {
+    const { profile, user, content } = req;
+
+    const timer = await this.tasksService.stopTimer(profile, user, content);
+    return new TimerModel(timer);
+  }
+
+  @Post(':cid/update-timer')
+  @Policies(ContentWritePolicy)
+  async updateTimer(@Body() dto: TimerValueUpdate, @Request() req: ProfileContentRequest<Task>) {
+    const { profile, user, content } = req;
+
+    const timer = await this.tasksService.updateTimerValue(profile, user, content, dto.value);
+    return new TimerModel(timer);
   }
 }

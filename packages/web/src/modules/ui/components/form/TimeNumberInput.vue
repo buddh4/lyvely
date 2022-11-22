@@ -7,17 +7,20 @@
     :help-text="helpText"
     :input-error="inputError"
   >
-    <div class="floating-input h-auto border border-divide">
+    <div ref="root" data-timer-input class="floating-input h-auto border border-divide">
       <div class="flex justify-center items-center gap-2">
         <div class="flex flex-col">
           <ly-button @click="increment('hours')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
             v-model="hourValue"
+            data-timer-hours-input
             inputmode="numeric"
             class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
             @focus="onFocus"
             @keyup.up="increment('hours')"
             @keyup.down="decrement('hours')"
+            @keyup.left="setFocus('seconds')"
+            @keyup.right="setFocus('minutes')"
           />
           <ly-button @click="decrement('hours')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
@@ -26,11 +29,14 @@
           <ly-button @click="increment('minutes')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
             v-model="minuteValue"
+            data-timer-minutes-input
             inputmode="numeric"
             class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
             @focus="onFocus"
             @keyup.up="increment('minutes')"
             @keyup.down="decrement('minutes')"
+            @keyup.left="setFocus('hours')"
+            @keyup.right="setFocus('seconds')"
           />
           <ly-button @click="decrement('minutes')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
@@ -39,11 +45,14 @@
           <ly-button @click="increment('seconds')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
             v-model="secondValue"
+            data-timer-seconds-input
             inputmode="numeric"
             class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
             @focus="onFocus"
             @keyup.up="increment('seconds')"
             @keyup.down="decrement('seconds')"
+            @keyup.left="setFocus('minutes')"
+            @keyup.right="setFocus('hours')"
           />
           <ly-button @click="decrement('seconds')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
@@ -174,7 +183,7 @@ export default {
       const timerValue = getTimerValueByInterval(interval);
       steps = steps ?? getStepsByInterval(interval);
       const newValue = parseInt(timerValue.value) - steps;
-      if (newValue < 0 && getPrevIntervalByInterval(interval)) {
+      if (newValue < 0) {
         timerValue.value = padTime(getMaxByInterval(interval) + 1 - steps);
       } else {
         timerValue.value = padTime(newValue);
@@ -191,19 +200,20 @@ export default {
     }
 
     function getStepsByInterval(interval: TimerInterval) {
-      return interval === 'seconds' ? 10 : interval === 'minutes' ? 5 : 1;
+      return interval === 'seconds' ? 5 : interval === 'minutes' ? 5 : 1;
     }
 
     function getNextIntervalByInterval(interval: TimerInterval) {
       return interval === 'seconds' ? 'minutes' : interval === 'minutes' ? 'hours' : null;
     }
 
-    function getPrevIntervalByInterval(interval: TimerInterval) {
-      return interval === 'hours' ? 'minutes' : interval === 'minutes' ? 'seconds' : null;
-    }
-
     function getMaxByInterval(interval: TimerInterval) {
       return interval === 'hours' ? 24 : 59;
+    }
+
+    const root = ref<HTMLElement>();
+    function setFocus(interval: TimerInterval) {
+      root.value?.querySelector<HTMLElement>(`[data-timer-${interval}-input]`)?.focus();
     }
 
     const buttonClass =
@@ -213,7 +223,9 @@ export default {
       ...baseInput,
       increment,
       decrement,
+      setFocus,
       onFocus,
+      root,
       hourValue,
       minuteValue,
       secondValue,

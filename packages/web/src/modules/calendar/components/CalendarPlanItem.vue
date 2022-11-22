@@ -48,7 +48,7 @@ const { model } = toRefs(props);
     <div class="mr-auto">
       <div class="entry-title-bar flex items-center">
         <slot name="pre-title"></slot>
-        <div class="whitespace-nowrap overflow-hidden overflow-ellipsis cursor-pointer" @click="$emit('details')">
+        <div class="whitespace-nowrap overflow-hidden overflow-ellipsis cursor-pointer" @click="$emit('details', model)">
           <slot name="title">
             <div class="flex items-center">
               {{ model.data.title }}
@@ -65,7 +65,7 @@ const { model } = toRefs(props);
     <div>
       <div class="flex flex-col">
         <slot name="menu">
-          <timing-list-entry-menu :model="model" @edit="$emit('edit')" @archive="$emit('archive')" />
+          <timing-list-entry-menu :model="model" @edit="$emit('edit', model)" @archive="$emit('archive', model)" />
         </slot>
         <slot name="rating"></slot>
       </div>

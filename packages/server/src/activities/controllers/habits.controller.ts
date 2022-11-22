@@ -19,7 +19,6 @@ import { ProfileRequest, ProfilePermissions } from '@/profiles';
 import { Policies } from '@/policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
 import { UseClassSerializer } from '@/core';
-import { isHabitContent } from '../utils/activity.utils';
 
 @ContentController('habits')
 // TODO: implement feature registration @Feature('content.activities.habits')
@@ -43,12 +42,8 @@ export class HabitsController implements HabitsEndpoint {
 
   @Put(':cid')
   @Policies(ContentWritePolicy)
-  async update(@Body() update: UpdateHabitDto, @Request() req: ProfileContentRequest, @Param('cid') id: string) {
+  async update(@Body() update: UpdateHabitDto, @Request() req: ProfileContentRequest<Habit>, @Param('cid') id: string) {
     const { profile, user, content } = req;
-
-    if (!isHabitContent(content)) {
-      throw new EntityNotFoundException();
-    }
 
     await this.contentService.updateHabit(profile, user, content, update);
 
@@ -58,12 +53,10 @@ export class HabitsController implements HabitsEndpoint {
     });
   }
 
-  @Post(':cid/update-log')
+  @Post(':cid/update-data-point')
   @Policies(ContentWritePolicy)
-  async updateDataPoint(@Body() dto: UpdateDataPointDto, @Request() req: ProfileContentRequest) {
+  async updateDataPoint(@Body() dto: UpdateDataPointDto, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
-
-    if (!isHabitContent(content)) throw new EntityNotFoundException();
 
     const dataPoint = await this.habitDataPointService.upsertDataPoint(profile, user, content, dto.date, dto.value);
 
@@ -75,10 +68,8 @@ export class HabitsController implements HabitsEndpoint {
 
   @Post(':cid/start-timer')
   @Policies(ContentWritePolicy)
-  async startTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest) {
+  async startTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
-
-    if (!isHabitContent(content)) throw new EntityNotFoundException();
 
     const dataPoint = await this.habitDataPointService.startTimer(profile, user, content, dto.date);
     return dataPoint.createDto();
@@ -86,10 +77,8 @@ export class HabitsController implements HabitsEndpoint {
 
   @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
-  async stopTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest) {
+  async stopTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
-
-    if (!isHabitContent(content)) throw new EntityNotFoundException();
 
     const dataPoint = await this.habitDataPointService.stopTimer(profile, user, content, dto.date);
 

@@ -1,5 +1,11 @@
 import repository from '@/repository';
-import { UpdateTaskStateModel, UpdateTaskDto, EndpointResult, ITasksEndpointService } from '@lyvely/common';
+import {
+  UpdateTaskStateModel,
+  UpdateTaskDto,
+  EndpointResult,
+  ITasksEndpointService,
+  TimerValueUpdate,
+} from '@lyvely/common';
 
 const resource = 'tasks';
 
@@ -18,5 +24,20 @@ export default {
 
   async update(taskId: string, model: Partial<UpdateTaskDto>) {
     return repository.put<EndpointResult<ITasksEndpointService['update']>>(`${resource}/${taskId}`, model);
+  },
+
+  async startTimer(taskId: string) {
+    return repository.post<EndpointResult<ITasksEndpointService['startTimer']>>(`${resource}/${taskId}/start-timer`);
+  },
+
+  async stopTimer(taskId: string) {
+    return repository.post<EndpointResult<ITasksEndpointService['stopTimer']>>(`${resource}/${taskId}/stop-timer`);
+  },
+
+  async updateTimer(taskId: string, model: TimerValueUpdate) {
+    return repository.post<EndpointResult<ITasksEndpointService['stopTimer']>>(
+      `${resource}/${taskId}/update-timer`,
+      model,
+    );
   },
 };

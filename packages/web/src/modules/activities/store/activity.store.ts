@@ -88,6 +88,10 @@ export const useActivityStore = defineStore('activities', () => {
     }
   }
 
+  async function toggleArchiveActivity(activity: ActivityModel) {
+    return activity.meta.isArchived ? unarchiveActivity(activity) : archiveActivity(activity);
+  }
+
   async function archiveActivity(activity: ActivityModel) {
     await activityRepository.archive(activity.id);
     activity.meta.isArchived = true;
@@ -96,6 +100,10 @@ export const useActivityStore = defineStore('activities', () => {
   async function unarchiveActivity(activity: ActivityModel) {
     await activityRepository.unarchive(activity.id);
     activity.meta.isArchived = false;
+  }
+
+  function selectTag(tagId: string) {
+    filter.value.setOption('tagId', tagId);
   }
 
   async function move(moveEvent: IMoveActivityEvent, from?: ActivityModel[], to?: ActivityModel[]) {
@@ -131,6 +139,8 @@ export const useActivityStore = defineStore('activities', () => {
     loadActivities,
     archiveActivity,
     unarchiveActivity,
+    toggleArchiveActivity,
+    selectTag,
     move,
     filter,
     ...status,

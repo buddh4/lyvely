@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import ActivityPlanItem from '@/modules/activities/components/ActivityPlanItem.vue';
+import TaskPlanItem from '@/modules/activities/components/TaskPlanItem.vue';
+import HabitPlanItem from '@/modules/activities/components/HabitPlanItem.vue';
 import CalendarPlanSection from '@/modules/calendar/components/CalendarPlanSection.vue';
-import { ActivityType } from '@lyvely/common';
+import { ActivityType, isTask } from '@lyvely/common';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
@@ -71,7 +72,8 @@ const createTitle = computed(() =>
     >
       <template #item="{ element }">
         <div :data-cid="element.id">
-          <ActivityPlanItem :model="element" />
+          <task-plan-item v-if="isTask(element)" :model="element" />
+          <habit-plan-item v-else :model="element" />
         </div>
       </template>
     </draggable>

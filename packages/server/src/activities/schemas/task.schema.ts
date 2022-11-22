@@ -10,6 +10,7 @@ import {
   TaskWithUsersModel,
   DataPointInputType,
   DataPointValueType,
+  PropertyType,
 } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '@/users';
@@ -18,6 +19,7 @@ import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '@/time-se
 import { assureObjectId, EntityIdentity } from '@/core';
 import { cloneDeep } from 'lodash';
 import { ContentDataType } from '@/content';
+import { Timer, TimerSchema } from '@/calendar';
 
 export type TaskDocument = Task & mongoose.Document;
 
@@ -44,7 +46,12 @@ const UserDoneSchema = SchemaFactory.createForClass(UserDone);
 @Schema()
 export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   @Prop({ type: [UserDoneSchema] })
-  doneBy?: UserDone[];
+  @PropertyType([UserDone])
+  doneBy: UserDone[];
+
+  @Prop({ type: [TimerSchema] })
+  @PropertyType([Timer])
+  timers: Timer[];
 
   afterInit() {
     if (!this.dataPointConfig) {
@@ -57,10 +64,6 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
     this.dataPointConfig.min = 1;
     this.dataPointConfig.max = 1;
     this.dataPointConfig.optimal = 1;
-
-    if (!this.doneBy) {
-      this.doneBy = [];
-    }
 
     super.afterInit();
   }
@@ -75,6 +78,14 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
     }
 
     return this.isDoneByUser(uid);
+  }
+
+  getTimer(uid: EntityIdentity<User>) {
+    if (this.userStrategy === UserAssignmentStrategy.Shared) {
+      return this.timers.length ? this.timers[0] : undefined;
+    }
+
+    return this.timers?.find((t) => t.uid?.equals(assureObjectId(uid)));
   }
 
   getDoneBy(uid: EntityIdentity<User>) {

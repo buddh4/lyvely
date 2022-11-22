@@ -5,9 +5,8 @@ import { ContentService } from '../services';
 import { ProfileContentRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
 import { Content } from '../schemas';
-import { getPolicyHandlerFromContext } from '../../policies/decorators/policies.decorator';
-import { PolicyService } from '../../policies/services/policy.service';
-import { ProfileContext } from '../../profiles';
+import { getPolicyHandlerFromContext, PolicyService } from '@/policies';
+import { ProfileContext } from '@/profiles';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 
 export const CONTENT_ID_PARAM_KEY = 'contentIdParam';

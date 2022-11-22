@@ -38,7 +38,7 @@ export class TimerModel extends BaseModel<TimerModel> {
 
   isStarted() {
     const span = this.getLatestSpan();
-    return span && !span.to;
+    return !!span && !span.to;
   }
 
   calculateTotalSpan(includeOpenSpan = true) {

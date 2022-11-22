@@ -8,6 +8,9 @@ import {
   UpdateTaskStateResultDto,
   CalendarDate,
   formatDate,
+  TimerModel,
+  TimerUpdate,
+  TimerValueUpdate,
 } from '@lyvely/common';
 
 import repository from '../repositories/tasks.repository';
@@ -30,6 +33,19 @@ export class TasksService implements ITasksEndpointService {
   setUndone(id: string, date: CalendarDate): Promise<UpdateTaskStateResultDto> {
     const dto = new UpdateTaskStateModel({ date: formatDate(date) });
     return unwrapAndCastResponse(repository.setUndone(id, dto), UpdateTaskStateResultDto);
+  }
+
+  startTimer(id: string): Promise<TimerModel> {
+    return unwrapAndCastResponse(repository.startTimer(id), TimerModel);
+  }
+
+  stopTimer(id: string): Promise<TimerModel> {
+    return unwrapAndCastResponse(repository.stopTimer(id), TimerModel);
+  }
+
+  updateTimer(id: string, value: number): Promise<TimerModel> {
+    const dto = new TimerValueUpdate(value);
+    return unwrapAndCastResponse(repository.updateTimer(id, dto), TimerModel);
   }
 }
 

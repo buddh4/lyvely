@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AbstractContentDao } from '@/content';
-import { Task, TaskDocument } from '../schemas';
+import { Task, TaskDocument, UserDone } from '../schemas';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -8,6 +8,7 @@ import module from '../activities.meta';
 import { User } from '@/users';
 import { UserAssignmentStrategy } from '@lyvely/common';
 import { Profile } from '@/profiles';
+import { Timer } from '@/calendar';
 
 @Injectable()
 export class TasksDao extends AbstractContentDao<Task> {
@@ -20,62 +21,34 @@ export class TasksDao extends AbstractContentDao<Task> {
     return maxSortOrderEntry.length ? maxSortOrderEntry[0].meta.sortOrder + 1 : 0;
   }
 
-  async setDone(
-    profile: Profile,
-    id: EntityIdentity<Task>,
-    user: EntityIdentity<User>,
-    timingId: string,
-  ): Promise<boolean> {
-    const task = id instanceof Task ? id : await this.findById(id);
-
-    if (!task) {
-      return false;
-    }
-
-    const doneBy = { uid: assureObjectId(user), tid: timingId, date: new Date() };
-    const isDoneByUser = task.isDoneByUser(user);
-
-    let result;
-    if (task.userStrategy === UserAssignmentStrategy.Shared) {
-      result = await this.updateOneSetById(id, { doneBy: [doneBy] });
-    } else {
-      result = !isDoneByUser
-        ? await this.updateOneByProfileAndId(profile, id, { $push: { doneBy: doneBy } })
-        : await this.updateOneByProfileAndFilter(
-            profile,
-            id,
-            { $set: { 'doneBy.$[elem].tid': doneBy.tid, 'doneBy.$[elem].date': doneBy.date } },
-            {},
-            {
-              arrayFilters: [{ 'elem.uid': assureObjectId(user) }],
-            },
-          );
-    }
-
-    if (result) {
-      task.setDoneBy(user, doneBy.tid, doneBy.date);
-    }
-
-    return !!result;
+  async updateDoneBy(profile: Profile, id: EntityIdentity<Task>, user: EntityIdentity<User>, doneBy: UserDone) {
+    return this.updateOneByProfileAndFilter(
+      profile,
+      id,
+      { $set: { 'doneBy.$[elem].tid': doneBy.tid, 'doneBy.$[elem].date': doneBy.date } },
+      {},
+      {
+        arrayFilters: [{ 'elem.uid': assureObjectId(user) }],
+      },
+    );
   }
 
-  async setUndone(profile: Profile, id: EntityIdentity<Task>, user: EntityIdentity<User>): Promise<boolean> {
-    const task = id instanceof Task ? id : await this.findById(id);
+  async pullDoneBy(profile: Profile, id: EntityIdentity<Task>, user: EntityIdentity<User>) {
+    return this.updateOneByProfileAndId(profile, id, {
+      $pull: { doneBy: { uid: assureObjectId(user) } },
+    });
+  }
 
-    if (!task) {
-      return false;
-    }
-
-    const result =
-      task.userStrategy === UserAssignmentStrategy.Shared
-        ? await this.updateOneByProfileAndIdSet(profile, id, { doneBy: [] })
-        : await this.updateOneByProfileAndId(profile, id, { $pull: { doneBy: { uid: assureObjectId(user) } } });
-
-    if (result) {
-      task.setUndoneBy(user);
-    }
-
-    return !!result;
+  async updateUserTimer(profile: Profile, identity: EntityIdentity<Task>, user: EntityIdentity<User>, timer: Timer) {
+    return this.updateOneByProfileAndFilter(
+      profile,
+      identity,
+      { $set: { 'timers.$[elem].spans': timer.spans } },
+      {},
+      {
+        arrayFilters: [{ 'elem.uid': assureObjectId(user) }],
+      },
+    );
   }
 
   getModelConstructor() {

@@ -1,19 +1,26 @@
 import { Expose } from 'class-transformer';
 import { ActivityType, ActivityModel } from '../../models';
-import { IsEnum } from 'class-validator';
 import { ContentModel } from '@/content';
+import { TimerModel } from '@/calendar';
+import { PropertyType } from '@/models';
 
 @Expose()
 export class TaskModel extends ActivityModel<TaskModel> {
   done?: string;
 
-  @IsEnum(ActivityType)
+  @PropertyType(TimerModel)
+  timer: TimerModel;
+
   type: string = ActivityType.Task;
 }
 
 @Expose()
-export class TaskWithUsersModel extends TaskModel {
+export class TaskWithUsersModel extends ActivityModel<TaskModel> {
   doneBy?: UserDoneModel[];
+
+  timers?: TimerModel[];
+
+  type: string = ActivityType.Task;
 }
 
 @Expose()

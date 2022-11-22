@@ -2,13 +2,14 @@ import { defineStore } from 'pinia';
 import { TaskModel, CalendarIntervalEnum, ActivityFilter } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
-import tasksRepository from '@/modules/activities/repositories/tasks.repository';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
+import { useTasksService } from '@/modules/activities/services/tasks.service';
 
 export const useTaskPlanStore = defineStore('taskPlan', () => {
   const activityStore = useActivityStore();
   const calendarPlanStore = useCalendarPlanStore();
   const profileStore = useProfileStore();
+  const tasksService = useTasksService();
 
   async function move(moveEvent: IMoveActivityEvent) {
     await activityStore.move(
@@ -32,9 +33,9 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
 
   async function setTaskDone(task: TaskModel) {
     try {
-      const { data } = await tasksRepository.setDone(task, calendarPlanStore.date);
-      task.done = data.done;
-      profileStore.updateScore(data.score);
+      const result = await tasksService.setDone(task.id, calendarPlanStore.date);
+      task.done = result.done;
+      profileStore.updateScore(result.score);
     } catch (e) {
       // Todo: handle error...
     }
@@ -42,17 +43,32 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
 
   async function setTaskUndone(task: TaskModel) {
     try {
-      const { data } = await tasksRepository.setUndone(task, calendarPlanStore.date);
+      const result = await tasksService.setUndone(task.id, calendarPlanStore.date);
       task.done = undefined;
-      profileStore.updateScore(data.score);
+      profileStore.updateScore(result.score);
     } catch (e) {
       // Todo: handle error...
     }
+  }
+
+  async function startTimer(task: TaskModel) {
+    task.timer = await tasksService.startTimer(task.id);
+    // Todo: handle error...
+  }
+
+  async function stopTimer(task: TaskModel) {
+    task.timer = await tasksService.stopTimer(task.id);
+    // Todo: handle error...
+  }
+
+  async function updateTimer(task: TaskModel, value: number) {
+    task.timer = await tasksService.updateTimer(task.id, value);
+    // Todo: handle error...
   }
 
   async function setTaskSelection(task: TaskModel, val: boolean) {
     return val ? setTaskDone(task) : setTaskUndone(task);
   }
 
-  return { addTask, setTaskSelection, move, getTasksByCalendarInterval };
+  return { addTask, setTaskSelection, move, getTasksByCalendarInterval, startTimer, stopTimer, updateTimer };
 });

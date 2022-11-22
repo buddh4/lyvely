@@ -45,6 +45,7 @@ export class ActivitiesController extends AbstractContentController<Activity> {
       if (isTaskContent(activity)) {
         const dto = new TaskModel(activity);
         dto.done = activity.getDoneBy(user)?.tid;
+        dto.timer = activity.getTimer(user);
         result.addActivity(dto);
       } else {
         result.addActivity(activity);

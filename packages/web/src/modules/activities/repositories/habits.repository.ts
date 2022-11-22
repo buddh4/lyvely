@@ -22,7 +22,7 @@ export default {
 
   async updateDataPoint(habitId: string, dto: UpdateDataPointDto) {
     return repository.post<EndpointResult<IHabitsEndpointService['updateDataPoint']>>(
-      `${resource}/${habitId}/update-log`,
+      `${resource}/${habitId}/update-data-point`,
       dto,
     );
   },

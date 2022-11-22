@@ -14,20 +14,11 @@ import {
   TaskDocument,
   TaskSchema,
 } from '../../schemas';
-import {
-  toTimingId,
-  CalendarDate,
-  CalendarIntervalEnum,
-  CreateHabitDto,
-  CreateTaskDto,
-  HabitModel,
-  toDate,
-  TaskWithUsersModel,
-} from '@lyvely/common';
+import { toTimingId, CalendarDate, CalendarIntervalEnum, CreateHabitDto, CreateTaskDto, toDate } from '@lyvely/common';
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Content, ContentScore, ContentScoreSchema } from '../../../content';
+import { Content, ContentScore, ContentScoreSchema } from '@/content';
 import { TestingModuleBuilder } from '@nestjs/testing/testing-module.builder';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Type } from '@nestjs/common/interfaces/type.interface';
@@ -72,7 +63,7 @@ export class ActivityTestDataUtil extends TestDataUtils {
     return toTimingId(ActivityTestDataUtil.getDateYesterday(), CalendarIntervalEnum.Daily);
   }
 
-  async findTaskById(id: EntityIdentity<Task>) {
+  async findTaskById(id: EntityIdentity<Task>): Promise<Task> {
     return createBaseEntityInstance(Task, await this.TaskModel.findById(assureObjectId(id)).lean());
   }
 

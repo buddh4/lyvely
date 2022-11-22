@@ -4,3 +4,4 @@ export * from './update-habit-response.dto';
 export * from './update-habit-data-point-response.dto';
 export * from './update-data-point.dto';
 export * from './timer.update';
+export * from './timer-value.update';
