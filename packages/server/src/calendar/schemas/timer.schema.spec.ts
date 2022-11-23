@@ -107,5 +107,23 @@ describe('TimerSchema', () => {
       expect(timer.isStarted()).toEqual(false);
       expect(timer.spans.length).toEqual(1);
     });
+
+    it('overwrite with 0', () => {
+      const timer = new Timer();
+      const now = Date.now();
+      const start = now - 1000 * 60 * 60;
+
+      timer.spans = [
+        { from: start, to: start + 300 },
+        { from: start + 300, to: start + 600 },
+        { from: start + 600, to: start + 1000 },
+      ];
+
+      timer.overwrite(0);
+
+      expect(timer.calculateTotalSpan()).toEqual(0);
+      expect(timer.isStarted()).toEqual(false);
+      expect(timer.spans.length).toEqual(0);
+    });
   });
 });

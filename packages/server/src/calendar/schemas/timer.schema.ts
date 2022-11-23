@@ -58,6 +58,11 @@ export class Timer extends TimerModel {
   }
 
   overwrite(newValue: number, userIdentity?: EntityIdentity<User>) {
+    if (newValue === 0) {
+      this.spans = [];
+      return;
+    }
+
     const currentValueWithoutOpenSpan = this.calculateTotalSpan(false);
     const latestSpan = this.getLatestSpan();
     if (newValue > currentValueWithoutOpenSpan) {

@@ -78,9 +78,13 @@ syncTimerState(isStarted.value);
 
 <template>
   <div class="flex items-center gap-2">
-    <a v-if="showTimeOnInit || timerValue > 0" role="link" :class="['text-sm cursor-pointer', textColorClass]" @click="setEditTimer">{{
-      formattedTimerValue
-    }}</a>
+    <a
+      v-if="showTimeOnInit || timerValue > 0"
+      role="link"
+      :class="['text-sm cursor-pointer', textColorClass]"
+      @click="setEditTimer"
+      >{{ formattedTimerValue }}</a
+    >
     <ly-button
       v-if="startable && !model.isStarted()"
       class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0"

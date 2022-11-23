@@ -7,7 +7,7 @@ import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue
 import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
-import { useActivityPlanItem } from "@/modules/activities/components/mixins/useActivityPlanItem";
+import { useActivityPlanItem } from '@/modules/activities/components/mixins/useActivityPlanItem';
 
 export interface IProps {
   model: TaskModel;
@@ -54,16 +54,15 @@ async function updateTimer(value: number) {
 
     <template #rating>
       <timer-state
-          :key="model.timer.calculateTotalSpan()"
-          :model="model.timer"
-          :show-time-on-init="false"
-          @start="startTimer"
-          @stop="stopTimer"
-          @update="updateTimer"
+        :key="model.timer.calculateTotalSpan()"
+        :model="model.timer"
+        :show-time-on-init="false"
+        @start="startTimer"
+        @stop="stopTimer"
+        @update="updateTimer"
       />
     </template>
   </calendar-plan-item>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

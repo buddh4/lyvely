@@ -28,10 +28,6 @@ export abstract class NumberDataPointService<
     date: CalendarDate,
     value: number,
   ): Promise<DataPointModel> {
-    if (isDefined(model.dataPointConfig.min)) {
-      value = Math.max(model.dataPointConfig.min, value);
-    }
-
     if (isDefined(model.dataPointConfig.max)) {
       value = Math.min(model.dataPointConfig.max, value);
     }

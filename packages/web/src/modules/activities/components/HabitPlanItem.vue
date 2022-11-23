@@ -9,7 +9,7 @@ import { useUpdateActivityStore } from '@/modules/activities/store/update-activi
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useDebounceFn } from '@vueuse/core';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
-import { useActivityPlanItem } from "@/modules/activities/components/mixins/useActivityPlanItem";
+import { useActivityPlanItem } from '@/modules/activities/components/mixins/useActivityPlanItem';
 
 export interface IProps {
   model: HabitModel;
@@ -93,44 +93,44 @@ const isPresentInterval = computed(() =>
     @select-tag="selectTag"
   >
     <template #rating>
-        <item-checkbox-list
-          v-if="model.dataPointConfig.inputType === DataPointInputType.Checkbox"
-          v-model:selection="selection"
-          :min="model.dataPointConfig.min"
-          :max="model.dataPointConfig.max"
-          :optimal="model.dataPointConfig.optimal"
-          :disabled="isDisabled"
-        />
-        <ly-input-number
-          v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
+      <item-checkbox-list
+        v-if="model.dataPointConfig.inputType === DataPointInputType.Checkbox"
+        v-model:selection="selection"
+        :min="model.dataPointConfig.min"
+        :max="model.dataPointConfig.max"
+        :optimal="model.dataPointConfig.optimal"
+        :disabled="isDisabled"
+      />
+      <ly-input-number
+        v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
+        v-model="selection"
+        :input-class="['calendar-plan-spinner-input text-sm bg-main', inputBorderColorClass]"
+        :min="0"
+        :max="model.dataPointConfig.max"
+        :disabled="isDisabled"
+      />
+      <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Range" class="flex items-center gap-2">
+        <span class="text-sm">{{ selection }}</span>
+        <ly-input-range
           v-model="selection"
-          :input-class="['calendar-plan-spinner-input text-sm bg-main', inputBorderColorClass]"
+          :input-class="['calendar-plan-range-input', inputColorClass]"
           :min="0"
           :max="model.dataPointConfig.max"
           :disabled="isDisabled"
         />
-        <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Range" class="flex items-center gap-2">
-          <span class="text-sm">{{ selection }}</span>
-          <ly-input-range
-            v-model="selection"
-            :input-class="['calendar-plan-range-input', inputColorClass]"
-            :min="0"
-            :max="model.dataPointConfig.max"
-            :disabled="isDisabled"
-          />
-        </div>
-        <timer-state
-          v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time"
-          :key="dataPoint.timer.calculateTotalSpan()"
-          :model="dataPoint.timer"
-          :min="model.dataPointConfig.min"
-          :max="model.dataPointConfig.max"
-          :optimal="model.dataPointConfig.optimal"
-          :startable="isPresentInterval"
-          @start="startTimer"
-          @stop="stopTimer"
-          @update="updateSelection"
-        />
+      </div>
+      <timer-state
+        v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time"
+        :key="dataPoint.timer.calculateTotalSpan()"
+        :model="dataPoint.timer"
+        :min="model.dataPointConfig.min"
+        :max="model.dataPointConfig.max"
+        :optimal="model.dataPointConfig.optimal"
+        :startable="isPresentInterval"
+        @start="startTimer"
+        @stop="stopTimer"
+        @update="updateSelection"
+      />
     </template>
   </calendar-plan-item>
 </template>

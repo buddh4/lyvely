@@ -3,12 +3,27 @@ import { usePageStore } from '@/modules/core/store/page.store';
 import { computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
+import { getScaledProgress } from "@lyvely/common";
 
 const profileStore = useProfileStore();
 const pageStore = usePageStore();
 
 const { toggleSidebar } = pageStore;
 const score = computed(() => profileStore.profile?.score);
+const formattedScore = computed(() => {
+  if(!score.value) return 0;
+
+  return Intl.NumberFormat('en-US', {
+    notation: "compact",
+    maximumFractionDigits: 1
+  }).format(score.value);
+});
+
+const progressStyle = computed(() => {
+  return {
+    width: getScaledProgress(score.value || 0) * 100 +'%'
+  }
+})
 </script>
 
 <template>
@@ -31,26 +46,31 @@ const score = computed(() => profileStore.profile?.score);
           <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">
             <ly-profile-avatar />
 
-            <div class="flex justify-center items-center text-xs">
-              <transition
-                name="score-icon"
-                mode="out-in"
-                enter-active-class="animate__animated animate_svg_flip"
-                leave-active-class=""
-              >
-                <ly-icon :key="score" name="score" class="text-success" />
-              </transition>
+            <div class="flex flex-col">
+              <div class="flex justify-center items-center text-xs">
+                <transition
+                    name="score-icon"
+                    mode="out-in"
+                    enter-active-class="animate__animated animate_svg_flip"
+                    leave-active-class=""
+                >
+                  <ly-icon :key="score" name="score" class="text-success" />
+                </transition>
 
-              <transition
-                name="score"
-                mode="out-in"
-                enter-active-class="animate__animated animate__faster animate__bounceIn"
-                leave-active-class="animate__animated animate__faster animate__bounceOut"
-              >
-                <div :key="score" class="inline-block score-value ml-0.5">
-                  {{ score }}
-                </div>
-              </transition>
+                <transition
+                    name="score"
+                    mode="out-in"
+                    enter-active-class="animate__animated animate__faster animate__bounceIn"
+                    leave-active-class="animate__animated animate__faster animate__bounceOut"
+                >
+                  <div :key="score" class="inline-block score-value ml-0.5">
+                    {{ formattedScore }}
+                  </div>
+                </transition>
+              </div>
+              <div class="border border-divide rounded-full w-full h-1.5">
+                <div class="score-progress float-right bg-success rounded-full w-2 h-full" :style="progressStyle"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -74,6 +94,10 @@ const score = computed(() => profileStore.profile?.score);
 </template>
 
 <style scoped>
+.score-progress {
+  transition: width 2s ease-in;
+}
+
 .score-value {
   min-width: 1em;
   font-weight: 500;
