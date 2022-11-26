@@ -7,6 +7,7 @@ import { User } from '@/users';
 import { HabitDataPointDao } from '../daos/habit-data-point.dao';
 import { ActivityScore } from '../schemas/activity-score.schema';
 import { ContentScoreService } from '@/content';
+import { isDefined } from 'class-validator';
 
 @Injectable()
 export class HabitDataPointService extends NumberDataPointService<Habit, HabitDataPoint> {
@@ -30,7 +31,7 @@ export class HabitDataPointService extends NumberDataPointService<Habit, HabitDa
         profile,
         user,
         content: habit,
-        userStrategy: habit.userStrategy,
+        userStrategy: habit.timeSeriesConfig.userStrategy,
         score: newScore - oldScore,
         date: dataPoint.date,
       }),
@@ -40,29 +41,32 @@ export class HabitDataPointService extends NumberDataPointService<Habit, HabitDa
   private static calculateLogScore(activity: Activity, units: number): number {
     let result = 0;
 
-    if (activity.dataPointConfig.inputType === DataPointInputType.Time) {
-      if (activity.dataPointConfig.min && units >= activity.dataPointConfig.min) {
-        result += activity.score;
+    if (activity.timeSeriesConfig.inputType === DataPointInputType.Time) {
+      if (activity.timeSeriesConfig.min && units >= activity.timeSeriesConfig.min) {
+        result += activity.config.score;
       }
 
       if (
-        activity.dataPointConfig.optimal &&
-        activity.dataPointConfig.optimal !== activity.dataPointConfig.min &&
-        units >= activity.dataPointConfig.optimal
+        activity.timeSeriesConfig.optimal &&
+        activity.timeSeriesConfig.optimal !== activity.timeSeriesConfig.min &&
+        units >= activity.timeSeriesConfig.optimal
       ) {
-        result += activity.score;
+        result += activity.config.score;
       }
 
       if (
-        activity.dataPointConfig.max &&
-        activity.dataPointConfig.max !== activity.dataPointConfig.min &&
-        activity.dataPointConfig.max !== activity.dataPointConfig.optimal &&
-        units >= activity.dataPointConfig.max
+        activity.timeSeriesConfig.max &&
+        activity.timeSeriesConfig.max !== activity.timeSeriesConfig.min &&
+        activity.timeSeriesConfig.max !== activity.timeSeriesConfig.optimal &&
+        units >= activity.timeSeriesConfig.max
       ) {
-        result += activity.score;
+        result += activity.config.score;
       }
     } else {
-      result = Math.min(units, activity.dataPointConfig.max) * activity.score;
+      const newValue = isDefined(activity.timeSeriesConfig.max)
+        ? Math.min(units, activity.timeSeriesConfig.max)
+        : units;
+      result = newValue * activity.config.score;
     }
 
     return result;

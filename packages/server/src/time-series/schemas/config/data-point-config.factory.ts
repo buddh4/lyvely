@@ -36,7 +36,7 @@ export class DataPointConfigFactory {
   }
 
   static createInstance<T extends DataPointConfig = DataPointConfig>(config: T): T {
-    const strategy = DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);
+    const strategy = config.strategy || DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);
     const ConfigType = register[strategy];
     if (ConfigType) {
       return assignEntityData(new ConfigType(), config);

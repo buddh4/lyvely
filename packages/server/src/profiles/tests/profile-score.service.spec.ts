@@ -1,11 +1,11 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createContentTestingModule } from '../../test/utils/test.utils';
+import { TestDataUtils } from '@/test';
+import { createContentTestingModule } from '@/test';
 import { Calendar, CalendarIntervalEnum } from '@lyvely/common';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import { TestProfileScore, TestProfileScoreSchema } from './src/test-profile-score.schema';
-import { TestProfileScoreDao } from './src/test-profile-score-dao.service';
+import { TestProfileScoreDao } from './src/test-profile-score.dao';
 import { INestApplication } from '@nestjs/common';
 import { TestProfileScoreService } from './src/test-profile-score.service';
 import { ProfileDao } from '../daos';

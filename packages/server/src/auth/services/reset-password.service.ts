@@ -30,9 +30,9 @@ export class ResetPasswordService {
     }
 
     const appName = this.configService.get('appName');
-    const forgotPasswordUrl = escapeHTML(encodeURI(this.urlGenerator.getAppUrl('/reset-password').href));
+    const forgotPasswordUrl = escapeHTML(encodeURI(this.urlGenerator.getAppUrl({ path: '/reset-password' }).href));
     const token = this.createResetPasswordToken(user);
-    const resetUrl = this.urlGenerator.getAppUrl('/reset-password/', { t: token });
+    const resetUrl = this.urlGenerator.getAppUrl({ path: '/reset-password/', params: { t: token } });
 
     await this.mailService.sendMail({
       to: email,

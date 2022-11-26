@@ -3,51 +3,35 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '../config';
 import { MisconfigurationException } from '@lyvely/common';
 
+export interface UrlRoute {
+  path?: string;
+  params?: Record<string, string>;
+}
+
 @Injectable()
 export class UrlGenerator {
-  constructor(private readonly configService: ConfigService<ConfigurationPath>) {}
+  constructor(protected readonly configService: ConfigService<ConfigurationPath>) {}
 
-  public getAppUrl(): URL;
-  public getAppUrl(path: string): URL;
-  public getAppUrl(path: Record<string, string>): URL;
-  public getAppUrl(path: string, params: Record<string, string>): URL;
-  public getAppUrl(path?: string | Record<string, string>, params?: Record<string, string>): URL {
-    if (path && typeof path === 'object') {
-      params = path;
-      path = undefined;
-    }
+  public getAppUrl(route?: UrlRoute): URL {
+    return this.generateUrl(this.getBaseAppUrl(), route);
+  }
 
-    const url = new URL(this.getBaseAppUrl());
-    url.pathname = this.getPathString(<string>path);
+  public getApiUrl(route?: UrlRoute): URL {
+    return this.generateUrl(this.getBaseApiUrl(), route);
+  }
 
-    if (params) {
-      Object.keys(params).forEach((name) => url.searchParams.append(name, params[name]));
+  protected generateUrl(baseUrl: string, route?: UrlRoute) {
+    const url = new URL(baseUrl);
+    url.pathname = this.getPathString(route?.path);
+
+    if (route?.params) {
+      Object.keys(route.params).forEach((name) => url.searchParams.append(name, route.params[name]));
     }
 
     return url;
   }
 
-  public getApiUrl(): URL;
-  public getApiUrl(path: string): URL;
-  public getApiUrl(path: Record<string, string>): URL;
-  public getApiUrl(path: string, params: Record<string, string>): URL;
-  public getApiUrl(path?: string | Record<string, string>, params?: Record<string, string>): URL {
-    if (path && typeof path === 'object') {
-      params = path;
-      path = undefined;
-    }
-
-    const url = new URL(this.getBaseApiUrl());
-    url.pathname = this.getPathString(<string>path);
-
-    if (params) {
-      Object.keys(params).forEach((name) => url.searchParams.append(name, params[name]));
-    }
-
-    return url;
-  }
-
-  private getPathString(path?: string) {
+  protected getPathString(path?: string) {
     if (!path) {
       return '';
     }
@@ -55,7 +39,7 @@ export class UrlGenerator {
     return path.startsWith('/') ? path.substring(1, path.length) : path;
   }
 
-  private getBaseApiUrl() {
+  protected getBaseApiUrl() {
     const appUrl = this.configService.get('http.baseUrl');
 
     if (!appUrl) {
@@ -65,7 +49,7 @@ export class UrlGenerator {
     return appUrl.endsWith('/') ? appUrl : appUrl + '/';
   }
 
-  private getBaseAppUrl() {
+  protected getBaseAppUrl() {
     const appUrl = this.configService.get('http.appUrl');
 
     if (!appUrl) {

@@ -1,4 +1,6 @@
+export * from './array.util';
 export * from './enum.util';
+export * from './string.util';
 export * from './util.types';
 export * from './validation.util';
 export * from './object.util';

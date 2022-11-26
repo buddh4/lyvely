@@ -36,9 +36,7 @@ export abstract class AbstractContentService<T extends Content> {
   }
 
   protected async mergeTagsForUpdate(profile: Profile, update: UpdateQuerySet<T>, tagNames?: string[]) {
-    if (!tagNames) {
-      return;
-    }
+    if (!tagNames) return;
 
     await this.profileTagsService.mergeTags(profile, tagNames);
     update.tagIds = [];

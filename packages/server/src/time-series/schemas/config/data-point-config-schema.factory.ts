@@ -1,4 +1,4 @@
-import { registerLogValueStrategy } from '../time-series-content-schema.factory';
+import { registerLogValueStrategy } from '../time-series-config-schema.factory';
 import { SchemaFactory } from '@nestjs/mongoose';
 import { IDataPointStrategyType, registerDataPointStrategy } from './data-point-config.factory';
 import { DataPointConfig } from './data-point-config.schema';

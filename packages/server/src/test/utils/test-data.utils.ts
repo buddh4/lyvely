@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { User, UserDocument } from '../../users';
+import { User, UserDocument } from '@/users';
 import { ProfileType, ProfileVisibilityLevel, BaseMembershipRole, UserStatus } from '@lyvely/common';
 import { closeInMongodConnection, rootMongooseTestModule } from './mongoose-test.utils';
 import {
@@ -16,7 +16,7 @@ import {
   Organization,
   UserProfile,
   GroupProfile,
-} from '../../profiles';
+} from '@/profiles';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { createBaseEntityInstance } from '@/core';

@@ -1,6 +1,6 @@
 import { TestDataPoint, TestNumberDataPoint } from './test-data-point.schema';
 import { Injectable, Inject } from '@nestjs/common';
-import { DataPointService, NumberDataPointService } from '../../services';
+import { DataPointService, NumberDataPointService } from '@/time-series';
 import { TestNumberTimeSeriesContent, TestTimeSeriesContent } from './test-time-series-content.schema';
 import { TestNumberDataPointDao } from './test-number-data-point.dao';
 

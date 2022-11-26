@@ -1,55 +1,77 @@
-import {
-  isSameDay,
-  UserAssignmentStrategy,
-  getNumberEnumValues,
-  IDataPointConfig,
-  TimeSeriesContentModel,
-} from '@lyvely/common';
-import { Prop } from '@nestjs/mongoose';
+import { isSameDay, ITimeSeriesContentConfig } from '@lyvely/common';
 import { Content, IContentEntity } from '@/content';
-import { DataPointConfigFactory, DefaultDataPointConfig, DefaultDataPointConfigSchema } from './config';
+import { DataPointConfig, DataPointConfigFactory, DefaultDataPointConfig } from './config';
 import { EntityType } from '@/core';
+import { cloneDeep } from 'lodash';
 
 type TimeSeriesContentEntity = IContentEntity & EntityType<TimeSeriesContent>;
-export type ITimeSeriesContentEntity<TDataPointConfig extends IDataPointConfig = DefaultDataPointConfig> =
-  TimeSeriesContentModel<TDataPointConfig>;
-
+type Unpacked<T> = T extends (infer U)[] ? U : T;
 /**
  * This class serves as base class for all time series content types and schemas. A subclass usually overwrites the
- * `dataPointConfig` schema type either with a custom or a predefined one as NumberDataPointConfig as well as overwriting
+ * `config` schema type either with a custom or a predefined one as NumberDataPointConfig as well as overwriting
  * `dataPointConfigHistory` schema.
  */
 export abstract class TimeSeriesContent<
-    TContent extends TimeSeriesContentEntity = TimeSeriesContentEntity,
-    TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
-  >
-  extends Content<TContent>
-  implements ITimeSeriesContentEntity<TDataPointConfig>
-{
-  @Prop({ type: DefaultDataPointConfigSchema, required: true })
-  dataPointConfig: TDataPointConfig;
+  TContent extends TimeSeriesContentEntity = TimeSeriesContentEntity,
+  TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
+> extends Content<TContent> {
+  config: ITimeSeriesContentConfig<TDataPointConfig>;
 
-  @Prop({ enum: getNumberEnumValues(UserAssignmentStrategy), default: UserAssignmentStrategy.Shared, required: true })
-  userStrategy: UserAssignmentStrategy;
+  abstract createTimeSeriesConfigRevision(
+    rev: TDataPointConfig,
+  ): Unpacked<TDataPointConfig['history']> | null | undefined;
 
-  abstract pushDataPointConfigRevision(rev: TDataPointConfig);
+  applyTimeSeriesConfigUpdate(update: Partial<TDataPointConfig>) {
+    const oldConfig = this.timeSeriesConfig;
+    const updatedConfig = Object.assign(cloneDeep(oldConfig), update);
 
-  dataPointConfigRevisionCheck(update: TDataPointConfig) {
-    return !this.dataPointConfig.isEqualTo(update) && !this.getRevisionUpdatedAt(new Date());
+    if (this.timeSeriesConfigRevisionCheck(updatedConfig)) {
+      this.timeSeriesConfig = updatedConfig;
+      this.pushTimeSeriesConfigRevision(oldConfig);
+    } else {
+      this.timeSeriesConfig = updatedConfig;
+    }
   }
 
-  getRevisionUpdatedAt(date: Date) {
-    if (!this.dataPointConfig?.history.length) {
+  private pushTimeSeriesConfigRevision(cfg: TDataPointConfig) {
+    if (!this.timeSeriesConfig.history) {
+      this.timeSeriesConfig.history = [];
+    }
+
+    const revision = this.createTimeSeriesConfigRevision(cfg);
+
+    if (revision) {
+      this.timeSeriesConfig.history.push(revision);
+    }
+  }
+
+  private timeSeriesConfigRevisionCheck(update: TDataPointConfig) {
+    return !this.timeSeriesConfig.isEqualTo(update) && !this.getTimeSeriesRevisionUpdatedAt(new Date());
+  }
+
+  getTimeSeriesRevisionUpdatedAt(date: Date) {
+    if (!this.timeSeriesConfig?.history.length) {
       return false;
     }
 
-    return this.dataPointConfig.history.find((rev) => isSameDay(rev.validUntil, date));
+    return this.timeSeriesConfig.history.find((rev) => isSameDay(rev.validUntil, date));
+  }
+
+  get timeSeriesConfig() {
+    return this.config?.timeSeries;
+  }
+
+  set timeSeriesConfig(config: TDataPointConfig) {
+    if (!this.config) {
+      this.config = <any>{};
+    }
+    this.config.timeSeries = config;
   }
 
   afterInit() {
     // in case plain object is given we create a class instance
-    if (this.dataPointConfig && !this.dataPointConfig.getSettings) {
-      this.dataPointConfig = DataPointConfigFactory.createInstance(this.dataPointConfig);
+    if (!(this.timeSeriesConfig instanceof DataPointConfig)) {
+      this.timeSeriesConfig = DataPointConfigFactory.createInstance(this.timeSeriesConfig);
     }
 
     super.afterInit();

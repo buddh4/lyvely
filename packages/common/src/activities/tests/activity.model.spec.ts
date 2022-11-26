@@ -9,7 +9,10 @@ describe('Activity Model', () => {
         title: 'Test activity',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
+        min: 0,
+        optimal: 0,
         max: 5,
+        score: 2,
       });
 
       expect(dto.min).toEqual(0);

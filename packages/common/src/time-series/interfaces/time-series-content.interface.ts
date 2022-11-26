@@ -1,11 +1,5 @@
 import { CalendarIntervalEnum } from '@/calendar';
-
-/*export enum DataPointInputStrategy {
-  CheckboxNumber = 'checkbox_number',
-  RangeNumber = 'range_number',
-  SpinnerNumber = 'spinner_number',
-  TextareaText = 'TextareaText',
-}*/
+import { UserAssignmentStrategy } from '@/collab';
 
 export enum DataPointValueType {
   Number = 'number',
@@ -37,16 +31,25 @@ export interface IDataPointConfig {
   history: IDataPointConfigRevision[];
   valueType: DataPointValueType;
   inputType?: DataPointInputType;
+  userStrategy: UserAssignmentStrategy;
 }
 
 export interface IDataPointConfigRevision {
   validUntil: Date;
   valueType: DataPointValueType;
   inputType?: DataPointInputType;
+  interval: CalendarIntervalEnum;
+}
+
+export interface INumberDataPointConfigRevision extends IDataPointConfigRevision {
+  min?: number;
+  max?: number;
+  optimal?: number;
 }
 
 export interface INumberDataPointConfig extends IDataPointConfig {
   valueType: DataPointValueType.Number;
+  history: INumberDataPointConfigRevision[];
   min?: number;
   max?: number;
   optimal?: number;
@@ -57,4 +60,6 @@ export interface INumberDataPointSettings {
   max?: number;
   optimal?: number;
   interval: CalendarIntervalEnum;
+  userStrategy?: UserAssignmentStrategy;
+  inputType?: DataPointInputType;
 }

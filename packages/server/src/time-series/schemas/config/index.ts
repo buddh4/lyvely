@@ -7,3 +7,4 @@ export * from './range-number-data-point-config.schema';
 export * from './spinner-number-data-point-config.schema';
 export * from './data-point-config-schema.factory';
 export * from './data-point-config.factory';
+export * from './data-point-config.schema';

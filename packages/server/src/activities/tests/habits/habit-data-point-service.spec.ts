@@ -1,10 +1,10 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
-import { HabitDataPointService } from '../../services/habit-data-point.service';
-import { HabitDataPointDao } from '../../daos/habit-data-point.dao';
+import { HabitDataPointService } from '@/activities/services/habit-data-point.service';
+import { HabitDataPointDao } from '@/activities/daos/habit-data-point.dao';
 import { UserAssignmentStrategy, toTimingId, DataPointIntervalFilter, CalendarIntervalEnum } from '@lyvely/common';
-import { ContentScoreDao, ContentScoreService } from '../../../content';
+import { ContentScoreDao, ContentScoreService } from '@/content';
 import { HabitDataPointDocument } from '../../schemas';
 import { Model } from 'mongoose';
 

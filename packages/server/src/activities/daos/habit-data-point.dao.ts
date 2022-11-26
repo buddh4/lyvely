@@ -1,11 +1,11 @@
-import { DataPointDao } from '../../time-series';
+import { DataPointDao } from '@/time-series';
 import { HabitDataPoint } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import module from '../activities.meta';
 import { EntityIdentity } from '@/core';
-import { User } from '../../users';
+import { User } from '@/users';
 
 @Injectable()
 export class HabitDataPointDao extends DataPointDao<HabitDataPoint> {

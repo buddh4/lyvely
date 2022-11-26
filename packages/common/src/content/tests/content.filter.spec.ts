@@ -17,21 +17,21 @@ describe('Content Filter', () => {
   });
 
   describe('archived filter', function () {
-    it('archived filter active by default', async () => {
+    it('archived entries are excluded by default', async () => {
       const filter = new ContentFilter();
       const result = filter.check(new TestContent({ meta: new ContentMetadataModel({ isArchived: true }) }));
       expect(result).toEqual(false);
     });
 
-    it('archive filter success', async () => {
+    it('archive filter includes archived content', async () => {
       const filter = new ContentFilter({ archived: true });
       const result = filter.check(new TestContent({ meta: new ContentMetadataModel({ isArchived: true }) }));
       expect(result).toEqual(true);
     });
 
-    it('archive filter fail', async () => {
+    it('archive filter does not include non archived content', async () => {
       const filter = new ContentFilter({ archived: true });
-      const result = filter.check(new TestContent({ meta: new ContentMetadataModel({ isArchived: true }) }));
+      const result = filter.check(new TestContent({ meta: new ContentMetadataModel({ isArchived: false }) }));
       expect(result).toEqual(false);
     });
   });

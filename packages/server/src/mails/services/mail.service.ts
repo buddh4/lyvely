@@ -47,7 +47,7 @@ export class MailService {
     sendMailOptions.context['footerText'] = mailConfig.footerText || this.configService.get('appName');
     sendMailOptions.context['footerSubText'] = mailConfig.footerSubtext || '';
     sendMailOptions.context['logoImageUrl'] =
-      mailConfig.logoImageUrl || this.urlGenerator.getAppUrl('/images/mail_default_logo.png').href;
+      mailConfig.logoImageUrl || this.urlGenerator.getAppUrl({ path: '/images/mail_default_logo.png' }).href;
     // TODO: translate...
     sendMailOptions.context['unsubscribeLabel'] = mailConfig.unsubscribeLabel || 'unsubscribe';
   }

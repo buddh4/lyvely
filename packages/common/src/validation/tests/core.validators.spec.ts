@@ -105,7 +105,7 @@ describe('Core Validators', () => {
       const result = await validate(baseModel);
       expect(result.length).toEqual(1);
       expect(result[0].property).toEqual('username');
-      expect(result[0].constraints['NotMatch']).toEqual('username can not match with email');
+      expect(result[0].constraints['notMatch']).toEqual('username can not match with email');
     });
   });
 

@@ -16,7 +16,7 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
       cid: assureObjectId(content),
-      tid: toTimingId(date, content.dataPointConfig.interval),
+      tid: toTimingId(date, content.timeSeriesConfig.interval),
     });
   }
 
@@ -25,7 +25,7 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
     return this.findOne({
       cid: assureObjectId(content),
       uid: assureObjectId(uid),
-      tid: toTimingId(date, content.dataPointConfig.interval),
+      tid: toTimingId(date, content.timeSeriesConfig.interval),
     });
   }
 

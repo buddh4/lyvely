@@ -3,8 +3,8 @@ import { ProfileMemberMailInvite } from '@lyvely/common';
 import { ProfilePermissionsService } from './profile-permissions.service';
 import { ProfileContext } from '../models';
 import { validateEmail } from '@/core';
-import { UsersService } from '../../users';
-import { MailService } from '../../mails/services/mail.service';
+import { UsersService } from '@/users';
+import { MailService } from '@/mails';
 
 @Injectable()
 export class InviteProfileUsersService {

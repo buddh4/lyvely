@@ -2,7 +2,15 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from '../../services/habits.service';
 import { Habit } from '../../schemas';
-import { CalendarIntervalEnum, ActivityType, CreateHabitDto, UpdateHabitDto } from '@lyvely/common';
+import {
+  ActivityType,
+  CalendarIntervalEnum,
+  CreateHabitDto,
+  PropertiesOf,
+  UpdateHabitDto,
+  DataPointInputType,
+  UserAssignmentStrategy,
+} from '@lyvely/common';
 import { Profile } from '@/profiles';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { HabitsDao } from '../../daos/habits.dao';
@@ -25,12 +33,15 @@ describe('HabitService', () => {
     await testData.reset(TEST_KEY);
   });
 
-  const createHabit = async (user: User, profile: Profile, dto?: CreateHabitDto) => {
+  const createHabit = async (user: User, profile: Profile, dto?: PropertiesOf<CreateHabitDto>) => {
     dto = dto || {
+      min: 0,
       max: 1,
       title: 'Do something!',
       score: 5,
       tagNames: [],
+      userStrategy: UserAssignmentStrategy.Shared,
+      inputType: DataPointInputType.Checkbox,
       interval: CalendarIntervalEnum.Daily,
     };
 
@@ -46,10 +57,10 @@ describe('HabitService', () => {
       expect(habit.meta.sortOrder).toEqual(0);
       expect(habit.meta.createdAt).toBeDefined();
       expect(habit.meta.updatedAt).toBeDefined();
-      expect(habit.dataPointConfig.min).toEqual(0);
-      expect(habit.dataPointConfig.max).toEqual(1);
-      expect(habit.score).toEqual(5);
-      expect(habit.data.title).toEqual('Do something!');
+      expect(habit.timeSeriesConfig.min).toEqual(0);
+      expect(habit.timeSeriesConfig.max).toEqual(1);
+      expect(habit.config.score).toEqual(5);
+      expect(habit.content.title).toEqual('Do something!');
       expect(habit.tagIds.length).toEqual(0);
     });
 
@@ -75,15 +86,12 @@ describe('HabitService', () => {
     });
   });
 
-  describe('updateHabit', () => {
+  describe('applyUpdate', () => {
     it('find activity by object id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
 
-      await habitService.updateHabit(
-        profile,
-        user,
-        habit,
+      habit.applyUpdate(
         new UpdateHabitDto({
           title: 'Updated Title',
           text: 'Updated description',
@@ -92,18 +100,19 @@ describe('HabitService', () => {
           score: 2,
           min: 1,
           optimal: 2,
-          tagNames: ['SomeCategory'],
         }),
       );
 
+      await habitService.updateContent(profile, user, habit, habit, ['SomeCategory']);
+
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
-      expect(search.data.title).toEqual('Updated Title');
-      expect(search.data.textContent).toEqual('Updated description');
-      expect(search.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
-      expect(search.dataPointConfig.min).toEqual(1);
-      expect(search.dataPointConfig.max).toEqual(2);
-      expect(search.dataPointConfig.optimal).toEqual(2);
+      expect(search.content.title).toEqual('Updated Title');
+      expect(search.content.text).toEqual('Updated description');
+      expect(search.timeSeriesConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
+      expect(search.timeSeriesConfig.min).toEqual(1);
+      expect(search.timeSeriesConfig.max).toEqual(2);
+      expect(search.timeSeriesConfig.optimal).toEqual(2);
       expect(search.tagIds.length).toEqual(1);
       expect(search.tagIds[0]).toEqual(profile.tags[0]._id);
       expect(profile.tags.length).toEqual(1);
@@ -125,10 +134,7 @@ describe('HabitService', () => {
         }),
       );
 
-      await habitService.updateHabit(
-        profile,
-        user,
-        habit,
+      habit.applyUpdate(
         new UpdateHabitDto({
           title: 'Test',
           interval: CalendarIntervalEnum.Weekly,
@@ -139,14 +145,16 @@ describe('HabitService', () => {
         }),
       );
 
+      await habitService.updateContent(profile, user, habit, habit);
+
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
-      expect(search.dataPointConfig.history).toBeDefined();
-      expect(search.dataPointConfig.history.length).toEqual(1);
-      expect(search.dataPointConfig.history[0].max).toEqual(2);
-      expect(search.dataPointConfig.history[0].min).toEqual(1);
-      expect(search.dataPointConfig.history[0].optimal).toEqual(1);
-      expect(search.dataPointConfig.history[0].interval).toEqual(CalendarIntervalEnum.Daily);
+      expect(search.timeSeriesConfig.history).toBeDefined();
+      expect(search.timeSeriesConfig.history.length).toEqual(1);
+      expect(search.timeSeriesConfig.history[0].max).toEqual(2);
+      expect(search.timeSeriesConfig.history[0].min).toEqual(1);
+      expect(search.timeSeriesConfig.history[0].optimal).toEqual(1);
+      expect(search.timeSeriesConfig.history[0].interval).toEqual(CalendarIntervalEnum.Daily);
     });
   });
 
@@ -165,10 +173,7 @@ describe('HabitService', () => {
       }),
     );
 
-    await habitService.updateHabit(
-      profile,
-      user,
-      habit,
+    habit.applyUpdate(
       new UpdateHabitDto({
         title: 'Test',
         interval: CalendarIntervalEnum.Weekly,
@@ -179,10 +184,9 @@ describe('HabitService', () => {
       }),
     );
 
-    await habitService.updateHabit(
-      profile,
-      user,
-      habit,
+    await habitService.updateContent(profile, user, habit, habit);
+
+    habit.applyUpdate(
       new UpdateHabitDto({
         title: 'Test',
         interval: CalendarIntervalEnum.Weekly,
@@ -193,12 +197,14 @@ describe('HabitService', () => {
       }),
     );
 
+    await habitService.updateContent(profile, user, habit, habit);
+
     const search = await habitService.findByProfileAndId(profile, habit);
     expect(search).toBeDefined();
-    expect(search.dataPointConfig.history).toBeDefined();
-    expect(search.dataPointConfig.history.length).toEqual(1);
-    expect(search.dataPointConfig.history[0].max).toEqual(2);
-    expect(search.dataPointConfig.max).toEqual(4);
+    expect(search.timeSeriesConfig.history).toBeDefined();
+    expect(search.timeSeriesConfig.history.length).toEqual(1);
+    expect(search.timeSeriesConfig.history[0].max).toEqual(2);
+    expect(search.timeSeriesConfig.max).toEqual(4);
   });
 
   describe('findUserActivityById', () => {

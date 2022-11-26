@@ -52,7 +52,7 @@ export class ContentFilter<
 
     if (
       this.options.query?.length &&
-      !((model.data.title || '') + (model.data.textContent || '')).match(
+      !((model.content.title || '') + (model.content.text || '')).match(
         new RegExp(escapeRegExp(this.options.query), 'i'),
       )
     ) {

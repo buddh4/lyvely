@@ -1,7 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createContentTestingModule } from '../../test/utils/test.utils';
+import { createContentTestingModule, TestDataUtils } from '@/test';
 import { Model } from 'mongoose';
 import {
   TestNumberDataPoint,

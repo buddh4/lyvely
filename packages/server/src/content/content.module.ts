@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Inject, Injectable, Module, OnModuleInit, Type } from '@nestjs/common';
 import { UsersModule } from '../users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -7,6 +7,8 @@ import { ProfileScore, ProfilesModule } from '../profiles';
 import { ContentDao, ContentScoreDao } from './daos';
 import { ContentReadPolicy, ContentWritePolicy } from './policies';
 import { ContentTypeRegistry } from './components';
+import { IContentTypeDefinition } from '@/content/interfaces';
+import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -23,26 +25,65 @@ const ContentScoreActionModel = MongooseModule.forFeature([
   },
 ]);
 
-@Module({
-  imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel],
-  controllers: [],
-  providers: [
-    ContentService,
-    ContentDao,
-    ContentTypeRegistry,
-    ContentReadPolicy,
-    ContentWritePolicy,
-    ContentScoreService,
-    ContentScoreDao,
-  ],
-  exports: [
-    ContentModel,
-    ContentService,
-    ContentScoreService,
-    ContentDao,
-    ContentTypeRegistry,
-    ContentReadPolicy,
-    ContentWritePolicy,
-  ],
-})
-export class ContentModule {}
+@Module({})
+export class ContentCoreModule {
+  static forRoot(): DynamicModule {
+    return ContentCoreModule.registerCore();
+  }
+
+  static registerCore(): DynamicModule {
+    return {
+      global: true,
+      module: ContentCoreModule,
+      imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel],
+      providers: [
+        ContentService,
+        ContentDao,
+        ContentTypeRegistry,
+        ContentReadPolicy,
+        ContentWritePolicy,
+        ContentScoreService,
+        ContentScoreDao,
+      ],
+      exports: [
+        ContentModel,
+        ContentService,
+        ContentScoreService,
+        ContentTypeRegistry,
+        ContentReadPolicy,
+        ContentWritePolicy,
+      ],
+    };
+  }
+}
+
+@Module({})
+export class ContentModule {
+  static forRoot(): DynamicModule {
+    return ContentCoreModule.registerCore();
+  }
+
+  static registerContentType(...contentTypes: Type<Content>[]): DynamicModule {
+    return {
+      module: ContentModule,
+      imports: [ContentCoreModule.registerCore()],
+      providers: [registerContentTypeOnInit(contentTypes)],
+    };
+  }
+}
+
+function registerContentTypeOnInit(contentTypes: Type<Content>[]) {
+  @Injectable()
+  class RegisterContentTypeService implements OnModuleInit {
+    @Inject()
+    private contentTypeRegistry: ContentTypeRegistry;
+
+    onModuleInit(): any {
+      if (contentTypes && contentTypes.length) {
+        this.contentTypeRegistry.registerTypes(contentTypes.map((type) => ({ type })));
+      }
+    }
+  }
+
+  return RegisterContentTypeService;
+}

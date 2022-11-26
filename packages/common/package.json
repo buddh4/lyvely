@@ -29,9 +29,12 @@
   "homepage": "https://github.com/buddh4/lively-common#readme",
   "dependencies": {
     "@buddh4/mapped-types": "^1.1.0",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "dayjs": "^1.11.3",
+    "he": "^1.2.0",
     "lodash": "^4.17.21",
     "mitt": "^3.0.0",
     "randomcolor": "^0.6.2",

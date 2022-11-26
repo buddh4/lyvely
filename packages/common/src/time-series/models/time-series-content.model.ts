@@ -1,19 +1,29 @@
-import { ContentModel } from '@/content';
+import { ContentModel, IContent } from '@/content';
 import { ISortable } from '@/models';
-import { UserAssignmentStrategy } from '@/collab';
-import { IDataPointConfig, IDataPointConfigRevision } from '../interfaces';
-import { IsEnum } from 'class-validator';
+import { IDataPointConfig } from '../interfaces';
 import { Expose } from 'class-transformer';
 
+export interface ITimeSeriesContentConfig<TDataPointConfig = IDataPointConfig> {
+  timeSeries: TDataPointConfig;
+}
+
+interface ITimeSeriesContentModel<TDataPointConfig = IDataPointConfig> extends IContent {
+  config: ITimeSeriesContentConfig<TDataPointConfig>;
+}
+
 @Expose()
-export class TimeSeriesContentModel<E extends IDataPointConfig = IDataPointConfig>
-  extends ContentModel<TimeSeriesContentModel>
+export class TimeSeriesContentModel<
+    TContentModel extends ITimeSeriesContentModel = ITimeSeriesContentModel,
+    TConfig extends ITimeSeriesContentConfig = ITimeSeriesContentConfig,
+  >
+  extends ContentModel<TContentModel, TConfig>
   implements ISortable
 {
-  dataPointConfig: E;
+  get timeSeriesConfig(): TConfig['timeSeries'] {
+    return this.config.timeSeries;
+  }
 
-  dataPointConfigHistory?: IDataPointConfigRevision[];
-
-  @IsEnum(UserAssignmentStrategy)
-  userStrategy: UserAssignmentStrategy;
+  set timeSeriesConfig(config: TConfig['timeSeries']) {
+    this.config.timeSeries = config;
+  }
 }

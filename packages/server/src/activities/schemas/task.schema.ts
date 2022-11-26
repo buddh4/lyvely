@@ -3,7 +3,6 @@ import { Profile } from '@/profiles';
 import {
   REGEX_TID,
   UserAssignmentStrategy,
-  applyValidationProperties,
   CreateTaskDto,
   UpdateTaskDto,
   PropertiesOf,
@@ -14,10 +13,14 @@ import {
 } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '@/users';
-import { Activity } from './activity.schema';
-import { CheckboxNumberDataPointConfig, DataPointConfigFactory } from '@/time-series';
+import { Activity, ActivityConfig } from './activity.schema';
+import {
+  CheckboxNumberDataPointConfig,
+  DataPointConfigFactory,
+  NumberTimeSeriesContentConfig,
+  TimeSeriesConfigSchemaFactory,
+} from '@/time-series';
 import { assureObjectId, EntityIdentity } from '@/core';
-import { cloneDeep } from 'lodash';
 import { ContentDataType } from '@/content';
 import { Timer, TimerSchema } from '@/calendar';
 
@@ -43,8 +46,23 @@ export class UserDone {
 
 const UserDoneSchema = SchemaFactory.createForClass(UserDone);
 
+@Schema({ id: false })
+export class TaskConfig extends NumberTimeSeriesContentConfig<TaskConfig, CheckboxNumberDataPointConfig> {
+  @Prop({ type: Number })
+  @PropertyType(Number, { default: 0 })
+  score: number;
+}
+
+export const TaskConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(TaskConfig, [
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
+]);
+
 @Schema()
 export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
+  @Prop({ type: TaskConfigSchema, required: true })
+  @PropertyType(TaskConfig)
+  config: TaskConfig;
+
   @Prop({ type: [UserDoneSchema] })
   @PropertyType([UserDone])
   doneBy: UserDone[];
@@ -54,16 +72,16 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   timers: Timer[];
 
   afterInit() {
-    if (!this.dataPointConfig) {
-      this.dataPointConfig = DataPointConfigFactory.createConfig(
+    if (!this.timeSeriesConfig) {
+      this.timeSeriesConfig = DataPointConfigFactory.createConfig(
         DataPointValueType.Number,
         DataPointInputType.Checkbox,
       );
     }
 
-    this.dataPointConfig.min = 1;
-    this.dataPointConfig.max = 1;
-    this.dataPointConfig.optimal = 1;
+    this.timeSeriesConfig.min = 1;
+    this.timeSeriesConfig.max = 1;
+    this.timeSeriesConfig.optimal = 1;
 
     super.afterInit();
   }
@@ -73,7 +91,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   }
 
   isDone(uid: EntityIdentity<User>) {
-    if (this.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       return !!this.doneBy.length;
     }
 
@@ -81,7 +99,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   }
 
   getTimer(uid: EntityIdentity<User>) {
-    if (this.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       return this.timers.length ? this.timers[0] : undefined;
     }
 
@@ -89,7 +107,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   }
 
   getDoneBy(uid: EntityIdentity<User>) {
-    if (this.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       return this.doneBy[0];
     }
 
@@ -97,7 +115,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   }
 
   setUndoneBy(uid: EntityIdentity<User>) {
-    if (this.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       this.doneBy = [];
     } else {
       this.doneBy = this.doneBy.filter((d) => !d.uid.equals(assureObjectId(uid)));
@@ -107,7 +125,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   setDoneBy(uid: EntityIdentity<User>, tid: string, date?: Date) {
     date = date || new Date();
 
-    if (this.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       this.doneBy = [new UserDone(uid, tid, date)];
     } else {
       const doneBy = this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
@@ -120,28 +138,18 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
     }
   }
 
-  public static applyUpdate(model: Task, update: UpdateTaskDto) {
-    const updatedDataPointConfig = cloneDeep(model.dataPointConfig);
-    updatedDataPointConfig.interval = update.interval ?? model.dataPointConfig.interval;
-
-    if (model.dataPointConfigRevisionCheck(updatedDataPointConfig)) {
-      model.pushDataPointConfigRevision(model.dataPointConfig);
-      model.dataPointConfig = updatedDataPointConfig;
-    }
-
-    model.data.title = update.title || model.data.title;
-    model.data.textContent = update.text || model.data.textContent;
-
-    applyValidationProperties(model, update);
+  createTimeSeriesConfigRevision() {
+    return null; // We do not want to create revisions for tasks
   }
 
-  public static create(profile: Profile, owner: User, update: CreateTaskDto): Task {
+  public static create(profile: Profile, owner: User, update: PropertiesOf<CreateTaskDto>): Task {
     return new Task(profile, owner, {
-      ...update,
-      score: update.score,
-      data: new ContentDataType({ title: update.title, textContent: update.text }),
+      content: new ContentDataType({ title: update.title, text: update.text }),
       tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
-      dataPointConfig: _createDataPointConfigFromUpdate(update),
+      config: new ActivityConfig({
+        score: update.score,
+        timeSeries: _createDataPointConfigFromUpdate(update),
+      }),
     });
   }
 }
@@ -154,6 +162,7 @@ function _createDataPointConfigFromUpdate(update: UpdateTaskDto) {
       min: 0,
       max: 1,
       interval: update.interval,
+      userStrategy: update.userStrategy,
       optimal: 0,
     },
   );

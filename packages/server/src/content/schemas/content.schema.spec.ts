@@ -47,10 +47,10 @@ describe('Content Model', () => {
     });
 
     it('constructor with user, profile and data object', async () => {
-      const content = new Content(profile, user, { data: { title: 'test title' } });
+      const content = new Content(profile, user, { content: { title: 'test title' } });
       expect(content.meta.createdBy).toEqual(user._id);
-      expect(content.data instanceof ContentDataType);
-      expect(content.data.title).toEqual('test title');
+      expect(content.content instanceof ContentDataType);
+      expect(content.content.title).toEqual('test title');
       expect(content.meta.createdAs).toBeDefined();
       expect(content.meta.createdAs.authorId).toEqual(user._id);
       expect(content.meta.createdAs.type).toEqual(CreatedAsType.User);

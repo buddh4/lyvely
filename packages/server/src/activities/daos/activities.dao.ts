@@ -70,10 +70,13 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
             $or: [
               { doneBy: [] },
               // We ignore which user done the task on shared tasks
-              { userStrategy: UserAssignmentStrategy.Shared, doneBy: { $elemMatch: { tid: { $in: tIds } } } },
+              {
+                'config.timeSeries.userStrategy': UserAssignmentStrategy.Shared,
+                doneBy: { $elemMatch: { tid: { $in: tIds } } },
+              },
               // On per user tasks we only include tasks not done by the given user or done by the given user within the given tid
               {
-                userStrategy: UserAssignmentStrategy.PerUser,
+                'config.timeSeries.userStrategy': UserAssignmentStrategy.PerUser,
                 $or: [
                   { doneBy: { $elemMatch: { uid: uid, tid: { $in: tIds } } } },
                   { doneBy: { $not: { $elemMatch: { uid: uid } } } },
@@ -106,7 +109,7 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
       profile,
       {
         type: type,
-        'dataPointConfig.interval': plan,
+        'config.timeSeries.interval': plan,
       },
       options,
     );

@@ -1,11 +1,9 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createTestExecutionContext } from '@/test/utils/test-execution-context.util';
-import { FeatureGuard } from '../../features/feature.guard';
-import { createContentTestingModule } from '../../../test/utils/test.utils';
+import { createContentTestingModule } from '@/test';
 import { ExecutionContext } from '@nestjs/common';
-import { Feature } from '../../features/feature.decorator';
-import { FeatureRegistry } from '../../features/feature.registry';
+import { Feature, FeatureGuard, FeatureRegistry } from '@/core';
 
 @Feature('test')
 class TestController {

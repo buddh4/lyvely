@@ -42,7 +42,7 @@ describe('Activities DAO', () => {
   async function createHabit(data?: Partial<CreateHabitDto>, overwrite?: (model: Habit) => void): Promise<Habit> {
     const { user, profile } = await testData.createUserAndProfile();
     const content = await activityData.createHabit(user, profile, data, overwrite);
-    return await activitiesDao.findByProfileAndId(profile, content._id);
+    return <Habit>await activitiesDao.findByProfileAndId(profile, content._id);
   }
 
   describe('HabitModel', () => {
@@ -67,9 +67,9 @@ describe('Activities DAO', () => {
       );
 
       const model = instanceToPlain(new HabitModel(search)) as PropertiesOf<HabitModel>;
-      expect(model.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
-      expect(model.data.title).toEqual('c1');
-      expect(model.data.textContent).toEqual('Test description');
+      expect(model.config.timeSeries.interval).toEqual(CalendarIntervalEnum.Monthly);
+      expect(model.content.title).toEqual('c1');
+      expect(model.content.text).toEqual('Test description');
       expect(model.type).toEqual(ActivityType.Habit);
       expect(model.meta.isArchived).toEqual(true);
       expect(model.meta.sortOrder).toEqual(3);
@@ -82,7 +82,7 @@ describe('Activities DAO', () => {
       expect(dto.tagIds).toEqual([]);
     });
 
-    it('dataPointConfig', async () => {
+    it('timeSeriesConfig', async () => {
       const search = await createHabit({
         min: 2,
         max: 3,
@@ -91,11 +91,11 @@ describe('Activities DAO', () => {
       });
 
       const dto = instanceToPlain(new HabitModel(search)) as HabitModel;
-      const dataPointConfig = dto.dataPointConfig as NumberDataPointConfig;
-      expect(dataPointConfig).toBeDefined();
-      expect(dataPointConfig.min).toEqual(2);
-      expect(dataPointConfig.max).toEqual(3);
-      expect(dataPointConfig.optimal).toEqual(3);
+      const timeSeriesConfig = dto.config.timeSeries as NumberDataPointConfig;
+      expect(timeSeriesConfig).toBeDefined();
+      expect(timeSeriesConfig.min).toEqual(2);
+      expect(timeSeriesConfig.max).toEqual(3);
+      expect(timeSeriesConfig.optimal).toEqual(3);
     });
   });
 });

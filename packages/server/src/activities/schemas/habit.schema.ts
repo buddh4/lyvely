@@ -1,82 +1,78 @@
-import { Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '@/users';
 import {
-  HabitModel,
-  UpdateHabitDto,
   applyValidationProperties,
-  PropertiesOf,
   CreateHabitDto,
-  DataPointValueType,
   DataPointInputType,
+  DataPointValueType,
+  HabitModel,
+  PropertiesOf,
+  PropertyType,
+  UpdateHabitDto,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
 import { Activity } from './activity.schema';
 import { ContentDocument } from '@/content';
-import { CheckboxNumberDataPointConfig, DataPointConfigFactory, NumberDataPointConfigRevision } from '@/time-series';
+import {
+  CheckboxNumberDataPointConfig,
+  DataPointConfigFactory,
+  NumberDataPointConfigRevision,
+  NumberTimeSeriesContentConfig,
+  RangeNumberDataPointConfig,
+  SpinnerNumberDataPointConfig,
+  TimeNumberDataPointConfig,
+  TimeSeriesConfigSchemaFactory,
+} from '@/time-series';
 import { assureObjectId } from '@/core';
-import { cloneDeep } from 'lodash';
 import { ContentDataType } from '@/content/schemas/content-data-type.schema';
 
 export type HabitDocument = Habit & ContentDocument;
 
+type HabitDataPointConfig =
+  | CheckboxNumberDataPointConfig
+  | SpinnerNumberDataPointConfig
+  | TimeNumberDataPointConfig
+  | RangeNumberDataPointConfig;
+
+@Schema({ id: false })
+export class HabitConfig extends NumberTimeSeriesContentConfig<HabitConfig, HabitDataPointConfig> {
+  @Prop({ type: Number })
+  @PropertyType(Number, { default: 0 })
+  score: number;
+}
+
+export const HabitConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(HabitConfig, [
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Time),
+]);
+
 @Schema()
 export class Habit extends Activity implements PropertiesOf<HabitModel> {
-  static applyUpdate(model: Habit, update: UpdateHabitDto) {
-    const updatedDataPointConfig = cloneDeep(model.dataPointConfig);
-    updatedDataPointConfig.min = update.min ?? model.dataPointConfig.min;
-    updatedDataPointConfig.max = update.max ?? model.dataPointConfig.max;
-    updatedDataPointConfig.optimal = update.optimal ?? model.dataPointConfig.optimal;
-    updatedDataPointConfig.interval = update.interval ?? model.dataPointConfig.interval;
-    updatedDataPointConfig.inputType = update.inputType || model.dataPointConfig.inputType;
-    // TODO: implement input strategy edit
-    //model.dataPointConfig.strategy = update.inputStrategy ?? model.dataPointConfig.strategy;
-
-    // TODO: find better solution for this policy, e.g. in dataPointConfig itself
-    if (updatedDataPointConfig.inputType === DataPointInputType.Checkbox) {
-      updatedDataPointConfig.max = Math.min(8, updatedDataPointConfig.max);
-    }
-
-    if (model.dataPointConfigRevisionCheck(updatedDataPointConfig)) {
-      const oldDataPointConfig = model.dataPointConfig;
-      model.dataPointConfig = updatedDataPointConfig;
-      model.pushDataPointConfigRevision(oldDataPointConfig);
-    } else {
-      model.dataPointConfig = updatedDataPointConfig;
-    }
-
-    model.data.title = update.title || model.data.title;
-    model.data.textContent = update.text || model.data.textContent;
-
-    applyValidationProperties(model, update);
-  }
+  @Prop({ type: HabitConfigSchema, required: true })
+  @PropertyType(HabitConfig)
+  config: HabitConfig;
 
   public static create(
     profile: Profile,
     owner: User,
-    update: CreateHabitDto,
+    update: PropertiesOf<CreateHabitDto>,
     history?: NumberDataPointConfigRevision[],
   ): Habit {
+    update.inputType = update.inputType || DataPointInputType.Checkbox;
+
     const result = new Habit(profile, owner, {
-      ...update,
-      score: update.score,
-      data: new ContentDataType({ title: update.title, textContent: update.text }),
+      content: new ContentDataType({ title: update.title, text: update.text }),
       tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
-      dataPointConfig: _createDataPointConfigFromUpdate(update),
+      config: new HabitConfig({
+        score: update.score,
+        timeSeries: _createDataPointConfigFromUpdate(update),
+      }),
     });
 
-    if (history) result.dataPointConfig.history = history;
+    if (history) result.timeSeriesConfig.history = history;
     return result;
-  }
-
-  afterInit() {
-    this.dataPointConfig.min = this.dataPointConfig.min ?? 0;
-    this.dataPointConfig.max = this.dataPointConfig.max ?? 1;
-
-    if (this.dataPointConfig.inputType === DataPointInputType.Checkbox) {
-      this.dataPointConfig.max = Math.min(8, this.dataPointConfig.max);
-    }
-
-    super.afterInit();
   }
 }
 
@@ -86,6 +82,7 @@ function _createDataPointConfigFromUpdate(dto: UpdateHabitDto) {
     max: dto.max,
     interval: dto.interval,
     optimal: dto.optimal,
+    userStrategy: dto.userStrategy,
   });
 }
 

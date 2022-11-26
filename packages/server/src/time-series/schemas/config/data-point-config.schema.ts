@@ -7,6 +7,7 @@ import {
   IDataPointConfigRevision,
   getNumberEnumValues,
   CalendarIntervalEnum,
+  UserAssignmentStrategy,
 } from '@lyvely/common';
 import { isEqual } from 'lodash';
 
@@ -25,10 +26,13 @@ export abstract class DataPointConfig<
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
   inputType: DataPointInputType;
 
-  strategy: string;
-
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;
+
+  @Prop({ enum: getNumberEnumValues(UserAssignmentStrategy), default: UserAssignmentStrategy.Shared, required: true })
+  userStrategy: UserAssignmentStrategy;
+
+  strategy: string;
 
   history: TRevision[];
 

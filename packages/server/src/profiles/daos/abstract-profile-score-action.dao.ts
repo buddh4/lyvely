@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractDao } from '../../core/db/abstract.dao';
+import { AbstractDao } from '@/core';
 import { ProfileScore } from '../schemas';
 
 @Injectable()

@@ -2,6 +2,7 @@ import { UpdateHabitDto } from '@/activities';
 
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
+import { UserAssignmentStrategy } from '@/collab';
 
 describe('UpdateHabitDto', () => {
   describe('transform', function () {
@@ -13,7 +14,7 @@ describe('UpdateHabitDto', () => {
         score: 3,
         interval: 0,
         strategy: 'checkbox_number',
-        userStrategy: 0,
+        userStrategy: UserAssignmentStrategy.Shared,
         categories: ['asdf'],
         title: 'hess',
         plan: 3,

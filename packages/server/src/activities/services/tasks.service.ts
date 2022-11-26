@@ -23,11 +23,11 @@ export class TasksService extends AbstractContentService<Task> {
   async setDone(profile: Profile, user: User, task: Task, date: CalendarDate): Promise<Task> {
     const wasDone = task.isDone(user);
 
-    const timingId = toTimingId(date, task.dataPointConfig.interval);
+    const timingId = toTimingId(date, task.timeSeriesConfig.interval);
     const doneBy = { uid: assureObjectId(user), tid: timingId, date: new Date() };
     const isDoneByUser = task.isDoneByUser(user);
 
-    if (task.userStrategy === UserAssignmentStrategy.Shared) {
+    if (task.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       await this.contentDao.updateOneByProfileAndIdSet(profile, task, { doneBy: [doneBy] });
     } else if (!isDoneByUser) {
       await this.contentDao.updateOneByProfileAndId(profile, task, { $push: { doneBy: doneBy } });
@@ -42,8 +42,8 @@ export class TasksService extends AbstractContentService<Task> {
           profile,
           user,
           content: task,
-          userStrategy: task.userStrategy,
-          score: task.score,
+          userStrategy: task.timeSeriesConfig.userStrategy,
+          score: task.config.score,
           date: date,
         }),
       );
@@ -55,7 +55,7 @@ export class TasksService extends AbstractContentService<Task> {
   async setUndone(profile: Profile, user: User, task: Task, date: CalendarDate): Promise<Task> {
     const wasDone = task.isDone(user);
 
-    if (task.userStrategy === UserAssignmentStrategy.Shared) {
+    if (task.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       await this.contentDao.updateOneByProfileAndIdSet(profile, task, { doneBy: [] });
     } else {
       await this.contentDao.pullDoneBy(profile, task, user);
@@ -70,8 +70,8 @@ export class TasksService extends AbstractContentService<Task> {
           profile,
           user,
           content: task,
-          userStrategy: task.userStrategy,
-          score: -task.score,
+          userStrategy: task.timeSeriesConfig.userStrategy,
+          score: -task.config.score,
           date: date,
         }),
       );
@@ -121,7 +121,7 @@ export class TasksService extends AbstractContentService<Task> {
   }
 
   private async updateTimer(profile: Profile, user: EntityIdentity<User>, task: Task, timer: Timer) {
-    if (task.userStrategy === UserAssignmentStrategy.Shared) {
+    if (task.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       return this.contentDao.updateOneByProfileAndIdSet(profile, task, { timers: [timer] });
     }
 

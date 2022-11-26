@@ -2,20 +2,13 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createContentTestingModule, TestDataUtils } from '@/test';
 import { TestNumberDataPoint, TestNumberDataPointSchema } from './src/test-data-point.schema';
-import {
-  CalendarIntervalEnum,
-  DeepPartial,
-  DataPointIntervalFilter,
-  toTimingId,
-  UserAssignmentStrategy,
-} from '@lyvely/common';
+import { CalendarIntervalEnum, DataPointIntervalFilter, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
 import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
 import { TestNumberDataPointService } from './src/test-number-data-point.service';
 import {
   TestNumberTimeSeriesContent,
   TestNumberTimeSeriesContentDocument,
   TestNumberTimeSeriesContentSchema,
-  TestTimeSeriesContent,
 } from './src/test-time-series-content.schema';
 import { Content, ContentSchema } from '@/content';
 import { Model } from 'mongoose';
@@ -61,16 +54,23 @@ describe('NumberDataPointService', () => {
     await testData.reset(TEST_KEY);
   });
 
-  async function createTimeSeriesContent(user: User, profile: Profile, data: DeepPartial<TestTimeSeriesContent> = {}) {
-    data.someTestField = data.someTestField || 'Testing...';
-    data.dataPointConfig =
-      data.dataPointConfig ||
-      new CheckboxNumberDataPointConfig({
-        min: 0,
-        max: 5,
-        optimal: 3,
-        interval: data.dataPointConfig?.interval ?? CalendarIntervalEnum.Daily,
-      });
+  async function createTimeSeriesContent(
+    user: User,
+    profile: Profile,
+    userStrategy: UserAssignmentStrategy = UserAssignmentStrategy.Shared,
+  ) {
+    const data = {
+      someTestField: 'Testing...',
+      config: {
+        timeSeries: new CheckboxNumberDataPointConfig({
+          min: 0,
+          max: 5,
+          optimal: 3,
+          userStrategy: userStrategy,
+          interval: CalendarIntervalEnum.Daily,
+        }),
+      },
+    };
 
     const model = new TestNumberTimeSeriesContent(profile, user, data as any);
     const entity = new TestNumberTimeSeriesContentModel(model);
@@ -112,7 +112,7 @@ describe('NumberDataPointService', () => {
     it('create per user strategy content', async () => {
       const { owner, member, profile } = await testData.createSimpleGroup();
       const date = new Date();
-      const content = await createTimeSeriesContent(owner, profile, { userStrategy: UserAssignmentStrategy.PerUser });
+      const content = await createTimeSeriesContent(owner, profile, UserAssignmentStrategy.PerUser);
       const ownerDataPoint = await service.upsertDataPoint(profile, owner, content, date, 1);
       const memberDataPoint = await service.upsertDataPoint(profile, member, content, date, 2);
 
@@ -134,7 +134,7 @@ describe('NumberDataPointService', () => {
     it('create shared user strategy content', async () => {
       const { owner, member, profile } = await testData.createSimpleGroup();
       const date = new Date();
-      const content = await createTimeSeriesContent(owner, profile, { userStrategy: UserAssignmentStrategy.Shared });
+      const content = await createTimeSeriesContent(owner, profile);
       const ownerDataPoint = await service.upsertDataPoint(profile, owner, content, date, 1);
       const memberDataPoint = await service.upsertDataPoint(profile, member, content, date, 2);
 

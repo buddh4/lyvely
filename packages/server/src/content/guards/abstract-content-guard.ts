@@ -8,10 +8,7 @@ import { Content } from '../schemas';
 import { getPolicyHandlerFromContext, PolicyService } from '@/policies';
 import { ProfileContext } from '@/profiles';
 import { Type } from '@nestjs/common/interfaces/type.interface';
-
-export const CONTENT_ID_PARAM_KEY = 'contentIdParam';
-export const DEFAULT_CONTENT_ID_PARAM_KEY = 'cid';
-export const CONTENT_TYPE_KEY = 'contentType';
+import { CONTENT_TYPE_KEY, CONTENT_ID_PARAM_KEY, CONTENT_DEFAULT_ID_PARAM_KEY } from '../content.constants';
 
 /**
  * If the request contains a cid parameter, this guard will try to fetch and validate the given content id
@@ -100,6 +97,6 @@ function getContentIdFromRequest(request: Request, context: ExecutionContext, re
 function getContentIdParamFromContext(context: ExecutionContext, reflector: Reflector) {
   return (
     reflector.getAllAndOverride<string>(CONTENT_ID_PARAM_KEY, [context.getHandler(), context.getClass()]) ||
-    DEFAULT_CONTENT_ID_PARAM_KEY
+    CONTENT_DEFAULT_ID_PARAM_KEY
   );
 }

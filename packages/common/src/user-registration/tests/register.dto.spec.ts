@@ -9,6 +9,7 @@ describe('RegisterDto', () => {
         email: 'test@mail.de',
         locale: 'de',
         password: 'password',
+        passwordRepeat: 'password',
       });
 
       expect(model.username).toEqual('MyUser');
@@ -23,6 +24,7 @@ describe('RegisterDto', () => {
         email: 'test@mail.de',
         locale: 'de',
         password: 'password',
+        passwordRepeat: 'password',
       });
 
       const errors = await validate(model);
@@ -35,6 +37,7 @@ describe('RegisterDto', () => {
         email: 'test@mail',
         locale: 'de',
         password: 'password',
+        passwordRepeat: 'password',
       });
 
       const errors = await validate(model);
@@ -47,18 +50,20 @@ describe('RegisterDto', () => {
         username: 'MyUser',
         email: 'test@mail.de',
         password: 'password',
+        passwordRepeat: 'password',
       });
 
       const errors = await validate(model);
       expect(errors.length).toEqual(0);
     });
 
-    it('validation fails due to short username', async () => {
+    it('validation fails due to empty username', async () => {
       const model = new UserRegistrationDto({
-        username: 'A',
+        username: '',
         email: 'test@mail.de',
         locale: 'de',
         password: 'password',
+        passwordRepeat: 'password',
       });
 
       const errors = await validate(model);

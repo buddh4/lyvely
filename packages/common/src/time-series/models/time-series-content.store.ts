@@ -76,7 +76,7 @@ export abstract class TimeSeriesDataPointStore<
 
   getModelsByIntervalFilter(interval: CalendarIntervalEnum, filter?: Filter<Model, any>) {
     return this.filterModels((entry) => {
-      return entry.dataPointConfig.interval === interval && (!filter || filter.check(entry));
+      return entry.timeSeriesConfig.interval === interval && (!filter || filter.check(entry));
     });
   }
 

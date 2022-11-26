@@ -16,8 +16,7 @@ import {
   PropertyType,
   ProfileUsage,
 } from '@lyvely/common';
-
-import { ProfileRolePermission, ProfileRolePermissionSchema } from '@/profiles';
+import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-role-permissions.schema';
 
 @Schema({ _id: false })
 class ProfileMetadata extends BaseModel<ProfileMetadata> {

@@ -24,7 +24,7 @@ export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   @IsString()
   @Length(0, 500)
   @IsOptional()
-  textContent?: string;
+  text?: string;
 }
 
 @Expose()
@@ -65,7 +65,10 @@ export class ContentLogModel<TData = any>
 }
 
 @Expose()
-export class ContentModel<T extends IContent = IContent> extends DocumentModel<T> implements IContent<TObjectId> {
+export class ContentModel<T extends IContent = IContent, TConfig extends Object = any>
+  extends DocumentModel<T>
+  implements IContent<TObjectId>
+{
   id: string;
 
   @Transform(({ value, obj }) => obj._id?.toString() || value)
@@ -73,10 +76,13 @@ export class ContentModel<T extends IContent = IContent> extends DocumentModel<T
 
   @Transform(({ value, obj }) => obj._id?.toString() || value)
   pid: TObjectId;
+
   type: string;
-  data: ContentDataTypeModel;
+
+  content: ContentDataTypeModel;
 
   @Type(() => ContentMetadataModel)
+  @PropertyType(ContentMetadataModel)
   meta: ContentMetadataModel;
 
   @IsArray()
@@ -86,6 +92,18 @@ export class ContentModel<T extends IContent = IContent> extends DocumentModel<T
   @IsArray()
   @Type(() => ContentLogModel)
   logs: Array<ContentLogModel>;
+
+  config: TConfig;
+
+  getDefaults() {
+    return {
+      config: this.getDefaultConfig(),
+    };
+  }
+
+  getDefaultConfig(): TConfig {
+    return undefined;
+  }
 
   getSortOrder(): number {
     return this.meta.sortOrder;

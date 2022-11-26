@@ -117,7 +117,7 @@ export const useActivityStore = defineStore('activities', () => {
       const attachTo = moveEvent.newIndex > 0 ? to[moveEvent.newIndex - 1] : undefined;
 
       if (moveEvent.fromInterval !== moveEvent.toInterval) {
-        activity.dataPointConfig.interval = moveEvent.toInterval;
+        activity.timeSeriesConfig.interval = moveEvent.toInterval;
       }
 
       const { data } = await activityRepository.sort(activity.id, moveEvent.toInterval, attachTo?.id);

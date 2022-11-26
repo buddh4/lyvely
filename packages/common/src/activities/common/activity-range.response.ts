@@ -4,6 +4,7 @@ import { TaskModel } from '../tasks';
 import { ActivityType, ActivityModel } from '../models';
 import { BaseModel } from '@/models';
 import { NumberDataPointModel } from '@/time-series';
+import { PropertiesOf } from '@/utils';
 
 @Exclude()
 export class ActivityRangeResponse extends BaseModel<ActivityRangeResponse> {
@@ -19,7 +20,7 @@ export class ActivityRangeResponse extends BaseModel<ActivityRangeResponse> {
   @Type(() => NumberDataPointModel)
   dataPoints: NumberDataPointModel[] = [];
 
-  addActivity(activity: ActivityModel) {
+  addActivity(activity: PropertiesOf<ActivityModel>) {
     switch (activity.type) {
       case ActivityType.Habit:
         this.habits.push(activity instanceof HabitModel ? activity : new HabitModel(activity));
@@ -30,7 +31,7 @@ export class ActivityRangeResponse extends BaseModel<ActivityRangeResponse> {
     }
   }
 
-  addActivities(activities: ActivityModel[]) {
+  addActivities(activities: PropertiesOf<ActivityModel>[]) {
     activities.forEach((activity) => this.addActivity(activity));
   }
 

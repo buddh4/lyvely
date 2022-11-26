@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Membership, ProfileRelationUserInfo } from '../schemas';
+import { Membership, Profile, ProfileRelationUserInfo } from '../schemas';
 import { MembershipsDao } from '../daos';
+import { EntityIdentity } from '@/core';
 
 @Injectable()
 export class ProfileMembershipService {
   constructor(private readonly membershipDao: MembershipsDao) {}
+
+  async getMemberShips(profile: EntityIdentity<Profile>) {
+    return this.membershipDao.findAllByProfile(profile);
+  }
 
   async updateMembershipInfo(
     membership: Membership,

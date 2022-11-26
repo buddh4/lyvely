@@ -72,7 +72,7 @@ export class UserRegistrationService {
   private async sendEmailAlreadyExistsMail(email: string) {
     // TODO: (i18n) missing translation
     const appName = escapeHTML(this.configService.get('appName'));
-    const forgotPasswordUrl = escapeHTML(encodeURI(this.urlGenerator.getAppUrl('/reset-password').href));
+    const forgotPasswordUrl = escapeHTML(encodeURI(this.urlGenerator.getAppUrl({ path: '/reset-password' }).href));
     return this.mailerService.sendMail({
       to: email,
       subject: `Attempt to register an already existing email`,

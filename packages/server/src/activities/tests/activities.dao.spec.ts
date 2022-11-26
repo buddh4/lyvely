@@ -48,7 +48,7 @@ describe('Activities DAO', () => {
       const search = await activitiesDao.findByProfileAndId(profile, content._id);
       expect(search).not.toBeNull();
       expect(search._id).toEqual(content._id);
-      expect(content instanceof Habit).toEqual(true);
+      expect(search instanceof Habit).toEqual(true);
     });
   });
 
@@ -58,7 +58,7 @@ describe('Activities DAO', () => {
       const habit = await activityData.createHabit(user, profile);
       const search = await activitiesDao.findByProfileAndTimingIds(profile, user, []);
       expect(search.length).toEqual(1);
-      expect(search.find((c) => c.data.title === habit.data.title)).toBeDefined();
+      expect(search.find((c) => c.content.title === habit.content.title)).toBeDefined();
     });
 
     it('find undone task on user profile', async () => {
@@ -326,8 +326,8 @@ describe('Activities DAO', () => {
       );
       expect(result).toBeDefined();
       expect(result.length).toEqual(2);
-      expect(result.find((c) => c.data.title === habit.data.title)).toBeDefined();
-      expect(result.find((c) => c.data.title === habit2.data.title)).toBeDefined();
+      expect(result.find((c) => c.content.title === habit.content.title)).toBeDefined();
+      expect(result.find((c) => c.content.title === habit2.content.title)).toBeDefined();
     });
 
     it('assure we do not include an entry of another plan', async () => {
@@ -342,7 +342,7 @@ describe('Activities DAO', () => {
       );
       expect(result).toBeDefined();
       expect(result.length).toEqual(1);
-      expect(result.find((c) => c.data.title === habit.data.title)).toBeDefined();
+      expect(result.find((c) => c.content.title === habit.content.title)).toBeDefined();
     });
 
     it('assure we do not include an entry of another type', async () => {
@@ -357,7 +357,7 @@ describe('Activities DAO', () => {
       );
       expect(result).toBeDefined();
       expect(result.length).toEqual(1);
-      expect(result[0].data.title).toEqual(habit.data.title);
+      expect(result[0].content.title).toEqual(habit.content.title);
     });
 
     it('find with exclude', async () => {
@@ -376,7 +376,7 @@ describe('Activities DAO', () => {
 
       expect(result).toBeDefined();
       expect(result.length).toEqual(1);
-      expect(result.find((c) => c.data.title === habit2.data.title)).toBeDefined();
+      expect(result.find((c) => c.content.title === habit2.content.title)).toBeDefined();
     });
   });
 });

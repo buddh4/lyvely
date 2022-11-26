@@ -13,7 +13,7 @@ describe('ActivityDataPointStore', () => {
 
   beforeEach(() => {
     store = new ActivityDataPointStore();
-    model = new HabitModel({ id: 'test', data: new ContentDataTypeModel({ title: 'test task' }) });
+    model = new HabitModel({ id: 'test', content: new ContentDataTypeModel({ title: 'test task' }) });
     timingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
     logModel = new NumberDataPointModel({ id: 'test-log', cid: 'test', value: 2, tid: timingId });
   });
@@ -111,18 +111,20 @@ describe('ActivityDataPointStore', () => {
       store.setModel(
         new HabitModel({
           id: 't3',
-          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
           meta: new ContentMetadataModel({ sortOrder: 3 }),
         }),
       );
       store.setModel(
         new HabitModel({
           id: 't2',
-          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
           meta: new ContentMetadataModel({ sortOrder: 2 }),
         }),
       );
-      store.setModel(new HabitModel({ id: 't1', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Weekly } }));
+      store.setModel(
+        new HabitModel({ id: 't1', config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Weekly }, score: 0 } }),
+      );
       const result = store.getHabitsByCalendarInterval(CalendarIntervalEnum.Daily);
       expect(result.length).toEqual(2);
       expect(result[0].id).toEqual('t2');
@@ -135,21 +137,21 @@ describe('ActivityDataPointStore', () => {
       store.setModel(
         new TaskModel({
           id: 't4',
-          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
           meta: new ContentMetadataModel({ sortOrder: 3 }),
         }),
       );
       store.setModel(
         new TaskModel({
           id: 't3',
-          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
           meta: new ContentMetadataModel({ sortOrder: 2 }),
         }),
       );
       store.setModel(
         new TaskModel({
           id: 't2',
-          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
           meta: new ContentMetadataModel({ sortOrder: 0 }),
           done: timingId,
         }),
@@ -157,11 +159,13 @@ describe('ActivityDataPointStore', () => {
       store.setModel(
         new TaskModel({
           id: 't1',
-          dataPointConfig: <any>{ interval: CalendarIntervalEnum.Daily },
+          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
           done: 'anotherday...',
         }),
       );
-      store.setModel(new TaskModel({ id: 't0', dataPointConfig: <any>{ interval: CalendarIntervalEnum.Weekly } }));
+      store.setModel(
+        new TaskModel({ id: 't0', config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Weekly }, score: 0 } }),
+      );
       const result = store.getTasksByCalendarInterval(CalendarIntervalEnum.Daily, timingId);
       expect(result.length).toEqual(3);
       expect(result[0].id).toEqual('t3');

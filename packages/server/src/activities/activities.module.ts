@@ -13,19 +13,19 @@ import {
   Activity,
   ActivitySchema,
 } from './schemas';
-import { UsersModule } from '../users';
+import { UsersModule } from '@/users';
 import { HabitsController } from './controllers/habits.controller';
 import { HabitsService } from './services/habits.service';
 import { TasksController } from './controllers/tasks.controller';
 import { HabitDataPointService } from './services/habit-data-point.service';
-import { Content, ContentModule } from '../content';
-import { ProfilesModule } from '../profiles';
+import { ContentModule } from '@/content';
+import { ProfilesModule } from '@/profiles';
 import { ActivitiesDao } from './daos/activities.dao';
 import { TasksDao } from './daos/tasks.dao';
-import { PoliciesModule } from '../policies/policies.module';
+import { PoliciesModule } from '@/policies/policies.module';
 import { HabitsDao } from './daos/habits.dao';
 import { ActivityEvents } from './activities.events';
-import { CoreModule } from '../core/core.module';
+import { CoreModule } from '@/core';
 import { HabitDataPointDao } from './daos/habit-data-point.dao';
 
 @Module({
@@ -34,11 +34,11 @@ import { HabitDataPointDao } from './daos/habit-data-point.dao';
     UsersModule,
     PoliciesModule,
     ProfilesModule,
-    ContentModule,
+    ContentModule.registerContentType(Habit, Task),
     MongooseModule.forFeature([
       {
         name: Activity.name,
-        collection: Content.collectionName(),
+        collection: Activity.collectionName(),
         schema: ActivitySchema,
         discriminators: [
           { name: Habit.name, schema: HabitSchema },

@@ -59,7 +59,7 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
   });
 
   function setEditActivity(activity: ActivityModel) {
-    const model = getEditModelByActivity(activity);
+    const model = activity.getEditModel();
     model.tagNames = useProfileStore()
       .getTags()
       .filter((tag) => activity.tagIds.includes(tag.id))

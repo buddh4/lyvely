@@ -1,8 +1,9 @@
 import { ActivityModel } from '../models';
 import { isTask, TaskModel } from '../tasks';
 import { sortBySortOrder } from '@/models';
+import { PropertiesOf } from '@/utils';
 
-export function sortActivities(activities: ActivityModel[]) {
+export function sortActivities(activities: PropertiesOf<ActivityModel>[]) {
   return activities.sort((a: ActivityModel, b: ActivityModel) => {
     if (isTask(a) && isTask(b)) {
       const aDone = (<TaskModel>a).done;

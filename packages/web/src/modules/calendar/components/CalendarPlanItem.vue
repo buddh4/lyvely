@@ -54,7 +54,7 @@ const { model } = toRefs(props);
         >
           <slot name="title">
             <div class="flex items-center">
-              {{ model.data.title }}
+              {{ model.content.title }}
               <ly-badge v-if="model.meta.isArchived" class="bg-danger ml-2">
                 {{ $t('common.archived') }}
               </ly-badge>

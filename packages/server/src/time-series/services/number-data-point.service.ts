@@ -18,7 +18,8 @@ export abstract class NumberDataPointService<
   ) {
     if (dataPoint.value === newValue) return;
 
-    await this.dataPointDao.updateDataPointValue(user, dataPoint, Math.min(newValue, model.dataPointConfig.max));
+    newValue = isDefined(model.timeSeriesConfig.max) ? Math.min(newValue, model.timeSeriesConfig.max) : newValue;
+    await this.dataPointDao.updateDataPointValue(user, dataPoint, newValue);
   }
 
   async upsertDataPoint(
@@ -28,13 +29,16 @@ export abstract class NumberDataPointService<
     date: CalendarDate,
     value: number,
   ): Promise<DataPointModel> {
-    if (isDefined(model.dataPointConfig.max)) {
-      value = Math.min(model.dataPointConfig.max, value);
+    if (isDefined(model.timeSeriesConfig.max)) {
+      value = Math.min(model.timeSeriesConfig.max, value);
     }
 
     const dataPoint = await super.upsertDataPoint(profile, user, model, date, value);
 
-    if (model.dataPointConfig.inputType === DataPointInputType.Time && dataPoint.timer.calculateTotalSpan() !== value) {
+    if (
+      model.timeSeriesConfig.inputType === DataPointInputType.Time &&
+      dataPoint.timer.calculateTotalSpan() !== value
+    ) {
       dataPoint.timer.overwrite(value, user);
       await this.dataPointDao.updateOneSetById(dataPoint, { timer: dataPoint.timer });
     }

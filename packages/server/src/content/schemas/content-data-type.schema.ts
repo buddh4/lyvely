@@ -8,14 +8,14 @@ export class ContentDataType<T extends IContentDataType = any> extends BaseEntit
   title?: string;
 
   @Prop()
-  textContent?: string;
+  text?: string;
 
   getTitle(): string {
     return this.title;
   }
 
   getTextContent(): string {
-    return this.textContent;
+    return this.text;
   }
 }
 

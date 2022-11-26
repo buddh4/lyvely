@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Habit, Task } from './schemas';
-import { IContentTypeDefinition, ContentModuleEvents, Content } from '../content';
-import { IFeature } from '@/core';
+import { IContentTypeDefinition } from '../content';
+import { IFeature, ModuleEvents } from '@/core';
 
 @Injectable()
-export class ActivityEvents extends ContentModuleEvents {
+export class ActivityEvents extends ModuleEvents {
   getFeatures(): IFeature[] {
     return [
       {
@@ -27,25 +27,6 @@ export class ActivityEvents extends ContentModuleEvents {
         name: 'Tasks',
         description: 'Management of tasks',
         enabled: true,
-      },
-    ];
-  }
-
-  getContentTypes(): IContentTypeDefinition<Content>[] {
-    return [
-      {
-        type: Habit.name,
-        moduleId: 'activities',
-        constructor: Habit,
-        name: 'Habit',
-        description: 'A Habit/Activity',
-      },
-      {
-        type: Task.name,
-        moduleId: 'activities',
-        constructor: Task,
-        name: 'Task',
-        description: 'A Task',
       },
     ];
   }

@@ -1,30 +1,37 @@
-import { IsEnum, IsNumber } from 'class-validator';
 import { CalendarIntervalEnum } from '@/calendar';
-import { INumberDataPointConfig, DataPointInputType, DataPointValueType, TimeSeriesContentModel } from '@/time-series';
+import { DataPointInputType, DataPointValueType, INumberDataPointConfig, TimeSeriesContentModel } from '@/time-series';
 import { Expose } from 'class-transformer';
+import { UserAssignmentStrategy } from '@/collab';
 
 export enum ActivityType {
   Task = 'Task',
   Habit = 'Habit',
 }
 
-@Expose()
-export abstract class ActivityModel<
-  T extends ActivityModel<any> = ActivityModel<any>,
-> extends TimeSeriesContentModel<INumberDataPointConfig> {
-  @IsEnum(ActivityType)
-  type: string;
-
-  @IsNumber()
+export interface IActivityConfig {
   score: number;
+  timeSeries: INumberDataPointConfig;
+}
 
-  constructor(obj?: Partial<T> & { _id?: any }) {
-    super(obj);
-    this.dataPointConfig = this.dataPointConfig || {
-      interval: CalendarIntervalEnum.Daily,
-      inputType: DataPointInputType.Checkbox,
-      valueType: DataPointValueType.Number,
-      history: [],
+@Expose()
+export abstract class ActivityModel<T extends ActivityModel<any> = ActivityModel<any>> extends TimeSeriesContentModel<
+  T,
+  IActivityConfig
+> {
+  getEditDto() {
+    return undefined;
+  }
+
+  getDefaultConfig(): IActivityConfig {
+    return {
+      score: 0,
+      timeSeries: {
+        interval: CalendarIntervalEnum.Daily,
+        inputType: DataPointInputType.Checkbox,
+        valueType: DataPointValueType.Number,
+        userStrategy: UserAssignmentStrategy.Shared,
+        history: [],
+      },
     };
   }
 }

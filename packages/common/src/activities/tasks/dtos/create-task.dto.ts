@@ -1,25 +1,75 @@
 import { Exclude, Expose } from 'class-transformer';
-import { UpdateTaskDto } from './update-task.dto';
-import { IsNotEmpty, IsString, Length, IsEnum } from 'class-validator';
+import { IsNotEmpty, IsString, Length, IsEnum, IsOptional, IsInt, Max, Min, IsArray, MaxLength } from 'class-validator';
 import { CalendarIntervalEnum } from '@/calendar';
+import { BaseModel } from '@/models';
+import { UserAssignmentStrategy } from '@/collab';
+import { DataPointInputType, INumberDataPointConfig } from '@/time-series';
+import { IContentDataType } from '@/content';
 
 @Exclude()
-export class CreateTaskDto extends UpdateTaskDto {
+export class CreateTaskDto extends BaseModel<CreateTaskDto> {
   @Expose()
   @IsString()
   @IsNotEmpty()
   @Length(0, 100)
-  title?: string;
+  title: string;
+
+  @Expose()
+  @IsOptional()
+  @IsString()
+  @Length(0, 2000)
+  text?: string;
 
   @Expose()
   @IsEnum(CalendarIntervalEnum)
-  interval?: CalendarIntervalEnum;
+  interval: CalendarIntervalEnum;
 
-  constructor(obj?: Partial<CreateTaskDto>) {
+  @Expose()
+  @IsEnum(UserAssignmentStrategy)
+  userStrategy: UserAssignmentStrategy;
+
+  @Expose()
+  @IsInt()
+  @Max(100)
+  @Min(-100)
+  score: number;
+
+  @Expose()
+  @IsArray()
+  @MaxLength(20, { each: true })
+  @IsOptional()
+  tagNames?: string[];
+
+  getTimeSeriesConfig(): Partial<INumberDataPointConfig> {
+    return {
+      min: 0,
+      max: 1,
+      optimal: 1,
+      interval: this.interval,
+      userStrategy: this.userStrategy,
+    };
+  }
+
+  getContent(): Partial<IContentDataType> {
+    return {
+      title: this.title,
+      text: this.text,
+    };
+  }
+
+  constructor(obj?: Partial<CreateTaskDto>, init = true) {
+    obj = init
+      ? Object.assign(
+          {
+            interval: CalendarIntervalEnum.Daily,
+            score: 2,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.Shared,
+            tagNames: [],
+          },
+          obj || {},
+        )
+      : obj;
     super(obj);
-
-    this.interval = this.interval ?? CalendarIntervalEnum.Daily;
-    this.score = this.score ?? 2;
-    this.tagNames = this.tagNames || [];
   }
 }

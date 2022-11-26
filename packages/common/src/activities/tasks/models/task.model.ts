@@ -1,8 +1,8 @@
 import { Expose } from 'class-transformer';
 import { ActivityType, ActivityModel } from '../../models';
-import { ContentModel } from '@/content';
 import { TimerModel } from '@/calendar';
 import { PropertyType } from '@/models';
+import { CreateTaskDto, UpdateTaskDto } from '@/activities';
 
 @Expose()
 export class TaskModel extends ActivityModel<TaskModel> {
@@ -12,6 +12,20 @@ export class TaskModel extends ActivityModel<TaskModel> {
   timer: TimerModel;
 
   type: string = ActivityType.Task;
+
+  static getCreateDto() {
+    return new CreateTaskDto();
+  }
+
+  getEditDto() {
+    return new UpdateTaskDto({
+      title: this.content.title,
+      text: this.content.text,
+      interval: this.timeSeriesConfig.interval,
+      userStrategy: this.timeSeriesConfig.userStrategy,
+      score: this.config.score,
+    });
+  }
 }
 
 @Expose()
@@ -30,6 +44,6 @@ export class UserDoneModel {
   date: Date;
 }
 
-export function isTask(content: ContentModel): content is TaskModel {
+export function isTask(content: any): content is TaskModel {
   return content.type === ActivityType.Task;
 }

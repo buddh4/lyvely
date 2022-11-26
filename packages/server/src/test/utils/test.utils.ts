@@ -1,25 +1,26 @@
 import { Provider } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
-import { TestModule } from '../test.module';
-import { UsersModule } from '../../users';
-import { ContentModule } from '../../content';
-import { ProfilesModule } from '../../profiles';
+import { UsersModule } from '@/users';
+import { ContentModule } from '@/content';
+import { ProfilesModule } from '@/profiles';
 import { TestingModuleBuilder } from '@nestjs/testing/testing-module.builder';
 import { TestDataUtils } from './test-data.utils';
-import { PoliciesModule } from '../../policies/policies.module';
+import { TestModule } from '../test.module';
+import { PoliciesModule } from '@/policies/policies.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import mongoose from 'mongoose';
-import { MailsModule } from '../../mails/mails.module';
-import { CoreModule } from '@/core';
+import { MailsModule } from '@/mails/mails.module';
+import { ConfigurationPath, CoreModule } from '@/core';
 import { AppConfigModule } from '@/app-config';
 import { I18nModule } from '@/i18n';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 export function createCoreTestingModule(
   key: string,
@@ -32,6 +33,14 @@ export function createCoreTestingModule(
       TestDataUtils.getMongooseTestModule(key),
       MongooseModule.forFeature([...models]),
       EventEmitterModule.forRoot({ wildcard: true }),
+      ThrottlerModule.forRootAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (config: ConfigService<ConfigurationPath>) => ({
+          ttl: config.get('http.rateLimit.ttl') || 60,
+          limit: config.get('http.rateLimit.limit') || 40,
+        }),
+      }),
       CoreModule,
       AppConfigModule,
       I18nModule,
@@ -62,7 +71,7 @@ export function createContentTestingModule(
   models: ModelDefinition[] = [],
   modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
 ): TestingModuleBuilder {
-  modules.push(ContentModule);
+  modules.push(ContentModule.forRoot());
   return createBasicTestingModule(key, providers, models, modules);
 }
 

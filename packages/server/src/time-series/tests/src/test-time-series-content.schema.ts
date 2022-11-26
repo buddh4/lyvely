@@ -1,30 +1,58 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   CheckboxNumberDataPointConfig,
   NumberTimeSeriesContent,
   SpinnerNumberDataPointConfig,
   TimeSeriesContent,
-  TimeSeriesContentSchemaFactory,
+  TimeSeriesConfigSchemaFactory,
   DefaultDataPointConfigSchema,
   DataPointConfigFactory,
+  TextareaTextDataPointConfig,
+  NumberTimeSeriesContentConfig,
 } from '../../schemas';
 import * as mongoose from 'mongoose';
-import { DataPointInputType, DataPointValueType } from '@lyvely/common';
+import { DataPointInputType, DataPointValueType, ITimeSeriesContentConfig } from '@lyvely/common';
+
+type TestDataPointConfig = CheckboxNumberDataPointConfig | TextareaTextDataPointConfig;
+
+@Schema({ id: false })
+class TestTimeSeriesConfig implements ITimeSeriesContentConfig {
+  @Prop({ type: DefaultDataPointConfigSchema })
+  timeSeries: TestDataPointConfig;
+}
+
+const TestTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(TestTimeSeriesConfig, [
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
+]);
 
 @Schema()
 export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {
+  @Prop({ type: TestTimeSeriesConfig })
+  config: TestTimeSeriesConfig;
+
   @Prop()
   someTestField: string;
 
-  pushDataPointConfigRevision() {
-    /* Nothing to-do */
+  createTimeSeriesConfigRevision() {
+    return null;
   }
 }
 
 export type TestTimeSeriesContentDocument = TestTimeSeriesContent & mongoose.Document;
-export const TestTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(TestTimeSeriesContent, [
+export const TestTimeSeriesContentSchema = SchemaFactory.createForClass(TestTimeSeriesContent);
+
+type TestNumberDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
+
+@Schema({ id: false })
+class TestNumberTimeSeriesConfig extends NumberTimeSeriesContentConfig<
+  TestNumberTimeSeriesConfig,
+  TestNumberDataPointConfig
+> {}
+
+const TestNumberTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(TestTimeSeriesConfig, [
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
 ]);
 
 @Schema()
@@ -32,15 +60,9 @@ export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNum
   @Prop()
   someTestField: string;
 
-  @Prop({ type: DefaultDataPointConfigSchema, required: true })
-  dataPointConfig: CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
+  @Prop({ type: TestNumberTimeSeriesConfigSchema, required: true })
+  config: TestNumberTimeSeriesConfig;
 }
 
 export type TestNumberTimeSeriesContentDocument = TestNumberTimeSeriesContent & mongoose.Document;
-export const TestNumberTimeSeriesContentSchema = TimeSeriesContentSchemaFactory.createForClass(
-  TestNumberTimeSeriesContent,
-  [
-    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
-    DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
-  ],
-);
+export const TestNumberTimeSeriesContentSchema = SchemaFactory.createForClass(TestNumberTimeSeriesContent);

@@ -24,6 +24,7 @@ import { ProfileType } from '@lyvely/common';
 import { useProfileMappings } from './mappings';
 import { ProfileMembershipController } from '@/profiles/controllers/profile-membership.controller';
 import { ProfileMembershipService } from '@/profiles/services/profile-membership.service';
+import { ProfileUrlGenerator } from '@/profiles/services/profile-url-generator.service';
 
 export const ProfileModel = MongooseModule.forFeature([
   {
@@ -56,6 +57,7 @@ useProfileMappings();
     ProfilesService,
     ProfileTagsService,
     ProfileVisibilityPolicy,
+    ProfileUrlGenerator,
   ],
   exports: [
     ProfilesService,

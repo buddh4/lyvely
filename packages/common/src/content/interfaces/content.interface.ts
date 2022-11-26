@@ -2,7 +2,7 @@ import { ISortable } from '@/models';
 
 export interface IContentDataType {
   title?: string;
-  textContent?: string;
+  text?: string;
 }
 
 export enum CreatedAsType {
@@ -34,13 +34,14 @@ export interface IContentLog<TData = any, TID = any> {
   type: string;
 }
 
-export interface IContent<TID = any> extends ISortable {
+export interface IContent<TID = any, TConfig extends Object = any> extends ISortable {
   id: string;
   oid: TID;
   pid: TID;
   type: string;
-  data: IContentDataType;
+  content: IContentDataType;
   meta: IContentMetadata<TID>;
+  config: TConfig;
   tagIds: TID[];
   logs: Array<IContentLog<any, TID>>;
 }

@@ -1,12 +1,11 @@
 import { Exclude, Expose } from 'class-transformer';
 import { CalendarIntervalEnum } from '@/calendar';
-import { DataPointInputType, DataPointNumberInputType } from '@/time-series';
+import { DataPointInputType, DataPointNumberInputType, INumberDataPointConfig } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
-import { IsEnum, IsInt, IsNotEmpty, IsString, Length, Min, Max, IsOptional, IsArray, MaxLength } from 'class-validator';
+import { IsArray, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Length, Max, MaxLength, Min } from 'class-validator';
 import { BaseModel } from '@/models';
 import { Gte, Lte } from '@/validation';
-import { ActivityModel } from '../../models';
-import { applyValidationProperties } from '@/utils';
+import { IContentDataType } from '@/content';
 
 @Exclude()
 export class CreateHabitDto extends BaseModel<CreateHabitDto> {
@@ -48,19 +47,16 @@ export class CreateHabitDto extends BaseModel<CreateHabitDto> {
   @IsInt()
   @Gte('min')
   @Lte('max')
-  @IsOptional()
   @Min(0)
   optimal?: number;
 
   @Expose()
   @IsEnum(DataPointNumberInputType)
-  @IsOptional()
-  inputType?: DataPointInputType;
+  inputType: DataPointInputType;
 
   @Expose()
   @IsEnum(UserAssignmentStrategy)
-  @IsOptional()
-  userStrategy?: UserAssignmentStrategy;
+  userStrategy: UserAssignmentStrategy;
 
   @Expose()
   @IsArray()
@@ -68,23 +64,40 @@ export class CreateHabitDto extends BaseModel<CreateHabitDto> {
   @IsOptional()
   tagNames?: string[];
 
-  constructor(model?: Partial<CreateHabitDto>, init = true) {
-    if (model instanceof ActivityModel) {
-      super();
-      applyValidationProperties(this, model);
-    } else {
-      super(model);
-    }
+  getTimeSeriesConfig(): Partial<INumberDataPointConfig> {
+    return {
+      min: this.min,
+      max: this.max,
+      optimal: this.optimal,
+      interval: this.interval,
+      inputType: this.inputType,
+      userStrategy: this.userStrategy,
+    };
+  }
 
-    if (init) {
-      this.interval = this.interval ?? CalendarIntervalEnum.Daily;
-      this.score = this.score ?? 2;
-      this.max = this.max ?? 3;
-      this.min = Math.min(this.min ?? 0, this.max);
-      this.optimal = Math.min(this.optimal ?? this.min, this.max);
-      this.inputType = this.inputType ?? DataPointInputType.Checkbox;
-      this.userStrategy = this.userStrategy ?? UserAssignmentStrategy.Shared;
-      this.tagNames = this.tagNames || [];
-    }
+  getContent(): Partial<IContentDataType> {
+    return {
+      title: this.title,
+      text: this.text,
+    };
+  }
+
+  constructor(obj?: Partial<CreateHabitDto>, init = true) {
+    obj = init
+      ? Object.assign(
+          {
+            interval: CalendarIntervalEnum.Daily,
+            score: 2,
+            max: 3,
+            min: 0,
+            optimal: 0,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.Shared,
+            tagNames: [],
+          },
+          obj || {},
+        )
+      : obj;
+    super(obj);
   }
 }

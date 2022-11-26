@@ -79,7 +79,7 @@ export class ActivitiesService extends AbstractContentService<Activity> {
     interval?: CalendarIntervalEnum,
     attachToId?: EntityIdentity<Activity>,
   ): Promise<SortResult[]> {
-    interval = interval ?? activity.dataPointConfig.interval;
+    interval = interval ?? activity.timeSeriesConfig.interval;
 
     const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
 
@@ -93,19 +93,17 @@ export class ActivitiesService extends AbstractContentService<Activity> {
       throw new IntegrityException('Can not merge habit with task');
     }
 
-    interval = attachTo ? attachTo.dataPointConfig.interval : interval ? interval : activity.dataPointConfig.interval;
+    interval = attachTo ? attachTo.timeSeriesConfig.interval : interval ? interval : activity.timeSeriesConfig.interval;
 
-    if (interval !== activity.dataPointConfig.interval) {
+    if (interval !== activity.timeSeriesConfig.interval) {
       // Create new revision for activity in case the latest revision was not today
-      const update = { 'dataPointConfig.interval': interval };
+      const update = { 'config.timeSeries.interval': interval };
 
-      if (activity instanceof Habit && !activity.getRevisionUpdatedAt(new Date())) {
-        activity.pushDataPointConfigRevision(activity.dataPointConfig);
-        update['dataPointConfig.history'] = activity.dataPointConfig.history;
-      }
+      activity.applyTimeSeriesConfigUpdate({ interval });
+      update['config.timeSeries.history'] = activity.timeSeriesConfig.history;
 
       await this.contentDao.updateOneByProfileAndIdSet(profile, activity, update);
-      activity.dataPointConfig.interval = interval;
+      activity.timeSeriesConfig.interval = interval;
     }
 
     const activitiesByInterval = await this.contentDao.findByProfileAndInterval(profile, activity.type, interval, {

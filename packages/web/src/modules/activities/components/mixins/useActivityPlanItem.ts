@@ -21,8 +21,8 @@ export const useActivityPlanItem = (model: ActivityModel) => {
       store: model.type === ActivityType.Habit ? useHabitPlanStore() : useTaskPlanStore(),
       event: {
         cid: model.id,
-        fromInterval: model.dataPointConfig.interval,
-        toInterval: model.dataPointConfig.interval,
+        fromInterval: model.timeSeriesConfig.interval,
+        toInterval: model.timeSeriesConfig.interval,
         oldIndex: currentIndex,
         newIndex: newIndex(currentIndex),
       },

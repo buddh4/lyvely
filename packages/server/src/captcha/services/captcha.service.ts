@@ -20,7 +20,7 @@ export class CaptchaService {
 
     return new CaptchaChallenge({
       identity,
-      imageUrl: this.urlGenerator.getApiUrl('/captcha', { identity }).href,
+      imageUrl: this.urlGenerator.getApiUrl({ path: '/captcha', params: { identity } }).href,
       issuedAt: new Date(),
       expiresIn: ms(TOKEN_EXPIRES_IN),
     });

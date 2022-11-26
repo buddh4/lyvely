@@ -40,7 +40,7 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   }
 
   function getDataPoint(activity: HabitModel) {
-    const timingId = toTimingId(calendarPlanStore.date, activity.dataPointConfig.interval);
+    const timingId = toTimingId(calendarPlanStore.date, activity.timeSeriesConfig.interval);
     return activityStore.cache.getDataPoint(activity, timingId, true);
   }
 

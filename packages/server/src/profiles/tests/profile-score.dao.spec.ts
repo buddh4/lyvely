@@ -5,7 +5,7 @@ import { createContentTestingModule } from '../../test/utils/test.utils';
 import { Calendar, CalendarIntervalEnum } from '@lyvely/common';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import { TestProfileScore, TestProfileScoreSchema } from './src/test-profile-score.schema';
-import { TestProfileScoreDao } from './src/test-profile-score-dao.service';
+import { TestProfileScoreDao } from './src/test-profile-score.dao';
 
 const testScoreModelDef = {
   name: ProfileScore.name,

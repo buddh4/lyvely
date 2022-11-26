@@ -1,8 +1,8 @@
-import { getObjectId } from '../../../test/utils/test.utils';
+import { getObjectId } from '@/test';
 import { Task } from '../../schemas';
-import { toTimingId, UserAssignmentStrategy } from '@lyvely/common';
-import { User } from '../../../users';
-import { Profile } from '../../../profiles';
+import { DataPointInputType, DataPointValueType, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
+import { User } from '@/users';
+import { Profile } from '@/profiles';
 import { expect } from '@jest/globals';
 
 describe('Task', () => {
@@ -10,7 +10,13 @@ describe('Task', () => {
     it('set done by user on shared task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -29,7 +35,13 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -49,7 +61,13 @@ describe('Task', () => {
     it('set done by user on per user task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -68,7 +86,13 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -94,7 +118,13 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -121,7 +151,13 @@ describe('Task', () => {
     it('set undone by user on shared task', async () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -138,7 +174,13 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -155,7 +197,13 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -176,7 +224,13 @@ describe('Task', () => {
       const user3 = new User({ _id: getObjectId('user3') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
+        },
       });
 
       const tid = toTimingId('2021-04-03');
@@ -198,7 +252,13 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.Shared,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.Shared,
+          },
+        },
       });
 
       expect(task.isDoneByUser(user1)).toEqual(false);
@@ -217,7 +277,13 @@ describe('Task', () => {
       const user2 = new User({ _id: getObjectId('user2') });
 
       const task = new Task(new Profile(user1), user1, {
-        userStrategy: UserAssignmentStrategy.PerUser,
+        config: {
+          timeSeries: {
+            valueType: DataPointValueType.Number,
+            inputType: DataPointInputType.Checkbox,
+            userStrategy: UserAssignmentStrategy.PerUser,
+          },
+        },
       });
 
       expect(task.isDoneByUser(user1)).toEqual(false);

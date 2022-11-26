@@ -1,4 +1,4 @@
-import { ProfileScore } from '../../schemas';
+import { ProfileScore } from '@/profiles';
 import mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 

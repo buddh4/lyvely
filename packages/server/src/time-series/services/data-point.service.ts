@@ -1,8 +1,8 @@
-import { User } from '../../users';
+import { User } from '@/users';
 import { CalendarDate, toDate, DataPointIntervalFilter, UserAssignmentStrategy } from '@lyvely/common';
 import { TimeSeriesContent, DataPoint } from '../schemas';
-import { Profile, ProfilesService } from '../../profiles';
-import { EntityIdentity } from '../../core/db/db.utils';
+import { Profile, ProfilesService } from '@/profiles';
+import { EntityIdentity } from '@/core';
 import { DataPointDao } from '../daos';
 import { Inject } from '@nestjs/common';
 
@@ -30,7 +30,7 @@ export abstract class DataPointService<
     content: TModel,
     date: CalendarDate,
   ): Promise<TDataPointModel> {
-    return content.userStrategy === UserAssignmentStrategy.PerUser
+    return content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser
       ? await this.dataPointDao.findUserDataPointByDate(content, user, date)
       : await this.dataPointDao.findDataPointByDate(content, date);
   }

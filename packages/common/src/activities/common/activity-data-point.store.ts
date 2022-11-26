@@ -11,14 +11,14 @@ export class ActivityDataPointStore extends TimeSeriesDataPointStore<ActivityMod
   }
 
   createDataPoint(model: ActivityModel, timingId: string): NumberDataPointModel {
-    return new NumberDataPointModel({ cid: model.id, interval: model.dataPointConfig.interval, tid: timingId });
+    return new NumberDataPointModel({ cid: model.id, interval: model.timeSeriesConfig.interval, tid: timingId });
   }
 
   getHabitsByCalendarInterval(interval: CalendarIntervalEnum, filter?: ActivityFilter): HabitModel[] {
     return this.filterModels((entry) => {
       return (
         entry.type === ActivityType.Habit &&
-        entry.dataPointConfig.interval === interval &&
+        entry.timeSeriesConfig.interval === interval &&
         (!filter || filter.check(entry))
       );
     });
@@ -28,7 +28,7 @@ export class ActivityDataPointStore extends TimeSeriesDataPointStore<ActivityMod
     return <TaskModel[]>this.filterModels((entry) => {
       return (
         isTask(entry) &&
-        entry.dataPointConfig.interval === interval &&
+        entry.timeSeriesConfig.interval === interval &&
         (!entry.done || entry.done === timingId) &&
         (!filter || filter.check(entry))
       );

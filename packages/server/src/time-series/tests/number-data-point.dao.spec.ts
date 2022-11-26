@@ -1,7 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
-import { createContentTestingModule, getObjectId } from '../../test/utils/test.utils';
+import { createContentTestingModule, getObjectId, TestDataUtils } from '@/test';
 import { TestNumberDataPoint, TestNumberDataPointSchema } from './src/test-data-point.schema';
 import {
   CalendarDateTime,
@@ -13,8 +12,8 @@ import {
   DataPointIntervalFilter,
 } from '@lyvely/common';
 import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
-import { Profile } from '../../profiles';
-import { User } from '../../users';
+import { Profile } from '@/profiles';
+import { User } from '@/users';
 import { TestTimeSeriesContent } from './src/test-time-series-content.schema';
 import { CheckboxNumberDataPointConfig } from '../schemas';
 
@@ -76,7 +75,7 @@ describe('NumberDataPointDao', () => {
     const profile = new Profile(user, { _id: getObjectId(options.pid || 'p1'), oid: getObjectId(options.pid || 'o1') });
     const content = new TestTimeSeriesContent(profile, user, {
       _id: getObjectId(options.uid || 'c1'),
-      dataPointConfig: new CheckboxNumberDataPointConfig({ interval: interval }),
+      config: { timeSeries: new CheckboxNumberDataPointConfig({ interval: interval }) },
     });
 
     const dataPoint = await dao.save(
@@ -161,19 +160,23 @@ describe('NumberDataPointDao', () => {
   describe('daily interval', () => {
     it('find daily data point', async () => {
       const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date));
+      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date.toDate()));
       expect(result.length).toEqual(1);
     });
 
     it('do not include day after', async () => {
       const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date.add(1, 'days')));
+      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date.add(1, 'days').toDate()));
       expect(result.length).toEqual(0);
     });
 
     it('do not include day before', async () => {
       const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date.subtract(1, 'days')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(date.subtract(1, 'days').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
@@ -182,7 +185,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Daily),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
       expect(result.length).toEqual(1);
     });
@@ -191,19 +194,27 @@ describe('NumberDataPointDao', () => {
   describe('weekly interval', () => {
     it('find weekly data point', async () => {
       const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date));
+      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date.toDate()));
       expect(result.length).toEqual(1);
     });
 
     it('do not include date after', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-02-13')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-02-13').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
     it('do not include date before', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-02-21')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-02-21').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
@@ -212,7 +223,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Daily),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
       expect(result.length).toEqual(0);
     });
@@ -222,7 +233,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Weekly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
       expect(result.length).toEqual(1);
     });
@@ -232,7 +243,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Monthly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
       expect(result.length).toEqual(1);
     });
@@ -242,7 +253,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Quarterly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
       expect(result.length).toEqual(1);
     });
@@ -252,7 +263,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Yearly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
       expect(result.length).toEqual(1);
     });
@@ -262,7 +273,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Unscheduled),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
       expect(result.length).toEqual(1);
     });
@@ -271,25 +282,41 @@ describe('NumberDataPointDao', () => {
   describe('monthly interval', () => {
     it('find monthly data point by first day of month', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-02-01')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-02-01').toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
     it('find monthly data point by last day of month', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-02-28')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-02-28').toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
     it('do not include date after', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-01-31')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-01-31').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
     it('do not include date before', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-03-01')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-03-01').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
@@ -298,7 +325,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Daily),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
       expect(result.length).toEqual(0);
     });
@@ -308,7 +335,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Weekly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
       expect(result.length).toEqual(0);
     });
@@ -318,7 +345,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Monthly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
       expect(result.length).toEqual(1);
     });
@@ -328,7 +355,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Quarterly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
       expect(result.length).toEqual(1);
     });
@@ -338,7 +365,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Yearly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
       expect(result.length).toEqual(1);
     });
@@ -348,7 +375,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Unscheduled),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
       expect(result.length).toEqual(1);
     });
@@ -357,25 +384,41 @@ describe('NumberDataPointDao', () => {
   describe('quarterly interval', () => {
     it('find quarterly data point by first day of quarter', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-01-01')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-01-01').toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
     it('find quarterly data point by first day of quarter', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-03-31')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-03-31').toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
     it('do not include date after', async () => {
       const { pid, uid } = await createEntity('2022-04-01', CalendarIntervalEnum.Quarterly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-03-31')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-03-31').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
     it('do not include date before', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-07-01')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-07-01').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
@@ -384,7 +427,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Daily),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
       expect(result.length).toEqual(0);
     });
@@ -394,7 +437,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Weekly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
       expect(result.length).toEqual(0);
     });
@@ -404,7 +447,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Monthly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
       expect(result.length).toEqual(0);
     });
@@ -414,7 +457,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Quarterly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
       expect(result.length).toEqual(1);
     });
@@ -424,7 +467,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Yearly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
       expect(result.length).toEqual(1);
     });
@@ -434,7 +477,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Unscheduled),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
       expect(result.length).toEqual(1);
     });
@@ -443,25 +486,41 @@ describe('NumberDataPointDao', () => {
   describe('yearly interval', () => {
     it('find yearly data point by first day of year', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-01-01')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-01-01').toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
     it('find yearly data point by first day of year', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-12-31')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-12-31').toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
     it('do not include date after', async () => {
       const { pid, uid } = await createEntity('2022-04-01', CalendarIntervalEnum.Yearly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2023-01-01')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2023-01-01').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
     it('do not include date before', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2021-12-31')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2021-12-31').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
@@ -470,7 +529,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Daily),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
       expect(result.length).toEqual(0);
     });
@@ -480,7 +539,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Weekly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
       expect(result.length).toEqual(0);
     });
@@ -490,7 +549,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Monthly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
       expect(result.length).toEqual(0);
     });
@@ -500,7 +559,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Quarterly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
       expect(result.length).toEqual(0);
     });
@@ -510,7 +569,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Yearly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
       expect(result.length).toEqual(1);
     });
@@ -520,7 +579,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Unscheduled),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
       expect(result.length).toEqual(1);
     });
@@ -529,13 +588,21 @@ describe('NumberDataPointDao', () => {
   describe('unscheduled interval', () => {
     it('include unscheduled data point for past search date', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('1998-01-01')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('1998-01-01').toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
     it('include unscheduled data point for future search date', async () => {
       const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime().add(5, 'years')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime().add(5, 'years').toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
@@ -544,7 +611,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Daily),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
       expect(result.length).toEqual(0);
     });
@@ -554,7 +621,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Weekly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
       expect(result.length).toEqual(0);
     });
@@ -564,7 +631,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Monthly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
       expect(result.length).toEqual(0);
     });
@@ -574,7 +641,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Quarterly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
       expect(result.length).toEqual(0);
     });
@@ -584,7 +651,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Yearly),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
       expect(result.length).toEqual(0);
     });
@@ -594,7 +661,7 @@ describe('NumberDataPointDao', () => {
       const result = await dao.findByIntervalLevel(
         pid,
         uid,
-        new DataPointIntervalFilter(date, CalendarIntervalEnum.Unscheduled),
+        new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
       expect(result.length).toEqual(1);
     });
@@ -611,7 +678,11 @@ describe('NumberDataPointDao', () => {
       ]);
 
       const { pid, uid } = entries[0];
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(dateTime('2022-02-20')));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(dateTime('2022-02-20').toDate()),
+      );
       expect(result.length).toEqual(5);
     });
   });

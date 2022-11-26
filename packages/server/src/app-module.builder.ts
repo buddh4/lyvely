@@ -191,7 +191,13 @@ export class AppModuleBuilder {
       return this;
     }
 
-    return this.importModules(ProfilesModule, UserRegistrationModule, ContentModule, AccountModule, AvatarsModule);
+    return this.importModules(
+      ProfilesModule,
+      UserRegistrationModule,
+      ContentModule.forRoot(),
+      AccountModule,
+      AvatarsModule,
+    );
   }
 
   private initFeatureModules() {

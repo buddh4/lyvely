@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { DeepPartial, IContent, PropertyType } from '@lyvely/common';
-import { BaseEntity } from '@/core';
+import { DeepPartial, IContent, PropertyType, assignRawDataTo } from '@lyvely/common';
+import { assignEntityData, BaseEntity } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
@@ -17,13 +17,17 @@ export interface IContentEntity extends IContent<TObjectId> {
 }
 
 @Schema({ discriminatorKey: 'type' })
-export class Content<T extends IContentEntity & BaseEntity<IContentEntity> = any>
+export class Content<
+    T extends IContentEntity & BaseEntity<IContentEntity> = any,
+    TContent extends ContentDataType = ContentDataType,
+    TConfig extends Object = any,
+  >
   extends BaseProfileModel<T>
   implements IContent, BaseProfileModel<T>
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)
-  data: ContentDataType;
+  content: TContent;
 
   @Prop({ type: ContentMetadataSchema })
   @PropertyType(ContentMetadata)
@@ -36,6 +40,8 @@ export class Content<T extends IContentEntity & BaseEntity<IContentEntity> = any
   @Prop({ type: [mongoose.Types.ObjectId], default: [] })
   tagIds: TObjectId[];
 
+  config: any;
+
   type: string;
 
   constructor(profile: Profile, createdBy: User, obj: DeepPartial<T> = {}) {
@@ -45,6 +51,20 @@ export class Content<T extends IContentEntity & BaseEntity<IContentEntity> = any
     obj.pid = profile._id;
     obj.oid = profile.oid;
     super(obj);
+  }
+
+  applyContentUpdate(update: Partial<TContent>) {
+    this.content = assignRawDataTo(this.content || ({} as TContent), update);
+  }
+
+  getDefaults() {
+    return {
+      config: this.getDefaultConfig(),
+    };
+  }
+
+  getDefaultConfig(): TConfig {
+    return undefined;
   }
 
   static collectionName() {

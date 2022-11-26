@@ -9,10 +9,14 @@ export type DocumentMock<T> = {
 
 export abstract class BaseModel<T> {
   constructor(obj?: Partial<T>) {
+    if ('getDefaults' in this && typeof this.getDefaults === 'function') {
+      obj = obj ? Object.assign(this.getDefaults(), obj) : this.getDefaults();
+    }
+
     assignRawDataToAndInitProps(this, obj);
 
-    if ('afterInit' in this) {
-      (<this & { afterInit: () => void }>this).afterInit();
+    if ('afterInit' in this && typeof this.afterInit === 'function') {
+      this.afterInit();
     }
   }
 }

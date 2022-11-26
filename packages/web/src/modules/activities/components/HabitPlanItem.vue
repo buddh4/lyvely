@@ -49,11 +49,11 @@ const inputBorderColorClass = computed(() => {
 });
 
 const inputColorClass = computed(() => {
-  if (props.model.dataPointConfig.min && selection.value <= props.model.dataPointConfig.min) {
+  if (props.model.timeSeriesConfig.min && selection.value <= props.model.timeSeriesConfig.min) {
     return 'warning';
   }
 
-  if (props.model.dataPointConfig.optimal && selection.value >= props.model.dataPointConfig.optimal!) {
+  if (props.model.timeSeriesConfig.optimal && selection.value >= props.model.timeSeriesConfig.optimal!) {
     return 'success';
   }
 
@@ -77,7 +77,7 @@ async function stopTimer() {
 }
 
 const isPresentInterval = computed(() =>
-  useCalendarPlanStore().isPresentInterval(props.model.dataPointConfig.interval),
+  useCalendarPlanStore().isPresentInterval(props.model.timeSeriesConfig.interval),
 );
 //TODO: Maybe implement move to next interval with Ctrl + Left/Right
 </script>
@@ -94,38 +94,38 @@ const isPresentInterval = computed(() =>
   >
     <template #rating>
       <item-checkbox-list
-        v-if="model.dataPointConfig.inputType === DataPointInputType.Checkbox"
+        v-if="model.timeSeriesConfig.inputType === DataPointInputType.Checkbox"
         v-model:selection="selection"
-        :min="model.dataPointConfig.min"
-        :max="model.dataPointConfig.max"
-        :optimal="model.dataPointConfig.optimal"
+        :min="model.timeSeriesConfig.min"
+        :max="model.timeSeriesConfig.max"
+        :optimal="model.timeSeriesConfig.optimal"
         :disabled="isDisabled"
       />
       <ly-input-number
-        v-else-if="model.dataPointConfig.inputType === DataPointInputType.Spinner"
+        v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Spinner"
         v-model="selection"
         :input-class="['calendar-plan-spinner-input text-sm bg-main', inputBorderColorClass]"
         :min="0"
-        :max="model.dataPointConfig.max"
+        :max="model.timeSeriesConfig.max"
         :disabled="isDisabled"
       />
-      <div v-else-if="model.dataPointConfig.inputType === DataPointInputType.Range" class="flex items-center gap-2">
+      <div v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Range" class="flex items-center gap-2">
         <span class="text-sm">{{ selection }}</span>
         <ly-input-range
           v-model="selection"
           :input-class="['calendar-plan-range-input', inputColorClass]"
           :min="0"
-          :max="model.dataPointConfig.max"
+          :max="model.timeSeriesConfig.max"
           :disabled="isDisabled"
         />
       </div>
       <timer-state
-        v-else-if="model.dataPointConfig.inputType === DataPointInputType.Time"
+        v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Time"
         :key="dataPoint.timer.calculateTotalSpan()"
         :model="dataPoint.timer"
-        :min="model.dataPointConfig.min"
-        :max="model.dataPointConfig.max"
-        :optimal="model.dataPointConfig.optimal"
+        :min="model.timeSeriesConfig.min"
+        :max="model.timeSeriesConfig.max"
+        :optimal="model.timeSeriesConfig.optimal"
         :startable="isPresentInterval"
         @start="startTimer"
         @stop="stopTimer"

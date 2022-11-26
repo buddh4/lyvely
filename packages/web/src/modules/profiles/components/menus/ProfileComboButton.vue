@@ -47,7 +47,7 @@ const progressStyle = computed(() => {
             <ly-profile-avatar />
 
             <div class="flex flex-col">
-              <div class="flex justify-center items-center text-xs">
+              <div class="flex justify-center items-center text-xs" :title="score">
                 <transition
                     name="score-icon"
                     mode="out-in"
@@ -64,7 +64,7 @@ const progressStyle = computed(() => {
                     leave-active-class="animate__animated animate__faster animate__bounceOut"
                 >
                   <div :key="score" class="inline-block score-value ml-0.5">
-                    {{ formattedScore }}
+                    <span>{{ formattedScore }}</span>
                   </div>
                 </transition>
               </div>

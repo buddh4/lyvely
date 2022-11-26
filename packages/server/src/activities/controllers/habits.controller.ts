@@ -7,7 +7,6 @@ import {
   UpdateHabitResponseDto,
   HabitModel,
   TagModel,
-  EntityNotFoundException,
   CreateHabitDto,
   HabitsEndpoint,
   TimerUpdate,
@@ -42,10 +41,11 @@ export class HabitsController implements HabitsEndpoint {
 
   @Put(':cid')
   @Policies(ContentWritePolicy)
-  async update(@Body() update: UpdateHabitDto, @Request() req: ProfileContentRequest<Habit>, @Param('cid') id: string) {
+  async update(@Body() update: UpdateHabitDto, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
 
-    await this.contentService.updateHabit(profile, user, content, update);
+    content.applyUpdate(update);
+    await this.contentService.updateContent(profile, user, content, content);
 
     return new UpdateHabitResponseDto({
       model: new HabitModel(content),

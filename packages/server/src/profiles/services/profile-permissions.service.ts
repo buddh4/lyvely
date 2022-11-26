@@ -8,7 +8,7 @@ import {
   IProfileRoleDefinition,
   IProfileRolePermission,
 } from '../interfaces';
-import { PermissionsService } from '../../permissions';
+import { PermissionsService } from '@/permissions';
 
 export const TOKEN_PROFILE_ROLES_DEFINITION = 'PROFILE_ROLES_DEFINITION';
 export const TOKEN_DEFAULT_PROFILE_PERMISSIONS = 'DEFAULT_PROFILE_PERMISSIONS';

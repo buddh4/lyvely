@@ -1,13 +1,15 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   DataPointInputType,
   DataPointValueType,
-  INumberDataPointSettings,
   INumberDataPointConfig,
+  INumberDataPointSettings,
+  INumberDataPointConfigRevision,
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 
-export class NumberDataPointConfigRevision extends DataPointConfigRevision implements INumberDataPointSettings {
+@Schema({ id: false })
+export class NumberDataPointConfigRevision extends DataPointConfigRevision implements INumberDataPointConfigRevision {
   @Prop()
   min?: number;
 
@@ -19,6 +21,7 @@ export class NumberDataPointConfigRevision extends DataPointConfigRevision imple
 
   constructor(config: INumberDataPointConfig) {
     super(config);
+    this.valueType = DataPointValueType.Number;
     this.min = config.min;
     this.max = config.max;
     this.optimal = config.optimal;
@@ -35,10 +38,8 @@ const SupportedNumberDataPointInputTypes = [
   DataPointInputType.Textarea,
 ];
 
-export class NumberDataPointConfig
-  extends DataPointConfig<INumberDataPointSettings>
-  implements INumberDataPointSettings
-{
+@Schema({ id: false, discriminatorKey: 'strategy' })
+export class NumberDataPointConfig extends DataPointConfig<INumberDataPointSettings> implements INumberDataPointConfig {
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;
 
@@ -62,9 +63,7 @@ export class NumberDataPointConfig
   }
 
   setSettings(settings?: INumberDataPointSettings) {
-    this.min = settings?.min;
-    this.max = settings?.max;
-    this.optimal = settings?.optimal;
+    Object.assign(this, settings);
   }
 
   getSettings() {

@@ -46,9 +46,9 @@ describe('TaskService', () => {
       expect(task.meta.sortOrder).toEqual(0);
       expect(task.meta.createdAt).toBeDefined();
       expect(task.meta.updatedAt).toBeDefined();
-      expect(task.dataPointConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
-      expect(task.score).toEqual(5);
-      expect(task.data.title).toEqual('Do something!');
+      expect(task.timeSeriesConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
+      expect(task.config.score).toEqual(5);
+      expect(task.content.title).toEqual('Do something!');
       expect(task.doneBy).toEqual([]);
     });
 
@@ -69,11 +69,11 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
+        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
 
         expect(profile.score).toEqual(5);
@@ -89,7 +89,7 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
         expect(search.doneBy[0].uid).toEqual(member._id);
 
         expect(profile.score).toEqual(5);
@@ -103,11 +103,11 @@ describe('TaskService', () => {
         await taskService.setDone(profile, owner, task, '2021-04-03');
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
+        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
       });
 
@@ -121,15 +121,15 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(2);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
         expect(search.doneBy[0].uid).toEqual(owner._id);
-        expect(search.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
+        expect(search.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
         expect(search.doneBy[1].uid).toEqual(member._id);
 
         expect(task.doneBy.length).toEqual(2);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.dataPointConfig.interval));
+        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
-        expect(task.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
+        expect(task.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
         expect(task.doneBy[1].uid).toEqual(member._id);
       });
 
@@ -143,11 +143,11 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.dataPointConfig.interval));
+        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
         expect(task.doneBy[0].uid).toEqual(owner._id);
       });
     });

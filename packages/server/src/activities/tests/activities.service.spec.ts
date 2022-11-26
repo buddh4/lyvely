@@ -69,51 +69,51 @@ describe('ActivityService', () => {
 
       const habits = await createHabits(user, profile);
 
-      await activitiesService.sort(profile, user, habits[3], habits[3].dataPointConfig.interval);
+      await activitiesService.sort(profile, user, habits[3], habits[3].timeSeriesConfig.interval);
 
       const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
-      expect(activities[0].data.title).toEqual('h3');
-      expect(activities[1].data.title).toEqual('h0');
-      expect(activities[2].data.title).toEqual('h1');
-      expect(activities[3].data.title).toEqual('h2');
-      expect(activities[4].data.title).toEqual('h4');
+      expect(activities[0].content.title).toEqual('h3');
+      expect(activities[1].content.title).toEqual('h0');
+      expect(activities[2].content.title).toEqual('h1');
+      expect(activities[3].content.title).toEqual('h2');
+      expect(activities[4].content.title).toEqual('h4');
     });
 
     it('sort to bottom', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habits = await createHabits(user, profile);
 
-      await activitiesService.sort(profile, user, habits[1], habits[1].dataPointConfig.interval, habits[4]);
+      await activitiesService.sort(profile, user, habits[1], habits[1].timeSeriesConfig.interval, habits[4]);
 
       const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
-      expect(activities[0].data.title).toEqual('h0');
-      expect(activities[1].data.title).toEqual('h2');
-      expect(activities[2].data.title).toEqual('h3');
-      expect(activities[3].data.title).toEqual('h4');
-      expect(activities[4].data.title).toEqual('h1');
+      expect(activities[0].content.title).toEqual('h0');
+      expect(activities[1].content.title).toEqual('h2');
+      expect(activities[2].content.title).toEqual('h3');
+      expect(activities[3].content.title).toEqual('h4');
+      expect(activities[4].content.title).toEqual('h1');
     });
 
     it('sort to same index', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habits = await createHabits(user, profile);
 
-      await activitiesService.sort(profile, user, habits[2], habits[2].dataPointConfig.interval, habits[2]);
+      await activitiesService.sort(profile, user, habits[2], habits[2].timeSeriesConfig.interval, habits[2]);
 
       const filter = new DataPointIntervalFilter(ActivityTestDataUtil.getDateTomorrow());
       const { activities } = await activitiesService.findByFilter(profile, user, filter);
       sortActivities(activities);
       expect(activities.length).toEqual(5);
-      expect(activities[0].data.title).toEqual('h0');
-      expect(activities[1].data.title).toEqual('h1');
-      expect(activities[2].data.title).toEqual('h2');
-      expect(activities[3].data.title).toEqual('h3');
-      expect(activities[4].data.title).toEqual('h4');
+      expect(activities[0].content.title).toEqual('h0');
+      expect(activities[1].content.title).toEqual('h1');
+      expect(activities[2].content.title).toEqual('h2');
+      expect(activities[3].content.title).toEqual('h3');
+      expect(activities[4].content.title).toEqual('h4');
     });
 
     it('sort to another interval', async () => {
@@ -136,10 +136,10 @@ describe('ActivityService', () => {
         }),
       ];
 
-      await activitiesService.sort(profile, user, habits[0], habits[2].dataPointConfig.interval, habits[2]);
-      expect(habits[0].dataPointConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
-      expect(habits[0].dataPointConfig.history.length).toEqual(1);
-      expect(habits[0].dataPointConfig.history[0].interval).toEqual(CalendarIntervalEnum.Daily);
+      await activitiesService.sort(profile, user, habits[0], habits[2].timeSeriesConfig.interval, habits[2]);
+      expect(habits[0].timeSeriesConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
+      expect(habits[0].timeSeriesConfig.history.length).toEqual(1);
+      expect(habits[0].timeSeriesConfig.history[0].interval).toEqual(CalendarIntervalEnum.Daily);
 
       expect(habits[0].meta.sortOrder).toEqual(1);
       const h2 = await activitiesService.findByProfileAndId(profile, habits[2]);

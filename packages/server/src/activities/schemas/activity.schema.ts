@@ -1,35 +1,59 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import {
   CheckboxNumberDataPointConfig,
-  SpinnerNumberDataPointConfig,
-  NumberTimeSeriesContent,
-  TimeSeriesContentSchemaFactory,
-  DefaultDataPointConfigSchema,
   DataPointConfigFactory,
+  NumberDataPointConfig,
+  NumberTimeSeriesContent,
+  NumberTimeSeriesContentConfig,
 } from '@/time-series';
-import { DataPointInputType, ActivityModel, PropertiesOf, DataPointValueType } from '@lyvely/common';
+import {
+  ActivityModel,
+  DataPointInputType,
+  DataPointValueType,
+  IContentDataType,
+  PropertiesOf,
+  PropertyType,
+} from '@lyvely/common';
 
-type ActivityDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
+@Schema({ id: false })
+export class ActivityConfig extends NumberTimeSeriesContentConfig<ActivityConfig> {
+  @Prop({ type: Number })
+  @PropertyType(Number, { default: 0 })
+  score: number;
+}
+
+const ActivityConfigSchema = SchemaFactory.createForClass(ActivityConfig);
 
 /**
  * Base Activity content class.
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Activity extends NumberTimeSeriesContent<Activity> implements PropertiesOf<ActivityModel> {
-  @Prop({ type: Number, default: 0 })
-  score: number;
-
-  @Prop({ type: DefaultDataPointConfigSchema, required: true })
-  dataPointConfig: ActivityDataPointConfig;
+  @Prop({ type: ActivityConfigSchema, required: true })
+  config: ActivityConfig;
 
   type: string;
+
+  applyUpdate(update: {
+    getTimeSeriesConfig?: () => Partial<NumberDataPointConfig>;
+    getContent?: () => Partial<IContentDataType>;
+  }) {
+    this.applyTimeSeriesConfigUpdate(update?.getTimeSeriesConfig());
+    this.applyContentUpdate(update?.getContent());
+  }
+
+  getDefaultConfig(): any {
+    return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
+      DataPointValueType.Number,
+      DataPointInputType.Checkbox,
+      {
+        min: 0,
+        max: 1,
+      },
+    );
+  }
 }
 
 export type ActivityDocument = Activity & mongoose.Document;
-export const ActivitySchema = TimeSeriesContentSchemaFactory.createForClass(Activity, [
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Time),
-]);
+export const ActivitySchema = SchemaFactory.createForClass(Activity);
