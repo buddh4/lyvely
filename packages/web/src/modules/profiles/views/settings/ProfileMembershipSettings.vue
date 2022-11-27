@@ -5,8 +5,8 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { useUpdateProfileMembershipSettingsStore } from '@/modules/profiles/stores/profile-membership-settings.store';
 import LyFormModel from '@/modules/ui/components/form/FormModel.vue';
-import { ModelValidator } from "@lyvely/common";
-import { StoreStatusPlugin } from "@/store";
+import { ModelValidator } from '@lyvely/common';
+import { StoreStatusPlugin } from '@/store';
 
 const profileStore = useProfileStore();
 const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();
@@ -37,7 +37,12 @@ function updateSettings() {
     </ly-content-panel>
 
     <ly-content-panel>
-      <ly-form-model v-model="model" :validator="validator" :status="updateProfileMembershipSettingsStore.status" label-key="profile.settings.membership">
+      <ly-form-model
+        v-model="model"
+        :validator="validator"
+        :status="updateProfileMembershipSettingsStore.status"
+        label-key="profile.settings.membership"
+      >
         <div class="flex items-center mb-2 flex-row items-stretch">
           <div class="w-full relative">
             <ly-input-text property="displayName" class="mb-0" />

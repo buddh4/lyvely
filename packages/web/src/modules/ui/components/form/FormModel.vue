@@ -3,12 +3,12 @@ import { provide } from 'vue';
 import { ModelValidator } from '@lyvely/common';
 import { StoreStatusPlugin } from '@/store';
 import { IFormModelData } from '@/modules/ui/components/form/BaseInput';
-import { I18nModelValidator } from "@/modules/core";
+import { I18nModelValidator } from '@/modules/core';
 
 export interface IProps {
   id?: string;
   modelValue: object;
-  validator?: ModelValidator|I18nModelValidator;
+  validator?: ModelValidator | I18nModelValidator;
   labelKey?: string;
   status?: StoreStatusPlugin;
   autoValidation?: boolean;

@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run deps-common
-npm run deps-server
-npm run deps-web
+npm run common:deps
+npm run server:deps
+npm run web:deps
 npm run lint:fix

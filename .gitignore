@@ -41,6 +41,6 @@ lerna-debug.log*
 /screenshots
 
 # dist
-docker
+docker/*
 !docker/lyvely.ts.dist
 !docker/web.env.dist
