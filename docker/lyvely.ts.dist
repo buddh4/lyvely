@@ -1,14 +1,19 @@
 import { LyvelyAppConfiguration } from '@/core';
+import  { join } from 'path';
 
 export default {
   appName: 'lyvely.app',
+  operationMode: 'standalone',
   docUrl: 'https://docs.lyvely.app',
   contactMail: 'help@lyvely.app',
   http: {
     host: 'localhost',
     port: 8080,
-    baseUrl: 'http://localhost:8080',
-    appUrl: 'http://localhost:3000',
+    baseUrl: 'http://localhost:8080/api',
+    appUrl: 'http://localhost:8080',
+  },
+  servStatic: {
+    rootPath: join(__dirname, '..', '..', 'web/dist'),
   },
   mongodb: {
     uri: 'mongodb://localhost:27017/lyvely',

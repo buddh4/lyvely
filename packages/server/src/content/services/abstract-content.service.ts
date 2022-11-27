@@ -14,8 +14,8 @@ export abstract class AbstractContentService<T extends Content> {
   @Inject()
   protected profileTagsService: ProfileTagsService;
 
-  @Inject()
-  protected contentEvents: ContentEventPublisher;
+  //@Inject()
+  //protected contentEvents: ContentEventPublisher;
 
   constructor(protected contentDao: AbstractContentDao<T>) {}
 
@@ -37,7 +37,7 @@ export abstract class AbstractContentService<T extends Content> {
     await this.mergeTags(profile, model, tagNames);
     model.meta.createdBy = assureObjectId(user);
     const result = await this.contentDao.save(model);
-    this.contentEvents.emitContentCreated(result);
+    //   this.contentEvents.emitContentCreated(result);
     return result;
   }
 

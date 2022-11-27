@@ -1,7 +1,8 @@
-import { LyvelyAppConfiguration } from '@/core';
+import { LyvelyAppConfiguration, OperationMode } from '@/core';
 
 const lyvelyTestConfig: LyvelyAppConfiguration = {
   appName: 'lyvely.test.app',
+  operationMode: OperationMode.STANDALONE,
   docUrl: 'http://docs.lyvely.app',
   contactMail: 'test@test.de',
   http: {

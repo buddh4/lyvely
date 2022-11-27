@@ -2,6 +2,7 @@ import { LyvelyAppConfiguration } from '@/core';
 
 export default {
   appName: 'lyvely.app',
+  operationMode: 'standalone',
   docUrl: 'https://docs.lyvely.app',
   contactMail: 'help@lyvely.app',
   http: {
