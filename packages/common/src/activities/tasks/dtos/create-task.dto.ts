@@ -40,16 +40,6 @@ export class CreateTaskDto extends BaseModel<CreateTaskDto> {
   @IsOptional()
   tagNames?: string[];
 
-  getTimeSeriesConfig(): Partial<INumberDataPointConfig> {
-    return {
-      min: 0,
-      max: 1,
-      optimal: 1,
-      interval: this.interval,
-      userStrategy: this.userStrategy,
-    };
-  }
-
   getContent(): Partial<IContentDataType> {
     return {
       title: this.title,

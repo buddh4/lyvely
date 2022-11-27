@@ -2,7 +2,7 @@
 import VueMultiselect from 'vue-multiselect';
 import useEditActivityModal from '../useEditActivityModal';
 
-const { model, modalTitle, showModal, validator, addTag, error, reset, submit, tagOptions, calendarPlanOptions } =
+const { model, modalTitle, showModal, validator, addTag, reset, submit, tagOptions, calendarPlanOptions } =
   useEditActivityModal();
 </script>
 
@@ -41,7 +41,7 @@ const { model, modalTitle, showModal, validator, addTag, error, reset, submit, t
       <ly-input-textarea v-model="model.text" label="Description" />
     </fieldset>
 
-    <ly-alert :message="error" class="mt-2" />
+    <!-- ly-alert :message="status.error" class="mt-2" /-->
     <ly-screen-reader-validation-error :errors="validator.getErrorSummary()" />
   </ly-modal>
 </template>

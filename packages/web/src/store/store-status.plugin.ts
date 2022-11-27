@@ -10,9 +10,8 @@ export enum Status {
 }
 
 export type StoreStatusPlugin = {
-  status: Ref<Status>;
-  statusError: Ref<string | undefined>;
-  toRefs(): { statusState: Ref<Status>; statusError: Ref<string | undefined> };
+  status: Status;
+  statusError: string | undefined;
   setError(msg: string): void;
   resetStatus(): void;
   setStatus(status: Status): void;
@@ -29,15 +28,9 @@ export function useStatus(status?: Ref<Status>): StoreStatusPlugin {
   const statusError = ref();
 
   return {
-    status: s,
-    statusError: statusError,
-
-    toRefs() {
-      return {
-        statusState: this.status,
-        statusError: this.statusError,
-      };
-    },
+    // TODO: This is a dirty workaround due to issues pinia stripping the ref and complaining in components...
+    status: <any>s,
+    statusError: <any>statusError,
 
     setError(msg: string) {
       this.setStatus(Status.ERROR);

@@ -10,6 +10,7 @@ import { AuthService } from '@/modules/auth/services/auth.service';
 import { ILoginResponse, UserModel, queuePromise, UserStatus } from '@lyvely/common';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 import { usePageStore } from '@/modules/core/store/page.store';
+import { useLiveStore } from '@/modules/live/stores/live.store';
 
 export const storedVid = localStorageManager.getStoredValue('visitorId');
 
@@ -77,6 +78,7 @@ export const useAuthStore = defineStore('user-auth', () => {
     if (user.value.locale) {
       await setLocale(user.value.locale);
     }
+    useLiveStore().connectUser();
   }
 
   async function refreshToken() {

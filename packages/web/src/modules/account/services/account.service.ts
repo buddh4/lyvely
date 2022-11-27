@@ -1,10 +1,10 @@
 import { IAccountService, AddEmailDto, VerifyEmailDto, OtpInfo, ResendOtpDto, useSingleton } from '@lyvely/common';
 import accountRepository from '../repositories/account.repository';
-import { unwrapResponse } from '@/modules/core';
+import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
 
 export class AccountService implements IAccountService {
   async addEmail(dto: AddEmailDto) {
-    return unwrapResponse(accountRepository.addEmail(dto));
+    return unwrapAndCastResponse(accountRepository.addEmail(dto), OtpInfo);
   }
 
   async verifyEmail(dto: VerifyEmailDto) {
@@ -12,7 +12,7 @@ export class AccountService implements IAccountService {
   }
 
   async resendOtp(dto: ResendOtpDto) {
-    return unwrapResponse(accountRepository.resendOtp(dto)).then((otpInfo) => new OtpInfo(otpInfo));
+    return unwrapAndCastResponse(accountRepository.resendOtp(dto), OtpInfo);
   }
 
   updateAvatar(file: Blob) {

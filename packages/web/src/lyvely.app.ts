@@ -41,7 +41,7 @@ import ScreenReaderValidationError from '@/modules/ui/components/error/ScreenRea
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
 
 export class LyvelyApp {
-  app: App;
+  vueApp: App;
   pinia: Pinia;
   i18n: I18n;
 
@@ -65,50 +65,50 @@ export class LyvelyApp {
   }
 
   private createApp() {
-    this.app = createApp(AppComponent);
-    this.app.use(this.pinia);
-    this.app.use(router);
-    this.app.use(ModuleLoader);
-    this.app.use(this.i18n);
+    this.vueApp = createApp(AppComponent);
+    this.vueApp.use(this.pinia);
+    this.vueApp.use(router);
+    this.vueApp.use(ModuleLoader);
+    this.vueApp.use(this.i18n);
     this.setGlobalComponents();
     useDayJsDateTimeAdapter();
   }
 
   mount(selector: string) {
-    this.app.mount(selector);
+    this.vueApp.mount(selector);
   }
 
   private setGlobalComponents() {
-    this.app.component('LyModal', ModalWindow);
-    this.app.component('LyConfirm', ConfirmModal);
-    this.app.component('LyDrawer', DrawerMenu);
-    this.app.component('LyBadge', BadgeText);
-    this.app.component('LyTag', TagBadge);
-    this.app.component('LyDividedList', DividedList);
-    this.app.component('LyTextDimmed', TextDimmed);
-    this.app.component('LyListItem', ListItem);
-    this.app.component('LyDropdown', DropdownMenu);
-    this.app.component('LyFormModel', FormModel);
-    this.app.component('LyDropdownLink', DropdownLink);
-    this.app.component('LyIcon', Icon);
-    this.app.component('LyButton', StyledButton);
-    this.app.component('LyAddButton', AddButton);
-    this.app.component('LyInputCheckbox', CheckboxInput);
-    this.app.component('LyInputRadio', RadioInput);
-    this.app.component('LyInputText', TextInput);
-    this.app.component('LyInputSelect', SelectInput);
-    this.app.component('LyInputNumber', NumberInput);
-    this.app.component('LyInputTextarea', TextareaInput);
-    this.app.component('LyInputRange', RangeInput);
-    this.app.component('LyInputCaptcha', CaptchaInput);
-    this.app.component('LyAlert', AlertBlock);
-    this.app.component('LyProfileAvatar', ProfileAvatar);
-    this.app.component('LyUserAvatar', UserAvatar);
-    this.app.component('LyLoader', LoaderBlock);
-    this.app.component('LyTabMenu', TabMenu);
-    this.app.component('LyTabMenuLink', TabMenuLink);
-    this.app.component('LyFormattedDate', FormattedDate);
-    this.app.component('LyContentPanel', ContentPanel);
-    this.app.component('LyScreenReaderValidationError', ScreenReaderValidationError);
+    this.vueApp.component('LyModal', ModalWindow);
+    this.vueApp.component('LyConfirm', ConfirmModal);
+    this.vueApp.component('LyDrawer', DrawerMenu);
+    this.vueApp.component('LyBadge', BadgeText);
+    this.vueApp.component('LyTag', TagBadge);
+    this.vueApp.component('LyDividedList', DividedList);
+    this.vueApp.component('LyTextDimmed', TextDimmed);
+    this.vueApp.component('LyListItem', ListItem);
+    this.vueApp.component('LyDropdown', DropdownMenu);
+    this.vueApp.component('LyFormModel', FormModel);
+    this.vueApp.component('LyDropdownLink', DropdownLink);
+    this.vueApp.component('LyIcon', Icon);
+    this.vueApp.component('LyButton', StyledButton);
+    this.vueApp.component('LyAddButton', AddButton);
+    this.vueApp.component('LyInputCheckbox', CheckboxInput);
+    this.vueApp.component('LyInputRadio', RadioInput);
+    this.vueApp.component('LyInputText', TextInput);
+    this.vueApp.component('LyInputSelect', SelectInput);
+    this.vueApp.component('LyInputNumber', NumberInput);
+    this.vueApp.component('LyInputTextarea', TextareaInput);
+    this.vueApp.component('LyInputRange', RangeInput);
+    this.vueApp.component('LyInputCaptcha', CaptchaInput);
+    this.vueApp.component('LyAlert', AlertBlock);
+    this.vueApp.component('LyProfileAvatar', ProfileAvatar);
+    this.vueApp.component('LyUserAvatar', UserAvatar);
+    this.vueApp.component('LyLoader', LoaderBlock);
+    this.vueApp.component('LyTabMenu', TabMenu);
+    this.vueApp.component('LyTabMenuLink', TabMenuLink);
+    this.vueApp.component('LyFormattedDate', FormattedDate);
+    this.vueApp.component('LyContentPanel', ContentPanel);
+    this.vueApp.component('LyScreenReaderValidationError', ScreenReaderValidationError);
   }
 }

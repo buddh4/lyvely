@@ -10,6 +10,7 @@ import {
   DataPointInputType,
   DataPointValueType,
   PropertyType,
+  IContentDataType,
 } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '@/users';
@@ -17,6 +18,7 @@ import { Activity, ActivityConfig } from './activity.schema';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
+  NumberDataPointConfig,
   NumberTimeSeriesContentConfig,
   TimeSeriesConfigSchemaFactory,
 } from '@/time-series';
@@ -84,6 +86,14 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
     this.timeSeriesConfig.optimal = 1;
 
     super.afterInit();
+  }
+
+  applyUpdate(update: UpdateTaskDto) {
+    this.applyTimeSeriesConfigUpdate({ interval: update.interval ?? this.timeSeriesConfig.interval });
+    this.applyContentUpdate({
+      title: update.title ?? this.content.title,
+      text: update.title ?? this.content.text,
+    });
   }
 
   isDoneByUser(uid: EntityIdentity<User>) {

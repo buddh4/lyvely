@@ -3,18 +3,10 @@ import * as mongoose from 'mongoose';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
-  NumberDataPointConfig,
   NumberTimeSeriesContent,
   NumberTimeSeriesContentConfig,
 } from '@/time-series';
-import {
-  ActivityModel,
-  DataPointInputType,
-  DataPointValueType,
-  IContentDataType,
-  PropertiesOf,
-  PropertyType,
-} from '@lyvely/common';
+import { ActivityModel, DataPointInputType, DataPointValueType, PropertiesOf, PropertyType } from '@lyvely/common';
 
 @Schema({ id: false })
 export class ActivityConfig extends NumberTimeSeriesContentConfig<ActivityConfig> {
@@ -35,12 +27,8 @@ export class Activity extends NumberTimeSeriesContent<Activity> implements Prope
 
   type: string;
 
-  applyUpdate(update: {
-    getTimeSeriesConfig?: () => Partial<NumberDataPointConfig>;
-    getContent?: () => Partial<IContentDataType>;
-  }) {
-    this.applyTimeSeriesConfigUpdate(update?.getTimeSeriesConfig());
-    this.applyContentUpdate(update?.getContent());
+  applyUpdate(update: any) {
+    // Nothing todo...
   }
 
   getDefaultConfig(): any {

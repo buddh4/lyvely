@@ -27,6 +27,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ReverseProxyThrottlerGuard } from '@/throttler';
 import { MulterModule } from '@nestjs/platform-express';
 import { AvatarsModule } from '@/avatars/avatars.module';
+import { LiveModule } from '@/live/live.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -89,6 +90,7 @@ export class AppModuleBuilder {
   private initCoreModules() {
     return this.importModules(
       EventEmitterModule.forRoot({ wildcard: true }),
+      LiveModule,
       MailsModule.fromConfig(),
       CoreModule,
       AppConfigModule,

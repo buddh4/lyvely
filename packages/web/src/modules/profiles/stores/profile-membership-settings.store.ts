@@ -16,7 +16,8 @@ export const useUpdateProfileMembershipSettingsStore = defineStore('update-profi
       description: membership?.userInfo.description || '',
     }),
   );
-  const validator = ref(new I18nModelValidator(model.value));
+
+  const validator = new I18nModelValidator(model.value);
 
   async function update() {
     await useProfileMembershipService().update(model.value);

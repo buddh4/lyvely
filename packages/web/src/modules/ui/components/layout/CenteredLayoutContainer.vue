@@ -8,7 +8,7 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  title: undefined,
+  title: '',
   width: 'sm',
 });
 
@@ -36,7 +36,7 @@ const widthClass = computed(
     >
       <slot name="header">
         <h1 class="text-center text-xl">
-          <slot name="title">{{ $t(props.title) }}</slot>
+          <slot name="title">{{ $t(title) }}</slot>
         </h1>
       </slot>
 

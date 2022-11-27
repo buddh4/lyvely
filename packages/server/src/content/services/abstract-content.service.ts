@@ -5,6 +5,7 @@ import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@/core';
 import { Content } from '../schemas';
 import { EntityNotFoundException } from '@lyvely/common';
 import { Inject } from '@nestjs/common';
+import { ContentEventPublisher } from '../components';
 
 export abstract class AbstractContentService<T extends Content> {
   @Inject()
@@ -12,6 +13,9 @@ export abstract class AbstractContentService<T extends Content> {
 
   @Inject()
   protected profileTagsService: ProfileTagsService;
+
+  @Inject()
+  protected contentEvents: ContentEventPublisher;
 
   constructor(protected contentDao: AbstractContentDao<T>) {}
 
@@ -32,7 +36,9 @@ export abstract class AbstractContentService<T extends Content> {
   async createContent(profile: Profile, user: User, model: T, tagNames?: string[]): Promise<T> {
     await this.mergeTags(profile, model, tagNames);
     model.meta.createdBy = assureObjectId(user);
-    return this.contentDao.save(model);
+    const result = await this.contentDao.save(model);
+    this.contentEvents.emitContentCreated(result);
+    return result;
   }
 
   protected async mergeTagsForUpdate(profile: Profile, update: UpdateQuerySet<T>, tagNames?: string[]) {
@@ -46,18 +52,6 @@ export abstract class AbstractContentService<T extends Content> {
         update.tagIds.push(tag._id);
       }
     });
-  }
-
-  async findContentAndUpdate(
-    profile: Profile,
-    user: User,
-    id: EntityIdentity<T>,
-    update: UpdateQuerySet<T>,
-    tagNames?: string[],
-  ) {
-    await this.mergeTagsForUpdate(profile, update, tagNames);
-    // TODO: set updatedBy on content
-    return this.contentDao.findOneAndSetById(id, update);
   }
 
   async updateContent(

@@ -28,6 +28,8 @@ export type LyvelyHttpOptions = {
 export type LyvelyMongoDBOptions = {
   uri: string;
   debug?: boolean;
+  replicaSet?: boolean;
+  shardedCluster?: boolean;
   transactions?: boolean;
 };
 
@@ -57,6 +59,8 @@ export type LyvelyAuthOptions = {
   };
 };
 
+export type LiveOptions = {};
+
 export type LyvelyFileOptions = {
   upload?: MulterOptions;
   local?: {
@@ -68,8 +72,15 @@ export type UserPermissionOptions = Record<string, string[]>;
 
 type ModulesConfiguration = {} & { [k: string]: object };
 
+export enum OperationMode {
+  STANDALONE = 'standalone',
+  STANDALONE_CLUSTER = 'standalone-cluster',
+  DISTRIBUTED = 'distributed',
+}
+
 export type LyvelyAppConfiguration = {
   appName: string;
+  operationMode: OperationMode;
   docUrl?: string;
   contactMail: string;
   i18n?: I18NOptions;

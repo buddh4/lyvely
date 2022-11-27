@@ -4,7 +4,6 @@ import {
   getCreateModelByActivityType,
   UpdateTaskDto,
   CreateHabitDto,
-  getEditModelByActivity,
   ActivityModel,
   CalendarIntervalEnum,
   UpdateHabitResponseDto,
@@ -59,7 +58,7 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
   });
 
   function setEditActivity(activity: ActivityModel) {
-    const model = activity.getEditModel();
+    const model = activity.getEditDto();
     model.tagNames = useProfileStore()
       .getTags()
       .filter((tag) => activity.tagIds.includes(tag.id))

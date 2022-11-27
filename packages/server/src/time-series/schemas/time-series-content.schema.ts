@@ -1,4 +1,4 @@
-import { isSameDay, ITimeSeriesContentConfig } from '@lyvely/common';
+import { DataPointInputType, DataPointValueType, isSameDay, ITimeSeriesContentConfig } from '@lyvely/common';
 import { Content, IContentEntity } from '@/content';
 import { DataPointConfig, DataPointConfigFactory, DefaultDataPointConfig } from './config';
 import { EntityType } from '@/core';
@@ -24,6 +24,13 @@ export abstract class TimeSeriesContent<
   applyTimeSeriesConfigUpdate(update: Partial<TDataPointConfig>) {
     const oldConfig = this.timeSeriesConfig;
     const updatedConfig = Object.assign(cloneDeep(oldConfig), update);
+
+    if (
+      (updatedConfig.inputType && updatedConfig.inputType !== oldConfig.inputType) ||
+      (updatedConfig.valueType && updatedConfig.valueType !== oldConfig.valueType)
+    ) {
+      updatedConfig.strategy = DataPointConfigFactory.getStrategyName(updatedConfig.valueType, updatedConfig.inputType);
+    }
 
     if (this.timeSeriesConfigRevisionCheck(updatedConfig)) {
       this.timeSeriesConfig = updatedConfig;

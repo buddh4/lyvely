@@ -7,7 +7,7 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export const useEditTagStore = defineStore('tagEdit', () => {
   const editState = useUpdateModelStore<UpdateTagDto, TagModel>({
-    repository: tagsRepository,
+    service: { create: () => <any>null, update: () => <any>null },
     onSubmitSuccess: (tag?: TagModel) => {
       if (tag) {
         useProfileStore().updateTags([tag]);

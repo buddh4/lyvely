@@ -20,8 +20,6 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const pageStore = usePageStore();
 
-const { activeDrawer } = storeToRefs(pageStore);
-
 const drawerId = uniqueId('drawer');
 const zIndex = ref(20);
 
@@ -36,10 +34,6 @@ watch(modelValue, (value) => {
     pageStore.popDrawer(drawerId);
     zIndex.value = 900;
   }
-});
-
-watch<string | undefined>(activeDrawer, (value: string | undefined) => {
-  zIndex.value = value === drawerId ? 22 : 21;
 });
 
 function close() {

@@ -7,7 +7,7 @@ export interface ITimeSeriesContentConfig<TDataPointConfig = IDataPointConfig> {
   timeSeries: TDataPointConfig;
 }
 
-interface ITimeSeriesContentModel<TDataPointConfig = IDataPointConfig> extends IContent {
+export interface ITimeSeriesContentModel<TDataPointConfig = IDataPointConfig> extends IContent {
   config: ITimeSeriesContentConfig<TDataPointConfig>;
 }
 

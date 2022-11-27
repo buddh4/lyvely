@@ -64,24 +64,6 @@ export class CreateHabitDto extends BaseModel<CreateHabitDto> {
   @IsOptional()
   tagNames?: string[];
 
-  getTimeSeriesConfig(): Partial<INumberDataPointConfig> {
-    return {
-      min: this.min,
-      max: this.max,
-      optimal: this.optimal,
-      interval: this.interval,
-      inputType: this.inputType,
-      userStrategy: this.userStrategy,
-    };
-  }
-
-  getContent(): Partial<IContentDataType> {
-    return {
-      title: this.title,
-      text: this.text,
-    };
-  }
-
   constructor(obj?: Partial<CreateHabitDto>, init = true) {
     obj = init
       ? Object.assign(

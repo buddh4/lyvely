@@ -5,7 +5,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "vite build && vue-tsc --emitDeclarationOnly",
-    "buildOLD": "vite build --debug",
+    "build:lib": "vite build --config vite-lib.config.ts && vue-tsc --emitDeclarationOnly",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write",
     "link:common": "npm link lyvely/common",

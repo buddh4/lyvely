@@ -4,6 +4,7 @@ import { NumberDataPointConfig, NumberDataPointConfigRevision, NumberDataPointCo
 import { EntityType } from '@/core';
 import { TimeSeriesContent } from './time-series-content.schema';
 import { BaseModel, DataPointInputType, ITimeSeriesContentConfig } from '@lyvely/common';
+import { isDefined } from 'class-validator';
 
 type NumberTimeSeriesContentEntity = IContentEntity & EntityType<NumberTimeSeriesContent>;
 
@@ -28,12 +29,21 @@ export abstract class NumberTimeSeriesContent<
 
   afterInit() {
     super.afterInit();
+
+    if (!isDefined(this.timeSeriesConfig.max) && this.timeSeriesConfig.inputType === DataPointInputType.Checkbox) {
+      this.timeSeriesConfig.max = 1;
+    }
+
     if (this.timeSeriesConfig.max && this.timeSeriesConfig.inputType === DataPointInputType.Checkbox) {
       this.timeSeriesConfig.max = Math.min(8, this.timeSeriesConfig.max);
     }
   }
 
   applyTimeSeriesConfigUpdate(update: Partial<NumberDataPointConfig>) {
+    if (update.max <= 0 && update.inputType === DataPointInputType.Checkbox) {
+      update.max = 1;
+    }
+
     if (update.max && update.inputType === DataPointInputType.Checkbox) {
       update.max = Math.min(8, update.max);
     }

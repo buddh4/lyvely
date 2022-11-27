@@ -46,7 +46,9 @@ export class LyvelyServer {
 
   private async initNestApp() {
     const appModule = this.options.appModule || new AppModuleBuilder(this.options).build();
-    return await NestFactory.create(appModule);
+    const app = await NestFactory.create(appModule);
+    app.setGlobalPrefix('api');
+    return app;
   }
 
   private initHelmet() {

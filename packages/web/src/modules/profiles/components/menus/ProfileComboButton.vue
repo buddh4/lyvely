@@ -3,27 +3,27 @@ import { usePageStore } from '@/modules/core/store/page.store';
 import { computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
-import { getScaledProgress } from "@lyvely/common";
+import { getScaledProgress } from '@lyvely/common';
 
 const profileStore = useProfileStore();
 const pageStore = usePageStore();
 
 const { toggleSidebar } = pageStore;
-const score = computed(() => profileStore.profile?.score);
+const score = computed(() => profileStore.profile?.score ?? 0);
 const formattedScore = computed(() => {
-  if(!score.value) return 0;
+  if (!score.value) return 0;
 
   return Intl.NumberFormat('en-US', {
-    notation: "compact",
-    maximumFractionDigits: 1
+    notation: 'compact',
+    maximumFractionDigits: 1,
   }).format(score.value);
 });
 
 const progressStyle = computed(() => {
   return {
-    width: getScaledProgress(score.value || 0) * 100 +'%'
-  }
-})
+    width: getScaledProgress(score.value || 0) * 100 + '%',
+  };
+});
 </script>
 
 <template>
@@ -47,21 +47,21 @@ const progressStyle = computed(() => {
             <ly-profile-avatar />
 
             <div class="flex flex-col">
-              <div class="flex justify-center items-center text-xs" :title="score">
+              <div class="flex justify-center items-center text-xs">
                 <transition
-                    name="score-icon"
-                    mode="out-in"
-                    enter-active-class="animate__animated animate_svg_flip"
-                    leave-active-class=""
+                  name="score-icon"
+                  mode="out-in"
+                  enter-active-class="animate__animated animate_svg_flip"
+                  leave-active-class=""
                 >
                   <ly-icon :key="score" name="score" class="text-success" />
                 </transition>
 
                 <transition
-                    name="score"
-                    mode="out-in"
-                    enter-active-class="animate__animated animate__faster animate__bounceIn"
-                    leave-active-class="animate__animated animate__faster animate__bounceOut"
+                  name="score"
+                  mode="out-in"
+                  enter-active-class="animate__animated animate__faster animate__bounceIn"
+                  leave-active-class="animate__animated animate__faster animate__bounceOut"
                 >
                   <div :key="score" class="inline-block score-value ml-0.5">
                     <span>{{ formattedScore }}</span>

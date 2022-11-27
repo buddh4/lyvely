@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '@/users';
 import {
-  applyValidationProperties,
   CreateHabitDto,
   DataPointInputType,
   DataPointValueType,
@@ -73,6 +72,22 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
 
     if (history) result.timeSeriesConfig.history = history;
     return result;
+  }
+
+  applyUpdate(update: UpdateHabitDto) {
+    this.applyTimeSeriesConfigUpdate({
+      max: update.max ?? this.timeSeriesConfig.max,
+      min: update.max ?? this.timeSeriesConfig.min,
+      optimal: update.max ?? this.timeSeriesConfig.optimal,
+      inputType: update.inputType ?? this.timeSeriesConfig.inputType,
+      userStrategy: update.userStrategy ?? this.timeSeriesConfig.userStrategy,
+      interval: update.interval ?? this.timeSeriesConfig.interval,
+    });
+
+    this.applyContentUpdate({
+      title: update.title ?? this.content.title,
+      text: update.title ?? this.content.text,
+    });
   }
 }
 

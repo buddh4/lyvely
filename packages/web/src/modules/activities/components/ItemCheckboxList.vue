@@ -3,7 +3,7 @@ import { computed, withDefaults } from 'vue';
 import { parseInt } from 'lodash';
 
 export interface IProps {
-  max: number;
+  max?: number;
   selection?: number;
   min?: number;
   optimal?: number;
@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<IProps>(), {
   selection: 0,
   optimal: 0,
   min: 0,
+  max: 1,
   disabled: false,
   single: false,
 });

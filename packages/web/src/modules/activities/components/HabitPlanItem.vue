@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { ActivityModel, DataPointInputType, HabitModel } from '@lyvely/common';
+import { TimerModel, DataPointInputType, HabitModel } from '@lyvely/common';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed, onMounted, ref } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -79,6 +79,8 @@ async function stopTimer() {
 const isPresentInterval = computed(() =>
   useCalendarPlanStore().isPresentInterval(props.model.timeSeriesConfig.interval),
 );
+
+const timer = computed(() => dataPoint.value.timer!);
 //TODO: Maybe implement move to next interval with Ctrl + Left/Right
 </script>
 
@@ -121,8 +123,8 @@ const isPresentInterval = computed(() =>
       </div>
       <timer-state
         v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Time"
-        :key="dataPoint.timer.calculateTotalSpan()"
-        :model="dataPoint.timer"
+        :key="timer.calculateTotalSpan()"
+        :model="timer"
         :min="model.timeSeriesConfig.min"
         :max="model.timeSeriesConfig.max"
         :optimal="model.timeSeriesConfig.optimal"

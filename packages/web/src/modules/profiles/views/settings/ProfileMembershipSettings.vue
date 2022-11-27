@@ -1,17 +1,22 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { useUpdateProfileMembershipSettingsStore } from '@/modules/profiles/stores/profile-membership-settings.store';
 import LyFormModel from '@/modules/ui/components/form/FormModel.vue';
+import { ModelValidator } from "@lyvely/common";
+import { StoreStatusPlugin } from "@/store";
 
 const profileStore = useProfileStore();
 const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();
 
-const { model, validator, status } = storeToRefs(updateProfileMembershipSettingsStore);
+const { model } = storeToRefs(updateProfileMembershipSettingsStore);
 
 const membership = computed(() => profileStore.profile!.getMembership());
+
+const validator = computed(() => updateProfileMembershipSettingsStore.validator as ModelValidator);
+const status = computed(() => updateProfileMembershipSettingsStore.status as StoreStatusPlugin);
 
 function updateSettings() {
   updateProfileMembershipSettingsStore.update();
@@ -32,7 +37,7 @@ function updateSettings() {
     </ly-content-panel>
 
     <ly-content-panel>
-      <ly-form-model v-model="model" :validator="validator" :status="status" label-key="profile.settings.membership">
+      <ly-form-model v-model="model" :validator="validator" :status="updateProfileMembershipSettingsStore.status" label-key="profile.settings.membership">
         <div class="flex items-center mb-2 flex-row items-stretch">
           <div class="w-full relative">
             <ly-input-text property="displayName" class="mb-0" />
