@@ -1,14 +1,13 @@
 import { Controller, Sse, Req } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { fromEvent } from 'rxjs';
 import { UserRequest } from '@/users';
+import { LiveService } from '@/live/services/live.service';
 
 @Controller('/live')
 export class LiveController {
-  constructor(private readonly eventEmitter: EventEmitter2) {}
+  constructor(private readonly liveService: LiveService) {}
 
   @Sse('/user')
   async userUpdates(@Req() request: UserRequest) {
-    return fromEvent(this.eventEmitter, 'test');
+    return this.liveService.subscribeUser(request.user);
   }
 }

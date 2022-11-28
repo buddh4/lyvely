@@ -15,6 +15,7 @@ const MODULE_PERMISSIONS = getModulePath('permissions');
 const MODULE_PROFILES = getModulePath('profiles');
 const MODULE_CONTENT = getModulePath('content');
 const MODULE_CALENDAR = getModulePath('calendar');
+const MODULE_LIVE = getModulePath('live');
 const MODULE_MAILS = getModulePath('mail');
 const MODULE_TEST = getModulePath('test');
 const MODULE_USERS = getModulePath('users');
@@ -65,10 +66,11 @@ module.exports = {
     createModuleDeps('auth', [MODULE_USERS, MODULE_JWT]),
     createModuleDeps('calendar'),
     createModuleDeps('captcha'),
-    createModuleDeps('content', [MODULE_PROFILES, MODULE_USERS, MODULE_POLICIES, MODULE_TAGS]),
+    createModuleDeps('content', [MODULE_PROFILES, MODULE_USERS, MODULE_POLICIES, MODULE_TAGS, MODULE_LIVE]),
     createModuleDeps('core'),
     createModuleDeps('i18n'),
     createModuleDeps('jwt', [MODULE_USERS]),
+    createModuleDeps('live', [MODULE_PROFILES]),
     createModuleDeps('mails'),
     createModuleDeps('permissions'),
     createModuleDeps('policies'),

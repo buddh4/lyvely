@@ -64,9 +64,9 @@ export enum BaseUserProfileRelationType {
 
 export enum BaseMembershipRole {
   Owner = 'owner',
-  Member = 'member',
-  Moderator = 'moderator',
   Admin = 'admin',
+  Moderator = 'moderator',
+  Member = 'member',
 }
 
 export enum BaseProfileRelationRole {

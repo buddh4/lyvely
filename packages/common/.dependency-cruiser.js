@@ -24,6 +24,7 @@ const MODULE_VALIDATION = getModulePath('validation');
 const MODULE_WEB = getModulePath('web');
 const MODULE_COLLAB = getModulePath('collab');
 const MODULE_FILES = getModulePath('files');
+const MODULE_LIVE = getModulePath('live');
 
 const NODE_MODULES = 'node_modules';
 const NODE_CORE = '^((?!\\/).)*$';
@@ -70,6 +71,7 @@ module.exports = {
     createModuleDeps('collab'),
     createModuleDeps('content', [MODULE_MODELS, MODULE_TAGS]),
     createModuleDeps('files'),
+    createModuleDeps('live'),
     createModuleDeps('mappings', [MODULE_MODELS, MODULE_UTILS]),
     createModuleDeps('models', [MODULE_UTILS]),
     createModuleDeps('profiles', [MODULE_TAGS, MODULE_MODELS, MODULE_ENDPOINTS]),

@@ -21,6 +21,7 @@ import { ConfigurationPath, CoreModule } from '@/core';
 import { AppConfigModule } from '@/app-config';
 import { I18nModule } from '@/i18n';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { LiveModule } from '@/live/live.module';
 
 export function createCoreTestingModule(
   key: string,
@@ -61,7 +62,7 @@ export function createBasicTestingModule(
   models: ModelDefinition[] = [],
   modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
 ): TestingModuleBuilder {
-  modules.push(UsersModule, ProfilesModule, PoliciesModule, TestModule);
+  modules.push(UsersModule, ProfilesModule, PoliciesModule, TestModule, LiveModule);
   return createCoreTestingModule(key, providers, models, modules);
 }
 

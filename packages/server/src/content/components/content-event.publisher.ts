@@ -7,8 +7,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ChangeStreamInsertDocument } from 'mongodb';
 
-const LIVE_EVENT_CONTENT_NEW = 'content:new';
-
 @Injectable()
 export class ContentEventPublisher {
   private emitCreateEvents: boolean;
@@ -21,10 +19,10 @@ export class ContentEventPublisher {
     if (configService.get('mongodb.replicaSet')) {
       const changeStream = contentModel.watch([{ $match: { operationType: 'insert' } }]);
       changeStream.on('change', (doc: ChangeStreamInsertDocument<ContentDocument>) => {
-        liveService.emit(LIVE_EVENT_CONTENT_NEW, {
+        /* liveService.emit(LIVE_EVENT_CONTENT_NEW, {
           id: assureStringId(doc.fullDocument._id),
           type: doc.fullDocument.type,
-        });
+        });*/
         this.emitCreateEvents = false;
       });
     } else {
@@ -34,10 +32,10 @@ export class ContentEventPublisher {
 
   emitContentCreated(content: Content) {
     if (this.emitCreateEvents) {
-      this.liveService.emit(LIVE_EVENT_CONTENT_NEW, {
+      /*this.liveService.emit(LIVE_EVENT_CONTENT_NEW, {
         id: assureStringId(content),
         type: content.type,
-      });
+      });*/
     }
   }
 }

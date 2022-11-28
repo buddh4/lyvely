@@ -1,28 +1,60 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Observable, fromEvent } from 'rxjs';
+import { Observable, fromEvent, merge } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, OperationMode } from '@/core';
-
-const EVENT_LIVE_UPDATE = 'live:update';
+import { assureStringId, ConfigurationPath, EntityIdentity, OperationMode } from '@/core';
+import { User } from '@/users';
+import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/common';
+import { Profile, ProfilesService } from '@/profiles';
 
 @Injectable()
 export class LiveService {
-  constructor(private eventEmitter: EventEmitter2, private readonly configService: ConfigService<ConfigurationPath>) {}
+  constructor(
+    private eventEmitter: EventEmitter2,
+    private readonly configService: ConfigService<ConfigurationPath>,
+    private profilesService: ProfilesService,
+  ) {}
 
-  emit(eventName: string, ...data: any[]) {
-    if (this.configService.get('operationMode') === OperationMode.STANDALONE) {
-      this.eventEmitter.emit(EVENT_LIVE_UPDATE, data);
+  emitProfileEvent(event: ILiveProfileEvent) {
+    return this.emit(this.buildLiveProfileEventName(event.pid), event);
+  }
+
+  emitUserEvent(event: ILiveUserEvent) {
+    return this.emit(this.buildLiveUserEventName(event.uid), event);
+  }
+
+  private emit(liveEventName: string, event: ILiveEvent) {
+    if (this.isStandaloneServer()) {
+      this.eventEmitter.emit(liveEventName, event);
     } else {
-      // TODO: redis update
+      // TODO: redis publish
     }
   }
 
-  subscribe(): Observable<any> {
-    if (this.configService.get('operationMode') === OperationMode.STANDALONE) {
-      return fromEvent(this.eventEmitter, EVENT_LIVE_UPDATE);
+  async subscribeUser(user: User): Promise<Observable<any>> {
+    if (this.isStandaloneServer()) {
+      const observables = new Set(
+        (await this.profilesService.findProfileRelationsByUser(user)).map((relation) =>
+          fromEvent(this.eventEmitter, this.buildLiveProfileEventName(relation.pid)),
+        ),
+      );
+
+      observables.add(fromEvent(this.eventEmitter, this.buildLiveUserEventName(user)));
+      return merge(...observables);
     } else {
-      // TODO: redis update
+      // TODO: redis subscription
     }
+  }
+
+  private buildLiveProfileEventName(pid: EntityIdentity<Profile>) {
+    return `live.profile.${assureStringId(pid)}`;
+  }
+
+  private buildLiveUserEventName(uid: EntityIdentity<User>) {
+    return `live.user.${assureStringId(uid)}`;
+  }
+
+  private isStandaloneServer() {
+    return this.configService.get('operationMode') === OperationMode.STANDALONE;
   }
 }
