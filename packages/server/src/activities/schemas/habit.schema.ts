@@ -33,7 +33,7 @@ type HabitDataPointConfig =
   | TimeNumberDataPointConfig
   | RangeNumberDataPointConfig;
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class HabitConfig extends NumberTimeSeriesContentConfig<HabitConfig, HabitDataPointConfig> {
   @Prop({ type: Number })
   @PropertyType(Number, { default: 0 })

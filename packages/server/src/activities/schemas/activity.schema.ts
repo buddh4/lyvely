@@ -8,7 +8,7 @@ import {
 } from '@/time-series';
 import { ActivityModel, DataPointInputType, DataPointValueType, PropertiesOf, PropertyType } from '@lyvely/common';
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class ActivityConfig extends NumberTimeSeriesContentConfig<ActivityConfig> {
   @Prop({ type: Number })
   @PropertyType(Number, { default: 0 })

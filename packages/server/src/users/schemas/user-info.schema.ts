@@ -5,7 +5,7 @@ import { assureObjectId, assureStringId } from '@/core';
 import { User } from '@/users';
 import { UserProfileRelation } from '@/profiles';
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class UserInfo extends BaseModel<UserInfo> implements PropertiesOf<Omit<UserInfoModel, 'uid'>> {
   @Prop({ type: [mongoose.Schema.Types.ObjectId], required: true })
   uid: TObjectId;

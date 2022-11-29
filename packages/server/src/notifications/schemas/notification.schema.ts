@@ -4,7 +4,7 @@ import { NotificationType } from './notification-type.schema';
 import { BaseEntity } from '@/core';
 import { BaseModel, IntegrityException } from '@lyvely/common';
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class NotificationSubscription extends BaseModel<NotificationSubscription> {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
   pid?: TObjectId;
@@ -32,10 +32,6 @@ export class Notification<T extends NotificationType = NotificationType> extends
       subscription,
       sortOrder: Date.now(),
     });
-
-    if (!this.data.type) {
-      this.data.type = this.data.constructor.name;
-    }
   }
 }
 

@@ -15,7 +15,7 @@ import { DataPointInputType, DataPointValueType, ITimeSeriesContentConfig } from
 
 type TestDataPointConfig = CheckboxNumberDataPointConfig | TextareaTextDataPointConfig;
 
-@Schema({ id: false })
+@Schema({ _id: false })
 class TestTimeSeriesConfig implements ITimeSeriesContentConfig {
   @Prop({ type: DefaultDataPointConfigSchema })
   timeSeries: TestDataPointConfig;
@@ -44,7 +44,7 @@ export const TestTimeSeriesContentSchema = SchemaFactory.createForClass(TestTime
 
 type TestNumberDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
 
-@Schema({ id: false })
+@Schema({ _id: false })
 class TestNumberTimeSeriesConfig extends NumberTimeSeriesContentConfig<
   TestNumberTimeSeriesConfig,
   TestNumberDataPointConfig

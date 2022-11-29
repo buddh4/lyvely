@@ -4,7 +4,7 @@ import { PropertyType, TimerModel, TimeSpanModel, PropertiesOf } from '@lyvely/c
 import { assureObjectId, EntityIdentity } from '@/core';
 import { User } from '@/users';
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class TimeSpan implements PropertiesOf<TimeSpanModel> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
   uid?: TObjectId;
@@ -28,7 +28,7 @@ export class TimeSpan implements PropertiesOf<TimeSpanModel> {
 
 export const TimeSpanSchema = SchemaFactory.createForClass(TimeSpan);
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class Timer extends TimerModel {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
   uid?: TObjectId;

@@ -8,7 +8,7 @@ import {
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class NumberDataPointConfigRevision extends DataPointConfigRevision implements INumberDataPointConfigRevision {
   @Prop()
   min?: number;
@@ -38,7 +38,7 @@ const SupportedNumberDataPointInputTypes = [
   DataPointInputType.Textarea,
 ];
 
-@Schema({ id: false, discriminatorKey: 'strategy' })
+@Schema({ _id: false, discriminatorKey: 'strategy' })
 export class NumberDataPointConfig extends DataPointConfig<INumberDataPointSettings> implements INumberDataPointConfig {
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;

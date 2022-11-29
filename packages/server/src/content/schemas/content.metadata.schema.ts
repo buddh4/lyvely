@@ -12,7 +12,7 @@ import { ContentVisibilityLevel, getNumberEnumValues, PropertyType, IContentMeta
  * isMovable
  */
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: TObjectId;

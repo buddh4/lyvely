@@ -15,7 +15,7 @@ import {
   PropertyType,
 } from '@lyvely/common';
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class ProfilesCount {
   @PropertyType(Number, { default: 0 })
   @Prop({ required: true, min: 0, default: 0 })

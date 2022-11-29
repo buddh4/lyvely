@@ -4,7 +4,7 @@ import { BaseModel, ProfileInfoModel, PropertiesOf } from '@lyvely/common';
 import { assureObjectId, assureStringId } from '@/core';
 import { Profile } from '@/profiles';
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class ProfileInfo extends BaseModel<ProfileInfo> implements PropertiesOf<Omit<ProfileInfoModel, 'pid'>> {
   @Prop({ type: [mongoose.Schema.Types.ObjectId], required: true })
   pid: TObjectId;

@@ -6,7 +6,7 @@ import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { useHelpStore } from '@/modules/help/stores/help.store';
 import NotificationDrawer from '@/modules/notifications/components/NotificationDrawer.vue';
-import { useNotificationStore } from "@/modules/notifications/stores/notifications.store";
+import { useNotificationStore } from '@/modules/notifications/stores/notifications.store';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();

@@ -1,12 +1,12 @@
 import { NotificationType, RenderFormat } from '@/notifications';
 import { Translatable } from '@/i18n';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop } from '@nestjs/mongoose';
 import { ProfileInfo, ProfileInfoSchema } from '@/profiles';
 import { UserInfo, UserInfoSchema } from '@/users';
-import { NotificationTypeSchemaFactory } from '@/notifications/schemas/notification-type-schema.factory';
+import { Notification } from '@/notifications/decorators';
 
-@Schema({ id: false })
+@Notification()
 export class TestNotification extends NotificationType<TestNotification> {
   @Prop({ type: ProfileInfoSchema, required: true })
   profileInfo: ProfileInfo;
@@ -31,5 +31,3 @@ export class TestNotification extends NotificationType<TestNotification> {
     return undefined;
   }
 }
-
-export const TestNotificationSchema = NotificationTypeSchemaFactory.createForClass(TestNotification);

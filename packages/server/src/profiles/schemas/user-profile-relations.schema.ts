@@ -16,7 +16,7 @@ export interface ICreateProfileRelation {
   role: string;
 }
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
   @Prop({ required: true, type: String })
   displayName: string;

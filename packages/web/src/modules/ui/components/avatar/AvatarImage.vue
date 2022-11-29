@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { AvatarModel } from '@lyvely/common/src';
+import { AvatarModel } from '@lyvely/common';
 import { computed } from 'vue';
 import { createAvatarUrl } from '@/repository';
 import randomColor from 'randomcolor';

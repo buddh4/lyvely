@@ -48,7 +48,7 @@ export class UserDone {
 
 const UserDoneSchema = SchemaFactory.createForClass(UserDone);
 
-@Schema({ id: false })
+@Schema({ _id: false })
 export class TaskConfig extends NumberTimeSeriesContentConfig<TaskConfig, CheckboxNumberDataPointConfig> {
   @Prop({ type: Number })
   @PropertyType(Number, { default: 0 })
