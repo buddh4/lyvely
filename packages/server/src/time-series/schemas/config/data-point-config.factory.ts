@@ -1,18 +1,12 @@
 import { Logger } from '@nestjs/common';
 import { DataPointConfig } from './data-point-config.schema';
 import { assignEntityData } from '@/core';
+import { Type } from '@lyvely/common';
 
 const register = {};
 const logger = new Logger('DataPointStrategyFactory');
 
-export interface IDataPointStrategyType<T extends DataPointConfig> extends Function {
-  new (settings?: any): T;
-}
-
-export function registerDataPointStrategy<TClass extends DataPointConfig>(
-  strategy: string,
-  type: IDataPointStrategyType<TClass>,
-) {
+export function registerDataPointStrategy<TClass extends DataPointConfig>(strategy: string, type: Type<TClass>) {
   register[strategy] = type;
 }
 

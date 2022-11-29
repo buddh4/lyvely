@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { NotificationType } from './notification-type.schema';
 import { BaseEntity } from '@/core';
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, IntegrityException } from '@lyvely/common';
 
 @Schema({ id: false })
 export class NotificationSubscription extends BaseModel<NotificationSubscription> {
@@ -17,11 +17,26 @@ const NotificationSubscriptionSchema = SchemaFactory.createForClass(Notification
 
 @Schema()
 export class Notification<T extends NotificationType = NotificationType> extends BaseEntity<Notification> {
-  @Prop({ type: NotificationSubscriptionSchema })
+  @Prop({ type: NotificationSubscriptionSchema, required: true })
   subscription: NotificationSubscription;
 
-  @Prop({ type: mongoose.Schema.Types.Mixed })
+  @Prop({ type: mongoose.Schema.Types.Mixed, required: true })
   data: T;
+
+  @Prop({ required: true })
+  sortOrder: number;
+
+  constructor(data: T, subscription: NotificationSubscription) {
+    super({
+      data,
+      subscription,
+      sortOrder: Date.now(),
+    });
+
+    if (!this.data.type) {
+      this.data.type = this.data.constructor.name;
+    }
+  }
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);

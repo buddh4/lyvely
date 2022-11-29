@@ -4,10 +4,13 @@ import { storeToRefs } from 'pinia';
 import { computed, toRefs } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { usePageStore } from '@/modules/core/store/page.store';
-import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
 import { useHelpStore } from '@/modules/help/stores/help.store';
+import NotificationDrawer from '@/modules/notifications/components/NotificationDrawer.vue';
+import { useNotificationStore } from "@/modules/notifications/stores/notifications.store";
 
 const accountStore = useAccountStore();
+const notificationStore = useNotificationStore();
+
 const authStore = useAuthStore();
 const pageStore = usePageStore();
 
@@ -16,6 +19,7 @@ function logout() {
 }
 
 const { showAccountDrawer } = storeToRefs(accountStore);
+const { showNotificationDrawer } = storeToRefs(notificationStore);
 
 const menuItemClass = 'block py-3 px-3 no-underline cursor-pointer flex no-wrap items-center h-12 menu-item text-main';
 const accountDrawerButtonClass = computed(() => [
@@ -34,13 +38,15 @@ const { isDark } = toRefs(pageStore);
 
 <template>
   <div id="account-menu" class="flex items-center justify-end score inline-block float-right">
-    <ly-button>
+    <ly-button @click="showNotificationDrawer = !showNotificationDrawer">
       <ly-icon name="bell" class="w-3.5" />
     </ly-button>
     <div :class="accountDrawerButtonClass" @click="showAccountDrawer = !showAccountDrawer">
       <ly-user-avatar />
     </div>
   </div>
+
+  <notification-drawer />
 
   <ly-drawer id="account-drawer" v-model="showAccountDrawer" title="account.drawer.title">
     <nav>

@@ -1,18 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, UrlRoute } from '@/core';
-import mongoose from 'mongoose';
-import { ProfileRoute } from '@/profiles/services/profile-url-generator.service';
+import { BaseEntity } from '@/core';
+import { PropertyType, UrlRoute } from '@lyvely/common';
 import { Translatable } from '@/i18n';
-
-export class ProfileInfo {
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], required: true })
-  uid: TObjectId;
-
-  @Prop({ required: true })
-  guid: string;
-}
-
-const ProfileInfoSchema = SchemaFactory.createForClass(ProfileInfo);
+import { ProfileInfo, ProfileInfoSchema } from '@/profiles';
+import { UserInfo, UserInfoSchema } from '@/users';
 
 export enum RenderFormat {
   HTML = 'html',
@@ -21,9 +12,10 @@ export enum RenderFormat {
 
 export interface INotificationType {
   type: string;
-  groupId: string;
+  groupId?: string;
   profileInfo?: ProfileInfo;
-  getUrl(): ProfileRoute | UrlRoute;
+  userInfo?: UserInfo;
+  getUrl(): UrlRoute;
   getTitle(format: RenderFormat): Translatable;
   getBody(format: RenderFormat): Translatable;
 }
@@ -33,10 +25,18 @@ export abstract class NotificationType<T extends INotificationType = INotificati
   implements INotificationType
 {
   @Prop()
-  groupId: string;
+  groupId?: string;
 
   @Prop({ type: ProfileInfoSchema })
+  @PropertyType(ProfileInfo)
   profileInfo?: ProfileInfo;
+
+  @Prop({ type: UserInfoSchema })
+  @PropertyType(UserInfo)
+  userInfo?: UserInfo;
+
+  @Prop()
+  url?: string;
 
   type: string;
 
@@ -48,7 +48,7 @@ export abstract class NotificationType<T extends INotificationType = INotificati
     // Nothing todo
   }
 
-  abstract getUrl(): ProfileRoute | UrlRoute | null;
+  abstract getUrl(): UrlRoute | null;
   abstract getTitle(format: RenderFormat): Translatable;
   abstract getBody(format: RenderFormat): Translatable;
 }
@@ -63,7 +63,7 @@ class NotificationSchemaType extends NotificationType<INotificationType> impleme
     return undefined;
   }
 
-  getUrl(): ProfileRoute | UrlRoute {
+  getUrl(): UrlRoute {
     return undefined;
   }
 }

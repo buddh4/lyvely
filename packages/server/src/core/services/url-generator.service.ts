@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '../config';
-import { MisconfigurationException } from '@lyvely/common';
-
-export interface UrlRoute {
-  path?: string;
-  params?: Record<string, string>;
-}
+import { MisconfigurationException, UrlRoute } from '@lyvely/common';
 
 @Injectable()
 export class UrlGenerator {
@@ -24,8 +19,8 @@ export class UrlGenerator {
     const url = new URL(baseUrl);
     url.pathname = this.getPathString(route?.path);
 
-    if (route?.params) {
-      Object.keys(route.params).forEach((name) => url.searchParams.append(name, route.params[name]));
+    if (route?.query) {
+      Object.keys(route.query).forEach((name) => url.searchParams.append(name, route.query[name]));
     }
 
     return url;

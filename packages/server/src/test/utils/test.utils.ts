@@ -22,12 +22,13 @@ import { AppConfigModule } from '@/app-config';
 import { I18nModule } from '@/i18n';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { LiveModule } from '@/live/live.module';
+import { NotificationsModule } from '@/notifications/notifications.module';
 
 export function createCoreTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
 ): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [
@@ -50,7 +51,7 @@ export function createCoreTestingModule(
         isGlobal: true,
       }),
       MailsModule.fromConfig(),
-      ...modules,
+      ...imports,
     ],
     providers: [...providers],
   });
@@ -60,20 +61,20 @@ export function createBasicTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
 ): TestingModuleBuilder {
-  modules.push(UsersModule, ProfilesModule, PoliciesModule, TestModule, LiveModule);
-  return createCoreTestingModule(key, providers, models, modules);
+  imports.push(UsersModule, ProfilesModule, PoliciesModule, TestModule, LiveModule, NotificationsModule.forRoot());
+  return createCoreTestingModule(key, providers, models, imports);
 }
 
 export function createContentTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
 ): TestingModuleBuilder {
-  modules.push(ContentModule.forRoot());
-  return createBasicTestingModule(key, providers, models, modules);
+  imports.push(ContentModule.forRoot());
+  return createBasicTestingModule(key, providers, models, imports);
 }
 
 export function getObjectId(id: string) {

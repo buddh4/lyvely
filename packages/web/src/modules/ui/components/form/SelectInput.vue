@@ -39,7 +39,7 @@ export default {
     options: { type: Array as PropType<Array<{ label: string; value: any }>>, required: true },
   },
   emits: ['change', 'update:modelValue'],
-  setup(props: IProps, context: SetupContext) {
+  setup(props: any, context: SetupContext) {
     return useFloatingInputSetup(props, context);
   },
   mounted() {

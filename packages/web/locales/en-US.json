@@ -377,5 +377,10 @@
     "edit": {
       "title": "Edit time"
     }
+  },
+  "notifications": {
+    "drawer": {
+      "title": "Notifications"
+    }
   }
 }

@@ -13,6 +13,7 @@ const MODULE_MAPPINGS = getModulePath('mappings');
 const MODULE_MODELS = getModulePath('models');
 const MODULE_PROFILES = getModulePath('profiles');
 const MODULE_STATISTICS = getModulePath('statistics');
+const MODULE_STREAM = getModulePath('stream');
 const MODULE_TAGS = getModulePath('tags');
 const MODULE_TIME_SERIES = getModulePath('time-series');
 const MODULE_TYPES = getModulePath('types');
@@ -76,6 +77,7 @@ module.exports = {
     createModuleDeps('models', [MODULE_UTILS]),
     createModuleDeps('profiles', [MODULE_TAGS, MODULE_MODELS, MODULE_ENDPOINTS]),
     createModuleDeps('statistics', [MODULE_CALENDAR]),
+    createModuleDeps('stream'),
     createModuleDeps('tags', [MODULE_MODELS]),
     createModuleDeps('time-series', [MODULE_CALENDAR, MODULE_MODELS, MODULE_CONTENT, MODULE_COLLAB]),
     createModuleDeps('types'),

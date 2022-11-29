@@ -1,10 +1,11 @@
 import { registerLogValueStrategy } from '../time-series-config-schema.factory';
 import { SchemaFactory } from '@nestjs/mongoose';
-import { IDataPointStrategyType, registerDataPointStrategy } from './data-point-config.factory';
+import { registerDataPointStrategy } from './data-point-config.factory';
 import { DataPointConfig } from './data-point-config.schema';
+import { Type } from '@lyvely/common';
 
 export class DataPointConfigSchemaFactory {
-  static createForClass<TClass extends DataPointConfig>(strategy: string, target: IDataPointStrategyType<TClass>) {
+  static createForClass<TClass extends DataPointConfig>(strategy: string, target: Type<TClass>) {
     const schema = SchemaFactory.createForClass(target);
     registerLogValueStrategy(strategy, schema);
     registerDataPointStrategy(strategy, target);

@@ -12,8 +12,19 @@ export function createApiUrl(path: string) {
   return apiURL + path;
 }
 
-export function createAvatarUrl(avatar: AvatarModel) {
-  return createApiUrl(`/avatars/${avatar.guid}?v=${avatar.timestamp}`);
+export function createAvatarUrl(avatar: AvatarModel): string;
+export function createAvatarUrl(guid: string, timestamp?: number): string;
+export function createAvatarUrl(guid: string | AvatarModel, timestamp?: number): string {
+  if (typeof guid === 'object') {
+    timestamp = guid.timestamp;
+    guid = guid.guid;
+  }
+
+  let path = `/avatars/${guid}`;
+  if (timestamp) {
+    path += `?v=${timestamp}`;
+  }
+  return createApiUrl(path);
 }
 
 export function createFileUrl(hash: string) {

@@ -24,22 +24,22 @@ describe('UrlGenrator', () => {
     });
 
     it('generate base app url with search param', () => {
-      const testUrl = urlGenerator.getAppUrl({ params: { test: 'testVal', test2: 'testVal2' } });
+      const testUrl = urlGenerator.getAppUrl({ query: { test: 'testVal', test2: 'testVal2' } });
       expect(testUrl.href).toEqual('https://test.com/?test=testVal&test2=testVal2');
     });
 
     it('generate base app url with path and search param', () => {
-      const testUrl = urlGenerator.getAppUrl({ path: 'some/path', params: { test: 'testVal', test2: 'testVal2' } });
+      const testUrl = urlGenerator.getAppUrl({ path: 'some/path', query: { test: 'testVal', test2: 'testVal2' } });
       expect(testUrl.href).toEqual('https://test.com/some/path?test=testVal&test2=testVal2');
     });
 
     it('generate base app url with path with leading slash', () => {
-      const testUrl = urlGenerator.getAppUrl({ path: '/some/path', params: { test: 'testVal', test2: 'testVal2' } });
+      const testUrl = urlGenerator.getAppUrl({ path: '/some/path', query: { test: 'testVal', test2: 'testVal2' } });
       expect(testUrl.href).toEqual('https://test.com/some/path?test=testVal&test2=testVal2');
     });
 
     it('url is encoded', () => {
-      const testUrl = urlGenerator.getAppUrl({ path: '/so?me/path', params: { 't&st': 't&stVal' } });
+      const testUrl = urlGenerator.getAppUrl({ path: '/so?me/path', query: { 't&st': 't&stVal' } });
       expect(testUrl.href).toEqual('https://test.com/so%3Fme/path?t%26st=t%26stVal');
     });
 
@@ -61,22 +61,22 @@ describe('UrlGenrator', () => {
     });
 
     it('generate base app url with search param', () => {
-      const testUrl = urlGenerator.getApiUrl({ params: { test: 'testVal', test2: 'testVal2' } });
+      const testUrl = urlGenerator.getApiUrl({ query: { test: 'testVal', test2: 'testVal2' } });
       expect(testUrl.href).toEqual('https://api.test.com/?test=testVal&test2=testVal2');
     });
 
     it('generate base app url with path and search param', () => {
-      const testUrl = urlGenerator.getApiUrl({ path: 'some/path', params: { test: 'testVal', test2: 'testVal2' } });
+      const testUrl = urlGenerator.getApiUrl({ path: 'some/path', query: { test: 'testVal', test2: 'testVal2' } });
       expect(testUrl.href).toEqual('https://api.test.com/some/path?test=testVal&test2=testVal2');
     });
 
     it('generate base app url with path with leading slash', () => {
-      const testUrl = urlGenerator.getApiUrl({ path: '/some/path', params: { test: 'testVal', test2: 'testVal2' } });
+      const testUrl = urlGenerator.getApiUrl({ path: '/some/path', query: { test: 'testVal', test2: 'testVal2' } });
       expect(testUrl.href).toEqual('https://api.test.com/some/path?test=testVal&test2=testVal2');
     });
 
     it('url is encoded', () => {
-      const testUrl = urlGenerator.getApiUrl({ path: '/so?me/path', params: { 't&st': 't&stVal' } });
+      const testUrl = urlGenerator.getApiUrl({ path: '/so?me/path', query: { 't&st': 't&stVal' } });
       expect(testUrl.href).toEqual('https://api.test.com/so%3Fme/path?t%26st=t%26stVal');
     });
 
@@ -84,7 +84,7 @@ describe('UrlGenrator', () => {
       const pid = getObjectId('test');
       const testUrl = urlGenerator.getApiUrl({
         path: '/so?me/path',
-        params: { 't&st': 't&stVal' },
+        query: { 't&st': 't&stVal' },
         pid: getObjectId('test'),
       });
       expect(testUrl.href).toEqual(`https://api.test.com/so%3Fme/path?t%26st=t%26stVal&pid=${assureStringId(pid)}`);

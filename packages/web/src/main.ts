@@ -29,13 +29,14 @@ import LoaderBlock from '@/modules/ui/components/loader/LoaderBlock.vue';
 import TabMenu from '@/modules/ui/components/menu/TabMenu.vue';
 import TabMenuLink from '@/modules/ui/components/menu/TabMenuLink.vue';
 import FormattedDate from '@/modules/ui/components/intl/FormattedDate.vue';
+import AvatarImage from '@/modules/ui/components/avatar/AvatarImage.vue';
 import ContentPanel from '@/modules/ui/components/panels/ContentPanel.vue';
 import ScreenReaderValidationError from '@/modules/ui/components/error/ScreenReaderValidationError.vue';
 import AppComponent from '@/App.vue';
 import { createApp } from 'vue';
 
 const app = new LyvelyApp();
-app.init().then(() => app.vueApp.mount('#app'));
+app.init().then(() => app.mount('#app'));
 
 function justForWebstorm() {
   const vueApp = createApp(AppComponent);
@@ -63,6 +64,7 @@ function justForWebstorm() {
   app.vueApp.component('LyInputCaptcha', CaptchaInput);
   app.vueApp.component('LyAlert', AlertBlock);
   app.vueApp.component('LyProfileAvatar', ProfileAvatar);
+  app.vueApp.component('LyAvatar', AvatarImage);
   app.vueApp.component('LyUserAvatar', UserAvatar);
   app.vueApp.component('LyLoader', LoaderBlock);
   app.vueApp.component('LyTabMenu', TabMenu);

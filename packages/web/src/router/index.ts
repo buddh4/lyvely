@@ -9,7 +9,6 @@ import { appConfigGuard } from '@/modules/app-config';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { loadProfile } from '@/modules/profiles';
-import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
 import { useHelpStore } from '@/modules/help/stores/help.store';
 
 const routes: Array<RouteRecordRaw> = [];

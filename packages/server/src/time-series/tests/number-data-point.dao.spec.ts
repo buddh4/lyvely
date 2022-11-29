@@ -36,11 +36,6 @@ describe('NumberDataPointDao', () => {
     dao = testingModule.get<TestNumberDataPointDao>(TestNumberDataPointDao);
   });
 
-  afterEach(async () => {
-    await dao.deleteAll();
-    await testData.reset(TEST_KEY);
-  });
-
   it('should be defined', () => {
     expect(dao).toBeDefined();
   });

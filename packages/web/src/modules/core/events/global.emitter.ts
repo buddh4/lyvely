@@ -1,11 +1,11 @@
 import mitt from 'mitt';
-import { App } from 'vue';
+import { LyvelyApp } from '@/lyvely.app';
 
 type GlobalEvents = {
-  'app.create.pre': void;
-  'app.create.post': App;
-  'app.mount.pre': App;
-  'app.mount.post': App;
+  'app.init.pre': void;
+  'app.init.post': LyvelyApp;
+  'app.mount.pre': LyvelyApp;
+  'app.mount.post': LyvelyApp;
 } & Record<string, any>;
 
 export const eventBus = mitt<GlobalEvents>();

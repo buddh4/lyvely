@@ -15,6 +15,7 @@ import {
   BaseModel,
   PropertyType,
   ProfileUsage,
+  AvatarModel,
 } from '@lyvely/common';
 import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-role-permissions.schema';
 
@@ -31,6 +32,22 @@ class ProfileMetadata extends BaseModel<ProfileMetadata> {
 
 const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
 
+@Schema({ _id: false })
+export class Avatar implements PropertiesOf<AvatarModel> {
+  @Prop({ required: true })
+  guid: string;
+
+  @Prop({ required: true })
+  timestamp: number;
+
+  constructor(guid: string) {
+    this.guid = guid;
+    this.timestamp = Date.now();
+  }
+}
+
+const AvatarSchema = SchemaFactory.createForClass(Avatar);
+
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Profile extends BaseEntity<Profile> implements PropertiesOf<ProfileModel> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
@@ -44,6 +61,9 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   @Prop({ max: MAX_PROFILE_DESCRIPTION_LENGTH })
   description: string;
+
+  @Prop({ type: AvatarSchema })
+  avatar?: Avatar;
 
   @Prop({ type: ProfileMetadataSchema })
   @PropertyType(ProfileMetadata)

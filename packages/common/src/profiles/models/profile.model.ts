@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { DocumentModel } from '@/models';
+import { BaseModel, DocumentModel } from '@/models';
 import { ProfileType, ProfileVisibilityLevel } from '../interfaces';
 import { IsArray, IsEnum, IsInt, IsOptional, IsString, Length, Min } from 'class-validator';
 import { TagModel } from '@/tags';
@@ -8,6 +8,13 @@ export const MIN_PROFILE_NAME_LENGTH = 1;
 export const MAX_PROFILE_NAME_LENGTH = 100;
 
 export const MAX_PROFILE_DESCRIPTION_LENGTH = 200;
+
+@Expose()
+export class ProfileInfoModel extends BaseModel<ProfileInfoModel> {
+  pid: string;
+  imageGuid?: string;
+  name: string;
+}
 
 @Exclude()
 export class ProfileModel extends DocumentModel<ProfileModel> {

@@ -23,6 +23,7 @@ const MODULE_USER_OTP = getModulePath('user-otp');
 const MODULE_TAGS = getModulePath('tags');
 const MODULE_TIME_SERIES = getModulePath('time-series');
 const MODULE_ACTIVITIES = getModulePath('activities');
+const MODULE_QUEUE = getModulePath('queue');
 const NODE_MODULES = 'node_modules';
 const LYVELY_COMMON = '/common/dist';
 const NODE_CORE = '^((?!\\/).)*$';
@@ -82,6 +83,7 @@ module.exports = {
       MODULE_CALENDAR,
       MODULE_TAGS,
     ]),
+    createModuleDeps('queue'),
     createModuleDeps('user-registration', [MODULE_USERS, MODULE_PROFILES, MODULE_MAILS, MODULE_USER_OTP]),
     createModuleDeps('statistics', [MODULE_USERS]),
     createModuleDeps('tags', [MODULE_PROFILES, MODULE_POLICIES]),

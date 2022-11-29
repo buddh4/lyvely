@@ -39,6 +39,8 @@ import FormattedDate from '@/modules/ui/components/intl/FormattedDate.vue';
 import ContentPanel from '@/modules/ui/components/panels/ContentPanel.vue';
 import ScreenReaderValidationError from '@/modules/ui/components/error/ScreenReaderValidationError.vue';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
+import { eventBus } from '@/modules/core/events/global.emitter';
+import AvatarImage from '@/modules/ui/components/avatar/AvatarImage.vue';
 
 export class LyvelyApp {
   vueApp: App;
@@ -46,9 +48,11 @@ export class LyvelyApp {
   i18n: I18n;
 
   async init() {
+    eventBus.emit('app.init.pre');
     this.setupPinia();
     await this.setupI18n();
     this.createApp();
+    eventBus.emit('app.init.post', this);
     return this;
   }
 
@@ -75,7 +79,9 @@ export class LyvelyApp {
   }
 
   mount(selector: string) {
+    eventBus.emit('app.mount.pre', this);
     this.vueApp.mount(selector);
+    eventBus.emit('app.mount.post', this);
   }
 
   private setGlobalComponents() {
@@ -103,6 +109,7 @@ export class LyvelyApp {
     this.vueApp.component('LyInputCaptcha', CaptchaInput);
     this.vueApp.component('LyAlert', AlertBlock);
     this.vueApp.component('LyProfileAvatar', ProfileAvatar);
+    this.vueApp.component('LyAvatar', AvatarImage);
     this.vueApp.component('LyUserAvatar', UserAvatar);
     this.vueApp.component('LyLoader', LoaderBlock);
     this.vueApp.component('LyTabMenu', TabMenu);

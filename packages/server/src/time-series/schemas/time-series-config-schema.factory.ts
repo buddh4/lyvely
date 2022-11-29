@@ -1,11 +1,11 @@
 import { Type } from '@nestjs/common';
 import { SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
 import { DataPointConfig } from '@/time-series';
 
 const SchemaMapping = {};
 
-export function registerLogValueStrategy(name: string, schema: mongoose.Schema) {
+export function registerLogValueStrategy(name: string, schema: Schema) {
   SchemaMapping[name] = schema;
 }
 
@@ -18,7 +18,7 @@ export class TimeSeriesConfigSchemaFactory {
     valueConfigStrategies.forEach((configStrategy) => {
       const schema = SchemaMapping[configStrategy];
       if (schema) {
-        Schema.path<mongoose.Schema.Types.Subdocument>('timeSeries').discriminator(
+        Schema.path<Schema.Types.Subdocument>('timeSeries').discriminator(
           configStrategy,
           SchemaMapping[configStrategy],
         );

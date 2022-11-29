@@ -10,7 +10,7 @@ export class UserNotification extends BaseEntity<UserNotification> {
   uid: TObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, require: true })
-  notification: TObjectId;
+  notificationId: TObjectId;
 
   @Prop()
   @PropertyType(Boolean, { default: false })

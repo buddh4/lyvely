@@ -30,7 +30,11 @@ type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' 
   [key: ContainsDot]: any;
 };
 
-type QuerySort<T extends BaseEntity<T>> = { [P in keyof UpdateSubQuerySet<T>]: 1 | -1 | 'asc' | 'desc' };
+type SortableRecord<T extends BaseEntity<T>> = Partial<Omit<T, '__v' | 'id'>> & {
+  [key: ContainsDot]: any;
+};
+
+type QuerySort<T extends BaseEntity<T>> = { [P in keyof SortableRecord<T>]: 1 | -1 | 'asc' | 'desc' };
 
 type EntityQuery<T extends BaseEntity<T>> = QueryWithHelpers<
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -177,7 +181,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     // TODO: trigger events
 
     options = options || {};
-    options.pagination = options.pagination || defaultFetchOptions.pagination;
+    //options.pagination = options.pagination || defaultFetchOptions.pagination;
 
     const query = this.model.find(filter, options?.projection, options);
     const fetchFilter = this.getFetchQueryFilter(options);
@@ -337,8 +341,8 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.findById(id);
   }
 
-  async deleteAll(options?: DeleteOptions): Promise<number> {
-    return this.deleteMany({}, options);
+  async deleteManyByIds(ids: EntityIdentity<T>[], options?: DeleteOptions): Promise<number> {
+    return this.deleteMany({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
 
   async deleteMany(filter: FilterQuery<T>, options?: DeleteOptions): Promise<number> {

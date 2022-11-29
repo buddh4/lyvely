@@ -20,6 +20,13 @@ export class AvatarModel extends BaseModel<AvatarModel> {
   timestamp: number;
 }
 
+@Expose()
+export class UserInfoModel extends BaseModel<UserInfoModel> {
+  uid: string;
+  imageGuid?: string;
+  name: string;
+}
+
 @Exclude()
 export class UserModel extends DocumentModel<UserModel> {
   @Expose()

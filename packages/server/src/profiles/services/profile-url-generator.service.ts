@@ -1,17 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { assureStringId, EntityIdentity, UrlGenerator, ConfigurationPath } from '@/core';
-import { Profile } from '../schemas';
-
-export interface UrlRoute {
-  path?: string;
-  params?: Record<string, string>;
-}
-
-export interface ProfileRoute extends UrlRoute {
-  params?: Record<string, string>;
-  pid?: EntityIdentity<Profile>;
-}
+import { assureStringId, UrlGenerator, ConfigurationPath } from '@/core';
+import { UrlRoute } from '@lyvely/common';
 
 @Injectable()
 export class ProfileUrlGenerator extends UrlGenerator {
@@ -19,7 +9,7 @@ export class ProfileUrlGenerator extends UrlGenerator {
     super(configService);
   }
 
-  public getAppUrl(route?: ProfileRoute): URL {
+  public getAppUrl(route?: UrlRoute): URL {
     if (route && 'pid' in route) {
       route.path = `/p/${assureStringId(route.pid)}/${this.getPathString(route.path)}`;
     }
@@ -27,13 +17,13 @@ export class ProfileUrlGenerator extends UrlGenerator {
     return super.getAppUrl(route);
   }
 
-  public getApiUrl(route?: ProfileRoute): URL {
+  public getApiUrl(route?: UrlRoute): URL {
     if (route && 'pid' in route) {
-      if (!route.params) {
-        route.params = {};
+      if (!route.query) {
+        route.query = {};
       }
 
-      route.params['pid'] = assureStringId(route.pid);
+      route.query['pid'] = assureStringId(route.pid);
     }
 
     return this.generateUrl(this.getBaseApiUrl(), route);

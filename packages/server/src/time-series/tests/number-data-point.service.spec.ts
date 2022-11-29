@@ -49,11 +49,6 @@ describe('NumberDataPointService', () => {
     );
   });
 
-  afterEach(async () => {
-    await dao.deleteAll();
-    await testData.reset(TEST_KEY);
-  });
-
   async function createTimeSeriesContent(
     user: User,
     profile: Profile,

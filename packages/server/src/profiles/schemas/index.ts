@@ -7,3 +7,4 @@ export * from './group-profiles.schema';
 export * from './organization.schema';
 export * from './user-profiles.schema';
 export * from './profiles.factory';
+export * from './profile-info.schema';
