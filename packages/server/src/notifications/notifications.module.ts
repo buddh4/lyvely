@@ -10,10 +10,8 @@ import {
   UserNotification,
   UserNotificationSchema,
 } from '@/notifications/schemas';
-import { InjectModel, MongooseModule } from '@nestjs/mongoose';
-import { Model, Schema } from 'mongoose';
-import { NotificationTypeSchemaFactory } from '@/notifications/schemas/notification-type-schema.factory';
-import { MisconfigurationException } from '@lyvely/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Schema } from 'mongoose';
 
 const NotificationModels = MongooseModule.forFeature([
   {
@@ -58,41 +56,4 @@ export class NotificationsModule {
   static forRoot() {
     return NotificationCoreModule.registerCore();
   }
-
-  static registerNotificationTypes(...notificationTypes: Type<NotificationType>[]): DynamicModule {
-    return {
-      module: NotificationsModule,
-      imports: [NotificationCoreModule.registerCore()],
-      providers: [registerNotificationTypeOnInit(notificationTypes)],
-    };
-  }
-}
-
-function registerNotificationTypeOnInit(notificationTypes: Type<NotificationType>[]) {
-  @Injectable()
-  class RegisterNotificationTypeService implements OnModuleInit {
-    constructor(
-      private notificationTypeRegistry: NotificationTypeRegistry,
-      @InjectModel(Notification.name) private notificationModel: Model<Notification>,
-    ) {}
-
-    onModuleInit(): any {
-      if (notificationTypes && notificationTypes.length) {
-        this.notificationTypeRegistry.registerTypes(notificationTypes.map((type) => ({ type })));
-        notificationTypes.forEach((notificationType) => {
-          const schema = NotificationTypeSchemaFactory.getSchemaByType(notificationType);
-
-          if (!schema) {
-            throw new MisconfigurationException(`No Schema registered for notification type ${notificationType.name}.`);
-          }
-
-          this.notificationModel.schema
-            .path<Schema.Types.Subdocument>('data')
-            .discriminator(notificationType.name, schema);
-        });
-      }
-    }
-  }
-
-  return RegisterNotificationTypeService;
 }

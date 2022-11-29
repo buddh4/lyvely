@@ -11,8 +11,9 @@ export class AbstractTypeRegistry<T, TMeta = any> {
   private typeMapping: Record<string, ITypeRegistryDefinition<T>> = {};
   private typeMeta: Record<string, TMeta> = {};
 
-  registerType(type: Type<T>, meta?: TMeta) {
-    const definition = { type: type.name, constructor: type };
+  registerType(type: Type<T>, name?: string, meta?: TMeta) {
+    name = name || type.name;
+    const definition = { type: name, constructor: type };
     this.logger.log(`Register content type ${definition.type}`);
     this.typeMapping[definition.type] = definition;
     if (meta) {
@@ -20,8 +21,8 @@ export class AbstractTypeRegistry<T, TMeta = any> {
     }
   }
 
-  registerTypes(types: { type: Type<T>; meta?: TMeta }[]) {
-    types.forEach((type) => this.registerType(type.type, type.meta));
+  registerTypes(types: { type: Type<T>; name?: string; meta?: TMeta }[]) {
+    types.forEach((type) => this.registerType(type.type, type.name, type.meta));
   }
 
   isRegisteredType(type: string): boolean {

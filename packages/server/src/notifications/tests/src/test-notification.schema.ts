@@ -1,18 +1,15 @@
 import { NotificationType, RenderFormat } from '@/notifications';
 import { Translatable } from '@/i18n';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
-import { Prop } from '@nestjs/mongoose';
-import { ProfileInfo, ProfileInfoSchema } from '@/profiles';
-import { UserInfo, UserInfoSchema } from '@/users';
 import { Notification } from '@/notifications/decorators';
+import { Prop } from '@nestjs/mongoose';
 
 @Notification()
 export class TestNotification extends NotificationType<TestNotification> {
-  @Prop({ type: ProfileInfoSchema, required: true })
-  profileInfo: ProfileInfo;
+  @Prop()
+  testProp: string;
 
-  @Prop({ type: UserInfoSchema, required: true })
-  userInfo: UserInfo;
+  nonProp: string;
 
   getBody(format: RenderFormat): Translatable {
     return {

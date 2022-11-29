@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { NotificationType } from './notification-type.schema';
+import { NotificationType, NotificationTypeSchema } from './notification-type.schema';
 import { BaseEntity } from '@/core';
 import { BaseModel, IntegrityException } from '@lyvely/common';
 
@@ -20,7 +20,7 @@ export class Notification<T extends NotificationType = NotificationType> extends
   @Prop({ type: NotificationSubscriptionSchema, required: true })
   subscription: NotificationSubscription;
 
-  @Prop({ type: mongoose.Schema.Types.Mixed, required: true })
+  @Prop({ type: NotificationTypeSchema, required: true })
   data: T;
 
   @Prop({ required: true })

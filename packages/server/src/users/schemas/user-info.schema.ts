@@ -7,10 +7,10 @@ import { UserProfileRelation } from '@/profiles';
 
 @Schema({ _id: false })
 export class UserInfo extends BaseModel<UserInfo> implements PropertiesOf<Omit<UserInfoModel, 'uid'>> {
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   uid: TObjectId;
 
-  @Prop({ required: true })
+  @Prop()
   imageGuid?: string;
 
   @Prop({ required: true })

@@ -7,3 +7,4 @@ export * from './modules';
 export * from './web';
 export * from './core.module';
 export * from './config';
+export * from './global.emitter';

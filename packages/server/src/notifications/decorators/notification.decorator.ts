@@ -1,20 +1,19 @@
-//export function Notification(constructor: T) {}
-
 import { Schema } from '@nestjs/mongoose';
 import { NotificationSchemaType } from '@/notifications';
 import { NotificationTypeSchemaFactory } from '@/notifications/schemas/notification-type-schema.factory';
 import { Type } from '@lyvely/common';
 
-type Constructor = { new (...args: any[]): {} };
-
-export function Notification(type?: string) {
+export function Notification() {
   return function <T extends Type<NotificationSchemaType>>(constructor: T) {
     Schema({ _id: false })(constructor);
 
-    NotificationTypeSchemaFactory.createForClass(constructor);
-
-    return class extends constructor {
-      type = type || constructor.name;
+    const TypeConstructor = class extends constructor {
+      type = constructor.name;
+      static typeName = constructor.name;
     };
+
+    NotificationTypeSchemaFactory.createForClass(TypeConstructor);
+
+    return TypeConstructor;
   };
 }

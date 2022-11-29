@@ -2,7 +2,6 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { UserNotificationsService } from '@/notifications/services/user-notifications.service';
-import { NotificationsModule } from '@/notifications/notifications.module';
 import { TestNotification } from '../src/test-notification.schema';
 import { UserNotification, Notification } from '@/notifications';
 import { Profile, ProfileInfo } from '@/profiles';
@@ -20,12 +19,7 @@ describe('UserNotificationsService', () => {
   let testData: TestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(
-      TEST_KEY,
-      [],
-      [],
-      [NotificationsModule.registerNotificationTypes(TestNotification)],
-    ).compile();
+    testingModule = await createBasicTestingModule(TEST_KEY, [], [], []).compile();
     userNotificationsService = testingModule.get(UserNotificationsService);
     notificationDao = testingModule.get(NotificationDao);
     userNotificationDao = testingModule.get(UserNotificationDao);
@@ -55,7 +49,13 @@ describe('UserNotificationsService', () => {
       expect(result.hasMore).toEqual(false);
     });
 
-    async function createTestNotification(user: User, profile: Profile, uids: TObjectId[], sortOrder?: number) {
+    async function createTestNotification(
+      user: User,
+      profile: Profile,
+      uids: TObjectId[],
+      sortOrder?: number,
+      testValue = 'test',
+    ) {
       const notification = new Notification(
         new TestNotification({
           userInfo: new UserInfo(user),
@@ -85,7 +85,7 @@ describe('UserNotificationsService', () => {
       const receiver = await testData.createUser();
       const sender = await testData.createUser('test2');
       const profile = await testData.createProfile(sender);
-      const notification = await createTestNotification(sender, profile, [assureObjectId(receiver)], Date.now());
+      const notification = await createTestNotification(sender, profile, [assureObjectId(receiver)]);
       const userNotification = await createTestUserNotification(receiver, notification);
       const result = await userNotificationsService.loadNext(receiver, { batchSize: 5 });
       expect(result.models.length).toEqual(1);

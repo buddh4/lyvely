@@ -6,10 +6,10 @@ import { Profile } from '@/profiles';
 
 @Schema({ _id: false })
 export class ProfileInfo extends BaseModel<ProfileInfo> implements PropertiesOf<Omit<ProfileInfoModel, 'pid'>> {
-  @Prop({ type: [mongoose.Schema.Types.ObjectId], required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   pid: TObjectId;
 
-  @Prop({ required: true })
+  @Prop()
   imageGuid?: string;
 
   @Prop({ required: true })
