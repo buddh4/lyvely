@@ -78,10 +78,16 @@ export enum OperationMode {
   DISTRIBUTED = 'distributed',
 }
 
+interface RedisConfig {
+  host: string;
+  port: string;
+}
+
 export type LyvelyAppConfiguration = {
   appName: string;
   operationMode: OperationMode;
   docUrl?: string;
+  redis: RedisConfig;
   contactMail: string;
   i18n?: I18NOptions;
   http?: LyvelyHttpOptions;
@@ -97,5 +103,8 @@ export type LyvelyAppConfiguration = {
 
 // TODO: This is not working for some types
 export type ConfigurationPath = {
-  [key in NestedPaths<LyvelyAppConfiguration>]: TypeFromPath<LyvelyAppConfiguration, key>;
+  [key in NestedPaths<LyvelyAppConfiguration>]: TypeFromPath<
+    LyvelyAppConfiguration,
+    key
+  >;
 };

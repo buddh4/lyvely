@@ -21,6 +21,7 @@ module.exports = {
   },
   plugins: ['vue', 'prettier', '@typescript-eslint/eslint-plugin', 'import'],
   extends: [
+    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:vue/vue3-recommended',
     'plugin:prettier/recommended',
@@ -51,6 +52,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -60,24 +62,8 @@ module.exports = {
     //'import/named': 'off',
     'import/no-unresolved': 'off',
     'import/no-named-as-default-member': 'off',
+    'multiline-ternary': ['error', 'always-multiline'],
     'function-call-argument-newline': ['error', 'consistent'],
   },
   ignorePatterns: ['.eslintrc.js', '*.d.ts'],
-  overrides: [
-    {
-      files: ['**/*.ts'],
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        project: [
-          './packages/web/tsconfig.json',
-          './packages/common/tsconfig.json',
-          './packages/server/tsconfig.json',
-          './packages/demo-web/tsconfig.json',
-          './packages/demo-server/tsconfig.json',
-        ],
-        sourceType: 'module',
-        extraFileExtensions: ['.vue'],
-      },
-    },
-  ],
 };

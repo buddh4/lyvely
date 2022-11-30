@@ -28,7 +28,9 @@ export function createCoreTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<
+    Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference
+  > = [],
 ): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [
@@ -47,7 +49,9 @@ export function createCoreTestingModule(
       AppConfigModule,
       I18nModule,
       ConfigModule.forRoot({
-        load: [() => import('./lyvely-test.config').then((module) => module.default)],
+        load: [
+          () => import('./lyvely-test.config').then((module) => module.default),
+        ],
         isGlobal: true,
       }),
       MailsModule.fromConfig(),
@@ -61,9 +65,18 @@ export function createBasicTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<
+    Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference
+  > = [],
 ): TestingModuleBuilder {
-  imports.push(UsersModule, ProfilesModule, PoliciesModule, TestModule, LiveModule, NotificationsModule.forRoot());
+  imports.push(
+    UsersModule,
+    ProfilesModule,
+    PoliciesModule,
+    TestModule,
+    LiveModule,
+    NotificationsModule.forRoot(),
+  );
   return createCoreTestingModule(key, providers, models, imports);
 }
 
@@ -71,12 +84,16 @@ export function createContentTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<
+    Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference
+  > = [],
 ): TestingModuleBuilder {
   imports.push(ContentModule.forRoot());
   return createBasicTestingModule(key, providers, models, imports);
 }
 
 export function getObjectId(id: string) {
-  return <TObjectId>new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
+  return <TObjectId>(
+    new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString())
+  );
 }

@@ -42,11 +42,27 @@ export class UsersService {
     return this.userDao.findById(id);
   }
 
-  async incrementProfileCount(owner: User, type: ProfileType, options?: IBaseQueryOptions) {
+  async findUserByIds(ids: EntityIdentity<User>[]): Promise<User[]> {
+    if (!ids?.length) {
+      return [];
+    }
+
+    return this.userDao.findAllByIds(ids);
+  }
+
+  async incrementProfileCount(
+    owner: User,
+    type: ProfileType,
+    options?: IBaseQueryOptions,
+  ) {
     return this.userDao.incrementProfileCount(owner, type, 1, options);
   }
 
-  async decrementProfileCount(owner: User, type: ProfileType, options?: IBaseQueryOptions) {
+  async decrementProfileCount(
+    owner: User,
+    type: ProfileType,
+    options?: IBaseQueryOptions,
+  ) {
     return this.userDao.incrementProfileCount(owner, type, -1, options);
   }
 
@@ -74,7 +90,11 @@ export class UsersService {
     return this.userDao.updateOneSetById(user, { status: status });
   }
 
-  async setUserPassword(user: EntityIdentity<User>, newPassword: string, resetSession: boolean) {
+  async setUserPassword(
+    user: EntityIdentity<User>,
+    newPassword: string,
+    resetSession: boolean,
+  ) {
     return this.userDao.updatePassword(user, newPassword, resetSession);
   }
 }

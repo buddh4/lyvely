@@ -68,5 +68,24 @@ describe('UserNotificationsService', () => {
       expect(notification.data instanceof TestNotification).toEqual(true);
       expect(notification.data.testProp).toEqual('testValue');
     });
+
+    it('assure non props are not saved', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const notification = (await notificationDao.save(
+        new Notification(
+          new TestNotification({
+            userInfo: new UserInfo(user),
+            profileInfo: new ProfileInfo(profile),
+            testProp: 'testValue',
+            nonProp: 'nonProp',
+          }),
+          { uids: [user._id] },
+        ),
+      )) as Notification<TestNotification>;
+      expect(notification).toBeDefined();
+      expect(notification.data instanceof TestNotification).toEqual(true);
+      expect(notification.data.testProp).toEqual('testValue');
+      expect(notification.data.nonProp).toBeUndefined();
+    });
   });
 });

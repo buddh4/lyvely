@@ -19,20 +19,31 @@ const globalListener = <Listener>globalEmitter.on(
 
 @Injectable()
 export class NotificationTypeRegistry extends AbstractTypeRegistry<NotificationType> {
-  constructor(@InjectModel(Notification.name) private notificationModel: Model<Notification>) {
+  constructor(
+    @InjectModel(Notification.name)
+    private notificationModel: Model<Notification>,
+  ) {
     super(new Logger(NotificationTypeRegistry.name));
     globalListener.off();
-    globalEmitter.on(EVENT_REGISTER_NOTIFICATION_TYPE, (type: TNotificationType, schema: Schema<NotificationType>) => {
-      this.addNotificationDataTypeDiscriminator(type, schema);
-    });
+    globalEmitter.on(
+      EVENT_REGISTER_NOTIFICATION_TYPE,
+      (type: TNotificationType, schema: Schema<NotificationType>) => {
+        this.addNotificationDataTypeDiscriminator(type, schema);
+      },
+    );
     queuedTypeSchemas.forEach(([type, schema]) => {
       this.addNotificationDataTypeDiscriminator(type, schema);
     });
     queuedTypeSchemas = [];
   }
 
-  private addNotificationDataTypeDiscriminator(type: TNotificationType, schema: Schema<NotificationType>) {
-    this.notificationModel.schema.path<Schema.Types.Subdocument>('data').discriminator(type.typeName, schema);
+  private addNotificationDataTypeDiscriminator(
+    type: TNotificationType,
+    schema: Schema<NotificationType>,
+  ) {
+    this.notificationModel.schema
+      .path<Schema.Types.Subdocument>('data')
+      .discriminator(type.typeName, schema);
     this.registerType(type, type.typeName);
   }
 }

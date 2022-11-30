@@ -1,24 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '@/users';
+import { User, UsersService } from '@/users';
 import { ProfileMembershipService } from '@/profiles/services/profile-membership.service';
 import { Notification } from '../schemas';
 import { chunkArray } from '@lyvely/common';
+import { Membership } from '@/profiles';
 
 @Injectable()
 export class NotificationSubscriptionService {
-  constructor(private userService: UsersService, private profileMemberService: ProfileMembershipService) {}
+  constructor(
+    private userService: UsersService,
+    private profileMemberService: ProfileMembershipService,
+  ) {}
 
-  async getUserIds(notification: Notification): Promise<Array<TObjectId>> {
-    const result = notification.subscription.uids || [];
-    if (notification.subscription.pid) {
-      const memberships = await this.profileMemberService.getMemberShips(notification.subscription.pid);
-      memberships.forEach((membership) => result.push(membership.uid));
-    }
+  async getProfileSubscriptions(
+    notification: Notification,
+    batchSize = 100,
+  ): Promise<Array<Membership[]>> {
+    if (!notification.subscription.pid) return [];
 
-    return result;
+    const memberships = await this.profileMemberService.getMemberShips(
+      notification.subscription.pid,
+    );
+
+    return chunkArray(memberships, batchSize);
   }
 
-  async getUserIdBatches(notification: Notification, batchSize = 100): Promise<Array<TObjectId[]>> {
-    return chunkArray(await this.getUserIds(notification), batchSize);
+  async getUserSubscriptions(notification: Notification): Promise<Array<User>> {
+    if (!notification.subscription.uids?.length) {
+      return [];
+    }
+
+    return this.userService.findUserByIds(notification.subscription.uids);
   }
 }

@@ -1,8 +1,22 @@
 import { User } from '@/users';
+import { ProfileRelation } from '@/profiles';
+import { Notification } from '../schemas';
+
+export interface NotificationContext {
+  user: User;
+  profileRelation?: ProfileRelation;
+}
+
+export interface NotificationDeliveryResult {
+  id: string;
+  success: boolean;
+  error?: string;
+}
 
 export interface INotificationChannel {
   getId(): string;
-  queue(user: User, notification: Notification);
-  send(user: User, notification: Notification);
-  sendBulk(users: User[], notification: Notification);
+  send(
+    context: NotificationContext,
+    notification: Notification,
+  ): Promise<NotificationDeliveryResult>;
 }

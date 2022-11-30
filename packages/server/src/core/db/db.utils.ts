@@ -1,9 +1,18 @@
 import { Document, Types, UpdateQuery } from 'mongoose';
 import { InternalServerErrorException } from '@nestjs/common';
 import { BaseEntity, assignEntityData } from './base.entity';
-import { isValidObjectId, assignRawDataTo, DeepPartial, Type } from '@lyvely/common';
+import {
+  isValidObjectId,
+  assignRawDataTo,
+  DeepPartial,
+  Type,
+} from '@lyvely/common';
 
-export type EntityIdentity<T extends BaseEntity<any>> = T | Types.ObjectId | string | (Document & T);
+export type EntityIdentity<T extends BaseEntity<any>> =
+  | T
+  | Types.ObjectId
+  | string
+  | (Document & T);
 
 export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 
@@ -15,7 +24,9 @@ export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
     if (isValidObjectId(identity)) {
       return new Types.ObjectId(identity as string);
     }
-    throw new InternalServerErrorException('Use of invalid object id detected.');
+    throw new InternalServerErrorException(
+      'Use of invalid object id detected.',
+    );
   }
 
   if (identity instanceof Types.ObjectId) {
@@ -26,7 +37,8 @@ export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
   if (
     identity &&
     '_id' in identity &&
-    (typeof identity['_id'] === 'string' || identity['_id'] instanceof Types.ObjectId)
+    (typeof identity['_id'] === 'string' ||
+      identity['_id'] instanceof Types.ObjectId)
   ) {
     return assureObjectId(identity['_id']);
   }
@@ -38,7 +50,10 @@ export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
   throw new InternalServerErrorException('Use of invalid object id detected.');
 }
 
-export function applyUpdateTo<T extends BaseEntity<any>>(identity: EntityIdentity<T>, update: UpdateQuery<T>) {
+export function applyUpdateTo<T extends BaseEntity<any>>(
+  identity: EntityIdentity<T>,
+  update: UpdateQuery<T>,
+) {
   if (typeof identity !== 'object') {
     return;
   }
@@ -84,11 +99,18 @@ export function findByPath<T>(model: T, path: string, parent = false) {
   path = parent ? path.replace(/\.[^/.]+$/, '') : path;
 
   let result = model;
-  path.split('.').forEach((sub) => (result = result || result[sub] ? result[sub] : undefined));
+  path
+    .split('.')
+    .forEach(
+      (sub) => (result = result || result[sub] ? result[sub] : undefined),
+    );
   return result;
 }
 
-export function applyPush<T>(model: T, pushData: { [key in keyof T]?: any }): T {
+export function applyPush<T>(
+  model: T,
+  pushData: { [key in keyof T]?: any },
+): T {
   // TODO: support path
   Object.keys(pushData).forEach((key) => {
     if (typeof model[key] === 'undefined') {
@@ -140,7 +162,10 @@ export function assureStringId(obj: any): string {
   throw new InternalServerErrorException('Use of invalid object id detected.');
 }
 
-export function createBaseEntityInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {
+export function createBaseEntityInstance<T>(
+  constructor: Type<T>,
+  data: DeepPartial<T>,
+) {
   const model = Object.create(constructor.prototype);
   if (typeof model.init === 'function') {
     model.init(data);

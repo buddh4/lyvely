@@ -12,6 +12,7 @@ import {
 } from '@/notifications/schemas';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Schema } from 'mongoose';
+import { QUEUE_NOTIFICATIONS_SEND } from '@/notifications/notification.constants';
 
 const NotificationModels = MongooseModule.forFeature([
   {
@@ -24,6 +25,10 @@ const NotificationModels = MongooseModule.forFeature([
   },
 ]);
 
+const NotificationQueues = QueueModule.registerQueues({
+  name: QUEUE_NOTIFICATIONS_SEND,
+});
+
 @Module({})
 export class NotificationCoreModule {
   static forRoot(): DynamicModule {
@@ -33,15 +38,14 @@ export class NotificationCoreModule {
   static registerCore() {
     return {
       module: NotificationsModule,
-      imports: [NotificationModels],
-      providers: [NotificationTypeRegistry, UserNotificationsService, UserNotificationDao, NotificationDao],
-      exports: [
+      imports: [NotificationModels, NotificationQueues],
+      providers: [
         NotificationTypeRegistry,
         UserNotificationsService,
-        NotificationModels,
         UserNotificationDao,
         NotificationDao,
       ],
+      exports: [UserNotificationsService, UserNotificationDao, NotificationDao],
     };
   }
 }

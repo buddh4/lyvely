@@ -1,8 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { NotificationType, NotificationTypeSchema } from './notification-type.schema';
+import {
+  NotificationType,
+  NotificationTypeSchema,
+} from './notification-type.schema';
 import { BaseEntity } from '@/core';
-import { BaseModel, IntegrityException } from '@lyvely/common';
+import { BaseModel } from '@lyvely/common';
 
 @Schema({ _id: false })
 export class NotificationSubscription extends BaseModel<NotificationSubscription> {
@@ -13,12 +16,19 @@ export class NotificationSubscription extends BaseModel<NotificationSubscription
   uids?: TObjectId[];
 }
 
-const NotificationSubscriptionSchema = SchemaFactory.createForClass(NotificationSubscription);
+const NotificationSubscriptionSchema = SchemaFactory.createForClass(
+  NotificationSubscription,
+);
 
 @Schema()
-export class Notification<T extends NotificationType = NotificationType> extends BaseEntity<Notification> {
+export class Notification<
+  T extends NotificationType = NotificationType,
+> extends BaseEntity<Notification> {
   @Prop({ type: NotificationSubscriptionSchema, required: true })
   subscription: NotificationSubscription;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  pid?: TObjectId;
 
   @Prop({ type: NotificationTypeSchema, required: true })
   data: T;
@@ -26,14 +36,18 @@ export class Notification<T extends NotificationType = NotificationType> extends
   @Prop({ required: true })
   sortOrder: number;
 
-  constructor(data: T, subscription: NotificationSubscription) {
+  constructor(
+    data: T,
+    subscription: NotificationSubscription,
+    pid?: TObjectId,
+  ) {
     super({
       data,
       subscription,
+      pid,
       sortOrder: Date.now(),
     });
   }
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);
-export type NotificationDocument = mongoose.Document & Notification;

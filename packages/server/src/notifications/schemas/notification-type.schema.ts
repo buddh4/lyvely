@@ -22,7 +22,9 @@ export interface INotificationType {
 
 export type TNotificationType = Type<NotificationType> & { typeName: string };
 
-export abstract class NotificationType<T extends INotificationType = INotificationType>
+export abstract class NotificationType<
+    T extends INotificationType = INotificationType,
+  >
   extends BaseEntity<T>
   implements INotificationType
 {
@@ -57,8 +59,14 @@ export abstract class NotificationType<T extends INotificationType = INotificati
   abstract getBody(format: RenderFormat): Translatable;
 }
 
-@Schema({ discriminatorKey: 'type', collection: NotificationType.collectionName() })
-export class NotificationSchemaType extends NotificationType<INotificationType> implements INotificationType {
+@Schema({
+  discriminatorKey: 'type',
+  collection: NotificationType.collectionName(),
+})
+export class NotificationSchemaType
+  extends NotificationType<INotificationType>
+  implements INotificationType
+{
   getBody(format: RenderFormat): Translatable {
     return undefined;
   }
@@ -72,4 +80,6 @@ export class NotificationSchemaType extends NotificationType<INotificationType> 
   }
 }
 
-export const NotificationTypeSchema = SchemaFactory.createForClass(NotificationSchemaType);
+export const NotificationTypeSchema = SchemaFactory.createForClass(
+  NotificationSchemaType,
+);
