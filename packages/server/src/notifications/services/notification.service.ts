@@ -1,15 +1,7 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  Logger,
-} from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { InjectQueue } from '@nestjs/bullmq';
-import {
-  Notification,
-  NotificationSubscription,
-  NotificationType,
-} from '../schemas';
+import { Notification, NotificationType, Subscription } from '../schemas';
 import { NotificationDao } from '../daos';
 import {
   JOB_SEND_NOTIFICATION,
@@ -27,21 +19,13 @@ export class NotificationService {
     private notificationDao: NotificationDao,
   ) {}
 
-  async sendNotification(
-    data: NotificationType,
-    subscription: NotificationSubscription,
-  ) {
+  async sendNotification(data: NotificationType, subscription: Subscription) {
     const notification = await this.notificationDao.save(
       new Notification(data, subscription),
     );
 
-    if (!notification)
-      throw new InternalServerErrorException(
-        `Could not save notification ${data?.type}`,
-      );
-
     this.notificationQueue.add(JOB_SEND_NOTIFICATION, {
-      nId: notification.id,
+      nid: notification.id,
     });
   }
 }

@@ -1,20 +1,31 @@
-import { UserProfileRelation, Profile, Membership, Organization } from '../schemas';
-import { User } from '../../users';
-import { BaseModel, PropertyType, BaseUserProfileRelationType } from '@lyvely/common';
+import {
+  UserProfileRelation,
+  Profile,
+  Membership,
+  Organization,
+} from '../schemas';
+import { User } from '@/users';
+import {
+  BaseModel,
+  PropertyType,
+  BaseUserProfileRelationType,
+} from '@lyvely/common';
 
 /**
  * This composite class holds information about the relation between a user and a profile and provides some utility
  * access functions. This class is mainly used in the controller and service layer for access and permission checks.
  */
-export class ProfileContext<T extends Profile = Profile> extends BaseModel<ProfileContext> {
+export class OptionalProfileContext<
+  T extends Profile = Profile,
+> extends BaseModel<OptionalProfileContext> {
   user?: User;
-  profile: T;
+  profile?: T;
 
   // TODO: Implement
-  private organizationContext?: ProfileContext<Organization>;
+  protected organizationContext?: OptionalProfileContext<Organization>;
 
   @PropertyType([UserProfileRelation])
-  relations: UserProfileRelation[];
+  relations?: UserProfileRelation[];
 
   get oid() {
     return this.profile.oid;
@@ -28,7 +39,7 @@ export class ProfileContext<T extends Profile = Profile> extends BaseModel<Profi
     return this.getOrganizationContext()?.profile;
   }
 
-  getOrganizationContext(): ProfileContext<Organization> {
+  getOrganizationContext(): OptionalProfileContext<Organization> {
     if (this.profile instanceof Organization) {
       return this;
     }
@@ -37,7 +48,7 @@ export class ProfileContext<T extends Profile = Profile> extends BaseModel<Profi
   }
 
   isGuest(): boolean {
-    return !!!this.user;
+    return !this.user;
   }
 
   isMember(): boolean {
@@ -49,7 +60,9 @@ export class ProfileContext<T extends Profile = Profile> extends BaseModel<Profi
   }
 
   getMembership(): Membership | undefined {
-    const membership = this.getRelationOfType(BaseUserProfileRelationType.Membership);
+    const membership = this.getRelationOfType(
+      BaseUserProfileRelationType.Membership,
+    );
     return membership ? new Membership(membership) : undefined;
   }
 
@@ -66,4 +79,14 @@ export class ProfileContext<T extends Profile = Profile> extends BaseModel<Profi
   getAllRelationsOfType(type: string): UserProfileRelation[] {
     return this.relations.filter((r) => r.type === type);
   }
+}
+
+export class ProfileContext<
+  T extends Profile = Profile,
+> extends OptionalProfileContext<T> {
+  user: User;
+  profile: T;
+  @PropertyType([UserProfileRelation])
+  relations: UserProfileRelation[];
+  protected organizationContext?: ProfileContext<Organization>;
 }

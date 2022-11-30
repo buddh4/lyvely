@@ -1,11 +1,5 @@
-import { User } from '@/users';
-import { ProfileRelation } from '@/profiles';
 import { Notification } from '../schemas';
-
-export interface NotificationContext {
-  user: User;
-  profileRelation?: ProfileRelation;
-}
+import { SubscriptionContext } from '@/notifications/services';
 
 export interface NotificationDeliveryResult {
   id: string;
@@ -16,7 +10,7 @@ export interface NotificationDeliveryResult {
 export interface INotificationChannel {
   getId(): string;
   send(
-    context: NotificationContext,
+    context: SubscriptionContext,
     notification: Notification,
   ): Promise<NotificationDeliveryResult>;
 }

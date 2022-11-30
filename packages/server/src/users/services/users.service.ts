@@ -42,7 +42,7 @@ export class UsersService {
     return this.userDao.findById(id);
   }
 
-  async findUserByIds(ids: EntityIdentity<User>[]): Promise<User[]> {
+  async findUsersById(ids: EntityIdentity<User>[]): Promise<User[]> {
     if (!ids?.length) {
       return [];
     }

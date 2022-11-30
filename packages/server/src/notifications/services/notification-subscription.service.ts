@@ -1,35 +1,83 @@
 import { Injectable } from '@nestjs/common';
 import { User, UsersService } from '@/users';
 import { ProfileMembershipService } from '@/profiles/services/profile-membership.service';
-import { Notification } from '../schemas';
-import { chunkArray } from '@lyvely/common';
-import { Membership } from '@/profiles';
+import {
+  Notification,
+  ProfileSubscription,
+  UsersSubscription,
+  UserSubscription,
+} from '../schemas';
+import { Profile, ProfilesService, UserProfileRelation } from '@/profiles';
+
+export interface SubscriptionContext {
+  user: User;
+  profile?: Profile;
+  relations?: UserProfileRelation[];
+}
 
 @Injectable()
 export class NotificationSubscriptionService {
   constructor(
     private userService: UsersService,
+    private profileService: ProfilesService,
     private profileMemberService: ProfileMembershipService,
   ) {}
 
-  async getProfileSubscriptions(
+  async getSubscriptionContext(
     notification: Notification,
-    batchSize = 100,
-  ): Promise<Array<Membership[]>> {
-    if (!notification.subscription.pid) return [];
-
-    const memberships = await this.profileMemberService.getMemberShips(
-      notification.subscription.pid,
-    );
-
-    return chunkArray(memberships, batchSize);
-  }
-
-  async getUserSubscriptions(notification: Notification): Promise<Array<User>> {
-    if (!notification.subscription.uids?.length) {
-      return [];
+  ): Promise<Array<SubscriptionContext>> {
+    switch (notification.data.type) {
+      case UserSubscription.typeName:
+        return this.getUserSubscriptionContext(notification);
+      case UsersSubscription.typeName:
+        return this.getUsersSubscriptionContext(notification);
+      case ProfileSubscription.typeName:
+        return this.getProfileSubscriptionContext(notification);
     }
 
-    return this.userService.findUserByIds(notification.subscription.uids);
+    return [];
+  }
+
+  private async getUserSubscriptionContext(
+    notification: Notification<any, UserSubscription>,
+  ): Promise<SubscriptionContext[]> {
+    const user = await this.userService.findUserById(
+      notification.subscription.uid,
+    );
+
+    if (!user) return [];
+    if (!notification.pid) return [{ user }];
+
+    return [
+      await this.profileService.findUserProfileRelations(
+        user,
+        notification.pid,
+      ),
+    ];
+  }
+
+  private async getUsersSubscriptionContext(
+    notification: Notification<any, UsersSubscription>,
+  ): Promise<SubscriptionContext[]> {
+    const users = await this.userService.findUsersById(
+      notification.subscription.uids,
+    );
+
+    if (!users?.length) return [];
+    if (!notification.pid) {
+      return users.map((user) => ({ user }));
+    }
+
+    return this.profileService.findManyUserProfileRelations(
+      users,
+      notification.pid,
+    );
+  }
+
+  private async getProfileSubscriptionContext(
+    notification: Notification<any, ProfileSubscription>,
+  ): Promise<SubscriptionContext[]> {
+    // TODO: This is currently not scalable for profiles with many users, we should split this in batches
+    return this.profileService.findAllUserProfileRelations(notification.pid);
   }
 }

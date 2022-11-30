@@ -1,10 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Organization, Profile, ProfileDocument, getProfileConstructorByType } from '../schemas';
+import {
+  Organization,
+  Profile,
+  ProfileDocument,
+  getProfileConstructorByType,
+} from '../schemas';
 import mongoose, { Model } from 'mongoose';
-import { applyRawDataTo, assureObjectId, EntityIdentity, AbstractDao } from '@/core';
-import { User } from '../../users';
-import { Constructor, DeepPartial, ProfileType, IntegrityException } from '@lyvely/common';
+import {
+  applyRawDataTo,
+  assureObjectId,
+  EntityIdentity,
+  AbstractDao,
+} from '@/core';
+import { User } from '@/users';
+import {
+  Constructor,
+  DeepPartial,
+  ProfileType,
+  IntegrityException,
+} from '@lyvely/common';
 import { Tag } from '@/tags';
 
 @Injectable()
@@ -15,7 +30,10 @@ export class ProfileDao extends AbstractDao<Profile> {
     return this.findOne({ ownerId: assureObjectId(owner), name });
   }
 
-  async findOneByOrganizationAndName(organization: EntityIdentity<Organization>, name: string) {
+  async findOneByOrganizationAndName(
+    organization: EntityIdentity<Organization>,
+    name: string,
+  ) {
     return this.findOne({ oid: assureObjectId(organization), name });
   }
 
@@ -23,7 +41,10 @@ export class ProfileDao extends AbstractDao<Profile> {
     return this.findOne({ type: ProfileType.Organization, name });
   }
 
-  async findOneByOwnerOrOrganizationName(owner: EntityIdentity<User>, name: string) {
+  async findOneByOwnerOrOrganizationName(
+    owner: EntityIdentity<User>,
+    name: string,
+  ) {
     return this.findOne({
       $or: [
         { ownerId: assureObjectId(owner), name },
@@ -39,7 +60,11 @@ export class ProfileDao extends AbstractDao<Profile> {
     return this.updateOneById(profile, { $push: { tags: { $each: tags } } });
   }
 
-  async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
+  async updateTag(
+    profile: Profile,
+    identity: EntityIdentity<Tag>,
+    update: Partial<Tag>,
+  ) {
     const tag = profile.getTagById(assureObjectId(identity));
 
     if (!tag) return 0;
@@ -70,7 +95,9 @@ export class ProfileDao extends AbstractDao<Profile> {
   getModelConstructor(model?: DeepPartial<Profile>): Constructor<Profile> {
     const ProfileType = getProfileConstructorByType(model.type);
     if (!ProfileType) {
-      throw new IntegrityException('Could not construct profile model due to invalid type: ' + model.type);
+      throw new IntegrityException(
+        'Could not construct profile model due to invalid type: ' + model.type,
+      );
     }
     return ProfileType;
   }

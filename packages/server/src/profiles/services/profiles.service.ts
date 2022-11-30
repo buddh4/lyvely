@@ -10,12 +10,18 @@ import {
 } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { ProfileContext } from '../models';
-import { EntityIdentity, withTransaction } from '@/core';
+import {
+  assureObjectId,
+  assureStringId,
+  EntityIdentity,
+  withTransaction,
+} from '@/core';
 import {
   Profile,
   ICreateProfileOptions,
   ICreateProfileTypeOptions,
   ProfilesFactory,
+  UserProfileRelation,
 } from '../schemas';
 import { InjectConnection } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
@@ -187,7 +193,74 @@ export class ProfilesService {
       identity instanceof Profile
         ? identity
         : await this.profileDao.findById(identity);
-    return new ProfileContext({ user, profile, relations });
+    return new ProfileContext({
+      user,
+      profile,
+      relations,
+    }) as ProfileContext;
+  }
+
+  async findManyUserProfileRelations(
+    users: User[],
+    identity: EntityIdentity<Profile>,
+  ): Promise<ProfileContext[]> {
+    if (!users?.length) return [];
+
+    const profile: Profile =
+      identity instanceof Profile
+        ? identity
+        : await this.profileDao.findById(identity);
+
+    if (!profile) return [];
+
+    const result = new Map<string, ProfileContext>();
+    const uids = users.map((user) => {
+      result.set(
+        user.id,
+        new ProfileContext<Profile>({
+          user,
+          profile,
+          relations: [] as UserProfileRelation[],
+        }),
+      );
+      return user._id;
+    });
+
+    const relations = await this.profileRelationsDao.findAll({
+      pid: assureObjectId(profile),
+      uid: { $in: uids },
+    });
+
+    relations.forEach((relation) => {
+      result.get(assureStringId(relation.uid)).relations.push(relation);
+    });
+
+    return Array.from(result.values());
+  }
+
+  async findAllUserProfileRelations(identity: EntityIdentity<Profile>) {
+    const profile: Profile =
+      identity instanceof Profile
+        ? identity
+        : await this.profileDao.findById(identity);
+
+    if (!profile) return [];
+
+    const userRelations = await this.profileRelationsDao.findAll({
+      pid: assureObjectId(identity),
+    });
+
+    const result = [];
+    const uids = userRelations.map((relation) => relation.uid);
+    const users = await this.usersService.findUsersById(uids);
+    users.forEach((user) => {
+      const relations = userRelations.filter((relation) =>
+        relation.uid.equals(user._id),
+      );
+      result.push({ user, profile, relations });
+    });
+
+    return result;
   }
 
   async findProfileRelationsByUser(user: User): Promise<ProfileContext[]> {
@@ -198,6 +271,7 @@ export class ProfilesService {
     const profiles = await this.profileDao.findAllByIds(
       userRelations.map((relation) => relation.pid),
     );
+
     return profiles.map(
       (profile) =>
         new ProfileContext({
