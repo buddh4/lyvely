@@ -17,7 +17,7 @@ export class UrlGenerator {
 
   protected generateUrl(baseUrl: string, route?: UrlRoute) {
     const url = new URL(baseUrl);
-    url.pathname = this.getPathString(route?.path);
+    url.pathname += this.getPathString(route?.path);
 
     if (route?.query) {
       Object.keys(route.query).forEach((name) => url.searchParams.append(name, route.query[name]));

@@ -1,7 +1,6 @@
-import { Get, Controller, Res, Param, NotFoundException } from '@nestjs/common';
+import { Get, Controller, Res, Param, NotFoundException, Header } from '@nestjs/common';
 import { Public, UseClassSerializer } from '@/core';
 import { getLocalFilePath } from '@/files/file-path.utils';
-import { join } from 'path';
 import fs from 'fs';
 import { Response } from 'express';
 import { isGuid } from '@lyvely/common';
@@ -13,6 +12,7 @@ export class AvatarsController {
   constructor(private readonly configService: ConfigService) {}
 
   @Get(':guid')
+  @Header('Cross-Origin-Resource-Policy', 'cross-origin')
   @Public()
   public async loadAvatar(@Param('guid') guid, @Res() res: Response) {
     if (!isGuid(guid)) throw new NotFoundException();

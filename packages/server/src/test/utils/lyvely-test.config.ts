@@ -11,6 +11,10 @@ const lyvelyTestConfig: LyvelyAppConfiguration = {
     port: 8080,
     appUrl: 'https://test.com',
   },
+  redis: {
+    host: '0.0.0.0',
+    port: 6379,
+  },
   auth: {
     jwt: {
       'secure-cookies': false,

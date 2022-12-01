@@ -1,5 +1,6 @@
-import { Controller, Get, Query, Post, HttpCode, Body, StreamableFile } from '@nestjs/common';
+import { Controller, Get, Header, Query, Post, HttpCode, Body, StreamableFile } from '@nestjs/common';
 import { CaptchaService } from '@/captcha/services/captcha.service';
+import { Response } from 'express';
 import { Readable } from 'stream';
 import { Public } from '@/core';
 import { ENDPOINT_CAPTCHA, CaptchaChallenge, CaptchaEndpoint } from '@lyvely/common';
@@ -22,6 +23,7 @@ export class CaptchaController implements CaptchaEndpoint {
   }
 
   @Public()
+  @Header('Cross-Origin-Resource-Policy', 'cross-origin')
   @Get()
   async render(@Query('identity') identity: string): Promise<StreamableFile> {
     const imageBuffer = await this.captchaService.render(identity);

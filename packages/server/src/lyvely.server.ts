@@ -61,7 +61,12 @@ export class LyvelyServer {
   private initCsurf() {
     this.nestApp.use(
       csurf({
-        cookie: true,
+        cookie: {
+          name: 'csrf-token',
+          httpOnly: true,
+          // secure: true, TODO: configure
+          sameSite: 'lax',
+        },
       }),
     );
   }

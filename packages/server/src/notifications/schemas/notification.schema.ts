@@ -100,7 +100,7 @@ export class Notification<
       !(this.subscription instanceof NotificationSubscription)
     ) {
       const SubscriptionType = SubscriptionTypes[this.subscription.type];
-      this.subscription = new SubscriptionType(this.subscription);
+      this.subscription = <TSubscription>(new SubscriptionType(this.subscription));
     }
   }
 }

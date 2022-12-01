@@ -12,6 +12,7 @@ import {
 } from '@/notifications/schemas';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Schema } from 'mongoose';
+import { BullModule } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '@/notifications/notification.constants';
 
 const NotificationModels = MongooseModule.forFeature([
@@ -25,7 +26,7 @@ const NotificationModels = MongooseModule.forFeature([
   },
 ]);
 
-const NotificationQueues = QueueModule.registerQueues({
+const NotificationQueues = BullModule.registerQueue({
   name: QUEUE_NOTIFICATIONS_SEND,
 });
 

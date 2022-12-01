@@ -5,6 +5,10 @@ export default {
   operationMode: 'standalone',
   docUrl: 'https://docs.lyvely.app',
   contactMail: 'help@lyvely.app',
+  redis: {
+    host: 'localhost',
+    port: 6379,
+  },
   http: {
     host: 'localhost',
     port: 8080,

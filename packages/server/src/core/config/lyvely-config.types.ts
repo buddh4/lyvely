@@ -80,7 +80,7 @@ export enum OperationMode {
 
 interface RedisConfig {
   host: string;
-  port: string;
+  port: number;
 }
 
 export type LyvelyAppConfiguration = {

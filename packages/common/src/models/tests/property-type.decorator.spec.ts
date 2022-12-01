@@ -1,6 +1,6 @@
 import { BaseModel, PropertyType } from '@/models';
 
-describe('ModelType Decorator', () => {
+describe('PropertyType', () => {
   it('test primitive value', async () => {
     class PlainSubModel extends BaseModel<PlainSubModel> {
       @PropertyType(String, { default: 'defaultValue' })
@@ -153,7 +153,9 @@ describe('ModelType Decorator', () => {
     }
 
     class PlainSubModel {
-      @PropertyType(ValueModel, { default: () => new ValueModel('defaultValue') })
+      @PropertyType(ValueModel, {
+        default: () => new ValueModel('defaultValue'),
+      })
       sub: ValueModel;
     }
 

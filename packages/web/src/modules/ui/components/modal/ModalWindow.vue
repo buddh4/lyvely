@@ -112,8 +112,7 @@ const modalWindowClass = `w-full ${
       name="modal-transition"
       mode="out-in"
       enter-active-class="animate__animated animate__fadeIn animate__faster"
-      leave-active-class="animate__animated animate__fadeOut animate__faster"
-    >
+      leave-active-class="animate__animated animate__fadeOut animate__faster">
       <div
         v-if="modelValue"
         ref="rootEl"
@@ -122,8 +121,7 @@ const modalWindowClass = `w-full ${
         role="dialog"
         aria-hidden="false"
         :style="{ 'z-index': zIndex }"
-        :aria-label="ariaLabel || $t('modal.aria.root')"
-      >
+        :aria-label="ariaLabel || $t('modal.aria.root')">
         <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
         <div :class="modalWindowClass">
           <div class="flex items-center p-5 md:rounded-t-sm shadow z-10" data-modal-header>
@@ -137,8 +135,7 @@ const modalWindowClass = `w-full ${
 
               <ly-button
                 class="float-right align-middle font-bold ml-auto inline-block px-2 py-0.5 border-none"
-                @click="cancel"
-              >
+                @click="cancel">
                 x
               </ly-button>
             </slot>
@@ -159,12 +156,12 @@ const modalWindowClass = `w-full ${
                 :disabled="isLoading"
                 data-modal-submit
                 class="m-1 primary"
-                @click="$emit('submit')"
-              >
+                @click="$emit('submit')">
                 {{ $t(submitButtonText) }}
               </ly-button>
             </slot>
           </div>
+          <div v-else class="p-2" data-modal-footer></div>
         </div>
       </div>
     </transition>
