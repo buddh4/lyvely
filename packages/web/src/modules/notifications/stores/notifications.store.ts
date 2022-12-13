@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { IWebNotification } from '@lyvely/common';
+import { useNotificationService } from '@/modules/notifications/services/notifications.service';
 
 export const useNotificationStore = defineStore('notifications', () => {
   const showNotificationDrawer = ref(false);
@@ -68,8 +69,14 @@ export const useNotificationStore = defineStore('notifications', () => {
     },
   ];
 
+  async function test() {
+    const result = useNotificationService().test();
+    console.log(result);
+  }
+
   return {
     showNotificationDrawer,
     notifications,
+    test,
   };
 });

@@ -1,11 +1,4 @@
-import {
-  Type,
-  DynamicModule,
-  ForwardReference,
-  Provider,
-  Global,
-  Module,
-} from '@nestjs/common';
+import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { CoreModule, setTransactionSupport, ConfigurationPath } from '@/core';
 import { loadConfig, AppConfigModule } from '@/app-config';
@@ -36,6 +29,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { AvatarsModule } from '@/avatars/avatars.module';
 import { LiveModule } from '@/live/live.module';
 import { BullModule } from '@nestjs/bullmq';
+import { NotificationsModule } from '@/notifications/notifications.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -47,10 +41,7 @@ export interface IAppModuleBuilderOptions {
   serveStatic?: boolean;
 }
 
-type ProviderOption<T = any> =
-  | { useClass: Type<T> }
-  | { useValue: T }
-  | Provider<T>;
+type ProviderOption<T = any> = { useClass: Type<T> } | { useValue: T } | Provider<T>;
 type ProviderToken = string | symbol;
 
 interface ICoreLyvelyProviderOptions {
@@ -80,13 +71,8 @@ function getProvider<T>(
   return getProviderFromOption(token, providerOption);
 }
 
-function getProviderFromOption<T>(
-  token: ProviderToken,
-  option: ProviderOption,
-): Provider<T> {
-  return 'provide' in option
-    ? option
-    : Object.assign({ provide: token }, option);
+function getProviderFromOption<T>(token: ProviderToken, option: ProviderOption): Provider<T> {
+  return 'provide' in option ? option : Object.assign({ provide: token }, option);
 }
 
 export class AppModuleBuilder {
@@ -127,6 +113,7 @@ export class AppModuleBuilder {
       EventEmitterModule.forRoot({ wildcard: true }),
       LiveModule,
       MailsModule.fromConfig(),
+      NotificationsModule,
       CoreModule,
       AppConfigModule,
       I18nModule,
@@ -183,9 +170,7 @@ export class AppModuleBuilder {
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          setTransactionSupport(
-            configService.get('mongodb.transactions', false),
-          );
+          setTransactionSupport(configService.get('mongodb.transactions', false));
           return {
             uri: configService.get('mongodb.uri'),
             autoIndex: true,

@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Req, Get } from '@nestjs/common';
 import {
   ENDPOINT_NOTIFICATIONS,
   NotificationsEndpoint,
@@ -6,19 +6,34 @@ import {
   IWebNotification,
   StreamRequest,
 } from '@lyvely/common';
-import { UserNotificationsService } from '../services/user-notifications.service';
+import { UserNotificationsService, NotificationService } from '../services';
+import { UserRequest } from '@/users';
+import { TestNotification } from '@/notifications/schemas/test-notification.schema';
+import { UserSubscription } from '@/notifications';
 
 @Controller(ENDPOINT_NOTIFICATIONS)
 export class NotificationsController implements NotificationsEndpoint {
-  constructor(private readonly notificationService: UserNotificationsService) {}
+  constructor(
+    private readonly userNotificationsService: UserNotificationsService,
+    private readonly notificationsService: NotificationService,
+  ) {}
 
   @Post('load-next')
-  loadNext(@Body() request: StreamRequest): Promise<IStreamResponse<IWebNotification>> {
+  async loadNext(@Body() request: StreamRequest): Promise<IStreamResponse<IWebNotification>> {
     return Promise.resolve(undefined);
   }
 
   @Post('update')
-  update(@Body() request: StreamRequest): Promise<IStreamResponse<IWebNotification>> {
+  async update(@Body() request: StreamRequest): Promise<IStreamResponse<IWebNotification>> {
     return Promise.resolve(undefined);
+  }
+
+  @Post('test')
+  async test(@Req() req: UserRequest): Promise<boolean> {
+    await this.notificationsService.sendNotification(
+      new TestNotification({ testValue: 'Test' }),
+      new UserSubscription(req.user),
+    );
+    return true;
   }
 }

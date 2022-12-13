@@ -23,4 +23,8 @@ export class WelcomeNotification extends NotificationType {
   getUrl() {
     return null;
   }
+
+  getCategory(): string {
+    return 'default';
+  }
 }

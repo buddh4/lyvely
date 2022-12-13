@@ -1,8 +1,7 @@
-import { Injectable, Module, OnModuleInit, Type } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { NotificationTypeRegistry } from '@/notifications/components/notification-type.registry';
 import { UserNotificationsService } from '@/notifications/services/user-notifications.service';
 import { UserNotificationDao, NotificationDao } from '@/notifications/daos';
-import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import {
   Notification,
   NotificationSchema,
@@ -12,6 +11,16 @@ import {
 import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '@/notifications/notification.constants';
+import { NotificationCategoryRegistry } from '@/notifications/components/notification-category.registry';
+import { DefaultNotificationCategory } from '@/notifications/models/default-notification-category.model';
+import { NotificationDecider } from '@/notifications/components/notification-decider.component';
+import { NotificationsController } from '@/notifications/controllers/notifications.controller';
+import { NotificationSenderProcessor } from '@/notifications/processors/notification-sender.processor';
+import { NotificationChannelRegistry } from '@/notifications/components/notification-channel.registry';
+import { NotificationSubscriptionService } from '@/notifications/services';
+import { NotificationService } from '@/notifications/services/notification.service';
+import { UsersModule } from '@/users';
+import { ProfilesModule } from '@/profiles';
 
 const NotificationModels = MongooseModule.forFeature([
   {
@@ -28,30 +37,22 @@ const NotificationQueues = BullModule.registerQueue({
   name: QUEUE_NOTIFICATIONS_SEND,
 });
 
-@Module({})
-export class NotificationCoreModule {
-  static forRoot(): DynamicModule {
-    return NotificationCoreModule.registerCore();
-  }
+NotificationCategoryRegistry.registerCategory(new DefaultNotificationCategory());
 
-  static registerCore() {
-    return {
-      module: NotificationsModule,
-      imports: [NotificationModels, NotificationQueues],
-      providers: [
-        NotificationTypeRegistry,
-        UserNotificationsService,
-        UserNotificationDao,
-        NotificationDao,
-      ],
-      exports: [UserNotificationsService],
-    };
-  }
-}
-
-@Module({})
-export class NotificationsModule {
-  static forRoot() {
-    return NotificationCoreModule.registerCore();
-  }
-}
+@Module({
+  imports: [NotificationModels, NotificationQueues, UsersModule, ProfilesModule],
+  controllers: [NotificationsController],
+  providers: [
+    NotificationService,
+    NotificationTypeRegistry,
+    UserNotificationsService,
+    UserNotificationDao,
+    NotificationDao,
+    NotificationDecider,
+    NotificationSenderProcessor,
+    NotificationChannelRegistry,
+    NotificationSubscriptionService,
+  ],
+  exports: [NotificationService],
+})
+export class NotificationsModule {}

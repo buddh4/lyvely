@@ -4,7 +4,7 @@ import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { NotificationDao } from '@/notifications/daos';
 import { Notification, UserSubscription } from '@/notifications/schemas';
 import { TestNotification } from '@/notifications/tests/src/test-notification.schema';
-import { NotificationSendProcessor } from '@/notifications/processors/notification-send.processor';
+import { NotificationSenderProcessor } from '@/notifications/processors/notification-sender.processor';
 
 const TEST_KEY = 'NotificationSendProcessor';
 
@@ -12,13 +12,13 @@ describe('NotificationSendProcessor', () => {
   let testingModule: TestingModule;
   let notificationDao: NotificationDao;
   let testData: TestDataUtils;
-  let processor: NotificationSendProcessor;
+  let processor: NotificationSenderProcessor;
 
   beforeEach(async () => {
     testingModule = await createBasicTestingModule(TEST_KEY, [], [], []).compile();
     notificationDao = testingModule.get(NotificationDao);
     testData = testingModule.get(TestDataUtils);
-    processor = testingModule.get(NotificationSendProcessor);
+    processor = testingModule.get(NotificationSenderProcessor);
   });
 
   afterEach(async () => {

@@ -1,6 +1,6 @@
 import { Notification, NotificationChannelDeliveryStatus } from '../schemas';
 import { UserSubscriptionContext } from './user-subscription-context.interface';
-import { INotificationRateLimit } from '@/users';
+import { INotificationRateLimit, User } from '@/users';
 
 export interface INotificationChannel {
   getId(): string;
@@ -9,4 +9,6 @@ export interface INotificationChannel {
     context: UserSubscriptionContext,
     notification: Notification,
   ): Promise<NotificationChannelDeliveryStatus>;
+
+  isActive(user: User): boolean;
 }

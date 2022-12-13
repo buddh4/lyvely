@@ -71,7 +71,7 @@ export function createBasicTestingModule(
     PoliciesModule,
     TestModule,
     LiveModule,
-    NotificationsModule.forRoot(),
+    NotificationsModule,
   );
   return createCoreTestingModule(key, providers, models, imports)
     .overrideProvider(getQueueToken(QUEUE_NOTIFICATIONS_SEND))

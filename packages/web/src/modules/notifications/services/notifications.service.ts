@@ -1,9 +1,19 @@
-import { IWebNotification, INotificationsService, IStreamState, IStreamOptions, IStreamResponse } from '@lyvely/common';
+import {
+  IWebNotification,
+  INotificationsService,
+  IStreamState,
+  IStreamOptions,
+  IStreamResponse,
+  useSingleton,
+} from '@lyvely/common';
 import notificationRepository from '../repositories/notifications.repository';
 import { unwrapResponse } from '@/modules/core';
 
 export class NotificationsService implements INotificationsService {
-  loadNext(state: IStreamState, options: IStreamOptions): Promise<IStreamResponse<IWebNotification>> {
+  async loadNext(
+    state: IStreamState,
+    options: IStreamOptions,
+  ): Promise<IStreamResponse<IWebNotification>> {
     return unwrapResponse(
       notificationRepository.loadNext({
         state,
@@ -12,7 +22,10 @@ export class NotificationsService implements INotificationsService {
     );
   }
 
-  update(state: IStreamState, options: IStreamOptions): Promise<IStreamResponse<IWebNotification>> {
+  async update(
+    state: IStreamState,
+    options: IStreamOptions,
+  ): Promise<IStreamResponse<IWebNotification>> {
     return unwrapResponse(
       notificationRepository.update({
         state,
@@ -20,4 +33,10 @@ export class NotificationsService implements INotificationsService {
       }),
     );
   }
+
+  async test() {
+    return notificationRepository.test();
+  }
 }
+
+export const useNotificationService = useSingleton(() => new NotificationsService());

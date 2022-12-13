@@ -147,7 +147,11 @@ const modalWindowClass = `w-full ${
 
           <div v-if="showFooter" class="flex p-5 justify-end shadow z-10" data-modal-footer>
             <slot name="footer">
-              <ly-button v-if="cancelButton" :loading="isLoading" :class="cancelButtonClass" @click="cancel">
+              <ly-button
+                v-if="cancelButton"
+                :loading="isLoading"
+                :class="cancelButtonClass"
+                @click="cancel">
                 {{ $t(cancelButtonText) }}
               </ly-button>
 

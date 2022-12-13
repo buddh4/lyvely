@@ -1,5 +1,10 @@
 import repository from '@/repository';
-import { ENDPOINT_NOTIFICATIONS, EndpointResult, INotificationsService, IStreamRequest } from '@lyvely/common';
+import {
+  ENDPOINT_NOTIFICATIONS,
+  EndpointResult,
+  INotificationsService,
+  IStreamRequest,
+} from '@lyvely/common';
 
 export default {
   async loadNext(request: IStreamRequest) {
@@ -14,5 +19,9 @@ export default {
       `${ENDPOINT_NOTIFICATIONS}/update`,
       request,
     );
+  },
+
+  async test() {
+    return repository.post<boolean>(`${ENDPOINT_NOTIFICATIONS}/test`);
   },
 };

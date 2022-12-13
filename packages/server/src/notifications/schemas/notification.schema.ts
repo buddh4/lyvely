@@ -74,12 +74,16 @@ export class Notification<
   @Prop({ required: true })
   sortOrder: number;
 
+  @Prop({ required: true })
+  category: string;
+
   constructor(data: T, subscription: Subscription, pid?: TObjectId) {
     super({
       data,
       subscription,
       pid,
       sortOrder: Date.now(),
+      category: data.getCategory(),
     });
   }
 

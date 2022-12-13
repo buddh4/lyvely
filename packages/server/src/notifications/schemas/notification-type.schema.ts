@@ -23,7 +23,7 @@ export interface INotificationType {
 export type TNotificationType = Type<NotificationType> & { typeName: string };
 
 export abstract class NotificationType<T extends INotificationType = INotificationType>
-  extends BaseEntity<T>
+  extends BaseEntity<Omit<T, 'type'>>
   implements INotificationType
 {
   static typeName: string;
@@ -32,11 +32,11 @@ export abstract class NotificationType<T extends INotificationType = INotificati
   groupId?: string;
 
   @Prop({ type: ProfileInfoSchema })
-  @PropertyType(ProfileInfo)
+  @PropertyType(ProfileInfo, { optional: true })
   profileInfo?: ProfileInfo;
 
   @Prop({ type: UserInfoSchema })
-  @PropertyType(UserInfo)
+  @PropertyType(UserInfo, { optional: true })
   userInfo?: UserInfo;
 
   type: string;
@@ -56,6 +56,7 @@ export abstract class NotificationType<T extends INotificationType = INotificati
   abstract getUrl(): UrlRoute | null;
   abstract getTitle(format: RenderFormat): Translatable;
   abstract getBody(format: RenderFormat): Translatable;
+  abstract getCategory(): string;
 }
 
 @Schema({
@@ -76,6 +77,10 @@ export class NotificationSchemaType
 
   getUrl(): UrlRoute {
     return undefined;
+  }
+
+  getCategory(): string {
+    return '';
   }
 }
 
