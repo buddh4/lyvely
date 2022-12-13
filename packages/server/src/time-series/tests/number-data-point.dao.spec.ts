@@ -17,7 +17,9 @@ import { User } from '@/users';
 import { TestTimeSeriesContent } from './src/test-time-series-content.schema';
 import { CheckboxNumberDataPointConfig } from '../schemas';
 
-const DataPointModelDefinition = [{ name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }];
+const DataPointModelDefinition = [
+  { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema },
+];
 
 describe('NumberDataPointDao', () => {
   let testingModule: TestingModule;
@@ -67,7 +69,10 @@ describe('NumberDataPointDao', () => {
   ) {
     const date = dateTime(d);
     const user = new User({ _id: getObjectId(options.uid || 'u1') });
-    const profile = new Profile(user, { _id: getObjectId(options.pid || 'p1'), oid: getObjectId(options.pid || 'o1') });
+    const profile = new Profile(user, {
+      _id: getObjectId(options.pid || 'p1'),
+      oid: getObjectId(options.pid || 'o1'),
+    });
     const content = new TestTimeSeriesContent(profile, user, {
       _id: getObjectId(options.uid || 'c1'),
       config: { timeSeries: new CheckboxNumberDataPointConfig({ interval: interval }) },
@@ -155,13 +160,21 @@ describe('NumberDataPointDao', () => {
   describe('daily interval', () => {
     it('find daily data point', async () => {
       const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date.toDate()));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(date.toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 
     it('do not include day after', async () => {
       const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date.add(1, 'days').toDate()));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(date.add(1, 'days').toDate()),
+      );
       expect(result.length).toEqual(0);
     });
 
@@ -189,7 +202,11 @@ describe('NumberDataPointDao', () => {
   describe('weekly interval', () => {
     it('find weekly data point', async () => {
       const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
-      const result = await dao.findByIntervalLevel(pid, uid, new DataPointIntervalFilter(date.toDate()));
+      const result = await dao.findByIntervalLevel(
+        pid,
+        uid,
+        new DataPointIntervalFilter(date.toDate()),
+      );
       expect(result.length).toEqual(1);
     });
 

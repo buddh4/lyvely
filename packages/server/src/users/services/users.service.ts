@@ -1,6 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserDao } from '../daos';
-import { RefreshToken, User, UserEmail } from '../schemas';
+import { RefreshToken, User, UserNotificationState } from '../schemas';
 import { ProfileType, IntegrityException, UserStatus } from '@lyvely/common';
 import { EntityIdentity, IBaseQueryOptions } from '@/core';
 
@@ -50,19 +50,11 @@ export class UsersService {
     return this.userDao.findAllByIds(ids);
   }
 
-  async incrementProfileCount(
-    owner: User,
-    type: ProfileType,
-    options?: IBaseQueryOptions,
-  ) {
+  async incrementProfileCount(owner: User, type: ProfileType, options?: IBaseQueryOptions) {
     return this.userDao.incrementProfileCount(owner, type, 1, options);
   }
 
-  async decrementProfileCount(
-    owner: User,
-    type: ProfileType,
-    options?: IBaseQueryOptions,
-  ) {
+  async decrementProfileCount(owner: User, type: ProfileType, options?: IBaseQueryOptions) {
     return this.userDao.incrementProfileCount(owner, type, -1, options);
   }
 
@@ -90,11 +82,11 @@ export class UsersService {
     return this.userDao.updateOneSetById(user, { status: status });
   }
 
-  async setUserPassword(
-    user: EntityIdentity<User>,
-    newPassword: string,
-    resetSession: boolean,
-  ) {
+  async updateNotificationState(user: EntityIdentity<User>, notification: UserNotificationState) {
+    return this.userDao.updateOneSetById(user, { notification });
+  }
+
+  async setUserPassword(user: EntityIdentity<User>, newPassword: string, resetSession: boolean) {
     return this.userDao.updatePassword(user, newPassword, resetSession);
   }
 }

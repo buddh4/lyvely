@@ -2,14 +2,14 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { TestNotification } from '../src/test-notification.schema';
-import { Notification } from '@/notifications';
+import { Notification, UserSubscription } from '@/notifications';
 import { ProfileInfo } from '@/profiles';
 import { UserInfo } from '@/users';
 import { NotificationDao } from '@/notifications/daos';
 
-const TEST_KEY = 'UserNotificationsService';
+const TEST_KEY = 'NotificationDao';
 
-describe('UserNotificationsService', () => {
+describe('NotificationDao', () => {
   let testingModule: TestingModule;
   let notificationDao: NotificationDao;
   let testData: TestDataUtils;
@@ -37,7 +37,7 @@ describe('UserNotificationsService', () => {
             userInfo: new UserInfo(user),
             profileInfo: new ProfileInfo(profile),
           }),
-          { uids: [user._id] },
+          new UserSubscription(user),
         ),
       )) as Notification<TestNotification>;
       expect(notification).toBeDefined();
@@ -49,7 +49,8 @@ describe('UserNotificationsService', () => {
       expect(notification.data.userInfo.uid).toEqual(user._id);
       expect(notification.sortOrder <= Date.now()).toBeDefined();
       expect(notification.sortOrder >= Date.now() - 1000).toBeDefined();
-      expect(notification.subscription).toEqual({ uids: [user._id] });
+      expect(notification.subscription instanceof UserSubscription).toEqual(true);
+      expect(notification.subscription.type).toEqual(UserSubscription.typeName);
     });
 
     it('assure extra properties are saved', async () => {
@@ -61,7 +62,7 @@ describe('UserNotificationsService', () => {
             profileInfo: new ProfileInfo(profile),
             testProp: 'testValue',
           }),
-          { uids: [user._id] },
+          new UserSubscription(user),
         ),
       )) as Notification<TestNotification>;
       expect(notification).toBeDefined();
@@ -79,7 +80,7 @@ describe('UserNotificationsService', () => {
             testProp: 'testValue',
             nonProp: 'nonProp',
           }),
-          { uids: [user._id] },
+          new UserSubscription(user),
         ),
       )) as Notification<TestNotification>;
       expect(notification).toBeDefined();

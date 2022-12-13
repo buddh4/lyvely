@@ -3,9 +3,22 @@ import { Notification } from '@/notifications/decorators';
 import { Translatable } from '@/i18n';
 import { UrlRoute } from '@lyvely/common';
 import { expect } from '@jest/globals';
+import { createBasicTestingModule } from '@/test';
+import { TestingModule } from '@nestjs/testing';
+import { NotificationTypeRegistry } from '@/notifications/components/notification-type.registry';
+
+const TEST_KEY = 'Notification decorator';
 
 describe('Notification decorator', () => {
-  it('type is automatically set', () => {
+  let testingModule: TestingModule;
+  let notificationRegistry: NotificationTypeRegistry;
+
+  beforeEach(async () => {
+    testingModule = await createBasicTestingModule(TEST_KEY, [], [], []).compile();
+    notificationRegistry = testingModule.get(NotificationTypeRegistry);
+  });
+
+  it('type is automatically set and registered', () => {
     @Notification()
     class MyNotificationType extends NotificationType {
       constructor(props) {
@@ -29,5 +42,8 @@ describe('Notification decorator', () => {
     expect(notificationInstance.type).toEqual(MyNotificationType.typeName);
     expect(notificationInstance.constructor.name).toEqual(MyNotificationType.name);
     expect(notificationInstance instanceof MyNotificationType).toEqual(true);
+    expect(notificationRegistry.getTypeConstructor(MyNotificationType.typeName)).toEqual(
+      MyNotificationType,
+    );
   });
 });

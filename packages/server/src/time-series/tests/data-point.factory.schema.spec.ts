@@ -7,7 +7,12 @@ import {
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
 } from '../schemas';
-import { DataPointInputType, DataPointValueType, INumberDataPointSettings, CalendarIntervalEnum } from '@lyvely/common';
+import {
+  DataPointInputType,
+  DataPointValueType,
+  INumberDataPointSettings,
+  CalendarIntervalEnum,
+} from '@lyvely/common';
 
 const CheckboxNumberStrategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Number,
@@ -92,7 +97,10 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       expectConfig(config, 0, 2, 1);
       expect(config instanceof SpinnerNumberDataPointConfig).toEqual(true);
       expect(config.strategy).toEqual(
-        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
+        DataPointConfigFactory.getStrategyName(
+          DataPointValueType.Number,
+          DataPointInputType.Spinner,
+        ),
       );
       expect(config.inputType).toEqual(DataPointInputType.Spinner);
       expect(config.valueType).toEqual(DataPointValueType.Number);
@@ -107,14 +115,22 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       expect(config).toBeDefined();
       expect(config instanceof TextareaTextDataPointConfig).toEqual(true);
       expect(config.strategy).toEqual(
-        DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
+        DataPointConfigFactory.getStrategyName(
+          DataPointValueType.Text,
+          DataPointInputType.Textarea,
+        ),
       );
       expect(config.inputType).toEqual(DataPointInputType.Textarea);
       expect(config.valueType).toEqual(DataPointValueType.Text);
       expect(config.getSettings()).toBeUndefined();
     });
 
-    function expectConfig(config: NumberDataPointConfig, min: number, max: number, optimal: number) {
+    function expectConfig(
+      config: NumberDataPointConfig,
+      min: number,
+      max: number,
+      optimal: number,
+    ) {
       expect(config instanceof NumberDataPointConfig).toEqual(true);
       expect(config.min).toEqual(min);
       expect(config.max).toEqual(max);

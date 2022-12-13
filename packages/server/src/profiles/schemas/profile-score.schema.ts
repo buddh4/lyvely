@@ -1,9 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { BaseEntity } from '@/core';
-import { User } from '../../users';
+import { User } from '@/users';
 import { Profile } from './profiles.schema';
-import { DeepPartial, toDate, UserAssignmentStrategy, CalendarDate, toTimingId } from '@lyvely/common';
+import {
+  DeepPartial,
+  toDate,
+  UserAssignmentStrategy,
+  CalendarDate,
+  toTimingId,
+} from '@lyvely/common';
 
 export interface IProfileScoreAction {
   _id: TObjectId;
@@ -29,7 +35,9 @@ export interface ICreateProfileScore {
  * as user the uid should be set, otherwise the action is linked to the whole profile.
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class ProfileScore<C extends IProfileScoreAction = IProfileScoreAction> extends BaseEntity<C> {
+export class ProfileScore<
+  C extends IProfileScoreAction = IProfileScoreAction,
+> extends BaseEntity<C> {
   constructor(options: ICreateProfileScore, data: DeepPartial<C> = {}) {
     const { user, profile } = options;
     data.createdBy = data.createdBy || user._id;

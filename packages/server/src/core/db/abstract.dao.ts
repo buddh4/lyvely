@@ -30,18 +30,13 @@ interface IPagination {
 type ContainsDot = `${string}.${string}`;
 
 export type UpdateQuerySet<T extends BaseEntity<T>> = UpdateQuery<T>['$set'];
-export type UpdateQueryUnset<T extends BaseEntity<T>> =
-  UpdateQuery<T>['$unset'];
+export type UpdateQueryUnset<T extends BaseEntity<T>> = UpdateQuery<T>['$unset'];
 
-type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<
-  Omit<T, '_id' | '__v' | 'id'>
-> & {
+type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & {
   [key: ContainsDot]: any;
 };
 
-type SortableRecord<T extends BaseEntity<T>> = Partial<
-  Omit<T, '__v' | 'id'>
-> & {
+type SortableRecord<T extends BaseEntity<T>> = Partial<Omit<T, '__v' | 'id'>> & {
   [key: ContainsDot]: any;
 };
 
@@ -70,8 +65,7 @@ export interface IUpdateQueryOptions extends IBaseQueryOptions {
   apply?: boolean;
 }
 
-export interface IBaseFetchQueryOptions<T extends BaseEntity<T>>
-  extends IBaseQueryOptions {
+export interface IBaseFetchQueryOptions<T extends BaseEntity<T>> extends IBaseQueryOptions {
   projection?: ProjectionType<T>;
   sort?: QuerySort<T>;
 }
@@ -92,8 +86,7 @@ export interface IFetchQueryFilterOptions<T extends BaseEntity<T>>
   excludeIds?: EntityIdentity<T>[] | EntityIdentity<T>;
 }
 
-export interface IFetchQueryOptions<T extends BaseEntity<T>>
-  extends IFetchQueryFilterOptions<T> {
+export interface IFetchQueryOptions<T extends BaseEntity<T>> extends IFetchQueryFilterOptions<T> {
   pagination?: IPagination;
   limit?: number;
 }
@@ -136,9 +129,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   protected constructModel(lean?: DeepPartial<T>): T {
-    return lean
-      ? createBaseEntityInstance(this.getModelConstructor(lean), lean)
-      : null;
+    return lean ? createBaseEntityInstance(this.getModelConstructor(lean), lean) : null;
   }
 
   protected constructModels(leanArr?: Partial<T>[]): T[] {
@@ -151,20 +142,14 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
 
   async save(entityData: T, options?: SaveOptions): Promise<T> {
     await this.beforeSave(entityData);
-    this.emit(
-      'save.pre',
-      new ModelSaveEvent(this, entityData, this.getModelName()),
-    );
+    this.emit('save.pre', new ModelSaveEvent(this, entityData, this.getModelName()));
     const result = await new this.model(entityData).save(options);
     const model = this.constructModel(
       result.toObject({ virtuals: true, aliases: true, getters: true }),
     );
     entityData._id = model._id;
     entityData.id = model.id;
-    this.emit(
-      `save.post`,
-      new ModelSaveEvent(this, model, this.getModelName()),
-    );
+    this.emit(`save.post`, new ModelSaveEvent(this, model, this.getModelName()));
     return await this.afterSave(model);
   }
 
@@ -198,26 +183,15 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   ): Promise<T | null> {
     // TODO: trigger events
     return this.constructModel(
-      await this.model
-        .findById(this.assureEntityId(identity), options?.projection, options)
-        .lean(),
+      await this.model.findById(this.assureEntityId(identity), options?.projection, options).lean(),
     );
   }
 
-  async findAllByIds(
-    ids: EntityIdentity<T>[],
-    options?: IFetchQueryOptions<T>,
-  ): Promise<T[]> {
-    return this.findAll(
-      { _id: { $in: ids.map((id) => this.assureEntityId(id)) } },
-      options,
-    );
+  async findAllByIds(ids: EntityIdentity<T>[], options?: IFetchQueryOptions<T>): Promise<T[]> {
+    return this.findAll({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
 
-  async findAll(
-    filter: FilterQuery<T>,
-    options?: IFetchQueryOptions<T>,
-  ): Promise<T[]> {
+  async findAll(filter: FilterQuery<T>, options?: IFetchQueryOptions<T>): Promise<T[]> {
     // TODO: trigger events
 
     options = options || {};
@@ -228,9 +202,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     if (fetchFilter) {
       query.where(fetchFilter);
     }
-    return this.constructModels(
-      await this.applyFetchQueryOptions(query, options).lean(),
-    );
+    return this.constructModels(await this.applyFetchQueryOptions(query, options).lean());
   }
 
   protected assureEntityId(identity: EntityIdentity<T>): T['_id'] {
@@ -254,15 +226,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   ): Promise<T | null> {
     options.new = options.new ?? true;
     return this.constructModel(
-      await this.model
-        .findOneAndUpdate(filter, update, { upsert: true, ...options })
-        .lean(),
+      await this.model.findOneAndUpdate(filter, update, { upsert: true, ...options }).lean(),
     );
   }
 
-  protected getFetchQueryFilter(
-    options: IFetchQueryFilterOptions<T>,
-  ): FilterQuery<any> {
+  protected getFetchQueryFilter(options: IFetchQueryFilterOptions<T>): FilterQuery<any> {
     const { excludeIds } = options;
 
     if (!excludeIds) {
@@ -327,9 +295,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     filter = filter || {};
     filter._id = this.assureEntityId(id);
 
-    const data = await this.model
-      .findOneAndUpdate(filter, cloneDeep(update), options)
-      .lean();
+    const data = await this.model.findOneAndUpdate(filter, cloneDeep(update), options).lean();
 
     if (!data) {
       return null;
@@ -421,27 +387,15 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.findById(id);
   }
 
-  async deleteManyByIds(
-    ids: EntityIdentity<T>[],
-    options?: DeleteOptions,
-  ): Promise<number> {
-    return this.deleteMany(
-      { _id: { $in: ids.map((id) => this.assureEntityId(id)) } },
-      options,
-    );
+  async deleteManyByIds(ids: EntityIdentity<T>[], options?: DeleteOptions): Promise<number> {
+    return this.deleteMany({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
 
-  async deleteMany(
-    filter: FilterQuery<T>,
-    options?: DeleteOptions,
-  ): Promise<number> {
+  async deleteMany(filter: FilterQuery<T>, options?: DeleteOptions): Promise<number> {
     return (await this.model.deleteMany(filter, options)).deletedCount;
   }
 
-  async deleteOne(
-    filter: FilterQuery<T>,
-    options?: DeleteOptions,
-  ): Promise<boolean> {
+  async deleteOne(filter: FilterQuery<T>, options?: DeleteOptions): Promise<boolean> {
     return (await this.model.deleteOne(filter, options)).deletedCount === 1;
   }
 }

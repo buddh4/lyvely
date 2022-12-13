@@ -1,4 +1,65 @@
 import { CalendarDate, dateTime } from '../interfaces';
+import { CalendarTimeInterval } from '@/calendar';
+
+export function subtractByInterval(
+  date: CalendarDate,
+  interval: CalendarTimeInterval,
+  count: number,
+  utc = true,
+): Date {
+  switch (interval) {
+    case CalendarTimeInterval.Unscheduled:
+      return dateTime(date, utc).toDate();
+    case CalendarTimeInterval.Yearly:
+      return subtractYear(date, count, utc);
+    case CalendarTimeInterval.Quarterly:
+      return subtractQuarter(date, count, utc);
+    case CalendarTimeInterval.Monthly:
+      return subtractMonth(date, count, utc);
+    case CalendarTimeInterval.Weekly:
+      return subtractWeek(date, count, utc);
+    case CalendarTimeInterval.Daily:
+      return subtractDays(date, count, utc);
+    case CalendarTimeInterval.Hourly:
+      return subtractHours(date, count, utc);
+    case CalendarTimeInterval.Minutely:
+      return subtractMinutes(date, count, utc);
+    case CalendarTimeInterval.Secondly:
+      return subtractSeconds(date, count, utc);
+    case CalendarTimeInterval.Millisecondly:
+      return subtractMilliSeconds(date, count, utc);
+  }
+}
+
+export function addByInterval(
+  date: CalendarDate,
+  interval: CalendarTimeInterval,
+  count: number,
+  utc = true,
+): Date {
+  switch (interval) {
+    case CalendarTimeInterval.Unscheduled:
+      return dateTime(date, utc).toDate();
+    case CalendarTimeInterval.Yearly:
+      return addYear(date, count, utc);
+    case CalendarTimeInterval.Quarterly:
+      return addQuarter(date, count, utc);
+    case CalendarTimeInterval.Monthly:
+      return addMonth(date, count, utc);
+    case CalendarTimeInterval.Weekly:
+      return addWeek(date, count, utc);
+    case CalendarTimeInterval.Daily:
+      return addDays(date, count, utc);
+    case CalendarTimeInterval.Hourly:
+      return addHours(date, count, utc);
+    case CalendarTimeInterval.Minutely:
+      return addMinutes(date, count, utc);
+    case CalendarTimeInterval.Secondly:
+      return addSeconds(date, count, utc);
+    case CalendarTimeInterval.Millisecondly:
+      return addMilliSeconds(date, count, utc);
+  }
+}
 
 export function subtractMilliSeconds(date: CalendarDate, count: number, utc = true): Date {
   return dateTime(date, utc).subtract(count, 'milliseconds').toDate();
@@ -22,6 +83,14 @@ export function subtractMinutes(date: CalendarDate, count: number, utc = true): 
 
 export function addMinutes(date: CalendarDate, count: number, utc = true): Date {
   return dateTime(date, utc).add(count, 'minutes').toDate();
+}
+
+export function subtractHours(date: CalendarDate, count: number, utc = true): Date {
+  return dateTime(date, utc).subtract(count, 'hours').toDate();
+}
+
+export function addHours(date: CalendarDate, count: number, utc = true): Date {
+  return dateTime(date, utc).add(count, 'hours').toDate();
 }
 
 export function subtractDays(date: CalendarDate, count: number, utc = true): Date {

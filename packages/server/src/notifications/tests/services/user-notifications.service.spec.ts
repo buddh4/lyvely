@@ -3,7 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { UserNotificationsService } from '@/notifications/services/user-notifications.service';
 import { TestNotification } from '../src/test-notification.schema';
-import { UserNotification, Notification } from '@/notifications';
+import { UserNotification, Notification, UsersSubscription } from '@/notifications';
 import { Profile, ProfileInfo } from '@/profiles';
 import { User, UserInfo } from '@/users';
 import { assureObjectId } from '@/core';
@@ -61,7 +61,7 @@ describe('UserNotificationsService', () => {
           userInfo: new UserInfo(user),
           profileInfo: new ProfileInfo(profile),
         }),
-        { uids: uids },
+        new UsersSubscription(uids),
       );
 
       if (sortOrder) {
@@ -85,7 +85,9 @@ describe('UserNotificationsService', () => {
       const receiver = await testData.createUser();
       const sender = await testData.createUser('test2');
       const profile = await testData.createProfile(sender);
-      const notification = await createTestNotification(sender, profile, [assureObjectId(receiver)]);
+      const notification = await createTestNotification(sender, profile, [
+        assureObjectId(receiver),
+      ]);
       const userNotification = await createTestUserNotification(receiver, notification);
       const result = await userNotificationsService.loadNext(receiver, { batchSize: 5 });
       expect(result.models.length).toEqual(1);
@@ -107,8 +109,18 @@ describe('UserNotificationsService', () => {
         [assureObjectId(receiver)],
         Date.now() - 1000,
       );
-      const notification2 = await createTestNotification(sender, profile, [assureObjectId(receiver)], Date.now() - 500);
-      const notification3 = await createTestNotification(sender, profile, [assureObjectId(receiver)], Date.now() - 200);
+      const notification2 = await createTestNotification(
+        sender,
+        profile,
+        [assureObjectId(receiver)],
+        Date.now() - 500,
+      );
+      const notification3 = await createTestNotification(
+        sender,
+        profile,
+        [assureObjectId(receiver)],
+        Date.now() - 200,
+      );
       const userNotification1 = await createTestUserNotification(receiver, notification1);
       const userNotification2 = await createTestUserNotification(receiver, notification2);
       const userNotification3 = await createTestUserNotification(receiver, notification3);

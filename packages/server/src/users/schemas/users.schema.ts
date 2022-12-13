@@ -8,73 +8,19 @@ import { createHash } from 'crypto';
 import {
   PropertiesOf,
   UserModel,
-  AvatarModel,
-  UserEmailModel,
   getNumberEnumValues,
   UserStatus,
   PropertyType,
 } from '@lyvely/common';
-
-@Schema({ _id: false })
-export class ProfilesCount {
-  @PropertyType(Number, { default: 0 })
-  @Prop({ required: true, min: 0, default: 0 })
-  user: number;
-
-  @PropertyType(Number, { default: 0 })
-  @Prop({ required: true, min: 0, default: 0 })
-  group: number;
-
-  @PropertyType(Number, { default: 0 })
-  @Prop({ required: true, min: 0, default: 0 })
-  organization: number;
-
-  constructor(obj: Partial<ProfilesCount> = {}) {
-    this.user = obj.user ?? 0;
-    this.group = obj.group ?? 0;
-    this.organization = obj.organization ?? 0;
-  }
-}
-
-const ProfilesCountSchema = SchemaFactory.createForClass(ProfilesCount);
+import { Avatar, AvatarSchema } from './user-avatar.schema';
+import { UserEmail, UserEmailSchema } from './user-email.schema';
+import { ProfilesCount, ProfilesCountSchema } from './profiles-count.schema';
+import {
+  UserNotificationState,
+  UserNotificationStateSchema,
+} from '@/users/schemas/user-notification-state.schema';
 
 export type UserDocument = User & mongoose.Document;
-
-@Schema({ _id: false })
-export class UserEmail implements PropertiesOf<UserEmailModel> {
-  @Prop({ required: true, validate: { validator: validateEmail } })
-  email: string;
-
-  @Prop({ required: true, validate: { validator: validateEmail } })
-  lowercaseEmail: string;
-
-  @Prop({ type: Boolean })
-  verified: boolean;
-
-  constructor(email: string, verified = false) {
-    this.email = email;
-    this.lowercaseEmail = email.toLowerCase();
-    this.verified = verified;
-  }
-}
-
-const UserEmailSchema = SchemaFactory.createForClass(UserEmail);
-
-@Schema({ _id: false })
-export class Avatar implements PropertiesOf<AvatarModel> {
-  @Prop({ required: true })
-  guid: string;
-
-  @Prop({ required: true })
-  timestamp: number;
-
-  constructor(guid: string) {
-    this.guid = guid;
-    this.timestamp = Date.now();
-  }
-}
-
-const AvatarSchema = SchemaFactory.createForClass(Avatar);
 
 @Schema({ timestamps: true })
 export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
@@ -133,6 +79,10 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @Prop({ type: Date })
   passwordResetAt?: Date;
 
+  @Prop({ type: UserNotificationStateSchema })
+  @PropertyType(UserNotificationState)
+  notification: UserNotificationState;
+
   createdAt: Date;
   updatedAt: Date;
 
@@ -155,11 +105,15 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   }
 
   getVerifiedUserEmail(email: string) {
-    return this.emails.find((userEmail) => userEmail.verified && userEmail.lowercaseEmail === email.toLowerCase());
+    return this.emails.find(
+      (userEmail) => userEmail.verified && userEmail.lowercaseEmail === email.toLowerCase(),
+    );
   }
 
   getUnverifiedUserEmail(email: string) {
-    return this.emails.find((userEmail) => !userEmail.verified && userEmail.lowercaseEmail === email.toLowerCase());
+    return this.emails.find(
+      (userEmail) => !userEmail.verified && userEmail.lowercaseEmail === email.toLowerCase(),
+    );
   }
 
   getUnverifiedUserEmails() {

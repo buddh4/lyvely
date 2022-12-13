@@ -1,16 +1,12 @@
-import { Notification } from '../schemas';
-import { SubscriptionContext } from '@/notifications/services';
-
-export interface NotificationDeliveryResult {
-  id: string;
-  success: boolean;
-  error?: string;
-}
+import { Notification, NotificationChannelDeliveryStatus } from '../schemas';
+import { UserSubscriptionContext } from './user-subscription-context.interface';
+import { INotificationRateLimit } from '@/users';
 
 export interface INotificationChannel {
   getId(): string;
+  getRateLimit(): INotificationRateLimit;
   send(
-    context: SubscriptionContext,
+    context: UserSubscriptionContext,
     notification: Notification,
-  ): Promise<NotificationDeliveryResult>;
+  ): Promise<NotificationChannelDeliveryStatus>;
 }

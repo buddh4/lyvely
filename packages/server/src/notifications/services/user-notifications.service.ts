@@ -12,7 +12,10 @@ const DEFAULT_BATCH_SIZE = 12;
 
 @Injectable()
 export class UserNotificationsService {
-  constructor(private userNotificationDao: UserNotificationDao, private notificationDao: NotificationDao) {}
+  constructor(
+    private userNotificationDao: UserNotificationDao,
+    private notificationDao: NotificationDao,
+  ) {}
 
   async loadNext(user: User, request: StreamRequest): Promise<IStreamResponse<WebNotification>> {
     const filter: FilterQuery<UserNotification> = { uid: assureObjectId(user) };
@@ -38,7 +41,7 @@ export class UserNotificationsService {
 
     userNotifications.forEach((userNotification) => {
       const notification = notifications.find((notification) =>
-        notification._id.equals(userNotification.notificationId),
+        notification._id.equals(userNotification.nid),
       );
 
       if (!notification) {
@@ -97,7 +100,7 @@ export class UserNotificationsService {
 
   private async loadNotifications(userNotifications: UserNotification[]) {
     if (!userNotifications.length) return [];
-    const notificationIds = userNotifications.map((userNotification) => userNotification.notificationId);
+    const notificationIds = userNotifications.map((userNotification) => userNotification.nid);
     return this.notificationDao.findAllByIds(notificationIds);
   }
 
@@ -112,7 +115,10 @@ export class UserNotificationsService {
 
     const batchSize = request.batchSize || DEFAULT_BATCH_SIZE;
 
-    const models = await this.userNotificationDao.findAll({}, { sort: { sortOrder: 1, _id: 1 }, limit: batchSize });
+    const models = await this.userNotificationDao.findAll(
+      {},
+      { sort: { sortOrder: 1, _id: 1 }, limit: batchSize },
+    );
 
     const response: IStreamResponse<any> = {
       models: models,

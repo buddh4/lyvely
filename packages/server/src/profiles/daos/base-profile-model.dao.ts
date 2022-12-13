@@ -10,7 +10,7 @@ import {
 } from '@/core';
 import { BaseProfileModel } from './base-profile-model.schema';
 import { Profile } from '../schemas';
-import { assureObjectId, EntityIdentityvlc } from '@/core';
+import { assureObjectId, EntityIdentity } from '@/core';
 import { FilterQuery, QueryOptions, UpdateQuery, Types } from 'mongoose';
 
 /**

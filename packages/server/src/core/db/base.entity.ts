@@ -35,10 +35,10 @@ export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
   }
 
   @Exclude()
-  public _id: ID;
+  _id: ID;
 
   @Expose()
-  public id: string;
+  id: string;
 }
 
 // Note: We do not use db.utils.ts to prevent circular dependency...

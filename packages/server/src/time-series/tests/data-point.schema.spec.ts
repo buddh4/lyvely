@@ -8,7 +8,9 @@ import {
   TestNumberDataPointSchema,
 } from './src/test-data-point.schema';
 
-const DataPointModelDefinition = [{ name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema }];
+const DataPointModelDefinition = [
+  { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema },
+];
 
 describe('NumberTimingDataPointSchema', () => {
   let testingModule: TestingModule;
@@ -18,9 +20,15 @@ describe('NumberTimingDataPointSchema', () => {
   const TEST_KEY = 'NumberTimingDataPointSchema';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [], DataPointModelDefinition).compile();
+    testingModule = await createContentTestingModule(
+      TEST_KEY,
+      [],
+      DataPointModelDefinition,
+    ).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    TestNumberDataPointModel = testingModule.get<Model<TestNumberDataPointDocument>>('TestNumberDataPointModel');
+    TestNumberDataPointModel = testingModule.get<Model<TestNumberDataPointDocument>>(
+      'TestNumberDataPointModel',
+    );
   });
 
   afterEach(async () => {

@@ -22,9 +22,7 @@ export interface INotificationType {
 
 export type TNotificationType = Type<NotificationType> & { typeName: string };
 
-export abstract class NotificationType<
-    T extends INotificationType = INotificationType,
-  >
+export abstract class NotificationType<T extends INotificationType = INotificationType>
   extends BaseEntity<T>
   implements INotificationType
 {
@@ -41,9 +39,6 @@ export abstract class NotificationType<
   @PropertyType(UserInfo)
   userInfo?: UserInfo;
 
-  @Prop()
-  url?: string;
-
   type: string;
 
   static collectionName() {
@@ -52,6 +47,10 @@ export abstract class NotificationType<
 
   mergeWith(notification: T) {
     // Nothing todo
+  }
+
+  getMinRedeliveryDuration() {
+    return 180_000; // 3 min
   }
 
   abstract getUrl(): UrlRoute | null;
@@ -80,6 +79,4 @@ export class NotificationSchemaType
   }
 }
 
-export const NotificationTypeSchema = SchemaFactory.createForClass(
-  NotificationSchemaType,
-);
+export const NotificationTypeSchema = SchemaFactory.createForClass(NotificationSchemaType);

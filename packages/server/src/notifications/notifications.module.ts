@@ -4,14 +4,12 @@ import { UserNotificationsService } from '@/notifications/services/user-notifica
 import { UserNotificationDao, NotificationDao } from '@/notifications/daos';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import {
-  NotificationType,
   Notification,
   NotificationSchema,
   UserNotification,
   UserNotificationSchema,
 } from '@/notifications/schemas';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Schema } from 'mongoose';
 import { BullModule } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '@/notifications/notification.constants';
 
@@ -46,14 +44,9 @@ export class NotificationCoreModule {
         UserNotificationDao,
         NotificationDao,
       ],
-      exports: [UserNotificationsService, UserNotificationDao, NotificationDao],
+      exports: [UserNotificationsService],
     };
   }
-}
-
-export interface NotificationTypeRegistration {
-  type: Type<NotificationType>;
-  schema: Schema<NotificationType>;
 }
 
 @Module({})

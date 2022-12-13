@@ -1,11 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import {
-  NotificationType,
-  NotificationTypeSchema,
-} from './notification-type.schema';
-import { BaseEntity } from '@/core';
-import { BaseModel } from '@lyvely/common';
+import { NotificationType, NotificationTypeSchema } from './notification-type.schema';
+import { assureObjectId, BaseEntity, createBaseEntityInstance, EntityIdentity } from '@/core';
+import { BaseModel, PropertiesOf } from '@lyvely/common';
+import { User } from '@/users';
 
 @Schema({ _id: false, discriminatorKey: 'type' })
 export class NotificationSubscription extends BaseModel<NotificationSubscription> {
@@ -15,9 +13,7 @@ export class NotificationSubscription extends BaseModel<NotificationSubscription
   type: string;
 }
 
-const NotificationSubscriptionSchema = SchemaFactory.createForClass(
-  NotificationSubscription,
-);
+const NotificationSubscriptionSchema = SchemaFactory.createForClass(NotificationSubscription);
 
 @Schema({ _id: false })
 export class ProfileSubscription extends NotificationSubscription {
@@ -25,11 +21,7 @@ export class ProfileSubscription extends NotificationSubscription {
   type = ProfileSubscription.typeName;
 }
 
-const ProfileSubscriptionSchema =
-  SchemaFactory.createForClass(ProfileSubscription);
-NotificationSubscriptionSchema.path<mongoose.Schema.Types.Subdocument>(
-  'type',
-).discriminator(ProfileSubscription.typeName, ProfileSubscriptionSchema);
+const ProfileSubscriptionSchema = SchemaFactory.createForClass(ProfileSubscription);
 
 @Schema({ _id: false })
 export class UsersSubscription extends NotificationSubscription {
@@ -38,31 +30,32 @@ export class UsersSubscription extends NotificationSubscription {
 
   @Prop({ type: [mongoose.Schema.Types.ObjectId] })
   uids?: TObjectId[];
+
+  constructor(identities: EntityIdentity<User>[]) {
+    super();
+    this.uids = identities.map((identity) => assureObjectId(identity));
+  }
 }
 
 const UsersSubscriptionSchema = SchemaFactory.createForClass(UsersSubscription);
-NotificationSubscriptionSchema.path<mongoose.Schema.Types.Subdocument>(
-  'type',
-).discriminator(UsersSubscription.typeName, UsersSubscriptionSchema);
 
 @Schema({ _id: false })
-export class UserSubscription {
+export class UserSubscription extends NotificationSubscription {
   static typeName = 'user';
   type = UserSubscription.typeName;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId })
   uid?: TObjectId;
+
+  constructor(identity: EntityIdentity<User>) {
+    super();
+    this.uid = assureObjectId(identity);
+  }
 }
 
 const UserSubscriptionSchema = SchemaFactory.createForClass(UserSubscription);
-NotificationSubscriptionSchema.path<mongoose.Schema.Types.Subdocument>(
-  'type',
-).discriminator(UserSubscription.typeName, UserSubscriptionSchema);
 
-export type Subscription =
-  | ProfileSubscription
-  | UserSubscription
-  | UsersSubscription;
+export type Subscription = ProfileSubscription | UserSubscription | UsersSubscription;
 
 @Schema()
 export class Notification<
@@ -81,11 +74,7 @@ export class Notification<
   @Prop({ required: true })
   sortOrder: number;
 
-  constructor(
-    data: T,
-    subscription: NotificationSubscription,
-    pid?: TObjectId,
-  ) {
+  constructor(data: T, subscription: Subscription, pid?: TObjectId) {
     super({
       data,
       subscription,
@@ -95,20 +84,35 @@ export class Notification<
   }
 
   afterInit() {
-    if (
-      this.subscription &&
-      !(this.subscription instanceof NotificationSubscription)
-    ) {
-      const SubscriptionType = SubscriptionTypes[this.subscription.type];
-      this.subscription = <TSubscription>(new SubscriptionType(this.subscription));
+    if (this.subscription && !(this.subscription instanceof NotificationSubscription)) {
+      const SubscriptionType =
+        SubscriptionTypes[(<PropertiesOf<NotificationSubscription>>this.subscription).type];
+      this.subscription = createBaseEntityInstance(SubscriptionType, this.subscription);
     }
+  }
+
+  getMinRedeliveryDuration() {
+    return this.data.getMinRedeliveryDuration();
   }
 }
 
 const SubscriptionTypes = {
   [ProfileSubscription.typeName]: ProfileSubscription,
-  [UserSubscription.typeName]: ProfileSubscription,
-  [UsersSubscription.typeName]: ProfileSubscription,
+  [UserSubscription.typeName]: UserSubscription,
+  [UsersSubscription.typeName]: UsersSubscription,
 };
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);
+
+NotificationSchema.path<mongoose.Schema.Types.Subdocument>('subscription').discriminator(
+  ProfileSubscription.typeName,
+  ProfileSubscriptionSchema,
+);
+NotificationSchema.path<mongoose.Schema.Types.Subdocument>('subscription').discriminator(
+  UsersSubscription.typeName,
+  UsersSubscriptionSchema,
+);
+NotificationSchema.path<mongoose.Schema.Types.Subdocument>('subscription').discriminator(
+  UserSubscription.typeName,
+  UserSubscriptionSchema,
+);

@@ -6,7 +6,10 @@ import { Type } from '@lyvely/common';
 const register = {};
 const logger = new Logger('DataPointStrategyFactory');
 
-export function registerDataPointStrategy<TClass extends DataPointConfig>(strategy: string, type: Type<TClass>) {
+export function registerDataPointStrategy<TClass extends DataPointConfig>(
+  strategy: string,
+  type: Type<TClass>,
+) {
   register[strategy] = type;
 }
 
@@ -30,7 +33,8 @@ export class DataPointConfigFactory {
   }
 
   static createInstance<T extends DataPointConfig = DataPointConfig>(config: T): T {
-    const strategy = config.strategy || DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);
+    const strategy =
+      config.strategy || DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);
     const ConfigType = register[strategy];
     if (ConfigType) {
       return assignEntityData(new ConfigType(), config);

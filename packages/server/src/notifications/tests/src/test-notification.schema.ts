@@ -1,4 +1,4 @@
-import { NotificationType, RenderFormat } from '@/notifications';
+import { NotificationType, RenderFormat } from '@/notifications/schemas';
 import { Translatable } from '@/i18n';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
 import { Notification } from '@/notifications/decorators';

@@ -20,7 +20,11 @@ export abstract class DataPointConfig<
   TRevision extends DataPointConfigRevision = DataPointConfigRevision,
 > implements IDataPointConfig
 {
-  @Prop({ enum: getStringEnumValues(DataPointValueType), required: true, default: DataPointValueType.Number })
+  @Prop({
+    enum: getStringEnumValues(DataPointValueType),
+    required: true,
+    default: DataPointValueType.Number,
+  })
   valueType: DataPointValueType;
 
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
@@ -29,7 +33,11 @@ export abstract class DataPointConfig<
   @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
   interval: CalendarIntervalEnum;
 
-  @Prop({ enum: getNumberEnumValues(UserAssignmentStrategy), default: UserAssignmentStrategy.Shared, required: true })
+  @Prop({
+    enum: getNumberEnumValues(UserAssignmentStrategy),
+    default: UserAssignmentStrategy.Shared,
+    required: true,
+  })
   userStrategy: UserAssignmentStrategy;
 
   strategy: string;
@@ -61,7 +69,11 @@ export abstract class DataPointConfig<
     return isEqual(cfg.getSettings(), this.getSettings());
   }
 
-  constructor(DataPointValueType: DataPointValueType, inputType: DataPointInputType, settings?: TSettings) {
+  constructor(
+    DataPointValueType: DataPointValueType,
+    inputType: DataPointInputType,
+    settings?: TSettings,
+  ) {
     this.valueType = DataPointValueType;
     this.inputType = inputType;
     this.interval = settings?.interval;
@@ -74,7 +86,11 @@ export abstract class DataPointConfigRevision implements IDataPointConfigRevisio
   @Prop({ type: Date, required: true, immutable: true })
   validUntil: Date;
 
-  @Prop({ enum: getStringEnumValues(DataPointValueType), required: true, default: DataPointValueType.Number })
+  @Prop({
+    enum: getStringEnumValues(DataPointValueType),
+    required: true,
+    default: DataPointValueType.Number,
+  })
   valueType: DataPointValueType;
 
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
