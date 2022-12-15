@@ -1,12 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { InjectQueue } from '@nestjs/bullmq';
-import { Notification, NotificationType, Subscription } from '../schemas';
+import { Notification, NotificationType } from '../schemas';
+import { Subscription } from '@/user-subscription';
 import { NotificationDao } from '../daos';
-import {
-  JOB_SEND_NOTIFICATION,
-  QUEUE_NOTIFICATIONS_SEND,
-} from '../notification.constants';
+import { JOB_SEND_NOTIFICATION, QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';
 
 @Injectable()
@@ -20,12 +18,7 @@ export class NotificationService {
   ) {}
 
   async sendNotification(data: NotificationType, subscription: Subscription) {
-    const notification = await this.notificationDao.save(
-      new Notification(data, subscription),
-    );
-
-    this.notificationQueue.add(JOB_SEND_NOTIFICATION, {
-      nid: notification.id,
-    });
+    const notification = await this.notificationDao.save(new Notification(data, subscription));
+    this.notificationQueue.add(JOB_SEND_NOTIFICATION, { nid: notification.id });
   }
 }

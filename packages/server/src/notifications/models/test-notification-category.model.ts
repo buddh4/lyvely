@@ -14,13 +14,13 @@ export class TestNotificationCategory extends NotificationCategory {
 
   getTitle(): Translatable {
     return {
-      key: 'notifications.categories.default.title',
+      key: 'notifications.categories.test.title',
     };
   }
 
   getDescription(): Translatable {
     return {
-      key: 'notifications.categories.default.description',
+      key: 'notifications.categories.test.description',
     };
   }
 }

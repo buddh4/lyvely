@@ -20,6 +20,7 @@ import {
   UserPermissionsServiceProvider,
 } from './user-permissions';
 import { I18nModule } from '@/i18n/i18n.module';
+import { I18nModule as NestjsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import { AccountModule } from '@/account/account.module';
 import { CaptchaModule } from '@/captcha/captcha.module';
 import { ThrottlerModule } from '@nestjs/throttler';
@@ -102,7 +103,7 @@ export class AppModuleBuilder {
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          return configService.get('redis');
+          return { connection: configService.get('redis') };
         },
       }),
     );
@@ -116,6 +117,13 @@ export class AppModuleBuilder {
       NotificationsModule,
       CoreModule,
       AppConfigModule,
+      NestjsI18nModule.forRoot({
+        fallbackLanguage: 'en',
+        loaderOptions: {
+          path: path.join(__dirname, '/i18n/locales/'),
+        },
+        resolvers: [AcceptLanguageResolver],
+      }),
       I18nModule,
       PoliciesModule,
       UsersModule,

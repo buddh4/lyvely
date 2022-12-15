@@ -2,14 +2,14 @@ import { ClassSerializerInterceptor, Controller, Get, Req, UseInterceptors } fro
 import { ConfigurationPath, LyvelyRequest, Public } from '@/core';
 import { AppConfigEndpoint, ENDPOINT_APP_CONFIG } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
-import { I18nService } from '@/i18n/services/i18n.service';
+import { I18n } from '@/i18n';
 
 @Controller(ENDPOINT_APP_CONFIG)
 @UseInterceptors(ClassSerializerInterceptor)
 export class AppConfigController implements AppConfigEndpoint {
   constructor(
     private readonly configService: ConfigService<ConfigurationPath>,
-    private readonly i18nService: I18nService,
+    private readonly i18n: I18n,
   ) {}
 
   @Public()
@@ -19,7 +19,7 @@ export class AppConfigController implements AppConfigEndpoint {
       appName: this.configService.get('appName'),
       docUrl: this.configService.get('docUrl'),
       csrf_token: req.csrfToken(),
-      locales: this.i18nService.getEnabledLocaleDefinitions(),
+      locales: this.i18n.getEnabledLocaleDefinitions(),
     };
   }
 }

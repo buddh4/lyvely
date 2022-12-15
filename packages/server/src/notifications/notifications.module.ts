@@ -17,10 +17,10 @@ import { NotificationDecider } from '@/notifications/components/notification-dec
 import { NotificationsController } from '@/notifications/controllers/notifications.controller';
 import { NotificationSenderProcessor } from '@/notifications/processors/notification-sender.processor';
 import { NotificationChannelRegistry } from '@/notifications/components/notification-channel.registry';
-import { NotificationSubscriptionService } from '@/notifications/services';
 import { NotificationService } from '@/notifications/services/notification.service';
 import { UsersModule } from '@/users';
 import { ProfilesModule } from '@/profiles';
+import { UserSubscriptionModule } from '@/user-subscription/user-subscription.module';
 
 const NotificationModels = MongooseModule.forFeature([
   {
@@ -40,7 +40,13 @@ const NotificationQueues = BullModule.registerQueue({
 NotificationCategoryRegistry.registerCategory(new DefaultNotificationCategory());
 
 @Module({
-  imports: [NotificationModels, NotificationQueues, UsersModule, ProfilesModule],
+  imports: [
+    NotificationModels,
+    NotificationQueues,
+    UsersModule,
+    ProfilesModule,
+    UserSubscriptionModule,
+  ],
   controllers: [NotificationsController],
   providers: [
     NotificationService,
@@ -51,8 +57,7 @@ NotificationCategoryRegistry.registerCategory(new DefaultNotificationCategory())
     NotificationDecider,
     NotificationSenderProcessor,
     NotificationChannelRegistry,
-    NotificationSubscriptionService,
   ],
-  exports: [NotificationService],
+  exports: [NotificationService, NotificationChannelRegistry],
 })
 export class NotificationsModule {}

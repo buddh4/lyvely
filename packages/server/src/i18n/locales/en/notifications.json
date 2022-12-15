@@ -1,0 +1,21 @@
+{
+  "channels": {
+    "mail": {
+      "title": "Email"
+    }
+  },
+  "categories": {
+    "default": {
+      "title": "Other",
+      "description": "Other notification types not listed above"
+    },
+    "test": {
+      "title": "Test",
+      "description": "Test notification category"
+    }
+  },
+  "test": {
+    "title": "Test Notification: {testKey}",
+    "body": "Test Notification rendered at {ts}"
+  }
+}

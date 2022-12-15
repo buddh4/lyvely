@@ -25,6 +25,8 @@ import { LiveModule } from '@/live/live.module';
 import { NotificationsModule } from '@/notifications/notifications.module';
 import { getQueueToken } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '@/notifications/notification.constants';
+import { I18nModule as NestjsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
+import path from 'path';
 
 export function createCoreTestingModule(
   key: string,
@@ -47,6 +49,13 @@ export function createCoreTestingModule(
       }),
       CoreModule,
       AppConfigModule,
+      NestjsI18nModule.forRoot({
+        fallbackLanguage: 'en',
+        loaderOptions: {
+          path: path.join(__dirname, '../../i18n/locales/'),
+        },
+        resolvers: [AcceptLanguageResolver],
+      }),
       I18nModule,
       ConfigModule.forRoot({
         load: [() => import('./lyvely-test.config').then((module) => module.default)],
@@ -63,7 +72,7 @@ export function createBasicTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
 ): TestingModuleBuilder {
   imports.push(
     UsersModule,

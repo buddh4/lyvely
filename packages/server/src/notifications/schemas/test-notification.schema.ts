@@ -10,18 +10,18 @@ export class TestNotification extends NotificationType<TestNotification> {
   @Prop()
   testValue: string;
 
-  getBody(format: RenderFormat): Translatable {
+  getTitle(format: RenderFormat): Translatable {
     return {
-      key: 'notifications.test.body',
+      key: 'notifications.test.title',
       params: {
         testKey: this.testValue,
       },
     };
   }
 
-  getTitle(format: RenderFormat): Translatable {
+  getBody(format: RenderFormat): Translatable {
     return {
-      key: 'notifications.test.title',
+      key: 'notifications.test.body',
       params: {
         ts: Date.now(),
       },

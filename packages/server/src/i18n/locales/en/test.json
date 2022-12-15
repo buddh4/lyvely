@@ -1,0 +1,10 @@
+{
+  "testKey": "Test Value",
+  "enOnly": "Only available in english",
+  "testWithParams": "Test {value}",
+  "nested": {
+    "test": {
+      "key": "Nested Value"
+    }
+  }
+}

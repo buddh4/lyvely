@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { INotificationChannel, UserSubscriptionContext } from '../interfaces';
+import { INotificationChannel } from '../interfaces';
+import { UserSubscriptionContext } from '@/user-subscription';
 import { UserNotification, Notification } from '../schemas';
 import { User } from '@/users';
 import { NotificationCategoryRegistry } from '@/notifications/components/notification-category.registry';

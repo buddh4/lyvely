@@ -1,13 +1,13 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
-import { ISendNotificationJob, UserSubscriptionContext } from '../interfaces';
+import { ISendNotificationJob } from '../interfaces';
+import { UserSubscriptionService, UserSubscriptionContext } from '@/user-subscription';
 import { Notification, NotificationDeliveryStatus, UserNotification } from '../schemas';
 import { Job } from 'bullmq';
-import { NotificationSubscriptionService } from '../services';
 import { NotificationChannelRegistry } from '../components';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { Logger } from '@nestjs/common';
-import { assureObjectId, assureStringId, EntityIdentity } from '@/core';
+import { assureObjectId, EntityIdentity } from '@/core';
 import { NotificationDecider } from '@/notifications/components/notification-decider.component';
 import { UsersService } from '@/users';
 import { ServiceException } from '@lyvely/common';
@@ -20,7 +20,7 @@ export class NotificationSenderProcessor extends WorkerHost {
     private notificationDao: NotificationDao,
     private userNotificationDao: UserNotificationDao,
     private channelRegistry: NotificationChannelRegistry,
-    private subscriptionService: NotificationSubscriptionService,
+    private subscriptionService: UserSubscriptionService,
     private decider: NotificationDecider,
     private usersService: UsersService,
   ) {
@@ -32,16 +32,14 @@ export class NotificationSenderProcessor extends WorkerHost {
   }
 
   async processNotification(identity: EntityIdentity<Notification>): Promise<void> {
-    this.logger.log('Processing notification... ' + assureStringId(identity));
-
     const notification =
       identity instanceof Notification ? identity : await this.notificationDao.findById(identity);
 
     if (!notification) throw new ServiceException('Invalid notification id');
 
-    const userSubscriptions = await this.subscriptionService.getSubscriptionContext(notification);
-
-    this.logger.log(userSubscriptions);
+    const userSubscriptions = await this.subscriptionService.getSubscriptionContext(
+      notification.subscription,
+    );
 
     const promises = [];
     userSubscriptions.forEach((userSubscription) => {
@@ -55,7 +53,6 @@ export class NotificationSenderProcessor extends WorkerHost {
     context: UserSubscriptionContext,
     notification: Notification,
   ) {
-    this.logger.log('Process user notification... ');
     const userNotification = await this.userNotificationDao.findOne({
       uid: assureObjectId(context.user),
       nid: assureObjectId(notification),
@@ -67,7 +64,6 @@ export class NotificationSenderProcessor extends WorkerHost {
     }
 
     if (!userNotification) {
-      this.logger.log('Create user notification... ');
       await this.userNotificationDao.save(new UserNotification(context.user, notification));
     } else {
       await this.resetDeliveryState(userNotification);

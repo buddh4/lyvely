@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Get } from '@nestjs/common';
+import { Controller, Post, Body, Req } from '@nestjs/common';
 import {
   ENDPOINT_NOTIFICATIONS,
   NotificationsEndpoint,
@@ -9,7 +9,7 @@ import {
 import { UserNotificationsService, NotificationService } from '../services';
 import { UserRequest } from '@/users';
 import { TestNotification } from '@/notifications/schemas/test-notification.schema';
-import { UserSubscription } from '@/notifications';
+import { SingleUserSubscription } from '@/user-subscription';
 
 @Controller(ENDPOINT_NOTIFICATIONS)
 export class NotificationsController implements NotificationsEndpoint {
@@ -32,7 +32,7 @@ export class NotificationsController implements NotificationsEndpoint {
   async test(@Req() req: UserRequest): Promise<boolean> {
     await this.notificationsService.sendNotification(
       new TestNotification({ testValue: 'Test' }),
-      new UserSubscription(req.user),
+      new SingleUserSubscription(req.user),
     );
     return true;
   }

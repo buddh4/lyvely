@@ -19,6 +19,9 @@ export class NotificationChannelDeliveryStatus extends BaseEntity<NotificationCh
   @Prop({ requried: true })
   @PropertyType(Boolean, { default: false })
   success: boolean;
+
+  @Prop()
+  error: string;
 }
 
 const NotificationChannelDeliveryStatusSchema = SchemaFactory.createForClass(
