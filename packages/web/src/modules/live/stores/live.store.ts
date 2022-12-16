@@ -5,7 +5,40 @@ import { ILiveEvent } from '@lyvely/common';
 const apiURL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8080';
 
 export const useLiveStore = defineStore('live', () => {
+  const channel = initBroadcastChannel();
+
+  function initBroadcastChannel() {
+    const channel = isBroadcastEventsEnabled() ? new BroadcastChannel('live_channel') : null;
+
+    if (channel) {
+      channel.onmessage = (event) => {
+        emitLiveEvent(event.data);
+      };
+    }
+
+    return channel;
+  }
+
+  function isBroadcastEventsEnabled() {
+    return !!window.BroadcastChannel && !!navigator.locks;
+  }
+
   function connectUser() {
+    if (isBroadcastEventsEnabled()) {
+      navigator.locks.request(
+        'live_master',
+        async () =>
+          new Promise((resolve) => {
+            connectUserEventSource();
+            window.addEventListener('beforeunload', resolve);
+          }),
+      );
+    } else {
+      connectUserEventSource();
+    }
+  }
+
+  function connectUserEventSource() {
     const eventSource = new EventSource(`${apiURL}/live/user`, { withCredentials: true });
     eventSource.onerror = (err) => {
       console.error(err);
@@ -18,8 +51,21 @@ export const useLiveStore = defineStore('live', () => {
     eventSource.onmessage = ({ data }) => {
       const event = JSON.parse(data) as ILiveEvent;
       console.log('New live event', event);
+      broadCastLiveEvent(event);
       eventBus.emit(createLiveEventType(event.module, event.name), event);
     };
+  }
+
+  function broadCastLiveEvent(event: ILiveEvent) {
+    if (channel) {
+      channel.postMessage(event);
+    } else {
+      emitLiveEvent(event);
+    }
+  }
+
+  function emitLiveEvent(event: ILiveEvent) {
+    eventBus.emit(createLiveEventType(event.module, event.name), event);
   }
 
   function createLiveEventType(module: string, name: string) {

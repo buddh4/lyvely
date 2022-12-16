@@ -45,8 +45,6 @@ function autoFocus() {
 }
 
 const hasFooter = computed(() => {
-  const test = !!useSlots().footer;
-  debugger;
   return !!useSlots().footer;
 });
 </script>
