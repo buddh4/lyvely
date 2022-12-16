@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, toRefs, watch } from 'vue';
+import { computed, ref, toRefs, useSlots, watch } from 'vue';
 import { uniqueId } from 'lodash';
 import { storeToRefs } from 'pinia';
 import { suggestFocusElement } from '@/modules/ui/utils';
@@ -43,6 +43,12 @@ function close() {
 function autoFocus() {
   suggestFocusElement(root.value)?.focus();
 }
+
+const hasFooter = computed(() => {
+  const test = !!useSlots().footer;
+  debugger;
+  return !!useSlots().footer;
+});
 </script>
 
 <template>
@@ -54,19 +60,24 @@ function autoFocus() {
         ref="root"
         :class="['drawer']"
         :style="{ 'z-index': zIndex }"
-        @keyup.esc="close"
-      >
-        <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
+        @keyup.esc="close">
+        <div
+          class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col justify-start content-start items-start">
           <div data-drawer-header class="mb-4 flex items-center pb-3 rounded-t-sm">
             <slot name="headerheader">
               <h1 v-if="title" class="font-bold">{{ $t(title) }}</h1>
-              <ly-button class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none" @click="close">
+              <ly-button
+                class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
+                @click="close">
                 x
               </ly-button>
             </slot>
           </div>
-          <div data-drawer-body>
+          <div data-drawer-body class="overflow-auto scrollbar-thin">
             <slot></slot>
+          </div>
+          <div v-if="hasFooter" data-drawer-footer class="pt-3">
+            <slot name="footer"></slot>
           </div>
         </div>
       </section>

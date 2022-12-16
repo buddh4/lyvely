@@ -21,6 +21,7 @@ import { NotificationService } from '@/notifications/services/notification.servi
 import { UsersModule } from '@/users';
 import { ProfilesModule } from '@/profiles';
 import { UserSubscriptionModule } from '@/user-subscription/user-subscription.module';
+import { LiveModule } from '@/live/live.module';
 
 const NotificationModels = MongooseModule.forFeature([
   {
@@ -46,6 +47,7 @@ NotificationCategoryRegistry.registerCategory(new DefaultNotificationCategory())
     UsersModule,
     ProfilesModule,
     UserSubscriptionModule,
+    LiveModule,
   ],
   controllers: [NotificationsController],
   providers: [

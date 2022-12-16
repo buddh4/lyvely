@@ -40,16 +40,17 @@ watch(showNotificationDrawer, () => {
     v-model="showNotificationDrawer"
     title="notifications.drawer.title">
     <ul>
+      <li v-if="stream.updateStatus.isStatusLoading()">loading...</li>
       <li v-for="notification in stream.models" :key="notification.id" class="pb-2">
         <notification-drawer-entry
           :notification="notification"
           @click="notificationClick(notification)" />
       </li>
-      <li class="pb-2">
-        <ly-button class="primary" @click="test">Test</ly-button>
-      </li>
       <li v-if="stream.nextStatus.isStatusLoading()">loading...</li>
     </ul>
+    <template #footer>
+      <ly-button class="primary" @click="test">Test</ly-button>
+    </template>
   </ly-drawer>
 </template>
 

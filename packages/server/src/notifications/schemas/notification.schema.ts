@@ -43,7 +43,7 @@ export class Notification<
     this.subscription = UserSubscriptionSchemaAddition.assureInstance(this.subscription);
   }
 
-  getMinRedeliveryDuration() {
+  getMinResendDuration() {
     return this.data.getMinRedeliveryDuration();
   }
 }

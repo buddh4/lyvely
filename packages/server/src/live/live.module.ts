@@ -7,5 +7,6 @@ import { LiveService } from '@/live/services';
   controllers: [LiveController],
   imports: [ProfilesModule],
   providers: [LiveService],
+  exports: [LiveService],
 })
 export class LiveModule {}

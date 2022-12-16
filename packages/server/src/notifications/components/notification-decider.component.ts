@@ -10,12 +10,12 @@ export class NotificationDecider {
   private readonly logger = new Logger(NotificationDecider.name);
 
   /**
-   * Checks if a given notification was already delivered and if so, checks if we should redeliver it.
+   * Checks if a given notification was already delivered and if so, checks if we should resend it.
    * @param context
    * @param notification
    * @param userNotification
    */
-  checkRedelivery(
+  checkResend(
     context: UserSubscriptionContext,
     notification: Notification,
     userNotification?: UserNotification,
@@ -26,7 +26,7 @@ export class NotificationDecider {
 
     return (
       Date.now() - userNotification.status.deliveredAt.getTime() >
-      notification.getMinRedeliveryDuration()
+      notification.getMinResendDuration()
     );
   }
 

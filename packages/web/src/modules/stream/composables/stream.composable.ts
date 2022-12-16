@@ -32,6 +32,8 @@ export function useStream<
     if (response.models?.length) {
       models.value = models.value.concat(response.models);
     }
+
+    return response;
   }
 
   async function update() {
@@ -43,6 +45,8 @@ export function useStream<
     if (response.models?.length) {
       models.value = response.models.concat(models.value);
     }
+
+    return response;
   }
 
   function isInitialized() {

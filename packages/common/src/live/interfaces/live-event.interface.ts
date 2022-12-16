@@ -3,7 +3,7 @@ import { BaseMembershipRole } from '@/profiles';
 export interface ILiveEvent<TData = any> {
   name: string;
   data: TData;
-  module?: string;
+  module: string;
 }
 
 export interface ILiveProfileEvent<TData = any> extends ILiveEvent<TData> {

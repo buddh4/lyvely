@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
@@ -9,6 +9,8 @@ import { Profile, ProfilesService } from '@/profiles';
 
 @Injectable()
 export class LiveService {
+  private logger = new Logger(LiveService.name);
+
   constructor(
     private eventEmitter: EventEmitter2,
     private readonly configService: ConfigService<ConfigurationPath>,
@@ -16,16 +18,26 @@ export class LiveService {
   ) {}
 
   emitProfileEvent(event: ILiveProfileEvent) {
+    this.logger.log(
+      `Send live event ${event.module}.${event.name} for profile ${this.buildLiveProfileEventName(
+        event.pid,
+      )}`,
+    );
     return this.emit(this.buildLiveProfileEventName(event.pid), event);
   }
 
   emitUserEvent(event: ILiveUserEvent) {
+    this.logger.log(
+      `Send live event ${event.module}.${event.name} to user ${this.buildLiveUserEventName(
+        event.uid,
+      )}`,
+    );
     return this.emit(this.buildLiveUserEventName(event.uid), event);
   }
 
   private emit(liveEventName: string, event: ILiveEvent) {
     if (this.isStandaloneServer()) {
-      this.eventEmitter.emit(liveEventName, event);
+      this.eventEmitter.emit(liveEventName, { data: event });
     } else {
       // TODO: redis publish
     }
@@ -40,6 +52,7 @@ export class LiveService {
       );
 
       observables.add(fromEvent(this.eventEmitter, this.buildLiveUserEventName(user)));
+      this.logger.log(`Subscribe user to ${this.buildLiveUserEventName(user)}`);
       return merge(...observables);
     } else {
       // TODO: redis subscription

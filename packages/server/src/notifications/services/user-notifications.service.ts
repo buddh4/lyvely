@@ -35,6 +35,70 @@ export class UserNotificationsService {
       limit: batchSize,
     });
 
+    const models = await this.mapToWebNotification(userNotifications, user);
+
+    const response: IStreamResponse<WebNotification> = {
+      models,
+      state: request.state ? cloneDeep(request.state) : {},
+      hasMore: true,
+    };
+
+    if (userNotifications.length) {
+      response.state.lastId = userNotifications[userNotifications.length - 1].id;
+      response.state.lastOrder = userNotifications[userNotifications.length - 1].sortOrder;
+
+      if (!response.state.firstId) {
+        response.state.firstId = userNotifications[0].id;
+        response.state.firstOrder = userNotifications[0].sortOrder;
+      }
+    }
+
+    if (userNotifications.length < batchSize) {
+      response.hasMore = false;
+    }
+
+    response.state.isEnd = !response.hasMore;
+
+    return response;
+  }
+
+  async update(user: User, request: StreamRequest): Promise<StreamResponse<WebNotification>> {
+    const filter: FilterQuery<UserNotification> = { uid: assureObjectId(user) };
+    if (request.state.firstOrder) {
+      filter['sortOrder'] = { $lte: request.state.firstOrder };
+      if (request.state.firstId) {
+        filter['_id'] = { $lt: request.state.lastId };
+      }
+    }
+
+    const batchSize = request.batchSize || DEFAULT_BATCH_SIZE;
+
+    const userNotifications = await this.userNotificationDao.findAll(filter, {
+      sort: { sortOrder: 1, _id: 1 },
+      limit: batchSize,
+    });
+
+    const models = await this.mapToWebNotification(userNotifications, user);
+
+    const response: IStreamResponse<any> = {
+      models: models,
+      state: cloneDeep(request.state),
+      hasMore: true,
+    };
+
+    if (models.length) {
+      response.state.firstId = userNotifications[0].id;
+      response.state.firstOrder = userNotifications[0].sortOrder;
+    }
+
+    if (models.length < batchSize) {
+      response.hasMore = false;
+    }
+
+    return response;
+  }
+
+  private async mapToWebNotification(userNotifications: UserNotification[], user: User) {
     const notifications = await this.loadNotifications(userNotifications);
 
     const models: WebNotification[] = [];
@@ -71,29 +135,7 @@ export class UserNotificationsService {
       });
     }
 
-    const response: IStreamResponse<WebNotification> = {
-      models,
-      state: request.state ? cloneDeep(request.state) : {},
-      hasMore: true,
-    };
-
-    if (userNotifications.length) {
-      response.state.lastId = userNotifications[userNotifications.length - 1].id;
-      response.state.lastOrder = userNotifications[userNotifications.length - 1].sortOrder;
-
-      if (!response.state.firstId) {
-        response.state.firstId = userNotifications[0].id;
-        response.state.firstOrder = userNotifications[0].sortOrder;
-      }
-    }
-
-    if (userNotifications.length < batchSize) {
-      response.hasMore = false;
-    }
-
-    response.state.isEnd = !response.hasMore;
-
-    return response;
+    return models;
   }
 
   private translate(user: User, translatable: Translatable) {
@@ -104,39 +146,5 @@ export class UserNotificationsService {
     if (!userNotifications.length) return [];
     const notificationIds = userNotifications.map((userNotification) => userNotification.nid);
     return this.notificationDao.findAllByIds(notificationIds);
-  }
-
-  async update(user: User, request: StreamRequest): Promise<StreamResponse<WebNotification>> {
-    const filter: FilterQuery<UserNotification> = { uid: assureObjectId(user) };
-    if (request.state.firstOrder) {
-      filter['sortOrder'] = { $lte: request.state.firstOrder };
-      if (request.state.firstId) {
-        filter['_id'] = { $lt: request.state.lastId };
-      }
-    }
-
-    const batchSize = request.batchSize || DEFAULT_BATCH_SIZE;
-
-    const models = await this.userNotificationDao.findAll(
-      {},
-      { sort: { sortOrder: 1, _id: 1 }, limit: batchSize },
-    );
-
-    const response: IStreamResponse<any> = {
-      models: models,
-      state: cloneDeep(request.state),
-      hasMore: true,
-    };
-
-    if (models.length) {
-      response.state.firstId = models[0].id;
-      response.state.firstOrder = models[0].sortOrder;
-    }
-
-    if (models.length < batchSize) {
-      response.hasMore = false;
-    }
-
-    return response;
   }
 }
