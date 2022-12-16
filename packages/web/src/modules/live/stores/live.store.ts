@@ -40,17 +40,11 @@ export const useLiveStore = defineStore('live', () => {
 
   function connectUserEventSource() {
     const eventSource = new EventSource(`${apiURL}/live/user`, { withCredentials: true });
-    eventSource.onerror = (err) => {
-      console.error(err);
-    };
-
-    eventSource.onopen = () => {
-      console.log('Live connection onopen');
-    };
-
+    eventSource.onerror = (err) => console.error(err);
+    eventSource.onopen = () => console.debug('Live connection onopen');
     eventSource.onmessage = ({ data }) => {
       const event = JSON.parse(data) as ILiveEvent;
-      console.log('New live event', event);
+      console.debug('New live event', event);
       broadCastLiveEvent(event);
       eventBus.emit(createLiveEventType(event.module, event.name), event);
     };
