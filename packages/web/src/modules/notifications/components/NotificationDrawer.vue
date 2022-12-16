@@ -15,6 +15,8 @@ const router = useRouter();
 
 function notificationClick(notification: IWebNotification) {
   // Make updateSeen request
+  // TODO: mark seen in background
+  notification.seen = true;
 
   if (notification.route) {
     router.push(toVueRoute(notification.route));
