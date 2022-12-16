@@ -30,10 +30,10 @@ const NotificationChannelDeliveryStatusSchema = SchemaFactory.createForClass(
 
 @SubSchema()
 export class NotificationDeliveryStatus extends BaseEntity<NotificationDeliveryStatus> {
-  @Prop({ required: true })
+  @Prop()
   success: boolean;
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date })
   deliveredAt?: Date;
 
   @Prop({ requried: true })

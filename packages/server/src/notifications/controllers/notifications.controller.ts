@@ -7,7 +7,7 @@ import {
   StreamRequest,
 } from '@lyvely/common';
 import { UserNotificationsService, NotificationService } from '../services';
-import { UserRequest } from '@/users';
+import { UserInfo, UserRequest } from '@/users';
 import { TestNotification } from '@/notifications/schemas/test-notification.schema';
 import { SingleUserSubscription } from '@/user-subscription';
 
@@ -19,19 +19,25 @@ export class NotificationsController implements NotificationsEndpoint {
   ) {}
 
   @Post('load-next')
-  async loadNext(@Body() request: StreamRequest): Promise<IStreamResponse<IWebNotification>> {
-    return Promise.resolve(undefined);
+  async loadNext(
+    @Body() streamRequest: StreamRequest,
+    @Req() req: UserRequest,
+  ): Promise<IStreamResponse<IWebNotification>> {
+    return this.userNotificationsService.loadNext(req.user, streamRequest);
   }
 
   @Post('update')
-  async update(@Body() request: StreamRequest): Promise<IStreamResponse<IWebNotification>> {
-    return Promise.resolve(undefined);
+  async update(
+    @Body() streamRequest: StreamRequest,
+    @Req() req: UserRequest,
+  ): Promise<IStreamResponse<IWebNotification>> {
+    return this.userNotificationsService.update(req.user, streamRequest);
   }
 
   @Post('test')
   async test(@Req() req: UserRequest): Promise<boolean> {
     await this.notificationsService.sendNotification(
-      new TestNotification({ testValue: 'Test' }),
+      new TestNotification({ testValue: 'Test', userInfo: new UserInfo(req.user) }),
       new SingleUserSubscription(req.user),
     );
     return true;

@@ -2,6 +2,8 @@ import { Translatable } from '@/i18n';
 import { NotificationCategory } from '@/notifications/models/notification-category.model';
 
 export class DefaultNotificationCategory extends NotificationCategory {
+  isConfigurable = true;
+
   getId() {
     return 'default';
   }

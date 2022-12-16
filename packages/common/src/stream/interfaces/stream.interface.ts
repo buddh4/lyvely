@@ -3,12 +3,21 @@ export interface IStreamState {
   lastOrder?: number;
   lastId?: string;
   firstId?: string;
+  /**
+   * Indicates if the last entry has been loaded
+   */
   isEnd?: boolean;
 }
 
 export enum StreamDirection {
-  ttb = 'ttb',
-  btt = 'btt',
+  /**
+   * Top to bottom, the newest entries on top
+   */
+  TTB = 'ttb',
+  /**
+   * Bottom to top, the newest entries at bottom
+   */
+  BBT = 'btt',
 }
 
 export interface IStreamOptions {
@@ -19,10 +28,16 @@ export interface IStreamOptions {
 export interface IStreamResponse<TModel, TState extends IStreamState = IStreamState> {
   models: TModel[];
   state: TState;
+  /**
+   * Indicates if there are still entries available, e.g. when loading updates
+   */
   hasMore?: boolean;
 }
 
-export interface IStreamRequest<TFilter extends IStreamFilter = any, TState extends IStreamState = IStreamState> {
+export interface IStreamRequest<
+  TFilter extends IStreamFilter = any,
+  TState extends IStreamState = IStreamState,
+> {
   state?: TState;
   batchSize: number;
   filter?: TFilter;
@@ -30,28 +45,20 @@ export interface IStreamRequest<TFilter extends IStreamFilter = any, TState exte
 
 export type IStreamFilter = Record<string, string | number>;
 
-export interface IStream<
-  TModel,
-  TFilter extends IStreamFilter = any,
-  TState extends IStreamState = IStreamState,
-  TOptions extends IStreamOptions = IStreamOptions,
-> {
-  state: TState;
-  options: TOptions;
-  filter?: TFilter;
-  models: TModel[];
-  activeModels: TModel[];
-
-  next(): Promise<TModel[]>;
-  update(): Promise<TModel[]>;
-}
-
 export interface IStreamService<
   TModel,
   TFilter extends IStreamFilter = any,
   TState extends IStreamState = IStreamState,
   TOptions extends IStreamOptions = IStreamOptions,
 > {
-  loadNext(state: IStreamState, options: TOptions, filter?: TFilter): Promise<IStreamResponse<TModel, TState>>;
-  update(state: IStreamState, options: TOptions, filter?: TFilter): Promise<IStreamResponse<TModel, TState>>;
+  loadNext(
+    state: IStreamState,
+    options: TOptions,
+    filter?: TFilter,
+  ): Promise<IStreamResponse<TModel, TState>>;
+  update(
+    state: IStreamState,
+    options: TOptions,
+    filter?: TFilter,
+  ): Promise<IStreamResponse<TModel, TState>>;
 }

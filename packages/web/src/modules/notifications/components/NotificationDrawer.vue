@@ -1,15 +1,17 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
+import { watch, toRefs, ref } from 'vue';
 import { useNotificationStore } from '../stores/notifications.store';
 import { useRouter } from 'vue-router';
 import NotificationDrawerEntry from '@/modules/notifications/components/NotificationDrawerEntry.vue';
 import { IWebNotification } from '@lyvely/common';
 import { toVueRoute } from '@/modules/core/backend-route.transformer';
-import LyButton from '@/modules/ui/components/button/StyledButton.vue';
+
 const notificationStore = useNotificationStore();
+const { showNotificationDrawer } = storeToRefs(notificationStore);
+const stream = ref(notificationStore.stream);
 
 const router = useRouter();
-const { showNotificationDrawer } = storeToRefs(notificationStore);
 
 function notificationClick(notification: IWebNotification) {
   // Make updateSeen request
@@ -22,6 +24,12 @@ function notificationClick(notification: IWebNotification) {
 function test() {
   notificationStore.test();
 }
+
+watch(showNotificationDrawer, () => {
+  if (!stream.value.isInitialized()) {
+    stream.value.next();
+  }
+});
 </script>
 
 <template>
@@ -30,10 +38,7 @@ function test() {
     v-model="showNotificationDrawer"
     title="notifications.drawer.title">
     <ul>
-      <li
-        v-for="notification in notificationStore.notifications"
-        :key="notification.id"
-        class="pb-2">
+      <li v-for="notification in stream.models" :key="notification.id" class="pb-2">
         <notification-drawer-entry
           :notification="notification"
           @click="notificationClick(notification)" />
@@ -41,6 +46,7 @@ function test() {
       <li class="pb-2">
         <ly-button class="primary" @click="test">Test</ly-button>
       </li>
+      <li v-if="stream.nextStatus.isStatusLoading()">loading...</li>
     </ul>
   </ly-drawer>
 </template>

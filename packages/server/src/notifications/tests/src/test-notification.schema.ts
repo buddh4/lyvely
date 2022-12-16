@@ -3,6 +3,7 @@ import { Translatable } from '@/i18n';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
 import { Notification } from '@/notifications/decorators';
 import { Prop } from '@nestjs/mongoose';
+import { TestNotificationCategory } from '@/notifications/models/test-notification-category.model';
 
 @Notification()
 export class TestNotification extends NotificationType<TestNotification> {
@@ -26,5 +27,9 @@ export class TestNotification extends NotificationType<TestNotification> {
 
   getUrl(): UrlRoute {
     return undefined;
+  }
+
+  getCategory(): string {
+    return TestNotificationCategory.ID;
   }
 }

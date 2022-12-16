@@ -6,7 +6,7 @@ import { User } from '@/users';
 import { assureObjectId } from '@/core';
 import { cloneDeep } from 'lodash';
 import { NotificationDao, UserNotificationDao } from '../daos';
-import { Translatable } from '@/i18n';
+import { I18n, Translatable } from '@/i18n';
 
 const DEFAULT_BATCH_SIZE = 12;
 
@@ -15,6 +15,7 @@ export class UserNotificationsService {
   constructor(
     private userNotificationDao: UserNotificationDao,
     private notificationDao: NotificationDao,
+    private i18n: I18n,
   ) {}
 
   async loadNext(user: User, request: StreamRequest): Promise<IStreamResponse<WebNotification>> {
@@ -46,6 +47,7 @@ export class UserNotificationsService {
 
       if (!notification) {
         toDelete.push(userNotification._id);
+        return;
       }
 
       const notificationType = notification.data;
@@ -95,7 +97,7 @@ export class UserNotificationsService {
   }
 
   private translate(user: User, translatable: Translatable) {
-    return 'Dummy translation';
+    return this.i18n.t(translatable, user);
   }
 
   private async loadNotifications(userNotifications: UserNotification[]) {
@@ -104,7 +106,7 @@ export class UserNotificationsService {
     return this.notificationDao.findAllByIds(notificationIds);
   }
 
-  async update(user: User, request: StreamRequest): Promise<StreamResponse<UserNotification>> {
+  async update(user: User, request: StreamRequest): Promise<StreamResponse<WebNotification>> {
     const filter: FilterQuery<UserNotification> = { uid: assureObjectId(user) };
     if (request.state.firstOrder) {
       filter['sortOrder'] = { $lte: request.state.firstOrder };

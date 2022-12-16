@@ -4,6 +4,8 @@ import { NotificationCategory } from '@/notifications/models/notification-catego
 export class TestNotificationCategory extends NotificationCategory {
   static ID = 'test';
 
+  isConfigurable = true;
+
   getId() {
     return TestNotificationCategory.ID;
   }

@@ -28,7 +28,11 @@ export class NotificationSenderProcessor extends WorkerHost {
   }
 
   async process(job: Job<ISendNotificationJob>): Promise<void> {
-    return this.processNotification(job.data.nid);
+    try {
+      return this.processNotification(job.data.nid);
+    } catch (e) {
+      this.logger.error(e);
+    }
   }
 
   async processNotification(identity: EntityIdentity<Notification>): Promise<void> {
@@ -53,23 +57,27 @@ export class NotificationSenderProcessor extends WorkerHost {
     context: UserSubscriptionContext,
     notification: Notification,
   ) {
-    const userNotification = await this.userNotificationDao.findOne({
-      uid: assureObjectId(context.user),
-      nid: assureObjectId(notification),
-    });
+    try {
+      const userNotification = await this.userNotificationDao.findOne({
+        uid: assureObjectId(context.user),
+        nid: assureObjectId(notification),
+      });
 
-    if (!this.decider.checkRedelivery(context, notification, userNotification)) {
-      // The notification was updated, but we do not want to redeliver it for some reason, so just update the seen state
-      return this.markUnseen(userNotification, notification);
+      if (!this.decider.checkRedelivery(context, notification, userNotification)) {
+        // The notification was updated, but we do not want to redeliver it for some reason, so just update the seen state
+        return this.markUnseen(userNotification, notification);
+      }
+
+      if (!userNotification) {
+        await this.userNotificationDao.save(new UserNotification(context.user, notification));
+      } else {
+        await this.resetDeliveryState(userNotification);
+      }
+
+      return this.send(context, notification);
+    } catch (e) {
+      this.logger.error(e);
     }
-
-    if (!userNotification) {
-      await this.userNotificationDao.save(new UserNotification(context.user, notification));
-    } else {
-      await this.resetDeliveryState(userNotification);
-    }
-
-    return this.send(context, notification);
   }
 
   private async resetDeliveryState(userNotification: UserNotification) {

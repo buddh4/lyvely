@@ -6,23 +6,24 @@ function getModulePath(name) {
   return `^src/${name}`;
 }
 
+const MODULE_APP_CONFIG = getModulePath('app-config');
+const MODULE_ACTIVITIES = getModulePath('activities');
 const MODULE_CORE = getModulePath('core');
+const MODULE_CONTENT = getModulePath('content');
+const MODULE_CALENDAR = getModulePath('calendar');
 const MODULE_I18N = getModulePath('i18n');
 const MODULE_JWT = getModulePath('jwt');
-const MODULE_APP_CONFIG = getModulePath('app-config');
 const MODULE_POLICIES = getModulePath('policies');
 const MODULE_PERMISSIONS = getModulePath('permissions');
 const MODULE_PROFILES = getModulePath('profiles');
-const MODULE_CONTENT = getModulePath('content');
-const MODULE_CALENDAR = getModulePath('calendar');
 const MODULE_LIVE = getModulePath('live');
 const MODULE_MAILS = getModulePath('mail');
 const MODULE_TEST = getModulePath('test');
 const MODULE_USERS = getModulePath('users');
+const MODULE_USER_SUBSCRIPTION = getModulePath('user-subscription');
 const MODULE_USER_OTP = getModulePath('user-otp');
 const MODULE_TAGS = getModulePath('tags');
 const MODULE_TIME_SERIES = getModulePath('time-series');
-const MODULE_ACTIVITIES = getModulePath('activities');
 const MODULE_QUEUE = getModulePath('queue');
 const NODE_MODULES = 'node_modules';
 const LYVELY_COMMON = '/common/dist';
@@ -54,6 +55,7 @@ module.exports = {
   forbidden: [
     ...preset.forbidden,
     /* module dependency restrictions: */
+    createModuleDeps('account', [MODULE_USERS, MODULE_USER_OTP]),
     createModuleDeps('activities', [
       MODULE_POLICIES,
       MODULE_CONTENT,
@@ -62,17 +64,25 @@ module.exports = {
       MODULE_TAGS,
       MODULE_TIME_SERIES,
     ]),
-    createModuleDeps('account', [MODULE_USERS, MODULE_USER_OTP]),
     createModuleDeps('app-config', [MODULE_I18N]),
     createModuleDeps('auth', [MODULE_USERS, MODULE_JWT]),
+    createModuleDeps('avatars', []),
     createModuleDeps('calendar'),
     createModuleDeps('captcha'),
-    createModuleDeps('content', [MODULE_PROFILES, MODULE_USERS, MODULE_POLICIES, MODULE_TAGS, MODULE_LIVE]),
+    createModuleDeps('content', [
+      MODULE_PROFILES,
+      MODULE_USERS,
+      MODULE_POLICIES,
+      MODULE_TAGS,
+      MODULE_LIVE,
+    ]),
     createModuleDeps('core'),
+    createModuleDeps('files'),
     createModuleDeps('i18n'),
     createModuleDeps('jwt', [MODULE_USERS]),
     createModuleDeps('live', [MODULE_PROFILES]),
     createModuleDeps('mails'),
+    createModuleDeps('notifications'),
     createModuleDeps('permissions'),
     createModuleDeps('policies'),
     createModuleDeps('profiles', [
@@ -83,8 +93,6 @@ module.exports = {
       MODULE_CALENDAR,
       MODULE_TAGS,
     ]),
-    createModuleDeps('queue'),
-    createModuleDeps('user-registration', [MODULE_USERS, MODULE_PROFILES, MODULE_MAILS, MODULE_USER_OTP]),
     createModuleDeps('statistics', [MODULE_USERS]),
     createModuleDeps('tags', [MODULE_PROFILES, MODULE_POLICIES]),
     createModuleDeps('test', [
@@ -96,10 +104,24 @@ module.exports = {
       MODULE_I18N,
       MODULE_APP_CONFIG,
     ]),
+    createModuleDeps('throttler'),
     createModuleDeps('time-series', [MODULE_CONTENT, MODULE_USERS, MODULE_PROFILES]),
-    createModuleDeps('user-invites', [MODULE_USERS, MODULE_PROFILES, MODULE_POLICIES, MODULE_MAILS]),
+    createModuleDeps('types'),
+    createModuleDeps('user-invites', [
+      MODULE_USERS,
+      MODULE_PROFILES,
+      MODULE_POLICIES,
+      MODULE_MAILS,
+    ]),
     createModuleDeps('user-otp', [MODULE_USERS]),
     createModuleDeps('user-permissions', [MODULE_USERS, MODULE_PERMISSIONS]),
+    createModuleDeps('user-subscription'),
+    createModuleDeps('user-registration', [
+      MODULE_USERS,
+      MODULE_PROFILES,
+      MODULE_MAILS,
+      MODULE_USER_OTP,
+    ]),
     createModuleDeps('users', [MODULE_POLICIES]),
     /* rules from the 'recommended' preset: */
   ],

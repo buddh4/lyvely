@@ -41,6 +41,6 @@ export class UserSubscriptionSchemaAddition {
       return createBaseEntityInstance(SubscriptionType, subscription);
     }
 
-    return undefined;
+    return subscription;
   }
 }

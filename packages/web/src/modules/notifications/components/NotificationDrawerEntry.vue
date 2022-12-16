@@ -18,7 +18,14 @@ const cssClass = computed(() => [
 <template>
   <div :class="cssClass">
     <div class="p-2 w-12">
-      <ly-avatar v-if="notification.source" :guid="notification.source.guid" :name="notification.source.name" />
+      <ly-avatar
+        v-if="notification.userInfo"
+        :guid="notification.userInfo.imageGuid"
+        :name="notification.userInfo.name" />
+      <ly-avatar
+        v-else-if="notification.profileInfo"
+        :guid="notification.profileInfo.imageGuid"
+        :name="notification.profileInfo.name" />
     </div>
     <div class="flex flex-col p-2 pl-0 gap-1 text-sm w-full">
       <div class="font-bold">{{ notification.title }}</div>

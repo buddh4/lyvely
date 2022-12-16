@@ -63,10 +63,7 @@ export abstract class NotificationType<T extends INotificationType = INotificati
   discriminatorKey: 'type',
   collection: NotificationType.collectionName(),
 })
-export class NotificationSchemaType
-  extends NotificationType<INotificationType>
-  implements INotificationType
-{
+export class NotificationSchemaType extends NotificationType implements INotificationType {
   getBody(format: RenderFormat): Translatable {
     return undefined;
   }
