@@ -32,7 +32,7 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
 
   const state = useUpdateModelStore<EditModel, UpdateActivityResponse>({
     service: (editModel: CreateTaskDto | CreateHabitDto) =>
-      editModel instanceof UpdateTaskDto ? tasksService : habitsService,
+      editModel instanceof CreateTaskDto ? tasksService : habitsService,
     onSubmitSuccess(response?: UpdateActivityResponse) {
       if (response) {
         useProfileStore().updateTags(response.tags);
@@ -45,16 +45,13 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
         setTimeout(() => {
           // TODO: move to view...
           findFocusable(
-            document.querySelector<HTMLElement>(`.calendar-plan-items [data-cid="${response.model.id}"]`),
+            document.querySelector<HTMLElement>(
+              `.calendar-plan-items [data-cid="${response.model.id}"]`,
+            ),
           )?.focus();
         });
       }
     },
-  });
-
-  const modalTitle = computed(() => {
-    const type = (state.model.value instanceof UpdateTaskDto ? ActivityType.Task : ActivityType.Habit).toLowerCase();
-    return state.isCreate.value ? `activities.${type}s.create.title` : `activities.${type}s.edit.title`;
   });
 
   function setEditActivity(activity: ActivityModel) {
@@ -70,7 +67,10 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
     if (isTask(activity)) {
       // TODO
     } else {
-      const updatedDataPoint = await habitsService.startTimer(activity.id, new TimerUpdate(calendarPlanStore.date));
+      const updatedDataPoint = await habitsService.startTimer(
+        activity.id,
+        new TimerUpdate(calendarPlanStore.date),
+      );
     }
   }
 
@@ -81,7 +81,6 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
   }
 
   return {
-    modalTitle,
     setEditActivity,
     setCreateActivity,
     ...state,

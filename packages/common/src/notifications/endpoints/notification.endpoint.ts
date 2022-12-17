@@ -2,7 +2,9 @@ import { IStreamService } from '@/stream';
 import { IWebNotification } from '@/notifications';
 import { Endpoint } from '@/endpoints';
 
-export type INotificationsService = IStreamService<IWebNotification>;
+export interface INotificationsService extends IStreamService<IWebNotification> {
+  markAsSeen(nid: string): Promise<void>;
+}
 
 export type NotificationsEndpoint = Endpoint<INotificationsService>;
 

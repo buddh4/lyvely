@@ -31,6 +31,7 @@ import { AvatarsModule } from '@/avatars/avatars.module';
 import { LiveModule } from '@/live/live.module';
 import { BullModule } from '@nestjs/bullmq';
 import { NotificationsModule } from '@/notifications/notifications.module';
+import { FeatureModule } from '@/features/feature.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -116,6 +117,7 @@ export class AppModuleBuilder {
       MailsModule.fromConfig(),
       NotificationsModule,
       CoreModule,
+      FeatureModule,
       AppConfigModule,
       NestjsI18nModule.forRoot({
         fallbackLanguage: 'en',

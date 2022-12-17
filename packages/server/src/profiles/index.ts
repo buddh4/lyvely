@@ -8,5 +8,4 @@ export * from './policies';
 export * from './interfaces';
 export * from './types';
 export * from './services';
-export * from './profile.events';
 export * from './profiles.module';

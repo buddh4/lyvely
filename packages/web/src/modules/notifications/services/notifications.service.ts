@@ -34,6 +34,10 @@ export class NotificationsService implements INotificationsService {
     );
   }
 
+  async markAsSeen(nid: string) {
+    return unwrapResponse(notificationRepository.markAsSeen(nid));
+  }
+
   async test() {
     return notificationRepository.test();
   }

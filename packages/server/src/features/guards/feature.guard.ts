@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Inject, Injectable } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { FeatureRegistry } from './feature.registry';
-import { getFeaturesFromContext } from './feature.decorator';
+import { FeatureRegistry } from '../components';
+import { getFeaturesFromContext } from '../decorators';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
@@ -19,6 +19,9 @@ export class FeatureGuard implements CanActivate {
       return true;
     }
 
-    return features.reduce((prev, current) => prev && !!this.featureRegistry.isEnabledFeature(current), true);
+    return features.reduce(
+      (prev, current) => prev && !!this.featureRegistry.isEnabledFeature(current),
+      true,
+    );
   }
 }

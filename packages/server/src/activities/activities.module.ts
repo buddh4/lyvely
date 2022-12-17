@@ -24,7 +24,6 @@ import { ActivitiesDao } from './daos/activities.dao';
 import { TasksDao } from './daos/tasks.dao';
 import { PoliciesModule } from '@/policies/policies.module';
 import { HabitsDao } from './daos/habits.dao';
-import { ActivityEvents } from './activities.events';
 import { CoreModule } from '@/core';
 import { HabitDataPointDao } from './daos/habit-data-point.dao';
 
@@ -50,7 +49,6 @@ import { HabitDataPointDao } from './daos/habit-data-point.dao';
   ],
   controllers: [ActivitiesController, HabitsController, TasksController],
   providers: [
-    ActivityEvents,
     ActivitiesDao,
     TasksDao,
     HabitsDao,

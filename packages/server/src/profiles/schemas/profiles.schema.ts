@@ -17,7 +17,10 @@ import {
   ProfileUsage,
   AvatarModel,
 } from '@lyvely/common';
-import { ProfileRolePermission, ProfileRolePermissionSchema } from './profile-role-permissions.schema';
+import {
+  ProfileRolePermission,
+  ProfileRolePermissionSchema,
+} from './profile-role-permissions.schema';
 
 @Schema({ _id: false })
 class ProfileMetadata extends BaseModel<ProfileMetadata> {
@@ -128,7 +131,8 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   afterInit() {
     super.afterInit();
-    this.tags = this.tags?.map((category) => (category instanceof Tag ? category : new Tag(category))) || [];
+    this.tags =
+      this.tags?.map((category) => (category instanceof Tag ? category : new Tag(category))) || [];
   }
 
   getTagByName(name: string) {

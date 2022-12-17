@@ -1,12 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { IStreamResponse, StreamRequest, StreamResponse, WebNotification } from '@lyvely/common';
+import {
+  EntityNotFoundException,
+  IStreamResponse,
+  StreamRequest,
+  StreamResponse,
+  WebNotification,
+  NotificationMarkedAsSeenLiveEvent,
+} from '@lyvely/common';
 import { RenderFormat, UserNotification } from '../schemas';
 import { FilterQuery } from 'mongoose';
 import { User } from '@/users';
-import { assureObjectId } from '@/core';
+import { assureObjectId, assureStringId, EntityIdentity } from '@/core';
 import { cloneDeep } from 'lodash';
 import { NotificationDao, UserNotificationDao } from '../daos';
-import { I18n, Translatable } from '@/i18n';
+import { I18n } from '@/i18n';
+import { LiveService } from '@/live';
 
 const DEFAULT_BATCH_SIZE = 12;
 
@@ -16,6 +24,7 @@ export class UserNotificationsService {
     private userNotificationDao: UserNotificationDao,
     private notificationDao: NotificationDao,
     private i18n: I18n,
+    private liveService: LiveService,
   ) {}
 
   async loadNext(user: User, request: StreamRequest): Promise<IStreamResponse<WebNotification>> {
@@ -120,8 +129,8 @@ export class UserNotificationsService {
         new WebNotification({
           id: userNotification.id,
           type: notificationType.type,
-          body: this.translate(user, notificationType.getBody(RenderFormat.HTML)),
-          title: this.translate(user, notificationType.getTitle(RenderFormat.HTML)),
+          body: this.i18n.t(notificationType.getBody(RenderFormat.HTML), user),
+          title: this.i18n.t(notificationType.getTitle(RenderFormat.HTML), user),
           seen: userNotification.seen,
           userInfo: notificationType.userInfo?.getDto(),
           profileInfo: notificationType.profileInfo?.getDto(),
@@ -138,13 +147,27 @@ export class UserNotificationsService {
     return models;
   }
 
-  private translate(user: User, translatable: Translatable) {
-    return this.i18n.t(translatable, user);
-  }
-
   private async loadNotifications(userNotifications: UserNotification[]) {
     if (!userNotifications.length) return [];
     const notificationIds = userNotifications.map((userNotification) => userNotification.nid);
     return this.notificationDao.findAllByIds(notificationIds);
+  }
+
+  async markAsSeen(user: EntityIdentity<User>, nid: EntityIdentity<UserNotification>) {
+    const notification = await this.userNotificationDao.findOneAndUpdateByFilter(
+      assureObjectId(nid),
+      { $set: { seen: true } },
+      { uid: assureObjectId(user) },
+      { new: false },
+    );
+
+    if (!notification) throw new EntityNotFoundException();
+
+    if (!notification.seen) {
+      // Only send live event if the notification was unseen prior the update
+      this.liveService.emitUserEvent(
+        new NotificationMarkedAsSeenLiveEvent(assureStringId(user), assureStringId(nid)),
+      );
+    }
   }
 }

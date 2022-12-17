@@ -5,11 +5,12 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { FeatureGuard, CoreModule, ServiceExceptionsFilter, ConfigurationPath } from '@/core';
+import { ServiceExceptionsFilter, ConfigurationPath } from '@/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from '@/app-module.builder';
 import helmet, { HelmetOptions } from 'helmet';
 import csurf from 'csurf';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
+import { FeatureModule, FeatureGuard } from '@/features';
 
 useDayJsDateTimeAdapter();
 
@@ -100,7 +101,7 @@ export class LyvelyServer {
 
   private initGuards() {
     const authGuard = this.nestApp.select(AuthModule).get(JwtAuthGuard);
-    const featureGuard = this.nestApp.select(CoreModule).get(FeatureGuard);
+    const featureGuard = this.nestApp.select(FeatureModule).get(FeatureGuard);
     this.nestApp.useGlobalGuards(authGuard, featureGuard);
   }
 
@@ -114,7 +115,9 @@ export class LyvelyServer {
     }
 
     if (!cors_origin && !staticServe) {
-      this.logger.warn('Not cors origin and no serve static configuration set, this is probably a misconfiguration.');
+      this.logger.warn(
+        'Not cors origin and no serve static configuration set, this is probably a misconfiguration.',
+      );
     }
 
     if (!cors_origin) {

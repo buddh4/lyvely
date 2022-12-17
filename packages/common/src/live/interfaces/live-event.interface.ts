@@ -1,16 +1,15 @@
 import { BaseMembershipRole } from '@/profiles';
 
-export interface ILiveEvent<TData = any> {
+export interface ILiveEvent {
   name: string;
-  data: TData;
   module: string;
 }
 
-export interface ILiveProfileEvent<TData = any> extends ILiveEvent<TData> {
+export interface ILiveProfileEvent extends ILiveEvent {
   pid: string;
   roles?: BaseMembershipRole[];
 }
 
-export interface ILiveUserEvent<TData = any> extends ILiveEvent<TData> {
+export interface ILiveUserEvent extends ILiveEvent {
   uid: string;
 }

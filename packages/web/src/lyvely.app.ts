@@ -24,6 +24,7 @@ import AddButton from '@/modules/ui/components/button/AddButton.vue';
 import CheckboxInput from '@/modules/ui/components/form/CheckboxInput.vue';
 import RadioInput from '@/modules/ui/components/form/RadioInput.vue';
 import TextInput from '@/modules/ui/components/form/TextInput.vue';
+import TimeNumberInput from '@/modules/ui/components/form/TimeNumberInput.vue';
 import SelectInput from '@/modules/ui/components/form/SelectInput.vue';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
 import TextareaInput from '@/modules/ui/components/form/TextareaInput.vue';
@@ -107,6 +108,7 @@ export class LyvelyApp {
     this.vueApp.component('LyInputTextarea', TextareaInput);
     this.vueApp.component('LyInputRange', RangeInput);
     this.vueApp.component('LyInputCaptcha', CaptchaInput);
+    this.vueApp.component('LyInputTimeNumber', TimeNumberInput);
     this.vueApp.component('LyAlert', AlertBlock);
     this.vueApp.component('LyProfileAvatar', ProfileAvatar);
     this.vueApp.component('LyAvatar', AvatarImage);

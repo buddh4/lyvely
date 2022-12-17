@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IFeature } from './feature.interface';
+import { IFeature } from '../interfaces';
 
 @Injectable()
 export class FeatureRegistry {

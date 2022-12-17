@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req } from '@nestjs/common';
+import { Controller, Post, Body, Req, Param } from '@nestjs/common';
 import {
   ENDPOINT_NOTIFICATIONS,
   NotificationsEndpoint,
@@ -32,6 +32,12 @@ export class NotificationsController implements NotificationsEndpoint {
     @Req() req: UserRequest,
   ): Promise<IStreamResponse<IWebNotification>> {
     return this.userNotificationsService.update(req.user, streamRequest);
+  }
+
+  @Post(':nid/mark-as-seen')
+  async markAsSeen(@Param('nid') nid: string, @Req() req: UserRequest): Promise<void> {
+    console.log(nid);
+    await this.userNotificationsService.markAsSeen(req.user, nid);
   }
 
   @Post('test')

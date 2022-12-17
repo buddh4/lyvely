@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Habit, Task } from './schemas';
-import { IContentTypeDefinition } from '../content';
-import { IFeature, ModuleEvents } from '@/core';
-
+/*
 @Injectable()
 export class ActivityEvents extends ModuleEvents {
   getFeatures(): IFeature[] {
@@ -31,3 +28,4 @@ export class ActivityEvents extends ModuleEvents {
     ];
   }
 }
+*/

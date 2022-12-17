@@ -1,22 +1,45 @@
 <script lang="ts" setup>
 import VueMultiselect from 'vue-multiselect';
 import useEditActivityModal from '../useEditActivityModal';
+import { computed } from 'vue';
+import { ActivityType, UpdateTaskDto } from '@lyvely/common';
 
-const { model, modalTitle, showModal, validator, addTag, reset, submit, tagOptions, calendarPlanOptions } =
-  useEditActivityModal();
+const {
+  model,
+  isCreate,
+  showModal,
+  validator,
+  addTag,
+  reset,
+  submit,
+  tagOptions,
+  calendarPlanOptions,
+} = useEditActivityModal();
+
+const modalTitle = computed(() => {
+  return isCreate.value ? `activities.tasks.create.title` : `activities.tasks.edit.title`;
+});
 </script>
 
 <template>
-  <ly-modal v-if="model && validator" v-model="showModal" :title="modalTitle" @submit="submit" @hide="reset">
+  <ly-modal
+    v-if="model && validator"
+    v-model="showModal"
+    :title="modalTitle"
+    @submit="submit"
+    @hide="reset">
     <fieldset>
-      <ly-input-text v-model="model.title" label="Title" :error="validator.getError('title')" />
+      <ly-input-text
+        v-model="model.title"
+        label="Title"
+        :autofocus="true"
+        :error="validator.getError('title')" />
 
       <ly-input-select
         v-model="model.interval"
         label="Plan"
         :options="calendarPlanOptions"
-        :error="validator.getError('interval')"
-      />
+        :error="validator.getError('interval')" />
 
       <VueMultiselect
         v-model="model.tagNames"
@@ -26,8 +49,7 @@ const { model, modalTitle, showModal, validator, addTag, reset, submit, tagOptio
         :taggable="true"
         tag-placeholder="Add this as new tag"
         placeholder="Search or add a tag"
-        @tag="addTag"
-      />
+        @tag="addTag" />
 
       <ly-input-number
         v-model="model.score"
@@ -35,8 +57,7 @@ const { model, modalTitle, showModal, validator, addTag, reset, submit, tagOptio
         :error="validator.getError('score')"
         :steps="2"
         :max="100"
-        :min="-100"
-      />
+        :min="-100" />
 
       <ly-input-textarea v-model="model.text" label="Description" />
     </fieldset>

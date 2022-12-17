@@ -8,7 +8,7 @@ export default function () {
   const activityEditStore = useUpdateActivityStore();
   const tagOptions = computed(() => profileStore.tagOptions);
   const calendarPlanOptions = computed(() => getCalendarPlanOptions());
-  const { model, modalTitle, validator, status } = toRefs(activityEditStore);
+  const { model, validator, status, isCreate } = toRefs(activityEditStore);
 
   const { submit, reset } = activityEditStore;
 
@@ -25,7 +25,7 @@ export default function () {
 
   return {
     model,
-    modalTitle,
+    isCreate,
     validator,
     addTag,
     status,

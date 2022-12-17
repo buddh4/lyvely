@@ -27,6 +27,7 @@ import { getQueueToken } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '@/notifications/notification.constants';
 import { I18nModule as NestjsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import path from 'path';
+import { FeatureModule } from '@/features/feature.module';
 
 export function createCoreTestingModule(
   key: string,
@@ -48,6 +49,7 @@ export function createCoreTestingModule(
         }),
       }),
       CoreModule,
+      FeatureModule,
       AppConfigModule,
       NestjsI18nModule.forRoot({
         fallbackLanguage: 'en',

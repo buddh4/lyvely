@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { watch, toRefs, ref } from 'vue';
+import { watch, ref } from 'vue';
 import { useNotificationStore } from '../stores/notifications.store';
 import { useRouter } from 'vue-router';
 import NotificationDrawerEntry from '@/modules/notifications/components/NotificationDrawerEntry.vue';
@@ -13,10 +13,8 @@ const stream = ref(notificationStore.stream);
 
 const router = useRouter();
 
-function notificationClick(notification: IWebNotification) {
-  // Make updateSeen request
-  // TODO: mark seen in background
-  notification.seen = true;
+async function notificationClick(notification: IWebNotification) {
+  notificationStore.markAsSeen(notification);
 
   if (notification.route) {
     router.push(toVueRoute(notification.route));

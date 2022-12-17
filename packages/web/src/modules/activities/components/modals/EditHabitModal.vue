@@ -4,9 +4,20 @@ import VueMultiselect from 'vue-multiselect';
 import { DataPointInputType } from '@lyvely/common';
 import LyInputTimeNumber from '@/modules/ui/components/form/TimeNumberInput.vue';
 import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
+import { computed } from 'vue';
 
-const { model, modalTitle, showModal, validator, addTag, reset, submit, tagOptions, calendarPlanOptions, status } =
-  useEditActivityModal();
+const {
+  model,
+  isCreate,
+  showModal,
+  validator,
+  addTag,
+  reset,
+  submit,
+  tagOptions,
+  calendarPlanOptions,
+  status,
+} = useEditActivityModal();
 
 function setInputType(inputType: DataPointInputType) {
   if (model.value) {
@@ -16,13 +27,26 @@ function setInputType(inputType: DataPointInputType) {
     }
   }
 }
+
+const modalTitle = computed(() => {
+  return isCreate.value ? `activities.habits.create.title` : `activities.habits.edit.title`;
+});
 </script>
 
 <template>
-  <ly-modal v-if="model && validator" v-model="showModal" :title="modalTitle" @submit="submit" @hide="reset">
-    <ly-form-model v-model="model" :validator="validator" :status="status" label-key="activities.fields">
+  <ly-modal
+    v-if="model && validator"
+    v-model="showModal"
+    :title="modalTitle"
+    @submit="submit"
+    @hide="reset">
+    <ly-form-model
+      v-model="model"
+      :validator="validator"
+      :status="status"
+      label-key="activities.fields">
       <fieldset>
-        <ly-input-text property="title" :required="true" />
+        <ly-input-text property="title" :required="true" :autofocus="true" />
         <ly-input-select property="interval" :required="true" :options="calendarPlanOptions" />
       </fieldset>
 
@@ -32,32 +56,28 @@ function setInputType(inputType: DataPointInputType) {
             <ly-button
               class="text-xs secondary w-full"
               :active="model.inputType === DataPointInputType.Checkbox"
-              @click="setInputType(DataPointInputType.Checkbox)"
-            >
+              @click="setInputType(DataPointInputType.Checkbox)">
               {{ $t('activities.input_types.checkbox') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
               :active="model.inputType === DataPointInputType.Spinner"
-              @click="setInputType(DataPointInputType.Spinner)"
-            >
+              @click="setInputType(DataPointInputType.Spinner)">
               {{ $t('activities.input_types.spinner') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
               :active="model.inputType === DataPointInputType.Time"
-              @click="setInputType(DataPointInputType.Time)"
-            >
+              @click="setInputType(DataPointInputType.Time)">
               {{ $t('activities.input_types.time') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
               :active="model.inputType === DataPointInputType.Range"
-              @click="setInputType(DataPointInputType.Range)"
-            >
+              @click="setInputType(DataPointInputType.Range)">
               {{ $t('activities.input_types.range') }}
             </ly-button>
           </div>
@@ -68,9 +88,10 @@ function setInputType(inputType: DataPointInputType) {
                 v-if="model.inputType === DataPointInputType.Checkbox"
                 property="max"
                 :min="1"
-                :max="8"
-              />
-              <ly-input-time-number v-else-if="model.inputType === DataPointInputType.Time" property="max" />
+                :max="8" />
+              <ly-input-time-number
+                v-else-if="model.inputType === DataPointInputType.Time"
+                property="max" />
               <ly-input-number v-else property="max" :min="1" />
             </div>
 
@@ -78,8 +99,7 @@ function setInputType(inputType: DataPointInputType) {
               <ly-input-time-number
                 v-if="model.inputType === DataPointInputType.Time"
                 property="min"
-                :max="model.max"
-              />
+                :max="model.max" />
               <ly-input-number v-else property="min" :min="0" :max="model.max" />
             </div>
             <div>
@@ -87,16 +107,14 @@ function setInputType(inputType: DataPointInputType) {
                 v-if="model.inputType === DataPointInputType.Time"
                 property="optimal"
                 :min="model.min"
-                :max="model.max"
-              />
+                :max="model.max" />
               <ly-input-number v-else property="optimal" :min="model.min" :max="model.max" />
             </div>
             <div class="flex flex-col">
               <ly-input-number property="score" :mb="0" :steps="2" :max="100" :min="-100" />
               <div
                 v-if="model.inputType === DataPointInputType.Time"
-                class="flex border border-divide bg-highlight rounded h-full p-2 text-xs text-dimmed gap-2"
-              >
+                class="flex border border-divide bg-highlight rounded h-full p-2 text-xs text-dimmed gap-2">
                 <div>
                   <ly-icon name="info" class="text-info-light" />
                 </div>
@@ -118,8 +136,7 @@ function setInputType(inputType: DataPointInputType) {
           :taggable="true"
           tag-placeholder="Add this as new tag"
           placeholder="Search or add a tag"
-          @tag="addTag"
-        />
+          @tag="addTag" />
         <ly-input-textarea property="description" />
       </fieldset>
     </ly-form-model>

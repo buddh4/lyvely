@@ -21,6 +21,12 @@ export default {
     );
   },
 
+  async markAsSeen(nid: string) {
+    return repository.post<EndpointResult<INotificationsService['markSeen']>>(
+      `${ENDPOINT_NOTIFICATIONS}/${nid}/mark-as-seen`,
+    );
+  },
+
   async test() {
     return repository.post<boolean>(`${ENDPOINT_NOTIFICATIONS}/test`);
   },

@@ -34,7 +34,9 @@ function unArchive(tag: TagModel) {
 }
 
 function confirmArchive(tag: TagModel) {
-  return tag.archived ? { text: 'tags.unarchive.confirm.text' } : { text: 'tags.archive.confirm.text' };
+  return tag.archived
+    ? { text: 'tags.unarchive.confirm.text' }
+    : { text: 'tags.archive.confirm.text' };
 }
 
 onMounted(() => accessibilityFocus('.list-page-headline'));
@@ -52,8 +54,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
           v-model="filter.query"
           type="text"
           :placeholder="$t('tags.view.search')"
-          class="search pl-2 ml-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main dark:bg-highlight"
-        />
+          class="search pl-2 ml-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main dark:bg-highlight" />
         <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
       </div>
       <div class="float-right">
@@ -61,13 +62,15 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
           :active="filter.archived"
           class="secondary outlined text-xs px-0.5 py-0.5"
           :title="$t('filter.archive')"
-          @click="filter.archived = !filter.archived"
-        >
+          @click="filter.archived = !filter.archived">
           <ly-icon name="archive" class="p-0.5"></ly-icon>
         </ly-button>
       </div>
     </div>
-    <div v-for="tag in tags" :key="tag.id" class="flex py-4 px-3 bg-main items-center border-divide">
+    <div
+      v-for="tag in tags"
+      :key="tag.id"
+      class="flex py-4 px-3 bg-main items-center border-divide">
       <div class="align-middle">
         <ly-tag :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
         <ly-badge v-if="tag.archived" class="bg-danger ml-2">
@@ -76,7 +79,10 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
       </div>
       <div class="mr-auto"></div>
       <div class="align-middle">
-        <ly-button class="secondary outlined mr-1" :title="$t('common.edit')" @click="setEditTag(tag)">
+        <ly-button
+          class="secondary outlined mr-1"
+          :title="$t('common.edit')"
+          @click="setEditTag(tag)">
           <ly-icon name="edit" />
         </ly-button>
         <ly-button
@@ -84,8 +90,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
           class="secondary outlined"
           :confirm="confirmArchive(tag)"
           :title="$t('common.unarchive')"
-          @click="unArchive(tag)"
-        >
+          @click="unArchive(tag)">
           <ly-icon name="unarchive" />
         </ly-button>
         <ly-button
@@ -93,8 +98,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
           class="secondary outlined"
           :confirm="confirmArchive(tag)"
           :title="$t('common.archive')"
-          @click="archive(tag)"
-        >
+          @click="archive(tag)">
           <ly-icon name="archive" />
         </ly-button>
       </div>

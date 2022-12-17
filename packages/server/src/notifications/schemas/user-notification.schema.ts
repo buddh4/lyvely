@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { assureObjectId, BaseEntity, EntityIdentity, SubSchema } from '@/core';
+import { assureObjectId, BaseEntity, EntityIdentity, NestedSchema } from '@/core';
 import mongoose from 'mongoose';
 import { isDefined } from 'class-validator';
 import { PropertyType } from '@lyvely/common';
@@ -11,7 +11,7 @@ export enum DeliveryStatus {
   ERROR,
 }
 
-@SubSchema()
+@NestedSchema()
 export class NotificationChannelDeliveryStatus extends BaseEntity<NotificationChannelDeliveryStatus> {
   @Prop({ requried: true })
   channel: string;
@@ -28,7 +28,7 @@ const NotificationChannelDeliveryStatusSchema = SchemaFactory.createForClass(
   NotificationChannelDeliveryStatus,
 );
 
-@SubSchema()
+@NestedSchema()
 export class NotificationDeliveryStatus extends BaseEntity<NotificationDeliveryStatus> {
   @Prop()
   success: boolean;

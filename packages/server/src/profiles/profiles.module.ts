@@ -12,13 +12,16 @@ import {
   OrganizationSchema,
 } from './schemas';
 import { ProfilesService, ProfileTagsService, ProfilePermissionsService } from './services';
-import { ProfilesController, ProfileTagsController, ProfileRelationInfosController } from './controllers';
+import {
+  ProfilesController,
+  ProfileTagsController,
+  ProfileRelationInfosController,
+} from './controllers';
 import { UsersModule } from '@/users';
 import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
 
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '@/policies/policies.module';
-import { ProfileEvents } from './profile.events';
 import { CoreModule } from '@/core';
 import { ProfileType } from '@lyvely/common';
 import { useProfileMappings } from './mappings';
@@ -48,7 +51,6 @@ useProfileMappings();
 @Module({
   imports: [CoreModule, UsersModule, PoliciesModule, ProfileModel],
   providers: [
-    ProfileEvents,
     ProfileDao,
     ProfilePermissionsService,
     UserProfileRelationsDao,
@@ -69,6 +71,11 @@ useProfileMappings();
     ProfileVisibilityPolicy,
     MembershipsDao,
   ],
-  controllers: [ProfilesController, ProfileTagsController, ProfileRelationInfosController, ProfileMembershipController],
+  controllers: [
+    ProfilesController,
+    ProfileTagsController,
+    ProfileRelationInfosController,
+    ProfileMembershipController,
+  ],
 })
 export class ProfilesModule {}
