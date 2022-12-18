@@ -3,11 +3,13 @@ import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { UserNotificationsService } from '@/notifications/services/user-notifications.service';
 import { TestNotification } from '../src/test-notification.schema';
-import { UserNotification, Notification, UsersSubscription } from '@/notifications';
+import { MultiUserSubscription } from '@/user-subscription';
+import { UserNotification, Notification } from '@/notifications';
 import { Profile, ProfileInfo } from '@/profiles';
 import { User, UserInfo } from '@/users';
 import { assureObjectId } from '@/core';
 import { NotificationDao, UserNotificationDao } from '@/notifications/daos';
+import { StreamRequest } from '@lyvely/common';
 
 const TEST_KEY = 'UserNotificationsService';
 
@@ -39,7 +41,10 @@ describe('UserNotificationsService', () => {
   describe('loadNext', () => {
     it('load initial with empty result', async () => {
       const user = await testData.createUser();
-      const result = await userNotificationsService.loadNext(user, { batchSize: 5 });
+      const result = await userNotificationsService.loadNext(
+        user,
+        new StreamRequest({ batchSize: 5 }),
+      );
       expect(result.models.length).toEqual(0);
       expect(result.state.firstId).toBeUndefined();
       expect(result.state.firstOrder).toBeUndefined();
@@ -61,7 +66,7 @@ describe('UserNotificationsService', () => {
           userInfo: new UserInfo(user),
           profileInfo: new ProfileInfo(profile),
         }),
-        new UsersSubscription(uids),
+        new MultiUserSubscription(uids),
       );
 
       if (sortOrder) {
@@ -72,13 +77,7 @@ describe('UserNotificationsService', () => {
     }
 
     async function createTestUserNotification(user: User, notification: Notification) {
-      return userNotificationDao.save(
-        new UserNotification({
-          uid: user._id,
-          notificationId: notification._id,
-          sortOrder: notification.sortOrder,
-        }),
-      );
+      return userNotificationDao.save(new UserNotification(user, notification));
     }
 
     it('load initial as last result', async () => {
@@ -89,7 +88,10 @@ describe('UserNotificationsService', () => {
         assureObjectId(receiver),
       ]);
       const userNotification = await createTestUserNotification(receiver, notification);
-      const result = await userNotificationsService.loadNext(receiver, { batchSize: 5 });
+      const result = await userNotificationsService.loadNext(
+        receiver,
+        new StreamRequest({ batchSize: 5 }),
+      );
       expect(result.models.length).toEqual(1);
       expect(result.state.firstId).toEqual(userNotification.id);
       expect(result.state.firstOrder).toEqual(userNotification.sortOrder);
@@ -124,7 +126,10 @@ describe('UserNotificationsService', () => {
       const userNotification1 = await createTestUserNotification(receiver, notification1);
       const userNotification2 = await createTestUserNotification(receiver, notification2);
       const userNotification3 = await createTestUserNotification(receiver, notification3);
-      const result = await userNotificationsService.loadNext(receiver, { batchSize: 2 });
+      const result = await userNotificationsService.loadNext(
+        receiver,
+        new StreamRequest({ batchSize: 2 }),
+      );
       expect(result.models.length).toEqual(2);
       expect(result.state.firstId).toEqual(userNotification1.id);
       expect(result.state.firstOrder).toEqual(userNotification1.sortOrder);

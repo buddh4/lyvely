@@ -1,19 +1,22 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import {
   IWebNotification,
-  NewNotificationLiveEvent,
+  NotificationUpdateStateLiveEvent,
   StreamDirection,
-  NotificationMarkedAsSeenLiveEvent,
+  NotificationSeenStateLiveEvent,
 } from '@lyvely/common';
 import { useNotificationService } from '@/modules/notifications/services/notifications.service';
 import { useStream } from '@/modules/stream/composables/stream.composable';
 import { useLiveStore } from '@/modules/live/stores/live.store';
 
 export const useNotificationStore = defineStore('notifications', () => {
-  const liveStore = useLiveStore();
+  const live = useLiveStore();
   const notificationService = useNotificationService();
   const showNotificationDrawer = ref(false);
+  const hasUpdates = ref(false);
+  const moduleId = 'notifications';
+
   const stream = useStream(
     {
       batchSize: 15,
@@ -22,32 +25,40 @@ export const useNotificationStore = defineStore('notifications', () => {
     notificationService,
   );
 
-  liveStore.on('notifications', NewNotificationLiveEvent.eventName, () => {
-    update();
-  });
+  live.on(moduleId, NotificationUpdateStateLiveEvent.eventName, handleNotificationUpdateStateEvent);
+  live.on(moduleId, NotificationSeenStateLiveEvent.eventName, handleMarkedAsSeenEvent);
 
-  liveStore.on(
-    'notifications',
-    NotificationMarkedAsSeenLiveEvent.eventName,
-    (evt: NotificationMarkedAsSeenLiveEvent) => {
-      const notification = stream.models.value.find((notification) => notification.id === evt.nid);
-      if (notification && !notification.seen) {
-        notification.seen = true;
-      }
-    },
-  );
+  function handleMarkedAsSeenEvent(evt: NotificationSeenStateLiveEvent) {
+    const notification = stream.models.value.find((notification) => notification.id === evt.nid);
+    if (notification && notification.seen !== evt.seen) {
+      notification.seen = evt.seen;
+    }
+  }
+
+  async function handleNotificationUpdateStateEvent(evt: NotificationUpdateStateLiveEvent) {
+    hasUpdates.value = evt.updatesAvailable;
+
+    if (showNotificationDrawer.value && hasUpdates.value) {
+      await update();
+    }
+  }
 
   async function update() {
     const response = await stream.update();
-    if (!response?.models?.length) return;
-    if (!showNotificationDrawer.value) {
-      // show update indicator
-    } else {
-      // update lastNotificationCheck for user
-      // set indicator false
-      // scroll to top or show new updates badge
-    }
+    // we only show the indicator in case the drawer is not open
+    // Todo: what to do if the drawer is hidden behind another one?
+    hasUpdates.value = !!response?.models?.length && !showNotificationDrawer.value;
   }
+
+  watch(showNotificationDrawer, (wasOpened) => {
+    if (wasOpened && !stream.isInitialized()) {
+      stream.next().then(() => {
+        hasUpdates.value = false;
+      });
+    } else if (wasOpened && hasUpdates.value) {
+      update();
+    }
+  });
 
   async function markAsSeen(notification: IWebNotification) {
     // We update the state prior the request, just for a better ux
@@ -69,6 +80,7 @@ export const useNotificationStore = defineStore('notifications', () => {
     showNotificationDrawer,
     notifications,
     markAsSeen,
+    hasUpdates,
     test,
   };
 });

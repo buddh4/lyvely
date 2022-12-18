@@ -24,12 +24,6 @@ async function notificationClick(notification: IWebNotification) {
 function test() {
   notificationStore.test();
 }
-
-watch(showNotificationDrawer, () => {
-  if (!stream.value.isInitialized()) {
-    stream.value.next();
-  }
-});
 </script>
 
 <template>

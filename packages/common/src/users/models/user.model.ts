@@ -1,6 +1,8 @@
 import { BaseModel, DocumentModel, PropertyType } from '@/models';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsArray } from 'class-validator';
+import { FeatureSyncModel } from '@/features';
+import { UserNotificationStateModel } from '@/users/models/user-notification-state.model';
 
 @Exclude()
 export class UserEmailModel extends BaseModel<UserEmailModel> {
@@ -60,6 +62,11 @@ export class UserModel extends DocumentModel<UserModel> {
   @Type(() => UserEmailModel)
   @PropertyType([UserEmailModel])
   emails: UserEmailModel[];
+
+  @Expose()
+  @Type(() => UserNotificationStateModel)
+  @PropertyType(UserNotificationStateModel)
+  notification: UserNotificationStateModel;
 
   findEmail(email: string) {
     return this.emails.find((userEmail) => userEmail.email.toLowerCase() === email);

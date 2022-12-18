@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import fs from 'fs';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 
 useDayJsDateTimeAdapter();
 
@@ -13,8 +15,7 @@ useDayJsDateTimeAdapter();
   // your code here
 
   await mongoose.disconnect();
-})();
-*/
+})();*/
 
 beforeEach(() => {
   const testMailsDir = './mail/messages/test';

@@ -7,6 +7,7 @@ import { TagFilter } from '@lyvely/common';
 import { useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import useFilterOption from '@/util/composables/useFilterOption';
+import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 
 const profileStore = useProfileStore();
 const { dragActive } = toRefs(useCalendarPlanStore());
@@ -66,7 +67,8 @@ function setTagFilter(tagId?: string) {
 const archiveFilter = useFilterOption(filter, 'archived');
 const queryFilter = useFilterOption(filter, 'query');
 
-const commonButtonClassNames = 'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
+const commonButtonClassNames =
+  'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
 </script>
@@ -77,8 +79,7 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
       :class="roundButton"
       :active="dragActive"
       :aria-label="$t('calendar.plan.aria.drag-toggle-button')"
-      @click="dragActive = !dragActive"
-    >
+      @click="dragActive = !dragActive">
       <ly-icon name="drag" />
     </ly-button>
 
@@ -95,8 +96,7 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
         role="tab"
         aria-controls="calendar-plan"
         :data-tag-id="tag.id"
-        @click="setTagFilter(tag.id)"
-      >
+        @click="setTagFilter(tag.id)">
         {{ tag.name }}
       </ly-button>
     </slider-navigation>
@@ -107,10 +107,9 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
         data-filter-button
         :class="[roundButton, 'ml-auto']"
         :active="showFilterDrawer"
-        @click="showFilterDrawer = !showFilterDrawer"
-      >
+        @click="showFilterDrawer = !showFilterDrawer">
         <ly-icon name="filter" />
-        <div v-if="!filter.isEmpty()" class="absolute w-1.5 h-1.5 bg-pop right-1 bottom-1.5 rounded-full">&nbsp;</div>
+        <ly-update-indicator v-if="!filter.isEmpty()" />
       </ly-button>
     </div>
   </nav>
@@ -122,14 +121,16 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
         v-model="queryFilter"
         class="search w-full mb-4 py-1"
         :placeholder="$t('common.filter.search')"
-        type="text"
-      />
+        type="text" />
       <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
     </div>
 
     <ly-input-checkbox v-model="archiveFilter" class="mb-4" label="common.filter.archive" />
 
-    <ly-button class="primary float-right text-xs" text="common.filter.clear" @click="filter.reset()" />
+    <ly-button
+      class="primary float-right text-xs"
+      text="common.filter.clear"
+      @click="filter.reset()" />
   </ly-drawer>
 </template>
 

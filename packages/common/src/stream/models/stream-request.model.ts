@@ -19,4 +19,8 @@ export class StreamRequest<
   batchSize: number;
 
   filter?: TFilter;
+
+  isInitialRequest() {
+    return !this.state?.firstId;
+  }
 }

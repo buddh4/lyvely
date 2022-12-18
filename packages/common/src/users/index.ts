@@ -1,2 +1,2 @@
-export * from './user.model';
+export * from './models';
 export * from './user.constants';

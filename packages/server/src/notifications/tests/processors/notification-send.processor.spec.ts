@@ -2,7 +2,8 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { NotificationDao } from '@/notifications/daos';
-import { Notification, UserSubscription } from '@/notifications/schemas';
+import { Notification } from '@/notifications/schemas';
+import { SingleUserSubscription } from '@/user-subscription';
 import { TestNotification } from '@/notifications/tests/src/test-notification.schema';
 import { NotificationSenderProcessor } from '@/notifications/processors/notification-sender.processor';
 
@@ -32,10 +33,9 @@ describe('NotificationSendProcessor', () => {
   describe('processNotification', () => {
     it('test non profile UserSubscription', async () => {
       const user = await testData.createUser();
-      const notificationType = new TestNotification({});
       const notification = new Notification(
         new TestNotification({ testProp: 'testValue' }),
-        new UserSubscription(user),
+        new SingleUserSubscription(user),
       );
       await notificationDao.save(notification);
       await processor.processNotification(notification);

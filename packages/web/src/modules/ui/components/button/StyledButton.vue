@@ -95,9 +95,16 @@ function getAriaSelected($attrs: any) {
 
   if (
     $attrs['role'] &&
-    ['tab', 'option', 'menuitemradio', 'treeitem', 'gridcell', 'row', 'rowheader', 'columnheader'].includes(
-      $attrs['role'],
-    )
+    [
+      'tab',
+      'option',
+      'menuitemradio',
+      'treeitem',
+      'gridcell',
+      'row',
+      'rowheader',
+      'columnheader',
+    ].includes($attrs['role'])
   ) {
     return props.active ? 'yes' : 'no';
   }
@@ -125,8 +132,7 @@ function getAriaPressed($attrs: any) {
     :type="buttonType"
     :disabled="disabled || loading"
     :data-loading="loading"
-    @click.prevent="onClick"
-  >
+    @click.prevent="onClick">
     <slot>{{ $t(text) }}</slot>
   </button>
   <router-link v-if="route" v-slot="{ navigate, isExactActive }" :to="route" custom>
@@ -137,8 +143,7 @@ function getAriaPressed($attrs: any) {
       v-bind="$attrs"
       :type="buttonType"
       :disabled="disabled"
-      @click="navigate"
-    >
+      @click="navigate">
       <slot>{{ $t(text) }}</slot>
     </button>
   </router-link>

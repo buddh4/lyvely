@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { getDefaultLocale, RefreshToken, User, UserDocument } from '../schemas';
+import { getDefaultLocale, RefreshToken, User, UserDocument } from '../../schemas';
 import { Model } from 'mongoose';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { addDays } from '@lyvely/common';
@@ -125,7 +125,11 @@ describe('Users schema', () => {
     it('findOneAndUpdate', async () => {
       const user = await testData.createUser('test', { password: 'whatever' });
       const oldPassword = user.password;
-      const updated = await UserModel.findOneAndUpdate({ _id: user._id }, { password: 'newPassword' }, { new: true });
+      const updated = await UserModel.findOneAndUpdate(
+        { _id: user._id },
+        { password: 'newPassword' },
+        { new: true },
+      );
       expect(updated.password).not.toEqual(oldPassword);
       expect(updated.password).not.toEqual('newPassword');
       expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);

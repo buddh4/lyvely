@@ -20,6 +20,7 @@ import FormModel from '@/modules/ui/components/form/FormModel.vue';
 import DropdownLink from '@/modules/ui/components/menu/DropdownLink.vue';
 import Icon from '@/modules/ui/components/icon/UIIcon.vue';
 import StyledButton from '@/modules/ui/components/button/StyledButton.vue';
+import ButtonUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 import AddButton from '@/modules/ui/components/button/AddButton.vue';
 import CheckboxInput from '@/modules/ui/components/form/CheckboxInput.vue';
 import RadioInput from '@/modules/ui/components/form/RadioInput.vue';
@@ -99,6 +100,7 @@ export class LyvelyApp {
     this.vueApp.component('LyDropdownLink', DropdownLink);
     this.vueApp.component('LyIcon', Icon);
     this.vueApp.component('LyButton', StyledButton);
+    this.vueApp.component('LyUpdateIndicator', ButtonUpdateIndicator);
     this.vueApp.component('LyAddButton', AddButton);
     this.vueApp.component('LyInputCheckbox', CheckboxInput);
     this.vueApp.component('LyInputRadio', RadioInput);

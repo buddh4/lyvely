@@ -19,9 +19,11 @@ function logout() {
 }
 
 const { showAccountDrawer } = storeToRefs(accountStore);
-const { showNotificationDrawer } = storeToRefs(notificationStore);
+const { showNotificationDrawer, hasUpdates: hasNotificationUpdates } =
+  storeToRefs(notificationStore);
 
-const menuItemClass = 'block py-3 px-3 no-underline cursor-pointer flex no-wrap items-center h-12 menu-item text-main';
+const menuItemClass =
+  'block py-3 px-3 no-underline cursor-pointer flex no-wrap items-center h-12 menu-item text-main';
 const accountDrawerButtonClass = computed(() => [
   'px-2 p-2 rounded-xl flex justify-center items-center gap-2 cursor-pointer text-sm cursor-pointer',
   { 'border border-divide': showAccountDrawer.value },
@@ -38,8 +40,9 @@ const { isDark } = toRefs(pageStore);
 
 <template>
   <div id="account-menu" class="flex items-center justify-end score inline-block float-right">
-    <ly-button @click="showNotificationDrawer = !showNotificationDrawer">
+    <ly-button class="relative" @click="showNotificationDrawer = !showNotificationDrawer">
       <ly-icon name="bell" class="w-3.5" />
+      <ly-update-indicator v-if="hasNotificationUpdates" />
     </ly-button>
     <div :class="accountDrawerButtonClass" @click="showAccountDrawer = !showAccountDrawer">
       <ly-user-avatar />

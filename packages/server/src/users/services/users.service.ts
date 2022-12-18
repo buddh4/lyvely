@@ -3,6 +3,7 @@ import { UserDao } from '../daos';
 import { RefreshToken, User, UserNotificationState } from '../schemas';
 import { ProfileType, IntegrityException, UserStatus } from '@lyvely/common';
 import { EntityIdentity, IBaseQueryOptions } from '@/core';
+import { FeatureSync } from '@/features';
 
 @Injectable()
 export class UsersService {
@@ -84,6 +85,14 @@ export class UsersService {
 
   async updateNotificationState(user: EntityIdentity<User>, notification: UserNotificationState) {
     return this.userDao.updateOneSetById(user, { notification });
+  }
+
+  async updateNotificationUpdateState(identity: EntityIdentity<User>, state: boolean) {
+    if (identity instanceof User && identity.notification.updatesAvailable === state) return true;
+
+    return this.userDao.updateOneSetById(identity, {
+      'notification.updatesAvailable': state,
+    });
   }
 
   async setUserPassword(user: EntityIdentity<User>, newPassword: string, resetSession: boolean) {

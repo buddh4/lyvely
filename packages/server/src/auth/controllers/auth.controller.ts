@@ -1,8 +1,29 @@
-import { Controller, Req, Post, UseGuards, Get, Inject, UnauthorizedException, Body } from '@nestjs/common';
-import { LocalAuthGuard, JwtRefreshGuard, clearAccessCookies, clearRefreshCookies } from '../guards';
+import {
+  Controller,
+  Req,
+  Post,
+  UseGuards,
+  Get,
+  Inject,
+  UnauthorizedException,
+  Body,
+} from '@nestjs/common';
+import {
+  LocalAuthGuard,
+  JwtRefreshGuard,
+  clearAccessCookies,
+  clearRefreshCookies,
+} from '../guards';
 import { JwtAuthService } from '@/auth/services';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
-import { UserModel, Headers, ENDPOINT_AUTH, AuthEndpoint, LoginModel, UserStatus } from '@lyvely/common';
+import {
+  UserModel,
+  Headers,
+  ENDPOINT_AUTH,
+  AuthEndpoint,
+  LoginModel,
+  UserStatus,
+} from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@/core';
@@ -25,7 +46,10 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   @Post('login')
   async login(@Body() loginModel: LoginModel, @Req() req: UserRequest) {
     const { user } = req;
-    const { accessToken, refreshToken, vid } = await this.authService.login(user, loginModel.remember);
+    const { accessToken, refreshToken, vid } = await this.authService.login(
+      user,
+      loginModel.remember,
+    );
 
     if (user.status === UserStatus.EmailVerification) {
       throw new UnauthorizedException({ userStatus: UserStatus.EmailVerification });

@@ -5,6 +5,7 @@ export * from './auth';
 export * from './calendar';
 export * from './content';
 export * from './endpoints';
+export * from './features';
 export * from './models';
 export * from './profiles';
 export * from './statistics';

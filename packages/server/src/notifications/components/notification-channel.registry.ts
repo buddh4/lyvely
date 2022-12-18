@@ -3,7 +3,7 @@ import { INotificationChannel } from '../interfaces';
 
 @Injectable()
 export class NotificationChannelRegistry {
-  channels: Array<INotificationChannel>;
+  channels: Array<INotificationChannel> = [];
 
   getNotificationChannels(): Array<INotificationChannel> {
     return this.channels;

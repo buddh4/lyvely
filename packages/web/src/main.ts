@@ -35,6 +35,7 @@ import ScreenReaderValidationError from '@/modules/ui/components/error/ScreenRea
 import AppComponent from '@/App.vue';
 import { createApp } from 'vue';
 import TimeNumberInput from '@/modules/ui/components/form/TimeNumberInput.vue';
+import ButtonUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 
 const app = new LyvelyApp();
 app.init().then(() => app.mount('#app'));
@@ -54,6 +55,7 @@ function justForWebstorm() {
   app.vueApp.component('LyDropdownLink', DropdownLink);
   app.vueApp.component('LyIcon', Icon);
   app.vueApp.component('LyButton', StyledButton);
+  app.vueApp.component('LyUpdateIndicator', ButtonUpdateIndicator);
   app.vueApp.component('LyAddButton', AddButton);
   app.vueApp.component('LyInputCheckbox', CheckboxInput);
   app.vueApp.component('LyInputRadio', RadioInput);

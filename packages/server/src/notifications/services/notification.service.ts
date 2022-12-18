@@ -6,6 +6,7 @@ import { Subscription } from '@/user-subscription';
 import { NotificationDao } from '../daos';
 import { JOB_SEND_NOTIFICATION, QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';
+import { EntityIdentity } from '@/core';
 
 @Injectable()
 export class NotificationService {
@@ -16,6 +17,12 @@ export class NotificationService {
     private notificationQueue: Queue<ISendNotificationJob>,
     private notificationDao: NotificationDao,
   ) {}
+
+  async findOne(identity: EntityIdentity<Notification>) {
+    return identity instanceof Notification
+      ? identity
+      : await this.notificationDao.findById(identity);
+  }
 
   async sendNotification(data: NotificationType, subscription: Subscription) {
     const notification = await this.notificationDao.save(new Notification(data, subscription));
