@@ -43,8 +43,12 @@ export const useNotificationStore = defineStore('notifications', () => {
     }
   }
 
+  async function loadEntry(nid: string) {
+    return stream.loadEntry(nid);
+  }
+
   async function next() {
-    const response = await stream.next();
+    await stream.next();
   }
 
   async function update() {
@@ -87,5 +91,6 @@ export const useNotificationStore = defineStore('notifications', () => {
     hasUpdates,
     test,
     next,
+    loadEntry,
   };
 });

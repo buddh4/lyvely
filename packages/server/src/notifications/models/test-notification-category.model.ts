@@ -1,10 +1,10 @@
 import { Translatable } from '@/i18n';
-import { NotificationCategory } from '@/notifications/models/notification-category.model';
+import { INotificationCategory, INotificationCategorySettings } from '../interfaces';
+import { NotificationCategory } from '../decorators';
 
-export class TestNotificationCategory extends NotificationCategory {
+@NotificationCategory()
+export class TestNotificationCategory implements INotificationCategory {
   static ID = 'test';
-
-  isConfigurable = true;
 
   getId() {
     return TestNotificationCategory.ID;
@@ -23,6 +23,12 @@ export class TestNotificationCategory extends NotificationCategory {
   getDescription(): Translatable {
     return {
       key: 'notifications.categories.test.description',
+    };
+  }
+
+  getSettings(): INotificationCategorySettings {
+    return {
+      isConfigurable: false,
     };
   }
 }

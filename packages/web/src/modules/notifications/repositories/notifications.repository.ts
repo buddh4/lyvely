@@ -27,6 +27,12 @@ export default {
     );
   },
 
+  async loadEntry(nid: string) {
+    return repository.get<EndpointResult<INotificationsService['loadEntry']>>(
+      `${ENDPOINT_NOTIFICATIONS}/${nid}`,
+    );
+  },
+
   async test() {
     return repository.post<boolean>(`${ENDPOINT_NOTIFICATIONS}/test`);
   },

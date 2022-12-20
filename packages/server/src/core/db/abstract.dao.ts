@@ -187,6 +187,16 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     );
   }
 
+  async findByIdAndFilter(
+    identity: EntityIdentity<T>,
+    filter?: FilterQuery<T>,
+    options?: IBaseFetchQueryOptions<T>,
+  ): Promise<T | null> {
+    filter ||= {};
+    filter._id = this.assureEntityId(identity);
+    return this.findOne(filter, options);
+  }
+
   async findAllByIds(ids: EntityIdentity<T>[], options?: IFetchQueryOptions<T>): Promise<T[]> {
     return this.findAll({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
@@ -276,6 +286,15 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     options?: IFindAndUpdateQueryOptions<T>,
   ): Promise<T | null> {
     return this.findOneAndUpdateByFilter(id, update, {}, options);
+  }
+
+  async findOneAndUpdateSetByFilter(
+    id: EntityIdentity<T>,
+    update: UpdateQuerySet<T>,
+    filter?: FilterQuery<T>,
+    options?: IFindAndUpdateQueryOptions<T>,
+  ): Promise<T | null> {
+    return this.findOneAndUpdateByFilter(id, { $set: update }, filter, options);
   }
 
   async findOneAndUpdateByFilter(

@@ -22,6 +22,7 @@ import { UsersModule } from '@/users';
 import { ProfilesModule } from '@/profiles';
 import { UserSubscriptionModule } from '@/user-subscription/user-subscription.module';
 import { LiveModule } from '@/live/live.module';
+import { MailNotificationChannel } from '@/notifications/components/mail-notification.channel';
 
 const NotificationModels = MongooseModule.forFeature([
   {
@@ -37,8 +38,6 @@ const NotificationModels = MongooseModule.forFeature([
 const NotificationQueues = BullModule.registerQueue({
   name: QUEUE_NOTIFICATIONS_SEND,
 });
-
-NotificationCategoryRegistry.registerCategory(new DefaultNotificationCategory());
 
 @Module({
   imports: [
@@ -59,6 +58,7 @@ NotificationCategoryRegistry.registerCategory(new DefaultNotificationCategory())
     NotificationDecider,
     NotificationSenderProcessor,
     NotificationChannelRegistry,
+    MailNotificationChannel,
   ],
   exports: [NotificationService, NotificationChannelRegistry],
 })

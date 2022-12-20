@@ -7,7 +7,7 @@ import {
   useSingleton,
 } from '@lyvely/common';
 import notificationRepository from '../repositories/notifications.repository';
-import { unwrapResponse } from '@/modules/core';
+import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
 
 export class NotificationsService implements INotificationsService {
   async loadNext(
@@ -34,7 +34,11 @@ export class NotificationsService implements INotificationsService {
     );
   }
 
-  async markAsSeen(nid: string) {
+  async loadEntry(id: string): Promise<IWebNotification> {
+    return unwrapResponse(notificationRepository.loadEntry(id));
+  }
+
+  async markAsSeen(nid: string): Promise<void> {
     return unwrapResponse(notificationRepository.markAsSeen(nid));
   }
 

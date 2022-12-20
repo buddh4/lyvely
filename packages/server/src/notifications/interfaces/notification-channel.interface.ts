@@ -10,6 +10,7 @@ export interface INotificationChannel {
   send(
     context: UserSubscriptionContext,
     notification: Notification,
+    userNotification: UserNotification,
   ): Promise<NotificationChannelDeliveryStatus>;
 
   isActive(user: User): boolean;

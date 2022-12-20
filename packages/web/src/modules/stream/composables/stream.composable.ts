@@ -3,7 +3,7 @@ import { ref, Ref } from 'vue';
 import { useStatus, loadingStatus, Status } from '@/store';
 
 export function useStream<
-  TModel,
+  TModel extends { id: string },
   TFilter extends IStreamFilter = any,
   TOptions extends IStreamOptions = IStreamOptions,
 >(
@@ -49,6 +49,17 @@ export function useStream<
     return response;
   }
 
+  async function loadEntry(id: string) {
+    const model = await service.loadEntry(id, filter);
+    if (!model) return null;
+
+    const index = models.value.findIndex((model) => model.id === id);
+    if (index !== -1) {
+      models.value[index] = model;
+    }
+    return model;
+  }
+
   function isInitialized() {
     return !nextStatus.isStatusInit();
   }
@@ -63,6 +74,7 @@ export function useStream<
     models,
     next,
     update,
+    loadEntry,
     reload,
   };
 }

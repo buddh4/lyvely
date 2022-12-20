@@ -1,4 +1,7 @@
 {
+  "actions": {
+    "open": "Open"
+  },
   "channels": {
     "mail": {
       "title": "Email"

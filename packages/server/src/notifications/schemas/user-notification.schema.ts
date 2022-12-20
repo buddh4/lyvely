@@ -80,6 +80,23 @@ export class UserNotification extends BaseEntity<UserNotification> {
       sortOrder: notification.sortOrder,
     });
   }
+
+  getChannelDeliveryStatus(channel: string) {
+    return this.status.channels.find((status) => status.channel === channel);
+  }
+
+  setChannelDeliveryStatus(status: NotificationChannelDeliveryStatus) {
+    const existingStatus = this.getChannelDeliveryStatus(status.channel);
+    if (!existingStatus) {
+      this.status.channels.push(status);
+    } else if (status.success) {
+      existingStatus.success = true;
+      delete existingStatus.error;
+    } else {
+      existingStatus.success = false;
+      existingStatus.error = status.error;
+    }
+  }
 }
 
 export const UserNotificationSchema = SchemaFactory.createForClass(UserNotification);

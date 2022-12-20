@@ -4,6 +4,7 @@ import { UserSubscriptionContext } from '@/user-subscription';
 import { UserNotification, Notification } from '../schemas';
 import { User } from '@/users';
 import { NotificationCategoryRegistry } from '@/notifications/components/notification-category.registry';
+import { UserStatus } from '@lyvely/common';
 
 @Injectable()
 export class NotificationDecider {
@@ -48,6 +49,8 @@ export class NotificationDecider {
     notification: Notification,
     channel: INotificationChannel,
   ) {
+    if (user.status !== UserStatus.Active) return false;
+
     const category = NotificationCategoryRegistry.getCategory(notification.category);
 
     if (!category) {

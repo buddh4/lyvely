@@ -16,7 +16,7 @@ export class TestNotification extends NotificationType<TestNotification> {
     return {
       key: 'test.notification.body',
       params: {
-        user: escapeHtmlIf(this.userInfo.name, format === RenderFormat.HTML),
+        user: escapeHtmlIf(this.userInfo?.name, format === RenderFormat.HTML),
       },
     };
   }

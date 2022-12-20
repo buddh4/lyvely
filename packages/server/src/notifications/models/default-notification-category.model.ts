@@ -1,9 +1,9 @@
 import { Translatable } from '@/i18n';
-import { NotificationCategory } from '@/notifications/models/notification-category.model';
+import { INotificationCategory, INotificationCategorySettings } from '@/notifications/interfaces';
+import { NotificationCategory } from '../decorators';
 
-export class DefaultNotificationCategory extends NotificationCategory {
-  isConfigurable = true;
-
+@NotificationCategory()
+export class DefaultNotificationCategory implements INotificationCategory {
   getId() {
     return 'default';
   }
@@ -22,5 +22,9 @@ export class DefaultNotificationCategory extends NotificationCategory {
     return {
       key: 'notifications.categories.default.description',
     };
+  }
+
+  getSettings(): INotificationCategorySettings {
+    return {};
   }
 }

@@ -7,6 +7,7 @@ import {
   WebNotification,
   NotificationSeenStateLiveEvent,
   NotificationUpdateStateLiveEvent,
+  IWebNotification,
 } from '@lyvely/common';
 import {
   RenderFormat,
@@ -36,14 +37,32 @@ export class UserNotificationsService {
     private usersService: UsersService,
   ) {}
 
-  async findOne(
+  async findOneByNotification(
     userIdentity: EntityIdentity<User>,
     notificationIdentity: EntityIdentity<Notification>,
   ) {
-    return await this.userNotificationDao.findOne({
+    return this.userNotificationDao.findOne({
       uid: assureObjectId(userIdentity),
       nid: assureObjectId(notificationIdentity),
     });
+  }
+
+  async loadEntry(
+    user: User,
+    identity: EntityIdentity<UserNotification>,
+  ): Promise<IWebNotification> {
+    const userNotification = await this.userNotificationDao.findOneAndUpdateSetByFilter(
+      identity,
+      { seen: true },
+      {
+        uid: assureObjectId(user),
+      },
+    );
+
+    if (!userNotification) return null;
+
+    const webNotifications = await this.mapToWebNotification([userNotification], user);
+    return webNotifications[0];
   }
 
   async create(identity: EntityIdentity<User>, notification: Notification) {
@@ -111,6 +130,12 @@ export class UserNotificationsService {
     this.liveService.emitUserEvent(
       new NotificationUpdateStateLiveEvent(assureStringId(identity), state),
     );
+  }
+
+  async updateDeliveryState(userNotification: UserNotification) {
+    return this.userNotificationDao.updateOneSetById(userNotification, {
+      status: userNotification.status,
+    });
   }
 
   async update(user: User, request: StreamRequest): Promise<StreamResponse<WebNotification>> {

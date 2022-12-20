@@ -2,7 +2,12 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';
 import { UserSubscriptionService, UserSubscriptionContext } from '@/user-subscription';
-import { Notification } from '../schemas';
+import {
+  Notification,
+  NotificationChannelDeliveryStatus,
+  NotificationDeliveryStatus,
+  UserNotification,
+} from '../schemas';
 import { Job } from 'bullmq';
 import { NotificationChannelRegistry } from '../components';
 import { Logger } from '@nestjs/common';
@@ -56,7 +61,10 @@ export class NotificationSenderProcessor extends WorkerHost {
     context: UserSubscriptionContext,
     notification: Notification,
   ) {
-    const userNotification = await this.userNotificationService.findOne(context.user, notification);
+    let userNotification = await this.userNotificationService.findOneByNotification(
+      context.user,
+      notification,
+    );
 
     if (!this.decider.checkResend(context, notification, userNotification)) {
       /**
@@ -74,22 +82,36 @@ export class NotificationSenderProcessor extends WorkerHost {
     }
 
     if (!userNotification) {
-      await this.userNotificationService.create(context.user, notification);
+      userNotification = await this.userNotificationService.create(context.user, notification);
     } else {
       await this.userNotificationService.resetDeliveryState(userNotification);
     }
 
-    return this.send(context, notification);
+    await this.send(context, notification, userNotification);
+    // TODO: Handle failed channels, retry, general error handling
+    userNotification.status.deliveredAt = new Date();
+    return this.userNotificationService.updateDeliveryState(userNotification);
   }
 
-  private async send(context: UserSubscriptionContext, notification: Notification): Promise<any> {
+  private async send(
+    context: UserSubscriptionContext,
+    notification: Notification,
+    userNotification: UserNotification,
+  ): Promise<any> {
     const promises = [];
     const { user } = context;
     // Todo: (scalability) For bigger installations and bigger profiles, this should be queued e.g by user (fanout)
     this.channelRegistry.getNotificationChannels().forEach((channel) => {
       user.notification.incrementRateLimitCounter(channel.getRateLimit());
       if (this.decider.checkChannelDelivery(context, notification, channel)) {
-        promises.push(channel.send(context, notification).catch((err) => this.logger.error(err)));
+        promises.push(
+          channel
+            .send(context, notification, userNotification)
+            .then((status: NotificationChannelDeliveryStatus) => {
+              userNotification.setChannelDeliveryStatus(status);
+            })
+            .catch((err) => this.logger.error(err)),
+        );
       }
     });
 

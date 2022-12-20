@@ -1,22 +1,39 @@
 import { INotificationChannel } from '../interfaces';
 import { UserSubscriptionContext } from '@/user-subscription';
 import { INotificationRateLimit, User } from '@/users';
-import { Notification, NotificationChannelDeliveryStatus, RenderFormat } from '../schemas';
-import { Injectable } from '@nestjs/common';
+import {
+  Notification,
+  NotificationChannelDeliveryStatus,
+  NotificationType,
+  RenderFormat,
+  UserNotification,
+} from '../schemas';
+import { Injectable, Logger } from '@nestjs/common';
 import { MailService } from '@/mails';
 import { BaseUserProfileRelationType, CalendarTimeInterval } from '@lyvely/common';
 import { I18n, Translatable } from '@/i18n';
+import { NotificationChannelRegistry } from '@/notifications/components/notification-channel.registry';
+import { UrlGenerator } from '@/core';
 
 @Injectable()
 export class MailNotificationChannel implements INotificationChannel {
-  constructor(private mailService: MailService, private i18n: I18n) {}
+  private readonly logger = new Logger(MailNotificationChannel.name);
+
+  constructor(
+    private mailService: MailService,
+    private i18n: I18n,
+    private channelRegistry: NotificationChannelRegistry,
+    private urlGenerator: UrlGenerator,
+  ) {
+    channelRegistry.registerChannel(this);
+  }
 
   getId(): string {
     return 'email';
   }
 
   getTitle(): Translatable {
-    return 'notifications.channels.mail.title';
+    return 'notifications.channels.email.title';
   }
 
   getRateLimit(): INotificationRateLimit {
@@ -34,7 +51,25 @@ export class MailNotificationChannel implements INotificationChannel {
   async send(
     context: UserSubscriptionContext,
     notification: Notification,
+    userNotification: UserNotification,
   ): Promise<NotificationChannelDeliveryStatus> {
+    try {
+      return this.sendMail(context, notification, userNotification);
+    } catch (e: any) {
+      this.logger.error(e);
+      return new NotificationChannelDeliveryStatus({
+        channel: this.getId(),
+        success: false,
+        error: e.message || 'Unknown error',
+      });
+    }
+  }
+
+  private async sendMail(
+    context: UserSubscriptionContext,
+    notification: Notification,
+    userNotification: UserNotification,
+  ) {
     const email = this.getEmail(context);
     if (!email) {
       return new NotificationChannelDeliveryStatus({
@@ -45,10 +80,11 @@ export class MailNotificationChannel implements INotificationChannel {
     }
 
     const { data } = notification;
+    const { user } = context;
 
-    const subject = this.i18n.t(data.getTitle(RenderFormat.PLAINTEXT), context.user);
-    const title = this.i18n.t(data.getTitle(RenderFormat.HTML), context.user);
-    const body = this.i18n.t(data.getBody(RenderFormat.HTML), context.user);
+    const subject = this.i18n.t(data.getTitle(RenderFormat.PLAINTEXT), user);
+    const title = this.i18n.t(data.getTitle(RenderFormat.HTML), user);
+    const body = this.renderMailBody(user, userNotification, data);
 
     await this.mailService.sendMail({
       to: email,
@@ -63,6 +99,16 @@ export class MailNotificationChannel implements INotificationChannel {
       channel: this.getId(),
       success: true,
     });
+  }
+
+  private renderMailBody(user: User, userNotification: UserNotification, data: NotificationType) {
+    const url = this.urlGenerator.getAppUrl({
+      path: '/notification',
+      query: { nid: userNotification.id },
+    });
+    const buttonText = this.i18n.t('notifications.actions.open', user);
+    const button = `<a href="${url}">${buttonText}</a>`;
+    return this.i18n.t(data.getBody(RenderFormat.HTML), user) + '<br>' + button;
   }
 
   private getEmail(context: UserSubscriptionContext) {

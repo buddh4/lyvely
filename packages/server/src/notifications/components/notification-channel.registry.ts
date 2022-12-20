@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { INotificationChannel } from '../interfaces';
 
 @Injectable()
 export class NotificationChannelRegistry {
-  channels: Array<INotificationChannel> = [];
+  private logger = new Logger(NotificationChannelRegistry.name);
+  private channels: Array<INotificationChannel> = [];
 
   getNotificationChannels(): Array<INotificationChannel> {
     return this.channels;

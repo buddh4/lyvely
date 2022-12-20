@@ -61,4 +61,5 @@ export interface IStreamService<
     options: TOptions,
     filter?: TFilter,
   ): Promise<IStreamResponse<TModel, TState>>;
+  loadEntry(id: string, filter?: TFilter): Promise<TModel>;
 }
