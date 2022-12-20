@@ -40,8 +40,7 @@ const { model } = toRefs(props);
       v-if="dragActive"
       class="item-drag-button mr-2 my-auto w-5 cursor-move text-secondary"
       @keyup.shift.up="$emit('moveUp', model, $el)"
-      @keyup.shift.down="$emit('moveDown', model, $el)"
-    >
+      @keyup.shift.down="$emit('moveDown', model, $el)">
       <ly-icon name="drag" class="fill-current w-5" />
     </button>
 
@@ -50,8 +49,7 @@ const { model } = toRefs(props);
         <slot name="pre-title"></slot>
         <div
           class="whitespace-nowrap overflow-hidden overflow-ellipsis cursor-pointer"
-          @click="$emit('details', model)"
-        >
+          @click="$emit('details', model)">
           <slot name="title">
             <div class="flex items-center">
               {{ model.content.title }}
@@ -66,9 +64,12 @@ const { model } = toRefs(props);
     </div>
 
     <div>
-      <div class="flex flex-col">
+      <div class="flex flex-col items-end">
         <slot name="menu">
-          <timing-list-entry-menu :model="model" @edit="$emit('edit', model)" @archive="$emit('archive', model)" />
+          <timing-list-entry-menu
+            :model="model"
+            @edit="$emit('edit', model)"
+            @archive="$emit('archive', model)" />
         </slot>
         <slot name="rating"></slot>
       </div>

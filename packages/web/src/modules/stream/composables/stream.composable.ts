@@ -1,6 +1,6 @@
 import { IStreamFilter, IStreamOptions, IStreamService, IStreamState } from '@lyvely/common';
 import { ref, Ref } from 'vue';
-import { useStatus, loadingStatus, Status } from '@/store';
+import { useStatus, loadingStatus } from '@/store';
 
 export function useStream<
   TModel extends { id: string },
