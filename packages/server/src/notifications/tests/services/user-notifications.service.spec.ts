@@ -38,6 +38,32 @@ describe('UserNotificationsService', () => {
     expect(userNotificationDao).toBeDefined();
   });
 
+  async function createTestNotification(
+    user: User,
+    profile: Profile,
+    uids: TObjectId[],
+    sortOrder?: number,
+    testValue = 'test',
+  ) {
+    const notification = new Notification(
+      new TestNotification({
+        userInfo: new UserInfo(user),
+        profileInfo: new ProfileInfo(profile),
+      }),
+      new MultiUserSubscription(uids),
+    );
+
+    if (sortOrder) {
+      notification.sortOrder = sortOrder;
+    }
+
+    return notificationDao.save(notification);
+  }
+
+  async function createTestUserNotification(user: User, notification: Notification) {
+    return userNotificationDao.save(new UserNotification(user, notification));
+  }
+
   describe('loadNext', () => {
     it('load initial with empty result', async () => {
       const user = await testData.createUser();
@@ -53,32 +79,6 @@ describe('UserNotificationsService', () => {
       expect(result.state.isEnd).toEqual(true);
       expect(result.hasMore).toEqual(false);
     });
-
-    async function createTestNotification(
-      user: User,
-      profile: Profile,
-      uids: TObjectId[],
-      sortOrder?: number,
-      testValue = 'test',
-    ) {
-      const notification = new Notification(
-        new TestNotification({
-          userInfo: new UserInfo(user),
-          profileInfo: new ProfileInfo(profile),
-        }),
-        new MultiUserSubscription(uids),
-      );
-
-      if (sortOrder) {
-        notification.sortOrder = sortOrder;
-      }
-
-      return notificationDao.save(notification);
-    }
-
-    async function createTestUserNotification(user: User, notification: Notification) {
-      return userNotificationDao.save(new UserNotification(user, notification));
-    }
 
     it('load initial as last result', async () => {
       const receiver = await testData.createUser();
@@ -131,11 +131,65 @@ describe('UserNotificationsService', () => {
         new StreamRequest({ batchSize: 2 }),
       );
       expect(result.models.length).toEqual(2);
-      expect(result.state.firstId).toEqual(userNotification1.id);
-      expect(result.state.firstOrder).toEqual(userNotification1.sortOrder);
+      expect(result.state.firstId).toEqual(userNotification3.id);
+      expect(result.state.firstOrder).toEqual(userNotification3.sortOrder);
       expect(result.state.lastOrder).toEqual(userNotification2.sortOrder);
       expect(result.state.lastId).toEqual(userNotification2.id);
       expect(result.state.isEnd).toEqual(false);
+      expect(result.hasMore).toEqual(true);
+    });
+  });
+
+  describe('loadNext', () => {
+    it('update entries with existing state', async () => {
+      const receiver = await testData.createUser();
+      const sender = await testData.createUser('test2');
+      const profile = await testData.createProfile(sender);
+      const notification1 = await createTestNotification(
+        sender,
+        profile,
+        [assureObjectId(receiver)],
+        Date.now() - 1000,
+        't1',
+      );
+      const notification2 = await createTestNotification(
+        sender,
+        profile,
+        [assureObjectId(receiver)],
+        Date.now() - 500,
+        't2',
+      );
+      const notification3 = await createTestNotification(
+        sender,
+        profile,
+        [assureObjectId(receiver)],
+        Date.now() - 200,
+        't3',
+      );
+      const userNotification1 = await createTestUserNotification(receiver, notification1);
+      const userNotification2 = await createTestUserNotification(receiver, notification2);
+      const userNotification3 = await createTestUserNotification(receiver, notification3);
+      const result = await userNotificationsService.update(
+        receiver,
+        new StreamRequest({
+          batchSize: 2,
+          state: {
+            firstId: userNotification1.id,
+            firstOrder: userNotification1.sortOrder,
+            lastId: userNotification1.id,
+            lastOrder: userNotification1.sortOrder,
+          },
+        }),
+      );
+
+      expect(result.models.length).toEqual(2);
+      expect(result.models[0].id).toEqual(userNotification3.id);
+      expect(result.models[1].id).toEqual(userNotification2.id);
+
+      expect(result.state.firstId).toEqual(userNotification3.id);
+      expect(result.state.firstOrder).toEqual(userNotification3.sortOrder);
+      expect(result.state.lastOrder).toEqual(userNotification1.sortOrder);
+      expect(result.state.lastId).toEqual(userNotification1.id);
       expect(result.hasMore).toEqual(true);
     });
   });

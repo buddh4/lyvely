@@ -59,16 +59,17 @@ export class UserNotificationsService {
     const filter: FilterQuery<UserNotification> = { uid: assureObjectId(user) };
 
     if (request.state?.lastOrder) {
-      filter['sortOrder'] = { $gte: request.state.lastOrder };
+      filter['sortOrder'] = { $lte: request.state.lastOrder };
       if (request.state.lastId) {
-        filter['_id'] = { $gt: request.state.lastId };
+        // TODO: we only filter out one potential overlap, there could be other requests with the same sortOrder
+        filter['_id'] = { $ne: assureObjectId(request.state.lastId) };
       }
     }
 
     const batchSize = request.batchSize || DEFAULT_BATCH_SIZE;
 
     const userNotifications = await this.userNotificationDao.findAll(filter, {
-      sort: { sortOrder: 1, _id: 1 },
+      sort: { sortOrder: -1 },
       limit: batchSize,
     });
 
@@ -115,22 +116,21 @@ export class UserNotificationsService {
   async update(user: User, request: StreamRequest): Promise<StreamResponse<WebNotification>> {
     const filter: FilterQuery<UserNotification> = { uid: assureObjectId(user) };
     if (request.state.firstOrder) {
-      filter['sortOrder'] = { $lte: request.state.firstOrder };
+      filter['sortOrder'] = { $gte: request.state.firstOrder };
       if (request.state.firstId) {
-        filter['_id'] = { $lt: request.state.lastId };
+        // TODO: we only filter out one potential overlap, there could be other requests with the same sortOrder
+        filter['_id'] = { $ne: assureObjectId(request.state.firstId) };
       }
     }
 
-    /**
-     * TODO: maybe we should use another limit for update calls since in most cases we want all updates
-     * and there should be rarely more than the batchSize anyways
-     **/
     const batchSize = request.batchSize || DEFAULT_BATCH_SIZE;
 
-    const userNotifications = await this.userNotificationDao.findAll(filter, {
-      sort: { sortOrder: 1, _id: 1 },
-      limit: batchSize,
-    });
+    const userNotifications = (
+      await this.userNotificationDao.findAll(filter, {
+        sort: { sortOrder: 1 },
+        limit: batchSize,
+      })
+    ).reverse();
 
     const models = await this.mapToWebNotification(userNotifications, user);
 
@@ -176,6 +176,7 @@ export class UserNotificationsService {
         new WebNotification({
           id: userNotification.id,
           type: notificationType.type,
+          sortOrder: notification.sortOrder,
           body: this.i18n.t(notificationType.getBody(RenderFormat.HTML), user),
           title: this.i18n.t(notificationType.getTitle(RenderFormat.HTML), user),
           seen: userNotification.seen,

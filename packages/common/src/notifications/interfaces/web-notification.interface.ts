@@ -8,6 +8,7 @@ export interface IWebNotification {
   route?: UrlRoute;
   userInfo?: UserInfoModel;
   profileInfo?: ProfileInfoModel;
+  sortOrder: number;
   title: string;
   body: string;
   seen: boolean;

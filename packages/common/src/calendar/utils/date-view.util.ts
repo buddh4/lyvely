@@ -1,4 +1,4 @@
-import { Days, Months, CalendarDate, dateTime } from '../interfaces';
+import { Days, Months, CalendarDate, dateTime, CalendarDateTime } from '../interfaces';
 
 export function getMonthNameByIndex(id: number, short = false) {
   return short ? Months[id] : Months[id].substring(0, 3);
@@ -25,8 +25,47 @@ export function getDayNameByIndex(id: number) {
   return Days[id];
 }
 
-export function formatDate(date: CalendarDate, format = 'YYYY-MM-DD') {
+export function formatDate(date: CalendarDateTime, format = 'YYYY-MM-DD') {
   return dateTime(date).format(format);
+}
+
+export function formatDateWithTime(date: CalendarDateTime, format = 'YYYY-MM-DDTHH:mm:ss') {
+  return dateTime(date).format(format);
+}
+
+export function getRelativeTime(
+  timeInMs: number,
+  locale: string,
+  style: Intl.RelativeTimeFormatStyle = 'long',
+) {
+  const rtf1 = new Intl.RelativeTimeFormat(locale, { style: style });
+
+  const timeInSec = Math.floor(timeInMs / 1000);
+  const sign = timeInSec > 0 ? 1 : -1;
+  const timeInSecAbs = Math.abs(Math.floor(timeInMs / 1000));
+
+  if (timeInSecAbs < 60) {
+    // Less than minute
+    return rtf1.format(timeInSec, 'second');
+  } else if (timeInSecAbs < 3_600 /* 60 * 60 */) {
+    // Less than hour
+    return rtf1.format(sign * Math.floor(timeInSecAbs / 60), 'minute');
+  } else if (timeInSecAbs < 86_400 /* 60 * 60 * 24 */) {
+    // Less than a day
+    return rtf1.format(sign * Math.floor(timeInSecAbs / 3_600), 'hour');
+  } else if (timeInSecAbs < 604_800 /* 60 * 60 * 24 * 7 */) {
+    // Less than a week
+    return rtf1.format(sign * Math.floor(timeInSecAbs / 86_400), 'day');
+  } else if (timeInSecAbs < 2_592_000 /* 60 * 60 * 24 * 30 */) {
+    // Less than a month
+    return rtf1.format(sign * Math.floor(timeInSecAbs / 604_800), 'week');
+  } else if (timeInSecAbs < 31_536_000 /* 60 * 60 * 24 * 365 */) {
+    // Less than a year
+    return rtf1.format(sign * Math.floor(timeInSecAbs / 2_592_000), 'month');
+  } else {
+    // More than a year
+    return rtf1.format(sign * Math.floor(timeInSecAbs / 31_536_000), 'year');
+  }
 }
 
 export function msToTime(ms: number) {

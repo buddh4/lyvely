@@ -11,6 +11,7 @@ export class WebNotification extends BaseModel<WebNotification> implements IWebN
   body: string;
   seen: boolean;
   title: string;
+  sortOrder: number;
 
   @Type(() => ProfileInfoModel)
   profileInfo?: ProfileInfoModel;

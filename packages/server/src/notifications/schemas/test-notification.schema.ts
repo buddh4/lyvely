@@ -1,7 +1,7 @@
 import { NotificationType, RenderFormat } from './notification-type.schema';
 import { Notification } from '../decorators';
 import { Translatable } from '@/i18n';
-import { UrlRoute } from '@lyvely/common';
+import { UrlRoute, formatDateWithTime } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { TestNotificationCategory } from '@/notifications/models/test-notification-category.model';
 
@@ -9,6 +9,14 @@ import { TestNotificationCategory } from '@/notifications/models/test-notificati
 export class TestNotification extends NotificationType<TestNotification> {
   @Prop()
   testValue: string;
+
+  @Prop()
+  date: Date;
+
+  constructor(props) {
+    super(props);
+    this.date ||= new Date();
+  }
 
   getTitle(format: RenderFormat): Translatable {
     return {
@@ -23,7 +31,7 @@ export class TestNotification extends NotificationType<TestNotification> {
     return {
       key: 'notifications.test.body',
       params: {
-        ts: Date.now(),
+        ts: formatDateWithTime(this.date || new Date()),
       },
     };
   }

@@ -30,8 +30,8 @@ export const useNotificationStore = defineStore('notifications', () => {
 
   function handleMarkedAsSeenEvent(evt: NotificationSeenStateLiveEvent) {
     const notification = stream.models.value.find((notification) => notification.id === evt.nid);
-    if (notification && notification.seen !== evt.seen) {
-      notification.seen = evt.seen;
+    if (notification && notification.seen !== evt.state) {
+      notification.seen = evt.state;
     }
   }
 
@@ -41,6 +41,10 @@ export const useNotificationStore = defineStore('notifications', () => {
     if (showNotificationDrawer.value && hasUpdates.value) {
       await update();
     }
+  }
+
+  async function next() {
+    const response = await stream.next();
   }
 
   async function update() {
@@ -82,5 +86,6 @@ export const useNotificationStore = defineStore('notifications', () => {
     markAsSeen,
     hasUpdates,
     test,
+    next,
   };
 });

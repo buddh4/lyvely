@@ -23,7 +23,7 @@ export class NotificationsController implements NotificationsEndpoint {
     @Body() streamRequest: StreamRequest,
     @Req() req: UserRequest,
   ): Promise<IStreamResponse<IWebNotification>> {
-    return this.userNotificationsService.loadNext(req.user, streamRequest);
+    return this.userNotificationsService.loadNext(req.user, new StreamRequest(streamRequest));
   }
 
   @Post('update')
@@ -31,7 +31,7 @@ export class NotificationsController implements NotificationsEndpoint {
     @Body() streamRequest: StreamRequest,
     @Req() req: UserRequest,
   ): Promise<IStreamResponse<IWebNotification>> {
-    return this.userNotificationsService.update(req.user, streamRequest);
+    return this.userNotificationsService.update(req.user, new StreamRequest(streamRequest));
   }
 
   @Post(':nid/mark-as-seen')

@@ -2,7 +2,16 @@ export type CalendarDate = string | number | Date;
 export type CalendarDateTime = CalendarDate | IDateTime;
 
 type UnitTypeShort = 'd' | 'M' | 'y' | 'h' | 'm' | 's' | 'ms';
-type UnitTypeLong = 'millisecond' | 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'quarter' | 'year';
+type UnitTypeLong =
+  | 'millisecond'
+  | 'second'
+  | 'minute'
+  | 'hour'
+  | 'day'
+  | 'week'
+  | 'month'
+  | 'quarter'
+  | 'year';
 type UnitTypeLongPlural =
   | 'milliseconds'
   | 'seconds'
@@ -48,7 +57,12 @@ export function toDate(date: CalendarDateTime) {
   return dateTime(date).toDate();
 }
 
-export type DateTimeFactory = (date?: CalendarDateTime, utc?: boolean, locale?: string, timezone?: string) => IDateTime;
+export type DateTimeFactory = (
+  date?: CalendarDateTime,
+  utc?: boolean,
+  locale?: string,
+  timezone?: string,
+) => IDateTime;
 
 let dateTimeFactory: DateTimeFactory;
 
@@ -56,7 +70,12 @@ export function setDateTimeFactory(factory: DateTimeFactory) {
   dateTimeFactory = factory;
 }
 
-export function dateTime(date?: CalendarDateTime, utc = false, locale?: string, timezone?: string): IDateTime {
+export function dateTime(
+  date?: CalendarDateTime,
+  utc = false,
+  locale?: string,
+  timezone?: string,
+): IDateTime {
   if (!dateTimeFactory) {
     throw new Error('No dateTimeFactory set');
   }
@@ -81,7 +100,9 @@ export function getFullDayDate(date: CalendarDate): Date {
     const dateNoTime = date.split('T')[0];
     if (/^([0-9]{4}-[0-9]{2}-[0-9]{2})$/.test(dateNoTime)) {
       const splitDate = dateNoTime.split('-');
-      date = new Date(Date.UTC(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])));
+      date = new Date(
+        Date.UTC(parseInt(splitDate[0]), parseInt(splitDate[1]) - 1, parseInt(splitDate[2])),
+      );
     } else {
       date = new Date(date);
     }

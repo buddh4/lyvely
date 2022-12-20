@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed, ref, toRefs, useSlots, watch } from 'vue';
 import { uniqueId } from 'lodash';
-import { storeToRefs } from 'pinia';
 import { suggestFocusElement } from '@/modules/ui/utils';
 import { usePageStore } from '@/modules/core/store/page.store';
+import { useInfiniteScroll } from '@vueuse/core';
 
 export interface IProps {
   modelValue: boolean;
@@ -23,7 +23,7 @@ const pageStore = usePageStore();
 const drawerId = uniqueId('drawer');
 const zIndex = ref(20);
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'infiniteScroll']);
 const root = ref<HTMLElement>();
 const { modelValue } = toRefs(props);
 
@@ -47,6 +47,15 @@ function autoFocus() {
 const hasFooter = computed(() => {
   return !!useSlots().footer;
 });
+
+const body = ref<HTMLElement>(null);
+useInfiniteScroll(
+  body,
+  () => {
+    emit('infiniteScroll');
+  },
+  { distance: 10 },
+);
 </script>
 
 <template>
@@ -62,7 +71,7 @@ const hasFooter = computed(() => {
         <div
           class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col justify-start content-start items-start">
           <div data-drawer-header class="mb-4 flex items-center pb-3 rounded-t-sm">
-            <slot name="headerheader">
+            <slot name="header">
               <h1 v-if="title" class="font-bold">{{ $t(title) }}</h1>
               <ly-button
                 class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
@@ -71,7 +80,7 @@ const hasFooter = computed(() => {
               </ly-button>
             </slot>
           </div>
-          <div data-drawer-body class="overflow-auto scrollbar-thin">
+          <div ref="body" data-drawer-body class="overflow-auto scrollbar-thin">
             <slot></slot>
           </div>
           <div v-if="hasFooter" data-drawer-footer class="pt-3">

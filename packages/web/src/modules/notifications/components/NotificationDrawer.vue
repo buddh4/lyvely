@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { watch, ref } from 'vue';
+import { ref } from 'vue';
 import { useNotificationStore } from '../stores/notifications.store';
 import { useRouter } from 'vue-router';
 import NotificationDrawerEntry from '@/modules/notifications/components/NotificationDrawerEntry.vue';
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
 import { IWebNotification } from '@lyvely/common';
 import { toVueRoute } from '@/modules/core/backend-route.transformer';
 
@@ -21,6 +22,10 @@ async function notificationClick(notification: IWebNotification) {
   }
 }
 
+async function loadNext() {
+  notificationStore.next();
+}
+
 function test() {
   notificationStore.test();
 }
@@ -29,20 +34,29 @@ function test() {
 <template>
   <ly-drawer
     id="notifications-drawer"
+    ref="root"
     v-model="showNotificationDrawer"
-    title="notifications.drawer.title">
-    <ul>
-      <li v-if="stream.updateStatus.isStatusLoading()">loading...</li>
-      <li v-for="notification in stream.models" :key="notification.id" class="pb-2">
-        <notification-drawer-entry
-          :notification="notification"
-          @click="notificationClick(notification)" />
-      </li>
-      <li v-if="stream.nextStatus.isStatusLoading()">loading...</li>
-    </ul>
-    <template #footer>
+    title="notifications.drawer.title"
+    @infinite-scroll="loadNext">
+    <dynamic-scroller :items="stream.models" :min-item-size="80" class="h-full" page-mode>
+      <template
+        #default="{
+          item,
+          index,
+          active,
+        }: {
+          item: IWebNotification,
+          index: number,
+          active: boolean,
+        }">
+        <dynamic-scroller-item :item="item" :active="active" :data-index="index">
+          <notification-drawer-entry :notification="item" @click="notificationClick(item)" />
+        </dynamic-scroller-item>
+      </template>
+    </dynamic-scroller>
+    <!-- template #footer>
       <ly-button class="primary" @click="test">Test</ly-button>
-    </template>
+    </template -->
   </ly-drawer>
 </template>
 
