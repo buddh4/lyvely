@@ -3,6 +3,7 @@ import { IWebNotification, getRelativeTime } from '@lyvely/common';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
+import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 
 const { locale } = storeToRefs(useAuthStore());
 
@@ -17,10 +18,6 @@ const cssClass = computed(() => [
   { 'hover:border-slate-200 dark:hover:border-slate-600': props.notification.seen },
   { 'border-pop': !props.notification.seen },
 ]);
-
-const timeAgo = computed(() => {
-  return getRelativeTime(props.notification.sortOrder - Date.now(), locale.value);
-});
 </script>
 
 <template>
@@ -36,9 +33,8 @@ const timeAgo = computed(() => {
         :name="notification.profileInfo.name" />
     </div>
     <div class="flex flex-col p-2 pl-0 gap-1 text-sm w-full">
-      <div class="font-bold">{{ notification.title }}</div>
-      <div v-html="notification.body"></div>
-      <span class="text-dimmed text-xs">{{ timeAgo }}</span>
+      <div class="line-clamp-2" v-html="notification.body"></div>
+      <relative-time :ts="notification.sortOrder" />
     </div>
   </div>
 </template>
