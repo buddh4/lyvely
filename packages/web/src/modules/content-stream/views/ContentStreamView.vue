@@ -17,22 +17,22 @@ const stream = [
   testMessage,
   testMessage,
   testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
-  testMessage,
+  /* testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,
+   testMessage,*/
 ];
 </script>
 
@@ -43,7 +43,7 @@ const stream = [
       <content-stream-filter-navigation />
     </div>
 
-    <div class="flex flex-col gap-2 overflow-auto scrollbar-thin px-2">
+    <div class="flex flex-col gap-4 pt-1 overflow-auto scrollbar-thin px-2">
       <template v-for="content in stream">
         <Component :is="getContentStreamEntryComponent(content.type)" :model="content" />
       </template>
