@@ -5,13 +5,14 @@ import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 
 export interface IProps {
   width?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
-  // TODO: GUEST - check guest access config
-  requireAuth?: boolean;
+  padding?: string;
+  margin?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   width: Size.LG,
-  requireAuth: true,
+  padding: undefined,
+  margin: undefined,
 });
 </script>
 

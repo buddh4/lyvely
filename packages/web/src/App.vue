@@ -15,27 +15,38 @@ const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRe
 );
 
 const layout = ref<string | undefined>();
+const layoutProps = ref<any | undefined>();
 const router = useRouter();
 const { isAuthenticated } = storeToRefs(useAuthStore());
 
 watch(router.currentRoute, (to) => {
   layout.value = to.meta?.layout;
+  layoutProps.value = to.meta?.layoutProps;
 });
 
-const layoutComponent = computed(() => {
-  if (!layout.value) {
-    return null;
-  }
+const layoutMap = new Map<string, { component: any; props: any }>();
+layoutMap.set('profile', { component: ProfileLayout, props: {} });
+layoutMap.set('profile_xl', { component: ProfileLayout, props: { containerWidth: 'xl' } });
+layoutMap.set('profile_full', { component: ProfileLayout, props: { containerWidth: 'full' } });
+
+const layoutComponent = computed<{ component: any; props: any } | undefined>(() => {
+  if (!layout.value) return undefined;
+  const layoutDefinition = layoutMap.get(layout.value?.toLowerCase());
+  if (!layoutDefinition) return undefined;
 
   return {
-    profile: ProfileLayout,
-  }[layout.value];
+    component: layoutDefinition.component,
+    props: Object.assign(layoutDefinition.props || {}, layoutProps.value),
+  };
 });
 </script>
 
 <template>
   <div class="flex items-stretch">
-    <Component :is="layoutComponent" v-if="layoutComponent"></Component>
+    <Component
+      :is="layoutComponent.component"
+      v-if="layoutComponent"
+      v-bind="layoutComponent.props"></Component>
     <template v-else>
       <router-view></router-view>
     </template>

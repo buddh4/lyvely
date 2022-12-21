@@ -4,13 +4,14 @@ import { Size } from '@/modules/ui/types';
 
 export interface IProps {
   width?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
-  // TODO: GUEST - check guest access config
-  requireAuth?: boolean;
+  padding?: string;
+  margin?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   width: Size.LG,
-  requireAuth: true,
+  padding: 'p-0.5 pb-5 pt-2 md:p-6',
+  margin: 'mb-6 md:mb-0',
 });
 
 const widthClass = computed(
@@ -27,10 +28,7 @@ const widthClass = computed(
 );
 
 const classNames = computed(() => {
-  return [
-    'container main-container h-full mx-auto p-0.5 pb-5 pt-2 md:p-6 mb-6 md:mb-0',
-    widthClass.value,
-  ];
+  return ['container main-container h-full mx-auto', props.padding, props.margin, widthClass.value];
 });
 </script>
 

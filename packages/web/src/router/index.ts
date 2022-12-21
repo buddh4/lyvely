@@ -1,4 +1,10 @@
-import { createRouter, createWebHistory, RouteRecordRaw, RouteLocation, NavigationGuardNext } from 'vue-router';
+import {
+  createRouter,
+  createWebHistory,
+  RouteRecordRaw,
+  RouteLocation,
+  NavigationGuardNext,
+} from 'vue-router';
 
 import NotFound from '@/modules/ui/components/error/NotFound.vue';
 import { messageLoaderGuard } from '@/modules/i18n';
@@ -44,7 +50,7 @@ router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuard
     useHelpStore().setShowModal(true);
   }
 
-  if (to.meta?.layout === 'profile') {
+  if (to.meta?.layout?.startsWith('profile')) {
     return loadProfile(to, from, next);
   }
 

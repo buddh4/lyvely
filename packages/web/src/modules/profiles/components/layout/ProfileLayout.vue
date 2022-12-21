@@ -12,23 +12,31 @@ import HelpModal from '@/modules/help/components/HelpModal.vue';
 
 export interface IProps {
   containerWidth?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
+  padding?: string;
+  margin?: string;
   requireAuth?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   containerWidth: Size.LG,
   requireAuth: true,
+  padding: undefined,
+  margin: undefined,
 });
 
 const { active: showIntroductionTour } = storeToRefs(useIntroductionTourStore());
 
 const containerProps = computed(() => ({
   width: props.containerWidth,
+  padding: props.padding,
+  margin: props.margin,
 }));
 
 const show = computed(() => (props.requireAuth ? useAuthStore().isAuthenticated : true));
 
-const IntroductionTour = defineAsyncComponent(() => import('@/modules/help/components/IntroductionTour.vue'));
+const IntroductionTour = defineAsyncComponent(
+  () => import('@/modules/help/components/IntroductionTour.vue'),
+);
 </script>
 
 <template>
