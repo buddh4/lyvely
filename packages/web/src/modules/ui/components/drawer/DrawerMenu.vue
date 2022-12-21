@@ -70,7 +70,7 @@ useInfiniteScroll(
         @keyup.esc="close">
         <div
           class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col justify-start content-start items-start">
-          <div data-drawer-header class="mb-4 flex items-center pb-3 rounded-t-sm">
+          <div data-drawer-header class="pt-4 px-4 flex items-center pb-3 rounded-t-sm">
             <slot name="header">
               <h1 v-if="title" class="font-bold">{{ $t(title) }}</h1>
               <ly-button
@@ -83,7 +83,7 @@ useInfiniteScroll(
           <div ref="body" data-drawer-body class="overflow-auto scrollbar-thin">
             <slot></slot>
           </div>
-          <div v-if="hasFooter" data-drawer-footer class="pt-3">
+          <div v-if="hasFooter" data-drawer-footer class="pb-4 px-4 pt-3">
             <slot name="footer"></slot>
           </div>
         </div>
@@ -97,7 +97,7 @@ h1 {
   @apply text-base;
 }
 .drawer {
-  @apply p-4 shadow-lg bg-highlight;
+  @apply shadow-lg bg-highlight;
   position: absolute;
   display: block;
   top: 55px;
