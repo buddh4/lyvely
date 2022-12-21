@@ -27,12 +27,15 @@ const widthClass = computed(
 );
 
 const classNames = computed(() => {
-  return ['container main-container mx-auto p-0.5 pb-5 pt-2 md:p-6 mb-6 md:mb-0', widthClass.value];
+  return [
+    'container main-container h-full mx-auto p-0.5 pb-5 pt-2 md:p-6 mb-6 md:mb-0',
+    widthClass.value,
+  ];
 });
 </script>
 
 <template>
-  <div class="overflow-y-auto overflow-x-hidden">
+  <div class="overflow-y-auto overflow-x-hidden h-full">
     <main :class="classNames">
       <slot></slot>
     </main>

@@ -49,9 +49,11 @@ function test() {
           index: number,
           active: boolean,
         }">
-        <dynamic-scroller-item :item="item" :active="active" :data-index="index">
-          <notification-drawer-entry :notification="item" @click="notificationClick(item)" />
-        </dynamic-scroller-item>
+        <div class="h-full overflow-auto scrollbar-thin">
+          <dynamic-scroller-item :item="item" :active="active" :data-index="index">
+            <notification-drawer-entry :notification="item" @click="notificationClick(item)" />
+          </dynamic-scroller-item>
+        </div>
       </template>
     </dynamic-scroller>
     <template #footer>

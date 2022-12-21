@@ -27,6 +27,11 @@ const sidebar = ref<HTMLElement | null>(null);
 
 const menuItems: IMenuItem[] = [
   {
+    to: { name: 'Stream' },
+    icon: 'stream',
+    label: 'stream.labels.main_nav',
+  },
+  {
     to: { name: 'Habits' },
     icon: 'activity',
     label: 'activities.labels.main_nav',
@@ -89,12 +94,12 @@ const ariaLabel = computed(() =>
 
 <template>
   <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
-    <div class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
+    <div
+      class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
         <a
           class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer"
-          @click="toggleSidebar"
-        >
+          @click="toggleSidebar">
           <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-5" />
           <transition name="fade">
             <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" :src="imageUrl" />
@@ -110,8 +115,7 @@ const ariaLabel = computed(() =>
                 v-if="menuItem.click"
                 :class="menuItemClasses"
                 class="flex no-wrap items-center h-12"
-                @click="menuItem.click"
-              >
+                @click="menuItem.click">
                 <ly-icon :name="menuItem.icon" class="w-5" />
                 <transition name="fade">
                   <span v-if="showLabels" class="menu-item">
@@ -123,8 +127,7 @@ const ariaLabel = computed(() =>
                 v-if="menuItem.to"
                 :class="menuItemClasses"
                 class="flex no-wrap items-center h-12"
-                :to="menuItem.to"
-              >
+                :to="menuItem.to">
                 <ly-icon :name="menuItem.icon" class="w-5" />
                 <transition name="fade">
                   <span v-if="showLabels" class="menu-item">

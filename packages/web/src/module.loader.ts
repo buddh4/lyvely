@@ -1,7 +1,9 @@
 import { App } from 'vue';
 import { IModule } from '@/modules/core/modules/interfaces/module.interface';
 
-const modulesImport = import.meta.glob<Promise<{ default: () => IModule }>>('./modules/**/module.ts');
+const modulesImport = import.meta.glob<Promise<{ default: () => IModule }>>(
+  './modules/**/module.ts',
+);
 const modules = [] as IModule[];
 
 interface ModuleImport {

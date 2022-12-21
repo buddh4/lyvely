@@ -36,7 +36,10 @@ export class ContentAuthor extends BaseModel<ContentAuthor> implements IContentA
 }
 
 @Expose()
-export class ContentMetadataModel extends BaseModel<ContentMetadataModel> implements IContentMetadata<TObjectId> {
+export class ContentMetadataModel
+  extends BaseModel<ContentMetadataModel>
+  implements IContentMetadata<TObjectId>
+{
   @Transform(({ value, obj }) => obj._id?.toString() || value)
   createdBy: TObjectId;
 

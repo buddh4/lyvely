@@ -11,7 +11,6 @@ export interface IProps {
   guid?: string;
   url?: string;
   timestamp?: number;
-  size?: string;
 }
 
 const props = defineProps<IProps>();
@@ -19,18 +18,29 @@ const props = defineProps<IProps>();
 const guid = computed(() => props.avatar?.guid || props.guid);
 const timestamp = computed(() => props.avatar?.timestamp || props.timestamp);
 const url = computed(() => {
-  return props.url ? props.url : guid.value ? createAvatarUrl(guid.value, timestamp.value) : undefined;
+  return props.url
+    ? props.url
+    : guid.value
+    ? createAvatarUrl(guid.value, timestamp.value)
+    : undefined;
 });
 
 const initials = computed(() => (url.value ? undefined : props.name?.substring(0, 2)));
-const color = computed(() => (url.value ? undefined : randomColor({ seed: props.name + '_user' || '' })));
+const color = computed(() =>
+  url.value ? undefined : randomColor({ seed: props.name + '_user' || '' }),
+);
 const textClass = computed(() =>
-  !url.value && color.value ? (getContrast(color.value) === 'black' ? 'text-slate-900' : 'text-slate-100') : undefined,
+  !url.value && color.value
+    ? getContrast(color.value) === 'black'
+      ? 'text-slate-900'
+      : 'text-slate-100'
+    : undefined,
 );
 
 function getClassNames(attrClasses: any, textClass: string) {
   return {
-    'rounded-full uppercase flex justify-center items-center select-none border border-shadow dark:border-divide': true,
+    'rounded-full uppercase flex justify-center items-center select-none border border-shadow dark:border-divide':
+      true,
     'p-1': !includesUtilityClass(attrClasses, 'p'),
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),
@@ -42,7 +52,8 @@ function getClassNames(attrClasses: any, textClass: string) {
 
 function getImageClassNames(attrClasses: any) {
   return {
-    'rounded-full uppercase flex justify-center items-center select-none border border-shadow dark:border-divide': true,
+    'rounded-full uppercase flex justify-center items-center select-none border border-shadow dark:border-divide':
+      true,
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),
     'text-xs': !includesUtilityClass(attrClasses, 'text'),
@@ -57,8 +68,7 @@ function getImageClassNames(attrClasses: any) {
     name="fade"
     mode="out-in"
     enter-active-class="animate__animated animate__faster animate__bounceIn"
-    leave-active-class="animate__animated animate__faster animate__bounceOut"
-  >
+    leave-active-class="animate__animated animate__faster animate__bounceOut">
     <img :key="url" :src="url" :class="getImageClassNames($attrs.class)" />
   </transition>
   <transition
@@ -66,8 +76,7 @@ function getImageClassNames(attrClasses: any) {
     name="fade"
     mode="out-in"
     enter-active-class="animate__animated animate__faster animate__bounceIn"
-    leave-active-class="animate__animated animate__faster animate__bounceOut"
-  >
+    leave-active-class="animate__animated animate__faster animate__bounceOut">
     <div :class="getClassNames($attrs.class, textClass)" :style="{ 'background-color': color }">
       {{ initials }}
     </div>

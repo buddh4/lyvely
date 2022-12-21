@@ -382,5 +382,14 @@
     "drawer": {
       "title": "Notifications"
     }
+  },
+  "stream": {
+    "labels":  {
+      "main_nav": "Stream"
+    },
+    "editor": {
+      "placeholder_single_user": "Write some notes",
+      "placeholder_multi_user": "Write a message"
+    }
   }
 }

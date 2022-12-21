@@ -2,11 +2,6 @@
 import { computed } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 
-export interface IProps {
-  size?: string;
-}
-
-const props = defineProps<IProps>();
 const user = computed(() => useAuthStore().user);
 </script>
 

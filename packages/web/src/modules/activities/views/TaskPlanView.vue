@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import EditTaskModal from '@/modules/activities/components/modals/EditTaskModal.vue';
 import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlan.vue';
-import TimingList from '@/modules/calendar/components/CalendarPlan.vue';
+import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType, getCalendarPlanArray } from '@lyvely/common';
 import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { computed } from 'vue';
@@ -20,9 +20,13 @@ usePageStore().setTitle(['Tasks']);
 </script>
 
 <template>
-  <timing-list>
-    <activity-plan-list v-for="interval in intervals" :key="interval" :interval="interval" :type="type" />
-  </timing-list>
+  <calendar-plan>
+    <activity-plan-list
+      v-for="interval in intervals"
+      :key="interval"
+      :interval="interval"
+      :type="type" />
+  </calendar-plan>
 
   <edit-task-modal />
 

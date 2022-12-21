@@ -10,7 +10,9 @@ import { watch, ref, computed, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 
-const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRefs(useGlobalDialogStore());
+const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRefs(
+  useGlobalDialogStore(),
+);
 
 const layout = ref<string | undefined>();
 const router = useRouter();
@@ -48,6 +50,5 @@ const layoutComponent = computed(() => {
     :icon-class="iconClass"
     :title="title"
     :button-type="buttonType"
-    :message="message"
-  />
+    :message="message" />
 </template>

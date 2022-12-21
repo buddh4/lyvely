@@ -7,6 +7,7 @@ export * from './content';
 export * from './endpoints';
 export * from './features';
 export * from './models';
+export * from './messages';
 export * from './profiles';
 export * from './statistics';
 export * from './stream';

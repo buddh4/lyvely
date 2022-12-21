@@ -80,7 +80,7 @@ useInfiniteScroll(
               </ly-button>
             </slot>
           </div>
-          <div ref="body" data-drawer-body class="overflow-auto scrollbar-thin">
+          <div ref="body" data-drawer-body>
             <slot></slot>
           </div>
           <div v-if="hasFooter" data-drawer-footer class="pt-3">
