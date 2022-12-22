@@ -52,8 +52,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
           v-for="relation in profileRelations.profiles"
           :key="relation.id"
           :active="profile.id === relation.id"
-          @click="setProfile(relation.id)"
-        >
+          @click="setProfile(relation.id)">
           <div class="flex items-center space-x-4">
             <div class="flex-shrink-0">
               <ly-profile-avatar :profile="relation" />
@@ -80,7 +79,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
       </div>
     </li>
     <li class="py-3 px-4 text-dimmed text-sm">
-      <ly-text-dimmed :text="$t('profile.messages.no-organization-relation')" />
+      <ly-text-dimmed :text="$t('profile.content-stream.no-organization-relation')" />
     </li>
   </ul>
 </template>

@@ -10,6 +10,7 @@ import { UserNotificationsService, NotificationService } from '../services';
 import { UserInfo, UserRequest } from '@/users';
 import { TestNotification } from '@/notifications/schemas/test-notification.schema';
 import { SingleUserSubscription } from '@/user-subscription';
+import { UserContext } from '@/profiles';
 
 @Controller(ENDPOINT_NOTIFICATIONS)
 export class NotificationsController implements NotificationsEndpoint {
@@ -23,7 +24,10 @@ export class NotificationsController implements NotificationsEndpoint {
     @Body() streamRequest: StreamRequest,
     @Req() req: UserRequest,
   ): Promise<IStreamResponse<IWebNotification>> {
-    return this.userNotificationsService.loadNext(req.user, new StreamRequest(streamRequest));
+    return this.userNotificationsService.loadNext(
+      new UserContext(req.user),
+      new StreamRequest(streamRequest),
+    );
   }
 
   @Post('update')
@@ -31,12 +35,15 @@ export class NotificationsController implements NotificationsEndpoint {
     @Body() streamRequest: StreamRequest,
     @Req() req: UserRequest,
   ): Promise<IStreamResponse<IWebNotification>> {
-    return this.userNotificationsService.update(req.user, new StreamRequest(streamRequest));
+    return this.userNotificationsService.updateStream(
+      new UserContext(req.user),
+      new StreamRequest(streamRequest),
+    );
   }
 
   @Get(':nid')
   async loadEntry(@Param('nid') nid: string, @Req() req: UserRequest): Promise<IWebNotification> {
-    return this.userNotificationsService.loadEntry(req.user, nid);
+    return this.userNotificationsService.loadEntry(new UserContext(req.user), nid);
   }
 
   @Post(':nid/mark-as-seen')

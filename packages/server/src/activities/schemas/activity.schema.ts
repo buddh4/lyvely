@@ -6,7 +6,15 @@ import {
   NumberTimeSeriesContent,
   NumberTimeSeriesContentConfig,
 } from '@/time-series';
-import { ActivityModel, DataPointInputType, DataPointValueType, PropertiesOf, PropertyType } from '@lyvely/common';
+import {
+  ActivityModel,
+  ContentModel,
+  DataPointInputType,
+  DataPointValueType,
+  PropertiesOf,
+  PropertyType,
+  Type,
+} from '@lyvely/common';
 
 @Schema({ _id: false })
 export class ActivityConfig extends NumberTimeSeriesContentConfig<ActivityConfig> {
@@ -21,7 +29,10 @@ const ActivityConfigSchema = SchemaFactory.createForClass(ActivityConfig);
  * Base Activity content class.
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Activity extends NumberTimeSeriesContent<Activity> implements PropertiesOf<ActivityModel> {
+export class Activity
+  extends NumberTimeSeriesContent<Activity>
+  implements PropertiesOf<ActivityModel>
+{
   @Prop({ type: ActivityConfigSchema, required: true })
   config: ActivityConfig;
 
@@ -40,6 +51,11 @@ export class Activity extends NumberTimeSeriesContent<Activity> implements Prope
         max: 1,
       },
     );
+  }
+
+  getModelConstructor(): Type<ContentModel> {
+    // This won't be called, but we need to implement it...
+    return ActivityModel;
   }
 }
 

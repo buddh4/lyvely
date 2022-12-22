@@ -18,7 +18,7 @@ useDayJsDateTimeAdapter();
 })();*/
 
 beforeEach(() => {
-  const testMailsDir = './mail/messages/test';
+  const testMailsDir = './mail/content-stream/test';
   if (fs.existsSync(testMailsDir)) {
     fs.readdirSync(testMailsDir).forEach((f) => fs.rmSync(`${testMailsDir}/${f}`));
   }

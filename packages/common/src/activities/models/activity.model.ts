@@ -1,5 +1,10 @@
 import { CalendarIntervalEnum } from '@/calendar';
-import { DataPointInputType, DataPointValueType, INumberDataPointConfig, TimeSeriesContentModel } from '@/time-series';
+import {
+  DataPointInputType,
+  DataPointValueType,
+  INumberDataPointConfig,
+  TimeSeriesContentModel,
+} from '@/time-series';
 import { Expose } from 'class-transformer';
 import { UserAssignmentStrategy } from '@/collab';
 
@@ -14,10 +19,9 @@ export interface IActivityConfig {
 }
 
 @Expose()
-export abstract class ActivityModel<T extends ActivityModel<any> = ActivityModel<any>> extends TimeSeriesContentModel<
-  T,
-  IActivityConfig
-> {
+export class ActivityModel<
+  T extends ActivityModel<any> = ActivityModel<any>,
+> extends TimeSeriesContentModel<T, IActivityConfig> {
   getEditDto() {
     return undefined;
   }

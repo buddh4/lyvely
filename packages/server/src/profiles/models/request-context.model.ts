@@ -1,45 +1,34 @@
-import {
-  UserProfileRelation,
-  Profile,
-  Membership,
-  Organization,
-} from '../schemas';
+import { UserProfileRelation, Profile, Membership, Organization } from '../schemas';
 import { User } from '@/users';
-import {
-  BaseModel,
-  PropertyType,
-  BaseUserProfileRelationType,
-} from '@lyvely/common';
+import { BaseModel, PropertyType, BaseUserProfileRelationType } from '@lyvely/common';
 
 /**
  * This composite class holds information about the relation between a user and a profile and provides some utility
  * access functions. This class is mainly used in the controller and service layer for access and permission checks.
  */
-export class OptionalProfileContext<
-  T extends Profile = Profile,
-> extends BaseModel<OptionalProfileContext> {
+export class RequestContext<T extends Profile = Profile> extends BaseModel<RequestContext> {
   user?: User;
   profile?: T;
 
   // TODO: Implement
-  protected organizationContext?: OptionalProfileContext<Organization>;
+  protected organizationContext?: RequestContext<Organization>;
 
   @PropertyType([UserProfileRelation])
   relations?: UserProfileRelation[];
 
   get oid() {
-    return this.profile.oid;
+    return this.profile?.oid;
   }
 
   get pid() {
-    return this.profile._id;
+    return this.profile?._id;
   }
 
   get organization() {
     return this.getOrganizationContext()?.profile;
   }
 
-  getOrganizationContext(): OptionalProfileContext<Organization> {
+  getOrganizationContext(): RequestContext<Organization> {
     if (this.profile instanceof Organization) {
       return this;
     }
@@ -60,9 +49,7 @@ export class OptionalProfileContext<
   }
 
   getMembership(): Membership | undefined {
-    const membership = this.getRelationOfType(
-      BaseUserProfileRelationType.Membership,
-    );
+    const membership = this.getRelationOfType(BaseUserProfileRelationType.Membership);
     return membership ? new Membership(membership) : undefined;
   }
 
@@ -81,12 +68,16 @@ export class OptionalProfileContext<
   }
 }
 
-export class ProfileContext<
-  T extends Profile = Profile,
-> extends OptionalProfileContext<T> {
+export class ProfileContext<T extends Profile = Profile> extends RequestContext<T> {
   user: User;
   profile: T;
   @PropertyType([UserProfileRelation])
   relations: UserProfileRelation[];
   protected organizationContext?: ProfileContext<Organization>;
+}
+
+export class UserContext extends RequestContext {
+  constructor(user: User) {
+    super({ user });
+  }
 }

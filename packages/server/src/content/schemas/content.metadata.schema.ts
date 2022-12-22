@@ -2,7 +2,12 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '@/core';
 import mongoose from 'mongoose';
 import { Author, ContentAuthorSchema, CreatedAs } from '@/content/schemas/content-author.schema';
-import { ContentVisibilityLevel, getNumberEnumValues, PropertyType, IContentMetadata } from '@lyvely/common';
+import {
+  ContentVisibilityLevel,
+  getNumberEnumValues,
+  PropertyType,
+  IContentMetadata,
+} from '@lyvely/common';
 
 /**
  * Other ideas:
@@ -30,7 +35,7 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
 
   @Prop({ type: Date, required: true })
   @PropertyType(Date, { default: new Date() })
-  streamSort: Date;
+  streamSort: number;
 
   @Prop({ enum: getNumberEnumValues(ContentVisibilityLevel) })
   @PropertyType(Number, { default: ContentVisibilityLevel.Member })

@@ -1,5 +1,5 @@
-import { DataPointInputType, DataPointValueType, isSameDay, ITimeSeriesContentConfig } from '@lyvely/common';
-import { Content, IContentEntity } from '@/content';
+import { isSameDay, ITimeSeriesContentConfig } from '@lyvely/common';
+import { ContentType, IContentEntity } from '@/content';
 import { DataPointConfig, DataPointConfigFactory, DefaultDataPointConfig } from './config';
 import { EntityType } from '@/core';
 import { cloneDeep } from 'lodash';
@@ -14,7 +14,7 @@ type Unpacked<T> = T extends (infer U)[] ? U : T;
 export abstract class TimeSeriesContent<
   TContent extends TimeSeriesContentEntity = TimeSeriesContentEntity,
   TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
-> extends Content<TContent> {
+> extends ContentType<TContent> {
   config: ITimeSeriesContentConfig<TDataPointConfig>;
 
   abstract createTimeSeriesConfigRevision(
@@ -29,7 +29,10 @@ export abstract class TimeSeriesContent<
       (updatedConfig.inputType && updatedConfig.inputType !== oldConfig.inputType) ||
       (updatedConfig.valueType && updatedConfig.valueType !== oldConfig.valueType)
     ) {
-      updatedConfig.strategy = DataPointConfigFactory.getStrategyName(updatedConfig.valueType, updatedConfig.inputType);
+      updatedConfig.strategy = DataPointConfigFactory.getStrategyName(
+        updatedConfig.valueType,
+        updatedConfig.inputType,
+      );
     }
 
     if (this.timeSeriesConfigRevisionCheck(updatedConfig)) {
@@ -53,7 +56,9 @@ export abstract class TimeSeriesContent<
   }
 
   private timeSeriesConfigRevisionCheck(update: TDataPointConfig) {
-    return !this.timeSeriesConfig.isEqualTo(update) && !this.getTimeSeriesRevisionUpdatedAt(new Date());
+    return (
+      !this.timeSeriesConfig.isEqualTo(update) && !this.getTimeSeriesRevisionUpdatedAt(new Date())
+    );
   }
 
   getTimeSeriesRevisionUpdatedAt(date: Date) {

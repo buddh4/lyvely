@@ -68,7 +68,7 @@ export async function loadModuleMessages(locale: string, module: string): Promis
 export function loadModuleBaseMessages(locale: string) {
   // TODO: here we assume all modules have base message files
   getModules().forEach((module) => {
-    console.log('Load base module messages for ' + module.getId());
+    console.log('Load base module content-stream for ' + module.getId());
     if (isModuleMessagesLoaded(locale, module.getId(), 'base')) return;
 
     return import(`./modules/${module.getId()}/locales/base.${locale}.json`)
@@ -118,7 +118,7 @@ export function getLocale() {
 }
 
 export async function loadLocaleMessages(locale: string) {
-  // load locale messages with dynamic import
+  // load locale content-stream with dynamic import
   return import(`../locales/${locale}.json`)
     .then((data) => mergeMessages(locale, data))
     .then(() => loadedCoreLocales.push(locale))

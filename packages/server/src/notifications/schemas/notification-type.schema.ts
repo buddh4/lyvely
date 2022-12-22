@@ -41,10 +41,6 @@ export abstract class NotificationType<T extends INotificationType = INotificati
 
   type: string;
 
-  static collectionName() {
-    return 'notifications';
-  }
-
   mergeWith(notification: T) {
     // Nothing todo
   }
@@ -59,10 +55,7 @@ export abstract class NotificationType<T extends INotificationType = INotificati
   abstract getCategory(): string;
 }
 
-@Schema({
-  discriminatorKey: 'type',
-  collection: NotificationType.collectionName(),
-})
+@Schema({ discriminatorKey: 'type' })
 export class NotificationSchemaType extends NotificationType implements INotificationType {
   getBody(format: RenderFormat): Translatable {
     return undefined;

@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, Inject } from '@nestjs/common';
 import {
   EntityNotFoundException,
   IStreamResponse,
@@ -18,106 +18,72 @@ import {
 import { FilterQuery } from 'mongoose';
 import { User, UsersService } from '@/users';
 import { assureObjectId, assureStringId, EntityIdentity } from '@/core';
-import { cloneDeep } from 'lodash';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { I18n } from '@/i18n';
 import { LiveService } from '@/live';
-
-const DEFAULT_BATCH_SIZE = 12;
+import { AbstractStreamService, StreamSortField } from '@/stream';
+import { RequestContext } from '@/profiles';
 
 @Injectable()
-export class UserNotificationsService {
-  private logger = new Logger(UserNotificationsService.name);
+export class UserNotificationsService extends AbstractStreamService<
+  UserNotification,
+  IWebNotification
+> {
+  @Inject()
+  protected streamEntryDao: UserNotificationDao;
 
   constructor(
-    private userNotificationDao: UserNotificationDao,
     private notificationDao: NotificationDao,
     private i18n: I18n,
     private liveService: LiveService,
     private usersService: UsersService,
-  ) {}
+  ) {
+    super(new Logger(UserNotificationsService.name));
+  }
 
   async findOneByNotification(
     userIdentity: EntityIdentity<User>,
     notificationIdentity: EntityIdentity<Notification>,
   ) {
-    return this.userNotificationDao.findOne({
+    return this.streamEntryDao.findOne({
       uid: assureObjectId(userIdentity),
       nid: assureObjectId(notificationIdentity),
     });
   }
 
   async loadEntry(
-    user: User,
+    context: RequestContext,
     identity: EntityIdentity<UserNotification>,
   ): Promise<IWebNotification> {
-    const userNotification = await this.userNotificationDao.findOneAndUpdateSetByFilter(
+    const userNotification = await this.streamEntryDao.findOneAndUpdateSetByFilter(
       identity,
       { seen: true },
       {
-        uid: assureObjectId(user),
+        uid: assureObjectId(context.user),
       },
     );
 
     if (!userNotification) return null;
 
-    const webNotifications = await this.mapToWebNotification([userNotification], user);
+    const webNotifications = await this.mapToResultModel([userNotification], context);
     return webNotifications[0];
   }
 
   async create(identity: EntityIdentity<User>, notification: Notification) {
-    return this.userNotificationDao
-      .save(new UserNotification(identity, notification))
-      .then((result) => {
-        this.setUpdateAvailableState(identity, true);
-        return result;
-      });
+    return this.streamEntryDao.save(new UserNotification(identity, notification)).then((result) => {
+      this.setUpdateAvailableState(identity, true);
+      return result;
+    });
   }
 
-  async loadNext(user: User, request: StreamRequest): Promise<IStreamResponse<WebNotification>> {
-    const filter: FilterQuery<UserNotification> = { uid: assureObjectId(user) };
+  async loadNext(
+    context: RequestContext,
+    request: StreamRequest,
+  ): Promise<IStreamResponse<WebNotification>> {
+    const response = await super.loadNext(context, request);
 
-    if (request.state?.lastOrder) {
-      filter['sortOrder'] = { $lte: request.state.lastOrder };
-      if (request.state.lastId) {
-        // TODO: we only filter out one potential overlap, there could be other requests with the same sortOrder
-        filter['_id'] = { $ne: assureObjectId(request.state.lastId) };
-      }
-    }
-
-    const batchSize = request.batchSize || DEFAULT_BATCH_SIZE;
-
-    const userNotifications = await this.userNotificationDao.findAll(filter, {
-      sort: { sortOrder: -1 },
-      limit: batchSize,
-    });
-
-    const models = await this.mapToWebNotification(userNotifications, user);
-
-    const response: IStreamResponse<WebNotification> = {
-      models,
-      state: request.state ? cloneDeep(request.state) : {},
-      hasMore: true,
-    };
-
-    if (userNotifications.length) {
-      response.state.lastId = userNotifications[userNotifications.length - 1].id;
-      response.state.lastOrder = userNotifications[userNotifications.length - 1].sortOrder;
-
-      if (!response.state.firstId) {
-        response.state.firstId = userNotifications[0].id;
-        response.state.firstOrder = userNotifications[0].sortOrder;
-      }
-    }
-
-    if (userNotifications.length < batchSize) {
-      response.hasMore = false;
-    }
-
-    response.state.isEnd = !response.hasMore;
-
-    if (request.isInitialRequest() && user.notification.updatesAvailable) {
-      this.setUpdateAvailableState(user, false);
+    if (request.isInitialRequest() && context.user.notification.updatesAvailable) {
+      this.setUpdateAvailableState(context.user, false);
     }
 
     return response;
@@ -133,53 +99,23 @@ export class UserNotificationsService {
   }
 
   async updateDeliveryState(userNotification: UserNotification) {
-    return this.userNotificationDao.updateOneSetById(userNotification, {
+    return this.streamEntryDao.updateOneSetById(userNotification, {
       status: userNotification.status,
     });
   }
 
-  async update(user: User, request: StreamRequest): Promise<StreamResponse<WebNotification>> {
-    const filter: FilterQuery<UserNotification> = { uid: assureObjectId(user) };
-    if (request.state.firstOrder) {
-      filter['sortOrder'] = { $gte: request.state.firstOrder };
-      if (request.state.firstId) {
-        // TODO: we only filter out one potential overlap, there could be other requests with the same sortOrder
-        filter['_id'] = { $ne: assureObjectId(request.state.firstId) };
-      }
-    }
+  async updateStream(
+    context: RequestContext,
+    request: StreamRequest,
+  ): Promise<StreamResponse<WebNotification>> {
+    const response = await super.updateStream(context, request);
 
-    const batchSize = request.batchSize || DEFAULT_BATCH_SIZE;
-
-    const userNotifications = (
-      await this.userNotificationDao.findAll(filter, {
-        sort: { sortOrder: 1 },
-        limit: batchSize,
-      })
-    ).reverse();
-
-    const models = await this.mapToWebNotification(userNotifications, user);
-
-    const response: IStreamResponse<any> = {
-      models: models,
-      state: cloneDeep(request.state),
-      hasMore: true,
-    };
-
-    if (models.length) {
-      response.state.firstId = userNotifications[0].id;
-      response.state.firstOrder = userNotifications[0].sortOrder;
-    }
-
-    if (models.length < batchSize) {
-      response.hasMore = false;
-    }
-
-    this.setUpdateAvailableState(user, false);
+    this.setUpdateAvailableState(context.user, false);
 
     return response;
   }
 
-  private async mapToWebNotification(userNotifications: UserNotification[], user: User) {
+  protected async mapToResultModel(userNotifications: UserNotification[], context: RequestContext) {
     const notifications = await this.loadNotifications(userNotifications);
 
     const models: WebNotification[] = [];
@@ -202,8 +138,8 @@ export class UserNotificationsService {
           id: userNotification.id,
           type: notificationType.type,
           sortOrder: notification.sortOrder,
-          body: this.i18n.t(notificationType.getBody(RenderFormat.HTML), user),
-          title: this.i18n.t(notificationType.getTitle(RenderFormat.HTML), user),
+          body: this.i18n.t(notificationType.getBody(RenderFormat.HTML), context.user),
+          title: this.i18n.t(notificationType.getTitle(RenderFormat.HTML), context.user),
           seen: userNotification.seen,
           userInfo: notificationType.userInfo?.getDto(),
           profileInfo: notificationType.profileInfo?.getDto(),
@@ -212,7 +148,7 @@ export class UserNotificationsService {
     });
 
     if (toDelete.length) {
-      this.userNotificationDao.deleteManyByIds(toDelete).then(() => {
+      this.streamEntryDao.deleteManyByIds(toDelete).then(() => {
         /* Nothing todo */
       });
     }
@@ -227,7 +163,7 @@ export class UserNotificationsService {
   }
 
   async resetDeliveryState(userNotification: UserNotification) {
-    return this.userNotificationDao.updateOneSetById(userNotification, {
+    return this.streamEntryDao.updateOneSetById(userNotification, {
       seen: false,
       sortOrder: userNotification.sortOrder,
       status: new NotificationDeliveryStatus(),
@@ -261,12 +197,11 @@ export class UserNotificationsService {
     if (notificationIdentity instanceof UserNotification) {
       notification = notificationIdentity;
       oldState = notification.seen;
-      sortOrder = sortOrder ?? notification.sortOrder;
-      await this.userNotificationDao.updateOneSetById(notification, update);
+      await this.streamEntryDao.updateOneSetById(notification, update);
     } else {
-      notification = await this.userNotificationDao.findOneAndUpdateByFilter(
+      notification = await this.streamEntryDao.findOneAndUpdateSetByFilter(
         notificationIdentity,
-        { $set: update },
+        update,
         { uid: assureObjectId(user) },
         { new: false },
       );
@@ -284,5 +219,13 @@ export class UserNotificationsService {
         ),
       );
     }
+  }
+
+  createFilterQuery(context: RequestContext): FilterQuery<UserNotification> {
+    return { uid: assureObjectId(context.user) };
+  }
+
+  getSortField(): StreamSortField<UserNotification> {
+    return 'sortOrder';
   }
 }

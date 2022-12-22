@@ -2,9 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { assureObjectId, BaseEntity, EntityIdentity, NestedSchema } from '@/core';
 import mongoose from 'mongoose';
 import { isDefined } from 'class-validator';
-import { PropertyType } from '@lyvely/common';
+import { ISortable, PropertyType } from '@lyvely/common';
 import { User } from '@/users';
 import { Notification } from './notification.schema';
+import { IStreamable } from '@/stream';
 
 export enum DeliveryStatus {
   SENT,
@@ -54,7 +55,10 @@ export class NotificationDeliveryStatus extends BaseEntity<NotificationDeliveryS
 const NotificationDeliveryStatusSchema = SchemaFactory.createForClass(NotificationDeliveryStatus);
 
 @Schema()
-export class UserNotification extends BaseEntity<UserNotification> {
+export class UserNotification
+  extends BaseEntity<UserNotification>
+  implements IStreamable<UserNotification>
+{
   @Prop({ type: mongoose.Schema.Types.ObjectId, require: true })
   uid: TObjectId;
 
@@ -96,6 +100,10 @@ export class UserNotification extends BaseEntity<UserNotification> {
       existingStatus.success = false;
       existingStatus.error = status.error;
     }
+  }
+
+  getSortOrder(): number {
+    return this.sortOrder;
   }
 }
 

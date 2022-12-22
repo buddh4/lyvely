@@ -169,7 +169,7 @@ describe('UserNotificationsService', () => {
       const userNotification1 = await createTestUserNotification(receiver, notification1);
       const userNotification2 = await createTestUserNotification(receiver, notification2);
       const userNotification3 = await createTestUserNotification(receiver, notification3);
-      const result = await userNotificationsService.update(
+      const result = await userNotificationsService.updateStream(
         receiver,
         new StreamRequest({
           batchSize: 2,

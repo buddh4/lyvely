@@ -1,6 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { DeepPartial, IContent, PropertyType, assignRawDataTo } from '@lyvely/common';
+import {
+  DeepPartial,
+  IContent,
+  PropertyType,
+  assignRawDataTo,
+  ContentModel,
+  Type,
+} from '@lyvely/common';
 import { BaseEntity } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
@@ -9,6 +16,7 @@ import { User } from '@/users';
 import { Profile, BaseProfileModel } from '@/profiles';
 import { Tag } from '@/tags';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
+import { IStreamable } from '@/stream';
 
 export type ContentDocument = Content & mongoose.Document;
 
@@ -23,7 +31,7 @@ export class Content<
     TConfig extends Object = any,
   >
   extends BaseProfileModel<T>
-  implements IContent, BaseProfileModel<T>
+  implements IContent, IStreamable<T>
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)
@@ -82,6 +90,23 @@ export class Content<
   setAuthor(author: Author) {
     this.setAuthor(author);
   }
+
+  toModel() {
+    const ModelConstructor: Type<ContentModel> =
+      'getModelConstructor' in this && typeof this.getModelConstructor === 'function'
+        ? this.getModelConstructor()
+        : ContentModel;
+
+    return new ModelConstructor(this);
+  }
+}
+
+export abstract class ContentType<
+  T extends IContentEntity & BaseEntity<IContentEntity> = any,
+  TContent extends ContentDataType = ContentDataType,
+  TConfig extends Object = any,
+> extends Content<T, TContent, TConfig> {
+  abstract getModelConstructor(): Type<ContentModel>;
 }
 
 export const ContentSchema = SchemaFactory.createForClass(Content);
