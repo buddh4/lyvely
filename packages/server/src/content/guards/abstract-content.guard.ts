@@ -8,7 +8,11 @@ import { Content } from '../schemas';
 import { getPolicyHandlerFromContext, PolicyService } from '@/policies';
 import { ProfileContext } from '@/profiles';
 import { Type } from '@nestjs/common/interfaces/type.interface';
-import { CONTENT_TYPE_KEY, CONTENT_ID_PARAM_KEY, CONTENT_DEFAULT_ID_PARAM_KEY } from '../content.constants';
+import {
+  CONTENT_TYPE_KEY,
+  CONTENT_ID_PARAM_KEY,
+  CONTENT_DEFAULT_ID_PARAM_KEY,
+} from '../content.constants';
 
 /**
  * If the request contains a cid parameter, this guard will try to fetch and validate the given content id
@@ -42,13 +46,17 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
     const contentId = getContentIdFromRequest(request, context, this.reflector);
 
     if (isValidObjectId(contentId)) {
-      const { profile, profileRelations } = request;
-      const content = await this.contentService.findContentByProfileAndId(profile, contentId, false);
+      const { profile, context: requestContext } = request;
+      const content = await this.contentService.findContentByProfileAndId(
+        profile,
+        contentId,
+        false,
+      );
 
       if (
         !content ||
         !validateContentTypeFromContext(content, context, this.reflector) ||
-        !(await this.canActivateContent(profileRelations, <C>content, context))
+        !(await this.canActivateContent(requestContext, <C>content, context))
       ) {
         return false;
       }
@@ -60,11 +68,18 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
   }
 
   private async validateContentPolicies(context: ExecutionContext) {
-    return this.policyService.checkEvery(context, ...getPolicyHandlerFromContext(context, this.reflector));
+    return this.policyService.checkEvery(
+      context,
+      ...getPolicyHandlerFromContext(context, this.reflector),
+    );
   }
 }
 
-function validateContentTypeFromContext(content: Content, context: ExecutionContext, reflector: Reflector) {
+function validateContentTypeFromContext(
+  content: Content,
+  context: ExecutionContext,
+  reflector: Reflector,
+) {
   const contentType = getContentTypeFromContext(context, reflector);
 
   if (!contentType) {
@@ -89,14 +104,20 @@ function getContentTypeFromContext(context: ExecutionContext, reflector: Reflect
   ]);
 }
 
-function getContentIdFromRequest(request: Request, context: ExecutionContext, reflector: Reflector): string {
+function getContentIdFromRequest(
+  request: Request,
+  context: ExecutionContext,
+  reflector: Reflector,
+): string {
   const name = getContentIdParamFromContext(context, reflector);
   return request.params[name] || (request.query[name] as string);
 }
 
 function getContentIdParamFromContext(context: ExecutionContext, reflector: Reflector) {
   return (
-    reflector.getAllAndOverride<string>(CONTENT_ID_PARAM_KEY, [context.getHandler(), context.getClass()]) ||
-    CONTENT_DEFAULT_ID_PARAM_KEY
+    reflector.getAllAndOverride<string>(CONTENT_ID_PARAM_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]) || CONTENT_DEFAULT_ID_PARAM_KEY
   );
 }

@@ -1,7 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <footer id="page-footer" class="footer mt-auto py-2 bg-main md:hidden">
+  <footer v-if="false" id="page-footer" class="footer mt-auto py-2 bg-main md:hidden">
     <div class="">
       <div class="navbar-nav flex flex-row justify-content-center">
         <router-link class="nav-link" to="/activities">

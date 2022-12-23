@@ -1,6 +1,15 @@
 import { ProfileController } from '../decorators';
 import { ProfilesService, ProfileTagsService } from '../services';
-import { Request, Param, Post, Body, Inject, ForbiddenException, NotFoundException, Put } from '@nestjs/common';
+import {
+  Request,
+  Param,
+  Post,
+  Body,
+  Inject,
+  ForbiddenException,
+  NotFoundException,
+  Put,
+} from '@nestjs/common';
 import { ProfileRequest } from '../types';
 import { UpdateTagDto, TagModel, CreateTagDto, ServiceException } from '@lyvely/common';
 import { assureObjectId, EntityIdentity, UseClassSerializer } from '@/core';
@@ -53,10 +62,10 @@ export class ProfileTagsController {
   }
 
   _getMemberProfile(req: ProfileRequest) {
-    const { profile, profileRelations } = req;
+    const { profile, context } = req;
 
     // TODO: Implement ManageTagsPolicy
-    if (!profileRelations.getMembership()) {
+    if (!context.getMembership()) {
       throw new ForbiddenException();
     }
 

@@ -6,9 +6,10 @@ import { ContentService, ContentScoreService } from './services';
 import { ProfileScore, ProfilesModule } from '../profiles';
 import { ContentDao, ContentScoreDao } from './daos';
 import { ContentReadPolicy, ContentWritePolicy } from './policies';
-import { ContentTypeRegistry } from './components';
+import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { IContentTypeDefinition } from '@/content/interfaces';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
+import { LiveModule } from '@/live/live.module';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -35,10 +36,11 @@ export class ContentCoreModule {
     return {
       global: true,
       module: ContentCoreModule,
-      imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel],
+      imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
       providers: [
         ContentService,
         ContentDao,
+        ContentEventPublisher,
         ContentTypeRegistry,
         ContentReadPolicy,
         ContentWritePolicy,
@@ -46,12 +48,14 @@ export class ContentCoreModule {
         ContentScoreDao,
       ],
       exports: [
+        ContentDao,
         ContentModel,
         ContentService,
         ContentScoreService,
         ContentTypeRegistry,
         ContentReadPolicy,
         ContentWritePolicy,
+        ContentEventPublisher,
       ],
     };
   }

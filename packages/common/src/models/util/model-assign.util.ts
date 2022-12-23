@@ -60,7 +60,9 @@ function _assignRawDataTo<T>(
       const arrayType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
       if (arrayType && Array.isArray(arrayType) && arrayType.length) {
         arrayData = data[path].map((entry) =>
-          entry instanceof arrayType[0] ? entry : Object.assign(Object.create(arrayType[0].prototype), entry),
+          entry instanceof arrayType[0]
+            ? entry
+            : Object.assign(Object.create(arrayType[0].prototype), entry),
         );
       }
       model[path] = _assignRawDataTo([], arrayData, level + 1, { maxDepth, strict, transform });
@@ -71,7 +73,9 @@ function _assignRawDataTo<T>(
       // Try to get model type by ModelType decorator, or otherwise try to determine the type from model or data
       let propertyType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
       if (!propertyType) {
-        propertyType = !model[path] ? data[path].constructor : getSpecificConstructor(model[path], data[path]);
+        propertyType = !model[path]
+          ? data[path].constructor
+          : getSpecificConstructor(model[path], data[path]);
       }
 
       // Only create a new instance if the type is not the expected, otherwise just use the given value

@@ -44,7 +44,11 @@ export class ContentMetadataModel
 
   @Type(() => ContentAuthor)
   createdAs?: ContentAuthor;
+
+  @PropertyType(Date)
   createdAt: Date;
+
+  @PropertyType(Date)
   updatedAt: Date;
   streamSort: number;
   sortOrder?: number;
@@ -81,6 +85,8 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
 
   type: string;
 
+  @Type(() => ContentDataTypeModel)
+  @PropertyType(ContentDataTypeModel)
   content: ContentDataTypeModel;
 
   @Type(() => ContentMetadataModel)

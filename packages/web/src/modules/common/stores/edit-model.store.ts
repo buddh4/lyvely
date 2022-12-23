@@ -66,7 +66,11 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
     }
 
     try {
-      const response = await loadingStatus(isCreate.value ? _createModel() : _editModel(), status, validator.value);
+      const response = await loadingStatus(
+        isCreate.value ? _createModel() : _editModel(),
+        status,
+        validator.value,
+      );
 
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
         options.onSubmitSuccess(<TResponse>response);
@@ -107,7 +111,11 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
       update = model.value;
     }
 
-    return loadingStatus(_getService(model.value).update(modelId.value, update), status, validator.value);
+    return loadingStatus(
+      _getService(model.value).update(modelId.value, update),
+      status,
+      validator.value,
+    );
   }
 
   function _getService(m: TUpdateModel) {

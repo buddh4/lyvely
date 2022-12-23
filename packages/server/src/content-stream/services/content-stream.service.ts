@@ -1,11 +1,16 @@
 import { AbstractStreamService, StreamSortField } from '@/stream';
 import { ContentModel, StreamRequest } from '@lyvely/common';
-import { Content } from '@/content';
+import { Inject, Logger } from '@nestjs/common';
+import { Content, ContentDao } from '@/content';
 import { RequestContext } from '@/profiles';
 import { FilterQuery } from 'mongoose';
 
 export class ContentStreamService extends AbstractStreamService<Content, ContentModel> {
-  createFilterQuery(context: RequestContext, request: StreamRequest): FilterQuery<Content> {
+  @Inject()
+  protected streamEntryDao: ContentDao;
+  protected logger = new Logger(ContentStreamService.name);
+
+  createQueryFilter(context: RequestContext, request: StreamRequest): FilterQuery<Content> {
     return { pid: context.pid };
   }
 
@@ -13,7 +18,10 @@ export class ContentStreamService extends AbstractStreamService<Content, Content
     return 'meta.streamSort';
   }
 
-  protected mapToResultModel(models: Content[], context: RequestContext): Promise<ContentModel[]> {
-    models.map((content) => content.to);
+  protected async mapToResultModel(
+    models: Content[],
+    context: RequestContext,
+  ): Promise<ContentModel[]> {
+    return models.map((content) => content.toModel());
   }
 }

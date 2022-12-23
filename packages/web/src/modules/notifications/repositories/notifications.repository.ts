@@ -28,7 +28,7 @@ export default {
   },
 
   async loadEntry(nid: string) {
-    return repository.get<EndpointResult<INotificationsService['loadEntry']>>(
+    return repository.post<EndpointResult<INotificationsService['loadEntry']>>(
       `${ENDPOINT_NOTIFICATIONS}/${nid}`,
     );
   },

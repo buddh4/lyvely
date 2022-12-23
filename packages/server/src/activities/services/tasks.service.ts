@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { Task } from '../schemas';
 import { Profile } from '@/profiles';
 import { CalendarDate, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
@@ -11,11 +11,18 @@ import { Timer } from '@/calendar';
 
 @Injectable()
 export class TasksService extends AbstractContentService<Task> {
-  constructor(protected contentDao: TasksDao, private scoreService: ContentScoreService) {
-    super(contentDao);
-  }
+  @Inject()
+  protected contentDao: TasksDao;
 
-  async createContent(profile: Profile, user: User, model: Task, tagNames?: string[]): Promise<Task> {
+  @Inject()
+  private scoreService: ContentScoreService;
+
+  async createContent(
+    profile: Profile,
+    user: User,
+    model: Task,
+    tagNames?: string[],
+  ): Promise<Task> {
     model.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
     return super.createContent(profile, user, model, tagNames);
   }
@@ -107,7 +114,12 @@ export class TasksService extends AbstractContentService<Task> {
     return timer;
   }
 
-  async updateTimerValue(profile: Profile, user: EntityIdentity<User>, task: Task, value: number): Promise<Timer> {
+  async updateTimerValue(
+    profile: Profile,
+    user: EntityIdentity<User>,
+    task: Task,
+    value: number,
+  ): Promise<Timer> {
     let timer = task.getTimer(user);
 
     if (!timer) {
@@ -120,7 +132,12 @@ export class TasksService extends AbstractContentService<Task> {
     return timer;
   }
 
-  private async updateTimer(profile: Profile, user: EntityIdentity<User>, task: Task, timer: Timer) {
+  private async updateTimer(
+    profile: Profile,
+    user: EntityIdentity<User>,
+    task: Task,
+    timer: Timer,
+  ) {
     if (task.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
       return this.contentDao.updateOneByProfileAndIdSet(profile, task, { timers: [timer] });
     }

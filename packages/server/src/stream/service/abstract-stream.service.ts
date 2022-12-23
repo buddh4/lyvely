@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { IStreamResponse, StreamRequest, IStreamFilter } from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
-import { AbstractDao, assureObjectId, IFetchQueryOptions } from '@/core';
+import { AbstractDao, assureObjectId, EntityIdentity, IFetchQueryOptions } from '@/core';
 import { cloneDeep } from 'lodash';
 import { RequestContext } from '@/profiles';
 import { IStreamable, StreamSortField } from '../interfaces';
@@ -13,14 +13,10 @@ export abstract class AbstractStreamService<
   TResult,
   TFilter extends IStreamFilter = any,
 > {
-  protected streamEntryDao: AbstractDao<TModel>;
+  protected abstract streamEntryDao: AbstractDao<TModel>;
+  protected abstract logger: Logger;
 
-  protected constructor(protected logger: Logger) {}
-
-  abstract createFilterQuery(
-    context: RequestContext,
-    request: StreamRequest<TFilter>,
-  ): FilterQuery<TModel>;
+  abstract createQueryFilter(context: RequestContext, filter?: TFilter): FilterQuery<TModel>;
 
   protected abstract mapToResultModel(
     models: TModel[],
@@ -28,11 +24,26 @@ export abstract class AbstractStreamService<
   ): Promise<TResult[]>;
   protected abstract getSortField(): StreamSortField<TModel>;
 
+  async loadEntry(
+    context: RequestContext,
+    identity: EntityIdentity<TModel>,
+    filter?: TFilter,
+  ): Promise<TResult | null> {
+    const streamEntry = await this.streamEntryDao.findByIdAndFilter(
+      identity,
+      this.createQueryFilter(context, filter),
+    );
+
+    if (!streamEntry) return null;
+
+    return (await this.mapToResultModel([streamEntry], context))[0];
+  }
+
   async loadNext(
     context: RequestContext,
     request: StreamRequest,
   ): Promise<IStreamResponse<TResult>> {
-    const filter = this.createFilterQuery(context, request);
+    const filter = this.createQueryFilter(context, request.filter);
 
     if (request.state?.lastOrder) {
       filter[this.getSortField() as keyof FilterQuery<TModel>] = { $lte: request.state.lastOrder };
@@ -45,7 +56,7 @@ export abstract class AbstractStreamService<
     const batchSize = request.batchSize || DEFAULT_BATCH_SIZE;
 
     const streamEntries = await this.streamEntryDao.findAll(filter, {
-      sort: { sortOrder: -1 },
+      sort: { [this.getSortField()]: -1 },
       limit: batchSize,
     } as IFetchQueryOptions<TModel>);
 
@@ -80,7 +91,7 @@ export abstract class AbstractStreamService<
     context: RequestContext,
     request: StreamRequest,
   ): Promise<IStreamResponse<TResult>> {
-    const filter = this.createFilterQuery(context, request);
+    const filter = this.createQueryFilter(context, request.filter);
 
     if (request.state.firstOrder) {
       filter[this.getSortField() as keyof FilterQuery<TModel>] = <any>{
@@ -96,7 +107,7 @@ export abstract class AbstractStreamService<
 
     const streamEntries = (
       await this.streamEntryDao.findAll(filter, {
-        sort: { sortOrder: 1 },
+        sort: { [this.getSortField()]: 1 },
         limit: batchSize,
       } as IFetchQueryOptions<TModel>)
     ).reverse();

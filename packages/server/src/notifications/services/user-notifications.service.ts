@@ -32,13 +32,15 @@ export class UserNotificationsService extends AbstractStreamService<
   @Inject()
   protected streamEntryDao: UserNotificationDao;
 
+  protected logger = new Logger(UserNotificationsService.name);
+
   constructor(
     private notificationDao: NotificationDao,
     private i18n: I18n,
     private liveService: LiveService,
     private usersService: UsersService,
   ) {
-    super(new Logger(UserNotificationsService.name));
+    super();
   }
 
   async findOneByNotification(
@@ -65,8 +67,7 @@ export class UserNotificationsService extends AbstractStreamService<
 
     if (!userNotification) return null;
 
-    const webNotifications = await this.mapToResultModel([userNotification], context);
-    return webNotifications[0];
+    return (await this.mapToResultModel([userNotification], context))[0];
   }
 
   async create(identity: EntityIdentity<User>, notification: Notification) {
@@ -221,7 +222,7 @@ export class UserNotificationsService extends AbstractStreamService<
     }
   }
 
-  createFilterQuery(context: RequestContext): FilterQuery<UserNotification> {
+  createQueryFilter(context: RequestContext): FilterQuery<UserNotification> {
     return { uid: assureObjectId(context.user) };
   }
 

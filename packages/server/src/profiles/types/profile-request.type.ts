@@ -7,6 +7,6 @@ import { RequestAdditions } from '@/core';
 export type ProfileRequest = Request<any, any, any, { pid: string } & Record<string, string>> & {
   profile: Profile;
   user: User;
-  profileRelations: ProfileContext;
+  context: ProfileContext;
   csrfToken: () => string;
 } & RequestAdditions;

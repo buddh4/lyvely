@@ -2456,7 +2456,7 @@
 <!-- src/modules/content/decorators/content&#45;type.decorator.ts -->
 <g id="node71" class="node">
 <title>src/modules/content/decorators/content&#45;type.decorator.ts</title>
-<g id="a_node71"><a xlink:href="src/modules/content/decorators/content-type.decorator.ts" xlink:title="content&#45;type.decorator.ts">
+<g id="a_node71"><a xlink:href="src/modules/content/decorators/strict-content-type.decorator.ts" xlink:title="content&#45;type.decorator.ts">
 <path fill="#ddfeff" stroke="black" d="M1061,-3568C1061,-3568 941,-3568 941,-3568 938,-3568 935,-3565 935,-3562 935,-3562 935,-3556 935,-3556 935,-3553 938,-3550 941,-3550 941,-3550 1061,-3550 1061,-3550 1064,-3550 1067,-3553 1067,-3556 1067,-3556 1067,-3562 1067,-3562 1067,-3565 1064,-3568 1061,-3568"/>
 <text text-anchor="start" x="943" y="-3556.8" font-family="Helvetica,sans-Serif" font-size="9.00">content&#45;type.decorator.ts</text>
 </a>
@@ -2508,7 +2508,7 @@
 <!-- src/modules/content/guards/abstract&#45;content&#45;guard.ts -->
 <g id="node74" class="node">
 <title>src/modules/content/guards/abstract&#45;content&#45;guard.ts</title>
-<g id="a_node74"><a xlink:href="src/modules/content/guards/abstract-content-guard.ts" xlink:title="abstract&#45;content&#45;guard.ts">
+<g id="a_node74"><a xlink:href="src/modules/content/guards/abstract-content.guard.ts" xlink:title="abstract&#45;content&#45;guard.ts">
 <path fill="#ddfeff" stroke="black" d="M705,-3426C705,-3426 583,-3426 583,-3426 580,-3426 577,-3423 577,-3420 577,-3420 577,-3414 577,-3414 577,-3411 580,-3408 583,-3408 583,-3408 705,-3408 705,-3408 708,-3408 711,-3411 711,-3414 711,-3414 711,-3420 711,-3420 711,-3423 708,-3426 705,-3426"/>
 <text text-anchor="start" x="585" y="-3414.8" font-family="Helvetica,sans-Serif" font-size="9.00">abstract&#45;content&#45;guard.ts</text>
 </a>

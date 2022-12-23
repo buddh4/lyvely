@@ -1,51 +1,47 @@
 <script lang="ts" setup>
 import ContentStreamFilterNavigation from '@/modules/content-stream/components/ContentStreamFilterNavigation.vue';
 import ContentStreamEditor from '@/modules/content-stream/components/ContentStreamEditor.vue';
-import { MessageModel } from '@lyvely/common';
+import { storeToRefs } from 'pinia';
 import { getContentStreamEntryComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
+import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
+import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
+import { onMounted, onUnmounted, ref } from 'vue';
 
-const testMessage = new MessageModel({
-  content: {
-    text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
-  },
-  meta: {
-    createdAt: new Date(),
-  },
+const contentStreamStore = useContentStreamStore();
+const createMessageStore = useCreateMessageStore();
+const { model } = storeToRefs(createMessageStore);
+const stream = ref(contentStreamStore.stream);
+
+function submit() {
+  createMessageStore.submit();
+}
+
+onMounted(() => {
+  stream.value.next();
+  contentStreamStore.isActive = true;
 });
 
-const stream = [
-  testMessage,
-  testMessage,
-  testMessage,
-  /* testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,
-   testMessage,*/
-];
+onUnmounted(() => {
+  contentStreamStore.isActive = false;
+});
 </script>
 
 <template>
-  <div class="flex h-full items-stretch flex-col-reverse">
-    <content-stream-editor />
-    <div class="mt-4">
-      <content-stream-filter-navigation />
+  <div class="flex h-full items-stretch flex-col-reverse p-0.5 pb-0 pt-1 md:px-6">
+    <div class="border border-divide p-4 rounded-t bg-main">
+      <div class="mb-4">
+        <content-stream-filter-navigation />
+      </div>
+      <content-stream-editor v-model="model.text" @submit="submit" />
     </div>
 
-    <div class="flex flex-col gap-4 pt-1 overflow-auto scrollbar-thin px-2">
-      <template v-for="content in stream">
-        <Component :is="getContentStreamEntryComponent(content.type)" :model="content" />
+    <div class="flex flex-col-reverse gap-2 overflow-auto scrollbar-thin px-2 py-1">
+      <div v-if="stream.nextStatus.isStatusInit()">...Loading</div>
+      <template v-for="content in stream.models">
+        <Component
+          :is="getContentStreamEntryComponent(content.type)"
+          v-if="getContentStreamEntryComponent(content.type)"
+          :model="content" />
       </template>
     </div>
   </div>

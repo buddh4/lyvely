@@ -6,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class ProfileVisibilityPolicy implements ProfilePolicy {
   async validate(context: ProfilePolicyContext): Promise<boolean> {
-    const { profile, profileRelations } = context.getRequest();
+    const { profile, context: requestContext } = context.getRequest();
 
     if (!profile) {
       return false;
@@ -14,9 +14,9 @@ export class ProfileVisibilityPolicy implements ProfilePolicy {
 
     switch (profile.visibility) {
       case ProfileVisibilityLevel.Member:
-        return profileRelations && profileRelations.isMember();
+        return context && requestContext.isMember();
       case ProfileVisibilityLevel.User:
-        return profileRelations && !profileRelations.isGuest();
+        return context && !requestContext.isGuest();
       case ProfileVisibilityLevel.Visitor:
         return true;
       default:

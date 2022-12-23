@@ -101,7 +101,7 @@ export const defaultFetchOptions = {
 export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
 
 export abstract class AbstractDao<T extends BaseEntity<T>> {
-  protected abstract model: Model<any>;
+  protected abstract model: Model<T>;
 
   @Inject()
   private eventEmitter: EventEmitter2;
@@ -394,8 +394,8 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     await this.model.bulkWrite(
       updates.map((update) => ({
         updateOne: {
-          filter: { _id: this.assureEntityId(update.id) },
-          update: { $set: update.update },
+          filter: <any>{ _id: this.assureEntityId(update.id) },
+          update: <any>{ $set: update.update },
         },
       })),
       options,

@@ -73,7 +73,7 @@ module.exports = {
     createModuleDeps('content', [MODULE_MODELS, MODULE_TAGS]),
     createModuleDeps('files'),
     createModuleDeps('live'),
-    createModuleDeps('messages', [MODULE_CONTENT]),
+    createModuleDeps('message', [MODULE_CONTENT]),
     createModuleDeps('mappings', [MODULE_MODELS, MODULE_UTILS]),
     createModuleDeps('models', [MODULE_UTILS]),
     createModuleDeps('profiles', [MODULE_TAGS, MODULE_MODELS, MODULE_ENDPOINTS]),

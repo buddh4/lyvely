@@ -33,8 +33,8 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   @PropertyType(Date, { default: new Date() })
   updatedAt: Date;
 
-  @Prop({ type: Date, required: true })
-  @PropertyType(Date, { default: new Date() })
+  @Prop({ required: true })
+  @PropertyType(Number)
   streamSort: number;
 
   @Prop({ enum: getNumberEnumValues(ContentVisibilityLevel) })
@@ -49,6 +49,10 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
 
   @Prop()
   isLocked?: boolean;
+
+  afterInit() {
+    this.streamSort ||= Date.now();
+  }
 
   setAuthor(author: Author) {
     this.createdAs = new CreatedAs(author);

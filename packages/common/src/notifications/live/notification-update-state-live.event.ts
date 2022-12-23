@@ -1,7 +1,7 @@
 import { ILiveUserEvent } from '@/live';
 
 export class NotificationUpdateStateLiveEvent implements ILiveUserEvent {
-  static eventName = 'newNotification';
+  static eventName = 'notificationUpdateStateEvent';
   name = NotificationUpdateStateLiveEvent.eventName;
   module = 'notifications';
   uid: string;

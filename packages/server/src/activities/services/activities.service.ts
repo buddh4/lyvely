@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Activity, Habit, HabitDataPoint } from '../schemas';
+import { Injectable, Inject } from '@nestjs/common';
+import { Activity, HabitDataPoint } from '../schemas';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
@@ -21,9 +21,11 @@ interface IActivitySearchResult {
 
 @Injectable()
 export class ActivitiesService extends AbstractContentService<Activity> {
-  constructor(protected contentDao: ActivitiesDao, protected activityDataPointService: HabitDataPointService) {
-    super(contentDao);
-  }
+  @Inject()
+  protected contentDao: ActivitiesDao;
+
+  @Inject()
+  protected activityDataPointService: HabitDataPointService;
 
   /**
    * Finds all activities (tasks and habits) and habit data points of a given user matching the given filter.
@@ -39,7 +41,11 @@ export class ActivitiesService extends AbstractContentService<Activity> {
    * @throws EntityNotFoundException
    * @throws ForbiddenServiceException
    */
-  async findByFilter(profile: Profile, user: User, filter: DataPointIntervalFilter): Promise<IActivitySearchResult> {
+  async findByFilter(
+    profile: Profile,
+    user: User,
+    filter: DataPointIntervalFilter,
+  ): Promise<IActivitySearchResult> {
     // Find all calendar ids for the given search date and filter out by filter level
     const tIds = getTimingIds(filter.date);
     if (filter.level > 0) {
@@ -47,7 +53,11 @@ export class ActivitiesService extends AbstractContentService<Activity> {
     }
 
     const activities = await this.contentDao.findByProfileAndTimingIds(profile, user, tIds);
-    const dataPoints = await this.activityDataPointService.findByIntervalLevel(profile, user, filter);
+    const dataPoints = await this.activityDataPointService.findByIntervalLevel(
+      profile,
+      user,
+      filter,
+    );
     return { activities, dataPoints };
   }
 
@@ -87,13 +97,19 @@ export class ActivitiesService extends AbstractContentService<Activity> {
       return Promise.resolve([]);
     }
 
-    const attachTo = attachToObjectId ? await this.contentDao.findByProfileAndId(profile, attachToObjectId) : undefined;
+    const attachTo = attachToObjectId
+      ? await this.contentDao.findByProfileAndId(profile, attachToObjectId)
+      : undefined;
 
     if (attachTo && activity.type !== attachTo.type) {
       throw new IntegrityException('Can not merge habit with task');
     }
 
-    interval = attachTo ? attachTo.timeSeriesConfig.interval : interval ? interval : activity.timeSeriesConfig.interval;
+    interval = attachTo
+      ? attachTo.timeSeriesConfig.interval
+      : interval
+      ? interval
+      : activity.timeSeriesConfig.interval;
 
     if (interval !== activity.timeSeriesConfig.interval) {
       // Create new revision for activity in case the latest revision was not today
@@ -106,10 +122,15 @@ export class ActivitiesService extends AbstractContentService<Activity> {
       activity.timeSeriesConfig.interval = interval;
     }
 
-    const activitiesByInterval = await this.contentDao.findByProfileAndInterval(profile, activity.type, interval, {
-      excludeIds: activity._id,
-      sort: { 'meta.sortOrder': 1 },
-    });
+    const activitiesByInterval = await this.contentDao.findByProfileAndInterval(
+      profile,
+      activity.type,
+      interval,
+      {
+        excludeIds: activity._id,
+        sort: { 'meta.sortOrder': 1 },
+      },
+    );
 
     const newIndex = attachTo ? attachTo.meta.sortOrder + 1 : 0;
     activitiesByInterval.splice(newIndex, 0, activity);

@@ -20,7 +20,9 @@ export class UserDao extends AbstractDao<User> {
    * @param email
    */
   async findByAnyEmail(email: string): Promise<User[]> {
-    return this.findAll({ $or: [{ email: email.toLowerCase() }, { 'emails.lowercaseEmail': email.toLowerCase() }] });
+    return this.findAll({
+      $or: [{ email: email.toLowerCase() }, { 'emails.lowercaseEmail': email.toLowerCase() }],
+    });
   }
 
   async findByVerifiedEmail(email: string): Promise<User[]> {
@@ -50,16 +52,25 @@ export class UserDao extends AbstractDao<User> {
   }
 
   async removeEmail(user: EntityIdentity<User>, email: string) {
-    const result = await this.updateOneById(user, { $pull: { emails: { lowercaseEmail: email.toLowerCase() } } });
+    const result = await this.updateOneById(user, {
+      $pull: { emails: { lowercaseEmail: email.toLowerCase() } },
+    });
 
     if (user instanceof User) {
-      user.emails = user.emails.filter((userEmail) => userEmail.lowercaseEmail !== email.toLowerCase());
+      user.emails = user.emails.filter(
+        (userEmail) => userEmail.lowercaseEmail !== email.toLowerCase(),
+      );
     }
 
     return result;
   }
 
-  async incrementProfileCount(user: User, type: ProfileType, amount = 1, options?: IBaseQueryOptions) {
+  async incrementProfileCount(
+    user: User,
+    type: ProfileType,
+    amount = 1,
+    options?: IBaseQueryOptions,
+  ) {
     let path = 'profilesCount.';
     let count;
 

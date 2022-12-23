@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { PolicyService } from './services/policy.service';
 
+@Global()
 @Module({
   providers: [PolicyService],
   exports: [PolicyService],

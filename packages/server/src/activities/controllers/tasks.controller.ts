@@ -23,13 +23,12 @@ import {
   TimerModel,
 } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
-import { ContentController, ContentType, ContentWritePolicy, ProfileContentRequest } from '@/content';
+import { ContentController, ContentWritePolicy, ProfileContentRequest } from '@/content';
 import { ProfileRequest } from '@/profiles';
 import { Policies } from '@/policies';
 
-@ContentController('tasks')
+@ContentController('tasks', Task)
 // TODO: implement feature registration @Feature('content.activities.tasks')
-@ContentType(Task)
 @UseInterceptors(ClassSerializerInterceptor)
 export class TasksController implements TasksEndpoint {
   @Inject()
@@ -76,7 +75,10 @@ export class TasksController implements TasksEndpoint {
     const { profile, user, content } = req;
 
     await this.tasksService.setDone(profile, user, content, dto.date);
-    return new UpdateTaskStateResultDto({ score: profile.score, done: content.getDoneBy(user)?.tid });
+    return new UpdateTaskStateResultDto({
+      score: profile.score,
+      done: content.getDoneBy(user)?.tid,
+    });
   }
 
   @Post(':cid/undone')

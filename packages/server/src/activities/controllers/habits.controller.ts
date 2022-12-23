@@ -13,18 +13,25 @@ import {
 } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
-import { ProfileContentRequest, ContentController, ContentType, ContentWritePolicy } from '@/content';
+import {
+  ProfileContentRequest,
+  ContentController,
+  StrictContentType,
+  ContentWritePolicy,
+} from '@/content';
 import { ProfileRequest, ProfilePermissions } from '@/profiles';
 import { Policies } from '@/policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
 import { UseClassSerializer } from '@/core';
 
-@ContentController('habits')
-// TODO: implement feature registration @Feature('content.activities.habits')
-@ContentType(Habit)
+@ContentController('habits', Habit)
+// TODO: implement feature registration @Feature('content.activities.habits')F
 @UseClassSerializer()
 export class HabitsController implements HabitsEndpoint {
-  constructor(protected contentService: HabitsService, protected habitDataPointService: HabitDataPointService) {}
+  constructor(
+    protected contentService: HabitsService,
+    protected habitDataPointService: HabitDataPointService,
+  ) {}
 
   @Post()
   @ProfilePermissions(ActivityPermissions.CREATE)
@@ -55,10 +62,19 @@ export class HabitsController implements HabitsEndpoint {
 
   @Post(':cid/update-data-point')
   @Policies(ContentWritePolicy)
-  async updateDataPoint(@Body() dto: UpdateDataPointDto, @Request() req: ProfileContentRequest<Habit>) {
+  async updateDataPoint(
+    @Body() dto: UpdateDataPointDto,
+    @Request() req: ProfileContentRequest<Habit>,
+  ) {
     const { profile, user, content } = req;
 
-    const dataPoint = await this.habitDataPointService.upsertDataPoint(profile, user, content, dto.date, dto.value);
+    const dataPoint = await this.habitDataPointService.upsertDataPoint(
+      profile,
+      user,
+      content,
+      dto.date,
+      dto.value,
+    );
 
     return new UpdateHabitDataPointResultDto({
       score: profile.score,

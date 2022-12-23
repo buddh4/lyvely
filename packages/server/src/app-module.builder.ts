@@ -32,6 +32,8 @@ import { LiveModule } from '@/live/live.module';
 import { BullModule } from '@nestjs/bullmq';
 import { NotificationsModule } from '@/notifications/notifications.module';
 import { FeatureModule } from '@/features/feature.module';
+import { ContentStreamModule } from '@/content-stream/content-stream.module';
+import { MessageModule } from '@/message/message.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -229,6 +231,7 @@ export class AppModuleBuilder {
       ProfilesModule,
       UserRegistrationModule,
       ContentModule.forRoot(),
+      ContentStreamModule,
       AccountModule,
       AvatarsModule,
     );
@@ -239,7 +242,7 @@ export class AppModuleBuilder {
       return this;
     }
 
-    return this.importModules(ActivitiesModule);
+    return this.importModules(ActivitiesModule, MessageModule);
   }
 
   public importModules(...module: Array<Import>) {

@@ -4,14 +4,10 @@ import { Size } from '@/modules/ui/types';
 
 export interface IProps {
   width?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
-  padding?: string;
-  margin?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   width: Size.LG,
-  padding: 'p-0.5 pb-5 pt-2 md:p-6',
-  margin: 'mb-6 md:mb-0',
 });
 
 const widthClass = computed(
@@ -28,12 +24,12 @@ const widthClass = computed(
 );
 
 const classNames = computed(() => {
-  return ['container main-container h-full mx-auto', props.padding, props.margin, widthClass.value];
+  return ['container main-container h-full mx-auto', widthClass.value];
 });
 </script>
 
 <template>
-  <div class="overflow-y-auto overflow-x-hidden h-full">
+  <div class="overflow-y-hidden overflow-x-hidden max-h-full">
     <main :class="classNames">
       <slot></slot>
     </main>

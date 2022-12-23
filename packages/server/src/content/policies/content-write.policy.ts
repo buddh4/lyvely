@@ -5,6 +5,6 @@ import { ContentPolicy } from './content.policy';
 export class ContentWritePolicy extends ContentPolicy {
   async validate(context): Promise<boolean> {
     // TODO: Profile permission check
-    return !!context.getRequest()?.profileRelations?.getMembership();
+    return !!context.getRequest()?.context?.getMembership();
   }
 }

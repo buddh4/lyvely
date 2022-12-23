@@ -18,6 +18,7 @@ export class StreamRequest<
   @Min(1)
   batchSize: number;
 
+  @Expose()
   filter?: TFilter;
 
   isInitialRequest() {

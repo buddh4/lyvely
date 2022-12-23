@@ -30,7 +30,7 @@
     }
 
     .scrollbar-thin::-webkit-scrollbar-thumb {
-        background: var(--color-secondary);
+        background: var(--color-secondary-light);
     }
 
     .dark .scrollbar-thin::-webkit-scrollbar-thumb {

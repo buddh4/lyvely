@@ -1,7 +1,7 @@
 import { Injectable, ExecutionContext, Inject } from '@nestjs/common';
 import { ContentWritePolicy } from '../policies';
 import { PolicyService } from '../../policies/services/policy.service';
-import { AbstractContentGuard } from './abstract-content-guard';
+import { AbstractContentGuard } from './abstract-content.guard';
 import { ProfileContext } from '../../profiles';
 import { Content } from '../schemas';
 

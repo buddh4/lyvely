@@ -141,7 +141,7 @@ const modalWindowClass = `w-full ${
             </slot>
           </div>
 
-          <section class="p-5 pb-0 overflow-auto scrollbar-thin" data-modal-body>
+          <section class="p-5 pb-1 overflow-auto scrollbar-thin" data-modal-body>
             <slot></slot>
           </section>
 

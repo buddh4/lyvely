@@ -41,12 +41,12 @@ describe('ProfileGuard', () => {
 
       expect(request.profile).toBeDefined();
       expect(request.profile._id).toEqual(profile._id);
-      expect(request.profileRelations).toBeDefined();
-      expect(request.profileRelations.profile).toBeDefined();
-      expect(request.profileRelations.user).toBeDefined();
-      expect(request.profileRelations.user._id).toEqual(owner._id);
-      expect(request.profileRelations.getMembership()).toBeDefined();
-      expect(request.profileRelations.getMembership().role).toEqual(BaseMembershipRole.Owner);
+      expect(request.context).toBeDefined();
+      expect(request.context.profile).toBeDefined();
+      expect(request.context.user).toBeDefined();
+      expect(request.context.user._id).toEqual(owner._id);
+      expect(request.context.getMembership()).toBeDefined();
+      expect(request.context.getMembership().role).toEqual(BaseMembershipRole.Owner);
     });
 
     it('member can access group profile', async () => {
@@ -64,12 +64,12 @@ describe('ProfileGuard', () => {
 
       expect(request.profile).toBeDefined();
       expect(request.profile._id).toEqual(profile._id);
-      expect(request.profileRelations).toBeDefined();
-      expect(request.profileRelations.profile).toBeDefined();
-      expect(request.profileRelations.user).toBeDefined();
-      expect(request.profileRelations.user._id).toEqual(member._id);
-      expect(request.profileRelations.getMembership()).toBeDefined();
-      expect(request.profileRelations.getMembership().role).toEqual(BaseMembershipRole.Member);
+      expect(request.context).toBeDefined();
+      expect(request.context.profile).toBeDefined();
+      expect(request.context.user).toBeDefined();
+      expect(request.context.user._id).toEqual(member._id);
+      expect(request.context.getMembership()).toBeDefined();
+      expect(request.context.getMembership().role).toEqual(BaseMembershipRole.Member);
     });
 
     it('non member user can access protected profile', async () => {
@@ -88,11 +88,11 @@ describe('ProfileGuard', () => {
 
       expect(request.profile).toBeDefined();
       expect(request.profile._id).toEqual(profile._id);
-      expect(request.profileRelations).toBeDefined();
-      expect(request.profileRelations.profile).toBeDefined();
-      expect(request.profileRelations.user).toBeDefined();
-      expect(request.profileRelations.user._id).toEqual(user._id);
-      expect(request.profileRelations.getMembership()).not.toBeDefined();
+      expect(request.context).toBeDefined();
+      expect(request.context.profile).toBeDefined();
+      expect(request.context.user).toBeDefined();
+      expect(request.context.user._id).toEqual(user._id);
+      expect(request.context.getMembership()).not.toBeDefined();
     });
 
     it('non member user can access public profile', async () => {
@@ -135,11 +135,11 @@ describe('ProfileGuard', () => {
 
       expect(request.profile).toBeDefined();
       expect(request.profile._id).toEqual(profile._id);
-      expect(request.profileRelations).toBeDefined();
-      expect(request.profileRelations.profile).toBeDefined();
-      expect(request.profileRelations.user).not.toBeDefined();
-      expect(request.profileRelations.isMember()).toEqual(false);
-      expect(request.profileRelations.isGuest()).toEqual(true);
+      expect(request.context).toBeDefined();
+      expect(request.context.profile).toBeDefined();
+      expect(request.context.user).not.toBeDefined();
+      expect(request.context.isMember()).toEqual(false);
+      expect(request.context.isGuest()).toEqual(true);
     });
 
     it('guest can not access protected profile', async () => {

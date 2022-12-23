@@ -1,7 +1,7 @@
 import { Controller, UseGuards } from '@nestjs/common';
 import { ProfileGuard } from '../../profiles';
 import { CanActivate } from '@nestjs/common/interfaces';
-import { ContentType } from './content-type.decorator';
+import { StrictContentType } from './strict-content-type.decorator';
 import { Content } from '../schemas';
 import { ContentGuard } from '../guards';
 import { Type } from '@nestjs/common/interfaces/type.interface';
@@ -14,7 +14,7 @@ export const ContentController = (
 ) => {
   const controller = Controller(prefix);
   const profileGuard = UseGuards(ProfileGuard, ContentGuard, ...guards);
-  const contentTypeGuard = contentType ? ContentType(contentType) : false;
+  const contentTypeGuard = contentType ? StrictContentType(contentType) : false;
 
   return function (target: any) {
     controller(target);

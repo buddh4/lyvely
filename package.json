@@ -4,7 +4,7 @@
   "author": "Julian Harrer",
   "private": true,
   "workspaces": [
-    "./packages/*"
+    "packages/*"
   ],
   "scripts": {
     "docker:build:static": "docker build -t lyvely-static -f static.Dockerfile .",

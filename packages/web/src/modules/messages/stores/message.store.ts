@@ -1,0 +1,30 @@
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { useMessageService } from '@/modules/messages/services/message.service';
+import { CreateMessage } from '@lyvely/common';
+import { loadingStatus, useStatus } from '@/store';
+import { I18nModelValidator } from '@/modules/core';
+
+export const useCreateMessageStore = defineStore('create-message', () => {
+  const model = ref(new CreateMessage(''));
+  const validator = ref(new I18nModelValidator(model.value));
+  const messageService = useMessageService();
+  const status = useStatus();
+
+  function reset() {
+    model.value = new CreateMessage('');
+    validator.value.setModel(model.value);
+    status.resetStatus();
+  }
+
+  async function submit() {
+    const response = await loadingStatus(messageService.create(model.value), status);
+    console.log(response);
+    reset();
+  }
+
+  return {
+    model,
+    submit,
+  };
+});

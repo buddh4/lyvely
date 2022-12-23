@@ -17,7 +17,13 @@ export class HabitDataPointService extends NumberDataPointService<Habit, HabitDa
   @Inject()
   protected scoreService: ContentScoreService;
 
-  protected async updateDataPointValue(profile, user, dataPoint: HabitDataPoint, habit: Habit, newValue: number) {
+  protected async updateDataPointValue(
+    profile,
+    user,
+    dataPoint: HabitDataPoint,
+    habit: Habit,
+    newValue: number,
+  ) {
     const oldValue = dataPoint.value || 0;
 
     await super.updateDataPointValue(profile, user, dataPoint, habit, newValue);
@@ -72,7 +78,7 @@ export class HabitDataPointService extends NumberDataPointService<Habit, HabitDa
     return result;
   }
 
-  async deleteLog(user: User, profile: Profile, timingModel: Activity, date: CalendarDate) {
+  async deleteLog(user: User, profile: Profile, timingModel: Habit, date: CalendarDate) {
     const log = await this.upsertDataPoint(profile, user, timingModel, date, 0);
     await this.dataPointDao.deleteOne({ _id: log._id });
   }

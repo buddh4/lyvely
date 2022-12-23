@@ -1,29 +1,14 @@
-import { MessagesEndpoint, IStreamResponse, StreamRequest, ContentModel } from '@lyvely/common';
-import { Controller, Body, Req, Post, Get, Param } from '@nestjs/common';
-import { UserRequest } from '@/users';
+import { ContentModel, ENDPOINT_CONTENT_STREAM } from '@lyvely/common';
+import { Inject } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
+import { AbstractStreamController } from '@/stream';
+import { Content } from '@/content';
+import { ContentStreamService } from '@/content-stream/services/content-stream.service';
+import { ProfileController } from '@/profiles';
 
-@Controller('stream')
+@ProfileController(ENDPOINT_CONTENT_STREAM)
 @UseClassSerializer()
-export class ContentStreamController implements MessagesEndpoint {
-  @Post('load-next')
-  loadNext(
-    @Body() streamRequest: StreamRequest,
-    @Req() req: UserRequest,
-  ): Promise<IStreamResponse<ContentModel>> {
-    return null;
-  }
-
-  @Post('load-next')
-  update(
-    @Body() streamRequest: StreamRequest,
-    @Req() req: UserRequest,
-  ): Promise<IStreamResponse<ContentModel>> {
-    return null;
-  }
-
-  @Get(':nid')
-  async loadEntry(@Param('nid') nid: string, @Req() req: UserRequest): Promise<ContentModel> {
-    return null;
-  }
+export class ContentStreamController extends AbstractStreamController<Content, ContentModel> {
+  @Inject()
+  protected streamEntryService: ContentStreamService;
 }

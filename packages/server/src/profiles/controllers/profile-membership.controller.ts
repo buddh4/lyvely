@@ -21,7 +21,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
     @Body() update: UpdateProfileMembershipSettingsDto,
     @Req() req: ProfileRequest,
   ): Promise<MembershipModel> {
-    const membership = req.profileRelations.getMembership();
+    const membership = req.context.getMembership();
     await this.membershipService.updateMembershipInfo(membership, update);
     return new MembershipModel(membership);
   }

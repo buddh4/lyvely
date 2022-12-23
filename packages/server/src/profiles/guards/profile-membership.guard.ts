@@ -5,6 +5,6 @@ import { ProfileRequest } from '../types';
 export class ProfileMembershipGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<ProfileRequest>();
-    return !!request.profileRelations.getMembership();
+    return !!request.context.getMembership();
   }
 }

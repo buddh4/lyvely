@@ -1,5 +1,5 @@
 import { isSameDay, ITimeSeriesContentConfig } from '@lyvely/common';
-import { ContentType, IContentEntity } from '@/content';
+import { IContentEntity, ContentType } from '@/content';
 import { DataPointConfig, DataPointConfigFactory, DefaultDataPointConfig } from './config';
 import { EntityType } from '@/core';
 import { cloneDeep } from 'lodash';

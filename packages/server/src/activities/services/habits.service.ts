@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { Habit } from '../schemas';
 import { AbstractContentService } from '@/content';
 import { HabitsDao } from '../daos/habits.dao';
@@ -8,9 +8,8 @@ import { CreateHabitDto } from '@lyvely/common';
 
 @Injectable()
 export class HabitsService extends AbstractContentService<Habit> {
-  constructor(protected contentDao: HabitsDao) {
-    super(contentDao);
-  }
+  @Inject()
+  protected contentDao: HabitsDao;
 
   async createHabit(profile: Profile, user: User, dto: CreateHabitDto) {
     return this.createContent(profile, user, Habit.create(profile, user, dto), dto.tagNames);

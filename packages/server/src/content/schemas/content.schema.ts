@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {
   DeepPartial,
@@ -84,7 +84,7 @@ export class Content<
   }
 
   getSortOrder() {
-    return this.meta.sortOrder;
+    return this.meta.streamSort;
   }
 
   setAuthor(author: Author) {
@@ -102,7 +102,7 @@ export class Content<
 }
 
 export abstract class ContentType<
-  T extends IContentEntity & BaseEntity<IContentEntity> = any,
+  T extends IContentEntity & BaseEntity<IContentEntity>,
   TContent extends ContentDataType = ContentDataType,
   TConfig extends Object = any,
 > extends Content<T, TContent, TConfig> {
@@ -110,3 +110,12 @@ export abstract class ContentType<
 }
 
 export const ContentSchema = SchemaFactory.createForClass(Content);
+
+export function getContentModelDefinition(definitions: ModelDefinition[]): ModelDefinition {
+  return {
+    name: Content.name,
+    collection: Content.collectionName(),
+    schema: ContentSchema,
+    discriminators: definitions,
+  };
+}

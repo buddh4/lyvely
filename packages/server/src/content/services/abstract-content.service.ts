@@ -1,4 +1,10 @@
-import { ProfilesService, Profile, ProfileContext, ProfileRelation, ProfileTagsService } from '@/profiles';
+import {
+  ProfilesService,
+  Profile,
+  ProfileContext,
+  ProfileRelation,
+  ProfileTagsService,
+} from '@/profiles';
 import { AbstractContentDao } from '../daos';
 import { User } from '@/users';
 import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@/core';
@@ -14,10 +20,10 @@ export abstract class AbstractContentService<T extends Content> {
   @Inject()
   protected profileTagsService: ProfileTagsService;
 
-  //@Inject()
-  //protected contentEvents: ContentEventPublisher;
+  protected abstract contentDao: AbstractContentDao<T>;
 
-  constructor(protected contentDao: AbstractContentDao<T>) {}
+  @Inject()
+  protected contentEvents: ContentEventPublisher;
 
   async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T | null> {
     return this.contentDao.findById(id);
@@ -37,11 +43,15 @@ export abstract class AbstractContentService<T extends Content> {
     await this.mergeTags(profile, model, tagNames);
     model.meta.createdBy = assureObjectId(user);
     const result = await this.contentDao.save(model);
-    //   this.contentEvents.emitContentCreated(result);
+    this.contentEvents.emitContentCreated(result);
     return result;
   }
 
-  protected async mergeTagsForUpdate(profile: Profile, update: UpdateQuerySet<T>, tagNames?: string[]) {
+  protected async mergeTagsForUpdate(
+    profile: Profile,
+    update: UpdateQuerySet<T>,
+    tagNames?: string[],
+  ) {
     if (!tagNames) return;
 
     await this.profileTagsService.mergeTags(profile, tagNames);

@@ -5,14 +5,10 @@ import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 
 export interface IProps {
   width?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
-  padding?: string;
-  margin?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   width: Size.LG,
-  padding: undefined,
-  margin: undefined,
 });
 </script>
 
