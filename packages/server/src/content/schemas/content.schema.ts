@@ -16,7 +16,6 @@ import { User } from '@/users';
 import { Profile, BaseProfileModel } from '@/profiles';
 import { Tag } from '@/tags';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
-import { IStreamable } from '@/stream';
 
 export type ContentDocument = Content & mongoose.Document;
 
@@ -31,7 +30,7 @@ export class Content<
     TConfig extends Object = any,
   >
   extends BaseProfileModel<T>
-  implements IContent, IStreamable<T>
+  implements IContent
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)

@@ -1,11 +1,11 @@
 import { Post, Body, Req, Param, Get } from '@nestjs/common';
 import { IStreamFilter, IStreamResponse, StreamRequest } from '@lyvely/common';
 import { ProfileRequest, UserContext } from '@/profiles';
-import { AbstractStreamService } from '@/stream/service';
-import { IStreamable } from '@/stream';
+import { AbstractStreamService } from '../service';
+import { BaseEntity } from '@/core';
 
 export abstract class AbstractStreamController<
-  TModel extends IStreamable<TModel>,
+  TModel extends BaseEntity<TModel>,
   TResult,
   TFilter extends IStreamFilter = any,
 > {

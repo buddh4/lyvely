@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { PropertyType, TimerModel, TimeSpanModel, PropertiesOf } from '@lyvely/common';
 import { assureObjectId, EntityIdentity } from '@/core';
-import { User } from '@/users';
 
 @Schema({ _id: false })
 export class TimeSpan implements PropertiesOf<TimeSpanModel> {
@@ -15,7 +14,8 @@ export class TimeSpan implements PropertiesOf<TimeSpanModel> {
   @Prop()
   to?: number;
 
-  constructor(userIdentity?: EntityIdentity<User>) {
+  // We use any since we do not want to introduce user module dependency
+  constructor(userIdentity?: EntityIdentity<any>) {
     if (!this.from) {
       this.from = Date.now();
     }
@@ -37,14 +37,14 @@ export class Timer extends TimerModel {
   @PropertyType([TimeSpan])
   spans: TimeSpan[] = [];
 
-  constructor(userIdentity?: EntityIdentity<User>) {
+  constructor(userIdentity?: EntityIdentity<any>) {
     super();
     if (userIdentity) {
       this.uid = assureObjectId(userIdentity);
     }
   }
 
-  start(userIdentity?: EntityIdentity<User>) {
+  start(userIdentity?: EntityIdentity<any>) {
     if (this.isStarted()) return;
     const span = new TimeSpan(userIdentity);
     this.spans.push(span);
@@ -57,7 +57,7 @@ export class Timer extends TimerModel {
     span.to = Date.now();
   }
 
-  overwrite(newValue: number, userIdentity?: EntityIdentity<User>) {
+  overwrite(newValue: number, userIdentity?: EntityIdentity<any>) {
     if (newValue === 0) {
       this.spans = [];
       return;

@@ -1,5 +1,6 @@
 import { BaseModel } from '@/models';
-import { IStreamFilter, IStreamRequest, IStreamState, StreamState } from '@/stream';
+import { IStreamFilter, IStreamRequest, IStreamState } from '../interfaces';
+import { StreamState } from './stream-state.model';
 import { Expose, Type } from 'class-transformer';
 import { IsNumber, Min } from 'class-validator';
 

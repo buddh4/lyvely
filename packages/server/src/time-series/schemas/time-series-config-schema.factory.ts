@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 import { SchemaFactory } from '@nestjs/mongoose';
 import { Schema } from 'mongoose';
-import { DataPointConfig } from '@/time-series';
+import { DataPointConfig } from './config/data-point-config.schema';
 
 const SchemaMapping = {};
 

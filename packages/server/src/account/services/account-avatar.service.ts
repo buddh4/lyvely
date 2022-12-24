@@ -43,6 +43,7 @@ export class AccountAvatarService {
   }
 
   private getAccountAvatarFilePath(user: User) {
+    // TODO: Move to avatar module
     return getLocalFilePath(this.configService, 'avatars', user.guid);
   }
 }

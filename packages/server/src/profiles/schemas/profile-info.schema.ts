@@ -2,10 +2,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { BaseModel, ProfileInfoModel, PropertiesOf } from '@lyvely/common';
 import { assureObjectId, assureStringId } from '@/core';
-import { Profile } from '@/profiles';
+import { Profile } from './profiles.schema';
 
 @Schema({ _id: false })
-export class ProfileInfo extends BaseModel<ProfileInfo> implements PropertiesOf<Omit<ProfileInfoModel, 'pid'>> {
+export class ProfileInfo
+  extends BaseModel<ProfileInfo>
+  implements PropertiesOf<Omit<ProfileInfoModel, 'pid'>>
+{
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   pid: TObjectId;
 

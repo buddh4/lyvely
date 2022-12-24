@@ -1,4 +1,4 @@
-import { IWebNotification } from '@/notifications';
+import { IWebNotification } from '../interfaces';
 import { Expose, Type } from 'class-transformer';
 import { BaseModel } from '@/models';
 import { ProfileInfoModel } from '@/profiles';

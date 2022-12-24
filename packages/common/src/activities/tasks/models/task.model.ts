@@ -2,7 +2,7 @@ import { Expose } from 'class-transformer';
 import { ActivityType, ActivityModel } from '../../models';
 import { TimerModel } from '@/calendar';
 import { PropertyType } from '@/models';
-import { CreateTaskDto, UpdateTaskDto } from '@/activities';
+import { CreateTaskDto, UpdateTaskDto } from '../dtos';
 
 @Expose()
 export class TaskModel extends ActivityModel<TaskModel> {

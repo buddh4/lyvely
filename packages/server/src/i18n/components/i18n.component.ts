@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { I18nService } from 'nestjs-i18n';
-import { Translatable } from '@/i18n';
+import { Translatable } from '../interfaces';
 import { User } from '@/users';
 
 const availableLocales = ['en-US', 'de-DE'];

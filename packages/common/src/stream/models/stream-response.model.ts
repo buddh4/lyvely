@@ -1,5 +1,6 @@
 import { BaseModel } from '@/models';
-import { IStreamResponse, IStreamState, StreamState } from '@/stream';
+import { IStreamResponse, IStreamState } from '../interfaces';
+import { StreamState } from './stream-state.model';
 import { Exclude, Expose, Type } from 'class-transformer';
 
 @Exclude()

@@ -1,6 +1,6 @@
 import { StrictEndpoint } from '@/endpoints';
 import { UpdateProfileMembershipSettingsDto } from '../dtos';
-import { MembershipModel } from '@/profiles';
+import { MembershipModel } from '../models';
 
 export interface IProfileMembershipService {
   update(update: UpdateProfileMembershipSettingsDto): Promise<MembershipModel>;

@@ -21,7 +21,7 @@ import { assureObjectId, assureStringId, EntityIdentity } from '@/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { I18n } from '@/i18n';
 import { LiveService } from '@/live';
-import { AbstractStreamService, StreamSortField } from '@/stream';
+import { AbstractStreamService } from '@/stream';
 import { RequestContext } from '@/profiles';
 
 @Injectable()
@@ -226,7 +226,7 @@ export class UserNotificationsService extends AbstractStreamService<
     return { uid: assureObjectId(context.user) };
   }
 
-  getSortField(): StreamSortField<UserNotification> {
+  getSortField(): string {
     return 'sortOrder';
   }
 }

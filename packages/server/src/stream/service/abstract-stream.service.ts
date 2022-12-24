@@ -1,15 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { IStreamResponse, StreamRequest, IStreamFilter, findByPath } from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
-import { AbstractDao, assureObjectId, EntityIdentity, IFetchQueryOptions } from '@/core';
+import {
+  AbstractDao,
+  assureObjectId,
+  BaseEntity,
+  EntityIdentity,
+  IFetchQueryOptions,
+} from '@/core';
 import { cloneDeep } from 'lodash';
 import { RequestContext } from '@/profiles';
-import { IStreamable, StreamSortField } from '../interfaces';
 import { DEFAULT_BATCH_SIZE } from '@/stream/stream.constants';
 
 @Injectable()
 export abstract class AbstractStreamService<
-  TModel extends IStreamable<TModel>,
+  TModel extends BaseEntity<TModel>,
   TResult,
   TFilter extends IStreamFilter = any,
 > {
@@ -22,7 +27,7 @@ export abstract class AbstractStreamService<
     models: TModel[],
     context: RequestContext,
   ): Promise<TResult[]>;
-  protected abstract getSortField(): StreamSortField<TModel>;
+  protected abstract getSortField(): string;
 
   async loadEntry(
     context: RequestContext,

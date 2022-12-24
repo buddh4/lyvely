@@ -1,7 +1,7 @@
 import { AbstractContentService } from '@/content';
 import { Message } from '@/message/schemas/message.schema';
 import { Inject, Injectable } from '@nestjs/common';
-import { MessageDao } from '@/message';
+import { MessageDao } from '../daos';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { CreateMessage } from '@lyvely/common';

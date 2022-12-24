@@ -1,5 +1,5 @@
 import { StreamResponse } from '@/stream/models/stream-response.model';
-import { IWebNotification } from '@/notifications';
+import { IWebNotification } from '../interfaces';
 import { Expose, Type } from 'class-transformer';
 import { WebNotification } from './web-notification.model';
 

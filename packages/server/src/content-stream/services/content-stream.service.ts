@@ -1,4 +1,4 @@
-import { AbstractStreamService, StreamSortField } from '@/stream';
+import { AbstractStreamService } from '@/stream';
 import { ContentModel, StreamRequest } from '@lyvely/common';
 import { Inject, Logger } from '@nestjs/common';
 import { Content, ContentDao } from '@/content';
@@ -14,7 +14,7 @@ export class ContentStreamService extends AbstractStreamService<Content, Content
     return { pid: context.pid };
   }
 
-  protected getSortField(): StreamSortField<Content> {
+  protected getSortField(): string {
     return 'meta.streamSort';
   }
 

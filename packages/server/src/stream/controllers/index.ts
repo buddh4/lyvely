@@ -1,1 +1,1 @@
-export * from './abstract-stream-controller';
+export * from './abstract-stream.controller';

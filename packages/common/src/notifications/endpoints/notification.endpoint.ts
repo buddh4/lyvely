@@ -1,5 +1,5 @@
 import { IStreamService } from '@/stream';
-import { IWebNotification } from '@/notifications';
+import { IWebNotification } from '../interfaces';
 import { Endpoint } from '@/endpoints';
 
 export interface INotificationsService extends IStreamService<IWebNotification> {

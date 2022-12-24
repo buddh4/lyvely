@@ -1,5 +1,5 @@
 import { CalendarDate, dateTime } from '../interfaces';
-import { CalendarTimeInterval } from '@/calendar';
+import { CalendarTimeInterval } from '../models';
 
 export function subtractByInterval(
   date: CalendarDate,

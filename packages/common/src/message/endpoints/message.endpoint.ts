@@ -1,6 +1,6 @@
 import { StrictEndpoint } from '@/endpoints';
 import { AbstractContentEndpoint } from '@/content';
-import { CreateMessage, MessageModel } from '@/message';
+import { CreateMessage, MessageModel } from '../models';
 
 export interface IMessageClient extends AbstractContentEndpoint {
   create(model: CreateMessage): Promise<MessageModel>;
