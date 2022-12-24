@@ -5,8 +5,8 @@ export interface ITypeRegistryDefinition<T> {
   constructor: Type<T>;
 }
 
-export class AbstractTypeRegistry<T, TMeta = any> {
-  constructor(protected readonly logger: Logger) {}
+export abstract class AbstractTypeRegistry<T, TMeta = any> {
+  protected abstract logger: Logger;
 
   private typeMapping: Record<string, ITypeRegistryDefinition<T>> = {};
   private typeMeta: Record<string, TMeta> = {};

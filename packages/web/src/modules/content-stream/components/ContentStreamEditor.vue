@@ -25,14 +25,18 @@ const placeholderKey =
 <template>
   <div class="flex flex-col">
     <div class="flex gap-1">
-      <ly-button class="primary rounded-full w-10 h-10"><ly-icon name="plus"></ly-icon></ly-button>
+      <ly-button class="primary rounded-full w-10 h-10 flex justify-center"
+        ><ly-icon name="plus"></ly-icon
+      ></ly-button>
       <input
         v-model="message"
         type="text"
         class="rounded-full"
         :placeholder="$t(placeholderKey)"
         @keyup.enter="$emit('submit')" />
-      <ly-button class="primary rounded-full w-10 h-10" @click="$emit('submit')">
+      <ly-button
+        class="primary rounded-full w-10 h-10 flex justify-center"
+        @click="$emit('submit')">
         <ly-icon name="send"></ly-icon
       ></ly-button>
     </div>

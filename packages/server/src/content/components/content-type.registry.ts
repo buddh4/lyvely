@@ -4,7 +4,5 @@ import { AbstractTypeRegistry } from '@/core/components/abstract-type.registry';
 
 @Injectable()
 export class ContentTypeRegistry extends AbstractTypeRegistry<Content> {
-  constructor() {
-    super(new Logger(ContentTypeRegistry.name));
-  }
+  protected logger = new Logger(ContentTypeRegistry.name);
 }

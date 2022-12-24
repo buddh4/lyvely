@@ -14,7 +14,6 @@ const tags = computed(() => new TagFilter({ archived: false }).apply(profileStor
 
 const router = useRouter();
 const showFilterDrawer = ref(false);
-let fullPath: string | undefined = undefined;
 
 const activeTagId = undefined;
 

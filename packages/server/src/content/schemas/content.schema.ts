@@ -84,7 +84,7 @@ export class Content<
   }
 
   getSortOrder() {
-    return this.meta.streamSort;
+    return this.meta.sortOrder;
   }
 
   setAuthor(author: Author) {

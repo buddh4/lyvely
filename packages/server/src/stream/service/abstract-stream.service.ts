@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IStreamResponse, StreamRequest, IStreamFilter } from '@lyvely/common';
+import { IStreamResponse, StreamRequest, IStreamFilter, findByPath } from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
 import { AbstractDao, assureObjectId, EntityIdentity, IFetchQueryOptions } from '@/core';
 import { cloneDeep } from 'lodash';
@@ -70,11 +70,11 @@ export abstract class AbstractStreamService<
 
     if (streamEntries.length) {
       response.state.lastId = streamEntries[streamEntries.length - 1].id;
-      response.state.lastOrder = streamEntries[streamEntries.length - 1].getSortOrder();
+      response.state.lastOrder = this.getSortValue(streamEntries[streamEntries.length - 1]);
 
       if (!response.state.firstId) {
         response.state.firstId = streamEntries[0].id;
-        response.state.firstOrder = streamEntries[0].getSortOrder();
+        response.state.firstOrder = this.getSortValue(streamEntries[0]);
       }
     }
 
@@ -85,6 +85,10 @@ export abstract class AbstractStreamService<
     response.state.isEnd = !response.hasMore;
 
     return response;
+  }
+
+  protected getSortValue(model: TModel) {
+    return findByPath(model, this.getSortField());
   }
 
   async updateStream(
@@ -122,7 +126,7 @@ export abstract class AbstractStreamService<
 
     if (models.length) {
       response.state.firstId = streamEntries[0].id;
-      response.state.firstOrder = streamEntries[0].getSortOrder();
+      response.state.firstOrder = this.getSortValue(streamEntries[0]);
     }
 
     if (models.length < batchSize) {

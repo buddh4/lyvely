@@ -24,23 +24,27 @@ watch(router.currentRoute, (to) => {
 
 const layoutMap = new Map<string, { component: any; props: any }>();
 layoutMap.set('profile', { component: ProfileLayout, props: {} });
-layoutMap.set('profile_xl', { component: ProfileLayout, props: { containerWidth: 'xl' } });
-layoutMap.set('profile_full', { component: ProfileLayout, props: { containerWidth: 'full' } });
+layoutMap.set('profile-xl', { component: ProfileLayout, props: { containerWidth: 'xl' } });
+layoutMap.set('profile-full', { component: ProfileLayout, props: { containerWidth: 'full' } });
 
-const layoutComponent = computed<{ component: any } | undefined>(() => {
+const layoutDefintion = computed<{ component: any; props: any } | undefined>(() => {
   if (!layout.value) return undefined;
   const layoutDefinition = layoutMap.get(layout.value?.toLowerCase());
   if (!layoutDefinition) return undefined;
 
   return {
     component: layoutDefinition.component,
+    props: layoutDefinition.props,
   };
 });
 </script>
 
 <template>
   <div class="flex items-stretch">
-    <Component :is="layoutComponent.component" v-if="layoutComponent" />
+    <Component
+      :is="layoutDefintion.component"
+      v-if="layoutDefintion"
+      v-bind="layoutDefintion.props" />
     <template v-else>
       <router-view></router-view>
     </template>

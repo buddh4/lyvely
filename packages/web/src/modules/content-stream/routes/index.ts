@@ -6,7 +6,7 @@ export default [
     path: profileRoute('/stream'),
     name: 'Stream',
     meta: {
-      layout: 'profile',
+      layout: 'profile-xl',
       title: translation('stream.title'),
     },
     component: () => import('../views/ContentStreamView.vue'),

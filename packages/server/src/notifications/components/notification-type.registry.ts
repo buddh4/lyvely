@@ -19,11 +19,12 @@ const globalListener = <Listener>globalEmitter.on(
 
 @Injectable()
 export class NotificationTypeRegistry extends AbstractTypeRegistry<NotificationType> {
+  protected logger = new Logger(NotificationTypeRegistry.name);
   constructor(
     @InjectModel(Notification.name)
     private notificationModel: Model<Notification>,
   ) {
-    super(new Logger(NotificationTypeRegistry.name));
+    super();
     globalListener.off();
     globalEmitter.on(
       EVENT_REGISTER_NOTIFICATION_TYPE,

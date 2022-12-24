@@ -1,13 +1,12 @@
-import { Inject, Injectable, Module, OnModuleInit, Type } from '@nestjs/common';
+import { Inject, Injectable, Module, OnModuleInit, Scope, Type } from '@nestjs/common';
 import { UsersModule } from '../users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ContentService, ContentScoreService } from './services';
+import { ContentScoreService, ContentService } from './services';
 import { ProfileScore, ProfilesModule } from '../profiles';
 import { ContentDao, ContentScoreDao } from './daos';
 import { ContentReadPolicy, ContentWritePolicy } from './policies';
 import { ContentEventPublisher, ContentTypeRegistry } from './components';
-import { IContentTypeDefinition } from '@/content/interfaces';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { LiveModule } from '@/live/live.module';
 
@@ -71,13 +70,18 @@ export class ContentModule {
     return {
       module: ContentModule,
       imports: [ContentCoreModule.registerCore()],
-      providers: [registerContentTypeOnInit(contentTypes)],
+      providers: [
+        {
+          provide: `ContentTypeRegistration${Math.random()}`,
+          useClass: registerContentTypeOnInit(contentTypes),
+        },
+      ],
     };
   }
 }
 
 function registerContentTypeOnInit(contentTypes: Type<Content>[]) {
-  @Injectable()
+  @Injectable({ scope: Scope.DEFAULT })
   class RegisterContentTypeService implements OnModuleInit {
     @Inject()
     private contentTypeRegistry: ContentTypeRegistry;
