@@ -24,7 +24,6 @@ if (diff < 86_400 /* Less than a day */) {
   const timeout = diff < 3_600 ? 60_000 : 3_600_000;
   const interval = setInterval(() => {
     now.value = Date.now();
-    console.log(now.value);
   }, timeout);
   onUnmounted(() => clearInterval(interval));
 }

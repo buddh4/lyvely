@@ -1,6 +1,24 @@
-import { IStreamFilter, IStreamOptions, IStreamService, IStreamState } from '@lyvely/common';
+import {
+  IStreamFilter,
+  IStreamOptions,
+  IStreamService,
+  IStreamState,
+  StreamDirection,
+} from '@lyvely/common';
 import { ref, Ref } from 'vue';
-import { useStatus, loadingStatus } from '@/store';
+import { loadingStatus, useStatus } from '@/store';
+import mitt from 'mitt';
+
+type StreamEvents<TModel> = {
+  'post.update': TModel[];
+  'post.next': TModel[];
+} & Record<string, any>;
+
+export type IStream<
+  TModel extends { id: string },
+  TFilter extends IStreamFilter = any,
+  TOptions extends IStreamOptions = IStreamOptions,
+> = ReturnType<typeof useStream<TModel, TFilter, TOptions>>;
 
 export function useStream<
   TModel extends { id: string },
@@ -15,6 +33,7 @@ export function useStream<
   const nextStatus = useStatus();
   const updateStatus = useStatus();
   const models = ref<TModel[]>([]) as Ref<TModel[]>;
+  const events = mitt<StreamEvents<TModel>>();
 
   async function reload() {
     state.value = {};
@@ -24,29 +43,62 @@ export function useStream<
 
   async function next() {
     if (state.value.isEnd) return;
+    if (nextStatus.isStatusLoading()) return;
+
     const response = await loadingStatus(
       service.loadNext(state.value, options, filter),
       nextStatus,
     );
+
     state.value = response.state;
-    if (response.models?.length) {
-      models.value = models.value.concat(response.models);
-    }
+    _addNext(response.models);
 
     return response;
   }
 
+  function _addNext(newModels: TModel[]) {
+    if (!newModels?.length) return;
+
+    newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
+
+    events.emit('pre.next', newModels);
+
+    if (options.direction === StreamDirection.TTB) {
+      models.value = models.value.concat(newModels);
+    } else {
+      models.value = newModels.concat(models.value);
+    }
+
+    events.emit('post.next', newModels);
+  }
+
   async function update() {
+    if (updateStatus.isStatusLoading()) return;
+
     const response = await loadingStatus(
       service.update(state.value, options, filter),
       updateStatus,
     );
     state.value = response.state;
-    if (response.models?.length) {
-      models.value = response.models.concat(models.value);
-    }
+    _addUpdates(response.models);
 
     return response;
+  }
+
+  function _addUpdates(newModels: TModel[]) {
+    if (!newModels?.length) return;
+
+    newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
+
+    events.emit('pre.update', newModels);
+
+    if (options.direction === StreamDirection.TTB) {
+      models.value = newModels.concat(models.value);
+    } else {
+      models.value = models.value.concat(newModels.reverse());
+    }
+
+    events.emit('post.update', newModels);
   }
 
   async function loadEntry(id: string) {
@@ -60,6 +112,11 @@ export function useStream<
     return model;
   }
 
+  function getStreamEntryAt(index: number): TModel | null {
+    if (index < 0 || index > models.value.length - 1) return null;
+    return models.value[index];
+  }
+
   function isInitialized() {
     return !nextStatus.isStatusInit();
   }
@@ -67,9 +124,11 @@ export function useStream<
   return {
     options,
     state,
+    events,
     nextStatus,
     updateStatus,
     isInitialized,
+    getStreamEntryAt,
     filter,
     models,
     next,

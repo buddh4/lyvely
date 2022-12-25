@@ -12,7 +12,7 @@ export const useContentStreamStore = defineStore('content-stream', () => {
   const live = useLiveStore();
   const isActive = ref(false);
   const stream = useStream<ContentModel>(
-    { batchSize: 20, direction: StreamDirection.BBT },
+    { batchSize: 25, direction: StreamDirection.BBT },
     contentStreamService,
   );
 

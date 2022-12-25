@@ -31,6 +31,7 @@
 
     .scrollbar-thin::-webkit-scrollbar-thumb {
         background: var(--color-secondary-light);
+        border-radius: 5px;
     }
 
     .dark .scrollbar-thin::-webkit-scrollbar-thumb {

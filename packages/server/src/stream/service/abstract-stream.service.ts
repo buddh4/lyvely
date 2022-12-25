@@ -1,5 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { IStreamResponse, StreamRequest, IStreamFilter, findByPath } from '@lyvely/common';
+import {
+  IStreamResponse,
+  StreamRequest,
+  IStreamFilter,
+  findByPath,
+  IStreamState,
+  BaseModel,
+  ContentModel,
+} from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
 import {
   AbstractDao,
@@ -11,6 +19,18 @@ import {
 import { cloneDeep } from 'lodash';
 import { RequestContext } from '@/profiles';
 import { DEFAULT_BATCH_SIZE } from '@/stream/stream.constants';
+import { Expose, instanceToPlain, Transform } from 'class-transformer';
+
+@Expose()
+export class StreamResponse<TResult>
+  extends BaseModel<StreamResponse<TResult>>
+  implements IStreamResponse<TResult>
+{
+  @Transform(({ value }) => value.map((elem) => instanceToPlain(elem)))
+  models: TResult[];
+  state: IStreamState;
+  hasMore?: boolean;
+}
 
 @Injectable()
 export abstract class AbstractStreamService<
@@ -67,11 +87,11 @@ export abstract class AbstractStreamService<
 
     const models = await this.mapToResultModel(streamEntries, context);
 
-    const response: IStreamResponse<TResult> = {
+    const response = new StreamResponse<TResult>({
       models,
       state: request.state ? cloneDeep(request.state) : {},
       hasMore: true,
-    };
+    });
 
     if (streamEntries.length) {
       response.state.lastId = streamEntries[streamEntries.length - 1].id;
@@ -123,11 +143,11 @@ export abstract class AbstractStreamService<
 
     const models = await this.mapToResultModel(streamEntries, context);
 
-    const response: IStreamResponse<any> = {
+    const response = new StreamResponse<TResult>({
       models: models,
       state: cloneDeep(request.state),
       hasMore: true,
-    };
+    });
 
     if (models.length) {
       response.state.firstId = streamEntries[0].id;

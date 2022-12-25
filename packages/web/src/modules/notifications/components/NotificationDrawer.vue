@@ -34,7 +34,6 @@ function test() {
 <template>
   <ly-drawer
     id="notifications-drawer"
-    ref="root"
     v-model="showNotificationDrawer"
     title="notifications.drawer.title"
     @infinite-scroll="loadNext">

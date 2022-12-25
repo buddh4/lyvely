@@ -20,6 +20,7 @@
     "@tailwindcss/typography": "^0.5.0",
     "@types/intro.js": "^5.1.0",
     "@types/ms": "^0.7.31",
+    "@vueuse/components": "^9.9.0",
     "@vueuse/core": "^9.1.0",
     "@vueuse/integrations": "^9.1.1",
     "animate.css": "^4.1.1",

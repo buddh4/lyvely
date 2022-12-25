@@ -8,6 +8,8 @@ import { Model } from 'mongoose';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
 import { ContentTypeRegistry } from '@/content';
+import { instanceToPlain } from 'class-transformer';
+import { ContentModel } from '@lyvely/common';
 
 describe('content dao', () => {
   let testingModule: TestingModule;
@@ -17,7 +19,7 @@ describe('content dao', () => {
 
   const TEST_KEY = 'content_dao';
 
-  const ContentModel = [
+  const ContentModels = [
     {
       name: Content.name,
       collection: Content.collectionName(),
@@ -30,7 +32,7 @@ describe('content dao', () => {
     testingModule = await createBasicTestingModule(
       TEST_KEY,
       [ContentDao, ContentTypeRegistry],
-      ContentModel,
+      ContentModels,
     ).compile();
     contentDao = testingModule.get<ContentDao>(ContentDao);
     contentTypeRegistry = testingModule.get<ContentTypeRegistry>(ContentTypeRegistry);
@@ -43,27 +45,13 @@ describe('content dao', () => {
     return new TestContent(profile, user, entity.toObject());
   }
 
-  describe('findById', () => {
-    it('search unregistered content', async () => {
+  describe('serialize', () => {
+    it('serialize test content', async () => {
       const { user, profile } = TestDataUtils.createDummyUserAndProfile();
       const content = await createTestContent(user, profile, 'Hello World');
-      const search = <TestContent>await contentDao.findById(content._id);
-      expect(search instanceof Content).toEqual(true);
-      expect(search instanceof TestContent).toEqual(false);
-      expect(search.content.testData).toEqual('Hello World');
+      const model = new ContentModel(content.toModel());
+      const serialized = instanceToPlain(model);
+      expect(serialized.oid).toEqual(content.oid.toString());
     });
-
-    it('search registered content', async () => {
-      const { user, profile } = TestDataUtils.createDummyUserAndProfile();
-
-      contentTypeRegistry.registerType(TestContent);
-
-      const content = await createTestContent(user, profile, 'Hello World');
-      const search = <TestContent>await contentDao.findById(content._id);
-      expect(search instanceof Content).toEqual(true);
-      expect(search instanceof TestContent).toEqual(true);
-      expect(search.content.testData).toEqual('Hello World');
-    });
-
   });
 });

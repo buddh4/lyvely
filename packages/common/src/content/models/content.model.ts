@@ -10,6 +10,7 @@ import {
   IContentLog,
   IContentMetadata,
 } from '../interfaces';
+import { TransformObjectId } from '@/utils';
 
 export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   extends BaseModel<T>
@@ -30,7 +31,7 @@ export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
 export class ContentAuthor extends BaseModel<ContentAuthor> implements IContentAuthor {
   type: CreatedAsType;
 
-  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  @TransformObjectId()
   authorId: TObjectId;
 }
 
@@ -39,7 +40,7 @@ export class ContentMetadataModel
   extends BaseModel<ContentMetadataModel>
   implements IContentMetadata<TObjectId>
 {
-  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  @TransformObjectId()
   createdBy: TObjectId;
 
   @Type(() => ContentAuthor)
@@ -62,7 +63,7 @@ export class ContentLogModel<TData = any>
   extends BaseModel<IContentLog<TData, TObjectId>>
   implements IContentLog<TData, TObjectId>
 {
-  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  @TransformObjectId()
   updatedBy?: TObjectId;
 
   updatedAt: Date;
@@ -77,10 +78,10 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
 {
   id: string;
 
-  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  @TransformObjectId()
   oid: TObjectId;
 
-  @Transform(({ value, obj }) => obj._id?.toString() || value)
+  @TransformObjectId()
   pid: TObjectId;
 
   type: string;
@@ -93,11 +94,9 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
   @PropertyType(ContentMetadataModel)
   meta: ContentMetadataModel;
 
-  @IsArray()
   @Transform(({ obj }) => obj.tagIds?.map((id) => id.toString()) || [])
   tagIds: Array<TObjectId>;
 
-  @IsArray()
   @Type(() => ContentLogModel)
   logs: Array<ContentLogModel>;
 

@@ -28,6 +28,7 @@
     --color-success-dark: #047857;
     --color-success-light: #10B981;
 
+    --elements-body: #f3f4f6;
     --elements-main: #ffffff;
     --elements-shadow: #f3f4f6;
     --elements-highlight: #f1f5f9;
@@ -50,6 +51,7 @@
 }
 
 .dark {
+    --elements-body: #1e293b;
     --elements-main: #1f2937;
     --elements-shadow: #374151;
     --elements-highlight: #334155;

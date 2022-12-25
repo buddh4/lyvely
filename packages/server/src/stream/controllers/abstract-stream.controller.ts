@@ -1,8 +1,9 @@
 import { Post, Body, Req, Param, Get } from '@nestjs/common';
 import { IStreamFilter, IStreamResponse, StreamRequest } from '@lyvely/common';
 import { ProfileRequest, UserContext } from '@/profiles';
-import { AbstractStreamService } from '../service';
+import { AbstractStreamService, StreamResponse } from '../service';
 import { BaseEntity } from '@/core';
+import { instanceToPlain } from 'class-transformer';
 
 export abstract class AbstractStreamController<
   TModel extends BaseEntity<TModel>,
@@ -15,7 +16,7 @@ export abstract class AbstractStreamController<
   async loadNext(
     @Body() streamRequest: StreamRequest<TFilter>,
     @Req() req: ProfileRequest,
-  ): Promise<IStreamResponse<TResult>> {
+  ): Promise<StreamResponse<TResult>> {
     const context = req.context || new UserContext(req.user);
     return this.streamEntryService.loadNext(context, new StreamRequest(streamRequest));
   }

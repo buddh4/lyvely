@@ -48,7 +48,7 @@ const hasFooter = computed(() => {
   return !!useSlots().footer;
 });
 
-const body = ref<HTMLElement>(null);
+const body = ref<HTMLElement | null>(null);
 useInfiniteScroll(
   body,
   () => {
@@ -68,8 +68,7 @@ useInfiniteScroll(
         :class="['drawer']"
         :style="{ 'z-index': zIndex }"
         @keyup.esc="close">
-        <div
-          class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col justify-start content-start items-start">
+        <div class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col">
           <div data-drawer-header class="pt-4 px-4 flex items-center pb-3 rounded-t-sm">
             <slot name="header">
               <h1 v-if="title" class="font-bold">{{ $t(title) }}</h1>

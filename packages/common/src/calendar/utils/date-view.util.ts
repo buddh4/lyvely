@@ -29,7 +29,7 @@ export function formatDate(date: CalendarDateTime, format = 'YYYY-MM-DD') {
   return dateTime(date).format(format);
 }
 
-export function formatDateWithTime(date: CalendarDateTime, format = 'YYYY-MM-DDTHH:mm:ss') {
+export function formatDateWithTime(date: CalendarDateTime, format = 'YYYY.MM.DD, HH:mm') {
   return dateTime(date).format(format);
 }
 

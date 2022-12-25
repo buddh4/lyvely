@@ -21,6 +21,7 @@ module.exports = {
         )}")`,
       }),
       backgroundColor: (theme) => ({
+        body: 'var(--elements-body)',
         main: 'var(--elements-main)',
         shadow: 'var(--elements-shadow)',
         highlight: 'var(--elements-highlight)',

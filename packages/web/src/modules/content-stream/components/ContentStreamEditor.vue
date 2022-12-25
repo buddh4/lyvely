@@ -25,7 +25,7 @@ const placeholderKey =
 <template>
   <div class="flex flex-col">
     <div class="flex gap-1">
-      <ly-button class="primary rounded-full w-10 h-10 flex justify-center"
+      <ly-button class="primary rounded-full w-10 h-10 flex items-center"
         ><ly-icon name="plus"></ly-icon
       ></ly-button>
       <input
@@ -34,9 +34,7 @@ const placeholderKey =
         class="rounded-full"
         :placeholder="$t(placeholderKey)"
         @keyup.enter="$emit('submit')" />
-      <ly-button
-        class="primary rounded-full w-10 h-10 flex justify-center"
-        @click="$emit('submit')">
+      <ly-button class="primary rounded-full w-10 h-10 flex items-center" @click="$emit('submit')">
         <ly-icon name="send"></ly-icon
       ></ly-button>
     </div>

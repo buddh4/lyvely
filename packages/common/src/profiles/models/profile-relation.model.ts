@@ -1,6 +1,7 @@
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { BaseModel } from '@/models';
 import { IProfileRelation, IProfileRelationUserInfo } from '../interfaces';
+import { TransformObjectId } from '@/utils';
 
 @Exclude()
 export class ProfileRelationUserInfoDto implements IProfileRelationUserInfo {
@@ -26,15 +27,15 @@ export class ProfileRelationModel<T extends IProfileRelation = IProfileRelation>
   id: string;
 
   @Expose()
-  @Transform(({ value, obj }) => obj.oid?.toString() || value)
+  @TransformObjectId()
   oid: TObjectId;
 
   @Expose()
-  @Transform(({ value, obj }) => obj.pid?.toString() || value)
+  @TransformObjectId()
   pid: TObjectId;
 
   @Expose()
-  @Transform(({ value, obj }) => obj.uid?.toString() || value)
+  @TransformObjectId()
   uid: TObjectId;
 
   @Expose()

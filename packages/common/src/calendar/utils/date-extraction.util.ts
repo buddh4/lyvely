@@ -48,6 +48,18 @@ export function isToday(cDate: CalendarDate) {
   );
 }
 
+export function isThisYear(cDate: CalendarDate) {
+  const today = new Date();
+  const date = cDate instanceof Date ? cDate : dateTime(cDate).toDate();
+  return date.getFullYear() == today.getFullYear();
+}
+
+export function isThisMonth(cDate: CalendarDate) {
+  const today = new Date();
+  const date = cDate instanceof Date ? cDate : dateTime(cDate).toDate();
+  return date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear();
+}
+
 export function isInFuture(cDate: CalendarDate) {
   const date = cDate instanceof Date ? cDate : dateTime(cDate).toDate();
   return date > new Date();
