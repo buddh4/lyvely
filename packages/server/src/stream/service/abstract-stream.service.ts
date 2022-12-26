@@ -66,7 +66,7 @@ export abstract class AbstractStreamService<
 
   async loadNext(
     context: RequestContext,
-    request: StreamRequest,
+    request: StreamRequest<TFilter>,
   ): Promise<IStreamResponse<TResult>> {
     const filter = this.createQueryFilter(context, request.filter);
 
@@ -118,7 +118,7 @@ export abstract class AbstractStreamService<
 
   async updateStream(
     context: RequestContext,
-    request: StreamRequest,
+    request: StreamRequest<TFilter>,
   ): Promise<IStreamResponse<TResult>> {
     const filter = this.createQueryFilter(context, request.filter);
 

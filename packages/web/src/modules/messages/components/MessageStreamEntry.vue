@@ -14,7 +14,7 @@ const props = defineProps<IProps>();
 
 <template>
   <content-stream-entry v-bind="props" :merge="true">
-    <div class="bg-highlight px-3 py-2 rounded-2xl">
+    <div class="hover:bg-highlight px-3 py-0.5 rounded-2xl">
       {{ model.content.text }}
     </div>
   </content-stream-entry>

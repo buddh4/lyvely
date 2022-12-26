@@ -536,7 +536,7 @@
 <polyline fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="99.77,-3429.5 102.53,-3430.69 "/>
 <ellipse fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" cx="104.73" cy="-3431.64" rx="2.4" ry="2.4"/>
 </g>
-<!-- src/modules/content/interfaces/index.ts -->
+<!-- src/modules/content/models/index.ts -->
 <g id="node80" class="node">
 <title>src/modules/content/interfaces/index.ts</title>
 <g id="a_node80"><a xlink:href="src/modules/content/interfaces/index.ts" xlink:title="index.ts">
@@ -545,7 +545,7 @@
 </a>
 </g>
 </g>
-<!-- src/modules/content/index.ts&#45;&gt;src/modules/content/interfaces/index.ts -->
+<!-- src/modules/content/index.ts&#45;&gt;src/modules/content/models/index.ts -->
 <g id="edge163" class="edge">
 <title>src/modules/content/index.ts&#45;&gt;src/modules/content/interfaces/index.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M654.88,-3004.24C671.85,-3020.86 705.97,-3057.76 719,-3097 724.17,-3112.56 715.33,-3675.49 727,-3687 741.81,-3701.61 1086.06,-3700.94 1101.5,-3687 1114.43,-3675.32 1100.57,-3623.96 1109.5,-3609 1167.06,-3512.57 1259.76,-3562.72 1318.5,-3467 1342.4,-3428.05 1309.02,-3404.79 1331.5,-3365 1346.27,-3338.85 1375.09,-3318.92 1395.83,-3307.13"/>
@@ -2632,7 +2632,7 @@
 <polyline fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="570.67,-3417 567.67,-3417 "/>
 <ellipse fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" cx="565.27" cy="-3417" rx="2.4" ry="2.4"/>
 </g>
-<!-- src/modules/content/interfaces/assert&#45;content&#45;metadata.interface.ts -->
+<!-- src/modules/content/models/assert&#45;content&#45;metadata.interface.ts -->
 <g id="node81" class="node">
 <title>src/modules/content/interfaces/assert&#45;content&#45;metadata.interface.ts</title>
 <g id="a_node81"><a xlink:href="src/modules/content/interfaces/assert-content-metadata.interface.ts" xlink:title="assert&#45;content&#45;metadata.interface.ts">
@@ -2641,13 +2641,13 @@
 </a>
 </g>
 </g>
-<!-- src/modules/content/interfaces/index.ts&#45;&gt;src/modules/content/interfaces/assert&#45;content&#45;metadata.interface.ts -->
+<!-- src/modules/content/models/index.ts&#45;&gt;src/modules/content/models/assert&#45;content&#45;metadata.interface.ts -->
 <g id="edge167" class="edge">
 <title>src/modules/content/interfaces/index.ts&#45;&gt;src/modules/content/interfaces/assert&#45;content&#45;metadata.interface.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M1448.23,-3299.05C1474.7,-3303.13 1516.59,-3309.59 1551.96,-3315.04"/>
 <polygon fill="#000000" fill-opacity="0.200000" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="1551.77,-3317.14 1558.02,-3315.98 1552.41,-3312.99 1551.77,-3317.14"/>
 </g>
-<!-- src/modules/content/interfaces/content&#45;module.events.ts -->
+<!-- src/modules/content/models/content&#45;module.events.ts -->
 <g id="node82" class="node">
 <title>src/modules/content/interfaces/content&#45;module.events.ts</title>
 <g id="a_node82"><a xlink:href="src/modules/content/interfaces/content-module.events.ts" xlink:title="content&#45;module.events.ts">
@@ -2656,13 +2656,13 @@
 </a>
 </g>
 </g>
-<!-- src/modules/content/interfaces/index.ts&#45;&gt;src/modules/content/interfaces/content&#45;module.events.ts -->
+<!-- src/modules/content/models/index.ts&#45;&gt;src/modules/content/models/content&#45;module.events.ts -->
 <g id="edge168" class="edge">
 <title>src/modules/content/interfaces/index.ts&#45;&gt;src/modules/content/interfaces/content&#45;module.events.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M1448.23,-3290.95C1474.7,-3286.87 1516.59,-3280.41 1551.96,-3274.96"/>
 <polygon fill="#000000" fill-opacity="0.200000" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="1552.41,-3277.01 1558.02,-3274.02 1551.77,-3272.86 1552.41,-3277.01"/>
 </g>
-<!-- src/modules/content/interfaces/content&#45;type.interface.ts -->
+<!-- src/modules/content/models/content&#45;type.interface.ts -->
 <g id="node83" class="node">
 <title>src/modules/content/interfaces/content&#45;type.interface.ts</title>
 <g id="a_node83"><a xlink:href="src/modules/content/interfaces/content-type.interface.ts" xlink:title="content&#45;type.interface.ts">
@@ -2671,7 +2671,7 @@
 </a>
 </g>
 </g>
-<!-- src/modules/content/interfaces/index.ts&#45;&gt;src/modules/content/interfaces/content&#45;type.interface.ts -->
+<!-- src/modules/content/models/index.ts&#45;&gt;src/modules/content/models/content&#45;type.interface.ts -->
 <g id="edge169" class="edge">
 <title>src/modules/content/interfaces/index.ts&#45;&gt;src/modules/content/interfaces/content&#45;type.interface.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M1448.23,-3295C1473.32,-3295 1512.27,-3295 1546.38,-3295"/>
@@ -2728,7 +2728,7 @@
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M1163.35,-3182.51C1143.24,-3176.41 1121.88,-3165.93 1109.5,-3148 1093.52,-3124.86 1121.01,-2915.26 1101.5,-2895 1072.57,-2864.95 759.07,-2895.68 727,-2869 678.89,-2828.98 652.99,-2623.73 646.59,-2566.08"/>
 <polygon fill="#000000" fill-opacity="0.200000" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="648.67,-2565.83 645.94,-2560.09 644.5,-2566.28 648.67,-2565.83"/>
 </g>
-<!-- src/modules/content/schemas/content.schema.ts&#45;&gt;src/modules/content/interfaces/index.ts -->
+<!-- src/modules/content/schemas/content.schema.ts&#45;&gt;src/modules/content/models/index.ts -->
 <g id="edge179" class="edge">
 <title>src/modules/content/schemas/content.schema.ts&#45;&gt;src/modules/content/interfaces/index.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M1232.83,-3200.05C1269.86,-3218.83 1355.07,-3262.06 1396.51,-3283.09"/>
@@ -2764,7 +2764,7 @@
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M1263.06,-3426.42C1287.6,-3425.1 1318,-3423.47 1345.48,-3422"/>
 <polygon fill="#000000" fill-opacity="0.200000" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="1345.79,-3424.09 1351.67,-3421.67 1345.56,-3419.89 1345.79,-3424.09"/>
 </g>
-<!-- src/modules/content/tests/assert&#45;content&#45;metadata&#45;interfaces.spec.ts -->
+<!-- src/modules/content/tests/assert&#45;content&#45;metadata&#45;models.spec.ts -->
 <g id="node96" class="node">
 <title>src/modules/content/tests/assert&#45;content&#45;metadata&#45;interfaces.spec.ts</title>
 <g id="a_node96"><a xlink:href="src/modules/content/tests/assert-content-metadata-interfaces.spec.ts" xlink:title="assert&#45;content&#45;metadata&#45;interfaces.spec.ts">
@@ -2773,13 +2773,13 @@
 </a>
 </g>
 </g>
-<!-- src/modules/content/tests/assert&#45;content&#45;metadata&#45;interfaces.spec.ts&#45;&gt;src/modules/test/utils/test&#45;data.utils.ts -->
+<!-- src/modules/content/tests/assert&#45;content&#45;metadata&#45;models.spec.ts&#45;&gt;src/modules/test/utils/test&#45;data.utils.ts -->
 <g id="edge193" class="edge">
 <title>src/modules/content/tests/assert&#45;content&#45;metadata&#45;interfaces.spec.ts&#45;&gt;src/modules/test/utils/test&#45;data.utils.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M540.11,-3204.96C543.34,-3202.67 546.33,-3200.03 549,-3197 565.33,-3178.49 546.63,-2997.4 557,-2975 599.97,-2882.22 635.02,-2864.66 727,-2820 795.29,-2786.84 823.64,-2816.48 895.5,-2792 927.34,-2781.16 961.1,-2761.34 981.37,-2748.42"/>
 <polygon fill="#000000" fill-opacity="0.200000" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="982.56,-2750.15 986.47,-2745.14 980.29,-2746.62 982.56,-2750.15"/>
 </g>
-<!-- src/modules/content/tests/assert&#45;content&#45;metadata&#45;interfaces.spec.ts&#45;&gt;src/modules/content/schemas/index.ts -->
+<!-- src/modules/content/tests/assert&#45;content&#45;metadata&#45;models.spec.ts&#45;&gt;src/modules/content/schemas/index.ts -->
 <g id="edge194" class="edge">
 <title>src/modules/content/tests/assert&#45;content&#45;metadata&#45;interfaces.spec.ts&#45;&gt;src/modules/content/schemas/index.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M451.76,-3223.14C468.08,-3242.95 509.98,-3289.58 557,-3309 591.79,-3323.37 864.88,-3344.89 895.5,-3323 910.02,-3312.62 898.87,-3300.03 908.5,-3285 928.35,-3254.04 961.48,-3226.29 981.96,-3210.84"/>
@@ -3028,7 +3028,7 @@
 </a>
 </g>
 </g>
-<!-- src/modules/permissions/interfaces/profile&#45;permissions.interface.ts -->
+<!-- src/modules/permissions/models/profile&#45;permissions.interface.ts -->
 <g id="node106" class="node">
 <title>src/modules/permissions/interfaces/profile&#45;permissions.interface.ts</title>
 <g id="a_node106"><a xlink:href="src/modules/permissions/interfaces/profile-permissions.interface.ts" xlink:title="profile&#45;permissions.interface.ts">
@@ -3055,7 +3055,7 @@
 </a>
 </g>
 </g>
-<!-- src/modules/permissions/services/profile&#45;permissions.service.ts&#45;&gt;src/modules/permissions/interfaces/profile&#45;permissions.interface.ts -->
+<!-- src/modules/permissions/services/profile&#45;permissions.service.ts&#45;&gt;src/modules/permissions/models/profile&#45;permissions.interface.ts -->
 <g id="edge223" class="edge">
 <title>src/modules/permissions/services/profile&#45;permissions.service.ts&#45;&gt;src/modules/permissions/interfaces/profile&#45;permissions.interface.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M1074.61,-1143.57C1092.5,-1145.44 1111.79,-1147.45 1130.12,-1149.36"/>
@@ -3103,7 +3103,7 @@
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M746.36,-1161.53C738.92,-1158.09 732.19,-1153.39 727,-1147 712,-1128.53 734.56,-951.01 719,-933 671.13,-877.59 604.35,-958.85 557,-903 541.62,-884.86 560.67,-495.72 549,-475 533.89,-448.17 502.88,-430.68 478.55,-420.49"/>
 <polygon fill="#000000" fill-opacity="0.200000" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="479.19,-418.49 472.84,-418.18 477.61,-422.38 479.19,-418.49"/>
 </g>
-<!-- src/modules/permissions/tests/permissions.service.spec.ts&#45;&gt;src/modules/permissions/interfaces/profile&#45;permissions.interface.ts -->
+<!-- src/modules/permissions/tests/permissions.service.spec.ts&#45;&gt;src/modules/permissions/models/profile&#45;permissions.interface.ts -->
 <g id="edge227" class="edge">
 <title>src/modules/permissions/tests/permissions.service.spec.ts&#45;&gt;src/modules/permissions/interfaces/profile&#45;permissions.interface.ts</title>
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M886.55,-1173.19C893.96,-1173.52 901.38,-1173.8 908.5,-1174 994.25,-1176.35 1015.94,-1180.11 1101.5,-1174 1118.87,-1172.76 1137.65,-1170.45 1154.76,-1167.96"/>
@@ -3139,7 +3139,7 @@
 <path fill="none" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" d="M1462.77,-1291C1490.34,-1291 1527.18,-1291 1557.88,-1291"/>
 <polygon fill="#000000" fill-opacity="0.200000" stroke="#000000" stroke-width="2" stroke-opacity="0.200000" points="1557.94,-1293.1 1563.94,-1291 1557.94,-1288.9 1557.94,-1293.1"/>
 </g>
-<!-- src/modules/policies/interfaces/policy.interface.ts -->
+<!-- src/modules/policies/models/policy.interface.ts -->
 <g id="node113" class="node">
 <title>src/modules/policies/interfaces/policy.interface.ts</title>
 <g id="a_node113"><a xlink:href="src/modules/policies/interfaces/policy.interface.ts" xlink:title="policy.interface.ts">

@@ -43,7 +43,9 @@ export interface IStreamRequest<
   filter?: TFilter;
 }
 
-export type IStreamFilter = Record<string, string | number>;
+export interface IStreamFilter {
+  reset();
+}
 
 export interface IStreamService<
   TModel,

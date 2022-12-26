@@ -19,8 +19,12 @@ const props = defineProps<IProps>();
         <ly-icon name="activity" />
       </div>
     </template>
-    {{ model.content.title }}
-    {{ model.content.text }}
+
+    <div class="border border-divide p-4 rounded-xl bg-main">
+      <b>{{ $t('activities.habits.stream_entry.text') }}:</b>
+      {{ model.content.title }}
+      {{ model.content.text }}
+    </div>
   </content-stream-entry>
 </template>
 

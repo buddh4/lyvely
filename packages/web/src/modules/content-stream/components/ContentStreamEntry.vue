@@ -3,12 +3,14 @@ import { ContentModel, formatDate, isThisMonth, isToday, formatDateWithTime } fr
 import { computed } from 'vue';
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
+import { useRouter } from 'vue-router';
+import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 
 export interface IProps {
   model: ContentModel;
   stream: IStream<ContentModel>;
   index: number;
-  merge: boolean;
+  merge?: boolean;
 }
 
 const props = defineProps<IProps>();
@@ -52,6 +54,12 @@ const mergeWithNext = computed(
 const cssClass = computed(() => {
   return mergeWithNext.value ? '' : 'pb-2';
 });
+
+const router = useRouter();
+
+function onContentClick() {
+  const test = router.push(profileRoute(`/c/${props.model.id}`, props.model.pid));
+}
 </script>
 
 <template>
@@ -70,7 +78,7 @@ const cssClass = computed(() => {
           <span class="font-bold mr-1">{{ name }}</span>
           <relative-time :ts="model.meta.streamSort"></relative-time>
         </div>
-        <div class="cursor-pointer">
+        <div class="cursor-pointer" @click="onContentClick">
           <slot></slot>
         </div>
       </div>

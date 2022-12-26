@@ -4,10 +4,16 @@
       "main_nav": "Activities"
     },
     "habits": {
-      "title": "Activities"
+      "title": "Activities",
+      "stream_entry": {
+        "text": "New activity"
+      }
     },
     "tasks": {
-      "title": "Tasks"
+      "title": "Tasks",
+      "stream_entry": {
+        "text": "New task"
+      }
     }
   }
 }

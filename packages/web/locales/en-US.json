@@ -384,12 +384,30 @@
     }
   },
   "stream": {
+    "title": "stream",
     "labels":  {
       "main_nav": "Stream"
     },
     "editor": {
       "placeholder_single_user": "Write some notes",
       "placeholder_multi_user": "Write a message"
+    }
+  },
+  "activities": {
+    "labels": {
+      "main_nav": "Activities"
+    },
+    "habits": {
+      "title": "Activities",
+      "stream_entry": {
+        "text": "New activity"
+      }
+    },
+    "tasks": {
+      "title": "Tasks",
+      "stream_entry": {
+        "text": "New task"
+      }
     }
   }
 }

@@ -29,7 +29,7 @@ const classNames = computed(() => {
 </script>
 
 <template>
-  <div class="overflow-y-hidden overflow-x-hidden max-h-full">
+  <div class="overflow-y-hidden overflow-x-hidden max-h-full h-full">
     <main :class="classNames">
       <slot></slot>
     </main>

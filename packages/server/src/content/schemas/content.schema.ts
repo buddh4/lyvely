@@ -47,6 +47,9 @@ export class Content<
   @Prop({ type: [mongoose.Types.ObjectId], default: [] })
   tagIds: TObjectId[];
 
+  @Prop({ type: mongoose.Types.ObjectId })
+  parentId?: TObjectId;
+
   config: any;
 
   type: string;

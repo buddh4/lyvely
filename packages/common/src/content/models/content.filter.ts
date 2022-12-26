@@ -19,7 +19,9 @@ export class ContentFilter<
 > extends Filter<TModel, TOptions> {
   tagProvider?: () => TagModel[];
 
-  constructor(options?: FilterConstructorOptions<TModel, TOptions> & { tagProvider?: TagProvider }) {
+  constructor(
+    options?: FilterConstructorOptions<TModel, TOptions> & { tagProvider?: TagProvider },
+  ) {
     const tagProvider = options?.tagProvider;
     delete options?.tagProvider;
 

@@ -1,5 +1,6 @@
 import {
   ContentModel,
+  ContentStreamFilter,
   IContentStreamClient,
   IStreamOptions,
   IStreamResponse,
@@ -10,18 +11,19 @@ import repositry from '../repositories';
 import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
 
 export class ContentStreamService implements IContentStreamClient {
-  async loadEntry(id: string, filter?: any): Promise<ContentModel> {
+  async loadEntry(id: string, filter?: ContentStreamFilter): Promise<ContentModel> {
     return unwrapAndCastResponse(repositry.loadEntry(id), ContentModel);
   }
 
   async loadNext(
     state: IStreamState,
     options: IStreamOptions,
-    filter?: any,
-  ): Promise<IStreamResponse<ContentModel, IStreamState>> {
+    filter?: ContentStreamFilter,
+  ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(
       repositry.loadNext({
         state,
+        filter,
         batchSize: options.batchSize,
       }),
     );
@@ -31,11 +33,12 @@ export class ContentStreamService implements IContentStreamClient {
   async update(
     state: IStreamState,
     options: IStreamOptions,
-    filter?: any,
+    filter?: ContentStreamFilter,
   ): Promise<IStreamResponse<ContentModel, IStreamState>> {
     const response = await unwrapResponse(
       repositry.update({
         state,
+        filter,
         batchSize: options.batchSize,
       }),
     );
@@ -43,7 +46,7 @@ export class ContentStreamService implements IContentStreamClient {
     return this.createModel(response);
   }
 
-  private createModel(response: IStreamResponse<ContentModel, IStreamState>) {
+  private createModel(response: IStreamResponse<ContentModel>) {
     response.models = response.models.map((model) => new ContentModel(model));
     return response;
   }
