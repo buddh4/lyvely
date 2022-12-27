@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { ContentModel, formatDate, isThisMonth, isToday, formatDateWithTime } from '@lyvely/common';
+import { ContentModel, formatDate, isToday, formatDateWithTime } from '@lyvely/common';
 import { computed } from 'vue';
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
 import { useRouter } from 'vue-router';
-import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { contentRoute } from '@/modules/content-stream/routes';
+import { isTextSelection } from '@/util/dom.util';
 
 export interface IProps {
   model: ContentModel;
@@ -59,6 +59,7 @@ const cssClass = computed(() => {
 const router = useRouter();
 
 function onContentClick() {
+  if (isTextSelection()) return;
   router.push(contentRoute(props.model.pid, props.model.id));
 }
 </script>

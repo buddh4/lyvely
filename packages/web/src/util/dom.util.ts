@@ -13,3 +13,8 @@ export function scrollToBottom(elem: HTMLElement) {
 export function isScrolledToBottom(elem: HTMLElement) {
   return elem.scrollTop === elem.scrollHeight - elem.offsetHeight;
 }
+
+export function isTextSelection() {
+  const selection = window.getSelection();
+  return selection && selection.type === 'Range';
+}
