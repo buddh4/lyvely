@@ -388,6 +388,10 @@
     "labels":  {
       "main_nav": "Stream"
     },
+    "breadcrumb": {
+      "content_details": "content",
+      "stream": "stream"
+    },
     "editor": {
       "placeholder_single_user": "Write some notes",
       "placeholder_multi_user": "Write a message"

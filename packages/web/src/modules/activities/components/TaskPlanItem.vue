@@ -7,7 +7,7 @@ import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue
 import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
-import { useActivityPlanItem } from '@/modules/activities/components/mixins/useActivityPlanItem';
+import { useActivityPlanItem } from '@/modules/activities/components/composables/useActivityPlanItem';
 
 export interface IProps {
   model: TaskModel;
@@ -44,11 +44,14 @@ async function updateTimer(value: number) {
     @edit="setEditActivity"
     @move-up="moveUp"
     @move-down="moveDown"
-    @select-tag="selectTag"
-  >
+    @select-tag="selectTag">
     <template #pre-title>
       <div class="mr-1">
-        <item-checkbox-list v-model:selection="selection" :max="1" :is-task="true" :disabled="isDisabled" />
+        <item-checkbox-list
+          v-model:selection="selection"
+          :max="1"
+          :is-task="true"
+          :disabled="isDisabled" />
       </div>
     </template>
 
@@ -59,8 +62,7 @@ async function updateTimer(value: number) {
         :show-time-on-init="false"
         @start="startTimer"
         @stop="stopTimer"
-        @update="updateTimer"
-      />
+        @update="updateTimer" />
     </template>
   </calendar-plan-item>
 </template>

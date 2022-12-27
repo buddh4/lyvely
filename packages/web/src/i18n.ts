@@ -19,6 +19,8 @@ export function getI18n() {
   return i18n;
 }
 
+export type ITranslation = () => string;
+
 export function translation(key: string, options?: any) {
   return () => translate(key, options);
 }

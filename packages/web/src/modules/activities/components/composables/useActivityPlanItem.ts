@@ -12,9 +12,15 @@ export const useActivityPlanItem = (model: ActivityModel) => {
   const isFuture = computed(() => calendarPlanStore.date > new Date());
   const isDisabled = computed(() => model.meta.isArchived || isFuture.value);
 
-  function prepareMoveEvent(model: ActivityModel, element: HTMLElement, newIndex: (current: number) => number) {
+  function prepareMoveEvent(
+    model: ActivityModel,
+    element: HTMLElement,
+    newIndex: (current: number) => number,
+  ) {
     const draggableElement = element.closest('[data-draggable]')!;
-    const currentIndex = Array.from(draggableElement.parentNode!.children).indexOf(draggableElement);
+    const currentIndex = Array.from(draggableElement.parentNode!.children).indexOf(
+      draggableElement,
+    );
 
     return {
       draggable: draggableElement,
@@ -42,7 +48,11 @@ export const useActivityPlanItem = (model: ActivityModel) => {
   }
 
   async function moveDown(model: ActivityModel, element: HTMLElement) {
-    const { store, event, draggable } = prepareMoveEvent(model, element, (currentIndex) => currentIndex + 1);
+    const { store, event, draggable } = prepareMoveEvent(
+      model,
+      element,
+      (currentIndex) => currentIndex + 1,
+    );
 
     if (draggable.parentNode!.children.length === event.newIndex) {
       useAccessibilityStore().addMessage(translate('calendar.plan.aria.move-boundary'));
@@ -54,7 +64,9 @@ export const useActivityPlanItem = (model: ActivityModel) => {
   }
 
   function afterMove(evt: IMoveActivityEvent) {
-    setTimeout(() => document.querySelector<HTMLElement>(`[data-cid="${evt.cid}"] .item-drag-button`)?.focus());
+    setTimeout(() =>
+      document.querySelector<HTMLElement>(`[data-cid="${evt.cid}"] .item-drag-button`)?.focus(),
+    );
     useAccessibilityStore().addMessage(
       translate('calendar.plan.aria.move-success', {
         from: evt.oldIndex,

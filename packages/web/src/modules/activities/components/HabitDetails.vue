@@ -17,7 +17,9 @@ const props = defineProps<IProps>();
   <content-details :model="model">
     <template #image>
       <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
-        <ly-icon name="activity" />
+        <router-link :to="{ name: 'Habits' }">
+          <ly-icon name="activity" class="text-main" />
+        </router-link>
       </div>
     </template>
     <template #body> Activity: {{ model.content.text }} </template>

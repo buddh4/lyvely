@@ -3,24 +3,32 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
+import { ITranslation } from '@/i18n';
 
+const router = useRouter();
 const profile = computed(() => useProfileStore().profile);
 const userName = computed(() => useAuthStore().user?.username);
 const profileName = computed(() => profile.value?.name);
-const isProfileRoute = computed(() => useRouter().currentRoute.value.path.startsWith('/p/'));
+const isProfileRoute = computed(() => router.currentRoute.value.path.startsWith('/p/'));
+
 const path = computed(() => {
-  const path = useRouter()
-    .currentRoute.value.path.split('/')
-    .filter((p) => p?.length);
+  const currentRoute = router.currentRoute.value;
+  const translations = (currentRoute.meta?.breadcrumb || []) as ITranslation[];
+  const path = currentRoute.path.split('/').filter((p) => p?.length);
   const result: { path: string; name: string }[] = [];
   let curr = '';
 
   path.forEach((subPath, i) => {
     curr = curr + '/' + subPath;
+    let subPathName = subPath;
+    const inverseIndex = path.length - i;
+    if (translations.length >= inverseIndex) {
+      subPathName = translations.at(-inverseIndex)?.() || subPath;
+    }
 
     if (!isProfileRoute.value || i > 1) {
       // We ignore /p/:pid
-      result.push({ path: curr, name: subPath });
+      result.push({ path: curr, name: subPathName });
     }
   });
   return result;
@@ -28,7 +36,9 @@ const path = computed(() => {
 </script>
 
 <template>
-  <div id="profile-breadcrumb" class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
+  <div
+    id="profile-breadcrumb"
+    class="border border-divide px-3 p-2 rounded-2xl text-sm hidden sm:inline-block">
     <router-link v-if="isProfileRoute" to="/" class="text-main">
       <span class="text-pop">@</span>
       {{ profileName }}

@@ -16,7 +16,9 @@ const props = defineProps<IProps>();
   <content-stream-entry v-bind="props">
     <template #image>
       <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
-        <ly-icon name="task" />
+        <router-link :to="{ name: 'Tasks' }">
+          <ly-icon name="task" class="text-main" />
+        </router-link>
       </div>
     </template>
 

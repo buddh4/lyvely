@@ -24,7 +24,7 @@ const name = computed(() => 'buddh4');
 const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1));
 const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
 
-const showTimeSep = computed(
+const showTimeSeparator = computed(
   () => prevEntry.value && props.model.meta.streamSort - prevEntry.value.meta.streamSort > 1800_000,
 );
 
@@ -32,18 +32,18 @@ const showNextTimeSep = computed(
   () => nextEntry.value && nextEntry.value.meta.streamSort - props.model.meta.streamSort > 1800_000,
 );
 
-const getSepTime = computed(() => {
-  if (!showTimeSep.value) return;
+const timeSeparator = computed(() => {
+  if (!showTimeSeparator.value) return;
 
   const ts = props.model.meta.streamSort;
-  return isToday(ts) ? formatDate(ts, 'mm:ss') : formatDateWithTime(ts);
+  return isToday(ts) ? formatDate(ts, 'HH:mm') : formatDateWithTime(ts);
 });
 
 const mergeWithPrev = computed(
   () =>
     prevEntry.value &&
     props.merge &&
-    !showTimeSep.value &&
+    !showTimeSeparator.value &&
     prevEntry.value.type === props.model.type &&
     prevEntry.value.meta.createdAs?.authorId === props.model.meta.createdAs?.authorId,
 );
@@ -71,8 +71,8 @@ function onContentClick() {
 
 <template>
   <div data-stream-entry :class="cssClass">
-    <div v-if="showTimeSep" class="flex items-center justify-center text-dimmed text-xs">
-      {{ getSepTime }}
+    <div v-if="showTimeSeparator" class="flex items-center justify-center text-dimmed text-xs">
+      {{ timeSeparator }}
     </div>
     <div class="flex items-stretch w-full gap-1">
       <div class="flex justify-center flex-shrink-0 w-9 pt-1">
