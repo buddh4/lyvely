@@ -80,7 +80,7 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
 
   private async handleSubContentCreation(profile: Profile, user: User, instance: T, model: TModel) {
     if (!model.parentId) return;
-    const parent = await this.contentDao.findById(model.parentId);
+    const parent = await this.baseContentDao.findById(model.parentId);
     if (!parent) throw new EntityNotFoundException();
     if (!parent.pid.equals(profile._id)) throw new EntityNotFoundException();
     if (parent.meta.isArchived || parent.meta.isLocked) throw new ForbiddenServiceException();

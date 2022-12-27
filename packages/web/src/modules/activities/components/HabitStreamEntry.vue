@@ -20,7 +20,7 @@ const props = defineProps<IProps>();
       </div>
     </template>
 
-    <div class="border border-divide p-4 rounded-xl bg-main">
+    <div class="border border-divide p-4 rounded-xl bg-main inline-block">
       <b>{{ $t('activities.habits.stream_entry.text') }}:</b>
       {{ model.content.title }}
       {{ model.content.text }}

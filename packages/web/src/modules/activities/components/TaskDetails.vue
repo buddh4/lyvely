@@ -2,6 +2,8 @@
 import { ContentModel, TaskModel } from '@lyvely/common';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
+import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
+import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 
 export interface IProps {
   model: TaskModel;
@@ -13,19 +15,14 @@ const props = defineProps<IProps>();
 </script>
 
 <template>
-  <content-stream-entry v-bind="props">
+  <content-details :model="model">
     <template #image>
       <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
         <ly-icon name="task" />
       </div>
     </template>
-
-    <div class="border border-divide p-4 rounded-xl bg-main inline-block">
-      <b>{{ $t('activities.tasks.stream_entry.text') }}:</b>
-      {{ model.content.title }}
-      {{ model.content.text }}
-    </div>
-  </content-stream-entry>
+    <template #body> <ly-input-checkbox :label="model.content.title" /> </template>
+  </content-details>
 </template>
 
 <style scoped></style>

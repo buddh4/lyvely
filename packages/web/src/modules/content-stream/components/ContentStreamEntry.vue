@@ -6,18 +6,23 @@ import { IStream } from '@/modules/stream/composables/stream.composable';
 import { useRouter } from 'vue-router';
 import { contentRoute } from '@/modules/content-stream/routes';
 import { isTextSelection } from '@/util/dom.util';
+import { getContentDetailsComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
 
 export interface IProps {
   model: ContentModel;
-  stream: IStream<ContentModel>;
-  index: number;
+  stream?: IStream<ContentModel>;
+  index?: number;
   merge?: boolean;
 }
 
-const props = defineProps<IProps>();
+const props = withDefaults(defineProps<IProps>(), {
+  stream: undefined,
+  index: 0,
+});
+
 const name = computed(() => 'buddh4');
-const prevEntry = computed(() => props.stream.getStreamEntryAt(props.index - 1));
-const nextEntry = computed(() => props.stream.getStreamEntryAt(props.index + 1));
+const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1));
+const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
 
 const showTimeSep = computed(
   () => prevEntry.value && props.model.meta.streamSort - prevEntry.value.meta.streamSort > 1800_000,
@@ -81,7 +86,12 @@ function onContentClick() {
           <relative-time :ts="model.meta.streamSort"></relative-time>
         </div>
         <div class="cursor-pointer" @click="onContentClick">
-          <slot></slot>
+          <slot>
+            <Component
+              :is="getContentDetailsComponent(model)"
+              class="border-divide"
+              :content="model" />
+          </slot>
         </div>
       </div>
     </div>
