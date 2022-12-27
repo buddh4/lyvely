@@ -7,7 +7,7 @@ import { UserRegistrationModule } from './user-registration/user-registration.mo
 import { UsersModule } from './users';
 import { ProfilesModule } from './profiles';
 import { PoliciesModule } from './policies/policies.module';
-import { ContentModule } from './content';
+import { ContentCoreModule, ContentModule } from './content';
 import { ActivitiesModule } from './activities/activities.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -230,7 +230,7 @@ export class AppModuleBuilder {
     return this.importModules(
       ProfilesModule,
       UserRegistrationModule,
-      ContentModule.forRoot(),
+      ContentCoreModule,
       ContentStreamModule,
       AccountModule,
       AvatarsModule,

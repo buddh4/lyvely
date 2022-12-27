@@ -5,6 +5,7 @@ import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
 import { useRouter } from 'vue-router';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
+import { contentRoute } from '@/modules/content-stream/routes';
 
 export interface IProps {
   model: ContentModel;
@@ -58,7 +59,7 @@ const cssClass = computed(() => {
 const router = useRouter();
 
 function onContentClick() {
-  const test = router.push(profileRoute(`/c/${props.model.id}`, props.model.pid));
+  router.push(contentRoute(props.model.pid, props.model.id));
 }
 </script>
 
@@ -70,10 +71,10 @@ function onContentClick() {
     <div class="flex items-stretch w-full gap-1">
       <div class="flex justify-center flex-shrink-0 w-9 pt-1">
         <slot v-if="!mergeWithPrev" name="image">
-          <ly-user-avatar :class="['w-8 h-8']" />
+          <ly-user-avatar class="w-8 h-8" />
         </slot>
       </div>
-      <div class="mx-3 my-0.5">
+      <div class="mx-3 my-0.5 w-full">
         <div v-if="!mergeWithPrev" class="text-sm mb-2">
           <span class="font-bold mr-1">{{ name }}</span>
           <relative-time :ts="model.meta.streamSort"></relative-time>

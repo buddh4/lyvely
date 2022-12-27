@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { MaxLength, IsArray, IsOptional } from 'class-validator';
+import { MaxLength, IsArray, IsOptional, IsString, IsMongoId } from 'class-validator';
 import { BaseModel } from '@/models';
 
 export class CreateContentModel<T extends CreateContentModel = any> extends BaseModel<T> {
@@ -8,4 +8,10 @@ export class CreateContentModel<T extends CreateContentModel = any> extends Base
   @MaxLength(50, { each: true })
   @IsOptional()
   tagNames?: string[];
+
+  @Expose()
+  @IsString()
+  @IsOptional()
+  @IsMongoId()
+  parentId?: string;
 }

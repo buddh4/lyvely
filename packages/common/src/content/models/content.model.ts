@@ -49,6 +49,9 @@ export class ContentMetadataModel
   @PropertyType(Date)
   createdAt: Date;
 
+  @TransformObjectId()
+  parentId?: TObjectId;
+
   @PropertyType(Date)
   updatedAt: Date;
   streamSort: number;
@@ -106,6 +109,14 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
     return {
       config: this.getDefaultConfig(),
     };
+  }
+
+  getTitle() {
+    if (this.content?.title?.length) {
+      return this.content.title;
+    } else {
+      return this.content.text;
+    }
   }
 
   getDefaultConfig(): TConfig {

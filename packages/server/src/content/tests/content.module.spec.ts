@@ -2,8 +2,13 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule } from '@/test';
 import { Content, ContentSchema } from '../schemas';
-import { TestContent, TestContentB, TestContentBSchema, TestContentSchema } from './src/test-content.schema';
-import { ContentModule, ContentService, ContentTypeRegistry } from '@/content';
+import {
+  TestContent,
+  TestContentB,
+  TestContentBSchema,
+  TestContentSchema,
+} from './src/test-content.schema';
+import { ContentCoreModule, ContentModule, ContentService, ContentTypeRegistry } from '@/content';
 import { INestApplication, Module } from '@nestjs/common';
 
 describe('content module', () => {
@@ -34,7 +39,7 @@ describe('content module', () => {
 
   beforeEach(async () => {
     testingModule = await createBasicTestingModule('content_module', [], TestModels, [
-      ContentModule.forRoot(),
+      ContentCoreModule,
       TestModule,
     ]).compile();
     contentService = testingModule.get<ContentService>(ContentService);

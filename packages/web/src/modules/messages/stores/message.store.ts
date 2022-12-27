@@ -17,10 +17,11 @@ export const useCreateMessageStore = defineStore('create-message', () => {
     status.resetStatus();
   }
 
-  async function submit() {
-    const response = await loadingStatus(messageService.create(model.value), status);
-    console.log(response);
+  async function submit(parentId?: string) {
+    const message = new CreateMessage(model.value.text, parentId);
+    const response = await loadingStatus(messageService.create(message), status);
     reset();
+    return response;
   }
 
   return {

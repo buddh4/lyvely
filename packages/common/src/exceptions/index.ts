@@ -22,6 +22,10 @@ export class ServiceException extends Error {
   }
 }
 
+export class UnsupportedOperationException extends ServiceException {
+  protected defaultMessage = 'Use of unsupported operation';
+}
+
 export class EntityNotFoundException extends ServiceException {
   protected defaultMessage = 'Entity not found';
 

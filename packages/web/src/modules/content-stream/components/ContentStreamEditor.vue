@@ -24,7 +24,7 @@ const placeholderKey =
 
 <template>
   <div class="flex flex-col">
-    <div class="flex gap-1">
+    <div class="flex gap-1 md:gap-2">
       <ly-button class="primary rounded-full w-10 h-10 flex items-center"
         ><ly-icon name="plus"></ly-icon
       ></ly-button>

@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Activity, HabitDataPoint } from '../schemas';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
@@ -12,6 +12,7 @@ import {
   CalendarIntervalEnum,
   SortResult,
   IntegrityException,
+  UnsupportedOperationException,
 } from '@lyvely/common';
 
 interface IActivitySearchResult {
@@ -20,12 +21,14 @@ interface IActivitySearchResult {
 }
 
 @Injectable()
-export class ActivitiesService extends AbstractContentService<Activity> {
+export class ActivitiesService extends AbstractContentService<Activity, any> {
   @Inject()
   protected contentDao: ActivitiesDao;
 
   @Inject()
   protected activityDataPointService: HabitDataPointService;
+
+  protected logger = new Logger(ActivitiesService.name);
 
   /**
    * Finds all activities (tasks and habits) and habit data points of a given user matching the given filter.
@@ -147,5 +150,9 @@ export class ActivitiesService extends AbstractContentService<Activity> {
      *
 
     //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex */
+  }
+
+  protected createInstance(profile: Profile, user: User, model: any): Promise<Activity> {
+    throw new UnsupportedOperationException();
   }
 }

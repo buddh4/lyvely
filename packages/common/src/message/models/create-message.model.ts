@@ -10,7 +10,7 @@ export class CreateMessage extends CreateContentModel<CreateMessage> {
   @Length(1, MESSAGE_MAX_LENGTH)
   text: string;
 
-  constructor(text: string) {
-    super({ text });
+  constructor(text: string, parentId?: string) {
+    super({ text, parentId });
   }
 }

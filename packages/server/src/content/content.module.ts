@@ -1,4 +1,4 @@
-import { Inject, Injectable, Module, OnModuleInit, Scope, Type } from '@nestjs/common';
+import { Global, Inject, Injectable, Module, OnModuleInit, Scope, Type } from '@nestjs/common';
 import { UsersModule } from '../users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -25,51 +25,37 @@ const ContentScoreActionModel = MongooseModule.forFeature([
   },
 ]);
 
-@Module({})
-export class ContentCoreModule {
-  static forRoot(): DynamicModule {
-    return ContentCoreModule.registerCore();
-  }
-
-  static registerCore(): DynamicModule {
-    return {
-      global: true,
-      module: ContentCoreModule,
-      imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
-      providers: [
-        ContentService,
-        ContentDao,
-        ContentEventPublisher,
-        ContentTypeRegistry,
-        ContentReadPolicy,
-        ContentWritePolicy,
-        ContentScoreService,
-        ContentScoreDao,
-      ],
-      exports: [
-        ContentDao,
-        ContentModel,
-        ContentService,
-        ContentScoreService,
-        ContentTypeRegistry,
-        ContentReadPolicy,
-        ContentWritePolicy,
-        ContentEventPublisher,
-      ],
-    };
-  }
-}
+@Global()
+@Module({
+  imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
+  providers: [
+    ContentService,
+    ContentDao,
+    ContentEventPublisher,
+    ContentTypeRegistry,
+    ContentReadPolicy,
+    ContentWritePolicy,
+    ContentScoreService,
+    ContentScoreDao,
+  ],
+  exports: [
+    ContentDao,
+    ContentModel,
+    ContentService,
+    ContentScoreService,
+    ContentTypeRegistry,
+    ContentReadPolicy,
+    ContentWritePolicy,
+    ContentEventPublisher,
+  ],
+})
+export class ContentCoreModule {}
 
 @Module({})
 export class ContentModule {
-  static forRoot(): DynamicModule {
-    return ContentCoreModule.registerCore();
-  }
-
   static registerContentType(...contentTypes: Type<Content>[]): DynamicModule {
     return {
       module: ContentModule,
-      imports: [ContentCoreModule.registerCore()],
       providers: [
         {
           provide: `ContentTypeRegistration${Math.random()}`,

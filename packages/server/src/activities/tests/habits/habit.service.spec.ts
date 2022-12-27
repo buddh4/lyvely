@@ -24,7 +24,10 @@ describe('HabitService', () => {
   const TEST_KEY = 'habit_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY, [HabitsDao, HabitsService]).compile();
+    testingModule = await createActivityTestingModule(TEST_KEY, [
+      HabitsDao,
+      HabitsService,
+    ]).compile();
     habitService = testingModule.get<HabitsService>(HabitsService);
     testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
   });

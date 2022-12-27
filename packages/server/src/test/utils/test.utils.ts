@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 import { UsersModule } from '@/users';
-import { ContentModule } from '@/content';
+import { ContentCoreModule, ContentModule } from '@/content';
 import { ProfilesModule } from '@/profiles';
 import { TestingModuleBuilder } from '@nestjs/testing/testing-module.builder';
 import { TestDataUtils } from './test-data.utils';
@@ -99,7 +99,7 @@ export function createContentTestingModule(
   models: ModelDefinition[] = [],
   imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
 ): TestingModuleBuilder {
-  imports.push(ContentModule.forRoot());
+  imports.push(ContentCoreModule);
   return createBasicTestingModule(key, providers, models, imports);
 }
 

@@ -19,11 +19,21 @@ import {
 
 @Schema({ _id: false })
 export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {
+  @Prop({ type: mongoose.Types.ObjectId })
+  parentId?: TObjectId;
+
+  @Prop({ type: mongoose.Types.ObjectId })
+  parentPath?: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: TObjectId;
 
   @Prop({ type: ContentAuthorSchema, required: true })
   createdAs?: CreatedAs;
+
+  @Prop()
+  @PropertyType(Number, { default: 0 })
+  childCount: number;
 
   @Prop({ type: Date })
   @PropertyType(Date, { default: new Date() })
@@ -57,25 +67,6 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   setAuthor(author: Author) {
     this.createdAs = new CreatedAs(author);
   }
-
-  /*
-
-   In the future we could make the following meta:
-  @Prop()
-  isArchivable?: boolean;
-
-  @Prop()
-  isDeletable?: boolean;
-
-  @Prop()
-  isEditable?: boolean;
-
-  @Prop()
-  isCommentable?: boolean;
-
-  @Prop()
-  isReactable?: boolean;
-  */
 }
 
 export const ContentMetadataSchema = SchemaFactory.createForClass(ContentMetadata);

@@ -3,7 +3,10 @@ import { BaseEntity } from '@/core';
 import { IContentDataType } from '@lyvely/common';
 
 @Schema()
-export class ContentDataType<T extends IContentDataType = any> extends BaseEntity<T> implements IContentDataType {
+export class ContentDataType<T extends IContentDataType = any>
+  extends BaseEntity<T>
+  implements IContentDataType
+{
   @Prop()
   title?: string;
 

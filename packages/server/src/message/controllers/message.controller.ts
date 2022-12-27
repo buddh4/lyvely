@@ -22,7 +22,7 @@ export class MessageController
     @Req() req: ProfileRequest,
   ): Promise<MessageModel> {
     const { profile, user } = req;
-    const model = await this.contentService.createMessage(profile, user, createModel);
+    const model = await this.contentService.createContent(profile, user, createModel);
     return new MessageModel(model);
   }
 }

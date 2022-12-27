@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Habit } from '../schemas';
 import { AbstractContentService } from '@/content';
 import { HabitsDao } from '../daos/habits.dao';
@@ -7,21 +7,15 @@ import { User } from '@/users';
 import { CreateHabitDto } from '@lyvely/common';
 
 @Injectable()
-export class HabitsService extends AbstractContentService<Habit> {
+export class HabitsService extends AbstractContentService<Habit, CreateHabitDto> {
   @Inject()
   protected contentDao: HabitsDao;
 
-  async createHabit(profile: Profile, user: User, dto: CreateHabitDto) {
-    return this.createContent(profile, user, Habit.create(profile, user, dto), dto.tagNames);
-  }
+  protected logger = new Logger(HabitsService.name);
 
-  async createContent(
-    profile: Profile,
-    user: User,
-    model: Habit,
-    tagNames?: string[],
-  ): Promise<Habit> {
-    model.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
-    return super.createContent(profile, user, model, tagNames);
+  protected async createInstance(profile: Profile, user: User, model: CreateHabitDto) {
+    const instance = Habit.create(profile, user, model);
+    instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
+    return instance;
   }
 }

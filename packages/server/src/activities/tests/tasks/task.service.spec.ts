@@ -1,6 +1,11 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { ActivityType, CalendarIntervalEnum, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
+import {
+  ActivityType,
+  CalendarIntervalEnum,
+  toTimingId,
+  UserAssignmentStrategy,
+} from '@lyvely/common';
 import { TasksService } from '../../services/tasks.service';
 import { ActivityTestDataUtil, createActivityTestingModule } from '../utils/activities.test.utils';
 import { TasksDao } from '../../daos/tasks.dao';
@@ -18,7 +23,11 @@ describe('TaskService', () => {
   const TEST_KEY = 'task_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY, [TasksDao, ActivitiesDao, TasksService]).compile();
+    testingModule = await createActivityTestingModule(TEST_KEY, [
+      TasksDao,
+      ActivitiesDao,
+      TasksService,
+    ]).compile();
     taskService = testingModule.get<TasksService>(TasksService);
     testDataUtils = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
   });
@@ -27,7 +36,12 @@ describe('TaskService', () => {
     await testDataUtils.reset(TEST_KEY);
   });
 
-  async function createTask(profile: Profile, user: User, userStrategy: UserAssignmentStrategy, timers: Timer[] = []) {
+  async function createTask(
+    profile: Profile,
+    user: User,
+    userStrategy: UserAssignmentStrategy,
+    timers: Timer[] = [],
+  ) {
     const task = Task.create(profile, user, {
       title: 'Do something!',
       score: 5,
@@ -69,11 +83,15 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-03', task.timeSeriesConfig.interval),
+        );
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
+        expect(task.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-03', task.timeSeriesConfig.interval),
+        );
         expect(task.doneBy[0].uid).toEqual(owner._id);
 
         expect(profile.score).toEqual(5);
@@ -89,7 +107,9 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-05', task.timeSeriesConfig.interval),
+        );
         expect(search.doneBy[0].uid).toEqual(member._id);
 
         expect(profile.score).toEqual(5);
@@ -103,11 +123,15 @@ describe('TaskService', () => {
         await taskService.setDone(profile, owner, task, '2021-04-03');
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-03', task.timeSeriesConfig.interval),
+        );
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
+        expect(task.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-03', task.timeSeriesConfig.interval),
+        );
         expect(task.doneBy[0].uid).toEqual(owner._id);
       });
 
@@ -121,15 +145,23 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(2);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-03', task.timeSeriesConfig.interval),
+        );
         expect(search.doneBy[0].uid).toEqual(owner._id);
-        expect(search.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
+        expect(search.doneBy[1].tid).toEqual(
+          toTimingId('2021-04-05', task.timeSeriesConfig.interval),
+        );
         expect(search.doneBy[1].uid).toEqual(member._id);
 
         expect(task.doneBy.length).toEqual(2);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.timeSeriesConfig.interval));
+        expect(task.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-03', task.timeSeriesConfig.interval),
+        );
         expect(task.doneBy[0].uid).toEqual(owner._id);
-        expect(task.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
+        expect(task.doneBy[1].tid).toEqual(
+          toTimingId('2021-04-05', task.timeSeriesConfig.interval),
+        );
         expect(task.doneBy[1].uid).toEqual(member._id);
       });
 
@@ -143,11 +175,15 @@ describe('TaskService', () => {
 
         const search = await testDataUtils.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
-        expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
+        expect(search.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-05', task.timeSeriesConfig.interval),
+        );
         expect(search.doneBy[0].uid).toEqual(owner._id);
 
         expect(task.doneBy.length).toEqual(1);
-        expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.timeSeriesConfig.interval));
+        expect(task.doneBy[0].tid).toEqual(
+          toTimingId('2021-04-05', task.timeSeriesConfig.interval),
+        );
         expect(task.doneBy[0].uid).toEqual(owner._id);
       });
     });
@@ -267,7 +303,9 @@ describe('TaskService', () => {
         const existingTimer = new Timer();
         existingTimer.spans = [{ from: start, to: start + 1000 }];
 
-        const task = await createTask(profile, owner, UserAssignmentStrategy.Shared, [existingTimer]);
+        const task = await createTask(profile, owner, UserAssignmentStrategy.Shared, [
+          existingTimer,
+        ]);
 
         expect(task.getTimer(owner)).not.toBeUndefined();
         expect(task.getTimer(owner).isStarted()).toEqual(false);
@@ -288,7 +326,9 @@ describe('TaskService', () => {
         const existingTimer = new Timer(owner);
         existingTimer.spans = [{ from: start, to: start + 1000, uid: owner._id }];
 
-        const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser, [existingTimer]);
+        const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser, [
+          existingTimer,
+        ]);
 
         expect(task.getTimer(owner)).not.toBeUndefined();
         expect(task.getTimer(owner).isStarted()).toEqual(false);
@@ -309,7 +349,9 @@ describe('TaskService', () => {
         const existingTimer = new Timer(owner);
         existingTimer.spans = [{ from: start, to: start + 1000, uid: owner._id }];
 
-        const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser, [existingTimer]);
+        const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser, [
+          existingTimer,
+        ]);
 
         await taskService.startTimer(profile, owner, task);
         await taskService.startTimer(profile, member, task);
@@ -331,7 +373,9 @@ describe('TaskService', () => {
         const existingTimer = new Timer(owner);
         existingTimer.spans = [{ from: start, uid: owner._id }];
 
-        const task = await createTask(profile, owner, UserAssignmentStrategy.Shared, [existingTimer]);
+        const task = await createTask(profile, owner, UserAssignmentStrategy.Shared, [
+          existingTimer,
+        ]);
         const timer = await taskService.stopTimer(profile, owner, task);
         expect(timer.isStarted()).toEqual(false);
 
@@ -370,7 +414,9 @@ describe('TaskService', () => {
         const existingTimer = new Timer(owner);
         existingTimer.spans = [{ from: start, to: start + 1000, uid: owner._id }];
 
-        const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser, [existingTimer]);
+        const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser, [
+          existingTimer,
+        ]);
         const timer = await taskService.stopTimer(profile, owner, task);
         expect(timer.isStarted()).toEqual(false);
 
@@ -389,7 +435,10 @@ describe('TaskService', () => {
         const memberTimer = new Timer(member);
         memberTimer.spans = [{ from: start, uid: member._id }];
 
-        const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser, [ownerTimer, memberTimer]);
+        const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser, [
+          ownerTimer,
+          memberTimer,
+        ]);
         await taskService.stopTimer(profile, owner, task);
         await taskService.stopTimer(profile, member, task);
 

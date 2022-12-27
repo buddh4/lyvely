@@ -16,10 +16,10 @@ export class ContentStreamService extends AbstractStreamService<
   protected logger = new Logger(ContentStreamService.name);
 
   createQueryFilter(context: RequestContext, filter?: ContentStreamFilter): FilterQuery<Content> {
-    const result = { pid: context.pid } as FilterQuery<Content>;
+    const result = { pid: context.pid, oid: context.oid } as FilterQuery<Content>;
 
-    if (filter?.parent) {
-      result['parentId'] = assureObjectId(filter.parent);
+    if (filter) {
+      result['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
     }
 
     return result;

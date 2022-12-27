@@ -86,6 +86,7 @@ export class LyvelyServer {
 
   private initMongoose() {
     mongoose.set('debug', !!this.configService.get('mongodb.debug'));
+    mongoose.Schema.Types.String.set('trim', true);
   }
 
   private logInitConfig() {

@@ -38,12 +38,7 @@ export class TasksController implements TasksEndpoint {
   async create(@Body() dto: CreateTaskDto, @Request() req: ProfileRequest) {
     const { profile, user } = req;
 
-    const activity = await this.tasksService.createContent(
-      profile,
-      user,
-      Task.create(profile, user, dto),
-      dto.tagNames,
-    );
+    const activity = await this.tasksService.createContent(profile, user, dto);
 
     if (!activity) {
       throw new InternalServerErrorException();

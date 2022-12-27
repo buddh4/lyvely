@@ -7,13 +7,13 @@ export abstract class AbstractContentDao<T extends Content> extends BaseProfileM
     return 'content';
   }
 
-  async archive(profileRelation: ProfileRelation, identity: EntityIdentity<T>): Promise<boolean> {
+  async archive(profileRelation: ProfileRelation, identity: EntityIdentity<T>): Promise<T> {
     const update = { 'meta.isArchived': true } as UpdateQuerySet<Content>;
-    return !!(await this.updateOneByProfileAndIdSet(profileRelation, identity, <any>update));
+    return this.findOneAndSetByProfileAndId(profileRelation, identity, update);
   }
 
-  async unarchive(profileRelation: ProfileRelation, identity: EntityIdentity<T>): Promise<boolean> {
+  async unarchive(profileRelation: ProfileRelation, identity: EntityIdentity<T>): Promise<T> {
     const update = { 'meta.isArchived': false } as UpdateQuerySet<Content>;
-    return !!(await this.updateOneByProfileAndIdSet(profileRelation, identity, <any>update));
+    return this.findOneAndSetByProfileAndId(profileRelation, identity, update);
   }
 }

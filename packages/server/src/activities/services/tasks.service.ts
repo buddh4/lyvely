@@ -1,7 +1,7 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Task } from '../schemas';
 import { Profile } from '@/profiles';
-import { CalendarDate, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
+import { CalendarDate, CreateTaskDto, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
 import { User } from '@/users';
 import { TasksDao } from '../daos/tasks.dao';
 import { AbstractContentService, ContentScoreService } from '@/content';
@@ -10,21 +10,23 @@ import { assureObjectId, EntityIdentity } from '@/core';
 import { Timer } from '@/calendar';
 
 @Injectable()
-export class TasksService extends AbstractContentService<Task> {
+export class TasksService extends AbstractContentService<Task, CreateTaskDto> {
   @Inject()
   protected contentDao: TasksDao;
 
   @Inject()
   private scoreService: ContentScoreService;
 
-  async createContent(
+  protected logger = new Logger(TasksService.name);
+
+  protected async createInstance(
     profile: Profile,
     user: User,
-    model: Task,
-    tagNames?: string[],
+    model: CreateTaskDto,
   ): Promise<Task> {
-    model.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
-    return super.createContent(profile, user, model, tagNames);
+    const instance = Task.create(profile, user, model);
+    instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
+    return instance;
   }
 
   async setDone(profile: Profile, user: User, task: Task, date: CalendarDate): Promise<Task> {

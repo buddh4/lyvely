@@ -3,12 +3,16 @@ import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { RouteLocation } from 'vue-router';
 import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
 
+export function contentRoute(pid: string, cid: string) {
+  return profileRoute(`/c/${cid}`, pid);
+}
+
 export default [
   {
     path: profileRoute('/stream'),
     name: 'Stream',
     meta: {
-      layout: 'profile-xl',
+      layout: 'profile-full',
       title: translation('stream.title'),
     },
     component: () => import('../views/ContentStreamView.vue'),
@@ -23,7 +27,7 @@ export default [
       },
     ],
     meta: {
-      layout: 'profile-xl',
+      layout: 'profile-full',
       title: translation('stream.title'),
     },
     component: () => import('../views/ContentDetailView.vue'),

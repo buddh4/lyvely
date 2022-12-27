@@ -1,13 +1,24 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsNotEmpty, IsString, Length, IsEnum, IsOptional, IsInt, Max, Min, IsArray, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  Length,
+  IsEnum,
+  IsOptional,
+  IsInt,
+  Max,
+  Min,
+  IsArray,
+  MaxLength,
+} from 'class-validator';
 import { CalendarIntervalEnum } from '@/calendar';
 import { BaseModel } from '@/models';
 import { UserAssignmentStrategy } from '@/collab';
 import { DataPointInputType, INumberDataPointConfig } from '@/time-series';
-import { IContentDataType } from '@/content';
+import { CreateContentModel, IContentDataType } from '@/content';
 
 @Exclude()
-export class CreateTaskDto extends BaseModel<CreateTaskDto> {
+export class CreateTaskDto extends CreateContentModel<CreateTaskDto> {
   @Expose()
   @IsString()
   @IsNotEmpty()

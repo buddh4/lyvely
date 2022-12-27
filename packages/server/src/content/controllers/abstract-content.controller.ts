@@ -4,12 +4,14 @@ import { AbstractContentService } from '../services';
 import { ProfileContentRequest } from '../types';
 import { Policies } from '@/policies';
 import { ContentWritePolicy } from '../policies';
-import { AbstractContentEndpoint } from '@lyvely/common';
+import { AbstractContentEndpoint, CreateContentModel } from '@lyvely/common';
 
-export abstract class AbstractContentController<T extends Content>
-  implements AbstractContentEndpoint
+export abstract class AbstractContentController<
+  T extends Content,
+  TModel extends CreateContentModel = any,
+> implements AbstractContentEndpoint
 {
-  protected abstract contentService: AbstractContentService<T>;
+  protected abstract contentService: AbstractContentService<T, TModel>;
 
   @Post(':cid/archive')
   @Policies(ContentWritePolicy)

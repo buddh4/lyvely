@@ -1,4 +1,4 @@
-import { Post, Param, Body, Request, Put } from '@nestjs/common';
+import { Post, Body, Request, Put } from '@nestjs/common';
 import { Habit } from '../schemas';
 import {
   UpdateHabitDto,
@@ -13,12 +13,7 @@ import {
 } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
-import {
-  ProfileContentRequest,
-  ContentController,
-  StrictContentType,
-  ContentWritePolicy,
-} from '@/content';
+import { ProfileContentRequest, ContentController, ContentWritePolicy } from '@/content';
 import { ProfileRequest, ProfilePermissions } from '@/profiles';
 import { Policies } from '@/policies/decorators/policies.decorator';
 import { ActivityPermissions } from '../permissions';
@@ -38,7 +33,7 @@ export class HabitsController implements HabitsEndpoint {
   async create(@Body() dto: CreateHabitDto, @Request() req: ProfileRequest) {
     const { profile, user } = req;
 
-    const habitModel = await this.contentService.createHabit(profile, user, dto);
+    const habitModel = await this.contentService.createContent(profile, user, dto);
 
     return new UpdateHabitResponseDto({
       model: new HabitModel(habitModel),

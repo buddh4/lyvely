@@ -64,6 +64,5 @@ describe('content dao', () => {
       expect(search instanceof TestContent).toEqual(true);
       expect(search.content.testData).toEqual('Hello World');
     });
-
   });
 });

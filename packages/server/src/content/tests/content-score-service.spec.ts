@@ -39,10 +39,15 @@ describe('ContentScoreService', () => {
   ];
 
   beforeEach(async () => {
-    testingApp = await createBasicTestingModule(TEST_KEY, [ContentScoreService, ContentScoreDao], Models).compile();
+    testingApp = await createBasicTestingModule(
+      TEST_KEY,
+      [ContentScoreService, ContentScoreDao],
+      Models,
+    ).compile();
     contentScoreService = testingApp.get<ContentScoreService>(ContentScoreService);
     testDataUtils = testingApp.get<TestDataUtils>(TestDataUtils);
-    TestContentScoreModel = testingApp.get<Model<TestContentScoreDocument>>('TestContentScoreModel');
+    TestContentScoreModel =
+      testingApp.get<Model<TestContentScoreDocument>>('TestContentScoreModel');
     ExtendedTestContentScoreModel = testingApp.get<Model<ExtendedTestContentScoreDocument>>(
       'ExtendedTestContentScoreModel',
     );
@@ -280,7 +285,10 @@ describe('ContentScoreService', () => {
         { special: 'TestValue' },
       );
 
-      const model = await contentScoreService.saveScore<ExtendedTestContentScore>(profile, testScore);
+      const model = await contentScoreService.saveScore<ExtendedTestContentScore>(
+        profile,
+        testScore,
+      );
 
       expect(model._id).toBeDefined();
       expect(model.cid).toEqual(content._id);

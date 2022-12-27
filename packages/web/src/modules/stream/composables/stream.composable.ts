@@ -25,7 +25,7 @@ export type IStream<
 
 export interface IStreamInitOptions<TFilter extends IStreamFilter = any> {
   root?: HTMLElement;
-  filter?: TFilter;
+  filter?: Ref<TFilter>;
   scrollToStart?: boolean;
   infiniteScroll?: { distance?: number } | boolean;
 }
@@ -33,7 +33,9 @@ export interface IStreamInitOptions<TFilter extends IStreamFilter = any> {
 export function useStream<
   TModel extends { id: string },
   TFilter extends IStreamFilter = any,
-  TOptions extends IStreamOptions = IStreamOptions,
+  TOptions extends IStreamOptions & { scrollToStart?: boolean } = IStreamOptions & {
+    scrollToStart?: boolean;
+  },
 >(
   options: TOptions,
   service: IStreamService<TModel, TFilter, IStreamState, TOptions>,
@@ -68,7 +70,9 @@ export function useStream<
 
   async function reload(hardReset = false) {
     reset(hardReset);
-    return next();
+    const result = await next();
+    _initialScroll();
+    return result;
   }
 
   let nextPromise: Promise<any>;
@@ -100,11 +104,18 @@ export function useStream<
     reset();
     await _loadInitialEntries();
 
-    if (initOptions?.scrollToStart !== false) {
-      scrollToStart();
-    }
-
     _initInfiniteScroll(initOptions);
+
+    options.scrollToStart = initOptions?.scrollToStart !== false;
+    _initialScroll();
+  }
+
+  function _initialScroll() {
+    if (options.scrollToStart !== false) {
+      scrollToStart();
+    } else {
+      scrollToEnd();
+    }
   }
 
   async function _loadInitialEntries() {
@@ -116,11 +127,30 @@ export function useStream<
 
   function scrollToStart() {
     if (!root.value) return;
-    if (options.direction === StreamDirection.BBT) {
-      scrollToBottom(root.value);
-    } else {
-      scrollToTop(root.value);
-    }
+
+    setTimeout(() => {
+      nextTick(() => {
+        if (options.direction === StreamDirection.BBT) {
+          scrollToBottom(root.value!);
+        } else {
+          scrollToTop(root.value!);
+        }
+      });
+    });
+  }
+
+  function scrollToEnd() {
+    if (!root.value) return;
+
+    setTimeout(() => {
+      nextTick(() => {
+        if (options.direction === StreamDirection.BBT) {
+          scrollToTop(root.value!);
+        } else {
+          scrollToBottom(root.value!);
+        }
+      });
+    });
   }
 
   function _initInfiniteScroll(initOptions?: IStreamInitOptions) {

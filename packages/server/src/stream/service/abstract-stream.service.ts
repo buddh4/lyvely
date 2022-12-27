@@ -7,6 +7,7 @@ import {
   IStreamState,
   BaseModel,
   ContentModel,
+  EntityNotFoundException,
 } from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
 import {
@@ -49,17 +50,23 @@ export abstract class AbstractStreamService<
   ): Promise<TResult[]>;
   protected abstract getSortField(): string;
 
+  /**
+   * Loads a single entry filtered by the given filter.
+   * @param context
+   * @param identity
+   * @param filter
+   */
   async loadEntry(
     context: RequestContext,
     identity: EntityIdentity<TModel>,
     filter?: TFilter,
-  ): Promise<TResult | null> {
+  ): Promise<TResult> {
     const streamEntry = await this.streamEntryDao.findByIdAndFilter(
       identity,
       this.createQueryFilter(context, filter),
     );
 
-    if (!streamEntry) return null;
+    if (!streamEntry) throw new EntityNotFoundException();
 
     return (await this.mapToResultModel([streamEntry], context))[0];
   }
