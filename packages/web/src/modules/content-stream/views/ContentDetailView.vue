@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ContentStreamMessageInput from '@/modules/content-stream/components/ContentStreamMessageInput.vue';
+import ContentStreamFooter from '@/modules/content-stream/components/ContentStreamFooter.vue';
 import ContentStream from '@/modules/content-stream/components/ContentStream.vue';
 import { ContentModel, ContentStreamFilter } from '@lyvely/common';
 import { useContentStreamService } from '@/modules/content-stream/services/content-stream.service';
@@ -34,9 +34,10 @@ watch(
   { immediate: true },
 );
 
-function onContentCreated(content: ContentModel) {
+async function onContentCreated(content: ContentModel) {
   const stream = streamComponent.value!.stream;
-  stream.scrollToStart();
+  await stream.addUpdates([content]);
+  await stream.scrollToStart();
 }
 
 function back() {
@@ -81,7 +82,7 @@ function back() {
           <div v-else class="p-2 md:p-4 m-4 border border-divide bg-main rounded">Loading...</div>
         </template>
       </content-stream>
-      <content-stream-message-input :parent-id="contentId" @content-created="onContentCreated" />
+      <content-stream-footer :parent-id="contentId" @content-created="onContentCreated" />
     </div>
   </div>
 </template>

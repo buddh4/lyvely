@@ -71,7 +71,7 @@ export function useStream<
   async function reload(hardReset = false) {
     reset(hardReset);
     const result = await next();
-    _initialScroll();
+    await _initialScroll();
     return result;
   }
 
@@ -87,7 +87,7 @@ export function useStream<
 
     const response = await nextPromise;
     state.value = response.state;
-    _addNext(response.models);
+    await addNext(response.models);
 
     return response;
   }
@@ -107,14 +107,14 @@ export function useStream<
     _initInfiniteScroll(initOptions);
 
     options.scrollToStart = initOptions?.scrollToStart !== false;
-    _initialScroll();
+    await _initialScroll();
   }
 
-  function _initialScroll() {
+  async function _initialScroll() {
     if (options.scrollToStart !== false) {
-      scrollToStart();
+      return scrollToStart();
     } else {
-      scrollToEnd();
+      return scrollToEnd();
     }
   }
 
@@ -125,30 +125,36 @@ export function useStream<
     }
   }
 
-  function scrollToStart() {
+  async function scrollToStart() {
     if (!root.value) return;
 
-    setTimeout(() => {
-      nextTick(() => {
-        if (options.direction === StreamDirection.BBT) {
-          scrollToBottom(root.value!);
-        } else {
-          scrollToTop(root.value!);
-        }
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        nextTick(() => {
+          if (options.direction === StreamDirection.BBT) {
+            scrollToBottom(root.value!);
+          } else {
+            scrollToTop(root.value!);
+          }
+        });
       });
+      resolve(true);
     });
   }
 
-  function scrollToEnd() {
+  async function scrollToEnd() {
     if (!root.value) return;
 
-    setTimeout(() => {
-      nextTick(() => {
-        if (options.direction === StreamDirection.BBT) {
-          scrollToTop(root.value!);
-        } else {
-          scrollToBottom(root.value!);
-        }
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        nextTick(() => {
+          if (options.direction === StreamDirection.BBT) {
+            scrollToTop(root.value!);
+          } else {
+            scrollToBottom(root.value!);
+          }
+          resolve(true);
+        });
       });
     });
   }
@@ -162,7 +168,7 @@ export function useStream<
     useInfiniteScroll(
       root,
       () => {
-        next();
+        next().catch((e) => console.error(e));
       },
       {
         distance: infiniteScrollOptions.distance || 50,
@@ -172,9 +178,10 @@ export function useStream<
     );
   }
 
-  function _addNext(newModels: TModel[]) {
+  async function addNext(newModels: TModel[]) {
     if (!newModels?.length) return;
 
+    newModels = newModels.filter((model) => !getStreamEntryById(model.id));
     newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
 
     events.emit('pre.next', newModels);
@@ -184,7 +191,7 @@ export function useStream<
       models.value = models.value.concat(newModels);
     } else {
       models.value = newModels.concat(models.value);
-      nextTick(() => restoreScroll(preparedScrollValue));
+      await nextTick(() => restoreScroll(preparedScrollValue));
     }
 
     events.emit('post.next', newModels);
@@ -208,14 +215,15 @@ export function useStream<
       updateStatus,
     );
     state.value = response.state;
-    _addUpdates(response.models);
+    await addUpdates(response.models);
 
     return response;
   }
 
-  function _addUpdates(newModels: TModel[]) {
+  async function addUpdates(newModels: TModel[]) {
     if (!newModels?.length) return;
 
+    newModels = newModels.filter((model) => !getStreamEntryById(model.id));
     newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
 
     events.emit('pre.update', newModels);
@@ -225,7 +233,7 @@ export function useStream<
     } else {
       const isScrollBottom = root.value && isScrolledToBottom(root.value);
       models.value = models.value.concat(newModels.reverse());
-      if (isScrollBottom) nextTick(scrollToStart);
+      if (isScrollBottom) await nextTick(scrollToStart);
     }
 
     events.emit('post.update', newModels);
@@ -273,7 +281,7 @@ export function useStream<
     loadEntry,
     reload,
     scrollToStart,
-    setFilter,
-    updateFilter,
+    addNext,
+    addUpdates,
   };
 }
