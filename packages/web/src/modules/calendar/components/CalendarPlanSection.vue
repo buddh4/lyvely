@@ -33,7 +33,10 @@ const isWeekly = props.interval === CalendarIntervalEnum.Weekly;
 const isUnscheduled = props.interval === CalendarIntervalEnum.Unscheduled;
 
 function getAccessibleTitle(d: Date) {
-  let title = calendarPlan.getAccessibleTitle(d, (isWeekly ? profileLocale : userLocale) || getDefaultLocale());
+  let title = calendarPlan.getAccessibleTitle(
+    d,
+    (isWeekly ? profileLocale : userLocale) || getDefaultLocale(),
+  );
 
   if (isDaily && isTodayUtil(d)) {
     title = translate('calendar.today') + ' ' + title;
@@ -91,15 +94,13 @@ function decrementTiming() {
     :data-count="count"
     class="calendar-plan-item calendar-plan-header-item first:rounded-t border-divide bg-shadow text-center border relative"
     @dragenter="open"
-    @focusin="showCreateButton = true"
-  >
+    @focusin="showCreateButton = true">
     <button
       v-if="showTodayIcon"
       class="today-button"
       :title="$t('calendar.plan.nav-today')"
       :aria-controls="itemsId"
-      @click="switchToToday"
-    >
+      @click="switchToToday">
       <ly-icon role="button" name="today" />
     </button>
 
@@ -109,8 +110,7 @@ function decrementTiming() {
       :aria-label="$t('calendar.plan.aria.nav-back', { time: prevTitle })"
       class="switch-timing no-underline py-0"
       :aria-controls="itemsId"
-      @click="decrementTiming"
-    >
+      @click="decrementTiming">
       {{ leftCaret }}
     </ly-button>
 
@@ -119,8 +119,7 @@ function decrementTiming() {
       :aria-controls="itemsId"
       :aria-label="accessibleTitle"
       :aria-expanded="collapsed ? 'false' : 'true'"
-      @click="toggleContent"
-    >
+      @click="toggleContent">
       <span aria-hidden="true">
         {{ title }}
         <small v-if="collapsed && !isEmpty">{{ ` (${count})` }}</small>
@@ -133,8 +132,7 @@ function decrementTiming() {
       :aria-label="$t('calendar.plan.aria.nav-next', { time: nextTitle })"
       class="switch-timing no-underline py-0"
       :aria-controls="itemsId"
-      @click="incrementTiming"
-    >
+      @click="incrementTiming">
       {{ rightCaret }}
     </ly-button>
 
@@ -145,13 +143,16 @@ function decrementTiming() {
       @click="
         showCreateButton = false;
         $emit('create');
-      "
-    >
+      ">
       +
     </ly-add-button>
   </div>
 
-  <div :id="itemsId" role="list" data-calendar-plan-item-container :class="['p-0 border-0', { hidden: collapsed }]">
+  <div
+    :id="itemsId"
+    role="list"
+    data-calendar-plan-item-container
+    :class="['p-0 border-0', { hidden: collapsed }]">
     <slot></slot>
   </div>
 </template>
