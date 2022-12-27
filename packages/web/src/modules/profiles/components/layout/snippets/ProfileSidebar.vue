@@ -8,6 +8,7 @@ import { usePageStore } from '@/modules/core/store/page.store';
 import { watchMaxSize, isMaxViewSize } from '@/util/media';
 import { isMultiUserProfile } from '@lyvely/common';
 import imageUrl from '@/assets/logo_white_bold.svg';
+import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 
 interface IMenuItem {
   to?: RouteLocationRaw | string;
@@ -27,7 +28,7 @@ const sidebar = ref<HTMLElement | null>(null);
 
 const menuItems: IMenuItem[] = [
   {
-    to: { name: 'Stream' },
+    to: profileRoute('/stream', profileStore.profile?.id),
     icon: 'stream',
     label: 'stream.labels.main_nav',
   },

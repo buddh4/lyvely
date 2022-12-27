@@ -16,12 +16,8 @@ async function onContentCreated(content: ContentModel) {
 </script>
 
 <template>
-  <div class="h-full flex flex-col-reverse items-stretch">
-    <div class="max-h-full flex items-stretch flex-col-reverse items-stretch h-full">
-      <content-stream-footer @content-created="onContentCreated" />
-      <content-stream ref="streamComponent" :filter="filter" />
-    </div>
-  </div>
+  <content-stream ref="streamComponent" :filter="filter" />
+  <content-stream-footer @content-created="onContentCreated" />
 </template>
 
 <style scoped></style>

@@ -27,7 +27,7 @@ async function loadContent(cid: string) {
 watch(
   router.currentRoute,
   async (to) => {
-    if (to.name === 'ContentDetails' && to.params.cid) {
+    if (to.name === 'content-details' && to.params.cid) {
       return loadContent(to.params.cid as string);
     }
   },
@@ -44,40 +44,32 @@ function back() {
   if (content.value!.meta.parentId) {
     router.push(contentRoute(content.value!.pid, content.value!.meta.parentId));
   } else {
-    router.push({ name: 'Stream' });
+    router.push({ name: 'stream' });
   }
 }
 </script>
 
 <template>
-  <div class="h-full flex flex-col items-stretch">
-    <div class="max-h-full flex items-stretch flex-col h-full">
-      <content-stream
-        ref="streamComponent"
-        :filter="filter"
-        :scroll-to-start="false"
-        :batch-size="100">
-        <template #before>
-          <div
-            v-if="content"
-            class="flex flex-col mx-0 mt-0 md:mx-2 md:mt-2 mb-4 border border-divide md:rounded divide-y">
-            <div class="px-1 md:p-2 bg-main border-divide rounded-t w-full">
-              <ly-button class="text-sm" @click="back">
-                <ly-icon name="arrow-left" class="w-3 mr-2" /><span>{{ $t('common.back') }}</span>
-              </ly-button>
-            </div>
-            <div class="border-divide">
-              <Component :is="getContentDetailsComponent(content.type)" :model="content" />
-            </div>
-          </div>
-          <div v-else class="p-2 md:p-4 m-4 border border-divide bg-main rounded">
-            <ly-loader />
-          </div>
-        </template>
-      </content-stream>
-      <content-stream-footer :parent-id="contentId" @content-created="onContentCreated" />
-    </div>
-  </div>
+  <content-stream ref="streamComponent" :filter="filter" :scroll-to-start="false" :batch-size="100">
+    <template #before>
+      <div
+        v-if="content"
+        class="flex flex-col mx-0 mt-0 md:mx-2 md:mt-2 mb-4 border border-divide md:rounded divide-y">
+        <div class="px-1 md:p-2 bg-main border-divide rounded-t w-full">
+          <ly-button class="text-sm" @click="back">
+            <ly-icon name="arrow-left" class="w-3 mr-2" /><span>{{ $t('common.back') }}</span>
+          </ly-button>
+        </div>
+        <div class="border-divide">
+          <Component :is="getContentDetailsComponent(content.type)" :model="content" />
+        </div>
+      </div>
+      <div v-else class="p-2 md:p-4 m-4 border border-divide bg-main rounded">
+        <ly-loader />
+      </div>
+    </template>
+  </content-stream>
+  <content-stream-footer :parent-id="contentId" @content-created="onContentCreated" />
 </template>
 
 <style scoped></style>

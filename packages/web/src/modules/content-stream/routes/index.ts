@@ -1,35 +1,34 @@
 import { translation } from '@/i18n';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
-import { RouteLocation } from 'vue-router';
-import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
 
 export function contentRoute(pid: string, cid: string) {
-  return profileRoute(`/c/${cid}`, pid);
+  return profileRoute(`/stream/${cid}`, pid);
 }
 
 export default [
   {
     path: profileRoute('/stream'),
-    name: 'Stream',
-    meta: {
-      layout: 'profile-full',
-      title: translation('stream.title'),
-    },
-    component: () => import('../views/ContentStreamView.vue'),
-  },
-  {
-    path: profileRoute('/c/:cid'),
-    name: 'ContentDetails',
-    beforeEnter: [
-      (to: RouteLocation) => {
-        const streamStore = useContentStreamStore();
-        streamStore.setParentId(to.params.cid as string);
+    component: import('../views/ContentStreamRootView.vue'),
+    layout: 'profile-full',
+    children: [
+      {
+        path: '',
+        name: 'stream',
+        component: import('../views/ContentStreamView.vue'),
+        meta: {
+          layout: 'profile-full',
+          title: translation('stream.title'),
+        },
+      },
+      {
+        path: ':cid',
+        name: 'content-details',
+        component: import('../views/ContentDetailView.vue'),
+        meta: {
+          layout: 'profile-full',
+          title: translation('stream.title'),
+        },
       },
     ],
-    meta: {
-      layout: 'profile-full',
-      title: translation('stream.title'),
-    },
-    component: () => import('../views/ContentDetailView.vue'),
   },
 ];
