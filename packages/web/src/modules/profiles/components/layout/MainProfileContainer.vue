@@ -2,6 +2,8 @@
 import { Size } from '@/modules/ui/types';
 import ProfileTopNavigation from './snippets/ProfileTopNavigation.vue';
 import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { storeToRefs } from 'pinia';
 
 export interface IProps {
   width?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
@@ -10,11 +12,13 @@ export interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   width: Size.LG,
 });
+
+const { profile } = storeToRefs(useProfileStore());
 </script>
 
 <template>
-  <profile-top-navigation />
-  <main-container v-bind="props">
+  <profile-top-navigation :key="profile.id" />
+  <main-container :key="profile.id" v-bind="props">
     <slot></slot>
   </main-container>
 </template>

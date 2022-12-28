@@ -3,7 +3,11 @@ import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
 import { isMultiUserProfile } from '@lyvely/common';
 
-export const ifIsMultiUserProfile = async (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
+export const ifIsMultiUserProfile = async (
+  to: RouteLocation,
+  from: RouteLocation,
+  next: NavigationGuardNext,
+) => {
   if (!isMultiUserProfile(useProfileStore().profile)) {
     next(profileRoute());
     return;
@@ -12,7 +16,11 @@ export const ifIsMultiUserProfile = async (to: RouteLocation, from: RouteLocatio
   next();
 };
 
-export const loadProfile = async (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
+export const loadProfile = async (
+  to: RouteLocation,
+  from: RouteLocation,
+  next: NavigationGuardNext,
+) => {
   const profileStore = useProfileStore();
 
   // params.pid === ':pid: when profile root or main root path is accessed
@@ -33,7 +41,11 @@ export const loadProfile = async (to: RouteLocation, from: RouteLocation, next: 
   next();
 };
 
-export const toProfileHome = async (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
+export const toProfileHome = async (
+  to: RouteLocation,
+  from: RouteLocation,
+  next: NavigationGuardNext,
+) => {
   const profileStore = useProfileStore();
 
   if (!profileStore.profile) {
@@ -42,5 +54,5 @@ export const toProfileHome = async (to: RouteLocation, from: RouteLocation, next
   }
 
   // TODO: Use profile setting default route
-  next(profileRoute('/activities', profileStore.profile.id));
+  next(profileRoute('/stream', profileStore.profile.id));
 };
