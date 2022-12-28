@@ -27,7 +27,7 @@ const done = computed(() => !!props.model.done);
 
     <div class="inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block">
       <ly-input-checkbox v-model="done" :label="model.content.title" :readonly="true" />
-      <p v-if="model.content.text?.length" class="text-sm">
+      <p v-if="model.content.text?.length" class="text-sm text-dimmed ml-7">
         {{ model.content.text }}
       </p>
     </div>
