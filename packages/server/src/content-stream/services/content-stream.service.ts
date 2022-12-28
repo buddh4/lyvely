@@ -33,6 +33,6 @@ export class ContentStreamService extends AbstractStreamService<
     models: Content[],
     context: RequestContext,
   ): Promise<ContentModel[]> {
-    return models.map((content) => content.toModel());
+    return models.map((content) => content.toModel(context.user));
   }
 }

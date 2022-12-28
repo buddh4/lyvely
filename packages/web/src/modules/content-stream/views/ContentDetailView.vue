@@ -54,7 +54,7 @@ function back() {
     <template #before>
       <div
         v-if="content"
-        class="flex flex-col mx-0 mt-0 md:mx-2 md:mt-2 mb-4 border border-divide md:rounded divide-y">
+        class="flex flex-col mx-0 mt-0 md:mx-2 mb-4 border border-divide md:rounded divide-y">
         <div class="px-1 md:p-2 bg-main border-divide rounded-t w-full">
           <ly-button class="text-sm" @click="back">
             <ly-icon name="arrow-left" class="w-3 mr-2" /><span>{{ $t('common.back') }}</span>

@@ -106,6 +106,15 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
     });
   }
 
+  toModel(user?: User): TaskModel {
+    const model = super.toModel(user) as TaskModel;
+    if (user) {
+      model.done = this.getDoneBy(user)?.tid;
+      model.timer = this.getTimer(user);
+    }
+    return model;
+  }
+
   isDoneByUser(uid: EntityIdentity<User>) {
     return !!this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
   }

@@ -90,7 +90,7 @@ export class Content<
     this.setAuthor(author);
   }
 
-  toModel() {
+  toModel(user?: User) {
     const ModelConstructor: Type<ContentModel> =
       'getModelConstructor' in this && typeof this.getModelConstructor === 'function'
         ? this.getModelConstructor()

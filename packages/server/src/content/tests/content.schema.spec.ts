@@ -49,7 +49,7 @@ describe('content dao', () => {
     it('serialize test content', async () => {
       const { user, profile } = TestDataUtils.createDummyUserAndProfile();
       const content = await createTestContent(user, profile, 'Hello World');
-      const model = new ContentModel(content.toModel());
+      const model = new ContentModel(content.toModel(user));
       const serialized = instanceToPlain(model);
       expect(serialized.oid).toEqual(content.oid.toString());
     });

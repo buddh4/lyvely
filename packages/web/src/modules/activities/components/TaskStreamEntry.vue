@@ -2,6 +2,8 @@
 import { ContentModel, TaskModel } from '@lyvely/common';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
+import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
+import { computed } from 'vue';
 
 export interface IProps {
   model: TaskModel;
@@ -10,10 +12,11 @@ export interface IProps {
 }
 
 const props = defineProps<IProps>();
+const done = computed(() => !!props.model.done);
 </script>
 
 <template>
-  <content-stream-entry v-bind="props">
+  <content-stream-entry v-bind="props" merge="true">
     <template #image>
       <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
         <router-link :to="{ name: 'Tasks' }">
@@ -22,10 +25,11 @@ const props = defineProps<IProps>();
       </div>
     </template>
 
-    <div class="border border-divide p-4 rounded-xl bg-main inline-block">
-      <b>{{ $t('activities.tasks.stream_entry.text') }}:</b>
-      {{ model.content.title }}
-      {{ model.content.text }}
+    <div class="inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block">
+      <ly-input-checkbox v-model="done" :label="model.content.title" :readonly="true" />
+      <p v-if="model.content.text?.length" class="text-sm">
+        {{ model.content.text }}
+      </p>
     </div>
   </content-stream-entry>
 </template>

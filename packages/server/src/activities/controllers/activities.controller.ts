@@ -10,6 +10,7 @@ import {
   Body,
 } from '@nestjs/common';
 import {
+  ActivityModel,
   ActivityRangeResponse,
   DataPointIntervalFilter,
   MoveAction,
@@ -56,14 +57,7 @@ export class ActivitiesController extends AbstractContentController<Activity> {
 
     const result = new ActivityRangeResponse();
     activities.forEach((activity) => {
-      if (isTaskContent(activity)) {
-        const dto = new TaskModel(activity);
-        dto.done = activity.getDoneBy(user)?.tid;
-        dto.timer = activity.getTimer(user);
-        result.addActivity(dto);
-      } else {
-        result.addActivity(activity);
-      }
+      result.addActivity(activity.toModel(user) as ActivityModel);
     });
 
     result.addDataPoints(dataPoints.map((value) => value.createDto()));

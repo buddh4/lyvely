@@ -68,7 +68,7 @@ defineExpose({ stream });
   <div
     id="contentStreamRoot"
     ref="streamRoot"
-    class="overflow-auto scrollbar-thin md:p-1 flex-grow">
+    class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
     <dynamic-scroller :items="stream.models" :min-item-size="100">
       <template #before>
         <slot name="before"></slot>
