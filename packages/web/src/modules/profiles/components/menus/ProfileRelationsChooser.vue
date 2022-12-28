@@ -19,7 +19,9 @@ const { show: showCreateProfile } = storeToRefs(useCreateProfileStore());
 const router = useRouter();
 
 async function setProfile(pid: string) {
-  const result = await router.push({ name: 'stream', params: { pid } });
+  const name = router.currentRoute.value.name || 'stream';
+  // TODO: check if feature is enabled on target profile
+  const result = await router.push({ name, params: { pid } });
   if (isNavigationFailure(result)) {
     console.error(result);
   }
