@@ -3,9 +3,8 @@ import { useProfileRelationInfosStore } from '@/modules/profiles/stores/profile-
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, isNavigationFailure } from 'vue-router';
 import { useCreateProfileStore } from '@/modules/profiles/stores/create-profile.store';
-import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { ProfileRelationInfo } from '@lyvely/common';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
@@ -20,7 +19,10 @@ const { show: showCreateProfile } = storeToRefs(useCreateProfileStore());
 const router = useRouter();
 
 async function setProfile(pid: string) {
-  router.push(profileRoute('/', pid));
+  const result = await router.push({ name: 'stream', params: { pid } });
+  if (isNavigationFailure(result)) {
+    console.error(result);
+  }
 }
 
 function getProfileIcon(relation: ProfileRelationInfo) {

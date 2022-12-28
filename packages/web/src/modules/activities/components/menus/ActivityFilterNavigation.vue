@@ -2,23 +2,25 @@
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
-import { computed, ref, toRefs, watch } from 'vue';
+import { computed, onUnmounted, ref, toRefs, watch } from 'vue';
 import { TagFilter } from '@lyvely/common';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import useFilterOption from '@/util/composables/useFilterOption';
 import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
+import { storeToRefs } from 'pinia';
 
 const profileStore = useProfileStore();
 const { dragActive } = toRefs(useCalendarPlanStore());
 const { filter } = useActivityStore();
+
 const tags = computed(() => new TagFilter({ archived: false }).apply(profileStore.getTags()));
 const activeTagId = computed(() => filter.option('tagId'));
 const router = useRouter();
 const showFilterDrawer = ref(false);
-let fullPath: string | undefined = undefined;
+let filterPath: string | undefined = undefined;
 
-watch(filter, () => {
+const unwatchFilter = watch(filter, () => {
   const currentRoute = router.currentRoute.value;
   const query = {
     ...currentRoute.query,
@@ -37,17 +39,17 @@ watch(filter, () => {
 
   const route = router.resolve({ path: currentRoute.path, query: query });
 
-  if (route.fullPath !== fullPath) {
+  if (route.fullPath !== currentRoute.fullPath) {
     // Prevent update loops
-    fullPath = route.fullPath;
+    filterPath = route.fullPath;
     router.replace({ path: currentRoute.path, query: query });
   }
 });
 
 watch(router.currentRoute, (to) => {
-  if (to.fullPath !== fullPath) {
+  if (to.fullPath !== filterPath) {
     // Prevent update loops
-    fullPath = to.fullPath;
+    filterPath = to.fullPath;
     setFilterFromRoute();
   }
 });
@@ -71,6 +73,8 @@ const commonButtonClassNames =
   'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
+
+onBeforeRouteLeave(unwatchFilter);
 </script>
 
 <template>

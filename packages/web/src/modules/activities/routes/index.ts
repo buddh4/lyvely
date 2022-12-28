@@ -15,6 +15,8 @@ export default [
         name: 'Habits',
         path: '',
         meta: {
+          i18n: { module: 'activities' },
+          layout: 'profile',
           title: () => translate('activities.habits.title'),
         },
         component: () => import('../views/HabitPlanView.vue'),
@@ -23,6 +25,8 @@ export default [
         name: 'Tasks',
         path: 'tasks',
         meta: {
+          i18n: { module: 'activities' },
+          layout: 'profile',
           title: () => translate('activities.tasks.title'),
         },
         component: () => import('../views/TaskPlanView.vue'),

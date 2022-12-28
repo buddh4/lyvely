@@ -41,8 +41,7 @@ const progressStyle = computed(() => {
           class="border-none px-0"
           :aria-label="$t('layout.aria.toggle-sidebar')"
           aria-controls="sidebar"
-          @click="toggleSidebar"
-        >
+          @click="toggleSidebar">
           <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">
             <ly-profile-avatar />
 
@@ -52,8 +51,7 @@ const progressStyle = computed(() => {
                   name="score-icon"
                   mode="out-in"
                   enter-active-class="animate__animated animate_svg_flip"
-                  leave-active-class=""
-                >
+                  leave-active-class="">
                   <ly-icon :key="score" name="score" class="text-success" />
                 </transition>
 
@@ -61,15 +59,16 @@ const progressStyle = computed(() => {
                   name="score"
                   mode="out-in"
                   enter-active-class="animate__animated animate__faster animate__bounceIn"
-                  leave-active-class="animate__animated animate__faster animate__bounceOut"
-                >
+                  leave-active-class="animate__animated animate__faster animate__bounceOut">
                   <div :key="score" class="inline-block score-value ml-0.5">
                     <span>{{ formattedScore }}</span>
                   </div>
                 </transition>
               </div>
               <div class="border border-divide rounded-full w-full h-1.5">
-                <div class="score-progress float-right bg-success rounded-full w-2 h-full" :style="progressStyle"></div>
+                <div
+                  class="score-progress float-right bg-success rounded-full w-2 h-full"
+                  :style="progressStyle"></div>
               </div>
             </div>
           </div>

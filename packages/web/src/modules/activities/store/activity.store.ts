@@ -45,6 +45,7 @@ export const useActivityStore = defineStore('activities', () => {
 
   watch(profile, async (newProfile, oldProfile) => {
     if (newProfile?.id !== oldProfile?.id) {
+      status.resetStatus();
       cache.value = new ActivityDataPointStore();
       tidCache.value = new LoadedTimingIdStore();
       // TODO: we should find a better way for managing the type filter here...
@@ -120,7 +121,11 @@ export const useActivityStore = defineStore('activities', () => {
         activity.timeSeriesConfig.interval = moveEvent.toInterval;
       }
 
-      const { data } = await activityRepository.sort(activity.id, moveEvent.toInterval, attachTo?.id);
+      const { data } = await activityRepository.sort(
+        activity.id,
+        moveEvent.toInterval,
+        attachTo?.id,
+      );
 
       data.forEach((update) => {
         const entry = cache.value.getModel(update.id);
@@ -143,6 +148,6 @@ export const useActivityStore = defineStore('activities', () => {
     selectTag,
     move,
     filter,
-    ...status,
+    status,
   };
 });
