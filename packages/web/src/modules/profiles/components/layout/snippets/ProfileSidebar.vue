@@ -99,7 +99,6 @@ const ariaLabel = computed(() =>
     <div
       class="h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
-        {{ profileStore?.profile.id }}
         <a
           class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer"
           @click="toggleSidebar">
