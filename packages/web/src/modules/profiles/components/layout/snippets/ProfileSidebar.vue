@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { computed, ref, toRefs, watch } from 'vue';
+import { computed, ref, toRefs, watch, getCurrentInstance } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
@@ -9,6 +9,7 @@ import { watchMaxSize, isMaxViewSize } from '@/util/media';
 import { isMultiUserProfile } from '@lyvely/common';
 import imageUrl from '@/assets/logo_white_bold.svg';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
+import { storeToRefs } from 'pinia';
 
 interface IMenuItem {
   to?: RouteLocationRaw | string;
@@ -28,7 +29,7 @@ const sidebar = ref<HTMLElement | null>(null);
 
 const menuItems: IMenuItem[] = [
   {
-    to: profileRoute('/stream', profileStore.profile?.id),
+    to: { name: 'stream' },
     icon: 'stream',
     label: 'stream.labels.main_nav',
   },
