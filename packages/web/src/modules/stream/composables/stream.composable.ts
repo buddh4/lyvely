@@ -214,6 +214,7 @@ export function useStream<
       service.update(state.value, options, <any>filter.value),
       updateStatus,
     );
+
     state.value = response.state;
     await addUpdates(response.models);
 
@@ -223,16 +224,27 @@ export function useStream<
   async function addUpdates(newModels: TModel[]) {
     if (!newModels?.length) return;
 
-    newModels = newModels.filter((model) => !getStreamEntryById(model.id));
+    const updatedModels = [...models.value];
+
+    newModels.forEach((model) => {
+      const index = getStreamEntryIndexById(model.id);
+
+      if (index !== -1) {
+        updatedModels.splice(index, 1);
+      }
+
+      return true;
+    });
+
     newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
 
     events.emit('pre.update', newModels);
 
     if (options.direction === StreamDirection.TTB) {
-      models.value = newModels.concat(models.value);
+      models.value = newModels.concat(updatedModels);
     } else {
       const isScrollBottom = root.value && isScrolledToBottom(root.value);
-      models.value = models.value.concat(newModels.reverse());
+      models.value = updatedModels.concat(newModels.reverse());
       if (isScrollBottom) await nextTick(scrollToStart);
     }
 
@@ -257,6 +269,10 @@ export function useStream<
 
   function getStreamEntryById(id: string): TModel | undefined {
     return models.value.find((model) => model.id === id);
+  }
+
+  function getStreamEntryIndexById(id: string): number {
+    return models.value.findIndex((model) => model.id === id);
   }
 
   function isInitialized() {

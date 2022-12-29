@@ -97,6 +97,8 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
       title: update.title ?? this.content.title,
       text: update.title ?? this.content.text,
     });
+
+    return this;
   }
 }
 

@@ -37,10 +37,7 @@ export class TasksService extends AbstractContentService<Task, CreateTaskDto> {
     const isDoneByUser = task.isDoneByUser(user);
 
     if (task.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
-      await this.contentDao.updateOneByProfileAndIdSet(profile, task, {
-        doneBy: [doneBy],
-        'meta.streamSort': Date.now(),
-      });
+      await this.updateContentSet(profile, user, task, { doneBy: [doneBy] }, { streamSort: true });
     } else if (!isDoneByUser) {
       await this.contentDao.updateOneByProfileAndId(profile, task, { $push: { doneBy: doneBy } });
     } else {
@@ -68,10 +65,15 @@ export class TasksService extends AbstractContentService<Task, CreateTaskDto> {
     const wasDone = task.isDone(user);
 
     if (task.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
-      await this.contentDao.updateOneByProfileAndIdSet(profile, task, {
-        doneBy: [],
-        'meta.streamSort': Date.now(),
-      });
+      await this.updateContentSet(
+        profile,
+        user,
+        task,
+        {
+          doneBy: [],
+        },
+        { streamSort: true },
+      );
     } else {
       await this.contentDao.pullDoneBy(profile, task, user);
     }

@@ -55,8 +55,9 @@ export class TasksController implements TasksEndpoint {
   async update(@Body() update: UpdateTaskDto, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
 
-    content.applyUpdate(update);
-    await this.tasksService.updateContent(profile, user, content, content, update.tagNames);
+    await this.tasksService.updateContentSet(profile, user, content, content.applyUpdate(update), {
+      tagNames: update.tagNames,
+    });
 
     return new UpdateTaskResponseDto({
       model: new TaskModel(content),

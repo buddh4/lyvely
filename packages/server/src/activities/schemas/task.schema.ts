@@ -104,6 +104,8 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
       title: update.title ?? this.content.title,
       text: update.title ?? this.content.text,
     });
+
+    return this;
   }
 
   toModel(user?: User): TaskModel {

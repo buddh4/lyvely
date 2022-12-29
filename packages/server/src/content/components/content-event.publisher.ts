@@ -33,9 +33,18 @@ export class ContentEventPublisher {
 
   emitContentCreated(content: Content) {
     if (this.emitCreateEvents) {
-      this.liveService.emitProfileEvent(
-        new ContentUpdateStateLiveEvent(assureStringId(content.pid), true),
-      );
+      this.emitContentUpdated(content);
     }
+  }
+
+  emitContentUpdated(content: Content) {
+    this.liveService.emitProfileEvent(
+      new ContentUpdateStateLiveEvent({
+        updatesAvailable: true,
+        pid: assureStringId(content.pid),
+        streamSort: content.meta.streamSort,
+        cid: content.id,
+      }),
+    );
   }
 }

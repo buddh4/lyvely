@@ -1,7 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from '../../services/habits.service';
-import { Habit } from '../../schemas';
 import {
   ActivityType,
   CalendarIntervalEnum,
@@ -48,7 +47,7 @@ describe('HabitService', () => {
       interval: CalendarIntervalEnum.Daily,
     };
 
-    return habitService.createContent(profile, user, Habit.create(profile, user, dto));
+    return habitService.createContent(profile, user, dto);
   };
 
   describe('create Habit', () => {
@@ -106,7 +105,9 @@ describe('HabitService', () => {
         }),
       );
 
-      await habitService.updateContent(profile, user, habit, habit, ['SomeCategory']);
+      await habitService.updateContentSet(profile, user, habit, habit, {
+        tagNames: ['SomeCategory'],
+      });
 
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
@@ -148,7 +149,7 @@ describe('HabitService', () => {
         }),
       );
 
-      await habitService.updateContent(profile, user, habit, habit);
+      await habitService.updateContentSet(profile, user, habit, habit);
 
       const search = await habitService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
@@ -187,7 +188,7 @@ describe('HabitService', () => {
       }),
     );
 
-    await habitService.updateContent(profile, user, habit, habit);
+    await habitService.updateContentSet(profile, user, habit, habit);
 
     habit.applyUpdate(
       new UpdateHabitDto({
@@ -200,7 +201,7 @@ describe('HabitService', () => {
       }),
     );
 
-    await habitService.updateContent(profile, user, habit, habit);
+    await habitService.updateContentSet(profile, user, habit, habit);
 
     const search = await habitService.findByProfileAndId(profile, habit);
     expect(search).toBeDefined();

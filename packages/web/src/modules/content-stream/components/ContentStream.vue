@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<IProps>(), {
 });
 
 function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
-  if (evt.pid === profile.value?.id) {
+  if (evt.pid === profile.value?.id && evt.updatesAvailable) {
     stream.value.update();
   }
 }

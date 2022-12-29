@@ -46,8 +46,15 @@ export class HabitsController implements HabitsEndpoint {
   async update(@Body() update: UpdateHabitDto, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
 
-    content.applyUpdate(update);
-    await this.contentService.updateContent(profile, user, content, content);
+    await this.contentService.updateContentSet(
+      profile,
+      user,
+      content,
+      content.applyUpdate(update),
+      {
+        tagNames: update.tagNames,
+      },
+    );
 
     return new UpdateHabitResponseDto({
       model: new HabitModel(content),

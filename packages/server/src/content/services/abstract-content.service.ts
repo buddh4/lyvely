@@ -1,7 +1,7 @@
 import { ProfilesService, Profile, ProfileTagsService, ProfileRelation } from '@/profiles';
 import { AbstractContentDao, ContentDao } from '../daos';
 import { User } from '@/users';
-import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@/core';
+import { assureObjectId, EntityIdentity, IBaseQueryOptions, UpdateQuerySet } from '@/core';
 import { Content } from '../schemas';
 import {
   CreateContentModel,
@@ -10,6 +10,12 @@ import {
 } from '@lyvely/common';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
+
+export interface IContentUpdateOptions extends IBaseQueryOptions {
+  streamSort?: boolean;
+  createdBy?: boolean;
+  tagNames?: string[];
+}
 
 export abstract class AbstractContentService<T extends Content, TModel extends CreateContentModel> {
   @Inject()
@@ -61,6 +67,35 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     return result;
   }
 
+  async updateContentSet(
+    profile: Profile,
+    user: User,
+    content: T,
+    updateSet: UpdateQuerySet<T>,
+    options?: IContentUpdateOptions,
+  ) {
+    if (options?.streamSort) {
+      (<any>updateSet['meta.streamSort']) = Date.now();
+    }
+
+    if (options?.createdBy !== false) {
+      (<any>updateSet['meta.createdBy']) = assureObjectId(user);
+    }
+
+    if (options.tagNames) {
+      await this.mergeTagsForUpdate(profile, updateSet, options?.tagNames);
+    }
+
+    return this.contentDao
+      .updateOneByProfileAndIdSet(profile, content, updateSet, options)
+      .then((result) => {
+        if (updateSet['meta.streamSort']) {
+          this.contentEvents.emitContentUpdated(content);
+        }
+        return result;
+      });
+  }
+
   private async incrementChildCount(context: ProfileRelation, parent: EntityIdentity<Content>) {
     return this.baseContentDao.updateOneByProfileAndId(context, parent, {
       $inc: { 'meta.childCount': 1 },
@@ -80,7 +115,7 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
 
   private async handleSubContentCreation(profile: Profile, user: User, instance: T, model: TModel) {
     if (!model.parentId) return;
-    const parent = await this.baseContentDao.findById(model.parentId);
+    const parent = await this.baseContentDao.findByProfileAndId(profile, model.parentId);
     if (!parent) throw new EntityNotFoundException();
     if (!parent.pid.equals(profile._id)) throw new EntityNotFoundException();
     if (parent.meta.isArchived || parent.meta.isLocked) throw new ForbiddenServiceException();
@@ -98,7 +133,7 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     update: UpdateQuerySet<T>,
     tagNames?: string[],
   ) {
-    if (!tagNames) return;
+    if (!tagNames?.length) return;
 
     await this.profileTagsService.mergeTags(profile, tagNames);
     update.tagIds = [];
@@ -108,18 +143,6 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
         update.tagIds.push(tag._id);
       }
     });
-  }
-
-  async updateContent(
-    profile: Profile,
-    user: User,
-    id: EntityIdentity<T>,
-    update: UpdateQuerySet<T>,
-    tagNames?: string[],
-  ) {
-    await this.mergeTagsForUpdate(profile, update, tagNames);
-    // TODO: set updatedBy on content
-    return this.contentDao.updateOneSetById(id, update);
   }
 
   /**
