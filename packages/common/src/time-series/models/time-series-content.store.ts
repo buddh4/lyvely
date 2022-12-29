@@ -74,13 +74,21 @@ export abstract class TimeSeriesDataPointStore<
     return this.models.get(this.getId(model));
   }
 
-  getModelsByIntervalFilter(interval: CalendarIntervalEnum, filter?: Filter<Model, any>) {
+  getModelsByIntervalFilter(
+    interval: CalendarIntervalEnum,
+    filter?: Filter<Model, any>,
+    tid?: string,
+  ) {
     return this.filterModels((entry) => {
       return entry.timeSeriesConfig.interval === interval && (!filter || filter.check(entry));
     });
   }
 
-  getDataPoint(identity: TimeSeriesContentIdentity, timingId: string, create = false): TDataPointModel {
+  getDataPoint(
+    identity: TimeSeriesContentIdentity,
+    timingId: string,
+    create = false,
+  ): TDataPointModel {
     const modelId = this.getId(identity);
     if (!this.hasDataPoint(modelId, timingId)) {
       if (!create) {

@@ -74,6 +74,7 @@ const commonButtonClassNames =
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
 
+// This prevents a routing error, since to the filter watcher is triggered on profile changes while navigating.
 onBeforeRouteLeave(unwatchFilter);
 </script>
 

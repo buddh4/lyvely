@@ -7,6 +7,7 @@ import {
   CalendarIntervalEnum,
   ActivityModel,
   ActivityType,
+  toTimingId,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -40,7 +41,8 @@ export const useActivityStore = defineStore('activities', () => {
 
   function getActivities(type: ActivityType, interval: CalendarIntervalEnum) {
     filter.value.setOption('type', type);
-    return cache.value.getModelsByIntervalFilter(interval, filter.value as ActivityFilter);
+    const tid = toTimingId(date.value, interval);
+    return cache.value.getModelsByIntervalFilter(interval, filter.value as ActivityFilter, tid);
   }
 
   watch(profile, async (newProfile, oldProfile) => {

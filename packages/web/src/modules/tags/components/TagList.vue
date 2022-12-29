@@ -25,9 +25,6 @@ const tags = computed(() =>
   <div v-if="tags.length">
     <ly-tag v-for="tag in tags" :key="tag.id" :tag="tag" @click="select(tag.id)" />
   </div>
-  <div v-else>
-    <br />
-  </div>
 </template>
 
 <style scoped>

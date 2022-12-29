@@ -23,6 +23,7 @@ const props = defineProps<IProps>();
     </template>
 
     <div class="border border-divide p-4 rounded-xl bg-main inline-block">
+      <tag-list :tag-ids="model.tagIds" @select="selectTag" />
       <b>{{ $t('activities.habits.stream_entry.text') }}:</b>
       {{ model.content.title }}
       {{ model.content.text }}

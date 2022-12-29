@@ -68,7 +68,7 @@ const { model } = toRefs(props);
           </slot>
         </div>
       </div>
-      <tag-list :tag-ids="model.tagIds" @select="selectTag" />
+      <tag-list class="mt-2" :tag-ids="model.tagIds" @select="selectTag" />
     </div>
 
     <div>

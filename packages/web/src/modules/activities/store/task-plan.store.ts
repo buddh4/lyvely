@@ -70,5 +70,13 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
     return val ? setTaskDone(task) : setTaskUndone(task);
   }
 
-  return { addTask, setTaskSelection, move, getTasksByCalendarInterval, startTimer, stopTimer, updateTimer };
+  return {
+    addTask,
+    setTaskSelection,
+    move,
+    getTasksByCalendarInterval,
+    startTimer,
+    stopTimer,
+    updateTimer,
+  };
 });
