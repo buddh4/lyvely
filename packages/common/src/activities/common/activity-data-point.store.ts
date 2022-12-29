@@ -1,6 +1,5 @@
 import { CalendarIntervalEnum } from '@/calendar';
 import { ActivityFilter, ActivityModel, ActivityType } from '../models';
-import { HabitModel } from '../habits';
 import { isTask, TaskModel } from '../tasks';
 import { NumberDataPointModel, TimeSeriesDataPointStore } from '@/time-series';
 import { sortActivities } from './activities.sort';

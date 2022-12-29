@@ -22,13 +22,17 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
   function getTasksByCalendarInterval(interval: CalendarIntervalEnum) {
     return activityStore.cache.getTasksByCalendarInterval(
       interval,
-      calendarPlanStore.getTimingId(interval),
       activityStore.filter as ActivityFilter,
+      calendarPlanStore.getTimingId(interval),
     );
   }
 
   function addTask(task: TaskModel) {
     activityStore.cache.setModel(new TaskModel(task));
+  }
+
+  function addTasks(tasks: TaskModel[]) {
+    activityStore.cache.setModels(tasks.map((task) => new TaskModel(task)));
   }
 
   async function setTaskDone(task: TaskModel) {
@@ -72,9 +76,9 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
 
   return {
     addTask,
+    addTasks,
     setTaskSelection,
     move,
-    getTasksByCalendarInterval,
     startTimer,
     stopTimer,
     updateTimer,

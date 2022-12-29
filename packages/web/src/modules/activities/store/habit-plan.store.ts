@@ -35,8 +35,18 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
     activityStore.cache.setModel(new HabitModel(habit));
   }
 
+  function addHabits(habits: HabitModel[]) {
+    activityStore.cache.setModels(habits.map((habit) => new HabitModel(habit)));
+  }
+
   function addDataPoint(dataPoint: NumberDataPointModel) {
     activityStore.cache.setDataPoint(new NumberDataPointModel(dataPoint));
+  }
+
+  function addDataPoints(dataPoint: NumberDataPointModel[]) {
+    activityStore.cache.setDataPoints(
+      dataPoint.map((dataPoint) => new NumberDataPointModel(dataPoint)),
+    );
   }
 
   function getDataPoint(activity: HabitModel) {
@@ -63,15 +73,31 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   }
 
   async function startTimer(activity: HabitModel) {
-    const updatedDataPoint = await habitsService.startTimer(activity.id, new TimerUpdate(calendarPlanStore.date));
+    const updatedDataPoint = await habitsService.startTimer(
+      activity.id,
+      new TimerUpdate(calendarPlanStore.date),
+    );
     activityStore.cache.setDataPoint(updatedDataPoint);
   }
 
   async function stopTimer(activity: HabitModel) {
-    const result = await habitsService.stopTimer(activity.id, new TimerUpdate(calendarPlanStore.date));
+    const result = await habitsService.stopTimer(
+      activity.id,
+      new TimerUpdate(calendarPlanStore.date),
+    );
     activityStore.cache.setDataPoint(result.dataPoint);
     profileStore.updateScore(result.score);
   }
 
-  return { addHabit, addDataPoint, move, getDataPoint, updateDataPoint, startTimer, stopTimer };
+  return {
+    addHabit,
+    addHabits,
+    addDataPoint,
+    addDataPoints,
+    move,
+    getDataPoint,
+    updateDataPoint,
+    startTimer,
+    stopTimer,
+  };
 });

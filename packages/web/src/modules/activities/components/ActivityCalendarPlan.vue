@@ -6,7 +6,7 @@ import { ActivityType, isTask } from '@lyvely/common';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import draggable from 'vuedraggable';
 
@@ -21,9 +21,11 @@ const activityStore = useActivityStore();
 const taskPlanStore = useTaskPlanStore();
 const habitPlanStore = useHabitPlanStore();
 
-//const activities = computed(() => activityStore.getActivities(props.type, props.interval));
+const showAll = ref(false);
 
-const activities = computed(() => activityStore.getActivities(props.type, props.interval));
+const activities = computed(() => {
+  return activityStore.getActivities(props.type, props.interval, showAll.value);
+});
 
 interface IDragEvent {
   from: HTMLElement;
@@ -49,8 +51,13 @@ function addEntry() {
 }
 
 const createTitle = computed(() =>
-  props.type === ActivityType.Habit ? 'activities.habits.create.title' : 'activities.tasks.create.title',
+  props.type === ActivityType.Habit
+    ? 'activities.habits.create.title'
+    : 'activities.tasks.create.title',
 );
+
+const hasMore = computed(() => activityStore.isHasMore(props.interval));
+const showMore = (value: boolean) => (showAll.value = value);
 </script>
 
 <template>
@@ -58,18 +65,16 @@ const createTitle = computed(() =>
     :interval="interval"
     :count="activities.length"
     :create-button-title="$t(createTitle)"
-    @create="addEntry"
-  >
+    @create="addEntry">
     <draggable
       :list="activities"
       tag="div"
-      class="calendar-plan-items divide-y divide-divide border-l border-l border-r border-divide"
+      class="calendar-plan-items divide-y divide-divide border-x border-divide"
       :data-calendar-interval="interval"
       group="habits"
       handle=".icon-drag"
       item-key="id"
-      @end="dragEnd"
-    >
+      @end="dragEnd">
       <template #item="{ element }">
         <div :data-cid="element.id">
           <task-plan-item v-if="isTask(element)" :model="element" />
@@ -77,6 +82,18 @@ const createTitle = computed(() =>
         </div>
       </template>
     </draggable>
+    <div
+      v-if="hasMore && !showAll"
+      class="flex items-center justify-center bg-main p-2 divide-y divide-divide border-x border-t border-divide cursor-pointer"
+      @click="showMore(true)">
+      Show More
+    </div>
+    <div
+      v-else-if="hasMore && showAll"
+      class="flex items-center justify-center bg-main p-2 divide-y divide-divide border-x border-t border-divide cursor-pointer"
+      @click="showMore(false)">
+      Show Less
+    </div>
   </calendar-plan-section>
 </template>
 

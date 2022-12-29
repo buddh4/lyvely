@@ -30,23 +30,35 @@ export abstract class TimeSeriesDataPointStore<
     this.models.set(this.getId(model), model);
   }
 
+  setModels(models: Model[]) {
+    const newModel = new Map(models.map((model) => [this.getId(model), model]));
+    this.models = new Map([...this.models, ...newModel]);
+  }
+
   setDataPoint(log: TDataPointModel) {
-    const modelId = log.cid;
-
-    if (!modelId) {
-      console.error('tried to add log without content id', log);
-      return;
-    }
-
-    if (!this.logs.has(modelId)) {
-      this.logs.set(modelId, new Map());
-    }
-
-    this.logs.get(modelId).set(log.tid, log);
+    this._setDataPoint(log, this.logs);
   }
 
   setDataPoints(logs: TDataPointModel[]) {
-    logs.forEach((log) => this.setDataPoint(log));
+    const update = new Map([...this.logs]);
+
+    logs.forEach((log) => {
+      this._setDataPoint(log, update);
+    });
+
+    this.logs = update;
+  }
+
+  private _setDataPoint(log: TDataPointModel, logs: Map<string, Map<string, TDataPointModel>>) {
+    const modelId = log.cid;
+
+    if (!modelId) return;
+
+    if (!logs.has(modelId)) {
+      logs.set(modelId, new Map());
+    }
+
+    logs.get(modelId).set(log.tid, log);
   }
 
   hasModel(model: TimeSeriesContentIdentity) {

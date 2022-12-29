@@ -3,17 +3,18 @@ import { Status, useStatus } from '@/store';
 import {
   ActivityDataPointStore,
   ActivityFilter,
-  LoadedTimingIdStore,
-  CalendarIntervalEnum,
   ActivityModel,
   ActivityType,
+  CalendarIntervalEnum,
+  LoadedTimingIdStore,
+  TaskModel,
   toTimingId,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import activityRepository from '@/modules/activities/repositories/activity.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
-import { ref, watch, toRefs } from 'vue';
+import { ref, toRefs, watch } from 'vue';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 
@@ -35,14 +36,41 @@ export const useActivityStore = defineStore('activities', () => {
   const tidCache = ref(new LoadedTimingIdStore());
   const filter = ref(new ActivityFilter({ tagProvider: () => profileStore.profile?.tags || [] }));
   const { profile } = toRefs(profileStore);
+  const hasMore = ref<{ [key in CalendarIntervalEnum]: boolean }>({
+    [CalendarIntervalEnum.Daily]: false,
+    [CalendarIntervalEnum.Weekly]: false,
+    [CalendarIntervalEnum.Monthly]: false,
+    [CalendarIntervalEnum.Quarterly]: false,
+    [CalendarIntervalEnum.Yearly]: false,
+    [CalendarIntervalEnum.Unscheduled]: false,
+  });
 
   const { date } = storeToRefs(calendarPlanStore);
   watch(date, () => useActivityStore().loadActivities());
 
-  function getActivities(type: ActivityType, interval: CalendarIntervalEnum) {
+  function getActivities(type: ActivityType, interval: CalendarIntervalEnum, showAll = false) {
     filter.value.setOption('type', type);
+    hasMore.value[interval] = false;
     const tid = toTimingId(date.value, interval);
-    return cache.value.getModelsByIntervalFilter(interval, filter.value as ActivityFilter, tid);
+    const activities = cache.value.getModelsByIntervalFilter(
+      interval,
+      filter.value as ActivityFilter,
+      tid,
+    );
+
+    if (type !== ActivityType.Task) return activities;
+
+    const tasks = [] as ActivityModel[];
+    let doneCount = 0;
+    activities.forEach((task) => {
+      if (!(<TaskModel>task).done || doneCount++ < 3) {
+        tasks.push(task);
+      }
+    });
+
+    hasMore.value[interval] = doneCount > 3;
+
+    return showAll ? activities : tasks;
   }
 
   watch(profile, async (newProfile, oldProfile) => {
@@ -81,9 +109,9 @@ export const useActivityStore = defineStore('activities', () => {
       const {
         data: { habits, tasks, dataPoints },
       } = await activityRepository.getByRange(intervalFilter);
-      tasks.forEach((task) => taskPlanStore.addTask(task));
-      habits.forEach((habit) => habitPlanStore.addHabit(habit));
-      dataPoints.forEach((dataPoint) => habitPlanStore.addDataPoint(dataPoint));
+      taskPlanStore.addTasks(tasks);
+      habitPlanStore.addHabits(habits);
+      habitPlanStore.addDataPoints(dataPoints);
       //calendarPlanStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded));
       status.setStatus(Status.SUCCESS);
     } catch (e) {
@@ -107,6 +135,10 @@ export const useActivityStore = defineStore('activities', () => {
 
   function selectTag(tagId: string) {
     filter.value.setOption('tagId', tagId);
+  }
+
+  function isHasMore(interval: CalendarIntervalEnum) {
+    return hasMore.value[interval];
   }
 
   async function move(moveEvent: IMoveActivityEvent, from?: ActivityModel[], to?: ActivityModel[]) {
@@ -142,8 +174,10 @@ export const useActivityStore = defineStore('activities', () => {
 
   return {
     cache,
+    isHasMore,
     getActivities,
     loadActivities,
+    hasMore,
     archiveActivity,
     unarchiveActivity,
     toggleArchiveActivity,

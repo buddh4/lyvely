@@ -16,7 +16,7 @@ const props = defineProps<IProps>();
   <content-stream-entry v-bind="props" :merge="true">
     <div class="md:w-2/3">
       <div
-        class="message-bubble inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-3 py-2 rounded-3xl">
+        class="message-bubble inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5 rounded-3xl">
         <span>
           {{ model.content.text }}
         </span>
