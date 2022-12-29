@@ -11,9 +11,11 @@ export function sortActivities(activities: PropertiesOf<ActivityModel>[]) {
 
       if (aDone && !bDone) return 1;
       if (!aDone && bDone) return -1;
-      if (a.meta.updatedAt < b.meta.updatedAt) return 1;
-      if (a.meta.updatedAt > b.meta.updatedAt) return -1;
-      if (a.meta.updatedAt === b.meta.updatedAt) return 0;
+      if (aDone && bDone) {
+        if (a.meta.updatedAt < b.meta.updatedAt) return 1;
+        if (a.meta.updatedAt > b.meta.updatedAt) return -1;
+        if (a.meta.updatedAt === b.meta.updatedAt) return 0;
+      }
     }
 
     return sortBySortOrder(a, b);
