@@ -22,7 +22,9 @@ const props = defineProps<IProps>();
         </router-link>
       </div>
     </template>
-    <template #body> Activity: {{ model.content.text }} </template>
+    <template #body>
+      {{ model.content.text }}
+    </template>
   </content-details>
 </template>
 

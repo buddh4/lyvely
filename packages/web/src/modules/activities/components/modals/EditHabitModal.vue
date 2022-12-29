@@ -137,7 +137,7 @@ const modalTitle = computed(() => {
           tag-placeholder="Add this as new tag"
           placeholder="Search or add a tag"
           @tag="addTag" />
-        <ly-input-textarea property="description" />
+        <ly-input-textarea property="text" />
       </fieldset>
     </ly-form-model>
   </ly-modal>

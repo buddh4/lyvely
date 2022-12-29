@@ -95,7 +95,7 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
 
     this.applyContentUpdate({
       title: update.title ?? this.content.title,
-      text: update.title ?? this.content.text,
+      text: update.text ?? this.content.text,
     });
 
     return this;

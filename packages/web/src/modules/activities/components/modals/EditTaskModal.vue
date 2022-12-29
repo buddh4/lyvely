@@ -6,6 +6,7 @@ import { ActivityType, UpdateTaskDto } from '@lyvely/common';
 
 const {
   model,
+  status,
   isCreate,
   showModal,
   validator,
@@ -28,42 +29,31 @@ const modalTitle = computed(() => {
     :title="modalTitle"
     @submit="submit"
     @hide="reset">
-    <fieldset>
-      <ly-input-text
-        v-model="model.title"
-        label="Title"
-        :autofocus="true"
-        :error="validator.getError('title')" />
-
-      <ly-input-select
-        v-model="model.interval"
-        label="Plan"
-        :options="calendarPlanOptions"
-        :error="validator.getError('interval')" />
-
-      <VueMultiselect
-        v-model="model.tagNames"
-        class="form-input"
-        :options="tagOptions"
-        :multiple="true"
-        :taggable="true"
-        tag-placeholder="Add this as new tag"
-        placeholder="Search or add a tag"
-        @tag="addTag" />
-
-      <ly-input-number
-        v-model="model.score"
-        label="★ Score"
-        :error="validator.getError('score')"
-        :steps="2"
-        :max="100"
-        :min="-100" />
-
-      <ly-input-textarea v-model="model.text" label="Description" />
-    </fieldset>
-
-    <!-- ly-alert :message="status.error" class="mt-2" /-->
-    <ly-screen-reader-validation-error :errors="validator.getErrorSummary()" />
+    <ly-form-model
+      v-model="model"
+      :validator="validator"
+      :status="status"
+      label-key="activities.fields">
+      <fieldset>
+        <ly-input-text property="title" :required="true" :autofocus="true" />
+        <ly-input-select property="interval" :required="true" :options="calendarPlanOptions" />
+      </fieldset>
+      <fieldset>
+        <VueMultiselect
+          v-model="model.tagNames"
+          class="form-input"
+          :options="tagOptions"
+          :multiple="true"
+          :taggable="true"
+          tag-placeholder="Add this as new tag"
+          placeholder="Search or add a tag"
+          @tag="addTag" />
+      </fieldset>
+      <fieldset>
+        <ly-input-number property="score" :mb="0" :steps="2" :max="100" :min="-100" />
+        <ly-input-textarea property="text" />
+      </fieldset>
+    </ly-form-model>
   </ly-modal>
 </template>
 

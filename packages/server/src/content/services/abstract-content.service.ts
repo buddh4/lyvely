@@ -14,6 +14,7 @@ import { ContentEventPublisher } from '../components';
 export interface IContentUpdateOptions extends IBaseQueryOptions {
   streamSort?: boolean;
   createdBy?: boolean;
+  liveUpdate?: boolean;
   tagNames?: string[];
 }
 
@@ -75,11 +76,11 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     options?: IContentUpdateOptions,
   ) {
     if (options?.streamSort) {
-      (<any>updateSet['meta.streamSort']) = Date.now();
+      this.setStreamSort(updateSet);
     }
 
     if (options?.createdBy !== false) {
-      (<any>updateSet['meta.createdBy']) = assureObjectId(user);
+      this.setCreatedBy(updateSet, user);
     }
 
     if (options.tagNames) {
@@ -89,11 +90,27 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     return this.contentDao
       .updateOneByProfileAndIdSet(profile, content, updateSet, options)
       .then((result) => {
-        if (updateSet['meta.streamSort']) {
+        if (options.liveUpdate !== false) {
           this.contentEvents.emitContentUpdated(content);
         }
         return result;
       });
+  }
+
+  private setStreamSort(updateSet: UpdateQuerySet<T>) {
+    if (updateSet.meta) {
+      updateSet.meta.streamSort = Date.now();
+    } else {
+      (<any>updateSet['meta.streamSort']) = Date.now();
+    }
+  }
+
+  private setCreatedBy(updateSet: UpdateQuerySet<T>, user: User) {
+    if (updateSet.meta) {
+      updateSet.meta.createdBy = assureObjectId(user);
+    } else {
+      (<any>updateSet['meta.createdBy']) = assureObjectId(user);
+    }
   }
 
   private async incrementChildCount(context: ProfileRelation, parent: EntityIdentity<Content>) {

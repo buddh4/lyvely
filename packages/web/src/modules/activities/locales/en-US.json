@@ -32,7 +32,7 @@
       "min": "Min",
       "optimal": "Optimal",
       "score": "Score ★",
-      "description": "Description"
+      "text": "Description"
     },
     "labels": {
       "main_nav": "Activities"
