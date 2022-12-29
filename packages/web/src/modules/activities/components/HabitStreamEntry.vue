@@ -22,11 +22,14 @@ const props = defineProps<IProps>();
       </div>
     </template>
 
-    <div class="border border-divide p-4 rounded-xl bg-main inline-block">
-      <tag-list :tag-ids="model.tagIds" />
-      {{ model.content.title }}
-      {{ model.content.text }}
-    </div>
+    <template #default>
+      <div>
+        <span>{{ model.content.title }}</span>
+        <p v-if="model.content.text?.length" class="text-sm text-dimmed">
+          {{ model.content.text }}
+        </p>
+      </div>
+    </template>
   </content-stream-entry>
 </template>
 

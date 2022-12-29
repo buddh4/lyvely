@@ -30,13 +30,13 @@ export class ContentStreamService implements IContentStreamClient {
     return this.createModel(response);
   }
 
-  async update(
+  async loadHead(
     state: IStreamState,
     options: IStreamOptions,
     filter?: ContentStreamFilter,
   ): Promise<IStreamResponse<ContentModel, IStreamState>> {
     const response = await unwrapResponse(
-      repositry.update({
+      repositry.loadHead({
         state,
         filter,
         batchSize: options.batchSize,

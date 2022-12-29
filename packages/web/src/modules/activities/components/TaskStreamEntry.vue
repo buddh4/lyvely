@@ -4,7 +4,6 @@ import ContentStreamEntry from '@/modules/content-stream/components/ContentStrea
 import { IStream } from '@/modules/stream/composables/stream.composable';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 import { computed } from 'vue';
-import TagList from '@/modules/tags/components/TagList.vue';
 
 export interface IProps {
   model: TaskModel;
@@ -27,13 +26,14 @@ const selectTag = () => {};
       </div>
     </template>
 
-    <div class="inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block">
-      <tag-list :tag-ids="model.tagIds" @select="selectTag" />
-      <ly-input-checkbox v-model="done" :label="model.content.title" :readonly="true" />
-      <p v-if="model.content.text?.length" class="text-sm text-dimmed ml-7">
-        {{ model.content.text }}
-      </p>
-    </div>
+    <template #default>
+      <div>
+        <ly-input-checkbox v-model="done" :label="model.content.title" :readonly="true" />
+        <p v-if="model.content.text?.length" class="text-sm text-dimmed ml-7">
+          {{ model.content.text }}
+        </p>
+      </div>
+    </template>
   </content-stream-entry>
 </template>
 

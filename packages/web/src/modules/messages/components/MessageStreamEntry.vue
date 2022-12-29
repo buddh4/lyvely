@@ -13,14 +13,11 @@ const props = defineProps<IProps>();
 </script>
 
 <template>
-  <content-stream-entry v-bind="props" :merge="true">
-    <div class="md:w-2/3">
-      <div
-        class="message-bubble inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5 rounded-3xl">
-        <span>
-          {{ model.content.text }}
-        </span>
-      </div>
+  <content-stream-entry v-bind="props" body-style="message" :merge="true" :message-width="true">
+    <div>
+      <span>
+        {{ model.content.text }}
+      </span>
     </div>
   </content-stream-entry>
 </template>

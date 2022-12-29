@@ -7,16 +7,21 @@ import { useRouter } from 'vue-router';
 import { contentRoute } from '@/modules/content-stream/routes';
 import { isTextSelection } from '@/util/dom.util';
 import { getContentDetailsComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
+import TagList from '@/modules/tags/components/TagList.vue';
 
 export interface IProps {
   model: ContentModel;
   stream?: IStream<ContentModel>;
   index?: number;
+  bodyStyle?: 'none' | 'message' | 'block';
+  omitTags?: boolean;
   merge?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   stream: undefined,
+  bodyStyle: 'block',
+  omitTags: false,
   index: 0,
 });
 
@@ -67,6 +72,16 @@ function onContentClick() {
   if (isTextSelection()) return;
   router.push(contentRoute(props.model.pid, props.model.id));
 }
+
+const bodyWrapperClass = computed(
+  () =>
+    ({
+      none: '',
+      message:
+        'inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5 rounded-3xl',
+      block: 'inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block',
+    }[props.bodyStyle]),
+);
 </script>
 
 <template>
@@ -85,33 +100,17 @@ function onContentClick() {
           <span class="font-bold mr-1">{{ name }}</span>
           <relative-time :ts="model.meta.streamSort"></relative-time>
         </div>
-        <div class="cursor-pointer" @click="onContentClick">
-          <slot>
-            <Component
-              :is="getContentDetailsComponent(model)"
-              class="border-divide"
-              :content="model" />
-          </slot>
+        <div :class="{ 'md:w-2/3': bodyStyle === 'message' }">
+          <div :class="bodyWrapperClass">
+            <div class="cursor-pointer inline-block" @click="onContentClick">
+              <tag-list v-if="!omitTags" :tag-ids="model.tagIds" />
+              <slot></slot>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-/*.content-stream-entry-content::after,
-.content-stream-entry-content::before {
-  background-color: var(--color-divide);
-  background-image: linear-gradient(var(--elements-main), var(--elements-main));
-  position: absolute;
-  top: 15px;
-  right: 100%;
-  left: -8px;
-  display: block;
-  width: 8px;
-  height: 16px;
-  pointer-events: none;
-  content: ' ';
-  clip-path: polygon(0 50%, 100% 0, 100% 100%);
-}*/
-</style>
+<style scoped></style>
