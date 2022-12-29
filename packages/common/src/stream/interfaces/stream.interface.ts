@@ -1,8 +1,8 @@
 export interface IStreamState {
-  firstOrder?: number;
-  lastOrder?: number;
-  lastId?: string;
-  firstId?: string;
+  head?: number;
+  headIds?: Array<string>;
+  tail?: number;
+  tailIds?: Array<string>;
   /**
    * Indicates if the last entry has been loaded
    */
@@ -53,12 +53,12 @@ export interface IStreamService<
   TState extends IStreamState = IStreamState,
   TOptions extends IStreamOptions = IStreamOptions,
 > {
-  loadNext(
+  loadTail(
     state: IStreamState,
     options: TOptions,
     filter?: TFilter,
   ): Promise<IStreamResponse<TModel, TState>>;
-  update(
+  loadHead(
     state: IStreamState,
     options: TOptions,
     filter?: TFilter,

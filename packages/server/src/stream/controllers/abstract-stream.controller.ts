@@ -3,7 +3,6 @@ import { IStreamFilter, IStreamResponse, StreamRequest } from '@lyvely/common';
 import { ProfileRequest, UserContext } from '@/profiles';
 import { AbstractStreamService, StreamResponse } from '../service';
 import { BaseEntity } from '@/core';
-import { instanceToPlain } from 'class-transformer';
 
 export abstract class AbstractStreamController<
   TModel extends BaseEntity<TModel>,
@@ -13,21 +12,21 @@ export abstract class AbstractStreamController<
   protected abstract streamEntryService: AbstractStreamService<TModel, TResult, TFilter>;
 
   @Post('load-next')
-  async loadNext(
+  async loadTail(
     @Body() streamRequest: StreamRequest<TFilter>,
     @Req() req: ProfileRequest,
   ): Promise<StreamResponse<TResult>> {
     const context = req.context || new UserContext(req.user);
-    return this.streamEntryService.loadNext(context, new StreamRequest(streamRequest));
+    return this.streamEntryService.loadTail(context, new StreamRequest(streamRequest));
   }
 
-  @Post('update')
-  async update(
+  @Post('loadHead')
+  async loadHead(
     @Body() streamRequest: StreamRequest,
     @Req() req: ProfileRequest,
   ): Promise<IStreamResponse<TResult>> {
     const context = req.context || new UserContext(req.user);
-    return this.streamEntryService.updateStream(context, new StreamRequest(streamRequest));
+    return this.streamEntryService.loadHead(context, new StreamRequest(streamRequest));
   }
 
   @Get(':nid')

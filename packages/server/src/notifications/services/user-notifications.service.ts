@@ -77,11 +77,11 @@ export class UserNotificationsService extends AbstractStreamService<
     });
   }
 
-  async loadNext(
+  async loadTail(
     context: RequestContext,
     request: StreamRequest,
   ): Promise<IStreamResponse<WebNotification>> {
-    const response = await super.loadNext(context, request);
+    const response = await super.loadTail(context, request);
 
     if (request.isInitialRequest() && context.user.notification.updatesAvailable) {
       this.setUpdateAvailableState(context.user, false);
@@ -105,11 +105,11 @@ export class UserNotificationsService extends AbstractStreamService<
     });
   }
 
-  async updateStream(
+  async loadHead(
     context: RequestContext,
     request: StreamRequest,
   ): Promise<StreamResponse<WebNotification>> {
-    const response = await super.updateStream(context, request);
+    const response = await super.loadHead(context, request);
 
     this.setUpdateAvailableState(context.user, false);
 

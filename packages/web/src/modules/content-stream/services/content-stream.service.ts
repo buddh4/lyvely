@@ -15,13 +15,13 @@ export class ContentStreamService implements IContentStreamClient {
     return unwrapAndCastResponse(repositry.loadEntry(id), ContentModel);
   }
 
-  async loadNext(
+  async loadTail(
     state: IStreamState,
     options: IStreamOptions,
     filter?: ContentStreamFilter,
   ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(
-      repositry.loadNext({
+      repositry.loadTail({
         state,
         filter,
         batchSize: options.batchSize,

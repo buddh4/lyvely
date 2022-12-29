@@ -22,8 +22,8 @@ async function notificationClick(notification: IWebNotification) {
   }
 }
 
-async function loadNext() {
-  notificationStore.next();
+async function loadTail() {
+  notificationStore.loadTail();
 }
 
 function test() {
@@ -36,7 +36,7 @@ function test() {
     id="notifications-drawer"
     v-model="showNotificationDrawer"
     title="notifications.drawer.title"
-    @infinite-scroll="loadNext">
+    @infinite-scroll="loadTail">
     <dynamic-scroller :items="stream.models" :min-item-size="80" class="h-full" page-mode>
       <template
         #default="{

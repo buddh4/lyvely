@@ -39,7 +39,7 @@ export const useNotificationStore = defineStore('notifications', () => {
     hasUpdates.value = evt.updatesAvailable;
 
     if (showNotificationDrawer.value && hasUpdates.value) {
-      await update();
+      await loadHead();
     }
   }
 
@@ -47,12 +47,12 @@ export const useNotificationStore = defineStore('notifications', () => {
     return stream.loadEntry(nid);
   }
 
-  async function next() {
-    await stream.next();
+  async function loadTail() {
+    await stream.loadTail();
   }
 
-  async function update() {
-    const response = await stream.update();
+  async function loadHead() {
+    const response = await stream.loadHead();
     // we only show the indicator in case the drawer is not open
     // Todo: what to do if the drawer is hidden behind another one?
     hasUpdates.value = !!response?.models?.length && !showNotificationDrawer.value;
@@ -60,11 +60,11 @@ export const useNotificationStore = defineStore('notifications', () => {
 
   watch(showNotificationDrawer, (wasOpened) => {
     if (wasOpened && !stream.isInitialized()) {
-      stream.next().then(() => {
+      stream.loadTail().then(() => {
         hasUpdates.value = false;
       });
     } else if (wasOpened && hasUpdates.value) {
-      update();
+      loadHead();
     }
   });
 
@@ -90,7 +90,7 @@ export const useNotificationStore = defineStore('notifications', () => {
     markAsSeen,
     hasUpdates,
     test,
-    next,
+    loadTail,
     loadEntry,
   };
 });

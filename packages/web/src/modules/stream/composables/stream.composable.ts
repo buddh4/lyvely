@@ -13,8 +13,8 @@ import { hasOverflow, isScrolledToBottom, scrollToBottom, scrollToTop } from '@/
 import { useInfiniteScroll } from '@vueuse/core';
 
 type StreamEvents<TModel> = {
-  'post.update': TModel[];
-  'post.next': TModel[];
+  'post.more': TModel[];
+  'post.head': TModel[];
 } & Record<string, any>;
 
 export type IStream<
@@ -30,6 +30,12 @@ export interface IStreamInitOptions<TFilter extends IStreamFilter = any> {
   infiniteScroll?: { distance?: number } | boolean;
 }
 
+class DummyFilter implements IStreamFilter {
+  reset() {
+    /* Nothing todo */
+  }
+}
+
 export function useStream<
   TModel extends { id: string },
   TFilter extends IStreamFilter = any,
@@ -39,15 +45,15 @@ export function useStream<
 >(
   options: TOptions,
   service: IStreamService<TModel, TFilter, IStreamState, TOptions>,
-  filterInstance: TFilter,
+  filterInstance?: TFilter,
 ) {
   const state = ref<IStreamState>({});
-  const nextStatus = useStatus();
-  const updateStatus = useStatus();
+  const loadTailStatus = useStatus();
+  const loadHeadStatus = useStatus();
   const models = ref<TModel[]>([]) as Ref<TModel[]>;
   const events = mitt<StreamEvents<TModel>>();
   const root = ref<HTMLElement | null>(null);
-  const filter = ref<TFilter>(filterInstance);
+  const filter = ref<TFilter>(filterInstance || <any>new DummyFilter());
 
   function reset(hard = true) {
     state.value = {};
@@ -58,36 +64,26 @@ export function useStream<
     }
   }
 
-  async function setFilter(f: TFilter) {
-    filter.value = f;
-    return reload();
-  }
-
-  async function updateFilter(f: Partial<PropertiesOf<TFilter>>) {
-    filter.value = Object.assign(filter.value, f);
-    return reload();
-  }
-
   async function reload(hardReset = false) {
     reset(hardReset);
-    const result = await next();
+    const result = await loadTail();
     await _initialScroll();
     return result;
   }
 
   let nextPromise: Promise<any>;
-  async function next() {
+  async function loadTail() {
     if (state.value.isEnd) return;
-    if (nextStatus.isStatusLoading()) return nextPromise;
+    if (loadTailStatus.isStatusLoading()) return nextPromise;
 
     nextPromise = loadingStatus(
-      service.loadNext(state.value, options, <any>filter.value),
-      nextStatus,
+      service.loadTail(state.value, options, <any>filter.value),
+      loadTailStatus,
     );
 
     const response = await nextPromise;
     state.value = response.state;
-    await addNext(response.models);
+    await addTail(response.models);
 
     return response;
   }
@@ -119,9 +115,9 @@ export function useStream<
   }
 
   async function _loadInitialEntries() {
-    if (!root.value) return next();
-    while (!hasOverflow(root.value) && !state.value.isEnd && !nextStatus.isStatusError()) {
-      await next();
+    if (!root.value) return loadTail();
+    while (!hasOverflow(root.value) && !state.value.isEnd && !loadTailStatus.isStatusError()) {
+      await loadTail();
     }
   }
 
@@ -168,7 +164,7 @@ export function useStream<
     useInfiniteScroll(
       root,
       () => {
-        next().catch((e) => console.error(e));
+        loadTail().catch((e) => console.error(e));
       },
       {
         distance: infiniteScrollOptions.distance || 50,
@@ -178,7 +174,7 @@ export function useStream<
     );
   }
 
-  async function addNext(newModels: TModel[]) {
+  async function addTail(newModels: TModel[]) {
     if (!newModels?.length) return;
 
     newModels = newModels.filter((model) => !getStreamEntryById(model.id));
@@ -186,10 +182,11 @@ export function useStream<
 
     events.emit('pre.next', newModels);
 
-    const preparedScrollValue = prepareScroll();
+    debugger;
     if (options.direction === StreamDirection.TTB) {
       models.value = models.value.concat(newModels);
     } else {
+      const preparedScrollValue = prepareScroll();
       models.value = newModels.concat(models.value);
       await nextTick(() => restoreScroll(preparedScrollValue));
     }
@@ -204,24 +201,32 @@ export function useStream<
 
   function restoreScroll(previousScrollHeightMinusTop: number) {
     if (!root.value) return;
-    root.value.scrollTop = root.value.scrollHeight - previousScrollHeightMinusTop;
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        nextTick(() => {
+          root.value!.scrollTop = root.value!.scrollHeight - previousScrollHeightMinusTop;
+        });
+      });
+      resolve(true);
+    });
   }
 
-  async function update() {
-    if (updateStatus.isStatusLoading()) return;
+  async function loadHead() {
+    if (loadHeadStatus.isStatusLoading()) return;
 
     const response = await loadingStatus(
-      service.update(state.value, options, <any>filter.value),
-      updateStatus,
+      service.loadHead(state.value, options, <any>filter.value),
+      loadHeadStatus,
     );
 
     state.value = response.state;
-    await addUpdates(response.models);
+    await addHead(response.models);
 
     return response;
   }
 
-  async function addUpdates(newModels: TModel[]) {
+  async function addHead(newModels: TModel[]) {
     if (!newModels?.length) return;
 
     const updatedModels = [...models.value];
@@ -238,7 +243,7 @@ export function useStream<
 
     newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
 
-    events.emit('pre.update', newModels);
+    events.emit('pre.head', newModels);
 
     if (options.direction === StreamDirection.TTB) {
       models.value = newModels.concat(updatedModels);
@@ -248,7 +253,7 @@ export function useStream<
       if (isScrollBottom) await nextTick(scrollToStart);
     }
 
-    events.emit('post.update', newModels);
+    events.emit('post.head', newModels);
   }
 
   async function loadEntry(id: string) {
@@ -276,7 +281,7 @@ export function useStream<
   }
 
   function isInitialized() {
-    return !nextStatus.isStatusInit();
+    return !loadTailStatus.isStatusInit();
   }
 
   return {
@@ -284,20 +289,20 @@ export function useStream<
     init,
     state,
     events,
-    nextStatus,
-    updateStatus,
+    loadTailStatus,
+    loadHeadStatus,
     isInitialized,
     getStreamEntryAt,
     getStreamEntryById,
     filter,
     models,
-    next,
+    loadTail,
     reset,
-    update,
+    loadHead,
     loadEntry,
     reload,
     scrollToStart,
-    addNext,
-    addUpdates,
+    addTail,
+    addHead,
   };
 }

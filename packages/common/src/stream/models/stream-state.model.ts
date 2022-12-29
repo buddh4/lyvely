@@ -1,6 +1,6 @@
 import { BaseModel } from '@/models';
 import { IStreamState } from '../interfaces';
-import { IsBoolean, IsMongoId, IsNumber, IsOptional, Min } from 'class-validator';
+import { IsArray, IsBoolean, IsMongoId, IsNumber, IsOptional, Min } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
@@ -12,23 +12,25 @@ export class StreamState<T extends IStreamState = IStreamState>
   @IsNumber()
   @Min(0)
   @IsOptional()
-  firstOrder?: number;
+  head?: number;
 
   @Expose()
   @IsNumber()
   @Min(0)
   @IsOptional()
-  lastOrder?: number;
+  tail?: number;
 
   @Expose()
-  @IsMongoId()
+  @IsMongoId({ each: true })
   @IsOptional()
-  lastId?: string;
+  @IsArray()
+  tailIds?: Array<string>;
 
   @Expose()
-  @IsMongoId()
+  @IsMongoId({ each: true })
   @IsOptional()
-  firstId?: string;
+  @IsArray()
+  headIds?: Array<string>;
 
   @Expose()
   @IsBoolean()

@@ -10,24 +10,24 @@ import notificationRepository from '../repositories/notifications.repository';
 import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
 
 export class NotificationsService implements INotificationsService {
-  async loadNext(
+  async loadTail(
     state: IStreamState,
     options: IStreamOptions,
   ): Promise<IStreamResponse<IWebNotification>> {
     return unwrapResponse(
-      notificationRepository.loadNext({
+      notificationRepository.loadTail({
         state,
         batchSize: options.batchSize,
       }),
     );
   }
 
-  async update(
+  async loadHead(
     state: IStreamState,
     options: IStreamOptions,
   ): Promise<IStreamResponse<IWebNotification>> {
     return unwrapResponse(
-      notificationRepository.update({
+      notificationRepository.loadHead({
         state,
         batchSize: options.batchSize,
       }),

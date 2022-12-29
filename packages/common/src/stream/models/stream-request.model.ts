@@ -23,6 +23,6 @@ export class StreamRequest<
   filter?: TFilter;
 
   isInitialRequest() {
-    return !this.state?.firstId;
+    return !this.state?.headIds;
   }
 }

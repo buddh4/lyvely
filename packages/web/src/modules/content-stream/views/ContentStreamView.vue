@@ -10,7 +10,7 @@ const streamComponent = ref<{ stream: IStream<ContentModel> }>();
 
 async function onContentCreated(content: ContentModel) {
   const stream = streamComponent.value!.stream;
-  await stream.addUpdates([content]);
+  await stream.addHead([content]);
   await stream.scrollToStart();
 }
 </script>

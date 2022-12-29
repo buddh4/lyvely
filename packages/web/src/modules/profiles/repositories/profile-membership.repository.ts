@@ -8,6 +8,9 @@ import {
 
 export default {
   async update(dto: UpdateProfileMembershipSettingsDto) {
-    return repository.post<EndpointResult<IProfileMembershipService['update']>>(`${ENDPOINT_PROFILE_MEMBERSHIP}`, dto);
+    return repository.post<EndpointResult<IProfileMembershipService['update']>>(
+      `${ENDPOINT_PROFILE_MEMBERSHIP}`,
+      dto,
+    );
   },
 };

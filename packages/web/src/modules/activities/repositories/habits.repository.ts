@@ -13,11 +13,17 @@ const resource = 'habits';
 export default {
   async create(activitiy: CreateHabitDto) {
     type a = EndpointResult<IHabitsEndpointService['create']>;
-    return repository.post<EndpointResult<IHabitsEndpointService['create']>>(`${resource}`, activitiy);
+    return repository.post<EndpointResult<IHabitsEndpointService['create']>>(
+      `${resource}`,
+      activitiy,
+    );
   },
 
   async update(habitId: string, activitiy: Partial<UpdateHabitDto>) {
-    return repository.put<EndpointResult<IHabitsEndpointService['update']>>(`${resource}/${habitId}`, activitiy);
+    return repository.put<EndpointResult<IHabitsEndpointService['update']>>(
+      `${resource}/${habitId}`,
+      activitiy,
+    );
   },
 
   async updateDataPoint(habitId: string, dto: UpdateDataPointDto) {

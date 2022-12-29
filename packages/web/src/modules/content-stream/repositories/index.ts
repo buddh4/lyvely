@@ -7,14 +7,14 @@ import {
 } from '@lyvely/common';
 
 export default {
-  async loadNext(request: IStreamRequest) {
-    return repository.post<EndpointResult<IContentStreamClient['loadNext']>>(
+  async loadTail(request: IStreamRequest) {
+    return repository.post<EndpointResult<IContentStreamClient['loadTail']>>(
       `${ENDPOINT_CONTENT_STREAM}/load-next`,
       request,
     );
   },
 
-  async update(request: IStreamRequest) {
+  async loadHead(request: IStreamRequest) {
     return repository.post<EndpointResult<IContentStreamClient['update']>>(
       `${ENDPOINT_CONTENT_STREAM}/update`,
       request,

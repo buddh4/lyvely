@@ -5,7 +5,7 @@ import { UserNotificationsService } from '@/notifications/services/user-notifica
 import { TestNotification } from '../src/test-notification.schema';
 import { MultiUserSubscription } from '@/user-subscription';
 import { UserNotification, Notification } from '@/notifications';
-import { Profile, ProfileInfo } from '@/profiles';
+import { Profile, ProfileInfo, UserContext } from '@/profiles';
 import { User, UserInfo } from '@/users';
 import { assureObjectId } from '@/core';
 import { NotificationDao, UserNotificationDao } from '@/notifications/daos';
@@ -64,18 +64,18 @@ describe('UserNotificationsService', () => {
     return userNotificationDao.save(new UserNotification(user, notification));
   }
 
-  describe('loadNext', () => {
+  describe('loadTail', () => {
     it('load initial with empty result', async () => {
       const user = await testData.createUser();
-      const result = await userNotificationsService.loadNext(
-        user,
+      const result = await userNotificationsService.loadTail(
+        new UserContext(user),
         new StreamRequest({ batchSize: 5 }),
       );
       expect(result.models.length).toEqual(0);
-      expect(result.state.firstId).toBeUndefined();
-      expect(result.state.firstOrder).toBeUndefined();
-      expect(result.state.lastOrder).toBeUndefined();
-      expect(result.state.lastId).toBeUndefined();
+      expect(result.state.headIds).toBeUndefined();
+      expect(result.state.head).toBeUndefined();
+      expect(result.state.tail).toBeUndefined();
+      expect(result.state.tailIds).toBeUndefined();
       expect(result.state.isEnd).toEqual(true);
       expect(result.hasMore).toEqual(false);
     });
@@ -88,15 +88,15 @@ describe('UserNotificationsService', () => {
         assureObjectId(receiver),
       ]);
       const userNotification = await createTestUserNotification(receiver, notification);
-      const result = await userNotificationsService.loadNext(
-        receiver,
+      const result = await userNotificationsService.loadTail(
+        new UserContext(receiver),
         new StreamRequest({ batchSize: 5 }),
       );
       expect(result.models.length).toEqual(1);
-      expect(result.state.firstId).toEqual(userNotification.id);
-      expect(result.state.firstOrder).toEqual(userNotification.sortOrder);
-      expect(result.state.lastOrder).toEqual(userNotification.sortOrder);
-      expect(result.state.lastId).toEqual(userNotification.id);
+      expect(result.state.headIds).toEqual([userNotification.id]);
+      expect(result.state.head).toEqual(userNotification.sortOrder);
+      expect(result.state.tail).toEqual(userNotification.sortOrder);
+      expect(result.state.tailIds).toEqual([userNotification.id]);
       expect(result.state.isEnd).toEqual(true);
       expect(result.hasMore).toEqual(false);
     });
@@ -126,21 +126,21 @@ describe('UserNotificationsService', () => {
       const userNotification1 = await createTestUserNotification(receiver, notification1);
       const userNotification2 = await createTestUserNotification(receiver, notification2);
       const userNotification3 = await createTestUserNotification(receiver, notification3);
-      const result = await userNotificationsService.loadNext(
-        receiver,
+      const result = await userNotificationsService.loadTail(
+        new UserContext(receiver),
         new StreamRequest({ batchSize: 2 }),
       );
       expect(result.models.length).toEqual(2);
-      expect(result.state.firstId).toEqual(userNotification3.id);
-      expect(result.state.firstOrder).toEqual(userNotification3.sortOrder);
-      expect(result.state.lastOrder).toEqual(userNotification2.sortOrder);
-      expect(result.state.lastId).toEqual(userNotification2.id);
+      expect(result.state.headIds).toEqual([userNotification3.id]);
+      expect(result.state.head).toEqual(userNotification3.sortOrder);
+      expect(result.state.tail).toEqual(userNotification2.sortOrder);
+      expect(result.state.tailIds).toEqual([userNotification2.id]);
       expect(result.state.isEnd).toEqual(false);
       expect(result.hasMore).toEqual(true);
     });
   });
 
-  describe('loadNext', () => {
+  describe('loadTail', () => {
     it('update entries with existing state', async () => {
       const receiver = await testData.createUser();
       const sender = await testData.createUser('test2');
@@ -169,15 +169,15 @@ describe('UserNotificationsService', () => {
       const userNotification1 = await createTestUserNotification(receiver, notification1);
       const userNotification2 = await createTestUserNotification(receiver, notification2);
       const userNotification3 = await createTestUserNotification(receiver, notification3);
-      const result = await userNotificationsService.updateStream(
-        receiver,
+      const result = await userNotificationsService.loadHead(
+        new UserContext(receiver),
         new StreamRequest({
           batchSize: 2,
           state: {
-            firstId: userNotification1.id,
-            firstOrder: userNotification1.sortOrder,
-            lastId: userNotification1.id,
-            lastOrder: userNotification1.sortOrder,
+            headIds: [userNotification1.id],
+            head: userNotification1.sortOrder,
+            tailIds: [userNotification1.id],
+            tail: userNotification1.sortOrder,
           },
         }),
       );
@@ -186,10 +186,10 @@ describe('UserNotificationsService', () => {
       expect(result.models[0].id).toEqual(userNotification3.id);
       expect(result.models[1].id).toEqual(userNotification2.id);
 
-      expect(result.state.firstId).toEqual(userNotification3.id);
-      expect(result.state.firstOrder).toEqual(userNotification3.sortOrder);
-      expect(result.state.lastOrder).toEqual(userNotification1.sortOrder);
-      expect(result.state.lastId).toEqual(userNotification1.id);
+      expect(result.state.headIds).toEqual([userNotification3.id]);
+      expect(result.state.head).toEqual(userNotification3.sortOrder);
+      expect(result.state.tail).toEqual(userNotification1.sortOrder);
+      expect(result.state.tailIds).toEqual([userNotification1.id]);
       expect(result.hasMore).toEqual(true);
     });
   });

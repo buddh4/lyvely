@@ -7,14 +7,14 @@ import {
 } from '@lyvely/common';
 
 export default {
-  async loadNext(request: IStreamRequest) {
-    return repository.post<EndpointResult<INotificationsService['loadNext']>>(
+  async loadTail(request: IStreamRequest) {
+    return repository.post<EndpointResult<INotificationsService['loadTail']>>(
       `${ENDPOINT_NOTIFICATIONS}/load-next`,
       request,
     );
   },
 
-  async update(request: IStreamRequest) {
+  async loadHead(request: IStreamRequest) {
     return repository.post<EndpointResult<INotificationsService['update']>>(
       `${ENDPOINT_NOTIFICATIONS}/update`,
       request,

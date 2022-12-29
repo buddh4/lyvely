@@ -6,13 +6,13 @@ import {
   findByPath,
   IStreamState,
   BaseModel,
-  ContentModel,
   EntityNotFoundException,
 } from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
 import {
   AbstractDao,
   assureObjectId,
+  assureStringId,
   BaseEntity,
   EntityIdentity,
   IFetchQueryOptions,
@@ -71,17 +71,17 @@ export abstract class AbstractStreamService<
     return (await this.mapToResultModel([streamEntry], context))[0];
   }
 
-  async loadNext(
+  async loadTail(
     context: RequestContext,
     request: StreamRequest<TFilter>,
   ): Promise<IStreamResponse<TResult>> {
     const filter = this.createQueryFilter(context, request.filter);
 
-    if (request.state?.lastOrder) {
-      filter[this.getSortField() as keyof FilterQuery<TModel>] = { $lte: request.state.lastOrder };
-      if (request.state.lastId) {
+    if (request.state?.tail) {
+      filter[this.getSortField() as keyof FilterQuery<TModel>] = { $lte: request.state.tail };
+      if (request.state.tailIds?.length) {
         // TODO: we only filter out one potential overlap, there could be other requests with the same sortOrder
-        filter['_id'] = { $ne: assureObjectId(request.state.lastId) };
+        filter['_id'] = { $nin: request.state.tailIds.map((id) => assureStringId(id)) };
       }
     }
 
@@ -101,12 +101,14 @@ export abstract class AbstractStreamService<
     });
 
     if (streamEntries.length) {
-      response.state.lastId = streamEntries[streamEntries.length - 1].id;
-      response.state.lastOrder = this.getSortValue(streamEntries[streamEntries.length - 1]);
+      response.state.tailIds = streamEntries
+        .filter((entry) => entry.id === streamEntries[streamEntries.length - 1].id)
+        .map((entry) => assureStringId(entry));
+      response.state.tail = this.getSortValue(streamEntries[streamEntries.length - 1]);
 
-      if (!response.state.firstId) {
-        response.state.firstId = streamEntries[0].id;
-        response.state.firstOrder = this.getSortValue(streamEntries[0]);
+      if (!response.state.headIds?.length) {
+        response.state.headIds = [streamEntries[0].id];
+        response.state.head = this.getSortValue(streamEntries[0]);
       }
     }
 
@@ -123,19 +125,19 @@ export abstract class AbstractStreamService<
     return findByPath(model, this.getSortField());
   }
 
-  async updateStream(
+  async loadHead(
     context: RequestContext,
     request: StreamRequest<TFilter>,
   ): Promise<IStreamResponse<TResult>> {
     const filter = this.createQueryFilter(context, request.filter);
 
-    if (request.state.firstOrder) {
+    if (request.state.head) {
       filter[this.getSortField() as keyof FilterQuery<TModel>] = <any>{
-        $gte: request.state.firstOrder,
+        $gte: request.state.head,
       };
-      if (request.state.firstId) {
+      if (request.state.headIds?.length) {
         // TODO: we only filter out one potential overlap, there could be other requests with the same sortOrder
-        filter['_id'] = { $ne: assureObjectId(request.state.firstId) };
+        filter['_id'] = { $nin: request.state.headIds.map((id) => assureStringId(id)) };
       }
     }
 
@@ -157,8 +159,10 @@ export abstract class AbstractStreamService<
     });
 
     if (models.length) {
-      response.state.firstId = streamEntries[0].id;
-      response.state.firstOrder = this.getSortValue(streamEntries[0]);
+      response.state.headIds = streamEntries
+        .filter((entry) => entry.id === streamEntries[0].id)
+        .map((entry) => assureStringId(entry));
+      response.state.head = this.getSortValue(streamEntries[0]);
     }
 
     if (models.length < batchSize) {
