@@ -182,7 +182,6 @@ export function useStream<
 
     events.emit('pre.next', newModels);
 
-    debugger;
     if (options.direction === StreamDirection.TTB) {
       models.value = models.value.concat(newModels);
     } else {

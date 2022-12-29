@@ -87,16 +87,14 @@ syncTimerState(isStarted.value);
     >
     <ly-button
       v-if="startable && !model.isStarted()"
-      class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0"
-      @click="emit('start')"
-    >
+      class="w-5 h-5 bg-main border border-divide rounded-full flex justify-center items-center text-sm px-0 py-0"
+      @click="emit('start')">
       <ly-icon name="play" class="w-3 text-primary" />
     </ly-button>
     <ly-button
       v-if="model.isStarted()"
-      class="w-5 h-5 bg-main border border-main rounded-full flex justify-center items-center text-sm px-0 py-0"
-      @click="emit('stop')"
-    >
+      class="w-5 h-5 bg-main border border-divide rounded-full flex justify-center items-center text-sm px-0 py-0"
+      @click="emit('stop')">
       <ly-icon name="stop" class="w-3 text-danger" />
     </ly-button>
   </div>
