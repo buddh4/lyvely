@@ -77,13 +77,10 @@ export function setPageTitle(title: Array<string> | string) {
   title = Array.isArray(title) ? title : [title];
   let pageTitle = title.join(' - ');
 
-  if (pageTitle.length) pageTitle += ' | ';
+  if (pageTitle.length) pageTitle += ' - ';
 
   if (profile) {
-    pageTitle += profile.name + ' | ';
+    pageTitle += profile.name;
   }
-
-  pageTitle += import.meta.env.VITE_APP_BASEURL || window.location.hostname;
-
   document.title = pageTitle;
 }
