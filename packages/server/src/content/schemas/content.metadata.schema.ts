@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '@/core';
+import { BaseEntity, NestedSchema } from '@/core';
 import mongoose from 'mongoose';
 import { Author, ContentAuthorSchema, CreatedAs } from '@/content/schemas/content-author.schema';
 import {
@@ -17,7 +17,7 @@ import {
  * isMovable
  */
 
-@Schema({ _id: false })
+@NestedSchema()
 export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {
   @Prop({ type: mongoose.Types.ObjectId })
   parentId?: TObjectId;

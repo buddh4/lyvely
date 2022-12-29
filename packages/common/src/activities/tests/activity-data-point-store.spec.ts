@@ -187,7 +187,7 @@ describe('ActivityDataPointStore', () => {
           config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Weekly }, score: 0 },
         }),
       );
-      const result = store.getTasksByCalendarInterval(CalendarIntervalEnum.Daily, timingId);
+      const result = store.getTasksByCalendarInterval(CalendarIntervalEnum.Daily);
       expect(result.length).toEqual(3);
       expect(result[0].id).toEqual('t3');
       expect(result[1].id).toEqual('t4');

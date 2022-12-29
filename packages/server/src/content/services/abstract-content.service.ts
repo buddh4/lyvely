@@ -80,7 +80,7 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     }
 
     if (options?.createdBy !== false) {
-      this.setCreatedBy(updateSet, user);
+      this.setUpdatedBy(updateSet, user);
     }
 
     if (options.tagNames) {
@@ -105,11 +105,13 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     }
   }
 
-  private setCreatedBy(updateSet: UpdateQuerySet<T>, user: User) {
+  private setUpdatedBy(updateSet: UpdateQuerySet<T>, user: User) {
     if (updateSet.meta) {
-      updateSet.meta.createdBy = assureObjectId(user);
+      updateSet.meta.updatedBy = assureObjectId(user);
+      updateSet.meta.updatedAt = new Date();
     } else {
-      (<any>updateSet['meta.createdBy']) = assureObjectId(user);
+      (<any>updateSet['meta.updatedBy']) = assureObjectId(user);
+      (<any>updateSet['meta.updatedAt']) = new Date();
     }
   }
 

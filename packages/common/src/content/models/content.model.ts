@@ -49,11 +49,12 @@ export class ContentMetadataModel
   @PropertyType(Date)
   createdAt: Date;
 
+  @PropertyType(Date)
+  updatedAt: Date;
+
   @TransformObjectId()
   parentId?: TObjectId;
 
-  @PropertyType(Date)
-  updatedAt: Date;
   streamSort: number;
   sortOrder?: number;
   visibility: ContentVisibilityLevel;

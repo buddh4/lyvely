@@ -39,6 +39,7 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
     try {
       const result = await tasksService.setDone(task.id, calendarPlanStore.date);
       task.done = result.done;
+      task.meta.updatedAt = new Date();
       profileStore.updateScore(result.score);
     } catch (e) {
       // Todo: handle error...
@@ -49,6 +50,7 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
     try {
       const result = await tasksService.setUndone(task.id, calendarPlanStore.date);
       task.done = undefined;
+      task.meta.updatedAt = new Date();
       profileStore.updateScore(result.score);
     } catch (e) {
       // Todo: handle error...
