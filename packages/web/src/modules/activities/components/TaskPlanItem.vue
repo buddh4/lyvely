@@ -58,8 +58,9 @@ async function updateTimer(value: number) {
     <template #rating>
       <timer-state
         :key="model.timer.calculateTotalSpan()"
+        :startable="!model.done"
         :model="model.timer"
-        :show-time-on-init="false"
+        :show-time-on-init="!!model.done"
         @start="startTimer"
         @stop="stopTimer"
         @update="updateTimer" />

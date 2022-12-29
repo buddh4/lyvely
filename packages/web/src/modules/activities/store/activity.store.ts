@@ -26,6 +26,8 @@ export interface IMoveActivityEvent {
   toInterval: CalendarIntervalEnum;
 }
 
+const MAX_DONE_TASKS = 2;
+
 export const useActivityStore = defineStore('activities', () => {
   const status = useStatus();
   const habitPlanStore = useHabitPlanStore();
@@ -63,12 +65,12 @@ export const useActivityStore = defineStore('activities', () => {
     const tasks = [] as ActivityModel[];
     let doneCount = 0;
     activities.forEach((task) => {
-      if (!(<TaskModel>task).done || doneCount++ < 3) {
+      if (!(<TaskModel>task).done || doneCount++ < MAX_DONE_TASKS) {
         tasks.push(task);
       }
     });
 
-    hasMore.value[interval] = doneCount > 3;
+    hasMore.value[interval] = doneCount > MAX_DONE_TASKS;
 
     return showAll ? activities : tasks;
   }
