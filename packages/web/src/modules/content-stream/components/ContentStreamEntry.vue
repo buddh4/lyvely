@@ -103,7 +103,10 @@ const bodyWrapperClass = computed(
         <div :class="{ 'md:w-2/3': bodyStyle === 'message' }">
           <div :class="bodyWrapperClass">
             <div class="cursor-pointer inline-block" @click="onContentClick">
-              <tag-list v-if="!omitTags" :tag-ids="model.tagIds" />
+              <tag-list
+                v-if="!omitTags"
+                :class="{ 'mt-2': bodyStyle === 'message' }"
+                :tag-ids="model.tagIds" />
               <slot></slot>
             </div>
           </div>
