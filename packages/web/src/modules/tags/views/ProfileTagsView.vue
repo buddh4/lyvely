@@ -2,7 +2,7 @@
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed, ref, onMounted } from 'vue';
 import EditTagModal from '@/modules/tags/components/EditTagModal.vue';
-import { useEditTagStore } from '@/modules/tags/stores/editTagStore';
+import { useEditTagStore } from '@/modules/tags/stores/edit-tag.store';
 import { TagModel, UpdateTagDto, CreateTagDto, TagFilter } from '@lyvely/common';
 import ListPage from '@/modules/ui/components/layout/ListPage.vue';
 import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
@@ -30,8 +30,8 @@ function archive(tag: TagModel) {
   editTagStore.archiveModel(tag.id, tag);
 }
 
-function unArchive(tag: TagModel) {
-  editTagStore.unArchiveModel(tag.id, tag);
+function unarchive(tag: TagModel) {
+  editTagStore.unarchiveModel(tag.id, tag);
 }
 
 function confirmArchive(tag: TagModel) {
@@ -92,7 +92,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
             class="secondary outlined"
             :confirm="confirmArchive(tag)"
             :title="$t('common.unarchive')"
-            @click="unArchive(tag)">
+            @click="unarchive(tag)">
             <ly-icon name="unarchive" />
           </ly-button>
           <ly-button

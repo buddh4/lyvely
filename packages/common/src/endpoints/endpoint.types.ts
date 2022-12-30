@@ -18,7 +18,7 @@ export type StrictEndpoint<T, TNonStrict extends keyof T = never> = {
 };
 
 export type EndpointResult<T extends (...args: any) => any> = T extends (...args: any) => infer R
-  ? Awaited<R> extends null | undefined | void
+  ? Awaited<R> extends null | undefined | void | boolean | number | string
     ? Awaited<R>
     : PropertiesOf<Awaited<R>>
   : any;

@@ -11,14 +11,21 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProfileRequest } from '../types';
-import { UpdateTagDto, TagModel, CreateTagDto, ServiceException } from '@lyvely/common';
+import {
+  UpdateTagDto,
+  TagModel,
+  CreateTagDto,
+  ServiceException,
+  ENDPOINT_PROFILE_TAGS,
+  ProfileTagsEndpoint,
+} from '@lyvely/common';
 import { assureObjectId, EntityIdentity, UseClassSerializer } from '@/core';
-import { Tag } from '../../tags';
+import { Tag } from '@/tags';
 
 // TODO feature check
-@ProfileController('tags')
+@ProfileController(ENDPOINT_PROFILE_TAGS)
 @UseClassSerializer()
-export class ProfileTagsController {
+export class ProfileTagsController implements ProfileTagsEndpoint {
   @Inject()
   private profilesService: ProfilesService;
 
@@ -26,7 +33,7 @@ export class ProfileTagsController {
   private tagService: ProfileTagsService;
 
   @Post()
-  async create(@Request() req: ProfileRequest, @Body() dto: CreateTagDto) {
+  async create(@Body() dto: CreateTagDto, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
 
     if (!(await this.tagService.addTag(profile, dto))) {
@@ -37,7 +44,7 @@ export class ProfileTagsController {
   }
 
   @Put(':id')
-  async update(@Request() req: ProfileRequest, @Param('id') id: string, @Body() dto: UpdateTagDto) {
+  async update(@Param('id') id: string, @Body() dto: UpdateTagDto, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
 
@@ -48,14 +55,14 @@ export class ProfileTagsController {
   }
 
   @Post(':id/archive')
-  async archive(@Request() req: ProfileRequest, @Param('id') id: string) {
+  async archive(@Param('id') id: string, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
     return await this.tagService.archiveTag(profile, tag);
   }
 
   @Post(':id/unarchive')
-  async unArchive(@Request() req: ProfileRequest, @Param('id') id: string) {
+  async unarchive(@Param('id') id: string, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
     return await this.tagService.unArchiveTag(profile, tag);

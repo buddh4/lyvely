@@ -3,7 +3,7 @@ import { computed, ref, Ref, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Sketch } from '@ckpack/vue-color';
 import { onClickOutside } from '@vueuse/core';
-import { useEditTagStore } from '@/modules/tags/stores/editTagStore';
+import { useEditTagStore } from '@/modules/tags/stores/edit-tag.store';
 
 const tagEditStore = useEditTagStore();
 
@@ -25,7 +25,8 @@ const colorPickerStyle = ref({ top: '0', left: '0' });
 
 function clickColorBox() {
   showColorPicker.value = true;
-  colorPickerStyle.value.top = colorInput.value!.offsetTop + 2 + colorInput.value!.offsetHeight + 'px';
+  colorPickerStyle.value.top =
+    colorInput.value!.offsetTop + 2 + colorInput.value!.offsetHeight + 'px';
   colorPickerStyle.value.left = colorInput.value!.offsetLeft + 'px';
 }
 
@@ -51,30 +52,38 @@ const { validator } = storeToRefs(tagEditStore);
       <div
         ref="colorInput"
         class="flex w-32 space-x-2 mb-2 p-2 cursor-pointer rounded-md border border-divide shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-        @click="clickColorBox"
-      >
+        @click="clickColorBox">
         <div class="inline-block rounded" :style="colorStyle">&nbsp;</div>
         <div>{{ color }}</div>
       </div>
 
-      <ly-input-text v-model="model.name" label="tags.fields.name" :error="validator.getError('name')" />
+      <ly-input-text
+        v-model="model.name"
+        :autofocus="true"
+        label="tags.fields.name"
+        :error="validator.getError('name')" />
 
       <ly-input-textarea
         v-model="model.description"
         label="tags.fields.description"
-        :error="validator.getError('description')"
-      />
+        :error="validator.getError('description')" />
 
       <ly-input-checkbox
         v-model="model.includeOnFilter"
         label="tags.fields.includeOnFilter"
-        help-text="tags.help.includeOnFilter"
-      />
+        help-text="tags.help.includeOnFilter" />
     </div>
 
-    <div v-if="showColorPicker" ref="colorPicker" class="absolute z-50 rounded bg-highlight" :style="colorPickerStyle">
+    <div
+      v-if="showColorPicker"
+      ref="colorPicker"
+      class="absolute z-50 rounded bg-highlight"
+      :style="colorPickerStyle">
       <sketch v-model="color" :disable-alpha="true" />
-      <ly-button class="primary px-1 py-0.5 m-1 float-right" text="common.close" @click="showColorPicker = false" />
+      <ly-button
+        class="primary px-1 py-0.5 m-1 float-right"
+        text="common.close"
+        @click="showColorPicker = false" />
     </div>
   </ly-modal>
 </template>

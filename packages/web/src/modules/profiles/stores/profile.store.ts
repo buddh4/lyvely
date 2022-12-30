@@ -48,7 +48,7 @@ export const useProfileStore = defineStore('profile', () => {
     }
   }
 
-  async function updateTags(tags: TagModel[]) {
+  function updateTags(tags: TagModel[]) {
     if (!profile.value) {
       console.warn('Called updateTags for non existing profile');
       return;

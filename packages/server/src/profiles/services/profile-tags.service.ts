@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Tag } from '../../tags';
+import { Tag } from '@/tags';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { FieldValidationException } from '@lyvely/common';
 import { ProfileDao } from '../daos';

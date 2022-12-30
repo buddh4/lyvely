@@ -10,7 +10,7 @@ export class MessageService implements IMessageClient {
     return repository.archive(messageId);
   }
 
-  unArchive(messageId: string) {
+  unarchive(messageId: string) {
     return repository.unarchive(messageId);
   }
 }

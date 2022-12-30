@@ -4,10 +4,11 @@ import { computed } from 'vue';
 import tagsRepository from '@/modules/tags/repositories/tags.repository';
 import { useUpdateModelStore, useArchiveModelStore } from '@/modules/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { useTagsService } from '@/modules/tags/services/tags.service';
 
 export const useEditTagStore = defineStore('tagEdit', () => {
   const editState = useUpdateModelStore<UpdateTagDto, TagModel>({
-    service: { create: () => <any>null, update: () => <any>null },
+    service: useTagsService(),
     onSubmitSuccess: (tag?: TagModel) => {
       if (tag) {
         useProfileStore().updateTags([tag]);
