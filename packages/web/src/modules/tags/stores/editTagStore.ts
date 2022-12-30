@@ -15,7 +15,9 @@ export const useEditTagStore = defineStore('tagEdit', () => {
     },
   });
 
-  const modalTitle = computed(() => (editState.isCreate.value ? 'tags.create.title' : 'tags.edit.title'));
+  const modalTitle = computed(() =>
+    editState.isCreate.value ? 'tags.create.title' : 'tags.edit.title',
+  );
 
   const archiveState = useArchiveModelStore<TagModel>({
     repository: tagsRepository,

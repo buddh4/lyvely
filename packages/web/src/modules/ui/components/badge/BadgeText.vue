@@ -48,7 +48,7 @@ const { text } = toRefs(props);
 
 <template>
   <span :class="getClassNames($attrs.class)" :style="styleObject" @click="$emit('click')">
-    <small>
+    <small class="text-xs">
       <slot>{{ text }}</slot>
     </small>
   </span>

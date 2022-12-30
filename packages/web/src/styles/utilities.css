@@ -13,6 +13,14 @@
         @apply rounded-r-none;
     }
 
+    .attachment-b {
+        @apply rounded-b-none;
+    }
+
+    .attachment-t {
+        @apply rounded-t-none;
+    }
+
     .attachment-l {
         @apply rounded-r-none;
     }

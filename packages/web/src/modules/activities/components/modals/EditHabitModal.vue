@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import useEditActivityModal from '../useEditActivityModal';
-import VueMultiselect from 'vue-multiselect';
 import { DataPointInputType } from '@lyvely/common';
-import LyInputTimeNumber from '@/modules/ui/components/form/TimeNumberInput.vue';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { computed } from 'vue';
+import TagChooser from '@/modules/tags/components/TagChooser.vue';
 
 const {
   model,
@@ -14,7 +12,6 @@ const {
   addTag,
   reset,
   submit,
-  tagOptions,
   calendarPlanOptions,
   status,
 } = useEditActivityModal();
@@ -128,15 +125,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <VueMultiselect
-          v-model="model.tagNames"
-          class="form-input"
-          :options="tagOptions"
-          :multiple="true"
-          :taggable="true"
-          tag-placeholder="Add this as new tag"
-          placeholder="Search or add a tag"
-          @tag="addTag" />
+        <tag-chooser v-model="model.tagNames" />
         <ly-input-textarea property="text" />
       </fieldset>
     </ly-form-model>

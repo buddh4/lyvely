@@ -8,7 +8,7 @@
     }
 
     body {
-        @apply bg-body text-gray-600 dark:text-slate-100;
+        @apply bg-body text-main;
         overflow: auto;
         height: 100%;
     }

@@ -68,6 +68,10 @@ export const useProfileStore = defineStore('profile', () => {
     return profile?.value?.tags || [];
   }
 
+  function getTagsByName(name: string): TagModel | undefined {
+    return profile?.value?.tags?.find((tag) => tag.name === name);
+  }
+
   return {
     profile,
     locale,
@@ -75,6 +79,7 @@ export const useProfileStore = defineStore('profile', () => {
     updateScore,
     tagOptions,
     getTags,
+    getTagsByName,
     updateTags,
     ...status,
   };

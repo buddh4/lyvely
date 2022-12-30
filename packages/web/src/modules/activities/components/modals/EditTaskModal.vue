@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import VueMultiselect from 'vue-multiselect';
 import useEditActivityModal from '../useEditActivityModal';
 import { computed } from 'vue';
-import { ActivityType, UpdateTaskDto } from '@lyvely/common';
+import TagChooser from '@/modules/tags/components/TagChooser.vue';
 
 const {
   model,
@@ -39,15 +38,7 @@ const modalTitle = computed(() => {
         <ly-input-select property="interval" :required="true" :options="calendarPlanOptions" />
       </fieldset>
       <fieldset>
-        <VueMultiselect
-          v-model="model.tagNames"
-          class="form-input"
-          :options="tagOptions"
-          :multiple="true"
-          :taggable="true"
-          tag-placeholder="Add this as new tag"
-          placeholder="Search or add a tag"
-          @tag="addTag" />
+        <tag-chooser v-model="model.tagNames" />
       </fieldset>
       <fieldset>
         <ly-input-number property="score" :mb="0" :steps="2" :max="100" :min="-100" />
