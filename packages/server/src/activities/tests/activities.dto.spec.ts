@@ -5,7 +5,13 @@ import { Model } from 'mongoose';
 import { ProfileDocument } from '@/profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { UserDocument } from '@/users';
-import { ActivityType, CalendarIntervalEnum, CreateHabitDto, HabitModel, PropertiesOf } from '@lyvely/common';
+import {
+  ActivityType,
+  CalendarIntervalEnum,
+  CreateHabitModel,
+  HabitModel,
+  PropertiesOf,
+} from '@lyvely/common';
 import { ActivityDocument, Habit } from '../schemas';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 import { instanceToPlain } from 'class-transformer';
@@ -39,7 +45,10 @@ describe('Activities DAO', () => {
     await closeInMongodConnection('activities service');
   });
 
-  async function createHabit(data?: Partial<CreateHabitDto>, overwrite?: (model: Habit) => void): Promise<Habit> {
+  async function createHabit(
+    data?: Partial<CreateHabitModel>,
+    overwrite?: (model: Habit) => void,
+  ): Promise<Habit> {
     const { user, profile } = await testData.createUserAndProfile();
     const content = await activityData.createHabit(user, profile, data, overwrite);
     return <Habit>await activitiesDao.findByProfileAndId(profile, content._id);

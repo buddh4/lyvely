@@ -3,8 +3,8 @@ import { Profile } from '@/profiles';
 import {
   REGEX_TID,
   UserAssignmentStrategy,
-  CreateTaskDto,
-  UpdateTaskDto,
+  CreateTaskModel,
+  UpdateTaskModel,
   PropertiesOf,
   TaskWithUsersModel,
   DataPointInputType,
@@ -92,11 +92,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
     super.afterInit();
   }
 
-  getModelConstructor(): Type<ContentModel> {
-    return TaskModel;
-  }
-
-  applyUpdate(update: UpdateTaskDto) {
+  applyUpdate(update: UpdateTaskModel) {
     this.applyTimeSeriesConfigUpdate({
       interval: update.interval ?? this.timeSeriesConfig.interval,
     });
@@ -109,7 +105,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   }
 
   toModel(user?: User): TaskModel {
-    const model = super.toModel(user) as TaskModel;
+    const model = new TaskModel(this);
     if (user) {
       model.done = this.getDoneBy(user)?.tid;
       model.timer = this.getTimer(user);
@@ -173,7 +169,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
     return null; // We do not want to create revisions for tasks
   }
 
-  public static create(profile: Profile, owner: User, update: PropertiesOf<CreateTaskDto>): Task {
+  public static create(profile: Profile, owner: User, update: PropertiesOf<CreateTaskModel>): Task {
     return new Task(profile, owner, {
       content: new ContentDataType({ title: update.title, text: update.text }),
       tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
@@ -185,7 +181,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   }
 }
 
-function _createDataPointConfigFromUpdate(update: UpdateTaskDto) {
+function _createDataPointConfigFromUpdate(update: UpdateTaskModel) {
   return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
     DataPointValueType.Number,
     DataPointInputType.Checkbox,

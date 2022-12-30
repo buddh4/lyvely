@@ -2,6 +2,7 @@
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 import TextTrimmed from '@/modules/ui/components/text/TextTrimmed.vue';
 import { ContentModel } from '@lyvely/common';
+import { IContentDetailsProps } from '@/modules/content-stream/interfaces/content-details-props.interface';
 
 export interface IProps {
   model: ContentModel;

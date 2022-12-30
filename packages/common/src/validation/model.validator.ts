@@ -12,7 +12,12 @@ interface ITranslationError<T> {
 
 export interface IValidatorOptions<T extends object = object> {
   isFieldValidator?: boolean;
-  rules?: Record<keyof T, [(value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>]> | any;
+  rules?:
+    | Record<
+        keyof T,
+        [(value: any, result: IFieldValidationResult) => Promise<IFieldValidationResult>]
+      >
+    | any;
   translate?: (error: ITranslationError<T>) => string | undefined;
 }
 
@@ -32,7 +37,10 @@ export class ModelValidator<T extends object = object> {
     this.options.rules = this.options.rules || <any>{};
     this.model = model;
     if (!this.options.isFieldValidator) {
-      this.fieldValidator = new ModelValidator<T>(model, Object.assign({}, options, { isFieldValidator: true }));
+      this.fieldValidator = new ModelValidator<T>(
+        model,
+        Object.assign({}, options, { isFieldValidator: true }),
+      );
     }
   }
 
@@ -66,7 +74,10 @@ export class ModelValidator<T extends object = object> {
   }
 
   getValidationResult(): IFieldValidationResult[] {
-    return Object.keys(this.errors).map((property) => ({ property: property, errors: [this.errors[property]] }));
+    return Object.keys(this.errors).map((property) => ({
+      property: property,
+      errors: [this.errors[property]],
+    }));
   }
 
   setErrors(errors: IFieldValidationResult[]) {
@@ -98,7 +109,7 @@ export class ModelValidator<T extends object = object> {
       for (const rule of propRules) {
         const injectedResult: IFieldValidationResult = { property, errors: [] };
         const result = (await rule(this.model[property], injectedResult)) || injectedResult;
-        if (!!result.errors?.length) {
+        if (result.errors?.length) {
           this.errors[property] = result.errors[0];
           break;
         }
@@ -120,7 +131,11 @@ export class ModelValidator<T extends object = object> {
 
     if (!rules.length) return;
 
-    const firstRule = constraints?.isNotEmpty ? 'isNotEmpty' : constraints?.isDefined ? 'isDefined' : rules[0];
+    const firstRule = constraints?.isNotEmpty
+      ? 'isNotEmpty'
+      : constraints?.isDefined
+      ? 'isDefined'
+      : rules[0];
 
     const firstErrorMessage = constraints[firstRule];
     if (firstErrorMessage) {

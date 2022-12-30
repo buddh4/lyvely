@@ -1,8 +1,10 @@
 import { ActivityType, ActivityModel } from '../models';
-import { CreateHabitDto, HabitModel, isHabit, UpdateHabitDto } from '../habits';
-import { CreateTaskDto, isTask, TaskModel, UpdateTaskDto } from '../tasks';
+import { CreateHabitModel, HabitModel, isHabit, UpdateHabitModel } from '../habits';
+import { CreateTaskModel, isTask, TaskModel, UpdateTaskModel } from '../tasks';
 
-export function getEditModelByActivity(activity: ActivityModel): UpdateHabitDto | UpdateTaskDto {
+export function getEditModelByActivity(
+  activity: ActivityModel,
+): UpdateHabitModel | UpdateTaskModel {
   if (isTask(activity)) {
     return activity.getEditDto();
   } else if (isHabit(activity)) {
@@ -10,6 +12,8 @@ export function getEditModelByActivity(activity: ActivityModel): UpdateHabitDto 
   }
 }
 
-export function getCreateModelByActivityType(type: ActivityType): CreateHabitDto | CreateTaskDto {
+export function getCreateModelByActivityType(
+  type: ActivityType,
+): CreateHabitModel | CreateTaskModel {
   return type === ActivityType.Task ? TaskModel.getCreateDto() : HabitModel.getCreateDto();
 }

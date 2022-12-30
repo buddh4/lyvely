@@ -1,10 +1,8 @@
 import { StrictEndpoint } from '@/endpoints';
-import { AbstractContentEndpoint } from '@/content';
+import { IAbstractContentService } from '@/content';
 import { CreateMessage, MessageModel } from '../models';
 
-export interface IMessageClient extends AbstractContentEndpoint {
-  create(model: CreateMessage): Promise<MessageModel>;
-}
+export interface IMessageClient extends IAbstractContentService<MessageModel, CreateMessage> {}
 
 export type MessageEndpoint = StrictEndpoint<IMessageClient>;
 

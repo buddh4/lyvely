@@ -1,38 +1,37 @@
 import {
   useSingleton,
   ITasksEndpointService,
-  CreateTaskDto,
-  UpdateTaskResponseDto,
-  UpdateTaskDto,
+  CreateTaskModel,
+  UpdateTaskResponse,
+  UpdateTaskModel,
   UpdateTaskStateModel,
-  UpdateTaskStateResultDto,
+  UpdateTaskStateResponse,
   CalendarDate,
   formatDate,
   TimerModel,
-  TimerUpdate,
-  TimerValueUpdate,
+  TimerValueUpdateModel,
 } from '@lyvely/common';
 
 import repository from '../repositories/tasks.repository';
 import { unwrapAndCastResponse } from '@/modules/core';
 
 export class TasksService implements ITasksEndpointService {
-  async create(dto: CreateTaskDto): Promise<UpdateTaskResponseDto> {
-    return unwrapAndCastResponse(repository.create(dto), UpdateTaskResponseDto);
+  async create(dto: CreateTaskModel): Promise<UpdateTaskResponse> {
+    return unwrapAndCastResponse(repository.create(dto), UpdateTaskResponse);
   }
 
-  update(id: string, update: UpdateTaskDto): Promise<UpdateTaskResponseDto> {
-    return unwrapAndCastResponse(repository.update(id, update), UpdateTaskResponseDto);
+  update(id: string, update: UpdateTaskModel): Promise<UpdateTaskResponse> {
+    return unwrapAndCastResponse(repository.update(id, update), UpdateTaskResponse);
   }
 
-  setDone(id: string, date: CalendarDate): Promise<UpdateTaskStateResultDto> {
+  setDone(id: string, date: CalendarDate): Promise<UpdateTaskStateResponse> {
     const dto = new UpdateTaskStateModel({ date: formatDate(date) });
-    return unwrapAndCastResponse(repository.setDone(id, dto), UpdateTaskStateResultDto);
+    return unwrapAndCastResponse(repository.setDone(id, dto), UpdateTaskStateResponse);
   }
 
-  setUndone(id: string, date: CalendarDate): Promise<UpdateTaskStateResultDto> {
+  setUndone(id: string, date: CalendarDate): Promise<UpdateTaskStateResponse> {
     const dto = new UpdateTaskStateModel({ date: formatDate(date) });
-    return unwrapAndCastResponse(repository.setUndone(id, dto), UpdateTaskStateResultDto);
+    return unwrapAndCastResponse(repository.setUndone(id, dto), UpdateTaskStateResponse);
   }
 
   startTimer(id: string): Promise<TimerModel> {
@@ -44,7 +43,7 @@ export class TasksService implements ITasksEndpointService {
   }
 
   updateTimer(id: string, value: number): Promise<TimerModel> {
-    const dto = new TimerValueUpdate(value);
+    const dto = new TimerValueUpdateModel(value);
     return unwrapAndCastResponse(repository.updateTimer(id, dto), TimerModel);
   }
 }

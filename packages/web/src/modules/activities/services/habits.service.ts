@@ -1,36 +1,42 @@
 import {
-  CreateHabitDto,
+  CreateHabitModel,
   IHabitsEndpointService,
   NumberDataPointModel,
-  TimerUpdate,
-  UpdateDataPointDto,
-  UpdateHabitDto,
-  UpdateHabitResponseDto,
-  UpdateHabitDataPointResultDto,
+  TimerUpdateModel,
+  UpdateHabitDataPointModel,
+  UpdateHabitModel,
+  UpdateHabitResponse,
+  UpdateHabitDataPointResponse,
   useSingleton,
 } from '@lyvely/common';
 import repository from '../repositories/habits.repository';
 import { unwrapAndCastResponse } from '@/modules/core';
 
 export class HabitsService implements IHabitsEndpointService {
-  async create(dto: CreateHabitDto): Promise<UpdateHabitResponseDto> {
-    return unwrapAndCastResponse(repository.create(dto), UpdateHabitResponseDto);
+  async create(dto: CreateHabitModel): Promise<UpdateHabitResponse> {
+    return unwrapAndCastResponse(repository.create(dto), UpdateHabitResponse);
   }
 
-  async update(id: string, update: UpdateHabitDto): Promise<UpdateHabitResponseDto> {
-    return unwrapAndCastResponse(repository.update(id, update), UpdateHabitResponseDto);
+  async update(id: string, update: UpdateHabitModel): Promise<UpdateHabitResponse> {
+    return unwrapAndCastResponse(repository.update(id, update), UpdateHabitResponse);
   }
 
-  async updateDataPoint(id: string, update: UpdateDataPointDto): Promise<UpdateHabitDataPointResultDto> {
-    return unwrapAndCastResponse(repository.updateDataPoint(id, update), UpdateHabitDataPointResultDto);
+  async updateDataPoint(
+    id: string,
+    update: UpdateHabitDataPointModel,
+  ): Promise<UpdateHabitDataPointResponse> {
+    return unwrapAndCastResponse(
+      repository.updateDataPoint(id, update),
+      UpdateHabitDataPointResponse,
+    );
   }
 
-  async startTimer(id: string, dto: TimerUpdate): Promise<NumberDataPointModel> {
+  async startTimer(id: string, dto: TimerUpdateModel): Promise<NumberDataPointModel> {
     return unwrapAndCastResponse(repository.startTimer(id, dto), NumberDataPointModel);
   }
 
-  async stopTimer(id: string, dto: TimerUpdate): Promise<UpdateHabitDataPointResultDto> {
-    return unwrapAndCastResponse(repository.stopTimer(id, dto), UpdateHabitDataPointResultDto);
+  async stopTimer(id: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse> {
+    return unwrapAndCastResponse(repository.stopTimer(id, dto), UpdateHabitDataPointResponse);
   }
 }
 

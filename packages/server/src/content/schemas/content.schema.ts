@@ -25,16 +25,16 @@ export interface IContentEntity extends IContent<TObjectId> {
 
 @Schema({ discriminatorKey: 'type' })
 export class Content<
-    T extends IContentEntity & BaseEntity<IContentEntity> = any,
-    TContent extends ContentDataType = ContentDataType,
+    TContent extends IContentEntity & BaseEntity<IContentEntity> = any,
+    TContentType extends ContentDataType = ContentDataType,
     TConfig extends Object = any,
   >
-  extends BaseProfileModel<T>
+  extends BaseProfileModel<TContent>
   implements IContent
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)
-  content: TContent;
+  content: TContentType;
 
   @Prop({ type: ContentMetadataSchema })
   @PropertyType(ContentMetadata)
@@ -51,7 +51,7 @@ export class Content<
 
   type: string;
 
-  constructor(profile: Profile, createdBy: User, obj: DeepPartial<T> = {}) {
+  constructor(profile: Profile, createdBy: User, obj: DeepPartial<TContent> = {}) {
     obj.meta = obj.meta || new ContentMetadata();
     obj.meta.createdBy = createdBy._id;
     obj.meta.createdAs = obj.meta.createdAs || new CreatedAs(createdBy);
@@ -60,8 +60,8 @@ export class Content<
     super(obj);
   }
 
-  applyContentUpdate(update: Partial<TContent>) {
-    this.content = assignRawDataTo(this.content || ({} as TContent), update);
+  applyContentUpdate(update: Partial<TContentType>) {
+    this.content = assignRawDataTo(this.content || ({} as TContentType), update);
   }
 
   getDefaults() {
@@ -104,8 +104,9 @@ export abstract class ContentType<
   T extends IContentEntity & BaseEntity<IContentEntity>,
   TContent extends ContentDataType = ContentDataType,
   TConfig extends Object = any,
+  TModel extends ContentModel = ContentModel,
 > extends Content<T, TContent, TConfig> {
-  abstract getModelConstructor(): Type<ContentModel>;
+  abstract toModel(user?: User): TModel;
 }
 
 export const ContentSchema = SchemaFactory.createForClass(Content);

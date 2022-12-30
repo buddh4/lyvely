@@ -14,7 +14,14 @@ import {
   TaskDocument,
   TaskSchema,
 } from '../../schemas';
-import { toTimingId, CalendarDate, CalendarIntervalEnum, CreateHabitDto, CreateTaskDto, toDate } from '@lyvely/common';
+import {
+  toTimingId,
+  CalendarDate,
+  CalendarIntervalEnum,
+  CreateHabitModel,
+  CreateTaskModel,
+  toDate,
+} from '@lyvely/common';
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -68,11 +75,21 @@ export class ActivityTestDataUtil extends TestDataUtils {
   }
 
   async findHabitById(id: EntityIdentity<Habit>) {
-    return createBaseEntityInstance(Habit, await this.HabitModel.findById(assureObjectId(id)).lean());
+    return createBaseEntityInstance(
+      Habit,
+      await this.HabitModel.findById(assureObjectId(id)).lean(),
+    );
   }
 
-  async createLog(user: User, profile: Profile, activity: Activity, date: CalendarDate): Promise<HabitDataPoint> {
-    const log = new this.HabitDataPointModel(new HabitDataPoint(profile, user, activity, { date: toDate(date) }));
+  async createLog(
+    user: User,
+    profile: Profile,
+    activity: Activity,
+    date: CalendarDate,
+  ): Promise<HabitDataPoint> {
+    const log = new this.HabitDataPointModel(
+      new HabitDataPoint(profile, user, activity, { date: toDate(date) }),
+    );
     await log.save();
     return createBaseEntityInstance(HabitDataPoint, log.toObject());
   }
@@ -80,10 +97,10 @@ export class ActivityTestDataUtil extends TestDataUtils {
   async createTask(
     user: User,
     profile: Profile,
-    data?: Partial<CreateTaskDto>,
+    data?: Partial<CreateTaskModel>,
     overwrite?: (model: Task) => void,
   ): Promise<Task> {
-    const initData = <CreateTaskDto>(
+    const initData = <CreateTaskModel>(
       Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {})
     );
 
@@ -101,10 +118,10 @@ export class ActivityTestDataUtil extends TestDataUtils {
   async createHabit(
     user: User,
     profile: Profile,
-    data?: Partial<CreateHabitDto>,
+    data?: Partial<CreateHabitModel>,
     overwrite?: (habit: Habit) => void,
   ): Promise<Habit> {
-    const initData = <CreateHabitDto>(
+    const initData = <CreateHabitModel>(
       Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {})
     );
     const model = Habit.create(profile, user, initData);

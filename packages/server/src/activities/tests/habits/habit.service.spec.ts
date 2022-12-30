@@ -4,9 +4,9 @@ import { HabitsService } from '../../services/habits.service';
 import {
   ActivityType,
   CalendarIntervalEnum,
-  CreateHabitDto,
+  CreateHabitModel,
   PropertiesOf,
-  UpdateHabitDto,
+  UpdateHabitModel,
   DataPointInputType,
   UserAssignmentStrategy,
 } from '@lyvely/common';
@@ -35,7 +35,11 @@ describe('HabitService', () => {
     await testData.reset(TEST_KEY);
   });
 
-  const createHabit = async (user: User, profile: Profile, dto?: PropertiesOf<CreateHabitDto>) => {
+  const createHabit = async (
+    user: User,
+    profile: Profile,
+    dto?: PropertiesOf<CreateHabitModel>,
+  ) => {
     dto = dto || {
       min: 0,
       max: 1,
@@ -94,7 +98,7 @@ describe('HabitService', () => {
       const habit = await testData.createHabit(user, profile);
 
       habit.applyUpdate(
-        new UpdateHabitDto({
+        new UpdateHabitModel({
           title: 'Updated Title',
           text: 'Updated description',
           interval: CalendarIntervalEnum.Weekly,
@@ -128,7 +132,7 @@ describe('HabitService', () => {
       const habit = await testData.createHabit(
         user,
         profile,
-        new CreateHabitDto({
+        new CreateHabitModel({
           title: 'Test',
           interval: CalendarIntervalEnum.Daily,
           max: 2,
@@ -139,7 +143,7 @@ describe('HabitService', () => {
       );
 
       habit.applyUpdate(
-        new UpdateHabitDto({
+        new UpdateHabitModel({
           title: 'Test',
           interval: CalendarIntervalEnum.Weekly,
           max: 3,
@@ -167,7 +171,7 @@ describe('HabitService', () => {
     const habit = await testData.createHabit(
       user,
       profile,
-      new CreateHabitDto({
+      new CreateHabitModel({
         title: 'Test',
         interval: CalendarIntervalEnum.Daily,
         max: 2,
@@ -178,7 +182,7 @@ describe('HabitService', () => {
     );
 
     habit.applyUpdate(
-      new UpdateHabitDto({
+      new UpdateHabitModel({
         title: 'Test',
         interval: CalendarIntervalEnum.Weekly,
         max: 3,
@@ -191,7 +195,7 @@ describe('HabitService', () => {
     await habitService.updateContentSet(profile, user, habit, habit);
 
     habit.applyUpdate(
-      new UpdateHabitDto({
+      new UpdateHabitModel({
         title: 'Test',
         interval: CalendarIntervalEnum.Weekly,
         max: 4,

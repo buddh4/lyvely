@@ -15,8 +15,8 @@ export default {
   },
 
   async loadHead(request: IStreamRequest) {
-    return repository.post<EndpointResult<IContentStreamClient['update']>>(
-      `${ENDPOINT_CONTENT_STREAM}/update`,
+    return repository.post<EndpointResult<IContentStreamClient['loadHead']>>(
+      `${ENDPOINT_CONTENT_STREAM}/load-head`,
       request,
     );
   },

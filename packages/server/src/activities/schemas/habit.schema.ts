@@ -3,14 +3,14 @@ import { User } from '@/users';
 import {
   ActivityModel,
   ContentModel,
-  CreateHabitDto,
+  CreateHabitModel,
   DataPointInputType,
   DataPointValueType,
   HabitModel,
   PropertiesOf,
   PropertyType,
   Type,
-  UpdateHabitDto,
+  UpdateHabitModel,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
 import { Activity } from './activity.schema';
@@ -61,7 +61,7 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
   public static create(
     profile: Profile,
     owner: User,
-    update: PropertiesOf<CreateHabitDto>,
+    update: PropertiesOf<CreateHabitModel>,
     history?: NumberDataPointConfigRevision[],
   ): Habit {
     update.inputType = update.inputType || DataPointInputType.Checkbox;
@@ -79,11 +79,11 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
     return result;
   }
 
-  getModelConstructor(): Type<ContentModel> {
-    return HabitModel;
+  toModel(): HabitModel {
+    return new HabitModel(this);
   }
 
-  applyUpdate(update: UpdateHabitDto) {
+  applyUpdate(update: UpdateHabitModel) {
     this.applyTimeSeriesConfigUpdate({
       max: update.max ?? this.timeSeriesConfig.max,
       min: update.max ?? this.timeSeriesConfig.min,
@@ -102,7 +102,7 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
   }
 }
 
-function _createDataPointConfigFromUpdate(dto: UpdateHabitDto) {
+function _createDataPointConfigFromUpdate(dto: UpdateHabitModel) {
   return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
     DataPointValueType.Number,
     dto.inputType,

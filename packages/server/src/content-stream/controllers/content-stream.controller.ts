@@ -4,7 +4,7 @@ import { UseClassSerializer } from '@/core';
 import { AbstractStreamController } from '@/stream';
 import { Content } from '@/content';
 import { ContentStreamService } from '@/content-stream/services/content-stream.service';
-import { ProfileController } from '@/profiles';
+import { ProfileContext, ProfileController } from '@/profiles';
 
 @ProfileController(ENDPOINT_CONTENT_STREAM)
 @UseClassSerializer()
@@ -15,4 +15,11 @@ export class ContentStreamController extends AbstractStreamController<
 > {
   @Inject()
   protected streamEntryService: ContentStreamService;
+
+  protected async mapToResultModel(
+    models: Content[],
+    context: ProfileContext,
+  ): Promise<ContentModel[]> {
+    return models.map((content) => content.toModel(context.user));
+  }
 }

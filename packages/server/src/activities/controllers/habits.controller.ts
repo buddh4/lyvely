@@ -1,71 +1,44 @@
-import { Post, Body, Request, Put } from '@nestjs/common';
+import { Post, Body, Request, Inject } from '@nestjs/common';
 import { Habit } from '../schemas';
 import {
-  UpdateHabitDto,
-  UpdateDataPointDto,
-  UpdateHabitDataPointResultDto,
-  UpdateHabitResponseDto,
-  HabitModel,
-  TagModel,
-  CreateHabitDto,
+  UpdateHabitDataPointModel,
+  UpdateHabitDataPointResponse,
+  UpdateHabitResponse,
+  CreateHabitModel,
   HabitsEndpoint,
-  TimerUpdate,
+  TimerUpdateModel,
+  UpdateHabitModel,
 } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
-import { ProfileContentRequest, ContentController, ContentWritePolicy } from '@/content';
-import { ProfileRequest, ProfilePermissions } from '@/profiles';
+import {
+  ProfileContentRequest,
+  ContentController,
+  ContentWritePolicy,
+  AbstractContentController,
+} from '@/content';
 import { Policies } from '@/policies/decorators/policies.decorator';
-import { ActivityPermissions } from '../permissions';
 import { UseClassSerializer } from '@/core';
 
 @ContentController('habits', Habit)
 // TODO: implement feature registration @Feature('content.activities.habits')F
 @UseClassSerializer()
-export class HabitsController implements HabitsEndpoint {
-  constructor(
-    protected contentService: HabitsService,
-    protected habitDataPointService: HabitDataPointService,
-  ) {}
+export class HabitsController
+  extends AbstractContentController<Habit, CreateHabitModel, UpdateHabitModel>
+  implements HabitsEndpoint
+{
+  @Inject()
+  protected contentService: HabitsService;
 
-  @Post()
-  @ProfilePermissions(ActivityPermissions.CREATE)
-  async create(@Body() dto: CreateHabitDto, @Request() req: ProfileRequest) {
-    const { profile, user } = req;
+  @Inject()
+  protected habitDataPointService: HabitDataPointService;
 
-    const habitModel = await this.contentService.createContent(profile, user, dto);
-
-    return new UpdateHabitResponseDto({
-      model: new HabitModel(habitModel),
-      tags: profile.getNewTags().map((tag) => new TagModel(tag)),
-    });
-  }
-
-  @Put(':cid')
-  @Policies(ContentWritePolicy)
-  async update(@Body() update: UpdateHabitDto, @Request() req: ProfileContentRequest<Habit>) {
-    const { profile, user, content } = req;
-
-    await this.contentService.updateContentSet(
-      profile,
-      user,
-      content,
-      content.applyUpdate(update),
-      {
-        tagNames: update.tagNames,
-      },
-    );
-
-    return new UpdateHabitResponseDto({
-      model: new HabitModel(content),
-      tags: profile.getNewTags().map((tag) => new TagModel(tag)),
-    });
-  }
+  protected updateResponseType = UpdateHabitResponse;
 
   @Post(':cid/update-data-point')
   @Policies(ContentWritePolicy)
   async updateDataPoint(
-    @Body() dto: UpdateDataPointDto,
+    @Body() dto: UpdateHabitDataPointModel,
     @Request() req: ProfileContentRequest<Habit>,
   ) {
     const { profile, user, content } = req;
@@ -78,7 +51,7 @@ export class HabitsController implements HabitsEndpoint {
       dto.value,
     );
 
-    return new UpdateHabitDataPointResultDto({
+    return new UpdateHabitDataPointResponse({
       score: profile.score,
       dataPoint: dataPoint.createDto(),
     });
@@ -86,7 +59,7 @@ export class HabitsController implements HabitsEndpoint {
 
   @Post(':cid/start-timer')
   @Policies(ContentWritePolicy)
-  async startTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest<Habit>) {
+  async startTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
 
     const dataPoint = await this.habitDataPointService.startTimer(profile, user, content, dto.date);
@@ -95,12 +68,12 @@ export class HabitsController implements HabitsEndpoint {
 
   @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
-  async stopTimer(@Body() dto: TimerUpdate, @Request() req: ProfileContentRequest<Habit>) {
+  async stopTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
 
     const dataPoint = await this.habitDataPointService.stopTimer(profile, user, content, dto.date);
 
-    return new UpdateHabitDataPointResultDto({
+    return new UpdateHabitDataPointResponse({
       score: profile.score,
       dataPoint: dataPoint.createDto(),
     });

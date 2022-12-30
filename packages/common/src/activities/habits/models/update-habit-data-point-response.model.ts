@@ -4,7 +4,7 @@ import { IsNumber } from 'class-validator';
 import { NumberDataPointModel } from '@/time-series';
 
 @Exclude()
-export class UpdateHabitDataPointResultDto extends BaseModel<UpdateHabitDataPointResultDto> {
+export class UpdateHabitDataPointResponse extends BaseModel<UpdateHabitDataPointResponse> {
   @Expose()
   @IsNumber()
   score: number;

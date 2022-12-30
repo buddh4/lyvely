@@ -7,7 +7,6 @@ import {
   WebNotification,
   NotificationSeenStateLiveEvent,
   NotificationUpdateStateLiveEvent,
-  IWebNotification,
 } from '@lyvely/common';
 import {
   RenderFormat,
@@ -25,10 +24,7 @@ import { AbstractStreamService } from '@/stream';
 import { RequestContext } from '@/profiles';
 
 @Injectable()
-export class UserNotificationsService extends AbstractStreamService<
-  UserNotification,
-  IWebNotification
-> {
+export class UserNotificationsService extends AbstractStreamService<UserNotification> {
   @Inject()
   protected streamEntryDao: UserNotificationDao;
 
@@ -56,7 +52,7 @@ export class UserNotificationsService extends AbstractStreamService<
   async loadEntry(
     context: RequestContext,
     identity: EntityIdentity<UserNotification>,
-  ): Promise<IWebNotification> {
+  ): Promise<UserNotification> {
     const userNotification = await this.streamEntryDao.findOneAndUpdateSetByFilter(
       identity,
       { seen: true },
@@ -67,7 +63,7 @@ export class UserNotificationsService extends AbstractStreamService<
 
     if (!userNotification) return null;
 
-    return (await this.mapToResultModel([userNotification], context))[0];
+    return userNotification;
   }
 
   async create(identity: EntityIdentity<User>, notification: Notification) {
@@ -80,7 +76,7 @@ export class UserNotificationsService extends AbstractStreamService<
   async loadTail(
     context: RequestContext,
     request: StreamRequest,
-  ): Promise<IStreamResponse<WebNotification>> {
+  ): Promise<IStreamResponse<UserNotification>> {
     const response = await super.loadTail(context, request);
 
     if (request.isInitialRequest() && context.user.notification.updatesAvailable) {
@@ -108,7 +104,7 @@ export class UserNotificationsService extends AbstractStreamService<
   async loadHead(
     context: RequestContext,
     request: StreamRequest,
-  ): Promise<StreamResponse<WebNotification>> {
+  ): Promise<StreamResponse<UserNotification>> {
     const response = await super.loadHead(context, request);
 
     this.setUpdateAvailableState(context.user, false);
@@ -116,7 +112,7 @@ export class UserNotificationsService extends AbstractStreamService<
     return response;
   }
 
-  protected async mapToResultModel(userNotifications: UserNotification[], context: RequestContext) {
+  async mapToResultModel(userNotifications: UserNotification[], context: RequestContext) {
     const notifications = await this.loadNotifications(userNotifications);
 
     const models: WebNotification[] = [];

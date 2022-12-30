@@ -13,12 +13,16 @@ import { ContentEventPublisher } from '../components';
 
 export interface IContentUpdateOptions extends IBaseQueryOptions {
   streamSort?: boolean;
-  createdBy?: boolean;
+  updatedByUser?: boolean;
   liveUpdate?: boolean;
   tagNames?: string[];
 }
 
-export abstract class AbstractContentService<T extends Content, TModel extends CreateContentModel> {
+export abstract class AbstractContentService<
+  T extends Content,
+  TCreateModel extends CreateContentModel,
+  TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
+> {
   @Inject()
   protected profileService: ProfilesService;
 
@@ -35,7 +39,13 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
 
   protected abstract logger: Logger;
 
-  protected abstract createInstance(profile: Profile, user: User, model: TModel): Promise<T>;
+  protected abstract createInstance(profile: Profile, user: User, model: TCreateModel): Promise<T>;
+  protected abstract createUpdate(
+    profile: Profile,
+    user: User,
+    content: T,
+    model: TUpdateModel,
+  ): Promise<UpdateQuerySet<T>>;
 
   async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T | null> {
     return this.contentDao.findById(id);
@@ -51,7 +61,7 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     tagNames.forEach((tagName) => model.addTag(profile.getTagByName(tagName)));
   }
 
-  async createContent(profile: Profile, user: User, model: TModel): Promise<T> {
+  async createContent(profile: Profile, user: User, model: TCreateModel): Promise<T> {
     const instance = await this.createInstance(profile, user, model);
     const parent = await this.handleSubContentCreation(profile, user, instance, model);
     await this.mergeTags(profile, instance, model.tagNames);
@@ -68,6 +78,14 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     return result;
   }
 
+  async updateContent(profile: Profile, user: User, content: T, model: TUpdateModel): Promise<T> {
+    const update = await this.createUpdate(profile, user, content, model);
+    await this.updateContentSet(profile, user, content, update, {
+      tagNames: model.tagNames,
+    });
+    return content;
+  }
+
   async updateContentSet(
     profile: Profile,
     user: User,
@@ -79,7 +97,7 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
       this.setStreamSort(updateSet);
     }
 
-    if (options?.createdBy !== false) {
+    if (options?.updatedByUser !== false) {
       this.setUpdatedBy(updateSet, user);
     }
 
@@ -132,7 +150,12 @@ export abstract class AbstractContentService<T extends Content, TModel extends C
     });
   }
 
-  private async handleSubContentCreation(profile: Profile, user: User, instance: T, model: TModel) {
+  private async handleSubContentCreation(
+    profile: Profile,
+    user: User,
+    instance: T,
+    model: TCreateModel,
+  ) {
     if (!model.parentId) return;
     const parent = await this.baseContentDao.findByProfileAndId(profile, model.parentId);
     if (!parent) throw new EntityNotFoundException();

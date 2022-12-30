@@ -4,7 +4,6 @@ import { User } from '@/users';
 import { Profile } from '@/profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { assureObjectId, EntityIdentity } from '@/core';
-import { AbstractContentService } from '@/content';
 import { HabitDataPointService } from './habit-data-point.service';
 import {
   getTimingIds,
@@ -12,7 +11,6 @@ import {
   CalendarIntervalEnum,
   SortResult,
   IntegrityException,
-  UnsupportedOperationException,
 } from '@lyvely/common';
 
 interface IActivitySearchResult {
@@ -21,7 +19,7 @@ interface IActivitySearchResult {
 }
 
 @Injectable()
-export class ActivitiesService extends AbstractContentService<Activity, any> {
+export class ActivitiesService {
   @Inject()
   protected contentDao: ActivitiesDao;
 
@@ -150,9 +148,5 @@ export class ActivitiesService extends AbstractContentService<Activity, any> {
      *
 
     //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex */
-  }
-
-  protected createInstance(profile: Profile, user: User, model: any): Promise<Activity> {
-    throw new UnsupportedOperationException();
   }
 }

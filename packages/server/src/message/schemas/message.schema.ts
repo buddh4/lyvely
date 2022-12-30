@@ -1,5 +1,5 @@
 import { ContentType } from '@/content';
-import { ContentModel, Type, MessageModel } from '@lyvely/common';
+import { MessageModel } from '@lyvely/common';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
@@ -12,8 +12,8 @@ export class Message extends ContentType<Message> {
     });
   }
 
-  getModelConstructor(): Type<ContentModel> {
-    return MessageModel;
+  toModel(): MessageModel {
+    return new MessageModel(this);
   }
 }
 

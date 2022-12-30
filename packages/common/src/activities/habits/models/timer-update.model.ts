@@ -5,7 +5,7 @@ import type { CalendarDate } from '@/calendar';
 import { BaseModel } from '@/models';
 
 @Exclude()
-export class TimerUpdate extends BaseModel<TimerUpdate> {
+export class TimerUpdateModel extends BaseModel<TimerUpdateModel> {
   @Expose()
   @Matches(REGEX_DATE_FORMAT)
   date: string;

@@ -1,5 +1,5 @@
 import { CalendarDate, getFullDayDate } from '../interfaces';
-import { addDays } from '../utils';
+import { addDays } from '../utils/date-calculation.util';
 
 export class DayIterator implements Iterable<Date> {
   private readonly currentDate: Date;

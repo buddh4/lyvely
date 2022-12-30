@@ -1,14 +1,29 @@
 import { Exclude, Expose } from 'class-transformer';
 import { CalendarIntervalEnum } from '@/calendar';
-import { DataPointInputType, DataPointNumberInputType, INumberDataPointConfig } from '@/time-series';
+import {
+  DataPointInputType,
+  DataPointNumberInputType,
+  INumberDataPointConfig,
+} from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
-import { IsArray, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Length, Max, MaxLength, Min } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
 import { BaseModel } from '@/models';
 import { Gte, Lte } from '@/validation';
 import { IContentDataType } from '@/content';
 
 @Exclude()
-export class CreateHabitDto extends BaseModel<CreateHabitDto> {
+export class CreateHabitModel extends BaseModel<CreateHabitModel> {
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -64,7 +79,7 @@ export class CreateHabitDto extends BaseModel<CreateHabitDto> {
   @IsOptional()
   tagNames?: string[];
 
-  constructor(obj?: Partial<CreateHabitDto>, init = true) {
+  constructor(obj?: Partial<CreateHabitModel>, init = true) {
     obj = init
       ? Object.assign(
           {

@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-import { ContentModel, formatDate, isToday, formatDateWithTime } from '@lyvely/common';
+import { formatDate, isToday, formatDateWithTime, ContentModel } from '@lyvely/common';
 import { computed } from 'vue';
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
-import { IStream } from '@/modules/stream/composables/stream.composable';
 import { useRouter } from 'vue-router';
 import { contentRoute } from '@/modules/content-stream/routes';
 import { isTextSelection } from '@/util/dom.util';
-import { getContentDetailsComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
 import TagList from '@/modules/tags/components/TagList.vue';
+import { IStream } from '@/modules/stream/composables/stream.composable';
 
 export interface IProps {
   model: ContentModel;

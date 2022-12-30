@@ -6,11 +6,7 @@ import { RequestContext } from '@/profiles';
 import { FilterQuery } from 'mongoose';
 import { assureObjectId } from '@/core';
 
-export class ContentStreamService extends AbstractStreamService<
-  Content,
-  ContentModel,
-  ContentStreamFilter
-> {
+export class ContentStreamService extends AbstractStreamService<Content, ContentStreamFilter> {
   @Inject()
   protected streamEntryDao: ContentDao;
   protected logger = new Logger(ContentStreamService.name);
@@ -27,12 +23,5 @@ export class ContentStreamService extends AbstractStreamService<
 
   protected getSortField(): string {
     return 'meta.streamSort';
-  }
-
-  protected async mapToResultModel(
-    models: Content[],
-    context: RequestContext,
-  ): Promise<ContentModel[]> {
-    return models.map((content) => content.toModel(context.user));
   }
 }

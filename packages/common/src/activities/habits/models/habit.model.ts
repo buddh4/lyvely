@@ -2,7 +2,8 @@ import { Expose } from 'class-transformer';
 import { ActivityType, ActivityModel } from '../../models';
 import { IsEnum } from 'class-validator';
 import { ContentModel } from '@/content';
-import { CreateHabitDto, UpdateHabitDto } from '@/activities';
+import { CreateHabitModel } from './create-habit.model';
+import { UpdateHabitModel } from './update-habit.model';
 
 @Expose()
 export class HabitModel extends ActivityModel<HabitModel> {
@@ -10,11 +11,11 @@ export class HabitModel extends ActivityModel<HabitModel> {
   type: string = ActivityType.Habit;
 
   static getCreateDto() {
-    return new CreateHabitDto();
+    return new CreateHabitModel();
   }
 
   getEditDto() {
-    return new UpdateHabitDto({
+    return new UpdateHabitModel({
       title: this.content.title,
       text: this.content.text,
       interval: this.timeSeriesConfig.interval,

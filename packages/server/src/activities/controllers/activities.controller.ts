@@ -1,37 +1,21 @@
-import {
-  Get,
-  Request,
-  UseInterceptors,
-  ClassSerializerInterceptor,
-  Inject,
-  Query,
-  ValidationPipe,
-  Post,
-  Body,
-} from '@nestjs/common';
+import { Get, Request, Inject, Query, ValidationPipe, Post, Body } from '@nestjs/common';
 import {
   ActivityModel,
   ActivityRangeResponse,
   DataPointIntervalFilter,
   MoveAction,
-  TaskModel,
 } from '@lyvely/common';
 import { ActivitiesService } from '../services/activities.service';
-import {
-  AbstractContentController,
-  ContentController,
-  ContentWritePolicy,
-  ProfileContentRequest,
-} from '@/content';
+import { ContentController, ContentWritePolicy, ProfileContentRequest } from '@/content';
 import { Activity } from '../schemas';
 import { ProfileRequest } from '@/profiles';
-import { isTaskContent } from '../utils/activity.utils';
 import { Policies } from '@/policies';
+import { UseClassSerializer } from '@/core';
 
 @ContentController('activities')
 // TODO: implement feature registration @Feature('activities')
-@UseInterceptors(ClassSerializerInterceptor)
-export class ActivitiesController extends AbstractContentController<Activity> {
+@UseClassSerializer()
+export class ActivitiesController {
   @Inject()
   protected contentService: ActivitiesService;
 

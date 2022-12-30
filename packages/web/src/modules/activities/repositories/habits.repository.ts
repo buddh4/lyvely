@@ -1,17 +1,17 @@
 import repository from '@/repository';
 import {
-  UpdateHabitDto,
-  UpdateDataPointDto,
-  CreateHabitDto,
+  UpdateHabitModel,
+  UpdateHabitDataPointModel,
+  CreateHabitModel,
   EndpointResult,
   IHabitsEndpointService,
-  TimerUpdate,
+  TimerUpdateModel,
 } from '@lyvely/common';
 
 const resource = 'habits';
 
 export default {
-  async create(activitiy: CreateHabitDto) {
+  async create(activitiy: CreateHabitModel) {
     type a = EndpointResult<IHabitsEndpointService['create']>;
     return repository.post<EndpointResult<IHabitsEndpointService['create']>>(
       `${resource}`,
@@ -19,28 +19,28 @@ export default {
     );
   },
 
-  async update(habitId: string, activitiy: Partial<UpdateHabitDto>) {
+  async update(habitId: string, activitiy: Partial<UpdateHabitModel>) {
     return repository.put<EndpointResult<IHabitsEndpointService['update']>>(
       `${resource}/${habitId}`,
       activitiy,
     );
   },
 
-  async updateDataPoint(habitId: string, dto: UpdateDataPointDto) {
+  async updateDataPoint(habitId: string, dto: UpdateHabitDataPointModel) {
     return repository.post<EndpointResult<IHabitsEndpointService['updateDataPoint']>>(
       `${resource}/${habitId}/update-data-point`,
       dto,
     );
   },
 
-  async startTimer(habitId: string, dto: TimerUpdate) {
+  async startTimer(habitId: string, dto: TimerUpdateModel) {
     return repository.post<EndpointResult<IHabitsEndpointService['startTimer']>>(
       `${resource}/${habitId}/start-timer`,
       dto,
     );
   },
 
-  async stopTimer(habitId: string, dto: TimerUpdate) {
+  async stopTimer(habitId: string, dto: TimerUpdateModel) {
     return repository.post<EndpointResult<IHabitsEndpointService['stopTimer']>>(
       `${resource}/${habitId}/stop-timer`,
       dto,

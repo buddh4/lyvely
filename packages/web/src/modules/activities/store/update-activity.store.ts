@@ -2,37 +2,37 @@ import { defineStore } from 'pinia';
 import {
   ActivityType,
   getCreateModelByActivityType,
-  UpdateTaskDto,
-  CreateHabitDto,
+  UpdateTaskModel,
+  CreateHabitModel,
   ActivityModel,
   CalendarIntervalEnum,
-  UpdateHabitResponseDto,
-  UpdateTaskResponseDto,
+  UpdateHabitResponse,
+  UpdateTaskResponse,
   isTask,
-  CreateTaskDto,
-  TimerUpdate,
+  CreateTaskModel,
+  UpdateHabitModel,
 } from '@lyvely/common';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
-import { computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useUpdateModelStore } from '@/modules/common';
 import { findFocusable } from '@/modules/ui/utils';
 import { useHabitsService } from '@/modules/activities/services/habits.service';
 import { useTasksService } from '@/modules/activities/services/tasks.service';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
 
-type EditModel = CreateTaskDto & CreateHabitDto;
-type UpdateActivityResponse = UpdateTaskResponseDto | UpdateHabitResponseDto;
+type CreateModel = CreateTaskModel | CreateHabitModel;
+type UpdateModel = UpdateTaskModel | UpdateHabitModel;
+type UpdateActivityResponse = UpdateTaskResponse & UpdateHabitResponse;
 
 export const useUpdateActivityStore = defineStore('update-activity', () => {
   const habitsService = useHabitsService();
   const tasksService = useTasksService();
-  const calendarPlanStore = useCalendarPlanStore();
 
-  const state = useUpdateModelStore<EditModel, UpdateActivityResponse>({
-    service: (editModel: CreateTaskDto | CreateHabitDto) =>
-      editModel instanceof CreateTaskDto ? tasksService : habitsService,
+  const state = useUpdateModelStore<UpdateActivityResponse, CreateModel, UpdateModel>({
+    service: <any>(
+      ((editModel: CreateModel) =>
+        editModel instanceof CreateTaskModel ? tasksService : habitsService)
+    ),
     onSubmitSuccess(response?: UpdateActivityResponse) {
       if (response) {
         useProfileStore().updateTags(response.tags);
@@ -60,24 +60,13 @@ export const useUpdateActivityStore = defineStore('update-activity', () => {
       .getTags()
       .filter((tag) => activity.tagIds.includes(tag.id))
       .map((tag) => tag.name);
-    state.setEditModel(activity.id, model as EditModel);
-  }
-
-  async function startTimer(activity: ActivityModel) {
-    if (isTask(activity)) {
-      // TODO
-    } else {
-      const updatedDataPoint = await habitsService.startTimer(
-        activity.id,
-        new TimerUpdate(calendarPlanStore.date),
-      );
-    }
+    state.setEditModel(activity.id, model as CreateModel);
   }
 
   function setCreateActivity(type: ActivityType, interval = CalendarIntervalEnum.Daily) {
     const model = getCreateModelByActivityType(type);
     model.interval = interval;
-    state.setCreateModel(model as EditModel);
+    state.setCreateModel(model as CreateModel);
   }
 
   return {

@@ -38,20 +38,4 @@ describe('content dao', () => {
     contentTypeRegistry = testingModule.get<ContentTypeRegistry>(ContentTypeRegistry);
     testContentModel = testingModule.get<Model<TestContentDocument>>('TestContentModel');
   });
-
-  async function createTestContent(user: User, profile: Profile, testData = 'Testing...') {
-    const testContent = new TestContent(profile, user, { content: { testData: testData } });
-    const entity = await testContentModel.create(testContent);
-    return new TestContent(profile, user, entity.toObject());
-  }
-
-  describe('serialize', () => {
-    it('serialize test content', async () => {
-      const { user, profile } = TestDataUtils.createDummyUserAndProfile();
-      const content = await createTestContent(user, profile, 'Hello World');
-      const model = new ContentModel(content.toModel(user));
-      const serialized = instanceToPlain(model);
-      expect(serialized.oid).toEqual(content.oid.toString());
-    });
-  });
 });

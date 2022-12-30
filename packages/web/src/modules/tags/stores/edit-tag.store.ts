@@ -7,7 +7,7 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useTagsService } from '@/modules/tags/services/tags.service';
 
 export const useEditTagStore = defineStore('tagEdit', () => {
-  const editState = useUpdateModelStore<UpdateTagDto, TagModel>({
+  const editState = useUpdateModelStore<TagModel, UpdateTagDto>({
     service: useTagsService(),
     onSubmitSuccess: (tag?: TagModel) => {
       if (tag) {

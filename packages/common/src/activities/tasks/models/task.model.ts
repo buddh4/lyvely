@@ -2,7 +2,8 @@ import { Expose } from 'class-transformer';
 import { ActivityType, ActivityModel } from '../../models';
 import { TimerModel } from '@/calendar';
 import { PropertyType } from '@/models';
-import { CreateTaskDto, UpdateTaskDto } from '../dtos';
+import { CreateTaskModel } from './create-task.model';
+import { UpdateTaskModel } from './update-task.model';
 
 @Expose()
 export class TaskModel extends ActivityModel<TaskModel> {
@@ -14,11 +15,11 @@ export class TaskModel extends ActivityModel<TaskModel> {
   type: string = ActivityType.Task;
 
   static getCreateDto() {
-    return new CreateTaskDto();
+    return new CreateTaskModel();
   }
 
   getEditDto() {
-    return new UpdateTaskDto({
+    return new UpdateTaskModel({
       title: this.content.title,
       text: this.content.text,
       interval: this.timeSeriesConfig.interval,

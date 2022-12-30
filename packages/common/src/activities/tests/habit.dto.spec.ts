@@ -1,13 +1,13 @@
-import { UpdateHabitDto } from '@/activities';
+import { UpdateHabitModel } from '@/activities';
 
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
 import { UserAssignmentStrategy } from '@/collab';
 
-describe('UpdateHabitDto', () => {
+describe('UpdateHabitModel', () => {
   describe('transform', function () {
     it('filter by habit type success', async () => {
-      plainToClass(UpdateHabitDto, {
+      plainToClass(UpdateHabitModel, {
         optimal: 3,
         max: 3,
         min: 3,
@@ -25,7 +25,7 @@ describe('UpdateHabitDto', () => {
 
   describe('validate', function () {
     it('test', async () => {
-      const model = plainToClass(UpdateHabitDto, { title: 'test' });
+      const model = plainToClass(UpdateHabitModel, { title: 'test' });
       const validation = await validate(model);
       expect(validation.length).toEqual(0);
     });

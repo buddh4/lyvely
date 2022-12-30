@@ -46,7 +46,7 @@ describe('ProfileService', () => {
       let tag = profile.getTagByName('health');
       expect(await profileTagsService.archiveTag(profile, tag)).toEqual(true);
       expect(tag.archived).toEqual(true);
-      expect(await profileTagsService.unArchiveTag(profile, tag)).toEqual(true);
+      expect(await profileTagsService.unarchive(profile, tag)).toEqual(true);
       expect(tag.archived).toEqual(false);
       tag = profile.getTagByName('health');
       expect(tag.archived).toEqual(false);

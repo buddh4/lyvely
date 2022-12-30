@@ -1,7 +1,7 @@
 import { IStreamService } from '@/stream';
 import { ContentModel } from '@/content';
 import { Endpoint } from '@/endpoints';
-import { ContentStreamFilter } from '@/content-stream';
+import { ContentStreamFilter } from '../models';
 
 export interface IContentStreamClient extends IStreamService<ContentModel, ContentStreamFilter> {}
 

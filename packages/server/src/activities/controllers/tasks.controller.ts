@@ -1,77 +1,50 @@
 import {
   Post,
-  Put,
   Body,
   Request,
   UseInterceptors,
   ClassSerializerInterceptor,
   Inject,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { Task } from '../schemas';
 import {
   UpdateTaskStateModel,
-  UpdateTaskStateResultDto,
-  UpdateTaskDto,
-  UpdateTaskResponseDto,
-  TaskModel,
-  TagModel,
+  UpdateTaskStateResponse,
+  UpdateTaskModel,
+  UpdateTaskResponse,
   TasksEndpoint,
-  CreateTaskDto,
-  TimerUpdate,
-  TimerValueUpdate,
+  CreateTaskModel,
+  TimerValueUpdateModel,
   TimerModel,
 } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
-import { ContentController, ContentWritePolicy, ProfileContentRequest } from '@/content';
-import { ProfileRequest } from '@/profiles';
+import {
+  AbstractContentController,
+  ContentController,
+  ContentWritePolicy,
+  ProfileContentRequest,
+} from '@/content';
 import { Policies } from '@/policies';
 
 @ContentController('tasks', Task)
 // TODO: implement feature registration @Feature('content.activities.tasks')
 @UseInterceptors(ClassSerializerInterceptor)
-export class TasksController implements TasksEndpoint {
+export class TasksController
+  extends AbstractContentController<Task, CreateTaskModel, UpdateTaskModel>
+  implements TasksEndpoint
+{
   @Inject()
-  private readonly tasksService: TasksService;
+  protected readonly contentService: TasksService;
 
-  @Post()
-  async create(@Body() dto: CreateTaskDto, @Request() req: ProfileRequest) {
-    const { profile, user } = req;
-
-    const activity = await this.tasksService.createContent(profile, user, dto);
-
-    if (!activity) {
-      throw new InternalServerErrorException();
-    }
-
-    return new UpdateTaskResponseDto({
-      model: new TaskModel(activity),
-      tags: profile.getNewTags().map((tag) => new TagModel(tag)),
-    });
-  }
-
-  @Put(':cid')
-  @Policies(ContentWritePolicy)
-  async update(@Body() update: UpdateTaskDto, @Request() req: ProfileContentRequest<Task>) {
-    const { profile, user, content } = req;
-
-    await this.tasksService.updateContentSet(profile, user, content, content.applyUpdate(update), {
-      tagNames: update.tagNames,
-    });
-
-    return new UpdateTaskResponseDto({
-      model: new TaskModel(content),
-      tags: profile.getNewTags().map((tag) => new TagModel(tag)),
-    });
-  }
+  protected updateResponseType = UpdateTaskResponse;
 
   @Post(':cid/done')
   @Policies(ContentWritePolicy)
   async setDone(@Body() dto: UpdateTaskStateModel, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
 
-    await this.tasksService.setDone(profile, user, content, dto.date);
-    return new UpdateTaskStateResultDto({
+    await this.contentService.setDone(profile, user, content, dto.date);
+    return new UpdateTaskStateResponse({
       score: profile.score,
       done: content.getDoneBy(user)?.tid,
     });
@@ -82,8 +55,8 @@ export class TasksController implements TasksEndpoint {
   async setUndone(@Body() dto: UpdateTaskStateModel, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
 
-    await this.tasksService.setUndone(profile, user, content, dto.date);
-    return new UpdateTaskStateResultDto({ score: profile.score, done: undefined });
+    await this.contentService.setUndone(profile, user, content, dto.date);
+    return new UpdateTaskStateResponse({ score: profile.score, done: undefined });
   }
 
   @Post(':cid/start-timer')
@@ -91,7 +64,7 @@ export class TasksController implements TasksEndpoint {
   async startTimer(@Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
 
-    const timer = await this.tasksService.startTimer(profile, user, content);
+    const timer = await this.contentService.startTimer(profile, user, content);
     return new TimerModel(timer);
   }
 
@@ -100,16 +73,19 @@ export class TasksController implements TasksEndpoint {
   async stopTimer(@Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
 
-    const timer = await this.tasksService.stopTimer(profile, user, content);
+    const timer = await this.contentService.stopTimer(profile, user, content);
     return new TimerModel(timer);
   }
 
   @Post(':cid/update-timer')
   @Policies(ContentWritePolicy)
-  async updateTimer(@Body() dto: TimerValueUpdate, @Request() req: ProfileContentRequest<Task>) {
+  async updateTimer(
+    @Body() dto: TimerValueUpdateModel,
+    @Request() req: ProfileContentRequest<Task>,
+  ) {
     const { profile, user, content } = req;
 
-    const timer = await this.tasksService.updateTimerValue(profile, user, content, dto.value);
+    const timer = await this.contentService.updateTimerValue(profile, user, content, dto.value);
     return new TimerModel(timer);
   }
 }

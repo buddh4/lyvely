@@ -1,29 +1,34 @@
-import { ref, Ref } from 'vue';
-import { ModelValidator } from '@lyvely/common';
-import { AxiosResponse } from 'axios';
+import { ref } from 'vue';
+import { ModelValidator, IEditModelService } from '@lyvely/common';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus } from '@/store';
 
-export interface IEditModelService<TUpdateModel, TResponse, TID = string> {
-  create: (model: TUpdateModel) => Promise<TResponse>;
-  update: (id: TID, model: Partial<TUpdateModel>) => Promise<TResponse>;
-}
-
-export interface IEditModelStoreOptions<TUpdateModel, TResponse, TID = string> {
+export interface IEditModelStoreOptions<
+  TModel,
+  TCreateModel,
+  TUpdateModel = Partial<TCreateModel>,
+  TID = string,
+> {
   partialUpdate?: boolean;
   service:
-    | IEditModelService<TUpdateModel, TResponse, TID>
-    | ((editModel: TUpdateModel) => IEditModelService<TUpdateModel, TResponse, TID>);
-  onSubmitSuccess?: (response?: TResponse) => void;
+    | IEditModelService<TModel, TCreateModel, TUpdateModel, TID>
+    | ((
+        editModel: TCreateModel | TUpdateModel,
+      ) => IEditModelService<TModel, TCreateModel, TUpdateModel, TID>);
+  onSubmitSuccess?: (response?: TModel) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
-export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID = string>(
-  options: IEditModelStoreOptions<TUpdateModel, TResponse, TID>,
-) {
-  const model = ref<TUpdateModel | undefined>(undefined) as Ref<TUpdateModel | undefined>;
-  let original: TUpdateModel | undefined = undefined;
+export function useUpdateModelStore<
+  TModel,
+  TCreateModel extends object,
+  TUpdateModel extends object = Partial<TCreateModel>,
+  TID = string,
+>(options: IEditModelStoreOptions<TModel, TCreateModel, TUpdateModel, TID>) {
+  type TEditModel = TUpdateModel | TCreateModel;
+  const model = ref<TEditModel>();
+  let original: TEditModel | undefined = undefined;
   const modelId = ref<TID>();
-  const validator = ref<ModelValidator<TUpdateModel>>();
+  const validator = ref<ModelValidator<TEditModel>>();
   const isActive = ref(false);
   const isCreate = ref(false);
   const status = useStatus();
@@ -49,7 +54,7 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
       model.value = newModel;
       original = cloneDeep(newModel);
       modelId.value = id;
-      validator.value = new ModelValidator<TUpdateModel>(model.value);
+      validator.value = new ModelValidator<TEditModel>(model.value);
       isActive.value = true;
     } else {
       original = undefined;
@@ -66,14 +71,14 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
     }
 
     try {
-      const response = await loadingStatus(
+      const response = await loadingStatus<TModel | false, TModel | false>(
         isCreate.value ? _createModel() : _editModel(),
         status,
         validator.value,
       );
 
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
-        options.onSubmitSuccess(<TResponse>response);
+        options.onSubmitSuccess(<TModel>response);
       }
 
       reset();
@@ -84,25 +89,29 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
     }
   }
 
-  async function _createModel(): Promise<TResponse> {
+  async function _createModel(): Promise<TModel> {
     if (!model.value) {
       throw new Error('Could not create model without value');
     }
 
-    return loadingStatus(_getService(model.value).create(model.value), status, validator.value);
+    return loadingStatus(
+      _getService(model.value).create(<TCreateModel>model.value),
+      status,
+      validator.value,
+    );
   }
 
-  async function _editModel(): Promise<TResponse | false> {
+  async function _editModel(): Promise<TModel | false> {
     if (!model.value || !modelId.value || !original) {
       throw new Error('Could not edit model without value');
     }
 
-    let update: Partial<TUpdateModel> = {};
+    let update: Partial<typeof model> = {};
 
     if (options.partialUpdate) {
       for (const field in model.value) {
-        if (!isEqual(model.value[field], original[field])) {
-          update[field as keyof typeof update] = model.value[field as keyof typeof update];
+        if (!isEqual(model.value[<keyof TEditModel>field], original[<keyof TEditModel>field])) {
+          update[<keyof typeof model>field] = (<any>model).value[field];
         }
       }
 
@@ -112,13 +121,13 @@ export function useUpdateModelStore<TUpdateModel extends object, TResponse, TID 
     }
 
     return loadingStatus(
-      _getService(model.value).update(modelId.value, update),
+      _getService(model.value).update(modelId.value, update as TUpdateModel),
       status,
       validator.value,
     );
   }
 
-  function _getService(m: TUpdateModel) {
+  function _getService(m: TEditModel) {
     if (typeof options.service === 'function') {
       return options.service(m);
     }

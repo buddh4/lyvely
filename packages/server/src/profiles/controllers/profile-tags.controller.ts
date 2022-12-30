@@ -65,7 +65,7 @@ export class ProfileTagsController implements ProfileTagsEndpoint {
   async unarchive(@Param('id') id: string, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
-    return await this.tagService.unArchiveTag(profile, tag);
+    return await this.tagService.unarchive(profile, tag);
   }
 
   _getMemberProfile(req: ProfileRequest) {

@@ -15,6 +15,7 @@ import {
   PropertyType,
   Type,
 } from '@lyvely/common';
+import { User } from '@/users';
 
 @Schema({ _id: false })
 export class ActivityConfig extends NumberTimeSeriesContentConfig<ActivityConfig> {
@@ -53,9 +54,9 @@ export class Activity
     );
   }
 
-  getModelConstructor(): Type<ContentModel> {
+  toModel(user?: User): ActivityModel {
     // This won't be called, but we need to implement it...
-    return ActivityModel;
+    return new ActivityModel<any>(this);
   }
 }
 

@@ -1,6 +1,10 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IContentEntity } from '@/content';
-import { NumberDataPointConfig, NumberDataPointConfigRevision, NumberDataPointConfigSchema } from './config';
+import {
+  NumberDataPointConfig,
+  NumberDataPointConfigRevision,
+  NumberDataPointConfigSchema,
+} from './config';
 import { EntityType } from '@/core';
 import { TimeSeriesContent } from './time-series-content.schema';
 import { BaseModel, DataPointInputType, ITimeSeriesContentConfig } from '@lyvely/common';
@@ -19,7 +23,8 @@ export class NumberTimeSeriesContentConfig<
   timeSeries: Types;
 }
 
-export const NumberTimeSeriesContentConfigSchema = SchemaFactory.createForClass(NumberDataPointConfig);
+export const NumberTimeSeriesContentConfigSchema =
+  SchemaFactory.createForClass(NumberDataPointConfig);
 
 export abstract class NumberTimeSeriesContent<
   T extends NumberTimeSeriesContentEntity = NumberTimeSeriesContentEntity,
@@ -30,11 +35,17 @@ export abstract class NumberTimeSeriesContent<
   afterInit() {
     super.afterInit();
 
-    if (!isDefined(this.timeSeriesConfig.max) && this.timeSeriesConfig.inputType === DataPointInputType.Checkbox) {
+    if (
+      !isDefined(this.timeSeriesConfig.max) &&
+      this.timeSeriesConfig.inputType === DataPointInputType.Checkbox
+    ) {
       this.timeSeriesConfig.max = 1;
     }
 
-    if (this.timeSeriesConfig.max && this.timeSeriesConfig.inputType === DataPointInputType.Checkbox) {
+    if (
+      this.timeSeriesConfig.max &&
+      this.timeSeriesConfig.inputType === DataPointInputType.Checkbox
+    ) {
       this.timeSeriesConfig.max = Math.min(8, this.timeSeriesConfig.max);
     }
   }

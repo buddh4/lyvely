@@ -8,8 +8,7 @@ import AccountMenu from '@/modules/account/components/menus/AccountMenu.vue';
   <nav
     id="top-navigation"
     class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible"
-    :aria-label="$t('layout.aria.top-nav')"
-  >
+    :aria-label="$t('layout.aria.top-nav')">
     <div class="w-1/3">
       <profile-combo-button />
     </div>

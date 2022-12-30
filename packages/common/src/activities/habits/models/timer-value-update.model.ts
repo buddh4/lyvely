@@ -3,7 +3,7 @@ import { IsNumber } from 'class-validator';
 import { BaseModel } from '@/models';
 
 @Exclude()
-export class TimerValueUpdate extends BaseModel<TimerValueUpdate> {
+export class TimerValueUpdateModel extends BaseModel<TimerValueUpdateModel> {
   @Expose()
   @IsNumber()
   value: number;

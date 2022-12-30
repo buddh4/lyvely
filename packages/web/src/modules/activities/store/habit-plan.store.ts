@@ -6,7 +6,7 @@ import {
   CalendarIntervalEnum,
   HabitModel,
   ActivityType,
-  TimerUpdate,
+  TimerUpdateModel,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -75,7 +75,7 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   async function startTimer(activity: HabitModel) {
     const updatedDataPoint = await habitsService.startTimer(
       activity.id,
-      new TimerUpdate(calendarPlanStore.date),
+      new TimerUpdateModel(calendarPlanStore.date),
     );
     activityStore.cache.setDataPoint(updatedDataPoint);
   }
@@ -83,7 +83,7 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
   async function stopTimer(activity: HabitModel) {
     const result = await habitsService.stopTimer(
       activity.id,
-      new TimerUpdate(calendarPlanStore.date),
+      new TimerUpdateModel(calendarPlanStore.date),
     );
     activityStore.cache.setDataPoint(result.dataPoint);
     profileStore.updateScore(result.score);

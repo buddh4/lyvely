@@ -6,6 +6,7 @@ import { TestNotification } from '@/notifications/schemas/test-notification.sche
 import { SingleUserSubscription } from '@/user-subscription';
 import { AbstractStreamController } from '@/stream';
 import { UserNotification } from '@/notifications';
+import { RequestContext } from '@/profiles';
 
 @Controller(ENDPOINT_NOTIFICATIONS)
 export class NotificationsController
@@ -17,6 +18,10 @@ export class NotificationsController
 
   @Inject()
   protected notificationsService: NotificationService;
+
+  protected async mapToResultModel(userNotifications: UserNotification[], context: RequestContext) {
+    return this.streamEntryService.mapToResultModel(userNotifications, context);
+  }
 
   @Post(':nid/mark-as-seen')
   async markAsSeen(@Param('nid') nid: string, @Req() req: UserRequest): Promise<void> {

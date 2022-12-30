@@ -21,7 +21,7 @@ export const useCreateMessageStore = defineStore('create-message', () => {
     const message = new CreateMessage(model.value.text, parentId);
     const response = await loadingStatus(messageService.create(message), status);
     reset();
-    return response;
+    return response.model;
   }
 
   return {

@@ -18,7 +18,7 @@ import { DataPointInputType, INumberDataPointConfig } from '@/time-series';
 import { CreateContentModel, IContentDataType } from '@/content';
 
 @Exclude()
-export class CreateTaskDto extends CreateContentModel<CreateTaskDto> {
+export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {
   @Expose()
   @IsString()
   @IsNotEmpty()
@@ -58,7 +58,7 @@ export class CreateTaskDto extends CreateContentModel<CreateTaskDto> {
     };
   }
 
-  constructor(obj?: Partial<CreateTaskDto>, init = true) {
+  constructor(obj?: Partial<CreateTaskModel>, init = true) {
     obj = init
       ? Object.assign(
           {

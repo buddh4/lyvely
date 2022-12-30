@@ -1,17 +1,22 @@
-import { IMessageClient, CreateMessage, MessageModel, useSingleton } from '@lyvely/common';
+import { IMessageClient, CreateMessage, useSingleton, MessageUpdateResponse } from '@lyvely/common';
 import repository from '../repositories';
-import { unwrapAndCastResponse } from '@/modules/core';
+import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
 
 export class MessageService implements IMessageClient {
-  create(model: CreateMessage) {
-    return unwrapAndCastResponse(repository.create(model), MessageModel);
-  }
-  archive(messageId: string) {
-    return repository.archive(messageId);
+  async create(model: CreateMessage) {
+    return unwrapAndCastResponse(repository.create(model), MessageUpdateResponse);
   }
 
-  unarchive(messageId: string) {
-    return repository.unarchive(messageId);
+  async update(id: string, model: Partial<CreateMessage>) {
+    return unwrapAndCastResponse(repository.update(id, model), MessageUpdateResponse);
+  }
+
+  async archive(messageId: string) {
+    return unwrapResponse(repository.archive(messageId));
+  }
+
+  async unarchive(messageId: string) {
+    return unwrapResponse(repository.unarchive(messageId));
   }
 }
 

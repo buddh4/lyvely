@@ -1,11 +1,11 @@
-import { UpdateHabitDto, UpdateDataPointDto } from '@/activities';
+import { UpdateHabitModel, UpdateHabitDataPointModel } from '@/activities';
 import { CalendarIntervalEnum } from '@/calendar';
 import { validate } from 'class-validator';
 
 describe('Activity Model', () => {
-  describe('UpdateHabitDto', function () {
+  describe('UpdateHabitModel', function () {
     it('validate valid dto', async () => {
-      const dto = new UpdateHabitDto({
+      const dto = new UpdateHabitModel({
         title: 'Test activity',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
@@ -23,8 +23,8 @@ describe('Activity Model', () => {
       expect(result.length).toEqual(0);
     });
 
-    it('validate UpdateHabitDto with empty title', async () => {
-      const dto = new UpdateHabitDto({
+    it('validate UpdateHabitModel with empty title', async () => {
+      const dto = new UpdateHabitModel({
         title: '',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
@@ -37,8 +37,8 @@ describe('Activity Model', () => {
       expect(result[0].property).toEqual('title');
     });
 
-    it('validate UpdateHabitDto with negative units', async () => {
-      const dto = new UpdateHabitDto({
+    it('validate UpdateHabitModel with negative units', async () => {
+      const dto = new UpdateHabitModel({
         title: 'Test',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
@@ -51,8 +51,8 @@ describe('Activity Model', () => {
       expect(result[0].property).toEqual('max');
     });
 
-    it('validate UpdateHabitDto with min > units', async () => {
-      const dto = new UpdateHabitDto({
+    it('validate UpdateHabitModel with min > units', async () => {
+      const dto = new UpdateHabitModel({
         title: 'Test',
         text: 'This is my test activity',
         interval: CalendarIntervalEnum.Daily,
@@ -69,7 +69,7 @@ describe('Activity Model', () => {
 
   describe('UpdateActivityDataPointDto', function () {
     it('validate valid dto', async () => {
-      const dto = new UpdateDataPointDto({
+      const dto = new UpdateHabitDataPointModel({
         date: '2021-01-01',
         value: 5,
       });
@@ -79,7 +79,7 @@ describe('Activity Model', () => {
     });
 
     it('validate invalid date', async () => {
-      const dto = new UpdateDataPointDto({
+      const dto = new UpdateHabitDataPointModel({
         date: '01-01-2021',
         value: 5,
       });

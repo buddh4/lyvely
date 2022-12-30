@@ -11,7 +11,6 @@ import {
 import { FilterQuery } from 'mongoose';
 import {
   AbstractDao,
-  assureObjectId,
   assureStringId,
   BaseEntity,
   EntityIdentity,
@@ -36,7 +35,6 @@ export class StreamResponse<TResult>
 @Injectable()
 export abstract class AbstractStreamService<
   TModel extends BaseEntity<TModel>,
-  TResult,
   TFilter extends IStreamFilter = any,
 > {
   protected abstract streamEntryDao: AbstractDao<TModel>;
@@ -44,10 +42,6 @@ export abstract class AbstractStreamService<
 
   abstract createQueryFilter(context: RequestContext, filter?: TFilter): FilterQuery<TModel>;
 
-  protected abstract mapToResultModel(
-    models: TModel[],
-    context: RequestContext,
-  ): Promise<TResult[]>;
   protected abstract getSortField(): string;
 
   /**
@@ -60,7 +54,7 @@ export abstract class AbstractStreamService<
     context: RequestContext,
     identity: EntityIdentity<TModel>,
     filter?: TFilter,
-  ): Promise<TResult> {
+  ): Promise<TModel> {
     const streamEntry = await this.streamEntryDao.findByIdAndFilter(
       identity,
       this.createQueryFilter(context, filter),
@@ -68,13 +62,13 @@ export abstract class AbstractStreamService<
 
     if (!streamEntry) throw new EntityNotFoundException();
 
-    return (await this.mapToResultModel([streamEntry], context))[0];
+    return streamEntry;
   }
 
   async loadTail(
     context: RequestContext,
     request: StreamRequest<TFilter>,
-  ): Promise<IStreamResponse<TResult>> {
+  ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);
 
     if (request.state?.tail) {
@@ -92,10 +86,8 @@ export abstract class AbstractStreamService<
       limit: batchSize,
     } as IFetchQueryOptions<TModel>);
 
-    const models = await this.mapToResultModel(streamEntries, context);
-
-    const response = new StreamResponse<TResult>({
-      models,
+    const response = new StreamResponse<TModel>({
+      models: streamEntries,
       state: request.state ? cloneDeep(request.state) : {},
       hasMore: true,
     });
@@ -128,7 +120,7 @@ export abstract class AbstractStreamService<
   async loadHead(
     context: RequestContext,
     request: StreamRequest<TFilter>,
-  ): Promise<IStreamResponse<TResult>> {
+  ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);
 
     if (request.state.head) {
@@ -150,22 +142,20 @@ export abstract class AbstractStreamService<
       } as IFetchQueryOptions<TModel>)
     ).reverse();
 
-    const models = await this.mapToResultModel(streamEntries, context);
-
-    const response = new StreamResponse<TResult>({
-      models: models,
+    const response = new StreamResponse<TModel>({
+      models: streamEntries,
       state: cloneDeep(request.state),
       hasMore: true,
     });
 
-    if (models.length) {
+    if (streamEntries.length) {
       response.state.headIds = streamEntries
         .filter((entry) => entry.id === streamEntries[0].id)
         .map((entry) => assureStringId(entry));
       response.state.head = this.getSortValue(streamEntries[0]);
     }
 
-    if (models.length < batchSize) {
+    if (streamEntries.length < batchSize) {
       response.hasMore = false;
     }
 
