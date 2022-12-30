@@ -27,6 +27,7 @@ const emit = defineEmits(['update:modelValue', 'update:visible']);
 
 const query = ref('');
 const visible = ref(false);
+const chooser = ref<HTMLElement>();
 
 watch(visible, () => {
   query.value = '';
@@ -72,6 +73,27 @@ function isExistingTag(name: string) {
   return !!tagsToAdd.value.find((tag) => tag.name === name);
 }
 
+function focusFirst(evt: KeyboardEvent) {
+  const entry = chooser.value?.querySelector('[data-tag-selection]') as HTMLElement;
+  if (entry) {
+    entry.focus();
+  }
+}
+
+function focusNext(evt: KeyboardEvent) {
+  const next = (<HTMLElement>evt.target).nextSibling as HTMLElement | null;
+  if (next) {
+    next.focus();
+  }
+}
+
+function focusPrev(evt: KeyboardEvent) {
+  const prev = (<HTMLElement>evt.target).previousSibling as HTMLElement | null;
+  if (prev) {
+    prev.focus();
+  }
+}
+
 const entryClass =
   'flex items-center gap-2 border-divide bg-main p-2 md:p-4 cursor-pointer p-2 md:p-4 focus:outline-none hover:bg-highlight focus:bg-highlight';
 </script>
@@ -94,22 +116,26 @@ const entryClass =
     :cancel-button="false"
     submit-button-text="tags.chooser.submit"
     @submit="visible = false">
-    <div class="flex flex-col">
+    <div ref="chooser" class="flex flex-col">
       <div>
         <ly-input-text
           v-model="query"
           :placeholder="$t('tags.chooser.query')"
-          input-class="attachment-b" />
+          input-class="attachment-b"
+          @keyup.down="focusFirst" />
       </div>
 
       <div class="flex flex-col border border-divide divide-y rounded-b">
         <div
           v-for="tag in selectedTags"
           :key="tag.name"
+          data-tag-selection
           :class="entryClass"
           tabindex="0"
           @click="removeTag(tag.name)"
-          @keyup.enter="removeTag(tag.name)">
+          @keyup.enter="removeTag(tag.name)"
+          @keyup.down="focusNext"
+          @keyup.up="focusPrev">
           <ly-button
             tabindex="-1"
             aria-hidden="true"
@@ -121,18 +147,24 @@ const entryClass =
         <div
           v-for="tag in tagsToAdd"
           :key="tag.name"
+          data-tag-selection
           :class="entryClass"
           tabindex="0"
           @click="addTag(tag.name)"
-          @keyup.enter="addTag(tag.name)">
+          @keyup.enter="addTag(tag.name)"
+          @keyup.down="focusNext"
+          @keyup.up="focusPrev">
           <ly-tag :tag="tag" />
         </div>
         <div
           v-if="query.length && !isExistingTag(query)"
+          data-tag-selection
           :class="[entryClass, 'rounded-b']"
           tabindex="0"
           @click="addTag(query)"
-          @keyup.enter="addTag(query)">
+          @keyup.enter="addTag(query)"
+          @keyup.down="focusNext"
+          @keyup.up="focusPrev">
           <i18n-t keypath="tags.chooser.add" tag="span" class="text-center text-dimmed text-sm">
             <template #tag>
               <b>{{ query }}</b>
