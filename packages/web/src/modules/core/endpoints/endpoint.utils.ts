@@ -1,7 +1,6 @@
 import { errorToServiceException } from '@/util';
 import { AxiosResponse } from 'axios';
 import { assignRawDataToAndInitProps, Type } from '@lyvely/common';
-import { createBaseEntityInstance } from '@lyvely/server/dist/src/core';
 
 type UnwrappedResponse<T extends Promise<AxiosResponse>> = T extends null | undefined | void
   ? T // special case for `null | undefined` when not in `--strictNullChecks` mode

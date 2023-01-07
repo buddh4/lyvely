@@ -3,10 +3,9 @@ import {
   IStreamOptions,
   IStreamService,
   IStreamState,
-  PropertiesOf,
   StreamDirection,
 } from '@lyvely/common';
-import { nextTick, ref, Ref, watch } from 'vue';
+import { nextTick, ref, Ref } from 'vue';
 import { loadingStatus, useStatus } from '@/store';
 import mitt from 'mitt';
 import { hasOverflow, isScrolledToBottom, scrollToBottom, scrollToTop } from '@/util/dom.util';

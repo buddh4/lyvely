@@ -6,9 +6,7 @@ import { useContentStreamService } from '@/modules/content-stream/services/conte
 import { useRouter } from 'vue-router';
 import { ref, watch, computed } from 'vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
-import LyButton from '@/modules/ui/components/button/StyledButton.vue';
 import { contentRoute } from '@/modules/content-stream/routes';
-import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import { getContentDetailsComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
 
@@ -61,7 +59,7 @@ function back() {
           </ly-button>
         </div>
         <div class="border-divide">
-          <Component :is="getContentDetailsComponent(content.type)" :model="content" />
+          <component :is="getContentDetailsComponent(content.type)" :model="content" />
         </div>
       </div>
       <div v-else class="p-2 md:p-4 m-4 border border-divide bg-main rounded">

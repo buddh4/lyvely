@@ -20,12 +20,13 @@ export interface IProps {
   scrollToStart?: boolean;
 }
 
-const { profile } = storeToRefs(useProfileStore());
-
 const props = withDefaults(defineProps<IProps>(), {
   batchSize: 25,
   scrollToStart: true,
 });
+
+const { profile } = storeToRefs(useProfileStore());
+const filter = ref(props.filter);
 
 function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
   if (evt.pid === profile.value?.id && evt.updatesAvailable) {
@@ -40,13 +41,17 @@ const stream = ref(
   useStream<ContentModel, ContentStreamFilter>(
     { batchSize: props.batchSize, direction: StreamDirection.BBT },
     useContentStreamService(),
-    props.filter,
+    filter.value,
   ),
 );
 
-watch(props.filter, () => {
-  stream.value.reload();
-});
+watch(
+  filter,
+  () => {
+    stream.value.reload();
+  },
+  { deep: true },
+);
 
 const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
 

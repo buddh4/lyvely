@@ -1,13 +1,18 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useActivityStore } from '@/modules/activities/store/activity.store';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
-import { computed, ref, toRefs, watch } from 'vue';
-import { ContentFilter, TagFilter } from '@lyvely/common';
+import { computed, ref } from 'vue';
+import { ContentStreamFilter, TagFilter } from '@lyvely/common';
 import { useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import useFilterOption from '@/util/composables/useFilterOption';
 import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
+
+export interface IProps {
+  filter: ContentStreamFilter;
+}
+
+const props = defineProps<IProps>();
+const filter = ref(props.filter);
 
 const profileStore = useProfileStore();
 const tags = computed(() => new TagFilter({ archived: false }).apply(profileStore.getTags()));
@@ -17,12 +22,12 @@ const showFilterDrawer = ref(false);
 
 const activeTagId = undefined;
 
-function setTagFilter(id?: string) {}
+function setTagFilter(id?: string) {
+  filter.value.toggleTag(id);
+}
 
-const filter = new ContentFilter();
-
-const archiveFilter = useFilterOption(filter, 'archived');
-const queryFilter = useFilterOption(filter, 'query');
+const archiveFilter = useFilterOption(props.filter, 'archived');
+const queryFilter = useFilterOption(props.filter, 'query');
 
 const commonButtonClassNames =
   'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
@@ -41,9 +46,9 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
         v-for="tag in tags"
         :key="tag.id"
         :class="pillButton"
-        :active="filter.option('tagId') === tag.id"
+        :active="filter.isActiveTag(tag.id)"
         role="tab"
-        aria-controls="calendar-plan"
+        aria-controls="contentStreamRoot"
         :data-tag-id="tag.id"
         @click="setTagFilter(tag.id)">
         {{ tag.name }}

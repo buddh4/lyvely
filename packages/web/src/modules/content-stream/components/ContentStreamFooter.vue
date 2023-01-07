@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import ContentStreamFilterNavigation from '@/modules/content-stream/components/ContentStreamFilterNavigation.vue';
-import { ProfileType } from '@lyvely/common';
+import { ContentStreamFilter, ProfileType } from '@lyvely/common';
 import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export interface IProps {
   parentId?: string;
+  filter: ContentStreamFilter;
 }
 
 const props = defineProps<IProps>();
@@ -30,7 +31,7 @@ const placeholderKey =
 <template>
   <div class="p-2 md:p-4 bg-main border-t border-divide">
     <div class="mb-2 md:mb-4 bg">
-      <content-stream-filter-navigation />
+      <content-stream-filter-navigation :filter="filter" />
     </div>
     <div class="flex flex-col">
       <div class="flex gap-1 md:gap-2">

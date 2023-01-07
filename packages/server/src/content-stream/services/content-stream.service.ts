@@ -1,5 +1,5 @@
 import { AbstractStreamService } from '@/stream';
-import { ContentModel, ContentStreamFilter } from '@lyvely/common';
+import { ContentStreamFilter } from '@lyvely/common';
 import { Inject, Logger } from '@nestjs/common';
 import { Content, ContentDao } from '@/content';
 import { RequestContext } from '@/profiles';
@@ -12,13 +12,22 @@ export class ContentStreamService extends AbstractStreamService<Content, Content
   protected logger = new Logger(ContentStreamService.name);
 
   createQueryFilter(context: RequestContext, filter?: ContentStreamFilter): FilterQuery<Content> {
-    const result = { pid: context.pid, oid: context.oid } as FilterQuery<Content>;
+    const query = { pid: context.pid, oid: context.oid } as FilterQuery<Content>;
+    return this.applyFilter(query, filter);
+  }
 
-    if (filter) {
-      result['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
+  applyFilter(query: FilterQuery<Content>, filter?: ContentStreamFilter) {
+    query['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
+
+    if (!filter) return;
+
+    query['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
+
+    if (filter.tagIds?.length) {
+      query['tagIds'] = { $in: filter.tagIds };
     }
 
-    return result;
+    return query;
   }
 
   protected getSortField(): string {

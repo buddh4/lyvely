@@ -17,7 +17,7 @@ async function onContentCreated(content: ContentModel) {
 
 <template>
   <content-stream ref="streamComponent" :filter="filter" />
-  <content-stream-footer @content-created="onContentCreated" />
+  <content-stream-footer :filter="filter" @content-created="onContentCreated" />
 </template>
 
 <style scoped></style>
