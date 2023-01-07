@@ -9,6 +9,7 @@ import {
 } from '@lyvely/common';
 import repositry from '../repositories';
 import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
+import { getContentType } from '@/modules/content-stream/components/content-stream-entry.registry';
 
 export class ContentStreamService implements IContentStreamClient {
   async loadEntry(id: string, filter?: ContentStreamFilter): Promise<ContentModel> {
@@ -47,7 +48,11 @@ export class ContentStreamService implements IContentStreamClient {
   }
 
   private createModel(response: IStreamResponse<ContentModel>) {
-    response.models = response.models.map((model) => new ContentModel(model));
+    response.models = response.models.map((model) => {
+      const ModelClass = getContentType(model.type) || ContentModel;
+      return new ModelClass(model);
+    });
+
     return response;
   }
 }

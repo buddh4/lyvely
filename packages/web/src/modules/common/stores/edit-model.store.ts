@@ -86,6 +86,7 @@ export function useUpdateModelStore<
       if (typeof options.onSubmitError === 'function') {
         options.onSubmitError(err);
       }
+      throw err;
     }
   }
 

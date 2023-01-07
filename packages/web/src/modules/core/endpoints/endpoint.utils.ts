@@ -1,6 +1,7 @@
 import { errorToServiceException } from '@/util';
 import { AxiosResponse } from 'axios';
-import { Type } from '@lyvely/common';
+import { assignRawDataToAndInitProps, Type } from '@lyvely/common';
+import { createBaseEntityInstance } from '@lyvely/server/dist/src/core';
 
 type UnwrappedResponse<T extends Promise<AxiosResponse>> = T extends null | undefined | void
   ? T // special case for `null | undefined` when not in `--strictNullChecks` mode
@@ -22,7 +23,9 @@ export function unwrapAndCastResponse<
   T extends Promise<AxiosResponse>,
   R extends UnwrappedResponse<T>,
 >(promise: T, type: Type<R>): Promise<R> {
-  return unwrapResponse(promise).then((response) => {
-    return new type(response);
+  return unwrapResponse(promise).then((rawResponse) => {
+    const model = Object.create(type.prototype);
+    assignRawDataToAndInitProps(model, rawResponse);
+    return model;
   });
 }
