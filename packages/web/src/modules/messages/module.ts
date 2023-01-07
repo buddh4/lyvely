@@ -2,6 +2,7 @@ import { registerContentType } from '@/modules/content-stream/components/content
 import MessageStreamEntry from '@/modules/messages/components/MessageStreamEntry.vue';
 import { IModule } from '@/modules/core/modules/interfaces/module.interface';
 import { MessageModel } from '@lyvely/common';
+import { translation } from '@/i18n';
 
 export default () => {
   return {
@@ -9,6 +10,9 @@ export default () => {
     init: () => {
       registerContentType({
         type: MessageModel.contentType,
+        name: translation('messages.content.name'),
+        icon: 'stream',
+        feature: 'messages',
         modelClass: MessageModel,
         streamEntryComponent: MessageStreamEntry,
       });

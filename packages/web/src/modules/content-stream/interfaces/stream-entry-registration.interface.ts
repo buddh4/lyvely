@@ -5,6 +5,9 @@ import { ContentModel, Type } from '@lyvely/common';
 
 export interface IContentTypeOptions {
   type: string;
+  name: string | (() => string);
+  feature: string;
+  icon?: string;
   modelClass: Type<ContentModel>;
   streamEntryComponent: Component<IStreamEntryProps>;
   detailsComponent?: Component<IContentDetailsProps>;

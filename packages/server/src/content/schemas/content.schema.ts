@@ -119,3 +119,5 @@ export function getContentModelDefinition(definitions: ModelDefinition[]): Model
     discriminators: definitions,
   };
 }
+
+//ContentSchema.index({ oid: 1, pid: 1, 'content.$**': 'text' });

@@ -33,7 +33,7 @@ export class ContentStreamFilter extends BaseModel<ContentStreamFilter> implemen
     return this.tagIds?.find((tid) => tid === id);
   }
 
-  setTagIds(...ids: string[]) {
+  setTagIds(ids: string[]) {
     this.tagIds = ids;
   }
 
@@ -53,10 +53,13 @@ export class ContentStreamFilter extends BaseModel<ContentStreamFilter> implemen
   }
 
   isEmpty() {
-    return !!this.tagIds?.length;
+    return !this.tagIds?.length && !this.query?.length && !this.archived;
   }
 
   reset() {
+    delete this.tagIds;
+    delete this.query;
+    delete this.archived;
     // parent filter needs to be reset manually
   }
 }

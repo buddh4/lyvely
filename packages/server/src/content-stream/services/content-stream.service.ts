@@ -24,7 +24,15 @@ export class ContentStreamService extends AbstractStreamService<Content, Content
     query['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
 
     if (filter.tagIds?.length) {
-      query['tagIds'] = { $in: filter.tagIds };
+      query['tagIds'] = { $all: filter.tagIds };
+    }
+
+    if (filter.archived) {
+      query['meta.isArchived'] = true;
+    }
+
+    if (filter.query?.length) {
+      query.$text = { $search: filter.query };
     }
 
     return query;

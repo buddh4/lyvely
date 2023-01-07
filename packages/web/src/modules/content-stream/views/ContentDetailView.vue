@@ -67,7 +67,10 @@ function back() {
       </div>
     </template>
   </content-stream>
-  <content-stream-footer :parent-id="contentId" @content-created="onContentCreated" />
+  <content-stream-footer
+    :parent-id="contentId"
+    :filter="filter"
+    @content-created="onContentCreated" />
 </template>
 
 <style scoped></style>

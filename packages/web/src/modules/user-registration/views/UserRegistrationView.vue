@@ -47,10 +47,13 @@ onUnmounted(userRegistrationStore.reset);
         v-model="model"
         :validator="validator"
         :status="status"
-        label-key="user_registration.fields"
-      >
+        label-key="user_registration.fields">
         <fieldset>
-          <ly-input-text autocomplete="username" property="username" :required="true" />
+          <ly-input-text
+            autocomplete="username"
+            property="username"
+            :required="true"
+            :autofocus="true" />
 
           <ly-input-text autocomplete="email" property="email" type="email" :required="true" />
         </fieldset>
@@ -62,31 +65,35 @@ onUnmounted(userRegistrationStore.reset);
             property="password"
             type="password"
             :required="true"
-            @toggle-type="repeatPasswordType = $event"
-          />
+            @toggle-type="repeatPasswordType = $event" />
 
           <ly-input-text
             property="passwordRepeat"
             autocomplete="new-password"
             :type="repeatPasswordType"
             :password-toggle="false"
-            :required="true"
-          />
+            :required="true" />
 
           <password-strength-meter v-model="model.password" />
         </fieldset>
 
         <fieldset class="my-5">
           <div class="flex flex-nowrap items-center">
-            <ly-input-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
+            <ly-input-checkbox
+              property="remember"
+              class="text-sm"
+              aria-describedby="remember-me-info" />
             <ly-icon
               name="info"
               class="ml-1 text-primary w-4 cursor-pointer"
               aria-hidden="true"
-              @click="showRememberInfo = !showRememberInfo"
-            />
+              @click="showRememberInfo = !showRememberInfo" />
           </div>
-          <ly-alert v-show="showRememberInfo" id="remember-me-info" class="mt-2 text-xs" type="info">
+          <ly-alert
+            v-show="showRememberInfo"
+            id="remember-me-info"
+            class="mt-2 text-xs"
+            type="info">
             <p class="mb-1">{{ $t('auth.login.remember_me_info.p1') }}</p>
             <p>{{ $t('auth.login.remember_me_info.p2') }}</p>
           </ly-alert>
@@ -99,8 +106,7 @@ onUnmounted(userRegistrationStore.reset);
         class="primary w-full mb-4 float-right"
         text="user_registration.create_account"
         :disabled="status.isStatusLoading()"
-        @click="register"
-      />
+        @click="register" />
 
       <div class="text-center pt-4">
         <small>

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { ContentStreamFilter, TagFilter } from '@lyvely/common';
 import { useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
-import useFilterOption from '@/util/composables/useFilterOption';
 import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
+import { useDebounceFn } from '@vueuse/core';
 
 export interface IProps {
   filter: ContentStreamFilter;
@@ -13,6 +13,15 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 const filter = ref(props.filter);
+const query = ref(props.filter.query);
+
+const updateQuery = useDebounceFn((value: string) => {
+  filter.value.query = value;
+}, 600);
+
+watch(query, (newValue) => {
+  updateQuery(newValue as string);
+});
 
 const profileStore = useProfileStore();
 const tags = computed(() => new TagFilter({ archived: false }).apply(profileStore.getTags()));
@@ -23,11 +32,12 @@ const showFilterDrawer = ref(false);
 const activeTagId = undefined;
 
 function setTagFilter(id?: string) {
-  filter.value.toggleTag(id);
+  if (id) {
+    filter.value.toggleTag(id);
+  } else {
+    filter.value.setTagIds([]);
+  }
 }
-
-const archiveFilter = useFilterOption(props.filter, 'archived');
-const queryFilter = useFilterOption(props.filter, 'query');
 
 const commonButtonClassNames =
   'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
@@ -73,14 +83,14 @@ const roundButton = commonButtonClassNames + ' px-1 rounded';
       <div class="relative inline-block">
         <input
           ref="search"
-          v-model="queryFilter"
+          v-model.trim="query"
           class="search w-full mb-4 py-1"
           :placeholder="$t('common.filter.search')"
           type="text" />
         <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
       </div>
 
-      <ly-input-checkbox v-model="archiveFilter" class="mb-4" label="common.filter.archive" />
+      <ly-input-checkbox v-model="filter.archived" class="mb-4" label="common.filter.archive" />
 
       <ly-button
         class="primary float-right text-xs"
