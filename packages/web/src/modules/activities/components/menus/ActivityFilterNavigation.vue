@@ -46,21 +46,23 @@ const unwatchFilter = watch(filter, () => {
   }
 });
 
-watch(router.currentRoute, (to) => {
-  if (to.fullPath !== filterPath) {
-    // Prevent update loops
-    filterPath = to.fullPath;
-    setFilterFromRoute();
-  }
-});
+watch(
+  router.currentRoute,
+  (to) => {
+    if (to.fullPath !== filterPath) {
+      // Prevent update loops
+      filterPath = to.fullPath;
+      setFilterFromRoute();
+    }
+  },
+  { immediate: true },
+);
 
 function setFilterFromRoute() {
   const currentRoute = router.currentRoute.value;
   filter.reset();
   filter.setOptions(currentRoute.query);
 }
-
-setFilterFromRoute();
 
 function setTagFilter(tagId?: string) {
   filter.setOptions({ tagId });

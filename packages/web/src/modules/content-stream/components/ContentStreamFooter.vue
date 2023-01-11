@@ -6,7 +6,6 @@ import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export interface IProps {
-  parentId?: string;
   filter: ContentStreamFilter;
 }
 
@@ -17,7 +16,7 @@ const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
 
 async function submitMessage() {
-  const newMessage = await createMessageStore.submit(props.parentId);
+  const newMessage = await createMessageStore.submit(props.filter.parent);
   emits('contentCreated', newMessage);
 }
 

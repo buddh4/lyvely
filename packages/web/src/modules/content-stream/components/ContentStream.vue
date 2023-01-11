@@ -13,6 +13,8 @@ import { useContentStreamService } from '@/modules/content-stream/services/conte
 import { useLiveStore } from '@/modules/live/stores/live.store';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
+import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
 
 export interface IProps {
   batchSize?: number;
@@ -26,45 +28,58 @@ const props = withDefaults(defineProps<IProps>(), {
 });
 
 const { profile } = storeToRefs(useProfileStore());
+const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
+const scroller = ref() as Ref<DynamicScroller>;
+const contentStreamStore = useContentStreamStore();
 const filter = ref(props.filter);
+const live = useLiveStore();
+const router = useRouter();
+
+const stream = useStream<ContentModel, ContentStreamFilter>(
+  { batchSize: props.batchSize, direction: StreamDirection.BBT },
+  useContentStreamService(),
+  filter.value,
+);
+
+const { models } = stream;
+
+watch(filter, () => stream.reload(), { deep: true });
 
 function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
   if (evt.pid === profile.value?.id && evt.updatesAvailable) {
-    stream.value.loadHead();
+    stream.loadHead();
   }
 }
 
-const live = useLiveStore();
-live.on('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate);
+onMounted(() => {
+  const history = useContentStreamStore().getHistoryState(filter.value.parent);
+  if (!history?.stream) {
+    stream.init({
+      root: streamRoot.value,
+      scrollToStart: props.scrollToStart,
+      infiniteScroll: { distance: 100 },
+    });
+  } else {
+    stream.restore({
+      history: history.stream,
+      root: streamRoot.value,
+      infiniteScroll: { distance: 100 },
+    });
 
-const stream = ref(
-  useStream<ContentModel, ContentStreamFilter>(
-    { batchSize: props.batchSize, direction: StreamDirection.BBT },
-    useContentStreamService(),
-    filter.value,
-  ),
-);
+    const index = models.value.findIndex((m) => m.id === history.state.cid);
+    setTimeout(() => scroller.value.scrollToItem(index));
+  }
 
-watch(
-  filter,
-  () => {
-    stream.value.reload();
-  },
-  { deep: true },
-);
+  live.on('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate);
+});
 
-const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
-
-async function initStream() {
-  return stream.value.init({
-    root: streamRoot.value,
-    scrollToStart: props.scrollToStart,
-    infiniteScroll: { distance: 100 },
-  });
-}
-
-onMounted(initStream);
 onUnmounted(() => live.off('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate));
+
+onBeforeRouteLeave((to) => {
+  if (to.params.cid) {
+    useContentStreamStore().setHistoryState(stream, filter.value.parent, to.params.cid as string);
+  }
+});
 
 defineExpose({ stream });
 </script>
@@ -74,7 +89,7 @@ defineExpose({ stream });
     id="contentStreamRoot"
     ref="streamRoot"
     class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
-    <dynamic-scroller :items="stream.models" :min-item-size="100">
+    <dynamic-scroller ref="scroller" :items="models" :min-item-size="100" page-mode>
       <template #before>
         <slot name="before"></slot>
       </template>

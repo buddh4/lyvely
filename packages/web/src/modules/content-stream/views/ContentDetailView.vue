@@ -17,16 +17,15 @@ const content = ref<ContentModel>();
 const filter = ref(new ContentStreamFilter({ parent: contentId.value }));
 const streamComponent = ref<{ stream: IStream<ContentModel> }>();
 
-async function loadContent(cid: string) {
-  content.value = await streamService.loadEntry(cid);
-  filter.value.parent = cid;
-}
-
 watch(
   router.currentRoute,
   async (to) => {
     if (to.name === 'content-details' && to.params.cid) {
-      return loadContent(to.params.cid as string);
+      const cid = to.params.cid as string;
+      if (content.value?.id !== cid) {
+        content.value = await streamService.loadEntry(cid);
+        filter.value.parent = cid;
+      }
     }
   },
   { immediate: true },
@@ -67,10 +66,7 @@ function back() {
       </div>
     </template>
   </content-stream>
-  <content-stream-footer
-    :parent-id="contentId"
-    :filter="filter"
-    @content-created="onContentCreated" />
+  <content-stream-footer :filter="filter" @content-created="onContentCreated" />
 </template>
 
 <style scoped></style>

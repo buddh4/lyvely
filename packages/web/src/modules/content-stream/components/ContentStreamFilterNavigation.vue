@@ -2,7 +2,7 @@
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed, ref, watch } from 'vue';
 import { ContentStreamFilter, TagFilter } from '@lyvely/common';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 import { useDebounceFn } from '@vueuse/core';
@@ -39,10 +39,26 @@ function setTagFilter(id?: string) {
   }
 }
 
+const unwatchFilter = watch(
+  filter,
+  () => {
+    const currentRoute = router.currentRoute.value;
+    const query = filter.value.mergeQuery(currentRoute.query);
+    const route = router.resolve({ path: currentRoute.path, query });
+
+    if (route.fullPath !== currentRoute.fullPath) {
+      router.replace({ path: currentRoute.path, query: query });
+    }
+  },
+  { deep: true },
+);
+
 const commonButtonClassNames =
   'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
+
+onBeforeRouteLeave(unwatchFilter);
 </script>
 
 <template>

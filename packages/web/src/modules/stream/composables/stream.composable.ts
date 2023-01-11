@@ -29,6 +29,16 @@ export interface IStreamInitOptions<TFilter extends IStreamFilter = any> {
   infiniteScroll?: { distance?: number } | boolean;
 }
 
+export interface IStreamRestoreOptions<
+  TModel extends { id: string } = any,
+  TFilter extends IStreamFilter = any,
+> {
+  root?: HTMLElement;
+  history: IStream<TModel, TFilter>;
+  filter?: Ref<TFilter>;
+  infiniteScroll?: { distance?: number } | boolean;
+}
+
 class DummyFilter implements IStreamFilter {
   reset() {
     /* Nothing todo */
@@ -52,7 +62,7 @@ export function useStream<
   const models = ref<TModel[]>([]) as Ref<TModel[]>;
   const events = mitt<StreamEvents<TModel>>();
   const root = ref<HTMLElement | null>(null);
-  const filter = ref<TFilter>(filterInstance || <any>new DummyFilter());
+  const filter = ref<TFilter>(filterInstance || <TFilter>new DummyFilter());
 
   function reset(hard = true) {
     state.value = {};
@@ -96,13 +106,25 @@ export function useStream<
       filter.value = initOptions.filter;
     }
 
-    reset();
+    reset(false);
     await _loadInitialEntries();
 
     _initInfiniteScroll(initOptions);
 
     options.scrollToStart = initOptions?.scrollToStart !== false;
     await _initialScroll();
+  }
+
+  async function restore(restoreOptions: IStreamRestoreOptions) {
+    if (restoreOptions?.root) {
+      root.value = restoreOptions.root;
+    }
+
+    models.value = restoreOptions.history.models.value;
+    filter.value = restoreOptions.history.filter.value;
+    state.value = restoreOptions.history.state.value;
+
+    _initInfiniteScroll(restoreOptions);
   }
 
   async function _initialScroll() {
@@ -285,6 +307,7 @@ export function useStream<
   return {
     options,
     init,
+    restore,
     state,
     events,
     loadTailStatus,
