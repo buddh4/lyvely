@@ -52,7 +52,7 @@ function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
 }
 
 onMounted(() => {
-  const history = useContentStreamStore().getHistoryState(filter.value.parent);
+  const history = contentStreamStore.getHistoryState(filter.value.parent);
   if (!history?.stream) {
     stream.init({
       root: streamRoot.value,
@@ -66,6 +66,7 @@ onMounted(() => {
       infiniteScroll: { distance: 100 },
     });
 
+    contentStreamStore.removeHistoryState(filter.value.parent);
     const index = models.value.findIndex((m) => m.id === history.state.cid);
     setTimeout(() => scroller.value.scrollToItem(index));
   }
@@ -76,7 +77,9 @@ onMounted(() => {
 onUnmounted(() => live.off('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate));
 
 onBeforeRouteLeave((to) => {
-  if (to.params.cid) {
+  if (!to.name || !['content-details', 'stream'].includes(to.name as string)) {
+    contentStreamStore.reset();
+  } else if (to.params.cid) {
     useContentStreamStore().setHistoryState(stream, filter.value.parent, to.params.cid as string);
   }
 });

@@ -23,6 +23,10 @@ export const useContentStreamStore = defineStore('content-stream', () => {
     stack.set(parent, { stream, state: { cid } });
   }
 
+  function removeHistoryState(parent = 'root') {
+    stack.delete(parent);
+  }
+
   function getHistoryState(parent = 'root') {
     return stack.get(parent);
   }
@@ -34,6 +38,7 @@ export const useContentStreamStore = defineStore('content-stream', () => {
   return {
     setHistoryState,
     getHistoryState,
+    removeHistoryState,
     reset,
   };
 });
