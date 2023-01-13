@@ -20,7 +20,7 @@ async function onContentCreated(content: ContentModel) {
 </script>
 
 <template>
-  <content-stream ref="streamComponent" :filter="filter" />
+  <content-stream ref="streamComponent" :filter="filter" :batch-size="40" />
   <content-stream-footer :filter="filter" @content-created="onContentCreated" />
 </template>
 

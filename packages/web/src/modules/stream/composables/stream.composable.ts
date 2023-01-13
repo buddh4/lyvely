@@ -189,7 +189,7 @@ export function useStream<
       },
       {
         distance: infiniteScrollOptions.distance || 50,
-        preserveScrollPosition: true,
+        preserveScrollPosition: false,
         direction: options.direction === StreamDirection.BBT ? 'top' : 'bottom',
       },
     );

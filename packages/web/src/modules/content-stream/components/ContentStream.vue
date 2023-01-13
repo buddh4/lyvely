@@ -14,7 +14,7 @@ import { useLiveStore } from '@/modules/live/stores/live.store';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
 import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
+import { onBeforeRouteLeave } from 'vue-router';
 
 export interface IProps {
   batchSize?: number;
@@ -23,7 +23,7 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  batchSize: 25,
+  batchSize: 50,
   scrollToStart: true,
 });
 
@@ -33,7 +33,6 @@ const scroller = ref() as Ref<DynamicScroller>;
 const contentStreamStore = useContentStreamStore();
 const filter = ref(props.filter);
 const live = useLiveStore();
-const router = useRouter();
 
 const stream = useStream<ContentModel, ContentStreamFilter>(
   { batchSize: props.batchSize, direction: StreamDirection.BBT },
