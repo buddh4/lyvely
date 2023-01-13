@@ -29,7 +29,7 @@ const tags = computed(() => new TagFilter({ archived: false }).apply(profileStor
 const router = useRouter();
 const showFilterDrawer = ref(false);
 
-const activeTagId = undefined;
+const activeTagId = computed(() => !!filter.value.tagIds?.length);
 
 function setTagFilter(id?: string) {
   if (id) {

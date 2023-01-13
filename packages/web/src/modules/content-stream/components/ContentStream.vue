@@ -85,6 +85,10 @@ onBeforeRouteLeave((to) => {
 });
 
 defineExpose({ stream });
+
+function selectTag(tagId: string) {
+  filter.value.addTagId(tagId);
+}
 </script>
 
 <template>
@@ -105,7 +109,8 @@ defineExpose({ stream });
               v-if="getContentStreamEntryComponent(item.type)"
               :model="item"
               :stream="stream"
-              :index="index" />
+              :index="index"
+              @select-tag="selectTag" />
           </div>
         </dynamic-scroller-item>
       </template>

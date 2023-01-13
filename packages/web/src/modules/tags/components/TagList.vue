@@ -23,7 +23,7 @@ const tags = computed(() =>
 
 <template>
   <div v-if="tags.length">
-    <ly-tag v-for="tag in tags" :key="tag.id" :tag="tag" @click="select(tag.id)" />
+    <ly-tag v-for="tag in tags" :key="tag.id" :tag="tag" @click.prevent.stop="select(tag.id)" />
   </div>
 </template>
 

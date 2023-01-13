@@ -24,6 +24,8 @@ const props = withDefaults(defineProps<IProps>(), {
   index: 0,
 });
 
+const emit = defineEmits(['selectTag']);
+
 const name = computed(() => 'buddh4');
 const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1));
 const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
@@ -105,7 +107,8 @@ const bodyWrapperClass = computed(
               <tag-list
                 v-if="!omitTags"
                 :class="{ 'mt-2': bodyStyle === 'message' }"
-                :tag-ids="model.tagIds" />
+                :tag-ids="model.tagIds"
+                @select="(tagId) => $emit('selectTag', tagId)" />
               <slot></slot>
             </div>
           </div>

@@ -17,8 +17,6 @@ const props = withDefaults(defineProps<IProps>(), {
   text: undefined,
 });
 
-defineEmits(['click']);
-
 function getClassNames(attrClasses: any) {
   const textContrast = props.color ? getContrast(props.color) : 'white';
 
@@ -47,7 +45,7 @@ const { text } = toRefs(props);
 </script>
 
 <template>
-  <span :class="getClassNames($attrs.class)" :style="styleObject" @click="$emit('click')">
+  <span :class="getClassNames($attrs.class)" :style="styleObject">
     <small class="text-xs">
       <slot>{{ text }}</slot>
     </small>
