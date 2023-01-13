@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { computed, ref, toRefs, watch, getCurrentInstance } from 'vue';
+import { computed, ref, toRefs, watch } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
@@ -8,7 +8,7 @@ import { usePageStore } from '@/modules/core/store/page.store';
 import { watchMaxSize, isMaxViewSize } from '@/util/media';
 import { isMultiUserProfile } from '@lyvely/common';
 import imageUrl from '@/assets/logo_white_bold.svg';
-import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
+import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { storeToRefs } from 'pinia';
 
 interface IMenuItem {
@@ -24,47 +24,51 @@ const authStore = useAuthStore();
 const profileStore = useProfileStore();
 const isAuthenticated = computed(() => authStore.isAuthenticated);
 const sidebar = ref<HTMLElement | null>(null);
+const { activeView } = storeToRefs(useActivityStore());
 
 // TODO: make modules register menu items here...
 
-const menuItems: IMenuItem[] = [
-  {
-    to: { name: 'stream' },
-    icon: 'stream',
-    label: 'stream.labels.main_nav',
-  },
-  {
-    to: { name: 'Habits' },
-    icon: 'activity',
-    label: 'activities.labels.main_nav',
-  },
-  /*{
+const menuItems = computed(
+  () =>
+    [
+      {
+        to: { name: 'stream' },
+        icon: 'stream',
+        label: 'stream.labels.main_nav',
+      },
+      {
+        to: { name: activeView.value },
+        icon: 'activity',
+        label: 'activities.labels.main_nav',
+      },
+      /*{
     to: {name: 'Journal'},
     icon: 'journal',
     label: 'journals.labels.main_nav'
   },*/
-  {
-    to: { name: 'Statistics' },
-    icon: 'statistics',
-    label: 'statistics.labels.main_nav',
-  },
-  {
-    to: { name: 'Tags' },
-    icon: 'tags',
-    label: 'tags.labels.main_nav',
-  },
-  {
-    to: { name: 'ProfileUsers' },
-    icon: 'users',
-    label: 'profile.users.label',
-    condition: () => isMultiUserProfile(profileStore.profile),
-  },
-  {
-    to: { name: 'ProfileSettings' },
-    icon: 'settings',
-    label: 'profile.settings.label',
-  },
-];
+      {
+        to: { name: 'Statistics' },
+        icon: 'statistics',
+        label: 'statistics.labels.main_nav',
+      },
+      {
+        to: { name: 'Tags' },
+        icon: 'tags',
+        label: 'tags.labels.main_nav',
+      },
+      {
+        to: { name: 'ProfileUsers' },
+        icon: 'users',
+        label: 'profile.users.label',
+        condition: () => isMultiUserProfile(profileStore.profile),
+      },
+      {
+        to: { name: 'ProfileSettings' },
+        icon: 'settings',
+        label: 'profile.settings.label',
+      },
+    ] as IMenuItem[],
+);
 
 const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer'];
 

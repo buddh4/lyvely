@@ -17,6 +17,7 @@ import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler
 import { ref, toRefs, watch } from 'vue';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
+import { localStorageManager } from '@/util';
 
 export interface IMoveActivityEvent {
   cid: string;
@@ -27,9 +28,12 @@ export interface IMoveActivityEvent {
 }
 
 const MAX_DONE_TASKS = 2;
+const DEFAULT_ACTIVITY_VIEW = 'latest_activity_view';
+export const latestActivityView = localStorageManager.getStoredValue(DEFAULT_ACTIVITY_VIEW);
 
 export const useActivityStore = defineStore('activities', () => {
   const status = useStatus();
+  const activeView = ref<string>(latestActivityView.getValue() || 'Habits');
   const habitPlanStore = useHabitPlanStore();
   const taskPlanStore = useTaskPlanStore();
   const profileStore = useProfileStore();
@@ -87,6 +91,11 @@ export const useActivityStore = defineStore('activities', () => {
       await loadActivities();
     }
   });
+
+  function setActiveView(view: 'Habits' | 'Tasks') {
+    activeView.value = view;
+    latestActivityView.setValue(view);
+  }
 
   async function loadActivities() {
     if (!profile.value) {
@@ -180,6 +189,8 @@ export const useActivityStore = defineStore('activities', () => {
     getActivities,
     loadActivities,
     hasMore,
+    setActiveView,
+    activeView,
     archiveActivity,
     unarchiveActivity,
     toggleArchiveActivity,

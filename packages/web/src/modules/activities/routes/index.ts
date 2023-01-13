@@ -1,5 +1,6 @@
 import { translate } from '@/i18n';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
+import { useActivityStore } from '@/modules/activities/store/activity.store';
 
 export default [
   {
@@ -20,6 +21,7 @@ export default [
           title: () => translate('activities.habits.title'),
         },
         component: () => import('../views/HabitPlanView.vue'),
+        beforeEnter: [() => useActivityStore().setActiveView('Habits')],
       },
       {
         name: 'Tasks',
@@ -30,6 +32,7 @@ export default [
           title: () => translate('activities.tasks.title'),
         },
         component: () => import('../views/TaskPlanView.vue'),
+        beforeEnter: [() => useActivityStore().setActiveView('Tasks')],
       },
     ],
   },
