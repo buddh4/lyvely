@@ -2,7 +2,6 @@
 import { useCreateProfileStore } from '@/modules/profiles/stores/create-profile.store';
 import { storeToRefs } from 'pinia';
 import { ProfileUsage, ProfileType } from '@lyvely/common';
-import VueMultiselect from 'vue-multiselect';
 import { translate } from '@/i18n';
 import LyBadgeChooser from '@/modules/ui/components/form/BadgeChooser.vue';
 
