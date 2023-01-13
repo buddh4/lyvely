@@ -12,7 +12,6 @@ const {
   addTag,
   reset,
   submit,
-  tagOptions,
   calendarPlanOptions,
 } = useEditActivityModal();
 

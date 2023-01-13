@@ -4,9 +4,7 @@ import { useUpdateActivityStore } from '@/modules/activities/store/update-activi
 import { getCalendarPlanOptions } from '@lyvely/common';
 
 export default function () {
-  const profileStore = useProfileStore();
   const activityEditStore = useUpdateActivityStore();
-  const tagOptions = computed(() => profileStore.tagOptions);
   const calendarPlanOptions = computed(() => getCalendarPlanOptions());
   const { model, validator, status, isCreate } = toRefs(activityEditStore);
 
@@ -32,7 +30,6 @@ export default function () {
     showModal,
     submit,
     reset,
-    tagOptions,
     calendarPlanOptions,
   };
 }

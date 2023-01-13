@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { ProfileUsage, ProfileType } from '@lyvely/common';
 import VueMultiselect from 'vue-multiselect';
 import { translate } from '@/i18n';
+import LyBadgeChooser from '@/modules/ui/components/form/BadgeChooser.vue';
 
 const createProfileStore = useCreateProfileStore();
 const { show, model, validator, error } = storeToRefs(createProfileStore);
@@ -27,16 +28,11 @@ const usageLabel = (usage: ProfileUsage) => translate('profile.usage.' + usage.t
     <ly-form-model v-model="model" label-key="profile.create.properties" :validator="validator">
       <ly-input-text property="name" :required="true" />
       <ly-input-textarea property="description" />
-      <VueMultiselect
+      <ly-badge-chooser
         v-model="model.usage"
-        class="form-input"
-        :custom-label="usageLabel"
-        :placeholder="$t('profile.create.placeholders.usage')"
-        track-by="key"
+        label="profile.create.placeholders.usage"
         :options="usageOptions"
-        :multiple="true"
-        tag-placeholder="Add this as new tag"
-      />
+        :labels="usageLabel" />
       <ly-input-radio property="type" label="profile.create.properties.user" :value="userType" />
       <ly-input-radio property="type" label="profile.create.properties.group" :value="groupType" />
     </ly-form-model>

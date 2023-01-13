@@ -14,7 +14,6 @@ export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFIL
 export const useProfileStore = defineStore('profile', () => {
   const profile = ref<ProfileWithRelationsModel>();
   const locale = computed(() => profile.value?.locale);
-  const tagOptions = computed(() => profile.value?.tags?.map((tag: TagModel) => tag.name) || []);
   const status = useStatus();
   const profileService = useProfileService();
 
@@ -77,7 +76,6 @@ export const useProfileStore = defineStore('profile', () => {
     locale,
     loadProfile,
     updateScore,
-    tagOptions,
     getTags,
     getTagsByName,
     updateTags,

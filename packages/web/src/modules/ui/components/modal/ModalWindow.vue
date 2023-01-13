@@ -15,6 +15,8 @@ export interface IModalProps {
   icon?: string;
   isLoading?: boolean;
   iconClass?: string;
+  closeOnEscape?: boolean;
+  submitOnSave?: boolean;
   cancelButton?: boolean;
   cancelButtonText?: string;
   cancelButtonClass?: string;
@@ -30,6 +32,8 @@ const props = withDefaults(defineProps<IModalProps>(), {
   width: 'lg',
   backButton: true,
   cancelButton: true,
+  closeOnEscape: true,
+  submitOnSave: true,
   cancelButtonText: 'common.cancel',
   submitButtonText: 'common.submit',
   cancelButtonClass: 'secondary',
@@ -66,6 +70,7 @@ function close() {
 
 function cancel() {
   close();
+  console.log('close');
   emit('cancel');
 }
 
@@ -104,6 +109,24 @@ const modalWindowClass = `w-full ${
 } flex flex-col max-h-full relative md:rounded-sm shadow-lg bg-main md:h-auto`;
 
 // absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto
+
+function onEscape(evt: KeyboardEvent) {
+  if (props.closeOnEscape) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    evt.stopImmediatePropagation();
+    cancel();
+  }
+}
+
+function onKeyDown(evt: KeyboardEvent) {
+  if (props.submitOnSave && evt.ctrlKey && evt.code === 'KeyS') {
+    evt.preventDefault();
+    evt.stopPropagation();
+    evt.stopImmediatePropagation();
+    emit('submit');
+  }
+}
 </script>
 
 <template>
@@ -121,7 +144,9 @@ const modalWindowClass = `w-full ${
         role="dialog"
         aria-hidden="false"
         :style="{ 'z-index': zIndex }"
-        :aria-label="ariaLabel || $t('modal.aria.root')">
+        :aria-label="ariaLabel || $t('modal.aria.root')"
+        @keyup.esc.stop.prevent="onEscape"
+        @keydown="onKeyDown">
         <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
         <div :class="modalWindowClass">
           <div class="flex items-center p-5 md:rounded-t-sm shadow z-10" data-modal-header>

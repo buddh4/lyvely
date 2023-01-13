@@ -2,7 +2,7 @@
 import ContentStreamFooter from '@/modules/content-stream/components/ContentStreamFooter.vue';
 import ContentStream from '@/modules/content-stream/components/ContentStream.vue';
 import { ContentModel, ContentStreamFilter } from '@lyvely/common';
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
 import { useRouter } from 'vue-router';
 

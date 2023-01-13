@@ -43,6 +43,7 @@ import ScreenReaderValidationError from '@/modules/ui/components/error/ScreenRea
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
 import { eventBus } from '@/modules/core/events/global.emitter';
 import AvatarImage from '@/modules/ui/components/avatar/AvatarImage.vue';
+import BadgeChooser from '@/modules/ui/components/form/BadgeChooser.vue';
 
 export class LyvelyApp {
   vueApp: App;
@@ -91,6 +92,7 @@ export class LyvelyApp {
     this.vueApp.component('LyConfirm', ConfirmModal);
     this.vueApp.component('LyDrawer', DrawerMenu);
     this.vueApp.component('LyBadge', BadgeText);
+    this.vueApp.component('LyBadgeChooser', BadgeChooser);
     this.vueApp.component('LyTag', TagBadge);
     this.vueApp.component('LyDividedList', DividedList);
     this.vueApp.component('LyTextDimmed', TextDimmed);

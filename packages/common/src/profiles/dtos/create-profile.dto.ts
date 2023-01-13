@@ -18,7 +18,7 @@ export class CreateProfileDto extends BaseModel<CreateProfileDto> {
   @Expose()
   @IsArray()
   @IsEnum(ProfileUsage, { each: true })
-  usage: ProfileUsage[];
+  usage: ProfileUsage[] = [];
 
   /*@Expose()
   @IsString()

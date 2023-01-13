@@ -19,6 +19,7 @@ import RadioInput from '@/modules/ui/components/form/RadioInput.vue';
 import TextInput from '@/modules/ui/components/form/TextInput.vue';
 import SelectInput from '@/modules/ui/components/form/SelectInput.vue';
 import NumberInput from '@/modules/ui/components/form/NumberInput.vue';
+import BadgeChooser from '@/modules/ui/components/form/BadgeChooser.vue';
 import TextareaInput from '@/modules/ui/components/form/TextareaInput.vue';
 import RangeInput from '@/modules/ui/components/form/RangeInput.vue';
 import CaptchaInput from '@/modules/captcha/components/CaptchaInput.vue';
@@ -46,6 +47,7 @@ function justForWebstorm() {
   app.vueApp.component('LyConfirm', ConfirmModal);
   app.vueApp.component('LyDrawer', DrawerMenu);
   app.vueApp.component('LyBadge', BadgeText);
+  app.vueApp.component('LyBadgeChooser', BadgeChooser);
   app.vueApp.component('LyTag', TagBadge);
   app.vueApp.component('LyDividedList', DividedList);
   app.vueApp.component('LyTextDimmed', TextDimmed);
