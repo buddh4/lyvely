@@ -24,7 +24,10 @@ const root = ref<HTMLElement | null>(null);
 onClickOutside(root, () => (open.value = false));
 
 const className = ['flex', 'dropdown'];
-const buttonClassName = ['inline-flex justify-center  leading-5 z-10 block rounded-md p-3', props.buttonClass];
+const buttonClassName = [
+  'inline-flex justify-center  leading-5 z-10 block rounded-md p-3',
+  props.buttonClass,
+];
 
 const id = uniqueId('dropdown-');
 const { icon, label } = toRefs(props);
@@ -64,12 +67,15 @@ function toggle() {
     :class="className"
     @keydown.prevent.down="navigateDown"
     @keydown.prevent.up="navigateUp"
-    @keydown.esc="open = false"
-  >
+    @keydown.esc="open = false">
     <div class="relative">
       <span class="rounded-md shadow-sm">
         <slot name="trigger" :toggle="toggle" :state="open">
-          <button :id="id" :class="buttonClassName" :aria-expanded="open ? 'true' : 'false'" @click="toggle">
+          <button
+            :id="id"
+            :class="buttonClassName"
+            :aria-expanded="open ? 'true' : 'false'"
+            @click="toggle">
             <span v-if="label" class="label text-sm">{{ $t(label) }}</span>
             <ly-icon v-if="icon" :name="icon" />
           </button>
@@ -80,11 +86,10 @@ function toggle() {
         v-if="open"
         :aria-labelledby="id"
         :class="[
-          'absolute dropdown-items py-2 bg-main dark:bg-shadow rounded-md shadow-lg border border-gray-100 dark:border-gray-700 z-20',
+          'absolute dropdown-items py-2 bg-main dark:bg-shadow rounded-md shadow-lg border border-divide z-20',
           position === 'left' ? 'right-0.5' : 'left-0.5',
         ]"
-        @click="onClickContent"
-      >
+        @click="onClickContent">
         <slot :toggle="toggle" :state="open"></slot>
       </div>
     </div>

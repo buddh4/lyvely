@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import { getContentStreamEntryComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { onMounted, onUnmounted, ref, Ref, watch } from 'vue';
+import { defineAsyncComponent, onMounted, onUnmounted, ref, Ref, watch } from 'vue';
 import {
   ContentModel,
   ContentStreamFilter,
   ContentUpdateStateLiveEvent,
+  Lazy,
   StreamDirection,
 } from '@lyvely/common';
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
@@ -15,6 +16,7 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
 import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
 import { onBeforeRouteLeave } from 'vue-router';
+import DefaultStreamEntry from '@/modules/content-stream/components/DefaultStreamEntry.vue';
 
 export interface IProps {
   batchSize?: number;
@@ -104,8 +106,7 @@ function selectTag(tagId: string) {
         <dynamic-scroller-item :item="item" :active="active" :data-index="index">
           <div class="px-2 md:px-6">
             <Component
-              :is="getContentStreamEntryComponent(item.type)"
-              v-if="getContentStreamEntryComponent(item.type)"
+              :is="getContentStreamEntryComponent(item)"
               :model="item"
               :stream="stream"
               :index="index"

@@ -58,7 +58,7 @@ function back() {
           </ly-button>
         </div>
         <div class="border-divide">
-          <component :is="getContentDetailsComponent(content.type)" :model="content" />
+          <component :is="getContentDetailsComponent(content)" :model="content" />
         </div>
       </div>
       <div v-else class="p-2 md:p-4 m-4 border border-divide bg-main rounded">

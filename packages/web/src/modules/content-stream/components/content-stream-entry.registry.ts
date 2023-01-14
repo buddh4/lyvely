@@ -1,20 +1,26 @@
-import { Component } from 'vue';
-import { ContentModel, Type } from '@lyvely/common';
+import { Component, defineAsyncComponent } from 'vue';
+import { ContentModel, Lazy, Type } from '@lyvely/common';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
-import { IContentTypeOptions } from '@/modules/content-stream/interfaces/stream-entry-registration.interface';
+import {
+  ComponentRegistration,
+  IContentTypeOptions,
+} from '@/modules/content-stream/interfaces/stream-entry-registration.interface';
+import { IStreamEntryProps } from '@/modules/content-stream/interfaces/stream-entry-props.interface';
+import { IContentDetailsProps } from '@/modules/content-stream/interfaces/content-details-props.interface';
+import DefaultStreamEntry from '@/modules/content-stream/components/DefaultStreamEntry.vue';
 
 const contentTypeRegistry = new Map<string, Type<ContentModel>>();
 const streamEntryRegistry = new Map<string, Component>();
 const contentDetailRegistry = new Map<string, Component>();
 
 export function registerContentType(options: IContentTypeOptions) {
-  if (options.detailsComponent) {
-    registerContentDetailsComponent(options.type, options.detailsComponent);
+  if (options.stream?.details) {
+    registerContentDetailsComponent(options.type, options.stream.details);
   }
 
-  if (options.streamEntryComponent) {
-    registerContentStreamEntryComponent(options.type, options.streamEntryComponent);
+  if (options.stream?.streamEntry) {
+    registerContentStreamEntryComponent(options.type, options.stream.streamEntry);
   }
 
   if (options.modelClass) {
@@ -30,23 +36,42 @@ export function getContentType(type: string) {
   return contentTypeRegistry.get(type);
 }
 
-export function registerContentStreamEntryComponent(contentType: string, component: Component) {
+export function registerContentStreamEntryComponent(
+  contentType: string,
+  component: ComponentRegistration<IStreamEntryProps>,
+) {
   console.debug(`Register content component ${contentType}`);
-  streamEntryRegistry.set(contentType, component);
+  streamEntryRegistry.set(
+    contentType,
+    typeof component === 'function'
+      ? defineAsyncComponent(component as Lazy<Component>)
+      : component,
+  );
 }
 
-export function getContentStreamEntryComponent(contentOrType: string | ContentModel) {
-  // Todo: maybe provide a fallback component type
+export function getContentStreamEntryComponent(
+  contentOrType: string | ContentModel,
+): Component<IStreamEntryProps> | Lazy<Component<IStreamEntryProps>> {
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
-  return streamEntryRegistry.get(type) || ContentStreamEntry;
+  return streamEntryRegistry.get(type) || DefaultStreamEntry;
 }
 
-export function registerContentDetailsComponent(contentType: string, component: Component) {
+export function registerContentDetailsComponent(
+  contentType: string,
+  component: ComponentRegistration<IContentDetailsProps>,
+) {
   console.debug(`Register content details component ${contentType}`);
-  contentDetailRegistry.set(contentType, component);
+  contentDetailRegistry.set(
+    contentType,
+    typeof component === 'function'
+      ? defineAsyncComponent(component as Lazy<Component>)
+      : component,
+  );
 }
 
-export function getContentDetailsComponent(contentOrType: string | ContentModel) {
+export function getContentDetailsComponent(
+  contentOrType: string | ContentModel,
+): Component<IContentDetailsProps> | Lazy<Component<IContentDetailsProps>> {
   // Todo: maybe provide a fallback component type
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
   return contentDetailRegistry.get(type) || ContentDetails;

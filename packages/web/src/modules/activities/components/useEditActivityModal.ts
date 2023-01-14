@@ -1,4 +1,3 @@
-import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed, toRefs } from 'vue';
 import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { getCalendarPlanOptions } from '@lyvely/common';
