@@ -115,7 +115,7 @@ sudo mkdir -p /var/www/lyvely
 sudo chown lyvely: /var/www/lyvely
 sudo -u myappuser -H bash -l
 sudo git clone git@github.com:buddh4/lyvely-app.git code
-npm install
+npm install --no-save
 npm common:build
 npm server:build
 npm web:build
