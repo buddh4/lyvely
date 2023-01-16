@@ -7,7 +7,7 @@ import { UserRegistrationModule } from './user-registration/user-registration.mo
 import { UsersModule } from './users';
 import { ProfilesModule } from './profiles';
 import { PoliciesModule } from './policies/policies.module';
-import { ContentCoreModule, ContentModule } from './content';
+import { ContentCoreModule } from './content';
 import { ActivitiesModule } from './activities/activities.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -160,9 +160,7 @@ export class AppModuleBuilder {
   }
 
   private initServeStaticModule() {
-    if (!this.options.serveStatic) {
-      return this;
-    }
+    if (!this.options.serveStatic) return this;
 
     return this.importModules(
       ServeStaticModule.forRootAsync({
@@ -170,7 +168,7 @@ export class AppModuleBuilder {
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath>) => {
           // TODO (serveStatic) provide some defaults...
-          return configService.get('serveStatic');
+          return [configService.get('serveStatic')];
         },
       }),
     );
