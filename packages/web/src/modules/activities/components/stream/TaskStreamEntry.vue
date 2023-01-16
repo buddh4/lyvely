@@ -13,11 +13,10 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 const done = computed(() => !!props.model.done);
-const selectTag = () => {};
 </script>
 
 <template>
-  <content-stream-entry v-bind="props" merge="true">
+  <content-stream-entry v-bind="props" :merge="true">
     <template #image>
       <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
         <router-link :to="{ name: 'Tasks' }">

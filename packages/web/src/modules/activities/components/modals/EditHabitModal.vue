@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import useEditActivityModal from '../useEditActivityModal';
-import { DataPointInputType } from '@lyvely/common';
-import { computed } from 'vue';
+import { CreateHabitModel, DataPointInputType } from '@lyvely/common';
+import { computed, Ref } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
 
 const {
@@ -17,13 +17,16 @@ const {
 } = useEditActivityModal();
 
 function setInputType(inputType: DataPointInputType) {
-  if (model.value) {
-    model.value.inputType = inputType;
-    if (model.value.inputType === DataPointInputType.Checkbox && model.value.max! > 8) {
-      model.value.max = 8;
+  const modelValue = model.value as CreateHabitModel;
+  if (modelValue) {
+    modelValue.inputType = inputType;
+    if (modelValue.inputType === DataPointInputType.Checkbox && modelValue.max! > 8) {
+      modelValue.max = 8;
     }
   }
 }
+
+const editModel = model as Ref<CreateHabitModel>;
 
 const modalTitle = computed(() => {
   return isCreate.value ? `activities.habits.create.title` : `activities.habits.edit.title`;
@@ -52,28 +55,28 @@ const modalTitle = computed(() => {
           <div class="flex gap-2 justify-between items-stretch">
             <ly-button
               class="text-xs secondary w-full"
-              :active="model.inputType === DataPointInputType.Checkbox"
+              :active="editModel.inputType === DataPointInputType.Checkbox"
               @click="setInputType(DataPointInputType.Checkbox)">
               {{ $t('activities.input_types.checkbox') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
-              :active="model.inputType === DataPointInputType.Spinner"
+              :active="editModel.inputType === DataPointInputType.Spinner"
               @click="setInputType(DataPointInputType.Spinner)">
               {{ $t('activities.input_types.spinner') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
-              :active="model.inputType === DataPointInputType.Time"
+              :active="editModel.inputType === DataPointInputType.Time"
               @click="setInputType(DataPointInputType.Time)">
               {{ $t('activities.input_types.time') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
-              :active="model.inputType === DataPointInputType.Range"
+              :active="editModel.inputType === DataPointInputType.Range"
               @click="setInputType(DataPointInputType.Range)">
               {{ $t('activities.input_types.range') }}
             </ly-button>
@@ -82,35 +85,39 @@ const modalTitle = computed(() => {
           <div class="grid grid-flow-col grid-cols-2 grid-rows-2 gap-2">
             <div>
               <ly-input-number
-                v-if="model.inputType === DataPointInputType.Checkbox"
+                v-if="editModel.inputType === DataPointInputType.Checkbox"
                 property="max"
                 :min="1"
                 :max="8" />
               <ly-input-time-number
-                v-else-if="model.inputType === DataPointInputType.Time"
+                v-else-if="editModel.inputType === DataPointInputType.Time"
                 property="max" />
               <ly-input-number v-else property="max" :min="1" />
             </div>
 
             <div>
               <ly-input-time-number
-                v-if="model.inputType === DataPointInputType.Time"
+                v-if="editModel.inputType === DataPointInputType.Time"
                 property="min"
-                :max="model.max" />
-              <ly-input-number v-else property="min" :min="0" :max="model.max" />
+                :max="editModel.max" />
+              <ly-input-number v-else property="min" :min="0" :max="editModel.max" />
             </div>
             <div>
               <ly-input-time-number
-                v-if="model.inputType === DataPointInputType.Time"
+                v-if="editModel.inputType === DataPointInputType.Time"
                 property="optimal"
-                :min="model.min"
-                :max="model.max" />
-              <ly-input-number v-else property="optimal" :min="model.min" :max="model.max" />
+                :min="editModel.min"
+                :max="editModel.max" />
+              <ly-input-number
+                v-else
+                property="optimal"
+                :min="editModel.min"
+                :max="editModel.max" />
             </div>
             <div class="flex flex-col">
               <ly-input-number property="score" :mb="0" :steps="2" :max="100" :min="-100" />
               <div
-                v-if="model.inputType === DataPointInputType.Time"
+                v-if="editModel.inputType === DataPointInputType.Time"
                 class="flex border border-divide bg-highlight rounded h-full p-2 text-xs text-dimmed gap-2">
                 <div>
                   <ly-icon name="info" class="text-info-light" />
@@ -125,7 +132,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <tag-chooser v-model="model.tagNames" />
+        <tag-chooser v-model="editModel.tagNames" />
         <ly-input-textarea property="text" />
       </fieldset>
     </ly-form-model>

@@ -8,12 +8,9 @@ export interface IAbstractContentService<
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
   TResponse extends ContentUpdateResponse<TModel> = ContentUpdateResponse<TModel>,
-> extends IEditModelService<TResponse, TCreateModel, TUpdateModel>,
-    IArchiveModelService {
+> extends IEditModelService<TResponse, TCreateModel, TUpdateModel> {
   create(model: TCreateModel): Promise<TResponse>;
   update(id: string, model: TUpdateModel): Promise<TResponse>;
-  archive(contentId: string): Promise<void>;
-  unarchive(contentId: string): Promise<void>;
 }
 
 export type AbstractContentEndpoint<

@@ -17,8 +17,8 @@ const { profile } = storeToRefs(useProfileStore());
 </script>
 
 <template>
-  <profile-top-navigation :key="profile.id" />
-  <main-container :key="profile.id" v-bind="props">
+  <profile-top-navigation v-if="profile" :key="profile.id" />
+  <main-container v-if="profile" :key="profile.id" v-bind="props">
     <slot></slot>
   </main-container>
 </template>

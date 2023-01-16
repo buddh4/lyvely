@@ -1,17 +1,18 @@
 <script lang="ts" setup>
-import { IWebNotification, getRelativeTime } from '@lyvely/common';
+import { IWebNotification } from '@lyvely/common';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
-
-const { locale } = storeToRefs(useAuthStore());
 
 export interface IProps {
   notification: IWebNotification;
 }
 
 const props = defineProps<IProps>();
+
+const { locale } = storeToRefs(useAuthStore());
+
 const cssClass = computed(() => [
   'flex border-l-4 hover:bg-highlight cursor-pointer',
   { 'border-transparent': props.notification.seen },

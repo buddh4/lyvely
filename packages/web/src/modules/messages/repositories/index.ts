@@ -14,14 +14,10 @@ export default {
   },
 
   archive(messageId: string) {
-    return repository.post<EndpointResult<IMessageClient['archive']>>(
-      `${ENDPOINT_MESSAGE}/${messageId}/archive`,
-    );
+    return repository.post<EndpointResult<any>>(`${ENDPOINT_MESSAGE}/${messageId}/archive`);
   },
 
   unarchive(messageId: string) {
-    return repository.post<EndpointResult<IMessageClient['unarchive']>>(
-      `${ENDPOINT_MESSAGE}/${messageId}/unarchive`,
-    );
+    return repository.post<EndpointResult<any>>(`${ENDPOINT_MESSAGE}/${messageId}/unarchive`);
   },
 };

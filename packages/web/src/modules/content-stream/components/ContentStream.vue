@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { getContentStreamEntryComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { defineAsyncComponent, onMounted, onUnmounted, ref, Ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, Ref, watch } from 'vue';
 import {
   ContentModel,
   ContentStreamFilter,
   ContentUpdateStateLiveEvent,
-  Lazy,
   StreamDirection,
 } from '@lyvely/common';
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
@@ -16,7 +15,6 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
 import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
 import { onBeforeRouteLeave } from 'vue-router';
-import DefaultStreamEntry from '@/modules/content-stream/components/DefaultStreamEntry.vue';
 
 export interface IProps {
   batchSize?: number;
@@ -31,7 +29,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const { profile } = storeToRefs(useProfileStore());
 const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
-const scroller = ref() as Ref<DynamicScroller>;
+const scroller = ref() as Ref<typeof DynamicScroller>;
 const contentStreamStore = useContentStreamStore();
 const filter = ref(props.filter);
 const live = useLiveStore();

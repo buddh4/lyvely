@@ -6,6 +6,17 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { TagModel } from '@lyvely/common';
 import { storeToRefs } from 'pinia';
 
+export interface IProps {
+  modelValue: Array<string> | undefined;
+  inputId?: string;
+  label?: string;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  inputId: uniqueId('tag-chooser'),
+  label: translate('tags.chooser.label'),
+});
+
 const { profile } = storeToRefs(useProfileStore());
 
 const options = computed(
@@ -16,21 +27,10 @@ const options = computed(
     })) || [],
 );
 
-export interface IProps {
-  modelValue: Array<string>;
-  inputId?: string;
-  label?: string;
-}
-
-const props = withDefaults(defineProps<IProps>(), {
-  inputId: uniqueId('tag-chooser'),
-  label: translate('tags.chooser.label'),
-});
-
 const emit = defineEmits(['update:modelValue']);
 
 const model = computed({
-  get: () => props.modelValue,
+  get: () => props.modelValue || [],
   set: (value: Array<string>) => emit('update:modelValue', value),
 });
 </script>

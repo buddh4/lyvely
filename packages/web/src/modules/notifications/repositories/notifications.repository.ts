@@ -15,7 +15,7 @@ export default {
   },
 
   async loadHead(request: IStreamRequest) {
-    return repository.post<EndpointResult<INotificationsService['update']>>(
+    return repository.post<EndpointResult<INotificationsService['loadHead']>>(
       `${ENDPOINT_NOTIFICATIONS}/update`,
       request,
     );

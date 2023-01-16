@@ -16,12 +16,11 @@ export interface IProps {
   multiple?: boolean;
   addTextKey?: string;
   inputId?: string;
-  label?: string;
+  label: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   inputId: uniqueId('tag-chooser'),
-  label: undefined,
   labels: undefined,
   add: false,
   multiple: true,
@@ -42,7 +41,7 @@ const optionsToAdd = computed(
     [],
 );
 
-function getOptionKey(option: IChooserOption) {
+function getOptionKey(option: IChooserOption): string {
   return typeof option === 'string' ? option : option.key;
 }
 
@@ -76,8 +75,9 @@ function getOption(key: string): IChooserOption | undefined {
 const model = computed(() => (isArray(props.modelValue) ? props.modelValue : []));
 const selection = computed(() => model.value.map(getOption));
 
-const selectedOptions = computed(() =>
-  model.value.map((key: string) => getOption(key)).filter(filterOption),
+const selectedOptions = computed(
+  () =>
+    model.value.map((key: string) => getOption(key)).filter(filterOption) as Array<IChooserOption>,
 );
 
 function addSelection(option: IChooserOption) {
@@ -159,6 +159,7 @@ function getColor(option: IChooserOption) {
     <div class="flex pt-2">
       <template v-for="option in selection" :key="getOptionKey(option)">
         <ly-badge
+          v-if="option"
           :text="getLabel(option)"
           :color="getColor(option)"
           :class="getBadgeClass(option)" />
@@ -204,6 +205,7 @@ function getColor(option: IChooserOption) {
             :color="getColor(option)"
             :class="getBadgeClass(option)" />
         </div>
+
         <div
           v-for="option in optionsToAdd"
           :key="getOptionKey(option)"

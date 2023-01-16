@@ -19,7 +19,7 @@ const usageOptions = [
   ProfileUsage.Family,
   ProfileUsage.Improvement,
 ];
-const usageLabel = (usage: ProfileUsage) => translate('profile.usage.' + usage.toLowerCase());
+const usageLabel = (usage: string) => translate('profile.usage.' + usage.toLowerCase());
 </script>
 
 <template>

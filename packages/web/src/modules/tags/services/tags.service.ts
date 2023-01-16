@@ -1,5 +1,10 @@
-import { IEditModelService } from '@/modules/common';
-import { TagModel, UpdateTagDto, useSingleton, IProfileTagsService } from '@lyvely/common';
+import {
+  TagModel,
+  UpdateTagDto,
+  useSingleton,
+  IProfileTagsService,
+  IEditModelService,
+} from '@lyvely/common';
 import repository from '../repositories/tags.repository';
 import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
 

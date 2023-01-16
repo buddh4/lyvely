@@ -34,7 +34,7 @@ const textClass = computed(() =>
     ? getContrast(color.value) === 'black'
       ? 'text-slate-900'
       : 'text-slate-100'
-    : undefined,
+    : '',
 );
 
 function getClassNames(attrClasses: any, textClass: string) {
