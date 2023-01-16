@@ -106,3 +106,17 @@ npm run start:debug
 **PhpStorm run config:**
 
 ![](docs/img/4f6a6bd9.png)
+
+### Installation
+
+```shell
+sudo adduser lyvely
+sudo mkdir -p /var/www/lyvely
+sudo chown lyvely: /var/www/lyvely
+sudo -u myappuser -H bash -l
+sudo git clone git@github.com:buddh4/lyvely-app.git code
+npm install
+npm common:build
+npm server:build
+npm web:build
+```
