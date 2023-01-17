@@ -93,7 +93,7 @@ export type LyvelyAppConfiguration = {
   http?: LyvelyHttpOptions;
   mongodb?: LyvelyMongoDBOptions;
   auth?: LyvelyAuthOptions;
-  helmet?: HelmetOptions;
+  helmet?: HelmetOptions | false;
   file?: LyvelyFileOptions;
   mail?: LyvelyMailOptions;
   modules?: ModulesConfiguration;
@@ -103,8 +103,5 @@ export type LyvelyAppConfiguration = {
 
 // TODO: This is not working for some types
 export type ConfigurationPath = {
-  [key in NestedPaths<LyvelyAppConfiguration>]: TypeFromPath<
-    LyvelyAppConfiguration,
-    key
-  >;
+  [key in NestedPaths<LyvelyAppConfiguration>]: TypeFromPath<LyvelyAppConfiguration, key>;
 };
