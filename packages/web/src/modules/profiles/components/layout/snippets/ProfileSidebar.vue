@@ -107,7 +107,6 @@ function onMenuItemClick(item: IMenuItem) {
 
 <template>
   <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
-    {{ showSidebar }}
     <div
       class="h-screen fix-h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
