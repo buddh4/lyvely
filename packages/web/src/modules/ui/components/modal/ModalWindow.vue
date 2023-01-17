@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, toRefs, ref, Ref, watch } from 'vue';
+import { computed, toRefs, ref, watch } from 'vue';
 import { suggestFocusElement } from '@/modules/ui/utils';
 import { useAccessibilityStore } from '@/modules/accessibility/stores/accessibility.store';
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap';
@@ -17,6 +17,7 @@ export interface IModalProps {
   iconClass?: string;
   closeOnEscape?: boolean;
   submitOnSave?: boolean;
+  submitIcon?: string;
   cancelButton?: boolean;
   cancelButtonText?: string;
   cancelButtonClass?: string;
@@ -34,6 +35,7 @@ const props = withDefaults(defineProps<IModalProps>(), {
   cancelButton: true,
   closeOnEscape: true,
   submitOnSave: true,
+  submitIcon: 'send',
   cancelButtonText: 'common.cancel',
   submitButtonText: 'common.submit',
   cancelButtonClass: 'secondary',
@@ -54,10 +56,12 @@ const zIndex = ref(1000);
 const { modelValue } = toRefs(props);
 
 const pageStore = usePageStore();
+const rootEl = ref<HTMLElement>();
 
 watch(modelValue, (value) => {
   if (value) {
     zIndex.value = pageStore.pushModal(modalId) + 1000;
+    rootEl.value?.scrollIntoView();
   } else {
     pageStore.popModal(modalId);
     zIndex.value = 1000;
@@ -74,7 +78,6 @@ function cancel() {
   emit('cancel');
 }
 
-const rootEl = ref<HTMLElement>();
 const { activate, deactivate } = useFocusTrap(rootEl);
 
 if (!props.prevAutoFocus) {
@@ -106,7 +109,7 @@ const widths = {
 
 const modalWindowClass = `w-full ${
   widths[props.width]
-} flex flex-col max-h-full relative md:rounded-sm shadow-lg bg-main md:h-auto`;
+} flex h-screen fix-h-screen flex-col max-h-full relative md:rounded-sm shadow-lg bg-main md:h-auto md:min-h-0`;
 
 // absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto
 
@@ -139,7 +142,7 @@ function onKeyDown(evt: KeyboardEvent) {
       <div
         v-if="modelValue"
         ref="rootEl"
-        class="min-w-screen h-screen fix-h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover overflow-y-auto"
+        class="min-w-screen h-screen fix-h-screen animated fadeIn faster fixed left-0 top-0 flex md:justify-center md:items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover overflow-y-auto"
         tabindex="1"
         role="dialog"
         aria-hidden="false"
@@ -151,6 +154,9 @@ function onKeyDown(evt: KeyboardEvent) {
         <div :class="modalWindowClass">
           <div class="flex items-center p-5 md:rounded-t-sm shadow z-10" data-modal-header>
             <slot name="header">
+              <ly-button class="text-sm md:hidden pl-0" @click="cancel">
+                <ly-icon name="arrow-left" class="w-3 mr-1" />
+              </ly-button>
               <h1 class="text-lg inline-block align-middle flex align-items-center" tabindex="-1">
                 <ly-icon v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass" />
                 <slot name="title">
@@ -159,14 +165,21 @@ function onKeyDown(evt: KeyboardEvent) {
               </h1>
 
               <ly-button
-                class="float-right align-middle font-bold ml-auto inline-block px-2 py-0.5 border-none"
+                class="float-right align-middle font-bold ml-auto inline-block px-2 py-0.5 border-none hidden md:inline"
                 @click="cancel">
                 x
+              </ly-button>
+
+              <ly-button
+                v-if="submitButton"
+                class="float-right align-middle font-bold ml-auto inline-block px-2 py-0.5 border-none md:hidden"
+                @click="$emit('submit')">
+                <ly-icon :name="submitIcon"></ly-icon>
               </ly-button>
             </slot>
           </div>
 
-          <section class="p-5 pb-1 overflow-auto scrollbar-thin" data-modal-body>
+          <section class="p-5 pb-1 overflow-auto scrollbar-thin flex-grow" data-modal-body>
             <slot></slot>
           </section>
 

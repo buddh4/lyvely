@@ -171,6 +171,7 @@ function getColor(option: IChooserOption) {
     :title="label"
     :cancel-button="false"
     submit-button-text="common.close"
+    submit-icon="check"
     @submit="visible = false">
     <div ref="chooser" class="flex flex-col">
       <div>
@@ -241,4 +242,8 @@ function getColor(option: IChooserOption) {
   </ly-modal>
 </template>
 
-<style scoped></style>
+<style scoped>
+[data-badge-selection]:last-of-type {
+  @apply rounded-b;
+}
+</style>

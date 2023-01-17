@@ -44,8 +44,8 @@ const placeholderKey =
           :placeholder="$t(placeholderKey)"
           @keyup.enter="submitMessage" />
         <ly-button class="primary rounded-full w-10 h-10 flex items-center" @click="submitMessage">
-          <ly-icon name="send"></ly-icon
-        ></ly-button>
+          <ly-icon name="send"></ly-icon>
+        </ly-button>
       </div>
     </div>
   </div>
