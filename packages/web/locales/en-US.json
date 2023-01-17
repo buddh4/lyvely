@@ -405,9 +405,6 @@
     }
   },
   "activities": {
-    "labels": {
-      "main_nav": "Activities"
-    },
     "habits": {
       "title": "Activities",
       "stream_entry": {

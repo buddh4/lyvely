@@ -1,25 +1,17 @@
 import { translation } from '@/i18n';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
-import { ContentModel } from '@lyvely/common';
-
-export function contentRoute(pid: string, cid: string) {
-  return profileRoute(`/stream/${cid}`, pid);
-}
-
-export function toContentDetails(content: ContentModel) {
-  return contentRoute(content.pid, content.id);
-}
 
 export default [
   {
+    name: 'Stream',
     path: profileRoute('/stream'),
-    component: import('../views/ContentStreamRootView.vue'),
+    component: () => import('../views/ContentStreamLayout.vue'),
     layout: 'profile-full',
     children: [
       {
         path: '',
         name: 'stream',
-        component: import('../views/ContentStreamView.vue'),
+        component: () => import('../views/ContentStreamView.vue'),
         meta: {
           layout: 'profile-full',
           title: translation('stream.title'),
@@ -29,7 +21,7 @@ export default [
       {
         path: ':cid',
         name: 'content-details',
-        component: import('../views/ContentDetailView.vue'),
+        component: () => import('../views/ContentDetailView.vue'),
         meta: {
           layout: 'profile-full',
           title: translation('stream.title'),

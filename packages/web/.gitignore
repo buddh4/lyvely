@@ -4,3 +4,5 @@ dist
 *.local
 .idea
 .env
+.env.*
+!.env.dist

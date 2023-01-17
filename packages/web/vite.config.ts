@@ -2,8 +2,9 @@ import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import vuePlugin from '@vitejs/plugin-vue';
 import { resolve, dirname } from 'path';
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
+/** @type {import('vite').UserConfig} */
 export default defineConfig({
   plugins: [
     vuePlugin(),

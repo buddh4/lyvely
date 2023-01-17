@@ -6,7 +6,7 @@ import { useContentStreamService } from '@/modules/content-stream/services/conte
 import { useRouter } from 'vue-router';
 import { ref, watch, computed } from 'vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
-import { contentRoute } from '@/modules/content-stream/routes';
+import { contentRoute } from '@/modules/content-stream/routes/route.utils';
 import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import { getContentDetailsComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
 

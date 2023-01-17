@@ -1,11 +1,12 @@
 import mitt from 'mitt';
-import { LyvelyApp } from '@/lyvely.app';
+
+// Todo: We use any for app events to prevent circular dependencies
 
 type GlobalEvents = {
   'app.init.pre': void;
-  'app.init.post': LyvelyApp;
-  'app.mount.pre': LyvelyApp;
-  'app.mount.post': LyvelyApp;
+  'app.init.post': any;
+  'app.mount.pre': any;
+  'app.mount.post': any;
 } & Record<string, any>;
 
 export const eventBus = mitt<GlobalEvents>();

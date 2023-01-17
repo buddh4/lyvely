@@ -6,7 +6,9 @@ import {
   ActivityModel,
   ActivityType,
   CalendarIntervalEnum,
+  HabitModel,
   LoadedTimingIdStore,
+  NumberDataPointModel,
   TaskModel,
   toTimingId,
 } from '@lyvely/common';
@@ -15,8 +17,6 @@ import { useCalendarPlanStore } from '@/modules/calendar/store';
 import activityRepository from '@/modules/activities/repositories/activity.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 import { ref, toRefs, watch } from 'vue';
-import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
-import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { localStorageManager } from '@/util';
 
 export interface IMoveActivityEvent {
@@ -34,8 +34,6 @@ export const latestActivityView = localStorageManager.getStoredValue(DEFAULT_ACT
 export const useActivityStore = defineStore('activities', () => {
   const status = useStatus();
   const activeView = ref<string>(latestActivityView.getValue() || 'Habits');
-  const habitPlanStore = useHabitPlanStore();
-  const taskPlanStore = useTaskPlanStore();
   const profileStore = useProfileStore();
   const calendarPlanStore = useCalendarPlanStore();
   const cache = ref(new ActivityDataPointStore());
@@ -120,9 +118,10 @@ export const useActivityStore = defineStore('activities', () => {
       const {
         data: { habits, tasks, dataPoints },
       } = await activityRepository.getByRange(intervalFilter);
-      taskPlanStore.addTasks(tasks);
-      habitPlanStore.addHabits(habits);
-      habitPlanStore.addDataPoints(dataPoints);
+      // TODO: use service layer
+      cache.value.setModels(tasks.map((task) => new TaskModel(task)));
+      cache.value.setModels(habits.map((habit) => new HabitModel(habit)));
+      cache.value.setDataPoints(dataPoints.map((dataPoint) => new NumberDataPointModel(dataPoint)));
       //calendarPlanStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded));
       status.setStatus(Status.SUCCESS);
     } catch (e) {

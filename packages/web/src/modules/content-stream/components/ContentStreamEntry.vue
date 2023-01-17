@@ -3,7 +3,7 @@ import { formatDate, isToday, formatDateWithTime, ContentModel } from '@lyvely/c
 import { computed } from 'vue';
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 import { useRouter } from 'vue-router';
-import { contentRoute } from '@/modules/content-stream/routes';
+import { contentRoute } from '@/modules/content-stream/routes/route.utils';
 import { isTextSelection } from '@/util/dom.util';
 import TagList from '@/modules/tags/components/TagList.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
