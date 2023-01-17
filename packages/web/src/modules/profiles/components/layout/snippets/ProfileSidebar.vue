@@ -84,7 +84,6 @@ watch(showSidebar, () => {
 });
 
 const isSmallView = ref(isMaxViewSize('sm'));
-
 watchMaxSize('sm', (value) => {
   isSmallView.value = value;
 });
@@ -96,10 +95,19 @@ const ariaLabel = computed(() =>
     profile: useProfileStore()?.profile?.name,
   }),
 );
+
+function onMenuItemClick(item: IMenuItem) {
+  if (item.click) item.click();
+  if (isMaxViewSize('sm')) {
+    // Note on small devices the value is reversed, since the nav is initialized a bit ugly...
+    showSidebar.value = true;
+  }
+}
 </script>
 
 <template>
   <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
+    {{ showSidebar }}
     <div
       class="h-screen fix-h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
@@ -121,7 +129,7 @@ const ariaLabel = computed(() =>
                 v-if="menuItem.click"
                 :class="menuItemClasses"
                 class="flex no-wrap items-center h-12"
-                @click="menuItem.click">
+                @click="onMenuItemClick(menuItem)">
                 <ly-icon :name="menuItem.icon" class="w-5" />
                 <transition name="fade">
                   <span v-if="showLabels" class="menu-item">
@@ -133,7 +141,8 @@ const ariaLabel = computed(() =>
                 v-if="menuItem.to"
                 :class="menuItemClasses"
                 class="flex no-wrap items-center h-12"
-                :to="menuItem.to">
+                :to="menuItem.to"
+                @click="onMenuItemClick(menuItem)">
                 <ly-icon :name="menuItem.icon" class="w-5" />
                 <transition name="fade">
                   <span v-if="showLabels" class="menu-item">
