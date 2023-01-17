@@ -48,6 +48,8 @@
 
     --zindex-modal: 1000;
     --zindex-modal-active: 1001;
+
+    --vh: 100vh;
 }
 
 .dark {
