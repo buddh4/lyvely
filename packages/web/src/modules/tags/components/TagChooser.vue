@@ -36,7 +36,12 @@ const model = computed({
 </script>
 
 <template>
-  <ly-badge-chooser v-model="model" :input-id="inputId" :options="options" :label="label" />
+  <ly-badge-chooser
+    v-model="model"
+    :input-id="inputId"
+    :options="options"
+    :label="label"
+    :add="true" />
 </template>
 
 <style scoped></style>
