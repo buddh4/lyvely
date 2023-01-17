@@ -7,8 +7,9 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { ServiceExceptionsFilter, ConfigurationPath } from '@/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from '@/app-module.builder';
-import helmet, { HelmetOptions } from 'helmet';
+import helmet from 'helmet';
 import csurf from 'csurf';
+import compression from 'compression';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
 import { FeatureModule, FeatureGuard } from '@/features';
 
@@ -38,6 +39,7 @@ export class LyvelyServer {
     this.initGuards();
     this.initCookieParser();
     this.initCsurf();
+    this.initCompression();
 
     this.initGlobalPipes();
     this.initGlobalFilters();
@@ -53,9 +55,17 @@ export class LyvelyServer {
   }
 
   private initHelmet() {
-    const helmetConfig = this.configService.get<HelmetOptions | false>('helmet', {});
+    const helmetConfig = this.configService.get('helmet', {});
     if (helmetConfig !== false) {
       this.nestApp.use(helmet(helmetConfig));
+    }
+  }
+
+  private initCompression() {
+    const compressionOptions = this.configService.get('http.compression', {});
+    if (compressionOptions !== false) {
+      const options = typeof compressionOptions === 'boolean' ? {} : compressionOptions;
+      this.nestApp.use(compression(options));
     }
   }
 

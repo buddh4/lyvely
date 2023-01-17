@@ -3,6 +3,7 @@ import { MailerOptions } from '@nestjs-modules/mailer';
 import { ServeStaticModuleOptions } from '@nestjs/serve-static';
 import { NestedPaths, TypeFromPath } from '@lyvely/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
+import { Request, Response } from 'express';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -11,8 +12,19 @@ export type LyvelyMailOptions = MailerOptions & {
   footerSubtext?: string;
 };
 
+export type CompressionOptions = {
+  chunkSize?: number;
+  filter?: (req: Request, res: Response) => boolean;
+  level?: -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  memLevel?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  strategy?: number;
+  threshold?: number;
+  windowBits?: number;
+};
+
 export type LyvelyHttpOptions = {
   appUrl?: string;
+  compression?: CompressionOptions | boolean;
   baseUrl: string;
   host: string;
   port: number;
