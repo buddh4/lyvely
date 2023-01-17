@@ -54,6 +54,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@intlify/unplugin-vue-i18n": "^0.8.1",
     "@types/chart.js": "^2.9.34",
     "@types/js-cookie": "^3.0.2",
     "@types/lodash": "^4.14.191",

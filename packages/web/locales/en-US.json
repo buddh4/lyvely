@@ -11,7 +11,7 @@
     "label": "Help",
     "modal": {
       "title": "How can we help you?",
-      "title_new": "Welcome to {{ appName }}?",
+      "title_new": "Welcome to {appName}?",
       "text_intro": "It seems this is your first day using {appName}. If you wish we can give you a short {introductionLink}, for an in-depth documentation please visit {docLink}.",
       "introductionLinkText": "introduction tour",
       "buttons": {
