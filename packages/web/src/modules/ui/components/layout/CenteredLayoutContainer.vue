@@ -30,10 +30,9 @@ const widthClass = computed(
   <section class="flex md:p-4 justify-center md:rounded md:h-screen w-full">
     <div
       :class="[
-        'bg-main main w-full p-4 md:border h-screen md:h-auto border-divide md:rounded shadow-xl m-auto',
+        'bg-main main w-full p-4 md:border h-screen fix-h-screen md:h-auto border-divide md:rounded shadow-xl m-auto',
         widthClass,
-      ]"
-    >
+      ]">
       <slot name="header">
         <h1 class="text-center text-xl">
           <slot name="title">{{ $t(title) }}</slot>

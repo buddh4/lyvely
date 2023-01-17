@@ -139,7 +139,7 @@ function onKeyDown(evt: KeyboardEvent) {
       <div
         v-if="modelValue"
         ref="rootEl"
-        class="min-w-screen h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover overflow-y-auto"
+        class="min-w-screen h-screen fix-h-screen animated fadeIn faster fixed left-0 top-0 flex justify-center items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat bg-center bg-cover overflow-y-auto"
         tabindex="1"
         role="dialog"
         aria-hidden="false"

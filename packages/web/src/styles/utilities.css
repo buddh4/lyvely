@@ -1,6 +1,12 @@
 @tailwind utilities;
 
 @layer utilities {
+
+    /* Fixes 100vh on mobile devices which do include address bar etc to the 100vh*/
+    .fix-h-screen {
+        min-height: calc(var(--vh) * 100);
+    }
+
     .focus-hidden {
         outline: none;
     }
