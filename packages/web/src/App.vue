@@ -38,18 +38,12 @@ const layoutDefintion = computed<{ component: any; props: any } | undefined>(() 
   };
 });
 
+/* Fixes 100vh on mobile devices which do include address bar to the 100vh*/
 function calculateVh() {
-  var vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', vh + 'px');
+  document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
 }
-
-// Initial calculation
 calculateVh();
-
-// Re-calculate on resize
 window.addEventListener('resize', calculateVh);
-
-// Re-calculate on device orientation change
 window.addEventListener('orientationchange', calculateVh);
 </script>
 
