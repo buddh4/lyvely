@@ -146,6 +146,11 @@ function getBadgeClass(option: IChooserOption) {
 function getColor(option: IChooserOption) {
   return typeof option === 'object' ? option.color : undefined;
 }
+
+const showAddEntry = computed(
+  () => props.add && query.value.length && !isExistingOption(query.value),
+);
+const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.length);
 </script>
 
 <template>
@@ -223,9 +228,9 @@ function getColor(option: IChooserOption) {
             :class="getBadgeClass(option)" />
         </div>
         <div
-          v-if="add && query.length && !isExistingOption(query)"
+          v-if="showAddEntry"
           data-badge-selection
-          :class="[entryClass, 'rounded-b']"
+          :class="[entryClass]"
           tabindex="0"
           @click="addSelection(query)"
           @keyup.enter.prevent.stop="addSelection(query)"
@@ -236,6 +241,13 @@ function getColor(option: IChooserOption) {
               <b>{{ query }}</b>
             </template>
           </i18n-t>
+        </div>
+        <div
+          v-if="showEmptyEntry"
+          data-badge-selection
+          class="flex items-center gap-2 border-divide bg-main p-2 md:p-4 p-2 md:p-4">
+          <span v-if="query">{{ $t('common.empty_result_filter') }}</span>
+          <span v-else>{{ $t('common.empty_result') }}</span>
         </div>
       </div>
     </div>

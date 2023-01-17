@@ -85,6 +85,8 @@
   },
   "common": {
     "create-new": "Create new",
+    "empty_result": "No entries available.",
+    "empty_result_filter": "No entries found for the given filter.",
     "close": "Close",
     "reload": "Reload",
     "cancel": "Cancel",
