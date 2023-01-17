@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import MyAccountHeader from '@/modules/account/components/MyAccountHeader.vue';
 import { useAccountStore } from '@/modules/account/stores/account.store';
+import { isMaxViewSize } from '@/util';
 
 const accountStore = useAccountStore();
-accountStore.showAccountDrawer = true;
+if (!isMaxViewSize('sm')) {
+  accountStore.showAccountDrawer = true;
+}
 </script>
 
 <template>

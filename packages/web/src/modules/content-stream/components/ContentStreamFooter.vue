@@ -33,10 +33,10 @@ const placeholderKey =
       <content-stream-filter-navigation :filter="filter" />
     </div>
     <div class="flex flex-col">
-      <div class="flex gap-1 md:gap-2">
-        <ly-button class="primary rounded-full w-10 h-10 flex items-center"
-          ><ly-icon name="plus"></ly-icon
-        ></ly-button>
+      <div class="flex gap-1 md:gap-3">
+        <ly-button class="primary rounded-full w-10 h-10 flex items-center">
+          <ly-icon name="plus"></ly-icon>
+        </ly-button>
         <input
           v-model="model.text"
           type="text"

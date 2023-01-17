@@ -7,6 +7,8 @@ import { usePageStore } from '@/modules/core/store/page.store';
 import { useHelpStore } from '@/modules/help/stores/help.store';
 import NotificationDrawer from '@/modules/notifications/components/NotificationDrawer.vue';
 import { useNotificationStore } from '@/modules/notifications/stores/notifications.store';
+import { onBeforeRouteLeave } from 'vue-router';
+import { isMaxViewSize } from '@/util';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();
@@ -44,6 +46,12 @@ function showHelp() {
 
 const { toggleDark } = pageStore;
 const { isDark } = toRefs(pageStore);
+
+function onMenuItemClick() {
+  if (isMaxViewSize('sm')) {
+    showAccountDrawer.value = false;
+  }
+}
 </script>
 
 <template>
@@ -65,25 +73,41 @@ const { isDark } = toRefs(pageStore);
     <nav>
       <ul>
         <li>
-          <router-link :to="{ name: 'MyAccountInfo' }" :class="menuItemClass" draggable="false">
+          <router-link
+            :to="{ name: 'MyAccountInfo' }"
+            :class="menuItemClass"
+            draggable="false"
+            @click="onMenuItemClick">
             <ly-icon name="account" />
             {{ $t('account.drawer.myAccount') }}
           </router-link>
         </li>
         <li>
-          <router-link to="/" :class="menuItemClass" draggable="false">
+          <router-link to="/" :class="menuItemClass" draggable="false" @click="onMenuItemClick">
             <ly-icon name="security" />
             {{ $t('account.drawer.security') }}
           </router-link>
         </li>
         <li>
-          <a :class="menuItemClass" draggable="false" @click="showHelp">
+          <a
+            :class="menuItemClass"
+            draggable="false"
+            @click="
+              showHelp();
+              onMenuItemClick();
+            ">
             <ly-icon name="help" />
             {{ $t('help.label') }}
           </a>
         </li>
         <li>
-          <a :class="menuItemClass" draggable="false" @click="toggleDark()">
+          <a
+            :class="menuItemClass"
+            draggable="false"
+            @click="
+              toggleDark();
+              onMenuItemClick();
+            ">
             <ly-icon v-if="isDark" name="light-mode" />
             <ly-icon v-else name="dark-mode" />
             <span v-if="isDark">{{ $t('page.toLightMode') }}</span>
