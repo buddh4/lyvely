@@ -37,9 +37,19 @@ import AppComponent from '@/App.vue';
 import { createApp } from 'vue';
 import TimeNumberInput from '@/modules/ui/components/form/TimeNumberInput.vue';
 import ButtonUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
+import { registerSW } from 'virtual:pwa-register';
 
 const app = new LyvelyApp();
 app.init().then(() => app.mount('#app'));
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    app.events.emit('app.need.refresh', updateSW);
+  },
+  onOfflineReady() {
+    app.events.emit('app.offline.ready');
+  },
+});
 
 function justForWebstorm() {
   const vueApp = createApp(AppComponent);
@@ -79,5 +89,3 @@ function justForWebstorm() {
   app.vueApp.component('LyContentPanel', ContentPanel);
   app.vueApp.component('LyScreenReaderValidationError', ScreenReaderValidationError);
 }
-
-console.log('App initialized');

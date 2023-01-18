@@ -23,11 +23,14 @@
     },
     "types": [
       "reflect-metadata",
+      "vite-plugin-pwa/client",
       "node"
     ],
     "lib": [
       "esnext",
       "dom",
+      "ESNext",
+      "WebWorker",
       "DOM",
       "dom.iterable",
       "scripthost"

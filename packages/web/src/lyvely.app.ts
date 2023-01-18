@@ -41,7 +41,7 @@ import FormattedDate from '@/modules/ui/components/intl/FormattedDate.vue';
 import ContentPanel from '@/modules/ui/components/panels/ContentPanel.vue';
 import ScreenReaderValidationError from '@/modules/ui/components/error/ScreenReaderValidationError.vue';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
-import { eventBus } from '@/modules/core/events/global.emitter';
+import { eventBus, AppEvents } from '@/modules/core/events/global.emitter';
 import AvatarImage from '@/modules/ui/components/avatar/AvatarImage.vue';
 import BadgeChooser from '@/modules/ui/components/form/BadgeChooser.vue';
 
@@ -49,13 +49,15 @@ export class LyvelyApp {
   vueApp: App;
   pinia: Pinia;
   i18n: I18n;
+  events: AppEvents;
 
   async init() {
-    eventBus.emit('app.init.pre');
+    this.events = eventBus;
+    this.events.emit('app.init.pre');
     this.setupPinia();
     await this.setupI18n();
     this.createApp();
-    eventBus.emit('app.init.post', this);
+    this.events.emit('app.init.post', this);
     return this;
   }
 
@@ -82,9 +84,9 @@ export class LyvelyApp {
   }
 
   mount(selector: string) {
-    eventBus.emit('app.mount.pre', this);
+    this.events.emit('app.mount.pre', this);
     this.vueApp.mount(selector);
-    eventBus.emit('app.mount.post', this);
+    this.events.emit('app.mount.post', this);
   }
 
   private setGlobalComponents() {

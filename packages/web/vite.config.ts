@@ -3,6 +3,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import vuePlugin from '@vitejs/plugin-vue';
 import { resolve, dirname } from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import {VitePWA} from "vite-plugin-pwa";
 
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
@@ -17,6 +18,46 @@ export default defineConfig({
         resolve(__dirname, './src/modules/*/locales/**'),
       ],
     }),
+    VitePWA({
+      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'safari-pinned-tab.svg'],
+      strategies: 'injectManifest',
+      srcDir: 'src',
+      filename: 'sw.ts',
+      registerType: 'prompt',
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        cleanupOutdatedCaches: true
+      },
+      manifest: {
+        name: 'lyvely',
+        short_name: 'lyvely',
+        description: 'lyvely PWA',
+        theme_color: '#ffffff',
+        icons: [
+          {
+            src: 'android-chrome-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'android-chrome-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          },
+          {
+            src: 'android-chrome-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
+          }
+        ]
+      },
+      devOptions: {
+        enabled: true,
+        type: 'module',
+        navigateFallback: 'index.html'
+      }
+    })
   ],
   server: {
     port: 3000,
@@ -25,6 +66,7 @@ export default defineConfig({
     alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],
   },
   build: {
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {},

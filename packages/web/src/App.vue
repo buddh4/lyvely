@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router';
 import { watch, ref, computed, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
+import ReloadPrompt from '@/modules/core/components/ReloadPrompt.vue';
 
 const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRefs(
   useGlobalDialogStore(),
@@ -57,9 +58,9 @@ window.addEventListener('orientationchange', calculateVh);
       <router-view></router-view>
     </template>
   </div>
-  <MobileFooterNavigation v-if="isAuthenticated" />
-  <AppLoader />
-  <AriaLiveStatus />
+  <mobile-footer-navigation v-if="isAuthenticated" />
+  <app-loader />
+  <aria-live-status />
   <dialog-window
     v-model="visible"
     :icon="icon"
@@ -68,4 +69,5 @@ window.addEventListener('orientationchange', calculateVh);
     :title="title"
     :button-type="buttonType"
     :message="message" />
+  <reload-prompt />
 </template>
