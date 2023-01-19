@@ -1,8 +1,8 @@
 import { StrictEndpoint } from '@/endpoints';
-import { IAbstractContentService } from '@/content';
+import { IContentTypeService } from '@/content';
 import { CreateMessage, MessageModel } from '../models';
 
-export interface IMessageClient extends IAbstractContentService<MessageModel, CreateMessage> {}
+export interface IMessageClient extends IContentTypeService<MessageModel, CreateMessage> {}
 
 export type MessageEndpoint = StrictEndpoint<IMessageClient>;
 

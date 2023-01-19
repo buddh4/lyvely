@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useDark, useToggle } from '@vueuse/core';
+import { useDark, useToggle, useOnline } from '@vueuse/core';
 import { ref } from 'vue';
 
 export const usePageStore = defineStore('page', () => {
@@ -10,6 +10,7 @@ export const usePageStore = defineStore('page', () => {
   const showAppLoader = ref(true);
   const modalStack = ref<Array<string>>([]);
   const drawerStack = ref<Array<string>>([]);
+  const isOnline = useOnline();
 
   function setTitle(title: Array<string> | string) {
     setPageTitle(title);
@@ -68,6 +69,7 @@ export const usePageStore = defineStore('page', () => {
     setShowAppLoader,
     showAppLoader,
     setTitle,
+    isOnline,
   };
 });
 

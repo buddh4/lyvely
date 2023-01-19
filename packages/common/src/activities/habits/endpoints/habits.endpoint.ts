@@ -1,6 +1,6 @@
 import { Endpoint } from '@/endpoints';
 import { NumberDataPointModel } from '@/time-series';
-import { IAbstractContentService } from '@/content';
+import { IContentTypeService } from '@/content';
 import {
   HabitModel,
   UpdateHabitResponse,
@@ -12,7 +12,7 @@ import {
 } from '../models';
 
 export interface IHabitsEndpointService
-  extends IAbstractContentService<HabitModel, CreateHabitModel, UpdateHabitModel> {
+  extends IContentTypeService<HabitModel, CreateHabitModel, UpdateHabitModel> {
   create(dto: CreateHabitModel): Promise<UpdateHabitResponse>;
   update(id: string, update: UpdateHabitModel): Promise<UpdateHabitResponse>;
   updateDataPoint(

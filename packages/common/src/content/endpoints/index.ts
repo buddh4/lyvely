@@ -1,1 +1,2 @@
-export * from './abstract-content.endpoint';
+export * from './abstract-content-type.endpoint';
+export * from './content.endpoint';

@@ -70,6 +70,14 @@ export class Content<
     };
   }
 
+  hasParent() {
+    return !!this.meta.parentId;
+  }
+
+  getParentId() {
+    return this.meta.parentId;
+  }
+
   getDefaultConfig(): TConfig {
     return undefined;
   }

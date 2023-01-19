@@ -33,4 +33,38 @@ export class ContentService {
 
     return content;
   }
+
+  /**
+   * Archives a content, only if the user has the required write permissions.
+   *
+   * @param context
+   * @param identity
+   * @throws EntityNotFoundException
+   */
+  async archive(context: ProfileRelation, identity: EntityIdentity<Content>): Promise<Content> {
+    const content = await this.contentDao.archive(context, identity);
+    if (content && content.meta.parentId) {
+      this.contentDao.decrementChildCount(context, content.meta.parentId).catch((e) => {
+        this.logger.error(e);
+      });
+    }
+    return content;
+  }
+
+  /**
+   * Un-archives a content, only if the user has the required write permissions.
+   *
+   * @param context
+   * @param identity
+   * @throws EntityNotFoundException
+   */
+  async unarchive(context: ProfileRelation, identity: EntityIdentity<Content>): Promise<Content> {
+    const content = await this.contentDao.unarchive(context, identity);
+    if (content && content.meta.parentId) {
+      this.contentDao.incrementChildCount(context, content.meta.parentId).catch((e) => {
+        this.logger.error(e);
+      });
+    }
+    return content;
+  }
 }

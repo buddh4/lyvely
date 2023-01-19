@@ -6,13 +6,13 @@ import {
   MoveAction,
 } from '@lyvely/common';
 import { ActivitiesService } from '../services/activities.service';
-import { ContentController, ContentWritePolicy, ProfileContentRequest } from '@/content';
+import { ContentTypeController, ContentWritePolicy, ProfileContentRequest } from '@/content';
 import { Activity } from '../schemas';
 import { ProfileRequest } from '@/profiles';
 import { Policies } from '@/policies';
 import { UseClassSerializer } from '@/core';
 
-@ContentController('activities')
+@ContentTypeController('activities')
 // TODO: implement feature registration @Feature('activities')
 @UseClassSerializer()
 export class ActivitiesController {

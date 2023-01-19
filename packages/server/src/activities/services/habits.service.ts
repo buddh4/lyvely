@@ -1,13 +1,13 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Habit } from '../schemas';
-import { AbstractContentService } from '@/content';
+import { AbstractContentTypeService } from '@/content';
 import { HabitsDao } from '../daos/habits.dao';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { CreateHabitModel, UpdateTaskModel } from '@lyvely/common';
 
 @Injectable()
-export class HabitsService extends AbstractContentService<Habit, CreateHabitModel> {
+export class HabitsService extends AbstractContentTypeService<Habit, CreateHabitModel> {
   @Inject()
   protected contentDao: HabitsDao;
 

@@ -2320,7 +2320,7 @@
 <!-- src/modules/content/services/abstract&#45;content.service.ts -->
 <g id="node93" class="node">
 <title>src/modules/content/services/abstract&#45;content.service.ts</title>
-<g id="a_node93"><a xlink:href="src/modules/content/services/abstract-content.service.ts" xlink:title="abstract&#45;content.service.ts">
+<g id="a_node93"><a xlink:href="src/modules/content/services/abstract-content-type.service.ts" xlink:title="abstract&#45;content.service.ts">
 <path fill="#ddfeff" stroke="black" d="M1484,-3427C1484,-3427 1358,-3427 1358,-3427 1355,-3427 1352,-3424 1352,-3421 1352,-3421 1352,-3415 1352,-3415 1352,-3412 1355,-3409 1358,-3409 1358,-3409 1484,-3409 1484,-3409 1487,-3409 1490,-3412 1490,-3415 1490,-3415 1490,-3421 1490,-3421 1490,-3424 1487,-3427 1484,-3427"/>
 <text text-anchor="start" x="1360" y="-3415.8" font-family="Helvetica,sans-Serif" font-size="9.00">abstract&#45;content.service.ts</text>
 </a>
@@ -2365,7 +2365,7 @@
 <!-- src/modules/content/controllers/abstract&#45;content.controller.ts -->
 <g id="node64" class="node">
 <title>src/modules/content/controllers/abstract&#45;content.controller.ts</title>
-<g id="a_node64"><a xlink:href="src/modules/content/controllers/abstract-content.controller.ts" xlink:title="abstract&#45;content.controller.ts">
+<g id="a_node64"><a xlink:href="src/modules/content/controllers/abstract-content-type.controller.ts" xlink:title="abstract&#45;content.controller.ts">
 <path fill="#ddfeff" stroke="black" d="M1069.5,-3628C1069.5,-3628 932.5,-3628 932.5,-3628 929.5,-3628 926.5,-3625 926.5,-3622 926.5,-3622 926.5,-3616 926.5,-3616 926.5,-3613 929.5,-3610 932.5,-3610 932.5,-3610 1069.5,-3610 1069.5,-3610 1072.5,-3610 1075.5,-3613 1075.5,-3616 1075.5,-3616 1075.5,-3622 1075.5,-3622 1075.5,-3625 1072.5,-3628 1069.5,-3628"/>
 <text text-anchor="start" x="934.5" y="-3616.8" font-family="Helvetica,sans-Serif" font-size="9.00">abstract&#45;content.controller.ts</text>
 </a>

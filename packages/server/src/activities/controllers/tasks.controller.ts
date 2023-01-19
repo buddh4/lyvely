@@ -19,18 +19,18 @@ import {
 } from '@lyvely/common';
 import { TasksService } from '../services/tasks.service';
 import {
-  AbstractContentController,
-  ContentController,
+  AbstractContentTypeController,
+  ContentTypeController,
   ContentWritePolicy,
   ProfileContentRequest,
 } from '@/content';
 import { Policies } from '@/policies';
 
-@ContentController('tasks', Task)
+@ContentTypeController('tasks', Task)
 // TODO: implement feature registration @Feature('content.activities.tasks')
 @UseInterceptors(ClassSerializerInterceptor)
 export class TasksController
-  extends AbstractContentController<Task, CreateTaskModel, UpdateTaskModel>
+  extends AbstractContentTypeController<Task, CreateTaskModel, UpdateTaskModel>
   implements TasksEndpoint
 {
   @Inject()

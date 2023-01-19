@@ -7,10 +7,10 @@ import {
   UpdateTaskModel,
   CreateTaskModel,
 } from '../models';
-import { IAbstractContentService } from '@/content';
+import { IContentTypeService } from '@/content';
 
 export interface ITasksEndpointService
-  extends IAbstractContentService<TaskModel, CreateTaskModel, UpdateTaskModel> {
+  extends IContentTypeService<TaskModel, CreateTaskModel, UpdateTaskModel> {
   create(dto: CreateTaskModel): Promise<UpdateTaskResponse>;
   update(id: string, update: UpdateTaskModel): Promise<UpdateTaskResponse>;
   setDone(id: string, date: CalendarDate): Promise<UpdateTaskStateResponse>;

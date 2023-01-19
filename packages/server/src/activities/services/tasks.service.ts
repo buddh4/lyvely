@@ -10,13 +10,13 @@ import {
 } from '@lyvely/common';
 import { User } from '@/users';
 import { TasksDao } from '../daos/tasks.dao';
-import { AbstractContentService, ContentScoreService } from '@/content';
+import { AbstractContentTypeService, ContentScoreService } from '@/content';
 import { ActivityScore } from '../schemas/activity-score.schema';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { Timer } from '@/calendar';
 
 @Injectable()
-export class TasksService extends AbstractContentService<Task, CreateTaskModel> {
+export class TasksService extends AbstractContentTypeService<Task, CreateTaskModel> {
   @Inject()
   protected contentDao: TasksDao;
 

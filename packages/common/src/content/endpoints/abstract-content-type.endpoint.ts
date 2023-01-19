@@ -1,9 +1,9 @@
 import { Endpoint } from '@/endpoints';
-import { IArchiveModelService, IEditModelService } from '@/models';
+import { IEditModelService } from '@/models';
 import { ContentUpdateResponse, CreateContentModel } from '../models';
 import { IContent } from '../interfaces';
 
-export interface IAbstractContentService<
+export interface IContentTypeService<
   TModel extends IContent,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
@@ -13,8 +13,8 @@ export interface IAbstractContentService<
   update(id: string, model: TUpdateModel): Promise<TResponse>;
 }
 
-export type AbstractContentEndpoint<
+export type ContentTypeEndpoint<
   TModel extends IContent,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
-> = Endpoint<IAbstractContentService<TModel, TCreateModel, TUpdateModel>>;
+> = Endpoint<IContentTypeService<TModel, TCreateModel, TUpdateModel>>;

@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import vuePlugin from '@vitejs/plugin-vue';
-import { resolve, dirname } from 'path';
+import { resolve } from 'path';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
-import {VitePWA} from "vite-plugin-pwa";
+import { VitePWA } from 'vite-plugin-pwa';
 
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
@@ -26,7 +26,7 @@ export default defineConfig({
       registerType: 'prompt',
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-        cleanupOutdatedCaches: true
+        cleanupOutdatedCaches: true,
       },
       manifest: {
         name: 'lyvely',
@@ -37,27 +37,27 @@ export default defineConfig({
           {
             src: 'android-chrome-192x192.png',
             sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: 'android-chrome-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'android-chrome-512x512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
-          }
-        ]
+          },
+          {
+            src: 'android-chrome-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+        ],
       },
       devOptions: {
         enabled: true,
         type: 'module',
-        navigateFallback: 'index.html'
-      }
-    })
+        navigateFallback: 'index.html',
+      },
+    }),
   ],
   server: {
     port: 3000,
@@ -67,6 +67,7 @@ export default defineConfig({
   },
   build: {
     sourcemap: true,
+    minify: false,
     rollupOptions: {
       output: {
         manualChunks: {},

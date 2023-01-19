@@ -7,4 +7,5 @@ export * from './guards';
 export * from './interfaces';
 export * from './policies';
 export * from './services';
+export * from './types';
 export * from './content.module';

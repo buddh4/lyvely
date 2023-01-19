@@ -1,11 +1,11 @@
 import { Body, Param, Post, Put, Request } from '@nestjs/common';
 import { Content } from '../schemas';
-import { AbstractContentService } from '../services';
+import { AbstractContentTypeService } from '../services';
 import { ProfileContentRequest } from '../types';
 import { Policies } from '@/policies';
 import { ContentWritePolicy } from '../policies';
 import {
-  AbstractContentEndpoint,
+  ContentTypeEndpoint,
   ContentModel,
   CreateContentModel,
   TagModel,
@@ -15,14 +15,14 @@ import {
 import { Profile, ProfileRequest } from '@/profiles';
 import { User } from '@/users';
 
-export abstract class AbstractContentController<
+export abstract class AbstractContentTypeController<
   TContent extends Content,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
   TModel extends ContentModel = ReturnType<TContent['toModel']>,
-> implements AbstractContentEndpoint<TModel, TCreateModel, TUpdateModel>
+> implements ContentTypeEndpoint<TModel, TCreateModel, TUpdateModel>
 {
-  protected abstract contentService: AbstractContentService<TContent, TCreateModel>;
+  protected abstract contentService: AbstractContentTypeService<TContent, TCreateModel>;
   protected abstract updateResponseType: Type<ContentUpdateResponse<TModel>>;
 
   @Post()
@@ -59,19 +59,5 @@ export abstract class AbstractContentController<
     response.model = <TModel>content.toModel(user);
     response.tags = profile.getNewTags().map((tag) => new TagModel(tag));
     return response;
-  }
-
-  @Post(':cid/archive')
-  @Policies(ContentWritePolicy)
-  async archive(@Param('cid') cid: string, @Request() req: ProfileContentRequest<TContent>) {
-    const { context, content } = req;
-    await this.contentService.archive(context, content);
-  }
-
-  @Post(':cid/unarchive')
-  @Policies(ContentWritePolicy)
-  async unarchive(@Param('cid') cid: string, @Request() req: ProfileContentRequest<TContent>) {
-    const { context, content } = req;
-    await this.contentService.unarchive(context, content);
   }
 }

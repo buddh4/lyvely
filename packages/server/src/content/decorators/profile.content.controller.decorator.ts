@@ -1,5 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import { ProfileGuard } from '../../profiles';
+import { ProfileGuard } from '@/profiles';
 import { CanActivate } from '@nestjs/common/interfaces';
 import { StrictContentType } from './strict-content-type.decorator';
 import { Content } from '../schemas';
@@ -7,7 +7,7 @@ import { ContentGuard } from '../guards';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const ContentController = (
+export const ContentTypeController = (
   prefix: string | string[],
   contentType?: string | Type<Content>,
   ...guards: (CanActivate | Function)[]

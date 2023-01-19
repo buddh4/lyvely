@@ -13,18 +13,18 @@ import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
 import {
   ProfileContentRequest,
-  ContentController,
+  ContentTypeController,
   ContentWritePolicy,
-  AbstractContentController,
+  AbstractContentTypeController,
 } from '@/content';
 import { Policies } from '@/policies/decorators/policies.decorator';
 import { UseClassSerializer } from '@/core';
 
-@ContentController('habits', Habit)
+@ContentTypeController('habits', Habit)
 // TODO: implement feature registration @Feature('content.activities.habits')F
 @UseClassSerializer()
 export class HabitsController
-  extends AbstractContentController<Habit, CreateHabitModel, UpdateHabitModel>
+  extends AbstractContentTypeController<Habit, CreateHabitModel, UpdateHabitModel>
   implements HabitsEndpoint
 {
   @Inject()
