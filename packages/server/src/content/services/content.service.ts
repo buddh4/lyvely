@@ -2,8 +2,9 @@ import { Content } from '../schemas';
 import { Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { EntityNotFoundException } from '@lyvely/common';
-import { ProfileRelation } from '@/profiles';
+import { ProfileShard } from '@/profiles';
 import { EntityIdentity } from '@/core';
+import { User } from '@/users';
 
 @Injectable()
 export class ContentService {
@@ -21,15 +22,13 @@ export class ContentService {
    * @throws EntityNotFoundException
    */
   public async findContentByProfileAndId(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     id: EntityIdentity<Content>,
-    throwException = true,
+    throwException = false,
   ): Promise<Content> {
     const content = await this.contentDao.findByProfileAndId(profileRelation, id);
 
-    if (!content && throwException) {
-      throw new EntityNotFoundException();
-    }
+    if (!content && throwException) throw new EntityNotFoundException();
 
     return content;
   }
@@ -37,14 +36,14 @@ export class ContentService {
   /**
    * Archives a content, only if the user has the required write permissions.
    *
-   * @param context
-   * @param identity
+   * @param user
+   * @param content
    * @throws EntityNotFoundException
    */
-  async archive(context: ProfileRelation, identity: EntityIdentity<Content>): Promise<Content> {
-    const content = await this.contentDao.archive(context, identity);
-    if (content && content.meta.parentId) {
-      this.contentDao.decrementChildCount(context, content.meta.parentId).catch((e) => {
+  async archive(user: User, content: Content): Promise<Content> {
+    await this.contentDao.archive(user, content);
+    if (content.meta.parentId) {
+      this.contentDao.decrementChildCount(content, content.meta.parentId).catch((e) => {
         this.logger.error(e);
       });
     }
@@ -54,14 +53,14 @@ export class ContentService {
   /**
    * Un-archives a content, only if the user has the required write permissions.
    *
-   * @param context
-   * @param identity
+   * @param user
+   * @param content
    * @throws EntityNotFoundException
    */
-  async unarchive(context: ProfileRelation, identity: EntityIdentity<Content>): Promise<Content> {
-    const content = await this.contentDao.unarchive(context, identity);
-    if (content && content.meta.parentId) {
-      this.contentDao.incrementChildCount(context, content.meta.parentId).catch((e) => {
+  async unarchive(user: User, content: Content): Promise<Content> {
+    await this.contentDao.unarchive(user, content);
+    if (content.meta.parentId) {
+      this.contentDao.incrementChildCount(content, content.meta.parentId).catch((e) => {
         this.logger.error(e);
       });
     }

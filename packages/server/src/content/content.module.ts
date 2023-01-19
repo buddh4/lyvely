@@ -1,14 +1,15 @@
 import { Global, Inject, Injectable, Module, OnModuleInit, Scope, Type } from '@nestjs/common';
-import { UsersModule } from '../users';
+import { UsersModule } from '@/users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ContentScoreService, ContentService } from './services';
-import { ProfileScore, ProfilesModule } from '../profiles';
+import { ProfileScore, ProfilesModule } from '@/profiles';
 import { ContentDao, ContentScoreDao } from './daos';
 import { ContentReadPolicy, ContentWritePolicy } from './policies';
 import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { LiveModule } from '@/live/live.module';
+import { ContentController } from '@/content/controllers';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -28,6 +29,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
 @Global()
 @Module({
   imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
+  controllers: [ContentController],
   providers: [
     ContentService,
     ContentDao,

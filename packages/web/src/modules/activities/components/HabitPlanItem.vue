@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { TimerModel, DataPointInputType, HabitModel } from '@lyvely/common';
+import { DataPointInputType, HabitModel } from '@lyvely/common';
+import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanItemMenu.vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed, onMounted, ref } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
@@ -96,6 +97,12 @@ const timer = computed(() => dataPoint.value.timer!);
     @move-up="moveUp"
     @move-down="moveDown"
     @select-tag="selectTag">
+    <template #menu>
+      <timing-list-entry-menu
+        :model="model"
+        @edit="$emit('edit', model)"
+        @archive="$emit('archive', model)" />
+    </template>
     <template #rating>
       <item-checkbox-list
         v-if="model.timeSeriesConfig.inputType === DataPointInputType.Checkbox"

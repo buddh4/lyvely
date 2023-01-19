@@ -14,15 +14,15 @@ export class ContentController implements ContentEndpoint {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Policies(ContentWritePolicy)
   async archive(@Param('cid') cid: string, @Request() req: ProfileContentRequest) {
-    const { context, content } = req;
-    await this.contentService.archive(context, content);
+    const { user, content } = req;
+    await this.contentService.archive(user, content);
   }
 
   @Post(':cid/unarchive')
   @HttpCode(HttpStatus.NO_CONTENT)
   @Policies(ContentWritePolicy)
   async unarchive(@Param('cid') cid: string, @Request() req: ProfileContentRequest) {
-    const { context, content } = req;
-    await this.contentService.unarchive(context, content);
+    const { user, content } = req;
+    await this.contentService.unarchive(user, content);
   }
 }

@@ -47,11 +47,7 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
 
     if (isValidObjectId(contentId)) {
       const { profile, context: requestContext } = request;
-      const content = await this.contentService.findContentByProfileAndId(
-        profile,
-        contentId,
-        false,
-      );
+      const content = await this.contentService.findContentByProfileAndId(profile, contentId);
 
       if (
         !content ||

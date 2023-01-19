@@ -18,7 +18,7 @@ import { FilterQuery, QueryOptions, UpdateQuery, Types } from 'mongoose';
  * This type is used as compound type for different kinds of profile relation on DAO level.
  * The BaseProfileModelDao at least requires an oid and pid for most of its queries.
  */
-export type ProfileRelation =
+export type ProfileShard =
   | Profile
   | BaseProfileModel<any>
   | { oid: Types.ObjectId; pid: Types.ObjectId };
@@ -29,7 +29,7 @@ export type ProfileRelation =
  */
 export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends AbstractDao<T> {
   async findByProfileAndId(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     identity: EntityIdentity<T>,
     options?: IBaseFetchQueryOptions<T>,
   ) {
@@ -42,7 +42,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async findAllByProfileAndIds(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     ids: EntityIdentity<T>[],
     options?: IFetchQueryOptions<T>,
   ) {
@@ -54,7 +54,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async findAllByProfile<C = T>(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     filter: FilterQuery<C>,
     options?: IFetchQueryOptions<T>,
   ): Promise<T[]> {
@@ -62,7 +62,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async findOneByProfile<C = T>(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     filter: FilterQuery<C>,
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
@@ -70,7 +70,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async updateOneByProfileAndIdSet(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     id: EntityIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IBaseQueryOptions,
@@ -79,7 +79,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async updateOneByProfileAndId(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     id: EntityIdentity<T>,
     update: UpdateQuery<T>,
     options?: IUpdateQueryOptions,
@@ -88,7 +88,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   protected async updateOneByProfileAndFilter(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     identity: EntityIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
@@ -103,7 +103,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async findOneAndSetByProfileAndId(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     id: EntityIdentity<T>,
     updateSet: UpdateQuerySet<T>,
     options?: IFindAndUpdateQueryOptions<T>,
@@ -117,7 +117,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async findOneAndUpdateByProfileAndId(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     id: EntityIdentity<T>,
     update: UpdateQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
@@ -126,7 +126,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async findOneAndUpdateByProfileAndFilter(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     id: EntityIdentity<T>,
     update: UpdateQuery<T>,
     filter?: FilterQuery<T>,
@@ -141,7 +141,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async updateSetBulkByProfile(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[],
     options?: IBaseQueryOptions,
   ) {
@@ -159,14 +159,14 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async deleteAllByProfile(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     options?: DeleteOptions,
   ): Promise<number> {
     return this.deleteMany(applyProfileFilter(profileRelation), options);
   }
 
   async deleteManyByProfile(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     filter: FilterQuery<T>,
     options?: DeleteOptions,
   ): Promise<number> {
@@ -174,7 +174,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 
   async deleteOneByProfile(
-    profileRelation: ProfileRelation,
+    profileRelation: ProfileShard,
     filter: FilterQuery<T>,
     options?: DeleteOptions,
   ): Promise<boolean> {
@@ -182,7 +182,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   }
 }
 
-function applyProfileFilter(profileRelation: ProfileRelation, filter?: FilterQuery<any>) {
+function applyProfileFilter(profileRelation: ProfileShard, filter?: FilterQuery<any>) {
   filter = filter || {};
   if (profileRelation.oid) {
     filter.oid = assureObjectId(profileRelation.oid);
@@ -193,7 +193,7 @@ function applyProfileFilter(profileRelation: ProfileRelation, filter?: FilterQue
   return filter;
 }
 
-function assureProfileId(profileRelation: ProfileRelation): Profile['_id'] {
+function assureProfileId(profileRelation: ProfileShard): Profile['_id'] {
   return profileRelation instanceof Profile
     ? profileRelation._id
     : assureObjectId(profileRelation.pid);

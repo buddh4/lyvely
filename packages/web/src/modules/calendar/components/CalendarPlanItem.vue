@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import TagList from '@/modules/tags/components/TagList.vue';
-import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanItemMenu.vue';
+
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import { TimeSeriesContentModel } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
@@ -14,7 +14,7 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), { draggable: true });
 
-const emit = defineEmits(['details', 'edit', 'archive', 'selectTag', 'moveUp', 'moveDown']);
+const emit = defineEmits(['details', 'selectTag', 'moveUp', 'moveDown']);
 
 const calendarPlanStore = useCalendarPlanStore();
 
@@ -73,12 +73,9 @@ const { model } = toRefs(props);
 
     <div>
       <div class="flex flex-col items-end">
-        <slot name="menu">
-          <timing-list-entry-menu
-            :model="model"
-            @edit="$emit('edit', model)"
-            @archive="$emit('archive', model)" />
-        </slot>
+        <div class="ml-auto">
+          <slot name="menu"></slot>
+        </div>
         <slot name="rating"></slot>
       </div>
     </div>

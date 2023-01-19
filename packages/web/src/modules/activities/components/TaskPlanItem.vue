@@ -8,6 +8,7 @@ import { useUpdateActivityStore } from '@/modules/activities/store/update-activi
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import { useActivityPlanItem } from '@/modules/activities/components/composables/useActivityPlanItem';
+import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 
 export interface IProps {
   model: TaskModel;
@@ -45,6 +46,9 @@ async function updateTimer(value: number) {
     @move-up="moveUp"
     @move-down="moveDown"
     @select-tag="selectTag">
+    <template #menu>
+      <content-dropdown :content="model"></content-dropdown>
+    </template>
     <template #pre-title>
       <div class="mr-1">
         <item-checkbox-list

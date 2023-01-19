@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, NestedSchema } from '@/core';
 import mongoose from 'mongoose';
 import { Author, ContentAuthorSchema, CreatedAs } from '@/content/schemas/content-author.schema';
@@ -42,6 +42,9 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   @Prop({ type: Date })
   @PropertyType(Date, { default: new Date() })
   updatedAt: Date;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  updatedBy: TObjectId;
 
   @Prop({ required: true })
   @PropertyType(Number)
