@@ -16,7 +16,7 @@ function onClickEdit() {}
 </script>
 
 <template>
-  <ly-dropdown button-class="pt-0 pr-0 item-menu-button">
+  <ly-dropdown button-class="item-menu-button">
     <ly-dropdown-link
       v-if="!content.meta.isArchived"
       icon="edit"

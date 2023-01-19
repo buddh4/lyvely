@@ -7,23 +7,25 @@ export interface IEditModelStoreOptions<
   TModel,
   TCreateModel,
   TUpdateModel = Partial<TCreateModel>,
+  TResponse = TModel,
   TID = string,
 > {
   partialUpdate?: boolean;
   service:
-    | IEditModelService<TModel, TCreateModel, TUpdateModel, TID>
+    | IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>
     | ((
         editModel: TCreateModel | TUpdateModel,
-      ) => IEditModelService<TModel, TCreateModel, TUpdateModel, TID>);
-  onSubmitSuccess?: (response?: TModel) => void;
+      ) => IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>);
+  onSubmitSuccess?: (response?: TResponse) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
 export function useUpdateModelStore<
   TModel,
   TCreateModel extends object,
   TUpdateModel extends object = Partial<TCreateModel>,
+  TResponse = TModel,
   TID = string,
->(options: IEditModelStoreOptions<TModel, TCreateModel, TUpdateModel, TID>) {
+>(options: IEditModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse, TID>) {
   type TEditModel = TUpdateModel | TCreateModel;
   const model = ref<TEditModel>();
   let original: TEditModel | undefined = undefined;
@@ -71,14 +73,14 @@ export function useUpdateModelStore<
     }
 
     try {
-      const response = await loadingStatus<TModel | false, TModel | false>(
+      const response = await loadingStatus<TResponse | false>(
         isCreate.value ? _createModel() : _editModel(),
         status,
         validator.value,
       );
 
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
-        options.onSubmitSuccess(<TModel>response);
+        options.onSubmitSuccess(<TResponse>response);
       }
 
       reset();
@@ -90,7 +92,7 @@ export function useUpdateModelStore<
     }
   }
 
-  async function _createModel(): Promise<TModel> {
+  async function _createModel(): Promise<TResponse> {
     if (!model.value) {
       throw new Error('Could not create model without value');
     }
@@ -102,7 +104,7 @@ export function useUpdateModelStore<
     );
   }
 
-  async function _editModel(): Promise<TModel | false> {
+  async function _editModel(): Promise<TResponse | false> {
     if (!model.value || !modelId.value || !original) {
       throw new Error('Could not edit model without value');
     }

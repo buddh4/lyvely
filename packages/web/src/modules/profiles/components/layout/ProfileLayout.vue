@@ -9,6 +9,8 @@ import CreateProfileModal from '../modals/CreateProfileModal.vue';
 import InviteUsersModal from '../modals/InviteUsersModal.vue';
 import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
 import HelpModal from '@/modules/help/components/HelpModal.vue';
+import { useContentStore } from '@/modules/content/stores/content.store';
+import { useEditContentStore } from '@/modules/content/stores/edit-content.store';
 
 export interface IProps {
   containerWidth?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
@@ -37,6 +39,10 @@ const show = computed(() => (props.requireAuth ? useAuthStore().isAuthenticated 
 const IntroductionTour = defineAsyncComponent(
   () => import('@/modules/help/components/IntroductionTour.vue'),
 );
+
+const contentStore = useEditContentStore();
+const { getEditModalComponent, getCreateModalComponent } = contentStore;
+const { showEditModal, showCreateModal } = storeToRefs(contentStore);
 </script>
 
 <template>
@@ -54,6 +60,8 @@ const IntroductionTour = defineAsyncComponent(
   <help-modal />
   <create-profile-modal />
   <invite-users-modal />
+  <component :is="getEditModalComponent()" v-if="showEditModal" />
+  <component :is="getCreateModalComponent()" v-else-if="showCreateModal" />
 </template>
 
 <style scoped></style>

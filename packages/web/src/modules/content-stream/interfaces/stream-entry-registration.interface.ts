@@ -1,8 +1,12 @@
 import { Component } from 'vue';
 import { IStreamEntryProps } from './stream-entry-props.interface';
 import { IContentDetailsProps } from './content-details-props.interface';
-import { ContentModel, Lazy, Type } from '@lyvely/common';
+import { ContentModel, CreateContentModel, Lazy, Type } from '@lyvely/common';
 import { RouteLocationRaw } from 'vue-router';
+import {
+  ICreateContentModalProps,
+  IEditContentModalProps,
+} from '@/modules/content/interfaces/edit-content-modal-props.interface';
 
 export enum EditMode {
   Modal = 'modal',
@@ -13,7 +17,13 @@ export type ComponentRegistration<Props> = Component<Props> | Lazy<Component<Pro
 
 export type ModalEdit = {
   mode: EditMode.Modal;
-  component: ComponentRegistration<IStreamEntryProps>;
+  component: ComponentRegistration<IEditContentModalProps>;
+};
+
+export type ModalCreate = {
+  mode: EditMode.Modal;
+  component: ComponentRegistration<ICreateContentModalProps>;
+  modelType: Type<CreateContentModel>;
 };
 
 export type RouteEdit = {
@@ -41,5 +51,6 @@ export interface IContentTypeOptions {
   modelClass: Type<ContentModel>;
   meta?: IContentTypeMeta;
   stream?: IContentTypeStreamOptions;
+  create?: ModalCreate | RouteEdit;
   edit?: ModalEdit | RouteEdit;
 }

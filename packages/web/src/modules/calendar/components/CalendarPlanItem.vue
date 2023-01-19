@@ -73,7 +73,7 @@ const { model } = toRefs(props);
 
     <div>
       <div class="flex flex-col items-end">
-        <div class="ml-auto">
+        <div class="ml-auto pb-3">
           <slot name="menu"></slot>
         </div>
         <slot name="rating"></slot>
@@ -82,8 +82,4 @@ const { model } = toRefs(props);
   </div>
 </template>
 
-<style scoped>
-.icon-drag {
-  margin-left: -5px;
-}
-</style>
+<style scoped></style>

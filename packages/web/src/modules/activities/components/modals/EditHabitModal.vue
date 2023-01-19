@@ -1,45 +1,38 @@
 <script lang="ts" setup>
 import useEditActivityModal from '../useEditActivityModal';
-import { CreateHabitModel, DataPointInputType } from '@lyvely/common';
+import { CreateHabitModel, DataPointInputType, HabitModel } from '@lyvely/common';
 import { computed, Ref } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
 
-const {
-  model,
-  isCreate,
-  showModal,
-  validator,
-  addTag,
-  reset,
-  submit,
-  calendarPlanOptions,
-  status,
-} = useEditActivityModal();
+interface IProps {
+  modelValue: boolean;
+  content?: HabitModel;
+}
+
+const props = defineProps<IProps>();
+const emit = defineEmits(['update:modelValue', 'hide']);
+
+const { validator, submit, calendarPlanOptions, status } = useEditActivityModal(props);
 
 function setInputType(inputType: DataPointInputType) {
-  const modelValue = model.value as CreateHabitModel;
-  if (modelValue) {
-    modelValue.inputType = inputType;
-    if (modelValue.inputType === DataPointInputType.Checkbox && modelValue.max! > 8) {
-      modelValue.max = 8;
-    }
+  model.inputType = inputType;
+  if (model.inputType === DataPointInputType.Checkbox && model.max! > 8) {
+    model.max = 8;
   }
 }
 
-const editModel = model as Ref<CreateHabitModel>;
-
 const modalTitle = computed(() => {
-  return isCreate.value ? `activities.habits.create.title` : `activities.habits.edit.title`;
+  return props.content ? `activities.habits.edit.title` : `activities.habits.create.title`;
 });
 </script>
 
 <template>
   <ly-modal
     v-if="model && validator"
-    v-model="showModal"
+    v-model="isVisible"
     :title="modalTitle"
     @submit="submit"
-    @hide="reset">
+    @hide="$emit('hide')">
     <ly-form-model
       v-model="model"
       :validator="validator"

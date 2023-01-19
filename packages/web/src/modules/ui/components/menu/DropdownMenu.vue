@@ -25,7 +25,7 @@ onClickOutside(root, () => (open.value = false));
 
 const className = ['flex', 'dropdown'];
 const buttonClassName = [
-  'inline-flex justify-center  leading-5 z-10 block rounded-md p-3',
+  'inline-flex justify-center  leading-5 z-10 block rounded-md',
   props.buttonClass,
 ];
 
@@ -69,18 +69,16 @@ function toggle() {
     @keydown.prevent.up="navigateUp"
     @keydown.esc="open = false">
     <div class="relative">
-      <span class="rounded-md shadow-sm">
-        <slot name="trigger" :toggle="toggle" :state="open">
-          <button
-            :id="id"
-            :class="buttonClassName"
-            :aria-expanded="open ? 'true' : 'false'"
-            @click="toggle">
-            <span v-if="label" class="label text-sm">{{ $t(label) }}</span>
-            <ly-icon v-if="icon" :name="icon" />
-          </button>
-        </slot>
-      </span>
+      <slot name="trigger" :toggle="toggle" :state="open">
+        <button
+          :id="id"
+          :class="buttonClassName"
+          :aria-expanded="open ? 'true' : 'false'"
+          @click="toggle">
+          <span v-if="label" class="label text-sm">{{ $t(label) }}</span>
+          <ly-icon v-if="icon" :name="icon" />
+        </button>
+      </slot>
 
       <div
         v-if="open"

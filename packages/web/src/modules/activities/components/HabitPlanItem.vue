@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
 import { DataPointInputType, HabitModel } from '@lyvely/common';
-import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanItemMenu.vue';
 import { computed, onMounted, ref } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue';
