@@ -68,18 +68,16 @@ function updateValue(checked: boolean, value: string) {
           v-model="values"
           :disabled="props.disabled"
           :input-class="cssClasses(unit)"
-          :value="unit"
-          @change="updateValue"
-        />
+          :value="unit.toString()"
+          @change="updateValue" />
       </div>
     </template>
     <template v-else>
       <ly-input-checkbox
-        :model-value="1"
+        model-value="1"
         :checked="props.selection"
         :input-class="cssClasses(0)"
-        @change="updateValue"
-      />
+        @change="updateValue" />
     </template>
   </fieldset>
 </template>

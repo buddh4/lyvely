@@ -1,12 +1,12 @@
-import { ProfileController } from '@/profiles';
 import { ENDPOINT_CONTENT, ContentEndpoint } from '@lyvely/common';
 import { Post, HttpCode, HttpStatus, Param, Request } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { ContentService } from '../services';
 import { ContentWritePolicy } from '../policies';
 import { ProfileContentRequest } from '../types';
+import { ContentTypeController } from '../decorators';
 
-@ProfileController(ENDPOINT_CONTENT)
+@ContentTypeController(ENDPOINT_CONTENT)
 export class ContentController implements ContentEndpoint {
   constructor(private contentService: ContentService) {}
 

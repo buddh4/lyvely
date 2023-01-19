@@ -367,8 +367,17 @@
     "toDarkMode": "Switch to dark mode",
     "toLightMode": "Switch to light mode",
   },
+  "status": {
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info",
+    "success": "Success",
+  },
   "error":{
-    "unknown": "An unexpected error occurred, please try again later.",
+    "unknown": {
+      "title": "Error",
+      "message": "An unexpected error occurred, please try again later."
+    },
     "500": "A problem occurred while handling your request, please try again later.",
     "403": "Your access to the requested service was denied.",
     "404": "The requested service could not be found.",
@@ -392,6 +401,12 @@
       "title": "Notifications"
     }
   },
+  "content": {
+    "actions": {
+      "archive": "Archive",
+      "restore": "Restore"
+    }
+  },
   "stream": {
     "title": "stream",
     "labels":  {
@@ -405,6 +420,12 @@
       "placeholder_single_user": "Write some notes",
       "placeholder_multi_user": "Write a message"
     }
+  },
+  "updater": {
+    "message": "New content available, click on reload button to update."
+  },
+  "offline": {
+    "message": "App ready to work offline"
   },
   "activities": {
     "habits": {

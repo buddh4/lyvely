@@ -39,22 +39,28 @@ export const useGlobalDialogStore = defineStore('global.dialog', {
   }),
   actions: {
     showSuccess(options: IShowAlertOptions) {
-      options.title = options.title || 'Success';
+      options.title = options.title || 'status.success';
       this.show(DialogType.Success, options);
     },
 
     showInfo(options: IShowAlertOptions) {
-      options.title = options.title || 'Info';
+      options.title = options.title || 'status.info';
       this.show(DialogType.Info, options);
     },
 
     showWarning(options: IShowAlertOptions) {
-      options.title = options.title || 'Warning';
+      options.title = options.title || 'status.warning';
       this.show(DialogType.Warning, options);
     },
 
     showError(options: IShowAlertOptions) {
-      options.title = options.title || 'Error';
+      options.title = options.title || 'status.error';
+      this.show(DialogType.Error, options);
+    },
+
+    showUnknownError(options = {} as IShowAlertOptions) {
+      options.title = options.title || 'error.unknown.title';
+      options.message = options.message || 'error.unknown.message';
       this.show(DialogType.Error, options);
     },
 

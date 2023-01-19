@@ -32,25 +32,27 @@
         @apply rounded-r-none;
     }
 
-    .scrollbar-thin {
-        scrollbar-width: thin;
-    }
+    @media screen and (pointer: fine) {
+        .scrollbar-thin {
+            scrollbar-width: thin;
+        }
 
-    .scrollbar-thin::-webkit-scrollbar {
-        width: 5px;
-    }
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 5px;
+        }
 
-    .scrollbar-thin::-webkit-scrollbar-track {
-        background: transparent;
-    }
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
-    .scrollbar-thin::-webkit-scrollbar-thumb {
-        background: var(--color-secondary-light);
-        border-radius: 5px;
-    }
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: var(--color-secondary-light);
+            border-radius: 5px;
+        }
 
-    .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-        background: var(--color-secondary-dark);
+        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: var(--color-secondary-dark);
+        }
     }
 
     .line-clamp-1 {

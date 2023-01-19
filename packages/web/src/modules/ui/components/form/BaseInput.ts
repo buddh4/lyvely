@@ -1,4 +1,12 @@
-import { ComponentOptions, computed, ComputedRef, ref, SetupContext, inject } from 'vue';
+import {
+  ComponentOptions,
+  computed,
+  ComputedRef,
+  ref,
+  SetupContext,
+  inject,
+  CSSProperties,
+} from 'vue';
 import { merge, uniqueId } from 'lodash';
 import { CssClassDefinition } from '@/util/component.types';
 import { ModelValidator } from '@lyvely/common';
@@ -53,7 +61,7 @@ export function useBaseInputProps() {
     loading: { type: Boolean, default: false },
     ariaDescribedby: { type: String, default: undefined },
     modelValue: {},
-    inputClass: { type: String, default: undefined },
+    inputClass: { type: [Object, Array, String], default: undefined },
     wrapperClass: { type: String, default: undefined },
     error: { type: String, default: undefined },
   };
@@ -115,11 +123,15 @@ function getComputedCssClasses(
     result.push({ 'is-invalid': !!inputError.value?.length });
 
     if (props.inputClass) {
-      result = result.concat(Array.isArray(props.inputClass) ? props.inputClass : [props.inputClass]);
+      result = result.concat(
+        Array.isArray(props.inputClass) ? props.inputClass : [props.inputClass],
+      );
     }
 
     if (options.inputClass) {
-      result = result.concat(Array.isArray(options.inputClass) ? options.inputClass : [options.inputClass]);
+      result = result.concat(
+        Array.isArray(options.inputClass) ? options.inputClass : [options.inputClass],
+      );
     }
 
     if (!props.label && !props.property) {
@@ -136,7 +148,9 @@ function getComputedCssClasses(
 
 function getComputedInputError(props: IBaseInputProps, formModelData?: IFormModelData<any>) {
   return computed(() =>
-    formModelData?.validator && props.property ? formModelData.validator.getError(props.property) : props.error,
+    formModelData?.validator && props.property
+      ? formModelData.validator.getError(props.property)
+      : props.error,
   );
 }
 
@@ -175,7 +189,10 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
   const formModelData = inject<IFormModelData | undefined>('formModelData', undefined);
   const validator = formModelData?.validator;
   const useAutoValidation =
-    formModelData?.autoValidation !== false && props.autoValidation && validator && props.property?.length;
+    formModelData?.autoValidation !== false &&
+    props.autoValidation &&
+    validator &&
+    props.property?.length;
 
   const inputError = getComputedInputError(props, formModelData);
 
@@ -189,7 +206,9 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
     label: getComputedInputLabel(props, formModelData),
     helpText: getComputedHelpText(props, formModelData),
     editable: computed(() => !props.disabled && !props.readonly),
-    hasFocus: computed(() => root.value && document.activeElement && root.value.contains(document.activeElement)),
+    hasFocus: computed(
+      () => root.value && document.activeElement && root.value.contains(document.activeElement),
+    ),
     onChange: (evt: any) => {
       if (useAutoValidation || inputError.value) {
         validator!.validateField(props.property!).then(() => {

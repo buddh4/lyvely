@@ -31,30 +31,27 @@ const close = async () => {
 </script>
 
 <template>
-  <div v-if="offlineReady || needRefresh" class="pwa-toast" role="alert">
-    <div class="message">
-      <span v-if="offlineReady"> App ready to work offline </span>
-      <span v-else> New content available, click on reload button to update. </span>
+  <div
+    v-if="offlineReady || needRefresh"
+    class="fixed right-0 bottom-0 m-2 p-1 md:m-4 md:p-5 bg-main border border-divide rounded text-left shadow"
+    style="z-index: 910"
+    role="alert">
+    <div class="mb-2 md:mb-3">
+      <span v-if="offlineReady">{{ $t('offline.message') }}</span>
+      <span v-else>{{ $t('updater.message') }}</span>
     </div>
-    <button v-if="needRefresh" @click="updateServiceWorker()">Reload</button>
-    <button @click="close">Close</button>
+    <div class="flex justify-center gap-1">
+      <ly-button class="secondary" @click="close">
+        {{ $t('common.close') }}
+      </ly-button>
+      <ly-button v-if="needRefresh" class="primary" @click="updateServiceWorker()">
+        {{ $t('common.reload') }}
+      </ly-button>
+    </div>
   </div>
 </template>
 
 <style>
-.pwa-toast {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  margin: 16px;
-  padding: 12px;
-  border: 1px solid #8885;
-  border-radius: 4px;
-  z-index: 1;
-  text-align: left;
-  box-shadow: 3px 4px 5px 0 #8885;
-  background-color: white;
-}
 .pwa-toast .message {
   margin-bottom: 8px;
 }

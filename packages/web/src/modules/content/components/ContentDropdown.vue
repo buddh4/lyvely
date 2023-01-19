@@ -1,23 +1,18 @@
 <script lang="ts" setup>
 import { ContentModel } from '@lyvely/common';
-import { useContentService } from '@/modules/content/services/content.service';
-import { computed } from 'vue';
+import { useContentArchive } from '@/modules/content/composables/content-archive.composable';
+import { reactive } from 'vue-demi';
 
 interface IProps {
   content: ContentModel;
 }
 
 const props = withDefaults(defineProps<IProps>(), {});
-const contentService = useContentService();
 
-const archiveLabel = computed(() => (props.content.meta.isArchived ? 'Restore' : 'Archive'));
-const archiveIcon = computed(() => (props.content.meta.isArchived ? 'unarchive' : 'archive'));
+const content = reactive(props.content);
+const { archiveIcon, archiveLabel, toggleArchive } = useContentArchive(content);
 
 function onClickEdit() {}
-
-function onClickArchive() {
-  contentService.archive(props.content.id);
-}
 </script>
 
 <template>
@@ -30,7 +25,7 @@ function onClickArchive() {
     <ly-dropdown-link
       :label="archiveLabel"
       :icon="archiveIcon"
-      @click="$emit('archive')"></ly-dropdown-link>
+      @click="toggleArchive"></ly-dropdown-link>
     <slot></slot>
   </ly-dropdown>
 </template>

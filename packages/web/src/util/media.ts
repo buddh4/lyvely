@@ -13,5 +13,7 @@ export function isMaxViewSize(size: VIEW_SIZE) {
 }
 
 export function watchMaxSize(size: VIEW_SIZE, listener: (x: boolean) => void) {
-  return window.matchMedia(`(max-width: ${SIZES[size].max}px )`).addEventListener('change', (x) => listener(x.matches));
+  return window
+    .matchMedia(`(max-width: ${SIZES[size].max}px )`)
+    .addEventListener('change', (x) => listener(x.matches));
 }

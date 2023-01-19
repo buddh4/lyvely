@@ -7,7 +7,7 @@ import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue
 import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
-import { useActivityPlanItem } from '@/modules/activities/components/composables/useActivityPlanItem';
+import { useActivityPlanItem } from '@/modules/activities/composables/useActivityPlanItem';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 
 export interface IProps {
@@ -18,8 +18,7 @@ const props = defineProps<IProps>();
 const taskStore = useTaskPlanStore();
 
 const { isDisabled, moveUp, moveDown } = useActivityPlanItem(props.model);
-const { toggleArchiveActivity, selectTag } = useActivityStore();
-const { setEditActivity } = useUpdateActivityStore();
+const { selectTag } = useActivityStore();
 
 const selection = computed({
   get: () => +!!props.model.done,
@@ -41,13 +40,11 @@ async function updateTimer(value: number) {
 <template>
   <calendar-plan-item
     :model="model"
-    @archive="toggleArchiveActivity"
-    @edit="setEditActivity"
     @move-up="moveUp"
     @move-down="moveDown"
     @select-tag="selectTag">
     <template #menu>
-      <content-dropdown :content="model"></content-dropdown>
+      <content-dropdown :content="model" />
     </template>
     <template #pre-title>
       <div class="mr-1">

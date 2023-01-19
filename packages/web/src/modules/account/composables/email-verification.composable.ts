@@ -16,7 +16,9 @@ interface IEmailVerificationOptions {
 
 export function useEmailVerificationStore(options: IEmailVerificationOptions) {
   const model = ref(new VerifyEmailDto());
-  const validator = ref(new I18nModelValidator<VerifyEmailDto>(model.value, options.validatorOptions));
+  const validator = ref(
+    new I18nModelValidator<VerifyEmailDto>(model.value, options.validatorOptions),
+  );
   const attempts = ref(0);
   const errorMsg = ref<undefined | string>();
   const otpInfo = ref(new OtpInfo());
@@ -81,7 +83,9 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
   async function resendOtp(remember?: boolean) {
     try {
       softReset();
-      otpInfo.value = await options.resend(new ResendOtpDto({ email: model.value.email, remember: remember }));
+      otpInfo.value = await options.resend(
+        new ResendOtpDto({ email: model.value.email, remember: remember }),
+      );
     } catch (e: any) {
       handleError(e);
     }
@@ -95,7 +99,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
         ? 'otp.errors.expired'
         : 'otp.errors.invalid';
     } else {
-      errorMsg.value = e?.message || 'error.unknown';
+      errorMsg.value = e?.message || 'error.unknown.message';
     }
   }
 

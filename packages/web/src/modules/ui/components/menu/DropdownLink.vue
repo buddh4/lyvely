@@ -32,8 +32,7 @@ const { route, label, icon } = toRefs(props);
     :to="route"
     :class="classNames"
     active-class="active"
-    @click="$emit('click')"
-  >
+    @click="$emit('click')">
     <ly-icon v-if="icon" :name="icon" class="align-middle"></ly-icon>
     <span class="align-middle">
       <slot>{{ $t(label) }}</slot>

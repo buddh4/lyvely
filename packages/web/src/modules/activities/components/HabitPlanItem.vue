@@ -2,15 +2,14 @@
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
 import { DataPointInputType, HabitModel } from '@lyvely/common';
 import TimingListEntryMenu from '@/modules/calendar/components/CalendarPlanItemMenu.vue';
-import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed, onMounted, ref } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar/store';
 import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue';
-import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useDebounceFn } from '@vueuse/core';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
-import { useActivityPlanItem } from '@/modules/activities/components/composables/useActivityPlanItem';
+import { useActivityPlanItem } from '@/modules/activities/composables/useActivityPlanItem';
+import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 
 export interface IProps {
   model: HabitModel;
@@ -21,9 +20,6 @@ const initialized = ref(false);
 const habitStore = useHabitPlanStore();
 
 const { isDisabled, moveUp, moveDown } = useActivityPlanItem(props.model);
-
-const { toggleArchiveActivity, selectTag } = useActivityStore();
-const { setEditActivity } = useUpdateActivityStore();
 
 const dataPoint = computed(() => habitStore.getDataPoint(props.model));
 
@@ -92,16 +88,11 @@ const timer = computed(() => dataPoint.value.timer!);
   <calendar-plan-item
     v-if="initialized"
     :model="model"
-    @archive="toggleArchiveActivity"
-    @edit="setEditActivity"
     @move-up="moveUp"
     @move-down="moveDown"
     @select-tag="selectTag">
     <template #menu>
-      <timing-list-entry-menu
-        :model="model"
-        @edit="$emit('edit', model)"
-        @archive="$emit('archive', model)" />
+      <content-dropdown :content="model" />
     </template>
     <template #rating>
       <item-checkbox-list
