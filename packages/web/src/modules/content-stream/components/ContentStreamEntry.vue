@@ -7,6 +7,7 @@ import { contentRoute } from '@/modules/content-stream/routes/route.utils';
 import { isTextSelection } from '@/util/dom.util';
 import TagList from '@/modules/tags/components/TagList.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
+import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 
 export interface IProps {
   model: ContentModel;
@@ -71,7 +72,7 @@ const router = useRouter();
 
 function onContentClick() {
   if (isTextSelection()) return;
-  router.push(contentRoute(props.model.pid, props.model.id));
+  router.push({ name: 'content-details', params: { pid: props.model.pid, cid: props.model.id } });
 }
 
 const bodyWrapperClass = computed(
@@ -79,7 +80,7 @@ const bodyWrapperClass = computed(
     ({
       none: '',
       message:
-        'inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5 rounded-3xl',
+        'message-bubble inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5',
       block: 'inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block',
     }[props.bodyStyle]),
 );
@@ -109,7 +110,13 @@ const bodyWrapperClass = computed(
                 :class="{ 'mt-2': bodyStyle === 'message' }"
                 :tag-ids="model.tagIds"
                 @select="(tagId) => $emit('selectTag', tagId)" />
-              <slot></slot>
+              <div class="flex gap-2">
+                <slot></slot>
+                <ly-icon
+                  v-if="model.meta.isArchived"
+                  name="archive"
+                  class="w-3 text-warning ml-auto" />
+              </div>
             </div>
           </div>
         </div>
@@ -118,4 +125,8 @@ const bodyWrapperClass = computed(
   </div>
 </template>
 
-<style scoped></style>
+<style>
+.message-bubble {
+  border-radius: 18px;
+}
+</style>

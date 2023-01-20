@@ -43,7 +43,7 @@
       },
       "default": {
         "title": "Confirm action",
-        "text": "Do you really want to perform this action?",
+        "text": "Are you sure you want to perform this action?",
         "confirm": "Confirm"
       }
     }
@@ -126,12 +126,12 @@
     },
     "archive": {
       "confirm": {
-        "text": "Do you really want to archive this tag?"
+        "text": "Are you sure you want to archive this tag?"
       }
     },
     "unarchive": {
       "confirm": {
-        "text": "Do you really want to add this tag from archive?"
+        "text": "Are you sure you want to add this tag from archive?"
       }
     },
     "view": {
@@ -403,9 +403,14 @@
   },
   "content": {
     "actions": {
+      "edit": "Edit",
       "archive": "Archive",
-      "restore": "Restore"
-    }
+      "restore": "Restore",
+      "confirm": {
+        "archive": "Are you sure you want to archive this content",
+        "unarchive": "Are you sure you want to restore this content from the archive",
+      }
+    },
   },
   "stream": {
     "title": "stream",

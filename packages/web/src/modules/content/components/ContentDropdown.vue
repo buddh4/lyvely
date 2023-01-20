@@ -2,6 +2,9 @@
 import { ContentModel } from '@lyvely/common';
 import { useContentArchive } from '@/modules/content/composables/content-archive.composable';
 import { reactive } from 'vue-demi';
+import { useContentEditStore } from '@/modules/content/stores/content-edit.store';
+import { computed, ref } from 'vue';
+import { IConfirmOptions } from '@/modules/ui/components/modal/IConfirmOptions';
 
 interface IProps {
   content: ContentModel;
@@ -9,25 +12,46 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {});
 
+const showConfirm = ref(false);
+const confirm = ref<IConfirmOptions>();
+const confirmAction = ref<() => void>();
+
 const content = reactive(props.content);
 const { archiveIcon, archiveLabel, toggleArchive } = useContentArchive(content);
 
-function onClickEdit() {}
+function onClickArchive() {
+  confirmAction.value = toggleArchive;
+  confirm.value = {
+    text: content.meta.isArchived
+      ? 'content.actions.confirm.unarchive'
+      : 'content.actions.confirm.archive',
+  };
+  showConfirm.value = true;
+}
+
+function onClickEdit() {
+  useContentEditStore().setEditContent(content);
+}
+
+const isEditable = computed(() => !content.meta.isArchived);
 </script>
 
 <template>
   <ly-dropdown button-class="item-menu-button">
     <ly-dropdown-link
-      v-if="!content.meta.isArchived"
+      v-if="isEditable"
       icon="edit"
-      label="Edit"
+      label="content.actions.edit"
       @click="onClickEdit"></ly-dropdown-link>
     <ly-dropdown-link
       :label="archiveLabel"
       :icon="archiveIcon"
-      @click="toggleArchive"></ly-dropdown-link>
+      @click="onClickArchive"></ly-dropdown-link>
     <slot></slot>
   </ly-dropdown>
+  <ly-confirm v-if="showConfirm" v-model="showConfirm" :options="confirm" @submit="confirmAction">
+    <slot name="confirmBody"></slot>
+  </ly-confirm>
 </template>
 
 <style scoped>

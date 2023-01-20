@@ -7,8 +7,6 @@ import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 
 export interface IProps {
   model: TaskModel;
-  stream: IStream<ContentModel>;
-  index: number;
 }
 
 const props = defineProps<IProps>();

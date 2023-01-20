@@ -5,16 +5,14 @@
     :label="label"
     :required="required"
     :help-text="helpText"
-    :input-error="inputError"
-  >
+    :input-error="inputError">
     <select
       :id="inputId"
       ref="input"
       v-model="inputValue"
       :aria-describedby="ariaDescribedby"
       :disabled="disabled"
-      :class="inputClass"
-    >
+      :class="inputClass">
       <option v-for="option in options" :key="option.value" :value="option.value">
         {{ $t(option.label) }}
       </option>

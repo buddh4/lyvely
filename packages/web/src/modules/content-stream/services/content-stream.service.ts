@@ -8,12 +8,13 @@ import {
   useSingleton,
 } from '@lyvely/common';
 import repositry from '../repositories';
-import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
+import { unwrapResponse } from '@/modules/core';
 import { getContentType } from '@/modules/content-stream/components/content-stream-entry.registry';
+import { PropertiesOf } from '@lyvely/common/src';
 
 export class ContentStreamService implements IContentStreamClient {
   async loadEntry(id: string, filter?: ContentStreamFilter): Promise<ContentModel> {
-    return unwrapAndCastResponse(repositry.loadEntry(id), ContentModel);
+    return this.createModel(await unwrapResponse(repositry.loadEntry(id)));
   }
 
   async loadTail(
@@ -28,7 +29,7 @@ export class ContentStreamService implements IContentStreamClient {
         batchSize: options.batchSize,
       }),
     );
-    return this.createModel(response);
+    return this.createModels(response);
   }
 
   async loadHead(
@@ -44,16 +45,22 @@ export class ContentStreamService implements IContentStreamClient {
       }),
     );
 
-    return this.createModel(response);
+    return this.createModels(response);
   }
 
-  private createModel(response: IStreamResponse<ContentModel>) {
-    response.models = response.models.map((model) => {
-      const ModelClass = getContentType(model.type) || ContentModel;
-      return new ModelClass(model);
-    });
+  private createModels(response: IStreamResponse<ContentModel>) {
+    response.models = response.models.map((model) => this.createModel(model));
 
     return response;
+  }
+
+  private createModel(model: PropertiesOf<ContentModel>) {
+    const ModelClass = this.getModelClass(model.type);
+    return new ModelClass(model);
+  }
+
+  private getModelClass(type: string) {
+    return getContentType(type) || ContentModel;
   }
 }
 

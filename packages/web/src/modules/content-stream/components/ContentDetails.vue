@@ -4,24 +4,13 @@ import TextTrimmed from '@/modules/ui/components/text/TextTrimmed.vue';
 import { ContentModel } from '@lyvely/common';
 import LyDropdown from '@/modules/ui/components/menu/DropdownMenu.vue';
 import { computed } from 'vue';
+import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 
 export interface IProps {
   model: ContentModel;
 }
 
-const props = defineProps<IProps>();
-
-const archiveLabel = computed(() => (props.model.meta.isArchived ? 'Restore' : 'Archive'));
-function archive() {
-  console.log('archive');
-  //contentEditStore.archive()
-  // contentEditStore.checks
-}
-
-function edit() {
-  // contentEditStore.edit(content);
-  // contentEditStore sets the editmodal or redirects to content edit component/route
-}
+defineProps<IProps>();
 </script>
 
 <template>
@@ -38,15 +27,7 @@ function edit() {
       </div>
       <div class="flex ml-auto">
         <slot name="menu">
-          <ly-dropdown>
-            <ly-dropdown-link
-              v-if="!model.meta.isArchived"
-              icon="edit"
-              label="Edit"
-              @click="$emit('edit')" />
-            <ly-dropdown-link :label="archiveLabel" icon="archive" @click="archive" />
-            <slot name="menu-addition"></slot>
-          </ly-dropdown>
+          <content-dropdown :content="model" />
         </slot>
       </div>
     </div>

@@ -1,3 +1,6 @@
+import {UnionToIntersection} from "@vue/shared";
+import {ObjectEmitsOptions} from "@vue/runtime-core";
+
 declare module '@ckpack/vue-color' {
   import type { Component } from '@vue/runtime-core';
   const Alpha: Component;
@@ -79,3 +82,7 @@ declare module 'virtual:pwa-register/vue' {
     updateServiceWorker: (reloadPage?: boolean) => Promise<void>
   }
 }
+
+declare type Emits<Options = ObjectEmitsOptions, Event extends keyof Options = keyof Options> = Options extends Array<infer V> ? (event: V, ...args: any[]) => void : {} extends Options ? (event: string, ...args: any[]) => void : UnionToIntersection<{
+  [key in Event]: Options[key] extends (...args: infer Args) => any ? (event: key, ...args: Args) => void : (event: key, ...args: any[]) => void;
+}[Event]>;

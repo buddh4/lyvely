@@ -273,17 +273,6 @@ export function getCalendarPlanArray(): CalendarIntervalEnum[] {
     .reverse();
 }
 
-export function getCalendarPlanOptions(): { value: CalendarIntervalEnum; label: string }[] {
-  return [
-    { value: CalendarIntervalEnum.Daily, label: 'Daily' },
-    { value: CalendarIntervalEnum.Weekly, label: 'Weekly' },
-    { value: CalendarIntervalEnum.Monthly, label: 'Monthly' },
-    { value: CalendarIntervalEnum.Quarterly, label: 'Quarterly' },
-    { value: CalendarIntervalEnum.Yearly, label: 'Yearly' },
-    { value: CalendarIntervalEnum.Unscheduled, label: 'Unscheduled' },
-  ];
-}
-
 const PlanFactory = {
   [CalendarIntervalEnum.Unscheduled]: UnscheduledPlan,
   [CalendarIntervalEnum.Yearly]: YearlyPlan,

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getContentStreamEntryComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { onMounted, onUnmounted, ref, Ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, Ref, watch, computed } from 'vue';
 import {
   ContentModel,
   ContentStreamFilter,
@@ -13,12 +13,12 @@ import { useContentStreamService } from '@/modules/content-stream/services/conte
 import { useLiveStore } from '@/modules/live/stores/live.store';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
-import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
+import { useContentStreamHistoryStore } from '@/modules/content-stream/stores/content-stream-history.store';
 import { onBeforeRouteLeave } from 'vue-router';
+import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
 
 export interface IProps {
   batchSize?: number;
-  filter: ContentStreamFilter;
   scrollToStart?: boolean;
 }
 
@@ -30,42 +30,38 @@ const props = withDefaults(defineProps<IProps>(), {
 const { profile } = storeToRefs(useProfileStore());
 const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
 const scroller = ref() as Ref<typeof DynamicScroller>;
-const contentStreamStore = useContentStreamStore();
-const filter = ref(props.filter);
 const live = useLiveStore();
+const isInitialized = ref(false);
 
-const stream = useStream<ContentModel, ContentStreamFilter>(
-  { batchSize: props.batchSize, direction: StreamDirection.BBT },
-  useContentStreamService(),
-  filter.value,
-);
+const { getHistoryState, removeHistoryState, resetHistory } = useContentStreamHistoryStore();
+const { reload, loadHead, init, restore } = useContentStreamStore();
+const { models, filter } = storeToRefs(useContentStreamStore());
 
-const { models } = stream;
-
-watch(filter, () => stream.reload(), { deep: true });
+watch(filter, () => reload(), { deep: true });
 
 function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
   if (evt.pid === profile.value?.id && evt.updatesAvailable) {
-    stream.loadHead();
+    loadHead();
   }
 }
 
 onMounted(() => {
-  const history = contentStreamStore.getHistoryState(filter.value.parent);
+  const history = getHistoryState(filter.value.parent);
+  isInitialized.value = false;
   if (!history?.stream) {
-    stream.init({
+    init({
       root: streamRoot.value,
       scrollToStart: props.scrollToStart,
       infiniteScroll: { distance: 100 },
-    });
+    }).then(() => (isInitialized.value = true));
   } else {
-    stream.restore({
+    restore({
       history: history.stream,
       root: streamRoot.value,
       infiniteScroll: { distance: 100 },
-    });
+    }).then(() => (isInitialized.value = true));
 
-    contentStreamStore.removeHistoryState(filter.value.parent);
+    removeHistoryState(filter.value.parent);
     const index = models.value.findIndex((m) => m.id === history.state.cid);
     setTimeout(() => scroller.value.scrollToItem(index));
   }
@@ -77,9 +73,13 @@ onUnmounted(() => live.off('content', ContentUpdateStateLiveEvent.eventName, onC
 
 onBeforeRouteLeave((to) => {
   if (!to.name || !['content-details', 'stream'].includes(to.name as string)) {
-    contentStreamStore.reset();
+    resetHistory();
   } else if (to.params.cid) {
-    useContentStreamStore().setHistoryState(stream, filter.value.parent, to.params.cid as string);
+    useContentStreamHistoryStore().setHistoryState(
+      stream,
+      filter.value.parent,
+      to.params.cid as string,
+    );
   }
 });
 
@@ -94,8 +94,8 @@ function selectTag(tagId: string) {
   <div
     id="contentStreamRoot"
     ref="streamRoot"
-    class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
-    <dynamic-scroller ref="scroller" :items="models" :min-item-size="100" page-mode>
+    class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow relative">
+    <dynamic-scroller ref="scroller" :items="models" :min-item-size="50" :buffer="300" page-mode>
       <template #before>
         <slot name="before"></slot>
       </template>
@@ -103,6 +103,7 @@ function selectTag(tagId: string) {
         #default="{ item, index, active }: { item: ContentModel, index: number, active: boolean }">
         <dynamic-scroller-item :item="item" :active="active" :data-index="index">
           <div class="px-2 md:px-6">
+            {{ index === undefined ? 'dfasfasdf' : '' }}
             <Component
               :is="getContentStreamEntryComponent(item)"
               :model="item"

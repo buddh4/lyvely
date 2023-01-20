@@ -1,38 +1,44 @@
 <script lang="ts" setup>
-import useEditActivityModal from '../useEditActivityModal';
-import { CreateHabitModel, DataPointInputType, HabitModel } from '@lyvely/common';
-import { computed, Ref } from 'vue';
+import { CreateHabitModel, DataPointInputType, HabitModel, UpdateHabitModel } from '@lyvely/common';
+import { computed } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
+import { useContentEditModal } from '@/modules/content/composables/content-edit-modal.composable';
+import { useHabitsService } from '@/modules/activities/services/habits.service';
+import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
 
 interface IProps {
   modelValue: boolean;
   content?: HabitModel;
+  type: string;
+  initOptions?: any;
 }
 
 const props = defineProps<IProps>();
-const emit = defineEmits(['update:modelValue', 'hide']);
+const emit = defineEmits(['update:modelValue']);
+const store = useContentEditModal<HabitModel, CreateHabitModel, UpdateHabitModel>(props, emit, {
+  service: useHabitsService(),
+});
 
-const { validator, submit, calendarPlanOptions, status } = useEditActivityModal(props);
+const { isCreate, showModal, model, validator, submit, status } = store;
 
 function setInputType(inputType: DataPointInputType) {
-  model.inputType = inputType;
-  if (model.inputType === DataPointInputType.Checkbox && model.max! > 8) {
-    model.max = 8;
+  if (!model.value) return;
+  const modelValue = model.value;
+  modelValue.inputType = inputType;
+  if (modelValue.inputType === DataPointInputType.Checkbox && modelValue.max! > 8) {
+    modelValue.max = 8;
   }
 }
 
+const calendarPlanOptions = computed(() => getCalendarPlanOptions());
+
 const modalTitle = computed(() => {
-  return props.content ? `activities.habits.edit.title` : `activities.habits.create.title`;
+  return isCreate.value ? `activities.habits.edit.title` : `activities.habits.create.title`;
 });
 </script>
 
 <template>
-  <ly-modal
-    v-if="model && validator"
-    v-model="isVisible"
-    :title="modalTitle"
-    @submit="submit"
-    @hide="$emit('hide')">
+  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit">
     <ly-form-model
       v-model="model"
       :validator="validator"
@@ -48,28 +54,28 @@ const modalTitle = computed(() => {
           <div class="flex gap-2 justify-between items-stretch">
             <ly-button
               class="text-xs secondary w-full"
-              :active="editModel.inputType === DataPointInputType.Checkbox"
+              :active="model.inputType === DataPointInputType.Checkbox"
               @click="setInputType(DataPointInputType.Checkbox)">
               {{ $t('activities.input_types.checkbox') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
-              :active="editModel.inputType === DataPointInputType.Spinner"
+              :active="model.inputType === DataPointInputType.Spinner"
               @click="setInputType(DataPointInputType.Spinner)">
               {{ $t('activities.input_types.spinner') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
-              :active="editModel.inputType === DataPointInputType.Time"
+              :active="model.inputType === DataPointInputType.Time"
               @click="setInputType(DataPointInputType.Time)">
               {{ $t('activities.input_types.time') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
-              :active="editModel.inputType === DataPointInputType.Range"
+              :active="model.inputType === DataPointInputType.Range"
               @click="setInputType(DataPointInputType.Range)">
               {{ $t('activities.input_types.range') }}
             </ly-button>
@@ -78,39 +84,35 @@ const modalTitle = computed(() => {
           <div class="grid grid-flow-col grid-cols-2 grid-rows-2 gap-2">
             <div>
               <ly-input-number
-                v-if="editModel.inputType === DataPointInputType.Checkbox"
+                v-if="model.inputType === DataPointInputType.Checkbox"
                 property="max"
                 :min="1"
                 :max="8" />
               <ly-input-time-number
-                v-else-if="editModel.inputType === DataPointInputType.Time"
+                v-else-if="model.inputType === DataPointInputType.Time"
                 property="max" />
               <ly-input-number v-else property="max" :min="1" />
             </div>
 
             <div>
               <ly-input-time-number
-                v-if="editModel.inputType === DataPointInputType.Time"
+                v-if="model.inputType === DataPointInputType.Time"
                 property="min"
-                :max="editModel.max" />
-              <ly-input-number v-else property="min" :min="0" :max="editModel.max" />
+                :max="model.max" />
+              <ly-input-number v-else property="min" :min="0" :max="model.max" />
             </div>
             <div>
               <ly-input-time-number
-                v-if="editModel.inputType === DataPointInputType.Time"
+                v-if="model.inputType === DataPointInputType.Time"
                 property="optimal"
-                :min="editModel.min"
-                :max="editModel.max" />
-              <ly-input-number
-                v-else
-                property="optimal"
-                :min="editModel.min"
-                :max="editModel.max" />
+                :min="model.min"
+                :max="model.max" />
+              <ly-input-number v-else property="optimal" :min="model.min" :max="model.max" />
             </div>
             <div class="flex flex-col">
               <ly-input-number property="score" :mb="0" :steps="2" :max="100" :min="-100" />
               <div
-                v-if="editModel.inputType === DataPointInputType.Time"
+                v-if="model.inputType === DataPointInputType.Time"
                 class="flex border border-divide bg-highlight rounded h-full p-2 text-xs text-dimmed gap-2">
                 <div>
                   <ly-icon name="info" class="text-info-light" />
@@ -125,7 +127,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <tag-chooser v-model="editModel.tagNames" />
+        <tag-chooser v-model="model.tagNames" />
         <ly-input-textarea property="text" />
       </fieldset>
     </ly-form-model>

@@ -52,7 +52,7 @@ export const useActivityStore = defineStore('activities', () => {
   const { date } = storeToRefs(calendarPlanStore);
   watch(date, () => useActivityStore().loadActivities());
 
-  function getActivities(type: ActivityType, interval: CalendarIntervalEnum, showAll = false) {
+  function getActivities(type: string, interval: CalendarIntervalEnum, showAll = false) {
     filter.value.setOption('type', type);
     hasMore.value[interval] = false;
     const tid = toTimingId(date.value, interval);

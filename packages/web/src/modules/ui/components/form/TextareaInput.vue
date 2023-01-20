@@ -5,8 +5,7 @@
     :label="label"
     :required="required"
     :help-text="helpText"
-    :input-error="inputError"
-  >
+    :input-error="inputError">
     <textarea
       :id="inputId"
       ref="input"
@@ -17,8 +16,7 @@
       :disabled="disabled"
       :readonly="readonly"
       :class="inputClass"
-      :maxlength="maxlength"
-    ></textarea>
+      :maxlength="maxlength"></textarea>
   </floating-input-layout>
 </template>
 
@@ -30,7 +28,6 @@ import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayou
 
 export default {
   components: { FloatingInputLayout },
-  inject: ['model', 'validator'],
   props: {
     ...useBaseInputProps(),
     rows: { type: Number, default: 3 },

@@ -8,10 +8,10 @@ import {
 import { Expose } from 'class-transformer';
 import { UserAssignmentStrategy } from '@/collab';
 
-export enum ActivityType {
-  Task = 'Task',
-  Habit = 'Habit',
-}
+export const ActivityType = {
+  Task: 'Task',
+  Habit: 'Habit',
+};
 
 export interface IActivityConfig {
   score: number;

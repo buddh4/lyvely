@@ -11,27 +11,34 @@
           :value="value"
           :class="inputClass"
           :readonly="readonly"
-          @change="onChange"
-        />
+          @change="onChange" />
       </label>
       <span v-if="label" class="label ml-2" @click="toggle">
-        {{ $t(label) }}
+        {{ translate ? $t(label) : label }}
       </span>
       <ly-icon
         v-if="hasHelpText"
         name="info"
         class="text-info-dark ml-1 cursor-pointer select-none"
-        @click="showHelpText = !showHelpText"
-      />
+        @click="showHelpText = !showHelpText" />
     </div>
-    <ly-alert v-if="hasHelpText" v-show="showHelpText" :id="helpTextId" class="mt-2 text-xs" type="info">
+    <ly-alert
+      v-if="hasHelpText"
+      v-show="showHelpText"
+      :id="helpTextId"
+      class="mt-2 text-xs"
+      type="info">
       {{ translatedHelpText }}
     </ly-alert>
   </div>
 </template>
 
 <script lang="ts">
-import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from '@/modules/ui/components/form/BaseInput';
+import {
+  IBaseInputProps,
+  useBaseInputProps,
+  useBaseInputSetup,
+} from '@/modules/ui/components/form/BaseInput';
 import { SetupContext, ref } from 'vue';
 import { isArray } from 'lodash';
 import { useHelpText } from '@/modules/ui/components/form/help-text.util';
@@ -44,6 +51,7 @@ export interface IProps extends IBaseInputProps {
 export default {
   props: {
     ...useBaseInputProps(),
+    translate: { type: Boolean, default: true },
     checked: { type: Boolean, default: undefined },
     value: { type: String, default: '' },
   },

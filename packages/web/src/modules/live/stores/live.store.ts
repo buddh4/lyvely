@@ -10,11 +10,9 @@ export const useLiveStore = defineStore('live', () => {
   function initBroadcastChannel() {
     const channel = isBroadcastEventsEnabled() ? new BroadcastChannel('live_channel') : null;
 
-    if (channel) {
-      channel.onmessage = (event) => {
-        emitLiveEvent(event.data);
-      };
-    }
+    if (!channel) return null;
+
+    channel.onmessage = (event) => emitLocalLiveEvent(event.data);
 
     return channel;
   }
@@ -44,9 +42,7 @@ export const useLiveStore = defineStore('live', () => {
     eventSource.onopen = () => console.debug('Live connection onopen');
     eventSource.onmessage = ({ data }) => {
       const event = JSON.parse(data) as ILiveEvent;
-      console.debug('New live event', event);
       broadCastLiveEvent(event);
-      eventBus.emit(createLiveEventType(event.module, event.name), event);
     };
   }
 
@@ -54,11 +50,11 @@ export const useLiveStore = defineStore('live', () => {
     if (channel) {
       channel.postMessage(event);
     } else {
-      emitLiveEvent(event);
+      emitLocalLiveEvent(event);
     }
   }
 
-  function emitLiveEvent(event: ILiveEvent) {
+  function emitLocalLiveEvent(event: ILiveEvent) {
     eventBus.emit(createLiveEventType(event.module, event.name), event);
   }
 
@@ -81,6 +77,17 @@ export const useLiveStore = defineStore('live', () => {
   ) {
     return eventBus.off(createLiveEventType(module, event), handler);
   }
+
+  setInterval(() => {
+    broadCastLiveEvent({
+      module: 'test',
+      name: 'test',
+    });
+  });
+
+  on('test', 'test', () => {
+    console.log('Received test event');
+  });
 
   return {
     connectUser,

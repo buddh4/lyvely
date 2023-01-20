@@ -1,44 +1,28 @@
-import { defineStore, storeToRefs } from 'pinia';
-import { IStream } from '@/modules/stream/composables/stream.composable';
-import { ContentModel, ContentStreamFilter } from '@lyvely/common';
-import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { watch } from 'vue';
-
-type IContentStream = IStream<ContentModel, ContentStreamFilter>;
-type IStreamHistoryState = {
-  cid?: string;
-};
-type IContentStreamHistory = {
-  stream: IContentStream;
-  state: IStreamHistoryState;
-};
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { ContentModel, ContentStreamFilter, StreamDirection } from '@lyvely/common';
+import { useStream } from '@/modules/stream/composables/stream.composable';
+import { useContentStreamService } from '@/modules/content-stream/services/content-stream.service';
+import { useContentStreamHistoryStore } from '@/modules/content-stream/stores/content-stream-history.store';
 
 export const useContentStreamStore = defineStore('content-stream', () => {
-  const { profile } = storeToRefs(useProfileStore());
-  let stack = new Map<string, IContentStreamHistory>();
+  const contentStreamService = useContentStreamService();
+  const contentStreamHistoryStore = useContentStreamHistoryStore();
+  const content = ref<ContentModel>();
+  const stream = useStream<ContentModel, ContentStreamFilter>(
+    { batchSize: 30, direction: StreamDirection.BBT },
+    useContentStreamService(),
+    new ContentStreamFilter(),
+  );
 
-  watch(profile, reset);
-
-  function setHistoryState(stream: IContentStream, parent = 'root', cid: string) {
-    stack.set(parent, { stream, state: { cid } });
-  }
-
-  function removeHistoryState(parent = 'root') {
-    stack.delete(parent);
-  }
-
-  function getHistoryState(parent = 'root') {
-    return stack.get(parent);
-  }
-
-  function reset() {
-    stack = new Map<string, IContentStreamHistory>();
+  async function setContentId(parent: string) {
+    content.value = await contentStreamService.loadEntry(parent);
+    stream.filter.value = new ContentStreamFilter({ parent });
   }
 
   return {
-    setHistoryState,
-    getHistoryState,
-    removeHistoryState,
-    reset,
+    content,
+    setContentId,
+    ...stream,
   };
 });

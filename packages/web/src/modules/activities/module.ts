@@ -1,6 +1,12 @@
 import { IModule } from '@/modules/core/modules/interfaces/module.interface';
 import { registerContentType } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { ActivityType, HabitModel, TaskModel } from '@lyvely/common';
+import {
+  ActivityType,
+  CreateHabitModel,
+  CreateTaskModel,
+  HabitModel,
+  TaskModel,
+} from '@lyvely/common';
 import { translation } from '@/i18n';
 
 export default () => {
@@ -13,9 +19,20 @@ export default () => {
         name: translation('activities.tasks.name'),
         icon: 'task',
         feature: 'activities.tasks',
-        stream: {
-          details: () => import('./components/stream/TaskDetails.vue'),
-          streamEntry: () => import('./components/stream/TaskStreamEntry.vue'),
+        interfaces: {
+          create: {
+            mode: 'modal',
+            modelClass: CreateTaskModel,
+            component: () => import('./components/modals/EditTaskModal.vue'),
+          },
+          edit: {
+            mode: 'modal',
+            component: () => import('./components/modals/EditTaskModal.vue'),
+          },
+          stream: {
+            details: () => import('./components/stream/TaskDetails.vue'),
+            entry: () => import('./components/stream/TaskStreamEntry.vue'),
+          },
         },
       });
       registerContentType({
@@ -24,9 +41,20 @@ export default () => {
         icon: 'activity',
         feature: 'activities.habits',
         modelClass: HabitModel,
-        stream: {
-          details: () => import('./components/stream/HabitDetails.vue'),
-          streamEntry: () => import('./components/stream/HabitStreamEntry.vue'),
+        interfaces: {
+          create: {
+            mode: 'modal',
+            modelClass: CreateHabitModel,
+            component: () => import('./components/modals/EditHabitModal.vue'),
+          },
+          edit: {
+            mode: 'modal',
+            component: () => import('./components/modals/EditHabitModal.vue'),
+          },
+          stream: {
+            details: () => import('./components/stream/HabitDetails.vue'),
+            entry: () => import('./components/stream/HabitStreamEntry.vue'),
+          },
         },
       });
     },

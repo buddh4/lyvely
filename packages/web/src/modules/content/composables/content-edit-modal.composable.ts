@@ -1,42 +1,48 @@
-import { computed, toRefs } from 'vue';
+import { computed, ref, Ref, toRefs } from 'vue';
 import {
   ContentModel,
   getCalendarPlanOptions,
-  ICrudModel,
+  IEditableModel,
   CreateContentModel,
   ContentUpdateResponse,
+  ModelValidator,
 } from '@lyvely/common';
-import {
-  ICreateContentModalProps,
-  IEditContentModalProps,
-} from '@/modules/content/interfaces/edit-content-modal-props.interface';
+import { IEditOrCreateModalProps } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 import { IEditModelStoreOptions, useUpdateModelStore } from '@/modules/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { eventBus } from '@/modules/core/events/global.emitter';
 import { getContentTypeOptions } from '@/modules/content-stream/components/content-stream-entry.registry';
 import { ModalCreate } from '@/modules/content-stream/interfaces/stream-entry-registration.interface';
+import { StoreStatusPlugin } from '@/store';
+import { Emits } from '@/types';
+import { useContentStore } from '@/modules/content/stores/content.store';
 
 export function useContentEditModal<
-  TModel extends ContentModel & ICrudModel<TUpdateModel>,
+  TModel extends ContentModel & IEditableModel<TUpdateModel>,
   TCreateModel extends CreateContentModel,
-  TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
+  TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
   TResponse extends ContentUpdateResponse<TModel> = ContentUpdateResponse<TModel>,
 >(
-  props: ICreateContentModalProps & IEditContentModalProps<TModel>,
+  props: IEditOrCreateModalProps<TModel>,
+  emit: Emits<['update:modelValue']>,
   options: IEditModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse>,
 ) {
   const { content, type } = props;
+  const contentStore = useContentStore();
+
+  const showModal = computed({
+    get: () => props.modelValue,
+    set: (val: boolean) => emit('update:modelValue', val),
+  });
 
   const originalOnSubmitSuccess = options.onSubmitSuccess;
   options.onSubmitSuccess = (response?: TResponse) => {
-    if (response) {
-      useProfileStore().updateTags(response.tags);
-      if (isCreate.value) {
-        eventBus.emit(`content.${response.model.type}.create.post`, response);
-      } else {
-        eventBus.emit(`content.${response.model.type}.update.post`, response);
-      }
+    if (isCreate.value) {
+      contentStore.handleCreateContent(response);
+    } else {
+      contentStore.handleUpdateContent(response);
     }
+
+    showModal.value = false;
 
     if (originalOnSubmitSuccess) originalOnSubmitSuccess(response);
   };
@@ -44,35 +50,50 @@ export function useContentEditModal<
   const updateStore = useUpdateModelStore<TResponse, TCreateModel, TUpdateModel>(options);
 
   if (content) {
-    const model = content.toEditModel();
-    model.tagNames = useProfileStore()
+    const editModel = content.toEditModel();
+    editModel.tagNames = useProfileStore()
       .getTags()
       .filter((tag) => content.tagIds.includes(tag.id))
       .map((tag) => tag.name);
-    updateStore.setEditModel(content.id, model as TUpdateModel);
+    updateStore.setEditModel(content.id, editModel);
   } else {
-    const CreateType = (<ModalCreate>getContentTypeOptions(type)?.create).modelType;
-    const model = new CreateType(props.initOptions) as TUpdateModel;
-    updateStore.setCreateModel(model);
+    const CreateType = (<ModalCreate>getContentTypeOptions(type)?.interfaces?.create)?.modelClass;
+
+    if (!CreateType) {
+      throw new Error(`Content type ${type} is missing a create model class definition`);
+    }
+
+    updateStore.setCreateModel(new CreateType(props.initOptions) as TUpdateModel);
   }
 
-  const { model, validator, status, isCreate } = toRefs(updateStore);
+  const {
+    model,
+    validator,
+    status,
+    isCreate,
+  }: {
+    model: Ref<TCreateModel | TUpdateModel>;
+    validator: Ref<ModelValidator<TCreateModel | TUpdateModel>>;
+    status: StoreStatusPlugin;
+    isCreate: Ref<boolean>;
+  } = updateStore;
   const { submit, reset } = updateStore;
 
   function addTag(newTag: string) {
-    if (model?.value?.tagNames) {
-      model?.value.tagNames.push(newTag);
+    if (model.value) {
+      model.value.tagNames ||= [];
+      model.value.tagNames.push(newTag);
     }
   }
 
   return {
+    showModal,
     model,
     isCreate,
     validator,
     addTag,
-    status,
+    status: ref(status),
     submit,
     reset,
-    calendarPlanOptions: computed(() => getCalendarPlanOptions()),
   };
 }

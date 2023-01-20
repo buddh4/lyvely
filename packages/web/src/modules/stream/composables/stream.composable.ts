@@ -8,7 +8,13 @@ import {
 import { nextTick, ref, Ref } from 'vue';
 import { loadingStatus, useStatus } from '@/store';
 import mitt from 'mitt';
-import { hasOverflow, isScrolledToBottom, scrollToBottom, scrollToTop } from '@/util/dom.util';
+import {
+  hasOverflow,
+  isScrolledToBottom,
+  isScrolledToTop,
+  scrollToBottom,
+  scrollToTop,
+} from '@/util/dom.util';
 import { useInfiniteScroll } from '@vueuse/core';
 
 type StreamEvents<TModel> = {
@@ -52,7 +58,7 @@ export function useStream<
     scrollToStart?: boolean;
   },
 >(
-  options: TOptions,
+  initOptions: TOptions,
   service: IStreamService<TModel, TFilter, IStreamState, TOptions>,
   filterInstance?: TFilter,
 ) {
@@ -63,6 +69,7 @@ export function useStream<
   const events = mitt<StreamEvents<TModel>>();
   const root = ref<HTMLElement | null>(null);
   const filter = ref<TFilter>(filterInstance || <TFilter>new DummyFilter());
+  const options = ref(initOptions);
 
   function reset(hard = true) {
     state.value = {};
@@ -86,7 +93,7 @@ export function useStream<
     if (loadTailStatus.isStatusLoading()) return nextPromise;
 
     nextPromise = loadingStatus(
-      service.loadTail(state.value, options, <any>filter.value),
+      service.loadTail(state.value, options.value, <any>filter.value),
       loadTailStatus,
     );
 
@@ -111,7 +118,7 @@ export function useStream<
 
     _initInfiniteScroll(initOptions);
 
-    options.scrollToStart = initOptions?.scrollToStart !== false;
+    options.value.scrollToStart = initOptions?.scrollToStart !== false;
     await _initialScroll();
   }
 
@@ -128,7 +135,7 @@ export function useStream<
   }
 
   async function _initialScroll() {
-    if (options.scrollToStart !== false) {
+    if (options.value.scrollToStart !== false) {
       return scrollToStart();
     } else {
       return scrollToEnd();
@@ -142,20 +149,24 @@ export function useStream<
     }
   }
 
-  async function scrollToStart() {
+  async function scrollToStart(attempt = 0) {
     if (!root.value) return;
 
     return new Promise((resolve) => {
       setTimeout(() => {
         nextTick(() => {
-          if (options.direction === StreamDirection.BBT) {
+          if (options.value.direction === StreamDirection.BBT) {
             scrollToBottom(root.value!);
           } else {
             scrollToTop(root.value!);
           }
+          if (attempt < 3 && root.value!.scrollTop !== root.value!.scrollHeight) {
+            scrollToStart(++attempt).then(resolve);
+          } else {
+            resolve(true);
+          }
         });
-      });
-      resolve(true);
+      }, 100);
     });
   }
 
@@ -165,7 +176,7 @@ export function useStream<
     return new Promise((resolve) => {
       setTimeout(() => {
         nextTick(() => {
-          if (options.direction === StreamDirection.BBT) {
+          if (options.value.direction === StreamDirection.BBT) {
             scrollToTop(root.value!);
           } else {
             scrollToBottom(root.value!);
@@ -190,7 +201,7 @@ export function useStream<
       {
         distance: infiniteScrollOptions.distance || 50,
         preserveScrollPosition: false,
-        direction: options.direction === StreamDirection.BBT ? 'top' : 'bottom',
+        direction: options.value.direction === StreamDirection.BBT ? 'top' : 'bottom',
       },
     );
   }
@@ -199,11 +210,11 @@ export function useStream<
     if (!newModels?.length) return;
 
     newModels = newModels.filter((model) => !getStreamEntryById(model.id));
-    newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
+    newModels = options.value.direction === StreamDirection.TTB ? newModels : newModels.reverse();
 
     events.emit('pre.next', newModels);
 
-    if (options.direction === StreamDirection.TTB) {
+    if (options.value.direction === StreamDirection.TTB) {
       models.value = models.value.concat(newModels);
     } else {
       const preparedScrollValue = prepareScroll();
@@ -236,7 +247,7 @@ export function useStream<
     if (loadHeadStatus.isStatusLoading()) return;
 
     const response = await loadingStatus(
-      service.loadHead(state.value, options, <any>filter.value),
+      service.loadHead(state.value, options.value, <any>filter.value),
       loadHeadStatus,
     );
 
@@ -246,7 +257,7 @@ export function useStream<
     return response;
   }
 
-  async function addHead(newModels: TModel[]) {
+  async function addHead(newModels: TModel[], autoScroll = false) {
     if (!newModels?.length) return;
 
     const updatedModels = [...models.value];
@@ -261,16 +272,18 @@ export function useStream<
       return true;
     });
 
-    newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
+    newModels = options.value.direction === StreamDirection.TTB ? newModels : newModels.reverse();
 
     events.emit('pre.head', newModels);
 
-    if (options.direction === StreamDirection.TTB) {
+    if (options.value.direction === StreamDirection.TTB) {
+      const isScrollTop = root.value && isScrolledToTop(root.value);
       models.value = newModels.concat(updatedModels);
+      if (autoScroll || isScrollTop) await scrollToStart();
     } else {
       const isScrollBottom = root.value && isScrolledToBottom(root.value);
       models.value = updatedModels.concat(newModels.reverse());
-      if (isScrollBottom) await nextTick(scrollToStart);
+      if (autoScroll || isScrollBottom) await scrollToStart();
     }
 
     events.emit('post.head', newModels);

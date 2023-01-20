@@ -14,34 +14,42 @@ import {
 } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 
 const contentTypeRegistry = new Map<string, Type<ContentModel>>();
-const streamEntryRegistry = new Map<string, Component>();
-const contentDetailRegistry = new Map<string, Component>();
-const createContentModalRegistry = new Map<string, Component>();
-const editContentModalRegistry = new Map<string, Component>();
+const streamEntryRegistry = new Map<string, Component<IStreamEntryProps>>();
+const contentDetailRegistry = new Map<string, Component<IContentDetailsProps>>();
+const createContentModalRegistry = new Map<string, Component<ICreateContentModalProps>>();
+const editContentModalRegistry = new Map<string, Component<IEditContentModalProps>>();
 const contentTypeOptionsRegistry = new Map<string, IContentTypeOptions>();
 
 export function registerContentType(options: IContentTypeOptions) {
-  if (options.stream?.details) {
-    registerContentDetailsComponent(options.type, options.stream.details);
-  }
+  const { interfaces } = options;
 
-  if (options.create?.mode === 'modal' && options.create.component) {
-    registerCreateContentModalComponent(options.type, options.create.component);
-  }
-
-  if (options.edit?.mode === 'modal' && options.edit.component) {
-    registerEditContentModalComponent(options.type, options.edit.component);
-  }
-
-  if (options.stream?.streamEntry) {
-    registerContentStreamEntryComponent(options.type, options.stream.streamEntry);
-  }
+  _registerInterfaces(options.type, interfaces);
 
   if (options.modelClass) {
     _registerContentType(options.type, options.modelClass);
   }
 
   _registerContentTypeOptions(options.type, options);
+}
+
+function _registerInterfaces(contentType: string, interfaces?: IContentTypeOptions['interfaces']) {
+  if (!interfaces) return;
+
+  if (interfaces.stream?.details) {
+    registerContentDetailsComponent(contentType, interfaces.stream.details);
+  }
+
+  if (interfaces.create?.mode === 'modal' && interfaces.create.component) {
+    registerCreateContentModalComponent(contentType, interfaces.create.component);
+  }
+
+  if (interfaces.edit?.mode === 'modal' && interfaces.edit.component) {
+    registerEditContentModalComponent(contentType, interfaces.edit.component);
+  }
+
+  if (interfaces.stream?.entry) {
+    registerContentStreamEntryComponent(contentType, interfaces.stream.entry);
+  }
 }
 
 function _registerContentTypeOptions(contentType: string, options: IContentTypeOptions) {
@@ -68,8 +76,11 @@ export function registerCreateContentModalComponent(
   createContentModalRegistry.set(contentType, _getComponent(component));
 }
 
-export function getCreateContentModalComponent(contentType: string) {
-  return createContentModalRegistry.get(contentType);
+export function getCreateContentModalComponent(
+  contentOrType: string | ContentModel,
+): Component<ICreateContentModalProps> | undefined {
+  const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
+  return createContentModalRegistry.get(type);
 }
 
 export function registerEditContentModalComponent(
@@ -80,8 +91,11 @@ export function registerEditContentModalComponent(
   editContentModalRegistry.set(contentType, _getComponent(component));
 }
 
-export function getEditContentModalComponent(contentType: string) {
-  return editContentModalRegistry.get(contentType);
+export function getEditContentModalComponent(
+  contentOrType: string | ContentModel,
+): Component<IEditContentModalProps> | undefined {
+  const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
+  return editContentModalRegistry.get(type);
 }
 
 export function registerContentStreamEntryComponent(
@@ -94,7 +108,7 @@ export function registerContentStreamEntryComponent(
 
 export function getContentStreamEntryComponent(
   contentOrType: string | ContentModel,
-): Component<IStreamEntryProps> | Lazy<Component<IStreamEntryProps>> {
+): Component<IStreamEntryProps> {
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
   return streamEntryRegistry.get(type) || DefaultStreamEntry;
 }
@@ -115,7 +129,7 @@ function _getComponent(component: ComponentRegistration<any>) {
 
 export function getContentDetailsComponent(
   contentOrType: string | ContentModel,
-): Component<IContentDetailsProps> | Lazy<Component<IContentDetailsProps>> {
+): ComponentRegistration<IContentDetailsProps> {
   // Todo: maybe provide a fallback component type
   const type = typeof contentOrType === 'string' ? contentOrType : contentOrType.type;
   return contentDetailRegistry.get(type) || ContentDetails;

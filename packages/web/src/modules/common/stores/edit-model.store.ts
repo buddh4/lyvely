@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { Ref, ref } from 'vue';
 import { ModelValidator, IEditModelService } from '@lyvely/common';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus } from '@/store';
@@ -68,9 +68,7 @@ export function useUpdateModelStore<
   }
 
   async function submit() {
-    if (!validator.value || !(await validator.value.validate())) {
-      return;
-    }
+    if (!validator.value || !(await validator.value.validate())) return;
 
     try {
       const response = await loadingStatus<TResponse | false>(
@@ -139,9 +137,9 @@ export function useUpdateModelStore<
   }
 
   return {
-    model,
+    model: <Ref<TEditModel>>model,
     modelId,
-    validator,
+    validator: <Ref<ModelValidator<TEditModel>>>validator,
     status,
     isActive,
     isCreate,

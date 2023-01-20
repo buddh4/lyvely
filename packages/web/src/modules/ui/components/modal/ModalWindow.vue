@@ -74,7 +74,6 @@ function close() {
 
 function cancel() {
   close();
-  console.log('close');
   emit('cancel');
 }
 

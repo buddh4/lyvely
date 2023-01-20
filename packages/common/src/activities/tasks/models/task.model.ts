@@ -1,24 +1,19 @@
 import { Expose } from 'class-transformer';
 import { ActivityType, ActivityModel } from '../../models';
 import { TimerModel } from '@/calendar';
-import { PropertyType } from '@/models';
-import { CreateTaskModel } from './create-task.model';
+import { IEditableModel, PropertyType } from '@/models';
 import { UpdateTaskModel } from './update-task.model';
 
 @Expose()
-export class TaskModel extends ActivityModel<TaskModel> {
+export class TaskModel extends ActivityModel<TaskModel> implements IEditableModel<UpdateTaskModel> {
   done?: string;
 
   @PropertyType(TimerModel)
   timer: TimerModel;
 
-  type: string = ActivityType.Task;
+  type = ActivityType.Task;
 
-  static getCreateDto() {
-    return new CreateTaskModel();
-  }
-
-  getEditDto() {
+  toEditModel() {
     return new UpdateTaskModel({
       title: this.content.title,
       text: this.content.text,
@@ -35,7 +30,7 @@ export class TaskWithUsersModel extends ActivityModel<TaskModel> {
 
   timers?: TimerModel[];
 
-  type: string = ActivityType.Task;
+  type = ActivityType.Task;
 }
 
 @Expose()

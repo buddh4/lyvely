@@ -1,18 +1,14 @@
 <script lang="ts" setup>
-import EditTaskModal from '@/modules/activities/components/modals/EditTaskModal.vue';
 import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlan.vue';
 import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType, getCalendarPlanArray } from '@lyvely/common';
-import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { computed } from 'vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
+import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 
 const type = ActivityType.Task;
-
-function createEntry() {
-  useUpdateActivityStore().setCreateActivity(type);
-}
+const createEntry = () => useContentCreateStore().setCreateContent(type);
 
 const intervals = computed(() => getCalendarPlanArray());
 
@@ -27,8 +23,6 @@ usePageStore().setTitle(['Tasks']);
       :interval="interval"
       :type="type" />
   </calendar-plan>
-
-  <edit-task-modal />
 
   <floating-add-button @click="createEntry" />
 </template>

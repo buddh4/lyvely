@@ -29,6 +29,8 @@ export class ContentStreamService extends AbstractStreamService<Content, Content
 
     if (filter.archived) {
       query['meta.isArchived'] = true;
+    } else {
+      query['meta.isArchived'] = { $ne: true };
     }
 
     if (filter.query?.length) {

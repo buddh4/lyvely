@@ -4,7 +4,6 @@ import { TaskModel, TimerModel } from '@lyvely/common';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed } from 'vue';
 import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue';
-import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import { useActivityPlanItem } from '@/modules/activities/composables/useActivityPlanItem';
@@ -25,15 +24,15 @@ const selection = computed({
   set: (selection: number) => taskStore.setTaskSelection(props.model, !!selection),
 });
 async function startTimer() {
-  taskStore.startTimer(props.model);
+  return taskStore.startTimer(props.model);
 }
 
 async function stopTimer() {
-  taskStore.stopTimer(props.model);
+  return taskStore.stopTimer(props.model);
 }
 
 async function updateTimer(value: number) {
-  taskStore.updateTimer(props.model, value);
+  return taskStore.updateTimer(props.model, value);
 }
 </script>
 

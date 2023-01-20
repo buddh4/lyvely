@@ -1,7 +1,11 @@
 import { defineStore } from 'pinia';
-import { ContentModel } from '@lyvely/common';
+import { ContentModel, ContentUpdateResponse } from '@lyvely/common';
 import { useContentService } from '@/modules/content/services/content.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
+import { eventBus } from '@/modules/core/events/global.emitter';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+
+type ContentEventType = 'archived' | 'unarchived' | 'created' | 'updated';
 
 export const useContentStore = defineStore('content', () => {
   const contentService = useContentService();
@@ -14,20 +18,93 @@ export const useContentStore = defineStore('content', () => {
   async function archive(content: ContentModel) {
     return contentService
       .archive(content.id)
-      .then(() => (content.meta.isArchived = true))
+      .then(() => {
+        content.meta.isArchived = true;
+        emitPostContentEvent(content.type, 'archived', content);
+      })
       .catch(globalDialog.showUnknownError);
   }
 
   async function unarchive(content: ContentModel) {
     return contentService
       .unarchive(content.id)
-      .then(() => (content.meta.isArchived = false))
+      .then(() => {
+        content.meta.isArchived = false;
+        emitPostContentEvent(content.type, 'archived', content);
+      })
       .catch(globalDialog.showUnknownError);
+  }
+
+  function onContentEvent<T extends ContentModel = ContentModel>(
+    type: '*' | string,
+    event: ContentEventType,
+    handler: (content: T) => void,
+  ): void {
+    return eventBus.on(`content.${type}.${event}.post`, handler!);
+  }
+
+  function offContentEvent<T extends ContentModel = ContentModel>(
+    type: '*' | string,
+    event: ContentEventType,
+    handler: (content: T) => void,
+  ): void {
+    return eventBus.off(`content.${type}.${event}.post`, handler!);
+  }
+
+  function onContentCreated<T extends ContentModel = ContentModel>(
+    type: '*' | string,
+    handler: (content: T) => void,
+  ): void {
+    return onContentEvent(type, 'created', handler);
+  }
+
+  function offContentCreated<T extends ContentModel = ContentModel>(
+    type: string,
+    handler: (content: T) => void,
+  ): void {
+    return offContentEvent(type, 'created', handler);
+  }
+
+  function onContentUpdated<T extends ContentModel = ContentModel>(
+    type: string,
+    handler: (content: T) => void,
+  ): void {
+    return onContentEvent(type, 'updated', handler);
+  }
+
+  function offContentUpdated<T extends ContentModel = ContentModel>(
+    type: string,
+    handler: (content: T) => void,
+  ): void {
+    return offContentEvent(type, 'updated', handler);
+  }
+
+  function emitPostContentEvent(type: string, event: ContentEventType, content: ContentModel) {
+    eventBus.emit(`content.${type.toLowerCase()}.${event}.post`, content);
+  }
+
+  function handleCreateContent(response?: ContentUpdateResponse<any>) {
+    if (!response) return;
+    useProfileStore().updateTags(response.tags);
+    emitPostContentEvent(response.model.type, 'created', response.model);
+  }
+
+  function handleUpdateContent(response?: ContentUpdateResponse<any>) {
+    if (!response) return;
+    useProfileStore().updateTags(response.tags);
+    emitPostContentEvent(response.model.type, 'updated', response.model);
   }
 
   return {
     archive,
     unarchive,
     toggleArchive,
+    handleCreateContent,
+    handleUpdateContent,
+    emitPostContentEvent,
+    onContentCreated,
+    offContentCreated,
+    onContentUpdated,
+    offContentUpdated,
   };
 });

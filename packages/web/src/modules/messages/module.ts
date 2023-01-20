@@ -13,8 +13,10 @@ export default () => {
         icon: 'stream',
         feature: 'messages',
         modelClass: MessageModel,
-        stream: {
-          streamEntry: () => import('./components/MessageStreamEntry.vue'),
+        interfaces: {
+          stream: {
+            entry: () => import('./components/MessageStreamEntry.vue'),
+          },
         },
       });
     },

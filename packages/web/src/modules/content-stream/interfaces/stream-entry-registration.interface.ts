@@ -8,26 +8,21 @@ import {
   IEditContentModalProps,
 } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 
-export enum EditMode {
-  Modal = 'modal',
-  Route = 'route',
-}
-
 export type ComponentRegistration<Props> = Component<Props> | Lazy<Component<Props>>;
 
 export type ModalEdit = {
-  mode: EditMode.Modal;
+  mode: 'modal';
   component: ComponentRegistration<IEditContentModalProps>;
 };
 
 export type ModalCreate = {
-  mode: EditMode.Modal;
+  mode: 'modal';
   component: ComponentRegistration<ICreateContentModalProps>;
-  modelType: Type<CreateContentModel>;
+  modelClass: Type<CreateContentModel>;
 };
 
 export type RouteEdit = {
-  mode: EditMode.Route;
+  mode: 'route';
   route: RouteLocationRaw;
 };
 
@@ -39,7 +34,7 @@ export interface IContentTypeMeta {
 }
 
 export interface IContentTypeStreamOptions {
-  streamEntry?: ComponentRegistration<IStreamEntryProps>;
+  entry?: ComponentRegistration<IStreamEntryProps>;
   details?: ComponentRegistration<IContentDetailsProps>;
 }
 
@@ -50,7 +45,9 @@ export interface IContentTypeOptions {
   icon?: string;
   modelClass: Type<ContentModel>;
   meta?: IContentTypeMeta;
-  stream?: IContentTypeStreamOptions;
-  create?: ModalCreate | RouteEdit;
-  edit?: ModalEdit | RouteEdit;
+  interfaces?: {
+    stream?: IContentTypeStreamOptions;
+    create?: ModalCreate | RouteEdit;
+    edit?: ModalEdit | RouteEdit;
+  };
 }

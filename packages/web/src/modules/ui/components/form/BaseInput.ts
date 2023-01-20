@@ -1,12 +1,4 @@
-import {
-  ComponentOptions,
-  computed,
-  ComputedRef,
-  ref,
-  SetupContext,
-  inject,
-  CSSProperties,
-} from 'vue';
+import { ComponentOptions, computed, ComputedRef, ref, SetupContext, inject } from 'vue';
 import { merge, uniqueId } from 'lodash';
 import { CssClassDefinition } from '@/util/component.types';
 import { ModelValidator } from '@lyvely/common';

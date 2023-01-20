@@ -5,14 +5,14 @@ import CalendarPlanSection from '@/modules/calendar/components/CalendarPlanSecti
 import { ActivityType, isTask } from '@lyvely/common';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
-import { useUpdateActivityStore } from '@/modules/activities/store/update-activity.store';
 import { computed, ref } from 'vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import draggable from 'vuedraggable';
+import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 
 export interface IProps {
   interval: number;
-  type: ActivityType;
+  type: string;
 }
 
 const props = defineProps<IProps>();
@@ -46,9 +46,8 @@ function dragEnd(evt: IDragEvent) {
   });
 }
 
-function addEntry() {
-  useUpdateActivityStore().setCreateActivity(props.type, props.interval);
-}
+const addEntry = () =>
+  useContentCreateStore().setCreateContent(props.type, { interval: props.interval });
 
 const createTitle = computed(() =>
   props.type === ActivityType.Habit

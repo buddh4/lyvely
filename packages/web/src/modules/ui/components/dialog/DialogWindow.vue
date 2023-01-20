@@ -28,10 +28,7 @@ const visible = computed({
 const modalBinds = computed(() => {
   return {
     icon: props.icon,
-    iconColor: props.iconColor,
-    iconClass: props.iconClass,
     title: props.title,
-    message: props.message,
   };
 });
 
@@ -41,14 +38,22 @@ const reload = () => {
 </script>
 
 <template>
-  <ly-modal v-model="visible" v-bind="modalBinds" :back-button="false" :submit-button="false">
+  <ly-modal v-model="visible" v-bind="modalBinds">
     <template v-if="message">
       {{ $t(message) }}
     </template>
 
     <template #footer>
-      <ly-button v-if="buttonType === 'reload'" class="danger" text="common.reload" @click="reload" />
-      <ly-button v-if="buttonType === 'close'" class="primary" text="common.close" @click="visible = false" />
+      <ly-button
+        v-if="buttonType === 'reload'"
+        class="danger"
+        text="common.reload"
+        @click="reload" />
+      <ly-button
+        v-if="buttonType === 'close'"
+        class="primary"
+        text="common.close"
+        @click="visible = false" />
     </template>
   </ly-modal>
 </template>

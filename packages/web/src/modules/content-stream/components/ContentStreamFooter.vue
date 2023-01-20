@@ -4,6 +4,7 @@ import { ContentStreamFilter, ProfileType } from '@lyvely/common';
 import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { onMounted, ref } from 'vue';
 
 export interface IProps {
   filter: ContentStreamFilter;
@@ -11,6 +12,8 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 const emits = defineEmits(['contentCreated']);
+
+const messageInput = ref<HTMLElement>();
 
 const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
@@ -25,6 +28,8 @@ const placeholderKey =
   profileStore.profile!.type === ProfileType.User
     ? 'stream.editor.placeholder_single_user'
     : 'stream.editor.placeholder_multi_user';
+
+onMounted(() => messageInput.value?.focus());
 </script>
 
 <template>
@@ -38,6 +43,7 @@ const placeholderKey =
           <ly-icon name="plus"></ly-icon>
         </ly-button>
         <input
+          ref="messageInput"
           v-model="model.text"
           type="text"
           class="rounded-full"

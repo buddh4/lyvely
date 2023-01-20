@@ -1,20 +1,17 @@
 import { Expose } from 'class-transformer';
 import { ActivityType, ActivityModel } from '../../models';
-import { IsEnum } from 'class-validator';
 import { ContentModel } from '@/content';
-import { CreateHabitModel } from './create-habit.model';
 import { UpdateHabitModel } from './update-habit.model';
+import { IEditableModel } from '@/models';
 
 @Expose()
-export class HabitModel extends ActivityModel<HabitModel> {
-  @IsEnum(ActivityType)
-  type: string = ActivityType.Habit;
+export class HabitModel
+  extends ActivityModel<HabitModel>
+  implements IEditableModel<UpdateHabitModel>
+{
+  type = ActivityType.Habit;
 
-  static getCreateDto() {
-    return new CreateHabitModel();
-  }
-
-  getEditDto() {
+  toEditModel() {
     return new UpdateHabitModel({
       title: this.content.title,
       text: this.content.text,

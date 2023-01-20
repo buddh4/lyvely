@@ -27,7 +27,11 @@ const done = computed(() => !!props.model.done);
 
     <template #default>
       <div>
-        <ly-input-checkbox v-model="done" :label="model.content.title" :readonly="true" />
+        <ly-input-checkbox
+          v-model="done"
+          :label="model.content.title"
+          :translate="false"
+          :readonly="true" />
         <p v-if="model.content.text?.length" class="text-sm text-dimmed ml-7">
           {{ model.content.text }}
         </p>

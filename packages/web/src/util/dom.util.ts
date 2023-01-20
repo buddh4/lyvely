@@ -10,6 +10,10 @@ export function scrollToBottom(elem: HTMLElement) {
   elem.scrollTop = elem.scrollHeight;
 }
 
+export function isScrolledToTop(elem: HTMLElement) {
+  return elem.scrollTop === 0;
+}
+
 export function isScrolledToBottom(elem: HTMLElement) {
   return elem.scrollTop === elem.scrollHeight - elem.offsetHeight;
 }

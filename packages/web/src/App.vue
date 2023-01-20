@@ -28,7 +28,7 @@ layoutMap.set('profile', { component: ProfileLayout, props: {} });
 layoutMap.set('profile-xl', { component: ProfileLayout, props: { containerWidth: 'xl' } });
 layoutMap.set('profile-full', { component: ProfileLayout, props: { containerWidth: 'full' } });
 
-const layoutDefintion = computed<{ component: any; props: any } | undefined>(() => {
+const layoutDefinition = computed<{ component: any; props: any } | undefined>(() => {
   if (!layout.value) return undefined;
   const layoutDefinition = layoutMap.get(layout.value?.toLowerCase());
   if (!layoutDefinition) return undefined;
@@ -51,9 +51,9 @@ window.addEventListener('orientationchange', calculateVh);
 <template>
   <div class="flex items-stretch">
     <Component
-      :is="layoutDefintion.component"
-      v-if="layoutDefintion"
-      v-bind="layoutDefintion.props" />
+      :is="layoutDefinition.component"
+      v-if="layoutDefinition"
+      v-bind="layoutDefinition.props" />
     <template v-else>
       <router-view></router-view>
     </template>

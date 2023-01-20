@@ -1,8 +1,8 @@
-import { ActivityType, ActivityModel } from './activity.model';
+import { ActivityModel } from './activity.model';
 import { ContentFilter, IContentFilterOptions } from '@/content';
 
 export interface IActivityFilterOptions extends IContentFilterOptions {
-  type?: ActivityType;
+  type?: string;
 }
 
 export class ActivityFilter extends ContentFilter<ActivityModel, IActivityFilterOptions> {}

@@ -6,8 +6,6 @@ import ContentDetails from '@/modules/content-stream/components/ContentDetails.v
 
 export interface IProps {
   model: TaskModel;
-  stream: IStream<ContentModel>;
-  index: number;
 }
 
 const props = defineProps<IProps>();

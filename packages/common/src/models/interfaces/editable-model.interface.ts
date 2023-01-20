@@ -1,3 +1,3 @@
-export interface IEditModel<TUpdateModel> {
+export interface IEditableModel<TUpdateModel> {
   toEditModel(): TUpdateModel;
 }
