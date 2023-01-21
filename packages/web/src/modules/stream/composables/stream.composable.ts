@@ -1,5 +1,6 @@
 import {
   IStreamFilter,
+  IStreamHistory,
   IStreamOptions,
   IStreamService,
   IStreamState,
@@ -28,24 +29,29 @@ export type IStream<
   TOptions extends IStreamOptions = IStreamOptions,
 > = ReturnType<typeof useStream<TModel, TFilter, TOptions>>;
 
-export interface IStreamInitOptions<TFilter extends IStreamFilter = any> {
-  root?: HTMLElement;
-  filter?: Ref<TFilter>;
-  scrollToStart?: boolean;
+export interface IStreamViewOptions<TFilter extends IStreamFilter = any> extends IStreamOptions {
+  root?: Ref<HTMLElement>;
+  filter?: TFilter;
+  scrollToHeadOnInit?: boolean;
+  scrollToHead?: () => Promise<void>;
+  scrollToTail?: () => Promise<void>;
   infiniteScroll?: { distance?: number } | boolean;
 }
 
-export interface IStreamRestoreOptions<
-  TModel extends { id: string } = any,
+export interface IStreamViewInitOptions<TFilter extends IStreamFilter = any>
+  extends Partial<IStreamViewOptions<TFilter>> {}
+
+export interface IStreamViewRestoreOptions<
+  TModel,
+  TRestoreState,
   TFilter extends IStreamFilter = any,
-> {
-  root?: HTMLElement;
-  history: IStream<TModel, TFilter>;
-  filter?: Ref<TFilter>;
-  infiniteScroll?: { distance?: number } | boolean;
+  TState extends IStreamState = IStreamState,
+  TOptions extends IStreamOptions = IStreamOptions,
+> extends IStreamViewInitOptions<TFilter> {
+  history: IStreamHistory<TModel, TRestoreState, TFilter, TState, TOptions>;
 }
 
-class DummyFilter implements IStreamFilter {
+class MockFilter implements IStreamFilter {
   reset() {
     /* Nothing todo */
   }
@@ -53,23 +59,19 @@ class DummyFilter implements IStreamFilter {
 
 export function useStream<
   TModel extends { id: string },
-  TFilter extends IStreamFilter = any,
-  TOptions extends IStreamOptions & { scrollToStart?: boolean } = IStreamOptions & {
-    scrollToStart?: boolean;
-  },
->(
-  initOptions: TOptions,
-  service: IStreamService<TModel, TFilter, IStreamState, TOptions>,
-  filterInstance?: TFilter,
-) {
+  TFilter extends IStreamFilter | MockFilter = any,
+  TRestoreState = any,
+  TState extends IStreamState = IStreamState,
+  TOptions extends IStreamViewOptions = IStreamViewOptions,
+>(initOptions: TOptions, service: IStreamService<TModel, TFilter, IStreamState, TOptions>) {
+  let options = initOptions;
   const state = ref<IStreamState>({});
   const loadTailStatus = useStatus();
   const loadHeadStatus = useStatus();
   const models = ref<TModel[]>([]) as Ref<TModel[]>;
   const events = mitt<StreamEvents<TModel>>();
-  const root = ref<HTMLElement | null>(null);
-  const filter = ref<TFilter>(filterInstance || <TFilter>new DummyFilter());
-  const options = ref(initOptions);
+  const filter = ref<TFilter>(options.filter || new MockFilter());
+  const isInitialized = ref(false);
 
   function reset(hard = true) {
     state.value = {};
@@ -93,7 +95,7 @@ export function useStream<
     if (loadTailStatus.isStatusLoading()) return nextPromise;
 
     nextPromise = loadingStatus(
-      service.loadTail(state.value, options.value, <any>filter.value),
+      service.loadTail(state.value, options, <any>filter.value),
       loadTailStatus,
     );
 
@@ -104,104 +106,102 @@ export function useStream<
     return response;
   }
 
-  async function init(initOptions?: IStreamInitOptions) {
-    if (initOptions?.root) {
-      root.value = initOptions.root;
-    }
+  async function init(initOptions?: IStreamViewInitOptions) {
+    isInitialized.value = false;
 
-    if (initOptions?.filter) {
-      filter.value = initOptions.filter;
+    if (initOptions) {
+      options = Object.assign(options, initOptions);
     }
 
     reset(false);
+
     await _loadInitialEntries();
 
-    _initInfiniteScroll(initOptions);
+    _initInfiniteScroll();
 
-    options.value.scrollToStart = initOptions?.scrollToStart !== false;
+    options.scrollToHeadOnInit = initOptions?.scrollToHeadOnInit !== false;
     await _initialScroll();
+    isInitialized.value = true;
   }
 
-  async function restore(restoreOptions: IStreamRestoreOptions) {
-    if (restoreOptions?.root) {
-      root.value = restoreOptions.root;
-    }
-
-    models.value = restoreOptions.history.models.value;
-    filter.value = restoreOptions.history.filter.value;
-    state.value = restoreOptions.history.state.value;
-
-    _initInfiniteScroll(restoreOptions);
-  }
-
-  async function _initialScroll() {
-    if (options.value.scrollToStart !== false) {
-      return scrollToStart();
-    } else {
-      return scrollToEnd();
-    }
+  async function restore(
+    restoreOptions: IStreamViewRestoreOptions<TModel, TRestoreState, TFilter, TState, TOptions>,
+  ) {
+    isInitialized.value = false;
+    models.value = restoreOptions.history.models;
+    filter.value = restoreOptions.history.filter;
+    state.value = restoreOptions.history.state;
+    _initInfiniteScroll();
+    isInitialized.value = true;
   }
 
   async function _loadInitialEntries() {
-    if (!root.value) return loadTail();
-    while (!hasOverflow(root.value) && !state.value.isEnd && !loadTailStatus.isStatusError()) {
+    if (!options.root?.value) return loadTail();
+    while (
+      !hasOverflow(options.root.value) &&
+      !state.value.isEnd &&
+      !loadTailStatus.isStatusError()
+    ) {
       await loadTail();
     }
   }
 
-  async function scrollToStart(attempt = 0) {
-    if (!root.value) return;
-
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        nextTick(() => {
-          if (options.value.direction === StreamDirection.BBT) {
-            scrollToBottom(root.value!);
-          } else {
-            scrollToTop(root.value!);
-          }
-          if (attempt < 3 && root.value!.scrollTop !== root.value!.scrollHeight) {
-            scrollToStart(++attempt).then(resolve);
-          } else {
-            resolve(true);
-          }
-        });
-      }, 100);
-    });
+  async function _initialScroll() {
+    return options.scrollToHeadOnInit !== false ? scrollToHead() : scrollToTail();
   }
 
-  async function scrollToEnd() {
-    if (!root.value) return;
+  async function scrollToHead() {
+    if (!options.root?.value) return;
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        nextTick(() => {
-          if (options.value.direction === StreamDirection.BBT) {
-            scrollToTop(root.value!);
-          } else {
-            scrollToBottom(root.value!);
-          }
-          resolve(true);
+    return options.scrollToHead
+      ? options.scrollToHead()
+      : new Promise((resolve) => {
+          setTimeout(() => {
+            nextTick(() => {
+              if (options.direction === StreamDirection.BBT) {
+                scrollToBottom(options.root!.value!);
+              } else {
+                scrollToTop(options.root!.value!);
+              }
+              resolve(true);
+            });
+          }, 100);
         });
-      });
-    });
   }
 
-  function _initInfiniteScroll(initOptions?: IStreamInitOptions) {
-    if (!root.value || !initOptions?.infiniteScroll) return;
+  async function scrollToTail() {
+    if (!options.root?.value) return;
+    return options.scrollToTail
+      ? options.scrollToTail()
+      : new Promise((resolve) => {
+          setTimeout(() => {
+            nextTick(() => {
+              if (options.direction === StreamDirection.BBT) {
+                scrollToTop(options.root!.value!);
+              } else {
+                scrollToBottom(options.root!.value!);
+              }
+              resolve(true);
+            });
+          });
+        });
+  }
+
+  function _initInfiniteScroll() {
+    if (!options.root || !options.infiniteScroll) return;
 
     const infiniteScrollOptions =
-      typeof initOptions.infiniteScroll === 'object' ? initOptions.infiniteScroll : {};
+      typeof options.infiniteScroll === 'object' ? options.infiniteScroll : {};
 
     useInfiniteScroll(
-      root,
+      options.root,
       () => {
         loadTail().catch((e) => console.error(e));
       },
       {
         distance: infiniteScrollOptions.distance || 50,
         preserveScrollPosition: false,
-        direction: options.value.direction === StreamDirection.BBT ? 'top' : 'bottom',
+        direction: options.direction === StreamDirection.BBT ? 'top' : 'bottom',
       },
     );
   }
@@ -210,11 +210,11 @@ export function useStream<
     if (!newModels?.length) return;
 
     newModels = newModels.filter((model) => !getStreamEntryById(model.id));
-    newModels = options.value.direction === StreamDirection.TTB ? newModels : newModels.reverse();
+    newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
 
     events.emit('pre.next', newModels);
 
-    if (options.value.direction === StreamDirection.TTB) {
+    if (options.direction === StreamDirection.TTB) {
       models.value = models.value.concat(newModels);
     } else {
       const preparedScrollValue = prepareScroll();
@@ -226,17 +226,18 @@ export function useStream<
   }
 
   function prepareScroll() {
-    if (!root.value) return 0;
-    return root.value?.scrollHeight - root.value.scrollTop;
+    if (!options.root?.value) return 0;
+    return options.root.value.scrollHeight - options.root.value.scrollTop;
   }
 
   function restoreScroll(previousScrollHeightMinusTop: number) {
-    if (!root.value) return;
+    if (!options.root?.value) return;
 
     return new Promise((resolve) => {
       setTimeout(() => {
         nextTick(() => {
-          root.value!.scrollTop = root.value!.scrollHeight - previousScrollHeightMinusTop;
+          options.root!.value!.scrollTop =
+            options.root!.value.scrollHeight - previousScrollHeightMinusTop;
         });
       });
       resolve(true);
@@ -247,7 +248,7 @@ export function useStream<
     if (loadHeadStatus.isStatusLoading()) return;
 
     const response = await loadingStatus(
-      service.loadHead(state.value, options.value, <any>filter.value),
+      service.loadHead(state.value, options, <any>filter.value),
       loadHeadStatus,
     );
 
@@ -272,25 +273,25 @@ export function useStream<
       return true;
     });
 
-    newModels = options.value.direction === StreamDirection.TTB ? newModels : newModels.reverse();
+    newModels = options.direction === StreamDirection.TTB ? newModels : newModels.reverse();
 
     events.emit('pre.head', newModels);
 
-    if (options.value.direction === StreamDirection.TTB) {
-      const isScrollTop = root.value && isScrolledToTop(root.value);
+    if (options.direction === StreamDirection.TTB) {
+      const isScrollTop = options.root?.value && isScrolledToTop(options.root.value);
       models.value = newModels.concat(updatedModels);
-      if (autoScroll || isScrollTop) await scrollToStart();
+      if (autoScroll || isScrollTop) await scrollToHead();
     } else {
-      const isScrollBottom = root.value && isScrolledToBottom(root.value);
+      const isScrollBottom = options.root?.value && isScrolledToBottom(options.root?.value);
       models.value = updatedModels.concat(newModels.reverse());
-      if (autoScroll || isScrollBottom) await scrollToStart();
+      if (autoScroll || isScrollBottom) await scrollToHead();
     }
 
     events.emit('post.head', newModels);
   }
 
   async function loadEntry(id: string) {
-    const model = await service.loadEntry(id, <any>filter.value);
+    const model = await service.loadEntry(id, filter.value);
     if (!model) return null;
 
     const index = models.value.findIndex((model) => model.id === id);
@@ -313,10 +314,6 @@ export function useStream<
     return models.value.findIndex((model) => model.id === id);
   }
 
-  function isInitialized() {
-    return !loadTailStatus.isStatusInit();
-  }
-
   return {
     options,
     init,
@@ -335,7 +332,8 @@ export function useStream<
     loadHead,
     loadEntry,
     reload,
-    scrollToStart,
+    scrollToHead,
+    scrollToTail,
     addTail,
     addHead,
   };

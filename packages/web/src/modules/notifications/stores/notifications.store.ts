@@ -59,7 +59,7 @@ export const useNotificationStore = defineStore('notifications', () => {
   }
 
   watch(showNotificationDrawer, (wasOpened) => {
-    if (wasOpened && !stream.isInitialized()) {
+    if (wasOpened && !stream.isInitialized.value) {
       stream.loadTail().then(() => {
         hasUpdates.value = false;
       });

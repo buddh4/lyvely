@@ -65,3 +65,17 @@ export interface IStreamService<
   ): Promise<IStreamResponse<TModel, TState>>;
   loadEntry(id: string, filter?: TFilter): Promise<TModel>;
 }
+
+export interface IStreamHistory<
+  TModel,
+  TRestoreState,
+  TFilter extends IStreamFilter = any,
+  TState extends IStreamState = IStreamState,
+  TOptions extends IStreamOptions = IStreamOptions,
+> {
+  models: TModel[];
+  state: TState;
+  options: TOptions;
+  filter: TFilter;
+  restoreState: TRestoreState;
+}

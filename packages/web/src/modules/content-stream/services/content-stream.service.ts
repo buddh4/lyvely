@@ -6,11 +6,11 @@ import {
   IStreamResponse,
   IStreamState,
   useSingleton,
+  PropertiesOf,
 } from '@lyvely/common';
 import repositry from '../repositories';
 import { unwrapResponse } from '@/modules/core';
 import { getContentType } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { PropertiesOf } from '@lyvely/common/src';
 
 export class ContentStreamService implements IContentStreamClient {
   async loadEntry(id: string, filter?: ContentStreamFilter): Promise<ContentModel> {

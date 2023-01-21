@@ -1,4 +1,4 @@
-import mitt, { Emitter, Handler } from 'mitt';
+import mitt, { Emitter, Handler, WildcardHandler } from 'mitt';
 
 // Todo: We use any for app events to prevent circular dependencies
 
@@ -17,28 +17,23 @@ export default function matching<
   Key extends string & keyof Events,
 >(mitt: Emitter<Events>) {
   const { on, off } = mitt;
-  const cache = {} as Record<string, typeof mitt['on']>;
   const mk = (pattern: Key, fn: Handler<Events[Key]>) => {
-    const key = pattern + fn;
-    return (
-      cache[key] ||
-      (cache[key] = (type: string, e: any) => {
-        const split = pattern.split('*');
-        if (split.length > 2) {
-          throw new Error('Event types with multiple wildcards are not supported');
-        }
+    return (type: Key, e: Events[Key]) => {
+      const split = pattern.split('*');
+      if (split.length > 2) {
+        throw new Error('Event types with multiple wildcards are not supported');
+      }
 
-        if (type.startsWith(split[0]) && type.endsWith(split[1])) return fn(e);
-      })
-    );
+      if (type.startsWith(split[0]) && type.endsWith(split[1])) return fn(e);
+    };
   };
   mitt.on = <any>(
     ((type: Key, fn: Handler<Events[Key]>) =>
-      type.match(/^.*[*]/) ? on('*', mk(type, fn)) : on(type, fn))
+      type.match(/^.*[*]/) ? on('*', <any>mk(type, fn)) : on(type, fn))
   );
   mitt.off = <any>(
     ((type: Key, fn: Handler<Events[Key]>) =>
-      type.match(/^.*[*]/) ? off('*', mk(type, fn)) : off(type, fn))
+      type.match(/^.*[*]/) ? off('*', <any>mk(type, fn)) : off(type, fn))
   );
   return mitt;
 }

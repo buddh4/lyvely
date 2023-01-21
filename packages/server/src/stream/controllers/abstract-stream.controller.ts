@@ -54,8 +54,8 @@ export abstract class AbstractStreamController<
     return this.mapResponse(response, context);
   }
 
-  @Get(':nid')
-  async loadEntry(@Param('nid') nid: string, @Req() req: ProfileRequest): Promise<TResult> {
+  @Get(':cid')
+  async loadEntry(@Param(':cid') nid: string, @Req() req: ProfileRequest): Promise<TResult> {
     const context = req.context || new UserContext(req.user);
     const entry = await this.streamEntryService.loadEntry(context, nid);
     return (await this.mapToResultModel([entry], context))[0];

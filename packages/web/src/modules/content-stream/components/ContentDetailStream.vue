@@ -2,10 +2,9 @@
 import ContentStreamFooter from '@/modules/content-stream/components/ContentStreamFooter.vue';
 import ContentStream from '@/modules/content-stream/components/ContentStream.vue';
 import { ContentModel, ContentStreamFilter } from '@lyvely/common';
-import { ref, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import { getContentDetailsComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { useContentStore } from '@/modules/content/stores/content.store';
 
 export interface IProps {
   content: ContentModel;
@@ -14,15 +13,8 @@ export interface IProps {
 const props = defineProps<IProps>();
 const emit = defineEmits(['back']);
 
-const filter = ref(new ContentStreamFilter({ parent: content.value.id }));
+const filter = ref(new ContentStreamFilter({ parent: props.content.id }));
 const streamComponent = ref<ContentStream>();
-
-const contentStore = useContentStore();
-const onContentCreated = (content: ContentModel) => {
-  streamComponent.value!.stream.addHead([content], true);
-};
-contentStore.onContentCreated('*', onContentCreated);
-onUnmounted(() => contentStore.offContentCreated('*', onContentCreated));
 </script>
 
 <template>

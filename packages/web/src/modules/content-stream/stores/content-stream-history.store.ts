@@ -1,10 +1,10 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { watch, Ref } from 'vue';
-import {
-  IContentStreamHistory,
-  IContentStreamState,
-} from '@/modules/content-stream/interfaces/content-stream.interface';
+import { watch } from 'vue';
+import { ContentModel, ContentStreamFilter, IStreamHistory } from '@lyvely/common';
+import { IStream } from '@/modules/stream/composables/stream.composable';
+
+export interface IContentStreamHistory extends IStreamHistory<ContentModel, { cid: string }> {}
 
 export const useContentStreamHistoryStore = defineStore('content-stream-history', () => {
   const { profile } = storeToRefs(useProfileStore());
@@ -12,8 +12,19 @@ export const useContentStreamHistoryStore = defineStore('content-stream-history'
 
   watch(profile, resetHistory);
 
-  function setHistoryState(stream: IContentStreamState, parent = 'root', cid: string) {
-    stack.set(parent, { stream, state: { cid } });
+  function setHistoryState(
+    stream: IStream<ContentModel, ContentStreamFilter>,
+    parent = 'root',
+    cid: string,
+  ) {
+    const { state, filter, options, models } = stream;
+    stack.set(parent, {
+      state: state.value,
+      filter: filter.value,
+      options: options.value,
+      models: models.value,
+      restoreState: { cid },
+    });
   }
 
   function removeHistoryState(parent = 'root') {

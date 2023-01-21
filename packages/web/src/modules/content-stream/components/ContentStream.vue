@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { getContentStreamEntryComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { onMounted, onUnmounted, ref, Ref, watch, computed } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref, Ref, watch } from 'vue';
 import {
   ContentModel,
   ContentStreamFilter,
@@ -8,70 +8,87 @@ import {
   StreamDirection,
 } from '@lyvely/common';
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
-import { useStream } from '@/modules/stream/composables/stream.composable';
-import { useContentStreamService } from '@/modules/content-stream/services/content-stream.service';
 import { useLiveStore } from '@/modules/live/stores/live.store';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
 import { useContentStreamHistoryStore } from '@/modules/content-stream/stores/content-stream-history.store';
 import { onBeforeRouteLeave } from 'vue-router';
-import { useContentStreamStore } from '@/modules/content-stream/stores/content-stream.store';
+import { useStream } from '@/modules/stream/composables/stream.composable';
+import { useContentStreamService } from '@/modules/content-stream/services/content-stream.service';
+import { useContentStore } from '@/modules/content/stores/content.store';
+import { scrollToBottom } from '@/util/dom.util';
+import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 
 export interface IProps {
   batchSize?: number;
-  scrollToStart?: boolean;
+  filter: ContentStreamFilter;
+  scrollToHeadOnInit?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   batchSize: 50,
-  scrollToStart: true,
+  scrollToHeadOnInit: true,
 });
 
-const { profile } = storeToRefs(useProfileStore());
 const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
+const { profile } = storeToRefs(useProfileStore());
 const scroller = ref() as Ref<typeof DynamicScroller>;
 const live = useLiveStore();
-const isInitialized = ref(false);
+
+async function scrollToHead(attempt = 0): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      nextTick(() => {
+        scrollToBottom(streamRoot.value);
+        if (attempt < 3 && streamRoot.value.scrollTop !== streamRoot.value.scrollHeight) {
+          scrollToHead(++attempt).then(resolve);
+        } else {
+          resolve();
+        }
+      });
+    }, 100);
+  });
+}
+
+async function scrollToContent(cid: string) {
+  return scrollToIndex(models.value.findIndex((m) => m.id === cid));
+}
+
+async function scrollToIndex(index: number) {
+  if (index >= 0) setTimeout(scroller.value.scrollToItem(index), 2000);
+}
 
 const { getHistoryState, removeHistoryState, resetHistory } = useContentStreamHistoryStore();
-const { reload, loadHead, init, restore } = useContentStreamStore();
-const { models, filter } = storeToRefs(useContentStreamStore());
+const stream = useStream<ContentModel, ContentStreamFilter>(
+  {
+    root: streamRoot,
+    batchSize: props.batchSize,
+    direction: StreamDirection.BBT,
+    scrollToHeadOnInit: props.scrollToHeadOnInit,
+    infiniteScroll: { distance: 100 },
+    filter: props.filter,
+    scrollToHead,
+  },
+  useContentStreamService(),
+);
 
-watch(filter, () => reload(), { deep: true });
+const { models, filter, isInitialized } = stream;
 
-function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
-  if (evt.pid === profile.value?.id && evt.updatesAvailable) {
-    loadHead();
+async function initOrRestore() {
+  const history = getHistoryState(filter.value.parent);
+  if (history) {
+    await stream.restore({ history });
+    removeHistoryState(filter.value.parent);
+    setTimeout(() => scrollToContent(history.restoreState.cid), 100);
+  } else {
+    await stream.init();
   }
 }
 
-onMounted(() => {
-  const history = getHistoryState(filter.value.parent);
-  isInitialized.value = false;
-  if (!history?.stream) {
-    init({
-      root: streamRoot.value,
-      scrollToStart: props.scrollToStart,
-      infiniteScroll: { distance: 100 },
-    }).then(() => (isInitialized.value = true));
-  } else {
-    restore({
-      history: history.stream,
-      root: streamRoot.value,
-      infiniteScroll: { distance: 100 },
-    }).then(() => (isInitialized.value = true));
-
-    removeHistoryState(filter.value.parent);
-    const index = models.value.findIndex((m) => m.id === history.state.cid);
-    setTimeout(() => scroller.value.scrollToItem(index));
-  }
-
-  live.on('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate);
-});
-
-onUnmounted(() => live.off('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate));
+watch(filter, () => stream.reload(), { deep: true });
 
 onBeforeRouteLeave((to) => {
+  // TODO: this is a bit ugly..
   if (!to.name || !['content-details', 'stream'].includes(to.name as string)) {
     resetHistory();
   } else if (to.params.cid) {
@@ -88,13 +105,36 @@ defineExpose({ stream });
 function selectTag(tagId: string) {
   filter.value.addTagId(tagId);
 }
+
+function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
+  if (evt.pid === profile.value?.id && evt.updatesAvailable) {
+    stream.loadHead();
+  }
+}
+
+const contentStore = useContentStore();
+const onContentCreated = (content: ContentModel) => {
+  stream.addHead([content], true);
+};
+
+onMounted(() => {
+  initOrRestore().then(() => {
+    live.on('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate);
+  });
+  contentStore.onContentCreated('*', onContentCreated);
+});
+
+onUnmounted(() => {
+  live.off('content', ContentUpdateStateLiveEvent.eventName, onContentUpdate);
+  contentStore.offContentCreated('*', onContentCreated);
+});
 </script>
 
 <template>
   <div
     id="contentStreamRoot"
     ref="streamRoot"
-    class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow relative">
+    class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
     <dynamic-scroller ref="scroller" :items="models" :min-item-size="50" :buffer="300" page-mode>
       <template #before>
         <slot name="before"></slot>
@@ -114,6 +154,11 @@ function selectTag(tagId: string) {
         </dynamic-scroller-item>
       </template>
     </dynamic-scroller>
+  </div>
+  <div v-if="!isInitialized" class="absolute bg-body w-full h-full bg-amber-50 z-50">
+    <div class="flex items-center w-full h-full justify-center">
+      <ly-loader />
+    </div>
   </div>
 </template>
 
