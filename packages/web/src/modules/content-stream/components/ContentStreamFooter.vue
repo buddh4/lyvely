@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import ContentStreamFilterNavigation from '@/modules/content-stream/components/ContentStreamFilterNavigation.vue';
-import { ContentStreamFilter, ProfileType } from '@lyvely/common';
+import { ProfileType } from '@lyvely/common';
 import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { onMounted, ref } from 'vue';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
+import { focusIfNotTouchScreen } from '@/util';
 
 const { filter } = storeToRefs(useContentStreamFilterStore());
 const emits = defineEmits(['contentCreated']);
@@ -26,7 +27,9 @@ const placeholderKey =
     ? 'stream.editor.placeholder_single_user'
     : 'stream.editor.placeholder_multi_user';
 
-onMounted(() => messageInput.value?.focus());
+onMounted(() => {
+  focusIfNotTouchScreen(messageInput.value);
+});
 </script>
 
 <template>

@@ -12,6 +12,14 @@ export function isMaxViewSize(size: VIEW_SIZE) {
   return window.matchMedia(`(max-width: ${SIZES[size].max}px )`).matches;
 }
 
+export function isTouchScreen() {
+  return window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+}
+
+export function focusIfNotTouchScreen(elem?: HTMLElement) {
+  if (elem && !isTouchScreen()) elem.focus();
+}
+
 export function watchMaxSize(size: VIEW_SIZE, listener: (x: boolean) => void) {
   return window
     .matchMedia(`(max-width: ${SIZES[size].max}px )`)
