@@ -3,7 +3,11 @@ export function profileRoot() {
   return '/p';
 }
 
-export function profileRoute(subPath = '/', pid = ':pid', query?: LocationQueryRaw): RouteLocationRaw {
+export function profileRoute(
+  subPath = '/',
+  pid = ':pid',
+  query?: LocationQueryRaw,
+): RouteLocationRaw {
   if (subPath.charAt(0) !== '/') {
     subPath = '/' + subPath;
   }

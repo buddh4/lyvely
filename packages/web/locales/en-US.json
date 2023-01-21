@@ -90,6 +90,7 @@
     "close": "Close",
     "reload": "Reload",
     "cancel": "Cancel",
+    "load_more": "Load more",
     "next": "Next",
     "add_option": "Add: '{option}'",
     "show_password": "Show password as plain text. Warning: this will display your password on the screen.",

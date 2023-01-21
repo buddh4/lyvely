@@ -25,6 +25,7 @@ export default [
         meta: {
           layout: 'profile-full',
           title: translation('stream.title'),
+          baseName: 'stream',
           breadcrumb: [
             translation('stream.breadcrumb.stream'),
             translation('stream.breadcrumb.content_details'),

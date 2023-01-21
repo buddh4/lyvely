@@ -40,6 +40,17 @@ function close() {
   emit('update:modelValue', false);
 }
 
+const isVisible = ref(props.modelValue);
+
+function afterEnter() {
+  autoFocus();
+  isVisible.value = true;
+}
+
+function afterLeave() {
+  isVisible.value = false;
+}
+
 function autoFocus() {
   suggestFocusElement(root.value)?.focus();
 }
@@ -60,12 +71,12 @@ useInfiniteScroll(
 
 <template>
   <teleport to="body">
-    <transition name="slide-fade" @after-enter="autoFocus">
+    <transition name="slide-fade" @after-enter="afterEnter" @after-leave="afterLeave">
       <section
         v-if="modelValue"
         :id="id"
         ref="root"
-        :class="['drawer']"
+        class="drawer"
         :style="{ 'z-index': zIndex }"
         @keyup.esc="close">
         <div class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col">
@@ -85,6 +96,12 @@ useInfiniteScroll(
           <div v-if="hasFooter" data-drawer-footer class="pb-4 px-4 pt-3">
             <slot name="footer"></slot>
           </div>
+          <!--
+              This fixes a nasty scrolling issue on chrome in combination with the transition
+              This somehow affected/s only the notification drawer which introduced an strange page overflow once
+              opened. The overflow disappeared once triggered any other rendering on the page.
+            -->
+          <div v-if="isVisible" class="invisible h-0 overflow-hidden" aria-hidden="true"></div>
         </div>
       </section>
     </transition>
@@ -96,11 +113,11 @@ h1 {
   @apply text-base;
 }
 .drawer {
-  @apply shadow-lg bg-highlight;
+  @apply bg-highlight;
   position: absolute;
   display: block;
   top: 55px;
-  height: calc(100vh - 55px);
+  height: calc(var(--vh) * 100 - 55px);
   bottom: 0;
   min-width: 280px;
   max-width: 280px;
@@ -109,7 +126,6 @@ h1 {
   border-right: 0;
   border-top: 0;
   border-bottom: 0;
-  transition: all 0.3s ease-out;
   margin-right: 0;
   right: 0;
 }
@@ -119,11 +135,15 @@ h1 {
   durations and timing functions.
 */
 .slide-fade-enter-active {
-  transition: all 0.5s ease-out;
+  transition-property: transform, opacity;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-out;
 }
 
 .slide-fade-leave-active {
-  transition: all 0.5s ease-in-out;
+  transition-property: transform, opacity;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in-out;
 }
 
 .slide-fade-enter-from,

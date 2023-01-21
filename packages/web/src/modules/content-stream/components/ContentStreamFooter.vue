@@ -5,12 +5,9 @@ import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { onMounted, ref } from 'vue';
+import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 
-export interface IProps {
-  filter: ContentStreamFilter;
-}
-
-const props = defineProps<IProps>();
+const { filter } = storeToRefs(useContentStreamFilterStore());
 const emits = defineEmits(['contentCreated']);
 
 const messageInput = ref<HTMLElement>();
@@ -19,7 +16,7 @@ const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
 
 async function submitMessage() {
-  const newMessage = await createMessageStore.submit(props.filter.parent);
+  const newMessage = await createMessageStore.submit(filter.value.parent);
   emits('contentCreated', newMessage);
 }
 
@@ -35,7 +32,7 @@ onMounted(() => messageInput.value?.focus());
 <template>
   <div class="p-2 md:p-4 bg-main border-t border-divide">
     <div class="mb-2 md:mb-4 bg">
-      <content-stream-filter-navigation :filter="filter" />
+      <content-stream-filter-navigation />
     </div>
     <div class="flex flex-col">
       <div class="flex gap-1 md:gap-3">

@@ -21,7 +21,7 @@ export const useContentStreamHistoryStore = defineStore('content-stream-history'
     stack.set(parent, {
       state: state.value,
       filter: filter.value,
-      options: options.value,
+      options: options,
       models: models.value,
       restoreState: { cid },
     });

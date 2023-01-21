@@ -42,6 +42,8 @@ declare module 'vue-router' {
     // is optional
     i18n?: { module?: string };
     layout?: string;
+    baseName?: string;
+    nonProfileView?: boolean;
     title?: () => string;
   }
 }

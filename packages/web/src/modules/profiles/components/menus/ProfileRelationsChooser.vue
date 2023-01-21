@@ -19,12 +19,16 @@ const { show: showCreateProfile } = storeToRefs(useCreateProfileStore());
 const router = useRouter();
 
 async function setProfile(pid: string) {
-  const name = router.currentRoute.value.name || 'stream';
+  const currentRoute = router.currentRoute.value;
+  const paramKeys = Object.keys(currentRoute.params);
   // TODO: check if feature is enabled on target profile
+  const useDefaultName =
+    currentRoute.meta.nonProfileView || paramKeys.length > 1 || !paramKeys.includes('pid');
+  const name = useDefaultName
+    ? 'stream'
+    : currentRoute.meta.baseName || currentRoute.name || 'stream';
   const result = await router.push({ name, params: { pid } });
-  if (isNavigationFailure(result)) {
-    console.error(result);
-  }
+  if (isNavigationFailure(result)) console.error(result);
 }
 
 function getProfileIcon(relation: ProfileRelationInfo) {

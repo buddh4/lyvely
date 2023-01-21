@@ -31,7 +31,7 @@ export type IStream<
 
 export interface IStreamViewOptions<TFilter extends IStreamFilter = any> extends IStreamOptions {
   root?: Ref<HTMLElement>;
-  filter?: TFilter;
+  filter?: Ref<TFilter>;
   scrollToHeadOnInit?: boolean;
   scrollToHead?: () => Promise<void>;
   scrollToTail?: () => Promise<void>;
@@ -70,7 +70,7 @@ export function useStream<
   const loadHeadStatus = useStatus();
   const models = ref<TModel[]>([]) as Ref<TModel[]>;
   const events = mitt<StreamEvents<TModel>>();
-  const filter = ref<TFilter>(options.filter || new MockFilter());
+  const filter = options.filter || ref(new MockFilter());
   const isInitialized = ref(false);
 
   function reset(hard = true) {
@@ -119,7 +119,8 @@ export function useStream<
 
     _initInfiniteScroll();
 
-    options.scrollToHeadOnInit = initOptions?.scrollToHeadOnInit !== false;
+    options.scrollToHeadOnInit = initOptions?.scrollToHeadOnInit || options.scrollToHeadOnInit;
+
     await _initialScroll();
     isInitialized.value = true;
   }
@@ -136,7 +137,8 @@ export function useStream<
   }
 
   async function _loadInitialEntries() {
-    if (!options.root?.value) return loadTail();
+    if (!options.root?.value || !options.infiniteScroll) return loadTail();
+    // In case of infiniteScroll, we have to make sure we create an overflow
     while (
       !hasOverflow(options.root.value) &&
       !state.value.isEnd &&

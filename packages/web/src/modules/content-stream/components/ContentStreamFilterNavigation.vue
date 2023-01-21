@@ -1,19 +1,16 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed, ref, watch } from 'vue';
-import { ContentStreamFilter, TagFilter } from '@lyvely/common';
+import { TagFilter } from '@lyvely/common';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 import { useDebounceFn } from '@vueuse/core';
+import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
+import {storeToRefs} from "pinia";
 
-export interface IProps {
-  filter: ContentStreamFilter;
-}
-
-const props = defineProps<IProps>();
-const filter = ref(props.filter);
-const query = ref(props.filter.query);
+const { filter } = storeToRefs(useContentStreamFilterStore());
+const query = ref(filter.value.query);
 
 const updateQuery = useDebounceFn((value: string) => {
   filter.value.query = value;

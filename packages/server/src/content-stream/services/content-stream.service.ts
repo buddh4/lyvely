@@ -19,7 +19,7 @@ export class ContentStreamService extends AbstractStreamService<Content, Content
   applyFilter(query: FilterQuery<Content>, filter?: ContentStreamFilter) {
     query['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
 
-    if (!filter) return;
+    if (!filter) return query;
 
     query['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
 

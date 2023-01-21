@@ -5,10 +5,9 @@ import { computed, toRefs } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { useHelpStore } from '@/modules/help/stores/help.store';
-import NotificationDrawer from '@/modules/notifications/components/NotificationDrawer.vue';
 import { useNotificationStore } from '@/modules/notifications/stores/notifications.store';
-import { onBeforeRouteLeave } from 'vue-router';
 import { isMaxViewSize } from '@/util';
+import NotificationDrawer from '@/modules/notifications/components/NotificationDrawer.vue';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();

@@ -1,4 +1,4 @@
-import { Post, Body, Req, Param, Get } from '@nestjs/common';
+import { Post, Body, Req, Param, Get, NotFoundException } from '@nestjs/common';
 import { IStreamFilter, IStreamResponse, StreamRequest } from '@lyvely/common';
 import { ProfileRequest, RequestContext, UserContext } from '@/profiles';
 import { AbstractStreamService, StreamResponse } from '../service';
@@ -54,10 +54,11 @@ export abstract class AbstractStreamController<
     return this.mapResponse(response, context);
   }
 
-  @Get(':cid')
-  async loadEntry(@Param(':cid') nid: string, @Req() req: ProfileRequest): Promise<TResult> {
+  @Get(':eid')
+  async loadEntry(@Param('eid') eid: string, @Req() req: ProfileRequest): Promise<TResult> {
     const context = req.context || new UserContext(req.user);
-    const entry = await this.streamEntryService.loadEntry(context, nid);
+    if (!eid) throw new NotFoundException();
+    const entry = await this.streamEntryService.loadEntry(context, eid);
     return (await this.mapToResultModel([entry], context))[0];
   }
 }
