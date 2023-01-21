@@ -5,6 +5,7 @@ import { useContentEditModal } from '@/modules/content/composables/content-edit-
 import { CreateTaskModel, TaskModel, UpdateTaskModel } from '@lyvely/common';
 import { useTasksService } from '@/modules/activities/services/tasks.service';
 import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
+import { isTouchScreen } from '@/util';
 
 export interface IProps {
   modelValue: boolean;
@@ -34,7 +35,7 @@ const modalTitle = computed(() => {
       :status="status"
       label-key="activities.fields">
       <fieldset>
-        <ly-input-text property="title" :required="true" :autofocus="true" />
+        <ly-input-text property="title" :required="true" :autofocus="!isTouchScreen()" />
         <ly-input-select property="interval" :required="true" :options="getCalendarPlanOptions()" />
       </fieldset>
       <fieldset>

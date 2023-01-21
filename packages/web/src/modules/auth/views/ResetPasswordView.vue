@@ -9,11 +9,14 @@ import { onUnmounted, ref } from 'vue';
 import { useResetPasswordStore } from '@/modules/auth/store/reset-password.store';
 import PasswordStrengthMeter from '@/modules/ui/components/form/PasswordStrengthMeter.vue';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
+import { isTouchScreen } from '@/util';
 
 const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();
 const { model: resetModel, validator: resetValidator, stage } = storeToRefs(resetPasswordStore);
-const { model: sendMailModel, validator: sendMailValidator } = storeToRefs(sendResetPasswordMailStore);
+const { model: sendMailModel, validator: sendMailValidator } = storeToRefs(
+  sendResetPasswordMailStore,
+);
 const router = useRouter();
 const loginRoute = { path: PATH_LOGIN };
 const captchaInput = ref();
@@ -56,9 +59,8 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         v-model="sendMailModel"
         :validator="sendMailValidator"
         :status="sendResetPasswordMailStore.status"
-        label-key="auth.reset_password.fields"
-      >
-        <ly-input-text property="email" autocomplete="email" autofocus />
+        label-key="auth.reset_password.fields">
+        <ly-input-text property="email" autocomplete="email" :autofocus="!isTouchScreen()" />
         <ly-input-captcha ref="captchaInput" />
       </ly-form-model>
     </template>
@@ -69,8 +71,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
           class="primary ml-auto"
           :loading="sendResetPasswordMailStore.status.isStatusLoading()"
           text="auth.reset_password.submit_send"
-          @click="sendMail"
-        />
+          @click="sendMail" />
       </div>
 
       <div class="text-right mt-4">
@@ -113,8 +114,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         v-model="resetModel"
         :validator="resetValidator"
         :status="resetPasswordStore.status"
-        label-key="auth.reset_password.fields"
-      >
+        label-key="auth.reset_password.fields">
         <fieldset>
           <ly-input-text
             name="new-password"
@@ -122,16 +122,14 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
             property="password"
             type="password"
             :required="true"
-            @toggle-type="repeatPasswordType = $event"
-          />
+            @toggle-type="repeatPasswordType = $event" />
 
           <ly-input-text
             property="passwordRepeat"
             autocomplete="new-password"
             :type="repeatPasswordType"
             :password-toggle="false"
-            :required="true"
-          />
+            :required="true" />
           <password-strength-meter v-model="resetModel.password" />
         </fieldset>
 
@@ -145,8 +143,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
           class="primary ml-auto"
           :loading="resetPasswordStore.status.isStatusLoading()"
           text="auth.reset_password.submit_reset"
-          @click="resetPassword"
-        />
+          @click="resetPassword" />
       </div>
 
       <div class="text-right mt-4">

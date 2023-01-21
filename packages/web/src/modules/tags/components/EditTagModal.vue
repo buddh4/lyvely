@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { Sketch } from '@ckpack/vue-color';
 import { onClickOutside } from '@vueuse/core';
 import { useEditTagStore } from '@/modules/tags/stores/edit-tag.store';
+import { isTouchScreen } from '@/util';
 
 const tagEditStore = useEditTagStore();
 
@@ -59,7 +60,7 @@ const { validator } = storeToRefs(tagEditStore);
 
       <ly-input-text
         v-model="model.name"
-        :autofocus="true"
+        :autofocus="!isTouchScreen()"
         label="tags.fields.name"
         :error="validator.getError('name')" />
 

@@ -6,6 +6,7 @@ import { watch, onUnmounted, ref } from 'vue';
 import { useLoginStore } from '@/modules/auth/store/login.store';
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
 import { useSendResetPasswordMailStore } from '@/modules/auth/store/send-reset-password-mail.store';
+import { isTouchScreen } from '@/util';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -71,10 +72,13 @@ onUnmounted(loginStore.reset);
         :status="loginStore.status"
         :show-alert="false"
         label-key="auth.login.fields"
-        @keydown.enter="next"
-      >
+        @keydown.enter="next">
         <div v-if="stage === 'email'">
-          <ly-input-text property="email" autocomplete="username" :autofocus="true" :required="true" />
+          <ly-input-text
+            property="email"
+            autocomplete="username"
+            :autofocus="!isTouchScreen()"
+            :required="true" />
           <ly-alert :message="loginStore.status.statusError" />
         </div>
 
@@ -82,8 +86,7 @@ onUnmounted(loginStore.reset);
           <div class="flex items-center justify-center mb-5">
             <div
               class="flex items-center border border-divide rounded-full px-2 py-1 text-sm font-bold cursor-pointer"
-              @click="stage = 'email'"
-            >
+              @click="stage = 'email'">
               <ly-icon name="user" class="mr-1" />
               <span>{{ loginModel.email }}</span>
             </div>
@@ -94,41 +97,43 @@ onUnmounted(loginStore.reset);
             wrapper-class="hidden"
             aria-hidden="true"
             property="email"
-            :autofocus="true"
-            :required="true"
-          />
+            :required="true" />
 
           <ly-input-text
             name="current-password"
             property="password"
             type="password"
-            :autofocus="true"
-            :required="true"
-          />
+            :autofocus="!isTouchScreen()"
+            :required="true" />
 
           <ly-alert :message="loginStore.status.statusError" />
 
           <div class="flex items-center justify-between">
             <div class="flex flex-nowrap items-center mt-1">
-              <ly-input-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
+              <ly-input-checkbox
+                property="remember"
+                class="text-sm"
+                aria-describedby="remember-me-info" />
               <ly-icon
                 name="info"
                 class="ml-1 text-info-dark w-4 cursor-pointer"
                 aria-hidden="true"
-                @click="showRememberInfo = !showRememberInfo"
-              />
+                @click="showRememberInfo = !showRememberInfo" />
             </div>
             <router-link
               v-if="stage === 'password'"
               :to="{ name: 'ResetPassword' }"
               class="no-underline font-bold text-xs cursor-pointer"
-              @click="setResetPassword"
-            >
+              @click="setResetPassword">
               {{ $t('auth.login.reset_password') }}
             </router-link>
           </div>
 
-          <ly-alert v-show="showRememberInfo" id="remember-me-info" class="mt-2 text-xs" type="info">
+          <ly-alert
+            v-show="showRememberInfo"
+            id="remember-me-info"
+            class="mt-2 text-xs"
+            type="info">
             <p class="mb-1">{{ $t('auth.login.remember_me_info.p1') }}</p>
             <p>{{ $t('auth.login.remember_me_info.p2') }}</p>
           </ly-alert>
@@ -157,8 +162,7 @@ onUnmounted(loginStore.reset);
         class="primary w-full"
         form="login"
         :loading="loginStore.status.isStatusLoading()"
-        @click="submit"
-      >
+        @click="submit">
         {{ $t('auth.login.sign_in') }}
       </ly-button>
     </template>

@@ -8,6 +8,7 @@ import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/modules/user-registration/routes/paths';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
+import { isTouchScreen } from '@/util';
 
 const userRegistrationStore = useUserRegistrationStore();
 
@@ -53,7 +54,7 @@ onUnmounted(userRegistrationStore.reset);
             autocomplete="username"
             property="username"
             :required="true"
-            :autofocus="true" />
+            :autofocus="!isTouchScreen()" />
 
           <ly-input-text autocomplete="email" property="email" type="email" :required="true" />
         </fieldset>
