@@ -60,7 +60,7 @@ const { validator } = storeToRefs(tagEditStore);
 
       <ly-input-text
         v-model="model.name"
-        :autofocus="!isTouchScreen()"
+        :autofocus="isCreate || !isTouchScreen()"
         label="tags.fields.name"
         :error="validator.getError('name')" />
 

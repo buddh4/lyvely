@@ -7,7 +7,6 @@ import {
   ContentUpdateStateLiveEvent,
   StreamDirection,
 } from '@lyvely/common';
-import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
 import { useLiveStore } from '@/modules/live/stores/live.store';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
@@ -35,7 +34,6 @@ const props = withDefaults(defineProps<IProps>(), {
 const { filter } = storeToRefs(useContentStreamFilterStore());
 const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
 const { profile } = storeToRefs(useProfileStore());
-const scroller = ref() as Ref<typeof DynamicScroller>;
 const live = useLiveStore();
 
 async function scrollToHead(attempt = 0): Promise<void> {
@@ -51,14 +49,6 @@ async function scrollToHead(attempt = 0): Promise<void> {
       });
     }, 100);
   });
-}
-
-async function scrollToContent(cid: string) {
-  return scrollToIndex(models.value.findIndex((m) => m.id === cid));
-}
-
-async function scrollToIndex(index: number) {
-  if (index >= 0) setTimeout(() => scroller.value.scrollToItem(index), 2000);
 }
 
 const { getHistoryState, removeHistoryState, resetHistory } = useContentStreamHistoryStore();
@@ -80,9 +70,8 @@ const { models, isInitialized } = stream;
 async function initOrRestore() {
   const history = getHistoryState(filter.value.parent);
   if (history) {
-    await stream.restore({ history });
+    await stream.restore(history);
     removeHistoryState(filter.value.parent);
-    setTimeout(() => scrollToContent(history.restoreState.cid), 100);
   } else {
     await stream.init();
   }
@@ -96,7 +85,7 @@ onBeforeRouteLeave((to) => {
     useContentStreamHistoryStore().setHistoryState(
       stream,
       filter.value.parent,
-      to.params.cid as string,
+      streamRoot.value.scrollTop,
     );
   }
 });
@@ -138,25 +127,17 @@ onUnmounted(() => {
     id="contentStreamRoot"
     ref="streamRoot"
     class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
-    <dynamic-scroller ref="scroller" :items="models" :min-item-size="50" :buffer="300" page-mode>
-      <template #before>
-        <slot name="before" :stream="stream"></slot>
+    <slot name="before" :stream="stream"></slot>
+    <div class="px-2 md:px-6">
+      <template v-for="(model, index) in models" :key="model.id">
+        <Component
+          :is="getContentStreamEntryComponent(model)"
+          :model="model"
+          :stream="stream"
+          :index="index"
+          @select-tag="selectTag" />
       </template>
-      <template
-        #default="{ item, index, active }: { item: ContentModel, index: number, active: boolean }">
-        <dynamic-scroller-item :item="item" :active="active" :data-index="index">
-          <div class="px-2 md:px-6">
-            {{ index === undefined ? 'dfasfasdf' : '' }}
-            <Component
-              :is="getContentStreamEntryComponent(item)"
-              :model="item"
-              :stream="stream"
-              :index="index || 0"
-              @select-tag="selectTag" />
-          </div>
-        </dynamic-scroller-item>
-      </template>
-    </dynamic-scroller>
+    </div>
   </div>
   <div v-if="!isInitialized" class="absolute bg-body w-full h-full bg-body z-50">
     <div class="flex items-center w-full h-full justify-center">

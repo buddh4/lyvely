@@ -5,6 +5,7 @@ import {
   IStreamService,
   IStreamState,
   StreamDirection,
+  IStreamRestoreState,
 } from '@lyvely/common';
 import { nextTick, ref, Ref } from 'vue';
 import { loadingStatus, useStatus } from '@/store';
@@ -26,8 +27,10 @@ type StreamEvents<TModel> = {
 export type IStream<
   TModel extends { id: string },
   TFilter extends IStreamFilter = any,
+  TRestoreState extends IStreamRestoreState = IStreamRestoreState,
+  TState extends IStreamState = IStreamState,
   TOptions extends IStreamOptions = IStreamOptions,
-> = ReturnType<typeof useStream<TModel, TFilter, TOptions>>;
+> = ReturnType<typeof useStream<TModel, TFilter, TRestoreState, TState, TOptions>>;
 
 export interface IStreamViewOptions<TFilter extends IStreamFilter = any> extends IStreamOptions {
   root?: Ref<HTMLElement>;
@@ -36,19 +39,6 @@ export interface IStreamViewOptions<TFilter extends IStreamFilter = any> extends
   scrollToHead?: () => Promise<void>;
   scrollToTail?: () => Promise<void>;
   infiniteScroll?: { distance?: number } | boolean;
-}
-
-export interface IStreamViewInitOptions<TFilter extends IStreamFilter = any>
-  extends Partial<IStreamViewOptions<TFilter>> {}
-
-export interface IStreamViewRestoreOptions<
-  TModel,
-  TRestoreState,
-  TFilter extends IStreamFilter = any,
-  TState extends IStreamState = IStreamState,
-  TOptions extends IStreamOptions = IStreamOptions,
-> extends IStreamViewInitOptions<TFilter> {
-  history: IStreamHistory<TModel, TRestoreState, TFilter, TState, TOptions>;
 }
 
 class MockFilter implements IStreamFilter {
@@ -60,11 +50,11 @@ class MockFilter implements IStreamFilter {
 export function useStream<
   TModel extends { id: string },
   TFilter extends IStreamFilter | MockFilter = any,
-  TRestoreState = any,
+  TRestoreState extends IStreamRestoreState = IStreamRestoreState,
   TState extends IStreamState = IStreamState,
   TOptions extends IStreamViewOptions = IStreamViewOptions,
 >(initOptions: TOptions, service: IStreamService<TModel, TFilter, IStreamState, TOptions>) {
-  let options = initOptions;
+  const options = initOptions;
   const state = ref<IStreamState>({});
   const loadTailStatus = useStatus();
   const loadHeadStatus = useStatus();
@@ -106,12 +96,8 @@ export function useStream<
     return response;
   }
 
-  async function init(initOptions?: IStreamViewInitOptions) {
+  async function init() {
     isInitialized.value = false;
-
-    if (initOptions) {
-      options = Object.assign(options, initOptions);
-    }
 
     reset(false);
 
@@ -122,18 +108,29 @@ export function useStream<
     options.scrollToHeadOnInit = initOptions?.scrollToHeadOnInit || options.scrollToHeadOnInit;
 
     await _initialScroll();
-    isInitialized.value = true;
+    return new Promise((resolve) => {
+      setTimeout(() => resolve((isInitialized.value = true)), 50);
+    });
   }
 
   async function restore(
-    restoreOptions: IStreamViewRestoreOptions<TModel, TRestoreState, TFilter, TState, TOptions>,
+    history: IStreamHistory<TModel, TRestoreState, TFilter, TState, TOptions>,
   ) {
     isInitialized.value = false;
-    models.value = restoreOptions.history.models;
-    filter.value = restoreOptions.history.filter;
-    state.value = restoreOptions.history.state;
+    models.value = history.models;
+    filter.value = history.filter;
+    state.value = history.state;
     _initInfiniteScroll();
-    isInitialized.value = true;
+
+    nextTick(() => {
+      if (options.root?.value && history.restoreState.scrollTop) {
+        options.root!.value!.scrollTop = history.restoreState.scrollTop;
+      }
+    });
+
+    return new Promise((resolve) => {
+      setTimeout(() => resolve((isInitialized.value = true)), 50);
+    });
   }
 
   async function _loadInitialEntries() {
@@ -237,10 +234,8 @@ export function useStream<
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        nextTick(() => {
-          options.root!.value!.scrollTop =
-            options.root!.value.scrollHeight - previousScrollHeightMinusTop;
-        });
+        options.root!.value!.scrollTop =
+          options.root!.value.scrollHeight - previousScrollHeightMinusTop;
       });
       resolve(true);
     });

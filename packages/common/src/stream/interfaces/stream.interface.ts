@@ -66,9 +66,13 @@ export interface IStreamService<
   loadEntry(id: string, filter?: TFilter): Promise<TModel>;
 }
 
+export interface IStreamRestoreState {
+  scrollTop?: number;
+}
+
 export interface IStreamHistory<
   TModel,
-  TRestoreState,
+  TRestoreState extends IStreamRestoreState = IStreamRestoreState,
   TFilter extends IStreamFilter = any,
   TState extends IStreamState = IStreamState,
   TOptions extends IStreamOptions = IStreamOptions,

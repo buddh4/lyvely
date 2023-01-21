@@ -4,7 +4,7 @@ import { watch } from 'vue';
 import { ContentModel, ContentStreamFilter, IStreamHistory } from '@lyvely/common';
 import { IStream } from '@/modules/stream/composables/stream.composable';
 
-export interface IContentStreamHistory extends IStreamHistory<ContentModel, { cid: string }> {}
+export interface IContentStreamHistory extends IStreamHistory<ContentModel> {}
 
 export const useContentStreamHistoryStore = defineStore('content-stream-history', () => {
   const { profile } = storeToRefs(useProfileStore());
@@ -15,7 +15,7 @@ export const useContentStreamHistoryStore = defineStore('content-stream-history'
   function setHistoryState(
     stream: IStream<ContentModel, ContentStreamFilter>,
     parent = 'root',
-    cid: string,
+    scrollTop: number,
   ) {
     const { state, filter, options, models } = stream;
     stack.set(parent, {
@@ -23,7 +23,7 @@ export const useContentStreamHistoryStore = defineStore('content-stream-history'
       filter: filter.value,
       options: options,
       models: models.value,
-      restoreState: { cid },
+      restoreState: { scrollTop },
     });
   }
 

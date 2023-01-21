@@ -35,7 +35,10 @@ const modalTitle = computed(() => {
       :status="status"
       label-key="activities.fields">
       <fieldset>
-        <ly-input-text property="title" :required="true" :autofocus="!isTouchScreen()" />
+        <ly-input-text
+          property="title"
+          :required="true"
+          :autofocus="isCreate || !isTouchScreen()" />
         <ly-input-select property="interval" :required="true" :options="getCalendarPlanOptions()" />
       </fieldset>
       <fieldset>
