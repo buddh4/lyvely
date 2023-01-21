@@ -1,7 +1,6 @@
-import { computed, ref, Ref, toRefs } from 'vue';
+import { computed, ref, Ref } from 'vue';
 import {
   ContentModel,
-  getCalendarPlanOptions,
   IEditableModel,
   CreateContentModel,
   ContentUpdateResponse,
@@ -13,7 +12,6 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { getContentTypeOptions } from '@/modules/content-stream/components/content-stream-entry.registry';
 import { ModalCreate } from '@/modules/content-stream/interfaces/stream-entry-registration.interface';
 import { StoreStatusPlugin } from '@/store';
-import { Emits } from '@/types';
 import { useContentStore } from '@/modules/content/stores/content.store';
 
 export function useContentEditModal<
@@ -23,7 +21,7 @@ export function useContentEditModal<
   TResponse extends ContentUpdateResponse<TModel> = ContentUpdateResponse<TModel>,
 >(
   props: IEditOrCreateModalProps<TModel>,
-  emit: Emits<['update:modelValue']>,
+  emit: (emit: 'update:modelValue', val: boolean) => void,
   options: IEditModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse>,
 ) {
   const { content, type } = props;

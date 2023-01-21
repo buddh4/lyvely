@@ -26,7 +26,7 @@ export interface IBaseInputProps {
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: string;
+  inputClass?: string | Record<string, any> | any[];
   wrapperClass?: string;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;

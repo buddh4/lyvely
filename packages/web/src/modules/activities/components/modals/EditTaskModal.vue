@@ -6,7 +6,7 @@ import { CreateTaskModel, TaskModel, UpdateTaskModel } from '@lyvely/common';
 import { useTasksService } from '@/modules/activities/services/tasks.service';
 import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
 
-interface IProps {
+export interface IProps {
   modelValue: boolean;
   content?: TaskModel;
   type: string;

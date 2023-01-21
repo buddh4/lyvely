@@ -6,7 +6,7 @@ import { useContentEditStore } from '@/modules/content/stores/content-edit.store
 import { computed, ref } from 'vue';
 import { IConfirmOptions } from '@/modules/ui/components/modal/IConfirmOptions';
 
-interface IProps {
+export interface IProps {
   content: ContentModel;
 }
 

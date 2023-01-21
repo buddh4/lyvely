@@ -74,6 +74,7 @@ const {
   <template v-if="showEditModal">
     <component
       :is="editModalComponent"
+      v-if="editContent"
       v-model="showEditModal"
       :content="editContent"
       :type="editContent.type"

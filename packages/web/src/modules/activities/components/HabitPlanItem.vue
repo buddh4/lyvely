@@ -9,6 +9,7 @@ import { useDebounceFn } from '@vueuse/core';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import { useActivityPlanItem } from '@/modules/activities/composables/useActivityPlanItem';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
+import { useActivityStore } from '@/modules/activities/store/activity.store';
 
 export interface IProps {
   model: HabitModel;
@@ -19,6 +20,7 @@ const initialized = ref(false);
 const habitStore = useHabitPlanStore();
 
 const { isDisabled, moveUp, moveDown } = useActivityPlanItem(props.model);
+const { selectTag } = useActivityStore();
 
 const dataPoint = computed(() => habitStore.getDataPoint(props.model));
 

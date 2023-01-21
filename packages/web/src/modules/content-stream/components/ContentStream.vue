@@ -58,7 +58,7 @@ async function scrollToContent(cid: string) {
 }
 
 async function scrollToIndex(index: number) {
-  if (index >= 0) setTimeout(scroller.value.scrollToItem(index), 2000);
+  if (index >= 0) setTimeout(() => scroller.value.scrollToItem(index), 2000);
 }
 
 const { getHistoryState, removeHistoryState, resetHistory } = useContentStreamHistoryStore();

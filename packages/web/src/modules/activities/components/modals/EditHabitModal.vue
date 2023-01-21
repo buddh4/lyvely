@@ -6,7 +6,7 @@ import { useContentEditModal } from '@/modules/content/composables/content-edit-
 import { useHabitsService } from '@/modules/activities/services/habits.service';
 import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
 
-interface IProps {
+export interface IProps {
   modelValue: boolean;
   content?: HabitModel;
   type: string;

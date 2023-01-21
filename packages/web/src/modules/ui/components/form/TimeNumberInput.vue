@@ -5,8 +5,7 @@
     :label="label"
     :required="required"
     :help-text="helpText"
-    :input-error="inputError"
-  >
+    :input-error="inputError">
     <div ref="root" data-timer-input class="floating-input h-auto border border-divide">
       <div class="flex justify-center items-center gap-2">
         <div class="flex flex-col">
@@ -20,8 +19,7 @@
             @keyup.up="increment('hours')"
             @keyup.down="decrement('hours')"
             @keyup.left="setFocus('seconds')"
-            @keyup.right="setFocus('minutes')"
-          />
+            @keyup.right="setFocus('minutes')" />
           <ly-button @click="decrement('hours')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
         <span>:</span>
@@ -36,8 +34,7 @@
             @keyup.up="increment('minutes')"
             @keyup.down="decrement('minutes')"
             @keyup.left="setFocus('hours')"
-            @keyup.right="setFocus('seconds')"
-          />
+            @keyup.right="setFocus('seconds')" />
           <ly-button @click="decrement('minutes')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
         <span>:</span>
@@ -52,8 +49,7 @@
             @keyup.up="increment('seconds')"
             @keyup.down="decrement('seconds')"
             @keyup.left="setFocus('minutes')"
-            @keyup.right="setFocus('hours')"
-          />
+            @keyup.right="setFocus('hours')" />
           <ly-button @click="decrement('seconds')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
       </div>
