@@ -36,7 +36,7 @@ function submit() {
 }
 
 onClickOutside(colorPicker, () => (showColorPicker.value = false));
-const { model } = toRefs(tagEditStore);
+const { model, isCreate } = toRefs(tagEditStore);
 
 const color = computed({
   get: () => model.value!.color,
