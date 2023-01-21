@@ -11,7 +11,11 @@
         @apply bg-body text-main;
         overflow: auto;
         height: 100%;
+        min-height: 540px;
     }
+
+    body[orient="portrait"] { min-height: 540px}
+    body[orient="landscape"] { min-height: 400px}
 
     a {
         text-decoration: none;
