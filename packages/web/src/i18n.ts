@@ -1,6 +1,6 @@
 import { nextTick } from 'vue';
 import { createI18n, I18n } from 'vue-i18n';
-import { getModules } from '@/module.loader';
+import { onModulesLoaded } from '@/module.loader';
 import { isDevelopEnvironment } from '@/modules/core/environment';
 
 export const SUPPORT_LOCALES = ['en-US', 'de-DE'];
@@ -29,18 +29,18 @@ export function translate(key: string, options?: any) {
   return (<any>getI18n().global).t(key, options);
 }
 
-export async function setupI18n(options = { locale: fallBackLocale }) {
+export function setupI18n() {
   i18n = createI18n({
     legacy: false,
     fallbackLocale: fallBackLocale,
     missingWarn: isDevelopEnvironment(),
   });
-  await setLocale(options.locale);
   return i18n;
 }
 
 const loadedModules: Record<string, Record<string, boolean>> = {};
 const loadedCoreLocales: string[] = [];
+const baseModuleLocales: string[] = [];
 
 export function isModuleMessagesLoaded(locale: string, module: string, prefix?: string) {
   return loadedModules[module] && loadedModules[module][prefix ? prefix + '.' + locale : locale];
@@ -69,15 +69,19 @@ export async function loadModuleMessages(locale: string, module: string): Promis
 
 export function loadModuleBaseMessages(locale: string) {
   // TODO: here we assume all modules have base message files
-  getModules().forEach((module) => {
-    console.log('Load base module content-stream for ' + module.getId());
-    if (isModuleMessagesLoaded(locale, module.getId(), 'base')) return;
+  onModulesLoaded().then((modules) => {
+    return Promise.all(
+      modules.map((module) => {
+        console.log('Load base module content-stream for ' + module.getId());
+        if (isModuleMessagesLoaded(locale, module.getId(), 'base')) return;
 
-    return import(`./modules/${module.getId()}/locales/base.${locale}.json`)
-      .then((data) => mergeMessages(locale, data))
-      .then(() => setModuleMessagesLoaded(locale, module.getId(), 'base'))
-      .then(() => nextTick())
-      .catch(console.error);
+        return import(`./modules/${module.getId()}/locales/base.${locale}.json`)
+          .then((data) => mergeMessages(locale, data))
+          .then(() => setModuleMessagesLoaded(locale, module.getId(), 'base'))
+          .then(() => nextTick())
+          .catch(console.error);
+      }),
+    ).then(() => baseModuleLocales.push(locale));
   });
 }
 
@@ -93,9 +97,16 @@ export function isGlobalMessagesLoaded(locale: string) {
   return loadedCoreLocales.includes(locale);
 }
 
+export function isBaseModuleMessagesLoaded(locale: string) {
+  return baseModuleLocales.includes(locale);
+}
+
 export async function setLocale(locale: string) {
   if (!isGlobalMessagesLoaded(locale)) {
     await loadLocaleMessages(locale);
+  }
+
+  if (!isBaseModuleMessagesLoaded(locale)) {
     await loadModuleBaseMessages(locale);
   }
 

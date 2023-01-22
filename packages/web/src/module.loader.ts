@@ -11,17 +11,31 @@ interface ModuleImport {
   default: () => IModule;
 }
 
+let moduleLoadedPromise: Promise<IModule[]>;
+
 export const ModuleLoader = {
   install(app: App) {
-    for (const path in modulesImport) {
-      const moduleImport = modulesImport[path];
-      const importPromise = typeof moduleImport === 'function' ? moduleImport() : moduleImport;
-      importPromise.then((moduleInitializer: ModuleImport) => {
-        pushModule(app, moduleInitializer);
-      });
-    }
+    moduleLoadedPromise = loadModules(app);
   },
 };
+
+export async function onModulesLoaded(): Promise<IModule[]> {
+  return moduleLoadedPromise;
+}
+
+async function loadModules(app: App): Promise<IModule[]> {
+  const promises: Promise<IModule>[] = [];
+  for (const path in modulesImport) {
+    const moduleImport = modulesImport[path];
+    const importPromise = typeof moduleImport === 'function' ? moduleImport() : moduleImport;
+    promises.push(
+      importPromise.then((moduleInitializer: ModuleImport) => {
+        return pushModule(app, moduleInitializer);
+      }),
+    );
+  }
+  return Promise.all(promises);
+}
 
 function pushModule(app: App, moduleImport: ModuleImport) {
   const module = moduleImport.default();
@@ -29,6 +43,7 @@ function pushModule(app: App, moduleImport: ModuleImport) {
     module.init(app);
   }
   modules.push(module);
+  return module;
 }
 
 export function getModules(): IModule[] {

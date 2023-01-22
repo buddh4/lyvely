@@ -79,11 +79,11 @@ export const useLiveStore = defineStore('live', () => {
   }
 
   setInterval(() => {
-    broadCastLiveEvent({
+    emitLocalLiveEvent({
       module: 'test',
       name: 'test',
     });
-  });
+  }, 5000);
 
   on('test', 'test', () => {
     console.log('Received test event');
