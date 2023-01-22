@@ -72,7 +72,6 @@ export function loadModuleBaseMessages(locale: string) {
   onModulesLoaded().then((modules) => {
     return Promise.all(
       modules.map((module) => {
-        console.log('Load base module content-stream for ' + module.getId());
         if (isModuleMessagesLoaded(locale, module.getId(), 'base')) return;
 
         return import(`./modules/${module.getId()}/locales/base.${locale}.json`)

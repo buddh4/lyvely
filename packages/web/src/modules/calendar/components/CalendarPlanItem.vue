@@ -52,7 +52,7 @@ const { model } = toRefs(props);
       <ly-icon name="drag" class="fill-current w-5" />
     </button>
 
-    <div class="mr-auto">
+    <div class="overflow-hidden relative flex-grow">
       <div class="entry-title-bar flex items-center">
         <slot name="pre-title"></slot>
         <div
@@ -60,13 +60,16 @@ const { model } = toRefs(props);
           @click="showDetails">
           <slot name="title">
             <div class="flex items-center">
-              {{ model.content.title }}
+              <span class="whitespace-nowrap overflow-hidden">
+                {{ model.content.title }}
+              </span>
               <ly-badge v-if="model.meta.isArchived" class="bg-danger ml-2">
                 {{ $t('common.archived') }}
               </ly-badge>
             </div>
           </slot>
         </div>
+        <div class="overflow-item"></div>
       </div>
       <tag-list class="mt-2" :tag-ids="model.tagIds" @select="selectTag" />
     </div>
@@ -82,4 +85,19 @@ const { model } = toRefs(props);
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,000000+100&0+0,1+100 */
+.overflow-item {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    var(--elements-main) 72%,
+    var(--elements-main) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+</style>
