@@ -9,6 +9,14 @@ interface IAssignOptions {
   transform?: WithTransformation;
 }
 
+export function createAndAssign<T, C extends Type<T> = Type<T>>(
+  type: C,
+  data?: { [key in keyof T]?: any } & any,
+  options: IAssignOptions = {},
+) {
+  return assignRawDataToAndInitProps(Object.create(type.prototype), data, options);
+}
+
 export function assignRawDataToAndInitProps<T>(
   model: T,
   data?: { [key in keyof T]?: any } & any,
@@ -16,6 +24,7 @@ export function assignRawDataToAndInitProps<T>(
 ) {
   assignRawDataTo(model, data, options);
   initPropertyTypes(model);
+  return model;
 }
 
 export function assignRawDataTo<T>(

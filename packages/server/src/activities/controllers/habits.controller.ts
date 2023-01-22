@@ -35,6 +35,10 @@ export class HabitsController
 
   protected updateResponseType = UpdateHabitResponse;
 
+  protected createModelType = CreateHabitModel;
+
+  protected updateModelType = UpdateHabitModel;
+
   @Post(':cid/update-data-point')
   @Policies(ContentWritePolicy)
   async updateDataPoint(

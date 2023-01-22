@@ -1,6 +1,6 @@
 import { BaseModel, DocumentModel, PropertyType } from '@/models';
 import { Expose, Transform, Type } from 'class-transformer';
-import { IsString, Length, IsArray, IsOptional } from 'class-validator';
+import { IsString, Length, IsOptional } from 'class-validator';
 import {
   ContentVisibilityLevel,
   CreatedAsType,
@@ -17,12 +17,12 @@ export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   implements IContentDataType
 {
   @IsString()
-  @Length(0, 80)
+  @Length(1, 80)
   @IsOptional()
   title?: string;
 
   @IsString()
-  @Length(0, 500)
+  @Length(1, 500)
   @IsOptional()
   text?: string;
 }

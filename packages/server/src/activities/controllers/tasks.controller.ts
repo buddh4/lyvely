@@ -37,6 +37,8 @@ export class TasksController
   protected readonly contentService: TasksService;
 
   protected updateResponseType = UpdateTaskResponse;
+  protected createModelType = CreateTaskModel;
+  protected updateModelType = UpdateTaskModel;
 
   @Post(':cid/done')
   @Policies(ContentWritePolicy)

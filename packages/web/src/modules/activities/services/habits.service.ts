@@ -10,33 +10,33 @@ import {
   useSingleton,
 } from '@lyvely/common';
 import repository from '../repositories/habits.repository';
-import { unwrapAndCastResponse } from '@/modules/core';
+import { unwrapAndTransformResponse } from '@/modules/core';
 
 export class HabitsService implements IHabitsEndpointService {
   async create(dto: CreateHabitModel): Promise<UpdateHabitResponse> {
-    return unwrapAndCastResponse(repository.create(dto), UpdateHabitResponse);
+    return unwrapAndTransformResponse(repository.create(dto), UpdateHabitResponse);
   }
 
   async update(id: string, update: UpdateHabitModel): Promise<UpdateHabitResponse> {
-    return unwrapAndCastResponse(repository.update(id, update), UpdateHabitResponse);
+    return unwrapAndTransformResponse(repository.update(id, update), UpdateHabitResponse);
   }
 
   async updateDataPoint(
     id: string,
     update: UpdateHabitDataPointModel,
   ): Promise<UpdateHabitDataPointResponse> {
-    return unwrapAndCastResponse(
+    return unwrapAndTransformResponse(
       repository.updateDataPoint(id, update),
       UpdateHabitDataPointResponse,
     );
   }
 
   async startTimer(id: string, dto: TimerUpdateModel): Promise<NumberDataPointModel> {
-    return unwrapAndCastResponse(repository.startTimer(id, dto), NumberDataPointModel);
+    return unwrapAndTransformResponse(repository.startTimer(id, dto), NumberDataPointModel);
   }
 
   async stopTimer(id: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse> {
-    return unwrapAndCastResponse(repository.stopTimer(id, dto), UpdateHabitDataPointResponse);
+    return unwrapAndTransformResponse(repository.stopTimer(id, dto), UpdateHabitDataPointResponse);
   }
 
   archive(id: string): Promise<void> {

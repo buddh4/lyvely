@@ -7,7 +7,7 @@ import {
   useSingleton,
 } from '@lyvely/common';
 import notificationRepository from '../repositories/notifications.repository';
-import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
+import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 
 export class NotificationsService implements INotificationsService {
   async loadTail(

@@ -18,7 +18,7 @@ export function unwrapResponse<T extends Promise<AxiosResponse>>(
     });
 }
 
-export function unwrapAndCastResponse<
+export function unwrapAndTransformResponse<
   T extends Promise<AxiosResponse>,
   R extends UnwrappedResponse<T>,
 >(promise: T, type: Type<R>): Promise<R> {

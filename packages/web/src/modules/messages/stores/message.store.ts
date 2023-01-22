@@ -19,6 +19,8 @@ export const useCreateMessageStore = defineStore('create-message', () => {
   }
 
   async function submit(parentId?: string) {
+    // TODO: Show some error message
+    if (!(await validator.value.validate())) return;
     const message = new CreateMessage(model.value.text, parentId);
     const response = await loadingStatus(messageService.create(message), status);
     reset();

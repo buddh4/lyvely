@@ -7,6 +7,7 @@ import {
   assignRawDataTo,
   ContentModel,
   Type,
+  CreateContentModel,
 } from '@lyvely/common';
 import { BaseEntity } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';

@@ -21,4 +21,6 @@ export class MessageController
   protected contentService: MessageService;
 
   protected updateResponseType = MessageUpdateResponse;
+  protected createModelType = CreateMessage;
+  protected updateModelType = CreateMessage;
 }

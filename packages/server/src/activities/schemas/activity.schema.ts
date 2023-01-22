@@ -9,6 +9,7 @@ import {
 import {
   ActivityModel,
   ContentModel,
+  CreateContentModel,
   DataPointInputType,
   DataPointValueType,
   PropertiesOf,

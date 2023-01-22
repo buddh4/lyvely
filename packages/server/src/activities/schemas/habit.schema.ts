@@ -56,8 +56,6 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
   @PropertyType(HabitConfig)
   config: HabitConfig;
 
-  modelConstructor = HabitModel;
-
   public static create(
     profile: Profile,
     owner: User,

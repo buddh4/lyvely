@@ -6,15 +6,15 @@ import {
   IEditModelService,
 } from '@lyvely/common';
 import repository from '../repositories/tags.repository';
-import { unwrapAndCastResponse, unwrapResponse } from '@/modules/core';
+import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 
 export class TagsService implements IEditModelService<UpdateTagDto, TagModel>, IProfileTagsService {
   async create(model: UpdateTagDto): Promise<TagModel> {
-    return unwrapAndCastResponse(repository.create(model), TagModel);
+    return unwrapAndTransformResponse(repository.create(model), TagModel);
   }
 
   async update(id: string, model: UpdateTagDto): Promise<TagModel> {
-    return unwrapAndCastResponse(repository.update(id, model), TagModel);
+    return unwrapAndTransformResponse(repository.update(id, model), TagModel);
   }
 
   async archive(id: string) {
