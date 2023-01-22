@@ -27,7 +27,7 @@ function isChecked(unitIndex: number) {
 }
 
 function cssClasses(unitIndex: number) {
-  let result = ['border rounded ml-1 ring-0'];
+  let result = ['border rounded mr-1 ring-0'];
 
   if (!isChecked(unitIndex) && unitIndex <= props.min) {
     result.push('warning');

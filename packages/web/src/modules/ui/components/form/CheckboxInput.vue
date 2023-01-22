@@ -60,7 +60,7 @@ export default {
     const checkbox = ref<HTMLInputElement>();
 
     const baseInput = useBaseInputSetup<boolean>(props, context, {
-      inputClass: 'border rounded ml-1 ring-0',
+      inputClass: 'border rounded ring-0',
     });
 
     function onChange(evt: any) {

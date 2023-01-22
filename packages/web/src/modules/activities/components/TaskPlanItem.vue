@@ -46,7 +46,7 @@ async function updateTimer(value: number) {
       <content-dropdown :content="model" />
     </template>
     <template #pre-title>
-      <div class="mr-1">
+      <div>
         <item-checkbox-list
           v-model:selection="selection"
           :max="1"
