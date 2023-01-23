@@ -5,30 +5,8 @@
 @tailwind components;
 
 @layer components {
-    #sidebar {
-        @apply bg-slate-900
-    }
-
-    #sidebar a {
-        @apply text-slate-100;
-        border-left: 4px solid transparent;
-    }
-
-    #sidebar .nav a .icon {
-        @apply fill-current mr-2 opacity-50;
-        border-left: 4px solid transparent;
-    }
-
-    #sidebar .nav a.router-link-active {
-        @apply font-bold border-l-4 border-pop;
-    }
-
-    #sidebar .nav a:hover:not(.router-link-active) {
-        @apply border-l-4 border-slate-600;
-    }
-
-    #sidebar .nav a.router-link-active .icon {
-        opacity: 1;
+    #app {
+        height:100%;
     }
 
     #main {

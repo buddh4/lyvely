@@ -4,7 +4,7 @@ import { ProfileType } from '@lyvely/common';
 import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { focusIfNotTouchScreen } from '@/util';
 
@@ -27,13 +27,25 @@ const placeholderKey =
     ? 'stream.editor.placeholder_single_user'
     : 'stream.editor.placeholder_multi_user';
 
+const footerRoot = ref<HTMLElement>();
 onMounted(() => {
   focusIfNotTouchScreen(messageInput.value);
+  console.log(footerRoot.value!.offsetHeight);
+  document.documentElement.style.setProperty(
+    '--mobile-body-bottom-margin',
+    `${footerRoot.value!.offsetHeight}px`,
+  );
+});
+onUnmounted(() => {
+  document.documentElement.style.removeProperty('--mobile-body-bottom-margin');
 });
 </script>
 
 <template>
-  <div class="p-2 md:p-4 bg-main border-t border-divide">
+  <div
+    id="content-stream-footer"
+    ref="footerRoot"
+    class="p-2 md:p-4 bg-main border-t border-divide">
     <div class="mb-2 md:mb-4 bg">
       <content-stream-filter-navigation />
     </div>
@@ -57,4 +69,13 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+@media (max-width: 767px) {
+  #content-stream-footer {
+    min-width: 100vw;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+  }
+}
+</style>

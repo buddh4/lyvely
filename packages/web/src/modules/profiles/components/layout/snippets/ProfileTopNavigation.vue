@@ -7,7 +7,7 @@ import AccountMenu from '@/modules/account/components/menus/AccountMenu.vue';
 <template>
   <nav
     id="top-navigation"
-    class="flex items-center justify-between no-wrap overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible"
+    class="flex items-center justify-between no-wrap bg-body overflow-hidden p-0.5 px-2 z-40 shadow dark:shadow-slate-900 overflow-visible"
     :aria-label="$t('layout.aria.top-nav')">
     <div class="w-1/3">
       <profile-combo-button />
@@ -28,6 +28,9 @@ import AccountMenu from '@/modules/account/components/menus/AccountMenu.vue';
 @media (max-width: 767px) {
   #top-navigation {
     min-width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
   }
 }
 </style>

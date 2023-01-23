@@ -23,12 +23,14 @@ export interface IProps {
   batchSize?: number;
   scrollToHead?: boolean;
   infiniteScroll?: boolean;
+  alignBottom?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   batchSize: 50,
   scrollToHead: true,
   infiniteScroll: true,
+  alignBottom: true,
 });
 
 const { filter } = storeToRefs(useContentStreamFilterStore());
@@ -126,7 +128,10 @@ onUnmounted(() => {
   <div
     id="contentStreamRoot"
     ref="streamRoot"
-    class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
+    :class="[
+      'overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow',
+      { 'flex flex-col-reverse': alignBottom },
+    ]">
     <slot name="before" :stream="stream"></slot>
     <div class="px-2 md:px-6">
       <template v-for="(model, index) in models" :key="model.id">

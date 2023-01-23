@@ -50,6 +50,20 @@
     --zindex-modal-active: 1001;
 
     --vh: 100vh;
+
+    --app-drawer-width: 260px;
+    --app-drawer-toggled-width: 60px;
+
+    --top-nav-height: 54px;
+    --mobile-body-top-margin: var(--top-nav-height);
+    --mobile-body-bottom-margin: 0px;
+    --body-y-margin: calc(var(--mobile-body-top-margin) + var(--mobile-body-bottom-margin, 0px));
+}
+
+@media (max-width: 767px) {
+    :root {
+        --app-drawer-toggled-width: 0px;
+    }
 }
 
 .dark {

@@ -46,6 +46,7 @@ function back() {
   <content-stream
     v-if="content"
     :key="content.id"
+    :align-bottom="false"
     :scroll-to-head="false"
     :infinite-scroll="false"
     :batch-size="100">

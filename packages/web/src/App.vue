@@ -49,7 +49,7 @@ window.addEventListener('orientationchange', calculateVh);
 </script>
 
 <template>
-  <div class="flex items-stretch">
+  <div class="app-layout h-full flex items-stretch">
     <Component
       :is="layoutDefinition.component"
       v-if="layoutDefinition"
@@ -71,3 +71,15 @@ window.addEventListener('orientationchange', calculateVh);
     :message="message" />
   <reload-prompt />
 </template>
+
+<style scoped>
+.app-layout {
+  margin-left: var(--app-layout-left-margin, var(--app-drawer-width));
+}
+
+@media (max-width: 767px) {
+  .app-layout {
+    margin-left: 0;
+  }
+}
+</style>
