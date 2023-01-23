@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { computed, ref, toRefs, watch } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { usePageStore } from '@/modules/core/store/page.store';
-import { watchMaxSize, isMaxViewSize } from '@/util/media';
 import { isMultiUserProfile } from '@lyvely/common';
 import imageUrl from '@/assets/logo_white_bold.svg';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { storeToRefs } from 'pinia';
+import { SwipeDirection, useSwipe } from '@vueuse/core';
+import { isMaxViewSize } from '@/util';
 
 interface IMenuItem {
   to?: RouteLocationRaw | string;
@@ -20,9 +20,7 @@ interface IMenuItem {
 }
 
 const pageStore = usePageStore();
-const authStore = useAuthStore();
 const profileStore = useProfileStore();
-const isAuthenticated = computed(() => authStore.isAuthenticated);
 const sidebar = ref<HTMLElement | null>(null);
 const { activeView } = storeToRefs(useActivityStore());
 
@@ -70,25 +68,47 @@ const menuItems = computed(
     ] as IMenuItem[],
 );
 
-const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer'];
+const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer animate-label'];
 
 const { toggleSidebar } = pageStore;
 const { showSidebar } = toRefs(pageStore);
 
-watch(showSidebar, () => {
-  if (showSidebar.value) {
-    sidebar.value?.classList.remove('toggled');
-  } else {
-    sidebar.value?.classList.add('toggled');
-  }
+watch(
+  showSidebar,
+  (newValue) => {
+    if (newValue) {
+      document.documentElement.style.setProperty(
+        '--app-layout-left-margin',
+        'var(--app-drawer-width)',
+      );
+    } else {
+      document.documentElement.style.setProperty(
+        '--app-layout-left-margin',
+        'var(--app-drawer-toggled-width)',
+      );
+    }
+  },
+  { immediate: true },
+);
+
+function onSwipeEnd(direction: SwipeDirection) {
+  if (showSidebar.value && direction === SwipeDirection.LEFT) toggleSidebar();
+  if (!showSidebar.value && direction === SwipeDirection.RIGHT) toggleSidebar();
+}
+const appDrawerRoot = ref<HTMLElement>();
+const appDrawerOverlay = ref<HTMLElement>();
+const { direction } = useSwipe(appDrawerRoot, {
+  onSwipeEnd(e: TouchEvent) {
+    onSwipeEnd(direction.value!);
+  },
+});
+const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
+  onSwipeEnd(e: TouchEvent) {
+    onSwipeEnd(overlayDirection.value!);
+  },
 });
 
-const isSmallView = ref(isMaxViewSize('sm'));
-watchMaxSize('sm', (value) => {
-  isSmallView.value = value;
-});
-
-const showLabels = computed(() => isSmallView.value || showSidebar.value);
+const showLabels = computed(() => showSidebar.value);
 
 const ariaLabel = computed(() =>
   translate('profile.aria.sidebar', {
@@ -98,15 +118,16 @@ const ariaLabel = computed(() =>
 
 function onMenuItemClick(item: IMenuItem) {
   if (item.click) item.click();
-  if (isMaxViewSize('sm')) {
-    // Note on small devices the value is reversed, since the nav is initialized a bit ugly...
-    showSidebar.value = true;
-  }
+  if (isMaxViewSize('sm')) showSidebar.value = false;
 }
 </script>
 
 <template>
-  <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
+  <nav
+    id="app-drawer"
+    ref="appDrawerRoot"
+    :class="['sidebar', { toggled: !showSidebar }]"
+    :aria-label="ariaLabel">
     <div
       class="h-screen fix-h-screen sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
@@ -114,9 +135,11 @@ function onMenuItemClick(item: IMenuItem) {
           class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer"
           @click="toggleSidebar">
           <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-5" />
-          <transition name="fade">
-            <img v-if="showLabels" class="lyvely-logo-text" alt="Lyvely Logo" :src="imageUrl" />
-          </transition>
+          <img
+            v-if="showLabels"
+            class="lyvely-logo-text animate-label"
+            alt="Lyvely Logo"
+            :src="imageUrl" />
         </a>
       </div>
 
@@ -130,11 +153,10 @@ function onMenuItemClick(item: IMenuItem) {
                 class="flex no-wrap items-center h-12"
                 @click="onMenuItemClick(menuItem)">
                 <ly-icon :name="menuItem.icon" class="w-5" />
-                <transition name="fade">
-                  <span v-if="showLabels" class="menu-item">
-                    {{ $t(menuItem.label) }}
-                  </span>
-                </transition>
+
+                <span v-if="showLabels" class="menu-item">
+                  {{ $t(menuItem.label) }}
+                </span>
               </a>
               <router-link
                 v-if="menuItem.to"
@@ -143,11 +165,10 @@ function onMenuItemClick(item: IMenuItem) {
                 :to="menuItem.to"
                 @click="onMenuItemClick(menuItem)">
                 <ly-icon :name="menuItem.icon" class="w-5" />
-                <transition name="fade">
-                  <span v-if="showLabels" class="menu-item">
-                    {{ $t(menuItem.label) }}
-                  </span>
-                </transition>
+
+                <span v-if="showLabels" class="menu-item">
+                  {{ $t(menuItem.label) }}
+                </span>
               </router-link>
             </template>
           </template>
@@ -155,6 +176,14 @@ function onMenuItemClick(item: IMenuItem) {
       </ul>
     </div>
   </nav>
+  <transition name="fade">
+    <div
+      v-if="showSidebar"
+      id="app-drawer-overlay"
+      ref="appDrawerOverlay"
+      class="fixed md:hidden bg-black opacity-50 inset-0 z-0"
+      @click="toggleSidebar"></div>
+  </transition>
 </template>
 
 <style scoped lang="postcss">
@@ -162,9 +191,54 @@ function onMenuItemClick(item: IMenuItem) {
   height: 20px;
 }
 
-.sidebar.toggled {
-  min-width: 60px;
-  max-width: 60px;
+#app-drawer.toggled {
+  width: var(--app-drawer-toggled-width);
+}
+
+#app-drawer {
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: var(--app-drawer-width);
+  direction: ltr;
+}
+
+#app-drawer-overlay {
+  z-index: 99;
+}
+
+#app-drawer {
+  @apply bg-slate-900;
+  z-index: 100;
+}
+
+#app-drawer a {
+  @apply text-slate-100;
+  border-left: 4px solid transparent;
+}
+
+#app-drawer .nav a .icon {
+  @apply fill-current mr-2 opacity-50;
+  border-left: 4px solid transparent;
+}
+
+#app-drawer .nav a.router-link-active {
+  @apply font-bold border-l-4 border-pop;
+}
+
+#app-drawer .nav a:hover:not(.router-link-active) {
+  @apply border-l-4 border-slate-600;
+}
+
+#app-drawer .nav a.router-link-active .icon {
+  opacity: 1;
+}
+
+@media (max-width: 767px) {
+  #app-drawer {
+    transition: width 0.35s ease;
+  }
 }
 
 .fade-leave-active {
@@ -172,32 +246,11 @@ function onMenuItemClick(item: IMenuItem) {
 }
 
 .fade-enter-active {
-  transition: opacity 2s ease;
+  transition: opacity 0.35s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-.sidebar {
-  min-width: 260px;
-  max-width: 260px;
-  transition: all 0.35s ease-in-out;
-  direction: ltr;
-}
-
-@media (max-width: 767px) {
-  .sidebar {
-    min-width: 260px;
-    max-width: 260px;
-    margin-left: -260px;
-  }
-
-  .sidebar.toggled {
-    min-width: 260px;
-    max-width: 260px;
-    margin-left: 0;
-  }
 }
 </style>
