@@ -10,9 +10,9 @@ mongodb:
 auth:
   jwt-access-token-secret: e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2 # change me!
   jwt-access-token-expiration: 15m
-  jwt-access-cookie-samesite: lax
+  jwt-access-cookie-sameSite: lax
   jwt-refresh-token-secret: e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2 # change me!
   jwt-refresh-token-expiration: 200d
-  jwt-refresh-cookie-samesite: lax
+  jwt-refresh-cookie-sameSite: lax
   jwt-cookies-secure: false # should be true in production!
 

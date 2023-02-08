@@ -4,6 +4,8 @@ import { ServeStaticModuleOptions } from '@nestjs/serve-static';
 import { NestedPaths, TypeFromPath } from '@lyvely/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { Request, Response } from 'express';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import https from 'https';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -28,9 +30,8 @@ export type LyvelyHttpOptions = {
   baseUrl: string;
   host: string;
   port: number;
-  cors?: {
-    origin: string;
-  };
+  cors?: CorsOptions;
+  tls?: https.ServerOptions;
   rateLimit?: {
     ttl: number;
     limit: number;
@@ -49,6 +50,8 @@ export type I18NOptions = {
   locales: string[];
 };
 
+export type CookieSameSite = 'lax' | 'strict' | 'none';
+
 export type LyvelyAuthOptions = {
   jwt: {
     'secure-cookies': boolean;
@@ -56,13 +59,13 @@ export type LyvelyAuthOptions = {
     access: {
       secret: string;
       expiresIn: string;
-      samesite: string;
+      sameSite: CookieSameSite;
     };
     refresh: {
       secret: string;
       expiresIn: string;
       expiresInRemember: string;
-      samesite: string;
+      sameSite: CookieSameSite;
     };
     verify: {
       secret: string;
@@ -70,8 +73,6 @@ export type LyvelyAuthOptions = {
     };
   };
 };
-
-export type LiveOptions = {};
 
 export type LyvelyFileOptions = {
   upload?: MulterOptions;
@@ -82,7 +83,7 @@ export type LyvelyFileOptions = {
 
 export type UserPermissionOptions = Record<string, string[]>;
 
-type ModulesConfiguration = {} & { [k: string]: object };
+export type ModulesConfiguration = {} & { [k: string]: object };
 
 export enum OperationMode {
   STANDALONE = 'standalone',
@@ -90,9 +91,16 @@ export enum OperationMode {
   DISTRIBUTED = 'distributed',
 }
 
-interface RedisConfig {
+export interface RedisConfig {
   host: string;
   port: number;
+}
+
+export interface LyvelyCsrfOptions {
+  name?: string;
+  secure?: boolean;
+  httpOnly?: boolean;
+  sameSite?: CookieSameSite;
 }
 
 export type LyvelyAppConfiguration = {
@@ -100,6 +108,7 @@ export type LyvelyAppConfiguration = {
   operationMode: OperationMode;
   docUrl?: string;
   redis: RedisConfig;
+  csrf?: LyvelyCsrfOptions;
   contactMail: string;
   i18n?: I18NOptions;
   http?: LyvelyHttpOptions;

@@ -1,27 +1,32 @@
 import { NestFactory } from '@nestjs/core';
-import { Type, INestApplication, ValidationPipe, Logger } from '@nestjs/common';
+import { INestApplication, ValidationPipe, Logger, NestApplicationOptions } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { ServiceExceptionsFilter, ConfigurationPath } from '@/core';
+import { ServiceExceptionsFilter, ConfigurationPath, LyvelyCsrfOptions } from '@/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from '@/app-module.builder';
 import helmet from 'helmet';
+import express from 'express';
+import http from 'http';
+import https from 'https';
 import csurf from 'csurf';
 import compression from 'compression';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
 import { FeatureModule, FeatureGuard } from '@/features';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import fs from 'fs';
 
 useDayJsDateTimeAdapter();
 
-interface ILyvelyServerOptions extends IAppModuleBuilderOptions {
-  appModule?: Type;
-}
+interface ILyvelyServerOptions extends IAppModuleBuilderOptions {}
 
 export class LyvelyServer {
   private logger: Logger;
   private nestApp: INestApplication;
+  private server: express.Express;
   private configService: ConfigService<ConfigurationPath>;
   private options: ILyvelyServerOptions;
 
@@ -38,18 +43,34 @@ export class LyvelyServer {
     this.initCors();
     this.initGuards();
     this.initCookieParser();
-    this.initCsurf();
+    this.initCsrf();
     this.initCompression();
-
     this.initGlobalPipes();
     this.initGlobalFilters();
+    await this.initServer();
+  }
 
-    await this.nestApp.listen(this.configService.get('http.port'));
+  private async initServer() {
+    await this.nestApp.init();
+
+    const tls = this.configService.get<https.ServerOptions>('http.tls');
+    if (tls) {
+      const port = this.configService.get('http.port', 443);
+      if (typeof tls.key === 'string') tls.key = fs.readFileSync(tls.key);
+      if (typeof tls.cert === 'string') tls.cert = fs.readFileSync(tls.cert);
+      https.createServer(this.configService.get('http.tls'), this.server).listen(port);
+    } else {
+      const port = this.configService.get('http.port', 8080);
+      http.createServer(this.server).listen(port);
+    }
   }
 
   private async initNestApp() {
-    const appModule = this.options.appModule || new AppModuleBuilder(this.options).build();
-    const app = await NestFactory.create(appModule);
+    this.server = express();
+    const app = await NestFactory.create(
+      new AppModuleBuilder(this.options).build(),
+      new ExpressAdapter(this.server),
+    );
     app.setGlobalPrefix('api');
     return app;
   }
@@ -69,17 +90,14 @@ export class LyvelyServer {
     }
   }
 
-  private initCsurf() {
-    this.nestApp.use(
-      csurf({
-        cookie: {
-          name: 'csrf-token',
-          httpOnly: true,
-          // secure: true, TODO: configure
-          sameSite: 'lax',
-        },
-      }),
-    );
+  private initCsrf() {
+    const cookie = this.configService.get<LyvelyCsrfOptions>('csrf', {});
+    cookie.name ||= 'csrf-token';
+    cookie.sameSite ||= 'lax';
+    cookie.httpOnly = cookie.httpOnly !== false;
+    cookie.secure =
+      typeof cookie.secure === 'boolean' ? cookie.secure : !!this.configService.get('http.tls');
+    this.nestApp.use(csurf({ cookie }));
   }
 
   private initCookieParser() {
@@ -104,9 +122,7 @@ export class LyvelyServer {
     const mongodb_uri = this.configService.get('mongodb.uri');
 
     this.logger.log(`Using port '${port}'`);
-
     this.logger.log(`Using mongodb uri '${mongodb_uri}'`);
-
     this.logger.log(`Using NODE_ENV '${process.env.NODE_ENV}'`);
   }
 
@@ -118,41 +134,40 @@ export class LyvelyServer {
 
   private initCors() {
     // Cors not required if staticServe is used
-    let cors_origin = this.configService.get('http.cors.origin');
+    let cors = this.configService.get<CorsOptions>('http.cors');
     const staticServe = !!this.configService.get('serveStatic');
 
-    if (!cors_origin && !staticServe) {
-      cors_origin = this.configService.get('http.appUrl');
+    if (!cors && !staticServe) {
+      cors = { origin: this.configService.get('http.appUrl') };
     }
 
-    if (!cors_origin && !staticServe) {
+    if (!cors && !staticServe) {
       this.logger.warn(
         'Not cors origin and no serve static configuration set, this is probably a misconfiguration.',
       );
     }
 
-    if (!cors_origin) {
+    if (!cors) {
       this.logger.log(`No cors mode configured.`);
       return;
     }
 
-    this.logger.log(`Using cors origin '${cors_origin}'`);
+    this.logger.log('Using cors origin', cors);
 
-    this.nestApp.enableCors({
-      origin: cors_origin,
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT'],
-      exposedHeaders: ['set-cookie'],
-      allowedHeaders: [
-        'x-visitor-id',
-        'x-captcha-identity',
-        'x-captcha-token',
-        'csrf-token',
-        'access-control-allow-origin',
-        'content-type',
-        'cookie',
-      ],
-      //allowedHeaders: 'access-control-allow-originaccept,Accept-Language,Content-Language,Content-Type,Authorization,Cookie,X-Requested-With,Origin,Host'
-    });
+    cors.credentials = cors.credentials !== false;
+    cors.methods ||= ['GET', 'POST', 'PUT'];
+    cors.exposedHeaders ||= ['set-cookie'];
+    cors.allowedHeaders ||= [
+      'x-visitor-id',
+      'x-captcha-identity',
+      'x-captcha-token',
+      'csrf-token',
+      'access-control-allow-origin',
+      'content-type',
+      'cookie',
+    ];
+    //allowedHeaders: 'access-control-allow-originaccept,Accept-Language,Content-Language,Content-Type,Authorization,Cookie,X-Requested-With,Origin,Host'
+
+    this.nestApp.enableCors(cors);
   }
 }

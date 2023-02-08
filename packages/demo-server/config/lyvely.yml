@@ -14,10 +14,10 @@ auth:
     access:
       secret: e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2 # change me!
       expiration: 15m
-      samesite: lax
+      sameSite: lax
     refresh:
       secret: e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2 # change me!
       expiration: 200d
-      samesite: lax
+      sameSite: lax
 
 

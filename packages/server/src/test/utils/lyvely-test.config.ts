@@ -21,13 +21,13 @@ const lyvelyTestConfig: LyvelyAppConfiguration = {
       access: {
         secret: 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
         expiresIn: '15m',
-        samesite: 'lax',
+        sameSite: 'lax',
       },
       refresh: {
         secret: 'e5d2ece45d3b7919fc7b7a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2',
         expiresIn: '30m',
         expiresInRemember: '200d',
-        samesite: 'lax',
+        sameSite: 'lax',
       },
       verify: {
         secret: 'e5d2ece45d3b7919fc7b7aff19abc0cb7916c71bef385ca11f27a0a3b324e3d2',

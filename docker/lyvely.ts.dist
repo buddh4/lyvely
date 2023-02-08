@@ -34,13 +34,13 @@ export default {
       access: {
         secret: undefined, // CHANGEME!
         expiresIn: '2m',
-        samesite: 'lax',
+        sameSite: 'lax',
       },
       refresh: {
         secret: undefined, // CHANGEME!
         expiresIn: '5m',
         expiresInRemember: '200d',
-        samesite: 'lax',
+        sameSite: 'lax',
       },
       verify: {
         secret: undefined, // CHANGEME!
