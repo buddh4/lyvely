@@ -16,12 +16,22 @@ export class ContentStreamService extends AbstractStreamService<Content, Content
     return this.applyFilter(query, filter);
   }
 
+  protected createLoadEntryQueryFilter(
+    context: RequestContext,
+    filter?: ContentStreamFilter,
+  ): FilterQuery<Content> {
+    const query = this.createQueryFilter(context, filter);
+    // In case we load a single entry we do need to remove the auto parent = null filter
+    if (!filter?.parent) {
+      delete query['meta.parentId'];
+    }
+    return query;
+  }
+
   applyFilter(query: FilterQuery<Content>, filter?: ContentStreamFilter) {
     query['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
 
     if (!filter) return query;
-
-    query['meta.parentId'] = filter?.parent ? assureObjectId(filter.parent) : null;
 
     if (filter.tagIds?.length) {
       query['tagIds'] = { $all: filter.tagIds };

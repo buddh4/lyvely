@@ -57,12 +57,19 @@ export abstract class AbstractStreamService<
   ): Promise<TModel> {
     const streamEntry = await this.streamEntryDao.findByIdAndFilter(
       identity,
-      this.createQueryFilter(context, filter),
+      this.createLoadEntryQueryFilter(context, filter),
     );
 
     if (!streamEntry) throw new EntityNotFoundException();
 
     return streamEntry;
+  }
+
+  protected createLoadEntryQueryFilter(
+    context: RequestContext,
+    filter?: TFilter,
+  ): FilterQuery<TModel> {
+    return this.createQueryFilter(context, filter);
   }
 
   async loadTail(
