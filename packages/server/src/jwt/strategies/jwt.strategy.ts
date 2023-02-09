@@ -15,7 +15,9 @@ export interface JwtStrategyOptionsIF {
   options: (configService: ConfigService<ConfigurationPath>) => StrategyOptions;
 }
 
-abstract class JwtStrategyClass<TPayload extends JwtTokenPayloadIF = JwtTokenPayloadIF> extends Strategy {
+abstract class JwtStrategyClass<
+  TPayload extends JwtTokenPayloadIF = JwtTokenPayloadIF,
+> extends Strategy {
   abstract validateUser(user: User, req: Request, payload: TPayload);
 }
 

@@ -19,6 +19,10 @@ export class UserRegistrationDto extends BaseModel<UserRegistrationDto> {
   @IsString()
   readonly locale?: string;
 
+  @IsOptional()
+  @IsString()
+  readonly inviteToken?: string;
+
   @IsString()
   @MinLength(6)
   @MaxLength(64)

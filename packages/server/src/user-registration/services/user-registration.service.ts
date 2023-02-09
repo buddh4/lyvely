@@ -72,7 +72,9 @@ export class UserRegistrationService {
   private async sendEmailAlreadyExistsMail(email: string) {
     // TODO: (i18n) missing translation
     const appName = escapeHTML(this.configService.get('appName'));
-    const forgotPasswordUrl = escapeHTML(encodeURI(this.urlGenerator.getAppUrl({ path: '/reset-password' }).href));
+    const forgotPasswordUrl = escapeHTML(
+      encodeURI(this.urlGenerator.getAppUrl({ path: '/reset-password' }).href),
+    );
     return this.mailerService.sendMail({
       to: email,
       subject: `Attempt to register an already existing email`,
@@ -88,7 +90,9 @@ export class UserRegistrationService {
 
   private async sendEmailVerificationMail(user: User, otp: string) {
     const appName = escapeHTML(this.configService.get('appName'));
-    const contactMailHref = escapeHTML(encodeURI(`mailto:${this.configService.get('contactMail')}`));
+    const contactMailHref = escapeHTML(
+      encodeURI(`mailto:${this.configService.get('contactMail')}`),
+    );
     const contactMail = escapeHTML(this.configService.get('contactMail'));
 
     // TODO: (i18n) missing translation

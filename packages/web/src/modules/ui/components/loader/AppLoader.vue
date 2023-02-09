@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { usePageStore } from '@/modules/core/store/page.store';
 import { toRefs } from 'vue';
+import imageUrl from '@/assets/logo-styled.svg';
 
 const { showAppLoader } = toRefs(usePageStore());
 </script>
@@ -13,7 +14,7 @@ const { showAppLoader } = toRefs(usePageStore());
           <span class="spinner border-divide border-t-pop"></span>
         </div>
         <div class="overlay__content">
-          <ly-icon name="lyvely" class="text-lyvely w-8" />
+          <img :src="imageUrl" class="w-8 h-8" />
         </div>
       </div>
     </div>

@@ -1,15 +1,15 @@
 import { ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtStrategy, JwtTokenPayloadIF } from '@/jwt';
-import { getIssuedAt } from '@/jwt/utils/jwt.util';
-import { UserStatus } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
+import { getIssuedAt } from '@/jwt/utils/jwt.util';
+import { UserStatus } from '@lyvely/common';
 
 export const JWT_RESET_PASSWORD_TOKEN = 'password-reset';
 
 @Injectable()
-export class JwtResetPasswordStrategy extends JwtStrategy<JwtTokenPayloadIF>({
+export class JwtInviteTokenStrategy extends JwtStrategy<JwtTokenPayloadIF>({
   name: JWT_RESET_PASSWORD_TOKEN,
   options: (configService) => {
     return {

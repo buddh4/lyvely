@@ -15,10 +15,14 @@ import { AbstractJwtAuthController, JwtAuthService } from '@/auth';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import ms from 'ms';
+import { UserRegistrationConfig, UserRegistrationMode } from '../interfaces';
 
 @Controller(ENDPOINT_USER_REGISTRATION)
 @UseClassSerializer()
-export class UserRegistrationController extends AbstractJwtAuthController implements UserRegistrationEndpoint {
+export class UserRegistrationController
+  extends AbstractJwtAuthController
+  implements UserRegistrationEndpoint
+{
   constructor(
     private registerService: UserRegistrationService,
     private authService: JwtAuthService,
@@ -31,6 +35,11 @@ export class UserRegistrationController extends AbstractJwtAuthController implem
   @Post()
   async register(@Body() registerDto: UserRegistrationDto): Promise<OtpInfo> {
     try {
+      const registrationMode = this.configService.get(
+        'modules.user-registration.mode',
+        UserRegistrationMode.Invite,
+      );
+
       return await this.registerService.register(registerDto);
     } catch (err: any) {
       // Fake an otp to prevent user enumeration attacks
