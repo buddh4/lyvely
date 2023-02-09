@@ -16,13 +16,12 @@ const showConfirm = ref(false);
 const confirm = ref<IConfirmOptions>();
 const confirmAction = ref<() => void>();
 
-const content = reactive(props.content);
-const { archiveIcon, archiveLabel, toggleArchive } = useContentArchive(content);
+const { archiveIcon, archiveLabel, toggleArchive } = useContentArchive(props.content);
 
 function onClickArchive() {
   confirmAction.value = toggleArchive;
   confirm.value = {
-    text: content.meta.isArchived
+    text: props.content.meta.isArchived
       ? 'content.actions.confirm.unarchive'
       : 'content.actions.confirm.archive',
   };
@@ -30,10 +29,10 @@ function onClickArchive() {
 }
 
 function onClickEdit() {
-  useContentEditStore().setEditContent(content);
+  useContentEditStore().setEditContent(props.content);
 }
 
-const isEditable = computed(() => !content.meta.isArchived);
+const isEditable = computed(() => !props.content.meta.isArchived);
 </script>
 
 <template>

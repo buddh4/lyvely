@@ -84,8 +84,8 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
   applyUpdate(update: UpdateHabitModel) {
     this.applyTimeSeriesConfigUpdate({
       max: update.max ?? this.timeSeriesConfig.max,
-      min: update.max ?? this.timeSeriesConfig.min,
-      optimal: update.max ?? this.timeSeriesConfig.optimal,
+      min: update.min ?? this.timeSeriesConfig.min,
+      optimal: update.optimal ?? this.timeSeriesConfig.optimal,
       inputType: update.inputType ?? this.timeSeriesConfig.inputType,
       userStrategy: update.userStrategy ?? this.timeSeriesConfig.userStrategy,
       interval: update.interval ?? this.timeSeriesConfig.interval,

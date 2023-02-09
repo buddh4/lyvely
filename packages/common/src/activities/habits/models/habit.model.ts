@@ -17,6 +17,10 @@ export class HabitModel
       text: this.content.text,
       interval: this.timeSeriesConfig.interval,
       userStrategy: this.timeSeriesConfig.userStrategy,
+      min: this.timeSeriesConfig.min,
+      max: this.timeSeriesConfig.max,
+      optimal: this.timeSeriesConfig.optimal,
+      inputType: this.timeSeriesConfig.inputType,
       score: this.config.score,
     });
   }

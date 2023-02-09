@@ -16,11 +16,14 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 const emit = defineEmits(['update:modelValue']);
-const store = useContentEditModal<HabitModel, CreateHabitModel, UpdateHabitModel>(props, emit, {
+
+const { isCreate, showModal, model, validator, submit, status } = useContentEditModal<
+  HabitModel,
+  CreateHabitModel,
+  UpdateHabitModel
+>(props, emit, {
   service: useHabitsService(),
 });
-
-const { isCreate, showModal, model, validator, submit, status } = store;
 
 function setInputType(inputType: DataPointInputType) {
   if (!model.value) return;

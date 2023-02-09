@@ -4,10 +4,44 @@
       "main_nav": "Activities"
     },
     "habits": {
-      "title": "Activities"
+      "title": "Activities",
+      "stream_entry": {
+        "text": "New activity"
+      },
+      "create" : {
+        "title": "Create activity"
+      },
+      "edit" : {
+        "title": "Edit activity"
+      },
+      "timer_score_info": "The score is awarded for each achieved min, optimal, max result."
     },
     "tasks": {
-      "title": "Tasks"
+      "title": "Tasks",
+      "stream_entry": {
+        "text": "New task"
+      },
+      "create" : {
+        "title": "Create task"
+      },
+      "edit" : {
+        "title": "Edit task"
+      }
+    },
+    "input_types": {
+      "checkbox": "Checkboxes",
+      "range": "Range",
+      "spinner": "Spinner",
+      "time": "Time"
+    },
+    "fields": {
+      "title": "Title",
+      "interval": "Plan",
+      "max": "Max",
+      "min": "Min",
+      "optimal": "Optimal",
+      "score": "Score ★",
+      "text": "Description"
     }
   }
 }
