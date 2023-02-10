@@ -76,6 +76,12 @@ export function registerCreateContentModalComponent(
   createContentModalRegistry.set(contentType, _getComponent(component));
 }
 
+export function getCreateContentTypes() {
+  return Array.from(contentTypeOptionsRegistry.values()).filter(
+    (options) => !!createContentModalRegistry.get(options.type),
+  );
+}
+
 export function getCreateContentModalComponent(
   contentOrType: string | ContentModel,
 ): Component<ICreateContentModalProps> | undefined {

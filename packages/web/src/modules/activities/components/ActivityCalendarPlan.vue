@@ -47,7 +47,7 @@ function dragEnd(evt: IDragEvent) {
 }
 
 const addEntry = () =>
-  useContentCreateStore().setCreateContent(props.type, { interval: props.interval });
+  useContentCreateStore().createContentType(props.type, { interval: props.interval });
 
 const createTitle = computed(() =>
   props.type === ActivityType.Habit

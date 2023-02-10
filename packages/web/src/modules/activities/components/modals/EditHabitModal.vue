@@ -6,12 +6,13 @@ import { useContentEditModal } from '@/modules/content/composables/content-edit-
 import { useHabitsService } from '@/modules/activities/services/habits.service';
 import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
 import { isTouchScreen } from '@/util';
+import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 
 export interface IProps {
   modelValue: boolean;
   content?: HabitModel;
   type: string;
-  initOptions?: any;
+  initOptions?: ICreateContentInitOptions;
 }
 
 const props = defineProps<IProps>();
@@ -43,6 +44,7 @@ const modalTitle = computed(() => {
 
 <template>
   <ly-modal v-model="showModal" :title="modalTitle" @submit="submit">
+    <template #preHeader><slot name="navigation"></slot></template>
     <ly-form-model
       v-model="model"
       :validator="validator"
@@ -52,7 +54,8 @@ const modalTitle = computed(() => {
         <ly-input-text
           property="title"
           :required="true"
-          :autofocus="isCreate || !isTouchScreen()" />
+          :autofocus="isCreate || !isTouchScreen()"
+          :auto-validation="false" />
         <ly-input-select property="interval" :required="true" :options="calendarPlanOptions" />
       </fieldset>
 

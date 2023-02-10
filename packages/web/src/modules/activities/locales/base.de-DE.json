@@ -5,6 +5,7 @@
     },
     "habits": {
       "title": "Activities",
+      "name": "Activity",
       "stream_entry": {
         "text": "New activity"
       },
@@ -18,6 +19,7 @@
     },
     "tasks": {
       "title": "Tasks",
+      "name": "Task",
       "stream_entry": {
         "text": "New task"
       },

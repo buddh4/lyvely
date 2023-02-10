@@ -6,16 +6,17 @@ import { CreateTaskModel, TaskModel, UpdateTaskModel } from '@lyvely/common';
 import { useTasksService } from '@/modules/activities/services/tasks.service';
 import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
 import { isTouchScreen } from '@/util';
+import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 
 export interface IProps {
   modelValue: boolean;
   content?: TaskModel;
   type: string;
-  initOptions?: any;
+  initOptions?: ICreateContentInitOptions;
 }
 
 const props = defineProps<IProps>();
-const emit = defineEmits(['update:modelValue', 'hide']);
+const emit = defineEmits(['update:modelValue']);
 const store = useContentEditModal<TaskModel, CreateTaskModel, UpdateTaskModel>(props, emit, {
   service: useTasksService(),
 });
@@ -28,7 +29,8 @@ const modalTitle = computed(() => {
 </script>
 
 <template>
-  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit" @hide="$emit('hide')">
+  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit">
+    <template #preHeader><slot name="navigation"></slot></template>
     <ly-form-model
       v-model="model"
       :validator="validator"
@@ -38,7 +40,8 @@ const modalTitle = computed(() => {
         <ly-input-text
           property="title"
           :required="true"
-          :autofocus="isCreate || !isTouchScreen()" />
+          :autofocus="isCreate || !isTouchScreen()"
+          :auto-validation="false" />
         <ly-input-select property="interval" :required="true" :options="getCalendarPlanOptions()" />
       </fieldset>
       <fieldset>

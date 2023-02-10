@@ -108,7 +108,7 @@ const widths = {
 
 const modalWindowClass = `w-full ${
   widths[props.width]
-} flex h-screen fix-h-screen flex-col max-h-full relative md:rounded-sm shadow-lg bg-main md:h-auto md:min-h-0`;
+} flex h-screen fix-h-screen overflow-hidden flex-col max-h-full relative md:rounded-sm shadow-lg bg-main md:h-auto md:min-h-0`;
 
 // absolute mx-auto md:rounded-sm shadow-lg bg-main top-0 md:top-1/4 h-full md:h-auto
 
@@ -151,6 +151,7 @@ function onKeyDown(evt: KeyboardEvent) {
         @keydown="onKeyDown">
         <div class="fixed bg-black opacity-50 inset-0 z-0"></div>
         <div :class="modalWindowClass">
+          <slot name="preHeader"></slot>
           <div class="flex items-center p-5 md:rounded-t-sm shadow z-10" data-modal-header>
             <slot name="header">
               <ly-button class="text-sm md:hidden pl-0" @click="cancel">

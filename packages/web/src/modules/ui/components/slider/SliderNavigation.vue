@@ -7,7 +7,8 @@ const slideActive = ref(false);
 const slideX = ref(0);
 const slideTransformX = ref(0);
 
-const getX = (evt: MouseEvent | TouchEvent) => (evt instanceof MouseEvent ? evt.clientX : evt.touches[0].clientX);
+const getX = (evt: MouseEvent | TouchEvent) =>
+  evt instanceof MouseEvent ? evt.clientX : evt.touches[0].clientX;
 
 function beginSlide(evt: MouseEvent | TouchEvent) {
   if (!container.value || !slider.value) {
@@ -62,17 +63,26 @@ const sliderStyle = computed(() => {
 </script>
 
 <template>
-  <div ref="container" class="flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
+  <div
+    ref="container"
+    class="flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
     <div
       ref="slider"
       :style="sliderStyle"
-      class="slider-nav touch-pan-y"
+      class="slider-nav touch-pan-y slider-nav flex gap-1"
       @mousedown="beginSlide"
-      @touchstart="beginSlide"
-    >
+      @touchstart="beginSlide">
       <slot></slot>
     </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.slider-nav {
+  transition-duration: 0.15s;
+  transition-timing-function: cubic-bezier(0.05, 0, 0, 1);
+  will-change: transform;
+  display: inline-block;
+  white-space: nowrap;
+}
+</style>

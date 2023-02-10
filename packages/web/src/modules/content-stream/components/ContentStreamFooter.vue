@@ -7,6 +7,7 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { onMounted, ref } from 'vue';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { focusIfNotTouchScreen } from '@/util';
+import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 
 const { filter } = storeToRefs(useContentStreamFilterStore());
 const emits = defineEmits(['contentCreated']);
@@ -21,6 +22,12 @@ async function submitMessage() {
   emits('contentCreated', newMessage);
 }
 
+async function openCreateContentModal() {
+  const tagNames = useProfileStore().tagIdsToNames(useContentStreamFilterStore().filter.tagIds);
+  useContentCreateStore().createAnyContent({ title: model.value.text, tagNames });
+  model.value.text = '';
+}
+
 const profileStore = useProfileStore();
 const placeholderKey =
   profileStore.profile!.type === ProfileType.User
@@ -30,6 +37,13 @@ const placeholderKey =
 onMounted(() => {
   focusIfNotTouchScreen(messageInput.value);
 });
+
+const onInputKeydown = (evt: KeyboardEvent) => {
+  if (evt.ctrlKey && evt.key === '+') {
+    evt.preventDefault();
+    openCreateContentModal();
+  }
+};
 </script>
 
 <template>
@@ -39,7 +53,9 @@ onMounted(() => {
     </div>
     <div class="flex flex-col">
       <div class="flex gap-1 md:gap-3">
-        <ly-button class="primary rounded-full w-10 h-10 flex items-center">
+        <ly-button
+          class="primary rounded-full w-10 h-10 flex items-center"
+          @click="openCreateContentModal">
           <ly-icon name="plus"></ly-icon>
         </ly-button>
         <input
@@ -48,7 +64,8 @@ onMounted(() => {
           type="text"
           class="rounded-full"
           :placeholder="$t(placeholderKey)"
-          @keyup.enter="submitMessage" />
+          @keyup.enter="submitMessage"
+          @keydown="onInputKeydown" />
         <ly-button class="primary rounded-full w-10 h-10 flex items-center" @click="submitMessage">
           <ly-icon name="send"></ly-icon>
         </ly-button>

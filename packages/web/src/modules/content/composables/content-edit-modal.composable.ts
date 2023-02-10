@@ -49,10 +49,7 @@ export function useContentEditModal<
 
   if (content) {
     const editModel = content.toEditModel();
-    editModel.tagNames = useProfileStore()
-      .getTags()
-      .filter((tag) => content.tagIds.includes(tag.id))
-      .map((tag) => tag.name);
+    editModel.tagNames = useProfileStore().tagIdsToNames(content.tagIds);
     updateStore.setEditModel(content.id, editModel);
   } else {
     const CreateType = (<ModalCreate>getContentTypeOptions(type)?.interfaces?.create)?.modelClass;
@@ -60,8 +57,8 @@ export function useContentEditModal<
     if (!CreateType) {
       throw new Error(`Content type ${type} is missing a create model class definition`);
     }
-
-    updateStore.setCreateModel(new CreateType(props.initOptions) as TUpdateModel);
+    const createModel = new CreateType(props.initOptions) as TUpdateModel;
+    updateStore.setCreateModel(createModel);
   }
 
   const {

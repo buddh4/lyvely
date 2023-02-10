@@ -143,12 +143,4 @@ onBeforeRouteLeave(unwatchFilter);
   </ly-drawer>
 </template>
 
-<style scoped>
-.slider-nav {
-  transition-duration: 0.15s;
-  transition-timing-function: cubic-bezier(0.05, 0, 0, 1);
-  will-change: transform;
-  display: inline-block;
-  white-space: nowrap;
-}
-</style>
+<style scoped></style>

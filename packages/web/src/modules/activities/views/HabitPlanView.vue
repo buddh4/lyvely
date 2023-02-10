@@ -8,7 +8,7 @@ import { useContentCreateStore } from '@/modules/content/stores/content-create.s
 
 const type = ActivityType.Habit;
 
-const createEntry = () => useContentCreateStore().setCreateContent(type);
+const createEntry = () => useContentCreateStore().createContentType(type);
 const intervals = computed(() => getCalendarPlanArray());
 </script>
 

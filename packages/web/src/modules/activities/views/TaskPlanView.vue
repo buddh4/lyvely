@@ -8,7 +8,7 @@ import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 
 const type = ActivityType.Task;
-const createEntry = () => useContentCreateStore().setCreateContent(type);
+const createEntry = () => useContentCreateStore().createContentType(type);
 
 const intervals = computed(() => getCalendarPlanArray());
 

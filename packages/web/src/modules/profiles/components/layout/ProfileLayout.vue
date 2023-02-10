@@ -9,8 +9,8 @@ import CreateProfileModal from '../modals/CreateProfileModal.vue';
 import InviteUsersModal from '../modals/InviteUsersModal.vue';
 import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
 import HelpModal from '@/modules/help/components/HelpModal.vue';
-import { useContentEditStore } from '@/modules/content/stores/content-edit.store';
-import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
+
+import CreateOrEditContentModal from '@/modules/content-stream/components/CreateOrEditContentModal.vue';
 
 export interface IProps {
   containerWidth?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
@@ -35,20 +35,6 @@ const show = computed(() => (props.requireAuth ? useAuthStore().isAuthenticated 
 const IntroductionTour = defineAsyncComponent(
   () => import('@/modules/help/components/IntroductionTour.vue'),
 );
-
-const {
-  showCreateModal,
-  createContentType,
-  initOptions: createInitOptions,
-  createModalComponent,
-} = storeToRefs(useContentCreateStore());
-
-const {
-  showEditModal,
-  editContent,
-  initOptions: editInitOptions,
-  editModalComponent,
-} = storeToRefs(useContentEditStore());
 </script>
 
 <template>
@@ -69,24 +55,9 @@ const {
 
   <create-profile-modal />
 
-  <invite-users-modal />
+  <create-or-edit-content-modal />
 
-  <template v-if="showEditModal">
-    <component
-      :is="editModalComponent"
-      v-if="editContent"
-      v-model="showEditModal"
-      :content="editContent"
-      :type="editContent.type"
-      :init-options="editInitOptions" />
-  </template>
-  <template v-if="showCreateModal">
-    <component
-      :is="createModalComponent"
-      v-model="showCreateModal"
-      :type="createContentType"
-      :init-options="createInitOptions" />
-  </template>
+  <invite-users-modal />
 </template>
 
 <style scoped></style>

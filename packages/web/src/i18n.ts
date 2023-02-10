@@ -25,7 +25,8 @@ export function translation(key: string, options?: any) {
   return () => translate(key, options);
 }
 
-export function translate(key: string, options?: any) {
+export function translate(key: string | (() => string), options?: any) {
+  if (typeof key === 'function') return key();
   return (<any>getI18n().global).t(key, options);
 }
 

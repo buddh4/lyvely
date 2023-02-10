@@ -71,6 +71,14 @@ export const useProfileStore = defineStore('profile', () => {
     return profile?.value?.tags?.find((tag) => tag.name === name);
   }
 
+  function tagIdsToNames(ids?: string[]) {
+    if (!ids?.length) return [];
+
+    return getTags()
+      .filter((tag) => ids.includes(tag.id))
+      .map((tag) => tag.name);
+  }
+
   return {
     profile,
     locale,
@@ -79,6 +87,7 @@ export const useProfileStore = defineStore('profile', () => {
     getTags,
     getTagsByName,
     updateTags,
+    tagIdsToNames,
     ...status,
   };
 });

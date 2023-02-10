@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia';
-import { ContentModel } from '@lyvely/common';
 import { computed, ref, watch } from 'vue';
-import {
-  getCreateContentModalComponent,
-  getEditContentModalComponent,
-} from '@/modules/content-stream/components/content-stream-entry.registry';
+import { getCreateContentModalComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
+import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 
 export const useContentCreateStore = defineStore('content-create', () => {
-  const createContentType = ref<string>();
-  const initOptions = ref<any>();
+  const contentType = ref<string>();
+  const initOptions = ref<ICreateContentInitOptions>();
+  const showContentTypeMenu = ref(false);
+  let latestContentType: string;
 
   const showCreateModal = ref(false);
 
@@ -20,30 +19,50 @@ export const useContentCreateStore = defineStore('content-create', () => {
 
   function reset() {
     showCreateModal.value = false;
-    createContentType.value = undefined;
+    contentType.value = undefined;
     initOptions.value = undefined;
+    showContentTypeMenu.value = false;
   }
 
-  function setCreateContent(contentType?: string, options?: any) {
+  function createContentType(
+    type?: string,
+    options?: ICreateContentInitOptions,
+    withContentTypeMenu = false,
+  ) {
     reset();
-    if (contentType) {
-      initOptions.value = options;
-      createContentType.value = contentType;
-      showCreateModal.value = true;
-    }
+
+    if (!type) return;
+
+    initOptions.value = options;
+    contentType.value = type;
+    latestContentType = type;
+    showContentTypeMenu.value = withContentTypeMenu;
+    showCreateModal.value = true;
+  }
+
+  function createAnyContent(options?: ICreateContentInitOptions) {
+    const contentType = selectContentType();
+    createContentType(contentType, options, true);
+  }
+
+  function selectContentType() {
+    // content type filter active?
+    // latest type selected
+    // default selected
+    return latestContentType || 'Task';
   }
 
   const createModalComponent = computed(() => {
-    return createContentType.value
-      ? getCreateContentModalComponent(createContentType.value)
-      : undefined;
+    return contentType.value ? getCreateContentModalComponent(contentType.value) : undefined;
   });
 
   return {
     showCreateModal,
     createModalComponent,
+    showContentTypeMenu,
     reset,
-    setCreateContent,
+    contentType,
+    createAnyContent,
     createContentType,
     initOptions,
   };

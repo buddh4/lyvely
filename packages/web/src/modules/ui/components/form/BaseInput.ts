@@ -212,7 +212,7 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
     },
     onFocusOut: () => {
       if (useAutoValidation) {
-        validator.validateField(props.property!);
+        setTimeout(() => validator.validateField(props.property!), 50);
       }
     },
   };
