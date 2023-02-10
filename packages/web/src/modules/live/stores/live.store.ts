@@ -49,9 +49,9 @@ export const useLiveStore = defineStore('live', () => {
   function broadCastLiveEvent(event: ILiveEvent) {
     if (channel) {
       channel.postMessage(event);
-    } else {
-      emitLocalLiveEvent(event);
     }
+
+    emitLocalLiveEvent(event);
   }
 
   function emitLocalLiveEvent(event: ILiveEvent) {
@@ -77,17 +77,6 @@ export const useLiveStore = defineStore('live', () => {
   ) {
     return eventBus.off(createLiveEventType(module, event), handler);
   }
-
-  setInterval(() => {
-    emitLocalLiveEvent({
-      module: 'test',
-      name: 'test',
-    });
-  }, 5000);
-
-  on('test', 'test', () => {
-    console.log('Received test event');
-  });
 
   return {
     connectUser,
