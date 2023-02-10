@@ -14,7 +14,8 @@ const { showAppLoader } = toRefs(usePageStore());
           <span class="spinner border-divide border-t-pop"></span>
         </div>
         <div class="overlay__content">
-          <img :src="imageUrl" class="w-8 h-8" />
+          <ly-icon name="lyvely" class="text-lyvely w-8" />
+          <!-- img :src="imageUrl" class="w-8 h-8" / -->
         </div>
       </div>
     </div>
