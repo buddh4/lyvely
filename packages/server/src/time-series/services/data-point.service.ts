@@ -1,5 +1,10 @@
 import { User } from '@/users';
-import { CalendarDate, toDate, DataPointIntervalFilter, UserAssignmentStrategy } from '@lyvely/common';
+import {
+  CalendarDate,
+  toDate,
+  DataPointIntervalFilter,
+  UserAssignmentStrategy,
+} from '@lyvely/common';
 import { TimeSeriesContent, DataPoint } from '../schemas';
 import { Profile, ProfilesService } from '@/profiles';
 import { EntityIdentity } from '@/core';
@@ -67,7 +72,9 @@ export abstract class DataPointService<
     if (log) return log;
 
     const DataPointConstructor = this.dataPointDao.getModelConstructor();
-    return await this.dataPointDao.save(new DataPointConstructor(profile, user, content, { date: toDate(date) }));
+    return await this.dataPointDao.save(
+      new DataPointConstructor(profile, user, content, { date: toDate(date) }),
+    );
   }
 
   async findByIntervalLevel(

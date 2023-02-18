@@ -43,6 +43,9 @@ export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityTy
   @Prop({ type: String, required: true, immutable: true })
   tid: string;
 
+  @Prop({ immutable: true })
+  valueType: string;
+
   /**
    * Contains a full day (no time) utc date with the same date described by tid.
    * date.toISOString() should always return a date string in the format '2020-02-20T00:00:00.000Z'
@@ -61,7 +64,9 @@ export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityTy
 
     this.pid = assureObjectId(profile._id);
     this.uid =
-      content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser ? assureObjectId(user._id) : null;
+      content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser
+        ? assureObjectId(user._id)
+        : null;
     this.cid = assureObjectId(content._id);
     this.interval = content.timeSeriesConfig.interval;
 

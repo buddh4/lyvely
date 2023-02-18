@@ -5,7 +5,7 @@ import {
   SpinnerNumberDataPointConfig,
   TimeSeriesContent,
   TimeSeriesConfigSchemaFactory,
-  DefaultDataPointConfigSchema,
+  DataPointConfigSchema,
   DataPointConfigFactory,
   TextareaTextDataPointConfig,
   NumberTimeSeriesContentConfig,
@@ -17,14 +17,17 @@ type TestDataPointConfig = CheckboxNumberDataPointConfig | TextareaTextDataPoint
 
 @Schema({ _id: false })
 class TestTimeSeriesConfig implements ITimeSeriesContentConfig {
-  @Prop({ type: DefaultDataPointConfigSchema })
+  @Prop({ type: DataPointConfigSchema })
   timeSeries: TestDataPointConfig;
 }
 
-const TestTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(TestTimeSeriesConfig, [
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
-]);
+const TestTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
+  TestTimeSeriesConfig,
+  [
+    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
+    DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
+  ],
+);
 
 @Schema()
 export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {
@@ -50,10 +53,13 @@ class TestNumberTimeSeriesConfig extends NumberTimeSeriesContentConfig<
   TestNumberDataPointConfig
 > {}
 
-const TestNumberTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(TestTimeSeriesConfig, [
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
-]);
+const TestNumberTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
+  TestTimeSeriesConfig,
+  [
+    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
+    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
+  ],
+);
 
 @Schema()
 export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNumberTimeSeriesContent> {
@@ -65,4 +71,6 @@ export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNum
 }
 
 export type TestNumberTimeSeriesContentDocument = TestNumberTimeSeriesContent & mongoose.Document;
-export const TestNumberTimeSeriesContentSchema = SchemaFactory.createForClass(TestNumberTimeSeriesContent);
+export const TestNumberTimeSeriesContentSchema = SchemaFactory.createForClass(
+  TestNumberTimeSeriesContent,
+);

@@ -1,7 +1,7 @@
 import { Prop } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
 import { assureStringId } from '@/core';
-import { NumberDataPointModel, PropertyType } from '@lyvely/common';
+import { DataPointValueType, NumberDataPointModel, PropertyType } from '@lyvely/common';
 import { Timer, TimerSchema } from '@/calendar';
 
 export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
@@ -11,6 +11,10 @@ export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
   @Prop({ type: TimerSchema })
   @PropertyType(Timer)
   timer?: Timer;
+
+  @Prop({ default: DataPointValueType.Number })
+  @PropertyType(String, { default: DataPointValueType.Number })
+  valueType = DataPointValueType.Number;
 
   afterInit() {
     this.value = this.value ?? 0;

@@ -6,8 +6,8 @@ import { CalendarDate, DataPointInputType } from '@lyvely/common';
 import { isDefined } from 'class-validator';
 
 export abstract class NumberDataPointService<
-  TimeSeriesModel extends NumberTimeSeriesContent,
-  DataPointModel extends NumberDataPoint,
+  TimeSeriesModel extends NumberTimeSeriesContent = NumberTimeSeriesContent,
+  DataPointModel extends NumberDataPoint = NumberDataPoint,
 > extends DataPointService<TimeSeriesModel, DataPointModel, number> {
   protected async updateDataPointValue(
     profile: Profile,
@@ -18,7 +18,9 @@ export abstract class NumberDataPointService<
   ) {
     if (dataPoint.value === newValue) return;
 
-    newValue = isDefined(model.timeSeriesConfig.max) ? Math.min(newValue, model.timeSeriesConfig.max) : newValue;
+    newValue = isDefined(model.timeSeriesConfig.max)
+      ? Math.min(newValue, model.timeSeriesConfig.max)
+      : newValue;
     await this.dataPointDao.updateDataPointValue(user, dataPoint, newValue);
   }
 

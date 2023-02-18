@@ -20,6 +20,9 @@ export abstract class DataPointModel<E extends DataPointModel = any> extends Doc
 
   @Expose()
   tid: string;
+
+  @Expose()
+  valueType: string;
 }
 
 export class NumberDataPointModel extends DataPointModel<NumberDataPointModel> {

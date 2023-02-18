@@ -1,15 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '@/users';
 import {
-  ActivityModel,
-  ContentModel,
   CreateHabitModel,
   DataPointInputType,
   DataPointValueType,
   HabitModel,
   PropertiesOf,
   PropertyType,
-  Type,
   UpdateHabitModel,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';

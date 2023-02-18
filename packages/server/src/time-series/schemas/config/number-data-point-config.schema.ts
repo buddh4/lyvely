@@ -9,7 +9,10 @@ import {
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 
 @Schema({ _id: false })
-export class NumberDataPointConfigRevision extends DataPointConfigRevision implements INumberDataPointConfigRevision {
+export class NumberDataPointConfigRevision
+  extends DataPointConfigRevision
+  implements INumberDataPointConfigRevision
+{
   @Prop()
   min?: number;
 
@@ -28,18 +31,22 @@ export class NumberDataPointConfigRevision extends DataPointConfigRevision imple
   }
 }
 
-export const NumberDataPointConfigRevisionSchema = SchemaFactory.createForClass(NumberDataPointConfigRevision);
+export const NumberDataPointConfigRevisionSchema = SchemaFactory.createForClass(
+  NumberDataPointConfigRevision,
+);
 
 const SupportedNumberDataPointInputTypes = [
   DataPointInputType.Time,
   DataPointInputType.Spinner,
   DataPointInputType.Range,
   DataPointInputType.Checkbox,
-  DataPointInputType.Textarea,
 ];
 
 @Schema({ _id: false, discriminatorKey: 'strategy' })
-export class NumberDataPointConfig extends DataPointConfig<INumberDataPointSettings> implements INumberDataPointConfig {
+export class NumberDataPointConfig
+  extends DataPointConfig<INumberDataPointSettings>
+  implements INumberDataPointConfig
+{
   @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
   valueType: DataPointValueType.Number = DataPointValueType.Number;
 

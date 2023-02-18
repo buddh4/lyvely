@@ -55,11 +55,28 @@ export interface INumberDataPointConfig extends IDataPointConfig {
   optimal?: number;
 }
 
-export interface INumberDataPointSettings {
+export interface IDataPointSettings {
+  userStrategy?: UserAssignmentStrategy;
+  inputType?: DataPointInputType;
+  interval: CalendarIntervalEnum;
+}
+
+export interface INumberDataPointSettings extends IDataPointSettings {
   min?: number;
   max?: number;
   optimal?: number;
-  interval: CalendarIntervalEnum;
-  userStrategy?: UserAssignmentStrategy;
-  inputType?: DataPointInputType;
+}
+
+export interface ITextDataPointConfig extends IDataPointConfig {
+  valueType: DataPointValueType.Text;
+  history: INumberDataPointConfigRevision[];
+  required?: boolean;
+}
+
+export interface ITextDataPointConfigRevision extends IDataPointConfigRevision {
+  required?: boolean;
+}
+
+export interface ITextDataPointSettings extends IDataPointSettings {
+  required?: boolean;
 }

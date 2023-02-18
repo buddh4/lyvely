@@ -4,7 +4,10 @@ import { DataPointInputType, INumberDataPointSettings, DataPointValueType } from
 import { DataPointConfigSchemaFactory } from './data-point-config-schema.factory';
 import { DataPointConfigFactory } from './data-point-config.factory';
 
-const strategy = DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Time);
+const strategy = DataPointConfigFactory.getStrategyName(
+  DataPointValueType.Number,
+  DataPointInputType.Time,
+);
 
 @Schema()
 export class TimeNumberDataPointConfig extends NumberDataPointConfig {

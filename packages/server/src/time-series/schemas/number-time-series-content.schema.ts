@@ -23,8 +23,9 @@ export class NumberTimeSeriesContentConfig<
   timeSeries: Types;
 }
 
-export const NumberTimeSeriesContentConfigSchema =
-  SchemaFactory.createForClass(NumberDataPointConfig);
+export const NumberTimeSeriesContentConfigSchema = SchemaFactory.createForClass(
+  NumberTimeSeriesContentConfig,
+);
 
 export abstract class NumberTimeSeriesContent<
   T extends NumberTimeSeriesContentEntity = NumberTimeSeriesContentEntity,

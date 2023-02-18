@@ -8,13 +8,10 @@ import {
 } from '@/time-series';
 import {
   ActivityModel,
-  ContentModel,
-  CreateContentModel,
   DataPointInputType,
   DataPointValueType,
   PropertiesOf,
   PropertyType,
-  Type,
 } from '@lyvely/common';
 import { User } from '@/users';
 
