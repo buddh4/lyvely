@@ -72,6 +72,7 @@ module.exports = {
     createModuleDeps('collab'),
     createModuleDeps('content', [MODULE_MODELS, MODULE_TAGS]),
     createModuleDeps('files'),
+    createModuleDeps('journals'),
     createModuleDeps('live'),
     createModuleDeps('message', [MODULE_CONTENT]),
     createModuleDeps('mappings', [MODULE_MODELS, MODULE_UTILS]),

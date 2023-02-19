@@ -51,13 +51,6 @@ export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {
   @IsOptional()
   tagNames?: string[];
 
-  getContent(): Partial<IContentDataType> {
-    return {
-      title: this.title,
-      text: this.text,
-    };
-  }
-
   constructor(obj?: Partial<CreateTaskModel>, init = true) {
     obj = init
       ? Object.assign(

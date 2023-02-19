@@ -81,6 +81,7 @@ module.exports = {
     createModuleDeps("content"),
     createModuleDeps("core"),
     createModuleDeps("i18n", [MODULE_AUTH, MODULE_APP_CONFIG]),
+    createModuleDeps("journals"),
     createModuleDeps("profiles", [MODULE_USERS, MODULE_AUTH]),
     createModuleDeps("statistics"),
     createModuleDeps("tags", [MODULE_PROFILES, MODULE_COMMON]),

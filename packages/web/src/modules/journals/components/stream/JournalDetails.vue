@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { TaskModel } from '@lyvely/common';
+import { JournalModel } from '@lyvely/common';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 
 export interface IProps {
-  model: TaskModel;
+  model: JournalModel;
 }
 
 const props = defineProps<IProps>();

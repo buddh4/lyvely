@@ -5,10 +5,11 @@ import {
   INumberDataPointSettings,
   ITextDataPointConfig,
   PropertyType,
+  ITextDataPointConfigRevision,
+  ITextDataPointSettings,
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { NestedSchema } from '@/core';
-import { ITextDataPointConfigRevision, ITextDataPointSettings } from '@lyvely/common/src';
 
 const SupportedTextDataPointInputTypes = [DataPointInputType.Textarea];
 

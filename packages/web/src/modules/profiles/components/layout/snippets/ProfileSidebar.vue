@@ -41,11 +41,11 @@ const menuItems = computed(
         icon: 'activity',
         label: 'activities.labels.main_nav',
       },
-      /*{
-    to: {name: 'Journal'},
-    icon: 'journal',
-    label: 'journals.labels.main_nav'
-  },*/
+      {
+        to: { name: 'Journals' },
+        icon: 'journal',
+        label: 'journals.labels.main_nav',
+      },
       {
         to: { name: 'Statistics' },
         icon: 'statistics',

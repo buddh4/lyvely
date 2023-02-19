@@ -42,14 +42,14 @@ export class CreateHabitModel extends BaseModel<CreateHabitModel> {
 
   @Expose()
   @IsInt()
-  @Min(1)
-  max: number;
-
-  @Expose()
-  @IsInt()
   @Max(100)
   @Min(-100)
   score: number;
+
+  @Expose()
+  @IsInt()
+  @Min(1)
+  max: number;
 
   @Expose()
   @IsInt()

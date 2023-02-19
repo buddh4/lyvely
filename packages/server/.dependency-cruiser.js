@@ -89,6 +89,7 @@ module.exports = {
     createModuleDeps('content-stream', [MODULE_STREAM, MODULE_PROFILES, MODULE_CONTENT]),
     createModuleDeps('files'),
     createModuleDeps('i18n', [MODULE_USERS]),
+    createModuleDeps('journals'),
     createModuleDeps('jwt', [MODULE_USERS]),
     createModuleDeps('live', [MODULE_USERS, MODULE_PROFILES]),
     createModuleDeps('mails'),

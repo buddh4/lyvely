@@ -1,8 +1,7 @@
 import { Prop } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
 import { assureStringId } from '@/core';
-import { TextDataPointModel } from '@lyvely/common/src';
-import { DataPointValueType, PropertyType } from '@lyvely/common';
+import { DataPointValueType, PropertyType, TextDataPointModel } from '@lyvely/common';
 
 export abstract class TextDataPoint extends DataPoint<TextDataPoint> {
   @Prop({ required: true })

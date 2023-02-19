@@ -16,6 +16,10 @@ export enum DataPointNumberInputType {
   Time = 'time',
 }
 
+export enum DataPointTextInputType {
+  Textarea = 'textarea',
+}
+
 export enum DataPointInputType {
   Checkbox = 'checkbox',
   Range = 'range',
