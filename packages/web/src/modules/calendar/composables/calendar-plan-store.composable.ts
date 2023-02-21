@@ -6,6 +6,8 @@ import {
   TimeSeriesContentModel,
   TimeSeriesDataPointStore,
   toTimingId,
+  ICalendarPlanService,
+  MoveAction,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { ref, toRefs, watch } from 'vue';
@@ -13,7 +15,6 @@ import { storeToRefs } from 'pinia';
 import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
 import { loadingStatus, Status, useStatus } from '@/store';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
-import { CalendarPlanService } from '@/modules/calendar/interfaces/calendar-plan-store.interface';
 
 export interface IMoveEntryEvent {
   cid: string;
@@ -30,7 +31,7 @@ export interface CalendarPlanOptions<
 > {
   filter: TFilter;
   cache: TimeSeriesDataPointStore<TModel>;
-  service: CalendarPlanService<TModel, TDataPointModel>;
+  service: ICalendarPlanService<TModel, TDataPointModel>;
 }
 
 export function useCalendarPlan<
@@ -49,18 +50,30 @@ export function useCalendarPlan<
   const tidCache = ref(new LoadedTimingIdStore());
   const status = useStatus();
 
-  watch(date, () => loadModels());
-  watch(profile, async (newProfile, oldProfile) => {
-    if (newProfile?.id !== oldProfile?.id) {
-      await reset();
-    }
-  });
+  function startWatch() {
+    const unwatchDate = watch(date, () => loadModels());
+    const unwatchProfile = watch(profile, async (newProfile, oldProfile) => {
+      if (newProfile?.id !== oldProfile?.id) {
+        await reset();
+      }
+    });
+
+    return () => {
+      unwatchDate();
+      unwatchProfile();
+    };
+  }
 
   async function reset() {
     status.resetStatus();
     cache.value.reset();
     tidCache.value.reset();
-    await loadModels();
+    // TODO: we need a way of preserving some options from being reset (softReset), this is required when changing profiles on activities
+    const type = filter.value.option('type');
+    filter.value.reset();
+    if (type) {
+      filter.value.setOption('type', type);
+    }
   }
 
   async function loadModels() {
@@ -76,7 +89,7 @@ export function useCalendarPlan<
     // TODO: Check if date already loaded + implement interval level query
 
     try {
-      const response = await loadingStatus(service.getByRange(intervalFilter), status);
+      const response = await loadingStatus(service.getByFilter(intervalFilter), status);
       cache.value.setModels(response.models);
       cache.value.setDataPoints(response.dataPoints);
       //calendarPlanStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded));
@@ -108,9 +121,12 @@ export function useCalendarPlan<
         model.timeSeriesConfig.interval = moveEvent.toInterval;
       }
 
-      const sortResult = await service.sort(model.id, moveEvent.toInterval, attachTo?.id);
+      const sortResult = await service.sort(
+        model.id,
+        new MoveAction({ interval: moveEvent.toInterval, attachToId: attachTo?.id }),
+      );
 
-      sortResult.forEach((update) => {
+      sortResult.sort.forEach((update) => {
         const entry = cache.value.getModel(update.id);
         if (entry) {
           entry.meta.sortOrder = update.sortOrder;
@@ -130,5 +146,6 @@ export function useCalendarPlan<
     getModels,
     selectTag,
     move,
+    startWatch,
   };
 }

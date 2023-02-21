@@ -6,6 +6,7 @@ import {
   getTimingIds,
   IntegrityException,
   SortResult,
+  isInFuture,
 } from '@lyvely/common';
 import { DataPoint, DataPointService, TimeSeriesContent } from '@/time-series';
 import { TimeSeriesContentDao } from '@/time-series/daos/time-series-content.dao';
@@ -37,9 +38,12 @@ export abstract class TimeSeriesContentService<
       tIds.splice(0, filter.level);
     }
 
-    const models = await this.contentDao.findByProfileAndTimingIds(profile, user, tIds);
-    const dataPoints = await this.dataPointService.findByIntervalLevel(profile, user, filter);
-    return { models, dataPoints };
+    return {
+      models: await this.contentDao.findByProfileAndTimingIds(profile, user, tIds),
+      dataPoints: isInFuture(filter.date)
+        ? []
+        : await this.dataPointService.findByIntervalLevel(profile, user, filter),
+    };
   }
 
   /**

@@ -1,40 +1,26 @@
 import repository from '@/repository';
 import {
-  ActivityRangeResponse,
+  ENDPOINT_JOURNALS,
   DataPointIntervalFilter,
-  CalendarIntervalEnum,
   MoveAction,
-  SortResult,
+  EndpointResult,
+  IJournalsEndpointService,
 } from '@lyvely/common';
 
-const resource = 'journals';
-
 export default {
-  async getByRange(filter: DataPointIntervalFilter) {
-    return repository.get<ActivityRangeResponse>(`${resource}`, {
-      params: filter,
-    });
-  },
-
-  async getActivity(id: string) {
-    return repository.get(`${resource}/${id}`);
-  },
-
-  async sort(cid: string, interval: CalendarIntervalEnum, attachToId?: string) {
-    return repository.post<SortResult[]>(
-      `${resource}/${cid}/sort`,
-      new MoveAction({
-        interval: interval,
-        attachToId: attachToId,
-      }),
+  async getByFilter(filter: DataPointIntervalFilter) {
+    return repository.get<EndpointResult<IJournalsEndpointService['getByFilter']>>(
+      `${ENDPOINT_JOURNALS}`,
+      {
+        params: filter,
+      },
     );
   },
 
-  archive(activityId: string) {
-    return repository.post(`${resource}/${activityId}/archive`);
-  },
-
-  unarchive(activityId: string) {
-    return repository.post(`${resource}/${activityId}/unarchive`);
+  async sort(cid: string, moveAction: MoveAction) {
+    return repository.post<EndpointResult<IJournalsEndpointService['sort']>>(
+      `${ENDPOINT_JOURNALS}/${cid}/sort`,
+      moveAction,
+    );
   },
 };

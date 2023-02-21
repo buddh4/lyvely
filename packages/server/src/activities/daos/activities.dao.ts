@@ -1,29 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { assureObjectId, EntityIdentity, IFetchQueryOptions, UpdateQuerySet } from '@/core';
+import { assureObjectId, IFetchQueryOptions } from '@/core';
 import {
   ActivityType,
-  CalendarIntervalEnum,
   DeepPartial,
   UserAssignmentStrategy,
   isTask,
   isHabit,
   ActivityModel,
-  SortResult,
   ProfileType,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
-import { AbstractContentDao } from '@/content';
 import { Activity, ActivityDocument, Habit, Task } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import module from '../activities.meta';
 import { User } from '@/users';
+import { TimeSeriesContentDao } from '@/time-series';
 
 @Injectable()
-export class ActivitiesDao extends AbstractContentDao<Activity> {
-  constructor(@InjectModel(Activity.name) protected model: Model<ActivityDocument>) {
-    super();
-  }
+export class ActivitiesDao extends TimeSeriesContentDao<Activity> {
+  @InjectModel(Activity.name)
+  protected model: Model<ActivityDocument>;
 
   /**
    * Finds all Habits and all Tasks which are undone or done within given tIds.
@@ -90,64 +87,13 @@ export class ActivitiesDao extends AbstractContentDao<Activity> {
     );
   }
 
-  /**
-   * Finds activities of a certain type, plan and profile. The exclude parameter may be used to exclude a single activity
-   * from the result.
-   *
-   * @param profile
-   * @param type
-   * @param plan
-   * @param options
-   */
-  async findByProfileAndInterval(
-    profile: Profile,
-    type: string,
-    plan: CalendarIntervalEnum,
-    options: IFetchQueryOptions<Activity> = {},
-  ): Promise<Activity[]> {
-    return this.findAllByProfile(
-      profile,
-      {
-        type: type,
-        'config.timeSeries.interval': plan,
-      },
-      options,
-    );
-  }
-
-  /**
-   * Updates the sortOrder by array index
-   * @param activities
-   */
-  async updateSortOrder(activities: Activity[]): Promise<SortResult[]> {
-    const updates: { id: EntityIdentity<Activity>; update: UpdateQuerySet<Activity> }[] = [];
-    const result: { id: string; sortOrder: number }[] = [];
-
-    activities.forEach((activity, index) => {
-      if (activity.meta.sortOrder !== index) {
-        updates.push({ id: activity._id, update: { 'meta.sortOrder': index } });
-        activity.meta.sortOrder = index;
-        result.push(new SortResult({ id: activity.id, sortOrder: index }));
-      }
-    });
-
-    await this.updateSetBulk(updates);
-    return result;
-  }
-
   protected getModelType(): string | null {
     return 'content.activity';
   }
 
   getModelConstructor(model?: DeepPartial<Activity>) {
-    if (isTask(model as ActivityModel)) {
-      return Task;
-    }
-
-    if (isHabit(model as ActivityModel)) {
-      return Habit;
-    }
-
+    if (isTask(model as ActivityModel)) return Task;
+    if (isHabit(model as ActivityModel)) return Habit;
     return Activity;
   }
 

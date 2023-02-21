@@ -14,14 +14,14 @@ export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
 
   @Prop({ default: DataPointValueType.Number })
   @PropertyType(String, { default: DataPointValueType.Number })
-  valueType = DataPointValueType.Number;
+  valueType: DataPointValueType = DataPointValueType.Number;
 
   afterInit() {
     this.value = this.value ?? 0;
     super.afterInit();
   }
 
-  createDto(): NumberDataPointModel {
+  toModel(): NumberDataPointModel {
     return new NumberDataPointModel({
       id: this.id,
       cid: assureStringId(this.cid),

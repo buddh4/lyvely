@@ -3,6 +3,7 @@ import type { CalendarDate } from '@/calendar';
 import { DocumentModel, PropertyType } from '@/models';
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { IsEnum, IsString, Matches } from 'class-validator';
+import { DataPointValueType, useDataPointFactory } from '@/time-series';
 
 @Exclude()
 export abstract class DataPointModel<E extends DataPointModel = any> extends DocumentModel<E> {
@@ -65,3 +66,7 @@ export class DataPointIntervalFilter {
     this.level = level;
   }
 }
+
+const dataPointFactory = useDataPointFactory();
+dataPointFactory.registerType(DataPointValueType.Number, NumberDataPointModel);
+dataPointFactory.registerType(DataPointValueType.Text, TextDataPointModel);

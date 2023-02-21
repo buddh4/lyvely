@@ -1,22 +1,32 @@
-import { CalendarPlanService } from '@/modules/calendar';
 import {
-  CalendarIntervalEnum,
   DataPointIntervalFilter,
-  DataPointModel,
+  ICalendarPlanResponse,
+  IJournalsEndpointService,
   JournalModel,
-  SortResult,
+  MoveAction,
+  SortResponse,
   useSingleton,
+  useDataPointFactory,
+  DataPointModel,
 } from '@lyvely/common';
+import repository from '../repositories/journals.repository';
+import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 
-export class JournalsService implements CalendarPlanService<JournalModel> {
-  getByRange(
+export class JournalsService implements IJournalsEndpointService {
+  dataPointFactory = useDataPointFactory();
+
+  async getByFilter(
     filter: DataPointIntervalFilter,
-  ): Promise<{ models: JournalModel[]; dataPoints: DataPointModel[] }> {
-    return Promise.resolve({ dataPoints: [], models: [] });
+  ): Promise<ICalendarPlanResponse<JournalModel, DataPointModel>> {
+    const { models, dataPoints } = await unwrapResponse(repository.getByFilter(filter));
+    return {
+      models: models.map((journal) => new JournalModel(journal)),
+      dataPoints: dataPoints.map((dataPoint) => this.dataPointFactory.createDataPoint(dataPoint)),
+    };
   }
 
-  sort(cid: string, interval: CalendarIntervalEnum, attachToId?: string): Promise<SortResult[]> {
-    return Promise.resolve([]);
+  async sort(cid: string, move: MoveAction): Promise<SortResponse> {
+    return unwrapAndTransformResponse(repository.sort(cid, move), SortResponse);
   }
 }
 

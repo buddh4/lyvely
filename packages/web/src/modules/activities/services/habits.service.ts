@@ -38,14 +38,6 @@ export class HabitsService implements IHabitsEndpointService {
   async stopTimer(id: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse> {
     return unwrapAndTransformResponse(repository.stopTimer(id, dto), UpdateHabitDataPointResponse);
   }
-
-  archive(id: string): Promise<void> {
-    return Promise.resolve(undefined);
-  }
-
-  unarchive(id: string): Promise<void> {
-    return Promise.resolve(undefined);
-  }
 }
 
 export const useHabitsService = useSingleton(() => new HabitsService());

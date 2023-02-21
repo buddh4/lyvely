@@ -36,7 +36,7 @@ export abstract class AbstractContentDao<T extends Content> extends BaseProfileM
    */
   async updateSortOrder(models: T[]): Promise<SortResult[]> {
     const updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[] = [];
-    const result: { id: string; sortOrder: number }[] = [];
+    const result: SortResult[] = [];
 
     models.forEach((model, index) => {
       if (model.meta.sortOrder !== index) {

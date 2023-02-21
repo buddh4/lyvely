@@ -9,7 +9,8 @@ export interface IPropertyDefinitionOption<TValue> {
   optional?: boolean;
 }
 
-export interface IPropertyDefinition<TTarget = any, TValue = any> extends IPropertyDefinitionOption<TValue> {
+export interface IPropertyDefinition<TTarget = any, TValue = any>
+  extends IPropertyDefinitionOption<TValue> {
   type: TTarget;
 }
 
@@ -28,7 +29,11 @@ export function getPropertyTypeDefinition(type: Type, propertyKey: string) {
   return typeDefinition ? typeDefinition[propertyKey] : undefined;
 }
 
-export function PropertyType<TTarget, TProperty extends Extract<keyof TTarget, string>, TValue = TTarget[TProperty]>(
+export function PropertyType<
+  TTarget,
+  TProperty extends Extract<keyof TTarget, string>,
+  TValue = TTarget[TProperty],
+>(
   type: Type<TValue> | Array<Type<TValue>>,
   options: IPropertyDefinitionOption<TValue> = {},
 ): PropertyDecorator {

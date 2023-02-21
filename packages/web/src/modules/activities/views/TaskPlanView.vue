@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlan.vue';
+import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlanSection.vue';
 import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
 import { ActivityType, getCalendarIntervalArray } from '@lyvely/common';
 import { computed } from 'vue';

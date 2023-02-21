@@ -1,4 +1,5 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { BaseModel, PropertyType } from '@/models';
 
 export interface ISortable {
   getSortOrder(): number;
@@ -18,6 +19,13 @@ export class SortResult {
       this.sortOrder = obj.sortOrder;
     }
   }
+}
+
+@Expose()
+export class SortResponse extends BaseModel<SortResponse> {
+  @Type(() => SortResult)
+  @PropertyType([SortResult])
+  sort: SortResult[];
 }
 
 export function sortBySortOrder(a: ISortable, b: ISortable) {

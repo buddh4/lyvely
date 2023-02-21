@@ -9,7 +9,7 @@ export abstract class TextDataPoint extends DataPoint<TextDataPoint> {
 
   @Prop({ default: DataPointValueType.Text })
   @PropertyType(String, { default: DataPointValueType.Text })
-  valueType = DataPointValueType.Text;
+  valueType: DataPointValueType = DataPointValueType.Text;
 
   createDto(): TextDataPointModel {
     return new TextDataPointModel({

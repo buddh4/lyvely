@@ -57,7 +57,7 @@ export class HabitsController
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,
-      dataPoint: dataPoint.createDto(),
+      dataPoint: dataPoint.toModel(),
     });
   }
 
@@ -67,7 +67,7 @@ export class HabitsController
     const { profile, user, content } = req;
 
     const dataPoint = await this.habitDataPointService.startTimer(profile, user, content, dto.date);
-    return dataPoint.createDto();
+    return dataPoint.toModel();
   }
 
   @Post(':cid/stop-timer')
@@ -79,7 +79,7 @@ export class HabitsController
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,
-      dataPoint: dataPoint.createDto(),
+      dataPoint: dataPoint.toModel(),
     });
   }
 }

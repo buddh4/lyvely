@@ -1,9 +1,11 @@
 import { Get, Request, Inject, Query, ValidationPipe, Post, Body } from '@nestjs/common';
 import {
-  ActivityModel,
-  ActivityRangeResponse,
+  ActivitySearchResponse,
   DataPointIntervalFilter,
   MoveAction,
+  ENDPOINT_ACTIVITIES,
+  ActivityEndpoint,
+  SortResponse,
 } from '@lyvely/common';
 import { ActivitiesService } from '../services/activities.service';
 import { ContentTypeController, ContentWritePolicy, ProfileContentRequest } from '@/content';
@@ -12,42 +14,37 @@ import { ProfileRequest } from '@/profiles';
 import { Policies } from '@/policies';
 import { UseClassSerializer } from '@/core';
 
-@ContentTypeController('activities')
+@ContentTypeController(ENDPOINT_ACTIVITIES)
 // TODO: implement feature registration @Feature('activities')
 @UseClassSerializer()
-export class ActivitiesController {
+export class ActivitiesController implements ActivityEndpoint {
   @Inject()
   protected contentService: ActivitiesService;
 
-  /**
-   * Finds all activities and logs relevant to the given range filter.
-   *
-   * @param req
-   * @param filter
-   */
   @Get()
-  async findByFilter(
+  async getByFilter(
     @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
     @Request() req: ProfileRequest,
-  ): Promise<ActivityRangeResponse> {
+  ): Promise<ActivitySearchResponse> {
     const { profile, user } = req;
-
-    // TODO: (Optimization) Currently we only need to load habits and undone tasks on first load
     const { models, dataPoints } = await this.contentService.findByFilter(profile, user, filter);
-
-    const result = new ActivityRangeResponse();
-    activities.forEach((activity) => {
-      result.addActivity(activity.toModel(user) as ActivityModel);
+    return new ActivitySearchResponse({
+      models: models.map((c) => c.toModel(user)),
+      dataPoints: dataPoints.map((value) => value.toModel()),
     });
-
-    result.addDataPoints(dataPoints.map((value) => value.createDto()));
-    return result;
   }
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Request() req: ProfileContentRequest<Activity>, @Body() dto: MoveAction) {
+  async sort(@Body() dto: MoveAction, @Request() req: ProfileContentRequest<Activity>) {
     const { profile, user, content } = req;
-    return await this.contentService.sort(profile, user, content, dto.interval, dto.attachToId);
+    const sort = await this.contentService.sort(
+      profile,
+      user,
+      content,
+      dto.interval,
+      dto.attachToId,
+    );
+    return new SortResponse({ sort });
   }
 }

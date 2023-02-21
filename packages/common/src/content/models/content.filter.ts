@@ -27,7 +27,7 @@ export class ContentFilter<
 
     super(options);
 
-    if (tagProvider()) {
+    if (tagProvider) {
       this.setTagProvider(tagProvider);
     }
   }
