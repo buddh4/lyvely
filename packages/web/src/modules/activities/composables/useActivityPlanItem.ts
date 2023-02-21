@@ -1,6 +1,6 @@
 import { ActivityModel, ActivityType } from '@lyvely/common';
 import { computed } from 'vue';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useAccessibilityStore } from '@/modules/accessibility';

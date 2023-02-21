@@ -1,18 +1,20 @@
 <script lang="ts" setup>
-import ActivityNavigation from '@/modules/activities/components/menus/ActivityNavigation.vue';
-import ActivityFilterNavigation from '@/modules/activities/components/menus/ActivityFilterNavigation.vue';
 import { computed, onBeforeMount, onMounted } from 'vue';
-import { useActivityStore } from '@/modules/activities/store/activity.store';
-import { accessibilityFocus } from '@/modules/accessibility/utils/accessibility.util';
 import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
+import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
+import CalendarPlanSection from '@/modules/calendar/components/CalendarPlanSection.vue';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import { JournalModel } from '@lyvely/common';
+import { JournalModel, getCalendarIntervalArray } from '@lyvely/common';
+import { useJournalStore } from '@/modules/journals/stores/journals.store';
+import Draggable from 'vuedraggable';
 
-onBeforeMount(() => useActivityStore().loadActivities());
+onBeforeMount(() => useJournalStore().loadModels());
 //onMounted(() => accessibilityFocus('#activity-navigation > button.active'));
 
+const;
+
 const createEntry = () => useContentCreateStore().createContentType(JournalModel.contentType);
-const intervals = computed(() => getCalendarPlanArray());
+const intervals = computed(() => getCalendarIntervalArray());
 </script>
 
 <template>

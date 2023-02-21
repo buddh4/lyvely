@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { Journal, JournalSchema } from '@/journals/schemas/journal.schema';
+import { Journal, JournalSchema } from './schemas/journal.schema';
 import { UsersModule } from '@/users';
 import { ProfilesModule } from '@/profiles';
 import { ContentModule, getContentModelDefinition } from '@/content';
@@ -11,15 +11,14 @@ import {
   JournalNumberDataPointSchema,
   JournalTextDataPoint,
   JournalTextDataPointSchema,
-} from '@/journals/schemas/journal-data-point.schema';
+} from './schemas/journal-data-point.schema';
 import { DataPointValueType } from '@lyvely/common';
-import {
-  JournalDataPointDao,
-  JournalNumberDataPointDao,
-  JournalTextDataPointDao,
-} from '@/journals/daos';
-import { JournalNumberDataPointService } from '@/journals/services/journal-number-data-point.service';
-import { JournalTextDataPointService } from '@/journals/services/journal-text-data-point.service';
+import { JournalDataPointDao, JournalNumberDataPointDao, JournalTextDataPointDao } from './daos';
+import { JournalNumberDataPointService } from './services/journal-number-data-point.service';
+import { JournalTextDataPointService } from './services/journal-text-data-point.service';
+import { JournalsDao } from './daos/journals.dao';
+import { JournalDataPointService } from './services/journal-data-point.service';
+import { JournalsService } from './services/journals.service';
 
 @Module({
   controllers: [],
@@ -48,7 +47,10 @@ import { JournalTextDataPointService } from '@/journals/services/journal-text-da
     ]),
   ],
   providers: [
+    JournalsDao,
+    JournalsService,
     JournalDataPointDao,
+    JournalDataPointService,
     JournalNumberDataPointDao,
     JournalTextDataPointDao,
     JournalNumberDataPointService,

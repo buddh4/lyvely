@@ -4,6 +4,10 @@ import { DataPointIntervalFilter } from './data-point.model';
 export class LoadedTimingIdStore {
   private loadedTimingIds: Set<string> = new Set<string>();
 
+  reset() {
+    this.loadedTimingIds = new Set();
+  }
+
   addLoadedTimingIds(ids: string[]) {
     if (!ids || !ids.length) {
       return;

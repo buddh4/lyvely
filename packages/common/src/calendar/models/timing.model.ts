@@ -1,5 +1,8 @@
 import { ITiming } from '../interfaces';
 
+/**
+ * @deprecated
+ */
 export class TimingModel implements ITiming {
   _id: string;
   tid: string;

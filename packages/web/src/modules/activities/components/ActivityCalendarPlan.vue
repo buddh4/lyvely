@@ -7,7 +7,7 @@ import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { computed, ref } from 'vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
-import draggable from 'vuedraggable';
+import Draggable from 'vuedraggable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 
 export interface IProps {

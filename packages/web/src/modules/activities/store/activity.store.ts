@@ -13,7 +13,7 @@ import {
   toTimingId,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
 import activityRepository from '@/modules/activities/repositories/activity.repository';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
 import { ref, toRefs, watch } from 'vue';
@@ -50,7 +50,7 @@ export const useActivityStore = defineStore('activities', () => {
   });
 
   const { date } = storeToRefs(calendarPlanStore);
-  watch(date, () => useActivityStore().loadActivities());
+  watch(date, () => loadActivities());
 
   function getActivities(type: string, interval: CalendarIntervalEnum, showAll = false) {
     filter.value.setOption('type', type);

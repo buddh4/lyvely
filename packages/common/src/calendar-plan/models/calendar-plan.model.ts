@@ -15,11 +15,14 @@ import {
   subtractQuarter,
   subtractWeek,
   subtractYear,
-} from '../utils';
-import { CalendarDate, dateTime, getFullDayDate, ITiming } from '../interfaces';
-import { TimingModel } from './timing.model';
-import { CalendarIntervalEnum } from './calendar-interval.enum';
-import { toTimingId } from './timing-id';
+  CalendarDate,
+  dateTime,
+  getFullDayDate,
+  ITiming,
+  TimingModel,
+  CalendarIntervalEnum,
+  toTimingId,
+} from '@/calendar';
 
 export abstract class CalendarPlan {
   protected abstract id: CalendarIntervalEnum;
@@ -264,13 +267,6 @@ export class DailyPlan extends WeeklyPlan {
   decrement(date: Date): Date {
     return subtractDays(date, 1);
   }
-}
-
-export function getCalendarPlanArray(): CalendarIntervalEnum[] {
-  return Object.keys(CalendarIntervalEnum)
-    .filter((value) => isNaN(Number(value)) === false)
-    .map((key) => parseInt(key))
-    .reverse();
 }
 
 const PlanFactory = {

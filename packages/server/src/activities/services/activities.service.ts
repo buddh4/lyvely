@@ -1,152 +1,28 @@
-import { Injectable, Inject, Logger } from '@nestjs/common';
-import { Activity, HabitDataPoint } from '../schemas';
-import { User } from '@/users';
+import { Injectable, Inject } from '@nestjs/common';
+import { Activity } from '../schemas';
 import { Profile } from '@/profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { EntityIdentity } from '@/core';
 import { HabitDataPointService } from './habit-data-point.service';
-import {
-  getTimingIds,
-  DataPointIntervalFilter,
-  CalendarIntervalEnum,
-  SortResult,
-  IntegrityException,
-} from '@lyvely/common';
-
-interface IActivitySearchResult {
-  activities: Activity[];
-  dataPoints: HabitDataPoint[];
-}
+import { TimeSeriesContentService } from '@/time-series/services/time-series-content.service';
+import { NumberDataPoint } from '@/time-series';
 
 @Injectable()
-export class ActivitiesService {
+export class ActivitiesService extends TimeSeriesContentService<Activity, NumberDataPoint> {
   @Inject()
   protected contentDao: ActivitiesDao;
 
   @Inject()
-  protected activityDataPointService: HabitDataPointService;
-
-  protected logger = new Logger(ActivitiesService.name);
-
-  /**
-   * Finds all activities (tasks and habits) and habit data points of a given user matching the given filter.
-   *
-   * This function will return tasks only if they are undone or where done within the given range of the
-   * range filter.
-   *
-   * Note: By default this function will include archived activities.
-   *
-   * @param profile
-   * @param user
-   * @param filter
-   * @throws EntityNotFoundException
-   * @throws ForbiddenServiceException
-   */
-  async findByFilter(
-    profile: Profile,
-    user: User,
-    filter: DataPointIntervalFilter,
-  ): Promise<IActivitySearchResult> {
-    // Find all calendar ids for the given search date and filter out by filter level
-    const tIds = getTimingIds(filter.date);
-    if (filter.level > 0) {
-      tIds.splice(0, filter.level);
-    }
-
-    const activities = await this.contentDao.findByProfileAndTimingIds(profile, user, tIds);
-    const dataPoints = await this.activityDataPointService.findByIntervalLevel(
-      profile,
-      user,
-      filter,
-    );
-    return { activities, dataPoints };
-  }
+  protected dataPointService: HabitDataPointService;
 
   /**
    * Finds an activity by given profile and activity identity.
    *
+   * @deprecated Currently only used in tests
    * @param profile
    * @param id
    */
   async findByProfileAndId(profile: Profile, id: EntityIdentity<Activity>): Promise<Activity> {
     return this.contentDao.findByProfileAndId(profile, id);
-  }
-
-  /**
-   * Re-sorts the given activity by means of the new index and updates the sortOrder of other activities with the same
-   * calendar plan accordingly.
-   *
-   * @param profile
-   * @param user
-   * @param activity
-   * @param attachToId
-   * @param interval
-   * @throws ForbiddenServiceException
-   */
-  async sort(
-    profile: Profile,
-    user: User,
-    activity: Activity,
-    interval?: CalendarIntervalEnum,
-    attachToId?: EntityIdentity<Activity>,
-  ): Promise<SortResult[]> {
-    interval = interval ?? activity.timeSeriesConfig.interval;
-
-    const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
-
-    if (attachToObjectId && activity._id.equals(attachToObjectId)) {
-      return Promise.resolve([]);
-    }
-
-    const attachTo = attachToObjectId
-      ? await this.contentDao.findByProfileAndId(profile, attachToObjectId)
-      : undefined;
-
-    if (attachTo && activity.type !== attachTo.type) {
-      throw new IntegrityException('Can not merge habit with task');
-    }
-
-    interval = attachTo
-      ? attachTo.timeSeriesConfig.interval
-      : interval
-      ? interval
-      : activity.timeSeriesConfig.interval;
-
-    if (interval !== activity.timeSeriesConfig.interval) {
-      // Create new revision for activity in case the latest revision was not today
-      const update = { 'config.timeSeries.interval': interval };
-
-      activity.applyTimeSeriesConfigUpdate({ interval });
-      update['config.timeSeries.history'] = activity.timeSeriesConfig.history;
-
-      await this.contentDao.updateOneByProfileAndIdSet(profile, activity, update);
-      activity.timeSeriesConfig.interval = interval;
-    }
-
-    const activitiesByInterval = await this.contentDao.findByProfileAndInterval(
-      profile,
-      activity.type,
-      interval,
-      {
-        excludeIds: activity._id,
-        sort: { 'meta.sortOrder': 1 },
-      },
-    );
-
-    const newIndex = attachTo ? attachTo.meta.sortOrder + 1 : 0;
-    activitiesByInterval.splice(newIndex, 0, activity);
-
-    return await this.contentDao.updateSortOrder(activitiesByInterval);
-
-    /*const { content: activity, profile } = await this.findWritableContentAndProfile(user, identity);
-
-    **
-     *  TODO: add some optimizations e.g.:
-     *  newIndex < oldIndex => skip if currentIndex > oldIndex
-     *  newIndex < oldIndex => skip indexes < newIndex
-     *  ...
-     *
-
-    //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex */
   }
 }

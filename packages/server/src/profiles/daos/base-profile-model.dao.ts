@@ -55,7 +55,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
 
   async findAllByProfile<C = T>(
     profileRelation: ProfileShard,
-    filter: FilterQuery<C>,
+    filter?: FilterQuery<C>,
     options?: IFetchQueryOptions<T>,
   ): Promise<T[]> {
     return this.findAll(applyProfileFilter(profileRelation, filter), options);

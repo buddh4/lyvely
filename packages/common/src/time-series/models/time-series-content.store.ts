@@ -1,5 +1,5 @@
 import { CalendarIntervalEnum } from '@/calendar';
-import { Filter } from '@/models';
+import { Filter, sortBySortOrder } from '@/models';
 import { DataPointModel } from './data-point.model';
 import { TimeSeriesContentModel } from './time-series-content.model';
 
@@ -10,13 +10,21 @@ type TimeSeriesContentIdentity = TimeSeriesContentModel | string;
  */
 export abstract class TimeSeriesDataPointStore<
   Model extends TimeSeriesContentModel,
-  TDataPointModel extends DataPointModel,
+  TDataPointModel extends DataPointModel = DataPointModel,
 > {
   models: Map<string, Model> = new Map();
   logs: Map<string, Map<string, TDataPointModel>> = new Map();
 
-  abstract sort(models: Model[]);
   abstract createDataPoint(model: Model, timingId: string): TDataPointModel;
+
+  reset() {
+    this.models = new Map();
+    this.logs = new Map();
+  }
+
+  sort(models: Model[]): Model[] {
+    return models.sort(sortBySortOrder);
+  }
 
   protected getId(model: TimeSeriesContentIdentity) {
     if (typeof model === 'string') {

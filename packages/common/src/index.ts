@@ -3,6 +3,7 @@ export * from './activities';
 export * from './app-config';
 export * from './auth';
 export * from './calendar';
+export * from './calendar-plan';
 export * from './content';
 export * from './content-stream';
 export * from './endpoints';

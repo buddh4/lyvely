@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import TagList from '@/modules/tags/components/TagList.vue';
 
-import { useCalendarPlanStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
 import { TimeSeriesContentModel } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
 import { useRouter } from 'vue-router';

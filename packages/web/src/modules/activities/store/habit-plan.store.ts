@@ -9,7 +9,7 @@ import {
   TimerUpdateModel,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 import { useHabitsService } from '@/modules/activities/services/habits.service';
 import { eventBus } from '@/modules/core/events/global.emitter';

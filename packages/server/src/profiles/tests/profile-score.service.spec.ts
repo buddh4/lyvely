@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils, createContentTestingModule } from '@/test';
-import { Calendar, CalendarIntervalEnum } from '@lyvely/common';
+import { Calendar, CalendarIntervalEnum, CalendarPlan } from '@lyvely/common';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import { TestProfileScore, TestProfileScoreSchema } from './src/test-profile-score.schema';
 import { TestProfileScoreDao } from './src/test-profile-score.dao';
@@ -53,7 +53,9 @@ describe('AbstractUserProfileActionService', () => {
         profile,
         new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
       );
-      const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date());
+      const timing = CalendarPlan.getInstance(CalendarIntervalEnum.Daily).createTimingInstance(
+        new Date(),
+      );
 
       expect(model).toBeDefined();
       expect(model.id).toBeDefined();

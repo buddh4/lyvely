@@ -16,7 +16,7 @@ export abstract class DataPointService<
   TDataPointModel extends DataPoint,
   TValue = any,
 > {
-  protected dataPointDao: DataPointDao<TDataPointModel>;
+  protected abstract dataPointDao: DataPointDao<TDataPointModel>;
 
   @Inject()
   protected profileService: ProfilesService;

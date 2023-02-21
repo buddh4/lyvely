@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
-import { computed, onUnmounted, ref, toRefs, watch } from 'vue';
+import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
+import { computed, ref, toRefs, watch } from 'vue';
 import { TagFilter } from '@lyvely/common';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import useFilterOption from '@/util/composables/useFilterOption';
 import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
-import { storeToRefs } from 'pinia';
 
 const profileStore = useProfileStore();
 const { dragActive } = toRefs(useCalendarPlanStore());

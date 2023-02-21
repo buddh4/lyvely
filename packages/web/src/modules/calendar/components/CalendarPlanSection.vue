@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { CalendarPlan, CalendarIntervalEnum, isToday as isTodayUtil } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useCalendarPlanStore } from '../store';
+import { useCalendarPlanStore } from '../stores/calendar-plan.store';
 import { computed, ref, toRefs } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { translate } from '@/i18n';

@@ -27,20 +27,25 @@ export class ContentFilter<
 
     super(options);
 
-    this.tagProvider = tagProvider;
-
-    if (this.tagProvider) {
-      this.additions.push((model: TModel, filter: ContentFilter<TModel, TOptions>) => {
-        const includeOnlyOnFilterTags = filter
-          .tagProvider()
-          .filter((tag) => tag.includeOnFilter && model.tagIds.includes(tag.id));
-        return !(filter.isEmpty() && includeOnlyOnFilterTags.length);
-      });
+    if (tagProvider()) {
+      this.setTagProvider(tagProvider);
     }
   }
 
+  setTagProvider(provider: TagProvider) {
+    if (this.tagProvider) return;
+
+    this.tagProvider = provider;
+    this.additions.push((model: TModel, filter: ContentFilter<TModel, TOptions>) => {
+      const includeOnlyOnFilterTags = filter
+        .tagProvider()
+        .filter((tag) => tag.includeOnFilter && model.tagIds.includes(tag.id));
+      return !(filter.isEmpty() && includeOnlyOnFilterTags.length);
+    });
+  }
+
   protected getDefaultOptions(): TOptions {
-    return <any>{ archived: false };
+    return <TOptions>{ archived: false };
   }
 
   protected checkModel(model: TModel) {

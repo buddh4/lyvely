@@ -2,7 +2,7 @@
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
 import { DataPointInputType, HabitModel } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
 import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useDebounceFn } from '@vueuse/core';

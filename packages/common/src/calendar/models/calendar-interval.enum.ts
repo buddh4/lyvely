@@ -19,3 +19,10 @@ export enum CalendarTimeInterval {
   Secondly,
   Millisecondly,
 }
+
+export function getCalendarIntervalArray(): CalendarIntervalEnum[] {
+  return Object.keys(CalendarIntervalEnum)
+    .filter((value) => isNaN(Number(value)) === false)
+    .map((key) => parseInt(key))
+    .reverse();
+}

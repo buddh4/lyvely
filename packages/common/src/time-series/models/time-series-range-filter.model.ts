@@ -1,6 +1,12 @@
 import { IsArray, IsOptional, IsString, Matches } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { getCalendarPlanArray, DayIterator, formatDate, REGEX_DATE_FORMAT, toTimingId } from '@/calendar';
+import {
+  getCalendarIntervalArray,
+  DayIterator,
+  formatDate,
+  REGEX_DATE_FORMAT,
+  toTimingId,
+} from '@/calendar';
 
 import type { CalendarDate } from '@/calendar';
 
@@ -71,7 +77,7 @@ export function getTimingIdsByRange(filter: TimeSeriesRangeFilter): string[] {
   const timingSet = new Set<string>();
 
   for (const date of new DayIterator(filter.from, filter.to)) {
-    for (const interval of getCalendarPlanArray()) {
+    for (const interval of getCalendarIntervalArray()) {
       const timingId = toTimingId(date, interval);
 
       if (

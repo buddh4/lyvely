@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { TaskModel, CalendarIntervalEnum, ActivityFilter, ActivityType } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useCalendarPlanStore } from '@/modules/calendar/store';
+import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
 import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
 import { useTasksService } from '@/modules/activities/services/tasks.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';

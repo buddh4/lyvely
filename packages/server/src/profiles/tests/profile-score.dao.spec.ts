@@ -21,7 +21,11 @@ describe('AbstractUserProfileActionDao', () => {
   const TEST_KEY = 'abstract_user_profile_action_dao';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [TestProfileScoreDao], [testScoreModelDef]).compile();
+    testingModule = await createContentTestingModule(
+      TEST_KEY,
+      [TestProfileScoreDao],
+      [testScoreModelDef],
+    ).compile();
     testScoreDao = testingModule.get<TestProfileScoreDao>(TestProfileScoreDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
@@ -36,7 +40,9 @@ describe('AbstractUserProfileActionDao', () => {
       const scoreLog = await testScoreDao.save(
         new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
       );
-      const timing = Calendar.createTiming(CalendarIntervalEnum.Daily, new Date());
+      const timing = CalendarPlan.getInstance(CalendarIntervalEnum.Daily).createTimingInstance(
+        new Date(),
+      );
 
       expect(scoreLog).toBeDefined();
       expect(scoreLog.id).toBeDefined();

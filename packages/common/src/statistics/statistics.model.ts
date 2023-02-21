@@ -1,4 +1,5 @@
-import { CalendarPlan, CalendarIntervalEnum, getMonthNames } from '@/calendar';
+import { CalendarIntervalEnum, getMonthNames } from '@/calendar';
+import { CalendarPlan } from '@/calendar-plan';
 
 abstract class Statistics {
   title: string;
