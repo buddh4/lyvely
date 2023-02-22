@@ -1,19 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsInt, Matches, Min } from 'class-validator';
-import { REGEX_DATE_FORMAT } from '@/calendar';
+import { IsInt, Min } from 'class-validator';
+
+import { UpdateDataPointModel } from '@/calendar-plan';
 
 @Exclude()
-export class UpdateHabitDataPointModel {
-  @Expose()
-  @Matches(REGEX_DATE_FORMAT)
-  date: string;
-
+export class UpdateHabitDataPointModel extends UpdateDataPointModel {
   @Expose()
   @IsInt()
   @Min(0)
   value: number;
-
-  constructor(obj: Partial<UpdateHabitDataPointModel>) {
-    Object.assign(this, obj);
-  }
 }

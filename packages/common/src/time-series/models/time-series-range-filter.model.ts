@@ -12,6 +12,7 @@ import type { CalendarDate } from '@/calendar';
 
 /**
  * Note: In an earlier implementation TimeSeriesRangeFilter was used instead of DataPointIntervalFilter
+ * @deprecated
  */
 export class TimeSeriesRangeFilter {
   @IsOptional()

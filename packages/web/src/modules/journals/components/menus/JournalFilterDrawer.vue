@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import useFilterOption from '@/util/composables/useFilterOption';
-import { useJournalStore } from '@/modules/journals/stores/journals.store';
+import { useJournalPlanStore } from '@/modules/journals/stores/journal-plan.store';
 import { storeToRefs } from 'pinia';
 
-const journalStore = useJournalStore();
+const journalStore = useJournalPlanStore();
 const { filter } = journalStore;
 const { showFilterDrawer } = storeToRefs(journalStore);
 const archiveFilter = useFilterOption(filter, 'archived');

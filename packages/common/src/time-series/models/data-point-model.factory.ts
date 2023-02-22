@@ -2,7 +2,7 @@ import { DataPointModel } from '@/time-series';
 import { PropertiesOf, Type, useSingleton } from '@/utils';
 
 export class DataPointFactory {
-  private types: Map<string, Type<DataPointModel>>;
+  private types = new Map<string, Type<DataPointModel>>();
 
   registerType(valueType: string, type: Type<DataPointModel>) {
     this.types.set(valueType, type);

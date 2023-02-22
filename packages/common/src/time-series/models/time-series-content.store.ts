@@ -2,6 +2,7 @@ import { CalendarIntervalEnum } from '@/calendar';
 import { Filter, sortBySortOrder } from '@/models';
 import { DataPointModel } from './data-point.model';
 import { TimeSeriesContentModel } from './time-series-content.model';
+import { ContentFilter } from '@/content';
 
 type TimeSeriesContentIdentity = TimeSeriesContentModel | string;
 
@@ -96,7 +97,7 @@ export abstract class TimeSeriesDataPointStore<
 
   getModelsByIntervalFilter(
     interval: CalendarIntervalEnum,
-    filter?: Filter<Model, any>,
+    filter?: ContentFilter<Model, any>,
     tid?: string,
   ) {
     return this.filterModels((entry) => {

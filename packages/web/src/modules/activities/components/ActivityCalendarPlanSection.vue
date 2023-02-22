@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import TaskPlanItem from '@/modules/activities/components/TaskPlanItem.vue';
 import HabitPlanItem from '@/modules/activities/components/HabitPlanItem.vue';
-import CalendarPlanSection from '@/modules/calendar/components/CalendarPlanSection.vue';
+import CalendarPlanSection from '@/modules/calendar-plan/components/CalendarPlanSection.vue';
 import { ActivityType, isTask } from '@lyvely/common';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
@@ -9,6 +9,7 @@ import { computed, ref } from 'vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import Draggable from 'vuedraggable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
+import { IDragEvent } from '@/modules/common';
 
 export interface IProps {
   interval: number;
@@ -27,23 +28,8 @@ const activities = computed(() => {
   return activityStore.getActivities(props.type, props.interval, showAll.value);
 });
 
-interface IDragEvent {
-  from: HTMLElement;
-  to: HTMLElement;
-  item: HTMLElement;
-  oldIndex: number;
-  newIndex: number;
-}
-
 function dragEnd(evt: IDragEvent) {
-  const store = props.type === ActivityType.Habit ? habitPlanStore : taskPlanStore;
-  store.move({
-    cid: evt.item.dataset.cid as string,
-    fromInterval: parseInt(evt.from.dataset.calendarInterval as string),
-    toInterval: parseInt(evt.to.dataset.calendarInterval as string),
-    newIndex: evt.newIndex,
-    oldIndex: evt.oldIndex,
-  });
+  (props.type === ActivityType.Habit ? habitPlanStore : taskPlanStore).move(evt);
 }
 
 const addEntry = () =>

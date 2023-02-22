@@ -17,26 +17,26 @@ export class HabitsService implements IHabitsEndpointService {
     return unwrapAndTransformResponse(repository.create(dto), UpdateHabitResponse);
   }
 
-  async update(id: string, update: UpdateHabitModel): Promise<UpdateHabitResponse> {
-    return unwrapAndTransformResponse(repository.update(id, update), UpdateHabitResponse);
+  async update(cid: string, update: UpdateHabitModel): Promise<UpdateHabitResponse> {
+    return unwrapAndTransformResponse(repository.update(cid, update), UpdateHabitResponse);
   }
 
   async updateDataPoint(
-    id: string,
+    cid: string,
     update: UpdateHabitDataPointModel,
   ): Promise<UpdateHabitDataPointResponse> {
     return unwrapAndTransformResponse(
-      repository.updateDataPoint(id, update),
+      repository.updateDataPoint(cid, update),
       UpdateHabitDataPointResponse,
     );
   }
 
-  async startTimer(id: string, dto: TimerUpdateModel): Promise<NumberDataPointModel> {
-    return unwrapAndTransformResponse(repository.startTimer(id, dto), NumberDataPointModel);
+  async startTimer(cid: string, dto: TimerUpdateModel): Promise<NumberDataPointModel> {
+    return unwrapAndTransformResponse(repository.startTimer(cid, dto), NumberDataPointModel);
   }
 
-  async stopTimer(id: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse> {
-    return unwrapAndTransformResponse(repository.stopTimer(id, dto), UpdateHabitDataPointResponse);
+  async stopTimer(cid: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse> {
+    return unwrapAndTransformResponse(repository.stopTimer(cid, dto), UpdateHabitDataPointResponse);
   }
 }
 

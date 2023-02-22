@@ -1,4 +1,6 @@
 import { CalendarIntervalEnum } from '@lyvely/common';
+import { IDragEvent } from '@/modules/common';
+import { IMoveEntryEvent } from '@/modules/calendar-plan';
 
 export function getCalendarPlanOptions(): { value: CalendarIntervalEnum; label: string }[] {
   return [
@@ -9,4 +11,20 @@ export function getCalendarPlanOptions(): { value: CalendarIntervalEnum; label: 
     { value: CalendarIntervalEnum.Yearly, label: 'calendar.interval.1' },
     { value: CalendarIntervalEnum.Unscheduled, label: 'calendar.interval.0' },
   ];
+}
+
+export function dragEventToMoveEvent(evt: IDragEvent | IMoveEntryEvent): IMoveEntryEvent {
+  return isMoveEntryEvent(evt)
+    ? evt
+    : {
+        cid: evt.item.dataset.cid as string,
+        fromInterval: parseInt(evt.from.dataset.calendarInterval as string),
+        toInterval: parseInt(evt.to.dataset.calendarInterval as string),
+        newIndex: evt.newIndex,
+        oldIndex: evt.oldIndex,
+      };
+}
+
+function isMoveEntryEvent(evt: any): evt is IMoveEntryEvent {
+  return evt.cid && evt.newIndex;
 }

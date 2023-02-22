@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import ActivityPlanList from '@/modules/activities/components/ActivityCalendarPlanSection.vue';
-import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
+import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
 import { ActivityType, getCalendarIntervalArray } from '@lyvely/common';
-import { computed } from 'vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
@@ -10,7 +9,7 @@ import { useContentCreateStore } from '@/modules/content/stores/content-create.s
 const type = ActivityType.Task;
 const createEntry = () => useContentCreateStore().createContentType(type);
 
-const intervals = computed(() => getCalendarIntervalArray());
+const intervals = getCalendarIntervalArray();
 
 usePageStore().setTitle(['Tasks']);
 </script>

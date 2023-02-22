@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { TaskModel, TimerModel } from '@lyvely/common';
+import { TaskModel } from '@lyvely/common';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed } from 'vue';
-import CalendarPlanItem from '@/modules/calendar/components/CalendarPlanItem.vue';
+import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
-import { useActivityPlanItem } from '@/modules/activities/composables/useActivityPlanItem';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
+import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
 
 export interface IProps {
   model: TaskModel;
@@ -16,7 +16,7 @@ export interface IProps {
 const props = defineProps<IProps>();
 const taskStore = useTaskPlanStore();
 
-const { isDisabled, moveUp, moveDown } = useActivityPlanItem(props.model);
+const { isDisabled, moveUp, moveDown } = useCalendarPlanPlanItem(props.model, taskStore);
 const { selectTag } = useActivityStore();
 
 const selection = computed({

@@ -25,6 +25,8 @@ export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityTy
 {
   meta: any;
 
+  abstract toModel(): DataPointModel;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, immutable: true })
   oid: TObjectId;
 
@@ -45,6 +47,8 @@ export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityTy
 
   @Prop({ immutable: true })
   valueType: string;
+
+  value: any;
 
   /**
    * Contains a full day (no time) utc date with the same date described by tid.

@@ -1,31 +1,30 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { DataPointInputType, HabitModel } from '@lyvely/common';
+import { DataPointInputType, JournalModel } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan/stores/calendar-plan.store';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
-import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useDebounceFn } from '@vueuse/core';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
-import { useActivityStore } from '@/modules/activities/store/activity.store';
+import { useJournalPlanStore } from '../stores/journal-plan.store';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
 
 export interface IProps {
-  model: HabitModel;
+  model: JournalModel;
 }
 
 const props = defineProps<IProps>();
 const initialized = ref(false);
-const habitStore = useHabitPlanStore();
+const journalStore = useJournalPlanStore();
 
-const { isDisabled, moveUp, moveDown } = useCalendarPlanPlanItem(props.model, habitStore);
-const { selectTag, getDataPoint } = useActivityStore();
+const { isDisabled, moveUp, moveDown } = useCalendarPlanPlanItem(props.model, journalStore);
+const { selectTag } = journalStore;
 
-const dataPoint = computed(() => getDataPoint(props.model));
+const dataPoint = computed(() => journalStore.getDataPoint(props.model));
 
 onMounted(async () => {
-  await habitStore.getDataPoint(props.model);
+  await journalStore.getDataPoint(props.model);
   initialized.value = true;
 });
 
@@ -38,7 +37,7 @@ const selection = computed({
 });
 
 const updateSelection = useDebounceFn((selection: number) => {
-  habitStore.updateDataPoint(dataPoint.value, selection);
+  journalStore.updateDataPoint(dataPoint.value, selection);
 }, 600);
 
 const inputBorderColorClass = computed(() => {
@@ -80,9 +79,6 @@ async function stopTimer() {
 const isPresentInterval = computed(() =>
   useCalendarPlanStore().isPresentInterval(props.model.timeSeriesConfig.interval),
 );
-
-const timer = computed(() => dataPoint.value.timer!);
-//TODO: Maybe implement move to next interval with Ctrl + Left/Right
 </script>
 
 <template>
@@ -136,17 +132,4 @@ const timer = computed(() => dataPoint.value.timer!);
   </calendar-plan-item>
 </template>
 
-<style>
-.calendar-plan-spinner-input {
-  max-width: 130px;
-  float: right;
-  clear: both;
-}
-
-.calendar-plan-range-input {
-  max-width: 130px;
-  direction: rtl;
-  float: right;
-  clear: both;
-}
-</style>
+<style scoped></style>

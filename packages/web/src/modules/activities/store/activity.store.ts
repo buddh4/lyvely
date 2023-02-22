@@ -10,7 +10,7 @@ import {
 } from '@lyvely/common';
 import { ref } from 'vue';
 import { localStorageManager } from '@/util';
-import { useCalendarPlan } from '@/modules/calendar';
+import { useCalendarPlan } from '@/modules/calendar-plan';
 import { useActivitiesService } from '@/modules/activities/services/activities.service';
 
 export interface IMoveActivityEvent {

@@ -6,11 +6,11 @@ import { TagFilter } from '@lyvely/common';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
-import { useJournalStore } from '@/modules/journals/stores/journals.store';
+import { useJournalPlanStore } from '@/modules/journals/stores/journal-plan.store';
 
 const profileStore = useProfileStore();
 const { dragActive } = toRefs(useCalendarPlanStore());
-const { filter } = useJournalStore();
+const { filter } = useJournalPlanStore();
 
 const tags = computed(() => new TagFilter({ archived: false }).apply(profileStore.getTags()));
 const activeTagId = computed(() => filter.option('tagId'));

@@ -5,6 +5,7 @@ import {
   MoveAction,
   EndpointResult,
   IJournalsEndpointService,
+  UpdateDataPointModel,
 } from '@lyvely/common';
 
 export default {
@@ -21,6 +22,13 @@ export default {
     return repository.post<EndpointResult<IJournalsEndpointService['sort']>>(
       `${ENDPOINT_JOURNALS}/${cid}/sort`,
       moveAction,
+    );
+  },
+
+  async updateDataPoint(cid: string, dto: UpdateDataPointModel) {
+    return repository.post<EndpointResult<IJournalsEndpointService['updateDataPoint']>>(
+      `${ENDPOINT_JOURNALS}/${cid}/update-data-point`,
+      dto,
     );
   },
 };

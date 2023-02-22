@@ -1,11 +1,16 @@
 import { defineStore } from 'pinia';
-import { TaskModel, CalendarIntervalEnum, ActivityFilter, ActivityType } from '@lyvely/common';
+import { TaskModel, CalendarIntervalEnum, ActivityType } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
-import { IMoveActivityEvent, useActivityStore } from '@/modules/activities/store/activity.store';
+import {
+  dragEventToMoveEvent,
+  IMoveEntryEvent,
+  useCalendarPlanStore,
+} from '@/modules/calendar-plan';
+import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { useTasksService } from '@/modules/activities/services/tasks.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { useContentStore } from '@/modules/content/stores/content.store';
+import { IDragEvent } from '@/modules/common';
 
 export const useTaskPlanStore = defineStore('taskPlan', () => {
   const activityStore = useActivityStore();
@@ -18,7 +23,10 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
   contentStore.onContentCreated(ActivityType.Task, addTask);
   contentStore.onContentUpdated(ActivityType.Task, addTask);
 
-  async function move(moveEvent: IMoveActivityEvent) {
+  // TODO: handle live event
+
+  async function move(evt: IDragEvent | IMoveEntryEvent) {
+    const moveEvent = dragEventToMoveEvent(evt);
     await activityStore.move(
       moveEvent,
       getTasksByCalendarInterval(moveEvent.fromInterval),
@@ -27,19 +35,11 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
   }
 
   function getTasksByCalendarInterval(interval: CalendarIntervalEnum) {
-    return activityStore.cache.getTasksByCalendarInterval(
-      interval,
-      activityStore.filter as ActivityFilter,
-      calendarPlanStore.getTimingId(interval),
-    );
+    return activityStore.getActivities(ActivityType.Task, interval);
   }
 
   function addTask(task: TaskModel) {
     activityStore.cache.setModel(new TaskModel(task));
-  }
-
-  function addTasks(tasks: TaskModel[]) {
-    activityStore.cache.setModels(tasks.map((task) => new TaskModel(task)));
   }
 
   async function setTaskDone(task: TaskModel) {
@@ -94,7 +94,6 @@ export const useTaskPlanStore = defineStore('taskPlan', () => {
 
   return {
     addTask,
-    addTasks,
     setTaskSelection,
     move,
     startTimer,

@@ -8,21 +8,17 @@ import {
   toTimingId,
   ICalendarPlanService,
   MoveAction,
+  getCalendarIntervalArray,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { ref, toRefs, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
+import { useCalendarPlanStore } from '../stores/calendar-plan.store';
 import { loadingStatus, Status, useStatus } from '@/store';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
-
-export interface IMoveEntryEvent {
-  cid: string;
-  newIndex: number;
-  oldIndex: number;
-  fromInterval: CalendarIntervalEnum;
-  toInterval: CalendarIntervalEnum;
-}
+import { IMoveEntryEvent } from '../interfaces';
+import { IDragEvent } from '@/modules/common';
+import { dragEventToMoveEvent } from '@/modules/calendar-plan';
 
 export interface CalendarPlanOptions<
   TModel extends TimeSeriesContentModel,
@@ -37,7 +33,8 @@ export interface CalendarPlanOptions<
 export function useCalendarPlan<
   TModel extends TimeSeriesContentModel,
   TFilter extends ContentFilter<TModel>,
->(options: CalendarPlanOptions<TModel, TFilter>) {
+  TDataPointModel extends DataPointModel = DataPointModel,
+>(options: CalendarPlanOptions<TModel, TFilter, TDataPointModel>) {
   const profileStore = useProfileStore();
   const calendarPlanStore = useCalendarPlanStore();
 
@@ -98,7 +95,7 @@ export function useCalendarPlan<
     }
   }
 
-  async function getModels(interval: CalendarIntervalEnum) {
+  function getModels(interval: CalendarIntervalEnum) {
     const tid = toTimingId(date.value, interval);
     return cache.value.getModelsByIntervalFilter(interval, filter.value, tid);
   }
@@ -107,11 +104,11 @@ export function useCalendarPlan<
     filter.value.setOption('tagId', tagId);
   }
 
-  async function move(moveEvent: IMoveEntryEvent, from?: TModel[], to?: TModel[]) {
-    if (!from || !to) {
-      console.assert(!!from && !!to, 'Unknown interval set on move event');
-      return;
-    }
+  async function move(evt: IDragEvent | IMoveEntryEvent, from?: TModel[], to?: TModel[]) {
+    const moveEvent = dragEventToMoveEvent(evt);
+
+    if (!from) from = getModels(moveEvent.fromInterval);
+    if (!to) to = getModels(moveEvent.toInterval);
 
     try {
       const model = cache.value.getModel(moveEvent.cid);
@@ -147,5 +144,6 @@ export function useCalendarPlan<
     selectTag,
     move,
     startWatch,
+    intervals: getCalendarIntervalArray(),
   };
 }

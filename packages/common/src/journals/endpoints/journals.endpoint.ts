@@ -1,7 +1,10 @@
 import { ICalendarPlanService } from '@/calendar-plan/interfaces/calendar-plan-service.interface';
 import { JournalModel } from '@/journals';
-import { StrictEndpoint } from '@/endpoints';
+import { Endpoint, StrictEndpoint } from '@/endpoints';
+import { UpdateDataPointModel, UpdateDataPointResponse } from '@/calendar-plan';
 
-export interface IJournalsEndpointService extends ICalendarPlanService<JournalModel> {}
-export type JournalsEndpoint = StrictEndpoint<IJournalsEndpointService>;
+export interface IJournalsEndpointService extends ICalendarPlanService<JournalModel> {
+  updateDataPoint(cid: string, update: UpdateDataPointModel): Promise<UpdateDataPointResponse>;
+}
+export type JournalsEndpoint = Endpoint<IJournalsEndpointService>;
 export const ENDPOINT_JOURNALS = 'journals';

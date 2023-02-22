@@ -1,16 +1,14 @@
 <script lang="ts" setup>
 import ActivityCalendarPlanSection from '@/modules/activities/components/ActivityCalendarPlanSection.vue';
-import CalendarPlan from '@/modules/calendar/components/CalendarPlan.vue';
+import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
 import { ActivityType, getCalendarIntervalArray } from '@lyvely/common';
-import { computed, onUnmounted } from 'vue';
 import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import { useActivityStore } from '@/modules/activities/store/activity.store';
 
 const type = ActivityType.Habit;
 
 const createEntry = () => useContentCreateStore().createContentType(type);
-const intervals = computed(() => getCalendarIntervalArray());
+const intervals = getCalendarIntervalArray();
 </script>
 
 <template>

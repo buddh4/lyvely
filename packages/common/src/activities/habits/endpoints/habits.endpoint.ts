@@ -14,13 +14,13 @@ import {
 export interface IHabitsEndpointService
   extends IContentTypeService<HabitModel, CreateHabitModel, UpdateHabitModel> {
   create(dto: CreateHabitModel): Promise<UpdateHabitResponse>;
-  update(id: string, update: UpdateHabitModel): Promise<UpdateHabitResponse>;
+  update(cid: string, update: UpdateHabitModel): Promise<UpdateHabitResponse>;
   updateDataPoint(
-    id: string,
+    cid: string,
     update: UpdateHabitDataPointModel,
   ): Promise<UpdateHabitDataPointResponse>;
-  startTimer(id: string, dto: TimerUpdateModel): Promise<NumberDataPointModel>;
-  stopTimer(id: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse>;
+  startTimer(cid: string, dto: TimerUpdateModel): Promise<NumberDataPointModel>;
+  stopTimer(cid: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse>;
 }
 
 export type HabitsEndpoint = Endpoint<IHabitsEndpointService>;

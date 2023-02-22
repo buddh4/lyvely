@@ -3,10 +3,11 @@ import type { CalendarDate } from '@/calendar';
 import { DocumentModel, PropertyType } from '@/models';
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { IsEnum, IsString, Matches } from 'class-validator';
-import { DataPointValueType, useDataPointFactory } from '@/time-series';
+import { useDataPointFactory } from './data-point-model.factory';
+import { DataPointValueType } from '../interfaces/time-series-content.interface';
 
 @Exclude()
-export abstract class DataPointModel<E extends DataPointModel = any> extends DocumentModel<E> {
+export class DataPointModel<E extends DataPointModel = any> extends DocumentModel<E> {
   @Expose()
   cid: string | TObjectId;
 
@@ -24,6 +25,9 @@ export abstract class DataPointModel<E extends DataPointModel = any> extends Doc
 
   @Expose()
   valueType: string;
+
+  @Expose()
+  value: any;
 }
 
 export class NumberDataPointModel extends DataPointModel<NumberDataPointModel> {
@@ -35,6 +39,9 @@ export class NumberDataPointModel extends DataPointModel<NumberDataPointModel> {
   @PropertyType(TimerModel)
   timer?: TimerModel;
 
+  @Expose()
+  valueType = DataPointValueType.Number;
+
   afterInit() {
     this.value = this.value ?? 0;
   }
@@ -43,6 +50,9 @@ export class NumberDataPointModel extends DataPointModel<NumberDataPointModel> {
 export class TextDataPointModel extends DataPointModel<TextDataPointModel> {
   @Expose()
   value: string;
+
+  @Expose()
+  valueType = DataPointValueType.Text;
 
   afterInit() {
     this.value = this.value ?? '';

@@ -1,19 +1,25 @@
-import { ActivityModel, ActivityType } from '@lyvely/common';
+import { TimeSeriesContentModel } from '@lyvely/common';
 import { computed } from 'vue';
-import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
-import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
-import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
+import { IMoveEntryEvent, useCalendarPlanStore } from '@/modules/calendar-plan';
 import { useAccessibilityStore } from '@/modules/accessibility';
 import { translate } from '@/i18n';
 import { IMoveActivityEvent } from '@/modules/activities/store/activity.store';
+import { IDragEvent } from '@/modules/common';
 
-export const useActivityPlanItem = (model: ActivityModel) => {
+export interface IMovableStore {
+  move(evt: IDragEvent | IMoveEntryEvent): Promise<void>;
+}
+
+export function useCalendarPlanPlanItem<TModel extends TimeSeriesContentModel>(
+  model: TModel,
+  store: IMovableStore,
+) {
   const calendarPlanStore = useCalendarPlanStore();
   const isFuture = computed(() => calendarPlanStore.date > new Date());
   const isDisabled = computed(() => model.meta.isArchived || isFuture.value);
 
   function prepareMoveEvent(
-    model: ActivityModel,
+    model: TModel,
     element: HTMLElement,
     newIndex: (current: number) => number,
   ) {
@@ -24,19 +30,18 @@ export const useActivityPlanItem = (model: ActivityModel) => {
 
     return {
       draggable: draggableElement,
-      store: model.type === ActivityType.Habit ? useHabitPlanStore() : useTaskPlanStore(),
       event: {
         cid: model.id,
         fromInterval: model.timeSeriesConfig.interval,
         toInterval: model.timeSeriesConfig.interval,
         oldIndex: currentIndex,
         newIndex: newIndex(currentIndex),
-      },
+      } as IMoveEntryEvent,
     };
   }
 
-  async function moveUp(model: ActivityModel, element: HTMLElement) {
-    const { store, event } = prepareMoveEvent(model, element, (currentIndex) => currentIndex - 1);
+  async function moveUp(model: TModel, element: HTMLElement) {
+    const { event } = prepareMoveEvent(model, element, (currentIndex) => currentIndex - 1);
 
     if (event.oldIndex === 0) {
       useAccessibilityStore().addMessage(translate('calendar.plan.aria.move-boundary'));
@@ -47,8 +52,8 @@ export const useActivityPlanItem = (model: ActivityModel) => {
     afterMove(event);
   }
 
-  async function moveDown(model: ActivityModel, element: HTMLElement) {
-    const { store, event, draggable } = prepareMoveEvent(
+  async function moveDown(model: TModel, element: HTMLElement) {
+    const { event, draggable } = prepareMoveEvent(
       model,
       element,
       (currentIndex) => currentIndex + 1,
@@ -81,4 +86,4 @@ export const useActivityPlanItem = (model: ActivityModel) => {
     moveUp,
     moveDown,
   };
-};
+}
