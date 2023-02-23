@@ -34,6 +34,7 @@ import { NotificationsModule } from '@/notifications/notifications.module';
 import { FeatureModule } from '@/features/feature.module';
 import { ContentStreamModule } from '@/content-stream/content-stream.module';
 import { MessageModule } from '@/message/message.module';
+import { JournalsModule } from '@/journals/journals.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -240,7 +241,7 @@ export class AppModuleBuilder {
       return this;
     }
 
-    return this.importModules(ActivitiesModule, MessageModule);
+    return this.importModules(ActivitiesModule, JournalsModule, MessageModule);
   }
 
   public importModules(...module: Array<Import>) {

@@ -2,7 +2,7 @@ import { Exclude, Type, Expose } from 'class-transformer';
 import { HabitModel } from '../habits';
 import { TaskModel } from '../tasks';
 import { ActivityType, ActivityModel } from '../models';
-import { BaseModel, PropertyType } from '@/models';
+import { BaseModel } from '@/models';
 import { NumberDataPointModel } from '@/time-series';
 import { ICalendarPlanResponse } from '@/calendar-plan';
 

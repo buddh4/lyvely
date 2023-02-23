@@ -1,27 +1,25 @@
 import { Module } from '@nestjs/common';
-import { Journal, JournalSchema } from './schemas/journal.schema';
 import { UsersModule } from '@/users';
 import { ProfilesModule } from '@/profiles';
 import { ContentModule, getContentModelDefinition } from '@/content';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
+  Journal,
+  JournalSchema,
   JournalDataPoint,
   JournalDataPointSchema,
   JournalNumberDataPoint,
   JournalNumberDataPointSchema,
   JournalTextDataPoint,
   JournalTextDataPointSchema,
-} from './schemas/journal-data-point.schema';
+} from './schemas';
 import { DataPointValueType } from '@lyvely/common';
-import { JournalDataPointDao, JournalNumberDataPointDao, JournalTextDataPointDao } from './daos';
-import { JournalNumberDataPointService } from './services/journal-number-data-point.service';
-import { JournalTextDataPointService } from './services/journal-text-data-point.service';
-import { JournalsDao } from './daos/journals.dao';
-import { JournalDataPointService } from './services/journal-data-point.service';
-import { JournalsService } from './services/journals.service';
+import { JournalDataPointDao, JournalsDao } from './daos';
+import { JournalsService, JournalDataPointService } from './services/';
+import { JournalsController } from './controllers';
 
 @Module({
-  controllers: [],
+  controllers: [JournalsController],
   imports: [
     UsersModule,
     ProfilesModule,
@@ -46,15 +44,6 @@ import { JournalsService } from './services/journals.service';
       },
     ]),
   ],
-  providers: [
-    JournalsDao,
-    JournalsService,
-    JournalDataPointDao,
-    JournalDataPointService,
-    JournalNumberDataPointDao,
-    JournalTextDataPointDao,
-    JournalNumberDataPointService,
-    JournalTextDataPointService,
-  ],
+  providers: [JournalsDao, JournalsService, JournalDataPointDao, JournalDataPointService],
 })
-export class ActivitiesModule {}
+export class JournalsModule {}

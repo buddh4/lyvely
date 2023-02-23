@@ -3,8 +3,6 @@ import { JournalDataPoint, JournalNumberDataPoint, JournalTextDataPoint } from '
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { EntityIdentity } from '@/core';
-import { User } from '@/users';
 import { DataPointValueType } from '@lyvely/common';
 
 @Injectable()
@@ -20,13 +18,5 @@ export class JournalDataPointDao extends DataPointDao<JournalDataPoint> {
 
   getModuleId(): string {
     return 'journals';
-  }
-
-  async updateDataPointValue(
-    uid: EntityIdentity<User>,
-    dataPoint: JournalDataPoint,
-    newValue: any,
-  ): Promise<boolean> {
-    return this.updateOneSetById(dataPoint, { value: newValue });
   }
 }

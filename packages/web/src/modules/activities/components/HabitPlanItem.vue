@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { DataPointInputType, HabitModel } from '@lyvely/common';
+import { DataPointInputType, HabitModel, NumberDataPointModel } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan/stores/calendar-plan.store';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
@@ -20,9 +20,10 @@ const initialized = ref(false);
 const habitStore = useHabitPlanStore();
 
 const { isDisabled, moveUp, moveDown } = useCalendarPlanPlanItem(props.model, habitStore);
-const { selectTag, getDataPoint } = useActivityStore();
+const { selectTag } = useActivityStore();
+const { getDataPoint } = habitStore;
 
-const dataPoint = computed(() => getDataPoint(props.model));
+const dataPoint = computed(() => getDataPoint(props.model) as NumberDataPointModel);
 
 onMounted(async () => {
   await habitStore.getDataPoint(props.model);
@@ -32,14 +33,16 @@ onMounted(async () => {
 const selection = computed({
   get: () => dataPoint.value.value,
   set: (selection: number) => {
+    const oldValue = dataPoint.value.value;
+    // Visually update due to debounce delay
     dataPoint.value.value = selection;
-    updateSelection(selection);
+    updateSelection(selection, oldValue);
   },
 });
 
-const updateSelection = useDebounceFn((selection: number) => {
-  habitStore.updateDataPoint(dataPoint.value, selection);
-}, 600);
+const updateSelection = useDebounceFn((selection: number, oldValue?: number) => {
+  habitStore.updateDataPoint(dataPoint.value, selection, oldValue);
+}, 500);
 
 const inputBorderColorClass = computed(() => {
   const color = inputColorClass.value;

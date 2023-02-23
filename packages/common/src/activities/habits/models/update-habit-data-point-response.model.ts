@@ -5,7 +5,7 @@ import { NumberDataPointModel } from '@/time-series';
 import { UpdateDataPointResponse } from '@/calendar-plan';
 
 @Exclude()
-export class UpdateHabitDataPointResponse extends UpdateDataPointResponse {
+export class UpdateHabitDataPointResponse extends UpdateDataPointResponse<UpdateHabitDataPointResponse> {
   @Expose()
   @IsNumber()
   score: number;

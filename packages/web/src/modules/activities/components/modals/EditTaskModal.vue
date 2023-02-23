@@ -4,7 +4,7 @@ import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import { useContentEditModal } from '@/modules/content/composables/content-edit-modal.composable';
 import { CreateTaskModel, TaskModel, UpdateTaskModel } from '@lyvely/common';
 import { useTasksService } from '@/modules/activities/services/tasks.service';
-import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
+import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 

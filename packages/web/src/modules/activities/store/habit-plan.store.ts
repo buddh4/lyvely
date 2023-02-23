@@ -19,6 +19,7 @@ import { useHabitsService } from '@/modules/activities/services/habits.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { useContentStore } from '@/modules/content/stores/content.store';
 import { IDragEvent } from '@/modules/common';
+import { isDefined } from 'class-validator';
 
 export const useHabitPlanStore = defineStore('habitPlan', () => {
   const activityStore = useActivityStore();
@@ -55,9 +56,7 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
     return activityStore.cache.getDataPoint(model, timingId, true);
   }
 
-  async function updateDataPoint(log: NumberDataPointModel, value: number) {
-    const oldValue = log.value;
-
+  async function updateDataPoint(log: NumberDataPointModel, value: number, oldValue?: number) {
     try {
       log.value = value;
       const result = await habitsService.updateDataPoint(log.cid, {
@@ -68,7 +67,9 @@ export const useHabitPlanStore = defineStore('habitPlan', () => {
       activityStore.cache.setDataPoint(result.dataPoint);
       profileStore.updateScore(result.score);
     } catch (e) {
-      log.value = oldValue;
+      if (isDefined(oldValue)) {
+        log.value = oldValue!;
+      }
       dialog.showUnknownError();
     }
   }

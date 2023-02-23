@@ -10,6 +10,7 @@ import { Profile, ProfilesService } from '@/profiles';
 import { EntityIdentity } from '@/core';
 import { DataPointDao } from '../daos';
 import { Inject } from '@nestjs/common';
+import { useDataPointValueStrategyRegistry } from '@/time-series/components/data-point-value-strategy.registry';
 
 export abstract class DataPointService<
   TModel extends TimeSeriesContent,
@@ -20,14 +21,6 @@ export abstract class DataPointService<
 
   @Inject()
   protected profileService: ProfilesService;
-
-  protected abstract updateDataPointValue(
-    profile: Profile,
-    user: User,
-    dataPoint: TDataPointModel,
-    model: TModel,
-    newValue: TValue,
-  );
 
   async findDataPointByDate(
     profile: Profile,
@@ -58,7 +51,38 @@ export abstract class DataPointService<
     // TODO: Use transaction
     const dataPoint = await this.findOrCreateDataPointByDate(profile, user, model, date);
     await this.updateDataPointValue(profile, user, dataPoint, model, value);
+    await this.postProcess(user, model, dataPoint);
     return dataPoint;
+  }
+
+  protected async postProcess(user: User, model: TModel, dataPoint: TDataPointModel) {
+    const strategy = this.getStrategy(dataPoint.valueType);
+    if (!strategy) return;
+    const update = strategy.postProcess(user, model, dataPoint);
+    if (typeof update === 'object') {
+      await this.dataPointDao.updateOneSetById(dataPoint._id, update);
+    }
+  }
+
+  protected async updateDataPointValue(
+    profile: Profile,
+    user: User,
+    dataPoint: TDataPointModel,
+    model: TModel,
+    newValue: TValue,
+  ) {
+    newValue = this.prepareValue(model, dataPoint, newValue);
+    if (dataPoint.value === newValue) return;
+    await this.dataPointDao.updateDataPointValue(user, dataPoint, newValue);
+  }
+
+  protected prepareValue(model: TModel, dataPoint: TDataPointModel, newValue: TValue): TValue {
+    const strategy = this.getStrategy(dataPoint.valueType);
+    return strategy ? strategy.prepareValue(model, dataPoint, newValue) : newValue;
+  }
+
+  protected getStrategy(valueType: string) {
+    return useDataPointValueStrategyRegistry().getStrategy(valueType);
   }
 
   protected async findOrCreateDataPointByDate(
@@ -71,7 +95,10 @@ export abstract class DataPointService<
 
     if (log) return log;
 
-    const DataPointConstructor = this.dataPointDao.getModelConstructor();
+    const DataPointConstructor = this.dataPointDao.getModelConstructor({
+      valueType: content.timeSeriesConfig.valueType,
+    });
+
     return await this.dataPointDao.save(
       new DataPointConstructor(profile, user, content, { date: toDate(date) }),
     );

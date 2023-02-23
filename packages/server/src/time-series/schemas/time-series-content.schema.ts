@@ -3,6 +3,7 @@ import { IContentEntity, ContentType } from '@/content';
 import { DataPointConfig, DataPointConfigFactory, DefaultDataPointConfig } from './config';
 import { EntityType } from '@/core';
 import { cloneDeep } from 'lodash';
+import { useDataPointValueStrategyRegistry } from '@/time-series/components/data-point-value-strategy.registry';
 
 type TimeSeriesContentEntity = IContentEntity & EntityType<TimeSeriesContent>;
 type Unpacked<T> = T extends (infer U)[] ? U : T;

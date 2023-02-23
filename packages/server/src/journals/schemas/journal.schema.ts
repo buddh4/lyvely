@@ -40,7 +40,7 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
 /**
  * Base Activity content class.
  */
-@Schema({ timestamps: true })
+@Schema()
 export class Journal extends TimeSeriesContent<Journal> {
   @Prop({ type: JournalConfigSchema, required: true })
   config: JournalConfig;

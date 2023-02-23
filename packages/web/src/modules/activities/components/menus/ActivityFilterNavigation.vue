@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
-import { useCalendarPlanStore } from '@/modules/calendar/stores/calendar-plan.store';
+import { useCalendarPlanStore } from '@/modules/calendar-plan';
 import { computed, ref, toRefs, watch } from 'vue';
 import { TagFilter } from '@lyvely/common';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';

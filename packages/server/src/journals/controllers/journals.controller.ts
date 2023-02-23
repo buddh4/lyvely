@@ -15,12 +15,16 @@ import { JournalsService } from '@/journals/services/journals.service';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { Journal } from '@/journals/schemas';
+import { JournalDataPointService } from '@/journals/services/journal-data-point.service';
 
-@ContentTypeController(ENDPOINT_JOURNALS)
+@ContentTypeController(ENDPOINT_JOURNALS, Journal)
 @UseClassSerializer()
-export class JournalController implements JournalsEndpoint {
+export class JournalsController implements JournalsEndpoint {
   @Inject()
   protected contentService: JournalsService;
+
+  @Inject()
+  protected dataPointService: JournalDataPointService;
 
   @Get()
   async getByFilter(
@@ -37,7 +41,10 @@ export class JournalController implements JournalsEndpoint {
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: MoveAction, @Request() req: ProfileContentRequest<Journal>) {
+  async sort(
+    @Body() dto: MoveAction,
+    @Request() req: ProfileContentRequest<Journal>,
+  ): Promise<SortResponse> {
     const { profile, user, content } = req;
     const sort = await this.contentService.sort(
       profile,
@@ -49,8 +56,24 @@ export class JournalController implements JournalsEndpoint {
     return new SortResponse({ sort });
   }
 
+  @Post(':cid/update-data-point')
+  @Policies(ContentWritePolicy)
   async updateDataPoint(
-    cid: string,
-    update: UpdateDataPointModel,
-  ): Promise<UpdateDataPointResponse> {}
+    @Body() dto: UpdateDataPointModel,
+    @Request() req: ProfileContentRequest<Journal>,
+  ): Promise<UpdateDataPointResponse> {
+    const { profile, user, content } = req;
+
+    const dataPoint = await this.dataPointService.upsertDataPoint(
+      profile,
+      user,
+      content,
+      dto.date,
+      dto.value,
+    );
+
+    return new UpdateDataPointResponse({
+      dataPoint: dataPoint.toModel(),
+    });
+  }
 }

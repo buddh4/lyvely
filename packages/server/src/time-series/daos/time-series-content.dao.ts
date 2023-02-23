@@ -1,9 +1,9 @@
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { EntityIdentity, IFetchQueryOptions, UpdateQuerySet } from '@/core';
+import { IFetchQueryOptions } from '@/core';
 import { TimeSeriesContent } from '@/time-series';
 import { AbstractContentDao } from '@/content';
-import { CalendarIntervalEnum, SortResult } from '@lyvely/common';
+import { CalendarIntervalEnum } from '@lyvely/common';
 
 export abstract class TimeSeriesContentDao<
   TModel extends TimeSeriesContent,

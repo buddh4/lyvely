@@ -4,7 +4,7 @@ import { computed } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import { useContentEditModal } from '@/modules/content/composables/content-edit-modal.composable';
 import { useHabitsService } from '@/modules/activities/services/habits.service';
-import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
+import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 

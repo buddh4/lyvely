@@ -1,9 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Activity, Habit, HabitDataPoint } from '../schemas';
 import { NumberDataPointService } from '@/time-series';
-import { CalendarDate, DataPointInputType } from '@lyvely/common';
-import { Profile } from '@/profiles';
-import { User } from '@/users';
+import { DataPointInputType } from '@lyvely/common';
 import { HabitDataPointDao } from '../daos/habit-data-point.dao';
 import { ActivityScore } from '../schemas/activity-score.schema';
 import { ContentScoreService } from '@/content';
@@ -76,10 +74,5 @@ export class HabitDataPointService extends NumberDataPointService<Habit, HabitDa
     }
 
     return result;
-  }
-
-  async deleteLog(user: User, profile: Profile, timingModel: Habit, date: CalendarDate) {
-    const log = await this.upsertDataPoint(profile, user, timingModel, date, 0);
-    await this.dataPointDao.deleteOne({ _id: log._id });
   }
 }
