@@ -12,7 +12,6 @@ const resource = 'habits';
 
 export default {
   async create(activitiy: CreateHabitModel) {
-    type a = EndpointResult<IHabitsEndpointService['create']>;
     return repository.post<EndpointResult<IHabitsEndpointService['create']>>(
       `${resource}`,
       activitiy,

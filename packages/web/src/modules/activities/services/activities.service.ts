@@ -22,7 +22,9 @@ export class ActivitiesService implements IActivityEndpointService {
     const { models, dataPoints } = await unwrapResponse(repository.getByFilter(filter));
     return {
       models: models.map((activity) => this.transformActivity(activity)),
-      dataPoints: dataPoints.map((dataPoint) => new NumberDataPointModel(dataPoint)),
+      dataPoints: dataPoints.map(
+        (dataPoint) => new NumberDataPointModel(<PropertiesOf<NumberDataPointModel>>dataPoint),
+      ),
     };
   }
 

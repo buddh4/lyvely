@@ -1,8 +1,13 @@
 import mitt, { Emitter, Handler } from 'mitt';
 
-export type FilterAddition<TModel, TOptions> = (model: TModel, filter: Filter<TModel, TOptions>) => boolean;
+export type FilterAddition<TModel, TOptions> = (
+  model: TModel,
+  filter: Filter<TModel, TOptions>,
+) => boolean;
 
-export type FilterConstructorOptions<TModel, TOptions> = TOptions & { additions?: FilterAddition<TModel, TOptions>[] };
+export type FilterConstructorOptions<TModel, TOptions> = TOptions & {
+  additions?: FilterAddition<TModel, TOptions>[];
+};
 
 type FilterEvents<TOptions> = {
   update: {
@@ -11,13 +16,27 @@ type FilterEvents<TOptions> = {
   };
 };
 
-export abstract class Filter<TModel, TOptions> {
+export interface IFilter<TModel, TOptions> {
+  option<T extends keyof TOptions>(key: T): TOptions[T];
+  setOption<T extends keyof TOptions>(key: T, value: TOptions[T]);
+  setOptions(update: Partial<TOptions>);
+  getOptions(): TOptions;
+  getOptionsWithStringValues(): Record<string, string>;
+  filter(models: TModel[]): TModel[];
+  check(model: TModel);
+  reset();
+  isEmpty(): boolean;
+  onUpdate(handler: Handler<FilterEvents<TOptions>['update']>);
+  offUpdate(handler: Handler<FilterEvents<TOptions>['update']>);
+}
+
+export abstract class Filter<TModel, TOptions> implements IFilter<TModel, TOptions> {
   protected options: TOptions;
   protected additions: FilterAddition<TModel, TOptions>[] = [];
   protected emitter: Emitter<FilterEvents<TOptions>>;
 
   protected abstract checkModel(model: TModel);
-  protected abstract isEmpty();
+  abstract isEmpty();
 
   constructor(options?: FilterConstructorOptions<TModel, TOptions>) {
     this.emitter = mitt<FilterEvents<TOptions>>();
@@ -48,7 +67,7 @@ export abstract class Filter<TModel, TOptions> {
     return { ...this.options };
   }
 
-  getOptionsWithStringValues() {
+  getOptionsWithStringValues(): Record<string, string> {
     const result: Record<string, string> = {};
     for (const option in this.options) {
       const value = this.options[option];

@@ -1,5 +1,5 @@
 import { escapeRegExp } from 'lodash';
-import { Filter, FilterConstructorOptions } from '@/models';
+import { Filter, FilterConstructorOptions, IFilter } from '@/models';
 import { TagModel } from '@/tags';
 import { IContent } from '../interfaces';
 
@@ -12,6 +12,13 @@ export interface IContentFilterOptions {
 }
 
 type TagProvider = () => TagModel[];
+
+export interface IContentFilter<
+  TModel extends IContent<string> = IContent<string>,
+  TOptions extends IContentFilterOptions = IContentFilterOptions,
+> extends IFilter<TModel, TOptions> {
+  setTagProvider(provider: TagProvider);
+}
 
 export class ContentFilter<
   TModel extends IContent<string> = IContent<string>,

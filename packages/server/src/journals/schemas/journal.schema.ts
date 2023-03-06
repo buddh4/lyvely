@@ -3,8 +3,6 @@ import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
   DataPointConfigSchema,
-  NumberDataPointConfig,
-  NumberTimeSeriesContentConfig,
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,

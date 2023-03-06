@@ -6,9 +6,25 @@ import {
   EndpointResult,
   IJournalsEndpointService,
   UpdateDataPointModel,
+  CreateJournalModel,
+  UpdateJournalModel,
 } from '@lyvely/common';
 
 export default {
+  async create(model: CreateJournalModel) {
+    return repository.post<EndpointResult<IJournalsEndpointService['create']>>(
+      `${ENDPOINT_JOURNALS}`,
+      model,
+    );
+  },
+
+  async update(habitId: string, model: Partial<UpdateJournalModel>) {
+    return repository.put<EndpointResult<IJournalsEndpointService['update']>>(
+      `${ENDPOINT_JOURNALS}/${habitId}`,
+      model,
+    );
+  },
+
   async getByFilter(filter: DataPointIntervalFilter) {
     return repository.get<EndpointResult<IJournalsEndpointService['getByFilter']>>(
       `${ENDPOINT_JOURNALS}`,

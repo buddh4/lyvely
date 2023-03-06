@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import { DataPointInputType, JournalModel, CreateJournalModel } from '@lyvely/common';
+import {
+  DataPointInputType,
+  JournalModel,
+  CreateJournalModel,
+  UpdateJournalModel,
+} from '@lyvely/common';
 import { computed } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import { useContentEditModal } from '@/modules/content/composables/content-edit-modal.composable';
-import { useHabitsService } from '@/modules/activities/services/habits.service';
-import { getCalendarPlanOptions } from '@/modules/calendar/utils/calendar-ui.utils';
+import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
+import { useJournalsService } from '@/modules/journals/services/journals.service';
 
 export interface IProps {
   modelValue: boolean;
@@ -20,9 +25,10 @@ const emit = defineEmits(['update:modelValue']);
 
 const { isCreate, showModal, model, validator, submit, status } = useContentEditModal<
   JournalModel,
-  CreateJournalModel
+  CreateJournalModel,
+  UpdateJournalModel
 >(props, emit, {
-  service: useHabitsService(),
+  service: useJournalsService(),
 });
 
 function setInputType(inputType: DataPointInputType) {
@@ -37,7 +43,7 @@ function setInputType(inputType: DataPointInputType) {
 const calendarPlanOptions = computed(() => getCalendarPlanOptions());
 
 const modalTitle = computed(() => {
-  return isCreate.value ? `activities.habits.edit.title` : `activities.habits.create.title`;
+  return isCreate.value ? `journals.edit.title` : `journals.create.title`;
 });
 </script>
 

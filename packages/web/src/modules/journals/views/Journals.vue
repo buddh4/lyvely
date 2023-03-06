@@ -7,9 +7,10 @@ import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.
 import { JournalModel } from '@lyvely/common';
 import { useJournalPlanStore } from '@/modules/journals/stores/journal-plan.store';
 import JournalCalendarPlanSection from '@/modules/journals/components/JournalCalendarPlanSection.vue';
+import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/CalendarPlanFilterNavigation.vue';
 
 const journalStore = useJournalPlanStore();
-const { intervals } = journalStore;
+const { intervals, filter } = journalStore;
 
 onBeforeMount(() => journalStore.loadModels());
 //onMounted(() => accessibilityFocus('#activity-navigation > button.active'));
@@ -21,6 +22,7 @@ onUnmounted(unwatch);
 
 <template>
   <content-root>
+    <calendar-plan-filter-navigation :filter="filter" />
     <calendar-plan>
       <journal-calendar-plan-section
         v-for="interval in intervals"
