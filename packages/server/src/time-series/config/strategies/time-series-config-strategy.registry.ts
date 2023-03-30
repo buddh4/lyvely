@@ -1,12 +1,12 @@
 import { useSingleton } from '@lyvely/common';
 import { Logger } from '@nestjs/common';
-import { TimeSeriesConfigStrategy } from '@/time-series';
+import { ITimeSeriesConfigStrategy } from './time-series-config.strategy';
 
 export class TimeSeriesConfigStrategyRegistry {
-  private registry = new Map<string, TimeSeriesConfigStrategy>();
+  private registry = new Map<string, ITimeSeriesConfigStrategy>();
   private logger = new Logger(TimeSeriesConfigStrategyRegistry.name);
 
-  registerValueStrategy(valueType: string, strategy: TimeSeriesConfigStrategy) {
+  registerValueStrategy(valueType: string, strategy: ITimeSeriesConfigStrategy) {
     this.registry.set(valueType, strategy);
   }
 

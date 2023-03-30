@@ -1,9 +1,9 @@
 import { Prop } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
-import { DataPointValueType, NumberDataPointModel, PropertyType } from '@lyvely/common';
+import { DataPointValueType, PropertyType } from '@lyvely/common';
 import { Timer, TimerSchema } from '@/calendar';
 
-export abstract class NumberDataPoint extends DataPoint<NumberDataPoint, NumberDataPointModel> {
+export abstract class NumberDataPoint extends DataPoint<NumberDataPoint> {
   @Prop({ type: Number, required: true, default: 0 })
   value: number;
 

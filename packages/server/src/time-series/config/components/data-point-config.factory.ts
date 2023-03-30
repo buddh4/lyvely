@@ -4,7 +4,7 @@ import { assignEntityData } from '@/core';
 import { Type } from '@lyvely/common';
 
 const register = {};
-const logger = new Logger('DataPointStrategyFactory');
+const logger = new Logger('DataPointConfigFactory');
 
 export function registerDataPointStrategy<TClass extends DataPointConfig>(
   strategy: string,

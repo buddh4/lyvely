@@ -1,20 +1,20 @@
 import { Expose } from 'class-transformer';
 import {
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Length,
-  IsEnum,
-  IsOptional,
-  IsInt,
-  Min,
-  IsArray,
   MaxLength,
-  IsBoolean,
+  Min,
   ValidateIf,
 } from 'class-validator';
 import { CalendarIntervalEnum } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
-import { DataPointInputType, DataPointNumberInputType, DataPointValueType } from '@/time-series';
+import { DataPointInputType, DataPointValueType } from '@/time-series';
 import { CreateContentModel } from '@/content';
 import { Gte, Lte } from '@/validation';
 
@@ -38,16 +38,17 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
 
   @IsString()
   @IsEnum(DataPointValueType)
-  type: DataPointValueType;
+  valueType: DataPointValueType;
 
   @Expose()
   @IsEnum(DataPointInputType)
+  @ValidateIf((o) => o.type === DataPointValueType.Number)
   inputType: DataPointInputType;
 
   @IsInt()
   @Min(1)
   @ValidateIf((o) => o.type === DataPointValueType.Number)
-  max: number;
+  max?: number;
 
   @IsInt()
   @Lte('max')
@@ -79,6 +80,7 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
           {
             interval: CalendarIntervalEnum.Daily,
             inputType: DataPointInputType.Checkbox,
+            valueType: DataPointValueType.Number,
             userStrategy: UserAssignmentStrategy.Shared,
             tagNames: [],
           },

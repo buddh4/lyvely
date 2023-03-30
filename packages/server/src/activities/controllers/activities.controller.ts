@@ -6,6 +6,7 @@ import {
   ENDPOINT_ACTIVITIES,
   ActivityEndpoint,
   SortResponse,
+  NumberDataPointModel,
 } from '@lyvely/common';
 import { ActivitiesService } from '../services/activities.service';
 import { ContentTypeController, ContentWritePolicy, ProfileContentRequest } from '@/content';
@@ -13,6 +14,7 @@ import { Activity } from '../schemas';
 import { ProfileRequest } from '@/profiles';
 import { Policies } from '@/policies';
 import { UseClassSerializer } from '@/core';
+import { DataPointModelConverter } from '@/time-series';
 
 @ContentTypeController(ENDPOINT_ACTIVITIES)
 // TODO: implement feature registration @Feature('activities')
@@ -30,7 +32,9 @@ export class ActivitiesController implements ActivityEndpoint {
     const { models, dataPoints } = await this.contentService.findByFilter(profile, user, filter);
     return new ActivitySearchResponse({
       models: models.map((c) => c.toModel(user)),
-      dataPoints: dataPoints.map((value) => value.toModel()),
+      dataPoints: dataPoints.map((value) =>
+        DataPointModelConverter.toModel<NumberDataPointModel>(value),
+      ),
     });
   }
 

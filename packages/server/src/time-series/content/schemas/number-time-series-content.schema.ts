@@ -1,10 +1,6 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IContentEntity } from '@/content';
-import {
-  NumberDataPointConfig,
-  NumberDataPointConfigRevision,
-  NumberDataPointConfigSchema,
-} from '../../config';
+import { NumberDataPointConfig, NumberDataPointConfigSchema } from '../../config';
 import { EntityType } from '@/core';
 import { TimeSeriesContent } from './time-series-content.schema';
 import { BaseModel, DataPointInputType, ITimeSeriesContentConfig } from '@lyvely/common';

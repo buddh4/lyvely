@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   CheckboxNumberDataPointConfig,
-  DataPointConfig,
   DataPointConfigFactory,
   DataPointConfigSchema,
   DataPointConfigHandler,
@@ -17,8 +16,8 @@ import {
   DataPointInputType,
   DataPointValueType,
   ITimeSeriesContentConfig,
+  JournalModel,
   PropertiesOf,
-  UpdateHabitModel,
   UpdateJournalModel,
 } from '@lyvely/common';
 import { User } from '@/users';
@@ -55,7 +54,7 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
  * Base Activity content class.
  */
 @Schema()
-export class Journal extends TimeSeriesContent<Journal> {
+export class Journal extends TimeSeriesContent<Journal, JournalDataPointConfig> {
   @Prop({ type: JournalConfigSchema, required: true })
   config: JournalConfig;
 
@@ -65,7 +64,7 @@ export class Journal extends TimeSeriesContent<Journal> {
       content: new ContentDataType({ title, text }),
       tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
       config: new JournalConfig(
-        DataPointConfigFactory.createConfig(update.type, update.inputType, update),
+        DataPointConfigFactory.createConfig(update.valueType, update.inputType, update),
       ),
     });
   }
@@ -79,19 +78,8 @@ export class Journal extends TimeSeriesContent<Journal> {
     return this;
   }
 
-  getDefaultConfig(): any {
-    return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
-      DataPointValueType.Number,
-      DataPointInputType.Checkbox,
-      {
-        min: 0,
-        max: 1,
-      },
-    );
-  }
-
-  toModel(user?: User): any {
-    return '';
+  toModel(user?: User): JournalModel {
+    return new JournalModel(this);
   }
 }
 

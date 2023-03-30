@@ -1,12 +1,12 @@
 import {
-  DataPointConfig,
   DataPointConfigFactory,
+  DataPointConfig,
   DataPointConfigRevision,
-  TimeSeriesContent,
-} from '@/time-series';
+  useDataPointConfigStrategyRegistry,
+} from '@/time-series/config';
+import { TimeSeriesContent } from '../schemas';
 import { cloneDeep } from 'lodash';
 import { isSameDay } from '@lyvely/common';
-import { useDataPointConfigStrategyRegistry } from '@/time-series/config/components/time-series-config-strategy.registry';
 
 export class DataPointConfigHandler {
   static applyUpdate(model: TimeSeriesContent, update: Partial<DataPointConfigRevision>) {

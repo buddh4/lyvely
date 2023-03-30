@@ -17,6 +17,7 @@ import {
   CreateJournalModel,
   UpdateJournalResponse,
   UpdateHabitModel,
+  UpdateJournalModel,
 } from '@lyvely/common';
 import { UseClassSerializer } from '@/core';
 import { JournalTimeSeriesService } from '@/journals/services/journal-time-series.service';
@@ -25,11 +26,12 @@ import { Policies } from '@/policies';
 import { Journal } from '@/journals/schemas';
 import { JournalDataPointService } from '@/journals/services/journal-data-point.service';
 import { JournalsService } from '@/journals/services/journals.service';
+import { DataPointModelConverter } from '@/time-series';
 
 @ContentTypeController(ENDPOINT_JOURNALS, Journal)
 @UseClassSerializer()
 export class JournalsController
-  extends AbstractContentTypeController<Journal, CreateJournalModel>
+  extends AbstractContentTypeController<Journal, CreateJournalModel, UpdateJournalModel>
   implements JournalsEndpoint
 {
   protected createModelType = CreateJournalModel;
@@ -56,7 +58,7 @@ export class JournalsController
     const { models, dataPoints } = await this.timeSeriesService.findByFilter(profile, user, filter);
     return new JournalSearchResponse({
       models: models.map((c) => c.toModel(user)),
-      dataPoints: dataPoints.map((value) => value.toModel()),
+      dataPoints: dataPoints.map((value) => DataPointModelConverter.toModel(value)),
     });
   }
 
@@ -94,15 +96,7 @@ export class JournalsController
     );
 
     return new UpdateDataPointResponse({
-      dataPoint: dataPoint.toModel(),
+      dataPoint: DataPointModelConverter.toModel(dataPoint),
     });
-  }
-
-  async create(args: any): Promise<UpdateJournalResponse> {
-    return Promise.resolve(undefined);
-  }
-
-  async update(args: any): Promise<UpdateJournalResponse> {
-    return Promise.resolve(undefined);
   }
 }

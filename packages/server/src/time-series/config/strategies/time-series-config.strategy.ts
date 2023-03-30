@@ -1,6 +1,6 @@
-import { DataPointConfig, DataPointConfigRevision } from '@/time-series';
+import { DataPointConfig, DataPointConfigRevision } from '../schemas';
 
-export interface TimeSeriesConfigStrategy<
+export interface ITimeSeriesConfigStrategy<
   TConfig extends DataPointConfig = any,
   TRev extends DataPointConfigRevision = any,
 > {

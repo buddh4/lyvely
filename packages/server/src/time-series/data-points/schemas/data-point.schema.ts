@@ -13,26 +13,17 @@ import {
 import { TimeSeriesContent } from '@/time-series/content';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
-import { useDataPointValueStrategyRegistry } from '../components';
 
 type DataPointEntity = DataPointModel & { _id: TObjectId };
 
 /**
  * This represents a datapoint bucket of given interval.
  */
-export abstract class DataPoint<
-    T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>,
-    TModel extends DataPointModel = DataPointModel,
-  >
+export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>>
   extends BaseEntity<T & { _id: TObjectId }>
   implements DataPointEntity
 {
   meta: any;
-
-  toModel(): TModel {
-    const strategy = useDataPointValueStrategyRegistry().getStrategy(this.valueType);
-    return strategy?.createModel(this) as TModel;
-  }
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, immutable: true })
   oid: TObjectId;

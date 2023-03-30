@@ -1,13 +1,8 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DataPoint, NumberDataPoint, TextDataPoint } from '@/time-series';
-import { DataPointModel, UnsupportedOperationException } from '@lyvely/common';
 
 @Schema({ timestamps: true, discriminatorKey: 'valueType' })
-export class JournalDataPoint extends DataPoint {
-  toModel(): DataPointModel {
-    throw new UnsupportedOperationException();
-  }
-}
+export class JournalDataPoint extends DataPoint {}
 
 export const JournalDataPointSchema = SchemaFactory.createForClass(JournalDataPoint);
 

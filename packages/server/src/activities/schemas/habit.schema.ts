@@ -23,11 +23,8 @@ import {
   SpinnerNumberDataPointConfig,
   TimeNumberDataPointConfig,
   TimeSeriesConfigSchemaFactory,
-  useDataPointConfigStrategyRegistry,
 } from '@/time-series';
-import { assureObjectId } from '@/core';
 import { ContentDataType } from '@/content/schemas/content-data-type.schema';
-import { pick } from 'lodash';
 
 export type HabitDocument = Habit & ContentDocument;
 

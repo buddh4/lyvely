@@ -14,7 +14,8 @@
       },
       "edit" : {
         "title": "Edit activity"
-      }
+      },
+      "timer_score_info": "The score is awarded for each achieved min, optimal, max result."
     },
     "tasks": {
       "title": "Tasks",
@@ -29,9 +30,19 @@
         "title": "Edit task"
       }
     },
+    "input_types": {
+      "checkbox": "Checkboxes",
+      "range": "Range",
+      "spinner": "Spinner",
+      "time": "Time"
+    },
     "fields": {
       "title": "Title",
       "interval": "Plan",
+      "max": "Max",
+      "min": "Min",
+      "optimal": "Optimal",
+      "score": "Score ★",
       "text": "Description"
     }
   }

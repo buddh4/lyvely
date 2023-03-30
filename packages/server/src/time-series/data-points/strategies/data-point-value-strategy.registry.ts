@@ -1,12 +1,12 @@
 import { useSingleton } from '@lyvely/common';
-import { DataPointValueStrategy } from '@/time-series/data-points/interfaces/data-point-value.strategy';
+import { IDataPointValueStrategy } from '@/time-series/data-points/strategies/data-point-value.strategy';
 import { Logger } from '@nestjs/common';
 
 export class DataPointValueStrategyRegistry {
-  private registry = new Map<string, DataPointValueStrategy>();
+  private registry = new Map<string, IDataPointValueStrategy>();
   private logger = new Logger(DataPointValueStrategyRegistry.name);
 
-  registerValueStrategy(valueType: string, strategy: DataPointValueStrategy) {
+  registerValueStrategy(valueType: string, strategy: IDataPointValueStrategy) {
     this.registry.set(valueType, strategy);
   }
 

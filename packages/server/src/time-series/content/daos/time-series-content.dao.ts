@@ -1,7 +1,7 @@
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { IFetchQueryOptions } from '@/core';
-import { TimeSeriesContent } from '@/time-series';
+import { TimeSeriesContent } from '@/time-series/content/schemas';
 import { AbstractContentDao } from '@/content';
 import { CalendarIntervalEnum } from '@lyvely/common';
 

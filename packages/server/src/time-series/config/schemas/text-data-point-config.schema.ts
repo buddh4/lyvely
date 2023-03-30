@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   DataPointInputType,
   DataPointValueType,
-  INumberDataPointSettings,
   ITextDataPointConfig,
   PropertyType,
   ITextDataPointConfigRevision,
@@ -10,6 +9,7 @@ import {
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { NestedSchema } from '@/core';
+import { pick } from 'lodash';
 
 const SupportedTextDataPointInputTypes = [DataPointInputType.Textarea];
 
@@ -44,23 +44,22 @@ export class TextDataPointConfig
   @Prop({ enum: SupportedTextDataPointInputTypes })
   inputType: DataPointInputType;
 
-  @Prop()
-  required?: boolean;
+  @Prop({ default: false })
+  required: boolean;
 
   @Prop({ type: [TextDataPointConfigRevisionSchema], default: [] })
   history: TextDataPointConfigRevision[];
 
-  constructor(inputType?: DataPointInputType, settings?: ITextDataPointSettings) {
-    super(DataPointValueType.Text, inputType, settings);
+  constructor(settings?: ITextDataPointSettings) {
+    super(DataPointValueType.Text, DataPointInputType.Textarea, settings);
   }
 
-  setSettings(settings?: INumberDataPointSettings) {
-    Object.assign(this, settings);
+  getSettings(): ITextDataPointSettings {
+    return pick(this, ['interval', 'userStrategy', 'required']);
   }
 
-  getSettings() {
-    const { required, interval } = this;
-    return { required, interval };
+  setSettings(settings: ITextDataPointSettings) {
+    Object.assign(this, pick(settings, ['interval', 'userStrategy', 'required']));
   }
 }
 

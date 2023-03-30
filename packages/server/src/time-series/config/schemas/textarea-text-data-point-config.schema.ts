@@ -1,8 +1,7 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPointInputType, DataPointValueType } from '@lyvely/common';
-import { DataPointConfigSchemaFactory } from '../components/data-point-config-schema.factory';
-import { DefaultDataPointConfig } from './data-point-config.schema';
-import { DataPointConfigFactory } from '../components/data-point-config.factory';
+import { DataPointConfigSchemaFactory, DataPointConfigFactory } from '../components';
+import { TextDataPointConfig } from './text-data-point-config.schema';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Text,
@@ -10,7 +9,7 @@ const strategy = DataPointConfigFactory.getStrategyName(
 );
 
 @Schema()
-export class TextareaTextDataPointConfig extends DefaultDataPointConfig {
+export class TextareaTextDataPointConfig extends TextDataPointConfig {
   strategy = strategy;
 
   @Prop({ enum: [DataPointValueType.Text], required: true, default: DataPointValueType.Text })
@@ -18,10 +17,6 @@ export class TextareaTextDataPointConfig extends DefaultDataPointConfig {
 
   @Prop({ enum: [DataPointInputType.Textarea], required: true, default: DataPointValueType.Text })
   inputType: DataPointInputType = DataPointInputType.Textarea;
-
-  constructor() {
-    super(DataPointValueType.Text, DataPointInputType.Textarea);
-  }
 }
 
 export const TextareaTextDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(

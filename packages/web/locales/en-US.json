@@ -59,6 +59,24 @@
       "5": "Daily"
     },
     "plan": {
+      "input_types": {
+        "checkbox": "Checkboxes",
+        "range": "Range",
+        "spinner": "Spinner",
+        "time": "Time"
+      },
+      "value_types": {
+        "number": "Number",
+        "text": "Text"
+      },
+      "fields": {
+        "max": "Max",
+        "min": "Min",
+        "optimal": "Optimal",
+        "score": "Score ★",
+        "required": "Is required?"
+      },
+      "timer_score_info": "The score is awarded for each achieved min, optimal, max result.",
       "nav-today": "Switch to today",
       "aria": {
         "move-success": "Item was successfully moved from index {from} to {to}",

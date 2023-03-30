@@ -8,6 +8,7 @@ import {
   HabitsEndpoint,
   TimerUpdateModel,
   UpdateHabitModel,
+  NumberDataPointModel,
 } from '@lyvely/common';
 import { HabitsService } from '../services/habits.service';
 import { HabitDataPointService } from '../services/habit-data-point.service';
@@ -19,9 +20,10 @@ import {
 } from '@/content';
 import { Policies } from '@/policies/decorators/policies.decorator';
 import { UseClassSerializer } from '@/core';
+import { DataPointModelConverter } from '@/time-series';
 
 @ContentTypeController('habits', Habit)
-// TODO: implement feature registration @Feature('content.activities.habits')F
+// TODO: implement feature registration @Feature('content.activities.habits')
 @UseClassSerializer()
 export class HabitsController
   extends AbstractContentTypeController<Habit, CreateHabitModel, UpdateHabitModel>
@@ -57,7 +59,7 @@ export class HabitsController
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,
-      dataPoint: dataPoint.toModel(),
+      dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
     });
   }
 
@@ -65,9 +67,8 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async startTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
-
     const dataPoint = await this.habitDataPointService.startTimer(profile, user, content, dto.date);
-    return dataPoint.toModel();
+    return DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint);
   }
 
   @Post(':cid/stop-timer')
@@ -79,7 +80,7 @@ export class HabitsController
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,
-      dataPoint: dataPoint.toModel(),
+      dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
     });
   }
 }

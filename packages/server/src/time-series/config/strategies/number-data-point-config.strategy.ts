@@ -1,12 +1,12 @@
 import { NumberDataPointConfig, NumberDataPointConfigRevision } from '../schemas';
-import { useDataPointConfigStrategyRegistry } from '../components';
-import { TimeSeriesConfigStrategy } from '../interfaces';
+import { useDataPointConfigStrategyRegistry } from './time-series-config-strategy.registry';
+import { ITimeSeriesConfigStrategy } from './time-series-config.strategy';
 import { DataPointInputType, DataPointValueType } from '@lyvely/common';
 import { isDefined } from 'class-validator';
 import { pick } from 'lodash';
 
 export class NumberDataPointConfigStrategy
-  implements TimeSeriesConfigStrategy<NumberDataPointConfig, NumberDataPointConfigRevision>
+  implements ITimeSeriesConfigStrategy<NumberDataPointConfig, NumberDataPointConfigRevision>
 {
   createRevision(config: NumberDataPointConfig): NumberDataPointConfigRevision {
     return new NumberDataPointConfigRevision(config);

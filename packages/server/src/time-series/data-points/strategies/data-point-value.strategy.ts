@@ -4,7 +4,7 @@ import { DataPointModel, FieldValidationException } from '@lyvely/common';
 import { UpdateQuerySet } from '@/core';
 import { User } from '@/users';
 
-export interface DataPointValueStrategy<
+export interface IDataPointValueStrategy<
   TModel extends TimeSeriesContent = any,
   TDataPoint extends DataPoint = any,
   TValue = any,

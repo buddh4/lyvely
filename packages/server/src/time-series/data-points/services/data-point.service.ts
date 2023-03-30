@@ -11,7 +11,7 @@ import { Profile, ProfilesService } from '@/profiles';
 import { EntityIdentity } from '@/core';
 import { DataPointDao } from '../daos';
 import { Inject } from '@nestjs/common';
-import { useDataPointValueStrategyRegistry } from '@/time-series/data-points/components/data-point-value-strategy.registry';
+import { useDataPointValueStrategyRegistry } from '@/time-series/data-points/strategies/data-point-value-strategy.registry';
 
 export abstract class DataPointService<
   TModel extends TimeSeriesContent,

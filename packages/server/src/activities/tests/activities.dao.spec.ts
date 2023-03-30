@@ -5,7 +5,13 @@ import { Model } from 'mongoose';
 import { ProfileDocument } from '@/profiles';
 import { ActivitiesDao } from '../daos/activities.dao';
 import { UserDocument } from '@/users';
-import { ActivityType, CalendarIntervalEnum, toTimingId, addDays, UserAssignmentStrategy } from '@lyvely/common';
+import {
+  ActivityType,
+  CalendarIntervalEnum,
+  toTimingId,
+  addDays,
+  UserAssignmentStrategy,
+} from '@lyvely/common';
 import { ActivityDocument, Habit, Task, UserDone } from '../schemas';
 import { ActivityTestDataUtil, createActivityTestingModule } from './utils/activities.test.utils';
 
@@ -67,7 +73,9 @@ describe('Activities DAO', () => {
 
       await activityData.createTask(user, profile);
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, user, [todayTimingId]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, user, [todayTimingId])
+      );
       expect(search.length).toEqual(1);
       expect(search[0].doneBy.length).toEqual(0);
     });
@@ -80,7 +88,9 @@ describe('Activities DAO', () => {
         model.doneBy = [new UserDone(user, todayTimingId, new Date())];
       });
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, user, [todayTimingId]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, user, [todayTimingId])
+      );
       expect(search.length).toEqual(1);
       expect(search[0].isDoneByUser(user)).toEqual(true);
     });
@@ -89,9 +99,13 @@ describe('Activities DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
 
-      await activityData.createTask(owner, profile, { userStrategy: UserAssignmentStrategy.Shared });
+      await activityData.createTask(owner, profile, {
+        userStrategy: UserAssignmentStrategy.Shared,
+      });
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTimingId]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTimingId])
+      );
       expect(search.length).toEqual(1);
       expect(search[0].doneBy.length).toEqual(0);
     });
@@ -111,7 +125,9 @@ describe('Activities DAO', () => {
         },
       );
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTimingId]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTimingId])
+      );
 
       expect(search.length).toEqual(1);
       expect(search[0].isDoneByUser(member)).toEqual(true);
@@ -132,7 +148,9 @@ describe('Activities DAO', () => {
         },
       );
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTimingId]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTimingId])
+      );
 
       expect(search.length).toEqual(1);
       expect(search[0].isDoneByUser(owner)).toEqual(true);
@@ -154,7 +172,9 @@ describe('Activities DAO', () => {
         },
       );
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid])
+      );
 
       expect(search.length).toEqual(0);
     });
@@ -167,7 +187,9 @@ describe('Activities DAO', () => {
         userStrategy: UserAssignmentStrategy.PerUser,
       });
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid])
+      );
 
       expect(search.length).toEqual(1);
     });
@@ -187,7 +209,9 @@ describe('Activities DAO', () => {
         },
       );
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid])
+      );
       expect(search.length).toEqual(1);
     });
 
@@ -203,11 +227,16 @@ describe('Activities DAO', () => {
           userStrategy: UserAssignmentStrategy.PerUser,
         },
         (model) => {
-          model.doneBy = [new UserDone(member, tomorrowTid, new Date()), new UserDone(owner, todayTid, new Date())];
+          model.doneBy = [
+            new UserDone(member, tomorrowTid, new Date()),
+            new UserDone(owner, todayTid, new Date()),
+          ];
         },
       );
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid])
+      );
       expect(search.length).toEqual(0);
     });
 
@@ -226,7 +255,9 @@ describe('Activities DAO', () => {
         },
       );
 
-      const search = <Task[]>await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid]);
+      const search = <Task[]>(
+        await activitiesDao.findByProfileAndTimingIds(profile, member, [todayTid])
+      );
       expect(search.length).toEqual(1);
     });
   });
@@ -316,8 +347,12 @@ describe('Activities DAO', () => {
   describe('findByProfileAndPlan', () => {
     it('assure we do find multiple of the same type', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await activityData.createHabit(user, profile, { interval: CalendarIntervalEnum.Daily });
-      const habit2 = await activityData.createHabit(user, profile, { interval: CalendarIntervalEnum.Daily });
+      const habit = await activityData.createHabit(user, profile, {
+        interval: CalendarIntervalEnum.Daily,
+      });
+      const habit2 = await activityData.createHabit(user, profile, {
+        interval: CalendarIntervalEnum.Daily,
+      });
 
       const result = await activitiesDao.findByProfileAndInterval(
         profile,
@@ -332,7 +367,9 @@ describe('Activities DAO', () => {
 
     it('assure we do not include an entry of another plan', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await activityData.createHabit(user, profile, { interval: CalendarIntervalEnum.Daily });
+      const habit = await activityData.createHabit(user, profile, {
+        interval: CalendarIntervalEnum.Daily,
+      });
       await activityData.createHabit(user, profile, { interval: CalendarIntervalEnum.Weekly });
 
       const result = await activitiesDao.findByProfileAndInterval(
@@ -347,7 +384,9 @@ describe('Activities DAO', () => {
 
     it('assure we do not include an entry of another type', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await activityData.createHabit(user, profile, { interval: CalendarIntervalEnum.Daily });
+      const habit = await activityData.createHabit(user, profile, {
+        interval: CalendarIntervalEnum.Daily,
+      });
       await activityData.createTask(user, profile, { interval: CalendarIntervalEnum.Daily });
 
       const result = await activitiesDao.findByProfileAndInterval(
@@ -362,8 +401,12 @@ describe('Activities DAO', () => {
 
     it('find with exclude', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await activityData.createHabit(user, profile, { interval: CalendarIntervalEnum.Daily });
-      const habit2 = await activityData.createHabit(user, profile, { interval: CalendarIntervalEnum.Daily });
+      const habit = await activityData.createHabit(user, profile, {
+        interval: CalendarIntervalEnum.Daily,
+      });
+      const habit2 = await activityData.createHabit(user, profile, {
+        interval: CalendarIntervalEnum.Daily,
+      });
 
       const result = await activitiesDao.findByProfileAndInterval(
         profile,

@@ -1,11 +1,11 @@
 import { TextDataPointConfig, TextDataPointConfigRevision } from '../schemas';
-import { useDataPointConfigStrategyRegistry } from '../components';
-import { TimeSeriesConfigStrategy } from '../interfaces';
+import { useDataPointConfigStrategyRegistry } from './time-series-config-strategy.registry';
+import { ITimeSeriesConfigStrategy } from './time-series-config.strategy';
 import { DataPointValueType } from '@lyvely/common';
 import { pick } from 'lodash';
 
 export class TextDataPointConfigStrategy
-  implements TimeSeriesConfigStrategy<TextDataPointConfig, TextDataPointConfigRevision>
+  implements ITimeSeriesConfigStrategy<TextDataPointConfig, TextDataPointConfigRevision>
 {
   createRevision(config: TextDataPointConfig): TextDataPointConfigRevision {
     return new TextDataPointConfigRevision(config);

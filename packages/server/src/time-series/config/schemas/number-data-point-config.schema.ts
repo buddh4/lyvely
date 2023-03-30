@@ -7,6 +7,7 @@ import {
   INumberDataPointConfigRevision,
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
+import { pick } from 'lodash';
 
 @Schema({ _id: false })
 export class NumberDataPointConfigRevision
@@ -70,12 +71,12 @@ export class NumberDataPointConfig
   }
 
   setSettings(settings?: INumberDataPointSettings) {
-    Object.assign(this, settings);
+    Object.assign(this, pick(settings, ['min', 'max', 'optimal', 'interval', 'userStrategy']));
   }
 
   getSettings() {
-    const { min, max, optimal, interval } = this;
-    return { min, max, optimal, interval };
+    const { min, max, optimal, interval, userStrategy } = this;
+    return { min, max, optimal, interval, userStrategy };
   }
 }
 

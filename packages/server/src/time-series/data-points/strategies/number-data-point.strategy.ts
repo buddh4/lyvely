@@ -1,17 +1,17 @@
 import {
-  DataPointValueStrategy,
+  IDataPointValueStrategy,
   InvalidDataPointValueTypeException,
-} from '@/time-series/data-points/interfaces/data-point-value.strategy';
+} from '@/time-series/data-points/strategies/data-point-value.strategy';
 import { NumberDataPoint } from '../schemas';
 import { NumberTimeSeriesContent } from '@/time-series/content';
 import { isDefined, isNumber } from 'class-validator';
 import { DataPointInputType, DataPointValueType, NumberDataPointModel } from '@lyvely/common';
 import { User } from '@/users';
 import { assureStringId, UpdateQuerySet } from '@/core';
-import { useDataPointValueStrategyRegistry } from '@/time-series/data-points/components/data-point-value-strategy.registry';
+import { useDataPointValueStrategyRegistry } from '@/time-series/data-points/strategies/data-point-value-strategy.registry';
 
 export class NumberDataPointStrategy
-  implements DataPointValueStrategy<NumberTimeSeriesContent, NumberDataPoint, number>
+  implements IDataPointValueStrategy<NumberTimeSeriesContent, NumberDataPoint, number>
 {
   prepareValue(model: NumberTimeSeriesContent, dataPoint: NumberDataPoint, value: number): number {
     if (!isNumber(value)) throw new InvalidDataPointValueTypeException();

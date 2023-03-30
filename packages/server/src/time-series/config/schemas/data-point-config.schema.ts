@@ -78,7 +78,9 @@ export abstract class DataPointConfig<
     this.inputType = inputType;
     this.interval = settings?.interval;
     this.history = [];
-    this.setSettings(settings);
+    if (settings) {
+      this.setSettings(settings);
+    }
   }
 }
 

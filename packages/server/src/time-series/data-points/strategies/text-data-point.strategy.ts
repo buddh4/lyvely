@@ -1,15 +1,16 @@
 import {
-  DataPointValueStrategy,
+  IDataPointValueStrategy,
   InvalidDataPointValueTypeException,
-} from '@/time-series/data-points/interfaces/data-point-value.strategy';
-import { TextDataPoint, TextTimeSeriesContent } from '@/time-series';
+} from '@/time-series/data-points/strategies/data-point-value.strategy';
+import { TextDataPoint } from '../schemas';
+import { TextTimeSeriesContent } from '@/time-series/content';
 import { isString } from 'class-validator';
 import { DataPointValueType, TextDataPointModel } from '@lyvely/common';
-import { useDataPointValueStrategyRegistry } from '@/time-series/data-points/components/data-point-value-strategy.registry';
+import { useDataPointValueStrategyRegistry } from '@/time-series/data-points/strategies/data-point-value-strategy.registry';
 import { assureStringId } from '@/core';
 
 export class TextDataPointStrategy
-  implements DataPointValueStrategy<TextTimeSeriesContent, TextDataPoint, string>
+  implements IDataPointValueStrategy<TextTimeSeriesContent, TextDataPoint, string>
 {
   prepareValue(model: TextTimeSeriesContent, dataPoint: TextDataPoint, value: string): string {
     if (!isString(value)) throw new InvalidDataPointValueTypeException();

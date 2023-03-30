@@ -33,8 +33,8 @@ export abstract class AbstractContentTypeController<
   protected abstract updateResponseType: Type<ContentUpdateResponse<TModel>>;
   protected abstract contentService: AbstractContentTypeService<TContent, TCreateModel>;
 
-  @Post()
   //@ProfilePermissions(ActivityPermissions.CREATE)
+  @Post()
   async create(
     @Body() body: TCreateModel,
     @Request() req: ProfileRequest,
