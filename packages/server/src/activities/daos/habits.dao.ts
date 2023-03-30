@@ -12,13 +12,6 @@ export class HabitsDao extends AbstractContentDao<Habit> {
     super();
   }
 
-  async getNextSortOrder(profile: Profile) {
-    const maxSortOrderEntry = await this.findAllByProfile(profile, {}, { sort: { 'meta.sortOrder': -1 }, limit: 1 });
-    return !maxSortOrderEntry.length || typeof maxSortOrderEntry[0].meta.sortOrder !== 'number'
-      ? 0
-      : maxSortOrderEntry[0].meta.sortOrder + 1;
-  }
-
   getModelConstructor() {
     return Habit;
   }

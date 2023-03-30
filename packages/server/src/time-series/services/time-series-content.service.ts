@@ -8,9 +8,10 @@ import {
   SortResult,
   isInFuture,
 } from '@lyvely/common';
-import { DataPoint, DataPointService, TimeSeriesContent } from '@/time-series';
-import { TimeSeriesContentDao } from '@/time-series/daos/time-series-content.dao';
+import { DataPoint, DataPointService } from '../data-points';
+import { TimeSeriesContent, TimeSeriesContentDao } from '../content';
 import { assureObjectId, EntityIdentity, QuerySort } from '@/core';
+import { DataPointConfigHandler } from '@/time-series';
 
 export interface ITimeSeriesContentSearchResult<
   TModel extends TimeSeriesContent,
@@ -47,7 +48,7 @@ export abstract class TimeSeriesContentService<
   }
 
   /**
-   * Re-sorts the given activity by means of the new index and updates the sortOrder of other activities with the same
+   * Re-sorts the given time series content entries by means of the new index and updates the sortOrder of other activities with the same
    * calendar plan accordingly.
    *
    * @param profile
@@ -90,7 +91,7 @@ export abstract class TimeSeriesContentService<
       // Create new revision for activity in case the latest revision was not today
       const update = { 'config.timeSeries.interval': interval };
 
-      model.applyTimeSeriesConfigUpdate({ interval });
+      DataPointConfigHandler.applyUpdate(model, { interval });
       update['config.timeSeries.history'] = model.timeSeriesConfig.history;
 
       await this.contentDao.updateOneByProfileAndIdSet(profile, model, update);

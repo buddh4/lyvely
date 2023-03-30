@@ -5,9 +5,9 @@ import {
   ActivityType,
   CalendarIntervalEnum,
   CreateHabitModel,
+  DataPointInputType,
   PropertiesOf,
   UpdateHabitModel,
-  DataPointInputType,
   UserAssignmentStrategy,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
@@ -78,18 +78,6 @@ describe('HabitService', () => {
       expect(habit1.meta.sortOrder).toEqual(0);
       expect(habit2.meta.sortOrder).toEqual(1);
     });
-
-    it('create duplicate', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      await testData.createHabit(user, profile);
-
-      try {
-        await testData.createHabit(user, profile);
-        expect(true).toBeFalsy();
-      } catch (err) {
-        expect(err).toBeDefined();
-      }
-    });
   });
 
   describe('applyUpdate', () => {
@@ -125,6 +113,37 @@ describe('HabitService', () => {
       expect(search.tagIds[0]).toEqual(profile.tags[0]._id);
       expect(profile.tags.length).toEqual(1);
       expect(profile.tags[0].name).toEqual('SomeCategory');
+    });
+
+    it('assure checkbox constraint', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habit = await testData.createHabit(
+        user,
+        profile,
+        new CreateHabitModel({
+          title: 'Test',
+          interval: CalendarIntervalEnum.Daily,
+          inputType: DataPointInputType.Checkbox,
+          max: 2,
+          min: 1,
+          optimal: 1,
+          score: 2,
+        }),
+      );
+
+      habit.applyUpdate(
+        new UpdateHabitModel({
+          title: 'Test',
+          interval: CalendarIntervalEnum.Weekly,
+          inputType: DataPointInputType.Checkbox,
+          max: 16,
+          min: 1,
+          optimal: 2,
+          score: 2,
+        }),
+      );
+
+      expect(habit.config.timeSeries.max).toEqual(8);
     });
 
     it('update data point config creates revision', async () => {

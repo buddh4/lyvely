@@ -1,6 +1,6 @@
 import { Content } from '../schemas';
 import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@/core';
-import { BaseProfileModelDao } from '@/profiles';
+import { BaseProfileModelDao, Profile } from '@/profiles';
 import { User } from '@/users';
 import { UpdateQuery } from 'mongoose';
 import { SortResult } from '@lyvely/common';
@@ -48,6 +48,17 @@ export abstract class AbstractContentDao<T extends Content> extends BaseProfileM
 
     await this.updateSetBulk(updates);
     return result;
+  }
+
+  async getNextSortOrder(profile: Profile) {
+    const maxSortOrderEntry = await this.findAllByProfile(
+      profile,
+      {},
+      { sort: <any>{ 'meta.sortOrder': -1 }, limit: 1 },
+    );
+    return !maxSortOrderEntry.length || typeof maxSortOrderEntry[0].meta.sortOrder !== 'number'
+      ? 0
+      : maxSortOrderEntry[0].meta.sortOrder + 1;
   }
 
   createUserUpdateQuery(

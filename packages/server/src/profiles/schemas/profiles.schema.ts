@@ -143,6 +143,10 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
     return this.tags.filter((tag) => tagNames.includes(tag.name));
   }
 
+  getTagIdsByName(tagNames: string[]) {
+    return this.getTagsByName(tagNames).map((tag) => assureObjectId(tag.id));
+  }
+
   getTagById(id: TObjectId) {
     return this.tags.find((tag) => tag._id.equals(id));
   }

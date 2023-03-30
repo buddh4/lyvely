@@ -1,8 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   CheckboxNumberDataPointConfig,
+  DataPointConfig,
   DataPointConfigFactory,
   DataPointConfigSchema,
+  DataPointConfigHandler,
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
@@ -10,9 +12,19 @@ import {
   TimeSeriesConfigSchemaFactory,
   TimeSeriesContent,
 } from '@/time-series';
-import { DataPointInputType, DataPointValueType, ITimeSeriesContentConfig } from '@lyvely/common';
+import {
+  CreateJournalModel,
+  DataPointInputType,
+  DataPointValueType,
+  ITimeSeriesContentConfig,
+  PropertiesOf,
+  UpdateHabitModel,
+  UpdateJournalModel,
+} from '@lyvely/common';
 import { User } from '@/users';
-import { NestedSchema } from '@/core';
+import { assureObjectId, NestedSchema } from '@/core';
+import { Profile } from '@/profiles';
+import { ContentDataType } from '@/content';
 
 type JournalDataPointConfig =
   | TextareaTextDataPointConfig
@@ -25,6 +37,10 @@ type JournalDataPointConfig =
 export class JournalConfig implements ITimeSeriesContentConfig {
   @Prop({ type: DataPointConfigSchema, required: true })
   timeSeries: JournalDataPointConfig;
+
+  constructor(timeSeries: JournalDataPointConfig) {
+    this.timeSeries = timeSeries;
+  }
 }
 
 export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(JournalConfig, [
@@ -43,8 +59,24 @@ export class Journal extends TimeSeriesContent<Journal> {
   @Prop({ type: JournalConfigSchema, required: true })
   config: JournalConfig;
 
-  applyUpdate(update: any) {
-    // TODO: implement
+  public static create(profile: Profile, owner: User, update: PropertiesOf<CreateJournalModel>) {
+    const { title, text } = update;
+    return new Journal(profile, owner, {
+      content: new ContentDataType({ title, text }),
+      tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
+      config: new JournalConfig(
+        DataPointConfigFactory.createConfig(update.type, update.inputType, update),
+      ),
+    });
+  }
+
+  applyUpdate(update: UpdateJournalModel) {
+    DataPointConfigHandler.applyUpdate(this, update);
+    this.applyContentUpdate({
+      title: update.title ?? this.content.title,
+      text: update.text ?? this.content.text,
+    });
+    return this;
   }
 
   getDefaultConfig(): any {
@@ -60,10 +92,6 @@ export class Journal extends TimeSeriesContent<Journal> {
 
   toModel(user?: User): any {
     return '';
-  }
-
-  createTimeSeriesConfigRevision() {
-    return null;
   }
 }
 

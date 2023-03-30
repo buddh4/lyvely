@@ -11,8 +11,6 @@ import {
   DataPointValueType,
   PropertyType,
   TaskModel,
-  Type,
-  ContentModel,
 } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '@/users';
@@ -93,9 +91,8 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
   }
 
   applyUpdate(update: UpdateTaskModel) {
-    this.applyTimeSeriesConfigUpdate({
-      interval: update.interval ?? this.timeSeriesConfig.interval,
-    });
+    // We only need to update the interval, all other time series config values are static
+    this.timeSeriesConfig.interval = update.interval ?? this.timeSeriesConfig.interval;
     this.applyContentUpdate({
       title: update.title ?? this.content.title,
       text: update.title ?? this.content.text,
@@ -163,10 +160,6 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
         this.doneBy.push(new UserDone(uid, tid, date));
       }
     }
-  }
-
-  createTimeSeriesConfigRevision() {
-    return null; // We do not want to create revisions for tasks
   }
 
   public static create(profile: Profile, owner: User, update: PropertiesOf<CreateTaskModel>): Task {

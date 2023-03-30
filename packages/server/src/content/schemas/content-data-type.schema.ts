@@ -13,6 +13,12 @@ export class ContentDataType<T extends IContentDataType = any>
   @Prop()
   text?: string;
 
+  constructor(obj: Partial<ContentDataType>) {
+    super();
+    this.title = obj.title;
+    this.text = obj.text;
+  }
+
   getTitle(): string {
     return this.title;
   }

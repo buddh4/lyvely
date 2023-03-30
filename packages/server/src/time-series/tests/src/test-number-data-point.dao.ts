@@ -2,7 +2,7 @@ import { TestNumberDataPoint, TestNumberDataPointDocument } from './test-data-po
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { NumberDataPointDao } from '../../daos/number-data-point.dao';
+import { NumberDataPointDao } from '../../data-points/daos/number-data-point.dao';
 
 @Injectable()
 export class TestNumberDataPointDao extends NumberDataPointDao<TestNumberDataPoint> {

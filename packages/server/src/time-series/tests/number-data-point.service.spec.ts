@@ -2,7 +2,12 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createContentTestingModule, TestDataUtils } from '@/test';
 import { TestNumberDataPoint, TestNumberDataPointSchema } from './src/test-data-point.schema';
-import { CalendarIntervalEnum, DataPointIntervalFilter, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
+import {
+  CalendarIntervalEnum,
+  DataPointIntervalFilter,
+  toTimingId,
+  UserAssignmentStrategy,
+} from '@lyvely/common';
 import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
 import { TestNumberDataPointService } from './src/test-number-data-point.service';
 import {
@@ -12,7 +17,7 @@ import {
 } from './src/test-time-series-content.schema';
 import { Content, ContentSchema } from '@/content';
 import { Model } from 'mongoose';
-import { CheckboxNumberDataPointConfig } from '../schemas';
+import { CheckboxNumberDataPointConfig } from '@/time-series';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
 
@@ -22,7 +27,9 @@ const Models = [
     name: Content.name,
     collection: Content.collectionName(),
     schema: ContentSchema,
-    discriminators: [{ name: TestNumberTimeSeriesContent.name, schema: TestNumberTimeSeriesContentSchema }],
+    discriminators: [
+      { name: TestNumberTimeSeriesContent.name, schema: TestNumberTimeSeriesContentSchema },
+    ],
   },
 ];
 
@@ -30,7 +37,6 @@ describe('NumberDataPointService', () => {
   let testingModule: TestingModule;
   let testData: TestDataUtils;
   let service: TestNumberDataPointService;
-  let dao: TestNumberDataPointDao;
   let TestNumberTimeSeriesContentModel: Model<TestNumberTimeSeriesContentDocument>;
 
   const TEST_KEY = 'NumberDataPointService';
@@ -43,10 +49,9 @@ describe('NumberDataPointService', () => {
     ).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
     service = testingModule.get<TestNumberDataPointService>(TestNumberDataPointService);
-    dao = testingModule.get<TestNumberDataPointDao>(TestNumberDataPointDao);
-    TestNumberTimeSeriesContentModel = testingModule.get<Model<TestNumberTimeSeriesContentDocument>>(
-      'TestNumberTimeSeriesContentModel',
-    );
+    TestNumberTimeSeriesContentModel = testingModule.get<
+      Model<TestNumberTimeSeriesContentDocument>
+    >('TestNumberTimeSeriesContentModel');
   });
 
   async function createTimeSeriesContent(

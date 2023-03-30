@@ -4,7 +4,7 @@ import { AbstractContentTypeService } from '@/content';
 import { HabitsDao } from '../daos/habits.dao';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { CreateHabitModel, UpdateTaskModel } from '@lyvely/common';
+import { CreateHabitModel, UpdateHabitModel } from '@lyvely/common';
 
 @Injectable()
 export class HabitsService extends AbstractContentTypeService<Habit, CreateHabitModel> {
@@ -16,6 +16,7 @@ export class HabitsService extends AbstractContentTypeService<Habit, CreateHabit
   protected async createInstance(profile: Profile, user: User, model: CreateHabitModel) {
     const instance = Habit.create(profile, user, model);
     instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
+
     return instance;
   }
 
@@ -23,7 +24,7 @@ export class HabitsService extends AbstractContentTypeService<Habit, CreateHabit
     profile: Profile,
     user: User,
     content: Habit,
-    model: UpdateTaskModel,
+    model: UpdateHabitModel,
   ) {
     return content.applyUpdate(model);
   }

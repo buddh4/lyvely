@@ -15,7 +15,7 @@ import { TestNumberDataPointDao } from './src/test-number-data-point.dao';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { TestTimeSeriesContent } from './src/test-time-series-content.schema';
-import { CheckboxNumberDataPointConfig } from '../schemas';
+import { CheckboxNumberDataPointConfig } from '@/time-series';
 
 const DataPointModelDefinition = [
   { name: TestNumberDataPoint.name, schema: TestNumberDataPointSchema },

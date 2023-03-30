@@ -15,15 +15,19 @@ import { ContentDocument } from '@/content';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
+  DataPointConfigHandler,
+  NumberDataPointConfig,
   NumberDataPointConfigRevision,
   NumberTimeSeriesContentConfig,
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   TimeNumberDataPointConfig,
   TimeSeriesConfigSchemaFactory,
+  useDataPointConfigStrategyRegistry,
 } from '@/time-series';
 import { assureObjectId } from '@/core';
 import { ContentDataType } from '@/content/schemas/content-data-type.schema';
+import { pick } from 'lodash';
 
 export type HabitDocument = Habit & ContentDocument;
 
@@ -62,13 +66,25 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
     update.inputType = update.inputType || DataPointInputType.Checkbox;
 
     const result = new Habit(profile, owner, {
-      content: new ContentDataType({ title: update.title, text: update.text }),
-      tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
+      content: new ContentDataType(update),
+      tagIds: profile.getTagIdsByName(update.tagNames),
       config: new HabitConfig({
         score: update.score,
-        timeSeries: _createDataPointConfigFromUpdate(update),
+        timeSeries: DataPointConfigFactory.createConfig<NumberDataPointConfig>(
+          DataPointValueType.Number,
+          update.inputType,
+          {
+            min: update.min,
+            max: update.max,
+            interval: update.interval,
+            optimal: update.optimal,
+            userStrategy: update.userStrategy,
+          },
+        ),
       }),
     });
+
+    DataPointConfigHandler.prepareConfig(result);
 
     if (history) result.timeSeriesConfig.history = history;
     return result;
@@ -79,15 +95,7 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
   }
 
   applyUpdate(update: UpdateHabitModel) {
-    this.applyTimeSeriesConfigUpdate({
-      max: update.max ?? this.timeSeriesConfig.max,
-      min: update.min ?? this.timeSeriesConfig.min,
-      optimal: update.optimal ?? this.timeSeriesConfig.optimal,
-      inputType: update.inputType ?? this.timeSeriesConfig.inputType,
-      userStrategy: update.userStrategy ?? this.timeSeriesConfig.userStrategy,
-      interval: update.interval ?? this.timeSeriesConfig.interval,
-    });
-
+    DataPointConfigHandler.applyUpdate(this, update);
     this.applyContentUpdate({
       title: update.title ?? this.content.title,
       text: update.text ?? this.content.text,
@@ -95,20 +103,6 @@ export class Habit extends Activity implements PropertiesOf<HabitModel> {
 
     return this;
   }
-}
-
-function _createDataPointConfigFromUpdate(dto: UpdateHabitModel) {
-  return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
-    DataPointValueType.Number,
-    dto.inputType,
-    {
-      min: dto.min,
-      max: dto.max,
-      interval: dto.interval,
-      optimal: dto.optimal,
-      userStrategy: dto.userStrategy,
-    },
-  );
 }
 
 export const HabitSchema = SchemaFactory.createForClass(Habit);

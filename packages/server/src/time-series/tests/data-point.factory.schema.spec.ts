@@ -6,7 +6,7 @@ import {
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
-} from '../schemas';
+} from '@/time-series';
 import {
   DataPointInputType,
   DataPointValueType,
@@ -122,7 +122,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       );
       expect(config.inputType).toEqual(DataPointInputType.Textarea);
       expect(config.valueType).toEqual(DataPointValueType.Text);
-      expect(config.getSettings()).toBeUndefined();
+      expect(config.getSettings()).toEqual({});
     });
 
     function expectConfig(

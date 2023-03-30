@@ -10,7 +10,11 @@ import {
 } from './src/test-time-series-content.schema';
 import { Model } from 'mongoose';
 import { CalendarIntervalEnum, DataPointValueType, DataPointInputType } from '@lyvely/common';
-import { CheckboxNumberDataPointConfig, DataPointConfigFactory, RangeNumberDataPointConfig } from '../schemas';
+import {
+  CheckboxNumberDataPointConfig,
+  DataPointConfigFactory,
+  RangeNumberDataPointConfig,
+} from '@/time-series';
 
 const ContentModels = [
   {
@@ -32,7 +36,9 @@ describe('TimeSeriesContentSchema', () => {
   beforeEach(async () => {
     testingModule = await createContentTestingModule(TEST_KEY, [], ContentModels).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    TestTimeSeriesContentModel = testingModule.get<Model<TestTimeSeriesContentDocument>>('TestTimeSeriesContentModel');
+    TestTimeSeriesContentModel = testingModule.get<Model<TestTimeSeriesContentDocument>>(
+      'TestTimeSeriesContentModel',
+    );
     app = testingModule.createNestApplication();
     await app.init();
   });
@@ -90,7 +96,10 @@ describe('TimeSeriesContentSchema', () => {
       expect(entity._id).toBeDefined();
       const timeSeriesConfig = <CheckboxNumberDataPointConfig>entity.toObject().config.timeSeries;
       expect(timeSeriesConfig.strategy).toEqual(
-        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
+        DataPointConfigFactory.getStrategyName(
+          DataPointValueType.Number,
+          DataPointInputType.Checkbox,
+        ),
       );
       expect(timeSeriesConfig.min).toEqual(0);
       expect(timeSeriesConfig.max).toEqual(5);
@@ -122,7 +131,10 @@ describe('TimeSeriesContentSchema', () => {
       const timeSeriesConfig = <CheckboxNumberDataPointConfig>newModel.timeSeriesConfig;
       expect(timeSeriesConfig instanceof CheckboxNumberDataPointConfig).toEqual(true);
       expect(timeSeriesConfig.strategy).toEqual(
-        DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
+        DataPointConfigFactory.getStrategyName(
+          DataPointValueType.Number,
+          DataPointInputType.Checkbox,
+        ),
       );
       expect(timeSeriesConfig.min).toEqual(0);
       expect(timeSeriesConfig.max).toEqual(5);
@@ -136,7 +148,10 @@ describe('TimeSeriesContentSchema', () => {
         config: {
           timeSeries: <CheckboxNumberDataPointConfig>{
             interval: CalendarIntervalEnum.Daily,
-            strategy: DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
+            strategy: DataPointConfigFactory.getStrategyName(
+              DataPointValueType.Number,
+              DataPointInputType.Range,
+            ),
             min: 0,
             max: 5,
             optimal: 3,

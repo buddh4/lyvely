@@ -1,6 +1,6 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { NumberDataPoint, DataPoint } from '../../schemas';
+import { NumberDataPoint, DataPoint } from '@/time-series';
 
 @Schema()
 export class TestDataPoint extends DataPoint {}

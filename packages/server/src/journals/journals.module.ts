@@ -15,8 +15,9 @@ import {
 } from './schemas';
 import { DataPointValueType } from '@lyvely/common';
 import { JournalDataPointDao, JournalsDao } from './daos';
-import { JournalsService, JournalDataPointService } from './services/';
+import { JournalTimeSeriesService, JournalDataPointService } from './services/';
 import { JournalsController } from './controllers';
+import { JournalsService } from '@/journals/services/journals.service';
 
 @Module({
   controllers: [JournalsController],
@@ -44,6 +45,12 @@ import { JournalsController } from './controllers';
       },
     ]),
   ],
-  providers: [JournalsDao, JournalsService, JournalDataPointDao, JournalDataPointService],
+  providers: [
+    JournalsDao,
+    JournalsService,
+    JournalTimeSeriesService,
+    JournalDataPointDao,
+    JournalDataPointService,
+  ],
 })
 export class JournalsModule {}

@@ -101,14 +101,14 @@ export abstract class AbstractContentTypeService<
       this.setUpdatedBy(updateSet, user);
     }
 
-    if (options.tagNames) {
+    if (options?.tagNames) {
       await this.mergeTagsForUpdate(profile, updateSet, options?.tagNames);
     }
 
     return this.contentDao
       .updateOneByProfileAndIdSet(profile, content, updateSet, options)
       .then((result) => {
-        if (options.liveUpdate !== false) {
+        if (options?.liveUpdate !== false) {
           this.contentEvents.emitContentUpdated(content);
         }
         return result;

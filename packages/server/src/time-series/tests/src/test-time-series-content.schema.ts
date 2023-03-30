@@ -9,9 +9,16 @@ import {
   DataPointConfigFactory,
   TextareaTextDataPointConfig,
   NumberTimeSeriesContentConfig,
-} from '../../schemas';
+} from '@/time-series';
 import * as mongoose from 'mongoose';
-import { DataPointInputType, DataPointValueType, ITimeSeriesContentConfig } from '@lyvely/common';
+import {
+  ContentModel,
+  DataPointInputType,
+  DataPointValueType,
+  IContent,
+  ITimeSeriesContentConfig,
+} from '@lyvely/common';
+import { User } from '@/users';
 
 type TestDataPointConfig = CheckboxNumberDataPointConfig | TextareaTextDataPointConfig;
 
@@ -37,8 +44,8 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
   @Prop()
   someTestField: string;
 
-  createTimeSeriesConfigRevision() {
-    return null;
+  toModel(user?: User): ContentModel<IContent<any, any>, any> {
+    throw new Error('Method not implemented.');
   }
 }
 
@@ -68,6 +75,10 @@ export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNum
 
   @Prop({ type: TestNumberTimeSeriesConfigSchema, required: true })
   config: TestNumberTimeSeriesConfig;
+
+  toModel(user?: User): ContentModel<IContent<any, any>, any> {
+    throw new Error('Method not implemented.');
+  }
 }
 
 export type TestNumberTimeSeriesContentDocument = TestNumberTimeSeriesContent & mongoose.Document;
