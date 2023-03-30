@@ -55,12 +55,10 @@ const { model } = toRefs(props);
     <div class="overflow-hidden relative flex-grow">
       <div class="entry-title-bar flex items-center">
         <slot name="pre-title"></slot>
-        <div
-          class="whitespace-nowrap overflow-hidden overflow-ellipsis cursor-pointer"
-          @click="showDetails">
+        <div class="cursor-pointer" @click="showDetails">
           <slot name="title">
             <div class="flex items-center">
-              <span class="whitespace-nowrap overflow-hidden">
+              <span>
                 {{ model.content.title }}
               </span>
               <ly-badge v-if="model.meta.isArchived" class="bg-danger ml-2">
@@ -69,7 +67,6 @@ const { model } = toRefs(props);
             </div>
           </slot>
         </div>
-        <div class="overflow-item"></div>
       </div>
       <tag-list class="mt-2" :tag-ids="model.tagIds" @select="selectTag" />
     </div>
