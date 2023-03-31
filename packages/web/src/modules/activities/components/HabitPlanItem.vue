@@ -1,15 +1,13 @@
 <script lang="ts" setup>
-import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { DataPointInputType, HabitModel, NumberDataPointModel } from '@lyvely/common';
+import { HabitModel, NumberDataPointModel } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
-import { useCalendarPlanStore } from '@/modules/calendar-plan/stores/calendar-plan.store';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
 import { useDebounceFn } from '@vueuse/core';
-import TimerState from '@/modules/calendar/components/TimerState.vue';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
+import CalendarPlanNumberInput from '@/modules/calendar-plan/components/CalendarPlanNumberInput.vue';
 
 export interface IProps {
   model: HabitModel;
@@ -26,7 +24,7 @@ const { getDataPoint } = habitStore;
 const dataPoint = computed(() => getDataPoint(props.model) as NumberDataPointModel);
 
 onMounted(async () => {
-  await habitStore.getDataPoint(props.model);
+  await getDataPoint(props.model);
   initialized.value = true;
 });
 
@@ -44,30 +42,6 @@ const updateSelection = useDebounceFn((selection: number, oldValue?: number) => 
   habitStore.updateDataPoint(dataPoint.value, selection, oldValue);
 }, 500);
 
-const inputBorderColorClass = computed(() => {
-  const color = inputColorClass.value;
-  return color.length ? `border-${color}` : color;
-});
-
-const inputColorClass = computed(() => {
-  if (props.model.timeSeriesConfig.min && selection.value <= props.model.timeSeriesConfig.min) {
-    return 'warning';
-  }
-
-  if (
-    props.model.timeSeriesConfig.optimal &&
-    selection.value >= props.model.timeSeriesConfig.optimal!
-  ) {
-    return 'success';
-  }
-
-  if (selection.value) {
-    return 'info';
-  }
-
-  return '';
-});
-
 async function startTimer() {
   if (!dataPoint.value.timer?.isStarted()) {
     await useHabitPlanStore().startTimer(props.model);
@@ -79,13 +53,7 @@ async function stopTimer() {
     await useHabitPlanStore().stopTimer(props.model);
   }
 }
-
-const isPresentInterval = computed(() =>
-  useCalendarPlanStore().isPresentInterval(props.model.timeSeriesConfig.interval),
-);
-
 const timer = computed(() => dataPoint.value.timer!);
-//TODO: Maybe implement move to next interval with Ctrl + Left/Right
 </script>
 
 <template>
@@ -99,57 +67,15 @@ const timer = computed(() => dataPoint.value.timer!);
       <content-dropdown :content="model" />
     </template>
     <template #rating>
-      <item-checkbox-list
-        v-if="model.timeSeriesConfig.inputType === DataPointInputType.Checkbox"
-        v-model:selection="selection"
-        :min="model.timeSeriesConfig.min"
-        :max="model.timeSeriesConfig.max"
-        :optimal="model.timeSeriesConfig.optimal"
-        :disabled="isDisabled" />
-      <ly-input-number
-        v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Spinner"
+      <calendar-plan-number-input
         v-model="selection"
-        :input-class="['calendar-plan-spinner-input text-sm bg-main', inputBorderColorClass]"
-        :min="0"
-        :max="model.timeSeriesConfig.max"
-        :disabled="isDisabled" />
-      <div
-        v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Range"
-        class="flex items-center gap-2">
-        <span class="text-sm">{{ selection }}</span>
-        <ly-input-range
-          v-model="selection"
-          :input-class="['calendar-plan-range-input', inputColorClass]"
-          :min="0"
-          :max="model.timeSeriesConfig.max"
-          :disabled="isDisabled" />
-      </div>
-      <timer-state
-        v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Time"
-        :key="timer.calculateTotalSpan()"
-        :model="timer"
-        :min="model.timeSeriesConfig.min"
-        :max="model.timeSeriesConfig.max"
-        :optimal="model.timeSeriesConfig.optimal"
-        :startable="isPresentInterval"
-        @start="startTimer"
-        @stop="stopTimer"
-        @update="updateSelection" />
+        :config="model.timeSeriesConfig"
+        :timer="timer"
+        :disabled="isDisabled"
+        @start-timer="startTimer"
+        @stop-timer="stopTimer" />
     </template>
   </calendar-plan-item>
 </template>
 
-<style>
-.calendar-plan-spinner-input {
-  max-width: 130px;
-  float: right;
-  clear: both;
-}
-
-.calendar-plan-range-input {
-  max-width: 130px;
-  direction: rtl;
-  float: right;
-  clear: both;
-}
-</style>
+<style></style>

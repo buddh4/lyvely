@@ -19,9 +19,12 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
   async updateDataPointValue(
     uid: EntityIdentity<User>,
     dataPoint: DataPoint<any>,
-    newValue: T['value'],
+    value: T['value'],
   ) {
-    return await this.updateOneSetById(dataPoint as EntityIdentity<T>, { value: newValue });
+    return await this.updateOneSetById(dataPoint as EntityIdentity<T>, {
+      valueType: dataPoint.valueType,
+      value,
+    });
   }
 
   async findDataPointByDate(content: TimeSeriesContent, date: CalendarDate) {

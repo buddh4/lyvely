@@ -1,3 +1,9 @@
 {
-  "activities": {}
+  "journals": {
+    "plan": {
+      "text": {
+        "placeholder": "Write something..."
+      }
+    }
+  }
 }

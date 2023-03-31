@@ -1,4 +1,10 @@
-import { CalendarIntervalEnum } from '@lyvely/common';
+import {
+  CalendarIntervalEnum,
+  DataPointValueType,
+  IDataPointConfig,
+  INumberDataPointConfig,
+  ITextDataPointConfig,
+} from '@lyvely/common';
 import { IDragEvent } from '@/modules/common';
 import { IMoveEntryEvent } from '@/modules/calendar-plan';
 
@@ -23,6 +29,28 @@ export function dragEventToMoveEvent(evt: IDragEvent | IMoveEntryEvent): IMoveEn
         newIndex: evt.newIndex,
         oldIndex: evt.oldIndex,
       };
+}
+
+export function getDataPointValueColor(config: IDataPointConfig, value: any) {
+  if (isNumberDataPointConfig(config)) {
+    if (config.min && value <= config.min) return 'warning';
+    if (config.optimal && value >= config.optimal!) return 'success';
+    if (value) return 'success';
+  } else if (isTextDataPointConfig(config)) {
+    if (config.required && !value) return 'warning';
+    // We do not need any other indication here
+  }
+  return '';
+}
+
+export function isNumberDataPointConfig(
+  config: IDataPointConfig,
+): config is INumberDataPointConfig {
+  return config.valueType === DataPointValueType.Number;
+}
+
+export function isTextDataPointConfig(config: IDataPointConfig): config is ITextDataPointConfig {
+  return config.valueType === DataPointValueType.Text;
 }
 
 function isMoveEntryEvent(evt: any): evt is IMoveEntryEvent {

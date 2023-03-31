@@ -94,6 +94,10 @@
         @apply bg-main border-divide w-full rounded-md border-divide shadow-sm bg-white  focus:ring focus:ring-blue-200 focus:ring-opacity-50
     }
 
+    textarea::placeholder {
+        @apply text-xs;
+    }
+
     [type="text"]:not(.bg-main),
     textarea:not(.bg-main) {
         @apply dark:bg-highlight

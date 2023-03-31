@@ -5,6 +5,7 @@ import { useJournalPlanStore } from '@/modules/journals/stores/journal-plan.stor
 import { computed } from 'vue';
 import { JournalModel } from '@lyvely/common';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
+import JournalCalendarPlanItem from '@/modules/journals/components/JournalCalendarPlanItem.vue';
 
 export interface IProps {
   interval: number;
@@ -37,7 +38,9 @@ const createEntry = () =>
       item-key="id"
       @end="move">
       <template #item="{ element }">
-        <div :data-cid="element.id"></div>
+        <div :data-cid="element.id">
+          <journal-calendar-plan-item :model="element" />
+        </div>
       </template>
     </draggable>
   </calendar-plan-section>

@@ -3,13 +3,14 @@ import { NumberDataPointConfig } from './number-data-point-config.schema';
 import { DataPointInputType, INumberDataPointSettings, DataPointValueType } from '@lyvely/common';
 import { DataPointConfigSchemaFactory } from '../components/data-point-config-schema.factory';
 import { DataPointConfigFactory } from '../components/data-point-config.factory';
+import { NestedSchema } from '@/core';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Number,
   DataPointInputType.Time,
 );
 
-@Schema()
+@NestedSchema()
 export class TimeNumberDataPointConfig extends NumberDataPointConfig {
   strategy = strategy;
 

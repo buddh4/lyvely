@@ -45,6 +45,7 @@ export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityTy
 
   valueType: string;
 
+  @Prop({ type: mongoose.Schema.Types.Mixed })
   value: any;
 
   /**

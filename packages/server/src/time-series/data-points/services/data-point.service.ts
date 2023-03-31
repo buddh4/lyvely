@@ -50,7 +50,7 @@ export abstract class DataPointService<
     value: TValue,
   ): Promise<TDataPointModel> {
     // TODO: Use transaction
-    const dataPoint = await this.findOrCreateDataPointByDate(profile, user, model, date);
+    const dataPoint = await this.findOrCreateDataPointByDate(profile, user, model, date, value);
     await this.updateDataPointValue(profile, user, dataPoint, model, value);
     await this.postProcess(user, model, dataPoint);
     return dataPoint;
@@ -91,6 +91,7 @@ export abstract class DataPointService<
     user: User,
     content: TModel,
     date: CalendarDate,
+    value?: TValue,
   ): Promise<TDataPointModel> {
     const log = await this.findDataPointByDate(profile, user, content, date);
 
@@ -101,7 +102,7 @@ export abstract class DataPointService<
     });
 
     return await this.dataPointDao.save(
-      new DataPointConstructor(profile, user, content, { date: toDate(date) }),
+      new DataPointConstructor(profile, user, content, { date: toDate(date), value }),
     );
   }
 

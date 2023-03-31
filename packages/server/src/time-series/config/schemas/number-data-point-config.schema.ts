@@ -8,6 +8,7 @@ import {
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { pick } from 'lodash';
+import { NestedSchema } from '@/core';
 
 @Schema({ _id: false })
 export class NumberDataPointConfigRevision
@@ -43,7 +44,7 @@ const SupportedNumberDataPointInputTypes = [
   DataPointInputType.Checkbox,
 ];
 
-@Schema({ _id: false, discriminatorKey: 'strategy' })
+@NestedSchema({ discriminatorKey: 'strategy' })
 export class NumberDataPointConfig
   extends DataPointConfig<INumberDataPointSettings>
   implements INumberDataPointConfig

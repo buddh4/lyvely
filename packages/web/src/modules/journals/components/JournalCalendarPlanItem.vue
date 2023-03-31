@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
-import { DataPointInputType, JournalModel } from '@lyvely/common';
+import { JournalModel } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
-import { useCalendarPlanStore } from '@/modules/calendar-plan/stores/calendar-plan.store';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
+import CalendarPlanNumberInput from '@/modules/calendar-plan/components/CalendarPlanNumberInput.vue';
 import { useDebounceFn } from '@vueuse/core';
-import TimerState from '@/modules/calendar/components/TimerState.vue';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useJournalPlanStore } from '../stores/journal-plan.store';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
+import { isNumberDataPointConfig, isTextDataPointConfig } from '@/modules/calendar-plan';
+import EditableText from '@/modules/ui/components/form/EditableText.vue';
 
 export interface IProps {
   model: JournalModel;
@@ -30,55 +30,15 @@ onMounted(async () => {
 
 const selection = computed({
   get: () => dataPoint.value.value,
-  set: (selection: number) => {
+  set: (selection: any) => {
     dataPoint.value.value = selection;
     updateSelection(selection);
   },
 });
 
-const updateSelection = useDebounceFn((selection: number) => {
+const updateSelection = useDebounceFn((selection: any) => {
   journalStore.updateDataPoint(dataPoint.value, selection);
 }, 600);
-
-const inputBorderColorClass = computed(() => {
-  const color = inputColorClass.value;
-  return color.length ? `border-${color}` : color;
-});
-
-const inputColorClass = computed(() => {
-  if (props.model.timeSeriesConfig.min && selection.value <= props.model.timeSeriesConfig.min) {
-    return 'warning';
-  }
-
-  if (
-    props.model.timeSeriesConfig.optimal &&
-    selection.value >= props.model.timeSeriesConfig.optimal!
-  ) {
-    return 'success';
-  }
-
-  if (selection.value) {
-    return 'info';
-  }
-
-  return '';
-});
-
-async function startTimer() {
-  if (!dataPoint.value.timer?.isStarted()) {
-    await useHabitPlanStore().startTimer(props.model);
-  }
-}
-
-async function stopTimer() {
-  if (dataPoint.value.timer?.isStarted()) {
-    await useHabitPlanStore().stopTimer(props.model);
-  }
-}
-
-const isPresentInterval = computed(() =>
-  useCalendarPlanStore().isPresentInterval(props.model.timeSeriesConfig.interval),
-);
 </script>
 
 <template>
@@ -92,42 +52,19 @@ const isPresentInterval = computed(() =>
       <content-dropdown :content="model" />
     </template>
     <template #rating>
-      <item-checkbox-list
-        v-if="model.timeSeriesConfig.inputType === DataPointInputType.Checkbox"
-        v-model:selection="selection"
-        :min="model.timeSeriesConfig.min"
-        :max="model.timeSeriesConfig.max"
-        :optimal="model.timeSeriesConfig.optimal"
-        :disabled="isDisabled" />
-      <ly-input-number
-        v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Spinner"
+      <calendar-plan-number-input
+        v-if="isNumberDataPointConfig(model.timeSeriesConfig)"
         v-model="selection"
-        :input-class="['calendar-plan-spinner-input text-sm bg-main', inputBorderColorClass]"
-        :min="0"
-        :max="model.timeSeriesConfig.max"
+        :config="model.timeSeriesConfig"
         :disabled="isDisabled" />
-      <div
-        v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Range"
-        class="flex items-center gap-2">
-        <span class="text-sm">{{ selection }}</span>
-        <ly-input-range
+    </template>
+    <template #body>
+      <div v-if="isTextDataPointConfig(model.timeSeriesConfig)">
+        <editable-text
           v-model="selection"
-          :input-class="['calendar-plan-range-input', inputColorClass]"
-          :min="0"
-          :max="model.timeSeriesConfig.max"
-          :disabled="isDisabled" />
+          class="text-sm pt-2"
+          :placeholder="$t('journals.plan.text.placeholder')" />
       </div>
-      <timer-state
-        v-else-if="model.timeSeriesConfig.inputType === DataPointInputType.Time"
-        :key="timer.calculateTotalSpan()"
-        :model="timer"
-        :min="model.timeSeriesConfig.min"
-        :max="model.timeSeriesConfig.max"
-        :optimal="model.timeSeriesConfig.optimal"
-        :startable="isPresentInterval"
-        @start="startTimer"
-        @stop="stopTimer"
-        @update="updateSelection" />
     </template>
   </calendar-plan-item>
 </template>

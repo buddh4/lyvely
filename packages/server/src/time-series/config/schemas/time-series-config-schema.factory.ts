@@ -2,6 +2,7 @@ import { Type } from '@nestjs/common';
 import { SchemaFactory } from '@nestjs/mongoose';
 import { Schema } from 'mongoose';
 import { DataPointConfig } from './data-point-config.schema';
+import { NestedSchema } from '@/core';
 
 const SchemaMapping = {};
 
@@ -9,6 +10,7 @@ export function registerLogValueStrategy(name: string, schema: Schema) {
   SchemaMapping[name] = schema;
 }
 
+@NestedSchema()
 export class TimeSeriesConfigSchemaFactory {
   static createForClass<TClass extends { timeSeries: DataPointConfig } = any>(
     target: Type<TClass>,

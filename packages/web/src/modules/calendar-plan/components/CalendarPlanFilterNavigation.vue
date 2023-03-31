@@ -28,7 +28,7 @@ const { tags, stopWatch, activeTagId, setTagFilter, queryFilter, archiveFilter }
 );
 
 const commonButtonClassNames =
-  'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
+  'secondary outlined inline-flex items-center text-xs mr-0.5 py-1 px-1';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
 

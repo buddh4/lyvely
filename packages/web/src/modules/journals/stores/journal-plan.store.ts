@@ -6,17 +6,23 @@ import {
   toTimingId,
   formatDate,
   DataPointModel,
+  ActivityType,
+  HabitModel,
 } from '@lyvely/common';
 import { useCalendarPlan, useCalendarPlanStore } from '@/modules/calendar-plan';
 import { useJournalsService } from '@/modules/journals/services/journals.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
-import { ref } from 'vue';
+import { useContentStore } from '@/modules/content/stores/content.store';
 
 export const useJournalPlanStore = defineStore('journal-plan', () => {
   const calendarPlanStore = useCalendarPlanStore();
   const journalsService = useJournalsService();
   const dialog = useGlobalDialogStore();
-  const showFilterDrawer = ref(false);
+  const contentStore = useContentStore();
+
+  contentStore.onContentCreated(JournalModel.contentType, addJournal);
+  contentStore.onContentUpdated(JournalModel.contentType, addJournal);
+
   const calendarPlan = useCalendarPlan<JournalModel, JournalFilter>({
     filter: new JournalFilter(),
     cache: new JournalDataPointStore(),
@@ -28,6 +34,10 @@ export const useJournalPlanStore = defineStore('journal-plan', () => {
   function getDataPoint(model: JournalModel) {
     const timingId = toTimingId(calendarPlanStore.date, model.timeSeriesConfig.interval);
     return cache.value.getDataPoint(model, timingId, true);
+  }
+
+  function addJournal(model: JournalModel) {
+    cache.value.setModel(new JournalModel(model));
   }
 
   async function updateDataPoint(dataPoint: DataPointModel, value: number) {
@@ -51,6 +61,5 @@ export const useJournalPlanStore = defineStore('journal-plan', () => {
     ...calendarPlan,
     getDataPoint,
     updateDataPoint,
-    showFilterDrawer,
   };
 });

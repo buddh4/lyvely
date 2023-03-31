@@ -3,13 +3,14 @@ import { DataPointInputType, INumberDataPointSettings, DataPointValueType } from
 import { NumberDataPointConfig } from './number-data-point-config.schema';
 import { DataPointConfigSchemaFactory } from '../components/data-point-config-schema.factory';
 import { DataPointConfigFactory } from '../components/data-point-config.factory';
+import { NestedSchema } from '@/core';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Number,
   DataPointInputType.Range,
 );
 
-@Schema()
+@NestedSchema()
 export class RangeNumberDataPointConfig extends NumberDataPointConfig {
   strategy = strategy;
 

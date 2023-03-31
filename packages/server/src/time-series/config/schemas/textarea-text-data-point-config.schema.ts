@@ -2,13 +2,14 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPointInputType, DataPointValueType } from '@lyvely/common';
 import { DataPointConfigSchemaFactory, DataPointConfigFactory } from '../components';
 import { TextDataPointConfig } from './text-data-point-config.schema';
+import { NestedSchema } from '@/core';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Text,
   DataPointInputType.Textarea,
 );
 
-@Schema()
+@NestedSchema()
 export class TextareaTextDataPointConfig extends TextDataPointConfig {
   strategy = strategy;
 
