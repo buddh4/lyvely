@@ -37,7 +37,8 @@
         "ui",
         "tags",
         "activities",
-        "stream"
+        "stream",
+        "journals"
       ]
     ]
   }
