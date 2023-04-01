@@ -85,7 +85,7 @@ describe('NumberDataPointDao', () => {
       }),
     );
 
-    return { pid: profile._id, cid: content._id, uid: user._id, date, dataPoint };
+    return { profile: profile, pid: profile._id, cid: content._id, uid: user._id, date, dataPoint };
   }
 
   // mongoose.set('debug', true);
@@ -159,9 +159,9 @@ describe('NumberDataPointDao', () => {
 
   describe('daily interval', () => {
     it('find daily data point', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
       const result = await dao.findByIntervalLevel(
-        pid,
+          profile,
         uid,
         new DataPointIntervalFilter(date.toDate()),
       );
@@ -169,9 +169,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include day after', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.add(1, 'days').toDate()),
       );
@@ -179,9 +179,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include day before', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.subtract(1, 'days').toDate()),
       );
@@ -189,9 +189,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include day if date time level is daily', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Daily);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
@@ -201,9 +201,9 @@ describe('NumberDataPointDao', () => {
 
   describe('weekly interval', () => {
     it('find weekly data point', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate()),
       );
@@ -211,9 +211,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include date after', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-02-13').toDate()),
       );
@@ -221,9 +221,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include date before', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-02-21').toDate()),
       );
@@ -231,9 +231,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is daily', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
@@ -241,9 +241,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is weekly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
@@ -251,9 +251,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is monthly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
@@ -261,9 +261,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is quarterly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
@@ -271,9 +271,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
@@ -281,9 +281,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Weekly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
@@ -293,9 +293,9 @@ describe('NumberDataPointDao', () => {
 
   describe('monthly interval', () => {
     it('find monthly data point by first day of month', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-02-01').toDate()),
       );
@@ -303,9 +303,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('find monthly data point by last day of month', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-02-28').toDate()),
       );
@@ -313,9 +313,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include date after', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-01-31').toDate()),
       );
@@ -323,9 +323,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include date before', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-03-01').toDate()),
       );
@@ -333,9 +333,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is daily', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
@@ -343,9 +343,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is weekly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
@@ -353,9 +353,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is monthly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
@@ -363,9 +363,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is quarterly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
@@ -373,9 +373,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
@@ -383,9 +383,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Monthly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
@@ -395,9 +395,9 @@ describe('NumberDataPointDao', () => {
 
   describe('quarterly interval', () => {
     it('find quarterly data point by first day of quarter', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-01-01').toDate()),
       );
@@ -405,9 +405,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('find quarterly data point by first day of quarter', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-03-31').toDate()),
       );
@@ -415,9 +415,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include date after', async () => {
-      const { pid, uid } = await createEntity('2022-04-01', CalendarIntervalEnum.Quarterly);
+      const { profile, uid } = await createEntity('2022-04-01', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-03-31').toDate()),
       );
@@ -425,9 +425,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include date before', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-07-01').toDate()),
       );
@@ -435,9 +435,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is daily', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
@@ -445,9 +445,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is weekly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
@@ -455,9 +455,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is monthly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
@@ -465,9 +465,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is quarterly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
@@ -475,9 +475,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
@@ -485,9 +485,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Quarterly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
@@ -497,9 +497,9 @@ describe('NumberDataPointDao', () => {
 
   describe('yearly interval', () => {
     it('find yearly data point by first day of year', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-01-01').toDate()),
       );
@@ -507,9 +507,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('find yearly data point by first day of year', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-12-31').toDate()),
       );
@@ -517,9 +517,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include date after', async () => {
-      const { pid, uid } = await createEntity('2022-04-01', CalendarIntervalEnum.Yearly);
+      const { profile, uid } = await createEntity('2022-04-01', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2023-01-01').toDate()),
       );
@@ -527,9 +527,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include date before', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2021-12-31').toDate()),
       );
@@ -537,9 +537,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is daily', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
@@ -547,9 +547,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is weekly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
@@ -557,9 +557,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is monthly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
@@ -567,9 +567,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is quarterly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
@@ -577,9 +577,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
@@ -587,9 +587,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Yearly);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
@@ -599,9 +599,9 @@ describe('NumberDataPointDao', () => {
 
   describe('unscheduled interval', () => {
     it('include unscheduled data point for past search date', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('1998-01-01').toDate()),
       );
@@ -609,9 +609,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('include unscheduled data point for future search date', async () => {
-      const { pid, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
+      const { profile, uid } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime().add(5, 'years').toDate()),
       );
@@ -619,9 +619,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is daily', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Daily),
       );
@@ -629,9 +629,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is weekly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Weekly),
       );
@@ -639,9 +639,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is monthly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Monthly),
       );
@@ -649,9 +649,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is quarterly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Quarterly),
       );
@@ -659,9 +659,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do not include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Yearly),
       );
@@ -669,9 +669,9 @@ describe('NumberDataPointDao', () => {
     });
 
     it('do include if interval level is yearly', async () => {
-      const { pid, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
+      const { profile, uid, date } = await createEntity('2022-02-20', CalendarIntervalEnum.Unscheduled);
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(date.toDate(), CalendarIntervalEnum.Unscheduled),
       );
@@ -689,9 +689,9 @@ describe('NumberDataPointDao', () => {
         { date: '2022-12-31', interval: CalendarIntervalEnum.Yearly },
       ]);
 
-      const { pid, uid } = entries[0];
+      const { profile, uid } = entries[0];
       const result = await dao.findByIntervalLevel(
-        pid,
+        profile,
         uid,
         new DataPointIntervalFilter(dateTime('2022-02-20').toDate()),
       );

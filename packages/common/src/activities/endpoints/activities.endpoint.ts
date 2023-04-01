@@ -1,5 +1,5 @@
 import { ICalendarPlanService } from '@/calendar-plan';
-import { ActivityModel } from '@/activities';
+import { ActivityModel } from '../models';
 import { Endpoint } from '@/endpoints';
 
 export interface IActivityEndpointService extends ICalendarPlanService<ActivityModel> {}

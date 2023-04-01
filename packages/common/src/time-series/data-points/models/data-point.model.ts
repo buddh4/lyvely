@@ -4,9 +4,13 @@ import { DocumentModel } from '@/models';
 import { Exclude, Expose, Transform } from 'class-transformer';
 import { IsEnum, IsString, Matches } from 'class-validator';
 import { TransformObjectId } from '@/utils';
+import { IDataPoint } from '../interfaces';
 
 @Exclude()
-export class DataPointModel<E extends DataPointModel = any> extends DocumentModel<E> {
+export class DataPointModel<E extends DataPointModel = any>
+  extends DocumentModel<E>
+  implements IDataPoint
+{
   @Expose()
   @TransformObjectId()
   cid: string | TObjectId;

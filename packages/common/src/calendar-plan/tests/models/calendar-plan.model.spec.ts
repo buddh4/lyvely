@@ -1,4 +1,4 @@
-import { CalendarIntervalEnum, Days, getFullDayDate } from '@/calendar';
+import { CalendarIntervalEnum } from '@/calendar';
 
 import {
   CalendarPlan,
@@ -14,26 +14,12 @@ describe('CalendarPlan', () => {
   describe('UnscheduledPlan', function () {
     it('init', async () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Unscheduled);
-      expect(plan.getPlan()).toEqual(CalendarIntervalEnum.Unscheduled);
+      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Unscheduled);
     });
 
     it('getTimingUniqueId', async () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Unscheduled);
       expect(plan.getTimingUniqueId(new Date())).toEqual('U');
-    });
-
-    it('createTimingInstance', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Unscheduled);
-      const timing = plan.createTimingInstance(new Date());
-      expect(timing.tid).toEqual('U');
-      expect(timing.interval).toEqual(CalendarIntervalEnum.Unscheduled);
-      expect(timing.year).toBeUndefined();
-      expect(timing.quarter).toBeUndefined();
-      expect(timing.monthOfYear).toBeUndefined();
-      expect(timing.isoWeekOfYear).toBeUndefined();
-      expect(timing.dayOfWeek).toBeUndefined();
-      expect(timing.dayOfMonth).toBeUndefined();
-      expect(timing.date).toBeUndefined();
     });
 
     it('singleton', async () => {
@@ -48,26 +34,12 @@ describe('CalendarPlan', () => {
   describe('YearlyPlan', function () {
     it('init', async () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Yearly);
-      expect(plan.getPlan()).toEqual(CalendarIntervalEnum.Yearly);
+      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Yearly);
     });
 
     it('getTimingUniqueId', async () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Yearly);
       expect(plan.getTimingUniqueId('2021-01-01')).toEqual('Y:2021');
-    });
-
-    it('createTimingInstance', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Yearly);
-      const timing = plan.createTimingInstance('2021-01-01');
-      expect(timing.tid).toEqual('Y:2021');
-      expect(timing.interval).toEqual(CalendarIntervalEnum.Yearly);
-      expect(timing.year).toEqual(2021);
-      expect(timing.quarter).toBeUndefined();
-      expect(timing.monthOfYear).toBeUndefined();
-      expect(timing.isoWeekOfYear).toBeUndefined();
-      expect(timing.dayOfWeek).toBeUndefined();
-      expect(timing.dayOfMonth).toBeUndefined();
-      expect(timing.date).toBeUndefined();
     });
 
     it('singleton', async () => {
@@ -82,7 +54,7 @@ describe('CalendarPlan', () => {
   describe('QuarterlyPlan', function () {
     it('init', async () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Quarterly);
-      expect(plan.getPlan()).toEqual(CalendarIntervalEnum.Quarterly);
+      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Quarterly);
     });
 
     it('getTimingUniqueId first quarter', async () => {
@@ -109,20 +81,6 @@ describe('CalendarPlan', () => {
       expect(plan.getTimingUniqueId('2021-12-31')).toEqual('Y:2021;Q:4');
     });
 
-    it('createTimingInstance', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Quarterly);
-      const timing = plan.createTimingInstance('2021-01-01');
-      expect(timing.tid).toEqual('Y:2021;Q:1');
-      expect(timing.interval).toEqual(CalendarIntervalEnum.Quarterly);
-      expect(timing.year).toEqual(2021);
-      expect(timing.quarter).toEqual(1);
-      expect(timing.monthOfYear).toBeUndefined();
-      expect(timing.isoWeekOfYear).toBeUndefined();
-      expect(timing.dayOfWeek).toBeUndefined();
-      expect(timing.dayOfMonth).toBeUndefined();
-      expect(timing.date).toBeUndefined();
-    });
-
     it('singleton', async () => {
       const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Quarterly);
       const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Quarterly);
@@ -135,7 +93,7 @@ describe('CalendarPlan', () => {
   describe('MonthlyPlan', function () {
     it('init', async () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Monthly);
-      expect(plan.getPlan()).toEqual(CalendarIntervalEnum.Monthly);
+      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Monthly);
     });
 
     it('getTimingUniqueId first quarter', async () => {
@@ -162,20 +120,6 @@ describe('CalendarPlan', () => {
       expect(plan.getTimingUniqueId('2021-12-31')).toEqual('Y:2021;Q:4;M:12');
     });
 
-    it('createTimingInstance', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Monthly);
-      const timing = plan.createTimingInstance('2021-01-01');
-      expect(timing.tid).toEqual('Y:2021;Q:1;M:1');
-      expect(timing.interval).toEqual(CalendarIntervalEnum.Monthly);
-      expect(timing.year).toEqual(2021);
-      expect(timing.quarter).toEqual(1);
-      expect(timing.monthOfYear).toEqual(0);
-      expect(timing.isoWeekOfYear).toBeUndefined();
-      expect(timing.dayOfWeek).toBeUndefined();
-      expect(timing.dayOfMonth).toBeUndefined();
-      expect(timing.date).toBeUndefined();
-    });
-
     it('singleton', async () => {
       const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Monthly);
       const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Monthly);
@@ -188,7 +132,7 @@ describe('CalendarPlan', () => {
   describe('WeeklyPlan', function () {
     it('init', async () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Weekly);
-      expect(plan.getPlan()).toEqual(CalendarIntervalEnum.Weekly);
+      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Weekly);
     });
 
     it('getTimingUniqueId first quarter', async () => {
@@ -215,20 +159,6 @@ describe('CalendarPlan', () => {
       expect(plan.getTimingUniqueId('2021-12-31')).toEqual('Y:2021;Q:4;M:12;W:52');
     });
 
-    it('createTimingInstance', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Weekly);
-      const timing = plan.createTimingInstance('2021-01-01');
-      expect(timing.tid).toEqual('Y:2021;Q:1;M:1;W:53');
-      expect(timing.interval).toEqual(CalendarIntervalEnum.Weekly);
-      expect(timing.year).toEqual(2021);
-      expect(timing.quarter).toEqual(1);
-      expect(timing.monthOfYear).toEqual(0);
-      expect(timing.isoWeekOfYear).toEqual(53);
-      expect(timing.dayOfWeek).toBeUndefined();
-      expect(timing.dayOfMonth).toBeUndefined();
-      expect(timing.date).toBeUndefined();
-    });
-
     it('singleton', async () => {
       const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Weekly);
       const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Weekly);
@@ -241,7 +171,7 @@ describe('CalendarPlan', () => {
   describe('DailyPlan', function () {
     it('init', async () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Daily);
-      expect(plan.getPlan()).toEqual(CalendarIntervalEnum.Daily);
+      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Daily);
     });
 
     it('getTimingUniqueId first quarter de', async () => {
@@ -266,20 +196,6 @@ describe('CalendarPlan', () => {
       const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Daily);
       expect(plan.getTimingUniqueId('2021-10-01')).toEqual('Y:2021;Q:4;M:10;W:39;D:1');
       expect(plan.getTimingUniqueId('2021-12-31')).toEqual('Y:2021;Q:4;M:12;W:52;D:31');
-    });
-
-    it('createTimingInstance', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Daily);
-      const timing = plan.createTimingInstance('2021-01-01');
-      expect(timing.tid).toEqual('Y:2021;Q:1;M:1;W:53;D:1');
-      expect(timing.interval).toEqual(CalendarIntervalEnum.Daily);
-      expect(timing.year).toEqual(2021);
-      expect(timing.quarter).toEqual(1);
-      expect(timing.monthOfYear).toEqual(0);
-      expect(timing.isoWeekOfYear).toEqual(53);
-      expect(timing.dayOfWeek).toEqual(Days.Friday);
-      expect(timing.dayOfMonth).toEqual(1);
-      expect(timing.date).toEqual(getFullDayDate('2021-01-01'));
     });
 
     it('singleton', async () => {

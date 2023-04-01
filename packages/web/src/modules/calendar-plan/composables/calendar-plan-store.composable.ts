@@ -11,7 +11,7 @@ import {
   getCalendarIntervalArray,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { ref, toRefs, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useCalendarPlanStore } from '../stores/calendar-plan.store';
 import { loadingStatus, Status, useStatus } from '@/store';
@@ -35,15 +35,14 @@ export function useCalendarPlan<
   TFilter extends ContentFilter<TModel>,
   TDataPointModel extends DataPointModel = DataPointModel,
 >(options: CalendarPlanOptions<TModel, TFilter, TDataPointModel>) {
-  const profileStore = useProfileStore();
+  const { profile, locale } = storeToRefs(useProfileStore());
   const calendarPlanStore = useCalendarPlanStore();
 
-  options.filter.setTagProvider(() => profileStore.profile?.tags || []);
+  options.filter.setTagProvider(() => profile.value?.tags || []);
   const filter = ref(options.filter);
   const cache = ref(options.cache);
   const service = options.service;
   const { date } = storeToRefs(calendarPlanStore);
-  const { profile } = toRefs(profileStore);
   const tidCache = ref(new LoadedTimingIdStore());
   const status = useStatus();
 
@@ -96,7 +95,7 @@ export function useCalendarPlan<
   }
 
   function getModels(interval: CalendarIntervalEnum) {
-    const tid = toTimingId(date.value, interval);
+    const tid = toTimingId(date.value, interval, locale.value);
     return cache.value.getModelsByIntervalFilter(interval, filter.value, tid);
   }
 

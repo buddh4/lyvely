@@ -1,16 +1,6 @@
 import { Expose } from 'class-transformer';
 import { DataPointModel } from './data-point.model';
-import {
-  DataPointStrategy,
-  DataPointValueType,
-  IDataPointValueStatus,
-  ITextDataPointConfig,
-  IDataPointConfig,
-  ITextDataPointConfigRevision,
-} from '../interfaces';
-import { useDataPointStrategyFacade } from '@/time-series/data-points';
-import { PropertiesOf } from '@/utils';
-import { isString } from 'class-validator';
+import { DataPointValueType, ITextDataPointConfig, IDataPointConfig } from '../interfaces';
 
 export class TextDataPointModel extends DataPointModel<TextDataPointModel> {
   @Expose()

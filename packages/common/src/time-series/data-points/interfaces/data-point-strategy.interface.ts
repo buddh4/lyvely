@@ -1,10 +1,10 @@
-import { DataPointModel, IDataPointConfig, IDataPointConfigRevision } from '@/time-series';
-import { PropertiesOf, Type } from '@/utils';
+import { IDataPoint, IDataPointConfig, IDataPointConfigRevision } from './data-point.interface';
+import { PropertiesOf } from '@/utils';
 
 export type IDataPointValueStatus = 'success' | 'warning' | 'info' | '';
 
 export interface IDataPointStrategy<
-  T extends DataPointModel = DataPointModel,
+  T extends IDataPoint<TValue> = IDataPoint,
   TConfig extends IDataPointConfig = any,
   TRev extends IDataPointConfigRevision = IDataPointConfigRevision,
   TValue = any,
@@ -21,7 +21,7 @@ export interface IDataPointStrategy<
 }
 
 export abstract class DataPointStrategy<
-  T extends DataPointModel = DataPointModel,
+  T extends IDataPoint<TValue> = IDataPoint,
   TConfig extends IDataPointConfig = IDataPointConfig,
   TRev extends IDataPointConfigRevision = IDataPointConfigRevision,
   TValue = any,

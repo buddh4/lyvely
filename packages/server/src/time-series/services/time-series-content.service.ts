@@ -7,6 +7,7 @@ import {
   IntegrityException,
   SortResult,
   isInFuture,
+  dateTime,
 } from '@lyvely/common';
 import { DataPoint, DataPointService } from '../data-points';
 import { TimeSeriesContent, TimeSeriesContentDao } from '../content';
@@ -34,14 +35,14 @@ export abstract class TimeSeriesContentService<
     filter: DataPointIntervalFilter,
   ): Promise<ITimeSeriesContentSearchResult<TModel, TDataPointModel>> {
     // Find all calendar ids for the given search date and filter out by filter level
-    const tIds = getTimingIds(filter.date);
+    const tIds = getTimingIds(filter.date, profile.locale);
     if (filter.level > 0) {
       tIds.splice(0, filter.level);
     }
 
     return {
       models: await this.contentDao.findByProfileAndTimingIds(profile, user, tIds),
-      dataPoints: isInFuture(filter.date)
+      dataPoints: isInFuture(filter.date, true)
         ? []
         : await this.dataPointService.findByIntervalLevel(profile, user, filter),
     };

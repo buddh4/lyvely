@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import {
   toTimingId,
   CalendarPlan,
@@ -7,13 +7,15 @@ import {
   isInFuture as isInFutureUtil,
 } from '@lyvely/common';
 import { ref, computed } from 'vue';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export const useCalendarPlanStore = defineStore('timing', () => {
   const date = ref(new Date());
   const dragActive = ref(false);
+  const { locale } = storeToRefs(useProfileStore());
 
   function getTimingId(interval: CalendarIntervalEnum) {
-    return toTimingId(date.value, interval);
+    return toTimingId(date.value, interval, locale.value);
   }
 
   function switchToToday() {
@@ -21,7 +23,7 @@ export const useCalendarPlanStore = defineStore('timing', () => {
   }
 
   function isPresentInterval(interval: CalendarIntervalEnum) {
-    return toTimingId(new Date(), interval) === toTimingId(date.value, interval);
+    return toTimingId(new Date(), interval) === toTimingId(date.value, interval, locale.value);
   }
 
   function _setCurrentDate(d: Date) {

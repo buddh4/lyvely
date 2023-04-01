@@ -4,7 +4,7 @@ import {
   JournalModel,
   UpdateJournalModel,
   UpdateJournalResponse,
-} from '@/journals';
+} from '../models';
 import { Endpoint } from '@/endpoints';
 import { UpdateDataPointModel, UpdateDataPointResponse } from '@/calendar-plan';
 import { IEditModelService } from '@/models';

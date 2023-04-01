@@ -77,7 +77,7 @@ export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityTy
     }
 
     this.date = getFullDayDate(this.date);
-    this.tid = toTimingId(this.date, this.interval);
+    this.tid = toTimingId(this.date, this.interval, profile.locale);
 
     this.afterInit();
   }

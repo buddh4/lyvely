@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import {
   ActivityDataPointStore,
   ActivityFilter,
@@ -12,6 +12,7 @@ import { ref } from 'vue';
 import { localStorageManager } from '@/util';
 import { useCalendarPlan } from '@/modules/calendar-plan';
 import { useActivitiesService } from '@/modules/activities/services/activities.service';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export interface IMoveActivityEvent {
   cid: string;
@@ -26,6 +27,7 @@ const DEFAULT_ACTIVITY_VIEW = 'latest_activity_view';
 export const latestActivityView = localStorageManager.getStoredValue(DEFAULT_ACTIVITY_VIEW);
 
 export const useActivityStore = defineStore('activities', () => {
+  const { locale } = storeToRefs(useProfileStore());
   const activeView = ref<string>(latestActivityView.getValue() || 'Habits');
   const calendarPlan = useCalendarPlan<ActivityModel, ActivityFilter>({
     filter: new ActivityFilter(),
@@ -47,7 +49,7 @@ export const useActivityStore = defineStore('activities', () => {
   function getActivities(type: string, interval: CalendarIntervalEnum, showAll = false) {
     filter.value.setOption('type', type);
     hasMore.value[interval] = false;
-    const tid = toTimingId(date.value, interval);
+    const tid = toTimingId(date.value, interval, locale.value);
     const activities = cache.value.getModelsByIntervalFilter(
       interval,
       filter.value as ActivityFilter,

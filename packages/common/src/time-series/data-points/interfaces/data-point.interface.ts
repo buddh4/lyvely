@@ -1,5 +1,7 @@
 import { CalendarIntervalEnum } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
+import { Expose } from 'class-transformer';
+import { TransformObjectId } from '@/utils';
 
 export enum DataPointValueType {
   Number = 'number',
@@ -17,6 +19,17 @@ export enum DataPointInputType {
   Textarea = 'textarea',
   //Provider = 'provider',
   //Richtext = 'richtext'
+}
+
+export interface IDataPoint<TValue = any> {
+  id: string;
+  cid: TObjectId;
+  uid?: TObjectId;
+  date: Date;
+  interval: CalendarIntervalEnum;
+  tid: string;
+  valueType: string;
+  value: TValue;
 }
 
 export interface IDataPointConfig {

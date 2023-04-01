@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '@/profiles';
 import {
-  REGEX_TID,
   UserAssignmentStrategy,
   CreateTaskModel,
   UpdateTaskModel,
@@ -32,7 +31,7 @@ export class UserDone {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   uid: TObjectId;
 
-  @Prop({ type: String, required: true, match: REGEX_TID })
+  @Prop({ type: String, required: true })
   tid: string;
 
   @Prop({ type: Date, required: true })

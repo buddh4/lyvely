@@ -34,10 +34,16 @@ export interface IDateTime {
   date(value: number): IDateTime;
   day(): number;
   day(value: number): IDateTime;
+  weekday(): number;
+  weekday(value: number): IDateTime;
   week(): number;
   week(value: number): IDateTime;
   isoWeek(): number;
   isoWeek(value: number): IDateTime;
+  isoWeekday(): number;
+  isoWeekday(value: number): IDateTime;
+  isoWeekYear(): number;
+  weekYear(): number;
   quarter(): number;
   quarter(value: number): IDateTime;
   month(): number;
@@ -80,9 +86,7 @@ export function dateTime(
     throw new Error('No dateTimeFactory set');
   }
 
-  if (implementsIDateTime(date)) {
-    return date;
-  }
+  if (implementsIDateTime(date)) return date;
 
   if (typeof date === 'string' && /^([0-9]{4}-[0-9]{2}-[0-9]{2})$/.test(date)) {
     date = getFullDayDate(date);
@@ -107,7 +111,7 @@ export function getFullDayDate(date: CalendarDate): Date {
       date = new Date(date);
     }
   } else if (date instanceof Date) {
-    date = new Date(date);
+    date = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   }
 
   if (!(date instanceof Date)) {

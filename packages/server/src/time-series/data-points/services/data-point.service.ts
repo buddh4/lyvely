@@ -6,6 +6,7 @@ import {
   UserAssignmentStrategy,
   useDataPointStrategyFacade,
   InvalidDataPointValueTypeException,
+  toTimingId,
 } from '@lyvely/common';
 import { DataPoint } from '../schemas';
 import { TimeSeriesContent } from '@/time-series/content';
@@ -31,9 +32,10 @@ export abstract class DataPointService<
     content: TModel,
     date: CalendarDate,
   ): Promise<TDataPointModel> {
+    const tid = toTimingId(date, content.timeSeriesConfig.interval, profile.locale);
     return content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser
-      ? await this.dataPointDao.findUserDataPointByDate(content, user, date)
-      : await this.dataPointDao.findDataPointByDate(content, date);
+      ? await this.dataPointDao.findUserDataPointByTid(content, user, tid)
+      : await this.dataPointDao.findDataPointByTid(content, tid);
   }
 
   /**

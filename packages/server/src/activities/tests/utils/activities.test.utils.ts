@@ -59,15 +59,15 @@ export class ActivityTestDataUtil extends TestDataUtils {
   }
 
   static getTodayTimingId() {
-    return toTimingId(ActivityTestDataUtil.getDateToday(), CalendarIntervalEnum.Daily);
+    return toTimingId(ActivityTestDataUtil.getDateToday());
   }
 
   static getTomorrowTimingId() {
-    return toTimingId(ActivityTestDataUtil.getDateTomorrow(), CalendarIntervalEnum.Daily);
+    return toTimingId(ActivityTestDataUtil.getDateTomorrow());
   }
 
   static getYesterdayTimingId() {
-    return toTimingId(ActivityTestDataUtil.getDateYesterday(), CalendarIntervalEnum.Daily);
+    return toTimingId(ActivityTestDataUtil.getDateYesterday());
   }
 
   async findTaskById(id: EntityIdentity<Task>): Promise<Task> {

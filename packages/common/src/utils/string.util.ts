@@ -4,7 +4,7 @@ export function encodeHtml(str: string) {
   return he.encode(str);
 }
 
-export function dencodeHtml(str: string) {
+export function decodeHtml(str: string) {
   return he.decode(str);
 }
 

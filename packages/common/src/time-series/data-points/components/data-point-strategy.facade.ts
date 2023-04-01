@@ -1,6 +1,6 @@
 import { DataPointModel } from '../models';
 import { PropertiesOf, useSingleton } from '@/utils';
-import { IDataPointConfig, IDataPointStrategy, IDataPointValueStatus } from '@/time-series';
+import { IDataPointConfig, IDataPointStrategy, IDataPointValueStatus } from '../interfaces';
 
 export class DataPointStrategyFacade {
   private types = new Map<string, IDataPointStrategy>();

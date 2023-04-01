@@ -5,10 +5,7 @@ import {
   addWeek,
   addYear,
   getDayNameByIndex,
-  getIsoWeekOfYear,
   getMonthNameByIndex,
-  getQuarter,
-  getYearAndWeekOfYear,
   isCurrentYear,
   subtractDays,
   subtractMonth,
@@ -17,18 +14,15 @@ import {
   subtractYear,
   CalendarDate,
   dateTime,
-  getFullDayDate,
-  ITiming,
-  TimingModel,
   CalendarIntervalEnum,
   toTimingId,
+  WeekStrategy,
 } from '@/calendar';
 
 export abstract class CalendarPlan {
   protected abstract id: CalendarIntervalEnum;
   private static _instances: Map<CalendarIntervalEnum, CalendarPlan> = new Map();
 
-  abstract createTimingInstance(date: CalendarDate): ITiming;
   abstract getLabel(): string;
   abstract getTitle(date: Date, locale: string): string;
   abstract getAccessibleTitle(date: Date, locale: string): string;
@@ -36,12 +30,12 @@ export abstract class CalendarPlan {
   abstract increment(date: Date): Date;
   abstract decrement(date: Date): Date;
 
-  public getPlan() {
+  public getInterval() {
     return this.id;
   }
 
-  getTimingUniqueId(date: CalendarDate): string {
-    return toTimingId(date, this.getPlan());
+  getTimingUniqueId(date: CalendarDate, locale = 'de', weekStrategy = WeekStrategy.LOCALE): string {
+    return toTimingId(date, this.getInterval(), locale, weekStrategy);
   }
 
   public static getInstance(interval: CalendarIntervalEnum): CalendarPlan {
@@ -60,10 +54,6 @@ export abstract class CalendarPlan {
 
 export class UnscheduledPlan extends CalendarPlan {
   protected id = CalendarIntervalEnum.Unscheduled;
-
-  createTimingInstance(date: CalendarDate): ITiming {
-    return new TimingModel(this.getTimingUniqueId(date), this.getPlan());
-  }
 
   getLabel(): string {
     return 'Unscheduled';
@@ -94,13 +84,6 @@ export class UnscheduledPlan extends CalendarPlan {
 export class YearlyPlan extends UnscheduledPlan {
   protected id = CalendarIntervalEnum.Yearly;
 
-  createTimingInstance(date: CalendarDate): ITiming {
-    date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date);
-    timing.year = date.getUTCFullYear();
-    return timing;
-  }
-
   getLabel(): string {
     return 'Yearly';
   }
@@ -125,13 +108,6 @@ export class YearlyPlan extends UnscheduledPlan {
 
 export class QuarterlyPlan extends YearlyPlan {
   protected id = CalendarIntervalEnum.Quarterly;
-
-  createTimingInstance(date: CalendarDate): ITiming {
-    date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date);
-    timing.quarter = getQuarter(date);
-    return timing;
-  }
 
   getLabel(): string {
     return 'Quarterly';
@@ -158,13 +134,6 @@ export class QuarterlyPlan extends YearlyPlan {
 
 export class MonthlyPlan extends QuarterlyPlan {
   protected id = CalendarIntervalEnum.Monthly;
-
-  createTimingInstance(date: CalendarDate): ITiming {
-    date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date);
-    timing.monthOfYear = date.getUTCMonth();
-    return timing;
-  }
 
   getLabel(): string {
     return 'Monthly';
@@ -196,22 +165,19 @@ export class MonthlyPlan extends QuarterlyPlan {
 export class WeeklyPlan extends MonthlyPlan {
   protected id = CalendarIntervalEnum.Weekly;
 
-  createTimingInstance(date: CalendarDate): ITiming {
-    date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date);
-    timing.isoWeekOfYear = getIsoWeekOfYear(date);
-    return timing;
-  }
-
   getLabel(): string {
     return 'Weekly';
   }
 
   getTitle(date: Date, locale: string): string {
-    const { weekOfYear, year } = getYearAndWeekOfYear(date, locale);
-    const dateMoment = dateTime(date);
-    const showYear = dateMoment.year() !== year || !isCurrentYear(date);
-    return `Week ${weekOfYear}` + (showYear ? ` · ${year}` : '');
+    const tid = this.getTimingUniqueId(date, locale);
+    const splitTid = tid.split(';');
+    const weekOfYear = parseInt(splitTid.at(-1).split(':')[1]);
+    const yearOfWeek = parseInt(splitTid.at(0).split(':')[1]);
+    const year = date.getFullYear();
+
+    const showYear = year !== new Date().getFullYear() || year !== yearOfWeek;
+    return `Week ${weekOfYear}` + (showYear ? ` · ${yearOfWeek}` : '');
   }
 
   getAccessibleTitle(date: Date, locale: string): string {
@@ -229,16 +195,6 @@ export class WeeklyPlan extends MonthlyPlan {
 
 export class DailyPlan extends WeeklyPlan {
   protected id = CalendarIntervalEnum.Daily;
-
-  createTimingInstance(date: CalendarDate): ITiming {
-    date = getFullDayDate(date);
-    const timing = super.createTimingInstance(date);
-    timing.isoWeekOfYear = getIsoWeekOfYear(date);
-    timing.date = date;
-    timing.dayOfMonth = date.getUTCDate();
-    timing.dayOfWeek = date.getUTCDay();
-    return timing;
-  }
 
   getLabel(): string {
     return 'Daily';

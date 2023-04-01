@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import {
   JournalFilter,
   JournalModel,
@@ -11,12 +11,14 @@ import { useCalendarPlan, useCalendarPlanStore } from '@/modules/calendar-plan';
 import { useJournalsService } from '@/modules/journals/services/journals.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { useContentStore } from '@/modules/content/stores/content.store';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export const useJournalPlanStore = defineStore('journal-plan', () => {
   const calendarPlanStore = useCalendarPlanStore();
   const journalsService = useJournalsService();
   const dialog = useGlobalDialogStore();
   const contentStore = useContentStore();
+  const { locale } = storeToRefs(useProfileStore());
 
   contentStore.onContentCreated(JournalModel.contentType, addJournal);
   contentStore.onContentUpdated(JournalModel.contentType, addJournal);
@@ -30,7 +32,11 @@ export const useJournalPlanStore = defineStore('journal-plan', () => {
   const { cache } = calendarPlan;
 
   function getDataPoint(model: JournalModel) {
-    const timingId = toTimingId(calendarPlanStore.date, model.timeSeriesConfig.interval);
+    const timingId = toTimingId(
+      calendarPlanStore.date,
+      model.timeSeriesConfig.interval,
+      locale.value,
+    );
     return cache.value.getDataPoint(model, timingId, true);
   }
 

@@ -5,9 +5,9 @@ import {
   IDataPointValueStatus,
   INumberDataPointConfig,
   INumberDataPointConfigRevision,
-  NumberDataPointModel,
-  useDataPointStrategyFacade,
-} from '@/time-series';
+} from '../interfaces';
+import { useDataPointStrategyFacade } from '../components';
+import { NumberDataPointModel } from '../models';
 import { PropertiesOf } from '@/utils';
 import { isDefined, isNumber } from 'class-validator';
 

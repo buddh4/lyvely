@@ -1,5 +1,5 @@
 import { ContentUpdateResponse } from '@/content';
-import { MessageModel } from '@/message';
+import { MessageModel } from './message.model';
 import { Expose, Type } from 'class-transformer';
 import { PropertyType } from '@/models';
 

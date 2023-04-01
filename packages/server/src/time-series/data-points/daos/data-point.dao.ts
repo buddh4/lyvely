@@ -27,24 +27,20 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
     });
   }
 
-  async findDataPointByDate(content: TimeSeriesContent, date: CalendarDate) {
+  async findDataPointByTid(content: TimeSeriesContent, tid: string) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
       cid: assureObjectId(content),
-      tid: toTimingId(date, content.timeSeriesConfig.interval),
+      tid,
     });
   }
 
-  async findUserDataPointByDate(
-    content: TimeSeriesContent,
-    uid: EntityIdentity<User>,
-    date: CalendarDate,
-  ) {
+  async findUserDataPointByTid(content: TimeSeriesContent, uid: EntityIdentity<User>, tid: string) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
       cid: assureObjectId(content),
       uid: assureObjectId(uid),
-      tid: toTimingId(date, content.timeSeriesConfig.interval),
+      tid,
     });
   }
 
@@ -64,12 +60,12 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
    *
    * An empty uid should only be given for visitor roles.
    * // TODO: (visitor) implement and test visitor view
-   * @param pid
+   * @param profile
    * @param uid
    * @param filter
    */
   async findByIntervalLevel(
-    pid: EntityIdentity<Profile>,
+    profile: Profile,
     uid: EntityIdentity<User> | null,
     filter: DataPointIntervalFilter,
   ) {
@@ -81,7 +77,11 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
       : { uid: null };
 
     return this.findAll({
-      $and: [{ pid: assureObjectId(pid) }, uidFilter, this.buildTimingIntervalFilter(filter)],
+      $and: [
+        { pid: assureObjectId(profile) },
+        uidFilter,
+        this.buildTimingIntervalFilter(profile, filter),
+      ],
     });
   }
 
@@ -93,8 +93,8 @@ export abstract class DataPointDao<T extends DataPoint<any>> extends AbstractDao
    * @param filter
    * @private
    */
-  private buildTimingIntervalFilter(filter: DataPointIntervalFilter) {
-    const timingIds = getTimingIds(filter.date);
+  private buildTimingIntervalFilter(profile: Profile, filter: DataPointIntervalFilter) {
+    const timingIds = getTimingIds(filter.date, profile.locale);
     const dailyFilter = {
       interval: CalendarIntervalEnum.Daily,
       tid: timingIds[CalendarIntervalEnum.Daily],

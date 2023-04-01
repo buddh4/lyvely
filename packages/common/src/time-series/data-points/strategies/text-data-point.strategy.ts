@@ -4,9 +4,9 @@ import {
   IDataPointValueStatus,
   ITextDataPointConfig,
   ITextDataPointConfigRevision,
-  TextDataPointModel,
-  useDataPointStrategyFacade,
-} from '@/time-series';
+} from '../interfaces';
+import { useDataPointStrategyFacade } from '../components';
+import { TextDataPointModel } from '../models';
 import { PropertiesOf } from '@/utils';
 import { isString } from 'class-validator';
 

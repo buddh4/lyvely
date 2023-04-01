@@ -40,9 +40,6 @@ describe('AbstractUserProfileActionDao', () => {
       const scoreLog = await testScoreDao.save(
         new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
       );
-      const timing = CalendarPlan.getInstance(CalendarIntervalEnum.Daily).createTimingInstance(
-        new Date(),
-      );
 
       expect(scoreLog).toBeDefined();
       expect(scoreLog.id).toBeDefined();

@@ -1,5 +1,5 @@
 import { Type, Expose } from 'class-transformer';
-import { JournalModel } from '../models';
+import { JournalModel } from './journal.model';
 import { BaseModel, PropertyType } from '@/models';
 import { DataPointModel } from '@/time-series';
 import { ICalendarPlanResponse } from '@/calendar-plan';

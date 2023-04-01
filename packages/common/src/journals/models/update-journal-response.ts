@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 import { TagModel } from '@/tags';
 import { PropertyType } from '@/models';
 import { ContentUpdateResponse } from '@/content';
-import { JournalModel } from '@/journals';
+import { JournalModel } from './journal.model';
 
 export class UpdateJournalResponse extends ContentUpdateResponse<JournalModel> {
   @Expose()

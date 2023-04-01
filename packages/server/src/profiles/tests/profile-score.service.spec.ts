@@ -53,9 +53,6 @@ describe('AbstractUserProfileActionService', () => {
         profile,
         new TestProfileScore({ user: user, profile: profile, score: 5 }, { text: 'test' }),
       );
-      const timing = CalendarPlan.getInstance(CalendarIntervalEnum.Daily).createTimingInstance(
-        new Date(),
-      );
 
       expect(model).toBeDefined();
       expect(model.id).toBeDefined();

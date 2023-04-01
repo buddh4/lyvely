@@ -10,7 +10,7 @@ import {
 import { CalendarIntervalEnum } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 import { IEditableModel } from '@/models';
-import { UpdateJournalModel } from '@/journals';
+import { UpdateJournalModel } from './update-journal.model';
 
 export interface IJournalConfig {
   timeSeries: INumberDataPointConfig | ITextDataPointConfig;

@@ -1,5 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { BaseModel, PropertyType } from '@/models';
+import { PropertyType } from '../decorators';
+import { BaseModel } from '../base.model';
 
 export interface ISortable {
   getSortOrder(): number;
@@ -29,17 +30,8 @@ export class SortResponse extends BaseModel<SortResponse> {
 }
 
 export function sortBySortOrder(a: ISortable, b: ISortable) {
-  if (a.getSortOrder() === b.getSortOrder()) {
-    return 0;
-  }
-
-  if (typeof a.getSortOrder() === 'undefined') {
-    return 1;
-  }
-
-  if (typeof b.getSortOrder() === 'undefined') {
-    return -1;
-  }
-
+  if (a.getSortOrder() === b.getSortOrder()) return 0;
+  if (typeof a.getSortOrder() === 'undefined') return 1;
+  if (typeof b.getSortOrder() === 'undefined') return -1;
   return a.getSortOrder() - b.getSortOrder();
 }

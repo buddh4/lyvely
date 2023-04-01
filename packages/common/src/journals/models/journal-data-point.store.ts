@@ -1,4 +1,4 @@
-import { JournalModel } from '../models';
+import { JournalModel } from './journal.model';
 import {
   DataPointModel,
   DataPointValueType,
