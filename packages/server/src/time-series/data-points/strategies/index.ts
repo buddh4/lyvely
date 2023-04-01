@@ -1,4 +1,3 @@
 export * from './number-data-point.strategy';
-export * from './text-data-point.strategy';
-export * from './data-point-value-strategy.registry';
-export * from './data-point-value.strategy';
+export * from './data-point-processor-strategy.registry';
+export * from './data-point-processor.strategy';

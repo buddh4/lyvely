@@ -1,8 +1,13 @@
 <script lang="ts" setup>
-import { DataPointInputType, INumberDataPointConfig, TimerModel } from '@lyvely/common';
+import {
+  DataPointInputType,
+  INumberDataPointConfig,
+  TimerModel,
+  useDataPointStrategyFacade,
+} from '@lyvely/common';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import { computed } from 'vue';
-import { getDataPointValueColor, useCalendarPlanStore } from '@/modules/calendar-plan';
+import { useCalendarPlanStore } from '@/modules/calendar-plan';
 import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
 
 interface IProps {
@@ -29,7 +34,7 @@ const updateSelection = (value: number) => {
 };
 
 const inputColorClass = computed(() => {
-  return getDataPointValueColor(props.config, selection.value);
+  return useDataPointStrategyFacade().getValueStatus(props.config, selection.value);
 });
 
 const inputBorderColorClass = computed(() => {

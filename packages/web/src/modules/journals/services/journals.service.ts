@@ -6,8 +6,7 @@ import {
   MoveAction,
   SortResponse,
   useSingleton,
-  useDataPointFactory,
-  DataPointModel,
+  useDataPointStrategyFacade,
   UpdateDataPointModel,
   UpdateDataPointResponse,
   CreateJournalModel,
@@ -17,7 +16,7 @@ import {
 import repository from '../repositories/journals.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 
-const dataPointFactory = useDataPointFactory();
+const dataPointService = useDataPointStrategyFacade();
 
 export class JournalsService implements IJournalsEndpointService {
   create(model: CreateJournalModel): Promise<UpdateJournalResponse> {
@@ -28,13 +27,11 @@ export class JournalsService implements IJournalsEndpointService {
     return unwrapAndTransformResponse(repository.update(id, model), UpdateJournalResponse);
   }
 
-  async getByFilter(
-    filter: DataPointIntervalFilter,
-  ): Promise<ICalendarPlanResponse<JournalModel, DataPointModel>> {
+  async getByFilter(filter: DataPointIntervalFilter): Promise<ICalendarPlanResponse<JournalModel>> {
     const { models, dataPoints } = await unwrapResponse(repository.getByFilter(filter));
     return {
       models: models.map((journal) => new JournalModel(journal)),
-      dataPoints: dataPoints.map((dataPoint) => dataPointFactory.createDataPoint(dataPoint)),
+      dataPoints: dataPoints.map((dataPoint) => dataPointService.createDataPoint(dataPoint)),
     };
   }
 

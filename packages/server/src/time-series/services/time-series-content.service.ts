@@ -9,7 +9,8 @@ import {
   isInFuture,
 } from '@lyvely/common';
 import { DataPoint, DataPointService } from '../data-points';
-import { TimeSeriesContent, TimeSeriesContentDao, DataPointConfigHandler } from '../content';
+import { TimeSeriesContent, TimeSeriesContentDao } from '../content';
+import { DataPointConfigHandler } from '../components';
 import { assureObjectId, EntityIdentity, QuerySort } from '@/core';
 
 export interface ITimeSeriesContentSearchResult<

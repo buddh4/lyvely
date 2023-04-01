@@ -1,17 +1,14 @@
 import { TimeSeriesContent } from '@/time-series/content';
 import { DataPoint } from '../schemas';
-import { DataPointModel, FieldValidationException } from '@lyvely/common';
+import { FieldValidationException } from '@lyvely/common';
 import { UpdateQuerySet } from '@/core';
 import { User } from '@/users';
 
-export interface IDataPointValueStrategy<
-  TModel extends TimeSeriesContent = any,
-  TDataPoint extends DataPoint = any,
-  TValue = any,
+export interface IDataPointProcessorStrategy<
+  TModel extends TimeSeriesContent = TimeSeriesContent,
+  TDataPoint extends DataPoint = DataPoint,
 > {
-  prepareValue(model: TModel, dataPoint: TDataPoint, value: TValue): TValue;
   postProcess(user: User, model: TModel, dataPoint: TDataPoint): UpdateQuerySet<TDataPoint> | false;
-  createModel(dataPoint: TDataPoint): DataPointModel;
 }
 
 export class InvalidDataPointValueTypeException extends FieldValidationException {

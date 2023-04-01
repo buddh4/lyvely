@@ -1,2 +1,2 @@
-export * from './interfaces';
+export * from './data-points';
 export * from './models';

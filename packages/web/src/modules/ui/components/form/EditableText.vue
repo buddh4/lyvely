@@ -6,7 +6,7 @@
           {{ inputValue }}
         </template>
         <template v-else-if="placeholder?.length">
-          {{ placeholder }}
+          <span class="text-dimmed">{{ placeholder }}</span>
         </template>
       </div>
       <div>

@@ -2,11 +2,12 @@ import {
   DataPointConfigFactory,
   DataPointConfig,
   DataPointConfigRevision,
-  useDataPointConfigStrategyRegistry,
 } from '@/time-series/config';
-import { TimeSeriesContent } from '../schemas';
-import { cloneDeep } from 'lodash';
-import { isSameDay } from '@lyvely/common';
+import { TimeSeriesContent } from '../content/schemas';
+import { cloneDeep, pick } from 'lodash';
+import { isSameDay, useDataPointStrategyFacade } from '@lyvely/common';
+
+const dataPointFacade = useDataPointStrategyFacade();
 
 export class DataPointConfigHandler {
   static applyUpdate(model: TimeSeriesContent, update: Partial<DataPointConfigRevision>) {
@@ -31,23 +32,23 @@ export class DataPointConfigHandler {
     }
   }
 
+  private static prepareUpdate(model: TimeSeriesContent, update: Partial<DataPointConfigRevision>) {
+    const settingKeys = dataPointFacade.getSettingKeys(model.timeSeriesConfig.valueType);
+    const preparedUpdate = pick(update, [
+      ['inputType', 'userStrategy', 'interval'],
+      ...settingKeys,
+    ]);
+    const updatedConfig = Object.assign(cloneDeep(model.timeSeriesConfig), preparedUpdate);
+    DataPointConfigHandler.prepareConfig(model, updatedConfig);
+    return updatedConfig;
+  }
+
   static prepareConfig(model: TimeSeriesContent, config?: DataPointConfig) {
     if (!config) {
       config = model.timeSeriesConfig;
     }
 
-    useDataPointConfigStrategyRegistry()
-      .getStrategy(model.timeSeriesConfig.valueType)
-      .prepareConfig(config);
-  }
-
-  private static prepareUpdate(model: TimeSeriesContent, update: Partial<DataPointConfigRevision>) {
-    const preparedUpdate = useDataPointConfigStrategyRegistry()
-      .getStrategy(model.timeSeriesConfig.valueType)
-      .prepareUpdate(update);
-    const updatedConfig = Object.assign(cloneDeep(model.timeSeriesConfig), preparedUpdate);
-    DataPointConfigHandler.prepareConfig(model, updatedConfig);
-    return updatedConfig;
+    dataPointFacade.getService(model.timeSeriesConfig.valueType).prepareConfig(config);
   }
 
   private static timeSeriesConfigRevisionCheck(model: TimeSeriesContent, update: DataPointConfig) {
@@ -76,8 +77,6 @@ export class DataPointConfigHandler {
   }
 
   private static createTimeSeriesConfigRevision(model: TimeSeriesContent, old: DataPointConfig) {
-    return useDataPointConfigStrategyRegistry()
-      .getStrategy(model.timeSeriesConfig.valueType)
-      .createRevision(old);
+    return dataPointFacade.createRevision(old);
   }
 }

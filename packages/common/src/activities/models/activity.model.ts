@@ -22,10 +22,6 @@ export interface IActivityConfig {
 export class ActivityModel<
   T extends ActivityModel<any> = ActivityModel<any>,
 > extends TimeSeriesContentModel<T, IActivityConfig> {
-  getEditDto() {
-    return undefined;
-  }
-
   getDefaultConfig(): IActivityConfig {
     return {
       score: 0,

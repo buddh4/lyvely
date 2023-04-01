@@ -1,6 +1,6 @@
 import { ContentModel, IContent } from '@/content';
 import { ISortable } from '@/models';
-import { IDataPointConfig } from '../interfaces';
+import { IDataPointConfig } from '../data-points';
 import { Expose } from 'class-transformer';
 
 export interface ITimeSeriesContentConfig<TDataPointConfig = IDataPointConfig> {

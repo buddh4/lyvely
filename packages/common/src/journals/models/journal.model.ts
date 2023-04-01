@@ -5,6 +5,7 @@ import {
   INumberDataPointConfig,
   ITextDataPointConfig,
   TimeSeriesContentModel,
+  useDataPointStrategyFacade,
 } from '@/time-series';
 import { CalendarIntervalEnum } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
@@ -23,10 +24,6 @@ export class JournalModel
   static contentType = 'Journal';
   type = JournalModel.contentType;
 
-  getEditDto() {
-    return undefined;
-  }
-
   getDefaultConfig(): IJournalConfig {
     return {
       timeSeries: {
@@ -43,21 +40,8 @@ export class JournalModel
     const editModel = new UpdateJournalModel({
       title: this.content.title,
       text: this.content.text,
-      interval: this.timeSeriesConfig.interval,
-      userStrategy: this.timeSeriesConfig.userStrategy,
-      inputType: this.timeSeriesConfig.inputType,
     });
-
-    if (this.timeSeriesConfig.valueType === DataPointValueType.Number) {
-      const numberConfig = <INumberDataPointConfig>this.timeSeriesConfig;
-      editModel.min = this.timeSeriesConfig.min;
-      editModel.max = this.timeSeriesConfig.max;
-      editModel.optimal = this.timeSeriesConfig.optimal;
-    } else if (this.timeSeriesConfig.valueType === DataPointValueType.Text) {
-      const textConfig = <ITextDataPointConfig>this.timeSeriesConfig;
-      editModel.required = textConfig.required;
-    }
-
+    useDataPointStrategyFacade().populateDataPointConfig(editModel, this.timeSeriesConfig);
     return editModel;
   }
 }

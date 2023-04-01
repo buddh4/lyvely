@@ -6,8 +6,6 @@ import {
   toTimingId,
   formatDate,
   DataPointModel,
-  ActivityType,
-  HabitModel,
 } from '@lyvely/common';
 import { useCalendarPlan, useCalendarPlanStore } from '@/modules/calendar-plan';
 import { useJournalsService } from '@/modules/journals/services/journals.service';

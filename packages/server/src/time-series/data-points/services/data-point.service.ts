@@ -4,6 +4,8 @@ import {
   toDate,
   DataPointIntervalFilter,
   UserAssignmentStrategy,
+  useDataPointStrategyFacade,
+  InvalidDataPointValueTypeException,
 } from '@lyvely/common';
 import { DataPoint } from '../schemas';
 import { TimeSeriesContent } from '@/time-series/content';
@@ -11,7 +13,7 @@ import { Profile, ProfilesService } from '@/profiles';
 import { EntityIdentity } from '@/core';
 import { DataPointDao } from '../daos';
 import { Inject } from '@nestjs/common';
-import { useDataPointValueStrategyRegistry } from '@/time-series/data-points/strategies/data-point-value-strategy.registry';
+import { useDataPointStrategyRegistry } from '@/time-series/data-points/strategies/data-point-processor-strategy.registry';
 
 export abstract class DataPointService<
   TModel extends TimeSeriesContent,
@@ -58,10 +60,11 @@ export abstract class DataPointService<
 
   protected async postProcess(user: User, model: TModel, dataPoint: TDataPointModel) {
     const strategy = this.getStrategy(dataPoint.valueType);
-    if (!strategy) return;
-    const update = strategy.postProcess(user, model, dataPoint);
-    if (typeof update === 'object') {
-      await this.dataPointDao.updateOneSetById(dataPoint._id, update);
+    if (strategy) {
+      const update = strategy.postProcess(user, model, dataPoint);
+      if (typeof update === 'object') {
+        await this.dataPointDao.updateOneSetById(dataPoint._id, update);
+      }
     }
   }
 
@@ -78,12 +81,16 @@ export abstract class DataPointService<
   }
 
   protected prepareValue(model: TModel, dataPoint: TDataPointModel, newValue: TValue): TValue {
-    const strategy = this.getStrategy(dataPoint.valueType);
-    return strategy ? strategy.prepareValue(model, dataPoint, newValue) : newValue;
+    const strategy = useDataPointStrategyFacade().getService(model.timeSeriesConfig.valueType);
+    if (!strategy.validateValue(model.timeSeriesConfig, newValue)) {
+      throw new InvalidDataPointValueTypeException();
+    }
+
+    return strategy.prepareValue(model.timeSeriesConfig, newValue);
   }
 
   protected getStrategy(valueType: string) {
-    return useDataPointValueStrategyRegistry().getStrategy(valueType);
+    return useDataPointStrategyRegistry().getStrategy(valueType);
   }
 
   protected async findOrCreateDataPointByDate(

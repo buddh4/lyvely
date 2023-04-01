@@ -1,6 +1,6 @@
 import { CalendarIntervalEnum } from '@/calendar';
-import { Filter, sortBySortOrder } from '@/models';
-import { DataPointModel } from './data-point.model';
+import { sortBySortOrder } from '@/models';
+import { DataPointModel } from '../data-points/models/data-point.model';
 import { TimeSeriesContentModel } from './time-series-content.model';
 import { ContentFilter } from '@/content';
 

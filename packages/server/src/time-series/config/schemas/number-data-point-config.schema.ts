@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import {
   DataPointInputType,
   DataPointValueType,
@@ -10,7 +10,7 @@ import { DataPointConfig, DataPointConfigRevision } from './data-point-config.sc
 import { pick } from 'lodash';
 import { NestedSchema } from '@/core';
 
-@Schema({ _id: false })
+@NestedSchema()
 export class NumberDataPointConfigRevision
   extends DataPointConfigRevision
   implements INumberDataPointConfigRevision
