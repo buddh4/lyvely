@@ -1,6 +1,5 @@
 import {
   DataPointValueType,
-  IDataPointValueStatus,
   ITextDataPointConfig,
   ITextDataPointConfigRevision,
 } from '../interfaces';

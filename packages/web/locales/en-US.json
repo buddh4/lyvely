@@ -63,11 +63,14 @@
         "checkbox": "Checkboxes",
         "range": "Range",
         "spinner": "Spinner",
-        "time": "Time"
+        "time": "Time",
+        "dropdown": "Dropdown",
+        "radio": "Radio"
       },
       "value_types": {
         "number": "Number",
-        "text": "Text"
+        "text": "Text",
+        "selection": "Selection"
       },
       "fields": {
         "max": "Max",
@@ -75,6 +78,10 @@
         "optimal": "Optimal",
         "score": "Score ★",
         "required": "Is required?"
+      },
+      "labels": {
+        "showOther": "Add \"Other\"",
+        "add_option": "Add Option"
       },
       "timer_score_info": "The score is awarded for each achieved min, optimal, max result.",
       "nav-today": "Switch to today",

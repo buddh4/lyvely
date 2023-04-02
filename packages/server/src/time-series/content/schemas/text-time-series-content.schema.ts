@@ -1,10 +1,6 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IContentEntity } from '@/content';
-import {
-  TextDataPointConfig,
-  TextDataPointConfigRevision,
-  TextDataPointConfigSchema,
-} from '../../config';
+import { TextDataPointConfig, TextDataPointConfigSchema } from '../../config';
 import { EntityType } from '@/core';
 import { TimeSeriesContent } from './time-series-content.schema';
 import { BaseModel, ITimeSeriesContentConfig } from '@lyvely/common';
@@ -29,6 +25,6 @@ export const TextTimeSeriesContentConfigSchema = SchemaFactory.createForClass(
 export abstract class TextTimeSeriesContent<
   T extends TextTimeSeriesContentEntity = TextTimeSeriesContentEntity,
 > extends TimeSeriesContent<T, TextDataPointConfig> {
-  @Prop({ type: TextTimeSeriesContentConfig, required: true })
+  @Prop({ type: TextTimeSeriesContentConfigSchema, required: true })
   config: TextTimeSeriesContentConfig;
 }

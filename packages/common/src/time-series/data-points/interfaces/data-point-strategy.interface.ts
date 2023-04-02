@@ -1,8 +1,6 @@
 import { IDataPoint, IDataPointConfig, IDataPointConfigRevision } from './data-point.interface';
 import { PropertiesOf } from '@/utils';
 
-export type IDataPointValueStatus = 'success' | 'warning' | 'info' | '';
-
 export interface IDataPointStrategy<
   T extends IDataPoint<TValue> = IDataPoint,
   TConfig extends IDataPointConfig = any,

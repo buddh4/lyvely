@@ -10,6 +10,9 @@ import {
   TimeNumberDataPointConfig,
   TimeSeriesConfigSchemaFactory,
   TimeSeriesContent,
+  CheckboxSelectionDataPointConfig,
+  RadioSelectionDataPointConfig,
+  DropdownSelectionDataPointConfig,
 } from '@/time-series';
 import {
   CreateJournalModel,
@@ -30,7 +33,10 @@ type JournalDataPointConfig =
   | CheckboxNumberDataPointConfig
   | SpinnerNumberDataPointConfig
   | TimeNumberDataPointConfig
-  | RangeNumberDataPointConfig;
+  | RangeNumberDataPointConfig
+  | RadioSelectionDataPointConfig
+  | DropdownSelectionDataPointConfig
+  | CheckboxSelectionDataPointConfig;
 
 @NestedSchema()
 export class JournalConfig implements ITimeSeriesContentConfig {
@@ -48,6 +54,9 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Time),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Selection, DataPointInputType.Checkbox),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Selection, DataPointInputType.Radio),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Selection, DataPointInputType.Dropdown),
 ]);
 
 /**

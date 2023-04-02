@@ -15,6 +15,7 @@ import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-con
 import { useJournalsService } from '@/modules/journals/services/journals.service';
 import NumberDataPointConfig from '@/modules/calendar-plan/components/NumberDataPointConfig.vue';
 import TextDataPointConfig from '@/modules/calendar-plan/components/TextDataPointConfig.vue';
+import SelectionDataPointConfig from '@/modules/calendar-plan/components/SelectionDataPointConfig.vue';
 
 export interface IProps {
   modelValue: boolean;
@@ -85,13 +86,23 @@ const modalTitle = computed(() => {
               @click="setValueType(DataPointValueType.Text)">
               {{ $t('calendar.plan.value_types.text') }}
             </ly-button>
+
+            <ly-button
+              class="text-xs secondary w-full"
+              :active="model.valueType === DataPointValueType.Selection"
+              @click="setValueType(DataPointValueType.Selection)">
+              {{ $t('calendar.plan.value_types.selection') }}
+            </ly-button>
           </div>
 
           <number-data-point-config
             v-if="model.valueType === DataPointValueType.Number"
             v-model="model" />
           <text-data-point-config
-            v-if="model.valueType === DataPointValueType.Text"
+            v-else-if="model.valueType === DataPointValueType.Text"
+            v-model="model" />
+          <selection-data-point-config
+            v-else-if="model.valueType === DataPointValueType.Selection"
             v-model="model" />
         </div>
       </fieldset>

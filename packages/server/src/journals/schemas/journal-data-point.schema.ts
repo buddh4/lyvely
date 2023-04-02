@@ -1,6 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DataPoint, NumberDataPoint, TextDataPoint } from '@/time-series';
-import mongoose from 'mongoose';
 
 @Schema({ timestamps: true, discriminatorKey: 'valueType' })
 export class JournalDataPoint extends DataPoint {}
@@ -16,3 +15,9 @@ export const JournalNumberDataPointSchema = SchemaFactory.createForClass(Journal
 export class JournalTextDataPoint extends TextDataPoint {}
 
 export const JournalTextDataPointSchema = SchemaFactory.createForClass(JournalTextDataPoint);
+
+@Schema()
+export class JournalSelectionDataPoint extends TextDataPoint {}
+
+export const JournalSelectionDataPointSchema =
+  SchemaFactory.createForClass(JournalSelectionDataPoint);

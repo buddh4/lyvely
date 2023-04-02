@@ -2,6 +2,7 @@ import { Expose } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
+  IsDefined,
   IsEnum,
   IsInt,
   IsNotEmpty,
@@ -56,6 +57,19 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
   @Min(0)
   @ValidateIf((o) => o.type === DataPointValueType.Number)
   min?: number;
+
+  @IsDefined()
+  @MaxLength(250, {
+    each: true,
+  })
+  @IsString({ each: true })
+  @ValidateIf((o) => o.type === DataPointValueType.Selection)
+  options?: Array<string>;
+
+  @IsBoolean()
+  @IsOptional()
+  @ValidateIf((o) => o.type === DataPointValueType.Selection)
+  showOther?: boolean;
 
   @IsInt()
   @Gte('min')

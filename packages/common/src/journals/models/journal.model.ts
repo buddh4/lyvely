@@ -3,6 +3,7 @@ import {
   DataPointInputType,
   DataPointValueType,
   INumberDataPointConfig,
+  ISelectionDataPointConfig,
   ITextDataPointConfig,
   TimeSeriesContentModel,
   useDataPointStrategyFacade,
@@ -13,7 +14,7 @@ import { IEditableModel } from '@/models';
 import { UpdateJournalModel } from './update-journal.model';
 
 export interface IJournalConfig {
-  timeSeries: INumberDataPointConfig | ITextDataPointConfig;
+  timeSeries: INumberDataPointConfig | ITextDataPointConfig | ISelectionDataPointConfig;
 }
 
 @Expose()

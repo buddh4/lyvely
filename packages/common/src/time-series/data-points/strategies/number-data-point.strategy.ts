@@ -1,7 +1,6 @@
 import {
   DataPointInputType,
   DataPointValueType,
-  IDataPointValueStatus,
   INumberDataPointConfig,
   INumberDataPointConfigRevision,
 } from '../interfaces';

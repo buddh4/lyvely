@@ -5,7 +5,7 @@ import { TransformObjectId } from '@/utils';
 
 export enum DataPointValueType {
   Number = 'number',
-  Boolean = 'boolean',
+  Selection = 'selection',
   Text = 'text',
   //File = 'file',
   //Time = 'time',
@@ -17,6 +17,8 @@ export enum DataPointInputType {
   Spinner = 'spinner',
   Time = 'time',
   Textarea = 'textarea',
+  Radio = 'radio',
+  Dropdown = 'dropdown',
   //Provider = 'provider',
   //Richtext = 'richtext'
 }

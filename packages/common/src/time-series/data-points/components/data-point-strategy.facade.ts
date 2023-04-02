@@ -1,6 +1,6 @@
 import { DataPointModel } from '../models';
 import { PropertiesOf, useSingleton } from '@/utils';
-import { IDataPointConfig, IDataPointStrategy, IDataPointValueStatus } from '../interfaces';
+import { IDataPointConfig, IDataPointStrategy } from '../interfaces';
 import { IntegrityException } from '@/exceptions';
 
 export class DataPointStrategyFacade {
@@ -22,10 +22,7 @@ export class DataPointStrategyFacade {
     return this.getService(valueType).getSettingKeys();
   }
 
-  populateDataPointConfig(
-    target: Partial<IDataPointConfig>,
-    config: IDataPointConfig,
-  ): IDataPointValueStatus {
+  populateDataPointConfig(target: Partial<IDataPointConfig>, config: IDataPointConfig) {
     return this.getService(config.valueType).populateDataPointConfig(target, config);
   }
 

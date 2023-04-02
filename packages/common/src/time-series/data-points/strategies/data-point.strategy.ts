@@ -3,7 +3,6 @@ import {
   IDataPointConfig,
   IDataPointConfigRevision,
   IDataPointStrategy,
-  IDataPointValueStatus,
 } from '@/time-series';
 import { PropertiesOf } from '@/utils';
 

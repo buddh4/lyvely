@@ -12,6 +12,8 @@ import {
   JournalNumberDataPointSchema,
   JournalTextDataPoint,
   JournalTextDataPointSchema,
+  JournalSelectionDataPoint,
+  JournalSelectionDataPointSchema,
 } from './schemas';
 import { DataPointValueType } from '@lyvely/common';
 import { JournalDataPointDao, JournalsDao } from './daos';
@@ -40,6 +42,11 @@ import { JournalsService } from '@/journals/services/journals.service';
             name: JournalTextDataPoint.name,
             schema: JournalTextDataPointSchema,
             value: DataPointValueType.Text,
+          },
+          {
+            name: JournalSelectionDataPoint.name,
+            schema: JournalSelectionDataPointSchema,
+            value: DataPointValueType.Selection,
           },
         ],
       },

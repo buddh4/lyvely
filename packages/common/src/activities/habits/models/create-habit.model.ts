@@ -1,10 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { CalendarIntervalEnum } from '@/calendar';
-import {
-  DataPointInputType,
-  DataPointNumberInputType,
-  INumberDataPointConfig,
-} from '@/time-series';
+import { DataPointInputType, DataPointNumberInputType } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import {
   IsArray,
