@@ -9,6 +9,8 @@ export function sortActivities(activities: ActivityModel[]): ActivityModel[] {
       const aDone = (<TaskModel>a).done;
       const bDone = (<TaskModel>b).done;
 
+      const test = new Date();
+
       if (aDone && !bDone) return 1;
       if (!aDone && bDone) return -1;
       if (aDone && bDone) {

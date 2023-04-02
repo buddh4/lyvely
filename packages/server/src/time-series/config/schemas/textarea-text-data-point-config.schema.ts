@@ -1,5 +1,5 @@
-import { Prop, Schema } from '@nestjs/mongoose';
-import { DataPointInputType, DataPointValueType } from '@lyvely/common';
+import { Prop } from '@nestjs/mongoose';
+import { DataPointInputType, DataPointValueType, ITextDataPointSettings } from '@lyvely/common';
 import { DataPointConfigSchemaFactory, DataPointConfigFactory } from '../components';
 import { TextDataPointConfig } from './text-data-point-config.schema';
 import { NestedSchema } from '@/core';
@@ -18,6 +18,10 @@ export class TextareaTextDataPointConfig extends TextDataPointConfig {
 
   @Prop({ enum: [DataPointInputType.Textarea], required: true, default: DataPointValueType.Text })
   inputType: DataPointInputType = DataPointInputType.Textarea;
+
+  constructor(settings: Omit<ITextDataPointSettings, 'inputType'>) {
+    super(DataPointInputType.Textarea, settings);
+  }
 }
 
 export const TextareaTextDataPointConfigSchema = DataPointConfigSchemaFactory.createForClass(

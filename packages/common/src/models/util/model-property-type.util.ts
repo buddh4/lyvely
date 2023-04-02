@@ -5,7 +5,12 @@ interface InitPropertiesOptionsIF {
   maxDepth?: number;
 }
 
-const primitivePrototypes = [String.prototype, Number.prototype, Boolean.prototype, Symbol.prototype];
+const primitivePrototypes = [
+  String.prototype,
+  Number.prototype,
+  Boolean.prototype,
+  Symbol.prototype,
+];
 
 const primitiveDefaults = new Map();
 primitiveDefaults.set(String, '');
@@ -35,8 +40,13 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
               : propertyDefinition.default;
         } else if (Array.isArray(propertyDefinition.type)) {
           model[propertyKey] = [];
+        } else if (propertyDefinition.type === Date) {
+          model[propertyKey] = new Date();
         } else if (!primitivePrototypes.includes(propertyDefinition.type.prototype)) {
-          model[propertyKey] = Object.assign(Object.create(propertyDefinition.type.prototype), model[propertyKey]);
+          model[propertyKey] = Object.assign(
+            Object.create(propertyDefinition.type.prototype),
+            model[propertyKey],
+          );
           if (
             !propertyDefinition.default &&
             'afterInit' in model[propertyKey] &&

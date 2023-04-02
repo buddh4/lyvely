@@ -50,8 +50,8 @@ export class TextDataPointConfig
   @Prop({ type: [TextDataPointConfigRevisionSchema], default: [] })
   history: TextDataPointConfigRevision[];
 
-  constructor(settings?: ITextDataPointSettings) {
-    super(DataPointValueType.Text, DataPointInputType.Textarea, settings);
+  constructor(inputType?: DataPointInputType, settings?: ITextDataPointSettings) {
+    super(DataPointValueType.Text, inputType, settings);
   }
 
   getSettings(): ITextDataPointSettings {

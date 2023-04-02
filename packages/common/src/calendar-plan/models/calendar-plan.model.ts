@@ -34,7 +34,7 @@ export abstract class CalendarPlan {
     return this.id;
   }
 
-  getTimingUniqueId(date: CalendarDate, locale = 'de', weekStrategy = WeekStrategy.LOCALE): string {
+  getTimingId(date: CalendarDate, locale = 'de', weekStrategy = WeekStrategy.LOCALE): string {
     return toTimingId(date, this.getInterval(), locale, weekStrategy);
   }
 
@@ -170,7 +170,7 @@ export class WeeklyPlan extends MonthlyPlan {
   }
 
   getTitle(date: Date, locale: string): string {
-    const tid = this.getTimingUniqueId(date, locale);
+    const tid = this.getTimingId(date, locale);
     const splitTid = tid.split(';');
     const weekOfYear = parseInt(splitTid.at(-1).split(':')[1]);
     const yearOfWeek = parseInt(splitTid.at(0).split(':')[1]);

@@ -3,8 +3,8 @@ import {
   DayIterator,
   getFullDayDate,
   getRelativeTime,
-  getWeekOfYear,
   toTimingId,
+  WeekStrategy,
 } from '@/calendar';
 
 describe('CalendarUtils', () => {
@@ -32,109 +32,6 @@ describe('CalendarUtils', () => {
     it('from string with max tz', async () => {
       const date = getFullDayDate('2021-03-01T12:00:00+12:00');
       expect(date.toUTCString()).toEqual('Mon, 01 Mar 2021 00:00:00 GMT');
-    });
-  });
-
-  describe('getWeekOfYear', function () {
-    it('overlapping week ends in new year', async () => {
-      const woy = getWeekOfYear('2021-01-01', 'de');
-      expect(woy).toEqual(53);
-    });
-
-    it('monday first dow', async () => {
-      const sunday = getWeekOfYear('2021-02-28', 'de');
-      const monday = getWeekOfYear('2021-03-01', 'de');
-      expect(sunday).toEqual(8);
-      expect(monday).toEqual(9);
-    });
-
-    it('monday first dow', async () => {
-      const sunday = getWeekOfYear('2021-02-28', 'en-US');
-      const monday = getWeekOfYear('2021-03-01', 'en-US');
-      expect(monday).toEqual(10);
-      expect(sunday).toEqual(10);
-    });
-  });
-
-  describe('toTimingId', function () {
-    describe('UnscheduledPlan', function () {
-      it('first day of year', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Unscheduled);
-        expect(timingId).toEqual('U');
-      });
-    });
-
-    describe('YearlyPlan', function () {
-      it('2021', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Yearly);
-        expect(timingId).toEqual('Y:2021');
-      });
-    });
-
-    describe('QuarterlyPlan', function () {
-      it('Begin of first quarter', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Quarterly);
-        expect(timingId).toEqual('Y:2021;Q:1');
-      });
-
-      it('End of first quarter', async () => {
-        const timingId = toTimingId('2021-03-31', CalendarIntervalEnum.Quarterly);
-        expect(timingId).toEqual('Y:2021;Q:1');
-      });
-
-      it('Begin of second quarter', async () => {
-        const timingId = toTimingId('2021-04-01', CalendarIntervalEnum.Quarterly);
-        expect(timingId).toEqual('Y:2021;Q:2');
-      });
-
-      it('End of second quarter', async () => {
-        const timingId = toTimingId('2021-06-30', CalendarIntervalEnum.Quarterly);
-        expect(timingId).toEqual('Y:2021;Q:2');
-      });
-
-      it('Begin of third quarter', async () => {
-        const timingId = toTimingId('2021-07-01', CalendarIntervalEnum.Quarterly);
-        expect(timingId).toEqual('Y:2021;Q:3');
-      });
-
-      it('End of third quarter', async () => {
-        const timingId = toTimingId('2021-09-30', CalendarIntervalEnum.Quarterly);
-        expect(timingId).toEqual('Y:2021;Q:3');
-      });
-
-      it('Begin of fourth quarter', async () => {
-        const timingId = toTimingId('2021-10-01', CalendarIntervalEnum.Quarterly);
-        expect(timingId).toEqual('Y:2021;Q:4');
-      });
-
-      it('End of fourth quarter', async () => {
-        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Quarterly);
-        expect(timingId).toEqual('Y:2021;Q:4');
-      });
-    });
-
-    describe('WeeklyPlan', function () {
-      it('overlapping last week of year', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Weekly);
-        expect(timingId).toEqual('Y:2021;Q:1;M:1;W:53');
-      });
-
-      it('last day of 2021', async () => {
-        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Weekly);
-        expect(timingId).toEqual('Y:2021;Q:4;M:12;W:52');
-      });
-    });
-
-    describe('Daily', function () {
-      it('overlapping last week of year', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Daily);
-        expect(timingId).toEqual('Y:2021;Q:1;M:1;W:53;D:1');
-      });
-
-      it('last day of 2021', async () => {
-        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Daily);
-        expect(timingId).toEqual('Y:2021;Q:4;M:12;W:52;D:31');
-      });
     });
   });
 

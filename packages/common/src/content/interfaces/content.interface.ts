@@ -22,6 +22,7 @@ export interface IContentMetadata<TID = any> {
   createdAt: Date;
   updatedAt: Date;
   streamSort: number;
+  sortOrder?: number;
   visibility: ContentVisibilityLevel;
   isArchived?: boolean;
   isLocked?: boolean;

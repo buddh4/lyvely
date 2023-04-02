@@ -1,6 +1,5 @@
 import {
   DataPointInputType,
-  DataPointStrategy,
   DataPointValueType,
   IDataPointValueStatus,
   INumberDataPointConfig,
@@ -10,8 +9,9 @@ import { useDataPointStrategyFacade } from '../components';
 import { NumberDataPointModel } from '../models';
 import { PropertiesOf } from '@/utils';
 import { isDefined, isNumber } from 'class-validator';
+import { DataPointStrategy } from './data-point.strategy';
 
-export class NumberDataPointService extends DataPointStrategy<
+export class NumberDataPointStrategy extends DataPointStrategy<
   NumberDataPointModel,
   INumberDataPointConfig,
   INumberDataPointConfigRevision,
@@ -21,19 +21,12 @@ export class NumberDataPointService extends DataPointStrategy<
     return new NumberDataPointModel(raw);
   }
 
-  getValueStatus(config: INumberDataPointConfig, value: any): IDataPointValueStatus {
-    if (config.min && value <= config.min) return 'warning';
-    if (config.optimal && value >= config.optimal!) return 'success';
-    if (value) return 'success';
-    return '';
-  }
-
   validateValue(config: INumberDataPointConfig, value: number): boolean {
     return isNumber(value) && value <= config.max;
   }
 
   prepareValue(config: INumberDataPointConfig, value: number): number {
-    return isDefined(config.max) ? Math.min(value, config.max) : value;
+    return isDefined(config.max) && isNumber(value) ? Math.min(value, config.max) : value;
   }
 
   prepareConfig(config: INumberDataPointConfig): void {
@@ -51,4 +44,4 @@ export class NumberDataPointService extends DataPointStrategy<
   }
 }
 
-useDataPointStrategyFacade().registerType(DataPointValueType.Number, new NumberDataPointService());
+useDataPointStrategyFacade().registerType(DataPointValueType.Number, new NumberDataPointStrategy());

@@ -12,20 +12,12 @@ export class ActivityDataPointStore extends TimeSeriesDataPointStore<
     return sortActivities(models);
   }
 
-  createDataPoint(model: ActivityModel, timingId: string): NumberDataPointModel {
-    return new NumberDataPointModel({
-      cid: model.id,
-      interval: model.timeSeriesConfig.interval,
-      tid: timingId,
-    });
-  }
-
   getModelsByIntervalFilter(
     interval: CalendarIntervalEnum,
     filter?: ActivityFilter,
     tid?: string,
   ): ActivityModel[] {
-    if (filter.option('type') === ActivityType.Task && tid) {
+    if (filter?.option('type') === ActivityType.Task && tid) {
       return this.getTasksByCalendarInterval(interval, filter, tid);
     }
 

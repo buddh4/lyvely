@@ -1,6 +1,7 @@
 import { DataPointModel } from '../models';
 import { PropertiesOf, useSingleton } from '@/utils';
 import { IDataPointConfig, IDataPointStrategy, IDataPointValueStatus } from '../interfaces';
+import { IntegrityException } from '@/exceptions';
 
 export class DataPointStrategyFacade {
   private types = new Map<string, IDataPointStrategy>();
@@ -10,11 +11,11 @@ export class DataPointStrategyFacade {
   }
 
   getService(valueType: string) {
-    return this.types.get(valueType);
-  }
-
-  getValueStatus(config: IDataPointConfig, value: any): IDataPointValueStatus {
-    return this.getService(config.valueType).getValueStatus(config, value);
+    const service = this.types.get(valueType);
+    if (!service) {
+      throw new IntegrityException('Unknown data point strategy value type ' + valueType);
+    }
+    return service;
   }
 
   getSettingKeys(valueType: string) {
@@ -30,6 +31,18 @@ export class DataPointStrategyFacade {
 
   createDataPoint(raw: PropertiesOf<DataPointModel>): DataPointModel {
     return this.getService(raw.valueType).createDataPoint(raw);
+  }
+
+  validateValue(config: IDataPointConfig, value: any): boolean {
+    return this.getService(config.valueType).validateValue(config, value);
+  }
+
+  prepareValue(config: IDataPointConfig, value: any): boolean {
+    return this.getService(config.valueType).prepareValue(config, value);
+  }
+
+  prepareConfig(config: IDataPointConfig): void {
+    this.getService(config.valueType).prepareConfig(config);
   }
 
   createRevision(config: IDataPointConfig) {

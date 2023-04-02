@@ -38,31 +38,95 @@ describe('time series utils', () => {
   }
 
   describe('toTimingId', () => {
-    it('date without level', () => {
-      expect(toTimingId('2022-02-20')).toEqual('Y:2022;Q:1;M:02;D:20');
+    describe('unscheduled level', function () {
+      it('simple unscheduled level', async () => {
+        expectTid('2022-02-20', CalendarIntervalEnum.Unscheduled, 'U');
+      });
     });
 
-    it('use weekly level', () => {
-      expectTid('2022-02-20', CalendarIntervalEnum.Weekly, 'Y:2022;Q:1;M:02;W:07');
+    describe('year level', function () {
+      it('simple year level', () => {
+        expectTid('2022-02-20', CalendarIntervalEnum.Yearly, 'Y:2022');
+      });
+
+      it('first day of year', async () => {
+        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Yearly);
+        expect(timingId).toEqual('Y:2021');
+      });
     });
 
-    it('use monthly level', () => {
-      expectTid('2022-02-20', CalendarIntervalEnum.Monthly, 'Y:2022;Q:1;M:02');
+    describe('month level', function () {
+      it('simple month level', () => {
+        expectTid('2022-02-20', CalendarIntervalEnum.Monthly, 'Y:2022;Q:1;M:02');
+      });
     });
 
-    it('use quarterly level', () => {
-      expectTid('2022-02-20', CalendarIntervalEnum.Quarterly, 'Y:2022;Q:1');
+    describe('quarter level', function () {
+      it('simple quarter level', () => {
+        expectTid('2022-02-20', CalendarIntervalEnum.Quarterly, 'Y:2022;Q:1');
+      });
+
+      it('Begin of first quarter', async () => {
+        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Quarterly);
+        expect(timingId).toEqual('Y:2021;Q:1');
+      });
+
+      it('End of first quarter', async () => {
+        const timingId = toTimingId('2021-03-31', CalendarIntervalEnum.Quarterly);
+        expect(timingId).toEqual('Y:2021;Q:1');
+      });
+
+      it('Begin of second quarter', async () => {
+        const timingId = toTimingId('2021-04-01', CalendarIntervalEnum.Quarterly);
+        expect(timingId).toEqual('Y:2021;Q:2');
+      });
+
+      it('End of second quarter', async () => {
+        const timingId = toTimingId('2021-06-30', CalendarIntervalEnum.Quarterly);
+        expect(timingId).toEqual('Y:2021;Q:2');
+      });
+
+      it('Begin of third quarter', async () => {
+        const timingId = toTimingId('2021-07-01', CalendarIntervalEnum.Quarterly);
+        expect(timingId).toEqual('Y:2021;Q:3');
+      });
+
+      it('End of third quarter', async () => {
+        const timingId = toTimingId('2021-09-30', CalendarIntervalEnum.Quarterly);
+        expect(timingId).toEqual('Y:2021;Q:3');
+      });
+
+      it('Begin of fourth quarter', async () => {
+        const timingId = toTimingId('2021-10-01', CalendarIntervalEnum.Quarterly);
+        expect(timingId).toEqual('Y:2021;Q:4');
+      });
+
+      it('End of fourth quarter', async () => {
+        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Quarterly);
+        expect(timingId).toEqual('Y:2021;Q:4');
+      });
     });
 
-    it('use yearly level', () => {
-      expectTid('2022-02-20', CalendarIntervalEnum.Yearly, 'Y:2022');
-    });
+    describe('week level', function () {
+      it('simple week level', () => {
+        expectTid('2022-02-20', CalendarIntervalEnum.Weekly, 'Y:2022;Q:1;M:02;W:07');
+      });
 
-    it('use unscheduled level', () => {
-      expectTid('2022-02-20', CalendarIntervalEnum.Unscheduled, 'U');
-    });
+      it('overlapping last week of year', async () => {
+        const timingId = toTimingId(
+          '2021-01-01',
+          CalendarIntervalEnum.Weekly,
+          'de',
+          WeekStrategy.ISO,
+        );
+        expect(timingId).toEqual('Y:2020;Q:4;M:12;W:53');
+      });
 
-    describe('weekly edge cases', () => {
+      it('last day of 2021', async () => {
+        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Weekly);
+        expect(timingId).toEqual('Y:2021;Q:4;M:12;W:52');
+      });
+
       it('en locale year edge cases', () => {
         expectWeeklyENTid('1982-01-03', 'Y:1982;Q:1;M:01;W:02');
         expectWeeklyENTid('1982-01-02', 'Y:1982;Q:1;M:01;W:01');
@@ -152,6 +216,22 @@ describe('time series utils', () => {
         expectWeeklyENTid('2023-04-03', 'Y:2023;Q:2;M:04;W:14');
         expectWeeklyENTid('2022-07-31', 'Y:2022;Q:3;M:07;W:32');
         expectWeeklyENTid('2022-08-01', 'Y:2022;Q:3;M:07;W:32');
+      });
+    });
+
+    describe('day level', function () {
+      it('without explicit level', () => {
+        expect(toTimingId('2022-02-20')).toEqual('Y:2022;Q:1;M:02;D:20');
+      });
+
+      it('overlapping last week of year', async () => {
+        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Daily);
+        expect(timingId).toEqual('Y:2021;Q:1;M:01;D:01');
+      });
+
+      it('last day of 2021', async () => {
+        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Daily);
+        expect(timingId).toEqual('Y:2021;Q:4;M:12;D:31');
       });
     });
   });

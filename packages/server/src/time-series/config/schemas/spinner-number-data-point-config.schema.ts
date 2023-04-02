@@ -17,7 +17,7 @@ export class SpinnerNumberDataPointConfig extends NumberDataPointConfig {
   @Prop({ enum: [DataPointInputType.Spinner] })
   inputType: DataPointInputType;
 
-  constructor(settings: INumberDataPointSettings) {
+  constructor(settings: Omit<INumberDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Spinner, settings);
   }
 }

@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop } from '@nestjs/mongoose';
 import { NumberDataPointConfig } from './number-data-point-config.schema';
 import { DataPointInputType, INumberDataPointSettings, DataPointValueType } from '@lyvely/common';
 import { DataPointConfigSchemaFactory } from '../components/data-point-config-schema.factory';
@@ -17,7 +17,7 @@ export class TimeNumberDataPointConfig extends NumberDataPointConfig {
   @Prop({ enum: [DataPointInputType.Time] })
   inputType: DataPointInputType;
 
-  constructor(settings: INumberDataPointSettings) {
+  constructor(settings: Omit<INumberDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Time, settings);
   }
 }

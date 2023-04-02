@@ -1,12 +1,8 @@
-import { Months, IWeekOfYear, CalendarDate, dateTime, getFullDayDate } from '../interfaces';
+import { CalendarDate, dateTime } from '../interfaces';
 
 export function getSecondsSinceStartOfDay(d: CalendarDate): number {
   const date = d instanceof Date ? d : dateTime(d).toDate();
   return date.getSeconds() + 60 * (date.getMinutes() + 60 * date.getHours());
-}
-
-export function getWeekOfYear(date: CalendarDate, locale: string): number {
-  return dateTime(date, false, locale).week();
 }
 
 export function getIsoWeekOfYear(date: CalendarDate): number {

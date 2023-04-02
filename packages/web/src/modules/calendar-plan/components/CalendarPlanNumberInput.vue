@@ -34,7 +34,10 @@ const updateSelection = (value: number) => {
 };
 
 const inputColorClass = computed(() => {
-  return useDataPointStrategyFacade().getValueStatus(props.config, selection.value);
+  if (props.config.min && selection.value <= props.config.min) return 'warning';
+  if (props.config.optimal && selection.value >= props.config.optimal) return 'success';
+  if (selection.value) return 'success';
+  return '';
 });
 
 const inputBorderColorClass = computed(() => {

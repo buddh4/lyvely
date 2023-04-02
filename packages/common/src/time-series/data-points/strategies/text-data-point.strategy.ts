@@ -1,5 +1,4 @@
 import {
-  DataPointStrategy,
   DataPointValueType,
   IDataPointValueStatus,
   ITextDataPointConfig,
@@ -9,6 +8,7 @@ import { useDataPointStrategyFacade } from '../components';
 import { TextDataPointModel } from '../models';
 import { PropertiesOf } from '@/utils';
 import { isString } from 'class-validator';
+import { DataPointStrategy } from './data-point.strategy';
 
 export class TextDataPointService extends DataPointStrategy<
   TextDataPointModel,
@@ -24,23 +24,12 @@ export class TextDataPointService extends DataPointStrategy<
     return ['required'];
   }
 
-  getValueStatus(config: ITextDataPointConfig, value: string): IDataPointValueStatus {
-    return config.required && !value ? 'warning' : '';
-  }
-
-  populateDataPointTypeSettings(
-    target: Partial<ITextDataPointConfig>,
-    config: ITextDataPointConfig,
-  ) {
-    target.required = config.required;
-  }
-
   prepareValue(config: ITextDataPointConfig, value: string): string {
-    return value?.trim();
+    return isString(value) ? value?.trim() : value;
   }
 
   validateValue(config: ITextDataPointConfig, value: string): boolean {
-    return isString(value) && !!value.length;
+    return isString(value) && !!value?.trim().length;
   }
 
   prepareConfig(config: ITextDataPointConfig): void {

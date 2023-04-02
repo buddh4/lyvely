@@ -17,7 +17,7 @@ export class CheckboxNumberDataPointConfig extends NumberDataPointConfig {
   @Prop({ enum: [DataPointInputType.Checkbox] })
   inputType: DataPointInputType;
 
-  constructor(settings: INumberDataPointSettings) {
+  constructor(settings: Omit<INumberDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Checkbox, settings);
   }
 }

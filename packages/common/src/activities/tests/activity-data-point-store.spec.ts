@@ -113,7 +113,7 @@ describe('ActivityDataPointStore', () => {
           done: timingId,
         }),
       );
-      const sorted = store.sort(Array.from(store.models.values()));
+      const sorted = store.sort(store.getModels());
       expect(sorted[0].id).toEqual('t2');
       expect(sorted[1].id).toEqual('t3');
       expect(sorted[2].id).toEqual('t0');
@@ -187,7 +187,13 @@ describe('ActivityDataPointStore', () => {
           config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Weekly }, score: 0 },
         }),
       );
-      const result = store.getTasksByCalendarInterval(CalendarIntervalEnum.Daily);
+
+      const result = store.getTasksByCalendarInterval(
+        CalendarIntervalEnum.Daily,
+        undefined,
+        timingId,
+      );
+
       expect(result.length).toEqual(3);
       expect(result[0].id).toEqual('t3');
       expect(result[1].id).toEqual('t4');

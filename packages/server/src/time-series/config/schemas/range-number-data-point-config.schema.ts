@@ -17,7 +17,7 @@ export class RangeNumberDataPointConfig extends NumberDataPointConfig {
   @Prop({ enum: [DataPointInputType.Range] })
   inputType: DataPointInputType;
 
-  constructor(settings: INumberDataPointSettings) {
+  constructor(settings: Omit<INumberDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Range, settings);
   }
 }
