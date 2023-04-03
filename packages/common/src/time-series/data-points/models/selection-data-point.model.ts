@@ -7,6 +7,10 @@ import type { ISelectionDataPointValue } from '../interfaces';
 export class SelectionDataPointModel extends DataPointModel<SelectionDataPointModel> {
   value: ISelectionDataPointValue;
   valueType = DataPointValueType.Selection;
+
+  afterInit() {
+    this.value ??= { selection: [] };
+  }
 }
 
 export function isSelectionDataPointConfig(

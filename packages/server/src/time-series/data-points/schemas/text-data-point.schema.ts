@@ -1,8 +1,9 @@
-import { Prop } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
 import { DataPointValueType } from '@lyvely/common';
 
-export abstract class TextDataPoint extends DataPoint<TextDataPoint> {
+@Schema()
+export class TextDataPoint extends DataPoint<TextDataPoint> {
   @Prop({ required: true })
   value: string;
 
@@ -10,3 +11,5 @@ export abstract class TextDataPoint extends DataPoint<TextDataPoint> {
     this.valueType = DataPointValueType.Text;
   }
 }
+
+export const TextDataPointSchema = SchemaFactory.createForClass(TextDataPoint);

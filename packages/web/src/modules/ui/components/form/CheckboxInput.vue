@@ -12,10 +12,10 @@
           :class="inputClass"
           :readonly="readonly"
           @change="onChange" />
+        <span v-if="label" class="label ml-2" @click="toggle">
+          {{ translate ? $t(label) : label }}
+        </span>
       </label>
-      <span v-if="label" class="label ml-2" @click="toggle">
-        {{ translate ? $t(label) : label }}
-      </span>
       <ly-icon
         v-if="hasHelpText"
         name="info"

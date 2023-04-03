@@ -12,11 +12,6 @@ export class JournalNumberDataPoint extends NumberDataPoint {}
 export const JournalNumberDataPointSchema = SchemaFactory.createForClass(JournalNumberDataPoint);
 
 @Schema()
-export class JournalTextDataPoint extends TextDataPoint {}
-
-export const JournalTextDataPointSchema = SchemaFactory.createForClass(JournalTextDataPoint);
-
-@Schema()
 export class JournalSelectionDataPoint extends TextDataPoint {}
 
 export const JournalSelectionDataPointSchema =

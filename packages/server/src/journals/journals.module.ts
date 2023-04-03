@@ -10,8 +10,6 @@ import {
   JournalDataPointSchema,
   JournalNumberDataPoint,
   JournalNumberDataPointSchema,
-  JournalTextDataPoint,
-  JournalTextDataPointSchema,
   JournalSelectionDataPoint,
   JournalSelectionDataPointSchema,
 } from './schemas';
@@ -20,6 +18,7 @@ import { JournalDataPointDao, JournalsDao } from './daos';
 import { JournalTimeSeriesService, JournalDataPointService } from './services/';
 import { JournalsController } from './controllers';
 import { JournalsService } from '@/journals/services/journals.service';
+import { TextDataPoint, TextDataPointSchema } from '@/time-series';
 
 @Module({
   controllers: [JournalsController],
@@ -39,8 +38,8 @@ import { JournalsService } from '@/journals/services/journals.service';
             value: DataPointValueType.Number,
           },
           {
-            name: JournalTextDataPoint.name,
-            schema: JournalTextDataPointSchema,
+            name: TextDataPoint.name,
+            schema: TextDataPointSchema,
             value: DataPointValueType.Text,
           },
           {

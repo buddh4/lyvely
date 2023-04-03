@@ -30,5 +30,5 @@ export interface ISelectionDataPointConfig extends IDataPointConfig {
 
 export interface ISelectionDataPointValue {
   selection: Array<string>;
-  otherValue: string;
+  otherValue?: string;
 }

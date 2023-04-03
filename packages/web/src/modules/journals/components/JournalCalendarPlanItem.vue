@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { JournalModel, isNumberDataPointConfig, isTextDataPointConfig } from '@lyvely/common';
+import {
+  JournalModel,
+  isNumberDataPointConfig,
+  isTextDataPointConfig,
+  isSelectionDataPointConfig,
+} from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import CalendarPlanNumberInput from '@/modules/calendar-plan/components/CalendarPlanNumberInput.vue';
@@ -8,6 +13,7 @@ import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useJournalPlanStore } from '../stores/journal-plan.store';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
 import EditableText from '@/modules/ui/components/form/EditableText.vue';
+import CalendarPlanSelectionInput from '@/modules/calendar-plan/components/CalendarPlanSelectionInput.vue';
 
 export interface IProps {
   model: JournalModel;
@@ -63,6 +69,12 @@ const updateSelection = useDebounceFn((selection: any) => {
           v-model="selection"
           class="text-sm pt-2"
           :placeholder="$t('journals.plan.text.placeholder')" />
+      </div>
+      <div v-else-if="isSelectionDataPointConfig(model.timeSeriesConfig)">
+        <calendar-plan-selection-input
+          v-model="selection"
+          :config="model.timeSeriesConfig"
+          :disabled="isDisabled" />
       </div>
     </template>
   </calendar-plan-item>

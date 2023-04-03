@@ -1,5 +1,5 @@
 import { DataPointDao } from '@/time-series';
-import { JournalDataPoint, JournalNumberDataPoint, JournalTextDataPoint } from '../schemas';
+import { JournalDataPoint, JournalNumberDataPoint } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -11,6 +11,9 @@ export class JournalDataPointDao extends DataPointDao<JournalDataPoint> {
   protected model: Model<JournalDataPoint>;
 
   getModelConstructor(model?: Partial<JournalDataPoint>) {
+    switch (model.valueType) {
+      case DataPointValueType
+    }
     return model.valueType === DataPointValueType.Text
       ? JournalTextDataPoint
       : JournalNumberDataPoint;
