@@ -105,7 +105,9 @@ describe('UserDao', () => {
 
   describe('findByVerifiedEmail()', () => {
     it('find user by verified email', async () => {
-      const user = await testData.createUser('test', { emails: [new UserEmail('secondary@test.de', true)] });
+      const user = await testData.createUser('test', {
+        emails: [new UserEmail('secondary@test.de', true)],
+      });
       const search = await userDao.findByVerifiedEmail('secondary@test.de');
       expect(search.length).toEqual(1);
       expect(search[0]._id).toEqual(user._id);
@@ -226,7 +228,9 @@ describe('UserDao', () => {
     });
 
     it('set unverified email to verified', async () => {
-      const user = await testData.createUser('tester', { emails: [new UserEmail('secondary@test.de', false)] });
+      const user = await testData.createUser('tester', {
+        emails: [new UserEmail('secondary@test.de', false)],
+      });
       expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
       await userDao.setEmailVerification(user, 'secondary@test.de');
       expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
@@ -235,7 +239,9 @@ describe('UserDao', () => {
     });
 
     it('set verified email to unverified', async () => {
-      const user = await testData.createUser('tester', { emails: [new UserEmail('secondary@test.de', true)] });
+      const user = await testData.createUser('tester', {
+        emails: [new UserEmail('secondary@test.de', true)],
+      });
       expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
       await userDao.setEmailVerification(user, 'secondary@test.de', false);
       expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
@@ -255,7 +261,9 @@ describe('UserDao', () => {
 
   describe('removeEmail()', () => {
     it('remove existing email', async () => {
-      const user = await testData.createUser('tester', { emails: [new UserEmail('secondary@test.de')] });
+      const user = await testData.createUser('tester', {
+        emails: [new UserEmail('secondary@test.de')],
+      });
       await userDao.removeEmail(user, 'secondary@test.de');
       expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
       const persistedUser = await userDao.reload(user);
@@ -275,12 +283,36 @@ describe('UserDao', () => {
     it('refresh token limit', async () => {
       const user = await testData.createUser('user1', {
         refreshTokens: [
-          new RefreshToken({ vid: 'vid1', hash: 'someHash1', expiration: addMinutes(new Date(), 1) }),
-          new RefreshToken({ vid: 'vid2', hash: 'someHash2', expiration: addMinutes(new Date(), 1) }),
-          new RefreshToken({ vid: 'vid3', hash: 'someHash3', expiration: addMinutes(new Date(), 1) }),
-          new RefreshToken({ vid: 'vid4', hash: 'someHash4', expiration: addMinutes(new Date(), 1) }),
-          new RefreshToken({ vid: 'vid5', hash: 'someHash5', expiration: addMinutes(new Date(), 1) }),
-          new RefreshToken({ vid: 'vid6', hash: 'someHash6', expiration: addMinutes(new Date(), 1) }),
+          new RefreshToken({
+            vid: 'vid1',
+            hash: 'someHash1',
+            expiration: addMinutes(new Date(), 1),
+          }),
+          new RefreshToken({
+            vid: 'vid2',
+            hash: 'someHash2',
+            expiration: addMinutes(new Date(), 1),
+          }),
+          new RefreshToken({
+            vid: 'vid3',
+            hash: 'someHash3',
+            expiration: addMinutes(new Date(), 1),
+          }),
+          new RefreshToken({
+            vid: 'vid4',
+            hash: 'someHash4',
+            expiration: addMinutes(new Date(), 1),
+          }),
+          new RefreshToken({
+            vid: 'vid5',
+            hash: 'someHash5',
+            expiration: addMinutes(new Date(), 1),
+          }),
+          new RefreshToken({
+            vid: 'vid6',
+            hash: 'someHash6',
+            expiration: addMinutes(new Date(), 1),
+          }),
         ],
       });
 

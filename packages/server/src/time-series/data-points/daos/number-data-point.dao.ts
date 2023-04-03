@@ -1,4 +1,6 @@
 import { NumberDataPoint } from '../schemas';
-import { DataPointDao } from './data-point.dao';
+import { DataPointStrategyDao } from './data-point-strategy.dao';
 
-export abstract class NumberDataPointDao<T extends NumberDataPoint> extends DataPointDao<T> {}
+export abstract class NumberDataPointDao<
+  T extends NumberDataPoint = NumberDataPoint,
+> extends DataPointStrategyDao<T> {}

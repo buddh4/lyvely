@@ -1,26 +1,19 @@
-import { DataPointDao } from '@/time-series';
-import { HabitDataPoint } from '../schemas';
+import { DataPoint, DataPointStrategyDao, NumberDataPoint } from '@/time-series';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import module from '../activities.meta';
-import { EntityIdentity } from '@/core';
-import { User } from '@/users';
 
 @Injectable()
-export class HabitDataPointDao extends DataPointDao<HabitDataPoint> {
-  @InjectModel(HabitDataPoint.name)
-  protected model: Model<HabitDataPoint>;
-
-  getModelConstructor() {
-    return HabitDataPoint;
-  }
+export class HabitDataPointDao extends DataPointStrategyDao<NumberDataPoint> {
+  @InjectModel(DataPoint.name)
+  protected model: Model<NumberDataPoint>;
 
   getModuleId(): string {
     return module.id;
   }
 
-  async updateDataPointValue(uid: EntityIdentity<User>, dataPoint: HabitDataPoint, newValue: any): Promise<boolean> {
-    return this.updateOneSetById(dataPoint, { value: newValue });
+  getModelConstructor() {
+    return NumberDataPoint;
   }
 }

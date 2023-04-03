@@ -12,10 +12,9 @@ import {
   MaxLength,
 } from 'class-validator';
 import { CalendarIntervalEnum } from '@/calendar';
-import { BaseModel } from '@/models';
 import { UserAssignmentStrategy } from '@/collab';
-import { DataPointInputType, INumberDataPointConfig } from '@/time-series';
-import { CreateContentModel, IContentDataType } from '@/content';
+import { DataPointInputType } from '@/time-series';
+import { CreateContentModel } from '@/content';
 
 @Exclude()
 export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {

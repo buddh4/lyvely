@@ -202,10 +202,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   async findAll(filter: FilterQuery<T>, options?: IFetchQueryOptions<T>): Promise<T[]> {
-    // TODO: trigger events
-
-    options = options || {};
-    //options.pagination = options.pagination || defaultFetchOptions.pagination;
+    options ??= {};
 
     const query = this.model.find(filter, options?.projection, options);
     const fetchFilter = this.getFetchQueryFilter(options);

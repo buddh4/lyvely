@@ -12,16 +12,23 @@ import { DataPoint } from '../schemas';
 import { TimeSeriesContent } from '@/time-series/content';
 import { Profile, ProfilesService } from '@/profiles';
 import { EntityIdentity } from '@/core';
-import { DataPointDao } from '../daos';
+import { DataPointStrategyDao } from '../daos';
 import { Inject } from '@nestjs/common';
 import { useDataPointStrategyRegistry } from '@/time-series/data-points/strategies/data-point-processor-strategy.registry';
+import { isEqual } from 'lodash';
+
+export interface DataPointUpdateResult<TDataPointModel extends DataPoint> {
+  dataPoint: TDataPointModel;
+  oldValue?: TDataPointModel['value'];
+  isNew: boolean;
+}
 
 export abstract class DataPointService<
   TModel extends TimeSeriesContent,
   TDataPointModel extends DataPoint,
   TValue = any,
 > {
-  protected abstract dataPointDao: DataPointDao<TDataPointModel>;
+  protected abstract dataPointDao: DataPointStrategyDao<TDataPointModel>;
 
   @Inject()
   protected profileService: ProfilesService;
@@ -52,15 +59,21 @@ export abstract class DataPointService<
     model: TModel,
     date: CalendarDate,
     value: TValue,
-  ): Promise<TDataPointModel> {
+  ): Promise<DataPointUpdateResult<TDataPointModel>> {
     // TODO: Use transaction
-    const dataPoint = await this.findOrCreateDataPointByDate(profile, user, model, date, value);
-    await this.updateDataPointValue(profile, user, dataPoint, model, value);
-    await this.postProcess(user, model, dataPoint);
-    return dataPoint;
+    const result = await this.findOrCreateDataPointByDate(profile, user, model, date, value);
+    await this.updateDataPointValue(profile, user, result.dataPoint, model, value);
+    await this.postProcess(profile, user, model, result);
+    return result;
   }
 
-  protected async postProcess(user: User, model: TModel, dataPoint: TDataPointModel) {
+  protected async postProcess(
+    profile: Profile,
+    user: User,
+    model: TModel,
+    updateResult: DataPointUpdateResult<TDataPointModel>,
+  ) {
+    const { dataPoint } = updateResult;
     const strategy = this.getStrategy(dataPoint.valueType);
     if (strategy) {
       const update = strategy.postProcess(user, model, dataPoint);
@@ -78,12 +91,15 @@ export abstract class DataPointService<
     newValue: TValue,
   ) {
     newValue = this.prepareValue(model, dataPoint, newValue);
-    if (dataPoint.value === newValue) return;
+    if (isEqual(dataPoint.value, newValue)) return;
     await this.dataPointDao.updateDataPointValue(user, dataPoint, newValue);
   }
 
   protected prepareValue(model: TModel, dataPoint: TDataPointModel, newValue: TValue): TValue {
     const strategy = useDataPointStrategyFacade().getService(model.timeSeriesConfig.valueType);
+
+    newValue = strategy.prepareValue(model.timeSeriesConfig, newValue);
+
     if (!strategy.validateValue(model.timeSeriesConfig, newValue)) {
       throw new InvalidDataPointValueTypeException();
     }
@@ -101,18 +117,20 @@ export abstract class DataPointService<
     content: TModel,
     date: CalendarDate,
     value?: TValue,
-  ): Promise<TDataPointModel> {
-    const log = await this.findDataPointByDate(profile, user, content, date);
+  ): Promise<DataPointUpdateResult<TDataPointModel>> {
+    let dataPoint = await this.findDataPointByDate(profile, user, content, date);
 
-    if (log) return log;
+    if (dataPoint) return { dataPoint, isNew: false, oldValue: dataPoint.value };
 
     const DataPointConstructor = this.dataPointDao.getModelConstructor({
       valueType: content.timeSeriesConfig.valueType,
     });
 
-    return await this.dataPointDao.save(
+    dataPoint = await this.dataPointDao.save(
       new DataPointConstructor(profile, user, content, { date: toDate(date), value }),
     );
+
+    return { dataPoint, isNew: true, oldValue: undefined };
   }
 
   async findByIntervalLevel(

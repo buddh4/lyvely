@@ -1,4 +1,4 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
 import { DataPointValueType, PropertyType } from '@lyvely/common';
 import { Timer, TimerSchema } from '@/calendar';
@@ -26,3 +26,5 @@ export class NumberDataPoint extends DataPoint<NumberDataPoint> {
     return this.timer;
   }
 }
+
+export const NumberDataPointSchema = SchemaFactory.createForClass(NumberDataPoint);

@@ -3,16 +3,7 @@ import { ActivitiesController } from './controllers/activities.controller';
 import { ActivitiesService } from './services/activities.service';
 import { TasksService } from './services/tasks.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import {
-  HabitDataPointSchema,
-  HabitDataPoint,
-  Habit,
-  HabitSchema,
-  Task,
-  TaskSchema,
-  Activity,
-  ActivitySchema,
-} from './schemas';
+import { Habit, HabitSchema, Task, TaskSchema, Activity, ActivitySchema } from './schemas';
 import { UsersModule } from '@/users';
 import { HabitsController } from './controllers/habits.controller';
 import { HabitsService } from './services/habits.service';
@@ -26,6 +17,7 @@ import { PoliciesModule } from '@/policies/policies.module';
 import { HabitsDao } from './daos/habits.dao';
 import { CoreModule } from '@/core';
 import { HabitDataPointDao } from './daos/habit-data-point.dao';
+import { DataPoint, DataPointSchema } from '@/time-series';
 
 @Module({
   imports: [
@@ -44,7 +36,7 @@ import { HabitDataPointDao } from './daos/habit-data-point.dao';
           { name: Task.name, schema: TaskSchema },
         ],
       },
-      { name: HabitDataPoint.name, schema: HabitDataPointSchema },
+      { name: DataPoint.name, collection: 'habitdatapoints', schema: DataPointSchema },
     ]),
   ],
   controllers: [ActivitiesController, HabitsController, TasksController],

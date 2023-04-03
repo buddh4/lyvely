@@ -2,7 +2,12 @@ import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User, UserDocument } from '@/users';
-import { ProfileType, ProfileVisibilityLevel, BaseMembershipRole, UserStatus } from '@lyvely/common';
+import {
+  ProfileType,
+  ProfileVisibilityLevel,
+  BaseMembershipRole,
+  UserStatus,
+} from '@lyvely/common';
 import { closeInMongodConnection, rootMongooseTestModule } from './mongoose-test.utils';
 import {
   Profile,
@@ -19,7 +24,7 @@ import {
 } from '@/profiles';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { createBaseEntityInstance } from '@/core';
+import { createBaseEntityInstance, globalEmitter } from '@/core';
 
 @Injectable()
 export class TestDataUtils {
@@ -149,7 +154,12 @@ export class TestDataUtils {
     return createBaseEntityInstance(Profile, await new this.ProfileModel(profile).save());
   }
 
-  async addProfileRelation(profile: Profile, user: User, type: string, role: string): Promise<UserProfileRelation> {
+  async addProfileRelation(
+    profile: Profile,
+    user: User,
+    type: string,
+    role: string,
+  ): Promise<UserProfileRelation> {
     return new this.UserProfileRelationModel(
       UserProfileRelation.create({
         user: user,
@@ -160,7 +170,11 @@ export class TestDataUtils {
     ).save();
   }
 
-  async addProfileMember(profile: Profile, user: User, role: string = BaseMembershipRole.Member): Promise<Membership> {
+  async addProfileMember(
+    profile: Profile,
+    user: User,
+    role: string = BaseMembershipRole.Member,
+  ): Promise<Membership> {
     return new this.MembershipModel(
       Membership.create({
         user: user,
@@ -204,6 +218,7 @@ export class TestDataUtils {
     await this.delete();
     if (this.eventEmitter) {
       this.eventEmitter.removeAllListeners();
+      globalEmitter.removeAllListeners();
     }
     await this.closeDBConnection(key);
   }

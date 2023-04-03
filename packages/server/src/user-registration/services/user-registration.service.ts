@@ -123,7 +123,7 @@ export class UserRegistrationService {
     }
 
     if ((await this.userDao.findByVerifiedEmail(email)).length) {
-      throw new UniqueConstraintException('Email already in use', 'email');
+      throw new UniqueConstraintException('email', 'Email already in use');
     }
   }
 

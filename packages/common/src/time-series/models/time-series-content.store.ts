@@ -3,7 +3,7 @@ import { sortBySortOrder } from '@/models';
 import { DataPointModel } from '../data-points/models/data-point.model';
 import { TimeSeriesContentModel } from './time-series-content.model';
 import { ContentFilter } from '@/content';
-import { useDataPointStrategyFacade } from '@/time-series';
+import { useDataPointStrategyFacade } from '../data-points';
 
 type TimeSeriesContentIdentity = TimeSeriesContentModel | string;
 

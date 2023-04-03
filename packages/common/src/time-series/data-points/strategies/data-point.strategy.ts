@@ -3,7 +3,7 @@ import {
   IDataPointConfig,
   IDataPointConfigRevision,
   IDataPointStrategy,
-} from '@/time-series';
+} from '../interfaces';
 import { PropertiesOf } from '@/utils';
 
 export abstract class DataPointStrategy<
@@ -31,7 +31,7 @@ export abstract class DataPointStrategy<
   }
 
   populateDataPointTypeSettings(target: Partial<TConfig>, config: TConfig) {
-    for (const key in this.getSettingKeys()) {
+    for (const key of this.getSettingKeys()) {
       target[key] = config[key];
     }
   }

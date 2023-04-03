@@ -1,5 +1,5 @@
 import { assignEntityData, BaseEntity, EntityType, assureObjectId } from '@/core';
-import { Prop } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {
   CalendarIntervalEnum,
@@ -19,7 +19,8 @@ type DataPointEntity = DataPointModel & { _id: TObjectId };
 /**
  * This represents a datapoint bucket of given interval.
  */
-export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>>
+@Schema({ timestamps: true, discriminatorKey: 'valueType' })
+export class DataPoint<T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>>
   extends BaseEntity<T & { _id: TObjectId }>
   implements DataPointEntity
 {
@@ -82,3 +83,5 @@ export abstract class DataPoint<T extends EntityType<DataPointEntity> = EntityTy
     this.afterInit();
   }
 }
+
+export const DataPointSchema = SchemaFactory.createForClass(DataPoint);

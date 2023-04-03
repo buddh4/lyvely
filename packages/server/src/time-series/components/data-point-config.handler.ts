@@ -34,10 +34,7 @@ export class DataPointConfigHandler {
 
   private static prepareUpdate(model: TimeSeriesContent, update: Partial<DataPointConfigRevision>) {
     const settingKeys = dataPointFacade.getSettingKeys(model.timeSeriesConfig.valueType);
-    const preparedUpdate = pick(update, [
-      ['inputType', 'userStrategy', 'interval'],
-      ...settingKeys,
-    ]);
+    const preparedUpdate = pick(update, ['inputType', 'userStrategy', 'interval', ...settingKeys]);
     const updatedConfig = Object.assign(cloneDeep(model.timeSeriesConfig), preparedUpdate);
     DataPointConfigHandler.prepareConfig(model, updatedConfig);
     return updatedConfig;

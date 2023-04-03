@@ -11,7 +11,12 @@ let testData: TestDataUtils;
 let userOtpService: UserOtpService;
 
 beforeEach(async () => {
-  testingModule = await createBasicTestingModule('user-otp.service', [], [], [UserOtpModule]).compile();
+  testingModule = await createBasicTestingModule(
+    'user-otp.service',
+    [],
+    [],
+    [UserOtpModule],
+  ).compile();
   testData = testingModule.get(TestDataUtils);
   userOtpService = testingModule.get(UserOtpService);
 });
@@ -24,7 +29,9 @@ describe('UserOtpService', () => {
   describe('createOrUpdateUserOtp', () => {
     it('create default opt', async () => {
       const user = await testData.createUser();
-      const { otp, otpModel } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test' });
+      const { otp, otpModel } = await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+      });
       expect(otp?.length).toEqual(6);
       expect(otpModel instanceof UserOtp).toBeDefined();
       expect(otpModel._id).toBeDefined();
@@ -34,8 +41,12 @@ describe('UserOtpService', () => {
 
     it('overwrite existing opt', async () => {
       const user = await testData.createUser();
-      const { otp: otp1, otpModel: model1 } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test' });
-      const { otp: otp2, otpModel: model2 } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test' });
+      const { otp: otp1, otpModel: model1 } = await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+      });
+      const { otp: otp2, otpModel: model2 } = await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+      });
 
       expect(model2._id.equals(model1._id)).toEqual(true);
       expect(model2.uid.equals(model1.uid)).toEqual(true);
@@ -51,7 +62,10 @@ describe('UserOtpService', () => {
         purpose: 'test',
         remember: true,
       });
-      const { otpModel } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test', remember: undefined });
+      const { otpModel } = await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+        remember: undefined,
+      });
 
       expect(otpModel.remember).toEqual(true);
     });
@@ -62,7 +76,10 @@ describe('UserOtpService', () => {
         purpose: 'test',
         remember: true,
       });
-      const { otpModel } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test', remember: false });
+      const { otpModel } = await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+        remember: false,
+      });
 
       expect(otpModel.remember).toEqual(false);
     });
@@ -87,13 +104,18 @@ describe('UserOtpService', () => {
   describe('validateOtp', () => {
     it('run successful validation', async () => {
       const user = await testData.createUser();
-      const { otpModel, otp } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test' });
+      const { otpModel, otp } = await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+      });
       expect(await userOtpService.validateOtp(user, 'test', otp, otpModel)).toEqual(true);
     });
 
     it('validation of expired otp fails', async () => {
       const user = await testData.createUser();
-      const { otpModel, otp } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test', expiresIn: '2m' });
+      const { otpModel, otp } = await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+        expiresIn: '2m',
+      });
       otpModel.issuedAt = subtractSeconds(new Date(), 121, false);
       expect(await userOtpService.validateOtp(user, 'test', otp, otpModel)).toEqual(false);
     });
@@ -135,7 +157,10 @@ describe('UserOtpService', () => {
 
     it('run successful validation with contextValidator', async () => {
       const user = await testData.createUser();
-      const { otp } = await userOtpService.createOrUpdateUserOtp(user, { purpose: 'test', context: { value: 'test' } });
+      const { otp } = await userOtpService.createOrUpdateUserOtp(user, {
+        purpose: 'test',
+        context: { value: 'test' },
+      });
       const { isValid } = await userOtpService.runValidation(user, 'test', otp, {
         contextValidator: async (context: any) => context.value === 'test',
       });

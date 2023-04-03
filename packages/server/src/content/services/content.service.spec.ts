@@ -2,11 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils, createContentTestingModule } from '@/test';
 import { Content, ContentSchema } from '../schemas';
-import {
-  TestContent,
-  TestContentDocument,
-  TestContentSchema,
-} from '../tests/src/test-content.schema';
+import { TestContent, TestContentDocument, TestContentSchema } from '../test/test-content.schema';
 import { Model } from 'mongoose';
 import { User } from '@/users';
 import { Profile } from '@/profiles';

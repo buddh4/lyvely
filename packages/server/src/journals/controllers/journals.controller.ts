@@ -87,7 +87,7 @@ export class JournalsController
   ): Promise<UpdateDataPointResponse> {
     const { profile, user, content } = req;
 
-    const dataPoint = await this.dataPointService.upsertDataPoint(
+    const { dataPoint } = await this.dataPointService.upsertDataPoint(
       profile,
       user,
       content,

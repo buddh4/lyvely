@@ -1,45 +1,46 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Activity, Habit, HabitDataPoint } from '../schemas';
-import { NumberDataPointService } from '@/time-series';
+import { Activity, Habit } from '../schemas';
+import { DataPointUpdateResult, NumberDataPoint, NumberDataPointService } from '@/time-series';
 import { DataPointInputType } from '@lyvely/common';
 import { HabitDataPointDao } from '../daos/habit-data-point.dao';
 import { ActivityScore } from '../schemas/activity-score.schema';
 import { ContentScoreService } from '@/content';
 import { isDefined } from 'class-validator';
+import { User } from '@/users';
+import { Profile } from '@/profiles';
 
 @Injectable()
-export class HabitDataPointService extends NumberDataPointService<Habit, HabitDataPoint> {
+export class HabitDataPointService extends NumberDataPointService<Habit> {
   @Inject()
   protected dataPointDao: HabitDataPointDao;
 
   @Inject()
   protected scoreService: ContentScoreService;
 
-  protected async updateDataPointValue(
-    profile,
-    user,
-    dataPoint: HabitDataPoint,
+  protected async postProcess(
+    profile: Profile,
+    user: User,
     habit: Habit,
-    newValue: number,
+    updateResult: DataPointUpdateResult<NumberDataPoint>,
   ) {
-    const oldValue = dataPoint.value || 0;
+    const { dataPoint } = updateResult;
+    const oldScore = HabitDataPointService.calculateLogScore(habit, updateResult.oldValue || 0);
+    const newScore = HabitDataPointService.calculateLogScore(habit, dataPoint.value);
 
-    await super.updateDataPointValue(profile, user, dataPoint, habit, newValue);
-
-    const oldScore = HabitDataPointService.calculateLogScore(habit, oldValue);
-    const newScore = HabitDataPointService.calculateLogScore(habit, newValue);
-
-    await this.scoreService.saveScore(
-      profile,
-      new ActivityScore({
+    await Promise.all([
+      super.postProcess(profile, user, habit, updateResult),
+      this.scoreService.saveScore(
         profile,
-        user,
-        content: habit,
-        userStrategy: habit.timeSeriesConfig.userStrategy,
-        score: newScore - oldScore,
-        date: dataPoint.date,
-      }),
-    );
+        new ActivityScore({
+          profile,
+          user,
+          content: habit,
+          userStrategy: habit.timeSeriesConfig.userStrategy,
+          score: newScore - oldScore,
+          date: dataPoint.date,
+        }),
+      ),
+    ]);
   }
 
   private static calculateLogScore(activity: Activity, units: number): number {

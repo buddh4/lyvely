@@ -16,7 +16,6 @@ import {
 } from 'class-validator';
 import { BaseModel } from '@/models';
 import { Gte, Lte } from '@/validation';
-import { IContentDataType } from '@/content';
 
 @Exclude()
 export class CreateHabitModel extends BaseModel<CreateHabitModel> {

@@ -49,7 +49,7 @@ export class HabitsController
   ) {
     const { profile, user, content } = req;
 
-    const dataPoint = await this.habitDataPointService.upsertDataPoint(
+    const { dataPoint } = await this.habitDataPointService.upsertDataPoint(
       profile,
       user,
       content,

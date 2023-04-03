@@ -10,7 +10,7 @@ export abstract class NumberDataPointService<
   DataPointModel extends NumberDataPoint = NumberDataPoint,
 > extends DataPointService<TimeSeriesModel, DataPointModel, number> {
   async startTimer(profile: Profile, user: User, model: TimeSeriesModel, date: CalendarDate) {
-    const dataPoint = await this.findOrCreateDataPointByDate(profile, user, model, date);
+    const { dataPoint } = await this.findOrCreateDataPointByDate(profile, user, model, date);
 
     const timer = dataPoint.getTimer();
 
@@ -23,7 +23,7 @@ export abstract class NumberDataPointService<
   }
 
   async stopTimer(profile: Profile, user: User, model: TimeSeriesModel, date: CalendarDate) {
-    const dataPoint = await this.findOrCreateDataPointByDate(profile, user, model, date);
+    const { dataPoint } = await this.findOrCreateDataPointByDate(profile, user, model, date);
     const timer = dataPoint.getTimer();
 
     if (!timer.isStarted()) return;

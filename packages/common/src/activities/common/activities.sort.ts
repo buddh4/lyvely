@@ -1,15 +1,15 @@
 import { ActivityModel } from '../models';
 import { isTask, TaskModel } from '../tasks';
-import { sortBySortOrder } from '@/models';
+import { ISortable, sortBySortOrder } from '@/models';
 import { PropertiesOf } from '@/utils';
 
-export function sortActivities(activities: ActivityModel[]): ActivityModel[] {
-  return activities.sort((a: ActivityModel, b: ActivityModel) => {
+export function sortActivities<T extends PropertiesOf<ActivityModel> & ISortable>(
+  activities: T[],
+): T[] {
+  return activities.sort((a: T, b: T) => {
     if (isTask(a) && isTask(b)) {
       const aDone = (<TaskModel>a).done;
       const bDone = (<TaskModel>b).done;
-
-      const test = new Date();
 
       if (aDone && !bDone) return 1;
       if (!aDone && bDone) return -1;
