@@ -1,16 +1,9 @@
 import { AbstractDao, assureObjectId, EntityIdentity } from '@/core';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { DataPoint, NumberDataPoint, TextDataPoint } from '../schemas';
+import { DataPoint } from '../schemas';
 import { TimeSeriesContent } from '@/time-series/content';
-import {
-  getTimingIds,
-  DataPointIntervalFilter,
-  CalendarIntervalEnum,
-  DataPointValueType,
-} from '@lyvely/common';
-import { JournalDataPoint } from '@/journals/schemas';
-import { SelectionDataPoint } from '@/time-series/data-points/schemas/selection-data-point.schema';
+import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum } from '@lyvely/common';
 
 type InterValFilter = { interval: CalendarIntervalEnum; tid?: string | { $regex: RegExp } };
 

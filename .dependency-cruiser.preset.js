@@ -106,7 +106,7 @@ module.exports = {
       from: {},
       to: {
         couldNotResolve: true,
-        pathNot: ['^virtual:']
+        pathNot: ['^virtual:'],
       },
     },
     {
@@ -152,8 +152,8 @@ module.exports = {
         path: '^(src)',
         pathNot: [
           '\\.(spec|test)\\.(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee\\.md)$',
+          '^src/.*/test',
           '^src/test',
-          '^src/activities/tests',
         ],
       },
       to: {

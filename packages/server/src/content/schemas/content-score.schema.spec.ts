@@ -1,6 +1,6 @@
 import { TestingModule } from '@nestjs/testing';
-import { ProfileScore } from '../../profiles';
-import { createBasicTestingModule, getObjectId } from '../../test/utils/test.utils';
+import { ProfileScore } from '@/profiles';
+import { TestDataUtils, createBasicTestingModule, getObjectId } from '@/test';
 import { ContentScore, ContentScoreSchema } from './index';
 import {
   ExtendedTestContentScore,
@@ -9,7 +9,6 @@ import {
 } from '../test/test-content-score.schema';
 import { Model } from 'mongoose';
 import { expect } from '@jest/globals';
-import { TestDataUtils } from '../../test/utils/test-data.utils';
 import { TestContent } from '../test/test-content.schema';
 import { toTimingId } from '@lyvely/common';
 

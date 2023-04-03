@@ -1,11 +1,10 @@
 import { CalendarIntervalEnum } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
-import { Expose } from 'class-transformer';
-import { TransformObjectId } from '@/utils';
 
 export enum DataPointValueType {
   Number = 'number',
   Selection = 'selection',
+  Timer = 'timer',
   Text = 'text',
   //File = 'file',
   //Time = 'time',

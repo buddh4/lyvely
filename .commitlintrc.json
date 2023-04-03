@@ -36,6 +36,7 @@
         "profiles",
         "ui",
         "tags",
+        "time-series",
         "activities",
         "stream",
         "journals"
