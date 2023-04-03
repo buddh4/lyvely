@@ -2,33 +2,33 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from './habits.service';
 import {
-  ActivityType,
   CalendarIntervalEnum,
   CreateHabitModel,
   DataPointInputType,
+  DataPointIntervalFilter,
   PropertiesOf,
   UpdateHabitModel,
   UserAssignmentStrategy,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
-import { ActivityTestDataUtil, createActivityTestingModule } from '../test/activities.test.utils';
-import { HabitsDao } from '../daos/habits.dao';
+import { HabitTestDataUtil, createHabitTestingModule } from '../test';
+import { HabitsDao } from '../daos';
 import { User } from '@/users';
+import { Habit } from '@/habits';
+import { ActivityTestDataUtil } from '@/activities/test/activities.test.utils';
+import { assureStringId } from '@/core';
 
 describe('HabitService', () => {
-  let habitService: HabitsService;
+  let habitsService: HabitsService;
   let testingModule: TestingModule;
-  let testData: ActivityTestDataUtil;
+  let testData: HabitTestDataUtil;
 
   const TEST_KEY = 'habit_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY, [
-      HabitsDao,
-      HabitsService,
-    ]).compile();
-    habitService = testingModule.get<HabitsService>(HabitsService);
-    testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
+    testingModule = await createHabitTestingModule(TEST_KEY, [HabitsDao, HabitsService]).compile();
+    habitsService = testingModule.get<HabitsService>(HabitsService);
+    testData = testingModule.get(HabitTestDataUtil);
   });
 
   afterEach(async () => {
@@ -51,7 +51,7 @@ describe('HabitService', () => {
       interval: CalendarIntervalEnum.Daily,
     };
 
-    return habitService.createContent(profile, user, dto);
+    return habitsService.createContent(profile, user, dto);
   };
 
   describe('create Habit', () => {
@@ -59,7 +59,7 @@ describe('HabitService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await createHabit(user, profile);
 
-      expect(habit.type).toBe(ActivityType.Habit);
+      expect(habit.type).toBe(Habit.name);
       expect(habit.meta.sortOrder).toEqual(0);
       expect(habit.meta.createdAt).toBeDefined();
       expect(habit.meta.updatedAt).toBeDefined();
@@ -97,11 +97,11 @@ describe('HabitService', () => {
         }),
       );
 
-      await habitService.updateContentSet(profile, user, habit, habit, {
+      await habitsService.updateContentSet(profile, user, habit, habit, {
         tagNames: ['SomeCategory'],
       });
 
-      const search = await habitService.findByProfileAndId(profile, habit._id);
+      const search = await habitsService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
       expect(search.content.title).toEqual('Updated Title');
       expect(search.content.text).toEqual('Updated description');
@@ -172,9 +172,9 @@ describe('HabitService', () => {
         }),
       );
 
-      await habitService.updateContentSet(profile, user, habit, habit);
+      await habitsService.updateContentSet(profile, user, habit, habit);
 
-      const search = await habitService.findByProfileAndId(profile, habit._id);
+      const search = await habitsService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
       expect(search.timeSeriesConfig.history).toBeDefined();
       expect(search.timeSeriesConfig.history.length).toEqual(1);
@@ -211,7 +211,7 @@ describe('HabitService', () => {
       }),
     );
 
-    await habitService.updateContentSet(profile, user, habit, habit);
+    await habitsService.updateContentSet(profile, user, habit, habit);
 
     habit.applyUpdate(
       new UpdateHabitModel({
@@ -224,9 +224,9 @@ describe('HabitService', () => {
       }),
     );
 
-    await habitService.updateContentSet(profile, user, habit, habit);
+    await habitsService.updateContentSet(profile, user, habit, habit);
 
-    const search = await habitService.findByProfileAndId(profile, habit);
+    const search = await habitsService.findByProfileAndId(profile, habit);
     expect(search).toBeDefined();
     expect(search.timeSeriesConfig.history).toBeDefined();
     expect(search.timeSeriesConfig.history.length).toEqual(1);
@@ -234,18 +234,44 @@ describe('HabitService', () => {
     expect(search.timeSeriesConfig.max).toEqual(4);
   });
 
+  describe('findByProfileAndId', () => {
+    it('find activity by profile and ObjectId', async () => {
+      const { user, profile } = await testData.createUserAndProfile('user1');
+      const habit = await testData.createHabit(user, profile);
+      const search = await habitsService.findByProfileAndId(profile, habit._id);
+      expect(search).toBeDefined();
+      expect(search.id).toEqual(habit.id);
+    });
+
+    it('find activity by profile and string id', async () => {
+      const { user, profile } = await testData.createUserAndProfile('user1');
+      const habit = await testData.createHabit(user, profile);
+      const search = await habitsService.findByProfileAndId(profile, assureStringId(habit._id));
+      expect(search).toBeDefined();
+      expect(search.id).toEqual(habit.id);
+    });
+
+    it('do not find activity of another profile', async () => {
+      const { user, profile } = await testData.createUserAndProfile('user1');
+      const profile2 = await testData.createProfile(user, 'profile2');
+      const habit = await testData.createHabit(user, profile);
+      const search = await habitsService.findByProfileAndId(profile2, assureStringId(habit._id));
+      expect(search).toBeNull();
+    });
+  });
+
   describe('findUserActivityById', () => {
     it('find activity by object id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const activity = await testData.createHabit(user, profile);
-      const search = await habitService.findByProfileAndId(profile, activity._id);
+      const search = await habitsService.findByProfileAndId(profile, activity._id);
       expect(search._id).toEqual(activity._id);
     });
 
     it('find activity by string id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const activity = await testData.createHabit(user, profile);
-      const search = await habitService.findByProfileAndId(profile, activity._id.toString());
+      const search = await habitsService.findByProfileAndId(profile, activity._id.toString());
       expect(search._id).toEqual(activity._id);
     });
   });
