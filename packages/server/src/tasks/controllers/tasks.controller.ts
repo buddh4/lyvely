@@ -5,6 +5,9 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Inject,
+  Get,
+  Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Task } from '../schemas';
 import {
@@ -16,6 +19,10 @@ import {
   CreateTaskModel,
   TimerValueUpdateModel,
   TimerModel,
+  DataPointIntervalFilter,
+  SortAction,
+  SortResponse,
+  TaskSearchResponse,
 } from '@lyvely/common';
 import { TasksService } from '../services';
 import {
@@ -25,9 +32,11 @@ import {
   ProfileContentRequest,
 } from '@/content';
 import { Policies } from '@/policies';
+import { ProfileRequest } from '@/profiles';
+import { TaskTimeSeriesService } from '@/tasks/services/task-time-series.service';
 
 @ContentTypeController('tasks', Task)
-// TODO: implement feature registration @Feature('content.activities.tasks')
+// TODO: implement feature registration @Feature('tasks')
 @UseInterceptors(ClassSerializerInterceptor)
 export class TasksController
   extends AbstractContentTypeController<Task, CreateTaskModel, UpdateTaskModel>
@@ -36,9 +45,38 @@ export class TasksController
   @Inject()
   protected readonly contentService: TasksService;
 
+  @Inject()
+  protected timeSeriesService: TaskTimeSeriesService;
+
   protected updateResponseType = UpdateTaskResponse;
   protected createModelType = CreateTaskModel;
   protected updateModelType = UpdateTaskModel;
+
+  @Get()
+  async getByFilter(
+    @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
+    @Request() req: ProfileRequest,
+  ): Promise<TaskSearchResponse> {
+    const { profile, user } = req;
+    const { models, dataPoints } = await this.timeSeriesService.findByFilter(profile, user, filter);
+    return new TaskSearchResponse({
+      models: models.map((c) => c.toModel()),
+    });
+  }
+
+  @Post(':cid/sort')
+  @Policies(ContentWritePolicy)
+  async sort(@Body() dto: SortAction, @Request() req: ProfileContentRequest<Task>) {
+    const { profile, user, content } = req;
+    const sort = await this.timeSeriesService.sort(
+      profile,
+      user,
+      content,
+      dto.interval,
+      dto.attachToId,
+    );
+    return new SortResponse({ sort });
+  }
 
   @Post(':cid/done')
   @Policies(ContentWritePolicy)

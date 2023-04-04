@@ -185,4 +185,17 @@ function decrementTiming() {
   width: 20px;
   fill: var(--color-secondary);
 }
+
+.calendar-plan-item:not(.calendar-plan-header-item) {
+  animation: fade-1 500ms 1;
+}
+
+@keyframes fade-1 {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 </style>

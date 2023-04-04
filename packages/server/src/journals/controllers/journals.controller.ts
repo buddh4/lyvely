@@ -9,7 +9,7 @@ import {
   DataPointIntervalFilter,
   ENDPOINT_JOURNALS,
   JournalsEndpoint,
-  MoveAction,
+  SortAction,
   SortResponse,
   JournalSearchResponse,
   UpdateDataPointModel,
@@ -65,7 +65,7 @@ export class JournalsController
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
   async sort(
-    @Body() dto: MoveAction,
+    @Body() dto: SortAction,
     @Request() req: ProfileContentRequest<Journal>,
   ): Promise<SortResponse> {
     const { profile, user, content } = req;

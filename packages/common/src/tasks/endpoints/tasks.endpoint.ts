@@ -8,9 +8,11 @@ import {
   CreateTaskModel,
 } from '../models';
 import { IContentTypeService } from '@/content';
+import { ICalendarPlanService } from '@/calendar-plan';
 
 export interface ITasksEndpointService
-  extends IContentTypeService<TaskModel, CreateTaskModel, UpdateTaskModel> {
+  extends IContentTypeService<TaskModel, CreateTaskModel, UpdateTaskModel>,
+    ICalendarPlanService<TaskModel> {
   create(dto: CreateTaskModel): Promise<UpdateTaskResponse>;
   update(id: string, update: UpdateTaskModel): Promise<UpdateTaskResponse>;
   setDone(id: string, date: CalendarDate): Promise<UpdateTaskStateResponse>;
@@ -21,3 +23,4 @@ export interface ITasksEndpointService
 }
 
 export type TasksEndpoint = Endpoint<ITasksEndpointService>;
+export const ENDPOINT_TASKS = 'tasks';

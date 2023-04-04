@@ -12,7 +12,7 @@ describe('Tasks DAO', () => {
   let testData: TestDataUtils;
   let taskTestData: TaskTestDataUtil;
 
-  const TEST_KEY = 'activities_dao';
+  const TEST_KEY = 'tasks_dao';
 
   beforeEach(async () => {
     testingModule = await createTaskTestingModule(TEST_KEY, [TasksDao]).compile();
@@ -23,7 +23,6 @@ describe('Tasks DAO', () => {
 
   afterEach(async () => {
     await testData.reset(TEST_KEY);
-    await closeInMongodConnection('activities service');
   });
 
   it('should be defined', () => {
@@ -216,7 +215,7 @@ describe('Tasks DAO', () => {
     });
   });
   describe('updateBulk', () => {
-    it('update multiple activities', async () => {
+    it('update multiple tasks', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const task1 = await taskTestData.createTask(user, profile);
       const task2 = await taskTestData.createTask(user, profile);
@@ -277,14 +276,14 @@ describe('Tasks DAO', () => {
       expect(refresh.meta.isArchived).toEqual(false);
     });
 
-    it('un-archive habit', async () => {
+    it('un-archive task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const habit = await taskTestData.createTask(user, profile, null, (model) => {
+      const task = await taskTestData.createTask(user, profile, null, (model) => {
         model.meta.isArchived = true;
       });
-      const result = await tasksDao.unarchive(user, habit);
+      const result = await tasksDao.unarchive(user, task);
       expect(result).toEqual(true);
-      const refresh = await tasksDao.reload(habit);
+      const refresh = await tasksDao.reload(task);
       expect(refresh.meta.isArchived).toEqual(false);
     });
   });

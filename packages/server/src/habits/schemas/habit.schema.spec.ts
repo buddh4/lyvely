@@ -29,7 +29,7 @@ describe('Habit', () => {
   let testingModule: TestingModule;
   let habitsDao: HabitsDao;
   let testData: TestDataUtils;
-  let activityData: HabitTestDataUtil;
+  let habitData: HabitTestDataUtil;
 
   let user: User;
   let profile: Profile;
@@ -44,7 +44,7 @@ describe('Habit', () => {
     testingModule = await createHabitTestingModule(TEST_KEY, [HabitsDao]).compile();
     habitsDao = testingModule.get(HabitsDao);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    activityData = testingModule.get(HabitTestDataUtil);
+    habitData = testingModule.get(HabitTestDataUtil);
   });
 
   it('create', async () => {
@@ -92,7 +92,7 @@ describe('Habit', () => {
     overwrite?: (model: Habit) => void,
   ): Promise<Habit> {
     const { user, profile } = await testData.createUserAndProfile();
-    const content = await activityData.createHabit(user, profile, data, overwrite);
+    const content = await habitData.createHabit(user, profile, data, overwrite);
     return <Habit>await habitsDao.findByProfileAndId(profile, content._id);
   }
 

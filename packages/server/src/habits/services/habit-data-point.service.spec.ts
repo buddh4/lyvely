@@ -17,7 +17,7 @@ describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
   let testingModule: TestingModule;
   let testData: HabitTestDataUtil;
-  let activityScoreDao: ContentScoreDao;
+  let contentScoreDao: ContentScoreDao;
   let HabitDataPointModel: Model<DataPoint>;
 
   const TEST_KEY = 'habit_data_point_service';
@@ -31,7 +31,7 @@ describe('HabitDataPointService', () => {
     ]).compile();
     habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get(HabitTestDataUtil);
-    activityScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
+    contentScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
     HabitDataPointModel = testingModule.get<Model<DataPoint>>('DataPointModel');
   });
 
@@ -170,7 +170,7 @@ describe('HabitDataPointService', () => {
       expect(profile.score).toEqual(0);
     });
 
-    it('activity score action is created', async () => {
+    it('habit score action is created', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, {
         max: 3,
@@ -180,7 +180,7 @@ describe('HabitDataPointService', () => {
       await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 2);
       await habitDataPointService.upsertDataPoint(profile, user, habit, new Date(), 0);
 
-      const scores = await activityScoreDao.findAll({});
+      const scores = await contentScoreDao.findAll({});
       expect(scores.length).toEqual(2);
       expect(scores[0].score).toEqual(10);
       expect(scores[0].uid).toBeNull();
@@ -296,7 +296,7 @@ describe('HabitDataPointService', () => {
       expect(group.score).toEqual(5);
     });
 
-    it('activity score action is created', async () => {
+    it('habit score action is created', async () => {
       const { owner, user, group } = await testData.createSmallGroup();
 
       expect(group.score).toEqual(0);
@@ -309,7 +309,7 @@ describe('HabitDataPointService', () => {
       await habitDataPointService.upsertDataPoint(group, owner, habit, new Date(), 2);
       await habitDataPointService.upsertDataPoint(group, user, habit, new Date(), 1);
 
-      const scores = await activityScoreDao.findAll({});
+      const scores = await contentScoreDao.findAll({});
       expect(scores.length).toEqual(2);
       expect(scores[0].score).toEqual(10);
       expect(scores[0].uid).toEqual(owner._id);

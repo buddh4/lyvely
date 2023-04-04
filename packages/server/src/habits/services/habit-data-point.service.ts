@@ -45,35 +45,35 @@ export class HabitDataPointService extends NumberDataPointService<Habit> {
     ]);
   }
 
-  private static calculateDataPointScore(activity: Habit, units: number): number {
+  private static calculateDataPointScore(habit: Habit, units: number): number {
     let result = 0;
 
-    if (activity.timeSeriesConfig.inputType === DataPointInputType.Time) {
-      if (activity.timeSeriesConfig.min && units >= activity.timeSeriesConfig.min) {
-        result += activity.config.score;
+    if (habit.timeSeriesConfig.inputType === DataPointInputType.Time) {
+      if (habit.timeSeriesConfig.min && units >= habit.timeSeriesConfig.min) {
+        result += habit.config.score;
       }
 
       if (
-        activity.timeSeriesConfig.optimal &&
-        activity.timeSeriesConfig.optimal !== activity.timeSeriesConfig.min &&
-        units >= activity.timeSeriesConfig.optimal
+        habit.timeSeriesConfig.optimal &&
+        habit.timeSeriesConfig.optimal !== habit.timeSeriesConfig.min &&
+        units >= habit.timeSeriesConfig.optimal
       ) {
-        result += activity.config.score;
+        result += habit.config.score;
       }
 
       if (
-        activity.timeSeriesConfig.max &&
-        activity.timeSeriesConfig.max !== activity.timeSeriesConfig.min &&
-        activity.timeSeriesConfig.max !== activity.timeSeriesConfig.optimal &&
-        units >= activity.timeSeriesConfig.max
+        habit.timeSeriesConfig.max &&
+        habit.timeSeriesConfig.max !== habit.timeSeriesConfig.min &&
+        habit.timeSeriesConfig.max !== habit.timeSeriesConfig.optimal &&
+        units >= habit.timeSeriesConfig.max
       ) {
-        result += activity.config.score;
+        result += habit.config.score;
       }
     } else {
-      const newValue = isDefined(activity.timeSeriesConfig.max)
-        ? Math.min(units, activity.timeSeriesConfig.max)
+      const newValue = isDefined(habit.timeSeriesConfig.max)
+        ? Math.min(units, habit.timeSeriesConfig.max)
         : units;
-      result = newValue * activity.config.score;
+      result = newValue * habit.config.score;
     }
 
     return result;

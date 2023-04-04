@@ -4,8 +4,6 @@ import { Profile } from '@/profiles';
 import {
   CalendarDate,
   CreateTaskModel,
-  DataPointIntervalFilter,
-  getTimingIds,
   toTimingId,
   UpdateTaskModel,
   UserAssignmentStrategy,
@@ -15,7 +13,6 @@ import { TasksDao } from '../daos';
 import { AbstractContentTypeService, ContentScoreService } from '@/content';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { Timer } from '@/calendar';
-import { ITimeSeriesContentSearchResult } from '@/time-series';
 
 @Injectable()
 export class TasksService extends AbstractContentTypeService<Task, CreateTaskModel> {
@@ -26,22 +23,6 @@ export class TasksService extends AbstractContentTypeService<Task, CreateTaskMod
   private scoreService: ContentScoreService;
 
   protected logger = new Logger(TasksService.name);
-
-  async findByFilter(
-    profile: Profile,
-    user: User,
-    filter: DataPointIntervalFilter,
-  ): Promise<ITimeSeriesContentSearchResult<Task, undefined>> {
-    // Find all calendar ids for the given search date and filter out by filter level
-    const tIds = getTimingIds(filter.date, profile.locale);
-    if (filter.level > 0) {
-      tIds.splice(0, filter.level);
-    }
-
-    return {
-      models: await this.contentDao.findByProfileAndTimingIds(profile, user, tIds),
-    };
-  }
 
   protected async createInstance(
     profile: Profile,

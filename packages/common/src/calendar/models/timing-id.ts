@@ -1,5 +1,6 @@
 import { CalendarDateTime, dateTime } from '../interfaces';
 import { CalendarIntervalEnum } from './calendar-interval.enum';
+import { filter } from 'lodash';
 
 /* export const REGEX_TID =
   /^Y:\d{4};Q:[0-4];M:(?:[1-9]|1[0-2]);W:(?:[1-9]|[1-4]\d|5[0-3]);D:(?:[1-9]|[1-2]\d|3[0-1])$/; */
@@ -77,6 +78,7 @@ function pad(num) {
 export function getTimingIds(
   d: CalendarDateTime,
   locale: string,
+  level = CalendarIntervalEnum.Unscheduled,
   weekStrategy = WeekStrategy.LOCALE,
 ) {
   const dayId = toTimingId(d, CalendarIntervalEnum.Daily, locale);
@@ -84,5 +86,6 @@ export function getTimingIds(
   const monthId = dayId.substring(0, dayId.lastIndexOf(';'));
   const quarterId = monthId.substring(0, monthId.lastIndexOf(';'));
   const yearId = quarterId.substring(0, quarterId.lastIndexOf(';'));
-  return ['U', yearId, quarterId, monthId, weekId, dayId];
+  const result = ['U', yearId, quarterId, monthId, weekId, dayId];
+  return level > 0 ? result.splice(0, level) : result;
 }

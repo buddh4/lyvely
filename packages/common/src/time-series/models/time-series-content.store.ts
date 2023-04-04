@@ -77,7 +77,7 @@ export class TimeSeriesDataPointStore<
   getModelsByIntervalFilter(
     interval: CalendarIntervalEnum,
     filter?: ContentFilter<Model, any>,
-    tid?: string,
+    tid?: string, // Todo: This is currently only used by task store, probably should move this to filter logic...
   ) {
     return this.filterModels((entry) => {
       return entry.timeSeriesConfig.interval === interval && (!filter || filter.check(entry));
@@ -88,14 +88,16 @@ export class TimeSeriesDataPointStore<
     return this.sort(Array.from(this.models.values()).filter(filter));
   }
 
-  setDataPoint(log: TDataPointModel) {
-    this._setDataPoint(log, this.dataPoints);
+  setDataPoint(dataPoint: TDataPointModel) {
+    this._setDataPoint(dataPoint, this.dataPoints);
   }
 
-  setDataPoints(logs: TDataPointModel[]) {
+  setDataPoints(dataPoints?: TDataPointModel[]) {
+    if (!dataPoints) return;
+
     const update = new Map([...this.dataPoints]);
 
-    logs.forEach((log) => {
+    dataPoints.forEach((log) => {
       this._setDataPoint(log, update);
     });
 

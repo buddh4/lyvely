@@ -6,13 +6,13 @@ import { translate } from '@/i18n';
 import { IMoveActivityEvent } from '@/modules/activities/store/activity.store';
 import { IDragEvent } from '@/modules/common';
 
-export interface IMovableStore {
-  move(evt: IDragEvent | IMoveEntryEvent): Promise<void>;
+export interface ISortableStore {
+  sort(evt: IDragEvent | IMoveEntryEvent): Promise<void>;
 }
 
 export function useCalendarPlanPlanItem<TModel extends TimeSeriesContentModel>(
   model: TModel,
-  store: IMovableStore,
+  store: ISortableStore,
 ) {
   const calendarPlanStore = useCalendarPlanStore();
   const isFuture = computed(() => calendarPlanStore.date > new Date());
@@ -48,8 +48,8 @@ export function useCalendarPlanPlanItem<TModel extends TimeSeriesContentModel>(
       return;
     }
 
-    await store.move(event);
-    afterMove(event);
+    await store.sort(event);
+    afterSort(event);
   }
 
   async function moveDown(model: TModel, element: HTMLElement) {
@@ -64,11 +64,11 @@ export function useCalendarPlanPlanItem<TModel extends TimeSeriesContentModel>(
       return;
     }
 
-    await store.move(event);
-    afterMove(event);
+    await store.sort(event);
+    afterSort(event);
   }
 
-  function afterMove(evt: IMoveActivityEvent) {
+  function afterSort(evt: IMoveActivityEvent) {
     setTimeout(() =>
       document.querySelector<HTMLElement>(`[data-cid="${evt.cid}"] .item-drag-button`)?.focus(),
     );

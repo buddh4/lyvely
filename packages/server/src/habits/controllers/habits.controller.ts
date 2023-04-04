@@ -11,7 +11,7 @@ import {
   NumberDataPointModel,
   DataPointIntervalFilter,
   HabitSearchResponse,
-  MoveAction,
+  SortAction,
   SortResponse,
 } from '@lyvely/common';
 import { HabitsService, HabitDataPointService, HabitTimeSeriesService } from '../services';
@@ -27,7 +27,7 @@ import { DataPointModelConverter } from '@/time-series';
 import { ProfileRequest } from '@/profiles';
 
 @ContentTypeController('habits', Habit)
-// TODO: implement feature registration @Feature('content.activities.habits')
+// TODO: implement feature registration @Feature('habits')
 @UseClassSerializer()
 export class HabitsController
   extends AbstractContentTypeController<Habit, CreateHabitModel, UpdateHabitModel>
@@ -65,7 +65,7 @@ export class HabitsController
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: MoveAction, @Request() req: ProfileContentRequest<Habit>) {
+  async sort(@Body() dto: SortAction, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
     const sort = await this.timeSeriesService.sort(
       profile,

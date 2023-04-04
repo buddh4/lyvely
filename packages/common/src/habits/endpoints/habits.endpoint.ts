@@ -23,3 +23,4 @@ export interface IHabitsEndpointService
 }
 
 export type HabitsEndpoint = Endpoint<IHabitsEndpointService>;
+export const ENDPOINT_HABITS = 'habits';

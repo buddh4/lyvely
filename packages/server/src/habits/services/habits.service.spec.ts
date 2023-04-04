@@ -79,7 +79,7 @@ describe('HabitService', () => {
   });
 
   describe('applyUpdate', () => {
-    it('find activity by object id', async () => {
+    it('find habit by object id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
 
@@ -233,7 +233,7 @@ describe('HabitService', () => {
   });
 
   describe('findByProfileAndId', () => {
-    it('find activity by profile and ObjectId', async () => {
+    it('find habit by profile and ObjectId', async () => {
       const { user, profile } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
       const search = await habitsService.findByProfileAndId(profile, habit._id);
@@ -241,7 +241,7 @@ describe('HabitService', () => {
       expect(search.id).toEqual(habit.id);
     });
 
-    it('find activity by profile and string id', async () => {
+    it('find habit by profile and string id', async () => {
       const { user, profile } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
       const search = await habitsService.findByProfileAndId(profile, assureStringId(habit._id));
@@ -257,18 +257,18 @@ describe('HabitService', () => {
       expect(search).toBeNull();
     });
 
-    it('find activity by object id', async () => {
+    it('find habit by object id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const activity = await testData.createHabit(user, profile);
-      const search = await habitsService.findByProfileAndId(profile, activity._id);
-      expect(search._id).toEqual(activity._id);
+      const habit = await testData.createHabit(user, profile);
+      const search = await habitsService.findByProfileAndId(profile, habit._id);
+      expect(search._id).toEqual(habit._id);
     });
 
-    it('find activity by string id', async () => {
+    it('find habit by string id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const activity = await testData.createHabit(user, profile);
-      const search = await habitsService.findByProfileAndId(profile, activity._id.toString());
-      expect(search._id).toEqual(activity._id);
+      const habit = await testData.createHabit(user, profile);
+      const search = await habitsService.findByProfileAndId(profile, habit._id.toString());
+      expect(search._id).toEqual(habit._id);
     });
   });
 });

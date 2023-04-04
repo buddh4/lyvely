@@ -6,3 +6,4 @@ export * from './create-task.model';
 export * from './update-task.model';
 export * from './task-filter.model';
 export * from './task-data-point.store';
+export * from './task-search.response';

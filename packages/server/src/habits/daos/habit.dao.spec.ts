@@ -12,7 +12,7 @@ describe('Habits DAO', () => {
   let testData: TestDataUtils;
   let habitTestData: HabitTestDataUtil;
 
-  const TEST_KEY = 'activities_dao';
+  const TEST_KEY = 'habits_dao';
 
   beforeEach(async () => {
     testingModule = await createHabitTestingModule(TEST_KEY, [HabitsDao]).compile();
@@ -30,7 +30,7 @@ describe('Habits DAO', () => {
   });
 
   describe('findByProfileAndId', () => {
-    it('find activity without strict type', async () => {
+    it('find habit by profile', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const content = await habitTestData.createHabit(user, profile);
       const search = await habitsDao.findByProfileAndId(profile, content._id);

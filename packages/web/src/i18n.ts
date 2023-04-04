@@ -62,7 +62,10 @@ export async function loadModuleMessages(locale: string, module: string): Promis
     import(`./modules/${module}/locales/${locale}.json`)
       .then((data) => mergeMessages(locale, data))
       .then(() => setModuleMessagesLoaded(locale, module))
-      .then(() => nextTick()),
+      .then(() => nextTick())
+      .catch(() => {
+        console.warn(`Error loading message file: ./modules/${module}/locales/${locale}.json`);
+      }),
   );
 
   return Promise.all(promises);

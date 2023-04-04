@@ -2,7 +2,7 @@ import repository from '@/repository';
 import {
   ENDPOINT_JOURNALS,
   DataPointIntervalFilter,
-  MoveAction,
+  SortAction,
   EndpointResult,
   IJournalsEndpointService,
   UpdateDataPointModel,
@@ -34,7 +34,7 @@ export default {
     );
   },
 
-  async sort(cid: string, moveAction: MoveAction) {
+  async sort(cid: string, moveAction: SortAction) {
     return repository.post<EndpointResult<IJournalsEndpointService['sort']>>(
       `${ENDPOINT_JOURNALS}/${cid}/sort`,
       moveAction,

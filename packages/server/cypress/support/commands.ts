@@ -57,13 +57,7 @@ declare namespace Cypress {
   }
 }
 
-type Plan =
-  | 'daily'
-  | 'weekly'
-  | 'monthly'
-  | 'quarterly'
-  | 'yearly'
-  | 'unscheduled';
+type Plan = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' | 'unscheduled';
 
 type CheckboxType = 'optimal' | 'min' | 'danger' | 'none';
 
@@ -86,7 +80,7 @@ Cypress.Commands.add('logout', () => {
   cy.getCookie(Cookies.AUTHENTICATION).should('not.exist');
 });
 
-const ACTIVITY_GROUP_ITEM_SELECTOR = '#activity-overview [data-entry-id]';
+const ACTIVITY_GROUP_ITEM_SELECTOR = '#activity-overview [data-cid]';
 
 /**
  * Activity
@@ -129,7 +123,7 @@ Cypress.Commands.add('getActivity', (title: string, plan?: Plan) => {
 Cypress.Commands.add('activityClickMenuItem', (title, label) => {
   cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
     .contains(title)
-    .closest('[data-entry-id]')
+    .closest('[data-cid]')
     .find('.dropdown button')
     .click({ force: true })
     .closest('.dropdown')
@@ -141,7 +135,7 @@ Cypress.Commands.add('activityClickMenuItem', (title, label) => {
 Cypress.Commands.add('activityMenuItemShouldExist', (title, label) => {
   cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
     .contains(title)
-    .closest('[data-entry-id]')
+    .closest('[data-cid]')
     .find('.dropdown button')
     .click({ force: true })
     .closest('.dropdown')
@@ -151,7 +145,7 @@ Cypress.Commands.add('activityMenuItemShouldExist', (title, label) => {
 
   cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
     .contains(title)
-    .closest('[data-entry-id]')
+    .closest('[data-cid]')
     .find('.dropdown button')
     .click({ force: true });
 });
@@ -159,7 +153,7 @@ Cypress.Commands.add('activityMenuItemShouldExist', (title, label) => {
 Cypress.Commands.add('activityMenuItemShouldNotExist', (title, label) => {
   cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
     .contains(title)
-    .closest('[data-entry-id]')
+    .closest('[data-cid]')
     .find('.dropdown button')
     .click({ force: true })
     .closest('.dropdown')
@@ -169,7 +163,7 @@ Cypress.Commands.add('activityMenuItemShouldNotExist', (title, label) => {
 
   cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
     .contains(title)
-    .closest('[data-entry-id]')
+    .closest('[data-cid]')
     .find('.dropdown button')
     .click({ force: true });
 });
@@ -193,14 +187,14 @@ Cypress.Commands.add(
       const childSelector = checked ? '[value="1"]' : '[value="0"]';
       cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
         .contains(title)
-        .closest('[data-entry-id]')
+        .closest('[data-cid]')
         .find(selector)
         .children(childSelector)
         .should('have.length', count);
     } else {
       cy.get(ACTIVITY_GROUP_ITEM_SELECTOR)
         .contains(title)
-        .closest('[data-entry-id]')
+        .closest('[data-cid]')
         .find(selector)
         .should('have.length', count);
     }

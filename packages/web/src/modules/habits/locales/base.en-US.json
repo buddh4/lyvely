@@ -1,0 +1,15 @@
+{
+  "habits": {
+    "title": "Activities",
+    "name": "Activity",
+    "stream_entry": {
+      "text": "New activity"
+    },
+    "create" : {
+      "title": "Create activity"
+    },
+    "edit" : {
+      "title": "Edit activity"
+    }
+  }
+}

@@ -7,7 +7,7 @@ import {
   TimeSeriesDataPointStore,
   toTimingId,
   ICalendarPlanService,
-  MoveAction,
+  SortAction,
   getCalendarIntervalArray,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
@@ -19,6 +19,7 @@ import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler
 import { IMoveEntryEvent } from '../interfaces';
 import { IDragEvent } from '@/modules/common';
 import { dragEventToMoveEvent } from '@/modules/calendar-plan';
+import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 
 export interface CalendarPlanOptions<
   TModel extends TimeSeriesContentModel,
@@ -103,23 +104,30 @@ export function useCalendarPlan<
     filter.value.setOption('tagId', tagId);
   }
 
-  async function move(evt: IDragEvent | IMoveEntryEvent, from?: TModel[], to?: TModel[]) {
+  async function sort(evt: IDragEvent | IMoveEntryEvent, to?: TModel[]) {
     const moveEvent = dragEventToMoveEvent(evt);
 
-    if (!from) from = getModels(moveEvent.fromInterval);
     if (!to) to = getModels(moveEvent.toInterval);
+    const isSameInterval = moveEvent.fromInterval === moveEvent.toInterval;
+
+    const model = cache.value.getModel(moveEvent.cid);
+    const attachTo =
+      moveEvent.newIndex > 0
+        ? to[moveEvent.newIndex - (!isSameInterval || evt.oldIndex > evt.newIndex ? 1 : 0)]
+        : undefined;
+
+    if (!isSameInterval) {
+      model.timeSeriesConfig.interval = moveEvent.toInterval;
+    }
+
+    const oldSortOrder = model.meta.sortOrder;
+    // We manually set the sortOrder to prevent flickering
+    model.meta.sortOrder = attachTo ? (attachTo.meta.sortOrder || 0) + 0.1 : 0;
 
     try {
-      const model = cache.value.getModel(moveEvent.cid);
-      const attachTo = moveEvent.newIndex > 0 ? to[moveEvent.newIndex - 1] : undefined;
-
-      if (moveEvent.fromInterval !== moveEvent.toInterval) {
-        model.timeSeriesConfig.interval = moveEvent.toInterval;
-      }
-
       const sortResult = await service.sort(
         model.id,
-        new MoveAction({ interval: moveEvent.toInterval, attachToId: attachTo?.id }),
+        new SortAction({ interval: moveEvent.toInterval, attachToId: attachTo?.id }),
       );
 
       sortResult.sort.forEach((update) => {
@@ -129,7 +137,8 @@ export function useCalendarPlan<
         }
       });
     } catch (e) {
-      // Todo: handle error...
+      model.meta.sortOrder = oldSortOrder;
+      useGlobalDialogStore().showUnknownError();
     }
   }
 
@@ -141,7 +150,7 @@ export function useCalendarPlan<
     loadModels,
     getModels,
     selectTag,
-    move,
+    sort,
     startWatch,
     intervals: getCalendarIntervalArray(),
   };

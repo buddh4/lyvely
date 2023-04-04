@@ -8,10 +8,7 @@ describe('Test Register Users', function () {
   it('initial ui view', () => {
     cy.get('.sidebar .router-link-active').should('contain', 'Activities');
     cy.get('#sub-nav .active').should('contain', 'Activities');
-    cy.get('#activity-overview [data-entry-id]').should(
-      'contain',
-      'Test Habit',
-    );
+    cy.get('#activity-overview [data-cid]').should('contain', 'Test Habit');
 
     // TODO: tags
   });

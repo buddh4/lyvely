@@ -3,7 +3,7 @@ import {
   ICalendarPlanResponse,
   IJournalsEndpointService,
   JournalModel,
-  MoveAction,
+  SortAction,
   SortResponse,
   useSingleton,
   useDataPointStrategyFacade,
@@ -45,7 +45,7 @@ export class JournalsService implements IJournalsEndpointService {
     );
   }
 
-  async sort(cid: string, move: MoveAction): Promise<SortResponse> {
+  async sort(cid: string, move: SortAction): Promise<SortResponse> {
     return unwrapAndTransformResponse(repository.sort(cid, move), SortResponse);
   }
 }

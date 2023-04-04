@@ -1,1 +1,1 @@
-export * from './time-series-content.service';
+export * from './time-series.service';

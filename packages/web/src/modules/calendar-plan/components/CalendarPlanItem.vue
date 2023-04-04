@@ -41,7 +41,11 @@ const { model } = toRefs(props);
 </script>
 
 <template>
-  <div class="calendar-plan-item bg-main" role="listitem" :data-entry-id="model.id">
+  <div
+    class="calendar-plan-item bg-main"
+    role="listitem"
+    :data-cid="model.id"
+    :data-sort-order="model.meta.sortOrder">
     <div :class="classNames">
       <button
         v-if="dragActive"

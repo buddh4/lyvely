@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { CalendarIntervalEnum, DataPointIntervalFilter, sortBySortOrder } from '@lyvely/common';
 import { Profile } from '@/profiles';
-import { HabitTestDataUtil, createHabitTestingModule } from '../test';
+import { createHabitTestingModule, HabitTestDataUtil } from '../test';
 import { HabitDataPointDao, HabitsDao } from '../daos';
 import { User } from '@/users';
 import { HabitDataPointService } from './habit-data-point.service';
@@ -40,13 +40,9 @@ describe('HabitTimeSeriesService', () => {
       const { user, profile } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
       const filter = new DataPointIntervalFilter('2021-01-01');
-      const { models: activities } = await habitsTimeSeriesService.findByFilter(
-        profile,
-        user,
-        filter,
-      );
-      expect(activities.length).toEqual(1);
-      expect(activities[0].id).toEqual(habit.id);
+      const { models: habits } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      expect(habits.length).toEqual(1);
+      expect(habits[0].id).toEqual(habit.id);
     });
 
     it('find habit log within filter range', async () => {
@@ -90,90 +86,8 @@ describe('HabitTimeSeriesService', () => {
       ];
     };
 
-    it('sort to top', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-
-      const habits = await createHabits(user, profile);
-
-      await habitsTimeSeriesService.sort(
-        profile,
-        user,
-        habits[3],
-        habits[3].timeSeriesConfig.interval,
-      );
-
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models: activities } = await habitsTimeSeriesService.findByFilter(
-        profile,
-        user,
-        filter,
-      );
-      sortHabits(activities);
-      expect(activities.length).toEqual(5);
-      expect(activities[0].content.title).toEqual('h3');
-      expect(activities[1].content.title).toEqual('h0');
-      expect(activities[2].content.title).toEqual('h1');
-      expect(activities[3].content.title).toEqual('h2');
-      expect(activities[4].content.title).toEqual('h4');
-    });
-
-    it('sort to bottom', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const habits = await createHabits(user, profile);
-
-      await habitsTimeSeriesService.sort(
-        profile,
-        user,
-        habits[1],
-        habits[1].timeSeriesConfig.interval,
-        habits[4],
-      );
-
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models: activities } = await habitsTimeSeriesService.findByFilter(
-        profile,
-        user,
-        filter,
-      );
-      sortHabits(activities);
-      expect(activities.length).toEqual(5);
-      expect(activities[0].content.title).toEqual('h0');
-      expect(activities[1].content.title).toEqual('h2');
-      expect(activities[2].content.title).toEqual('h3');
-      expect(activities[3].content.title).toEqual('h4');
-      expect(activities[4].content.title).toEqual('h1');
-    });
-
-    it('sort to same index', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const habits = await createHabits(user, profile);
-
-      await habitsTimeSeriesService.sort(
-        profile,
-        user,
-        habits[2],
-        habits[2].timeSeriesConfig.interval,
-        habits[2],
-      );
-
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models: activities } = await habitsTimeSeriesService.findByFilter(
-        profile,
-        user,
-        filter,
-      );
-      sortHabits(activities);
-      expect(activities.length).toEqual(5);
-      expect(activities[0].content.title).toEqual('h0');
-      expect(activities[1].content.title).toEqual('h1');
-      expect(activities[2].content.title).toEqual('h2');
-      expect(activities[3].content.title).toEqual('h3');
-      expect(activities[4].content.title).toEqual('h4');
-    });
-
-    it('sort to another interval', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const habits = [
+    const createMultiIntervalHabits = async (user: User, profile: Profile) => {
+      return [
         await testData.createHabit(
           user,
           profile,
@@ -215,6 +129,128 @@ describe('HabitTimeSeriesService', () => {
           },
         ),
       ];
+    };
+
+    it('sort between', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+
+      const habits = await createHabits(user, profile);
+
+      await habitsTimeSeriesService.sort(
+        profile,
+        user,
+        habits[1],
+        habits[1].timeSeriesConfig.interval,
+        habits[3],
+      );
+
+      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      sortHabits(models);
+      expect(models.length).toEqual(5);
+      expect(models[0].content.title).toEqual('h0');
+      expect(models[1].content.title).toEqual('h2');
+      expect(models[2].content.title).toEqual('h3');
+      expect(models[3].content.title).toEqual('h1');
+      expect(models[4].content.title).toEqual('h4');
+    });
+
+    it('sort first entry to second entry', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+
+      const habits = await createHabits(user, profile);
+
+      await habitsTimeSeriesService.sort(
+        profile,
+        user,
+        habits[0],
+        habits[0].timeSeriesConfig.interval,
+        habits[1],
+      );
+
+      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      sortHabits(models);
+      expect(models.length).toEqual(5);
+      expect(models[0].content.title).toEqual('h1');
+      expect(models[1].content.title).toEqual('h0');
+      expect(models[2].content.title).toEqual('h2');
+      expect(models[3].content.title).toEqual('h3');
+      expect(models[4].content.title).toEqual('h4');
+    });
+
+    it('sort to top', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+
+      const habits = await createHabits(user, profile);
+
+      await habitsTimeSeriesService.sort(
+        profile,
+        user,
+        habits[3],
+        habits[3].timeSeriesConfig.interval,
+      );
+
+      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      sortHabits(models);
+      expect(models.length).toEqual(5);
+      expect(models[0].content.title).toEqual('h3');
+      expect(models[1].content.title).toEqual('h0');
+      expect(models[2].content.title).toEqual('h1');
+      expect(models[3].content.title).toEqual('h2');
+      expect(models[4].content.title).toEqual('h4');
+    });
+
+    it('sort to bottom', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habits = await createHabits(user, profile);
+
+      await habitsTimeSeriesService.sort(
+        profile,
+        user,
+        habits[1],
+        habits[1].timeSeriesConfig.interval,
+        habits[4],
+      );
+
+      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      sortHabits(models);
+      expect(models.length).toEqual(5);
+      expect(models[0].content.title).toEqual('h0');
+      expect(models[1].content.title).toEqual('h2');
+      expect(models[2].content.title).toEqual('h3');
+      expect(models[3].content.title).toEqual('h4');
+      expect(models[4].content.title).toEqual('h1');
+    });
+
+    it('sort to same index', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habits = await createHabits(user, profile);
+
+      await habitsTimeSeriesService.sort(
+        profile,
+        user,
+        habits[2],
+        habits[2].timeSeriesConfig.interval,
+        habits[2],
+      );
+
+      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      sortHabits(models);
+      expect(models.length).toEqual(5);
+      expect(models[0].content.title).toEqual('h0');
+      expect(models[1].content.title).toEqual('h1');
+      expect(models[2].content.title).toEqual('h2');
+      expect(models[3].content.title).toEqual('h3');
+      expect(models[4].content.title).toEqual('h4');
+    });
+
+    it('sort between another interval', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habits = await createMultiIntervalHabits(user, profile);
 
       await habitsTimeSeriesService.sort(
         profile,
@@ -223,17 +259,77 @@ describe('HabitTimeSeriesService', () => {
         habits[2].timeSeriesConfig.interval,
         habits[2],
       );
+
       expect(habits[0].timeSeriesConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
       expect(habits[0].timeSeriesConfig.history.length).toEqual(1);
       expect(habits[0].timeSeriesConfig.history[0].interval).toEqual(CalendarIntervalEnum.Daily);
 
-      expect(habits[0].meta.sortOrder).toEqual(1);
-      const h2 = await habitsService.findByProfileAndId(profile, habits[2]);
-      expect(h2.meta.sortOrder).toEqual(0);
-      const h3 = await habitsService.findByProfileAndId(profile, habits[3]);
-      expect(h3.meta.sortOrder).toEqual(2);
-      const h4 = await habitsService.findByProfileAndId(profile, habits[4]);
-      expect(h4.meta.sortOrder).toEqual(3);
+      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
+      let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      models = models.filter(
+        (model) => model.timeSeriesConfig.interval === CalendarIntervalEnum.Weekly,
+      );
+
+      sortHabits(models);
+
+      expect(models.length).toEqual(4);
+      expect(models[0].content.title).toEqual('h2');
+      expect(models[1].content.title).toEqual('h0');
+      expect(models[2].content.title).toEqual('h3');
+      expect(models[3].content.title).toEqual('h4');
+    });
+
+    it('sort on top of another interval', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habits = await createMultiIntervalHabits(user, profile);
+
+      await habitsTimeSeriesService.sort(
+        profile,
+        user,
+        habits[0],
+        habits[2].timeSeriesConfig.interval,
+      );
+
+      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
+      let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      models = models.filter(
+        (model) => model.timeSeriesConfig.interval === CalendarIntervalEnum.Weekly,
+      );
+
+      sortHabits(models);
+
+      expect(models.length).toEqual(4);
+      expect(models[0].content.title).toEqual('h0');
+      expect(models[1].content.title).toEqual('h2');
+      expect(models[2].content.title).toEqual('h3');
+      expect(models[3].content.title).toEqual('h4');
+    });
+
+    it('sort to end of another interval', async () => {
+      const { user, profile } = await testData.createUserAndProfile();
+      const habits = await createMultiIntervalHabits(user, profile);
+
+      await habitsTimeSeriesService.sort(
+        profile,
+        user,
+        habits[0],
+        habits[4].timeSeriesConfig.interval,
+        habits[4],
+      );
+
+      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
+      let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      models = models.filter(
+        (model) => model.timeSeriesConfig.interval === CalendarIntervalEnum.Weekly,
+      );
+
+      sortHabits(models);
+
+      expect(models.length).toEqual(4);
+      expect(models[0].content.title).toEqual('h2');
+      expect(models[1].content.title).toEqual('h3');
+      expect(models[2].content.title).toEqual('h4');
+      expect(models[3].content.title).toEqual('h0');
     });
   });
 

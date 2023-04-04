@@ -9,6 +9,7 @@ import { Task, TaskSchema, TaskScore, TaskScoreSchema } from './schemas';
 import { TasksController } from '@/tasks/controllers';
 import { TasksDao } from '@/tasks/daos';
 import { TasksService } from '@/tasks/services';
+import { TaskTimeSeriesService } from '@/tasks/services/task-time-series.service';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import { TasksService } from '@/tasks/services';
     ]),
   ],
   controllers: [TasksController],
-  providers: [TasksDao, TasksService],
+  providers: [TasksDao, TasksService, TaskTimeSeriesService],
 })
 export class TasksModule {}

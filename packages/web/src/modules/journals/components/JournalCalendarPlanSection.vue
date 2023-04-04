@@ -14,7 +14,7 @@ export interface IProps {
 const props = defineProps<IProps>();
 
 const journalsStore = useJournalPlanStore();
-const { move } = journalsStore;
+const { sort } = journalsStore;
 
 const journals = computed(() => journalsStore.getModels(props.interval));
 
@@ -36,7 +36,7 @@ const createEntry = () =>
       group="habits"
       handle=".icon-drag"
       item-key="id"
-      @end="move">
+      @end="sort">
       <template #item="{ element }">
         <div :data-cid="element.id">
           <journal-calendar-plan-item :model="element" />
