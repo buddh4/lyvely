@@ -8,7 +8,6 @@ import { UsersModule } from './users';
 import { ProfilesModule } from './profiles';
 import { PoliciesModule } from './policies/policies.module';
 import { ContentCoreModule } from './content';
-import { ActivitiesModule } from './activities/activities.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -241,7 +240,7 @@ export class AppModuleBuilder {
       return this;
     }
 
-    return this.importModules(ActivitiesModule, JournalsModule, MessageModule);
+    return this.importModules(JournalsModule, MessageModule);
   }
 
   public importModules(...module: Array<Import>) {

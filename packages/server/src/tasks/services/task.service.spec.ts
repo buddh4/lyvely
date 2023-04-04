@@ -1,40 +1,36 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import {
-  ActivityType,
   CalendarIntervalEnum,
+  DataPointIntervalFilter,
   toTimingId,
   UserAssignmentStrategy,
 } from '@lyvely/common';
 import { TasksService } from './tasks.service';
-import { ActivityTestDataUtil, createActivityTestingModule } from '../test/activities.test.utils';
-import { TasksDao } from '../daos/tasks.dao';
-import { ActivitiesDao } from '../daos/activities.dao';
+import { TaskTestDataUtil, createTaskTestingModule } from '../test';
+import { TasksDao } from '../daos';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { Timer } from '@/calendar';
+import { Task, UserDone } from '../schemas';
 
 describe('TaskService', () => {
   let testingModule: TestingModule;
   let taskService: TasksService;
-  let testDataUtils: ActivityTestDataUtil;
+  let testData: TaskTestDataUtil;
   let taskDao: TasksDao;
 
   const TEST_KEY = 'task_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY, [
-      TasksDao,
-      ActivitiesDao,
-      TasksService,
-    ]).compile();
+    testingModule = await createTaskTestingModule(TEST_KEY, [TasksDao, TasksService]).compile();
     taskService = testingModule.get(TasksService);
-    testDataUtils = testingModule.get(ActivityTestDataUtil);
+    testData = testingModule.get(TaskTestDataUtil);
     taskDao = testingModule.get(TasksDao);
   });
 
   afterEach(async () => {
-    await testDataUtils.reset(TEST_KEY);
+    await testData.reset(TEST_KEY);
   });
 
   async function createTask(
@@ -55,10 +51,53 @@ describe('TaskService', () => {
   }
 
   describe('Task service', () => {
+    describe('findByFilter', () => {
+      it('find undone task', async () => {
+        const { user, profile } = await testData.createUserAndProfile('user1');
+        const task = await testData.createTask(user, profile);
+        const filter = new DataPointIntervalFilter(new Date());
+        const { models: activities } = await taskService.findByFilter(profile, user, filter);
+        expect(activities.length).toEqual(1);
+        expect(activities[0].id).toEqual(task.id);
+      });
+
+      it('find task done today within filter range', async () => {
+        const { user, profile } = await testData.createUserAndProfile('user1');
+        const task = await testData.createTask(user, profile, { title: 't1' }, (model) => {
+          model.doneBy = [new UserDone(user, TaskTestDataUtil.getTodayTimingId())];
+        });
+        const filter = new DataPointIntervalFilter(new Date());
+        const { models: activities } = await taskService.findByFilter(profile, user, filter);
+        expect(activities.length).toEqual(1);
+        expect(activities[0].id).toEqual(task.id);
+      });
+
+      it('find task done tomorrow within filter range', async () => {
+        const { user, profile } = await testData.createUserAndProfile('user1');
+        const task = await testData.createTask(user, profile, { title: 't1' }, (model) => {
+          model.doneBy = [new UserDone(user, TaskTestDataUtil.getTomorrowTimingId())];
+        });
+        const filter = new DataPointIntervalFilter(TaskTestDataUtil.getDateTomorrow());
+        const { models: activities } = await taskService.findByFilter(profile, user, filter);
+        expect(activities.length).toEqual(1);
+        expect(activities[0].id).toEqual(task.id);
+      });
+
+      it('do not include tasks done outside of filter range', async () => {
+        const { user, profile } = await testData.createUserAndProfile('user1');
+        await testData.createTask(user, profile, { title: 't1' }, (model) => {
+          model.doneBy = [new UserDone(user, TaskTestDataUtil.getTomorrowTimingId())];
+        });
+        const filter = new DataPointIntervalFilter(new Date());
+        const { models: activities } = await taskService.findByFilter(profile, user, filter);
+        expect(activities.length).toEqual(0);
+      });
+    });
+
     it('create', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
+      const { user, profile } = await testData.createUserAndProfile();
       const task = await createTask(profile, user, UserAssignmentStrategy.Shared);
-      expect(task.type).toBe(ActivityType.Task);
+      expect(task.type).toBe(Task.name);
       expect(task.meta.sortOrder).toEqual(0);
       expect(task.meta.createdAt).toBeDefined();
       expect(task.meta.updatedAt).toBeDefined();
@@ -69,7 +108,7 @@ describe('TaskService', () => {
     });
 
     it('sortOrder creation', async () => {
-      const { user, profile } = await testDataUtils.createUserAndProfile();
+      const { user, profile } = await testData.createUserAndProfile();
       const task1 = await createTask(profile, user, UserAssignmentStrategy.Shared);
       const task2 = await createTask(profile, user, UserAssignmentStrategy.Shared);
       expect(task1.meta.sortOrder).toEqual(0);
@@ -78,12 +117,12 @@ describe('TaskService', () => {
 
     describe('setDone', () => {
       it('set done on shared task', async () => {
-        const { owner, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.Shared);
 
         await taskService.setDone(profile, owner, task, '2021-04-03');
 
-        const search = await testDataUtils.findTaskById(task);
+        const search = await testData.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
         expect(search.doneBy[0].tid).toEqual(
           toTimingId('2021-04-03', task.timeSeriesConfig.interval),
@@ -100,14 +139,14 @@ describe('TaskService', () => {
       });
 
       it('set multiple done on shared task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
 
         const task = await createTask(profile, member, UserAssignmentStrategy.Shared);
 
         await taskService.setDone(profile, owner, task, '2021-04-03');
         await taskService.setDone(profile, member, task, '2021-04-05');
 
-        const search = await testDataUtils.findTaskById(task);
+        const search = await testData.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
         expect(search.doneBy[0].tid).toEqual(
           toTimingId('2021-04-05', task.timeSeriesConfig.interval),
@@ -118,12 +157,12 @@ describe('TaskService', () => {
       });
 
       it('set done on per-user task', async () => {
-        const { owner, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, profile } = await testData.createSimpleGroup();
 
         const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser);
 
         await taskService.setDone(profile, owner, task, '2021-04-03');
-        const search = await testDataUtils.findTaskById(task);
+        const search = await testData.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
         expect(search.doneBy[0].tid).toEqual(
           toTimingId('2021-04-03', task.timeSeriesConfig.interval),
@@ -138,14 +177,14 @@ describe('TaskService', () => {
       });
 
       it('set multiple done by on per-user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
 
         const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser);
 
         await taskService.setDone(profile, owner, task, '2021-04-03');
         await taskService.setDone(profile, member, task, '2021-04-05');
 
-        const search = await testDataUtils.findTaskById(task);
+        const search = await testData.findTaskById(task);
         expect(search.doneBy.length).toEqual(2);
         expect(search.doneBy[0].tid).toEqual(
           toTimingId('2021-04-03', task.timeSeriesConfig.interval),
@@ -168,14 +207,14 @@ describe('TaskService', () => {
       });
 
       it('set multiple done by single user on per-user task', async () => {
-        const { owner, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, profile } = await testData.createSimpleGroup();
 
         const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser);
 
         await taskService.setDone(profile, owner, task, '2021-04-03');
         await taskService.setDone(profile, owner, task, '2021-04-05');
 
-        const search = await testDataUtils.findTaskById(task);
+        const search = await testData.findTaskById(task);
         expect(search.doneBy.length).toEqual(1);
         expect(search.doneBy[0].tid).toEqual(
           toTimingId('2021-04-05', task.timeSeriesConfig.interval),
@@ -192,50 +231,50 @@ describe('TaskService', () => {
 
     describe('setUndone', () => {
       it('set undone on shared task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.Shared);
 
         await taskService.setDone(profile, member, task, '2021-04-03');
         await taskService.setUndone(profile, member, task, '2021-04-03');
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.doneBy).toEqual([]);
         expect(task.doneBy).toEqual([]);
       });
 
       it('set undone by another user on shared task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.Shared);
 
         await taskService.setDone(profile, member, task, '2021-04-03');
         await taskService.setUndone(profile, owner, task, '2021-04-03');
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.doneBy).toEqual([]);
         expect(task.doneBy).toEqual([]);
       });
 
       it('set undone on per user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser);
 
         await taskService.setDone(profile, member, task, '2021-04-03');
         await taskService.setUndone(profile, member, task, '2021-04-03');
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.doneBy).toEqual([]);
         expect(task.doneBy).toEqual([]);
       });
 
       it('set undone on per user task with multiple doneBy', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser);
 
         await taskService.setDone(profile, member, task, '2021-04-03');
         await taskService.setDone(profile, owner, task, '2021-04-03');
         await taskService.setUndone(profile, member, task, '2021-04-03');
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.doneBy.length).toEqual(1);
         expect(search.isDoneByUser(owner)).toEqual(true);
         expect(search.isDoneByUser(member)).toEqual(false);
@@ -247,59 +286,59 @@ describe('TaskService', () => {
 
     describe('startTimer', () => {
       it('start new timer on shared task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.Shared);
         const timer = await taskService.startTimer(profile, owner, task);
         expect(timer.isStarted()).toEqual(true);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(true);
         expect(search.getTimer(member).isStarted()).toEqual(true);
         expect(search.timers.length).toEqual(1);
       });
 
       it('start new timer on per user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser);
         const timer = await taskService.startTimer(profile, owner, task);
         expect(timer.isStarted()).toEqual(true);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(true);
         expect(search.getTimer(member)).toBeUndefined();
         expect(search.timers.length).toEqual(1);
       });
 
       it('start already started timer on shared task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.Shared);
         await taskService.startTimer(profile, owner, task);
         const timer = await taskService.startTimer(profile, member, task);
 
         expect(timer.isStarted()).toEqual(true);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(true);
         expect(search.getTimer(member).isStarted()).toEqual(true);
         expect(search.timers.length).toEqual(1);
       });
 
       it('start already started timer on per user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
         const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser);
         await taskService.startTimer(profile, owner, task);
         const timer = await taskService.startTimer(profile, owner, task);
 
         expect(timer.isStarted()).toEqual(true);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(true);
         expect(search.getTimer(member)).toBeUndefined();
         expect(search.timers.length).toEqual(1);
       });
 
       it('start stopped timer on shared task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
 
         const start = Date.now() - 1000 * 60 * 60;
         const existingTimer = new Timer();
@@ -314,7 +353,7 @@ describe('TaskService', () => {
 
         await taskService.startTimer(profile, owner, task);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(true);
         expect(search.getTimer(member).isStarted()).toEqual(true);
         expect(search.getTimer(member).spans.length).toEqual(2);
@@ -322,7 +361,7 @@ describe('TaskService', () => {
       });
 
       it('start stopped timer on per user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
 
         const start = Date.now() - 1000 * 60 * 60;
         const existingTimer = new Timer(owner);
@@ -337,7 +376,7 @@ describe('TaskService', () => {
 
         await taskService.startTimer(profile, owner, task);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(true);
         expect(search.getTimer(owner).spans.length).toEqual(2);
         expect(search.getTimer(member)).toBeUndefined();
@@ -345,7 +384,7 @@ describe('TaskService', () => {
       });
 
       it('start multiple timers on per user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
 
         const start = Date.now() - 1000 * 60 * 60;
         const existingTimer = new Timer(owner);
@@ -358,7 +397,7 @@ describe('TaskService', () => {
         await taskService.startTimer(profile, owner, task);
         await taskService.startTimer(profile, member, task);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(true);
         expect(search.getTimer(owner).spans.length).toEqual(2);
         expect(search.getTimer(member).isStarted()).toEqual(true);
@@ -369,7 +408,7 @@ describe('TaskService', () => {
 
     describe('stopTimer', () => {
       it('stop timer on shared task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
 
         const start = Date.now() - 1000 * 60 * 60;
         const existingTimer = new Timer(owner);
@@ -381,36 +420,36 @@ describe('TaskService', () => {
         const timer = await taskService.stopTimer(profile, owner, task);
         expect(timer.isStarted()).toEqual(false);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(false);
         expect(search.getTimer(member).isStarted()).toEqual(false);
         expect(search.timers.length).toEqual(1);
       });
 
       it('stop non existing timer on shared task', async () => {
-        const { owner, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, profile } = await testData.createSimpleGroup();
 
         const task = await createTask(profile, owner, UserAssignmentStrategy.Shared);
         const timer = await taskService.stopTimer(profile, owner, task);
         expect(timer.isStarted()).toEqual(false);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner)).toBeUndefined();
       });
 
       it('stop non existing timer on per user task', async () => {
-        const { owner, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, profile } = await testData.createSimpleGroup();
 
         const task = await createTask(profile, owner, UserAssignmentStrategy.PerUser);
         const timer = await taskService.stopTimer(profile, owner, task);
         expect(timer.isStarted()).toEqual(false);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner)).toBeUndefined();
       });
 
       it('stop timer on per user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
 
         const start = Date.now() - 1000 * 60 * 60;
         const existingTimer = new Timer(owner);
@@ -422,14 +461,14 @@ describe('TaskService', () => {
         const timer = await taskService.stopTimer(profile, owner, task);
         expect(timer.isStarted()).toEqual(false);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(false);
         expect(search.getTimer(member)).toBeUndefined();
         expect(search.timers.length).toEqual(1);
       });
 
       it('stop two timer on per user task', async () => {
-        const { owner, member, profile } = await testDataUtils.createSimpleGroup();
+        const { owner, member, profile } = await testData.createSimpleGroup();
 
         const start = Date.now() - 1000 * 60 * 60;
         const ownerTimer = new Timer(owner);
@@ -444,7 +483,7 @@ describe('TaskService', () => {
         await taskService.stopTimer(profile, owner, task);
         await taskService.stopTimer(profile, member, task);
 
-        const search = await testDataUtils.findTaskById(task.id);
+        const search = await testData.findTaskById(task.id);
         expect(search.getTimer(owner).isStarted()).toEqual(false);
         expect(search.getTimer(member).isStarted()).toEqual(false);
         expect(search.timers.length).toEqual(2);

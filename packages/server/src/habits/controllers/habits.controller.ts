@@ -1,4 +1,4 @@
-import { Post, Body, Request, Inject } from '@nestjs/common';
+import { Post, Body, Request, Inject, Get, Query, ValidationPipe } from '@nestjs/common';
 import { Habit } from '../schemas';
 import {
   UpdateHabitDataPointModel,
@@ -9,18 +9,22 @@ import {
   TimerUpdateModel,
   UpdateHabitModel,
   NumberDataPointModel,
+  DataPointIntervalFilter,
+  HabitSearchResponse,
+  MoveAction,
+  SortResponse,
 } from '@lyvely/common';
-import { HabitsService } from '../services/habits.service';
-import { HabitDataPointService } from '../services/habit-data-point.service';
+import { HabitsService, HabitDataPointService, HabitTimeSeriesService } from '../services';
 import {
   ProfileContentRequest,
   ContentTypeController,
   ContentWritePolicy,
   AbstractContentTypeController,
 } from '@/content';
-import { Policies } from '@/policies/decorators/policies.decorator';
+import { Policies } from '@/policies';
 import { UseClassSerializer } from '@/core';
 import { DataPointModelConverter } from '@/time-series';
+import { ProfileRequest } from '@/profiles';
 
 @ContentTypeController('habits', Habit)
 // TODO: implement feature registration @Feature('content.activities.habits')
@@ -33,13 +37,45 @@ export class HabitsController
   protected contentService: HabitsService;
 
   @Inject()
-  protected habitDataPointService: HabitDataPointService;
+  protected dataPointService: HabitDataPointService;
+
+  @Inject()
+  protected timeSeriesService: HabitTimeSeriesService;
 
   protected updateResponseType = UpdateHabitResponse;
 
   protected createModelType = CreateHabitModel;
 
   protected updateModelType = UpdateHabitModel;
+
+  @Get()
+  async getByFilter(
+    @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
+    @Request() req: ProfileRequest,
+  ): Promise<HabitSearchResponse> {
+    const { profile, user } = req;
+    const { models, dataPoints } = await this.timeSeriesService.findByFilter(profile, user, filter);
+    return new HabitSearchResponse({
+      models: models.map((c) => c.toModel()),
+      dataPoints: dataPoints.map((value) =>
+        DataPointModelConverter.toModel<NumberDataPointModel>(value),
+      ),
+    });
+  }
+
+  @Post(':cid/sort')
+  @Policies(ContentWritePolicy)
+  async sort(@Body() dto: MoveAction, @Request() req: ProfileContentRequest<Habit>) {
+    const { profile, user, content } = req;
+    const sort = await this.timeSeriesService.sort(
+      profile,
+      user,
+      content,
+      dto.interval,
+      dto.attachToId,
+    );
+    return new SortResponse({ sort });
+  }
 
   @Post(':cid/update-data-point')
   @Policies(ContentWritePolicy)
@@ -49,7 +85,7 @@ export class HabitsController
   ) {
     const { profile, user, content } = req;
 
-    const { dataPoint } = await this.habitDataPointService.upsertDataPoint(
+    const { dataPoint } = await this.dataPointService.upsertDataPoint(
       profile,
       user,
       content,
@@ -67,7 +103,7 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async startTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
-    const dataPoint = await this.habitDataPointService.startTimer(profile, user, content, dto.date);
+    const dataPoint = await this.dataPointService.startTimer(profile, user, content, dto.date);
     return DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint);
   }
 
@@ -76,7 +112,7 @@ export class HabitsController
   async stopTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
 
-    const dataPoint = await this.habitDataPointService.stopTimer(profile, user, content, dto.date);
+    const dataPoint = await this.dataPointService.stopTimer(profile, user, content, dto.date);
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,

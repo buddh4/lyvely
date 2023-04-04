@@ -7,7 +7,6 @@ import {
   IntegrityException,
   SortResult,
   isInFuture,
-  dateTime,
 } from '@lyvely/common';
 import { DataPoint, DataPointService } from '../data-points';
 import { TimeSeriesContent, TimeSeriesContentDao } from '../content';
@@ -19,7 +18,7 @@ export interface ITimeSeriesContentSearchResult<
   TDataPointModel extends DataPoint = DataPoint,
 > {
   models: TModel[];
-  dataPoints: TDataPointModel[];
+  dataPoints?: TDataPointModel[];
 }
 
 export abstract class TimeSeriesContentService<
@@ -99,20 +98,15 @@ export abstract class TimeSeriesContentService<
       model.timeSeriesConfig.interval = interval;
     }
 
-    const activitiesByInterval = await this.contentDao.findByProfileAndInterval(
-      profile,
-      model.type,
-      interval,
-      {
-        excludeIds: model._id,
-        sort: <QuerySort<TModel>>{ 'meta.sortOrder': 1 },
-      },
-    );
+    const modelsByInterval = await this.contentDao.findByProfileAndInterval(profile, interval, {
+      excludeIds: model._id,
+      sort: <QuerySort<TModel>>{ 'meta.sortOrder': 1 },
+    });
 
     const newIndex = attachTo ? attachTo.meta.sortOrder + 1 : 0;
-    activitiesByInterval.splice(newIndex, 0, model);
+    modelsByInterval.splice(newIndex, 0, model);
 
-    return await this.contentDao.updateSortOrder(activitiesByInterval);
+    return await this.contentDao.updateSortOrder(modelsByInterval);
 
     /*const { content: activity, profile } = await this.findWritableContentAndProfile(user, identity);
 

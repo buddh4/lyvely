@@ -5,7 +5,6 @@ import {
   CalendarIntervalEnum,
   CreateHabitModel,
   DataPointInputType,
-  DataPointIntervalFilter,
   PropertiesOf,
   UpdateHabitModel,
   UserAssignmentStrategy,
@@ -14,8 +13,7 @@ import { Profile } from '@/profiles';
 import { HabitTestDataUtil, createHabitTestingModule } from '../test';
 import { HabitsDao } from '../daos';
 import { User } from '@/users';
-import { Habit } from '@/habits';
-import { ActivityTestDataUtil } from '@/activities/test/activities.test.utils';
+import { Habit } from '../schemas';
 import { assureStringId } from '@/core';
 
 describe('HabitService', () => {
@@ -251,16 +249,14 @@ describe('HabitService', () => {
       expect(search.id).toEqual(habit.id);
     });
 
-    it('do not find activity of another profile', async () => {
+    it('do not find habits of another profile', async () => {
       const { user, profile } = await testData.createUserAndProfile('user1');
       const profile2 = await testData.createProfile(user, 'profile2');
       const habit = await testData.createHabit(user, profile);
       const search = await habitsService.findByProfileAndId(profile2, assureStringId(habit._id));
       expect(search).toBeNull();
     });
-  });
 
-  describe('findUserActivityById', () => {
     it('find activity by object id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const activity = await testData.createHabit(user, profile);

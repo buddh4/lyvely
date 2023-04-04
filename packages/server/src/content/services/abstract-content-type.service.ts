@@ -48,7 +48,7 @@ export abstract class AbstractContentTypeService<
   ): Promise<UpdateQuerySet<T>>;
 
   async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T | null> {
-    return this.contentDao.findById(id);
+    return this.contentDao.findByProfileAndId(profile, id);
   }
 
   protected async mergeTags(profile, model: T, tagNames?: string[]) {

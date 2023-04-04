@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractContentDao } from '@/content';
 import { HabitDocument, Habit } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import module from '../activities.meta';
-import { Profile } from '@/profiles';
+import { TimeSeriesContentDao } from '@/time-series';
 
 @Injectable()
-export class HabitsDao extends AbstractContentDao<Habit> {
+export class HabitsDao extends TimeSeriesContentDao<Habit> {
   constructor(@InjectModel(Habit.name) protected model: Model<HabitDocument>) {
     super();
   }
@@ -17,6 +15,6 @@ export class HabitsDao extends AbstractContentDao<Habit> {
   }
 
   getModuleId(): string {
-    return module.id;
+    return 'habits';
   }
 }

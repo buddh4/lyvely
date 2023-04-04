@@ -1,7 +1,6 @@
-import { DataPointStrategyDao } from '../daos';
-import { DataPoint, TextDataPoint, NumberDataPoint } from '../schemas';
+import { DataPointStrategyDao } from './data-point-strategy.dao';
+import { DataPoint, TextDataPoint, NumberDataPoint, SelectionDataPoint } from '../schemas';
 import { DataPointValueType } from '@lyvely/common';
-import { SelectionDataPoint } from '@/time-series/data-points/schemas/selection-data-point.schema';
 
 export abstract class DataPointDao extends DataPointStrategyDao<DataPoint> {
   getModelConstructor(model?: Partial<DataPoint>) {

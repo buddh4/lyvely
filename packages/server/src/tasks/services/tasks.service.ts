@@ -1,19 +1,21 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
-import { Task } from '../schemas';
+import { Task, TaskScore } from '../schemas';
 import { Profile } from '@/profiles';
 import {
   CalendarDate,
   CreateTaskModel,
+  DataPointIntervalFilter,
+  getTimingIds,
   toTimingId,
   UpdateTaskModel,
   UserAssignmentStrategy,
 } from '@lyvely/common';
 import { User } from '@/users';
-import { TasksDao } from '../daos/tasks.dao';
+import { TasksDao } from '../daos';
 import { AbstractContentTypeService, ContentScoreService } from '@/content';
-import { ActivityScore } from '../schemas/activity-score.schema';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { Timer } from '@/calendar';
+import { ITimeSeriesContentSearchResult } from '@/time-series';
 
 @Injectable()
 export class TasksService extends AbstractContentTypeService<Task, CreateTaskModel> {
@@ -24,6 +26,22 @@ export class TasksService extends AbstractContentTypeService<Task, CreateTaskMod
   private scoreService: ContentScoreService;
 
   protected logger = new Logger(TasksService.name);
+
+  async findByFilter(
+    profile: Profile,
+    user: User,
+    filter: DataPointIntervalFilter,
+  ): Promise<ITimeSeriesContentSearchResult<Task, undefined>> {
+    // Find all calendar ids for the given search date and filter out by filter level
+    const tIds = getTimingIds(filter.date, profile.locale);
+    if (filter.level > 0) {
+      tIds.splice(0, filter.level);
+    }
+
+    return {
+      models: await this.contentDao.findByProfileAndTimingIds(profile, user, tIds),
+    };
+  }
 
   protected async createInstance(
     profile: Profile,
@@ -62,7 +80,7 @@ export class TasksService extends AbstractContentTypeService<Task, CreateTaskMod
     if (!wasDone) {
       await this.scoreService.saveScore(
         profile,
-        new ActivityScore({
+        new TaskScore({
           profile,
           user,
           content: task,
@@ -98,7 +116,7 @@ export class TasksService extends AbstractContentTypeService<Task, CreateTaskMod
     if (wasDone) {
       await this.scoreService.saveScore(
         profile,
-        new ActivityScore({
+        new TaskScore({
           profile,
           user,
           content: task,

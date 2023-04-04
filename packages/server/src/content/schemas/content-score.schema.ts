@@ -1,5 +1,5 @@
-import { ICreateProfileScore, IProfileScoreAction, ProfileScore } from '../../profiles';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ICreateProfileScore, IProfileScoreAction, ProfileScore } from '@/profiles';
+import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Content } from './content.schema';
 import { DeepPartial, IntegrityException } from '@lyvely/common';
@@ -30,3 +30,12 @@ export class ContentScore<T extends IContentScore = IContentScore> extends Profi
 
 export const ContentScoreSchema = SchemaFactory.createForClass(ContentScore);
 export type ContentActionDocument = ContentScore & mongoose.Document;
+
+export function getContentScoreDefinition(definitions: ModelDefinition[]): ModelDefinition {
+  return {
+    name: ContentScore.name,
+    collection: ProfileScore.collectionName(),
+    schema: ContentScoreSchema,
+    discriminators: definitions,
+  };
+}

@@ -36,14 +36,12 @@ export abstract class TimeSeriesContentDao<
    */
   async findByProfileAndInterval(
     profile: Profile,
-    type: string,
     plan: CalendarIntervalEnum,
     options: IFetchQueryOptions<TModel> = {},
   ): Promise<TModel[]> {
     return this.findAllByProfile(
       profile,
       {
-        type: type,
         'config.timeSeries.interval': plan,
       },
       options,

@@ -1,8 +1,8 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { ActivityTestDataUtil, createActivityTestingModule } from '../test/activities.test.utils';
-import { HabitDataPointService } from '@/activities/services/habit-data-point.service';
-import { HabitDataPointDao } from '@/activities/daos/habit-data-point.dao';
+import { HabitTestDataUtil, createHabitTestingModule } from '../test';
+import { HabitDataPointService } from './habit-data-point.service';
+import { HabitDataPointDao } from '../daos';
 import {
   UserAssignmentStrategy,
   toTimingId,
@@ -16,21 +16,21 @@ import { DataPoint } from '@/time-series';
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
   let testingModule: TestingModule;
-  let testData: ActivityTestDataUtil;
+  let testData: HabitTestDataUtil;
   let activityScoreDao: ContentScoreDao;
   let HabitDataPointModel: Model<DataPoint>;
 
   const TEST_KEY = 'habit_data_point_service';
 
   beforeEach(async () => {
-    testingModule = await createActivityTestingModule(TEST_KEY, [
+    testingModule = await createHabitTestingModule(TEST_KEY, [
       HabitDataPointService,
       HabitDataPointDao,
       ContentScoreService,
       ContentScoreDao,
     ]).compile();
     habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
-    testData = testingModule.get<ActivityTestDataUtil>(ActivityTestDataUtil);
+    testData = testingModule.get(HabitTestDataUtil);
     activityScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
     HabitDataPointModel = testingModule.get<Model<DataPoint>>('DataPointModel');
   });

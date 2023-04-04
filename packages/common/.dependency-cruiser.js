@@ -73,6 +73,7 @@ module.exports = {
     createModuleDeps('collab'),
     createModuleDeps('content', [MODULE_MODELS, MODULE_TAGS]),
     createModuleDeps('files'),
+    createModuleDeps('habits', [MODULE_CONTENT]),
     createModuleDeps('journals'),
     createModuleDeps('live'),
     createModuleDeps('message', [MODULE_CONTENT]),
@@ -82,6 +83,7 @@ module.exports = {
     createModuleDeps('statistics', [MODULE_CALENDAR]),
     createModuleDeps('stream'),
     createModuleDeps('tags', [MODULE_MODELS]),
+    createModuleDeps('tasks', [MODULE_CONTENT]),
     createModuleDeps('time-series', [
       MODULE_CALENDAR,
       MODULE_MODELS,

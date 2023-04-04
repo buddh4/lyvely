@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Activity, Habit } from '../schemas';
+import { Habit, HabitScore } from '../schemas';
 import { DataPointUpdateResult, NumberDataPoint, NumberDataPointService } from '@/time-series';
 import { DataPointInputType } from '@lyvely/common';
-import { HabitDataPointDao } from '../daos/habit-data-point.dao';
-import { ActivityScore } from '../schemas/activity-score.schema';
+import { HabitDataPointDao } from '../daos';
 import { ContentScoreService } from '@/content';
 import { isDefined } from 'class-validator';
 import { User } from '@/users';
@@ -24,14 +23,17 @@ export class HabitDataPointService extends NumberDataPointService<Habit> {
     updateResult: DataPointUpdateResult<NumberDataPoint>,
   ) {
     const { dataPoint } = updateResult;
-    const oldScore = HabitDataPointService.calculateLogScore(habit, updateResult.oldValue || 0);
-    const newScore = HabitDataPointService.calculateLogScore(habit, dataPoint.value);
+    const oldScore = HabitDataPointService.calculateDataPointScore(
+      habit,
+      updateResult.oldValue || 0,
+    );
+    const newScore = HabitDataPointService.calculateDataPointScore(habit, dataPoint.value);
 
     await Promise.all([
       super.postProcess(profile, user, habit, updateResult),
       this.scoreService.saveScore(
         profile,
-        new ActivityScore({
+        new HabitScore({
           profile,
           user,
           content: habit,
@@ -43,7 +45,7 @@ export class HabitDataPointService extends NumberDataPointService<Habit> {
     ]);
   }
 
-  private static calculateLogScore(activity: Activity, units: number): number {
+  private static calculateDataPointScore(activity: Habit, units: number): number {
     let result = 0;
 
     if (activity.timeSeriesConfig.inputType === DataPointInputType.Time) {

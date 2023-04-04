@@ -13,10 +13,10 @@ import {
 } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '@/users';
-import { Activity, ActivityConfig } from './activity.schema';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
+  NumberTimeSeriesContent,
   NumberTimeSeriesContentConfig,
   TimeSeriesConfigSchemaFactory,
 } from '@/time-series';
@@ -61,7 +61,10 @@ export const TaskConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(Tas
 ]);
 
 @Schema()
-export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
+export class Task
+  extends NumberTimeSeriesContent<Task>
+  implements PropertiesOf<TaskWithUsersModel>
+{
   @Prop({ type: TaskConfigSchema, required: true })
   @PropertyType(TaskConfig)
   config: TaskConfig;
@@ -165,7 +168,7 @@ export class Task extends Activity implements PropertiesOf<TaskWithUsersModel> {
     return new Task(profile, owner, {
       content: new ContentDataType({ title: update.title, text: update.text }),
       tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
-      config: new ActivityConfig({
+      config: new TaskConfig({
         score: update.score,
         timeSeries: _createDataPointConfigFromUpdate(update),
       }),
