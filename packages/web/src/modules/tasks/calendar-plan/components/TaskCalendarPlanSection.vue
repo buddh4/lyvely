@@ -6,7 +6,6 @@ import { computed, ref } from 'vue';
 import Draggable from 'vuedraggable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import { TaskModel } from '@lyvely/common';
-import CalendarPlanDraggableItem from '@/modules/calendar-plan/components/CalendarPlanDraggableItem.vue';
 
 export interface IProps {
   interval: number;
