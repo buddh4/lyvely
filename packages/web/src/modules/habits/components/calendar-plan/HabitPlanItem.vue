@@ -2,7 +2,7 @@
 import { HabitModel, NumberDataPointModel } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
-import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
+import { useHabitPlanStore } from '@/modules/habits/store/calendar-plan/habit-plan.store';
 import { useDebounceFn } from '@vueuse/core';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';

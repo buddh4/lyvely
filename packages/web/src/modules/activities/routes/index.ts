@@ -20,7 +20,7 @@ export default [
           layout: 'profile',
           title: () => translate('activities.habits.title'),
         },
-        component: () => import('../views/HabitPlanView.vue'),
+        component: () => import('../../habits/views/calendar-plan/HabitPlanView.vue'),
         beforeEnter: [() => useActivityStore().setActiveView('Habits')],
       },
       {
@@ -31,7 +31,7 @@ export default [
           layout: 'profile',
           title: () => translate('activities.tasks.title'),
         },
-        component: () => import('../views/TaskPlanView.vue'),
+        component: () => import('../../tasks/views/calendar-plan/TaskPlanView.vue'),
         beforeEnter: [() => useActivityStore().setActiveView('Tasks')],
       },
     ],

@@ -23,15 +23,15 @@ export default () => {
           create: {
             mode: 'modal',
             modelClass: CreateTaskModel,
-            component: () => import('./components/modals/EditTaskModal.vue'),
+            component: () => import('../tasks/components/modals/EditTaskModal.vue'),
           },
           edit: {
             mode: 'modal',
-            component: () => import('./components/modals/EditTaskModal.vue'),
+            component: () => import('../tasks/components/modals/EditTaskModal.vue'),
           },
           stream: {
-            details: () => import('./components/stream/TaskDetails.vue'),
-            entry: () => import('./components/stream/TaskStreamEntry.vue'),
+            details: () => import('../tasks/components/stream/TaskDetails.vue'),
+            entry: () => import('../tasks/components/stream/TaskStreamEntry.vue'),
           },
         },
       });
@@ -45,15 +45,15 @@ export default () => {
           create: {
             mode: 'modal',
             modelClass: CreateHabitModel,
-            component: () => import('./components/modals/EditHabitModal.vue'),
+            component: () => import('../habits/components/modals/EditHabitModal.vue'),
           },
           edit: {
             mode: 'modal',
-            component: () => import('./components/modals/EditHabitModal.vue'),
+            component: () => import('../habits/components/modals/EditHabitModal.vue'),
           },
           stream: {
-            details: () => import('./components/stream/HabitDetails.vue'),
-            entry: () => import('./components/stream/HabitStreamEntry.vue'),
+            details: () => import('../habits/components/stream/HabitDetails.vue'),
+            entry: () => import('../habits/components/stream/HabitStreamEntry.vue'),
           },
         },
       });

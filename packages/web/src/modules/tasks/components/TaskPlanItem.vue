@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
+import ItemCheckboxList from '@/modules/ui/components/form/CheckboxRange.vue';
 import { TaskModel } from '@lyvely/common';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { computed } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
-import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
+import { useTaskPlanStore } from '@/modules/tasks/store/calendar-plan/task-plan.store';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';

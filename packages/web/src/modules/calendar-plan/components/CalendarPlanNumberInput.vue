@@ -8,7 +8,7 @@ import {
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import { computed } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';
-import ItemCheckboxList from '@/modules/activities/components/ItemCheckboxList.vue';
+import ItemCheckboxList from '@/modules/ui/components/form/CheckboxRange.vue';
 
 interface IProps {
   modelValue: number;

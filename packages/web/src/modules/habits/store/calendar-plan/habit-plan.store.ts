@@ -15,7 +15,7 @@ import {
   useCalendarPlanStore,
 } from '@/modules/calendar-plan';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
-import { useHabitsService } from '@/modules/activities/services/habits.service';
+import { useHabitsService } from '@/modules/habits/services/habits.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { useContentStore } from '@/modules/content/stores/content.store';
 import { IDragEvent } from '@/modules/common';

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import TaskPlanItem from '@/modules/activities/components/TaskPlanItem.vue';
-import HabitPlanItem from '@/modules/activities/components/HabitPlanItem.vue';
+import TaskPlanItem from '@/modules/tasks/components/TaskPlanItem.vue';
+import HabitPlanItem from '@/modules/habits/components/calendar-plan/HabitPlanItem.vue';
 import CalendarPlanSection from '@/modules/calendar-plan/components/CalendarPlanSection.vue';
 import { ActivityType, isTask } from '@lyvely/common';
-import { useTaskPlanStore } from '@/modules/activities/store/task-plan.store';
-import { useHabitPlanStore } from '@/modules/activities/store/habit-plan.store';
+import { useTaskPlanStore } from '@/modules/tasks/store/calendar-plan/task-plan.store';
+import { useHabitPlanStore } from '@/modules/habits/store/calendar-plan/habit-plan.store';
 import { computed, ref } from 'vue';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import Draggable from 'vuedraggable';
