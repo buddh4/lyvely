@@ -232,6 +232,29 @@ describe('PropertyType', () => {
     expect(model.arr[0]).toEqual('test');
   });
 
+  it('test string array without default', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType([String])
+      arr: string[];
+    }
+
+    const model = new TestModel();
+    expect(model.arr).toBeDefined();
+    expect(model.arr.length).toEqual(0);
+  });
+
+  it('test string array with init value', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType([String])
+      arr: string[];
+    }
+
+    const model = new TestModel({ arr: ['test'] });
+    expect(model.arr).toBeDefined();
+    expect(model.arr.length).toEqual(1);
+    expect(model.arr[0]).toEqual('test');
+  });
+
   it('test typed array', async () => {
     class SubModel {
       value: string;
@@ -263,5 +286,145 @@ describe('PropertyType', () => {
     expect(model.date.getFullYear()).toEqual(2022);
     expect(model.date.getDate()).toEqual(23);
     expect(model.date.getMonth()).toEqual(6);
+  });
+
+  it('transform to null', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(null)
+      val: null;
+    }
+
+    const model = new TestModel({ val: <any>1 });
+    expect(model.val).toEqual(null);
+  });
+
+  it('transform to undefined', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(undefined)
+      val: null;
+    }
+
+    const model = new TestModel({ val: <any>1 });
+    expect(model.val).toEqual(undefined);
+  });
+
+  it('transform number to string', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(String)
+      val: string;
+    }
+
+    const model = new TestModel({ val: <any>1 });
+    expect(model.val).toEqual('1');
+  });
+
+  it('transform true to string', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(String)
+      val: string;
+    }
+
+    const model = new TestModel({ val: <any>true });
+    expect(model.val).toEqual('true');
+  });
+
+  it('transform false to string', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(String)
+      val: string;
+    }
+
+    const model = new TestModel({ val: <any>false });
+    expect(model.val).toEqual('false');
+  });
+
+  it('transform bigint to string', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(String)
+      val: string;
+    }
+
+    const model = new TestModel({ val: <any>BigInt(123) });
+    expect(model.val).toEqual('123');
+  });
+
+  it('transform bigint to string', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(String)
+      val: string;
+    }
+
+    const model = new TestModel({ val: <any>BigInt(123) });
+    expect(model.val).toEqual('123');
+  });
+
+  it('transform object to string results in empty string if not optional', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(String)
+      val: string;
+    }
+
+    const model = new TestModel({ val: <any>{ test: 'test' } });
+    expect(model.val).toEqual('');
+  });
+
+  it('transform object to string results in null if optional', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(String, { optional: true })
+      val?: string;
+    }
+
+    const model = new TestModel({ val: <any>{ test: 'test' } });
+    expect(model.val).toEqual(null);
+  });
+
+  it('transform number to true', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(Boolean)
+      val: string;
+    }
+
+    const model = new TestModel({ val: <any>1 });
+    expect(model.val).toEqual(true);
+  });
+
+  it('transform number to false', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(Boolean)
+      val: string;
+    }
+
+    const model = new TestModel({ val: <any>0 });
+    expect(model.val).toEqual(false);
+  });
+
+  it('transform string to int', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(Number)
+      val: number;
+    }
+
+    const model = new TestModel({ val: <any>'123' });
+    expect(model.val).toEqual(123);
+  });
+
+  it('transform string to float', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(Number)
+      val: number;
+    }
+
+    const model = new TestModel({ val: <any>'1.2' });
+    expect(model.val).toEqual(1.2);
+  });
+
+  it('transform string invalid float', async () => {
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(Number, { optional: true })
+      val?: number;
+    }
+
+    const model = new TestModel({ val: <any>'1,2' });
+    expect(model.val).toEqual(null);
   });
 });

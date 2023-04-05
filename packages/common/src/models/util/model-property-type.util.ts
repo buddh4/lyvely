@@ -9,6 +9,7 @@ const primitivePrototypes = [
   String.prototype,
   Number.prototype,
   Boolean.prototype,
+  BigInt.prototype,
   Symbol.prototype,
 ];
 
@@ -38,6 +39,8 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
             typeof propertyDefinition.default === 'function'
               ? propertyDefinition.default()
               : propertyDefinition.default;
+        } else if (!propertyDefinition.type) {
+          model[propertyKey] = propertyDefinition.type; //null, undefined etc
         } else if (Array.isArray(propertyDefinition.type)) {
           model[propertyKey] = [];
         } else if (propertyDefinition.type === Date) {
