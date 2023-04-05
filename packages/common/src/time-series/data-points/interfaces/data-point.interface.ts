@@ -14,7 +14,7 @@ export enum DataPointInputType {
   Checkbox = 'checkbox',
   Range = 'range',
   Spinner = 'spinner',
-  Time = 'time',
+  Timer = 'timer',
   Textarea = 'textarea',
   Radio = 'radio',
   Dropdown = 'dropdown',

@@ -1,6 +1,6 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 import { CalendarIntervalEnum } from '@/calendar';
-import { DataPointInputType, DataPointNumberInputType } from '@/time-series';
+import { DataPointInputType, DataPointNumberInputType, DataPointValueType } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import {
   IsArray,
@@ -17,58 +17,52 @@ import {
 import { BaseModel } from '@/models';
 import { Gte, Lte } from '@/validation';
 
-@Exclude()
+@Expose()
 export class CreateHabitModel extends BaseModel<CreateHabitModel> {
-  @Expose()
   @IsString()
   @IsNotEmpty()
   //@Length(0, 100)
   title: string;
 
-  @Expose()
   @IsString()
   @IsOptional()
   @Length(0, 2000)
   text?: string;
 
-  @Expose()
   @IsEnum(CalendarIntervalEnum)
   interval: CalendarIntervalEnum;
 
-  @Expose()
   @IsInt()
   @Max(100)
   @Min(-100)
   score: number;
 
-  @Expose()
   @IsInt()
   @Min(1)
   max: number;
 
-  @Expose()
   @IsInt()
   @Lte('max')
   @IsOptional()
   @Min(0)
   min?: number;
 
-  @Expose()
   @IsInt()
   @Gte('min')
   @Lte('max')
   @Min(0)
   optimal?: number;
 
-  @Expose()
   @IsEnum(DataPointNumberInputType)
   inputType: DataPointInputType;
 
-  @Expose()
   @IsEnum(UserAssignmentStrategy)
   userStrategy: UserAssignmentStrategy;
 
-  @Expose()
+  @IsString()
+  @IsEnum([DataPointValueType.Number, DataPointValueType.Timer])
+  valueType: DataPointValueType;
+
   @IsArray()
   @MaxLength(20, { each: true })
   @IsOptional()

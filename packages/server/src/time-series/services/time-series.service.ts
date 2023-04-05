@@ -1,17 +1,11 @@
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { DataPointIntervalFilter, getTimingIds, isInFuture } from '@lyvely/common';
-import { DataPoint, DataPointService } from '../data-points';
-import { TimeSeriesContent, TimeSeriesContentDao } from '../content';
+import { DataPoint, TimeSeriesContent } from '../schemas';
+import { DataPointService } from './data-point.service';
+import { ITimeSeriesContentSearchResult } from './time-series-content-search.result';
+import { TimeSeriesContentDao } from '../daos';
 import { SortableTimeSeriesService } from '@/time-series/services/sortable-time-series.service';
-
-export interface ITimeSeriesContentSearchResult<
-  TModel extends TimeSeriesContent,
-  TDataPointModel extends DataPoint = DataPoint,
-> {
-  models: TModel[];
-  dataPoints?: TDataPointModel[];
-}
 
 export abstract class TimeSeriesService<
   TModel extends TimeSeriesContent,

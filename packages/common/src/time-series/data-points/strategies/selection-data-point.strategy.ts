@@ -23,7 +23,7 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
     return new SelectionDataPointModel(raw);
   }
 
-  validateValue(config: ISelectionDataPointConfig, value: ISelectionDataPointValue): boolean {
+  async validateValue(config: ISelectionDataPointConfig, value: ISelectionDataPointValue) {
     return isObject(value) && isArray(value);
   }
 
@@ -59,10 +59,7 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
     return config.showOther && config.inputType !== DataPointInputType.Dropdown;
   }
 
-  prepareValue(
-    config: ISelectionDataPointConfig,
-    value: ISelectionDataPointValue,
-  ): ISelectionDataPointValue {
+  prepareValue(config: ISelectionDataPointConfig, value: ISelectionDataPointValue) {
     if (!isObject(value) || !isArray(value.selection)) return value;
 
     value.selection = value.selection?.filter(
@@ -83,7 +80,7 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
     return value;
   }
 
-  prepareConfig(config: ISelectionDataPointConfig): void {
+  prepareConfig() {
     /** Nothing todo **/
   }
 

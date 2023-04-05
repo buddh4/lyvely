@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Habit, HabitScore } from '../schemas';
 import { DataPointUpdateResult, NumberDataPoint, NumberDataPointService } from '@/time-series';
-import { DataPointInputType } from '@lyvely/common';
+import { DataPointValueType } from '@lyvely/common';
 import { HabitDataPointDao } from '../daos';
 import { ContentScoreService } from '@/content';
 import { isDefined } from 'class-validator';
@@ -48,7 +48,7 @@ export class HabitDataPointService extends NumberDataPointService<Habit> {
   private static calculateDataPointScore(habit: Habit, units: number): number {
     let result = 0;
 
-    if (habit.timeSeriesConfig.inputType === DataPointInputType.Time) {
+    if (habit.timeSeriesConfig.valueType === DataPointValueType.Timer) {
       if (habit.timeSeriesConfig.min && units >= habit.timeSeriesConfig.min) {
         result += habit.config.score;
       }

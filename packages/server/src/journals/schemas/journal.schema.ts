@@ -7,7 +7,6 @@ import {
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
-  TimeNumberDataPointConfig,
   TimeSeriesConfigSchemaFactory,
   TimeSeriesContent,
   CheckboxSelectionDataPointConfig,
@@ -32,7 +31,6 @@ type JournalDataPointConfig =
   | TextareaTextDataPointConfig
   | CheckboxNumberDataPointConfig
   | SpinnerNumberDataPointConfig
-  | TimeNumberDataPointConfig
   | RangeNumberDataPointConfig
   | RadioSelectionDataPointConfig
   | DropdownSelectionDataPointConfig
@@ -53,7 +51,6 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Time),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Selection, DataPointInputType.Checkbox),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Selection, DataPointInputType.Radio),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Selection, DataPointInputType.Dropdown),
@@ -63,7 +60,10 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
  * Base Activity content class.
  */
 @Schema()
-export class Journal extends TimeSeriesContent<Journal, JournalDataPointConfig> {
+export class Journal
+  extends TimeSeriesContent<Journal, JournalDataPointConfig>
+  implements PropertiesOf<JournalModel>
+{
   @Prop({ type: JournalConfigSchema, required: true })
   config: JournalConfig;
 

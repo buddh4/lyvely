@@ -30,16 +30,16 @@ export class DataPointStrategyFacade {
     return this.getService(raw.valueType).createDataPoint(raw);
   }
 
-  validateValue(config: IDataPointConfig, value: any): boolean {
+  async validateValue(config: IDataPointConfig, value: any) {
     return this.getService(config.valueType).validateValue(config, value);
   }
 
-  prepareValue(config: IDataPointConfig, value: any): boolean {
+  prepareValue(config: IDataPointConfig, value: any) {
     return this.getService(config.valueType).prepareValue(config, value);
   }
 
-  prepareConfig(config: IDataPointConfig): void {
-    this.getService(config.valueType).prepareConfig(config);
+  prepareConfig(config: IDataPointConfig) {
+    return this.getService(config.valueType).prepareConfig(config);
   }
 
   createRevision(config: IDataPointConfig) {

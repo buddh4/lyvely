@@ -20,15 +20,15 @@ export class NumberDataPointStrategy extends DataPointStrategy<
     return new NumberDataPointModel(raw);
   }
 
-  validateValue(config: INumberDataPointConfig, value: number): boolean {
+  async validateValue(config: INumberDataPointConfig, value: number) {
     return isNumber(value) && value <= config.max;
   }
 
-  prepareValue(config: INumberDataPointConfig, value: number): number {
+  prepareValue(config: INumberDataPointConfig, value: number) {
     return isDefined(config.max) && isNumber(value) ? Math.min(value, config.max) : value;
   }
 
-  prepareConfig(config: INumberDataPointConfig): void {
+  prepareConfig(config: INumberDataPointConfig) {
     if (!isDefined(config.max) && config.inputType === DataPointInputType.Checkbox) {
       config.max = 1;
     }

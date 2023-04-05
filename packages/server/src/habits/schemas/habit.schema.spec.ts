@@ -55,6 +55,7 @@ describe('Habit', () => {
       max: 3,
       min: 2,
       optimal: 2,
+      valueType: DataPointValueType.Number,
       interval: CalendarIntervalEnum.Monthly,
       inputType: DataPointInputType.Checkbox,
       userStrategy: UserAssignmentStrategy.Shared,

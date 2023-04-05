@@ -20,19 +20,6 @@ export class TaskModel
   @PropertyType(TimerModel)
   timer: TimerModel;
 
-  getDefaultConfig(): IHabitConfig {
-    return {
-      score: 0,
-      timeSeries: {
-        interval: CalendarIntervalEnum.Daily,
-        inputType: DataPointInputType.Checkbox,
-        valueType: DataPointValueType.Number,
-        userStrategy: UserAssignmentStrategy.Shared,
-        history: [],
-      },
-    };
-  }
-
   toEditModel() {
     return new UpdateTaskModel({
       title: this.content.title,

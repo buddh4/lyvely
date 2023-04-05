@@ -23,15 +23,15 @@ export class TextDataPointService extends DataPointStrategy<
     return ['required'];
   }
 
-  prepareValue(config: ITextDataPointConfig, value: string): string {
+  prepareValue(config: ITextDataPointConfig, value: string) {
     return isString(value) ? value?.trim() : value;
   }
 
-  validateValue(config: ITextDataPointConfig, value: string): boolean {
+  async validateValue(config: ITextDataPointConfig, value: string) {
     return isString(value) && !!value?.trim().length;
   }
 
-  prepareConfig(config: ITextDataPointConfig): void {
+  prepareConfig(config: ITextDataPointConfig) {
     /** Nothing todo **/
   }
 }

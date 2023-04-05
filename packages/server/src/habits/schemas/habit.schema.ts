@@ -5,86 +5,75 @@ import {
   DataPointInputType,
   DataPointValueType,
   HabitModel,
+  ITimeSeriesContentConfig,
   PropertiesOf,
   PropertyType,
   UpdateHabitModel,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
-import { ContentDocument } from '@/content';
+import { ContentDocument, ContentDataType } from '@/content';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
   DataPointConfigHandler,
-  NumberDataPointConfig,
-  NumberDataPointConfigRevision,
-  NumberTimeSeriesContent,
-  NumberTimeSeriesContentConfig,
+  DataPointConfigSchema,
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
-  TimeNumberDataPointConfig,
   TimeSeriesConfigSchemaFactory,
+  TimeSeriesContent,
+  TimerDataPointConfig,
 } from '@/time-series';
-import { ContentDataType } from '@/content/schemas/content-data-type.schema';
+import { assureObjectId, NestedSchema } from '@/core';
 
 export type HabitDocument = Habit & ContentDocument;
 
 type HabitDataPointConfig =
   | CheckboxNumberDataPointConfig
   | SpinnerNumberDataPointConfig
-  | TimeNumberDataPointConfig
+  | TimerDataPointConfig
   | RangeNumberDataPointConfig;
 
-@Schema({ _id: false })
-export class HabitConfig extends NumberTimeSeriesContentConfig<HabitConfig, HabitDataPointConfig> {
+@NestedSchema()
+export class HabitConfig implements ITimeSeriesContentConfig<HabitDataPointConfig> {
+  @Prop({ type: DataPointConfigSchema, required: true })
+  timeSeries: HabitDataPointConfig;
+
   @Prop({ type: Number })
   @PropertyType(Number, { default: 0 })
   score: number;
+
+  constructor(timeSeries: HabitDataPointConfig, score: number) {
+    this.timeSeries = timeSeries;
+    this.score = score;
+  }
 }
 
 export const HabitConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(HabitConfig, [
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Range),
   DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Time),
+  DataPointConfigFactory.getStrategyName(DataPointValueType.Timer, DataPointInputType.Timer),
 ]);
 
 @Schema()
-export class Habit extends NumberTimeSeriesContent<Habit> implements PropertiesOf<HabitModel> {
+export class Habit
+  extends TimeSeriesContent<Habit, HabitDataPointConfig>
+  implements PropertiesOf<HabitModel>
+{
   @Prop({ type: HabitConfigSchema, required: true })
   @PropertyType(HabitConfig)
   config: HabitConfig;
 
-  public static create(
-    profile: Profile,
-    owner: User,
-    update: PropertiesOf<CreateHabitModel>,
-    history?: NumberDataPointConfigRevision[],
-  ): Habit {
-    update.inputType = update.inputType || DataPointInputType.Checkbox;
-
-    const result = new Habit(profile, owner, {
-      content: new ContentDataType(update),
-      tagIds: profile.getTagIdsByName(update.tagNames),
-      config: new HabitConfig({
-        score: update.score,
-        timeSeries: DataPointConfigFactory.createConfig<NumberDataPointConfig>(
-          DataPointValueType.Number,
-          update.inputType,
-          {
-            min: update.min,
-            max: update.max,
-            interval: update.interval,
-            optimal: update.optimal,
-            userStrategy: update.userStrategy,
-          },
-        ),
-      }),
+  public static create(profile: Profile, owner: User, update: PropertiesOf<CreateHabitModel>) {
+    const { title, text } = update;
+    return new Habit(profile, owner, {
+      content: new ContentDataType({ title, text }),
+      tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
+      config: new HabitConfig(
+        DataPointConfigFactory.createConfig(update.valueType, update.inputType, update),
+        update.score,
+      ),
     });
-
-    DataPointConfigHandler.prepareConfig(result);
-
-    if (history) result.timeSeriesConfig.history = history;
-    return result;
   }
 
   getDefaultConfig(): any {

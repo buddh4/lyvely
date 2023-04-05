@@ -16,11 +16,9 @@ import {
   NumberDataPointSchema,
   TextDataPoint,
   TextDataPointSchema,
-} from '@/time-series';
-import {
   SelectionDataPoint,
   SelectionDataPointSchema,
-} from '@/time-series/data-points/schemas/selection-data-point.schema';
+} from '@/time-series';
 
 @Module({
   controllers: [JournalsController],

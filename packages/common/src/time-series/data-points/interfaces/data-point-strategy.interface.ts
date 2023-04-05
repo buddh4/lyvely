@@ -8,8 +8,8 @@ export interface IDataPointStrategy<
   TValue = any,
 > {
   getSettingKeys(): Array<keyof TConfig>;
-  validateValue(config: TConfig, value: TValue): boolean;
-  prepareValue(config: TConfig, value: TValue): TValue;
+  validateValue(config: TConfig, value: TValue): Promise<boolean>;
+  prepareValue(config: TConfig, value: TValue, oldValue?: TValue): TValue;
   prepareConfig(config: TConfig): void;
   createDataPoint(raw: PropertiesOf<T>): T;
   createRevision(config: TConfig): TRev;

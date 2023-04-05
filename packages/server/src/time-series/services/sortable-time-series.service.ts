@@ -6,18 +6,11 @@ import {
   IntegrityException,
   SortResult,
 } from '@lyvely/common';
-import { DataPoint } from '../data-points';
-import { TimeSeriesContent, TimeSeriesContentDao } from '../content';
+import { DataPoint, TimeSeriesContent } from '../schemas';
+import { TimeSeriesContentDao } from '../daos';
 import { DataPointConfigHandler } from '../components';
 import { assureObjectId, EntityIdentity, QuerySort } from '@/core';
-
-export interface ITimeSeriesContentSearchResult<
-  TModel extends TimeSeriesContent,
-  TDataPointModel extends DataPoint = DataPoint,
-> {
-  models: TModel[];
-  dataPoints?: TDataPointModel[];
-}
+import { ITimeSeriesContentSearchResult } from './time-series-content-search.result';
 
 export abstract class SortableTimeSeriesService<
   TModel extends TimeSeriesContent,

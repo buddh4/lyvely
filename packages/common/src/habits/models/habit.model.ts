@@ -1,5 +1,4 @@
 import { Expose } from 'class-transformer';
-import { ContentModel } from '@/content';
 import { UpdateHabitModel } from './update-habit.model';
 import { IEditableModel } from '@/models';
 import { CalendarIntervalEnum } from '@/calendar';
@@ -41,8 +40,4 @@ export class HabitModel
       score: this.config.score,
     });
   }
-}
-
-export function isHabit(content: ContentModel): content is HabitModel {
-  return content && content.type === HabitModel.contentType;
 }

@@ -9,25 +9,19 @@ export enum DataPointNumberInputType {
   Checkbox = 'checkbox',
   Range = 'range',
   Spinner = 'spinner',
-  Time = 'time',
 }
 
-export interface INumberDataPointConfigRevision extends IDataPointConfigRevision {
+interface INumberSettings {
   min?: number;
   max?: number;
   optimal?: number;
 }
 
-export interface INumberDataPointConfig extends IDataPointConfig {
+export interface INumberDataPointConfigRevision extends IDataPointConfigRevision, INumberSettings {}
+
+export interface INumberDataPointConfig extends IDataPointConfig, INumberSettings {
   valueType: DataPointValueType.Number;
   history: INumberDataPointConfigRevision[];
-  min?: number;
-  max?: number;
-  optimal?: number;
 }
 
-export interface INumberDataPointSettings extends IDataPointSettings {
-  min?: number;
-  max?: number;
-  optimal?: number;
-}
+export interface INumberDataPointSettings extends IDataPointSettings, INumberSettings {}

@@ -14,8 +14,8 @@ export abstract class DataPointStrategy<
 > implements IDataPointStrategy<T, TConfig, TRev, TValue>
 {
   abstract getSettingKeys(): Array<keyof TConfig>;
-  abstract validateValue(config: TConfig, value: TValue): boolean;
-  abstract prepareValue(config: TConfig, value: TValue): TValue;
+  abstract validateValue(config: TConfig, value: TValue): Promise<boolean>;
+  abstract prepareValue(config: TConfig, value: TValue, oldValue?: TValue): TValue;
   abstract prepareConfig(config: TConfig): void;
   abstract createDataPoint(raw: PropertiesOf<T>): T;
 
