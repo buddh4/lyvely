@@ -1,7 +1,5 @@
 import { BaseModel, DocumentModel, PropertyType } from '@/models';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsArray } from 'class-validator';
-import { FeatureSyncModel } from '@/features';
 import { UserNotificationStateModel } from '@/users/models/user-notification-state.model';
 
 @Exclude()
@@ -58,7 +56,6 @@ export class UserModel extends DocumentModel<UserModel> {
   locale: string;
 
   @Expose()
-  @IsArray()
   @Type(() => UserEmailModel)
   @PropertyType([UserEmailModel])
   emails: UserEmailModel[];

@@ -211,7 +211,7 @@ describe('PropertyType', () => {
 
   it('test array without default', async () => {
     class TestModel extends BaseModel<TestModel> {
-      @PropertyType(Array)
+      @PropertyType(String)
       arr: string[];
     }
 
@@ -222,7 +222,7 @@ describe('PropertyType', () => {
 
   it('test array default', async () => {
     class TestModel extends BaseModel<TestModel> {
-      @PropertyType(Array, { default: ['test'] })
+      @PropertyType(String, { default: ['test'] })
       arr: string[];
     }
 

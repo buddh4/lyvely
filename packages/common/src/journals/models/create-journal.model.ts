@@ -69,7 +69,7 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
   @IsBoolean()
   @IsOptional()
   @ValidateIf((o) => o.type === DataPointValueType.Selection)
-  showOther?: boolean;
+  allowOther?: boolean;
 
   @IsInt()
   @Gte('min')

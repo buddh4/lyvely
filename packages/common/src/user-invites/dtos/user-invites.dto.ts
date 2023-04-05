@@ -1,5 +1,13 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { ArrayNotEmpty, IsArray, IsMongoId, IsOptional, IsString } from 'class-validator';
+import {
+  ArrayNotEmpty,
+  IsArray,
+  IsEmail,
+  IsMongoId,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { PropertyType } from '@/models';
 import { BaseMembershipRole } from '@/profiles';
 
@@ -16,6 +24,7 @@ export class UserInvite {
 export class MailInvite extends UserInvite {
   @Expose()
   @IsString()
+  @IsEmail()
   email: string;
 }
 
@@ -25,6 +34,8 @@ export class UserInvites {
   @IsArray()
   @ArrayNotEmpty()
   @Type(() => MailInvite)
+  @PropertyType(MailInvite)
+  @ValidateNested()
   invites: MailInvite[];
 
   @Expose()

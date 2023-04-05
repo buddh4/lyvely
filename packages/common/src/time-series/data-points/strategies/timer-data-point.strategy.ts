@@ -43,6 +43,12 @@ export class TimerDataPointStrategy extends DataPointStrategy<
     if (isDefined(config.max) && isNumber(value.ms)) {
       value.ms = Math.min(value.ms, config.max);
     }
+
+    if (!value.timer && oldValue.timer) {
+      value.timer = oldValue.timer;
+      value.timer.overwrite(value.ms);
+    }
+
     return value;
   }
 

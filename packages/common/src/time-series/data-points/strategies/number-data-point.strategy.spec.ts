@@ -9,9 +9,9 @@ import { CalendarIntervalEnum, isToday, toTimingId } from '@/calendar';
 
 describe('NumberDataPointStrategy', () => {
   describe('validateValue', () => {
-    it('valid number', () => {
+    it('valid number', async () => {
       expect(
-        useDataPointStrategyFacade().validateValue(
+        await useDataPointStrategyFacade().validateValue(
           <INumberDataPointConfig>{
             valueType: DataPointValueType.Number,
             min: 0,
@@ -22,9 +22,9 @@ describe('NumberDataPointStrategy', () => {
       ).toEqual(true);
     });
 
-    it('value > max should fail', () => {
+    it('value > max should fail', async () => {
       expect(
-        useDataPointStrategyFacade().validateValue(
+        await useDataPointStrategyFacade().validateValue(
           <INumberDataPointConfig>{
             valueType: DataPointValueType.Number,
             min: 0,
@@ -35,9 +35,9 @@ describe('NumberDataPointStrategy', () => {
       ).toEqual(false);
     });
 
-    it('invalid value should fail', () => {
+    it('invalid value should fail', async () => {
       expect(
-        useDataPointStrategyFacade().validateValue(
+        await useDataPointStrategyFacade().validateValue(
           <INumberDataPointConfig>{
             valueType: DataPointValueType.Number,
             min: 0,

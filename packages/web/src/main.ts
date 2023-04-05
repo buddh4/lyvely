@@ -39,6 +39,9 @@ import TimeNumberInput from '@/modules/ui/components/form/TimeNumberInput.vue';
 import ButtonUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 import { registerSW } from 'virtual:pwa-register';
 
+// Prototype pollution protection
+Object.freeze(Object.prototype);
+
 const app = new LyvelyApp();
 app.init().then(() => app.mount('#app'));
 

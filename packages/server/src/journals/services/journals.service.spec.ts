@@ -117,7 +117,7 @@ describe('JournalService', () => {
         interval: CalendarIntervalEnum.Daily,
         userStrategy: UserAssignmentStrategy.PerUser,
         options: ['Option 1', 'Option 2'],
-        showOther: true,
+        allowOther: true,
       });
 
       const config = journal.config.timeSeries as ISelectionDataPointConfig;
@@ -131,7 +131,7 @@ describe('JournalService', () => {
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.userStrategy).toEqual(UserAssignmentStrategy.PerUser);
       expect(config.options).toEqual(['Option 1', 'Option 2']);
-      expect(config.showOther).toEqual(true);
+      expect(config.allowOther).toEqual(true);
     });
 
     it('create invalid number journal', async () => {

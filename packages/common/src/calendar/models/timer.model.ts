@@ -1,35 +1,95 @@
-import { BaseModel } from '@/models';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { BaseModel, PropertyType } from '@/models';
+import { Expose, Type } from 'class-transformer';
 import { TransformObjectId } from '@/utils';
-
+import { ValidateNested } from 'class-validator';
 function compareSpans(a: TimeSpanModel, b: TimeSpanModel) {
   if (a.from < b.from) return -1;
   if (a.from > b.from) return 1;
   return 0;
 }
 
-@Exclude()
+@Expose()
 export class TimeSpanModel extends BaseModel<TimeSpanModel> {
-  @Expose()
   @TransformObjectId()
   uid?: TObjectId;
-
-  @Expose()
   from: number;
-
-  @Expose()
   to?: number;
+
+  constructor(uid?: TObjectId) {
+    super();
+    if (!this.from) {
+      this.from = Date.now();
+    }
+
+    if (uid) {
+      this.uid = uid;
+    }
+  }
 }
 
-@Exclude()
+@Expose()
 export class TimerModel extends BaseModel<TimerModel> {
-  @Expose()
   @TransformObjectId()
   uid?: TObjectId;
 
-  @Expose()
   @Type(() => TimeSpanModel)
+  @PropertyType([TimeSpanModel])
+  @ValidateNested()
   spans: TimeSpanModel[];
+
+  start(uid?: TObjectId) {
+    if (this.isStarted()) return;
+    const span = new TimeSpanModel(uid);
+    this.spans.push(span);
+    return span;
+  }
+
+  stop() {
+    const span = this.getLatestSpan();
+    if (!span) return;
+    span.to = Date.now();
+  }
+
+  overwrite(newValue: number, uid?: TObjectId) {
+    if (newValue === 0) {
+      this.spans = [];
+      return;
+    }
+
+    const currentValueWithoutOpenSpan = this.calculateTotalSpan(false);
+    const latestSpan = this.getLatestSpan();
+    if (newValue > currentValueWithoutOpenSpan) {
+      const diff = newValue - currentValueWithoutOpenSpan;
+      if (!this.isStarted()) {
+        if (latestSpan) {
+          latestSpan.to += diff;
+        } else {
+          const newSpan = this.start(uid);
+          // Todo: This could be a problem when editing old dataPoints without any time spans
+          newSpan.from = Date.now() - diff; // This could be a problem when editing old dataPoints without spans
+          newSpan.to = newSpan.from + diff;
+        }
+      } else {
+        latestSpan.to = latestSpan.from + diff;
+      }
+    } else {
+      let currentValue = 0;
+      const newSpans = [];
+      for (let i = 0; i < this.spans.length; i++) {
+        const currSpan = this.spans[i];
+        const timeSpan = this.calculateSpan(this.spans[i], false);
+        if (currentValue + timeSpan >= newValue) {
+          currSpan.to = currSpan.from + (newValue - currentValue);
+          newSpans.push(currSpan);
+          break;
+        } else {
+          newSpans.push(currSpan);
+          currentValue += timeSpan;
+        }
+      }
+      this.spans = newSpans;
+    }
+  }
 
   getLatestSpan() {
     if (!this.spans?.length) return;
@@ -42,7 +102,9 @@ export class TimerModel extends BaseModel<TimerModel> {
   }
 
   calculateTotalSpan(includeOpenSpan = true) {
-    return this.spans?.reduce((val, curr) => val + this.calculateSpan(curr, includeOpenSpan), 0) ?? 0;
+    return (
+      this.spans?.reduce((val, curr) => val + this.calculateSpan(curr, includeOpenSpan), 0) ?? 0
+    );
   }
 
   calculateSpan(span: TimeSpanModel, includeOpenSpan = true) {

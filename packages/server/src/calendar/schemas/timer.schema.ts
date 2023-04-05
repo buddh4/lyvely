@@ -1,10 +1,11 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { PropertyType, TimerModel, TimeSpanModel, PropertiesOf } from '@lyvely/common';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, EntityIdentity, NestedSchema } from '@/core';
+import { User } from '@/users';
 
-@Schema({ _id: false })
-export class TimeSpan implements PropertiesOf<TimeSpanModel> {
+@NestedSchema()
+export class TimeSpan extends TimeSpanModel implements PropertiesOf<TimeSpanModel> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
   uid?: TObjectId;
 
@@ -14,21 +15,18 @@ export class TimeSpan implements PropertiesOf<TimeSpanModel> {
   @Prop()
   to?: number;
 
-  // We use any since we do not want to introduce user module dependency
-  constructor(userIdentity?: EntityIdentity<any>) {
-    if (!this.from) {
-      this.from = Date.now();
-    }
+  constructor(user: EntityIdentity<User>) {
+    super(assureObjectId(user));
+  }
 
-    if (userIdentity) {
-      this.uid = assureObjectId(userIdentity);
-    }
+  afterInit() {
+    this.uid = assureObjectId(this.uid);
   }
 }
 
 export const TimeSpanSchema = SchemaFactory.createForClass(TimeSpan);
 
-@Schema({ _id: false })
+@NestedSchema()
 export class Timer extends TimerModel {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
   uid?: TObjectId;
@@ -37,6 +35,10 @@ export class Timer extends TimerModel {
   @PropertyType([TimeSpan])
   spans: TimeSpan[] = [];
 
+  start(user: EntityIdentity<User>) {
+    return super.start(assureObjectId(user));
+  }
+
   constructor(userIdentity?: EntityIdentity<any>) {
     super();
     if (userIdentity) {
@@ -44,58 +46,8 @@ export class Timer extends TimerModel {
     }
   }
 
-  start(userIdentity?: EntityIdentity<any>) {
-    if (this.isStarted()) return;
-    const span = new TimeSpan(userIdentity);
-    this.spans.push(span);
-    return span;
-  }
-
-  stop() {
-    const span = this.getLatestSpan();
-    if (!span) return;
-    span.to = Date.now();
-  }
-
-  overwrite(newValue: number, userIdentity?: EntityIdentity<any>) {
-    if (newValue === 0) {
-      this.spans = [];
-      return;
-    }
-
-    const currentValueWithoutOpenSpan = this.calculateTotalSpan(false);
-    const latestSpan = this.getLatestSpan();
-    if (newValue > currentValueWithoutOpenSpan) {
-      const diff = newValue - currentValueWithoutOpenSpan;
-      if (!this.isStarted()) {
-        if (latestSpan) {
-          latestSpan.to += diff;
-        } else {
-          const newSpan = this.start(userIdentity);
-          // Todo: This could be a problem when editing old dataPoints without any time spans
-          newSpan.from = Date.now() - diff; // This could be a problem when editing old dataPoints without spans
-          newSpan.to = newSpan.from + diff;
-        }
-      } else {
-        latestSpan.to = latestSpan.from + diff;
-      }
-    } else {
-      let currentValue = 0;
-      const newSpans = [];
-      for (let i = 0; i < this.spans.length; i++) {
-        const currSpan = this.spans[i];
-        const timeSpan = this.calculateSpan(this.spans[i], false);
-        if (currentValue + timeSpan >= newValue) {
-          currSpan.to = currSpan.from + (newValue - currentValue);
-          newSpans.push(currSpan);
-          break;
-        } else {
-          newSpans.push(currSpan);
-          currentValue += timeSpan;
-        }
-      }
-      this.spans = newSpans;
-    }
+  afterInit() {
+    this.uid = assureObjectId(this.uid);
   }
 }
 

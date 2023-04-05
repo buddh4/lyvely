@@ -12,19 +12,19 @@ export enum DataPointSelectionInputType {
 }
 
 export interface ISelectionDataPointSettings extends IDataPointSettings {
-  showOther?: boolean;
+  allowOther?: boolean;
   options: Array<string>;
 }
 
 export interface ISelectionDataPointConfigRevision extends IDataPointConfigRevision {
-  showOther: boolean;
+  allowOther: boolean;
   options: Array<string>;
 }
 
 export interface ISelectionDataPointConfig extends IDataPointConfig {
   valueType: DataPointValueType.Selection;
   history: ISelectionDataPointConfigRevision[];
-  showOther: boolean;
+  allowOther: boolean;
   options: Array<string>;
 }
 

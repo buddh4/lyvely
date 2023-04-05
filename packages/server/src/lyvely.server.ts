@@ -21,6 +21,9 @@ import fs from 'fs';
 
 useDayJsDateTimeAdapter();
 
+// Prototype pollution protection
+Object.freeze(Object.prototype);
+
 interface ILyvelyServerOptions extends IAppModuleBuilderOptions {}
 
 export class LyvelyServer {

@@ -26,7 +26,7 @@ export class DropdownSelectionDataPointConfig extends SelectionDataPointConfig {
 
   constructor(settings: Omit<ISelectionDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Dropdown, settings);
-    this.showOther = false;
+    this.allowOther = false;
   }
 }
 

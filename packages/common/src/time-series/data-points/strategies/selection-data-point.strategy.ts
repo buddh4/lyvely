@@ -7,9 +7,9 @@ import {
 } from '../interfaces';
 import { useDataPointStrategyFacade } from '../components';
 import { PropertiesOf } from '@/utils';
-import { isArray, isDefined, isObject, isString } from 'class-validator';
+import { isArray, isObject, validate } from 'class-validator';
 import { DataPointStrategy } from './data-point.strategy';
-import { SelectionDataPointModel } from '@/time-series/data-points/models/selection-data-point.model';
+import { SelectionDataPointModel, SelectionDataPointValueModel } from '../models';
 
 export const SELECTION_OTHER_OPTION_KEY = '__other_option__';
 
@@ -24,15 +24,12 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
   }
 
   async validateValue(config: ISelectionDataPointConfig, value: ISelectionDataPointValue) {
-    return isObject(value) && isArray(value);
-  }
+    if (!isObject(value) || !isArray(value.selection)) return false;
 
-  private validateSelection(
-    config: ISelectionDataPointConfig,
-    value: ISelectionDataPointValue,
-  ): boolean {
     const { selection, otherValue } = value;
-    if (!isArray(selection)) return false;
+
+    const errors = await validate(new SelectionDataPointValueModel(value));
+    if (errors.length) return false;
 
     if (
       selection.length > 1 &&
@@ -41,12 +38,11 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
       return false;
     }
 
-    for (const option of selection) {
+    for (const selectedOption of selection) {
       if (
-        (option === SELECTION_OTHER_OPTION_KEY && !this.allowOtherValue(config)) ||
-        (option === SELECTION_OTHER_OPTION_KEY &&
-          (!isString(otherValue) || !otherValue.trim().length)) ||
-        (option !== SELECTION_OTHER_OPTION_KEY && config.options.includes(option))
+        (selectedOption === SELECTION_OTHER_OPTION_KEY && !this.allowOtherValue(config)) ||
+        (selectedOption === SELECTION_OTHER_OPTION_KEY && !otherValue.trim().length) ||
+        (selectedOption !== SELECTION_OTHER_OPTION_KEY && !config.options.includes(selectedOption))
       ) {
         return false;
       }
@@ -56,7 +52,7 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
   }
 
   private allowOtherValue(config: ISelectionDataPointConfig) {
-    return config.showOther && config.inputType !== DataPointInputType.Dropdown;
+    return config.allowOther && config.inputType !== DataPointInputType.Dropdown;
   }
 
   prepareValue(config: ISelectionDataPointConfig, value: ISelectionDataPointValue) {
@@ -64,7 +60,7 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
 
     value.selection = value.selection?.filter(
       (key) =>
-        isDefined(config.options.includes(key)) ||
+        config.options.includes(key) ||
         (config.inputType !== DataPointInputType.Dropdown &&
           this.allowOtherValue(config) &&
           key === SELECTION_OTHER_OPTION_KEY),
@@ -85,7 +81,7 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
   }
 
   getSettingKeys(): Array<keyof ISelectionDataPointConfig> {
-    return ['showOther', 'options'];
+    return ['allowOther', 'options'];
   }
 }
 

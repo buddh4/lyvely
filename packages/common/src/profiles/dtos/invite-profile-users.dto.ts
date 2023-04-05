@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { BaseModel, PropertyType } from '@/models';
 import { BaseMembershipRole } from '../models';
 
@@ -22,5 +22,6 @@ export class InviteProfileMembers {
   @IsArray()
   @Type(() => ProfileMemberMailInvite)
   @PropertyType([ProfileMemberMailInvite])
+  @ValidateNested()
   mailInvites: ProfileMemberMailInvite[];
 }

@@ -22,12 +22,12 @@ export class SelectionDataPointConfigRevision
   options: Array<string>;
 
   @Prop({ default: false })
-  showOther: boolean;
+  allowOther: boolean;
 
   constructor(config: ISelectionDataPointConfig) {
     super(config);
     this.valueType = DataPointValueType.Selection;
-    this.showOther ??= false;
+    this.allowOther ??= false;
   }
 }
 
@@ -58,18 +58,18 @@ export class SelectionDataPointConfig
   options: Array<string>;
 
   @Prop({ default: false })
-  showOther: boolean;
+  allowOther: boolean;
 
   constructor(inputType?: DataPointInputType, settings?: ISelectionDataPointSettings) {
     super(DataPointValueType.Text, inputType, settings);
   }
 
   getSettings(): ISelectionDataPointSettings {
-    return pick(this, ['options', 'showOther', 'interval', 'userStrategy']);
+    return pick(this, ['options', 'allowOther', 'interval', 'userStrategy']);
   }
 
   setSettings(settings: ISelectionDataPointSettings) {
-    Object.assign(this, pick(settings, ['interval', 'userStrategy', 'options', 'showOther']));
+    Object.assign(this, pick(settings, ['interval', 'userStrategy', 'options', 'allowOther']));
   }
 }
 
