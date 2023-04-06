@@ -1,17 +1,26 @@
 import { User } from '@/users';
 import { Profile } from '@/profiles';
-import { TimerDataPoint } from '../schemas';
-import { TimerDataPointContent } from '../interfaces';
-import { CalendarDate } from '@lyvely/common';
+import {
+  CalendarDate,
+  EntityNotFoundException,
+  IntegrityException,
+  isTimerDataPointConfig,
+} from '@lyvely/common';
 import { DataPointService } from './data-point.service';
+import { DataPoint, TimerDataPoint, TimeSeriesContent } from '../schemas';
 
-export abstract class TimerDataPointService<
-  TModel extends TimerDataPointContent = TimerDataPointContent,
-  DataPointModel extends TimerDataPoint = TimerDataPoint,
-> {
-  abstract dataPointService: DataPointService<TModel, DataPointModel>;
+export abstract class TimerDataPointService {
+  abstract dataPointService: DataPointService<TimeSeriesContent>;
 
-  async startTimer(profile: Profile, user: User, model: TModel, date: CalendarDate) {
+  async startTimer(
+    profile: Profile,
+    user: User,
+    model: TimeSeriesContent,
+    date: CalendarDate,
+  ): Promise<TimerDataPoint> {
+    if (!isTimerDataPointConfig(model.timeSeriesConfig))
+      throw new IntegrityException('Can not start timer of non timer time series.');
+
     const { dataPoint } = await this.dataPointService.findOrCreateDataPointByDate(
       profile,
       user,
@@ -19,21 +28,31 @@ export abstract class TimerDataPointService<
       date,
     );
 
-    if (dataPoint.isTimerStarted()) return dataPoint;
+    if (this.isTimerDataPoint(dataPoint)) {
+      if (dataPoint.isTimerStarted()) return dataPoint;
 
-    dataPoint.startTimer(user);
+      dataPoint.startTimer(user);
 
-    const { dataPoint: updatedDataPoint } = await this.dataPointService.upsertDataPoint(
-      profile,
-      user,
-      model,
-      date,
-      dataPoint.value,
-    );
-    return updatedDataPoint;
+      const { dataPoint: updatedDataPoint } = await this.dataPointService.upsertDataPoint(
+        profile,
+        user,
+        model,
+        date,
+        dataPoint.value,
+      );
+      return updatedDataPoint as TimerDataPoint;
+    }
   }
 
-  async stopTimer(profile: Profile, user: User, model: TModel, date: CalendarDate) {
+  async stopTimer(
+    profile: Profile,
+    user: User,
+    model: TimeSeriesContent,
+    date: CalendarDate,
+  ): Promise<TimerDataPoint> {
+    if (!isTimerDataPointConfig(model.timeSeriesConfig))
+      throw new IntegrityException('Can not start timer of non timer time series.');
+
     const { dataPoint } = await this.dataPointService.findOrCreateDataPointByDate(
       profile,
       user,
@@ -41,18 +60,28 @@ export abstract class TimerDataPointService<
       date,
     );
 
-    if (!dataPoint.isTimerStarted()) return dataPoint;
+    if (this.isTimerDataPoint(dataPoint)) {
+      if (!dataPoint.isTimerStarted()) return dataPoint;
 
-    dataPoint.stopTimer();
+      dataPoint.stopTimer();
 
-    const { dataPoint: updatedDataPoint } = await this.dataPointService.upsertDataPoint(
-      profile,
-      user,
-      model,
-      date,
-      dataPoint.value,
-    );
+      const { dataPoint: updatedDataPoint } = await this.dataPointService.upsertDataPoint(
+        profile,
+        user,
+        model,
+        date,
+        dataPoint.value,
+      );
 
-    return updatedDataPoint;
+      return updatedDataPoint as TimerDataPoint;
+    }
+  }
+
+  private isTimerDataPoint(dataPoint: DataPoint): dataPoint is TimerDataPoint {
+    if (!dataPoint) throw new EntityNotFoundException();
+    if (!(dataPoint instanceof TimerDataPoint))
+      throw new IntegrityException('Can not start timer of non timer data point.');
+
+    return true;
   }
 }

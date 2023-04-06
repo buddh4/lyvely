@@ -9,7 +9,8 @@ import {
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { pick } from 'lodash';
 import { NestedSchema } from '@/core';
-import { DataPointConfigFactory, DataPointConfigSchemaFactory } from '../../components';
+import { DataPointConfigFactory } from '../data-point-config.factory';
+import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Timer,

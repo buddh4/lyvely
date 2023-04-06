@@ -6,9 +6,7 @@ import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum } from '@ly
 
 type InterValFilter = { interval: CalendarIntervalEnum; tid?: string | { $regex: RegExp } };
 
-export abstract class DataPointStrategyDao<
-  T extends DataPoint<any> = DataPoint<any>,
-> extends AbstractDao<T> {
+export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> extends AbstractDao<T> {
   // TODO: Implement update interval of data points
 
   async updateDataPointValue(

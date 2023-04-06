@@ -1,6 +1,11 @@
 import { Expose } from 'class-transformer';
 import { DataPointModel } from './data-point.model';
-import { DataPointValueType, IDataPointConfig, ITimerDataPointConfig } from '../interfaces';
+import {
+  DataPointValueType,
+  IDataPoint,
+  IDataPointConfig,
+  ITimerDataPointConfig,
+} from '../interfaces';
 import { BaseModel, PropertyType } from '@/models';
 import { Type as TransformType } from 'class-transformer/types/decorators/type.decorator';
 import { TimerModel } from '@/calendar';

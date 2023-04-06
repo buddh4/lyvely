@@ -103,20 +103,22 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async startTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
-    const dataPoint = await this.dataPointService.startTimer(profile, user, content, dto.date);
-    return DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint);
+    return null;
+    //const dataPoint = await this.dataPointService.startTimer(profile, user, content, dto.date);
+    // return DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint);
   }
 
   @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
   async stopTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
+    return null;
 
-    const dataPoint = await this.dataPointService.stopTimer(profile, user, content, dto.date);
+    // const dataPoint = await this.dataPointService.stopTimer(profile, user, content, dto.date);
 
-    return new UpdateHabitDataPointResponse({
-      score: profile.score,
-      dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
-    });
+    //  return new UpdateHabitDataPointResponse({
+    //   score: profile.score,
+    //  dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
+    //});
   }
 }

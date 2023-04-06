@@ -4,7 +4,8 @@ import {
   DataPointValueType,
   ISelectionDataPointSettings,
 } from '@lyvely/common';
-import { DataPointConfigFactory, DataPointConfigSchemaFactory } from '../../components';
+import { DataPointConfigFactory } from '../data-point-config.factory';
+import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
 import { SelectionDataPointConfig } from './selection-data-point-config.schema';
 import { NestedSchema } from '@/core';
 

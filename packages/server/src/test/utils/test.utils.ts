@@ -10,7 +10,7 @@ import { TestModule } from '../test.module';
 import { PoliciesModule } from '@/policies/policies.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Type } from '@nestjs/common/interfaces/type.interface';
+import { Type } from '@lyvely/common';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
 import { ConfigModule, ConfigService } from '@nestjs/config';

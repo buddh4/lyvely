@@ -328,6 +328,18 @@ describe('SelectionDataPointStrategy', () => {
     });
   });
 
+  describe('prepareConfig', () => {
+    it('assure dropdown input type disables other value', () => {
+      const config = {
+        valueType: DataPointValueType.Selection,
+        inputType: DataPointInputType.Dropdown,
+        allowOther: true,
+      } as ISelectionDataPointConfig;
+      useDataPointStrategyFacade().prepareConfig(config);
+      expect(config.allowOther).toEqual(false);
+    });
+  });
+
   describe('createDataPoint', () => {
     it('create selection data point', () => {
       const tid = toTimingId(new Date());

@@ -1,14 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   CheckboxNumberDataPointConfig,
-  NumberTimeSeriesContent,
-  SpinnerNumberDataPointConfig,
   TimeSeriesContent,
   TimeSeriesConfigSchemaFactory,
   DataPointConfigSchema,
   DataPointConfigFactory,
   TextareaTextDataPointConfig,
-  NumberTimeSeriesContentConfig,
+  TimerDataPointConfig,
 } from '@/time-series';
 import * as mongoose from 'mongoose';
 import {
@@ -19,10 +17,14 @@ import {
   ITimeSeriesContentConfig,
 } from '@lyvely/common';
 import { User } from '@/users';
+import { NestedSchema } from '@/core';
 
-type TestDataPointConfig = CheckboxNumberDataPointConfig | TextareaTextDataPointConfig;
+type TestDataPointConfig =
+  | CheckboxNumberDataPointConfig
+  | TextareaTextDataPointConfig
+  | TimerDataPointConfig;
 
-@Schema({ _id: false })
+@NestedSchema()
 class TestTimeSeriesConfig implements ITimeSeriesContentConfig {
   @Prop({ type: DataPointConfigSchema })
   timeSeries: TestDataPointConfig;
@@ -38,7 +40,7 @@ const TestTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
 
 @Schema()
 export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesContent> {
-  @Prop({ type: TestTimeSeriesConfig })
+  @Prop({ type: TestTimeSeriesConfigSchema })
   config: TestTimeSeriesConfig;
 
   @Prop()
@@ -51,37 +53,3 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
 
 export type TestTimeSeriesContentDocument = TestTimeSeriesContent & mongoose.Document;
 export const TestTimeSeriesContentSchema = SchemaFactory.createForClass(TestTimeSeriesContent);
-
-type TestNumberDataPointConfig = CheckboxNumberDataPointConfig | SpinnerNumberDataPointConfig;
-
-@Schema({ _id: false })
-class TestNumberTimeSeriesConfig extends NumberTimeSeriesContentConfig<
-  TestNumberTimeSeriesConfig,
-  TestNumberDataPointConfig
-> {}
-
-const TestNumberTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
-  TestTimeSeriesConfig,
-  [
-    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
-    DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Spinner),
-  ],
-);
-
-@Schema()
-export class TestNumberTimeSeriesContent extends NumberTimeSeriesContent<TestNumberTimeSeriesContent> {
-  @Prop()
-  someTestField: string;
-
-  @Prop({ type: TestNumberTimeSeriesConfigSchema, required: true })
-  config: TestNumberTimeSeriesConfig;
-
-  toModel(user?: User): ContentModel<IContent<any, any>, any> {
-    throw new Error('Method not implemented.');
-  }
-}
-
-export type TestNumberTimeSeriesContentDocument = TestNumberTimeSeriesContent & mongoose.Document;
-export const TestNumberTimeSeriesContentSchema = SchemaFactory.createForClass(
-  TestNumberTimeSeriesContent,
-);

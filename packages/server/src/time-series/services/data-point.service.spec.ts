@@ -8,11 +8,10 @@ import {
   UserAssignmentStrategy,
 } from '@lyvely/common';
 import {
-  TestNumberDataPointDao,
-  TestNumberDataPointService,
-  TestNumberTimeSeriesContent,
-  TestNumberTimeSeriesContentDocument,
-  TestNumberTimeSeriesContentSchema,
+  TestDataPointDao,
+  TestDataPointService,
+  TestTimeSeriesContent,
+  TestTimeSeriesContentSchema,
 } from '../test';
 import { Content, ContentSchema } from '@/content';
 import { Model } from 'mongoose';
@@ -23,6 +22,8 @@ import {
 } from '@/time-series';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
+import { TestTimeSeriesService } from '@/time-series/test/test-time-series.service';
+import { TestTimeSeriesContentDao } from '@/time-series/test/test-time-series-content.dao';
 
 const Models = [
   { name: NumberDataPoint.name, schema: NumberDataPointSchema },
@@ -30,31 +31,28 @@ const Models = [
     name: Content.name,
     collection: Content.collectionName(),
     schema: ContentSchema,
-    discriminators: [
-      { name: TestNumberTimeSeriesContent.name, schema: TestNumberTimeSeriesContentSchema },
-    ],
+    discriminators: [{ name: TestTimeSeriesContent.name, schema: TestTimeSeriesContentSchema }],
   },
 ];
 
-describe('NumberDataPointService', () => {
+describe('DataPointService', () => {
   let testingModule: TestingModule;
   let testData: TestDataUtils;
-  let service: TestNumberDataPointService;
-  let TestNumberTimeSeriesContentModel: Model<TestNumberTimeSeriesContentDocument>;
+  let service: TestDataPointService;
+  // let dataPointService: TestDataPointService;
+  let TestNumberTimeSeriesContentModel: Model<TestTimeSeriesContent>;
 
   const TEST_KEY = 'NumberDataPointService';
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(
       TEST_KEY,
-      [TestNumberDataPointService, TestNumberDataPointDao],
+      [TestDataPointDao, TestDataPointService, TestTimeSeriesContentDao, TestTimeSeriesService],
       Models,
     ).compile();
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    service = testingModule.get<TestNumberDataPointService>(TestNumberDataPointService);
-    TestNumberTimeSeriesContentModel = testingModule.get<
-      Model<TestNumberTimeSeriesContentDocument>
-    >('TestNumberTimeSeriesContentModel');
+    testData = testingModule.get(TestDataUtils);
+    service = testingModule.get(TestDataPointService);
+    TestNumberTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
   });
 
   async function createTimeSeriesContent(
@@ -75,10 +73,10 @@ describe('NumberDataPointService', () => {
       },
     };
 
-    const model = new TestNumberTimeSeriesContent(profile, user, data as any);
+    const model = new TestTimeSeriesContent(profile, user, data as any);
     const entity = new TestNumberTimeSeriesContentModel(model);
     await entity.save();
-    return new TestNumberTimeSeriesContent(profile, user, entity.toObject());
+    return new TestTimeSeriesContent(profile, user, entity.toObject());
   }
 
   it('should be defined', () => {
@@ -176,46 +174,6 @@ describe('NumberDataPointService', () => {
 
       expect(memberDataPoints.length).toEqual(1);
       expect(memberDataPoints[0]._id).toEqual(ownerDataPoints[0]._id);
-    });
-  });
-
-  describe('startTimer()', () => {
-    it('start new timer', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const content = await createTimeSeriesContent(user, profile);
-      const date = new Date();
-
-      const dataPoint = await service.startTimer(profile, user, content, date);
-      expect(dataPoint.timer).toBeDefined();
-      expect(dataPoint.timer.spans.length).toEqual(1);
-      expect(dataPoint.timer.isStarted()).toEqual(true);
-    });
-
-    it('start already started timer', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const content = await createTimeSeriesContent(user, profile);
-      const date = new Date();
-
-      await service.startTimer(profile, user, content, date);
-      const dataPoint = await service.startTimer(profile, user, content, date);
-
-      expect(dataPoint.timer).toBeDefined();
-      expect(dataPoint.timer.spans.length).toEqual(1);
-      expect(dataPoint.timer.isStarted()).toEqual(true);
-    });
-
-    it('restart stopped timer', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const content = await createTimeSeriesContent(user, profile);
-      const date = new Date();
-
-      await service.startTimer(profile, user, content, date);
-      await service.stopTimer(profile, user, content, date);
-      const dataPoint = await service.startTimer(profile, user, content, date);
-
-      expect(dataPoint.timer).toBeDefined();
-      expect(dataPoint.timer.spans.length).toEqual(2);
-      expect(dataPoint.timer.isStarted()).toEqual(true);
     });
   });
 });

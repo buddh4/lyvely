@@ -1,4 +1,5 @@
-import { registerLogValueStrategy, DataPointConfig } from '../schemas';
+import { DataPointConfig } from './config/data-point-config.schema';
+import { registerLogValueStrategy } from './config/time-series-config-schema.factory';
 import { SchemaFactory } from '@nestjs/mongoose';
 import { registerDataPointStrategy } from './data-point-config.factory';
 import { Type } from '@lyvely/common';

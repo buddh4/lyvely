@@ -16,8 +16,6 @@ import { User } from '@/users';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
-  NumberTimeSeriesContent,
-  NumberTimeSeriesContentConfig,
   TimeSeriesConfigSchemaFactory,
 } from '@/time-series';
 import { assureObjectId, EntityIdentity } from '@/core';

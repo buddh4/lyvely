@@ -10,7 +10,7 @@ import {
   getFullDayDate,
   toTimingId,
 } from '@lyvely/common';
-import { TestNumberDataPointDao, TestTimeSeriesContent } from '@/time-series/test';
+import { TestDataPointDao, TestTimeSeriesContent } from '@/time-series/test';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import {
@@ -26,18 +26,18 @@ const DataPointModelDefinition = [
 describe('NumberDataPointDao', () => {
   let testingModule: TestingModule;
   let testData: TestDataUtils;
-  let dao: TestNumberDataPointDao;
+  let dao: TestDataPointDao;
 
   const TEST_KEY = 'NumberDataPointDao';
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(
       TEST_KEY,
-      [TestNumberDataPointDao],
+      [TestDataPointDao],
       DataPointModelDefinition,
     ).compile();
     testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    dao = testingModule.get<TestNumberDataPointDao>(TestNumberDataPointDao);
+    dao = testingModule.get<TestDataPointDao>(TestDataPointDao);
   });
 
   it('should be defined', () => {

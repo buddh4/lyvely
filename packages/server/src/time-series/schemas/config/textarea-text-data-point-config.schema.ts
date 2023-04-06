@@ -1,6 +1,7 @@
 import { Prop } from '@nestjs/mongoose';
 import { DataPointInputType, DataPointValueType, ITextDataPointSettings } from '@lyvely/common';
-import { DataPointConfigFactory, DataPointConfigSchemaFactory } from '../../components';
+import { DataPointConfigFactory } from '../data-point-config.factory';
+import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
 import { TextDataPointConfig } from './text-data-point-config.schema';
 import { NestedSchema } from '@/core';
 

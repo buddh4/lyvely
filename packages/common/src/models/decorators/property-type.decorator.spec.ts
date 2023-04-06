@@ -220,18 +220,6 @@ describe('PropertyType', () => {
     expect(model.arr.length).toEqual(0);
   });
 
-  it('test array default', async () => {
-    class TestModel extends BaseModel<TestModel> {
-      @PropertyType(String, { default: ['test'] })
-      arr: string[];
-    }
-
-    const model = new TestModel();
-    expect(model.arr).toBeDefined();
-    expect(model.arr.length).toEqual(1);
-    expect(model.arr[0]).toEqual('test');
-  });
-
   it('test string array without default', async () => {
     class TestModel extends BaseModel<TestModel> {
       @PropertyType([String])

@@ -1,6 +1,6 @@
 import { SetMetadata } from '@nestjs/common';
 import { Content } from '../schemas';
-import { Type } from '@nestjs/common/interfaces/type.interface';
+import { Type } from '@lyvely/common';
 import { CONTENT_TYPE_KEY } from '../content.constants';
 
 export const StrictContentType = (type: string | Type<Content>) =>

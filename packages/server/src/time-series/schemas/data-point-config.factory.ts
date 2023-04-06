@@ -1,8 +1,7 @@
 import { Logger } from '@nestjs/common';
-import { DataPointConfig } from '../schemas';
+import { DataPointConfig } from './config/data-point-config.schema';
 import { assignEntityData } from '@/core';
-import { Type } from '@lyvely/common';
-import { DataPointConfigHandler } from '@/time-series/components';
+import { Type, useDataPointStrategyFacade } from '@lyvely/common';
 
 const register = {};
 const logger = new Logger('DataPointConfigFactory');
@@ -29,7 +28,7 @@ export class DataPointConfigFactory {
     }
 
     const result = new ConfigType(settings);
-    DataPointConfigHandler.prepareConfig(result);
+    useDataPointStrategyFacade().prepareConfig(result);
     return result;
   }
 

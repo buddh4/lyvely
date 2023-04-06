@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Habit, HabitScore } from '../schemas';
-import { DataPointUpdateResult, NumberDataPoint, NumberDataPointService } from '@/time-series';
+import { DataPointService, DataPointUpdateResult, NumberDataPoint } from '@/time-series';
 import { DataPointValueType } from '@lyvely/common';
 import { HabitDataPointDao } from '../daos';
 import { ContentScoreService } from '@/content';
@@ -9,7 +9,7 @@ import { User } from '@/users';
 import { Profile } from '@/profiles';
 
 @Injectable()
-export class HabitDataPointService extends NumberDataPointService<Habit> {
+export class HabitDataPointService extends DataPointService<Habit> {
   @Inject()
   protected dataPointDao: HabitDataPointDao;
 

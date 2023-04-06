@@ -4,7 +4,7 @@ import { CanActivate } from '@nestjs/common/interfaces';
 import { StrictContentType } from './strict-content-type.decorator';
 import { Content } from '../schemas';
 import { ContentGuard } from '../guards';
-import { Type } from '@nestjs/common/interfaces/type.interface';
+import { Type } from '@lyvely/common';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const ContentTypeController = (

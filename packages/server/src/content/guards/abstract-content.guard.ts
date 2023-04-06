@@ -3,11 +3,10 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { ContentService } from '../services';
 import { ProfileContentRequest } from '../types';
-import { isValidObjectId } from '@lyvely/common';
+import { isValidObjectId, Type } from '@lyvely/common';
 import { Content } from '../schemas';
 import { getPolicyHandlerFromContext, PolicyService } from '@/policies';
 import { ProfileContext } from '@/profiles';
-import { Type } from '@nestjs/common/interfaces/type.interface';
 import {
   CONTENT_TYPE_KEY,
   CONTENT_ID_PARAM_KEY,

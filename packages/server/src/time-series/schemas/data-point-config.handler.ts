@@ -1,7 +1,8 @@
 import { DataPointConfigFactory } from './data-point-config.factory';
-import { TimeSeriesContent, DataPointConfig, DataPointConfigRevision } from '../schemas';
 import { cloneDeep, pick } from 'lodash';
 import { isSameDay, useDataPointStrategyFacade } from '@lyvely/common';
+import { TimeSeriesContent } from './time-series-content.schema';
+import { DataPointConfig, DataPointConfigRevision } from './config';
 
 const dataPointFacade = useDataPointStrategyFacade();
 

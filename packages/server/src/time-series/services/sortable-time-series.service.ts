@@ -6,9 +6,8 @@ import {
   IntegrityException,
   SortResult,
 } from '@lyvely/common';
-import { DataPoint, TimeSeriesContent } from '../schemas';
+import { DataPoint, TimeSeriesContent, DataPointConfigHandler } from '../schemas';
 import { TimeSeriesContentDao } from '../daos';
-import { DataPointConfigHandler } from '../components';
 import { assureObjectId, EntityIdentity, QuerySort } from '@/core';
 import { ITimeSeriesContentSearchResult } from './time-series-content-search.result';
 

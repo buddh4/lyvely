@@ -1,0 +1,19 @@
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { TimeSeriesContentDao } from '@/time-series/daos';
+import { TestTimeSeriesContent } from './test-time-series-content.schema';
+
+@Injectable()
+export class TestTimeSeriesContentDao extends TimeSeriesContentDao<TestTimeSeriesContent> {
+  @InjectModel(TestTimeSeriesContent.name)
+  model: Model<TestTimeSeriesContent>;
+
+  getModuleId(): string {
+    return 'test';
+  }
+
+  getModelConstructor() {
+    return TestTimeSeriesContent;
+  }
+}

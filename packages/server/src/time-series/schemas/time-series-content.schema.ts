@@ -1,7 +1,7 @@
 import { ITimeSeriesContentConfig } from '@lyvely/common';
 import { IContentEntity, ContentType } from '@/content';
-import { DataPointConfigFactory } from '@/time-series/components';
-import { DataPointConfig, DefaultDataPointConfig } from '@/time-series/schemas';
+import { DataPointConfigFactory } from './data-point-config.factory';
+import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';
 import { EntityType } from '@/core';
 
 type TimeSeriesContentEntity = IContentEntity & EntityType<TimeSeriesContent>;

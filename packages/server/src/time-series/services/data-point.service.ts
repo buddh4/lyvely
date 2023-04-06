@@ -24,7 +24,7 @@ export interface DataPointUpdateResult<TDataPointModel extends DataPoint> {
 
 export abstract class DataPointService<
   TModel extends TimeSeriesContent,
-  TDataPointModel extends DataPoint,
+  TDataPointModel extends DataPoint = DataPoint,
   TValue = any,
 > {
   protected abstract dataPointDao: DataPointStrategyDao<TDataPointModel>;

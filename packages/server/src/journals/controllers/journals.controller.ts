@@ -34,12 +34,6 @@ export class JournalsController
   extends AbstractContentTypeController<Journal, CreateJournalModel, UpdateJournalModel>
   implements JournalsEndpoint
 {
-  protected createModelType = CreateJournalModel;
-
-  protected updateModelType = UpdateHabitModel;
-
-  protected updateResponseType = UpdateJournalResponse;
-
   @Inject()
   protected contentService: JournalsService;
 
@@ -48,6 +42,10 @@ export class JournalsController
 
   @Inject()
   protected dataPointService: JournalDataPointService;
+
+  protected createModelType = CreateJournalModel;
+  protected updateModelType = UpdateHabitModel;
+  protected updateResponseType = UpdateJournalResponse;
 
   @Get()
   async getByFilter(

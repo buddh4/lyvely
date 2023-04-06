@@ -13,6 +13,8 @@ import { SelectionDataPointModel, SelectionDataPointValueModel } from '../models
 
 export const SELECTION_OTHER_OPTION_KEY = '__other_option__';
 
+const SINGLE_VALUE_INPUT_TYPE = [DataPointInputType.Dropdown, DataPointInputType.Radio];
+
 export class SelectionDataPointStrategy extends DataPointStrategy<
   SelectionDataPointModel,
   ISelectionDataPointConfig,
@@ -31,10 +33,7 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
     const errors = await validate(new SelectionDataPointValueModel(value));
     if (errors.length) return false;
 
-    if (
-      selection.length > 1 &&
-      [DataPointInputType.Dropdown, DataPointInputType.Radio].includes(config.inputType)
-    ) {
+    if (selection.length > 1 && this.isSingleValueInputType(config.inputType)) {
       return false;
     }
 
@@ -49,6 +48,10 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
     }
 
     return true;
+  }
+
+  private isSingleValueInputType(type: DataPointInputType) {
+    return SINGLE_VALUE_INPUT_TYPE.includes(type);
   }
 
   private allowOtherValue(config: ISelectionDataPointConfig) {
@@ -76,8 +79,10 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
     return value;
   }
 
-  prepareConfig() {
-    /** Nothing todo **/
+  prepareConfig(config: ISelectionDataPointConfig) {
+    if (config.inputType === DataPointInputType.Dropdown) {
+      config.allowOther = false;
+    }
   }
 
   getSettingKeys(): Array<keyof ISelectionDataPointConfig> {
