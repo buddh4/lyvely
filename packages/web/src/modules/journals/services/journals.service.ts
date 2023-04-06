@@ -1,6 +1,5 @@
 import {
   DataPointIntervalFilter,
-  ICalendarPlanResponse,
   IJournalsEndpointService,
   JournalModel,
   SortAction,
@@ -27,7 +26,7 @@ export class JournalsService implements IJournalsEndpointService {
     return unwrapAndTransformResponse(repository.update(id, model), UpdateJournalResponse);
   }
 
-  async getByFilter(filter: DataPointIntervalFilter): Promise<ICalendarPlanResponse<JournalModel>> {
+  async getByFilter(filter: DataPointIntervalFilter) {
     const { models, dataPoints } = await unwrapResponse(repository.getByFilter(filter));
     return {
       models: models.map((journal) => new JournalModel(journal)),

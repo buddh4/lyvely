@@ -1,4 +1,4 @@
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 
 import {
   CalendarPlan,
@@ -13,13 +13,13 @@ import {
 describe('CalendarPlan', () => {
   describe('UnscheduledPlan', function () {
     it('init', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Unscheduled);
-      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Unscheduled);
+      const plan = CalendarPlan.getInstance(CalendarInterval.Unscheduled);
+      expect(plan.getInterval()).toEqual(CalendarInterval.Unscheduled);
     });
 
     it('singleton', async () => {
-      const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Unscheduled);
-      const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Unscheduled);
+      const plan1 = CalendarPlan.getInstance(CalendarInterval.Unscheduled);
+      const plan2 = CalendarPlan.getInstance(CalendarInterval.Unscheduled);
       expect(plan1).toBeInstanceOf(UnscheduledPlan);
       expect(plan1).toBe(plan2);
       expect(plan1).not.toBe(new UnscheduledPlan());
@@ -28,13 +28,13 @@ describe('CalendarPlan', () => {
 
   describe('YearlyPlan', function () {
     it('init', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Yearly);
-      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Yearly);
+      const plan = CalendarPlan.getInstance(CalendarInterval.Yearly);
+      expect(plan.getInterval()).toEqual(CalendarInterval.Yearly);
     });
 
     it('singleton', async () => {
-      const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Yearly);
-      const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Yearly);
+      const plan1 = CalendarPlan.getInstance(CalendarInterval.Yearly);
+      const plan2 = CalendarPlan.getInstance(CalendarInterval.Yearly);
       expect(plan1).toBeInstanceOf(YearlyPlan);
       expect(plan1).toBe(plan2);
       expect(plan1).not.toBe(new YearlyPlan());
@@ -43,13 +43,13 @@ describe('CalendarPlan', () => {
 
   describe('QuarterlyPlan', function () {
     it('init', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Quarterly);
-      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Quarterly);
+      const plan = CalendarPlan.getInstance(CalendarInterval.Quarterly);
+      expect(plan.getInterval()).toEqual(CalendarInterval.Quarterly);
     });
 
     it('singleton', async () => {
-      const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Quarterly);
-      const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Quarterly);
+      const plan1 = CalendarPlan.getInstance(CalendarInterval.Quarterly);
+      const plan2 = CalendarPlan.getInstance(CalendarInterval.Quarterly);
       expect(plan1).toBeInstanceOf(QuarterlyPlan);
       expect(plan1).toBe(plan2);
       expect(plan1).not.toBe(new QuarterlyPlan());
@@ -58,13 +58,13 @@ describe('CalendarPlan', () => {
 
   describe('MonthlyPlan', function () {
     it('init', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Monthly);
-      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Monthly);
+      const plan = CalendarPlan.getInstance(CalendarInterval.Monthly);
+      expect(plan.getInterval()).toEqual(CalendarInterval.Monthly);
     });
 
     it('singleton', async () => {
-      const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Monthly);
-      const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Monthly);
+      const plan1 = CalendarPlan.getInstance(CalendarInterval.Monthly);
+      const plan2 = CalendarPlan.getInstance(CalendarInterval.Monthly);
       expect(plan1).toBeInstanceOf(MonthlyPlan);
       expect(plan1).toBe(plan2);
       expect(plan1).not.toBe(new MonthlyPlan());
@@ -73,13 +73,13 @@ describe('CalendarPlan', () => {
 
   describe('WeeklyPlan', function () {
     it('init', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Weekly);
-      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Weekly);
+      const plan = CalendarPlan.getInstance(CalendarInterval.Weekly);
+      expect(plan.getInterval()).toEqual(CalendarInterval.Weekly);
     });
 
     it('singleton', async () => {
-      const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Weekly);
-      const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Weekly);
+      const plan1 = CalendarPlan.getInstance(CalendarInterval.Weekly);
+      const plan2 = CalendarPlan.getInstance(CalendarInterval.Weekly);
       expect(plan1).toBeInstanceOf(WeeklyPlan);
       expect(plan1).toBe(plan2);
       expect(plan1).not.toBe(new WeeklyPlan());
@@ -88,13 +88,13 @@ describe('CalendarPlan', () => {
 
   describe('DailyPlan', function () {
     it('init', async () => {
-      const plan = CalendarPlan.getInstance(CalendarIntervalEnum.Daily);
-      expect(plan.getInterval()).toEqual(CalendarIntervalEnum.Daily);
+      const plan = CalendarPlan.getInstance(CalendarInterval.Daily);
+      expect(plan.getInterval()).toEqual(CalendarInterval.Daily);
     });
 
     it('singleton', async () => {
-      const plan1 = CalendarPlan.getInstance(CalendarIntervalEnum.Daily);
-      const plan2 = CalendarPlan.getInstance(CalendarIntervalEnum.Daily);
+      const plan1 = CalendarPlan.getInstance(CalendarInterval.Daily);
+      const plan2 = CalendarPlan.getInstance(CalendarInterval.Daily);
       expect(plan1).toBeInstanceOf(DailyPlan);
       expect(plan1).toBe(plan2);
       expect(plan1).not.toBe(new DailyPlan());

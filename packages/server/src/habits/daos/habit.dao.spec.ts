@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils } from '@/test';
-import { CalendarIntervalEnum } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/common';
 import { Habit } from '../schemas';
 import { HabitTestDataUtil, createHabitTestingModule } from '../test';
 import { HabitsDao } from './habits.dao';
@@ -54,13 +54,13 @@ describe('Habits DAO', () => {
     it('assure we do find multiple of the same type', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await habitTestData.createHabit(user, profile, {
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
       });
       const habit2 = await habitTestData.createHabit(user, profile, {
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
       });
 
-      const result = await habitsDao.findByProfileAndInterval(profile, CalendarIntervalEnum.Daily);
+      const result = await habitsDao.findByProfileAndInterval(profile, CalendarInterval.Daily);
       expect(result).toBeDefined();
       expect(result.length).toEqual(2);
       expect(result.find((c) => c.content.title === habit.content.title)).toBeDefined();
@@ -70,11 +70,11 @@ describe('Habits DAO', () => {
     it('assure we do not include an entry of another plan', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await habitTestData.createHabit(user, profile, {
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
       });
-      await habitTestData.createHabit(user, profile, { interval: CalendarIntervalEnum.Weekly });
+      await habitTestData.createHabit(user, profile, { interval: CalendarInterval.Weekly });
 
-      const result = await habitsDao.findByProfileAndInterval(profile, CalendarIntervalEnum.Daily);
+      const result = await habitsDao.findByProfileAndInterval(profile, CalendarInterval.Daily);
       expect(result).toBeDefined();
       expect(result.length).toEqual(1);
       expect(result.find((c) => c.content.title === habit.content.title)).toBeDefined();

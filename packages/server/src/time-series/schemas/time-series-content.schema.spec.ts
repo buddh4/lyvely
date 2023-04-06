@@ -9,7 +9,7 @@ import {
   TestTimeSeriesContentSchema,
 } from '../test';
 import { Model } from 'mongoose';
-import { CalendarIntervalEnum, DataPointValueType, DataPointInputType } from '@lyvely/common';
+import { CalendarInterval, DataPointValueType, DataPointInputType } from '@lyvely/common';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
@@ -58,7 +58,7 @@ describe('TimeSeriesContentSchema', () => {
       const model = new TestTimeSeriesContent(profile, user, {
         someTestField: 'Testing...',
         timeSeriesConfig: new CheckboxNumberDataPointConfig({
-          interval: CalendarIntervalEnum.Daily,
+          interval: CalendarInterval.Daily,
           min: 0,
           max: 5,
           optimal: 3,
@@ -82,7 +82,7 @@ describe('TimeSeriesContentSchema', () => {
         someTestField: 'Testing...',
         config: {
           timeSeries: new CheckboxNumberDataPointConfig({
-            interval: CalendarIntervalEnum.Daily,
+            interval: CalendarInterval.Daily,
             min: 0,
             max: 5,
             optimal: 3,
@@ -114,7 +114,7 @@ describe('TimeSeriesContentSchema', () => {
         someTestField: 'Testing...',
         config: {
           timeSeries: new CheckboxNumberDataPointConfig({
-            interval: CalendarIntervalEnum.Daily,
+            interval: CalendarInterval.Daily,
             min: 0,
             max: 5,
             optimal: 3,
@@ -147,7 +147,7 @@ describe('TimeSeriesContentSchema', () => {
         someTestField: 'Testing...',
         config: {
           timeSeries: <CheckboxNumberDataPointConfig>{
-            interval: CalendarIntervalEnum.Daily,
+            interval: CalendarInterval.Daily,
             strategy: DataPointConfigFactory.getStrategyName(
               DataPointValueType.Number,
               DataPointInputType.Range,

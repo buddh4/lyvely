@@ -1,10 +1,13 @@
-import { ITimeSeriesContentConfig } from '@lyvely/common';
-import { IContentEntity, ContentType } from '@/content';
+import { IContent, ITimeSeriesContentConfig } from '@lyvely/common';
+import { ContentEntity, ContentType } from '@/content';
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';
 import { EntityType } from '@/core';
 
-type TimeSeriesContentEntity = IContentEntity & EntityType<TimeSeriesContent>;
+export type TimeSeriesContentEntity<
+  T,
+  TConfig extends ITimeSeriesContentConfig = any,
+> = ContentEntity<T, TConfig>;
 
 /**
  * This class serves as base class for all time series content types and schemas. A subclass usually overwrites the
@@ -12,10 +15,11 @@ type TimeSeriesContentEntity = IContentEntity & EntityType<TimeSeriesContent>;
  * `dataPointConfigHistory` schema.
  */
 export abstract class TimeSeriesContent<
-  TContent extends TimeSeriesContentEntity = TimeSeriesContentEntity,
+  TContent extends TimeSeriesContentEntity<TContent, TConfig>,
   TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
-> extends ContentType<TContent> {
-  config: ITimeSeriesContentConfig<TDataPointConfig>;
+  TConfig extends ITimeSeriesContentConfig<TDataPointConfig> = ITimeSeriesContentConfig<TDataPointConfig>,
+> extends ContentType<TContent, TConfig> {
+  config: TConfig;
 
   get timeSeriesConfig() {
     return this.config?.timeSeries;
@@ -26,6 +30,10 @@ export abstract class TimeSeriesContent<
       this.config = <any>{};
     }
     this.config.timeSeries = config;
+  }
+
+  get interval() {
+    return this.timeSeriesConfig.interval;
   }
 
   afterInit() {

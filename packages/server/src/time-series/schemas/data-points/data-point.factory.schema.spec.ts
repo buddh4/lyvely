@@ -11,7 +11,7 @@ import {
   DataPointInputType,
   DataPointValueType,
   INumberDataPointSettings,
-  CalendarIntervalEnum,
+  CalendarInterval,
 } from '@lyvely/common';
 
 const CheckboxNumberStrategy = DataPointConfigFactory.getStrategyName(
@@ -45,7 +45,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         min: 0,
         max: 2,
         optimal: 1,
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
       };
       const config = DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
         DataPointValueType.Number,
@@ -65,7 +65,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         min: 0,
         max: 2,
         optimal: 1,
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
       };
       const config = DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(
         DataPointValueType.Number,
@@ -86,7 +86,7 @@ describe('TimeSeriesDataPointConfigFactory', () => {
         min: 0,
         max: 2,
         optimal: 1,
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
       };
       const config = DataPointConfigFactory.createConfig<SpinnerNumberDataPointConfig>(
         DataPointValueType.Number,

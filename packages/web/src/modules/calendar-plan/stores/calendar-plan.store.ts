@@ -2,7 +2,7 @@ import { defineStore, storeToRefs } from 'pinia';
 import {
   toTimingId,
   CalendarPlan,
-  CalendarIntervalEnum,
+  CalendarInterval,
   isToday as isTodayUtil,
   isInFuture as isInFutureUtil,
 } from '@lyvely/common';
@@ -14,7 +14,7 @@ export const useCalendarPlanStore = defineStore('timing', () => {
   const dragActive = ref(false);
   const { locale } = storeToRefs(useProfileStore());
 
-  function getTimingId(interval: CalendarIntervalEnum) {
+  function getTimingId(interval: CalendarInterval) {
     return toTimingId(date.value, interval, locale.value);
   }
 
@@ -22,7 +22,7 @@ export const useCalendarPlanStore = defineStore('timing', () => {
     date.value = new Date();
   }
 
-  function isPresentInterval(interval: CalendarIntervalEnum) {
+  function isPresentInterval(interval: CalendarInterval) {
     return toTimingId(new Date(), interval) === toTimingId(date.value, interval, locale.value);
   }
 
@@ -30,23 +30,23 @@ export const useCalendarPlanStore = defineStore('timing', () => {
     date.value = d;
   }
 
-  function decrementTiming(plan: CalendarIntervalEnum | CalendarPlan) {
+  function decrementTiming(plan: CalendarInterval | CalendarPlan) {
     _setCurrentDate(getPreviousDate(plan));
   }
 
-  function incrementTiming(plan: CalendarIntervalEnum | CalendarPlan) {
+  function incrementTiming(plan: CalendarInterval | CalendarPlan) {
     _setCurrentDate(getNextDate(plan));
   }
 
-  function getCalendarPlan(plan: CalendarIntervalEnum | CalendarPlan) {
+  function getCalendarPlan(plan: CalendarInterval | CalendarPlan) {
     return plan instanceof CalendarPlan ? plan : CalendarPlan.getInstance(plan);
   }
 
-  function getNextDate(plan: CalendarIntervalEnum | CalendarPlan) {
+  function getNextDate(plan: CalendarInterval | CalendarPlan) {
     return getCalendarPlan(plan).increment(date.value);
   }
 
-  function getPreviousDate(plan: CalendarIntervalEnum | CalendarPlan) {
+  function getPreviousDate(plan: CalendarInterval | CalendarPlan) {
     return getCalendarPlan(plan).decrement(date.value);
   }
 

@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { UpdateHabitModel } from './update-habit.model';
 import { IEditableModel } from '@/models';
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 import { DataPointInputType, DataPointValueType, TimeSeriesContentModel } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import { IHabitConfig } from '../interfaces';
@@ -18,7 +18,7 @@ export class HabitModel
     return {
       score: 0,
       timeSeries: {
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         inputType: DataPointInputType.Checkbox,
         valueType: DataPointValueType.Number,
         userStrategy: UserAssignmentStrategy.Shared,

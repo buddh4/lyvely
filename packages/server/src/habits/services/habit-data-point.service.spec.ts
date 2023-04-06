@@ -7,7 +7,7 @@ import {
   UserAssignmentStrategy,
   toTimingId,
   DataPointIntervalFilter,
-  CalendarIntervalEnum,
+  CalendarInterval,
 } from '@lyvely/common';
 import { ContentScoreDao, ContentScoreService } from '@/content';
 import { Model } from 'mongoose';
@@ -71,7 +71,7 @@ describe('HabitDataPointService', () => {
     it('find existing data point for unscheduled habit', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile, {
-        interval: CalendarIntervalEnum.Unscheduled,
+        interval: CalendarInterval.Unscheduled,
       });
 
       await habitDataPointService.upsertDataPoint(profile, user, habit, '2021-04-03', 2);

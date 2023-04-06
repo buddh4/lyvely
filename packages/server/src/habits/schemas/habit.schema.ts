@@ -75,15 +75,17 @@ export class Habit
       ),
     });
   }
-
-  getDefaultConfig(): any {
-    return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
-      DataPointValueType.Number,
-      DataPointInputType.Checkbox,
-      {
-        min: 0,
-        max: 1,
-      },
+  getDefaultConfig(): HabitConfig {
+    return new HabitConfig(
+      DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
+        DataPointValueType.Number,
+        DataPointInputType.Checkbox,
+        {
+          min: 0,
+          max: 1,
+        },
+      ),
+      2,
     );
   }
 

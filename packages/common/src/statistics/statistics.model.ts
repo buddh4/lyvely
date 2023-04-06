@@ -1,4 +1,4 @@
-import { CalendarIntervalEnum, getMonthNames } from '@/calendar';
+import { CalendarInterval, getMonthNames } from '@/calendar';
 import { CalendarPlan } from '@/calendar-plan';
 
 abstract class Statistics {
@@ -13,7 +13,7 @@ export interface IScoreStatisticsDataset {
 
 export class ScoreStatistics extends Statistics {
   data: IScoreStatisticsDataset[];
-  interval: CalendarIntervalEnum;
+  interval: CalendarInterval;
 
   constructor(obj: Partial<ScoreStatistics>) {
     super();
@@ -52,7 +52,7 @@ export class ScoreStatistics extends Statistics {
 
   getDataSetIds() {
     switch (this.interval) {
-      case CalendarIntervalEnum.Monthly: {
+      case CalendarInterval.Monthly: {
         return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11];
       }
     }
@@ -69,7 +69,7 @@ export class ScoreStatistics extends Statistics {
 
   getChartLabels() {
     switch (this.interval) {
-      case CalendarIntervalEnum.Monthly:
+      case CalendarInterval.Monthly:
         return getMonthNames();
     }
 

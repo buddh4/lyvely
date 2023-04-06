@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 import { DataPointInputType, DataPointNumberInputType, DataPointValueType } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import {
@@ -29,8 +29,8 @@ export class CreateHabitModel extends BaseModel<CreateHabitModel> {
   @Length(0, 2000)
   text?: string;
 
-  @IsEnum(CalendarIntervalEnum)
-  interval: CalendarIntervalEnum;
+  @IsEnum(CalendarInterval)
+  interval: CalendarInterval;
 
   @IsInt()
   @Max(100)
@@ -72,7 +72,7 @@ export class CreateHabitModel extends BaseModel<CreateHabitModel> {
     obj = init
       ? Object.assign(
           {
-            interval: CalendarIntervalEnum.Daily,
+            interval: CalendarInterval.Daily,
             score: 2,
             max: 3,
             min: 0,

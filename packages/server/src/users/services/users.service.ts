@@ -3,7 +3,6 @@ import { UserDao } from '../daos';
 import { RefreshToken, User, UserNotificationState } from '../schemas';
 import { ProfileType, IntegrityException, UserStatus } from '@lyvely/common';
 import { EntityIdentity, IBaseQueryOptions } from '@/core';
-import { FeatureSync } from '@/features';
 
 @Injectable()
 export class UsersService {

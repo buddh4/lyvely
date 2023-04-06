@@ -6,11 +6,11 @@ import { Model } from 'mongoose';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
 import { Timer } from '@/calendar';
-import { TimeSeriesContentDao } from '@/time-series';
 import { ProfileType, UserAssignmentStrategy } from '@lyvely/common';
+import { AbstractContentDao } from '@/content';
 
 @Injectable()
-export class TasksDao extends TimeSeriesContentDao<Task> {
+export class TasksDao extends AbstractContentDao<Task> {
   @InjectModel(Task.name)
   protected model: Model<Task>;
 

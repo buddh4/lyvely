@@ -1,16 +1,15 @@
 import { Expose } from 'class-transformer';
-import { IEditableModel, PropertyType } from '../../models';
-import { CalendarIntervalEnum, TimerModel } from '@/calendar';
+import { IEditableModel, PropertyType } from '@/models';
+import { CalendarInterval, TimerModel } from '@/calendar';
 import { UpdateTaskModel } from './update-task.model';
-import { DataPointInputType, DataPointValueType, TimeSeriesContentModel } from '@/time-series';
 import { ITaskConfig } from '@/tasks/interfaces/task-config.interface';
-import { IHabitConfig } from '@/habits';
-import { UserAssignmentStrategy } from '@/collab';
+import { ContentModel } from '@/content';
+import { ICalendarPlanEntry } from '@/calendar-plan';
 
 @Expose()
 export class TaskModel
-  extends TimeSeriesContentModel<TaskModel, ITaskConfig>
-  implements IEditableModel<UpdateTaskModel>
+  extends ContentModel<TaskModel, ITaskConfig>
+  implements IEditableModel<UpdateTaskModel>, ICalendarPlanEntry
 {
   static contentType = 'Task';
   type = TaskModel.contentType;
@@ -20,19 +19,23 @@ export class TaskModel
   @PropertyType(TimerModel)
   timer: TimerModel;
 
+  get interval(): CalendarInterval {
+    return this.config.interval;
+  }
+
   toEditModel() {
     return new UpdateTaskModel({
       title: this.content.title,
       text: this.content.text,
-      interval: this.timeSeriesConfig.interval,
-      userStrategy: this.timeSeriesConfig.userStrategy,
+      interval: this.config.interval,
+      userStrategy: this.config.userStrategy,
       score: this.config.score,
     });
   }
 }
 
 @Expose()
-export class TaskWithUsersModel extends TimeSeriesContentModel<TaskWithUsersModel, ITaskConfig> {
+export class TaskWithUsersModel extends ContentModel<TaskWithUsersModel, ITaskConfig> {
   doneBy?: UserDoneModel[];
   timers?: TimerModel[];
   type = TaskModel.contentType;

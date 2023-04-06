@@ -3,10 +3,10 @@ import { User } from '@/users';
 import { IFetchQueryOptions } from '@/core';
 import { TimeSeriesContent } from '../schemas';
 import { AbstractContentDao } from '@/content';
-import { CalendarIntervalEnum } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/common';
 
 export abstract class TimeSeriesContentDao<
-  TModel extends TimeSeriesContent,
+  TModel extends TimeSeriesContent<TModel>,
 > extends AbstractContentDao<TModel> {
   /**
    * Returns all time-series content models by given user and tids. The base implementation just returns all
@@ -36,7 +36,7 @@ export abstract class TimeSeriesContentDao<
    */
   async findByProfileAndInterval(
     profile: Profile,
-    plan: CalendarIntervalEnum,
+    plan: CalendarInterval,
     options: IFetchQueryOptions<TModel> = {},
   ): Promise<TModel[]> {
     return this.findAllByProfile(

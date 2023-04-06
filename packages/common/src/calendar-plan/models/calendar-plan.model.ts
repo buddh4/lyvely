@@ -14,14 +14,14 @@ import {
   subtractYear,
   CalendarDate,
   dateTime,
-  CalendarIntervalEnum,
+  CalendarInterval,
   toTimingId,
   WeekStrategy,
 } from '@/calendar';
 
 export abstract class CalendarPlan {
-  protected abstract id: CalendarIntervalEnum;
-  private static _instances: Map<CalendarIntervalEnum, CalendarPlan> = new Map();
+  protected abstract id: CalendarInterval;
+  private static _instances: Map<CalendarInterval, CalendarPlan> = new Map();
 
   abstract getLabel(): string;
   abstract getTitle(date: Date, locale: string): string;
@@ -38,7 +38,7 @@ export abstract class CalendarPlan {
     return toTimingId(date, this.getInterval(), locale, weekStrategy);
   }
 
-  public static getInstance(interval: CalendarIntervalEnum): CalendarPlan {
+  public static getInstance(interval: CalendarInterval): CalendarPlan {
     if (!CalendarPlan._instances[interval]) {
       const planClass = PlanFactory[interval];
       if (!planClass) {
@@ -53,7 +53,7 @@ export abstract class CalendarPlan {
 }
 
 export class UnscheduledPlan extends CalendarPlan {
-  protected id = CalendarIntervalEnum.Unscheduled;
+  protected id = CalendarInterval.Unscheduled;
 
   getLabel(): string {
     return 'Unscheduled';
@@ -82,7 +82,7 @@ export class UnscheduledPlan extends CalendarPlan {
 }
 
 export class YearlyPlan extends UnscheduledPlan {
-  protected id = CalendarIntervalEnum.Yearly;
+  protected id = CalendarInterval.Yearly;
 
   getLabel(): string {
     return 'Yearly';
@@ -107,7 +107,7 @@ export class YearlyPlan extends UnscheduledPlan {
 }
 
 export class QuarterlyPlan extends YearlyPlan {
-  protected id = CalendarIntervalEnum.Quarterly;
+  protected id = CalendarInterval.Quarterly;
 
   getLabel(): string {
     return 'Quarterly';
@@ -133,7 +133,7 @@ export class QuarterlyPlan extends YearlyPlan {
 }
 
 export class MonthlyPlan extends QuarterlyPlan {
-  protected id = CalendarIntervalEnum.Monthly;
+  protected id = CalendarInterval.Monthly;
 
   getLabel(): string {
     return 'Monthly';
@@ -163,7 +163,7 @@ export class MonthlyPlan extends QuarterlyPlan {
 }
 
 export class WeeklyPlan extends MonthlyPlan {
-  protected id = CalendarIntervalEnum.Weekly;
+  protected id = CalendarInterval.Weekly;
 
   getLabel(): string {
     return 'Weekly';
@@ -194,7 +194,7 @@ export class WeeklyPlan extends MonthlyPlan {
 }
 
 export class DailyPlan extends WeeklyPlan {
-  protected id = CalendarIntervalEnum.Daily;
+  protected id = CalendarInterval.Daily;
 
   getLabel(): string {
     return 'Daily';
@@ -226,10 +226,10 @@ export class DailyPlan extends WeeklyPlan {
 }
 
 const PlanFactory = {
-  [CalendarIntervalEnum.Unscheduled]: UnscheduledPlan,
-  [CalendarIntervalEnum.Yearly]: YearlyPlan,
-  [CalendarIntervalEnum.Quarterly]: QuarterlyPlan,
-  [CalendarIntervalEnum.Monthly]: MonthlyPlan,
-  [CalendarIntervalEnum.Weekly]: WeeklyPlan,
-  [CalendarIntervalEnum.Daily]: DailyPlan,
+  [CalendarInterval.Unscheduled]: UnscheduledPlan,
+  [CalendarInterval.Yearly]: YearlyPlan,
+  [CalendarInterval.Quarterly]: QuarterlyPlan,
+  [CalendarInterval.Monthly]: MonthlyPlan,
+  [CalendarInterval.Weekly]: WeeklyPlan,
+  [CalendarInterval.Daily]: DailyPlan,
 };

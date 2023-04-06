@@ -1,4 +1,4 @@
-import { CalendarIntervalEnum, getTimingIds, toTimingId, WeekStrategy } from '../models';
+import { CalendarInterval, getTimingIds, toTimingId, WeekStrategy } from '../models';
 import { CalendarDateTime } from '../interfaces';
 
 describe('time series utils', () => {
@@ -6,18 +6,18 @@ describe('time series utils', () => {
     it('get calendar ids', () => {
       const date = new Date('2022-02-20');
       const tIds = getTimingIds(date, 'de');
-      expect(tIds[CalendarIntervalEnum.Unscheduled]).toEqual('U');
-      expect(tIds[CalendarIntervalEnum.Yearly]).toEqual('Y:2022');
-      expect(tIds[CalendarIntervalEnum.Quarterly]).toEqual('Y:2022;Q:1');
-      expect(tIds[CalendarIntervalEnum.Monthly]).toEqual('Y:2022;Q:1;M:02');
-      expect(tIds[CalendarIntervalEnum.Weekly]).toEqual('Y:2022;Q:1;M:02;W:07');
-      expect(tIds[CalendarIntervalEnum.Daily]).toEqual('Y:2022;Q:1;M:02;D:20');
+      expect(tIds[CalendarInterval.Unscheduled]).toEqual('U');
+      expect(tIds[CalendarInterval.Yearly]).toEqual('Y:2022');
+      expect(tIds[CalendarInterval.Quarterly]).toEqual('Y:2022;Q:1');
+      expect(tIds[CalendarInterval.Monthly]).toEqual('Y:2022;Q:1;M:02');
+      expect(tIds[CalendarInterval.Weekly]).toEqual('Y:2022;Q:1;M:02;W:07');
+      expect(tIds[CalendarInterval.Daily]).toEqual('Y:2022;Q:1;M:02;D:20');
     });
   });
 
   function expectTid(
     date: CalendarDateTime,
-    interval: CalendarIntervalEnum,
+    interval: CalendarInterval,
     expected: string,
     locale = 'de',
     strategy = WeekStrategy.LOCALE,
@@ -26,104 +26,99 @@ describe('time series utils', () => {
   }
 
   function expectWeeklyENTid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarIntervalEnum.Weekly, expected, 'en', WeekStrategy.LOCALE);
+    expectTid(date, CalendarInterval.Weekly, expected, 'en', WeekStrategy.LOCALE);
   }
 
   function expectWeeklyDETid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarIntervalEnum.Weekly, expected, 'de', WeekStrategy.LOCALE);
+    expectTid(date, CalendarInterval.Weekly, expected, 'de', WeekStrategy.LOCALE);
   }
 
   function expectWeeklyIsoTid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarIntervalEnum.Weekly, expected, 'de', WeekStrategy.ISO);
+    expectTid(date, CalendarInterval.Weekly, expected, 'de', WeekStrategy.ISO);
   }
 
   describe('toTimingId', () => {
     describe('unscheduled level', function () {
       it('simple unscheduled level', async () => {
-        expectTid('2022-02-20', CalendarIntervalEnum.Unscheduled, 'U');
+        expectTid('2022-02-20', CalendarInterval.Unscheduled, 'U');
       });
     });
 
     describe('year level', function () {
       it('simple year level', () => {
-        expectTid('2022-02-20', CalendarIntervalEnum.Yearly, 'Y:2022');
+        expectTid('2022-02-20', CalendarInterval.Yearly, 'Y:2022');
       });
 
       it('first day of year', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Yearly);
+        const timingId = toTimingId('2021-01-01', CalendarInterval.Yearly);
         expect(timingId).toEqual('Y:2021');
       });
     });
 
     describe('month level', function () {
       it('simple month level', () => {
-        expectTid('2022-02-20', CalendarIntervalEnum.Monthly, 'Y:2022;Q:1;M:02');
+        expectTid('2022-02-20', CalendarInterval.Monthly, 'Y:2022;Q:1;M:02');
       });
     });
 
     describe('quarter level', function () {
       it('simple quarter level', () => {
-        expectTid('2022-02-20', CalendarIntervalEnum.Quarterly, 'Y:2022;Q:1');
+        expectTid('2022-02-20', CalendarInterval.Quarterly, 'Y:2022;Q:1');
       });
 
       it('Begin of first quarter', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Quarterly);
+        const timingId = toTimingId('2021-01-01', CalendarInterval.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:1');
       });
 
       it('End of first quarter', async () => {
-        const timingId = toTimingId('2021-03-31', CalendarIntervalEnum.Quarterly);
+        const timingId = toTimingId('2021-03-31', CalendarInterval.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:1');
       });
 
       it('Begin of second quarter', async () => {
-        const timingId = toTimingId('2021-04-01', CalendarIntervalEnum.Quarterly);
+        const timingId = toTimingId('2021-04-01', CalendarInterval.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:2');
       });
 
       it('End of second quarter', async () => {
-        const timingId = toTimingId('2021-06-30', CalendarIntervalEnum.Quarterly);
+        const timingId = toTimingId('2021-06-30', CalendarInterval.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:2');
       });
 
       it('Begin of third quarter', async () => {
-        const timingId = toTimingId('2021-07-01', CalendarIntervalEnum.Quarterly);
+        const timingId = toTimingId('2021-07-01', CalendarInterval.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:3');
       });
 
       it('End of third quarter', async () => {
-        const timingId = toTimingId('2021-09-30', CalendarIntervalEnum.Quarterly);
+        const timingId = toTimingId('2021-09-30', CalendarInterval.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:3');
       });
 
       it('Begin of fourth quarter', async () => {
-        const timingId = toTimingId('2021-10-01', CalendarIntervalEnum.Quarterly);
+        const timingId = toTimingId('2021-10-01', CalendarInterval.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:4');
       });
 
       it('End of fourth quarter', async () => {
-        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Quarterly);
+        const timingId = toTimingId('2021-12-31', CalendarInterval.Quarterly);
         expect(timingId).toEqual('Y:2021;Q:4');
       });
     });
 
     describe('week level', function () {
       it('simple week level', () => {
-        expectTid('2022-02-20', CalendarIntervalEnum.Weekly, 'Y:2022;Q:1;M:02;W:07');
+        expectTid('2022-02-20', CalendarInterval.Weekly, 'Y:2022;Q:1;M:02;W:07');
       });
 
       it('overlapping last week of year', async () => {
-        const timingId = toTimingId(
-          '2021-01-01',
-          CalendarIntervalEnum.Weekly,
-          'de',
-          WeekStrategy.ISO,
-        );
+        const timingId = toTimingId('2021-01-01', CalendarInterval.Weekly, 'de', WeekStrategy.ISO);
         expect(timingId).toEqual('Y:2020;Q:4;M:12;W:53');
       });
 
       it('last day of 2021', async () => {
-        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Weekly);
+        const timingId = toTimingId('2021-12-31', CalendarInterval.Weekly);
         expect(timingId).toEqual('Y:2021;Q:4;M:12;W:52');
       });
 
@@ -225,12 +220,12 @@ describe('time series utils', () => {
       });
 
       it('overlapping last week of year', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarIntervalEnum.Daily);
+        const timingId = toTimingId('2021-01-01', CalendarInterval.Daily);
         expect(timingId).toEqual('Y:2021;Q:1;M:01;D:01');
       });
 
       it('last day of 2021', async () => {
-        const timingId = toTimingId('2021-12-31', CalendarIntervalEnum.Daily);
+        const timingId = toTimingId('2021-12-31', CalendarInterval.Daily);
         expect(timingId).toEqual('Y:2021;Q:4;M:12;D:31');
       });
     });

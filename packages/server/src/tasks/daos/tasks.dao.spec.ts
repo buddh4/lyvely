@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { closeInMongodConnection, TestDataUtils } from '@/test';
-import { CalendarIntervalEnum, toTimingId, addDays, UserAssignmentStrategy } from '@lyvely/common';
+import { CalendarInterval, toTimingId, addDays, UserAssignmentStrategy } from '@lyvely/common';
 import { Task, UserDone } from '../schemas';
 import { TaskTestDataUtil, createTaskTestingModule } from '../test';
 import { TasksDao } from '../daos';
@@ -32,7 +32,7 @@ describe('Tasks DAO', () => {
   describe('findByProfileAndTimingIds', () => {
     it('find undone task on user profile', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+      const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
       await taskTestData.createTask(user, profile);
 
@@ -45,7 +45,7 @@ describe('Tasks DAO', () => {
 
     it('find done task on user profile', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+      const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
       await taskTestData.createTask(user, profile, {}, (model) => {
         model.doneBy = [new UserDone(user, todayTimingId, new Date())];
@@ -60,7 +60,7 @@ describe('Tasks DAO', () => {
 
     it('find undone shared task', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
-      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+      const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
       await taskTestData.createTask(owner, profile, {
         userStrategy: UserAssignmentStrategy.Shared,
@@ -75,7 +75,7 @@ describe('Tasks DAO', () => {
 
     it('find shared task done by me', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
-      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+      const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
       await taskTestData.createTask(
         owner,
@@ -98,7 +98,7 @@ describe('Tasks DAO', () => {
 
     it('find shared task done by another user', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
-      const todayTimingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+      const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
       await taskTestData.createTask(
         owner,
@@ -121,8 +121,8 @@ describe('Tasks DAO', () => {
 
     it('do not find task done outside of tid search', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
-      const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
-      const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarIntervalEnum.Daily);
+      const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
+      const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarInterval.Daily);
 
       await taskTestData.createTask(
         owner,
@@ -142,7 +142,7 @@ describe('Tasks DAO', () => {
 
     it('find undone per user task', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
-      const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+      const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
       await taskTestData.createTask(owner, profile, {
         userStrategy: UserAssignmentStrategy.PerUser,
@@ -155,7 +155,7 @@ describe('Tasks DAO', () => {
 
     it('find per user task done by me', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
-      const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+      const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
       await taskTestData.createTask(
         owner,
@@ -174,8 +174,8 @@ describe('Tasks DAO', () => {
 
     it('do not find per user task done by me outside of search tid', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
-      const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
-      const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarIntervalEnum.Daily);
+      const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
+      const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarInterval.Daily);
 
       await taskTestData.createTask(
         owner,
@@ -197,7 +197,7 @@ describe('Tasks DAO', () => {
 
     it('find per user task not done by me but done by another user', async () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
-      const todayTid = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+      const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
       await taskTestData.createTask(
         owner,

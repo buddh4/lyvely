@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from './habits.service';
 import {
-  CalendarIntervalEnum,
+  CalendarInterval,
   CreateHabitModel,
   DataPointInputType,
   PropertiesOf,
@@ -15,6 +15,7 @@ import { HabitsDao } from '../daos';
 import { User } from '@/users';
 import { Habit } from '../schemas';
 import { assureStringId } from '@/core';
+import { DataPointValueType } from '@lyvely/common/src';
 
 describe('HabitService', () => {
   let habitsService: HabitsService;
@@ -44,9 +45,10 @@ describe('HabitService', () => {
       title: 'Do something!',
       score: 5,
       tagNames: [],
+      valueType: DataPointValueType.Number,
       userStrategy: UserAssignmentStrategy.Shared,
       inputType: DataPointInputType.Checkbox,
-      interval: CalendarIntervalEnum.Daily,
+      interval: CalendarInterval.Daily,
     };
 
     return habitsService.createContent(profile, user, dto);
@@ -87,7 +89,7 @@ describe('HabitService', () => {
         new UpdateHabitModel({
           title: 'Updated Title',
           text: 'Updated description',
-          interval: CalendarIntervalEnum.Weekly,
+          interval: CalendarInterval.Weekly,
           max: 2,
           score: 2,
           min: 1,
@@ -103,7 +105,7 @@ describe('HabitService', () => {
       expect(search).toBeDefined();
       expect(search.content.title).toEqual('Updated Title');
       expect(search.content.text).toEqual('Updated description');
-      expect(search.timeSeriesConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
+      expect(search.timeSeriesConfig.interval).toEqual(CalendarInterval.Weekly);
       expect(search.timeSeriesConfig.min).toEqual(1);
       expect(search.timeSeriesConfig.max).toEqual(2);
       expect(search.timeSeriesConfig.optimal).toEqual(2);
@@ -120,7 +122,7 @@ describe('HabitService', () => {
         profile,
         new CreateHabitModel({
           title: 'Test',
-          interval: CalendarIntervalEnum.Daily,
+          interval: CalendarInterval.Daily,
           inputType: DataPointInputType.Checkbox,
           max: 2,
           min: 1,
@@ -132,7 +134,7 @@ describe('HabitService', () => {
       habit.applyUpdate(
         new UpdateHabitModel({
           title: 'Test',
-          interval: CalendarIntervalEnum.Weekly,
+          interval: CalendarInterval.Weekly,
           inputType: DataPointInputType.Checkbox,
           max: 16,
           min: 1,
@@ -151,7 +153,7 @@ describe('HabitService', () => {
         profile,
         new CreateHabitModel({
           title: 'Test',
-          interval: CalendarIntervalEnum.Daily,
+          interval: CalendarInterval.Daily,
           max: 2,
           min: 1,
           optimal: 1,
@@ -162,7 +164,7 @@ describe('HabitService', () => {
       habit.applyUpdate(
         new UpdateHabitModel({
           title: 'Test',
-          interval: CalendarIntervalEnum.Weekly,
+          interval: CalendarInterval.Weekly,
           max: 3,
           min: 1,
           optimal: 2,
@@ -179,7 +181,7 @@ describe('HabitService', () => {
       expect(search.timeSeriesConfig.history[0].max).toEqual(2);
       expect(search.timeSeriesConfig.history[0].min).toEqual(1);
       expect(search.timeSeriesConfig.history[0].optimal).toEqual(1);
-      expect(search.timeSeriesConfig.history[0].interval).toEqual(CalendarIntervalEnum.Daily);
+      expect(search.timeSeriesConfig.history[0].interval).toEqual(CalendarInterval.Daily);
     });
   });
 
@@ -190,7 +192,7 @@ describe('HabitService', () => {
       profile,
       new CreateHabitModel({
         title: 'Test',
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         max: 2,
         min: 1,
         optimal: 1,
@@ -201,7 +203,7 @@ describe('HabitService', () => {
     habit.applyUpdate(
       new UpdateHabitModel({
         title: 'Test',
-        interval: CalendarIntervalEnum.Weekly,
+        interval: CalendarInterval.Weekly,
         max: 3,
         min: 1,
         optimal: 2,
@@ -214,7 +216,7 @@ describe('HabitService', () => {
     habit.applyUpdate(
       new UpdateHabitModel({
         title: 'Test',
-        interval: CalendarIntervalEnum.Weekly,
+        interval: CalendarInterval.Weekly,
         max: 4,
         min: 1,
         optimal: 2,

@@ -1,7 +1,7 @@
 import { Injectable, Provider } from '@nestjs/common';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
-import { toTimingId, CalendarIntervalEnum, CreateTaskModel } from '@lyvely/common';
+import { toTimingId, CalendarInterval, CreateTaskModel } from '@lyvely/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { getContentModelDefinition, getContentScoreDefinition } from '@/content';
@@ -54,7 +54,7 @@ export class TaskTestDataUtil extends TestDataUtils {
     overwrite?: (model: Task) => void,
   ): Promise<Task> {
     const initData = <CreateTaskModel>(
-      Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {})
+      Object.assign({}, { title: 'test', interval: CalendarInterval.Daily }, data || {})
     );
 
     const model = Task.create(profile, user, initData);

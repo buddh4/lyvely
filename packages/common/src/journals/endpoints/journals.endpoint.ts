@@ -1,4 +1,3 @@
-import { ICalendarPlanService } from '@/calendar-plan/interfaces/calendar-plan-service.interface';
 import {
   CreateJournalModel,
   JournalModel,
@@ -8,9 +7,10 @@ import {
 import { Endpoint } from '@/endpoints';
 import { UpdateDataPointModel, UpdateDataPointResponse } from '@/calendar-plan';
 import { IEditModelService } from '@/models';
+import { ITimeSeriesCalendarPlanService } from '@/time-series';
 
 export interface IJournalsEndpointService
-  extends ICalendarPlanService<JournalModel>,
+  extends ITimeSeriesCalendarPlanService<JournalModel>,
     IEditModelService<UpdateJournalResponse, CreateJournalModel, UpdateJournalModel> {
   updateDataPoint(cid: string, update: UpdateDataPointModel): Promise<UpdateDataPointResponse>;
 }

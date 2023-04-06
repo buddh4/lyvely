@@ -10,7 +10,7 @@ import {
   IContentLog,
   IContentMetadata,
 } from '../interfaces';
-import { TransformObjectId } from '@/utils';
+import { TransformObjectId, PropertiesOf } from '@/utils';
 
 export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   extends BaseModel<T>
@@ -106,8 +106,8 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
 
   config: TConfig;
 
-  getDefaults() {
-    return {
+  getDefaults(): Partial<PropertiesOf<T>> {
+    return <any>{
       config: this.getDefaultConfig(),
     };
   }

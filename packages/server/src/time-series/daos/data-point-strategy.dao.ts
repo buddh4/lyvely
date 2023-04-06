@@ -2,9 +2,9 @@ import { AbstractDao, assureObjectId, EntityIdentity } from '@/core';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { DataPoint, TimeSeriesContent } from '../schemas';
-import { getTimingIds, DataPointIntervalFilter, CalendarIntervalEnum } from '@lyvely/common';
+import { getTimingIds, DataPointIntervalFilter, CalendarInterval } from '@lyvely/common';
 
-type InterValFilter = { interval: CalendarIntervalEnum; tid?: string | { $regex: RegExp } };
+type InterValFilter = { interval: CalendarInterval; tid?: string | { $regex: RegExp } };
 
 export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> extends AbstractDao<T> {
   // TODO: Implement update interval of data points
@@ -20,7 +20,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
     });
   }
 
-  async findDataPointByTid(content: TimeSeriesContent, tid: string) {
+  async findDataPointByTid(content: TimeSeriesContent<any>, tid: string) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
       cid: assureObjectId(content),
@@ -28,7 +28,11 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
     });
   }
 
-  async findUserDataPointByTid(content: TimeSeriesContent, uid: EntityIdentity<User>, tid: string) {
+  async findUserDataPointByTid(
+    content: TimeSeriesContent<any>,
+    uid: EntityIdentity<User>,
+    tid: string,
+  ) {
     // TODO: (TimeSeries History) fetch interval from history
     return this.findOne({
       cid: assureObjectId(content),
@@ -82,7 +86,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
     const timingIds = getTimingIds(filter.date, profile.locale);
     const relevantTids = [];
 
-    for (let i = CalendarIntervalEnum.Daily; i >= 0; i--) {
+    for (let i = CalendarInterval.Daily; i >= 0; i--) {
       if (filter.level <= i) {
         relevantTids.push(timingIds[i]);
       }
@@ -102,20 +106,20 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
   private buildTimingRegexIntervalFilter(profile: Profile, filter: DataPointIntervalFilter) {
     const timingIds = getTimingIds(filter.date, profile.locale);
     const dailyFilter = {
-      interval: CalendarIntervalEnum.Daily,
-      tid: timingIds[CalendarIntervalEnum.Daily],
+      interval: CalendarInterval.Daily,
+      tid: timingIds[CalendarInterval.Daily],
     };
 
-    if (filter.level === CalendarIntervalEnum.Daily) {
+    if (filter.level === CalendarInterval.Daily) {
       return dailyFilter;
     }
 
     const intervalFilter: InterValFilter[] = [dailyFilter];
 
-    for (let i = CalendarIntervalEnum.Weekly; i >= 0; i--) {
+    for (let i = CalendarInterval.Weekly; i >= 0; i--) {
       if (filter.level <= i) {
         const filter =
-          i === CalendarIntervalEnum.Unscheduled
+          i === CalendarInterval.Unscheduled
             ? { interval: i }
             : { interval: i, tid: { $regex: new RegExp(`^${timingIds[i]}`) } };
         intervalFilter.push(filter);

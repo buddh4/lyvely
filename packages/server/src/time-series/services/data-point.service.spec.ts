@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createContentTestingModule, TestDataUtils } from '@/test';
 import {
-  CalendarIntervalEnum,
+  CalendarInterval,
   DataPointIntervalFilter,
   toTimingId,
   UserAssignmentStrategy,
@@ -68,7 +68,7 @@ describe('DataPointService', () => {
           max: 5,
           optimal: 3,
           userStrategy: userStrategy,
-          interval: CalendarIntervalEnum.Daily,
+          interval: CalendarInterval.Daily,
         }),
       },
     };

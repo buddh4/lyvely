@@ -1,4 +1,4 @@
-export enum CalendarIntervalEnum {
+export enum CalendarInterval {
   Unscheduled,
   Yearly,
   Quarterly,
@@ -20,8 +20,8 @@ export enum CalendarTimeInterval {
   Millisecondly,
 }
 
-export function getCalendarIntervalArray(): CalendarIntervalEnum[] {
-  return Object.keys(CalendarIntervalEnum)
+export function getCalendarIntervalArray(): CalendarInterval[] {
+  return Object.keys(CalendarInterval)
     .filter((value) => isNaN(Number(value)) === false)
     .map((key) => parseInt(key))
     .reverse();

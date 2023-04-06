@@ -1,4 +1,4 @@
 import { JournalModel } from './journal.model';
-import { TimeSeriesDataPointStore } from '@/time-series';
+import { TimeSeriesStore } from '@/time-series';
 
-export class JournalDataPointStore extends TimeSeriesDataPointStore<JournalModel> {}
+export class JournalDataPointStore extends TimeSeriesStore<JournalModel> {}

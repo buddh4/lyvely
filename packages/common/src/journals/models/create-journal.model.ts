@@ -13,7 +13,7 @@ import {
   Min,
   ValidateIf,
 } from 'class-validator';
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 import { DataPointInputType, DataPointValueType } from '@/time-series';
 import { CreateContentModel } from '@/content';
@@ -31,8 +31,8 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
   @Length(0, 2000)
   text?: string;
 
-  @IsEnum(CalendarIntervalEnum)
-  interval: CalendarIntervalEnum;
+  @IsEnum(CalendarInterval)
+  interval: CalendarInterval;
 
   @IsEnum(UserAssignmentStrategy)
   userStrategy: UserAssignmentStrategy;
@@ -92,7 +92,7 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
     obj = init
       ? Object.assign(
           {
-            interval: CalendarIntervalEnum.Daily,
+            interval: CalendarInterval.Daily,
             inputType: DataPointInputType.Checkbox,
             valueType: DataPointValueType.Number,
             userStrategy: UserAssignmentStrategy.Shared,

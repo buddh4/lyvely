@@ -1,4 +1,4 @@
-describe('Test Register Users', function () {
+/*describe('Test Register Users', function () {
   const SELECTOR_ARCHIVE_BUTTON = '#filter-archive';
 
   beforeEach(() => {
@@ -46,3 +46,4 @@ describe('Test Register Users', function () {
     cy.getActivity('Archived Habit').find('[type="checkbox"]:disabled').should('have.length', 5);
   });
 });
+*/

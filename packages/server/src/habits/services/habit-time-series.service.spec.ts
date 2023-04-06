@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { CalendarIntervalEnum, DataPointIntervalFilter, sortBySortOrder } from '@lyvely/common';
+import { CalendarInterval, DataPointIntervalFilter, sortBySortOrder } from '@lyvely/common';
 import { Profile } from '@/profiles';
 import { createHabitTestingModule, HabitTestDataUtil } from '../test';
 import { HabitDataPointDao, HabitsDao } from '../daos';
@@ -91,7 +91,7 @@ describe('HabitTimeSeriesService', () => {
         await testData.createHabit(
           user,
           profile,
-          { title: 'h0', interval: CalendarIntervalEnum.Daily },
+          { title: 'h0', interval: CalendarInterval.Daily },
           (model) => {
             model.meta.sortOrder = 0;
           },
@@ -99,7 +99,7 @@ describe('HabitTimeSeriesService', () => {
         await testData.createHabit(
           user,
           profile,
-          { title: 'h1', interval: CalendarIntervalEnum.Daily },
+          { title: 'h1', interval: CalendarInterval.Daily },
           (model) => {
             model.meta.sortOrder = 1;
           },
@@ -107,7 +107,7 @@ describe('HabitTimeSeriesService', () => {
         await testData.createHabit(
           user,
           profile,
-          { title: 'h2', interval: CalendarIntervalEnum.Weekly },
+          { title: 'h2', interval: CalendarInterval.Weekly },
           (model) => {
             model.meta.sortOrder = 0;
           },
@@ -115,7 +115,7 @@ describe('HabitTimeSeriesService', () => {
         await testData.createHabit(
           user,
           profile,
-          { title: 'h3', interval: CalendarIntervalEnum.Weekly },
+          { title: 'h3', interval: CalendarInterval.Weekly },
           (model) => {
             model.meta.sortOrder = 1;
           },
@@ -123,7 +123,7 @@ describe('HabitTimeSeriesService', () => {
         await testData.createHabit(
           user,
           profile,
-          { title: 'h4', interval: CalendarIntervalEnum.Weekly },
+          { title: 'h4', interval: CalendarInterval.Weekly },
           (model) => {
             model.meta.sortOrder = 2;
           },
@@ -260,14 +260,14 @@ describe('HabitTimeSeriesService', () => {
         habits[2],
       );
 
-      expect(habits[0].timeSeriesConfig.interval).toEqual(CalendarIntervalEnum.Weekly);
+      expect(habits[0].timeSeriesConfig.interval).toEqual(CalendarInterval.Weekly);
       expect(habits[0].timeSeriesConfig.history.length).toEqual(1);
-      expect(habits[0].timeSeriesConfig.history[0].interval).toEqual(CalendarIntervalEnum.Daily);
+      expect(habits[0].timeSeriesConfig.history[0].interval).toEqual(CalendarInterval.Daily);
 
       const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
       let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
       models = models.filter(
-        (model) => model.timeSeriesConfig.interval === CalendarIntervalEnum.Weekly,
+        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );
 
       sortHabits(models);
@@ -293,7 +293,7 @@ describe('HabitTimeSeriesService', () => {
       const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
       let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
       models = models.filter(
-        (model) => model.timeSeriesConfig.interval === CalendarIntervalEnum.Weekly,
+        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );
 
       sortHabits(models);
@@ -320,7 +320,7 @@ describe('HabitTimeSeriesService', () => {
       const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
       let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
       models = models.filter(
-        (model) => model.timeSeriesConfig.interval === CalendarIntervalEnum.Weekly,
+        (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );
 
       sortHabits(models);

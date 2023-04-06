@@ -1,13 +1,16 @@
 import { Exclude, Type, Expose } from 'class-transformer';
 import { BaseModel } from '@/models';
-import { NumberDataPointModel } from '@/time-series';
-import { ICalendarPlanResponse } from '@/calendar-plan';
+import {
+  DataPointModel,
+  ITimeSeriesCalendarPlanResponse,
+  NumberDataPointModel,
+} from '@/time-series';
 import { HabitModel } from './habit.model';
 
 @Exclude()
 export class HabitSearchResponse
   extends BaseModel<HabitSearchResponse>
-  implements ICalendarPlanResponse<HabitModel, NumberDataPointModel>
+  implements ITimeSeriesCalendarPlanResponse<HabitModel>
 {
   @Expose()
   @Type(() => HabitModel)
@@ -15,5 +18,5 @@ export class HabitSearchResponse
 
   @Expose()
   @Type(() => NumberDataPointModel)
-  dataPoints: NumberDataPointModel[];
+  dataPoints: DataPointModel[];
 }

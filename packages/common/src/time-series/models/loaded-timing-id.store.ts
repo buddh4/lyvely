@@ -1,5 +1,5 @@
 import { CalendarDate, toTimingId } from '@/calendar';
-import { DataPointIntervalFilter } from '../data-points/models/data-point.model';
+import { DataPointIntervalFilter } from '../models';
 
 export class LoadedTimingIdStore {
   private loadedTimingIds: Set<string> = new Set<string>();

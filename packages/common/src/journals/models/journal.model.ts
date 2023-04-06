@@ -8,7 +8,7 @@ import {
   TimeSeriesContentModel,
   useDataPointStrategyFacade,
 } from '@/time-series';
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 import { IEditableModel } from '@/models';
 import { UpdateJournalModel } from './update-journal.model';
@@ -28,7 +28,7 @@ export class JournalModel
   getDefaultConfig(): IJournalConfig {
     return {
       timeSeries: {
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         inputType: DataPointInputType.Checkbox,
         valueType: DataPointValueType.Number,
         userStrategy: UserAssignmentStrategy.Shared,

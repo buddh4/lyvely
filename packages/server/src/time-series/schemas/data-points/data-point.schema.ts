@@ -2,7 +2,7 @@ import { assignEntityData, BaseEntity, EntityType, assureObjectId } from '@/core
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {
-  CalendarIntervalEnum,
+  CalendarInterval,
   getFullDayDate,
   getNumberEnumValues,
   toTimingId,
@@ -13,16 +13,17 @@ import {
 import { TimeSeriesContent } from '../time-series-content.schema';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
+import { PropertiesOf } from '@lyvely/common/src';
 
-type DataPointEntity = DataPointModel & { _id: TObjectId };
+export type DataPointEntity<T> = DataPointModel & BaseEntity<T>;
 
 /**
  * This represents a datapoint bucket of given interval.
  */
 @Schema({ timestamps: true, discriminatorKey: 'valueType' })
-export class DataPoint<T extends EntityType<DataPointEntity> = EntityType<DataPointEntity>>
-  extends BaseEntity<T & { _id: TObjectId }>
-  implements DataPointEntity
+export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
+  extends BaseEntity<T>
+  implements PropertiesOf<DataPointModel>
 {
   meta: any;
 
@@ -38,8 +39,8 @@ export class DataPoint<T extends EntityType<DataPointEntity> = EntityType<DataPo
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
   uid?: TObjectId;
 
-  @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
-  interval: CalendarIntervalEnum;
+  @Prop({ enum: getNumberEnumValues(CalendarInterval), required: true })
+  interval: CalendarInterval;
 
   @Prop({ type: String, required: true, immutable: true })
   tid: string;
@@ -58,7 +59,7 @@ export class DataPoint<T extends EntityType<DataPointEntity> = EntityType<DataPo
   @Prop({ type: Date, required: true, immutable: true })
   date: Date;
 
-  constructor(profile: Profile, user: User, content: TimeSeriesContent, obj?: DeepPartial<T>) {
+  constructor(profile: Profile, user: User, content: TimeSeriesContent<any>, obj?: DeepPartial<T>) {
     super(false);
 
     if (obj) {

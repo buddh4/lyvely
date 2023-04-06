@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 
 @Exclude()
 export class SortAction {
@@ -7,7 +7,7 @@ export class SortAction {
   attachToId?: string;
 
   @Expose()
-  interval: CalendarIntervalEnum;
+  interval: CalendarInterval;
 
   constructor(obj?: Partial<SortAction>) {
     if (obj) {

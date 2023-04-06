@@ -1,9 +1,9 @@
-import { CalendarIntervalEnum } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/common';
 
 export interface IMoveEntryEvent {
   cid: string;
   newIndex: number;
   oldIndex: number;
-  fromInterval: CalendarIntervalEnum;
-  toInterval: CalendarIntervalEnum;
+  fromInterval: CalendarInterval;
+  toInterval: CalendarInterval;
 }

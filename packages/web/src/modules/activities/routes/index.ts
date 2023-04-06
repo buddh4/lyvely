@@ -31,7 +31,7 @@ export default [
           layout: 'profile',
           title: () => translate('tasks.title'),
         },
-        component: () => import('../../tasks/calendar-plan/components/TaskCalendarPlan.vue'),
+        component: () => import('../../tasks/components/calendar-plan/TaskCalendarPlan.vue'),
         beforeEnter: [() => useActivityStore().setActiveView('Tasks')],
       },
     ],

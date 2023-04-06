@@ -98,7 +98,7 @@
       "patterns": [
         "src/**"
       ],
-      "ignore": "src/**/test",
+      "ignore": "src/**/*.spec.ts",
       "extensions": "ts"
     }
   }

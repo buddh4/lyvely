@@ -23,7 +23,7 @@ export interface DataPointUpdateResult<TDataPointModel extends DataPoint> {
 }
 
 export abstract class DataPointService<
-  TModel extends TimeSeriesContent,
+  TModel extends TimeSeriesContent<TModel>,
   TDataPointModel extends DataPoint = DataPoint,
   TValue = any,
 > {

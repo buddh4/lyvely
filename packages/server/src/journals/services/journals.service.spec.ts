@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import {
-  CalendarIntervalEnum,
+  CalendarInterval,
   DataPointInputType,
   DataPointValueType,
   INumberDataPointConfig,
@@ -59,7 +59,7 @@ describe('JournalService', () => {
         text: 'Enter some infos about your day.',
         valueType: DataPointValueType.Text,
         inputType: DataPointInputType.Textarea,
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         userStrategy: UserAssignmentStrategy.PerUser,
       });
 
@@ -69,7 +69,7 @@ describe('JournalService', () => {
       expect(config instanceof TextareaTextDataPointConfig).toEqual(true);
       expect(journal.content.title).toEqual('How are you today?');
       expect(journal.content.text).toEqual('Enter some infos about your day.');
-      expect(config.interval).toEqual(CalendarIntervalEnum.Daily);
+      expect(config.interval).toEqual(CalendarInterval.Daily);
       expect(config.valueType).toEqual(DataPointValueType.Text);
       expect(config.inputType).toEqual(DataPointInputType.Textarea);
       expect(config.userStrategy).toEqual(UserAssignmentStrategy.PerUser);
@@ -84,7 +84,7 @@ describe('JournalService', () => {
         text: 'Test',
         valueType: DataPointValueType.Number,
         inputType: DataPointInputType.Checkbox,
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         userStrategy: UserAssignmentStrategy.PerUser,
         min: 1,
         max: 5,
@@ -97,7 +97,7 @@ describe('JournalService', () => {
       expect(config instanceof CheckboxNumberDataPointConfig).toEqual(true);
       expect(journal.content.title).toEqual('How much?');
       expect(journal.content.text).toEqual('Test');
-      expect(config.interval).toEqual(CalendarIntervalEnum.Daily);
+      expect(config.interval).toEqual(CalendarInterval.Daily);
       expect(config.valueType).toEqual(DataPointValueType.Number);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.userStrategy).toEqual(UserAssignmentStrategy.PerUser);
@@ -114,7 +114,7 @@ describe('JournalService', () => {
         text: 'Test',
         valueType: DataPointValueType.Selection,
         inputType: DataPointInputType.Checkbox,
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         userStrategy: UserAssignmentStrategy.PerUser,
         options: ['Option 1', 'Option 2'],
         allowOther: true,
@@ -126,7 +126,7 @@ describe('JournalService', () => {
       expect(config instanceof CheckboxSelectionDataPointConfig).toEqual(true);
       expect(journal.content.title).toEqual('How much?');
       expect(journal.content.text).toEqual('Test');
-      expect(config.interval).toEqual(CalendarIntervalEnum.Daily);
+      expect(config.interval).toEqual(CalendarInterval.Daily);
       expect(config.valueType).toEqual(DataPointValueType.Selection);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.userStrategy).toEqual(UserAssignmentStrategy.PerUser);
@@ -142,7 +142,7 @@ describe('JournalService', () => {
         text: 'Some description...',
         valueType: DataPointValueType.Number,
         inputType: DataPointInputType.Checkbox,
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         userStrategy: UserAssignmentStrategy.PerUser,
         min: 2,
         max: 5,
@@ -155,7 +155,7 @@ describe('JournalService', () => {
       expect(config instanceof NumberDataPointConfig).toEqual(true);
       expect(journal.content.title).toEqual('How many?');
       expect(journal.content.text).toEqual('Some description...');
-      expect(config.interval).toEqual(CalendarIntervalEnum.Daily);
+      expect(config.interval).toEqual(CalendarInterval.Daily);
       expect(config.valueType).toEqual(DataPointValueType.Number);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.userStrategy).toEqual(UserAssignmentStrategy.PerUser);

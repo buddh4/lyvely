@@ -11,7 +11,7 @@ import {
   IsArray,
   MaxLength,
 } from 'class-validator';
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 import { DataPointInputType } from '@/time-series';
 import { CreateContentModel } from '@/content';
@@ -31,8 +31,8 @@ export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {
   text?: string;
 
   @Expose()
-  @IsEnum(CalendarIntervalEnum)
-  interval: CalendarIntervalEnum;
+  @IsEnum(CalendarInterval)
+  interval: CalendarInterval;
 
   @Expose()
   @IsEnum(UserAssignmentStrategy)
@@ -54,7 +54,7 @@ export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {
     obj = init
       ? Object.assign(
           {
-            interval: CalendarIntervalEnum.Daily,
+            interval: CalendarInterval.Daily,
             score: 2,
             inputType: DataPointInputType.Checkbox,
             userStrategy: UserAssignmentStrategy.Shared,

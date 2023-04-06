@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { CalendarIntervalEnum, ITiming, getNumberEnumValues } from '@lyvely/common';
+import { CalendarInterval, ITiming, getNumberEnumValues } from '@lyvely/common';
 
 @Schema()
 export class Timing implements ITiming {
@@ -27,8 +27,8 @@ export class Timing implements ITiming {
   @Prop()
   isoWeekOfYear: number;
 
-  @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
-  interval: CalendarIntervalEnum;
+  @Prop({ enum: getNumberEnumValues(CalendarInterval), required: true })
+  interval: CalendarInterval;
 
   @Prop({ min: 1, max: 4 })
   quarter: number;

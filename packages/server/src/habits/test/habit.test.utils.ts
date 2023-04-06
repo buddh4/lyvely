@@ -5,7 +5,7 @@ import { Habit, HabitDocument, HabitSchema, HabitScore, HabitScoreSchema } from 
 import {
   toTimingId,
   CalendarDate,
-  CalendarIntervalEnum,
+  CalendarInterval,
   CreateHabitModel,
   toDate,
 } from '@lyvely/common';
@@ -87,7 +87,7 @@ export class HabitTestDataUtil extends TestDataUtils {
     overwrite?: (habit: Habit) => void,
   ): Promise<Habit> {
     const initData = <CreateHabitModel>(
-      Object.assign({}, { title: 'test', interval: CalendarIntervalEnum.Daily }, data || {})
+      Object.assign({}, { title: 'test', interval: CalendarInterval.Daily }, data || {})
     );
     const model = Habit.create(profile, user, initData);
     if (overwrite) overwrite(model);

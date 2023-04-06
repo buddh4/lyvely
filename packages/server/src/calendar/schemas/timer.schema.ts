@@ -35,7 +35,7 @@ export class Timer extends TimerModel {
   @PropertyType([TimeSpan])
   spans: TimeSpan[] = [];
 
-  start(user: EntityIdentity<User>) {
+  start(user?: EntityIdentity<User>) {
     return super.start(assureObjectId(user));
   }
 

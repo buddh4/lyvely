@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { CalendarIntervalEnum } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/common';
 import { ref } from 'vue';
 import { localStorageManager } from '@/util';
 
@@ -7,8 +7,8 @@ export interface IMoveActivityEvent {
   cid: string;
   newIndex: number;
   oldIndex: number;
-  fromInterval: CalendarIntervalEnum;
-  toInterval: CalendarIntervalEnum;
+  fromInterval: CalendarInterval;
+  toInterval: CalendarInterval;
 }
 
 const DEFAULT_ACTIVITY_VIEW = 'latest_activity_view';

@@ -7,7 +7,7 @@ import {
   assignRawDataTo,
   ContentModel,
   Type,
-  CreateContentModel,
+  PropertiesOf,
 } from '@lyvely/common';
 import { BaseEntity } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
@@ -20,18 +20,17 @@ import { ContentDataType, ContentDataTypeSchema } from './content-data-type.sche
 
 export type ContentDocument = Content & mongoose.Document;
 
-export interface IContentEntity extends IContent<TObjectId> {
-  _id: TObjectId;
-}
+export type ContentEntity<T, TConfig extends Object = any> = IContent<TObjectId, TConfig> &
+  BaseEntity<T>;
 
 @Schema({ discriminatorKey: 'type' })
 export class Content<
-    TContent extends IContentEntity & BaseEntity<IContentEntity> = any,
-    TContentType extends ContentDataType = ContentDataType,
+    T extends ContentEntity<T, TConfig> = any,
     TConfig extends Object = any,
+    TContentType extends ContentDataType = ContentDataType,
   >
-  extends BaseProfileModel<TContent>
-  implements IContent
+  extends BaseProfileModel<T>
+  implements IContent<TObjectId, TConfig>
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)
@@ -52,7 +51,7 @@ export class Content<
 
   type: string;
 
-  constructor(profile: Profile, createdBy: User, obj: DeepPartial<TContent> = {}) {
+  constructor(profile: Profile, createdBy: User, obj: DeepPartial<T> = {}) {
     obj.meta = obj.meta || new ContentMetadata();
     obj.meta.createdBy = createdBy._id;
     obj.meta.createdAs = obj.meta.createdAs || new CreatedAs(createdBy);
@@ -65,8 +64,9 @@ export class Content<
     this.content = assignRawDataTo(this.content || ({} as TContentType), update);
   }
 
-  getDefaults() {
-    return {
+  getDefaults(): Partial<PropertiesOf<T>> {
+    // not really sure why the cast is required...
+    return <any>{
       config: this.getDefaultConfig(),
     };
   }
@@ -110,11 +110,11 @@ export class Content<
 }
 
 export abstract class ContentType<
-  T extends IContentEntity & BaseEntity<IContentEntity>,
-  TContent extends ContentDataType = ContentDataType,
+  T extends ContentEntity<T, TConfig>,
   TConfig extends Object = any,
+  TContent extends ContentDataType = ContentDataType,
   TModel extends ContentModel = ContentModel,
-> extends Content<T, TContent, TConfig> {
+> extends Content<T, TConfig, TContent> {
   abstract toModel(user?: User): TModel;
 }
 

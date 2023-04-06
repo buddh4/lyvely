@@ -1,5 +1,5 @@
 import { CalendarDateTime, dateTime } from '../interfaces';
-import { CalendarIntervalEnum } from './calendar-interval.enum';
+import { CalendarInterval } from './calendar-interval.enum';
 import { filter } from 'lodash';
 
 /* export const REGEX_TID =
@@ -12,28 +12,28 @@ export enum WeekStrategy {
 
 export function toTimingId(
   cd: CalendarDateTime,
-  level = CalendarIntervalEnum.Daily,
+  level = CalendarInterval.Daily,
   locale = 'de',
   weekStrategy = WeekStrategy.LOCALE,
 ) {
   // TODO: dayJs locale support
   locale = locale.split('-')[0];
-  if (level <= CalendarIntervalEnum.Unscheduled) return 'U';
-  if (level === CalendarIntervalEnum.Weekly) return toWeekTimingId(cd, locale, weekStrategy);
+  if (level <= CalendarInterval.Unscheduled) return 'U';
+  if (level === CalendarInterval.Weekly) return toWeekTimingId(cd, locale, weekStrategy);
 
   const dt = dateTime(cd, false, locale);
   const d = dt.toDate();
   let result = `Y:${d.getUTCFullYear()}`;
 
-  if (level <= CalendarIntervalEnum.Yearly) return result;
+  if (level <= CalendarInterval.Yearly) return result;
 
   result += `;Q:${dt.quarter()}`;
 
-  if (level <= CalendarIntervalEnum.Quarterly) return result;
+  if (level <= CalendarInterval.Quarterly) return result;
 
   result += `;M:${pad(d.getUTCMonth() + 1)}`;
 
-  if (level <= CalendarIntervalEnum.Monthly) return result;
+  if (level <= CalendarInterval.Monthly) return result;
 
   return result + `;D:${pad(d.getDate())}`;
 }
@@ -78,10 +78,10 @@ function pad(num) {
 export function getTimingIds(
   d: CalendarDateTime,
   locale: string,
-  level = CalendarIntervalEnum.Unscheduled,
+  level = CalendarInterval.Unscheduled,
   weekStrategy = WeekStrategy.LOCALE,
 ) {
-  const dayId = toTimingId(d, CalendarIntervalEnum.Daily, locale);
+  const dayId = toTimingId(d, CalendarInterval.Daily, locale);
   const weekId = toWeekTimingId(d, locale, weekStrategy);
   const monthId = dayId.substring(0, dayId.lastIndexOf(';'));
   const quarterId = monthId.substring(0, monthId.lastIndexOf(';'));

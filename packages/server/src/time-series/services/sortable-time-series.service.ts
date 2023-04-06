@@ -1,7 +1,7 @@
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import {
-  CalendarIntervalEnum,
+  CalendarInterval,
   DataPointIntervalFilter,
   IntegrityException,
   SortResult,
@@ -12,7 +12,7 @@ import { assureObjectId, EntityIdentity, QuerySort } from '@/core';
 import { ITimeSeriesContentSearchResult } from './time-series-content-search.result';
 
 export abstract class SortableTimeSeriesService<
-  TModel extends TimeSeriesContent,
+  TModel extends TimeSeriesContent<TModel>,
   TDataPointModel extends DataPoint = DataPoint,
 > {
   protected abstract contentDao: TimeSeriesContentDao<TModel>;
@@ -38,7 +38,7 @@ export abstract class SortableTimeSeriesService<
     profile: Profile,
     user: User,
     model: TModel,
-    interval?: CalendarIntervalEnum,
+    interval?: CalendarInterval,
     attachToId?: EntityIdentity<TModel>,
   ): Promise<SortResult[]> {
     interval = interval ?? model.timeSeriesConfig.interval;

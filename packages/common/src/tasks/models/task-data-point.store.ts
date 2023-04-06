@@ -1,22 +1,22 @@
-import { TimeSeriesDataPointStore } from '@/time-series';
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 import { TaskFilter } from './task-filter.model';
 import { TaskModel } from './task.model';
 import { sortTasks } from '@/tasks/models/task.sort';
+import { CalendarPlanStore } from '@/calendar-plan/models/calendar-plan.store';
 
-export class TaskDataPointStore extends TimeSeriesDataPointStore<TaskModel> {
+export class TaskDataPointStore extends CalendarPlanStore<TaskModel> {
   sort(models: TaskModel[]): TaskModel[] {
     return sortTasks(models);
   }
 
   getModelsByIntervalFilter(
-    interval: CalendarIntervalEnum,
+    interval: CalendarInterval,
     filter?: TaskFilter,
     tid?: string,
   ): TaskModel[] {
     return <TaskModel[]>this.filterModels((entry) => {
       return (
-        entry.timeSeriesConfig.interval === interval &&
+        entry.interval === interval &&
         (!entry.done || entry.done === tid) &&
         (!filter || filter.check(entry))
       );

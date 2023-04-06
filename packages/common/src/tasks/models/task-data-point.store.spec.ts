@@ -1,7 +1,8 @@
 import { TaskModel } from './task.model';
-import { CalendarIntervalEnum, toTimingId } from '@/calendar';
+import { CalendarInterval, toTimingId } from '@/calendar';
 import { TaskDataPointStore } from './task-data-point.store';
 import { ContentMetadataModel } from '@/content';
+import { UserAssignmentStrategy } from '@/collab';
 
 describe('ActivityDataPointStore', () => {
   let store: TaskDataPointStore;
@@ -9,7 +10,7 @@ describe('ActivityDataPointStore', () => {
 
   beforeEach(() => {
     store = new TaskDataPointStore();
-    timingId = toTimingId(new Date(), CalendarIntervalEnum.Daily);
+    timingId = toTimingId(new Date(), CalendarInterval.Daily);
   });
 
   describe('sort', function () {
@@ -40,24 +41,29 @@ describe('ActivityDataPointStore', () => {
 
   describe('getTasksByCalendarPlan', function () {
     it('only include done task which where done at the searched timingId', async () => {
+      const config = {
+        interval: CalendarInterval.Daily,
+        score: 0,
+        userStrategy: UserAssignmentStrategy.Shared,
+      };
       store.setModel(
         new TaskModel({
           id: 't4',
-          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
+          config,
           meta: new ContentMetadataModel({ sortOrder: 3 }),
         }),
       );
       store.setModel(
         new TaskModel({
           id: 't3',
-          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
+          config,
           meta: new ContentMetadataModel({ sortOrder: 2 }),
         }),
       );
       store.setModel(
         new TaskModel({
           id: 't2',
-          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
+          config,
           meta: new ContentMetadataModel({ sortOrder: 0 }),
           done: timingId,
         }),
@@ -65,22 +71,18 @@ describe('ActivityDataPointStore', () => {
       store.setModel(
         new TaskModel({
           id: 't1',
-          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Daily }, score: 0 },
+          config,
           done: 'anotherday...',
         }),
       );
       store.setModel(
         new TaskModel({
           id: 't0',
-          config: { timeSeries: <any>{ interval: CalendarIntervalEnum.Weekly }, score: 0 },
+          config,
         }),
       );
 
-      const result = store.getModelsByIntervalFilter(
-        CalendarIntervalEnum.Daily,
-        undefined,
-        timingId,
-      );
+      const result = store.getModelsByIntervalFilter(CalendarInterval.Daily, undefined, timingId);
 
       expect(result.length).toEqual(3);
       expect(result[0].id).toEqual('t3');

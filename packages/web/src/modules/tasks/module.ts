@@ -17,15 +17,15 @@ export default () => {
           create: {
             mode: 'modal',
             modelClass: CreateTaskModel,
-            component: () => import('./common/components/modals/EditTaskModal.vue'),
+            component: () => import('./components/modals/EditTaskModal.vue'),
           },
           edit: {
             mode: 'modal',
-            component: () => import('./common/components/modals/EditTaskModal.vue'),
+            component: () => import('./components/modals/EditTaskModal.vue'),
           },
           stream: {
-            details: () => import('./stream/components/TaskDetails.vue'),
-            entry: () => import('./stream/components/TaskStreamEntry.vue'),
+            details: () => import('./components/content-stream/TaskDetails.vue'),
+            entry: () => import('./components/content-stream/TaskStreamEntry.vue'),
           },
         },
       });

@@ -1,7 +1,9 @@
 import { ContentModel, IContent } from '@/content';
 import { ISortable } from '@/models';
-import { IDataPointConfig } from '../data-points';
+import { IDataPointConfig } from '../interfaces';
 import { Expose } from 'class-transformer';
+import { ICalendarPlanEntry } from '@/calendar-plan';
+import { CalendarInterval } from '@/calendar';
 
 export interface ITimeSeriesContentConfig<TDataPointConfig = IDataPointConfig> {
   timeSeries: TDataPointConfig;
@@ -9,6 +11,7 @@ export interface ITimeSeriesContentConfig<TDataPointConfig = IDataPointConfig> {
 
 export interface ITimeSeriesContentModel<TDataPointConfig = IDataPointConfig> extends IContent {
   config: ITimeSeriesContentConfig<TDataPointConfig>;
+  get interval(): CalendarInterval;
 }
 
 @Expose()
@@ -17,8 +20,12 @@ export class TimeSeriesContentModel<
     TConfig extends ITimeSeriesContentConfig = ITimeSeriesContentConfig,
   >
   extends ContentModel<TContentModel, TConfig>
-  implements ISortable
+  implements ISortable, ICalendarPlanEntry
 {
+  get interval(): CalendarInterval {
+    return this.timeSeriesConfig.interval;
+  }
+
   get timeSeriesConfig(): TConfig['timeSeries'] {
     return this.config.timeSeries;
   }

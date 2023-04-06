@@ -1,6 +1,8 @@
-import { INumberDataPointConfig } from '@/time-series';
+import { CalendarInterval } from '@/calendar';
+import { UserAssignmentStrategy } from '@/collab';
 
 export interface ITaskConfig {
   score: number;
-  timeSeries: INumberDataPointConfig;
+  interval: CalendarInterval;
+  userStrategy: UserAssignmentStrategy;
 }

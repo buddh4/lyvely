@@ -8,7 +8,7 @@ import { TimeSeriesContentDao } from '../daos';
 import { SortableTimeSeriesService } from '@/time-series/services/sortable-time-series.service';
 
 export abstract class TimeSeriesService<
-  TModel extends TimeSeriesContent,
+  TModel extends TimeSeriesContent<TModel>,
   TDataPointModel extends DataPoint = DataPoint,
 > extends SortableTimeSeriesService<TModel> {
   protected abstract contentDao: TimeSeriesContentDao<TModel>;

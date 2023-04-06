@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { Timer } from '@/calendar';
+import { Timer, TimeSpan } from '@/calendar';
 
 describe('TimerSchema', () => {
   describe('start', () => {
@@ -27,7 +27,7 @@ describe('TimerSchema', () => {
       const now = Date.now();
       const start = now - 1000 * 60 * 60;
 
-      timer.spans = [{ from: start, to: start + 1000 }, { from: start + 1000 }];
+      timer.spans = <Array<TimeSpan>>[{ from: start, to: start + 1000 }, { from: start + 1000 }];
       timer.overwrite(2000);
 
       expect(timer.calculateTotalSpan()).toEqual(2000);
@@ -44,7 +44,11 @@ describe('TimerSchema', () => {
       const now = Date.now();
       const start = now - 1000 * 60 * 60;
 
-      timer.spans = [{ from: start, to: start + 300 }, { from: start + 300, to: start + 600 }, { from: start + 600 }];
+      timer.spans = <Array<TimeSpan>>[
+        { from: start, to: start + 300 },
+        { from: start + 300, to: start + 600 },
+        { from: start + 600 },
+      ];
       timer.overwrite(500);
 
       expect(timer.calculateTotalSpan()).toEqual(500);
@@ -61,7 +65,7 @@ describe('TimerSchema', () => {
       const now = Date.now();
       const start = now - 1000 * 60 * 60;
 
-      timer.spans = [
+      timer.spans = <Array<TimeSpan>>[
         { from: start, to: start + 1000 },
         { from: start + 1000, to: start + 2000 },
       ];
@@ -82,7 +86,7 @@ describe('TimerSchema', () => {
       const now = Date.now();
       const start = now - 1000 * 60 * 60;
 
-      timer.spans = [
+      timer.spans = <Array<TimeSpan>>[
         { from: start, to: start + 300 },
         { from: start + 300, to: start + 600 },
         { from: start + 600, to: start + 1000 },
@@ -113,7 +117,7 @@ describe('TimerSchema', () => {
       const now = Date.now();
       const start = now - 1000 * 60 * 60;
 
-      timer.spans = [
+      timer.spans = <Array<TimeSpan>>[
         { from: start, to: start + 300 },
         { from: start + 300, to: start + 600 },
         { from: start + 600, to: start + 1000 },

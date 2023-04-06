@@ -1,5 +1,6 @@
 import { Transform, Expose, Exclude } from 'class-transformer';
 import { assignRawDataToAndInitProps } from './util';
+import { PropertiesOf } from '@/utils';
 
 export type DocumentMock<T> = {
   _id?: any;
@@ -7,8 +8,12 @@ export type DocumentMock<T> = {
   toJSON?: () => T;
 };
 
+const t: Partial<PropertiesOf<DocumentMock<any>>> = {
+  id: 'asdf',
+};
+
 export abstract class BaseModel<T> {
-  constructor(obj?: Partial<T>) {
+  constructor(obj?: Partial<PropertiesOf<T>>) {
     if ('getDefaults' in this && typeof this.getDefaults === 'function') {
       obj = obj ? Object.assign(this.getDefaults(), obj) : this.getDefaults();
     }
@@ -29,7 +34,7 @@ export abstract class DocumentModel<T extends DocumentMock<T>> extends BaseModel
   @Exclude()
   _id?: TObjectId;
 
-  constructor(obj?: Partial<T>) {
+  constructor(obj?: Partial<PropertiesOf<T>>) {
     if (!obj) {
       super();
       return;
@@ -40,7 +45,7 @@ export abstract class DocumentModel<T extends DocumentMock<T>> extends BaseModel
     }
 
     if ('_id' in obj && typeof obj['_id'] === 'object') {
-      obj.id = obj['_id'].toString();
+      obj['id'] = obj['_id'].toString();
     }
 
     super(obj);

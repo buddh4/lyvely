@@ -58,7 +58,7 @@ describe('Base Model', () => {
     });
 
     it('do not overwrite functions', async () => {
-      const baseModel = new TestDocumentDto({
+      const baseModel = new TestDocumentDto(<any>{
         someFunction: () => 'no',
       });
 

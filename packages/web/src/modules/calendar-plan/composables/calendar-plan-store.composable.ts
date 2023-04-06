@@ -1,14 +1,14 @@
 import {
-  CalendarIntervalEnum,
+  CalendarInterval,
   ContentFilter,
-  DataPointModel,
   LoadedTimingIdStore,
-  TimeSeriesContentModel,
-  TimeSeriesDataPointStore,
   toTimingId,
   ICalendarPlanService,
   SortAction,
   getCalendarIntervalArray,
+  ICalendarPlanEntry,
+  CalendarPlanStore,
+  ICalendarPlanResponse,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { ref, watch } from 'vue';
@@ -21,21 +21,23 @@ import { IDragEvent } from '@/modules/common';
 import { dragEventToMoveEvent } from '@/modules/calendar-plan';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 
-export interface CalendarPlanOptions<
-  TModel extends TimeSeriesContentModel,
+export interface ICalendarPlanOptions<
+  TModel extends ICalendarPlanEntry,
   TFilter extends ContentFilter<TModel>,
-  TDataPointModel extends DataPointModel = DataPointModel,
+  TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
+  TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
 > {
   filter: TFilter;
-  cache: TimeSeriesDataPointStore<TModel>;
-  service: ICalendarPlanService<TModel, TDataPointModel>;
+  cache: TStore;
+  service: ICalendarPlanService<TModel>;
 }
 
 export function useCalendarPlan<
-  TModel extends TimeSeriesContentModel,
+  TModel extends ICalendarPlanEntry,
   TFilter extends ContentFilter<TModel>,
-  TDataPointModel extends DataPointModel = DataPointModel,
->(options: CalendarPlanOptions<TModel, TFilter, TDataPointModel>) {
+  TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
+  TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
+>(options: ICalendarPlanOptions<TModel, TFilter, TResponse, TStore>) {
   const { profile, locale } = storeToRefs(useProfileStore());
   const calendarPlanStore = useCalendarPlanStore();
 
@@ -88,14 +90,12 @@ export function useCalendarPlan<
     try {
       const response = await loadingStatus(service.getByFilter(intervalFilter), status);
       cache.value.setModels(response.models);
-      cache.value.setDataPoints(response.dataPoints);
-      //calendarPlanStore.addLoadedTimingIds(getTimingIdsByRange(datesToBeLoaded));
     } catch (e) {
       DialogExceptionHandler('An unknown error occurred while loading models.', this)(e);
     }
   }
 
-  function getModels(interval: CalendarIntervalEnum) {
+  function getModels(interval: CalendarInterval): TModel[] {
     const tid = toTimingId(date.value, interval, locale.value);
     return cache.value.getModelsByIntervalFilter(interval, filter.value, tid);
   }
@@ -107,7 +107,8 @@ export function useCalendarPlan<
   async function sort(evt: IDragEvent | IMoveEntryEvent, to?: TModel[]) {
     const moveEvent = dragEventToMoveEvent(evt);
 
-    if (!to) to = getModels(moveEvent.toInterval);
+    to ??= getModels(moveEvent.toInterval);
+
     const isSameInterval = moveEvent.fromInterval === moveEvent.toInterval;
 
     const model = cache.value.getModel(moveEvent.cid);

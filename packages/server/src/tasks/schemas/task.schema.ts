@@ -6,23 +6,18 @@ import {
   UpdateTaskModel,
   PropertiesOf,
   TaskWithUsersModel,
-  DataPointInputType,
-  DataPointValueType,
   PropertyType,
   TaskModel,
+  getNumberEnumValues,
+  CalendarInterval,
+  BaseModel,
+  ITaskConfig,
 } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '@/users';
-import {
-  CheckboxNumberDataPointConfig,
-  DataPointConfigFactory,
-  TimeSeriesConfigSchemaFactory,
-} from '@/time-series';
-import { assureObjectId, EntityIdentity } from '@/core';
-import { ContentDataType } from '@/content';
+import { assureObjectId, EntityIdentity, NestedSchema } from '@/core';
+import { ContentDataType, ContentType } from '@/content';
 import { Timer, TimerSchema } from '@/calendar';
-
-export type TaskDocument = Task & mongoose.Document;
 
 @Schema({ _id: false })
 export class UserDone {
@@ -44,23 +39,33 @@ export class UserDone {
 
 const UserDoneSchema = SchemaFactory.createForClass(UserDone);
 
-@Schema({ _id: false })
-export class TaskConfig extends NumberTimeSeriesContentConfig<
-  TaskConfig,
-  CheckboxNumberDataPointConfig
-> {
+@NestedSchema()
+export class TaskConfig extends BaseModel<TaskConfig> implements ITaskConfig {
   @Prop({ type: Number })
   @PropertyType(Number, { default: 0 })
   score: number;
+
+  @Prop({ enum: getNumberEnumValues(CalendarInterval), required: true })
+  interval: CalendarInterval;
+
+  @Prop({
+    enum: getNumberEnumValues(UserAssignmentStrategy),
+    default: UserAssignmentStrategy.Shared,
+    required: true,
+  })
+  userStrategy: UserAssignmentStrategy;
+
+  applyUpdate(update: UpdateTaskModel) {
+    this.interval = update.interval ?? this.interval;
+    this.userStrategy = update.userStrategy ?? this.userStrategy;
+  }
 }
 
-export const TaskConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(TaskConfig, [
-  DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
-]);
+const TaskConfigSchema = SchemaFactory.createForClass(TaskConfig);
 
 @Schema()
 export class Task
-  extends NumberTimeSeriesContent<Task>
+  extends ContentType<Task, TaskConfig>
   implements PropertiesOf<TaskWithUsersModel>
 {
   @Prop({ type: TaskConfigSchema, required: true })
@@ -75,29 +80,17 @@ export class Task
   @PropertyType([Timer])
   timers: Timer[];
 
-  afterInit() {
-    if (!this.timeSeriesConfig) {
-      this.timeSeriesConfig = DataPointConfigFactory.createConfig(
-        DataPointValueType.Number,
-        DataPointInputType.Checkbox,
-      );
-    }
-
-    this.timeSeriesConfig.min = 1;
-    this.timeSeriesConfig.max = 1;
-    this.timeSeriesConfig.optimal = 1;
-
-    super.afterInit();
+  get interval() {
+    return this.config.interval;
   }
 
   applyUpdate(update: UpdateTaskModel) {
     // We only need to update the interval, all other time series config values are static
-    this.timeSeriesConfig.interval = update.interval ?? this.timeSeriesConfig.interval;
     this.applyContentUpdate({
       title: update.title ?? this.content.title,
       text: update.title ?? this.content.text,
     });
-
+    this.config.applyUpdate(update);
     return this;
   }
 
@@ -115,7 +108,7 @@ export class Task
   }
 
   isDone(uid: EntityIdentity<User>) {
-    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return !!this.doneBy.length;
     }
 
@@ -123,7 +116,7 @@ export class Task
   }
 
   getTimer(uid: EntityIdentity<User>) {
-    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return this.timers.length ? this.timers[0] : undefined;
     }
 
@@ -131,7 +124,7 @@ export class Task
   }
 
   getDoneBy(uid: EntityIdentity<User>) {
-    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return this.doneBy[0];
     }
 
@@ -139,7 +132,7 @@ export class Task
   }
 
   setUndoneBy(uid: EntityIdentity<User>) {
-    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       this.doneBy = [];
     } else {
       this.doneBy = this.doneBy.filter((d) => !d.uid.equals(assureObjectId(uid)));
@@ -149,7 +142,7 @@ export class Task
   setDoneBy(uid: EntityIdentity<User>, tid: string, date?: Date) {
     date = date || new Date();
 
-    if (this.timeSeriesConfig.userStrategy === UserAssignmentStrategy.Shared) {
+    if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       this.doneBy = [new UserDone(uid, tid, date)];
     } else {
       const doneBy = this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
@@ -162,30 +155,18 @@ export class Task
     }
   }
 
-  public static create(profile: Profile, owner: User, update: PropertiesOf<CreateTaskModel>): Task {
+  public static create(
+    profile: Profile,
+    owner: User,
+    createModel: PropertiesOf<CreateTaskModel>,
+  ): Task {
+    const { title, text, score, interval, userStrategy } = createModel;
     return new Task(profile, owner, {
-      content: new ContentDataType({ title: update.title, text: update.text }),
-      tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
-      config: new TaskConfig({
-        score: update.score,
-        timeSeries: _createDataPointConfigFromUpdate(update),
-      }),
+      content: new ContentDataType({ title, text }),
+      tagIds: profile.getTagsByName(createModel.tagNames).map((tag) => assureObjectId(tag.id)),
+      config: new TaskConfig({ score, interval, userStrategy }),
     });
   }
-}
-
-function _createDataPointConfigFromUpdate(update: UpdateTaskModel) {
-  return DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
-    DataPointValueType.Number,
-    DataPointInputType.Checkbox,
-    {
-      min: 0,
-      max: 1,
-      interval: update.interval,
-      userStrategy: update.userStrategy,
-      optimal: 0,
-    },
-  );
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

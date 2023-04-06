@@ -6,13 +6,13 @@ import {
   DataPointValueType,
   IDataPointConfigRevision,
   getNumberEnumValues,
-  CalendarIntervalEnum,
+  CalendarInterval,
   UserAssignmentStrategy,
 } from '@lyvely/common';
 import { isEqual } from 'lodash';
 
 export interface IDataPointSettings {
-  interval: CalendarIntervalEnum;
+  interval: CalendarInterval;
 }
 
 export abstract class DataPointConfig<
@@ -30,8 +30,8 @@ export abstract class DataPointConfig<
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
   inputType: DataPointInputType;
 
-  @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
-  interval: CalendarIntervalEnum;
+  @Prop({ enum: getNumberEnumValues(CalendarInterval), required: true })
+  interval: CalendarInterval;
 
   @Prop({
     enum: getNumberEnumValues(UserAssignmentStrategy),
@@ -98,8 +98,8 @@ export abstract class DataPointConfigRevision implements IDataPointConfigRevisio
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
   inputType?: DataPointInputType;
 
-  @Prop({ enum: getNumberEnumValues(CalendarIntervalEnum), required: true })
-  interval: CalendarIntervalEnum;
+  @Prop({ enum: getNumberEnumValues(CalendarInterval), required: true })
+  interval: CalendarInterval;
 
   constructor(config: IDataPointConfig) {
     this.validUntil = new Date();

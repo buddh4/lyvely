@@ -1,6 +1,6 @@
 import { UpdateHabitModel } from './update-habit.model';
 import { UpdateHabitDataPointModel } from './update-habit-data-point.model';
-import { CalendarIntervalEnum } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 import { validate } from 'class-validator';
 
 describe('Activity Model', () => {
@@ -9,7 +9,7 @@ describe('Activity Model', () => {
       const dto = new UpdateHabitModel({
         title: 'Test activity',
         text: 'This is my test activity',
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         min: 0,
         optimal: 0,
         max: 5,
@@ -28,7 +28,7 @@ describe('Activity Model', () => {
       const dto = new UpdateHabitModel({
         title: '',
         text: 'This is my test activity',
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         max: 5,
         score: 5,
       });
@@ -42,7 +42,7 @@ describe('Activity Model', () => {
       const dto = new UpdateHabitModel({
         title: 'Test',
         text: 'This is my test activity',
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         max: -1,
         score: 5,
       });
@@ -56,7 +56,7 @@ describe('Activity Model', () => {
       const dto = new UpdateHabitModel({
         title: 'Test',
         text: 'This is my test activity',
-        interval: CalendarIntervalEnum.Daily,
+        interval: CalendarInterval.Daily,
         max: 5,
       });
 

@@ -23,7 +23,7 @@ export interface INotificationType {
 export type TNotificationType = Type<NotificationType> & { typeName: string };
 
 export abstract class NotificationType<T extends INotificationType = INotificationType>
-  extends BaseEntity<Omit<T, 'type'>>
+  extends BaseEntity<T>
   implements INotificationType
 {
   static typeName: string;

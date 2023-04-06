@@ -23,7 +23,7 @@ export class StatisticsService {
 
     return new ScoreStatistics({
       title: `Monthly scores of ${year}`,
-      plan: CalendarIntervalEnum.Monthly,
+      plan: CalendarInterval.Monthly,
       data: data,
     });
   }
@@ -52,7 +52,7 @@ export class StatisticsService {
 
     return new ScoreStatistics({
       title: `Monthly scores of ${year}`,
-      plan: CalendarIntervalEnum.Monthly,
+      plan: CalendarInterval.Monthly,
       data: data,
     });
   }*/

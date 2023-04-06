@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CalendarPlan, CalendarIntervalEnum, isToday as isTodayUtil } from '@lyvely/common';
+import { CalendarPlan, CalendarInterval, isToday as isTodayUtil } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlanStore } from '../stores/calendar-plan.store';
 import { computed, ref, toRefs } from 'vue';
@@ -9,7 +9,7 @@ import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { getDefaultLocale } from '@/util';
 
 export interface IProps {
-  interval: CalendarIntervalEnum;
+  interval: CalendarInterval;
   createButtonTitle: string;
   count: number;
 }
@@ -28,9 +28,9 @@ const collapsed = ref(false);
 const calendarPlan = CalendarPlan.getInstance(props.interval);
 
 const isEmpty = computed(() => !props.count);
-const isDaily = props.interval === CalendarIntervalEnum.Daily;
-const isWeekly = props.interval === CalendarIntervalEnum.Weekly;
-const isUnscheduled = props.interval === CalendarIntervalEnum.Unscheduled;
+const isDaily = props.interval === CalendarInterval.Daily;
+const isWeekly = props.interval === CalendarInterval.Weekly;
+const isUnscheduled = props.interval === CalendarInterval.Unscheduled;
 
 function getAccessibleTitle(d: Date) {
   let title = calendarPlan.getAccessibleTitle(

@@ -9,13 +9,15 @@ import {
 import { DataPointService } from './data-point.service';
 import { DataPoint, TimerDataPoint, TimeSeriesContent } from '../schemas';
 
-export abstract class TimerDataPointService {
-  abstract dataPointService: DataPointService<TimeSeriesContent>;
+export abstract class TimerDataPointService<
+  T extends TimeSeriesContent<T> = TimeSeriesContent<any>,
+> {
+  abstract dataPointService: DataPointService<T>;
 
   async startTimer(
     profile: Profile,
     user: User,
-    model: TimeSeriesContent,
+    model: T,
     date: CalendarDate,
   ): Promise<TimerDataPoint> {
     if (!isTimerDataPointConfig(model.timeSeriesConfig))
@@ -47,7 +49,7 @@ export abstract class TimerDataPointService {
   async stopTimer(
     profile: Profile,
     user: User,
-    model: TimeSeriesContent,
+    model: T,
     date: CalendarDate,
   ): Promise<TimerDataPoint> {
     if (!isTimerDataPointConfig(model.timeSeriesConfig))

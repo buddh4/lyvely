@@ -1,4 +1,4 @@
-import { TimeSeriesContentModel } from '@lyvely/common';
+import { ICalendarPlanEntry } from '@lyvely/common';
 import { computed } from 'vue';
 import { IMoveEntryEvent, useCalendarPlanStore } from '@/modules/calendar-plan';
 import { useAccessibilityStore } from '@/modules/accessibility';
@@ -10,7 +10,7 @@ export interface ISortableStore {
   sort(evt: IDragEvent | IMoveEntryEvent): Promise<void>;
 }
 
-export function useCalendarPlanPlanItem<TModel extends TimeSeriesContentModel>(
+export function useCalendarPlanPlanItem<TModel extends ICalendarPlanEntry>(
   model: TModel,
   store: ISortableStore,
 ) {
@@ -32,8 +32,8 @@ export function useCalendarPlanPlanItem<TModel extends TimeSeriesContentModel>(
       draggable: draggableElement,
       event: {
         cid: model.id,
-        fromInterval: model.timeSeriesConfig.interval,
-        toInterval: model.timeSeriesConfig.interval,
+        fromInterval: model.interval,
+        toInterval: model.interval,
         oldIndex: currentIndex,
         newIndex: newIndex(currentIndex),
       } as IMoveEntryEvent,

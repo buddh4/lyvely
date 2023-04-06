@@ -2,7 +2,7 @@ import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { Habit } from './index';
 import {
-  CalendarIntervalEnum,
+  CalendarInterval,
   CreatedAsType,
   CreateHabitModel,
   DataPointInputType,
@@ -56,7 +56,7 @@ describe('Habit', () => {
       min: 2,
       optimal: 2,
       valueType: DataPointValueType.Number,
-      interval: CalendarIntervalEnum.Monthly,
+      interval: CalendarInterval.Monthly,
       inputType: DataPointInputType.Checkbox,
       userStrategy: UserAssignmentStrategy.Shared,
       tagNames: ['Test1'],
@@ -82,7 +82,7 @@ describe('Habit', () => {
     expect(habit.timeSeriesConfig.min).toEqual(2);
     expect(habit.timeSeriesConfig.optimal).toEqual(2);
     expect(habit.timeSeriesConfig.getSettings()).toBeDefined();
-    expect(habit.timeSeriesConfig.interval).toEqual(CalendarIntervalEnum.Monthly);
+    expect(habit.timeSeriesConfig.interval).toEqual(CalendarInterval.Monthly);
     expect(habit.content.text).toEqual('Some Test Habit');
     expect(habit.tagIds.length).toEqual(1);
     expect(habit.tagIds[0]).toEqual(profile.tags[0]._id);
@@ -109,7 +109,7 @@ describe('Habit', () => {
       const search = await createHabit(
         {
           title: 'c1',
-          interval: CalendarIntervalEnum.Monthly,
+          interval: CalendarInterval.Monthly,
           text: 'Test description',
         },
         (model) => {
@@ -119,7 +119,7 @@ describe('Habit', () => {
       );
 
       const model = instanceToPlain(new HabitModel(search)) as PropertiesOf<HabitModel>;
-      expect(model.config.timeSeries.interval).toEqual(CalendarIntervalEnum.Monthly);
+      expect(model.config.timeSeries.interval).toEqual(CalendarInterval.Monthly);
       expect(model.content.title).toEqual('c1');
       expect(model.content.text).toEqual('Test description');
       expect(model.type).toEqual(Habit.name);
