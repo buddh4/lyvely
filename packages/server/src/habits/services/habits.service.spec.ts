@@ -8,6 +8,7 @@ import {
   PropertiesOf,
   UpdateHabitModel,
   UserAssignmentStrategy,
+  DataPointValueType,
 } from '@lyvely/common';
 import { Profile } from '@/profiles';
 import { HabitTestDataUtil, createHabitTestingModule } from '../test';
@@ -15,7 +16,6 @@ import { HabitsDao } from '../daos';
 import { User } from '@/users';
 import { Habit } from '../schemas';
 import { assureStringId } from '@/core';
-import { DataPointValueType } from '@lyvely/common/src';
 
 describe('HabitService', () => {
   let habitsService: HabitsService;

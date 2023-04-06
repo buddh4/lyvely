@@ -5,9 +5,12 @@ import {
   UpdateJournalResponse,
 } from '../models';
 import { Endpoint } from '@/endpoints';
-import { UpdateDataPointModel, UpdateDataPointResponse } from '@/calendar-plan';
+import {
+  UpdateDataPointModel,
+  UpdateDataPointResponse,
+  ITimeSeriesCalendarPlanService,
+} from '@/time-series';
 import { IEditModelService } from '@/models';
-import { ITimeSeriesCalendarPlanService } from '@/time-series';
 
 export interface IJournalsEndpointService
   extends ITimeSeriesCalendarPlanService<JournalModel>,

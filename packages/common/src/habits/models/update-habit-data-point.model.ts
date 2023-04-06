@@ -1,12 +1,6 @@
-import { Exclude, Expose } from 'class-transformer';
-import { IsInt, Min } from 'class-validator';
+import { Exclude } from 'class-transformer';
 
-import { UpdateDataPointModel } from '@/calendar-plan';
+import { UpdateDataPointModel } from '@/time-series';
 
 @Exclude()
-export class UpdateHabitDataPointModel extends UpdateDataPointModel {
-  @Expose()
-  @IsInt()
-  @Min(0)
-  value: number;
-}
+export class UpdateHabitDataPointModel extends UpdateDataPointModel {}

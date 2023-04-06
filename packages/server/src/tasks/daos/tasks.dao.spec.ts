@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { closeInMongodConnection, TestDataUtils } from '@/test';
+import { TestDataUtils } from '@/test';
 import { CalendarInterval, toTimingId, addDays, UserAssignmentStrategy } from '@lyvely/common';
 import { Task, UserDone } from '../schemas';
 import { TaskTestDataUtil, createTaskTestingModule } from '../test';
@@ -124,12 +124,10 @@ describe('Tasks DAO', () => {
       const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
       const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarInterval.Daily);
 
-      await taskTestData.createTask(
+      const task = await taskTestData.createTask(
         owner,
         profile,
-        {
-          userStrategy: UserAssignmentStrategy.Shared,
-        },
+        { userStrategy: UserAssignmentStrategy.Shared },
         (model) => {
           model.doneBy = [new UserDone(owner, tomorrowTid, new Date())];
         },

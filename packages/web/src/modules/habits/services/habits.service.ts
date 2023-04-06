@@ -8,9 +8,9 @@ import {
   UpdateHabitResponse,
   UpdateHabitDataPointResponse,
   useSingleton,
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   HabitModel,
-  SortAction,
+  CalendarPlanSort,
   SortResponse,
   useDataPointStrategyFacade,
 } from '@lyvely/common';
@@ -18,7 +18,7 @@ import repository from '../repositories/habits.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 
 export class HabitsService implements IHabitsEndpointService {
-  async getByFilter(filter: DataPointIntervalFilter) {
+  async getByFilter(filter: CalendarPlanFilter) {
     const { models, dataPoints } = await unwrapResponse(repository.getByFilter(filter));
     return {
       models: models.map((habit) => new HabitModel(habit)),
@@ -28,8 +28,8 @@ export class HabitsService implements IHabitsEndpointService {
     };
   }
 
-  sort(cid: string, move: SortAction): Promise<SortResponse> {
-    return unwrapAndTransformResponse(repository.sort(cid, move), SortResponse);
+  sort(cid: string, sort: CalendarPlanSort): Promise<SortResponse> {
+    return unwrapAndTransformResponse(repository.sort(cid, sort), SortResponse);
   }
 
   async create(dto: CreateHabitModel): Promise<UpdateHabitResponse> {

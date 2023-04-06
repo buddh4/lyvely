@@ -1,8 +1,7 @@
-import { Journal, JournalDataPoint } from '../schemas';
+import { Journal } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AbstractContentDao } from '@/content';
 import { TimeSeriesContentDao } from '@/time-series';
 
 @Injectable()

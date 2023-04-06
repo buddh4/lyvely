@@ -16,11 +16,11 @@ import {
   ProjectionType,
 } from 'mongoose';
 import { BaseEntity } from './base.entity';
-import { Inject } from '@nestjs/common';
+import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
-import { DeepPartial, PropertiesOf } from '@lyvely/common';
+import { DeepPartial } from '@lyvely/common';
 import { cloneDeep } from 'lodash';
 
 interface IPagination {
@@ -55,6 +55,7 @@ type EntityQuery<T extends BaseEntity<T>> = QueryWithHelpers<
 
 export interface IBaseQueryOptions {
   session?: ClientSession;
+  discriminator?: string;
 }
 
 export interface IUpsertQueryOptions extends IBaseQueryOptions {
@@ -102,11 +103,16 @@ export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
 
 export abstract class AbstractDao<T extends BaseEntity<T>> {
   protected abstract model: Model<T>;
+  protected logger: Logger;
+
+  constructor() {
+    this.logger = new Logger(this.constructor.name);
+  }
 
   @Inject()
   private eventEmitter: EventEmitter2;
 
-  abstract getModelConstructor(model?: DeepPartial<T>): Constructor<T>;
+  abstract getModelConstructor(model: DeepPartial<T>): Constructor<T>;
   abstract getModuleId(): string;
 
   protected createEventName(event: string) {
@@ -143,7 +149,8 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   async save(entityData: T, options?: SaveOptions): Promise<T> {
     await this.beforeSave(entityData);
     this.emit('save.pre', new ModelSaveEvent(this, entityData, this.getModelName()));
-    const result = await new this.model(entityData).save(options);
+    const entityModel = this.getModel(options);
+    const result = await new entityModel(entityData).save(options);
     const model = this.constructModel(
       result.toObject({ virtuals: true, aliases: true, getters: true }),
     );
@@ -183,7 +190,9 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   ): Promise<T | null> {
     // TODO: trigger events
     return this.constructModel(
-      await this.model.findById(this.assureEntityId(identity), options?.projection, options).lean(),
+      await this.getModel(options)
+        .findById(this.assureEntityId(identity), options?.projection, options)
+        .lean(),
     );
   }
 
@@ -204,7 +213,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   async findAll(filter: FilterQuery<T>, options?: IFetchQueryOptions<T>): Promise<T[]> {
     options ??= {};
 
-    const query = this.model.find(filter, options?.projection, options);
+    const query = this.getModel(options).find(filter, options?.projection, options);
     const fetchFilter = this.getFetchQueryFilter(options);
     if (fetchFilter) {
       query.where(fetchFilter);
@@ -222,7 +231,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   ): Promise<T | null> {
     // TODO: trigger events
     return this.constructModel(
-      await this.model.findOne(filter, options?.projection, options).lean(),
+      await this.getModel(options).findOne(filter, options?.projection, options).lean(),
     );
   }
 
@@ -233,7 +242,9 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   ): Promise<T | null> {
     options.new = options.new ?? true;
     return this.constructModel(
-      await this.model.findOneAndUpdate(filter, update, { upsert: true, ...options }).lean(),
+      await this.getModel(options)
+        .findOneAndUpdate(filter, update, { upsert: true, ...options })
+        .lean(),
     );
   }
 
@@ -311,7 +322,9 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     filter = filter || {};
     filter._id = this.assureEntityId(id);
 
-    const data = await this.model.findOneAndUpdate(filter, cloneDeep(update), options).lean();
+    const data = await this.getModel(options)
+      .findOneAndUpdate(filter, cloneDeep(update), options)
+      .lean();
 
     if (!data) {
       return null;
@@ -362,7 +375,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     filter = filter || {};
     filter._id = this.assureEntityId(identity);
 
-    const query = this.model.updateOne(filter, clonedUpdate, options);
+    const query = this.getModel(options).updateOne(filter, clonedUpdate, options);
     const modifiedCount = (await query.exec()).modifiedCount;
 
     if (modifiedCount && (!options || options.apply !== false)) {
@@ -374,6 +387,22 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     }
 
     return !!modifiedCount;
+  }
+
+  protected getModel(options?: IBaseQueryOptions) {
+    let model = this.model;
+
+    if (options?.discriminator) {
+      model =
+        model.discriminators[options.discriminator] ||
+        model.discriminators[this.model.modelName + '.' + options.discriminator];
+    }
+
+    if (!model && options.discriminator) {
+      this.logger.warn('Invalid discriminator value: ' + options.discriminator);
+    }
+
+    return model || this.model;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -388,7 +417,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[],
     options?: IBaseQueryOptions,
   ) {
-    await this.model.bulkWrite(
+    await this.getModel(options).bulkWrite(
       updates.map((update) => ({
         updateOne: {
           filter: <any>{ _id: this.assureEntityId(update.id) },
@@ -408,10 +437,10 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   async deleteMany(filter: FilterQuery<T>, options?: DeleteOptions): Promise<number> {
-    return (await this.model.deleteMany(filter, options)).deletedCount;
+    return (await this.getModel(options).deleteMany(filter, options)).deletedCount;
   }
 
   async deleteOne(filter: FilterQuery<T>, options?: DeleteOptions): Promise<boolean> {
-    return (await this.model.deleteOne(filter, options)).deletedCount === 1;
+    return (await this.getModel(options).deleteOne(filter, options)).deletedCount === 1;
   }
 }

@@ -24,8 +24,8 @@ export default () => {
             component: () => import('./components/modals/EditJournalModal.vue'),
           },
           stream: {
-            details: () => import('./components/stream/JournalDetails.vue'),
-            entry: () => import('./components/stream/JournalStreamEntry.vue'),
+            details: () => import('./components/content-stream/JournalDetails.vue'),
+            entry: () => import('./components/content-stream/JournalStreamEntry.vue'),
           },
         },
       });

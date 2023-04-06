@@ -30,7 +30,7 @@ export class ContentDao extends AbstractContentDao<Content> {
     );
   }
 
-  getModelConstructor(model?: DeepPartial<Content>) {
+  getModelConstructor(model: DeepPartial<Content>) {
     return model?.type && this.contentTypeRegistry.isRegisteredType(model.type)
       ? this.contentTypeRegistry.getTypeConstructor(model.type)
       : Content;

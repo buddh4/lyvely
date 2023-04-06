@@ -6,7 +6,7 @@ import { HabitDataPointDao } from '../daos';
 import {
   UserAssignmentStrategy,
   toTimingId,
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   CalendarInterval,
 } from '@lyvely/common';
 import { ContentScoreDao, ContentScoreService } from '@/content';
@@ -47,7 +47,7 @@ describe('HabitDataPointService', () => {
       const logs = await habitDataPointService.findByIntervalLevel(
         profile,
         user,
-        new DataPointIntervalFilter('2021-04-03'),
+        new CalendarPlanFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(0);
@@ -62,7 +62,7 @@ describe('HabitDataPointService', () => {
       const logs = await habitDataPointService.findByIntervalLevel(
         profile,
         user,
-        new DataPointIntervalFilter('2021-04-03'),
+        new CalendarPlanFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(1);
@@ -79,7 +79,7 @@ describe('HabitDataPointService', () => {
       const logs = await habitDataPointService.findByIntervalLevel(
         profile,
         user,
-        new DataPointIntervalFilter('2021-04-03'),
+        new CalendarPlanFilter('2021-04-03'),
       );
 
       expect(logs.length).toEqual(1);

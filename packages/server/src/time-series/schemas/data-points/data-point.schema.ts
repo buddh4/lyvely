@@ -1,5 +1,5 @@
-import { assignEntityData, BaseEntity, EntityType, assureObjectId } from '@/core';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { assignEntityData, BaseEntity, assureObjectId } from '@/core';
+import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {
   CalendarInterval,
@@ -9,11 +9,12 @@ import {
   UserAssignmentStrategy,
   DeepPartial,
   DataPointModel,
+  PropertiesOf,
 } from '@lyvely/common';
 import { TimeSeriesContent } from '../time-series-content.schema';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
-import { PropertiesOf } from '@lyvely/common/src';
+import { DiscriminatorOptions } from '@nestjs/mongoose/dist/interfaces/model-definition.interface';
 
 export type DataPointEntity<T> = DataPointModel & BaseEntity<T>;
 
@@ -47,7 +48,6 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
 
   valueType: string;
 
-  @Prop({ type: mongoose.Schema.Types.Mixed })
   value: any;
 
   /**

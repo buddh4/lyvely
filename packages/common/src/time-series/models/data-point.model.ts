@@ -1,8 +1,6 @@
-import { CalendarInterval, formatDate, REGEX_DATE_FORMAT } from '@/calendar';
-import type { CalendarDate } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
 import { DocumentModel } from '@/models';
 import { Exclude, Expose, Transform } from 'class-transformer';
-import { IsEnum, IsString, Matches } from 'class-validator';
 import { TransformObjectId } from '@/utils';
 import { IDataPoint } from '../interfaces';
 
@@ -13,11 +11,11 @@ export class DataPointModel<E extends DataPointModel = any>
 {
   @Expose()
   @TransformObjectId()
-  cid: string | TObjectId;
+  cid: TObjectId;
 
   @Expose()
   @TransformObjectId()
-  uid?: string | TObjectId;
+  uid?: TObjectId;
 
   @Expose()
   date: Date;
@@ -33,22 +31,4 @@ export class DataPointModel<E extends DataPointModel = any>
 
   @Expose()
   value: any;
-}
-
-@Exclude()
-export class DataPointIntervalFilter {
-  @Expose()
-  @IsString()
-  @Matches(REGEX_DATE_FORMAT)
-  public date: string;
-
-  @Expose()
-  @IsEnum(CalendarInterval)
-  @Transform((value) => parseInt(value.value, 10), { toClassOnly: true }) // for query to class transformation
-  public level: CalendarInterval;
-
-  constructor(date: CalendarDate, level: CalendarInterval = CalendarInterval.Unscheduled) {
-    this.date = formatDate(date);
-    this.level = level;
-  }
 }

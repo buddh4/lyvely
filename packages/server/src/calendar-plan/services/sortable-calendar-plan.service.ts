@@ -2,26 +2,24 @@ import { Profile } from '@/profiles';
 import { User } from '@/users';
 import {
   CalendarInterval,
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   IntegrityException,
   SortResult,
 } from '@lyvely/common';
-import { DataPoint, TimeSeriesContent, DataPointConfigHandler } from '../schemas';
-import { TimeSeriesContentDao } from '../daos';
 import { assureObjectId, EntityIdentity, QuerySort } from '@/core';
-import { ITimeSeriesContentSearchResult } from './time-series-content-search.result';
+import { CalendarPlanDao, CalendarPlanEntity } from '@/calendar-plan/interfaces';
+import { CalendarPlanService } from './calendar-plan.service';
 
-export abstract class SortableTimeSeriesService<
-  TModel extends TimeSeriesContent<TModel>,
-  TDataPointModel extends DataPoint = DataPoint,
-> {
-  protected abstract contentDao: TimeSeriesContentDao<TModel>;
+export abstract class SortableCalendarPlanService<
+  TModel extends CalendarPlanEntity,
+> extends CalendarPlanService<TModel> {
+  protected abstract contentDao: CalendarPlanDao<TModel>;
 
-  abstract findByFilter(
+  protected abstract updateIntervalConfig(
     profile: Profile,
-    user: User,
-    filter: DataPointIntervalFilter,
-  ): Promise<ITimeSeriesContentSearchResult<TModel, TDataPointModel>>;
+    model: TModel,
+    interval: CalendarInterval,
+  ): Promise<void>;
 
   /**
    * Re-sorts the given time series content entries by means of the new index and updates the sortOrder of other activities with the same
@@ -41,7 +39,7 @@ export abstract class SortableTimeSeriesService<
     interval?: CalendarInterval,
     attachToId?: EntityIdentity<TModel>,
   ): Promise<SortResult[]> {
-    interval = interval ?? model.timeSeriesConfig.interval;
+    interval = interval ?? model.interval;
 
     const attachToObjectId = attachToId ? assureObjectId(attachToId) : undefined;
 
@@ -57,23 +55,12 @@ export abstract class SortableTimeSeriesService<
       throw new IntegrityException('Can not sort different content types');
     }
 
-    interval = attachTo
-      ? attachTo.timeSeriesConfig.interval
-      : interval
-      ? interval
-      : model.timeSeriesConfig.interval;
+    interval = attachTo ? attachTo.interval : interval ? interval : model.interval;
 
-    const isSameInterval = interval === model.timeSeriesConfig.interval;
+    const isSameInterval = interval === model.interval;
 
     if (!isSameInterval) {
-      // Create new revision for activity in case the latest revision was not today
-      const update = { 'config.timeSeries.interval': interval };
-
-      DataPointConfigHandler.applyUpdate(model, { interval });
-      update['config.timeSeries.history'] = model.timeSeriesConfig.history;
-
-      await this.contentDao.updateOneByProfileAndIdSet(profile, model, update);
-      model.timeSeriesConfig.interval = interval;
+      await this.updateIntervalConfig(profile, model, interval);
     }
 
     const modelsByInterval = await this.contentDao.findByProfileAndInterval(profile, interval, {
@@ -87,15 +74,12 @@ export abstract class SortableTimeSeriesService<
 
     return await this.contentDao.updateSortOrder(modelsByInterval);
 
-    /*const { content: activity, profile } = await this.findWritableContentAndProfile(user, identity);
-
-    **
+    /*
+     *
      *  TODO: add some optimizations e.g.:
      *  newIndex < oldIndex => skip if currentIndex > oldIndex
      *  newIndex < oldIndex => skip indexes < newIndex
-     *  ...
      *
-
-    //TODO: add some optimizations e.g. newIndex < oldIndex => skip if currentIndex > oldIndex */
+     */
   }
 }

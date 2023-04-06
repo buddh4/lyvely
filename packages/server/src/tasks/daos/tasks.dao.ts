@@ -6,13 +6,22 @@ import { Model } from 'mongoose';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
 import { Timer } from '@/calendar';
-import { ProfileType, UserAssignmentStrategy } from '@lyvely/common';
+import { CalendarInterval, ProfileType, UserAssignmentStrategy } from '@lyvely/common';
 import { AbstractContentDao } from '@/content';
+import { CalendarPlanDao } from '@/calendar-plan';
 
 @Injectable()
-export class TasksDao extends AbstractContentDao<Task> {
+export class TasksDao extends AbstractContentDao<Task> implements CalendarPlanDao<any> {
   @InjectModel(Task.name)
   protected model: Model<Task>;
+
+  async findByProfileAndInterval(
+    profile: Profile,
+    plan: CalendarInterval,
+    options: IFetchQueryOptions<Task> = {},
+  ): Promise<Task[]> {
+    return this.findAllByProfile(profile, { 'config.interval': plan }, options);
+  }
 
   async findByProfileAndTimingIds(
     profile: Profile,
@@ -42,12 +51,12 @@ export class TasksDao extends AbstractContentDao<Task> {
           { doneBy: [] },
           // We ignore which user done the task on shared tasks
           {
-            'config.timeSeries.userStrategy': UserAssignmentStrategy.Shared,
+            'config.userStrategy': UserAssignmentStrategy.Shared,
             doneBy: { $elemMatch: { tid: { $in: tIds } } },
           },
           // On per user tasks we only include tasks not done by the given user or done by the given user within the given tid
           {
-            'config.timeSeries.userStrategy': UserAssignmentStrategy.PerUser,
+            'config.userStrategy': UserAssignmentStrategy.PerUser,
             $or: [
               { doneBy: { $elemMatch: { uid: uid, tid: { $in: tIds } } } },
               { doneBy: { $not: { $elemMatch: { uid: uid } } } },

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { DataPoint, DataPointDao, NumberDataPoint } from '@/time-series';
+import { DataPoint, DataPointDao } from '@/time-series';
+import { InjectDataPointModel } from '@/time-series/decorators/inject-data-point-model.decorator';
+import { TestTimeSeriesContent } from '@/time-series/test/test-time-series-content.schema';
 
 @Injectable()
 export class TestDataPointDao extends DataPointDao {
-  @InjectModel(DataPoint.name)
+  @InjectDataPointModel(TestTimeSeriesContent.name)
   model: Model<DataPoint>;
 
   getModuleId(): string {

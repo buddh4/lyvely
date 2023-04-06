@@ -6,10 +6,10 @@ import {
   ProfileContentRequest,
 } from '@/content';
 import {
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   ENDPOINT_JOURNALS,
   JournalsEndpoint,
-  SortAction,
+  CalendarPlanSort,
   SortResponse,
   JournalSearchResponse,
   UpdateDataPointModel,
@@ -49,11 +49,15 @@ export class JournalsController
 
   @Get()
   async getByFilter(
-    @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
+    @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
     @Request() req: ProfileRequest,
   ): Promise<JournalSearchResponse> {
     const { profile, user } = req;
-    const { models, dataPoints } = await this.timeSeriesService.findByFilter(profile, user, filter);
+    const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(
+      profile,
+      user,
+      filter,
+    );
     return new JournalSearchResponse({
       models: models.map((c) => c.toModel(user)),
       dataPoints: dataPoints.map((value) => DataPointModelConverter.toModel(value)),
@@ -63,7 +67,7 @@ export class JournalsController
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
   async sort(
-    @Body() dto: SortAction,
+    @Body() dto: CalendarPlanSort,
     @Request() req: ProfileContentRequest<Journal>,
   ): Promise<SortResponse> {
     const { profile, user, content } = req;

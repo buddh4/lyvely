@@ -2,7 +2,7 @@ import { User } from '@/users';
 import {
   CalendarDate,
   toDate,
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   UserAssignmentStrategy,
   useDataPointStrategyFacade,
   InvalidDataPointValueTypeException,
@@ -140,7 +140,7 @@ export abstract class DataPointService<
   async findByIntervalLevel(
     profile: Profile,
     uid: EntityIdentity<User> | null,
-    filter: DataPointIntervalFilter,
+    filter: CalendarPlanFilter,
   ): Promise<TDataPointModel[]> {
     return await this.dataPointDao.findByIntervalLevel(profile, uid, filter);
   }

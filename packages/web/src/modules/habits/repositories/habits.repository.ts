@@ -6,19 +6,19 @@ import {
   EndpointResult,
   IHabitsEndpointService,
   TimerUpdateModel,
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   ENDPOINT_HABITS,
-  SortAction,
+  CalendarPlanSort,
 } from '@lyvely/common';
 
 export default {
-  async getByFilter(filter: DataPointIntervalFilter) {
+  async getByFilter(filter: CalendarPlanFilter) {
     return repository.get<EndpointResult<IHabitsEndpointService['getByFilter']>>(ENDPOINT_HABITS, {
       params: filter,
     });
   },
 
-  async sort(cid: string, moveAction: SortAction) {
+  async sort(cid: string, moveAction: CalendarPlanSort) {
     return repository.post<EndpointResult<IHabitsEndpointService['sort']>>(
       `${ENDPOINT_HABITS}/${cid}/sort`,
       moveAction,

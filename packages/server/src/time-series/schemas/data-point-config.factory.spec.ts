@@ -19,7 +19,7 @@ const CheckboxNumberStrategy = DataPointConfigFactory.getStrategyName(
   DataPointInputType.Checkbox,
 );
 
-describe('TimeSeriesDataPointConfigFactory', () => {
+describe('DataPointConfigFactory', () => {
   describe('createConfig()', () => {
     it('create checkbox config without settings', async () => {
       const config = DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
@@ -33,10 +33,10 @@ describe('TimeSeriesDataPointConfigFactory', () => {
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
       expect(config.valueType).toEqual(DataPointValueType.Number);
       expect(config.min).toBeUndefined();
-      expect(config.max).toBeUndefined();
+      expect(config.max).toEqual(1);
       expect(config.optimal).toBeUndefined();
       expect(config.getSettings().min).toBeUndefined();
-      expect(config.getSettings().max).toBeUndefined();
+      expect(config.getSettings().max).toEqual(1);
       expect(config.getSettings().optimal).toBeUndefined();
     });
 

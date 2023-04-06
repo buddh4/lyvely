@@ -1,8 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { PropertyType } from '@/models';
 import { IsNumber } from 'class-validator';
-import { NumberDataPointModel } from '@/time-series';
-import { UpdateDataPointResponse } from '@/calendar-plan';
+import { NumberDataPointModel, UpdateDataPointResponse } from '@/time-series';
 
 @Exclude()
 export class UpdateHabitDataPointResponse extends UpdateDataPointResponse<UpdateHabitDataPointResponse> {

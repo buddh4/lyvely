@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { CalendarInterval, DataPointIntervalFilter, sortBySortOrder } from '@lyvely/common';
+import { CalendarInterval, CalendarPlanFilter, sortBySortOrder } from '@lyvely/common';
 import { Profile } from '@/profiles';
 import { createHabitTestingModule, HabitTestDataUtil } from '../test';
 import { HabitDataPointDao, HabitsDao } from '../daos';
@@ -39,8 +39,12 @@ describe('HabitTimeSeriesService', () => {
     it('find habit', async () => {
       const { user, profile } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
-      const filter = new DataPointIntervalFilter('2021-01-01');
-      const { models: habits } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter('2021-01-01');
+      const { models: habits } = await habitsTimeSeriesService.findTimeSeries(
+        profile,
+        user,
+        filter,
+      );
       expect(habits.length).toEqual(1);
       expect(habits[0].id).toEqual(habit.id);
     });
@@ -49,8 +53,8 @@ describe('HabitTimeSeriesService', () => {
       const { user, profile } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
       const log = await testData.createDataPoint(user, profile, habit, new Date());
-      const filter = new DataPointIntervalFilter(new Date());
-      const { dataPoints } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(new Date());
+      const { dataPoints } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       expect(dataPoints.length).toEqual(1);
       expect(dataPoints[0].id).toEqual(log.id);
     });
@@ -59,8 +63,8 @@ describe('HabitTimeSeriesService', () => {
       const { user, profile } = await testData.createUserAndProfile('user1');
       const habit = await testData.createHabit(user, profile);
       await testData.createDataPoint(user, profile, habit, HabitTestDataUtil.getDateTomorrow());
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateYesterday());
-      const { dataPoints } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateYesterday());
+      const { dataPoints } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       expect(dataPoints.length).toEqual(0);
     });
   });
@@ -144,8 +148,8 @@ describe('HabitTimeSeriesService', () => {
         habits[3],
       );
 
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h0');
@@ -168,8 +172,8 @@ describe('HabitTimeSeriesService', () => {
         habits[1],
       );
 
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h1');
@@ -191,8 +195,8 @@ describe('HabitTimeSeriesService', () => {
         habits[3].timeSeriesConfig.interval,
       );
 
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h3');
@@ -214,8 +218,8 @@ describe('HabitTimeSeriesService', () => {
         habits[4],
       );
 
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h0');
@@ -237,8 +241,8 @@ describe('HabitTimeSeriesService', () => {
         habits[2],
       );
 
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      const { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
+      const { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       sortHabits(models);
       expect(models.length).toEqual(5);
       expect(models[0].content.title).toEqual('h0');
@@ -264,8 +268,8 @@ describe('HabitTimeSeriesService', () => {
       expect(habits[0].timeSeriesConfig.history.length).toEqual(1);
       expect(habits[0].timeSeriesConfig.history[0].interval).toEqual(CalendarInterval.Daily);
 
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
+      let { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       models = models.filter(
         (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );
@@ -290,8 +294,8 @@ describe('HabitTimeSeriesService', () => {
         habits[2].timeSeriesConfig.interval,
       );
 
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
+      let { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       models = models.filter(
         (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );
@@ -317,8 +321,8 @@ describe('HabitTimeSeriesService', () => {
         habits[4],
       );
 
-      const filter = new DataPointIntervalFilter(HabitTestDataUtil.getDateTomorrow());
-      let { models } = await habitsTimeSeriesService.findByFilter(profile, user, filter);
+      const filter = new CalendarPlanFilter(HabitTestDataUtil.getDateTomorrow());
+      let { models } = await habitsTimeSeriesService.findTimeSeries(profile, user, filter);
       models = models.filter(
         (model) => model.timeSeriesConfig.interval === CalendarInterval.Weekly,
       );

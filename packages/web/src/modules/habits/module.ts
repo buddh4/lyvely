@@ -17,15 +17,15 @@ export default () => {
           create: {
             mode: 'modal',
             modelClass: CreateHabitModel,
-            component: () => import('./common/components/modals/EditHabitModal.vue'),
+            component: () => import('./components/modals/EditHabitModal.vue'),
           },
           edit: {
             mode: 'modal',
-            component: () => import('./common/components/modals/EditHabitModal.vue'),
+            component: () => import('./components/modals/EditHabitModal.vue'),
           },
           stream: {
-            details: () => import('./stream/components/HabitDetails.vue'),
-            entry: () => import('./stream/components/HabitStreamEntry.vue'),
+            details: () => import('./components/content-stream/HabitDetails.vue'),
+            entry: () => import('./components/content-stream/HabitStreamEntry.vue'),
           },
         },
       });

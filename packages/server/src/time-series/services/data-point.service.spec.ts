@@ -3,7 +3,8 @@ import { TestingModule } from '@nestjs/testing';
 import { createContentTestingModule, TestDataUtils } from '@/test';
 import {
   CalendarInterval,
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
+  DataPointValueType,
   toTimingId,
   UserAssignmentStrategy,
 } from '@lyvely/common';
@@ -15,24 +16,23 @@ import {
 } from '../test';
 import { Content, ContentSchema } from '@/content';
 import { Model } from 'mongoose';
-import {
-  CheckboxNumberDataPointConfig,
-  NumberDataPoint,
-  NumberDataPointSchema,
-} from '@/time-series';
+import { CheckboxNumberDataPointConfig, getDataPointModelDefinition } from '@/time-series';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
 import { TestTimeSeriesService } from '@/time-series/test/test-time-series.service';
 import { TestTimeSeriesContentDao } from '@/time-series/test/test-time-series-content.dao';
 
 const Models = [
-  { name: NumberDataPoint.name, schema: NumberDataPointSchema },
   {
     name: Content.name,
     collection: Content.collectionName(),
     schema: ContentSchema,
     discriminators: [{ name: TestTimeSeriesContent.name, schema: TestTimeSeriesContentSchema }],
   },
+  getDataPointModelDefinition(TestTimeSeriesContent.name, [
+    DataPointValueType.Number,
+    DataPointValueType.Timer,
+  ]),
 ];
 
 describe('DataPointService', () => {
@@ -42,7 +42,7 @@ describe('DataPointService', () => {
   // let dataPointService: TestDataPointService;
   let TestNumberTimeSeriesContentModel: Model<TestTimeSeriesContent>;
 
-  const TEST_KEY = 'NumberDataPointService';
+  const TEST_KEY = 'DataPointService';
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(
@@ -131,7 +131,7 @@ describe('DataPointService', () => {
 
       expect(ownerDataPoint._id).not.toEqual(memberDataPoint._id);
 
-      const filter = new DataPointIntervalFilter(date);
+      const filter = new CalendarPlanFilter(date);
       const ownerDataPoints = await service.findByIntervalLevel(profile, owner, filter);
       const memberDataPoints = await service.findByIntervalLevel(profile, member, filter);
 
@@ -165,7 +165,7 @@ describe('DataPointService', () => {
 
       expect(ownerDataPoint._id).toEqual(memberDataPoint._id);
 
-      const filter = new DataPointIntervalFilter(date);
+      const filter = new CalendarPlanFilter(date);
       const ownerDataPoints = await service.findByIntervalLevel(profile, owner, filter);
       const memberDataPoints = await service.findByIntervalLevel(profile, member, filter);
 

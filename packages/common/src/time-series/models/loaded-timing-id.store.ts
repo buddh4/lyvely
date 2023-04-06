@@ -1,5 +1,5 @@
 import { CalendarDate, toTimingId } from '@/calendar';
-import { DataPointIntervalFilter } from '../models';
+import { CalendarPlanFilter } from '@/calendar-plan';
 
 export class LoadedTimingIdStore {
   private loadedTimingIds: Set<string> = new Set<string>();
@@ -22,19 +22,19 @@ export class LoadedTimingIdStore {
     return requiredTimingIds.filter((requiredId) => !this.loadedTimingIds.has(requiredId));
   }
 
-  getDataPointIntervalFilter(date: CalendarDate): DataPointIntervalFilter | false {
+  getCalendarPlanFilter(date: CalendarDate): CalendarPlanFilter | false {
     const tid = toTimingId(date);
 
     if (this.loadedTimingIds.has(tid)) {
       return false;
     }
 
-    // Note: In an earlier implementation TimeSeriesRangeFilter was used instead of DataPointIntervalFilter
+    // Note: In an earlier implementation TimeSeriesRangeFilter was used instead of CalendarPlanFilter
     //const tids = getTimingIdsByRange(new TimeSeriesRangeFilter({ from: date, to: date }));
 
     // TODO: Filter out already loaded levels
     // If we've already loaded today, we do not need to lead this year again so level is daily (unless week changed)
 
-    return new DataPointIntervalFilter(date);
+    return new CalendarPlanFilter(date);
   }
 }

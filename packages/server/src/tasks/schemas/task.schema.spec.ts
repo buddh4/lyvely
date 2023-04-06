@@ -1,11 +1,6 @@
 import { getObjectId } from '@/test';
 import { Task } from './index';
-import {
-  DataPointInputType,
-  DataPointValueType,
-  toTimingId,
-  UserAssignmentStrategy,
-} from '@lyvely/common';
+import { CalendarInterval, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
 import { expect } from '@jest/globals';
@@ -16,11 +11,8 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.Shared,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.Shared,
         },
       });
 
@@ -41,11 +33,8 @@ describe('Task', () => {
 
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.Shared,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.Shared,
         },
       });
 
@@ -67,11 +56,8 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.PerUser,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.PerUser,
         },
       });
 
@@ -92,11 +78,8 @@ describe('Task', () => {
 
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.PerUser,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.PerUser,
         },
       });
 
@@ -124,11 +107,8 @@ describe('Task', () => {
 
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.PerUser,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.PerUser,
         },
       });
 
@@ -157,11 +137,8 @@ describe('Task', () => {
       const user1 = new User({ _id: getObjectId('user1') });
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.Shared,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.PerUser,
         },
       });
 
@@ -180,11 +157,8 @@ describe('Task', () => {
 
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.Shared,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.Shared,
         },
       });
 
@@ -203,11 +177,8 @@ describe('Task', () => {
 
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.PerUser,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.PerUser,
         },
       });
 
@@ -230,11 +201,8 @@ describe('Task', () => {
 
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.PerUser,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.PerUser,
         },
       });
 
@@ -258,11 +226,8 @@ describe('Task', () => {
 
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.Shared,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.Shared,
         },
       });
 
@@ -283,11 +248,8 @@ describe('Task', () => {
 
       const task = new Task(new Profile(user1), user1, {
         config: {
-          timeSeries: {
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.PerUser,
-          },
+          interval: CalendarInterval.Daily,
+          userStrategy: UserAssignmentStrategy.PerUser,
         },
       });
 

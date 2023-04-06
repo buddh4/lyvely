@@ -20,7 +20,7 @@ export default [
           layout: 'profile',
           title: () => translate('habits.title'),
         },
-        component: () => import('../../habits/calendar-plan/components/HabitCalendarPlan.vue'),
+        component: () => import('../../habits/components//calendar-plan/HabitCalendarPlan.vue'),
         beforeEnter: [() => useActivityStore().setActiveView('Habits')],
       },
       {

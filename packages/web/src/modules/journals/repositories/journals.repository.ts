@@ -1,8 +1,8 @@
 import repository from '@/repository';
 import {
   ENDPOINT_JOURNALS,
-  DataPointIntervalFilter,
-  SortAction,
+  CalendarPlanFilter,
+  CalendarPlanSort,
   EndpointResult,
   IJournalsEndpointService,
   UpdateDataPointModel,
@@ -25,7 +25,7 @@ export default {
     );
   },
 
-  async getByFilter(filter: DataPointIntervalFilter) {
+  async getByFilter(filter: CalendarPlanFilter) {
     return repository.get<EndpointResult<IJournalsEndpointService['getByFilter']>>(
       `${ENDPOINT_JOURNALS}`,
       {
@@ -34,10 +34,10 @@ export default {
     );
   },
 
-  async sort(cid: string, moveAction: SortAction) {
+  async sort(cid: string, sort: CalendarPlanSort) {
     return repository.post<EndpointResult<IJournalsEndpointService['sort']>>(
       `${ENDPOINT_JOURNALS}/${cid}/sort`,
-      moveAction,
+      sort,
     );
   },
 

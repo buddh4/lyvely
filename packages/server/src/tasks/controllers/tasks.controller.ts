@@ -19,12 +19,12 @@ import {
   CreateTaskModel,
   TimerValueUpdateModel,
   TimerModel,
-  DataPointIntervalFilter,
-  SortAction,
+  CalendarPlanFilter,
+  CalendarPlanSort,
   SortResponse,
   TaskSearchResponse,
 } from '@lyvely/common';
-import { TasksService } from '../services';
+import { TasksService, TaskCalendarPlanService } from '../services';
 import {
   AbstractContentTypeController,
   ContentTypeController,
@@ -33,7 +33,6 @@ import {
 } from '@/content';
 import { Policies } from '@/policies';
 import { ProfileRequest } from '@/profiles';
-import { TaskTimeSeriesService } from '@/tasks/services/task-time-series.service';
 
 @ContentTypeController('tasks', Task)
 // TODO: implement feature registration @Feature('tasks')
@@ -46,7 +45,7 @@ export class TasksController
   protected readonly contentService: TasksService;
 
   @Inject()
-  protected timeSeriesService: TaskTimeSeriesService;
+  protected calendarPlanService: TaskCalendarPlanService;
 
   protected updateResponseType = UpdateTaskResponse;
   protected createModelType = CreateTaskModel;
@@ -54,11 +53,11 @@ export class TasksController
 
   @Get()
   async getByFilter(
-    @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
+    @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
     @Request() req: ProfileRequest,
   ): Promise<TaskSearchResponse> {
     const { profile, user } = req;
-    const { models, dataPoints } = await this.timeSeriesService.findByFilter(profile, user, filter);
+    const models = await this.calendarPlanService.findByFilter(profile, user, filter);
     return new TaskSearchResponse({
       models: models.map((c) => c.toModel()),
     });
@@ -66,9 +65,9 @@ export class TasksController
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: SortAction, @Request() req: ProfileContentRequest<Task>) {
+  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileContentRequest<Task>) {
     const { profile, user, content } = req;
-    const sort = await this.timeSeriesService.sort(
+    const sort = await this.calendarPlanService.sort(
       profile,
       user,
       content,

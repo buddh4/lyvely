@@ -2,7 +2,7 @@ import { DataPointModel } from '../models/data-point.model';
 import { TimeSeriesContentModel } from './time-series-content.model';
 import { useDataPointStrategyFacade } from '../components';
 import { CalendarPlanStore } from '@/calendar-plan/models/calendar-plan.store';
-import { ITimeSeriesCalendarPlanResponse } from '@/time-series';
+import { ITimeSeriesCalendarPlanResponse } from '@/time-series/interfaces';
 
 type TimeSeriesContentIdentity = TimeSeriesContentModel | string;
 

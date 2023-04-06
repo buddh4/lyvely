@@ -1,8 +1,8 @@
 import {
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   IJournalsEndpointService,
   JournalModel,
-  SortAction,
+  CalendarPlanSort,
   SortResponse,
   useSingleton,
   useDataPointStrategyFacade,
@@ -26,7 +26,7 @@ export class JournalsService implements IJournalsEndpointService {
     return unwrapAndTransformResponse(repository.update(id, model), UpdateJournalResponse);
   }
 
-  async getByFilter(filter: DataPointIntervalFilter) {
+  async getByFilter(filter: CalendarPlanFilter) {
     const { models, dataPoints } = await unwrapResponse(repository.getByFilter(filter));
     return {
       models: models.map((journal) => new JournalModel(journal)),
@@ -44,8 +44,8 @@ export class JournalsService implements IJournalsEndpointService {
     );
   }
 
-  async sort(cid: string, move: SortAction): Promise<SortResponse> {
-    return unwrapAndTransformResponse(repository.sort(cid, move), SortResponse);
+  async sort(cid: string, sort: CalendarPlanSort): Promise<SortResponse> {
+    return unwrapAndTransformResponse(repository.sort(cid, sort), SortResponse);
   }
 }
 

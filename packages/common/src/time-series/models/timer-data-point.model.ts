@@ -1,19 +1,13 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { DataPointModel } from './data-point.model';
-import {
-  DataPointValueType,
-  IDataPoint,
-  IDataPointConfig,
-  ITimerDataPointConfig,
-} from '../interfaces';
+import { DataPointValueType, IDataPointConfig, ITimerDataPointConfig } from '../interfaces';
 import { BaseModel, PropertyType } from '@/models';
-import { Type as TransformType } from 'class-transformer/types/decorators/type.decorator';
 import { TimerModel } from '@/calendar';
 import { IsNumber, Min, ValidateNested } from 'class-validator';
 
 export class TimerDataPointValueModel extends BaseModel<TimerDataPointValueModel> {
   @Expose()
-  @TransformType(() => TimerModel)
+  @Type(() => TimerModel)
   @PropertyType(TimerModel)
   @ValidateNested()
   timer: TimerModel;
@@ -27,7 +21,7 @@ export class TimerDataPointValueModel extends BaseModel<TimerDataPointValueModel
 
 export class TimerDataPointModel extends DataPointModel<TimerDataPointModel> {
   @Expose()
-  @TransformType(() => TimerDataPointValueModel)
+  @Type(() => TimerDataPointValueModel)
   @PropertyType(TimerDataPointValueModel)
   value: TimerDataPointValueModel;
 

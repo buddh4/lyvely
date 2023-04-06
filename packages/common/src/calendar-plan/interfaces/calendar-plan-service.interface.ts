@@ -1,16 +1,25 @@
-import { DataPointIntervalFilter } from '@/time-series';
+import { ICalendarPlanEntry } from './calendar-plan-entry.interface';
 import { SortResponse } from '@/models';
-import { SortAction } from '../models';
-import { ICalendarPlanEntry } from '@/calendar-plan';
+import { CalendarInterval } from '@/calendar';
 
 export interface ICalendarPlanResponse<TModel extends ICalendarPlanEntry> {
   models: TModel[];
+}
+
+export interface ICalendarPlanSort {
+  attachToId?: string;
+  interval: CalendarInterval;
+}
+
+export interface ICalendarPlanFilter {
+  date?: string;
+  level: CalendarInterval;
 }
 
 export interface ICalendarPlanService<
   TModel extends ICalendarPlanEntry,
   TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
 > {
-  getByFilter(filter: DataPointIntervalFilter): Promise<TResponse>;
-  sort(cid: string, move: SortAction): Promise<SortResponse>;
+  getByFilter(filter: ICalendarPlanFilter): Promise<TResponse>;
+  sort(cid: string, move: ICalendarPlanSort): Promise<SortResponse>;
 }

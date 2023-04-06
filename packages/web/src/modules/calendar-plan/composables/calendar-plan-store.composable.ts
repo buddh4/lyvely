@@ -4,7 +4,7 @@ import {
   LoadedTimingIdStore,
   toTimingId,
   ICalendarPlanService,
-  SortAction,
+  CalendarPlanSort,
   getCalendarIntervalArray,
   ICalendarPlanEntry,
   CalendarPlanStore,
@@ -78,7 +78,7 @@ export function useCalendarPlan<
   async function loadModels() {
     if (!profile.value) return;
 
-    const intervalFilter = tidCache.value.getDataPointIntervalFilter(date.value);
+    const intervalFilter = tidCache.value.getCalendarPlanFilter(date.value);
 
     if (intervalFilter === false) {
       status.setStatus(Status.SUCCESS);
@@ -128,7 +128,7 @@ export function useCalendarPlan<
     try {
       const sortResult = await service.sort(
         model.id,
-        new SortAction({ interval: moveEvent.toInterval, attachToId: attachTo?.id }),
+        new CalendarPlanSort({ interval: moveEvent.toInterval, attachToId: attachTo?.id }),
       );
 
       sortResult.sort.forEach((update) => {

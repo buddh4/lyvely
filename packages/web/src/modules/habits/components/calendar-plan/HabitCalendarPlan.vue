@@ -5,7 +5,7 @@ import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/CalendarPlanFilterNavigation.vue';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
-import HabitCalendarPlanSection from '@/modules/habits/calendar-plan/components/HabitCalendarPlanSection.vue';
+import HabitCalendarPlanSection from '@/modules/habits/components/calendar-plan/HabitCalendarPlanSection.vue';
 import { onBeforeMount, onUnmounted } from 'vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { translate } from '@/i18n';

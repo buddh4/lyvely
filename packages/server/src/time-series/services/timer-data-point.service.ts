@@ -42,6 +42,7 @@ export abstract class TimerDataPointService<
         date,
         dataPoint.value,
       );
+
       return updatedDataPoint as TimerDataPoint;
     }
   }

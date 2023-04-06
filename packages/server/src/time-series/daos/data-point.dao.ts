@@ -1,9 +1,15 @@
 import { DataPointStrategyDao } from './data-point-strategy.dao';
-import { DataPoint, TextDataPoint, NumberDataPoint, SelectionDataPoint } from '../schemas';
-import { DataPointValueType } from '@lyvely/common';
+import {
+  DataPoint,
+  TextDataPoint,
+  NumberDataPoint,
+  SelectionDataPoint,
+  TimerDataPoint,
+} from '../schemas';
+import { DataPointValueType, IntegrityException } from '@lyvely/common';
 
 export abstract class DataPointDao extends DataPointStrategyDao<DataPoint> {
-  getModelConstructor(model?: Partial<DataPoint>) {
+  getModelConstructor(model: Partial<DataPoint>) {
     switch (model.valueType) {
       case DataPointValueType.Text:
         return TextDataPoint;
@@ -11,8 +17,10 @@ export abstract class DataPointDao extends DataPointStrategyDao<DataPoint> {
         return NumberDataPoint;
       case DataPointValueType.Selection:
         return SelectionDataPoint;
+      case DataPointValueType.Timer:
+        return TimerDataPoint;
     }
 
-    return DataPoint;
+    throw new IntegrityException('Unknown data point value type: ' + model.valueType);
   }
 }

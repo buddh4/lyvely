@@ -1,7 +1,7 @@
 import { CalendarInterval } from '@/calendar';
 import { sortBySortOrder } from '@/models';
 import { ContentFilter } from '@/content';
-import { ICalendarPlanEntry, ICalendarPlanResponse } from '@/calendar-plan';
+import { ICalendarPlanEntry, ICalendarPlanResponse } from '../interfaces';
 
 type TimeSeriesContentIdentity = ICalendarPlanEntry | string;
 

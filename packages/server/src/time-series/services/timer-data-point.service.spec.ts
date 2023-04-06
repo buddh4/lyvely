@@ -1,12 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createContentTestingModule, TestDataUtils } from '@/test';
-import {
-  CalendarInterval,
-  DataPointIntervalFilter,
-  toTimingId,
-  UserAssignmentStrategy,
-} from '@lyvely/common';
+import { CalendarInterval, DataPointValueType, UserAssignmentStrategy } from '@lyvely/common';
 import {
   TestDataPointDao,
   TestDataPointService,
@@ -15,25 +10,19 @@ import {
 } from '../test';
 import { Content, ContentSchema } from '@/content';
 import { Model } from 'mongoose';
-import {
-  CheckboxNumberDataPointConfig,
-  NumberDataPoint,
-  NumberDataPointSchema,
-} from '@/time-series';
+import { getDataPointModelDefinition, TimerDataPointConfig } from '@/time-series';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
-import { TestTimeSeriesService } from '@/time-series/test/test-time-series.service';
-import { TestTimeSeriesContentDao } from '@/time-series/test/test-time-series-content.dao';
 import { TestTimerDataPointService } from '@/time-series/test/test-timer-data-point.service';
 
 const Models = [
-  { name: NumberDataPoint.name, schema: NumberDataPointSchema },
   {
     name: Content.name,
     collection: Content.collectionName(),
     schema: ContentSchema,
     discriminators: [{ name: TestTimeSeriesContent.name, schema: TestTimeSeriesContentSchema }],
   },
+  getDataPointModelDefinition(TestTimeSeriesContent.name, [DataPointValueType.Timer]),
 ];
 
 describe('TimerDataPointService', () => {
@@ -41,19 +30,19 @@ describe('TimerDataPointService', () => {
   let testData: TestDataUtils;
   let service: TestTimerDataPointService;
   // let dataPointService: TestDataPointService;
-  let TestNumberTimeSeriesContentModel: Model<TestTimeSeriesContent>;
+  let TestTimeSeriesContentModel: Model<TestTimeSeriesContent>;
 
   const TEST_KEY = 'NumberDataPointService';
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(
       TEST_KEY,
-      [TestDataPointDao, TestDataPointService, TestTimeSeriesContentDao, TestTimeSeriesService],
+      [TestDataPointDao, TestDataPointService, TestTimerDataPointService],
       Models,
     ).compile();
     testData = testingModule.get(TestDataUtils);
     service = testingModule.get(TestTimerDataPointService);
-    TestNumberTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
+    TestTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
   });
 
   async function createTimeSeriesContent(
@@ -64,7 +53,7 @@ describe('TimerDataPointService', () => {
     const data = {
       someTestField: 'Testing...',
       config: {
-        timeSeries: new CheckboxNumberDataPointConfig({
+        timeSeries: new TimerDataPointConfig({
           min: 0,
           max: 5,
           optimal: 3,
@@ -75,7 +64,7 @@ describe('TimerDataPointService', () => {
     };
 
     const model = new TestTimeSeriesContent(profile, user, data as any);
-    const entity = new TestNumberTimeSeriesContentModel(model);
+    const entity = new TestTimeSeriesContentModel(model);
     await entity.save();
     return new TestTimeSeriesContent(profile, user, entity.toObject());
   }

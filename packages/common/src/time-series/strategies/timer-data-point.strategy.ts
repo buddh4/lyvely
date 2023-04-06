@@ -58,4 +58,4 @@ export class TimerDataPointStrategy extends DataPointStrategy<
   }
 }
 
-useDataPointStrategyFacade().registerType(DataPointValueType.Text, new TimerDataPointStrategy());
+useDataPointStrategyFacade().registerType(DataPointValueType.Timer, new TimerDataPointStrategy());

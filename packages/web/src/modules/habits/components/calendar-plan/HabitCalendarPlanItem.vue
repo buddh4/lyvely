@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { HabitModel, NumberDataPointModel } from '@lyvely/common';
+import { HabitModel, isNumberDataPointConfig, NumberDataPointModel } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
@@ -68,6 +68,7 @@ const timer = computed(() => dataPoint.value.timer!);
     </template>
     <template #rating>
       <calendar-plan-number-input
+        v-if="isNumberDataPointConfig(model.timeSeriesConfig)"
         v-model="selection"
         :config="model.timeSeriesConfig"
         :timer="timer"

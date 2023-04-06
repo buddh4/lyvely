@@ -9,9 +9,9 @@ import {
   TimerUpdateModel,
   UpdateHabitModel,
   NumberDataPointModel,
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   HabitSearchResponse,
-  SortAction,
+  CalendarPlanSort,
   SortResponse,
 } from '@lyvely/common';
 import { HabitsService, HabitDataPointService, HabitTimeSeriesService } from '../services';
@@ -50,11 +50,15 @@ export class HabitsController
 
   @Get()
   async getByFilter(
-    @Query(new ValidationPipe({ transform: true })) filter: DataPointIntervalFilter,
+    @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
     @Request() req: ProfileRequest,
   ): Promise<HabitSearchResponse> {
     const { profile, user } = req;
-    const { models, dataPoints } = await this.timeSeriesService.findByFilter(profile, user, filter);
+    const { models, dataPoints } = await this.timeSeriesService.findTimeSeries(
+      profile,
+      user,
+      filter,
+    );
     return new HabitSearchResponse({
       models: models.map((c) => c.toModel()),
       dataPoints: dataPoints.map((value) =>
@@ -65,7 +69,7 @@ export class HabitsController
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: SortAction, @Request() req: ProfileContentRequest<Habit>) {
+  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
     const sort = await this.timeSeriesService.sort(
       profile,

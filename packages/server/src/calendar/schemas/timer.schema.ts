@@ -47,7 +47,9 @@ export class Timer extends TimerModel {
   }
 
   afterInit() {
-    this.uid = assureObjectId(this.uid);
+    if (this.uid) {
+      this.uid = assureObjectId(this.uid);
+    }
   }
 }
 

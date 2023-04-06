@@ -7,11 +7,12 @@ import {
   formatDate,
   DataPointModel,
 } from '@lyvely/common';
-import { useCalendarPlan, useCalendarPlanStore } from '@/modules/calendar-plan';
+import { useCalendarPlanStore } from '@/modules/calendar-plan';
 import { useJournalsService } from '@/modules/journals/services/journals.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { useContentStore } from '@/modules/content/stores/content.store';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { useTimeSeriesCalendarPlan } from '@/modules/time-series';
 
 export const useJournalPlanStore = defineStore('journal-plan', () => {
   const calendarPlanStore = useCalendarPlanStore();
@@ -23,7 +24,7 @@ export const useJournalPlanStore = defineStore('journal-plan', () => {
   contentStore.onContentCreated(JournalModel.contentType, addJournal);
   contentStore.onContentUpdated(JournalModel.contentType, addJournal);
 
-  const calendarPlan = useCalendarPlan<JournalModel, JournalFilter>({
+  const calendarPlan = useTimeSeriesCalendarPlan<JournalModel, JournalFilter>({
     filter: new JournalFilter(),
     cache: new JournalDataPointStore(),
     service: journalsService,
@@ -31,6 +32,7 @@ export const useJournalPlanStore = defineStore('journal-plan', () => {
 
   const { cache } = calendarPlan;
 
+  // TODO: move this into timeSeriesCalendarPlan composable
   function getDataPoint(model: JournalModel) {
     const timingId = toTimingId(
       calendarPlanStore.date,

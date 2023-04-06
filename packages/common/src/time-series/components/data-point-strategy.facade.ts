@@ -1,6 +1,5 @@
-import { DataPointModel } from '../models';
 import { PropertiesOf, useSingleton } from '@/utils';
-import { IDataPointConfig, IDataPointStrategy } from '../interfaces';
+import { IDataPoint, IDataPointConfig, IDataPointStrategy } from '../interfaces';
 import { IntegrityException } from '@/exceptions';
 
 export class DataPointStrategyFacade {
@@ -26,7 +25,7 @@ export class DataPointStrategyFacade {
     return this.getService(config.valueType).populateDataPointConfig(target, config);
   }
 
-  createDataPoint(raw: PropertiesOf<DataPointModel>): DataPointModel {
+  createDataPoint(raw: PropertiesOf<IDataPoint>): IDataPoint {
     return this.getService(raw.valueType).createDataPoint(raw);
   }
 

@@ -6,3 +6,4 @@ export * from './selection-data-point.interface';
 export * from './timer-data-point.interface';
 export * from './time-series-calendar-plan-service.interface';
 export * from './exceptions';
+export * from './time-series-content.interface';

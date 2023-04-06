@@ -8,6 +8,8 @@ import {
   CalendarInterval,
   CreateHabitModel,
   toDate,
+  DataPointValueType,
+  DataPointInputType,
 } from '@lyvely/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -25,8 +27,7 @@ import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
 import { createContentTestingModule, TestDataUtils } from '@/test';
 import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@/core';
-import { DataPoint, DataPointSchema, NumberDataPoint } from '@/time-series';
-import { Journal, JournalSchema } from '@/journals/schemas';
+import { DataPoint, getDataPointModelDefinition, NumberDataPoint } from '@/time-series';
 
 @Injectable()
 export class HabitTestDataUtil extends TestDataUtils {
@@ -34,7 +35,7 @@ export class HabitTestDataUtil extends TestDataUtils {
   protected HabitModel: Model<HabitDocument>;
 
   @InjectModel(DataPoint.name)
-  protected HabitDataPointModel: Model<NumberDataPoint>;
+  protected HabitDataPointModel: Model<DataPoint>;
 
   static getDateToday(): Date {
     return new Date();
@@ -86,8 +87,15 @@ export class HabitTestDataUtil extends TestDataUtils {
     data?: Partial<CreateHabitModel>,
     overwrite?: (habit: Habit) => void,
   ): Promise<Habit> {
-    const initData = <CreateHabitModel>(
-      Object.assign({}, { title: 'test', interval: CalendarInterval.Daily }, data || {})
+    const initData = <CreateHabitModel>Object.assign(
+      {},
+      {
+        title: 'test',
+        interval: CalendarInterval.Daily,
+        valueType: DataPointValueType.Number,
+        inputType: DataPointInputType.Checkbox,
+      },
+      data || {},
     );
     const model = Habit.create(profile, user, initData);
     if (overwrite) overwrite(model);
@@ -111,7 +119,7 @@ export function createHabitTestingModule(
   providers.push(HabitTestDataUtil);
   models.push(
     getContentModelDefinition([{ name: Habit.name, schema: HabitSchema }]),
-    { name: DataPoint.name, collection: 'habitdatapoints', schema: DataPointSchema },
+    getDataPointModelDefinition(Habit.name, [DataPointValueType.Number, DataPointValueType.Timer]),
     getContentScoreDefinition([{ name: HabitScore.name, schema: HabitScoreSchema }]),
   );
   return createContentTestingModule(key, providers, models, modules);

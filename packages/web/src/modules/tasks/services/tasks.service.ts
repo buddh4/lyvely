@@ -10,9 +10,9 @@ import {
   formatDate,
   TimerModel,
   TimerValueUpdateModel,
-  DataPointIntervalFilter,
+  CalendarPlanFilter,
   ICalendarPlanResponse,
-  SortAction,
+  CalendarPlanSort,
   SortResponse,
   TaskModel,
 } from '@lyvely/common';
@@ -21,14 +21,14 @@ import repository from '../repositories/tasks.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 
 export class TasksService implements ITasksEndpointService {
-  async getByFilter(filter: DataPointIntervalFilter): Promise<ICalendarPlanResponse<TaskModel>> {
+  async getByFilter(filter: CalendarPlanFilter): Promise<ICalendarPlanResponse<TaskModel>> {
     const { models } = await unwrapResponse(repository.getByFilter(filter));
     return {
       models: models.map((task) => new TaskModel(task)),
     };
   }
 
-  sort(cid: string, move: SortAction): Promise<SortResponse> {
+  sort(cid: string, move: CalendarPlanSort): Promise<SortResponse> {
     return unwrapAndTransformResponse(repository.sort(cid, move), SortResponse);
   }
 

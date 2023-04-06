@@ -35,6 +35,7 @@ const TestTimeSeriesConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
   [
     DataPointConfigFactory.getStrategyName(DataPointValueType.Number, DataPointInputType.Checkbox),
     DataPointConfigFactory.getStrategyName(DataPointValueType.Text, DataPointInputType.Textarea),
+    DataPointConfigFactory.getStrategyName(DataPointValueType.Timer, DataPointInputType.Timer),
   ],
 );
 

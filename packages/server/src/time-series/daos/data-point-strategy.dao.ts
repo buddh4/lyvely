@@ -2,7 +2,7 @@ import { AbstractDao, assureObjectId, EntityIdentity } from '@/core';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { DataPoint, TimeSeriesContent } from '../schemas';
-import { getTimingIds, DataPointIntervalFilter, CalendarInterval } from '@lyvely/common';
+import { getTimingIds, CalendarPlanFilter, CalendarInterval } from '@lyvely/common';
 
 type InterValFilter = { interval: CalendarInterval; tid?: string | { $regex: RegExp } };
 
@@ -14,10 +14,16 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
     dataPoint: DataPoint<any>,
     value: T['value'],
   ) {
-    return await this.updateOneSetById(dataPoint as EntityIdentity<T>, {
-      valueType: dataPoint.valueType,
-      value,
-    });
+    return await this.updateOneSetById(
+      dataPoint as EntityIdentity<T>,
+      {
+        valueType: dataPoint.valueType,
+        value,
+      },
+      {
+        discriminator: dataPoint.constructor.name,
+      },
+    );
   }
 
   async findDataPointByTid(content: TimeSeriesContent<any>, tid: string) {
@@ -64,7 +70,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
   async findByIntervalLevel(
     profile: Profile,
     uid: EntityIdentity<User> | null,
-    filter: DataPointIntervalFilter,
+    filter: CalendarPlanFilter,
   ) {
     // If no uid is given we assume visitor role
     const uidFilter = uid
@@ -82,7 +88,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
     });
   }
 
-  private buildTimingIntervalFilter(profile: Profile, filter: DataPointIntervalFilter) {
+  private buildTimingIntervalFilter(profile: Profile, filter: CalendarPlanFilter) {
     const timingIds = getTimingIds(filter.date, profile.locale);
     const relevantTids = [];
 
@@ -103,7 +109,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
    * @param filter
    * @private
    */
-  private buildTimingRegexIntervalFilter(profile: Profile, filter: DataPointIntervalFilter) {
+  private buildTimingRegexIntervalFilter(profile: Profile, filter: CalendarPlanFilter) {
     const timingIds = getTimingIds(filter.date, profile.locale);
     const dailyFilter = {
       interval: CalendarInterval.Daily,

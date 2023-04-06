@@ -25,7 +25,7 @@ export class TimerDataPoint extends DataPoint<TimerDataPoint> {
   value: TimerDataPointValue;
 
   afterInit() {
-    this.valueType = DataPointValueType.Number;
+    this.valueType = DataPointValueType.Timer;
   }
 
   isTimerStarted() {

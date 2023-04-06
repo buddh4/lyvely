@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import HabitCalendarPlanItem from '@/modules/habits/calendar-plan/components/HabitCalendarPlanItem.vue';
+import HabitCalendarPlanItem from '@/modules/habits/components/calendar-plan/HabitCalendarPlanItem.vue';
 import CalendarPlanSection from '@/modules/calendar-plan/components/CalendarPlanSection.vue';
 import { computed } from 'vue';
 import Draggable from 'vuedraggable';
