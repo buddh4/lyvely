@@ -88,8 +88,7 @@ export function useCalendarPlan<
     // TODO: Check if date already loaded + implement interval level query
 
     try {
-      const response = await loadingStatus(service.getByFilter(intervalFilter), status);
-      cache.value.setModels(response.models);
+      cache.value.handleResponse(await loadingStatus(service.getByFilter(intervalFilter), status));
     } catch (e) {
       DialogExceptionHandler('An unknown error occurred while loading models.', this)(e);
     }

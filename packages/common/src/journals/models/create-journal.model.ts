@@ -39,7 +39,7 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
 
   @IsString()
   @IsEnum([DataPointValueType.Number, DataPointValueType.Timer, DataPointValueType.Selection])
-  valueType: DataPointValueType;
+  valueType: string;
 
   @Expose()
   @IsEnum(DataPointInputType)

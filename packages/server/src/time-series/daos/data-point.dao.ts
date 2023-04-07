@@ -1,26 +1,14 @@
 import { DataPointStrategyDao } from './data-point-strategy.dao';
-import {
-  DataPoint,
-  TextDataPoint,
-  NumberDataPoint,
-  SelectionDataPoint,
-  TimerDataPoint,
-} from '../schemas';
-import { DataPointValueType, IntegrityException } from '@lyvely/common';
+import { DataPoint } from '../schemas';
+import { IntegrityException } from '@lyvely/common';
+import { DataPointSchemaFactory } from '@/time-series/schemas/data-points/data-point-schema.factory';
 
 export abstract class DataPointDao extends DataPointStrategyDao<DataPoint> {
   getModelConstructor(model: Partial<DataPoint>) {
-    switch (model.valueType) {
-      case DataPointValueType.Text:
-        return TextDataPoint;
-      case DataPointValueType.Number:
-        return NumberDataPoint;
-      case DataPointValueType.Selection:
-        return SelectionDataPoint;
-      case DataPointValueType.Timer:
-        return TimerDataPoint;
-    }
+    const result = DataPointSchemaFactory.getModelType(model.valueType);
 
-    throw new IntegrityException('Unknown data point value type: ' + model.valueType);
+    if (!result) throw new IntegrityException('Unknown data point value type: ' + model.valueType);
+
+    return result;
   }
 }

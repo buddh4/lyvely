@@ -25,7 +25,7 @@ export abstract class DataPointConfig<
     required: true,
     default: DataPointValueType.Number,
   })
-  valueType: DataPointValueType;
+  valueType: string;
 
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
   inputType: DataPointInputType;
@@ -69,11 +69,7 @@ export abstract class DataPointConfig<
     return isEqual(cfg.getSettings(), this.getSettings());
   }
 
-  constructor(
-    DataPointValueType: DataPointValueType,
-    inputType: DataPointInputType,
-    settings?: TSettings,
-  ) {
+  constructor(DataPointValueType: string, inputType: DataPointInputType, settings?: TSettings) {
     this.valueType = DataPointValueType;
     this.inputType = inputType;
     this.interval = settings?.interval;
@@ -93,7 +89,7 @@ export abstract class DataPointConfigRevision implements IDataPointConfigRevisio
     required: true,
     default: DataPointValueType.Number,
   })
-  valueType: DataPointValueType;
+  valueType: string;
 
   @Prop({ enum: getStringEnumValues(DataPointInputType), required: true })
   inputType?: DataPointInputType;

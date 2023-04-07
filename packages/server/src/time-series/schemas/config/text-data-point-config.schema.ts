@@ -37,9 +37,14 @@ export class TextDataPointConfig
   extends DataPointConfig<ITextDataPointSettings>
   implements ITextDataPointConfig
 {
-  @Prop({ enum: [DataPointValueType.Text], required: true, default: DataPointValueType.Text })
+  @Prop({
+    type: String,
+    enum: [DataPointValueType.Text],
+    required: true,
+    default: DataPointValueType.Text,
+  })
   @PropertyType(String, { default: DataPointValueType.Text })
-  valueType: DataPointValueType.Text = DataPointValueType.Text;
+  valueType: typeof DataPointValueType.Text = DataPointValueType.Text;
 
   @Prop({ enum: SupportedTextDataPointInputTypes })
   inputType: DataPointInputType;

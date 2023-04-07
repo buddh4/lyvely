@@ -61,7 +61,7 @@ export class CreateHabitModel extends BaseModel<CreateHabitModel> {
 
   @IsString()
   @IsEnum([DataPointValueType.Number, DataPointValueType.Timer])
-  valueType: DataPointValueType;
+  valueType: string;
 
   @IsArray()
   @MaxLength(20, { each: true })

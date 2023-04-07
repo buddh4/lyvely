@@ -52,8 +52,13 @@ export class TimerDataPointConfig
 {
   strategy = strategy;
 
-  @Prop({ enum: [DataPointValueType.Timer], required: true, default: DataPointValueType.Timer })
-  valueType: DataPointValueType.Timer = DataPointValueType.Timer;
+  @Prop({
+    type: String,
+    enum: [DataPointValueType.Timer],
+    required: true,
+    default: DataPointValueType.Timer,
+  })
+  valueType: typeof DataPointValueType.Timer = DataPointValueType.Timer;
 
   @Prop({ enum: [DataPointInputType.Timer] })
   inputType: DataPointInputType.Timer = DataPointInputType.Timer;

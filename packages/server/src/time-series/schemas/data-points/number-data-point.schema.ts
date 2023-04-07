@@ -1,16 +1,27 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
-import { DataPointValueType, PropertyType } from '@lyvely/common';
+import {
+  DataPointValueType,
+  NumberDataPointModel,
+  PropertiesOf,
+  PropertyType,
+} from '@lyvely/common';
 import { Timer, TimerSchema } from '@/calendar';
+import { DataPointSchemaFactory } from '@/time-series/schemas/data-points/data-point-schema.factory';
 
 @Schema()
-export class NumberDataPoint extends DataPoint<NumberDataPoint> {
+export class NumberDataPoint
+  extends DataPoint<NumberDataPoint>
+  implements PropertiesOf<NumberDataPointModel>
+{
   @Prop({ type: Number, required: true, default: 0 })
   value: number;
 
   @Prop({ type: TimerSchema })
   @PropertyType(Timer)
   timer?: Timer;
+
+  valueType: typeof DataPointValueType.Number;
 
   afterInit() {
     this.value = this.value ?? 0;
@@ -27,4 +38,7 @@ export class NumberDataPoint extends DataPoint<NumberDataPoint> {
   }
 }
 
-export const NumberDataPointSchema = SchemaFactory.createForClass(NumberDataPoint);
+export const NumberDataPointSchema = DataPointSchemaFactory.createForClass(
+  DataPointValueType.Number,
+  NumberDataPoint,
+);

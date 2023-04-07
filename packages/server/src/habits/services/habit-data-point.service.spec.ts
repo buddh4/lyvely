@@ -32,7 +32,7 @@ describe('HabitDataPointService', () => {
     habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get(HabitTestDataUtil);
     contentScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
-    HabitDataPointModel = testingModule.get<Model<DataPoint>>('DataPointModel');
+    HabitDataPointModel = testingModule.get<Model<DataPoint>>('HabitDataPointModel');
   });
 
   afterEach(async () => {
@@ -86,7 +86,7 @@ describe('HabitDataPointService', () => {
     });
   });
 
-  describe('updateLog', () => {
+  describe('upsertDataPoint', () => {
     it('update non existing log', async () => {
       const { user, profile } = await testData.createUserAndProfile();
 
@@ -115,13 +115,14 @@ describe('HabitDataPointService', () => {
         max: 3,
         userStrategy: UserAssignmentStrategy.Shared,
       });
-      const { dataPoint } = await habitDataPointService.upsertDataPoint(
+      const { dataPoint, isNew } = await habitDataPointService.upsertDataPoint(
         profile,
         user,
         habit,
         new Date(),
         2,
       );
+      expect(isNew).toEqual(true);
       expect(dataPoint._id).toBeDefined();
       expect(dataPoint.uid).toBeNull();
       expect(dataPoint.tid).toEqual(toTimingId(new Date()));
@@ -134,22 +135,30 @@ describe('HabitDataPointService', () => {
         max: 3,
         userStrategy: UserAssignmentStrategy.Shared,
       });
-      const { dataPoint: dataPoint1 } = await habitDataPointService.upsertDataPoint(
+
+      const date = new Date();
+
+      await habitDataPointService.upsertDataPoint(profile, user, habit, date, 2);
+
+      const { dataPoint, isNew } = await habitDataPointService.upsertDataPoint(
         profile,
         user,
         habit,
-        new Date(),
-        2,
-      );
-      const { dataPoint: dataPoint2 } = await habitDataPointService.upsertDataPoint(
-        profile,
-        user,
-        habit,
-        new Date(),
+        date,
         3,
       );
-      expect(dataPoint2._id).toEqual(dataPoint1._id);
-      expect(dataPoint2.value).toEqual(3);
+
+      const updatedDataPoint = await habitDataPointService.findDataPointByDate(
+        profile,
+        user,
+        habit,
+        date,
+      );
+
+      expect(isNew).toEqual(false);
+      expect(updatedDataPoint._id).toEqual(dataPoint._id);
+      expect(dataPoint.value).toEqual(3);
+      expect(updatedDataPoint.value).toEqual(3);
     });
 
     it('track profile score', async () => {

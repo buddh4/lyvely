@@ -22,7 +22,7 @@ export interface ISelectionDataPointConfigRevision extends IDataPointConfigRevis
 }
 
 export interface ISelectionDataPointConfig extends IDataPointConfig {
-  valueType: DataPointValueType.Selection;
+  valueType: typeof DataPointValueType.Selection;
   history: ISelectionDataPointConfigRevision[];
   allowOther: boolean;
   options: Array<string>;

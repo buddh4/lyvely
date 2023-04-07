@@ -1,4 +1,4 @@
-import { assignEntityData, BaseEntity, assureObjectId } from '@/core';
+import { assignEntityData, BaseEntity, assureObjectId, MixedProp } from '@/core';
 import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {

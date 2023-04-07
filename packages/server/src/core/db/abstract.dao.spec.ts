@@ -1,36 +1,46 @@
 import { expect } from '@jest/globals';
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, AbstractDao, ModelSaveEvent } from '@/core';
-import { Model, Document } from 'mongoose';
+import { Model } from 'mongoose';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, getObjectId } from '@/test/utils/test.utils';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-@Schema()
-class TestEntity extends BaseEntity<TestEntity> {
-  @Prop({ type: String, required: true })
+interface ITestEntity {
   requiredField: string;
-
-  @Prop({ type: Number })
   numberField: number;
+  type: string;
 }
 
-type TestEntityDocument = TestEntity & Document;
+@Schema({ discriminatorKey: 'type' })
+class TestEntity<T extends ITestEntity = ITestEntity> extends BaseEntity<T> {
+  @Prop({ required: true })
+  requiredField: string;
+
+  @Prop()
+  numberField: number;
+
+  type: string;
+}
+
 const TestEntitySchema = SchemaFactory.createForClass(TestEntity);
 
-const TestEntityModelDefinition: ModelDefinition = {
-  name: TestEntity.name,
-  schema: TestEntitySchema,
-};
+@Schema()
+class SubTestEntity extends TestEntity<SubTestEntity> {
+  @Prop()
+  specialField?: string;
+}
+
+const SubTestEntitySchema = SchemaFactory.createForClass(SubTestEntity);
 
 @Injectable()
 class TestEntityDao extends AbstractDao<TestEntity> {
-  @InjectModel(TestEntity.name) protected model: Model<TestEntityDocument>;
+  @InjectModel(TestEntity.name) protected model: Model<TestEntity>;
 
-  getModelConstructor() {
-    return TestEntity;
+  getModelConstructor(model: Partial<TestEntity>) {
+    return model.type === SubTestEntity.name ? SubTestEntity : TestEntity;
   }
 
   getModuleId(): string {
@@ -45,6 +55,12 @@ class EventTester {
 }
 
 const TEST_KEY = 'abstract_dao';
+
+const TestEntityModelDefinition: ModelDefinition = {
+  name: TestEntity.name,
+  schema: TestEntitySchema,
+  discriminators: [{ name: SubTestEntity.name, schema: SubTestEntitySchema }],
+};
 
 describe('AbstractDao', () => {
   let testingModule: TestingModule;
@@ -78,6 +94,21 @@ describe('AbstractDao', () => {
       expect(model.id).toEqual(entity.id);
     });
 
+    it('save discriminator value', async () => {
+      const model = new SubTestEntity({
+        requiredField: 'We need this...',
+        specialField: 'specialValue',
+      });
+      const entity = await dao.save(model, { discriminator: SubTestEntity.name });
+      expect(entity).toBeDefined();
+      expect(entity instanceof SubTestEntity).toEqual(true);
+      expect(entity.requiredField).toEqual('We need this...');
+      expect((<SubTestEntity>entity).specialField).toEqual('specialValue');
+      expect(entity._id).toBeDefined();
+      expect(model._id).toEqual(entity._id);
+      expect(model.id).toEqual(entity.id);
+    });
+
     it('save invalid entity fails', async () => {
       try {
         await dao.save(new TestEntity({ numberField: 3 }));
@@ -94,10 +125,13 @@ describe('AbstractDao', () => {
     it('beforeSave is called', async () => {
       const model = new TestEntity({ requiredField: 'We need this...' });
       let wasCalled = false;
-      eventTester.eventEmitter.on('model.testentity.save.pre', (evt: ModelSaveEvent<TestEntityDao, TestEntity>) => {
-        expect(evt.model).toEqual(model);
-        wasCalled = true;
-      });
+      eventTester.eventEmitter.on(
+        'model.testentity.save.pre',
+        (evt: ModelSaveEvent<TestEntityDao, TestEntity>) => {
+          expect(evt.model).toEqual(model);
+          wasCalled = true;
+        },
+      );
       await dao.save(model);
       expect(wasCalled).toEqual(true);
     });
@@ -105,11 +139,14 @@ describe('AbstractDao', () => {
     it('afterSave is called', async () => {
       const model = new TestEntity({ requiredField: 'We need this...' });
       let wasCalled = false;
-      eventTester.eventEmitter.on('model.testentity.save.post', (evt: ModelSaveEvent<TestEntityDao, TestEntity>) => {
-        expect(evt.model._id).toBeDefined();
-        expect(evt.model.requiredField).toEqual('We need this...');
-        wasCalled = true;
-      });
+      eventTester.eventEmitter.on(
+        'model.testentity.save.post',
+        (evt: ModelSaveEvent<TestEntityDao, TestEntity>) => {
+          expect(evt.model._id).toBeDefined();
+          expect(evt.model.requiredField).toEqual('We need this...');
+          wasCalled = true;
+        },
+      );
       await dao.save(model);
       expect(wasCalled).toEqual(true);
     });
@@ -184,7 +221,9 @@ describe('AbstractDao', () => {
         await dao.save(model);
         await dao.save(model2);
         await dao.save(model3);
-        const result = await dao.findAllByIds([model, model2, model3], { sort: { numberField: 1 } });
+        const result = await dao.findAllByIds([model, model2, model3], {
+          sort: { numberField: 1 },
+        });
         expect(result.length).toEqual(3);
         expect(result[0]._id).toEqual(model2._id);
         expect(result[1]._id).toEqual(model._id);
@@ -281,9 +320,24 @@ describe('AbstractDao', () => {
       });
     });
 
+    it('update discriminator value', async () => {
+      const model = new SubTestEntity({ requiredField: '1', specialField: 'updated' });
+      await dao.save(model, { discriminator: SubTestEntity.name });
+      const entity = await dao.updateOneSetById(
+        model,
+        { specialValue: 'updated' },
+        { discriminator: SubTestEntity.name },
+      );
+      const search = (await dao.reload(model)) as SubTestEntity;
+      expect(search.specialField).toEqual('updated');
+    });
+
     describe('upsert', () => {
       it('upsert non existing entity', async () => {
-        const model = await dao.upsert({ requiredField: 'upserted' }, { requiredField: 'upserted', numberField: 5 });
+        const model = await dao.upsert(
+          { requiredField: 'upserted' },
+          { requiredField: 'upserted', numberField: 5 },
+        );
         expect(model instanceof TestEntity).toEqual(true);
         expect(model._id).toBeDefined();
         expect(model.requiredField).toEqual('upserted');
@@ -301,7 +355,10 @@ describe('AbstractDao', () => {
 
       it('upsert existing entity', async () => {
         const model = await dao.save(new TestEntity({ requiredField: '1', numberField: 4 }));
-        const upserted = await dao.upsert({ requiredField: '1' }, { requiredField: 'upserted', numberField: 5 });
+        const upserted = await dao.upsert(
+          { requiredField: '1' },
+          { requiredField: 'upserted', numberField: 5 },
+        );
         expect(upserted instanceof TestEntity).toEqual(true);
         expect(upserted._id.equals(model._id)).toBeDefined();
         expect(upserted.requiredField).toEqual('upserted');
@@ -336,13 +393,19 @@ describe('AbstractDao', () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         await dao.save(model);
 
-        const result = await dao.findOneAndSetById(model, { requiredField: 'updated' }, { new: false });
+        const result = await dao.findOneAndSetById(
+          model,
+          { requiredField: 'updated' },
+          { new: false },
+        );
         expect(model.requiredField).toEqual('updated');
         expect(result.requiredField).toEqual('1');
       });
 
       it('update non existing entity', async () => {
-        const result = await dao.findOneAndSetById(getObjectId('whatever'), { requiredField: 'updated' });
+        const result = await dao.findOneAndSetById(getObjectId('whatever'), {
+          requiredField: 'updated',
+        });
         expect(result).toBeNull();
       });
 
@@ -369,15 +432,14 @@ describe('AbstractDao', () => {
         const model = new TestEntity({ requiredField: '1', numberField: 4 });
         await dao.save(model);
 
-        const result = await dao.findOneAndSetById(model, { requiredField: 'updated' }, { apply: false });
+        const result = await dao.findOneAndSetById(
+          model,
+          { requiredField: 'updated' },
+          { apply: false },
+        );
         expect(model.requiredField).toEqual('1');
         expect(result.requiredField).toEqual('updated');
       });
     });
   });
 });
-
-// TODO: Test validation functions
-// TODO: Test defaults
-// TODO: Test getter/setter
-// TODO: Test virtuals etc..

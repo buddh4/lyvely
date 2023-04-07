@@ -41,12 +41,13 @@ export class SelectionDataPointConfig
   implements ISelectionDataPointConfig
 {
   @Prop({
+    type: String,
     enum: [DataPointValueType.Selection],
     required: true,
     default: DataPointValueType.Selection,
   })
   @PropertyType(String, { default: DataPointValueType.Selection })
-  valueType: DataPointValueType.Selection = DataPointValueType.Selection;
+  valueType: typeof DataPointValueType.Selection = DataPointValueType.Selection;
 
   @Prop({ enum: getStringEnumValues(DataPointSelectionInputType) })
   inputType: DataPointInputType;

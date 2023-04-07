@@ -1,13 +1,20 @@
 import { AbstractDao, assureObjectId, EntityIdentity } from '@/core';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { DataPoint, TimeSeriesContent } from '../schemas';
+import {
+  buildDataPointModelName,
+  buildDiscriminatorName,
+  DataPoint,
+  TimeSeriesContent,
+} from '../schemas';
 import { getTimingIds, CalendarPlanFilter, CalendarInterval } from '@lyvely/common';
 
 type InterValFilter = { interval: CalendarInterval; tid?: string | { $regex: RegExp } };
 
 export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> extends AbstractDao<T> {
   // TODO: Implement update interval of data points
+
+  protected abstract contentName: string;
 
   async updateDataPointValue(
     uid: EntityIdentity<User>,
@@ -21,7 +28,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
         value,
       },
       {
-        discriminator: dataPoint.constructor.name,
+        discriminator: buildDiscriminatorName(this.contentName, dataPoint.constructor.name),
       },
     );
   }

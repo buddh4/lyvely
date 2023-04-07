@@ -20,7 +20,7 @@ interface INumberSettings {
 export interface INumberDataPointConfigRevision extends IDataPointConfigRevision, INumberSettings {}
 
 export interface INumberDataPointConfig extends IDataPointConfig, INumberSettings {
-  valueType: DataPointValueType.Number;
+  valueType: typeof DataPointValueType.Number;
   history: INumberDataPointConfigRevision[];
 }
 

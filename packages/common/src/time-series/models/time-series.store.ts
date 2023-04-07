@@ -24,7 +24,7 @@ export class TimeSeriesStore<
     if (dataPoints?.length) this.setDataPoints(dataPoints);
   }
 
-  handleResponse(response: TResponse) {
+  override handleResponse(response: TResponse) {
     super.handleResponse(response);
     this.setDataPoints(response.dataPoints);
   }

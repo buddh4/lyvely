@@ -14,7 +14,7 @@ interface ITimerSettings {
 export interface ITimerDataPointConfigRevision extends IDataPointConfigRevision, ITimerSettings {}
 
 export interface ITimerDataPointConfig extends IDataPointConfig, ITimerSettings {
-  valueType: DataPointValueType.Timer;
+  valueType: typeof DataPointValueType.Timer;
   history: ITimerDataPointConfigRevision[];
 }
 

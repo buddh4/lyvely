@@ -9,6 +9,8 @@ export class TestDataPointDao extends DataPointDao {
   @InjectDataPointModel(TestTimeSeriesContent.name)
   model: Model<DataPoint>;
 
+  protected contentName = TestTimeSeriesContent.name;
+
   getModuleId(): string {
     return 'test';
   }

@@ -28,13 +28,14 @@ import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-refe
 import { createContentTestingModule, TestDataUtils } from '@/test';
 import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@/core';
 import { DataPoint, getDataPointModelDefinition, NumberDataPoint } from '@/time-series';
+import { InjectDataPointModel } from '@/time-series/decorators/inject-data-point-model.decorator';
 
 @Injectable()
 export class HabitTestDataUtil extends TestDataUtils {
   @InjectModel(Habit.name)
   protected HabitModel: Model<HabitDocument>;
 
-  @InjectModel(DataPoint.name)
+  @InjectDataPointModel(Habit.name)
   protected HabitDataPointModel: Model<DataPoint>;
 
   static getDateToday(): Date {

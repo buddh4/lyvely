@@ -5,6 +5,7 @@ import {
   CalendarInterval,
   CalendarPlanFilter,
   DataPointValueType,
+  formatDate,
   toTimingId,
   UserAssignmentStrategy,
 } from '@lyvely/common';
@@ -103,7 +104,16 @@ describe('DataPointService', () => {
       const date = new Date();
 
       await service.upsertDataPoint(profile, user, content, date, 5);
+      const test = await service.findByIntervalLevel(profile, user, {
+        date: formatDate(date),
+        level: CalendarInterval.Unscheduled,
+      });
       await service.upsertDataPoint(profile, user, content, date, 3);
+
+      const test2 = await service.findByIntervalLevel(profile, user, {
+        date: formatDate(date),
+        level: CalendarInterval.Unscheduled,
+      });
       const dataPoint = await service.findDataPointByDate(profile, user, content, date);
       expect(dataPoint.value).toEqual(3);
     });

@@ -10,7 +10,7 @@ export enum DataPointTextInputType {
 }
 
 export interface ITextDataPointConfig extends IDataPointConfig {
-  valueType: DataPointValueType.Text;
+  valueType: typeof DataPointValueType.Text;
   history: ITextDataPointConfigRevision[];
   required?: boolean;
 }

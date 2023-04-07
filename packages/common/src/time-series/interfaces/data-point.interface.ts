@@ -1,14 +1,14 @@
 import { CalendarInterval } from '@/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 
-export enum DataPointValueType {
-  Number = 'number',
-  Selection = 'selection',
-  Timer = 'timer',
-  Text = 'text',
+export const DataPointValueType = {
+  Number: 'number',
+  Selection: 'selection',
+  Timer: 'timer',
+  Text: 'text',
   //File = 'file',
   //Time = 'time',
-}
+} as const;
 
 export enum DataPointInputType {
   Checkbox = 'checkbox',
@@ -36,14 +36,14 @@ export interface IDataPoint<TValue = any> {
 export interface IDataPointConfig {
   interval: CalendarInterval;
   history: IDataPointConfigRevision[];
-  valueType: DataPointValueType;
+  valueType: string;
   inputType?: DataPointInputType;
   userStrategy: UserAssignmentStrategy;
 }
 
 export interface IDataPointConfigRevision {
   validUntil: Date;
-  valueType: DataPointValueType;
+  valueType: string;
   inputType?: DataPointInputType;
   interval: CalendarInterval;
 }

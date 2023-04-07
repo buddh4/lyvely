@@ -7,7 +7,7 @@ import { TextDataPoint, TextDataPointSchema } from './text-data-point.schema';
 import { TimerDataPoint, TimerDataPointSchema } from './timer-data-point.schema';
 import { DataPointValueType } from '@lyvely/common';
 
-const DataPointDiscriminatorMap = new Map<DataPointValueType, DiscriminatorOptions>();
+const DataPointDiscriminatorMap = new Map<string, DiscriminatorOptions>();
 DataPointDiscriminatorMap.set(DataPointValueType.Number, {
   name: NumberDataPoint.name,
   schema: NumberDataPointSchema,
@@ -30,20 +30,24 @@ DataPointDiscriminatorMap.set(DataPointValueType.Number, {
   });
 
 export function buildDataPointModelName(contentName: string) {
-  return contentName + 'DataPoints';
+  return contentName + 'DataPoint';
+}
+
+export function buildDiscriminatorName(contentName: string, def: string) {
+  return buildDataPointModelName(contentName) + '.' + def;
 }
 
 export function getDataPointModelDefinition(
   contentName: string,
-  definitions: Array<DiscriminatorOptions | DataPointValueType>,
+  definitions: Array<DiscriminatorOptions | string>,
   collection?: string,
 ): ModelDefinition {
   const name = buildDataPointModelName(contentName);
-  collection ??= name.toLowerCase();
+  collection ??= name.toLowerCase() + 's';
 
   const discriminators = definitions.map<DiscriminatorOptions>((def) => {
     def = typeof def !== 'object' ? Object.assign({}, DataPointDiscriminatorMap.get(def)) : def;
-    def.name = name + '.' + def.name;
+    def.name = buildDiscriminatorName(contentName, def.name);
     return def;
   });
 

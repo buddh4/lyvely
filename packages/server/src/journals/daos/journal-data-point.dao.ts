@@ -9,6 +9,8 @@ export class JournalDataPointDao extends DataPointDao {
   @InjectDataPointModel(Journal.name)
   protected model: Model<DataPoint>;
 
+  protected contentName = Journal.name;
+
   getModuleId(): string {
     return 'journals';
   }

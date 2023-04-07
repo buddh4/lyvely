@@ -48,8 +48,13 @@ export class NumberDataPointConfig
   extends DataPointConfig<INumberDataPointSettings>
   implements INumberDataPointConfig
 {
-  @Prop({ enum: [DataPointValueType.Number], required: true, default: DataPointValueType.Number })
-  valueType: DataPointValueType.Number = DataPointValueType.Number;
+  @Prop({
+    type: String,
+    enum: [DataPointValueType.Number],
+    required: true,
+    default: DataPointValueType.Number,
+  })
+  valueType: typeof DataPointValueType.Number = DataPointValueType.Number;
 
   @Prop({ enum: SupportedNumberDataPointInputTypes })
   inputType: DataPointInputType;
