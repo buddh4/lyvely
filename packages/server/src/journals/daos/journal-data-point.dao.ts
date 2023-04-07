@@ -1,8 +1,7 @@
-import { DataPoint, DataPointDao } from '@/time-series';
+import { DataPoint, DataPointDao, InjectDataPointModel } from '@/time-series';
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectDataPointModel } from '@/time-series/decorators/inject-data-point-model.decorator';
 import { Journal } from '../schemas';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class JournalDataPointDao extends DataPointDao {

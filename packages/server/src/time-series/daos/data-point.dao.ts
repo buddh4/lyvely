@@ -3,7 +3,7 @@ import { DataPoint } from '../schemas';
 import { IntegrityException } from '@lyvely/common';
 import { DataPointSchemaFactory } from '@/time-series/schemas/data-points/data-point-schema.factory';
 
-export abstract class DataPointDao extends DataPointStrategyDao<DataPoint> {
+export abstract class DataPointDao extends DataPointStrategyDao {
   getModelConstructor(model: Partial<DataPoint>) {
     const result = DataPointSchemaFactory.getModelType(model.valueType);
 

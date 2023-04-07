@@ -27,8 +27,12 @@ import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
 import { createContentTestingModule, TestDataUtils } from '@/test';
 import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@/core';
-import { DataPoint, getDataPointModelDefinition, NumberDataPoint } from '@/time-series';
-import { InjectDataPointModel } from '@/time-series/decorators/inject-data-point-model.decorator';
+import {
+  DataPoint,
+  getDataPointModelDefinition,
+  NumberDataPoint,
+  InjectDataPointModel,
+} from '@/time-series';
 
 @Injectable()
 export class HabitTestDataUtil extends TestDataUtils {

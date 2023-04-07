@@ -131,7 +131,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   protected getModelName() {
-    return this.model.modelName;
+    return this.getModel().modelName;
   }
 
   protected constructModel(lean?: DeepPartial<T>): T {
