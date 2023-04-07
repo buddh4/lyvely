@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ContentModel } from '@lyvely/common';
 import { useContentArchive } from '@/modules/content/composables/content-archive.composable';
-import { reactive } from 'vue-demi';
 import { useContentEditStore } from '@/modules/content/stores/content-edit.store';
 import { computed, ref } from 'vue';
 import { IConfirmOptions } from '@/modules/ui/components/modal/IConfirmOptions';

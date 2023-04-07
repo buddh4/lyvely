@@ -1,6 +1,6 @@
 import { CalendarInterval } from '@lyvely/common';
 import { IDragEvent } from '@/modules/common';
-import { IMoveEntryEvent } from '@/modules/calendar-plan';
+import { IMoveEntryEvent } from '../interfaces';
 
 export function getCalendarPlanOptions(): { value: CalendarInterval; label: string }[] {
   return [

@@ -1,6 +1,7 @@
 import { ICalendarPlanEntry } from '@lyvely/common';
 import { computed } from 'vue';
-import { IMoveEntryEvent, useCalendarPlanStore } from '@/modules/calendar-plan';
+import { useCalendarPlanStore } from '../stores';
+import { IMoveEntryEvent } from '../interfaces';
 import { useAccessibilityStore } from '@/modules/accessibility';
 import { translate } from '@/i18n';
 import { IMoveActivityEvent } from '@/modules/activities/store/activity.store';

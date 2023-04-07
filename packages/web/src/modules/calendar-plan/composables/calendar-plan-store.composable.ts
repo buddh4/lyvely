@@ -13,12 +13,12 @@ import {
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useCalendarPlanStore } from '../stores/calendar-plan.store';
+import { useCalendarPlanStore } from '../stores';
 import { loadingStatus, Status, useStatus } from '@/store';
 import { DialogExceptionHandler } from '@/modules/core/handler/exception.handler';
+import { dragEventToMoveEvent } from '../utils';
 import { IMoveEntryEvent } from '../interfaces';
 import { IDragEvent } from '@/modules/common';
-import { dragEventToMoveEvent } from '@/modules/calendar-plan';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 
 export interface ICalendarPlanOptions<
