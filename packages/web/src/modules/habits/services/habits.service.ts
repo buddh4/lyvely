@@ -16,6 +16,7 @@ import {
 } from '@lyvely/common';
 import repository from '../repositories/habits.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export class HabitsService implements IHabitsEndpointService {
   async getByFilter(filter: CalendarPlanFilter) {
@@ -44,10 +45,14 @@ export class HabitsService implements IHabitsEndpointService {
     cid: string,
     update: UpdateHabitDataPointModel,
   ): Promise<UpdateHabitDataPointResponse> {
-    return unwrapAndTransformResponse(
+    const result = await unwrapAndTransformResponse(
       repository.updateDataPoint(cid, update),
       UpdateHabitDataPointResponse,
     );
+
+    useProfileStore().updateScore(result.score);
+
+    return result;
   }
 
   async startTimer(cid: string, dto: TimerUpdateModel): Promise<NumberDataPointModel> {

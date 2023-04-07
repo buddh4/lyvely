@@ -15,7 +15,7 @@ import { ContentDocument, ContentDataType } from '@/content';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
-  DataPointConfigHandler,
+  useDataPointConfigHandler,
   DataPointConfigSchema,
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
@@ -94,7 +94,7 @@ export class Habit
   }
 
   applyUpdate(update: UpdateHabitModel) {
-    DataPointConfigHandler.applyUpdate(this, update);
+    useDataPointConfigHandler().applyUpdate(this, update);
     this.applyContentUpdate({
       title: update.title ?? this.content.title,
       text: update.text ?? this.content.text,

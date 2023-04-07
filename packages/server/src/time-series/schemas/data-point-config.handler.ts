@@ -1,15 +1,15 @@
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { cloneDeep, pick } from 'lodash';
-import { isSameDay, useDataPointStrategyFacade } from '@lyvely/common';
+import { isSameDay, useDataPointStrategyFacade, useSingleton } from '@lyvely/common';
 import { TimeSeriesContent } from './time-series-content.schema';
 import { DataPointConfig, DataPointConfigRevision } from './config';
 
 const dataPointFacade = useDataPointStrategyFacade();
 
 export class DataPointConfigHandler {
-  static applyUpdate(model: TimeSeriesContent<any>, update: Partial<DataPointConfigRevision>) {
+  applyUpdate(model: TimeSeriesContent<any>, update: Partial<DataPointConfigRevision>) {
     const oldConfig = model.timeSeriesConfig;
-    const updatedConfig = DataPointConfigHandler.prepareUpdate(model, update);
+    const updatedConfig = this.prepareUpdate(model, update);
 
     if (
       (updatedConfig.inputType && updatedConfig.inputType !== oldConfig.inputType) ||
@@ -21,26 +21,23 @@ export class DataPointConfigHandler {
       );
     }
 
-    if (DataPointConfigHandler.timeSeriesConfigRevisionCheck(model, updatedConfig)) {
+    if (this.timeSeriesConfigRevisionCheck(model, updatedConfig)) {
       model.timeSeriesConfig = updatedConfig;
-      DataPointConfigHandler.pushTimeSeriesConfigRevision(model, oldConfig);
+      this.pushTimeSeriesConfigRevision(model, oldConfig);
     } else {
       model.timeSeriesConfig = updatedConfig;
     }
   }
 
-  private static prepareUpdate(
-    model: TimeSeriesContent<any>,
-    update: Partial<DataPointConfigRevision>,
-  ) {
+  private prepareUpdate(model: TimeSeriesContent<any>, update: Partial<DataPointConfigRevision>) {
     const settingKeys = dataPointFacade.getSettingKeys(model.timeSeriesConfig.valueType);
     const preparedUpdate = pick(update, ['inputType', 'userStrategy', 'interval', ...settingKeys]);
     const updatedConfig = Object.assign(cloneDeep(model.timeSeriesConfig), preparedUpdate);
-    DataPointConfigHandler.prepareConfig(model, updatedConfig);
+    this.prepareConfig(model, updatedConfig);
     return updatedConfig;
   }
 
-  static prepareConfig(model: TimeSeriesContent<any>, config?: DataPointConfig) {
+  prepareConfig(model: TimeSeriesContent<any>, config?: DataPointConfig) {
     if (!config) {
       config = model.timeSeriesConfig;
     }
@@ -48,41 +45,31 @@ export class DataPointConfigHandler {
     dataPointFacade.getService(model.timeSeriesConfig.valueType).prepareConfig(config);
   }
 
-  private static timeSeriesConfigRevisionCheck(
-    model: TimeSeriesContent<any>,
-    update: DataPointConfig,
-  ) {
-    return (
-      !model.timeSeriesConfig.isEqualTo(update) &&
-      !DataPointConfigHandler.getTimeSeriesRevisionUpdatedAt(model)
-    );
+  private timeSeriesConfigRevisionCheck(model: TimeSeriesContent<any>, update: DataPointConfig) {
+    return !model.timeSeriesConfig.isEqualTo(update) && !this.getTimeSeriesRevisionUpdatedAt(model);
   }
 
-  private static getTimeSeriesRevisionUpdatedAt(
-    model: TimeSeriesContent<any>,
-    date: Date = new Date(),
-  ) {
+  private getTimeSeriesRevisionUpdatedAt(model: TimeSeriesContent<any>, date: Date = new Date()) {
     if (!model.timeSeriesConfig?.history.length) return false;
 
     return model.timeSeriesConfig.history.find((rev) => isSameDay(rev.validUntil, date));
   }
 
-  private static pushTimeSeriesConfigRevision(model: TimeSeriesContent<any>, cfg: DataPointConfig) {
+  private pushTimeSeriesConfigRevision(model: TimeSeriesContent<any>, cfg: DataPointConfig) {
     if (!model.timeSeriesConfig.history) {
       model.timeSeriesConfig.history = [];
     }
 
-    const revision = DataPointConfigHandler.createTimeSeriesConfigRevision(model, cfg);
+    const revision = this.createTimeSeriesConfigRevision(model, cfg);
 
     if (revision) {
       model.timeSeriesConfig.history.push(revision);
     }
   }
 
-  private static createTimeSeriesConfigRevision(
-    model: TimeSeriesContent<any>,
-    old: DataPointConfig,
-  ) {
+  private createTimeSeriesConfigRevision(model: TimeSeriesContent<any>, old: DataPointConfig) {
     return dataPointFacade.createRevision(old);
   }
 }
+
+export const useDataPointConfigHandler = useSingleton(() => new DataPointConfigHandler());

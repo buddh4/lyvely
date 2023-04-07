@@ -1,7 +1,7 @@
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { CalendarInterval, CalendarPlanFilter, getTimingIds, isInFuture } from '@lyvely/common';
-import { DataPoint, DataPointConfigHandler, TimeSeriesContent } from '../schemas';
+import { DataPoint, TimeSeriesContent, useDataPointConfigHandler } from '../schemas';
 import { DataPointService } from './data-point.service';
 import { ITimeSeriesContentSearchResult } from './time-series-content-search.result';
 import { TimeSeriesContentDao } from '../daos';
@@ -45,7 +45,7 @@ export abstract class TimeSeriesService<
     interval: CalendarInterval,
   ) {
     const update = { 'config.timeSeries.interval': interval };
-    DataPointConfigHandler.applyUpdate(model, { interval });
+    useDataPointConfigHandler().applyUpdate(model, { interval });
     update['config.timeSeries.history'] = model.timeSeriesConfig.history;
 
     await this.contentDao.updateOneByProfileAndIdSet(profile, model, update);

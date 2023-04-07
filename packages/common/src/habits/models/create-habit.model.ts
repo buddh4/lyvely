@@ -77,6 +77,7 @@ export class CreateHabitModel extends BaseModel<CreateHabitModel> {
             max: 3,
             min: 0,
             optimal: 0,
+            valueType: DataPointValueType.Number,
             inputType: DataPointInputType.Checkbox,
             userStrategy: UserAssignmentStrategy.Shared,
             tagNames: [],

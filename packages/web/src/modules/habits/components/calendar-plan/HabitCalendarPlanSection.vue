@@ -17,7 +17,7 @@ const habitPlanStore = useHabitCalendarPlanStore();
 const { sort } = habitPlanStore;
 
 const habits = computed(() => {
-  return habitPlanStore.getHabits(props.interval);
+  return habitPlanStore.getModels(props.interval);
 });
 
 const addEntry = () =>

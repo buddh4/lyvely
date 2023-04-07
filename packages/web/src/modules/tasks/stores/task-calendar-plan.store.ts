@@ -10,7 +10,6 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlan, useCalendarPlanStore } from '@/modules/calendar-plan';
 import { useTasksService } from '@/modules/tasks/services/tasks.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
-import { useContentStore } from '@/modules/content/stores/content.store';
 import { ref } from 'vue';
 
 const MAX_DONE_TASKS = 2;
@@ -21,11 +20,11 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
   const profileStore = useProfileStore();
   const tasksService = useTasksService();
   const dialog = useGlobalDialogStore();
-  const contentStore = useContentStore();
 
   const taskPlan = useCalendarPlan<TaskModel, TaskFilter>({
     filter: new TaskFilter(),
     cache: new CalendarPlanStore<TaskModel>(),
+    contentTypes: [TaskModel.contentType],
     service: useTasksService(),
   });
 
@@ -39,9 +38,6 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
     [CalendarInterval.Yearly]: false,
     [CalendarInterval.Unscheduled]: false,
   });
-
-  contentStore.onContentCreated(TaskModel.contentType, addTask);
-  contentStore.onContentUpdated(TaskModel.contentType, addTask);
 
   function getTasks(interval: CalendarInterval, showAll = false) {
     hasMore.value[interval] = false;
@@ -66,10 +62,6 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   function isHasMore(interval: CalendarInterval) {
     return hasMore.value[interval];
-  }
-
-  function addTask(task: TaskModel) {
-    cache.value.setModel(new TaskModel(task));
   }
 
   async function setTaskDone(task: TaskModel) {
@@ -126,7 +118,6 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
     ...taskPlan,
     getTasks,
     isHasMore,
-    addTask,
     setTaskSelection,
     startTimer,
     stopTimer,

@@ -3,7 +3,6 @@ import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
   DataPointConfigSchema,
-  DataPointConfigHandler,
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
@@ -12,6 +11,7 @@ import {
   CheckboxSelectionDataPointConfig,
   RadioSelectionDataPointConfig,
   DropdownSelectionDataPointConfig,
+  useDataPointConfigHandler,
 } from '@/time-series';
 import {
   CreateJournalModel,
@@ -79,7 +79,7 @@ export class Journal
   }
 
   applyUpdate(update: UpdateJournalModel) {
-    DataPointConfigHandler.applyUpdate(this, update);
+    useDataPointConfigHandler().applyUpdate(this, update);
     this.applyContentUpdate({
       title: update.title ?? this.content.title,
       text: update.text ?? this.content.text,

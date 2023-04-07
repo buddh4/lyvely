@@ -20,16 +20,19 @@ import { dragEventToMoveEvent } from '../utils';
 import { IMoveEntryEvent } from '../interfaces';
 import { IDragEvent } from '@/modules/common';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
+import { useContentStore } from '@/modules/content/stores/content.store';
 
 export interface ICalendarPlanOptions<
   TModel extends ICalendarPlanEntry,
   TFilter extends ContentFilter<TModel>,
   TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
   TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
+  TService extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
 > {
   filter: TFilter;
   cache: TStore;
-  service: ICalendarPlanService<TModel>;
+  contentTypes?: string[];
+  service: TService;
 }
 
 export function useCalendarPlan<
@@ -37,10 +40,12 @@ export function useCalendarPlan<
   TFilter extends ContentFilter<TModel>,
   TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
   TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
->(options: ICalendarPlanOptions<TModel, TFilter, TResponse, TStore>) {
+  TService extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
+>(options: ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TService>) {
   const { profile, locale } = storeToRefs(useProfileStore());
   const calendarPlanStore = useCalendarPlanStore();
 
+  options.contentTypes ??= [];
   options.filter.setTagProvider(() => profile.value?.tags || []);
   const filter = ref(options.filter);
   const cache = ref(options.cache);
@@ -48,6 +53,12 @@ export function useCalendarPlan<
   const { date } = storeToRefs(calendarPlanStore);
   const tidCache = ref(new LoadedTimingIdStore());
   const status = useStatus();
+  const contentStore = useContentStore();
+
+  for (const contentType of options.contentTypes) {
+    contentStore.onContentCreated(contentType, <any>setModel);
+    contentStore.onContentUpdated(contentType, <any>setModel);
+  }
 
   function startWatch() {
     const unwatchDate = watch(date, () => loadModels());
@@ -97,6 +108,10 @@ export function useCalendarPlan<
   function getModels(interval: CalendarInterval): TModel[] {
     const tid = toTimingId(date.value, interval, locale.value);
     return cache.value.getModelsByIntervalFilter(interval, filter.value, tid);
+  }
+
+  function setModel(model: TModel) {
+    cache.value.setModel(model);
   }
 
   function selectTag(tagId: string) {
@@ -149,9 +164,11 @@ export function useCalendarPlan<
     status,
     loadModels,
     getModels,
+    setModel,
     selectTag,
     sort,
     startWatch,
+    service,
     intervals: getCalendarIntervalArray(),
   };
 }
