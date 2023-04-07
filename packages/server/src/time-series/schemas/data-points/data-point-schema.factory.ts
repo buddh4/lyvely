@@ -1,5 +1,5 @@
-import { DataPointModel, Type } from '@lyvely/common';
-import { DataPoint } from '@/time-series';
+import { Type } from '@lyvely/common';
+import { DataPoint } from './data-point.schema';
 import { SchemaFactory } from '@nestjs/mongoose';
 
 const registry = new Map<string, Type<DataPoint>>();

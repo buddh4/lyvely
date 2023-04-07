@@ -10,7 +10,7 @@ import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanIte
 import CalendarPlanNumberInput from '@/modules/calendar-plan/components/CalendarPlanNumberInput.vue';
 import { useDebounceFn } from '@vueuse/core';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
-import { useJournalPlanStore } from '../stores/journal-plan.store';
+import { useJournalPlanStore } from '@/modules/journals/stores/journal-calendar-plan.store';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
 import EditableText from '@/modules/ui/components/form/EditableText.vue';
 import CalendarPlanSelectionInput from '@/modules/calendar-plan/components/CalendarPlanSelectionInput.vue';

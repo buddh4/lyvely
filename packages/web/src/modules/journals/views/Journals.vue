@@ -5,7 +5,7 @@ import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 import { JournalModel } from '@lyvely/common';
-import { useJournalPlanStore } from '@/modules/journals/stores/journal-plan.store';
+import { useJournalPlanStore } from '@/modules/journals/stores/journal-calendar-plan.store';
 import JournalCalendarPlanSection from '@/modules/journals/components/JournalCalendarPlanSection.vue';
 import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/CalendarPlanFilterNavigation.vue';
 

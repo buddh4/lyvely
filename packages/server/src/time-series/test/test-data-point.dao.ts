@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DataPoint, DataPointDao, InjectDataPointModel } from '@/time-series';
-import { TestTimeSeriesContent } from '@/time-series/test';
+import { TestTimeSeriesContent } from './test-time-series-content.schema';
 import { Model } from 'mongoose';
 
 @Injectable()

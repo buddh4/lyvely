@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import CalendarPlanSection from '@/modules/calendar-plan/components/CalendarPlanSection.vue';
 import Draggable from 'vuedraggable';
-import { useJournalPlanStore } from '@/modules/journals/stores/journal-plan.store';
+import { useJournalPlanStore } from '@/modules/journals/stores/journal-calendar-plan.store';
 import { computed } from 'vue';
 import { JournalModel } from '@lyvely/common';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';

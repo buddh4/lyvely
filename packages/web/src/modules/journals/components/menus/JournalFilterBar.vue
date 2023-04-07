@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useJournalPlanStore } from '@/modules/journals/stores/journal-plan.store';
+import { useJournalPlanStore } from '@/modules/journals/stores/journal-calendar-plan.store';
 
 const { filter } = useJournalPlanStore();
 </script>
