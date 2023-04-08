@@ -34,7 +34,7 @@
       "checkbox": "Checkboxes",
       "range": "Range",
       "spinner": "Spinner",
-      "time": "Time"
+      "timer": "Timer"
     },
     "fields": {
       "title": "Title",

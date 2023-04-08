@@ -1,5 +1,9 @@
 import { Endpoint } from '@/endpoints';
-import { ITimeSeriesCalendarPlanService, NumberDataPointModel } from '@/time-series';
+import {
+  ITimeSeriesCalendarPlanService,
+  NumberDataPointModel,
+  TimerDataPointModel,
+} from '@/time-series';
 import { IContentTypeService } from '@/content';
 import {
   HabitModel,
@@ -17,7 +21,7 @@ export interface IHabitsEndpointService
     cid: string,
     update: UpdateHabitDataPointModel,
   ): Promise<UpdateHabitDataPointResponse>;
-  startTimer(cid: string, dto: TimerUpdateModel): Promise<NumberDataPointModel>;
+  startTimer(cid: string, dto: TimerUpdateModel): Promise<TimerDataPointModel>;
   stopTimer(cid: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse>;
 }
 

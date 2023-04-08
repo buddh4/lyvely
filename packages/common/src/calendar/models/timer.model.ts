@@ -107,7 +107,7 @@ export class TimerModel extends BaseModel<TimerModel> {
     );
   }
 
-  calculateSpan(span: TimeSpanModel, includeOpenSpan = true) {
+  private calculateSpan(span: TimeSpanModel, includeOpenSpan = true) {
     if (span.to) {
       return span.to - span.from;
     } else if (includeOpenSpan) {

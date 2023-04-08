@@ -11,6 +11,7 @@ import { CoreModule } from '@/core';
 import { getDataPointModelDefinition } from '@/time-series';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from './schemas';
 import { DataPointValueType } from '@lyvely/common';
+import { HabitDataPointTimerService } from '@/habits/services/habit-data-point-timer.service';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { DataPointValueType } from '@lyvely/common';
     HabitDataPointDao,
     HabitDataPointService,
     HabitTimeSeriesService,
+    HabitDataPointTimerService,
     HabitsService,
   ],
 })

@@ -1,16 +1,17 @@
-import { Exclude, Expose, Type } from 'class-transformer';
-import { PropertyType } from '@/models';
+import { Expose } from 'class-transformer';
 import { IsNumber } from 'class-validator';
-import { NumberDataPointModel, UpdateDataPointResponse } from '@/time-series';
+import { DataPointModel, TimerDataPointModel, UpdateDataPointResponse } from '@/time-series';
+import { PropertyType } from '@/models';
 
-@Exclude()
+@Expose()
 export class UpdateHabitDataPointResponse extends UpdateDataPointResponse<UpdateHabitDataPointResponse> {
-  @Expose()
   @IsNumber()
   score: number;
+  dataPoint: DataPointModel;
+}
 
-  @Expose()
-  @Type(() => NumberDataPointModel)
-  @PropertyType(NumberDataPointModel)
-  dataPoint: NumberDataPointModel;
+@Expose()
+export class UpdateHabitDataPointTimerResponse extends UpdateHabitDataPointResponse {
+  @PropertyType(TimerDataPointModel)
+  dataPoint: TimerDataPointModel;
 }

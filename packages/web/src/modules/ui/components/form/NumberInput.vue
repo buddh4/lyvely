@@ -5,8 +5,7 @@
     :label="label"
     :required="required"
     :help-text="helpText"
-    :input-error="inputError"
-  >
+    :input-error="inputError">
     <input
       :id="inputId"
       ref="input"
@@ -18,8 +17,7 @@
       :class="inputClass"
       type="text"
       inputmode="numeric"
-      @change="$emit('change')"
-    />
+      @change="$emit('change')" />
     <div v-if="slider && editable" class="number-slider">
       <ly-button :class="buttonClass" @click="increment">+</ly-button>
       <ly-button :class="buttonClass" @click="decrement">-</ly-button>
@@ -69,7 +67,8 @@ export default {
         val = parseInt(val + '');
 
         context.emit('change', val);
-        baseInputValue.value = baseInput.hasFocus.value ? val : getAllowedVal(val);
+        //baseInputValue.value = baseInput.hasFocus.value ? val : getAllowedVal(val);
+        baseInputValue.value = getAllowedVal(val);
       },
     });
 

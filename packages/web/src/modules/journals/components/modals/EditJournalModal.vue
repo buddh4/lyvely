@@ -13,7 +13,7 @@ import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 import { useJournalsService } from '@/modules/journals/services/journals.service';
-import NumberDataPointConfig from '@/modules/calendar-plan/components/NumberDataPointConfig.vue';
+import { NumberDataPointConfigForm } from '@/modules/calendar-plan/components/NumberDataPointConfigForm.vue';
 import TextDataPointConfig from '@/modules/calendar-plan/components/TextDataPointConfig.vue';
 import SelectionDataPointConfig from '@/modules/calendar-plan/components/SelectionDataPointConfig.vue';
 
@@ -35,7 +35,7 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
   service: useJournalsService(),
 });
 
-function setValueType(valueType: DataPointValueType) {
+function setValueType(valueType: string) {
   if (!model.value) return;
   model.value.valueType = valueType;
   // TODO: Move this somewhere else...
@@ -95,7 +95,7 @@ const modalTitle = computed(() => {
             </ly-button>
           </div>
 
-          <number-data-point-config
+          <number-data-point-config-form
             v-if="model.valueType === DataPointValueType.Number"
             v-model="model" />
           <text-data-point-config

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { HabitModel, isNumberDataPointConfig, NumberDataPointModel } from '@lyvely/common';
+import { HabitModel, isNumberDataPointConfig, isTimerDataPointConfig } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
-import { useDebounceFn } from '@vueuse/core';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
 import CalendarPlanNumberInput from '@/modules/calendar-plan/components/CalendarPlanNumberInput.vue';
+import CalendarPlanTimerInput from '@/modules/calendar-plan/components/CalendarPlanTimerInput.vue';
 
 export interface IProps {
   model: HabitModel;
@@ -15,18 +15,10 @@ export interface IProps {
 const props = defineProps<IProps>();
 const initialized = ref(false);
 const habitStore = useHabitCalendarPlanStore();
-const { selectTag } = habitStore;
-
+const { selectTag, updateDataPoint } = habitStore;
 const { isDisabled, moveUp, moveDown } = useCalendarPlanPlanItem(props.model, habitStore);
-
 const { getDataPoint } = habitStore;
-
-const dataPoint = computed(() => getDataPoint(props.model) as NumberDataPointModel);
-
-onMounted(async () => {
-  await getDataPoint(props.model);
-  initialized.value = true;
-});
+const dataPoint = computed(() => getDataPoint(props.model));
 
 const selection = computed({
   get: () => dataPoint.value.value,
@@ -34,26 +26,30 @@ const selection = computed({
     const oldValue = dataPoint.value.value;
     // Visually update due to debounce delay
     dataPoint.value.value = selection;
-    updateSelection(selection, oldValue);
+    updateDataPoint(dataPoint.value, selection, oldValue);
   },
 });
 
-const updateSelection = useDebounceFn((selection: number, oldValue?: number) => {
-  habitStore.updateDataPoint(dataPoint.value, selection, oldValue);
-}, 500);
-
 async function startTimer() {
-  if (!dataPoint.value.timer?.isStarted()) {
+  if (!timer.value) return;
+  if (!timer.value.isStarted()) {
     await useHabitCalendarPlanStore().startTimer(props.model);
   }
 }
 
 async function stopTimer() {
-  if (dataPoint.value.timer?.isStarted()) {
+  if (!timer.value) return;
+  if (timer.value.isStarted()) {
     await useHabitCalendarPlanStore().stopTimer(props.model);
   }
 }
-const timer = computed(() => dataPoint.value.timer!);
+
+const timer = computed(() => dataPoint.value.value.timer);
+
+onMounted(async () => {
+  await getDataPoint(props.model);
+  initialized.value = true;
+});
 </script>
 
 <template>
@@ -69,6 +65,11 @@ const timer = computed(() => dataPoint.value.timer!);
     <template #rating>
       <calendar-plan-number-input
         v-if="isNumberDataPointConfig(model.timeSeriesConfig)"
+        v-model="selection"
+        :config="model.timeSeriesConfig"
+        :disabled="isDisabled" />
+      <calendar-plan-timer-input
+        v-else-if="isTimerDataPointConfig(model.timeSeriesConfig)"
         v-model="selection"
         :config="model.timeSeriesConfig"
         :timer="timer"

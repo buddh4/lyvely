@@ -13,6 +13,8 @@ import {
   HabitSearchResponse,
   CalendarPlanSort,
   SortResponse,
+  TimerDataPointModel,
+  UpdateHabitDataPointTimerResponse,
 } from '@lyvely/common';
 import { HabitsService, HabitDataPointService, HabitTimeSeriesService } from '../services';
 import {
@@ -25,6 +27,7 @@ import { Policies } from '@/policies';
 import { UseClassSerializer } from '@/core';
 import { DataPointModelConverter } from '@/time-series';
 import { ProfileRequest } from '@/profiles';
+import { HabitDataPointTimerService } from '@/habits/services/habit-data-point-timer.service';
 
 @ContentTypeController('habits', Habit)
 // TODO: implement feature registration @Feature('habits')
@@ -41,6 +44,9 @@ export class HabitsController
 
   @Inject()
   protected timeSeriesService: HabitTimeSeriesService;
+
+  @Inject()
+  protected timerService: HabitDataPointTimerService;
 
   protected updateResponseType = UpdateHabitResponse;
 
@@ -107,22 +113,20 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async startTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
-    return null;
-    //const dataPoint = await this.dataPointService.startTimer(profile, user, content, dto.date);
-    // return DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint);
+    const dataPoint = await this.timerService.startTimer(profile, user, content, dto.date);
+    return DataPointModelConverter.toModel<TimerDataPointModel>(dataPoint);
   }
 
   @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
   async stopTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
-    return null;
 
-    // const dataPoint = await this.dataPointService.stopTimer(profile, user, content, dto.date);
+    const dataPoint = await this.timerService.stopTimer(profile, user, content, dto.date);
 
-    //  return new UpdateHabitDataPointResponse({
-    //   score: profile.score,
-    //  dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
-    //});
+    return new UpdateHabitDataPointTimerResponse({
+      score: profile.score,
+      dataPoint: DataPointModelConverter.toModel<TimerDataPointModel>(dataPoint),
+    });
   }
 }

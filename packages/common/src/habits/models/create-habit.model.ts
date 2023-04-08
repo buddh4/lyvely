@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { CalendarInterval } from '@/calendar';
-import { DataPointInputType, DataPointNumberInputType, DataPointValueType } from '@/time-series';
+import { DataPointInputType, DataPointValueType } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import {
   IsArray,
@@ -21,12 +21,12 @@ import { Gte, Lte } from '@/validation';
 export class CreateHabitModel extends BaseModel<CreateHabitModel> {
   @IsString()
   @IsNotEmpty()
-  //@Length(0, 100)
+  @MaxLength(250)
   title: string;
 
   @IsString()
   @IsOptional()
-  @Length(0, 2000)
+  @Length(0, 2500)
   text?: string;
 
   @IsEnum(CalendarInterval)
@@ -38,7 +38,7 @@ export class CreateHabitModel extends BaseModel<CreateHabitModel> {
   score: number;
 
   @IsInt()
-  @Min(1)
+  @Min(0)
   max: number;
 
   @IsInt()
@@ -53,7 +53,12 @@ export class CreateHabitModel extends BaseModel<CreateHabitModel> {
   @Min(0)
   optimal?: number;
 
-  @IsEnum(DataPointNumberInputType)
+  @IsEnum([
+    DataPointInputType.Checkbox,
+    DataPointInputType.Spinner,
+    DataPointInputType.Range,
+    DataPointInputType.Timer,
+  ])
   inputType: DataPointInputType;
 
   @IsEnum(UserAssignmentStrategy)

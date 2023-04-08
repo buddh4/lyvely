@@ -30,12 +30,6 @@
         "title": "Edit task"
       }
     },
-    "input_types": {
-      "checkbox": "Checkboxes",
-      "range": "Range",
-      "spinner": "Spinner",
-      "time": "Time"
-    },
     "fields": {
       "title": "Title",
       "interval": "Plan",

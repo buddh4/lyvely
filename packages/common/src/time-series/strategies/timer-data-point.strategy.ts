@@ -50,7 +50,11 @@ export class TimerDataPointStrategy extends DataPointStrategy<
   }
 
   prepareConfig(config: ITimerDataPointConfig) {
-    /** Nothing todo **/
+    if (config.optimal > config.max) config.optimal = config.max;
+    if (config.min > config.optimal) config.min = config.optimal;
+    if (config.max > 0 && config.max < 1000) config.max = 1000;
+    if (config.min > 0 && config.min < 1000) config.min = 1000;
+    if (config.optimal > 0 && config.optimal < 1000) config.optimal = 1000;
   }
 
   getSettingKeys(): Array<keyof ITimerDataPointConfig> {

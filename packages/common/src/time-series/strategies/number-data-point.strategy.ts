@@ -29,6 +29,9 @@ export class NumberDataPointStrategy extends DataPointStrategy<
   }
 
   prepareConfig(config: INumberDataPointConfig) {
+    if (config.optimal > config.max) config.optimal = config.max;
+    if (config.min > config.optimal) config.min = config.optimal;
+
     if (!isDefined(config.max) && config.inputType === DataPointInputType.Checkbox) {
       config.max = 1;
     }

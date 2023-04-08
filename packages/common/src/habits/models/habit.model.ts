@@ -2,7 +2,12 @@ import { Expose } from 'class-transformer';
 import { UpdateHabitModel } from './update-habit.model';
 import { IEditableModel } from '@/models';
 import { CalendarInterval } from '@/calendar';
-import { DataPointInputType, DataPointValueType, TimeSeriesContentModel } from '@/time-series';
+import {
+  DataPointInputType,
+  DataPointValueType,
+  TimeSeriesContentModel,
+  useDataPointStrategyFacade,
+} from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import { IHabitConfig } from '../interfaces';
 
@@ -28,16 +33,13 @@ export class HabitModel
   }
 
   toEditModel() {
-    return new UpdateHabitModel({
+    const editModel = new UpdateHabitModel({
       title: this.content.title,
       text: this.content.text,
-      interval: this.timeSeriesConfig.interval,
-      userStrategy: this.timeSeriesConfig.userStrategy,
-      min: this.timeSeriesConfig.min,
-      max: this.timeSeriesConfig.max,
-      optimal: this.timeSeriesConfig.optimal,
-      inputType: this.timeSeriesConfig.inputType,
       score: this.config.score,
     });
+
+    useDataPointStrategyFacade().populateDataPointConfig(editModel, this.timeSeriesConfig);
+    return editModel;
   }
 }

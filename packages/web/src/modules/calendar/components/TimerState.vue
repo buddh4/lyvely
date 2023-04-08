@@ -32,7 +32,7 @@ const formattedTimerValue = computed(() => formatTime(msToTime(timerValue.value)
 let timerInterval: ReturnType<typeof setInterval>;
 function syncTimerState(start: boolean) {
   if (timerInterval) clearInterval(timerInterval);
-
+  debugger;
   if (start) {
     timerInterval = setInterval(() => {
       if (props.max && timerValue.value + 1000 >= props.max) {

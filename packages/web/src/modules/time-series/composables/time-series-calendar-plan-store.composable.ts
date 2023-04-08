@@ -17,6 +17,7 @@ import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { isDefined } from 'class-validator';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
+import { useDebounceFn } from '@vueuse/core';
 
 export interface ITimeSeriesCalendarPlanOptions<
   TModel extends TimeSeriesContentModel,
@@ -75,10 +76,20 @@ export function useTimeSeriesCalendarPlan<
     return cache.value.getDataPoint(model, timingId, true);
   }
 
-  async function updateDataPoint(log: DataPointModel, value: any, oldValue?: any) {
+  async function updateDataPoint(
+    dataPoint: DataPointModel,
+    value: any,
+    oldValue?: any,
+    debounce = false,
+  ) {
+    if (debounce) {
+      await debounceUpdate(dataPoint, value, oldValue);
+      return;
+    }
+
     try {
-      log.value = value;
-      const result = await service.updateDataPoint(log.cid, {
+      dataPoint.value = value;
+      const result = await service.updateDataPoint(dataPoint.cid, {
         date: formatDate(calendarPlanStore.date),
         value: value,
       });
@@ -86,11 +97,18 @@ export function useTimeSeriesCalendarPlan<
       cache.value.setDataPoint(result.dataPoint);
     } catch (e) {
       if (isDefined(oldValue)) {
-        log.value = oldValue!;
+        dataPoint.value = oldValue!;
       }
       dialog.showUnknownError();
     }
   }
+
+  const debounceUpdate = useDebounceFn(
+    (dataPoint: DataPointModel, selection: number, oldValue?: number) => {
+      return updateDataPoint(dataPoint, selection, oldValue);
+    },
+    500,
+  );
 
   return {
     ...calendarPlan,

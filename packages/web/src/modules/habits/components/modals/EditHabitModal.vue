@@ -7,7 +7,7 @@ import { useHabitsService } from '@/modules/habits/services/habits.service';
 import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
-import NumberDataPointConfig from '@/modules/calendar-plan/components/NumberDataPointConfig.vue';
+import NumberDataPointConfigForm from '@/modules/calendar-plan/components/NumberDataPointConfigForm.vue';
 
 export interface IProps {
   modelValue: boolean;
@@ -52,7 +52,11 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <number-data-point-config v-model="model" :score="true" />
+        <number-data-point-config-form
+          v-model="model"
+          :is-create="isCreate"
+          :timer="true"
+          :score="true" />
       </fieldset>
 
       <fieldset>

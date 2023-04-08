@@ -1,7 +1,6 @@
 import {
   CreateHabitModel,
   IHabitsEndpointService,
-  NumberDataPointModel,
   TimerUpdateModel,
   UpdateHabitDataPointModel,
   UpdateHabitModel,
@@ -13,6 +12,8 @@ import {
   CalendarPlanSort,
   SortResponse,
   useDataPointStrategyFacade,
+  TimerDataPointModel,
+  UpdateHabitDataPointTimerResponse,
 } from '@lyvely/common';
 import repository from '../repositories/habits.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
@@ -55,12 +56,15 @@ export class HabitsService implements IHabitsEndpointService {
     return result;
   }
 
-  async startTimer(cid: string, dto: TimerUpdateModel): Promise<NumberDataPointModel> {
-    return unwrapAndTransformResponse(repository.startTimer(cid, dto), NumberDataPointModel);
+  async startTimer(cid: string, dto: TimerUpdateModel): Promise<TimerDataPointModel> {
+    return unwrapAndTransformResponse(repository.startTimer(cid, dto), TimerDataPointModel);
   }
 
-  async stopTimer(cid: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointResponse> {
-    return unwrapAndTransformResponse(repository.stopTimer(cid, dto), UpdateHabitDataPointResponse);
+  async stopTimer(cid: string, dto: TimerUpdateModel): Promise<UpdateHabitDataPointTimerResponse> {
+    return unwrapAndTransformResponse(
+      repository.stopTimer(cid, dto),
+      UpdateHabitDataPointTimerResponse,
+    );
   }
 }
 

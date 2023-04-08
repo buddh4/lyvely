@@ -1,20 +1,12 @@
 <script lang="ts" setup>
-import {
-  DataPointInputType,
-  INumberDataPointConfig,
-  TimerModel,
-  useDataPointStrategyFacade,
-} from '@lyvely/common';
-import TimerState from '@/modules/calendar/components/TimerState.vue';
+import { DataPointInputType, INumberDataPointConfig } from '@lyvely/common';
 import { computed } from 'vue';
-import { useCalendarPlanStore } from '@/modules/calendar-plan';
 import ItemCheckboxList from '@/modules/ui/components/form/CheckboxRange.vue';
 
 interface IProps {
   modelValue: number;
   config: INumberDataPointConfig;
   disabled?: boolean;
-  timer?: TimerModel;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -22,16 +14,12 @@ const props = withDefaults(defineProps<IProps>(), {
   timer: undefined,
 });
 
-const emit = defineEmits(['update:modelValue', 'startTimer', 'stopTimer']);
+const emit = defineEmits(['update:modelValue']);
 
 const selection = computed({
   get: () => props.modelValue,
   set: (selection: number) => emit('update:modelValue', selection),
 });
-
-const updateSelection = (value: number) => {
-  selection.value = value;
-};
 
 const inputColorClass = computed(() => {
   if (props.config.min && selection.value <= props.config.min) return 'warning';
@@ -44,10 +32,6 @@ const inputBorderColorClass = computed(() => {
   const color = inputColorClass.value;
   return color.length ? `border-${color}` : color;
 });
-
-const isPresentInterval = computed(() =>
-  useCalendarPlanStore().isPresentInterval(props.config.interval),
-);
 </script>
 
 <template>
@@ -74,17 +58,6 @@ const isPresentInterval = computed(() =>
       :max="config.max"
       :disabled="disabled" />
   </div>
-  <timer-state
-    v-else-if="config.inputType === DataPointInputType.Time"
-    :key="timer.calculateTotalSpan()"
-    :model="timer"
-    :min="config.min"
-    :max="config.max"
-    :optimal="config.optimal"
-    :startable="isPresentInterval"
-    @start="$emit('startTimer')"
-    @stop="$emit('stopTimer')"
-    @update="updateSelection" />
 </template>
 
 <style>
