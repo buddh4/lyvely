@@ -7,7 +7,7 @@ import { useHabitsService } from '@/modules/habits/services/habits.service';
 import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
-import NumberDataPointConfigForm from '@/modules/calendar-plan/components/NumberDataPointConfigForm.vue';
+import NumberDataPointConfigForm from '@/modules/time-series/components/NumberDataPointConfigForm.vue';
 
 export interface IProps {
   modelValue: boolean;

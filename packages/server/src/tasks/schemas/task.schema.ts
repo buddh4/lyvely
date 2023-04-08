@@ -84,6 +84,10 @@ export class Task
     return this.config.interval;
   }
 
+  set interval(interval: CalendarInterval) {
+    this.config.interval = interval;
+  }
+
   applyUpdate(update: UpdateTaskModel) {
     // We only need to update the interval, all other time series config values are static
     this.applyContentUpdate({

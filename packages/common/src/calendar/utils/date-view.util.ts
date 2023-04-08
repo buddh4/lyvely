@@ -94,5 +94,8 @@ export function padTime(num) {
 }
 
 export function formatTime({ hours, minutes, seconds }) {
-  return padTime(hours) + ':' + padTime(minutes) + ':' + padTime(seconds);
+  let result = padTime(minutes) + ':' + padTime(seconds);
+  const paddedHours = padTime(hours);
+  result = paddedHours === '00' ? result : paddedHours + ':' + result;
+  return result;
 }

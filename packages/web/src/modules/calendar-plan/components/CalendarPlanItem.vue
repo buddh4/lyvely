@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import TagList from '@/modules/tags/components/TagList.vue';
-
 import { useCalendarPlanStore } from '../stores';
-import { TimeSeriesContentModel } from '@lyvely/common';
+import { ICalendarPlanEntry } from '@lyvely/common';
 import { computed, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import { toContentDetails } from '@/modules/content-stream';
 
 export interface IProps {
-  model: TimeSeriesContentModel;
+  model: ICalendarPlanEntry;
   draggable?: boolean;
 }
 

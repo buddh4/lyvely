@@ -59,7 +59,7 @@ export class TasksController
     const { profile, user } = req;
     const models = await this.calendarPlanService.findByFilter(profile, user, filter);
     return new TaskSearchResponse({
-      models: models.map((c) => c.toModel()),
+      models: models.map((c) => c.toModel(user)),
     });
   }
 

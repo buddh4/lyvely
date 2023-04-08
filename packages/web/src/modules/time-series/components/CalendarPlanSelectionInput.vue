@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { ISelectionDataPointConfig, ISelectionDataPointValue } from '@lyvely/common';
+import { ISelectionDataPointValue, ISelectionDataPointSettings } from '@lyvely/common';
 import { computed } from 'vue';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 
 interface IProps {
   modelValue: ISelectionDataPointValue;
-  config: ISelectionDataPointConfig;
+  config: ISelectionDataPointSettings;
   disabled?: boolean;
 }
 

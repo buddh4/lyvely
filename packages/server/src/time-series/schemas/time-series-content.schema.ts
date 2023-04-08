@@ -1,8 +1,7 @@
-import { IContent, ITimeSeriesContentConfig } from '@lyvely/common';
+import { ITimeSeriesContentConfig, CalendarInterval } from '@lyvely/common';
 import { ContentEntity, ContentType } from '@/content';
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';
-import { EntityType } from '@/core';
 
 export type TimeSeriesContentEntity<
   T,
@@ -34,6 +33,10 @@ export abstract class TimeSeriesContent<
 
   get interval() {
     return this.timeSeriesConfig.interval;
+  }
+
+  set interval(interval: CalendarInterval) {
+    this.timeSeriesConfig.interval = interval;
   }
 
   afterInit() {

@@ -13,9 +13,9 @@ import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 import { useJournalsService } from '@/modules/journals/services/journals.service';
-import { NumberDataPointConfigForm } from '@/modules/calendar-plan/components/NumberDataPointConfigForm.vue';
-import TextDataPointConfig from '@/modules/calendar-plan/components/TextDataPointConfig.vue';
-import SelectionDataPointConfig from '@/modules/calendar-plan/components/SelectionDataPointConfig.vue';
+import NumberDataPointConfigForm from '@/modules/time-series/components/NumberDataPointConfigForm.vue';
+import TextDataPointConfigForm from '@/modules/time-series/components/TextDataPointConfigForm.vue';
+import SelectionDataPointConfigForm from '@/modules/time-series/components/SelectionDataPointConfigForm.vue';
 
 export interface IProps {
   modelValue: boolean;
@@ -98,10 +98,10 @@ const modalTitle = computed(() => {
           <number-data-point-config-form
             v-if="model.valueType === DataPointValueType.Number"
             v-model="model" />
-          <text-data-point-config
+          <text-data-point-config-form
             v-else-if="model.valueType === DataPointValueType.Text"
             v-model="model" />
-          <selection-data-point-config
+          <selection-data-point-config-form
             v-else-if="model.valueType === DataPointValueType.Selection"
             v-model="model" />
         </div>

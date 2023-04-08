@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { DataPointInputType, INumberDataPointConfig, ITextDataPointConfig } from '@lyvely/common';
+import { ITextDataPointSettings } from '@lyvely/common';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 import { computed } from 'vue';
 
 interface IProps {
-  modelValue: ITextDataPointConfig;
+  modelValue: ITextDataPointSettings;
 }
 
 const props = defineProps<IProps>();

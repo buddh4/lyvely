@@ -9,6 +9,7 @@ import {
   ICalendarPlanEntry,
   CalendarPlanStore,
   ICalendarPlanResponse,
+  SortResult,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { ref, watch } from 'vue';
@@ -125,14 +126,14 @@ export function useCalendarPlan<
 
     const isSameInterval = moveEvent.fromInterval === moveEvent.toInterval;
 
-    const model = cache.value.getModel(moveEvent.cid);
+    const model = cache.value.getModel(moveEvent.cid) as ICalendarPlanEntry;
     const attachTo =
       moveEvent.newIndex > 0
         ? to[moveEvent.newIndex - (!isSameInterval || evt.oldIndex > evt.newIndex ? 1 : 0)]
         : undefined;
 
     if (!isSameInterval) {
-      model.timeSeriesConfig.interval = moveEvent.toInterval;
+      model.interval = moveEvent.toInterval;
     }
 
     const oldSortOrder = model.meta.sortOrder;
@@ -145,7 +146,7 @@ export function useCalendarPlan<
         new CalendarPlanSort({ interval: moveEvent.toInterval, attachToId: attachTo?.id }),
       );
 
-      sortResult.sort.forEach((update) => {
+      sortResult.sort.forEach((update: SortResult) => {
         const entry = cache.value.getModel(update.id);
         if (entry) {
           entry.meta.sortOrder = update.sortOrder;

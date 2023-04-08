@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { TimerModel, ITimerDataPointConfig, TimerDataPointValueModel } from '@lyvely/common';
+import { TimerModel, TimerDataPointValueModel, ITimerDataPointSettings } from '@lyvely/common';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import { computed } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';
 
 interface IProps {
   modelValue: TimerDataPointValueModel;
-  config: ITimerDataPointConfig;
+  config: ITimerDataPointSettings;
   disabled?: boolean;
   timer: TimerModel;
 }

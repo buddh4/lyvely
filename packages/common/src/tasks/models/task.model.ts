@@ -23,6 +23,10 @@ export class TaskModel
     return this.config.interval;
   }
 
+  set interval(interval: CalendarInterval) {
+    this.config.interval = interval;
+  }
+
   toEditModel() {
     return new UpdateTaskModel({
       title: this.content.title,

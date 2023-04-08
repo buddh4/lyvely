@@ -5,8 +5,8 @@ import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanIte
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
-import CalendarPlanNumberInput from '@/modules/calendar-plan/components/CalendarPlanNumberInput.vue';
-import CalendarPlanTimerInput from '@/modules/calendar-plan/components/CalendarPlanTimerInput.vue';
+import CalendarPlanNumberInput from '@/modules/time-series/components/CalendarPlanNumberInput.vue';
+import CalendarPlanTimerInput from '@/modules/time-series/components/CalendarPlanTimerInput.vue';
 
 export interface IProps {
   model: HabitModel;

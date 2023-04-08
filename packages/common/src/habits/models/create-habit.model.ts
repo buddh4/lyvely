@@ -1,6 +1,11 @@
 import { Expose } from 'class-transformer';
 import { CalendarInterval } from '@/calendar';
-import { DataPointInputType, DataPointValueType } from '@/time-series';
+import {
+  DataPointInputType,
+  DataPointValueType,
+  INumberDataPointSettings,
+  ITimerDataPointSettings,
+} from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 import {
   IsArray,
@@ -18,7 +23,10 @@ import { BaseModel } from '@/models';
 import { Gte, Lte } from '@/validation';
 
 @Expose()
-export class CreateHabitModel extends BaseModel<CreateHabitModel> {
+export class CreateHabitModel
+  extends BaseModel<CreateHabitModel>
+  implements INumberDataPointSettings, ITimerDataPointSettings
+{
   @IsString()
   @IsNotEmpty()
   @MaxLength(250)

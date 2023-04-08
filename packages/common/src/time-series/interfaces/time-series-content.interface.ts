@@ -9,4 +9,5 @@ export interface ITimeSeriesContentConfig<TDataPointConfig = IDataPointConfig> {
 export interface ITimeSeriesContent<TDataPointConfig = IDataPointConfig> extends IContent {
   config: ITimeSeriesContentConfig<TDataPointConfig>;
   get interval(): CalendarInterval;
+  set interval(interval: CalendarInterval);
 }

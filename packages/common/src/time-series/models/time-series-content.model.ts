@@ -17,6 +17,10 @@ export class TimeSeriesContentModel<
     return this.timeSeriesConfig.interval;
   }
 
+  set interval(interval: CalendarInterval) {
+    this.timeSeriesConfig.interval = interval;
+  }
+
   get timeSeriesConfig(): TConfig['timeSeries'] {
     return this.config.timeSeries;
   }

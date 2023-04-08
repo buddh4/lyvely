@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { DataPointInputType, INumberDataPointConfig } from '@lyvely/common';
+import { DataPointInputType, INumberDataPointSettings } from '@lyvely/common';
 import { computed } from 'vue';
 import ItemCheckboxList from '@/modules/ui/components/form/CheckboxRange.vue';
 
 interface IProps {
   modelValue: number;
-  config: INumberDataPointConfig;
+  config: INumberDataPointSettings;
   disabled?: boolean;
 }
 
