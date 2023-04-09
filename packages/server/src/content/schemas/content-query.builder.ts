@@ -1,17 +1,9 @@
 import { FilterQuery } from 'mongoose';
-import { Content } from '@/content';
+import { Content } from './content.schema';
 
 export class ContentCondition {
   static ARCHIVED: FilterQuery<Content> = { 'meta.archived': true };
   static NOTARCHIVED: FilterQuery<Content> = { 'meta.archived': { $in: [null, false] } };
-
-  static or(conditions: FilterQuery<Content>[]): FilterQuery<Content> {
-    return { $or: Object.assign({}, ...conditions) };
-  }
-
-  static and(conditions: FilterQuery<Content>[]): FilterQuery<Content> {
-    return Object.assign({}, ...conditions);
-  }
 
   static archived(archived: boolean): FilterQuery<Content> {
     return archived ? ContentCondition.ARCHIVED : ContentCondition.NOTARCHIVED;

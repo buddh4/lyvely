@@ -1,6 +1,6 @@
 import { TimerDataPointService } from '@/time-series';
 import { Inject, Injectable } from '@nestjs/common';
-import { HabitDataPointService } from '@/habits';
+import { HabitDataPointService } from './habit-data-point.service';
 
 @Injectable()
 export class HabitDataPointTimerService extends TimerDataPointService {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Milestone } from '../schemas';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, EntityIdentity, DBQuery } from '@/core';
 import { MilestoneRelationEvent } from '@/milestones';
 import { CalendarDateTime, MilestoneRelationModel } from '@lyvely/common';
 import { Content, ContentDao } from '@/content';
@@ -20,7 +20,7 @@ export class MilestonesRelationsService {
 
     const contents = await this.contentDao.findAllByProfile(
       profile,
-      ContentCondition.and([
+      DBQuery.and<Content>([
         ContentCondition.NOTARCHIVED,
         ContentCondition.inMilestones(milestones.map((mid) => assureObjectId(mid))),
       ]),
