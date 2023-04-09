@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { IEditableModel } from '@/models';
 import { CalendarInterval } from '@/calendar';
 import { UpdateMilestoneModel } from './update-milestone.model';
@@ -6,12 +6,14 @@ import { IMilestoneConfig } from '../interfaces';
 import { ContentModel } from '@/content';
 import { ICalendarPlanEntry } from '@/calendar-plan';
 
-@Expose()
+@Exclude()
 export class MilestoneModel
   extends ContentModel<MilestoneModel, IMilestoneConfig>
   implements IEditableModel<UpdateMilestoneModel>, ICalendarPlanEntry
 {
   static contentType = 'Milestone';
+
+  @Expose()
   type = MilestoneModel.contentType;
 
   get interval(): CalendarInterval {

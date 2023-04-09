@@ -52,7 +52,6 @@ const modalTitle = computed(() => {
         <tag-chooser v-model="model.tagNames" />
       </fieldset>
       <fieldset>
-        <ly-input-number property="score" :mb="0" :steps="2" :max="100" :min="-100" />
         <ly-input-textarea property="text" />
       </fieldset>
     </ly-form-model>

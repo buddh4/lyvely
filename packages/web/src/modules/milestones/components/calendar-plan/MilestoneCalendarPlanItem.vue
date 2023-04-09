@@ -25,9 +25,7 @@ const { moveUp, moveDown } = useCalendarPlanPlanItem(props.model, milestoneStore
     <template #menu>
       <content-dropdown :content="model" />
     </template>
-    <template #rating>
-      {{ model }}
-    </template>
+    <template #body> </template>
   </calendar-plan-item>
 </template>
 

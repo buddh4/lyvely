@@ -9,9 +9,9 @@ export default () => {
     init: () => {
       registerContentType({
         type: MilestoneModel.contentType,
-        name: translation('habits.name'),
+        name: translation('milestones.name'),
         icon: 'target',
-        feature: 'milestone',
+        feature: 'milestones',
         modelClass: MilestoneModel,
         interfaces: {
           create: {

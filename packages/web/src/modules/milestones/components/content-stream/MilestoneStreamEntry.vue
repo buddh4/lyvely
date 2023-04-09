@@ -17,13 +17,14 @@ const props = defineProps<IProps>();
     <template #image>
       <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
         <router-link :to="{ name: 'Milestones' }">
-          <ly-icon name="milestone" class="text-main" />
+          <ly-icon name="target" class="text-main h-3.5" />
         </router-link>
       </div>
     </template>
 
     <template #default>
       <div>
+        <span>{{ model.content.title }}</span>
         <p v-if="model.content.text?.length" class="text-sm text-dimmed ml-7">
           {{ model.content.text }}
         </p>

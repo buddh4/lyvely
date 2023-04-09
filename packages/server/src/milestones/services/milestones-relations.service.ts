@@ -21,7 +21,7 @@ export class MilestonesRelationsService {
     const contents = await this.contentDao.findAllByProfile(
       profile,
       DBQuery.and<Content>([
-        ContentCondition.NOTARCHIVED,
+        ContentCondition.NOT_ARCHIVED,
         ContentCondition.inMilestones(milestones.map((mid) => assureObjectId(mid))),
       ]),
     );

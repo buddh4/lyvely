@@ -1,8 +1,10 @@
 import { ContentModel } from '@/content';
-import { Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
-@Expose()
+@Exclude()
 export class MessageModel extends ContentModel {
   static contentType = 'Message';
+
+  @Expose()
   type = MessageModel.contentType;
 }

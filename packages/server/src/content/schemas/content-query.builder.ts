@@ -3,10 +3,10 @@ import { Content } from './content.schema';
 
 export class ContentCondition {
   static ARCHIVED: FilterQuery<Content> = { 'meta.archived': true };
-  static NOTARCHIVED: FilterQuery<Content> = { 'meta.archived': { $in: [null, false] } };
+  static NOT_ARCHIVED: FilterQuery<Content> = { 'meta.archived': { $in: [null, false] } };
 
   static archived(archived: boolean): FilterQuery<Content> {
-    return archived ? ContentCondition.ARCHIVED : ContentCondition.NOTARCHIVED;
+    return archived ? ContentCondition.ARCHIVED : ContentCondition.NOT_ARCHIVED;
   }
 
   static milestone(mid: TObjectId): FilterQuery<Content> {

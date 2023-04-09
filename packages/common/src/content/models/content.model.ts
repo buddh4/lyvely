@@ -1,5 +1,5 @@
 import { BaseModel, DocumentModel, PropertyType } from '@/models';
-import { Expose, Transform, Type } from 'class-transformer';
+import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
 import {
   ContentVisibilityLevel,
@@ -78,37 +78,47 @@ export class ContentLogModel<TData = any>
   type: string;
 }
 
-@Expose()
+@Exclude()
 export class ContentModel<T extends IContent = IContent, TConfig extends Object = any>
   extends DocumentModel<T>
   implements IContent<TObjectId>
 {
+  @Expose()
   id: string;
 
+  @Expose()
   @TransformObjectId()
   oid: TObjectId;
 
+  @Expose()
   @TransformObjectId()
   pid: TObjectId;
 
+  @Expose()
   type: string;
 
+  @Expose()
   @Type(() => ContentDataTypeModel)
   @PropertyType(ContentDataTypeModel)
   content: ContentDataTypeModel;
 
+  @Expose()
   @Type(() => ContentMetadataModel)
   @PropertyType(ContentMetadataModel)
   meta: ContentMetadataModel;
 
+  @Expose()
   @Transform(({ obj }) => obj.tagIds?.map((id) => id.toString()) || [])
   tagIds: Array<TObjectId>;
 
+  @Expose()
   @Type(() => ContentLogModel)
   logs: Array<ContentLogModel>;
 
+  @Expose()
   config: TConfig;
 
+  @Expose()
   getDefaults(): Partial<PropertiesOf<T>> {
     return <any>{
       config: this.getDefaultConfig(),
