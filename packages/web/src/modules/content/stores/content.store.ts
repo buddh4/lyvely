@@ -12,14 +12,14 @@ export const useContentStore = defineStore('content', () => {
   const globalDialog = useGlobalDialogStore();
 
   async function toggleArchive(content: ContentModel) {
-    return content.meta.isArchived ? unarchive(content) : archive(content);
+    return content.meta.archived ? unarchive(content) : archive(content);
   }
 
   async function archive(content: ContentModel) {
     return contentService
       .archive(content.id)
       .then(() => {
-        content.meta.isArchived = true;
+        content.meta.archived = true;
         emitPostContentEvent(content.type, 'archived', content);
       })
       .catch(globalDialog.showUnknownError);
@@ -29,7 +29,7 @@ export const useContentStore = defineStore('content', () => {
     return contentService
       .unarchive(content.id)
       .then(() => {
-        content.meta.isArchived = false;
+        content.meta.archived = false;
         emitPostContentEvent(content.type, 'archived', content);
       })
       .catch(globalDialog.showUnknownError);

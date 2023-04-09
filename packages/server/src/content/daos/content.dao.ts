@@ -4,12 +4,12 @@ import { ContentTypeRegistry } from '../components';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { DeepPartial } from '@lyvely/common';
-import { AbstractContentDao } from './abstract-content.dao';
+import { ContentTypeDao } from './content-type.dao';
 import { ProfileShard } from '@/profiles';
 import { EntityIdentity } from '@/core';
 
 @Injectable()
-export class ContentDao extends AbstractContentDao<Content> {
+export class ContentDao extends ContentTypeDao<Content> {
   constructor(
     @InjectModel(Content.name) protected model: Model<ContentDocument>,
     protected contentTypeRegistry: ContentTypeRegistry,

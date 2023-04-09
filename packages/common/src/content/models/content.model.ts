@@ -41,6 +41,9 @@ export class ContentMetadataModel
   implements IContentMetadata<TObjectId>
 {
   @TransformObjectId()
+  mid?: TObjectId;
+
+  @TransformObjectId()
   createdBy: TObjectId;
 
   @Type(() => ContentAuthor)
@@ -58,8 +61,8 @@ export class ContentMetadataModel
   streamSort: number;
   sortOrder?: number;
   visibility: ContentVisibilityLevel;
-  isArchived?: boolean;
-  isLocked?: boolean;
+  archived?: boolean;
+  locked?: boolean;
 }
 
 @Expose()

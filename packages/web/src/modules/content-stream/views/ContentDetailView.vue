@@ -60,7 +60,7 @@ function back() {
             </ly-button>
             <div class="px-1.5 ml-auto inline">
               <ly-icon
-                v-if="content.meta.isArchived"
+                v-if="content.meta.archived"
                 name="archive"
                 :title="$t('common.archived')"
                 class="w-4 text-warning ml-auto" />

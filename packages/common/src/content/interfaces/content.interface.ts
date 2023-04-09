@@ -17,6 +17,7 @@ export interface IContentAuthor<TID = any> {
 }
 
 export interface IContentMetadata<TID = any> {
+  mid?: TID;
   createdBy: TID;
   createdAs?: IContentAuthor<TID>;
   createdAt: Date;
@@ -24,8 +25,8 @@ export interface IContentMetadata<TID = any> {
   streamSort: number;
   sortOrder?: number;
   visibility: ContentVisibilityLevel;
-  isArchived?: boolean;
-  isLocked?: boolean;
+  archived?: boolean;
+  locked?: boolean;
 }
 
 export interface IContentLog<TData = any, TID = any> {

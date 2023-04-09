@@ -5,7 +5,7 @@ import { User } from '@/users';
 import { UpdateQuery } from 'mongoose';
 import { SortResult } from '@lyvely/common';
 
-export abstract class AbstractContentDao<T extends Content> extends BaseProfileModelDao<T> {
+export abstract class ContentTypeDao<T extends Content> extends BaseProfileModelDao<T> {
   protected getModelType(): string | null {
     return 'content';
   }
@@ -15,7 +15,7 @@ export abstract class AbstractContentDao<T extends Content> extends BaseProfileM
       content,
       content,
       this.createUserUpdateQuerySet(user, {
-        'meta.isArchived': true,
+        'meta.archived': true,
       }),
     );
   }
@@ -25,7 +25,7 @@ export abstract class AbstractContentDao<T extends Content> extends BaseProfileM
       content,
       content,
       this.createUserUpdateQuerySet(user, {
-        'meta.isArchived': false,
+        'meta.archived': false,
       }),
     );
   }

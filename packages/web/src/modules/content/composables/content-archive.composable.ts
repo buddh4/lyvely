@@ -7,9 +7,9 @@ export const useContentArchive = (content: ContentModel) => {
 
   const { archive, unarchive, toggleArchive } = contentStore;
   const archiveLabel = computed(() =>
-    content.meta.isArchived ? 'content.actions.restore' : 'content.actions.archive',
+    content.meta.archived ? 'content.actions.restore' : 'content.actions.archive',
   );
-  const archiveIcon = computed(() => (content.meta.isArchived ? 'unarchive' : 'archive'));
+  const archiveIcon = computed(() => (content.meta.archived ? 'unarchive' : 'archive'));
 
   return {
     archive: () => archive(content),

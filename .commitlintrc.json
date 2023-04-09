@@ -37,6 +37,7 @@
         "ui",
         "tags",
         "time-series",
+        "milestones",
         "activities",
         "stream",
         "journals"

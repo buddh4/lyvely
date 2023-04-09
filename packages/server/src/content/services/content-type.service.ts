@@ -1,5 +1,5 @@
 import { ProfilesService, Profile, ProfileTagsService } from '@/profiles';
-import { AbstractContentDao, ContentDao } from '../daos';
+import { ContentTypeDao, ContentDao } from '../daos';
 import { User } from '@/users';
 import { assureObjectId, EntityIdentity, IBaseQueryOptions, UpdateQuerySet } from '@/core';
 import { Content } from '../schemas';
@@ -18,7 +18,7 @@ export interface IContentUpdateOptions extends IBaseQueryOptions {
   tagNames?: string[];
 }
 
-export abstract class AbstractContentTypeService<
+export abstract class ContentTypeService<
   T extends Content,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
@@ -29,7 +29,7 @@ export abstract class AbstractContentTypeService<
   @Inject()
   protected profileTagsService: ProfileTagsService;
 
-  protected abstract contentDao: AbstractContentDao<T>;
+  protected abstract contentDao: ContentTypeDao<T>;
 
   @Inject()
   private baseContentDao: ContentDao;
@@ -143,7 +143,7 @@ export abstract class AbstractContentTypeService<
     const parent = await this.baseContentDao.findByProfileAndId(profile, model.parentId);
     if (!parent) throw new EntityNotFoundException();
     if (!parent.pid.equals(profile._id)) throw new EntityNotFoundException();
-    if (parent.meta.isArchived || parent.meta.isLocked) throw new ForbiddenServiceException();
+    if (parent.meta.archived || parent.meta.locked) throw new ForbiddenServiceException();
 
     instance.meta.parentId = parent._id;
     instance.meta.parentPath = parent.meta.parentPath

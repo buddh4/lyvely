@@ -8,7 +8,6 @@ export default [
     path: profileRoute('/activities'),
     component: () => import('../views/ActivityLayout.vue'),
     meta: {
-      i18n: { module: 'activities' },
       layout: 'profile',
     },
     children: [
@@ -16,7 +15,7 @@ export default [
         name: 'Habits',
         path: '',
         meta: {
-          i18n: { module: 'habits' },
+          i18n: { module: ['activities', 'habits'] },
           layout: 'profile',
           title: () => translate('habits.title'),
         },
@@ -27,11 +26,23 @@ export default [
         name: 'Tasks',
         path: 'tasks',
         meta: {
-          i18n: { module: 'tasks' },
+          i18n: { module: ['activities', 'habits'] },
           layout: 'profile',
           title: () => translate('tasks.title'),
         },
         component: () => import('../../tasks/components/calendar-plan/TaskCalendarPlan.vue'),
+        beforeEnter: [() => useActivityStore().setActiveView('Tasks')],
+      },
+      {
+        name: 'Milestones',
+        path: 'milestones',
+        meta: {
+          i18n: { module: ['activities', 'milestones'] },
+          layout: 'profile',
+          title: () => translate('milestones.title'),
+        },
+        component: () =>
+          import('../../milestones/components/calendar-plan/MilestoneCalendarPlan.vue'),
         beforeEnter: [() => useActivityStore().setActiveView('Tasks')],
       },
     ],

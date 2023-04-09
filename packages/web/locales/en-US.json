@@ -457,19 +457,5 @@
   },
   "offline": {
     "message": "App ready to work offline"
-  },
-  "activities": {
-    "habits": {
-      "title": "Activities",
-      "stream_entry": {
-        "text": "New activity"
-      }
-    },
-    "tasks": {
-      "title": "Tasks",
-      "stream_entry": {
-        "text": "New task"
-      }
-    }
   }
 }

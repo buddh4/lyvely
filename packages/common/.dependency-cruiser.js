@@ -75,6 +75,7 @@ module.exports = {
     createModuleDeps('files'),
     createModuleDeps('habits', [MODULE_CONTENT]),
     createModuleDeps('journals'),
+    createModuleDeps('milestones'),
     createModuleDeps('live'),
     createModuleDeps('message', [MODULE_CONTENT]),
     createModuleDeps('mappings', [MODULE_MODELS, MODULE_UTILS]),

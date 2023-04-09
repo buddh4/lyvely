@@ -1,15 +1,15 @@
 import { TaskModel } from './task.model';
 import { CalendarInterval, toTimingId } from '@/calendar';
-import { TaskDataPointStore } from './task-data-point.store';
+import { TaskCalendarPlanStore } from './task-calendar-plan.store';
 import { ContentMetadataModel } from '@/content';
 import { UserAssignmentStrategy } from '@/collab';
 
 describe('ActivityDataPointStore', () => {
-  let store: TaskDataPointStore;
+  let store: TaskCalendarPlanStore;
   let timingId: string;
 
   beforeEach(() => {
-    store = new TaskDataPointStore();
+    store = new TaskCalendarPlanStore();
     timingId = toTimingId(new Date(), CalendarInterval.Daily);
   });
 

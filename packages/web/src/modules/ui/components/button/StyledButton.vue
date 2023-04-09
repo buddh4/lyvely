@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { ref, onMounted, Ref } from 'vue';
 import { includesUtilityClass } from '@/modules/ui/utils';
-import { RouteRecord } from 'vue-router';
+import { RouteLocationRaw } from 'vue-router';
 import { IConfirmOptions } from '@/modules/ui/components/modal/IConfirmOptions';
 import { isDevelopEnvironment } from '@/modules/core/environment';
 
@@ -20,7 +20,7 @@ export interface IProps {
   loading?: boolean;
   rounded?: boolean;
   isToggle?: boolean;
-  route?: RouteRecord;
+  route?: RouteLocationRaw;
   confirm?: IConfirmOptions;
 }
 
@@ -133,7 +133,7 @@ function getAriaPressed($attrs: any) {
     :disabled="disabled || loading"
     :data-loading="loading"
     @click.prevent="onClick">
-    <slot>{{ $t(text) }}</slot>
+    <slot :active="active">{{ $t(text) }}</slot>
   </button>
   <router-link v-if="route" v-slot="{ navigate, isExactActive }" :to="route" custom>
     <button
@@ -144,7 +144,7 @@ function getAriaPressed($attrs: any) {
       :type="buttonType"
       :disabled="disabled"
       @click="navigate">
-      <slot>{{ $t(text) }}</slot>
+      <slot :active="isExactActive">{{ $t(text) }}</slot>
     </button>
   </router-link>
 

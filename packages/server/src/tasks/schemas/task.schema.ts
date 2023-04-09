@@ -54,11 +54,6 @@ export class TaskConfig extends BaseModel<TaskConfig> implements ITaskConfig {
     required: true,
   })
   userStrategy: UserAssignmentStrategy;
-
-  applyUpdate(update: UpdateTaskModel) {
-    this.interval = update.interval ?? this.interval;
-    this.userStrategy = update.userStrategy ?? this.userStrategy;
-  }
 }
 
 const TaskConfigSchema = SchemaFactory.createForClass(TaskConfig);
@@ -86,16 +81,6 @@ export class Task
 
   set interval(interval: CalendarInterval) {
     this.config.interval = interval;
-  }
-
-  applyUpdate(update: UpdateTaskModel) {
-    // We only need to update the interval, all other time series config values are static
-    this.applyContentUpdate({
-      title: update.title ?? this.content.title,
-      text: update.title ?? this.content.text,
-    });
-    this.config.applyUpdate(update);
-    return this;
   }
 
   toModel(user?: User): TaskModel {
@@ -167,7 +152,7 @@ export class Task
     const { title, text, score, interval, userStrategy } = createModel;
     return new Task(profile, owner, {
       content: new ContentDataType({ title, text }),
-      tagIds: profile.getTagsByName(createModel.tagNames).map((tag) => assureObjectId(tag.id)),
+      tagIds: profile.getTagIdsByName(createModel.tagNames),
       config: new TaskConfig({ score, interval, userStrategy }),
     });
   }

@@ -21,10 +21,10 @@ export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => 
 
   const { cache } = habitPlan;
 
-  async function startTimer(activity: HabitModel) {
+  async function startTimer(habit: HabitModel) {
     try {
       const updatedDataPoint = await habitsService.startTimer(
-        activity.id,
+        habit.id,
         new TimerUpdateModel(calendarPlanStore.date),
       );
       cache.value.setDataPoint(updatedDataPoint);
@@ -33,10 +33,10 @@ export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => 
     }
   }
 
-  async function stopTimer(activity: HabitModel) {
+  async function stopTimer(habit: HabitModel) {
     try {
       const result = await habitsService.stopTimer(
-        activity.id,
+        habit.id,
         new TimerUpdateModel(calendarPlanStore.date),
       );
       cache.value.setDataPoint(result.dataPoint);

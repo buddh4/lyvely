@@ -2,12 +2,12 @@ import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { IFetchQueryOptions } from '@/core';
 import { TimeSeriesContent } from '../schemas';
-import { AbstractContentDao } from '@/content';
+import { ContentTypeDao } from '@/content';
 import { CalendarInterval } from '@lyvely/common';
 
 export abstract class TimeSeriesContentDao<
   TModel extends TimeSeriesContent<TModel>,
-> extends AbstractContentDao<TModel> {
+> extends ContentTypeDao<TModel> {
   /**
    * Returns all time-series content models by given user and tids. The base implementation just returns all
    * entries related to the given profile, sub-classes may implement more sophisticated queries.

@@ -19,7 +19,11 @@ export abstract class TimeSeriesService<
     user: User,
     filter: CalendarPlanFilter,
   ): Promise<Array<TModel>> {
-    return this.contentDao.findAllByProfile(profile);
+    return this.contentDao.findByProfileAndTimingIds(
+      profile,
+      user,
+      getTimingIds(filter.date, profile.locale, filter.level),
+    );
   }
 
   async findTimeSeries(
@@ -27,16 +31,22 @@ export abstract class TimeSeriesService<
     user: User,
     filter: CalendarPlanFilter,
   ): Promise<ITimeSeriesContentSearchResult<TModel, TDataPointModel>> {
-    return {
-      models: await this.contentDao.findByProfileAndTimingIds(
-        profile,
-        user,
-        getTimingIds(filter.date, profile.locale, filter.level),
-      ),
-      dataPoints: isInFuture(filter.date, true)
-        ? []
-        : await this.dataPointService.findByIntervalLevel(profile, user, filter),
-    };
+    const [models, dataPoints] = await Promise.all([
+      this.findByFilter(profile, user, filter),
+      this.findDataPoints(profile, user, filter),
+    ]);
+
+    return { models, dataPoints };
+  }
+
+  private async findDataPoints(
+    profile: Profile,
+    user: User,
+    filter: CalendarPlanFilter,
+  ): Promise<TDataPointModel[]> {
+    return isInFuture(filter.date, true)
+      ? []
+      : await this.dataPointService.findByIntervalLevel(profile, user, filter);
   }
 
   protected async updateIntervalConfig(

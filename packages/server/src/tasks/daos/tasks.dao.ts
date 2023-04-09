@@ -7,11 +7,11 @@ import { User } from '@/users';
 import { Profile } from '@/profiles';
 import { Timer } from '@/calendar';
 import { CalendarInterval, ProfileType, UserAssignmentStrategy } from '@lyvely/common';
-import { AbstractContentDao } from '@/content';
+import { ContentTypeDao } from '@/content';
 import { CalendarPlanDao } from '@/calendar-plan';
 
 @Injectable()
-export class TasksDao extends AbstractContentDao<Task> implements CalendarPlanDao<any> {
+export class TasksDao extends ContentTypeDao<Task> implements CalendarPlanDao<any> {
   @InjectModel(Task.name)
   protected model: Model<Task>;
 

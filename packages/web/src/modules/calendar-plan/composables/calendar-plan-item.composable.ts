@@ -17,7 +17,7 @@ export function useCalendarPlanPlanItem<TModel extends ICalendarPlanEntry>(
 ) {
   const calendarPlanStore = useCalendarPlanStore();
   const isFuture = computed(() => calendarPlanStore.date > new Date());
-  const isDisabled = computed(() => model.meta.isArchived || isFuture.value);
+  const isDisabled = computed(() => model.meta.archived || isFuture.value);
 
   function prepareMoveEvent(
     model: TModel,

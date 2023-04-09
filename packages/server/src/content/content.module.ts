@@ -10,6 +10,7 @@ import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { LiveModule } from '@/live/live.module';
 import { ContentController } from '@/content/controllers';
+import { uniqueId } from 'lodash';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -60,7 +61,7 @@ export class ContentModule {
       module: ContentModule,
       providers: [
         {
-          provide: `ContentTypeRegistration${Math.random()}`,
+          provide: `ContentTypeRegistration${uniqueId('ContentTypeRegistration')}`,
           useClass: registerContentTypeOnInit(contentTypes),
         },
       ],

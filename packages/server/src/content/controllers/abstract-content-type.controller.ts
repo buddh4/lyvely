@@ -1,6 +1,6 @@
 import { Body, Param, Post, Put, Request } from '@nestjs/common';
 import { Content } from '../schemas';
-import { AbstractContentTypeService } from '../services';
+import { ContentTypeService } from '../services';
 import { ProfileContentRequest } from '../types';
 import { Policies } from '@/policies';
 import { ContentWritePolicy } from '../policies';
@@ -31,7 +31,7 @@ export abstract class AbstractContentTypeController<
   protected abstract createModelType: Type<BaseModel<any>>;
   protected abstract updateModelType: Type<BaseModel<any>>;
   protected abstract updateResponseType: Type<ContentUpdateResponse<TModel>>;
-  protected abstract contentService: AbstractContentTypeService<TContent, TCreateModel>;
+  protected abstract contentService: ContentTypeService<TContent, TCreateModel>;
 
   //@ProfilePermissions(ActivityPermissions.CREATE)
   @Post()

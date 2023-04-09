@@ -27,14 +27,14 @@ export type ContentEntity<T, TConfig extends Object = any> = IContent<TObjectId,
 export class Content<
     T extends ContentEntity<T, TConfig> = any,
     TConfig extends Object = any,
-    TContentType extends ContentDataType = ContentDataType,
+    TData extends ContentDataType = ContentDataType,
   >
   extends BaseProfileModel<T>
   implements IContent<TObjectId, TConfig>
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)
-  content: TContentType;
+  content: TData;
 
   @Prop({ type: ContentMetadataSchema })
   @PropertyType(ContentMetadata)
@@ -60,8 +60,12 @@ export class Content<
     super(obj);
   }
 
-  applyContentUpdate(update: Partial<TContentType>) {
-    this.content = assignRawDataTo(this.content || ({} as TContentType), update);
+  /**
+   * @deprecated this should be part of a helper function instead, updates should not be applied on the model itself, but
+   * only on the query
+   */
+  applyContentUpdate(update: Partial<TData>) {
+    this.content = assignRawDataTo(this.content || ({} as TData), update);
   }
 
   getDefaults(): Partial<PropertiesOf<T>> {
@@ -112,9 +116,9 @@ export class Content<
 export abstract class ContentType<
   T extends ContentEntity<T, TConfig>,
   TConfig extends Object = any,
-  TContent extends ContentDataType = ContentDataType,
+  TData extends ContentDataType = ContentDataType,
   TModel extends ContentModel = ContentModel,
-> extends Content<T, TConfig, TContent> {
+> extends Content<T, TConfig, TData> {
   abstract toModel(user?: User): TModel;
 }
 

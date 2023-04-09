@@ -1,10 +1,11 @@
-import { ENDPOINT_CONTENT, ContentEndpoint } from '@lyvely/common';
-import { Post, HttpCode, HttpStatus, Param, Request } from '@nestjs/common';
+import { ENDPOINT_CONTENT, ContentEndpoint, SetMilestoneModel } from '@lyvely/common';
+import { Post, HttpCode, HttpStatus, Param, Request, Body } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { ContentService } from '../services';
 import { ContentWritePolicy } from '../policies';
 import { ProfileContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
+import { assureObjectId } from '@/core';
 
 @ContentTypeController(ENDPOINT_CONTENT)
 export class ContentController implements ContentEndpoint {
@@ -24,5 +25,17 @@ export class ContentController implements ContentEndpoint {
   async unarchive(@Param('cid') cid: string, @Request() req: ProfileContentRequest) {
     const { user, content } = req;
     await this.contentService.unarchive(user, content);
+  }
+
+  @Post(':cid/set-milestone')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Policies(ContentWritePolicy)
+  async setMilestone(
+    @Body() model: SetMilestoneModel,
+    @Param('cid') cid: string,
+    @Request() req: ProfileContentRequest,
+  ) {
+    const { profile, user, content } = req;
+    await this.contentService.setMilestone(profile, user, content, model.mid);
   }
 }

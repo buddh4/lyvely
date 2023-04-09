@@ -113,7 +113,7 @@ describe('Habit', () => {
           text: 'Test description',
         },
         (model) => {
-          model.meta.isArchived = true;
+          model.meta.archived = true;
           model.meta.sortOrder = 3;
         },
       );
@@ -123,7 +123,7 @@ describe('Habit', () => {
       expect(model.content.title).toEqual('c1');
       expect(model.content.text).toEqual('Test description');
       expect(model.type).toEqual(Habit.name);
-      expect(model.meta.isArchived).toEqual(true);
+      expect(model.meta.archived).toEqual(true);
       expect(model.meta.sortOrder).toEqual(3);
     });
 

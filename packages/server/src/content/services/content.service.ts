@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { EntityNotFoundException } from '@lyvely/common';
 import { ProfileShard } from '@/profiles';
-import { EntityIdentity } from '@/core';
+import { assureObjectId, EntityIdentity } from '@/core';
 import { User } from '@/users';
 
 @Injectable()
@@ -65,5 +65,19 @@ export class ContentService {
       });
     }
     return content;
+  }
+
+  async setMilestone(
+    profileRelation: ProfileShard,
+    user: User,
+    cid: EntityIdentity<Content>,
+    mid: TObjectId | string,
+  ): Promise<boolean> {
+    mid = assureObjectId(mid);
+    const milestone = this.contentDao.findByProfileAndId(profileRelation, mid);
+
+    if (!milestone) throw new EntityNotFoundException();
+
+    return this.contentDao.updateOneByProfileAndIdSet(profileRelation, cid, { mid });
   }
 }

@@ -20,6 +20,9 @@ import {
 @NestedSchema()
 export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {
   @Prop({ type: mongoose.Types.ObjectId })
+  mid?: TObjectId;
+
+  @Prop({ type: mongoose.Types.ObjectId })
   parentId?: TObjectId;
 
   @Prop({ type: mongoose.Types.ObjectId })
@@ -58,10 +61,10 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   sortOrder?: number;
 
   @Prop()
-  isArchived?: boolean;
+  archived?: boolean;
 
   @Prop()
-  isLocked?: boolean;
+  locked?: boolean;
 
   afterInit() {
     this.streamSort ||= Date.now();

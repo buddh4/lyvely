@@ -1,4 +1,4 @@
-import { AbstractContentTypeService } from '@/content';
+import { ContentTypeService } from '@/content';
 import { Message } from '@/message/schemas/message.schema';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { MessageDao } from '../daos';
@@ -8,7 +8,7 @@ import { CreateMessage } from '@lyvely/common';
 import { UpdateQuerySet } from '@/core';
 
 @Injectable()
-export class MessageService extends AbstractContentTypeService<Message, CreateMessage> {
+export class MessageService extends ContentTypeService<Message, CreateMessage> {
   @Inject()
   protected contentDao: MessageDao;
 

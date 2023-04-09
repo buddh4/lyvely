@@ -10,12 +10,12 @@ import {
 } from '@lyvely/common';
 import { User } from '@/users';
 import { TasksDao } from '../daos';
-import { AbstractContentTypeService, ContentScoreService } from '@/content';
+import { ContentTypeService, ContentScoreService } from '@/content';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { Timer } from '@/calendar';
 
 @Injectable()
-export class TasksService extends AbstractContentTypeService<Task, CreateTaskModel> {
+export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
   @Inject()
   protected contentDao: TasksDao;
 
@@ -34,13 +34,16 @@ export class TasksService extends AbstractContentTypeService<Task, CreateTaskMod
     return instance;
   }
 
-  protected async createUpdate(
-    profile: Profile,
-    user: User,
-    content: Task,
-    model: UpdateTaskModel,
-  ) {
-    return content.applyUpdate(model);
+  protected async createUpdate(profile: Profile, user: User, task: Task, update: UpdateTaskModel) {
+    task.applyContentUpdate({
+      title: update.title ?? task.content.title,
+      text: update.title ?? task.content.text,
+    });
+
+    task.config.interval = update.interval ?? task.config.interval;
+    task.config.userStrategy = update.userStrategy ?? task.config.userStrategy;
+
+    return task;
   }
 
   async setDone(profile: Profile, user: User, task: Task, date: CalendarDate): Promise<Task> {

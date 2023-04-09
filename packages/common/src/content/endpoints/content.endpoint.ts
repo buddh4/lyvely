@@ -9,6 +9,7 @@ export interface IContentService {
   //delete: (id: string) => Promise<void>;
   archive: (id: string) => Promise<void>;
   unarchive: (id: string) => Promise<void>;
+  setMilestone: (id: string, mid: string) => Promise<void>;
 }
 
 export type ContentEndpoint = Endpoint<IContentService>;

@@ -113,7 +113,7 @@ const bodyWrapperClass = computed(
               <div class="flex gap-2">
                 <slot></slot>
                 <ly-icon
-                  v-if="model.meta.isArchived"
+                  v-if="model.meta.archived"
                   name="archive"
                   class="w-3 text-warning ml-auto" />
               </div>

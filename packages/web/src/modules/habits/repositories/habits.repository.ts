@@ -25,38 +25,38 @@ export default {
     );
   },
 
-  async create(activitiy: CreateHabitModel) {
+  async create(habit: CreateHabitModel) {
     return repository.post<EndpointResult<IHabitsEndpointService['create']>>(
       `${ENDPOINT_HABITS}`,
-      activitiy,
+      habit,
     );
   },
 
-  async update(habitId: string, activitiy: Partial<UpdateHabitModel>) {
+  async update(habitId: string, habit: Partial<UpdateHabitModel>) {
     return repository.put<EndpointResult<IHabitsEndpointService['update']>>(
       `${ENDPOINT_HABITS}/${habitId}`,
-      activitiy,
+      habit,
     );
   },
 
-  async updateDataPoint(habitId: string, dto: UpdateHabitDataPointModel) {
+  async updateDataPoint(habitId: string, model: UpdateHabitDataPointModel) {
     return repository.post<EndpointResult<IHabitsEndpointService['updateDataPoint']>>(
       `${ENDPOINT_HABITS}/${habitId}/update-data-point`,
-      dto,
+      model,
     );
   },
 
-  async startTimer(habitId: string, dto: TimerUpdateModel) {
+  async startTimer(habitId: string, model: TimerUpdateModel) {
     return repository.post<EndpointResult<IHabitsEndpointService['startTimer']>>(
       `${ENDPOINT_HABITS}/${habitId}/start-timer`,
-      dto,
+      model,
     );
   },
 
-  async stopTimer(habitId: string, dto: TimerUpdateModel) {
+  async stopTimer(habitId: string, model: TimerUpdateModel) {
     return repository.post<EndpointResult<IHabitsEndpointService['stopTimer']>>(
       `${ENDPOINT_HABITS}/${habitId}/stop-timer`,
-      dto,
+      model,
     );
   },
 };

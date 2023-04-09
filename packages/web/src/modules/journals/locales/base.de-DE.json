@@ -1,34 +1,18 @@
 {
-  "activities": {
+  "journals": {
     "labels": {
-      "main_nav": "Activities"
+      "main_nav": "Journals"
     },
-    "habits": {
-      "title": "Activities",
-      "name": "Activity",
-      "stream_entry": {
-        "text": "New activity"
-      },
-      "create" : {
-        "title": "Create activity"
-      },
-      "edit" : {
-        "title": "Edit activity"
-      },
-      "timer_score_info": "The score is awarded for each achieved min, optimal, max result."
+    "title": "Activities",
+    "name": "Activity",
+    "stream_entry": {
+      "text": "New journal item"
     },
-    "tasks": {
-      "title": "Tasks",
-      "name": "Task",
-      "stream_entry": {
-        "text": "New task"
-      },
-      "create" : {
-        "title": "Create task"
-      },
-      "edit" : {
-        "title": "Edit task"
-      }
+    "create" : {
+      "title": "Create journal item"
+    },
+    "edit" : {
+      "title": "Edit journal item"
     },
     "fields": {
       "title": "Title",

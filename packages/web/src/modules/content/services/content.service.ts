@@ -3,6 +3,10 @@ import repository from '../repositories/content.repository';
 import { unwrapResponse } from '@/modules/core';
 
 export class ContentService implements IContentService {
+  setMilestone(id: string, mid: string): Promise<void> {
+    return unwrapResponse(repository.setMilestone(id, mid));
+  }
+
   archive(cid: string): Promise<void> {
     return unwrapResponse(repository.archive(cid));
   }

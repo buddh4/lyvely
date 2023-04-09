@@ -1,7 +1,12 @@
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { NavigationGuardWithThis } from 'vue-router';
-import { isModuleMessagesLoaded, isGlobalMessagesLoaded, setLocale, loadModuleMessages } from '@/i18n';
+import {
+  isModuleMessagesLoaded,
+  isGlobalMessagesLoaded,
+  setLocale,
+  loadModuleMessages,
+} from '@/i18n';
 
 export const messageLoaderGuard: NavigationGuardWithThis<undefined> = async (to, from, next) => {
   const { locale } = useAuthStore();
@@ -14,8 +19,14 @@ export const messageLoaderGuard: NavigationGuardWithThis<undefined> = async (to,
     promises.push(setLocale(locale));
   }
 
-  if (to.meta?.i18n?.module && !isModuleMessagesLoaded(locale, to.meta?.i18n?.module)) {
-    promises.push(loadModuleMessages(locale, to.meta?.i18n?.module));
+  if (to.meta?.i18n?.module) {
+    const i18nModules =
+      typeof to.meta.i18n.module === 'string' ? [to.meta.i18n.module] : to.meta.i18n.module;
+    i18nModules.forEach((module) => {
+      if (!isModuleMessagesLoaded(locale, module)) {
+        promises.push(loadModuleMessages(locale, module));
+      }
+    });
   }
 
   if (promises.length) {

@@ -1,4 +1,4 @@
-import { AbstractContentTypeService } from '@/content';
+import { ContentTypeService } from '@/content';
 import { Journal } from '@/journals/schemas';
 import { CreateJournalModel } from '@lyvely/common';
 import { Injectable, Inject, Logger } from '@nestjs/common';
@@ -8,7 +8,7 @@ import { User } from '@/users';
 import { UpdateQuerySet } from '@/core';
 
 @Injectable()
-export class JournalsService extends AbstractContentTypeService<Journal, CreateJournalModel> {
+export class JournalsService extends ContentTypeService<Journal, CreateJournalModel> {
   @Inject()
   protected contentDao: JournalsDao;
 

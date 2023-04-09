@@ -14,8 +14,4 @@ export class UpdateTaskResponse extends ContentUpdateResponse<TaskModel> {
   @Expose()
   @Type(() => TagModel)
   tags: TagModel[];
-
-  constructor() {
-    super();
-  }
 }

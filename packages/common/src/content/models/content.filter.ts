@@ -73,7 +73,7 @@ export class ContentFilter<
       return false;
     }
 
-    return !!this.options.archived === !!model.meta.isArchived;
+    return !!this.options.archived === !!model.meta.archived;
   }
 
   isEmpty() {

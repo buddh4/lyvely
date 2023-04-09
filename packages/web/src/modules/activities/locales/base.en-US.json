@@ -3,32 +3,6 @@
     "labels": {
       "main_nav": "Activities"
     },
-    "habits": {
-      "title": "Activities",
-      "name": "Activity",
-      "stream_entry": {
-        "text": "New activity"
-      },
-      "create" : {
-        "title": "Create activity"
-      },
-      "edit" : {
-        "title": "Edit activity"
-      }
-    },
-    "tasks": {
-      "title": "Tasks",
-      "name": "Task",
-      "stream_entry": {
-        "text": "New task"
-      },
-      "create" : {
-        "title": "Create task"
-      },
-      "edit" : {
-        "title": "Edit task"
-      }
-    },
     "fields": {
       "title": "Title",
       "interval": "Plan",

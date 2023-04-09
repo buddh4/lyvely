@@ -20,7 +20,7 @@ const { archiveIcon, archiveLabel, toggleArchive } = useContentArchive(props.con
 function onClickArchive() {
   confirmAction.value = toggleArchive;
   confirm.value = {
-    text: props.content.meta.isArchived
+    text: props.content.meta.archived
       ? 'content.actions.confirm.unarchive'
       : 'content.actions.confirm.archive',
   };
@@ -31,7 +31,7 @@ function onClickEdit() {
   useContentEditStore().setEditContent(props.content);
 }
 
-const isEditable = computed(() => !props.content.meta.isArchived);
+const isEditable = computed(() => !props.content.meta.archived);
 </script>
 
 <template>

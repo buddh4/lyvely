@@ -11,7 +11,7 @@ export class TaskCalendarPlanService extends SortableCalendarPlanService<Task> {
   @Inject()
   protected contentDao: TasksDao;
 
-  findByFilter(profile: Profile, user: User, filter): Promise<Array<Task>> {
+  findByFilter(profile: Profile, user: User, filter: CalendarPlanFilter): Promise<Array<Task>> {
     return this.contentDao.findByProfileAndTimingIds(
       profile,
       user,

@@ -1,21 +1,32 @@
 <script lang="ts" setup>
-import { RouteRecord } from 'vue-router';
+import { RouteLocationRaw } from 'vue-router';
+
 export interface IProps {
-  route: RouteRecord;
+  to: RouteLocationRaw;
   ariaControls: string;
-  labelKey?: string;
+  label?: string;
+  translate?: boolean;
 }
 
-defineProps<IProps>();
+withDefaults(defineProps<IProps>(), {
+  translate: true,
+  label: undefined,
+});
 </script>
 
 <template>
-  <ly-button :route="route" role="tab" class="secondary outlined grow px-1 py-1" :aria-controls="ariaControls">
-    <slot>
-      <template v-if="labelKey">
-        {{ $t(labelKey) }}
-      </template>
-    </slot>
+  <ly-button
+    :route="to"
+    role="tab"
+    class="secondary outlined grow px-1 py-1"
+    :aria-controls="ariaControls">
+    <template #default="{ active }">
+      <slot :active="active">
+        <template v-if="label">
+          {{ translate ? $t(label) : label }}
+        </template>
+      </slot>
+    </template>
   </ly-button>
 </template>
 

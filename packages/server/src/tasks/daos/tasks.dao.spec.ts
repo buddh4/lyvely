@@ -238,18 +238,18 @@ describe('Tasks DAO', () => {
       const result = await tasksDao.archive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.isArchived).toEqual(true);
+      expect(refresh.meta.archived).toEqual(true);
     });
 
     it('archive already archived task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const task = await taskTestData.createTask(user, profile, null, (model) => {
-        model.meta.isArchived = true;
+        model.meta.archived = true;
       });
       const result = await tasksDao.archive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.isArchived).toEqual(true);
+      expect(refresh.meta.archived).toEqual(true);
     });
   });
 
@@ -257,12 +257,12 @@ describe('Tasks DAO', () => {
     it('un-archive task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const task = await taskTestData.createTask(user, profile, null, (model) => {
-        model.meta.isArchived = true;
+        model.meta.archived = true;
       });
       const result = await tasksDao.unarchive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.isArchived).toEqual(false);
+      expect(refresh.meta.archived).toEqual(false);
     });
 
     it('un-archive already un-archive task', async () => {
@@ -271,18 +271,18 @@ describe('Tasks DAO', () => {
       const result = await tasksDao.unarchive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.isArchived).toEqual(false);
+      expect(refresh.meta.archived).toEqual(false);
     });
 
     it('un-archive task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const task = await taskTestData.createTask(user, profile, null, (model) => {
-        model.meta.isArchived = true;
+        model.meta.archived = true;
       });
       const result = await tasksDao.unarchive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.isArchived).toEqual(false);
+      expect(refresh.meta.archived).toEqual(false);
     });
   });
 });

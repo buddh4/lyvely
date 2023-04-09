@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Test } from '@nestjs/testing';
 import { UsersModule } from '@/users';
-import { ContentCoreModule, ContentModule } from '@/content';
+import { ContentCoreModule } from '@/content';
 import { ProfilesModule } from '@/profiles';
 import { TestingModuleBuilder } from '@nestjs/testing/testing-module.builder';
 import { TestDataUtils } from './test-data.utils';
