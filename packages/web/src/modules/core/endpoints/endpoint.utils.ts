@@ -23,8 +23,6 @@ export function unwrapAndTransformResponse<
   R extends UnwrappedResponse<T>,
 >(promise: T, type: Type<R>): Promise<R> {
   return unwrapResponse(promise).then((rawResponse) => {
-    const model = Object.create(type.prototype);
-    assignRawDataToAndInitProps(model, rawResponse);
-    return model;
+    return assignRawDataToAndInitProps(Object.create(type.prototype), rawResponse);
   });
 }

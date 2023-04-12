@@ -5,6 +5,8 @@ import { UpdateMilestoneModel } from './update-milestone.model';
 import { IMilestoneConfig } from '../interfaces';
 import { ContentModel } from '@/content';
 import { ICalendarPlanEntry } from '@/calendar-plan';
+import { DataPointInputType, DataPointValueType } from '@/time-series';
+import { UserAssignmentStrategy } from '@/collab';
 
 @Exclude()
 export class MilestoneModel
@@ -22,6 +24,12 @@ export class MilestoneModel
 
   set interval(interval: CalendarInterval) {
     this.config.interval = interval;
+  }
+
+  getDefaultConfig(): IMilestoneConfig {
+    return {
+      interval: CalendarInterval.Daily,
+    };
   }
 
   toEditModel() {

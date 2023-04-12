@@ -8,10 +8,6 @@ export type DocumentMock<T> = {
   toJSON?: () => T;
 };
 
-const t: Partial<PropertiesOf<DocumentMock<any>>> = {
-  id: 'asdf',
-};
-
 export abstract class BaseModel<T> {
   constructor(obj?: Partial<PropertiesOf<T>>) {
     if ('getDefaults' in this && typeof this.getDefaults === 'function') {

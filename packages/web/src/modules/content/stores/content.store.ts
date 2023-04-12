@@ -5,7 +5,7 @@ import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { eventBus } from '@/modules/core/events/global.emitter';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
-type ContentEventType = 'archived' | 'unarchived' | 'created' | 'updated';
+type ContentEventType = 'archived' | 'unarchived' | 'created' | 'updated' | 'set-milestone';
 
 export const useContentStore = defineStore('content', () => {
   const contentService = useContentService();
@@ -15,12 +15,25 @@ export const useContentStore = defineStore('content', () => {
     return content.meta.archived ? unarchive(content) : archive(content);
   }
 
+  async function setMilestone(content: ContentModel, mid: string) {
+    if (content.meta.mid === mid) return;
+    return contentService
+      .setMilestone(content.id, mid)
+      .then(() => {
+        content.meta.mid = mid;
+        emitPostContentEvent(content.type, 'set-milestone', content);
+        emitPostContentUpdateEvent(content.type, content);
+      })
+      .catch(globalDialog.showUnknownError);
+  }
+
   async function archive(content: ContentModel) {
     return contentService
       .archive(content.id)
       .then(() => {
         content.meta.archived = true;
         emitPostContentEvent(content.type, 'archived', content);
+        emitPostContentUpdateEvent(content.type, content);
       })
       .catch(globalDialog.showUnknownError);
   }
@@ -30,7 +43,8 @@ export const useContentStore = defineStore('content', () => {
       .unarchive(content.id)
       .then(() => {
         content.meta.archived = false;
-        emitPostContentEvent(content.type, 'archived', content);
+        emitPostContentEvent(content.type, 'unarchived', content);
+        emitPostContentUpdateEvent(content.type, content);
       })
       .catch(globalDialog.showUnknownError);
   }
@@ -80,8 +94,11 @@ export const useContentStore = defineStore('content', () => {
   }
 
   function emitPostContentEvent(type: string, event: ContentEventType, content: ContentModel) {
-    console.log('emit', `content.${type.toLowerCase()}.${event}.post`);
     eventBus.emit(`content.${type.toLowerCase()}.${event}.post`, content);
+  }
+
+  function emitPostContentUpdateEvent(type: string, content: ContentModel) {
+    emitPostContentEvent(type, 'updated', content);
   }
 
   function handleCreateContent(response?: ContentUpdateResponse<any>) {
@@ -93,7 +110,7 @@ export const useContentStore = defineStore('content', () => {
   function handleUpdateContent(response?: ContentUpdateResponse<any>) {
     if (!response) return;
     useProfileStore().updateTags(response.tags);
-    emitPostContentEvent(response.model.type, 'updated', response.model);
+    emitPostContentUpdateEvent(response.model.type, response.model);
   }
 
   return {
@@ -106,6 +123,7 @@ export const useContentStore = defineStore('content', () => {
     onContentCreated,
     offContentCreated,
     onContentUpdated,
+    setMilestone,
     offContentUpdated,
   };
 });

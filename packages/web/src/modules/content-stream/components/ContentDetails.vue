@@ -2,8 +2,6 @@
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 import TextTrimmed from '@/modules/ui/components/text/TextTrimmed.vue';
 import { ContentModel } from '@lyvely/common';
-import LyDropdown from '@/modules/ui/components/menu/DropdownMenu.vue';
-import { computed } from 'vue';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 
 export interface IProps {

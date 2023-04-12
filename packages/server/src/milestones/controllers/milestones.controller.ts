@@ -1,7 +1,7 @@
 import {
   AbstractContentTypeController,
+  ContentReadPolicy,
   ContentTypeController,
-  ContentWritePolicy,
   ProfileContentRequest,
 } from '@/content';
 import { Milestone } from '@/milestones/schemas';
@@ -11,17 +11,14 @@ import {
   UpdateMilestoneModel,
   UpdateMilestoneResponse,
   ENDPOINT_MILESTONES,
-  CalendarPlanFilter,
-  CalendarPlanSort,
-  SortResponse,
-  MilestoneEndpoint,
-  MilestoneSearchResponse,
+  MilestonesEndpoint,
+  MilestoneListResponse,
 } from '@lyvely/common';
 import { MilestonesService } from '@/milestones/services';
-import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
-import { ProfileRequest } from '@/profiles';
+import { Get, Inject, Request } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { MilestonesCalendarPlanService } from '@/milestones/services/milestones-calendar-plan.service';
+import { ProfileRequest } from '@/profiles';
 
 @ContentTypeController(ENDPOINT_MILESTONES, MilestoneModel.contentType)
 export class MilestonesController
@@ -31,7 +28,7 @@ export class MilestonesController
     UpdateMilestoneModel,
     MilestoneModel
   >
-  implements MilestoneEndpoint
+  implements MilestonesEndpoint
 {
   @Inject()
   protected contentService: MilestonesService;
@@ -44,36 +41,19 @@ export class MilestonesController
   protected updateResponseType = UpdateMilestoneResponse;
 
   @Get()
-  async getByFilter(
-    @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
-    @Request() req: ProfileRequest,
-  ): Promise<MilestoneSearchResponse> {
-    const { profile, user } = req;
-
-    const { models, relations } = await this.calendarPlanService.findMilestonesWithRelations(
-      profile,
-      user,
-      filter,
-    );
-
-    return new MilestoneSearchResponse({
-      models: models.map((m) => m.toModel()),
-      relations,
+  @Policies(ContentReadPolicy)
+  async getAll(@Request() req: ProfileRequest): Promise<MilestoneListResponse> {
+    const { profile } = req;
+    const models = await this.contentService.findAllByProfile(profile, { archived: false });
+    return new MilestoneListResponse({
+      models: models.map((model) => model.toModel()),
     });
   }
 
-  @Post(':cid/sort')
-  @Policies(ContentWritePolicy)
-  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileContentRequest<Milestone>) {
-    const { profile, user, content } = req;
-
-    const sort = await this.calendarPlanService.sort(
-      profile,
-      user,
-      content,
-      dto.interval,
-      dto.attachToId,
-    );
-    return new SortResponse({ sort });
+  @Get(':cid')
+  @Policies(ContentReadPolicy)
+  async getById(@Request() req: ProfileContentRequest<Milestone>): Promise<MilestoneModel> {
+    const { content } = req;
+    return content.toModel();
   }
 }

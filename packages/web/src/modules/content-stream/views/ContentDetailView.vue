@@ -9,6 +9,7 @@ import { contentRoute } from '@/modules/content-stream/routes/route.utils';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { getContentDetailsComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
 import { storeToRefs } from 'pinia';
+import ContentDetailHeader from '@/modules/content-stream/components/ContentDetailsHeader.vue';
 
 const router = useRouter();
 const streamService = useContentStreamService();
@@ -32,14 +33,6 @@ watch(
   },
   { immediate: true },
 );
-
-function back() {
-  if (content.value!.meta.parentId) {
-    router.push(contentRoute(content.value!.pid, content.value!.meta.parentId));
-  } else {
-    router.push({ name: 'stream' });
-  }
-}
 </script>
 
 <template>
@@ -53,20 +46,7 @@ function back() {
       <div
         v-if="content"
         class="flex flex-col mx-0 mt-0 md:mx-2 mb-4 border border-divide md:rounded divide-y">
-        <div class="px-1 md:p-2 bg-main border-divide rounded-t w-full">
-          <div class="flex items-center">
-            <ly-button class="text-sm" @click="back">
-              <ly-icon name="arrow-left" class="w-3 mr-2" /><span>{{ $t('common.back') }}</span>
-            </ly-button>
-            <div class="px-1.5 ml-auto inline">
-              <ly-icon
-                v-if="content.meta.archived"
-                name="archive"
-                :title="$t('common.archived')"
-                class="w-4 text-warning ml-auto" />
-            </div>
-          </div>
-        </div>
+        <content-detail-header :content="content" />
         <div class="border-divide">
           <component :is="getContentDetailsComponent(content)" :model="content" />
         </div>

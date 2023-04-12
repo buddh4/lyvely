@@ -2,20 +2,26 @@ import { ProfilesService, Profile, ProfileTagsService } from '@/profiles';
 import { ContentTypeDao, ContentDao } from '../daos';
 import { User } from '@/users';
 import { assureObjectId, EntityIdentity, IBaseQueryOptions, UpdateQuerySet } from '@/core';
-import { Content } from '../schemas';
+import { Content, ContentCondition } from '../schemas';
 import {
   CreateContentModel,
   EntityNotFoundException,
   ForbiddenServiceException,
+  IContentFilter,
 } from '@lyvely/common';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
+import { isDefined } from 'class-validator';
 
 export interface IContentUpdateOptions extends IBaseQueryOptions {
   streamSort?: boolean;
   updatedByUser?: boolean;
   liveUpdate?: boolean;
   tagNames?: string[];
+}
+
+export interface IContentSearchFilter {
+  archived?: boolean;
 }
 
 export abstract class ContentTypeService<
@@ -46,6 +52,14 @@ export abstract class ContentTypeService<
     content: T,
     model: TUpdateModel,
   ): Promise<UpdateQuerySet<T>>;
+
+  async findAllByProfile(profile: Profile, filter?: IContentSearchFilter): Promise<T[]> {
+    let queryFilter = undefined;
+    if (isDefined(filter?.archived)) {
+      queryFilter = ContentCondition.archived(filter.archived);
+    }
+    return this.contentDao.findAllByProfile(profile, queryFilter);
+  }
 
   async findByProfileAndId(profile: Profile, id: EntityIdentity<T>): Promise<T | null> {
     return this.contentDao.findByProfileAndId(profile, id);

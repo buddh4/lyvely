@@ -127,6 +127,7 @@
     "archived": "Archived",
     "restore": "Restore default",
     "archive": "Archive",
+    "none": "none",
     "unarchive": "Add from archive",
     "filter": {
       "search": "Search",

@@ -55,23 +55,26 @@ export class TimeSeriesStore<
 
     const update = new Map([...this.dataPoints]);
 
-    dataPoints.forEach((log) => {
-      this._setDataPoint(log, update);
+    dataPoints.forEach((dataPoint) => {
+      this._setDataPoint(dataPoint, update);
     });
 
     this.dataPoints = update;
   }
 
-  private _setDataPoint(log: TDataPointModel, logs: Map<string, Map<string, TDataPointModel>>) {
-    const modelId = log.cid;
+  private _setDataPoint(
+    dataPoint: TDataPointModel,
+    dataPoints: Map<string, Map<string, TDataPointModel>>,
+  ) {
+    const modelId = dataPoint.cid;
 
     if (!modelId) return;
 
-    if (!logs.has(modelId)) {
-      logs.set(modelId, new Map());
+    if (!dataPoints.has(modelId)) {
+      dataPoints.set(modelId, new Map());
     }
 
-    logs.get(modelId).set(log.tid, log);
+    dataPoints.get(modelId).set(dataPoint.tid, dataPoint);
   }
 
   getDataPoint(
@@ -90,7 +93,7 @@ export class TimeSeriesStore<
         return;
       }
 
-      // Add and fetch log in order to return a reactive instance
+      // Add and fetch dataPoint in order to return a reactive instance
       this.setDataPoint(this.createDataPoint(model, timingId));
       return this.getDataPoint(model, timingId);
     }

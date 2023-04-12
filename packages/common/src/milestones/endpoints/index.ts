@@ -1,1 +1,2 @@
-export * from './milestone.endpoint';
+export * from './milestones.endpoint';
+export * from './milestone-plan.endpoint';

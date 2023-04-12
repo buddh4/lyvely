@@ -19,5 +19,8 @@ export class MilestoneRelationModel extends BaseModel<MilestoneRelationModel> {
   interval?: CalendarInterval;
 
   @Expose()
+  tid?: string;
+
+  @Expose()
   progress?: number;
 }

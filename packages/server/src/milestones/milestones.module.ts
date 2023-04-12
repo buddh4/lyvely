@@ -11,6 +11,7 @@ import { MilestonesDao } from '@/milestones/daos';
 import { MilestonesService } from '@/milestones/services';
 import { MilestonesRelationsService } from '@/milestones/services/milestones-relations.service';
 import { MilestonesCalendarPlanService } from '@/milestones/services/milestones-calendar-plan.service';
+import { MilestonePlanController } from '@/milestones/controllers/milestone-plan.controller';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { MilestonesCalendarPlanService } from '@/milestones/services/milestones-
       getContentModelDefinition([{ name: Milestone.name, schema: MilestoneSchema }]),
     ]),
   ],
-  controllers: [MilestonesController],
+  controllers: [MilestonesController, MilestonePlanController],
   providers: [
     MilestonesDao,
     MilestonesService,

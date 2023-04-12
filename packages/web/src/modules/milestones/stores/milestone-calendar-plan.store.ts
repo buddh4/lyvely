@@ -1,13 +1,23 @@
 import { defineStore } from 'pinia';
-import { MilestoneModel, MilestoneFilter, CalendarPlanStore } from '@lyvely/common';
+import {
+  MilestoneModel,
+  MilestoneFilter,
+  MilestoneRelationsStore,
+  MilestoneSearchResponse,
+} from '@lyvely/common';
 import { useCalendarPlan } from '@/modules/calendar-plan';
-import { useMilestonesService } from '../services/milestones.service';
+import { useMilestonePlanService } from '../services/milestone-plan-service';
 
 export const useMilestoneCalendarPlanStore = defineStore('milestone-calendar-plan', () => {
-  return useCalendarPlan<MilestoneModel, MilestoneFilter>({
+  return useCalendarPlan<
+    MilestoneModel,
+    MilestoneFilter,
+    MilestoneSearchResponse,
+    MilestoneRelationsStore
+  >({
     filter: new MilestoneFilter(),
-    cache: new CalendarPlanStore<MilestoneModel>(),
+    cache: new MilestoneRelationsStore(),
     contentTypes: [MilestoneModel.contentType],
-    service: useMilestonesService(),
+    service: useMilestonePlanService(),
   });
 });

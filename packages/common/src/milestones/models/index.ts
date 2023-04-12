@@ -5,3 +5,6 @@ export * from './update-milestone.model';
 export * from './milestone-filter.model';
 export * from './milestone-search.response';
 export * from './milestone-relation.model';
+export * from './milestone-relation.store';
+export * from './milestone-plan-search.filter';
+export * from './milestone-list.response';

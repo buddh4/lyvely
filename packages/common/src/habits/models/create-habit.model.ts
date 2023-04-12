@@ -19,7 +19,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { BaseModel } from '@/models';
+import { BaseModel, PropertyType } from '@/models';
 import { Gte, Lte } from '@/validation';
 
 @Expose()
@@ -30,35 +30,42 @@ export class CreateHabitModel
   @IsString()
   @IsNotEmpty()
   @MaxLength(250)
+  @PropertyType(String)
   title: string;
 
   @IsString()
   @IsOptional()
   @Length(0, 2500)
+  @PropertyType(String, { optional: true })
   text?: string;
 
   @IsEnum(CalendarInterval)
+  @PropertyType(Number, { default: CalendarInterval.Daily })
   interval: CalendarInterval;
 
   @IsInt()
   @Max(100)
   @Min(-100)
+  @PropertyType(Number, { default: 2 })
   score: number;
 
   @IsInt()
   @Min(0)
+  @PropertyType(Number, { default: 3 })
   max: number;
 
   @IsInt()
   @Lte('max')
   @IsOptional()
   @Min(0)
+  @PropertyType(Number, { default: 0 })
   min?: number;
 
   @IsInt()
   @Gte('min')
   @Lte('max')
   @Min(0)
+  @PropertyType(Number, { default: 0 })
   optimal?: number;
 
   @IsEnum([
@@ -67,37 +74,21 @@ export class CreateHabitModel
     DataPointInputType.Range,
     DataPointInputType.Timer,
   ])
+  @PropertyType(String, { default: DataPointInputType.Checkbox })
   inputType: DataPointInputType;
 
   @IsEnum(UserAssignmentStrategy)
+  @PropertyType(Number, { default: UserAssignmentStrategy.Shared })
   userStrategy: UserAssignmentStrategy;
 
   @IsString()
   @IsEnum([DataPointValueType.Number, DataPointValueType.Timer])
+  @PropertyType(String, { default: DataPointValueType.Number })
   valueType: string;
 
   @IsArray()
   @MaxLength(20, { each: true })
   @IsOptional()
+  @PropertyType([String])
   tagNames?: string[];
-
-  constructor(obj?: Partial<CreateHabitModel>, init = true) {
-    obj = init
-      ? Object.assign(
-          {
-            interval: CalendarInterval.Daily,
-            score: 2,
-            max: 3,
-            min: 0,
-            optimal: 0,
-            valueType: DataPointValueType.Number,
-            inputType: DataPointInputType.Checkbox,
-            userStrategy: UserAssignmentStrategy.Shared,
-            tagNames: [],
-          },
-          obj || {},
-        )
-      : obj;
-    super(obj);
-  }
 }
