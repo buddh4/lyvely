@@ -23,6 +23,7 @@ const { moveUp, moveDown } = useCalendarPlanPlanItem(props.model, milestoneStore
 
 const relations = computed(() => {
   const tid = toTimingId(calendarPlanStore.date, props.model.interval, locale.value);
+  debugger;
   return milestoneStore.cache.getRelations(props.model, tid);
 });
 </script>

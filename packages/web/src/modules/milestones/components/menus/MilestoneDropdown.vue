@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref, watch } from 'vue';
+import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
 import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
 import { ContentModel, MilestoneModel } from '@lyvely/common';
 import MilestoneChooser from '@/modules/milestones/components/menus/MilestoneChooser.vue';
@@ -14,33 +14,31 @@ const props = withDefaults(defineProps<IProps>(), {
   editable: false,
 });
 
-const isLoaded = ref(!props.content.meta.mid);
+const mid = computed(() => props.content.meta.mid);
+
+const isLoaded = ref(!mid.value);
 const milestone = ref<MilestoneModel | null>(null);
 
 const milestoneTitle = computed(() => {
   return milestone.value ? milestone.value.getTitle() : translate('common.none');
 });
 
-watch(
-  props.content.meta.mid,
-  () => {
-    if (!props.content.meta.mid) return;
+watchEffect(() => {
+  if (!mid.value) return;
 
-    isLoaded.value = false;
+  isLoaded.value = false;
 
-    useMilestonesStore()
-      .loadMilestone(props.content.meta.mid)
-      .then((model) => {
-        milestone.value = model;
-      })
-      .finally(() => {
-        isLoaded.value = true;
-      });
-  },
-  {
-    immediate: true,
-  },
-);
+  useMilestonesStore()
+    .loadMilestone(mid.value)
+    .then((model) => {
+      milestone.value = model;
+    })
+    .finally(() => {
+      isLoaded.value = true;
+    });
+}, {});
+
+// TODO accessibility
 </script>
 
 <template>

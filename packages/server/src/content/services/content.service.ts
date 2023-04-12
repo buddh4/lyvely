@@ -78,6 +78,6 @@ export class ContentService {
 
     if (!milestone) throw new EntityNotFoundException();
 
-    return this.contentDao.updateOneByProfileAndIdSet(profileRelation, cid, { mid });
+    return this.contentDao.updateOneByProfileAndIdSet(profileRelation, cid, { 'meta.mid': mid });
   }
 }

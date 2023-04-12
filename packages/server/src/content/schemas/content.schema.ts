@@ -60,6 +60,10 @@ export class Content<
     super(obj);
   }
 
+  static collectionName() {
+    return 'contents';
+  }
+
   /**
    * @deprecated this should be part of a helper function instead, updates should not be applied on the model itself, but
    * only on the query
@@ -87,10 +91,6 @@ export class Content<
     return undefined;
   }
 
-  static collectionName() {
-    return 'contents';
-  }
-
   addTag(tag: Tag) {
     if (tag) this.tagIds.push(tag._id);
   }
@@ -110,6 +110,14 @@ export class Content<
         : ContentModel;
 
     return new ModelConstructor(this);
+  }
+
+  getTitle() {
+    return this.content?.title;
+  }
+
+  getText() {
+    return this.content?.text;
   }
 }
 

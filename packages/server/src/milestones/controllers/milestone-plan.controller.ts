@@ -1,23 +1,13 @@
-import {
-  AbstractContentTypeController,
-  ContentReadPolicy,
-  ContentTypeController,
-  ContentWritePolicy,
-  ProfileContentRequest,
-} from '@/content';
+import { ContentTypeController, ContentWritePolicy, ProfileContentRequest } from '@/content';
 import { Milestone } from '@/milestones/schemas';
 import {
-  CreateMilestoneModel,
   MilestoneModel,
-  UpdateMilestoneModel,
-  UpdateMilestoneResponse,
   ENDPOINT_MILESTONE_PLAN,
   CalendarPlanSort,
   SortResponse,
-  MilestonesEndpoint,
   MilestoneSearchResponse,
-  MilestonePlanSearchFilter,
   MilestonePlanEndpoint,
+  CalendarPlanFilter,
 } from '@lyvely/common';
 import { MilestonesService } from '@/milestones/services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
@@ -35,17 +25,10 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
 
   @Get()
   async getByFilter(
-    @Query(new ValidationPipe({ transform: true })) filter: MilestonePlanSearchFilter,
+    @Query(new ValidationPipe({ transform: true })) filter: CalendarPlanFilter,
     @Request() req: ProfileRequest,
   ): Promise<MilestoneSearchResponse> {
     const { profile, user } = req;
-
-    if (filter.withRelations === false) {
-      const models = await this.calendarPlanService.findByFilter(profile, user, filter);
-      return new MilestoneSearchResponse({
-        models: models.map((m) => m.toModel()),
-      });
-    }
 
     const { models, relations } = await this.calendarPlanService.findMilestonesWithRelations(
       profile,

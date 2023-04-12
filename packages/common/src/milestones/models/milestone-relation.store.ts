@@ -2,6 +2,8 @@ import { CalendarPlanStore } from '@/calendar-plan/models/calendar-plan.store';
 import { MilestoneModel, MilestoneRelationModel, MilestoneSearchResponse } from '@/milestones';
 
 type MilestoneIdentity = MilestoneModel | string;
+type MID = string;
+type TID = string;
 
 /**
  * This class is used to stores time series content and related data points.
@@ -10,7 +12,7 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
   MilestoneModel,
   MilestoneSearchResponse
 > {
-  protected relationsByTid: Map<string, Map<string, MilestoneRelationModel>> = new Map();
+  protected relationsByTid: Map<MID, Map<TID, MilestoneRelationModel[]>> = new Map();
 
   constructor(models?: MilestoneModel[], relations?: MilestoneRelationModel[]) {
     super(models);
@@ -45,17 +47,21 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
 
   private _setRelation(
     relation: MilestoneRelationModel,
-    logs: Map<string, Map<string, MilestoneRelationModel>>,
+    relations: Map<MID, Map<TID, MilestoneRelationModel[]>>,
   ) {
-    const modelId = relation.cid;
+    const mid = relation.mid;
 
-    if (!modelId) return;
+    if (!mid) return;
 
-    if (!logs.has(modelId)) {
-      logs.set(modelId, new Map());
+    if (!relations.has(mid)) {
+      relations.set(mid, new Map());
     }
 
-    logs.get(modelId).set(relation.tid, relation);
+    if (!relations.get(mid).get(relation.tid)) {
+      relations.get(mid).set(relation.tid, []);
+    }
+
+    relations.get(mid).get(relation.tid).push(relation);
   }
 
   getRelations(identity: MilestoneIdentity, timingId: string): MilestoneRelationModel[] {

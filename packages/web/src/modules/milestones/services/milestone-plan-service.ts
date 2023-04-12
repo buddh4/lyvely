@@ -1,22 +1,18 @@
 import {
   useSingleton,
   CalendarPlanFilter,
-  ICalendarPlanResponse,
   CalendarPlanSort,
   SortResponse,
   IMilestonePlanEndpointService,
-  MilestoneModel,
+  MilestoneSearchResponse,
 } from '@lyvely/common';
 
 import repository from '../repositories/milestone-plan.repository';
-import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
+import { unwrapAndTransformResponse } from '@/modules/core';
 
 export class MilestonePlanService implements IMilestonePlanEndpointService {
-  async getByFilter(filter: CalendarPlanFilter): Promise<ICalendarPlanResponse<MilestoneModel>> {
-    const { models } = await unwrapResponse(repository.getByFilter(filter));
-    return {
-      models: models.map((milestone) => new MilestoneModel(milestone)),
-    };
+  async getByFilter(filter: CalendarPlanFilter): Promise<MilestoneSearchResponse> {
+    return unwrapAndTransformResponse(repository.getByFilter(filter), MilestoneSearchResponse);
   }
 
   sort(cid: string, move: CalendarPlanSort): Promise<SortResponse> {

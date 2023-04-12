@@ -5,7 +5,6 @@ import { ContentService } from '../services';
 import { ContentWritePolicy } from '../policies';
 import { ProfileContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
-import { assureObjectId } from '@/core';
 
 @ContentTypeController(ENDPOINT_CONTENT)
 export class ContentController implements ContentEndpoint {

@@ -13,7 +13,7 @@ export class ContentCondition {
     return { 'meta.mid': mid };
   }
 
-  static inMilestones(mid: TObjectId[]): FilterQuery<Content> {
+  static withMilestones(mid: TObjectId[]): FilterQuery<Content> {
     return { 'meta.mid': { $in: mid } };
   }
 }

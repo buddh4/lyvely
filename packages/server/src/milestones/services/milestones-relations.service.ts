@@ -22,7 +22,7 @@ export class MilestonesRelationsService {
       profile,
       DBQuery.and<Content>([
         ContentCondition.NOT_ARCHIVED,
-        ContentCondition.inMilestones(milestones.map((mid) => assureObjectId(mid))),
+        ContentCondition.withMilestones(milestones.map((mid) => assureObjectId(mid))),
       ]),
     );
 
@@ -46,7 +46,20 @@ export class MilestonesRelationsService {
         event,
       );
 
-      event.getResult().forEach((relation) => relations.push(relation));
+      if (!event.getResult()?.length) {
+        contents.forEach((content) =>
+          relations.push(
+            new MilestoneRelationModel({
+              cid: content._id,
+              mid: content.meta.mid,
+              title: content.getTitle(),
+              contentType: content.type,
+            }),
+          ),
+        );
+      } else {
+        event.getResult().forEach((relation) => relations.push(relation));
+      }
     }
 
     return relations;

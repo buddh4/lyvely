@@ -20,10 +20,6 @@ function back() {
     router.push({ name: 'stream' });
   }
 }
-
-/*const milestone = computed(() => {
-
-});*/
 </script>
 
 <template>

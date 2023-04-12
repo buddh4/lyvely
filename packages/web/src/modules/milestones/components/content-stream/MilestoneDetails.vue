@@ -6,7 +6,7 @@ export interface IProps {
   model: MilestoneModel;
 }
 
-const props = defineProps<IProps>();
+defineProps<IProps>();
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const props = defineProps<IProps>();
         </router-link>
       </div>
     </template>
-    <template #body> <ly-input-checkbox :label="model.content.title" /> </template>
+    <template #body> </template>
   </content-details>
 </template>
 

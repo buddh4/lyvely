@@ -10,6 +10,10 @@ export class MilestoneRelationModel extends BaseModel<MilestoneRelationModel> {
   cid: TObjectId;
 
   @Expose()
+  @TransformObjectId()
+  mid: TObjectId;
+
+  @Expose()
   title: string;
 
   @Expose()
