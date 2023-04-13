@@ -5,14 +5,19 @@ import {
   CalendarInterval,
   isToday as isTodayUtil,
   isInFuture as isInFutureUtil,
+  everyFullMinute,
 } from '@lyvely/common';
 import { ref, computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export const useCalendarPlanStore = defineStore('timing', () => {
-  const date = ref(new Date());
+  const now = ref(new Date());
+  const date = ref(now.value);
+
   const dragActive = ref(false);
   const { locale } = storeToRefs(useProfileStore());
+
+  everyFullMinute(() => (now.value = new Date()));
 
   function getTimingId(interval: CalendarInterval) {
     return toTimingId(date.value, interval, locale.value);
@@ -50,7 +55,7 @@ export const useCalendarPlanStore = defineStore('timing', () => {
     return getCalendarPlan(plan).decrement(date.value);
   }
 
-  const isInFuture = computed(() => isInFutureUtil(date.value));
+  const isInFuture = computed(() => date.value > now.value);
   const isToday = computed(() => isTodayUtil(date.value));
 
   return {

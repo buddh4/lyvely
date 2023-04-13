@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref, watch, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
 import { ContentModel, MilestoneModel } from '@lyvely/common';
 import MilestoneChooser from '@/modules/milestones/components/menus/MilestoneChooser.vue';

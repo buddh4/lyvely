@@ -6,6 +6,7 @@ import { useAccessibilityStore } from '@/modules/accessibility';
 import { translate } from '@/i18n';
 import { IMoveActivityEvent } from '@/modules/activities/store/activity.store';
 import { IDragEvent } from '@/modules/common';
+import { storeToRefs } from 'pinia';
 
 export interface ISortableStore {
   sort(evt: IDragEvent | IMoveEntryEvent): Promise<void>;
@@ -15,9 +16,9 @@ export function useCalendarPlanPlanItem<TModel extends ICalendarPlanEntry>(
   model: TModel,
   store: ISortableStore,
 ) {
-  const calendarPlanStore = useCalendarPlanStore();
-  const isFuture = computed(() => calendarPlanStore.date > new Date());
-  const isDisabled = computed(() => model.meta.archived || isFuture.value);
+  const { isInFuture } = storeToRefs(useCalendarPlanStore());
+
+  const isDisabled = computed(() => model.meta.archived || isInFuture.value);
 
   function prepareMoveEvent(
     model: TModel,
@@ -82,7 +83,7 @@ export function useCalendarPlanPlanItem<TModel extends ICalendarPlanEntry>(
   }
 
   return {
-    isFuture,
+    isInFuture,
     isDisabled,
     moveUp,
     moveDown,
