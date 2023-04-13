@@ -28,7 +28,7 @@ const store = useContentEditModal<MilestoneModel, CreateMilestoneModel, UpdateMi
 const { showModal, isCreate, model, validator, submit, status } = store;
 
 const modalTitle = computed(() => {
-  return isCreate.value ? `activities.milestones.create.title` : `activities.milestones.edit.title`;
+  return isCreate.value ? `milestones.create.title` : `milestones.edit.title`;
 });
 </script>
 

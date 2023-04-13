@@ -5,6 +5,6 @@ export function contentRoute(pid: string, cid: string) {
   return profileRoute(`/stream/${cid}`, pid);
 }
 
-export function toContentDetails(content: IContent) {
-  return contentRoute(content.pid, content.id);
+export function toContentDetails({ id, pid }: { id: string; pid: string }) {
+  return contentRoute(pid, id);
 }

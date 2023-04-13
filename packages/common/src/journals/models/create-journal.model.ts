@@ -93,19 +93,13 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
   @IsOptional()
   tagNames?: string[];
 
-  constructor(obj?: Partial<CreateJournalModel>, init = true) {
-    obj = init
-      ? Object.assign(
-          {
-            interval: CalendarInterval.Daily,
-            inputType: DataPointInputType.Checkbox,
-            valueType: DataPointValueType.Number,
-            userStrategy: UserAssignmentStrategy.Shared,
-            tagNames: [],
-          },
-          obj || {},
-        )
-      : obj;
-    super(obj);
+  getDefaults() {
+    return {
+      interval: CalendarInterval.Daily,
+      inputType: DataPointInputType.Checkbox,
+      valueType: DataPointValueType.Number,
+      userStrategy: UserAssignmentStrategy.Shared,
+      tagNames: [],
+    };
   }
 }

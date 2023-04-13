@@ -8,3 +8,4 @@ export * from './function.util';
 export * from './promise.util';
 export * from './transformation.util';
 export * from './nested.path.type';
+export * from './math.util';

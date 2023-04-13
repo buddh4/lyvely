@@ -7,6 +7,8 @@ import { SortableCalendarPlanService } from '@/calendar-plan';
 import { User } from '@/users';
 import { ContentCondition } from '@/content/schemas/content-query.builder';
 import { MilestonesRelationsService } from '@/milestones/services/milestones-relations.service';
+import { isDefined } from 'class-validator';
+import { DBQuery } from '@/core';
 
 @Injectable()
 export class MilestonesCalendarPlanService extends SortableCalendarPlanService<Milestone> {
@@ -21,13 +23,24 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
     user: User,
     filter: CalendarPlanFilter,
   ): Promise<Array<Milestone>> {
-    return this.contentDao.findAllByProfile(profile, ContentCondition.archived(filter.archived));
+    const conditions = [];
+
+    if (!isDefined(filter.cid) || isDefined(filter.archived)) {
+      conditions.push(ContentCondition.archived(filter.archived));
+    }
+
+    if (isDefined(filter.cid)) {
+      conditions.push(ContentCondition.cid(filter.cid));
+    }
+
+    return this.contentDao.findAllByProfile(profile, DBQuery.and(conditions));
   }
 
   async findMilestonesWithRelations(profile: Profile, user: User, filter: CalendarPlanFilter) {
     const models = await this.findByFilter(profile, user, filter);
     const relations = await this.relationsService.getRelationsByMilestones(
       profile,
+      user,
       models,
       filter.date,
     );

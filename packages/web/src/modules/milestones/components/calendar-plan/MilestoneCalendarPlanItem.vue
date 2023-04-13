@@ -8,6 +8,9 @@ import { computed } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import ProgressBar from '@/modules/ui/components/progress/ProgressBar.vue';
+import { useRouter } from 'vue-router';
+import { toContentDetails } from '@/modules/content-stream';
 
 export interface IProps {
   model: MilestoneModel;
@@ -18,14 +21,18 @@ const calendarPlanStore = useCalendarPlanStore();
 const milestoneStore = useMilestoneCalendarPlanStore();
 const { selectTag } = milestoneStore;
 const { locale } = storeToRefs(useProfileStore());
+const router = useRouter();
 
 const { moveUp, moveDown } = useCalendarPlanPlanItem(props.model, milestoneStore);
 
-const relations = computed(() => {
+const progress = computed(() => {
   const tid = toTimingId(calendarPlanStore.date, props.model.interval, locale.value);
-  debugger;
-  return milestoneStore.cache.getRelations(props.model, tid);
+  return milestoneStore.cache.calculateProgress(props.model, tid);
 });
+
+const toDetails = () => {
+  router.push(toContentDetails(props.model));
+};
 </script>
 
 <template>
@@ -37,9 +44,9 @@ const relations = computed(() => {
     <template #menu>
       <content-dropdown :content="model" />
     </template>
-    <template #body>
-      <div v-for="relation in relations" :key="relation.cid">
-        {{ relation.cid }}
+    <template #rating>
+      <div class="w-40 ml-auto">
+        <progress-bar :progress="progress" class="cursor-pointer" @click="toDetails" />
       </div>
     </template>
   </calendar-plan-item>

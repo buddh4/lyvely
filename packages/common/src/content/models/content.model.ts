@@ -126,11 +126,11 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
   }
 
   getTitle() {
-    if (this.content?.title?.length) {
-      return this.content.title;
-    } else {
-      return this.content.text;
-    }
+    return this.content.title;
+  }
+
+  getText() {
+    return this.content.text;
   }
 
   getDefaultConfig(): TConfig {

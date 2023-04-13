@@ -46,6 +46,8 @@ export interface IContent<TID = any, TConfig extends Object = any> extends ISort
   config: TConfig;
   tagIds: TID[];
   logs: Array<IContentLog<any, TID>>;
+  getTitle(): string;
+  getText(): string;
 }
 
 /**

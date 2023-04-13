@@ -3,16 +3,16 @@
     "labels": {
       "main_nav": "Journals"
     },
-    "title": "Activities",
-    "name": "Activity",
+    "title": "Journals",
+    "name": "Journal",
     "stream_entry": {
       "text": "New journal item"
     },
     "create" : {
-      "title": "Create journal item"
+      "title": "Create Journal Item"
     },
     "edit" : {
-      "title": "Edit journal item"
+      "title": "Edit Journal Item"
     },
     "fields": {
       "title": "Title",

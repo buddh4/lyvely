@@ -5,7 +5,7 @@
     <ly-tab-menu-link aria-controls="calendar-plan" :to="{ name: 'Habits' }">
       <template #default="{ active }">
         <div class="flex gap-1 items-center justify-center">
-          <ly-icon name="activity" class="h-3" />
+          <ly-icon name="activity" class="hidden md:visible h-3" />
           <span :class="!active ? 'hidden md:inline' : ''">
             {{ $t('activities.habits.title') }}
           </span>
@@ -15,7 +15,7 @@
     <ly-tab-menu-link aria-controls="calendar-plan" :to="{ name: 'Tasks' }">
       <template #default="{ active }">
         <div class="flex gap-1 items-center justify-center">
-          <ly-icon name="task" />
+          <ly-icon name="task" class="hidden md:visible" />
           <span :class="!active ? 'hidden md:inline' : ''">
             {{ $t('activities.tasks.title') }}
           </span>
@@ -25,7 +25,7 @@
     <ly-tab-menu-link aria-controls="calendar-plan" :to="{ name: 'Milestones' }">
       <template #default="{ active }">
         <div class="flex gap-1 items-center justify-center">
-          <ly-icon name="target" class="h-3" />
+          <ly-icon name="target" class="hidden md:visible h-3" />
           <span :class="!active ? 'hidden md:inline' : ''">
             {{ $t('activities.milestones.title') }}
           </span>

@@ -1,6 +1,16 @@
 {
   "milestones": {
     "title": "Milestones",
-    "name": "Milestone"
+    "name": "Milestone",
+    "details": {
+      "relation": "Relation",
+      "progress": "Progress"
+    },
+    "create": {
+      "title": "Create Milestone"
+    },
+    "edit": {
+      "title": "Edit Milestone"
+    }
   }
 }

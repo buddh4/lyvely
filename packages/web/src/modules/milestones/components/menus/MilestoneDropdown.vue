@@ -18,6 +18,7 @@ const mid = computed(() => props.content.meta.mid);
 
 const isLoaded = ref(!mid.value);
 const milestone = ref<MilestoneModel | null>(null);
+const isMilestone = computed(() => props.content.type === MilestoneModel.contentType);
 
 const milestoneTitle = computed(() => {
   return milestone.value ? milestone.value.getTitle() : translate('common.none');
@@ -42,7 +43,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <ly-dropdown>
+  <ly-dropdown v-if="!isMilestone">
     <template #trigger="{ toggle }">
       <div
         :class="[

@@ -24,7 +24,7 @@ const store = useContentEditModal<TaskModel, CreateTaskModel, UpdateTaskModel>(p
 const { showModal, isCreate, model, validator, submit, status } = store;
 
 const modalTitle = computed(() => {
-  return isCreate.value ? `activities.tasks.create.title` : `activities.tasks.edit.title`;
+  return isCreate.value ? `tasks.create.title` : `tasks.edit.title`;
 });
 </script>
 
@@ -35,7 +35,7 @@ const modalTitle = computed(() => {
       v-model="model"
       :validator="validator"
       :status="status"
-      label-key="activities.fields">
+      label-key="common.fields">
       <fieldset>
         <ly-input-text
           property="title"

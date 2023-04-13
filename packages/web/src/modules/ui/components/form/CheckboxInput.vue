@@ -1,7 +1,7 @@
 <template>
   <div :class="['cursor-pointer', wrapperClass]" @keydown.enter.prevent.stop="toggle">
     <div class="flex">
-      <label class="inline-flex items-center">
+      <label :class="['inline-flex items-center', { 'cursor-pointer': !readonly && !disabled }]">
         <input
           ref="checkbox"
           v-model="inputValue"
@@ -64,6 +64,7 @@ export default {
     });
 
     function onChange(evt: any) {
+      if (props.readonly || props.disabled) return;
       context.emit('change', evt.target.checked, evt.target.value);
     }
 

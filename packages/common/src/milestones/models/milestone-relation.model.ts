@@ -1,10 +1,14 @@
 import { TransformObjectId } from '@/utils';
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel } from '@/models';
-import { CalendarInterval } from '@/calendar';
+import type { IContent } from '@/content';
 
 @Exclude()
 export class MilestoneRelationModel extends BaseModel<MilestoneRelationModel> {
+  @Expose()
+  @TransformObjectId()
+  pid: TObjectId;
+
   @Expose()
   @TransformObjectId()
   cid: TObjectId;
@@ -17,14 +21,27 @@ export class MilestoneRelationModel extends BaseModel<MilestoneRelationModel> {
   title: string;
 
   @Expose()
-  contentType: string;
+  text?: string;
 
   @Expose()
-  interval?: CalendarInterval;
+  contentType: string;
 
   @Expose()
   tid?: string;
 
   @Expose()
   progress?: number;
+
+  constructor(content: IContent, progress?: { progress: number; tid?: string } | number) {
+    super({
+      pid: content.pid,
+      cid: content.id,
+      mid: content.meta.mid,
+      title: content.getTitle() || content.getText(),
+      text: content.getText()?.substring(0, 150),
+      contentType: content.type,
+      progress: typeof progress === 'number' ? progress : progress?.progress,
+      tid: typeof progress === 'object' ? progress?.tid : undefined,
+    });
+  }
 }

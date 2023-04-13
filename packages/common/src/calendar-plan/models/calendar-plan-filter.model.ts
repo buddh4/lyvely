@@ -1,11 +1,15 @@
 import { Exclude, Expose, Transform } from 'class-transformer';
-import { IsBoolean, IsEnum, IsOptional, IsString, Matches } from 'class-validator';
+import { IsBoolean, IsEnum, IsMongoId, IsOptional, IsString, Matches } from 'class-validator';
 import { CalendarInterval, formatDate, REGEX_DATE_FORMAT } from '@/calendar';
 import type { CalendarDate } from '@/calendar';
 import { ICalendarPlanFilter } from '../interfaces';
+import { BaseModel } from '@/models';
 
 @Exclude()
-export class CalendarPlanFilter implements ICalendarPlanFilter {
+export class CalendarPlanFilter
+  extends BaseModel<CalendarPlanFilter>
+  implements ICalendarPlanFilter
+{
   @Expose()
   @IsString()
   @Matches(REGEX_DATE_FORMAT)
@@ -21,7 +25,17 @@ export class CalendarPlanFilter implements ICalendarPlanFilter {
   @IsOptional()
   archived?: boolean;
 
-  constructor(date: CalendarDate, level: CalendarInterval = CalendarInterval.Unscheduled) {
+  @Expose()
+  @IsMongoId()
+  @IsOptional()
+  cid?: string;
+
+  constructor(
+    date: CalendarDate,
+    level: CalendarInterval = CalendarInterval.Unscheduled,
+    data?: Partial<CalendarPlanFilter>,
+  ) {
+    super(data);
     this.date = formatDate(date);
     this.level = level;
   }

@@ -10,7 +10,7 @@ export default () => {
       registerContentType({
         type: JournalModel.contentType,
         modelClass: JournalModel,
-        name: translation('journals.content.name'),
+        name: translation('journals.name'),
         icon: 'journal',
         feature: 'journals',
         interfaces: {

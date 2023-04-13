@@ -1,21 +1,25 @@
 import { BaseModel, MilestoneRelationModel, CalendarDateTime, formatDate } from '@lyvely/common';
 import { Content } from '@/content';
+import { User } from '@/users';
 
-export interface IMilestoneRelationEventData {
-  contents: Content[];
+export interface IMilestoneRelationEventData<TContent extends Content = Content> {
+  contents: TContent[];
   date: CalendarDateTime;
+  user: User;
 }
 
-export class MilestoneRelationEvent extends BaseModel<MilestoneRelationEvent> {
+export class MilestoneRelationEvent<
+  TContent extends Content = Content,
+> extends BaseModel<MilestoneRelationEvent> {
   static getKeyByContentType(contentType: string) {
     return `milestones.fetch.${contentType}`;
   }
 
   private result: MilestoneRelationModel[] = [];
 
-  data: IMilestoneRelationEventData;
+  data: IMilestoneRelationEventData<TContent>;
 
-  constructor(data: IMilestoneRelationEventData) {
+  constructor(data: IMilestoneRelationEventData<TContent>) {
     super({ data });
   }
 

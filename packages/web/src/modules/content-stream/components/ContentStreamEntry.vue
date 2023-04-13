@@ -110,12 +110,9 @@ const bodyWrapperClass = computed(
                 :class="{ 'mt-2': bodyStyle === 'message' }"
                 :tag-ids="model.tagIds"
                 @select="(tagId) => $emit('selectTag', tagId)" />
-              <div class="flex gap-2">
+              <ly-icon v-if="model.meta.archived" name="archive" class="w-3 text-warning ml-auto" />
+              <div>
                 <slot></slot>
-                <ly-icon
-                  v-if="model.meta.archived"
-                  name="archive"
-                  class="w-3 text-warning ml-auto" />
               </div>
             </div>
           </div>

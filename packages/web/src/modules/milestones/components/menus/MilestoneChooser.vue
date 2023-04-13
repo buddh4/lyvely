@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
-import { ContentModel } from '@lyvely/common';
+import { ContentModel, MilestoneModel } from '@lyvely/common';
 import { useSetContentMilestone } from '@/modules/content/composables/set-content-milestone.composable';
 
 export interface IProps {

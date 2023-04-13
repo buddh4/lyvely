@@ -2,6 +2,7 @@
 import { ContentModel, MilestoneModel } from '@lyvely/common';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
+import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
 
 export interface IProps {
   model: MilestoneModel;
@@ -23,9 +24,12 @@ const props = defineProps<IProps>();
     </template>
 
     <template #default>
-      <div>
+      <div class="flex items-center gap-1">
+        <ly-badge class="bg-secondary">Milestone</ly-badge>
         <span>{{ model.content.title }}</span>
-        <p v-if="model.content.text?.length" class="text-sm text-dimmed ml-7">
+      </div>
+      <div>
+        <p v-if="model.content.text?.length" class="text-sm text-dimmed mt-2">
           {{ model.content.text }}
         </p>
       </div>

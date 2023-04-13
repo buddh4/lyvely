@@ -7,12 +7,14 @@ import { Content, ContentDao } from '@/content';
 import { Profile } from '@/profiles';
 import { ContentCondition } from '@/content/schemas/content-query.builder';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { User } from '@/users';
 
 @Injectable()
 export class MilestonesRelationsService {
   constructor(private contentDao: ContentDao, private eventEmitter: EventEmitter2) {}
   public async getRelationsByMilestones(
     profile: Profile,
+    user: User,
     milestones: EntityIdentity<Milestone>[],
     date?: CalendarDateTime,
   ) {
@@ -37,6 +39,7 @@ export class MilestonesRelationsService {
     const relations = [] as MilestoneRelationModel[];
     for (const contents of contentTypeMap.values()) {
       const event = new MilestoneRelationEvent({
+        user,
         contents,
         date,
       });
@@ -47,16 +50,7 @@ export class MilestonesRelationsService {
       );
 
       if (!event.getResult()?.length) {
-        contents.forEach((content) =>
-          relations.push(
-            new MilestoneRelationModel({
-              cid: content._id,
-              mid: content.meta.mid,
-              title: content.getTitle(),
-              contentType: content.type,
-            }),
-          ),
-        );
+        contents.forEach((content) => relations.push(new MilestoneRelationModel(content)));
       } else {
         event.getResult().forEach((relation) => relations.push(relation));
       }

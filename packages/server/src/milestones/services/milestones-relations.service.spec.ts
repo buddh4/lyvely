@@ -43,6 +43,7 @@ class TestMilestoneRelationProvider {
       payload.data.contents.map((content) => {
         return {
           cid: content._id,
+          mid: content.meta.mid,
           interval: CalendarInterval.Daily,
           contentType: TestContent.name,
           progress: 0.4,
@@ -106,7 +107,7 @@ describe('MileStonesRelationService', () => {
   describe('getRelationsByMilestones()', () => {
     it('test event data', async () => {
       const { profile, user, content, mid } = await createTestContent();
-      await service.getRelationsByMilestones(profile, [mid as EntityIdentity<Milestone>]);
+      await service.getRelationsByMilestones(profile, user, [mid as EntityIdentity<Milestone>]);
       expect(testProvider.event?.data).toBeDefined();
       expect(testProvider.event.data.contents.length).toEqual(1);
       expect(testProvider.event.data.contents[0]._id).toEqual(content._id);
@@ -114,8 +115,8 @@ describe('MileStonesRelationService', () => {
     });
 
     it('test result', async () => {
-      const { profile, content, mid } = await createTestContent();
-      const result = await service.getRelationsByMilestones(profile, [
+      const { profile, user, content, mid } = await createTestContent();
+      const result = await service.getRelationsByMilestones(profile, user, [
         mid as EntityIdentity<Milestone>,
       ]);
       expect(result.length).toEqual(1);

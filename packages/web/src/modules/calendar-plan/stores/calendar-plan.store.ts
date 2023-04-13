@@ -4,7 +4,6 @@ import {
   CalendarPlan,
   CalendarInterval,
   isToday as isTodayUtil,
-  isInFuture as isInFutureUtil,
   everyFullMinute,
 } from '@lyvely/common';
 import { ref, computed } from 'vue';

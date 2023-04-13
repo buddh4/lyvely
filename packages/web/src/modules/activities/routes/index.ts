@@ -43,7 +43,7 @@ export default [
         },
         component: () =>
           import('../../milestones/components/calendar-plan/MilestoneCalendarPlan.vue'),
-        beforeEnter: [() => useActivityStore().setActiveView('Tasks')],
+        beforeEnter: [() => useActivityStore().setActiveView('Milestones')],
       },
     ],
   },

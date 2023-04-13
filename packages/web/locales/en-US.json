@@ -129,6 +129,16 @@
     "archive": "Archive",
     "none": "none",
     "unarchive": "Add from archive",
+    "fields": {
+      "title": "Title",
+      "tags": "Tags",
+      "text": "Description",
+      "score": "Scroe",
+      "interval": "Plan",
+      "max": "Max",
+      "optimal": "Optimal",
+      "min": "Min"
+    },
     "filter": {
       "search": "Search",
       "clear": "Reset",

@@ -1,5 +1,7 @@
 import { CalendarPlanStore } from '@/calendar-plan/models/calendar-plan.store';
 import { MilestoneModel, MilestoneRelationModel, MilestoneSearchResponse } from '@/milestones';
+import { isDefined } from 'class-validator';
+import { mergePercentages } from '@/utils';
 
 type MilestoneIdentity = MilestoneModel | string;
 type MID = string;
@@ -61,7 +63,20 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
       relations.get(mid).set(relation.tid, []);
     }
 
-    relations.get(mid).get(relation.tid).push(relation);
+    const tidStore = relations.get(mid).get(relation.tid);
+    const relationIndex = tidStore.findIndex((r) => r.cid === relation.cid);
+    if (relationIndex < 0) {
+      tidStore.push(relation);
+    } else {
+      tidStore[relationIndex] = relation;
+    }
+  }
+
+  calculateProgress(identity: MilestoneIdentity, timingId: string): number | undefined {
+    const progresses = this.getRelations(identity, timingId)
+      .filter((relation) => isDefined(relation.progress))
+      .map((relation) => relation.progress);
+    return progresses.length ? mergePercentages(progresses) : undefined;
   }
 
   getRelations(identity: MilestoneIdentity, timingId: string): MilestoneRelationModel[] {
@@ -70,6 +85,12 @@ export class MilestoneRelationsStore extends CalendarPlanStore<
     const relationsWithoutTimingId = (this.relationsByTid
       .get(this.getId(identity))
       ?.get(undefined) || []) as MilestoneRelationModel[];
-    return [...relationsByTimingId, ...relationsWithoutTimingId];
+    return [...relationsByTimingId, ...relationsWithoutTimingId].sort((a, b) => {
+      if (a.progress > b.progress) return 1;
+      if (a.progress < b.progress) return -1;
+      if (isDefined(a.progress) && !isDefined(b.progress)) return -1;
+      if (!isDefined(a.progress) && isDefined(b.progress)) return 1;
+      return 0;
+    });
   }
 }

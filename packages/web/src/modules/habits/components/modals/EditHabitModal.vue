@@ -30,7 +30,7 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
 const calendarPlanOptions = computed(() => getCalendarPlanOptions());
 
 const modalTitle = computed(() => {
-  return isCreate.value ? `activities.habits.edit.title` : `activities.habits.create.title`;
+  return isCreate.value ? `habits.create.title` : `habits.edit.title`;
 });
 </script>
 
@@ -41,7 +41,7 @@ const modalTitle = computed(() => {
       v-model="model"
       :validator="validator"
       :status="status"
-      label-key="activities.fields">
+      label-key="common.fields">
       <fieldset>
         <ly-input-text
           property="title"
