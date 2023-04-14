@@ -39,11 +39,11 @@ function selectTag(tagId: string) {
         </slot>
       </div>
     </div>
-  </div>
-  <div class="p-2 md:p-4 bg-main border-divide rounded-b">
-    <div class="flex justify-end w-full mb-2">
+    <div v-if="model.tagIds?.length" class="flex w-full justify-end mt-2">
       <tag-list :tag-ids="model.tagIds" @select="selectTag" />
     </div>
+  </div>
+  <div class="p-2 md:p-4 bg-main border-divide rounded-b">
     <slot name="body">
       {{ model.content.text }}
     </slot>

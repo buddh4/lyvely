@@ -116,7 +116,7 @@ onBeforeMount(async () => {
         </tbody>
       </table>
       <div v-else class="w-fit">
-        <ly-alert message="milestones.messages.no_relations" type="info" />
+        <span class="text-xs">{{ $t('milestones.messages.no_relations') }}</span>
       </div>
     </template>
   </content-details>
