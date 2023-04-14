@@ -214,7 +214,7 @@ export class AppModuleBuilder {
         inject: [ConfigService],
         useFactory: (config: ConfigService<ConfigurationPath>) => ({
           ttl: config.get('http.rateLimit.ttl') || 60,
-          limit: config.get('http.rateLimit.limit') || 40,
+          limit: config.get('http.rateLimit.limit') || 60,
         }),
       }),
     ).useProviders({
