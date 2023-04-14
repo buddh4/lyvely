@@ -25,7 +25,7 @@ const props = defineProps<IProps>();
 
     <template #default>
       <div class="flex items-center gap-1">
-        <ly-badge class="bg-secondary">Milestone</ly-badge>
+        <ly-badge class="bg-secondary-dark">Milestone</ly-badge>
         <span>{{ model.content.title }}</span>
       </div>
       <div>

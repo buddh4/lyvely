@@ -32,7 +32,9 @@ export class JwtAccessStrategy extends JwtStrategy<JwtTokenPayloadIF>({
   options: (configService) => {
     return {
       secretOrKey: configService.get('auth.jwt.access.secret'),
-      jwtFromRequest: ExtractJwt.fromExtractors([(req: Request) => extractAuthCookie(req, configService)]),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req: Request) => extractAuthCookie(req, configService),
+      ]),
     };
   },
 }) {

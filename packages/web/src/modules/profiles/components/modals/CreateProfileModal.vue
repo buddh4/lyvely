@@ -19,21 +19,21 @@ const usageOptions = [
   ProfileUsage.Family,
   ProfileUsage.Improvement,
 ];
-const usageLabel = (usage: string) => translate('profile.usage.' + usage.toLowerCase());
+const usageLabel = (usage: string) => translate('profiles.usage.' + usage.toLowerCase());
 </script>
 
 <template>
-  <ly-modal v-model="show" title="profile.create.title" @cancel="reset" @submit="submit">
-    <ly-form-model v-model="model" label-key="profile.create.properties" :validator="validator">
+  <ly-modal v-model="show" title="profiles.create.title" @cancel="reset" @submit="submit">
+    <ly-form-model v-model="model" label-key="profiles.create.properties" :validator="validator">
       <ly-input-text property="name" :required="true" />
       <ly-input-textarea property="description" />
       <ly-badge-chooser
         v-model="model.usage"
-        label="profile.create.placeholders.usage"
+        label="profiles.create.placeholders.usage"
         :options="usageOptions"
         :labels="usageLabel" />
-      <ly-input-radio property="type" label="profile.create.properties.user" :value="userType" />
-      <ly-input-radio property="type" label="profile.create.properties.group" :value="groupType" />
+      <ly-input-radio property="type" label="profiles.create.properties.user" :value="userType" />
+      <ly-input-radio property="type" label="profiles.create.properties.group" :value="groupType" />
     </ly-form-model>
     <ly-alert :message="error" class="mt-2" />
   </ly-modal>

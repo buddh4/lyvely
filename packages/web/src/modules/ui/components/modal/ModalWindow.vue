@@ -158,7 +158,12 @@ function onKeyDown(evt: KeyboardEvent) {
                 <ly-icon name="arrow-left" class="w-3 mr-1" />
               </ly-button>
               <h1 class="text-lg inline-block align-middle flex align-items-center" tabindex="-1">
-                <ly-icon v-if="icon" class="w-6 mr-2" :name="icon" :class="iconClass" />
+                <ly-icon
+                  v-if="icon"
+                  class="w-6 mr-2"
+                  :scale-to="24"
+                  :name="icon"
+                  :class="iconClass" />
                 <slot name="title">
                   {{ $t(title) }}
                 </slot>

@@ -3,11 +3,15 @@ import { useStatus } from '@/store';
 import { ref } from 'vue';
 import { isValidEmail } from '@lyvely/common';
 
+type InviteStages = 'users' | 'profile' | 'loading';
+
 export const useInviteUsersStore = defineStore('invite-user', () => {
   const status = useStatus();
   const showModal = ref(false);
   const emails = ref<string[]>([]);
   const emailInput = ref('');
+  const stage = ref<InviteStages>('users');
+  const profileId = ref<string | null>(null);
 
   function addEmails() {
     const emailsArr = emailInput.value
@@ -35,12 +39,21 @@ export const useInviteUsersStore = defineStore('invite-user', () => {
   }
 
   function submit() {
-    if (validate()) {
+    if (stage.value === 'users') {
+      submitUserSelection();
+    } else if (stage.value === 'profile') {
+    }
+  }
+
+  function submitUserSelection() {
+    if (validateUserSelection()) {
       reset();
     }
   }
 
-  function validate() {
+  function submitProfileSelection() {}
+
+  function validateUserSelection() {
     if (!emails.value.length) {
       status.setError('profile.invite.email-empty');
       return false;
@@ -50,13 +63,16 @@ export const useInviteUsersStore = defineStore('invite-user', () => {
 
   function reset() {
     emails.value = [];
+    stage.value = 'users';
     showModal.value = false;
     status.resetStatus();
+    profileId.value = null;
   }
 
   return {
     ...status,
     emails,
+    stage,
     addEmails,
     removeEmail,
     emailInput,

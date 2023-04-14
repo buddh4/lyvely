@@ -76,8 +76,6 @@ export class UnauthenticatedServiceException extends ServiceException {
 }
 
 export class ForbiddenServiceException extends ServiceException {
-  protected defaultMessage = '';
-
   constructor(msgOrData?: string | any, msg = 'Service action forbidden.') {
     super(msgOrData, msg);
     this.status = 403;
@@ -114,7 +112,6 @@ export class UniqueConstraintException extends FieldValidationException {
 }
 
 export class RateLimitException extends ServiceException {
-  protected defaultMessage = 'Too many requests.';
   public retryAfter?: number;
 
   constructor(msgOrData?: string | any, retryAfter?: number, msg = 'Too many requests.') {

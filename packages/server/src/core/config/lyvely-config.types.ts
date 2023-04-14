@@ -103,6 +103,10 @@ export interface LyvelyCsrfOptions {
   sameSite?: CookieSameSite;
 }
 
+export interface UserInviteOptions {
+  maxPerWeek?: number;
+}
+
 export type LyvelyAppConfiguration = {
   appName: string;
   operationMode: OperationMode;
@@ -119,6 +123,7 @@ export type LyvelyAppConfiguration = {
   mail?: LyvelyMailOptions;
   modules?: ModulesConfiguration;
   'user-permissions'?: UserPermissionOptions;
+  'user-invites'?: UserInviteOptions;
   serveStatic?: ServeStaticModuleOptions;
 };
 

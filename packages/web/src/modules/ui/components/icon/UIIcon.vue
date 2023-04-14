@@ -9,17 +9,23 @@ export interface IProps {
   name?: IconName;
   title?: string;
   options?: IconOptionsIF;
+  scaleTo?: number;
+  autoScale?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   name: '',
   options: undefined,
   title: undefined,
+  scaleTo: 0,
+  autoScale: false,
 });
 
 const name = computed(() => props.name || props.options?.name || '');
 const definition = computed(() => getIconByName(name.value));
-const styleObject = computed((): StyleDefinition => (props.options?.fill ? { fill: props.options.fill } : {}));
+const styleObject = computed(
+  (): StyleDefinition => (props.options?.fill ? { fill: props.options.fill } : {}),
+);
 
 function getClassNames(attrClasses: any) {
   const result = {
@@ -35,6 +41,21 @@ function getClassNames(attrClasses: any) {
 
   return result;
 }
+
+const transform = computed(() => {
+  if (!props.scaleTo && !props.autoScale) return;
+
+  const scaleTo = props.scaleTo || 24;
+
+  try {
+    const size = parseInt(definition.value?.viewBox.split(' ').at(-1) as string);
+    if (size === scaleTo) return;
+    const ratio = scaleTo / size;
+    return `scale(${ratio})`;
+  } catch (e) {
+    console.log(e);
+  }
+});
 </script>
 
 <template>
@@ -43,10 +64,9 @@ function getClassNames(attrClasses: any) {
     aria-hidden="true"
     :class="getClassNames($attrs.class)"
     :style="styleObject"
-    :viewBox="definition.viewBox"
-  >
+    :viewBox="definition.viewBox">
     <title v-if="title">{{ $t(title) }}</title>
-    <path v-for="path in definition.paths" :key="path" :d="path"></path>
+    <path v-for="path in definition.paths" :key="path" :d="path" :transform="transform"></path>
   </svg>
 </template>
 

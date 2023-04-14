@@ -11,7 +11,7 @@ defineProps<IProps>();
 <template>
   <div class="list-page-root border border-divide rounded divide-y">
     <div class="flex items-center max-w-none py-2 px-3 bg-shadow">
-      <ly-icon v-if="icon" :name="icon" class="mr-1.5" />
+      <ly-icon v-if="icon" :name="icon" :auto-scale="false" class="mr-1.5" />
       <h2
         class="list-page-headline inline-block font-medium m-0"
         tabindex="-1"

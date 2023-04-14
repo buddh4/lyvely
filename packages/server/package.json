@@ -64,6 +64,7 @@
     "i18n": "^0.15.1",
     "joi": "^17.5.0",
     "js-yaml": "^4.1.0",
+    "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "minimatch": "^3.0.4",

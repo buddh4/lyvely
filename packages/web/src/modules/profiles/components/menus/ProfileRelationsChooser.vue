@@ -49,7 +49,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
     <li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
-          {{ $t('profile.labels.profiles') }}
+          {{ $t('profiles.labels.profiles') }}
         </span>
         <ly-add-button class="m-auto" @click="showCreateProfile = true" />
       </div>
@@ -81,7 +81,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
     <li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
-          {{ $t('profile.labels.organizations') }}
+          {{ $t('profiles.labels.organizations') }}
         </span>
         <ly-add-button class="m-auto" />
       </div>

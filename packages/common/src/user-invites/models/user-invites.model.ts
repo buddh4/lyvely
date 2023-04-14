@@ -8,20 +8,10 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { PropertyType } from '@/models';
-import { BaseMembershipRole } from '@/profiles';
+import { BaseModel, PropertyType } from '@/models';
 
 @Exclude()
-export class UserInvite {
-  @Expose()
-  @IsString()
-  @IsOptional()
-  @PropertyType(String, { default: BaseMembershipRole.Member })
-  role?: string;
-}
-
-@Exclude()
-export class MailInvite extends UserInvite {
+export class MailInvite extends BaseModel<MailInvite> {
   @Expose()
   @IsString()
   @IsEmail()
@@ -39,8 +29,7 @@ export class UserInvites {
   invites: MailInvite[];
 
   @Expose()
-  @IsArray()
-  @IsMongoId({ each: true })
+  @IsMongoId()
   @IsOptional()
-  pids?: string[];
+  pid?: string;
 }

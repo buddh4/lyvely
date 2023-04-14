@@ -4,7 +4,7 @@ import {
   InviteProfileMembers,
   InviteProfileUsersEndpoint,
 } from '@lyvely/common';
-import { UseClassSerializer } from '../../core';
+import { UseClassSerializer } from '@/core';
 import { Body, Post, HttpCode, HttpStatus, Request } from '@nestjs/common';
 import { ProfileRequest } from '../types';
 import { ProfilePermissions } from '../permissions';

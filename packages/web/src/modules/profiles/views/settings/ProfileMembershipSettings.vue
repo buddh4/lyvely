@@ -28,9 +28,12 @@ function updateSettings() {
     <ly-content-panel>
       <div class="flex items-center">
         <ly-icon name="info" class="info mr-1" />
-        <i18n-t keypath="profile.settings.membership.your_role" tag="span" class="text-center text-dimmed text-sm">
+        <i18n-t
+          keypath="profiles.settings.membership.your_role"
+          tag="span"
+          class="text-center text-dimmed text-sm">
           <template #role>
-            <b>{{ $t(`profile.roles.${membership.role}`) }}</b>
+            <b>{{ $t(`profiles.roles.${membership.role}`) }}</b>
           </template>
         </i18n-t>
       </div>
@@ -41,15 +44,13 @@ function updateSettings() {
         v-model="model"
         :validator="validator"
         :status="updateProfileMembershipSettingsStore.status"
-        label-key="profile.settings.membership"
-      >
+        label-key="profiles.settings.membership">
         <div class="flex items-center mb-2 flex-row items-stretch">
           <div class="w-full relative">
             <ly-input-text property="displayName" class="mb-0" />
           </div>
           <div
-            class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer"
-          >
+            class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer">
             <ly-user-avatar class="m-3" />
           </div>
         </div>
@@ -68,8 +69,10 @@ function updateSettings() {
 
     <ly-content-panel>
       <div>
-        <ly-button class="danger float-right" :confirm="{ text: 'profile.settings.archive.confirm' }">
-          {{ $t('profile.settings.membership.archive') }}
+        <ly-button
+          class="danger float-right"
+          :confirm="{ text: 'profiles.settings.archive.confirm' }">
+          {{ $t('profiles.settings.membership.archive') }}
         </ly-button>
       </div>
     </ly-content-panel>

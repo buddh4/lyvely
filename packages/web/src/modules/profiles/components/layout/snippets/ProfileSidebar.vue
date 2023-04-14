@@ -59,13 +59,13 @@ const menuItems = computed(
       {
         to: { name: 'ProfileUsers' },
         icon: 'users',
-        label: 'profile.users.label',
+        label: 'profiles.users.label',
         condition: () => isMultiUserProfile(profileStore.profile),
       },
       {
         to: { name: 'ProfileSettings' },
         icon: 'settings',
-        label: 'profile.settings.label',
+        label: 'profiles.settings.label',
       },
     ] as IMenuItem[],
 );
@@ -91,7 +91,7 @@ watchMaxSize('sm', (value) => {
 const showLabels = computed(() => isSmallView.value || showSidebar.value);
 
 const ariaLabel = computed(() =>
-  translate('profile.aria.sidebar', {
+  translate('profiles.aria.sidebar', {
     profile: useProfileStore()?.profile?.name,
   }),
 );

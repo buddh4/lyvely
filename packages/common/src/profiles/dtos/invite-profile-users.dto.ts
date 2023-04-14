@@ -23,5 +23,5 @@ export class InviteProfileMembers {
   @Type(() => ProfileMemberMailInvite)
   @PropertyType([ProfileMemberMailInvite])
   @ValidateNested()
-  mailInvites: ProfileMemberMailInvite[];
+  invites: ProfileMemberMailInvite[];
 }

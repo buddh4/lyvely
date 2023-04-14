@@ -5,11 +5,11 @@
     <ly-tab-menu-link
       aria-controls="profile-settings-content"
       :to="{ name: 'ProfileMembershipSettings' }"
-      label="profile.settings.membership.label" />
+      label="profiles.settings.membership.label" />
     <ly-tab-menu-link
       aria-controls="profile-settings-content"
       :to="{ name: 'GeneralProfileSettings' }"
-      label="profile.settings.general.label" />
+      label="profiles.settings.general.label" />
   </ly-tab-menu>
 </template>
 

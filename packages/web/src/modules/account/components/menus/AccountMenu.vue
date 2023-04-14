@@ -8,6 +8,7 @@ import { useHelpStore } from '@/modules/help/stores/help.store';
 import { useNotificationStore } from '@/modules/notifications/stores/notifications.store';
 import { isMaxViewSize } from '@/util';
 import NotificationDrawer from '@/modules/notifications/components/NotificationDrawer.vue';
+import { useInviteUsersStore } from '@/modules/profiles/stores/invite-users.store';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();
@@ -38,6 +39,10 @@ const notificationDrawerButtonClass = computed(() => {
     { 'border-transparent': !showNotificationDrawer.value },
   ];
 });
+
+function onInvite() {
+  useInviteUsersStore().showModal = true;
+}
 
 function showHelp() {
   useHelpStore().setShowModal(true);
@@ -114,8 +119,21 @@ function onMenuItemClick() {
           </a>
         </li>
         <li>
+          <a
+            :class="menuItemClass"
+            draggable="false"
+            @click="
+              onInvite();
+              onMenuItemClick();
+            ">
+            <ly-icon name="paper-plane" :auto-scale="true" />
+            <span>{{ $t('profiles.invite.title') }}</span>
+            <invite-users-modal />
+          </a>
+        </li>
+        <li>
           <a :class="menuItemClass" draggable="false" @click="logout">
-            <ly-icon name="logout" />
+            <ly-icon name="logout" :auto-scale="true" />
             {{ $t('auth.logout') }}
           </a>
         </li>

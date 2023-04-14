@@ -1,8 +1,9 @@
-import { Prop, Schema } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
+import { BaseEntity } from '@/core';
 
-@Schema()
-export class UserInvite {
+@Schema({ timestamps: true })
+export class UserInvite extends BaseEntity<UserInvite> {
   @Prop()
   createdBy: TObjectId;
 
@@ -13,5 +14,10 @@ export class UserInvite {
   token: string;
 
   @Prop({ type: [Types.ObjectId] })
-  pids?: TObjectId[];
+  pid?: TObjectId;
+
+  createdAt: Date;
+  updatedAt: Date;
 }
+
+export const UserInviteSchema = SchemaFactory.createForClass(UserInvite);

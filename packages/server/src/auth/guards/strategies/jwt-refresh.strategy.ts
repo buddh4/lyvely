@@ -22,7 +22,10 @@ export function getRefreshCookieName(configService: ConfigService<ConfigurationP
   return useSecureCookies ? COOKIE_REFRESH_SECURE : COOKIE_REFRESH;
 }
 
-export function extractRefreshCookie(req: Request, configService: ConfigService<ConfigurationPath>) {
+export function extractRefreshCookie(
+  req: Request,
+  configService: ConfigService<ConfigurationPath>,
+) {
   return req.cookies && req.cookies[getRefreshCookieName(configService)];
 }
 
