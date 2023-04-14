@@ -18,6 +18,7 @@ import TextTrimmed from '@/modules/ui/components/text/TextTrimmed.vue';
 import { contentRoute, getContentTypeOptions } from '@/modules/content-stream';
 import { useRouter } from 'vue-router';
 import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
+import LyAlert from '@/modules/ui/components/alert/AlertBlock.vue';
 
 export interface IProps {
   model: MilestoneModel;
@@ -70,7 +71,10 @@ onBeforeMount(async () => {
       </div>
     </template>
     <template #body>
-      <progress-bar :progress="progress" class="mb-4" />
+      <progress-bar :progress="progress" />
+      <p class="my-4 text-sm">
+        {{ model.content.text }}
+      </p>
       <table v-if="relations.length" class="border-collapse table-auto text-xs">
         <thead>
           <tr>
@@ -111,6 +115,9 @@ onBeforeMount(async () => {
           </tr>
         </tbody>
       </table>
+      <div v-else class="w-fit">
+        <ly-alert message="milestones.messages.no_relations" type="info" />
+      </div>
     </template>
   </content-details>
 </template>

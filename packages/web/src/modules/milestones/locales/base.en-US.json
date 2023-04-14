@@ -11,6 +11,9 @@
     },
     "edit": {
       "title": "Edit Milestone"
+    },
+    "messages": {
+      "no_relations": "This milestone has no relations yet."
     }
   }
 }

@@ -5,20 +5,27 @@ import { ContentModel, ContentStreamFilter } from '@lyvely/common';
 import { useContentStreamService } from '@/modules/content-stream/services/content-stream.service';
 import { useRouter } from 'vue-router';
 import { ref, watch } from 'vue';
-import { contentRoute } from '@/modules/content-stream/routes/route.utils';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { getContentDetailsComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
 import { storeToRefs } from 'pinia';
 import ContentDetailHeader from '@/modules/content-stream/components/ContentDetailsHeader.vue';
+import { useContentStore } from '@/modules/content/stores/content.store';
 
 const router = useRouter();
 const streamService = useContentStreamService();
 const content = ref<ContentModel>();
 const { filter } = storeToRefs(useContentStreamFilterStore());
+const contentStore = useContentStore();
 
 filter.value = new ContentStreamFilter({
   parent: router.currentRoute.value.params.cid as string,
 });
+
+function onContentUpdated(updatedContent: ContentModel) {
+  if (updatedContent.id === content.value?.id) {
+    content.value = updatedContent;
+  }
+}
 
 watch(
   router.currentRoute,
@@ -28,6 +35,7 @@ watch(
       if (content.value?.id !== cid) {
         content.value = await streamService.loadEntry(cid);
         filter.value = new ContentStreamFilter({ parent: cid });
+        contentStore.onContentUpdated('*', onContentUpdated);
       }
     }
   },
