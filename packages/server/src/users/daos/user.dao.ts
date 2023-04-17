@@ -34,6 +34,16 @@ export class UserDao extends AbstractDao<User> {
     });
   }
 
+  async findByVerifiedEmailS(emails: string[]): Promise<User[]> {
+    const lowerCaseEmails = emails.map((email) => email.toLowerCase());
+    return this.findAll({
+      $or: [
+        { status: { $ne: UserStatus.EmailVerification } },
+        { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': true },
+      ],
+    });
+  }
+
   async setEmailVerification(user: EntityIdentity<User>, email: string, verification = true) {
     const result = await this.updateOneByFilter(
       user,

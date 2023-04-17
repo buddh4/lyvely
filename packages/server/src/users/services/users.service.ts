@@ -15,17 +15,13 @@ export class UsersService {
    * @param email
    */
   async findUserByMainEmail(email: string): Promise<User | null> {
-    if (!email) {
-      return null;
-    }
+    if (!email) return null;
 
     return this.userDao.findByMainEmail(email);
   }
 
   async findUserByAnyEmail(email: string): Promise<User[]> {
-    if (!email) {
-      return null;
-    }
+    if (!email) return null;
 
     return this.userDao.findByAnyEmail(email);
   }

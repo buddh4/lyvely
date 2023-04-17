@@ -3,12 +3,14 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsEmail,
+  IsEnum,
   IsMongoId,
   IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 import { BaseModel, PropertyType } from '@/models';
+import { BaseProfileRelationRole } from '@/profiles';
 
 @Exclude()
 export class MailInvite extends BaseModel<MailInvite> {
@@ -16,6 +18,10 @@ export class MailInvite extends BaseModel<MailInvite> {
   @IsString()
   @IsEmail()
   email: string;
+
+  @Expose()
+  @IsEnum([BaseProfileRelationRole.Member, BaseProfileRelationRole.Guest])
+  role?: BaseProfileRelationRole.Member | BaseProfileRelationRole.Guest;
 }
 
 @Exclude()
