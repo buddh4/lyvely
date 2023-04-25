@@ -1,7 +1,31 @@
-import { Days, Months, CalendarDate, dateTime, CalendarDateTime } from '../interfaces';
+import { Days, Months, dateTime, CalendarDateTime } from '../interfaces';
 
 export function getMonthNameByIndex(id: number, short = false) {
   return short ? Months[id] : Months[id].substring(0, 3);
+}
+
+export function getLocalizedDays(format: 'long' | 'short' | 'narrow' | undefined = 'long') {
+  const days = [];
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(Date.UTC(2022, 0, i + 3));
+    days.push(date.toLocaleDateString(undefined, { weekday: format }));
+  }
+
+  return days;
+}
+
+export function getLocalizedMonths(
+  format: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' | undefined = 'long',
+) {
+  const months = [];
+
+  for (let i = 0; i < 12; i++) {
+    const date = new Date(Date.UTC(2022, i, 1));
+    months.push(date.toLocaleDateString(undefined, { month: format }));
+  }
+
+  return months;
 }
 
 export function getMonthNames() {
@@ -23,6 +47,18 @@ export function getMonthNames() {
 
 export function getDayNameByIndex(id: number) {
   return Days[id];
+}
+
+export function getDayNames() {
+  return [
+    getDayNameByIndex(0),
+    getDayNameByIndex(1),
+    getDayNameByIndex(2),
+    getDayNameByIndex(3),
+    getDayNameByIndex(4),
+    getDayNameByIndex(5),
+    getDayNameByIndex(6),
+  ];
 }
 
 export function formatDate(date: CalendarDateTime, format = 'YYYY-MM-DD') {

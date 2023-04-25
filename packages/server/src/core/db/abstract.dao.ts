@@ -160,6 +160,27 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return await this.afterSave(model);
   }
 
+  async saveMany(entityDataArr: T[], options?: SaveOptions): Promise<T[]> {
+    for (const entityData of entityDataArr) {
+      await this.beforeSave(entityData);
+      this.emit('save.pre', new ModelSaveEvent(this, entityData, this.getModelName()));
+    }
+
+    const rawModels = await this.getModel(options).insertMany(entityDataArr, {
+      lean: true,
+      ...options,
+    });
+
+    const result: T[] = [];
+    for (const rawModel of rawModels) {
+      const model = this.constructModel(rawModel);
+      this.emit(`save.post`, new ModelSaveEvent(this, model, this.getModelName()));
+      result.push(await this.afterSave(model));
+    }
+
+    return result;
+  }
+
   /**
    * Can be overwritten by subclasses for additional checks, manipulation prior saving the data etc.
    * @param toCreate

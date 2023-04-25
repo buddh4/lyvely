@@ -5,8 +5,8 @@ import { LyvelyAppConfiguration, LyvelyMailOptions, UrlGenerator } from '@/core'
 import { ConfigService } from '@nestjs/config';
 import fs from 'fs';
 import { Stream } from 'stream';
-import { noop } from '@lyvely/common';
 import pug from 'pug';
+import { escapeHTML, UrlRoute } from '@lyvely/common';
 
 export interface IMessageInfo {
   messageId: string;
@@ -32,7 +32,9 @@ export class MailService {
     private readonly urlGenerator: UrlGenerator,
   ) {}
 
-  async sendMail(sendMailOptions: ISendMailOptions): Promise<SentMessageInfo & { messageFile?: Promise<void> }> {
+  async sendMail(
+    sendMailOptions: ISendMailOptions,
+  ): Promise<SentMessageInfo & { messageFile?: Promise<void> }> {
     sendMailOptions.template = sendMailOptions.template || 'main';
     this.setDefaultContext(sendMailOptions);
     this.renderPartials(sendMailOptions);
@@ -44,10 +46,12 @@ export class MailService {
   private setDefaultContext(sendMailOptions: ISendMailOptions) {
     const mailConfig = this.configService.get('mail');
     sendMailOptions.context = sendMailOptions.context || {};
-    sendMailOptions.context['footerText'] = mailConfig.footerText || this.configService.get('appName');
+    sendMailOptions.context['footerText'] =
+      mailConfig.footerText || this.configService.get('appName');
     sendMailOptions.context['footerSubText'] = mailConfig.footerSubtext || '';
     sendMailOptions.context['logoImageUrl'] =
-      mailConfig.logoImageUrl || this.urlGenerator.getAppUrl({ path: '/images/mail_default_logo.png' }).href;
+      mailConfig.logoImageUrl ||
+      this.urlGenerator.getAppUrl({ path: '/images/mail_default_logo.png' }).href;
     // TODO: translate...
     sendMailOptions.context['unsubscribeLabel'] = mailConfig.unsubscribeLabel || 'unsubscribe';
   }
@@ -72,12 +76,19 @@ export class MailService {
   }
 
   public getMessageFileDir() {
-    return this.configService.get<LyvelyMailOptions>('mail').messagesPath || `${process.cwd()}/mail/messages`;
+    return (
+      this.configService.get<LyvelyMailOptions>('mail').messagesPath ||
+      `${process.cwd()}/mail/messages`
+    );
   }
 
   public getMessageFilePath(info: SentMessageInfo) {
     const messageId = this.getMessageId(info);
-    const extension = this.isJsonTransport(info) ? `json` : this.isStreamTransport(info) ? 'eml' : '';
+    const extension = this.isJsonTransport(info)
+      ? `json`
+      : this.isStreamTransport(info)
+      ? 'eml'
+      : '';
     return `${this.getMessageFileDir()}/${messageId}.${extension}`;
   }
 
@@ -125,7 +136,8 @@ export class MailService {
   }
 
   private getMessageId(rawIdOrMessageInfo: string | SentMessageInfo) {
-    const rawId = typeof rawIdOrMessageInfo === 'string' ? rawIdOrMessageInfo : rawIdOrMessageInfo.messageId;
+    const rawId =
+      typeof rawIdOrMessageInfo === 'string' ? rawIdOrMessageInfo : rawIdOrMessageInfo.messageId;
     return rawId.replace(/[<>]/g, '');
   }
 
@@ -148,5 +160,13 @@ export class MailService {
     const messagePath = this.getMessageFileDir();
     if (!fs.existsSync(messagePath)) fs.mkdirSync(messagePath, { recursive: true });
     return this.getMessageFilePath(info);
+  }
+
+  getEscapedAppUrl(route: UrlRoute) {
+    return escapeHTML(encodeURI(this.urlGenerator.getAppUrl(route).href));
+  }
+
+  getEscapedApiUrl(route: UrlRoute) {
+    return escapeHTML(encodeURI(this.urlGenerator.getApiUrl(route).href));
   }
 }

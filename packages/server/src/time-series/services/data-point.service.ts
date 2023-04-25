@@ -131,7 +131,11 @@ export abstract class DataPointService<
     });
 
     dataPoint = await this.dataPointDao.save(
-      new DataPointConstructor(profile, user, content, { date: toDate(date), value }),
+      new DataPointConstructor(profile, user, content, {
+        date: toDate(date),
+        value,
+        valueType: content.timeSeriesConfig.valueType,
+      }),
     );
 
     return { dataPoint, isNew: true, oldValue: undefined };

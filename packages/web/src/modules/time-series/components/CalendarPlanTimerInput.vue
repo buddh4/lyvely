@@ -17,14 +17,10 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const emit = defineEmits(['update:modelValue', 'startTimer', 'stopTimer']);
 
-const updateSelection = (value: number) => {
-  emit(
-    'update:modelValue',
-    new TimerDataPointValueModel({
-      timer: props.modelValue.timer,
-      ms: value,
-    }),
-  );
+const updateSelection = (ms: number) => {
+  const timer = props.modelValue.timer;
+  timer.overwrite(ms);
+  emit('update:modelValue', new TimerDataPointValueModel({ timer, ms }));
 };
 
 const isPresentInterval = computed(() =>

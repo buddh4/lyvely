@@ -9,7 +9,7 @@ export default [
     component: Statistics,
     meta: {
       title: translation('statistics.title'),
-      layout: 'profile',
+      layout: 'profile-xl',
     },
     beforeEnter: [loadProfile],
   },

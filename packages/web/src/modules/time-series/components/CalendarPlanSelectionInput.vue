@@ -28,7 +28,6 @@ const selection = computed({
 
 <template>
   <div class="flex flex-col gap-2 ml-2">
-    {{ modelValue.selection }}
     <div v-for="option in config.options" :key="option">
       <ly-input-checkbox v-model="selection" :label="option" :value="option" :translate="false" />
     </div>

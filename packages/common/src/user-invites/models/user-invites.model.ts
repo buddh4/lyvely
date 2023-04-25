@@ -25,7 +25,7 @@ export class MailInvite extends BaseModel<MailInvite> {
 }
 
 @Exclude()
-export class UserInvites {
+export class UserInvites extends BaseModel<UserInvites> {
   @Expose()
   @IsArray()
   @ArrayNotEmpty()

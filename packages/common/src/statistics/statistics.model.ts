@@ -1,4 +1,10 @@
-import { CalendarInterval, getMonthNames } from '@/calendar';
+import {
+  CalendarInterval,
+  getDayNames,
+  getLocalizedDays,
+  getLocalizedMonths,
+  getMonthNames,
+} from '@/calendar';
 import { CalendarPlan } from '@/calendar-plan';
 
 abstract class Statistics {
@@ -52,9 +58,10 @@ export class ScoreStatistics extends Statistics {
 
   getDataSetIds() {
     switch (this.interval) {
-      case CalendarInterval.Monthly: {
+      case CalendarInterval.Monthly:
         return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 11];
-      }
+      case CalendarInterval.Daily:
+        return [0, 1, 2, 3, 4, 5, 6, 7];
     }
   }
 
@@ -70,7 +77,9 @@ export class ScoreStatistics extends Statistics {
   getChartLabels() {
     switch (this.interval) {
       case CalendarInterval.Monthly:
-        return getMonthNames();
+        return getLocalizedMonths('short');
+      case CalendarInterval.Daily:
+        return getLocalizedDays('short');
     }
 
     return [];

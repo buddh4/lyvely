@@ -20,10 +20,10 @@ export class InviteProfileUsersController implements InviteProfileUsersEndpoint 
   @SomeProfilePermissions(ProfilePermissions.INVITE_MEMBER)
   async inviteMembers(@Body() inviteUsers: InviteProfileMembers, @Request() req: ProfileRequest) {
     const { context } = req;
-    const mailInvites = inviteUsers.mailInvites.map((invite) =>
+    /*const mailInvites = inviteUsers.mailInvites.map((invite) =>
       this.inviteProfileUsersService.inviteUserByMail(context, invite),
-    );
+    );*/
 
-    return Promise.all(mailInvites);
+    // return Promise.all(mailInvites);
   }
 }

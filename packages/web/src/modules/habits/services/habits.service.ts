@@ -46,11 +46,8 @@ export class HabitsService implements IHabitsEndpointService {
     cid: string,
     update: UpdateHabitDataPointModel,
   ): Promise<UpdateHabitDataPointResponse> {
-    const result = await unwrapAndTransformResponse(
-      repository.updateDataPoint(cid, update),
-      UpdateHabitDataPointResponse,
-    );
-
+    const result = await unwrapResponse(repository.updateDataPoint(cid, update));
+    result.dataPoint = useDataPointStrategyFacade().createDataPoint(result.dataPoint);
     useProfileStore().updateScore(result.score);
 
     return result;
