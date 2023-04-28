@@ -23,17 +23,9 @@ const selection = computed({
   set: (selection: number) => taskStore.setTaskSelection(props.model, !!selection),
 });
 
-async function startTimer() {
-  return taskStore.startTimer(props.model);
-}
-
-async function stopTimer() {
-  return taskStore.stopTimer(props.model);
-}
-
-async function updateTimer(value: number) {
-  return taskStore.updateTimer(props.model, value);
-}
+const startTimer = async () => taskStore.startTimer(props.model);
+const stopTimer = async () => taskStore.stopTimer(props.model);
+const updateTimer = async (value: number) => taskStore.updateTimer(props.model, value);
 </script>
 
 <template>
