@@ -62,6 +62,7 @@ export class ContentMetadataModel
   sortOrder?: number;
   visibility: ContentVisibilityLevel;
   archived?: boolean;
+  childCount?: number;
   locked?: boolean;
 }
 

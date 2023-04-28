@@ -85,13 +85,22 @@ const contentTypeName = computed(() =>
   translate(getContentTypeOptions(props.model.type)?.name || ''),
 );
 
+const childCount = computed(() => {
+  if (!props.model.meta.childCount) return 0;
+  return Intl.NumberFormat('en-US', {
+    notation: 'compact',
+    maximumFractionDigits: 1,
+  }).format(props.model.meta.childCount);
+});
+
 const bodyWrapperClass = computed(
   () =>
     ({
-      none: '',
+      none: 'relative',
       message:
-        'message-bubble inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5',
-      block: 'inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block',
+        'relative message-bubble inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5',
+      block:
+        'relative inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block',
     }[props.bodyStyle]),
 );
 </script>
@@ -130,6 +139,13 @@ const bodyWrapperClass = computed(
               </div>
               <div>
                 <slot></slot>
+              </div>
+              <div v-if="model.meta.childCount" class="flex mt-2 justify-end">
+                <div
+                  class="inline-flex justify-center items-center px-2 py-1 rounded bg-main border border-divide right-2.5 -bottom-2.5 text-xs gap-1">
+                  <ly-icon name="stream" />
+                  <span>{{ childCount }}</span>
+                </div>
               </div>
             </div>
           </div>
