@@ -39,7 +39,9 @@ function selectTag(tagId: string) {
         </slot>
       </div>
     </div>
-    <div v-if="model.tagIds?.length" class="flex w-full justify-end mt-2">
+  </div>
+  <div v-if="model.tagIds?.length" class="bg-main px-2 pt-2 md:px-4 md:pt-4">
+    <div class="flex w-full">
       <tag-list :tag-ids="model.tagIds" @select="selectTag" />
     </div>
   </div>
@@ -47,6 +49,9 @@ function selectTag(tagId: string) {
     <slot name="body">
       {{ model.content.text }}
     </slot>
+  </div>
+  <div v-if="$slots.footer" class="bg-main px-1 md:p-2 border-t border-divide">
+    <slot name="footer" />
   </div>
 </template>
 

@@ -105,7 +105,7 @@ onUnmounted(userRegistrationStore.reset);
     <template #footer>
       <ly-button
         class="primary w-full mb-4 float-right"
-        text="user_registration.create_account"
+        label="user_registration.create_account"
         :disabled="status.isStatusLoading()"
         @click="register" />
 

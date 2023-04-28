@@ -15,9 +15,13 @@ const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileRelations = await profileRelationInfosStore.getRelations();
-const orgCount = profileRelations.profiles.filter((p) => p.type === ProfileType.Organization).length;
+const orgCount = profileRelations.profiles.filter(
+  (p) => p.type === ProfileType.Organization,
+).length;
 const groupCount = profileRelations.profiles.filter((p) => p.type === ProfileType.Group).length;
-const userProfileCount = profileRelations.profiles.filter((p) => p.type === ProfileType.User).length;
+const userProfileCount = profileRelations.profiles.filter(
+  (p) => p.type === ProfileType.User,
+).length;
 
 const accountAvatarStore = useAccountAvatarStore();
 
@@ -50,10 +54,16 @@ function updateGravatar() {
   <div v-if="user" class="flex items-center justify-center">
     <div class="m-5 relative cursor-pointer" @click="showUpdateAvatarModal = true">
       <ly-user-avatar class="w-16 h-16 text-xl border border-main" />
-      <div class="w-6 h-6 absolute flex justify-center bg-shadow bottom-0 right-0 border border-main rounded-full">
+      <div
+        class="w-6 h-6 absolute flex justify-center bg-shadow bottom-0 right-0 border border-main rounded-full">
         <ly-icon name="camera" class="p-0.5 color-main" />
       </div>
-      <input id="new-avatar" ref="newAvatarFileInput" type="file" class="hidden" @change="processNewAvatar" />
+      <input
+        id="new-avatar"
+        ref="newAvatarFileInput"
+        type="file"
+        class="hidden"
+        @change="processNewAvatar" />
     </div>
     <div class="py-5 px-2 flex flex-col">
       <h2 class="font-bold text-xl">{{ user.username }}</h2>
@@ -76,8 +86,8 @@ function updateGravatar() {
 
   <ly-modal v-model="showUpdateAvatarModal" title="avatar.title" :show-footer="false">
     <div class="flex flex-col items-stretch space-y-1">
-      <ly-button class="primary" text="avatar.upload" @click="selectNewAvatar" />
-      <ly-button class="primary" text="avatar.gravatar" @click="updateGravatar" />
+      <ly-button class="primary" label="avatar.upload" @click="selectNewAvatar" />
+      <ly-button class="primary" label="avatar.gravatar" @click="updateGravatar" />
     </div>
   </ly-modal>
 

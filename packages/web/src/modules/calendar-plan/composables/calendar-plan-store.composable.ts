@@ -106,6 +106,27 @@ export function useCalendarPlan<
     }
   }
 
+  async function loadModel(cid: string) {
+    if (!profile.value) return;
+
+    const intervalFilter = tidCache.value.getCalendarPlanFilter(date.value);
+
+    if (intervalFilter === false) {
+      status.setStatus(Status.SUCCESS);
+      return;
+    }
+
+    intervalFilter.cid = cid;
+
+    // TODO: Check if date already loaded + implement interval level query
+
+    try {
+      cache.value.handleResponse(await loadingStatus(service.getByFilter(intervalFilter), status));
+    } catch (e) {
+      DialogExceptionHandler('An unknown error occurred while loading models.', this)(e);
+    }
+  }
+
   function getModels(interval: CalendarInterval): TModel[] {
     const tid = toTimingId(date.value, interval, locale.value);
     return cache.value.getModelsByIntervalFilter(interval, filter.value, tid);
@@ -164,6 +185,7 @@ export function useCalendarPlan<
     date,
     status,
     loadModels,
+    loadModel,
     getModels,
     setModel,
     selectTag,

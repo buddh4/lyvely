@@ -9,7 +9,7 @@ defineProps<IProps>();
 </script>
 
 <template>
-  <ly-badge :color="tag.color" :data-tag-id="tag.id" class="mr-0.5">
+  <ly-badge :color="tag.color" :data-tag-id="tag.id">
     {{ tag.name }}
   </ly-badge>
 </template>

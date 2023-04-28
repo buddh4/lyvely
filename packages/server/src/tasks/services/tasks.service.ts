@@ -37,7 +37,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
   protected async createUpdate(profile: Profile, user: User, task: Task, update: UpdateTaskModel) {
     task.applyContentUpdate({
       title: update.title ?? task.content.title,
-      text: update.title ?? task.content.text,
+      text: update.text ?? task.content.text,
     });
 
     task.config.interval = update.interval ?? task.config.interval;

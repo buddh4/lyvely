@@ -7,7 +7,7 @@ import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vu
 import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 import { useDebounceFn } from '@vueuse/core';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from 'pinia';
 
 const { filter } = storeToRefs(useContentStreamFilterStore());
 const query = ref(filter.value.query);
@@ -107,7 +107,7 @@ onBeforeRouteLeave(unwatchFilter);
 
       <ly-button
         class="primary float-right text-xs"
-        text="common.filter.clear"
+        label="common.filter.clear"
         @click="filter.reset()" />
     </div>
   </ly-drawer>

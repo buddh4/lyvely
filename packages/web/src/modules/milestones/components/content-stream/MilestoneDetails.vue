@@ -76,36 +76,22 @@ onBeforeMount(async () => {
         {{ model.content.text }}
       </p>
       <table v-if="relations.length" class="border-collapse table-auto text-xs">
-        <thead>
-          <tr>
-            <th
-              class="border-b dark:border-slate-600 p-4 pl-2 pr-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left"></th>
-            <th
-              class="border-b dark:border-slate-600 p-4 pl-2 pr-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-              {{ $t('milestones.details.relation') }}
-            </th>
-            <th
-              class="border-b dark:border-slate-600 p-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-center">
-              {{ $t('milestones.details.progress') }}
-            </th>
-          </tr>
-        </thead>
-        <tbody class="bg-white dark:bg-slate-800">
+        <tbody>
           <tr
             v-for="relation in relations"
             class="cursor-pointer hover:bg-highlight"
             @click="onRelationClick(relation)">
-            <td class="border-b dark:border-divide p-4 pl-2 text-left">
+            <td class="p-4 pl-2 text-left">
               <ly-icon v-if="getIcon(relation)" :name="getIcon(relation)" />
             </td>
-            <td class="border-b border-divide p-4 pl-2 text-left">
+            <td class="p-4 pl-2 text-left">
               <span class="font-bold">
                 <text-trimmed
                   :max="20"
                   :text="relation.title || relation.text || relation.contentType" />
               </span>
             </td>
-            <td class="border-b w-40 border-divide p-4 pl-8 text-slate-500 text-center">
+            <td class="w-40 p-4 pl-8 text-center">
               <progress-bar v-if="isDefined(relation.progress)" :progress="relation.progress" />
               <span v-else>-</span>
             </td>

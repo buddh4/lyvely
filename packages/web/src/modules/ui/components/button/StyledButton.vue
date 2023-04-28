@@ -13,7 +13,7 @@ import { isDevelopEnvironment } from '@/modules/core/environment';
 
 export interface IProps {
   submit?: boolean;
-  text?: string;
+  label?: string;
   active?: boolean;
   border?: boolean;
   disabled?: boolean;
@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<IProps>(), {
   submit: false,
   active: false,
   border: true,
-  text: '',
+  label: '',
   disabled: false,
   loading: false,
   rounded: true,
@@ -133,7 +133,7 @@ function getAriaPressed($attrs: any) {
     :disabled="disabled || loading"
     :data-loading="loading"
     @click.prevent="onClick">
-    <slot :active="active">{{ $t(text) }}</slot>
+    <slot :active="active">{{ $t(label) }}</slot>
   </button>
   <router-link v-if="route" v-slot="{ navigate, isExactActive }" :to="route" custom>
     <button
@@ -144,7 +144,7 @@ function getAriaPressed($attrs: any) {
       :type="buttonType"
       :disabled="disabled"
       @click="navigate">
-      <slot :active="isExactActive">{{ $t(text) }}</slot>
+      <slot :active="isExactActive">{{ $t(label) }}</slot>
     </button>
   </router-link>
 

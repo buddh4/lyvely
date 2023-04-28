@@ -65,6 +65,7 @@
 
     --color-divide: rgba(255, 255, 255, 0.125);
     --color-secondary: #dcdcdc;
+    --color-success: rgb(13, 155, 131);
     --color-inverted: rgba(0, 0, 0, 0.80);
 }
 

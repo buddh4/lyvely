@@ -22,8 +22,10 @@ const tags = computed(() =>
 </script>
 
 <template>
-  <div v-if="tags.length">
+  <div v-if="tagIds?.length || $slots.pre || $slots.post" class="flex gap-1">
+    <slot name="pre"></slot>
     <ly-tag v-for="tag in tags" :key="tag.id" :tag="tag" @click.prevent.stop="select(tag.id)" />
+    <slot name="post"></slot>
   </div>
 </template>
 

@@ -32,14 +32,21 @@ onUnmounted(verifyEmailStore.reset);
     </template>
 
     <template #body>
-      <otp-input v-model="model.otp" :has-error="!!validator.getError('otp') || !!errorMsg" :email="model.email" />
+      <otp-input
+        v-model="model.otp"
+        :has-error="!!validator.getError('otp') || !!errorMsg"
+        :email="model.email" />
       <ly-alert :message="errorMsg" />
     </template>
 
     <template #footer>
       <div class="flex justify-center space-x-1">
-        <ly-button class="secondary" text="common.resend" @click="resendOtp" />
-        <ly-button v-if="!otpInfo?.requiresRefresh()" class="primary" text="common.submit" @click="verifyEmail" />
+        <ly-button class="secondary" label="common.resend" @click="resendOtp" />
+        <ly-button
+          v-if="!otpInfo?.requiresRefresh()"
+          class="primary"
+          label="common.submit"
+          @click="verifyEmail" />
       </div>
     </template>
   </centered-layout-container>

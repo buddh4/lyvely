@@ -4,6 +4,7 @@ import ContentStreamEntry from '@/modules/content-stream/components/ContentStrea
 import { IStream } from '@/modules/stream/composables/stream.composable';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 import { computed } from 'vue';
+import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
 
 export interface IProps {
   model: TaskModel;
@@ -27,12 +28,10 @@ const done = computed(() => !!props.model.done);
 
     <template #default>
       <div>
-        <ly-input-checkbox
-          v-model="done"
-          :label="model.content.title"
-          :translate="false"
-          :readonly="true" />
-        <p v-if="model.content.text?.length" class="text-sm text-dimmed ml-7">
+        <div class="flex items-center gap-1">
+          <span>{{ model.content.title }}</span>
+        </div>
+        <p v-if="model.content.text?.length" class="text-sm text-dimmed">
           {{ model.content.text }}
         </p>
       </div>

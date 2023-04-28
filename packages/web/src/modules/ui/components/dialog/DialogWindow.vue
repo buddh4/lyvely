@@ -47,12 +47,12 @@ const reload = () => {
       <ly-button
         v-if="buttonType === 'reload'"
         class="danger"
-        text="common.reload"
+        label="common.reload"
         @click="reload" />
       <ly-button
         v-if="buttonType === 'close'"
         class="primary"
-        text="common.close"
+        label="common.close"
         @click="visible = false" />
     </template>
   </ly-modal>

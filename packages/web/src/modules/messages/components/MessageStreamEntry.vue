@@ -13,7 +13,12 @@ const props = defineProps<IProps>();
 </script>
 
 <template>
-  <content-stream-entry v-bind="props" body-style="message" :merge="true" :message-width="true">
+  <content-stream-entry
+    v-bind="props"
+    body-style="message"
+    :merge="true"
+    :message-width="true"
+    :show-type="false">
     <div>
       <span>
         {{ model.content.text }}

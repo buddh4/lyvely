@@ -35,42 +35,41 @@ const inputBorderColorClass = computed(() => {
 </script>
 
 <template>
-  <item-checkbox-list
-    v-if="config.inputType === DataPointInputType.Checkbox"
-    v-model:selection="selection"
-    :min="config.min"
-    :max="config.max"
-    :optimal="config.optimal"
-    :disabled="disabled" />
-  <ly-input-number
-    v-else-if="config.inputType === DataPointInputType.Spinner"
-    v-model="selection"
-    :input-class="['calendar-plan-spinner-input text-sm bg-main', inputBorderColorClass]"
-    :min="0"
-    :max="config.max"
-    :disabled="disabled" />
-  <div v-else-if="config.inputType === DataPointInputType.Range" class="flex items-center gap-2">
-    <span class="text-sm">{{ selection }}</span>
-    <ly-input-range
+  <div class="calendar-plan-number-input">
+    <item-checkbox-list
+      v-if="config.inputType === DataPointInputType.Checkbox"
+      v-model:selection="selection"
+      :min="config.min"
+      :max="config.max"
+      :optimal="config.optimal"
+      :disabled="disabled" />
+    <ly-input-number
+      v-else-if="config.inputType === DataPointInputType.Spinner"
       v-model="selection"
-      :input-class="['calendar-plan-range-input', inputColorClass]"
+      :input-class="['calendar-plan-spinner-input text-sm bg-main', inputBorderColorClass]"
       :min="0"
       :max="config.max"
       :disabled="disabled" />
+    <div v-else-if="config.inputType === DataPointInputType.Range" class="flex items-center gap-2">
+      <span class="text-sm">{{ selection }}</span>
+      <ly-input-range
+        v-model="selection"
+        :input-class="['calendar-plan-range-input', inputColorClass]"
+        :min="0"
+        :max="config.max"
+        :disabled="disabled" />
+    </div>
   </div>
 </template>
 
 <style>
-.calendar-plan-spinner-input {
-  max-width: 130px;
-  float: right;
-  clear: both;
+.calendar-plan-number-input {
+  max-width: 150px;
 }
 
 .calendar-plan-range-input {
   max-width: 130px;
   direction: rtl;
-  float: right;
   clear: both;
 }
 </style>

@@ -8,10 +8,15 @@ import { isTextSelection } from '@/util/dom.util';
 import TagList from '@/modules/tags/components/TagList.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
 import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
+import { getContentTypeOptions } from '@/modules/content-stream';
+import { translate } from '@/i18n';
+import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
+import LyTag from '@/modules/tags/components/TagBadge.vue';
 
 export interface IProps {
   model: ContentModel;
   stream?: IStream<ContentModel>;
+  showType?: boolean;
   index?: number;
   bodyStyle?: 'none' | 'message' | 'block';
   omitTags?: boolean;
@@ -20,6 +25,7 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   stream: undefined,
+  showType: true,
   bodyStyle: 'block',
   omitTags: false,
   index: 0,
@@ -27,7 +33,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const emit = defineEmits(['selectTag']);
 
-const name = computed(() => 'buddh4');
+const authorName = computed(() => 'buddh4');
 const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1));
 const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
 
@@ -75,6 +81,10 @@ function onContentClick() {
   router.push({ name: 'content-details', params: { pid: props.model.pid, cid: props.model.id } });
 }
 
+const contentTypeName = computed(() =>
+  translate(getContentTypeOptions(props.model.type)?.name || ''),
+);
+
 const bodyWrapperClass = computed(
   () =>
     ({
@@ -99,18 +109,25 @@ const bodyWrapperClass = computed(
       </div>
       <div class="mx-3 my-0.5 w-full">
         <div v-if="!mergeWithPrev" class="text-sm mb-2">
-          <span class="font-bold mr-1">{{ name }}</span>
+          <span class="font-bold mr-1">{{ authorName }}</span>
           <relative-time :ts="model.meta.streamSort"></relative-time>
         </div>
         <div :class="{ 'md:w-2/3': bodyStyle === 'message' }">
           <div :class="bodyWrapperClass">
             <div class="cursor-pointer inline-block" @click="onContentClick">
-              <tag-list
-                v-if="!omitTags"
-                :class="{ 'mt-2': bodyStyle === 'message' }"
-                :tag-ids="model.tagIds"
-                @select="(tagId) => $emit('selectTag', tagId)" />
-              <ly-icon v-if="model.meta.archived" name="archive" class="w-3 text-warning ml-auto" />
+              <div class="flex gap-1">
+                <tag-list
+                  :class="['mb-2', { 'mt-2': bodyStyle === 'message' }]"
+                  :tag-ids="omitTags ? [] : model.tagIds"
+                  @select="(tagId) => $emit('selectTag', tagId)">
+                  <template v-if="showType" #pre>
+                    <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
+                  </template>
+                  <template v-if="model.meta.archived" #post>
+                    <ly-icon name="archive" class="w-3 text-warning ml-auto" />
+                  </template>
+                </tag-list>
+              </div>
               <div>
                 <slot></slot>
               </div>

@@ -23,7 +23,7 @@ export const useCalendarPlanStore = defineStore('timing', () => {
   }
 
   function switchToToday() {
-    date.value = new Date();
+    date.value = now.value;
   }
 
   function isPresentInterval(interval: CalendarInterval) {

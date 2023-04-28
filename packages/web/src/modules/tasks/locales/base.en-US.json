@@ -10,6 +10,10 @@
     },
     "edit" : {
       "title": "Edit task"
+    },
+    "buttons": {
+      "close": "Close task",
+      "open": "Reopen task"
     }
   }
 }

@@ -3,7 +3,7 @@ const svgToDataUri = require('mini-svg-data-uri');
 
 module.exports = {
   darkMode: 'class',
-  // purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {

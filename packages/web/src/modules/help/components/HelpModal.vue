@@ -18,7 +18,8 @@ const { showModal } = storeToRefs(helpStore);
 
 const appName = appConfigStore.get('appName');
 const isNewUser =
-  authStore.user && (isToday(authStore.user.createdAt) || Date.now() - authStore.user.createdAt.getTime() < ms('2h'));
+  authStore.user &&
+  (isToday(authStore.user.createdAt) || Date.now() - authStore.user.createdAt.getTime() < ms('2h'));
 const title = isNewUser ? 'help.modal.title_new' : 'help.modal.title';
 
 function startIntroTour() {
@@ -38,17 +39,23 @@ function toDocs() {
       {{ $t(title, { appName }) }}
     </template>
 
-    <i18n-t v-if="isNewUser" keypath="help.modal.text_intro" tag="p" class="text-center text-dimmed text-sm mb-5">
+    <i18n-t
+      v-if="isNewUser"
+      keypath="help.modal.text_intro"
+      tag="p"
+      class="text-center text-dimmed text-sm mb-5">
       <template #appName>
         {{ appName }}
       </template>
       <template #introductionLink>
-        <a class="cursor-pointer" @click="startIntroTour">{{ $t('help.modal.introductionLinkText') }}</a>
+        <a class="cursor-pointer" @click="startIntroTour">{{
+          $t('help.modal.introductionLinkText')
+        }}</a>
       </template>
     </i18n-t>
 
     <div class="flex flex-col space-y-1">
-      <ly-button text="help.modal.buttons.intro" class="primary" @click="startIntroTour" />
+      <ly-button label="help.modal.buttons.intro" class="primary" @click="startIntroTour" />
       <ly-button class="primary flex items-center justify-center" @click="toDocs">
         {{ $t('help.modal.buttons.to_docs') }}
         <ly-icon name="external_link" class="ml-1" />
