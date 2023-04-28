@@ -66,7 +66,7 @@ const contentTypeName = computed(() =>
       {{ model.content.text }}
     </slot>
   </div>
-  <div v-if="$slots.footer" class="bg-main px-1 md:p-2 border-t border-divide">
+  <div v-if="$slots.footer" class="bg-main rounded-b px-1 md:p-2 border-t border-divide">
     <slot name="footer" />
   </div>
 </template>
