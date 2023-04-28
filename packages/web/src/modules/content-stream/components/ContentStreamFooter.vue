@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ContentStreamFilterNavigation from '@/modules/content-stream/components/ContentStreamFilterNavigation.vue';
-import { ProfileType } from '@lyvely/common';
+import { ContentModel, ProfileType } from '@lyvely/common';
 import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
@@ -8,6 +8,12 @@ import { onMounted, ref } from 'vue';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { focusIfNotTouchScreen } from '@/util';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
+
+export interface IProps {
+  parent?: ContentModel;
+}
+
+const props = defineProps<IProps>();
 
 const { filter } = storeToRefs(useContentStreamFilterStore());
 const emits = defineEmits(['contentCreated']);
@@ -18,13 +24,17 @@ const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
 
 async function submitMessage() {
-  const newMessage = await createMessageStore.submit(filter.value.parent);
+  const newMessage = await createMessageStore.submit(filter.value.parentId);
   emits('contentCreated', newMessage);
 }
 
 async function openCreateContentModal() {
   const tagNames = useProfileStore().tagIdsToNames(useContentStreamFilterStore().filter.tagIds);
-  useContentCreateStore().createAnyContent({ title: model.value.text, tagNames });
+  useContentCreateStore().createAnyContent({
+    title: model.value.text,
+    tagNames,
+    parentId: props.parent?.id,
+  });
   model.value.text = '';
 }
 

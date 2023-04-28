@@ -68,10 +68,10 @@ const stream = useStream<ContentModel, ContentStreamFilter>(
 const { models, isInitialized } = stream;
 
 async function initOrRestore() {
-  const history = getHistoryState(filter.value.parent);
+  const history = getHistoryState(filter.value.parentId);
   if (history) {
     await stream.restore(history);
-    removeHistoryState(filter.value.parent);
+    removeHistoryState(filter.value.parentId);
   } else {
     await stream.init();
   }
@@ -84,7 +84,7 @@ onBeforeRouteLeave((to) => {
   } else if (to.params.cid) {
     useContentStreamHistoryStore().setHistoryState(
       stream,
-      filter.value.parent,
+      filter.value.parentId,
       streamRoot.value.scrollTop,
     );
   }
@@ -95,7 +95,11 @@ function selectTag(tagId: string) {
 }
 
 function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
-  if (evt.pid === profile.value?.id && evt.updatesAvailable) {
+  if (
+    evt.pid === profile.value?.id &&
+    evt.updatesAvailable &&
+    filter.value.parentId === evt.parentId
+  ) {
     stream.loadHead();
   }
 }

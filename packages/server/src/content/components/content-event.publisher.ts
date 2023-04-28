@@ -42,6 +42,7 @@ export class ContentEventPublisher {
       new ContentUpdateStateLiveEvent({
         updatesAvailable: true,
         pid: assureStringId(content.pid),
+        parentId: content.getParentId() ? assureStringId(content.getParentId()) : undefined,
         streamSort: content.meta.streamSort,
         cid: content.id,
       }),

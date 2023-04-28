@@ -7,7 +7,7 @@ import { IStreamFilter } from '@/stream';
 export class ContentStreamFilter extends BaseModel<ContentStreamFilter> implements IStreamFilter {
   @IsMongoId()
   @IsOptional()
-  parent?: string;
+  parentId?: string;
 
   @IsBoolean()
   @IsOptional()

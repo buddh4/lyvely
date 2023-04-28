@@ -19,6 +19,7 @@ export interface IEditOrCreateModalProps<T extends ContentModel = ContentModel> 
 }
 
 export type ICreateContentInitOptions = {
+  parent?: string;
   tagNames?: string[];
   title?: string;
   text?: string;

@@ -20,7 +20,7 @@ const { filter } = storeToRefs(useContentStreamFilterStore());
 const contentStore = useContentStore();
 
 filter.value = new ContentStreamFilter({
-  parent: router.currentRoute.value.params.cid as string,
+  parentId: router.currentRoute.value.params.cid as string,
 });
 
 function onContentUpdated(updatedContent: ContentModel) {
@@ -36,7 +36,7 @@ watch(
       const cid = to.params.cid as string;
       if (content.value?.id !== cid) {
         content.value = await streamService.loadEntry(cid);
-        filter.value = new ContentStreamFilter({ parent: cid });
+        filter.value = new ContentStreamFilter({ parentId: cid });
         contentStore.onContentUpdated('*', onContentUpdated);
       }
     }
@@ -73,7 +73,7 @@ watch(
       </div>
     </template>
   </content-stream>
-  <content-stream-footer v-if="content" />
+  <content-stream-footer v-if="content" :parent="content" />
 </template>
 
 <style scoped></style>
