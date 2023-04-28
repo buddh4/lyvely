@@ -10,14 +10,17 @@ import { onBeforeMount, onUnmounted } from 'vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { translate } from '@/i18n';
 
-const { filter, loadModels, startWatch } = useHabitCalendarPlanStore();
+const { filter, loadModels, startWatch, reset } = useHabitCalendarPlanStore();
 const createEntry = () => useContentCreateStore().createContentType(HabitModel.contentType);
 
 usePageStore().setTitle([translate('habits.title')]);
 
 onBeforeMount(() => loadModels());
 const unwatch = startWatch();
-onUnmounted(unwatch);
+onUnmounted(() => {
+  unwatch();
+  reset();
+});
 </script>
 
 <template>

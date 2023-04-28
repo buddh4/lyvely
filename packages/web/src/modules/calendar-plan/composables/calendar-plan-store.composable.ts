@@ -184,6 +184,7 @@ export function useCalendarPlan<
     cache,
     date,
     status,
+    reset,
     loadModels,
     loadModel,
     getModels,

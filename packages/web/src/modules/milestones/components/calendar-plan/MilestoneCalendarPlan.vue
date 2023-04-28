@@ -10,14 +10,17 @@ import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/Cal
 import { onBeforeMount, onUnmounted } from 'vue';
 import MilestoneCalendarPlanSection from '@/modules/milestones/components/calendar-plan/MilestoneCalendarPlanSection.vue';
 
-const { filter, loadModels, startWatch } = useMilestoneCalendarPlanStore();
+const { filter, loadModels, startWatch, reset } = useMilestoneCalendarPlanStore();
 const createEntry = () => useContentCreateStore().createContentType(MilestoneModel.contentType);
 
 usePageStore().setTitle([translate('milestones.title')]);
 
 onBeforeMount(() => loadModels());
 const unwatch = startWatch();
-onUnmounted(unwatch);
+onUnmounted(() => {
+  unwatch();
+  reset();
+});
 </script>
 
 <template>

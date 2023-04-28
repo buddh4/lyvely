@@ -10,7 +10,6 @@ const props = withDefaults(defineProps<IProps>(), {
 });
 
 const colorClass = computed(() => {
-  if (props.progress < 0.25) return 'bg-danger';
   if (props.progress < 0.5) return 'bg-warning';
   if (props.progress < 0.75) return 'bg-info';
   return 'bg-success';

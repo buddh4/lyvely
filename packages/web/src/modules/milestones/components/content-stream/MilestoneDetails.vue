@@ -81,17 +81,17 @@ onBeforeMount(async () => {
             v-for="relation in relations"
             class="cursor-pointer hover:bg-highlight"
             @click="onRelationClick(relation)">
-            <td class="p-4 pl-2 text-left">
+            <td class="px-4 py-2 pl-2 text-left">
               <ly-icon v-if="getIcon(relation)" :name="getIcon(relation)" />
             </td>
-            <td class="p-4 pl-2 text-left">
+            <td class="px-4 py-2 pl-2 text-left">
               <span class="font-bold">
                 <text-trimmed
                   :max="20"
                   :text="relation.title || relation.text || relation.contentType" />
               </span>
             </td>
-            <td class="w-40 p-4 pl-8 text-center">
+            <td class="w-40 px-4 py-2 pl-8 text-center">
               <progress-bar v-if="isDefined(relation.progress)" :progress="relation.progress" />
               <span v-else>-</span>
             </td>

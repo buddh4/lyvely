@@ -18,6 +18,7 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { isDefined } from 'class-validator';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { useDebounceFn } from '@vueuse/core';
+import { watch } from 'vue';
 
 export interface ITimeSeriesCalendarPlanOptions<
   TModel extends TimeSeriesContentModel,
@@ -60,7 +61,7 @@ export function useTimeSeriesCalendarPlan<
 >(
   options: ITimeSeriesCalendarPlanOptions<TModel, TFilter, TDataPoint, TResponse, TStore, TService>,
 ) {
-  const { locale } = storeToRefs(useProfileStore());
+  const { locale, profile } = storeToRefs(useProfileStore());
   const calendarPlanStore = useCalendarPlanStore();
   const calendarPlan = useCalendarPlan<TModel, TFilter, TResponse, TStore, TService>(options);
   const dialog = useGlobalDialogStore();

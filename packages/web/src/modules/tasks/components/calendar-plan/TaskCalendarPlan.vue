@@ -10,14 +10,17 @@ import { useTaskCalendarPlanStore } from '@/modules/tasks/stores/task-calendar-p
 import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/CalendarPlanFilterNavigation.vue';
 import { onBeforeMount, onUnmounted } from 'vue';
 
-const { filter, loadModels, startWatch } = useTaskCalendarPlanStore();
+const { filter, loadModels, startWatch, reset } = useTaskCalendarPlanStore();
 const createEntry = () => useContentCreateStore().createContentType(TaskModel.contentType);
 
 usePageStore().setTitle([translate('tasks.title')]);
 
 onBeforeMount(() => loadModels());
 const unwatch = startWatch();
-onUnmounted(unwatch);
+onUnmounted(() => {
+  unwatch();
+  reset();
+});
 </script>
 
 <template>
