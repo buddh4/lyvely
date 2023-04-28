@@ -18,9 +18,13 @@ const props = withDefaults(defineProps<IProps>(), {
   required: false,
 });
 
-const { helpTextId, showHelpText, translatedHelpText, hasHelpText, ariaDescribedBy } = useHelpText(props.helpText);
+const { helpTextId, showHelpText, translatedHelpText, hasHelpText, ariaDescribedBy } = useHelpText(
+  props.helpText,
+);
 
 const wrapperClasses = ['form-input relative', { required: props.required }, props.wrapperClass];
+
+// old style: absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none
 </script>
 
 <template>
@@ -29,9 +33,8 @@ const wrapperClasses = ['form-input relative', { required: props.required }, pro
       <label
         v-if="label"
         :for="inputId"
-        class="absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none"
-        :aria-describedby="ariaDescribedBy"
-      >
+        class="absolute inline-block text-xs px-3 py-2 text-dimmed rounded pointer-events-none bg-main"
+        :aria-describedby="ariaDescribedBy">
         {{ $t(label) }}
       </label>
       <ly-icon
@@ -39,12 +42,16 @@ const wrapperClasses = ['form-input relative', { required: props.required }, pro
         name="info"
         class="absolute text-info-dark w-4 cursor-pointer top-2 right-3"
         aria-hidden="true"
-        @click="showHelpText = !showHelpText"
-      />
+        @click="showHelpText = !showHelpText" />
     </slot>
     <slot></slot>
 
-    <ly-alert v-if="hasHelpText" v-show="showHelpText" :id="helpTextId" class="mt-2 text-xs" type="info">
+    <ly-alert
+      v-if="hasHelpText"
+      v-show="showHelpText"
+      :id="helpTextId"
+      class="mt-2 text-xs"
+      type="info">
       {{ translatedHelpText }}
     </ly-alert>
 
@@ -59,6 +66,11 @@ const wrapperClasses = ['form-input relative', { required: props.required }, pro
 </template>
 
 <style scoped>
+.form-input label {
+  top: 1px;
+  left: 1px;
+}
+
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
