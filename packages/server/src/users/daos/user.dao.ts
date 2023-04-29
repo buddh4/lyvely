@@ -25,6 +25,16 @@ export class UserDao extends AbstractDao<User> {
     });
   }
 
+  async findByAnyEmails(emails: string[]): Promise<User[]> {
+    const lowerCaseEmails = emails.map((email) => email.toLowerCase());
+    return this.findAll({
+      $or: [
+        { email: { $in: lowerCaseEmails } },
+        { 'emails.lowercaseEmail': { $in: lowerCaseEmails } },
+      ],
+    });
+  }
+
   async findByVerifiedEmail(email: string): Promise<User[]> {
     return this.findAll({
       $or: [
@@ -34,12 +44,40 @@ export class UserDao extends AbstractDao<User> {
     });
   }
 
-  async findByVerifiedEmailS(emails: string[]): Promise<User[]> {
-    const lowerCaseEmails = emails.map((email) => email.toLowerCase());
+  async findByUnverifiedEmail(email: string): Promise<User[]> {
     return this.findAll({
       $or: [
-        { status: { $ne: UserStatus.EmailVerification } },
+        { email: email.toLowerCase(), status: { $ne: UserStatus.EmailVerification } },
+        { 'emails.lowercaseEmail': email.toLowerCase(), 'emails.verified': false },
+      ],
+    });
+  }
+
+  async findByVerifiedEmails(emails: string[]): Promise<User[]> {
+    const lowerCaseEmails = emails
+      .filter((email) => !!email?.length)
+      .map((email) => email.toLowerCase());
+
+    if (!lowerCaseEmails.length) return [];
+
+    return this.findAll({
+      $or: [
+        { email: { $in: lowerCaseEmails }, status: { $ne: UserStatus.EmailVerification } },
         { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': true },
+      ],
+    });
+  }
+
+  async findByUnverifiedEmails(emails: string[]): Promise<User[]> {
+    const lowerCaseEmails = emails
+      .filter((email) => !!email?.length)
+      .map((email) => email.toLowerCase());
+
+    if (!lowerCaseEmails.length) return [];
+    return this.findAll({
+      $or: [
+        { email: { $in: lowerCaseEmails }, status: { $ne: UserStatus.EmailVerification } },
+        { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': false },
       ],
     });
   }

@@ -20,10 +20,10 @@ export class UsersService {
     return this.userDao.findByMainEmail(email);
   }
 
-  async findUserByAnyEmail(email: string): Promise<User[]> {
-    if (!email) return null;
+  async findUsersByVerifiedEmails(emails: string[]): Promise<User[]> {
+    if (!emails?.length) return null;
 
-    return this.userDao.findByAnyEmail(email);
+    return this.userDao.findByVerifiedEmails(emails);
   }
 
   /**

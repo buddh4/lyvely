@@ -8,8 +8,6 @@ import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 import { translate } from '@/i18n';
 import { getContentTypeOptions } from '@/modules/content-stream';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
-import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
 
 export interface IProps {
   model: ContentModel;

@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import { globalEmitter } from '@/core';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en';
+import { TestMailService } from '@/mails';
 
 useDayJsDateTimeAdapter();
 
@@ -23,6 +24,7 @@ useDayJsDateTimeAdapter();
 beforeEach(() => {
   const testMailsDir = './mail/content-stream/test';
   globalEmitter.removeAllListeners();
+  TestMailService.reset();
   if (fs.existsSync(testMailsDir)) {
     fs.readdirSync(testMailsDir).forEach((f) => fs.rmSync(`${testMailsDir}/${f}`));
   }

@@ -15,7 +15,12 @@ describe('UserRegistrationService', () => {
   const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [], [], [UserRegistrationModule]).compile();
+    testingModule = await createBasicTestingModule(
+      TEST_KEY,
+      [],
+      [],
+      [UserRegistrationModule],
+    ).compile();
     registerService = testingModule.get<UserRegistrationService>(UserRegistrationService);
     userService = testingModule.get(UsersService);
     testData = testingModule.get<TestDataUtils>(TestDataUtils);

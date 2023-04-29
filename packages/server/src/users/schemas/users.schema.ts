@@ -117,11 +117,11 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   }
 
   getUnverifiedUserEmails() {
-    return this.emails.find((userEmail) => !userEmail.verified);
+    return this.emails.filter((userEmail) => !userEmail.verified);
   }
 
   getVerifiedUserEmails() {
-    return this.emails.find((userEmail) => userEmail.verified);
+    return this.emails.filter((userEmail) => userEmail.verified);
   }
 
   isAcitve() {

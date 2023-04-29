@@ -31,6 +31,11 @@ describe('UserDao', () => {
         status: UserStatus.Active,
         locale: 'de',
         password: 'testPasswort',
+        emails: [
+          new UserEmail(email, true),
+          new UserEmail('new_' + email, false),
+          new UserEmail('alt_' + email, true),
+        ],
       }),
     );
   }
@@ -86,6 +91,12 @@ describe('UserDao', () => {
       expect(searchUser).toBeNull();
     });
 
+    it('do not find secondary email', async () => {
+      await createTestUser('test@test.de');
+      const searchUser = await userDao.findByMainEmail('new_test@test.de');
+      expect(searchUser).toBeNull();
+    });
+
     it('find user by main email address', async () => {
       const user = await createTestUser('test@test.de');
       const searchUser = await userDao.findByMainEmail('test@test.de');
@@ -138,11 +149,61 @@ describe('UserDao', () => {
     });
   });
 
+  describe('findByAnyEmails()', () => {
+    it('failed find user by any email attempt', async () => {
+      await createTestUser('test@test.de');
+      const searchUser = await userDao.findByAnyEmails(['test2@test.de']);
+      expect(searchUser.length).toEqual(0);
+    });
+
+    it('find user by secondary verified email', async () => {
+      await createTestUser('test@test.de');
+      const searchUser = await userDao.findByAnyEmails(['ALT_test@test.de']);
+      expect(searchUser.length).toEqual(1);
+    });
+
+    it('find user by secondary unverified email', async () => {
+      await createTestUser('test@test.de');
+      const searchUser = await userDao.findByAnyEmails(['NEW_test@test.de']);
+      expect(searchUser.length).toEqual(1);
+    });
+
+    it('find user by any email address', async () => {
+      const user = await createTestUser('test@test.de');
+      user.emails.push(new UserEmail('test2@test.de'));
+      await userDao.updateOneById(user, user);
+      const searchUser = await userDao.findByAnyEmails(['test2@test.de']);
+      expect(searchUser.length).toEqual(1);
+      expect(searchUser[0] instanceof User).toEqual(true);
+      expect(searchUser[0]._id.equals(user._id)).toBeDefined();
+    });
+
+    it('assure case insensitivity', async () => {
+      const user = await createTestUser('test@test.de');
+      const searchUser = await userDao.findByAnyEmails(['TEST@TEST.de']);
+      expect(searchUser.length).toEqual(1);
+      expect(searchUser[0] instanceof User).toEqual(true);
+      expect(searchUser[0]._id.equals(user._id)).toBeDefined();
+    });
+  });
+
   describe('findByAnyEmail()', () => {
     it('failed find user by any email', async () => {
       await createTestUser('test@test.de');
       const searchUser = await userDao.findByAnyEmail('test2@test.de');
       expect(searchUser.length).toEqual(0);
+    });
+
+    it('find user by secondary verified email', async () => {
+      await createTestUser('test@test.de');
+      const searchUser = await userDao.findByAnyEmail('ALT_test@test.de');
+      expect(searchUser.length).toEqual(1);
+    });
+
+    it('find user by secondary unverified email', async () => {
+      await createTestUser('test@test.de');
+      const searchUser = await userDao.findByAnyEmail('NEW_test@test.de');
+      expect(searchUser.length).toEqual(1);
     });
 
     it('find user by any email address', async () => {

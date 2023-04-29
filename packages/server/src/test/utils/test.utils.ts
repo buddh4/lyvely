@@ -28,6 +28,8 @@ import { QUEUE_NOTIFICATIONS_SEND } from '@/notifications/notification.constants
 import { I18nModule as NestjsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import path from 'path';
 import { FeatureModule } from '@/features/feature.module';
+import { MailService } from '@/mails';
+import { TestMailService } from '@/mails/services/test-mail.service';
 
 export function createCoreTestingModule(
   key: string,
@@ -90,7 +92,9 @@ export function createBasicTestingModule(
       add: jest.fn(),
       process: jest.fn(),
       on: jest.fn(),
-    });
+    })
+    .overrideProvider(MailService)
+    .useClass(TestMailService);
 }
 
 export function createContentTestingModule(

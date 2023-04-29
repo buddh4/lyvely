@@ -53,7 +53,7 @@ export class UserSubscriptionService {
       return users.map((user) => ({ user }));
     }
 
-    return this.profileService.findManyUserProfileRelations(users, pid);
+    return this.profileService.findManyUserProfileRelations(pid, users);
   }
 
   private async getProfileSubscriptionContext(

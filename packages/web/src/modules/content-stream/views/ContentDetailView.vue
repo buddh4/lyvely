@@ -10,8 +10,6 @@ import { getContentDetailsComponent } from '@/modules/content-stream/components/
 import { storeToRefs } from 'pinia';
 import ContentDetailHeader from '@/modules/content-stream/components/ContentDetailsHeader.vue';
 import { useContentStore } from '@/modules/content/stores/content.store';
-import TagList from '@/modules/tags/components/TagList.vue';
-import ContentDetailsFooter from '@/modules/content-stream/components/ContentDetailsFooter.vue';
 
 const router = useRouter();
 const streamService = useContentStreamService();

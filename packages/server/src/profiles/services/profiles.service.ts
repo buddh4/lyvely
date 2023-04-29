@@ -152,8 +152,8 @@ export class ProfilesService {
   }
 
   async findManyUserProfileRelations(
-    users: User[],
     identity: EntityIdentity<Profile>,
+    users: User[],
   ): Promise<ProfileContext[]> {
     if (!users?.length) return [];
 

@@ -24,12 +24,12 @@ export interface ISendMailOptions extends MailerSendMailOptions {
 
 @Injectable()
 export class MailService {
-  private readonly logger = new Logger(MailService.name);
+  protected readonly logger = new Logger(MailService.name);
 
   constructor(
-    private readonly mailerService: MailerService,
-    private readonly configService: ConfigService<LyvelyAppConfiguration>,
-    private readonly urlGenerator: UrlGenerator,
+    protected readonly mailerService: MailerService,
+    protected readonly configService: ConfigService<LyvelyAppConfiguration>,
+    protected readonly urlGenerator: UrlGenerator,
   ) {}
 
   async sendMail(

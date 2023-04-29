@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Profile, ProfilePermissionsService, ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import {
@@ -12,12 +12,13 @@ import {
   UserStatus,
   escapeHTML,
   isMultiUserProfile,
+  EntityNotFoundException,
 } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { assureObjectId, ConfigurationPath, UrlGenerator } from '@/core';
+import { assureObjectId, ConfigurationPath } from '@/core';
 import { UserInviteDao } from '@/user-invites/daos/user-invite.dao';
 import { isDefined } from 'class-validator';
 import { UserInvite } from '@/user-invites/schemas';
@@ -38,13 +39,14 @@ export class UserInvitesService {
 
   public async inviteUsers(host: User, inviteRequest: UserInvites) {
     await this.runUserCanInviteCheck(host, inviteRequest);
-    // Check if user is already member
-    // Load existing invites by given email
-    const { invites, pid } = inviteRequest;
+    const profile = inviteRequest.pid
+      ? await this.profileService.findProfileById(inviteRequest.pid)
+      : null;
 
-    const profile = pid ? await this.profileService.findProfileById(pid) : null;
+    return inviteRequest.pid
+      ? await this.sendProfileInvites(host, inviteRequest, profile)
+      : await this.sendNetworkInvites(host, inviteRequest);
 
-    if (pid && !isMultiUserProfile(profile.type)) throw new ForbiddenServiceException();
     // TODO:
     // Find existing users with verified emails
     // If non profile invite, filter out all existing users
@@ -52,19 +54,71 @@ export class UserInvitesService {
     // Create UserInvite for all users
     // Send existing user email for all existing users
     // Send platform invite email to all non existing users
+  }
 
+  private async sendNetworkInvites(host: User, inviteRequest: UserInvites) {
     const userInvites = [] as UserInvite[];
-    for (const invite of invites) {
+    const emails = inviteRequest.invites.map((invite) => invite.email);
+    const existingUsers = await this.userService.findUsersByVerifiedEmails(emails);
+
+    for (const invite of inviteRequest.invites) {
+      const { email } = invite;
+      // User can not self invite
+      if (host.getUserEmail(email)) continue;
+      // We do not allow inviting emails, which are already verified
+      if (existingUsers.find((user) => user.getVerifiedUserEmail(email))) continue;
+
       userInvites.push(
         new UserInvite({
-          pid: inviteRequest.pid ? assureObjectId(inviteRequest.pid) : undefined,
+          email,
           createdBy: assureObjectId(host),
-          email: invite.email,
-          role: !inviteRequest.pid
-            ? undefined
-            : invite.role === BaseProfileRelationRole.Guest
-            ? BaseProfileRelationRole.Guest
-            : BaseProfileRelationRole.Member,
+          token: this.createUserInviteToken(invite),
+        }),
+      );
+    }
+
+    const inviteModels = await this.inviteDao.saveMany(userInvites);
+    return Promise.all(
+      inviteModels.map((inviteModel) => {
+        return this.sendInviteMail(inviteModel.email, host, inviteModel.token).then(
+          () => inviteModel,
+        );
+      }),
+    );
+  }
+
+  private async sendProfileInvites(host: User, inviteRequest: UserInvites, profile?: Profile) {
+    const { pid, invites } = inviteRequest;
+
+    if (!profile) throw new EntityNotFoundException();
+    if (!isMultiUserProfile(profile.type)) throw new ForbiddenServiceException();
+
+    const emails = invites.map((invite) => invite.email);
+    const existingUsers = await this.userService.findUsersByVerifiedEmails(emails);
+    const existingMembers = await this.profileService.findManyUserProfileRelations(
+      pid,
+      existingUsers,
+    );
+    const userInvites = [] as UserInvite[];
+
+    for (const invite of invites) {
+      const { email } = invite;
+
+      if (!isValidEmail(email)) continue;
+      // User can not invite himself
+      if (host.getUserEmail(email)) continue;
+      // Filter out all users which are already member of this profile
+      if (existingMembers.find(({ user }) => user.getVerifiedUserEmail(email))) continue;
+
+      userInvites.push(
+        new UserInvite({
+          pid,
+          email,
+          createdBy: assureObjectId(host),
+          role:
+            invite.role === BaseProfileRelationRole.Guest
+              ? BaseProfileRelationRole.Guest
+              : BaseProfileRelationRole.Member,
           token: this.createUserInviteToken(invite),
         }),
       );

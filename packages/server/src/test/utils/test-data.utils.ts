@@ -1,7 +1,7 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { User, UserDocument } from '@/users';
+import { User, UserDocument, UserEmail } from '@/users';
 import {
   ProfileType,
   ProfileVisibilityLevel,
@@ -74,6 +74,11 @@ export class TestDataUtils {
   async createUser(username = 'test', userData: Partial<User> = {}): Promise<User> {
     userData.username = username;
     userData.email = userData.email || `${username}@test.de`;
+    userData.emails = [
+      new UserEmail(`${username}@test.de`, true),
+      new UserEmail(`uv_${username}@test.de`, false),
+      new UserEmail(`alt_${username}@test.de`, true),
+    ];
     userData.password = userData.password || `testPassword`;
     userData.status = userData.status ?? UserStatus.Active;
     const user = new this.UserModel(new User(userData));
