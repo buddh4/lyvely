@@ -40,6 +40,10 @@ export class TimerDataPoint
     this.valueType = DataPointValueType.Timer;
   }
 
+  get numericValue() {
+    return this.value.ms;
+  }
+
   isTimerStarted() {
     return this.value.timer.isStarted();
   }

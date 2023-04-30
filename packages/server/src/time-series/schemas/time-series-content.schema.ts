@@ -1,12 +1,51 @@
-import { ITimeSeriesContentConfig, CalendarInterval } from '@lyvely/common';
+import {
+  ITimeSeriesContentConfig,
+  CalendarInterval,
+  BaseModel,
+  PropertyType,
+  ITimeSeriesContent,
+  ITimeSeriesSummary,
+  ITimeSeriesSummaryWindowEntry,
+} from '@lyvely/common';
 import { ContentEntity, ContentType } from '@/content';
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';
+import { NestedSchema } from '@/core';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
 
 export type TimeSeriesContentEntity<
   T,
   TConfig extends ITimeSeriesContentConfig = any,
 > = ContentEntity<T, TConfig>;
+
+@NestedSchema()
+export class TimeSeriesSummaryWindowEntry
+  extends BaseModel<TimeSeriesSummaryWindowEntry>
+  implements ITimeSeriesSummaryWindowEntry
+{
+  @Prop({ required: true })
+  tid: string;
+
+  @Prop({ required: true })
+  value: number;
+
+  constructor(tid: string, value: number) {
+    super({ tid, value });
+  }
+}
+
+const TimeSeriesSummaryWindowEntrySchema = SchemaFactory.createForClass(
+  TimeSeriesSummaryWindowEntry,
+);
+
+@NestedSchema()
+export class TimeSeriesSummary implements ITimeSeriesSummary {
+  @Prop({ type: [TimeSeriesSummaryWindowEntrySchema] })
+  @PropertyType([TimeSeriesSummaryWindowEntry])
+  window: TimeSeriesSummaryWindowEntry[];
+}
+
+const TimeSeriesSummarySchema = SchemaFactory.createForClass(TimeSeriesSummary);
 
 /**
  * This class serves as base class for all time series content types and schemas. A subclass usually overwrites the
@@ -14,11 +53,18 @@ export type TimeSeriesContentEntity<
  * `dataPointConfigHistory` schema.
  */
 export abstract class TimeSeriesContent<
-  TContent extends TimeSeriesContentEntity<TContent, TConfig>,
-  TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
-  TConfig extends ITimeSeriesContentConfig<TDataPointConfig> = ITimeSeriesContentConfig<TDataPointConfig>,
-> extends ContentType<TContent, TConfig> {
+    TContent extends TimeSeriesContentEntity<TContent, TConfig>,
+    TDataPointConfig extends DefaultDataPointConfig = DefaultDataPointConfig,
+    TConfig extends ITimeSeriesContentConfig<TDataPointConfig> = ITimeSeriesContentConfig<TDataPointConfig>,
+  >
+  extends ContentType<TContent, TConfig>
+  implements ITimeSeriesContent<TDataPointConfig>
+{
   config: TConfig;
+
+  @Prop({ type: TimeSeriesSummarySchema })
+  @PropertyType(TimeSeriesSummary)
+  timeSeriesSummary: TimeSeriesSummary;
 
   get timeSeriesConfig() {
     return this.config?.timeSeries;

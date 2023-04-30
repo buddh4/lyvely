@@ -37,9 +37,9 @@ describe('HabitService', () => {
   const createHabit = async (
     user: User,
     profile: Profile,
-    dto?: PropertiesOf<CreateHabitModel>,
+    raw?: PropertiesOf<CreateHabitModel>,
   ) => {
-    dto = dto || {
+    raw = raw || {
       min: 0,
       max: 1,
       title: 'Do something!',
@@ -51,7 +51,7 @@ describe('HabitService', () => {
       interval: CalendarInterval.Daily,
     };
 
-    return habitsService.createContent(profile, user, dto);
+    return habitsService.createContent(profile, user, new CreateHabitModel(raw));
   };
 
   describe('create Habit', () => {

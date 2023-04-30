@@ -8,7 +8,7 @@ import {
   InvalidDataPointValueTypeException,
   toTimingId,
 } from '@lyvely/common';
-import { buildDataPointModelName, DataPoint, TimeSeriesContent } from '../schemas';
+import { DataPoint, TimeSeriesContent } from '../schemas';
 import { Profile, ProfilesService } from '@/profiles';
 import { EntityIdentity } from '@/core';
 import { DataPointStrategyDao } from '../daos';

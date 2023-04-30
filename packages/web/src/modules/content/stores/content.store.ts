@@ -120,6 +120,7 @@ export const useContentStore = defineStore('content', () => {
     handleCreateContent,
     handleUpdateContent,
     emitPostContentEvent,
+    emitPostContentUpdateEvent,
     onContentCreated,
     offContentCreated,
     onContentUpdated,

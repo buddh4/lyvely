@@ -14,7 +14,6 @@ import {
 import { TimeSeriesContent } from '../time-series-content.schema';
 import { User } from '@/users';
 import { Profile } from '@/profiles';
-import { DiscriminatorOptions } from '@nestjs/mongoose/dist/interfaces/model-definition.interface';
 
 export type DataPointEntity<T> = DataPointModel & BaseEntity<T>;
 

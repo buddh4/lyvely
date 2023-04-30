@@ -40,9 +40,6 @@ export class HabitsController
   protected contentService: HabitsService;
 
   @Inject()
-  protected dataPointService: HabitDataPointService;
-
-  @Inject()
   protected timeSeriesService: HabitTimeSeriesService;
 
   @Inject()
@@ -95,7 +92,7 @@ export class HabitsController
   ) {
     const { profile, user, content } = req;
 
-    const { dataPoint } = await this.dataPointService.upsertDataPoint(
+    const { dataPoint } = await this.timeSeriesService.upsertDataPoint(
       profile,
       user,
       content,
@@ -105,6 +102,7 @@ export class HabitsController
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,
+      model: content,
       dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
     });
   }

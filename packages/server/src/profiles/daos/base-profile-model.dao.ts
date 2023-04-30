@@ -21,7 +21,7 @@ import { FilterQuery, QueryOptions, UpdateQuery, Types } from 'mongoose';
 export type ProfileShard =
   | Profile
   | BaseProfileModel<any>
-  | { oid: Types.ObjectId; pid: Types.ObjectId };
+  | { oid: Types.ObjectId; location: string; pid: Types.ObjectId };
 
 /**
  * This Dao class serves as base class for profile related models.
@@ -34,7 +34,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     options?: IBaseFetchQueryOptions<T>,
   ) {
     return this.findOne(
-      applyProfileFilter(profileRelation, {
+      applyShardQueryFilter(profileRelation, {
         _id: this.assureEntityId(identity),
       }),
       options,
@@ -58,7 +58,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     filter?: FilterQuery<C>,
     options?: IFetchQueryOptions<T>,
   ): Promise<T[]> {
-    return this.findAll(applyProfileFilter(profileRelation, filter), options);
+    return this.findAll(applyShardQueryFilter(profileRelation, filter), options);
   }
 
   async findOneByProfile<C = T>(
@@ -66,7 +66,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     filter: FilterQuery<C>,
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
-    return this.findOne(applyProfileFilter(profileRelation, filter), options);
+    return this.findOne(applyShardQueryFilter(profileRelation, filter), options);
   }
 
   async updateOneByProfileAndIdSet(
@@ -84,7 +84,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     update: UpdateQuery<T>,
     options?: IUpdateQueryOptions,
   ) {
-    return this.updateOneByFilter(id, update, applyProfileFilter(profileRelation), options);
+    return this.updateOneByFilter(id, update, applyShardQueryFilter(profileRelation), options);
   }
 
   protected async updateOneByProfileAndFilter(
@@ -97,7 +97,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     return this.updateOneByFilter(
       identity,
       update,
-      applyProfileFilter(profileRelation, filter),
+      applyShardQueryFilter(profileRelation, filter),
       options,
     );
   }
@@ -122,7 +122,12 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     update: UpdateQuery<T>,
     options?: IFindAndUpdateQueryOptions<T>,
   ): Promise<T | null> {
-    return this.findOneAndUpdateByFilter(id, update, applyProfileFilter(profileRelation), options);
+    return this.findOneAndUpdateByFilter(
+      id,
+      update,
+      applyShardQueryFilter(profileRelation),
+      options,
+    );
   }
 
   async findOneAndUpdateByProfileAndFilter(
@@ -135,7 +140,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     return this.findOneAndUpdateByFilter(
       id,
       update,
-      applyProfileFilter(profileRelation, filter),
+      applyShardQueryFilter(profileRelation, filter),
       options,
     );
   }
@@ -148,7 +153,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     await this.model.bulkWrite(
       updates.map((update) => ({
         updateOne: <any>{
-          filter: applyProfileFilter(profileRelation, {
+          filter: applyShardQueryFilter(profileRelation, {
             _id: this.assureEntityId(update.id),
           }),
           update: { $set: update.update },
@@ -162,7 +167,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     profileRelation: ProfileShard,
     options?: DeleteOptions,
   ): Promise<number> {
-    return this.deleteMany(applyProfileFilter(profileRelation), options);
+    return this.deleteMany(applyShardQueryFilter(profileRelation), options);
   }
 
   async deleteManyByProfile(
@@ -170,7 +175,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     filter: FilterQuery<T>,
     options?: DeleteOptions,
   ): Promise<number> {
-    return this.deleteMany(applyProfileFilter(profileRelation, filter), options);
+    return this.deleteMany(applyShardQueryFilter(profileRelation, filter), options);
   }
 
   async deleteOneByProfile(
@@ -178,11 +183,11 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
     filter: FilterQuery<T>,
     options?: DeleteOptions,
   ): Promise<boolean> {
-    return this.deleteOne(applyProfileFilter(profileRelation, filter), options);
+    return this.deleteOne(applyShardQueryFilter(profileRelation, filter), options);
   }
 }
 
-function applyProfileFilter(profileRelation: ProfileShard, filter?: FilterQuery<any>) {
+function applyShardQueryFilter(profileRelation: ProfileShard, filter?: FilterQuery<any>) {
   filter = filter || {};
   if (profileRelation.oid) {
     filter.oid = assureObjectId(profileRelation.oid);

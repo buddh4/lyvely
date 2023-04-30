@@ -19,6 +19,7 @@ import { isDefined } from 'class-validator';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { useDebounceFn } from '@vueuse/core';
 import { watch } from 'vue';
+import { useContentStore } from '@/modules/content/stores/content.store';
 
 export interface ITimeSeriesCalendarPlanOptions<
   TModel extends TimeSeriesContentModel,
@@ -61,7 +62,7 @@ export function useTimeSeriesCalendarPlan<
 >(
   options: ITimeSeriesCalendarPlanOptions<TModel, TFilter, TDataPoint, TResponse, TStore, TService>,
 ) {
-  const { locale, profile } = storeToRefs(useProfileStore());
+  const { locale } = storeToRefs(useProfileStore());
   const calendarPlanStore = useCalendarPlanStore();
   const calendarPlan = useCalendarPlan<TModel, TFilter, TResponse, TStore, TService>(options);
   const dialog = useGlobalDialogStore();
@@ -95,6 +96,8 @@ export function useTimeSeriesCalendarPlan<
         value: value,
       });
 
+      cache.value.setModel(result.model);
+      useContentStore().emitPostContentUpdateEvent(result.model.type, result.model);
       cache.value.setDataPoint(result.dataPoint);
     } catch (e) {
       if (isDefined(oldValue)) {

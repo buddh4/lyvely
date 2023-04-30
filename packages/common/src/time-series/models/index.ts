@@ -8,3 +8,4 @@ export * from './selection-data-point.model';
 export * from './number-data-point.model';
 export * from './update-data-point-response.model';
 export * from './update-data-point.model';
+export * from './moving-average.calculator';

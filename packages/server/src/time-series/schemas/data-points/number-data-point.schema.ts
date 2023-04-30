@@ -29,6 +29,10 @@ export class NumberDataPoint
     super.afterInit();
   }
 
+  get numericValue() {
+    return this.value;
+  }
+
   getTimer() {
     if (!this.timer) {
       this.timer = new Timer();

@@ -27,8 +27,9 @@ export abstract class CalendarPlan {
   abstract getTitle(date: Date, locale: string): string;
   abstract getAccessibleTitle(date: Date, locale: string): string;
   abstract getLabelById(id: any): string;
-  abstract increment(date: Date): Date;
-  abstract decrement(date: Date): Date;
+  abstract increment(date: Date, amount?: number): Date;
+  abstract decrement(date: Date, amount?: number): Date;
+  abstract getDefaultWindowSize(): number;
 
   public getInterval() {
     return this.id;
@@ -68,16 +69,20 @@ export class UnscheduledPlan extends CalendarPlan {
     return this.getTitle(date, locale);
   }
 
-  increment(date: Date): Date {
+  increment(date: Date, amount?: number): Date {
     return date;
   }
 
-  decrement(date: Date): Date {
+  decrement(date: Date, amount?: number): Date {
     return date;
   }
 
   getLabelById(id: any): string {
     return id;
+  }
+
+  getDefaultWindowSize(): number {
+    return 0;
   }
 }
 
@@ -97,12 +102,16 @@ export class YearlyPlan extends UnscheduledPlan {
     return this.getTitle(date, locale);
   }
 
-  increment(date: Date): Date {
-    return addYear(date, 1);
+  increment(date: Date, amount = 1): Date {
+    return addYear(date, amount);
   }
 
-  decrement(date: Date): Date {
-    return subtractYear(date, 1);
+  decrement(date: Date, amount = 1): Date {
+    return subtractYear(date, amount);
+  }
+
+  getDefaultWindowSize(): number {
+    return 5;
   }
 }
 
@@ -123,12 +132,16 @@ export class QuarterlyPlan extends YearlyPlan {
     return this.getTitle(date, locale);
   }
 
-  increment(date: Date): Date {
-    return addQuarter(date, 1);
+  increment(date: Date, amount = 1): Date {
+    return addQuarter(date, amount);
   }
 
-  decrement(date: Date): Date {
-    return subtractQuarter(date, 1);
+  decrement(date: Date, amount = 1): Date {
+    return subtractQuarter(date, amount);
+  }
+
+  getDefaultWindowSize(): number {
+    return 8;
   }
 }
 
@@ -153,12 +166,16 @@ export class MonthlyPlan extends QuarterlyPlan {
     return this.getTitle(date, locale);
   }
 
-  increment(date: Date): Date {
-    return addMonth(date, 1);
+  increment(date: Date, amount = 1): Date {
+    return addMonth(date, amount);
   }
 
-  decrement(date: Date): Date {
-    return subtractMonth(date, 1);
+  decrement(date: Date, amount = 1): Date {
+    return subtractMonth(date, amount);
+  }
+
+  getDefaultWindowSize(): number {
+    return 12;
   }
 }
 
@@ -184,12 +201,16 @@ export class WeeklyPlan extends MonthlyPlan {
     return this.getTitle(date, locale);
   }
 
-  increment(date: Date): Date {
-    return addWeek(date, 1);
+  increment(date: Date, amount = 1): Date {
+    return addWeek(date, amount);
   }
 
-  decrement(date: Date): Date {
-    return subtractWeek(date, 1);
+  decrement(date: Date, amount = 1): Date {
+    return subtractWeek(date, amount);
+  }
+
+  getDefaultWindowSize(): number {
+    return 10;
   }
 }
 
@@ -216,12 +237,16 @@ export class DailyPlan extends WeeklyPlan {
     return dateTime(date).format(format);
   }
 
-  increment(date: Date): Date {
-    return addDays(date, 1);
+  increment(date: Date, amount = 1): Date {
+    return addDays(date, amount);
   }
 
-  decrement(date: Date): Date {
-    return subtractDays(date, 1);
+  decrement(date: Date, amount = 1): Date {
+    return subtractDays(date, amount);
+  }
+
+  getDefaultWindowSize(): number {
+    return 14;
   }
 }
 

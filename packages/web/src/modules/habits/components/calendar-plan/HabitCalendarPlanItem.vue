@@ -7,6 +7,7 @@ import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
 import CalendarPlanNumberInput from '@/modules/calendar-plan/components/inputs/CalendarPlanNumberInput.vue';
 import CalendarPlanTimerInput from '@/modules/calendar-plan/components/inputs/CalendarPlanTimerInput.vue';
+import { useUpdateHabit } from '@/modules/habits/composables/update-habit.composable';
 
 export interface IProps {
   model: HabitModel;
@@ -15,36 +16,9 @@ export interface IProps {
 const props = defineProps<IProps>();
 const initialized = ref(false);
 const habitStore = useHabitCalendarPlanStore();
-const { selectTag, updateDataPoint } = habitStore;
+const { selectTag, getDataPoint } = habitStore;
 const { isDisabled, moveUp, moveDown } = useCalendarPlanPlanItem(props.model, habitStore);
-const { getDataPoint } = habitStore;
-const dataPoint = computed(() => getDataPoint(props.model));
-
-const selection = computed({
-  get: () => dataPoint.value.value,
-  set: (selection: number) => {
-    const oldValue = dataPoint.value.value;
-    // Visually update due to debounce delay
-    dataPoint.value.value = selection;
-    updateDataPoint(dataPoint.value, selection, oldValue);
-  },
-});
-
-async function startTimer() {
-  if (!timer.value) return;
-  if (!timer.value.isStarted()) {
-    await useHabitCalendarPlanStore().startTimer(props.model);
-  }
-}
-
-async function stopTimer() {
-  if (!timer.value) return;
-  if (timer.value.isStarted()) {
-    await useHabitCalendarPlanStore().stopTimer(props.model);
-  }
-}
-
-const timer = computed(() => dataPoint.value.value.timer);
+const { selection, startTimer, stopTimer, timer } = useUpdateHabit(props.model);
 
 onMounted(async () => {
   await getDataPoint(props.model);

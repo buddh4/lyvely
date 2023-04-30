@@ -1,20 +1,17 @@
 <script lang="ts" setup>
-import {
-  CalendarInterval,
-  HabitModel,
-  isNumberDataPointConfig,
-  isTimerDataPointConfig,
-} from '@lyvely/common';
+import { HabitModel, isNumberDataPointConfig, isTimerDataPointConfig } from '@lyvely/common';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 import CalendarPlanNumberInput from '@/modules/calendar-plan/components/inputs/CalendarPlanNumberInput.vue';
 import CalendarPlanTimerInput from '@/modules/calendar-plan/components/inputs/CalendarPlanTimerInput.vue';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { onMounted, onUnmounted, ref, watch } from 'vue';
 import {
   useCalendarPlanPlanItem,
   useCalendarPlanPlanNavigation,
   useCalendarPlanStore,
 } from '@/modules/calendar-plan';
+import { useUpdateHabit } from '@/modules/habits/composables';
+import TimeSeriesSummary from '@/modules/time-series/components/TimeSeriesSummary.vue';
 
 export interface IProps {
   model: HabitModel;
@@ -24,38 +21,9 @@ const props = defineProps<IProps>();
 
 const habitStore = useHabitCalendarPlanStore();
 const initialized = ref(false);
-const { updateDataPoint } = habitStore;
 const { getDataPoint, loadModel } = habitStore;
-const dataPoint = computed(() => getDataPoint(props.model));
-
-const selection = computed({
-  get: () => dataPoint.value?.value,
-  set: (selection: number) => {
-    const oldValue = dataPoint.value.value;
-    // Visually update due to debounce delay
-    dataPoint.value.value = selection;
-    updateDataPoint(dataPoint.value, selection, oldValue);
-  },
-});
-
 const { isDisabled } = useCalendarPlanPlanItem(props.model, habitStore);
-
-async function startTimer() {
-  if (!timer.value) return;
-  if (!timer.value.isStarted()) {
-    await useHabitCalendarPlanStore().startTimer(props.model);
-  }
-}
-
-async function stopTimer() {
-  if (!timer.value) return;
-  if (timer.value.isStarted()) {
-    await useHabitCalendarPlanStore().stopTimer(props.model);
-  }
-}
-
-const timer = computed(() => dataPoint.value.value.timer);
-
+const { selection, startTimer, stopTimer, timer } = useUpdateHabit(props.model);
 const {
   title,
   accessibleTitle,
@@ -95,6 +63,12 @@ onUnmounted(unwatchDate);
     <template #body>
       <div>
         {{ model.content.text }}
+      </div>
+      <div>
+        <time-series-summary
+          class="mt-4"
+          :summary="model.timeSeriesSummary"
+          :interval="model.interval" />
       </div>
     </template>
     <template #footer>

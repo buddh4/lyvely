@@ -46,6 +46,7 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
+    "@lyvely/web": "^0.0.1",
     "@types/uuid": "^8.3.4",
     "eslint-config-prettier": "^8.5.0",
     "typescript": "^4.9.3",
