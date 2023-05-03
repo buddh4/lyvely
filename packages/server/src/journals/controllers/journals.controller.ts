@@ -98,6 +98,7 @@ export class JournalsController
     );
 
     return new UpdateDataPointResponse({
+      model: content.toModel(),
       dataPoint: DataPointModelConverter.toModel(dataPoint),
     });
   }

@@ -7,12 +7,15 @@ import { useLoginStore } from '@/modules/auth/store/login.store';
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
 import { useSendResetPasswordMailStore } from '@/modules/auth/store/send-reset-password-mail.store';
 import { isTouchScreen } from '@/util';
+import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 
 const loginStore = useLoginStore();
 const router = useRouter();
 const showRememberInfo = ref(false);
 
 const { loginModel, validator, stage } = storeToRefs(loginStore);
+
+const isPublicRegistration = useAppConfigStore().config.registrationMode === 'public';
 
 watch(stage, () => {
   // When moving between stages we want to clear the errors
@@ -147,7 +150,7 @@ onUnmounted(loginStore.reset);
           {{ $t('common.next') }}
         </ly-button>
 
-        <div class="text-center mt-4">
+        <div v-if="isPublicRegistration" class="text-center mt-4">
           <small>
             {{ $t('auth.login.not_a_member') }}
             <router-link to="/register" class="no-underline font-bold">

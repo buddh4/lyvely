@@ -120,14 +120,14 @@ describe('UserDao', () => {
         emails: [new UserEmail('secondary@test.de', true)],
       });
       const search = await userDao.findByVerifiedEmail('secondary@test.de');
-      expect(search.length).toEqual(1);
-      expect(search[0]._id).toEqual(user._id);
+      expect(search).toBeDefined();
+      expect(search._id).toEqual(user._id);
     });
 
     it('do not include unverified emails', async () => {
       await testData.createUser('test', { emails: [new UserEmail('secondary@test.de', false)] });
       const search = await userDao.findByVerifiedEmail('secondary@test.de');
-      expect(search.length).toEqual(0);
+      expect(search).toBeNull();
     });
 
     it('do not include users with unverified main email', async () => {
@@ -136,7 +136,7 @@ describe('UserDao', () => {
         email: 'test@test.de',
       });
       const search = await userDao.findByVerifiedEmail('test@test.de');
-      expect(search.length).toEqual(0);
+      expect(search).toBeNull();
     });
 
     it('do include main email', async () => {
@@ -144,8 +144,8 @@ describe('UserDao', () => {
         email: 'test@test.de',
       });
       const search = await userDao.findByVerifiedEmail('test@test.de');
-      expect(search.length).toEqual(1);
-      expect(search[0]._id).toEqual(user._id);
+      expect(search).toBeDefined();
+      expect(search._id).toEqual(user._id);
     });
   });
 

@@ -26,6 +26,12 @@ export class UsersService {
     return this.userDao.findByVerifiedEmails(emails);
   }
 
+  async findByVerifiedEmail(email: string): Promise<User> {
+    if (!email) return null;
+
+    return this.userDao.findByVerifiedEmail(email);
+  }
+
   /**
    * Returns a single user with the given id or null.
    * @param id

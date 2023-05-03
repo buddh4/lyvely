@@ -1,13 +1,13 @@
 import { StrictEndpoint } from '@/endpoints';
 import { AddEmailDto, VerifyEmailDto } from '@/account/dtos';
-import { ResendOtpDto } from '@/user-registration';
+import { ResendOtp } from '@/user-registration';
 import { OtpInfo } from '@/auth';
 import { AvatarModel } from '@/users';
 
 export interface IAccountService {
   addEmail(dto: AddEmailDto): Promise<OtpInfo>;
   verifyEmail(dto: VerifyEmailDto);
-  resendOtp(dto: ResendOtpDto): Promise<OtpInfo>;
+  resendOtp(dto: ResendOtp): Promise<OtpInfo>;
   updateAvatar(file: any): Promise<AvatarModel>;
   updateGravatar(): Promise<AvatarModel>;
 }

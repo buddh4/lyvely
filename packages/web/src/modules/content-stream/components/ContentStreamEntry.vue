@@ -3,7 +3,6 @@ import { formatDate, isToday, formatDateWithTime, ContentModel } from '@lyvely/c
 import { computed } from 'vue';
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 import { useRouter } from 'vue-router';
-import { contentRoute } from '@/modules/content-stream/routes/route.utils';
 import { isTextSelection } from '@/util/dom.util';
 import TagList from '@/modules/tags/components/TagList.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
@@ -11,7 +10,8 @@ import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { getContentTypeOptions } from '@/modules/content-stream';
 import { translate } from '@/i18n';
 import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
-import LyTag from '@/modules/tags/components/TagBadge.vue';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import LyAvatar from '@/modules/ui/components/avatar/AvatarImage.vue';
 
 export interface IProps {
   model: ContentModel;
@@ -33,7 +33,17 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const emit = defineEmits(['selectTag']);
 
-const authorName = computed(() => 'buddh4');
+const authorName = computed(
+  // TODO: use props.model.meta.createdAs?.authorId and check type
+  () => useProfileStore().getUserInfo(props.model.meta.createdBy)?.displayName,
+);
+
+const avatar = computed(() => {
+  return {
+    guid: useProfileStore().getUserInfo(props.model.meta.createdBy)?.guid,
+  };
+});
+
 const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1));
 const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
 
@@ -113,7 +123,7 @@ const bodyWrapperClass = computed(
     <div class="flex items-stretch w-full gap-1">
       <div class="flex justify-center flex-shrink-0 w-9 pt-1">
         <slot v-if="!mergeWithPrev" name="image">
-          <ly-user-avatar class="w-8 h-8" />
+          <ly-avatar class="w-8 h-8" :name="authorName" :avatar="avatar" />
         </slot>
       </div>
       <div class="mx-3 my-0.5 w-full">

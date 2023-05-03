@@ -102,7 +102,7 @@ export class HabitsController
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,
-      model: content,
+      model: content.toModel(),
       dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
     });
   }

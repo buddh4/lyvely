@@ -1,65 +1,33 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
-  InternalServerErrorException,
-  NotFoundException,
-  ForbiddenException,
-  Logger,
-  BadRequestException,
-} from '@nestjs/common';
-import {
-  ForbiddenServiceException,
-  EntityNotFoundException,
-  FieldValidationException,
-  ServiceException,
-} from '@lyvely/common';
-
-const exceptionLog = new Logger('exception');
+import { ExceptionFilter, Catch, ArgumentsHost, Logger } from '@nestjs/common';
+import { ServiceException } from '@lyvely/common';
 
 @Catch(ServiceException)
 export class ServiceExceptionsFilter implements ExceptionFilter {
-  catch(exception: unknown, host: ArgumentsHost) {
-    exceptionLog.error(exception);
-    console.log(exception);
+  private logger = new Logger(ServiceExceptionsFilter.name);
+
+  catch(exception: ServiceException, host: ArgumentsHost) {
+    this.logger.error(exception.message, exception.stack);
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
 
-    const httpException = this.mapException(exception);
-    const responseData = httpException.getResponse();
+    const responseData = exception.getResponse();
+    const status = exception.status;
+
     if (!responseData) {
-      response.status(httpException.getStatus()).json({
-        statusCode: httpException.getStatus(),
-        message: httpException.message,
+      response.status(status).json({
+        statusCode: status,
+        message: exception.message,
+        error: exception.message,
       });
     } else if (typeof responseData === 'string') {
-      response.status(httpException.getStatus()).json({
-        statusCode: httpException.getStatus(),
+      response.status(status).json({
+        statusCode: status,
         message: responseData,
+        error: responseData,
       });
     } else {
-      response.status(httpException.getStatus()).json(responseData);
+      response.status(status).json(responseData);
     }
-  }
-
-  mapException(exception: unknown): HttpException {
-    if (exception instanceof HttpException) {
-      return exception;
-    }
-
-    if (exception instanceof FieldValidationException) {
-      return new BadRequestException(exception.getResponse());
-    }
-
-    if (exception instanceof EntityNotFoundException) {
-      return new NotFoundException(exception.getResponse());
-    }
-
-    if (exception instanceof ForbiddenServiceException) {
-      return new ForbiddenException(exception.getResponse());
-    }
-
-    return new InternalServerErrorException();
   }
 }

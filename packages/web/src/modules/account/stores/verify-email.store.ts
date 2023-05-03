@@ -1,7 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { IFieldValidationResult, VerifyEmailDto, ResendOtpDto, OtpInfo } from '@lyvely/common';
+import { IFieldValidationResult, VerifyEmailDto, ResendOtp, OtpInfo } from '@lyvely/common';
 import { useAccountService } from '@/modules/account/services/account.service';
 import { useEmailVerificationStore } from '@/modules/account';
 
@@ -26,7 +26,7 @@ export const useVerifyEmailStore = defineStore('verify-email', () => {
       showModal.value = false;
       return true;
     },
-    resend: async (dto: ResendOtpDto) => {
+    resend: async (dto: ResendOtp) => {
       return await accountService.resendOtp(dto);
     },
     validatorOptions: {

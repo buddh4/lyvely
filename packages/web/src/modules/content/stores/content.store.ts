@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ContentModel, ContentUpdateResponse } from '@lyvely/common';
+import { ContentModel, ContentUpdateResponse, IContent } from '@lyvely/common';
 import { useContentService } from '@/modules/content/services/content.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { eventBus } from '@/modules/core/events/global.emitter';
@@ -93,11 +93,11 @@ export const useContentStore = defineStore('content', () => {
     return offContentEvent(type, 'updated', handler);
   }
 
-  function emitPostContentEvent(type: string, event: ContentEventType, content: ContentModel) {
+  function emitPostContentEvent(type: string, event: ContentEventType, content: IContent) {
     eventBus.emit(`content.${type.toLowerCase()}.${event}.post`, content);
   }
 
-  function emitPostContentUpdateEvent(type: string, content: ContentModel) {
+  function emitPostContentUpdateEvent(type: string, content: IContent) {
     emitPostContentEvent(type, 'updated', content);
   }
 

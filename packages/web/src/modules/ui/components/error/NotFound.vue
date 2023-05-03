@@ -5,7 +5,7 @@ import imgUrl from '@/assets/404.png';
 <template>
   <div class="card error-page">
     <img alt="Page Not Found" :src="imgUrl" />
-    <router-link to="/" class="btn btn-primary">Take me back home</router-link>
+    <router-link to="/" class="btn btn-primary">{{ $t('common.back_to_home') }}</router-link>
   </div>
 </template>
 

@@ -3,11 +3,11 @@ import { UserRegistrationService } from '../services/user-registration.service';
 import { Public, UseClassSerializer, ConfigurationPath } from '@/core';
 import {
   UserRegistrationEndpoint,
-  UserRegistrationDto,
+  UserRegistration,
   ENDPOINT_USER_REGISTRATION,
   VerifyEmailDto,
   UserModel,
-  ResendOtpDto,
+  ResendOtp,
   OtpInfo,
   UniqueConstraintException,
 } from '@lyvely/common';
@@ -26,20 +26,15 @@ export class UserRegistrationController
   constructor(
     private registerService: UserRegistrationService,
     private authService: JwtAuthService,
-    protected configService: ConfigService<ConfigurationPath>,
+    protected configService: ConfigService<ConfigurationPath & any>,
   ) {
     super(configService);
   }
 
   @Public()
   @Post()
-  async register(@Body() registerDto: UserRegistrationDto): Promise<OtpInfo> {
+  async register(@Body() registerDto: UserRegistration): Promise<OtpInfo> {
     try {
-      const registrationMode = this.configService.get(
-        'modules.user-registration.mode',
-        UserRegistrationMode.Invite,
-      );
-
       return await this.registerService.register(registerDto);
     } catch (err: any) {
       // Fake an otp to prevent user enumeration attacks
@@ -53,7 +48,7 @@ export class UserRegistrationController
 
   @Public()
   @Post('resend-verify-email')
-  async resendVerifyEmail(@Body() dto: ResendOtpDto): Promise<OtpInfo> {
+  async resendVerifyEmail(@Body() dto: ResendOtp): Promise<OtpInfo> {
     try {
       return await this.registerService.resendOtp(dto.email);
     } catch (err: any) {

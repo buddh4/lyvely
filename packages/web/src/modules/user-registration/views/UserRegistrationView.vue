@@ -9,14 +9,26 @@ import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/modules/user-registration/routes/paths';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 import { isTouchScreen } from '@/util';
+import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 
 const userRegistrationStore = useUserRegistrationStore();
+const registrationMode = useAppConfigStore().config?.registrationMode;
 
 const router = useRouter();
 const { model, validator } = storeToRefs(userRegistrationStore);
+model.value.inviteToken = router.currentRoute.value.query?.invite as string;
+model.value.email = router.currentRoute.value.query?.email as string;
 const { status } = userRegistrationStore;
 const showRememberInfo = ref(false);
 const repeatPasswordType = ref('password');
+
+if (
+  !registrationMode ||
+  registrationMode === 'none' ||
+  (registrationMode === 'invite' && !model.value.inviteToken)
+) {
+  router.push('/login');
+}
 
 async function register() {
   return userRegistrationStore.register().then((success) => {

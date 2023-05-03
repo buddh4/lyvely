@@ -107,6 +107,12 @@ export interface UserInviteOptions {
   maxPerWeek?: number;
 }
 
+export type RegistrationModes = 'public' | 'invite' | 'none';
+
+export interface RegistrationOptions {
+  mode?: RegistrationModes;
+}
+
 export type LyvelyAppConfiguration = {
   appName: string;
   operationMode: OperationMode;
@@ -123,7 +129,8 @@ export type LyvelyAppConfiguration = {
   mail?: LyvelyMailOptions;
   modules?: ModulesConfiguration;
   'user-permissions'?: UserPermissionOptions;
-  'user-invites'?: UserInviteOptions;
+  invitations?: UserInviteOptions;
+  registration?: RegistrationOptions;
   serveStatic?: ServeStaticModuleOptions;
 };
 

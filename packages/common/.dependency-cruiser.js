@@ -17,7 +17,7 @@ const MODULE_STREAM = getModulePath('stream');
 const MODULE_TAGS = getModulePath('tags');
 const MODULE_TIME_SERIES = getModulePath('time-series');
 const MODULE_TYPES = getModulePath('types');
-const MODULE_USER_INVITES = getModulePath('user-invites');
+const MODULE_USER_INVITES = getModulePath('invitations');
 const MODULE_USERS = getModulePath('users');
 const MODULE_UTILS = getModulePath('utils');
 const MODULE_ENDPOINTS = getModulePath('endpoints');
@@ -92,7 +92,7 @@ module.exports = {
       MODULE_COLLAB,
     ]),
     createModuleDeps('types'),
-    createModuleDeps('user-invites', [MODULE_ENDPOINTS, MODULE_PROFILES, MODULE_MODELS]),
+    createModuleDeps('invitations', [MODULE_ENDPOINTS, MODULE_PROFILES, MODULE_MODELS]),
     createModuleDeps('users', [MODULE_MODELS]),
     createModuleDeps('utils'),
     createModuleDeps('validation'),

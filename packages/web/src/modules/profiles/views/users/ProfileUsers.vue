@@ -25,7 +25,7 @@ const { profile } = storeToRefs(profileStore);
         v-for="relation in profile.relations"
         :key="relation.uid"
         class="flex py-4 px-3 bg-main items-center border-divide">
-        <ly-user-avatar :user="{ id: relation.uid, username: relation.userInfo.displayName }" />
+        <ly-user-avatar />
         <span class="ml-2">
           {{ relation.userInfo.displayName }}
         </span>

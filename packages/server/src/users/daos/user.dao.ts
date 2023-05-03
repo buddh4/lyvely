@@ -35,8 +35,8 @@ export class UserDao extends AbstractDao<User> {
     });
   }
 
-  async findByVerifiedEmail(email: string): Promise<User[]> {
-    return this.findAll({
+  async findByVerifiedEmail(email: string): Promise<User> {
+    return this.findOne({
       $or: [
         { email: email.toLowerCase(), status: { $ne: UserStatus.EmailVerification } },
         { 'emails.lowercaseEmail': email.toLowerCase(), 'emails.verified': true },

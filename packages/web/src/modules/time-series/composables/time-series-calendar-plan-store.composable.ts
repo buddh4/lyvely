@@ -18,7 +18,6 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { isDefined } from 'class-validator';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { useDebounceFn } from '@vueuse/core';
-import { watch } from 'vue';
 import { useContentStore } from '@/modules/content/stores/content.store';
 
 export interface ITimeSeriesCalendarPlanOptions<

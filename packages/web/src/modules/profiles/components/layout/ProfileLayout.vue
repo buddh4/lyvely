@@ -6,7 +6,7 @@ import { computed, defineAsyncComponent } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import CreateProfileModal from '../modals/CreateProfileModal.vue';
-import InviteUsersModal from '../modals/InviteUsersModal.vue';
+import InviteUsersModal from '../../../invitations/components/modals/InviteUsersModal.vue';
 import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
 import HelpModal from '@/modules/help/components/HelpModal.vue';
 

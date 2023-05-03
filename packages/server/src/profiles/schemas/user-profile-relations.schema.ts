@@ -1,17 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import {
-  assignEntityData,
-  BaseEntity,
-  validateEmail,
-  assureObjectId,
-} from '@/core';
+import { assignEntityData, BaseEntity, validateEmail, assureObjectId } from '@/core';
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
-import {
-  IProfileRelationUserInfo,
-  ProfileRelationUserInfoDto,
-} from '@lyvely/common';
+import { IProfileRelationUserInfo, ProfileRelationUserInfoDto, PropertyType } from '@lyvely/common';
 
 export interface ICreateProfileRelation {
   profile: Profile;
@@ -52,9 +44,7 @@ export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
   }
 }
 
-export const UserProfileRelationInfoSchema = SchemaFactory.createForClass(
-  ProfileRelationUserInfo,
-);
+export const UserProfileRelationInfoSchema = SchemaFactory.createForClass(ProfileRelationUserInfo);
 
 type UserRelation = {
   _id: TObjectId;
@@ -70,9 +60,7 @@ type UserRelation = {
  * TODO: also include oid? Only problematic if we move a profile from one orga to another...
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class UserProfileRelation<
-  C extends UserRelation = UserRelation,
-> extends BaseEntity<C> {
+export class UserProfileRelation<C extends UserRelation = UserRelation> extends BaseEntity<C> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   uid: TObjectId;
 
@@ -83,6 +71,7 @@ export class UserProfileRelation<
   pid: TObjectId;
 
   @Prop({ type: UserProfileRelationInfoSchema })
+  @PropertyType(ProfileRelationUserInfo)
   userInfo: ProfileRelationUserInfo;
 
   type: string;
@@ -93,13 +82,6 @@ export class UserProfileRelation<
   createdAt: Date;
 
   updatedAt: Date;
-
-  afterInit() {
-    if (!(this.userInfo instanceof ProfileRelationUserInfoDto)) {
-      this.userInfo = new ProfileRelationUserInfo(this.userInfo);
-    }
-    super.afterInit();
-  }
 
   static create(data: ICreateProfileRelation & any): UserProfileRelation {
     return new UserProfileRelation({
@@ -113,7 +95,5 @@ export class UserProfileRelation<
   }
 }
 
-export const UserProfileRelationSchema =
-  SchemaFactory.createForClass(UserProfileRelation);
-export type UserProfileRelationDocument = UserProfileRelation &
-  mongoose.Document;
+export const UserProfileRelationSchema = SchemaFactory.createForClass(UserProfileRelation);
+export type UserProfileRelationDocument = UserProfileRelation & mongoose.Document;

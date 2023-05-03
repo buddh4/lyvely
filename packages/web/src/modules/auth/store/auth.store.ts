@@ -44,13 +44,16 @@ export const useAuthStore = defineStore('user-auth', () => {
     return user;
   }
 
-  async function logout() {
-    usePageStore().setShowAppLoader(true);
+  async function logout(redirect = true) {
+    if (redirect) usePageStore().setShowAppLoader(true);
     await authService.logout(visitorId.value).catch(console.error);
     // TODO: If logout request fails we should set an additional header assuring to logout on next valid request
     clear();
-    // We use document.location instead of router here in order to force stores to be cleared
-    document.location = '/';
+
+    if (redirect) {
+      // We use document.location instead of router here in order to force stores to be cleared
+      document.location = '/';
+    }
   }
 
   function isAwaitingEmailVerification() {

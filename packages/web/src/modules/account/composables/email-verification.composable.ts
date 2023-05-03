@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import {
   VerifyEmailDto,
-  ResendOtpDto,
+  ResendOtp,
   OtpInfo,
   UnauthenticatedServiceException,
   FieldValidationException,
@@ -10,7 +10,7 @@ import { I18nModelValidator, I18nModelValidatorOptionsIF } from '@/modules/core'
 
 interface IEmailVerificationOptions {
   verify: (dto: VerifyEmailDto) => Promise<boolean>;
-  resend: (dto: ResendOtpDto) => Promise<OtpInfo>;
+  resend: (dto: ResendOtp) => Promise<OtpInfo>;
   validatorOptions?: I18nModelValidatorOptionsIF<VerifyEmailDto>;
 }
 
@@ -84,7 +84,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
     try {
       softReset();
       otpInfo.value = await options.resend(
-        new ResendOtpDto({ email: model.value.email, remember: remember }),
+        new ResendOtp({ email: model.value.email, remember: remember }),
       );
     } catch (e: any) {
       handleError(e);

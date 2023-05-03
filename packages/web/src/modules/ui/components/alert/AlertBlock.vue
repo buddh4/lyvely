@@ -4,7 +4,7 @@ import { computed, useSlots } from 'vue';
 export interface IProps {
   message?: string;
   hide?: boolean;
-  type?: 'danger' | 'info' | 'warning' | 'secondary';
+  type?: 'danger' | 'info' | 'warning' | 'secondary' | 'success';
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -19,6 +19,7 @@ const cssClass = [
   { 'border-info text-dimmed': props.type === 'info' },
   { 'border-warning text-warning': props.type === 'warning' },
   { 'border-divide text-dimmed': props.type === 'secondary' },
+  { 'border-success text-dimmed': props.type === 'success' },
 ];
 
 const isActive = computed(() => {

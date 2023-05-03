@@ -73,18 +73,27 @@ export async function loadModuleMessages(locale: string, module: string): Promis
 
 export function loadModuleBaseMessages(locale: string) {
   // TODO: here we assume all modules have base message files
-  onModulesLoaded().then((modules) => {
-    return Promise.all(
-      modules.map((module) => {
-        if (isModuleMessagesLoaded(locale, module.getId(), 'base')) return;
 
-        return import(`./modules/${module.getId()}/locales/base.${locale}.json`)
-          .then((data) => mergeMessages(locale, data))
-          .then(() => setModuleMessagesLoaded(locale, module.getId(), 'base'))
-          .then(() => nextTick())
-          .catch(console.error);
-      }),
-    ).then(() => baseModuleLocales.push(locale));
+  return onModulesLoaded().then((modules) => {
+    const promises: Array<Promise<any>> = modules.map((module) => {
+      if (
+        module?.options?.i18n?.baseLocales === false ||
+        isModuleMessagesLoaded(locale, module.getId(), 'base')
+      )
+        return Promise.resolve();
+
+      return import(`./modules/${module.getId()}/locales/base.${locale}.json`)
+        .then((data) => mergeMessages(locale, data))
+        .then(() => setModuleMessagesLoaded(locale, module.getId(), 'base'))
+        .then(() => nextTick())
+        .catch(console.error);
+    });
+
+    if (locale !== fallBackLocale) {
+      promises.push(loadModuleBaseMessages(fallBackLocale));
+    }
+
+    return Promise.all(promises).then(() => baseModuleLocales.push(locale));
   });
 }
 
@@ -105,13 +114,21 @@ export function isBaseModuleMessagesLoaded(locale: string) {
 }
 
 export async function setLocale(locale: string) {
+  const promises = [];
+
   if (!isGlobalMessagesLoaded(locale)) {
-    await loadLocaleMessages(locale);
+    promises.push(loadLocaleMessages(locale));
+  }
+
+  if (!isGlobalMessagesLoaded(fallBackLocale)) {
+    promises.push(loadLocaleMessages(fallBackLocale));
   }
 
   if (!isBaseModuleMessagesLoaded(locale)) {
-    await loadModuleBaseMessages(locale);
+    promises.push(loadModuleBaseMessages(locale));
   }
+
+  await Promise.all(promises);
 
   if (i18n.mode === 'legacy' || typeof i18n.global.locale === 'string') {
     i18n.global.locale = locale;

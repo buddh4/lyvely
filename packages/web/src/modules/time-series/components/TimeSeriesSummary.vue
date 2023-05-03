@@ -19,7 +19,6 @@ watch(
 );
 
 function renderSummaryChart(summary: ITimeSeriesSummary) {
-  console.log('asdf');
   const { tids, values, movingAverages, differences } =
     MovingAverageCalculator.calculateMovingAverage(summary, props.interval);
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { AvatarModel } from '@lyvely/common';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { createAvatarUrl } from '@/repository';
 import randomColor from 'randomcolor';
 import { getContrast, includesUtilityClass } from '@/modules/ui/utils';
@@ -17,8 +17,13 @@ const props = defineProps<IProps>();
 
 const guid = computed(() => props.avatar?.guid || props.guid);
 const timestamp = computed(() => props.avatar?.timestamp || props.timestamp);
+
+const imgError = ref(false);
+
 const url = computed(() => {
-  return props.url
+  return imgError.value
+    ? undefined
+    : props.url
     ? props.url
     : guid.value
     ? createAvatarUrl(guid.value, timestamp.value)
@@ -69,7 +74,7 @@ function getImageClassNames(attrClasses: any) {
     mode="out-in"
     enter-active-class="animate__animated animate__faster animate__bounceIn"
     leave-active-class="animate__animated animate__faster animate__bounceOut">
-    <img :key="url" :src="url" :class="getImageClassNames($attrs.class)" />
+    <img :key="url" :src="url" :class="getImageClassNames($attrs.class)" @error="imgError = true" />
   </transition>
   <transition
     v-else

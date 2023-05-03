@@ -23,7 +23,7 @@ export * from './user-registration';
 export * from './web';
 export * from './mappings';
 export * from './milestones';
-export * from './user-invites';
+export * from './invitations';
 export * from './exceptions';
 export * from './collab';
 export * from './captcha';

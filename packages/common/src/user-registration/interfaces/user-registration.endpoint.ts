@@ -1,5 +1,5 @@
 import { StrictEndpoint } from '@/endpoints';
-import { UserRegistrationDto, ResendOtpDto } from '../dtos';
+import { UserRegistration, ResendOtp } from '../models';
 import { VerifyEmailDto } from '@/account/dtos';
 import { ILoginResponse, OtpInfo } from '@/auth';
 
@@ -8,9 +8,9 @@ export interface IUserRegistrationService {
    * @throws FieldValidationException
    * @param model
    */
-  register(model: UserRegistrationDto): Promise<OtpInfo>;
+  register(model: UserRegistration): Promise<OtpInfo>;
   verifyEmail(otp: VerifyEmailDto): Promise<ILoginResponse>;
-  resendVerifyEmail(model: ResendOtpDto): Promise<OtpInfo>;
+  resendVerifyEmail(model: ResendOtp): Promise<OtpInfo>;
 }
 
 export type UserRegistrationEndpoint = StrictEndpoint<IUserRegistrationService>;

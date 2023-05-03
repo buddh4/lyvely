@@ -1,13 +1,15 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   FieldValidationException,
-  UserRegistrationDto,
+  UserRegistration,
   isValidEmail,
   escapeHTML,
   UserStatus,
   UniqueConstraintException,
   VerifyEmailDto,
   OtpInfo,
+  RegistrationMode,
+  ForbiddenServiceException,
 } from '@lyvely/common';
 import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';
@@ -15,6 +17,10 @@ import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
 import { UrlGenerator, ConfigurationPath } from '@/core';
 import { UserOtpService } from '@/user-otp';
+import {
+  IInvitationMetadata,
+  InvitationsService,
+} from '@/invitations/services/invitations.service';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
 
@@ -25,9 +31,10 @@ export class UserRegistrationService {
     private profileService: ProfilesService,
     private userService: UsersService,
     private mailerService: MailService,
-    private configService: ConfigService<ConfigurationPath>,
+    private configService: ConfigService<ConfigurationPath & any>,
     private urlGenerator: UrlGenerator,
     private userOtpService: UserOtpService,
+    private invitationsService: InvitationsService,
   ) {}
 
   /**
@@ -35,23 +42,42 @@ export class UserRegistrationService {
    *
    * Note: By default, usernames are not unique.
    *
-   * @param {UserRegistrationDto} registerDto username, email, and password. Email must be
+   * @param {UserRegistration} userRegistration username, email, and password. Email must be
    * unique, will throw an email with a description if either are duplicates
    * @returns {Promise<UserDocument>} or throws an error
    * @memberof UsersService
    */
-  async register(registerDto: UserRegistrationDto): Promise<OtpInfo> {
+  async register(userRegistration: UserRegistration): Promise<OtpInfo> {
+    const registrationMode = this.configService.get<RegistrationMode>(
+      'registration.mode',
+      'public',
+    );
+
+    const invitationMetadata = await this.invitationsService.getInvitationMetadata(
+      userRegistration.inviteToken,
+    );
+
+    if (
+      registrationMode === 'none' ||
+      (registrationMode === 'invite' &&
+        !(await this.invitationsService.validateInvitationMetadata(invitationMetadata)))
+    ) {
+      throw new ForbiddenServiceException();
+    }
+
     try {
-      await this.validateEmail(registerDto.email);
+      await this.validateEmail(userRegistration.email);
       const user = await this.userDao.save(
         new User({
-          username: registerDto.username,
-          email: registerDto.email,
+          username: userRegistration.username,
+          email: userRegistration.email,
           status: UserStatus.EmailVerification,
-          locale: registerDto.locale,
-          password: registerDto.password,
+          locale: userRegistration.locale,
+          password: userRegistration.password,
         }),
       );
+
+      await this.handleInviteToken(user, invitationMetadata);
 
       const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user);
 
@@ -63,10 +89,16 @@ export class UserRegistrationService {
       return otpModel.getOtpClientInfo();
     } catch (err: any) {
       if (err instanceof UniqueConstraintException) {
-        await this.sendEmailAlreadyExistsMail(registerDto.email);
+        await this.sendEmailAlreadyExistsMail(userRegistration.email);
       }
       throw err;
     }
+  }
+
+  private async handleInviteToken(user: User, invitationMetadata: IInvitationMetadata) {
+    if (!invitationMetadata) return;
+    // Remove token (invalidate)
+    // Set new user id
   }
 
   private async sendEmailAlreadyExistsMail(email: string) {
@@ -122,7 +154,7 @@ export class UserRegistrationService {
       throw new FieldValidationException([{ property: 'email', errors: ['validation.isEmail'] }]);
     }
 
-    if ((await this.userDao.findByVerifiedEmail(email)).length) {
+    if (await this.userDao.findByVerifiedEmail(email)) {
       throw new UniqueConstraintException('email', 'Email already in use');
     }
   }

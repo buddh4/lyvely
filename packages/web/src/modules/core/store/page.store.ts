@@ -79,10 +79,11 @@ export function setPageTitle(title: Array<string> | string) {
   title = Array.isArray(title) ? title : [title];
   let pageTitle = title.join(' - ');
 
-  if (pageTitle.length) pageTitle += ' - ';
+  if (pageTitle.length && profile) pageTitle += ' - ';
 
   if (profile) {
     pageTitle += profile.name;
   }
+
   document.title = pageTitle;
 }

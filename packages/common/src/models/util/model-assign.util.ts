@@ -1,7 +1,6 @@
 import { findByPath, isObjectId, Type } from '@/utils';
 import { initPropertyTypes } from './model-property-type.util';
 import { getPropertyTypeDefinition } from '../decorators';
-import { isBoolean, isDefined, isNumber, isString } from 'class-validator';
 
 type WithTransformation = ((any, string) => undefined | any) | undefined;
 interface IAssignOptions {
@@ -60,7 +59,7 @@ function _assignRawDataTo<T>(
     }
 
     if (BLACKLISTED_PATH.includes(path)) return;
-    if (!Array.isArray(model) && strict && !model.hasOwnProperty(path)) return;
+    if (typeof model === 'object' && strict && !Object.hasOwn(model, path)) return;
 
     const transformed = transform ? transform(data[path], path) : undefined;
 

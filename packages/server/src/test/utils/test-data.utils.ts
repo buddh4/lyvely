@@ -74,7 +74,7 @@ export class TestDataUtils {
   async createUser(username = 'test', userData: Partial<User> = {}): Promise<User> {
     userData.username = username;
     userData.email = userData.email || `${username}@test.de`;
-    userData.emails = [
+    userData.emails ||= [
       new UserEmail(`${username}@test.de`, true),
       new UserEmail(`uv_${username}@test.de`, false),
       new UserEmail(`alt_${username}@test.de`, true),

@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { UserRegistrationService } from './user-registration.service';
-import { UserRegistrationDto, UserStatus } from '@lyvely/common';
+import { UserRegistration, UserStatus } from '@lyvely/common';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { User, UsersService } from '@/users';
 import { UserRegistrationModule } from '@/user-registration/user-registration.module';
@@ -37,7 +37,7 @@ describe('UserRegistrationService', () => {
   describe('register', () => {
     it('register valid user', async () => {
       await registerService.register(
-        new UserRegistrationDto({
+        new UserRegistration({
           username: 'Tester',
           email: 'tester@test.de',
           password: 'testpw',
@@ -60,7 +60,7 @@ describe('UserRegistrationService', () => {
 
       try {
         profile = await registerService.register(
-          new UserRegistrationDto({
+          new UserRegistration({
             username: 'Tester',
             email: 'testertest.de',
             password: 'testpw',
@@ -77,7 +77,7 @@ describe('UserRegistrationService', () => {
 
     it('register already existing email', async () => {
       await registerService.register(
-        new UserRegistrationDto({
+        new UserRegistration({
           username: 'TesterNew',
           email: 'tester@test.de',
           password: 'testpw',
@@ -89,7 +89,7 @@ describe('UserRegistrationService', () => {
 
       try {
         profile = await registerService.register(
-          new UserRegistrationDto({
+          new UserRegistration({
             username: 'Tester',
             email: 'tester@test.de',
             password: 'testpw',

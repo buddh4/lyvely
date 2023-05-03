@@ -8,7 +8,7 @@ import { I18n } from '@/i18n';
 @UseInterceptors(ClassSerializerInterceptor)
 export class AppConfigController implements AppConfigEndpoint {
   constructor(
-    private readonly configService: ConfigService<ConfigurationPath>,
+    private readonly configService: ConfigService<ConfigurationPath & any>,
     private readonly i18n: I18n,
   ) {}
 
@@ -16,10 +16,11 @@ export class AppConfigController implements AppConfigEndpoint {
   @Get()
   async getConfig(@Req() req: LyvelyRequest) {
     return {
-      appName: this.configService.get('appName'),
+      appName: this.configService.get('appName', 'lyvely'),
       docUrl: this.configService.get('docUrl'),
       csrf_token: req.csrfToken(),
       locales: this.i18n.getEnabledLocaleDefinitions(),
+      registrationMode: this.configService.get('registration.mode', 'public'),
     };
   }
 }

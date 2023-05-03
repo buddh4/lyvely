@@ -1,7 +1,13 @@
 import { Document, Types, UpdateQuery } from 'mongoose';
-import { InternalServerErrorException } from '@nestjs/common';
 import { BaseEntity, assignEntityData } from './base.entity';
-import { isValidObjectId, assignRawDataTo, DeepPartial, Type, findByPath } from '@lyvely/common';
+import {
+  isValidObjectId,
+  assignRawDataTo,
+  DeepPartial,
+  Type,
+  findByPath,
+  IntegrityException,
+} from '@lyvely/common';
 
 export type EntityIdentity<T extends BaseEntity<any>> =
   | T
@@ -14,12 +20,15 @@ export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 // We use any here since we need to use this when defining sub documents
 export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
   identity: EntityIdentity<T>,
+  optional = false,
 ): Types.ObjectId {
+  if (!identity && optional) return undefined;
+
   if (typeof identity === 'string') {
     if (isValidObjectId(identity)) {
       return new Types.ObjectId(identity as string);
     }
-    throw new InternalServerErrorException('Use of invalid object id detected.');
+    throw new IntegrityException('Use of invalid object id detected.');
   }
 
   if (identity instanceof Types.ObjectId) {
@@ -39,7 +48,7 @@ export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
     return assureObjectId(identity['id']);
   }
 
-  throw new InternalServerErrorException('Use of invalid object id detected.');
+  throw new IntegrityException('Use of invalid object id detected.');
 }
 
 export function applyUpdateTo<T extends BaseEntity<any>>(
@@ -126,10 +135,11 @@ export function applyRawDataTo<T>(
   return assignRawDataTo(model, data, { maxDepth, strict });
 }
 
-export function assureStringId(obj: any): string {
-  if (!obj) {
-    console.trace('assureStringId called on undefined object');
-    return;
+export function assureStringId(obj: any, optional = false): string {
+  if (!obj && !optional) {
+    throw new IntegrityException('Cannot assure string id on undefined.');
+  } else if (!obj) {
+    return undefined;
   }
 
   if (typeof obj === 'string') {
@@ -144,7 +154,7 @@ export function assureStringId(obj: any): string {
     return obj._id.toString();
   }
 
-  throw new InternalServerErrorException('Use of invalid object id detected.');
+  throw new IntegrityException('Use of invalid object id detected.');
 }
 
 export function createBaseEntityInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {

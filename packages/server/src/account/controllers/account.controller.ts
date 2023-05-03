@@ -1,10 +1,18 @@
-import { Body, Controller, Post, Req, UploadedFile, UseInterceptors, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  UploadedFile,
+  UseInterceptors,
+  UseGuards,
+} from '@nestjs/common';
 import {
   AccountEndpoint,
   AddEmailDto,
   ENDPOINT_ACCOUNT,
   VerifyEmailDto,
-  ResendOtpDto,
+  ResendOtp,
   AvatarModel,
 } from '@lyvely/common';
 import { UseClassSerializer } from '@/core';
@@ -27,7 +35,10 @@ const avatarPipe = new ParseFilePipeBuilder()
 @Controller(ENDPOINT_ACCOUNT)
 @UseClassSerializer()
 export class AccountController implements AccountEndpoint {
-  constructor(private accountService: AccountService, private accountAvatarService: AccountAvatarService) {}
+  constructor(
+    private accountService: AccountService,
+    private accountAvatarService: AccountAvatarService,
+  ) {}
 
   @Post('add-email')
   async addEmail(@Body() dto: AddEmailDto, @Req() req: UserRequest) {
@@ -40,7 +51,7 @@ export class AccountController implements AccountEndpoint {
   }
 
   @Post('resend-otp')
-  async resendOtp(@Body() dto: ResendOtpDto, @Req() req: UserRequest) {
+  async resendOtp(@Body() dto: ResendOtp, @Req() req: UserRequest) {
     return this.accountService.resendOtp(req.user, dto.email);
   }
 

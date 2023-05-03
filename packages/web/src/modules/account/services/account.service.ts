@@ -3,7 +3,7 @@ import {
   AddEmailDto,
   VerifyEmailDto,
   OtpInfo,
-  ResendOtpDto,
+  ResendOtp,
   useSingleton,
 } from '@lyvely/common';
 import accountRepository from '../repositories/account.repository';
@@ -18,7 +18,7 @@ export class AccountService implements IAccountService {
     return unwrapResponse(accountRepository.verifyEmail(dto));
   }
 
-  async resendOtp(dto: ResendOtpDto) {
+  async resendOtp(dto: ResendOtp) {
     return unwrapAndTransformResponse(accountRepository.resendOtp(dto), OtpInfo);
   }
 

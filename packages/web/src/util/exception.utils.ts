@@ -9,13 +9,16 @@ import {
   ForbiddenServiceException,
   UnauthenticatedServiceException,
   RateLimitException,
+  EntityNotFoundException,
 } from '@lyvely/common';
 
 export function isAxiosError(error: any): error is AxiosError {
   return error.isAxiosError;
 }
 
-export function isAxiosErrorWithResponse<T = any>(error: any): error is AxiosError<T> & { response: AxiosResponse<T> } {
+export function isAxiosErrorWithResponse<T = any>(
+  error: any,
+): error is AxiosError<T> & { response: AxiosResponse<T> } {
   return isAxiosError(error) && !!error.response;
 }
 
@@ -25,11 +28,15 @@ export function isAxiosErrorWithResponseData<T = any>(
   return isAxiosError(error) && !!error.response?.data;
 }
 
-export function isAxiosErrorWithoutResponseData<T = any>(error: any): error is AxiosError<T> & { response: undefined } {
+export function isAxiosErrorWithoutResponseData<T = any>(
+  error: any,
+): error is AxiosError<T> & { response: undefined } {
   return isAxiosError(error) && !error.response;
 }
 
-export function isFieldValidationError(error: any): error is AxiosError<IFieldValidationResponse> & {
+export function isFieldValidationError(
+  error: any,
+): error is AxiosError<IFieldValidationResponse> & {
   response: AxiosResponse<IFieldValidationResponse>;
 } {
   return (
@@ -47,7 +54,9 @@ export function isUnauthorizedForbidden(error: any): error is AxiosError {
   return isAxiosErrorWithResponseData(error) && error.response.status === 401;
 }
 
-export function isModelValidationError(error: any): error is AxiosError<IModelValidationResponse> & {
+export function isModelValidationError(
+  error: any,
+): error is AxiosError<IModelValidationResponse> & {
   response: AxiosResponse<IModelValidationResponse>;
 } {
   return (
@@ -61,6 +70,12 @@ export function isRateLimitError(error: any): error is AxiosError<IModelValidati
   response: AxiosResponse<IModelValidationResponse>;
 } {
   return isAxiosErrorWithResponse(error) && error.response.status === 429;
+}
+
+export function isNotFoundError(error: any): error is AxiosError<IModelValidationResponse> & {
+  response: AxiosResponse<IModelValidationResponse>;
+} {
+  return isAxiosErrorWithResponse(error) && error.response.status === 404;
 }
 
 /**
@@ -86,6 +101,8 @@ export function errorToServiceException(error: any, throws = false): ServiceExce
     result = new ModelValidationException(error.response.data.result);
   } else if (isRateLimitError(error)) {
     result = new RateLimitException(error, parseInt(error.response.headers['Retry-After'] || '20'));
+  } else if (isNotFoundError(error)) {
+    result = new EntityNotFoundException(error.response?.data);
   }
 
   if (throws) throw result;

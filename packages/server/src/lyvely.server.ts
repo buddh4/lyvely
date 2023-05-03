@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
-import { INestApplication, ValidationPipe, Logger, NestApplicationOptions } from '@nestjs/common';
+import { INestApplication, ValidationPipe, Logger as NestLogger } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -21,13 +22,10 @@ import fs from 'fs';
 
 useDayJsDateTimeAdapter();
 
-// Prototype pollution protection
-Object.freeze(Object.prototype);
-
 interface ILyvelyServerOptions extends IAppModuleBuilderOptions {}
 
 export class LyvelyServer {
-  private logger: Logger;
+  private logger: NestLogger;
   private nestApp: INestApplication;
   private server: express.Express;
   private configService: ConfigService<ConfigurationPath>;
@@ -37,7 +35,7 @@ export class LyvelyServer {
     this.options = options;
     this.nestApp = await this.initNestApp();
 
-    this.logger = new Logger('main');
+    this.logger = new NestLogger('main');
     this.configService = this.nestApp.get(ConfigService);
 
     this.initHelmet();
@@ -73,8 +71,12 @@ export class LyvelyServer {
     const app = await NestFactory.create(
       new AppModuleBuilder(this.options).build(),
       new ExpressAdapter(this.server),
+      {
+        bufferLogs: true,
+      },
     );
     app.setGlobalPrefix('api');
+    app.useLogger(app.get(Logger));
     return app;
   }
 

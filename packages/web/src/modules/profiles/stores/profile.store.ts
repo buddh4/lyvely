@@ -79,6 +79,11 @@ export const useProfileStore = defineStore('profile', () => {
       .map((tag) => tag.name);
   }
 
+  function getUserInfo(uid: string) {
+    const relation = profile.value?.relations.find((realtion) => realtion.uid === uid);
+    return relation?.userInfo;
+  }
+
   return {
     profile,
     locale,
@@ -88,6 +93,7 @@ export const useProfileStore = defineStore('profile', () => {
     getTagsByName,
     updateTags,
     tagIdsToNames,
+    getUserInfo,
     ...status,
   };
 });

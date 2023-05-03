@@ -127,6 +127,7 @@
     "archived": "Archived",
     "restore": "Restore default",
     "archive": "Archive",
+    "back_to_home": "Take me back home",
     "none": "none",
     "unarchive": "Add from archive",
     "fields": {
@@ -331,13 +332,13 @@
   },
   "page": {
     "toDarkMode": "Switch to dark mode",
-    "toLightMode": "Switch to light mode",
+    "toLightMode": "Switch to light mode"
   },
   "status": {
     "error": "Error",
     "warning": "Warning",
     "info": "Info",
-    "success": "Success",
+    "success": "Success"
   },
   "error":{
     "unknown": {
@@ -374,9 +375,9 @@
       "restore": "Restore",
       "confirm": {
         "archive": "Are you sure you want to archive this content",
-        "unarchive": "Are you sure you want to restore this content from the archive",
+        "unarchive": "Are you sure you want to restore this content from the archive"
       }
-    },
+    }
   },
   "stream": {
     "title": "stream",
