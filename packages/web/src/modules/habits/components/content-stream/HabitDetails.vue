@@ -39,6 +39,8 @@ const {
   date,
 } = useCalendarPlanPlanNavigation(props.model.interval);
 
+const timerSelection = <any>selection;
+
 const unwatchDate = watch(date, () => loadModel(props.model.id));
 
 onMounted(async () => {
@@ -106,7 +108,7 @@ onUnmounted(unwatchDate);
             :config="model.timeSeriesConfig" />
           <calendar-plan-timer-input
             v-else-if="isTimerDataPointConfig(model.timeSeriesConfig)"
-            v-model="selection"
+            v-model="timerSelection"
             :config="model.timeSeriesConfig"
             :timer="timer"
             :disabled="isDisabled"

@@ -52,6 +52,7 @@ export default {
   props: {
     ...useBaseInputProps(),
     maxlength: { type: Number, default: undefined },
+    rows: { rows: Number, default: undefined },
   },
   emits: ['change', 'update:modelValue'],
   setup(props: IBaseInputProps, context: SetupContext) {

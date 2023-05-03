@@ -15,7 +15,7 @@ const showRememberInfo = ref(false);
 
 const { loginModel, validator, stage } = storeToRefs(loginStore);
 
-const isPublicRegistration = useAppConfigStore().config.registrationMode === 'public';
+const isPublicRegistration = useAppConfigStore().config?.registrationMode === 'public';
 
 watch(stage, () => {
   // When moving between stages we want to clear the errors

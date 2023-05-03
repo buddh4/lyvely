@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
-import { useInviteUsersStore } from '../../stores/send-invitations.store';
+import { useSendInviteUsersStore } from '../../stores/send-invitations.store';
 import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import LyAlert from '@/modules/ui/components/alert/AlertBlock.vue';
 
-const inviteUserStore = useInviteUsersStore();
+const inviteUserStore = useSendInviteUsersStore();
 
 const { emails, showModal, statusError, emailInput, stage } = storeToRefs(inviteUserStore);
 const { submit, reset, addEmails, removeEmail } = inviteUserStore;

@@ -44,7 +44,11 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
     DataPointValueType.Timer,
     DataPointValueType.Selection,
   ])
-  valueType: string;
+  valueType:
+    | typeof DataPointValueType.Number
+    | typeof DataPointValueType.Timer
+    | typeof DataPointValueType.Text
+    | typeof DataPointValueType.Selection;
 
   @Expose()
   @IsEnum(DataPointInputType)

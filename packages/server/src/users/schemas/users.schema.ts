@@ -185,10 +185,6 @@ UserSchema.pre('findOneAndReplace', function (next) {
   preUpdateQuery(this.getUpdate() as UpdateQuery<User>, next);
 });
 
-UserSchema.pre('update', function (next) {
-  preUpdateQuery(this.getUpdate() as UpdateQuery<User>, next);
-});
-
 UserSchema.pre('updateOne', function (next) {
   preUpdateQuery((<UpdateQuery<User>>this).getUpdate(), next);
 });

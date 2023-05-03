@@ -6,7 +6,8 @@ import {
   TextDataPointModel,
   TimeSeriesContentModel,
 } from '@/time-series';
-import { CalendarInterval, toTimingId } from '@/calendar';
+import { CalendarInterval } from '@/calendar';
+import { toTimingId } from '@/calendar-plan';
 import { IContentMetadata } from '@/content';
 
 describe('TimeSeriesStore', () => {

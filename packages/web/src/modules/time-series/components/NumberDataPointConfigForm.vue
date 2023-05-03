@@ -7,7 +7,9 @@ import {
 } from '@lyvely/common';
 
 interface IProps {
-  modelValue: INumberDataPointConfig | ITimerDataPointConfig;
+  modelValue: Partial<
+    Omit<INumberDataPointConfig | ITimerDataPointConfig, 'history' | 'valueType'>
+  > & { valueType?: string };
   score: boolean;
   timer: boolean;
   isCreate: boolean;

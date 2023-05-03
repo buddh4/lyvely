@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { BaseModel, PropertyType } from '@/models';
 import { DataPointModel } from './data-point.model';
-import { TimeSeriesContentModel } from '@/time-series';
+import { TimeSeriesContentModel } from './time-series-content.model';
 
 @Expose()
 export class UpdateDataPointResponse<

@@ -2,6 +2,8 @@
 import { MovingAverageCalculator, ITimeSeriesSummary, CalendarInterval } from '@lyvely/common';
 import { onMounted, ref, watch, watchEffect } from 'vue';
 import * as echarts from 'echarts/core';
+import { storeToRefs } from 'pinia';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export interface IProps {
   summary: ITimeSeriesSummary;
@@ -9,6 +11,7 @@ export interface IProps {
 }
 
 const props = defineProps<IProps>();
+const { locale } = storeToRefs(useProfileStore());
 
 const chartRoot = ref<HTMLElement>();
 
@@ -20,9 +23,9 @@ watch(
 
 function renderSummaryChart(summary: ITimeSeriesSummary) {
   const { tids, values, movingAverages, differences } =
-    MovingAverageCalculator.calculateMovingAverage(summary, props.interval);
+    MovingAverageCalculator.calculateMovingAverage(summary, props.interval, locale.value!);
 
-  const chart = echarts.init(chartRoot.value!, null, { width: 500, height: 300 });
+  const chart = echarts.init(chartRoot.value!, <any>null, { width: 500, height: 300 });
 
   chart.setOption({
     tooltip: {

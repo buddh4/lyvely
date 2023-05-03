@@ -1,5 +1,5 @@
-import { CalendarInterval, getTimingIds, toTimingId, WeekStrategy } from '../models';
-import { CalendarDateTime } from '../interfaces';
+import { getTimingIds, toTimingId, WeekStrategy } from '../models';
+import { CalendarDateTime, CalendarInterval } from '@/calendar';
 
 describe('time series utils', () => {
   describe('getTimingIds', () => {

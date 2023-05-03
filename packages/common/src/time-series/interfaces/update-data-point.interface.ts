@@ -1,6 +1,6 @@
 import { IDataPoint } from './data-point.interface';
 import { BaseModel } from '@/models';
-import { ITimeSeriesContent } from '@/time-series';
+import { ITimeSeriesContent } from './time-series-content.interface';
 
 export interface IUpdateDataPoint<TValue = any> {
   date: string;

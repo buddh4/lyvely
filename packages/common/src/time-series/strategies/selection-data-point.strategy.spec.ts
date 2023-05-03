@@ -7,7 +7,8 @@ import {
   SelectionDataPointModel,
   useDataPointStrategyFacade,
 } from '@/time-series';
-import { CalendarInterval, isToday, toTimingId } from '@/calendar';
+import { CalendarInterval, isToday } from '@/calendar';
+import { toTimingId } from '@/calendar-plan';
 
 describe('SelectionDataPointStrategy', () => {
   describe('validateValue', () => {

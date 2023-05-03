@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { HabitModel, isNumberDataPointConfig, isTimerDataPointConfig } from '@lyvely/common';
+import {
+  HabitModel,
+  isNumberDataPointConfig,
+  isTimerDataPointConfig,
+  TimerDataPointValueModel,
+} from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
@@ -19,6 +24,8 @@ const habitStore = useHabitCalendarPlanStore();
 const { selectTag, getDataPoint } = habitStore;
 const { isDisabled, moveUp, moveDown } = useCalendarPlanPlanItem(props.model, habitStore);
 const { selection, startTimer, stopTimer, timer } = useUpdateHabit(props.model);
+
+const timerSelection = <any>selection;
 
 onMounted(async () => {
   await getDataPoint(props.model);
@@ -44,7 +51,7 @@ onMounted(async () => {
         :disabled="isDisabled" />
       <calendar-plan-timer-input
         v-else-if="isTimerDataPointConfig(model.timeSeriesConfig)"
-        v-model="selection"
+        v-model="timerSelection"
         :config="model.timeSeriesConfig"
         :timer="timer"
         :disabled="isDisabled"

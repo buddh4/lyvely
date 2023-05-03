@@ -67,7 +67,7 @@ export class InvitationsService {
   }
 
   public verifyToken(token: string): Promise<boolean> {
-    if (!token) return false;
+    if (!token) return Promise.resolve(false);
     return new Promise((resolve, reject) => {
       jwt.verify(token, this.configService.get('auth.jwt.verify.secret'), (err, decoded) => {
         resolve(!err);

@@ -26,15 +26,17 @@
     "web:deps": "npm run deps -w @lyvely/web",
     "prepare": "husky install"
   },
+  "dependencies": {
+    "eslint-config-prettier": "^8.8.0",
+    "typescript": "^5.0.4",
+    "uuid": "^9.0.0"
+  },
   "devDependencies": {
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
-    "@types/multer": "^1.4.7",
-    "@types/node": "^18.7.14",
-    "@types/nodemailer": "^6.4.5",
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
-    "dependency-cruiser": "^11.16.1",
+    "dependency-cruiser": "^12.12.0",
     "eslint": "^8.24.0",
     "eslint-import-resolver-typescript": "^3.5.1",
     "eslint-plugin-import": "^2.26.0",
@@ -44,12 +46,5 @@
     "prettier": "2.7.1",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1"
-  },
-  "dependencies": {
-    "@lyvely/web": "^0.0.1",
-    "@types/uuid": "^8.3.4",
-    "eslint-config-prettier": "^8.5.0",
-    "typescript": "^4.9.3",
-    "uuid": "^9.0.0"
   }
 }

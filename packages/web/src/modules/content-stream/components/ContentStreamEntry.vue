@@ -35,12 +35,12 @@ const emit = defineEmits(['selectTag']);
 
 const authorName = computed(
   // TODO: use props.model.meta.createdAs?.authorId and check type
-  () => useProfileStore().getUserInfo(props.model.meta.createdBy)?.displayName,
+  () => useProfileStore().getUserInfo(props.model.meta.createdBy)?.displayName || '',
 );
 
 const avatar = computed(() => {
   return {
-    guid: useProfileStore().getUserInfo(props.model.meta.createdBy)?.guid,
+    guid: useProfileStore().getUserInfo(props.model.meta.createdBy)?.guid || '',
   };
 });
 

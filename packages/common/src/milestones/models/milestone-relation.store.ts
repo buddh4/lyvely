@@ -1,5 +1,7 @@
 import { CalendarPlanStore } from '@/calendar-plan/models/calendar-plan.store';
-import { MilestoneModel, MilestoneRelationModel, MilestoneSearchResponse } from '@/milestones';
+import { MilestoneModel } from './milestone.model';
+import { MilestoneRelationModel } from './milestone-relation.model';
+import { MilestoneSearchResponse } from './milestone-search.response';
 import { isDefined } from 'class-validator';
 import { mergePercentages } from '@/utils';
 

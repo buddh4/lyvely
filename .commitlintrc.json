@@ -40,6 +40,7 @@
         "ui",
         "tags",
         "tasks",
+        "deps",
         "time-series",
         "invitations",
         "milestones",

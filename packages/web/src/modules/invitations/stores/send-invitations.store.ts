@@ -6,7 +6,7 @@ import { useInvitationsService } from '@/modules/invitations/services/invitation
 
 type InviteStages = 'users' | 'profile' | 'loading' | 'success';
 
-export const useInviteUsersStore = defineStore('send-invitations', () => {
+export const useSendInviteUsersStore = defineStore('send-invitations', () => {
   const status = useStatus();
   const showModal = ref(false);
   const emails = ref<string[]>([]);

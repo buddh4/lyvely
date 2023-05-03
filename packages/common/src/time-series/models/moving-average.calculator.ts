@@ -1,6 +1,6 @@
-import { ITimeSeriesSummary } from '@/time-series';
-import { CalendarInterval, getTidWindow } from '@/calendar';
-import { CalendarPlan } from '@/calendar-plan';
+import { ITimeSeriesSummary } from '../interfaces';
+import { CalendarInterval } from '@/calendar';
+import { CalendarPlan, getTidWindow } from '@/calendar-plan';
 
 export interface IMovingAverageData {
   tid: string;

@@ -1,13 +1,11 @@
 import {
-  DataPointInputType,
   DataPointValueType,
-  INumberDataPointConfig,
   ITextDataPointConfig,
-  NumberDataPointModel,
   TextDataPointModel,
   useDataPointStrategyFacade,
 } from '@/time-series';
-import { CalendarInterval, isToday, toTimingId } from '@/calendar';
+import { CalendarInterval, isToday } from '@/calendar';
+import { toTimingId } from '@/calendar-plan';
 
 describe('TextDataPointStrategy', () => {
   describe('validateValue', () => {

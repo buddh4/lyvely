@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { DataPointInputType, ISelectionDataPointConfig } from '@lyvely/common';
+import { DataPointInputType, ISelectionDataPointSettings } from '@lyvely/common';
 import { ref } from 'vue';
 import { isArray } from 'class-validator';
 
 interface IProps {
-  modelValue: ISelectionDataPointConfig;
+  modelValue: Partial<ISelectionDataPointSettings>;
   score: boolean;
 }
 
@@ -37,7 +37,7 @@ function setInputType(inputType: DataPointInputType) {
   const modelValue = props.modelValue;
   modelValue.inputType = inputType;
   if (modelValue.inputType === DataPointInputType.Dropdown) {
-    modelValue.showOther = false;
+    modelValue.allowOther = false;
   }
 }
 </script>

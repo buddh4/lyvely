@@ -1,5 +1,5 @@
-import { CalendarDate, toTimingId } from '@/calendar';
-import { CalendarPlanFilter } from '@/calendar-plan';
+import { CalendarDate } from '@/calendar';
+import { CalendarPlanFilter, toTimingId } from '@/calendar-plan';
 
 export class LoadedTimingIdStore {
   private loadedTimingIds: Set<string> = new Set<string>();

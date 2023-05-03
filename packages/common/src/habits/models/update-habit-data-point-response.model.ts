@@ -1,13 +1,7 @@
 import { Expose } from 'class-transformer';
-import { IsNumber } from 'class-validator';
-import {
-  DataPointModel,
-  TimerDataPointModel,
-  TimeSeriesContentModel,
-  UpdateDataPointResponse,
-} from '@/time-series';
+import { TimerDataPointModel, UpdateDataPointResponse } from '@/time-series';
 import { PropertyType } from '@/models';
-import { HabitModel } from '@/habits';
+import { HabitModel } from './habit.model';
 
 @Expose()
 export class UpdateHabitDataPointResponse extends UpdateDataPointResponse<UpdateHabitDataPointResponse> {

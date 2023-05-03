@@ -20,6 +20,7 @@
     "typeRoots": ["./node_modules/@types", "../../node_modules/@types", "./src/types"],
     "paths": {
       "@/*": ["src/*"],
+      "vite": ["node_modules/vite"]
     },
     "types": [
       "reflect-metadata",

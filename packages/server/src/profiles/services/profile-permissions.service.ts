@@ -1,6 +1,6 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
 import { ProfileContext } from '../models';
-import minimatch from 'minimatch';
+import { minimatch } from 'minimatch';
 import { BaseMembershipRole } from '@lyvely/common';
 import {
   defaultProfileRolesDefinition,
@@ -16,8 +16,12 @@ export const TOKEN_DEFAULT_PROFILE_PERMISSIONS = 'DEFAULT_PROFILE_PERMISSIONS';
 @Injectable()
 export class ProfilePermissionsService extends PermissionsService<ProfileContext> {
   constructor(
-    @Optional() @Inject(TOKEN_PROFILE_ROLES_DEFINITION) private rolesDefinition: IProfileRoleDefinition[],
-    @Optional() @Inject(TOKEN_DEFAULT_PROFILE_PERMISSIONS) private defaultPermissions: IDefaultRolePermissions,
+    @Optional()
+    @Inject(TOKEN_PROFILE_ROLES_DEFINITION)
+    private rolesDefinition: IProfileRoleDefinition[],
+    @Optional()
+    @Inject(TOKEN_DEFAULT_PROFILE_PERMISSIONS)
+    private defaultPermissions: IDefaultRolePermissions,
   ) {
     super();
     this.rolesDefinition = this.rolesDefinition || defaultProfileRolesDefinition;

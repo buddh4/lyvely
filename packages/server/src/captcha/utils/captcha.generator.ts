@@ -44,7 +44,7 @@ export function generateCaptcha(options: CaptchaOptions = {}): { image: Buffer; 
 
 function initCanvas(options: CaptchaOptions) {
   const canvas = createCanvas(options.width, options.height);
-  const context = canvas.getContext('2d');
+  const context = (<any>canvas.getContext('2d')) as CanvasRenderingContext2D;
   context.fillStyle = getBackgroundColor(options);
   context.fillRect(0, 0, options.width, options.height);
   return { canvas, context };
@@ -76,9 +76,11 @@ function drawCaptchaTokenText(context: CanvasRenderingContext2D, options: Captch
     context.shadowOffsetY = 0; // integer
     context.shadowBlur = 10; // integer
 
-    if (i % 2 === 0) context.setTransform(1, getRandomFloat(0, 0.1, 1), getRandomFloat(0, 0.1, 1), 1.0, 0, -10); // integer
+    if (i % 2 === 0)
+      context.setTransform(1, getRandomFloat(0, 0.1, 1), getRandomFloat(0, 0.1, 1), 1.0, 0, -10); // integer
 
-    if (i % 2 !== 0) context.setTransform(1.0, getRandomFloat(0, 0.1, 1), getRandomFloat(0, 0.1, 1), 1.0, 0, -5); // integer
+    if (i % 2 !== 0)
+      context.setTransform(1.0, getRandomFloat(0, 0.1, 1), getRandomFloat(0, 0.1, 1), 1.0, 0, -5); // integer
 
     const colors = ['red', 'gray', 'cyan', 'blue', 'silver'];
 

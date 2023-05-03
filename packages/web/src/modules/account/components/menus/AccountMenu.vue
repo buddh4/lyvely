@@ -8,7 +8,7 @@ import { useHelpStore } from '@/modules/help/stores/help.store';
 import { useNotificationStore } from '@/modules/notifications/stores/notifications.store';
 import { isMaxViewSize } from '@/util';
 import NotificationDrawer from '@/modules/notifications/components/NotificationDrawer.vue';
-import { useInviteUsersStore } from '@/modules/invitations/stores/send-invitations.store';
+import { useSendInviteUsersStore } from '@/modules/invitations/stores/send-invitations.store';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();
@@ -41,7 +41,7 @@ const notificationDrawerButtonClass = computed(() => {
 });
 
 function onInvite() {
-  useInviteUsersStore().showModal = true;
+  useSendInviteUsersStore().showModal = true;
 }
 
 function showHelp() {

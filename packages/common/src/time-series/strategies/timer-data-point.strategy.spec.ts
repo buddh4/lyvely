@@ -3,8 +3,9 @@ import {
   ITimerDataPointConfig,
   useDataPointStrategyFacade,
 } from '@/time-series';
-import { CalendarInterval, isToday, toTimingId } from '@/calendar';
+import { CalendarInterval, isToday } from '@/calendar';
 import { TimerDataPointModel } from '../models';
+import { toTimingId } from '@/calendar-plan';
 
 describe('TimerDataPointStrategy', () => {
   describe('validateValue', () => {

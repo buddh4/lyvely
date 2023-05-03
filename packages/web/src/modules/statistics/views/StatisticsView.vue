@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { Chart, registerables } from 'chart.js';
 import { useStatisticsStore } from '@/modules/statistics/store';
 import { onMounted, ref, watch } from 'vue';
 import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
@@ -8,7 +7,7 @@ import { storeToRefs } from 'pinia';
 
 const cardClass = 'rounded border border-divide bg-main p-5 drop-shadow-md';
 const addCardClass = 'rounded border border-divide p-5 drop-shadow-md cursor-pointer';
-
+/*
 const dailyChart = ref<Chart>();
 const monthlyChart = ref<Chart>();
 const { isDark } = storeToRefs(usePageStore());
@@ -32,6 +31,7 @@ onMounted(async () => {
   );
   monthlyChart.value = new Chart(monthlyContext!, <any>useStatisticsStore().monthly.getChart());
 });
+ */
 </script>
 
 <template>

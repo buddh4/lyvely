@@ -17,7 +17,7 @@ export class AvatarModel extends BaseModel<AvatarModel> {
   guid: string;
 
   @Expose()
-  timestamp: number;
+  timestamp?: number;
 }
 
 @Expose()

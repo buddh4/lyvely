@@ -5,9 +5,10 @@ import { UsersModule } from '@/users';
 import { UserRegistrationService } from './services/user-registration.service';
 import { AuthModule } from '@/auth/auth.module';
 import { UserOtpModule } from '@/user-otp';
+import { InvitationsModule } from '@/invitations/invitations.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, ProfilesModule, UserOtpModule],
+  imports: [UsersModule, AuthModule, ProfilesModule, UserOtpModule, InvitationsModule],
   controllers: [UserRegistrationController],
   providers: [UserRegistrationService],
 })

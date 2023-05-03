@@ -2,11 +2,11 @@
 import ListPage from '@/modules/ui/components/layout/ListPage.vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
-import { useInviteUsersStore } from '@/modules/profiles/stores/invite-users.store';
+import { useSendInviteUsersStore } from '@/modules/invitations/stores/send-invitations.store';
 import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
 
 const profileStore = useProfileStore();
-const { showModal: showInviteModal } = storeToRefs(useInviteUsersStore());
+const { showModal: showInviteModal } = storeToRefs(useSendInviteUsersStore());
 const { profile } = storeToRefs(profileStore);
 </script>
 
