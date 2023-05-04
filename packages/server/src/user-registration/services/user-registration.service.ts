@@ -17,10 +17,9 @@ import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
 import { UrlGenerator, ConfigurationPath } from '@/core';
 import { UserOtpService } from '@/user-otp';
-import {
-  IInvitationMetadata,
-  InvitationsService,
-} from '@/invitations/services/invitations.service';
+import { InvitationsService } from '@/invitations/services/invitations.service';
+import { Invitation } from '@/invitations';
+import { SystemMessagesService } from '@/system-messages';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
 
@@ -35,6 +34,7 @@ export class UserRegistrationService {
     private urlGenerator: UrlGenerator,
     private userOtpService: UserOtpService,
     private invitationsService: InvitationsService,
+    private systemMessageService: SystemMessagesService,
   ) {}
 
   /**
@@ -48,26 +48,44 @@ export class UserRegistrationService {
    * @memberof UsersService
    */
   async register(userRegistration: UserRegistration): Promise<OtpInfo> {
-    const registrationMode = this.configService.get<RegistrationMode>(
-      'registration.mode',
-      'public',
-    );
+    this.validateRegistrationMode();
 
-    const invitationMetadata = await this.invitationsService.getInvitationMetadata(
-      userRegistration.inviteToken,
-    );
+    const invitation = await this.getAndValidateInvitation(userRegistration);
+    const user = await this.createAndValidateUser(userRegistration);
 
-    if (
-      registrationMode === 'none' ||
-      (registrationMode === 'invite' &&
-        !(await this.invitationsService.validateInvitationMetadata(invitationMetadata)))
-    ) {
-      throw new ForbiddenServiceException();
+    const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user);
+
+    await Promise.all([
+      this.createDefaultUserProfile(user),
+      this.sendEmailVerificationMail(user, otp),
+      this.invalidateInvitations(user, invitation),
+    ]);
+
+    return otpModel.getOtpClientInfo();
+  }
+
+  private async createDefaultUserProfile(user: User) {
+    const { profile } = await this.profileService.createDefaultUserProfile(user);
+    return this.systemMessageService.createContent(profile, user, {
+      text: 'profiles.intro.private_first',
+    });
+  }
+
+  private invalidateInvitations(user, invitation?: Invitation) {
+    if (invitation) {
+      this.invitationsService.acceptInvitation(user, invitation);
     }
+  }
 
+  private validateRegistrationMode() {
+    const registrationMode = this.getRegistrationMode();
+    if (registrationMode === 'none') throw new ForbiddenServiceException();
+  }
+
+  private async createAndValidateUser(userRegistration: UserRegistration) {
     try {
       await this.validateEmail(userRegistration.email);
-      const user = await this.userDao.save(
+      return this.userDao.save(
         new User({
           username: userRegistration.username,
           email: userRegistration.email,
@@ -76,17 +94,6 @@ export class UserRegistrationService {
           password: userRegistration.password,
         }),
       );
-
-      await this.handleInviteToken(user, invitationMetadata);
-
-      const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user);
-
-      await Promise.all([
-        this.profileService.createDefaultUserProfile(user),
-        this.sendEmailVerificationMail(user, otp),
-      ]);
-
-      return otpModel.getOtpClientInfo();
     } catch (err: any) {
       if (err instanceof UniqueConstraintException) {
         await this.sendEmailAlreadyExistsMail(userRegistration.email);
@@ -95,10 +102,23 @@ export class UserRegistrationService {
     }
   }
 
-  private async handleInviteToken(user: User, invitationMetadata: IInvitationMetadata) {
-    if (!invitationMetadata) return;
-    // Remove token (invalidate)
-    // Set new user id
+  private getRegistrationMode() {
+    return this.configService.get<RegistrationMode>('userRegistration.mode', 'public');
+  }
+
+  private async getAndValidateInvitation(userRegistration: UserRegistration) {
+    const invitationMetadata = await this.invitationsService.getInvitationMetadata(
+      userRegistration.inviteToken,
+    );
+
+    if (
+      this.getRegistrationMode() === 'invite' &&
+      !(await this.invitationsService.validateInvitationMetadata(invitationMetadata))
+    ) {
+      throw new ForbiddenServiceException();
+    }
+
+    return invitationMetadata?.invitation;
   }
 
   private async sendEmailAlreadyExistsMail(email: string) {
@@ -154,7 +174,7 @@ export class UserRegistrationService {
       throw new FieldValidationException([{ property: 'email', errors: ['validation.isEmail'] }]);
     }
 
-    if (await this.userDao.findByVerifiedEmail(email)) {
+    if (await this.userDao.findByVerifiedEmail(email, true)) {
       throw new UniqueConstraintException('email', 'Email already in use');
     }
   }

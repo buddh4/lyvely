@@ -20,7 +20,7 @@ export class AppConfigController implements AppConfigEndpoint {
       docUrl: this.configService.get('docUrl'),
       csrf_token: req.csrfToken(),
       locales: this.i18n.getEnabledLocaleDefinitions(),
-      registrationMode: this.configService.get('registration.mode', 'public'),
+      registrationMode: this.configService.get('userRegistration.mode', 'public'),
     };
   }
 }

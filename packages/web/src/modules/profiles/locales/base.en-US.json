@@ -68,6 +68,9 @@
     },
     "aria": {
       "sidebar": "Navigation of profile {profile}"
+    },
+    "intro": {
+      "private_first": "Great job! You've  successfully created your first private profile. In the stream section, you can easily jot down notes, links, and other types of content. When you click on a content entry, you'll be able to view more details and even create sub-entries for more organization and clarity."
     }
   }
 }

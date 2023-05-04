@@ -19,7 +19,7 @@ import { assureObjectId, ConfigurationPath } from '@/core';
 import { InvitationDao } from '@/invitations/daos/invitation.dao';
 import { isDefined } from 'class-validator';
 import { MailInvitation } from '../schemas';
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 const JWT_USER_INVITE_TOKEN = 'invitation_token';
 
@@ -43,24 +43,16 @@ export class SendInvitationsService {
 
     return inviteRequest.pid
       ? await this.sendProfileInvites(host, inviteRequest, profile)
-      : await this.sendNetworkInvites(host, inviteRequest);
-
-    // TODO:
-    // Find existing users with verified emails
-    // If non profile invite, filter out all existing users
-    // If profile invite, filter out all already members
-    // Create UserInvite for all users
-    // Send existing user email for all existing users
-    // Send platform invite email to all non existing users
+      : await this.sendPlatformInvites(host, inviteRequest);
   }
 
-  private async sendNetworkInvites(host: User, inviteRequest: InvitationRequest) {
+  private async sendPlatformInvites(host: User, inviteRequest: InvitationRequest) {
     const userInvites = [] as MailInvitation[];
-    const emails = inviteRequest.invites.map((invite) => invite.email);
+    const emails = inviteRequest.invites.map((invite) => invite.email.toLowerCase());
     const existingUsers = await this.userService.findUsersByVerifiedEmails(emails);
 
     for (const invite of inviteRequest.invites) {
-      const { email } = invite;
+      const email = invite.email.toLowerCase();
       // User can not self invite
       if (host.getUserEmail(email)) continue;
       // We do not allow inviting emails, which are already verified
@@ -74,6 +66,8 @@ export class SendInvitationsService {
         }),
       );
     }
+
+    // TODO: assure we do not invite a user multiple times at least not by the same user
 
     const inviteModels = await this.inviteDao.saveMany(userInvites);
     return Promise.all(
@@ -195,7 +189,7 @@ export class SendInvitationsService {
     }
   }
 
-  async userCanInviteToProfile(host: User, inviteRequest: InvitationRequest) {
+  private async userCanInviteToProfile(host: User, inviteRequest: InvitationRequest) {
     const profileContext = await this.profileService.findUserProfileRelations(
       host,
       inviteRequest.pid,
@@ -223,7 +217,7 @@ export class SendInvitationsService {
     } as JwtSignOptions;
 
     const issuer = this.configService.get('auth.jwt.issuer');
-    if (issuer) options.issuer = issuer;
+    if (typeof issuer === 'string') options.issuer = issuer;
 
     return this.jwtService.sign({ sub: email, purpose: JWT_USER_INVITE_TOKEN }, options);
   }

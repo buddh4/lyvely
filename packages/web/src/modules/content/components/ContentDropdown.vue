@@ -4,6 +4,7 @@ import { useContentArchive } from '@/modules/content/composables/content-archive
 import { useContentEditStore } from '@/modules/content/stores/content-edit.store';
 import { computed, ref } from 'vue';
 import { IConfirmOptions } from '@/modules/ui/components/modal/IConfirmOptions';
+import { getContentTypeOptions } from '@/modules/content-stream';
 
 export interface IProps {
   content: ContentModel;
@@ -31,7 +32,8 @@ function onClickEdit() {
   useContentEditStore().setEditContent(props.content);
 }
 
-const isEditable = computed(() => !props.content.meta.archived);
+const { interfaces } = getContentTypeOptions(props.content.type);
+const isEditable = computed(() => interfaces?.edit !== false && !props.content.meta.archived);
 </script>
 
 <template>

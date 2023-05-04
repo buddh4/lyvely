@@ -39,11 +39,15 @@ function _registerInterfaces(contentType: string, interfaces?: IContentTypeOptio
     registerContentDetailsComponent(contentType, interfaces.stream.details);
   }
 
-  if (interfaces.create?.mode === 'modal' && interfaces.create.component) {
+  if (
+    interfaces.create !== false &&
+    interfaces.create?.mode === 'modal' &&
+    interfaces.create.component
+  ) {
     registerCreateContentModalComponent(contentType, interfaces.create.component);
   }
 
-  if (interfaces.edit?.mode === 'modal' && interfaces.edit.component) {
+  if (interfaces.edit !== false && interfaces.edit?.mode === 'modal' && interfaces.edit.component) {
     registerEditContentModalComponent(contentType, interfaces.edit.component);
   }
 

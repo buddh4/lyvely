@@ -1,23 +1,25 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
-import { BaseEntity } from '@/core';
+import { BaseEntity, ObjectIdProp } from '@/core';
 import { BaseProfileRelationRole } from '@lyvely/common';
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Invitation<T extends Invitation = any> extends BaseEntity<T> {
-  @Prop({ type: Types.ObjectId, required: true })
+  @ObjectIdProp({ required: true })
   createdBy: TObjectId;
 
-  type: string;
+  @ObjectIdProp()
+  uid?: TObjectId;
 
-  @Prop({ required: true })
-  token: string;
-
-  @Prop({ type: Types.ObjectId })
+  @ObjectIdProp()
   pid?: TObjectId;
+
+  @Prop()
+  token?: string;
 
   @Prop({ enum: [BaseProfileRelationRole.Member, BaseProfileRelationRole.Guest] })
   role?: BaseProfileRelationRole.Member | BaseProfileRelationRole.Guest;
+
+  type: string;
 
   createdAt: Date;
   updatedAt: Date;

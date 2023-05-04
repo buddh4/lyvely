@@ -39,6 +39,7 @@ import { HabitsModule } from '@/habits/habits.module';
 import { MilestonesModule } from '@/milestones/milestones.module';
 import { InvitationsModule } from '@/invitations/invitations.module';
 import { LoggerModule } from 'nestjs-pino';
+import { SystemMessagesModule } from '@/system-messages/system-messages.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -238,6 +239,7 @@ export class AppModuleBuilder {
       UserRegistrationModule,
       ContentCoreModule,
       ContentStreamModule,
+      SystemMessagesModule,
       AccountModule,
       AvatarsModule,
       InvitationsModule,

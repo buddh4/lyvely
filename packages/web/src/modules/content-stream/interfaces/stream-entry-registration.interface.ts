@@ -47,7 +47,7 @@ export interface IContentTypeOptions {
   meta?: IContentTypeMeta;
   interfaces?: {
     stream?: IContentTypeStreamOptions;
-    create?: ModalCreate | RouteEdit;
-    edit?: ModalEdit | RouteEdit;
+    create?: ModalCreate | RouteEdit | false;
+    edit?: ModalEdit | RouteEdit | false;
   };
 }

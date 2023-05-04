@@ -1,11 +1,14 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Invitation } from './invitation.schema';
-import mongoose from 'mongoose';
+import { ObjectIdProp } from '@/core';
 
 @Schema({ timestamps: true })
 export class UserInvitation extends Invitation<UserInvitation> {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @ObjectIdProp({ required: true })
   uid: TObjectId;
+
+  @ObjectIdProp({ required: true })
+  pid: TObjectId;
 
   type = UserInvitation.name;
 }

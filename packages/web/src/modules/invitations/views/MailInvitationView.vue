@@ -25,7 +25,7 @@ const { isAuthenticated, user } = storeToRefs(authStore);
 
 function logoutAndRegister() {
   authStore.logout(false);
-  register();
+  setTimeout(register, 200);
 }
 
 function register() {

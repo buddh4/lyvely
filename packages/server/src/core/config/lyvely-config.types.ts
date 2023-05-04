@@ -109,7 +109,7 @@ export interface UserInviteOptions {
 
 export type RegistrationModes = 'public' | 'invite' | 'none';
 
-export interface RegistrationOptions {
+export interface UserRegistrationOptions {
   mode?: RegistrationModes;
 }
 
@@ -130,7 +130,7 @@ export type LyvelyAppConfiguration = {
   modules?: ModulesConfiguration;
   'user-permissions'?: UserPermissionOptions;
   invitations?: UserInviteOptions;
-  registration?: RegistrationOptions;
+  userRegistration?: UserRegistrationOptions;
   serveStatic?: ServeStaticModuleOptions;
 };
 

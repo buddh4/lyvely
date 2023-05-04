@@ -42,6 +42,7 @@
         "tasks",
         "deps",
         "time-series",
+        "system-messages",
         "invitations",
         "milestones",
         "activities",

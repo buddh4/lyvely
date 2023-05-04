@@ -128,7 +128,11 @@ const bodyWrapperClass = computed(
       </div>
       <div class="mx-3 my-0.5 w-full">
         <div v-if="!mergeWithPrev" class="text-sm mb-2">
-          <span class="font-bold mr-1">{{ authorName }}</span>
+          <span class="font-bold mr-1">
+            <slot name="authorName">
+              {{ authorName }}
+            </slot>
+          </span>
           <relative-time :ts="model.meta.streamSort"></relative-time>
         </div>
         <div :class="{ 'md:w-2/3': bodyStyle === 'message' }">

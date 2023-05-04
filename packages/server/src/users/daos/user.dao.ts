@@ -35,11 +35,38 @@ export class UserDao extends AbstractDao<User> {
     });
   }
 
-  async findByVerifiedEmail(email: string): Promise<User> {
+  async findByVerifiedEmail(email: string, includeUnverifiedMain = false): Promise<User> {
+    const mainEmailCondition = { email: email.toLowerCase() };
+
+    if (!includeUnverifiedMain) {
+      mainEmailCondition['status'] = { $ne: UserStatus.EmailVerification };
+    }
+
     return this.findOne({
       $or: [
-        { email: email.toLowerCase(), status: { $ne: UserStatus.EmailVerification } },
+        mainEmailCondition,
         { 'emails.lowercaseEmail': email.toLowerCase(), 'emails.verified': true },
+      ],
+    });
+  }
+
+  async findByVerifiedEmails(emails: string[], includeUnverifiedMain = false): Promise<User[]> {
+    const lowerCaseEmails = emails
+      .filter((email) => !!email?.length)
+      .map((email) => email.toLowerCase());
+
+    if (!lowerCaseEmails.length) return [];
+
+    const mainEmailCondition = { email: { $in: lowerCaseEmails } };
+
+    if (!includeUnverifiedMain) {
+      mainEmailCondition['status'] = { $ne: UserStatus.EmailVerification };
+    }
+
+    return this.findAll({
+      $or: [
+        mainEmailCondition,
+        { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': true },
       ],
     });
   }
@@ -47,23 +74,8 @@ export class UserDao extends AbstractDao<User> {
   async findByUnverifiedEmail(email: string): Promise<User[]> {
     return this.findAll({
       $or: [
-        { email: email.toLowerCase(), status: { $ne: UserStatus.EmailVerification } },
+        { email: email.toLowerCase(), status: UserStatus.EmailVerification },
         { 'emails.lowercaseEmail': email.toLowerCase(), 'emails.verified': false },
-      ],
-    });
-  }
-
-  async findByVerifiedEmails(emails: string[]): Promise<User[]> {
-    const lowerCaseEmails = emails
-      .filter((email) => !!email?.length)
-      .map((email) => email.toLowerCase());
-
-    if (!lowerCaseEmails.length) return [];
-
-    return this.findAll({
-      $or: [
-        { email: { $in: lowerCaseEmails }, status: { $ne: UserStatus.EmailVerification } },
-        { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': true },
       ],
     });
   }
@@ -76,7 +88,7 @@ export class UserDao extends AbstractDao<User> {
     if (!lowerCaseEmails.length) return [];
     return this.findAll({
       $or: [
-        { email: { $in: lowerCaseEmails }, status: { $ne: UserStatus.EmailVerification } },
+        { email: { $in: lowerCaseEmails }, status: UserStatus.EmailVerification },
         { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': false },
       ],
     });

@@ -5,14 +5,14 @@ import { UserStatus } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/core';
+import { assureObjectId, ConfigurationPath } from '@/core';
 import { InvitationDao } from '@/invitations/daos/invitation.dao';
 import jwt from 'jsonwebtoken';
 import { Invitation, MailInvitation, UserInvitation } from '@/invitations/schemas';
 
 const JWT_USER_INVITE_TOKEN = 'invitation_token';
 
-export interface IInvitationMetadata {
+export interface IInvitationContext {
   invitation: Invitation;
   invitee?: User;
   host?: User;
@@ -32,9 +32,36 @@ export class InvitationsService {
     private profilePermissionsService: ProfilePermissionsService,
   ) {}
 
-  public async getInvitationMetadata(token: string): Promise<IInvitationMetadata> {
+  public async acceptInvitation(user: User, invitation: Invitation) {
+    return Promise.all([
+      this.inviteDao.updateOneSetById(invitation, { uid: user._id, email: null, token: null }),
+      this.invalidateOtherInvitations(invitation),
+    ]);
+  }
+
+  public async invalidateOtherInvitations(invitation: Invitation) {
+    if (invitation instanceof MailInvitation) {
+      return this.inviteDao.deleteMany({
+        _id: { $ne: assureObjectId(invitation) },
+        email: invitation.email,
+        pid: invitation.pid,
+      });
+    } else if (invitation.pid) {
+      return this.inviteDao.deleteMany({
+        _id: { $ne: assureObjectId(invitation) },
+        uid: invitation.uid,
+        pid: invitation.pid,
+      });
+    }
+  }
+
+  public async getInvitationMetadata(token: string): Promise<IInvitationContext> {
     if (!token) return null;
+
     const invitation = await this.inviteDao.findOne({ token });
+
+    if (!invitation) return null;
+
     const inviteePromise =
       invitation instanceof MailInvitation
         ? this.userService.findByVerifiedEmail(invitation.email)
@@ -56,7 +83,7 @@ export class InvitationsService {
     return { invitee, host, profile, token, invitation };
   }
 
-  public async validateInvitationMetadata(metaData: IInvitationMetadata): Promise<boolean> {
+  public async validateInvitationMetadata(metaData: IInvitationContext): Promise<boolean> {
     if (!metaData) return false;
     const { invitee, host, profile, token, invitation } = metaData;
     return (

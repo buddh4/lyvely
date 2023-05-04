@@ -16,12 +16,7 @@ watch(emailInput, (value) => {
 </script>
 
 <template>
-  <ly-modal
-    v-model="showModal"
-    title="profiles.invite.title"
-    submit-button-text="common.next"
-    @cancel="reset"
-    @submit="submit">
+  <ly-modal v-model="showModal" title="profiles.invite.title" @cancel="reset" @submit="submit">
     <div v-if="stage === 'users'">
       <div class="flex flex-row items-center items-stretch mb-2">
         <ly-input-text
@@ -43,7 +38,9 @@ watch(emailInput, (value) => {
     </div>
     <div v-else-if="stage === 'profile'"></div>
     <div v-else-if="stage === 'loading'">
-      <ly-loader />
+      <div class="h-12">
+        <ly-loader />
+      </div>
     </div>
     <div v-if="stage === 'success'">
       <ly-alert type="success" message="invitations.messages.success" />

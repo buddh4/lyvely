@@ -8,6 +8,7 @@ import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
 import LyButton from '@/modules/ui/components/button/StyledButton.vue';
 import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
+import { computed } from 'vue';
 
 const authStore = useAuthStore();
 const helpStore = useHelpStore();
@@ -27,9 +28,11 @@ function startIntroTour() {
   introductionTourStore.startTour();
 }
 
+const docUrl = computed(() => appConfigStore.get('docUrl', 'https://docs.lyvely.app'));
+
 function toDocs() {
   showModal.value = false;
-  window.open(appConfigStore.get('docUrl', 'https://docs.lyvely.app'), '_blank');
+  window.open(docUrl.value, '_blank');
 }
 </script>
 
@@ -51,6 +54,9 @@ function toDocs() {
         <a class="cursor-pointer" @click="startIntroTour">{{
           $t('help.modal.introductionLinkText')
         }}</a>
+      </template>
+      <template #docLink>
+        <a class="cursor-pointer" @click="toDocs">{{ docUrl }}</a>
       </template>
     </i18n-t>
 

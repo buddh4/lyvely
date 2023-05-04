@@ -14,6 +14,7 @@ export * from './message';
 export * from './profiles';
 export * from './statistics';
 export * from './stream';
+export * from './system-messages';
 export * from './tags';
 export * from './tasks';
 export * from './time-series';

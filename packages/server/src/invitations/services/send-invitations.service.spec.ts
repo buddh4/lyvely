@@ -12,7 +12,7 @@ import {
   UserInvitation,
   UserInvitationSchema,
 } from '@/invitations/schemas';
-import { BaseProfileRelationRole, MailInvite, UserInvites } from '@lyvely/common';
+import { BaseProfileRelationRole, MailInvite, InvitationRequest } from '@lyvely/common';
 import { TestMailService } from '@/mails';
 
 describe('SendInvitations', () => {
@@ -52,7 +52,7 @@ describe('SendInvitations', () => {
       const user = await testData.createUser();
       const result = await invitesService.sendInvitations(
         user,
-        new UserInvites({
+        new InvitationRequest({
           invites: [new MailInvite({ email: 'test@mail.de' })],
         }),
       );
@@ -72,7 +72,7 @@ describe('SendInvitations', () => {
       const { owner, member } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [new MailInvite({ email: member.getUnverifiedUserEmails()[0].email })],
         }),
       );
@@ -88,7 +88,7 @@ describe('SendInvitations', () => {
       const { owner } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [new MailInvite({ email: owner.email.toUpperCase() })],
         }),
       );
@@ -101,7 +101,7 @@ describe('SendInvitations', () => {
       const { owner } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [
             new MailInvite({ email: owner.getVerifiedUserEmails()[1].email.toUpperCase() }),
           ],
@@ -116,7 +116,7 @@ describe('SendInvitations', () => {
       const { owner } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [
             new MailInvite({ email: owner.getUnverifiedUserEmails()[0].email.toUpperCase() }),
           ],
@@ -131,7 +131,7 @@ describe('SendInvitations', () => {
       const { owner } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [new MailInvite({ email: owner.email.toUpperCase() })],
         }),
       );
@@ -144,7 +144,7 @@ describe('SendInvitations', () => {
       const { owner, member } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [new MailInvite({ email: member.email })],
         }),
       );
@@ -157,7 +157,7 @@ describe('SendInvitations', () => {
       const { owner, member } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [new MailInvite({ email: member.email.toUpperCase() })],
         }),
       );
@@ -170,7 +170,7 @@ describe('SendInvitations', () => {
       const { owner, member } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [new MailInvite({ email: member.getVerifiedUserEmails()[1].email })],
         }),
       );
@@ -183,7 +183,7 @@ describe('SendInvitations', () => {
       const { owner, member } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           invites: [
             new MailInvite({ email: member.getVerifiedUserEmails()[1].email.toUpperCase() }),
           ],
@@ -200,7 +200,7 @@ describe('SendInvitations', () => {
       const { owner, profile } = await testData.createSimpleGroup();
       const result = await invitesService.sendInvitations(
         owner,
-        new UserInvites({
+        new InvitationRequest({
           pid: profile.id,
           invites: [new MailInvite({ email: 'test@mail.de' })],
         }),

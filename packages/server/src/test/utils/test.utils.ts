@@ -30,12 +30,14 @@ import path from 'path';
 import { FeatureModule } from '@/features/feature.module';
 import { MailService } from '@/mails';
 import { TestMailService } from '@/mails/services/test-mail.service';
+import { TestConfigService } from '@/test/utils/test-config.service';
 
 export function createCoreTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
   imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  config = {},
 ): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [
@@ -62,7 +64,10 @@ export function createCoreTestingModule(
       }),
       I18nModule,
       ConfigModule.forRoot({
-        load: [() => import('./lyvely-test.config').then((module) => module.default)],
+        load: [
+          () => import('./lyvely-test.config').then((module) => module.default),
+          () => Promise.resolve(config),
+        ],
         isGlobal: true,
       }),
       MailsModule.fromConfig(),
@@ -94,7 +99,9 @@ export function createBasicTestingModule(
       on: jest.fn(),
     })
     .overrideProvider(MailService)
-    .useClass(TestMailService);
+    .useClass(TestMailService)
+    .overrideProvider(ConfigService)
+    .useClass(TestConfigService);
 }
 
 export function createContentTestingModule(

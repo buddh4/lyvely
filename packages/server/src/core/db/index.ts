@@ -6,4 +6,5 @@ export * from './db.utils';
 export * from './field.validator.util';
 export * from './transaction.util';
 export * from './mixed-prop.decorator';
+export * from './object-id-prop.decorator';
 export * from './nested-schema.decorator';
