@@ -33,9 +33,9 @@ const appName = useAppConfigStore().config?.appName;
     </template>
 
     <template #default>
-      <h1 v-if="model.content.title">{{ $t(model.content.title, model.content.params) }}</h1>
-      <span>
-        {{ $t(model.content.text, model.content.params) }}
+      <h1 v-if="model.content.title">{{ $t(model.content.title, model.content.params || {}) }}</h1>
+      <span v-if="model.content.text">
+        {{ $t(model.content.text, model.content.params || {}) }}
       </span>
     </template>
   </content-stream-entry>

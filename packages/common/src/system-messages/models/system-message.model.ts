@@ -5,7 +5,7 @@ import { PropertyType } from '@/models';
 @Exclude()
 export class SystemMessageContent extends ContentDataTypeModel {
   @Expose()
-  params?: Array<string>;
+  params?: Record<string, string>;
 }
 
 @Exclude()

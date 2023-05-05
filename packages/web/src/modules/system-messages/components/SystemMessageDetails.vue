@@ -23,13 +23,15 @@ const appName = useAppConfigStore().config?.appName;
     </template>
     <template #title>
       <slot name="title">
-        <span class="font-bold">{{ model.getTitle() ? $t(model.getTitle()) : appName }}</span>
+        <span class="font-bold">{{
+          model.getTitle() ? $t(model.getTitle(), model.content.params || {}) : appName
+        }}</span>
         <relative-time :ts="model.meta.createdAt.getTime()"></relative-time>
       </slot>
     </template>
     <template #body>
-      <p class="my-4 text-sm">
-        {{ $t(model.content.text, model.content.params) }}
+      <p v-if="model.content.text" class="my-4 text-sm">
+        {{ $t(model.content.text, model.content.params || {}) }}
       </p>
     </template>
   </content-details>

@@ -30,7 +30,7 @@
 # Required common files
 !packages/common/src
 !packages/common/package.json
-!packages/common/rollup.config.js
+!packages/common/rollup.config.mjs
 !packages/common/tsconfig.build.json
 !packages/common/tsconfig.json
 

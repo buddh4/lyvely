@@ -32,8 +32,10 @@ function onClickEdit() {
   useContentEditStore().setEditContent(props.content);
 }
 
-const { interfaces } = getContentTypeOptions(props.content.type);
-const isEditable = computed(() => interfaces?.edit !== false && !props.content.meta.archived);
+const contentTypeOptions = getContentTypeOptions(props.content.type);
+const isEditable = computed(
+  () => contentTypeOptions?.interfaces?.edit !== false && !props.content.meta.archived,
+);
 </script>
 
 <template>

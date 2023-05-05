@@ -1,0 +1,47 @@
+worker_processes  1;
+
+events {
+    worker_connections  ${WORKER_CONNECTIONS};
+}
+
+http {
+    client_max_body_size ${MAX_BODY_SIZE};
+
+    server {
+        listen ${HTTP_PORT};
+        server_name ${BASE_URL};
+        return 301 https://www.${HOST_NAME}$request_uri;
+    }
+
+    server {
+            listen ${HTTPS_PORT} ssl;
+            server_name ${BASE_URL};
+            return 301 https://www.${HOST_NAME}$request_uri;
+
+            ssl_certificate /etc/nginx/certs/${SSL_CERT};
+            ssl_certificate_key /etc/nginx/certs/${SSL_CERT_KEY};
+    }
+
+    server {
+        listen ${HTTPS_PORT} ssl;
+        server_name www.${BASE_URL};
+
+        ssl_certificate /etc/nginx/certs/${SSL_CERT};
+        ssl_certificate_key /etc/nginx/certs/${SSL_CERT_KEY};
+
+        root /usr/share/nginx/html;
+
+        index index.html;
+
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+
+        location /api {
+            proxy_pass http://lyvely:8080/api;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+}

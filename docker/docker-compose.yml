@@ -1,0 +1,179 @@
+version: '3'
+
+networks:
+  lyvely-network:
+    driver: bridge
+
+services:
+  mongodb1:
+    image: mongo:latest
+    hostname: mongo1
+    user: mongo:mongo
+    networks:
+      - lyvely-network
+    container_name: lyvely-mongo1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    volumes:
+      - ./data/mongo1:/data/db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "lyvely-mongo1"
+    command: mongod --replSet rs0 --bind_ip 172.17.0.1 --port 27017 --dbpath /data/db
+
+  mongodb2:
+    image: mongo:latest
+    hostname: mongo2
+    user: mongo:mongo
+    networks:
+      - lyvely-network
+    container_name: lyvely-mongo2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./data/mongo2:/data/db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "lyvely-mongo2"
+    command: mongod --replSet rs0 --bind_ip 172.17.0.1 --port 27017 --dbpath /data/db --smallfiles --oplogSize 128
+
+  mongodb3:
+    image: mongo:latest
+    hostname: mongo3
+    user: mongo:mongo
+    networks:
+      - lyvely-network
+    container_name: lyvely-mongo3
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./data/mongo3:/data/db
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "lyvely-mongo3"
+    command: mongod --replSet rs0 --bind_ip 172.17.0.1 --port 27017 --dbpath /data/db --smallfiles --oplogSize 128
+
+  mongoinit:
+    image: mongo:latest
+    user: mongo:mongo
+    restart: "no"
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    networks:
+      - lyvely-network
+    container_name: mongo-setup
+    command: >
+      mongo --host mongo1:27017 --eval 
+      '
+      db = (new Mongo("localhost:27017")).getDB("lyvely");
+      config = {
+      "_id" : "rs0",
+      "members" : [
+        {
+          "_id" : 0,
+          "host" : "mongo1:27017"
+        },
+        {
+          "_id" : 1,
+          "host" : "mongo2:27017"
+        },
+        {
+          "_id" : 2,
+          "host" : "mongo3:27017"
+        }
+      ]
+      };
+      rs.initiate(config);
+      '      
+
+  redis:
+    image: redis:latest
+    hostname: redis
+    user: redis:redis
+    restart: always
+    networks:
+      - lyvely-network
+    container_name: lyvely-redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - ./data/redis:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "lyvely-redis"
+    command: redis-server --appendonly yes
+
+  prometheus:
+    image: prom/prometheus
+    profiles:
+      - full
+      - monitoring
+    networks:
+      - lyvely-network
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
+  api:
+    build:
+      context: ../
+      dockerfile: Dockerfile.static
+    hostname: lyvely
+    user: lyvely:lyvely
+    networks:
+      - lyvely-network
+    container_name: lyvely-api
+    environment:
+      NODE_ENV: production
+      MONGO_URI: mongodb://root:example@mongodb1:27017,mongodb2:27017,mongodb3:27017/lyvely?replicaSet=rs0&readPreference=primary
+    depends_on:
+      - mongoinit
+      - redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "lyvely-api"
+    command: npm run start:prod
+
+  frontend:
+    build:
+      context: ../
+      dockerfile: Dockerfile.nginx
+    user: nginx:nginx
+    networks:
+      - lyvely-network
+    container_name: lyvely-nginx
+    ports:
+      - '80:80'
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "lyvely-nginx"
+    depends_on:
+      - api

@@ -1,12 +1,12 @@
 import { ContentDataType, ContentType } from '@/content';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { NestedSchema } from '@/core';
+import { MixedProp, NestedSchema } from '@/core';
 import { SystemMessageModel } from '@lyvely/common';
 
 @NestedSchema()
 export class SystemMessageContent extends ContentDataType {
-  @Prop({ type: [String] })
-  params?: Array<string>;
+  @MixedProp()
+  params?: Record<string, string>;
 }
 
 const SystemMessageContentSchema = SchemaFactory.createForClass(SystemMessageContent);

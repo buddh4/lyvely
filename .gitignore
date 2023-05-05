@@ -40,8 +40,3 @@ lerna-debug.log*
 # custom
 .env
 /screenshots
-
-# dist
-docker/*
-!docker/lyvely.ts.dist
-!docker/web.env.dist

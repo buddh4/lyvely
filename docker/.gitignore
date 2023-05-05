@@ -1,0 +1,13 @@
+*
+!certs
+!.env.dist
+!.gitignore
+!docker-compose.yml
+!docker-setup.sh
+!Dockerfile.nginx
+!Dockerfile.static
+!lyvely.ts.dist
+!nginx.conf.dist
+!prometheus.yml
+!web.env.dist
+!Dockerfile.static
