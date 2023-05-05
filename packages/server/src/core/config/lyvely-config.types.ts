@@ -6,6 +6,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import https from 'https';
+import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -38,13 +39,12 @@ export type LyvelyHttpOptions = {
   };
 };
 
-export type LyvelyMongoDBOptions = {
+export interface LyvelyMongoDBOptions extends MongooseModuleOptions {
   uri: string;
   debug?: boolean;
-  replicaSet?: boolean;
-  shardedCluster?: boolean;
+  replicaSet?: string;
   transactions?: boolean;
-};
+}
 
 export type I18NOptions = {
   locales: string[];
@@ -137,4 +137,4 @@ export type LyvelyAppConfiguration = {
 // TODO: This is not working for some types
 export type ConfigurationPath = {
   [key in NestedPaths<LyvelyAppConfiguration>]: TypeFromPath<LyvelyAppConfiguration, key>;
-};
+} & any;

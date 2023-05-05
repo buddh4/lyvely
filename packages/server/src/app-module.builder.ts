@@ -1,6 +1,6 @@
 import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule, setTransactionSupport, ConfigurationPath } from '@/core';
+import { CoreModule, setTransactionSupport, ConfigurationPath, LyvelyMongoDBOptions } from '@/core';
 import { loadConfig, AppConfigModule } from '@/app-config';
 import { AuthModule } from './auth/auth.module';
 import { UserRegistrationModule } from './user-registration/user-registration.module';
@@ -40,6 +40,7 @@ import { MilestonesModule } from '@/milestones/milestones.module';
 import { InvitationsModule } from '@/invitations/invitations.module';
 import { LoggerModule } from 'nestjs-pino';
 import { SystemMessagesModule } from '@/system-messages/system-messages.module';
+import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -188,12 +189,18 @@ export class AppModuleBuilder {
       MongooseModule.forRootAsync({
         imports: [ConfigModule],
         inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          setTransactionSupport(configService.get('mongodb.transactions', false));
-          return {
-            uri: configService.get('mongodb.uri'),
-            autoIndex: true,
-          };
+        useFactory: async (configService: ConfigService<ConfigurationPath & any>) => {
+          const options = { ...configService.get<LyvelyMongoDBOptions>('mongodb') };
+
+          setTransactionSupport(!!options.transactions);
+          delete options.transactions;
+          delete options.debug;
+
+          options.autoIndex ||= true;
+          options.useNewUrlParser ||= true;
+          options.useUnifiedTopology ||= true;
+
+          return options;
         },
       }),
     );
