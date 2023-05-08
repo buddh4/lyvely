@@ -30,7 +30,7 @@ services:
     command: >
       mongod --replSet rs0 --port 27017 --dbpath /data/db & 
       sleep 5 && 
-      mongosh -- eval '
+      mongosh --eval '
         config = {
           "_id" : "rs0",
           "members" : [
