@@ -40,7 +40,6 @@ import { MilestonesModule } from '@/milestones/milestones.module';
 import { InvitationsModule } from '@/invitations/invitations.module';
 import { LoggerModule } from 'nestjs-pino';
 import { SystemMessagesModule } from '@/system-messages/system-messages.module';
-import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 

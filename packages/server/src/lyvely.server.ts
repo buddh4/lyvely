@@ -177,6 +177,7 @@ export class LyvelyServer {
     cors.methods ||= ['GET', 'POST', 'PUT'];
     cors.exposedHeaders ||= ['set-cookie'];
     cors.allowedHeaders ||= [
+      'Accept-Language',
       'x-visitor-id',
       'x-captcha-identity',
       'x-captcha-token',
