@@ -1,4 +1,4 @@
-# This docker file can be used to create a standalone backend image, which serves the web files itself
+# This dockerfile is used in combination with our docker-compose.yml and defines our api service
 
 # Base image
 FROM node:19
@@ -8,11 +8,8 @@ WORKDIR /usr/src/app
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
-COPY packages/web/package*.json ./packages/web/
-COPY packages/server/package*.json ./packages/server/
 COPY packages/common/package*.json ./packages/common/
-COPY docker/lyvely.ts ./packages/server/config/lyvely.ts
-COPY docker/web.env ./package/web/.env
+COPY packages/server/package*.json ./packages/server/
 
 # Install app dependencies
 RUN npm install
@@ -20,12 +17,12 @@ RUN npm install
 # Bundle app source
 COPY .. .
 
+# Copy our the api config
+COPY docker/config/lyvely.ts packages/server/config/lyvely.ts
+
 # Creates a "dist" folder with the production build
 RUN npm run common:build
 RUN npm run server:build
-RUN npm run web:build
-
-EXPOSE 8080
 
 # Start the server using the production build
 CMD  ["npm", "run", "server:prod"]

@@ -7,14 +7,14 @@ networks:
 services:
   mongodb1:
     image: mongo:latest
-    hostname: mongo1
-    user: mongo:mongo
+    hostname: mongodb1
+    user: "${MONGODB_USER}"
     networks:
       - lyvely-network
     container_name: lyvely-mongo1
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    #environment:
+    #  MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+    #  MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
       - ./data/mongo1:/data/db
     logging:
@@ -23,18 +23,45 @@ services:
         max-size: "10m"
         max-file: "3"
         labels: "lyvely-mongo1"
-    command: mongod --replSet rs0 --bind_ip 172.17.0.1 --port 27017 --dbpath /data/db
+    depends_on:
+      - api
+      - mongodb2
+      - mongodb3
+    command: >
+      mongod --replSet rs0 --port 27017 --dbpath /data/db & 
+      sleep 5 && 
+      mongo -- eval '
+        config = {
+          "_id" : "rs0",
+          "members" : [
+            {
+              "_id" : 0,
+              "host" : "mongodb1:27017"
+            },
+            {
+              "_id" : 1,
+              "host" : "mongodb2:27017"
+            },
+            {
+              "_id" : 2,
+              "host" : "mongodb3:27017"
+            }
+          ]
+        };
+        rs.initiate(config);
+      '
+    
 
   mongodb2:
     image: mongo:latest
-    hostname: mongo2
-    user: mongo:mongo
+    hostname: mongodb2
+    user: "${MONGODB_USER}"
     networks:
       - lyvely-network
     container_name: lyvely-mongo2
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    #environment:
+    #  MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+    #  MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
       - ./data/mongo2:/data/db
     logging:
@@ -43,18 +70,20 @@ services:
         max-size: "10m"
         max-file: "3"
         labels: "lyvely-mongo2"
-    command: mongod --replSet rs0 --bind_ip 172.17.0.1 --port 27017 --dbpath /data/db --smallfiles --oplogSize 128
+    depends_on:
+      - api
+    command: mongod --replSet rs0 --port 27017 --dbpath /data/db --oplogSize 128
 
   mongodb3:
     image: mongo:latest
-    hostname: mongo3
-    user: mongo:mongo
+    hostname: mongodb3
+    user: "${MONGODB_USER}"
     networks:
       - lyvely-network
     container_name: lyvely-mongo3
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+    #environment:
+    #  MONGO_INITDB_ROOT_USERNAME: root
+    #  MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - ./data/mongo3:/data/db
     logging:
@@ -63,53 +92,20 @@ services:
         max-size: "10m"
         max-file: "3"
         labels: "lyvely-mongo3"
-    command: mongod --replSet rs0 --bind_ip 172.17.0.1 --port 27017 --dbpath /data/db --smallfiles --oplogSize 128
-
-  mongoinit:
-    image: mongo:latest
-    user: mongo:mongo
-    restart: "no"
     depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
-    networks:
-      - lyvely-network
-    container_name: mongo-setup
-    command: >
-      mongo --host mongo1:27017 --eval 
-      '
-      db = (new Mongo("localhost:27017")).getDB("lyvely");
-      config = {
-      "_id" : "rs0",
-      "members" : [
-        {
-          "_id" : 0,
-          "host" : "mongo1:27017"
-        },
-        {
-          "_id" : 1,
-          "host" : "mongo2:27017"
-        },
-        {
-          "_id" : 2,
-          "host" : "mongo3:27017"
-        }
-      ]
-      };
-      rs.initiate(config);
-      '      
+      - api
+    command: mongod --replSet rs0 --port 27017 --dbpath /data/db --oplogSize 128
 
   redis:
-    image: redis:latest
+    image: redis:7.0.11-alpine
     hostname: redis
-    user: redis:redis
+    user: "${REDIS_USER}"
     restart: always
     networks:
       - lyvely-network
     container_name: lyvely-redis
-    environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    #environment:
+    #  REDIS_PASSWORD: ${REDIS_PASSWORD}
     volumes:
       - ./data/redis:/data
     logging:
@@ -135,17 +131,16 @@ services:
   api:
     build:
       context: ../
-      dockerfile: Dockerfile.static
+      dockerfile: docker/Dockerfile.api
     hostname: lyvely
-    user: lyvely:lyvely
     networks:
       - lyvely-network
     container_name: lyvely-api
     environment:
       NODE_ENV: production
-      MONGO_URI: mongodb://root:example@mongodb1:27017,mongodb2:27017,mongodb3:27017/lyvely?replicaSet=rs0&readPreference=primary
+    volumes:
+      - ./config/lyvely.ts:/usr/src/app/packages/server/config/lyvely.ts:ro
     depends_on:
-      - mongoinit
       - redis
     logging:
       driver: "json-file"
@@ -153,21 +148,21 @@ services:
         max-size: "10m"
         max-file: "3"
         labels: "lyvely-api"
-    command: npm run start:prod
+    command: npm run server:prod
 
   frontend:
     build:
       context: ../
-      dockerfile: Dockerfile.nginx
-    user: nginx:nginx
+      dockerfile: docker/Dockerfile.nginx
     networks:
       - lyvely-network
+    hostname: nginx
     container_name: lyvely-nginx
     ports:
-      - '80:80'
-      - "443:443"
+      - '${HTTP_PORT}:80'
+      - "${HTTPS_PORT}:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./certs:/etc/nginx/certs:ro
     logging:
       driver: "json-file"

@@ -154,18 +154,19 @@ export class SendInvitationsService {
       to,
       subject,
       partials: {
-        headline: appName + ' invitation',
-        body: `<p>${subject}</p>
-                <div style="padding:20px 0">
-                  <table cellspacing="0" cellpadding="0" align="center"> <tr> 
-                  <td align="center" width="300" height="40" bgcolor="#047857" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; color: #ffffff; display: block;">
-                    <a href="${inviteUrl}" target="_blank" style="font-size:16px; font-weight: bold; font-family:sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block">
-                    <span style="color: #ffffff;">
-                        Join Now
-                    </span>
-                    </a>
-                  </td> 
-                  </tr> </table> 
+        headline: subject,
+        body: `<div style="padding:20px 0">
+                  <table cellspacing="0" cellpadding="0"> 
+                    <tr> 
+                      <td align="center" width="100" height="40" bgcolor="#047857" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; color: #ffffff; display: block;">
+                        <a href="${inviteUrl}" target="_blank" style="font-size:16px; font-weight: bold; font-family:sans-serif; text-decoration: none; line-height:40px; width:100%; display:inline-block">
+                        <span style="color: #ffffff;">
+                            Join Now
+                        </span>
+                        </a>
+                      </td> 
+                    </tr> 
+                  </table> 
                   <![endif]>
                 </div>
                 <p>This link is only valid for 1 day.</p>`,

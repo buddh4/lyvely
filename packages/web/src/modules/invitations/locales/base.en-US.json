@@ -1,0 +1,8 @@
+{
+  "invitations": {
+    "account": {
+      "title": "Send Invite",
+      "success": "Invitations sent!"
+    }
+  }
+}

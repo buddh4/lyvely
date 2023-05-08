@@ -20,6 +20,7 @@
 !packages/web/locales
 !packages/web/public
 !packages/web/src
+!packages/web/dist
 !packages/web/index.html
 !packages/web/package.json
 !packages/web/postcss.config.js

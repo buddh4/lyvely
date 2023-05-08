@@ -41,7 +41,9 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
 
   async function submit() {
     if (stage.value === 'users') {
-      return submitUserSelection();
+      return submitUserSelection().then(() => {
+        stage.value = 'success';
+      });
     } else if (stage.value === 'profile') {
     }
   }
@@ -58,6 +60,7 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
         status,
       ).then(() => stage.value === 'success');
     }
+    return Promise.resolve();
   }
 
   function validateUserSelection() {

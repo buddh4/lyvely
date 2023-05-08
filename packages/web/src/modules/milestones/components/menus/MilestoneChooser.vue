@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
-import { ContentModel, MilestoneModel } from '@lyvely/common';
+import { ContentModel } from '@lyvely/common';
 import { useSetContentMilestone } from '@/modules/content/composables/set-content-milestone.composable';
 
 export interface IProps {
@@ -16,7 +16,7 @@ const { setMilestone } = useSetContentMilestone(props.content);
 </script>
 
 <template>
-  <ly-divided-list>
+  <ly-divided-list v-if="milestones?.length">
     <ly-list-item
       v-for="milestone in milestones"
       :key="milestone.id"

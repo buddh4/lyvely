@@ -139,6 +139,7 @@ function getBadgeClass(option: IChooserOption) {
   return [
     'mr-0.5 border',
     { 'border-transparent': !!getColor(option) },
+    { 'bg-primary': !getColor(option) },
     { 'border-divide': !getColor(option) },
   ];
 }

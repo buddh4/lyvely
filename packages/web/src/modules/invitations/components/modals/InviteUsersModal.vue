@@ -43,7 +43,7 @@ watch(emailInput, (value) => {
       </div>
     </div>
     <div v-if="stage === 'success'">
-      <ly-alert type="success" message="invitations.messages.success" />
+      <ly-alert type="success" message="invitations.account.success" />
     </div>
   </ly-modal>
 </template>

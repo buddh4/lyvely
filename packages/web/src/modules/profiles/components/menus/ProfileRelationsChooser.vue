@@ -78,7 +78,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
         </ly-list-item>
       </ly-divided-list>
     </li>
-    <li class="py-3 px-4">
+    <!-- li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
           {{ $t('profiles.labels.organizations') }}
@@ -88,7 +88,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
     </li>
     <li class="py-3 px-4 text-dimmed text-sm">
       <ly-text-dimmed :text="$t('profile.content-stream.no-organization-relation')" />
-    </li>
+    </li -->
   </ul>
 </template>
 

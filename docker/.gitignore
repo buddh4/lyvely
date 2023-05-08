@@ -1,13 +1,13 @@
 *
 !certs
+!config
 !.env.dist
 !.gitignore
 !docker-compose.yml
-!docker-setup.sh
+!docker-compose-setup.sh
 !Dockerfile.nginx
-!Dockerfile.static
+!Dockerfile.api
 !lyvely.ts.dist
 !nginx.conf.dist
 !prometheus.yml
 !web.env.dist
-!Dockerfile.static

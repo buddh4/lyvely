@@ -127,7 +127,7 @@ function onMenuItemClick() {
               onMenuItemClick();
             ">
             <ly-icon name="paper-plane" :auto-scale="true" />
-            <span>{{ $t('profiles.invite.title') }}</span>
+            <span>{{ $t('invitations.account.title') }}</span>
             <invite-users-modal />
           </a>
         </li>

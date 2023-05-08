@@ -1,49 +1,55 @@
 import { LyvelyAppConfiguration } from '@/core';
-import  { join } from 'path';
 
 export default {
-  appName: 'lyvely.app',
+  appName: '${APP_NAME}',
   operationMode: 'standalone',
-  docUrl: 'https://docs.lyvely.app',
-  contactMail: 'help@lyvely.app',
+  docUrl: '${DOCS_URL}',
+  contactMail: 'help@${BASE_URL}',
   http: {
-    host: 'localhost',
-    port: 8080,
-    baseUrl: 'http://localhost:8080/api',
-    appUrl: 'http://localhost:8080',
-  },
-  servStatic: {
-    rootPath: join(__dirname, '..', '..', 'web/dist'),
+    host: '${API_HOST}',
+    port: ${API_PORT},
+    baseUrl: 'https://${HTTP_HOST}/api',
+    appUrl: 'https://${HTTP_HOST}',
   },
   mongodb: {
-    uri: 'mongodb://localhost:27017/lyvely',
-    debug: false,
+    uri: '${MONGO_URI}',
+  },
+  redis: {
+    host: 'redis',
+    port: 6379,
   },
   mail: {
     transport: {
-      streamTransport: true,
+      host: '${MAIL_HOST}',
+      port: 587,
+      pool: true,
+      secure: false, // upgrade later with STARTTLS https://nodemailer.com/smtp/
+      ignoreTLS: false,
+      auth: {
+        user: '${MAIL_USER}',
+        pass: '${MAIL_PASSWORD}'
+      }
     },
-    preview: {
-      dir: `${process.cwd()}/mail/messages/test`,
-      open: true,
+    defaults: {
+     from: '"${APP_NAME}" <no-reply@${BASE_URL}>',
     },
   },
   auth: {
     jwt: {
       'secure-cookies': false,
       access: {
-        secret: undefined, // CHANGEME!
+        secret: '${JWT_ACCESS_TOKEN}',
         expiresIn: '2m',
         sameSite: 'lax',
       },
       refresh: {
-        secret: undefined, // CHANGEME!
+        secret: '${JWT_REFRESH_TOKEN}',
         expiresIn: '5m',
         expiresInRemember: '200d',
         sameSite: 'lax',
       },
       verify: {
-        secret: undefined, // CHANGEME!
+        secret: '${JWT_VERIFY_TOKEN}',
         expiresIn: '1d',
       },
     },

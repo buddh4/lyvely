@@ -7,7 +7,7 @@
     "packages/*"
   ],
   "scripts": {
-    "docker:build:static": "docker build -t lyvely-static -f docker/Dockerfile.static .",
+    "docker:build:static": "docker build -t lyvely-static -f docker/Dockerfile.api .",
     "lint": "eslint -c .eslintrc.js \"packages/*/src/**/*.{ts,vue}\"",
     "lint:fix": "eslint -c .eslintrc.js \"packages/*/src/**/*.{ts,vue}\" --fix",
     "common:watch": "npm run watch -w @lyvely/common",

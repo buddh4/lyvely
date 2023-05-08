@@ -5,26 +5,36 @@ events {
 }
 
 http {
+    include    /etc/nginx/mime.types;
     client_max_body_size ${MAX_BODY_SIZE};
+    index    index.html index.htm index.php;
+
+    default_type application/octet-stream;
+    log_format   main '$remote_addr - $remote_user [$time_local]  $status '
+    '"$request" $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log   /var/log/nginx/access.log  main;
+    sendfile     on;
+    tcp_nopush   on;
 
     server {
-        listen ${HTTP_PORT};
+        listen 80;
         server_name ${BASE_URL};
-        return 301 https://www.${HOST_NAME}$request_uri;
+        return 301 https://${HTTP_HOST}$request_uri;
     }
 
     server {
-            listen ${HTTPS_PORT} ssl;
+            listen 443 ssl;
             server_name ${BASE_URL};
-            return 301 https://www.${HOST_NAME}$request_uri;
+            return 301 https://${HTTP_HOST}$request_uri;
 
             ssl_certificate /etc/nginx/certs/${SSL_CERT};
             ssl_certificate_key /etc/nginx/certs/${SSL_CERT_KEY};
     }
 
     server {
-        listen ${HTTPS_PORT} ssl;
-        server_name www.${BASE_URL};
+        listen 443 ssl;
+        server_name ${HTTP_HOST};
 
         ssl_certificate /etc/nginx/certs/${SSL_CERT};
         ssl_certificate_key /etc/nginx/certs/${SSL_CERT_KEY};
@@ -38,7 +48,7 @@ http {
         }
 
         location /api {
-            proxy_pass http://lyvely:8080/api;
+            proxy_pass http://lyvely/api;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

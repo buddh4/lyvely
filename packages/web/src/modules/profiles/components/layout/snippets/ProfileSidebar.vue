@@ -127,7 +127,7 @@ function onMenuItemClick(item: IMenuItem) {
               <a
                 v-if="menuItem.click"
                 :class="menuItemClasses"
-                class="flex no-wrap items-center h-12"
+                class="flex no-wrap items-center h-12 select-none"
                 @click="onMenuItemClick(menuItem)">
                 <ly-icon :name="menuItem.icon" class="w-5" />
                 <transition name="fade">
@@ -139,7 +139,7 @@ function onMenuItemClick(item: IMenuItem) {
               <router-link
                 v-if="menuItem.to"
                 :class="menuItemClasses"
-                class="flex no-wrap items-center h-12"
+                class="flex no-wrap items-center h-12 select-none"
                 :to="menuItem.to"
                 @click="onMenuItemClick(menuItem)">
                 <ly-icon :name="menuItem.icon" class="w-5" />

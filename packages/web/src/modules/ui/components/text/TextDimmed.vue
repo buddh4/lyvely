@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 export interface IProps {
-  text: string;
+  text?: string;
 }
 
 withDefaults(defineProps<IProps>(), {
-  text: undefined,
+  text: '',
 });
 </script>
 
