@@ -1,6 +1,6 @@
 #!/bin/bash
 
-while getopts f flag
+while getopts fbu flag
 do
     case "${flag}" in
         f) FORCE=1;;
