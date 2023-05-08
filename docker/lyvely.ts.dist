@@ -37,7 +37,7 @@ export default {
   },
   auth: {
     jwt: {
-      'secure-cookies': false,
+      'secure-cookies': true,
       access: {
         secret: '${JWT_ACCESS_TOKEN}',
         expiresIn: '2m',

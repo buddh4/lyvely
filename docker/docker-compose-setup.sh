@@ -34,6 +34,7 @@ if [ -f .env ]; then
   export host='$host'
   export request_uri='$request_uri'
   export uri='$uri'
+  export scheme='$scheme'
 fi
 
 # Copy environment used for this setup and docker-compose

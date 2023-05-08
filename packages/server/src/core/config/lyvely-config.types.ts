@@ -33,7 +33,7 @@ export type LyvelyHttpOptions = {
   port: number;
   cors?: CorsOptions;
   tls?: https.ServerOptions;
-  trustProxy: boolean | string | number | ((ip: string) => boolean);
+  trustProxy?: boolean | string | number | ((ip: string) => boolean);
   rateLimit?: {
     ttl: number;
     limit: number;
