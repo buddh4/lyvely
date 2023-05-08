@@ -10,6 +10,7 @@ export default {
     port: ${API_PORT},
     baseUrl: 'https://${HTTP_HOST}/api',
     appUrl: 'https://${HTTP_HOST}',
+    trustProxy: 1,
   },
   mongodb: {
     uri: '${MONGO_URI}',
