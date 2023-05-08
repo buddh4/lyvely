@@ -35,6 +35,14 @@ if [ -f .env ]; then
   export request_uri='$request_uri'
   export uri='$uri'
   export scheme='$scheme'
+  export remote_user='$remote_user'
+  export time_local='$time_local'
+  export status='$status'
+  export request='$request'
+  export body_bytes_sent='$body_bytes_sent'
+  export http_referer='$http_referer'
+  export http_user_agent='$http_user_agent'
+  export http_x_forwarded_for='$http_x_forwarded_for'
 fi
 
 # Copy environment used for this setup and docker-compose
