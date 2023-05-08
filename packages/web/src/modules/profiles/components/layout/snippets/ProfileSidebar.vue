@@ -46,11 +46,11 @@ const menuItems = computed(
         icon: 'journal',
         label: 'journals.labels.main_nav',
       },
-      {
+      /*{
         to: { name: 'Statistics' },
         icon: 'statistics',
         label: 'statistics.labels.main_nav',
-      },
+      },*/
       {
         to: { name: 'Tags' },
         icon: 'tags',
@@ -60,13 +60,13 @@ const menuItems = computed(
         to: { name: 'ProfileUsers' },
         icon: 'users',
         label: 'profiles.users.label',
-        condition: () => isMultiUserProfile(profileStore.profile),
+        condition: () => isMultiUserProfile(profileStore.profile!),
       },
-      {
+      /*{
         to: { name: 'ProfileSettings' },
         icon: 'settings',
         label: 'profiles.settings.label',
-      },
+      },*/
     ] as IMenuItem[],
 );
 
