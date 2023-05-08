@@ -24,5 +24,8 @@ COPY docker/config/lyvely.ts packages/server/config/lyvely.ts
 RUN npm run common:build
 RUN npm run server:build
 
+# In some environments this file does not seem to be copied, needs to be reviewed probably a problem with nest build
+COPY packages/server/src/captcha/utils/PunctureRegular.ttf packages/server/dist/src/captcha/utils/PunctureRegular.ttf
+
 # Start the server using the production build
 CMD  ["npm", "run", "server:prod"]
