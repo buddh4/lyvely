@@ -3,7 +3,7 @@
 while getopts fbu flag
 do
     case "${flag}" in
-        f) FORCE=1;;
+        f) FILES=1;;
         b) BUILD=1;;
         u) USER=1;;
     esac
@@ -43,7 +43,7 @@ then
 fi
 
 # Copy backend configuration
-if [ ! -f config/lyvely.ts ] || [ "$FORCE" = 1 ]
+if [ ! -f config/lyvely.ts ] || [ "$FILES" = 1 ]
 then
   export JWT_ACCESS_TOKEN=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'));")
   export JWT_REFRESH_TOKEN=$(node -e "console.log(require('crypto').randomBytes(32).toString('hex'));")
@@ -52,13 +52,13 @@ then
 fi
 
 # Copy nginx configuration
-if [ ! -f config/nginx.conf ] || [ "$FORCE" = 1 ]
+if [ ! -f config/nginx.conf ] || [ "$FILES" = 1 ]
 then
 	envsubst < nginx.conf.dist > config/nginx.conf
 fi
 
 # Copy web environment
-if [ ! -f ../packages/web/.env ] || [ "$FORCE" = 1 ]
+if [ ! -f ../packages/web/.env ] || [ "$FILES" = 1 ]
 then
 	envsubst < web.env.dist > ../packages/web/.env
 fi

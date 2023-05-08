@@ -38,6 +38,7 @@
         "users",
         "profiles",
         "ui",
+        "docker",
         "tags",
         "tasks",
         "deps",
