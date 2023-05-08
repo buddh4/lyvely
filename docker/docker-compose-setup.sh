@@ -67,9 +67,7 @@ fi
 if [ "$BUILD" = 1 ]; then
 # Build the web static files which we need for our custom nginx image
   cd ..
-  npm install
-  npm run common:build;
-  npm run web:build;
+  npm install && npm run common:build && npm run web:build
 fi
 
 
