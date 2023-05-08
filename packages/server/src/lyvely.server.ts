@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { INestApplication, ValidationPipe, Logger as NestLogger } from '@nestjs/common';
-import { Logger } from 'nestjs-pino';
+//import { Logger } from 'nestjs-pino';
 import { ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
@@ -56,7 +56,7 @@ export class LyvelyServer {
   private initExpress() {
     this.nestApp.setGlobalPrefix('api');
 
-    this.nestApp.useLogger(this.nestApp.get(Logger));
+    //this.nestApp.useLogger(this.nestApp.get(Logger));
     this.nestApp.use((req, res, next) => {
       const clientIP = req.headers['x-real-ip'] || req.ip;
 

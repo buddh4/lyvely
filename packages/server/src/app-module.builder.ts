@@ -38,7 +38,7 @@ import { TasksModule } from '@/tasks/tasks.module';
 import { HabitsModule } from '@/habits/habits.module';
 import { MilestonesModule } from '@/milestones/milestones.module';
 import { InvitationsModule } from '@/invitations/invitations.module';
-import { LoggerModule } from 'nestjs-pino';
+//import { LoggerModule } from 'nestjs-pino';
 import { SystemMessagesModule } from '@/system-messages/system-messages.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
@@ -121,9 +121,9 @@ export class AppModuleBuilder {
   private initCoreModules() {
     return this.importModules(
       EventEmitterModule.forRoot({ wildcard: true }),
-      LoggerModule.forRoot({
+      /* LoggerModule.forRoot({
         pinoHttp: { level: 'debug' },
-      }),
+      }),*/
       LiveModule,
       MailsModule.fromConfig(),
       NotificationsModule,
