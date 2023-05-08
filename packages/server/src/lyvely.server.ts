@@ -16,9 +16,10 @@ import csurf from 'csurf';
 import compression from 'compression';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
 import { FeatureModule, FeatureGuard } from '@/features';
-import { ExpressAdapter } from '@nestjs/platform-express';
+import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import fs from 'fs';
+import * as net from 'net';
 
 useDayJsDateTimeAdapter();
 
@@ -68,7 +69,7 @@ export class LyvelyServer {
 
   private async initNestApp() {
     this.server = express();
-    const app = await NestFactory.create(
+    const app = await NestFactory.create<NestExpressApplication>(
       new AppModuleBuilder(this.options).build(),
       new ExpressAdapter(this.server),
       {
@@ -76,7 +77,20 @@ export class LyvelyServer {
       },
     );
     app.setGlobalPrefix('api');
+
+    app.set('trust proxy', this.configService.get('http.trustProxy', false));
+
     app.useLogger(app.get(Logger));
+    app.use((req, res, next) => {
+      const clientIP = req.headers['x-real-ip'] || req.ip;
+
+      if (!net.isIP(clientIP)) {
+        // handle invalid IP address
+        return res.status(400).send('Invalid IP address');
+      }
+
+      next();
+    });
     return app;
   }
 
