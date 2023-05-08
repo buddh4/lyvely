@@ -90,9 +90,9 @@ export class LyvelyServer {
     return NestFactory.create<NestExpressApplication>(
       new AppModuleBuilder(this.options).build(),
       new ExpressAdapter(this.server),
-      {
+      /* {
         bufferLogs: true,
-      },
+      },*/
     );
   }
 
