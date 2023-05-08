@@ -27,7 +27,7 @@ interface ILyvelyServerOptions extends IAppModuleBuilderOptions {}
 
 export class LyvelyServer {
   private logger: NestLogger;
-  private nestApp: INestApplication;
+  private nestApp: NestExpressApplication;
   private server: express.Express;
   private configService: ConfigService<ConfigurationPath>;
   private options: ILyvelyServerOptions;
@@ -39,6 +39,7 @@ export class LyvelyServer {
     this.logger = new NestLogger('main');
     this.configService = this.nestApp.get(ConfigService);
 
+    this.initExpress();
     this.initHelmet();
     this.logInitConfig();
     this.initMongoose();
@@ -50,6 +51,23 @@ export class LyvelyServer {
     this.initGlobalPipes();
     this.initGlobalFilters();
     await this.initServer();
+  }
+
+  private initExpress() {
+    this.nestApp.setGlobalPrefix('api');
+
+    this.nestApp.useLogger(this.nestApp.get(Logger));
+    this.nestApp.use((req, res, next) => {
+      const clientIP = req.headers['x-real-ip'] || req.ip;
+
+      if (!net.isIP(clientIP)) {
+        // handle invalid IP address
+        return res.status(400).send('Invalid IP address');
+      }
+
+      next();
+    });
+    this.nestApp.set('trust proxy', this.configService.get('http.trustProxy', false));
   }
 
   private async initServer() {
@@ -69,29 +87,13 @@ export class LyvelyServer {
 
   private async initNestApp() {
     this.server = express();
-    const app = await NestFactory.create<NestExpressApplication>(
+    return NestFactory.create<NestExpressApplication>(
       new AppModuleBuilder(this.options).build(),
       new ExpressAdapter(this.server),
       {
         bufferLogs: true,
       },
     );
-    app.setGlobalPrefix('api');
-
-    app.set('trust proxy', this.configService.get('http.trustProxy', false));
-
-    app.useLogger(app.get(Logger));
-    app.use((req, res, next) => {
-      const clientIP = req.headers['x-real-ip'] || req.ip;
-
-      if (!net.isIP(clientIP)) {
-        // handle invalid IP address
-        return res.status(400).send('Invalid IP address');
-      }
-
-      next();
-    });
-    return app;
   }
 
   private initHelmet() {
