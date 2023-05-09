@@ -1,12 +1,24 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { MilestoneModel } from '@lyvely/common';
 import { useMilestonesService } from '@/modules/milestones/services/milestones.service';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { loadingStatus, useStatus } from '@/store';
+import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 
 export const useMilestonesStore = defineStore('milestones', () => {
-  const milestones = new Map<string, MilestoneModel>();
+  let milestones = new Map<string, MilestoneModel>();
   const allLoaded = ref(false);
   const service = useMilestonesService();
+  const status = useStatus();
+  const { profile } = storeToRefs(useProfileStore());
+
+  watch(profile, reset);
+
+  function reset() {
+    milestones = new Map<string, MilestoneModel>();
+    allLoaded.value = false;
+    status.resetStatus();
+  }
 
   async function loadMilestone(mid: string): Promise<MilestoneModel> {
     const cached = milestones.get(mid);
@@ -19,9 +31,10 @@ export const useMilestonesStore = defineStore('milestones', () => {
 
   async function loadMilestones(): Promise<MilestoneModel[]> {
     if (!allLoaded.value) {
-      const allMilestones = await service.getAll();
-      allMilestones.models.forEach((model) => setMilestone(model));
-      allLoaded.value = true;
+      await loadingStatus(service.getAll(), status, undefined, (allMilestones) => {
+        allMilestones.models.forEach((model) => setMilestone(model));
+        allLoaded.value = true;
+      });
     }
 
     return Array.from(milestones.values());
@@ -33,6 +46,7 @@ export const useMilestonesStore = defineStore('milestones', () => {
   }
 
   return {
+    ...status,
     loadMilestone,
     loadMilestones,
   };

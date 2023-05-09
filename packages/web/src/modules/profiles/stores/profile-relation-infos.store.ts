@@ -14,9 +14,14 @@ export const useProfileRelationInfosStore = defineStore('profile-relation-infos'
   }
 
   async function loadRelations() {
-    return loadingStatus(profilesRelationInfosService.getUserProfileInfos(), status, undefined, (result) => {
-      relations.value = result;
-    });
+    return loadingStatus(
+      profilesRelationInfosService.getUserProfileInfos(),
+      status,
+      undefined,
+      (result) => {
+        relations.value = result;
+      },
+    );
   }
 
   function addRelation(relation: ProfileRelationInfo) {
