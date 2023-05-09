@@ -40,7 +40,7 @@ onBeforeRouteLeave(stopWatch);
     <ly-button
       :class="roundButton"
       :active="dragActive"
-      :aria-label="$t('calendar.plan.aria.drag-toggle-button')"
+      :aria-label="$t('calendar-plan.aria.drag-toggle-button')"
       @click="dragActive = !dragActive">
       <ly-icon name="drag" />
     </ly-button>

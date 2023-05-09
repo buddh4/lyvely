@@ -42,7 +42,11 @@ const modalTitle = computed(() => {
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-input-select property="interval" :required="true" :options="getCalendarPlanOptions()" />
+        <ly-input-select
+          property="interval"
+          label="common.fields.interval_plural"
+          :required="true"
+          :options="getCalendarPlanOptions('plural')" />
       </fieldset>
       <fieldset>
         <tag-chooser v-model="model.tagNames" />

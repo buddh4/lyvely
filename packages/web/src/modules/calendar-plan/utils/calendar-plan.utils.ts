@@ -2,14 +2,16 @@ import { CalendarInterval } from '@lyvely/common';
 import { IDragEvent } from '@/modules/common';
 import { IMoveEntryEvent } from '../interfaces';
 
-export function getCalendarPlanOptions(): { value: CalendarInterval; label: string }[] {
+export function getCalendarPlanOptions(
+  mode: 'recurrent' | 'plural' = 'recurrent',
+): { value: CalendarInterval; label: string }[] {
   return [
-    { value: CalendarInterval.Daily, label: 'calendar.interval.5' },
-    { value: CalendarInterval.Weekly, label: 'calendar.interval.4' },
-    { value: CalendarInterval.Monthly, label: 'calendar.interval.3' },
-    { value: CalendarInterval.Quarterly, label: 'calendar.interval.2' },
-    { value: CalendarInterval.Yearly, label: 'calendar.interval.1' },
-    { value: CalendarInterval.Unscheduled, label: 'calendar.interval.0' },
+    { value: CalendarInterval.Daily, label: `calendar-plan.interval.${mode}.5` },
+    { value: CalendarInterval.Weekly, label: `calendar-plan.interval.${mode}.4` },
+    { value: CalendarInterval.Monthly, label: `calendar-plan.interval.${mode}.3` },
+    { value: CalendarInterval.Quarterly, label: `calendar-plan.interval.${mode}.2` },
+    { value: CalendarInterval.Yearly, label: `calendar-plan.interval.${mode}.1` },
+    { value: CalendarInterval.Unscheduled, label: `calendar-plan.interval.${mode}.0` },
   ];
 }
 

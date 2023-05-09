@@ -25,7 +25,7 @@ export function useCalendarPlanPlanNavigation(interval: CalendarInterval) {
     );
 
     if (isDaily && isTodayUtil(d)) {
-      title = translate('calendar.today') + ' ' + title;
+      title = translate('calendar-plan.today') + ' ' + title;
     }
 
     return title;

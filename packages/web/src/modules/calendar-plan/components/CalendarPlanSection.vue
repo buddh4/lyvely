@@ -58,7 +58,7 @@ function open() {
     ref="header"
     data-calendar-plan-header
     tabindex="0"
-    :aria-label="$t('calendar.plan.aria.header', { time: accessibleTitle })"
+    :aria-label="$t('calendar-plan.aria.header', { time: accessibleTitle })"
     :data-count="count"
     class="calendar-plan-item calendar-plan-header-item first:rounded-t border-divide bg-shadow text-center border relative"
     @dragenter="open"
@@ -66,7 +66,7 @@ function open() {
     <button
       v-if="showTodayIcon"
       class="today-button"
-      :title="$t('calendar.plan.nav-today')"
+      :title="$t('calendar-plan.nav-today')"
       :aria-controls="itemsId"
       @click="switchToToday">
       <ly-icon role="button" name="today" />
@@ -75,7 +75,7 @@ function open() {
     <ly-button
       v-if="leftCaret"
       tabindex="0"
-      :aria-label="$t('calendar.plan.aria.nav-back', { time: prevTitle })"
+      :aria-label="$t('calendar-plan.aria.nav-back', { time: prevTitle })"
       class="switch-timing no-underline py-0"
       :aria-controls="itemsId"
       @click="decrementTiming">
@@ -97,7 +97,7 @@ function open() {
     <ly-button
       v-if="rightCaret"
       tabindex="0"
-      :aria-label="$t('calendar.plan.aria.nav-next', { time: nextTitle })"
+      :aria-label="$t('calendar-plan.aria.nav-next', { time: nextTitle })"
       class="switch-timing no-underline py-0"
       :aria-controls="itemsId"
       @click="incrementTiming">
