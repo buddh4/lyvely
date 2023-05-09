@@ -58,7 +58,7 @@ const onInputKeydown = (evt: KeyboardEvent) => {
 
 <template>
   <div class="p-2 md:p-4 bg-main border-t border-divide">
-    <div class="mb-2 md:mb-4 bg">
+    <div class="mb-2 md:mb-4">
       <content-stream-filter-navigation />
     </div>
     <div class="flex flex-col">
