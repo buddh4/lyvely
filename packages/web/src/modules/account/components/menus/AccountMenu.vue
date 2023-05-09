@@ -86,12 +86,12 @@ function onMenuItemClick() {
             {{ $t('account.drawer.myAccount') }}
           </router-link>
         </li>
-        <li>
+        <!--li>
           <router-link to="/" :class="menuItemClass" draggable="false" @click="onMenuItemClick">
             <ly-icon name="security" />
             {{ $t('account.drawer.security') }}
           </router-link>
-        </li>
+        </li -->
         <li>
           <a
             :class="menuItemClass"
