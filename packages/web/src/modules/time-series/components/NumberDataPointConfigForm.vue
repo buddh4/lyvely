@@ -46,21 +46,21 @@ function setInputType(inputType: DataPointInputType) {
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Checkbox"
         @click="setInputType(DataPointInputType.Checkbox)">
-        {{ $t('calendar.plan.input_types.checkbox') }}
+        {{ $t('calendar-plan.input_types.checkbox') }}
       </ly-button>
 
       <ly-button
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Spinner"
         @click="setInputType(DataPointInputType.Spinner)">
-        {{ $t('calendar.plan.input_types.spinner') }}
+        {{ $t('calendar-plan.input_types.spinner') }}
       </ly-button>
 
       <ly-button
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Range"
         @click="setInputType(DataPointInputType.Range)">
-        {{ $t('calendar.plan.input_types.range') }}
+        {{ $t('calendar-plan.input_types.range') }}
       </ly-button>
 
       <ly-button
@@ -68,7 +68,7 @@ function setInputType(inputType: DataPointInputType) {
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Timer"
         @click="setInputType(DataPointInputType.Timer)">
-        {{ $t('calendar.plan.input_types.timer') }}
+        {{ $t('calendar-plan.input_types.timer') }}
       </ly-button>
     </div>
 
@@ -77,26 +77,26 @@ function setInputType(inputType: DataPointInputType) {
         <ly-input-number
           v-if="modelValue.inputType === DataPointInputType.Checkbox"
           property="max"
-          label="calendar.plan.fields.max"
+          label="calendar-plan.fields.max"
           :min="1"
           :max="8" />
         <ly-input-time-number
           v-else-if="modelValue.inputType === DataPointInputType.Timer"
           property="max"
-          label="calendar.plan.fields.max" />
-        <ly-input-number v-else property="max" label="calendar.plan.fields.max" :min="1" />
+          label="calendar-plan.fields.max" />
+        <ly-input-number v-else property="max" label="calendar-plan.fields.max" :min="1" />
       </div>
 
       <div>
         <ly-input-time-number
           v-if="modelValue.inputType === DataPointInputType.Timer"
           property="min"
-          label="calendar.plan.fields.min"
+          label="calendar-plan.fields.min"
           :max="modelValue.max" />
         <ly-input-number
           v-else
           property="min"
-          label="calendar.plan.fields.min"
+          label="calendar-plan.fields.min"
           :min="0"
           :max="modelValue.max" />
       </div>
@@ -104,20 +104,20 @@ function setInputType(inputType: DataPointInputType) {
         <ly-input-time-number
           v-if="modelValue.inputType === DataPointInputType.Timer"
           property="optimal"
-          label="calendar.plan.fields.optimal"
+          label="calendar-plan.fields.optimal"
           :min="modelValue.min"
           :max="modelValue.max" />
         <ly-input-number
           v-else
           property="optimal"
-          label="calendar.plan.fields.optimal"
+          label="calendar-plan.fields.optimal"
           :min="modelValue.min"
           :max="modelValue.max" />
       </div>
       <div v-if="score" class="flex flex-col">
         <ly-input-number
           property="score"
-          label="calendar.plan.fields.score"
+          label="calendar-plan.fields.score"
           :mb="0"
           :steps="2"
           :max="100"
@@ -129,7 +129,7 @@ function setInputType(inputType: DataPointInputType) {
             <ly-icon name="info" class="text-info-light" />
           </div>
           <div>
-            {{ $t('calendar.plan.timer_score_info') }}
+            {{ $t('calendar-plan.timer_score_info') }}
           </div>
         </div>
       </div>

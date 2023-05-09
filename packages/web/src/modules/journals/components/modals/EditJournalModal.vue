@@ -49,7 +49,7 @@ function setValueType(valueType: CreateJournalModel['valueType']) {
 const calendarPlanOptions = computed(() => getCalendarPlanOptions());
 
 const modalTitle = computed(() => {
-  return isCreate.value ? `journals.edit.title` : `journals.create.title`;
+  return isCreate.value ? `journals.create.title` : `journals.edit.title`;
 });
 </script>
 
@@ -77,21 +77,21 @@ const modalTitle = computed(() => {
               class="text-xs secondary w-full"
               :active="model.valueType === DataPointValueType.Number"
               @click="setValueType(DataPointValueType.Number)">
-              {{ $t('calendar.plan.value_types.number') }}
+              {{ $t('calendar-plan.value_types.number') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
               :active="model.valueType === DataPointValueType.Text"
               @click="setValueType(DataPointValueType.Text)">
-              {{ $t('calendar.plan.value_types.text') }}
+              {{ $t('calendar-plan.value_types.text') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
               :active="model.valueType === DataPointValueType.Selection"
               @click="setValueType(DataPointValueType.Selection)">
-              {{ $t('calendar.plan.value_types.selection') }}
+              {{ $t('calendar-plan.value_types.selection') }}
             </ly-button>
           </div>
 

@@ -23,7 +23,7 @@ const isRequired = computed({
 <template>
   <div class="flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3">
     <div class="text-xs">
-      <ly-input-checkbox v-model="isRequired" label="calendar.plan.fields.required" />
+      <ly-input-checkbox v-model="isRequired" label="calendar-plan.fields.required" />
     </div>
   </div>
 </template>

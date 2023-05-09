@@ -79,7 +79,7 @@ onUnmounted(unwatchDate);
           <ly-button
             v-if="leftCaret"
             tabindex="0"
-            :aria-label="$t('calendar.plan.aria.nav-back', { time: prevTitle })"
+            :aria-label="$t('calendar-plan.aria.nav-back', { time: prevTitle })"
             class="switch-timing no-underline py-0"
             @click="decrementTiming">
             {{ leftCaret }}
@@ -94,7 +94,7 @@ onUnmounted(unwatchDate);
           <ly-button
             v-if="rightCaret"
             tabindex="0"
-            :aria-label="$t('calendar.plan.aria.nav-next', { time: nextTitle })"
+            :aria-label="$t('calendar-plan.aria.nav-next', { time: nextTitle })"
             class="switch-timing no-underline py-0"
             @click="incrementTiming">
             {{ rightCaret }}
@@ -119,7 +119,7 @@ onUnmounted(unwatchDate);
           <button
             v-if="showTodayIcon"
             class="today-button"
-            :title="$t('calendar.plan.nav-today')"
+            :title="$t('calendar-plan.nav-today')"
             @click="switchToToday">
             <ly-icon role="button" name="today" />
           </button>
