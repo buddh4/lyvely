@@ -111,7 +111,7 @@ onUnmounted(loginStore.reset);
 
           <ly-alert :message="loginStore.status.statusError" />
 
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between cursor-pointer">
             <div class="flex flex-nowrap items-center mt-1">
               <ly-input-checkbox
                 property="remember"

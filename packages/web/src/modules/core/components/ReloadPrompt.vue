@@ -32,7 +32,7 @@ const close = async () => {
 
 <template>
   <div
-    v-if="offlineReady || needRefresh"
+    v-if="needRefresh"
     class="fixed right-0 bottom-0 m-2 p-1 md:m-4 md:p-5 bg-main border border-divide rounded text-left shadow"
     style="z-index: 910"
     role="alert">
