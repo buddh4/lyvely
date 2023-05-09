@@ -54,7 +54,7 @@ const { model } = toRefs(props);
         <ly-icon name="drag" class="fill-current w-5" />
       </button>
 
-      <div class="overflow-hidden relative flex-grow">
+      <div class="relative flex-grow">
         <div class="entry-title-bar flex items-center">
           <slot name="pre-title"></slot>
           <div class="cursor-pointer" @click="showDetails">
