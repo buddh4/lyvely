@@ -12,7 +12,7 @@
           :class="inputClass"
           :readonly="readonly"
           @change="onChange" />
-        <span v-if="label" class="label ml-2" @click="toggle">
+        <span v-if="label" class="label ml-2">
           {{ translate ? $t(label) : label }}
         </span>
       </label>
@@ -63,26 +63,18 @@ export default {
       inputClass: 'border rounded ring-0',
     });
 
-    function onChange(evt: any) {
+    function onChange(evt: any, toggle = false) {
       if (props.readonly || props.disabled) return;
-      context.emit('change', evt.target.checked, evt.target.value);
+      context.emit('change', toggle ? !evt.target.checked : evt.target.checked, evt.target.value);
     }
 
-    function toggle(evt: Event, stop?: boolean) {
-      if (stop) {
-        evt.stopImmediatePropagation();
-        evt.stopPropagation();
-        evt.preventDefault();
-      }
+    function toggle(evt: Event) {
+      evt.stopImmediatePropagation();
+      evt.stopPropagation();
+      evt.preventDefault();
 
-      if (isArray(props.modelValue)) {
-        context.emit(
-          'update:modelValue',
-          props.modelValue.filter((val) => val !== checkbox.value!.value),
-        );
-      } else {
-        baseInput.inputValue.value = !checkbox.value!.checked;
-      }
+      baseInput.inputValue.value = !checkbox.value!.checked;
+      onChange(evt, true);
     }
 
     return {
