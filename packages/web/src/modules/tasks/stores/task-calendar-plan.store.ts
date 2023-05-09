@@ -5,6 +5,7 @@ import {
   TaskFilter,
   toTimingId,
   CalendarPlanStore,
+  TaskCalendarPlanStore,
 } from '@lyvely/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlan, useCalendarPlanStore } from '@/modules/calendar-plan';
@@ -23,7 +24,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   const taskPlan = useCalendarPlan<TaskModel, TaskFilter>({
     filter: new TaskFilter(),
-    cache: new CalendarPlanStore<TaskModel>(),
+    cache: new TaskCalendarPlanStore(),
     contentTypes: [TaskModel.contentType],
     service: useTasksService(),
   });
