@@ -4,6 +4,7 @@ import { useMilestonesService } from '@/modules/milestones/services/milestones.s
 import { ref, watch } from 'vue';
 import { loadingStatus, useStatus } from '@/store';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { useContentStore } from '@/modules/content/stores/content.store';
 
 export const useMilestonesStore = defineStore('milestones', () => {
   let milestones = new Map<string, MilestoneModel>();
@@ -13,6 +14,9 @@ export const useMilestonesStore = defineStore('milestones', () => {
   const { profile } = storeToRefs(useProfileStore());
 
   watch(profile, reset);
+
+  useContentStore().onContentCreated(MilestoneModel.contentType, setMilestone);
+  useContentStore().onContentUpdated(MilestoneModel.contentType, setMilestone);
 
   function reset() {
     milestones = new Map<string, MilestoneModel>();
@@ -41,7 +45,7 @@ export const useMilestonesStore = defineStore('milestones', () => {
   }
 
   function setMilestone(milestone: MilestoneModel) {
-    if (!milestone) return;
+    if (!milestone || milestone.pid !== profile.value?.id) return;
     milestones.set(milestone.id, milestone);
   }
 

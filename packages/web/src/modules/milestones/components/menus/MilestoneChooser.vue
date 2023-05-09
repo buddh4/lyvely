@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
-import { ContentModel, MilestoneModel } from '@lyvely/common';
+import { ContentModel, MilestoneModel, UpdateMilestoneResponse } from '@lyvely/common';
 import { useSetContentMilestone } from '@/modules/content/composables/set-content-milestone.composable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import LyAddButton from '@/modules/ui/components/button/AddButton.vue';
 import { storeToRefs } from 'pinia';
+import { eventBus } from '@/modules/core/events/global.emitter';
 
 export interface IProps {
   content: ContentModel;
@@ -19,6 +20,11 @@ const { setMilestone } = useSetContentMilestone(props.content);
 const { statusError } = storeToRefs(milestonesStore);
 
 const createMilestone = () => useContentCreateStore().createContentType(MilestoneModel.contentType);
+eventBus.on('model.created.post', (response: unknown) => {
+  if (response instanceof UpdateMilestoneResponse) {
+    setMilestone(response.model.id);
+  }
+});
 </script>
 
 <template>

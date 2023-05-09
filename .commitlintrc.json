@@ -39,6 +39,7 @@
         "profiles",
         "ui",
         "docker",
+        "milestones",
         "tags",
         "tasks",
         "deps",

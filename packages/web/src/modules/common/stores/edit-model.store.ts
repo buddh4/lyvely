@@ -2,6 +2,7 @@ import { Ref, ref } from 'vue';
 import { ModelValidator, IEditModelService } from '@lyvely/common';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus } from '@/store';
+import { eventBus } from '@/modules/core/events/global.emitter';
 
 export interface IEditModelStoreOptions<
   TModel,
@@ -78,6 +79,8 @@ export function useUpdateModelStore<
       );
 
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
+        const event = isCreate.value ? 'created' : 'updated';
+        eventBus.emit(`model.${event}.post`, response);
         options.onSubmitSuccess(<TResponse>response);
       }
 

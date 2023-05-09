@@ -106,7 +106,10 @@ function onContentUpdate(evt: ContentUpdateStateLiveEvent) {
 
 const contentStore = useContentStore();
 const onContentCreated = (content: ContentModel) => {
-  stream.addHead([content], true);
+  // TODO: We need to filter by all active filters here
+  if (filter.value.parentId === content.meta.parentId) {
+    stream.addHead([content], true);
+  }
 };
 
 let unWatchFilter: WatchStopHandle;
