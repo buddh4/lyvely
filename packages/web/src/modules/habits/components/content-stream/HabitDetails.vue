@@ -63,14 +63,15 @@ onUnmounted(unwatchDate);
       </div>
     </template>
     <template #body>
-      <div>
+      <div v-if="model.content.text?.length" class="mb-4">
         {{ model.content.text }}
       </div>
       <div>
         <time-series-summary
           class="mt-4"
           :summary="model.timeSeriesSummary"
-          :interval="model.interval" />
+          :interval="model.interval"
+          height="200px" />
       </div>
     </template>
     <template #footer>

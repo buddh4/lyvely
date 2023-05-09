@@ -1,19 +1,30 @@
 <script lang="ts" setup>
 import { MovingAverageCalculator, ITimeSeriesSummary, CalendarInterval } from '@lyvely/common';
-import { onMounted, ref, watch, watchEffect } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
 import * as echarts from 'echarts/core';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { usePageStore } from '@/modules/core/store/page.store';
+import { translate } from '@/i18n';
 
 export interface IProps {
   summary: ITimeSeriesSummary;
   interval: CalendarInterval;
+  showTrend?: boolean;
+  width?: string | number;
+  height?: string | number;
 }
 
-const props = defineProps<IProps>();
+const props = withDefaults(defineProps<IProps>(), {
+  width: '100%',
+  height: '100%',
+  showTrend: true,
+});
+
 const { locale } = storeToRefs(useProfileStore());
 
 const chartRoot = ref<HTMLElement>();
+let chart: echarts.EChartsType;
 
 watch(
   () => props.summary,
@@ -21,20 +32,43 @@ watch(
   { deep: true },
 );
 
+const { isDark } = storeToRefs(usePageStore());
+
+const textStyle = computed(() => ({ color: isDark.value ? '#f3f4f6' : '#4b5563' }));
+
+watch(isDark, () => {
+  if (!chart) return;
+  renderSummaryChart(props.summary);
+});
+
+const onResize = () => chart?.resize();
+
 function renderSummaryChart(summary: ITimeSeriesSummary) {
   const { tids, values, movingAverages, differences } =
     MovingAverageCalculator.calculateMovingAverage(summary, props.interval, locale.value!);
 
-  const chart = echarts.init(chartRoot.value!, <any>null, { width: 500, height: 300 });
+  chart = echarts.init(chartRoot.value!);
 
-  chart.setOption({
+  chart!.setOption({
     tooltip: {
       trigger: 'axis',
       position: function (pt: number[]) {
         return [pt[0], '10%'];
       },
+      axisPointer: {
+        label: {
+          show: true,
+        },
+      },
     },
-    legend: {},
+    textStyle: textStyle.value,
+    legend: {
+      textStyle: textStyle.value,
+      selected: {
+        [translate('time-series.chart.value')]: true,
+        [translate('time-series.chart.trend')]: false,
+      },
+    },
     xAxis: {
       type: 'category',
       data: tids.map((tid: string) => tid.split(';').at(-1)),
@@ -44,17 +78,18 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
     },
     series: [
       {
-        name: 'Value',
+        name: translate('time-series.chart.value'),
         data: values,
         type: 'line',
         smooth: true,
         areaStyle: {},
       },
       {
-        name: 'Trend',
+        name: translate('time-series.chart.trend'),
         data: movingAverages,
         type: 'line',
         smooth: true,
+
         lineStyle: {
           width: 2,
         },
@@ -63,11 +98,15 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
   });
 }
 
-onMounted(() => renderSummaryChart(props.summary));
+onMounted(() => {
+  renderSummaryChart(props.summary);
+  window.addEventListener('resize', onResize);
+});
+onUnmounted(() => window.removeEventListener('resize', onResize));
 </script>
 
 <template>
-  <div ref="chartRoot"></div>
+  <div ref="chartRoot" :style="{ height, width }"></div>
 </template>
 
 <style scoped></style>
