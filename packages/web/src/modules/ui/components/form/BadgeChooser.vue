@@ -176,7 +176,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
     v-model="visible"
     :title="label"
     :cancel-button="false"
-    submit-button-text="common.close"
+    submit-button-text="common.select"
     submit-icon="check"
     @submit="visible = false">
     <div ref="chooser" class="flex flex-col">
