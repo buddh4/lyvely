@@ -1,4 +1,4 @@
-import { Profile, UserProfileRelation } from '@/profiles';
+import { Profile, UserProfileRelation } from '../schemas';
 import { BaseModel, PropertyType } from '@lyvely/common';
 import { User } from '@/users';
 
