@@ -75,7 +75,7 @@ onMounted(async () => {
           </i18n-t>
 
           <div class="flex flex-col space-y-1">
-            <ly-button v-if="user.id !== mailInviteInfo.hostId" class="primary">
+            <ly-button v-if="user?.id !== mailInviteInfo.hostId" class="primary">
               <i18n-t keypath="invitations.buttons.join_as_current">
                 <template #username>
                   {{ user?.username }}

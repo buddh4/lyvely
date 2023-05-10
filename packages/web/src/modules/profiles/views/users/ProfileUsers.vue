@@ -7,7 +7,7 @@ import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
 import LyAvatar from '@/modules/ui/components/avatar/AvatarImage.vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { computed } from 'vue';
-import { BaseMembershipRole } from '@lyvely/common';
+import { BaseMembershipRole, ProfileRelationModel } from '@lyvely/common';
 
 const sendInviteStore = useSendInviteUsersStore();
 const profileStore = useProfileStore();
@@ -23,9 +23,12 @@ const order = [
 ];
 
 const profileRelations = computed(() => {
-  const profileRelations = profile.value.profileRelations;
-  return [...profileRelations].sort((a: BaseMembershipRole, b: BaseMembershipRole) => {
-    return order.indexOf(a) - order.indexOf(b);
+  const profileRelations = profile.value?.profileRelations || [];
+  return [...profileRelations].sort((a: ProfileRelationModel, b: ProfileRelationModel) => {
+    return (
+      order.indexOf((a.role as BaseMembershipRole) || BaseMembershipRole.Guest) -
+      order.indexOf((b.role as BaseMembershipRole) || BaseMembershipRole.Guest)
+    );
   });
 });
 
@@ -47,7 +50,7 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
         v-for="relation in profileRelations"
         :key="relation.uid"
         class="flex py-4 px-3 bg-main items-center border-divide">
-        <ly-user-avatar v-if="relation.uid === user.id" />
+        <ly-user-avatar v-if="relation.uid === user?.id" />
         <ly-avatar v-else :name="relation.userInfo.displayName" :guid="relation.userInfo.guid" />
         <span class="ml-2">
           {{ relation.userInfo.displayName }}
