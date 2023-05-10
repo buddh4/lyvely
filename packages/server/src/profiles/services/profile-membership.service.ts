@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Membership, Profile, ProfileRelationUserInfo } from '../schemas';
 import { MembershipsDao } from '../daos';
 import { EntityIdentity } from '@/core';
+import { User } from '@/users';
 
 @Injectable()
 export class ProfileMembershipService {

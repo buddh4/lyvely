@@ -15,6 +15,7 @@ import {
 } from './schemas';
 import { JwtModule } from '@nestjs/jwt';
 import { InvitationsService } from '@/invitations/services/invitations.service';
+import { NotificationsModule } from '@/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { InvitationsService } from '@/invitations/services/invitations.service';
     UsersModule,
     ProfilesModule,
     JwtModule,
+    NotificationsModule,
   ],
   controllers: [InvitationsController],
   providers: [InvitationDao, InvitationsService, SendInvitationsService, MailInvitesService],

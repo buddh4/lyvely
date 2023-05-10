@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Profile, ProfilePermissionsService, ProfilesService } from '@/profiles';
+import { Profile, ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import {
   InvitationRequest,
   MaxInvitationError,
-  BaseProfileRelationRole,
   ForbiddenServiceException,
   isValidEmail,
   FieldValidationException,
@@ -18,8 +17,10 @@ import { ConfigService } from '@nestjs/config';
 import { assureObjectId, ConfigurationPath } from '@/core';
 import { InvitationDao } from '@/invitations/daos/invitation.dao';
 import { isDefined } from 'class-validator';
-import { MailInvitation } from '../schemas';
-import jwt from 'jsonwebtoken';
+import { Invitation, MailInvitation, UserInvitation } from '../schemas';
+import { NotificationService } from '@/notifications';
+import { ProfileInvitationNotification } from '@/invitations/notifications';
+import { MultiUserSubscription } from '@/user-subscription';
 
 const JWT_USER_INVITE_TOKEN = 'invitation_token';
 
@@ -32,7 +33,7 @@ export class SendInvitationsService {
     private jwtService: JwtService,
     private configService: ConfigService<ConfigurationPath>,
     private inviteDao: InvitationDao,
-    private profilePermissionsService: ProfilePermissionsService,
+    private notificationService: NotificationService,
   ) {}
 
   public async sendInvitations(host: User, inviteRequest: InvitationRequest) {
@@ -96,8 +97,9 @@ export class SendInvitationsService {
     const existingMembers = await this.profileService.findManyUserProfileRelations(
       pid,
       existingUsers,
+      true,
     );
-    const userInvites = [] as MailInvitation[];
+    const invitationEntities: Invitation[] = [];
 
     for (const invite of invites) {
       const { email } = invite;
@@ -108,30 +110,58 @@ export class SendInvitationsService {
       // Filter out all users which are already member of this profile
       if (existingMembers.find(({ user }) => user.getVerifiedUserEmail(email))) continue;
 
-      userInvites.push(
-        new MailInvitation({
-          pid,
-          email,
-          createdBy: assureObjectId(host),
-          role:
-            invite.role === BaseProfileRelationRole.Guest
-              ? BaseProfileRelationRole.Guest
-              : BaseProfileRelationRole.Member,
-          token: this.createMailInviteToken(invite.email),
-        }),
-      );
+      const existingUser = existingUsers.find((user) => user.getVerifiedUserEmail(email));
+
+      if (existingUser) {
+        invitationEntities.push(
+          new UserInvitation({
+            pid,
+            uid: existingUser._id,
+            createdBy: assureObjectId(host),
+            role: invite.role,
+          }),
+        );
+      } else {
+        invitationEntities.push(
+          new MailInvitation({
+            pid,
+            email,
+            createdBy: assureObjectId(host),
+            role: invite.role,
+            token: this.createMailInviteToken(invite.email),
+          }),
+        );
+      }
     }
 
-    const inviteModels = await this.inviteDao.saveMany(userInvites);
+    const persistedInvitations = await this.inviteDao.saveMany(invitationEntities);
+
+    const userInvitations = <UserInvitation[]>(
+      persistedInvitations.filter((i) => i instanceof UserInvitation)
+    );
+
+    const mailInvitations = <MailInvitation[]>(
+      persistedInvitations.filter((i) => i instanceof MailInvitation)
+    );
+
+    return Promise.all([
+      this.sendMailInvitations(mailInvitations, host, profile),
+      this.sendUserInvitations(userInvitations, host, profile),
+    ]).then(() => [...userInvitations, ...mailInvitations]);
+  }
+
+  private async sendMailInvitations(invitations: MailInvitation[], host: User, profile?: Profile) {
     return Promise.all(
-      inviteModels.map((inviteModel) => {
-        return this.sendInviteMail(
-          (<MailInvitation>inviteModel).email,
-          host,
-          inviteModel.token,
-          profile,
-        ).then(() => inviteModel);
-      }),
+      invitations.map((inviteModel) =>
+        this.sendInviteMail(inviteModel.email, host, inviteModel.token, profile),
+      ),
+    );
+  }
+
+  private async sendUserInvitations(invitations: UserInvitation[], host: User, profile: Profile) {
+    return this.notificationService.sendNotification(
+      new ProfileInvitationNotification(profile, host),
+      new MultiUserSubscription(invitations.map((i) => i.uid)),
     );
   }
 
@@ -196,6 +226,8 @@ export class SendInvitationsService {
       inviteRequest.pid,
     );
 
+    if (!profileContext.getMembership()) throw new ForbiddenServiceException();
+    /*
     const permissions = ['invite.member'];
     if (inviteRequest.invites.find((invite) => invite.role === BaseProfileRelationRole.Guest)) {
       permissions.push('invite.guest');
@@ -208,6 +240,7 @@ export class SendInvitationsService {
     ) {
       throw new ForbiddenServiceException();
     }
+    */
   }
 
   public createMailInviteToken(email: string): string {
@@ -221,13 +254,5 @@ export class SendInvitationsService {
     if (typeof issuer === 'string') options.issuer = issuer;
 
     return this.jwtService.sign({ sub: email, purpose: JWT_USER_INVITE_TOKEN }, options);
-  }
-
-  public verifyToken(token: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      jwt.verify(token, this.configService.get('auth.jwt.verify.secret'), (err, decoded) => {
-        resolve(!err);
-      });
-    });
   }
 }

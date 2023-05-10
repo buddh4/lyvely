@@ -4,10 +4,17 @@ import { storeToRefs } from 'pinia';
 import { ProfileUsage, ProfileType } from '@lyvely/common';
 import { translate } from '@/i18n';
 import LyBadgeChooser from '@/modules/ui/components/form/BadgeChooser.vue';
+import { useRouter } from 'vue-router';
+import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 
 const createProfileStore = useCreateProfileStore();
 const { show, model, validator, error } = storeToRefs(createProfileStore);
 const { reset, submit } = createProfileStore;
+
+const router = useRouter();
+
+const createProfile = () =>
+  submit().then((profile) => router.push(profileRoute('/stream', profile.id)));
 
 const userType = ProfileType.User;
 const groupType = ProfileType.Group;
@@ -23,7 +30,7 @@ const usageLabel = (usage: string) => translate('profiles.usage.' + usage.toLowe
 </script>
 
 <template>
-  <ly-modal v-model="show" title="profiles.create.title" @cancel="reset" @submit="submit">
+  <ly-modal v-model="show" title="profiles.create.title" @cancel="reset" @submit="createProfile">
     <ly-form-model v-model="model" label-key="profiles.create.properties" :validator="validator">
       <ly-input-text property="name" :required="true" />
       <ly-input-textarea property="description" />

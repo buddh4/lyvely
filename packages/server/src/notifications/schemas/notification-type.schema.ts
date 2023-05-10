@@ -3,11 +3,16 @@ import { BaseEntity } from '@/core';
 import { PropertyType, Type, UrlRoute } from '@lyvely/common';
 import { Translatable } from '@/i18n';
 import { ProfileInfo, ProfileInfoSchema } from '@/profiles';
-import { UserInfo, UserInfoSchema } from '@/users';
+import { User, UserInfo, UserInfoSchema } from '@/users';
 
 export enum RenderFormat {
   HTML = 'html',
   PLAINTEXT = 'plain',
+}
+
+export interface NotificationContext {
+  format: RenderFormat;
+  receiver: User;
 }
 
 export interface INotificationType {
@@ -16,8 +21,8 @@ export interface INotificationType {
   profileInfo?: ProfileInfo;
   userInfo?: UserInfo;
   getUrl(): UrlRoute;
-  getTitle(format: RenderFormat): Translatable;
-  getBody(format: RenderFormat): Translatable;
+  getTitle(format: NotificationContext): Translatable;
+  getBody(format: NotificationContext): Translatable;
 }
 
 export type TNotificationType = Type<NotificationType> & { typeName: string };
@@ -50,18 +55,18 @@ export abstract class NotificationType<T extends INotificationType = INotificati
   }
 
   abstract getUrl(): UrlRoute | null;
-  abstract getTitle(format: RenderFormat): Translatable;
-  abstract getBody(format: RenderFormat): Translatable;
+  abstract getTitle(context: NotificationContext): Translatable;
+  abstract getBody(context: NotificationContext): Translatable;
   abstract getCategory(): string;
 }
 
 @Schema({ discriminatorKey: 'type' })
 export class NotificationSchemaType extends NotificationType implements INotificationType {
-  getBody(format: RenderFormat): Translatable {
+  getBody(format: NotificationContext): Translatable {
     return undefined;
   }
 
-  getTitle(format: RenderFormat): Translatable {
+  getTitle(format: NotificationContext): Translatable {
     return undefined;
   }
 

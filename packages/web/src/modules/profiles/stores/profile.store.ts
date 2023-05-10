@@ -80,7 +80,7 @@ export const useProfileStore = defineStore('profile', () => {
   }
 
   function getUserInfo(uid: string) {
-    const relation = profile.value?.relations.find((realtion) => realtion.uid === uid);
+    const relation = profile.value?.profileRelations.find((realtion) => realtion.uid === uid);
     return relation?.userInfo;
   }
 

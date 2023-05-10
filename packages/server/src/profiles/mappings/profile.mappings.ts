@@ -1,5 +1,10 @@
-import { ProfileContext } from '../models';
-import { ProfileRelationInfo, ProfileRelationInfos, ProfileWithRelationsModel, registerMapping } from '@lyvely/common';
+import { ProfileContext, ProfileRelations } from '../models';
+import {
+  ProfileRelationInfo,
+  ProfileRelationInfos,
+  ProfileWithRelationsModel,
+  registerMapping,
+} from '@lyvely/common';
 
 export function useProfileMappings() {
   registerMapping(ProfileContext, ProfileRelationInfo, (relations) => {
@@ -26,10 +31,19 @@ export function useProfileMappings() {
     });
   });
 
+  registerMapping(ProfileRelations, ProfileWithRelationsModel, (relations) => {
+    return new ProfileWithRelationsModel({
+      ...relations.profile,
+      userRelations: relations.userRelations,
+      profileRelations: relations.profileRelations,
+    });
+  });
+
   registerMapping(ProfileContext, ProfileWithRelationsModel, (relations) => {
     return new ProfileWithRelationsModel({
       ...relations.profile,
-      relations: relations.relations,
+      userRelations: relations.relations,
+      profileRelations: relations.relations,
     });
   });
 }

@@ -1,25 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { User, UsersService } from '@/users';
 import {
+  BaseMembershipRole,
+  EntityNotFoundException,
   ProfileType,
   ProfileUsage,
-  BaseMembershipRole,
   ProfileVisibilityLevel,
-  EntityNotFoundException,
   UniqueConstraintException,
 } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { ProfileContext } from '../models';
-import { assureObjectId, assureStringId, EntityIdentity, withTransaction } from '@/core';
 import {
-  Profile,
+  assureObjectId,
+  assureStringId,
+  EntityIdentity,
+  Transaction,
+  withTransaction,
+} from '@/core';
+import {
   ICreateProfileOptions,
   ICreateProfileTypeOptions,
+  Profile,
   ProfilesFactory,
   UserProfileRelation,
 } from '../schemas';
 import { InjectConnection } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
+import { ProfileRelations } from '@/profiles/models/profile-relations.model';
 
 @Injectable()
 export class ProfilesService {
@@ -124,10 +131,12 @@ export class ProfilesService {
         transaction,
       );
 
-      const [membership] = await Promise.all([
-        this.membershipDao.addMembership(profile, owner, BaseMembershipRole.Owner, transaction),
-        this.usersService.incrementProfileCount(owner, profile.type, transaction),
-      ]);
+      const membership = await this.createMembership(
+        profile,
+        owner,
+        BaseMembershipRole.Owner,
+        transaction,
+      );
 
       return new ProfileContext({
         user: owner,
@@ -135,6 +144,44 @@ export class ProfilesService {
         relations: [membership],
       });
     });
+  }
+
+  async createMembership(
+    profile: Profile,
+    member: User,
+    role: BaseMembershipRole = BaseMembershipRole.Member,
+    transaction?: Transaction,
+  ) {
+    const existingMembership = await this.membershipDao.findByProfileAndUser(
+      profile,
+      member,
+      transaction,
+    );
+
+    if (existingMembership) {
+      if (existingMembership.role !== role) {
+        await this.membershipDao.updateOneSetById(existingMembership, { role }, transaction);
+      }
+      return existingMembership;
+    }
+
+    const [membership] = await Promise.all([
+      this.membershipDao.addMembership(profile, member, role, transaction),
+      this.usersService.incrementProfileCount(member, profile.type, transaction),
+    ]);
+
+    return membership;
+  }
+
+  async findProfileRelations(
+    user: User,
+    identity: EntityIdentity<Profile>,
+  ): Promise<ProfileRelations> {
+    const profile =
+      identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+    const profileRelations = await this.profileRelationsDao.findAllByProfile(identity);
+    const userRelations = profileRelations.filter((relation) => relation.uid.equals(user._id));
+    return new ProfileRelations({ user, profile, profileRelations, userRelations });
   }
 
   async findUserProfileRelations(
@@ -154,6 +201,7 @@ export class ProfilesService {
   async findManyUserProfileRelations(
     identity: EntityIdentity<Profile>,
     users: User[],
+    skipEmptyRelations = false,
   ): Promise<ProfileContext[]> {
     if (!users?.length) return [];
 
@@ -162,9 +210,9 @@ export class ProfilesService {
 
     if (!profile) return [];
 
-    const result = new Map<string, ProfileContext>();
+    const profileContextMap = new Map<string, ProfileContext>();
     const uids = users.map((user) => {
-      result.set(
+      profileContextMap.set(
         user.id,
         new ProfileContext<Profile>({
           user,
@@ -181,10 +229,13 @@ export class ProfilesService {
     });
 
     relations.forEach((relation) => {
-      result.get(assureStringId(relation.uid)).relations.push(relation);
+      profileContextMap.get(assureStringId(relation.uid)).relations.push(relation);
     });
 
-    return Array.from(result.values());
+    const result = Array.from(profileContextMap.values());
+    return skipEmptyRelations
+      ? result.filter((profileContext) => !!profileContext.relations.length)
+      : result;
   }
 
   async findAllUserProfileRelations(identity: EntityIdentity<Profile>) {

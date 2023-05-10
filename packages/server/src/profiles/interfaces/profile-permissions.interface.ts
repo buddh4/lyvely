@@ -1,25 +1,5 @@
 import { ContentVisibilityLevel, BaseProfileRelationRole } from '@lyvely/common';
 
-export enum BaseMembershipRole {
-  Owner = 'owner',
-  Member = 'member',
-  Admin = 'admin',
-}
-
-export enum BaseProfilePermissionRole {
-  Owner = 'owner',
-  Admin = 'admin',
-  Moderator = 'moderator',
-  Member = 'member',
-  Guest = 'guest',
-  Organization = 'organization',
-  InvitedMember = 'member_invited',
-  RequestedMember = 'member_requested',
-  Follower = 'follower',
-  User = 'user',
-  Visitor = 'visitor',
-}
-
 export type RoleName = string;
 export type Permission = string;
 
@@ -66,14 +46,31 @@ export const defaultProfileRolesDefinition: IProfileRoleDefinition[] = [
     assignable: true,
     extendable: true,
   },
-  { role: BaseProfileRelationRole.Guest, label: 'Guest', visibility: ContentVisibilityLevel.Member, extendable: true },
-  { role: BaseProfileRelationRole.Organization, label: 'Guest', visibility: ContentVisibilityLevel.Organization },
-  { role: BaseProfileRelationRole.InvitedMember, label: 'Invited users', visibility: ContentVisibilityLevel.User },
+  {
+    role: BaseProfileRelationRole.Guest,
+    label: 'Guest',
+    visibility: ContentVisibilityLevel.Member,
+    extendable: true,
+  },
+  {
+    role: BaseProfileRelationRole.Organization,
+    label: 'Guest',
+    visibility: ContentVisibilityLevel.Organization,
+  },
+  {
+    role: BaseProfileRelationRole.InvitedMember,
+    label: 'Invited users',
+    visibility: ContentVisibilityLevel.User,
+  },
   {
     role: BaseProfileRelationRole.RequestedMember,
     label: 'Membership requested',
     visibility: ContentVisibilityLevel.User,
   },
   { role: BaseProfileRelationRole.User, label: 'User', visibility: ContentVisibilityLevel.User },
-  { role: BaseProfileRelationRole.Visitor, label: 'Visitor', visibility: ContentVisibilityLevel.Public },
+  {
+    role: BaseProfileRelationRole.Visitor,
+    label: 'Visitor',
+    visibility: ContentVisibilityLevel.Public,
+  },
 ];

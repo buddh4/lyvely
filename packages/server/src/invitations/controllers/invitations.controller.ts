@@ -1,14 +1,4 @@
-import {
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Body,
-  Req,
-  Get,
-  Param,
-  Logger,
-} from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus, Post, Body, Req, Get, Param } from '@nestjs/common';
 import { SendInvitationsService, MailInvitesService } from '../services';
 import { InvitationsEndpoint, ENDPOINT_INVITATIONS, InvitationRequest } from '@lyvely/common';
 import { Public, UseClassSerializer } from '@/core';

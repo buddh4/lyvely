@@ -2,7 +2,12 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { NotificationDao } from '@/notifications/daos';
-import { Notification, NotificationType, RenderFormat } from '@/notifications/schemas';
+import {
+  Notification,
+  NotificationContext,
+  NotificationType,
+  RenderFormat,
+} from '@/notifications/schemas';
 import { SingleUserSubscription } from '@/user-subscription';
 import { NotificationSenderProcessor } from '@/notifications/processors/notification-sender.processor';
 import { UserNotificationsService } from '@/notifications/services';
@@ -22,16 +27,16 @@ export class MyTestNotification extends NotificationType<MyTestNotification> {
 
   nonProp: string;
 
-  getBody(format: RenderFormat): Translatable {
+  getBody(context: NotificationContext): Translatable {
     return {
       key: 'test.notification.body',
       params: {
-        user: escapeHtmlIf(this.userInfo?.name, format === RenderFormat.HTML),
+        user: escapeHtmlIf(this.userInfo?.name, context.format === RenderFormat.HTML),
       },
     };
   }
 
-  getTitle(format: RenderFormat): Translatable {
+  getTitle(format: NotificationContext): Translatable {
     return { key: 'test.notification.title' };
   }
 

@@ -57,6 +57,7 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
         useInvitationsService().sendInvitations(
           new InvitationRequest({
             invites: emails.value.map((email) => new MailInvite({ email })),
+            pid: profileId.value || undefined,
           }),
         ),
         status,
@@ -82,6 +83,15 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
     profileId.value = null;
   }
 
+  function openModal(pid?: string) {
+    reset();
+    if (pid) {
+      profileId.value = pid;
+    }
+
+    showModal.value = true;
+  }
+
   return {
     ...status,
     emails,
@@ -90,6 +100,7 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
     removeEmail,
     emailInput,
     showModal,
+    openModal,
     submit,
     reset,
   };

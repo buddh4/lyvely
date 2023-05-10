@@ -8,8 +8,9 @@ import {
   ENDPOINT_PROFILES,
 } from '@lyvely/common';
 import { ProfilesService } from '../services';
-import { ProfileContext } from '../models';
-import { UseClassSerializer } from '../../core';
+import { ProfileContext, ProfileRelations } from '../models';
+import { UseClassSerializer } from '@/core';
+import { User, UserRequest } from '@/users';
 
 @Controller(ENDPOINT_PROFILES)
 @UseClassSerializer()
@@ -17,17 +18,25 @@ export class ProfilesController implements ProfilesEndpoint {
   constructor(private profilesService: ProfilesService) {}
 
   @Get(':id')
-  async getProfile(@Param('id') id: string, @Request() req): Promise<ProfileWithRelationsModel> {
-    const profileRelations =
-      id === 'default'
-        ? await this.profilesService.findDefaultProfileMembershipByUser(req.user)
-        : await this.profilesService.findUserProfileRelations(req.user, id);
-
-    // TODO: (profile visibility) currently only member profiles are supported
-    if (!profileRelations.getMembership()) {
-      throw new NotFoundException();
+  async getProfile(
+    @Param('id') pid: string,
+    @Request() req: UserRequest,
+  ): Promise<ProfileWithRelationsModel> {
+    const { user } = req;
+    if (pid === 'default') {
+      return this.getDefaultProfile(req.user);
     }
 
+    const profileRelations = await this.profilesService.findProfileRelations(user, pid);
+
+    // TODO: (profile visibility) currently only member profiles are supported
+    if (!profileRelations.userRelations.length) throw new NotFoundException();
+
+    return mapType(ProfileRelations, ProfileWithRelationsModel, profileRelations);
+  }
+
+  private async getDefaultProfile(user: User) {
+    const profileRelations = await this.profilesService.findDefaultProfileMembershipByUser(user);
     return mapType(ProfileContext, ProfileWithRelationsModel, profileRelations);
   }
 

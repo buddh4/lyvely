@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, ObjectIdProp } from '@/core';
-import { BaseProfileRelationRole } from '@lyvely/common';
+import { BaseMembershipRole } from '@lyvely/common';
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Invitation<T extends Invitation = any> extends BaseEntity<T> {
@@ -16,13 +16,18 @@ export class Invitation<T extends Invitation = any> extends BaseEntity<T> {
   @Prop()
   token?: string;
 
-  @Prop({ enum: [BaseProfileRelationRole.Member, BaseProfileRelationRole.Guest] })
-  role?: BaseProfileRelationRole.Member | BaseProfileRelationRole.Guest;
+  @Prop({ enum: [BaseMembershipRole.Member, BaseMembershipRole.Guest] })
+  role?: BaseMembershipRole.Member | BaseMembershipRole.Guest;
 
   type: string;
 
   createdAt: Date;
   updatedAt: Date;
+
+  afterInit() {
+    this.role =
+      this.role === BaseMembershipRole.Guest ? BaseMembershipRole.Guest : BaseMembershipRole.Member;
+  }
 }
 
 export const InvitationSchema = SchemaFactory.createForClass(Invitation);

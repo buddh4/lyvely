@@ -83,8 +83,8 @@ router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuard
   }
   next();
 });
-router.beforeEach(appConfigGuard);
 router.beforeEach(messageLoaderGuard);
+router.beforeEach(appConfigGuard);
 router.beforeEach(authGuard);
 router.afterEach(() => usePageStore().setShowAppLoader(false));
 router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {

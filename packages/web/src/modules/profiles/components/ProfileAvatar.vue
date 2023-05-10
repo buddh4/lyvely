@@ -13,31 +13,10 @@ export interface IProps {
 const props = defineProps<IProps>();
 
 const profile = computed(() => props.profile || useProfileStore().profile);
-const url = computed(() => (profile.value?.guid ? createFileUrl(profile.value.guid) : undefined));
-const hasUrl = computed(() => url.value?.length);
-const initials = computed(() => profile.value?.name.substring(0, 2));
-const color = computed(() => randomColor({ seed: profile.value?.id || '' }));
-const textClass = computed(() => {
-  return getContrast(color.value) === 'black' ? 'text-slate-900' : 'text-slate-100';
-});
 </script>
 
 <template>
-  <img
-    v-if="hasUrl"
-    :src="url"
-    class="rounded-full w-6 h-6 uppercase flex justify-center items-center text-xs p-1 select-none border border-shadow dark:border-divide"
-  />
-  <div
-    v-if="!hasUrl"
-    :class="[
-      'rounded-full w-6 h-6 uppercase flex justify-center items-center text-xs p-1 select-none border border-shadow dark:border-divide',
-      textClass,
-    ]"
-    :style="{ 'background-color': color }"
-  >
-    {{ initials }}
-  </div>
+  <ly-avatar v-if="profile" :name="profile.name" :guid="profile.guid" />
 </template>
 
 <style scoped></style>

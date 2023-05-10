@@ -48,3 +48,8 @@ export class ProfileRelationModel<T extends IProfileRelation = IProfileRelation>
   @Expose()
   role?: string;
 }
+
+@Exclude()
+export class ProfileRelationDetailsModel<
+  T extends IProfileRelation = IProfileRelation,
+> extends ProfileRelationModel<T> {}

@@ -82,8 +82,17 @@ export class MailNotificationChannel implements INotificationChannel {
     const { data } = notification;
     const { user } = context;
 
-    const subject = this.i18n.t(data.getTitle(RenderFormat.PLAINTEXT), user);
-    const title = this.i18n.t(data.getTitle(RenderFormat.HTML), user);
+    const subject = this.i18n.t(
+      data.getTitle({ receiver: user, format: RenderFormat.PLAINTEXT }),
+      user,
+    );
+    const title = this.i18n.t(
+      data.getTitle({
+        receiver: user,
+        format: RenderFormat.HTML,
+      }),
+      user,
+    );
     const body = this.renderMailBody(user, userNotification, data);
 
     await this.mailService.sendMail({
@@ -108,7 +117,11 @@ export class MailNotificationChannel implements INotificationChannel {
     });
     const buttonText = this.i18n.t('notifications.actions.open', user);
     const button = `<a href="${url}">${buttonText}</a>`;
-    return this.i18n.t(data.getBody(RenderFormat.HTML), user) + '<br>' + button;
+    return (
+      this.i18n.t(data.getBody({ receiver: user, format: RenderFormat.HTML }), user) +
+      '<br>' +
+      button
+    );
   }
 
   private getEmail(context: UserSubscriptionContext) {

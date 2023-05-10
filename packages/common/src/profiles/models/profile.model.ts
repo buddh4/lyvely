@@ -69,13 +69,20 @@ export enum BaseUserProfileRelationType {
   Membership = 'Membership',
 }
 
+/**
+ * Defines the role a profile member can have.
+ */
 export enum BaseMembershipRole {
   Owner = 'owner',
   Admin = 'admin',
   Moderator = 'moderator',
   Member = 'member',
+  Guest = 'guest',
 }
 
+/**
+ * Defines the possible relations a user or visitor can have with a profile.
+ */
 export enum BaseProfileRelationRole {
   Owner = 'owner',
   Admin = 'admin',

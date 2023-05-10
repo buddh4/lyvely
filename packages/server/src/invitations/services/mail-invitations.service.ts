@@ -28,6 +28,7 @@ export class MailInvitesService {
       isVerifiedMail: !!invitee,
       hostName: host?.getDisplayName(),
       hostGuid: host?.guid,
+      hostId: host?.id,
     });
   }
 }

@@ -20,10 +20,7 @@ import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { AccountService } from '@/account/services/account.service';
 import { ParseFilePipeBuilder } from '@/files/pipes/parse-file-pipe.builder';
 import { MimeTypeValidator } from '@/files/validators/mime-type.validator';
-import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
-import fs from 'fs/promises';
-import { getLocalFilePath } from '@/files/file-path.utils';
 import { AccountAvatarService } from '@/account/services/account-avatar.service';
 
 const avatarPipe = new ParseFilePipeBuilder()

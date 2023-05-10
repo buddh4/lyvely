@@ -117,6 +117,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
 
     const models: WebNotification[] = [];
     const toDelete: TObjectId[] = [];
+    const { user } = context;
 
     userNotifications.forEach((userNotification) => {
       const notification = notifications.find((notification) =>
@@ -129,17 +130,17 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
       }
 
       const notificationType = notification.data;
-
+      const notificationContext = { receiver: user, format: RenderFormat.HTML };
       models.push(
         new WebNotification({
           id: userNotification.id,
           type: notificationType.type,
           sortOrder: notification.sortOrder,
-          body: this.i18n.t(notificationType.getBody(RenderFormat.HTML), context.user),
-          title: this.i18n.t(notificationType.getTitle(RenderFormat.HTML), context.user),
+          body: this.i18n.t(notificationType.getBody(notificationContext), user),
+          title: this.i18n.t(notificationType.getTitle(notificationContext), user),
           seen: userNotification.seen,
-          userInfo: notificationType.userInfo?.getDto(),
-          profileInfo: notificationType.profileInfo?.getDto(),
+          userInfo: notificationType.userInfo?.toModel(),
+          profileInfo: notificationType.profileInfo?.toModel(),
         }),
       );
     });

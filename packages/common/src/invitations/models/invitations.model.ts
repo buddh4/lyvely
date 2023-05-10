@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { BaseModel, PropertyType } from '@/models';
-import { BaseProfileRelationRole } from '@/profiles';
+import { BaseMembershipRole } from '@/profiles';
 
 @Exclude()
 export class MailInvite extends BaseModel<MailInvite> {
@@ -20,9 +20,9 @@ export class MailInvite extends BaseModel<MailInvite> {
   email: string;
 
   @Expose()
-  @IsEnum([BaseProfileRelationRole.Member, BaseProfileRelationRole.Guest])
+  @IsEnum([BaseMembershipRole.Member, BaseMembershipRole.Guest])
   @IsOptional()
-  role?: BaseProfileRelationRole.Member | BaseProfileRelationRole.Guest;
+  role?: BaseMembershipRole.Member | BaseMembershipRole.Guest;
 }
 
 @Exclude()
@@ -57,6 +57,9 @@ export class MailInvitationInfo extends BaseModel<MailInvitationInfo> {
 
   @Expose()
   hostGuid: string;
+
+  @Expose()
+  hostId: string;
 
   @Expose()
   isVerifiedMail: boolean;

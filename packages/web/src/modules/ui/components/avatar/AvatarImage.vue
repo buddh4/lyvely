@@ -32,7 +32,7 @@ const url = computed(() => {
 
 const initials = computed(() => (url.value ? undefined : props.name?.substring(0, 2)));
 const color = computed(() =>
-  url.value ? undefined : randomColor({ seed: props.name + '_user' || '' }),
+  url.value ? undefined : randomColor({ seed: props.name + '_user' + guid.value || '' }),
 );
 const textClass = computed(() =>
   !url.value && color.value
@@ -49,7 +49,7 @@ function getClassNames(attrClasses: any, textClass: string) {
     'p-1': !includesUtilityClass(attrClasses, 'p'),
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),
-    'text-xs': !includesUtilityClass(attrClasses, 'text'),
+    'text-xxs': !includesUtilityClass(attrClasses, 'text'),
     [attrClasses]: true,
     [textClass]: true,
   };
@@ -61,7 +61,7 @@ function getImageClassNames(attrClasses: any) {
       true,
     'w-6': !includesUtilityClass(attrClasses, 'w'),
     'h-6': !includesUtilityClass(attrClasses, 'h'),
-    'text-xs': !includesUtilityClass(attrClasses, 'text'),
+    'text-xxs': !includesUtilityClass(attrClasses, 'text'),
     [attrClasses]: true,
   };
 }

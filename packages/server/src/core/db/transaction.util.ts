@@ -3,7 +3,7 @@ import { TransactionOptions } from 'mongodb';
 
 let transactionSupport = false;
 
-type Transaction = { session: ClientSession };
+export type Transaction = { session: ClientSession };
 
 export function setTransactionSupport(ts: boolean) {
   transactionSupport = ts;

@@ -1,14 +1,20 @@
 import { Exclude, Expose } from 'class-transformer';
 import { MembershipModel } from './profile-membership.model';
-import { ProfileRelationModel } from './profile-relation.model';
+import { ProfileRelationDetailsModel, ProfileRelationModel } from './profile-relation.model';
 import { BaseUserProfileRelationType, ProfileModel } from './profile.model';
-import { PropertyType } from '@/models';
+import { PropertyType, TransformTo } from '@/models';
 
 @Exclude()
 export class ProfileWithRelationsModel extends ProfileModel {
   @Expose()
+  @PropertyType([ProfileRelationDetailsModel])
+  @TransformTo(ProfileRelationDetailsModel)
+  userRelations: ProfileRelationDetailsModel[];
+
+  @Expose()
   @PropertyType([ProfileRelationModel])
-  readonly relations: ProfileRelationModel[];
+  @TransformTo(ProfileRelationModel)
+  profileRelations: ProfileRelationModel[];
 
   constructor(obj?: Partial<ProfileWithRelationsModel>) {
     super(obj);
@@ -16,7 +22,9 @@ export class ProfileWithRelationsModel extends ProfileModel {
 
   getMembership(): MembershipModel | null {
     return <MembershipModel | null>(
-      this.relations.find((relation) => relation.type === BaseUserProfileRelationType.Membership)
+      this.userRelations.find(
+        (relation) => relation.type === BaseUserProfileRelationType.Membership,
+      )
     );
   }
 }

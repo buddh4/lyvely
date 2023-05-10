@@ -3,36 +3,42 @@ import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { UserNotificationsService } from '@/notifications/services/user-notifications.service';
 import { MultiUserSubscription } from '@/user-subscription';
-import { UserNotification, Notification, NotificationType, RenderFormat } from '@/notifications';
+import {
+  UserNotification,
+  NotificationType,
+  RenderFormat,
+  NotificationContext,
+  Notification,
+} from '@/notifications';
 import { Profile, ProfileInfo, UserContext } from '@/profiles';
 import { User, UserInfo } from '@/users';
 import { assureObjectId } from '@/core';
 import { NotificationDao, UserNotificationDao } from '@/notifications/daos';
 import { escapeHtmlIf, StreamRequest, UrlRoute } from '@lyvely/common';
-import { Notification as NotificationDecorator } from '@/notifications/decorators';
 import { Prop } from '@nestjs/mongoose';
+import { Notification as BaseNotification } from '@/notifications/schemas';
 import { Translatable } from '@/i18n';
 import { TestNotificationCategory } from '@/notifications/models';
 
 const TEST_KEY = 'UserNotificationsService';
 
-@NotificationDecorator()
+@Notification()
 export class MyTestNotification extends NotificationType<MyTestNotification> {
   @Prop()
   testProp: string;
 
   nonProp: string;
 
-  getBody(format: RenderFormat): Translatable {
+  getBody(ctx: NotificationContext): Translatable {
     return {
       key: 'test.notification.body',
       params: {
-        user: escapeHtmlIf(this.userInfo?.name, format === RenderFormat.HTML),
+        user: escapeHtmlIf(this.userInfo?.name, ctx.format === RenderFormat.HTML),
       },
     };
   }
 
-  getTitle(format: RenderFormat): Translatable {
+  getTitle(): Translatable {
     return { key: 'test.notification.title' };
   }
 
@@ -76,7 +82,7 @@ describe('UserNotificationsService', () => {
     uids: TObjectId[],
     sortOrder?: number,
   ) {
-    const notification = new Notification(
+    const notification = new BaseNotification(
       new MyTestNotification({
         userInfo: new UserInfo(user),
         profileInfo: new ProfileInfo(profile),
@@ -91,7 +97,7 @@ describe('UserNotificationsService', () => {
     return notificationDao.save(notification);
   }
 
-  async function createTestUserNotification(user: User, notification: Notification) {
+  async function createTestUserNotification(user: User, notification: BaseNotification) {
     return userNotificationDao.save(new UserNotification(user, notification));
   }
 

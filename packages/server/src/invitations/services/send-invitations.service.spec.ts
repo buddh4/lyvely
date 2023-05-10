@@ -12,7 +12,12 @@ import {
   UserInvitation,
   UserInvitationSchema,
 } from '@/invitations/schemas';
-import { BaseProfileRelationRole, MailInvite, InvitationRequest } from '@lyvely/common';
+import {
+  BaseProfileRelationRole,
+  MailInvite,
+  InvitationRequest,
+  ForbiddenServiceException,
+} from '@lyvely/common';
 import { TestMailService } from '@/mails';
 
 describe('SendInvitations', () => {
@@ -47,25 +52,108 @@ describe('SendInvitations', () => {
     expect(invitesService).toBeDefined();
   });
 
+  describe('Invite new users to profile', () => {
+    it('Member can send an invite to a non existing user', async () => {
+      const { owner, profile } = await testData.createSimpleGroup();
+      const result = await invitesService.sendInvitations(
+        owner,
+        new InvitationRequest({
+          pid: profile.id,
+          invites: [new MailInvite({ email: 'invited@mail.de' })],
+        }),
+      );
+
+      expect(result.length).toEqual(1);
+      expect(result[0] instanceof MailInvitation).toEqual(true);
+      expect((<MailInvitation>result[0]).email).toEqual('invited@mail.de');
+      expect(result[0].role).toEqual(BaseProfileRelationRole.Member);
+      expect(result[0].pid).toEqual(profile._id);
+      expect(result[0].token).toBeDefined();
+      expect(result[0].createdBy).toEqual(owner._id);
+      expect(TestMailService.sentMailOptions.length).toEqual(1);
+      expect(TestMailService.sentMailOptions[0].to).toEqual('invited@mail.de');
+    });
+
+    it('Member can send an invite to an existing user', async () => {
+      const user = await testData.createUser('someUser');
+      const { owner, profile } = await testData.createSimpleGroup();
+      const result = await invitesService.sendInvitations(
+        owner,
+        new InvitationRequest({
+          pid: profile.id,
+          invites: [new MailInvite({ email: user.email })],
+        }),
+      );
+
+      expect(result.length).toEqual(1);
+      expect(TestMailService.sentMailOptions.length).toEqual(1);
+      expect(TestMailService.sentMailOptions[0].to).toEqual('someUser@mail.de');
+    });
+
+    it('User can not invite user to private profile', async () => {
+      expect.assertions(1);
+      const { user, profile } = await testData.createUserAndProfile();
+      try {
+        await invitesService.sendInvitations(
+          user,
+          new InvitationRequest({
+            pid: profile.id,
+            invites: [new MailInvite({ email: 'invited@mail.de' })],
+          }),
+        );
+      } catch (e) {
+        expect(e instanceof ForbiddenServiceException).toEqual(true);
+      }
+    });
+
+    it('Invitations to members of the group are ignored', async () => {
+      const { owner, member, profile } = await testData.createSimpleGroup();
+      const result = await invitesService.sendInvitations(
+        owner,
+        new InvitationRequest({
+          pid: profile.id,
+          invites: [new MailInvite({ email: member.email })],
+        }),
+      );
+
+      expect(result.length).toEqual(0);
+    });
+
+    it('Invitations to members of the group by secondary email are ignored', async () => {
+      const { owner, member, profile } = await testData.createSimpleGroup();
+      const result = await invitesService.sendInvitations(
+        owner,
+        new InvitationRequest({
+          pid: profile.id,
+          invites: [
+            new MailInvite({ email: member.getVerifiedUserEmails()[1].email.toUpperCase() }),
+          ],
+        }),
+      );
+
+      expect(result.length).toEqual(0);
+    });
+  });
+
   describe('Invite new users to network', () => {
     it('User can send an invite to a non existing email', async () => {
       const user = await testData.createUser();
       const result = await invitesService.sendInvitations(
         user,
         new InvitationRequest({
-          invites: [new MailInvite({ email: 'test@mail.de' })],
+          invites: [new MailInvite({ email: 'invited@mail.de' })],
         }),
       );
 
       expect(result.length).toEqual(1);
       expect(result[0] instanceof MailInvitation).toEqual(true);
-      expect((<MailInvitation>result[0]).email).toEqual('test@mail.de');
+      expect((<MailInvitation>result[0]).email).toEqual('invited@mail.de');
       expect(result[0].role).toBeUndefined();
       expect(result[0].pid).toBeUndefined();
       expect(result[0].token).toBeDefined();
       expect(result[0].createdBy).toEqual(user._id);
       expect(TestMailService.sentMailOptions.length).toEqual(1);
-      expect(TestMailService.sentMailOptions[0].to).toEqual('test@mail.de');
+      expect(TestMailService.sentMailOptions[0].to).toEqual('invited@mail.de');
     });
 
     it('User can send an invite to an unverified existing email', async () => {

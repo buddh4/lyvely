@@ -1,4 +1,4 @@
-import { NotificationType, RenderFormat } from '@/notifications';
+import { NotificationContext, NotificationType } from '@/notifications';
 import { Notification } from '@/notifications/decorators/index';
 import { Translatable } from '@/i18n';
 import { UrlRoute } from '@lyvely/common';
@@ -25,11 +25,11 @@ describe('Notification decorator', () => {
         super(props);
       }
 
-      getBody(format: RenderFormat): Translatable {
+      getBody(format: NotificationContext): Translatable {
         return undefined;
       }
 
-      getTitle(format: RenderFormat): Translatable {
+      getTitle(format: NotificationContext): Translatable {
         return undefined;
       }
 

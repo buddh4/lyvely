@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Profile, ProfilePermissionsService, ProfilesService } from '@/profiles';
+import { Profile, ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import { UserStatus } from '@lyvely/common';
 import { User, UsersService } from '@/users';
@@ -9,8 +9,6 @@ import { assureObjectId, ConfigurationPath } from '@/core';
 import { InvitationDao } from '@/invitations/daos/invitation.dao';
 import jwt from 'jsonwebtoken';
 import { Invitation, MailInvitation, UserInvitation } from '@/invitations/schemas';
-
-const JWT_USER_INVITE_TOKEN = 'invitation_token';
 
 export interface IInvitationContext {
   invitation: Invitation;
@@ -29,17 +27,23 @@ export class InvitationsService {
     private jwtService: JwtService,
     private configService: ConfigService<ConfigurationPath>,
     private inviteDao: InvitationDao,
-    private profilePermissionsService: ProfilePermissionsService,
   ) {}
 
   public async acceptInvitation(user: User, invitation: Invitation) {
     return Promise.all([
+      this.handleProfileInvitation(user, invitation),
       this.inviteDao.updateOneSetById(invitation, { uid: user._id, email: null, token: null }),
       this.invalidateOtherInvitations(invitation),
-    ]);
+    ]).then((result) => result[0]);
   }
 
-  public async invalidateOtherInvitations(invitation: Invitation) {
+  private async handleProfileInvitation(user: User, invitation: Invitation) {
+    if (!invitation.pid) return;
+    const profile = await this.profileService.findProfileById(invitation.pid);
+    return this.profileService.createMembership(profile, user, invitation.role);
+  }
+
+  private async invalidateOtherInvitations(invitation: Invitation) {
     if (invitation instanceof MailInvitation) {
       return this.inviteDao.deleteMany({
         _id: { $ne: assureObjectId(invitation) },
@@ -93,9 +97,9 @@ export class InvitationsService {
     );
   }
 
-  public verifyToken(token: string): Promise<boolean> {
+  private verifyToken(token: string): Promise<boolean> {
     if (!token) return Promise.resolve(false);
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       jwt.verify(token, this.configService.get('auth.jwt.verify.secret'), (err, decoded) => {
         resolve(!err);
       });

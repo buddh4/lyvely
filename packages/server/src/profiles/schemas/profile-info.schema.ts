@@ -26,7 +26,7 @@ export class ProfileInfo
     });
   }
 
-  getDto(): ProfileInfoModel {
+  toModel(): ProfileInfoModel {
     return new ProfileInfoModel({
       pid: assureStringId(this.pid),
       imageGuid: this.imageGuid,

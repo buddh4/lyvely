@@ -58,7 +58,7 @@ export class UserRegistrationService {
     await Promise.all([
       this.createDefaultUserProfile(user),
       this.sendEmailVerificationMail(user, otp),
-      this.invalidateInvitations(user, invitation),
+      this.handleInvitation(user, invitation),
     ]);
 
     return otpModel.getOtpClientInfo();
@@ -71,10 +71,9 @@ export class UserRegistrationService {
     });
   }
 
-  private invalidateInvitations(user, invitation?: Invitation) {
-    if (invitation) {
-      this.invitationsService.acceptInvitation(user, invitation);
-    }
+  private async handleInvitation(user, invitation?: Invitation) {
+    if (!invitation) return;
+    return this.invitationsService.acceptInvitation(user, invitation);
   }
 
   private validateRegistrationMode() {

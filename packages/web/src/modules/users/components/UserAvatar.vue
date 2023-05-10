@@ -6,7 +6,7 @@ const user = computed(() => useAuthStore().user);
 </script>
 
 <template>
-  <ly-avatar v-if="user" :avatar="user.avatar" :name="user.username" />
+  <ly-avatar v-if="user" :avatar="user.avatar" :name="user.username" :guid="user.guid" />
 </template>
 
 <style scoped></style>

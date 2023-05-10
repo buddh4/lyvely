@@ -1,0 +1,6 @@
+{
+  "notifications": {
+    "title": "Invitation to join {profileName}",
+    "body": "<b>{hostName}</b> invited you to join <b>{profileName}</b>"
+  }
+}

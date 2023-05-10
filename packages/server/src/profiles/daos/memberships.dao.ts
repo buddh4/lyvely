@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { Membership, MembershipDocument, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
-import { assureObjectId, EntityIdentity, SaveOptions } from '@/core';
+import { assureObjectId, EntityIdentity, IBaseQueryOptions, SaveOptions } from '@/core';
 import { Constructor, BaseMembershipRole } from '@lyvely/common';
 
 @Injectable()
@@ -22,18 +22,18 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
     return this.save(Membership.create({ profile, user, role }), options);
   }
 
-  async findByUserAndProfileRole(
-    user: EntityIdentity<User>,
+  async findByProfileAndUser(
     profile: EntityIdentity<Profile>,
-    role: string,
+    user: EntityIdentity<User>,
+    options: IBaseQueryOptions,
   ): Promise<Membership | null> {
-    return this.model
-      .findOne({
+    return this.findOne(
+      {
         uid: assureObjectId(user),
         pid: assureObjectId(profile),
-        role: role,
-      })
-      .lean();
+      },
+      options,
+    );
   }
 
   getModelConstructor(): Constructor<Membership> {

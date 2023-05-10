@@ -21,12 +21,12 @@ export class UserInfo
   constructor(userOrRelation: User) {
     super({
       uid: assureObjectId(userOrRelation),
-      imageGuid: userOrRelation.avatar?.guid,
+      imageGuid: userOrRelation.avatar?.guid || userOrRelation.guid,
       name: userOrRelation.getDisplayName(),
     });
   }
 
-  getDto(): UserInfoModel {
+  toModel(): UserInfoModel {
     return new UserInfoModel({
       uid: assureStringId(this.uid),
       imageGuid: this.imageGuid,
