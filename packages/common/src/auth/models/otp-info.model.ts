@@ -16,10 +16,10 @@ export class OtpInfo extends BaseModel<OtpInfo> {
   @Expose()
   maxAttempts: number;
 
+  @PropertyType(Number, { default: 0 })
   attempts: number;
 
   afterInit() {
-    this.attempts = this.attempts ?? 0;
     this.maxAttempts = this.maxAttempts ?? DEFAULT_MAX_OTP_ATTEMPTS;
   }
 
