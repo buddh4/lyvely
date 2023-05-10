@@ -53,9 +53,9 @@ function test() {
         </dynamic-scroller-item>
       </template>
     </dynamic-scroller>
-    <template #footer>
+    <!--template #footer>
       <ly-button class="primary" @click="test">Test</ly-button>
-    </template>
+    </--template -->
   </ly-drawer>
 </template>
 
