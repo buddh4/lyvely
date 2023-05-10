@@ -204,7 +204,10 @@ export class UserRegistrationService {
 
     if (!isValid) throw new UnauthorizedException();
 
-    await this.userService.setUserStatus(user, UserStatus.Active);
+    await Promise.all([
+      this.userService.setUserStatus(user, UserStatus.Active),
+      this.userDao.setEmailVerification(user, verifyEmail.email, true),
+    ]);
 
     return { user, remember };
   }

@@ -8,7 +8,7 @@ import ms from 'ms';
 import bcrypt from 'bcrypt';
 import { EntityIdentity } from '@/core';
 
-interface IGenerateOtpOptions<TContext = any> {
+export interface IGenerateOtpOptions<TContext = any> {
   purpose: string;
   context?: TContext;
   remember?: boolean;
@@ -51,7 +51,7 @@ export class UserOtpService<TContext = any> {
     return { otpModel, otp };
   }
 
-  private async generateOtp(options: IGenerateOtpOptions) {
+  protected async generateOtp(options: IGenerateOtpOptions) {
     const length = options.length || 6;
     const otp = generateOTP(length);
     const hashedOtp = await bcrypt.hash(otp, 10);
@@ -66,7 +66,12 @@ export class UserOtpService<TContext = any> {
     return this.userOtpDao.findOne({ uid: user._id, purpose });
   }
 
-  async runValidation(user: User, purpose: string, otp: string, options: IOtpValidationOptions<TContext> = {}) {
+  async runValidation(
+    user: User,
+    purpose: string,
+    otp: string,
+    options: IOtpValidationOptions<TContext> = {},
+  ) {
     options.max = options.max || DEFAULT_MAX_OTP_ATTEMPTS;
     const otpModel = await this.findOtpByUserAndPurpose(user, purpose);
 
@@ -85,7 +90,8 @@ export class UserOtpService<TContext = any> {
     return {
       isValid,
       remember: otpModel.remember,
-      attempts: isExpired || isValid || maxAttempts ? 0 : Math.max(0, options.max - otpModel.attempts),
+      attempts:
+        isExpired || isValid || maxAttempts ? 0 : Math.max(0, options.max - otpModel.attempts),
     };
   }
 

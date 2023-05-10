@@ -7,8 +7,9 @@ import {
   UniqueConstraintException,
   UserRegistration,
   UserStatus,
+  VerifyEmailDto,
 } from '@lyvely/common';
-import { createBasicTestingModule, TestDataUtils } from '@/test';
+import { createBasicTestingModule, createContentTestingModule, TestDataUtils } from '@/test';
 import { User, UsersService } from '@/users';
 import { UserRegistrationModule } from '@/user-registration/user-registration.module';
 import { ConfigService } from '@nestjs/config';
@@ -17,6 +18,7 @@ import { InvitationsModule } from '@/invitations/invitations.module';
 import { InvitationDao, MailInvitation, SendInvitationsService } from '@/invitations';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { Profile } from '@/profiles';
+import { UnauthorizedException } from '@nestjs/common';
 
 describe('UserRegistrationService', () => {
   let testingModule: TestingModule;
@@ -30,7 +32,7 @@ describe('UserRegistrationService', () => {
   const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(
+    testingModule = await createContentTestingModule(
       TEST_KEY,
       [],
       [],
@@ -167,6 +169,37 @@ describe('UserRegistrationService', () => {
       expect(updatedInvitation.token).toBeNull();
       const updatedInvitation2 = await invitationDao.reload(invitation2);
       expect(updatedInvitation2).toBeNull();
+    });
+  });
+
+  describe('verifyEmail', () => {
+    it('verify valid otp', async () => {
+      await registerService.register(validRegistration);
+      const { user } = await registerService.verifyEmail(
+        new VerifyEmailDto({
+          otp: '000000',
+          email: validRegistration.email,
+        }),
+      );
+
+      expect(user).toBeDefined();
+      expect(user.status).toEqual(UserStatus.Active);
+      expect(user.getVerifiedUserEmail(validRegistration.email)).toBeDefined();
+    });
+
+    it('verify invalid otp', async () => {
+      expect.assertions(1);
+      await registerService.register(validRegistration);
+      try {
+        await registerService.verifyEmail(
+          new VerifyEmailDto({
+            otp: '001111',
+            email: validRegistration.email,
+          }),
+        );
+      } catch (e) {
+        expect(e instanceof UnauthorizedException).toEqual(true);
+      }
     });
   });
 
