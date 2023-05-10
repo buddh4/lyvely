@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/common",
-  "version": "0.0.1",
+  "version": "0.1.0-alpha1",
   "description": "Shared lively library",
   "author": "Julian Harrer",
   "type": "commonjs",
