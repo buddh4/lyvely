@@ -16,7 +16,14 @@ watch(emailInput, (value) => {
 </script>
 
 <template>
-  <ly-modal v-model="showModal" title="profiles.invite.title" @cancel="reset" @submit="submit">
+  <ly-modal
+    v-model="showModal"
+    title="profiles.invite.title"
+    :cancel-button-text="stage === 'success' ? 'common.close' : 'common.cancel'"
+    :submit-button="stage !== 'success'"
+    @cancel="reset"
+    @submit="submit"
+    @hide="reset">
     <div v-if="stage === 'users'">
       <div class="flex flex-row items-center items-stretch mb-2">
         <ly-input-text
@@ -26,7 +33,7 @@ watch(emailInput, (value) => {
           label="profiles.invite.email-help" />
         <ly-button class="primary rounded-r w-12" @click="addEmails"> + </ly-button>
       </div>
-      <ly-alert :message="statusError" />
+      <ly-alert type="danger" :message="statusError" />
       <div v-for="email in emails" :key="email" class="flex mb-2">
         <div class="bg-highlight border border-divide p-2 rounded-l clearfix grow attachment-r">
           {{ email }}

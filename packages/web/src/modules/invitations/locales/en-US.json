@@ -17,7 +17,7 @@
       "to_login": "Sign in"
     },
     "errors": {
-      "invalid": "Unfortunately, your requested invitation is not valid anymore."
+      "invalid": "Unfortunately, your requested invitation is not valid anymore.",
     }
   }
 }

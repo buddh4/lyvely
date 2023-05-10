@@ -29,7 +29,7 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
     emailInput.value = invalidEmailsArr.length ? invalidEmailsArr.join(', ') : '';
 
     if (invalidEmailsArr.length) {
-      status.setError('profile.invite.email-invalid');
+      status.setError('invitations.errors.email-invalid');
     } else {
       status.resetStatus();
     }
@@ -40,6 +40,8 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
   }
 
   async function submit() {
+    if (emailInput.value) addEmails();
+    if (!emails.value.length || status.isStatusError()) return;
     if (stage.value === 'users') {
       return submitUserSelection().then(() => {
         stage.value = 'success';
@@ -73,6 +75,7 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
 
   function reset() {
     emails.value = [];
+    emailInput.value = '';
     stage.value = 'users';
     showModal.value = false;
     status.resetStatus();
