@@ -20,7 +20,9 @@ export class TimeSpan extends TimeSpanModel implements PropertiesOf<TimeSpanMode
   }
 
   afterInit() {
-    this.uid = assureObjectId(this.uid);
+    if (this.uid) {
+      this.uid = assureObjectId(this.uid);
+    }
   }
 }
 
