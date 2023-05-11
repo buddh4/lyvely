@@ -37,7 +37,7 @@ export const useContentCreateStore = defineStore('content-create', () => {
     type?: string,
     options?: ICreateContentInitOptions,
     withContentTypeMenu = false,
-  ) {
+  ): Promise<any> {
     reset();
 
     if (!type) return Promise.resolve();

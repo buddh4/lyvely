@@ -17,6 +17,7 @@ const {
 
 const { onCreated, onCanceled: onCreateCanceled } = contentCreateStore;
 
+const contentEditStore = useContentEditStore();
 const {
   showEditModal,
   editModel,
@@ -24,7 +25,7 @@ const {
   editModalComponent,
 } = storeToRefs(useContentEditStore());
 
-const { onUpdated, onCanceled: onUpdateCanceled } = contentCreateStore;
+const { onUpdated, onCanceled: onUpdateCanceled } = contentEditStore;
 
 function switchCreateContentType(type: string) {
   useContentCreateStore().createContentType(type, createInitOptions.value, true);
