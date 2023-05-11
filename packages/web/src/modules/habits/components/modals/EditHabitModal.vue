@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { CreateHabitModel, HabitModel, UpdateHabitModel } from '@lyvely/common';
+import {
+  CreateHabitModel,
+  HabitModel,
+  UpdateHabitModel,
+  useDataPointStrategyFacade,
+} from '@lyvely/common';
 import { computed } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import {
@@ -30,6 +35,11 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
   service: useHabitsService(),
 });
 
+function adjustAndSubmit() {
+  useDataPointStrategyFacade().prepareConfig(<any>model.value);
+  submit();
+}
+
 const calendarPlanOptions = computed(() => getCalendarPlanOptions());
 
 const modalTitle = computed(() => {
@@ -38,7 +48,11 @@ const modalTitle = computed(() => {
 </script>
 
 <template>
-  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit" @cancel="$emit('cancel')">
+  <ly-modal
+    v-model="showModal"
+    :title="modalTitle"
+    @submit="adjustAndSubmit"
+    @cancel="$emit('cancel')">
     <template #preHeader><slot name="navigation"></slot></template>
     <ly-form-model
       v-model="model"

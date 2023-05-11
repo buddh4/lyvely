@@ -3,6 +3,7 @@ import {
   DataPointValueType,
   INumberDataPointConfig,
   INumberDataPointConfigRevision,
+  INumberDataPointSettings,
 } from '../interfaces';
 import { useDataPointStrategyFacade } from '../components';
 import { NumberDataPointModel } from '../models';
@@ -28,9 +29,10 @@ export class NumberDataPointStrategy extends DataPointStrategy<
     return isDefined(config.max) && isNumber(value) ? Math.min(value, config.max) : value;
   }
 
-  prepareConfig(config: INumberDataPointConfig) {
+  prepareConfig(config: INumberDataPointSettings) {
     if (config.optimal > config.max) config.optimal = config.max;
-    if (config.min > config.optimal) config.min = config.optimal;
+    if (config.min > config.max) config.min = config.max;
+    if (config.min > config.optimal) config.optimal = config.min;
 
     if (!isDefined(config.max) && config.inputType === DataPointInputType.Checkbox) {
       config.max = 1;

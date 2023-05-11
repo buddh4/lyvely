@@ -17,6 +17,7 @@
       :class="inputClass"
       type="text"
       inputmode="numeric"
+      @blur="$emit('blur')"
       @change="$emit('change')" />
     <div v-if="slider && editable" class="number-slider">
       <ly-button :class="buttonClass" @click="increment">+</ly-button>
@@ -28,7 +29,7 @@
 <script lang="ts">
 import { IBaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
 import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
-import { computed, SetupContext } from 'vue';
+import { computed, ref, SetupContext, watch } from 'vue';
 import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
 
 export interface IProps extends IBaseInputProps {
@@ -47,7 +48,7 @@ export default {
     min: { type: Number, default: undefined },
     max: { type: Number, default: undefined },
   },
-  emits: ['change', 'update:modelValue'],
+  emits: ['change', 'update:modelValue', 'increment', 'decrement', 'blur', 'focus'],
   setup(props: IProps, context: SetupContext) {
     const baseInput = useFloatingInputSetup<number>(props, context);
 
@@ -85,10 +86,12 @@ export default {
 
     function increment() {
       baseInput.inputValue.value = baseInput.inputValue.value + props.steps!;
+      context.emit('increment', baseInput.inputValue.value);
     }
 
     function decrement() {
       baseInput.inputValue.value = baseInput.inputValue.value - props.steps!;
+      context.emit('decrement', baseInput.inputValue.value);
     }
 
     const buttonClass =

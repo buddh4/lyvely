@@ -74,7 +74,7 @@ function getComputedInputValue<T extends AllowedInputValueTypes = any>(
   return model && property
     ? computed<T>({
         get: () => model[property],
-        set: (val: T) => (model[property] = val),
+        set: (val: T) => setTimeout(() => (model[property] = val)),
       })
     : computed<T>({
         get: () => props.modelValue,

@@ -7,7 +7,7 @@
     :help-text="helpText"
     :input-error="inputError">
     <div ref="root" data-timer-input class="floating-input h-auto border border-divide">
-      <div class="flex justify-center items-center gap-2">
+      <div class="flex justify-center items-center gap-0.5 md:gap-2">
         <div class="flex flex-col">
           <ly-button @click="increment('hours')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
@@ -22,7 +22,7 @@
             @keyup.right="setFocus('minutes')" />
           <ly-button @click="decrement('hours')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
-        <span>:</span>
+        <span class="hidden md:block">:</span>
         <div class="flex flex-col">
           <ly-button @click="increment('minutes')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
@@ -37,7 +37,7 @@
             @keyup.right="setFocus('seconds')" />
           <ly-button @click="decrement('minutes')"><ly-icon name="caret-down"></ly-icon></ly-button>
         </div>
-        <span>:</span>
+        <span class="hidden md:block">:</span>
         <div class="flex flex-col">
           <ly-button @click="increment('seconds')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
@@ -60,7 +60,7 @@
 <script lang="ts">
 import { IBaseInputProps, useBaseInputProps } from '@/modules/ui/components/form/BaseInput';
 import { useFloatingInputSetup } from '@/modules/ui/components/form/FloatingInput';
-import { computed, SetupContext, ref } from 'vue';
+import { computed, SetupContext, ref, onMounted } from 'vue';
 import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
 import { msToTime, timeToMs, padTime } from '@lyvely/common';
 
