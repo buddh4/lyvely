@@ -118,7 +118,7 @@ function onKeyDown(evt: KeyboardEvent) {
       :aria-label="ariaLabel || $t('modal.aria.root')"
       @keyup.esc.stop.prevent="onEscape"
       @keydown="onKeyDown">
-      <div class="flex flex-col h-screen-s max-h-full md:h-auto md:min-h-0">
+      <div class="flex flex-col h-screen-s max-h-screen-s max-h-full md:h-auto md:min-h-0">
         <slot name="preHeader"></slot>
         <div
           class="flex items-center p-3 px-4 pb-5 md:p-5 md:px-5 md:rounded-t-sm md:shadow z-10"

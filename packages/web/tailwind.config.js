@@ -39,6 +39,7 @@ module.exports = {
       maxHeight: {
         '1/3': '33.333333%',
         '2/3': '66.666666%',
+        'screen-s': '100svh',
       },
       height: {
         'screen-s': '100svh',
