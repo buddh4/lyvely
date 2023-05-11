@@ -30,7 +30,7 @@ const widthClass = computed(
   <section class="flex md:p-4 justify-center md:rounded md:h-screen w-full">
     <div
       :class="[
-        'bg-main main w-full p-4 md:border h-screen fix-h-screen md:h-auto md:min-h-0 md:max-h-auto border-divide md:rounded shadow-xl m-auto',
+        'bg-main main w-full p-4 md:border h-screen-s md:h-auto md:min-h-0 md:max-h-auto border-divide md:rounded shadow-xl m-auto',
         widthClass,
       ]">
       <slot name="header">

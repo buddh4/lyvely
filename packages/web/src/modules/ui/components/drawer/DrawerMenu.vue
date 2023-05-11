@@ -93,7 +93,7 @@ useInfiniteScroll(
           <div ref="body" data-drawer-body class="overflow-auto scrollbar-thin">
             <slot></slot>
           </div>
-          <div v-if="hasFooter" data-drawer-footer class="pb-4 px-4 pt-3">
+          <div data-drawer-footer class="pb-4 px-4 pt-3">
             <slot name="footer"></slot>
           </div>
           <!--
@@ -117,7 +117,7 @@ h1 {
   position: absolute;
   display: block;
   top: 55px;
-  height: calc(var(--vh) * 100 - 55px);
+  height: calc(100svh - 55px);
   bottom: 0;
   min-width: 280px;
   max-width: 280px;

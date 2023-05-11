@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Added missing coloring of some error alerts
 - Changed PWA theme color to dark theme bg-main instead of pop
+- Improved modal style on mobile
+- Removed deprecated modal z-index handling
+- Replaced full screen height workaround with new 100svh
 
 ### Added
 - Profile user invitation

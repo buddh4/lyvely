@@ -38,14 +38,6 @@ const layoutDefinition = computed<{ component: any; props: any } | undefined>(()
     props: layoutDefinition.props,
   };
 });
-
-/* Fixes 100vh on mobile devices which do include address bar to the 100vh*/
-function calculateVh() {
-  document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
-}
-calculateVh();
-window.addEventListener('resize', calculateVh);
-window.addEventListener('orientationchange', calculateVh);
 </script>
 
 <template>

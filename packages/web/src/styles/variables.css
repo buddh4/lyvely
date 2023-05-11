@@ -47,11 +47,6 @@
     --media-min-lg: 1024px;
     --media-min-xl: 1280px;
     --media-min-2xl: 1536px;
-
-    --zindex-modal: 1000;
-    --zindex-modal-active: 1001;
-
-    --vh: 100vh;
 }
 
 .dark {

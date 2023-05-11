@@ -39,8 +39,8 @@ const IntroductionTour = defineAsyncComponent(
 
 <template>
   <profile-sidebar v-if="show" />
-  <div v-if="show" class="overflow-hidden flex w-full min-h-screen fix-h-screen flex-col">
-    <div class="flex items-stretch flex-col h-screen fix-h-screen">
+  <div v-if="show" class="overflow-hidden flex w-full h-screen-s flex-col">
+    <div class="flex items-stretch flex-col h-screen-s">
       <main-profile-container v-bind="containerProps">
         <slot>
           <router-view></router-view>

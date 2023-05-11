@@ -40,6 +40,9 @@ module.exports = {
         '1/3': '33.333333%',
         '2/3': '66.666666%',
       },
+      height: {
+        'screen-s': '100svh',
+      },
       colors: {
         lyvely: 'var(--color-lyvely)',
         inverted: 'var(--color-inverted)',
