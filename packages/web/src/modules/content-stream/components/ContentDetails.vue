@@ -27,7 +27,7 @@ const contentTypeName = computed(() =>
 </script>
 
 <template>
-  <div class="p-2 md:p-4 bg-shadow border-divide w-full">
+  <div class="p-2.5 md:px-4 bg-shadow border-divide w-full">
     <div class="flex items-center justify-items-stretch gap-2">
       <slot name="image">
         <ly-user-avatar class="w-8 h-8" />
@@ -47,7 +47,7 @@ const contentTypeName = computed(() =>
       </div>
     </div>
   </div>
-  <div v-if="model.tagIds?.length" class="bg-main px-2 pt-2 md:px-4 md:pt-4">
+  <div v-if="model.tagIds?.length" class="bg-main px-2.5 pt-2.5 md:px-4 md:pt-4">
     <div class="flex w-full">
       <tag-list :tag-ids="model.tagIds" @select="selectTag">
         <template #pre>
@@ -59,12 +59,12 @@ const contentTypeName = computed(() =>
       </tag-list>
     </div>
   </div>
-  <div class="p-2 md:p-4 bg-main border-divide rounded-b">
+  <div class="p-2.5 md:px-4 bg-main border-divide rounded-b">
     <slot name="body">
       {{ model.content.text }}
     </slot>
   </div>
-  <div v-if="$slots.footer" class="bg-main rounded-b p-2 md:p-4 border-t border-divide">
+  <div v-if="$slots.footer" class="bg-main rounded-b p-2.5 md:p-4 border-t border-divide">
     <slot name="footer" />
   </div>
 </template>

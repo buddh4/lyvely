@@ -48,19 +48,14 @@ const cancelButtonClass = computed(() => [props.cancelButtonClass, 'm-1']);
 
 const emit = defineEmits(['submit', 'show', 'hide', 'cancel', 'update:modelValue']);
 
-const modalId = uniqueId('modal');
-const zIndex = ref(1000);
-
 const { modelValue } = toRefs(props);
 
-const pageStore = usePageStore();
 const rootEl = ref<HTMLDialogElement>();
 
 watch(
   modelValue,
   (value) => {
     if (value) {
-      zIndex.value = pageStore.pushModal(modalId) + 1000;
       nextTick(() => {
         rootEl.value?.scrollIntoView();
         rootEl.value?.showModal();
@@ -92,7 +87,7 @@ const widths = {
 
 const dialogClass = `w-full ${
   widths[props.width]
-} h-screen fix-h-screen max-h-full md:h-fit md:min-h-0 my-0 md:my-auto p-0 bg-main text-main md:rounded-sm shadow-lg md:justify-center md:items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat overflow-y-auto`;
+} h-screen fix-h-screen max-h-full md:h-fit md:max-h md:min-h-0 my-0 md:my-auto p-0 bg-main text-main md:rounded-sm shadow-lg md:justify-center md:items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat overflow-y-auto`;
 
 function onEscape(evt: KeyboardEvent) {
   if (props.closeOnEscape) {
@@ -120,18 +115,21 @@ function onKeyDown(evt: KeyboardEvent) {
       ref="rootEl"
       tabindex="1"
       :class="dialogClass"
-      :style="{ 'z-index': zIndex }"
       :aria-label="ariaLabel || $t('modal.aria.root')"
       @keyup.esc.stop.prevent="onEscape"
       @keydown="onKeyDown">
       <div class="flex flex-col h-screen fix-h-screen max-h-full md:h-auto md:min-h-0">
         <slot name="preHeader"></slot>
-        <div class="flex items-center p-5 md:rounded-t-sm shadow z-10" data-modal-header>
+        <div
+          class="flex items-center p-3 px-4 pb-5 md:p-5 md:px-5 md:rounded-t-sm md:shadow z-10"
+          data-modal-header>
           <slot name="header">
-            <ly-button class="text-sm md:hidden pl-0" @click="cancel">
-              <ly-icon name="arrow-left" class="w-3 mr-1" />
+            <ly-button class="text-sm md:hidden pr-5" @click="cancel">
+              <ly-icon name="arrow-left" class="w-3" />
             </ly-button>
-            <h1 class="text-lg inline-block align-middle flex align-items-center" tabindex="-1">
+            <h1
+              class="flex text-md md:text-lg inline-block align-middle flex align-items-center flex-grow"
+              tabindex="-1">
               <ly-icon
                 v-if="icon"
                 class="w-6 mr-2"
@@ -151,18 +149,23 @@ function onKeyDown(evt: KeyboardEvent) {
 
             <ly-button
               v-if="submitButton"
-              class="float-right align-middle font-bold ml-auto inline-block px-2 py-0.5 border-none md:hidden"
+              class="float-right align-middle font-bold ml-auto inline-block px-1 md:px-2 py-0.5 border-none md:hidden"
               @click="$emit('submit')">
-              <ly-icon :name="submitIcon"></ly-icon>
+              <ly-icon :name="submitIcon" class="w-3.5"></ly-icon>
             </ly-button>
           </slot>
         </div>
 
-        <section class="p-5 pb-1 overflow-auto scrollbar-thin flex-grow" data-modal-body>
+        <section
+          class="p-2 pt-1 md:p-5 pb-1 overflow-auto scrollbar-thin flex-grow"
+          data-modal-body>
           <slot></slot>
         </section>
 
-        <div v-if="showFooter" class="flex p-5 justify-end shadow z-10" data-modal-footer>
+        <div
+          v-if="showFooter"
+          class="flex gap-1 p-2 px-4 md:p-5 md:px-5 justify-end shadow z-10"
+          data-modal-footer>
           <slot name="footer">
             <ly-button
               v-if="cancelButton"
@@ -176,7 +179,7 @@ function onKeyDown(evt: KeyboardEvent) {
               v-if="submitButton"
               :disabled="isLoading"
               data-modal-submit
-              class="m-1 primary"
+              class="my-1 primary"
               @click="$emit('submit')">
               {{ $t(submitButtonText) }}
             </ly-button>

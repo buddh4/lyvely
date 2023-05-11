@@ -179,7 +179,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
     submit-button-text="common.select"
     submit-icon="check"
     @submit="visible = false">
-    <div ref="chooser" class="flex flex-col">
+    <div ref="chooser" class="flex flex-col max-h-full">
       <div>
         <ly-input-text
           id="badge-chooser-search"
@@ -190,7 +190,8 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           @keyup.down="focusFirst" />
       </div>
 
-      <div class="flex flex-col border border-divide divide-y rounded-b">
+      <div
+        class="flex flex-col border border-divide divide-y rounded-b md:max-h-96 overflow-auto scrollbar-thin">
         <div
           v-for="option in selectedOptions"
           :key="getOptionKey(option)"

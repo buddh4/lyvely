@@ -8,7 +8,6 @@ export const usePageStore = defineStore('page', () => {
   const isDark = useDark();
   const toggleDark = useToggle(isDark);
   const showAppLoader = ref(true);
-  const modalStack = ref<Array<string>>([]);
   const drawerStack = ref<Array<string>>([]);
   const isOnline = useOnline();
 
@@ -39,15 +38,6 @@ export const usePageStore = defineStore('page', () => {
     showAppLoader.value = !!show;
   }
 
-  function pushModal(id: string) {
-    return modalStack.value.push(id);
-  }
-
-  function popModal(id: string) {
-    modalStack.value = modalStack.value.filter((mId) => mId !== id);
-    return modalStack.value.length;
-  }
-
   function pushDrawer(id: string) {
     return drawerStack.value.push(id);
   }
@@ -60,8 +50,6 @@ export const usePageStore = defineStore('page', () => {
   return {
     isDark,
     showSidebar,
-    pushModal,
-    popModal,
     pushDrawer,
     popDrawer,
     toggleSidebar,

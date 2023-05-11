@@ -36,6 +36,10 @@ module.exports = {
         dimmed: 'var(--text-dimmed)',
         inverted: 'var(--text-inverted)',
       },
+      maxHeight: {
+        '1/3': '33.333333%',
+        '2/3': '66.666666%',
+      },
       colors: {
         lyvely: 'var(--color-lyvely)',
         inverted: 'var(--color-inverted)',

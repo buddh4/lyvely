@@ -23,12 +23,12 @@ function back() {
 </script>
 
 <template>
-  <div class="px-1 md:p-2 bg-main border-divide rounded-t w-full">
+  <div class="p-2.5 md:px-4 bg-main border-divide rounded-t w-full">
     <div class="flex items-center">
-      <ly-button class="text-sm" @click="back">
+      <ly-button class="text-sm pl-0" @click="back">
         <ly-icon name="arrow-left" class="w-3 mr-2" /><span>{{ $t('common.back') }}</span>
       </ly-button>
-      <div class="px-1.5 ml-auto inline">
+      <div class="px-2 md:px-4 ml-auto inline">
         <ly-icon
           v-if="content.meta.archived"
           name="archive"
