@@ -1,5 +1,5 @@
 import { AbstractDao } from '@/core';
-import { UserNotification } from '@/notifications';
+import { UserNotification } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';

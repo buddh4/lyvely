@@ -1,5 +1,5 @@
 import { Translatable } from '@/i18n';
-import { INotificationCategory, INotificationCategorySettings } from '@/notifications/interfaces';
+import { INotificationCategory, INotificationCategorySettings } from '../interfaces';
 import { NotificationCategory } from '../decorators';
 
 @NotificationCategory()

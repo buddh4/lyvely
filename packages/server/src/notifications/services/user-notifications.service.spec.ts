@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
-import { UserNotificationsService } from '@/notifications/services/user-notifications.service';
+import { UserNotificationsService } from './user-notifications.service';
 import { MultiUserSubscription } from '@/user-subscription';
 import {
   UserNotification,
@@ -13,12 +13,12 @@ import {
 import { Profile, ProfileInfo, UserContext } from '@/profiles';
 import { User, UserInfo } from '@/users';
 import { assureObjectId } from '@/core';
-import { NotificationDao, UserNotificationDao } from '@/notifications/daos';
+import { NotificationDao, UserNotificationDao } from '../daos';
 import { escapeHtmlIf, StreamRequest, UrlRoute } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
-import { Notification as BaseNotification } from '@/notifications/schemas';
+import { Notification as BaseNotification } from '../schemas';
 import { Translatable } from '@/i18n';
-import { TestNotificationCategory } from '@/notifications/models';
+import { TestNotificationCategory } from '../notifications';
 
 const TEST_KEY = 'UserNotificationsService';
 

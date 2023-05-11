@@ -9,13 +9,12 @@ import {
   UserNotification,
 } from '../schemas';
 import { Job } from 'bullmq';
-import { NotificationChannelRegistry } from '../components';
+import { NotificationChannelRegistry, NotificationDecider } from '../components';
 import { Logger } from '@nestjs/common';
 import { EntityIdentity } from '@/core';
-import { NotificationDecider } from '@/notifications/components/notification-decider.component';
 import { UsersService } from '@/users';
 import { ServiceException } from '@lyvely/common';
-import { NotificationService, UserNotificationsService } from '@/notifications/services';
+import { NotificationService, UserNotificationsService } from '../services';
 
 @Processor(QUEUE_NOTIFICATIONS_SEND)
 export class NotificationSenderProcessor extends WorkerHost {

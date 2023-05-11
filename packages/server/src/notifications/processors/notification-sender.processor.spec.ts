@@ -2,21 +2,16 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@/test';
 import { NotificationDao } from '@/notifications/daos';
-import {
-  Notification,
-  NotificationContext,
-  NotificationType,
-  RenderFormat,
-} from '@/notifications/schemas';
+import { Notification, NotificationContext, NotificationType, RenderFormat } from '../schemas';
 import { SingleUserSubscription } from '@/user-subscription';
-import { NotificationSenderProcessor } from '@/notifications/processors/notification-sender.processor';
-import { UserNotificationsService } from '@/notifications/services';
+import { NotificationSenderProcessor } from './notification-sender.processor';
+import { UserNotificationsService } from '../services';
 import { UserInfo } from '@/users';
 import { Notification as NotificationDecorator } from '@/notifications/decorators';
 import { Prop } from '@nestjs/mongoose';
 import { Translatable } from '@/i18n';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
-import { TestNotificationCategory } from '@/notifications/models';
+import { TestNotificationCategory } from '../notifications';
 
 const TEST_KEY = 'NotificationSendProcessor';
 

@@ -1,6 +1,6 @@
 export * from './schemas/notification-type.schema';
 export * from './schemas/notification-type-schema.factory';
-export * from './schemas/test-notification.schema';
+export * from './notifications/test.notification';
 export * from './schemas/user-notification.schema';
 export * from './decorators';
 export * from './components';

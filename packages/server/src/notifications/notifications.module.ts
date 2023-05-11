@@ -1,26 +1,27 @@
 import { Module } from '@nestjs/common';
-import { NotificationTypeRegistry } from '@/notifications/components/notification-type.registry';
-import { UserNotificationsService } from '@/notifications/services/user-notifications.service';
-import { UserNotificationDao, NotificationDao } from '@/notifications/daos';
+import {
+  NotificationTypeRegistry,
+  NotificationDecider,
+  NotificationChannelRegistry,
+  MailNotificationChannel,
+} from './components';
+import { UserNotificationsService, NotificationService } from './services';
+import { UserNotificationDao, NotificationDao } from './daos';
 import {
   Notification,
   NotificationSchema,
   UserNotification,
   UserNotificationSchema,
-} from '@/notifications/schemas';
+} from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bullmq';
-import { QUEUE_NOTIFICATIONS_SEND } from '@/notifications/notification.constants';
-import { NotificationDecider } from '@/notifications/components/notification-decider.component';
-import { NotificationsController } from '@/notifications/controllers/notifications.controller';
-import { NotificationSenderProcessor } from '@/notifications/processors/notification-sender.processor';
-import { NotificationChannelRegistry } from '@/notifications/components/notification-channel.registry';
-import { NotificationService } from '@/notifications/services/notification.service';
+import { QUEUE_NOTIFICATIONS_SEND } from './notification.constants';
+import { NotificationsController } from './controllers';
+import { NotificationSenderProcessor } from './processors';
 import { UsersModule } from '@/users';
 import { ProfilesModule } from '@/profiles';
 import { UserSubscriptionModule } from '@/user-subscription/user-subscription.module';
 import { LiveModule } from '@/live/live.module';
-import { MailNotificationChannel } from '@/notifications/components/mail-notification.channel';
 
 const NotificationModels = MongooseModule.forFeature([
   {

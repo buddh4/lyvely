@@ -1,9 +1,9 @@
-import { NotificationContext, NotificationType, RenderFormat } from './notification-type.schema';
+import { NotificationContext, NotificationType } from '../schemas/notification-type.schema';
 import { Notification } from '../decorators';
 import { Translatable } from '@/i18n';
 import { UrlRoute, formatDateWithTime } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
-import { TestNotificationCategory } from '@/notifications/models/test-notification-category.model';
+import { TestNotificationCategory } from './test.notification-category';
 
 @Notification()
 export class TestNotification extends NotificationType<TestNotification> {

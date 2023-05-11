@@ -6,11 +6,11 @@ import { Notification, NotificationContext, NotificationType, RenderFormat } fro
 import { SingleUserSubscription } from '@/user-subscription';
 import { ProfileInfo } from '@/profiles';
 import { UserInfo } from '@/users';
-import { NotificationDao } from '@/notifications/daos/index';
+import { NotificationDao } from './notification.dao';
 import { Prop } from '@nestjs/mongoose';
 import { Translatable } from '@/i18n';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
-import { TestNotificationCategory } from '@/notifications/models';
+import { TestNotificationCategory } from '../notifications';
 
 const TEST_KEY = 'NotificationDao';
 

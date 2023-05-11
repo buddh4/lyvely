@@ -1,5 +1,5 @@
-import { NotificationContext, NotificationType } from '@/notifications';
-import { Notification } from '@/notifications/decorators/index';
+import { NotificationContext, NotificationType } from '../schemas';
+import { Notification } from './notification.decorator';
 import { Translatable } from '@/i18n';
 import { UrlRoute } from '@lyvely/common';
 import { expect } from '@jest/globals';

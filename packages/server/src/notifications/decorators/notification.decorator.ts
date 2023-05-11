@@ -1,6 +1,5 @@
 import { Schema } from '@nestjs/mongoose';
-import { NotificationSchemaType } from '@/notifications';
-import { NotificationTypeSchemaFactory } from '@/notifications/schemas/notification-type-schema.factory';
+import { NotificationSchemaType, NotificationTypeSchemaFactory } from '../schemas';
 import { Type } from '@lyvely/common';
 
 export function Notification() {

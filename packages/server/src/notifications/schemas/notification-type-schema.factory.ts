@@ -1,9 +1,9 @@
-import { NotificationType } from '@/notifications';
+import { NotificationType } from './notification-type.schema';
 import { Type } from '@lyvely/common';
 import { SchemaFactory } from '@nestjs/mongoose';
 import { Schema } from 'mongoose';
 import { globalEmitter } from '@/core';
-import { EVENT_REGISTER_NOTIFICATION_TYPE } from '@/notifications/notification.constants';
+import { EVENT_REGISTER_NOTIFICATION_TYPE } from '../notification.constants';
 
 const typeRegistry: Map<string, Type<NotificationType>> = new Map();
 const typeSchemaRegistry: Map<string, Schema<NotificationType>> = new Map();

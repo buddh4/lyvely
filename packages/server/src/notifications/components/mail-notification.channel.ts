@@ -12,7 +12,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { MailService } from '@/mails';
 import { BaseUserProfileRelationType, CalendarTimeInterval } from '@lyvely/common';
 import { I18n, Translatable } from '@/i18n';
-import { NotificationChannelRegistry } from '@/notifications/components/notification-channel.registry';
+import { NotificationChannelRegistry } from './notification-channel.registry';
 import { UrlGenerator } from '@/core';
 
 @Injectable()
