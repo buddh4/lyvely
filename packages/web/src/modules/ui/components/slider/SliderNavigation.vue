@@ -65,11 +65,11 @@ const sliderStyle = computed(() => {
 <template>
   <div
     ref="container"
-    class="lex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
+    class="flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
     <div
       ref="slider"
       :style="sliderStyle"
-      class="slider-nav touch-pan-y slider-nav flex gap-1"
+      class="inline-flex slider-nav touch-pan-y slider-nav flex"
       @mousedown="beginSlide"
       @touchstart="beginSlide">
       <slot></slot>
@@ -82,7 +82,6 @@ const sliderStyle = computed(() => {
   transition-duration: 0.15s;
   transition-timing-function: cubic-bezier(0.05, 0, 0, 1);
   will-change: transform;
-  display: inline-block;
   white-space: nowrap;
 }
 </style>
