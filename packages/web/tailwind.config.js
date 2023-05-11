@@ -26,11 +26,13 @@ module.exports = {
         body: 'var(--elements-body)',
         main: 'var(--elements-main)',
         shadow: 'var(--elements-shadow)',
+        sidebar: 'var(--elements-sidebar)',
         highlight: 'var(--elements-highlight)',
       }),
       textColor: {
         highlight: 'var(--text-highlight)',
         main: 'var(--text-main)',
+        sidebar: 'var(--text-sidebar)',
         dimmed: 'var(--text-dimmed)',
         inverted: 'var(--text-inverted)',
       },

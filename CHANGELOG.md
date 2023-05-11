@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Added missing coloring of some error alerts
+- Changed PWA theme color to dark theme bg-main instead of pop
 
 ### Added
 - Profile user invitation

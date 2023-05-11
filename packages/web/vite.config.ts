@@ -32,7 +32,7 @@ export default defineConfig({
         name: 'lyvely',
         short_name: 'lyvely',
         description: 'lyvely PWA',
-        theme_color: '#ffffff',
+        theme_color: '#1f2937',
         icons: [
           {
             src: 'android-chrome-192x192.png',

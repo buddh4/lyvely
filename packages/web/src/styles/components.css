@@ -6,11 +6,11 @@
 
 @layer components {
     #sidebar {
-        @apply bg-slate-900
+        @apply bg-sidebar text-sidebar
     }
 
     #sidebar a {
-        @apply text-slate-100;
+        @apply text-sidebar;
         border-left: 4px solid transparent;
     }
 

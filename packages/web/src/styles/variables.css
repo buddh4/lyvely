@@ -32,6 +32,7 @@
     --elements-main: #ffffff;
     --elements-shadow: #f3f4f6;
     --elements-highlight: #d8dae3;
+    --elements-sidebar: #0E172C;
 
     --color-pop: #48ce48;
 
@@ -39,6 +40,7 @@
     --text-main: #4b5563;
     --text-dimmed: #6b7280;
     --text-inverted: #f3f4f6;
+    --text-sidebar: #ECF2F8;
 
     --media-min-sm: 640px;
     --media-min-md: 768px;
