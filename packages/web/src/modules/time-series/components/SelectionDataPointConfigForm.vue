@@ -5,12 +5,9 @@ import { isArray } from 'class-validator';
 
 interface IProps {
   modelValue: Partial<ISelectionDataPointSettings>;
-  score: boolean;
 }
 
-const props = withDefaults(defineProps<IProps>(), {
-  score: false,
-});
+const props = defineProps<IProps>();
 
 const newOption = ref('');
 

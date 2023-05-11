@@ -44,7 +44,7 @@ export class JournalsController
   protected dataPointService: JournalDataPointService;
 
   protected createModelType = CreateJournalModel;
-  protected updateModelType = UpdateHabitModel;
+  protected updateModelType = UpdateJournalModel;
   protected updateResponseType = UpdateJournalResponse;
 
   @Get()

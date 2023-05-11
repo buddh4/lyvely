@@ -10,8 +10,8 @@ interface IProps {
   modelValue: Partial<
     Omit<INumberDataPointConfig | ITimerDataPointConfig, 'history' | 'valueType'>
   > & { valueType?: string };
-  score: boolean;
-  timer: boolean;
+  score?: boolean;
+  timer?: boolean;
   isCreate: boolean;
 }
 

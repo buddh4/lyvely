@@ -5,3 +5,4 @@ export * from './journal-filter.model';
 export * from './journal-data-point.store';
 export * from './journal-search.response';
 export * from './update-journal-response';
+export * from './update-journal-data-point.response';

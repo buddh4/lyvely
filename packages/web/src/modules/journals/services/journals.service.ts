@@ -7,10 +7,10 @@ import {
   useSingleton,
   useDataPointStrategyFacade,
   UpdateDataPointModel,
-  UpdateDataPointResponse,
   CreateJournalModel,
   UpdateJournalModel,
   UpdateJournalResponse,
+  UpdateJournalDataPointResponse,
 } from '@lyvely/common';
 import repository from '../repositories/journals.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
@@ -37,10 +37,10 @@ export class JournalsService implements IJournalsEndpointService {
   async updateDataPoint(
     cid: string,
     update: UpdateDataPointModel,
-  ): Promise<UpdateDataPointResponse> {
+  ): Promise<UpdateJournalDataPointResponse> {
     return unwrapAndTransformResponse(
       repository.updateDataPoint(cid, update),
-      UpdateDataPointResponse,
+      UpdateJournalDataPointResponse,
     );
   }
 

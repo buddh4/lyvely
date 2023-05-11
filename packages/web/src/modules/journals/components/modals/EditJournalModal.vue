@@ -100,7 +100,8 @@ const modalTitle = computed(() => {
 
           <number-data-point-config-form
             v-if="model.valueType === DataPointValueType.Number"
-            v-model="model" />
+            v-model="model"
+            :is-create="isCreate" />
           <text-data-point-config-form
             v-else-if="model.valueType === DataPointValueType.Text"
             v-model="model" />

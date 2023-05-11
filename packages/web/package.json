@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/web",
-  "version": "0.1.0-alpha1",
+  "version": "0.1.0-alpha2",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {

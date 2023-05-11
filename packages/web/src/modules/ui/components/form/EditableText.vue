@@ -1,7 +1,7 @@
 <template>
   <div class="cursor-pointer">
     <div v-if="!isEdit" class="flex gap-2 justify-between" @click="edit">
-      <div class="flex-grow whitespace-pre">
+      <div class="flex-grow">
         <template v-if="inputValue?.length">
           {{ inputValue }}
         </template>
@@ -9,7 +9,7 @@
           <span class="text-dimmed">{{ placeholder }}</span>
         </template>
       </div>
-      <div>
+      <div class="flex flex-col justify-end">
         <a class="text-secondary text-xs">{{ $t('common.edit') }}</a>
       </div>
     </div>

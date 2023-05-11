@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Timer datapoint value can not be updated manually
 - Datapoint timer input overflows on small devices
 - Manual timer input not working if max value is set to 0
+- Fixed Journal datapoint input types
 
 ### Changed
 - Added missing coloring of some error alerts

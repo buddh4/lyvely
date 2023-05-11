@@ -1,7 +1,7 @@
 {
   "name": "@lyvely/server",
   "type": "commonjs",
-  "version": "0.1.0-alpha1",
+  "version": "0.1.0-alpha2",
   "description": "",
   "author": "",
   "main": "dist/src/index.js",

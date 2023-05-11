@@ -52,7 +52,6 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
 
   @Expose()
   @IsEnum(DataPointInputType)
-  @ValidateIf((o) => o.type === DataPointValueType.Number)
   inputType: DataPointInputType;
 
   @IsInt()
