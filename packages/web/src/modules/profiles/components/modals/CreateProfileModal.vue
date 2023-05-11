@@ -42,7 +42,7 @@ const usageLabel = (usage: string) => translate('profiles.usage.' + usage.toLowe
       <ly-input-radio property="type" label="profiles.create.properties.user" :value="userType" />
       <ly-input-radio property="type" label="profiles.create.properties.group" :value="groupType" />
     </ly-form-model>
-    <ly-alert :message="error" class="mt-2" />
+    <ly-alert type="danger" :message="error" class="mt-2" />
   </ly-modal>
 </template>
 

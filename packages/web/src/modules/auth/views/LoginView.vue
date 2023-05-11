@@ -82,7 +82,7 @@ onUnmounted(loginStore.reset);
             autocomplete="username"
             :autofocus="!isTouchScreen()"
             :required="true" />
-          <ly-alert :message="loginStore.status.statusError" />
+          <ly-alert type="danger" :message="loginStore.status.statusError" />
         </div>
 
         <div v-if="stage === 'password'">
@@ -109,7 +109,7 @@ onUnmounted(loginStore.reset);
             :autofocus="!isTouchScreen()"
             :required="true" />
 
-          <ly-alert :message="loginStore.status.statusError" />
+          <ly-alert type="danger" :message="loginStore.status.statusError" />
 
           <div class="flex items-center justify-between cursor-pointer">
             <div class="flex flex-nowrap items-center mt-1">

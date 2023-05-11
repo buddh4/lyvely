@@ -36,7 +36,7 @@ onUnmounted(verifyEmailStore.reset);
         v-model="model.otp"
         :has-error="!!validator.getError('otp') || !!errorMsg"
         :email="model.email" />
-      <ly-alert :message="errorMsg" />
+      <ly-alert type="danger" :message="errorMsg" />
     </template>
 
     <template #footer>

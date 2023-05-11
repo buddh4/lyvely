@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - User is not redirected to new profile after creation
 - Email is not marked as verified after registration
 - Handling of avatars in multi-user profiles
+- Slider navigation overflow visible
+
+### Changed
+- Added missing coloring of some error alerts
 
 ### Added
 - Profile user invitation

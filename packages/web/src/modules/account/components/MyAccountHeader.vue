@@ -94,7 +94,7 @@ function updateGravatar() {
   <ly-modal v-model="showCropImageModal" width="2xl" title="cropper.title" @submit="uploadAvatar">
     <div>
       <img id="imagePreview" src="" alt="Image preview" style="display: block; max-width: 100%" />
-      <ly-alert :message="accountAvatarStore?.statusError" class="mt-1" />
+      <ly-alert type="danger" :message="accountAvatarStore?.statusError" class="mt-1" />
     </div>
   </ly-modal>
 </template>
