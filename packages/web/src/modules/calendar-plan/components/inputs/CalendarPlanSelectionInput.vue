@@ -33,7 +33,7 @@ const selection = computed({
 });
 
 const singleValueSelection = computed({
-  get: () => (props.modelValue.selection.length ? props.modelValue.selection[0] : undefined),
+  get: () => (props.modelValue.selection.length ? props.modelValue.selection[0] : ''),
 
   set: (selection: string) => {
     // eslint-disable-next-line vue/no-mutating-props
