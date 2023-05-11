@@ -4,10 +4,13 @@ import { computed, ref, watch } from 'vue';
 import { getEditContentModalComponent } from '@/modules/content-stream/components/content-stream-entry.registry';
 
 export const useContentEditStore = defineStore('content-edit', () => {
-  const editContent = ref<ContentModel>();
+  const editModel = ref<ContentModel>();
   const initOptions = ref<any>();
 
   const showEditModal = ref(false);
+
+  let activeResolve: ((res?: any) => void) | undefined;
+  let activeReject: ((err?: any) => void) | undefined;
 
   const resetOnClose = (newVal: boolean) => {
     if (!newVal) reset();
@@ -17,29 +20,50 @@ export const useContentEditStore = defineStore('content-edit', () => {
 
   function reset() {
     showEditModal.value = false;
-    editContent.value = undefined;
+    editModel.value = undefined;
     initOptions.value = undefined;
+
+    // The resolve handler was not called
+    if (activeResolve) activeResolve();
+    activeResolve = undefined;
   }
 
-  function setEditContent(content?: ContentModel, options?: any) {
+  function editContent(content?: ContentModel, options?: any, onSuccess?: (res: any) => void) {
     reset();
-    if (content) {
-      initOptions.value = options;
-      editContent.value = content;
-      showEditModal.value = true;
-    }
+
+    if (!content) return Promise.resolve();
+
+    initOptions.value = options;
+    editModel.value = content;
+    showEditModal.value = true;
+
+    return new Promise((resolve, reject) => {
+      activeResolve = resolve;
+    });
+  }
+
+  function onUpdated(resp: any) {
+    if (activeResolve) activeResolve(resp);
+    activeResolve = undefined;
+  }
+
+  function onCanceled() {
+    if (activeResolve) activeResolve();
+    activeResolve = undefined;
   }
 
   const editModalComponent = computed(() => {
-    return editContent.value ? getEditContentModalComponent(editContent.value.type) : undefined;
+    return editModel.value ? getEditContentModalComponent(editModel.value.type) : undefined;
   });
 
   return {
     showEditModal,
     editModalComponent,
     reset,
-    setEditContent,
     editContent,
+    editModel,
     initOptions,
+    onUpdated,
+    onCanceled,
   };
 });

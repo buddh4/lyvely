@@ -6,22 +6,26 @@ import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vu
 import { getCreateContentTypes } from '@/modules/content-stream/components/content-stream-entry.registry';
 import { translate } from '@/i18n';
 
+const contentCreateStore = useContentCreateStore();
 const {
   showCreateModal,
   showContentTypeMenu,
   contentType,
   initOptions: createInitOptions,
   createModalComponent,
-} = storeToRefs(useContentCreateStore());
+} = storeToRefs(contentCreateStore);
+
+const { onCreated, onCanceled: onCreateCanceled } = contentCreateStore;
 
 const {
   showEditModal,
-  editContent,
+  editModel,
   initOptions: editInitOptions,
   editModalComponent,
 } = storeToRefs(useContentEditStore());
 
-const createContentModals = getCreateContentTypes();
+const { onUpdated, onCanceled: onUpdateCanceled } = contentCreateStore;
+
 function switchCreateContentType(type: string) {
   useContentCreateStore().createContentType(type, createInitOptions.value, true);
 }
@@ -31,18 +35,22 @@ function switchCreateContentType(type: string) {
   <template v-if="showEditModal">
     <component
       :is="editModalComponent"
-      v-if="editContent"
+      v-if="editModel"
       v-model="showEditModal"
-      :content="editContent"
-      :type="editContent.type"
-      :init-options="editInitOptions" />
+      :content="editModel"
+      :type="editModel.type"
+      :init-options="editInitOptions"
+      @success="onUpdated"
+      @cancel="onUpdateCanceled" />
   </template>
   <template v-if="showCreateModal">
     <component
       :is="createModalComponent"
       v-model="showCreateModal"
       :type="contentType"
-      :init-options="createInitOptions">
+      :init-options="createInitOptions"
+      @success="onCreated"
+      @cancel="onCreateCanceled">
       <template #navigation>
         <div v-if="showContentTypeMenu" class="flex justify-center p-2 shadow bg-highlight">
           <slider-navigation>

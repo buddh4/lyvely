@@ -11,6 +11,8 @@ export const useContentCreateStore = defineStore('content-create', () => {
 
   const showCreateModal = ref(false);
 
+  let activeResolve: ((res?: any) => void) | undefined;
+
   const resetOnClose = (newVal: boolean) => {
     if (!newVal) reset();
   };
@@ -22,6 +24,13 @@ export const useContentCreateStore = defineStore('content-create', () => {
     contentType.value = undefined;
     initOptions.value = undefined;
     showContentTypeMenu.value = false;
+
+    // The resolve handler was not called
+    if (activeResolve) {
+      activeResolve();
+    }
+
+    activeResolve = undefined;
   }
 
   function createContentType(
@@ -31,13 +40,27 @@ export const useContentCreateStore = defineStore('content-create', () => {
   ) {
     reset();
 
-    if (!type) return;
+    if (!type) return Promise.resolve();
 
     initOptions.value = options;
     contentType.value = type;
     latestContentType = type;
     showContentTypeMenu.value = withContentTypeMenu;
     showCreateModal.value = true;
+
+    return new Promise((resolve) => {
+      activeResolve = resolve;
+    });
+  }
+
+  function onCreated(resp: any) {
+    if (activeResolve) activeResolve(resp);
+    activeResolve = undefined;
+  }
+
+  function onCanceled() {
+    if (activeResolve) activeResolve();
+    activeResolve = undefined;
   }
 
   function createAnyContent(options?: ICreateContentInitOptions) {
@@ -65,5 +88,7 @@ export const useContentCreateStore = defineStore('content-create', () => {
     createAnyContent,
     createContentType,
     initOptions,
+    onCreated,
+    onCanceled,
   };
 });

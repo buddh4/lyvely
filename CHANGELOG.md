@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Profile user invitation
+- Content create and edit store now return a promise
 
 ## [0.1.0.alpha1] - 2023-05-10
 ### Fixed

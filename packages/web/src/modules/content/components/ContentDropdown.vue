@@ -29,7 +29,7 @@ function onClickArchive() {
 }
 
 function onClickEdit() {
-  useContentEditStore().setEditContent(props.content);
+  useContentEditStore().editContent(props.content);
 }
 
 const contentTypeOptions = getContentTypeOptions(props.content.type);

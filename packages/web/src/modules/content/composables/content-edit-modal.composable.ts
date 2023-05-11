@@ -14,6 +14,9 @@ import { ModalCreate } from '@/modules/content-stream/interfaces/stream-entry-re
 import { StoreStatusPlugin } from '@/store';
 import { useContentStore } from '@/modules/content/stores/content.store';
 
+export const ContentEditModalEmits = ['update:modelValue', 'success', 'cancel'];
+type TContentEditModalEmits = 'update:modelValue' | 'success';
+
 export function useContentEditModal<
   TModel extends ContentModel & IEditableModel<TUpdateModel>,
   TCreateModel extends CreateContentModel,
@@ -21,7 +24,7 @@ export function useContentEditModal<
   TResponse extends ContentUpdateResponse<TModel> = ContentUpdateResponse<TModel>,
 >(
   props: IEditOrCreateModalProps<TModel>,
-  emit: (emit: 'update:modelValue', val: boolean) => void,
+  emit: (emit: TContentEditModalEmits, val?: any) => void,
   options: IEditModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse>,
 ) {
   const { content, type } = props;
@@ -39,6 +42,9 @@ export function useContentEditModal<
     } else {
       contentStore.handleUpdateContent(response);
     }
+
+    // This needs to be called before we hide the modal, otherwise dependent stores may be reset or handlers are rejected
+    emit('success', response);
 
     showModal.value = false;
 

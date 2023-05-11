@@ -2,11 +2,13 @@
 import { computed } from 'vue';
 
 export interface IProps {
-  text: string;
+  text?: string;
   max: number;
 }
 
-const props = defineProps<IProps>();
+const props = withDefaults(defineProps<IProps>(), {
+  text: '',
+});
 
 const trimmedText = computed(() => {
   const text = props.text?.trim() || '';

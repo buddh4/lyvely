@@ -8,7 +8,10 @@ import {
 } from '@lyvely/common';
 import { computed } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
-import { useContentEditModal } from '@/modules/content/composables/content-edit-modal.composable';
+import {
+  ContentEditModalEmits,
+  useContentEditModal,
+} from '@/modules/content/composables/content-edit-modal.composable';
 import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
@@ -25,7 +28,7 @@ export interface IProps {
 }
 
 const props = defineProps<IProps>();
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(ContentEditModalEmits);
 
 const { isCreate, showModal, model, validator, submit, status } = useContentEditModal<
   JournalModel,
@@ -54,7 +57,7 @@ const modalTitle = computed(() => {
 </script>
 
 <template>
-  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit">
+  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit" @cancel="$emit('cancel')">
     <template #preHeader><slot name="navigation"></slot></template>
     <ly-form-model
       v-model="model"

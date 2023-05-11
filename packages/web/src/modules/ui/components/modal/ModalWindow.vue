@@ -90,12 +90,6 @@ const widths = {
   full: 'max-w-full',
 };
 
-const modalWindowClass = `w-full ${
-  widths[props.width]
-} flex  fix-h-screen flex-col max-h-full relative md:rounded-sm shadow-lg bg-main md:h-auto md:min-h-0`;
-
-//flex h-screen fix-h-screen flex-col max-h-full relative md:rounded-sm shadow-lg bg-main md:h-auto md:min-h-0`
-
 const dialogClass = `w-full ${
   widths[props.width]
 } h-screen fix-h-screen max-h-full md:h-fit md:min-h-0 my-0 md:my-auto p-0 bg-main text-main md:rounded-sm shadow-lg md:justify-center md:items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat overflow-y-auto`;

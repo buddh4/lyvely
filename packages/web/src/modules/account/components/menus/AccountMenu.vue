@@ -9,6 +9,7 @@ import { useNotificationStore } from '@/modules/notifications/stores/notificatio
 import { isMaxViewSize } from '@/util';
 import NotificationDrawer from '@/modules/notifications/components/NotificationDrawer.vue';
 import { useSendInviteUsersStore } from '@/modules/invitations/stores/send-invitations.store';
+import InviteUsersModal from '@/modules/invitations/components/modals/InviteUsersModal.vue';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();

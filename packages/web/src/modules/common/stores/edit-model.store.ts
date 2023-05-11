@@ -69,7 +69,7 @@ export function useUpdateModelStore<
   }
 
   async function submit() {
-    if (!validator.value || !(await validator.value.validate())) return;
+    if (!validator.value || !(await validator.value.validate())) return Promise.reject();
 
     try {
       const response = await loadingStatus<TResponse | false>(
@@ -85,6 +85,7 @@ export function useUpdateModelStore<
       }
 
       reset();
+      return response;
     } catch (err) {
       if (typeof options.onSubmitError === 'function') {
         options.onSubmitError(err);

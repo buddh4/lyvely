@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
-import { useContentEditModal } from '@/modules/content/composables/content-edit-modal.composable';
+import {
+  ContentEditModalEmits,
+  useContentEditModal,
+} from '@/modules/content/composables/content-edit-modal.composable';
 import { CreateTaskModel, TaskModel, UpdateTaskModel } from '@lyvely/common';
 import { useTasksService } from '@/modules/tasks/services/tasks.service';
 import { getCalendarPlanOptions } from '@/modules/calendar-plan';
@@ -16,7 +19,7 @@ export interface IProps {
 }
 
 const props = defineProps<IProps>();
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(ContentEditModalEmits);
 const store = useContentEditModal<TaskModel, CreateTaskModel, UpdateTaskModel>(props, emit, {
   service: useTasksService(),
 });
@@ -29,7 +32,7 @@ const modalTitle = computed(() => {
 </script>
 
 <template>
-  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit">
+  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit" @cancel="$emit('cancel')">
     <template #preHeader><slot name="navigation"></slot></template>
     <ly-form-model
       v-model="model"

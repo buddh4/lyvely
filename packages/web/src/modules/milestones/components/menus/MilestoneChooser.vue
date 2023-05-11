@@ -6,7 +6,6 @@ import { useSetContentMilestone } from '@/modules/content/composables/set-conten
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import LyAddButton from '@/modules/ui/components/button/AddButton.vue';
 import { storeToRefs } from 'pinia';
-import { eventBus } from '@/modules/core/events/global.emitter';
 
 export interface IProps {
   content: ContentModel;
@@ -19,12 +18,12 @@ const milestones = ref(await milestonesStore.loadMilestones());
 const { setMilestone } = useSetContentMilestone(props.content);
 const { statusError } = storeToRefs(milestonesStore);
 
-const createMilestone = () => useContentCreateStore().createContentType(MilestoneModel.contentType);
-eventBus.on('model.created.post', (response: unknown) => {
-  if (response instanceof UpdateMilestoneResponse) {
-    setMilestone(response.model.id);
-  }
-});
+const createMilestone = () =>
+  useContentCreateStore()
+    .createContentType(MilestoneModel.contentType)
+    .then((response?: UpdateMilestoneResponse) => {
+      if (response) setMilestone(response.model.id);
+    });
 </script>
 
 <template>
