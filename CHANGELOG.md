@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Modal autofocus was not working due to new dialog
 - Center modal title on mobile
 - Modal may show second scrollbar in some cases of y-overflow
+- Number input does not remove leading zeros
 
 ### Changed
 - Initially hide main container scrollbar on small devices

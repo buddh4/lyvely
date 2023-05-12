@@ -18,7 +18,7 @@
       type="text"
       inputmode="numeric"
       @blur="$emit('blur')"
-      @change="$emit('change')" />
+      @input="onInput" />
     <div v-if="slider && editable" class="number-slider">
       <ly-button :class="buttonClass" @click="increment">+</ly-button>
       <ly-button :class="buttonClass" @click="decrement">-</ly-button>
@@ -48,7 +48,7 @@ export default {
     min: { type: Number, default: undefined },
     max: { type: Number, default: undefined },
   },
-  emits: ['change', 'update:modelValue', 'increment', 'decrement', 'blur', 'focus'],
+  emits: ['change', 'update:modelValue', 'increment', 'decrement', 'blur', 'focus', 'input'],
   setup(props: IProps, context: SetupContext) {
     const baseInput = useFloatingInputSetup<number>(props, context);
 
@@ -66,10 +66,11 @@ export default {
 
         val = val || 0;
         val = parseInt(val + '');
+        debugger;
 
         context.emit('change', val);
         //baseInputValue.value = baseInput.hasFocus.value ? val : getAllowedVal(val);
-        baseInputValue.value = getAllowedVal(val);
+        baseInputValue.value = val;
       },
     });
 
@@ -85,23 +86,33 @@ export default {
     }
 
     function increment() {
-      baseInput.inputValue.value = baseInput.inputValue.value + props.steps!;
+      baseInput.inputValue.value = getAllowedVal(baseInput.inputValue.value + props.steps!);
       context.emit('increment', baseInput.inputValue.value);
     }
 
     function decrement() {
-      baseInput.inputValue.value = baseInput.inputValue.value - props.steps!;
+      baseInput.inputValue.value = getAllowedVal(baseInput.inputValue.value - props.steps!);
       context.emit('decrement', baseInput.inputValue.value);
     }
 
     const buttonClass =
       'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm px-0 py-0';
 
+    const leadingZerosRegex = new RegExp(/^0+[0-9]+/);
+
+    function onInput($evt: InputEvent) {
+      const target = $evt.target as HTMLInputElement;
+      if (leadingZerosRegex.test(`${target.value}`)) {
+        target.value = parseInt(target.value) + '';
+      }
+      context.emit('input', $evt);
+    }
     return {
       ...baseInput,
       increment,
       decrement,
       buttonClass,
+      onInput,
     };
   },
   mounted() {
