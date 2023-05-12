@@ -4,12 +4,10 @@ import { ContentModel, ProfileType } from '@lyvely/common';
 import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { nextTick, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { focusIfNotTouchScreen } from '@/util';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import { useRouter } from 'vue-router';
-import { useContentStreamFooterStore } from '@/modules/content-stream/stores/content-stream-footer.store';
 
 export interface IProps {
   parent?: ContentModel;

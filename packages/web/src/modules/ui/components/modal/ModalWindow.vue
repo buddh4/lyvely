@@ -84,7 +84,7 @@ const widths = {
 
 const dialogClass = `w-full ${
   widths[props.width]
-} h-screen-s max-h-full md:h-fit md:max-h md:min-h-0 my-0 md:my-auto p-0 bg-main text-main md:rounded-sm shadow-lg md:justify-center md:items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat overflow-y-auto`;
+} h-screen-s max-h-screen-s md:h-fit md:max-h overflow-hidden md:min-h-0 my-0 md:my-auto p-0 bg-main text-main md:rounded-sm shadow-lg md:justify-center md:items-center inset-0 z-50 outline-none focus:outline-none bg-no-repeat`;
 
 function onEscape(evt: KeyboardEvent) {
   if (props.closeOnEscape) {
@@ -115,7 +115,7 @@ function onKeyDown(evt: KeyboardEvent) {
       :aria-label="ariaLabel || $t('modal.aria.root')"
       @keyup.esc.stop.prevent="onEscape"
       @keydown="onKeyDown">
-      <div class="flex flex-col h-screen-s max-h-screen-s max-h-full md:h-auto md:min-h-0">
+      <div class="flex flex-col h-screen-s max-h-screen-s md:h-auto md:min-h-0">
         <slot name="preHeader"></slot>
         <div
           class="flex items-center p-3 px-4 pb-5 md:p-5 md:px-5 md:rounded-t-sm md:shadow z-10"

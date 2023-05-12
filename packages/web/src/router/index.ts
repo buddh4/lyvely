@@ -17,7 +17,6 @@ import { usePageStore } from '@/modules/core/store/page.store';
 import { loadProfile } from '@/modules/profiles';
 import { useHelpStore } from '@/modules/help/stores/help.store';
 import { showMobileNavGuard } from '@/modules/core';
-import { animateContentStreamFooterGuard } from '@/modules/content-stream/guards';
 
 const routes: Array<RouteRecordRaw> = [];
 

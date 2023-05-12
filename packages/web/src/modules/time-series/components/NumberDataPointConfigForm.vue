@@ -4,6 +4,7 @@ import {
   DataPointValueType,
   INumberDataPointConfig,
   ITimerDataPointConfig,
+  useDataPointStrategyFacade,
 } from '@lyvely/common';
 
 interface IProps {
@@ -14,6 +15,8 @@ interface IProps {
   timer?: boolean;
   isCreate: boolean;
 }
+
+defineEmits(['update:modelValue']);
 
 const props = withDefaults(defineProps<IProps>(), {
   score: false,
