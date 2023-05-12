@@ -46,6 +46,28 @@
 
         .dark .scrollbar-thin::-webkit-scrollbar-thumb {
             background: var(--color-secondary-dark);
+            transition: background-color 0.3s ease;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .scrollbar-hidden {
+            scrollbar-width: none;
+            scrollbar-color: transparent transparent !important;
+        }
+
+        .scrollbar-hidden::-webkit-scrollbar-track {
+            background: transparent !important;
+        }
+
+        .scrollbar-hidden::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            background-color: transparent !important;
+        }
+
+        .scrollbar-hidden::-webkit-scrollbar-thumb {
+            background-color: transparent !important;
         }
     }
 

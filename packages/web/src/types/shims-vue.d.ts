@@ -42,6 +42,7 @@ declare module 'vue-router' {
     // is optional
     i18n?: { module?: string | string[] };
     layout?: string;
+    showMobileFooter?: boolean;
     baseName?: string;
     nonProfileView?: boolean;
     title?: () => string;

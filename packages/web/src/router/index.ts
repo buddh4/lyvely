@@ -16,6 +16,8 @@ import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { loadProfile } from '@/modules/profiles';
 import { useHelpStore } from '@/modules/help/stores/help.store';
+import { showMobileNavGuard } from '@/modules/core';
+import { animateContentStreamFooterGuard } from '@/modules/content-stream/guards';
 
 const routes: Array<RouteRecordRaw> = [];
 
@@ -87,6 +89,7 @@ router.beforeEach(messageLoaderGuard);
 router.beforeEach(appConfigGuard);
 router.beforeEach(authGuard);
 router.afterEach(() => usePageStore().setShowAppLoader(false));
+router.beforeEach(showMobileNavGuard);
 router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
   if (to.query.help === '1') {
     useHelpStore().setShowModal(true);

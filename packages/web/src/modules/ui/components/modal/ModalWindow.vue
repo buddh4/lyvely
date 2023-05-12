@@ -21,7 +21,6 @@ export interface IModalProps {
   cancelButtonClass?: string;
   submitButton?: boolean;
   submitButtonText?: string;
-  prevAutoFocus?: boolean;
   ariaLabel?: string;
 }
 
@@ -40,7 +39,6 @@ const props = withDefaults(defineProps<IModalProps>(), {
   isLoading: false,
   submitButton: true,
   iconClass: undefined,
-  prevAutoFocus: false,
   ariaLabel: undefined,
 });
 
@@ -59,7 +57,6 @@ watch(
       nextTick(() => {
         rootEl.value?.scrollIntoView();
         rootEl.value?.showModal();
-        accessibilityFocus(suggestFocusElement(rootEl.value));
       });
     }
   },
@@ -124,11 +121,11 @@ function onKeyDown(evt: KeyboardEvent) {
           class="flex items-center p-3 px-4 pb-5 md:p-5 md:px-5 md:rounded-t-sm md:shadow z-10"
           data-modal-header>
           <slot name="header">
-            <ly-button class="text-sm md:hidden pr-5" @click="cancel">
+            <ly-button class="text-sm md:hidden pl-0" @click="cancel">
               <ly-icon name="arrow-left" class="w-3" />
             </ly-button>
             <h1
-              class="flex text-md md:text-lg inline-block align-middle flex align-items-center flex-grow"
+              class="flex text-md md:text-lg inline-block align-middle justify-center md:justify-start align-items-center flex-grow"
               tabindex="-1">
               <ly-icon
                 v-if="icon"

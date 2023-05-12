@@ -4,10 +4,12 @@ import { ContentModel, ProfileType } from '@lyvely/common';
 import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { focusIfNotTouchScreen } from '@/util';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
+import { useRouter } from 'vue-router';
+import { useContentStreamFooterStore } from '@/modules/content-stream/stores/content-stream-footer.store';
 
 export interface IProps {
   parent?: ContentModel;
@@ -44,16 +46,14 @@ const placeholderKey =
     ? 'stream.editor.placeholder_single_user'
     : 'stream.editor.placeholder_multi_user';
 
-onMounted(() => {
-  focusIfNotTouchScreen(messageInput.value);
-});
-
 const onInputKeydown = (evt: KeyboardEvent) => {
   if (evt.ctrlKey && evt.key === '+') {
     evt.preventDefault();
     openCreateContentModal();
   }
 };
+
+onMounted(() => focusIfNotTouchScreen(messageInput.value));
 </script>
 
 <template>

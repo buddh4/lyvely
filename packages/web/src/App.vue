@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import DialogWindow from '@/modules/ui/components/dialog/DialogWindow.vue';
-import MobileFooterNavigation from '@/modules/ui/components/layout/MobileFooterNavigation.vue';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import AriaLiveStatus from '@/modules/accessibility/components/AriaLiveStatus.vue';
 import ProfileLayout from '@/modules/profiles/components/layout/ProfileLayout.vue';
@@ -50,7 +49,6 @@ const layoutDefinition = computed<{ component: any; props: any } | undefined>(()
       <router-view></router-view>
     </template>
   </div>
-  <mobile-footer-navigation v-if="isAuthenticated" />
   <app-loader />
   <aria-live-status />
   <dialog-window

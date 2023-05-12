@@ -53,14 +53,14 @@
 }
 
 /* Size < Small */
-@media screen and (max-width: 756px) {
+@media screen and (max-width: 768px) {
     .introjs-tooltip {
         min-width: 300px !important;
     }
 }
 
 /* Size > Small */
-@media screen and (min-width: 756px) {
+@media screen and (min-width: 768px) {
     .introjs-tooltip {
         min-width: 500px !important;
     }

@@ -16,6 +16,7 @@ export default [
           layout: 'profile-full',
           title: translation('stream.title'),
           breadcrumb: [translation('stream.breadcrumb.stream')],
+          showMobileFooter: false,
         },
       },
       {
@@ -26,6 +27,7 @@ export default [
           layout: 'profile-full',
           title: translation('stream.title'),
           baseName: 'stream',
+          showMobileFooter: false,
           breadcrumb: [
             translation('stream.breadcrumb.stream'),
             translation('stream.breadcrumb.content_details'),

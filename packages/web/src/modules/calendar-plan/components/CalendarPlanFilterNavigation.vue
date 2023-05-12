@@ -36,7 +36,7 @@ onBeforeRouteLeave(stopWatch);
 </script>
 
 <template>
-  <nav id="filter-nav" class="flex flex-row content-left clearfix ms-2 me-2 mb-2">
+  <nav id="filter-nav" class="flex flex-row content-left clearfix mb-2">
     <ly-button
       :class="roundButton"
       :active="dragActive"

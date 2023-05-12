@@ -59,7 +59,7 @@ onBeforeRouteLeave(unwatchFilter);
 </script>
 
 <template>
-  <nav id="stream-filter-nav" class="flex flex-row content-left clearfix ms-2 me-2 mb-2">
+  <nav id="stream-filter-nav" class="flex flex-row content-left clearfix mb-2">
     <slider-navigation class="tag-filter-selection">
       <ly-button :class="pillButton" :active="!activeTagId" @click="setTagFilter()">
         {{ $t('filter.all') }}

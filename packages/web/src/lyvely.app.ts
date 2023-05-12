@@ -79,6 +79,7 @@ export class LyvelyApp {
     this.vueApp.use(router);
     this.vueApp.use(ModuleLoader);
     this.vueApp.use(this.i18n);
+    this.initDirectives();
     this.setGlobalComponents();
     useDayJsDateTimeAdapter();
   }
@@ -87,6 +88,25 @@ export class LyvelyApp {
     this.events.emit('app.mount.pre', this);
     this.vueApp.mount(selector);
     this.events.emit('app.mount.post', this);
+  }
+
+  private initDirectives() {
+    this.vueApp.directive('mobile-scrollbar', {
+      mounted: (el) => {
+        const isInitialized = false;
+
+        const hide = (timeout = 0) =>
+          window.setTimeout(() => el.classList.add('scrollbar-hidden'), timeout);
+
+        hide();
+        // ContentStream requires this
+        hide(500);
+
+        el.addEventListener('scroll', function () {
+          if (!isInitialized) el.classList.remove('scrollbar-hidden');
+        });
+      },
+    });
   }
 
   private setGlobalComponents() {

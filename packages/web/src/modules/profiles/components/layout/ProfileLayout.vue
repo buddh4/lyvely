@@ -11,6 +11,8 @@ import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tou
 import HelpModal from '@/modules/help/components/HelpModal.vue';
 
 import CreateOrEditContentModal from '@/modules/content-stream/components/CreateOrEditContentModal.vue';
+import MobileFotterMenu from '@/modules/profiles/components/menus/MobileFotterMenu.vue';
+import { usePageStore } from '@/modules/core/store/page.store';
 
 export interface IProps {
   containerWidth?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
@@ -32,6 +34,8 @@ const containerProps = computed(() => ({ width: props.containerWidth }));
 
 const show = computed(() => (props.requireAuth ? useAuthStore().isAuthenticated : true));
 
+const { showMobileFooter } = storeToRefs(usePageStore());
+
 const IntroductionTour = defineAsyncComponent(
   () => import('@/modules/help/components/IntroductionTour.vue'),
 );
@@ -46,6 +50,7 @@ const IntroductionTour = defineAsyncComponent(
           <router-view></router-view>
         </slot>
       </main-profile-container>
+      <mobile-fotter-menu :state="showMobileFooter" />
     </div>
   </div>
 

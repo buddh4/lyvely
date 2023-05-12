@@ -133,6 +133,7 @@ onUnmounted(() => {
   <div
     id="contentStreamRoot"
     ref="streamRoot"
+    v-mobile-scrollbar
     class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
     <slot name="before" :stream="stream"></slot>
     <div class="px-2 md:px-6">

@@ -10,6 +10,7 @@ export const usePageStore = defineStore('page', () => {
   const showAppLoader = ref(true);
   const drawerStack = ref<Array<string>>([]);
   const isOnline = useOnline();
+  const showMobileFooter = ref(true);
 
   function setTitle(title: Array<string> | string) {
     setPageTitle(title);
@@ -58,6 +59,7 @@ export const usePageStore = defineStore('page', () => {
     showAppLoader,
     setTitle,
     isOnline,
+    showMobileFooter,
   };
 });
 

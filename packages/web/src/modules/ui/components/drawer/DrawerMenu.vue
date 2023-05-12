@@ -151,7 +151,4 @@ h1 {
   transform: translateX(280px);
   opacity: 0.9;
 }
-
-@media (max-width: 768px) {
-}
 </style>

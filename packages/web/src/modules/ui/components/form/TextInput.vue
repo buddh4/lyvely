@@ -5,8 +5,7 @@
     :label="label"
     :required="required"
     :help-text="helpText"
-    :input-error="inputError"
-  >
+    :input-error="inputError">
     <template #label>
       <slot name="label"></slot>
     </template>
@@ -26,16 +25,14 @@
       :type="internalType"
       :class="inputClass"
       @change="onChange"
-      @focusout="onFocusOut"
-    />
+      @focusout="onFocusOut" />
 
     <div
       v-if="isPassword && passwordToggle"
       role="button"
       class="absolute flex top-1 right-2 cursor-pointer"
       :aria-label="$t(togglePasswordAriaLabel)"
-      @click="togglePassword"
-    >
+      @click="togglePassword">
       <ly-icon :name="togglePasswordIcon" />
     </div>
   </floating-input-layout>
@@ -81,7 +78,7 @@ export default {
     },
   },
   mounted() {
-    if (this.autofocus) this.$refs.input.focus();
+    if (this.autofocus) setTimeout(() => this.$refs.input.focus());
   },
   methods: {
     togglePassword() {
