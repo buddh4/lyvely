@@ -7,6 +7,7 @@ import { NotificationDao } from '../daos';
 import { JOB_SEND_NOTIFICATION, QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';
 import { EntityIdentity } from '@/core';
+import { User } from '@/users';
 
 @Injectable()
 export class NotificationService {

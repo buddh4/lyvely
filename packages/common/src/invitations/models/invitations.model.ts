@@ -53,6 +53,9 @@ export class MailInvitationInfo extends BaseModel<MailInvitationInfo> {
   profileName?: string;
 
   @Expose()
+  profileGuid?: string;
+
+  @Expose()
   hostName: string;
 
   @Expose()
@@ -63,4 +66,25 @@ export class MailInvitationInfo extends BaseModel<MailInvitationInfo> {
 
   @Expose()
   isVerifiedMail: boolean;
+}
+
+@Exclude()
+export class UserInvitationInfo extends BaseModel<UserInvitationInfo> {
+  @Expose()
+  pid: string;
+
+  @Expose()
+  profileName: string;
+
+  @Expose()
+  profileGuid?: string;
+
+  @Expose()
+  hostId: string;
+
+  @Expose()
+  hostName: string;
+
+  @Expose()
+  hostGuid: string;
 }

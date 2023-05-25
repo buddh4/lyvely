@@ -1,11 +1,11 @@
-import { UrlRoute } from '@/web';
+import { IUrlRoute } from '@/web';
 import { UserInfoModel } from '@/users';
 import { ProfileInfoModel } from '@/profiles';
 
 export interface IWebNotification {
   id: string;
   type: string;
-  route?: UrlRoute;
+  route?: IUrlRoute;
   userInfo?: UserInfoModel;
   profileInfo?: ProfileInfoModel;
   sortOrder: number;

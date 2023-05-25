@@ -1,108 +1,79 @@
 import { Injectable } from '@nestjs/common';
-import { Profile, ProfilesService } from '@/profiles';
-import { MailService } from '@/mails';
-import { UserStatus } from '@lyvely/common';
-import { User, UsersService } from '@/users';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
-import { assureObjectId, ConfigurationPath } from '@/core';
-import { InvitationDao } from '@/invitations/daos/invitation.dao';
-import jwt from 'jsonwebtoken';
-import { Invitation, MailInvitation, UserInvitation } from '@/invitations/schemas';
-
-export interface IInvitationContext {
-  invitation: Invitation;
-  invitee?: User;
-  host?: User;
-  profile?: Profile;
-  token: string;
-}
+import { Membership, Profile, ProfilesService } from '@/profiles';
+import { User } from '@/users';
+import { InvitationDao } from '../daos';
+import { MailInvitation, UserInvitation } from '../schemas';
+import { MailInvitationService } from './mail-invitations.service';
+import { IMailInvitationContext, InvitationIF } from '../interfaces';
+import { UserInvitationsService } from './user-invitations.service';
+import { assureObjectId, EntityIdentity } from '@/core';
+import { EntityNotFoundException } from '@lyvely/common';
+import { NotificationService } from '@/notifications';
 
 @Injectable()
 export class InvitationsService {
   constructor(
     private profileService: ProfilesService,
-    private userService: UsersService,
-    private mailService: MailService,
-    private jwtService: JwtService,
-    private configService: ConfigService<ConfigurationPath>,
     private inviteDao: InvitationDao,
+    private mailInvitationsService: MailInvitationService,
+    private userInvitationsService: UserInvitationsService,
+    private notificationService: NotificationService,
   ) {}
 
-  public async acceptInvitation(user: User, invitation: Invitation) {
+  public async getMailInvitationContext(token: string) {
+    return this.mailInvitationsService.getInvitationContext(token);
+  }
+
+  public async getUserInvitationContext(user: User, profile: EntityIdentity<Profile>) {
+    return this.userInvitationsService.getInvitationContext({ user, profile });
+  }
+
+  public async validateMailInvitationContext(metaData: IMailInvitationContext) {
+    return this.mailInvitationsService.validateInvitationContext(metaData);
+  }
+
+  public async acceptUserInvitation(
+    user: User,
+    profile: EntityIdentity<Profile>,
+  ): Promise<Membership> {
+    const invitation = await this.userInvitationsService.getInvitation({ user, profile });
+    if (!invitation) throw new EntityNotFoundException();
+    return this.acceptInvitation(user, invitation);
+  }
+
+  public async declineUserInvitation(
+    user: User,
+    profile: EntityIdentity<Profile>,
+  ): Promise<number> {
+    // TODO: invalidate notification
+    return this.inviteDao.deleteMany({ uid: assureObjectId(user), pid: assureObjectId(profile) });
+  }
+
+  public async acceptMailInvitation(user: User, token: string): Promise<Membership> {
+    const invitation = await this.mailInvitationsService.getInvitation(token);
+    if (!invitation) throw new EntityNotFoundException();
+    return this.acceptInvitation(user, invitation);
+  }
+
+  public async acceptInvitation(user: User, invitation: InvitationIF) {
     return Promise.all([
       this.handleProfileInvitation(user, invitation),
-      this.inviteDao.updateOneSetById(invitation, { uid: user._id, email: null, token: null }),
+      this.inviteDao.updateOneSetById(invitation._id, { uid: user._id, email: null, token: null }),
       this.invalidateOtherInvitations(invitation),
     ]).then((result) => result[0]);
   }
 
-  private async handleProfileInvitation(user: User, invitation: Invitation) {
+  private async handleProfileInvitation(user: User, invitation: InvitationIF) {
     if (!invitation.pid) return;
     const profile = await this.profileService.findProfileById(invitation.pid);
     return this.profileService.createMembership(profile, user, invitation.role);
   }
 
-  private async invalidateOtherInvitations(invitation: Invitation) {
+  private async invalidateOtherInvitations(invitation: InvitationIF) {
     if (invitation instanceof MailInvitation) {
-      return this.inviteDao.deleteMany({
-        _id: { $ne: assureObjectId(invitation) },
-        email: invitation.email,
-        pid: invitation.pid,
-      });
-    } else if (invitation.pid) {
-      return this.inviteDao.deleteMany({
-        _id: { $ne: assureObjectId(invitation) },
-        uid: invitation.uid,
-        pid: invitation.pid,
-      });
+      return this.mailInvitationsService.invalidateOtherInvitations(invitation);
+    } else if (invitation instanceof UserInvitation) {
+      return this.userInvitationsService.invalidateOtherInvitations(invitation);
     }
-  }
-
-  public async getInvitationMetadata(token: string): Promise<IInvitationContext> {
-    if (!token) return null;
-
-    const invitation = await this.inviteDao.findOne({ token });
-
-    if (!invitation) return null;
-
-    const inviteePromise =
-      invitation instanceof MailInvitation
-        ? this.userService.findByVerifiedEmail(invitation.email)
-        : invitation instanceof UserInvitation
-        ? this.userService.findUserById(invitation.uid)
-        : undefined;
-
-    const profilePromise = invitation.pid
-      ? this.profileService.findProfileById(invitation.pid)
-      : undefined;
-    const hostPromise = this.userService.findUserById(invitation.createdBy);
-
-    const [invitee, host, profile]: [User, User, Profile] = await Promise.all([
-      inviteePromise,
-      hostPromise,
-      profilePromise,
-    ]);
-
-    return { invitee, host, profile, token, invitation };
-  }
-
-  public async validateInvitationMetadata(metaData: IInvitationContext): Promise<boolean> {
-    if (!metaData) return false;
-    const { invitee, host, profile, token, invitation } = metaData;
-    return (
-      host.status === UserStatus.Active &&
-      (!invitation.pid || profile) &&
-      (await this.verifyToken(token))
-    );
-  }
-
-  private verifyToken(token: string): Promise<boolean> {
-    if (!token) return Promise.resolve(false);
-    return new Promise((resolve) => {
-      jwt.verify(token, this.configService.get('auth.jwt.verify.secret'), (err, decoded) => {
-        resolve(!err);
-      });
-    });
   }
 }

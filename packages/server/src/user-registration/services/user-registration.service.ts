@@ -18,7 +18,7 @@ import { ConfigService } from '@nestjs/config';
 import { UrlGenerator, ConfigurationPath } from '@/core';
 import { UserOtpService } from '@/user-otp';
 import { InvitationsService } from '@/invitations/services/invitations.service';
-import { Invitation } from '@/invitations';
+import { IMailInvitation } from '@/invitations';
 import { SystemMessagesService } from '@/system-messages';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
@@ -71,7 +71,7 @@ export class UserRegistrationService {
     });
   }
 
-  private async handleInvitation(user, invitation?: Invitation) {
+  private async handleInvitation(user, invitation?: IMailInvitation) {
     if (!invitation) return;
     return this.invitationsService.acceptInvitation(user, invitation);
   }
@@ -106,18 +106,18 @@ export class UserRegistrationService {
   }
 
   private async getAndValidateInvitation(userRegistration: UserRegistration) {
-    const invitationMetadata = await this.invitationsService.getInvitationMetadata(
+    const invitationContext = await this.invitationsService.getMailInvitationContext(
       userRegistration.inviteToken,
     );
 
     if (
       this.getRegistrationMode() === 'invite' &&
-      !(await this.invitationsService.validateInvitationMetadata(invitationMetadata))
+      !(await this.invitationsService.validateMailInvitationContext(invitationContext))
     ) {
       throw new ForbiddenServiceException();
     }
 
-    return invitationMetadata?.invitation;
+    return invitationContext?.invitation;
   }
 
   private async sendEmailAlreadyExistsMail(email: string) {

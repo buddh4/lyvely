@@ -15,11 +15,11 @@ import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { assureObjectId, ConfigurationPath } from '@/core';
-import { InvitationDao } from '@/invitations/daos/invitation.dao';
+import { InvitationDao } from '../daos/invitation.dao';
 import { isDefined } from 'class-validator';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';
 import { NotificationService } from '@/notifications';
-import { ProfileInvitationNotification } from '@/invitations/notifications';
+import { ProfileInvitationNotification } from '../notifications';
 import { MultiUserSubscription } from '@/user-subscription';
 
 const JWT_USER_INVITE_TOKEN = 'invitation_token';
@@ -172,7 +172,7 @@ export class SendInvitationsService {
 
     const appName = this.configService.get('appName');
     const inviteUrl = this.mailService.getEscapedAppUrl({
-      path: '/mail-invite',
+      path: '/mail-invitation',
       query: { t: token },
     });
 

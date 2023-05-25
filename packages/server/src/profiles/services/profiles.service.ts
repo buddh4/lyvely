@@ -313,6 +313,8 @@ export class ProfilesService {
     identity: EntityIdentity<Profile>,
     throwsException = false,
   ): Promise<Profile | undefined> {
+    if (!identity) return null;
+
     const result =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
 

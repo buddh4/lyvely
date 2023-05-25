@@ -2,6 +2,10 @@
   "invitations": {
     "title": "Invitation",
     "headline": "Hey, there!",
+    "accept": {
+      "title": "Accept invitation",
+      "headline": "You've been invited!"
+    },
     "messages": {
       "success": "Invitations sent!",
       "profile_invite": "{host} invited you to join {profile}. Please choose an option below.",

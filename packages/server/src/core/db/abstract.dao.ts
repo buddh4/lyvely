@@ -239,6 +239,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     if (fetchFilter) {
       query.where(fetchFilter);
     }
+
     return this.constructModels(await this.applyFetchQueryOptions(query, options).lean());
   }
 

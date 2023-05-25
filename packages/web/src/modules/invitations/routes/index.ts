@@ -2,7 +2,7 @@ import { translate } from '@/i18n';
 
 export default [
   {
-    path: '/mail-invite',
+    path: '/mail-invitation',
     name: 'MailInvite',
     meta: {
       i18n: { module: 'invitations' },
@@ -10,5 +10,14 @@ export default [
       isPublic: true,
     },
     component: () => import('../views/MailInvitationView.vue'),
+  },
+  {
+    path: '/accept-invitation',
+    name: 'AcceptInvitation',
+    meta: {
+      i18n: { module: 'invitations' },
+      title: () => translate('invitations.accept.title'),
+    },
+    component: () => import('../views/AcceptInvitationView.vue'),
   },
 ];

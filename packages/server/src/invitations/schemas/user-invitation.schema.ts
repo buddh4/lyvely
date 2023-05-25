@@ -1,9 +1,10 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Invitation } from './invitation.schema';
 import { ObjectIdProp } from '@/core';
+import { IUserInvitation } from '../interfaces';
 
 @Schema({ timestamps: true })
-export class UserInvitation extends Invitation<UserInvitation> {
+export class UserInvitation extends Invitation<UserInvitation> implements IUserInvitation {
   @ObjectIdProp({ required: true })
   uid: TObjectId;
 

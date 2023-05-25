@@ -3,8 +3,13 @@ import { InvitationsController } from './controllers/invitations.controller';
 import { ProfilesModule } from '../profiles';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from '../users';
-import { SendInvitationsService, MailInvitesService } from './services';
-import { InvitationDao } from './daos';
+import {
+  SendInvitationsService,
+  MailInvitationService,
+  InvitationsService,
+  UserInvitationsService,
+} from './services';
+import { InvitationDao, MailInvitationDao, UserInvitationDao } from './daos';
 import {
   Invitation,
   UserInvitation,
@@ -14,7 +19,6 @@ import {
   UserInvitationSchema,
 } from './schemas';
 import { JwtModule } from '@nestjs/jwt';
-import { InvitationsService } from '@/invitations/services/invitations.service';
 import { NotificationsModule } from '@/notifications/notifications.module';
 
 @Module({
@@ -35,7 +39,15 @@ import { NotificationsModule } from '@/notifications/notifications.module';
     NotificationsModule,
   ],
   controllers: [InvitationsController],
-  providers: [InvitationDao, InvitationsService, SendInvitationsService, MailInvitesService],
+  providers: [
+    InvitationDao,
+    UserInvitationDao,
+    MailInvitationDao,
+    InvitationsService,
+    SendInvitationsService,
+    MailInvitationService,
+    UserInvitationsService,
+  ],
   exports: [InvitationsService],
 })
 export class InvitationsModule {}

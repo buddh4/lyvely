@@ -36,7 +36,7 @@ export abstract class AbstractContentTypeController<
   //@ProfilePermissions(ActivityPermissions.CREATE)
   @Post()
   async create(
-    @Body() body: TCreateModel,
+    @Body() body: PropertiesOf<TCreateModel>,
     @Request() req: ProfileRequest,
   ): Promise<ContentUpdateResponse<TModel>> {
     // TODO: check content specific write permission
@@ -55,7 +55,7 @@ export abstract class AbstractContentTypeController<
   @Policies(ContentWritePolicy)
   async update(
     @Param('cid') cid: string,
-    @Body() body: TUpdateModel,
+    @Body() body: PropertiesOf<TUpdateModel>,
     @Request() req: ProfileContentRequest<TContent>,
   ): Promise<ContentUpdateResponse<TModel>> {
     const model = this.transformUpdateModel(body);

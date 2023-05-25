@@ -59,6 +59,6 @@ const NotificationQueues = BullModule.registerQueue({
     NotificationChannelRegistry,
     MailNotificationChannel,
   ],
-  exports: [NotificationService, NotificationChannelRegistry],
+  exports: [NotificationService, NotificationChannelRegistry, UserNotificationsService],
 })
 export class NotificationsModule {}

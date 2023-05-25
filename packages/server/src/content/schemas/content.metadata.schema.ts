@@ -50,7 +50,6 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   updatedBy: TObjectId;
 
   @Prop({ required: true })
-  @PropertyType(Number)
   streamSort: number;
 
   @Prop({ enum: getNumberEnumValues(ContentVisibilityLevel) })

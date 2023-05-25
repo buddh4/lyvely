@@ -40,7 +40,7 @@ export class DataPointConfigFactory {
   }
 
   static instantiateConfig<T extends DataPointConfig = DataPointConfig>(
-    config: PropertiesOf<DataPointConfig>,
+    config: PropertiesOf<T>,
   ): T {
     const strategy =
       config.strategy || DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);

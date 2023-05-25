@@ -39,7 +39,6 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
 });
 
 function setValueType(valueType: CreateJournalModel['valueType']) {
-  debugger;
   if (!model.value) return;
   model.value.valueType = valueType;
   // TODO: Move this somewhere else...

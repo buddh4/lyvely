@@ -7,7 +7,7 @@ export type DeepPartial<T> = {
 };
 
 type NonFunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? never : K }[keyof T];
-export type PropertiesOf<T> = Pick<T, NonFunctionPropertyNames<T>>;
+export type PropertiesOf<T> = T extends T ? Pick<T, NonFunctionPropertyNames<T>> : never;
 
 type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
 export type FunctionsOf<T> = Pick<T, FunctionPropertyNames<T>>;

@@ -19,4 +19,22 @@ export default {
       `${ENDPOINT_INVITATIONS}/mail/${token}`,
     );
   },
+
+  async getUserInvitationInfo(pid: string) {
+    return repository.get<EndpointResult<IInvitationsService['getUserInvitationInfo']>>(
+      `${ENDPOINT_INVITATIONS}/user/${pid}`,
+    );
+  },
+
+  async accept(pid: string) {
+    return repository.post<EndpointResult<IInvitationsService['accept']>>(
+      `${ENDPOINT_INVITATIONS}/accept/${pid}`,
+    );
+  },
+
+  async decline(pid: string) {
+    return repository.post<EndpointResult<IInvitationsService['decline']>>(
+      `${ENDPOINT_INVITATIONS}/decline/${pid}`,
+    );
+  },
 };

@@ -3,6 +3,7 @@ import {
   MailInvitationInfo,
   InvitationRequest,
   useSingleton,
+  UserInvitationInfo,
 } from '@lyvely/common';
 import repository from '../repositories/invitations.repository';
 import { unwrapAndTransformResponse } from '@/modules/core';
@@ -14,6 +15,18 @@ export class InvitationsService implements IInvitationsService {
 
   async getMailInvitationInfo(token: string): Promise<MailInvitationInfo> {
     return unwrapAndTransformResponse(repository.getMailInvitationInfo(token), MailInvitationInfo);
+  }
+
+  async getUserInvitationInfo(pid: string): Promise<UserInvitationInfo> {
+    return unwrapAndTransformResponse(repository.getUserInvitationInfo(pid), UserInvitationInfo);
+  }
+
+  async accept(pid: string): Promise<void> {
+    await repository.accept(pid);
+  }
+
+  async decline(pid: string): Promise<void> {
+    await repository.decline(pid);
   }
 }
 

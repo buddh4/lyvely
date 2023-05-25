@@ -77,6 +77,8 @@
     "resend": "Resend",
     "update": "Update",
     "archived": "Archived",
+    "accept": "Accept",
+    "decline": "Decline",
     "restore": "Restore default",
     "archive": "Archive",
     "back_to_home": "Take me back home",
@@ -294,6 +296,7 @@
     "success": "Success"
   },
   "error":{
+    "title": "Error",
     "unknown": {
       "title": "Error",
       "message": "An unexpected error occurred, please try again later."

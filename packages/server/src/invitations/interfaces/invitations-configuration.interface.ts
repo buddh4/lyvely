@@ -1,6 +1,6 @@
-import { LaxUserCanInvitePolicy } from '@/invitations/policies/lax-user-can-invite.policy';
+import { UserPolicy } from '@/users/policies/UserPolicy';
 
 export interface IInvitationsConfiguration {
-  policy?: LaxUserCanInvitePolicy;
+  policy?: UserPolicy;
   allowedHosts?: string[];
 }

@@ -141,6 +141,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
           seen: userNotification.seen,
           userInfo: notificationType.userInfo?.toModel(),
           profileInfo: notificationType.profileInfo?.toModel(),
+          route: notificationType.getUrl(),
         }),
       );
     });
@@ -217,6 +218,12 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
         ),
       );
     }
+  }
+
+  private deleteNotification(user: User, type: string, filter: any) {
+    this.streamEntryDao.deleteMany({
+      uid: assureObjectId(user),
+    });
   }
 
   createQueryFilter(context: RequestContext): FilterQuery<UserNotification> {

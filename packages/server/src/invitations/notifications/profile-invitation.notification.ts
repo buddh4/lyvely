@@ -4,7 +4,7 @@ import { escapeHtmlIf, PropertyType, UrlRoute } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { User, UserInfo, UserInfoSchema } from '@/users';
 import { ProfileInfo, ProfileInfoSchema, Profile } from '@/profiles';
-import { InvitationsNotificationCategory } from '@/invitations/notifications/invitations.notification-category';
+import { InvitationsNotificationCategory } from './invitations.notification-category';
 import { assureStringId } from '@/core';
 
 @Notification()

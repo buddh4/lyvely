@@ -30,6 +30,8 @@ watch(emailInput, (value) => {
           v-model="emailInput"
           class="mb-0 grow"
           input-class="attachment-r"
+          :autocomplete="true"
+          :autofocus="true"
           label="profiles.invite.email-help" />
         <ly-button class="primary rounded-r w-12" @click="addEmails"> + </ly-button>
       </div>
