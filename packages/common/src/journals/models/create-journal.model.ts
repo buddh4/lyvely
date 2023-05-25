@@ -99,9 +99,12 @@ export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {
   getDefaults() {
     return {
       interval: CalendarInterval.Daily,
-      inputType: DataPointInputType.Checkbox,
+      inputType: DataPointInputType.Range,
       valueType: DataPointValueType.Number,
       userStrategy: UserAssignmentStrategy.Shared,
+      max: 10,
+      min: 5,
+      optimal: 6,
       tagNames: [],
     };
   }

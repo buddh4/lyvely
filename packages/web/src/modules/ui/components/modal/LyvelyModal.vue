@@ -1,9 +1,5 @@
 <script lang="ts" setup>
 import { computed, toRefs, ref, watch, nextTick } from 'vue';
-import { suggestFocusElement } from '@/modules/ui/utils';
-import { accessibilityFocus } from '@/modules/accessibility';
-import { usePageStore } from '@/modules/core/store/page.store';
-import { uniqueId } from 'lodash';
 
 export interface IModalProps {
   modelValue: boolean;
@@ -125,7 +121,7 @@ function onKeyDown(evt: KeyboardEvent) {
               <ly-icon name="arrow-left" class="w-3" />
             </ly-button>
             <h1
-              class="flex text-md md:text-lg inline-block align-middle justify-center md:justify-start align-items-center flex-grow"
+              class="flex text-md md:text-lg focus-hidden inline-block align-middle justify-center md:justify-start align-items-center flex-grow"
               tabindex="-1">
               <ly-icon
                 v-if="icon"

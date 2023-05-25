@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import LyModal from '@/modules/ui/components/modal/ModalWindow.vue';
+import LyModal from '@/modules/ui/components/modal/LyvelyModal.vue';
 import { computed, nextTick, ref, watch } from 'vue';
 import LyInputText from '@/modules/ui/components/form/TextInput.vue';
 import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';

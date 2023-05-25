@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { LyvelyApp } from '@/lyvely.app';
-import ModalWindow from '@/modules/ui/components/modal/ModalWindow.vue';
+import LyvelyModal from '@/modules/ui/components/modal/LyvelyModal.vue';
 import ConfirmModal from '@/modules/ui/components/modal/ConfirmModal.vue';
 import DrawerMenu from '@/modules/ui/components/drawer/DrawerMenu.vue';
 import BadgeText from '@/modules/ui/components/badge/BadgeText.vue';
@@ -53,7 +53,7 @@ const updateSW = registerSW({
 
 function justForWebstorm() {
   const vueApp = createApp(AppComponent);
-  vueApp.component('LyModal', ModalWindow);
+  vueApp.component('LyModal', LyvelyModal);
   app.vueApp.component('LyConfirm', ConfirmModal);
   app.vueApp.component('LyDrawer', DrawerMenu);
   app.vueApp.component('LyBadge', BadgeText);

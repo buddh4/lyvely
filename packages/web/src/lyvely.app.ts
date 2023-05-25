@@ -7,7 +7,7 @@ import AppComponent from '@/App.vue';
 import { ModuleLoader } from '@/module.loader';
 import { setupI18n } from '@/i18n';
 import { I18n } from 'vue-i18n';
-import ModalWindow from '@/modules/ui/components/modal/ModalWindow.vue';
+import LyvelyModal from '@/modules/ui/components/modal/LyvelyModal.vue';
 import ConfirmModal from '@/modules/ui/components/modal/ConfirmModal.vue';
 import DrawerMenu from '@/modules/ui/components/drawer/DrawerMenu.vue';
 import BadgeText from '@/modules/ui/components/badge/BadgeText.vue';
@@ -110,7 +110,7 @@ export class LyvelyApp {
   }
 
   private setGlobalComponents() {
-    this.vueApp.component('LyModal', ModalWindow);
+    this.vueApp.component('LyModal', LyvelyModal);
     this.vueApp.component('LyConfirm', ConfirmModal);
     this.vueApp.component('LyDrawer', DrawerMenu);
     this.vueApp.component('LyBadge', BadgeText);
