@@ -1,11 +1,6 @@
 <script lang="ts" setup>
-import {
-  HabitModel,
-  isNumberDataPointConfig,
-  isTimerDataPointConfig,
-  TimerDataPointValueModel,
-} from '@lyvely/common';
-import { computed, onMounted, ref } from 'vue';
+import { HabitModel, isNumberDataPointConfig, isTimerDataPointConfig } from '@lyvely/common';
+import { onMounted, ref } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '@/core';
+import { BaseEntity, NestedSchema } from '@/core';
 import mongoose from 'mongoose';
 import { PropertyType, IContentLog } from '@lyvely/common';
 
@@ -30,7 +30,7 @@ export enum BaseContentLogTypes {
   Locked = 'locked',
 }
 
-@Schema()
+@NestedSchema()
 export class ContentLog<TData = undefined> extends BaseEntity<IContentLog<TData>> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
   updatedBy?: TObjectId;

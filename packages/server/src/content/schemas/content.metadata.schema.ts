@@ -67,7 +67,8 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   locked?: boolean;
 
   afterInit() {
-    this.streamSort ||= Date.now();
+    this.streamSort ??= Date.now();
+    this.sortOrder ??= Date.now();
   }
 
   setAuthor(author: Author) {

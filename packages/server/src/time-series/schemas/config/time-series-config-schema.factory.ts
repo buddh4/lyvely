@@ -6,7 +6,7 @@ import { NestedSchema } from '@/core';
 
 const SchemaMapping = {};
 
-export function registerLogValueStrategy(name: string, schema: Schema) {
+export function registerDataPointConfigStrategy(name: string, schema: Schema) {
   SchemaMapping[name] = schema;
 }
 

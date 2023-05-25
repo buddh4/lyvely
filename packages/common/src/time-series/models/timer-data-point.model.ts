@@ -4,7 +4,7 @@ import {
   DataPointValueType,
   IDataPointConfig,
   ITimerDataPointConfig,
-  INumericDataPoint,
+  NumericDataPointInterface,
 } from '../interfaces';
 import { BaseModel, PropertyType } from '@/models';
 import { TimerModel } from '@/calendar';
@@ -26,7 +26,7 @@ export class TimerDataPointValueModel extends BaseModel<TimerDataPointValueModel
 
 export class TimerDataPointModel
   extends DataPointModel<TimerDataPointModel>
-  implements INumericDataPoint
+  implements NumericDataPointInterface
 {
   @Expose()
   @Type(() => TimerDataPointValueModel)

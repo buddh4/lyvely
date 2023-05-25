@@ -22,7 +22,7 @@ const CheckboxNumberStrategy = DataPointConfigFactory.getStrategyName(
 describe('DataPointConfigFactory', () => {
   describe('createConfig()', () => {
     it('create checkbox config without settings', async () => {
-      const config = DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
+      const config = DataPointConfigFactory.initializeConfig<CheckboxNumberDataPointConfig>(
         DataPointValueType.Number,
         DataPointInputType.Checkbox,
       );
@@ -47,7 +47,7 @@ describe('DataPointConfigFactory', () => {
         optimal: 1,
         interval: CalendarInterval.Daily,
       };
-      const config = DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
+      const config = DataPointConfigFactory.initializeConfig<CheckboxNumberDataPointConfig>(
         DataPointValueType.Number,
         DataPointInputType.Checkbox,
         settings,
@@ -67,7 +67,7 @@ describe('DataPointConfigFactory', () => {
         optimal: 1,
         interval: CalendarInterval.Daily,
       };
-      const config = DataPointConfigFactory.createConfig<RangeNumberDataPointConfig>(
+      const config = DataPointConfigFactory.initializeConfig<RangeNumberDataPointConfig>(
         DataPointValueType.Number,
         DataPointInputType.Range,
         settings,
@@ -88,7 +88,7 @@ describe('DataPointConfigFactory', () => {
         optimal: 1,
         interval: CalendarInterval.Daily,
       };
-      const config = DataPointConfigFactory.createConfig<SpinnerNumberDataPointConfig>(
+      const config = DataPointConfigFactory.initializeConfig<SpinnerNumberDataPointConfig>(
         DataPointValueType.Number,
         DataPointInputType.Spinner,
         settings,
@@ -107,7 +107,7 @@ describe('DataPointConfigFactory', () => {
     });
 
     it('create text config', async () => {
-      const config = DataPointConfigFactory.createConfig<TextareaTextDataPointConfig>(
+      const config = DataPointConfigFactory.initializeConfig<TextareaTextDataPointConfig>(
         DataPointValueType.Text,
         DataPointInputType.Textarea,
       );

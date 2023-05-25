@@ -6,12 +6,12 @@ import {
   DataPointValueType,
   INumberDataPointConfig,
   IDataPointConfig,
-  INumericDataPoint,
+  NumericDataPointInterface,
 } from '../interfaces';
 
 export class NumberDataPointModel
   extends DataPointModel<NumberDataPointModel>
-  implements INumericDataPoint
+  implements NumericDataPointInterface
 {
   @Expose()
   value: number;
@@ -19,11 +19,6 @@ export class NumberDataPointModel
   get numericValue() {
     return this.value;
   }
-
-  @Expose()
-  @TransformType(() => TimerModel)
-  @PropertyType(TimerModel)
-  timer?: TimerModel;
 
   @Expose()
   valueType = DataPointValueType.Number;

@@ -1,6 +1,11 @@
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { cloneDeep, pick } from 'lodash';
-import { isSameDay, useDataPointStrategyFacade, useSingleton } from '@lyvely/common';
+import {
+  IntegrityException,
+  isSameDay,
+  useDataPointStrategyFacade,
+  useSingleton,
+} from '@lyvely/common';
 import { TimeSeriesContent } from './time-series-content.schema';
 import { DataPointConfig, DataPointConfigRevision } from './config';
 
@@ -21,6 +26,12 @@ export class DataPointConfigHandler {
       );
     }
 
+    if (!DataPointConfigFactory.validateStrategyByName(updatedConfig.strategy)) {
+      throw new IntegrityException(
+        `Could not apply update due to use of invalid data point strategy ${updatedConfig.strategy}`,
+      );
+    }
+
     if (this.timeSeriesConfigRevisionCheck(model, updatedConfig)) {
       model.timeSeriesConfig = updatedConfig;
       this.pushTimeSeriesConfigRevision(model, oldConfig);
@@ -30,11 +41,29 @@ export class DataPointConfigHandler {
   }
 
   private prepareUpdate(model: TimeSeriesContent<any>, update: Partial<DataPointConfigRevision>) {
-    const settingKeys = dataPointFacade.getSettingKeys(model.timeSeriesConfig.valueType);
-    const preparedUpdate = pick(update, ['inputType', 'userStrategy', 'interval', ...settingKeys]);
-    const updatedConfig = Object.assign(cloneDeep(model.timeSeriesConfig), preparedUpdate);
+    const valueType = update.valueType || model.timeSeriesConfig.valueType;
+    const inputType = update.inputType || model.timeSeriesConfig.inputType;
+    const preparedUpdate = this.pickValueTypeSettings(update, valueType);
+
+    // In case the value type changed we create a new config instance otherwise we just overwrite the changes
+    const updatedConfig: DataPointConfig =
+      valueType !== model.timeSeriesConfig.valueType
+        ? DataPointConfigFactory.initializeConfig(valueType, inputType, {
+            ...this.pickValueTypeSettings(model.timeSeriesConfig, valueType),
+            ...preparedUpdate,
+          })
+        : DataPointConfigFactory.instantiateConfig({
+            ...cloneDeep(model.timeSeriesConfig),
+            ...preparedUpdate,
+          });
+
     this.prepareConfig(model, updatedConfig);
     return updatedConfig;
+  }
+
+  private pickValueTypeSettings(obj: any, valueType: string) {
+    const settingKeys = dataPointFacade.getSettingKeys(valueType);
+    return pick(obj, ['inputType', 'valueType', 'userStrategy', 'interval', ...settingKeys]);
   }
 
   prepareConfig(model: TimeSeriesContent<any>, config?: DataPointConfig) {

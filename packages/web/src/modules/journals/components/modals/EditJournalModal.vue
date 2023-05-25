@@ -39,6 +39,7 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
 });
 
 function setValueType(valueType: CreateJournalModel['valueType']) {
+  debugger;
   if (!model.value) return;
   model.value.valueType = valueType;
   // TODO: Move this somewhere else...
@@ -46,6 +47,8 @@ function setValueType(valueType: CreateJournalModel['valueType']) {
     model.value.inputType = DataPointInputType.Checkbox;
   } else if (valueType === DataPointValueType.Text) {
     model.value.inputType = DataPointInputType.Textarea;
+  } else if (valueType === DataPointValueType.Selection) {
+    model.value.inputType = DataPointInputType.Checkbox;
   }
 }
 

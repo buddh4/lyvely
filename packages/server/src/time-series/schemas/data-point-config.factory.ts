@@ -1,10 +1,8 @@
-import { Logger } from '@nestjs/common';
 import { DataPointConfig } from './config/data-point-config.schema';
 import { assignEntityData } from '@/core';
-import { Type, useDataPointStrategyFacade } from '@lyvely/common';
+import { Type, useDataPointStrategyFacade, IntegrityException, PropertiesOf } from '@lyvely/common';
 
 const register = {};
-const logger = new Logger('DataPointConfigFactory');
 
 export function registerDataPointStrategy<TClass extends DataPointConfig>(
   strategy: string,
@@ -14,7 +12,7 @@ export function registerDataPointStrategy<TClass extends DataPointConfig>(
 }
 
 export class DataPointConfigFactory {
-  static createConfig<T extends DataPointConfig = DataPointConfig>(
+  static initializeConfig<T extends DataPointConfig = DataPointConfig>(
     valueType: string,
     inputType: string,
     settings?: any,
@@ -23,8 +21,9 @@ export class DataPointConfigFactory {
     const ConfigType = register[strategy];
 
     if (!ConfigType) {
-      logger.error(`Could not create unregistered data point strategy '${strategy}'`);
-      return null;
+      throw new IntegrityException(
+        `Could not initialize data point config with strategy '${strategy}'`,
+      );
     }
 
     const result = new ConfigType(settings);
@@ -36,18 +35,23 @@ export class DataPointConfigFactory {
     return `${valueType}_${inputType}`;
   }
 
-  static createInstance<T extends DataPointConfig = DataPointConfig>(config: T): T {
-    const strategy =
-      config.strategy || DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);
-    const ConfigType = register[strategy];
-    if (ConfigType) {
-      return assignEntityData(new ConfigType(), config);
-    }
-    logger.error(`Could not create unregistered data point strategy '${strategy}'`);
-    return null;
+  static validateStrategyByName(strategy: string) {
+    return !!register[strategy];
   }
 
-  static getConstructorByStrategy(strategy: string) {
-    return register[strategy];
+  static instantiateConfig<T extends DataPointConfig = DataPointConfig>(
+    config: PropertiesOf<DataPointConfig>,
+  ): T {
+    const strategy =
+      config.strategy || DataPointConfigFactory.getStrategyName(config.valueType, config.inputType);
+
+    const ConfigType = register[strategy];
+    if (!ConfigType) {
+      throw new IntegrityException(
+        `Could not instantiate data point config with unregistered strategy '${strategy}'`,
+      );
+    }
+
+    return assignEntityData(new ConfigType(), config);
   }
 }

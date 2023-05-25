@@ -87,8 +87,8 @@ export abstract class TimeSeriesContent<
 
   afterInit() {
     // in case plain object is given we create a class instance
-    if (!(this.timeSeriesConfig instanceof DataPointConfig)) {
-      this.timeSeriesConfig = DataPointConfigFactory.createInstance(this.timeSeriesConfig);
+    if (this.timeSeriesConfig && !(this.timeSeriesConfig instanceof DataPointConfig)) {
+      this.timeSeriesConfig = DataPointConfigFactory.instantiateConfig(this.timeSeriesConfig);
     }
 
     super.afterInit();

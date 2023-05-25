@@ -60,7 +60,6 @@ describe('HabitService', () => {
       const habit = await createHabit(user, profile);
 
       expect(habit.type).toBe(Habit.name);
-      expect(habit.meta.sortOrder).toEqual(0);
       expect(habit.meta.createdAt).toBeDefined();
       expect(habit.meta.updatedAt).toBeDefined();
       expect(habit.timeSeriesConfig.min).toEqual(0);
@@ -68,15 +67,6 @@ describe('HabitService', () => {
       expect(habit.config.score).toEqual(5);
       expect(habit.content.title).toEqual('Do something!');
       expect(habit.tagIds.length).toEqual(0);
-    });
-
-    it('sortOrder creation', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-      const habit1 = await createHabit(user, profile);
-      const habit2 = await createHabit(user, profile);
-
-      expect(habit1.meta.sortOrder).toEqual(0);
-      expect(habit2.meta.sortOrder).toEqual(1);
     });
   });
 

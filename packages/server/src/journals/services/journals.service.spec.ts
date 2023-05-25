@@ -2,8 +2,10 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import {
   CalendarInterval,
+  CreateJournalModel,
   DataPointInputType,
   DataPointValueType,
+  IntegrityException,
   INumberDataPointConfig,
   ISelectionDataPointConfig,
   ITextDataPointConfig,
@@ -16,8 +18,7 @@ import { Content } from '@/content';
 import { Journal, JournalSchema } from '@/journals/schemas';
 import {
   CheckboxNumberDataPointConfig,
-  CheckboxSelectionDataPointConfig,
-  NumberDataPointConfig,
+  RadioSelectionDataPointConfig,
   TextareaTextDataPointConfig,
 } from '@/time-series';
 
@@ -34,7 +35,7 @@ describe('JournalService', () => {
   let testingModule: TestingModule;
   let testData: TestDataUtils;
 
-  const TEST_KEY = 'habit_service';
+  const TEST_KEY = 'journals_service';
 
   beforeEach(async () => {
     testingModule = await createContentTestingModule(
@@ -50,11 +51,28 @@ describe('JournalService', () => {
     await testData.reset(TEST_KEY);
   });
 
+  async function createJournal(obj: Partial<CreateJournalModel> = {}) {
+    const { user, profile } = await testData.createUserAndProfile();
+    const journal = await journalsService.createContent(
+      profile,
+      user,
+      new CreateJournalModel({
+        title: 'Test Journal Title',
+        text: 'Test Journal Text',
+        valueType: DataPointValueType.Text,
+        inputType: DataPointInputType.Textarea,
+        interval: CalendarInterval.Daily,
+        userStrategy: UserAssignmentStrategy.PerUser,
+        ...obj,
+      }),
+    );
+
+    return { user, profile, journal };
+  }
+
   describe('create Journal', () => {
     it('create text journal', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-
-      const journal = await journalsService.createContent(profile, user, {
+      const { journal } = await createJournal({
         title: 'How are you today?',
         text: 'Enter some infos about your day.',
         valueType: DataPointValueType.Text,
@@ -77,15 +95,9 @@ describe('JournalService', () => {
     });
 
     it('create checkbox journal', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-
-      const journal = await journalsService.createContent(profile, user, {
-        title: 'How much?',
-        text: 'Test',
+      const { journal } = await createJournal({
         valueType: DataPointValueType.Number,
         inputType: DataPointInputType.Checkbox,
-        interval: CalendarInterval.Daily,
-        userStrategy: UserAssignmentStrategy.PerUser,
         min: 1,
         max: 5,
         optimal: 3,
@@ -95,82 +107,64 @@ describe('JournalService', () => {
 
       expect(journal._id).toBeDefined();
       expect(config instanceof CheckboxNumberDataPointConfig).toEqual(true);
-      expect(journal.content.title).toEqual('How much?');
-      expect(journal.content.text).toEqual('Test');
-      expect(config.interval).toEqual(CalendarInterval.Daily);
       expect(config.valueType).toEqual(DataPointValueType.Number);
       expect(config.inputType).toEqual(DataPointInputType.Checkbox);
-      expect(config.userStrategy).toEqual(UserAssignmentStrategy.PerUser);
       expect(config.min).toEqual(1);
       expect(config.max).toEqual(5);
       expect(config.optimal).toEqual(3);
     });
 
-    it('create selection journal', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
-
-      const journal = await journalsService.createContent(profile, user, {
-        title: 'How much?',
-        text: 'Test',
+    it('create radio journal', async () => {
+      const { journal } = await createJournal({
         valueType: DataPointValueType.Selection,
-        inputType: DataPointInputType.Checkbox,
-        interval: CalendarInterval.Daily,
-        userStrategy: UserAssignmentStrategy.PerUser,
-        options: ['Option 1', 'Option 2'],
-        allowOther: true,
+        inputType: DataPointInputType.Radio,
+        options: ['Option A', 'Option B'],
       });
 
       const config = journal.config.timeSeries as ISelectionDataPointConfig;
 
       expect(journal._id).toBeDefined();
-      expect(config instanceof CheckboxSelectionDataPointConfig).toEqual(true);
-      expect(journal.content.title).toEqual('How much?');
-      expect(journal.content.text).toEqual('Test');
-      expect(config.interval).toEqual(CalendarInterval.Daily);
+      expect(config instanceof RadioSelectionDataPointConfig).toEqual(true);
       expect(config.valueType).toEqual(DataPointValueType.Selection);
-      expect(config.inputType).toEqual(DataPointInputType.Checkbox);
-      expect(config.userStrategy).toEqual(UserAssignmentStrategy.PerUser);
-      expect(config.options).toEqual(['Option 1', 'Option 2']);
-      expect(config.allowOther).toEqual(true);
+      expect(config.inputType).toEqual(DataPointInputType.Radio);
+      expect(config.options).toBeDefined();
+      expect(config.options.length).toEqual(2);
+      expect(config.options[0]).toEqual('Option A');
+      expect(config.options[1]).toEqual('Option B');
     });
 
-    it('create invalid number journal', async () => {
-      const { user, profile } = await testData.createUserAndProfile();
+    it('creating journal with invalid strategy should throw error', async () => {
+      expect.assertions(2);
 
-      const journal = await journalsService.createContent(profile, user, {
-        title: 'How many?',
-        text: 'Some description...',
-        valueType: DataPointValueType.Number,
-        inputType: DataPointInputType.Checkbox,
-        interval: CalendarInterval.Daily,
-        userStrategy: UserAssignmentStrategy.PerUser,
-        min: 2,
-        max: 5,
-        optimal: 3,
-      });
-
-      const config = journal.config.timeSeries as INumberDataPointConfig;
-
-      expect(journal._id).toBeDefined();
-      expect(config instanceof NumberDataPointConfig).toEqual(true);
-      expect(journal.content.title).toEqual('How many?');
-      expect(journal.content.text).toEqual('Some description...');
-      expect(config.interval).toEqual(CalendarInterval.Daily);
-      expect(config.valueType).toEqual(DataPointValueType.Number);
-      expect(config.inputType).toEqual(DataPointInputType.Checkbox);
-      expect(config.userStrategy).toEqual(UserAssignmentStrategy.PerUser);
-      expect(config.min).toEqual(2);
-      expect(config.max).toEqual(5);
-      expect(config.optimal).toEqual(3);
+      try {
+        await createJournal({
+          valueType: DataPointValueType.Number,
+          inputType: DataPointInputType.Radio,
+        });
+      } catch (e) {
+        expect(e instanceof IntegrityException).toBeDefined();
+        expect(e.message).toEqual(
+          "Could not initialize data point config with strategy 'number_radio'",
+        );
+      }
     });
+  });
 
-    it('sortOrder creation', async () => {
-      /* const { user, profile } = await testData.createUserAndProfile();
-      const habit1 = await createHabit(user, profile);
-      const habit2 = await createHabit(user, profile);
-
-      expect(habit1.meta.sortOrder).toEqual(0);
-      expect(habit2.meta.sortOrder).toEqual(1);*/
+  describe('update Journal', () => {
+    it('update journal with invalid strategy should throw error', async () => {
+      expect.assertions(2);
+      const { profile, user, journal } = await createJournal();
+      try {
+        await journalsService.updateContent(profile, user, journal, {
+          valueType: DataPointValueType.Number,
+          inputType: DataPointInputType.Radio,
+        });
+      } catch (e) {
+        expect(e instanceof IntegrityException).toBeDefined();
+        expect(e.message).toEqual(
+          'Could not apply update due to use of invalid data point strategy number_radio',
+        );
+      }
     });
   });
 });

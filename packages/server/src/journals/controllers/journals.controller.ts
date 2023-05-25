@@ -16,7 +16,6 @@ import {
   UpdateDataPointResponse,
   CreateJournalModel,
   UpdateJournalResponse,
-  UpdateHabitModel,
   UpdateJournalModel,
 } from '@lyvely/common';
 import { UseClassSerializer } from '@/core';

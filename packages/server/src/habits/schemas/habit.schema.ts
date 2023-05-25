@@ -70,14 +70,14 @@ export class Habit
       content: new ContentDataType({ title, text }),
       tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
       config: new HabitConfig(
-        DataPointConfigFactory.createConfig(update.valueType, update.inputType, update),
+        DataPointConfigFactory.initializeConfig(update.valueType, update.inputType, update),
         update.score,
       ),
     });
   }
   getDefaultConfig(): HabitConfig {
     return new HabitConfig(
-      DataPointConfigFactory.createConfig<CheckboxNumberDataPointConfig>(
+      DataPointConfigFactory.initializeConfig<CheckboxNumberDataPointConfig>(
         DataPointValueType.Number,
         DataPointInputType.Checkbox,
         {

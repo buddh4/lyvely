@@ -6,7 +6,6 @@ import {
 } from '@lyvely/common';
 import { computed } from 'vue';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
-import SelectInput from '@/modules/ui/components/form/SelectInput.vue';
 import LyInputSelect from '@/modules/ui/components/form/SelectInput.vue';
 import LyInputRadio from '@/modules/ui/components/form/RadioInput.vue';
 

@@ -19,9 +19,7 @@ export class JournalsService extends ContentTypeService<Journal, CreateJournalMo
     user: User,
     model: CreateJournalModel,
   ): Promise<Journal> {
-    const instance = Journal.create(profile, user, model);
-    instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
-    return instance;
+    return Journal.create(profile, user, model);
   }
 
   protected async createUpdate(

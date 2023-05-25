@@ -5,6 +5,7 @@ import {
   IDataPointStrategy,
 } from '../interfaces';
 import { PropertiesOf } from '@/utils';
+import { cloneDeep } from 'lodash';
 
 export abstract class DataPointStrategy<
   T extends IDataPoint<TValue> = IDataPoint,
@@ -32,7 +33,7 @@ export abstract class DataPointStrategy<
 
   populateDataPointTypeSettings(target: Partial<TConfig>, config: TConfig) {
     for (const key of this.getSettingKeys()) {
-      target[key] = config[key];
+      target[key] = cloneDeep(config[key]);
     }
   }
 

@@ -14,10 +14,7 @@ export class HabitsService extends ContentTypeService<Habit, CreateHabitModel> {
   protected logger = new Logger(HabitsService.name);
 
   protected async createInstance(profile: Profile, user: User, model: CreateHabitModel) {
-    const instance = Habit.create(profile, user, model);
-    instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);
-
-    return instance;
+    return Habit.create(profile, user, model);
   }
 
   protected async createUpdate(
