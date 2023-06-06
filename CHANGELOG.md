@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Swipe handler should be prevented in case of active scroll
 
+### Changed
+- Mobile profile drawer is closed on route change
+
 ## [0.1.0-alpha3] - 2023-06-06
 
 ### Fixed
