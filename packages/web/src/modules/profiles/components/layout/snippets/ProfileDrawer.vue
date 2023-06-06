@@ -154,7 +154,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
       </ul>
     </div>
   </nav>
-  <transition name="fade">
+  <transition name="fade-fast">
     <div
       v-if="showSidebar"
       id="app-drawer-overlay"
@@ -225,7 +225,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
     margin-left: -260px;
   }
 }
-
+.fade-fast-leave-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
 }
@@ -234,6 +234,12 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
   transition: opacity 2s ease;
 }
 
+.fade-fast-enter-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-fast-enter-from,
+.fade-fast-leave-to,
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;

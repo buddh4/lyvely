@@ -21,7 +21,7 @@ const accountStore = useAccountStore();
 const { toggleSidebar } = pageStore;
 const { showAccountDrawer } = storeToRefs(accountStore);
 
-const { showMobileFooter, showSidebar } = storeToRefs(pageStore);
+const { showMobileFooter, showSidebar, noSwipe } = storeToRefs(pageStore);
 const root = ref<HTMLElement>() as Ref<HTMLElement>;
 
 export interface IProps {
@@ -42,10 +42,28 @@ const { active: showIntroductionTour } = storeToRefs(useIntroductionTourStore())
 
 const containerProps = computed(() => ({ width: props.containerWidth }));
 
+let isScrolling = false;
+
+window.addEventListener('scroll', () => {
+  isScrolling = true;
+});
+
+window.addEventListener('touchend', () => {
+  isScrolling = false;
+});
+
 const { direction } = useSwipe(root, {
   onSwipeEnd(e: TouchEvent) {
     // Closing swipe gestures are handled within the drawer components
-    if (showSidebar.value || showAccountDrawer.value) return;
+    const noSwipeElement = (<HTMLElement>e.target).closest('.no-swipe');
+    if (
+      noSwipeElement ||
+      noSwipe.value ||
+      isScrolling ||
+      showSidebar.value ||
+      showAccountDrawer.value
+    )
+      return;
 
     if (direction.value === 'right') toggleSidebar();
     if (direction.value === 'left') showAccountDrawer.value = true;

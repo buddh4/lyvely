@@ -12,6 +12,7 @@ export const usePageStore = defineStore('page', () => {
   const drawerStack = ref<Array<string>>([]);
   const isOnline = useOnline();
   const showMobileFooter = ref(true);
+  const noSwipe = ref(false);
 
   function setTitle(title: Array<string> | string) {
     setPageTitle(title);
@@ -53,6 +54,7 @@ export const usePageStore = defineStore('page', () => {
     isDark,
     showSidebar,
     pushDrawer,
+    noSwipe,
     popDrawer,
     toggleSidebar,
     toggleDark,

@@ -65,7 +65,7 @@ const sliderStyle = computed(() => {
 <template>
   <div
     ref="container"
-    class="flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
+    class="no-swipe flex tag-filter-selection overflow-x-hidden whitespace-nowrap relative mr-1">
     <div
       ref="slider"
       :style="sliderStyle"
