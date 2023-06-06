@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ProfileBreadcrumb from '@/modules/profiles/components/menus/ProfileBreadcrumb.vue';
 import ProfileComboButton from '@/modules/profiles/components/menus/ProfileComboButton.vue';
-import AccountMenu from '@/modules/account/components/menus/AccountMenu.vue';
+import AccountDrawer from '@/modules/account/components/menus/AccountDrawer.vue';
 </script>
 
 <template>
@@ -18,7 +18,7 @@ import AccountMenu from '@/modules/account/components/menus/AccountMenu.vue';
     </div>
 
     <div class="w-1/3">
-      <account-menu />
+      <account-drawer />
     </div>
   </nav>
 </template>

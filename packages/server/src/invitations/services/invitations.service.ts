@@ -17,7 +17,6 @@ export class InvitationsService {
     private inviteDao: InvitationDao,
     private mailInvitationsService: MailInvitationService,
     private userInvitationsService: UserInvitationsService,
-    private notificationService: NotificationService,
   ) {}
 
   public async getMailInvitationContext(token: string) {
@@ -36,6 +35,7 @@ export class InvitationsService {
     user: User,
     profile: EntityIdentity<Profile>,
   ): Promise<Membership> {
+    // TODO: invalidate notification
     const invitation = await this.userInvitationsService.getInvitation({ user, profile });
     if (!invitation) throw new EntityNotFoundException();
     return this.acceptInvitation(user, invitation);

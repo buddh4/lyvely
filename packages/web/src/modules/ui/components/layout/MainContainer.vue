@@ -24,16 +24,17 @@ const widthClass = computed(
 );
 
 const classNames = computed(() => {
-  return ['container main-container h-full mx-auto', widthClass.value];
+  return ['container main-container mx-auto', widthClass.value];
 });
 </script>
 
 <template>
-  <div v-mobile-scrollbar class="overflow-y-auto scrollbar-thin max-h-full h-full">
-    <main :class="classNames">
-      <slot></slot>
-    </main>
-  </div>
+  <main
+    v-mobile-scrollbar
+    :class="classNames"
+    class="overflow-y-auto scrollbar-thin max-h-full h-full min-w-fit flex-grow">
+    <slot></slot>
+  </main>
 </template>
 
 <style>

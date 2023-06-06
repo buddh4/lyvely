@@ -48,6 +48,10 @@ const { activeView } = storeToRefs(useActivityStore());
   margin: 5px;
 }
 
+#page-footer {
+  width: 100dvw;
+}
+
 #page-footer .navbar-nav {
   flex-direction: row;
   justify-content: center;
@@ -56,7 +60,6 @@ const { activeView } = storeToRefs(useActivityStore());
 #page-footer .navbar-nav .nav-link {
   @apply mx-7;
   padding: 0;
-  color: var(--bs-gray);
 }
 
 #page-footer .router-link-active {

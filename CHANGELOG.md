@@ -12,13 +12,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Center modal title on mobile
 - Modal may show second scrollbar in some cases of y-overflow
 - Number input does not remove leading zeros
+- Updates of invalid data point strategies were not detected when updating time series content entries
+- Issues occurred when changing the data point configuration value type
+- Fixed drawer menu viewport overflow issue
+- Fixed show profile menu toggle state is reversed of small devices
 
 ### Changed
 - Initially hide main container scrollbar on small devices
 - Removed margins from filter navigation
+- Changed the default journal config to range input
 
 ### Added
 - Implemented mobile footer menu
+- Implemented user profile invitations
+- Added swipe gestures to open/close profile and account drawer
 
 ## [0.1.0.alpha2] - 2023-05-11
 ### Fixed

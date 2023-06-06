@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { computed, ref, toRefs, watch } from 'vue';
+import { computed, Ref, ref, toRefs, watch } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
@@ -10,6 +9,7 @@ import { isMultiUserProfile } from '@lyvely/common';
 import imageUrl from '@/assets/logo_white_bold.svg';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { storeToRefs } from 'pinia';
+import { UseSwipeDirection, useSwipe } from '@vueuse/core';
 
 interface IMenuItem {
   to?: RouteLocationRaw | string;
@@ -20,10 +20,8 @@ interface IMenuItem {
 }
 
 const pageStore = usePageStore();
-const authStore = useAuthStore();
 const profileStore = useProfileStore();
-const isAuthenticated = computed(() => authStore.isAuthenticated);
-const sidebar = ref<HTMLElement | null>(null);
+const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
 const { activeView } = storeToRefs(useActivityStore());
 
 // TODO: make modules register menu items here...
@@ -70,25 +68,15 @@ const menuItems = computed(
     ] as IMenuItem[],
 );
 
-const menuItemClasses = ['block py-3 px-3 no-underline cursor-pointer'];
-
 const { toggleSidebar } = pageStore;
 const { showSidebar } = toRefs(pageStore);
-
-watch(showSidebar, () => {
-  if (showSidebar.value) {
-    sidebar.value?.classList.remove('toggled');
-  } else {
-    sidebar.value?.classList.add('toggled');
-  }
-});
 
 const isSmallView = ref(isMaxViewSize('sm'));
 watchMaxSize('sm', (value) => {
   isSmallView.value = value;
 });
 
-const showLabels = computed(() => isSmallView.value || showSidebar.value);
+const showLabels = computed(() => showSidebar.value);
 
 const ariaLabel = computed(() =>
   translate('profiles.aria.sidebar', {
@@ -98,16 +86,30 @@ const ariaLabel = computed(() =>
 
 function onMenuItemClick(item: IMenuItem) {
   if (item.click) item.click();
-  if (isMaxViewSize('sm')) {
-    // Note on small devices the value is reversed, since the nav is initialized a bit ugly...
-    showSidebar.value = true;
-  }
+  if (isMaxViewSize('sm')) showSidebar.value = true;
 }
+
+function onSwipeEnd(direction: UseSwipeDirection) {
+  if (showSidebar.value && direction === 'left') toggleSidebar();
+  if (!showSidebar.value && direction === 'right') toggleSidebar();
+}
+
+const appDrawerOverlay = ref<HTMLElement>() as Ref<HTMLElement>;
+const { direction } = useSwipe(appDrawer, {
+  onSwipeEnd(e: TouchEvent) {
+    onSwipeEnd(direction.value!);
+  },
+});
+const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
+  onSwipeEnd(e: TouchEvent) {
+    onSwipeEnd(overlayDirection.value!);
+  },
+});
 </script>
 
 <template>
-  <nav v-if="isAuthenticated" id="sidebar" ref="sidebar" class="sidebar" :aria-label="ariaLabel">
-    <div class="h- sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
+  <nav id="app-drawer" ref="appDrawer" :class="[{ toggled: !showSidebar }]" :aria-label="ariaLabel">
+    <div class="h-sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
       <div class="py-2">
         <a
           class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer"
@@ -125,8 +127,7 @@ function onMenuItemClick(item: IMenuItem) {
             <template v-if="!menuItem.condition || menuItem.condition()">
               <a
                 v-if="menuItem.click"
-                :class="menuItemClasses"
-                class="flex no-wrap items-center h-12 select-none"
+                class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
                 @click="onMenuItemClick(menuItem)">
                 <ly-icon :name="menuItem.icon" class="w-5" />
                 <transition name="fade">
@@ -137,8 +138,7 @@ function onMenuItemClick(item: IMenuItem) {
               </a>
               <router-link
                 v-if="menuItem.to"
-                :class="menuItemClasses"
-                class="flex no-wrap items-center h-12 select-none"
+                class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
                 :to="menuItem.to"
                 @click="onMenuItemClick(menuItem)">
                 <ly-icon :name="menuItem.icon" class="w-5" />
@@ -154,6 +154,14 @@ function onMenuItemClick(item: IMenuItem) {
       </ul>
     </div>
   </nav>
+  <transition name="fade">
+    <div
+      v-if="showSidebar"
+      id="app-drawer-overlay"
+      ref="appDrawerOverlay"
+      class="fixed md:hidden bg-black opacity-50 inset-0 z-0"
+      @click="toggleSidebar"></div>
+  </transition>
 </template>
 
 <style scoped lang="postcss">
@@ -161,9 +169,61 @@ function onMenuItemClick(item: IMenuItem) {
   height: 20px;
 }
 
-.sidebar.toggled {
+#app-drawer {
+  @apply bg-sidebar text-sidebar;
+  min-width: 260px;
+  max-width: 260px;
+  transition: all 0.35s ease-in-out;
+  direction: ltr;
+}
+
+#app-drawer a {
+  @apply text-sidebar;
+  border-left: 4px solid transparent;
+}
+
+#app-drawer .nav a .icon {
+  @apply fill-current mr-2 opacity-50;
+  border-left: 4px solid transparent;
+}
+
+#app-drawer .nav a.router-link-active {
+  @apply font-bold border-l-4 border-pop;
+}
+
+#app-drawer .nav a:hover:not(.router-link-active) {
+  @apply border-l-4 border-slate-600;
+}
+
+#app-drawer .nav a.router-link-active .icon {
+  opacity: 1;
+}
+
+#app-drawer.toggled {
   min-width: 60px;
   max-width: 60px;
+}
+
+#app-drawer-overlay {
+  z-index: 99;
+}
+#app-drawer {
+  @apply bg-slate-900;
+  z-index: 100;
+}
+
+@media (max-width: 767px) {
+  #app-drawer {
+    min-width: 260px;
+    max-width: 260px;
+    margin-left: 0;
+  }
+
+  #app-drawer.toggled {
+    min-width: 260px;
+    max-width: 260px;
+    margin-left: -260px;
+  }
 }
 
 .fade-leave-active {
@@ -177,26 +237,5 @@ function onMenuItemClick(item: IMenuItem) {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-}
-
-.sidebar {
-  min-width: 260px;
-  max-width: 260px;
-  transition: all 0.35s ease-in-out;
-  direction: ltr;
-}
-
-@media (max-width: 767px) {
-  .sidebar {
-    min-width: 260px;
-    max-width: 260px;
-    margin-left: -260px;
-  }
-
-  .sidebar.toggled {
-    min-width: 260px;
-    max-width: 260px;
-    margin-left: 0;
-  }
 }
 </style>

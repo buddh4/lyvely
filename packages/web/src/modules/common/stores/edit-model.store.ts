@@ -69,7 +69,6 @@ export function useUpdateModelStore<
   }
 
   async function submit() {
-    debugger;
     if (!validator.value || !(await validator.value.validate())) return Promise.reject();
 
     try {

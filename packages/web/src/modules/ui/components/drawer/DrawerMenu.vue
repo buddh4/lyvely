@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { computed, ref, toRefs, useSlots, watch } from 'vue';
+import { computed, Ref, ref, toRefs, useSlots, watch } from 'vue';
 import { uniqueId } from 'lodash';
 import { suggestFocusElement } from '@/modules/ui/utils';
 import { usePageStore } from '@/modules/core/store/page.store';
-import { useInfiniteScroll } from '@vueuse/core';
+import { useInfiniteScroll, useSwipe } from '@vueuse/core';
 
 export interface IProps {
   modelValue: boolean;
@@ -24,7 +24,7 @@ const drawerId = uniqueId('drawer');
 const zIndex = ref(20);
 
 const emit = defineEmits(['update:modelValue', 'infiniteScroll']);
-const root = ref<HTMLElement>();
+const root = ref<HTMLElement>() as Ref<HTMLElement>;
 const { modelValue } = toRefs(props);
 
 watch(modelValue, (value) => {
@@ -67,45 +67,52 @@ useInfiniteScroll(
   },
   { distance: 10 },
 );
+
+const { direction } = useSwipe(root, {
+  onSwipeEnd(e: TouchEvent) {
+    if (modelValue.value && direction.value === 'right') {
+      e.stopPropagation();
+      close();
+    }
+  },
+});
 </script>
 
 <template>
-  <teleport to="body">
-    <transition name="slide-fade" @after-enter="afterEnter" @after-leave="afterLeave">
-      <section
-        v-if="modelValue"
-        :id="id"
-        ref="root"
-        class="drawer"
-        :style="{ 'z-index': zIndex }"
-        @keyup.esc="close">
-        <div class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col">
-          <div data-drawer-header class="pt-4 px-4 flex items-center pb-3 rounded-t-sm">
-            <slot name="header">
-              <h1 v-if="title" class="font-bold">{{ $t(title) }}</h1>
-              <ly-button
-                class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
-                @click="close">
-                x
-              </ly-button>
-            </slot>
-          </div>
-          <div ref="body" data-drawer-body class="overflow-auto scrollbar-thin">
-            <slot></slot>
-          </div>
-          <div data-drawer-footer class="pb-4 px-4 pt-3">
-            <slot name="footer"></slot>
-          </div>
-          <!--
+  <transition name="slide-fade" @after-enter="afterEnter" @after-leave="afterLeave">
+    <section
+      v-if="modelValue"
+      :id="id"
+      ref="root"
+      class="drawer"
+      :style="{ 'z-index': zIndex }"
+      @keyup.esc="close">
+      <div class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col">
+        <div data-drawer-header class="pt-4 px-4 flex items-center pb-3 rounded-t-sm">
+          <slot name="header">
+            <h1 v-if="title" class="font-bold">{{ $t(title) }}</h1>
+            <ly-button
+              class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
+              @click="close">
+              x
+            </ly-button>
+          </slot>
+        </div>
+        <div ref="body" data-drawer-body class="overflow-auto scrollbar-thin">
+          <slot></slot>
+        </div>
+        <div data-drawer-footer class="pb-4 px-4 pt-3">
+          <slot name="footer"></slot>
+        </div>
+        <!--
               This fixes a nasty scrolling issue on chrome in combination with the transition
               This somehow affected/s only the notification drawer which introduced an strange page overflow once
               opened. The overflow disappeared once triggered any other rendering on the page.
             -->
-          <div v-if="isVisible" class="invisible h-0 overflow-hidden" aria-hidden="true"></div>
-        </div>
-      </section>
-    </transition>
-  </teleport>
+        <div v-if="isVisible" class="invisible h-0 overflow-hidden" aria-hidden="true"></div>
+      </div>
+    </section>
+  </transition>
 </template>
 
 <style scoped lang="postcss">
@@ -114,20 +121,19 @@ h1 {
 }
 .drawer {
   @apply bg-highlight;
-  position: absolute;
-  display: block;
+  position: fixed;
   top: 55px;
+  right: 0;
   height: calc(100svh - 55px);
-  bottom: 0;
+
   min-width: 280px;
   max-width: 280px;
   background: var(--elements-main);
-  border: 1px solid var(--color-divide);
-  border-right: 0;
-  border-top: 0;
-  border-bottom: 0;
+  border-left: 1px solid var(--color-divide);
+
+  will-change: transform;
+  contain: paint;
   margin-right: 0;
-  right: 0;
 }
 
 /*
@@ -148,7 +154,7 @@ h1 {
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-  transform: translateX(280px);
+  transform: translateX(100%);
   opacity: 0.9;
 }
 </style>

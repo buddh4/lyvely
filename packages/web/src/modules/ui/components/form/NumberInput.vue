@@ -66,7 +66,6 @@ export default {
 
         val = val || 0;
         val = parseInt(val + '');
-        debugger;
 
         context.emit('change', val);
         //baseInputValue.value = baseInput.hasFocus.value ? val : getAllowedVal(val);
