@@ -76,17 +76,14 @@ const { direction } = useSwipe(root, {
     }
   },
 });
+
+// Workaround due to conflicting HtmlAttribute types of docs/react
+const style = computed<any>(() => ({ 'z-index': zIndex.value }));
 </script>
 
 <template>
   <transition name="slide-fade" @after-enter="afterEnter" @after-leave="afterLeave">
-    <section
-      v-if="modelValue"
-      :id="id"
-      ref="root"
-      class="drawer"
-      :style="{ 'z-index': zIndex }"
-      @keyup.esc="close">
+    <section v-if="modelValue" :id="id" ref="root" class="drawer" :style="style" @keyup.esc="close">
       <div class="max-h-full flex items-stretch flex-col top-0 left-0 flex-col">
         <div data-drawer-header class="pt-4 px-4 flex items-center pb-3 rounded-t-sm">
           <slot name="header">

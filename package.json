@@ -1,6 +1,6 @@
 {
   "name": "lyvely-app",
-  "version": "0.1.0-alpha2",
+  "version": "0.1.0-alpha3",
   "author": "Julian Harrer",
   "private": true,
   "workspaces": [

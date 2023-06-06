@@ -1,6 +1,6 @@
 {
   "name": "@lyvely/web",
-  "version": "0.1.0-alpha2",
+  "version": "0.1.0-alpha3",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -17,11 +17,9 @@
   },
   "dependencies": {
     "@ckpack/vue-color": "^1.4.1",
-    "@lyvely/common": "*",
+    "@lyvely/common": "0.1.0-alpha3",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
-    "@types/intro.js": "^5.1.1",
-    "@types/ms": "^0.7.31",
     "@vueuse/components": "^10.1.2",
     "@vueuse/core": "^10.1.2",
     "@vueuse/integrations": "^10.1.2",
@@ -62,6 +60,8 @@
     "@types/lodash": "^4.14.194",
     "@types/nprogress": "^0.2.0",
     "@types/randomcolor": "^0.5.7",
+    "@types/intro.js": "^5.1.1",
+    "@types/ms": "^0.7.31",
     "@vitejs/plugin-vue": "^4.2.1",
     "@vue/compiler-sfc": "^3.2.47",
     "autoprefixer": "^10.4.14",

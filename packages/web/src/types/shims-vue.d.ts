@@ -25,10 +25,10 @@ export declare global {
   export interface ImportMeta {
     glob: <T = any>(path: string, options?: { eager?: boolean }) => (() => T)[] | T[];
     env: {
-      DEV: boolean,
-      PROD: boolean,
-      BASE_URL: string,
-      SSR: false,
+      DEV: boolean;
+      PROD: boolean;
+      BASE_URL: string;
+      SSR: false;
       VITE_APP_API_URL: string;
       VITE_APP_ENV: 'development' | 'production';
       VITE_APP_BASEURL: string;

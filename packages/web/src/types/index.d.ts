@@ -18,8 +18,8 @@ declare module '@ckpack/vue-color' {
 
 // Type definitions for vue-virtual-scroller
 // Project: https://github.com/Akryum/vue-virtual-scroller/
-declare module "vue-virtual-scroller" {
-  import Vue, { ComponentOptions, PluginObject, Component } from "vue";
+declare module 'vue-virtual-scroller' {
+  import Vue, { ComponentOptions, PluginObject, Component } from 'vue';
   interface PluginOptions {
     installComponents?: boolean;
     componentsPrefix?: string;
@@ -28,7 +28,9 @@ declare module "vue-virtual-scroller" {
   const plugin: PluginObject<PluginOptions> & { version: string };
 
   export const RecycleScroller: Component<any, any, any, any>;
-  export const DynamicScroller: Component<any, any, any, any> & { scrollToItem: ((index: number) => void) };
+  export const DynamicScroller: Component<any, any, any, any> & {
+    scrollToItem: (index: number) => void;
+  };
   export const DynamicScrollerItem: Component<any, any, any, any>;
 
   export function IdState(options?: {
@@ -50,32 +52,35 @@ declare module '*.png' {
 
 declare module 'virtual:pwa-register/vue' {
   // @ts-expect-error ignore when vue is not installed
-  import type { Ref } from 'vue'
+  import type { Ref } from 'vue';
 
   export interface RegisterSWOptions {
-    immediate?: boolean
-    onNeedRefresh?: () => void
-    onOfflineReady?: () => void
+    immediate?: boolean;
+    onNeedRefresh?: () => void;
+    onOfflineReady?: () => void;
     /**
      * Called only if `onRegisteredSW` is not provided.
      *
      * @deprecated Use `onRegisteredSW` instead.
      * @param registration The service worker registration if available.
      */
-    onRegistered?: (registration: ServiceWorkerRegistration | undefined) => void
+    onRegistered?: (registration: ServiceWorkerRegistration | undefined) => void;
     /**
      * Called once the service worker is registered (requires version `0.12.8+`).
      *
      * @param swScriptUrl The service worker script url.
      * @param registration The service worker registration if available.
      */
-    onRegisteredSW?: (swScriptUrl: string, registration: ServiceWorkerRegistration | undefined) => void
-    onRegisterError?: (error: any) => void
+    onRegisteredSW?: (
+      swScriptUrl: string,
+      registration: ServiceWorkerRegistration | undefined,
+    ) => void;
+    onRegisterError?: (error: any) => void;
   }
 
   export function useRegisterSW(options?: RegisterSWOptions): {
-    needRefresh: Ref<boolean>
-    offlineReady: Ref<boolean>
-    updateServiceWorker: (reloadPage?: boolean) => Promise<void>
-  }
+    needRefresh: Ref<boolean>;
+    offlineReady: Ref<boolean>;
+    updateServiceWorker: (reloadPage?: boolean) => Promise<void>;
+  };
 }

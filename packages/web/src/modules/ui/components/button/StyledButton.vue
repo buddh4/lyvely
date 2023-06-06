@@ -67,7 +67,7 @@ function onClick() {
   }
 }
 
-const button = ref(null) as Ref<HTMLElement | null>;
+const button = ref<HTMLElement>() as Ref<HTMLElement>;
 
 if (isDevelopEnvironment()) {
   onMounted(() => {

@@ -99,7 +99,7 @@ export default {
 
     const leadingZerosRegex = new RegExp(/^0+[0-9]+/);
 
-    function onInput($evt: InputEvent) {
+    function onInput($evt: Event) {
       const target = $evt.target as HTMLInputElement;
       if (leadingZerosRegex.test(`${target.value}`)) {
         target.value = parseInt(target.value) + '';

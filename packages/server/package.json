@@ -1,7 +1,7 @@
 {
   "name": "@lyvely/server",
   "type": "commonjs",
-  "version": "0.1.0-alpha2",
+  "version": "0.1.0-alpha3",
   "description": "",
   "author": "",
   "main": "dist/src/index.js",
@@ -32,7 +32,7 @@
     "@automapper/classes": "^8.7.7",
     "@automapper/core": "^8.7.7",
     "@automapper/nestjs": "^8.7.7",
-    "@lyvely/common": "*",
+    "@lyvely/common": "0.1.0-alpha3",
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/bullmq": "^1.1.0",
     "@nestjs/common": "^9.4.0",

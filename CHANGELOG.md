@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0.alpha3] - WIP
+## [0.1.0-alpha3] - 2023-06-06
 
 ### Fixed
 - Modal autofocus was not working due to new dialog
@@ -24,10 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Implemented mobile footer menu
-- Implemented user profile invitations
+- Implemented group profile invitations
 - Added swipe gestures to open/close profile and account drawer
 
-## [0.1.0.alpha2] - 2023-05-11
+## [0.1.0-alpha2] - 2023-05-11
 ### Fixed
 - User is not redirected to newly created profile
 - Email is not marked as verified after registration
@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile user invitation
 - Content create and edit store now return a promise
 
-## [0.1.0.alpha1] - 2023-05-10
+## [0.1.0-alpha1] - 2023-05-10
 ### Fixed
 - Checkbox labels are not clickable
 - Title of create journal displays “Edit Journal Item“

@@ -23,6 +23,8 @@
       "vite": ["node_modules/vite"]
     },
     "types": [
+      "vue",
+      "@vue/runtime-dom",
       "reflect-metadata",
       "vite-plugin-pwa/client",
       "node"

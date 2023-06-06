@@ -36,7 +36,7 @@ function selectNewAvatar() {
   }, 50);
 }
 
-function processNewAvatar(evt: Event) {
+function processNewAvatar() {
   if (!newAvatarFileInput.value?.files?.length) return;
   accountAvatarStore.cropImageFile(newAvatarFileInput.value.files[0]);
 }
