@@ -15,24 +15,22 @@ const details = {};
 const loading = ref(false);
 const legalService = useLegalService();
 
-watch(activeSection, () => {
-  const section = activeSection.value;
+function setActiveSection(section: LegalSection) {
   if (!section) return;
 
-  if (details[section]) {
+  activeSection.value = section;
+
+  if (details[section.id]) {
     activeSectionDetails.value = details[section.id];
   } else {
     loading.value = true;
     showLegalModal.value = true;
-    legalService.getLegalDetails(section.id).then((details) => {
-      activeSectionDetails.value = details[section.id] = details;
+    legalService.getLegalDetails(section.id).then((sectionDetails) => {
+      activeSectionDetails.value = details[section.id] = sectionDetails;
       loading.value = false;
     });
   }
-});
 
-function setActiveSection(section: LegalSection) {
-  activeSection.value = section;
   showLegalModal.value = true;
 }
 </script>
@@ -40,15 +38,20 @@ function setActiveSection(section: LegalSection) {
 <template>
   <div class="flex justify-center items-center gap-1">
     <template v-for="(section, index) in sections" :key="section.id">
-      <a class="text-xs" href="#" @click="setActiveSection(section)">{{ section.label }}</a>
       <span v-if="index > 0">&middot;</span>
+      <a class="text-xs" href="#" @click="setActiveSection(section)">{{ section.label }}</a>
     </template>
   </div>
   <ly-modal
     v-model="showLegalModal"
+    icon="lyvely"
+    icon-class="text-lyvely"
     :is-loading="loading"
     :title="activeSection?.label || ''"
-    width="4xl">
+    :cancel-button="false"
+    submit-button-text="common.close"
+    width="4xl"
+    @submit="showLegalModal = false">
     <template #default>
       <ly-loader v-if="loading" />
       <template v-else-if="activeSectionDetails">
