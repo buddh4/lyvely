@@ -8,6 +8,7 @@ import { JournalModel } from '@lyvely/common';
 import { useJournalPlanStore } from '@/modules/journals/stores/journal-calendar-plan.store';
 import JournalCalendarPlanSection from '@/modules/journals/components/JournalCalendarPlanSection.vue';
 import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/CalendarPlanFilterNavigation.vue';
+import JournalsNavigation from '@/modules/journals/components/menus/JournalsNavigation.vue';
 
 const journalStore = useJournalPlanStore();
 const { intervals, filter } = journalStore;
@@ -22,6 +23,7 @@ onUnmounted(unwatch);
 
 <template>
   <content-root>
+    <journals-navigation class="md:hidden" />
     <calendar-plan-filter-navigation :filter="filter" />
     <calendar-plan>
       <journal-calendar-plan-section

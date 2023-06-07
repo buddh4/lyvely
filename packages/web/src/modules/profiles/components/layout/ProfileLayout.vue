@@ -10,7 +10,7 @@ import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tou
 import HelpModal from '@/modules/help/components/HelpModal.vue';
 
 import CreateOrEditContentModal from '@/modules/content-stream/components/CreateOrEditContentModal.vue';
-import MobileFotterMenu from '@/modules/profiles/components/menus/MobileFotterMenu.vue';
+import MobileFooterMenu from '@/modules/profiles/components/menus/MobileFooterMenu.vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { useSwipe } from '@vueuse/core';
 import { useAccountStore } from '@/modules/account/stores/account.store';
@@ -84,7 +84,7 @@ const IntroductionTour = defineAsyncComponent(
           <router-view></router-view>
         </slot>
       </main-profile-container>
-      <mobile-fotter-menu :state="showMobileFooter" />
+      <mobile-footer-menu :state="showMobileFooter" />
     </div>
   </div>
 
