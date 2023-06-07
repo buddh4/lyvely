@@ -23,7 +23,11 @@ const { helpTextId, showHelpText, translatedHelpText, hasHelpText, ariaDescribed
   props.helpText,
 );
 
-const wrapperClasses = ['form-input relative', { required: props.required }, props.wrapperClass];
+const wrapperClasses = [
+  'form-input relative no-swipe',
+  { required: props.required },
+  props.wrapperClass,
+];
 
 // old style: absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none
 // new style: absolute inline-block text-xs pl-3 pr-1 pt-2 pb-0.5 opacity-95 text-dimmed rounded pointer-events-none bg-main
