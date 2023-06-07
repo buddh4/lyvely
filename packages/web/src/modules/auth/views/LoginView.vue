@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayoutContainer.vue';
 import { useRouter, RouteLocationRaw } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { watch, onUnmounted, ref } from 'vue';
@@ -8,7 +7,7 @@ import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
 import { useSendResetPasswordMailStore } from '@/modules/auth/store/send-reset-password-mail.store';
 import { isTouchScreen } from '@/util';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
-import LegalLinks from '@/modules/legal/components/LegalLinks.vue';
+import CenteredLayout from '@/modules/app/components/layouts/CenteredLayout.vue';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -61,7 +60,7 @@ onUnmounted(loginStore.reset);
     <LanguageChooser class="float-right" />
   </div>
 
-  <centered-layout-container>
+  <centered-layout>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">{{ $t('auth.login.sign_in') }}</span>
@@ -170,9 +169,5 @@ onUnmounted(loginStore.reset);
         {{ $t('auth.login.sign_in') }}
       </ly-button>
     </template>
-
-    <template #links>
-      <legal-links />
-    </template>
-  </centered-layout-container>
+  </centered-layout>
 </template>

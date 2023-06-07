@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayoutContainer.vue';
 import { useUserRegistrationStore } from '@/modules/user-registration/stores/user-registration.store';
 import { storeToRefs } from 'pinia';
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
@@ -10,6 +9,7 @@ import { PATH_VERIFY_EMAIL } from '@/modules/user-registration/routes/paths';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 import { isTouchScreen } from '@/util';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
+import CenteredLayout from '@/modules/app/components/layouts/CenteredLayout.vue';
 
 const userRegistrationStore = useUserRegistrationStore();
 const registrationMode = useAppConfigStore().config?.registrationMode;
@@ -46,7 +46,7 @@ onUnmounted(userRegistrationStore.reset);
     <LanguageChooser class="float-right" />
   </div>
 
-  <centered-layout-container>
+  <centered-layout>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -130,7 +130,7 @@ onUnmounted(userRegistrationStore.reset);
         </small>
       </div>
     </template>
-  </centered-layout-container>
+  </centered-layout>
 </template>
 
 <style scoped></style>

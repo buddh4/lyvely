@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
-import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayoutContainer.vue';
 import { useSendResetPasswordMailStore } from '@/modules/auth/store/send-reset-password-mail.store';
 import { storeToRefs } from 'pinia';
 import { useRouter, RouteLocationRaw } from 'vue-router';
@@ -10,6 +9,7 @@ import { useResetPasswordStore } from '@/modules/auth/store/reset-password.store
 import PasswordStrengthMeter from '@/modules/ui/components/form/PasswordStrengthMeter.vue';
 import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 import { isTouchScreen } from '@/util';
+import CenteredLayout from '@/modules/app/components/layouts/CenteredLayout.vue';
 
 const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();
@@ -46,7 +46,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     <LanguageChooser class="float-right" />
   </div>
 
-  <centered-layout-container v-if="stage === 'init'" width="lg">
+  <centered-layout v-if="stage === 'init'" width="lg">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -80,9 +80,9 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         </router-link>
       </div>
     </template>
-  </centered-layout-container>
+  </centered-layout>
 
-  <centered-layout-container v-if="stage === 'sent'" width="sm">
+  <centered-layout v-if="stage === 'sent'" width="sm">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -102,9 +102,9 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         label="auth.reset_password.to_login"
         @click="toLogin" />
     </template>
-  </centered-layout-container>
+  </centered-layout>
 
-  <centered-layout-container v-if="stage === 'reset'" width="sm">
+  <centered-layout v-if="stage === 'reset'" width="sm">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -155,5 +155,5 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         </router-link>
       </div>
     </template>
-  </centered-layout-container>
+  </centered-layout>
 </template>
