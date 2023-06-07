@@ -28,10 +28,9 @@ const widthClass = computed(
 
 <template>
   <section class="flex md:p-4 justify-center md:rounded md:h-screen w-full">
-    <div
-      class="flex flex-col gap-4 w-full h-screen-s md:h-auto md:min-h-0 md:max-h-auto m-auto"
-      :class="widthClass">
-      <div class="bg-main main border-divide md:border p-4 shadow-xl md:rounded">
+    <div class="flex flex-col gap-4 w-full md:min-h-0 md:max-h-auto m-auto" :class="widthClass">
+      <div
+        class="bg-main main h-screen-s md:h-auto border-divide md:border p-4 shadow-xl md:rounded">
         <slot name="header">
           <h1 class="text-center text-xl">
             <slot name="title">{{ $t(title) }}</slot>
@@ -45,8 +44,12 @@ const widthClass = computed(
         <div>
           <slot name="footer"></slot>
         </div>
+
+        <div class="block md:hidden my-4">
+          <slot name="links" />
+        </div>
       </div>
-      <div>
+      <div class="hidden md:block">
         <slot name="links" />
       </div>
     </div>
