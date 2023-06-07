@@ -36,7 +36,7 @@ function setActiveSection(section: LegalSection) {
 </script>
 
 <template>
-  <div class="flex justify-center items-center gap-1">
+  <div class="flex justify-center items-center gap-1 flex-wrap">
     <template v-for="(section, index) in sections" :key="section.id">
       <span v-if="index > 0">&middot;</span>
       <a class="text-xs" href="#" @click="setActiveSection(section)">{{ section.label }}</a>

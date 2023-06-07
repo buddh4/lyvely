@@ -10,6 +10,7 @@ import imageUrl from '@/assets/logo_white_bold.svg';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { storeToRefs } from 'pinia';
 import { UseSwipeDirection, useSwipe } from '@vueuse/core';
+import LegalLinks from '@/modules/legal/components/LegalLinks.vue';
 
 interface IMenuItem {
   to?: RouteLocationRaw | string;
@@ -109,7 +110,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
 
 <template>
   <nav id="app-drawer" ref="appDrawer" :class="[{ toggled: !showSidebar }]" :aria-label="ariaLabel">
-    <div class="h-sticky top-0 left-0 flex-col flex-wrap justify-start content-start items-start">
+    <div class="flex flex-col flex-wrap items-stretch content-start h-screen-s">
       <div class="py-2">
         <a
           class="flex items-center no-underline font-extrabold uppercase tracking-wider h-12 px-3 cursor-pointer"
@@ -121,37 +122,45 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
         </a>
       </div>
 
-      <ul id="profile-navigation" class="nav flex-column">
-        <li>
-          <template v-for="menuItem in menuItems" :key="menuItem.label">
-            <template v-if="!menuItem.condition || menuItem.condition()">
-              <a
-                v-if="menuItem.click"
-                class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
-                @click="onMenuItemClick(menuItem)">
-                <ly-icon :name="menuItem.icon" class="w-5" />
-                <transition name="fade">
-                  <span v-if="showLabels" class="menu-item">
-                    {{ $t(menuItem.label) }}
-                  </span>
-                </transition>
-              </a>
-              <router-link
-                v-if="menuItem.to"
-                class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
-                :to="menuItem.to"
-                @click="onMenuItemClick(menuItem)">
-                <ly-icon :name="menuItem.icon" class="w-5" />
-                <transition name="fade">
-                  <span v-if="showLabels" class="menu-item">
-                    {{ $t(menuItem.label) }}
-                  </span>
-                </transition>
-              </router-link>
+      <div class="flex-grow">
+        <ul id="profile-navigation" class="nav flex-column">
+          <li>
+            <template v-for="menuItem in menuItems" :key="menuItem.label">
+              <template v-if="!menuItem.condition || menuItem.condition()">
+                <a
+                  v-if="menuItem.click"
+                  class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
+                  @click="onMenuItemClick(menuItem)">
+                  <ly-icon :name="menuItem.icon" class="w-5" />
+                  <transition name="fade">
+                    <span v-if="showLabels" class="menu-item">
+                      {{ $t(menuItem.label) }}
+                    </span>
+                  </transition>
+                </a>
+                <router-link
+                  v-if="menuItem.to"
+                  class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
+                  :to="menuItem.to"
+                  @click="onMenuItemClick(menuItem)">
+                  <ly-icon :name="menuItem.icon" class="w-5" />
+                  <transition name="fade">
+                    <span v-if="showLabels" class="menu-item">
+                      {{ $t(menuItem.label) }}
+                    </span>
+                  </transition>
+                </router-link>
+              </template>
             </template>
-          </template>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
+
+      <transition name="fade">
+        <div v-if="showSidebar" class="legal-links shrink-0 flex justify-center px-2 py-4 w-full">
+          <legal-links />
+        </div>
+      </transition>
     </div>
   </nav>
   <transition name="fade-fast">
@@ -164,9 +173,17 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
   </transition>
 </template>
 
-<style scoped lang="postcss">
+<style lang="postcss">
 .lyvely-logo-text {
   height: 20px;
+}
+
+.legal-links {
+  background-color: rgba(255, 255, 255, 5%);
+}
+
+.legal-links a {
+  color: white;
 }
 
 #app-drawer {
