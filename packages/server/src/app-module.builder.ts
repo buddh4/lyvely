@@ -40,6 +40,7 @@ import { MilestonesModule } from '@/milestones/milestones.module';
 import { InvitationsModule } from '@/invitations/invitations.module';
 //import { LoggerModule } from 'nestjs-pino';
 import { SystemMessagesModule } from '@/system-messages/system-messages.module';
+import { LegalModule } from '@/legal/legal.module';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -129,6 +130,7 @@ export class AppModuleBuilder {
       NotificationsModule,
       CoreModule,
       FeatureModule,
+      LegalModule,
       AppConfigModule,
       NestjsI18nModule.forRoot({
         fallbackLanguage: 'en',

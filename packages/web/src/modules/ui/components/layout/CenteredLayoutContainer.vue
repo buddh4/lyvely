@@ -29,22 +29,25 @@ const widthClass = computed(
 <template>
   <section class="flex md:p-4 justify-center md:rounded md:h-screen w-full">
     <div
-      :class="[
-        'bg-main main w-full p-4 md:border h-screen-s md:h-auto md:min-h-0 md:max-h-auto border-divide md:rounded shadow-xl m-auto',
-        widthClass,
-      ]">
-      <slot name="header">
-        <h1 class="text-center text-xl">
-          <slot name="title">{{ $t(title) }}</slot>
-        </h1>
-      </slot>
+      class="flex flex-col gap-4 w-full h-screen-s md:h-auto md:min-h-0 md:max-h-auto m-auto"
+      :class="widthClass">
+      <div class="bg-main main border-divide md:border p-4 shadow-xl md:rounded">
+        <slot name="header">
+          <h1 class="text-center text-xl">
+            <slot name="title">{{ $t(title) }}</slot>
+          </h1>
+        </slot>
 
-      <div class="my-5">
-        <slot name="body"></slot>
+        <div class="my-5">
+          <slot name="body"></slot>
+        </div>
+
+        <div>
+          <slot name="footer"></slot>
+        </div>
       </div>
-
       <div>
-        <slot name="footer"></slot>
+        <slot name="links" />
       </div>
     </div>
   </section>

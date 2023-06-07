@@ -171,6 +171,7 @@ function onKeyDown(evt: KeyboardEvent) {
             <ly-button
               v-if="submitButton"
               :disabled="isLoading"
+              :loading="isLoading"
               data-modal-submit
               class="my-1 primary"
               @click="$emit('submit')">

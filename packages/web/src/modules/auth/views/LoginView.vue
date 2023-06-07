@@ -8,6 +8,7 @@ import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
 import { useSendResetPasswordMailStore } from '@/modules/auth/store/send-reset-password-mail.store';
 import { isTouchScreen } from '@/util';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
+import LegalLinks from '@/modules/legal/components/LegalLinks.vue';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -168,6 +169,10 @@ onUnmounted(loginStore.reset);
         @click="submit">
         {{ $t('auth.login.sign_in') }}
       </ly-button>
+    </template>
+
+    <template #links>
+      <legal-links />
     </template>
   </centered-layout-container>
 </template>

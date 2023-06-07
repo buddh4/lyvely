@@ -114,6 +114,25 @@ export interface UserRegistrationOptions {
   mode?: RegistrationModes;
 }
 
+export interface LegalOptions {
+  sections: {
+    [k: string]: {
+      label: string;
+      content: string;
+      version: string;
+      format?: 'html' | 'markdown';
+      locales?: {
+        [k: string]: {
+          label: string;
+          content: string;
+          version: string;
+          format?: 'html' | 'markdown';
+        };
+      };
+    };
+  };
+}
+
 export type LyvelyAppConfiguration = {
   appName: string;
   operationMode: OperationMode;
@@ -129,6 +148,7 @@ export type LyvelyAppConfiguration = {
   file?: LyvelyFileOptions;
   mail?: LyvelyMailOptions;
   modules?: ModulesConfiguration;
+  legal?: LegalOptions;
   'user-permissions'?: UserPermissionOptions;
   invitations?: UserInviteOptions;
   userRegistration?: UserRegistrationOptions;

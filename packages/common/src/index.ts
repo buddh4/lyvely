@@ -9,6 +9,7 @@ export * from './endpoints';
 export * from './features';
 export * from './habits';
 export * from './journals';
+export * from './legal';
 export * from './models';
 export * from './message';
 export * from './profiles';

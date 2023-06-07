@@ -1,8 +1,11 @@
+import { LegalSection } from '@/legal';
+
 export type AppConfig = {
   appName: string;
   docUrl: string;
   csrf_token: string;
   locales: ILocale[];
+  legal: LegalSection[];
   registrationMode: RegistrationMode;
 } & { [n: string]: any };
 
