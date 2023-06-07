@@ -16,7 +16,7 @@ const { activeView } = storeToRefs(useActivityStore());
     <nav
       v-if="state"
       id="page-footer"
-      class="footer shrink-0 p-4 shadow overflow-hidden w-full py-2 bg-main md:hidden">
+      class="footer shrink-0 shadow overflow-hidden w-full py-1 bg-main md:hidden">
       <div class="flex justify-center">
         <div class="navbar-nav flex flex-row justify-content-center">
           <router-link class="nav-link" :to="{ name: 'stream' }">
