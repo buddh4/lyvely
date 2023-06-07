@@ -27,8 +27,7 @@ const { tags, stopWatch, activeTagId, setTagFilter, queryFilter, archiveFilter }
   },
 );
 
-const commonButtonClassNames =
-  'secondary outlined inline-flex items-center text-xs mr-0.5 py-1 px-1';
+const commonButtonClassNames = 'secondary outlined inline-flex items-center text-xs py-1 px-1';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
 
@@ -36,7 +35,7 @@ onBeforeRouteLeave(stopWatch);
 </script>
 
 <template>
-  <nav id="filter-nav" class="flex flex-row content-left clearfix mb-2">
+  <nav id="filter-nav" class="flex flex-row gap-0.5 content-left clearfix mb-2">
     <ly-button
       :class="roundButton"
       :active="dragActive"

@@ -29,12 +29,11 @@ const classNames = computed(() => {
 </script>
 
 <template>
-  <main
-    v-mobile-scrollbar
-    :class="classNames"
-    class="overflow-y-auto scrollbar-thin max-h-full h-full min-w-fit flex-grow">
-    <slot></slot>
-  </main>
+  <div class="flex items-stretch flex-grow overflow-y-auto scrollbar-thin">
+    <main v-mobile-scrollbar :class="classNames" class="min-w-fit">
+      <slot></slot>
+    </main>
+  </div>
 </template>
 
 <style>

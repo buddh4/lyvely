@@ -59,7 +59,7 @@ function switchCreateContentType(type: string) {
               v-for="contentTypeOption in getCreateContentTypes()"
               :key="contentTypeOption.type">
               <ly-button
-                class="select-none button no-underline text-center rounded inline-block secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs px-2 rounded"
+                class="select-none button no-underline text-center rounded inline-block secondary outlined inline-flex items-center text-xs py-1 px-1 text-xs px-2 rounded"
                 :active="contentTypeOption.type === contentType"
                 @click="switchCreateContentType(contentTypeOption.type)">
                 {{ translate(contentTypeOption.name) }}

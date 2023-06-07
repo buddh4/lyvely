@@ -51,7 +51,7 @@ const unwatchFilter = watch(
 );
 
 const commonButtonClassNames =
-  'secondary outlined mr-0.5 inline-flex items-center text-xs py-1 px-1 text-xs';
+  'secondary outlined inline-flex items-center text-xs py-1 px-1 text-xs';
 const pillButton = commonButtonClassNames + ' px-2 rounded';
 const roundButton = commonButtonClassNames + ' px-1 rounded';
 
@@ -59,7 +59,7 @@ onBeforeRouteLeave(unwatchFilter);
 </script>
 
 <template>
-  <nav id="stream-filter-nav" class="flex flex-row content-left clearfix mb-2">
+  <nav id="stream-filter-nav" class="flex flex-row gap-0.5 content-left clearfix mb-2">
     <slider-navigation class="tag-filter-selection">
       <ly-button :class="pillButton" :active="!activeTagId" @click="setTagFilter()">
         {{ $t('filter.all') }}
