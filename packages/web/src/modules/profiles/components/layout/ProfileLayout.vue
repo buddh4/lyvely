@@ -14,6 +14,7 @@ import MobileFooterMenu from '@/modules/profiles/components/menus/MobileFooterMe
 import { usePageStore } from '@/modules/core/store/page.store';
 import { useSwipe } from '@vueuse/core';
 import { useAccountStore } from '@/modules/account/stores/account.store';
+import { isFormField } from '@/modules/ui/utils';
 
 const pageStore = usePageStore();
 const accountStore = useAccountStore();
@@ -55,7 +56,8 @@ window.addEventListener('touchend', () => {
 const { direction } = useSwipe(root, {
   onSwipeEnd(e: TouchEvent) {
     // Closing swipe gestures are handled within the drawer components
-    const noSwipeElement = (<HTMLElement>e.target).closest('.no-swipe');
+    const target = e.target as HTMLElement;
+    const noSwipeElement = target.closest('.no-swipe') || isFormField(target);
     if (
       noSwipeElement ||
       noSwipe.value ||

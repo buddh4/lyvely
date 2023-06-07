@@ -7,6 +7,10 @@ export function findFirstInput(root?: HTMLElement | null) {
   return <HTMLElement | undefined>root?.querySelector(SELECTOR_FORM_FIELD);
 }
 
+export function isFormField(elem?: HTMLElement | null) {
+  return !!elem?.matches(SELECTOR_FORM_FIELD);
+}
+
 export function isFocusable(root?: HTMLElement | null) {
   return !!root?.matches(SELECTOR_FOCUSABLE);
 }
