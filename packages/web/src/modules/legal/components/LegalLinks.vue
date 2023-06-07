@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { LegalSection, LegalSectionDetails } from '@lyvely/common';
 import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import { useLegalService } from '@/modules/legal/services/legal.service';
@@ -33,13 +33,18 @@ function setActiveSection(section: LegalSection) {
 
   showLegalModal.value = true;
 }
+
+const docUrl = computed(() => useAppConfigStore().get('docUrl', 'https://docs.lyvely.app'));
 </script>
 
 <template>
   <div class="flex justify-center items-center gap-1 flex-wrap">
     <template v-for="(section, index) in sections" :key="section.id">
       <span v-if="index > 0">&middot;</span>
-      <a class="text-xs" href="#" @click="setActiveSection(section)">{{ section.label }}</a>
+      <a v-if="!!section.url" class="text-xs" target="_blank" :href="section.url">{{
+        section.label
+      }}</a>
+      <a v-else class="text-xs" href="#" @click="setActiveSection(section)">{{ section.label }}</a>
     </template>
   </div>
   <ly-modal

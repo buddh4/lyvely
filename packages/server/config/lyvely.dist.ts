@@ -55,4 +55,13 @@ export default {
       },
     },
   },
+  legal: {
+    sections: {
+      poweredBy: {
+        label: 'Powered by lyvely',
+        url: 'https://www.lyvely.app',
+        version: '1.0',
+      },
+    },
+  },
 } as LyvelyAppConfiguration;

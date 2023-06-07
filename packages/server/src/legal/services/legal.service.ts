@@ -14,12 +14,13 @@ export class LegalService {
 
     for (const sectionId in legal.sections) {
       const localizedSection = this.getLocalizedSection(sectionId, locale);
-      const { label, version } = localizedSection;
+      const { label, version, url } = localizedSection;
       result.push(
         new LegalSection({
           id: sectionId,
           label,
           version,
+          url,
         }),
       );
     }
@@ -30,13 +31,14 @@ export class LegalService {
   async getDetails(sectionId: string, locale?: string): Promise<LegalSectionDetails | null> {
     const localizedSection = this.getLocalizedSection(sectionId, locale);
     if (!localizedSection) return null;
-    const { label, version, content, format } = localizedSection;
+    const { label, version, content, format, url } = localizedSection;
     return new LegalSectionDetails({
       id: sectionId,
       label,
       version,
       content,
       format,
+      url,
     });
   }
 

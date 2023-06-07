@@ -4,6 +4,7 @@ import { Expose } from 'class-transformer';
 export interface ILegalSection {
   id: string;
   label: string;
+  url?: string;
   version: string;
 }
 
@@ -11,6 +12,7 @@ export interface ILegalSection {
 export class LegalSection<T extends ILegalSection = ILegalSection> extends BaseModel<T> {
   id: string;
   label: string;
+  url?: string;
   version: string;
 }
 

@@ -118,13 +118,15 @@ export interface LegalOptions {
   sections: {
     [k: string]: {
       label: string;
-      content: string;
+      content?: string;
+      url?: string;
       version: string;
       format?: 'html' | 'markdown';
       locales?: {
         [k: string]: {
           label: string;
-          content: string;
+          content?: string;
+          url?: string;
           version: string;
           format?: 'html' | 'markdown';
         };

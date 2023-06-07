@@ -182,8 +182,13 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
   background-color: rgba(255, 255, 255, 5%);
 }
 
-.legal-links a {
-  color: white;
+#app-drawer .legal-links,
+#app-drawer .legal-links a {
+  color: rgba(255, 255, 255, 30%);
+}
+
+#app-drawer .legal-links a:hover {
+  color: rgba(255, 255, 255, 80%);
 }
 
 #app-drawer {
