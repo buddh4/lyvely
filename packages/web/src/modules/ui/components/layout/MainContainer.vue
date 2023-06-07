@@ -30,7 +30,7 @@ const classNames = computed(() => {
 
 <template>
   <div class="flex items-stretch flex-grow overflow-y-auto overflow-x-hidden scrollbar-thin">
-    <main v-mobile-scrollbar :class="classNames" class="min-w-fit">
+    <main v-mobile-scrollbar :class="classNames">
       <slot></slot>
     </main>
   </div>

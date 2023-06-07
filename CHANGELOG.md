@@ -8,11 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0-alpha4] - WIP
 
 ### Fixed
-- Swipe handler should be prevented in case of active scroll
+- Profile layout swipe handler should be prevented in case of active scroll
 - MainContainer does not have full width and scrollbar is not at the right page
+- Profile layout swipe handler not active on form elements
 
 ### Changed
 - Mobile profile drawer is closed on route change
+- Minor usability fine-tuning
 
 ## [0.1.0-alpha4] - 2023-06-06
 
