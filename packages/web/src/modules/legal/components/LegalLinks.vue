@@ -11,7 +11,7 @@ const sections = get('legal');
 const showLegalModal = ref(false);
 const activeSection = ref<LegalSection>();
 const activeSectionDetails = ref<LegalSectionDetails>();
-const details = {};
+const details = {} as { [id: string]: LegalSectionDetails };
 const loading = ref(false);
 const legalService = useLegalService();
 

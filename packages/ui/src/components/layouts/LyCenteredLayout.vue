@@ -1,15 +1,18 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { Size } from '@/modules/ui/types';
+import { Size } from '@/types';
+import { t } from '@/i18n.ts';
 
 export interface IProps {
   title?: string;
   width?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
+  translate?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   title: '',
   width: 'sm',
+  translate: true,
 });
 
 const widthClass = computed(
@@ -33,7 +36,7 @@ const widthClass = computed(
         class="bg-main main h-screen-s md:h-auto border-divide md:border p-4 shadow-xl md:rounded">
         <slot name="header">
           <h1 class="text-center text-xl">
-            <slot name="title">{{ $t(title) }}</slot>
+            <slot name="title">{{ translate ? t(title) : title }}</slot>
           </h1>
         </slot>
 

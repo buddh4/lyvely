@@ -10,6 +10,7 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     sourceType: 'module',
     project: [
+      './packages/ui/tsconfig.json',
       './packages/web/tsconfig.json',
       './packages/common/tsconfig.json',
       './packages/server/tsconfig.json',
@@ -19,7 +20,7 @@ module.exports = {
     tsconfigRootDir: './',
     extraFileExtensions: ['.vue'],
   },
-  plugins: ['vue', 'prettier', '@typescript-eslint/eslint-plugin', 'import'],
+  plugins: ['vue', 'prettier', '@typescript-eslint/eslint-plugin', 'import', '@nx'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -40,6 +41,13 @@ module.exports = {
     },
   },
   rules: {
+    "@nx/enforce-module-boundaries": [
+      "error",
+      {
+        allow: [],
+        banTransitiveDependencies: true,
+      }
+    ],
     '@typescript-eslint/naming-convention': [
       'warn',
       {

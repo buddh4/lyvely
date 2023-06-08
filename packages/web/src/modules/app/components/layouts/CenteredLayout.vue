@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import CenteredLayoutContainer from '@/modules/ui/components/layout/CenteredLayoutContainer.vue';
 import LegalLinks from '@/modules/legal/components/LegalLinks.vue';
 
 export interface IProps {
@@ -14,7 +13,7 @@ const props = withDefaults(defineProps<IProps>(), {
 </script>
 
 <template>
-  <centered-layout-container v-bind="props">
+  <ly-centered-layout v-bind="props">
     <template #header>
       <slot name="header">
         <h1 class="text-center text-xl">
@@ -35,7 +34,7 @@ const props = withDefaults(defineProps<IProps>(), {
       <legal-links />
       <slot name="links" />
     </template>
-  </centered-layout-container>
+  </ly-centered-layout>
 </template>
 
 <style scoped></style>

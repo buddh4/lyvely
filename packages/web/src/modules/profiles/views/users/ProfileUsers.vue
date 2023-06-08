@@ -3,7 +3,7 @@ import ListPage from '@/modules/ui/components/layout/ListPage.vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
 import { useSendInviteUsersStore } from '@/modules/invitations/stores/send-invitations.store';
-import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
+import { LyContentRoot } from '@lyvely/ui';
 import LyAvatar from '@/modules/ui/components/avatar/AvatarImage.vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { computed } from 'vue';
@@ -36,7 +36,7 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
 </script>
 
 <template>
-  <content-root>
+  <ly-content-root>
     <list-page v-if="profile" title="profiles.users.title" icon="users">
       <template #header-right>
         <ly-button
@@ -58,7 +58,7 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
         </span>
       </div>
     </list-page>
-  </content-root>
+  </ly-content-root>
 </template>
 
 <style scoped></style>

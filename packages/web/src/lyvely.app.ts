@@ -5,7 +5,7 @@ import { createPinia, Pinia } from 'pinia';
 import router from '@/router';
 import AppComponent from '@/App.vue';
 import { ModuleLoader } from '@/module.loader';
-import { setupI18n } from '@/i18n';
+import { setupI18n, translate } from '@/i18n';
 import { I18n } from 'vue-i18n';
 import LyvelyModal from '@/modules/ui/components/modal/LyvelyModal.vue';
 import ConfirmModal from '@/modules/ui/components/modal/ConfirmModal.vue';
@@ -44,6 +44,7 @@ import { useDayJsDateTimeAdapter } from '@lyvely/common';
 import { eventBus, AppEvents } from '@/modules/core/events/global.emitter';
 import AvatarImage from '@/modules/ui/components/avatar/AvatarImage.vue';
 import BadgeChooser from '@/modules/ui/components/form/BadgeChooser.vue';
+import { createLyvelyUi } from '@lyvely/ui';
 
 export class LyvelyApp {
   vueApp: App;
@@ -79,6 +80,11 @@ export class LyvelyApp {
     this.vueApp.use(router);
     this.vueApp.use(ModuleLoader);
     this.vueApp.use(this.i18n);
+    this.vueApp.use(
+      createLyvelyUi({
+        translationProvider: translate,
+      }),
+    );
     this.initDirectives();
     this.setGlobalComponents();
     useDayJsDateTimeAdapter();

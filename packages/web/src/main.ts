@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import '@lyvely/ui/style.css';
 import { LyvelyApp } from '@/lyvely.app';
 import LyvelyModal from '@/modules/ui/components/modal/LyvelyModal.vue';
 import ConfirmModal from '@/modules/ui/components/modal/ConfirmModal.vue';
@@ -38,6 +39,7 @@ import { createApp } from 'vue';
 import TimeNumberInput from '@/modules/ui/components/form/TimeNumberInput.vue';
 import ButtonUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 import { registerSW } from 'virtual:pwa-register';
+import { createLyvelyUi } from '@lyvely/ui';
 
 const app = new LyvelyApp();
 app.init().then(() => app.mount('#app'));
@@ -53,6 +55,7 @@ const updateSW = registerSW({
 
 function justForWebstorm() {
   const vueApp = createApp(AppComponent);
+  vueApp.use(createLyvelyUi());
   vueApp.component('LyModal', LyvelyModal);
   app.vueApp.component('LyConfirm', ConfirmModal);
   app.vueApp.component('LyDrawer', DrawerMenu);

@@ -2,16 +2,16 @@
 import ActivityNavigation from '@/modules/activities/components/menus/ActivityNavigation.vue';
 import { onMounted } from 'vue';
 import { accessibilityFocus } from '@/modules/accessibility/utils/accessibility.util';
-import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
+import { LyContentRoot } from '@lyvely/ui';
 
 onMounted(() => accessibilityFocus('#activity-navigation > button.active'));
 </script>
 
 <template>
-  <content-root>
+  <ly-content-root>
     <activity-navigation />
     <router-view></router-view>
-  </content-root>
+  </ly-content-root>
 </template>
 
 <style scoped></style>
