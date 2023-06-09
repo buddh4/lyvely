@@ -20,10 +20,12 @@ export default defineConfig({
       fileName: 'lyvely-ui',
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ['vue', 'vue-router', '@vueuse/core', 'lodash', 'randomcolor'],
       output: {
         globals: {
           vue: 'Vue',
+          lodash: '_',
+          'vue-router': 'VueRouter'
         },
       },
     },

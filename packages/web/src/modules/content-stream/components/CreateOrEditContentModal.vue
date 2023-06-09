@@ -54,7 +54,7 @@ function switchCreateContentType(type: string) {
       @cancel="onCreateCanceled">
       <template #navigation>
         <div v-if="showContentTypeMenu" class="flex justify-center p-2 shadow bg-highlight">
-          <slider-navigation>
+          <ly-slider-menu>
             <template
               v-for="contentTypeOption in getCreateContentTypes()"
               :key="contentTypeOption.type">
@@ -65,7 +65,7 @@ function switchCreateContentType(type: string) {
                 {{ translate(contentTypeOption.name) }}
               </ly-button>
             </template>
-          </slider-navigation>
+          </ly-slider-menu>
         </div>
       </template>
     </component>

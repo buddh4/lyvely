@@ -1,30 +1,21 @@
 import axios from 'axios';
-import { Icons } from '@/modules/ui/components/icon/Icons';
+import { Icons } from '@lyvely/ui';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
-import { AvatarModel } from '@lyvely/common';
 
 // TODO: abstract this away in config or something..
 const apiURL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8080';
 const repository = axios.create({ baseURL: apiURL });
 
-export function createApiUrl(path: string) {
+export function createApiUrl(path: string, queryParameters: Record<string, string> = {}) {
+  const url = new URL(apiURL);
   path = path.charAt(0) === '/' ? path : '/' + path;
-  return apiURL + path;
-}
+  url.pathname = path;
 
-export function createAvatarUrl(avatar: AvatarModel): string;
-export function createAvatarUrl(guid: string, timestamp?: number): string;
-export function createAvatarUrl(guid: string | AvatarModel, timestamp?: number): string {
-  if (typeof guid === 'object') {
-    timestamp = guid.timestamp;
-    guid = guid.guid;
-  }
+  Object.keys(queryParameters).forEach((key) => {
+    url.searchParams.append(key, queryParameters[key]);
+  });
 
-  let path = `/avatars/${guid}`;
-  if (timestamp) {
-    path += `?v=${timestamp}`;
-  }
-  return createApiUrl(path);
+  return url.toString();
 }
 
 export function createFileUrl(hash: string) {
@@ -43,7 +34,10 @@ repository.interceptors.response.use(undefined, (error) => {
         message: 'error.network.message',
         buttonType: 'reload',
       });
-    } else if (error.response.status === 403 && error.response.data.message === 'invalid csrf token') {
+    } else if (
+      error.response.status === 403 &&
+      error.response.data.message === 'invalid csrf token'
+    ) {
       useGlobalDialogStore().showError({
         icon: Icons.error_network.name,
         title: 'error.csrf.title',

@@ -32,5 +32,5 @@ onUnmounted(() => {
       :interval="interval" />
   </calendar-plan>
 
-  <floating-add-button @click="createEntry" />
+  <ly-floating-add-button @click="createEntry" />
 </template>

@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, onUnmounted } from 'vue';
-import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
 import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 import { JournalModel } from '@lyvely/common';
 import { useJournalPlanStore } from '@/modules/journals/stores/journal-calendar-plan.store';
 import JournalCalendarPlanSection from '@/modules/journals/components/JournalCalendarPlanSection.vue';
@@ -33,7 +31,7 @@ onUnmounted(unwatch);
         :interval="interval" />
     </calendar-plan>
 
-    <floating-add-button @click="createEntry" />
+    <ly-floating-add-button @click="createEntry" />
   </ly-content-root>
 </template>
 

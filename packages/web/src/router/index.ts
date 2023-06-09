@@ -6,7 +6,7 @@ import {
   NavigationGuardNext,
 } from 'vue-router';
 
-import NotFound from '@/modules/ui/components/error/NotFound.vue';
+import NotFound from '@/modules/ui/components/errors/NotFound.vue';
 import { messageLoaderGuard } from '@/modules/i18n';
 import { authGuard } from '@/modules/auth';
 import NProgress from 'nprogress';

@@ -9,7 +9,6 @@ export const usePageStore = defineStore('page', () => {
   const isDark = useDark();
   const toggleDark = useToggle(isDark);
   const showAppLoader = ref(true);
-  const drawerStack = ref<Array<string>>([]);
   const isOnline = useOnline();
   const showMobileFooter = ref(true);
   const noSwipe = ref(false);
@@ -41,21 +40,10 @@ export const usePageStore = defineStore('page', () => {
     showAppLoader.value = !!show;
   }
 
-  function pushDrawer(id: string) {
-    return drawerStack.value.push(id);
-  }
-
-  function popDrawer(id: string) {
-    drawerStack.value = drawerStack.value.filter((mId) => mId !== id);
-    return drawerStack.value.length;
-  }
-
   return {
     isDark,
     showSidebar,
-    pushDrawer,
     noSwipe,
-    popDrawer,
     toggleSidebar,
     toggleDark,
     setShowAppLoader,

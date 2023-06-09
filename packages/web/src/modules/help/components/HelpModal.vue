@@ -6,8 +6,6 @@ import { isToday } from '@lyvely/common';
 import ms from 'ms';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
-import LyButton from '@/modules/ui/components/button/StyledButton.vue';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { computed } from 'vue';
 
 const authStore = useAuthStore();

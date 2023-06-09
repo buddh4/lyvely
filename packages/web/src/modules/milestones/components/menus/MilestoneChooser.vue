@@ -4,7 +4,6 @@ import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store
 import { ContentModel, MilestoneModel, UpdateMilestoneResponse } from '@lyvely/common';
 import { useSetContentMilestone } from '@/modules/content/composables/set-content-milestone.composable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import LyAddButton from '@/modules/ui/components/button/AddButton.vue';
 import { storeToRefs } from 'pinia';
 
 export interface IProps {
@@ -53,7 +52,7 @@ const createMilestone = () =>
               <p class="text-sm font-medium truncate">
                 {{ milestone.content.title }}
               </p>
-              <ly-text-dimmed :text="milestone.content.text" />
+              <ly-dimmed :text="milestone.content.text" :translate="false" />
             </div>
           </div>
         </ly-list-item>

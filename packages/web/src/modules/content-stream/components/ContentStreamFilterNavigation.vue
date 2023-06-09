@@ -4,7 +4,6 @@ import { computed, ref, watch } from 'vue';
 import { TagFilter } from '@lyvely/common';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
-import LyUpdateIndicator from '@/modules/ui/components/button/ButtonUpdateIndicator.vue';
 import { useDebounceFn } from '@vueuse/core';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { storeToRefs } from 'pinia';
@@ -60,7 +59,7 @@ onBeforeRouteLeave(unwatchFilter);
 
 <template>
   <nav id="stream-filter-nav" class="flex flex-row gap-0.5 content-left clearfix mb-2">
-    <slider-navigation class="tag-filter-selection">
+    <ly-slider-menu class="tag-filter-selection">
       <ly-button :class="pillButton" :active="!activeTagId" @click="setTagFilter()">
         {{ $t('filter.all') }}
       </ly-button>
@@ -76,7 +75,7 @@ onBeforeRouteLeave(unwatchFilter);
         @click="setTagFilter(tag.id)">
         {{ tag.name }}
       </ly-button>
-    </slider-navigation>
+    </ly-slider-menu>
 
     <div class="ml-auto flex flex-nowrap">
       <ly-button

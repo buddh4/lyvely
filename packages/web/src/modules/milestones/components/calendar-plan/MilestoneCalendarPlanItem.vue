@@ -46,7 +46,7 @@ const toDetails = () => {
     </template>
     <template #rating>
       <div class="w-40 ml-auto">
-        <progress-bar :progress="progress" class="cursor-pointer" @click="toDetails" />
+        <ly-progress-bar :progress="progress" class="cursor-pointer" @click="toDetails" />
       </div>
     </template>
   </calendar-plan-item>

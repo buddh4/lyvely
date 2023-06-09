@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { TaskModel } from '@lyvely/common';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
-import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
-import LyButton from '@/modules/ui/components/button/StyledButton.vue';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { computed } from 'vue';
 import { useTaskCalendarPlanStore } from '@/modules/tasks/stores/task-calendar-plan.store';
 import TimerState from '@/modules/calendar/components/TimerState.vue';

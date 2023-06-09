@@ -51,9 +51,13 @@ const isEditable = computed(
       @click="onClickArchive"></ly-dropdown-link>
     <slot></slot>
   </ly-dropdown>
-  <ly-confirm v-if="showConfirm" v-model="showConfirm" :options="confirm" @submit="confirmAction">
+  <ly-confirm-modal
+    v-if="showConfirm"
+    v-model="showConfirm"
+    :options="confirm"
+    @submit="confirmAction">
     <slot name="confirmBody"></slot>
-  </ly-confirm>
+  </ly-confirm-modal>
 </template>
 
 <style scoped>

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 import { DialogType, useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 
 let numberInput1 = 0,
@@ -31,7 +30,16 @@ let numberInput1 = 0,
   selectValue1 = 0,
   selectValue2 = 0,
   selectValue3 = 0,
-  colors = ['bg-pop', 'bg-lyvely', 'bg-primary', 'bg-secondary', 'bg-info', 'bg-success', 'bg-warning', 'bg-danger'];
+  colors = [
+    'bg-pop',
+    'bg-lyvely',
+    'bg-primary',
+    'bg-secondary',
+    'bg-info',
+    'bg-success',
+    'bg-warning',
+    'bg-danger',
+  ];
 
 function showAlert(text: string) {
   alert(text);
@@ -56,7 +64,7 @@ const radioValue2 = ref('2');
 
 <template>
   <div class="flex items-center justify-center">
-    <main-container class="bg-main">
+    <ly-main-container class="bg-main">
       <div class="prose dark:prose-invert">
         <h1>Style Guide</h1>
 
@@ -196,9 +204,21 @@ const radioValue2 = ref('2');
         <div class="flex flex-col">
           <ly-input-radio v-model="radioValue" value="1" label="Checked" />
           <ly-input-radio v-model="radioValue" value="2" label="Unchecked" />
-          <ly-input-radio v-model="radioValue" value="1" label="Disabled checked" :disabled="true" />
-          <ly-input-radio v-model="radioValue2" value="1" label="Disabled unchecked" :disabled="true" />
-          <ly-input-radio v-model="radioValue2" value="2" input-class="success" label="Success colored checkbox" />
+          <ly-input-radio
+            v-model="radioValue"
+            value="1"
+            label="Disabled checked"
+            :disabled="true" />
+          <ly-input-radio
+            v-model="radioValue2"
+            value="1"
+            label="Disabled unchecked"
+            :disabled="true" />
+          <ly-input-radio
+            v-model="radioValue2"
+            value="2"
+            input-class="success"
+            label="Success colored checkbox" />
         </div>
 
         <h3>Text Input</h3>
@@ -219,25 +239,49 @@ const radioValue2 = ref('2');
             <ly-input-textarea v-model="textareaInput3" label="With error" error="Some error..." />
             <ly-input-textarea v-model="textareaInput4" label="Disabled" :disabled="true" />
             <ly-input-textarea v-model="textareaInput4" label="Readonly" :readonly="true" />
-            <ly-input-textarea v-model="textareaInput4" label="Not resizable" input-class="resize-none" />
+            <ly-input-textarea
+              v-model="textareaInput4"
+              label="Not resizable"
+              input-class="resize-none" />
           </div>
         </div>
 
         <h3>Number Input</h3>
         <div class="flex flex-col">
           <ly-input-number v-model="numberInput1" label="Simple Input" wrapper-class="max-w-sm" />
-          <ly-input-number v-model="numberInput2" :min="3" :max="6" label="With Min/Max" wrapper-class="max-w-sm" />
-          <ly-input-number v-model="numberInput3" :steps="5" :min="0" label="Width steps" wrapper-class="max-w-sm" />
+          <ly-input-number
+            v-model="numberInput2"
+            :min="3"
+            :max="6"
+            label="With Min/Max"
+            wrapper-class="max-w-sm" />
+          <ly-input-number
+            v-model="numberInput3"
+            :steps="5"
+            :min="0"
+            label="Width steps"
+            wrapper-class="max-w-sm" />
           <ly-input-number v-model="numberInput7" wrapper-class="max-w-sm" />
-          <ly-input-number v-model="numberInput4" label="No slider" :slider="false" wrapper-class="max-w-sm" />
+          <ly-input-number
+            v-model="numberInput4"
+            label="No slider"
+            :slider="false"
+            wrapper-class="max-w-sm" />
           <ly-input-number
             v-model="numberInput5"
             label="Error"
             error="Something went wrong?"
-            wrapper-class="max-w-sm"
-          />
-          <ly-input-number v-model="numberInput6" label="Disabled" :disabled="true" wrapper-class="max-w-sm" />
-          <ly-input-number v-model="numberInput7" label="Readonly" :readonly="true" wrapper-class="max-w-sm" />
+            wrapper-class="max-w-sm" />
+          <ly-input-number
+            v-model="numberInput6"
+            label="Disabled"
+            :disabled="true"
+            wrapper-class="max-w-sm" />
+          <ly-input-number
+            v-model="numberInput7"
+            label="Readonly"
+            :readonly="true"
+            wrapper-class="max-w-sm" />
         </div>
 
         <h3>Select</h3>
@@ -246,22 +290,19 @@ const radioValue2 = ref('2');
             v-model="selectValue1"
             label="Simple select"
             :options="selectOptions"
-            wrapper-class="max-w-sm"
-          />
+            wrapper-class="max-w-sm" />
           <ly-input-select
             v-model="selectValue2"
             label="With error"
             error="Invalid..."
             :options="selectOptions"
-            wrapper-class="max-w-sm"
-          />
+            wrapper-class="max-w-sm" />
           <ly-input-select
             v-model="selectValue3"
             label="Disabled"
             :options="selectOptions"
             :disabled="true"
-            wrapper-class="max-w-sm"
-          />
+            wrapper-class="max-w-sm" />
         </div>
 
         <h3>Range</h3>
@@ -272,7 +313,13 @@ const radioValue2 = ref('2');
           <div class="text-right">{{ rangeInput2 }}</div>
           <ly-input-range v-model="rangeInput3" :min="0" :max="100" :step="5" label="Steps of 5" />
           <div class="text-right">{{ rangeInput3 }}</div>
-          <ly-input-range v-model="rangeInput4" :disabled="true" :min="0" :max="100" :step="5" label="Disabled" />
+          <ly-input-range
+            v-model="rangeInput4"
+            :disabled="true"
+            :min="0"
+            :max="100"
+            :step="5"
+            label="Disabled" />
           <div class="text-right">{{ rangeInput4 }}</div>
         </div>
 
@@ -281,29 +328,44 @@ const radioValue2 = ref('2');
           <ly-dropdown input-class="float-right">
             <ly-dropdownLink label="Route" route="/activities" />
             <ly-dropdownLink label="Click" @click="showAlert('Clicked!')" />
-            <ly-dropdownLink label="With icon" icon="lyvely" @click="showAlert('Clicked with Icon!')" />
+            <ly-dropdownLink
+              label="With icon"
+              icon="lyvely"
+              @click="showAlert('Clicked with Icon!')" />
           </ly-dropdown>
         </div>
         <div class="clear-both mb-2">
           <ly-dropdown input-class="float-right" label="With Label">
             <ly-dropdownLink label="Route" route="/activities" />
             <ly-dropdownLink label="Click" @click="showAlert('Clicked!')" />
-            <ly-dropdownLink label="With icon" icon="lyvely" @click="showAlert('Clicked with Icon!')" />
+            <ly-dropdownLink
+              label="With icon"
+              icon="lyvely"
+              @click="showAlert('Clicked with Icon!')" />
           </ly-dropdown>
         </div>
         <div class="clear-both mb-2">
           <ly-dropdown input-class="float-right" label="With Label">
             <ly-dropdownLink label="Route" route="/activities" />
             <ly-dropdownLink label="Click" @click="showAlert('Clicked!')" />
-            <ly-dropdownLink label="With icon" icon="lyvely" @click="showAlert('Clicked with Icon!')" />
+            <ly-dropdownLink
+              label="With icon"
+              icon="lyvely"
+              @click="showAlert('Clicked with Icon!')" />
           </ly-dropdown>
         </div>
 
         <h3>Dialog</h3>
         <ly-button class="info" @click="showDialog(DialogType.Info)"> Info Dialog </ly-button>
-        <ly-button class="danger ml-1" @click="showDialog(DialogType.Error)"> Error Dialog </ly-button>
-        <ly-button class="warning ml-1" @click="showDialog(DialogType.Warning)"> Warning Dialog </ly-button>
-        <ly-button class="success ml-1" @click="showDialog(DialogType.Success)"> Success Dialog </ly-button>
+        <ly-button class="danger ml-1" @click="showDialog(DialogType.Error)">
+          Error Dialog
+        </ly-button>
+        <ly-button class="warning ml-1" @click="showDialog(DialogType.Warning)">
+          Warning Dialog
+        </ly-button>
+        <ly-button class="success ml-1" @click="showDialog(DialogType.Success)">
+          Success Dialog
+        </ly-button>
 
         <br />
         <br />
@@ -311,7 +373,7 @@ const radioValue2 = ref('2');
         <br />
         <br />
       </div>
-    </main-container>
+    </ly-main-container>
   </div>
 </template>
 

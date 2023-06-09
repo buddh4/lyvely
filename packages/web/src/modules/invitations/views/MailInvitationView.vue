@@ -1,17 +1,12 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
-import LyButton from '@/modules/ui/components/button/StyledButton.vue';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { EntityNotFoundException, MailInvitationInfo } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
 import { useInvitationsService } from '../services/invitations.service';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { storeToRefs } from 'pinia';
-import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
-import LyAlert from '@/modules/ui/components/alert/AlertBlock.vue';
-import CenteredLayout from '@/modules/app/components/layouts/CenteredLayout.vue';
 
 const router = useRouter();
 
@@ -56,7 +51,7 @@ onMounted(async () => {
     <language-chooser class="float-right" />
   </div>
 
-  <centered-layout>
+  <ly-centered-layout>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">{{ $t('invitations.headline') }}</span>
@@ -158,5 +153,5 @@ onMounted(async () => {
     </template>
 
     <template #footer> </template>
-  </centered-layout>
+  </ly-centered-layout>
 </template>

@@ -7,9 +7,7 @@ import { PATH_LOGIN } from '@/modules/auth';
 import { onUnmounted, ref } from 'vue';
 import { useResetPasswordStore } from '@/modules/auth/store/reset-password.store';
 import PasswordStrengthMeter from '@/modules/ui/components/form/PasswordStrengthMeter.vue';
-import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 import { isTouchScreen } from '@/util';
-import CenteredLayout from '@/modules/app/components/layouts/CenteredLayout.vue';
 
 const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();
@@ -46,7 +44,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     <LanguageChooser class="float-right" />
   </div>
 
-  <centered-layout v-if="stage === 'init'" width="lg">
+  <ly-centered-layout v-if="stage === 'init'" width="lg">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -80,9 +78,9 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         </router-link>
       </div>
     </template>
-  </centered-layout>
+  </ly-centered-layout>
 
-  <centered-layout v-if="stage === 'sent'" width="sm">
+  <ly-centered-layout v-if="stage === 'sent'" width="sm">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -102,9 +100,9 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         label="auth.reset_password.to_login"
         @click="toLogin" />
     </template>
-  </centered-layout>
+  </ly-centered-layout>
 
-  <centered-layout v-if="stage === 'reset'" width="sm">
+  <ly-centered-layout v-if="stage === 'reset'" width="sm">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -155,5 +153,5 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         </router-link>
       </div>
     </template>
-  </centered-layout>
+  </ly-centered-layout>
 </template>

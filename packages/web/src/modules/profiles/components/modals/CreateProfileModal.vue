@@ -3,7 +3,6 @@ import { useCreateProfileStore } from '@/modules/profiles/stores/create-profile.
 import { storeToRefs } from 'pinia';
 import { ProfileUsage, ProfileType } from '@lyvely/common';
 import { translate } from '@/i18n';
-import LyBadgeChooser from '@/modules/ui/components/form/BadgeChooser.vue';
 import { useRouter } from 'vue-router';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 

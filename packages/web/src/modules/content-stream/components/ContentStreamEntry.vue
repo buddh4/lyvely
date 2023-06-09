@@ -6,12 +6,9 @@ import { useRouter } from 'vue-router';
 import { isTextSelection } from '@/util/dom.util';
 import TagList from '@/modules/tags/components/TagList.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { getContentTypeOptions } from '@/modules/content-stream';
 import { translate } from '@/i18n';
-import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import LyAvatar from '@/modules/ui/components/avatar/AvatarImage.vue';
 
 export interface IProps {
   model: ContentModel;
@@ -144,7 +141,9 @@ const bodyWrapperClass = computed(
                   :tag-ids="omitTags ? [] : model.tagIds"
                   @select="(tagId) => $emit('selectTag', tagId)">
                   <template v-if="showType" #pre>
-                    <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
+                    <ly-badge class="bg-secondary-dark" :translate="false">{{
+                      contentTypeName
+                    }}</ly-badge>
                   </template>
                   <template v-if="model.meta.archived" #post>
                     <ly-icon name="archive" class="w-3 text-warning ml-auto" />

@@ -2,7 +2,6 @@
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 import { computed, ref, watch } from 'vue';
 import { LegalSection, LegalSectionDetails } from '@lyvely/common';
-import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import { useLegalService } from '@/modules/legal/services/legal.service';
 
 const { get } = useAppConfigStore();

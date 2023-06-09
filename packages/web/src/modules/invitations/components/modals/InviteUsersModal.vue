@@ -2,8 +2,6 @@
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import { useSendInviteUsersStore } from '../../stores/send-invitations.store';
-import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
-import LyAlert from '@/modules/ui/components/alert/AlertBlock.vue';
 
 const inviteUserStore = useSendInviteUsersStore();
 

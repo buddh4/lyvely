@@ -3,13 +3,7 @@ import { useRouter } from 'vue-router';
 import { EntityNotFoundException, UserInvitationInfo } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
 import { useInvitationsService } from '../services/invitations.service';
-import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
-import LyAvatar from '@/modules/ui/components/avatar/AvatarImage.vue';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
-import LyButton from '@/modules/ui/components/button/StyledButton.vue';
-import LyAlert from '@/modules/ui/components/alert/AlertBlock.vue';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
-import CenteredLayout from '@/modules/app/components/layouts/CenteredLayout.vue';
 
 const router = useRouter();
 
@@ -57,7 +51,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <centered-layout>
+  <ly-centered-layout>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span v-if="error?.length" class="text-base font-bold">{{ $t('error.title') }}</span>
@@ -98,5 +92,5 @@ onMounted(async () => {
         <ly-button class="primary" label="common.accept" @click="accept" />
       </div>
     </template>
-  </centered-layout>
+  </ly-centered-layout>
 </template>

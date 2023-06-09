@@ -4,12 +4,7 @@ import { computed, ref, onMounted } from 'vue';
 import EditTagModal from '@/modules/tags/components/EditTagModal.vue';
 import { useEditTagStore } from '@/modules/tags/stores/edit-tag.store';
 import { TagModel, UpdateTagDto, CreateTagDto, TagFilter } from '@lyvely/common';
-import ListPage from '@/modules/ui/components/layout/ListPage.vue';
-import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
-import { usePageStore } from '@/modules/core/store/page.store';
-import AddButton from '@/modules/ui/components/button/AddButton.vue';
 import { accessibilityFocus } from '@/modules/accessibility';
-import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
 
 const filter = ref(new TagFilter({ archived: false }));
 
@@ -44,10 +39,10 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
 </script>
 
 <template>
-  <content-root>
-    <list-page title="tags.view.title" aria-label="tags.view.aria.title" icon="tags">
+  <ly-content-root>
+    <ly-list-page title="tags.view.title" aria-label="tags.view.aria.title" icon="tags">
       <template #header-right>
-        <add-button @click="setCreateTag" />
+        <ly-add-button @click="setCreateTag" />
       </template>
       <div class="py-3 pr-3 border-divide bg-highlight dark:bg-main">
         <div class="relative inline-block">
@@ -75,7 +70,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
         class="flex py-4 px-3 bg-main items-center border-divide">
         <div class="align-middle">
           <ly-tag :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
-          <ly-badge v-if="tag.archived" class="bg-danger ml-2">
+          <ly-badge v-if="tag.archived" class="bg-danger ml-2" :translate="false">
             {{ $t('common.archived') }}
           </ly-badge>
         </div>
@@ -109,10 +104,10 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
         <span v-if="filter.isActive()">{{ $t('filter.empty') }}</span>
         <span v-else>{{ $t('list.empty') }}</span>
       </div>
-    </list-page>
+    </ly-list-page>
     <edit-tag-modal />
-    <floating-add-button @click="setCreateTag" />
-  </content-root>
+    <ly-floating-add-button @click="setCreateTag" />
+  </ly-content-root>
 </template>
 
 <style scoped></style>

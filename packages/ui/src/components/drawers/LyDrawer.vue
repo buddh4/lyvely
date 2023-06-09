@@ -1,0 +1,146 @@
+<script lang="ts" setup>
+import { computed, Ref, ref, toRefs, watch } from 'vue';
+import { uniqueId } from 'lodash';
+import { suggestFocusElement } from '@/helpers';
+import { useInfiniteScroll, useSwipe } from '@vueuse/core';
+import { useDrawerStore } from '@/components/drawers/drawer.store';
+import { t } from '@/i18n';
+
+export interface IProps {
+  modelValue: boolean;
+  id?: string;
+  title?: string;
+  translateTitle?: boolean;
+  prevAutoFocus?: boolean;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  id: undefined,
+  title: undefined,
+  prevAutoFocus: false,
+  translateTitle: true,
+});
+
+const drawerId = uniqueId('drawer');
+const zIndex = ref(20);
+
+const emit = defineEmits(['update:modelValue', 'infiniteScroll']);
+const root = ref<HTMLElement>() as Ref<HTMLElement>;
+const { modelValue } = toRefs(props);
+const { pushDrawer, popDrawer } = useDrawerStore();
+
+watch(modelValue, (value) => {
+  if (value) {
+    zIndex.value = pushDrawer(drawerId) + 900;
+  } else {
+    popDrawer(drawerId);
+    zIndex.value = 900;
+  }
+});
+
+function close() {
+  emit('update:modelValue', false);
+}
+
+function autoFocus() {
+  suggestFocusElement(root.value)?.focus();
+}
+
+const body = ref<HTMLElement | null>(null);
+useInfiniteScroll(
+  body,
+  () => {
+    emit('infiniteScroll');
+  },
+  { distance: 10 },
+);
+
+const { direction } = useSwipe(root, {
+  onSwipeEnd(e: TouchEvent) {
+    if (modelValue.value && direction.value === 'right') {
+      e.stopPropagation();
+      close();
+    }
+  },
+});
+
+// Workaround due to conflicting HtmlAttribute types of docs/react
+const style = computed<any>(() => ({ 'z-index': zIndex.value }));
+</script>
+
+<template>
+  <teleport to="body">
+    <transition name="slide-fade" @after-enter="autoFocus">
+      <section
+        v-if="modelValue"
+        :id="id"
+        ref="root"
+        class="drawer"
+        :style="style"
+        @keyup.esc="close">
+        <div class="max-h-full flex items-stretch top-0 left-0 flex-col">
+          <div data-drawer-header class="pt-4 px-4 flex items-center pb-3 rounded-t-sm">
+            <slot name="header">
+              <h1 v-if="title" class="font-bold">{{ translateTitle ? t(title) : title }}</h1>
+              <ly-button
+                class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
+                @click="close">
+                x
+              </ly-button>
+            </slot>
+          </div>
+          <div ref="body" data-drawer-body class="overflow-auto scrollbar-thin">
+            <slot></slot>
+          </div>
+          <div data-drawer-footer class="pb-4 px-4 pt-3">
+            <slot name="footer"></slot>
+          </div>
+        </div>
+      </section>
+    </transition>
+  </teleport>
+</template>
+
+<style scoped lang="postcss">
+h1 {
+  @apply text-base;
+}
+.drawer {
+  @apply bg-highlight;
+  position: fixed;
+  top: 55px;
+  right: 0;
+  height: calc(100svh - 55px);
+
+  min-width: 280px;
+  max-width: 280px;
+  background: var(--elements-main);
+  border-left: 1px solid var(--color-divide);
+
+  will-change: transform;
+  contain: paint;
+  margin-right: 0;
+}
+
+/*
+  Enter and leave animations can use different
+  durations and timing functions.
+*/
+.slide-fade-enter-active {
+  transition-property: transform, opacity;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-out;
+}
+
+.slide-fade-leave-active {
+  transition-property: transform, opacity;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in-out;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(100%);
+  opacity: 0.9;
+}
+</style>

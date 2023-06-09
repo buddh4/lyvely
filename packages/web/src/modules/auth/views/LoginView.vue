@@ -7,7 +7,6 @@ import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
 import { useSendResetPasswordMailStore } from '@/modules/auth/store/send-reset-password-mail.store';
 import { isTouchScreen } from '@/util';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
-import CenteredLayout from '@/modules/app/components/layouts/CenteredLayout.vue';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -60,7 +59,7 @@ onUnmounted(loginStore.reset);
     <LanguageChooser class="float-right" />
   </div>
 
-  <centered-layout>
+  <ly-centered-layout>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">{{ $t('auth.login.sign_in') }}</span>
@@ -169,5 +168,5 @@ onUnmounted(loginStore.reset);
         {{ $t('auth.login.sign_in') }}
       </ly-button>
     </template>
-  </centered-layout>
+  </ly-centered-layout>
 </template>

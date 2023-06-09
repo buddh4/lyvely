@@ -1,14 +1,13 @@
 <script lang="ts" setup>
-import DialogWindow from '@/modules/ui/components/dialog/DialogWindow.vue';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import AriaLiveStatus from '@/modules/accessibility/components/AriaLiveStatus.vue';
 import ProfileLayout from '@/modules/profiles/components/layout/ProfileLayout.vue';
-import AppLoader from '@/modules/ui/components/loader/AppLoader.vue';
 import { useRouter } from 'vue-router';
 import { watch, ref, computed, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import ReloadPrompt from '@/modules/core/components/ReloadPrompt.vue';
+import { usePageStore } from '@/modules/core/store/page.store';
 
 const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRefs(
   useGlobalDialogStore(),
@@ -17,6 +16,7 @@ const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRe
 const layout = ref<string | undefined>();
 const router = useRouter();
 const { isAuthenticated } = storeToRefs(useAuthStore());
+const { showAppLoader } = storeToRefs(usePageStore());
 
 watch(router.currentRoute, (to) => {
   layout.value = to.meta?.layout;
@@ -49,9 +49,9 @@ const layoutDefinition = computed<{ component: any; props: any } | undefined>(()
       <router-view></router-view>
     </template>
   </div>
-  <app-loader />
+  <ly-app-loader v-model="showAppLoader" />
   <aria-live-status />
-  <dialog-window
+  <ly-dialog
     v-model="visible"
     :icon="icon"
     :icon-color="iconColor"

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { t } from '@/i18n.ts';
+import { t } from '@/i18n';
 
 export interface IProps {
   title: string;

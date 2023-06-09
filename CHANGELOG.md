@@ -11,10 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Profile layout swipe handler should be prevented in case of active scroll
 - MainContainer does not have full width and scrollbar is not at the right page
 - Profile layout swipe handler not active on form elements
+- Drawer stack not working as expected
 
 ### Changed
 - Mobile profile drawer is closed on route change
 - Minor usability fine-tuning
+- Major modularization refactoring
+- Use of nx monorepo
+- Updated to vue v3.3.0
 
 
 ### Added

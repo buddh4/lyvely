@@ -27,9 +27,7 @@ export class UrlGenerator {
   }
 
   protected getPathString(path?: string) {
-    if (!path) {
-      return '';
-    }
+    if (!path) return '';
 
     return path.startsWith('/') ? path.substring(1, path.length) : path;
   }
@@ -38,7 +36,9 @@ export class UrlGenerator {
     const appUrl = this.configService.get('http.baseUrl');
 
     if (!appUrl) {
-      throw new MisconfigurationException('Could not generate app url, no http.appUrl setting configured');
+      throw new MisconfigurationException(
+        'Could not generate app url, no http.appUrl setting configured',
+      );
     }
 
     return appUrl.endsWith('/') ? appUrl : appUrl + '/';
@@ -48,7 +48,9 @@ export class UrlGenerator {
     const appUrl = this.configService.get('http.appUrl');
 
     if (!appUrl) {
-      throw new MisconfigurationException('Could not generate app url, no http.appUrl setting configured');
+      throw new MisconfigurationException(
+        'Could not generate app url, no http.appUrl setting configured',
+      );
     }
 
     return appUrl.endsWith('/') ? appUrl : appUrl + '/';

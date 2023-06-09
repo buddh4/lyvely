@@ -16,7 +16,6 @@ import { useStream } from '@/modules/stream/composables/stream.composable';
 import { useContentStreamService } from '@/modules/content-stream/services/content-stream.service';
 import { useContentStore } from '@/modules/content/stores/content.store';
 import { scrollToBottom } from '@/util/dom.util';
-import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 
 export interface IProps {

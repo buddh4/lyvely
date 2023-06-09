@@ -2,7 +2,6 @@
 import { contentRoute } from '@/modules/content-stream';
 import { ContentModel } from '@lyvely/common';
 import { useRouter } from 'vue-router';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import MilestoneChooser from '@/modules/milestones/components/menus/MilestoneDropdown.vue';
 
 interface IProps {

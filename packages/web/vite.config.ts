@@ -7,9 +7,6 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
-  optimizeDeps: {
-    include: ['@lyvely/ui'],
-  },
   plugins: [
     vuePlugin(),
     tsconfigPaths(),

@@ -1,10 +1,7 @@
 <script lang="ts" setup>
-import ListPage from '@/modules/ui/components/layout/ListPage.vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
 import { useSendInviteUsersStore } from '@/modules/invitations/stores/send-invitations.store';
-import { LyContentRoot } from '@lyvely/ui';
-import LyAvatar from '@/modules/ui/components/avatar/AvatarImage.vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { computed } from 'vue';
 import { BaseMembershipRole, ProfileRelationModel } from '@lyvely/common';
@@ -37,7 +34,7 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
 
 <template>
   <ly-content-root>
-    <list-page v-if="profile" title="profiles.users.title" icon="users">
+    <ly-list-page v-if="profile" title="profiles.users.title" icon="users">
       <template #header-right>
         <ly-button
           class="secondary outlined mr-0.5 inline-flex items-center text-xs py-0 px-1"
@@ -57,7 +54,7 @@ const openInviteModal = () => sendInviteStore.openModal(profileStore.profile!.id
           <small>({{ relation.role }})</small>
         </span>
       </div>
-    </list-page>
+    </ly-list-page>
   </ly-content-root>
 </template>
 

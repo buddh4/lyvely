@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Size } from '@/modules/ui/types';
 import ProfileTopNavigation from './snippets/ProfileTopNavigation.vue';
-import MainContainer from '@/modules/ui/components/layout/MainContainer.vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
 
@@ -18,9 +17,9 @@ const { profile } = storeToRefs(useProfileStore());
 
 <template>
   <profile-top-navigation v-if="profile" :key="profile.id" />
-  <main-container v-if="profile" :key="profile.id" v-bind="props">
+  <ly-main-container v-if="profile" :key="profile.id" v-bind="props">
     <slot></slot>
-  </main-container>
+  </ly-main-container>
 </template>
 
 <style scoped></style>

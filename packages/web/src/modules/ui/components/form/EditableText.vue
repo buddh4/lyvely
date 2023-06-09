@@ -43,12 +43,10 @@ import {
   useBaseInputSetup,
 } from '@/modules/ui/components/form/BaseInput';
 import { ref, SetupContext } from 'vue';
-import LyButton from '@/modules/ui/components/button/StyledButton.vue';
 
 // TODO (accessibility): Make this component accessible!
 
 export default {
-  components: { LyButton },
   props: {
     ...useBaseInputProps(),
     maxlength: { type: Number, default: undefined },

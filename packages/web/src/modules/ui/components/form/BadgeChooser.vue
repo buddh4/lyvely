@@ -1,10 +1,7 @@
 <script lang="ts" setup>
-import LyModal from '@/modules/ui/components/modal/LyvelyModal.vue';
 import { computed, nextTick, ref, watch } from 'vue';
-import LyInputText from '@/modules/ui/components/form/TextInput.vue';
 import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
 import { escapeRegExp, isArray, uniqueId } from 'lodash';
-import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
 
 export type IChooserOption = { key: string; value?: any; label?: string; color?: string } | string;
 
@@ -168,7 +165,8 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           v-if="option"
           :text="getLabel(option)"
           :color="getColor(option)"
-          :class="getBadgeClass(option)" />
+          :class="getBadgeClass(option)"
+          :translate="false" />
       </template>
     </div>
   </floating-input-layout>
@@ -211,7 +209,8 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           <ly-badge
             :text="getLabel(option)"
             :color="getColor(option)"
-            :class="getBadgeClass(option)" />
+            :class="getBadgeClass(option)"
+            :translate="false" />
         </div>
 
         <div
@@ -227,7 +226,8 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           <ly-badge
             :text="getLabel(option)"
             :color="getColor(option)"
-            :class="getBadgeClass(option)" />
+            :class="getBadgeClass(option)"
+            :translate="false" />
         </div>
         <div
           v-if="showAddEntry"

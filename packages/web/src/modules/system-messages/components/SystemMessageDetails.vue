@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { SystemMessageModel } from '@lyvely/common';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 

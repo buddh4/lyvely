@@ -2,7 +2,6 @@
 import { ContentModel, MilestoneModel } from '@lyvely/common';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
-import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
 
 export interface IProps {
   model: MilestoneModel;

@@ -2,9 +2,7 @@
 import { ContentModel, TaskModel } from '@lyvely/common';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
-import LyInputCheckbox from '@/modules/ui/components/form/CheckboxInput.vue';
 import { computed } from 'vue';
-import LyBadge from '@/modules/ui/components/badge/BadgeText.vue';
 
 export interface IProps {
   model: TaskModel;

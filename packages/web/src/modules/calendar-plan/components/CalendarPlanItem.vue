@@ -63,7 +63,7 @@ const { model } = toRefs(props);
                 <span>
                   {{ model.content.title }}
                 </span>
-                <ly-badge v-if="model.meta.archived" class="bg-danger ml-2">
+                <ly-badge v-if="model.meta.archived" class="bg-danger ml-2" :translate="false">
                   {{ $t('common.archived') }}
                 </ly-badge>
               </div>

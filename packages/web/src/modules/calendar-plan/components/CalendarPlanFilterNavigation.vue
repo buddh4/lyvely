@@ -44,7 +44,7 @@ onBeforeRouteLeave(stopWatch);
       <ly-icon name="drag" />
     </ly-button>
 
-    <slider-navigation class="tag-filter-selection">
+    <ly-slider-menu class="tag-filter-selection">
       <ly-button :class="pillButton" :active="!activeTagId" @click="setTagFilter()">
         {{ $t('filter.all') }}
       </ly-button>
@@ -60,7 +60,7 @@ onBeforeRouteLeave(stopWatch);
         @click="setTagFilter(tag.id)">
         {{ tag.name }}
       </ly-button>
-    </slider-navigation>
+    </ly-slider-menu>
 
     <div class="ml-auto flex flex-nowrap">
       <ly-button

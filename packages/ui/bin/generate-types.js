@@ -58,6 +58,7 @@ function transformComponentInfo(componentInfo) {
       "symbol": displayName
     },
     attributes: props?.map((prop) => {
+      if(!prop?.type?.name) console.error(prop);
       const attr = {
       "name": '',
       "value": {

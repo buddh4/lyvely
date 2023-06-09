@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useStatisticsStore } from '@/modules/statistics/store';
 import { onMounted, ref, watch } from 'vue';
-import ContentRoot from '@/modules/ui/components/layout/ContentRoot.vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { storeToRefs } from 'pinia';
 
@@ -35,7 +34,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <content-root>
+  <ly-content-root>
     <div class="grid grid-cols-3 gap-4">
       <div :class="cardClass">
         <div class="text-sm font-bold flex justify-center">Daily scores</div>
@@ -52,7 +51,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-  </content-root>
+  </ly-content-root>
 </template>
 
 <style scoped></style>

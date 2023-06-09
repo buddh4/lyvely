@@ -2,9 +2,7 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import LyIcon from '@/modules/ui/components/icon/UIIcon.vue';
 import { useUpdateProfileMembershipSettingsStore } from '@/modules/profiles/stores/profile-membership-settings.store';
-import LyFormModel from '@/modules/ui/components/form/FormModel.vue';
 import { ModelValidator } from '@lyvely/common';
 import { StoreStatusPlugin } from '@/store';
 

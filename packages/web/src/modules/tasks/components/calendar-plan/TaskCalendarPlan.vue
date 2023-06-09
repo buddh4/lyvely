@@ -2,7 +2,6 @@
 import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
 import { getCalendarIntervalArray, TaskModel } from '@lyvely/common';
 import { usePageStore } from '@/modules/core/store/page.store';
-import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import { translate } from '@/i18n';
 import TaskCalendarPlanSection from '@/modules/tasks/components/calendar-plan/TaskCalendarPlanSection.vue';
@@ -32,5 +31,5 @@ onUnmounted(() => {
       :interval="interval" />
   </calendar-plan>
 
-  <floating-add-button @click="createEntry" />
+  <ly-floating-add-button @click="createEntry" />
 </template>
