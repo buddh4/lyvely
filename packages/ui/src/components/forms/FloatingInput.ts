@@ -2,7 +2,7 @@ import { AllowedInputValueTypes, IBaseInputProps, useBaseInputSetup } from './Ba
 
 export function useFloatingInputSetup<T extends AllowedInputValueTypes = any>(
   props: IBaseInputProps,
-  emit: (event: string, ...args: any[]) => void,
+  emit: (event: any, ...args: any[]) => void,
 ) {
   return {
     ...useBaseInputSetup<T>(props, emit, { inputClass: 'floating-input' }),

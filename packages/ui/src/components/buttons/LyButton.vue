@@ -161,7 +161,7 @@ function getAriaPressed($attrs: any) {
   </ly-confirm-modal>
 </template>
 
-<style lang="postcss">
+<style>
 .button {
   transition: background 0.5s;
 }

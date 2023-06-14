@@ -1,71 +1,62 @@
+<script lang="ts" setup>
+import { computed, onMounted, ref, toRefs, watch } from 'vue';
+
+export interface IProps {
+  modelValue: string;
+  secureLength?: number;
+  cssClass?: string;
+  userInputs?: Array<string>;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  secureLength: 7,
+  cssClass: '',
+  userInputs: () => [],
+});
+
+const emit = defineEmits([
+  'input',
+  'blur',
+  'focus',
+  'score',
+  'hide',
+  'show',
+  'update:modelValue',
+  'feedback',
+]);
+
+const password = ref<string | null>(null);
+let zxcvbn: (pw: string, inputs?: string[]) => any;
+
+onMounted(async () => {
+  const zxcvbnModule = (await import('zxcvbn')) as {
+    default: (pw: string, inputs?: string[]) => any;
+  };
+  zxcvbn = zxcvbnModule.default;
+});
+
+const passwordStrength = computed(() =>
+  password.value
+    ? zxcvbn(password.value!, props.userInputs.length >= 1 ? props.userInputs : undefined).score
+    : null,
+);
+
+const { modelValue } = toRefs(props);
+
+watch(modelValue, (newValue) => {
+  emit('update:modelValue', newValue);
+  password.value = newValue;
+  emit('feedback', zxcvbn(newValue).feedback);
+});
+</script>
+
 <template>
   <div class="Password">
     <div :class="['Password__strength-meter', cssClass]">
-      <div :class="[strengthMeterFillClass]" :data-score="passwordStrength"></div>
+      <div class="Password__strength-meter--fill" :data-score="passwordStrength"></div>
     </div>
   </div>
 </template>
-
-<script>
-import zxcvbn from 'zxcvbn';
-
-export default {
-  name: 'LyPasswordStrengthMeter',
-  inheritAttrs: false,
-  props: {
-    modelValue: { type: String },
-    secureLength: { type: Number, default: 7 },
-    cssClass: {
-      type: String,
-    },
-    strengthMeterFillClass: {
-      type: String,
-      default: 'Password__strength-meter--fill',
-    },
-    userInputs: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  emits: ['input', 'blur', 'focus', 'score', 'hide', 'show', 'update:modelValue', 'feedback'],
-  data() {
-    return {
-      password: null,
-    };
-  },
-
-  computed: {
-    passwordStrength() {
-      return this.password ? zxcvbn(this.password, this.userInputs.length >= 1 ? this.userInputs : null).score : null;
-    },
-    isActive() {
-      return this.password && this.password.length > 0;
-    },
-  },
-
-  watch: {
-    modelValue(newValue) {
-      this.emitValue('input', newValue);
-      this.$emit('feedback', zxcvbn(newValue).feedback);
-    },
-    passwordStrength(score) {
-      this.$emit('score', score);
-    },
-  },
-
-  methods: {
-    emitValue(type, value) {
-      if (type == 'input') {
-        this.$emit('update:modelValue', value); // Changed in Vue 3
-      } else {
-        this.$emit(type, value);
-      }
-
-      this.password = value;
-    },
-  },
-};
-</script>
 
 <style lang="scss">
 [v-cloak] {

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue';
-import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
+import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
 import { escapeRegExp, isArray, uniqueId } from 'lodash';
 import { t } from '@/i18n';
 
@@ -111,7 +111,7 @@ function isSelected(option: IChooserOption) {
 }
 
 function isExistingOption(key: string) {
-  return !!optionsToAdd.value.find((option) => getOptionKey(option) === key);
+  return !!optionsToAdd.value.find((option: IChooserOption) => getOptionKey(option) === key);
 }
 
 function focusFirst() {
@@ -120,15 +120,19 @@ function focusFirst() {
 }
 
 function focusNext(evt: KeyboardEvent) {
-  const next = (<HTMLElement>evt.target).nextElementSibling as HTMLElement | null;
-  if (next) next.focus();
-  else (<HTMLElement>document.querySelector('#badge-chooser-search'))?.focus();
+  if (evt.target instanceof HTMLElement) {
+    const next = evt.target.nextElementSibling as HTMLElement;
+    if (next) next.focus();
+    else document.querySelector<HTMLElement>('#badge-chooser-search')?.focus();
+  }
 }
 
 function focusPrev(evt: KeyboardEvent) {
-  const prev = (<HTMLElement>evt.target).previousElementSibling as HTMLElement | null;
-  if (prev) prev.focus();
-  else (<HTMLElement>document.querySelector('#badge-chooser-search'))?.focus();
+  if (evt.target instanceof HTMLElement) {
+    const prev = evt.target.previousElementSibling as HTMLElement;
+    if (prev) prev.focus();
+    else document.querySelector<HTMLElement>('#badge-chooser-search')?.focus();
+  }
 }
 
 const entryClass =
@@ -154,7 +158,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
 </script>
 
 <template>
-  <floating-input-layout
+  <ly-floating-input-layout
     tabindex="0"
     :input-id="inputId"
     class="floating-input cursor-pointer h-auto"
@@ -171,7 +175,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           :translate="false" />
       </template>
     </div>
-  </floating-input-layout>
+  </ly-floating-input-layout>
   <ly-modal
     v-model="visible"
     :title="label"

@@ -2,10 +2,8 @@ import { ComponentOptions, computed, ComputedRef, ref, inject } from 'vue';
 import { merge, uniqueId } from 'lodash';
 import { ModelValidator } from '@lyvely/common';
 import slugify from 'slugify';
-import { t } from '@/i18n';
 
 export type AllowedInputValueTypes = string | number | string[] | boolean | undefined;
-
 export interface IFormModelData<T extends object = any> {
   id?: string;
   model: T;
@@ -190,7 +188,7 @@ function getComputedAutoCompleteValue(props: IBaseInputProps) {
 
 export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
   props: IBaseInputProps,
-  emit: (event: string, ...args: any[]) => void,
+  emit: (event: any, ...args: any[]) => void,
   options: IBaseInputSetupOptions = {},
 ) {
   const root = ref<HTMLElement | null>(null);
@@ -205,7 +203,6 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
   const inputError = getComputedInputError(props, formModelData);
 
   return {
-    t,
     showHelpText: ref(false),
     inputId: getId(props, formModelData),
     inputValue: getComputedInputValue<T>(props, emit, formModelData),

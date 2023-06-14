@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { baseInputDefaults, IBaseInputProps } from './BaseInput';
 import { computed, onMounted, Ref, ref } from 'vue';
 import { useFloatingInputSetup } from './FloatingInput';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
@@ -7,13 +6,50 @@ import { t } from '@/i18n';
 
 export type ITextInputType = 'text' | 'password';
 
-export interface IProps extends IBaseInputProps {
+export interface IProps {
+  id?: string;
+  label?: string;
+  helpText?: string;
+  name?: string;
+  modelValue?: any;
+  value?: string;
+  property?: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  inputClass?: any;
+  wrapperClass?: string;
+  autofocus?: boolean;
+  autocomplete?: boolean | string;
+  ariaDescribedby?: string;
+  error?: string;
+  loading?: boolean;
+  autoValidation?: boolean;
   type?: ITextInputType;
   passwordToggle?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  ...baseInputDefaults,
+  id: undefined,
+  label: undefined,
+  modelValue: undefined,
+  helpText: undefined,
+  value: undefined,
+  property: undefined,
+  placeholder: undefined,
+  name: undefined,
+  disabled: false,
+  readonly: false,
+  required: false,
+  autocomplete: false,
+  autofocus: false,
+  autoValidation: true,
+  loading: false,
+  ariaDescribedby: undefined,
+  inputClass: undefined,
+  wrapperClass: undefined,
+  error: undefined,
   type: 'text',
   passwordToggle: true,
 });
@@ -35,15 +71,12 @@ const isPassword = computed(() => props.type === 'password');
 
 function togglePassword() {
   internalType.value = internalType.value === 'password' ? 'text' : 'password';
-  this.$emit('toggleType', internalType.value);
-}
-
-function change(evt: any) {
-  this.$emit('change', evt);
+  emit('toggleType', internalType.value);
 }
 
 const { inputId, inputError, inputValue, autoCompleteValue, onChange, onFocusOut } =
   useFloatingInputSetup(props, emit);
+
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
 });

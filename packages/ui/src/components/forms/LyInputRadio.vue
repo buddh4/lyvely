@@ -1,3 +1,64 @@
+<script lang="ts" setup>
+import { useBaseInputSetup } from './BaseInput';
+import { onMounted, ref } from 'vue';
+import { t } from '@/i18n';
+
+export interface IProps {
+  id?: string;
+  label?: string;
+  helpText?: string;
+  name?: string;
+  modelValue?: any;
+  value?: string;
+  property?: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  inputClass?: any;
+  wrapperClass?: string;
+  autofocus?: boolean;
+  autocomplete?: boolean | string;
+  ariaDescribedby?: string;
+  error?: string;
+  loading?: boolean;
+  autoValidation?: boolean;
+  translate?: boolean;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  id: undefined,
+  label: undefined,
+  modelValue: undefined,
+  helpText: undefined,
+  value: undefined,
+  property: undefined,
+  placeholder: undefined,
+  name: undefined,
+  disabled: false,
+  readonly: false,
+  required: false,
+  autocomplete: false,
+  autofocus: false,
+  autoValidation: true,
+  loading: false,
+  ariaDescribedby: undefined,
+  inputClass: undefined,
+  wrapperClass: undefined,
+  error: undefined,
+  translate: true,
+});
+
+const emit = defineEmits(['change', 'update:modelValue']);
+
+const input = ref<HTMLInputElement>();
+const { inputValue, onChange, showHelpText } = useBaseInputSetup(props, emit);
+
+onMounted(() => {
+  if (props.autofocus) setTimeout(() => input.value?.focus());
+});
+</script>
+
 <template>
   <div :class="wrapperClass">
     <div class="flex">
@@ -13,7 +74,7 @@
           :class="inputClass"
           :readonly="readonly"
           @change="onChange" />
-        <span v-if="label" class="label ml-2">{{ t(label) }}</span>
+        <span v-if="label" class="label ml-2">{{ translate ? t(label) : label }}</span>
       </label>
     </div>
     <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
@@ -21,27 +82,5 @@
     </span>
   </div>
 </template>
-
-<script lang="ts">
-import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from './BaseInput';
-import { SetupContext } from 'vue';
-
-type Props = IBaseInputProps;
-
-export default {
-  props: {
-    ...useBaseInputProps(),
-  },
-  emits: ['change', 'update:modelValue'],
-  setup(props: Props, context: SetupContext) {
-    return useBaseInputSetup(props, context);
-  },
-  mounted() {
-    if (this.autofocus) {
-      (this.$refs.input as HTMLInputElement).focus();
-    }
-  },
-};
-</script>
 
 <style scoped></style>

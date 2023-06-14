@@ -1,3 +1,108 @@
+<script lang="ts" setup>
+import { useBaseInputSetup } from './BaseInput';
+import { computed, onMounted, ref } from 'vue';
+import { t } from '@/i18n';
+
+export interface IProps {
+  id?: string;
+  label?: string;
+  helpText?: string;
+  name?: string;
+  modelValue?: any;
+  value?: string;
+  property?: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  inputClass?: any;
+  wrapperClass?: string;
+  autofocus?: boolean;
+  autocomplete?: boolean | string;
+  ariaDescribedby?: string;
+  error?: string;
+  loading?: boolean;
+  autoValidation?: boolean;
+  min: number;
+  max: number;
+  step?: number;
+  width?: string;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  id: undefined,
+  label: undefined,
+  modelValue: undefined,
+  helpText: undefined,
+  value: undefined,
+  property: undefined,
+  placeholder: undefined,
+  name: undefined,
+  disabled: false,
+  readonly: false,
+  required: false,
+  autocomplete: false,
+  autofocus: false,
+  autoValidation: true,
+  loading: false,
+  ariaDescribedby: undefined,
+  inputClass: undefined,
+  wrapperClass: undefined,
+  error: undefined,
+  step: 1,
+  width: '',
+});
+
+const emit = defineEmits(['change', 'update:modelValue']);
+const input = ref<HTMLInputElement>();
+
+const baseInput = useBaseInputSetup<number>(props, emit);
+const { editable, hasFocus } = baseInput;
+
+const baseInputValue = baseInput.inputValue;
+const inputValue = computed({
+  get: () => {
+    let allowed = getAllowedVal(baseInputValue.value);
+    if (baseInputValue.value !== allowed) {
+      emit('update:modelValue', allowed);
+    }
+    return baseInputValue.value;
+  },
+  set: (val: number) => {
+    if (!editable) return;
+
+    val = val || 0;
+    val = parseInt(val + '');
+
+    emit('change', val);
+    baseInputValue.value = hasFocus.value ? val : getAllowedVal(val);
+  },
+});
+
+function getAllowedVal(val: number): number {
+  if (typeof props.min !== 'undefined') {
+    val = Math.max(props.min, val);
+  }
+
+  if (typeof props.max !== 'undefined') {
+    val = Math.min(props.max, val);
+  }
+
+  return val;
+}
+
+function inputStyle() {
+  if (!props.width) {
+    return {};
+  }
+  return { width: props.width };
+}
+
+onMounted(() => {
+  if (props.autofocus) setTimeout(() => input.value?.focus());
+});
+</script>
+
 <template>
   <section :class="wrapperClass">
     <label v-if="label" :for="id" class="form-label">{{ t(label) }}</label>
@@ -17,80 +122,5 @@
       @change="$emit('change')" />
   </section>
 </template>
-
-<script lang="ts">
-import { IBaseInputProps, useBaseInputProps, useBaseInputSetup } from './BaseInput';
-import { computed, SetupContext } from 'vue';
-import { useHelpText } from './help-text.util';
-
-export interface IProps extends IBaseInputProps {
-  min?: number;
-  max?: number;
-  step?: number;
-  width?: string;
-}
-
-export default {
-  props: {
-    ...useBaseInputProps(),
-    min: { type: Number, required: true },
-    max: { type: Number, required: true },
-    step: { type: Number, default: 1 },
-    width: { type: String, default: '' },
-  },
-  emits: ['change', 'update:modelValue'],
-  setup(props: IProps, context: SetupContext) {
-    const baseInput = useBaseInputSetup<number>(props, context);
-
-    const baseInputValue = baseInput.inputValue;
-    baseInput.inputValue = computed({
-      get: () => {
-        let allowed = getAllowedVal(baseInputValue.value);
-        if (baseInputValue.value !== allowed) {
-          context.emit('update:modelValue', allowed);
-        }
-        return baseInputValue.value;
-      },
-      set: (val: number) => {
-        if (!baseInput.editable) return;
-
-        val = val || 0;
-        val = parseInt(val + '');
-
-        context.emit('change', val);
-        baseInputValue.value = baseInput.hasFocus.value ? val : getAllowedVal(val);
-      },
-    });
-
-    function getAllowedVal(val: number): number {
-      if (typeof props.min !== 'undefined') {
-        val = Math.max(props.min, val);
-      }
-
-      if (typeof props.max !== 'undefined') {
-        val = Math.min(props.max, val);
-      }
-
-      return val;
-    }
-
-    function inputStyle() {
-      if (!props.width) {
-        return {};
-      }
-      return { width: props.width };
-    }
-
-    return {
-      ...baseInput,
-      ...useHelpText(props.helpText),
-      inputStyle,
-    };
-  },
-  mounted() {
-    if (this.autofocus) (this.$refs.input as HTMLInputElement).focus();
-  },
-};
-</script>
 
 <style scoped></style>

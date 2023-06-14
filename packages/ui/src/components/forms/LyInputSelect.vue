@@ -1,5 +1,66 @@
+<script lang="ts" setup>
+import { useFloatingInputSetup } from './FloatingInput';
+import { t } from '@/i18n';
+import { onMounted, ref } from 'vue';
+import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
+
+export interface IProps {
+  id?: string;
+  label?: string;
+  helpText?: string;
+  name?: string;
+  modelValue?: any;
+  value?: string;
+  property?: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  inputClass?: any;
+  wrapperClass?: string;
+  autofocus?: boolean;
+  autocomplete?: boolean | string;
+  ariaDescribedby?: string;
+  error?: string;
+  loading?: boolean;
+  autoValidation?: boolean;
+  options: Array<{ label: string; value: any }>;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  id: undefined,
+  label: undefined,
+  modelValue: undefined,
+  helpText: undefined,
+  value: undefined,
+  property: undefined,
+  placeholder: undefined,
+  name: undefined,
+  disabled: false,
+  readonly: false,
+  required: false,
+  autocomplete: false,
+  autofocus: false,
+  autoValidation: true,
+  loading: false,
+  ariaDescribedby: undefined,
+  inputClass: undefined,
+  wrapperClass: undefined,
+  error: undefined,
+});
+
+const emit = defineEmits(['change', 'update:modelValue']);
+const input = ref<HTMLInputElement>();
+
+const { inputId, inputError, inputValue } = useFloatingInputSetup(props, emit);
+
+onMounted(() => {
+  if (props.autofocus) setTimeout(() => input.value?.focus());
+});
+</script>
+
 <template>
-  <floating-input-layout
+  <ly-floating-input-layout
     :wrapper-class="wrapperClass"
     :input-id="inputId"
     :label="label"
@@ -17,33 +78,7 @@
         {{ t(option.label) }}
       </option>
     </select>
-  </floating-input-layout>
+  </ly-floating-input-layout>
 </template>
-
-<script lang="ts">
-import { IBaseInputProps, useBaseInputProps } from './BaseInput';
-import { useFloatingInputSetup } from './FloatingInput';
-import { PropType, SetupContext } from 'vue';
-import FloatingInputLayout from './FloatingInputLayout.vue';
-
-export interface IProps extends IBaseInputProps {
-  options: Array<{ label: string; value: any }>;
-}
-
-export default {
-  components: { FloatingInputLayout },
-  props: {
-    ...useBaseInputProps(),
-    options: { type: Array as PropType<Array<{ label: string; value: any }>>, required: true },
-  },
-  emits: ['change', 'update:modelValue'],
-  setup(props: any, context: SetupContext) {
-    return useFloatingInputSetup(props, context);
-  },
-  mounted() {
-    if (this.autofocus) (this.$refs.input as HTMLInputElement).focus();
-  },
-};
-</script>
 
 <style scoped></style>

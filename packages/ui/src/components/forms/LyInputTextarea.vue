@@ -1,5 +1,68 @@
+<script lang="ts" setup>
+import { useFloatingInputSetup } from './FloatingInput';
+import { onMounted, ref } from 'vue';
+import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
+
+export interface IProps {
+  id?: string;
+  label?: string;
+  helpText?: string;
+  name?: string;
+  modelValue?: any;
+  value?: string;
+  property?: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  readonly?: boolean;
+  inputClass?: any;
+  wrapperClass?: string;
+  autofocus?: boolean;
+  autocomplete?: boolean | string;
+  ariaDescribedby?: string;
+  error?: string;
+  loading?: boolean;
+  autoValidation?: boolean;
+  rows: number;
+  maxlength: number;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  id: undefined,
+  label: undefined,
+  modelValue: undefined,
+  helpText: undefined,
+  value: undefined,
+  property: undefined,
+  placeholder: undefined,
+  name: undefined,
+  disabled: false,
+  readonly: false,
+  required: false,
+  autocomplete: false,
+  autofocus: false,
+  autoValidation: true,
+  loading: false,
+  ariaDescribedby: undefined,
+  inputClass: undefined,
+  wrapperClass: undefined,
+  error: undefined,
+  rows: 3,
+  maxlength: undefined,
+});
+
+const emit = defineEmits(['change', 'update:modelValue']);
+const input = ref<HTMLInputElement>();
+
+const { inputId, label, inputError, inputValue } = useFloatingInputSetup(props, emit);
+
+onMounted(() => {
+  if (props.autofocus) setTimeout(() => input.value?.focus());
+});
+</script>
+
 <template>
-  <floating-input-layout
+  <ly-floating-input-layout
     :wrapper-class="wrapperClass"
     :input-id="inputId"
     :label="label"
@@ -17,32 +80,7 @@
       :readonly="readonly"
       :class="inputClass"
       :maxlength="maxlength"></textarea>
-  </floating-input-layout>
+  </ly-floating-input-layout>
 </template>
-
-<script lang="ts">
-import { IBaseInputProps, useBaseInputProps } from './BaseInput';
-import { useFloatingInputSetup } from './FloatingInput';
-import { SetupContext } from 'vue';
-import FloatingInputLayout from '@/modules/ui/components/form/FloatingInputLayout.vue';
-
-export default {
-  components: { FloatingInputLayout },
-  props: {
-    ...useBaseInputProps(),
-    rows: { type: Number, default: 3 },
-    maxlength: { type: Number, default: undefined },
-  },
-  emits: ['change', 'update:modelValue'],
-  setup(props: IBaseInputProps, context: SetupContext) {
-    return useFloatingInputSetup<string>(props, context);
-  },
-  mounted() {
-    if (this.autofocus) {
-      (this.$refs.input as HTMLInputElement).focus();
-    }
-  },
-};
-</script>
 
 <style scoped></style>

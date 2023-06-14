@@ -76,7 +76,7 @@ function updateValue(checked: boolean, value: string) {
     <template v-else>
       <ly-input-checkbox
         model-value="1"
-        :checked="props.selection"
+        :checked="!!props.selection"
         :input-class="cssClasses(0)"
         @change="updateValue" />
     </template>
