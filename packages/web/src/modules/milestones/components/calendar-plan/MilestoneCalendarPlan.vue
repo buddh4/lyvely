@@ -2,7 +2,6 @@
 import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
 import { getCalendarIntervalArray, MilestoneModel } from '@lyvely/common';
 import { usePageStore } from '@/modules/core/store/page.store';
-import FloatingAddButton from '@/modules/ui/components/button/FloatingAddButton.vue';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import { translate } from '@/i18n';
 import { useMilestoneCalendarPlanStore } from '@/modules/milestones/stores/milestone-calendar-plan.store';

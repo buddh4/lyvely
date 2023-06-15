@@ -2,7 +2,6 @@
 import { useUserRegistrationStore } from '@/modules/user-registration/stores/user-registration.store';
 import { storeToRefs } from 'pinia';
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
-import PasswordStrengthMeter from '@/modules/ui/components/form/PasswordStrengthMeter.vue';
 import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/modules/user-registration/routes/paths';
@@ -85,7 +84,7 @@ onUnmounted(userRegistrationStore.reset);
             :password-toggle="false"
             :required="true" />
 
-          <password-strength-meter v-model="model.password" />
+          <ly-password-strength-meter v-model="model.password" />
         </fieldset>
 
         <fieldset class="my-5">

@@ -57,7 +57,7 @@ const emit = defineEmits(['change', 'update:modelValue']);
 const input = ref<HTMLInputElement>();
 
 const baseInput = useBaseInputSetup<number>(props, emit);
-const { editable, hasFocus } = baseInput;
+const { editable, hasFocus, label, inputClass } = baseInput;
 
 const baseInputValue = baseInput.inputValue;
 const inputValue = computed({

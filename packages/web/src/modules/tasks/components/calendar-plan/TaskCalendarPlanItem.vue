@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import ItemCheckboxList from '@/modules/ui/components/form/CheckboxRange.vue';
 import { TaskModel } from '@lyvely/common';
 import { computed } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
@@ -39,7 +38,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
     </template>
     <template #pre-title>
       <div>
-        <item-checkbox-list
+        <ly-checkbox-range
           v-model:selection="selection"
           :max="1"
           :is-task="true"

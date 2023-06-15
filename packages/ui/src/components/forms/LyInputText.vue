@@ -74,8 +74,16 @@ function togglePassword() {
   emit('toggleType', internalType.value);
 }
 
-const { inputId, inputError, inputValue, autoCompleteValue, onChange, onFocusOut } =
-  useFloatingInputSetup(props, emit);
+const {
+  inputId,
+  inputClass,
+  inputError,
+  inputValue,
+  autoCompleteValue,
+  onChange,
+  onFocusOut,
+  label,
+} = useFloatingInputSetup(props, emit);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());

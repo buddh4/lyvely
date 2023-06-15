@@ -5,6 +5,7 @@ import EditTagModal from '@/modules/tags/components/EditTagModal.vue';
 import { useEditTagStore } from '@/modules/tags/stores/edit-tag.store';
 import { TagModel, UpdateTagDto, CreateTagDto, TagFilter } from '@lyvely/common';
 import { accessibilityFocus } from '@/modules/accessibility';
+import TagBadge from '../components/TagBadge.vue';
 
 const filter = ref(new TagFilter({ archived: false }));
 
@@ -69,7 +70,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
         :key="tag.id"
         class="flex py-4 px-3 bg-main items-center border-divide">
         <div class="align-middle">
-          <ly-tag :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
+          <tag-badge :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
           <ly-badge v-if="tag.archived" class="bg-danger ml-2" :translate="false">
             {{ $t('common.archived') }}
           </ly-badge>

@@ -2,7 +2,6 @@
 import { storeToRefs } from 'pinia';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import { useContentEditStore } from '@/modules/content/stores/content-edit.store';
-import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import { getCreateContentTypes } from '@/modules/content-stream/components/content-stream-entry.registry';
 import { translate } from '@/i18n';
 

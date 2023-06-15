@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['change', 'update:modelValue']);
 const input = ref<HTMLInputElement>();
 
-const { inputId, label, inputError, inputValue } = useFloatingInputSetup(props, emit);
+const { inputId, inputClass, inputError, inputValue, label } = useFloatingInputSetup(props, emit);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());

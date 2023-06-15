@@ -66,7 +66,7 @@ const emit = defineEmits([
   'input',
 ]);
 let baseInput = useFloatingInputSetup<number>(props, emit);
-const { editable, inputId, inputError } = baseInput;
+const { editable, inputId, inputError, label, inputClass } = baseInput;
 
 const baseInputValue = baseInput.inputValue;
 const input = ref<HTMLInputElement>();

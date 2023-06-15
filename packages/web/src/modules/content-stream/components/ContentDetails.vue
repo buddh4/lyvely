@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
-import TextTrimmed from '@/modules/ui/components/text/TextTrimmed.vue';
 import { ContentModel } from '@lyvely/common';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import TagList from '@/modules/tags/components/TagList.vue';

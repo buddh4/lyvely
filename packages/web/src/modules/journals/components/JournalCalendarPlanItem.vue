@@ -12,7 +12,6 @@ import { useDebounceFn } from '@vueuse/core';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
 import { useJournalPlanStore } from '@/modules/journals/stores/journal-calendar-plan.store';
 import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
-import EditableText from '@/modules/ui/components/form/EditableText.vue';
 import CalendarPlanSelectionInput from '@/modules/calendar-plan/components/inputs/CalendarPlanSelectionInput.vue';
 
 export interface IProps {
@@ -65,7 +64,7 @@ const updateSelection = useDebounceFn((selection: any) => {
     </template>
     <template #body>
       <div v-if="isTextDataPointConfig(model.timeSeriesConfig)">
-        <editable-text
+        <ly-editable-text
           v-model="selection"
           class="text-sm pt-2"
           :placeholder="$t('journals.plan.text.placeholder')" />

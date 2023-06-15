@@ -11,10 +11,8 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import ProgressBar from '@/modules/ui/components/progress/ProgressBar.vue';
 import { isDefined } from 'class-validator';
 import { useMilestonePlanService } from '@/modules/milestones/services/milestone-plan-service';
-import TextTrimmed from '@/modules/ui/components/text/TextTrimmed.vue';
 import { contentRoute, getContentTypeOptions } from '@/modules/content-stream';
 import { useRouter } from 'vue-router';
 

@@ -8,7 +8,6 @@ import { computed } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import ProgressBar from '@/modules/ui/components/progress/ProgressBar.vue';
 import { useRouter } from 'vue-router';
 import { toContentDetails } from '@/modules/content-stream';
 

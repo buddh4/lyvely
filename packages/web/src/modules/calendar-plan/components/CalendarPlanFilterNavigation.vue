@@ -4,7 +4,6 @@ import { useContentFilter } from '@/modules/content';
 import { LocationQuery, onBeforeRouteLeave, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';
-import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import { ref } from 'vue';
 
 export interface IProps {

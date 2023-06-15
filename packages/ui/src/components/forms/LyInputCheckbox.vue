@@ -56,7 +56,7 @@ const emit = defineEmits(['change', 'update:modelValue']);
 
 const checkbox = ref<HTMLInputElement>();
 
-const { inputValue, helpText } = useBaseInputSetup<boolean>(props, emit, {
+const { inputValue, helpText, label, inputClass } = useBaseInputSetup<boolean>(props, emit, {
   inputClass: 'border rounded ring-0',
 });
 

@@ -3,7 +3,6 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed, ref, watch } from 'vue';
 import { TagFilter } from '@lyvely/common';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
-import SliderNavigation from '@/modules/ui/components/slider/SliderNavigation.vue';
 import { useDebounceFn } from '@vueuse/core';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
 import { storeToRefs } from 'pinia';

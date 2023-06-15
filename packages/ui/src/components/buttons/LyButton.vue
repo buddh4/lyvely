@@ -23,6 +23,7 @@ export interface IProps {
   loading?: boolean;
   rounded?: boolean;
   isToggle?: boolean;
+  outlined?: boolean;
   route?: RouteLocationRaw;
   confirm?: IConfirmOptions;
 }
@@ -39,11 +40,13 @@ const props = withDefaults(defineProps<IProps>(), {
   route: undefined,
   isToggle: false,
   confirm: undefined,
+  outlined: false,
 });
 
 function getClassNames(attrClasses: any, isActive?: boolean, loading?: boolean) {
   return {
     'select-none': true,
+    outlined: props.outlined,
     button: true,
     loading: loading,
     'no-underline': true,

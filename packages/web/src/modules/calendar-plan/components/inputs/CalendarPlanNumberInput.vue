@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { DataPointInputType, INumberDataPointSettings } from '@lyvely/common';
 import { computed } from 'vue';
-import ItemCheckboxList from '@/modules/ui/components/form/CheckboxRange.vue';
 
 interface IProps {
   modelValue: number;
@@ -36,7 +35,7 @@ const inputBorderColorClass = computed(() => {
 
 <template>
   <div class="calendar-plan-number-input">
-    <item-checkbox-list
+    <ly-checkbox-range
       v-if="config.inputType === DataPointInputType.Checkbox"
       v-model:selection="selection"
       :min="config.min"

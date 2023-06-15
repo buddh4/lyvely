@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import LanguageChooser from '@/modules/i18n/components/LanguageChooser.vue';
+import CaptchaInput from '@/modules/captcha/components/CaptchaInput.vue';
 import { useSendResetPasswordMailStore } from '@/modules/auth/store/send-reset-password-mail.store';
 import { storeToRefs } from 'pinia';
 import { useRouter, RouteLocationRaw } from 'vue-router';
 import { PATH_LOGIN } from '@/modules/auth';
 import { onUnmounted, ref } from 'vue';
 import { useResetPasswordStore } from '@/modules/auth/store/reset-password.store';
-import PasswordStrengthMeter from '@/modules/ui/components/form/PasswordStrengthMeter.vue';
 import { isTouchScreen } from '@/util';
 
 const resetPasswordStore = useResetPasswordStore();
@@ -59,7 +59,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         :status="sendResetPasswordMailStore.status"
         label-key="auth.reset_password.fields">
         <ly-input-text property="email" autocomplete="email" :autofocus="!isTouchScreen()" />
-        <ly-input-captcha ref="captchaInput" />
+        <captcha-input ref="captchaInput" />
       </ly-form-model>
     </template>
 
@@ -131,7 +131,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
             :type="repeatPasswordType"
             :password-toggle="false"
             :required="true" />
-          <password-strength-meter v-model="resetModel.password" />
+          <ly-password-strength-meter v-model="resetModel.password" />
         </fieldset>
 
         <ly-input-checkbox property="resetSessions" />

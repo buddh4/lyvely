@@ -52,7 +52,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['change', 'update:modelValue']);
 
 const input = ref<HTMLInputElement>();
-const { inputValue, onChange, showHelpText } = useBaseInputSetup(props, emit);
+const { inputValue, onChange, showHelpText, label, inputClass } = useBaseInputSetup(props, emit);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());

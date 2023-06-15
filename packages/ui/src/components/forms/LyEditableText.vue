@@ -57,7 +57,7 @@ const input = ref<HTMLInputElement>() as Ref<HTMLInputElement>;
 const isEdit = ref(false);
 const editValue = ref('');
 
-const { inputId, inputValue } = useFloatingInputSetup(props, emit);
+const { inputId, inputValue, inputClass } = useFloatingInputSetup(props, emit);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
