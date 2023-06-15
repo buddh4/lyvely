@@ -26,10 +26,7 @@ export abstract class AbstractUserProfileRelationsDao<
     profile: EntityIdentity<Profile>,
     options: IFetchQueryOptions<T> = defaultFetchOptions,
   ): Promise<T[] | null> {
-    return this.findAll(
-      { uid: assureObjectId(user), pid: assureObjectId(profile) },
-      options,
-    );
+    return this.findAll({ uid: assureObjectId(user), pid: assureObjectId(profile) }, options);
   }
 
   async findAllByProfile(profile: EntityIdentity<Profile>): Promise<T[]> {

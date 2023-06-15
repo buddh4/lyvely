@@ -1,5 +1,10 @@
 import { Controller, Body, Post, UseGuards, Req } from '@nestjs/common';
-import { ENDPOINT_RESET_PASSWORD, ResetPasswordEndpoint, SendResetPasswordMail, ResetPassword } from '@lyvely/common';
+import {
+  ENDPOINT_RESET_PASSWORD,
+  ResetPasswordEndpoint,
+  SendResetPasswordMail,
+  ResetPassword,
+} from '@lyvely/common';
 import { Public, UseClassSerializer } from '@lyvely/server-core';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
 import { CaptchaGuard } from '@/captcha';

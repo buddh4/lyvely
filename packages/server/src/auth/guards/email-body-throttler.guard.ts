@@ -4,7 +4,11 @@ import { ReverseProxyThrottlerGuard } from '@/throttler';
 import { USER_THROTTLER_LIMIT, USER_THROTTLER_TTL } from '@/users';
 
 export class EmailBodyThrottlerGuard extends ReverseProxyThrottlerGuard {
-  protected override async handleRequest(context: ExecutionContext, limit: number, ttl: number): Promise<boolean> {
+  protected override async handleRequest(
+    context: ExecutionContext,
+    limit: number,
+    ttl: number,
+  ): Promise<boolean> {
     const { req } = this.getRequestResponse(context);
 
     if (!req.body.email) return true;
@@ -12,7 +16,8 @@ export class EmailBodyThrottlerGuard extends ReverseProxyThrottlerGuard {
     const handler = context.getHandler();
     const classRef = context.getClass();
 
-    limit = this.reflector.getAllAndOverride<number>(USER_THROTTLER_LIMIT, [handler, classRef]) || 20;
+    limit =
+      this.reflector.getAllAndOverride<number>(USER_THROTTLER_LIMIT, [handler, classRef]) || 20;
     ttl = this.reflector.getAllAndOverride<number>(USER_THROTTLER_TTL, [handler, classRef]) || 60;
 
     return await super.handleRequest(context, limit, ttl);

@@ -13,7 +13,10 @@ interface LocalFilesInterceptorOptions {
   filename?(req: Request, configService: ConfigService, file: Express.Multer.File): string;
 }
 
-export function LocalFilesInterceptor(fieldName: string, options: LocalFilesInterceptorOptions): Type<NestInterceptor> {
+export function LocalFilesInterceptor(
+  fieldName: string,
+  options: LocalFilesInterceptorOptions,
+): Type<NestInterceptor> {
   @Injectable()
   class Interceptor implements NestInterceptor {
     fileInterceptor: NestInterceptor;

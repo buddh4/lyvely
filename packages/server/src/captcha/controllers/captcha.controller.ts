@@ -1,4 +1,13 @@
-import { Controller, Get, Header, Query, Post, HttpCode, Body, StreamableFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Header,
+  Query,
+  Post,
+  HttpCode,
+  Body,
+  StreamableFile,
+} from '@nestjs/common';
 import { CaptchaService } from '@/captcha/services/captcha.service';
 import { Readable } from 'stream';
 import { Public } from '@lyvely/server-core';

@@ -4,7 +4,12 @@ import { Model } from 'mongoose';
 import { Membership, MembershipDocument, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
-import { assureObjectId, EntityIdentity, IBaseQueryOptions, SaveOptions } from '@lyvely/server-core';
+import {
+  assureObjectId,
+  EntityIdentity,
+  IBaseQueryOptions,
+  SaveOptions,
+} from '@lyvely/server-core';
 import { Constructor, BaseMembershipRole } from '@lyvely/common';
 
 @Injectable()

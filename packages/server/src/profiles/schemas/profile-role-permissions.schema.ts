@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { BaseEntity } from '../../core/db/base.entity';
+import { BaseEntity } from '@lyvely/server-core';
 import { Profile } from 'passport';
 
 export type ProfileRolePermissionDocument = Profile & mongoose.Document;

@@ -33,6 +33,9 @@ export class ContentScoreService extends ProfileScoreService<ContentScore> {
   ): Promise<ContentScore[]> {
     return strategy === UserAssignmentStrategy.Shared
       ? await this.profileScoreDao.findAll({ cid: assureObjectId(content) })
-      : await this.profileScoreDao.findAll({ cid: assureObjectId(content), uid: assureObjectId(user) });
+      : await this.profileScoreDao.findAll({
+          cid: assureObjectId(content),
+          uid: assureObjectId(user),
+        });
   }
 }

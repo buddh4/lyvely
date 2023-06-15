@@ -1,8 +1,8 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from './profiles.schema';
 import { ProfileType } from '@lyvely/common';
-import { User } from '../../users';
-import { EntityIdentity } from '../../core/db/db.utils';
+import { User } from '@/users';
+import { EntityIdentity } from '@lyvely/server-core';
 
 @Schema({ timestamps: true })
 export class UserProfile extends Profile {

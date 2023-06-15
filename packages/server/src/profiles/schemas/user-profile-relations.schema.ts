@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { assignEntityData, BaseEntity, validateEmail, assureObjectId } from '@lyvely/server-core';
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
-import { IProfileRelationUserInfo, ProfileRelationUserInfoDto, PropertyType } from '@lyvely/common';
+import { IProfileRelationUserInfo, PropertyType } from '@lyvely/common';
 
 export interface ICreateProfileRelation {
   profile: Profile;

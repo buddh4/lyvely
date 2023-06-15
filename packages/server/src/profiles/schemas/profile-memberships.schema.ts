@@ -1,6 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { UserProfileRelation, ICreateProfileRelation, ProfileRelationUserInfo } from './user-profile-relations.schema';
+import {
+  UserProfileRelation,
+  ICreateProfileRelation,
+  ProfileRelationUserInfo,
+} from './user-profile-relations.schema';
 import { assureObjectId } from '@lyvely/server-core';
 import { BaseMembershipRole } from '@lyvely/common';
 

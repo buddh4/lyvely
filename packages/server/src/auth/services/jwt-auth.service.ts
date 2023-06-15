@@ -40,7 +40,11 @@ export class JwtAuthService {
     return this.jwtService.sign({ sub: user._id.toString(), purpose: JWT_ACCESS_TOKEN }, options);
   }
 
-  public async createRefreshToken(user: User, visitorId: string, remember?: boolean): Promise<string> {
+  public async createRefreshToken(
+    user: User,
+    visitorId: string,
+    remember?: boolean,
+  ): Promise<string> {
     remember = !!remember;
 
     const expiresIn = getRefreshCookieExpiresIn(remember, this.configService);
