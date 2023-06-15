@@ -3,7 +3,7 @@ import { DataPointInputType, DataPointValueType, ITextDataPointSettings } from '
 import { DataPointConfigFactory } from '../data-point-config.factory';
 import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
 import { TextDataPointConfig } from './text-data-point-config.schema';
-import { NestedSchema } from '@/core';
+import { NestedSchema } from '@lyvely/server-core';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Text,

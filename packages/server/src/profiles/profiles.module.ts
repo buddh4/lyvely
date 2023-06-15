@@ -22,7 +22,7 @@ import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
 
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '@/policies/policies.module';
-import { CoreModule } from '@/core';
+import { CoreModule } from '@lyvely/server-core';
 import { ProfileType } from '@lyvely/common';
 import { useProfileMappings } from './mappings';
 import { ProfileMembershipController } from '@/profiles/controllers/profile-membership.controller';

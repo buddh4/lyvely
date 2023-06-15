@@ -8,7 +8,7 @@ import {
   PropertyType,
   SelectionDataPointModel,
 } from '@lyvely/common';
-import { NestedSchema } from '@/core';
+import { NestedSchema } from '@lyvely/server-core';
 import { DataPointSchemaFactory } from '@/time-series/schemas/data-points/data-point-schema.factory';
 
 @NestedSchema()

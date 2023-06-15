@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureStringId, ConfigurationPath } from '@/core';
+import { assureStringId, ConfigurationPath } from '@lyvely/server-core';
 import { MailInvitation } from '../schemas';
 import { MailInvitationInfo } from '@lyvely/common';
 import { IMailInvitationContext } from '../interfaces';

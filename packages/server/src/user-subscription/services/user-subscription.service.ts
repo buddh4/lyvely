@@ -8,7 +8,7 @@ import {
 } from '../schemas';
 import { UserSubscriptionContext } from '../interfaces';
 import { Profile, ProfilesService } from '@/profiles';
-import { EntityIdentity } from '@/core';
+import { EntityIdentity } from '@lyvely/server-core';
 
 @Injectable()
 export class UserSubscriptionService {

@@ -13,7 +13,7 @@ import { MailService } from '@/mails';
 import { BaseUserProfileRelationType, CalendarTimeInterval } from '@lyvely/common';
 import { I18n, Translatable } from '@/i18n';
 import { NotificationChannelRegistry } from './notification-channel.registry';
-import { UrlGenerator } from '@/core';
+import { UrlGenerator } from '@lyvely/server-core';
 
 @Injectable()
 export class MailNotificationChannel implements INotificationChannel {

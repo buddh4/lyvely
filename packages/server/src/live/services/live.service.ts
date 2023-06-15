@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
-import { assureStringId, ConfigurationPath, EntityIdentity, OperationMode } from '@/core';
+import { assureStringId, ConfigurationPath, EntityIdentity, OperationMode } from '@lyvely/server-core';
 import { User } from '@/users';
 import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/common';
 import { Profile, ProfilesService } from '@/profiles';

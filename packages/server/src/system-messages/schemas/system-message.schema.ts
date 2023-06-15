@@ -1,6 +1,6 @@
 import { ContentDataType, ContentType } from '@/content';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { MixedProp, NestedSchema } from '@/core';
+import { MixedProp, NestedSchema } from '@lyvely/server-core';
 import { SystemMessageModel } from '@lyvely/common';
 
 @NestedSchema()

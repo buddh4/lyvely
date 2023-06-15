@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Membership, Profile, ProfileRelationUserInfo } from '../schemas';
 import { MembershipsDao } from '../daos';
-import { EntityIdentity } from '@/core';
+import { EntityIdentity } from '@lyvely/server-core';
 import { User } from '@/users';
 
 @Injectable()

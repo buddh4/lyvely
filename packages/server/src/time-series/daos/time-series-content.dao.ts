@@ -1,6 +1,6 @@
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { IFetchQueryOptions } from '@/core';
+import { IFetchQueryOptions } from '@lyvely/server-core';
 import { TimeSeriesContent } from '../schemas';
 import { ContentTypeDao } from '@/content';
 import { CalendarInterval } from '@lyvely/common';

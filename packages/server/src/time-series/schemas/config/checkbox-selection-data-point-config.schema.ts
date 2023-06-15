@@ -7,7 +7,7 @@ import {
 import { DataPointConfigFactory } from '../data-point-config.factory';
 import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
 import { SelectionDataPointConfig } from './selection-data-point-config.schema';
-import { NestedSchema } from '@/core';
+import { NestedSchema } from '@lyvely/server-core';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Selection,

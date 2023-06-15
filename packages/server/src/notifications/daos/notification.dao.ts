@@ -1,4 +1,4 @@
-import { AbstractDao, createBaseEntityInstance } from '@/core';
+import { AbstractDao, createBaseEntityInstance } from '@lyvely/server-core';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';

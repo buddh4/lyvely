@@ -5,7 +5,7 @@ import { MessageDao } from '../daos';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { CreateMessage } from '@lyvely/common';
-import { UpdateQuerySet } from '@/core';
+import { UpdateQuerySet } from '@lyvely/server-core';
 
 @Injectable()
 export class MessageService extends ContentTypeService<Message, CreateMessage> {

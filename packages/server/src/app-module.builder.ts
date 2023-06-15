@@ -1,6 +1,6 @@
 import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from '@nestjs/common';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule, setTransactionSupport, ConfigurationPath, LyvelyMongoDBOptions } from '@/core';
+import { CoreModule, setTransactionSupport, ConfigurationPath, LyvelyMongoDBOptions } from '@lyvely/server-core';
 import { loadConfig, AppConfigModule } from '@/app-config';
 import { AuthModule } from './auth/auth.module';
 import { UserRegistrationModule } from './user-registration/user-registration.module';

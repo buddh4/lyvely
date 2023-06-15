@@ -1,5 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema } from '@/core';
+import { BaseEntity, NestedSchema } from '@lyvely/server-core';
 import { IContentDataType } from '@lyvely/common';
 
 @NestedSchema()

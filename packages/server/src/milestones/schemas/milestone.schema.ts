@@ -10,7 +10,7 @@ import {
   MilestoneModel,
 } from '@lyvely/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { NestedSchema } from '@/core';
+import { NestedSchema } from '@lyvely/server-core';
 
 @NestedSchema()
 export class MilestoneConfig extends BaseModel<MilestoneConfig> implements IMilestoneConfig {

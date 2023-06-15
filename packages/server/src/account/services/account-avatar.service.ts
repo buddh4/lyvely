@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Avatar, User, UserDao } from '@/users';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@lyvely/server-core';
 import fs from 'fs/promises';
 import { createWriteStream } from 'fs';
 import crypto from 'crypto';

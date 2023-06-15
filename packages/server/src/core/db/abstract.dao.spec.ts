@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, AbstractDao, ModelSaveEvent } from '@/core';
+import { BaseEntity, AbstractDao, ModelSaveEvent } from '@lyvely/server-core';
 import { Model } from 'mongoose';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, getObjectId } from '@/test/utils/test.utils';

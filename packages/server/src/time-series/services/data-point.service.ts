@@ -10,7 +10,7 @@ import {
 } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
 import { Profile, ProfilesService } from '@/profiles';
-import { EntityIdentity } from '@/core';
+import { EntityIdentity } from '@lyvely/server-core';
 import { DataPointStrategyDao } from '../daos';
 import { Inject } from '@nestjs/common';
 import { useDataPointStrategyRegistry } from '../strategies';

@@ -7,7 +7,7 @@ import { ContentModule, getContentModelDefinition, getContentScoreDefinition } f
 import { ProfilesModule } from '@/profiles';
 import { PoliciesModule } from '@/policies/policies.module';
 import { HabitDataPointDao, HabitsDao } from './daos';
-import { CoreModule } from '@/core';
+import { CoreModule } from '@lyvely/server-core';
 import { getDataPointModelDefinition } from '@/time-series';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from './schemas';
 import { DataPointValueType } from '@lyvely/common';

@@ -1,4 +1,4 @@
-import { AbstractDao, assureObjectId, EntityIdentity } from '@/core';
+import { AbstractDao, assureObjectId, EntityIdentity } from '@lyvely/server-core';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { buildDiscriminatorName, DataPoint, TimeSeriesContent } from '../schemas';

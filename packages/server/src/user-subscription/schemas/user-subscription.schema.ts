@@ -1,6 +1,6 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseModel } from '@lyvely/common';
-import { assureObjectId, EntityIdentity, NestedSchema } from '@/core';
+import { assureObjectId, EntityIdentity, NestedSchema } from '@lyvely/server-core';
 import { User } from '@/users';
 import mongoose from 'mongoose';
 

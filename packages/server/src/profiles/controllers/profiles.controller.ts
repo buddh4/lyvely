@@ -9,7 +9,7 @@ import {
 } from '@lyvely/common';
 import { ProfilesService } from '../services';
 import { ProfileContext, ProfileRelations } from '../models';
-import { UseClassSerializer } from '@/core';
+import { UseClassSerializer } from '@lyvely/server-core';
 import { User, UserRequest } from '@/users';
 
 @Controller(ENDPOINT_PROFILES)

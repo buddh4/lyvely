@@ -10,7 +10,7 @@ import {
 import { ContentEntity, ContentType } from '@/content';
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';
-import { NestedSchema } from '@/core';
+import { NestedSchema } from '@lyvely/server-core';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 
 export type TimeSeriesContentEntity<

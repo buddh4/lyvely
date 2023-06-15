@@ -5,7 +5,7 @@ import { Injectable, Inject, Logger } from '@nestjs/common';
 import { JournalsDao } from '@/journals/daos';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { UpdateQuerySet } from '@/core';
+import { UpdateQuerySet } from '@lyvely/server-core';
 
 @Injectable()
 export class JournalsService extends ContentTypeService<Journal, CreateJournalModel> {

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
 import { addMilliSeconds } from '@lyvely/common';
 import ms from 'ms';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@lyvely/server-core';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { getRefreshCookieExpiresIn, JWT_ACCESS_TOKEN, JWT_REFRESH_TOKEN } from '../guards';
 

@@ -23,7 +23,7 @@ import {
   TimeSeriesContent,
   TimerDataPointConfig,
 } from '@/time-series';
-import { assureObjectId, NestedSchema } from '@/core';
+import { assureObjectId, NestedSchema } from '@lyvely/server-core';
 
 export type HabitDocument = Habit & ContentDocument;
 

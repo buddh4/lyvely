@@ -24,7 +24,7 @@ import {
   AbstractContentTypeController,
 } from '@/content';
 import { Policies } from '@/policies';
-import { UseClassSerializer } from '@/core';
+import { UseClassSerializer } from '@lyvely/server-core';
 import { DataPointModelConverter } from '@/time-series';
 import { ProfileRequest } from '@/profiles';
 import { HabitDataPointTimerService } from '@/habits/services/habit-data-point-timer.service';

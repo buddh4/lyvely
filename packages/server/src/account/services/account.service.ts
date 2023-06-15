@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Avatar, User, UserDao, UserEmail } from '@/users';
 import { escapeHTML, FieldValidationException, VerifyEmailDto, isValidEmail } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@lyvely/server-core';
 import { MailService } from '@/mails';
 import { InvalidOtpException, UserOtpService } from '@/user-otp';
 

@@ -1,0 +1,54 @@
+import { ClientSession, Connection } from 'mongoose';
+import { TransactionOptions } from 'mongodb';
+
+let transactionSupport = false;
+
+export type Transaction = { session: ClientSession };
+
+export function setTransactionSupport(ts: boolean) {
+  transactionSupport = ts;
+}
+
+export async function startSession(connection: Connection): Promise<ClientSession | undefined> {
+  return transactionSupport ? connection.startSession() : undefined;
+}
+
+export async function startTransaction(
+  connection: Connection,
+  options?: TransactionOptions,
+): Promise<{ session: ClientSession }> {
+  const session = await startSession(connection);
+  // The <any> cast prevents an "Type instantiation is excessivley deep ts error
+  if (session) session.startTransaction(<any>options);
+  return { session };
+}
+
+export async function commitTransaction({ session }) {
+  if (transactionSupport && session) {
+    await session.commitTransaction();
+  }
+}
+
+export async function abortTransaction({ session }) {
+  if (transactionSupport && session) {
+    await session.abortTransaction();
+  }
+}
+
+export async function withTransaction<T>(
+  connection: Connection,
+  handler: (transaction: Transaction) => Promise<T>,
+  options?: TransactionOptions,
+): Promise<T> {
+  return new Promise<T>(async (resolve, reject) => {
+    const transaction = await startTransaction(connection, options);
+    try {
+      const result = await handler(<Transaction>transaction);
+      await commitTransaction(transaction);
+      resolve(result);
+    } catch (e) {
+      await abortTransaction(transaction);
+      reject(e);
+    }
+  });
+}

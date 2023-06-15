@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, LegalOptions } from '@/core';
+import { ConfigurationPath, LegalOptions } from '@lyvely/server-core';
 import { LegalSection, LegalSectionDetails } from '@lyvely/common';
 
 @Injectable()

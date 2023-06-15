@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserDao } from '../daos';
 import { RefreshToken, User, UserNotificationState } from '../schemas';
 import { ProfileType, IntegrityException, UserStatus } from '@lyvely/common';
-import { EntityIdentity, IBaseQueryOptions } from '@/core';
+import { EntityIdentity, IBaseQueryOptions } from '@lyvely/server-core';
 
 @Injectable()
 export class UsersService {

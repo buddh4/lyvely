@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import * as yaml from 'js-yaml';
 import { join } from 'path';
-import { LyvelyAppConfiguration } from '@/core';
+import { LyvelyAppConfiguration } from '@lyvely/server-core';
 
 const YAML_CONFIG_FILENAME = 'lyvely.ts';
 

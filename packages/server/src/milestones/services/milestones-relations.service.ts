@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Milestone } from '../schemas';
-import { assureObjectId, EntityIdentity, DBQuery } from '@/core';
+import { assureObjectId, EntityIdentity, DBQuery } from '@lyvely/server-core';
 import { MilestoneRelationEvent } from '@/milestones';
 import { CalendarDateTime, MilestoneRelationModel } from '@lyvely/common';
 import { Content, ContentDao } from '@/content';

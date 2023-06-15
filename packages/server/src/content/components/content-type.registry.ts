@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Content } from '../schemas';
-import { AbstractTypeRegistry } from '@/core/components/abstract-type.registry';
+import { AbstractTypeRegistry } from '@lyvely/server-core';
 
 @Injectable()
 export class ContentTypeRegistry extends AbstractTypeRegistry<Content> {

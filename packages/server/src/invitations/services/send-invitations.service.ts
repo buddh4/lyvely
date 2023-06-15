@@ -14,7 +14,7 @@ import { User, UsersService } from '@/users';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { assureObjectId, ConfigurationPath } from '@/core';
+import { assureObjectId, ConfigurationPath } from '@lyvely/server-core';
 import { InvitationDao } from '../daos/invitation.dao';
 import { isDefined } from 'class-validator';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';

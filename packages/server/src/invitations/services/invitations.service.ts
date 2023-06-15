@@ -6,7 +6,7 @@ import { MailInvitation, UserInvitation } from '../schemas';
 import { MailInvitationService } from './mail-invitations.service';
 import { IMailInvitationContext, InvitationIF } from '../interfaces';
 import { UserInvitationsService } from './user-invitations.service';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, EntityIdentity } from '@lyvely/server-core';
 import { EntityNotFoundException } from '@lyvely/common';
 import { NotificationService } from '@/notifications';
 

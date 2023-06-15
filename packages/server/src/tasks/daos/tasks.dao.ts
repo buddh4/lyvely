@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Task, UserDone } from '../schemas';
-import { assureObjectId, EntityIdentity, IFetchQueryOptions } from '@/core';
+import { assureObjectId, EntityIdentity, IFetchQueryOptions } from '@lyvely/server-core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '@/users';

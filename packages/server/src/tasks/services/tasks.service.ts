@@ -11,7 +11,7 @@ import {
 import { User } from '@/users';
 import { TasksDao } from '../daos';
 import { ContentTypeService, ContentScoreService } from '@/content';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, EntityIdentity } from '@lyvely/server-core';
 import { Timer } from '@/calendar';
 
 @Injectable()

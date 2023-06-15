@@ -1,4 +1,4 @@
-import { AbstractDao, assureObjectId, EntityIdentity } from '@/core';
+import { AbstractDao, assureObjectId, EntityIdentity } from '@lyvely/server-core';
 import { UserInvitation } from '../schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';

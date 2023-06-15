@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { NotificationType, NotificationTypeSchema } from './notification-type.schema';
-import { BaseEntity } from '@/core';
+import { BaseEntity } from '@lyvely/server-core';
 
 import {
   UserSubscriptionSchema,

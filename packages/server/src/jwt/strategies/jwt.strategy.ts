@@ -4,7 +4,7 @@ import { Inject, Type, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { JwtTokenPayloadIF } from '../interfaces/jwt-payload.interface';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@lyvely/server-core';
 import { User, UsersService } from '@/users';
 import { UserStatus } from '@lyvely/common';
 import { getIssuedAt } from '../utils/jwt.util';

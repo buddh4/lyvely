@@ -9,7 +9,7 @@ import {
   UpdateQuerySet,
   assureObjectId,
   EntityIdentity,
-} from '@/core';
+} from '@lyvely/server-core';
 import { BaseProfileModel } from './base-profile-model.schema';
 import { Profile } from '../schemas';
 import { FilterQuery, QueryOptions, UpdateQuery, Types } from 'mongoose';

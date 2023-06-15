@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Headers, Req } from '@nestjs/common';
 import { LegalEndpoint, LegalSectionDetails, ENDPOINT_LEGAL } from '@lyvely/common';
 import { LegalService } from '../services/legal.service';
-import { Public } from '@/core';
+import { Public } from '@lyvely/server-core';
 import { PublicRequest } from '@/users';
 
 @Controller(ENDPOINT_LEGAL)

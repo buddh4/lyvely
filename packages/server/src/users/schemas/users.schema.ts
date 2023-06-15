@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import bcrypt from 'bcrypt';
 import mongoose, { UpdateQuery } from 'mongoose';
-import { BaseEntity, validateEmail } from '@/core';
+import { BaseEntity, validateEmail } from '@lyvely/server-core';
 import { Length } from 'class-validator';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';

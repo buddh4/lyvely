@@ -6,7 +6,7 @@ import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { UnsupportedOperationException } from '@lyvely/common';
 import { SystemMessage } from '../schemas';
-import { UpdateQuerySet } from '@/core';
+import { UpdateQuerySet } from '@lyvely/server-core';
 import { ICreateSystemMessage } from '../interfaces';
 
 @Injectable()

@@ -26,7 +26,7 @@ import {
 } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@/core';
+import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@lyvely/server-core';
 import { AbstractJwtAuthController } from '@/auth/controllers/abstract-jwt-auth.controller';
 import { EmailBodyThrottlerGuard } from '@/auth/guards/email-body-throttler.guard';
 

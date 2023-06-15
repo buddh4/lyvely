@@ -1,4 +1,4 @@
-import { LyvelyRequest } from '@/core';
+import { LyvelyRequest } from '@lyvely/server-core';
 import { ExecutionContext } from '@nestjs/common';
 import { ReverseProxyThrottlerGuard } from '@/throttler';
 import { USER_THROTTLER_LIMIT, USER_THROTTLER_TTL } from '@/users';

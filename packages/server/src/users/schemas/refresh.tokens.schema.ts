@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
-import { BaseEntity } from '@/core';
+import { BaseEntity } from '@lyvely/server-core';
 
 @Exclude()
 @Schema({ timestamps: true })

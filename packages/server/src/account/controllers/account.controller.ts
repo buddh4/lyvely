@@ -15,7 +15,7 @@ import {
   ResendOtp,
   AvatarModel,
 } from '@lyvely/common';
-import { UseClassSerializer } from '@/core';
+import { UseClassSerializer } from '@lyvely/server-core';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { AccountService } from '@/account/services/account.service';
 import { ParseFilePipeBuilder } from '@/files/pipes/parse-file-pipe.builder';

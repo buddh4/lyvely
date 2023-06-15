@@ -5,7 +5,7 @@ import { Inject, Logger } from '@nestjs/common';
 import { MilestonesDao } from '../daos';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { UpdateQuerySet } from '@/core';
+import { UpdateQuerySet } from '@lyvely/server-core';
 
 export class MilestonesService extends ContentTypeService<
   Milestone,

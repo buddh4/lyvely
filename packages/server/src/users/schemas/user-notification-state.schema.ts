@@ -1,4 +1,4 @@
-import { BaseEntity, NestedSchema } from '@/core';
+import { BaseEntity, NestedSchema } from '@lyvely/server-core';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import {
   addByInterval,

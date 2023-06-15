@@ -19,7 +19,7 @@ import {
   ENDPOINT_PROFILE_TAGS,
   ProfileTagsEndpoint,
 } from '@lyvely/common';
-import { assureObjectId, EntityIdentity, UseClassSerializer } from '@/core';
+import { assureObjectId, EntityIdentity, UseClassSerializer } from '@lyvely/server-core';
 import { Tag } from '@/tags';
 
 // TODO feature check

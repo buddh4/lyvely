@@ -5,7 +5,7 @@ import { JwtStrategy, JwtTokenPayloadIF } from '@/jwt';
 import { User } from '@/users';
 import { UserStatus } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@lyvely/server-core';
 
 export const JWT_ACCESS_TOKEN = 'jwt-access-token';
 

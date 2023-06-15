@@ -1,4 +1,4 @@
-import { applyInc, applyPush, applyRawDataTo } from '@/core';
+import { applyInc, applyPush, applyRawDataTo } from '@lyvely/server-core';
 import { expect } from '@jest/globals';
 
 class SubModel {

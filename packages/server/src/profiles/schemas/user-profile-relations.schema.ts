@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { assignEntityData, BaseEntity, validateEmail, assureObjectId } from '@/core';
+import { assignEntityData, BaseEntity, validateEmail, assureObjectId } from '@lyvely/server-core';
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
 import { IProfileRelationUserInfo, ProfileRelationUserInfoDto, PropertyType } from '@lyvely/common';

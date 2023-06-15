@@ -1,4 +1,4 @@
-import { AbstractDao, EntityIdentity } from '@/core';
+import { AbstractDao, EntityIdentity } from '@lyvely/server-core';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';

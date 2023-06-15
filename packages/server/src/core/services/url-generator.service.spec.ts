@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { UrlGenerator } from '@/core';
+import { UrlGenerator } from '@lyvely/server-core';
 import { createBasicTestingModule } from '@/test';
 import { TestingModule } from '@nestjs/testing';
 

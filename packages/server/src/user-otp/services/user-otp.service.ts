@@ -6,7 +6,7 @@ import { UserOtpDao } from '../daos';
 import { generateOTP } from '../utils';
 import ms from 'ms';
 import bcrypt from 'bcrypt';
-import { EntityIdentity } from '@/core';
+import { EntityIdentity } from '@lyvely/server-core';
 
 export interface IGenerateOtpOptions<TContext = any> {
   purpose: string;

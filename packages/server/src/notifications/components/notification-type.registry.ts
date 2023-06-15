@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { NotificationType, Notification, TNotificationType } from '../schemas';
-import { AbstractTypeRegistry } from '@/core/components/abstract-type.registry';
-import { globalEmitter } from '@/core';
+import { AbstractTypeRegistry } from '@lyvely/server-core';
+import { globalEmitter } from '@lyvely/server-core';
 import { EVENT_REGISTER_NOTIFICATION_TYPE } from '../notification.constants';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';

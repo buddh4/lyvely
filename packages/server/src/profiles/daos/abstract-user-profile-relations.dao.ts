@@ -6,7 +6,7 @@ import {
   assureObjectId,
   EntityIdentity,
   QuerySort,
-} from '@/core';
+} from '@lyvely/server-core';
 import { Profile, UserProfileRelation } from '../schemas';
 import { User } from '@/users';
 

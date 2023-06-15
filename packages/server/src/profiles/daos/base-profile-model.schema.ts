@@ -1,4 +1,4 @@
-import { BaseEntity } from '@/core';
+import { BaseEntity } from '@lyvely/server-core';
 import mongoose from 'mongoose';
 import { Prop } from '@nestjs/mongoose';
 

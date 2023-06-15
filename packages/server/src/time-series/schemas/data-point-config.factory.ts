@@ -1,5 +1,5 @@
 import { DataPointConfig } from './config/data-point-config.schema';
-import { assignEntityData } from '@/core';
+import { assignEntityData } from '@lyvely/server-core';
 import { Type, useDataPointStrategyFacade, IntegrityException, PropertiesOf } from '@lyvely/common';
 
 const register = {};

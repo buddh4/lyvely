@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema } from '@/core';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { BaseEntity, NestedSchema } from '@lyvely/server-core';
 import mongoose from 'mongoose';
 import { PropertyType, IContentLog } from '@lyvely/common';
 
