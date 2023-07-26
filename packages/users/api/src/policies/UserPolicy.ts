@@ -1,4 +1,4 @@
-import { IPolicy } from '../../policies/interfaces/policy.interface';
+import { IPolicy } from '@lyvely/policy';
 import { UserPolicyContext } from '../guards';
 
 export abstract class UserPolicy<T extends UserPolicyContext = UserPolicyContext> implements IPolicy<T> {

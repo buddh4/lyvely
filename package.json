@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "packages/users/*"
+    "packages/users/*",
+    "packages/policy/*"
   ],
   "scripts": {
     "docker:build:static": "docker build -t lyvely-static -f docker/Dockerfile.api .",
