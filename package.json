@@ -7,7 +7,8 @@
     "packages/*",
     "packages/users/*",
     "packages/throttler/*",
-    "packages/policy/*"
+    "packages/policy/*",
+    "packages/mail/*"
   ],
   "scripts": {
     "docker:build:static": "docker build -t lyvely-static -f docker/Dockerfile.api .",
