@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { CalendarPlanDao } from '@/calendar-plan';
 import { Profile } from '@/profiles';
 import { CalendarInterval } from '@lyvely/common';
-import { IFetchQueryOptions } from '@lyvely/server-core';
+import { IFetchQueryOptions } from '@lyvely/core';
 
 export class MilestonesDao extends ContentTypeDao<Milestone> implements CalendarPlanDao<Milestone> {
   @InjectModel(Milestone.name)

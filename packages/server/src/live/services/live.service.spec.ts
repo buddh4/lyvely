@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { TestDataUtils, createBasicTestingModule } from '@/test';
 import { LiveService } from '@/live';
-import { assureStringId } from '@lyvely/server-core';
+import { assureStringId } from '@lyvely/core';
 import { firstValueFrom } from 'rxjs';
 import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/common';
 

@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { DeepPartial } from '@lyvely/common';
 import { ContentTypeDao } from './content-type.dao';
 import { ProfileShard } from '@/profiles';
-import { EntityIdentity } from '@lyvely/server-core';
+import { EntityIdentity } from '@lyvely/core';
 
 @Injectable()
 export class ContentDao extends ContentTypeDao<Content> {

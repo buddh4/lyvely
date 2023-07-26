@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, ObjectIdProp } from '@lyvely/server-core';
+import { BaseEntity, ObjectIdProp } from '@lyvely/core';
 import { BaseMembershipRole } from '@lyvely/common';
 import { InvitationIF } from '../interfaces';
 

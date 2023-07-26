@@ -24,7 +24,7 @@ import {
 } from '@/profiles';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { createBaseEntityInstance, globalEmitter } from '@lyvely/server-core';
+import { createBaseEntityInstance, globalEmitter } from '@lyvely/core';
 
 @Injectable()
 export class TestDataUtils {

@@ -3,7 +3,7 @@ import { Injectable, mixin, NestInterceptor, Type } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { diskStorage } from 'multer';
-import { ConfigurationPath } from '@lyvely/server-core';
+import { ConfigurationPath } from '@lyvely/core';
 import { UserRequest } from '@/users';
 import { Request } from 'express';
 import { getLocalFilePath } from '@/files/file-path.utils';

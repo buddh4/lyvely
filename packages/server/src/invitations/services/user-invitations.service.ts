@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { assureStringId, EntityIdentity } from '@lyvely/server-core';
+import { assureStringId, EntityIdentity } from '@lyvely/core';
 import { UserInvitation } from '../schemas';
 import { UserInvitationInfo } from '@lyvely/common';
 import { User, UsersService } from '@/users';

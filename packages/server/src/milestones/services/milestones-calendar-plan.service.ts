@@ -8,7 +8,7 @@ import { User } from '@/users';
 import { ContentCondition } from '@/content/schemas/content-query.builder';
 import { MilestonesRelationsService } from '@/milestones/services/milestones-relations.service';
 import { isDefined } from 'class-validator';
-import { DBQuery } from '@lyvely/server-core';
+import { DBQuery } from '@lyvely/core';
 
 @Injectable()
 export class MilestonesCalendarPlanService extends SortableCalendarPlanService<Milestone> {

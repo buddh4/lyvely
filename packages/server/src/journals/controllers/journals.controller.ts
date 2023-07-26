@@ -18,7 +18,7 @@ import {
   UpdateJournalResponse,
   UpdateJournalModel,
 } from '@lyvely/common';
-import { UseClassSerializer } from '@lyvely/server-core';
+import { UseClassSerializer } from '@lyvely/core';
 import { JournalTimeSeriesService } from '@/journals/services/journal-time-series.service';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 import { Policies } from '@/policies';

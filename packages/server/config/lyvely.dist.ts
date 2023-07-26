@@ -1,4 +1,4 @@
-import { LyvelyAppConfiguration } from '@lyvely/server-core';
+import { LyvelyAppConfiguration, OperationMode } from '../../core';
 
 export default {
   appName: 'lyvely.app',

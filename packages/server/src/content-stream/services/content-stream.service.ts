@@ -4,7 +4,7 @@ import { Inject, Logger } from '@nestjs/common';
 import { Content, ContentDao } from '@/content';
 import { RequestContext } from '@/profiles';
 import { FilterQuery } from 'mongoose';
-import { assureObjectId } from '@lyvely/server-core';
+import { assureObjectId } from '@lyvely/core';
 
 export class ContentStreamService extends AbstractStreamService<Content, ContentStreamFilter> {
   @Inject()

@@ -33,6 +33,7 @@
     "@automapper/core": "^8.7.7",
     "@automapper/nestjs": "^8.7.7",
     "@lyvely/common": "0.1.0-alpha3",
+    "@lyvely/core": "0.1.0-alpha3",
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/bullmq": "^1.1.0",
     "@nestjs/common": "^9.4.0",

@@ -12,7 +12,7 @@ import {
 } from '@/notifications';
 import { Profile, ProfileInfo, UserContext } from '@/profiles';
 import { User, UserInfo } from '@/users';
-import { assureObjectId } from '@lyvely/server-core';
+import { assureObjectId } from '@lyvely/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { escapeHtmlIf, StreamRequest, UrlRoute } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';

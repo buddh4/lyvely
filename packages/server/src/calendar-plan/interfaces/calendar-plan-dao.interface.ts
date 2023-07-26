@@ -1,5 +1,5 @@
 import { Profile } from '@/profiles';
-import { IFetchQueryOptions } from '@lyvely/server-core';
+import { IFetchQueryOptions } from '@lyvely/core';
 import { CalendarInterval } from '@lyvely/common';
 import { CalendarPlanEntity } from './calendar-plan-entitiy.interface';
 import { ContentTypeDao } from '@/content';

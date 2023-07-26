@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { getDefaultLocale, User } from '@/users';
 import mongoose from 'mongoose';
-import { BaseEntity, assureObjectId, EntityIdentity } from '@lyvely/server-core';
+import { BaseEntity, assureObjectId, EntityIdentity } from '@lyvely/core';
 import { Tag, TagSchema } from '@/tags';
 import {
   ProfileVisibilityLevel,

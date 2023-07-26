@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { assureStringId, globalEmitter } from '@lyvely/server-core';
+import { assureStringId, globalEmitter } from '@lyvely/core';
 import { createBasicTestingModule, getObjectId } from '@/test';
 import { TestingModule } from '@nestjs/testing';
 import { ProfileUrlGenerator } from '@/profiles/services/profile-url-generator.service';

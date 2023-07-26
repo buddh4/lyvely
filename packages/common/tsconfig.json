@@ -14,7 +14,6 @@
     "incremental": true,
     "skipLibCheck": true,
     "isolatedModules": true,
-    "typeRoots": ["./node_modules/@types", "../../node_modules/@types", "./src/types"],
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]

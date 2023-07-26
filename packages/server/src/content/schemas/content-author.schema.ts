@@ -1,5 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema } from '@lyvely/server-core';
+import { BaseEntity, NestedSchema } from '@lyvely/core';
 import { DeepPartial, getStringEnumValues, CreatedAsType } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '@/users';

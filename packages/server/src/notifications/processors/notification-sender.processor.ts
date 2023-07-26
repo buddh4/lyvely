@@ -11,7 +11,7 @@ import {
 import { Job } from 'bullmq';
 import { NotificationChannelRegistry, NotificationDecider } from '../components';
 import { Logger } from '@nestjs/common';
-import { EntityIdentity } from '@lyvely/server-core';
+import { EntityIdentity } from '@lyvely/core';
 import { UsersService } from '@/users';
 import { ServiceException } from '@lyvely/common';
 import { NotificationService, UserNotificationsService } from '../services';

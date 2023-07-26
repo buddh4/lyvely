@@ -1,4 +1,3 @@
-import { expect } from '@jest/globals';
 import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '@/users';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, getObjectId, TestDataUtils } from '@/test';

@@ -16,7 +16,7 @@ import {
   EntityIdentity,
   Transaction,
   withTransaction,
-} from '@lyvely/server-core';
+} from '@lyvely/core';
 import {
   ICreateProfileOptions,
   ICreateProfileTypeOptions,

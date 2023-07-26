@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { ServiceExceptionsFilter, ConfigurationPath, LyvelyCsrfOptions } from '@lyvely/server-core';
+import { ServiceExceptionsFilter, ConfigurationPath, LyvelyCsrfOptions } from '@lyvely/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from '@/app-module.builder';
 import helmet from 'helmet';
 import express from 'express';

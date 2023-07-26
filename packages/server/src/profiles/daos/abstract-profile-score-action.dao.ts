@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AbstractDao } from '@lyvely/server-core';
+import { AbstractDao } from '@lyvely/core';
 import { ProfileScore } from '../schemas';
 
 @Injectable()

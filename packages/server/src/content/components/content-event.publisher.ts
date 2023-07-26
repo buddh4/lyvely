@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Content, ContentDocument } from '../schemas';
 import { ConfigService } from '@nestjs/config';
 import { LiveService } from '@/live/services/live.service';
-import { assureStringId, ConfigurationPath } from '@lyvely/server-core';
+import { assureStringId, ConfigurationPath } from '@lyvely/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ChangeStreamInsertDocument } from 'mongodb';

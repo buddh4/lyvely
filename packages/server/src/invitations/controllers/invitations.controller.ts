@@ -6,7 +6,7 @@ import {
   InvitationsService,
 } from '../services';
 import { InvitationsEndpoint, ENDPOINT_INVITATIONS, InvitationRequest } from '@lyvely/common';
-import { Public, UseClassSerializer } from '@lyvely/server-core';
+import { Public, UseClassSerializer } from '@lyvely/core';
 import { UserRequest } from '@/users';
 
 @Controller(ENDPOINT_INVITATIONS)

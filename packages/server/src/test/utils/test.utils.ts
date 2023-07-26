@@ -17,7 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import mongoose from 'mongoose';
 import { MailsModule } from '@/mails/mails.module';
-import { ConfigurationPath, CoreModule } from '@lyvely/server-core';
+import { ConfigurationPath, CoreModule } from '@lyvely/core';
 import { AppConfigModule } from '@/app-config';
 import { I18nModule } from '@/i18n';
 import { ThrottlerModule } from '@nestjs/throttler';

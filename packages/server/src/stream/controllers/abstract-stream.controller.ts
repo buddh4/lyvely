@@ -2,7 +2,7 @@ import { Post, Body, Req, Param, Get, NotFoundException } from '@nestjs/common';
 import { IStreamFilter, IStreamResponse, StreamRequest } from '@lyvely/common';
 import { ProfileRequest, RequestContext, UserContext } from '@/profiles';
 import { AbstractStreamService, StreamResponse } from '../service';
-import { BaseEntity } from '@lyvely/server-core';
+import { BaseEntity } from '@lyvely/core';
 
 export abstract class AbstractStreamController<
   TModel extends BaseEntity<TModel>,

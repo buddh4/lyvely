@@ -7,7 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './controllers/auth.controller';
 import { JwtAuthGuard } from './guards';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, ModuleMeta } from '@lyvely/server-core';
+import { ConfigurationPath, ModuleMeta } from '@lyvely/core';
 import { ResetPasswordController } from '@/auth/controllers/reset-password.controller';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
 import { CaptchaModule } from '@/captcha/captcha.module';

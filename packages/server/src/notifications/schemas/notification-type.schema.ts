@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '@lyvely/server-core';
+import { BaseEntity } from '@lyvely/core';
 import { PropertyType, Type, UrlRoute } from '@lyvely/common';
 import { Translatable } from '@/i18n';
 import { ProfileInfo, ProfileInfoSchema } from '@/profiles';

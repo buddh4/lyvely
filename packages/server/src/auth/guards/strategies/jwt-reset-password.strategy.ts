@@ -4,7 +4,7 @@ import { JwtStrategy, JwtTokenPayloadIF } from '@/jwt';
 import { getIssuedAt } from '@/jwt/utils/jwt.util';
 import { UserStatus } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@lyvely/server-core';
+import { ConfigurationPath } from '@lyvely/core';
 
 export const JWT_RESET_PASSWORD_TOKEN = 'password-reset';
 

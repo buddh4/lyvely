@@ -9,7 +9,7 @@ import {
   Type,
   PropertiesOf,
 } from '@lyvely/common';
-import { BaseEntity } from '@lyvely/server-core';
+import { BaseEntity } from '@lyvely/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';

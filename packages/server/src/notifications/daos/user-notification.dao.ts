@@ -1,4 +1,4 @@
-import { AbstractDao } from '@lyvely/server-core';
+import { AbstractDao } from '@lyvely/core';
 import { UserNotification } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';

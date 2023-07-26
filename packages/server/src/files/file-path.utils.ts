@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@lyvely/server-core';
+import { ConfigurationPath } from '@lyvely/core';
 
 export function getLocalFilePath(
   configService: ConfigService<ConfigurationPath>,

@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
 import { CaptchaChallenge } from '@lyvely/common';
 import ms from 'ms';
-import { UrlGenerator } from '@lyvely/server-core';
+import { UrlGenerator } from '@lyvely/core';
 
 @Injectable()
 export class CaptchaService {

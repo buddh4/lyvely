@@ -2,7 +2,7 @@ import { Module, Global, DynamicModule } from '@nestjs/common';
 import { MailService } from './services/mail.service';
 import { MailerModule, MailerOptions } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-import { ModuleMeta, ConfigurationPath } from '@lyvely/server-core';
+import { ModuleMeta, ConfigurationPath } from '@lyvely/core';
 import { ConfigService } from '@nestjs/config';
 
 const DEFAULT_MAIL_CONFIG: MailerOptions = {

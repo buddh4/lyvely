@@ -16,7 +16,7 @@ import { ConfigService } from '@nestjs/config';
 import { TestConfigService } from '@/test/utils/test-config.service';
 import { InvitationsModule } from '@/invitations/invitations.module';
 import { InvitationDao, MailInvitation, SendInvitationsService } from '@/invitations';
-import { assureObjectId, EntityIdentity } from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity } from '@lyvely/core';
 import { Profile } from '@/profiles';
 import { UnauthorizedException } from '@nestjs/common';
 

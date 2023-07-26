@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import bcrypt from 'bcrypt';
 import mongoose, { UpdateQuery } from 'mongoose';
-import { BaseEntity, validateEmail } from '@lyvely/server-core';
+import { BaseEntity, validateEmail } from '@lyvely/core';
 import { Length } from 'class-validator';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
@@ -18,7 +18,7 @@ import { ProfilesCount, ProfilesCountSchema } from './profiles-count.schema';
 import {
   UserNotificationState,
   UserNotificationStateSchema,
-} from '@/users/schemas/user-notification-state.schema';
+} from './user-notification-state.schema';
 
 export type UserDocument = User & mongoose.Document;
 

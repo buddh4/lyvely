@@ -2,7 +2,7 @@ import { Profile, ProfileScoreService } from '@/profiles';
 import { Inject, Injectable } from '@nestjs/common';
 import { Content, ContentScore } from '../schemas';
 import { ContentScoreDao } from '../daos';
-import { assureObjectId, EntityIdentity } from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity } from '@lyvely/core';
 import { UserAssignmentStrategy } from '@lyvely/common';
 import { User } from '@/users';
 

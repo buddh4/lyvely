@@ -1,5 +1,5 @@
 import { TimeSeriesContent, DataPoint } from '../schemas';
-import { UpdateQuerySet } from '@lyvely/server-core';
+import { UpdateQuerySet } from '@lyvely/core';
 import { User } from '@/users';
 
 export interface IDataPointProcessorStrategy<

@@ -5,7 +5,7 @@ import {
   SendResetPasswordMail,
   ResetPassword,
 } from '@lyvely/common';
-import { Public, UseClassSerializer } from '@lyvely/server-core';
+import { Public, UseClassSerializer } from '@lyvely/core';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
 import { CaptchaGuard } from '@/captcha';
 import { UserRequest, UserThrottle } from '@/users';

@@ -3,7 +3,7 @@ import { ContentModel } from '@lyvely/common';
 import { useContentArchive } from '@/modules/content/composables/content-archive.composable';
 import { useContentEditStore } from '@/modules/content/stores/content-edit.store';
 import { computed, ref } from 'vue';
-import { IConfirmOptions } from '@/modules/ui/components/modal/IConfirmOptions';
+import { IConfirmOptions } from '@lyvely/ui';
 import { getContentTypeOptions } from '@/modules/content-stream';
 
 export interface IProps {

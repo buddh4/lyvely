@@ -3,7 +3,7 @@ import fs from 'fs';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { globalEmitter } from '@lyvely/server-core';
+import { globalEmitter } from '../core';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en';
 import { TestMailService } from '@/mails';

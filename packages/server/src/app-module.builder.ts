@@ -5,7 +5,7 @@ import {
   setTransactionSupport,
   ConfigurationPath,
   LyvelyMongoDBOptions,
-} from '@lyvely/server-core';
+} from '@lyvely/core';
 import { loadConfig, AppConfigModule } from '@/app-config';
 import { AuthModule } from './auth/auth.module';
 import { UserRegistrationModule } from './user-registration/user-registration.module';

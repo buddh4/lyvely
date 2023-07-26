@@ -100,7 +100,8 @@ export function useCalendarPlan<
     // TODO: Check if date already loaded + implement interval level query
 
     try {
-      cache.value.handleResponse(await loadingStatus(service.getByFilter(intervalFilter), status));
+      const result = await loadingStatus(service.getByFilter(intervalFilter), status);
+      cache.value.handleResponse(result as TResponse);
     } catch (e) {
       DialogExceptionHandler('An unknown error occurred while loading models.', this)(e);
     }
@@ -121,7 +122,8 @@ export function useCalendarPlan<
     // TODO: Check if date already loaded + implement interval level query
 
     try {
-      cache.value.handleResponse(await loadingStatus(service.getByFilter(intervalFilter), status));
+      const result = await loadingStatus(service.getByFilter(intervalFilter), status);
+      cache.value.handleResponse(result as TResponse);
     } catch (e) {
       DialogExceptionHandler('An unknown error occurred while loading models.', this)(e);
     }
@@ -129,7 +131,7 @@ export function useCalendarPlan<
 
   function getModels(interval: CalendarInterval): TModel[] {
     const tid = toTimingId(date.value, interval, locale.value);
-    return cache.value.getModelsByIntervalFilter(interval, filter.value, tid);
+    return cache.value.getModelsByIntervalFilter(interval, filter.value as TFilter, tid);
   }
 
   function setModel(model: TModel) {

@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { assureObjectId, BaseEntity, EntityIdentity, NestedSchema } from '@lyvely/server-core';
+import { assureObjectId, BaseEntity, EntityIdentity, NestedSchema } from '@lyvely/core';
 import mongoose from 'mongoose';
 import { ISortable, PropertyType } from '@lyvely/common';
 import { User } from '@/users';

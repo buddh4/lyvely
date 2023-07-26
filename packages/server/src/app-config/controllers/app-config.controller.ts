@@ -1,5 +1,5 @@
 import { ClassSerializerInterceptor, Controller, Get, Req, UseInterceptors } from '@nestjs/common';
-import { ConfigurationPath, LyvelyRequest, Public } from '@lyvely/server-core';
+import { ConfigurationPath, LyvelyRequest, Public } from '@lyvely/core';
 import { AppConfigEndpoint, ENDPOINT_APP_CONFIG } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import { I18n } from '@/i18n';

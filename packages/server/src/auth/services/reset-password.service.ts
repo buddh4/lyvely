@@ -3,7 +3,7 @@ import { FieldValidationException, isValidEmail, UserStatus, escapeHTML } from '
 import { User, UsersService } from '@/users';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, UrlGenerator } from '@lyvely/server-core';
+import { ConfigurationPath, UrlGenerator } from '@lyvely/core';
 import { JwtService } from '@nestjs/jwt';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JWT_RESET_PASSWORD_TOKEN } from '@/auth/guards/strategies/jwt-reset-password.strategy';

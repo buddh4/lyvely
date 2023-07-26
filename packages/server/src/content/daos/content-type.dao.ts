@@ -1,5 +1,5 @@
 import { Content } from '../schemas';
-import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@lyvely/core';
 import { BaseProfileModelDao, Profile } from '@/profiles';
 import { User } from '@/users';
 import { UpdateQuery } from 'mongoose';

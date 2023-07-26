@@ -15,7 +15,7 @@ import {
   BaseEntity,
   EntityIdentity,
   IFetchQueryOptions,
-} from '@lyvely/server-core';
+} from '@lyvely/core';
 import { cloneDeep } from 'lodash';
 import { RequestContext } from '@/profiles';
 import { DEFAULT_BATCH_SIZE } from '@/stream/stream.constants';

@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { EntityNotFoundException } from '@lyvely/common';
 import { ProfileShard } from '@/profiles';
-import { assureObjectId, EntityIdentity } from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity } from '@lyvely/core';
 import { User } from '@/users';
 
 @Injectable()

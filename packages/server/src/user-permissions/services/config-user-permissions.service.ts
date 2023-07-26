@@ -1,7 +1,7 @@
 import { UserPermissionsServiceProvider } from '../interfaces';
 import { User } from '../../users';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, assureStringId } from '@lyvely/server-core';
+import { ConfigurationPath, assureStringId } from '@lyvely/core';
 import { UserStatus } from '@lyvely/common';
 
 export class ConfigUserPermissionsService extends UserPermissionsServiceProvider {

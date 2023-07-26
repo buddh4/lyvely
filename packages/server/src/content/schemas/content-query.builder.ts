@@ -1,6 +1,6 @@
 import { FilterQuery } from 'mongoose';
 import { Content } from './content.schema';
-import { assureObjectId, EntityIdentity } from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity } from '@lyvely/core';
 
 export class ContentCondition {
   static ARCHIVED: FilterQuery<Content> = { 'meta.archived': true };

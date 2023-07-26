@@ -8,7 +8,7 @@ import {
   UserSubscription,
   Subscription,
 } from './user-subscription.schema';
-import { createBaseEntityInstance } from '@lyvely/server-core';
+import { createBaseEntityInstance } from '@lyvely/core';
 import { PropertiesOf } from '@lyvely/common';
 
 const SubscriptionTypes = {

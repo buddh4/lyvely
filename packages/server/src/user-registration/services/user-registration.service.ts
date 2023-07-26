@@ -15,7 +15,7 @@ import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
-import { UrlGenerator, ConfigurationPath } from '@lyvely/server-core';
+import { UrlGenerator, ConfigurationPath } from '@lyvely/core';
 import { UserOtpService } from '@/user-otp';
 import { InvitationsService } from '@/invitations/services/invitations.service';
 import { IMailInvitation } from '@/invitations';

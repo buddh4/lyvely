@@ -8,7 +8,7 @@ import {
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { pick } from 'lodash';
-import { NestedSchema } from '@lyvely/server-core';
+import { NestedSchema } from '@lyvely/core';
 
 @NestedSchema()
 export class NumberDataPointConfigRevision

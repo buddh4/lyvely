@@ -6,7 +6,7 @@ import {
   IntegrityException,
   SortResult,
 } from '@lyvely/common';
-import { assureObjectId, EntityIdentity, QuerySort } from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity, QuerySort } from '@lyvely/core';
 import { CalendarPlanDao, CalendarPlanEntity } from '@/calendar-plan/interfaces';
 import { CalendarPlanService } from './calendar-plan.service';
 

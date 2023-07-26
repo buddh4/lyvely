@@ -1,6 +1,6 @@
 import { Controller, Post, Body, Req, UnauthorizedException } from '@nestjs/common';
 import { UserRegistrationService } from '../services/user-registration.service';
-import { Public, UseClassSerializer, ConfigurationPath } from '@lyvely/server-core';
+import { Public, UseClassSerializer, ConfigurationPath } from '@lyvely/core';
 import {
   UserRegistrationEndpoint,
   UserRegistration,

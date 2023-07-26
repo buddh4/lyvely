@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { CaptchaService } from '@/captcha/services/captcha.service';
 import { Readable } from 'stream';
-import { Public } from '@lyvely/server-core';
+import { Public } from '@lyvely/core';
 import { ENDPOINT_CAPTCHA, CaptchaChallenge, CaptchaEndpoint } from '@lyvely/common';
 
 @Controller(ENDPOINT_CAPTCHA)

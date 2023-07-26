@@ -1,12 +1,7 @@
 import { ProfilesService, Profile, ProfileTagsService } from '@/profiles';
 import { ContentTypeDao, ContentDao } from '../daos';
 import { User } from '@/users';
-import {
-  assureObjectId,
-  EntityIdentity,
-  IBaseQueryOptions,
-  UpdateQuerySet,
-} from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity, IBaseQueryOptions, UpdateQuerySet } from '@lyvely/core';
 import { Content, ContentCondition } from '../schemas';
 import {
   CreateContentModel,

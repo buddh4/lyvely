@@ -1,5 +1,5 @@
 import { Get, Controller, Res, Param, NotFoundException, Header } from '@nestjs/common';
-import { Public, UseClassSerializer } from '@lyvely/server-core';
+import { Public, UseClassSerializer } from '@lyvely/core';
 import { getLocalFilePath } from '@/files/file-path.utils';
 import fs from 'fs';
 import { Response } from 'express';

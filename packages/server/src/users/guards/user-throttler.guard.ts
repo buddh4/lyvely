@@ -1,10 +1,14 @@
 import { ReverseProxyThrottlerGuard } from '@/throttler';
 import { UserRequest } from '../types';
 import { ExecutionContext } from '@nestjs/common';
-import { USER_THROTTLER_LIMIT, USER_THROTTLER_TTL } from '@/users/decorators/user-throttle.decorator';
+import { USER_THROTTLER_LIMIT, USER_THROTTLER_TTL } from '../decorators';
 
 export class UserThrottlerGuard extends ReverseProxyThrottlerGuard {
-  protected override async handleRequest(context: ExecutionContext, limit: number, ttl: number): Promise<boolean> {
+  protected override async handleRequest(
+    context: ExecutionContext,
+    limit: number,
+    ttl: number,
+  ): Promise<boolean> {
     const { req } = this.getRequestResponse(context);
 
     if (!req.user) return true;

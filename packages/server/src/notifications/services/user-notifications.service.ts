@@ -16,7 +16,7 @@ import {
 } from '../schemas';
 import { FilterQuery } from 'mongoose';
 import { User, UsersService } from '@/users';
-import { assureObjectId, assureStringId, EntityIdentity } from '@lyvely/server-core';
+import { assureObjectId, assureStringId, EntityIdentity } from '@lyvely/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { I18n } from '@/i18n';
 import { LiveService } from '@/live';

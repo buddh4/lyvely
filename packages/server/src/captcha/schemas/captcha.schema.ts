@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, DocumentType } from '@lyvely/server-core';
+import { BaseEntity, DocumentType } from '@lyvely/core';
 import { addMilliSeconds } from '@lyvely/common';
 import ms from 'ms';
 

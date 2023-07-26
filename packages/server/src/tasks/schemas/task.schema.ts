@@ -15,7 +15,7 @@ import {
 } from '@lyvely/common';
 import mongoose from 'mongoose';
 import { User } from '@/users';
-import { assureObjectId, EntityIdentity, NestedSchema } from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity, NestedSchema } from '@lyvely/core';
 import { ContentDataType, ContentType } from '@/content';
 import { Timer, TimerSchema } from '@/calendar';
 

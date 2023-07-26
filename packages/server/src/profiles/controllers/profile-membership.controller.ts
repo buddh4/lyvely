@@ -2,7 +2,7 @@ import { Post, Req, Body } from '@nestjs/common';
 import { ProfileController } from '../decorators';
 import { ProfileMembershipGuard } from '../guards';
 import { ProfileRequest } from '../types';
-import { UseClassSerializer } from '@lyvely/server-core';
+import { UseClassSerializer } from '@lyvely/core';
 import {
   MembershipModel,
   UpdateProfileMembershipSettingsDto,

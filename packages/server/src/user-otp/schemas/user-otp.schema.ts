@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { BaseEntity } from '@lyvely/server-core';
+import { BaseEntity } from '@lyvely/core';
 import { addMilliSeconds, OtpInfo, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/common';
 
 @Schema()

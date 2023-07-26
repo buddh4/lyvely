@@ -4,7 +4,7 @@ import { UsersModule } from '@/users';
 import { ContentModule, getContentModelDefinition, getContentScoreDefinition } from '@/content';
 import { ProfilesModule } from '@/profiles';
 import { PoliciesModule } from '@/policies/policies.module';
-import { CoreModule } from '@lyvely/server-core';
+import { CoreModule } from '@lyvely/core';
 import { Task, TaskSchema, TaskScore, TaskScoreSchema } from './schemas';
 import { TasksController } from '@/tasks/controllers';
 import { TasksDao } from '@/tasks/daos';

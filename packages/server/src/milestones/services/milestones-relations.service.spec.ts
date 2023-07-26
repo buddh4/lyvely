@@ -12,7 +12,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { MilestoneRelationEvent } from '@/milestones';
 import { Milestone } from '@/milestones/schemas';
 import { ObjectID } from 'mongodb';
-import { EntityIdentity } from '@lyvely/server-core';
+import { EntityIdentity } from '@lyvely/core';
 
 @Schema()
 class TestContent extends ContentType<TestContent> {

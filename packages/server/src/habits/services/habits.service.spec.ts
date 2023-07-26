@@ -15,7 +15,7 @@ import { HabitTestDataUtil, createHabitTestingModule } from '../test';
 import { HabitsDao } from '../daos';
 import { User } from '@/users';
 import { Habit } from '../schemas';
-import { assureStringId } from '@lyvely/server-core';
+import { assureStringId } from '@lyvely/core';
 
 describe('HabitService', () => {
   let habitsService: HabitsService;

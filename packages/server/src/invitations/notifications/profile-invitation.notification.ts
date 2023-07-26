@@ -5,7 +5,7 @@ import { Prop } from '@nestjs/mongoose';
 import { User, UserInfo, UserInfoSchema } from '@/users';
 import { ProfileInfo, ProfileInfoSchema, Profile } from '@/profiles';
 import { InvitationsNotificationCategory } from './invitations.notification-category';
-import { assureStringId } from '@lyvely/server-core';
+import { assureStringId } from '@lyvely/core';
 
 @Notification()
 export class ProfileInvitationNotification extends NotificationType<ProfileInvitationNotification> {

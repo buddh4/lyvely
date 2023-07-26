@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
 import { getScaledProgress } from '@lyvely/common';
+import ProfileAvatar from '@/modules/profiles/components/ProfileAvatar.vue';
 
 const profileStore = useProfileStore();
 const pageStore = usePageStore();
@@ -43,23 +44,23 @@ const progressStyle = computed(() => {
           aria-controls="sidebar"
           @click="toggleSidebar">
           <div class="border border-divide px-3 p-2 flex justify-center items-center gap-2">
-            <ly-profile-avatar />
+            <profile-avatar />
 
             <div class="flex flex-col">
               <div class="flex justify-center items-center text-xs">
                 <transition
                   name="score-icon"
                   mode="out-in"
-                  enter-active-class="animate__animated animate_svg_flip"
-                  leave-active-class="">
+                  enterActiveClass="animate__animated animate_svg_flip"
+                  leaveActiveClass="">
                   <ly-icon :key="score" name="score" class="text-success" />
                 </transition>
 
                 <transition
                   name="score"
                   mode="out-in"
-                  enter-active-class="animate__animated animate__faster animate__bounceIn"
-                  leave-active-class="animate__animated animate__faster animate__bounceOut">
+                  enterActiveClass="animate__animated animate__faster animate__bounceIn"
+                  leaveActiveClass="animate__animated animate__faster animate__bounceOut">
                   <div :key="score" class="inline-block score-value ml-0.5">
                     <span>{{ formattedScore }}</span>
                   </div>

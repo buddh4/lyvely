@@ -17,7 +17,7 @@ import {
   ITimeSeriesContentConfig,
 } from '@lyvely/common';
 import { User } from '@/users';
-import { NestedSchema } from '@lyvely/server-core';
+import { NestedSchema } from '@lyvely/core';
 
 type TestDataPointConfig =
   | CheckboxNumberDataPointConfig

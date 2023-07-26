@@ -10,7 +10,9 @@ module.exports = {
     parser: '@typescript-eslint/parser',
     sourceType: 'module',
     project: [
-      './packages/core/server/tsconfig.json',
+      './packages/core/tsconfig.json',
+      './packages/users/backend/tsconfig.json',
+      './packages/testing/tsconfig.json',
       './packages/ui/tsconfig.json',
       './packages/web/tsconfig.json',
       './packages/common/tsconfig.json',
@@ -42,12 +44,12 @@ module.exports = {
     },
   },
   rules: {
-    "@nx/enforce-module-boundaries": [
-      "error",
+    '@nx/enforce-module-boundaries': [
+      'error',
       {
         allow: [],
         banTransitiveDependencies: true,
-      }
+      },
     ],
     '@typescript-eslint/naming-convention': [
       'warn',

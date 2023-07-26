@@ -4,7 +4,7 @@ import { UsersModule } from '@/users';
 import { ContentModule, getContentModelDefinition } from '@/content';
 import { ProfilesModule } from '@/profiles';
 import { PoliciesModule } from '@/policies/policies.module';
-import { CoreModule } from '@lyvely/server-core';
+import { CoreModule } from '@lyvely/core';
 import { Milestone, MilestoneSchema } from './schemas';
 import { MilestonesController } from '@/milestones/controllers/milestones.controller';
 import { MilestonesDao } from '@/milestones/daos';

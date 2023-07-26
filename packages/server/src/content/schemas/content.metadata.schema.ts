@@ -1,5 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema } from '@lyvely/server-core';
+import { BaseEntity, NestedSchema } from '@lyvely/core';
 import mongoose from 'mongoose';
 import { Author, ContentAuthorSchema, CreatedAs } from '@/content/schemas/content-author.schema';
 import {

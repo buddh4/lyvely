@@ -2,7 +2,7 @@ import { Inject } from '@nestjs/common';
 import { AbstractContentTypeController, ContentTypeController } from '@/content';
 import { Message } from '@/message/schemas/message.schema';
 import { MessageService } from '@/message/services/message.service';
-import { UseClassSerializer } from '@lyvely/server-core';
+import { UseClassSerializer } from '@lyvely/core';
 import {
   MessageEndpoint,
   ENDPOINT_MESSAGE,

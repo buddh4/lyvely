@@ -1,6 +1,6 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Invitation } from './invitation.schema';
-import { ObjectIdProp } from '@lyvely/server-core';
+import { ObjectIdProp } from '@lyvely/core';
 import { IUserInvitation } from '../interfaces';
 
 @Schema({ timestamps: true })

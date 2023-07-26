@@ -23,7 +23,7 @@ import {
   UpdateJournalModel,
 } from '@lyvely/common';
 import { User } from '@/users';
-import { assureObjectId, NestedSchema } from '@lyvely/server-core';
+import { assureObjectId, NestedSchema } from '@lyvely/core';
 import { Profile } from '@/profiles';
 import { ContentDataType } from '@/content';
 

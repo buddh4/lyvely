@@ -8,7 +8,7 @@ import {
   ITextDataPointSettings,
 } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
-import { NestedSchema } from '@lyvely/server-core';
+import { NestedSchema } from '@lyvely/core';
 import { pick } from 'lodash';
 
 const SupportedTextDataPointInputTypes = [DataPointInputType.Textarea];

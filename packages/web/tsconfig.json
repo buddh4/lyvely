@@ -17,7 +17,6 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
     "baseUrl": ".",
-    "typeRoots": ["./node_modules/@types", "../../node_modules/@types", "./src/types"],
     "paths": {
       "@/*": ["src/*"],
       "vite": ["node_modules/vite"]

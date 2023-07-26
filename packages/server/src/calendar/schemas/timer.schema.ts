@@ -1,7 +1,7 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { PropertyType, TimerModel, TimeSpanModel, PropertiesOf } from '@lyvely/common';
-import { assureObjectId, EntityIdentity, NestedSchema } from '@lyvely/server-core';
+import { assureObjectId, EntityIdentity, NestedSchema } from '@lyvely/core';
 import { User } from '@/users';
 
 @NestedSchema()

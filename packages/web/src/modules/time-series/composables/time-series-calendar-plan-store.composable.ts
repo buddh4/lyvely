@@ -95,9 +95,9 @@ export function useTimeSeriesCalendarPlan<
         value: value,
       });
 
-      cache.value.setModel(result.model);
+      cache.value.setModel(result.model as TModel);
       useContentStore().emitPostContentUpdateEvent(result.model.type, result.model);
-      cache.value.setDataPoint(result.dataPoint);
+      cache.value.setDataPoint(result.dataPoint as TDataPoint);
     } catch (e) {
       if (isDefined(oldValue)) {
         dataPoint.value = oldValue!;
