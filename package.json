@@ -6,6 +6,7 @@
   "workspaces": [
     "packages/*",
     "packages/users/*",
+    "packages/throttler/*",
     "packages/policy/*"
   ],
   "scripts": {
