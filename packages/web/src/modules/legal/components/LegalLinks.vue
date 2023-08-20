@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { LegalSection, LegalSectionDetails } from '@lyvely/common';
 import LyLoader from '@/modules/ui/components/loader/LoaderBlock.vue';
 import { useLegalService } from '@/modules/legal/services/legal.service';
@@ -11,7 +11,7 @@ const sections = get('legal');
 const showLegalModal = ref(false);
 const activeSection = ref<LegalSection>();
 const activeSectionDetails = ref<LegalSectionDetails>();
-const details = {};
+const details = {} as Record<string, LegalSectionDetails>;
 const loading = ref(false);
 const legalService = useLegalService();
 
