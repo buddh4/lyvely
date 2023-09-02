@@ -2,6 +2,6 @@
 sidebar_position: 1
 ---
 
-# User Guide
+# Introduction
 
-> Comming Soon
+> Comming soon
