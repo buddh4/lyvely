@@ -1,4 +1,4 @@
-import { BaseModel, DocumentModel, PropertyType } from '@/models';
+import { BaseModel, DocumentModel, PropertyType } from '@lyvely/core';
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
 import {
@@ -10,7 +10,7 @@ import {
   IContentLog,
   IContentMetadata,
 } from '../interfaces';
-import { TransformObjectId, PropertiesOf } from '@/utils';
+import { TransformObjectId, PropertiesOf } from '@lyvely/core';
 
 export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   extends BaseModel<T>

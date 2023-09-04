@@ -1,7 +1,7 @@
 import { UpdateHabitModel } from './update-habit.model';
 import { plainToClass } from 'class-transformer';
 import { validate } from 'class-validator';
-import { UserAssignmentStrategy } from '@/collab';
+import { UserAssignmentStrategy } from '@lyvely/collab';
 
 describe('UpdateHabitModel', () => {
   describe('transform', function () {

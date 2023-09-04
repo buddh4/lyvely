@@ -1,6 +1,6 @@
 import { Matches } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
-import { REGEX_DATE_FORMAT } from '@/calendar';
+import { REGEX_DATE_FORMAT } from '@lyvely/calendar';
 
 @Exclude()
 export class UpdateTaskStateModel {

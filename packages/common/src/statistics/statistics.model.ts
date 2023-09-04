@@ -4,8 +4,8 @@ import {
   getLocalizedDays,
   getLocalizedMonths,
   getMonthNames,
-} from '@/calendar';
-import { CalendarPlan } from '@/calendar-plan';
+} from '@lyvely/calendar';
+import { CalendarPlan } from '@lyvely/calendar-plan';
 
 abstract class Statistics {
   title: string;

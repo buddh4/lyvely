@@ -1,6 +1,6 @@
 import { IUrlRoute } from '@/web';
-import { UserInfoModel } from '@/users';
-import { ProfileInfoModel } from '@/profiles';
+import { UserInfoModel } from '@lyvely/users';
+import { ProfileInfoModel } from '@lyvely/profiles';
 
 export interface IWebNotification {
   id: string;

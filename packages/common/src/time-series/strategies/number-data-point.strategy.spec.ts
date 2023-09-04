@@ -5,8 +5,8 @@ import {
   NumberDataPointModel,
   useDataPointStrategyFacade,
 } from '@/time-series';
-import { CalendarInterval, isToday } from '@/calendar';
-import { toTimingId } from '@/calendar-plan';
+import { CalendarInterval, isToday } from '@lyvely/calendar';
+import { toTimingId } from '@lyvely/calendar-plan';
 
 describe('NumberDataPointStrategy', () => {
   describe('validateValue', () => {

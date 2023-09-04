@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
-import { TimerDataPointModel, UpdateDataPointResponse } from '@/time-series';
-import { PropertyType } from '@/models';
+import { TimerDataPointModel, UpdateDataPointResponse } from '@lyvely/time-series';
+import { PropertyType } from '@lyvely/core';
 import { HabitModel } from './habit.model';
 
 @Expose()

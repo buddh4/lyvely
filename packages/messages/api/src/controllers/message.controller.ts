@@ -1,0 +1,26 @@
+import { Inject } from '@nestjs/common';
+import { AbstractContentTypeController, ContentTypeController } from '@lyvely/content';
+import { Message } from '../message/schemas';
+import { MessageService } from '../services';
+import { UseClassSerializer } from '@lyvely/core';
+import {
+  MessageEndpoint,
+  ENDPOINT_MESSAGE,
+  CreateMessage,
+  MessageUpdateResponse,
+} from '@lyvely/common';
+
+@ContentTypeController(ENDPOINT_MESSAGE, Message)
+// TODO: implement feature registration @Feature('activities')
+@UseClassSerializer()
+export class MessageController
+  extends AbstractContentTypeController<Message, CreateMessage>
+  implements MessageEndpoint
+{
+  @Inject()
+  protected contentService: MessageService;
+
+  protected updateResponseType = MessageUpdateResponse;
+  protected createModelType = CreateMessage;
+  protected updateModelType = CreateMessage;
+}

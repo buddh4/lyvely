@@ -1,5 +1,5 @@
 import { Expose, Type as TransformType } from 'class-transformer';
-import { TimerModel } from '@/calendar';
+import { TimerModel } from '@lyvely/calendar';
 import { PropertyType } from '@/models';
 import { DataPointModel } from './data-point.model';
 import {

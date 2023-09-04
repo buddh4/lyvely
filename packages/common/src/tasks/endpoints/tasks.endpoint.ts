@@ -1,5 +1,5 @@
 import { Endpoint } from '@/endpoints';
-import { CalendarDate, TimerModel } from '@/calendar';
+import { CalendarDate, TimerModel } from '@lyvely/calendar';
 import {
   UpdateTaskResponse,
   TaskModel,
@@ -7,8 +7,8 @@ import {
   UpdateTaskModel,
   CreateTaskModel,
 } from '../models';
-import { IContentTypeService } from '@/content';
-import { ICalendarPlanService } from '@/calendar-plan';
+import { IContentTypeService } from '@lyvely/content';
+import { ICalendarPlanService } from '@lyvely/calendar-plan';
 
 export interface ITasksEndpointService
   extends IContentTypeService<TaskModel, CreateTaskModel, UpdateTaskModel>,

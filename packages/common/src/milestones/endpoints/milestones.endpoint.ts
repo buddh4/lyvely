@@ -1,6 +1,6 @@
 import { Endpoint } from '@/endpoints';
 import { MilestoneModel, UpdateMilestoneModel, CreateMilestoneModel } from '../models';
-import { IContentTypeService } from '@/content';
+import { IContentTypeService } from '@lyvely/content';
 import { MilestoneListResponse } from '@/milestones/models/milestone-list.response';
 
 export interface IMilestonesEndpointService

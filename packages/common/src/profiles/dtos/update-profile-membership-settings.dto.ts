@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsOptional, IsString, Length, MaxLength } from 'class-validator';
-import { MIN_USER_NAME_LENGTH, MAX_USER_NAME_LENGTH } from '@/users';
+import { MIN_USER_NAME_LENGTH, MAX_USER_NAME_LENGTH } from '@lyvely/users';
 import { BaseModel } from '@/models';
 
 @Exclude()

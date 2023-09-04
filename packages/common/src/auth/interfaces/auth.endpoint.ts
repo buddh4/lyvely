@@ -1,5 +1,5 @@
-import { Endpoint } from '@/endpoints';
-import { UserModel } from '@/users';
+import { Endpoint } from '@lyvely/core';
+import { UserModel } from '@lyvely/users';
 import { LoginModel } from '../models/login.model';
 
 export interface IRefreshTokenResponse {

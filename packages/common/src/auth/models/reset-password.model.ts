@@ -1,6 +1,6 @@
-import { BaseModel, PropertyType } from '@/models';
+import { BaseModel, PropertyType } from '@lyvely/core';
 import { IsBoolean, IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-import { Match } from '@/validation';
+import { Match } from '@lyvely/validation';
 
 export class SendResetPasswordMail extends BaseModel<SendResetPasswordMail> {
   @IsEmail()

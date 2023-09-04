@@ -1,6 +1,6 @@
 import { ITimeSeriesSummary } from '../interfaces';
-import { CalendarInterval } from '@/calendar';
-import { CalendarPlan, getTidWindow } from '@/calendar-plan';
+import { CalendarInterval } from '@lyvely/calendar';
+import { CalendarPlan, getTidWindow } from '@lyvely/calendar-plan';
 
 export interface IMovingAverageData {
   tid: string;

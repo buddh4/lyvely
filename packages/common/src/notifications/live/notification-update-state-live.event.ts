@@ -1,4 +1,4 @@
-import { ILiveUserEvent } from '@/live';
+import { ILiveUserEvent } from '@lyvely/live';
 
 export class NotificationUpdateStateLiveEvent implements ILiveUserEvent {
   static eventName = 'notificationUpdateStateEvent';

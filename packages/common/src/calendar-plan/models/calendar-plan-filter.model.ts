@@ -1,7 +1,7 @@
 import { Exclude, Expose, Transform } from 'class-transformer';
 import { IsBoolean, IsEnum, IsMongoId, IsOptional, IsString, Matches } from 'class-validator';
-import { CalendarInterval, formatDate, REGEX_DATE_FORMAT } from '@/calendar';
-import type { CalendarDate } from '@/calendar';
+import { CalendarInterval, formatDate, REGEX_DATE_FORMAT } from '@lyvely/calendar';
+import type { CalendarDate } from '@lyvely/calendar';
 import { ICalendarPlanFilter } from '../interfaces';
 import { BaseModel } from '@/models';
 

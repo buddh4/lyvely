@@ -1,10 +1,10 @@
-import { Endpoint } from '@/endpoints';
+import { Endpoint } from '@lyvely/core';
 import {
   ITimeSeriesCalendarPlanService,
   NumberDataPointModel,
   TimerDataPointModel,
-} from '@/time-series';
-import { IContentTypeService } from '@/content';
+} from '@lyvely/time-series';
+import { IContentTypeService } from '@lyvely/content';
 import {
   HabitModel,
   UpdateHabitModel,

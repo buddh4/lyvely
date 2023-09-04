@@ -1,4 +1,4 @@
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 
 export interface ITaskConfig {

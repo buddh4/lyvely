@@ -1,4 +1,4 @@
-import { translate } from '@/i18n';
+import { translate } from '@lyvely/i18n';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 

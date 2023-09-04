@@ -1,5 +1,5 @@
 import { getTimingIds, toTimingId, WeekStrategy } from '../models';
-import { CalendarDateTime, CalendarInterval } from '@/calendar';
+import { CalendarDateTime, CalendarInterval } from '@lyvely/calendar';
 
 describe('time series utils', () => {
   describe('getTimingIds', () => {

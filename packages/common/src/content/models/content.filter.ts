@@ -1,5 +1,5 @@
 import { escapeRegExp } from 'lodash';
-import { Filter, FilterConstructorOptions, IFilter } from '@/models';
+import { Filter, FilterConstructorOptions, IFilter } from '@lyvely/core';
 import { TagModel } from '@/tags';
 import { IContent } from '../interfaces';
 

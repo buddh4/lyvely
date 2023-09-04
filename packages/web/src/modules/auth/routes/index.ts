@@ -1,5 +1,5 @@
 import { ifNotAuthenticated } from '../guards';
-import { translate } from '@/i18n';
+import { translate } from '@lyvely/i18n';
 import { RouteLocation } from 'vue-router';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from './paths';

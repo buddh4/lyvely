@@ -1,4 +1,4 @@
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { TaskFilter } from './task-filter.model';
 import { TaskModel } from './task.model';
 import { sortTasks } from '@/tasks/models/task.sort';

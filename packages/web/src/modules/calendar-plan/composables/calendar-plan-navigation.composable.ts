@@ -1,5 +1,5 @@
 import { CalendarInterval, CalendarPlan, isToday as isTodayUtil } from '@lyvely/common';
-import { translate } from '@/i18n';
+import { translate } from '@lyvely/i18n';
 import { getDefaultLocale } from '@/util';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useAuthStore } from '@/modules/auth/store/auth.store';

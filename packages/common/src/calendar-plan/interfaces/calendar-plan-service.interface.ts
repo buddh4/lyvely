@@ -1,6 +1,6 @@
 import { ICalendarPlanEntry } from './calendar-plan-entry.interface';
 import { SortResponse } from '@/models';
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 
 export interface ICalendarPlanResponse<TModel extends ICalendarPlanEntry> {
   models: TModel[];

@@ -1,0 +1,12 @@
+{
+  "baseUrl": "./",
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "types": ["cypress", "node"]
+  },
+  "include": ["**/*.ts"],
+  "paths": {
+    "@common/*": ["node_modules/@lyvely/common/dist/lib/*"]
+  }
+}

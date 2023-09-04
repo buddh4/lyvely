@@ -1,4 +1,4 @@
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 
 import {
   CalendarPlan,
@@ -8,7 +8,7 @@ import {
   UnscheduledPlan,
   WeeklyPlan,
   YearlyPlan,
-} from '@/calendar-plan';
+} from '@lyvely/calendar-plan';
 
 describe('CalendarPlan', () => {
   describe('UnscheduledPlan', function () {

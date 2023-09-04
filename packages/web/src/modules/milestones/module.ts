@@ -1,6 +1,6 @@
 import { IModule } from '@/modules/core/modules/interfaces/module.interface';
 import { registerContentType } from '@/modules/content-stream';
-import { translation } from '@/i18n';
+import { translation } from '@lyvely/i18n';
 import { MilestoneModel, CreateMilestoneModel } from '@lyvely/common';
 
 export default () => {

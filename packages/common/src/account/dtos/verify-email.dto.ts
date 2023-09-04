@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, Length, Matches } from 'class-validator';
-import { BaseModel } from '@/models';
+import { BaseModel } from '@lyvely/core';
 
 export class VerifyEmailDto extends BaseModel<VerifyEmailDto> {
   @IsEmail()

@@ -11,10 +11,10 @@ import {
   IsArray,
   MaxLength,
 } from 'class-validator';
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 import { DataPointInputType } from '@/time-series';
-import { CreateContentModel } from '@/content';
+import { CreateContentModel } from '@lyvely/content';
 
 @Exclude()
 export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {

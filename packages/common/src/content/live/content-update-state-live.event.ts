@@ -1,4 +1,4 @@
-import { ILiveProfileEvent } from '@/live';
+import { ILiveProfileEvent } from '@lyvely/live';
 
 export interface IContentUpdateStateEventOptions {
   pid: string;

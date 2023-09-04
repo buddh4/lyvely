@@ -1,4 +1,4 @@
-import { INumberDataPointConfig, ITimerDataPointConfig } from '@/time-series';
+import { INumberDataPointConfig, ITimerDataPointConfig } from '@lyvely/time-series';
 
 export interface IHabitConfig {
   score: number;

@@ -1,5 +1,5 @@
-import { IStreamService } from '@/stream';
-import { ContentModel } from '@/content';
+import { IStreamService } from '@lyvely/stream';
+import { ContentModel } from '@lyvely/content';
 import { Endpoint } from '@/endpoints';
 import { ContentStreamFilter } from '../models';
 

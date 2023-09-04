@@ -1,6 +1,6 @@
 import { UpdateHabitModel } from './update-habit.model';
 import { UpdateHabitDataPointModel } from './update-habit-data-point.model';
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { validate } from 'class-validator';
 
 describe('Activity Model', () => {

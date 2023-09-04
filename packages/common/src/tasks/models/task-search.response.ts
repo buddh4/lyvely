@@ -1,7 +1,7 @@
 import { Exclude, Type, Expose } from 'class-transformer';
 import { TaskModel } from './task.model';
 import { BaseModel } from '@/models';
-import { ICalendarPlanResponse } from '@/calendar-plan';
+import { ICalendarPlanResponse } from '@lyvely/calendar-plan';
 
 @Exclude()
 export class TaskSearchResponse

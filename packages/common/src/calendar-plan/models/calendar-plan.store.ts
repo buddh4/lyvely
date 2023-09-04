@@ -1,6 +1,6 @@
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { sortBySortOrder } from '@/models';
-import { ContentFilter } from '@/content';
+import { ContentFilter } from '@lyvely/content';
 import { ICalendarPlanEntry, ICalendarPlanResponse } from '../interfaces';
 
 type TimeSeriesContentIdentity = ICalendarPlanEntry | string;

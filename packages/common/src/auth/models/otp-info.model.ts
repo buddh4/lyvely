@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, PropertyType } from '@/models';
-import { addMilliSeconds } from '@/calendar';
+import { BaseModel, PropertyType } from '@lyvely/core';
+import { addMilliSeconds } from '@lyvely/calendar';
 
 export const DEFAULT_MAX_OTP_ATTEMPTS = 4;
 

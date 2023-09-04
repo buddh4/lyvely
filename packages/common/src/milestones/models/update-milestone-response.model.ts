@@ -2,7 +2,7 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { TagModel } from '@/tags';
 import { PropertyType } from '@/models';
 import { MilestoneModel } from './milestone.model';
-import { ContentUpdateResponse } from '@/content';
+import { ContentUpdateResponse } from '@lyvely/content';
 
 @Exclude()
 export class UpdateMilestoneResponse extends ContentUpdateResponse<MilestoneModel> {

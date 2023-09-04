@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { ICalendarPlanSort } from '../interfaces';
 
 @Exclude()

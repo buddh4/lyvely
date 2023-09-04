@@ -3,9 +3,9 @@ import {
   ITimerDataPointConfig,
   useDataPointStrategyFacade,
 } from '@/time-series';
-import { CalendarInterval, isToday } from '@/calendar';
+import { CalendarInterval, isToday } from '@lyvely/calendar';
 import { TimerDataPointModel } from '../models';
-import { toTimingId } from '@/calendar-plan';
+import { toTimingId } from '@lyvely/calendar-plan';
 
 describe('TimerDataPointStrategy', () => {
   describe('validateValue', () => {

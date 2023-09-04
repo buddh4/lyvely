@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { BaseModel, PropertyType } from '@/models';
-import { BaseMembershipRole } from '@/profiles';
+import { BaseMembershipRole } from '@lyvely/profiles';
 
 @Exclude()
 export class MailInvite extends BaseModel<MailInvite> {

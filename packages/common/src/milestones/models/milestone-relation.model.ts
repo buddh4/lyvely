@@ -1,7 +1,7 @@
 import { TransformObjectId } from '@/utils';
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel } from '@/models';
-import type { IContent } from '@/content';
+import type { IContent } from '@lyvely/content';
 
 @Exclude()
 export class MilestoneRelationModel extends BaseModel<MilestoneRelationModel> {

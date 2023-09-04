@@ -1,5 +1,5 @@
 import { CaptchaChallenge } from '../models';
-import { StrictEndpoint } from '@/endpoints';
+import { StrictEndpoint } from '@lyvely/core';
 
 export interface ICaptchaService {
   challenge(): Promise<CaptchaChallenge>;

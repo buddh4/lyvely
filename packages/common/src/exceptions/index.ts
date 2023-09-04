@@ -1,4 +1,4 @@
-import { IModelValidationResult, IFieldValidationResult } from '@/validation';
+import { IModelValidationResult, IFieldValidationResult } from '@lyvely/validation';
 
 export class ServiceException extends Error {
   protected defaultMessage = 'Unknown service error';

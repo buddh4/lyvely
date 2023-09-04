@@ -1,4 +1,4 @@
-import { ContentDataTypeModel, ContentModel } from '@/content';
+import { ContentDataTypeModel, ContentModel } from '@lyvely/content';
 import { Exclude, Expose } from 'class-transformer';
 import { PropertyType } from '@/models';
 

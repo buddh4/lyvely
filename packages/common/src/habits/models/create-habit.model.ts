@@ -1,12 +1,12 @@
 import { Expose } from 'class-transformer';
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import {
   DataPointInputType,
   DataPointValueType,
   INumberDataPointSettings,
   ITimerDataPointSettings,
-} from '@/time-series';
-import { UserAssignmentStrategy } from '@/collab';
+} from '@lyvely/time-series';
+import { UserAssignmentStrategy } from '@lyvely/collab';
 import {
   IsArray,
   IsEnum,
@@ -19,8 +19,8 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { BaseModel } from '@/models';
-import { Gte, Lte } from '@/validation';
+import { BaseModel } from '@lyvely/core';
+import { Gte, Lte } from '@lyvely/validation';
 
 @Expose()
 export class CreateHabitModel

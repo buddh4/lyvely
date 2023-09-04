@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { getDefaultLocale, RefreshToken, User, UserDocument } from './index';
 import { Model } from 'mongoose';
-import { createBasicTestingModule, TestDataUtils } from '@/test';
+import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
 import { addDays } from '@lyvely/common';
 import bcrypt from 'bcrypt';
 

@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { BaseModel } from '@/models';
 import { Match, NotMatch } from '@/validation';
-import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from '@/users';
+import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from '@lyvely/users';
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()

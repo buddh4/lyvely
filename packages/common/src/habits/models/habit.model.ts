@@ -1,14 +1,14 @@
 import { Expose } from 'class-transformer';
 import { UpdateHabitModel } from './update-habit.model';
-import { IEditableModel } from '@/models';
-import { CalendarInterval } from '@/calendar';
+import { IEditableModel } from '@lyvely/core';
+import { CalendarInterval } from '@lyvely/calendar';
 import {
   DataPointInputType,
   DataPointValueType,
   TimeSeriesContentModel,
   useDataPointStrategyFacade,
 } from '@/time-series';
-import { UserAssignmentStrategy } from '@/collab';
+import { UserAssignmentStrategy } from '@lyvely/collab';
 import { IHabitConfig } from '../interfaces';
 
 @Expose()

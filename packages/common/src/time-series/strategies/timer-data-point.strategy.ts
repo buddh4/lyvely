@@ -8,7 +8,7 @@ import { PropertiesOf } from '@/utils';
 import { isDefined, isNumber, validate } from 'class-validator';
 import { DataPointStrategy } from './data-point.strategy';
 import { TimerDataPointModel, TimerDataPointValueModel } from '../models';
-import { TimerModel } from '@/calendar';
+import { TimerModel } from '@lyvely/calendar';
 
 export class TimerDataPointStrategy extends DataPointStrategy<
   TimerDataPointModel,

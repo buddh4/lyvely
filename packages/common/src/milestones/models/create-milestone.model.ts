@@ -8,8 +8,8 @@ import {
   IsArray,
   MaxLength,
 } from 'class-validator';
-import { CalendarInterval } from '@/calendar';
-import { CreateContentModel } from '@/content';
+import { CalendarInterval } from '@lyvely/calendar';
+import { CreateContentModel } from '@lyvely/content';
 
 @Exclude()
 export class CreateMilestoneModel extends CreateContentModel<CreateMilestoneModel> {

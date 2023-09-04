@@ -1,10 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IEditableModel, PropertyType, TransformTo } from '@/models';
-import { CalendarInterval, TimerModel } from '@/calendar';
+import { CalendarInterval, TimerModel } from '@lyvely/calendar';
 import { UpdateTaskModel } from './update-task.model';
 import { ITaskConfig } from '@/tasks/interfaces/task-config.interface';
-import { ContentModel } from '@/content';
-import { ICalendarPlanEntry } from '@/calendar-plan';
+import { ContentModel } from '@lyvely/content';
+import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
 
 @Exclude()
 export class TaskModel

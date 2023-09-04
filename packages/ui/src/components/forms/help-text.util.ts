@@ -1,6 +1,6 @@
 import { uniqueId } from 'lodash';
 import { computed, ref } from 'vue';
-import { t } from '@/i18n';
+import { t } from '@lyvely/i18n';
 
 export function useHelpText(helpText?: string) {
   const translatedHelpText = helpText ? t(helpText) : undefined;

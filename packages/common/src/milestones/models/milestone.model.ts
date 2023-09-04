@@ -1,10 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IEditableModel } from '@/models';
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { UpdateMilestoneModel } from './update-milestone.model';
 import { IMilestoneConfig } from '../interfaces';
-import { ContentModel } from '@/content';
-import { ICalendarPlanEntry } from '@/calendar-plan';
+import { ContentModel } from '@lyvely/content';
+import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
 import { DataPointInputType, DataPointValueType } from '@/time-series';
 import { UserAssignmentStrategy } from '@/collab';
 

@@ -1,9 +1,9 @@
-import { ContentModel } from '@/content';
+import { ContentModel } from '@lyvely/content';
 import { ISortable, PropertyType } from '@/models';
 import { ITimeSeriesContentConfig, ITimeSeriesContent, ITimeSeriesSummary } from '../interfaces';
 import { Expose } from 'class-transformer';
-import { ICalendarPlanEntry } from '@/calendar-plan';
-import { CalendarInterval } from '@/calendar';
+import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
+import { CalendarInterval } from '@lyvely/calendar';
 
 export class TimeSeriesSummaryWindowEntryModel {
   @Expose()

@@ -1,6 +1,6 @@
 import { Transform, Expose, Exclude } from 'class-transformer';
 import { assignRawDataToAndInitProps } from './util';
-import { PropertiesOf } from '@/utils';
+import { PropertiesOf } from '@lyvely/core';
 
 export type DocumentMock<T> = {
   _id?: any;

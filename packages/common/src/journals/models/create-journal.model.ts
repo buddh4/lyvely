@@ -13,10 +13,10 @@ import {
   Min,
   ValidateIf,
 } from 'class-validator';
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 import { DataPointInputType, DataPointValueType } from '@/time-series';
-import { CreateContentModel } from '@/content';
+import { CreateContentModel } from '@lyvely/content';
 import { Gte, Lte } from '@/validation';
 
 @Expose()

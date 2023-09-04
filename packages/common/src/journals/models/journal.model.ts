@@ -8,7 +8,7 @@ import {
   TimeSeriesContentModel,
   useDataPointStrategyFacade,
 } from '@/time-series';
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { UserAssignmentStrategy } from '@/collab';
 import { IEditableModel } from '@/models';
 import { UpdateJournalModel } from './update-journal.model';

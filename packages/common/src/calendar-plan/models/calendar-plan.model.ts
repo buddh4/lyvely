@@ -16,7 +16,7 @@ import {
   dateTime,
   CalendarInterval,
   CalendarDateTime,
-} from '@/calendar';
+} from '@lyvely/calendar';
 
 export abstract class CalendarPlan {
   protected abstract id: CalendarInterval;

@@ -7,7 +7,7 @@ import {
   NumericDataPointInterface,
 } from '../interfaces';
 import { BaseModel, PropertyType } from '@/models';
-import { TimerModel } from '@/calendar';
+import { TimerModel } from '@lyvely/calendar';
 import { IsNumber, Min, ValidateNested } from 'class-validator';
 
 export class TimerDataPointValueModel extends BaseModel<TimerDataPointValueModel> {

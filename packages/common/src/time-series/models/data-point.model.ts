@@ -1,4 +1,4 @@
-import { CalendarInterval } from '@/calendar';
+import { CalendarInterval } from '@lyvely/calendar';
 import { DocumentModel } from '@/models';
 import { Exclude, Expose, Transform } from 'class-transformer';
 import { TransformObjectId } from '@/utils';

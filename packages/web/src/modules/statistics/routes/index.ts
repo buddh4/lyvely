@@ -1,5 +1,5 @@
 import Statistics from '@/modules/statistics/views/StatisticsView.vue';
-import { translation } from '@/i18n';
+import { translation } from '@lyvely/i18n';
 import { loadProfile } from '@/modules/profiles';
 
 export default [

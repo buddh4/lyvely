@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { setLocale } from '@/i18n';
+import { setLocale } from '@lyvely/i18n';
 import { localStorageManager, sessionStorageManager } from '@/util/storage';
 import { ref, computed } from 'vue';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';

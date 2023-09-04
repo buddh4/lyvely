@@ -1,4 +1,4 @@
-import { setTranslationProvider, TranslationAdapter } from '@/i18n';
+import { setTranslationProvider, TranslationAdapter } from '@lyvely/i18n';
 import { AvatarData } from '@/interfaces';
 
 export type ENV = 'development' | 'production';

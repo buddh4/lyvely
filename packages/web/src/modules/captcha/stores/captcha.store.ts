@@ -11,7 +11,7 @@ import {
   IFieldValidationResult,
 } from '@lyvely/common';
 import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
-import { translate, translation } from '@/i18n';
+import { translate, translation } from '@lyvely/i18n';
 import repository from '@/repository';
 import { isFieldValidationError } from '@/util';
 

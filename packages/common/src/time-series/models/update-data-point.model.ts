@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Matches } from 'class-validator';
-import { REGEX_DATE_FORMAT } from '@/calendar';
+import { REGEX_DATE_FORMAT } from '@lyvely/calendar';
 import { BaseModel } from '@/models';
 import { IUpdateDataPoint } from '../interfaces';
 
