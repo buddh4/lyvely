@@ -27,6 +27,7 @@
       1,
       "always",
       [
+        "accounts",
         "activities",
         "mixed",
         "docs",

@@ -1,5 +1,5 @@
 {
-  "name": "@lyvely/mail",
+  "name": "@lyvely/mails",
   "version": "0.1.0-alpha3",
   "description": "Lyvely policy module",
   "main": "dist/index.js",
