@@ -1,6 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Document, Types } from 'mongoose';
-import { DeepPartial, assignRawDataToAndInitProps } from '@lyvely/common';
+import {
+  DeepPartial,
+  assignRawDataToAndInitProps,
+  implementsGetDefaults,
+} from '@lyvely/core-common';
 
 export type TObjectId = Types.ObjectId;
 
@@ -20,7 +24,7 @@ export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
   }
 
   init(obj?: DeepPartial<C> | false) {
-    if ('getDefaults' in this && typeof this.getDefaults === 'function') {
+    if (implementsGetDefaults(this)) {
       const defaultValues = this.getDefaults();
       if (defaultValues) {
         obj = Object.assign(defaultValues, obj);

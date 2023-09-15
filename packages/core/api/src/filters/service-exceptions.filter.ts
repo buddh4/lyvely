@@ -1,5 +1,5 @@
 import { ExceptionFilter, Catch, ArgumentsHost, Logger } from '@nestjs/common';
-import { ServiceException } from '@lyvely/common';
+import { ServiceException } from '@lyvely/core-common';
 
 @Catch(ServiceException)
 export class ServiceExceptionsFilter implements ExceptionFilter {

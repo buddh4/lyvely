@@ -7,7 +7,7 @@ import {
   Type,
   findByPath,
   IntegrityException,
-} from '@lyvely/common';
+} from '@lyvely/core-common';
 
 export type EntityIdentity<T extends BaseEntity<any>> =
   | T
@@ -130,7 +130,7 @@ export function applyPush<T>(model: T, pushData: { [key in keyof T]?: any }): T 
   return model;
 }
 
-export function applyRawDataTo<T>(
+export function applyRawDataTo<T extends Object>(
   model: T,
   data: { [key in keyof T]?: any },
   { maxDepth = 100, strict = false } = {},

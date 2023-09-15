@@ -3,7 +3,7 @@ import { UrlGenerator } from './url-generator.service';
 import { createCoreTestingModule } from '../testing/core-test.util';
 import { TestingModule } from '@nestjs/testing';
 
-describe('UrlGenrator', () => {
+describe('UrlGenerator', () => {
   let urlGenerator: UrlGenerator;
   let testingModule: TestingModule;
 

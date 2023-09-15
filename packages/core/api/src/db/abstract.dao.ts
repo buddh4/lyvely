@@ -21,7 +21,7 @@ import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
-import { DeepPartial } from '@lyvely/common';
+import { DeepPartial } from '@lyvely/core-common';
 import { cloneDeep } from 'lodash';
 
 interface IPagination {

@@ -1,10 +1,9 @@
 import { Provider, DynamicModule, ForwardReference } from '@nestjs/common';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Type } from '@lyvely/common';
+import { Type } from '@lyvely/core-common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule } from '@nestjs/config';
-import { CoreModule } from '../core.module';
 import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose, { disconnect } from 'mongoose';
