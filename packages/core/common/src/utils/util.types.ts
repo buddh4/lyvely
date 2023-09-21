@@ -12,6 +12,6 @@ export type PropertiesOf<T> = T extends T ? Pick<T, NonFunctionPropertyNames<T>>
 type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
 export type FunctionsOf<T> = Pick<T, FunctionPropertyNames<T>>;
 
-export declare type Constructor<T> = new (...args: any[]) => T;
+export type Constructor<T> = new (...args: any[]) => T;
 
 export type Lazy<T> = () => Promise<T>;

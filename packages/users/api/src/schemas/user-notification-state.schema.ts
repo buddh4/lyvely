@@ -1,11 +1,7 @@
 import { BaseEntity, NestedSchema } from '@lyvely/core';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import {
-  addByInterval,
-  CalendarTimeInterval,
-  PropertyType,
-  UserNotificationStateModel,
-} from '@lyvely/common';
+import { addByInterval, CalendarTimeInterval } from '@lyvely/dates';
+import { UserNotificationStateModel } from '@lyvely/users-interface';
 
 export interface INotificationRateLimit {
   channel: string;

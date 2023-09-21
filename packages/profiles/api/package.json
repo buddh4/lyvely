@@ -21,7 +21,6 @@
     "bcrypt": "^5.1.0"
   },
   "devDependencies": {
-    "@lyvely/common": "0.1.0-alpha3",
     "@lyvely/core": "0.1.0-alpha3",
     "@lyvely/testing": "0.1.0-alpha3",
     "@lyvely/policies": "0.1.0-alpha3",
@@ -41,7 +40,6 @@
     "typescript": "^5.1.3"
   },
   "peerDependencies": {
-    "@lyvely/common": "0.1.0-alpha3",
     "@lyvely/policies": "0.1.0-alpha3",
     "@lyvely/permissions": "0.1.0-alpha3",
     "@lyvely/core": "0.1.0-alpha3",

@@ -5,10 +5,10 @@ import { ProfileRequest } from '../types';
 import { UseClassSerializer } from '@lyvely/core';
 import {
   MembershipModel,
-  UpdateProfileMembershipSettingsDto,
+  UpdateProfileMembershipSettings,
   ENDPOINT_PROFILE_MEMBERSHIP,
   ProfileMembershipEndpoint,
-} from '@lyvely/common';
+} from '@lyvely/profiles-interface';
 import { ProfileMembershipService } from '../services';
 
 @ProfileController(ENDPOINT_PROFILE_MEMBERSHIP, ProfileMembershipGuard)
@@ -18,7 +18,7 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
 
   @Post()
   async update(
-    @Body() update: UpdateProfileMembershipSettingsDto,
+    @Body() update: UpdateProfileMembershipSettings,
     @Req() req: ProfileRequest,
   ): Promise<MembershipModel> {
     const membership = req.context.getMembership();

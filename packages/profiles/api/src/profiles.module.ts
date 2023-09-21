@@ -11,7 +11,13 @@ import {
   GroupProfileSchema,
   OrganizationSchema,
 } from './schemas';
-import { ProfilesService, ProfileTagsService, ProfilePermissionsService } from './services';
+import {
+  ProfilesService,
+  ProfileTagsService,
+  ProfilePermissionsService,
+  ProfileMembershipService,
+  ProfileUrlGenerator,
+} from './services';
 import {
   ProfilesController,
   ProfileTagsController,
@@ -23,10 +29,9 @@ import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '@lyvely/policies';
 import { CoreModule } from '@lyvely/core';
-import { ProfileType } from '@lyvely/common';
+import { ProfileType } from '@lyvely/profiles-interface';
 import { useProfileMappings } from './mappings';
 import { ProfileMembershipController } from './controllers/profile-membership.controller';
-import { ProfileMembershipService, ProfileUrlGenerator } from './services';
 
 export const ProfileModel = MongooseModule.forFeature([
   {

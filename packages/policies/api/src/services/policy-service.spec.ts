@@ -1,7 +1,7 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { PolicyService } from './policy.service';
-import { createBasicTestingModule, createTestExecutionContext, TestDataUtils } from '@lyvely/testing';
+import { createCoreTestingModule, createTestExecutionContext } from '@lyvely/testing';
 import { IPolicy } from '../interfaces/policy.interface';
 import { Request } from 'express';
 import { Injectable } from '@nestjs/common';
@@ -23,23 +23,19 @@ class FalsePolicy implements IPolicy<Request> {
 describe('PolicyService', () => {
   let testingModule: TestingModule;
   let policyService: PolicyService;
-  let testData: TestDataUtils;
 
   const TEST_KEY = 'policy-service';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [
+    testingModule = await createCoreTestingModule(TEST_KEY, [
       PolicyService,
       TruePolicy,
       FalsePolicy,
     ]).compile();
     policyService = testingModule.get<PolicyService>(PolicyService);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
   });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
-  });
+  afterEach(async () => {});
 
   it('should be defined', () => {
     expect(policyService).toBeDefined();

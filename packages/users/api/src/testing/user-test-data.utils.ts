@@ -2,10 +2,13 @@ import { Inject, Injectable, Optional } from '@nestjs/common';
 import { InjectModel, MongooseModuleOptions } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { User, UserDocument, UserEmail } from '../schemas';
-import { UserStatus } from '@lyvely/common';
-import { closeInMongodConnection, rootMongooseTestModule } from '@lyvely/testing';
+import { UserStatus } from '@lyvely/users-interface';
+import {
+  closeInMongodConnection,
+  rootMongooseTestModule,
+  getObjectId as mongoSeedingGetObjectId,
+} from '@lyvely/testing';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
-import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { globalEmitter } from '@lyvely/core';
 
 @Injectable()

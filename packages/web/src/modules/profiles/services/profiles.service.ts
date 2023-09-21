@@ -1,4 +1,9 @@
-import { CreateProfileDto, IProfilesService, ProfileWithRelationsModel, useSingleton } from '@lyvely/common';
+import {
+  CreateProfileModel,
+  IProfilesService,
+  ProfileWithRelationsModel,
+  useSingleton,
+} from '@lyvely/common';
 import profileRepository from '@/modules/profiles/repositories/profile.repository';
 
 class ProfilesService implements IProfilesService {
@@ -7,7 +12,7 @@ class ProfilesService implements IProfilesService {
     return new ProfileWithRelationsModel(data);
   }
 
-  async create(dto: CreateProfileDto): Promise<ProfileWithRelationsModel> {
+  async create(dto: CreateProfileModel): Promise<ProfileWithRelationsModel> {
     const { data: relation } = await profileRepository.createProfile(dto);
     return new ProfileWithRelationsModel(relation);
   }

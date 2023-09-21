@@ -1,16 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import mongoose, { UpdateQuery } from 'mongoose';
-import { BaseEntity, validateEmail } from '@lyvely/core';
+import {
+  BaseEntity,
+  validateEmail,
+  PropertiesOf,
+  getNumberEnumValues,
+  PropertyType,
+} from '@lyvely/core';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
-import {
-  PropertiesOf,
-  UserModel,
-  getNumberEnumValues,
-  UserStatus,
-  PropertyType,
-} from '@lyvely/common';
+import { UserModel, UserStatus } from '@lyvely/users-interface';
 import { Avatar, AvatarSchema } from './user-avatar.schema';
 import { UserEmail, UserEmailSchema } from './user-email.schema';
 import { ProfilesCount, ProfilesCountSchema } from './profiles-count.schema';

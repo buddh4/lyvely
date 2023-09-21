@@ -1,7 +1,7 @@
 import { Body, Controller, Get, NotFoundException, Param, Post, Request } from '@nestjs/common';
 import {
   ProfileWithRelationsModel,
-  CreateProfileDto,
+  CreateProfileModel,
   ProfileType,
   mapType,
   ProfilesEndpoint,
@@ -41,7 +41,10 @@ export class ProfilesController implements ProfilesEndpoint {
   }
 
   @Post()
-  async create(@Body() dto: CreateProfileDto, @Request() req): Promise<ProfileWithRelationsModel> {
+  async create(
+    @Body() dto: CreateProfileModel,
+    @Request() req,
+  ): Promise<ProfileWithRelationsModel> {
     // TODO: (TEAM) check if user is allowed to create team profiles
     let profileRelations;
     if (dto.type === ProfileType.User) {

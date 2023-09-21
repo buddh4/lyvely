@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { AvatarModel, PropertiesOf } from '@lyvely/common';
+import { PropertiesOf } from '@lyvely/core';
+import { AvatarModel } from '@lyvely/users-interface';
 
 @Schema({ _id: false })
 export class Avatar implements PropertiesOf<AvatarModel> {

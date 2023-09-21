@@ -4,3 +4,4 @@ export * from './models';
 export * from './endpoints';
 export * from './exceptions';
 export * from './web';
+export * from './mappings';

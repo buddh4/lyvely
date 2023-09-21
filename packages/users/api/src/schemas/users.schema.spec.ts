@@ -3,7 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { getDefaultLocale, RefreshToken, User, UserDocument } from './index';
 import { Model } from 'mongoose';
 import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
-import { addDays } from '@lyvely/common';
+import { addDays } from '@lyvely/dates';
 import bcrypt from 'bcrypt';
 
 describe('Users schema', () => {

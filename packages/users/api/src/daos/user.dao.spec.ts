@@ -2,7 +2,9 @@ import { TestingModule } from '@nestjs/testing';
 import { createUserTestingModule, UserTestDataUtils } from '../testing';
 import { UserDao } from '../daos';
 import { RefreshToken, User, UserEmail } from '../schemas';
-import { ProfileType, UserStatus, addMinutes } from '@lyvely/common';
+import { UserStatus } from '@lyvely/users-interface';
+import { ProfileType } from '@lyvely/profiles-interface';
+import { addMinutes } from '@lyvely/dates';
 
 describe('UserDao', () => {
   let testingModule: TestingModule;

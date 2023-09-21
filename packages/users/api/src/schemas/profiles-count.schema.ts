@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { PropertyType } from '@lyvely/common';
+import { PropertyType } from '@lyvely/core';
 
 @Schema({ _id: false })
 export class ProfilesCount {

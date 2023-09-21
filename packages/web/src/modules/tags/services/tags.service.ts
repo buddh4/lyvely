@@ -1,6 +1,6 @@
 import {
   TagModel,
-  UpdateTagDto,
+  UpdateTag,
   useSingleton,
   IProfileTagsService,
   IEditModelService,
@@ -8,12 +8,12 @@ import {
 import repository from '../repositories/tags.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 
-export class TagsService implements IEditModelService<UpdateTagDto, TagModel>, IProfileTagsService {
-  async create(model: UpdateTagDto): Promise<TagModel> {
+export class TagsService implements IEditModelService<UpdateTag, TagModel>, IProfileTagsService {
+  async create(model: UpdateTag): Promise<TagModel> {
     return unwrapAndTransformResponse(repository.create(model), TagModel);
   }
 
-  async update(id: string, model: UpdateTagDto): Promise<TagModel> {
+  async update(id: string, model: UpdateTag): Promise<TagModel> {
     return unwrapAndTransformResponse(repository.update(id, model), TagModel);
   }
 

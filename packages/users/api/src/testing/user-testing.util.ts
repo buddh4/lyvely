@@ -1,7 +1,7 @@
 import { createCoreTestingModule, TestConfigService } from '@lyvely/testing';
 import { Provider, DynamicModule, ForwardReference } from '@nestjs/common';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Type } from '@lyvely/common';
+import { Type } from '@lyvely/core';
 import { TestingModuleBuilder } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { UsersModule } from '../users.module';

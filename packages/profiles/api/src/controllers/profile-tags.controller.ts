@@ -12,9 +12,9 @@ import {
 } from '@nestjs/common';
 import { ProfileRequest } from '../types';
 import {
-  UpdateTagDto,
+  UpdateTag,
   TagModel,
-  CreateTagDto,
+  CreateTagModel,
   ServiceException,
   ENDPOINT_PROFILE_TAGS,
   ProfileTagsEndpoint,
@@ -33,7 +33,7 @@ export class ProfileTagsController implements ProfileTagsEndpoint {
   private tagService: ProfileTagsService;
 
   @Post()
-  async create(@Body() dto: CreateTagDto, @Request() req: ProfileRequest) {
+  async create(@Body() dto: CreateTagModel, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
 
     if (!(await this.tagService.addTag(profile, dto))) {
@@ -44,7 +44,7 @@ export class ProfileTagsController implements ProfileTagsEndpoint {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateTagDto, @Request() req: ProfileRequest) {
+  async update(@Param('id') id: string, @Body() dto: UpdateTag, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
 

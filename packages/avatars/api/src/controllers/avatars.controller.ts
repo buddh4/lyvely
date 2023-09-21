@@ -1,9 +1,8 @@
 import { Get, Controller, Res, Param, NotFoundException, Header } from '@nestjs/common';
-import { Public, UseClassSerializer } from '@lyvely/core';
+import { Public, UseClassSerializer, isGuid } from '@lyvely/core';
 import { getLocalFilePath } from '@lyvely/files';
 import fs from 'fs';
 import { Response } from 'express';
-import { isGuid } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 
 @Controller('avatars')

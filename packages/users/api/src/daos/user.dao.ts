@@ -2,8 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, RefreshToken, UserEmail } from '../schemas';
-import { AbstractDao, IBaseQueryOptions, EntityIdentity, UpdateQuerySet } from '@lyvely/core';
-import { Constructor, ProfileType, UserStatus } from '@lyvely/common';
+import {
+  Constructor,
+  AbstractDao,
+  IBaseQueryOptions,
+  EntityIdentity,
+  UpdateQuerySet,
+} from '@lyvely/core';
+import { UserStatus } from '@lyvely/users-interface';
+import { ProfileType } from '@lyvely/profiles-interface';
 
 @Injectable()
 export class UserDao extends AbstractDao<User> {

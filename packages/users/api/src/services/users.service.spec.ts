@@ -2,7 +2,8 @@ import { expect } from '@jest/globals';
 import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '@lyvely/users';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, getObjectId, TestDataUtils } from '@lyvely/testing';
-import { ProfileType, addDays, addMinutes } from '@lyvely/common';
+import { addDays, addMinutes } from '@lyvely/dates';
+import { ProfileType } from '@lyvely/profiles-interface';
 import bcrypt from 'bcrypt';
 
 describe('UserService', () => {

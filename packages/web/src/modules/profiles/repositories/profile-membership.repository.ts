@@ -3,11 +3,11 @@ import {
   ENDPOINT_PROFILE_MEMBERSHIP,
   EndpointResult,
   IProfileMembershipService,
-  UpdateProfileMembershipSettingsDto,
+  UpdateProfileMembershipSettings,
 } from '@lyvely/common';
 
 export default {
-  async update(dto: UpdateProfileMembershipSettingsDto) {
+  async update(dto: UpdateProfileMembershipSettings) {
     return repository.post<EndpointResult<IProfileMembershipService['update']>>(
       `${ENDPOINT_PROFILE_MEMBERSHIP}`,
       dto,
