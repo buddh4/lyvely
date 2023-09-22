@@ -23,7 +23,8 @@
   "dependencies": {
     "dayjs": "^1.11.10",
     "class-validator": "^0.14.0",
-    "class-transformer": "^0.5.1"
+    "class-transformer": "^0.5.1",
+    "@lyvely/models": "^0.1.0-alpha3"
   },
   "devDependencies": {
     "rollup": "^3.21.3",

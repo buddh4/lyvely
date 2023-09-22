@@ -7,7 +7,7 @@ import {
   PropertyType,
   TimerDataPointModel,
 } from '@lyvely/common';
-import { Timer, TimerSchema } from '@lyvely/calendar';
+import { Timer, TimerSchema } from '@lyvely/dates';
 import { EntityIdentity, NestedSchema } from '@lyvely/core';
 import { User } from '@lyvely/users';
 import { DataPointSchemaFactory } from '@/time-series/schemas/data-points/data-point-schema.factory';

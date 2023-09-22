@@ -8,6 +8,7 @@ import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose, { disconnect } from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
+import { CoreModule } from '../core.module';
 
 const mongods = new Map<string, MongoMemoryServer>();
 
@@ -51,6 +52,7 @@ export function createCoreTestingModule(
         ],
         isGlobal: true,
       }),
+      CoreModule,
       ...imports,
     ],
     providers: [...providers],

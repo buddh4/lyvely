@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, PropertyType } from '@lyvely/core';
+import { BaseModel, PropertyType } from '@lyvely/models';
 import { ProfileType } from '../interfaces';
 import { BaseUserProfileRelationType, isMultiUserProfile } from '../models';
 

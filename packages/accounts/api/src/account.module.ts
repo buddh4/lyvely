@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AccountController } from './controllers/account.controller';
+import { AccountController } from './controllers';
 import { UsersModule } from '@lyvely/users';
-import { AccountService, AccountAvatarService } from './services/account.service';
+import { AccountService, AccountAvatarService } from './services';
 import { UserOtpModule } from '@lyvely/otp';
 
 @Module({

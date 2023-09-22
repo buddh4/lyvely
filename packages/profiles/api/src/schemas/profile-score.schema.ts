@@ -1,22 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { BaseEntity } from '@lyvely/core';
+import { BaseEntity, DeepPartial, UserAssignmentStrategy, toTimingId } from '@lyvely/core';
 import { User } from '@lyvely/users';
 import { Profile } from './profiles.schema';
-import {
-  DeepPartial,
-  toDate,
-  UserAssignmentStrategy,
-  CalendarDate,
-  toTimingId,
-} from '@lyvely/common';
+import { toDate, CalendarDate } from '@lyvely/dates';
 
 export interface IProfileScoreAction {
-  _id: TObjectId;
-  oid?: TObjectId;
-  pid: TObjectId;
-  uid?: TObjectId;
-  createdBy: TObjectId;
+  _id: mongoose.Types.ObjectId;
+  oid?: mongoose.Types.ObjectId;
+  pid: mongoose.Types.ObjectId;
+  uid?: mongoose.Types.ObjectId;
+  createdBy: mongoose.Types.ObjectId;
   tid: string;
   type: string;
   score: number;

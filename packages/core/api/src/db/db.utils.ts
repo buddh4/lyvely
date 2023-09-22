@@ -2,12 +2,12 @@ import { Document, Types, UpdateQuery } from 'mongoose';
 import { BaseEntity, assignEntityData } from './base.entity';
 import {
   isValidObjectId,
-  assignRawDataTo,
   DeepPartial,
   Type,
   findByPath,
   IntegrityException,
 } from '@lyvely/core-common';
+import { assignRawDataTo } from '@lyvely/models';
 
 export type EntityIdentity<T extends BaseEntity<any>> =
   | T

@@ -10,7 +10,7 @@ export class ProfileInfo
   implements PropertiesOf<Omit<ProfileInfoModel, 'pid'>>
 {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: TObjectId;
+  pid: mongoose.Types.ObjectId;
 
   @Prop()
   imageGuid?: string;

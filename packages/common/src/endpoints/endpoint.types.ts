@@ -1,4 +1,4 @@
-import { PropertiesOf } from '@lyvely/utils';
+import { PropertiesOf } from '../utils';
 
 export type Endpoint<T> = {
   [k in keyof T]: T[k] extends (...args: any) => any ? (...args: any[]) => ReturnType<T[k]> : never;

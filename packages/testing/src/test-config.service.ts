@@ -1,5 +1,6 @@
 import { Inject, Injectable, Optional } from '@nestjs/common';
-import { findByPath, assignRawDataTo } from '@lyvely/core';
+import { findByPath } from '@lyvely/core';
+import { assignRawDataTo } from '@lyvely/models';
 import { CONFIGURATION_TOKEN } from '@nestjs/config/dist/config.constants';
 
 @Injectable()

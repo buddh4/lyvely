@@ -3,7 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { MembershipsDao } from './index';
 import { ProfileRelationUserInfo } from '../schemas';
 import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
-import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
+import { createCoreTestingModule, TestDataUtils } from '@lyvely/testing';
 
 describe('MembershipDao', () => {
   let testingModule: TestingModule;

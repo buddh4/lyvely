@@ -1,15 +1,14 @@
 import { Body, Controller, Get, NotFoundException, Param, Post, Request } from '@nestjs/common';
+import { mapType, UseClassSerializer } from '@lyvely/core';
 import {
   ProfileWithRelationsModel,
   CreateProfileModel,
   ProfileType,
-  mapType,
   ProfilesEndpoint,
   ENDPOINT_PROFILES,
-} from '@lyvely/common';
+} from '@lyvely/profiles-interface';
 import { ProfilesService } from '../services';
 import { ProfileContext, ProfileRelations } from '../models';
-import { UseClassSerializer } from '@lyvely/core';
 import { User, UserRequest } from '@lyvely/users';
 
 @Controller(ENDPOINT_PROFILES)
@@ -35,7 +34,7 @@ export class ProfilesController implements ProfilesEndpoint {
     return mapType(ProfileRelations, ProfileWithRelationsModel, profileRelations);
   }
 
-  private async getDefaultProfile(user: User) {
+  private async getDefaultProfile(user: User): Promise<ProfileWithRelationsModel> {
     const profileRelations = await this.profilesService.findDefaultProfileMembershipByUser(user);
     return mapType(ProfileContext, ProfileWithRelationsModel, profileRelations);
   }

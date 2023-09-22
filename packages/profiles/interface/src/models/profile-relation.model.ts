@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { BaseModel, TransformObjectId } from '@lyvely/core';
+import { BaseModel, TransformObjectId } from '@lyvely/models';
 import { IProfileRelation, IProfileRelationUserInfo } from '../interfaces';
 
 @Exclude()

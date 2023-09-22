@@ -13,6 +13,7 @@ import {
 import { BaseProfileModel } from './base-profile-model.schema';
 import { Profile } from '../schemas';
 import { FilterQuery, QueryOptions, UpdateQuery, Types } from 'mongoose';
+import { IBulkBaseQueryOptions } from '@lyvely/core/src';
 
 /**
  * This type is used as compound type for different kinds of profile relation on DAO level.
@@ -148,7 +149,7 @@ export abstract class BaseProfileModelDao<T extends BaseProfileModel<T>> extends
   async updateSetBulkByProfile(
     profileRelation: ProfileShard,
     updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[],
-    options?: IBaseQueryOptions,
+    options?: IBulkBaseQueryOptions,
   ) {
     await this.model.bulkWrite(
       updates.map((update) => ({
@@ -201,5 +202,5 @@ function applyShardQueryFilter(profileRelation: ProfileShard, filter?: FilterQue
 function assureProfileId(profileRelation: ProfileShard): Profile['_id'] {
   return profileRelation instanceof Profile
     ? profileRelation._id
-    : assureObjectId(profileRelation.pid);
+    : (assureObjectId(profileRelation.pid) as Profile['_id']);
 }

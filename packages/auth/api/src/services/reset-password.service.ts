@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { FieldValidationException, isValidEmail, UserStatus, escapeHTML } from '@lyvely/common';
-import { User, UsersService } from '@lyvely/users';
+import { FieldValidationException, isValidEmail, escapeHTML } from '@lyvely/common';
+import { UserStatus, User, UsersService } from '@lyvely/users';
 import { MailService } from '@lyvely/mails';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath, UrlGenerator } from '@lyvely/core';
 import { JwtService } from '@nestjs/jwt';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
-import { JWT_RESET_PASSWORD_TOKEN } from '@lyvely/auth';
+import { JWT_RESET_PASSWORD_TOKEN } from '../guards';
 
 @Injectable()
 export class ResetPasswordService {

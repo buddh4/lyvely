@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '@lyvely/users';
 import { Profile } from '@lyvely/profiles';
-import { Timer } from '@lyvely/calendar';
+import { Timer } from '@lyvely/dates';
 import { CalendarInterval, ProfileType, UserAssignmentStrategy } from '@lyvely/common';
 import { ContentTypeDao } from '@lyvely/content';
 import { CalendarPlanDao } from '@lyvely/calendar-plan';

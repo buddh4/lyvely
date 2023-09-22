@@ -1,10 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Document, Types } from 'mongoose';
-import {
-  DeepPartial,
-  assignRawDataToAndInitProps,
-  implementsGetDefaults,
-} from '@lyvely/core-common';
+import { DeepPartial } from '@lyvely/core-common';
+import { assignRawDataToAndInitProps, implementsGetDefaults } from '@lyvely/models';
 
 export type TObjectId = Types.ObjectId;
 

@@ -271,15 +271,6 @@
 @lyvely/users';
 
 
-=== mails [] ===
-@nestjs/common';
-@nestjs/config';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/core';
-@lyvely/testing';
-
-
 === messages [] ===
 @nestjs/common';
 @nestjs/mongoose';

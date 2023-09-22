@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { Profile } from '../schemas';
-import { User } from '../../users';
+import { User } from '@lyvely/users';
 import { ProfileContext } from '../models';
 import { RequestAdditions } from '@lyvely/core';
 

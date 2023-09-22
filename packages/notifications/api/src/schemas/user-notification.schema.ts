@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { assureObjectId, BaseEntity, EntityIdentity, NestedSchema } from '@lyvely/core';
 import mongoose from 'mongoose';
-import { ISortable, PropertyType } from '@lyvely/common';
+import { ISortable, PropertyType } from '@lyvely/models';
 import { User } from '@lyvely/users';
 import { Notification } from './notification.schema';
 

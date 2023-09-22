@@ -1,14 +1,14 @@
 import { Expose, Exclude } from 'class-transformer';
 import { IsNotEmpty, IsHexColor, IsString, IsOptional, IsBoolean } from 'class-validator';
 import randomColor from 'randomcolor';
-import { BaseModel } from '@lyvely/core';
+import { BaseModel } from '@lyvely/models';
 
 @Exclude()
 export class CreateTagModel extends BaseModel<CreateTagModel> {
   @Expose()
   @IsString()
   @IsNotEmpty()
-  name?: string;
+  name: string;
 
   @Expose()
   @IsHexColor()

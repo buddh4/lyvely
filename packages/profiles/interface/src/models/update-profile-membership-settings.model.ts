@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsOptional, IsString, Length, MaxLength } from 'class-validator';
 import { MIN_USER_NAME_LENGTH, MAX_USER_NAME_LENGTH } from '@lyvely/users-interface';
-import { BaseModel } from '@lyvely/core';
+import { BaseModel } from '@lyvely/models';
 
 @Exclude()
 export class UpdateProfileMembershipSettings extends BaseModel<UpdateProfileMembershipSettings> {

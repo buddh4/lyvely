@@ -12,11 +12,10 @@ import {
   AddEmailDto,
   ENDPOINT_ACCOUNT,
   VerifyEmailDto,
-  ResendOtp,
-  AvatarModel,
-} from '@lyvely/common';
+} from '@lyvely/accounts-interface';
+import { AvatarModel, UserRequest, UserThrottle, UserThrottlerGuard } from '@lyvely/users';
+import { ResendOtp } from '@lyvely/otp';
 import { UseClassSerializer } from '@lyvely/core';
-import { UserRequest, UserThrottle, UserThrottlerGuard } from '@lyvely/users';
 import { AccountService, AccountAvatarService } from '../services';
 import { ParseFilePipeBuilder, MimeTypeValidator } from '@lyvely/files';
 import { FileInterceptor } from '@nestjs/platform-express';

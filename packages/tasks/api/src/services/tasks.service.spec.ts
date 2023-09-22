@@ -6,7 +6,7 @@ import { TaskTestDataUtil, createTaskTestingModule } from '../test';
 import { TasksDao } from '../daos';
 import { Profile } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
-import { Timer, TimeSpan } from '@lyvely/calendar';
+import { Timer, TimeSpan } from '@lyvely/dates';
 import { Task } from '../schemas';
 
 describe('TaskService', () => {

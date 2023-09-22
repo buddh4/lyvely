@@ -13,21 +13,16 @@ import {
   JwtRefreshGuard,
   clearAccessCookies,
   clearRefreshCookies,
+  EmailBodyThrottlerGuard,
 } from '../guards';
-import { JwtAuthService } from '@lyvely/auth';
-import { UserRequest, UserThrottle, UserThrottlerGuard } from '@lyvely/users';
-import {
-  UserModel,
-  Headers,
-  ENDPOINT_AUTH,
-  AuthEndpoint,
-  LoginModel,
-  UserStatus,
-} from '@lyvely/common';
+import { AbstractJwtAuthController } from './abstract-jwt-auth.controller';
+import { JwtAuthService } from '../services';
+import { UserRequest, UserThrottle, UserThrottlerGuard, UserStatus } from '@lyvely/users';
+import { UserModel, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/auth-interface';
+import { Headers } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@lyvely/core';
-import { AbstractJwtAuthController, EmailBodyThrottlerGuard } from '@lyvely/auth';
 
 @Controller(ENDPOINT_AUTH)
 @UseClassSerializer()

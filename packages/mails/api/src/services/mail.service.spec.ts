@@ -1,8 +1,7 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule } from '@lyvely/testing';
 import { MailService } from './mail.service';
 import fs from 'fs';
+import { createMailTestingModule } from '../testing/testing.util';
 
 describe('MailService', () => {
   let testingModule: TestingModule;
@@ -11,7 +10,7 @@ describe('MailService', () => {
   const TEST_KEY = 'membership_dao';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY).compile();
+    testingModule = await createMailTestingModule(TEST_KEY).compile();
     mailService = testingModule.get(MailService);
   });
 

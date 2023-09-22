@@ -11,15 +11,14 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProfileRequest } from '../types';
+import { ServiceException, assureObjectId, EntityIdentity, UseClassSerializer } from '@lyvely/core';
 import {
   UpdateTag,
   TagModel,
   CreateTagModel,
-  ServiceException,
   ENDPOINT_PROFILE_TAGS,
   ProfileTagsEndpoint,
-} from '@lyvely/common';
-import { assureObjectId, EntityIdentity, UseClassSerializer } from '@lyvely/core';
+} from '@lyvely/profiles-interface';
 import { Tag } from '../schemas';
 
 // TODO feature check

@@ -1,7 +1,7 @@
 import { ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtStrategy, JwtTokenPayloadIF, getIssuedAt } from '@lyvely/jwt';
-import { UserStatus } from '@lyvely/common';
+import { UserStatus } from '@lyvely/users';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@lyvely/core';
 

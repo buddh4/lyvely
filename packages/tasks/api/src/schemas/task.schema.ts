@@ -17,7 +17,7 @@ import mongoose from 'mongoose';
 import { User } from '@lyvely/users';
 import { assureObjectId, EntityIdentity, NestedSchema } from '@lyvely/core';
 import { ContentDataType, ContentType } from '@lyvely/content';
-import { Timer, TimerSchema } from '@lyvely/calendar';
+import { Timer, TimerSchema } from '@lyvely/dates';
 
 @Schema({ _id: false })
 export class UserDone {

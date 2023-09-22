@@ -1,5 +1,6 @@
-import { assignEntityData, BaseEntity, assureObjectId, MixedProp } from '@lyvely/core';
-import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { assureObjectId, MixedProp } from '@lyvely/core';
+import { assignEntityData, BaseEntity } from '@lyvely/models';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {
   CalendarInterval,

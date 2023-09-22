@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Avatar, User, UserDao, UserEmail } from '@lyvely/users';
-import { escapeHTML, FieldValidationException, VerifyEmailDto, isValidEmail } from '@lyvely/common';
+import { VerifyEmailDto } from '@lyvely/accounts-interface';
+import {
+  escapeHTML,
+  FieldValidationException,
+  isValidEmail,
+  ConfigurationPath,
+} from '@lyvely/core';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@lyvely/core';
 import { MailService } from '@lyvely/mails';
-import { InvalidOtpException, UserOtpService } from '@lyvely/otp';
+import { InvalidOtpException, OtpInfo, UserOtpService } from '@lyvely/otp';
 
 const OTP_PURPOSE_VERIFY_SECONDARY_EMAIL = 'verify-secondary-email';
 
@@ -38,7 +43,7 @@ export class AccountService {
 
     const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user, email);
     await this.sendEmailVerificationMail(user, otp);
-    return otpModel.getOtpClientInfo();
+    return otpModel?.getOtpClientInfo();
   }
 
   private async createOrUpdateEmailVerificationOtp(user: User, email: string) {
@@ -50,7 +55,7 @@ export class AccountService {
 
   private async sendEmailAlreadyExistsMail(email: string) {
     // TODO: (i18n) missing translation
-    const appName = escapeHTML(this.configService.get('appName'));
+    const appName = escapeHTML(this.configService.get('appName') || '');
     return this.mailService.sendMail({
       to: email,
       subject: `Attempt to add an already existing email`,
@@ -64,7 +69,7 @@ export class AccountService {
   }
 
   private async sendEmailVerificationMail(user: User, otp: string) {
-    const appName = escapeHTML(this.configService.get('appName'));
+    const appName = escapeHTML(this.configService.get('appName') || '');
     // TODO: (i18n) missing translation
     return this.mailService.sendMail({
       to: user.email,
@@ -84,10 +89,10 @@ export class AccountService {
     });
   }
 
-  async resendOtp(user: User, email: string) {
+  async resendOtp(user: User, email: string): Promise<OtpInfo | null> {
     const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user, email);
     await this.sendEmailVerificationMail(user, otp);
-    return otpModel.getOtpClientInfo();
+    return otpModel?.getOtpClientInfo() || null;
   }
 
   async verifyEmail(user: User, verifyEmail: VerifyEmailDto) {
@@ -100,7 +105,7 @@ export class AccountService {
       user,
       OTP_PURPOSE_VERIFY_SECONDARY_EMAIL,
       verifyEmail.otp,
-      { contextValidator: async (context) => context.email === verifyEmail.email },
+      { contextValidator: async (context) => context!.email === verifyEmail.email },
     );
 
     if (!isValid) throw new InvalidOtpException();

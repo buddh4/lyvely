@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
-import { addMilliSeconds } from '@lyvely/common';
+import { addMilliSeconds } from '@lyvely/dates';
 import ms from 'ms';
 import { ConfigurationPath } from '@lyvely/core';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';

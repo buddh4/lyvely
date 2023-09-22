@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
-import { JwtAuthService } from './services/jwt-auth.service';
-import { LocalStrategy, JwtAccessStrategy, JwtRefreshStrategy } from './guards/strategies';
-import { UsersModule } from '../users';
+import { JwtAuthService, ResetPasswordService } from './services';
+import {
+  LocalStrategy,
+  JwtAccessStrategy,
+  JwtRefreshStrategy,
+  JwtResetPasswordStrategy,
+} from './guards';
+import { UsersModule } from '@lyvely/users';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './controllers/auth.controller';
+import { AuthController, ResetPasswordController } from './controllers';
 import { JwtAuthGuard } from './guards';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath, ModuleMeta } from '@lyvely/core';
-import { ResetPasswordController, ResetPasswordService, JwtResetPasswordStrategy } from '@lyvely/auth';
 import { CaptchaModule } from '@lyvely/captchas';
 
 @Module({

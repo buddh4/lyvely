@@ -59,6 +59,11 @@ export interface IBaseQueryOptions {
   discriminator?: string;
 }
 
+export interface IBulkBaseQueryOptions {
+  session?: ClientSession;
+  discriminator?: string;
+}
+
 export interface IUpsertQueryOptions extends IBaseQueryOptions {
   new?: boolean;
 }

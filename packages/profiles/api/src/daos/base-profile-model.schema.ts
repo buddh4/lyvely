@@ -4,11 +4,11 @@ import { Prop } from '@nestjs/mongoose';
 
 export class BaseProfileModel<C extends BaseEntity<C>> extends BaseEntity<C> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  oid: TObjectId;
+  oid: mongoose.Types.ObjectId;
 
   @Prop({ required: true, default: 'default' })
   location: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: TObjectId;
+  pid: mongoose.Types.ObjectId;
 }

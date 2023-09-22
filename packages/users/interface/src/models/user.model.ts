@@ -1,4 +1,4 @@
-import { BaseModel, DocumentModel, PropertyType } from '@lyvely/core';
+import { BaseModel, DocumentModel, PropertyType } from '@lyvely/models';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { UserNotificationStateModel } from './user-notification-state.model';
 

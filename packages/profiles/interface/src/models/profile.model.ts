@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { BaseModel, DocumentModel } from '@lyvely/core';
+import { BaseModel, DocumentModel } from '@lyvely/models';
 import { ProfileType, ProfileVisibilityLevel } from '../interfaces';
 import { IsArray, IsEnum, IsInt, IsOptional, IsString, Length, Min } from 'class-validator';
 import { TagModel } from './tag.model';

@@ -12,7 +12,7 @@ import { User } from '@lyvely/users';
 import { TasksDao } from '../daos';
 import { ContentTypeService, ContentScoreService } from '@lyvely/content';
 import { assureObjectId, EntityIdentity } from '@lyvely/core';
-import { Timer } from '@lyvely/calendar';
+import { Timer } from '@lyvely/dates';
 
 @Injectable()
 export class TasksService extends ContentTypeService<Task, CreateTaskModel> {

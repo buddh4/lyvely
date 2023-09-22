@@ -20,22 +20,23 @@
   "dependencies": {
     "@nestjs/common": "^9.4.0",
     "@nestjs/config": "^2.3.1",
-    "@nestjs/core": "^9.4.0",
     "@nestjs/platform-express": "^9.4.0",
     "@lyvely/core": "^0.1.0-alpha3",
+    "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/users": "^0.1.0-alpha3",
     "@lyvely/files": "^0.1.0-alpha3",
     "@lyvely/otp": "^0.1.0-alpha3",
+    "@lyvely/accounts-interface": "^0.1.0-alpha3",
     "@lyvely/mails": "^0.1.0-alpha3",
-    "reflect-metadata": "0.1.13",
-    "ts-node": "10.9.1"
+    "reflect-metadata": "0.1.13"
+
   },
   "devDependencies": {
-    "jest": "^29.5.0",
     "ts-jest": "29.1.0",
+    "ts-node": "10.9.1",
     "@lyvely/testing": "^0.1.0-alpha3",
     "@nestjs/testing": "^9.4.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.2.2"
   },
   "jest": {
     "rootDir": ".",

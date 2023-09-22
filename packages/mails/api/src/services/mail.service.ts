@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import fs from 'fs';
 import { Stream } from 'stream';
 import pug from 'pug';
-import { escapeHTML, UrlRoute } from '@lyvely/common';
+import { escapeHTML, UrlRoute } from '@lyvely/core';
 
 export interface IMessageInfo {
   messageId: string;

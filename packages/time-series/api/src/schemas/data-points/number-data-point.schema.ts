@@ -6,7 +6,7 @@ import {
   PropertiesOf,
   PropertyType,
 } from '@lyvely/common';
-import { Timer, TimerSchema } from '@lyvely/calendar';
+import { Timer, TimerSchema } from '@lyvely/dates';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 
 @Schema()

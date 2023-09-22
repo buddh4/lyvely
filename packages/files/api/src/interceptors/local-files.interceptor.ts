@@ -4,7 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { diskStorage } from 'multer';
 import { ConfigurationPath } from '@lyvely/core';
-import { UserRequest } from '@lyvely/users';
 import { Request } from 'express';
 import { getLocalFilePath } from '../file-path.utils';
 

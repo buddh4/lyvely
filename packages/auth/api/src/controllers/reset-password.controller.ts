@@ -4,9 +4,10 @@ import {
   ResetPasswordEndpoint,
   SendResetPasswordMail,
   ResetPassword,
-} from '@lyvely/common';
+} from '@lyvely/auth-interface';
 import { Public, UseClassSerializer } from '@lyvely/core';
-import { ResetPasswordService, JwtResetPasswordGuard, EmailBodyThrottlerGuard } from '@lyvely/auth';
+import { ResetPasswordService } from '../services';
+import { JwtResetPasswordGuard, EmailBodyThrottlerGuard } from '../guards';
 import { CaptchaGuard } from '@lyvely/captchas';
 import { UserRequest, UserThrottle } from '@lyvely/users';
 

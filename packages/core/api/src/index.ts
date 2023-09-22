@@ -8,4 +8,3 @@ export * from './services';
 export * from './core.module';
 export * from './modules';
 export * from './global.emitter';
-export * from '@lyvely/core-common';

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Avatar, User, UserDao } from '@lyvely/users';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@lyvely/core';
 import fs from 'fs/promises';
 import { createWriteStream } from 'fs';
 import crypto from 'crypto';
 import { getLocalFilePath } from '@lyvely/files';
 import client from 'https';
+import { ConfigurationPath } from '@lyvely/core';
 import { isGuid, IntegrityException } from '@lyvely/common';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class AccountAvatarService {
     return avatar;
   }
 
-  async updateGravatar(user: User) {
+  async updateGravatar(user: User): Promise<Avatar> {
     if (!isGuid(user.guid)) throw new IntegrityException(`Invalid user guid for user '${user.id}'`);
 
     const hash = crypto.createHash('md5').update(user.email.toLowerCase()).digest('hex');

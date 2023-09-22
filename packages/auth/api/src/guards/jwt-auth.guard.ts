@@ -2,7 +2,7 @@ import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '@lyvely/core';
-import { JWT_ACCESS_TOKEN } from '@lyvely/auth';
+import { JWT_ACCESS_TOKEN } from './strategies';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
