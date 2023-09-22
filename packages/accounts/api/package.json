@@ -26,14 +26,14 @@
     "@lyvely/users": "^0.1.0-alpha3",
     "@lyvely/files": "^0.1.0-alpha3",
     "@lyvely/otp": "^0.1.0-alpha3",
-    "@lyvely/mails": "0.1.0-alpha3",
+    "@lyvely/mails": "^0.1.0-alpha3",
     "reflect-metadata": "0.1.13",
     "ts-node": "10.9.1"
   },
   "devDependencies": {
     "jest": "^29.5.0",
     "ts-jest": "29.1.0",
-    "@lyvely/testing": "0.1.0-alpha3",
+    "@lyvely/testing": "^0.1.0-alpha3",
     "@nestjs/testing": "^9.4.0",
     "typescript": "^5.1.3"
   },

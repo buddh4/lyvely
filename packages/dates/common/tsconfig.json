@@ -4,7 +4,6 @@
     "target": "es2017",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "declaration": false,
     "removeComments": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,

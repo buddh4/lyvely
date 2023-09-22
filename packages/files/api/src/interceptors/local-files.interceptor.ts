@@ -24,16 +24,16 @@ export function LocalFilesInterceptor(
       const multerOptions: MulterOptions = {
         storage: diskStorage({
           destination: (
-            req: UserRequest,
+            req: Request,
             file: Express.Multer.File,
             callback: (error: Error | null, destination: string) => void,
-          ) => callback(null, getLocalFilePath(configService, options.dir)),
+          ) => callback(null, getLocalFilePath(configService, options.dir || '')),
           filename: options.filename
             ? (
-                req: UserRequest,
+                req: Request,
                 file: Express.Multer.File,
                 callback: (error: Error | null, destination: string) => void,
-              ) => callback(null, options.filename?.(req, configService, file))
+              ) => callback(null, options.filename!(req, configService, file))
             : undefined,
         }),
       };

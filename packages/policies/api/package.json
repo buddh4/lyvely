@@ -20,13 +20,13 @@
   "dependencies": {
     "@nestjs/common": "^9.4.0",
     "@nestjs/core": "^9.4.0",
-    "@lyvely/core": "0.1.0-alpha3",
+    "@lyvely/core": "^0.1.0-alpha3",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
-    "@lyvely/testing": "0.1.0-alpha3",
+    "@lyvely/testing": "^0.1.0-alpha3",
     "typescript": "^5.2.2"
   },
   "jest": {

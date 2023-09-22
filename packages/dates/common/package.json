@@ -2,12 +2,14 @@
   "name": "@lyvely/dates",
   "version": "0.1.0-alpha3",
   "description": "Lyvely calendar core module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "commonjs",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "lint": "eslint \"lib/**/*.ts\" --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
-    "build": "rm -rf dist && sleep 2  && tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
@@ -24,8 +26,12 @@
     "class-transformer": "^0.5.1"
   },
   "devDependencies": {
+    "rollup": "^3.21.3",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@rollup/plugin-commonjs": "^24.1.0",
     "ts-jest": "29.1.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "rimraf": "^5.0.0"
   },
   "jest": {
     "rootDir": ".",

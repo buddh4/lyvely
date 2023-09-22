@@ -1,6 +1,5 @@
 # compiled output
 /dist
-/dev-dist
 /node_modules
 
 # Logs
@@ -40,4 +39,3 @@ lerna-debug.log*
 # custom
 .env
 /screenshots
-output.txt

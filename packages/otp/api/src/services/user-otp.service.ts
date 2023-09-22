@@ -1,7 +1,7 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '@lyvely/users';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { User, UserStatus } from '@lyvely/users';
+import { DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/otp-interface';
 import { UserOtp } from '../schemas';
-import { UserStatus, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/common';
 import { UserOtpDao } from '../daos';
 import { generateOTP } from '../utils';
 import ms from 'ms';
@@ -30,7 +30,7 @@ export class UserOtpService<TContext = any> {
   async createOrUpdateUserOtp(
     user: User,
     options: IGenerateOtpOptions<TContext>,
-  ): Promise<{ otpModel: UserOtp<TContext>; otp: string }> {
+  ): Promise<{ otpModel: UserOtp<TContext> | null; otp: string }> {
     if (user.status === UserStatus.Disabled) throw new UnauthorizedException();
 
     const { otp, hashedOtp } = await this.generateOtp(options);
@@ -58,7 +58,7 @@ export class UserOtpService<TContext = any> {
     return { otp, hashedOtp };
   }
 
-  async findOtpByUserAndPurpose(user: User, purpose: string): Promise<UserOtp<TContext>> {
+  async findOtpByUserAndPurpose(user: User, purpose: string): Promise<UserOtp<TContext> | null> {
     if (user.status === UserStatus.Disabled) {
       throw new UnauthorizedException();
     }

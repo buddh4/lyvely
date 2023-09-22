@@ -21,7 +21,7 @@
     "bcrypt": "^5.1.0"
   },
   "devDependencies": {
-    "@lyvely/core": "0.1.0-alpha3",
+    "@lyvely/core": "^0.1.0-alpha3",
     "@lyvely/testing": "0.1.0-alpha3",
     "@nestjs/common": "^9.4.0",
     "@nestjs/core": "^9.4.0",

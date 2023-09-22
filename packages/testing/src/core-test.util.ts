@@ -1,14 +1,11 @@
 import { Provider, DynamicModule, ForwardReference } from '@nestjs/common';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModuleBuilder } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { TestModule } from '@lyvely/deprecated-server/dist/src/test';
-import { TestConfigService } from '@lyvely/deprecated-server/dist/src/test/utils/test-config.service';
-import { TestOtpService } from '@lyvely/deprecated-server/dist/src/test/utils/test-otp.service';
 
 const mongods = new Map<string, MongoMemoryServer>();
 export type Type<T = any> = new (...args: any[]) => T;

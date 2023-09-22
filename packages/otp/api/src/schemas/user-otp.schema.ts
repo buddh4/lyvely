@@ -1,12 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { BaseEntity } from '@lyvely/core';
-import { addMilliSeconds, OtpInfo, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/common';
+import { addMilliSeconds } from '@lyvely/dates';
+import { OtpInfo, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/otp-interface';
 
 @Schema()
 export class UserOtp<TContext = any> extends BaseEntity<UserOtp> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  uid: TObjectId;
+  uid: mongoose.Types.ObjectId;
 
   @Prop({ required: true })
   otp: string;

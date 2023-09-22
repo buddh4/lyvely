@@ -1,24 +1,10 @@
 {
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "ES2021",
-    "noImplicitAny": false,
-    "removeComments": true,
-    "noLib": false,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "lib": ["ES2022"],
-    "sourceMap": false,
-    "skipLibCheck": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "declaration": true,
-    "outDir": "./dist",
-    "rootDir": "./src"
+    "composite": true,
+    "rootDir": "src",
+    "outDir": "dist/lib"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules", "tests", "dist", "**/*spec.ts"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/tests/**/*", "**/*.spec.ts"]
 }

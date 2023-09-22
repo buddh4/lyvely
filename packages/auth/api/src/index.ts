@@ -1,2 +1,3 @@
-export * from './services/jwt-auth.service';
-export * from './controllers/abstract-jwt-auth.controller';
+export * from './services';
+export * from './controllers';
+export * from './guards';
