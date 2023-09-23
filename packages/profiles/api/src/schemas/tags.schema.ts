@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '@lyvely/core';
-import { TagModel, REGEX_HEX_COLOR, PropertiesOf } from '@lyvely/common';
+import { REGEX_HEX_COLOR, PropertiesOf } from '@lyvely/common';
+import { TagModel } from '@lyvely/profiles-interface';
 import randomColor from 'randomcolor';
 
 @Schema()

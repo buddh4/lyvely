@@ -11,7 +11,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProfileRequest } from '../types';
-import { ServiceException, assureObjectId, EntityIdentity, UseClassSerializer } from '@lyvely/core';
+import { assureObjectId, EntityIdentity, UseClassSerializer } from '@lyvely/core';
+import { ServiceException } from '@lyvely/common';
 import {
   UpdateTag,
   TagModel,

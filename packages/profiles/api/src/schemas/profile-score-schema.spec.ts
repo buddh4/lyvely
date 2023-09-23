@@ -2,7 +2,6 @@ import { TestingModule } from '@nestjs/testing';
 import { ProfileScore, ProfileScoreSchema } from './index';
 import { createBasicTestingModule, getObjectId, TestDataUtils } from '@lyvely/testing';
 import { Model } from 'mongoose';
-import { expect } from '@jest/globals';
 import {
   TestProfileScore,
   TestProfileScoreDocument,

@@ -5,7 +5,7 @@ import { UserInfo, UserRequest } from '@lyvely/users';
 import { UserNotification } from '../schemas';
 import { TestNotification } from '../notifications';
 import { SingleUserSubscription } from '@lyvely/subscription';
-import { AbstractStreamController } from '@lyvely/stream';
+import { AbstractStreamController } from '@lyvely/streams';
 import { RequestContext } from '@lyvely/profiles';
 
 @Controller(ENDPOINT_NOTIFICATIONS)

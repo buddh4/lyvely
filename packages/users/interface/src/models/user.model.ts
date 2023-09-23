@@ -1,4 +1,4 @@
-import { BaseModel, DocumentModel, PropertyType } from '@lyvely/common';
+import { BaseModel, DocumentModel, PropertyType, AvatarModel } from '@lyvely/common';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { UserNotificationStateModel } from './user-notification-state.model';
 
@@ -9,15 +9,6 @@ export class UserEmailModel extends BaseModel<UserEmailModel> {
 
   @Expose()
   verified: boolean;
-}
-
-@Exclude()
-export class AvatarModel extends BaseModel<AvatarModel> {
-  @Expose()
-  guid: string;
-
-  @Expose()
-  timestamp?: number;
 }
 
 @Expose()

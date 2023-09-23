@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { BaseEntity, DeepPartial, UserAssignmentStrategy, toTimingId } from '@lyvely/core';
+import { BaseEntity } from '@lyvely/core';
+import { DeepPartial, UserAssignmentStrategy } from '@lyvely/common';
+import { toTimingId } from '@lyvely/calendar-plan';
 import { User } from '@lyvely/users';
 import { Profile } from './profiles.schema';
 import { toDate, CalendarDate } from '@lyvely/dates';

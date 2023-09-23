@@ -1,4 +1,4 @@
-import { AbstractStreamService } from '@lyvely/stream';
+import { AbstractStreamService } from '@lyvely/streams';
 import { ContentStreamFilter } from '@lyvely/common';
 import { Inject, Logger } from '@nestjs/common';
 import { Content, ContentDao } from '@lyvely/content';

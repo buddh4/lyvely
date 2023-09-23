@@ -25,9 +25,11 @@
     "@lyvely/core": "^0.1.0-alpha3",
     "@lyvely/permissions": "^0.1.0-alpha3",
     "@lyvely/policies": "^0.1.0-alpha3",
+    "@lyvely/calendar-plan": "^0.1.0-alpha3",
     "@lyvely/users": "^0.1.0-alpha3",
     "express": "^4.18.2",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "0.1.13",
+    "randomcolor": "^0.6.2"
   },
   "devDependencies": {
     "@lyvely/testing": "^0.1.0-alpha3",

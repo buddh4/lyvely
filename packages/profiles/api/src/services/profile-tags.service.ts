@@ -14,7 +14,7 @@ export class ProfileTagsService {
     }
 
     const newTagNames = new Set<string>();
-    const tagsToPush = [];
+    const tagsToPush: Tag[] = [];
 
     tagsNames.forEach((tagName) => {
       if (!tagName.length || newTagNames.has(tagName)) {
@@ -33,7 +33,7 @@ export class ProfileTagsService {
   }
 
   async addTag(profile: Profile, data: Partial<Tag>) {
-    const tag = profile.getTagByName(data.name);
+    const tag = profile.getTagByName(data.name!);
 
     if (tag) {
       throw new FieldValidationException('A tag with the same name already exists');

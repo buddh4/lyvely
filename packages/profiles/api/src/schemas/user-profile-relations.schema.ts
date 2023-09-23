@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 import { assignEntityData, BaseEntity, assureObjectId } from '@lyvely/core';
 import { Profile } from './profiles.schema';
 import { User } from '@lyvely/users';
-import { IProfileRelationUserInfo, PropertyType, validateEmail } from '@lyvely/common';
+import { PropertyType, validateEmail } from '@lyvely/common';
+import { IProfileRelationUserInfo } from '@lyvely/profiles-interface';
 
 export interface ICreateProfileRelation {
   profile: Profile;
@@ -47,10 +48,10 @@ export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
 export const UserProfileRelationInfoSchema = SchemaFactory.createForClass(ProfileRelationUserInfo);
 
 type UserRelation = {
-  _id: TObjectId;
-  uid: TObjectId;
-  oid: TObjectId;
-  pid: TObjectId;
+  _id: mongoose.Types.ObjectId;
+  uid: mongoose.Types.ObjectId;
+  oid: mongoose.Types.ObjectId;
+  pid: mongoose.Types.ObjectId;
   userInfo: ProfileRelationUserInfo;
   type: string;
   role: string;
@@ -62,13 +63,13 @@ type UserRelation = {
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class UserProfileRelation<C extends UserRelation = UserRelation> extends BaseEntity<C> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  uid: TObjectId;
+  uid: mongoose.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  oid: TObjectId;
+  oid: mongoose.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: TObjectId;
+  pid: mongoose.Types.ObjectId;
 
   @Prop({ type: UserProfileRelationInfoSchema })
   @PropertyType(ProfileRelationUserInfo)

@@ -1,4 +1,4 @@
 import { ProfilePolicyContext } from './profile-policy.context';
-import { IPolicy } from '../../policies/interfaces/policy.interface';
+import { IPolicy } from '@lyvely/policies';
 
 export type ProfilePolicy = IPolicy<ProfilePolicyContext>;

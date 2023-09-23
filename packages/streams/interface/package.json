@@ -1,7 +1,7 @@
 {
-  "name": "@lyvely/stream-interface",
+  "name": "@lyvely/streams-interface",
   "version": "0.1.0-alpha3",
-  "description": "Lyvely stream interface",
+  "description": "Lyvely streams interface",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -19,9 +19,9 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
+    "@lyvely/common": "^0.1.0-alpha3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "mitt": "^3.0.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {

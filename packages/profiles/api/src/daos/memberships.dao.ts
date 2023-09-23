@@ -5,11 +5,12 @@ import { Membership, MembershipDocument, Profile } from '../schemas';
 import { User } from '@lyvely/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
 import { assureObjectId, EntityIdentity, IBaseQueryOptions, SaveOptions } from '@lyvely/core';
-import { Constructor, BaseMembershipRole } from '@lyvely/common';
+import { BaseMembershipRole } from '@lyvely/profiles-interface';
+import { Constructor } from '@lyvely/common';
 
 @Injectable()
 export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> {
-  constructor(@InjectModel(Membership.name) protected model: Model<MembershipDocument>) {
+  constructor(@InjectModel(Membership.name) protected model: Model<Membership>) {
     super();
   }
 
@@ -25,7 +26,7 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
   async findByProfileAndUser(
     profile: EntityIdentity<Profile>,
     user: EntityIdentity<User>,
-    options: IBaseQueryOptions,
+    options?: IBaseQueryOptions,
   ): Promise<Membership | null> {
     return this.findOne(
       {

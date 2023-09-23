@@ -1,6 +1,6 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from './profiles.schema';
-import { ProfileType } from '@lyvely/common';
+import { ProfileType } from '@lyvely/profiles-interface';
 import { User } from '@lyvely/users';
 import { EntityIdentity } from '@lyvely/core';
 

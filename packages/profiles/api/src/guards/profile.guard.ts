@@ -7,6 +7,7 @@ import { ProfileVisibilityPolicy } from '../policies';
 import { PolicyService } from '@lyvely/policies';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
+import {Profile} from "../schemas";
 
 export const PROFILE_PERMISSIONS_KEY_STRICT = 'profile_permissions_strict';
 export const PROFILE_PERMISSIONS_KEY_SOME = 'profile_permissions_some';
@@ -53,7 +54,7 @@ export class ProfileGuard implements CanActivate {
       request.context = await this.profileService.findUserProfileRelations(user, request.query.pid);
       request.profile = request.context.profile;
     } else {
-      request.profile = await this.profileService.findProfileById(request.query.pid);
+      request.profile = <Profile>(await this.profileService.findProfileById(request.query.pid));
       request.context = new ProfileContext({ profile: request.profile });
     }
 

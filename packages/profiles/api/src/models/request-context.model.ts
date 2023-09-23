@@ -1,6 +1,7 @@
 import { UserProfileRelation, Profile, Membership, Organization } from '../schemas';
 import { User } from '@lyvely/users';
-import { BaseModel, PropertyType, BaseUserProfileRelationType } from '@lyvely/common';
+import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseUserProfileRelationType } from '@lyvely/profiles-interface';
 
 /**
  * This composite class holds information about the relation between a user and a profile and provides some utility
@@ -28,12 +29,12 @@ export class RequestContext<T extends Profile = Profile> extends BaseModel<Reque
     return this.getOrganizationContext()?.profile;
   }
 
-  getOrganizationContext(): RequestContext<Organization> {
+  getOrganizationContext(): RequestContext<Organization> | null {
     if (this.profile instanceof Organization) {
       return this;
     }
 
-    return this.organizationContext;
+    return this.organizationContext || null;
   }
 
   isGuest(): boolean {
@@ -45,7 +46,7 @@ export class RequestContext<T extends Profile = Profile> extends BaseModel<Reque
   }
 
   hasRelation() {
-    return !!this.relations.length;
+    return !!this.relations?.length;
   }
 
   getMembership(): Membership | undefined {
@@ -59,11 +60,13 @@ export class RequestContext<T extends Profile = Profile> extends BaseModel<Reque
   }
 
   getRelationByRole(role: string): UserProfileRelation | undefined {
+    if (!this.relations) return undefined;
     const relations = this.relations.filter((r) => r.role === role);
     return relations.length ? relations[0] : undefined;
   }
 
   getAllRelationsOfType(type: string): UserProfileRelation[] {
+    if (!this.relations) return [];
     return this.relations.filter((r) => r.type === type);
   }
 }

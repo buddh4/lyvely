@@ -23,7 +23,7 @@ export class ProfileUrlGenerator extends UrlGenerator {
         route.query = {};
       }
 
-      route.query['pid'] = assureStringId(route.pid);
+      route.query['pid'] = assureStringId(route.pid)!;
     }
 
     return this.generateUrl(this.getBaseApiUrl(), route);

@@ -1,4 +1,4 @@
-import { IStreamService } from '@lyvely/stream';
+import { IStreamService } from '@lyvely/streams';
 import { IWebNotification } from '../interfaces';
 import { Endpoint } from '@lyvely/common';
 

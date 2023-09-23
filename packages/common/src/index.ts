@@ -1,4 +1,5 @@
 export * from './utils';
+export * from './avatars';
 export * from './collab';
 export * from './validation';
 export * from './endpoints';

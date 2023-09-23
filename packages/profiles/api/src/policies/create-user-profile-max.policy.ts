@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IPolicy } from '../../policies/interfaces/policy.interface';
-import { UserPolicyContext } from '../../users';
+import { IPolicy } from '@lyvely/policies';
+import { UserPolicyContext } from '@lyvely/users';
 
 @Injectable()
 export class CreateUserProfileLaxPolicy implements IPolicy<UserPolicyContext> {

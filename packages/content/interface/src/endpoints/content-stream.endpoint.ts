@@ -1,4 +1,4 @@
-import { IStreamService } from '@lyvely/stream';
+import { IStreamService } from '@lyvely/streams';
 import { ContentModel } from '@lyvely/content';
 import { Endpoint } from '@lyvely/common';
 import { ContentStreamFilter } from '../models';

@@ -2,7 +2,7 @@ import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from './profiles.schema';
 import { EntityIdentity } from '@lyvely/core';
 import { User } from '@lyvely/users';
-import { ProfileType } from '@lyvely/common';
+import { ProfileType } from '@lyvely/profiles-interface';
 
 @Schema({ timestamps: true })
 export class GroupProfile extends Profile {

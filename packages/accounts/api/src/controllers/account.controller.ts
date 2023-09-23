@@ -13,7 +13,8 @@ import {
   ENDPOINT_ACCOUNT,
   VerifyEmailDto,
 } from '@lyvely/accounts-interface';
-import { AvatarModel, UserRequest, UserThrottle, UserThrottlerGuard } from '@lyvely/users';
+import { UserRequest, UserThrottle, UserThrottlerGuard } from '@lyvely/users';
+import { AvatarModel } from '@lyvely/common';
 import { ResendOtp } from '@lyvely/otp';
 import { UseClassSerializer } from '@lyvely/core';
 import { AccountService, AccountAvatarService } from '../services';

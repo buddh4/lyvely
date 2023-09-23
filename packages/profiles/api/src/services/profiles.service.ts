@@ -2,12 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { User, UsersService } from '@lyvely/users';
 import {
   BaseMembershipRole,
-  EntityNotFoundException,
   ProfileType,
   ProfileUsage,
   ProfileVisibilityLevel,
-  UniqueConstraintException,
-} from '@lyvely/common';
+} from '@lyvely/profiles-interface';
+import { EntityNotFoundException, UniqueConstraintException} from '@lyvely/common'
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { ProfileContext } from '../models';
 import {
@@ -179,6 +178,9 @@ export class ProfilesService {
   ): Promise<ProfileRelations> {
     const profile =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+
+    if(!profile) throw new EntityNotFoundException();
+
     const profileRelations = await this.profileRelationsDao.findAllByProfile(identity);
     const userRelations = profileRelations.filter((relation) => relation.uid.equals(user._id));
     return new ProfileRelations({ user, profile, profileRelations, userRelations });
@@ -188,9 +190,13 @@ export class ProfilesService {
     user: User,
     identity: EntityIdentity<Profile>,
   ): Promise<ProfileContext> {
-    const relations = await this.profileRelationsDao.findAllByUserAndProfile(user, identity);
     const profile =
-      identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+        identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+
+    if(!profile) throw new EntityNotFoundException();
+
+    const relations = await this.profileRelationsDao.findAllByUserAndProfile(user, profile);
+
     return new ProfileContext({
       user,
       profile,
@@ -205,7 +211,7 @@ export class ProfilesService {
   ): Promise<ProfileContext[]> {
     if (!users?.length) return [];
 
-    const profile: Profile =
+    const profile =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
 
     if (!profile) return [];
@@ -229,7 +235,7 @@ export class ProfilesService {
     });
 
     relations.forEach((relation) => {
-      profileContextMap.get(assureStringId(relation.uid)).relations.push(relation);
+      profileContextMap.get(assureStringId(relation.uid)!)?.relations.push(relation);
     });
 
     const result = Array.from(profileContextMap.values());
@@ -239,7 +245,7 @@ export class ProfilesService {
   }
 
   async findAllUserProfileRelations(identity: EntityIdentity<Profile>) {
-    const profile: Profile =
+    const profile =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
 
     if (!profile) return [];
@@ -248,7 +254,7 @@ export class ProfilesService {
       pid: assureObjectId(identity),
     });
 
-    const result = [];
+    const result: { user: User, profile: Profile, relations: UserProfileRelation[] }[] = [];
     const uids = userRelations.map((relation) => relation.uid);
     const users = await this.usersService.findUsersById(uids);
     users.forEach((user) => {
@@ -299,11 +305,12 @@ export class ProfilesService {
   }
 
   async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {
-    if (inc === 0) {
-      return;
-    }
-
     const profile = await this.findProfileById(identity, true);
+
+    if(!profile) throw new EntityNotFoundException();
+
+    if (inc === 0) return profile.score;
+
     const newScore = Math.max(profile.score + inc, 0);
     await this.profileDao.updateOneSetById(profile, { score: newScore });
     return newScore;
@@ -312,7 +319,7 @@ export class ProfilesService {
   async findProfileById(
     identity: EntityIdentity<Profile>,
     throwsException = false,
-  ): Promise<Profile | undefined> {
+  ): Promise<Profile | null> {
     if (!identity) return null;
 
     const result =

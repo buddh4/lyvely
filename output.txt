@@ -103,7 +103,7 @@
 @lyvely/core';
 @lyvely/live';
 @lyvely/profiles';
-@lyvely/stream';
+@lyvely/streams';
 @lyvely/time-series';
 @lyvely/user-registration';
 @lyvely/users';
@@ -135,7 +135,7 @@
 @lyvely/live';
 @lyvely/policies';
 @lyvely/profiles';
-@lyvely/stream';
+@lyvely/streams';
 @lyvely/test';
 @lyvely/testing';
 @lyvely/users';
@@ -310,7 +310,7 @@
 @lyvely/mails';
 @lyvely/notifications';
 @lyvely/profiles';
-@lyvely/stream';
+@lyvely/streams';
 @lyvely/subscription';
 @lyvely/testing';
 @lyvely/user';
@@ -419,7 +419,7 @@
 @lyvely/common';
 @lyvely/core';
 @lyvely/profiles';
-@lyvely/stream';
+@lyvely/streams';
 @lyvely/testing';
 
 

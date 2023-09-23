@@ -1,7 +1,6 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint, AvatarModel } from '@lyvely/common';
 import { AddEmailDto, VerifyEmailDto } from '../dtos';
 import { ResendOtp, OtpInfo } from '@lyvely/otp-interface';
-import { AvatarModel } from '@lyvely/users-interface';
 
 export interface IAccountService {
   addEmail(dto: AddEmailDto): Promise<OtpInfo>;

@@ -20,7 +20,7 @@ import { assureObjectId, assureStringId, EntityIdentity } from '@lyvely/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { I18n } from '@lyvely/i18n';
 import { LiveService } from '@lyvely/live';
-import { AbstractStreamService } from '@lyvely/stream';
+import { AbstractStreamService } from '@lyvely/streams';
 import { RequestContext } from '@lyvely/profiles';
 
 @Injectable()

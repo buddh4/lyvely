@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { BaseModel } from '@lyvely/common';
 import { IsBoolean, IsMongoId, IsOptional, IsString } from 'class-validator';
-import { IStreamFilter } from '@lyvely/stream';
+import { IStreamFilter } from '@lyvely/streams';
 
 @Expose()
 export class ContentStreamFilter extends BaseModel<ContentStreamFilter> implements IStreamFilter {

@@ -5,17 +5,19 @@ import { BaseEntity, assureObjectId, EntityIdentity } from '@lyvely/core';
 import { Tag, TagSchema } from '../schemas';
 import {
   ProfileVisibilityLevel,
-  getNumberEnumValues,
-  PropertiesOf,
   ProfileModel,
   MIN_PROFILE_NAME_LENGTH,
   MAX_PROFILE_NAME_LENGTH,
   MAX_PROFILE_DESCRIPTION_LENGTH,
   ProfileType,
-  BaseModel,
-  PropertyType,
   ProfileUsage,
   AvatarModel,
+} from '@lyvely/profiles-interface';
+import {
+  BaseModel,
+  getNumberEnumValues,
+  PropertiesOf,
+  PropertyType,
 } from '@lyvely/common';
 import {
   ProfileRolePermission,
@@ -54,10 +56,10 @@ const AvatarSchema = SchemaFactory.createForClass(Avatar);
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Profile extends BaseEntity<Profile> implements PropertiesOf<ProfileModel> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  ownerId: TObjectId;
+  ownerId: mongoose.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  oid?: TObjectId;
+  oid?: mongoose.Types.ObjectId;
 
   @Prop({ min: MIN_PROFILE_NAME_LENGTH, max: MAX_PROFILE_NAME_LENGTH, required: true })
   name: string;
@@ -110,7 +112,7 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
   constructor(owner: EntityIdentity<User>, obj?: Partial<Profile>) {
     super(obj);
 
-    this.ownerId = assureObjectId(owner);
+    this.ownerId = assureObjectId(owner)!;
     this.visibility = this.visibility ?? ProfileVisibilityLevel.Member;
 
     // We need to assign an oid even if this profile is not connected to an organizations for sharding and query index.
@@ -147,11 +149,11 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
     return this.getTagsByName(tagNames).map((tag) => assureObjectId(tag.id));
   }
 
-  getTagById(id: TObjectId) {
+  getTagById(id: mongoose.Types.ObjectId) {
     return this.tags.find((tag) => tag._id.equals(id));
   }
 
-  getTagsById(tagIds: TObjectId[]) {
+  getTagsById(tagIds: mongoose.Types.ObjectId[]) {
     return this.tags.filter((tag) => tagIds.includes(tag._id));
   }
 

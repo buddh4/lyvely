@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Organization, Profile, ProfileDocument, getProfileConstructorByType } from '../schemas';
+import { Organization, Profile, getProfileConstructorByType, Tag } from '../schemas';
 import mongoose, { Model } from 'mongoose';
 import { applyRawDataTo, assureObjectId, EntityIdentity, AbstractDao } from '@lyvely/core';
 import { User } from '@lyvely/users';
@@ -9,7 +9,7 @@ import { ProfileType } from '@lyvely/profiles-interface';
 
 @Injectable()
 export class ProfileDao extends AbstractDao<Profile> {
-  @InjectModel(Profile.name) protected model: Model<ProfileDocument>;
+  @InjectModel(Profile.name) protected model: Model<Profile>;
 
   async findOneByOwnerAndName(owner: EntityIdentity<User>, name: string) {
     return this.findOne({ ownerId: assureObjectId(owner), name });

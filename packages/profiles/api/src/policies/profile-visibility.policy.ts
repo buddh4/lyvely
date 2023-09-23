@@ -1,6 +1,6 @@
 import { ProfilePolicyContext } from './profile-policy.context';
 import { ProfilePolicy } from './profile.policy';
-import { ProfileVisibilityLevel } from '@lyvely/common';
+import { ProfileVisibilityLevel } from '@lyvely/profiles-interface';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

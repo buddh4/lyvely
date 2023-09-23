@@ -13,7 +13,7 @@ import {
   ENDPOINT_PROFILE_RELATION_INFOS,
   ProfileRelationInfosEndpoint,
 } from '@lyvely/profiles-interface';
-import { mapType } from '@lyvely/core';
+import { mapType } from '@lyvely/common';
 import { ProfileContext } from '../models';
 
 @Controller(ENDPOINT_PROFILE_RELATION_INFOS)

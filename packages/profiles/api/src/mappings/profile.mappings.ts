@@ -3,8 +3,8 @@ import {
   ProfileRelationInfo,
   ProfileRelationInfos,
   ProfileWithRelationsModel,
-  registerMapping,
-} from '@lyvely/common';
+} from '@lyvely/profiles-interface';
+import { registerMapping } from '@lyvely/common'
 
 export function useProfileMappings() {
   registerMapping(ProfileContext, ProfileRelationInfo, (relations) => {

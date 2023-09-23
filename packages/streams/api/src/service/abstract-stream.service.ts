@@ -18,7 +18,7 @@ import {
 } from '@lyvely/core';
 import { cloneDeep } from 'lodash';
 import { RequestContext } from '@lyvely/profiles';
-import { DEFAULT_BATCH_SIZE } from '@lyvely/stream';
+import { DEFAULT_BATCH_SIZE } from '../stream.constants'
 import { Expose, instanceToPlain, Transform } from 'class-transformer';
 
 @Expose()

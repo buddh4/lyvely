@@ -1,5 +1,6 @@
 import { Body, Controller, Get, NotFoundException, Param, Post, Request } from '@nestjs/common';
-import { mapType, UseClassSerializer } from '@lyvely/core';
+import { UseClassSerializer } from '@lyvely/core';
+import { mapType } from '@lyvely/common';
 import {
   ProfileWithRelationsModel,
   CreateProfileModel,
