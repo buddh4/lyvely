@@ -1,4 +1,4 @@
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { IsBoolean, IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { Match } from '@lyvely/common';
 

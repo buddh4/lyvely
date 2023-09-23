@@ -1,5 +1,5 @@
 import { IDataPoint } from './data-point.interface';
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 import { ITimeSeriesContent } from './time-series-content.interface';
 
 export interface IUpdateDataPoint<TValue = any> {

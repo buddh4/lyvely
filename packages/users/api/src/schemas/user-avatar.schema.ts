@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { PropertiesOf } from '@lyvely/core';
+import { PropertiesOf } from '@lyvely/common';
 import { AvatarModel } from '@lyvely/users-interface';
 
 @Schema({ _id: false })

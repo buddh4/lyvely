@@ -9,7 +9,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { BaseMembershipRole } from '@lyvely/profiles';
 
 @Exclude()

@@ -10,7 +10,7 @@ import {
 } from '@/time-series';
 import { CalendarInterval } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@/collab';
-import { IEditableModel } from '@lyvely/models';
+import { IEditableModel } from '@lyvely/common';
 import { UpdateJournalModel } from './update-journal.model';
 
 export interface IJournalConfig {

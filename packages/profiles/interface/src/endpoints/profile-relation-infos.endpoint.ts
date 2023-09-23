@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/core';
+import { StrictEndpoint } from '@lyvely/common';
 import { ProfileRelationInfos } from '../models';
 
 export interface IProfileRelationInfosService {

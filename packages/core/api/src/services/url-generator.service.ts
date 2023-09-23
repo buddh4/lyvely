@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '../config';
-import { MisconfigurationException, UrlRoute } from '@lyvely/core-common';
+import { MisconfigurationException, UrlRoute } from '@lyvely/common';
 
 @Injectable()
 export class UrlGenerator {

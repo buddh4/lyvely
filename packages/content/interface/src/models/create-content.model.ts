@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { MaxLength, IsArray, IsOptional, IsString, IsMongoId } from 'class-validator';
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 
 export class CreateContentModel<T extends CreateContentModel = any> extends BaseModel<T> {
   @Expose()

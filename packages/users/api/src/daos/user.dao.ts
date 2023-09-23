@@ -2,13 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, RefreshToken, UserEmail } from '../schemas';
-import {
-  Constructor,
-  AbstractDao,
-  IBaseQueryOptions,
-  EntityIdentity,
-  UpdateQuerySet,
-} from '@lyvely/core';
+import { AbstractDao, IBaseQueryOptions, EntityIdentity, UpdateQuerySet } from '@lyvely/core';
+import { Constructor } from '@lyvely/common';
 import { UserStatus } from '@lyvely/users-interface';
 import { ProfileType } from '@lyvely/profiles-interface';
 

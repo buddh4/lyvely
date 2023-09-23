@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { UserEmailModel } from '@lyvely/users-interface';
-import { PropertiesOf, validateEmail } from '@lyvely/core';
+import { PropertiesOf, validateEmail } from '@lyvely/common';
 
 @Schema({ _id: false })
 export class UserEmail implements PropertiesOf<UserEmailModel> {

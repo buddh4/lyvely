@@ -1,5 +1,5 @@
 import { CreateProfileModel, ProfileWithRelationsModel } from '../models';
-import { StrictEndpoint } from '@lyvely/core';
+import { StrictEndpoint } from '@lyvely/common';
 
 export interface IProfilesService {
   getProfile(id: string): Promise<ProfileWithRelationsModel>;

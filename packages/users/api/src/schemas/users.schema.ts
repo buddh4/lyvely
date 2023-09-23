@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import mongoose, { UpdateQuery } from 'mongoose';
-import { BaseEntity, validateEmail, PropertiesOf, getNumberEnumValues } from '@lyvely/core';
-import { PropertyType } from '@lyvely/models';
+import { BaseEntity } from '@lyvely/core';
+import { PropertiesOf, getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
 import { UserModel, UserStatus } from '@lyvely/users-interface';

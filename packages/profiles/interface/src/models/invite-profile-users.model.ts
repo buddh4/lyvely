@@ -1,6 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { BaseMembershipRole } from './profile.model';
 
 @Exclude()

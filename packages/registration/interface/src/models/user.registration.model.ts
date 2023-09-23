@@ -8,7 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 import { Match, NotMatch } from '@/validation';
 import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH } from '@lyvely/users';
 import { Exclude, Expose } from 'class-transformer';

@@ -2,7 +2,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { MembershipModel } from './profile-membership.model';
 import { ProfileRelationDetailsModel, ProfileRelationModel } from './profile-relation.model';
 import { BaseUserProfileRelationType, ProfileModel } from './profile.model';
-import { PropertyType, TransformTo } from '@lyvely/models';
+import { PropertyType, TransformTo } from '@lyvely/common';
 
 @Exclude()
 export class ProfileWithRelationsModel extends ProfileModel {

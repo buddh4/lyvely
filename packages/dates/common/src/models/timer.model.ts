@@ -1,4 +1,4 @@
-import { BaseModel, PropertyType, TransformObjectId } from '@lyvely/models';
+import { BaseModel, PropertyType, TransformObjectId } from '@lyvely/common';
 import { Expose, Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
 function compareSpans(a: TimeSpanModel, b: TimeSpanModel) {

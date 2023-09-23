@@ -1,6 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 import { TagModel } from '@/tags';
-import { PropertyType } from '@lyvely/models';
+import { PropertyType } from '@lyvely/common';
 import { ContentUpdateResponse } from '@lyvely/content';
 import { JournalModel } from './journal.model';
 

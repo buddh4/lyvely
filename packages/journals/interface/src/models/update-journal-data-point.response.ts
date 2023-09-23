@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { PropertyType } from '@lyvely/models';
+import { PropertyType } from '@lyvely/common';
 import { UpdateDataPointResponse, DataPointModel } from '@/time-series';
 import { JournalModel } from '@/journals';
 

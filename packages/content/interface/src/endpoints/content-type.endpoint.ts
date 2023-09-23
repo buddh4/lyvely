@@ -1,5 +1,5 @@
 import { Endpoint } from '@lyvely/common';
-import { IEditModelService } from '@lyvely/models';
+import { IEditModelService } from '@lyvely/common';
 import { ContentUpdateResponse, CreateContentModel } from '../models';
 import { IContent } from '../interfaces';
 

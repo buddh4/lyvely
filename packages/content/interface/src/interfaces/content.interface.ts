@@ -1,4 +1,4 @@
-import { ISortable } from '@lyvely/models';
+import { ISortable } from '@lyvely/common';
 
 export interface IContentDataType {
   title?: string;

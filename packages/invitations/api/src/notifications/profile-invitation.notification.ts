@@ -5,7 +5,7 @@ import {
   RenderFormat,
 } from '@lyvely/notifications';
 import { Translatable } from '@lyvely/i18n';
-import { escapeHtmlIf, PropertyType, UrlRoute } from '@lyvely/models';
+import { escapeHtmlIf, PropertyType, UrlRoute } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { User, UserInfo, UserInfoSchema } from '@lyvely/users';
 import { ProfileInfo, ProfileInfoSchema, Profile } from '@lyvely/profiles';

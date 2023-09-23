@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { addMilliSeconds } from '@lyvely/dates';
 
 export const DEFAULT_MAX_OTP_ATTEMPTS = 4;

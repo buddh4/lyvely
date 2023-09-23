@@ -1,4 +1,4 @@
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 import { IStreamState } from '../interfaces';
 import { IsArray, IsBoolean, IsMongoId, IsNumber, IsOptional, Min } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';

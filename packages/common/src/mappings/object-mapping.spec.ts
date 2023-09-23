@@ -1,5 +1,5 @@
 import { mapType, registerMapping } from '../index';
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 
 class User extends BaseModel<User> {
   forename: string;

@@ -1,6 +1,6 @@
-import { TransformObjectId } from '@lyvely/models';
+import { TransformObjectId } from '@lyvely/common';
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 import type { IContent } from '@lyvely/content';
 
 @Exclude()

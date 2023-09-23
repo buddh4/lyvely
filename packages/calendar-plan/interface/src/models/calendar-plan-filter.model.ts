@@ -3,7 +3,7 @@ import { IsBoolean, IsEnum, IsMongoId, IsOptional, IsString, Matches } from 'cla
 import { CalendarInterval, formatDate, REGEX_DATE_FORMAT } from '@lyvely/dates';
 import type { CalendarDate } from '@lyvely/dates';
 import { ICalendarPlanFilter } from '../interfaces';
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 
 @Exclude()
 export class CalendarPlanFilter

@@ -1,5 +1,5 @@
 import { BaseEntity, NestedSchema } from '@lyvely/core';
-import { PropertyType } from '@lyvely/models';
+import { PropertyType } from '@lyvely/common';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { addByInterval, CalendarTimeInterval } from '@lyvely/dates';
 import { UserNotificationStateModel } from '@lyvely/users-interface';

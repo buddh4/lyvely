@@ -6,8 +6,8 @@ import {
   Type,
   findByPath,
   IntegrityException,
-} from '@lyvely/core-common';
-import { assignRawDataTo } from '@lyvely/models';
+} from '@lyvely/common';
+import { assignRawDataTo } from '@lyvely/common';
 
 export type EntityIdentity<T extends BaseEntity<any>> =
   | T

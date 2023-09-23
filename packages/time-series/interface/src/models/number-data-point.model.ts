@@ -1,6 +1,6 @@
 import { Expose, Type as TransformType } from 'class-transformer';
 import { TimerModel } from '@lyvely/dates';
-import { PropertyType } from '@lyvely/models';
+import { PropertyType } from '@lyvely/common';
 import { DataPointModel } from './data-point.model';
 import {
   DataPointValueType,

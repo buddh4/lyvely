@@ -2,7 +2,7 @@ import { Expose, Type } from 'class-transformer';
 import { DataPointModel } from './data-point.model';
 import { DataPointValueType, IDataPointConfig, ISelectionDataPointConfig } from '../interfaces';
 import type { ISelectionDataPointValue } from '../interfaces';
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator';
 
 @Expose()

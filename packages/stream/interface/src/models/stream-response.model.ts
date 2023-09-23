@@ -1,4 +1,4 @@
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 import { IStreamResponse, IStreamState } from '../interfaces';
 import { StreamState } from './stream-state.model';
 import { Exclude, Expose, Type } from 'class-transformer';

@@ -1,7 +1,7 @@
 import { CalendarInterval } from '@lyvely/dates';
-import { DocumentModel } from '@lyvely/models';
+import { DocumentModel } from '@lyvely/common';
 import { Exclude, Expose, Transform } from 'class-transformer';
-import { TransformObjectId } from '@lyvely/models';
+import { TransformObjectId } from '@lyvely/common';
 import { IDataPoint } from '../interfaces';
 
 @Exclude()

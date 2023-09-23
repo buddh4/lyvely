@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/core';
+import { StrictEndpoint } from '@lyvely/common';
 import { UpdateProfileMembershipSettings, MembershipModel } from '../models';
 
 export interface IProfileMembershipService {

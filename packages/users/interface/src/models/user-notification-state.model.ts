@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 
 @Exclude()
 export class UserNotificationStateModel extends BaseModel<UserNotificationStateModel> {

@@ -1,4 +1,4 @@
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 import { Expose } from 'class-transformer';
 
 export interface ILegalSection {

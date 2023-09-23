@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IEditableModel } from '@lyvely/models';
+import { IEditableModel } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { UpdateMilestoneModel } from './update-milestone.model';
 import { IMilestoneConfig } from '../interfaces';

@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Matches } from 'class-validator';
 import { REGEX_DATE_FORMAT } from '@lyvely/dates';
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 import { IUpdateDataPoint } from '../interfaces';
 
 @Exclude()

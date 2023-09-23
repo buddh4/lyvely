@@ -1,5 +1,5 @@
 import { TaskModel } from './task.model';
-import { ISortable, sortBySortOrder } from '@lyvely/models';
+import { ISortable, sortBySortOrder } from '@lyvely/common';
 import { PropertiesOf } from '@/utils';
 
 export function sortTasks<T extends PropertiesOf<TaskModel> & ISortable>(taks: T[]): T[] {

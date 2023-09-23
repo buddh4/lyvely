@@ -1,5 +1,5 @@
 import { CalendarInterval } from '@lyvely/dates';
-import { sortBySortOrder } from '@lyvely/models';
+import { sortBySortOrder } from '@lyvely/common';
 import { ContentFilter } from '@lyvely/content';
 import { ICalendarPlanEntry, ICalendarPlanResponse } from '../interfaces';
 

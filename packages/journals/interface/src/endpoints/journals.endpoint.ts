@@ -10,7 +10,7 @@ import {
   UpdateDataPointResponse,
   ITimeSeriesCalendarPlanService,
 } from '@/time-series';
-import { IEditModelService } from '@lyvely/models';
+import { IEditModelService } from '@lyvely/common';
 
 export interface IJournalsEndpointService
   extends ITimeSeriesCalendarPlanService<JournalModel>,

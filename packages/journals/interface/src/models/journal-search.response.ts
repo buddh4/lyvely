@@ -1,6 +1,6 @@
 import { Type, Expose } from 'class-transformer';
 import { JournalModel } from './journal.model';
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { DataPointModel, ITimeSeriesCalendarPlanResponse } from '@/time-series';
 
 @Expose()

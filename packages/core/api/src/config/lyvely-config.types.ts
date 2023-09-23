@@ -1,7 +1,7 @@
 import { HelmetOptions } from 'helmet';
 import { MailerOptions } from '@nestjs-modules/mailer';
 import { ServeStaticModuleOptions } from '@nestjs/serve-static';
-import { NestedPaths, TypeFromPath } from '@lyvely/core-common';
+import { NestedPaths, TypeFromPath } from '@lyvely/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';

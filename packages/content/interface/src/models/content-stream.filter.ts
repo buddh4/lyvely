@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { BaseModel } from '@lyvely/models';
+import { BaseModel } from '@lyvely/common';
 import { IsBoolean, IsMongoId, IsOptional, IsString } from 'class-validator';
 import { IStreamFilter } from '@lyvely/stream';
 

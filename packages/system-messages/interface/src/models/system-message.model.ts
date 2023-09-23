@@ -1,6 +1,6 @@
 import { ContentDataTypeModel, ContentModel } from '@lyvely/content';
 import { Exclude, Expose } from 'class-transformer';
-import { PropertyType } from '@lyvely/models';
+import { PropertyType } from '@lyvely/common';
 
 @Exclude()
 export class SystemMessageContent extends ContentDataTypeModel {

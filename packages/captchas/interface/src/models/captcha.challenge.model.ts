@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { addMilliSeconds } from '@lyvely/dates';
-import { BaseModel, PropertyType } from '@lyvely/models';
+import { BaseModel, PropertyType } from '@lyvely/common';
 
 @Expose()
 export class CaptchaChallenge extends BaseModel<CaptchaChallenge> {

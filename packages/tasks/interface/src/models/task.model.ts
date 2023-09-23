@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IEditableModel, PropertyType, TransformTo } from '@lyvely/models';
+import { IEditableModel, PropertyType, TransformTo } from '@lyvely/common';
 import { CalendarInterval, TimerModel } from '@lyvely/dates';
 import { UpdateTaskModel } from './update-task.model';
 import { ITaskConfig } from '@/tasks/interfaces/task-config.interface';

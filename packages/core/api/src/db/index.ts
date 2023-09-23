@@ -3,7 +3,6 @@ export * from './base.entity';
 export * from './dao.events';
 export * from './db-query.util';
 export * from './db.utils';
-export * from './field.validator.util';
 export * from './transaction.util';
 export * from './mixed-prop.decorator';
 export * from './object-id-prop.decorator';

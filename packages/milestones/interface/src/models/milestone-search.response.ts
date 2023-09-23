@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { MilestoneModel } from './milestone.model';
-import { BaseModel, PropertyType, TransformTo } from '@lyvely/models';
+import { BaseModel, PropertyType, TransformTo } from '@lyvely/common';
 import { ICalendarPlanResponse } from '@lyvely/calendar-plan';
 import { MilestoneRelationModel } from './milestone-relation.model';
 

@@ -1,5 +1,5 @@
 import { assureObjectId, MixedProp } from '@lyvely/core';
-import { assignEntityData, BaseEntity } from '@lyvely/models';
+import { assignEntityData, BaseEntity } from '@lyvely/common';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import {

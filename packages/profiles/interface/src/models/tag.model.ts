@@ -1,4 +1,4 @@
-import { DocumentModel } from '@lyvely/models';
+import { DocumentModel } from '@lyvely/common';
 import { Expose, Exclude } from 'class-transformer';
 import randomColor from 'randomcolor';
 

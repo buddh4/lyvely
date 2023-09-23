@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
 import { HabitModel } from './habit.model';
 import { TagModel } from '@lyvely/profiles';
-import { PropertyType } from '@lyvely/models';
+import { PropertyType } from '@lyvely/common';
 import { ContentUpdateResponse } from '@lyvely/content';
 
 export class UpdateHabitResponse extends ContentUpdateResponse<HabitModel> {

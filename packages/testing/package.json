@@ -24,6 +24,7 @@
     "@nestjs/mongoose": "^9.2.2",
     "@nestjs/event-emitter": "^1.4.1",
     "@lyvely/core": "^0.1.0-alpha3",
+    "@lyvely/common": "^0.1.0-alpha3",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
