@@ -20,8 +20,26 @@ export default [
       },
     ],
     external: (id) => {
+      const isExternal = [
+        'class-validator',
+        'class-transformer',
+        'dayjs',
+        'mitt',
+        'dayjs/plugin/weekOfYear',
+        'dayjs/plugin/utc',
+        'dayjs/plugin/timezone',
+        'dayjs/plugin/quarterOfYear',
+        'dayjs/plugin/isoWeek',
+      ].includes(id);
+
       // Exclude all dependencies from the bundle
-      return /node_modules/.test(id);
+      if(isExternal) {
+        console.log('External '+id);
+      } else {
+        console.log('Non External '+id);
+      }
+
+      return isExternal;
     },
     plugins: [
       typescript({

@@ -19,6 +19,7 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
+    "@lyvely/common": "^0.1.0-alpha3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "mitt": "^3.0.0",

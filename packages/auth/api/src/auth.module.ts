@@ -5,12 +5,12 @@ import {
   JwtAccessStrategy,
   JwtRefreshStrategy,
   JwtResetPasswordStrategy,
+  JwtAuthGuard,
 } from './guards';
 import { UsersModule } from '@lyvely/users';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController, ResetPasswordController } from './controllers';
-import { JwtAuthGuard } from './guards';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath, ModuleMeta } from '@lyvely/core';
 import { CaptchaModule } from '@lyvely/captchas';

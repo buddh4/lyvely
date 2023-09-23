@@ -1,12 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Avatar, User, UserDao, UserEmail } from '@lyvely/users';
 import { VerifyEmailDto } from '@lyvely/accounts-interface';
-import {
-  escapeHTML,
-  FieldValidationException,
-  isValidEmail,
-  ConfigurationPath,
-} from '@lyvely/core';
+import { ConfigurationPath } from '@lyvely/core';
+import { escapeHTML, FieldValidationException, isValidEmail } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import { MailService } from '@lyvely/mails';
 import { InvalidOtpException, OtpInfo, UserOtpService } from '@lyvely/otp';

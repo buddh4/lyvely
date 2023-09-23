@@ -1,7 +1,7 @@
 {
   "name": "@lyvely/i18n",
   "version": "0.1.0-alpha3",
-  "description": "Lyvely policy module",
+  "description": "Lyvely i18n module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

@@ -1,4 +1,4 @@
-=== accounts [] ===
+=== accounts [x] ===
 @nestjs/common';
 @nestjs/config';
 @nestjs/platform-express';
@@ -37,7 +37,7 @@
 @lyvely/users';
 
 
-=== auth [] ===
+=== auth [x] ===
 @nestjs/common';
 @nestjs/config';
 @nestjs/core';
@@ -55,7 +55,7 @@
 @lyvely/users';
 
 
-=== avatars [] ===
+=== avatars [x] ===
 @nestjs/common';
 @nestjs/config';
 @lyvely/common';
@@ -82,7 +82,7 @@
 @lyvely/users';
 
 
-=== captchas [] ===
+=== captchas [x] ===
 @lyvely/calendar-plan';
 @lyvely/common';
 @lyvely/content';

@@ -1,7 +1,7 @@
 {
   "name": "@lyvely/captchas-interface",
   "version": "0.1.0-alpha3",
-  "description": "Lyvely calendar-plan interface",
+  "description": "Lyvely captchas interface module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

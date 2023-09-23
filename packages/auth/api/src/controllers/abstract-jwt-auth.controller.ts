@@ -2,11 +2,7 @@ import { addMilliSeconds } from '@lyvely/dates';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { ConfigurationPath } from '@lyvely/core';
-import {
-  getAuthCookieName,
-  getRefreshCookieName,
-  getRefreshCookieExpiresIn,
-} from '../guards/strategies';
+import { getAuthCookieName, getRefreshCookieName, getRefreshCookieExpiresIn } from '../guards';
 import { Request } from 'express';
 
 const DEFAULT_ACCESS_TOKEN_EXPIRES_IN = '15m';
@@ -29,7 +25,7 @@ export abstract class AbstractJwtAuthController {
       ),
       MIN_ACCESS_TOKEN_EXPIRES_IN,
     );
-    req.res.cookie(authCookieName, token, {
+    req.res!.cookie(authCookieName, token, {
       sameSite: this.configService.get('auth.jwt.access.sameSite', DEFAULT_SAME_SITE),
       httpOnly: true,
       secure: secure,
@@ -42,12 +38,12 @@ export abstract class AbstractJwtAuthController {
     const refreshCookieName = getRefreshCookieName(this.configService);
     const expiresIn = getRefreshCookieExpiresIn(remember, this.configService);
 
-    req.res.cookie(refreshCookieName, token, {
+    req.res!.cookie(refreshCookieName, token, {
       sameSite: this.configService.get('auth.jwt.refresh.sameSite', DEFAULT_SAME_SITE),
       httpOnly: true,
       path: '/api/auth/refresh',
       secure: secure,
-      expires: addMilliSeconds(new Date(), ms(expiresIn), false),
+      expires: addMilliSeconds(new Date(), ms(expiresIn!), false),
     });
   }
 

@@ -17,8 +17,14 @@ import {
 } from '../guards';
 import { AbstractJwtAuthController } from './abstract-jwt-auth.controller';
 import { JwtAuthService } from '../services';
-import { UserRequest, UserThrottle, UserThrottlerGuard, UserStatus } from '@lyvely/users';
-import { UserModel, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/auth-interface';
+import {
+  UserRequest,
+  UserThrottle,
+  UserThrottlerGuard,
+  UserStatus,
+  UserModel,
+} from '@lyvely/users';
+import { ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/auth-interface';
 import { Headers } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
@@ -40,6 +46,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   @Post('login')
   async login(@Body() loginModel: LoginModel, @Req() req: UserRequest) {
     const { user } = req;
+    loginModel.remember ??= false;
     const { accessToken, refreshToken, vid } = await this.authService.login(
       user,
       loginModel.remember,
@@ -57,7 +64,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     return {
       user: new UserModel(user),
       vid: vid,
-      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')),
+      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')!),
     };
   }
 
@@ -70,7 +77,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     const vid = this.getVisitorIdHeader(req);
     const oldRefreshToken = user.getRefreshTokenByVisitorId(vid);
 
-    if (!user || !vid) {
+    if (!user || !vid || !oldRefreshToken) {
       // Should not happen since we validate everything in the guard, but does not hurt...
       throw new UnauthorizedException();
     }
@@ -82,10 +89,10 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     this.setRefreshCookie(
       req,
       await this.authService.createRefreshToken(user, vid, oldRefreshToken.remember),
-      oldRefreshToken.remember,
+      !!oldRefreshToken.remember,
     );
 
-    return { token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')) };
+    return { token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')!) };
   }
 
   @Public()
@@ -96,15 +103,14 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     if (user && vid) {
       await this.authService.destroyRefreshToken(user, vid);
     }
-    clearAccessCookies(res);
-    clearRefreshCookies(res);
-    req.user = undefined;
+    clearAccessCookies(res!);
+    clearRefreshCookies(res!);
+    req.user = undefined as any;
     // TODO: trigger event
-    //req.logout();
   }
 
   getVisitorIdHeader(req: UserRequest): string {
-    const vid: string | string[] = req.header(Headers.X_VISITOR_ID);
+    const vid = req.header(Headers.X_VISITOR_ID);
     return Array.isArray(vid) ? vid[0] : vid;
   }
 
@@ -114,7 +120,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   async loadUser(@Req() req: UserRequest) {
     return {
       user: new UserModel(req.user),
-      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')),
+      token_expiration: ms(this.configService.get<string>('auth.jwt.access.expiresIn')!),
     };
   }
 }

@@ -1,2 +1,3 @@
-export * from './interfaces/jwt-payload.interface';
-export * from './strategies/jwt.strategy';
+export * from './interfaces';
+export * from './strategies';
+export * from './utils';

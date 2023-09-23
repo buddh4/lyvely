@@ -61,6 +61,9 @@ export class JwtRefreshStrategy extends JwtStrategy<JwtRefreshTokenPayloadIF>({
 
     const tokenString = extractRefreshCookie(req, this.configService);
     const vid = req.header(Headers.X_VISITOR_ID);
+
+    if (!vid) throw new UnauthorizedException();
+
     const refreshTokenModel = user.getRefreshTokenByVisitorId(vid);
 
     if (!refreshTokenModel) throw new UnauthorizedException();

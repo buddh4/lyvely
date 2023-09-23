@@ -3,11 +3,10 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Inject, Type, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
-import { JwtTokenPayloadIF } from '../interfaces/jwt-payload.interface';
+import { JwtTokenPayloadIF } from '../interfaces';
 import { ConfigurationPath } from '@lyvely/core';
-import { User, UsersService } from '@lyvely/users';
-import { UserStatus } from '@lyvely/common';
-import { getIssuedAt } from '../utils/jwt.util';
+import { User, UsersService, UserStatus } from '@lyvely/users';
+import { getIssuedAt } from '../utils';
 
 export interface JwtStrategyOptionsIF {
   name: string;
