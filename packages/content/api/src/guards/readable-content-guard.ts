@@ -1,6 +1,6 @@
 import { Injectable, ExecutionContext, Inject } from '@nestjs/common';
 import { ContentGuard } from './content.guard';
-import { PolicyService } from '../../policies/services/policy.service';
+import { PolicyService } from '@lyvely/policies';
 import { ContentReadPolicy } from '../policies';
 
 @Injectable()

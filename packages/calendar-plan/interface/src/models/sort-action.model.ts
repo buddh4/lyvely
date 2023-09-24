@@ -13,7 +13,7 @@ export class CalendarPlanSort implements ICalendarPlanSort {
   constructor(obj?: Partial<CalendarPlanSort>) {
     if (obj) {
       this.attachToId = obj.attachToId;
-      this.interval = obj.interval;
+      this.interval = obj.interval || this.interval;
     }
   }
 }

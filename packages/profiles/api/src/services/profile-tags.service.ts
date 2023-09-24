@@ -43,7 +43,7 @@ export class ProfileTagsService {
   }
 
   async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
-    const tag = profile.getTagById(assureObjectId(identity));
+    const tag = profile.getTagById(assureObjectId(identity, false));
 
     if (!tag) return false;
 

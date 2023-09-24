@@ -5,18 +5,19 @@ import { ProfileContentRequest } from '../types';
 import { Policies } from '@lyvely/policies';
 import { ContentWritePolicy } from '../policies';
 import {
-  ContentTypeEndpoint,
-  ContentModel,
-  CreateContentModel,
-  TagModel,
-  ContentUpdateResponse,
   Type,
   BaseModel,
   PropertiesOf,
   createAndAssign,
   FieldValidationException,
 } from '@lyvely/common';
-import { Profile, ProfileRequest } from '@lyvely/profiles';
+import {
+  ContentTypeEndpoint,
+  ContentModel,
+  CreateContentModel,
+  ContentUpdateResponse,
+} from '@lyvely/content-interface';
+import { Profile, ProfileRequest, TagModel } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { validate } from 'class-validator';
 

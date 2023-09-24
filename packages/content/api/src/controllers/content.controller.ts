@@ -1,4 +1,4 @@
-import { ENDPOINT_CONTENT, ContentEndpoint, SetMilestoneModel } from '@lyvely/common';
+import { ENDPOINT_CONTENT, ContentEndpoint, SetMilestoneModel } from '@lyvely/content-interface';
 import { Post, HttpCode, HttpStatus, Param, Request, Body } from '@nestjs/common';
 import { Policies } from '@lyvely/policies';
 import { ContentService } from '../services';

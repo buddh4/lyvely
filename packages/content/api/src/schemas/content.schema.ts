@@ -1,15 +1,8 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import {
-  DeepPartial,
-  IContent,
-  PropertyType,
-  assignRawDataTo,
-  ContentModel,
-  Type,
-  PropertiesOf,
-} from '@lyvely/common';
-import { BaseEntity } from '@lyvely/core';
+import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '@lyvely/common';
+import { IContent, ContentModel } from '@lyvely/content-interface';
+import { BaseEntity, ObjectIdProp } from '@lyvely/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
@@ -19,7 +12,18 @@ import { ContentDataType, ContentDataTypeSchema } from './content-data-type.sche
 
 export type ContentDocument = Content & mongoose.Document;
 
-export type ContentEntity<T, TConfig extends Object = any> = IContent<TObjectId, TConfig> &
+type IGetModelConstructor = {
+  getModelConstructor: () => any;
+};
+
+function implementsGetModelConstructor(model: any): model is IGetModelConstructor {
+  return typeof (model as IGetModelConstructor).getModelConstructor === 'function';
+}
+
+export type ContentEntity<T, TConfig extends Object = any> = IContent<
+  mongoose.Types.ObjectId,
+  TConfig
+> &
   BaseEntity<T>;
 
 @Schema({ discriminatorKey: 'type' })
@@ -29,7 +33,7 @@ export class Content<
     TData extends ContentDataType = ContentDataType,
   >
   extends BaseProfileModel<T>
-  implements IContent<TObjectId, TConfig>
+  implements IContent<mongoose.Types.ObjectId, TConfig>
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)
@@ -43,8 +47,8 @@ export class Content<
   @PropertyType([ContentLog])
   logs: ContentLog[];
 
-  @Prop({ type: [mongoose.Types.ObjectId], default: [] })
-  tagIds: TObjectId[];
+  @ObjectIdProp({ default: [] })
+  tagIds: mongoose.Types.ObjectId[];
 
   config: any;
 
@@ -86,7 +90,7 @@ export class Content<
     return this.meta.parentId;
   }
 
-  getDefaultConfig(): TConfig {
+  getDefaultConfig(): TConfig | undefined {
     return undefined;
   }
 
@@ -103,20 +107,19 @@ export class Content<
   }
 
   toModel(user?: User) {
-    const ModelConstructor: Type<ContentModel> =
-      'getModelConstructor' in this && typeof this.getModelConstructor === 'function'
-        ? this.getModelConstructor()
-        : ContentModel;
+    const ModelConstructor: Type<ContentModel> = implementsGetModelConstructor(this)
+      ? this.getModelConstructor()
+      : ContentModel;
 
     return new ModelConstructor(this);
   }
 
   getTitle() {
-    return this.content?.title;
+    return this.content?.title || '';
   }
 
   getText() {
-    return this.content?.text;
+    return this.content?.text || '';
   }
 }
 

@@ -4,7 +4,7 @@ import { Observable, fromEvent, merge } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { assureStringId, ConfigurationPath, EntityIdentity, OperationMode } from '@lyvely/core';
 import { User } from '@lyvely/users';
-import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/common';
+import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/live-interface';
 import { Profile, ProfilesService } from '@lyvely/profiles';
 
 @Injectable()
@@ -47,7 +47,7 @@ export class LiveService {
     if (this.isStandaloneServer()) {
       const observables = new Set(
         (await this.profilesService.findProfileRelationsByUser(user)).map((relation) =>
-          fromEvent(this.eventEmitter, this.buildLiveProfileEventName(relation.pid)),
+          fromEvent(this.eventEmitter, this.buildLiveProfileEventName(relation.pid!)),
         ),
       );
 
@@ -55,6 +55,7 @@ export class LiveService {
       this.logger.log(`Subscribe user to ${this.buildLiveUserEventName(user)}`);
       return merge(...observables);
     } else {
+      return undefined as any;
       // TODO: redis subscription
     }
   }

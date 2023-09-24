@@ -2,10 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { BaseEntity } from '@lyvely/core';
 import { DeepPartial, UserAssignmentStrategy } from '@lyvely/common';
-import { toTimingId } from '@lyvely/calendar-plan';
 import { User } from '@lyvely/users';
 import { Profile } from './profiles.schema';
-import { toDate, CalendarDate } from '@lyvely/dates';
+import { toTimingId, toDate, CalendarDate } from '@lyvely/dates';
 
 export interface IProfileScoreAction {
   _id: mongoose.Types.ObjectId;
@@ -45,7 +44,7 @@ export class ProfileScore<
     if (strategy === UserAssignmentStrategy.PerUser) {
       data.uid = user._id;
     } else {
-      data.uid = null;
+      data.uid = undefined;
     }
 
     data.tid = data.tid || toTimingId(toDate(options.date ?? new Date()));
@@ -54,16 +53,16 @@ export class ProfileScore<
   }
 
   @Prop({ type: mongoose.Schema.Types.ObjectId })
-  oid?: TObjectId;
+  oid?: mongoose.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: TObjectId;
+  pid: mongoose.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId })
-  uid?: TObjectId;
+  uid?: mongoose.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  createdBy: TObjectId;
+  createdBy: mongoose.Types.ObjectId;
 
   @Prop({ type: String, required: true })
   tid: string;

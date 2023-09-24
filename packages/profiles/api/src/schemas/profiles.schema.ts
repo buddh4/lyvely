@@ -11,13 +11,13 @@ import {
   MAX_PROFILE_DESCRIPTION_LENGTH,
   ProfileType,
   ProfileUsage,
-  AvatarModel,
 } from '@lyvely/profiles-interface';
 import {
   BaseModel,
   getNumberEnumValues,
   PropertiesOf,
   PropertyType,
+  AvatarModel,
 } from '@lyvely/common';
 import {
   ProfileRolePermission,

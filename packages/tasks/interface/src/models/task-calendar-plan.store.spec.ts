@@ -1,6 +1,6 @@
 import { TaskModel } from './task.model';
 import { CalendarInterval } from '@lyvely/dates';
-import { toTimingId } from '@lyvely/calendar-plan';
+import { toTimingId } from '@lyvely/dates';
 import { TaskCalendarPlanStore } from './task-calendar-plan.store';
 import { ContentMetadataModel } from '@lyvely/content';
 import { UserAssignmentStrategy } from '@/collab';

@@ -1,6 +1,6 @@
 import { CalendarInterval } from '@lyvely/dates';
 import { sortBySortOrder } from '@lyvely/common';
-import { ContentFilter } from '@lyvely/content';
+import { ContentFilter } from '@lyvely/content-interface';
 import { ICalendarPlanEntry, ICalendarPlanResponse } from '../interfaces';
 
 type TimeSeriesContentIdentity = ICalendarPlanEntry | string;
@@ -45,12 +45,12 @@ export class CalendarPlanStore<
     this.models = new Map([...this.models, ...newModel]);
   }
 
-  getModel(model: TimeSeriesContentIdentity): Model {
+  getModel(model: TimeSeriesContentIdentity): Model | null {
     if (!this.hasModel(model)) {
       return null;
     }
 
-    return this.models.get(this.getId(model));
+    return this.models.get(this.getId(model)) || null;
   }
 
   getModels() {

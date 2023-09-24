@@ -2,7 +2,6 @@ import { BaseModel, DocumentModel, PropertyType } from '@lyvely/common';
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
 import {
-  ContentVisibilityLevel,
   CreatedAsType,
   IContent,
   IContentAuthor,
@@ -11,6 +10,8 @@ import {
   IContentMetadata,
 } from '../interfaces';
 import { TransformObjectId, PropertiesOf } from '@lyvely/common';
+import * as mongoose from 'mongoose';
+import { RoleVisibilityLevel } from '@lyvely/profiles';
 
 export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   extends BaseModel<T>
@@ -32,19 +33,19 @@ export class ContentAuthor extends BaseModel<ContentAuthor> implements IContentA
   type: CreatedAsType;
 
   @TransformObjectId()
-  authorId: TObjectId;
+  authorId: mongoose.Types.ObjectId;
 }
 
 @Expose()
 export class ContentMetadataModel
   extends BaseModel<ContentMetadataModel>
-  implements IContentMetadata<TObjectId>
+  implements IContentMetadata<mongoose.Types.ObjectId>
 {
   @TransformObjectId()
-  mid?: TObjectId;
+  mid?: mongoose.Types.ObjectId;
 
   @TransformObjectId()
-  createdBy: TObjectId;
+  createdBy: mongoose.Types.ObjectId;
 
   @Type(() => ContentAuthor)
   createdAs?: ContentAuthor;
@@ -56,11 +57,11 @@ export class ContentMetadataModel
   updatedAt: Date;
 
   @TransformObjectId()
-  parentId?: TObjectId;
+  parentId?: mongoose.Types.ObjectId;
 
   streamSort: number;
   sortOrder?: number;
-  visibility: ContentVisibilityLevel;
+  visibility: RoleVisibilityLevel;
   archived?: boolean;
   childCount?: number;
   locked?: boolean;
@@ -68,11 +69,11 @@ export class ContentMetadataModel
 
 @Expose()
 export class ContentLogModel<TData = any>
-  extends BaseModel<IContentLog<TData, TObjectId>>
-  implements IContentLog<TData, TObjectId>
+  extends BaseModel<IContentLog<TData, mongoose.Types.ObjectId>>
+  implements IContentLog<TData, mongoose.Types.ObjectId>
 {
   @TransformObjectId()
-  updatedBy?: TObjectId;
+  updatedBy?: mongoose.Types.ObjectId;
 
   updatedAt: Date;
   data?: TData;
@@ -82,18 +83,18 @@ export class ContentLogModel<TData = any>
 @Exclude()
 export class ContentModel<T extends IContent = IContent, TConfig extends Object = any>
   extends DocumentModel<T>
-  implements IContent<TObjectId>
+  implements IContent<mongoose.Types.ObjectId>
 {
   @Expose()
   id: string;
 
   @Expose()
   @TransformObjectId()
-  oid: TObjectId;
+  oid: mongoose.Types.ObjectId;
 
   @Expose()
   @TransformObjectId()
-  pid: TObjectId;
+  pid: mongoose.Types.ObjectId;
 
   @Expose()
   type: string;
@@ -110,7 +111,7 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
 
   @Expose()
   @Transform(({ obj }) => obj.tagIds?.map((id) => id.toString()) || [])
-  tagIds: Array<TObjectId>;
+  tagIds: Array<mongoose.Types.ObjectId>;
 
   @Expose()
   @Type(() => ContentLogModel)
@@ -127,18 +128,18 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
   }
 
   getTitle() {
-    return this.content.title;
+    return this.content.title || '';
   }
 
   getText() {
-    return this.content.text;
+    return this.content.text || '';
   }
 
-  getDefaultConfig(): TConfig {
+  getDefaultConfig(): TConfig | undefined {
     return undefined;
   }
 
-  getSortOrder(): number {
+  getSortOrder(): number | undefined {
     return this.meta.sortOrder;
   }
 }

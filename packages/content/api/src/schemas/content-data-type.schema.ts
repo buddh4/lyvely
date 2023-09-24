@@ -1,6 +1,6 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, NestedSchema } from '@lyvely/core';
-import { IContentDataType } from '@lyvely/common';
+import { IContentDataType } from '@lyvely/content-interface';
 
 @NestedSchema()
 export class ContentDataType<T extends IContentDataType = any>
@@ -14,11 +14,11 @@ export class ContentDataType<T extends IContentDataType = any>
   text?: string;
 
   getTitle(): string {
-    return this.title;
+    return this.title || '';
   }
 
   getTextContent(): string {
-    return this.text;
+    return this.text || '';
   }
 }
 

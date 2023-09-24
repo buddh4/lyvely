@@ -40,7 +40,7 @@ export class ProfileDao extends AbstractDao<Profile> {
   }
 
   async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
-    const tag = profile.getTagById(assureObjectId(identity));
+    const tag = profile.getTagById(assureObjectId(identity, false));
 
     if (!tag) return 0;
 
@@ -68,6 +68,7 @@ export class ProfileDao extends AbstractDao<Profile> {
   }
 
   getModelConstructor(model: DeepPartial<Profile>): Constructor<Profile> {
+    if (!model.type) throw new IntegrityException();
     const ProfileType = getProfileConstructorByType(model.type);
     if (!ProfileType) {
       throw new IntegrityException(

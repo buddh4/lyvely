@@ -1,4 +1,4 @@
-import { BaseMembershipRole } from '@lyvely/profiles';
+import { BaseMembershipRole } from '@lyvely/profiles-interface';
 
 export interface ILiveEvent {
   name: string;

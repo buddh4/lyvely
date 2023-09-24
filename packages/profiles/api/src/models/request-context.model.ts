@@ -31,7 +31,7 @@ export class RequestContext<T extends Profile = Profile> extends BaseModel<Reque
 
   getOrganizationContext(): RequestContext<Organization> | null {
     if (this.profile instanceof Organization) {
-      return this;
+      return this as RequestContext<Organization>;
     }
 
     return this.organizationContext || null;

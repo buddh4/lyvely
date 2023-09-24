@@ -3,15 +3,12 @@ import { ContentTypeDao, ContentDao } from '../daos';
 import { User } from '@lyvely/users';
 import { assureObjectId, EntityIdentity, IBaseQueryOptions, UpdateQuerySet } from '@lyvely/core';
 import { Content, ContentCondition } from '../schemas';
-import {
-  CreateContentModel,
-  EntityNotFoundException,
-  ForbiddenServiceException,
-  IContentFilter,
-} from '@lyvely/common';
+import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
+import { CreateContentModel } from '@lyvely/content-interface';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
 import { isDefined } from 'class-validator';
+import { FilterQuery } from 'mongoose';
 
 export interface IContentUpdateOptions extends IBaseQueryOptions {
   streamSort?: boolean;
@@ -54,9 +51,9 @@ export abstract class ContentTypeService<
   ): Promise<UpdateQuerySet<T>>;
 
   async findAllByProfile(profile: Profile, filter?: IContentSearchFilter): Promise<T[]> {
-    let queryFilter = undefined;
+    let queryFilter: FilterQuery<Content> | undefined = undefined;
     if (isDefined(filter?.archived)) {
-      queryFilter = ContentCondition.archived(filter.archived);
+      queryFilter = ContentCondition.archived(filter!.archived!);
     }
     return this.contentDao.findAllByProfile(profile, queryFilter);
   }
@@ -79,7 +76,7 @@ export abstract class ContentTypeService<
     const instance = await this.createInstance(profile, user, model);
     const parent = await this.handleSubContentCreation(profile, user, instance, model);
     await this.mergeTags(profile, instance, model.tagNames);
-    instance.meta.createdBy = assureObjectId(user);
+    instance.meta.createdBy = assureObjectId(user, false);
     const result = await this.contentDao.save(instance);
 
     if (parent) {
@@ -130,6 +127,8 @@ export abstract class ContentTypeService<
   }
 
   private setStreamSort(updateSet: UpdateQuerySet<T>) {
+    if (!updateSet) return;
+
     if (updateSet.meta) {
       updateSet.meta.streamSort = Date.now();
     } else {
@@ -138,6 +137,8 @@ export abstract class ContentTypeService<
   }
 
   private setUpdatedBy(updateSet: UpdateQuerySet<T>, user: User) {
+    if (!updateSet) return;
+
     if (updateSet.meta) {
       updateSet.meta.updatedBy = assureObjectId(user);
       updateSet.meta.updatedAt = new Date();
@@ -172,7 +173,7 @@ export abstract class ContentTypeService<
     update: UpdateQuerySet<T>,
     tagNames?: string[],
   ) {
-    if (!tagNames?.length) return;
+    if (!tagNames?.length || !update) return;
 
     await this.profileTagsService.mergeTags(profile, tagNames);
     update.tagIds = [];

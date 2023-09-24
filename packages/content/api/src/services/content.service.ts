@@ -5,6 +5,7 @@ import { EntityNotFoundException } from '@lyvely/common';
 import { ProfileShard } from '@lyvely/profiles';
 import { assureObjectId, EntityIdentity } from '@lyvely/core';
 import { User } from '@lyvely/users';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class ContentService {
@@ -21,16 +22,18 @@ export class ContentService {
    * @private
    * @throws EntityNotFoundException
    */
-  public async findContentByProfileAndId(
+  public async findContentByProfileAndId<
+    B extends boolean | undefined | null = boolean | undefined | null,
+  >(
     profileRelation: ProfileShard,
     id: EntityIdentity<Content>,
-    throwException = false,
-  ): Promise<Content> {
+    throwException?: B,
+  ): Promise<B extends false | undefined | null ? Content | undefined : Content> {
     const content = await this.contentDao.findByProfileAndId(profileRelation, id);
 
     if (!content && throwException) throw new EntityNotFoundException();
 
-    return content;
+    return content as Content;
   }
 
   /**
@@ -71,9 +74,9 @@ export class ContentService {
     profileRelation: ProfileShard,
     user: User,
     cid: EntityIdentity<Content>,
-    mid: TObjectId | string,
+    mid: mongoose.Types.ObjectId | string,
   ): Promise<boolean> {
-    mid = assureObjectId(mid);
+    mid = assureObjectId(mid, false);
     const milestone = this.contentDao.findByProfileAndId(profileRelation, mid);
 
     if (!milestone) throw new EntityNotFoundException();

@@ -36,7 +36,7 @@ export default [
       if(isExternal) {
         console.log('External '+id);
       } else {
-        console.log('Non External '+id);
+      //  console.log('Non External '+id);
       }
 
       return isExternal;

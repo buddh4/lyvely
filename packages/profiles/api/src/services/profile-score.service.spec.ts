@@ -7,7 +7,7 @@ import { TestProfileScoreDao } from '../test/test-profile-score.dao';
 import { INestApplication } from '@nestjs/common';
 import { TestProfileScoreService } from '../test/test-profile-score.service';
 import { ProfileDao } from '../daos';
-import { toTimingId } from '@lyvely/common';
+import { toTimingId } from '@lyvely/dates';
 
 const testScoreModelDef = {
   name: ProfileScore.name,

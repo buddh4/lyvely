@@ -1,6 +1,7 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, NestedSchema } from '@lyvely/core';
-import { DeepPartial, getStringEnumValues, CreatedAsType } from '@lyvely/common';
+import { DeepPartial, getStringEnumValues } from '@lyvely/common';
+import { CreatedAsType } from '@lyvely/content-interface';
 import mongoose from 'mongoose';
 import { User } from '@lyvely/users';
 import { Organization, Profile } from '@lyvely/profiles';
@@ -25,7 +26,7 @@ export class CreatedAs extends BaseEntity<CreatedAs> {
   type: CreatedAsType;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  authorId: TObjectId;
+  authorId: mongoose.Types.ObjectId;
 }
 
 export const ContentAuthorSchema = SchemaFactory.createForClass(CreatedAs);

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { TestProfileScore } from './test-profile-score.schema';
-import { ProfileScoreService } from '@lyvely/profiles';
+import { ProfileScoreService } from '../services';
 import { TestProfileScoreDao } from './test-profile-score.dao';
 
 @Injectable()

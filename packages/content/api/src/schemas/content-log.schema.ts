@@ -1,7 +1,8 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, NestedSchema } from '@lyvely/core';
 import mongoose from 'mongoose';
-import { PropertyType, IContentLog } from '@lyvely/common';
+import { PropertyType } from '@lyvely/common';
+import { IContentLog } from '@lyvely/content-interface';
 
 /**
  * Examples:
@@ -33,7 +34,7 @@ export enum BaseContentLogTypes {
 @NestedSchema()
 export class ContentLog<TData = undefined> extends BaseEntity<IContentLog<TData>> {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-  updatedBy?: TObjectId;
+  updatedBy?: mongoose.Types.ObjectId;
 
   @Prop({ type: Date, required: true })
   @PropertyType(Date, { default: new Date() })

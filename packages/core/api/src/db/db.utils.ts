@@ -1,12 +1,6 @@
 import { Document, Types, UpdateQuery } from 'mongoose';
 import { BaseEntity, assignEntityData } from './base.entity';
-import {
-  isValidObjectId,
-  DeepPartial,
-  Type,
-  findByPath,
-  IntegrityException,
-} from '@lyvely/common';
+import { isValidObjectId, DeepPartial, Type, findByPath, IntegrityException } from '@lyvely/common';
 import { assignRawDataTo } from '@lyvely/common';
 
 export type EntityIdentity<T extends BaseEntity<any>> =
@@ -22,7 +16,7 @@ export function assureObjectId<
   T extends BaseEntity<any> = BaseEntity<any>,
   B extends boolean | undefined | null = boolean | undefined | null,
 >(
-  identity: EntityIdentity<T>,
+  identity: EntityIdentity<T> | undefined,
   optional?: B,
 ): B extends true | undefined | null ? Types.ObjectId | undefined : Types.ObjectId {
   if (!identity && optional) return undefined as any;
@@ -95,18 +89,6 @@ export function applyInc<T>(model: T, incData: Record<string, number>) {
   });
 }
 
-/*export function findByPath<T>(model: T, path: string, parent = false) {
-  if (!path.includes('.')) {
-    return parent ? model : model[path];
-  }
-
-  path = parent ? path.replace(/\.[^/.]+$/, '') : path;
-
-  let result = model;
-  path.split('.').forEach((sub) => (result = result || result[sub] ? result[sub] : undefined));
-  return result;
-}*/
-
 export function applyPush<T>(model: T, pushData: { [key in keyof T]?: any }): T {
   // TODO: support path
   Object.keys(pushData).forEach((key) => {
@@ -138,11 +120,14 @@ export function applyRawDataTo<T extends Object>(
   return assignRawDataTo(model, data, { maxDepth, strict });
 }
 
-export function assureStringId(obj: any, optional = false): string | undefined {
+export function assureStringId<B extends boolean | undefined | null = boolean | undefined | null>(
+  obj: any | undefined,
+  optional?: B,
+): B extends true | undefined | null ? string | undefined : string {
   if (!obj && !optional) {
     throw new IntegrityException('Cannot assure string id on undefined.');
   } else if (!obj) {
-    return undefined;
+    return undefined as any;
   }
 
   if (typeof obj === 'string') {
@@ -156,6 +141,8 @@ export function assureStringId(obj: any, optional = false): string | undefined {
   if (obj._id) {
     return obj._id.toString();
   }
+
+  if (!optional) return undefined as any;
 
   throw new IntegrityException('Use of invalid object id detected.');
 }

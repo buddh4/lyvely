@@ -1,6 +1,6 @@
 import { escapeRegExp } from 'lodash';
-import { Filter, FilterConstructorOptions, IFilter } from '@lyvely/core';
-import { TagModel } from '@/tags';
+import { Filter, FilterConstructorOptions, IFilter } from '@lyvely/common';
+import { TagModel } from '@lyvely/profiles-interface';
 import { IContent } from '../interfaces';
 
 export interface IContentFilterOptions {
@@ -18,12 +18,14 @@ export interface IContentFilter<
   TOptions extends IContentFilterOptions = IContentFilterOptions,
 > extends IFilter<TModel, TOptions> {
   setTagProvider(provider: TagProvider);
+  tagProvider?: () => TagModel[];
 }
 
 export class ContentFilter<
   TModel extends IContent<string> = IContent<string>,
   TOptions extends IContentFilterOptions = IContentFilterOptions,
-> extends Filter<TModel, TOptions> {
+  TFilter extends IContentFilter<TModel, TOptions> = IContentFilter<TModel, TOptions>,
+> extends Filter<TModel, TOptions, TFilter> {
   tagProvider?: () => TagModel[];
 
   constructor(
@@ -43,12 +45,13 @@ export class ContentFilter<
     if (this.tagProvider) return;
 
     this.tagProvider = provider;
-    this.additions.push((model: TModel, filter: ContentFilter<TModel, TOptions>) => {
-      const includeOnlyOnFilterTags = filter
-        .tagProvider()
-        .filter((tag) => tag.includeOnFilter && model.tagIds.includes(tag.id));
+    const tagAddition = (model: TModel, filter: IContentFilter<TModel, TOptions>) => {
+      const includeOnlyOnFilterTags = filter.tagProvider!().filter(
+        (tag) => tag.includeOnFilter && model.tagIds.includes(tag.id),
+      );
       return !(filter.isEmpty() && includeOnlyOnFilterTags.length);
-    });
+    };
+    this.additions.push(tagAddition);
   }
 
   protected getDefaultOptions(): TOptions {

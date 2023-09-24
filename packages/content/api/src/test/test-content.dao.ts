@@ -1,4 +1,4 @@
-import { ContentTypeDao } from '@lyvely/content';
+import { ContentTypeDao } from '../daos';
 import { TestContent } from './test-content.schema';
 import { Constructor } from '@lyvely/common';
 import { Injectable } from '@nestjs/common';

@@ -6,7 +6,7 @@ import { assureStringId, ConfigurationPath } from '@lyvely/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ChangeStreamInsertDocument } from 'mongodb';
-import { ContentUpdateStateLiveEvent } from '@lyvely/common';
+import { ContentUpdateStateLiveEvent } from '@lyvely/content-interface';
 
 @Injectable()
 export class ContentEventPublisher {
@@ -41,7 +41,7 @@ export class ContentEventPublisher {
     this.liveService.emitProfileEvent(
       new ContentUpdateStateLiveEvent({
         updatesAvailable: true,
-        pid: assureStringId(content.pid),
+        pid: assureStringId(content.pid, false),
         parentId: content.getParentId() ? assureStringId(content.getParentId()) : undefined,
         streamSort: content.meta.streamSort,
         cid: content.id,

@@ -1,4 +1,4 @@
-import { ContentVisibilityLevel, BaseProfileRelationRole } from '@lyvely/common';
+import { BaseProfileRelationRole, RoleVisibilityLevel } from '@lyvely/profiles-interface';
 
 export type RoleName = string;
 export type Permission = string;
@@ -15,7 +15,7 @@ export interface IProfileRolePermission {
 export interface IProfileRoleDefinition {
   role: RoleName;
   extends?: string;
-  visibility: ContentVisibilityLevel;
+  visibility: RoleVisibilityLevel;
   label: string;
   assignable?: boolean;
   editable?: boolean;
@@ -24,53 +24,53 @@ export interface IProfileRoleDefinition {
 }
 
 export const defaultProfileRolesDefinition: IProfileRoleDefinition[] = [
-  { role: BaseProfileRelationRole.Owner, label: 'Owner', visibility: ContentVisibilityLevel.Owner },
+  { role: BaseProfileRelationRole.Owner, label: 'Owner', visibility: RoleVisibilityLevel.Owner },
   {
     role: BaseProfileRelationRole.Admin,
     label: 'Admin',
-    visibility: ContentVisibilityLevel.Admin,
+    visibility: RoleVisibilityLevel.Admin,
     assignable: true,
     extendable: true,
   },
   {
     role: BaseProfileRelationRole.Moderator,
     label: 'Moderator',
-    visibility: ContentVisibilityLevel.Moderator,
+    visibility: RoleVisibilityLevel.Moderator,
     assignable: true,
     extendable: true,
   },
   {
     role: BaseProfileRelationRole.Member,
     label: 'Member',
-    visibility: ContentVisibilityLevel.Member,
+    visibility: RoleVisibilityLevel.Member,
     assignable: true,
     extendable: true,
   },
   {
     role: BaseProfileRelationRole.Guest,
     label: 'Guest',
-    visibility: ContentVisibilityLevel.Member,
+    visibility: RoleVisibilityLevel.Member,
     extendable: true,
   },
   {
     role: BaseProfileRelationRole.Organization,
     label: 'Guest',
-    visibility: ContentVisibilityLevel.Organization,
+    visibility: RoleVisibilityLevel.Organization,
   },
   {
     role: BaseProfileRelationRole.InvitedMember,
     label: 'Invited users',
-    visibility: ContentVisibilityLevel.User,
+    visibility: RoleVisibilityLevel.User,
   },
   {
     role: BaseProfileRelationRole.RequestedMember,
     label: 'Membership requested',
-    visibility: ContentVisibilityLevel.User,
+    visibility: RoleVisibilityLevel.User,
   },
-  { role: BaseProfileRelationRole.User, label: 'User', visibility: ContentVisibilityLevel.User },
+  { role: BaseProfileRelationRole.User, label: 'User', visibility: RoleVisibilityLevel.User },
   {
     role: BaseProfileRelationRole.Visitor,
     label: 'Visitor',
-    visibility: ContentVisibilityLevel.Public,
+    visibility: RoleVisibilityLevel.Public,
   },
 ];

@@ -1,9 +1,10 @@
 import mitt, { Emitter, Handler } from 'mitt';
 
-export type FilterAddition<TModel, TOptions> = (
-  model: TModel,
-  filter: Filter<TModel, TOptions>,
-) => boolean;
+export type FilterAddition<
+  TModel,
+  TOptions,
+  TFilter extends IFilter<TModel, TOptions> = IFilter<TModel, TOptions>,
+> = (model: TModel, filter: TFilter) => boolean;
 
 export type FilterConstructorOptions<TModel, TOptions> = TOptions & {
   additions?: FilterAddition<TModel, TOptions>[];
@@ -30,9 +31,14 @@ export interface IFilter<TModel, TOptions> {
   offUpdate(handler: Handler<FilterEvents<TOptions>['update']>);
 }
 
-export abstract class Filter<TModel, TOptions> implements IFilter<TModel, TOptions> {
+export abstract class Filter<
+  TModel,
+  TOptions,
+  TFilter extends IFilter<TModel, TOptions> = IFilter<TModel, TOptions>,
+> implements IFilter<TModel, TOptions>
+{
   protected options: TOptions;
-  protected additions: FilterAddition<TModel, TOptions>[] = [];
+  protected additions: FilterAddition<TModel, TOptions, TFilter>[] = [];
   protected emitter: Emitter<FilterEvents<TOptions>>;
 
   protected abstract checkModel(model: TModel);
@@ -116,7 +122,7 @@ export abstract class Filter<TModel, TOptions> implements IFilter<TModel, TOptio
   protected runAdditions(model: TModel) {
     let result = true;
     this.additions.forEach((addition) => {
-      if (!addition(model, this)) {
+      if (!addition(model, this as any)) {
         result = false;
       }
     });

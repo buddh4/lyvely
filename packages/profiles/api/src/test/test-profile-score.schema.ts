@@ -1,4 +1,4 @@
-import { ProfileScore } from '@lyvely/profiles';
+import { ProfileScore } from '../schemas';
 import mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 

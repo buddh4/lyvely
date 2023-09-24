@@ -1,7 +1,6 @@
 import { IStreamService } from '@lyvely/streams';
-import { ContentModel } from '@lyvely/content';
 import { Endpoint } from '@lyvely/common';
-import { ContentStreamFilter } from '../models';
+import { ContentStreamFilter, ContentModel } from '../models';
 
 export interface IContentStreamClient extends IStreamService<ContentModel, ContentStreamFilter> {}
 

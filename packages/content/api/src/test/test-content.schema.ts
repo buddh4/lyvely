@@ -1,7 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Content } from '../schemas';
-import { ContentDataType } from '@lyvely/content';
+import { Content, ContentDataType } from '../schemas';
 
 @Schema()
 export class TestContentData extends ContentDataType {

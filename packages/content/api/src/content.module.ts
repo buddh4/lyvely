@@ -2,16 +2,15 @@ import { Global, Inject, Injectable, Module, OnModuleInit, Scope, Type } from '@
 import { UsersModule } from '@lyvely/users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
-import {ContentScoreService, ContentService, ContentStreamService} from './services';
+import { ContentScoreService, ContentService, ContentStreamService } from './services';
 import { ProfileScore, ProfilesModule } from '@lyvely/profiles';
 import { ContentDao, ContentScoreDao } from './daos';
 import { ContentReadPolicy, ContentWritePolicy } from './policies';
 import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { LiveModule } from '@lyvely/live';
-import { ContentController } from '@lyvely/content';
 import { uniqueId } from 'lodash';
-import {ContentStreamController} from "./controllers";
+import { ContentStreamController, ContentController } from './controllers';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -34,7 +33,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
   controllers: [ContentController, ContentStreamController],
   providers: [
     ContentService,
-      ContentStreamService,
+    ContentStreamService,
     ContentDao,
     ContentEventPublisher,
     ContentTypeRegistry,

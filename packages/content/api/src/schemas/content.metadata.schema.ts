@@ -1,13 +1,10 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema } from '@lyvely/core';
+import { BaseEntity, NestedSchema, ObjectIdProp } from '@lyvely/core';
 import mongoose from 'mongoose';
-import { Author, ContentAuthorSchema, CreatedAs } from '@lyvely/content';
-import {
-  ContentVisibilityLevel,
-  getNumberEnumValues,
-  PropertyType,
-  IContentMetadata,
-} from '@lyvely/common';
+import { Author, ContentAuthorSchema, CreatedAs } from './content-author.schema';
+import { getNumberEnumValues, PropertyType } from '@lyvely/common';
+import { IContentMetadata } from '@lyvely/content-interface';
+import { RoleVisibilityLevel } from '@lyvely/profiles';
 
 /**
  * Other ideas:
@@ -19,17 +16,17 @@ import {
 
 @NestedSchema()
 export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {
-  @Prop({ type: mongoose.Types.ObjectId })
-  mid?: TObjectId;
+  @ObjectIdProp()
+  mid?: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Types.ObjectId })
-  parentId?: TObjectId;
+  @ObjectIdProp()
+  parentId?: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Types.ObjectId })
+  @Prop()
   parentPath?: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  createdBy: TObjectId;
+  @ObjectIdProp({ required: true })
+  createdBy: mongoose.Types.ObjectId;
 
   @Prop({ type: ContentAuthorSchema, required: true })
   createdAs?: CreatedAs;
@@ -46,15 +43,15 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   @PropertyType(Date, { default: new Date() })
   updatedAt: Date;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  updatedBy: TObjectId;
+  @ObjectIdProp()
+  updatedBy: mongoose.Types.ObjectId;
 
   @Prop({ required: true })
   streamSort: number;
 
-  @Prop({ enum: getNumberEnumValues(ContentVisibilityLevel) })
-  @PropertyType(Number, { default: ContentVisibilityLevel.Member })
-  visibility: ContentVisibilityLevel;
+  @Prop({ enum: getNumberEnumValues(RoleVisibilityLevel) })
+  @PropertyType(Number, { default: RoleVisibilityLevel.Member })
+  visibility: RoleVisibilityLevel;
 
   @Prop({ type: Number, min: 0 })
   sortOrder?: number;

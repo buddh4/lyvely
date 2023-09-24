@@ -1,4 +1,4 @@
-import { ICalendarPlanEntry } from '@lyvely/common';
+import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 import { Content } from '@lyvely/content';
 import { BaseEntity } from '@lyvely/core';
 

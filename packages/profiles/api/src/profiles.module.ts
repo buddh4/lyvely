@@ -33,7 +33,7 @@ import { ProfileType } from '@lyvely/profiles-interface';
 import { useProfileMappings } from './mappings';
 import { ProfileMembershipController } from './controllers/profile-membership.controller';
 
-export const ProfileModel = MongooseModule.forFeature([
+const ProfileModel = MongooseModule.forFeature([
   {
     name: Profile.name,
     schema: ProfileSchema,

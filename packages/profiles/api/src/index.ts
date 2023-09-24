@@ -9,3 +9,4 @@ export * from './interfaces';
 export * from './types';
 export * from './services';
 export * from './profiles.module';
+export * from '@lyvely/profiles-interface';

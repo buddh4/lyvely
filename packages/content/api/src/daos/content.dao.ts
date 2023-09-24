@@ -1,4 +1,4 @@
-import { Content, ContentDocument } from '../schemas';
+import { Content } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { ContentTypeRegistry } from '../components';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,7 +11,7 @@ import { EntityIdentity } from '@lyvely/core';
 @Injectable()
 export class ContentDao extends ContentTypeDao<Content> {
   constructor(
-    @InjectModel(Content.name) protected model: Model<ContentDocument>,
+    @InjectModel(Content.name) protected model: Model<Content>,
     protected contentTypeRegistry: ContentTypeRegistry,
   ) {
     super();
@@ -32,7 +32,7 @@ export class ContentDao extends ContentTypeDao<Content> {
 
   getModelConstructor(model: DeepPartial<Content>) {
     return model?.type && this.contentTypeRegistry.isRegisteredType(model.type)
-      ? this.contentTypeRegistry.getTypeConstructor(model.type)
+      ? this.contentTypeRegistry.getTypeConstructor(model.type) || Content
       : Content;
   }
 

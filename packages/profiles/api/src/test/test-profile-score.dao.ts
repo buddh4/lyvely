@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TestProfileScore, TestProfileScoreDocument } from './test-profile-score.schema';
+import { TestProfileScore } from './test-profile-score.schema';
 import { ProfileScoreDao } from '../daos';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -8,7 +8,7 @@ import { Constructor } from '@lyvely/common';
 @Injectable()
 export class TestProfileScoreDao extends ProfileScoreDao<TestProfileScore> {
   @InjectModel(TestProfileScore.name)
-  model: Model<TestProfileScoreDocument>;
+  model: Model<TestProfileScore>;
 
   getModelConstructor(): Constructor<TestProfileScore> {
     return TestProfileScore;

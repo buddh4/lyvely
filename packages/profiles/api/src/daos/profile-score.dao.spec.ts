@@ -4,7 +4,7 @@ import { TestDataUtils, createContentTestingModule } from '@lyvely/testing';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import { TestProfileScore, TestProfileScoreSchema } from '../test/test-profile-score.schema';
 import { TestProfileScoreDao } from '../test/test-profile-score.dao';
-import { toTimingId } from '@lyvely/common';
+import { toTimingId } from '@lyvely/dates';
 
 const testScoreModelDef = {
   name: ProfileScore.name,

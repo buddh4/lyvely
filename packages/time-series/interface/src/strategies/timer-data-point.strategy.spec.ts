@@ -5,7 +5,7 @@ import {
 } from '@/time-series';
 import { CalendarInterval, isToday } from '@lyvely/dates';
 import { TimerDataPointModel } from '../models';
-import { toTimingId } from '@lyvely/calendar-plan';
+import { toTimingId } from '@lyvely/dates';
 
 describe('TimerDataPointStrategy', () => {
   describe('validateValue', () => {

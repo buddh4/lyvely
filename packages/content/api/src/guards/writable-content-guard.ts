@@ -1,8 +1,8 @@
 import { Injectable, ExecutionContext, Inject } from '@nestjs/common';
 import { ContentWritePolicy } from '../policies';
-import { PolicyService } from '../../policies/services/policy.service';
+import { PolicyService } from '@lyvely/policies';
 import { AbstractContentGuard } from './abstract-content.guard';
-import { ProfileContext } from '../../profiles';
+import { ProfileContext } from '@lyvely/profiles';
 import { Content } from '../schemas';
 
 @Injectable()

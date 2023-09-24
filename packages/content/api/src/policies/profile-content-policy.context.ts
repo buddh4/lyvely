@@ -1,4 +1,4 @@
-import { ProfilePolicyContext } from '../../profiles';
+import { ProfilePolicyContext } from '@lyvely/profiles';
 import { ProfileContentRequest } from '../types';
 
 export class ProfileContentContext<

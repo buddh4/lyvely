@@ -1,7 +1,8 @@
 import { AbstractStreamService } from '@lyvely/streams';
-import { ContentStreamFilter } from '@lyvely/common';
+import { ContentStreamFilter } from '@lyvely/content-interface';
 import { Inject, Logger } from '@nestjs/common';
-import { Content, ContentDao } from '@lyvely/content';
+import { ContentDao } from '../daos';
+import { Content } from '../schemas';
 import { RequestContext } from '@lyvely/profiles';
 import { FilterQuery } from 'mongoose';
 import { assureObjectId } from '@lyvely/core';

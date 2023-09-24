@@ -7,7 +7,8 @@ import {
   TestProfileScoreDocument,
   TestProfileScoreSchema,
 } from '../test/test-profile-score.schema';
-import { addDays, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
+import { addDays, toTimingId } from '@lyvely/dates';
+import { UserAssignmentStrategy } from '@lyvely/common';
 
 describe('ProfileScore', () => {
   let testingModule: TestingModule;

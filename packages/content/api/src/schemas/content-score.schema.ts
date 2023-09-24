@@ -1,21 +1,22 @@
 import { ICreateProfileScore, IProfileScoreAction, ProfileScore } from '@lyvely/profiles';
-import { ModelDefinition, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ModelDefinition, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Content } from './content.schema';
 import { DeepPartial, IntegrityException } from '@lyvely/common';
+import { ObjectIdProp } from '@lyvely/core';
 
 interface ICreateContentScore extends ICreateProfileScore {
   content: Content;
 }
 
 interface IContentScore extends IProfileScoreAction {
-  cid: TObjectId;
+  cid: mongoose.Types.ObjectId;
 }
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class ContentScore<T extends IContentScore = IContentScore> extends ProfileScore<T> {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  cid: TObjectId;
+  @ObjectIdProp()
+  cid: mongoose.Types.ObjectId;
 
   constructor(options: ICreateContentScore, data: DeepPartial<T> = {}) {
     data.cid = options.content._id;

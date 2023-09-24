@@ -1,8 +1,13 @@
-import { ContentModel, ContentStreamFilter, ENDPOINT_CONTENT_STREAM } from '@lyvely/common';
+import {
+  ContentModel,
+  ContentStreamFilter,
+  ENDPOINT_CONTENT_STREAM,
+} from '@lyvely/content-interface';
 import { Inject } from '@nestjs/common';
 import { UseClassSerializer } from '@lyvely/core';
 import { AbstractStreamController } from '@lyvely/streams';
-import { Content, ContentStreamService } from '@lyvely/content';
+import { Content } from '../schemas';
+import { ContentStreamService } from '../services';
 import { ProfileContext, ProfileController } from '@lyvely/profiles';
 
 @ProfileController(ENDPOINT_CONTENT_STREAM)

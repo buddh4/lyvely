@@ -3,11 +3,9 @@ import {
   IStreamResponse,
   StreamRequest,
   IStreamFilter,
-  findByPath,
-  IStreamState,
-  BaseModel,
-  EntityNotFoundException,
-} from '@lyvely/common';
+  StreamResponse,
+} from '@lyvely/streams-interface';
+import { BaseModel, findByPath, EntityNotFoundException } from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
 import {
   AbstractDao,
@@ -18,19 +16,7 @@ import {
 } from '@lyvely/core';
 import { cloneDeep } from 'lodash';
 import { RequestContext } from '@lyvely/profiles';
-import { DEFAULT_BATCH_SIZE } from '../stream.constants'
-import { Expose, instanceToPlain, Transform } from 'class-transformer';
-
-@Expose()
-export class StreamResponse<TResult>
-  extends BaseModel<StreamResponse<TResult>>
-  implements IStreamResponse<TResult>
-{
-  @Transform(({ value }) => value.map((elem) => instanceToPlain(elem)))
-  models: TResult[];
-  state: IStreamState;
-  hasMore?: boolean;
-}
+import { DEFAULT_BATCH_SIZE } from '../stream.constants';
 
 @Injectable()
 export abstract class AbstractStreamService<
@@ -102,7 +88,7 @@ export abstract class AbstractStreamService<
     if (streamEntries.length) {
       response.state.tailIds = streamEntries
         .filter((entry) => entry.id === streamEntries[streamEntries.length - 1].id)
-        .map((entry) => assureStringId(entry));
+        .map((entry) => assureStringId(entry, false));
       response.state.tail = this.getSortValue(streamEntries[streamEntries.length - 1]);
 
       if (!response.state.headIds?.length) {
@@ -130,7 +116,8 @@ export abstract class AbstractStreamService<
   ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);
 
-    if (request.state.head) {
+    // TODO: make request.state required?
+    if (request.state?.head) {
       filter[this.getSortField() as keyof FilterQuery<TModel>] = <any>{
         $gte: request.state.head,
       };
@@ -158,7 +145,7 @@ export abstract class AbstractStreamService<
     if (streamEntries.length) {
       response.state.headIds = streamEntries
         .filter((entry) => entry.id === streamEntries[0].id)
-        .map((entry) => assureStringId(entry));
+        .map((entry) => assureStringId(entry, false));
       response.state.head = this.getSortValue(streamEntries[0]);
     }
 

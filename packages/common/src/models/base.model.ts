@@ -24,6 +24,14 @@ export function implementsAfterInit(model: any): model is IAfterInit {
   return typeof (model as IAfterInit).afterInit === 'function';
 }
 
+export type IToJson = {
+  toJSON: () => any;
+};
+
+export function implementsToJson(model: any): model is IToJson {
+  return typeof (model as IToJson).toJSON === 'function';
+}
+
 export abstract class BaseModel<T> {
   constructor(obj?: Partial<PropertiesOf<T>>) {
     if (implementsGetDefaults(this)) {
@@ -52,7 +60,7 @@ export abstract class DocumentModel<T extends DocumentMock<T>> extends BaseModel
       return;
     }
 
-    if (obj && 'toJSON' in obj && typeof obj.toJSON === 'function') {
+    if (implementsToJson(obj)) {
       obj = obj.toJSON();
     }
 

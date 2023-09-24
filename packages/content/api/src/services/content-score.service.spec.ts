@@ -14,7 +14,8 @@ import { Model } from 'mongoose';
 import { expect } from '@jest/globals';
 import { ContentScoreService } from './index';
 import { ContentScoreDao } from '../daos';
-import { toTimingId, UserAssignmentStrategy } from '@lyvely/common';
+import { toTimingId } from '@lyvely/dates';
+import { UserAssignmentStrategy } from '@lyvely/common';
 import { TestContent } from '../test/test-content.schema';
 
 describe('ContentScoreService', () => {

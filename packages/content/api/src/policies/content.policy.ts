@@ -1,4 +1,4 @@
-import { IPolicy } from '../../policies/interfaces/policy.interface';
+import { IPolicy } from '@lyvely/policies';
 import { Injectable } from '@nestjs/common';
 import { ProfileContentContext } from './profile-content-policy.context';
 
