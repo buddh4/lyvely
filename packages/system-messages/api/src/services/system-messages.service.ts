@@ -1,5 +1,5 @@
 import { ContentTypeService } from '@lyvely/content';
-import { Message } from '@lyvely/message';
+import { Message } from '@lyvely/messages';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SystemMessagesDao } from '../daos';
 import { Profile } from '@lyvely/profiles';
@@ -28,7 +28,7 @@ export class SystemMessagesService extends ContentTypeService<SystemMessage, ICr
     user: User,
     content: Message,
     model: Partial<ICreateSystemMessage>,
-  ): Promise<UpdateQuerySet<null>> {
+  ): Promise<UpdateQuerySet<Message>> {
     throw new UnsupportedOperationException();
   }
 }

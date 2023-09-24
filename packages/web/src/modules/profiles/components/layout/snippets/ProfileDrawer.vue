@@ -195,6 +195,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
   @apply bg-sidebar text-sidebar;
   min-width: 260px;
   max-width: 260px;
+  will-change: min-width, max-width;
   transition: all 0.35s ease-in-out;
   direction: ltr;
 }

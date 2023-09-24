@@ -1,5 +1,9 @@
 import { Prop } from '@nestjs/mongoose';
-import { DataPointInputType, DataPointValueType, ITextDataPointSettings } from '@lyvely/common';
+import {
+  DataPointInputType,
+  DataPointValueType,
+  ITextDataPointSettings,
+} from '@lyvely/time-series-interface';
 import { DataPointConfigFactory } from '../data-point-config.factory';
 import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
 import { TextDataPointConfig } from './text-data-point-config.schema';

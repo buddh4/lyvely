@@ -5,7 +5,7 @@ import { DataPointSchemaFactory } from '../schemas/data-points/data-point-schema
 
 export abstract class DataPointDao extends DataPointStrategyDao {
   getModelConstructor(model: Partial<DataPoint>) {
-    const result = DataPointSchemaFactory.getModelType(model.valueType);
+    const result = DataPointSchemaFactory.getModelType(model.valueType!);
 
     if (!result) throw new IntegrityException('Unknown data point value type: ' + model.valueType);
 

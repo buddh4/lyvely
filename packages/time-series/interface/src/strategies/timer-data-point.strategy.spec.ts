@@ -1,8 +1,4 @@
-import {
-  DataPointValueType,
-  ITimerDataPointConfig,
-  useDataPointStrategyFacade,
-} from '@/time-series';
+import { DataPointValueType, ITimerDataPointConfig, useDataPointStrategyFacade } from '../index';
 import { CalendarInterval, isToday } from '@lyvely/dates';
 import { TimerDataPointModel } from '../models';
 import { toTimingId } from '@lyvely/dates';

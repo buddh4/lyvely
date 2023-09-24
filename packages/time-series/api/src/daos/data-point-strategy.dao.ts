@@ -2,8 +2,8 @@ import { AbstractDao, assureObjectId, EntityIdentity } from '@lyvely/core';
 import { Profile } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { buildDiscriminatorName, DataPoint, TimeSeriesContent } from '../schemas';
-import { getTimingIds, CalendarPlanFilter, CalendarInterval } from '@lyvely/common';
-
+import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { getTimingIds, CalendarInterval } from '@lyvely/dates';
 type InterValFilter = { interval: CalendarInterval; tid?: string | { $regex: RegExp } };
 
 export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> extends AbstractDao<T> {
@@ -90,7 +90,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
 
   private buildTimingIntervalFilter(profile: Profile, filter: CalendarPlanFilter) {
     const timingIds = getTimingIds(filter.date, profile.locale);
-    const relevantTids = [];
+    const relevantTids: string[] = [];
 
     for (let i = CalendarInterval.Daily; i >= 0; i--) {
       if (filter.level <= i) {

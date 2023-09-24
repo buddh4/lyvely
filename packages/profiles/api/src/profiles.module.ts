@@ -10,6 +10,8 @@ import {
   UserProfileSchema,
   GroupProfileSchema,
   OrganizationSchema,
+  Tag,
+  TagSchema,
 } from './schemas';
 import {
   ProfilesService,

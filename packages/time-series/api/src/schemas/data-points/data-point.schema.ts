@@ -1,17 +1,14 @@
-import { assureObjectId, MixedProp } from '@lyvely/core';
-import { assignEntityData, BaseEntity } from '@lyvely/common';
+import { assureObjectId, ObjectIdProp, assignEntityData, BaseEntity } from '@lyvely/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
+import { CalendarInterval, getFullDayDate, toTimingId } from '@lyvely/dates';
 import {
-  CalendarInterval,
-  getFullDayDate,
   getNumberEnumValues,
-  toTimingId,
   UserAssignmentStrategy,
   DeepPartial,
-  DataPointModel,
   PropertiesOf,
 } from '@lyvely/common';
+import { DataPointModel } from '@lyvely/time-series-interface';
 import { TimeSeriesContent } from '../time-series-content.schema';
 import { User } from '@lyvely/users';
 import { Profile } from '@lyvely/profiles';
@@ -28,17 +25,17 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
 {
   meta: any;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, immutable: true })
-  oid: TObjectId;
+  @ObjectIdProp({ immutable: true })
+  oid: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true })
-  pid: TObjectId;
+  @ObjectIdProp({ required: true, immutable: true })
+  pid: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, immutable: true })
-  cid: TObjectId;
+  @ObjectIdProp({ required: true, immutable: true })
+  cid: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
-  uid?: TObjectId;
+  @ObjectIdProp({ immutable: true })
+  uid?: mongoose.Types.ObjectId | null;
 
   @Prop({ enum: getNumberEnumValues(CalendarInterval), required: true })
   interval: CalendarInterval;
@@ -66,12 +63,12 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
       assignEntityData(this, obj);
     }
 
-    this.pid = assureObjectId(profile._id);
+    this.pid = assureObjectId(profile._id, false);
     this.uid =
       content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser
-        ? assureObjectId(user._id)
+        ? assureObjectId(user._id, false)
         : null;
-    this.cid = assureObjectId(content._id);
+    this.cid = assureObjectId(content._id, false);
     this.interval = content.timeSeriesConfig.interval;
 
     if (!this.date) {

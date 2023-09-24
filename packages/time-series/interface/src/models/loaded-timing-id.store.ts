@@ -1,5 +1,6 @@
 import { CalendarDate } from '@lyvely/dates';
-import { CalendarPlanFilter, toTimingId } from '@lyvely/dates';
+import { toTimingId } from '@lyvely/dates';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 
 export class LoadedTimingIdStore {
   private loadedTimingIds: Set<string> = new Set<string>();

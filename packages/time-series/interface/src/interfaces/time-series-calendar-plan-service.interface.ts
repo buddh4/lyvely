@@ -1,5 +1,5 @@
 import { ITimeSeriesContent } from './time-series-content.interface';
-import { ICalendarPlanService } from '@lyvely/calendar-plan';
+import { ICalendarPlanService } from '@lyvely/calendar-plan-interface';
 import { IDataPoint } from './data-point.interface';
 import { IUpdateDataPoint, IUpdateDataPointResponse } from './update-data-point.interface';
 

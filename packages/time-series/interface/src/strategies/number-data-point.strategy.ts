@@ -7,7 +7,7 @@ import {
 } from '../interfaces';
 import { useDataPointStrategyFacade } from '../components';
 import { NumberDataPointModel } from '../models';
-import { PropertiesOf } from '@/utils';
+import { PropertiesOf } from '@lyvely/common';
 import { isDefined, isNumber } from 'class-validator';
 import { DataPointStrategy } from './data-point.strategy';
 
@@ -22,17 +22,20 @@ export class NumberDataPointStrategy extends DataPointStrategy<
   }
 
   async validateValue(config: INumberDataPointConfig, value: number) {
-    return isNumber(value) && value <= config.max;
+    return isNumber(value) && (!isDefined(config.max) || value <= config.max!);
   }
 
   prepareValue(config: INumberDataPointConfig, value: number) {
-    return isDefined(config.max) && isNumber(value) ? Math.min(value, config.max) : value;
+    return isDefined(config.max) && isNumber(value) ? Math.min(value, config.max!) : value;
   }
 
   prepareConfig(config: INumberDataPointSettings) {
-    if (config.optimal > config.max) config.optimal = config.max;
-    if (config.min > config.max) config.min = config.max;
-    if (config.min > config.optimal) config.optimal = config.min;
+    if (isDefined(config.optimal) && isDefined(config.max) && config.optimal! > config.max!)
+      config.optimal = config.max;
+    if (isDefined(config.min) && isDefined(config.max) && config.min! > config.max!)
+      config.min = config.max;
+    if (isDefined(config.min) && isDefined(config.optimal) && config.min! > config.optimal!)
+      config.optimal = config.min;
 
     if (!isDefined(config.max) && config.inputType === DataPointInputType.Checkbox) {
       config.max = 1;

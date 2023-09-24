@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath, LegalOptions } from '@lyvely/core';
-import { LegalSection, LegalSectionDetails } from '@lyvely/common';
+import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
 
 @Injectable()
 export class LegalService {
@@ -14,6 +14,7 @@ export class LegalService {
 
     for (const sectionId in legal.sections) {
       const localizedSection = this.getLocalizedSection(sectionId, locale);
+      if (!localizedSection) continue;
       const { label, version, url } = localizedSection;
       result.push(
         new LegalSection({

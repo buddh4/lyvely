@@ -1,4 +1,4 @@
-import { ContentUpdateResponse } from '@lyvely/content';
+import { ContentUpdateResponse } from '@lyvely/content-interface';
 import { MessageModel } from './message.model';
 import { Expose, Type } from 'class-transformer';
 import { PropertyType } from '@lyvely/common';

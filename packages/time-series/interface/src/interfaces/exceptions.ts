@@ -1,4 +1,4 @@
-import { FieldValidationException } from '@/exceptions';
+import { FieldValidationException } from '@lyvely/common';
 
 export class InvalidDataPointValueTypeException extends FieldValidationException {
   constructor(error?: string, msg?: string) {

@@ -6,7 +6,7 @@ import {
   ISelectionDataPointValue,
 } from '../interfaces';
 import { useDataPointStrategyFacade } from '../components';
-import { PropertiesOf } from '@/utils';
+import { PropertiesOf } from '@lyvely/common';
 import { isArray, isObject, validate } from 'class-validator';
 import { DataPointStrategy } from './data-point.strategy';
 import { SelectionDataPointModel, SelectionDataPointValueModel } from '../models';
@@ -14,6 +14,8 @@ import { SelectionDataPointModel, SelectionDataPointValueModel } from '../models
 export const SELECTION_OTHER_OPTION_KEY = '__other_option__';
 
 const SINGLE_VALUE_INPUT_TYPE = [DataPointInputType.Dropdown, DataPointInputType.Radio];
+
+const DEFAULT_INPUT_TYPE = DataPointInputType.Checkbox;
 
 export class SelectionDataPointStrategy extends DataPointStrategy<
   SelectionDataPointModel,
@@ -33,14 +35,17 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
     const errors = await validate(new SelectionDataPointValueModel(value));
     if (errors.length) return false;
 
-    if (selection.length > 1 && this.isSingleValueInputType(config.inputType)) {
+    if (
+      selection.length > 1 &&
+      this.isSingleValueInputType(config.inputType || DEFAULT_INPUT_TYPE)
+    ) {
       return false;
     }
 
     for (const selectedOption of selection) {
       if (
         (selectedOption === SELECTION_OTHER_OPTION_KEY && !this.allowOtherValue(config)) ||
-        (selectedOption === SELECTION_OTHER_OPTION_KEY && !otherValue.trim().length) ||
+        (selectedOption === SELECTION_OTHER_OPTION_KEY && !otherValue?.trim().length) ||
         (selectedOption !== SELECTION_OTHER_OPTION_KEY && !config.options.includes(selectedOption))
       ) {
         return false;
@@ -71,7 +76,9 @@ export class SelectionDataPointStrategy extends DataPointStrategy<
 
     if (
       value.selection?.length > 1 &&
-      [DataPointInputType.Dropdown, DataPointInputType.Radio].includes(config.inputType)
+      [DataPointInputType.Dropdown, DataPointInputType.Radio].includes(
+        config.inputType || DEFAULT_INPUT_TYPE,
+      )
     ) {
       value.selection = [value.selection[0]];
     }

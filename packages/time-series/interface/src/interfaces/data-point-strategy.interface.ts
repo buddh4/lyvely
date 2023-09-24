@@ -1,5 +1,5 @@
 import { IDataPoint, IDataPointConfig, IDataPointConfigRevision } from './data-point.interface';
-import { PropertiesOf } from '@/utils';
+import { PropertiesOf } from '@lyvely/common';
 
 /**
  * This interface is used to describe the behavior of different DataPoint value types. This is especially used for

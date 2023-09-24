@@ -2,13 +2,12 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   DataPointInputType,
   DataPointValueType,
-  getStringEnumValues,
   ISelectionDataPointConfig,
   ISelectionDataPointConfigRevision,
   ISelectionDataPointSettings,
-  PropertyType,
   DataPointSelectionInputType,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
+import { getStringEnumValues, PropertyType } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { NestedSchema } from '@lyvely/core';
 import { pick } from 'lodash';
@@ -62,7 +61,7 @@ export class SelectionDataPointConfig
   allowOther: boolean;
 
   constructor(inputType?: DataPointInputType, settings?: ISelectionDataPointSettings) {
-    super(DataPointValueType.Text, inputType, settings);
+    super(DataPointValueType.Text, inputType!, settings);
   }
 
   getSettings(): ISelectionDataPointSettings {

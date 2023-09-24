@@ -4,7 +4,7 @@ import {
   INumberDataPointConfig,
   NumberDataPointModel,
   useDataPointStrategyFacade,
-} from '@/time-series';
+} from '../index';
 import { CalendarInterval, isToday } from '@lyvely/dates';
 import { toTimingId } from '@lyvely/dates';
 

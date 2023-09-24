@@ -1,7 +1,7 @@
 {
-  "name": "@lyvely/tags",
+  "name": "@lyvely/time-series",
   "version": "0.1.0-alpha3",
-  "description": "Lyvely policy module",
+  "description": "Lyvely time-series module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

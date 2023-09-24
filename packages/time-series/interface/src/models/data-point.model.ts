@@ -1,6 +1,6 @@
 import { CalendarInterval } from '@lyvely/dates';
 import { DocumentModel } from '@lyvely/common';
-import { Exclude, Expose, Transform } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { TransformObjectId } from '@lyvely/common';
 import { IDataPoint } from '../interfaces';
 
@@ -11,11 +11,11 @@ export class DataPointModel<E extends DataPointModel = any>
 {
   @Expose()
   @TransformObjectId()
-  cid: TObjectId;
+  cid: any;
 
   @Expose()
   @TransformObjectId()
-  uid?: TObjectId;
+  uid?: any;
 
   @Expose()
   date: Date;

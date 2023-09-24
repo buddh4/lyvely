@@ -5,7 +5,7 @@ import {
   NumberDataPointModel,
   TextDataPointModel,
   TimeSeriesContentModel,
-} from '@/time-series';
+} from '../index';
 import { CalendarInterval } from '@lyvely/dates';
 import { toTimingId } from '@lyvely/dates';
 import { IContentMetadata } from '@lyvely/content';

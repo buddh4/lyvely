@@ -1,13 +1,13 @@
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { SchemaFactory } from '@nestjs/mongoose';
 import { BaseModel } from '@lyvely/common';
-import { assureObjectId, EntityIdentity, NestedSchema } from '@lyvely/core';
+import { assureObjectId, EntityIdentity, NestedSchema, ObjectIdProp } from '@lyvely/core';
 import { User } from '@lyvely/users';
-import mongoose from 'mongoose';
+import { Types } from 'mongoose';
 
 @NestedSchema({ discriminatorKey: 'type' })
 export class UserSubscription extends BaseModel<UserSubscription> {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  pid?: TObjectId;
+  @ObjectIdProp()
+  pid?: Types.ObjectId;
 
   type: string;
 }
@@ -25,12 +25,12 @@ export class MultiUserSubscription extends UserSubscription {
   static typeName = 'users';
   type = MultiUserSubscription.typeName;
 
-  @Prop({ type: [mongoose.Schema.Types.ObjectId] })
-  uids?: TObjectId[];
+  @ObjectIdProp()
+  uids?: Types.ObjectId[];
 
   constructor(identities: EntityIdentity<User>[]) {
     super();
-    this.uids = identities.map((identity) => assureObjectId(identity));
+    this.uids = identities.map((identity) => assureObjectId(identity, false));
   }
 }
 
@@ -39,8 +39,8 @@ export class SingleUserSubscription extends UserSubscription {
   static typeName = 'user';
   type = SingleUserSubscription.typeName;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  uid?: TObjectId;
+  @ObjectIdProp()
+  uid?: Types.ObjectId;
 
   constructor(identity: EntityIdentity<User>) {
     super();

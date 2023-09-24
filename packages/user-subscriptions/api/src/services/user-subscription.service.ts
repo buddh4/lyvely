@@ -9,6 +9,7 @@ import {
 import { UserSubscriptionContext } from '../interfaces';
 import { Profile, ProfilesService } from '@lyvely/profiles';
 import { EntityIdentity } from '@lyvely/core';
+import { IntegrityException } from '@lyvely/common';
 
 @Injectable()
 export class UserSubscriptionService {
@@ -24,6 +25,7 @@ export class UserSubscriptionService {
       case MultiUserSubscription.typeName:
         return this.getMultiUserSubscriptionContext(subscription, pid);
       case ProfileSubscription.typeName:
+        if (!pid) return [];
         return this.getProfileSubscriptionContext(pid);
     }
 
@@ -34,6 +36,8 @@ export class UserSubscriptionService {
     subscription: SingleUserSubscription,
     pid?: EntityIdentity<Profile>,
   ): Promise<UserSubscriptionContext[]> {
+    if (!subscription.uid)
+      throw new IntegrityException('SingleUserSubscription without uid requested.');
     const user = await this.userService.findUserById(subscription.uid);
 
     if (!user) return [];
@@ -46,6 +50,8 @@ export class UserSubscriptionService {
     subscription: MultiUserSubscription,
     pid?: EntityIdentity<Profile>,
   ): Promise<UserSubscriptionContext[]> {
+    if (!subscription?.uids?.length) return [];
+
     const users = await this.userService.findUsersById(subscription.uids);
 
     if (!users?.length) return [];

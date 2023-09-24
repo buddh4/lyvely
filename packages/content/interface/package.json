@@ -20,8 +20,8 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/stream-interface": "^0.1.0-alpha3",
-    "@lyvely/profile-interface": "^0.1.0-alpha3",
+    "@lyvely/streams-interface": "^0.1.0-alpha3",
+    "@lyvely/profiles-interface": "^0.1.0-alpha3",
     "@lyvely/live-interface": "^0.1.0-alpha3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

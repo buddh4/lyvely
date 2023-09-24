@@ -3,7 +3,7 @@ import {
   DataPointInputType,
   DataPointValueType,
   ISelectionDataPointSettings,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
 import { DataPointConfigFactory } from '../data-point-config.factory';
 import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
 import { SelectionDataPointConfig } from './selection-data-point-config.schema';

@@ -4,7 +4,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { MessageDao } from '../daos';
 import { Profile } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
-import { CreateMessage } from '@lyvely/common';
+import { CreateMessage } from '@lyvely/messages-interface';
 import { UpdateQuerySet } from '@lyvely/core';
 
 @Injectable()

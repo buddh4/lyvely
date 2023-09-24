@@ -1,25 +1,32 @@
 import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
+import { buildTest } from '@lyvely/testing';
 import {
   MultiUserSubscription,
   ProfileSubscription,
   SingleUserSubscription,
   UserSubscriptionService,
-} from '@lyvely/subscription';
-import { BaseUserProfileRelationType } from '@lyvely/common';
+} from '../index';
+import {
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+  BaseUserProfileRelationType,
+} from '@lyvely/profiles';
 
 describe('UserSubscriptionService', () => {
   let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
   let userSubscriptionService: UserSubscriptionService;
 
   const TEST_KEY = 'UserSubscriptionService';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [UserSubscriptionService]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin()])
+      .providers([UserSubscriptionService])
+      .compile();
     userSubscriptionService = testingModule.get(UserSubscriptionService);
-    testData = testingModule.get(TestDataUtils);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   it('should be defined', () => {
@@ -34,9 +41,9 @@ describe('UserSubscriptionService', () => {
       );
 
       expect(userContexts.length).toEqual(1);
-      expect(userContexts[0].user._id).toEqual(user._id);
-      expect(userContexts[0].profile).toBeUndefined();
-      expect(userContexts[0].relations).toBeUndefined();
+      expect(userContexts![0].user._id).toEqual(user._id);
+      expect(userContexts![0].profile).toBeUndefined();
+      expect(userContexts![0].relations).toBeUndefined();
     });
 
     it('test single user subscription with non-member profile', async () => {
@@ -48,9 +55,9 @@ describe('UserSubscriptionService', () => {
       );
 
       expect(userContexts.length).toEqual(1);
-      expect(userContexts[0].user._id).toEqual(user2._id);
-      expect(userContexts[0].profile._id).toEqual(profile._id);
-      expect(userContexts[0].relations).toEqual([]);
+      expect(userContexts![0].user._id).toEqual(user2._id);
+      expect(userContexts![0].profile!._id).toEqual(profile._id);
+      expect(userContexts![0].relations).toEqual([]);
     });
 
     it('test single user subscription with member profile', async () => {
@@ -61,10 +68,10 @@ describe('UserSubscriptionService', () => {
       );
 
       expect(userContexts.length).toEqual(1);
-      expect(userContexts[0].user._id).toEqual(member._id);
-      expect(userContexts[0].profile._id).toEqual(profile._id);
-      expect(userContexts[0].relations.length).toEqual(1);
-      expect(userContexts[0].relations[0].type).toEqual(BaseUserProfileRelationType.Membership);
+      expect(userContexts![0].user._id).toEqual(member._id);
+      expect(userContexts![0].profile!._id).toEqual(profile._id);
+      expect(userContexts![0].relations?.length).toEqual(1);
+      expect(userContexts![0].relations![0].type).toEqual(BaseUserProfileRelationType.Membership);
     });
 
     it('test multi user subscription without profile', async () => {
@@ -75,9 +82,9 @@ describe('UserSubscriptionService', () => {
       );
 
       expect(userContexts.length).toEqual(2);
-      expect(userContexts[0].user._id).toEqual(user1._id);
-      expect(userContexts[0].profile).toBeUndefined();
-      expect(userContexts[0].relations).toBeUndefined();
+      expect(userContexts![0].user._id).toEqual(user1._id);
+      expect(userContexts![0].profile).toBeUndefined();
+      expect(userContexts![0].relations).toBeUndefined();
 
       expect(userContexts[1].user._id).toEqual(user2._id);
       expect(userContexts[1].profile).toBeUndefined();
@@ -93,12 +100,12 @@ describe('UserSubscriptionService', () => {
       );
 
       expect(userContexts.length).toEqual(2);
-      expect(userContexts[0].user._id).toEqual(member._id);
-      expect(userContexts[0].profile._id).toEqual(profile._id);
-      expect(userContexts[0].relations[0].type).toEqual(BaseUserProfileRelationType.Membership);
+      expect(userContexts![0].user._id).toEqual(member._id);
+      expect(userContexts![0].profile!._id).toEqual(profile._id);
+      expect(userContexts![0].relations![0].type).toEqual(BaseUserProfileRelationType.Membership);
 
       expect(userContexts[1].user._id).toEqual(user._id);
-      expect(userContexts[0].profile._id).toEqual(profile._id);
+      expect(userContexts![0].profile!._id).toEqual(profile._id);
       expect(userContexts[1].relations).toEqual([]);
     });
 
@@ -118,13 +125,13 @@ describe('UserSubscriptionService', () => {
       );
 
       expect(userContexts.length).toEqual(2);
-      expect(userContexts[0].user._id).toEqual(owner._id);
-      expect(userContexts[0].profile._id).toEqual(profile._id);
-      expect(userContexts[0].relations[0].type).toEqual(BaseUserProfileRelationType.Membership);
+      expect(userContexts![0].user._id).toEqual(owner._id);
+      expect(userContexts![0].profile!._id).toEqual(profile._id);
+      expect(userContexts![0].relations![0].type).toEqual(BaseUserProfileRelationType.Membership);
 
       expect(userContexts[1].user._id).toEqual(member._id);
-      expect(userContexts[1].profile._id).toEqual(profile._id);
-      expect(userContexts[1].relations[0].type).toEqual(BaseUserProfileRelationType.Membership);
+      expect(userContexts[1].profile!._id).toEqual(profile._id);
+      expect(userContexts[1].relations![0].type).toEqual(BaseUserProfileRelationType.Membership);
     });
   });
 });

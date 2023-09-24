@@ -21,7 +21,6 @@
   "dependencies": {
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "mitt": "^3.0.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {

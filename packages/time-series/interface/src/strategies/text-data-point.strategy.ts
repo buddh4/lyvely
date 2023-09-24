@@ -5,7 +5,7 @@ import {
 } from '../interfaces';
 import { useDataPointStrategyFacade } from '../components';
 import { TextDataPointModel } from '../models';
-import { PropertiesOf } from '@/utils';
+import { PropertiesOf } from '@lyvely/common';
 import { isString } from 'class-validator';
 import { DataPointStrategy } from './data-point.strategy';
 

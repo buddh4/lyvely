@@ -5,7 +5,7 @@ import {
   INumberDataPointConfig,
   INumberDataPointSettings,
   INumberDataPointConfigRevision,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { pick } from 'lodash';
 import { NestedSchema } from '@lyvely/core';
@@ -72,7 +72,7 @@ export class NumberDataPointConfig
   history: NumberDataPointConfigRevision[];
 
   constructor(inputType?: DataPointInputType, settings?: INumberDataPointSettings) {
-    super(DataPointValueType.Number, inputType, settings);
+    super(DataPointValueType.Number, inputType!, settings);
   }
 
   setSettings(settings?: INumberDataPointSettings) {

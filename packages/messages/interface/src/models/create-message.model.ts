@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsString, Length } from 'class-validator';
 import { MESSAGE_MAX_LENGTH } from '../message.constants';
-import { CreateContentModel } from '@lyvely/content';
+import { CreateContentModel } from '@lyvely/content-interface';
 
 @Exclude()
 export class CreateMessage extends CreateContentModel<CreateMessage> {

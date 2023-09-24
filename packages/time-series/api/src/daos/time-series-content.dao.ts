@@ -3,7 +3,7 @@ import { User } from '@lyvely/users';
 import { IFetchQueryOptions } from '@lyvely/core';
 import { TimeSeriesContent } from '../schemas';
 import { ContentTypeDao } from '@lyvely/content';
-import { CalendarInterval } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
 
 export abstract class TimeSeriesContentDao<
   TModel extends TimeSeriesContent<TModel>,

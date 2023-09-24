@@ -9,3 +9,4 @@ export * from './policies';
 export * from './services';
 export * from './types';
 export * from './content.module';
+export * from '@lyvely/content-interface';

@@ -1,4 +1,4 @@
-import { LegalSectionDetails } from '@/legal';
+import { LegalSectionDetails } from '../models';
 import { StrictEndpoint } from '@lyvely/common';
 
 export interface ILegalClient {

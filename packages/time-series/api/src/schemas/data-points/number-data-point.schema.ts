@@ -5,8 +5,9 @@ import {
   NumberDataPointModel,
   PropertiesOf,
   PropertyType,
-} from '@lyvely/common';
-import { Timer, TimerSchema } from '@lyvely/dates';
+} from '@lyvely/time-series-interface';
+import { PropertiesOf, PropertyType } from '@lyvely/common';
+import { Timer, TimerSchema } from '@lyvely/tim';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 
 @Schema()

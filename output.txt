@@ -1,107 +1,3 @@
-=== calendar-plan [] ===
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/users';
-
-
-=== dates [x] ===
-@nestjs/common';
-@nestjs/mongoose';
-@lyvely/common';
-@lyvely/core';
-@lyvely/testing';
-@lyvely/users';
-
-
-=== captchas [x] ===
-@lyvely/calendar-plan';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/users';
-
-
-=== common [] ===
-@lyvely/account';
-@lyvely/auth';
-@lyvely/calendar";
-@lyvely/calendar';
-@lyvely/calendar-plan';
-@lyvely/collab';
-@lyvely/content';
-@lyvely/core';
-@lyvely/live';
-@lyvely/profiles';
-@lyvely/streams';
-@lyvely/time-series';
-@lyvely/user-registration';
-@lyvely/users';
-@lyvely/utils';
-@lyvely/validation';
-
-
-=== content [x] ===
-@nestjs/common';
-@nestjs/common/interfaces';
-@nestjs/common/interfaces/modules/dynamic-module.interface';
-@nestjs/config';
-@nestjs/core';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/live';
-@lyvely/policies';
-@lyvely/profiles';
-@lyvely/streams';
-@lyvely/test';
-@lyvely/testing';
-@lyvely/users';
-
-
-=== core [] ===
-@nestjs/common';
-@nestjs/common").CustomDecorator<string>;
-@nestjs/common/interfaces/external/cors-options.interface';
-@nestjs/common/utils/merge-with-values.util';
-@nestjs/config';
-@nestjs/event-emitter';
-@nestjs/mongoose';
-@nestjs/mongoose/dist/decorators/prop.decorator';
-@nestjs/mongoose/dist/decorators/schema.decorator';
-@nestjs/mongoose/dist/interfaces';
-@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
-@nestjs/platform-express/multer/interfaces/multer-options.interface';
-@nestjs/serve-static';
-@nestjs/testing';
-@lyvely/core-common';
-
-
-=== demo-server [] ===
-@lyvely/server';
-@lyvely/server/dist/src/modules/core';
-
-
-=== demo-web [] ===
-@lyvely/web';
-
-
-=== features [] ===
-@nestjs/common';
-@nestjs/core';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/core';
-@lyvely/testing';
-
-
 === habits [] ===
 @nestjs/common';
 @nestjs/common/interfaces/modules/dynamic-module.interface';
@@ -120,15 +16,6 @@
 @lyvely/testing';
 @lyvely/time-series';
 @lyvely/users';
-
-
-=== i18n [] ===
-@nestjs/common';
-@nestjs/config';
-@nestjs/testing';
-@lyvely/testing';
-@lyvely/users';
-
 
 === invitations [] ===
 @nestjs/common';
@@ -162,50 +49,6 @@
 @lyvely/time-series';
 @lyvely/users';
 
-
-=== jwt [] ===
-@nestjs/common';
-@nestjs/config';
-@nestjs/passport';
-@lyvely/common';
-@lyvely/core';
-@lyvely/testing';
-@lyvely/users';
-
-
-=== legal [] ===
-@nestjs/common';
-@nestjs/config';
-@lyvely/common';
-@lyvely/core';
-@lyvely/testing';
-@lyvely/users';
-
-
-=== live [x] ===
-@nestjs/common';
-@nestjs/config';
-@nestjs/event-emitter';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/core';
-@lyvely/live';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/users';
-
-
-=== messages [] ===
-@nestjs/common';
-@nestjs/mongoose';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/users';
-
-
 === milestones [] ===
 @nestjs/common';
 @nestjs/event-emitter';
@@ -220,7 +63,6 @@
 @lyvely/profiles';
 @lyvely/testing';
 @lyvely/users';
-
 
 === notifications [] ===
 @nestjs/bullmq';
@@ -240,34 +82,6 @@
 @lyvely/user';
 @lyvely/users';
 
-
-=== policies [] ===
-@nestjs/common';
-@nestjs/common").CustomDecorator<string>;
-@nestjs/common").Type<T>;
-@nestjs/core';
-@nestjs/testing';
-@lyvely/testing';
-
-
-=== profiles [] ===
-@nestjs/common';
-@nestjs/common/interfaces';
-@nestjs/common/interfaces/modules/dynamic-module.interface';
-@nestjs/config';
-@nestjs/core';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/core';
-@lyvely/permissions';
-@lyvely/policies';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/users';
-@lyvely/users-interface';
-
-
 === registration [] ===
 @nestjs/common';
 @nestjs/config';
@@ -284,92 +98,10 @@
 @lyvely/testing';
 @lyvely/users';
 
-
-=== server [] ===
-@nestjs/bullmq';
-@nestjs/common';
-@nestjs/common").CustomDecorator<string>;
-@nestjs/common").DynamicModule;
-@nestjs/common/interfaces';
-@nestjs/common/interfaces/modules/dynamic-module.interface';
-@nestjs/common/interfaces/modules/forward-reference.interface';
-@nestjs/common/interfaces/type.interface';
-@nestjs/common").Type<Content<any,
-@nestjs/common").Type<T>;
-@nestjs/config';
-@nestjs/config/dist/config.constants';
-@nestjs/core';
-@nestjs/event-emitter';
-@nestjs/jwt';
-@nestjs/mongoose';
-@nestjs/mongoose/dist/interfaces';
-@nestjs/mongoose/dist/interfaces/model-definition.interface';
-@nestjs/passport").Type<import("@nestjs/passport").IAuthGuard>;
-@nestjs/testing';
-@nestjs/testing/testing-module.builder';
-@nestjs/throttler';
-@lyvely/common';
-@lyvely/common").CalendarInterval;
-@lyvely/common").DataPointStrategyFacade);
-@lyvely/common").DataPointStrategyFacade;
-@lyvely/common").DeepPartial<import("../schemas").INotificationType>):
-@lyvely/common").ITimeSeriesContentConfig<import("..").DefaultDataPointConfig>>,
-@lyvely/common").ITimeSeriesContentConfig<import("../schemas").DefaultDataPointConfig>>,
-@lyvely/common").LegalSection<import("@lyvely/common").ILegalSection>[];
-@lyvely/common").MailInvitationInfo>;
-@lyvely/common").MilestoneRelationModel[];
-@lyvely/common").OtpInfo>;
-@lyvely/common").TimeSpanModel;
-@lyvely/common").Type<DataPoint<import("../schemas").DataPointEntity<any>>>;
-@lyvely/common").UrlRoute;
-@lyvely/common").UserAssignmentStrategy;
-@lyvely/common").UserInvitationInfo>;
-@lyvely/common").WebNotification[]>;
-@lyvely/content';
-@lyvely/core';
-@lyvely/i18n';
-@lyvely/profiles';
-@lyvely/users';
-
-
 === statistics [] ===
 @nestjs/common';
 @lyvely/common';
 @lyvely/testing';
-
-
-=== stream [x] ===
-@nestjs/common';
-@lyvely/common';
-@lyvely/core';
-@lyvely/profiles';
-@lyvely/streams';
-@lyvely/testing';
-
-
-=== subscription [] ===
-@nestjs/common';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/core';
-@lyvely/profiles';
-@lyvely/subscription';
-@lyvely/testing';
-@lyvely/users';
-
-
-=== system-messages [] ===
-@nestjs/common';
-@nestjs/mongoose';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/message';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/users';
-
 
 === tasks [] ===
 @nestjs/common';
@@ -392,29 +124,6 @@
 @lyvely/testing';
 @lyvely/users';
 
-
-=== testing [] ===
-@nestjs/common';
-@nestjs/common").DynamicModule;
-@nestjs/common/interfaces';
-@nestjs/config';
-@nestjs/config/dist/config.constants';
-@nestjs/core';
-@nestjs/event-emitter';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/core';
-@lyvely/deprecated-server/dist/src/test';
-@lyvely/deprecated-server/dist/src/test/utils/test-config.service';
-@lyvely/deprecated-server/dist/src/test/utils/test-otp.service';
-
-
-=== throttler [] ===
-@nestjs/common';
-@nestjs/throttler';
-@lyvely/testing';
-
-
 === time-series [] ===
 @nestjs/common';
 @nestjs/mongoose';
@@ -433,26 +142,6 @@
 === ui [] ===
 @lyvely/common';
 @lyvely/i18n';
-
-
-=== users [] ===
-@nestjs/common';
-@nestjs/common").DynamicModule;
-@nestjs/config';
-@nestjs/event-emitter';
-@nestjs/mongoose';
-@nestjs/mongoose/dist/interfaces';
-@nestjs/testing';
-@lyvely/calendar-core';
-@lyvely/common';
-@lyvely/core';
-@lyvely/policy';
-@lyvely/testing';
-@lyvely/throttler';
-@lyvely/users';
-@lyvely/users-common';
-@lyvely/users-interface';
-
 
 === web [] ===
 @lyvely/common';

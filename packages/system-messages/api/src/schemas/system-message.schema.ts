@@ -1,7 +1,7 @@
 import { ContentDataType, ContentType } from '@lyvely/content';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { MixedProp, NestedSchema } from '@lyvely/core';
-import { SystemMessageModel } from '@lyvely/common';
+import { SystemMessageModel } from '@lyvely/system-messages-interface';
 
 @NestedSchema()
 export class SystemMessageContent extends ContentDataType {

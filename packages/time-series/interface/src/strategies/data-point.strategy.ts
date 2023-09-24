@@ -4,7 +4,7 @@ import {
   IDataPointConfigRevision,
   IDataPointStrategy,
 } from '../interfaces';
-import { PropertiesOf } from '@/utils';
+import { PropertiesOf } from '@lyvely/common';
 import { cloneDeep } from 'lodash';
 
 export abstract class DataPointStrategy<

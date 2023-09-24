@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LegalController } from './controllers/legal-controller';
-import { LegalService } from '../services';
+import { LegalController } from './controllers';
+import { LegalService } from './services';
 
 @Module({
   imports: [],

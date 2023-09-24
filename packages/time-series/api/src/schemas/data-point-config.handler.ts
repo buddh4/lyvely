@@ -1,11 +1,8 @@
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { cloneDeep, pick } from 'lodash';
-import {
-  IntegrityException,
-  isSameDay,
-  useDataPointStrategyFacade,
-  useSingleton,
-} from '@lyvely/common';
+import { IntegrityException, useSingleton } from '@lyvely/common';
+import { useDataPointStrategyFacade } from '@lyvely/time-series-interface';
+import { isSameDay } from '@lyvely/dates';
 import { TimeSeriesContent } from './time-series-content.schema';
 import { DataPointConfig, DataPointConfigRevision } from './config';
 

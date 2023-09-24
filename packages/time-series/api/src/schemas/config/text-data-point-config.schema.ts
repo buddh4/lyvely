@@ -3,10 +3,10 @@ import {
   DataPointInputType,
   DataPointValueType,
   ITextDataPointConfig,
-  PropertyType,
   ITextDataPointConfigRevision,
   ITextDataPointSettings,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
+import { PropertyType } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { NestedSchema } from '@lyvely/core';
 import { pick } from 'lodash';

@@ -1,8 +1,8 @@
-import { DataPointModel } from '../models/data-point.model';
+import { DataPointModel } from './data-point.model';
 import { TimeSeriesContentModel } from './time-series-content.model';
 import { useDataPointStrategyFacade } from '../components';
-import { CalendarPlanStore } from '@/calendar-plan/models/calendar-plan.store';
-import { ITimeSeriesCalendarPlanResponse } from '@/time-series/interfaces';
+import { CalendarPlanStore } from '@lyvely/calendar-plan-interface';
+import { ITimeSeriesCalendarPlanResponse } from '../interfaces';
 
 type TimeSeriesContentIdentity = TimeSeriesContentModel | string;
 
@@ -31,7 +31,7 @@ export class TimeSeriesStore<
 
   createDataPoint(model: TModel, tid: string): TDataPointModel {
     return <TDataPointModel>useDataPointStrategyFacade().createDataPoint({
-      id: undefined,
+      id: undefined as any,
       value: undefined,
       cid: model.id,
       interval: model.timeSeriesConfig.interval,
@@ -74,31 +74,27 @@ export class TimeSeriesStore<
       dataPoints.set(modelId, new Map());
     }
 
-    dataPoints.get(modelId).set(dataPoint.tid, dataPoint);
+    dataPoints.get(modelId)?.set(dataPoint.tid, dataPoint);
   }
 
   getDataPoint(
     identity: TimeSeriesContentIdentity,
     timingId: string,
     create = false,
-  ): TDataPointModel {
+  ): TDataPointModel | null {
     const modelId = this.getId(identity);
     if (!this.hasDataPoint(modelId, timingId)) {
-      if (!create) {
-        return;
-      }
+      if (!create) return null;
 
       const model = this.getModel(modelId);
-      if (!model) {
-        return;
-      }
+      if (!model) return null;
 
       // Add and fetch dataPoint in order to return a reactive instance
       this.setDataPoint(this.createDataPoint(model, timingId));
       return this.getDataPoint(model, timingId);
     }
 
-    return this.dataPoints.get(modelId).get(timingId);
+    return this.dataPoints.get(modelId)?.get(timingId) || null;
   }
 
   getDataPoints() {
@@ -111,6 +107,6 @@ export class TimeSeriesStore<
       return false;
     }
 
-    return this.dataPoints.get(modelId).has(timingId);
+    return !!this.dataPoints.get(modelId)?.has(timingId);
   }
 }

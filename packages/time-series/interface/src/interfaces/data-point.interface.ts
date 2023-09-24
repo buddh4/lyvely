@@ -1,5 +1,5 @@
 import { CalendarInterval } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@/collab';
+import { UserAssignmentStrategy } from '@lyvely/common';
 
 export const DataPointValueType = {
   Number: 'number',
@@ -24,8 +24,8 @@ export enum DataPointInputType {
 
 export interface IDataPoint<TValue = any> {
   id: string;
-  cid: TObjectId;
-  uid?: TObjectId;
+  cid: any;
+  uid?: any;
   date: Date;
   interval: CalendarInterval;
   tid: string;

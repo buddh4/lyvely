@@ -1,6 +1,5 @@
-import { PropertiesOf, useSingleton } from '@/utils';
+import { PropertiesOf, useSingleton, IntegrityException } from '@lyvely/common';
 import { IDataPoint, IDataPointConfig, IDataPointStrategy } from '../interfaces';
-import { IntegrityException } from '@/exceptions';
 
 export class DataPointStrategyFacade {
   private types = new Map<string, IDataPointStrategy>();

@@ -1,4 +1,4 @@
-import { ContentModel } from '@lyvely/content';
+import { ContentModel } from '@lyvely/content-interface';
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()

@@ -1,6 +1,6 @@
 import { ITimeSeriesSummary } from '../interfaces';
 import { CalendarInterval } from '@lyvely/dates';
-import { CalendarPlan, getTidWindow } from '@lyvely/calendar-plan';
+import { CalendarPlan, getTidWindow } from '@lyvely/calendar-plan-interface';
 
 export interface IMovingAverageData {
   tid: string;
@@ -47,8 +47,8 @@ export class MovingAverageCalculator {
 
     const tids: string[] = getTidWindow(interval, locale, windowSize);
     const values: number[] = [];
-    const movingAverages: number[] = [];
-    const differences: number[] = [];
+    const movingAverages: Array<number | null> = [];
+    const differences: Array<number | null> = [];
 
     for (let i = 0; i < tids.length; i++) {
       const tid = tids[i];

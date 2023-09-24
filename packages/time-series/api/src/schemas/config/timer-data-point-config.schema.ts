@@ -5,7 +5,7 @@ import {
   ITimerDataPointConfig,
   ITimerDataPointSettings,
   ITimerDataPointConfigRevision,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { pick } from 'lodash';
 import { NestedSchema } from '@lyvely/core';

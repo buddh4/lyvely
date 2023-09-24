@@ -4,11 +4,13 @@ import {
   ITimerDataPointConfigRevision,
 } from '../interfaces';
 import { useDataPointStrategyFacade } from '../components';
-import { PropertiesOf } from '@/utils';
-import { isDefined, isNumber, validate } from 'class-validator';
+import { PropertiesOf } from '@lyvely/common';
+import { isNumber, validate } from 'class-validator';
 import { DataPointStrategy } from './data-point.strategy';
 import { TimerDataPointModel, TimerDataPointValueModel } from '../models';
 import { TimerModel } from '@lyvely/dates';
+
+const TIMER_MAX_VALUE = 1000;
 
 export class TimerDataPointStrategy extends DataPointStrategy<
   TimerDataPointModel,
@@ -29,7 +31,7 @@ export class TimerDataPointStrategy extends DataPointStrategy<
       if (errors.length) return false;
     }
 
-    return isNumber(value.ms) && value.ms <= config.max;
+    return isNumber(value.ms) && isNumber(config.max) && value.ms <= config.max;
   }
 
   prepareValue(
@@ -37,7 +39,7 @@ export class TimerDataPointStrategy extends DataPointStrategy<
     value: TimerDataPointValueModel,
     oldValue: TimerDataPointValueModel,
   ) {
-    if (isDefined(config.max) && isNumber(value.ms)) {
+    if (isNumber(config.max) && isNumber(value.ms)) {
       value.ms = Math.min(value.ms, config.max);
     }
 
@@ -50,11 +52,14 @@ export class TimerDataPointStrategy extends DataPointStrategy<
   }
 
   prepareConfig(config: ITimerDataPointConfig) {
-    if (config.optimal > config.max) config.optimal = config.max;
-    if (config.min > config.optimal) config.min = config.optimal;
-    if (config.max > 0 && config.max < 1000) config.max = 1000;
-    if (config.min > 0 && config.min < 1000) config.min = 1000;
-    if (config.optimal > 0 && config.optimal < 1000) config.optimal = 1000;
+    if (isNumber(config.optimal) && isNumber(config.max) && config.optimal > config.max)
+      config.optimal = config.max;
+    if (isNumber(config.min) && isNumber(config.optimal) && config.min > config.optimal)
+      config.min = config.optimal;
+    if (isNumber(config.max) && config.max > 0 && config.max < 1000) config.max = TIMER_MAX_VALUE;
+    if (isNumber(config.min) && config.min > 0 && config.min < 1000) config.min = TIMER_MAX_VALUE;
+    if (isNumber(config.optimal) && config.optimal > 0 && config.optimal < 1000)
+      config.optimal = TIMER_MAX_VALUE;
   }
 
   getSettingKeys(): Array<keyof ITimerDataPointConfig> {

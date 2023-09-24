@@ -1,5 +1,5 @@
 import { ContentType } from '@lyvely/content';
-import { MessageModel } from '@lyvely/common';
+import { MessageModel } from '@lyvely/messages-interface';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
