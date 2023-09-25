@@ -1,13 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
+import { BaseModel, PropertiesOf, PropertyType } from '@lyvely/common';
 import {
-  BaseModel,
   DataPointValueType,
   ISelectionDataPointValue,
-  PropertiesOf,
-  PropertyType,
   SelectionDataPointModel,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
 import { NestedSchema } from '@lyvely/core';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 

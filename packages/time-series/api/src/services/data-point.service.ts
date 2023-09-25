@@ -1,13 +1,11 @@
 import { User } from '@lyvely/users';
+import { CalendarDate, toDate, toTimingId } from '@lyvely/dates';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import {
-  CalendarDate,
-  toDate,
-  CalendarPlanFilter,
-  UserAssignmentStrategy,
   useDataPointStrategyFacade,
   InvalidDataPointValueTypeException,
-  toTimingId,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
+import { UserAssignmentStrategy } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
 import { Profile, ProfilesService } from '@lyvely/profiles';
 import { EntityIdentity } from '@lyvely/core';
@@ -39,7 +37,7 @@ export abstract class DataPointService<
     user: User,
     content: TModel,
     date: CalendarDate,
-  ): Promise<TDataPointModel> {
+  ): Promise<TDataPointModel | null> {
     const tid = toTimingId(date, content.timeSeriesConfig.interval, profile.locale);
     return content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser
       ? await this.dataPointDao.findUserDataPointByTid(content, user, tid)

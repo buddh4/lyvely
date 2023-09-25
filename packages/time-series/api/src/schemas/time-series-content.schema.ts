@@ -1,12 +1,11 @@
+import { BaseModel, PropertyType } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
 import {
-  ITimeSeriesContentConfig,
-  CalendarInterval,
-  BaseModel,
-  PropertyType,
   ITimeSeriesContent,
+  ITimeSeriesContentConfig,
   ITimeSeriesSummary,
   ITimeSeriesSummaryWindowEntry,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
 import { ContentEntity, ContentType } from '@lyvely/content';
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';

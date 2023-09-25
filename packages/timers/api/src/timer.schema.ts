@@ -1,13 +1,14 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { PropertyType, TimerModel, TimeSpanModel, PropertiesOf } from '@lyvely/common';
-import { assureObjectId, EntityIdentity, NestedSchema } from '@/core';
-import { User } from '@/users';
+import { TimerModel, TimeSpanModel } from '@lyvely/timers-interface';
+import { PropertyType, PropertiesOf } from '@lyvely/common';
+import { assureObjectId, EntityIdentity, NestedSchema, ObjectIdProp } from '@lyvely/core';
+import { User } from '@lyvely/users';
 
 @NestedSchema()
 export class TimeSpan extends TimeSpanModel implements PropertiesOf<TimeSpanModel> {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
-  uid?: TObjectId;
+  @ObjectIdProp({ immutable: true })
+  uid?: mongoose.Types.ObjectId;
 
   @Prop({ required: true })
   from: number;
@@ -30,8 +31,8 @@ export const TimeSpanSchema = SchemaFactory.createForClass(TimeSpan);
 
 @NestedSchema()
 export class Timer extends TimerModel {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, immutable: true })
-  uid?: TObjectId;
+  @ObjectIdProp({ immutable: true })
+  uid?: mongoose.Types.ObjectId;
 
   @Prop({ type: [TimeSpanSchema] })
   @PropertyType([TimeSpan])

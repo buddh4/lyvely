@@ -1,6 +1,7 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
-import { DataPointValueType, PropertiesOf, TextDataPointModel } from '@lyvely/common';
+import { PropertiesOf } from '@lyvely/common';
+import { DataPointValueType, TextDataPointModel } from '@lyvely/time-series-interface';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 
 @Schema()

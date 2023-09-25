@@ -56,7 +56,7 @@ export class TextDataPointConfig
   history: TextDataPointConfigRevision[];
 
   constructor(inputType?: DataPointInputType, settings?: ITextDataPointSettings) {
-    super(DataPointValueType.Text, inputType, settings);
+    super(DataPointValueType.Text, inputType!, settings);
   }
 
   getSettings(): ITextDataPointSettings {

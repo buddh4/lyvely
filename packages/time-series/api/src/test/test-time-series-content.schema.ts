@@ -8,14 +8,13 @@ import {
   TextareaTextDataPointConfig,
   TimerDataPointConfig,
 } from '../';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
+import { ContentModel, IContent } from '@lyvely/content';
 import {
-  ContentModel,
   DataPointInputType,
-  DataPointValueType,
-  IContent,
   ITimeSeriesContentConfig,
-} from '@lyvely/common';
+  DataPointValueType,
+} from '@lyvely/time-series-interface';
 import { User } from '@lyvely/users';
 import { NestedSchema } from '@lyvely/core';
 

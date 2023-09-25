@@ -1,11 +1,8 @@
 import { User } from '@lyvely/users';
 import { Profile } from '@lyvely/profiles';
-import {
-  CalendarDate,
-  EntityNotFoundException,
-  IntegrityException,
-  isTimerDataPointConfig,
-} from '@lyvely/common';
+import { CalendarDate } from '@lyvely/dates';
+import { isTimerDataPointConfig } from '@lyvely/time-series-interface';
+import { EntityNotFoundException, IntegrityException } from '@lyvely/common';
 import { DataPointService } from './data-point.service';
 import { DataPoint, TimerDataPoint, TimeSeriesContent } from '../schemas';
 
@@ -30,21 +27,22 @@ export abstract class TimerDataPointService<
       date,
     );
 
-    if (this.isTimerDataPoint(dataPoint)) {
-      if (dataPoint.isTimerStarted()) return dataPoint;
+    if (!this.isTimerDataPoint(dataPoint))
+      throw new IntegrityException('Can not start timer of non timer data point.');
 
-      dataPoint.startTimer(user);
+    if (dataPoint.isTimerStarted()) return dataPoint;
 
-      const { dataPoint: updatedDataPoint } = await this.dataPointService.upsertDataPoint(
-        profile,
-        user,
-        model,
-        date,
-        dataPoint.value,
-      );
+    dataPoint.startTimer(user);
 
-      return updatedDataPoint as TimerDataPoint;
-    }
+    const { dataPoint: updatedDataPoint } = await this.dataPointService.upsertDataPoint(
+      profile,
+      user,
+      model,
+      date,
+      dataPoint.value,
+    );
+
+    return updatedDataPoint as TimerDataPoint;
   }
 
   async stopTimer(
@@ -63,21 +61,22 @@ export abstract class TimerDataPointService<
       date,
     );
 
-    if (this.isTimerDataPoint(dataPoint)) {
-      if (!dataPoint.isTimerStarted()) return dataPoint;
+    if (!this.isTimerDataPoint(dataPoint))
+      throw new IntegrityException('Can not stop timer of non timer data point.');
 
-      dataPoint.stopTimer();
+    if (!dataPoint.isTimerStarted()) return dataPoint;
 
-      const { dataPoint: updatedDataPoint } = await this.dataPointService.upsertDataPoint(
-        profile,
-        user,
-        model,
-        date,
-        dataPoint.value,
-      );
+    dataPoint.stopTimer();
 
-      return updatedDataPoint as TimerDataPoint;
-    }
+    const { dataPoint: updatedDataPoint } = await this.dataPointService.upsertDataPoint(
+      profile,
+      user,
+      model,
+      date,
+      dataPoint.value,
+    );
+
+    return updatedDataPoint as TimerDataPoint;
   }
 
   private isTimerDataPoint(dataPoint: DataPoint): dataPoint is TimerDataPoint {

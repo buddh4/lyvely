@@ -5,7 +5,7 @@ import { NumberDataPoint, NumberDataPointSchema } from './number-data-point.sche
 import { SelectionDataPoint, SelectionDataPointSchema } from './selection-data-point.schema';
 import { TextDataPoint, TextDataPointSchema } from './text-data-point.schema';
 import { TimerDataPoint, TimerDataPointSchema } from './timer-data-point.schema';
-import { DataPointValueType } from '@lyvely/common';
+import { DataPointValueType } from '@lyvely/time-series-interface';
 
 const DataPointDiscriminatorMap = new Map<string, DiscriminatorOptions>();
 DataPointDiscriminatorMap.set(DataPointValueType.Number, {
