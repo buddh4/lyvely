@@ -40,7 +40,7 @@ export class ProfileDao extends AbstractDao<Profile> {
   }
 
   async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
-    const tag = profile.getTagById(assureObjectId(identity, false));
+    const tag = profile.getTagById(assureObjectId(identity));
 
     if (!tag) return 0;
 

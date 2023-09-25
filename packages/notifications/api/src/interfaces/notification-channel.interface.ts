@@ -1,5 +1,5 @@
 import { Notification, NotificationChannelDeliveryStatus, UserNotification } from '../schemas';
-import { UserSubscriptionContext } from '@lyvely/subscription';
+import { UserSubscriptionContext } from '@lyvely/user-subscriptions';
 import { INotificationRateLimit, User } from '@lyvely/users';
 import { Translatable } from '@lyvely/i18n';
 

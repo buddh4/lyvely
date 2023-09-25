@@ -1,10 +1,14 @@
 import { Controller, Post, Req, Param, Inject } from '@nestjs/common';
-import { ENDPOINT_NOTIFICATIONS, NotificationsEndpoint, IWebNotification } from '@lyvely/common';
+import {
+  ENDPOINT_NOTIFICATIONS,
+  NotificationsEndpoint,
+  IWebNotification,
+} from '@lyvely/notifications-interface';
 import { UserNotificationsService, NotificationService } from '../services';
 import { UserInfo, UserRequest } from '@lyvely/users';
 import { UserNotification } from '../schemas';
 import { TestNotification } from '../notifications';
-import { SingleUserSubscription } from '@lyvely/subscription';
+import { SingleUserSubscription } from '@lyvely/user-subscriptions';
 import { AbstractStreamController } from '@lyvely/streams';
 import { RequestContext } from '@lyvely/profiles';
 

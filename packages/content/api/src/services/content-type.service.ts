@@ -76,7 +76,7 @@ export abstract class ContentTypeService<
     const instance = await this.createInstance(profile, user, model);
     const parent = await this.handleSubContentCreation(profile, user, instance, model);
     await this.mergeTags(profile, instance, model.tagNames);
-    instance.meta.createdBy = assureObjectId(user, false);
+    instance.meta.createdBy = assureObjectId(user);
     const result = await this.contentDao.save(instance);
 
     if (parent) {

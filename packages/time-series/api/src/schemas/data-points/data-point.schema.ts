@@ -63,12 +63,12 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
       assignEntityData(this, obj);
     }
 
-    this.pid = assureObjectId(profile._id, false);
+    this.pid = assureObjectId(profile._id);
     this.uid =
       content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser
-        ? assureObjectId(user._id, false)
+        ? assureObjectId(user._id)
         : null;
-    this.cid = assureObjectId(content._id, false);
+    this.cid = assureObjectId(content._id);
     this.interval = content.timeSeriesConfig.interval;
 
     if (!this.date) {

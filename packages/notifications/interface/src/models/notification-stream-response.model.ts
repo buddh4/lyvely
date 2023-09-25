@@ -1,4 +1,4 @@
-import { StreamResponse } from '@/stream/models/stream-response.model';
+import { StreamResponse } from '@lyvely/streams-interface';
 import { IWebNotification } from '../interfaces';
 import { Expose, Type } from 'class-transformer';
 import { WebNotification } from './web-notification.model';

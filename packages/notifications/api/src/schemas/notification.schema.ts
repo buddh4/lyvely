@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { NotificationType, NotificationTypeSchema } from './notification-type.schema';
-import { BaseEntity } from '@lyvely/core';
+import { BaseEntity, ObjectIdProp } from '@lyvely/core';
 
 import {
   UserSubscriptionSchema,
   Subscription,
   UserSubscriptionSchemaAddition,
-} from '@lyvely/subscription';
+} from '@lyvely/user-subscriptions';
 
 @Schema()
 export class Notification<
@@ -17,8 +17,8 @@ export class Notification<
   @Prop({ type: UserSubscriptionSchema, required: true })
   subscription: TSubscription;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  pid?: TObjectId;
+  @ObjectIdProp()
+  pid?: mongoose.Types.ObjectId;
 
   @Prop({ type: NotificationTypeSchema, required: true })
   data: T;
@@ -29,7 +29,7 @@ export class Notification<
   @Prop({ required: true })
   category: string;
 
-  constructor(data: T, subscription: Subscription, pid?: TObjectId) {
+  constructor(data: T, subscription: Subscription, pid?: mongoose.Types.ObjectId) {
     super({
       data,
       subscription,

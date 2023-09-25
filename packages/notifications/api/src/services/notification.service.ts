@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Queue } from 'bullmq';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Notification, NotificationType } from '../schemas';
-import { Subscription } from '@lyvely/subscription';
+import { Subscription } from '@lyvely/user-subscriptions';
 import { NotificationDao } from '../daos';
 import { JOB_SEND_NOTIFICATION, QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';

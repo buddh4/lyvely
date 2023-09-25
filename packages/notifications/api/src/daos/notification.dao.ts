@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Notification } from '../schemas';
 import { DeepPartial, Type } from '@lyvely/common';
-import { NotificationTypeRegistry } from '../components/notification-type.registry';
+import { NotificationTypeRegistry } from '../components';
 
 @Injectable()
 export class NotificationDao extends AbstractDao<Notification> {
@@ -22,12 +22,12 @@ export class NotificationDao extends AbstractDao<Notification> {
     return Notification;
   }
 
-  protected constructModel(lean?: DeepPartial<Notification>): Notification {
+  protected constructModel(lean: DeepPartial<Notification>): Notification {
     const result = super.constructModel(lean);
     if (result.data?.type) {
       result.data = createBaseEntityInstance(
-        this.notificationTypeRegistry.getTypeConstructor(result.data.type),
-        lean.data,
+        this.notificationTypeRegistry.getTypeConstructor(result.data.type)!,
+        lean.data!,
       );
     }
     return result;

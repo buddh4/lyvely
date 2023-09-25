@@ -30,7 +30,7 @@ export class MultiUserSubscription extends UserSubscription {
 
   constructor(identities: EntityIdentity<User>[]) {
     super();
-    this.uids = identities.map((identity) => assureObjectId(identity, false));
+    this.uids = identities.map((identity) => assureObjectId(identity));
   }
 }
 

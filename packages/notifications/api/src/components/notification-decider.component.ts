@@ -1,10 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { INotificationChannel } from '../interfaces';
-import { UserSubscriptionContext } from '@lyvely/subscription';
+import { UserSubscriptionContext } from '@lyvely/user-subscriptions';
 import { UserNotification, Notification } from '../schemas';
-import { User } from '@lyvely/users';
+import { User, UserStatus } from '@lyvely/users';
 import { NotificationCategoryRegistry } from './notification-category.registry';
-import { UserStatus } from '@lyvely/common';
 
 @Injectable()
 export class NotificationDecider {

@@ -20,7 +20,7 @@ import { NotificationsController } from './controllers';
 import { NotificationSenderProcessor } from './processors';
 import { UsersModule } from '@lyvely/users';
 import { ProfilesModule } from '@lyvely/profiles';
-import { UserSubscriptionModule } from '@lyvely/subscription';
+import { UserSubscriptionModule } from '@lyvely/user-subscriptions';
 import { LiveModule } from '@lyvely/live';
 
 const NotificationModels = MongooseModule.forFeature([

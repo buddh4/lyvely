@@ -4,6 +4,7 @@ import { PropertyType, Type, UrlRoute } from '@lyvely/common';
 import { Translatable } from '@lyvely/i18n';
 import { ProfileInfo, ProfileInfoSchema } from '@lyvely/profiles';
 import { User, UserInfo, UserInfoSchema } from '@lyvely/users';
+import { NotImplementedException } from '@nestjs/common';
 
 export enum RenderFormat {
   HTML = 'html',
@@ -20,7 +21,7 @@ export interface INotificationType {
   groupId?: string;
   profileInfo?: ProfileInfo;
   userInfo?: UserInfo;
-  getUrl(): UrlRoute;
+  getUrl(): UrlRoute | null;
   getTitle(format: NotificationContext): Translatable;
   getBody(format: NotificationContext): Translatable;
 }
@@ -63,15 +64,15 @@ export abstract class NotificationType<T extends INotificationType = INotificati
 @Schema({ discriminatorKey: 'type' })
 export class NotificationSchemaType extends NotificationType implements INotificationType {
   getBody(format: NotificationContext): Translatable {
-    return undefined;
+    throw new NotImplementedException();
   }
 
   getTitle(format: NotificationContext): Translatable {
-    return undefined;
+    throw new NotImplementedException();
   }
 
-  getUrl(): UrlRoute {
-    return undefined;
+  getUrl(): UrlRoute | null {
+    return null;
   }
 
   getCategory(): string {

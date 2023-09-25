@@ -1,20 +1,18 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
+import { EntityNotFoundException, IntegrityException } from '@lyvely/common';
+import { IStreamResponse, StreamRequest, StreamResponse } from '@lyvely/streams';
 import {
-  EntityNotFoundException,
-  IStreamResponse,
-  StreamRequest,
-  StreamResponse,
   WebNotification,
   NotificationSeenStateLiveEvent,
   NotificationUpdateStateLiveEvent,
-} from '@lyvely/common';
+} from '@lyvely/notifications-interface';
 import {
   RenderFormat,
   Notification,
   UserNotification,
   NotificationDeliveryStatus,
 } from '../schemas';
-import { FilterQuery } from 'mongoose';
+import mongoose, { FilterQuery } from 'mongoose';
 import { User, UsersService } from '@lyvely/users';
 import { assureObjectId, assureStringId, EntityIdentity } from '@lyvely/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
@@ -61,7 +59,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
       },
     );
 
-    if (!userNotification) return null;
+    if (!userNotification) throw new EntityNotFoundException();
 
     return userNotification;
   }
@@ -77,6 +75,9 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
     context: RequestContext,
     request: StreamRequest,
   ): Promise<IStreamResponse<UserNotification>> {
+    if (!context.user)
+      throw new IntegrityException('Can not load notifications without user identity');
+
     const response = await super.loadTail(context, request);
 
     if (request.isInitialRequest() && context.user.notification.updatesAvailable) {
@@ -105,6 +106,9 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
     context: RequestContext,
     request: StreamRequest,
   ): Promise<StreamResponse<UserNotification>> {
+    if (!context.user)
+      throw new IntegrityException('Can not load notifications without user identity');
+
     const response = await super.loadHead(context, request);
 
     this.setUpdateAvailableState(context.user, false);
@@ -115,8 +119,11 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
   async mapToResultModel(userNotifications: UserNotification[], context: RequestContext) {
     const notifications = await this.loadNotifications(userNotifications);
 
+    if (!context.user)
+      throw new IntegrityException('Can not load notifications without user identity');
+
     const models: WebNotification[] = [];
-    const toDelete: TObjectId[] = [];
+    const toDelete: mongoose.Types.ObjectId[] = [];
     const { user } = context;
 
     userNotifications.forEach((userNotification) => {
@@ -189,7 +196,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
     seen: boolean,
     sortOrder?: number,
   ) {
-    let notification: UserNotification;
+    let notification: UserNotification | null;
     let oldState: boolean;
     const update = sortOrder ? { seen, sortOrder } : { seen };
 
@@ -204,6 +211,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
         { uid: assureObjectId(user) },
         { new: false },
       );
+      if (!notification) throw new IntegrityException('Could not find user notification');
       oldState = notification.seen;
     }
 

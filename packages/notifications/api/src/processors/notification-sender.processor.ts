@@ -1,13 +1,8 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';
-import { UserSubscriptionService, UserSubscriptionContext } from '@lyvely/subscription';
-import {
-  Notification,
-  NotificationChannelDeliveryStatus,
-  NotificationDeliveryStatus,
-  UserNotification,
-} from '../schemas';
+import { UserSubscriptionService, UserSubscriptionContext } from '@lyvely/user-subscriptions';
+import { Notification, NotificationChannelDeliveryStatus, UserNotification } from '../schemas';
 import { Job } from 'bullmq';
 import { NotificationChannelRegistry, NotificationDecider } from '../components';
 import { Logger } from '@nestjs/common';
@@ -44,7 +39,7 @@ export class NotificationSenderProcessor extends WorkerHost {
       notification.subscription,
     );
 
-    const promises = [];
+    const promises: Promise<any>[] = [];
     userSubscriptions.forEach((userSubscription) => {
       promises.push(
         this.processUserNotification(userSubscription, notification).catch((err) =>
@@ -64,6 +59,8 @@ export class NotificationSenderProcessor extends WorkerHost {
       context.user,
       notification,
     );
+
+    if (!userNotification) return;
 
     if (!this.decider.checkResend(context, notification, userNotification)) {
       /**
@@ -97,7 +94,7 @@ export class NotificationSenderProcessor extends WorkerHost {
     notification: Notification,
     userNotification: UserNotification,
   ): Promise<any> {
-    const promises = [];
+    const promises: Promise<any>[] = [];
     const { user } = context;
     // Todo: (scalability) For bigger installations and bigger profiles, this should be queued e.g by user (fanout)
     this.channelRegistry.getNotificationChannels().forEach((channel) => {

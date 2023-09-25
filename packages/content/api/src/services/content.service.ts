@@ -76,7 +76,7 @@ export class ContentService {
     cid: EntityIdentity<Content>,
     mid: mongoose.Types.ObjectId | string,
   ): Promise<boolean> {
-    mid = assureObjectId(mid, false);
+    mid = assureObjectId(mid);
     const milestone = this.contentDao.findByProfileAndId(profileRelation, mid);
 
     if (!milestone) throw new EntityNotFoundException();

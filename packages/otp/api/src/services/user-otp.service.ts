@@ -7,6 +7,7 @@ import { generateOTP } from '../utils';
 import ms from 'ms';
 import bcrypt from 'bcrypt';
 import { EntityIdentity } from '@lyvely/core';
+import { IntegrityException } from '@lyvely/common';
 
 export interface IGenerateOtpOptions<TContext = any> {
   purpose: string;
@@ -30,7 +31,7 @@ export class UserOtpService<TContext = any> {
   async createOrUpdateUserOtp(
     user: User,
     options: IGenerateOtpOptions<TContext>,
-  ): Promise<{ otpModel: UserOtp<TContext> | null; otp: string }> {
+  ): Promise<{ otpModel: UserOtp<TContext>; otp: string }> {
     if (user.status === UserStatus.Disabled) throw new UnauthorizedException();
 
     const { otp, hashedOtp } = await this.generateOtp(options);
@@ -47,6 +48,8 @@ export class UserOtpService<TContext = any> {
         expiresIn: ms(options.expiresIn || DEFAULT_OTP_EXPIRATION),
       }),
     );
+
+    if (!otpModel) throw new IntegrityException('Could not upsert otp model');
 
     return { otpModel, otp };
   }

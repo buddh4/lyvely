@@ -1,5 +1,5 @@
 import { INotificationChannel } from '../interfaces';
-import { UserSubscriptionContext } from '@lyvely/subscription';
+import { UserSubscriptionContext } from '@lyvely/user-subscriptions';
 import { INotificationRateLimit, User } from '@lyvely/users';
 import {
   Notification,
@@ -10,7 +10,8 @@ import {
 } from '../schemas';
 import { Injectable, Logger } from '@nestjs/common';
 import { MailService } from '@lyvely/mails';
-import { BaseUserProfileRelationType, CalendarTimeInterval } from '@lyvely/common';
+import { BaseUserProfileRelationType } from '@lyvely/profiles';
+import { CalendarTimeInterval } from '@lyvely/dates';
 import { I18n, Translatable } from '@lyvely/i18n';
 import { NotificationChannelRegistry } from './notification-channel.registry';
 import { UrlGenerator } from '@lyvely/core';

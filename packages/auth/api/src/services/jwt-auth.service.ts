@@ -18,7 +18,7 @@ export class JwtAuthService {
     private configService: ConfigService<ConfigurationPath>,
   ) {}
 
-  async login(user: User, remember?: boolean) {
+  async login(user: User, remember: boolean) {
     const vid = uuidv4();
     return {
       accessToken: this.createAccessToken(user),
@@ -43,10 +43,8 @@ export class JwtAuthService {
   public async createRefreshToken(
     user: User,
     visitorId: string,
-    remember?: boolean,
+    remember: boolean,
   ): Promise<string> {
-    remember = !!remember;
-
     const expiresIn = getRefreshCookieExpiresIn(remember, this.configService);
 
     const options = {

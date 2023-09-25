@@ -2,7 +2,7 @@ import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
 import { UserNotificationsService } from './user-notifications.service';
-import { MultiUserSubscription } from '@lyvely/subscription';
+import { MultiUserSubscription } from '@lyvely/user-subscriptions';
 import {
   UserNotification,
   NotificationType,

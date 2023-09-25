@@ -1,7 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { assureObjectId, BaseEntity, EntityIdentity, NestedSchema } from '@lyvely/core';
+import {
+  assureObjectId,
+  BaseEntity,
+  EntityIdentity,
+  NestedSchema,
+  ObjectIdProp,
+} from '@lyvely/core';
 import mongoose from 'mongoose';
-import { ISortable, PropertyType } from '@lyvely/common';
+import { PropertyType } from '@lyvely/common';
 import { User } from '@lyvely/users';
 import { Notification } from './notification.schema';
 
@@ -20,7 +26,7 @@ export class NotificationChannelDeliveryStatus extends BaseEntity<NotificationCh
   success: boolean;
 
   @Prop()
-  error: string;
+  error?: string;
 }
 
 const NotificationChannelDeliveryStatusSchema = SchemaFactory.createForClass(
@@ -54,11 +60,11 @@ const NotificationDeliveryStatusSchema = SchemaFactory.createForClass(Notificati
 
 @Schema()
 export class UserNotification extends BaseEntity<UserNotification> {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, require: true })
-  uid: TObjectId;
+  @ObjectIdProp({ required: true })
+  uid: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, require: true })
-  nid: TObjectId;
+  @ObjectIdProp({ required: true })
+  nid: mongoose.Types.ObjectId;
 
   @Prop()
   @PropertyType(Boolean, { default: false })

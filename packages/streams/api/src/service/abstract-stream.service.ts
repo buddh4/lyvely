@@ -88,7 +88,7 @@ export abstract class AbstractStreamService<
     if (streamEntries.length) {
       response.state.tailIds = streamEntries
         .filter((entry) => entry.id === streamEntries[streamEntries.length - 1].id)
-        .map((entry) => assureStringId(entry, false));
+        .map((entry) => assureStringId(entry));
       response.state.tail = this.getSortValue(streamEntries[streamEntries.length - 1]);
 
       if (!response.state.headIds?.length) {
@@ -145,7 +145,7 @@ export abstract class AbstractStreamService<
     if (streamEntries.length) {
       response.state.headIds = streamEntries
         .filter((entry) => entry.id === streamEntries[0].id)
-        .map((entry) => assureStringId(entry, false));
+        .map((entry) => assureStringId(entry));
       response.state.head = this.getSortValue(streamEntries[0]);
     }
 

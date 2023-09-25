@@ -31,7 +31,7 @@
 @lyvely/mails';
 @lyvely/notifications';
 @lyvely/profiles';
-@lyvely/subscription';
+@lyvely/user-subscriptions';
 @lyvely/testing';
 @lyvely/users';
 
@@ -62,24 +62,6 @@
 @lyvely/policies';
 @lyvely/profiles';
 @lyvely/testing';
-@lyvely/users';
-
-=== notifications [] ===
-@nestjs/bullmq';
-@nestjs/common';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/core';
-@lyvely/i18n';
-@lyvely/live';
-@lyvely/mails';
-@lyvely/notifications';
-@lyvely/profiles';
-@lyvely/streams';
-@lyvely/subscription';
-@lyvely/testing';
-@lyvely/user';
 @lyvely/users';
 
 === registration [] ===
@@ -123,21 +105,6 @@
 @lyvely/profiles';
 @lyvely/testing';
 @lyvely/users';
-
-=== time-series [] ===
-@nestjs/common';
-@nestjs/mongoose';
-@nestjs/mongoose/dist/interfaces/model-definition.interface';
-@nestjs/testing';
-@lyvely/calendar';
-@lyvely/calendar-plan';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/users';
-
 
 === ui [] ===
 @lyvely/common';

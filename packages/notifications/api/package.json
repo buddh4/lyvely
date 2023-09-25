@@ -18,12 +18,27 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "bcrypt": "^5.1.0"
+    "@nestjs/common": "^9.4.0",
+    "@nestjs/bullmq": "^1.1.0",
+    "@nestjs/mongoose": "^9.2.2",
+    "@lyvely/core": "^0.1.0-alpha3",
+    "@lyvely/common": "^0.1.0-alpha3",
+    "@lyvely/i18n": "^0.1.0-alpha3",
+    "@lyvely/live": "^0.1.0-alpha3",
+    "@lyvely/mails": "^0.1.0-alpha3",
+    "@lyvely/dates": "^0.1.0-alpha3",
+    "@lyvely/profiles": "^0.1.0-alpha3",
+    "@lyvely/streams": "^0.1.0-alpha3",
+    "@lyvely/users": "^0.1.0-alpha3",
+    "@lyvely/user-subscriptions": "^0.1.0-alpha3",
+    "@lyvely/notifications-interface": "^0.1.0-alpha3",
+    "eventemitter2": "^6.4.9",
+    "mongoose": "^6.0.2 || ^7.0.0"
   },
   "devDependencies": {
     "@lyvely/core": "^0.1.0-alpha3",
     "@lyvely/testing": "^0.1.0-alpha3",
-    "@nestjs/common": "^9.4.0",
+
     "@nestjs/core": "^9.4.0",
     "@nestjs/testing": "^9.4.0",
     "jest": "^29.5.0",

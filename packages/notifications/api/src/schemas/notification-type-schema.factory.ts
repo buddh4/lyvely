@@ -16,13 +16,4 @@ export class NotificationTypeSchemaFactory {
     globalEmitter.emit(EVENT_REGISTER_NOTIFICATION_TYPE, target, schema);
     return schema;
   }
-
-  static getConstructorByType(type: string) {
-    return typeRegistry.get(type);
-  }
-
-  static getSchemaByType(type: string | Type<NotificationType>): Schema<NotificationType> {
-    const typeKey = typeof type === 'string' ? type : type.name;
-    return typeSchemaRegistry.get(typeKey);
-  }
 }

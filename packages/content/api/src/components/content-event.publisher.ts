@@ -41,7 +41,7 @@ export class ContentEventPublisher {
     this.liveService.emitProfileEvent(
       new ContentUpdateStateLiveEvent({
         updatesAvailable: true,
-        pid: assureStringId(content.pid, false),
+        pid: assureStringId(content.pid),
         parentId: content.getParentId() ? assureStringId(content.getParentId()) : undefined,
         streamSort: content.meta.streamSort,
         cid: content.id,

@@ -12,13 +12,18 @@ export type EntityIdentity<T extends BaseEntity<any>> =
 export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 
 // We use any here since we need to use this when defining sub documents
-export function assureObjectId<
-  T extends BaseEntity<any> = BaseEntity<any>,
-  B extends boolean | undefined | null = boolean | undefined | null,
->(
+export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
   identity: EntityIdentity<T> | undefined,
-  optional?: B,
-): B extends true | undefined | null ? Types.ObjectId | undefined : Types.ObjectId {
+  optional?: false,
+): Types.ObjectId;
+export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
+  identity: EntityIdentity<T> | undefined,
+  optional: true,
+): Types.ObjectId | undefined;
+export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
+  identity: EntityIdentity<T> | undefined,
+  optional?: boolean,
+): Types.ObjectId {
   if (!identity && optional) return undefined as any;
 
   if (typeof identity === 'string') {
@@ -120,10 +125,9 @@ export function applyRawDataTo<T extends Object>(
   return assignRawDataTo(model, data, { maxDepth, strict });
 }
 
-export function assureStringId<B extends boolean | undefined | null = boolean | undefined | null>(
-  obj: any | undefined,
-  optional?: B,
-): B extends true | undefined | null ? string | undefined : string {
+export function assureStringId(obj: any | undefined, optional?: false): string;
+export function assureStringId(obj: any | undefined, optional: true): string | undefined;
+export function assureStringId(obj: any | undefined, optional?: boolean): string {
   if (!obj && !optional) {
     throw new IntegrityException('Cannot assure string id on undefined.');
   } else if (!obj) {

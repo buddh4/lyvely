@@ -3,7 +3,7 @@ import { TestingModule } from '@nestjs/testing';
 import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
 import { Notification as NotificationDecorator } from '../decorators';
 import { Notification, NotificationContext, NotificationType, RenderFormat } from '../schemas';
-import { SingleUserSubscription } from '@lyvely/subscription';
+import { SingleUserSubscription } from '@lyvely/user-subscriptions';
 import { ProfileInfo } from '@lyvely/profiles';
 import { UserInfo } from '@lyvely/users';
 import { NotificationDao } from './notification.dao';

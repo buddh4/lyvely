@@ -139,12 +139,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.getModel().modelName;
   }
 
-  protected constructModel(lean?: DeepPartial<T> | null): T {
-    return lean ? createBaseEntityInstance(this.getModelConstructor(lean), lean) : null;
+  protected constructModel(lean: DeepPartial<T>): T {
+    return createBaseEntityInstance(this.getModelConstructor(lean), lean);
   }
 
-  protected constructModels(leanArr?: Partial<T>[]): T[] {
-    return leanArr?.map((lean) => this.constructModel(lean)) || [];
+  protected constructModels(leanArr: Partial<T>[]): T[] {
+    return leanArr.map((lean) => this.constructModel(lean)) || [];
   }
 
   protected emit(event: string, data: any) {
@@ -215,11 +215,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
     // TODO: trigger events
-    return this.constructModel(
-      await this.getModel(options)
-        .findById(this.assureEntityId(identity), options?.projection, options)
-        .lean(),
-    );
+    const model = await this.getModel(options)
+      .findById(this.assureEntityId(identity), options?.projection, options)
+      .lean();
+
+    return model ? this.constructModel(model) : null;
   }
 
   async findByIdAndFilter(
@@ -249,7 +249,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
   }
 
   protected assureEntityId(identity: EntityIdentity<T>): T['_id'] {
-    return assureObjectId(identity, false);
+    return assureObjectId(identity);
   }
 
   async findOne<C = T>(
@@ -257,9 +257,8 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
     // TODO: trigger events
-    return this.constructModel(
-      await this.getModel(options).findOne(filter, options?.projection, options).lean(),
-    );
+    const model = await this.getModel(options).findOne(filter, options?.projection, options).lean();
+    return model ? this.constructModel(model) : null;
   }
 
   async upsert(
@@ -267,12 +266,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     update: UpdateQuery<T>,
     options: IUpsertQueryOptions = {},
   ): Promise<T | null> {
-    options.new = options.new ?? true;
-    return this.constructModel(
-      await this.getModel(options)
-        .findOneAndUpdate(filter, update, { upsert: true, ...options })
-        .lean(),
-    );
+    options.new ??= true;
+    const model = await this.getModel(options)
+      .findOneAndUpdate(filter, update, { upsert: true, ...options })
+      .lean();
+    return model ? this.constructModel(model) : null;
   }
 
   protected getFetchQueryFilter(options: IFetchQueryFilterOptions<T>): FilterQuery<any> | null {

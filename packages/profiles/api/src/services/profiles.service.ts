@@ -6,7 +6,7 @@ import {
   ProfileUsage,
   ProfileVisibilityLevel,
 } from '@lyvely/profiles-interface';
-import { EntityNotFoundException, UniqueConstraintException} from '@lyvely/common'
+import { EntityNotFoundException, UniqueConstraintException } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
 import { ProfileContext } from '../models';
 import {
@@ -179,7 +179,7 @@ export class ProfilesService {
     const profile =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
 
-    if(!profile) throw new EntityNotFoundException();
+    if (!profile) throw new EntityNotFoundException();
 
     const profileRelations = await this.profileRelationsDao.findAllByProfile(identity);
     const userRelations = profileRelations.filter((relation) => relation.uid.equals(user._id));
@@ -191,9 +191,9 @@ export class ProfilesService {
     identity: EntityIdentity<Profile>,
   ): Promise<ProfileContext> {
     const profile =
-        identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+      identity instanceof Profile ? identity : await this.profileDao.findById(identity);
 
-    if(!profile) throw new EntityNotFoundException();
+    if (!profile) throw new EntityNotFoundException();
 
     const relations = await this.profileRelationsDao.findAllByUserAndProfile(user, profile);
 
@@ -254,7 +254,7 @@ export class ProfilesService {
       pid: assureObjectId(identity),
     });
 
-    const result: { user: User, profile: Profile, relations: UserProfileRelation[] }[] = [];
+    const result: { user: User; profile: Profile; relations: UserProfileRelation[] }[] = [];
     const uids = userRelations.map((relation) => relation.uid);
     const users = await this.usersService.findUsersById(uids);
     users.forEach((user) => {
@@ -307,7 +307,7 @@ export class ProfilesService {
   async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {
     const profile = await this.findProfileById(identity, true);
 
-    if(!profile) throw new EntityNotFoundException();
+    if (!profile) throw new EntityNotFoundException();
 
     if (inc === 0) return profile.score;
 
@@ -317,9 +317,10 @@ export class ProfilesService {
   }
 
   async findProfileById(
-    identity: EntityIdentity<Profile>,
+    identity: EntityIdentity<Profile> | null | undefined,
     throwsException = false,
   ): Promise<Profile | null> {
+    if (!identity && throwsException) throw new EntityNotFoundException('Profile not found.');
     if (!identity) return null;
 
     const result =
