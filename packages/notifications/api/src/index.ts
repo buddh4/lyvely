@@ -8,5 +8,6 @@ export * from './daos';
 export * from './interfaces';
 export * from './models';
 export * from './services';
+export * from './testing';
 export * from './notifications.module';
 export * from '@lyvely/notifications-interface';

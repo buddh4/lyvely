@@ -33,6 +33,7 @@
     "class-transformer": "^0.5.1",
     "helmet": "^6.1.5",
     "lodash": "^4.17.21",
+    "eventemitter2": "^6.4.9",
     "nodemailer": "^6.9.1",
     "reflect-metadata": "0.1.13"
   },

@@ -17,25 +17,6 @@
 @lyvely/time-series';
 @lyvely/users';
 
-=== invitations [] ===
-@nestjs/common';
-@nestjs/config';
-@nestjs/jwt';
-@nestjs/jwt/dist/interfaces';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/core';
-@lyvely/i18n';
-@lyvely/invitations';
-@lyvely/mails';
-@lyvely/notifications';
-@lyvely/profiles';
-@lyvely/user-subscriptions';
-@lyvely/testing';
-@lyvely/users';
-
-
 === journals [] ===
 @nestjs/common';
 @nestjs/mongoose';
@@ -47,21 +28,6 @@
 @lyvely/profiles';
 @lyvely/testing';
 @lyvely/time-series';
-@lyvely/users';
-
-=== milestones [] ===
-@nestjs/common';
-@nestjs/event-emitter';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/calendar-plan';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/milestones';
-@lyvely/policies';
-@lyvely/profiles';
-@lyvely/testing';
 @lyvely/users';
 
 === registration [] ===

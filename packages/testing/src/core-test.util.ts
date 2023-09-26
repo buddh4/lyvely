@@ -13,8 +13,8 @@ const mongods = new Map<string, MongoMemoryServer>();
 export type Type<T = any> = new (...args: any[]) => T;
 
 export interface TestPlugin {
-  apply: (builder: LyvelyTestBuilder) => void;
-  prepare: (moduleBuilder: TestingModuleBuilder) => void;
+  apply?: (builder: LyvelyTestBuilder) => void;
+  prepare?: (moduleBuilder: TestingModuleBuilder) => void;
 }
 
 export class LyvelyTestBuilder {
@@ -52,7 +52,7 @@ export class LyvelyTestBuilder {
   }
 
   plugins(plugins: TestPlugin[]) {
-    plugins.forEach((plugin) => plugin.apply(this));
+    plugins.forEach((plugin) => plugin.apply?.(this));
     this._plugins.push(...plugins);
     return this;
   }
@@ -60,12 +60,12 @@ export class LyvelyTestBuilder {
   build() {
     const moduleBuilder = createCoreTestingModule(
       this.id,
-      this._providers,
-      this._models,
-      this._imports,
+      [...new Set(this._providers)],
+      [...new Set(this._models)],
+      [...new Set(this._imports)],
       this._config,
     );
-    this._plugins.forEach((plugin) => plugin.prepare(moduleBuilder));
+    this._plugins.forEach((plugin) => plugin.prepare?.(moduleBuilder));
     return moduleBuilder;
   }
 

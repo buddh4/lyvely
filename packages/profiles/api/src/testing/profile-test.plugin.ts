@@ -1,4 +1,3 @@
-import { TestingModuleBuilder } from '@nestjs/testing';
 import { LyvelyTestBuilder, TestPlugin } from '@lyvely/testing';
 import { UsersModule } from '@lyvely/users';
 import { ProfilesModule } from '../profiles.module';
@@ -10,6 +9,5 @@ export function profilesTestPlugin(): TestPlugin {
       builder.imports([UsersModule, ProfilesModule]);
       builder.providers([ProfileTestDataUtils]);
     },
-    prepare(moduleBuilder: TestingModuleBuilder) {},
   };
 }

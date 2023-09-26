@@ -1,24 +1,38 @@
-import { Logger, Type } from '@nestjs/common';
+import { Logger, ModuleMetadata, Type } from '@nestjs/common';
+import { EventEmitter2 } from 'eventemitter2';
 
 export interface ITypeRegistryDefinition<T> {
   type: string;
   constructor: Type<T>;
 }
 
+export const EVENT_REGISTRATION = 'EVENT_REGISTRATION';
+
 export abstract class AbstractTypeRegistry<T, TMeta = any> {
   protected abstract logger: Logger;
 
-  private typeMapping: Record<string, ITypeRegistryDefinition<T>> = {};
-  private typeMeta: Record<string, TMeta> = {};
+  private typeMapping: Map<string, ITypeRegistryDefinition<T>> = new Map();
+  private typeMeta: Map<string, TMeta> = new Map();
+  protected emitter: EventEmitter2;
+
+  constructor() {
+    this.emitter = new EventEmitter2();
+  }
 
   registerType(type: Type<T>, name?: string, meta?: TMeta) {
     name = name || type.name;
     const definition = { type: name, constructor: type };
-    this.logger.log(`Register content type ${definition.type}`);
-    this.typeMapping[definition.type] = definition;
+    this.logger.log(`Register type ${definition.type}`);
+    this.typeMapping.set(definition.type, definition);
     if (meta) {
-      this.typeMeta[definition.type] = meta;
+      this.typeMeta.set(definition.type, meta);
     }
+
+    this.emitter.emit(EVENT_REGISTRATION, meta);
+  }
+
+  onRegistration(handler: (meta: ModuleMetadata) => void) {
+    return this.emitter.on(EVENT_REGISTRATION, handler);
   }
 
   registerTypes(types: { type: Type<T>; name?: string; meta?: TMeta }[]) {
@@ -30,9 +44,9 @@ export abstract class AbstractTypeRegistry<T, TMeta = any> {
   }
 
   getTypeDefinition(type: string): ITypeRegistryDefinition<T> | undefined {
-    const result = this.typeMapping[type];
+    const result = this.typeMapping.get(type);
     if (!result) {
-      this.logger.warn(`Type ${type} without content type definition requested`);
+      this.logger.warn(`Type ${type} without type definition requested`);
     }
     return result;
   }
@@ -46,6 +60,10 @@ export abstract class AbstractTypeRegistry<T, TMeta = any> {
   }
 
   getTypeMeta(type: string): TMeta | undefined {
-    return this.typeMeta[type];
+    return this.typeMeta.get(type);
+  }
+
+  getAllMeta(): TMeta[] {
+    return Array.from(this.typeMeta.values());
   }
 }

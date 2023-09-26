@@ -1,37 +1,39 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
+import { buildTest } from '@lyvely/testing';
+import {
+  BaseProfileRelationRole,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+} from '@lyvely/profiles';
 import { SendInvitationsService } from './send-invitations.service';
 import { JwtModule } from '@nestjs/jwt';
-import { InvitationDao } from '@lyvely/invitations';
 import {
   Invitation,
+  InvitationDao,
   InvitationSchema,
   MailInvitation,
   MailInvitationSchema,
   UserInvitation,
   UserInvitationSchema,
-} from '@lyvely/invitations';
-import {
-  BaseProfileRelationRole,
-  MailInvite,
-  InvitationRequest,
-  ForbiddenServiceException,
-} from '@lyvely/common';
-import { TestMailService } from '@lyvely/mails';
+} from '../index';
+import { ForbiddenServiceException } from '@lyvely/common';
+import { MailInvite, InvitationRequest } from '@lyvely/user-invitations-interface';
+import { mailTestPlugin, TestMailService } from '@lyvely/mails';
+import { notificationTestPlugin } from '@lyvely/notifications';
 
 describe('SendInvitations', () => {
   let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
   let invitesService: SendInvitationsService;
 
   const TEST_KEY = 'invite_service';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(
-      TEST_KEY,
-      [SendInvitationsService, InvitationDao],
-      [
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin(), mailTestPlugin(), notificationTestPlugin()])
+      .imports([JwtModule])
+      .providers([SendInvitationsService, InvitationDao])
+      .models([
         {
           name: Invitation.name,
           schema: InvitationSchema,
@@ -40,12 +42,10 @@ describe('SendInvitations', () => {
             { name: UserInvitation.name, schema: UserInvitationSchema },
           ],
         },
-      ],
-
-      [JwtModule],
-    ).compile();
+      ])
+      .compile();
     invitesService = testingModule.get(SendInvitationsService);
-    testData = testingModule.get(TestDataUtils);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   it('is defined', () => {

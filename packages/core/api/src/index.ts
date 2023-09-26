@@ -5,6 +5,6 @@ export * from './db';
 export * from './decorators';
 export * from './filters';
 export * from './services';
+export * from './interfaces';
 export * from './core.module';
-export * from './modules';
 export * from './global.emitter';
