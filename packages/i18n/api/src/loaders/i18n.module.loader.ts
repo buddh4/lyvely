@@ -40,7 +40,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
 
   createModuleLoaders() {
     this.moduleRegistry.getAllMeta().forEach((moduleMeta) => {
-      this.logger.log(`Create i18n loader for ${moduleMeta.id}`);
+      this.logger.debug(`Create i18n loader for ${moduleMeta.id}`);
       this.createModuleLoader(moduleMeta);
     });
   }
@@ -68,33 +68,24 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
     }
 
     /*
-    const loadersWithKeys = Array.from(this.moduleLoader.entries()).map(([key, loader]) => ({
-      key,
-      loader,
-    }));
-    if (this.options.watch) {
-      const observables = loadersWithKeys.map(({ loader }) => loader.load());
-
-      return from(observables).pipe(
-        mergeMap((result) => result),
-        scan(async (acc, value, index) => {
-          const moduleId = loadersWithKeys[index].key; // Access the key
-          const translations = value instanceof Observable ? await firstValueFrom(value) : value;
-          const mappedTranslation: I18nTranslation = {};
-          for (const locale in translations) {
-            if (Object.hasOwn(translations, locale)) {
-              mappedTranslation[locale] = { [moduleId]: translations[locale] };
-            }
-          }
-          return merge({}, acc, mappedTranslation);
-        }, {}),
-      );
+      TODO: doen't work at the moment
+      if (this.options.watch) {
+        return this.loadModuleTranslationsAndWatch();
+      }
     }*/
 
+    return this.loadModuleTranslations();
+  }
+
+  private async loadModuleTranslations() {
     const result: I18nTranslation[] = [];
     for (const [moduleId, loader] of this.moduleLoader) {
-      const translations = await loader.load();
-      if (translations instanceof Observable) continue;
+      this.logger.debug(`Load translations for ${moduleId}`);
+      let translations = await loader.load();
+
+      if (translations instanceof Observable) {
+        translations = await firstValueFrom(translations);
+      }
 
       const mappedTranslation: I18nTranslation = {};
       for (const locale in translations) {
@@ -106,5 +97,28 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
     }
 
     return merge({}, ...result);
+  }
+
+  private async loadModuleTranslationsAndWatch() {
+    const loadersWithKeys = Array.from(this.moduleLoader.entries()).map(([key, loader]) => ({
+      key,
+      loader,
+    }));
+    const observables = loadersWithKeys.map(({ loader }) => loader.load());
+
+    return from(observables).pipe(
+      mergeMap((result) => result),
+      scan(async (acc, value, index) => {
+        const moduleId = loadersWithKeys[index].key; // Access the key
+        const translations = value instanceof Observable ? await firstValueFrom(value) : value;
+        const mappedTranslation: I18nTranslation = {};
+        for (const locale in translations) {
+          if (Object.hasOwn(translations, locale)) {
+            mappedTranslation[locale] = { [moduleId]: translations[locale] };
+          }
+        }
+        return merge({}, acc, mappedTranslation);
+      }, {}),
+    );
   }
 }
