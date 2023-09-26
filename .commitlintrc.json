@@ -45,6 +45,7 @@
         "milestones",
         "tags",
         "tasks",
+        "i18n",
         "deps",
         "time-series",
         "system-messages",
