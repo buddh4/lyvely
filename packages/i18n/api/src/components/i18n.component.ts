@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { I18nService } from 'nestjs-i18n';
-import { Translatable } from '../interfaces';
+import { I18nConfigPath, Translatable } from '../interfaces';
 import { User } from '@lyvely/users';
 
 const availableLocales = ['en-US', 'de-DE'];
@@ -17,7 +17,7 @@ export interface TranslationOptions {
 @Injectable()
 export class I18n {
   constructor(
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService<I18nConfigPath>,
     private readonly i18nService: I18nService,
   ) {}
 
@@ -42,7 +42,7 @@ export class I18n {
 
   public getEnabledLocales() {
     return this.configService
-      .get('i18n.locales', availableLocales)
+      .get('modules.i18n.locales', availableLocales)
       .filter((locale) => availableLocales.includes(locale));
   }
 

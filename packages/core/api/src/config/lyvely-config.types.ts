@@ -159,7 +159,7 @@ export type LyvelyAppConfiguration = {
 
 // TODO: This is not working for some types
 
-export type ConfigurationPath = {
+export type ConfigurationPath<C = LyvelyAppConfiguration> = {
   // @ts-ignore
-  [key in NestedPaths<LyvelyAppConfiguration>]: TypeFromPath<LyvelyAppConfiguration, key>;
+  [key in NestedPaths<C>]: TypeFromPath<C, key>;
 } & any;

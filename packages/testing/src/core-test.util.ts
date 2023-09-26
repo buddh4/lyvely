@@ -54,6 +54,7 @@ export class LyvelyTestBuilder {
   plugins(plugins: TestPlugin[]) {
     plugins.forEach((plugin) => plugin.apply?.(this));
     this._plugins.push(...plugins);
+    debugger;
     return this;
   }
 
@@ -66,10 +67,12 @@ export class LyvelyTestBuilder {
       this._config,
     );
     this._plugins.forEach((plugin) => plugin.prepare?.(moduleBuilder));
+    debugger;
     return moduleBuilder;
   }
 
   async compile() {
+    debugger;
     return this.build().compile();
   }
 }

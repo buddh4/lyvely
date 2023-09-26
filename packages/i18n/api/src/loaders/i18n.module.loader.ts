@@ -1,15 +1,16 @@
 import { I18nJsonLoader, I18nLoader, I18nTranslation, I18N_LOADER_OPTIONS } from 'nestjs-i18n';
 import { Inject, Logger, OnModuleDestroy } from '@nestjs/common';
-import { Observable, from, mergeMap, scan } from 'rxjs';
+import { Observable, from, mergeMap, scan, firstValueFrom } from 'rxjs';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { merge } from 'lodash';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_REGISTRATION, IModuleMetadata, ModuleRegistry } from '@lyvely/core';
-import { I18n } from '../components';
+import { ConfigService } from '@nestjs/config';
+import { I18nConfigPath } from '../interfaces';
 
 export interface I18nModuleLoaderOptions {
-  watch?: boolean;
+  //watch?: boolean;
 }
 
 export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
@@ -20,9 +21,10 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
     private moduleRegistry: ModuleRegistry,
     @Inject(I18N_LOADER_OPTIONS)
     private options: I18nModuleLoaderOptions, //private i18n: I18n,
+    private configService: ConfigService<I18nConfigPath>,
   ) {
     super();
-    this.options.watch ??= false;
+    //this.options.watch ??= false;
   }
 
   async onModuleDestroy() {
@@ -49,7 +51,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
 
       if (!existsSync(localesPath)) return;
 
-      const loader = new I18nJsonLoader({ path: localesPath, watch: this.options.watch });
+      const loader = new I18nJsonLoader({ path: localesPath, watch: false });
       this.moduleLoader.set(metaData.id, loader);
     } catch (e) {
       this.logger.error(e);
@@ -57,8 +59,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
   }
 
   async languages(): Promise<string[] | Observable<string[]>> {
-    return ['en'];
-    //this.i18n.getEnabledLocales();
+    return this.configService.get('modules.i18n.locals') || ['en'];
   }
 
   async load(): Promise<I18nTranslation | Observable<I18nTranslation>> {
@@ -66,24 +67,42 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
       this.createModuleLoaders();
     }
 
-    const loaders = Array.from(this.moduleLoader.values());
-
+    /*
+    const loadersWithKeys = Array.from(this.moduleLoader.entries()).map(([key, loader]) => ({
+      key,
+      loader,
+    }));
     if (this.options.watch) {
-      const observables = loaders.map((loader) => loader.load());
+      const observables = loadersWithKeys.map(({ loader }) => loader.load());
 
       return from(observables).pipe(
         mergeMap((result) => result),
-        scan((acc, value) => merge({}, acc, value), {}), // Deep merge using Lodash
+        scan(async (acc, value, index) => {
+          const moduleId = loadersWithKeys[index].key; // Access the key
+          const translations = value instanceof Observable ? await firstValueFrom(value) : value;
+          const mappedTranslation: I18nTranslation = {};
+          for (const locale in translations) {
+            if (Object.hasOwn(translations, locale)) {
+              mappedTranslation[locale] = { [moduleId]: translations[locale] };
+            }
+          }
+          return merge({}, acc, mappedTranslation);
+        }, {}),
       );
-    }
+    }*/
 
     const result: I18nTranslation[] = [];
-    for (const loader of loaders.values()) {
+    for (const [moduleId, loader] of this.moduleLoader) {
       const translations = await loader.load();
-
       if (translations instanceof Observable) continue;
 
-      result.push(translations);
+      const mappedTranslation: I18nTranslation = {};
+      for (const locale in translations) {
+        if (Object.hasOwn(translations, locale)) {
+          mappedTranslation[locale] = { [moduleId]: translations[locale] };
+        }
+      }
+      result.push(mappedTranslation);
     }
 
     return merge({}, ...result);

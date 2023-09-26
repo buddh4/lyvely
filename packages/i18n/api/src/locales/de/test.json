@@ -1,3 +1,4 @@
 {
-  "testKey": "Test Wert"
+  "testKey": "Test Wert",
+  "hello": "Hallo"
 }
