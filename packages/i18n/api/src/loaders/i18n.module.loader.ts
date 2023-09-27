@@ -1,6 +1,6 @@
 import { I18nJsonLoader, I18nLoader, I18nTranslation, I18N_LOADER_OPTIONS } from 'nestjs-i18n';
 import { Inject, Logger, OnModuleDestroy } from '@nestjs/common';
-import { Observable, from, mergeMap, scan, firstValueFrom } from 'rxjs';
+import { Observable, from, mergeMap, scan, firstValueFrom, mergeAll } from 'rxjs';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { merge } from 'lodash';
@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { I18nConfigPath } from '../interfaces';
 
 export interface I18nModuleLoaderOptions {
-  //watch?: boolean;
+  watch?: boolean;
 }
 
 export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
@@ -24,7 +24,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
     private configService: ConfigService<I18nConfigPath>,
   ) {
     super();
-    //this.options.watch ??= false;
+    this.options.watch ??= false;
   }
 
   async onModuleDestroy() {
@@ -51,7 +51,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
 
       if (!existsSync(localesPath)) return;
 
-      const loader = new I18nJsonLoader({ path: localesPath, watch: false });
+      const loader = new I18nJsonLoader({ path: localesPath, watch: this.options.watch });
       this.moduleLoader.set(metaData.id, loader);
     } catch (e) {
       this.logger.error(e);
@@ -67,12 +67,9 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
       this.createModuleLoaders();
     }
 
-    /*
-      TODO: doen't work at the moment
-      if (this.options.watch) {
-        return this.loadModuleTranslationsAndWatch();
-      }
-    }*/
+    if (this.options.watch) {
+      return this.loadModuleTranslationsAndWatch();
+    }
 
     return this.loadModuleTranslations();
   }
@@ -87,16 +84,20 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
         translations = await firstValueFrom(translations);
       }
 
-      const mappedTranslation: I18nTranslation = {};
-      for (const locale in translations) {
-        if (Object.hasOwn(translations, locale)) {
-          mappedTranslation[locale] = { [moduleId]: translations[locale] };
-        }
-      }
-      result.push(mappedTranslation);
+      result.push(this.addModulePrefix(translations, moduleId));
     }
 
     return merge({}, ...result);
+  }
+
+  private addModulePrefix(translations: I18nTranslation, moduleId: string): I18nTranslation {
+    const mappedTranslation: I18nTranslation = {};
+    for (const locale in translations) {
+      if (Object.hasOwn(translations, locale)) {
+        mappedTranslation[locale] = { [moduleId]: translations[locale] };
+      }
+    }
+    return mappedTranslation;
   }
 
   private async loadModuleTranslationsAndWatch() {
@@ -104,21 +105,33 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
       key,
       loader,
     }));
+
     const observables = loadersWithKeys.map(({ loader }) => loader.load());
 
-    return from(observables).pipe(
-      mergeMap((result) => result),
-      scan(async (acc, value, index) => {
-        const moduleId = loadersWithKeys[index].key; // Access the key
-        const translations = value instanceof Observable ? await firstValueFrom(value) : value;
-        const mappedTranslation: I18nTranslation = {};
-        for (const locale in translations) {
-          if (Object.hasOwn(translations, locale)) {
-            mappedTranslation[locale] = { [moduleId]: translations[locale] };
-          }
-        }
-        return merge({}, acc, mappedTranslation);
-      }, {}),
+    return Promise.all(observables).then(
+      (observables: Array<I18nTranslation | Observable<I18nTranslation>>) => {
+        const filtered = observables.filter((o) => o instanceof Observable) as Array<
+          Observable<I18nTranslation>
+        >;
+
+        // Convert the array of Observables into an Observable and merge them
+        const mergedObservable = from(filtered).pipe(
+          mergeAll(),
+          mergeMap((obj, index) => {
+            return new Observable((subscriber) => {
+              subscriber.next(this.addModulePrefix(obj, loadersWithKeys[index].key));
+              subscriber.complete();
+            });
+          }),
+        );
+
+        // Use the scan operator to accumulate the merged values
+        return mergedObservable.pipe(
+          scan((acc, value) => {
+            return { ...acc, ...(value as any) };
+          }, {}),
+        );
+      },
     );
   }
 }

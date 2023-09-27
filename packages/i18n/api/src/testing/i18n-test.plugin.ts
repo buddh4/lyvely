@@ -12,7 +12,7 @@ export const i18nTestPlugin = {
           fallbackLanguage: 'en',
           loader: I18nModuleLoader,
           loaderOptions: {
-            watch: true,
+            watch: false,
           },
           resolvers: [AcceptLanguageResolver],
         }),
