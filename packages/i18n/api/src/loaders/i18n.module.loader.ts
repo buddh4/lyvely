@@ -115,7 +115,7 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
         >;
 
         // Convert the array of Observables into an Observable and merge them
-        const mergedObservable = from(filtered).pipe(
+        return from(filtered).pipe(
           mergeAll(),
           mergeMap((obj, index) => {
             return new Observable((subscriber) => {
@@ -123,10 +123,6 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
               subscriber.complete();
             });
           }),
-        );
-
-        // Use the scan operator to accumulate the merged values
-        return mergedObservable.pipe(
           scan((acc, value) => {
             return { ...acc, ...(value as any) };
           }, {}),
