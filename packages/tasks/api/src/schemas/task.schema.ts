@@ -2,27 +2,29 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '@lyvely/profiles';
 import {
   UserAssignmentStrategy,
-  CreateTaskModel,
-  UpdateTaskModel,
   PropertiesOf,
-  TaskWithUsersModel,
   PropertyType,
-  TaskModel,
   getNumberEnumValues,
-  CalendarInterval,
   BaseModel,
-  ITaskConfig,
 } from '@lyvely/common';
-import mongoose from 'mongoose';
+import { CalendarInterval } from '@lyvely/dates';
+import { Timer, TimerModel, TimerSchema } from '@lyvely/timers';
+import {
+  TaskModel,
+  CreateTaskModel,
+  TaskWithUsersModel,
+  ITaskConfig,
+  UserDoneModel,
+} from '@lyvely/tasks-interface';
+import { Types } from 'mongoose';
 import { User } from '@lyvely/users';
-import { assureObjectId, EntityIdentity, NestedSchema } from '@lyvely/core';
+import { assureObjectId, EntityIdentity, NestedSchema, ObjectIdProp } from '@lyvely/core';
 import { ContentDataType, ContentType } from '@lyvely/content';
-import { Timer, TimerSchema } from '@lyvely/dates';
 
 @Schema({ _id: false })
-export class UserDone {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  uid: TObjectId;
+export class UserDone implements UserDoneModel<Types.ObjectId> {
+  @ObjectIdProp({ required: true })
+  uid: Types.ObjectId;
 
   @Prop({ type: String, required: true })
   tid: string;
@@ -61,7 +63,7 @@ const TaskConfigSchema = SchemaFactory.createForClass(TaskConfig);
 @Schema()
 export class Task
   extends ContentType<Task, TaskConfig>
-  implements PropertiesOf<TaskWithUsersModel>
+  implements PropertiesOf<TaskWithUsersModel<Types.ObjectId>>
 {
   @Prop({ type: TaskConfigSchema, required: true })
   @PropertyType(TaskConfig)
@@ -83,11 +85,11 @@ export class Task
     this.config.interval = interval;
   }
 
-  toModel(user?: User): TaskModel {
-    const model = new TaskModel(this);
+  toModel(user?: User): TaskModel<any> {
+    const model = new TaskModel<Types.ObjectId>(this);
     if (user) {
       model.done = this.getDoneBy(user)?.tid;
-      model.timer = this.getTimer(user);
+      model.timer = this.getTimer(user) as TimerModel;
     }
     return model;
   }
@@ -104,20 +106,20 @@ export class Task
     return this.isDoneByUser(uid);
   }
 
-  getTimer(uid: EntityIdentity<User>) {
+  getTimer(uid: EntityIdentity<User>): Timer | undefined {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
       return this.timers.length ? this.timers[0] : undefined;
     }
 
-    return this.timers?.find((t) => t.uid?.equals(assureObjectId(uid)));
+    return this.timers?.find((t) => t.uid?.equals(assureObjectId(uid))) || undefined;
   }
 
-  getDoneBy(uid: EntityIdentity<User>) {
+  getDoneBy(uid: EntityIdentity<User>): UserDone | undefined {
     if (this.config.userStrategy === UserAssignmentStrategy.Shared) {
-      return this.doneBy[0];
+      return this.doneBy?.[0] || undefined;
     }
 
-    return this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid)));
+    return this.doneBy?.find((d) => d.uid.equals(assureObjectId(uid))) || undefined;
   }
 
   setUndoneBy(uid: EntityIdentity<User>) {
@@ -152,7 +154,6 @@ export class Task
     const { title, text, score, interval, userStrategy } = createModel;
     return new Task(profile, owner, {
       content: new ContentDataType({ title, text }),
-      tagIds: profile.getTagIdsByName(createModel.tagNames),
       config: new TaskConfig({ score, interval, userStrategy }),
     });
   }

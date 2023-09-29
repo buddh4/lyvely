@@ -3,12 +3,11 @@ import { Milestone } from '../schemas';
 import {
   MilestoneModel,
   ENDPOINT_MILESTONE_PLAN,
-  CalendarPlanSort,
-  SortResponse,
-  MilestoneSearchResponse,
   MilestonePlanEndpoint,
-  CalendarPlanFilter,
-} from '@lyvely/common';
+  MilestoneSearchResponse,
+} from '@lyvely/milestones-interface';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { SortResponse } from '@lyvely/common';
 import { MilestonesService, MilestonesCalendarPlanService } from '../services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 import { ProfileRequest } from '@lyvely/profiles';

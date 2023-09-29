@@ -1,6 +1,12 @@
 import { SchemaFactory } from '@nestjs/mongoose';
 import { BaseModel } from '@lyvely/common';
-import { assureObjectId, EntityIdentity, NestedSchema, ObjectIdProp } from '@lyvely/core';
+import {
+  assureObjectId,
+  EntityIdentity,
+  NestedSchema,
+  ObjectIdArrayProp,
+  ObjectIdProp,
+} from '@lyvely/core';
 import { User } from '@lyvely/users';
 import { Types } from 'mongoose';
 
@@ -25,7 +31,7 @@ export class MultiUserSubscription extends UserSubscription {
   static typeName = 'users';
   type = MultiUserSubscription.typeName;
 
-  @ObjectIdProp()
+  @ObjectIdArrayProp()
   uids?: Types.ObjectId[];
 
   constructor(identities: EntityIdentity<User>[]) {

@@ -1,20 +1,20 @@
 import { TestingModule } from '@nestjs/testing';
-import { ProfileScore } from '@lyvely/profiles';
-import { TestDataUtils, createBasicTestingModule, getObjectId } from '@lyvely/testing';
+import { ProfileScore, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { getObjectId, buildTest } from '@lyvely/testing';
 import { ContentScore, ContentScoreSchema } from './index';
 import {
   ExtendedTestContentScore,
   ExtendedTestContentScoreDocument,
   ExtendedTestContentScoreSchema,
-} from '../test/test-content-score.schema';
+  contentTestPlugin,
+  TestContent,
+} from '../testing';
 import { Model } from 'mongoose';
-import { expect } from '@jest/globals';
-import { TestContent } from '../test/test-content.schema';
 import { toTimingId } from '@lyvely/dates';
 
 describe('ContentScore', () => {
   let testingModule: TestingModule;
-  let testDataUtils: TestDataUtils;
+  let testDataUtils: ProfileTestDataUtils;
   let ExtendedTestContentScoreModel: Model<ExtendedTestContentScoreDocument>;
 
   const TEST_KEY = 'ContentScore';
@@ -31,11 +31,14 @@ describe('ContentScore', () => {
   ];
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [], Models).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([contentTestPlugin, profilesTestPlugin])
+      .models(Models)
+      .compile();
     ExtendedTestContentScoreModel = testingModule.get<Model<ExtendedTestContentScoreDocument>>(
       'ExtendedTestContentScoreModel',
     );
-    testDataUtils = testingModule.get<TestDataUtils>(TestDataUtils);
+    testDataUtils = testingModule.get(ProfileTestDataUtils);
   });
 
   it('should be defined', () => {

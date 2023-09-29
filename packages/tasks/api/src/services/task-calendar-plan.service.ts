@@ -1,10 +1,10 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Task } from '../schemas';
 import { Profile } from '@lyvely/profiles';
-import { CalendarInterval, CalendarPlanFilter, getTimingIds } from '@lyvely/common';
+import { CalendarInterval, getTimingIds } from '@lyvely/dates';
+import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { User } from '@lyvely/users';
 import { TasksDao } from '../daos';
-import { SortableCalendarPlanService } from '@lyvely/calendar-plan';
 
 @Injectable()
 export class TaskCalendarPlanService extends SortableCalendarPlanService<Task> {

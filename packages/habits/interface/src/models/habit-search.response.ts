@@ -1,10 +1,10 @@
 import { Exclude, Type, Expose } from 'class-transformer';
-import { BaseModel } from '@lyvely/core';
+import { BaseModel } from '@lyvely/common';
 import {
   DataPointModel,
   ITimeSeriesCalendarPlanResponse,
   NumberDataPointModel,
-} from '@lyvely/time-series';
+} from '@lyvely/time-series-interface';
 import { HabitModel } from './habit.model';
 
 @Exclude()

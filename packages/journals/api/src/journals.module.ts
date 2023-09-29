@@ -4,12 +4,10 @@ import { ProfilesModule } from '@lyvely/profiles';
 import { ContentModule, getContentModelDefinition } from '@lyvely/content';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Journal, JournalSchema } from './schemas';
-import { DataPointValueType } from '@lyvely/common';
+import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-series';
 import { JournalDataPointDao, JournalsDao } from './daos';
-import { JournalTimeSeriesService, JournalDataPointService } from './services/';
+import { JournalTimeSeriesService, JournalDataPointService, JournalsService } from './services/';
 import { JournalsController } from './controllers';
-import { JournalsService } from '../services';
-import { getDataPointModelDefinition } from '@lyvely/time-series';
 
 @Module({
   controllers: [JournalsController],

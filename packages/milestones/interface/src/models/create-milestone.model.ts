@@ -9,7 +9,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
-import { CreateContentModel } from '@lyvely/content';
+import { CreateContentModel } from '@lyvely/content-interface';
 
 @Exclude()
 export class CreateMilestoneModel extends CreateContentModel<CreateMilestoneModel> {

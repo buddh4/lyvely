@@ -1,6 +1,6 @@
 import { ContentTypeService } from '@lyvely/content';
 import { Journal } from '../schemas';
-import { CreateJournalModel } from '@lyvely/common';
+import { CreateJournalModel } from '@lyvely/journals-interface';
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { JournalsDao } from '../daos';
 import { Profile } from '@lyvely/profiles';

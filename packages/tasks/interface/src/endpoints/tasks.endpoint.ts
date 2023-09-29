@@ -1,5 +1,6 @@
 import { Endpoint } from '@lyvely/common';
-import { CalendarDate, TimerModel } from '@lyvely/dates';
+import { CalendarDate } from '@lyvely/dates';
+import { TimerModel } from '@lyvely/timers-interface';
 import {
   UpdateTaskResponse,
   TaskModel,

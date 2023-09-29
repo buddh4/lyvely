@@ -1,8 +1,8 @@
 import { CalendarInterval } from '@lyvely/dates';
 import { TaskFilter } from './task-filter.model';
 import { TaskModel } from './task.model';
-import { sortTasks } from '@/tasks/models/task.sort';
-import { CalendarPlanStore } from '@/calendar-plan/models/calendar-plan.store';
+import { sortTasks } from './task.sort';
+import { CalendarPlanStore } from '@lyvely/calendar-plan-interface';
 
 export class TaskCalendarPlanStore extends CalendarPlanStore<TaskModel> {
   sort(models: TaskModel[]): TaskModel[] {

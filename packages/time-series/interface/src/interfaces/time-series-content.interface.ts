@@ -15,8 +15,8 @@ export interface ITimeSeriesSummary {
   window: ITimeSeriesSummaryWindowEntry[];
 }
 
-export interface ITimeSeriesContent<TDataPointConfig = IDataPointConfig> extends IContent {
-  config: ITimeSeriesContentConfig<TDataPointConfig>;
+export interface ITimeSeriesContent<TID = string, TDataPointConfig = IDataPointConfig>
+  extends IContent<TID, ITimeSeriesContentConfig<TDataPointConfig>> {
   timeSeriesSummary: ITimeSeriesSummary;
   get interval(): CalendarInterval;
   set interval(interval: CalendarInterval);

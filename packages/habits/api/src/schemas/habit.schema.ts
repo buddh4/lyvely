@@ -1,18 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '@lyvely/users';
-import {
-  CreateHabitModel,
-  DataPointInputType,
-  DataPointValueType,
-  HabitModel,
-  ITimeSeriesContentConfig,
-  PropertiesOf,
-  PropertyType,
-  UpdateHabitModel,
-} from '@lyvely/common';
+import { PropertiesOf, PropertyType } from '@lyvely/common';
+import { HabitModel, CreateHabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
 import { Profile } from '@lyvely/profiles';
 import { ContentDocument, ContentDataType } from '@lyvely/content';
 import {
+  DataPointInputType,
+  DataPointValueType,
+  ITimeSeriesContentConfig,
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
   useDataPointConfigHandler,
@@ -24,6 +19,7 @@ import {
   TimerDataPointConfig,
 } from '@lyvely/time-series';
 import { assureObjectId, NestedSchema } from '@lyvely/core';
+import { Types } from 'mongoose';
 
 export type HabitDocument = Habit & ContentDocument;
 
@@ -58,7 +54,7 @@ export const HabitConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(Ha
 @Schema()
 export class Habit
   extends TimeSeriesContent<Habit, HabitDataPointConfig>
-  implements PropertiesOf<HabitModel>
+  implements PropertiesOf<HabitModel<Types.ObjectId>>
 {
   @Prop({ type: HabitConfigSchema, required: true })
   @PropertyType(HabitConfig)
@@ -68,7 +64,7 @@ export class Habit
     const { title, text } = update;
     return new Habit(profile, owner, {
       content: new ContentDataType({ title, text }),
-      tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
+      tagIds: profile.getTagsByName(update.tagNames || []).map((tag) => assureObjectId(tag.id)),
       config: new HabitConfig(
         DataPointConfigFactory.initializeConfig(update.valueType, update.inputType, update),
         update.score,
@@ -89,8 +85,8 @@ export class Habit
     );
   }
 
-  toModel(): HabitModel {
-    return new HabitModel(this);
+  toModel(): HabitModel<any> {
+    return new HabitModel<any>(this);
   }
 
   applyUpdate(update: UpdateHabitModel) {

@@ -20,12 +20,13 @@ import {
 import { Profile, ProfileRequest, TagModel } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { validate } from 'class-validator';
+import { Types } from 'mongoose';
 
 export abstract class AbstractContentTypeController<
   TContent extends Content,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<TCreateModel> = Partial<TCreateModel>,
-  TModel extends ContentModel = ReturnType<TContent['toModel']>,
+  TModel extends ContentModel<any> = ReturnType<TContent['toModel']>,
 > implements ContentTypeEndpoint<TModel, TCreateModel, TUpdateModel>
 {
   // We need those models, since the validation pipeline can not determine the type of generic body types

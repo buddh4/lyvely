@@ -46,7 +46,7 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
   @Prop()
   someTestField: string;
 
-  toModel(user?: User): ContentModel<IContent<any, any>, any> {
+  toModel(user?: User): ContentModel<string, IContent<any, any>, any> {
     throw new Error('Method not implemented.');
   }
 }

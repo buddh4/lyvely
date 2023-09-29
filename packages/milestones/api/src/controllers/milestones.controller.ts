@@ -13,7 +13,7 @@ import {
   ENDPOINT_MILESTONES,
   MilestonesEndpoint,
   MilestoneListResponse,
-} from '@lyvely/common';
+} from '@lyvely/milestones-interface';
 import { MilestonesService, MilestonesCalendarPlanService } from '../services';
 import { Get, Inject, Request } from '@nestjs/common';
 import { Policies } from '@lyvely/policies';

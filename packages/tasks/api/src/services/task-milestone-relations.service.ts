@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Task } from '../schemas';
 import { OnEvent } from '@nestjs/event-emitter';
-import { MilestoneRelationEvent } from '@lyvely/milestones';
-import { MilestoneRelationModel } from '@lyvely/common';
+import { MilestoneRelationEvent, MilestoneRelationModel } from '@lyvely/milestones';
 
 @Injectable()
 export class TaskMilestoneRelationsService {

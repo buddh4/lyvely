@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { TagModel } from '@/tags';
+import { TagModel } from '@lyvely/profiles-interface';
 import { PropertyType } from '@lyvely/common';
 import { MilestoneModel } from './milestone.model';
 import { ContentUpdateResponse } from '@lyvely/content';

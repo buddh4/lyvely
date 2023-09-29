@@ -1,6 +1,5 @@
 import { TestingModule } from '@nestjs/testing';
 import { CaptchaService } from './captcha.service';
-import { expect } from '@jest/globals';
 import { CaptchaModule } from '../captcha.module';
 import { buildTest } from '@lyvely/testing';
 

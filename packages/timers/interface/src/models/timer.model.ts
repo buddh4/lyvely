@@ -1,6 +1,7 @@
 import { BaseModel, PropertyType, TransformObjectId } from '@lyvely/common';
 import { Expose, Type } from 'class-transformer';
 import { ValidateNested } from 'class-validator';
+
 function compareSpans(a: TimeSpanModel, b: TimeSpanModel) {
   if (a.from < b.from) return -1;
   if (a.from > b.from) return 1;
@@ -27,16 +28,16 @@ export class TimeSpanModel extends BaseModel<TimeSpanModel> {
 }
 
 @Expose()
-export class TimerModel extends BaseModel<TimerModel> {
+export class TimerModel<TID = string> extends BaseModel<TimerModel<TID>> {
   @TransformObjectId()
-  uid?: any;
+  uid?: TID;
 
   @Type(() => TimeSpanModel)
   @PropertyType([TimeSpanModel])
   @ValidateNested()
   spans: TimeSpanModel[];
 
-  start(uid?: any) {
+  start(uid?: TID) {
     if (this.isStarted()) return;
     const span = new TimeSpanModel(uid);
     this.spans.push(span);
@@ -49,7 +50,7 @@ export class TimerModel extends BaseModel<TimerModel> {
     span.to = Date.now();
   }
 
-  overwrite(newValue: number, uid?: any) {
+  overwrite(newValue: number, uid?: TID) {
     if (newValue === 0) {
       this.spans = [];
       return;
@@ -64,14 +65,12 @@ export class TimerModel extends BaseModel<TimerModel> {
           latestSpan.to! += diff;
         } else {
           const newSpan = this.start(uid);
-          if (newSpan) {
-            // Todo: This could be a problem when editing old dataPoints without any time spans
-            newSpan.from = Date.now() - diff; // This could be a problem when editing old dataPoints without spans
-            newSpan.to = newSpan.from + diff;
-          }
+          // Todo: This could be a problem when editing old dataPoints without any time spans
+          newSpan!.from = Date.now() - diff; // This could be a problem when editing old dataPoints without spans
+          newSpan!.to = newSpan!.from + diff;
         }
-      } else if (latestSpan) {
-        latestSpan.to = latestSpan.from + diff;
+      } else {
+        latestSpan!.to = latestSpan!.from + diff;
       }
     } else {
       let currentValue = 0;

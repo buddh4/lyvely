@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '@lyvely/common';
 import { IContent, ContentModel } from '@lyvely/content-interface';
-import { BaseEntity, ObjectIdProp } from '@lyvely/core';
+import { BaseEntity, ObjectIdArrayProp } from '@lyvely/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
@@ -20,10 +20,7 @@ function implementsGetModelConstructor(model: any): model is IGetModelConstructo
   return typeof (model as IGetModelConstructor).getModelConstructor === 'function';
 }
 
-export type ContentEntity<T, TConfig extends Object = any> = IContent<
-  mongoose.Types.ObjectId,
-  TConfig
-> &
+export type ContentEntity<T, TConfig extends Object = any> = IContent<Types.ObjectId, TConfig> &
   BaseEntity<T>;
 
 @Schema({ discriminatorKey: 'type' })
@@ -33,7 +30,7 @@ export class Content<
     TData extends ContentDataType = ContentDataType,
   >
   extends BaseProfileModel<T>
-  implements IContent<mongoose.Types.ObjectId, TConfig>
+  implements IContent<Types.ObjectId, TConfig>
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)
@@ -47,8 +44,8 @@ export class Content<
   @PropertyType([ContentLog])
   logs: ContentLog[];
 
-  @ObjectIdProp({ default: [] })
-  tagIds: mongoose.Types.ObjectId[];
+  @ObjectIdArrayProp({ default: [] })
+  tagIds: Types.ObjectId[];
 
   config: any;
 
@@ -106,7 +103,7 @@ export class Content<
     this.setAuthor(author);
   }
 
-  toModel(user?: User) {
+  toModel(user?: User): ContentModel<any> {
     const ModelConstructor: Type<ContentModel> = implementsGetModelConstructor(this)
       ? this.getModelConstructor()
       : ContentModel;
@@ -127,7 +124,7 @@ export abstract class ContentType<
   T extends ContentEntity<T, TConfig>,
   TConfig extends Object = any,
   TData extends ContentDataType = ContentDataType,
-  TModel extends ContentModel = ContentModel,
+  TModel extends ContentModel<any> = ContentModel<any>,
 > extends Content<T, TConfig, TData> {
   abstract toModel(user?: User): TModel;
 }

@@ -1,6 +1,6 @@
 import { Endpoint } from '@lyvely/common';
 import { MilestoneModel } from '../models';
-import { ICalendarPlanService } from '@lyvely/calendar-plan';
+import { ICalendarPlanService } from '@lyvely/calendar-plan-interface';
 
 export interface IMilestonePlanEndpointService extends ICalendarPlanService<MilestoneModel> {}
 

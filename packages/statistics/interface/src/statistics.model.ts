@@ -1,10 +1,4 @@
-import {
-  CalendarInterval,
-  getDayNames,
-  getLocalizedDays,
-  getLocalizedMonths,
-  getMonthNames,
-} from '@lyvely/dates';
+import { CalendarInterval, getLocalizedDays, getLocalizedMonths } from '@lyvely/dates';
 import { CalendarPlan } from '@lyvely/calendar-plan';
 
 abstract class Statistics {
@@ -23,9 +17,9 @@ export class ScoreStatistics extends Statistics {
 
   constructor(obj: Partial<ScoreStatistics>) {
     super();
-    this.title = obj.title;
-    this.data = obj.data;
-    this.interval = obj.interval;
+    this.title = obj.title || this.title;
+    this.data = obj.data || this.data;
+    this.interval = obj.interval || this.interval;
   }
 
   getChart() {

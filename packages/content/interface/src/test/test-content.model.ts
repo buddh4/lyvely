@@ -1,3 +1,3 @@
 import { ContentModel } from '../models';
 
-export class TestContent extends ContentModel<TestContent> {}
+export class TestContent<TID = string> extends ContentModel<TID, TestContent> {}

@@ -8,15 +8,18 @@ import {
   HabitsEndpoint,
   TimerUpdateModel,
   UpdateHabitModel,
-  NumberDataPointModel,
-  CalendarPlanFilter,
   HabitSearchResponse,
-  CalendarPlanSort,
-  SortResponse,
-  TimerDataPointModel,
   UpdateHabitDataPointTimerResponse,
-} from '@lyvely/common';
-import { HabitsService, HabitDataPointService, HabitTimeSeriesService } from '../services';
+  HabitModel,
+} from '@lyvely/habits-interface';
+import {
+  TimerDataPointModel,
+  NumberDataPointModel,
+  DataPointModelConverter,
+} from '@lyvely/time-series';
+import { SortResponse } from '@lyvely/common';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
+import { HabitsService, HabitTimeSeriesService, HabitDataPointTimerService } from '../services';
 import {
   ProfileContentRequest,
   ContentTypeController,
@@ -25,9 +28,7 @@ import {
 } from '@lyvely/content';
 import { Policies } from '@lyvely/policies';
 import { UseClassSerializer } from '@lyvely/core';
-import { DataPointModelConverter } from '@lyvely/time-series';
 import { ProfileRequest } from '@lyvely/profiles';
-import { HabitDataPointTimerService } from '../services/habit-data-point-timer.service';
 
 @ContentTypeController('habits', Habit)
 // TODO: implement feature registration @Feature('habits')
@@ -63,7 +64,7 @@ export class HabitsController
       filter,
     );
     return new HabitSearchResponse({
-      models: models.map((c) => c.toModel()),
+      models: models.map<HabitModel<any>>((c) => c.toModel()),
       dataPoints: dataPoints.map((value) =>
         DataPointModelConverter.toModel<NumberDataPointModel>(value),
       ),
@@ -102,7 +103,7 @@ export class HabitsController
 
     return new UpdateHabitDataPointResponse({
       score: profile.score,
-      model: content.toModel(),
+      model: content.toModel() as HabitModel<any>,
       dataPoint: DataPointModelConverter.toModel<NumberDataPointModel>(dataPoint),
     });
   }

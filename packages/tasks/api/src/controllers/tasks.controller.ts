@@ -16,14 +16,12 @@ import {
   UpdateTaskModel,
   UpdateTaskResponse,
   TasksEndpoint,
-  CreateTaskModel,
-  TimerValueUpdateModel,
-  TimerModel,
-  CalendarPlanFilter,
-  CalendarPlanSort,
-  SortResponse,
   TaskSearchResponse,
-} from '@lyvely/common';
+  CreateTaskModel,
+} from '@lyvely/tasks-interface';
+import { TimerModel, TimerValueUpdateModel } from '@lyvely/timers';
+import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
+import { SortResponse } from '@lyvely/common';
 import { TasksService, TaskCalendarPlanService } from '../services';
 import {
   AbstractContentTypeController,
@@ -100,20 +98,20 @@ export class TasksController
 
   @Post(':cid/start-timer')
   @Policies(ContentWritePolicy)
-  async startTimer(@Request() req: ProfileContentRequest<Task>) {
+  async startTimer(@Request() req: ProfileContentRequest<Task>): Promise<TimerModel> {
     const { profile, user, content } = req;
 
     const timer = await this.contentService.startTimer(profile, user, content);
-    return new TimerModel(timer);
+    return new TimerModel<any>(timer);
   }
 
   @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
-  async stopTimer(@Request() req: ProfileContentRequest<Task>) {
+  async stopTimer(@Request() req: ProfileContentRequest<Task>): Promise<TimerModel> {
     const { profile, user, content } = req;
 
     const timer = await this.contentService.stopTimer(profile, user, content);
-    return new TimerModel(timer);
+    return new TimerModel<any>(timer);
   }
 
   @Post(':cid/update-timer')
@@ -125,6 +123,6 @@ export class TasksController
     const { profile, user, content } = req;
 
     const timer = await this.contentService.updateTimerValue(profile, user, content, dto.value);
-    return new TimerModel(timer);
+    return new TimerModel<any>(timer);
   }
 }

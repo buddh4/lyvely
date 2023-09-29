@@ -5,25 +5,26 @@ import {
   ContentWritePolicy,
   ProfileContentRequest,
 } from '@lyvely/content';
+import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import {
-  CalendarPlanFilter,
   ENDPOINT_JOURNALS,
   JournalsEndpoint,
-  CalendarPlanSort,
-  SortResponse,
   JournalSearchResponse,
-  UpdateDataPointModel,
-  UpdateDataPointResponse,
-  CreateJournalModel,
   UpdateJournalResponse,
   UpdateJournalModel,
-} from '@lyvely/common';
+  CreateJournalModel,
+} from '@lyvely/journals-interface';
+import {
+  UpdateDataPointModel,
+  UpdateDataPointResponse,
+  DataPointModelConverter,
+} from '@lyvely/time-series';
+import { SortResponse } from '@lyvely/common';
 import { UseClassSerializer } from '@lyvely/core';
 import { JournalTimeSeriesService, JournalDataPointService, JournalsService } from '../services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 import { Policies } from '@lyvely/policies';
 import { Journal } from '../schemas';
-import { DataPointModelConverter } from '@lyvely/time-series';
 
 @ContentTypeController(ENDPOINT_JOURNALS, Journal)
 @UseClassSerializer()

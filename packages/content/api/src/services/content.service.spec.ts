@@ -1,18 +1,17 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createContentTestingModule } from '@lyvely/testing';
+import { buildTest } from '@lyvely/testing';
 import { Content, ContentSchema } from '../schemas';
-import { TestContent, TestContentDocument, TestContentSchema } from '../test/test-content.schema';
+import { TestContent, TestContentDocument, TestContentSchema, contentTestPlugin } from '../testing';
 import { Model } from 'mongoose';
 import { User } from '@lyvely/users';
-import { Profile } from '@lyvely/profiles';
-import { ContentService } from '@lyvely/content';
+import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { ContentService } from './content.service';
 
 describe('content dao', () => {
   let testingModule: TestingModule;
   let contentService: ContentService;
   let testContentModel: Model<TestContentDocument>;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'content_service';
 
@@ -26,10 +25,13 @@ describe('content dao', () => {
   ];
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [], ContentModel).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([contentTestPlugin, profilesTestPlugin])
+      .models(ContentModel)
+      .compile();
     contentService = testingModule.get(ContentService);
     testContentModel = testingModule.get<Model<TestContentDocument>>('TestContentModel');
-    testData = testingModule.get(TestDataUtils);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   async function createTestContent(user: User, profile: Profile, archived = false) {
@@ -54,9 +56,9 @@ describe('content dao', () => {
       await contentService.archive(owner, content);
       expect(content.meta.archived).toEqual(true);
       const persisted = await contentService.findContentByProfileAndId(profile, content);
-      expect(persisted.meta.archived).toEqual(true);
-      expect(persisted.meta.updatedAt).not.toEqual(updatedAt);
-      expect(persisted.meta.updatedBy).toEqual(owner._id);
+      expect(persisted?.meta.archived).toEqual(true);
+      expect(persisted?.meta.updatedAt).not.toEqual(updatedAt);
+      expect(persisted?.meta.updatedBy).toEqual(owner._id);
     });
   });
 
@@ -69,9 +71,9 @@ describe('content dao', () => {
       await contentService.unarchive(owner, content);
       expect(content.meta.archived).toEqual(false);
       const persisted = await contentService.findContentByProfileAndId(profile, content);
-      expect(persisted.meta.archived).toEqual(false);
-      expect(persisted.meta.updatedAt).not.toEqual(updatedAt);
-      expect(persisted.meta.updatedBy).toEqual(owner._id);
+      expect(persisted?.meta.archived).toEqual(false);
+      expect(persisted?.meta.updatedAt).not.toEqual(updatedAt);
+      expect(persisted?.meta.updatedBy).toEqual(owner._id);
     });
   });
 });

@@ -5,8 +5,7 @@ import {
   DataPointValueType,
   INumberDataPointSettings,
   ITimerDataPointSettings,
-} from '@lyvely/time-series';
-import { UserAssignmentStrategy } from '@lyvely/collab';
+} from '@lyvely/time-series-interface';
 import {
   IsArray,
   IsEnum,
@@ -19,8 +18,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { BaseModel } from '@lyvely/core';
-import { Gte, Lte } from '@lyvely/common';
+import { BaseModel, Gte, Lte, UserAssignmentStrategy } from '@lyvely/common';
 
 @Expose()
 export class CreateHabitModel

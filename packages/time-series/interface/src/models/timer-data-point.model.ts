@@ -10,12 +10,14 @@ import { BaseModel, PropertyType } from '@lyvely/common';
 import { TimerModel } from '@lyvely/timers-interface';
 import { IsNumber, Min, ValidateNested } from 'class-validator';
 
-export class TimerDataPointValueModel extends BaseModel<TimerDataPointValueModel> {
+export class TimerDataPointValueModel<TID = string> extends BaseModel<
+  TimerDataPointValueModel<TID>
+> {
   @Expose()
   @Type(() => TimerModel)
   @PropertyType(TimerModel)
   @ValidateNested()
-  timer: TimerModel;
+  timer: TimerModel<TID>;
 
   @Expose()
   @IsNumber()
@@ -24,14 +26,14 @@ export class TimerDataPointValueModel extends BaseModel<TimerDataPointValueModel
   ms: number;
 }
 
-export class TimerDataPointModel
-  extends DataPointModel<TimerDataPointModel>
+export class TimerDataPointModel<TID = string>
+  extends DataPointModel<TID, TimerDataPointModel<TID>>
   implements NumericDataPointInterface
 {
   @Expose()
   @Type(() => TimerDataPointValueModel)
   @PropertyType(TimerDataPointValueModel)
-  value: TimerDataPointValueModel;
+  value: TimerDataPointValueModel<TID>;
 
   get numericValue() {
     return this.value.ms;

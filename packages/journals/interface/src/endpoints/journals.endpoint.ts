@@ -4,13 +4,12 @@ import {
   UpdateJournalModel,
   UpdateJournalResponse,
 } from '../models';
-import { Endpoint } from '@lyvely/common';
+import { Endpoint, IEditModelService } from '@lyvely/common';
 import {
   UpdateDataPointModel,
   UpdateDataPointResponse,
   ITimeSeriesCalendarPlanService,
-} from '@/time-series';
-import { IEditModelService } from '@lyvely/common';
+} from '@lyvely/time-series-interface';
 
 export interface IJournalsEndpointService
   extends ITimeSeriesCalendarPlanService<JournalModel>,

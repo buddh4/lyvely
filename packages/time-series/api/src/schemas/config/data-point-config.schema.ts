@@ -4,14 +4,11 @@ import {
   DataPointInputType,
   DataPointValueType,
   IDataPointConfigRevision,
+  IDataPointSettings,
 } from '@lyvely/time-series-interface';
 import { getStringEnumValues, getNumberEnumValues, UserAssignmentStrategy } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { isEqual } from 'lodash';
-
-export interface IDataPointSettings {
-  interval: CalendarInterval;
-}
 
 export abstract class DataPointConfig<
   TSettings extends IDataPointSettings = IDataPointSettings,

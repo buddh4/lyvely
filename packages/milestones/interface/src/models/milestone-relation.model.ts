@@ -1,21 +1,20 @@
-import { TransformObjectId } from '@lyvely/common';
+import { TransformObjectId, BaseModel } from '@lyvely/common';
 import { Exclude, Expose } from 'class-transformer';
-import { BaseModel } from '@lyvely/common';
 import type { IContent } from '@lyvely/content';
 
 @Exclude()
-export class MilestoneRelationModel extends BaseModel<MilestoneRelationModel> {
+export class MilestoneRelationModel<TID = string> extends BaseModel<MilestoneRelationModel<any>> {
   @Expose()
   @TransformObjectId()
-  pid: TObjectId;
+  pid: TID;
 
   @Expose()
   @TransformObjectId()
-  cid: TObjectId;
+  cid: TID;
 
   @Expose()
   @TransformObjectId()
-  mid: TObjectId;
+  mid: TID;
 
   @Expose()
   title: string;
@@ -32,7 +31,7 @@ export class MilestoneRelationModel extends BaseModel<MilestoneRelationModel> {
   @Expose()
   progress?: number;
 
-  constructor(content: IContent, progress?: { progress: number; tid?: string } | number) {
+  constructor(content: IContent<any>, progress?: { progress: number; tid?: string } | number) {
     super({
       pid: content.pid,
       cid: content.id,

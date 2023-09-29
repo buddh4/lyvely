@@ -1,6 +1,6 @@
 import { TestingModule } from '@nestjs/testing';
-import { ProfileScore } from '@lyvely/profiles';
-import { createBasicTestingModule, getObjectId, TestDataUtils } from '@lyvely/test';
+import { ProfileScore, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { buildTest, getObjectId } from '@lyvely/testing';
 import { ContentScore, ContentScoreSchema } from '../schemas';
 import {
   ExtendedTestContentScore,
@@ -9,18 +9,17 @@ import {
   TestContentScore,
   TestContentScoreDocument,
   TestContentScoreSchema,
-} from '../test/test-content-score.schema';
+  TestContent,
+} from '../testing';
 import { Model } from 'mongoose';
-import { expect } from '@jest/globals';
 import { ContentScoreService } from './index';
 import { ContentScoreDao } from '../daos';
 import { toTimingId } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/common';
-import { TestContent } from '../test/test-content.schema';
 
 describe('ContentScoreService', () => {
-  let testingApp: TestingModule;
-  let testDataUtils: TestDataUtils;
+  let testingModule: TestingModule;
+  let testDataUtils: ProfileTestDataUtils;
   let TestContentScoreModel: Model<TestContentScoreDocument>;
   let ExtendedTestContentScoreModel: Model<ExtendedTestContentScoreDocument>;
   let contentScoreService: ContentScoreService;
@@ -40,16 +39,16 @@ describe('ContentScoreService', () => {
   ];
 
   beforeEach(async () => {
-    testingApp = await createBasicTestingModule(
-      TEST_KEY,
-      [ContentScoreService, ContentScoreDao],
-      Models,
-    ).compile();
-    contentScoreService = testingApp.get<ContentScoreService>(ContentScoreService);
-    testDataUtils = testingApp.get<TestDataUtils>(TestDataUtils);
+    testingModule = await buildTest(TEST_KEY)
+      .providers([ContentScoreService, ContentScoreDao])
+      .plugins([profilesTestPlugin])
+      .models(Models)
+      .compile();
+    contentScoreService = testingModule.get<ContentScoreService>(ContentScoreService);
+    testDataUtils = testingModule.get(ProfileTestDataUtils);
     TestContentScoreModel =
-      testingApp.get<Model<TestContentScoreDocument>>('TestContentScoreModel');
-    ExtendedTestContentScoreModel = testingApp.get<Model<ExtendedTestContentScoreDocument>>(
+      testingModule.get<Model<TestContentScoreDocument>>('TestContentScoreModel');
+    ExtendedTestContentScoreModel = testingModule.get<Model<ExtendedTestContentScoreDocument>>(
       'ExtendedTestContentScoreModel',
     );
   });
@@ -155,12 +154,12 @@ describe('ContentScoreService', () => {
         );
 
         expect(ownerScore._id).toBeDefined();
-        expect(ownerScore.uid).toBeNull();
+        expect(ownerScore.uid).toBeUndefined();
         expect(ownerScore.score).toEqual(5);
 
         expect(memberScore._id).toBeDefined();
         expect(memberScore._id).not.toEqual(ownerScore._id);
-        expect(memberScore.uid).toBeNull();
+        expect(memberScore.uid).toBeUndefined();
         expect(memberScore.score).toEqual(-2);
 
         expect(profile.score).toEqual(3);

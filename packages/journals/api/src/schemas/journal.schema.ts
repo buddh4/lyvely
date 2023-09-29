@@ -12,20 +12,17 @@ import {
   RadioSelectionDataPointConfig,
   DropdownSelectionDataPointConfig,
   useDataPointConfigHandler,
-} from '@lyvely/time-series';
-import {
-  CreateJournalModel,
   DataPointInputType,
   DataPointValueType,
   ITimeSeriesContentConfig,
-  JournalModel,
-  PropertiesOf,
-  UpdateJournalModel,
-} from '@lyvely/common';
+} from '@lyvely/time-series';
+import { CreateJournalModel, JournalModel, UpdateJournalModel } from '@lyvely/journals-interface';
 import { User } from '@lyvely/users';
+import { PropertiesOf } from '@lyvely/common';
 import { assureObjectId, NestedSchema } from '@lyvely/core';
 import { Profile } from '@lyvely/profiles';
 import { ContentDataType } from '@lyvely/content';
+import { Types } from 'mongoose';
 
 type JournalDataPointConfig =
   | TextareaTextDataPointConfig
@@ -62,18 +59,18 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
 @Schema()
 export class Journal
   extends TimeSeriesContent<Journal, JournalDataPointConfig>
-  implements PropertiesOf<JournalModel>
+  implements PropertiesOf<JournalModel<Types.ObjectId>>
 {
   @Prop({ type: JournalConfigSchema, required: true })
   config: JournalConfig;
 
-  public static create(profile: Profile, owner: User, update: PropertiesOf<CreateJournalModel>) {
-    const { title, text } = update;
+  public static create(profile: Profile, owner: User, model: PropertiesOf<CreateJournalModel>) {
+    const { title, text } = model;
     return new Journal(profile, owner, {
       content: new ContentDataType({ title, text }),
-      tagIds: profile.getTagsByName(update.tagNames).map((tag) => assureObjectId(tag.id)),
+      tagIds: profile.getTagsByName(model.tagNames || []).map((tag) => assureObjectId(tag.id)),
       config: new JournalConfig(
-        DataPointConfigFactory.initializeConfig(update.valueType, update.inputType, update),
+        DataPointConfigFactory.initializeConfig(model.valueType, model.inputType, model),
       ),
     });
   }
@@ -87,7 +84,7 @@ export class Journal
     return this;
   }
 
-  toModel(user?: User): JournalModel {
+  toModel(user?: User): JournalModel<any> {
     return new JournalModel(this);
   }
 }

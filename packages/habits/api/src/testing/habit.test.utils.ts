@@ -1,41 +1,23 @@
 import { Injectable, Provider } from '@nestjs/common';
 import { User } from '@lyvely/users';
-import { Profile, ProfileScore } from '@lyvely/profiles';
+import { Profile, ProfileTestDataUtils } from '@lyvely/profiles';
 import { Habit, HabitDocument, HabitSchema, HabitScore, HabitScoreSchema } from '../schemas';
+import { toTimingId, CalendarDate, CalendarInterval, toDate } from '@lyvely/dates';
+import { CreateHabitModel } from '@lyvely/habits-interface';
 import {
-  toTimingId,
-  CalendarDate,
-  CalendarInterval,
-  CreateHabitModel,
-  toDate,
   DataPointValueType,
   DataPointInputType,
-} from '@lyvely/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import {
-  Content,
-  ContentScore,
-  ContentScoreSchema,
-  getContentModelDefinition,
-  getContentScoreDefinition,
-} from '@lyvely/content';
-import { TestingModuleBuilder } from '@nestjs/testing/testing-module.builder';
-import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Type } from '@nestjs/common/interfaces/type.interface';
-import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
-import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
-import { createContentTestingModule, TestDataUtils } from '@lyvely/testing';
-import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@lyvely/core';
-import {
   DataPoint,
   getDataPointModelDefinition,
   NumberDataPoint,
   InjectDataPointModel,
 } from '@lyvely/time-series';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@lyvely/core';
 
 @Injectable()
-export class HabitTestDataUtil extends TestDataUtils {
+export class HabitTestDataUtil extends ProfileTestDataUtils {
   @InjectModel(Habit.name)
   protected HabitModel: Model<HabitDocument>;
 
@@ -67,10 +49,11 @@ export class HabitTestDataUtil extends TestDataUtils {
   }
 
   async findHabitById(id: EntityIdentity<Habit>) {
-    return createBaseEntityInstance(
-      Habit,
-      await this.HabitModel.findById(assureObjectId(id)).lean(),
-    );
+    const model = await this.HabitModel.findById(assureObjectId(id)).lean();
+
+    if (!model) return null;
+
+    return createBaseEntityInstance(Habit, model);
   }
 
   async createDataPoint(
@@ -113,19 +96,4 @@ export class HabitTestDataUtil extends TestDataUtils {
   async delete() {
     await this.HabitDataPointModel.deleteMany({});
   }
-}
-
-export function createHabitTestingModule(
-  key: string,
-  providers: Provider[] = [],
-  models: ModelDefinition[] = [],
-  modules: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
-): TestingModuleBuilder {
-  providers.push(HabitTestDataUtil);
-  models.push(
-    getContentModelDefinition([{ name: Habit.name, schema: HabitSchema }]),
-    getDataPointModelDefinition(Habit.name, [DataPointValueType.Number, DataPointValueType.Timer]),
-    getContentScoreDefinition([{ name: HabitScore.name, schema: HabitScoreSchema }]),
-  );
-  return createContentTestingModule(key, providers, models, modules);
 }

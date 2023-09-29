@@ -1,2 +1,1 @@
-export * from './timer.model';
-export * from './timing.interface';
+export * from './models';

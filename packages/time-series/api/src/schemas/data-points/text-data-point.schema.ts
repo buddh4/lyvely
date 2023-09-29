@@ -3,11 +3,12 @@ import { DataPoint } from './data-point.schema';
 import { PropertiesOf } from '@lyvely/common';
 import { DataPointValueType, TextDataPointModel } from '@lyvely/time-series-interface';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
+import { Types } from 'mongoose';
 
 @Schema()
 export class TextDataPoint
   extends DataPoint<TextDataPoint>
-  implements PropertiesOf<TextDataPointModel>
+  implements PropertiesOf<TextDataPointModel<Types.ObjectId>>
 {
   @Prop({ required: true })
   value: string;

@@ -1,21 +1,15 @@
-import { Injectable, Provider } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from '@lyvely/users';
-import { Profile } from '@lyvely/profiles';
-import { toTimingId, CalendarInterval, CreateTaskModel } from '@lyvely/common';
+import { Profile, ProfileTestDataUtils } from '@lyvely/profiles';
+import { CreateTaskModel } from '@lyvely/tasks-interface';
+import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { getContentModelDefinition, getContentScoreDefinition } from '@lyvely/content';
-import { TestingModuleBuilder } from '@nestjs/testing/testing-module.builder';
-import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Type } from '@nestjs/common/interfaces/type.interface';
-import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
-import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
-import { createContentTestingModule, TestDataUtils } from '@lyvely/testing';
 import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@lyvely/core';
-import { Task, TaskSchema, TaskScore, TaskScoreSchema } from '../schemas';
+import { Task } from '../schemas';
 
 @Injectable()
-export class TaskTestDataUtil extends TestDataUtils {
+export class TaskTestDataUtil extends ProfileTestDataUtils {
   @InjectModel(Task.name)
   protected TaskModel: Model<Task>;
 
@@ -43,8 +37,10 @@ export class TaskTestDataUtil extends TestDataUtils {
     return toTimingId(TaskTestDataUtil.getDateYesterday());
   }
 
-  async findTaskById(id: EntityIdentity<Task>): Promise<Task> {
-    return createBaseEntityInstance(Task, await this.TaskModel.findById(assureObjectId(id)).lean());
+  async findTaskById(id: EntityIdentity<Task>): Promise<Task | null> {
+    const raw = await this.TaskModel.findById(assureObjectId(id)).lean();
+    if (!raw) return null;
+    return createBaseEntityInstance(Task, raw);
   }
 
   async createTask(
@@ -67,18 +63,4 @@ export class TaskTestDataUtil extends TestDataUtils {
 
     return createBaseEntityInstance(Task, task.toObject());
   }
-}
-
-export function createTaskTestingModule(
-  key: string,
-  providers: Provider[] = [],
-  models: ModelDefinition[] = [],
-  modules: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
-): TestingModuleBuilder {
-  providers.push(TaskTestDataUtil);
-  models.push(
-    getContentModelDefinition([{ name: Task.name, schema: TaskSchema }]),
-    getContentScoreDefinition([{ name: TaskScore.name, schema: TaskScoreSchema }]),
-  );
-  return createContentTestingModule(key, providers, models, modules);
 }

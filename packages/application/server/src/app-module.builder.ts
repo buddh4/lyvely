@@ -202,9 +202,9 @@ export class AppModuleBuilder {
           delete options.transactions;
           delete options.debug;
 
-          options.autoIndex ||= true;
-          options.useNewUrlParser ||= true;
-          options.useUnifiedTopology ||= true;
+          options.autoIndex ??= true;
+          options.useNewUrlParser ??= true;
+          options.useUnifiedTopology ??= true;
 
           return options;
         },

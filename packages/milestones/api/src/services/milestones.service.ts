@@ -1,6 +1,6 @@
 import { ContentDataType, ContentService, ContentTypeService } from '@lyvely/content';
 import { Milestone, MilestoneConfig } from '../schemas';
-import { CreateMilestoneModel, UpdateMilestoneModel } from '@lyvely/common';
+import { CreateMilestoneModel, UpdateMilestoneModel } from '@lyvely/milestones-interface';
 import { Inject, Logger } from '@nestjs/common';
 import { MilestonesDao } from '../daos';
 import { Profile } from '@lyvely/profiles';
@@ -28,7 +28,6 @@ export class MilestonesService extends ContentTypeService<
     const { title, text, interval } = model;
     const instance = new Milestone(profile, user, {
       content: new ContentDataType({ title, text }),
-      tagIds: profile.getTagIdsByName(model.tagNames),
       config: new MilestoneConfig({ interval }),
     });
     instance.meta.sortOrder = await this.contentDao.getNextSortOrder(profile);

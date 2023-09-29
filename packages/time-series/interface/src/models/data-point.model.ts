@@ -1,21 +1,20 @@
 import { CalendarInterval } from '@lyvely/dates';
-import { DocumentModel } from '@lyvely/common';
+import { DocumentModel, TransformObjectId } from '@lyvely/common';
 import { Exclude, Expose } from 'class-transformer';
-import { TransformObjectId } from '@lyvely/common';
 import { IDataPoint } from '../interfaces';
 
 @Exclude()
-export class DataPointModel<E extends DataPointModel = any>
-  extends DocumentModel<E>
+export class DataPointModel<TID = string, T extends DataPointModel<TID> = any>
+  extends DocumentModel<T>
   implements IDataPoint
 {
   @Expose()
   @TransformObjectId()
-  cid: any;
+  cid: TID;
 
   @Expose()
   @TransformObjectId()
-  uid?: any;
+  uid?: TID | null;
 
   @Expose()
   date: Date;

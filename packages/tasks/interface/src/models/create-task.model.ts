@@ -12,8 +12,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@/collab';
-import { DataPointInputType } from '@/time-series';
+import { UserAssignmentStrategy } from '@lyvely/common';
 import { CreateContentModel } from '@lyvely/content';
 
 @Exclude()
@@ -56,7 +55,6 @@ export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {
           {
             interval: CalendarInterval.Daily,
             score: 2,
-            inputType: DataPointInputType.Checkbox,
             userStrategy: UserAssignmentStrategy.Shared,
             tagNames: [],
           },

@@ -1,10 +1,10 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Habit } from '../schemas';
 import { ContentTypeService } from '@lyvely/content';
-import { HabitsDao } from '../daos/habits.dao';
+import { HabitsDao } from '../daos';
 import { Profile } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
-import { CreateHabitModel, UpdateHabitModel } from '@lyvely/common';
+import { CreateHabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
 
 @Injectable()
 export class HabitsService extends ContentTypeService<Habit, CreateHabitModel> {

@@ -1,76 +1,7 @@
-=== habits [] ===
-@nestjs/common';
-@nestjs/common/interfaces/modules/dynamic-module.interface';
-@nestjs/common/interfaces/modules/forward-reference.interface';
-@nestjs/common/interfaces/type.interface';
-@nestjs/mongoose';
-@nestjs/mongoose/dist/interfaces';
-@nestjs/testing';
-@nestjs/testing/testing-module.builder';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/policies';
-@lyvely/policies/policies.module';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/time-series';
-@lyvely/users';
-
-=== journals [] ===
-@nestjs/common';
-@nestjs/mongoose';
-@nestjs/testing';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/policies';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/time-series';
-@lyvely/users';
-
-=== registration [] ===
-@nestjs/common';
-@nestjs/config';
-@nestjs/testing';
-@lyvely/auth';
-@lyvely/common';
-@lyvely/core';
-@lyvely/invitations';
-@lyvely/jwt';
-@lyvely/mails';
-@lyvely/otp';
-@lyvely/profiles';
-@lyvely/system-messages';
-@lyvely/testing';
-@lyvely/users';
-
 === statistics [] ===
 @nestjs/common';
 @lyvely/common';
 @lyvely/testing';
-
-=== tasks [] ===
-@nestjs/common';
-@nestjs/common/interfaces/modules/dynamic-module.interface';
-@nestjs/common/interfaces/modules/forward-reference.interface';
-@nestjs/common/interfaces/type.interface';
-@nestjs/event-emitter';
-@nestjs/mongoose';
-@nestjs/mongoose/dist/interfaces';
-@nestjs/testing';
-@nestjs/testing/testing-module.builder';
-@lyvely/calendar';
-@lyvely/calendar-plan';
-@lyvely/common';
-@lyvely/content';
-@lyvely/core';
-@lyvely/milestones';
-@lyvely/policies';
-@lyvely/profiles';
-@lyvely/testing';
-@lyvely/users';
 
 === ui [] ===
 @lyvely/common';

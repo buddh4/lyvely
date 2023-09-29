@@ -74,9 +74,14 @@ export abstract class ContentTypeService<
 
   async createContent(profile: Profile, user: User, model: TCreateModel): Promise<T> {
     const instance = await this.createInstance(profile, user, model);
-    const parent = await this.handleSubContentCreation(profile, user, instance, model);
-    await this.mergeTags(profile, instance, model.tagNames);
+
+    // This needs to be the first step since we throw an exception in case the parent does not exist
+    const parent = await this.handleSubContentCreation(profile, instance, model);
+
+    instance.tagIds = profile.getTagIdsByName(model.tagNames || []);
     instance.meta.createdBy = assureObjectId(user);
+
+    await this.mergeTags(profile, instance, model.tagNames);
     const result = await this.contentDao.save(instance);
 
     if (parent) {
@@ -148,13 +153,9 @@ export abstract class ContentTypeService<
     }
   }
 
-  private async handleSubContentCreation(
-    profile: Profile,
-    user: User,
-    instance: T,
-    model: TCreateModel,
-  ) {
+  private async handleSubContentCreation(profile: Profile, instance: T, model: TCreateModel) {
     if (!model.parentId) return;
+
     const parent = await this.baseContentDao.findByProfileAndId(profile, model.parentId);
     if (!parent) throw new EntityNotFoundException();
     if (!parent.pid.equals(profile._id)) throw new EntityNotFoundException();

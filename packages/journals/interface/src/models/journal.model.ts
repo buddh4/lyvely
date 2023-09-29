@@ -7,10 +7,9 @@ import {
   ITextDataPointConfig,
   TimeSeriesContentModel,
   useDataPointStrategyFacade,
-} from '@/time-series';
+} from '@lyvely/time-series-interface';
 import { CalendarInterval } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@/collab';
-import { IEditableModel } from '@lyvely/common';
+import { UserAssignmentStrategy, IEditableModel } from '@lyvely/common';
 import { UpdateJournalModel } from './update-journal.model';
 
 export interface IJournalConfig {
@@ -18,8 +17,8 @@ export interface IJournalConfig {
 }
 
 @Expose()
-export class JournalModel
-  extends TimeSeriesContentModel<JournalModel, IJournalConfig>
+export class JournalModel<TID = string>
+  extends TimeSeriesContentModel<TID, JournalModel<TID>, IJournalConfig>
   implements IEditableModel<UpdateJournalModel>
 {
   static contentType = 'Journal';

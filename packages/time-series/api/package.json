@@ -13,7 +13,7 @@
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "prerelease": "npm run build",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
@@ -28,8 +28,9 @@
     "@lyvely/timers": "^0.1.0-alpha3",
     "@lyvely/calendar-plan": "^0.1.0-alpha3",
     "@lyvely/time-series-interface": "^0.1.0-alpha3",
+    "@lyvely/content": "^0.1.0-alpha3",
     "reflect-metadata": "0.1.13",
-    "@lyvely/content": "^0.1.0-alpha3"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@lyvely/testing": "^0.1.0-alpha3",

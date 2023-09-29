@@ -2,16 +2,23 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from '@lyvely/users';
 import { HabitsController } from './controllers';
-import { HabitDataPointService, HabitsService, HabitTimeSeriesService } from './services';
-import { ContentModule, getContentModelDefinition, getContentScoreDefinition } from '@lyvely/content';
+import {
+  HabitDataPointService,
+  HabitsService,
+  HabitTimeSeriesService,
+  HabitDataPointTimerService,
+} from './services';
+import {
+  ContentModule,
+  getContentModelDefinition,
+  getContentScoreDefinition,
+} from '@lyvely/content';
 import { ProfilesModule } from '@lyvely/profiles';
-import { PoliciesModule } from '@lyvely/policies/policies.module';
+import { PoliciesModule } from '@lyvely/policies';
 import { HabitDataPointDao, HabitsDao } from './daos';
 import { CoreModule } from '@lyvely/core';
-import { getDataPointModelDefinition } from '@lyvely/time-series';
+import { getDataPointModelDefinition, DataPointValueType } from '@lyvely/time-series';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from './schemas';
-import { DataPointValueType } from '@lyvely/common';
-import { HabitDataPointTimerService } from '../services';
 
 @Module({
   imports: [

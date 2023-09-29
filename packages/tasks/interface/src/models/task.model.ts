@@ -1,15 +1,16 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IEditableModel, PropertyType, TransformTo } from '@lyvely/common';
-import { CalendarInterval, TimerModel } from '@lyvely/dates';
+import { CalendarInterval } from '@lyvely/dates';
+import { TimerModel } from '@lyvely/timers-interface';
 import { UpdateTaskModel } from './update-task.model';
-import { ITaskConfig } from '@/tasks/interfaces/task-config.interface';
+import { ITaskConfig } from '../interfaces';
 import { ContentModel } from '@lyvely/content';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
 
 @Exclude()
-export class TaskModel
-  extends ContentModel<TaskModel, ITaskConfig>
-  implements IEditableModel<UpdateTaskModel>, ICalendarPlanEntry
+export class TaskModel<TID = string>
+  extends ContentModel<TID, TaskModel<TID>, ITaskConfig>
+  implements IEditableModel<UpdateTaskModel>, ICalendarPlanEntry<TID>
 {
   static contentType = 'Task';
 
@@ -44,23 +45,27 @@ export class TaskModel
 }
 
 @Expose()
-export class UserDoneModel {
-  uid: any;
+export class UserDoneModel<TID = string> {
+  uid: TID;
   tid: string;
   date: Date;
 }
 
 @Exclude()
-export class TaskWithUsersModel extends ContentModel<TaskWithUsersModel, ITaskConfig> {
+export class TaskWithUsersModel<TID = string> extends ContentModel<
+  TID,
+  TaskWithUsersModel<TID>,
+  ITaskConfig
+> {
   @Expose()
   @TransformTo(UserDoneModel)
   @PropertyType([UserDoneModel])
-  doneBy?: UserDoneModel[];
+  doneBy?: UserDoneModel<TID>[];
 
   @Expose()
   @TransformTo(TaskModel)
   @PropertyType([TaskModel])
-  timers?: TimerModel[];
+  timers?: TimerModel<TID>[];
 
   @Expose()
   type = TaskModel.contentType;

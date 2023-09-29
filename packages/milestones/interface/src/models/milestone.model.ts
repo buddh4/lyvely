@@ -5,13 +5,11 @@ import { UpdateMilestoneModel } from './update-milestone.model';
 import { IMilestoneConfig } from '../interfaces';
 import { ContentModel } from '@lyvely/content';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
-import { DataPointInputType, DataPointValueType } from '@/time-series';
-import { UserAssignmentStrategy } from '@/collab';
 
 @Exclude()
-export class MilestoneModel
-  extends ContentModel<MilestoneModel, IMilestoneConfig>
-  implements IEditableModel<UpdateMilestoneModel>, ICalendarPlanEntry
+export class MilestoneModel<TID = string>
+  extends ContentModel<TID, MilestoneModel<TID>, IMilestoneConfig>
+  implements IEditableModel<UpdateMilestoneModel>, ICalendarPlanEntry<TID>
 {
   static contentType = 'Milestone';
 

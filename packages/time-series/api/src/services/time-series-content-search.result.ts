@@ -5,5 +5,5 @@ export interface ITimeSeriesContentSearchResult<
   TDataPointModel extends DataPoint = DataPoint,
 > {
   models: TModel[];
-  dataPoints?: TDataPointModel[];
+  dataPoints: TDataPointModel[];
 }

@@ -6,9 +6,13 @@ import { ProfilesModule } from '@lyvely/profiles';
 import { PoliciesModule } from '@lyvely/policies';
 import { CoreModule } from '@lyvely/core';
 import { Milestone, MilestoneSchema } from './schemas';
-import { MilestonesController } from './controllers/milestones.controller';
+import { MilestonePlanController, MilestonesController } from './controllers';
 import { MilestonesDao } from './daos';
-import { MilestonesService, MilestonesRelationsService, MilestonesCalendarPlanService, MilestonePlanController} from './services';
+import {
+  MilestonesService,
+  MilestonesRelationsService,
+  MilestonesCalendarPlanService,
+} from './services';
 
 @Module({
   imports: [

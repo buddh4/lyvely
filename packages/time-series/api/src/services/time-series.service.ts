@@ -1,7 +1,11 @@
 import { Profile } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { CalendarDate, CalendarInterval, getTimingIds, isInFuture } from '@lyvely/dates';
-import { CalendarPlanFilter, getTidWindow } from '@lyvely/calendar-plan';
+import {
+  CalendarPlanFilter,
+  getTidWindow,
+  SortableCalendarPlanService,
+} from '@lyvely/calendar-plan';
 import { implementsINumericDataPoint } from '@lyvely/time-series-interface';
 import {
   DataPoint,
@@ -12,7 +16,6 @@ import {
 import { DataPointService, DataPointUpdateResult } from './data-point.service';
 import { ITimeSeriesContentSearchResult } from './time-series-content-search.result';
 import { TimeSeriesContentDao } from '../daos';
-import { SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { isEqual } from 'lodash';
 
 export abstract class TimeSeriesService<

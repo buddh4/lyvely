@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { TimerDataPointModel, UpdateDataPointResponse } from '@lyvely/time-series';
+import { TimerDataPointModel, UpdateDataPointResponse } from '@lyvely/time-series-interface';
 import { PropertyType } from '@lyvely/common';
 import { HabitModel } from './habit.model';
 

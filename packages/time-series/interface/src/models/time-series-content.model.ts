@@ -20,11 +20,12 @@ export class TimeSeriesSummaryModel {
 
 @Expose()
 export class TimeSeriesContentModel<
-    TContentModel extends ITimeSeriesContent = ITimeSeriesContent,
+    TID = string,
+    TModel extends ITimeSeriesContent<TID> = ITimeSeriesContent<TID>,
     TConfig extends ITimeSeriesContentConfig = ITimeSeriesContentConfig,
   >
-  extends ContentModel<TContentModel, TConfig>
-  implements ISortable, ICalendarPlanEntry
+  extends ContentModel<TID, TModel, TConfig>
+  implements ISortable, ICalendarPlanEntry<TID>
 {
   @Expose()
   @PropertyType(TimeSeriesSummaryModel)

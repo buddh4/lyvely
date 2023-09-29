@@ -1,13 +1,12 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createBasicTestingModule } from '@lyvely/testing';
+import { buildTest } from '@lyvely/testing';
 import { ContentDao } from './index';
 import { Content, ContentSchema } from '../schemas';
-import { TestContent, TestContentDocument, TestContentSchema } from '../test/test-content.schema';
+import { TestContent, TestContentDocument, TestContentSchema } from '../testing';
 import { Model } from 'mongoose';
 import { User } from '@lyvely/users';
-import { Profile } from '@lyvely/profiles';
-import { ContentTypeRegistry } from '@lyvely/content';
+import { Profile, ProfileTestDataUtils } from '@lyvely/profiles';
+import { ContentTypeRegistry } from '../components';
 
 describe('content dao', () => {
   let testingModule: TestingModule;
@@ -27,11 +26,10 @@ describe('content dao', () => {
   ];
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(
-      TEST_KEY,
-      [ContentDao, ContentTypeRegistry],
-      ContentModel,
-    ).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .providers([ContentDao, ContentTypeRegistry])
+      .models(ContentModel)
+      .compile();
     contentDao = testingModule.get<ContentDao>(ContentDao);
     contentTypeRegistry = testingModule.get<ContentTypeRegistry>(ContentTypeRegistry);
     testContentModel = testingModule.get<Model<TestContentDocument>>('TestContentModel');
@@ -45,7 +43,7 @@ describe('content dao', () => {
 
   describe('findById', () => {
     it('search unregistered content', async () => {
-      const { user, profile } = TestDataUtils.createDummyUserAndProfile();
+      const { user, profile } = ProfileTestDataUtils.createDummyUserAndProfile();
       const content = await createTestContent(user, profile, 'Hello World');
       const search = <TestContent>await contentDao.findById(content._id);
       expect(search instanceof Content).toEqual(true);
@@ -54,7 +52,7 @@ describe('content dao', () => {
     });
 
     it('search registered content', async () => {
-      const { user, profile } = TestDataUtils.createDummyUserAndProfile();
+      const { user, profile } = ProfileTestDataUtils.createDummyUserAndProfile();
 
       contentTypeRegistry.registerType(TestContent);
 

@@ -13,7 +13,7 @@
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "prerelease": "npm run build",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
@@ -28,6 +28,8 @@
     "@lyvely/streams": "^0.1.0-alpha3",
     "@lyvely/users": "^0.1.0-alpha3",
     "@lyvely/live": "^0.1.0-alpha3",
+    "mongoose": " ^7.0.0",
+    "class-validator": "^0.14.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

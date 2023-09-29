@@ -1,19 +1,18 @@
 import { Expose } from 'class-transformer';
 import { UpdateHabitModel } from './update-habit.model';
-import { IEditableModel } from '@lyvely/core';
+import { IEditableModel, UserAssignmentStrategy } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import {
   DataPointInputType,
   DataPointValueType,
   TimeSeriesContentModel,
   useDataPointStrategyFacade,
-} from '@/time-series';
-import { UserAssignmentStrategy } from '@lyvely/collab';
+} from '@lyvely/time-series-interface';
 import { IHabitConfig } from '../interfaces';
 
 @Expose()
-export class HabitModel
-  extends TimeSeriesContentModel<HabitModel, IHabitConfig>
+export class HabitModel<TID = string>
+  extends TimeSeriesContentModel<TID, HabitModel<TID>, IHabitConfig>
   implements IEditableModel<UpdateHabitModel>
 {
   static contentType = 'Habit';

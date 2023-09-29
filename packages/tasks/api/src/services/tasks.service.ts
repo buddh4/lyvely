@@ -1,18 +1,14 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Task, TaskScore } from '../schemas';
 import { Profile } from '@lyvely/profiles';
-import {
-  CalendarDate,
-  CreateTaskModel,
-  toTimingId,
-  UpdateTaskModel,
-  UserAssignmentStrategy,
-} from '@lyvely/common';
+import { CalendarDate, toTimingId } from '@lyvely/dates';
+import { Timer } from '@lyvely/timers';
+import { CreateTaskModel, UpdateTaskModel } from '@lyvely/tasks-interface';
+import { UserAssignmentStrategy } from '@lyvely/common';
 import { User } from '@lyvely/users';
 import { TasksDao } from '../daos';
 import { ContentTypeService, ContentScoreService } from '@lyvely/content';
 import { assureObjectId, EntityIdentity } from '@lyvely/core';
-import { Timer } from '@lyvely/dates';
 
 @Injectable()
 export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
@@ -115,11 +111,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
   }
 
   async startTimer(profile: Profile, user: EntityIdentity<User>, task: Task): Promise<Timer> {
-    let timer = task.getTimer(user);
-
-    if (!timer) {
-      timer = new Timer(user);
-    }
+    const timer = task.getTimer(user) || new Timer(user);
 
     if (timer.isStarted()) return timer;
 
@@ -147,11 +139,7 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
     task: Task,
     value: number,
   ): Promise<Timer> {
-    let timer = task.getTimer(user);
-
-    if (!timer) {
-      timer = new Timer(user);
-    }
+    const timer = task.getTimer(user) || new Timer(user);
 
     timer.overwrite(value, assureObjectId(user));
 

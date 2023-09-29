@@ -11,6 +11,7 @@ import { DataPointConfigFactory } from './data-point-config.factory';
 import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';
 import { NestedSchema } from '@lyvely/core';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Types } from 'mongoose';
 
 export type TimeSeriesContentEntity<
   T,
@@ -57,10 +58,8 @@ export abstract class TimeSeriesContent<
     TConfig extends ITimeSeriesContentConfig<TDataPointConfig> = ITimeSeriesContentConfig<TDataPointConfig>,
   >
   extends ContentType<TContent, TConfig>
-  implements ITimeSeriesContent<TDataPointConfig>
+  implements ITimeSeriesContent<Types.ObjectId, TDataPointConfig>
 {
-  config: TConfig;
-
   @Prop({ type: TimeSeriesSummarySchema })
   @PropertyType(TimeSeriesSummary)
   timeSeriesSummary: TimeSeriesSummary;

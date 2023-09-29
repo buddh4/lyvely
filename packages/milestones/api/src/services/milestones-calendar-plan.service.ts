@@ -1,14 +1,15 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Milestone } from '../schemas';
 import { Profile } from '@lyvely/profiles';
-import { CalendarInterval, CalendarPlanFilter } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
+import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { MilestonesDao } from '../daos';
-import { SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { User } from '@lyvely/users';
 import { ContentCondition } from '@lyvely/content';
-import { MilestonesRelationsService } from '@lyvely/milestones';
+import { MilestonesRelationsService } from './milestones-relations.service';
 import { isDefined } from 'class-validator';
 import { DBQuery } from '@lyvely/core';
+import { FilterQuery } from 'mongoose';
 
 @Injectable()
 export class MilestonesCalendarPlanService extends SortableCalendarPlanService<Milestone> {
@@ -23,14 +24,14 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
     user: User,
     filter: CalendarPlanFilter,
   ): Promise<Array<Milestone>> {
-    const conditions = [];
+    const conditions: FilterQuery<Milestone>[] = [];
 
     if (!isDefined(filter.cid) || isDefined(filter.archived)) {
-      conditions.push(ContentCondition.archived(filter.archived));
+      conditions.push(ContentCondition.archived(filter.archived!));
     }
 
     if (isDefined(filter.cid)) {
-      conditions.push(ContentCondition.cid(filter.cid));
+      conditions.push(ContentCondition.cid(filter.cid!));
     }
 
     return this.contentDao.findAllByProfile(profile, DBQuery.and(conditions));

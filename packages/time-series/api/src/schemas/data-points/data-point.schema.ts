@@ -1,6 +1,6 @@
 import { assureObjectId, ObjectIdProp, assignEntityData, BaseEntity } from '@lyvely/core';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import { Types } from 'mongoose';
 import { CalendarInterval, getFullDayDate, toTimingId } from '@lyvely/dates';
 import {
   getNumberEnumValues,
@@ -13,7 +13,7 @@ import { TimeSeriesContent } from '../time-series-content.schema';
 import { User } from '@lyvely/users';
 import { Profile } from '@lyvely/profiles';
 
-export type DataPointEntity<T> = DataPointModel & BaseEntity<T>;
+export type DataPointEntity<T> = DataPointModel<Types.ObjectId> & BaseEntity<T>;
 
 /**
  * This represents a datapoint bucket of given interval.
@@ -21,21 +21,21 @@ export type DataPointEntity<T> = DataPointModel & BaseEntity<T>;
 @Schema({ timestamps: true, discriminatorKey: 'valueType' })
 export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
   extends BaseEntity<T>
-  implements PropertiesOf<DataPointModel>
+  implements PropertiesOf<DataPointModel<Types.ObjectId, T>>
 {
   meta: any;
 
   @ObjectIdProp({ immutable: true })
-  oid: mongoose.Types.ObjectId;
+  oid: Types.ObjectId;
 
   @ObjectIdProp({ required: true, immutable: true })
-  pid: mongoose.Types.ObjectId;
+  pid: Types.ObjectId;
 
   @ObjectIdProp({ required: true, immutable: true })
-  cid: mongoose.Types.ObjectId;
+  cid: Types.ObjectId;
 
   @ObjectIdProp({ immutable: true })
-  uid?: mongoose.Types.ObjectId | null;
+  uid?: Types.ObjectId | null;
 
   @Prop({ enum: getNumberEnumValues(CalendarInterval), required: true })
   interval: CalendarInterval;

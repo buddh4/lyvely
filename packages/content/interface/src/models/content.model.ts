@@ -1,4 +1,10 @@
-import { BaseModel, DocumentModel, PropertyType } from '@lyvely/common';
+import {
+  BaseModel,
+  DocumentModel,
+  PropertyType,
+  TransformObjectId,
+  PropertiesOf,
+} from '@lyvely/common';
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
 import {
@@ -9,8 +15,6 @@ import {
   IContentLog,
   IContentMetadata,
 } from '../interfaces';
-import { TransformObjectId, PropertiesOf } from '@lyvely/common';
-import * as mongoose from 'mongoose';
 import { RoleVisibilityLevel } from '@lyvely/profiles';
 
 export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
@@ -29,26 +33,29 @@ export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
 }
 
 @Expose()
-export class ContentAuthor extends BaseModel<ContentAuthor> implements IContentAuthor {
+export class ContentAuthor<TID = string>
+  extends BaseModel<ContentAuthor>
+  implements IContentAuthor
+{
   type: CreatedAsType;
 
   @TransformObjectId()
-  authorId: mongoose.Types.ObjectId;
+  authorId: TID;
 }
 
 @Expose()
-export class ContentMetadataModel
+export class ContentMetadataModel<TID = string>
   extends BaseModel<ContentMetadataModel>
-  implements IContentMetadata<mongoose.Types.ObjectId>
+  implements IContentMetadata<TID>
 {
   @TransformObjectId()
-  mid?: mongoose.Types.ObjectId;
+  mid?: TID;
 
   @TransformObjectId()
-  createdBy: mongoose.Types.ObjectId;
+  createdBy: TID;
 
   @Type(() => ContentAuthor)
-  createdAs?: ContentAuthor;
+  createdAs?: ContentAuthor<TID>;
 
   @PropertyType(Date)
   createdAt: Date;
@@ -57,7 +64,7 @@ export class ContentMetadataModel
   updatedAt: Date;
 
   @TransformObjectId()
-  parentId?: mongoose.Types.ObjectId;
+  parentId?: TID;
 
   streamSort: number;
   sortOrder?: number;
@@ -68,12 +75,12 @@ export class ContentMetadataModel
 }
 
 @Expose()
-export class ContentLogModel<TData = any>
-  extends BaseModel<IContentLog<TData, mongoose.Types.ObjectId>>
-  implements IContentLog<TData, mongoose.Types.ObjectId>
+export class ContentLogModel<TData = any, TID = string>
+  extends BaseModel<IContentLog<TData, TID>>
+  implements IContentLog<TData, TID>
 {
   @TransformObjectId()
-  updatedBy?: mongoose.Types.ObjectId;
+  updatedBy?: TID;
 
   updatedAt: Date;
   data?: TData;
@@ -81,20 +88,20 @@ export class ContentLogModel<TData = any>
 }
 
 @Exclude()
-export class ContentModel<T extends IContent = IContent, TConfig extends Object = any>
+export class ContentModel<TID = string, T extends IContent = IContent, TConfig extends Object = any>
   extends DocumentModel<T>
-  implements IContent<mongoose.Types.ObjectId>
+  implements IContent<TID>
 {
   @Expose()
   id: string;
 
   @Expose()
   @TransformObjectId()
-  oid: mongoose.Types.ObjectId;
+  oid: TID;
 
   @Expose()
   @TransformObjectId()
-  pid: mongoose.Types.ObjectId;
+  pid: TID;
 
   @Expose()
   type: string;
@@ -107,15 +114,15 @@ export class ContentModel<T extends IContent = IContent, TConfig extends Object 
   @Expose()
   @Type(() => ContentMetadataModel)
   @PropertyType(ContentMetadataModel)
-  meta: ContentMetadataModel;
+  meta: ContentMetadataModel<TID>;
 
   @Expose()
   @Transform(({ obj }) => obj.tagIds?.map((id) => id.toString()) || [])
-  tagIds: Array<mongoose.Types.ObjectId>;
+  tagIds: Array<TID>;
 
   @Expose()
   @Type(() => ContentLogModel)
-  logs: Array<ContentLogModel>;
+  logs: Array<ContentLogModel<any, TID>>;
 
   @Expose()
   config: TConfig;

@@ -7,8 +7,8 @@ import {
   NumericDataPointInterface,
 } from '../interfaces';
 
-export class NumberDataPointModel
-  extends DataPointModel<NumberDataPointModel>
+export class NumberDataPointModel<TID = string>
+  extends DataPointModel<TID, NumberDataPointModel<TID>>
   implements NumericDataPointInterface
 {
   @Expose()

@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CalendarPlanDao } from '@lyvely/calendar-plan';
 import { Profile } from '@lyvely/profiles';
-import { CalendarInterval } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
 import { IFetchQueryOptions } from '@lyvely/core';
 
 export class MilestonesDao extends ContentTypeDao<Milestone> implements CalendarPlanDao<Milestone> {
