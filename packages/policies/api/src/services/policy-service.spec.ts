@@ -1,20 +1,18 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { PolicyService } from './policy.service';
-import { createCoreTestingModule, createTestExecutionContext } from '@lyvely/testing';
-import { IPolicy } from '../interfaces/policy.interface';
-import { Request } from 'express';
+import { buildTest, createTestExecutionContext } from '@lyvely/testing';
+import { IPolicy } from '../interfaces';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-class TruePolicy implements IPolicy<Request> {
+class TruePolicy implements IPolicy<any> {
   validate(): Promise<boolean> {
     return Promise.resolve(true);
   }
 }
 
 @Injectable()
-class FalsePolicy implements IPolicy<Request> {
+class FalsePolicy implements IPolicy<any> {
   validate(): Promise<boolean> {
     return Promise.resolve(false);
   }
@@ -27,15 +25,11 @@ describe('PolicyService', () => {
   const TEST_KEY = 'policy-service';
 
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule(TEST_KEY, [
-      PolicyService,
-      TruePolicy,
-      FalsePolicy,
-    ]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .providers([PolicyService, TruePolicy, FalsePolicy])
+      .compile();
     policyService = testingModule.get<PolicyService>(PolicyService);
   });
-
-  afterEach(async () => {});
 
   it('should be defined', () => {
     expect(policyService).toBeDefined();

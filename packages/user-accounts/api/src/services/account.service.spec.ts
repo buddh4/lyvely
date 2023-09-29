@@ -11,7 +11,7 @@ describe('AccountService', () => {
   beforeEach(async () => {
     const module: TestingModule = await buildTest('account-service')
       .imports([AccountModule, ThrottlerModule.forRoot()])
-      .plugins([mailTestPlugin()])
+      .plugins([mailTestPlugin])
       .compile();
     service = module.get<AccountService>(AccountService);
   });

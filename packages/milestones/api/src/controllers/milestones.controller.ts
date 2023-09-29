@@ -45,7 +45,7 @@ export class MilestonesController
     const { profile } = req;
     const models = await this.contentService.findAllByProfile(profile, { archived: false });
     return new MilestoneListResponse({
-      models: models.map((model) => model.toModel()),
+      models: models.map((model) => model.toModel() as MilestoneModel<any>),
     });
   }
 
@@ -53,6 +53,6 @@ export class MilestonesController
   @Policies(ContentReadPolicy)
   async getById(@Request() req: ProfileContentRequest<Milestone>): Promise<MilestoneModel> {
     const { content } = req;
-    return content.toModel();
+    return content.toModel() as MilestoneModel<any>;
   }
 }

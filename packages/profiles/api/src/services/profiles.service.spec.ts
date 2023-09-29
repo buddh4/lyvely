@@ -1,30 +1,33 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { ProfilesService } from './index';
+import { UniqueConstraintException } from '@lyvely/common';
 import {
   ProfileType,
   BaseMembershipRole,
   BaseUserProfileRelationType,
-  UniqueConstraintException,
-} from '@lyvely/common';
-import { createContentTestingModule, TestDataUtils } from '@lyvely/testing';
+} from '@lyvely/profiles-interface';
+import { buildTest } from '@lyvely/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
+import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
+import { ModuleRegistry } from '@lyvely/core';
 
-describe('ProfileService (Group)', () => {
+describe('ProfileService', () => {
   let testingModule: TestingModule;
   let profileService: ProfilesService;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
+  let moduleRegistry: ModuleRegistry;
 
   const TEST_KEY = 'profile_service_group';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY).compile();
+    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
     profileService = testingModule.get<ProfilesService>(ProfilesService);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
+    testData = testingModule.get(ProfileTestDataUtils);
+    moduleRegistry = testingModule.get(ModuleRegistry);
   });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+  afterEach(() => {
+    moduleRegistry.reset();
   });
 
   it('should be defined', () => {

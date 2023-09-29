@@ -1,8 +1,7 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createTestExecutionContext, createContentTestingModule } from '@lyvely/testing';
+import { buildTest, createTestExecutionContext } from '@lyvely/testing';
 import { ExecutionContext } from '@nestjs/common';
-import { Feature, FeatureGuard, FeatureRegistry } from '../';
+import { Feature, FeatureGuard, FeatureModule, FeatureRegistry } from '../';
 
 @Feature('test')
 class TestController {
@@ -26,7 +25,7 @@ describe('ProfileGuard', () => {
   const TEST_KEY = 'feature-guard';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY).compile();
+    testingModule = await buildTest(TEST_KEY).imports([FeatureModule]).compile();
     featureGuard = testingModule.get<FeatureGuard>(FeatureGuard);
     featureRegistry = testingModule.get<FeatureRegistry>(FeatureRegistry);
 
@@ -92,7 +91,7 @@ describe('ProfileGuard', () => {
         handler: new TestController().testHandler,
       });
 
-      featureRegistry.getFeature('test.sub').enabled = true;
+      featureRegistry.getFeature('test.sub')!.enabled = true;
       const result = await featureGuard.canActivate(context);
       expect(result).toEqual(true);
     });

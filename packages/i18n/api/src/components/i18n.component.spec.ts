@@ -1,7 +1,7 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { createCoreTestingModule } from '@lyvely/testing';
+import { buildTest } from '@lyvely/testing';
 import { I18n } from './';
+import { i18nTestPlugin } from '../testing';
 
 describe('I18n', () => {
   let testingModule: TestingModule;
@@ -10,7 +10,7 @@ describe('I18n', () => {
   const TEST_KEY = 'I18n';
 
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule(TEST_KEY).compile();
+    testingModule = await buildTest(TEST_KEY).plugins([i18nTestPlugin]).compile();
     i18n = testingModule.get(I18n);
   });
 
@@ -20,33 +20,35 @@ describe('I18n', () => {
 
   describe('translate()', () => {
     it('translate with string key and locale', async () => {
-      expect(i18n.t('test.testKey', { locale: 'en' })).toEqual('Test Value');
+      expect(i18n.t('i18n.test.testKey', { locale: 'en' })).toEqual('Test Value');
     });
 
     it('translate with translatable and locale', async () => {
-      expect(i18n.t({ key: 'test.testKey' }, { locale: 'en' })).toEqual('Test Value');
+      expect(i18n.t({ key: 'i18n.test.testKey' }, { locale: 'en' })).toEqual('Test Value');
     });
 
     it('translate with fallback', async () => {
-      expect(i18n.t('test.enOnly', { locale: 'de' })).toEqual('Only available in english');
+      expect(i18n.t('i18n.test.enOnly', { locale: 'de' })).toEqual('Only available in english');
     });
 
     it('translate to no default lang', async () => {
-      expect(i18n.t('test.testKey', { locale: 'de' })).toEqual('Test Wert');
+      expect(i18n.t('i18n.test.testKey', { locale: 'de' })).toEqual('Test Wert');
     });
 
     it('translate locale with region', async () => {
-      expect(i18n.t('test.testKey', { locale: 'de-DE' })).toEqual('Test Wert');
+      expect(i18n.t('i18n.test.testKey', { locale: 'de-DE' })).toEqual('Test Wert');
     });
 
     it('translate with param', async () => {
       expect(
-        i18n.t({ key: 'test.testWithParams', params: { value: 'VALUE' } }, { locale: 'en' }),
+        i18n.t({ key: 'i18n.test.testWithParams', params: { value: 'VALUE' } }, { locale: 'en' }),
       ).toEqual('Test VALUE');
     });
 
     it('translate nested', async () => {
-      expect(i18n.t({ key: 'test.nested.test.key' }, { locale: 'en' })).toEqual('Nested Value');
+      expect(i18n.t({ key: 'i18n.test.nested.test.key' }, { locale: 'en' })).toEqual(
+        'Nested Value',
+      );
     });
   });
 });

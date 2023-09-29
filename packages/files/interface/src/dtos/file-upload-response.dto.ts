@@ -1,4 +1,4 @@
-import { BaseModel } from '@lyvely/core';
+import { BaseModel } from '@lyvely/common';
 
 export class FileUploadResponse extends BaseModel<FileUploadResponse> {
   url: string;

@@ -8,6 +8,8 @@ import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { CalendarDate, IDateTime, setDateTimeFactory, UnitType } from '../interfaces';
 import { isDefined } from 'class-validator';
+import 'dayjs/locale/de';
+import 'dayjs/locale/en';
 
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);

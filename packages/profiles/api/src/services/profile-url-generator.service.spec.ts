@@ -1,20 +1,23 @@
-import { expect } from '@jest/globals';
-import { assureStringId, globalEmitter } from '@lyvely/core';
-import { createBasicTestingModule, getObjectId } from '@lyvely/testing';
+import { assureStringId, globalEmitter, ModuleRegistry } from '@lyvely/core';
+import { buildTest, getObjectId } from '@lyvely/testing';
 import { TestingModule } from '@nestjs/testing';
 import { ProfileUrlGenerator } from './profile-url-generator.service';
+import { profilesTestPlugin } from '../testing';
 
 describe('UrlGenrator', () => {
   let urlGenerator: ProfileUrlGenerator;
   let testingModule: TestingModule;
+  let moduleRegistry: ModuleRegistry;
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule('url-gnerator').compile();
+    testingModule = await buildTest('url-gnerator').plugins([profilesTestPlugin]).compile();
     urlGenerator = testingModule.get(ProfileUrlGenerator);
+    moduleRegistry = testingModule.get(ModuleRegistry);
   });
 
   afterEach(() => {
     globalEmitter.removeAllListeners();
+    moduleRegistry.reset();
   });
 
   it('should be defined', () => {

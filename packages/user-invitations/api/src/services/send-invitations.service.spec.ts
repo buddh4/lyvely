@@ -30,7 +30,7 @@ describe('SendInvitations', () => {
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin(), mailTestPlugin(), notificationTestPlugin()])
+      .plugins([profilesTestPlugin(), mailTestPlugin, notificationTestPlugin()])
       .imports([JwtModule])
       .providers([SendInvitationsService, InvitationDao])
       .models([

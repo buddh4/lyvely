@@ -66,4 +66,8 @@ export abstract class AbstractTypeRegistry<T, TMeta = any> {
   getAllMeta(): TMeta[] {
     return Array.from(this.typeMeta.values());
   }
+
+  reset() {
+    this.emitter?.removeAllListeners();
+  }
 }

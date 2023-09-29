@@ -7,8 +7,8 @@ import {
   CreateHabitModel,
   UpdateHabitDataPointModel,
   UpdateHabitDataPointResponse,
-  TimerUpdateModel,
 } from '../models';
+import { TimerUpdateModel } from '@lyvely/timers-interface';
 
 export interface IHabitsEndpointService
   extends IContentTypeService<HabitModel, CreateHabitModel, UpdateHabitModel>,

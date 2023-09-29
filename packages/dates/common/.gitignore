@@ -41,3 +41,4 @@ lerna-debug.log*
 /screenshots
 
 .rollup.cache
+tsconfig.tsbuildinfo

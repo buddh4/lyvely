@@ -5,6 +5,7 @@ import {
   ENDPOINT_MILESTONE_PLAN,
   MilestonePlanEndpoint,
   MilestoneSearchResponse,
+  MilestoneRelationModel,
 } from '@lyvely/milestones-interface';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { SortResponse } from '@lyvely/common';
@@ -36,7 +37,7 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
 
     return new MilestoneSearchResponse({
       models: models.map((m) => m.toModel()),
-      relations,
+      relations: relations as MilestoneRelationModel<any>[],
     });
   }
 

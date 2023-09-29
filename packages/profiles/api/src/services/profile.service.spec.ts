@@ -1,24 +1,20 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { ProfilesService } from './index';
-import { BaseMembershipRole } from '@lyvely/common';
-import { TestDataUtils, createContentTestingModule } from '@lyvely/testing';
+import { BaseMembershipRole } from '@lyvely/profiles-interface';
+import { buildTest } from '@lyvely/testing';
+import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 
 describe('ProfileService', () => {
   let testingModule: TestingModule;
   let profileService: ProfilesService;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'profile_service';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY).compile();
+    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
     profileService = testingModule.get<ProfilesService>(ProfilesService);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
-  });
-
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   it('should be defined', () => {
@@ -31,16 +27,16 @@ describe('ProfileService', () => {
       const relations = await profileService.findUserProfileRelations(user, profile);
       const membership = relations.getMembership();
       expect(membership).toBeDefined();
-      expect(membership.role).toEqual(BaseMembershipRole.Owner);
-      expect(membership.pid).toEqual(profile._id);
-      expect(membership.uid).toEqual(user._id);
+      expect(membership?.role).toEqual(BaseMembershipRole.Owner);
+      expect(membership?.pid).toEqual(profile._id);
+      expect(membership?.uid).toEqual(user._id);
     });
 
     it('find by profile id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const relations = await profileService.findUserProfileRelations(user, profile.id);
-      expect(relations.profile).toBeDefined();
-      expect(relations.profile._id).toEqual(profile._id);
+      expect(relations?.profile).toBeDefined();
+      expect(relations?.profile._id).toEqual(profile._id);
     });
 
     it('find non membership relation', async () => {

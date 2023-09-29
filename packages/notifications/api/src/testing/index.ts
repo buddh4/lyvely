@@ -1,1 +1,1 @@
-export * from './notification.test.plugin';
+export * from './notification-test.plugin';

@@ -1,25 +1,24 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createTestExecutionContext, createBasicTestingModule } from '@lyvely/testing';
+import { buildTest, createTestExecutionContext } from '@lyvely/testing';
 import { ProfileGuard } from './index';
 import { ProfileRequest } from '../types';
-import { ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/common';
+import { ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/profiles-interface';
+import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 
 describe('ProfileGuard', () => {
   let testingModule: TestingModule;
   let profileGuard: ProfileGuard;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'profile-guard';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [ProfileGuard]).compile();
-    profileGuard = testingModule.get<ProfileGuard>(ProfileGuard);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
-  });
-
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin])
+      .providers([ProfileGuard])
+      .compile();
+    profileGuard = testingModule.get(ProfileGuard);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   it('should be defined', () => {
@@ -46,7 +45,7 @@ describe('ProfileGuard', () => {
       expect(request.context.user).toBeDefined();
       expect(request.context.user._id).toEqual(owner._id);
       expect(request.context.getMembership()).toBeDefined();
-      expect(request.context.getMembership().role).toEqual(BaseMembershipRole.Owner);
+      expect(request.context.getMembership()?.role).toEqual(BaseMembershipRole.Owner);
     });
 
     it('member can access group profile', async () => {
@@ -69,7 +68,7 @@ describe('ProfileGuard', () => {
       expect(request.context.user).toBeDefined();
       expect(request.context.user._id).toEqual(member._id);
       expect(request.context.getMembership()).toBeDefined();
-      expect(request.context.getMembership().role).toEqual(BaseMembershipRole.Member);
+      expect(request.context.getMembership()?.role).toEqual(BaseMembershipRole.Member);
     });
 
     it('non member user can access protected profile', async () => {

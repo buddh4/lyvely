@@ -1,14 +1,14 @@
 import { TestPlugin } from '@lyvely/testing';
-import { I18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
-import { LyvelyI18nModule } from '../lyvely-I18n.module';
+import { I18nModule as NestJsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
+import { I18nModule } from '../i18n.module';
 import { I18nModuleLoader } from '../loaders/i18n.module.loader';
 
 export const i18nTestPlugin = {
   apply(builder) {
     builder
       .imports([
-        LyvelyI18nModule,
-        I18nModule.forRoot({
+        I18nModule,
+        NestJsI18nModule.forRoot({
           fallbackLanguage: 'en',
           loader: I18nModuleLoader,
           loaderOptions: {

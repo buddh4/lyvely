@@ -1,17 +1,14 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { HabitTestDataUtil, createHabitTestingModule } from '../test';
+import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitDataPointService } from './habit-data-point.service';
 import { HabitDataPointDao } from '../daos';
-import {
-  UserAssignmentStrategy,
-  toTimingId,
-  CalendarPlanFilter,
-  CalendarInterval,
-} from '@lyvely/common';
+import { CalendarInterval, toTimingId } from '@lyvely/dates';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan';
+import { UserAssignmentStrategy } from '@lyvely/common';
 import { ContentScoreDao, ContentScoreService } from '@lyvely/content';
 import { Model } from 'mongoose';
 import { DataPoint } from '@lyvely/time-series';
+import { buildTest } from '@lyvely/testing';
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
@@ -23,20 +20,14 @@ describe('HabitDataPointService', () => {
   const TEST_KEY = 'habit_data_point_service';
 
   beforeEach(async () => {
-    testingModule = await createHabitTestingModule(TEST_KEY, [
-      HabitDataPointService,
-      HabitDataPointDao,
-      ContentScoreService,
-      ContentScoreDao,
-    ]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([habitTestPlugin])
+      .providers([HabitDataPointService, HabitDataPointDao, ContentScoreService, ContentScoreDao])
+      .compile();
     habitDataPointService = testingModule.get<HabitDataPointService>(HabitDataPointService);
     testData = testingModule.get(HabitTestDataUtil);
     contentScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
     HabitDataPointModel = testingModule.get<Model<DataPoint>>('HabitDataPointModel');
-  });
-
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
   });
 
   describe('findLogsByRange', () => {
@@ -156,9 +147,9 @@ describe('HabitDataPointService', () => {
       );
 
       expect(isNew).toEqual(false);
-      expect(updatedDataPoint._id).toEqual(dataPoint._id);
+      expect(updatedDataPoint?._id).toEqual(dataPoint._id);
       expect(dataPoint.value).toEqual(3);
-      expect(updatedDataPoint.value).toEqual(3);
+      expect(updatedDataPoint?.value).toEqual(3);
     });
 
     it('track profile score', async () => {

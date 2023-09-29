@@ -24,5 +24,5 @@ import { closeInMongodConnections } from './src/testing/core-test.util';
 })();*/
 
 afterEach(async () => {
-  await closeInMongodConnections();
+  //await closeInMongodConnections();
 });

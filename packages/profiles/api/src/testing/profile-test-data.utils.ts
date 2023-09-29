@@ -1,4 +1,4 @@
-import { User, UserEmail, UserTestDataUtils } from '@lyvely/users';
+import { User, UserEmail, UserTestDataUtils, UserStatus } from '@lyvely/users';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   GroupProfile,
@@ -20,7 +20,6 @@ import {
   ProfileType,
   ProfileVisibilityLevel,
 } from '@lyvely/profiles-interface';
-import { UserStatus } from '@lyvely/users';
 import { createBaseEntityInstance } from '@lyvely/core';
 
 export class ProfileTestDataUtils extends UserTestDataUtils {
@@ -50,14 +49,14 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
 
   async createSimpleOrganization(
     name = 'TestOrganization',
-  ): Promise<{ owner: User; member: User; organization: Profile }> {
+  ): Promise<{ owner: User; member: User; organization: Organization }> {
     const { user: owner } = await this.createUserAndProfile('owner');
     const { user: member } = await this.createUserAndProfile('member');
 
     const organization = await this.createProfile(owner, name, ProfileType.Organization);
     await this.addProfileMember(organization, member);
 
-    return { owner, member, organization };
+    return { owner, member, organization: organization as Organization };
   }
 
   async createUser(username = 'test', userData: Partial<User> = {}): Promise<User> {

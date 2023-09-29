@@ -1,18 +1,20 @@
-import { TestingModule } from '@nestjs/testing';
 import { ProfileScore, ProfileScoreSchema } from './index';
-import { createBasicTestingModule, getObjectId, TestDataUtils } from '@lyvely/testing';
+import { buildTest, getObjectId } from '@lyvely/testing';
 import { Model } from 'mongoose';
 import {
   TestProfileScore,
   TestProfileScoreDocument,
   TestProfileScoreSchema,
-} from '../test/test-profile-score.schema';
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+} from '../testing';
 import { addDays, toTimingId } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/common';
+import { TestingModule } from '@nestjs/testing';
 
 describe('ProfileScore', () => {
   let testingModule: TestingModule;
-  let testDataUtils: TestDataUtils;
+  let testDataUtils: ProfileTestDataUtils;
   let TestProfileScoreModel: Model<TestProfileScoreDocument>;
 
   const TEST_KEY = 'ProfileScore';
@@ -26,10 +28,13 @@ describe('ProfileScore', () => {
   ];
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [], Models).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin])
+      .models(Models)
+      .compile();
     TestProfileScoreModel =
       testingModule.get<Model<TestProfileScoreDocument>>('TestProfileScoreModel');
-    testDataUtils = testingModule.get<TestDataUtils>(TestDataUtils);
+    testDataUtils = testingModule.get(ProfileTestDataUtils);
   });
 
   it('should be defined', () => {
@@ -65,7 +70,7 @@ describe('ProfileScore', () => {
         score: 5,
         userStrategy: UserAssignmentStrategy.Shared,
       });
-      expect(model.uid).toBeNull();
+      expect(model.uid).toBeUndefined();
       expect(model.createdBy).toEqual(user._id);
     });
 

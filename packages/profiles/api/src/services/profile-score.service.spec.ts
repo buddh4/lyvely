@@ -1,11 +1,15 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createContentTestingModule } from '@lyvely/testing';
+import { buildTest } from '@lyvely/testing';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
-import { TestProfileScore, TestProfileScoreSchema } from '../test/test-profile-score.schema';
-import { TestProfileScoreDao } from '../test/test-profile-score.dao';
+import {
+  TestProfileScore,
+  TestProfileScoreSchema,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+  TestProfileScoreDao,
+  TestProfileScoreService,
+} from '../testing';
 import { INestApplication } from '@nestjs/common';
-import { TestProfileScoreService } from '../test/test-profile-score.service';
 import { ProfileDao } from '../daos';
 import { toTimingId } from '@lyvely/dates';
 
@@ -18,27 +22,26 @@ const testScoreModelDef = {
 describe('AbstractUserProfileActionService', () => {
   let testingModule: TestingModule;
   let testProfileActionService: TestProfileScoreService;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
   let profileDao: ProfileDao;
   let app: INestApplication;
 
   const TEST_KEY = 'abstract_user_profile_action_service';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(
-      TEST_KEY,
-      [TestProfileScoreDao, TestProfileScoreService],
-      [testScoreModelDef],
-    ).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin])
+      .providers([TestProfileScoreDao, TestProfileScoreService])
+      .models([testScoreModelDef])
+      .compile();
     testProfileActionService = testingModule.get<TestProfileScoreService>(TestProfileScoreService);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    profileDao = testingModule.get<ProfileDao>(ProfileDao);
+    testData = testingModule.get(ProfileTestDataUtils);
+    profileDao = testingModule.get(ProfileDao);
     app = testingModule.createNestApplication();
     await app.init();
   });
 
   afterEach(async () => {
-    await testData.reset(TEST_KEY);
     await app.close();
   });
 
@@ -76,7 +79,7 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(5);
       const profileInDB = await profileDao.reload(profile);
-      expect(profileInDB.score).toEqual(5);
+      expect(profileInDB?.score).toEqual(5);
     });
 
     it('create multiple actions', async () => {
@@ -96,7 +99,7 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(3);
       const profileInDB = await profileDao.reload(profile);
-      expect(profileInDB.score).toEqual(3);
+      expect(profileInDB?.score).toEqual(3);
     });
 
     it('min 0 profile score', async () => {
@@ -111,7 +114,7 @@ describe('AbstractUserProfileActionService', () => {
 
       expect(profile.score).toEqual(0);
       const profileInDB = await profileDao.reload(profile);
-      expect(profileInDB.score).toEqual(0);
+      expect(profileInDB?.score).toEqual(0);
     });
   });
 });

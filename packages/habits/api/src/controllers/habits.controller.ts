@@ -6,12 +6,12 @@ import {
   UpdateHabitResponse,
   CreateHabitModel,
   HabitsEndpoint,
-  TimerUpdateModel,
   UpdateHabitModel,
   HabitSearchResponse,
   UpdateHabitDataPointTimerResponse,
   HabitModel,
 } from '@lyvely/habits-interface';
+import { TimerUpdateModel } from '@lyvely/timers';
 import {
   TimerDataPointModel,
   NumberDataPointModel,

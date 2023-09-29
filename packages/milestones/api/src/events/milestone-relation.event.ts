@@ -3,6 +3,7 @@ import { MilestoneRelationModel } from '@lyvely/milestones-interface';
 import { CalendarDateTime, formatDate } from '@lyvely/dates';
 import { Content } from '@lyvely/content';
 import { User } from '@lyvely/users';
+import { Types } from 'mongoose';
 
 export interface IMilestoneRelationEventData<TContent extends Content = Content> {
   contents: TContent[];
@@ -17,7 +18,7 @@ export class MilestoneRelationEvent<
     return `milestones.fetch.${contentType}`;
   }
 
-  private result: MilestoneRelationModel[] = [];
+  private result: MilestoneRelationModel<Types.ObjectId>[] = [];
 
   data: IMilestoneRelationEventData<TContent>;
 
@@ -31,11 +32,11 @@ export class MilestoneRelationEvent<
     }
   }
 
-  addResult(model: MilestoneRelationModel) {
+  addResult(model: MilestoneRelationModel<Types.ObjectId>) {
     this.result.push(model);
   }
 
-  setResult(model: MilestoneRelationModel[]) {
+  setResult(model: MilestoneRelationModel<Types.ObjectId>[]) {
     this.result = model;
   }
 

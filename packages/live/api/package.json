@@ -27,7 +27,8 @@
     "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/live-interface": "^0.1.0-alpha3",
     "@lyvely/profiles": "^0.1.0-alpha3",
-    "@lyvely/users": "^0.1.0-alpha3"
+    "@lyvely/users": "^0.1.0-alpha3",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@lyvely/testing": "^0.1.0-alpha3",

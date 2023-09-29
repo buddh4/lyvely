@@ -23,6 +23,8 @@ export default [
       'class-transformer',
       'dayjs',
       'dayjs/plugin/weekOfYear',
+      'dayjs/plugin/weekYear',
+      'dayjs/plugin/weekday',
       'dayjs/plugin/utc',
       'dayjs/plugin/timezone',
       'dayjs/plugin/quarterOfYear',

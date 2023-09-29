@@ -19,7 +19,7 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@lyvely/commmon": "^0.1.0-alpha3",
+    "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/content": "^0.1.0-alpha3",
     "@lyvely/profiles": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",

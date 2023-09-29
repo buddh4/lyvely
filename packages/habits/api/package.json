@@ -26,6 +26,7 @@
     "@lyvely/content": "^0.1.0-alpha3",
     "@lyvely/profiles": "^0.1.0-alpha3",
     "@lyvely/users": "^0.1.0-alpha3",
+    "@lyvely/timers": "^0.1.0-alpha3",
     "@lyvely/time-series": "^0.1.0-alpha3",
     "@lyvely/habits-interface": "^0.1.0-alpha3",
     "mongoose": " ^7.0.0",

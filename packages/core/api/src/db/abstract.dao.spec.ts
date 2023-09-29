@@ -1,4 +1,3 @@
-import { expect } from '@jest/globals';
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
 import { ModelSaveEvent } from './dao.events';
@@ -9,7 +8,8 @@ import { createCoreTestingModule, getObjectId } from '../testing/core-test.util'
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { afterEach } from 'node:test';
+import { globalEmitter } from '../global.emitter';
+import { ModuleRegistry } from '../components';
 
 interface ITestEntity {
   requiredField: string;
@@ -69,6 +69,7 @@ describe('AbstractDao', () => {
   let testingModule: TestingModule;
   let dao: TestEntityDao;
   let eventTester: EventTester;
+  let moduleRegistry: ModuleRegistry;
 
   beforeEach(async () => {
     testingModule = await createCoreTestingModule(
@@ -78,11 +79,13 @@ describe('AbstractDao', () => {
     ).compile();
     dao = testingModule.get<TestEntityDao>(TestEntityDao);
     eventTester = testingModule.get<EventTester>(EventTester);
+    moduleRegistry = testingModule.get(ModuleRegistry);
   });
 
-  afterEach(async (done) => {
-    await testingModule.close();
-    done();
+  afterEach(() => {
+    eventTester.eventEmitter.removeAllListeners();
+    globalEmitter.removeAllListeners();
+    moduleRegistry.reset();
   });
 
   it('should be defined', () => {
@@ -121,10 +124,9 @@ describe('AbstractDao', () => {
       try {
         await dao.save(new TestEntity({ numberField: 3 }));
         expect(true).toEqual(false);
-      } catch (err) {
-        // @ts-ignore
+      } catch (e) {
+        const err = <any>e;
         if (err.name === 'ValidationError') {
-          // @ts-ignore
           expect(err.errors['requiredField'].kind).toEqual('required');
         } else {
           expect(true).toEqual(false);

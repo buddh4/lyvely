@@ -1,26 +1,23 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
+import { CalendarInterval } from '@lyvely/dates';
+import { CreateJournalModel } from '@lyvely/journals-interface';
 import {
-  CalendarInterval,
-  CreateJournalModel,
   DataPointInputType,
   DataPointValueType,
-  IntegrityException,
   INumberDataPointConfig,
   ISelectionDataPointConfig,
   ITextDataPointConfig,
-  UserAssignmentStrategy,
-} from '@lyvely/common';
-import { JournalsService } from '../services';
-import { JournalsDao } from '../daos';
-import { createContentTestingModule, TestDataUtils } from '@lyvely/testing';
-import { Content } from '@lyvely/content';
-import { Journal, JournalSchema } from '../schemas';
-import {
   CheckboxNumberDataPointConfig,
   RadioSelectionDataPointConfig,
   TextareaTextDataPointConfig,
 } from '@lyvely/time-series';
+import { IntegrityException, UserAssignmentStrategy } from '@lyvely/common';
+import { JournalsService } from '../services';
+import { JournalsDao } from '../daos';
+import { buildTest } from '@lyvely/testing';
+import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { Content, contentTestPlugin } from '@lyvely/content';
+import { Journal, JournalSchema } from '../schemas';
 
 const Models = [
   {
@@ -33,22 +30,18 @@ const Models = [
 describe('JournalService', () => {
   let journalsService: JournalsService;
   let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'journals_service';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(
-      TEST_KEY,
-      [JournalsDao, JournalsService],
-      Models,
-    ).compile();
-    journalsService = testingModule.get<JournalsService>(JournalsService);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
-  });
-
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([contentTestPlugin, profilesTestPlugin])
+      .providers([JournalsDao, JournalsService])
+      .models(Models)
+      .compile();
+    journalsService = testingModule.get(JournalsService);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   async function createJournal(obj: Partial<CreateJournalModel> = {}) {
@@ -141,7 +134,8 @@ describe('JournalService', () => {
           valueType: DataPointValueType.Number,
           inputType: DataPointInputType.Radio,
         });
-      } catch (e) {
+      } catch (err) {
+        const e = <any>err;
         expect(e instanceof IntegrityException).toBeDefined();
         expect(e.message).toEqual(
           "Could not initialize data point config with strategy 'number_radio'",
@@ -159,10 +153,11 @@ describe('JournalService', () => {
           valueType: DataPointValueType.Number,
           inputType: DataPointInputType.Radio,
         });
-      } catch (e) {
+      } catch (err) {
+        const e = <any>err;
         expect(e instanceof IntegrityException).toBeDefined();
         expect(e.message).toEqual(
-          'Could not apply update due to use of invalid data point strategy number_radio',
+          "Could not initialize data point config with strategy 'number_radio'",
         );
       }
     });

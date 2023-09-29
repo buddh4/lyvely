@@ -1,25 +1,25 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
 import { MembershipsDao } from './index';
 import { ProfileRelationUserInfo } from '../schemas';
-import { ProfileType, BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/common';
-import { createCoreTestingModule, TestDataUtils } from '@lyvely/testing';
+import {
+  ProfileType,
+  BaseMembershipRole,
+  BaseUserProfileRelationType,
+} from '@lyvely/profiles-interface';
+import { buildTest } from '@lyvely/testing';
+import { ProfileTestDataUtils, profilesTestPlugin } from '../testing';
 
 describe('MembershipDao', () => {
   let testingModule: TestingModule;
   let membershipDao: MembershipsDao;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'membership_dao';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [MembershipsDao]).compile();
+    testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
     membershipDao = testingModule.get<MembershipsDao>(MembershipsDao);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
-  });
-
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   it('should be defined', () => {
@@ -108,8 +108,8 @@ describe('MembershipDao', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const membership = await membershipDao.findByUserAndProfile(user, profile);
       expect(membership).toBeDefined();
-      expect(membership.uid).toEqual(user._id);
-      expect(membership.pid).toEqual(profile._id);
+      expect(membership?.uid).toEqual(user._id);
+      expect(membership?.pid).toEqual(profile._id);
     });
 
     it('do not find non related membership', async () => {

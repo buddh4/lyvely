@@ -1,22 +1,25 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createBasicTestingModule } from '@lyvely/testing';
-import { LiveService } from '@lyvely/live';
+import { buildTest } from '@lyvely/testing';
+import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { LiveService } from './live.service';
 import { assureStringId } from '@lyvely/core';
 import { firstValueFrom } from 'rxjs';
-import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/common';
+import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/live-interface';
 
 describe('LiveService', () => {
   let testingModule: TestingModule;
   let liveService: LiveService;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'LiveService';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin])
+      .providers([LiveService])
+      .compile();
     liveService = testingModule.get(LiveService);
-    testData = testingModule.get(TestDataUtils);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   it('should be defined', () => {

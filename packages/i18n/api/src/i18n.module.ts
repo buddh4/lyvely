@@ -11,4 +11,4 @@ import { LyvelyModule } from '@lyvely/core';
   providers: [I18n],
   exports: [I18n],
 })
-export class LyvelyI18nModule {}
+export class I18nModule {}

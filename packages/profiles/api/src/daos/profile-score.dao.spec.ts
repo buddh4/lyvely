@@ -1,9 +1,13 @@
-import { expect } from '@jest/globals';
 import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createContentTestingModule } from '@lyvely/testing';
+import { buildTest } from '@lyvely/testing';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
-import { TestProfileScore, TestProfileScoreSchema } from '../test/test-profile-score.schema';
-import { TestProfileScoreDao } from '../test/test-profile-score.dao';
+import {
+  TestProfileScore,
+  TestProfileScoreSchema,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+  TestProfileScoreDao,
+} from '../testing';
 import { toTimingId } from '@lyvely/dates';
 
 const testScoreModelDef = {
@@ -15,18 +19,18 @@ const testScoreModelDef = {
 describe('AbstractUserProfileActionDao', () => {
   let testingModule: TestingModule;
   let testScoreDao: TestProfileScoreDao;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'abstract_user_profile_action_dao';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(
-      TEST_KEY,
-      [TestProfileScoreDao],
-      [testScoreModelDef],
-    ).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin])
+      .providers([TestProfileScoreDao])
+      .models([testScoreModelDef])
+      .compile();
     testScoreDao = testingModule.get<TestProfileScoreDao>(TestProfileScoreDao);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
   it('should be defined', () => {

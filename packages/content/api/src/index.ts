@@ -8,5 +8,6 @@ export * from './interfaces';
 export * from './policies';
 export * from './services';
 export * from './types';
+export * from './testing';
 export * from './content.module';
 export * from '@lyvely/content-interface';

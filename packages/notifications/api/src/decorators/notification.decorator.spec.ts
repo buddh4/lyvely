@@ -2,10 +2,10 @@ import { NotificationContext, NotificationType } from '../schemas';
 import { Notification } from './notification.decorator';
 import { Translatable } from '@lyvely/i18n';
 import { UrlRoute } from '@lyvely/common';
-import { expect } from '@jest/globals';
-import { createBasicTestingModule } from '@lyvely/testing';
+import { buildTest } from '@lyvely/testing';
 import { TestingModule } from '@nestjs/testing';
-import { NotificationTypeRegistry } from '@lyvely/notifications';
+import { NotificationTypeRegistry } from '../components';
+import { notificationTestPlugin } from '../testing/notification-test.plugin';
 
 const TEST_KEY = 'Notification decorator';
 
@@ -14,7 +14,7 @@ describe('Notification decorator', () => {
   let notificationRegistry: NotificationTypeRegistry;
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [], [], []).compile();
+    testingModule = await buildTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
     notificationRegistry = testingModule.get(NotificationTypeRegistry);
   });
 
@@ -26,14 +26,14 @@ describe('Notification decorator', () => {
       }
 
       getBody(format: NotificationContext): Translatable {
-        return undefined;
+        return '';
       }
 
       getTitle(format: NotificationContext): Translatable {
-        return undefined;
+        return '';
       }
 
-      getUrl(): UrlRoute {
+      getUrl(): UrlRoute | null {
         return null;
       }
 
