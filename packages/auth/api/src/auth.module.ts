@@ -12,7 +12,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController, ResetPasswordController } from './controllers';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, ModuleMeta } from '@lyvely/core';
+import { ConfigurationPath } from '@lyvely/core';
 import { CaptchaModule } from '@lyvely/captchas';
 
 @Module({
@@ -36,15 +36,6 @@ import { CaptchaModule } from '@lyvely/captchas';
     JwtResetPasswordStrategy,
     JwtAuthGuard,
     ResetPasswordService,
-    {
-      provide: 'modules.auth.meta',
-      useValue: new ModuleMeta({
-        id: 'auth',
-        path: __dirname,
-        name: 'Auth',
-        description: 'Lyvely user authentication module',
-      }),
-    },
   ],
   controllers: [AuthController, ResetPasswordController],
   exports: [JwtAuthService, JwtAuthGuard],

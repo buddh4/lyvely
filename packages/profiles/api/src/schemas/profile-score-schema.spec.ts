@@ -1,5 +1,5 @@
 import { ProfileScore, ProfileScoreSchema } from './index';
-import { buildTest, getObjectId } from '@lyvely/testing';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { Model } from 'mongoose';
 import {
   TestProfileScore,
@@ -10,10 +10,9 @@ import {
 } from '../testing';
 import { addDays, toTimingId } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/common';
-import { TestingModule } from '@nestjs/testing';
 
 describe('ProfileScore', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let TestProfileScoreModel: Model<TestProfileScoreDocument>;
 
@@ -35,6 +34,10 @@ describe('ProfileScore', () => {
     TestProfileScoreModel =
       testingModule.get<Model<TestProfileScoreDocument>>('TestProfileScoreModel');
     testDataUtils = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

@@ -1,29 +1,28 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { CalendarPlanFilter } from '@lyvely/common';
-import { TaskTestDataUtil, createTaskTestingModule } from '../test';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan';
+import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 import { UserDone } from '../schemas';
-import { TaskCalendarPlanService } from './services';
+import { TaskCalendarPlanService } from './task-calendar-plan.service';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('TaskCalendarPlanService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let taskTimeSeriesService: TaskCalendarPlanService;
   let testData: TaskTestDataUtil;
 
   const TEST_KEY = 'task_service';
 
   beforeEach(async () => {
-    testingModule = await createTaskTestingModule(TEST_KEY, [
-      TasksDao,
-      TaskCalendarPlanService,
-    ]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([taskTestPlugin])
+      .providers([TasksDao, TaskCalendarPlanService])
+      .compile();
     taskTimeSeriesService = testingModule.get(TaskCalendarPlanService);
     testData = testingModule.get(TaskTestDataUtil);
   });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   describe('findByFilter', () => {

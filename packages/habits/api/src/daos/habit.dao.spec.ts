@@ -1,12 +1,11 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { CalendarInterval } from '@lyvely/dates';
 import { Habit } from '../schemas';
 import { HabitTestDataUtil } from '../testing';
 import { HabitsDao } from './habits.dao';
 
 describe('Habits DAO', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let habitsDao: HabitsDao;
   let testData: HabitTestDataUtil;
 
@@ -16,6 +15,10 @@ describe('Habits DAO', () => {
     testingModule = await buildTest(TEST_KEY).providers([HabitsDao]).compile();
     habitsDao = testingModule.get(HabitsDao);
     testData = testingModule.get(HabitTestDataUtil);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

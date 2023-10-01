@@ -1,5 +1,4 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import {
   BaseProfileRelationRole,
   profilesTestPlugin,
@@ -22,7 +21,7 @@ import { mailTestPlugin, TestMailService } from '@lyvely/mails';
 import { notificationTestPlugin } from '@lyvely/notifications';
 
 describe('SendInvitations', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let invitesService: SendInvitationsService;
 
@@ -46,6 +45,10 @@ describe('SendInvitations', () => {
       .compile();
     invitesService = testingModule.get(SendInvitationsService);
     testData = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   it('is defined', () => {

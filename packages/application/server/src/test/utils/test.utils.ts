@@ -31,7 +31,7 @@ import { FeatureModule } from '@/features/feature.module';
 import { MailService } from '@/mails';
 import { TestMailService } from '@/mails/services/test-mail.service';
 import { TestConfigService } from '@/test/utils/test-config.service';
-import { UserOtpService } from '@/user-otp';
+import { OtpService } from '@/user-otp';
 import { TestOtpService } from '@/test/utils/test-otp.service';
 
 export function createCoreTestingModule(
@@ -104,7 +104,7 @@ export function createBasicTestingModule(
     .useClass(TestMailService)
     .overrideProvider(ConfigService)
     .useClass(TestConfigService)
-    .overrideProvider(UserOtpService)
+    .overrideProvider(OtpService)
     .useClass(TestOtpService);
 }
 

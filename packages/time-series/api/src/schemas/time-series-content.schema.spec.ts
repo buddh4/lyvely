@@ -1,6 +1,4 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils, createContentTestingModule } from '@lyvely/testing';
+import { TestDataUtils, createContentTestingModule, LyvelyTestingModule } from '@lyvely/testing';
 import { INestApplication } from '@nestjs/common';
 import { Content, ContentSchema } from '@lyvely/content';
 import {
@@ -26,7 +24,7 @@ const ContentModels = [
 ];
 
 describe('TimeSeriesContentSchema', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testData: TestDataUtils;
   let app: INestApplication;
   let TestTimeSeriesContentModel: Model<TestTimeSeriesContentDocument>;
@@ -44,6 +42,7 @@ describe('TimeSeriesContentSchema', () => {
   });
 
   afterEach(async () => {
+    testingModule.afterEach();
     await testData.reset(TEST_KEY);
     await app.close();
   });

@@ -1,13 +1,15 @@
-import { Provider, DynamicModule, ForwardReference } from '@nestjs/common';
+import { Provider, DynamicModule, ForwardReference, Injectable, Inject } from '@nestjs/common';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
-import { EventEmitterModule } from '@nestjs/event-emitter';
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModuleBuilder } from '@nestjs/testing';
+import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { CoreModule } from '@lyvely/core';
+import { CoreModule, ModuleRegistry, globalEmitter } from '@lyvely/core';
 import { PropertiesOf } from '@lyvely/common';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { TestConfigService } from './test-config.service';
 
 const mongods = new Map<string, MongoMemoryServer>();
 export type Type<T = any> = new (...args: any[]) => T;
@@ -15,6 +17,16 @@ export type Type<T = any> = new (...args: any[]) => T;
 export interface TestPlugin {
   apply?: (builder: LyvelyTestBuilder) => void;
   prepare?: (moduleBuilder: TestingModuleBuilder) => void;
+}
+
+export interface LyvelyTestingModule extends TestingModule {
+  afterEach(): void;
+}
+
+@Injectable()
+export class EventTester {
+  @Inject()
+  public eventEmitter: EventEmitter2;
 }
 
 export class LyvelyTestBuilder {
@@ -69,8 +81,14 @@ export class LyvelyTestBuilder {
     return moduleBuilder;
   }
 
-  async compile() {
-    return this.build().compile();
+  async compile(): Promise<LyvelyTestingModule> {
+    const testingModule = await this.build().compile();
+    (<LyvelyTestingModule>(<any>testingModule)).afterEach = () => {
+      testingModule.get(ModuleRegistry)?.reset();
+      testingModule.get(EventTester)?.eventEmitter.removeAllListeners();
+      globalEmitter.removeAllListeners();
+    };
+    return testingModule as LyvelyTestingModule;
   }
 }
 
@@ -97,6 +115,14 @@ export function createCoreTestingModule(
           };
         },
       }),
+      ThrottlerModule.forRootAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (config: ConfigService) => ({
+          ttl: config.get('http.rateLimit.ttl') || 60,
+          limit: config.get('http.rateLimit.limit') || 40,
+        }),
+      }),
       MongooseModule.forFeature([...models]),
       EventEmitterModule.forRoot({ wildcard: true }),
       ConfigModule.forRoot({
@@ -109,8 +135,10 @@ export function createCoreTestingModule(
       CoreModule,
       ...imports,
     ],
-    providers: [...providers],
-  });
+    providers: [EventTester, ...providers],
+  })
+    .overrideProvider(ConfigService)
+    .useClass(TestConfigService);
 }
 
 export function getObjectId(id: string) {

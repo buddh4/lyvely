@@ -1,5 +1,5 @@
 import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { Content, ContentLog, ContentMetadata, CreatedAs, ContentDataType } from '../schemas';
@@ -7,7 +7,7 @@ import { CreatedAsType } from '@lyvely/content-interface';
 import { contentTestPlugin } from '../testing';
 
 describe('Content Model', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let user: User;
   let profile: Profile;

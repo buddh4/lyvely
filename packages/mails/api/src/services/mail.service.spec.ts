@@ -1,17 +1,21 @@
-import { TestingModule } from '@nestjs/testing';
 import { MailService } from './mail.service';
 import fs from 'fs';
-import { createMailTestingModule } from '../testing/testing.util';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { mailTestPlugin } from '../testing';
 
 describe('MailService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let mailService: MailService;
 
   const TEST_KEY = 'membership_dao';
 
   beforeEach(async () => {
-    testingModule = await createMailTestingModule(TEST_KEY).compile();
+    testingModule = await buildTest(TEST_KEY).plugins([mailTestPlugin]).compile();
     mailService = testingModule.get(MailService);
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   it('is defined', () => {

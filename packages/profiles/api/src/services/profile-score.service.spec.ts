@@ -1,5 +1,4 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { ProfileScore, ProfileScoreSchema } from '../schemas';
 import {
   TestProfileScore,
@@ -20,7 +19,7 @@ const testScoreModelDef = {
 };
 
 describe('AbstractUserProfileActionService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testProfileActionService: TestProfileScoreService;
   let testData: ProfileTestDataUtils;
   let profileDao: ProfileDao;
@@ -43,6 +42,7 @@ describe('AbstractUserProfileActionService', () => {
 
   afterEach(async () => {
     await app.close();
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

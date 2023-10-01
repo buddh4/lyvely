@@ -1,35 +1,26 @@
-import { Profile } from '@lyvely/profiles';
+import { CreatedAsType } from '@lyvely/content';
+import { Profile, Tag } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { Habit } from './index';
+import { CalendarInterval } from '@lyvely/dates';
+import { CreateHabitModel, HabitModel } from '@lyvely/habits-interface';
 import {
-  CalendarInterval,
-  CreatedAsType,
-  CreateHabitModel,
   DataPointInputType,
   DataPointValueType,
-  HabitModel,
-  PropertiesOf,
-  UserAssignmentStrategy,
-} from '@lyvely/common';
-import { expect } from '@jest/globals';
-import mongoose from 'mongoose';
-import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
   NumberDataPointConfig,
 } from '@lyvely/time-series';
-import { Tag } from '@lyvely/profiles';
-import { getObjectId, TestDataUtils } from '@lyvely/testing';
+import { PropertiesOf, UserAssignmentStrategy } from '@lyvely/common';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { instanceToPlain } from 'class-transformer';
-import { TestingModule } from '@nestjs/testing';
-import { HabitTestDataUtil, createHabitTestingModule } from '../test';
+import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
 
 describe('Habit', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let habitsDao: HabitsDao;
-  let testData: TestDataUtils;
-  let habitData: HabitTestDataUtil;
+  let testData: HabitTestDataUtil;
 
   let user: User;
   let profile: Profile;
@@ -37,14 +28,20 @@ describe('Habit', () => {
   const TEST_KEY = 'habit_schema';
 
   beforeEach(async () => {
-    user = new User({ _id: new mongoose.Types.ObjectId() });
-    profile = new Profile(user, { _id: new mongoose.Types.ObjectId() });
+    user = new User({ _id: getObjectId('userA') });
+    profile = new Profile(user, { _id: getObjectId('profileA') });
     profile.tags = [new Tag({ _id: getObjectId('Test1'), name: 'Test1' })];
 
-    testingModule = await createHabitTestingModule(TEST_KEY, [HabitsDao]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([habitTestPlugin])
+      .providers([HabitsDao])
+      .compile();
     habitsDao = testingModule.get(HabitsDao);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    habitData = testingModule.get(HabitTestDataUtil);
+    testData = testingModule.get(HabitTestDataUtil);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('create', async () => {
@@ -65,8 +62,8 @@ describe('Habit', () => {
     expect(habit.pid).toEqual(profile._id);
     expect(habit.meta.createdBy).toEqual(user._id);
     expect(habit.meta.createdAs).toBeDefined();
-    expect(habit.meta.createdAs.type).toEqual(CreatedAsType.User);
-    expect(habit.meta.createdAs.authorId).toEqual(user._id);
+    expect(habit.meta.createdAs!.type).toEqual(CreatedAsType.User);
+    expect(habit.meta.createdAs!.authorId).toEqual(user._id);
     expect(habit.content.title).toEqual('Test');
     expect(habit.config.score).toEqual(5);
     expect(habit.timeSeriesConfig.strategy).toEqual(
@@ -93,7 +90,7 @@ describe('Habit', () => {
     overwrite?: (model: Habit) => void,
   ): Promise<Habit> {
     const { user, profile } = await testData.createUserAndProfile();
-    const content = await habitData.createHabit(user, profile, data, overwrite);
+    const content = await testData.createHabit(user, profile, data, overwrite);
     return <Habit>await habitsDao.findByProfileAndId(profile, content._id);
   }
 

@@ -1,5 +1,4 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 import { LiveService } from './live.service';
 import { assureStringId } from '@lyvely/core';
@@ -7,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/live-interface';
 
 describe('LiveService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let liveService: LiveService;
   let testData: ProfileTestDataUtils;
 
@@ -20,6 +19,10 @@ describe('LiveService', () => {
       .compile();
     liveService = testingModule.get(LiveService);
     testData = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

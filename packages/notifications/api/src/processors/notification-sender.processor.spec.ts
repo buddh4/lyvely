@@ -1,17 +1,16 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
-import { NotificationDao } from '@lyvely/notifications';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { NotificationDao, Notification as NotificationDecorator } from '../index';
 import { Notification, NotificationContext, NotificationType, RenderFormat } from '../schemas';
-import { SingleUserSubscription } from '@lyvely/user';
+import { SingleUserSubscription } from '@lyvely/user-subscriptions';
 import { NotificationSenderProcessor } from './notification-sender.processor';
 import { UserNotificationsService } from '../services';
 import { UserInfo } from '@lyvely/users';
-import { Notification as NotificationDecorator } from '@lyvely/notifications';
 import { Prop } from '@nestjs/mongoose';
 import { Translatable } from '@lyvely/i18n';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
 import { TestNotificationCategory } from '../notifications';
+import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { notificationTestPlugin } from '../testing';
 
 const TEST_KEY = 'NotificationSendProcessor';
 
@@ -26,7 +25,7 @@ export class MyTestNotification extends NotificationType<MyTestNotification> {
     return {
       key: 'test.notification.body',
       params: {
-        user: escapeHtmlIf(this.userInfo?.name, context.format === RenderFormat.HTML),
+        user: escapeHtmlIf(this.userInfo!.name, context.format === RenderFormat.HTML),
       },
     };
   }
@@ -35,8 +34,8 @@ export class MyTestNotification extends NotificationType<MyTestNotification> {
     return { key: 'test.notification.title' };
   }
 
-  getUrl(): UrlRoute {
-    return undefined;
+  getUrl(): UrlRoute | null {
+    return null;
   }
 
   getCategory(): string {
@@ -45,22 +44,24 @@ export class MyTestNotification extends NotificationType<MyTestNotification> {
 }
 
 describe('NotificationSendProcessor', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let notificationDao: NotificationDao;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
   let processor: NotificationSenderProcessor;
   let userNotificationService: UserNotificationsService;
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [], [], []).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin, notificationTestPlugin])
+      .compile();
     notificationDao = testingModule.get(NotificationDao);
-    testData = testingModule.get(TestDataUtils);
+    testData = testingModule.get(ProfileTestDataUtils);
     processor = testingModule.get(NotificationSenderProcessor);
     userNotificationService = testingModule.get(UserNotificationsService);
   });
 
   afterEach(async () => {
-    await testData.reset(TEST_KEY);
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {
@@ -81,10 +82,10 @@ describe('NotificationSendProcessor', () => {
         notification,
       );
       expect(userNotification).toBeDefined();
-      const emailDelivery = userNotification.getChannelDeliveryStatus('email');
+      const emailDelivery = userNotification!.getChannelDeliveryStatus('email');
       expect(emailDelivery).toBeDefined();
-      expect(emailDelivery.success).toEqual(true);
-      expect(userNotification.status.deliveredAt).toBeDefined();
+      expect(emailDelivery!.success).toEqual(true);
+      expect(userNotification!.status.deliveredAt).toBeDefined();
     });
   });
 });

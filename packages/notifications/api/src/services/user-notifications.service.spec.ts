@@ -1,6 +1,4 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { UserNotificationsService } from './user-notifications.service';
 import { MultiUserSubscription } from '@lyvely/user-subscriptions';
 import {
@@ -9,16 +7,25 @@ import {
   RenderFormat,
   NotificationContext,
   Notification,
-} from '@lyvely/notifications';
-import { Profile, ProfileInfo, UserContext } from '@lyvely/profiles';
+} from '../index';
+import {
+  Profile,
+  ProfileInfo,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+  UserContext,
+} from '@lyvely/profiles';
 import { User, UserInfo } from '@lyvely/users';
 import { assureObjectId } from '@lyvely/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
-import { escapeHtmlIf, StreamRequest, UrlRoute } from '@lyvely/common';
+import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
+import { StreamRequest } from '@lyvely/streams';
 import { Prop } from '@nestjs/mongoose';
 import { Notification as BaseNotification } from '../schemas';
 import { Translatable } from '@lyvely/i18n';
 import { TestNotificationCategory } from '../notifications';
+import { notificationTestPlugin } from '../testing';
+import mongoose from 'mongoose';
 
 const TEST_KEY = 'UserNotificationsService';
 
@@ -33,7 +40,7 @@ export class MyTestNotification extends NotificationType<MyTestNotification> {
     return {
       key: 'test.notification.body',
       params: {
-        user: escapeHtmlIf(this.userInfo?.name, ctx.format === RenderFormat.HTML),
+        user: escapeHtmlIf(this.userInfo!.name, ctx.format === RenderFormat.HTML),
       },
     };
   }
@@ -42,8 +49,8 @@ export class MyTestNotification extends NotificationType<MyTestNotification> {
     return { key: 'test.notification.title' };
   }
 
-  getUrl(): UrlRoute {
-    return undefined;
+  getUrl(): UrlRoute | null {
+    return null;
   }
 
   getCategory(): string {
@@ -52,22 +59,24 @@ export class MyTestNotification extends NotificationType<MyTestNotification> {
 }
 
 describe('UserNotificationsService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let userNotificationsService: UserNotificationsService;
   let notificationDao: NotificationDao;
   let userNotificationDao: UserNotificationDao;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY, [], [], []).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin, notificationTestPlugin])
+      .compile();
     userNotificationsService = testingModule.get(UserNotificationsService);
     notificationDao = testingModule.get(NotificationDao);
     userNotificationDao = testingModule.get(UserNotificationDao);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
+    testData = testingModule.get(ProfileTestDataUtils);
   });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {
@@ -79,7 +88,7 @@ describe('UserNotificationsService', () => {
   async function createTestNotification(
     user: User,
     profile: Profile,
-    uids: TObjectId[],
+    uids: mongoose.Types.ObjectId[],
     sortOrder?: number,
   ) {
     const notification = new BaseNotification(

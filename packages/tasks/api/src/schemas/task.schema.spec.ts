@@ -1,9 +1,9 @@
 import { getObjectId } from '@lyvely/testing';
 import { Task } from './index';
-import { CalendarInterval, toTimingId, UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy } from '@lyvely/common';
+import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { User } from '@lyvely/users';
 import { Profile } from '@lyvely/profiles';
-import { expect } from '@jest/globals';
 
 describe('Task', () => {
   describe('setDoneBy', () => {

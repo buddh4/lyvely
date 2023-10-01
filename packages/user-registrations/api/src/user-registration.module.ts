@@ -4,8 +4,8 @@ import { ProfilesModule } from '@lyvely/profiles';
 import { UsersModule } from '@lyvely/users';
 import { UserRegistrationService } from './services/user-registration.service';
 import { AuthModule } from '@lyvely/auth';
-import { UserOtpModule } from '@lyvely/otp';
-import { InvitationsModule } from '@lyvely/invitations';
+import { OtpModule } from '@lyvely/otp';
+import { InvitationsModule } from '@lyvely/user-invitations';
 import { SystemMessagesModule } from '@lyvely/system-messages';
 
 @Module({
@@ -13,7 +13,7 @@ import { SystemMessagesModule } from '@lyvely/system-messages';
     UsersModule,
     AuthModule,
     ProfilesModule,
-    UserOtpModule,
+    OtpModule,
     InvitationsModule,
     SystemMessagesModule,
   ],

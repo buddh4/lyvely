@@ -25,7 +25,7 @@ interface IOtpValidationOptions<TContext = any> {
 const DEFAULT_OTP_EXPIRATION = '2m';
 
 @Injectable()
-export class UserOtpService<TContext = any> {
+export class OtpService<TContext = any> {
   constructor(private readonly userOtpDao: UserOtpDao) {}
 
   async createOrUpdateUserOtp(

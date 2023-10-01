@@ -1,26 +1,25 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
 import { getDefaultLocale, RefreshToken, User, UserDocument } from './index';
 import { Model } from 'mongoose';
-import { createBasicTestingModule, TestDataUtils } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { addDays } from '@lyvely/dates';
-import bcrypt from 'bcrypt';
+import { compare } from 'bcrypt';
+import { usersTestPlugin, UserTestDataUtils } from '../testing';
 
 describe('Users schema', () => {
-  let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testingModule: LyvelyTestingModule;
+  let testData: UserTestDataUtils;
   let UserModel: Model<UserDocument>;
 
   const TEST_KEY = 'user_schema';
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule(TEST_KEY).compile();
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
+    testingModule = await buildTest(TEST_KEY).plugins([usersTestPlugin]).compile();
+    testData = testingModule.get(UserTestDataUtils);
     UserModel = testingModule.get<Model<UserDocument>>('UserModel');
   });
 
   afterEach(async () => {
-    await testData.reset(TEST_KEY);
+    testingModule.afterEach();
   });
 
   describe('create', () => {
@@ -54,8 +53,8 @@ describe('Users schema', () => {
       );
       expect(user.password).not.toEqual('Password');
       const updated = await UserModel.findById(user._id);
-      expect(updated.password).not.toEqual('Password');
-      expect(await bcrypt.compare('Password', updated.password)).toEqual(true);
+      expect(updated!.password).not.toEqual('Password');
+      expect(await compare('Password', updated!.password)).toEqual(true);
     });
 
     it('save', async () => {
@@ -67,19 +66,19 @@ describe('Users schema', () => {
       await user.save();
 
       const updated = await UserModel.findById(user._id);
-      expect(updated.password).not.toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      expect(updated!.password).not.toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
     });
 
     it('update', async () => {
       const user = await testData.createUser('test', { password: 'whatever' });
       const oldPassword = user.password;
-      await UserModel.update({ _id: user._id }, { password: 'newPassword' });
+      await UserModel.updateOne({ _id: user._id }, { password: 'newPassword' });
       const updated = await UserModel.findById(user._id);
-      expect(updated.password).not.toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      expect(updated!.password).not.toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
     });
 
     it('updateOne', async () => {
@@ -87,9 +86,9 @@ describe('Users schema', () => {
       const oldPassword = user.password;
       await UserModel.updateOne({ _id: user._id }, { password: 'newPassword' });
       const updated = await UserModel.findById(user._id);
-      expect(updated.password).not.toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      expect(updated!.password).not.toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
     });
 
     it('updateOne with $set', async () => {
@@ -97,9 +96,9 @@ describe('Users schema', () => {
       const oldPassword = user.password;
       await UserModel.updateOne({ _id: user._id }, { $set: { password: 'newPassword' } });
       const updated = await UserModel.findById(user._id);
-      expect(updated.password).not.toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      expect(updated!.password).not.toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
     });
 
     it('updateMany does not allow password set', async () => {
@@ -107,9 +106,9 @@ describe('Users schema', () => {
       const oldPassword = user.password;
       await UserModel.updateMany({}, { password: 'newPassword' });
       const updated = await UserModel.findById(user._id);
-      expect(updated.password).toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(false);
+      expect(updated!.password).toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(false);
     });
 
     it('updateMany with $set does not allow password set', async () => {
@@ -117,9 +116,9 @@ describe('Users schema', () => {
       const oldPassword = user.password;
       await UserModel.updateMany({}, { $set: { password: 'newPassword' } });
       const updated = await UserModel.findById(user._id);
-      expect(updated.password).toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(false);
+      expect(updated!.password).toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(false);
     });
 
     it('findOneAndUpdate', async () => {
@@ -130,9 +129,9 @@ describe('Users schema', () => {
         { password: 'newPassword' },
         { new: true },
       );
-      expect(updated.password).not.toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      expect(updated!.password).not.toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
     });
 
     it('replaceOne', async () => {
@@ -143,9 +142,9 @@ describe('Users schema', () => {
         new User({ username: 'Test', password: 'newPassword', email: 'Tester@test.de' }),
       );
       const updated = await UserModel.findById(user._id);
-      expect(updated.password).not.toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      expect(updated!.password).not.toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
     });
 
     it('findOneAndReplace', async () => {
@@ -156,9 +155,9 @@ describe('Users schema', () => {
         new User({ username: 'Test', password: 'newPassword', email: 'Tester@test.de' }),
         { new: true },
       );
-      expect(updated.password).not.toEqual(oldPassword);
-      expect(updated.password).not.toEqual('newPassword');
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
+      expect(updated!.password).not.toEqual(oldPassword);
+      expect(updated!.password).not.toEqual('newPassword');
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
     });
   });
 

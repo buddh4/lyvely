@@ -1,5 +1,4 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { ContentDao } from './index';
 import { Content, ContentSchema } from '../schemas';
 import { TestContent, TestContentDocument, TestContentSchema } from '../testing';
@@ -9,7 +8,7 @@ import { Profile, ProfileTestDataUtils } from '@lyvely/profiles';
 import { ContentTypeRegistry } from '../components';
 
 describe('content dao', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let contentDao: ContentDao;
   let contentTypeRegistry: ContentTypeRegistry;
   let testContentModel: Model<TestContentDocument>;
@@ -33,6 +32,10 @@ describe('content dao', () => {
     contentDao = testingModule.get<ContentDao>(ContentDao);
     contentTypeRegistry = testingModule.get<ContentTypeRegistry>(ContentTypeRegistry);
     testContentModel = testingModule.get<Model<TestContentDocument>>('TestContentModel');
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   async function createTestContent(user: User, profile: Profile, testData = 'Testing...') {

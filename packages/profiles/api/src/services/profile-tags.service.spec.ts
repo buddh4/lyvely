@@ -1,16 +1,13 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest, getObjectId } from '@lyvely/testing';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { Tag } from '../schemas';
 import { ProfileTagsService, ProfilesService } from './index';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
-import { ModuleRegistry } from '@lyvely/core';
 
 describe('ProfileTagsService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let profileTagsService: ProfileTagsService;
   let profileService: ProfilesService;
   let testData: ProfileTestDataUtils;
-  let moduleRegistry: ModuleRegistry;
 
   const TEST_KEY = 'profile_service';
 
@@ -19,11 +16,10 @@ describe('ProfileTagsService', () => {
     profileTagsService = testingModule.get<ProfileTagsService>(ProfileTagsService);
     profileService = testingModule.get<ProfilesService>(ProfilesService);
     testData = testingModule.get(ProfileTestDataUtils);
-    moduleRegistry = testingModule.get(ModuleRegistry);
   });
 
   afterEach(() => {
-    moduleRegistry.reset();
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

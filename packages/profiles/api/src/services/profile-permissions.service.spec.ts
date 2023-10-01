@@ -1,5 +1,4 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import {
   TOKEN_DEFAULT_PROFILE_PERMISSIONS,
   TOKEN_PROFILE_ROLES_DEFINITION,
@@ -16,13 +15,11 @@ import {
   BaseMembershipRole,
   BaseProfileRelationRole,
 } from '@lyvely/profiles-interface';
-import { ModuleRegistry } from '@lyvely/core';
 
 describe('ProfilePermissionsService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let permissionsService: ProfilePermissionsService;
-  let moduleRegistry: ModuleRegistry;
 
   const rolesDefinitionProvider = {
     provide: TOKEN_PROFILE_ROLES_DEFINITION,
@@ -121,11 +118,10 @@ describe('ProfilePermissionsService', () => {
       .compile();
     permissionsService = testingModule.get<ProfilePermissionsService>(ProfilePermissionsService);
     testDataUtils = testingModule.get(ProfileTestDataUtils);
-    moduleRegistry = testingModule.get(ModuleRegistry);
   });
 
   afterEach(() => {
-    moduleRegistry.reset();
+    testingModule.afterEach();
   });
 
   // TODO: Seperate between default permission tests and configured permission test

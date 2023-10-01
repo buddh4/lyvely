@@ -1,23 +1,19 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { Content, ContentSchema } from './schemas';
 import {
+  contentTestPlugin,
   TestContent,
   TestContentB,
   TestContentBSchema,
   TestContentSchema,
-} from './test/test-content.schema';
-import {
-  ContentCoreModule,
-  ContentModule,
-  ContentService,
-  ContentTypeRegistry,
-} from '@lyvely/content';
+} from './testing';
 import { INestApplication, Module } from '@nestjs/common';
+import { ContentCoreModule, ContentModule } from './content.module';
+import { ContentService } from './services';
+import { ContentTypeRegistry } from './components';
 
 describe('content module', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let contentService: ContentService;
   let contentTypeRegistry: ContentTypeRegistry;
   let app: INestApplication;
@@ -43,14 +39,18 @@ describe('content module', () => {
   class TestModule {}
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule('content_module', [], TestModels, [
-      ContentCoreModule,
-      TestModule,
-    ]).compile();
+    testingModule = await buildTest('content_module')
+      .imports([ContentCoreModule, TestModule])
+      .models(TestModels)
+      .compile();
     contentService = testingModule.get<ContentService>(ContentService);
     contentTypeRegistry = testingModule.get<ContentTypeRegistry>(ContentTypeRegistry);
     app = testingModule.createNestApplication();
     await app.init();
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

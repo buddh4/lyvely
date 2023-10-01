@@ -1,38 +1,40 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { CalendarInterval, CalendarPlanFilter, sortBySortOrder } from '@lyvely/common';
+import { sortBySortOrder } from '@lyvely/common';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan';
+import { CalendarInterval } from '@lyvely/dates';
 import { Profile } from '@lyvely/profiles';
-import { createHabitTestingModule, HabitTestDataUtil } from '../test';
+import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitDataPointDao, HabitsDao } from '../daos';
 import { User } from '@lyvely/users';
 import { HabitDataPointService } from './habit-data-point.service';
 import { HabitsService } from './habits.service';
 import { Habit } from '../schemas';
 import { HabitTimeSeriesService } from './habit-time-series.service';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('HabitTimeSeriesService', () => {
   let habitsTimeSeriesService: HabitTimeSeriesService;
-  let habitsService: HabitsService;
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testData: HabitTestDataUtil;
 
   const TEST_KEY = 'habit_time_series_service';
 
   beforeEach(async () => {
-    testingModule = await createHabitTestingModule(TEST_KEY, [
-      HabitsDao,
-      HabitDataPointDao,
-      HabitTimeSeriesService,
-      HabitDataPointService,
-      HabitsService,
-    ]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([habitTestPlugin])
+      .providers([
+        HabitsDao,
+        HabitDataPointDao,
+        HabitTimeSeriesService,
+        HabitDataPointService,
+        HabitsService,
+      ])
+      .compile();
     habitsTimeSeriesService = testingModule.get(HabitTimeSeriesService);
-    habitsService = testingModule.get(HabitsService);
     testData = testingModule.get(HabitTestDataUtil);
   });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   describe('findByFilter', () => {

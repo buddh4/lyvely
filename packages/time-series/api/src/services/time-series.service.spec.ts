@@ -1,26 +1,23 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { createContentTestingModule, TestDataUtils } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { UserAssignmentStrategy } from '@lyvely/common';
 import {
-  CalendarInterval,
   DataPointValueType,
-  subtractDays,
-  toTimingId,
-  UserAssignmentStrategy,
-} from '@lyvely/common';
+  CheckboxNumberDataPointConfig,
+  getDataPointModelDefinition,
+} from '../index';
+import { CalendarInterval, subtractDays, toTimingId } from '@lyvely/dates';
 import {
   TestDataPointDao,
   TestDataPointService,
   TestTimeSeriesContent,
   TestTimeSeriesContentSchema,
-} from '../test';
-import { Content, ContentSchema } from '@lyvely/content';
+  TestTimeSeriesService,
+  TestTimeSeriesContentDao,
+} from '../testing';
+import { Content, ContentSchema, contentTestPlugin } from '@lyvely/content';
 import { Model } from 'mongoose';
-import { CheckboxNumberDataPointConfig, getDataPointModelDefinition } from '../';
 import { User } from '@lyvely/users';
-import { Profile } from '@lyvely/profiles';
-import { TestTimeSeriesService } from './test-time-series.service';
-import { TestTimeSeriesContentDao } from './test-time-series-content.dao';
+import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 
 const Models = [
   {
@@ -36,25 +33,33 @@ const Models = [
 ];
 
 describe('TimeSeriesService', () => {
-  let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testingModule: LyvelyTestingModule;
+  let testData: ProfileTestDataUtils;
   let service: TestTimeSeriesService;
   let contentDao: TestTimeSeriesContentDao;
-  // let dataPointService: TestDataPointService;
   let TestNumberTimeSeriesContentModel: Model<TestTimeSeriesContent>;
 
   const TEST_KEY = 'DataPointService';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(
-      TEST_KEY,
-      [TestDataPointDao, TestDataPointService, TestTimeSeriesContentDao, TestTimeSeriesService],
-      Models,
-    ).compile();
-    testData = testingModule.get(TestDataUtils);
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin, contentTestPlugin])
+      .providers([
+        TestDataPointDao,
+        TestDataPointService,
+        TestTimeSeriesContentDao,
+        TestTimeSeriesService,
+      ])
+      .models(Models)
+      .compile();
+    testData = testingModule.get(ProfileTestDataUtils);
     service = testingModule.get(TestTimeSeriesService);
     contentDao = testingModule.get(TestTimeSeriesContentDao);
     TestNumberTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   async function createTimeSeriesContent(
@@ -94,10 +99,10 @@ describe('TimeSeriesService', () => {
       await service.upsertDataPoint(profile, user, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
-      expect(updatedContent.timeSeriesSummary).toBeDefined();
-      expect(updatedContent.timeSeriesSummary.window?.length).toEqual(1);
-      expect(updatedContent.timeSeriesSummary.window[0].value).toEqual(5);
-      expect(updatedContent.timeSeriesSummary.window[0].tid).toEqual(
+      expect(updatedContent!.timeSeriesSummary).toBeDefined();
+      expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(1);
+      expect(updatedContent!.timeSeriesSummary.window[0].value).toEqual(5);
+      expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
         toTimingId(date, CalendarInterval.Daily),
       );
     });
@@ -110,8 +115,8 @@ describe('TimeSeriesService', () => {
       await service.upsertDataPoint(profile, user, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
-      expect(updatedContent.timeSeriesSummary).toBeDefined();
-      expect(updatedContent.timeSeriesSummary.window?.length).toEqual(0);
+      expect(updatedContent!.timeSeriesSummary).toBeDefined();
+      expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(0);
     });
 
     it('boundary of window update creates new summary entry', async () => {
@@ -122,10 +127,10 @@ describe('TimeSeriesService', () => {
       await service.upsertDataPoint(profile, user, content, date, 5);
       const updatedContent = await contentDao.reload(content);
 
-      expect(updatedContent.timeSeriesSummary).toBeDefined();
-      expect(updatedContent.timeSeriesSummary.window?.length).toEqual(1);
-      expect(updatedContent.timeSeriesSummary.window[0].value).toEqual(5);
-      expect(updatedContent.timeSeriesSummary.window[0].tid).toEqual(
+      expect(updatedContent!.timeSeriesSummary).toBeDefined();
+      expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(1);
+      expect(updatedContent!.timeSeriesSummary.window[0].value).toEqual(5);
+      expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
         toTimingId(date, CalendarInterval.Daily),
       );
     });
@@ -140,11 +145,11 @@ describe('TimeSeriesService', () => {
       await service.upsertDataPoint(profile, user, content, yesterday, 3);
       const updatedContent = await contentDao.reload(content);
 
-      expect(updatedContent.timeSeriesSummary.window?.length).toEqual(2);
-      expect(updatedContent.timeSeriesSummary.window[0].tid).toEqual(
+      expect(updatedContent!.timeSeriesSummary.window?.length).toEqual(2);
+      expect(updatedContent!.timeSeriesSummary.window[0].tid).toEqual(
         toTimingId(yesterday, CalendarInterval.Daily),
       );
-      expect(updatedContent.timeSeriesSummary.window[1].tid).toEqual(
+      expect(updatedContent!.timeSeriesSummary.window[1].tid).toEqual(
         toTimingId(today, CalendarInterval.Daily),
       );
     });

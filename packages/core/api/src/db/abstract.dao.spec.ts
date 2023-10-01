@@ -3,13 +3,11 @@ import { AbstractDao } from './abstract.dao';
 import { ModelSaveEvent } from './dao.events';
 import { BaseEntity } from './base.entity';
 import { Model } from 'mongoose';
-import { TestingModule } from '@nestjs/testing';
 import { createCoreTestingModule, getObjectId } from '../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Inject, Injectable } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { globalEmitter } from '../global.emitter';
-import { ModuleRegistry } from '../components';
+import { buildTest, LyvelyTestingModule, EventTester } from '@lyvely/testing';
 
 interface ITestEntity {
   requiredField: string;
@@ -51,12 +49,6 @@ class TestEntityDao extends AbstractDao<TestEntity> {
   }
 }
 
-@Injectable()
-class EventTester {
-  @Inject()
-  public eventEmitter: EventEmitter2;
-}
-
 const TEST_KEY = 'abstract_dao';
 
 const TestEntityModelDefinition: ModelDefinition = {
@@ -66,26 +58,23 @@ const TestEntityModelDefinition: ModelDefinition = {
 };
 
 describe('AbstractDao', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let dao: TestEntityDao;
   let eventTester: EventTester;
-  let moduleRegistry: ModuleRegistry;
 
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule(
-      TEST_KEY,
-      [TestEntityDao, EventTester],
-      [TestEntityModelDefinition],
-    ).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .providers([TestEntityDao, EventTester])
+      .models([TestEntityModelDefinition])
+      .compile();
     dao = testingModule.get<TestEntityDao>(TestEntityDao);
     eventTester = testingModule.get<EventTester>(EventTester);
-    moduleRegistry = testingModule.get(ModuleRegistry);
   });
 
   afterEach(() => {
+    testingModule.afterEach();
     eventTester.eventEmitter.removeAllListeners();
     globalEmitter.removeAllListeners();
-    moduleRegistry.reset();
   });
 
   it('should be defined', () => {

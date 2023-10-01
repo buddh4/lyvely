@@ -1,6 +1,5 @@
-import { TestingModule } from '@nestjs/testing';
 import { ProfileTestDataUtils, profilesTestPlugin } from '@lyvely/profiles';
-import { buildTest, getObjectId } from '@lyvely/testing';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import {
   Content,
   ContentMetadata,
@@ -67,7 +66,7 @@ class TestMilestoneRelationProvider {
 }
 
 describe('MileStonesRelationService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let service: MilestonesRelationsService;
   let TestContentModel: Model<TestContent>;
@@ -91,6 +90,7 @@ describe('MileStonesRelationService', () => {
   });
 
   afterEach(async () => {
+    testingModule.afterEach();
     await app.close();
     testProvider.reset();
   });

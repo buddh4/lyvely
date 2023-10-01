@@ -1,5 +1,4 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest, createTestExecutionContext } from '@lyvely/testing';
+import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@lyvely/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { Feature, FeatureGuard, FeatureModule, FeatureRegistry } from '../';
 
@@ -17,7 +16,7 @@ class TestController {
 }
 
 describe('ProfileGuard', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let featureGuard: FeatureGuard;
   let featureRegistry: FeatureRegistry;
   let context: ExecutionContext;
@@ -52,6 +51,10 @@ describe('ProfileGuard', () => {
         description: 'Specific test sub feature',
       },
     ]);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

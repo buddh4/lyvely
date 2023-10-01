@@ -1,5 +1,4 @@
-import { expect } from '@jest/globals';
-import { Timer, TimeSpan } from '@/calendar';
+import { Timer, TimeSpan } from './timer.schema';
 
 describe('TimerSchema', () => {
   describe('start', () => {

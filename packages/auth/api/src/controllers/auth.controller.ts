@@ -28,7 +28,7 @@ import { ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/auth-interface'
 import { Headers } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { ModuleMeta, Public, UseClassSerializer, ConfigurationPath } from '@lyvely/core';
+import { Public, UseClassSerializer, ConfigurationPath } from '@lyvely/core';
 
 @Controller(ENDPOINT_AUTH)
 @UseClassSerializer()
@@ -36,7 +36,6 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   constructor(
     private authService: JwtAuthService,
     protected configService: ConfigService<ConfigurationPath>,
-    @Inject('modules.auth.meta') private meta: ModuleMeta,
   ) {
     super(configService);
   }
@@ -88,7 +87,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     await this.authService.destroyRefreshToken(user, oldRefreshToken.vid);
     this.setRefreshCookie(
       req,
-      await this.authService.createRefreshToken(user, vid, oldRefreshToken.remember),
+      await this.authService.createRefreshToken(user, vid, !!oldRefreshToken.remember),
       !!oldRefreshToken.remember,
     );
 

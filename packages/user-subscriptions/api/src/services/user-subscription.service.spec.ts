@@ -1,6 +1,4 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import {
   MultiUserSubscription,
   ProfileSubscription,
@@ -14,7 +12,7 @@ import {
 } from '@lyvely/profiles';
 
 describe('UserSubscriptionService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let userSubscriptionService: UserSubscriptionService;
 
@@ -22,11 +20,15 @@ describe('UserSubscriptionService', () => {
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin()])
+      .plugins([profilesTestPlugin])
       .providers([UserSubscriptionService])
       .compile();
     userSubscriptionService = testingModule.get(UserSubscriptionService);
     testData = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

@@ -1,6 +1,5 @@
-import { TestingModule } from '@nestjs/testing';
 import { PolicyService } from './policy.service';
-import { buildTest, createTestExecutionContext } from '@lyvely/testing';
+import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@lyvely/testing';
 import { IPolicy } from '../interfaces';
 import { Injectable } from '@nestjs/common';
 
@@ -19,7 +18,7 @@ class FalsePolicy implements IPolicy<any> {
 }
 
 describe('PolicyService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let policyService: PolicyService;
 
   const TEST_KEY = 'policy-service';
@@ -29,6 +28,10 @@ describe('PolicyService', () => {
       .providers([PolicyService, TruePolicy, FalsePolicy])
       .compile();
     policyService = testingModule.get<PolicyService>(PolicyService);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

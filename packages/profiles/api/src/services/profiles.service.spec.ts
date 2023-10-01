@@ -1,4 +1,3 @@
-import { TestingModule } from '@nestjs/testing';
 import { ProfilesService } from './index';
 import { UniqueConstraintException } from '@lyvely/common';
 import {
@@ -6,16 +5,14 @@ import {
   BaseMembershipRole,
   BaseUserProfileRelationType,
 } from '@lyvely/profiles-interface';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
-import { ModuleRegistry } from '@lyvely/core';
 
 describe('ProfileService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let profileService: ProfilesService;
   let testData: ProfileTestDataUtils;
-  let moduleRegistry: ModuleRegistry;
 
   const TEST_KEY = 'profile_service_group';
 
@@ -23,11 +20,10 @@ describe('ProfileService', () => {
     testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
     profileService = testingModule.get<ProfilesService>(ProfilesService);
     testData = testingModule.get(ProfileTestDataUtils);
-    moduleRegistry = testingModule.get(ModuleRegistry);
   });
 
   afterEach(() => {
-    moduleRegistry.reset();
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

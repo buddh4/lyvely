@@ -1,4 +1,3 @@
-import { TestingModule } from '@nestjs/testing';
 import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitDataPointService } from './habit-data-point.service';
 import { HabitDataPointDao } from '../daos';
@@ -8,11 +7,11 @@ import { UserAssignmentStrategy } from '@lyvely/common';
 import { ContentScoreDao, ContentScoreService } from '@lyvely/content';
 import { Model } from 'mongoose';
 import { DataPoint } from '@lyvely/time-series';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('HabitDataPointService', () => {
   let habitDataPointService: HabitDataPointService;
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testData: HabitTestDataUtil;
   let contentScoreDao: ContentScoreDao;
   let HabitDataPointModel: Model<DataPoint>;
@@ -28,6 +27,10 @@ describe('HabitDataPointService', () => {
     testData = testingModule.get(HabitTestDataUtil);
     contentScoreDao = testingModule.get<ContentScoreDao>(ContentScoreDao);
     HabitDataPointModel = testingModule.get<Model<DataPoint>>('HabitDataPointModel');
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   describe('findLogsByRange', () => {

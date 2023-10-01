@@ -1,19 +1,18 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { createContentTestingModule, TestDataUtils } from '@lyvely/testing';
-import { CalendarInterval, DataPointValueType, UserAssignmentStrategy } from '@lyvely/common';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { UserAssignmentStrategy } from '@lyvely/common';
+import { DataPointValueType, getDataPointModelDefinition, TimerDataPointConfig } from '../index';
+import { CalendarInterval } from '@lyvely/dates';
 import {
   TestDataPointDao,
   TestDataPointService,
   TestTimeSeriesContent,
   TestTimeSeriesContentSchema,
-} from '../test';
-import { Content, ContentSchema } from '@lyvely/content';
+  TestTimerDataPointService,
+} from '../testing';
+import { Content, ContentSchema, contentTestPlugin } from '@lyvely/content';
 import { Model } from 'mongoose';
-import { getDataPointModelDefinition, TimerDataPointConfig } from '../';
 import { User } from '@lyvely/users';
-import { Profile } from '@lyvely/profiles';
-import { TestTimerDataPointService } from '../test';
+import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 
 const Models = [
   {
@@ -26,8 +25,8 @@ const Models = [
 ];
 
 describe('TimerDataPointService', () => {
-  let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testingModule: LyvelyTestingModule;
+  let testData: ProfileTestDataUtils;
   let service: TestTimerDataPointService;
   // let dataPointService: TestDataPointService;
   let TestTimeSeriesContentModel: Model<TestTimeSeriesContent>;
@@ -35,14 +34,18 @@ describe('TimerDataPointService', () => {
   const TEST_KEY = 'NumberDataPointService';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(
-      TEST_KEY,
-      [TestDataPointDao, TestDataPointService, TestTimerDataPointService],
-      Models,
-    ).compile();
-    testData = testingModule.get(TestDataUtils);
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin, contentTestPlugin])
+      .providers([TestDataPointDao, TestDataPointService, TestTimerDataPointService])
+      .models(Models)
+      .compile();
+    testData = testingModule.get(ProfileTestDataUtils);
     service = testingModule.get(TestTimerDataPointService);
     TestTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   async function createTimeSeriesContent(

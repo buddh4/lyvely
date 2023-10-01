@@ -1,37 +1,34 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
 import { HabitsService } from './habits.service';
-import {
-  CalendarInterval,
-  CreateHabitModel,
-  DataPointInputType,
-  PropertiesOf,
-  UpdateHabitModel,
-  UserAssignmentStrategy,
-  DataPointValueType,
-} from '@lyvely/common';
+import { PropertiesOf, UserAssignmentStrategy } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
+import { DataPointValueType, DataPointInputType } from '@lyvely/time-series';
+import { UpdateHabitModel, CreateHabitModel } from '@lyvely/habits-interface';
 import { Profile } from '@lyvely/profiles';
-import { HabitTestDataUtil, createHabitTestingModule } from '../test';
+import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
 import { User } from '@lyvely/users';
 import { Habit } from '../schemas';
 import { assureStringId } from '@lyvely/core';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('HabitService', () => {
   let habitsService: HabitsService;
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testData: HabitTestDataUtil;
 
   const TEST_KEY = 'habit_service';
 
   beforeEach(async () => {
-    testingModule = await createHabitTestingModule(TEST_KEY, [HabitsDao, HabitsService]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([habitTestPlugin])
+      .providers([HabitsDao, HabitsService])
+      .compile();
     habitsService = testingModule.get<HabitsService>(HabitsService);
     testData = testingModule.get(HabitTestDataUtil);
   });
 
   afterEach(async () => {
-    await testData.reset(TEST_KEY);
+    testingModule.afterEach();
   });
 
   const createHabit = async (
@@ -93,14 +90,14 @@ describe('HabitService', () => {
 
       const search = await habitsService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
-      expect(search.content.title).toEqual('Updated Title');
-      expect(search.content.text).toEqual('Updated description');
-      expect(search.timeSeriesConfig.interval).toEqual(CalendarInterval.Weekly);
-      expect(search.timeSeriesConfig.min).toEqual(1);
-      expect(search.timeSeriesConfig.max).toEqual(2);
-      expect(search.timeSeriesConfig.optimal).toEqual(2);
-      expect(search.tagIds.length).toEqual(1);
-      expect(search.tagIds[0]).toEqual(profile.tags[0]._id);
+      expect(search!.content.title).toEqual('Updated Title');
+      expect(search!.content.text).toEqual('Updated description');
+      expect(search!.timeSeriesConfig.interval).toEqual(CalendarInterval.Weekly);
+      expect(search!.timeSeriesConfig.min).toEqual(1);
+      expect(search!.timeSeriesConfig.max).toEqual(2);
+      expect(search!.timeSeriesConfig.optimal).toEqual(2);
+      expect(search!.tagIds.length).toEqual(1);
+      expect(search!.tagIds[0]).toEqual(profile.tags[0]._id);
       expect(profile.tags.length).toEqual(1);
       expect(profile.tags[0].name).toEqual('SomeCategory');
     });
@@ -166,12 +163,12 @@ describe('HabitService', () => {
 
       const search = await habitsService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
-      expect(search.timeSeriesConfig.history).toBeDefined();
-      expect(search.timeSeriesConfig.history.length).toEqual(1);
-      expect(search.timeSeriesConfig.history[0].max).toEqual(2);
-      expect(search.timeSeriesConfig.history[0].min).toEqual(1);
-      expect(search.timeSeriesConfig.history[0].optimal).toEqual(1);
-      expect(search.timeSeriesConfig.history[0].interval).toEqual(CalendarInterval.Daily);
+      expect(search!.timeSeriesConfig.history).toBeDefined();
+      expect(search!.timeSeriesConfig.history.length).toEqual(1);
+      expect(search!.timeSeriesConfig.history[0].max).toEqual(2);
+      expect(search!.timeSeriesConfig.history[0].min).toEqual(1);
+      expect(search!.timeSeriesConfig.history[0].optimal).toEqual(1);
+      expect(search!.timeSeriesConfig.history[0].interval).toEqual(CalendarInterval.Daily);
     });
   });
 
@@ -218,10 +215,10 @@ describe('HabitService', () => {
 
     const search = await habitsService.findByProfileAndId(profile, habit);
     expect(search).toBeDefined();
-    expect(search.timeSeriesConfig.history).toBeDefined();
-    expect(search.timeSeriesConfig.history.length).toEqual(1);
-    expect(search.timeSeriesConfig.history[0].max).toEqual(2);
-    expect(search.timeSeriesConfig.max).toEqual(4);
+    expect(search!.timeSeriesConfig.history).toBeDefined();
+    expect(search!.timeSeriesConfig.history.length).toEqual(1);
+    expect(search!.timeSeriesConfig.history[0].max).toEqual(2);
+    expect(search!.timeSeriesConfig.max).toEqual(4);
   });
 
   describe('findByProfileAndId', () => {
@@ -230,7 +227,7 @@ describe('HabitService', () => {
       const habit = await testData.createHabit(user, profile);
       const search = await habitsService.findByProfileAndId(profile, habit._id);
       expect(search).toBeDefined();
-      expect(search.id).toEqual(habit.id);
+      expect(search!.id).toEqual(habit.id);
     });
 
     it('find habit by profile and string id', async () => {
@@ -238,7 +235,7 @@ describe('HabitService', () => {
       const habit = await testData.createHabit(user, profile);
       const search = await habitsService.findByProfileAndId(profile, assureStringId(habit._id));
       expect(search).toBeDefined();
-      expect(search.id).toEqual(habit.id);
+      expect(search!.id).toEqual(habit.id);
     });
 
     it('do not find habits of another profile', async () => {
@@ -253,14 +250,14 @@ describe('HabitService', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
       const search = await habitsService.findByProfileAndId(profile, habit._id);
-      expect(search._id).toEqual(habit._id);
+      expect(search!._id).toEqual(habit._id);
     });
 
     it('find habit by string id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const habit = await testData.createHabit(user, profile);
       const search = await habitsService.findByProfileAndId(profile, habit._id.toString());
-      expect(search._id).toEqual(habit._id);
+      expect(search!._id).toEqual(habit._id);
     });
   });
 });

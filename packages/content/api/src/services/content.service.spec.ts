@@ -1,5 +1,4 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { Content, ContentSchema } from '../schemas';
 import { TestContent, TestContentDocument, TestContentSchema, contentTestPlugin } from '../testing';
 import { Model } from 'mongoose';
@@ -8,7 +7,7 @@ import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profi
 import { ContentService } from './content.service';
 
 describe('content dao', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let contentService: ContentService;
   let testContentModel: Model<TestContentDocument>;
   let testData: ProfileTestDataUtils;
@@ -32,6 +31,10 @@ describe('content dao', () => {
     contentService = testingModule.get(ContentService);
     testContentModel = testingModule.get<Model<TestContentDocument>>('TestContentModel');
     testData = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   async function createTestContent(user: User, profile: Profile, archived = false) {

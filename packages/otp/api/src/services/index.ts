@@ -1,1 +1,1 @@
-export * from './user-otp.service';
+export * from './otp.service';

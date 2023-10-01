@@ -1,20 +1,24 @@
-import { TestingModule } from '@nestjs/testing';
-import { createUserTestingModule, UserTestDataUtils } from '../testing';
+import { usersTestPlugin, UserTestDataUtils } from '../testing';
 import { UserDao } from '../daos';
 import { RefreshToken, User, UserEmail } from '../schemas';
 import { UserStatus } from '@lyvely/users-interface';
 import { ProfileType } from '@lyvely/profiles-interface';
 import { addMinutes } from '@lyvely/dates';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('UserDao', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let userDao: UserDao;
   let testData: UserTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await createUserTestingModule('user-dao').compile();
+    testingModule = await buildTest('user-dao').plugins([usersTestPlugin]).compile();
     userDao = testingModule.get<UserDao>(UserDao);
     testData = testingModule.get<UserTestDataUtils>(UserTestDataUtils);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

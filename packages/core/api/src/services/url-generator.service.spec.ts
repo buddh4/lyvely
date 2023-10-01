@@ -1,7 +1,8 @@
-import { expect } from '@jest/globals';
 import { UrlGenerator } from './url-generator.service';
-import { createCoreTestingModule } from '../testing/core-test.util';
+import { createCoreTestingModule } from '../testing';
 import { TestingModule } from '@nestjs/testing';
+import { afterEach } from 'node:test';
+import { ModuleRegistry } from '../components';
 
 describe('UrlGenerator', () => {
   let urlGenerator: UrlGenerator;
@@ -10,6 +11,10 @@ describe('UrlGenerator', () => {
   beforeEach(async () => {
     testingModule = await createCoreTestingModule('url-gnerator', [UrlGenerator]).compile();
     urlGenerator = testingModule.get(UrlGenerator);
+  });
+
+  afterEach(() => {
+    testingModule.get(ModuleRegistry)?.reset();
   });
 
   it('should be defined', () => {

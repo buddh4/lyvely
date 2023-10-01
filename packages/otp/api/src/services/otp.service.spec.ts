@@ -1,26 +1,22 @@
-import { buildTest, getObjectId } from '@lyvely/testing';
-import { TestingModule } from '@nestjs/testing';
-import { UserOtpModule, UserOtpService } from '../';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
+import { OtpModule, OtpService } from '../';
 import { UserOtp } from '../schemas';
 import ms from 'ms';
 import { subtractSeconds } from '@lyvely/dates';
 import { DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/otp-interface';
 import { User, UserStatus } from '@lyvely/users';
-import { ModuleRegistry } from '@lyvely/core';
 
-let testingModule: TestingModule;
-let userOtpService: UserOtpService;
-let moduleRegistry: ModuleRegistry;
+let testingModule: LyvelyTestingModule;
+let userOtpService: OtpService;
 
-describe('UserOtpService', () => {
+describe('OtpService', () => {
   beforeEach(async () => {
-    testingModule = await buildTest('user-otp.service').imports([UserOtpModule]).compile();
-    userOtpService = testingModule.get(UserOtpService);
-    moduleRegistry = testingModule.get(ModuleRegistry);
+    testingModule = await buildTest('user-otp.service').imports([OtpModule]).compile();
+    userOtpService = testingModule.get(OtpService);
   });
 
   afterEach(() => {
-    moduleRegistry.reset();
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

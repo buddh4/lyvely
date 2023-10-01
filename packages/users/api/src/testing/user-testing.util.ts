@@ -27,6 +27,6 @@ export function createUserTestingModule(
       .overrideProvider(MailService)
       .useClass(TestMailService)
 
-      .overrideProvider(UserOtpService)
+      .overrideProvider(OtpService)
       .useClass(TestOtpService)*/
 }

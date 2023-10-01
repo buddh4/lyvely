@@ -1,8 +1,8 @@
 import { registerFont, createCanvas } from 'canvas';
 import { randomInt } from 'crypto';
-import path from 'path';
+import { resolve } from 'path';
 
-registerFont(path.resolve(__dirname, './PunctureRegular.ttf'), { family: 'PunctureRegular' });
+registerFont(resolve(__dirname, './PunctureRegular.ttf'), { family: 'PunctureRegular' });
 
 interface CaptchaOptions {
   font?: string;

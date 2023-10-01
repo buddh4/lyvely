@@ -6,21 +6,15 @@ import {
   UniqueConstraintException,
   ForbiddenServiceException,
 } from '@lyvely/common';
-import {
-  UserRegistration,
-  VerifyEmailDto,
-  RegistrationMode,
-} from '@lyvely/user-registrations-interface';
-import { OtpInfo } from '@lyvely/otp';
-import { UserStatus } from '@lyvely/users';
-import { UserDao, User, UsersService } from '@lyvely/users';
+import { UserRegistration, RegistrationMode } from '@lyvely/user-registrations-interface';
+import { VerifyEmailDto } from '@lyvely/user-accounts';
+import { OtpInfo, OtpService } from '@lyvely/otp';
+import { UserStatus, UserDao, User, UsersService } from '@lyvely/users';
 import { ProfilesService } from '@lyvely/profiles';
 import { MailService } from '@lyvely/mails';
 import { ConfigService } from '@nestjs/config';
 import { UrlGenerator, ConfigurationPath } from '@lyvely/core';
-import { UserOtpService } from '@lyvely/otp';
-import { InvitationsService } from '@lyvely/invitations';
-import { IMailInvitation } from '@lyvely/invitations';
+import { InvitationsService, IMailInvitation } from '@lyvely/user-invitations';
 import { SystemMessagesService } from '@lyvely/system-messages';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
@@ -34,7 +28,7 @@ export class UserRegistrationService {
     private mailerService: MailService,
     private configService: ConfigService<ConfigurationPath & any>,
     private urlGenerator: UrlGenerator,
-    private userOtpService: UserOtpService,
+    private userOtpService: OtpService,
     private invitationsService: InvitationsService,
     private systemMessageService: SystemMessagesService,
   ) {}
@@ -109,12 +103,12 @@ export class UserRegistrationService {
 
   private async getAndValidateInvitation(userRegistration: UserRegistration) {
     const invitationContext = await this.invitationsService.getMailInvitationContext(
-      userRegistration.inviteToken,
+      userRegistration.inviteToken!,
     );
 
     if (
       this.getRegistrationMode() === 'invite' &&
-      !(await this.invitationsService.validateMailInvitationContext(invitationContext))
+      !(await this.invitationsService.validateMailInvitationContext(invitationContext!))
     ) {
       throw new ForbiddenServiceException();
     }
@@ -124,7 +118,7 @@ export class UserRegistrationService {
 
   private async sendEmailAlreadyExistsMail(email: string) {
     // TODO: (i18n) missing translation
-    const appName = escapeHTML(this.configService.get('appName'));
+    const appName = escapeHTML(this.configService.get('appName')!);
     const forgotPasswordUrl = escapeHTML(
       encodeURI(this.urlGenerator.getAppUrl({ path: '/reset-password' }).href),
     );
@@ -142,11 +136,11 @@ export class UserRegistrationService {
   }
 
   private async sendEmailVerificationMail(user: User, otp: string) {
-    const appName = escapeHTML(this.configService.get('appName'));
+    const appName = escapeHTML(this.configService.get('appName')!);
     const contactMailHref = escapeHTML(
       encodeURI(`mailto:${this.configService.get('contactMail')}`),
     );
-    const contactMail = escapeHTML(this.configService.get('contactMail'));
+    const contactMail = escapeHTML(this.configService.get('contactMail')!);
 
     // TODO: (i18n) missing translation
     return this.mailerService.sendMail({

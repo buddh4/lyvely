@@ -2,20 +2,23 @@ import { NotificationContext, NotificationType } from '../schemas';
 import { Notification } from './notification.decorator';
 import { Translatable } from '@lyvely/i18n';
 import { UrlRoute } from '@lyvely/common';
-import { buildTest } from '@lyvely/testing';
-import { TestingModule } from '@nestjs/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { NotificationTypeRegistry } from '../components';
-import { notificationTestPlugin } from '../testing/notification-test.plugin';
+import { notificationTestPlugin } from '../testing';
 
 const TEST_KEY = 'Notification decorator';
 
 describe('Notification decorator', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let notificationRegistry: NotificationTypeRegistry;
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY).plugins([notificationTestPlugin]).compile();
     notificationRegistry = testingModule.get(NotificationTypeRegistry);
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   it('type is automatically set and registered', () => {

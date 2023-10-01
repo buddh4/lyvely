@@ -1,12 +1,11 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest, createTestExecutionContext } from '@lyvely/testing';
+import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@lyvely/testing';
 import { ProfileGuard } from './index';
 import { ProfileRequest } from '../types';
 import { ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/profiles-interface';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 
 describe('ProfileGuard', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let profileGuard: ProfileGuard;
   let testData: ProfileTestDataUtils;
 
@@ -19,6 +18,10 @@ describe('ProfileGuard', () => {
       .compile();
     profileGuard = testingModule.get(ProfileGuard);
     testData = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

@@ -1,29 +1,28 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { TestDataUtils } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { CalendarInterval, toTimingId, addDays } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/common';
 import { Task, UserDone } from '../schemas';
-import { TaskTestDataUtil, createTaskTestingModule } from '../test';
+import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 
 describe('Tasks DAO', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let tasksDao: TasksDao;
-  let testData: TestDataUtils;
-  let taskTestData: TaskTestDataUtil;
+  let testData: TaskTestDataUtil;
 
   const TEST_KEY = 'tasks_dao';
 
   beforeEach(async () => {
-    testingModule = await createTaskTestingModule(TEST_KEY, [TasksDao]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([taskTestPlugin])
+      .providers([TasksDao])
+      .compile();
     tasksDao = testingModule.get(TasksDao);
-    testData = testingModule.get(TestDataUtils);
-    taskTestData = testingModule.get(TaskTestDataUtil);
+    testData = testingModule.get(TaskTestDataUtil);
   });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {
@@ -35,7 +34,7 @@ describe('Tasks DAO', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-      await taskTestData.createTask(user, profile);
+      await testData.createTask(user, profile);
 
       const search = <Task[]>(
         await tasksDao.findByProfileAndTimingIds(profile, user, [todayTimingId])
@@ -48,7 +47,7 @@ describe('Tasks DAO', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-      await taskTestData.createTask(user, profile, {}, (model) => {
+      await testData.createTask(user, profile, {}, (model) => {
         model.doneBy = [new UserDone(user, todayTimingId, new Date())];
       });
 
@@ -63,7 +62,7 @@ describe('Tasks DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-      await taskTestData.createTask(owner, profile, {
+      await testData.createTask(owner, profile, {
         userStrategy: UserAssignmentStrategy.Shared,
       });
 
@@ -78,7 +77,7 @@ describe('Tasks DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-      await taskTestData.createTask(
+      await testData.createTask(
         owner,
         profile,
         {
@@ -101,7 +100,7 @@ describe('Tasks DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTimingId = toTimingId(new Date(), CalendarInterval.Daily);
 
-      await taskTestData.createTask(
+      await testData.createTask(
         owner,
         profile,
         {
@@ -125,7 +124,7 @@ describe('Tasks DAO', () => {
       const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
       const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarInterval.Daily);
 
-      const task = await taskTestData.createTask(
+      const task = await testData.createTask(
         owner,
         profile,
         { userStrategy: UserAssignmentStrategy.Shared },
@@ -143,7 +142,7 @@ describe('Tasks DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
-      await taskTestData.createTask(owner, profile, {
+      await testData.createTask(owner, profile, {
         userStrategy: UserAssignmentStrategy.PerUser,
       });
 
@@ -156,7 +155,7 @@ describe('Tasks DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
-      await taskTestData.createTask(
+      await testData.createTask(
         owner,
         profile,
         {
@@ -176,7 +175,7 @@ describe('Tasks DAO', () => {
       const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
       const tomorrowTid = toTimingId(addDays(new Date(), 1), CalendarInterval.Daily);
 
-      await taskTestData.createTask(
+      await testData.createTask(
         owner,
         profile,
         {
@@ -198,7 +197,7 @@ describe('Tasks DAO', () => {
       const { member, owner, profile } = await testData.createSimpleGroup();
       const todayTid = toTimingId(new Date(), CalendarInterval.Daily);
 
-      await taskTestData.createTask(
+      await testData.createTask(
         owner,
         profile,
         {
@@ -216,8 +215,8 @@ describe('Tasks DAO', () => {
   describe('updateBulk', () => {
     it('update multiple tasks', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const task1 = await taskTestData.createTask(user, profile);
-      const task2 = await taskTestData.createTask(user, profile);
+      const task1 = await testData.createTask(user, profile);
+      const task2 = await testData.createTask(user, profile);
 
       await tasksDao.updateSetBulk([
         { id: task1._id, update: { 'meta.sortOrder': 1 } },
@@ -225,65 +224,65 @@ describe('Tasks DAO', () => {
       ]);
 
       const taskUpdated = await tasksDao.reload(task1);
-      expect(taskUpdated.meta.sortOrder).toEqual(1);
+      expect(taskUpdated!.meta.sortOrder).toEqual(1);
 
       const taskUpdated2 = await tasksDao.reload(task2);
-      expect(taskUpdated2.meta.sortOrder).toEqual(2);
+      expect(taskUpdated2!.meta.sortOrder).toEqual(2);
     });
   });
 
   describe('archive', () => {
     it('archive task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const task = await taskTestData.createTask(user, profile);
+      const task = await testData.createTask(user, profile);
       const result = await tasksDao.archive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.archived).toEqual(true);
+      expect(refresh!.meta.archived).toEqual(true);
     });
 
     it('archive already archived task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const task = await taskTestData.createTask(user, profile, null, (model) => {
+      const task = await testData.createTask(user, profile, {}, (model) => {
         model.meta.archived = true;
       });
       const result = await tasksDao.archive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.archived).toEqual(true);
+      expect(refresh!.meta.archived).toEqual(true);
     });
   });
 
   describe('unarchive', () => {
     it('un-archive task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const task = await taskTestData.createTask(user, profile, null, (model) => {
+      const task = await testData.createTask(user, profile, {}, (model) => {
         model.meta.archived = true;
       });
       const result = await tasksDao.unarchive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.archived).toEqual(false);
+      expect(refresh!.meta.archived).toEqual(false);
     });
 
     it('un-archive already un-archive task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const task = await taskTestData.createTask(user, profile);
+      const task = await testData.createTask(user, profile);
       const result = await tasksDao.unarchive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.archived).toEqual(false);
+      expect(refresh!.meta.archived).toEqual(false);
     });
 
     it('un-archive task', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const task = await taskTestData.createTask(user, profile, null, (model) => {
+      const task = await testData.createTask(user, profile, {}, (model) => {
         model.meta.archived = true;
       });
       const result = await tasksDao.unarchive(user, task);
       expect(result).toEqual(true);
       const refresh = await tasksDao.reload(task);
-      expect(refresh.meta.archived).toEqual(false);
+      expect(refresh!.meta.archived).toEqual(false);
     });
   });
 });

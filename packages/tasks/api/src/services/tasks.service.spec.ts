@@ -1,16 +1,16 @@
-import { TestingModule } from '@nestjs/testing';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { Timer, TimeSpan } from '@lyvely/timers';
 import { UserAssignmentStrategy } from '@lyvely/common';
 import { TasksService } from './tasks.service';
-import { TaskTestDataUtil, createTaskTestingModule } from '../test';
+import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';
 import { Profile } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { Task } from '../schemas';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('TaskService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let taskService: TasksService;
   let testData: TaskTestDataUtil;
   let taskDao: TasksDao;
@@ -18,14 +18,17 @@ describe('TaskService', () => {
   const TEST_KEY = 'task_service';
 
   beforeEach(async () => {
-    testingModule = await createTaskTestingModule(TEST_KEY, [TasksDao, TasksService]).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([taskTestPlugin])
+      .providers([TasksDao, TasksService])
+      .compile();
     taskService = testingModule.get(TasksService);
     testData = testingModule.get(TaskTestDataUtil);
     taskDao = testingModule.get(TasksDao);
   });
 
-  afterEach(async () => {
-    await testData.reset(TEST_KEY);
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   async function createTask(
@@ -74,9 +77,9 @@ describe('TaskService', () => {
       await taskService.setDone(profile, owner, task, '2021-04-03');
 
       const search = await testData.findTaskById(task);
-      expect(search.doneBy.length).toEqual(1);
-      expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
-      expect(search.doneBy[0].uid).toEqual(owner._id);
+      expect(search!.doneBy.length).toEqual(1);
+      expect(search!.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
+      expect(search!.doneBy[0].uid).toEqual(owner._id);
 
       expect(task.doneBy.length).toEqual(1);
       expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
@@ -94,9 +97,9 @@ describe('TaskService', () => {
       await taskService.setDone(profile, member, task, '2021-04-05');
 
       const search = await testData.findTaskById(task);
-      expect(search.doneBy.length).toEqual(1);
-      expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.config.interval));
-      expect(search.doneBy[0].uid).toEqual(member._id);
+      expect(search!.doneBy.length).toEqual(1);
+      expect(search!.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.config.interval));
+      expect(search!.doneBy[0].uid).toEqual(member._id);
 
       expect(profile.score).toEqual(5);
     });
@@ -108,9 +111,9 @@ describe('TaskService', () => {
 
       await taskService.setDone(profile, owner, task, '2021-04-03');
       const search = await testData.findTaskById(task);
-      expect(search.doneBy.length).toEqual(1);
-      expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
-      expect(search.doneBy[0].uid).toEqual(owner._id);
+      expect(search!.doneBy.length).toEqual(1);
+      expect(search!.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
+      expect(search!.doneBy[0].uid).toEqual(owner._id);
 
       expect(task.doneBy.length).toEqual(1);
       expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
@@ -126,11 +129,11 @@ describe('TaskService', () => {
       await taskService.setDone(profile, member, task, '2021-04-05');
 
       const search = await testData.findTaskById(task);
-      expect(search.doneBy.length).toEqual(2);
-      expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
-      expect(search.doneBy[0].uid).toEqual(owner._id);
-      expect(search.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.config.interval));
-      expect(search.doneBy[1].uid).toEqual(member._id);
+      expect(search!.doneBy.length).toEqual(2);
+      expect(search!.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
+      expect(search!.doneBy[0].uid).toEqual(owner._id);
+      expect(search!.doneBy[1].tid).toEqual(toTimingId('2021-04-05', task.config.interval));
+      expect(search!.doneBy[1].uid).toEqual(member._id);
 
       expect(task.doneBy.length).toEqual(2);
       expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-03', task.config.interval));
@@ -148,9 +151,9 @@ describe('TaskService', () => {
       await taskService.setDone(profile, owner, task, '2021-04-05');
 
       const search = await testData.findTaskById(task);
-      expect(search.doneBy.length).toEqual(1);
-      expect(search.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.config.interval));
-      expect(search.doneBy[0].uid).toEqual(owner._id);
+      expect(search!.doneBy.length).toEqual(1);
+      expect(search!.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.config.interval));
+      expect(search!.doneBy[0].uid).toEqual(owner._id);
 
       expect(task.doneBy.length).toEqual(1);
       expect(task.doneBy[0].tid).toEqual(toTimingId('2021-04-05', task.config.interval));
@@ -167,7 +170,7 @@ describe('TaskService', () => {
       await taskService.setUndone(profile, member, task, '2021-04-03');
 
       const search = await testData.findTaskById(task.id);
-      expect(search.doneBy).toEqual([]);
+      expect(search!.doneBy).toEqual([]);
       expect(task.doneBy).toEqual([]);
     });
 
@@ -179,7 +182,7 @@ describe('TaskService', () => {
       await taskService.setUndone(profile, owner, task, '2021-04-03');
 
       const search = await testData.findTaskById(task.id);
-      expect(search.doneBy).toEqual([]);
+      expect(search!.doneBy).toEqual([]);
       expect(task.doneBy).toEqual([]);
     });
 
@@ -191,7 +194,7 @@ describe('TaskService', () => {
       await taskService.setUndone(profile, member, task, '2021-04-03');
 
       const search = await testData.findTaskById(task.id);
-      expect(search.doneBy).toEqual([]);
+      expect(search!.doneBy).toEqual([]);
       expect(task.doneBy).toEqual([]);
     });
 
@@ -204,9 +207,9 @@ describe('TaskService', () => {
       await taskService.setUndone(profile, member, task, '2021-04-03');
 
       const search = await testData.findTaskById(task.id);
-      expect(search.doneBy.length).toEqual(1);
-      expect(search.isDoneByUser(owner)).toEqual(true);
-      expect(search.isDoneByUser(member)).toEqual(false);
+      expect(search!.doneBy.length).toEqual(1);
+      expect(search!.isDoneByUser(owner)).toEqual(true);
+      expect(search!.isDoneByUser(member)).toEqual(false);
       expect(task.doneBy.length).toEqual(1);
       expect(task.isDoneByUser(owner)).toEqual(true);
       expect(task.isDoneByUser(member)).toEqual(false);
@@ -221,9 +224,9 @@ describe('TaskService', () => {
       expect(timer.isStarted()).toEqual(true);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(true);
-      expect(search.getTimer(member).isStarted()).toEqual(true);
-      expect(search.timers.length).toEqual(1);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(member)!.isStarted()).toEqual(true);
+      expect(search!.timers.length).toEqual(1);
     });
 
     it('start new timer on per user task', async () => {
@@ -233,9 +236,9 @@ describe('TaskService', () => {
       expect(timer.isStarted()).toEqual(true);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(true);
-      expect(search.getTimer(member)).toBeUndefined();
-      expect(search.timers.length).toEqual(1);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(member)).toBeUndefined();
+      expect(search!.timers.length).toEqual(1);
     });
 
     it('start already started timer on shared task', async () => {
@@ -247,9 +250,9 @@ describe('TaskService', () => {
       expect(timer.isStarted()).toEqual(true);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(true);
-      expect(search.getTimer(member).isStarted()).toEqual(true);
-      expect(search.timers.length).toEqual(1);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(member)!.isStarted()).toEqual(true);
+      expect(search!.timers.length).toEqual(1);
     });
 
     it('start already started timer on per user task', async () => {
@@ -261,9 +264,9 @@ describe('TaskService', () => {
       expect(timer.isStarted()).toEqual(true);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(true);
-      expect(search.getTimer(member)).toBeUndefined();
-      expect(search.timers.length).toEqual(1);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(member)).toBeUndefined();
+      expect(search!.timers.length).toEqual(1);
     });
 
     it('start stopped timer on shared task', async () => {
@@ -276,15 +279,15 @@ describe('TaskService', () => {
       const task = await createTask(profile, owner, UserAssignmentStrategy.Shared, [existingTimer]);
 
       expect(task.getTimer(owner)).not.toBeUndefined();
-      expect(task.getTimer(owner).isStarted()).toEqual(false);
+      expect(task.getTimer(owner)!.isStarted()).toEqual(false);
 
       await taskService.startTimer(profile, owner, task);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(true);
-      expect(search.getTimer(member).isStarted()).toEqual(true);
-      expect(search.getTimer(member).spans.length).toEqual(2);
-      expect(search.timers.length).toEqual(1);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(member)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(member)!.spans.length).toEqual(2);
+      expect(search!.timers.length).toEqual(1);
     });
 
     it('start stopped timer on per user task', async () => {
@@ -299,15 +302,15 @@ describe('TaskService', () => {
       ]);
 
       expect(task.getTimer(owner)).not.toBeUndefined();
-      expect(task.getTimer(owner).isStarted()).toEqual(false);
+      expect(task.getTimer(owner)!.isStarted()).toEqual(false);
 
       await taskService.startTimer(profile, owner, task);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(true);
-      expect(search.getTimer(owner).spans.length).toEqual(2);
-      expect(search.getTimer(member)).toBeUndefined();
-      expect(search.timers.length).toEqual(1);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(owner)!.spans.length).toEqual(2);
+      expect(search!.getTimer(member)).toBeUndefined();
+      expect(search!.timers.length).toEqual(1);
     });
 
     it('start multiple timers on per user task', async () => {
@@ -325,11 +328,11 @@ describe('TaskService', () => {
       await taskService.startTimer(profile, member, task);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(true);
-      expect(search.getTimer(owner).spans.length).toEqual(2);
-      expect(search.getTimer(member).isStarted()).toEqual(true);
-      expect(search.getTimer(member).spans.length).toEqual(1);
-      expect(search.timers.length).toEqual(2);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(owner)!.spans.length).toEqual(2);
+      expect(search!.getTimer(member)!.isStarted()).toEqual(true);
+      expect(search!.getTimer(member)!.spans.length).toEqual(1);
+      expect(search!.timers.length).toEqual(2);
     });
   });
 
@@ -346,9 +349,9 @@ describe('TaskService', () => {
       expect(timer.isStarted()).toEqual(false);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(false);
-      expect(search.getTimer(member).isStarted()).toEqual(false);
-      expect(search.timers.length).toEqual(1);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(false);
+      expect(search!.getTimer(member)!.isStarted()).toEqual(false);
+      expect(search!.timers.length).toEqual(1);
     });
 
     it('stop non existing timer on shared task', async () => {
@@ -359,7 +362,7 @@ describe('TaskService', () => {
       expect(timer.isStarted()).toEqual(false);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner)).toBeUndefined();
+      expect(search!.getTimer(owner)).toBeUndefined();
     });
 
     it('stop non existing timer on per user task', async () => {
@@ -370,7 +373,7 @@ describe('TaskService', () => {
       expect(timer.isStarted()).toEqual(false);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner)).toBeUndefined();
+      expect(search!.getTimer(owner)).toBeUndefined();
     });
 
     it('stop timer on per user task', async () => {
@@ -387,9 +390,9 @@ describe('TaskService', () => {
       expect(timer.isStarted()).toEqual(false);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(false);
-      expect(search.getTimer(member)).toBeUndefined();
-      expect(search.timers.length).toEqual(1);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(false);
+      expect(search!.getTimer(member)).toBeUndefined();
+      expect(search!.timers.length).toEqual(1);
     });
 
     it('stop two timer on per user task', async () => {
@@ -409,9 +412,9 @@ describe('TaskService', () => {
       await taskService.stopTimer(profile, member, task);
 
       const search = await testData.findTaskById(task.id);
-      expect(search.getTimer(owner).isStarted()).toEqual(false);
-      expect(search.getTimer(member).isStarted()).toEqual(false);
-      expect(search.timers.length).toEqual(2);
+      expect(search!.getTimer(owner)!.isStarted()).toEqual(false);
+      expect(search!.getTimer(member)!.isStarted()).toEqual(false);
+      expect(search!.timers.length).toEqual(2);
     });
   });
 });

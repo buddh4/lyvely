@@ -1,4 +1,3 @@
-import { TestingModule } from '@nestjs/testing';
 import { CalendarInterval } from '@lyvely/dates';
 import { CreateJournalModel } from '@lyvely/journals-interface';
 import {
@@ -14,7 +13,7 @@ import {
 import { IntegrityException, UserAssignmentStrategy } from '@lyvely/common';
 import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 import { Content, contentTestPlugin } from '@lyvely/content';
 import { Journal, JournalSchema } from '../schemas';
@@ -29,7 +28,7 @@ const Models = [
 
 describe('JournalService', () => {
   let journalsService: JournalsService;
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'journals_service';
@@ -42,6 +41,10 @@ describe('JournalService', () => {
       .compile();
     journalsService = testingModule.get(JournalsService);
     testData = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   async function createJournal(obj: Partial<CreateJournalModel> = {}) {

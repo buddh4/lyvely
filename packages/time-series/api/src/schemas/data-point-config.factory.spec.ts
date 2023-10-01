@@ -1,4 +1,3 @@
-import { expect } from '@jest/globals';
 import {
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
@@ -6,13 +5,11 @@ import {
   RangeNumberDataPointConfig,
   SpinnerNumberDataPointConfig,
   TextareaTextDataPointConfig,
-} from '../';
-import {
   DataPointInputType,
   DataPointValueType,
   INumberDataPointSettings,
-  CalendarInterval,
-} from '@lyvely/common';
+} from '../';
+import { CalendarInterval } from '@lyvely/dates';
 
 const CheckboxNumberStrategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Number,

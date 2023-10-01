@@ -1,5 +1,4 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { Notification as NotificationDecorator } from '../decorators';
 import { Notification, NotificationContext, NotificationType, RenderFormat } from '../schemas';
 import { SingleUserSubscription } from '@lyvely/user-subscriptions';
@@ -7,11 +6,10 @@ import { ProfileInfo, ProfileTestDataUtils, profilesTestPlugin } from '@lyvely/p
 import { UserInfo } from '@lyvely/users';
 import { NotificationDao } from './notification.dao';
 import { Prop } from '@nestjs/mongoose';
-import { i18nTestPlugin, Translatable } from '@lyvely/i18n';
+import { Translatable } from '@lyvely/i18n';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
 import { TestNotificationCategory } from '../notifications';
-import { notificationTestPlugin } from '../testing/notification-test.plugin';
-import { mailTestPlugin } from '@lyvely/mails';
+import { notificationTestPlugin } from '../testing';
 
 const TEST_KEY = 'NotificationDao';
 
@@ -45,7 +43,7 @@ export class MyTestNotification extends NotificationType<MyTestNotification> {
 }
 
 describe('NotificationDao', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let notificationDao: NotificationDao;
   let testData: ProfileTestDataUtils;
 
@@ -55,6 +53,10 @@ describe('NotificationDao', () => {
       .compile();
     notificationDao = testingModule.get(NotificationDao);
     testData = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

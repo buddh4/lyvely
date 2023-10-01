@@ -1,6 +1,5 @@
-import { TestingModule } from '@nestjs/testing';
 import { ProfileScore, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
-import { buildTest, getObjectId } from '@lyvely/testing';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { ContentScore, ContentScoreSchema } from '../schemas';
 import {
   ExtendedTestContentScore,
@@ -18,7 +17,7 @@ import { toTimingId } from '@lyvely/dates';
 import { UserAssignmentStrategy } from '@lyvely/common';
 
 describe('ContentScoreService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
   let TestContentScoreModel: Model<TestContentScoreDocument>;
   let ExtendedTestContentScoreModel: Model<ExtendedTestContentScoreDocument>;
@@ -51,6 +50,10 @@ describe('ContentScoreService', () => {
     ExtendedTestContentScoreModel = testingModule.get<Model<ExtendedTestContentScoreDocument>>(
       'ExtendedTestContentScoreModel',
     );
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

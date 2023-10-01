@@ -1,15 +1,13 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
 import { UserRegistrationService } from './user-registration.service';
 import {
   FieldValidationException,
   ForbiddenServiceException,
   UniqueConstraintException,
 } from '@lyvely/common';
-import { UserStatus } from '@lyvely/users';
-import { UserRegistration, VerifyEmailDto } from '@lyvely/user-registrations-interface';
-import { createContentTestingModule, TestDataUtils, TestConfigService } from '@lyvely/testing';
-import { User, UsersService } from '@lyvely/users';
+import { UserStatus, User, UsersService, UserTestDataUtils, usersTestPlugin } from '@lyvely/users';
+import { VerifyEmailDto } from '@lyvely/user-accounts';
+import { UserRegistration } from '@lyvely/user-registrations-interface';
+import { TestConfigService, LyvelyTestingModule, buildTest } from '@lyvely/testing';
 import { UserRegistrationModule } from '../user-registration.module';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -17,16 +15,20 @@ import {
   InvitationDao,
   MailInvitation,
   SendInvitationsService,
-} from '@lyvely/invitations';
+} from '@lyvely/user-invitations';
 import { assureObjectId, EntityIdentity } from '@lyvely/core';
 import { Profile } from '@lyvely/profiles';
 import { UnauthorizedException } from '@nestjs/common';
+import { contentTestPlugin } from '@lyvely/content';
+import { mailTestPlugin } from '@lyvely/mails';
+import { i18nTestPlugin } from '@lyvely/i18n';
+import { otpTestPlugin } from '@lyvely/otp';
 
 describe('UserRegistrationService', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let registerService: UserRegistrationService;
   let userService: UsersService;
-  let testData: TestDataUtils;
+  let testData: UserTestDataUtils;
   let configService: TestConfigService;
   let invitationDao: InvitationDao;
   let sendInvitationService: SendInvitationsService;
@@ -34,22 +36,20 @@ describe('UserRegistrationService', () => {
   const TEST_KEY = 'register_service';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(
-      TEST_KEY,
-      [],
-      [],
-      [UserRegistrationModule, InvitationsModule],
-    ).compile();
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([usersTestPlugin, otpTestPlugin, contentTestPlugin, mailTestPlugin, i18nTestPlugin])
+      .imports([UserRegistrationModule, InvitationsModule])
+      .compile();
     registerService = testingModule.get<UserRegistrationService>(UserRegistrationService);
     userService = testingModule.get(UsersService);
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
+    testData = testingModule.get(UserTestDataUtils);
     configService = testingModule.get(ConfigService);
     invitationDao = testingModule.get(InvitationDao);
     sendInvitationService = testingModule.get(SendInvitationsService);
   });
 
   afterEach(async () => {
-    return testData.reset(TEST_KEY);
+    return testingModule.afterEach();
   });
 
   it('should be defined', () => {
@@ -65,10 +65,10 @@ describe('UserRegistrationService', () => {
       const user = await findUserByMail();
       expect(user).toBeDefined();
       expect(user instanceof User).toEqual(true);
-      expect(user.username).toEqual('Tester');
-      expect(user.email).toEqual('tester@test.de');
-      expect(user.locale).toEqual('de-DE');
-      expect(user.status).toEqual(UserStatus.EmailVerification);
+      expect(user!.username).toEqual('Tester');
+      expect(user!.email).toEqual('tester@test.de');
+      expect(user!.locale).toEqual('de-DE');
+      expect(user!.status).toEqual(UserStatus.EmailVerification);
     });
 
     it('register user with invalid email', async () => {
@@ -149,9 +149,9 @@ describe('UserRegistrationService', () => {
       const updatedInvitation = await invitationDao.reload(invitation);
       const registeredUser = await findUserByMail(email);
       expect(registeredUser).toBeDefined();
-      expect(updatedInvitation.createdBy).toEqual(user._id);
-      expect(updatedInvitation.uid).toEqual(registeredUser._id);
-      expect(updatedInvitation.token).toBeNull();
+      expect(updatedInvitation!.createdBy).toEqual(user._id);
+      expect(updatedInvitation!.uid).toEqual(registeredUser!._id);
+      expect(updatedInvitation!.token).toBeNull();
     });
 
     it('registration invalidates other invitations', async () => {
@@ -166,9 +166,9 @@ describe('UserRegistrationService', () => {
       const updatedInvitation = await invitationDao.reload(invitation);
       const registeredUser = await findUserByMail(email);
       expect(registeredUser).toBeDefined();
-      expect(updatedInvitation.createdBy).toEqual(user._id);
-      expect(updatedInvitation.uid).toEqual(registeredUser._id);
-      expect(updatedInvitation.token).toBeNull();
+      expect(updatedInvitation!.createdBy).toEqual(user._id);
+      expect(updatedInvitation!.uid).toEqual(registeredUser!._id);
+      expect(updatedInvitation!.token).toBeNull();
       const updatedInvitation2 = await invitationDao.reload(invitation2);
       expect(updatedInvitation2).toBeNull();
     });

@@ -1,20 +1,23 @@
-import { expect } from '@jest/globals';
-import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '@lyvely/users';
-import { TestingModule } from '@nestjs/testing';
-import { createBasicTestingModule, getObjectId, TestDataUtils } from '@lyvely/testing';
+import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '../index';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { addDays, addMinutes } from '@lyvely/dates';
 import { ProfileType } from '@lyvely/profiles-interface';
-import bcrypt from 'bcrypt';
+import { compare } from 'bcrypt';
+import { usersTestPlugin, UserTestDataUtils } from '../testing';
 
 describe('UserService', () => {
   let userService: UsersService;
-  let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testingModule: LyvelyTestingModule;
+  let testData: UserTestDataUtils;
 
   beforeEach(async () => {
-    testingModule = await createBasicTestingModule('UserService').compile();
+    testingModule = await buildTest('UserService').plugins([usersTestPlugin]).compile();
     userService = testingModule.get(UsersService);
-    testData = testingModule.get(TestDataUtils);
+    testData = testingModule.get(UserTestDataUtils);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {
@@ -26,7 +29,7 @@ describe('UserService', () => {
       const user = await testData.createUser('testUser', { email: 'test@test.de' });
       const searchUser = await userService.findUserByMainEmail('test@test.de');
       expect(searchUser).toBeDefined();
-      expect(searchUser._id.equals(user._id)).toEqual(true);
+      expect(searchUser!._id.equals(user._id)).toEqual(true);
     });
 
     it('find non existing user by main email', async () => {
@@ -50,14 +53,14 @@ describe('UserService', () => {
       const user = await testData.createUser();
       const searchUser = await userService.findUserById(user._id);
       expect(searchUser).toBeDefined();
-      expect(searchUser._id.equals(user._id)).toEqual(true);
+      expect(searchUser!._id.equals(user._id)).toEqual(true);
     });
 
     it('find existing user by string id', async () => {
       const user = await testData.createUser();
       const searchUser = await userService.findUserById(user.id);
       expect(searchUser).toBeDefined();
-      expect(searchUser._id.equals(user._id)).toEqual(true);
+      expect(searchUser!._id.equals(user._id)).toEqual(true);
     });
 
     it('find non existing user by main email', async () => {
@@ -73,7 +76,7 @@ describe('UserService', () => {
       expect(user.profilesCount.user).toEqual(0);
       await userService.incrementProfileCount(user, ProfileType.User);
       expect(user.profilesCount.user).toEqual(1);
-      expect((await userService.findUserById(user)).profilesCount.user).toEqual(1);
+      expect((await userService.findUserById(user))!.profilesCount.user).toEqual(1);
     });
 
     it('increment group profile count', async () => {
@@ -81,7 +84,7 @@ describe('UserService', () => {
       expect(user.profilesCount.group).toEqual(0);
       await userService.incrementProfileCount(user, ProfileType.Group);
       expect(user.profilesCount.group).toEqual(1);
-      expect((await userService.findUserById(user)).profilesCount.group).toEqual(1);
+      expect((await userService.findUserById(user))!.profilesCount.group).toEqual(1);
     });
 
     it('increment organization profile count', async () => {
@@ -89,7 +92,7 @@ describe('UserService', () => {
       expect(user.profilesCount.organization).toEqual(0);
       await userService.incrementProfileCount(user, ProfileType.Organization);
       expect(user.profilesCount.organization).toEqual(1);
-      expect((await userService.findUserById(user)).profilesCount.organization).toEqual(1);
+      expect((await userService.findUserById(user))!.profilesCount.organization).toEqual(1);
     });
   });
 
@@ -101,7 +104,7 @@ describe('UserService', () => {
       expect(user.profilesCount.user).toEqual(5);
       await userService.decrementProfileCount(user, ProfileType.User);
       expect(user.profilesCount.user).toEqual(4);
-      expect((await userService.findUserById(user)).profilesCount.user).toEqual(4);
+      expect((await userService.findUserById(user))!.profilesCount.user).toEqual(4);
     });
 
     it('decrement group profile count', async () => {
@@ -111,7 +114,7 @@ describe('UserService', () => {
       expect(user.profilesCount.group).toEqual(5);
       await userService.decrementProfileCount(user, ProfileType.Group);
       expect(user.profilesCount.group).toEqual(4);
-      expect((await userService.findUserById(user)).profilesCount.group).toEqual(4);
+      expect((await userService.findUserById(user))!.profilesCount.group).toEqual(4);
     });
 
     it('decrement organization profile count', async () => {
@@ -121,7 +124,7 @@ describe('UserService', () => {
       expect(user.profilesCount.organization).toEqual(5);
       await userService.decrementProfileCount(user, ProfileType.Organization);
       expect(user.profilesCount.organization).toEqual(4);
-      expect((await userService.findUserById(user)).profilesCount.organization).toEqual(4);
+      expect((await userService.findUserById(user))!.profilesCount.organization).toEqual(4);
     });
   });
 
@@ -139,12 +142,12 @@ describe('UserService', () => {
         }),
       );
       expect(user.refreshTokens.length).toEqual(1);
-      const persitedUser = await userService.findUserById(user);
+      const persistedUser = await userService.findUserById(user);
 
-      expect(persitedUser.refreshTokens.length).toEqual(1);
-      expect(persitedUser.refreshTokens[0].remember).toEqual(true);
-      expect(persitedUser.refreshTokens[0].vid).toEqual('vid1');
-      expect(persitedUser.refreshTokens[0].hash).toEqual('someHash');
+      expect(persistedUser!.refreshTokens.length).toEqual(1);
+      expect(persistedUser!.refreshTokens[0].remember).toEqual(true);
+      expect(persistedUser!.refreshTokens[0].vid).toEqual('vid1');
+      expect(persistedUser!.refreshTokens[0].hash).toEqual('someHash');
     });
 
     it('update refresh token', async () => {
@@ -176,8 +179,8 @@ describe('UserService', () => {
       expect(user.refreshTokens[0].hash).toEqual('someNewHash');
 
       const persistedUser = await userService.findUserById(user);
-      expect(persistedUser.refreshTokens.length).toEqual(1);
-      expect(persistedUser.refreshTokens[0].hash).toEqual('someNewHash');
+      expect(persistedUser!.refreshTokens.length).toEqual(1);
+      expect(persistedUser!.refreshTokens[0].hash).toEqual('someNewHash');
     });
   });
 
@@ -196,7 +199,7 @@ describe('UserService', () => {
 
       expect(await userService.destroyRefreshToken(user, vid)).toEqual(true);
       expect(user.refreshTokens.length).toEqual(0);
-      expect((await userService.findUserById(user)).refreshTokens.length).toEqual(0);
+      expect((await userService.findUserById(user))!.refreshTokens.length).toEqual(0);
     });
 
     it('destroy non existing refresh token', async () => {
@@ -231,7 +234,7 @@ describe('UserService', () => {
       await userService.destroyExpiredRefreshTokens(user);
       expect(user.refreshTokens.length).toEqual(0);
       const persistedUser = await userService.findUserById(user);
-      expect(persistedUser.refreshTokens.length).toEqual(0);
+      expect(persistedUser!.refreshTokens.length).toEqual(0);
     });
 
     it('do not destroy non expired refresh token', async () => {
@@ -253,9 +256,9 @@ describe('UserService', () => {
       await userService.destroyExpiredRefreshTokens(user);
       expect(user.refreshTokens.length).toEqual(1);
       const persistedUser = await userService.findUserById(user);
-      expect(persistedUser.refreshTokens.length).toEqual(1);
-      expect(persistedUser.refreshTokens[0].vid).toEqual('vid1');
-      expect(persistedUser.refreshTokens[0].hash).toEqual('someHash1');
+      expect(persistedUser!.refreshTokens.length).toEqual(1);
+      expect(persistedUser!.refreshTokens[0].vid).toEqual('vid1');
+      expect(persistedUser!.refreshTokens[0].hash).toEqual('someHash1');
     });
   });
 
@@ -267,16 +270,16 @@ describe('UserService', () => {
       expect(user.password).not.toEqual(currentPassword);
       expect(user.password).not.toEqual('newPassword');
       const updated = await userService.findUserById(user);
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
-      expect(updated.passwordResetAt instanceof Date).toEqual(true);
-      expect(updated.sessionResetAt instanceof Date).toEqual(true);
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
+      expect(updated!.passwordResetAt instanceof Date).toEqual(true);
+      expect(updated!.sessionResetAt instanceof Date).toEqual(true);
       const now = new Date();
-      expect(updated.passwordResetAt).toEqual(updated.sessionResetAt);
-      expect(updated.sessionResetAt.getDate()).toEqual(now.getDate());
-      expect(updated.sessionResetAt.getMonth()).toEqual(now.getMonth());
-      expect(updated.sessionResetAt.getFullYear()).toEqual(now.getFullYear());
-      expect(updated.sessionResetAt.getHours()).toEqual(now.getHours());
-      expect(updated.sessionResetAt.getMinutes()).toEqual(now.getMinutes());
+      expect(updated!.passwordResetAt).toEqual(updated!.sessionResetAt);
+      expect(updated!.sessionResetAt!.getDate()).toEqual(now.getDate());
+      expect(updated!.sessionResetAt!.getMonth()).toEqual(now.getMonth());
+      expect(updated!.sessionResetAt!.getFullYear()).toEqual(now.getFullYear());
+      expect(updated!.sessionResetAt!.getHours()).toEqual(now.getHours());
+      expect(updated!.sessionResetAt!.getMinutes()).toEqual(now.getMinutes());
     });
 
     it('reset user password without session reset', async () => {
@@ -286,15 +289,15 @@ describe('UserService', () => {
       expect(user.password).not.toEqual(currentPassword);
       expect(user.password).not.toEqual('newPassword');
       const updated = await userService.findUserById(user);
-      expect(await bcrypt.compare('newPassword', updated.password)).toEqual(true);
-      expect(updated.sessionResetAt).toBeUndefined();
-      expect(updated.passwordResetAt instanceof Date).toEqual(true);
+      expect(await compare('newPassword', updated!.password)).toEqual(true);
+      expect(updated!.sessionResetAt).toBeUndefined();
+      expect(updated!.passwordResetAt instanceof Date).toEqual(true);
       const now = new Date();
-      expect(updated.passwordResetAt.getDate()).toEqual(now.getDate());
-      expect(updated.passwordResetAt.getMonth()).toEqual(now.getMonth());
-      expect(updated.passwordResetAt.getFullYear()).toEqual(now.getFullYear());
-      expect(updated.passwordResetAt.getHours()).toEqual(now.getHours());
-      expect(updated.passwordResetAt.getMinutes()).toEqual(now.getMinutes());
+      expect(updated!.passwordResetAt!.getDate()).toEqual(now.getDate());
+      expect(updated!.passwordResetAt!.getMonth()).toEqual(now.getMonth());
+      expect(updated!.passwordResetAt!.getFullYear()).toEqual(now.getFullYear());
+      expect(updated!.passwordResetAt!.getHours()).toEqual(now.getHours());
+      expect(updated!.passwordResetAt!.getMinutes()).toEqual(now.getMinutes());
     });
   });
 });

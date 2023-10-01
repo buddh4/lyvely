@@ -1,44 +1,47 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { createContentTestingModule, getObjectId, TestDataUtils } from '@lyvely/testing';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
+import {
+  DataPointValueType,
+  CheckboxNumberDataPointConfig,
+  getDataPointModelDefinition,
+  NumberDataPoint,
+} from '../index';
+import { CalendarPlanFilter, CalendarPlanFilter } from '@lyvely/calendar-plan';
 import {
   CalendarDateTime,
   CalendarInterval,
-  CalendarPlanFilter,
-  DataPointValueType,
   dateTime,
   formatDate,
   getFullDayDate,
   toTimingId,
-} from '@lyvely/common';
-import { TestDataPointDao, TestTimeSeriesContent } from '../test';
-import { Profile } from '@lyvely/profiles';
+} from '@lyvely/dates';
+import { TestDataPointDao, TestTimeSeriesContent } from '../testing';
+import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
-import {
-  CheckboxNumberDataPointConfig,
-  getDataPointModelDefinition,
-  NumberDataPoint,
-} from '../';
+import { contentTestPlugin } from '@lyvely/content';
 
 const DataPointModelDefinition = [
   getDataPointModelDefinition(TestTimeSeriesContent.name, [DataPointValueType.Number]),
 ];
 
 describe('DataPointDao', () => {
-  let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testingModule: LyvelyTestingModule;
+  let testData: ProfileTestDataUtils;
   let dao: TestDataPointDao;
 
   const TEST_KEY = 'DataPointDao';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(
-      TEST_KEY,
-      [TestDataPointDao],
-      DataPointModelDefinition,
-    ).compile();
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
-    dao = testingModule.get<TestDataPointDao>(TestDataPointDao);
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin, contentTestPlugin])
+      .providers([TestDataPointDao])
+      .models(DataPointModelDefinition)
+      .compile();
+    testData = testingModule.get(ProfileTestDataUtils);
+    dao = testingModule.get(TestDataPointDao);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

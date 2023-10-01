@@ -1,10 +1,9 @@
-import { TestingModule } from '@nestjs/testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { I18n } from './';
 import { i18nTestPlugin } from '../testing';
 
 describe('I18n', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let i18n: I18n;
 
   const TEST_KEY = 'I18n';
@@ -12,6 +11,10 @@ describe('I18n', () => {
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY).plugins([i18nTestPlugin]).compile();
     i18n = testingModule.get(I18n);
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

@@ -1,26 +1,24 @@
-import { expect } from '@jest/globals';
-import { TestingModule } from '@nestjs/testing';
-import { createContentTestingModule, TestDataUtils } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { UserAssignmentStrategy } from '@lyvely/common';
 import {
-  CalendarInterval,
-  CalendarPlanFilter,
   DataPointValueType,
-  formatDate,
-  toTimingId,
-  UserAssignmentStrategy,
-} from '@lyvely/common';
+  CheckboxNumberDataPointConfig,
+  getDataPointModelDefinition,
+} from '../index';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan';
+import { CalendarInterval, formatDate, toTimingId } from '@lyvely/dates';
 import {
   TestDataPointDao,
   TestDataPointService,
   TestTimeSeriesContent,
   TestTimeSeriesContentSchema,
-} from '../test';
-import { Content, ContentSchema } from '@lyvely/content';
+  TestTimeSeriesService,
+  TestTimeSeriesContentDao,
+} from '../testing';
+import { Content, ContentSchema, contentTestPlugin } from '@lyvely/content';
 import { Model } from 'mongoose';
-import { CheckboxNumberDataPointConfig, getDataPointModelDefinition } from '../';
 import { User } from '@lyvely/users';
-import { Profile } from '@lyvely/profiles';
-import { TestTimeSeriesService, TestTimeSeriesContentDao } from '../test';
+import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 
 const Models = [
   {
@@ -36,23 +34,31 @@ const Models = [
 ];
 
 describe('DataPointService', () => {
-  let testingModule: TestingModule;
-  let testData: TestDataUtils;
+  let testingModule: LyvelyTestingModule;
+  let testData: ProfileTestDataUtils;
   let service: TestDataPointService;
-  // let dataPointService: TestDataPointService;
   let TestNumberTimeSeriesContentModel: Model<TestTimeSeriesContent>;
 
   const TEST_KEY = 'DataPointService';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(
-      TEST_KEY,
-      [TestDataPointDao, TestDataPointService, TestTimeSeriesContentDao, TestTimeSeriesService],
-      Models,
-    ).compile();
-    testData = testingModule.get(TestDataUtils);
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([profilesTestPlugin, contentTestPlugin])
+      .providers([
+        TestDataPointDao,
+        TestDataPointService,
+        TestTimeSeriesContentDao,
+        TestTimeSeriesService,
+      ])
+      .models(Models)
+      .compile();
+    testData = testingModule.get(ProfileTestDataUtils);
     service = testingModule.get(TestDataPointService);
     TestNumberTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
+  });
+
+  afterEach(async () => {
+    testingModule.afterEach();
   });
 
   async function createTimeSeriesContent(
@@ -114,7 +120,7 @@ describe('DataPointService', () => {
         level: CalendarInterval.Unscheduled,
       });
       const dataPoint = await service.findDataPointByDate(profile, user, content, date);
-      expect(dataPoint.value).toEqual(3);
+      expect(dataPoint!.value).toEqual(3);
     });
   });
 

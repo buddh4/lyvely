@@ -1,11 +1,10 @@
-import { TestingModule } from '@nestjs/testing';
 import { UserProfile, Tag, Profile } from '../schemas';
 import { ProfileDao } from './index';
 import { ProfileTestDataUtils, profilesTestPlugin } from '../testing';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('ProfileDao', () => {
-  let testingModule: TestingModule;
+  let testingModule: LyvelyTestingModule;
   let profileDao: ProfileDao;
   let testData: ProfileTestDataUtils;
 
@@ -15,6 +14,10 @@ describe('ProfileDao', () => {
     testingModule = await buildTest(TEST_KEY).plugins([profilesTestPlugin]).compile();
     profileDao = testingModule.get<ProfileDao>(ProfileDao);
     testData = testingModule.get(ProfileTestDataUtils);
+  });
+
+  afterEach(() => {
+    testingModule.afterEach();
   });
 
   it('should be defined', () => {

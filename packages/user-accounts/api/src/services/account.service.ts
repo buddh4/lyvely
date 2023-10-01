@@ -5,7 +5,7 @@ import { ConfigurationPath } from '@lyvely/core';
 import { escapeHTML, FieldValidationException, isValidEmail } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import { MailService } from '@lyvely/mails';
-import { InvalidOtpException, OtpInfo, UserOtpService } from '@lyvely/otp';
+import { InvalidOtpException, OtpInfo, OtpService } from '@lyvely/otp';
 
 const OTP_PURPOSE_VERIFY_SECONDARY_EMAIL = 'verify-secondary-email';
 
@@ -19,7 +19,7 @@ export class AccountService {
     private userDao: UserDao,
     private configService: ConfigService<ConfigurationPath>,
     private mailService: MailService,
-    private userOtpService: UserOtpService<IOtpEmailVerificationContext>,
+    private userOtpService: OtpService<IOtpEmailVerificationContext>,
   ) {}
 
   async addEmail(user: User, email: string) {
