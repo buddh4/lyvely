@@ -23,6 +23,7 @@ import { contentTestPlugin } from '@lyvely/content';
 import { mailTestPlugin } from '@lyvely/mails';
 import { i18nTestPlugin } from '@lyvely/i18n';
 import { otpTestPlugin } from '@lyvely/otp';
+import { notificationTestPlugin } from '@lyvely/notifications';
 
 describe('UserRegistrationService', () => {
   let testingModule: LyvelyTestingModule;
@@ -37,7 +38,14 @@ describe('UserRegistrationService', () => {
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
-      .plugins([usersTestPlugin, otpTestPlugin, contentTestPlugin, mailTestPlugin, i18nTestPlugin])
+      .plugins([
+        usersTestPlugin,
+        otpTestPlugin,
+        contentTestPlugin,
+        notificationTestPlugin,
+        mailTestPlugin,
+        i18nTestPlugin,
+      ])
       .imports([UserRegistrationModule, InvitationsModule])
       .compile();
     registerService = testingModule.get<UserRegistrationService>(UserRegistrationService);
