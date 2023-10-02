@@ -40,8 +40,12 @@ describe('Habit', () => {
     testData = testingModule.get(HabitTestDataUtil);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('create', async () => {

@@ -1,20 +1,24 @@
 import { UrlGenerator } from './url-generator.service';
-import { createCoreTestingModule } from '../testing';
+import { afterAllTests, afterEachTest, createCoreTestingModule } from '../testing';
 import { TestingModule } from '@nestjs/testing';
-import { afterEach } from 'node:test';
-import { ModuleRegistry } from '../components';
 
 describe('UrlGenerator', () => {
   let urlGenerator: UrlGenerator;
   let testingModule: TestingModule;
 
+  const TEST_KEY = 'UrlGenerator';
+
   beforeEach(async () => {
-    testingModule = await createCoreTestingModule('url-gnerator', [UrlGenerator]).compile();
+    testingModule = await createCoreTestingModule(TEST_KEY, [UrlGenerator]).compile();
     urlGenerator = testingModule.get(UrlGenerator);
   });
 
-  afterEach(() => {
-    testingModule.get(ModuleRegistry)?.reset();
+  afterEach(async () => {
+    await afterEachTest(TEST_KEY, testingModule);
+  });
+
+  afterAll(async () => {
+    await afterAllTests(TEST_KEY);
   });
 
   it('should be defined', () => {

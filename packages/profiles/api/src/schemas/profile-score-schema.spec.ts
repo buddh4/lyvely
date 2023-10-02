@@ -36,8 +36,12 @@ describe('ProfileScore', () => {
     testDataUtils = testingModule.get(ProfileTestDataUtils);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('should be defined', () => {

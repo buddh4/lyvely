@@ -61,7 +61,11 @@ describe('NotificationSendProcessor', () => {
   });
 
   afterEach(async () => {
-    testingModule.afterEach();
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('should be defined', () => {
@@ -82,7 +86,7 @@ describe('NotificationSendProcessor', () => {
         notification,
       );
       expect(userNotification).toBeDefined();
-      const emailDelivery = userNotification!.getChannelDeliveryStatus('email');
+      const emailDelivery = userNotification?.getChannelDeliveryStatus('email');
       expect(emailDelivery).toBeDefined();
       expect(emailDelivery!.success).toEqual(true);
       expect(userNotification!.status.deliveredAt).toBeDefined();

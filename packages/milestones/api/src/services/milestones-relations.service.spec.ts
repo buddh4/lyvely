@@ -90,9 +90,13 @@ describe('MileStonesRelationService', () => {
   });
 
   afterEach(async () => {
-    testingModule.afterEach();
+    await testingModule.afterEach();
     await app.close();
     testProvider.reset();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('should be defined', () => {

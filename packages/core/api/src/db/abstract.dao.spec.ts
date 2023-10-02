@@ -3,11 +3,16 @@ import { AbstractDao } from './abstract.dao';
 import { ModelSaveEvent } from './dao.events';
 import { BaseEntity } from './base.entity';
 import { Model } from 'mongoose';
-import { createCoreTestingModule, getObjectId } from '../testing/core-test.util';
+import {
+  createCoreTestingModule,
+  EventTester,
+  getObjectId,
+  afterEachTest,
+  afterAllTests,
+} from '../testing/core-test.util';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
-import { Inject, Injectable } from '@nestjs/common';
-import { globalEmitter } from '../global.emitter';
-import { buildTest, LyvelyTestingModule, EventTester } from '@lyvely/testing';
+import { Injectable } from '@nestjs/common';
+import { TestingModule } from '@nestjs/testing';
 
 interface ITestEntity {
   requiredField: string;
@@ -58,28 +63,30 @@ const TestEntityModelDefinition: ModelDefinition = {
 };
 
 describe('AbstractDao', () => {
-  let testingModule: LyvelyTestingModule;
+  let testingModule: TestingModule;
   let dao: TestEntityDao;
   let eventTester: EventTester;
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY)
-      .providers([TestEntityDao, EventTester])
-      .models([TestEntityModelDefinition])
-      .compile();
-    dao = testingModule.get<TestEntityDao>(TestEntityDao);
-    eventTester = testingModule.get<EventTester>(EventTester);
+    testingModule = await createCoreTestingModule(
+      TEST_KEY,
+      [TestEntityDao, EventTester],
+      [TestEntityModelDefinition],
+    ).compile();
+    dao = testingModule.get(TestEntityDao);
+    eventTester = testingModule.get(EventTester);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
-    eventTester.eventEmitter.removeAllListeners();
-    globalEmitter.removeAllListeners();
+  afterEach(async () => {
+    await afterEachTest(TEST_KEY, testingModule);
+  });
+
+  afterAll(async () => {
+    await afterAllTests(TEST_KEY);
   });
 
   it('should be defined', () => {
     expect(dao).toBeDefined();
-    expect(eventTester).toBeDefined();
   });
 
   describe('save', () => {
@@ -110,15 +117,13 @@ describe('AbstractDao', () => {
     });
 
     it('save invalid entity fails', async () => {
+      expect.assertions(1);
       try {
         await dao.save(new TestEntity({ numberField: 3 }));
-        expect(true).toEqual(false);
       } catch (e) {
         const err = <any>e;
         if (err.name === 'ValidationError') {
           expect(err.errors['requiredField'].kind).toEqual('required');
-        } else {
-          expect(true).toEqual(false);
         }
       }
     });

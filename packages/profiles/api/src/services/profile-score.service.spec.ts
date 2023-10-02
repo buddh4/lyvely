@@ -42,7 +42,11 @@ describe('AbstractUserProfileActionService', () => {
 
   afterEach(async () => {
     await app.close();
-    testingModule.afterEach();
+    await testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('should be defined', () => {

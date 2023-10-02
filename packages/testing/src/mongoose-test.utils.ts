@@ -19,7 +19,6 @@ export const rootMongooseTestModule = (key?: string, options: MongooseModuleOpti
 
 export const closeInMongodConnection = async (key: string) => {
   if (mongods.get(key)) await mongods.get(key)!.stop();
-  await disconnect();
 };
 
 export const closeInMongodConnections = async () => {

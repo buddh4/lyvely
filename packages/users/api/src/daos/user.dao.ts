@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { User, RefreshToken, UserEmail } from '../schemas';
 import { AbstractDao, IBaseQueryOptions, EntityIdentity, UpdateQuerySet } from '@lyvely/core';
 import { Constructor } from '@lyvely/common';
@@ -39,12 +39,14 @@ export class UserDao extends AbstractDao<User> {
 
   async findByVerifiedEmail(email: string, includeUnverifiedMain = false): Promise<User | null> {
     const mainEmailCondition = { email: email.toLowerCase() };
+    const statusCondition: FilterQuery<User> = {};
 
     if (!includeUnverifiedMain) {
-      mainEmailCondition['status'] = { $ne: UserStatus.EmailVerification };
+      statusCondition['status'] = { $ne: UserStatus.EmailVerification };
     }
 
     return this.findOne({
+      ...statusCondition,
       $or: [
         mainEmailCondition,
         { 'emails.lowercaseEmail': email.toLowerCase(), 'emails.verified': true },
@@ -57,15 +59,18 @@ export class UserDao extends AbstractDao<User> {
       .filter((email) => !!email?.length)
       .map((email) => email.toLowerCase());
 
+    const statusCondition: FilterQuery<User> = {};
+
     if (!lowerCaseEmails.length) return [];
 
     const mainEmailCondition = { email: { $in: lowerCaseEmails } };
 
     if (!includeUnverifiedMain) {
-      mainEmailCondition['status'] = { $ne: UserStatus.EmailVerification };
+      statusCondition['status'] = { $ne: UserStatus.EmailVerification };
     }
 
     return this.findAll({
+      ...statusCondition,
       $or: [
         mainEmailCondition,
         { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': true },

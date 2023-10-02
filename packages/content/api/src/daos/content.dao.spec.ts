@@ -34,8 +34,12 @@ describe('content dao', () => {
     testContentModel = testingModule.get<Model<TestContentDocument>>('TestContentModel');
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   async function createTestContent(user: User, profile: Profile, testData = 'Testing...') {

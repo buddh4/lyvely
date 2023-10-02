@@ -1,18 +1,21 @@
-import { TestDataUtils, createContentTestingModule, LyvelyTestingModule } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { INestApplication } from '@nestjs/common';
-import { Content, ContentSchema } from '@lyvely/content';
+import { Content, ContentSchema, contentTestPlugin } from '@lyvely/content';
 import {
   TestTimeSeriesContent,
   TestTimeSeriesContentDocument,
   TestTimeSeriesContentSchema,
-} from '../test';
+} from '../testing';
 import { Model } from 'mongoose';
-import { CalendarInterval, DataPointValueType, DataPointInputType } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
 import {
+  DataPointValueType,
+  DataPointInputType,
   CheckboxNumberDataPointConfig,
   DataPointConfigFactory,
   RangeNumberDataPointConfig,
-} from '../';
+} from '../index';
+import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 
 const ContentModels = [
   {
@@ -25,15 +28,18 @@ const ContentModels = [
 
 describe('TimeSeriesContentSchema', () => {
   let testingModule: LyvelyTestingModule;
-  let testData: TestDataUtils;
+  let testData: ProfileTestDataUtils;
   let app: INestApplication;
   let TestTimeSeriesContentModel: Model<TestTimeSeriesContentDocument>;
 
   const TEST_KEY = 'TimeSeriesContentSchema';
 
   beforeEach(async () => {
-    testingModule = await createContentTestingModule(TEST_KEY, [], ContentModels).compile();
-    testData = testingModule.get<TestDataUtils>(TestDataUtils);
+    testingModule = await buildTest(TEST_KEY)
+      .plugins([contentTestPlugin, profilesTestPlugin])
+      .models(ContentModels)
+      .compile();
+    testData = testingModule.get(ProfileTestDataUtils);
     TestTimeSeriesContentModel = testingModule.get<Model<TestTimeSeriesContentDocument>>(
       'TestTimeSeriesContentModel',
     );
@@ -42,9 +48,12 @@ describe('TimeSeriesContentSchema', () => {
   });
 
   afterEach(async () => {
-    testingModule.afterEach();
-    await testData.reset(TEST_KEY);
+    await testingModule.afterEach();
     await app.close();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('should be defined', () => {
@@ -64,14 +73,14 @@ describe('TimeSeriesContentSchema', () => {
         }),
       });
 
-      delete model.timeSeriesConfig;
+      delete (<any>model).timeSeriesConfig;
 
       const entity = new TestTimeSeriesContentModel(model);
 
       try {
         await entity.save();
       } catch (e) {
-        expect(e.errors?.config).toBeDefined();
+        expect((e as any).errors?.config).toBeDefined();
       }
     });
 

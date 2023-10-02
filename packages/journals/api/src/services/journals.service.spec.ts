@@ -44,7 +44,11 @@ describe('JournalService', () => {
   });
 
   afterEach(async () => {
-    testingModule.afterEach();
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   async function createJournal(obj: Partial<CreateJournalModel> = {}) {

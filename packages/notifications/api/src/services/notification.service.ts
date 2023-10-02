@@ -7,7 +7,6 @@ import { NotificationDao } from '../daos';
 import { JOB_SEND_NOTIFICATION, QUEUE_NOTIFICATIONS_SEND } from '../notification.constants';
 import { ISendNotificationJob } from '../interfaces';
 import { EntityIdentity } from '@lyvely/core';
-import { User } from '@lyvely/users';
 
 @Injectable()
 export class NotificationService {

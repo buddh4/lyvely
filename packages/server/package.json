@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build_disabled": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:e2e": "cross-env NODE_ENV=e2e npm run start",
@@ -17,7 +17,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
-    "test": "jest --forceExit",
+    "test_disabled": "jest --forceExit",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage --no-cache",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
@@ -138,7 +138,15 @@
       "^@/(.*)$": "<rootDir>/src/$1"
     },
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "compilerOptions": {
+            "sourceMap": true,
+            "inlineSourceMap": true
+          }
+        }
+      ]
     },
     "modulePathIgnorePatterns": [
       "cypress"

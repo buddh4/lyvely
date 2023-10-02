@@ -5,7 +5,7 @@ import {
   getDataPointModelDefinition,
   NumberDataPoint,
 } from '../index';
-import { CalendarPlanFilter, CalendarPlanFilter } from '@lyvely/calendar-plan';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import {
   CalendarDateTime,
   CalendarInterval,
@@ -15,7 +15,7 @@ import {
   toTimingId,
 } from '@lyvely/dates';
 import { TestDataPointDao, TestTimeSeriesContent } from '../testing';
-import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { Profile, profilesTestPlugin } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { contentTestPlugin } from '@lyvely/content';
 
@@ -25,7 +25,6 @@ const DataPointModelDefinition = [
 
 describe('DataPointDao', () => {
   let testingModule: LyvelyTestingModule;
-  let testData: ProfileTestDataUtils;
   let dao: TestDataPointDao;
 
   const TEST_KEY = 'DataPointDao';
@@ -36,12 +35,15 @@ describe('DataPointDao', () => {
       .providers([TestDataPointDao])
       .models(DataPointModelDefinition)
       .compile();
-    testData = testingModule.get(ProfileTestDataUtils);
     dao = testingModule.get(TestDataPointDao);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('should be defined', () => {
@@ -62,7 +64,7 @@ describe('DataPointDao', () => {
   }
 
   async function createEntities(entries: IExtendedPointTestOptions[]) {
-    const result = [];
+    const result: ReturnType<typeof createEntity>[] = [];
     for (const entry of entries) {
       result.push(createEntity(entry.date, entry.interval, entry));
     }
@@ -119,48 +121,49 @@ describe('DataPointDao', () => {
   describe('updateDataPointValue()', () => {
     it('update value', async () => {
       const date = new Date('2022-02-20');
-      let { dataPoint, uid } = await createEntity(date, CalendarInterval.Daily);
+      // eslint-disable-next-line prefer-const
+      const { dataPoint, uid } = await createEntity(date, CalendarInterval.Daily);
       await dao.updateDataPointValue(uid, dataPoint, 3);
-      dataPoint = await dao.reload(dataPoint);
-      expect(dataPoint.value).toEqual(3);
+      const updated = await dao.reload(dataPoint);
+      expect(updated!.value).toEqual(3);
     });
   });
 
   describe('updateOneSetById()', () => {
     it('update value', async () => {
       const date = new Date('2022-02-20');
-      let { dataPoint } = await createEntity(date, CalendarInterval.Daily);
+      const { dataPoint } = await createEntity(date, CalendarInterval.Daily);
       await dao.updateOneSetById(
         dataPoint._id,
         { value: 3 },
         { discriminator: NumberDataPoint.name },
       );
-      dataPoint = await dao.reload(dataPoint);
-      expect(dataPoint.value).toEqual(3);
+      const updated = await dao.reload(dataPoint);
+      expect(updated!.value).toEqual(3);
     });
 
     it('update interval', async () => {
       const date = new Date('2022-02-20');
-      let { dataPoint } = await createEntity(date, CalendarInterval.Daily);
+      const { dataPoint } = await createEntity(date, CalendarInterval.Daily);
       await dao.updateOneSetById(dataPoint._id, { interval: CalendarInterval.Monthly });
-      dataPoint = await dao.reload(dataPoint);
-      expect(dataPoint.interval).toEqual(CalendarInterval.Monthly);
+      const updated = await dao.reload(dataPoint);
+      expect(updated!.interval).toEqual(CalendarInterval.Monthly);
     });
 
     it('assure date is not updatable', async () => {
       const date = new Date('2022-02-20');
-      let { dataPoint } = await createEntity(date, CalendarInterval.Daily);
+      const { dataPoint } = await createEntity(date, CalendarInterval.Daily);
       await dao.updateOneSetById(dataPoint._id, { value: 3, date: new Date() });
-      dataPoint = await dao.reload(dataPoint);
-      expect(dataPoint.date.toISOString()).toEqual(getFullDayDate(date).toISOString());
+      const updated = await dao.reload(dataPoint);
+      expect(updated!.date.toISOString()).toEqual(getFullDayDate(date).toISOString());
     });
 
     it('assure tid is not updatable', async () => {
       const date = new Date('2022-02-20');
-      let { dataPoint } = await createEntity(date, CalendarInterval.Daily);
+      const { dataPoint } = await createEntity(date, CalendarInterval.Daily);
       await dao.updateOneSetById(dataPoint._id, { value: 3, tid: toTimingId(Date()) });
-      dataPoint = await dao.reload(dataPoint);
-      expect(dataPoint.tid).toEqual(toTimingId(date));
+      const updated = await dao.reload(dataPoint);
+      expect(updated!.tid).toEqual(toTimingId(date));
     });
 
     it('assure meta pid,uid,cid is not updatable', async () => {
@@ -173,10 +176,10 @@ describe('DataPointDao', () => {
         uid: getObjectId('u2'),
       });
       const updated = await dao.reload(dataPoint);
-      expect(updated.pid).toEqual(dataPoint.pid);
-      expect(updated.cid).toEqual(dataPoint.cid);
-      expect(updated.uid).toEqual(dataPoint.uid);
-      expect(updated.interval).toEqual(dataPoint.interval);
+      expect(updated!.pid).toEqual(dataPoint.pid);
+      expect(updated!.cid).toEqual(dataPoint.cid);
+      expect(updated!.uid).toEqual(dataPoint.uid);
+      expect(updated!.interval).toEqual(dataPoint.interval);
     });
   });
 

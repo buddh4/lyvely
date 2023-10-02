@@ -10,8 +10,13 @@ describe('I18nModuleLoader', () => {
     i18n = test.get(I18n);
   }, 50000);
 
-  it('registry is defined', async () => {
+  it('Test module prefix', async () => {
     const translation = i18n.t('i18n.test.hello', { locale: 'de' });
     expect(translation).toEqual('Hallo');
+  }, 10000);
+
+  it('Test base translation are merged', async () => {
+    const translation = i18n.t('i18n.test.mergeThis', { locale: 'de' });
+    expect(translation).toEqual('Es wurde zusammengeführt.');
   }, 10000);
 });

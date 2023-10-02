@@ -120,8 +120,12 @@ describe('ProfilePermissionsService', () => {
     testDataUtils = testingModule.get(ProfileTestDataUtils);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   // TODO: Seperate between default permission tests and configured permission test

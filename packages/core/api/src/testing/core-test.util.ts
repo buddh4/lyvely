@@ -1,14 +1,17 @@
-import { Provider, DynamicModule, ForwardReference } from '@nestjs/common';
+import { Provider, DynamicModule, ForwardReference, Injectable, Inject } from '@nestjs/common';
 import { ModelDefinition } from '@nestjs/mongoose/dist/interfaces';
 import { Type } from '@lyvely/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModuleBuilder } from '@nestjs/testing';
+import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose, { disconnect } from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { CoreModule } from '../core.module';
+import { ModuleRegistry } from '../components';
+import { EventEmitter2 } from 'eventemitter2';
+import { globalEmitter } from '../global.emitter';
 
 const mongods = new Map<string, MongoMemoryServer>();
 
@@ -23,6 +26,12 @@ export const closeInMongodConnections = async () => {
   }
   await disconnect();
 };
+
+@Injectable()
+export class EventTester {
+  @Inject()
+  public eventEmitter: EventEmitter2;
+}
 
 export function createCoreTestingModule(
   key: string,
@@ -55,8 +64,19 @@ export function createCoreTestingModule(
       CoreModule,
       ...imports,
     ],
-    providers: [...providers],
+    providers: [...providers, EventTester],
   });
+}
+
+export async function afterEachTest(key: string, testingModule: TestingModule) {
+  testingModule.get(ModuleRegistry)?.reset();
+  testingModule.get(EventTester)?.eventEmitter.removeAllListeners();
+  globalEmitter.removeAllListeners();
+  await closeInMongodConnection(key);
+}
+
+export async function afterAllTests(key: string) {
+  await closeInMongodConnections();
 }
 
 export function getObjectId(id: string) {

@@ -1,16 +1,22 @@
-import { TestingModule } from '@nestjs/testing';
 import { CaptchaController } from './captcha.controller';
 import { CaptchaModule } from '../captcha.module';
-import { buildTest } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('CaptchaController', () => {
   let controller: CaptchaController;
+  let testingModule: LyvelyTestingModule;
 
   beforeEach(async () => {
-    const module: TestingModule = await buildTest('captcha-controller')
-      .imports([CaptchaModule])
-      .compile();
-    controller = module.get<CaptchaController>(CaptchaController);
+    testingModule = await buildTest('captcha-controller').imports([CaptchaModule]).compile();
+    controller = testingModule.get(CaptchaController);
+  });
+
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('should be defined', () => {

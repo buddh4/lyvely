@@ -18,7 +18,7 @@ export class UserTestDataUtils {
       new UserEmail(`alt_${username}@test.de`, true),
     ];
     userData.password = userData.password || `testPassword`;
-    userData.status = userData.status ?? UserStatus.Active;
+    userData.status ??= UserStatus.Active;
     const user = new this.UserModel(new User(userData));
     await user.save();
     return new User(user);

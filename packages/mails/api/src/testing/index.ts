@@ -1,2 +1,2 @@
 export * from './test-mail.service';
-export * from './testing.util';
+export * from './mails-testing.plugin';

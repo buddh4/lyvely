@@ -59,7 +59,11 @@ describe('TimeSeriesService', () => {
   });
 
   afterEach(async () => {
-    testingModule.afterEach();
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   async function createTimeSeriesContent(

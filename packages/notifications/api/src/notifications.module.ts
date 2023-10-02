@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import {
   NotificationTypeRegistry,
   NotificationDecider,
@@ -22,6 +21,7 @@ import { UsersModule } from '@lyvely/users';
 import { ProfilesModule } from '@lyvely/profiles';
 import { UserSubscriptionModule } from '@lyvely/user-subscriptions';
 import { LiveModule } from '@lyvely/live';
+import { LyvelyModule } from '@lyvely/core';
 
 const NotificationModels = MongooseModule.forFeature([
   {
@@ -34,11 +34,12 @@ const NotificationModels = MongooseModule.forFeature([
   },
 ]);
 
-const NotificationQueues = BullModule.registerQueue({
-  name: QUEUE_NOTIFICATIONS_SEND,
-});
+const NotificationQueues = BullModule.registerQueue({ name: QUEUE_NOTIFICATIONS_SEND });
 
-@Module({
+@LyvelyModule({
+  id: 'notifications',
+  name: 'Notifications',
+  path: __dirname,
   imports: [
     NotificationModels,
     NotificationQueues,

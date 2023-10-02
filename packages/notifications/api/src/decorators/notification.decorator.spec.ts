@@ -18,7 +18,11 @@ describe('Notification decorator', () => {
   });
 
   afterEach(async () => {
-    testingModule.afterEach();
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('type is automatically set and registered', () => {

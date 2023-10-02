@@ -6,6 +6,7 @@ import {
   NotificationChannelDeliveryStatus,
   NotificationType,
   RenderFormat,
+  StatusError,
   UserNotification,
 } from '../schemas';
 import { Injectable, Logger } from '@nestjs/common';
@@ -61,7 +62,7 @@ export class MailNotificationChannel implements INotificationChannel {
       return new NotificationChannelDeliveryStatus({
         channel: this.getId(),
         success: false,
-        error: e.message || 'Unknown error',
+        error: new StatusError(e),
       });
     }
   }
@@ -76,7 +77,7 @@ export class MailNotificationChannel implements INotificationChannel {
       return new NotificationChannelDeliveryStatus({
         channel: this.getId(),
         success: false,
-        error: 'Could not determine target email for user',
+        error: new StatusError('Could not determine target email for user'),
       });
     }
 

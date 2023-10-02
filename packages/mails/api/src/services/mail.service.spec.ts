@@ -15,7 +15,11 @@ describe('MailService', () => {
   });
 
   afterEach(async () => {
-    testingModule.afterEach();
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('is defined', () => {

@@ -33,8 +33,12 @@ describe('content dao', () => {
     testData = testingModule.get(ProfileTestDataUtils);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   async function createTestContent(user: User, profile: Profile, archived = false) {

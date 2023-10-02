@@ -12,7 +12,7 @@ import { profilesTestPlugin } from '@lyvely/profiles';
 export const habitTestPlugin = {
   apply(builder) {
     builder
-      .plugins([contentTestPlugin])
+      .plugins([contentTestPlugin, profilesTestPlugin])
       .providers([HabitTestDataUtil])
       .models([
         getContentModelDefinition([{ name: Habit.name, schema: HabitSchema }]),
@@ -21,7 +21,6 @@ export const habitTestPlugin = {
           DataPointValueType.Timer,
         ]),
         getContentScoreDefinition([{ name: HabitScore.name, schema: HabitScoreSchema }]),
-      ])
-      .plugins([profilesTestPlugin]);
+      ]);
   },
 } as TestPlugin;

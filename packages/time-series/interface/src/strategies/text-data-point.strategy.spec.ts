@@ -4,14 +4,13 @@ import {
   TextDataPointModel,
   useDataPointStrategyFacade,
 } from '../index';
-import { CalendarInterval, isToday } from '@lyvely/dates';
-import { toTimingId } from '@lyvely/dates';
+import { CalendarInterval, isToday, toTimingId } from '@lyvely/dates';
 
 describe('TextDataPointStrategy', () => {
   describe('validateValue', () => {
-    it('valid string', () => {
+    it('valid string', async () => {
       expect(
-        useDataPointStrategyFacade().validateValue(
+        await useDataPointStrategyFacade().validateValue(
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
@@ -20,9 +19,9 @@ describe('TextDataPointStrategy', () => {
       ).toEqual(true);
     });
 
-    it('empty value', () => {
+    it('empty value', async () => {
       expect(
-        useDataPointStrategyFacade().validateValue(
+        await useDataPointStrategyFacade().validateValue(
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
@@ -31,9 +30,9 @@ describe('TextDataPointStrategy', () => {
       ).toEqual(false);
     });
 
-    it('empty text', () => {
+    it('empty text', async () => {
       expect(
-        useDataPointStrategyFacade().validateValue(
+        await useDataPointStrategyFacade().validateValue(
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },
@@ -42,9 +41,9 @@ describe('TextDataPointStrategy', () => {
       ).toEqual(false);
     });
 
-    it('invalid value should fail', () => {
+    it('invalid value should fail', async () => {
       expect(
-        useDataPointStrategyFacade().validateValue(
+        await useDataPointStrategyFacade().validateValue(
           <ITextDataPointConfig>{
             valueType: DataPointValueType.Text,
           },

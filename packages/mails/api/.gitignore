@@ -39,3 +39,4 @@ lerna-debug.log*
 # custom
 .env
 /screenshots
+/mail

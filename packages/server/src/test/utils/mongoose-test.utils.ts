@@ -16,6 +16,10 @@ export const rootMongooseTestModule = (key?: string, options: MongooseModuleOpti
     },
   });
 
-export const closeInMongodConnection = async (key?: string) => {
+export const closeInMongodConnection = async (key: string) => {
   if (mongods.get(key)) await mongods.get(key).stop();
+};
+
+export const closeInMongodConnections = async () => {
+  return Promise.all(Array.of(...mongods.values()).map((mongod) => mongod.stop()));
 };

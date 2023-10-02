@@ -60,9 +60,7 @@ export class NotificationSenderProcessor extends WorkerHost {
       notification,
     );
 
-    if (!userNotification) return;
-
-    if (!this.decider.checkResend(context, notification, userNotification)) {
+    if (userNotification && !this.decider.checkResend(context, notification, userNotification)) {
       /**
        * The notification was updated, but we do not want to resend it for some reason, so we just update the seen state
        *
@@ -85,7 +83,6 @@ export class NotificationSenderProcessor extends WorkerHost {
 
     await this.send(context, notification, userNotification);
     // TODO: Handle failed channels, retry, general error handling
-    userNotification.status.deliveredAt = new Date();
     return this.userNotificationService.updateDeliveryState(userNotification);
   }
 
@@ -103,16 +100,20 @@ export class NotificationSenderProcessor extends WorkerHost {
         promises.push(
           channel
             .send(context, notification, userNotification)
-            .then((status: NotificationChannelDeliveryStatus) => {
-              userNotification.setChannelDeliveryStatus(status);
-            })
-            .catch((err) => this.logger.error(err)),
+            .then((status: NotificationChannelDeliveryStatus) =>
+              userNotification.setChannelDeliveryStatus(status),
+            )
+            .catch((err) => {
+              userNotification.setDeliveryErrorStatus(channel.getId(), err);
+              this.logger.error(err);
+            }),
         );
       }
     });
 
     promises.push(this.usersService.updateNotificationState(user, user.notification));
 
+    userNotification.status.deliveredAt = new Date();
     return Promise.all(promises);
   }
 }

@@ -15,8 +15,12 @@ describe('OtpService', () => {
     userOtpService = testingModule.get(OtpService);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('should be defined', () => {

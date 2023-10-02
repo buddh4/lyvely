@@ -13,7 +13,7 @@
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "prerelease": "npm run build",
-    "test": "jest --passWithNoTests --forceExit"
+    "test": "jest --passWithNoTests --detectOpenHandles --runInBand"
   },
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
@@ -38,9 +38,11 @@
   },
   "devDependencies": {
     "@lyvely/testing": "^0.1.0-alpha3",
+    "bullmq": "^3.12.0",
     "@nestjs/testing": "^9.4.0",
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
+    "leaked-handles": "^5.2.0",
     "typescript": "^5.2.2"
   },
   "peerDependencies": {
@@ -66,7 +68,15 @@
       "^@/(.*)$": "<rootDir>/src/$1"
     },
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "compilerOptions": {
+            "sourceMap": true,
+            "inlineSourceMap": true
+          }
+        }
+      ]
     },
     "collectCoverageFrom": [
       "src/**/*.ts"

@@ -7,7 +7,7 @@ import {
   ObjectIdProp,
 } from '@lyvely/core';
 import mongoose from 'mongoose';
-import { PropertyType } from '@lyvely/common';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { User } from '@lyvely/users';
 import { Notification } from './notification.schema';
 
@@ -17,7 +17,36 @@ export enum DeliveryStatus {
 }
 
 @NestedSchema()
-export class NotificationChannelDeliveryStatus extends BaseEntity<NotificationChannelDeliveryStatus> {
+export class StatusError extends BaseModel<StatusError> {
+  @Prop()
+  message: string;
+
+  @Prop()
+  stack: string;
+
+  constructor(error: any) {
+    if (error instanceof Error) {
+      super({
+        message: error.message,
+        stack: error.stack,
+      });
+    } else if (typeof error === 'string') {
+      super({
+        message: error,
+      });
+    } else {
+      super({
+        message: error?.message || 'Unknown error',
+        stack: error?.stack,
+      });
+    }
+  }
+}
+
+const StatusErrorSchema = SchemaFactory.createForClass(StatusError);
+
+@NestedSchema()
+export class NotificationChannelDeliveryStatus extends BaseModel<NotificationChannelDeliveryStatus> {
   @Prop({ requried: true })
   channel: string;
 
@@ -25,8 +54,20 @@ export class NotificationChannelDeliveryStatus extends BaseEntity<NotificationCh
   @PropertyType(Boolean, { default: false })
   success: boolean;
 
+  @Prop({ requried: true })
+  attempts: 0;
+
+  @Prop({ type: StatusErrorSchema })
+  error?: StatusError;
+
   @Prop()
-  error?: string;
+  date: Date;
+
+  constructor(init: Partial<NotificationChannelDeliveryStatus> = {}) {
+    init.attempts = 0;
+    init.date = new Date();
+    super(init);
+  }
 }
 
 const NotificationChannelDeliveryStatusSchema = SchemaFactory.createForClass(
@@ -34,7 +75,7 @@ const NotificationChannelDeliveryStatusSchema = SchemaFactory.createForClass(
 );
 
 @NestedSchema()
-export class NotificationDeliveryStatus extends BaseEntity<NotificationDeliveryStatus> {
+export class NotificationDeliveryStatus extends BaseModel<NotificationDeliveryStatus> {
   @Prop()
   success: boolean;
 
@@ -101,6 +142,15 @@ export class UserNotification extends BaseEntity<UserNotification> {
       existingStatus.success = false;
       existingStatus.error = status.error;
     }
+  }
+
+  setDeliveryErrorStatus(channel: string, err: any) {
+    const deliveryStatus =
+      this.getChannelDeliveryStatus(channel) || new NotificationChannelDeliveryStatus({ channel });
+    deliveryStatus.attempts += 1;
+    deliveryStatus.success = false;
+    deliveryStatus.error = new StatusError(err);
+    this.setChannelDeliveryStatus(deliveryStatus);
   }
 
   getSortOrder(): number {

@@ -96,6 +96,11 @@ export class I18nModuleLoader extends I18nLoader implements OnModuleDestroy {
       if (Object.hasOwn(translations, locale)) {
         mappedTranslation[locale] = { [moduleId]: translations[locale] };
       }
+
+      if (mappedTranslation[locale]?.[moduleId]?.[moduleId]) {
+        merge(mappedTranslation[locale][moduleId], mappedTranslation[locale][moduleId][moduleId]);
+        delete mappedTranslation[locale][moduleId][moduleId];
+      }
     }
     return mappedTranslation;
   }

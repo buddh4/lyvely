@@ -29,8 +29,12 @@ describe('HabitDataPointService', () => {
     HabitDataPointModel = testingModule.get<Model<DataPoint>>('HabitDataPointModel');
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   describe('findLogsByRange', () => {
@@ -97,7 +101,7 @@ describe('HabitDataPointService', () => {
       expect(dataPoint.tid).toEqual(toTimingId('2021-01-01'));
       expect(dataPoint.value).toEqual(2);
 
-      const logs = await HabitDataPointModel.find({ timingModel: habit._id }).exec();
+      const logs = await HabitDataPointModel.find({ cid: habit._id }).exec();
       expect(logs.length).toEqual(1);
     });
   });
@@ -186,9 +190,9 @@ describe('HabitDataPointService', () => {
       const scores = await contentScoreDao.findAll({});
       expect(scores.length).toEqual(2);
       expect(scores[0].score).toEqual(10);
-      expect(scores[0].uid).toBeNull();
+      expect(scores[0].uid).toBeUndefined();
       expect(scores[1].score).toEqual(-10);
-      expect(scores[1].uid).toBeNull();
+      expect(scores[1].uid).toBeUndefined();
     });
   });
 

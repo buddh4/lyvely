@@ -21,8 +21,12 @@ describe('TaskCalendarPlanService', () => {
     testData = testingModule.get(TaskTestDataUtil);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   describe('findByFilter', () => {

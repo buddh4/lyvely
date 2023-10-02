@@ -39,19 +39,19 @@ export class Timer extends TimerModel<Types.ObjectId> {
   spans: TimeSpan[] = [];
 
   start(user?: EntityIdentity<User>) {
-    return super.start(assureObjectId(user));
+    return super.start(assureObjectId(user, true));
   }
 
   constructor(userIdentity?: EntityIdentity<any>) {
     super();
     if (userIdentity) {
-      this.uid = assureObjectId(userIdentity);
+      this.uid = assureObjectId(userIdentity, true);
     }
   }
 
   afterInit() {
     if (this.uid) {
-      this.uid = assureObjectId(this.uid);
+      this.uid = assureObjectId(this.uid, true);
     }
   }
 }

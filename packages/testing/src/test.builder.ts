@@ -10,17 +10,24 @@ import { CoreModule, ModuleRegistry, globalEmitter } from '@lyvely/core';
 import { PropertiesOf } from '@lyvely/common';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TestConfigService } from './test-config.service';
+import {
+  closeInMongodConnection,
+  closeInMongodConnections,
+  rootMongooseTestModule,
+} from './mongoose-test.utils';
 
-const mongods = new Map<string, MongoMemoryServer>();
 export type Type<T = any> = new (...args: any[]) => T;
 
 export interface TestPlugin {
   apply?: (builder: LyvelyTestBuilder) => void;
   prepare?: (moduleBuilder: TestingModuleBuilder) => void;
+  afterEach?: (module: TestingModule) => void;
+  afterAll?: (module: TestingModule) => void;
 }
 
 export interface LyvelyTestingModule extends TestingModule {
-  afterEach(): void;
+  afterEach(): Promise<void>;
+  afterAll(): Promise<void>;
 }
 
 @Injectable()
@@ -83,10 +90,16 @@ export class LyvelyTestBuilder {
 
   async compile(): Promise<LyvelyTestingModule> {
     const testingModule = await this.build().compile();
-    (<LyvelyTestingModule>(<any>testingModule)).afterEach = () => {
+    (<LyvelyTestingModule>(<any>testingModule)).afterEach = async () => {
       testingModule.get(ModuleRegistry)?.reset();
       testingModule.get(EventTester)?.eventEmitter.removeAllListeners();
       globalEmitter.removeAllListeners();
+      this._plugins.forEach((plugin) => plugin.afterEach?.(testingModule));
+      await closeInMongodConnection(this.id);
+    };
+    (<LyvelyTestingModule>(<any>testingModule)).afterAll = async () => {
+      this._plugins.forEach((plugin) => plugin.afterAll?.(testingModule));
+      await closeInMongodConnections();
     };
     return testingModule as LyvelyTestingModule;
   }
@@ -105,16 +118,7 @@ export function createCoreTestingModule(
 ): TestingModuleBuilder {
   return Test.createTestingModule({
     imports: [
-      MongooseModule.forRootAsync({
-        useFactory: async () => {
-          const mongod = await MongoMemoryServer.create();
-          const mongoUri = mongod.getUri();
-          mongods.set(key || new Date().toString(), mongod);
-          return {
-            uri: mongoUri,
-          };
-        },
-      }),
+      rootMongooseTestModule(key),
       ThrottlerModule.forRootAsync({
         imports: [ConfigModule],
         inject: [ConfigService],

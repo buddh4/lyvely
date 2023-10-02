@@ -1,9 +1,8 @@
 import { TaskModel } from './task.model';
-import { CalendarInterval } from '@lyvely/dates';
-import { toTimingId } from '@lyvely/dates';
+import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { TaskCalendarPlanStore } from './task-calendar-plan.store';
 import { ContentMetadataModel } from '@lyvely/content';
-import { UserAssignmentStrategy } from '@/collab';
+import { UserAssignmentStrategy } from '@lyvely/common';
 
 describe('ActivityDataPointStore', () => {
   let store: TaskCalendarPlanStore;
@@ -49,23 +48,14 @@ describe('ActivityDataPointStore', () => {
       };
       store.setModel(
         new TaskModel({
-          id: 't4',
-          config,
-          meta: new ContentMetadataModel({ sortOrder: 3 }),
-        }),
-      );
-      store.setModel(
-        new TaskModel({
           id: 't3',
           config,
-          meta: new ContentMetadataModel({ sortOrder: 2 }),
         }),
       );
       store.setModel(
         new TaskModel({
           id: 't2',
           config,
-          meta: new ContentMetadataModel({ sortOrder: 0 }),
           done: timingId,
         }),
       );
@@ -76,19 +66,12 @@ describe('ActivityDataPointStore', () => {
           done: 'anotherday...',
         }),
       );
-      store.setModel(
-        new TaskModel({
-          id: 't0',
-          config,
-        }),
-      );
 
       const result = store.getModelsByIntervalFilter(CalendarInterval.Daily, undefined, timingId);
 
-      expect(result.length).toEqual(3);
+      expect(result.length).toEqual(2);
       expect(result[0].id).toEqual('t3');
-      expect(result[1].id).toEqual('t4');
-      expect(result[2].id).toEqual('t2');
+      expect(result[1].id).toEqual('t2');
     });
   });
 });

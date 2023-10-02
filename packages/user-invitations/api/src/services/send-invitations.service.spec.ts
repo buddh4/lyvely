@@ -18,18 +18,19 @@ import {
 import { ForbiddenServiceException } from '@lyvely/common';
 import { MailInvite, InvitationRequest } from '@lyvely/user-invitations-interface';
 import { mailTestPlugin, TestMailService } from '@lyvely/mails';
-import { notificationTestPlugin } from '@lyvely/notifications';
+import { NotificationQueueTester, notificationTestPlugin } from '@lyvely/notifications';
 
 describe('SendInvitations', () => {
   let testingModule: LyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let invitesService: SendInvitationsService;
+  let notificationQueueTester: NotificationQueueTester;
 
   const TEST_KEY = 'invite_service';
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY)
-      .plugins([profilesTestPlugin(), mailTestPlugin, notificationTestPlugin()])
+      .plugins([profilesTestPlugin, mailTestPlugin, notificationTestPlugin])
       .imports([JwtModule])
       .providers([SendInvitationsService, InvitationDao])
       .models([
@@ -45,10 +46,15 @@ describe('SendInvitations', () => {
       .compile();
     invitesService = testingModule.get(SendInvitationsService);
     testData = testingModule.get(ProfileTestDataUtils);
+    notificationQueueTester = testingModule.get(NotificationQueueTester);
   });
 
   afterEach(async () => {
-    testingModule.afterEach();
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   it('is defined', () => {
@@ -88,9 +94,8 @@ describe('SendInvitations', () => {
         }),
       );
 
+      expect(notificationQueueTester.notificationQueue.add).toHaveBeenCalledTimes(1);
       expect(result.length).toEqual(1);
-      expect(TestMailService.sentMailOptions.length).toEqual(1);
-      expect(TestMailService.sentMailOptions[0].to).toEqual('someUser@mail.de');
     });
 
     it('User can not invite user to private profile', async () => {
@@ -151,7 +156,7 @@ describe('SendInvitations', () => {
       expect(result.length).toEqual(1);
       expect(result[0] instanceof MailInvitation).toEqual(true);
       expect((<MailInvitation>result[0]).email).toEqual('invited@mail.de');
-      expect(result[0].role).toBeUndefined();
+      expect(result[0].role).toEqual(BaseProfileRelationRole.Member);
       expect(result[0].pid).toBeUndefined();
       expect(result[0].token).toBeDefined();
       expect(result[0].createdBy).toEqual(user._id);

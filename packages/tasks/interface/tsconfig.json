@@ -10,9 +10,10 @@
         "experimentalDecorators": true,
         "target": "ES2021",
         "lib": ["ES2022"],
-        "sourceMap": false,
         "skipLibCheck": true,
         "strict": true,
         "strictPropertyInitialization": false,
+        "inlineSourceMap": true,
+        "sourceMap": true
     }
 }

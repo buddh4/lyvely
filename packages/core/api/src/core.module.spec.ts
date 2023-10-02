@@ -1,12 +1,24 @@
 import { ModuleRegistry } from './components';
-import { createCoreTestingModule } from './testing/core-test.util';
+import { afterAllTests, afterEachTest, createCoreTestingModule } from './testing/core-test.util';
+import { TestingModule } from '@nestjs/testing';
 
-describe('SendInvitations', () => {
+describe('CoreModule', () => {
   let moduleRegistry: ModuleRegistry;
+  let testingModule: TestingModule;
+
+  const TEST_KEY = 'CoreModule';
 
   beforeEach(async () => {
-    const test = await createCoreTestingModule('core-module-test').compile();
-    moduleRegistry = test.get(ModuleRegistry);
+    testingModule = await createCoreTestingModule('CoreModule').compile();
+    moduleRegistry = testingModule.get(ModuleRegistry);
+  });
+
+  afterEach(async () => {
+    await afterEachTest(TEST_KEY, testingModule);
+  });
+
+  afterAll(async () => {
+    await afterAllTests(TEST_KEY);
   });
 
   it('registry is defined', () => {

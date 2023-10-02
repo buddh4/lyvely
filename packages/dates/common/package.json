@@ -15,7 +15,7 @@
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "prerelease": "npm run build",
-    "test": "jest --passWithNoTests --forceExit",
+    "test": "jest --passWithNoTests",
     "test:cov": "jest --coverage --no-cache"
   },
   "author": "Julian Harrer",
@@ -49,7 +49,15 @@
       "^@/(.*)$": "<rootDir>/src/$1"
     },
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "compilerOptions": {
+            "sourceMap": true,
+            "inlineSourceMap": true
+          }
+        }
+      ]
     },
     "collectCoverageFrom": [
       "src/**/*.ts"

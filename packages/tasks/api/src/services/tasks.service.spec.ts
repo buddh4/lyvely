@@ -27,8 +27,12 @@ describe('TaskService', () => {
     taskDao = testingModule.get(TasksDao);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
+  });
+
+  afterAll(async () => {
+    return testingModule.afterAll();
   });
 
   async function createTask(

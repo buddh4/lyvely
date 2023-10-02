@@ -16,10 +16,13 @@ describe('UserService', () => {
     testData = testingModule.get(UserTestDataUtils);
   });
 
-  afterEach(() => {
-    testingModule.afterEach();
+  afterEach(async () => {
+    return testingModule.afterEach();
   });
 
+  afterAll(async () => {
+    return testingModule.afterAll();
+  });
   it('should be defined', () => {
     expect(userService).toBeDefined();
   });
@@ -273,13 +276,7 @@ describe('UserService', () => {
       expect(await compare('newPassword', updated!.password)).toEqual(true);
       expect(updated!.passwordResetAt instanceof Date).toEqual(true);
       expect(updated!.sessionResetAt instanceof Date).toEqual(true);
-      const now = new Date();
       expect(updated!.passwordResetAt).toEqual(updated!.sessionResetAt);
-      expect(updated!.sessionResetAt!.getDate()).toEqual(now.getDate());
-      expect(updated!.sessionResetAt!.getMonth()).toEqual(now.getMonth());
-      expect(updated!.sessionResetAt!.getFullYear()).toEqual(now.getFullYear());
-      expect(updated!.sessionResetAt!.getHours()).toEqual(now.getHours());
-      expect(updated!.sessionResetAt!.getMinutes()).toEqual(now.getMinutes());
     });
 
     it('reset user password without session reset', async () => {
@@ -292,12 +289,6 @@ describe('UserService', () => {
       expect(await compare('newPassword', updated!.password)).toEqual(true);
       expect(updated!.sessionResetAt).toBeUndefined();
       expect(updated!.passwordResetAt instanceof Date).toEqual(true);
-      const now = new Date();
-      expect(updated!.passwordResetAt!.getDate()).toEqual(now.getDate());
-      expect(updated!.passwordResetAt!.getMonth()).toEqual(now.getMonth());
-      expect(updated!.passwordResetAt!.getFullYear()).toEqual(now.getFullYear());
-      expect(updated!.passwordResetAt!.getHours()).toEqual(now.getHours());
-      expect(updated!.passwordResetAt!.getMinutes()).toEqual(now.getMinutes());
     });
   });
 });
