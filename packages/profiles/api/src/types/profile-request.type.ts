@@ -1,12 +1,29 @@
 import { Request } from 'express';
 import { Profile } from '../schemas';
-import { User } from '@lyvely/users';
-import { ProfileContext } from '../models';
+import { ProfileContext, ProfileUserContext } from '../models';
 import { RequestAdditions } from '@lyvely/core';
+import { OptionalUserRequest, UserRequest } from '@lyvely/users';
 
-export type ProfileRequest = Request<any, any, any, { pid: string } & Record<string, string>> & {
+export type ProfileRequest<TContext extends ProfileContext = ProfileContext> = Request<
+  any,
+  any,
+  any,
+  { pid: string } & Record<string, string>
+> & {
   profile: Profile;
-  user: User;
-  context: ProfileContext;
+  context: TContext;
   csrfToken: () => string;
-} & RequestAdditions;
+} & OptionalUserRequest &
+  RequestAdditions;
+
+export type ProfileUserRequest<TContext extends ProfileUserContext = ProfileUserContext> = Request<
+  any,
+  any,
+  any,
+  { pid: string } & Record<string, string>
+> & {
+  profile: Profile;
+  context: TContext;
+  csrfToken: () => string;
+} & UserRequest &
+  RequestAdditions;

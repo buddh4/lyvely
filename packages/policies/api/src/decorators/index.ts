@@ -1,1 +1,2 @@
-export * from './policies.decorator';
+export * from './inject-policy.decorator';
+export * from './policies.decoartor';

@@ -4,7 +4,11 @@ import { IModuleMetadata } from '../interfaces';
 import { useSingleton } from '@lyvely/common';
 
 @Injectable()
-export class ModuleRegistry extends AbstractTypeRegistry<any, IModuleMetadata> {
+export class ModuleRegistry<TView = any> extends AbstractTypeRegistry<
+  any,
+  IModuleMetadata<TView>,
+  TView
+> {
   protected logger = new Logger(ModuleRegistry.name);
 }
 

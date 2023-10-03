@@ -5,7 +5,7 @@ import {
   StreamRequest,
   StreamResponse,
 } from '@lyvely/streams-interface';
-import { ProfileRequest, RequestContext, UserContext } from '@lyvely/profiles';
+import { ProfileRequest, ProfileContext } from '@lyvely/profiles';
 import { AbstractStreamService } from '../service';
 import { BaseEntity } from '@lyvely/core';
 import { PropertiesOf } from '@lyvely/common';
@@ -19,7 +19,7 @@ export abstract class AbstractStreamController<
 
   protected abstract mapToResultModel(
     models: TModel[],
-    context: RequestContext,
+    context: ProfileContext,
   ): Promise<TResult[]>;
 
   @Post('load-next')
@@ -27,7 +27,7 @@ export abstract class AbstractStreamController<
     @Body() streamRequest: StreamRequest<TFilter>,
     @Req() req: ProfileRequest,
   ): Promise<StreamResponse<TResult>> {
-    const context = req.context || new UserContext(req.user);
+    const context = req.context;
     const response = await this.streamEntryService.loadTail(
       context,
       new StreamRequest(streamRequest),
@@ -37,7 +37,7 @@ export abstract class AbstractStreamController<
 
   private async mapResponse(
     response: StreamResponse<TModel>,
-    context: RequestContext,
+    context: ProfileContext,
   ): Promise<StreamResponse<TResult>> {
     const models = await this.mapToResultModel(response.models, context);
     return new StreamResponse<TResult>({
@@ -52,7 +52,7 @@ export abstract class AbstractStreamController<
     @Body() streamRequest: StreamRequest,
     @Req() req: ProfileRequest,
   ): Promise<IStreamResponse<TResult>> {
-    const context = req.context || new UserContext(req.user);
+    const context = req.context;
     const response = await this.streamEntryService.loadHead(
       context,
       new StreamRequest(streamRequest as PropertiesOf<StreamRequest>),
@@ -62,7 +62,7 @@ export abstract class AbstractStreamController<
 
   @Get(':eid')
   async loadEntry(@Param('eid') eid: string, @Req() req: ProfileRequest): Promise<TResult> {
-    const context = req.context || new UserContext(req.user);
+    const context = req.context;
     if (!eid) throw new NotFoundException();
     const entry = await this.streamEntryService.loadEntry(context, eid);
     return (await this.mapToResultModel([entry], context))[0];

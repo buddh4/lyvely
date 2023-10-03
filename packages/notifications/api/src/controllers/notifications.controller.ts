@@ -10,7 +10,7 @@ import { UserNotification } from '../schemas';
 import { TestNotification } from '../notifications';
 import { SingleUserSubscription } from '@lyvely/user-subscriptions';
 import { AbstractStreamController } from '@lyvely/streams';
-import { RequestContext } from '@lyvely/profiles';
+import { ProfileContext } from '@lyvely/profiles';
 
 @Controller(ENDPOINT_NOTIFICATIONS)
 export class NotificationsController
@@ -23,7 +23,7 @@ export class NotificationsController
   @Inject()
   protected notificationsService: NotificationService;
 
-  protected async mapToResultModel(userNotifications: UserNotification[], context: RequestContext) {
+  protected async mapToResultModel(userNotifications: UserNotification[], context: ProfileContext) {
     return this.streamEntryService.mapToResultModel(userNotifications, context);
   }
 

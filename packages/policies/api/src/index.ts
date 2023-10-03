@@ -1,5 +1,5 @@
 export * from './decorators';
-export * from './services';
 export * from './interfaces';
-export * from './guards';
+export * from './components';
+export * from './testing';
 export * from './policies.module';

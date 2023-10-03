@@ -1,1 +1,1 @@
-export * from './user.policy';
+export * from './user.policy.interface';

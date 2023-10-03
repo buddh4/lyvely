@@ -5,13 +5,12 @@ import { ContentService } from '../services';
 import { ProfileContentRequest } from '../types';
 import { isValidObjectId, Type } from '@lyvely/common';
 import { Content } from '../schemas';
-import { getPolicyHandlerFromContext, PolicyService } from '@lyvely/policies';
-import { ProfileContext } from '@lyvely/profiles';
 import {
   CONTENT_TYPE_KEY,
   CONTENT_ID_PARAM_KEY,
   CONTENT_DEFAULT_ID_PARAM_KEY,
 } from '../content.constants';
+import { ProfileContentContext } from '../models';
 
 /**
  * If the request contains a cid parameter, this guard will try to fetch and validate the given content id
@@ -31,42 +30,32 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
   @Inject()
   protected contentService: ContentService;
 
-  @Inject()
-  protected policyService: PolicyService;
-
   abstract canActivateContent(
-    profileRelations: ProfileContext,
-    content: C,
+    profileContentContext: ProfileContentContext,
     context: ExecutionContext,
   ): Promise<boolean>;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = <ProfileContentRequest>context.switchToHttp().getRequest<Request>();
+    const request = context.switchToHttp().getRequest<ProfileContentRequest>();
     const contentId = getContentIdFromRequest(request, context, this.reflector);
+    const { profile, context: profileContentContext } = request;
 
-    if (isValidObjectId(contentId)) {
-      const { profile, context: requestContext } = request;
-      const content = await this.contentService.findContentByProfileAndId(profile, contentId);
+    if (!isValidObjectId(contentId)) return false;
 
-      if (
-        !content ||
-        !validateContentTypeFromContext(content, context, this.reflector) ||
-        !(await this.canActivateContent(requestContext, <C>content, context))
-      ) {
-        return false;
-      }
+    const content = await this.contentService.findContentByProfileAndId(profile, contentId);
 
-      request.content = content;
+    if (!content) return false;
+
+    request.content = profileContentContext.content = content;
+
+    if (
+      !validateContentTypeFromContext(content, context, this.reflector) ||
+      !(await this.canActivateContent(profileContentContext, context))
+    ) {
+      return false;
     }
 
-    return this.validateContentPolicies(context);
-  }
-
-  private async validateContentPolicies(context: ExecutionContext) {
-    return this.policyService.checkEvery(
-      context,
-      ...getPolicyHandlerFromContext(context, this.reflector),
-    );
+    return true;
   }
 }
 
@@ -77,9 +66,7 @@ function validateContentTypeFromContext(
 ) {
   const contentType = getContentTypeFromContext(context, reflector);
 
-  if (!contentType) {
-    return true;
-  }
+  if (!contentType) return true;
 
   if (typeof contentType === 'string') {
     return content.type === contentType;
@@ -104,8 +91,8 @@ function getContentIdFromRequest(
   context: ExecutionContext,
   reflector: Reflector,
 ): string {
-  const name = getContentIdParamFromContext(context, reflector);
-  return request.params[name] || (request.query[name] as string);
+  const paramName = getContentIdParamFromContext(context, reflector);
+  return request.params[paramName] || (request.query[paramName] as string);
 }
 
 function getContentIdParamFromContext(context: ExecutionContext, reflector: Reflector) {

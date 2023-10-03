@@ -1,1 +1,2 @@
-export * from './profile-permissions.interface';
+export * from './profile-permission.interface';
+export * from './profile.policy.interface';

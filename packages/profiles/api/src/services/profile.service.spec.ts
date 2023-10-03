@@ -31,7 +31,7 @@ describe('ProfileService', () => {
   describe('findUserProfileRelations()', () => {
     it('find owner membership', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const relations = await profileService.findUserProfileRelations(user, profile);
+      const relations = await profileService.findProfileContext(user, profile);
       const membership = relations.getMembership();
       expect(membership).toBeDefined();
       expect(membership?.role).toEqual(BaseMembershipRole.Owner);
@@ -41,7 +41,7 @@ describe('ProfileService', () => {
 
     it('find by profile id', async () => {
       const { user, profile } = await testData.createUserAndProfile();
-      const relations = await profileService.findUserProfileRelations(user, profile.id);
+      const relations = await profileService.findProfileContext(user, profile.id);
       expect(relations?.profile).toBeDefined();
       expect(relations?.profile._id).toEqual(profile._id);
     });
@@ -49,7 +49,7 @@ describe('ProfileService', () => {
     it('find non membership relation', async () => {
       const { profile } = await testData.createUserAndProfile();
       const user2 = await testData.createUser('User2');
-      const relations = await profileService.findUserProfileRelations(user2, profile);
+      const relations = await profileService.findProfileContext(user2, profile);
       const membership = relations.getMembership();
       expect(membership).not.toBeDefined();
     });

@@ -9,7 +9,7 @@ import {
   ENDPOINT_PROFILES,
 } from '@lyvely/profiles-interface';
 import { ProfilesService } from '../services';
-import { ProfileContext, ProfileRelations } from '../models';
+import { ProfileUserContext, ProfileRelations } from '../models';
 import { User, UserRequest } from '@lyvely/users';
 
 @Controller(ENDPOINT_PROFILES)
@@ -37,7 +37,7 @@ export class ProfilesController implements ProfilesEndpoint {
 
   private async getDefaultProfile(user: User): Promise<ProfileWithRelationsModel> {
     const profileRelations = await this.profilesService.findDefaultProfileMembershipByUser(user);
-    return mapType(ProfileContext, ProfileWithRelationsModel, profileRelations);
+    return mapType(ProfileUserContext, ProfileWithRelationsModel, profileRelations);
   }
 
   @Post()
@@ -55,6 +55,6 @@ export class ProfilesController implements ProfilesEndpoint {
       profileRelations = await this.profilesService.createOrganization(req.user, dto);
     }
 
-    return mapType(ProfileContext, ProfileWithRelationsModel, profileRelations);
+    return mapType(ProfileUserContext, ProfileWithRelationsModel, profileRelations);
   }
 }

@@ -3,7 +3,7 @@ import { ContentStreamFilter } from '@lyvely/content-interface';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { Content } from '../schemas';
-import { RequestContext } from '@lyvely/profiles';
+import { ProfileContext } from '@lyvely/profiles';
 import { FilterQuery } from 'mongoose';
 import { assureObjectId } from '@lyvely/core';
 
@@ -12,13 +12,13 @@ export class ContentStreamService extends AbstractStreamService<Content, Content
   protected streamEntryDao: ContentDao;
   protected logger = new Logger(ContentStreamService.name);
 
-  createQueryFilter(context: RequestContext, filter?: ContentStreamFilter): FilterQuery<Content> {
+  createQueryFilter(context: ProfileContext, filter?: ContentStreamFilter): FilterQuery<Content> {
     const query = { pid: context.pid, oid: context.oid } as FilterQuery<Content>;
     return this.applyFilter(query, filter);
   }
 
   protected createLoadEntryQueryFilter(
-    context: RequestContext,
+    context: ProfileContext,
     filter?: ContentStreamFilter,
   ): FilterQuery<Content> {
     const query = this.createQueryFilter(context, filter);

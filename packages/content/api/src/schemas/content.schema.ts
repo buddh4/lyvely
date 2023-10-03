@@ -9,6 +9,8 @@ import { CreatedAs, Author } from './content-author.schema';
 import { User } from '@lyvely/users';
 import { Profile, BaseProfileModel, Tag } from '@lyvely/profiles';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
+import { IPolicy } from '@lyvely/policies';
+import { ProfileContentContext } from '../models';
 
 export type ContentDocument = Content & mongoose.Document;
 
@@ -117,6 +119,18 @@ export class Content<
 
   getText() {
     return this.content?.text || '';
+  }
+
+  getWritePolicy(): Type<IPolicy<ProfileContentContext>> | null {
+    return null;
+  }
+
+  getManagePolicy(): Type<IPolicy<ProfileContentContext>> | null {
+    return null;
+  }
+
+  getReadPolicy(): Type<IPolicy<ProfileContentContext>> | null {
+    return null;
   }
 }
 

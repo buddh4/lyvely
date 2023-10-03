@@ -1,5 +1,5 @@
-import { User } from '../schemas';
 import { LyvelyRequest } from '@lyvely/core';
+import { IOptionalUserContext, IUserContext } from './user.context';
 
-export type UserRequest = LyvelyRequest & { user: User };
-export type PublicRequest = LyvelyRequest & { user?: User };
+export type UserRequest = LyvelyRequest & IUserContext;
+export type OptionalUserRequest = LyvelyRequest & IOptionalUserContext;

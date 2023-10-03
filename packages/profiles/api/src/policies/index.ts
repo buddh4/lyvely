@@ -1,3 +1,3 @@
-export * from './profile.policy';
 export * from './profile-visibility.policy';
-export * from './profile-policy.context';
+export * from './create-user-profile.policy';
+export * from './create-user-profile-lax.policy';

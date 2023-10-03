@@ -1,2 +1,2 @@
-export * from './request-context.model';
+export * from './profile.context';
 export * from './profile-relations.model';

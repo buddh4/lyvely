@@ -1,13 +1,13 @@
-import { ProfileContext, ProfileRelations } from '../models';
+import { ProfileUserContext, ProfileRelations } from '../models';
 import {
   ProfileRelationInfo,
   ProfileRelationInfos,
   ProfileWithRelationsModel,
 } from '@lyvely/profiles-interface';
-import { registerMapping } from '@lyvely/common'
+import { registerMapping } from '@lyvely/common';
 
 export function useProfileMappings() {
-  registerMapping(ProfileContext, ProfileRelationInfo, (relations) => {
+  registerMapping(ProfileUserContext, ProfileRelationInfo, (relations) => {
     const { id, name, description, score, type } = relations.profile;
     return new ProfileRelationInfo({
       id,
@@ -19,7 +19,7 @@ export function useProfileMappings() {
     });
   });
 
-  registerMapping([ProfileContext], ProfileRelationInfos, (relations) => {
+  registerMapping([ProfileUserContext], ProfileRelationInfos, (relations) => {
     return new ProfileRelationInfos({
       profiles: relations.map((relation) => {
         const { name, description, score, type, guid, id } = relation.profile;
@@ -39,7 +39,7 @@ export function useProfileMappings() {
     });
   });
 
-  registerMapping(ProfileContext, ProfileWithRelationsModel, (relations) => {
+  registerMapping(ProfileUserContext, ProfileWithRelationsModel, (relations) => {
     return new ProfileWithRelationsModel({
       ...relations.profile,
       userRelations: relations.relations,

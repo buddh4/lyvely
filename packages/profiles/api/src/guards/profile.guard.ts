@@ -2,12 +2,11 @@ import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/commo
 import { ProfilesService, ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
-import { ProfileContext } from '../models';
+import { ProfileContext, ProfileUserContext } from '../models';
 import { ProfileVisibilityPolicy } from '../policies';
-import { PolicyService } from '@lyvely/policies';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
-import {Profile} from "../schemas";
+import { Profile } from '../schemas';
 
 export const PROFILE_PERMISSIONS_KEY_STRICT = 'profile_permissions_strict';
 export const PROFILE_PERMISSIONS_KEY_SOME = 'profile_permissions_some';
@@ -25,9 +24,6 @@ export const PROFILE_PERMISSIONS_KEY_SOME = 'profile_permissions_some';
  */
 @Injectable()
 export class ProfileGuard implements CanActivate {
-  @Inject()
-  protected policyService: PolicyService;
-
   @Inject()
   protected profileService: ProfilesService;
 
@@ -51,18 +47,16 @@ export class ProfileGuard implements CanActivate {
     const user = request.user;
 
     if (user) {
-      request.context = await this.profileService.findUserProfileRelations(user, request.query.pid);
+      request.context = await this.profileService.findProfileContext(user, request.query.pid);
       request.profile = request.context.profile;
     } else {
-      request.profile = <Profile>(await this.profileService.findProfileById(request.query.pid));
-      request.context = new ProfileContext({ profile: request.profile });
+      request.profile = <Profile>await this.profileService.findProfileById(request.query.pid);
+      request.context = new ProfileUserContext({ profile: request.profile });
     }
 
-    if (!request.profile) {
-      return false;
-    }
+    if (!request.profile) return false;
 
-    if (!(await this.policyService.checkEvery(context, this.profileVisibilityPolicy))) {
+    if (!(await this.profileVisibilityPolicy.verify(request.context))) {
       return false;
     }
 
@@ -70,7 +64,7 @@ export class ProfileGuard implements CanActivate {
     return this.validatePermissions(request.context, context);
   }
 
-  private validatePermissions(profileRelations: ProfileContext, context: ExecutionContext) {
+  private validatePermissions(profileContext: ProfileContext, context: ExecutionContext) {
     const strictPermissions = this.getPermissionsFromContext(
       context,
       PROFILE_PERMISSIONS_KEY_STRICT,
@@ -78,7 +72,7 @@ export class ProfileGuard implements CanActivate {
 
     if (strictPermissions?.length) {
       return this.profilePermissionService.checkEveryPermission(
-        profileRelations,
+        profileContext,
         ...strictPermissions,
       );
     }
@@ -86,7 +80,7 @@ export class ProfileGuard implements CanActivate {
     const anyPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_SOME);
 
     return anyPermissions?.length
-      ? this.profilePermissionService.checkSomePermission(profileRelations, ...anyPermissions)
+      ? this.profilePermissionService.checkSomePermission(profileContext, ...anyPermissions)
       : true;
   }
 

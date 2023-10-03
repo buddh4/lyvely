@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IPolicy } from '@lyvely/policies';
-import { UserPolicyContext } from '@lyvely/users';
+import { IUserContext } from '@lyvely/users';
+import { CreateUserProfilePolicy } from './create-user-profile.policy';
 
 @Injectable()
-export class CreateUserProfileLaxPolicy implements IPolicy<UserPolicyContext> {
-  async validate(context: UserPolicyContext): Promise<boolean> {
-    return !!context.getRequest().user?.isAcitve();
+export class CreateUserProfileLaxPolicy extends CreateUserProfilePolicy {
+  async verify(context: IUserContext): Promise<boolean> {
+    return !!context.user?.isAcitve();
   }
 }

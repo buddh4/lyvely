@@ -145,7 +145,7 @@ describe('ProfileGuard', () => {
       expect(request.context.profile).toBeDefined();
       expect(request.context.user).not.toBeDefined();
       expect(request.context.isMember()).toEqual(false);
-      expect(request.context.isGuest()).toEqual(true);
+      expect(request.context.isUser()).toEqual(false);
     });
 
     it('guest can not access protected profile', async () => {

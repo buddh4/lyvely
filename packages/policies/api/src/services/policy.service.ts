@@ -1,40 +1,29 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ModuleRef, Reflector } from '@nestjs/core';
-import { IPolicy, PolicyHandler } from '../interfaces/policy.interface';
-import { PolicyContext } from '../guards/policy-context';
+import { IPolicy, PolicyHandler } from '../interfaces';
 
 @Injectable()
 export class PolicyService {
   constructor(private reflector: Reflector, private moduleRef: ModuleRef) {}
 
-  async check(executionContext: ExecutionContext, handler: PolicyHandler<any>): Promise<boolean> {
-    return this.checkEvery(executionContext, handler);
-  }
+  async checkEvery<T = any>(context: T, ...policies: PolicyHandler<T>[]): Promise<boolean> {
+    if (!policies?.length) return true;
 
-  async checkEvery(executionContext: ExecutionContext, ...policies: PolicyHandler<any>[]): Promise<boolean> {
-    if (!policies?.length) {
-      return true;
-    }
-
-    const context = new PolicyContext(executionContext, this.reflector, this.moduleRef);
-    const promises = policies.map((handler) => this.runHandler(handler, context));
+    const promises = policies.map((handler) => this.runHandler<T>(handler, context));
     return !(await Promise.all(promises)).includes(false);
   }
 
-  async checkSome(executionContext: ExecutionContext, ...policies: PolicyHandler<any>[]): Promise<boolean> {
-    if (!policies?.length) {
-      return true;
-    }
+  async checkSome<T = any>(context: T, ...policies: PolicyHandler<T>[]): Promise<boolean> {
+    if (!policies?.length) return true;
 
-    const context = new PolicyContext(executionContext, this.reflector, this.moduleRef);
-    const promises = policies.map((handler) => this.runHandler(handler, context));
+    const promises = policies.map((handler) => this.runHandler<T>(handler, context));
     return (await Promise.all(promises)).includes(true);
   }
 
-  private async runHandler(handler: PolicyHandler<any>, context: PolicyContext): Promise<boolean> {
-    const policy = <IPolicy<any>>(
+  private async runHandler<T = any>(handler: PolicyHandler<T>, context: T): Promise<boolean> {
+    const policy = <IPolicy<T>>(
       (handler instanceof Function ? this.moduleRef.get(handler, { strict: false }) : handler)
     );
-    return policy.validate(context);
+    return policy.verify(context);
   }
 }

@@ -1,10 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { ContentPolicy } from './content.policy';
+import { IContentPolicy } from '../interfaces';
+import { ProfileContentContext } from '../models';
+import { ModuleRef } from '@nestjs/core';
+import { getPolicyToken } from '@lyvely/policies';
+import { BaseContentWritePolicy } from './base-content-write.policy';
 
 @Injectable()
-export class ContentWritePolicy extends ContentPolicy {
-  async validate(context): Promise<boolean> {
-    // TODO: Profile permission check
-    return !!context.getRequest()?.context?.getMembership();
+export class ContentWritePolicy extends BaseContentWritePolicy {
+  constructor(private moduleRef: ModuleRef) {
+    super();
+  }
+
+  async verify(context: ProfileContentContext): Promise<boolean> {
+    const { content } = context;
+
+    const contentWritePolicyType = content.getWritePolicy();
+    if (contentWritePolicyType) {
+      const contentWritePolicy = this.moduleRef.get<IContentPolicy>(
+        getPolicyToken(contentWritePolicyType.name),
+        { strict: false },
+      );
+
+      return contentWritePolicy.verify(context);
+    }
+
+    return super.verify(context);
   }
 }

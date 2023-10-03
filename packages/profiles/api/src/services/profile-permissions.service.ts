@@ -1,7 +1,7 @@
-import { Inject, Injectable, Optional } from '@nestjs/common';
+import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { ProfileContext } from '../models';
 import { minimatch } from 'minimatch';
-import { BaseMembershipRole } from '@lyvely/profiles-interface';
+import { BaseMembershipRole, RoleVisibilityLevel } from '@lyvely/profiles-interface';
 import {
   defaultProfileRolesDefinition,
   IDefaultRolePermissions,
@@ -15,6 +15,7 @@ export const TOKEN_DEFAULT_PROFILE_PERMISSIONS = 'DEFAULT_PROFILE_PERMISSIONS';
 
 @Injectable()
 export class ProfilePermissionsService extends PermissionsService<ProfileContext> {
+  logger = new Logger(ProfilePermissionsService.name);
   constructor(
     @Optional()
     @Inject(TOKEN_PROFILE_ROLES_DEFINITION)
@@ -42,21 +43,32 @@ export class ProfilePermissionsService extends PermissionsService<ProfileContext
     }
   }
 
-  async checkPermission(profileRelations: ProfileContext, permission: string): Promise<boolean> {
-    const { profile } = profileRelations;
+  getVisibilityLevel(context: ProfileContext): number {
+    const role = context.getRole();
+    const roleDefinition = this.rolesDefinition.find(
+      (roleDefinition) => roleDefinition.role === role,
+    );
 
-    if (!profile) {
-      return false;
+    if (!roleDefinition) {
+      this.logger.warn(`Could not determine visibility level for role ${role}`);
     }
 
-    if (profileRelations.getRelationByRole(BaseMembershipRole.Owner)) {
+    return roleDefinition ? roleDefinition.visibility : RoleVisibilityLevel.Visitor;
+  }
+
+  async checkPermission(context: ProfileContext, permission: string): Promise<boolean> {
+    const { profile } = context;
+
+    if (!profile) return false;
+
+    if (context.getRelationByRole(BaseMembershipRole.Owner)) {
       return true;
     }
 
     let userInheritsRole = false;
     for (let i = 0; i < this.rolesDefinition.length; i++) {
       const roleDef = this.rolesDefinition[i];
-      if (profileRelations.getRelationByRole(roleDef.role)) {
+      if (context.getRelationByRole(roleDef.role)) {
         userInheritsRole = true;
       }
 
@@ -71,14 +83,14 @@ export class ProfilePermissionsService extends PermissionsService<ProfileContext
       }
     }
 
-    return this.checkDefaultPermission(permission, profileRelations);
+    return this.checkDefaultPermission(permission, context);
   }
 
-  private checkDefaultPermission(permission: string, profileRelations: ProfileContext): boolean {
+  private checkDefaultPermission(permission: string, context: ProfileContext): boolean {
     for (const defaultPermission in this.defaultPermissions) {
       if (
         minimatch(permission, defaultPermission) &&
-        this.userInheritsRole(profileRelations, this.defaultPermissions[defaultPermission])
+        this.userInheritsRole(context, this.defaultPermissions[defaultPermission])
       ) {
         return true;
       }

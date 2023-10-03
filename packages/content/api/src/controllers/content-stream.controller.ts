@@ -8,7 +8,7 @@ import { UseClassSerializer } from '@lyvely/core';
 import { AbstractStreamController } from '@lyvely/streams';
 import { Content } from '../schemas';
 import { ContentStreamService } from '../services';
-import { ProfileContext, ProfileController } from '@lyvely/profiles';
+import { ProfileUserContext, ProfileController } from '@lyvely/profiles';
 import { Types } from 'mongoose';
 
 @ProfileController(ENDPOINT_CONTENT_STREAM)
@@ -23,7 +23,7 @@ export class ContentStreamController extends AbstractStreamController<
 
   protected async mapToResultModel(
     models: Content[],
-    context: ProfileContext,
+    context: ProfileUserContext,
   ): Promise<ContentModel<any>[]> {
     return models.map((content) => content.toModel(context.user));
   }

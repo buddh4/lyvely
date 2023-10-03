@@ -40,11 +40,11 @@ export function getPrototypeTree(type: Type): Array<Type> {
 
 export function useSingleton<T>(create: () => T) {
   let instance: T;
-  return () => {
+  return <TR extends T = T>(): TR => {
     if (!instance) {
       instance = create();
     }
 
-    return instance;
+    return instance as TR;
   };
 }

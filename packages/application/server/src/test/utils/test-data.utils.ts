@@ -16,7 +16,7 @@ import {
   UserProfileRelationDocument,
   Membership,
   MembershipDocument,
-  ProfileContext,
+  ProfileUserContext,
   ProfilesFactory,
   Organization,
   UserProfile,
@@ -48,10 +48,10 @@ export class TestDataUtils {
     username = 'test',
     password = 'test',
     email?: string,
-  ): Promise<{ user: User; profile: UserProfile; profileRelations: ProfileContext }> {
+  ): Promise<{ user: User; profile: UserProfile; profileRelations: ProfileUserContext }> {
     const user = await this.createUser(username, { password, email });
     const profile = await this.createProfile(user);
-    const profileRelations = new ProfileContext({
+    const profileRelations = new ProfileUserContext({
       user,
       profile,
       relations: [Membership.create({ user, profile, role: BaseMembershipRole.Owner })],

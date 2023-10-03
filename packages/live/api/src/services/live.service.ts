@@ -46,13 +46,13 @@ export class LiveService {
   async subscribeUser(user: User): Promise<Observable<any>> {
     if (this.isStandaloneServer()) {
       const observables = new Set(
-        (await this.profilesService.findProfileRelationsByUser(user)).map((relation) =>
+        (await this.profilesService.findAllProfileRelationsByUser(user)).map((relation) =>
           fromEvent(this.eventEmitter, this.buildLiveProfileEventName(relation.pid!)),
         ),
       );
 
       observables.add(fromEvent(this.eventEmitter, this.buildLiveUserEventName(user)));
-      this.logger.log(`Subscribe user to ${this.buildLiveUserEventName(user)}`);
+      this.logger.debug(`Subscribe user to ${this.buildLiveUserEventName(user)}`);
       return merge(...observables);
     } else {
       return undefined as any;

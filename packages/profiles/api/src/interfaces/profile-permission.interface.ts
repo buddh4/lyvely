@@ -49,12 +49,12 @@ export const defaultProfileRolesDefinition: IProfileRoleDefinition[] = [
   {
     role: BaseProfileRelationRole.Guest,
     label: 'Guest',
-    visibility: RoleVisibilityLevel.Member,
+    visibility: RoleVisibilityLevel.User,
     extendable: true,
   },
   {
     role: BaseProfileRelationRole.Organization,
-    label: 'Guest',
+    label: 'Organization Member',
     visibility: RoleVisibilityLevel.Organization,
   },
   {
@@ -71,6 +71,6 @@ export const defaultProfileRolesDefinition: IProfileRoleDefinition[] = [
   {
     role: BaseProfileRelationRole.Visitor,
     label: 'Visitor',
-    visibility: RoleVisibilityLevel.Public,
+    visibility: RoleVisibilityLevel.Visitor,
   },
 ];

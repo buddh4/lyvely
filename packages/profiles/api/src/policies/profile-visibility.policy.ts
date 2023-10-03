@@ -1,22 +1,22 @@
-import { ProfilePolicyContext } from './profile-policy.context';
-import { ProfilePolicy } from './profile.policy';
+import { IProfilePolicy } from '../interfaces';
 import { ProfileVisibilityLevel } from '@lyvely/profiles-interface';
 import { Injectable } from '@nestjs/common';
+import { ProfileContext } from '../models';
 
 @Injectable()
-export class ProfileVisibilityPolicy implements ProfilePolicy {
-  async validate(context: ProfilePolicyContext): Promise<boolean> {
-    const { profile, context: requestContext } = context.getRequest();
+export class ProfileVisibilityPolicy implements IProfilePolicy {
+  async verify(context: ProfileContext): Promise<boolean> {
+    const { profile } = context;
 
-    if (!profile) {
-      return false;
-    }
+    if (!profile) return false;
 
     switch (profile.visibility) {
       case ProfileVisibilityLevel.Member:
-        return context && requestContext.isMember();
+        return context.isMember();
+      case ProfileVisibilityLevel.Organization:
+        return context.isMember() || !!context.getOrganizationContext()?.isMember();
       case ProfileVisibilityLevel.User:
-        return context && !requestContext.isGuest();
+        return context.isUser();
       case ProfileVisibilityLevel.Visitor:
         return true;
       default:

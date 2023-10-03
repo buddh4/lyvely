@@ -14,7 +14,7 @@ import {
   ProfileRelationInfosEndpoint,
 } from '@lyvely/profiles-interface';
 import { mapType } from '@lyvely/common';
-import { ProfileContext } from '../models';
+import { ProfileUserContext } from '../models';
 
 @Controller(ENDPOINT_PROFILE_RELATION_INFOS)
 @UseInterceptors(ClassSerializerInterceptor)
@@ -23,7 +23,7 @@ export class ProfileRelationInfosController implements ProfileRelationInfosEndpo
 
   @Get()
   async getUserProfileInfos(@Request() req: UserRequest): Promise<ProfileRelationInfos> {
-    const relations = await this.profilesService.findProfileRelationsByUser(req.user);
-    return mapType([ProfileContext], ProfileRelationInfos, relations);
+    const relations = await this.profilesService.findAllProfileContextsByUser(req.user);
+    return mapType([ProfileUserContext], ProfileRelationInfos, relations);
   }
 }

@@ -15,7 +15,7 @@ import {
   IFetchQueryOptions,
 } from '@lyvely/core';
 import { cloneDeep } from 'lodash';
-import { RequestContext } from '@lyvely/profiles';
+import { ProfileContext } from '@lyvely/profiles';
 import { DEFAULT_BATCH_SIZE } from '../stream.constants';
 
 @Injectable()
@@ -26,7 +26,7 @@ export abstract class AbstractStreamService<
   protected abstract streamEntryDao: AbstractDao<TModel>;
   protected abstract logger: Logger;
 
-  abstract createQueryFilter(context: RequestContext, filter?: TFilter): FilterQuery<TModel>;
+  abstract createQueryFilter(context: ProfileContext, filter?: TFilter): FilterQuery<TModel>;
 
   protected abstract getSortField(): string;
 
@@ -37,7 +37,7 @@ export abstract class AbstractStreamService<
    * @param filter
    */
   async loadEntry(
-    context: RequestContext,
+    context: ProfileContext,
     identity: EntityIdentity<TModel>,
     filter?: TFilter,
   ): Promise<TModel> {
@@ -52,14 +52,14 @@ export abstract class AbstractStreamService<
   }
 
   protected createLoadEntryQueryFilter(
-    context: RequestContext,
+    context: ProfileContext,
     filter?: TFilter,
   ): FilterQuery<TModel> {
     return this.createQueryFilter(context, filter);
   }
 
   async loadTail(
-    context: RequestContext,
+    context: ProfileContext,
     request: StreamRequest<TFilter>,
   ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);
@@ -111,7 +111,7 @@ export abstract class AbstractStreamService<
   }
 
   async loadHead(
-    context: RequestContext,
+    context: ProfileContext,
     request: StreamRequest<TFilter>,
   ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);
