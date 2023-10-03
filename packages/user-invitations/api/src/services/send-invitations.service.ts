@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Profile, ProfilesService } from '@lyvely/profiles';
+import { Profile, ProfilesService, isMultiUserProfile } from '@lyvely/profiles';
 import { MailService } from '@lyvely/mails';
 import {
   ForbiddenServiceException,
@@ -7,7 +7,6 @@ import {
   FieldValidationException,
   EntityNotFoundException,
 } from '@lyvely/common';
-import { isMultiUserProfile } from '@lyvely/profiles';
 import { InvitationRequest, MaxInvitationError } from '@lyvely/user-invitations-interface';
 import { User, UsersService } from '@lyvely/users';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
@@ -96,7 +95,7 @@ export class SendInvitationsService {
 
     const emails = invites.map((invite) => invite.email);
     const existingUsers = await this.userService.findUsersByVerifiedEmails(emails);
-    const existingMembers = await this.profileService.findManyUserProfileRelations(
+    const existingMembers = await this.profileService.findProfileContextsByUsers(
       pid,
       existingUsers,
       true,
@@ -223,10 +222,7 @@ export class SendInvitationsService {
   }
 
   private async userCanInviteToProfile(host: User, inviteRequest: InvitationRequest) {
-    const profileContext = await this.profileService.findUserProfileRelations(
-      host,
-      inviteRequest.pid!,
-    );
+    const profileContext = await this.profileService.findProfileContext(host, inviteRequest.pid!);
 
     if (!profileContext.getMembership()) throw new ForbiddenServiceException();
     /*

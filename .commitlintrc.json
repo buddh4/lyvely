@@ -40,6 +40,7 @@
         "server",
         "users",
         "profiles",
+        "policies",
         "ui",
         "docker",
         "milestones",

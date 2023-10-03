@@ -5,7 +5,7 @@ import {
   IStreamFilter,
   StreamResponse,
 } from '@lyvely/streams-interface';
-import { BaseModel, findByPath, EntityNotFoundException } from '@lyvely/common';
+import { findByPath, EntityNotFoundException } from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
 import {
   AbstractDao,
@@ -15,18 +15,18 @@ import {
   IFetchQueryOptions,
 } from '@lyvely/core';
 import { cloneDeep } from 'lodash';
-import { ProfileContext } from '@lyvely/profiles';
 import { DEFAULT_BATCH_SIZE } from '../stream.constants';
 
 @Injectable()
 export abstract class AbstractStreamService<
   TModel extends BaseEntity<TModel>,
   TFilter extends IStreamFilter = any,
+  TContext = any,
 > {
   protected abstract streamEntryDao: AbstractDao<TModel>;
   protected abstract logger: Logger;
 
-  abstract createQueryFilter(context: ProfileContext, filter?: TFilter): FilterQuery<TModel>;
+  abstract createQueryFilter(context: TContext, filter?: TFilter): FilterQuery<TModel>;
 
   protected abstract getSortField(): string;
 
@@ -37,7 +37,7 @@ export abstract class AbstractStreamService<
    * @param filter
    */
   async loadEntry(
-    context: ProfileContext,
+    context: TContext,
     identity: EntityIdentity<TModel>,
     filter?: TFilter,
   ): Promise<TModel> {
@@ -51,15 +51,12 @@ export abstract class AbstractStreamService<
     return streamEntry;
   }
 
-  protected createLoadEntryQueryFilter(
-    context: ProfileContext,
-    filter?: TFilter,
-  ): FilterQuery<TModel> {
+  protected createLoadEntryQueryFilter(context: TContext, filter?: TFilter): FilterQuery<TModel> {
     return this.createQueryFilter(context, filter);
   }
 
   async loadTail(
-    context: ProfileContext,
+    context: TContext,
     request: StreamRequest<TFilter>,
   ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);
@@ -111,7 +108,7 @@ export abstract class AbstractStreamService<
   }
 
   async loadHead(
-    context: ProfileContext,
+    context: TContext,
     request: StreamRequest<TFilter>,
   ): Promise<IStreamResponse<TModel>> {
     const filter = this.createQueryFilter(context, request.filter);

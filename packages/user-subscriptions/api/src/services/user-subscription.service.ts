@@ -43,7 +43,7 @@ export class UserSubscriptionService {
     if (!user) return [];
     if (!pid) return [{ user }];
 
-    return [await this.profileService.findUserProfileRelations(user, pid)];
+    return [await this.profileService.findProfileContext(user, pid)];
   }
 
   private async getMultiUserSubscriptionContext(
@@ -59,7 +59,7 @@ export class UserSubscriptionService {
       return users.map((user) => ({ user }));
     }
 
-    return this.profileService.findManyUserProfileRelations(pid, users);
+    return this.profileService.findProfileContextsByUsers(pid, users);
   }
 
   private async getProfileSubscriptionContext(

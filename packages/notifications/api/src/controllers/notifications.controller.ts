@@ -5,16 +5,15 @@ import {
   IWebNotification,
 } from '@lyvely/notifications-interface';
 import { UserNotificationsService, NotificationService } from '../services';
-import { UserInfo, UserRequest } from '@lyvely/users';
+import { IUserContext, UserInfo, UserRequest } from '@lyvely/users';
 import { UserNotification } from '../schemas';
 import { TestNotification } from '../notifications';
 import { SingleUserSubscription } from '@lyvely/user-subscriptions';
 import { AbstractStreamController } from '@lyvely/streams';
-import { ProfileContext } from '@lyvely/profiles';
 
 @Controller(ENDPOINT_NOTIFICATIONS)
 export class NotificationsController
-  extends AbstractStreamController<UserNotification, IWebNotification>
+  extends AbstractStreamController<UserNotification, IWebNotification, any, IUserContext>
   implements NotificationsEndpoint
 {
   @Inject()
@@ -23,7 +22,7 @@ export class NotificationsController
   @Inject()
   protected notificationsService: NotificationService;
 
-  protected async mapToResultModel(userNotifications: UserNotification[], context: ProfileContext) {
+  protected async mapToResultModel(userNotifications: UserNotification[], context: IUserContext) {
     return this.streamEntryService.mapToResultModel(userNotifications, context);
   }
 

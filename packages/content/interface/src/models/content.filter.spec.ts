@@ -1,4 +1,4 @@
-import { ContentFilter, ContentMetadataModel } from '@lyvely/content';
+import { ContentFilter, ContentMetadataModel } from '../index';
 import { TestContent } from '../test/test-content.model';
 
 describe('Content Filter', () => {

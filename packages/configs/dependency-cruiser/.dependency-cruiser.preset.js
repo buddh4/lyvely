@@ -1,9 +1,5 @@
 /** @type {import('dependency-cruiser').IConfiguration} */
 
-const NODE_MODULES = 'node_modules';
-const LYVELY_COMMON = '/common/dist';
-const NODE_CORE = '^((?!\\/).)*$';
-
 module.exports = {
   forbidden: [
     /* rules from the 'recommended' preset: */

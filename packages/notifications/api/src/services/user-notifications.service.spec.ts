@@ -8,13 +8,7 @@ import {
   NotificationContext,
   Notification,
 } from '../index';
-import {
-  Profile,
-  ProfileInfo,
-  profilesTestPlugin,
-  ProfileTestDataUtils,
-  UserContext,
-} from '@lyvely/profiles';
+import { Profile, ProfileInfo, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 import { User, UserInfo } from '@lyvely/users';
 import { assureObjectId } from '@lyvely/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
@@ -118,7 +112,7 @@ describe('UserNotificationsService', () => {
     it('load initial with empty result', async () => {
       const user = await testData.createUser();
       const result = await userNotificationsService.loadTail(
-        new UserContext(user),
+        { user },
         new StreamRequest({ batchSize: 5 }),
       );
       expect(result.models.length).toEqual(0);
@@ -139,7 +133,7 @@ describe('UserNotificationsService', () => {
       ]);
       const userNotification = await createTestUserNotification(receiver, notification);
       const result = await userNotificationsService.loadTail(
-        new UserContext(receiver),
+        { user: receiver },
         new StreamRequest({ batchSize: 5 }),
       );
       expect(result.models.length).toEqual(1);
@@ -177,7 +171,7 @@ describe('UserNotificationsService', () => {
       const userNotification2 = await createTestUserNotification(receiver, notification2);
       const userNotification3 = await createTestUserNotification(receiver, notification3);
       const result = await userNotificationsService.loadTail(
-        new UserContext(receiver),
+        { user: receiver },
         new StreamRequest({ batchSize: 2 }),
       );
       expect(result.models.length).toEqual(2);
@@ -217,7 +211,7 @@ describe('UserNotificationsService', () => {
       const userNotification2 = await createTestUserNotification(receiver, notification2);
       const userNotification3 = await createTestUserNotification(receiver, notification3);
       const result = await userNotificationsService.loadHead(
-        new UserContext(receiver),
+        { user: receiver },
         new StreamRequest({
           batchSize: 2,
           state: {

@@ -7,10 +7,29 @@ import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
 import { User } from '@lyvely/users';
-import { Profile, BaseProfileModel, Tag } from '@lyvely/profiles';
+import {
+  Profile,
+  BaseProfileModel,
+  Tag,
+  ProfileContext,
+  ProfileUserContext,
+} from '@lyvely/profiles';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
 import { IPolicy } from '@lyvely/policies';
-import { ProfileContentContext } from '../models';
+
+export class ProfileContentContext<
+  TContent extends Content = Content,
+  TProfile extends Profile = Profile,
+> extends ProfileContext<TProfile> {
+  content: TContent;
+}
+
+export class ProfileUserContentContext<
+  TContent extends Content = Content,
+  TProfile extends Profile = Profile,
+> extends ProfileUserContext<TProfile> {
+  content: TContent;
+}
 
 export type ContentDocument = Content & mongoose.Document;
 

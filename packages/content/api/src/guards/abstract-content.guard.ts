@@ -4,13 +4,12 @@ import { Reflector } from '@nestjs/core';
 import { ContentService } from '../services';
 import { ProfileContentRequest } from '../types';
 import { isValidObjectId, Type } from '@lyvely/common';
-import { Content } from '../schemas';
+import { Content, ProfileContentContext } from '../schemas';
 import {
   CONTENT_TYPE_KEY,
   CONTENT_ID_PARAM_KEY,
   CONTENT_DEFAULT_ID_PARAM_KEY,
 } from '../content.constants';
-import { ProfileContentContext } from '../models';
 
 /**
  * If the request contains a cid parameter, this guard will try to fetch and validate the given content id

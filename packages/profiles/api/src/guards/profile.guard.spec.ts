@@ -50,7 +50,7 @@ describe('ProfileGuard', () => {
       expect(request.context).toBeDefined();
       expect(request.context.profile).toBeDefined();
       expect(request.context.user).toBeDefined();
-      expect(request.context.user._id).toEqual(owner._id);
+      expect(request.context.user?._id).toEqual(owner._id);
       expect(request.context.getMembership()).toBeDefined();
       expect(request.context.getMembership()?.role).toEqual(BaseMembershipRole.Owner);
     });
@@ -73,7 +73,7 @@ describe('ProfileGuard', () => {
       expect(request.context).toBeDefined();
       expect(request.context.profile).toBeDefined();
       expect(request.context.user).toBeDefined();
-      expect(request.context.user._id).toEqual(member._id);
+      expect(request.context.user?._id).toEqual(member._id);
       expect(request.context.getMembership()).toBeDefined();
       expect(request.context.getMembership()?.role).toEqual(BaseMembershipRole.Member);
     });
@@ -97,7 +97,7 @@ describe('ProfileGuard', () => {
       expect(request.context).toBeDefined();
       expect(request.context.profile).toBeDefined();
       expect(request.context.user).toBeDefined();
-      expect(request.context.user._id).toEqual(user._id);
+      expect(request.context.user?._id).toEqual(user._id);
       expect(request.context.getMembership()).not.toBeDefined();
     });
 

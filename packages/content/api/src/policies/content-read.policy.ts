@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IContentPolicy } from '../interfaces';
-import { ProfileContentContext } from '../models';
+import { ProfileContentContext } from '../schemas';
 import { getPolicyToken } from '@lyvely/policies';
 import { BaseContentReadPolicy } from './base-content-read.policy';
 

@@ -9,11 +9,11 @@ import {
   UpdateQuerySet,
   assureObjectId,
   EntityIdentity,
+  IBulkBaseQueryOptions,
 } from '@lyvely/core';
 import { BaseProfileModel } from './base-profile-model.schema';
 import { Profile } from '../schemas';
 import { FilterQuery, QueryOptions, UpdateQuery, Types } from 'mongoose';
-import { IBulkBaseQueryOptions } from '@lyvely/core/src';
 
 /**
  * This type is used as compound type for different kinds of profile relation on DAO level.

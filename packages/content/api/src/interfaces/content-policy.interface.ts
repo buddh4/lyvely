@@ -1,5 +1,5 @@
 import { IProfilePolicy, IProfileUserPolicy } from '@lyvely/profiles';
-import { ProfileContentContext, ProfileUserContentContext } from '../models';
+import { ProfileContentContext, ProfileUserContentContext } from '../schemas';
 
 export interface IContentPolicy<T extends ProfileContentContext = ProfileContentContext>
   extends IProfilePolicy<T> {}

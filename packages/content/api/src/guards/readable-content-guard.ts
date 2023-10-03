@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ContentReadPolicy } from '../policies';
-import { ProfileContentContext } from '../models';
+import { ProfileContentContext } from '../schemas';
 import { AbstractContentGuard } from './abstract-content.guard';
 
 @Injectable()

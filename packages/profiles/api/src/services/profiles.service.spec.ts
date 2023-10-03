@@ -158,7 +158,9 @@ describe('ProfileService', () => {
     });
 
     it('organization group profile can not have same name as organization', async () => {
-      const { member, organization } = await testData.createSimpleOrganization('MyOrganization');
+      const { member, organization } = await testData.createSimpleOrganization({
+        name: 'MyOrganization',
+      });
 
       expect.assertions(2);
       return profileService
@@ -259,7 +261,9 @@ describe('ProfileService', () => {
       });
 
       it('organization user profile can not have same name as organization', async () => {
-        const { member, organization } = await testData.createSimpleOrganization('MyOrganization');
+        const { member, organization } = await testData.createSimpleOrganization({
+          name: 'MyOrganization',
+        });
 
         expect.assertions(2);
         return profileService

@@ -18,7 +18,7 @@ import {
   NotificationDeliveryStatus,
 } from '../schemas';
 import mongoose, { FilterQuery } from 'mongoose';
-import { User, UsersService } from '@lyvely/users';
+import { IUserContext, User, UsersService } from '@lyvely/users';
 import { assureObjectId, assureStringId, EntityIdentity } from '@lyvely/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { I18n } from '@lyvely/i18n';
@@ -26,7 +26,11 @@ import { LiveService } from '@lyvely/live';
 import { ProfileContext } from '@lyvely/profiles';
 
 @Injectable()
-export class UserNotificationsService extends AbstractStreamService<UserNotification> {
+export class UserNotificationsService extends AbstractStreamService<
+  UserNotification,
+  any,
+  IUserContext
+> {
   @Inject()
   protected streamEntryDao: UserNotificationDao;
 
@@ -52,7 +56,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
   }
 
   async loadEntry(
-    context: ProfileContext,
+    context: IUserContext,
     identity: EntityIdentity<UserNotification>,
   ): Promise<UserNotification> {
     const userNotification = await this.streamEntryDao.findOneAndUpdateSetByFilter(
@@ -76,7 +80,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
   }
 
   async loadTail(
-    context: ProfileContext,
+    context: IUserContext,
     request: StreamRequest,
   ): Promise<IStreamResponse<UserNotification>> {
     if (!context.user)
@@ -107,7 +111,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
   }
 
   async loadHead(
-    context: ProfileContext,
+    context: IUserContext,
     request: StreamRequest,
   ): Promise<StreamResponse<UserNotification>> {
     if (!context.user)
@@ -120,7 +124,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
     return response;
   }
 
-  async mapToResultModel(userNotifications: UserNotification[], context: ProfileContext) {
+  async mapToResultModel(userNotifications: UserNotification[], context: IUserContext) {
     const notifications = await this.loadNotifications(userNotifications);
 
     if (!context.user)
@@ -238,7 +242,7 @@ export class UserNotificationsService extends AbstractStreamService<UserNotifica
     });
   }
 
-  createQueryFilter(context: ProfileContext): FilterQuery<UserNotification> {
+  createQueryFilter(context: IUserContext): FilterQuery<UserNotification> {
     return { uid: assureObjectId(context.user) };
   }
 

@@ -5,7 +5,6 @@ import {
   StreamRequest,
   StreamResponse,
 } from '@lyvely/streams-interface';
-import { ProfileRequest, ProfileContext } from '@lyvely/profiles';
 import { AbstractStreamService } from '../service';
 import { BaseEntity } from '@lyvely/core';
 import { PropertiesOf } from '@lyvely/common';
@@ -14,18 +13,16 @@ export abstract class AbstractStreamController<
   TModel extends BaseEntity<TModel>,
   TResult,
   TFilter extends IStreamFilter = any,
+  TContext = any,
 > {
   protected abstract streamEntryService: AbstractStreamService<TModel, TFilter>;
 
-  protected abstract mapToResultModel(
-    models: TModel[],
-    context: ProfileContext,
-  ): Promise<TResult[]>;
+  protected abstract mapToResultModel(models: TModel[], context: TContext): Promise<TResult[]>;
 
   @Post('load-next')
   async loadTail(
     @Body() streamRequest: StreamRequest<TFilter>,
-    @Req() req: ProfileRequest,
+    @Req() req: { context: TContext },
   ): Promise<StreamResponse<TResult>> {
     const context = req.context;
     const response = await this.streamEntryService.loadTail(
@@ -37,7 +34,7 @@ export abstract class AbstractStreamController<
 
   private async mapResponse(
     response: StreamResponse<TModel>,
-    context: ProfileContext,
+    context: TContext,
   ): Promise<StreamResponse<TResult>> {
     const models = await this.mapToResultModel(response.models, context);
     return new StreamResponse<TResult>({
@@ -50,7 +47,7 @@ export abstract class AbstractStreamController<
   @Post('load-head')
   async loadHead(
     @Body() streamRequest: StreamRequest,
-    @Req() req: ProfileRequest,
+    @Req() req: { context: TContext },
   ): Promise<IStreamResponse<TResult>> {
     const context = req.context;
     const response = await this.streamEntryService.loadHead(
@@ -61,7 +58,7 @@ export abstract class AbstractStreamController<
   }
 
   @Get(':eid')
-  async loadEntry(@Param('eid') eid: string, @Req() req: ProfileRequest): Promise<TResult> {
+  async loadEntry(@Param('eid') eid: string, @Req() req: { context: TContext }): Promise<TResult> {
     const context = req.context;
     if (!eid) throw new NotFoundException();
     const entry = await this.streamEntryService.loadEntry(context, eid);

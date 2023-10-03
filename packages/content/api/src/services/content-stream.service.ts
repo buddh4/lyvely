@@ -7,7 +7,11 @@ import { ProfileContext } from '@lyvely/profiles';
 import { FilterQuery } from 'mongoose';
 import { assureObjectId } from '@lyvely/core';
 
-export class ContentStreamService extends AbstractStreamService<Content, ContentStreamFilter> {
+export class ContentStreamService extends AbstractStreamService<
+  Content,
+  ContentStreamFilter,
+  ProfileContext
+> {
   @Inject()
   protected streamEntryDao: ContentDao;
   protected logger = new Logger(ContentStreamService.name);

@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ContentWritePolicy } from '../policies';
 import { AbstractContentGuard } from './abstract-content.guard';
-import { ProfileContentContext } from '../models';
+import { ProfileContentContext } from '../schemas';
 
 @Injectable()
 export class WritableContentGuard extends AbstractContentGuard {

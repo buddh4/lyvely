@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IContentPolicy } from '../interfaces';
-import { ProfileContentContext } from '../models';
+import { ProfileContentContext } from '../schemas';
 
 @Injectable()
 export abstract class BaseContentManagePolicy implements IContentPolicy {

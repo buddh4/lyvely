@@ -1,7 +1,7 @@
 import { Body, Param, Post, Put, Request } from '@nestjs/common';
 import { Content } from '../schemas';
 import { ContentTypeService } from '../services';
-import { ProfileContentRequest, ProfileUserContentRequest } from '../types';
+import { ProfileUserContentRequest } from '../types';
 import { ContentWritePolicy } from '../policies';
 import {
   Type,
@@ -16,7 +16,7 @@ import {
   CreateContentModel,
   ContentUpdateResponse,
 } from '@lyvely/content-interface';
-import { Profile, ProfileRequest, ProfileUserRequest, TagModel } from '@lyvely/profiles';
+import { Profile, ProfileUserRequest, TagModel } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { validate } from 'class-validator';
 import { Policies } from '@lyvely/policies';

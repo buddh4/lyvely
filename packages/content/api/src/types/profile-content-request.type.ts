@@ -1,6 +1,5 @@
 import { ProfileRequest, ProfileUserRequest } from '@lyvely/profiles';
-import { Content } from '../schemas';
-import { ProfileContentContext, ProfileUserContentContext } from '../models';
+import { Content, ProfileContentContext, ProfileUserContentContext } from '../schemas';
 
 export type ProfileContentRequest<C extends Content = Content> =
   ProfileRequest<ProfileContentContext> & { content: C };

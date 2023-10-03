@@ -28,7 +28,7 @@ describe('ProfileService', () => {
     expect(profileService).toBeDefined();
   });
 
-  describe('findUserProfileRelations()', () => {
+  describe('findProfileContext()', () => {
     it('find owner membership', async () => {
       const { user, profile } = await testData.createUserAndProfile();
       const relations = await profileService.findProfileContext(user, profile);
