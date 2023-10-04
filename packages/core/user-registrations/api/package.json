@@ -1,0 +1,76 @@
+{
+  "name": "@lyvely/user-registrations",
+  "version": "0.1.0-alpha3",
+  "description": "Lyvely user registrations module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "eslint \"lib/**/*.ts\" --fix",
+    "format": "prettier \"lib/**/*.ts\" --write",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "prepublish:npm": "npm run build",
+    "publish:npm": "npm publish --access public",
+    "prepublish:next": "npm run build",
+    "publish:next": "npm publish --access public --tag next",
+    "prerelease": "npm run build",
+    "test": "jest --passWithNoTests"
+  },
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@nestjs/common": "^9.4.0",
+    "@nestjs/config": "^2.3.1",
+    "@lyvely/core": "^0.1.0-alpha3",
+    "@lyvely/users": "^0.1.0-alpha3",
+    "@lyvely/user-invitations": "^0.1.0-alpha3",
+    "@lyvely/user-accounts": "^0.1.0-alpha3",
+    "@lyvely/jwt": "^0.1.0-alpha3",
+    "@lyvely/mails": "^0.1.0-alpha3",
+    "@lyvely/otp": "^0.1.0-alpha3",
+    "@lyvely/profiles": "^0.1.0-alpha3",
+    "@lyvely/system-messages": "^0.1.0-alpha3",
+    "ms": "^2.1.3",
+    "passport-jwt": "^4.0.1",
+    "reflect-metadata": "0.1.13"
+  },
+  "devDependencies": {
+    "@lyvely/testing": "^0.1.0-alpha3",
+    "@lyvely/content": "^0.1.0-alpha3",
+    "@nestjs/core": "^9.4.0",
+    "@nestjs/testing": "^9.4.0",
+    "ts-jest": "29.1.0",
+    "ts-node": "10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "jest": {
+    "rootDir": ".",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
+    "testRegex": "[^cypress]*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "compilerOptions": {
+            "sourceMap": true,
+            "inlineSourceMap": true
+          }
+        }
+      ]
+    },
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
+  }
+}
