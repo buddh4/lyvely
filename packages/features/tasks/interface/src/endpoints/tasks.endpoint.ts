@@ -8,8 +8,8 @@ import {
   UpdateTaskModel,
   CreateTaskModel,
 } from '../models';
-import { IContentTypeService } from '@lyvely/content';
-import { ICalendarPlanService } from '@lyvely/calendar-plan';
+import { IContentTypeService } from '@lyvely/content-interface';
+import { ICalendarPlanService } from '@lyvely/calendar-plan-interface';
 
 export interface ITasksEndpointService
   extends IContentTypeService<TaskModel, CreateTaskModel, UpdateTaskModel>,

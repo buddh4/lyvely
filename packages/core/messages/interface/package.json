@@ -13,12 +13,14 @@
     "prepublish:next": "npm run build",
     "publish:next": "npm publish --access public --tag next",
     "prerelease": "npm run build",
-    "test": "jest --passWithNoTests",
+     "test": "jest --passWithNoTests",
+  "clear": "rm -rf ./dist",
     "test:cov": "jest --coverage --no-cache"
   },
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
+    "@lyvely/messages-interface": "^0.1.0-alpha3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "reflect-metadata": "^0.1.13"

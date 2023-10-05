@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 //import { HabitDataPointDocument } from '../activities/schemas';
-import { Model } from 'mongoose';
-import { User } from '../users/schemas/users.schema';
+//import { Model } from 'mongoose';
+//import { User } from '../users/schemas/users.schema';
 
 @Injectable()
 export class StatisticsService {

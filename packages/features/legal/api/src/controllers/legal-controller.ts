@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Headers, Req, NotFoundException } from '@nestjs/common';
 import { LegalEndpoint, LegalSectionDetails, ENDPOINT_LEGAL } from '@lyvely/legal-interface';
-import { LegalService } from '../services/legal.service';
+import { LegalService } from '../services';
 import { Public } from '@lyvely/core';
-import { PublicRequest } from '@lyvely/users';
+import { OptionalUserRequest } from '@lyvely/users/src';
 
 @Controller(ENDPOINT_LEGAL)
 export class LegalController implements LegalEndpoint {
@@ -12,7 +12,7 @@ export class LegalController implements LegalEndpoint {
   @Get(':sectionId')
   async getLegalDetails(
     @Param('sectionId') sectionId,
-    @Req() req: PublicRequest,
+    @Req() req: OptionalUserRequest,
     @Headers('accept-language') acceptLanguage?: string,
   ): Promise<LegalSectionDetails> {
     const section = await this.legalService.getDetails(

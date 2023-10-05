@@ -8,7 +8,7 @@ import {
   UnscheduledPlan,
   WeeklyPlan,
   YearlyPlan,
-} from '@lyvely/calendar-plan';
+} from '../index';
 
 describe('CalendarPlan', () => {
   describe('UnscheduledPlan', function () {

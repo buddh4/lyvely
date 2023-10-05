@@ -28,6 +28,7 @@
     "@lyvely/mails": "^0.1.0-alpha3",
     "@lyvely/notifications": "^0.1.0-alpha3",
     "@lyvely/profiles": "^0.1.0-alpha3",
+    "@lyvely/user-inivtations-interface": "^0.1.0-alpha3",
     "@lyvely/user-subscriptions": "^0.1.0-alpha3",
     "@lyvely/users": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
