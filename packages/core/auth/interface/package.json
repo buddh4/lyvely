@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@lyvely/testing": "^0.1.0-alpha3",
+    "@lyvely/configs": "^0.1.0-alpha3",
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
     "rollup": "^3.21.3",

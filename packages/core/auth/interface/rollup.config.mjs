@@ -1,57 +1,11 @@
-import typescript from '@rollup/plugin-typescript';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
+import libConfig from '@lyvely/configs/rollup/lib.rollup.config.mjs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const production = !process.env.ROLLUP_WATCH;
 
-export default [
-  {
-    input: './src/index.ts',
-    output: [
-      {
-        sourcemap: !production,
-        dir: 'dist/esm',
-        format: 'esm',
-      },
-      {
-        sourcemap: !production,
-        dir: 'dist/cjs',
-        format: 'cjs',
-      },
-    ],
-    external: (id) => {
-      const isExternal = [
-        'class-validator',
-        'class-transformer',
-        '@lyvely/common',
-        '@lyvely/dates',
-        '@lyvely/users-interface',
-      ].includes(id);
+const config = libConfig({ path: __dirname })
 
-      // Exclude all dependencies from the bundle
-      if(isExternal) {
-        console.log('External '+id);
-      } else {
-        console.log('Non External '+id);
-      }
-
-      return isExternal;
-    },
-    plugins: [
-      typescript({
-        sourceMap: !production,
-        inlineSources: !production,
-        paths: {
-          '@/*': ['src/*'],
-        },
-      }),
-      nodeResolve({
-        resolveOnly: ['he'],
-      }),
-      commonjs({}),
-    ],
-    watch: {
-      clearScreen: false,
-    },
-  },
-];
+export default config;
