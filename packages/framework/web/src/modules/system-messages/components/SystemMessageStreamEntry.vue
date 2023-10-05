@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ContentModel, SystemMessageModel } from '@lyvely/common';
+import { SystemMessageModel } from '@lyvely/system-messages-interface';
+import { ContentModel } from '@lyvely/content-interface';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';

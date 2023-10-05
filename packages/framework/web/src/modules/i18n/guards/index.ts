@@ -6,7 +6,7 @@ import {
   isGlobalMessagesLoaded,
   setLocale,
   loadModuleMessages,
-} from '@lyvely/i18n';
+} from '@/i18n';
 
 export const messageLoaderGuard: NavigationGuardWithThis<undefined> = async (to, from, next) => {
   const { locale } = useAuthStore();

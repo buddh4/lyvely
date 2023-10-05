@@ -1,13 +1,6 @@
-import {
-  ContentModel,
-  ContentStreamFilter,
-  IContentStreamClient,
-  IStreamOptions,
-  IStreamResponse,
-  IStreamState,
-  useSingleton,
-  PropertiesOf,
-} from '@lyvely/common';
+import { ContentModel, ContentStreamFilter, IContentStreamClient } from '@lyvely/content-interface';
+import { useSingleton, PropertiesOf } from '@lyvely/common';
+import { IStreamOptions, IStreamResponse, IStreamState } from '@lyvely/streams-interface';
 import repositry from '../repositories';
 import { unwrapResponse } from '@/modules/core';
 import { getContentType } from '@/modules/content-stream/components/content-stream-entry.registry';

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { formatDate, isToday, formatDateWithTime, ContentModel } from '@lyvely/common';
+import { formatDate, isToday, formatDateWithTime } from '@lyvely/dates';
+import { ContentModel } from '@lyvely/content-interface';
 import { computed } from 'vue';
 import RelativeTime from '@/modules/calendar/components/RelativeTime.vue';
 import { useRouter } from 'vue-router';

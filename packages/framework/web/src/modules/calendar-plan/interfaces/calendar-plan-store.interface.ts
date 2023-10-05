@@ -1,4 +1,4 @@
-import { CalendarInterval } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
 
 export interface IMoveEntryEvent {
   cid: string;

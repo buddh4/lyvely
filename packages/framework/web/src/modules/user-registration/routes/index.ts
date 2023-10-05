@@ -1,5 +1,5 @@
 import { ifNotAuthenticated } from '@/modules/auth';
-import { translation } from '@lyvely/i18n';
+import { translation } from '@/i18n';
 import { PATH_REGISTER, PATH_VERIFY_EMAIL } from './paths';
 
 export default [

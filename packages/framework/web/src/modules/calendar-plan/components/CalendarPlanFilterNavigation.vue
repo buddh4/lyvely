@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { IContentFilter } from '@lyvely/common';
+import { IContentFilter } from '@lyvely/content-interface';
 import { useContentFilter } from '@/modules/content';
 import { LocationQuery, onBeforeRouteLeave, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';

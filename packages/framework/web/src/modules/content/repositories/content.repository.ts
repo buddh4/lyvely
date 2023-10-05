@@ -1,5 +1,5 @@
 import repository from '@/repository';
-import { ENDPOINT_CONTENT, SetMilestoneModel } from '@lyvely/common';
+import { ENDPOINT_CONTENT, SetMilestoneModel } from '@lyvely/content-interface';
 
 export default {
   setMilestone(cid: string, mid: string) {

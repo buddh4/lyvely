@@ -1,21 +1,16 @@
 import {
-  useSingleton,
   ITasksEndpointService,
   CreateTaskModel,
   UpdateTaskResponse,
   UpdateTaskModel,
   UpdateTaskStateModel,
   UpdateTaskStateResponse,
-  CalendarDate,
-  formatDate,
-  TimerModel,
-  TimerValueUpdateModel,
-  CalendarPlanFilter,
-  ICalendarPlanResponse,
-  CalendarPlanSort,
-  SortResponse,
   TaskModel,
-} from '@lyvely/common';
+} from '@lyvely/tasks-interface';
+import { SortResponse, useSingleton } from '@lyvely/common';
+import { TimerModel, TimerValueUpdateModel } from '@lyvely/timers-interface';
+import { formatDate, CalendarDate, ICalendarPlanResponse, CalendarPlanSort } from '@lyvely/dates';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 
 import repository from '../repositories/tasks.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';

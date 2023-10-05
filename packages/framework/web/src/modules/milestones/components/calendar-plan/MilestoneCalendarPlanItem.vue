@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { MilestoneModel, toTimingId } from '@lyvely/common';
+import { toTimingId } from '@lyvely/dates';
+import { MilestoneModel } from '@lyvely/milestones-interface';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import { useMilestoneCalendarPlanStore } from '@/modules/milestones/stores/milestone-calendar-plan.store';
 import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';

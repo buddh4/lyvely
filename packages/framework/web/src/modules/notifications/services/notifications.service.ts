@@ -1,11 +1,5 @@
-import {
-  IWebNotification,
-  INotificationsService,
-  IStreamState,
-  IStreamOptions,
-  IStreamResponse,
-  useSingleton,
-} from '@lyvely/common';
+import { IWebNotification, INotificationsService, useSingleton } from '@lyvely/common';
+import { IStreamState, IStreamOptions, IStreamResponse } from '@lyvely/streams-interface';
 import notificationRepository from '../repositories/notifications.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 

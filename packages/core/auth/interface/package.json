@@ -2,12 +2,14 @@
   "name": "@lyvely/auth-interface",
   "version": "0.1.0-alpha3",
   "description": "Lyvely models common",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "type": "commonjs",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/lib/index.d.ts",
   "scripts": {
     "lint": "eslint \"lib/**/*.ts\" --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
-    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
@@ -31,6 +33,7 @@
     "@lyvely/testing": "^0.1.0-alpha3",
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
+    "rollup": "^3.21.3",
     "typescript": "^5.2.2"
   },
   "jest": {

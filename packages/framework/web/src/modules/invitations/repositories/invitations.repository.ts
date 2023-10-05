@@ -1,10 +1,10 @@
 import repository from '@/repository';
 import {
   ENDPOINT_INVITATIONS,
-  EndpointResult,
   InvitationRequest,
   IInvitationsService,
-} from '@lyvely/common';
+} from '@lyvely/user-invitations-interface';
+import { EndpointResult } from '@lyvely/common';
 
 export default {
   async sendInvitations(invite: InvitationRequest) {

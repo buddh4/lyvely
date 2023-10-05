@@ -5,8 +5,8 @@ import {
   ContentModel,
   ContentStreamFilter,
   ContentUpdateStateLiveEvent,
-  StreamDirection,
-} from '@lyvely/common';
+} from '@lyvely/content-interface';
+import { StreamDirection } from '@lyvely/streams-interface';
 import { useLiveStore } from '@/modules/live/stores/live.store';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';

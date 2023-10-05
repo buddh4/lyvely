@@ -1,8 +1,9 @@
-import { defineStore, storeToRefs } from 'pinia';
+import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { loadingStatus, useStatus } from '@/store';
 import { ResetPasswordService } from '@/modules/auth/services/reset-password.service';
-import { ModelValidator, SendResetPasswordMail } from '@lyvely/common';
+import { ModelValidator } from '@lyvely/common';
+import { SendResetPasswordMail } from '@lyvely/auth-interface';
 import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
 import { useCaptchaStore } from '@/modules/captcha/stores/captcha.store';
 import { useResetPasswordStore } from '@/modules/auth/store/reset-password.store';
@@ -29,9 +30,11 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
 
   async function sendResetPasswordMail() {
     if (!(await validate())) return;
-    loadingStatus(resetPasswordService.sendMail(model.value), status, validator.value as ModelValidator).then(() =>
-      resetPasswordStore.setStage('sent'),
-    );
+    loadingStatus(
+      resetPasswordService.sendMail(model.value),
+      status,
+      validator.value as ModelValidator,
+    ).then(() => resetPasswordStore.setStage('sent'));
   }
 
   async function validate() {

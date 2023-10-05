@@ -2,7 +2,7 @@
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { useHelpStore } from '@/modules/help/stores/help.store';
 import { storeToRefs } from 'pinia';
-import { isToday } from '@lyvely/common';
+import { isToday } from '@lyvely/dates';
 import ms from 'ms';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';

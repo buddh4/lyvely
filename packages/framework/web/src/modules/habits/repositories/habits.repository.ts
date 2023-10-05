@@ -3,13 +3,12 @@ import {
   UpdateHabitModel,
   UpdateHabitDataPointModel,
   CreateHabitModel,
-  EndpointResult,
   IHabitsEndpointService,
   TimerUpdateModel,
-  CalendarPlanFilter,
   ENDPOINT_HABITS,
-  CalendarPlanSort,
-} from '@lyvely/common';
+} from '@lyvely/habits-interface';
+import { EndpointResult } from '@lyvely/common';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 
 export default {
   async getByFilter(filter: CalendarPlanFilter) {

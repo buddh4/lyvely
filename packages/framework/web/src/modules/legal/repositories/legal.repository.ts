@@ -1,4 +1,5 @@
-import { ENDPOINT_LEGAL, EndpointResult, ILegalClient } from '@lyvely/common';
+import { ENDPOINT_LEGAL, EndpointResult } from '@lyvely/common';
+import { ILegalClient } from '@lyvely/legal-interface';
 import repository from '@/repository';
 
 export default {

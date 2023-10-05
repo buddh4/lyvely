@@ -1,11 +1,9 @@
 import {
-  useSingleton,
-  CalendarPlanFilter,
-  CalendarPlanSort,
-  SortResponse,
   IMilestonePlanEndpointService,
   MilestoneSearchResponse,
-} from '@lyvely/common';
+} from '@lyvely/milestones-interface';
+import { SortResponse, useSingleton } from '@lyvely/common';
+import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
 
 import repository from '../repositories/milestone-plan.repository';
 import { unwrapAndTransformResponse } from '@/modules/core';

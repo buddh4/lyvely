@@ -1,5 +1,9 @@
 import repository from '@/repository';
-import { CreateProfileModel, ENDPOINT_PROFILES, ProfileWithRelationsModel } from '@lyvely/common';
+import {
+  CreateProfileModel,
+  ENDPOINT_PROFILES,
+  ProfileWithRelationsModel,
+} from '@lyvely/profiles-interface';
 
 export default {
   async getDefaultProfile() {

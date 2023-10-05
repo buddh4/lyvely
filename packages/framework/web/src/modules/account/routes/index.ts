@@ -1,4 +1,4 @@
-import { translation } from '@lyvely/i18n';
+import { translation } from '@/i18n';
 
 export default [
   {

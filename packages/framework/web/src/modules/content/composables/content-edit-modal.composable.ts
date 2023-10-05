@@ -1,11 +1,6 @@
 import { computed, ref, Ref } from 'vue';
-import {
-  ContentModel,
-  IEditableModel,
-  CreateContentModel,
-  ContentUpdateResponse,
-  ModelValidator,
-} from '@lyvely/common';
+import { ModelValidator, IEditableModel } from '@lyvely/common';
+import { ContentModel, CreateContentModel, ContentUpdateResponse } from '@lyvely/content-interface';
 import { IEditOrCreateModalProps } from '@/modules/content/interfaces/edit-content-modal-props.interface';
 import { IEditModelStoreOptions, useUpdateModelStore } from '@/modules/common';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';

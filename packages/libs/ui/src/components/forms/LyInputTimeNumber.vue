@@ -2,7 +2,7 @@
 import { useFloatingInputSetup } from './FloatingInput';
 import { computed, ref, onMounted } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
-import { msToTime, timeToMs, padTime } from '@lyvely/common';
+import { msToTime, timeToMs, padTime } from '@lyvely/dates';
 
 export interface IProps {
   id?: string;

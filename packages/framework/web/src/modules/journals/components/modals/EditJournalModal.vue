@@ -1,11 +1,6 @@
 <script lang="ts" setup>
-import {
-  CreateJournalModel,
-  DataPointInputType,
-  DataPointValueType,
-  JournalModel,
-  UpdateJournalModel,
-} from '@lyvely/common';
+import { CreateJournalModel, JournalModel, UpdateJournalModel } from '@lyvely/journals-interface';
+import { DataPointInputType, DataPointValueType } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import {

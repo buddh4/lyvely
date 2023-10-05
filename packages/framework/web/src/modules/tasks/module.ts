@@ -1,7 +1,7 @@
 import { IModule } from '@/modules/core/modules/interfaces/module.interface';
 import { registerContentType } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { CreateTaskModel, TaskModel } from '@lyvely/common';
-import { translation } from '@lyvely/i18n';
+import { CreateTaskModel, TaskModel } from '@lyvely/tasks-interface';
+import { translation } from '@/i18n';
 
 export default () => {
   return {

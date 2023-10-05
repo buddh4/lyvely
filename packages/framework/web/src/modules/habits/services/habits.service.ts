@@ -6,15 +6,12 @@ import {
   UpdateHabitModel,
   UpdateHabitResponse,
   UpdateHabitDataPointResponse,
-  useSingleton,
-  CalendarPlanFilter,
   HabitModel,
-  CalendarPlanSort,
-  SortResponse,
-  useDataPointStrategyFacade,
-  TimerDataPointModel,
   UpdateHabitDataPointTimerResponse,
-} from '@lyvely/common';
+} from '@lyvely/habits-interface';
+import { SortResponse, useSingleton } from '@lyvely/common';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { useDataPointStrategyFacade, TimerDataPointModel } from '@lyvely/time-series-interface';
 import repository from '../repositories/habits.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';

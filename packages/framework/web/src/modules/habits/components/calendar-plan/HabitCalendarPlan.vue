@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
-import { getCalendarIntervalArray, HabitModel } from '@lyvely/common';
+import { HabitModel } from '@lyvely/habits-interface';
+import { getCalendarIntervalArray } from '@lyvely/dates';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/CalendarPlanFilterNavigation.vue';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';

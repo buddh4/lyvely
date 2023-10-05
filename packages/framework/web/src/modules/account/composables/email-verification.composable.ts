@@ -1,11 +1,6 @@
 import { ref } from 'vue';
-import {
-  VerifyEmailDto,
-  ResendOtp,
-  OtpInfo,
-  UnauthenticatedServiceException,
-  FieldValidationException,
-} from '@lyvely/common';
+import { UnauthenticatedServiceException, FieldValidationException } from '@lyvely/common';
+import { VerifyEmailDto, ResendOtp, OtpInfo } from '@lyvely/user-accounts-interface';
 import { I18nModelValidator, I18nModelValidatorOptionsIF } from '@/modules/core';
 
 interface IEmailVerificationOptions {

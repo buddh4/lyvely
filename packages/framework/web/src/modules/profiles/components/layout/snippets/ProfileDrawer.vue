@@ -5,7 +5,7 @@ import { translate } from '@/i18n';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { watchMaxSize, isMaxViewSize } from '@/util/media';
-import { isMultiUserProfile } from '@lyvely/common';
+import { isMultiUserProfile } from '@lyvely/profiles-interface';
 import imageUrl from '@/assets/logo_white_bold.svg';
 import { useActivityStore } from '@/modules/activities/store/activity.store';
 import { storeToRefs } from 'pinia';

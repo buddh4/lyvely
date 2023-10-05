@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DataPointInputType, INumberDataPointSettings } from '@lyvely/common';
+import { DataPointInputType, INumberDataPointSettings } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
 
 interface IProps {

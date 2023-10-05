@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { JournalModel } from '@lyvely/common';
+import { JournalModel } from '@lyvely/journals-interface';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 
 export interface IProps {

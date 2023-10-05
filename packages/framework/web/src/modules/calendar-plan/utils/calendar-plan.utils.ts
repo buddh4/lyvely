@@ -1,4 +1,4 @@
-import { CalendarInterval } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
 import { IDragEvent } from '@/modules/common';
 import { IMoveEntryEvent } from '../interfaces';
 

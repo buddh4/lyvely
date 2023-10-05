@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { DataPointInputType, ISelectionDataPointSettings } from '@lyvely/common';
+import { DataPointInputType, ISelectionDataPointSettings } from '@lyvely/time-series-interface';
 import { ref } from 'vue';
 import { isArray } from 'class-validator';
 

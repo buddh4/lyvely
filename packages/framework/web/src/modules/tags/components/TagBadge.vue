@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { TagModel } from '@lyvely/common';
+import { TagModel } from '@lyvely/profiles-interface';
 
 export interface IProps {
   tag: TagModel;

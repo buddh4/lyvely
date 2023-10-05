@@ -4,8 +4,7 @@ import {
   DataPointValueType,
   INumberDataPointConfig,
   ITimerDataPointConfig,
-  useDataPointStrategyFacade,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
 
 interface IProps {
   modelValue: Partial<

@@ -1,12 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
-import {
-  TaskModel,
-  CalendarInterval,
-  TaskFilter,
-  toTimingId,
-  CalendarPlanStore,
-  TaskCalendarPlanStore,
-} from '@lyvely/common';
+import { TaskModel, TaskFilter, TaskCalendarPlanStore } from '@lyvely/tasks-interface';
+import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlan, useCalendarPlanStore } from '@/modules/calendar-plan';
 import { useTasksService } from '@/modules/tasks/services/tasks.service';

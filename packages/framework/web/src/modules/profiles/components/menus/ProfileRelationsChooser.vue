@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useRouter, isNavigationFailure } from 'vue-router';
 import { useCreateProfileStore } from '@/modules/profiles/stores/create-profile.store';
-import { ProfileRelationInfo } from '@lyvely/common';
+import { ProfileRelationInfo } from '@lyvely/profiles-interface';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileStore = useProfileStore();

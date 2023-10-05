@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
-import { HabitModel } from '@lyvely/common';
+import { HabitModel } from '@lyvely/habits-interface';
 
 export const useUpdateHabit = (model: HabitModel) => {
   const habitStore = useHabitCalendarPlanStore();

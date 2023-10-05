@@ -3,7 +3,7 @@ import {
   DataPointInputType,
   ISelectionDataPointSettings,
   ISelectionDataPointValue,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
 import { computed } from 'vue';
 
 interface IProps {

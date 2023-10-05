@@ -5,7 +5,7 @@ import { useMilestoneCalendarPlanStore } from '@/modules/milestones/stores/miles
 import { computed } from 'vue';
 import Draggable from 'vuedraggable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import { MilestoneModel } from '@lyvely/common';
+import { MilestoneModel } from '@lyvely/milestones-interface';
 
 export interface IProps {
   interval: number;

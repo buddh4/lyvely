@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ContentStreamFooter from '@/modules/content-stream/components/ContentStreamFooter.vue';
 import ContentStream from '@/modules/content-stream/components/ContentStream.vue';
-import { ContentModel, ContentStreamFilter } from '@lyvely/common';
+import { ContentModel, ContentStreamFilter } from '@lyvely/content-interface';
 import { useContentStreamService } from '@/modules/content-stream/services/content-stream.service';
 import { useRouter } from 'vue-router';
 import { ref, watch } from 'vue';

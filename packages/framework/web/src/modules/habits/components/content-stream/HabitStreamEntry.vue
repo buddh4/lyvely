@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { ContentModel, TaskModel } from '@lyvely/common';
+import { HabitModel } from '@lyvely/habits-interface';
+import { ContentModel } from '@lyvely/content-interface';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
 
 export interface IProps {
-  model: TaskModel;
+  model: HabitModel;
   stream: IStream<ContentModel>;
   index: number;
 }

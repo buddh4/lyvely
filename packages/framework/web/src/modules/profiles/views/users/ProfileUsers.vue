@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useSendInviteUsersStore } from '@/modules/invitations/stores/send-invitations.store';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { computed } from 'vue';
-import { BaseMembershipRole, ProfileRelationModel } from '@lyvely/common';
+import { BaseMembershipRole, ProfileRelationModel } from '@lyvely/profiles-interface';
 
 const sendInviteStore = useSendInviteUsersStore();
 const profileStore = useProfileStore();

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { loadingStatus, useStatus } from '@/store';
-import { UserRegistration, ModelValidator } from '@lyvely/common';
+import { UserRegistration } from '@lyvely/user-registrations-interface';
+import { ModelValidator } from '@lyvely/common';
 import { ref } from 'vue';
 import { UserRegistrationService } from '../services/user-registration.service';
 import { useVerifyRegistrationEmailStore } from './verify-email.store';

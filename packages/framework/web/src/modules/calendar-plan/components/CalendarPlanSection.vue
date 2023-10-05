@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CalendarInterval } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
 import { useCalendarPlanStore } from '../stores';
 import { computed, ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';

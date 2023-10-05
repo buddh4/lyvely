@@ -1,9 +1,9 @@
-import { ICalendarPlanEntry } from '@lyvely/common';
+import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 import { computed } from 'vue';
 import { useCalendarPlanStore } from '../stores';
 import { IMoveEntryEvent } from '../interfaces';
 import { useAccessibilityStore } from '@/modules/accessibility';
-import { translate } from '@lyvely/i18n';
+import { translate } from '@/i18n';
 import { IMoveActivityEvent } from '@/modules/activities/store/activity.store';
 import { IDragEvent } from '@/modules/common';
 import { storeToRefs } from 'pinia';

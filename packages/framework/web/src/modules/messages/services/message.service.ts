@@ -1,4 +1,5 @@
-import { IMessageClient, CreateMessage, useSingleton, MessageUpdateResponse } from '@lyvely/common';
+import { IMessageClient, CreateMessage, MessageUpdateResponse } from '@lyvely/messages-interface';
+import { useSingleton } from '@lyvely/common';
 import repository from '../repositories';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 

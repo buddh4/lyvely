@@ -5,7 +5,7 @@ import { createPinia, Pinia } from 'pinia';
 import router from '@/router';
 import AppComponent from '@/App.vue';
 import { ModuleLoader } from '@/module.loader';
-import { setupI18n, translate } from '@lyvely/i18n';
+import { setupI18n, translate } from '@/i18n';
 import { I18n } from 'vue-i18n';
 import { useDayJsDateTimeAdapter } from '@lyvely/common';
 import { eventBus, AppEvents } from '@/modules/core/events/global.emitter';

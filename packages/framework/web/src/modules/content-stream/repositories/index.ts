@@ -3,8 +3,8 @@ import {
   ENDPOINT_CONTENT_STREAM,
   EndpointResult,
   IContentStreamClient,
-  IStreamRequest,
-} from '@lyvely/common';
+} from '@lyvely/content-interface';
+import { IStreamRequest } from '@lyvely/streams-interface';
 
 export default {
   async loadTail(request: IStreamRequest) {

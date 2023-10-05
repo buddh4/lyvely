@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ITextDataPointSettings } from '@lyvely/common';
+import { ITextDataPointSettings } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
 
 interface IProps {

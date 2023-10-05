@@ -1,10 +1,5 @@
-import {
-  TagModel,
-  UpdateTag,
-  useSingleton,
-  IProfileTagsService,
-  IEditModelService,
-} from '@lyvely/common';
+import { TagModel, UpdateTag, IProfileTagsService } from '@lyvely/profiles-interface';
+import { useSingleton, IEditModelService } from '@lyvely/common';
 import repository from '../repositories/tags.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
-import { ContentModel, MilestoneModel, UpdateMilestoneResponse } from '@lyvely/common';
+import { MilestoneModel, UpdateMilestoneResponse } from '@lyvely/milestones-interface';
+import { ContentModel } from '@lyvely/content-interface';
 import { useSetContentMilestone } from '@/modules/content/composables/set-content-milestone.composable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import { storeToRefs } from 'pinia';

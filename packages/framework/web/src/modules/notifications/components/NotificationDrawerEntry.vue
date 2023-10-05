@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { IWebNotification } from '@lyvely/common';
+import { IWebNotification } from '@lyvely/notifications-interface';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/modules/auth/store/auth.store';

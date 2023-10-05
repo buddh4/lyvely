@@ -1,16 +1,15 @@
 import repository from '@/repository';
 import {
-  Headers,
   ILoadUserResponse,
   ILoginResponse,
   IRefreshTokenResponse,
   ENDPOINT_AUTH,
-  EndpointResult,
   LoginModel,
   IAuthService,
-} from '@lyvely/common';
+} from '@lyvely/auth-interface';
+import { Headers, EndpointResult } from '@lyvely/common';
 
-const resource = ENDPOINT_AUTH;
+const resource = 'test';
 
 export default {
   async loadUser() {

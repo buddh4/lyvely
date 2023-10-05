@@ -1,14 +1,13 @@
 import repository from '@/repository';
 import {
   ENDPOINT_JOURNALS,
-  CalendarPlanFilter,
-  CalendarPlanSort,
-  EndpointResult,
   IJournalsEndpointService,
   UpdateDataPointModel,
   CreateJournalModel,
   UpdateJournalModel,
-} from '@lyvely/common';
+} from '@lyvely/journals-interface';
+import { EndpointResult } from '@lyvely/common';
+import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
 
 export default {
   async create(model: CreateJournalModel) {

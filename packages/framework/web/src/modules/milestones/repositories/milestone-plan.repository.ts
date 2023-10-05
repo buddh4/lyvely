@@ -1,11 +1,10 @@
 import repository from '@/repository';
 import {
-  EndpointResult,
   IMilestonePlanEndpointService,
-  CalendarPlanFilter,
   ENDPOINT_MILESTONE_PLAN,
-  CalendarPlanSort,
-} from '@lyvely/common';
+} from '@lyvely/milestones-interface';
+import { EndpointResult } from '@lyvely/common';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 
 export default {
   async getByFilter(filter: CalendarPlanFilter) {

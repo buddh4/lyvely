@@ -1,10 +1,7 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed } from 'vue';
-import { createFileUrl } from '@/repository';
-import randomColor from 'randomcolor';
-import { getContrast } from '@/modules/ui/utils';
-import { ProfileModel } from '@lyvely/common';
+import { ProfileModel } from '@lyvely/profiles-interface';
 
 export interface IProps {
   profile?: Pick<ProfileModel, 'id' | 'guid' | 'name'>;

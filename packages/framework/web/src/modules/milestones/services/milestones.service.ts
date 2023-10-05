@@ -1,12 +1,12 @@
 import {
-  useSingleton,
   IMilestonesEndpointService,
   UpdateMilestoneResponse,
   CreateMilestoneModel,
   UpdateMilestoneModel,
   MilestoneModel,
   MilestoneListResponse,
-} from '@lyvely/common';
+} from '@lyvely/milestones-interface';
+import { useSingleton } from '@lyvely/common';
 
 import repository from '../repositories/milestones.repository';
 import { unwrapAndTransformResponse } from '@/modules/core';

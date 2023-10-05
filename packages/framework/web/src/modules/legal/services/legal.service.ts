@@ -1,4 +1,5 @@
-import { ILegalClient, LegalSectionDetails, useSingleton } from '@lyvely/common';
+import { ILegalClient, LegalSectionDetails } from '@lyvely/legal-interface';
+import { useSingleton } from '@lyvely/common';
 import { unwrapAndTransformResponse } from '@/modules/core';
 import repository from '../repositories/legal.repository';
 

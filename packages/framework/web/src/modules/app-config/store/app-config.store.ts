@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { loadingStatus, useStatus } from '@/store';
 import repository from '@/repository';
-import { AppConfig } from '@lyvely/common';
+import { AppConfig } from '@lyvely/app-config-interface';
 import { AppConfigService } from '@/modules/app-config/services/app-config.service';
 
 type ConfigKey = keyof AppConfig;
@@ -21,7 +21,10 @@ export const useAppConfigStore = defineStore('app-config', () => {
     config.value = cfg;
   }
 
-  function get<T extends ConfigKey>(cfg: T, defaultValue?: ConfigValue<T>): ConfigValue<T> | undefined {
+  function get<T extends ConfigKey>(
+    cfg: T,
+    defaultValue?: ConfigValue<T>,
+  ): ConfigValue<T> | undefined {
     if (!config.value) return defaultValue;
     return config.value[cfg] ?? defaultValue;
   }

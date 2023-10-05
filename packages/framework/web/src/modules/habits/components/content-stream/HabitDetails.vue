@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { HabitModel, isNumberDataPointConfig, isTimerDataPointConfig } from '@lyvely/common';
+import { HabitModel } from '@lyvely/habits-interface';
+import { isNumberDataPointConfig, isTimerDataPointConfig } from '@lyvely/time-series-interface';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 import CalendarPlanNumberInput from '@/modules/calendar-plan/components/inputs/CalendarPlanNumberInput.vue';
 import CalendarPlanTimerInput from '@/modules/calendar-plan/components/inputs/CalendarPlanTimerInput.vue';

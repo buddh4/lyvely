@@ -3,7 +3,7 @@ import CalendarPlanSection from '@/modules/calendar-plan/components/CalendarPlan
 import Draggable from 'vuedraggable';
 import { useJournalPlanStore } from '@/modules/journals/stores/journal-calendar-plan.store';
 import { computed } from 'vue';
-import { JournalModel } from '@lyvely/common';
+import { JournalModel } from '@lyvely/journals-interface';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import JournalCalendarPlanItem from '@/modules/journals/components/JournalCalendarPlanItem.vue';
 

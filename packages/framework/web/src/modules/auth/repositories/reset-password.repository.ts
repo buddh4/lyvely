@@ -6,18 +6,25 @@ import {
   IResetPasswordService,
   SendResetPasswordMail,
   ResetPassword,
-} from '@lyvely/common';
+} from '@lyvely/auth-interface';
 
 const resource = ENDPOINT_RESET_PASSWORD;
 const SEND_MAIL_ENDPOINT = `${resource}/${ENDPOINT_RESET_PASSWORD_SEND_MAIL}`;
 
 export default {
   async sendMail(data: SendResetPasswordMail) {
-    return repository.post<EndpointResult<IResetPasswordService['sendMail']>>(SEND_MAIL_ENDPOINT, data, {
-      withCaptcha: true,
-    });
+    return repository.post<EndpointResult<IResetPasswordService['sendMail']>>(
+      SEND_MAIL_ENDPOINT,
+      data,
+      {
+        withCaptcha: true,
+      },
+    );
   },
   async resetPassword(data: ResetPassword) {
-    return repository.post<EndpointResult<IResetPasswordService['resetPassword']>>(`${resource}`, data);
+    return repository.post<EndpointResult<IResetPasswordService['resetPassword']>>(
+      `${resource}`,
+      data,
+    );
   },
 };

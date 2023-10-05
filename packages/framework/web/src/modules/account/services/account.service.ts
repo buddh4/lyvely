@@ -4,8 +4,8 @@ import {
   VerifyEmailDto,
   OtpInfo,
   ResendOtp,
-  useSingleton,
-} from '@lyvely/common';
+} from '@lyvely/user-accounts-interface';
+import { useSingleton } from '@lyvely/common';
 import accountRepository from '../repositories/account.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { computed, ref, watchEffect } from 'vue';
 import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
-import { ContentModel, MilestoneModel } from '@lyvely/common';
+import { MilestoneModel } from '@lyvely/milestones-interface';
+import { ContentModel } from '@lyvely/content-interface';
 import MilestoneChooser from '@/modules/milestones/components/menus/MilestoneChooser.vue';
 import { translate } from '@/i18n';
 

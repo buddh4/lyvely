@@ -1,10 +1,10 @@
 import repository from '@/repository';
 import {
   ENDPOINT_PROFILE_MEMBERSHIP,
-  EndpointResult,
   IProfileMembershipService,
   UpdateProfileMembershipSettings,
-} from '@lyvely/common';
+} from '@lyvely/profiles-interface';
+import { EndpointResult } from '@lyvely/common';
 
 export default {
   async update(dto: UpdateProfileMembershipSettings) {

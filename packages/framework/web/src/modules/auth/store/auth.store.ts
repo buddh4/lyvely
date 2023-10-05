@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { setLocale } from '@lyvely/i18n';
+import { setLocale } from '@/i18n';
 import { localStorageManager, sessionStorageManager } from '@/util/storage';
 import { ref, computed } from 'vue';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
@@ -7,7 +7,9 @@ import repository from '@/repository';
 import { eventBus } from '@/modules/core/events/global.emitter';
 import { getDefaultLocale } from '@/util';
 import { AuthService } from '@/modules/auth/services/auth.service';
-import { ILoginResponse, UserModel, queuePromise, UserStatus } from '@lyvely/common';
+import { ILoginResponse } from '@lyvely/auth-interface';
+import { queuePromise } from '@lyvely/common';
+import { ILoginResponse, UserModel, UserStatus } from '@lyvely/users-interface';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { useLiveStore } from '@/modules/live/stores/live.store';

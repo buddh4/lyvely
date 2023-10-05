@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import {
-  JournalModel,
   isNumberDataPointConfig,
   isTextDataPointConfig,
   isSelectionDataPointConfig,
-} from '@lyvely/common';
+} from '@lyvely/time-series-interface';
+import { JournalModel } from '@lyvely/journals-interface';
 import { computed, onMounted, ref } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import CalendarPlanNumberInput from '@/modules/calendar-plan/components/inputs/CalendarPlanNumberInput.vue';

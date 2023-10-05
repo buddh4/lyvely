@@ -1,4 +1,4 @@
-import { ContentModel } from '@lyvely/common';
+import { ContentModel } from '@lyvely/content-interface';
 
 export interface ICreateContentModalProps {
   type: string;

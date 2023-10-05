@@ -1,7 +1,17 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { AddEmailDto, IFieldValidationResult, ModelValidator, UserEmailModel, OtpInfo } from '@lyvely/common';
+import { IFieldValidationResult, ModelValidator } from '@lyvely/common';
+import {
+  AddEmailDto,
+  UserEmailModel,
+  OtpInfo,
+  AddEmailDto,
+  IFieldValidationResult,
+  ModelValidator,
+  UserEmailModel,
+} from '@lyvely/user-accounts-interface';
+import { OtpInfo } from '@lyvely/otp-interface';
 import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
 import { useAccountService } from '@/modules/account/services/account.service';
 import { loadingStatus, useStatus } from '@/store';
@@ -32,7 +42,11 @@ export const useAddEmailStore = defineStore('add-email', () => {
 
   async function addEmail() {
     toVerifyEmail(
-      await loadingStatus(() => accountService.addEmail(model.value), status, validator.value as ModelValidator),
+      await loadingStatus(
+        () => accountService.addEmail(model.value),
+        status,
+        validator.value as ModelValidator,
+      ),
     );
   }
 

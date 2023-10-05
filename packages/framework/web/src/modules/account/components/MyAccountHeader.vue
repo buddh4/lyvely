@@ -4,7 +4,7 @@ import { useProfileRelationInfosStore } from '@/modules/profiles/stores/profile-
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import 'cropperjs/dist/cropper.min.css';
-import { ProfileType } from '@lyvely/common';
+import { ProfileType } from '@lyvely/profiles-interface';
 import { useAccountAvatarStore } from '@/modules/account/stores/upload-account-avatar.store';
 
 const authStore = useAuthStore();

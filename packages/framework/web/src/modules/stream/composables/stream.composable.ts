@@ -6,7 +6,7 @@ import {
   IStreamState,
   StreamDirection,
   IStreamRestoreState,
-} from '@lyvely/common';
+} from '@lyvely/streams-interface';
 import { nextTick, ref, Ref } from 'vue';
 import { loadingStatus, useStatus } from '@/store';
 import mitt from 'mitt';

@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import ContentStreamFooter from '@/modules/content-stream/components/ContentStreamFooter.vue';
 import ContentStream from '@/modules/content-stream/components/ContentStream.vue';
-import { ContentStreamFilter } from '@lyvely/common';
+import { ContentStreamFilter } from '@lyvely/content-interface';
 import { useRouter } from 'vue-router';
 import { useContentStreamFilterStore } from '@/modules/content-stream/stores/content-stream-filter.store';
-import { ref } from 'vue';
-import {storeToRefs} from "pinia";
+import { storeToRefs } from 'pinia';
 
 const { filter } = storeToRefs(useContentStreamFilterStore());
 filter.value = new ContentStreamFilter();

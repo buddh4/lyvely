@@ -3,10 +3,10 @@ import {
   UserRegistration,
   ENDPOINT_USER_REGISTRATION,
   IUserRegistrationService,
-  EndpointResult,
   VerifyEmailDto,
-  ResendOtp,
-} from '@lyvely/common';
+} from '@lyvely/user-registrations-interface';
+import { ResendOtp } from '@lyvely/otp-interface';
+import { EndpointResult } from '@lyvely/common';
 
 const endpoint = ENDPOINT_USER_REGISTRATION;
 

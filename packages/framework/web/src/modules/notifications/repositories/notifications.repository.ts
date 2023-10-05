@@ -1,10 +1,7 @@
 import repository from '@/repository';
-import {
-  ENDPOINT_NOTIFICATIONS,
-  EndpointResult,
-  INotificationsService,
-  IStreamRequest,
-} from '@lyvely/common';
+import { ENDPOINT_NOTIFICATIONS, INotificationsService } from '@lyvely/notifications-interface';
+import { IStreamRequest } from '@lyvely/streams-interface';
+import { EndpointResult } from '@lyvely/common';
 
 export default {
   async loadTail(request: IStreamRequest) {

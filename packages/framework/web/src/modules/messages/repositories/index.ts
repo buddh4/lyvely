@@ -1,5 +1,6 @@
 import repository from '@/repository';
-import { ENDPOINT_MESSAGE, CreateMessage, EndpointResult, IMessageClient } from '@lyvely/common';
+import { ENDPOINT_MESSAGE, CreateMessage, IMessageClient } from '@lyvely/messages-interface';
+import { EndpointResult } from '@lyvely/common';
 
 export default {
   create(model: CreateMessage) {

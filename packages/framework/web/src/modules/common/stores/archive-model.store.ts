@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { IArchivable } from '@lyvely/common';
+import { IArchivable } from '@lyvely/content-interface';
 
 interface IArchiveModelRepository<TID = string> {
   archive: (id: TID) => Promise<AxiosResponse<boolean>>;

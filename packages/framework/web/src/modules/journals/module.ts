@@ -1,7 +1,7 @@
 import { IModule } from '@/modules/core/modules/interfaces/module.interface';
 import { registerContentType } from '@/modules/content-stream';
-import { translation } from '@lyvely/i18n';
-import { JournalModel, CreateJournalModel } from '@lyvely/common';
+import { translation } from '@/i18n';
+import { JournalModel, CreateJournalModel } from '@lyvely/journals-interface';
 
 export default () => {
   return {

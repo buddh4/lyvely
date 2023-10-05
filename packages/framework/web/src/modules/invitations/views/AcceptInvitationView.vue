@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { EntityNotFoundException, UserInvitationInfo } from '@lyvely/common';
+import { UserInvitationInfo } from '@lyvely/user-invitations-interface';
+import { EntityNotFoundException } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
 import { useInvitationsService } from '../services/invitations.service';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';

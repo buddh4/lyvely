@@ -5,7 +5,11 @@ import {
   ContentEditModalEmits,
   useContentEditModal,
 } from '@/modules/content/composables/content-edit-modal.composable';
-import { CreateMilestoneModel, MilestoneModel, UpdateMilestoneModel } from '@lyvely/common';
+import {
+  CreateMilestoneModel,
+  MilestoneModel,
+  UpdateMilestoneModel,
+} from '@lyvely/milestones-interface';
 import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';
 import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';

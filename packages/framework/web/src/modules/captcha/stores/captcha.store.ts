@@ -5,13 +5,13 @@ import { IsNotEmpty, Matches } from 'class-validator';
 import {
   BaseModel,
   PropertyType,
-  CaptchaChallenge,
   Headers,
   IFieldValidationResponse,
   IFieldValidationResult,
 } from '@lyvely/common';
+import { CaptchaChallenge } from '@lyvely/captchas-interface';
 import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
-import { translate, translation } from '@lyvely/i18n';
+import { translate, translation } from '@/i18n';
 import repository from '@/repository';
 import { isFieldValidationError } from '@/util';
 
@@ -109,7 +109,10 @@ const authRepositoryPlugin = () => {
 
     const captchaError = validation.fields.find((field) => field.property === 'captcha');
     if (captchaError)
-      useCaptchaStore().setCaptchaError({ property: 'captcha', errors: [translate('captcha.errors.invalid')] });
+      useCaptchaStore().setCaptchaError({
+        property: 'captcha',
+        errors: [translate('captcha.errors.invalid')],
+      });
 
     return Promise.reject(error);
   });

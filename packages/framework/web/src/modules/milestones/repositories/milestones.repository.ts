@@ -1,10 +1,10 @@
 import repository from '@/repository';
 import {
   UpdateMilestoneModel,
-  EndpointResult,
   IMilestonesEndpointService,
   ENDPOINT_MILESTONES,
-} from '@lyvely/common';
+} from '@lyvely/milestones-interface';
+import { EndpointResult } from '@lyvely/common';
 
 export default {
   async getAll() {

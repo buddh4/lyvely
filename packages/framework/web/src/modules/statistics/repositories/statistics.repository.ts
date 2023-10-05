@@ -1,4 +1,5 @@
-import { CalendarInterval, ScoreStatistics } from '@lyvely/common';
+import { ScoreStatistics } from '@lyvely/statistics-interface';
+import { CalendarInterval } from '@lyvely/dates';
 
 const resource = 'statistics';
 

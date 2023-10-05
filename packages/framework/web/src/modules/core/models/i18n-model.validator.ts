@@ -1,7 +1,8 @@
 import { ModelValidator, IValidatorOptions, getPropertyConstraints } from '@lyvely/common';
-import { translate } from '@lyvely/i18n';
+import { translate } from '@/i18n';
 
-export interface I18nModelValidatorOptionsIF<T extends object = object> extends IValidatorOptions<T> {
+export interface I18nModelValidatorOptionsIF<T extends object = object>
+  extends IValidatorOptions<T> {
   translationKey?: string;
 }
 

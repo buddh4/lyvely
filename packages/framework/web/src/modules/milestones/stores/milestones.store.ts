@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { MilestoneModel } from '@lyvely/common';
+import { MilestoneModel } from '@lyvely/milestones-interface';
 import { useMilestonesService } from '@/modules/milestones/services/milestones.service';
 import { ref, watch } from 'vue';
 import { loadingStatus, useStatus } from '@/store';

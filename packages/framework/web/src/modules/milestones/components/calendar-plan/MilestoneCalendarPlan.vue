@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
-import { getCalendarIntervalArray, MilestoneModel } from '@lyvely/common';
+import { MilestoneModel } from '@lyvely/milestones-interface';
+import { getCalendarIntervalArray } from '@lyvely/dates';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import { translate } from '@/i18n';

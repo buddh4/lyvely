@@ -5,7 +5,7 @@ import { useNotificationStore } from '../stores/notifications.store';
 import { useRouter } from 'vue-router';
 import NotificationDrawerEntry from '@/modules/notifications/components/NotificationDrawerEntry.vue';
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
-import { IWebNotification } from '@lyvely/common';
+import { IWebNotification } from '@lyvely/notifications-interface';
 import { toVueRoute } from '@/modules/core/backend-route.transformer';
 
 const notificationStore = useNotificationStore();

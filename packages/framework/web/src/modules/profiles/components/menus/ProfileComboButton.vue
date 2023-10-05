@@ -3,7 +3,7 @@ import { usePageStore } from '@/modules/core/store/page.store';
 import { computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
-import { getScaledProgress } from '@lyvely/common';
+import { getScaledProgress } from '@lyvely/profiles-interface';
 import ProfileAvatar from '@/modules/profiles/components/ProfileAvatar.vue';
 
 const profileStore = useProfileStore();
@@ -51,16 +51,16 @@ const progressStyle = computed(() => {
                 <transition
                   name="score-icon"
                   mode="out-in"
-                  enterActiveClass="animate__animated animate_svg_flip"
-                  leaveActiveClass="">
+                  enter-active-class="animate__animated animate_svg_flip"
+                  leave-active-class="">
                   <ly-icon :key="score" name="score" class="text-success" />
                 </transition>
 
                 <transition
                   name="score"
                   mode="out-in"
-                  enterActiveClass="animate__animated animate__faster animate__bounceIn"
-                  leaveActiveClass="animate__animated animate__faster animate__bounceOut">
+                  enter-active-class="animate__animated animate__faster animate__bounceIn"
+                  leave-active-class="animate__animated animate__faster animate__bounceOut">
                   <div :key="score" class="inline-block score-value ml-0.5">
                     <span>{{ formattedScore }}</span>
                   </div>

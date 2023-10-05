@@ -1,10 +1,6 @@
 <script lang="ts" setup>
-import {
-  CreateHabitModel,
-  HabitModel,
-  UpdateHabitModel,
-  useDataPointStrategyFacade,
-} from '@lyvely/common';
+import { CreateHabitModel, HabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
+import { useDataPointStrategyFacade } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
 import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import {

@@ -2,8 +2,8 @@ import {
   CreateProfileModel,
   IProfilesService,
   ProfileWithRelationsModel,
-  useSingleton,
-} from '@lyvely/common';
+} from '@lyvely/profiles-interface';
+import { useSingleton } from '@lyvely/common';
 import profileRepository from '@/modules/profiles/repositories/profile.repository';
 
 class ProfilesService implements IProfilesService {

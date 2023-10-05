@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useStatus } from '@/store';
 import { ref } from 'vue';
-import { UpdateProfileMembershipSettings } from '@lyvely/common';
+import { UpdateProfileMembershipSettings } from '@lyvely/profiles-interface';
 import { I18nModelValidator } from '@/modules/core';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useProfileMembershipService } from '@/modules/profiles/services/profile-membership.service';

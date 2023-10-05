@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { CalendarInterval } from '@lyvely/common';
+import { CalendarInterval } from '@lyvely/dates';
 import { ref } from 'vue';
 import { localStorageManager } from '@/util';
 

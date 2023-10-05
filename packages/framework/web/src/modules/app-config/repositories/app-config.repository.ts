@@ -1,5 +1,5 @@
 import repository from '@/repository';
-import { AppConfig } from '@lyvely/common';
+import { AppConfig } from '@lyvely/app-config-interface';
 
 // TODO: change to config endpoint
 const resource = 'app-config';

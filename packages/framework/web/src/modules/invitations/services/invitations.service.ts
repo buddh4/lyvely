@@ -2,9 +2,9 @@ import {
   IInvitationsService,
   MailInvitationInfo,
   InvitationRequest,
-  useSingleton,
   UserInvitationInfo,
-} from '@lyvely/common';
+} from '@lyvely/user-invitations-interface';
+import { useSingleton } from '@lyvely/common';
 import repository from '../repositories/invitations.repository';
 import { unwrapAndTransformResponse } from '@/modules/core';
 

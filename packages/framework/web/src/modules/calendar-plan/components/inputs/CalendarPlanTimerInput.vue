@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { TimerModel, TimerDataPointValueModel, ITimerDataPointSettings } from '@lyvely/common';
+import { TimerDataPointValueModel, ITimerDataPointSettings } from '@lyvely/time-series-interface';
+import { TimerModel } from '@lyvely/timers-interface';
 import TimerState from '@/modules/calendar/components/TimerState.vue';
 import { computed } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';

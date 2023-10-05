@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { TaskModel } from '@lyvely/common';
+import { TaskModel } from '@lyvely/tasks-interface';
 import { computed } from 'vue';
 import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
 import { useTaskCalendarPlanStore } from '@/modules/tasks/stores/task-calendar-plan.store';

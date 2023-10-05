@@ -1,7 +1,7 @@
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
-import { isMultiUserProfile } from '@lyvely/common';
+import { isMultiUserProfile } from '@lyvely/profiles-interface';
 
 export const ifIsMultiUserProfile = async (
   to: RouteLocation,

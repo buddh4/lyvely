@@ -6,7 +6,8 @@ import {
   IAccountService,
   ENDPOINT_ACCOUNT,
   ResendOtp,
-} from '@lyvely/common';
+} from '@lyvely/user-accounts-interface';
+import { EndpointResult } from '@lyvely/common';
 
 const resource = ENDPOINT_ACCOUNT;
 

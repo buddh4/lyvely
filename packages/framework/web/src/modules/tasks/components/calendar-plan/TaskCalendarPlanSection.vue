@@ -5,7 +5,7 @@ import { useTaskCalendarPlanStore } from '@/modules/tasks/stores/task-calendar-p
 import { computed, ref } from 'vue';
 import Draggable from 'vuedraggable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import { TaskModel } from '@lyvely/common';
+import { TaskModel } from '@lyvely/tasks-interface';
 
 export interface IProps {
   interval: number;

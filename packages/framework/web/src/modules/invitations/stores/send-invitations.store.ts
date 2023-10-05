@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import { loadingStatus, useStatus } from '@/store';
 import { ref } from 'vue';
-import { InvitationRequest, isValidEmail, MailInvite } from '@lyvely/common';
+import { isValidEmail } from '@lyvely/common';
+import { InvitationRequest, MailInvite } from '@lyvely/user-invitations-interface';
 import { useInvitationsService } from '@/modules/invitations/services/invitations.service';
 
 type InviteStages = 'users' | 'profile' | 'loading' | 'success';

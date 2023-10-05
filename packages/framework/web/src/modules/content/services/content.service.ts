@@ -1,4 +1,5 @@
-import { IContentService, useSingleton } from '@lyvely/common';
+import { useSingleton } from '@lyvely/common';
+import { IContentService } from '@lyvely/content-interface';
 import repository from '../repositories/content.repository';
 import { unwrapResponse } from '@/modules/core';
 

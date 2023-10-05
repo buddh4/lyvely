@@ -5,7 +5,7 @@ import {
   ENDPOINT_PROFILE_TAGS,
   EndpointResult,
   IProfileTagsService,
-} from '@lyvely/common';
+} from '@lyvely/profiles-interface';
 
 export default {
   async create(model: CreateTagModel) {

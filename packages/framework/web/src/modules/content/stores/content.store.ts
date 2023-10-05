@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ContentModel, ContentUpdateResponse, IContent } from '@lyvely/common';
+import { ContentModel, ContentUpdateResponse, IContent } from '@lyvely/content-interface';
 import { useContentService } from '@/modules/content/services/content.service';
 import { useGlobalDialogStore } from '@/modules/core/store/global.dialog.store';
 import { eventBus } from '@/modules/core/events/global.emitter';

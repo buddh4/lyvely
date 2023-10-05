@@ -4,7 +4,7 @@ import {
   MilestoneFilter,
   MilestoneRelationsStore,
   MilestoneSearchResponse,
-} from '@lyvely/common';
+} from '@lyvely/milestones-interface';
 import { useCalendarPlan } from '@/modules/calendar-plan';
 import { useMilestonePlanService } from '../services/milestone-plan-service';
 

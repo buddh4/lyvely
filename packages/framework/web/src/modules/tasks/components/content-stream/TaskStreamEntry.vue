@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ContentModel, TaskModel } from '@lyvely/common';
+import { TaskModel } from '@lyvely/tasks-interface';
+import { ContentModel } from '@lyvely/content-interface';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
 import { computed } from 'vue';

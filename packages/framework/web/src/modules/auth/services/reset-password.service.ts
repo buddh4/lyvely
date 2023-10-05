@@ -1,4 +1,8 @@
-import { IResetPasswordService, SendResetPasswordMail, ResetPassword } from '@lyvely/common';
+import {
+  IResetPasswordService,
+  SendResetPasswordMail,
+  ResetPassword,
+} from '@lyvely/auth-interface';
 import resetPasswordRepository from '@/modules/auth/repositories/reset-password.repository';
 import { unwrapResponse } from '@/modules/core';
 

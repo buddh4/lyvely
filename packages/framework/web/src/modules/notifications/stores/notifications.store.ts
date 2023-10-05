@@ -3,9 +3,9 @@ import { ref, watch } from 'vue';
 import {
   IWebNotification,
   NotificationUpdateStateLiveEvent,
-  StreamDirection,
   NotificationSeenStateLiveEvent,
-} from '@lyvely/common';
+} from '@lyvely/notifications-interface';
+import { StreamDirection } from '@lyvely/streams-interface';
 import { useNotificationService } from '@/modules/notifications/services/notifications.service';
 import { useStream } from '@/modules/stream/composables/stream.composable';
 import { useLiveStore } from '@/modules/live/stores/live.store';

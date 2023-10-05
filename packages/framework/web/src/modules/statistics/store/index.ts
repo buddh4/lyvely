@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import statisticsRepository from '@/modules/statistics/repositories/statistics.repository';
-import { ScoreStatistics } from '@lyvely/common';
+import { ScoreStatistics } from '@lyvely/statistics-interface';
 import { ref } from 'vue';
 
 export const useStatisticsStore = defineStore('statistics', () => {

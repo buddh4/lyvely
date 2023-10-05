@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useCreateProfileStore } from '@/modules/profiles/stores/create-profile.store';
 import { storeToRefs } from 'pinia';
-import { ProfileUsage, ProfileType } from '@lyvely/common';
+import { ProfileUsage, ProfileType } from '@lyvely/profiles-interface';
 import { translate } from '@/i18n';
 import { useRouter } from 'vue-router';
 import { profileRoute } from '@/modules/profiles/routes/profile-route.util';

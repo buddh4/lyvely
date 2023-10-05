@@ -3,7 +3,7 @@ import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { computed, ref, onMounted } from 'vue';
 import EditTagModal from '@/modules/tags/components/EditTagModal.vue';
 import { useEditTagStore } from '@/modules/tags/stores/edit-tag.store';
-import { TagModel, UpdateTagDto, CreateTagDto, TagFilter } from '@lyvely/common';
+import { TagModel, UpdateTagModel, CreateTagModel, TagFilter } from '@lyvely/profiles-interface';
 import { accessibilityFocus } from '@/modules/accessibility';
 import TagBadge from '../components/TagBadge.vue';
 
@@ -15,11 +15,11 @@ const { setEditModel, setCreateModel } = editTagStore;
 const tags = computed(() => filter.value.apply(profileStore.profile?.tags));
 
 const setEditTag = (tag: TagModel) => {
-  setEditModel(tag.id, new UpdateTagDto(tag));
+  setEditModel(tag.id, new UpdateTagModel(tag));
 };
 
 const setCreateTag = () => {
-  setCreateModel(new CreateTagDto());
+  setCreateModel(new CreateTagModel());
 };
 
 function archive(tag: TagModel) {

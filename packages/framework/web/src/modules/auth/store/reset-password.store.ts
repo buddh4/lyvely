@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { loadingStatus, useStatus } from '@/store';
 import { ResetPasswordService } from '@/modules/auth/services/reset-password.service';
-import { ResetPassword, ModelValidator } from '@lyvely/common';
+import { ModelValidator } from '@lyvely/common';
+import { ResetPassword } from '@lyvely/auth-interface';
 import { I18nModelValidator } from '@/modules/core/models/i18n-model.validator';
 import { PATH_LOGIN } from '@/modules/auth';
 
@@ -14,7 +15,9 @@ export const useResetPasswordStore = defineStore('reset-password', () => {
   const resetPasswordService = new ResetPasswordService();
 
   const model = ref(new ResetPassword());
-  const validator = ref(new I18nModelValidator(model, { translationKey: 'auth.reset_password.fields' }));
+  const validator = ref(
+    new I18nModelValidator(model, { translationKey: 'auth.reset_password.fields' }),
+  );
 
   function reset() {
     setStage('init');

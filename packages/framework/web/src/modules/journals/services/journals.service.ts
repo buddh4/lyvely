@@ -1,17 +1,15 @@
 import {
-  CalendarPlanFilter,
   IJournalsEndpointService,
   JournalModel,
-  CalendarPlanSort,
-  SortResponse,
-  useSingleton,
-  useDataPointStrategyFacade,
   UpdateDataPointModel,
   CreateJournalModel,
   UpdateJournalModel,
   UpdateJournalResponse,
   UpdateJournalDataPointResponse,
-} from '@lyvely/common';
+} from '@lyvely/journals-interface';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { useDataPointStrategyFacade } from '@lyvely/time-series-interface';
+import { SortResponse, useSingleton } from '@lyvely/common';
 import repository from '../repositories/journals.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
 

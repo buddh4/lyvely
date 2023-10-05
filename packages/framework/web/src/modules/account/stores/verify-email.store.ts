@@ -1,7 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
-import { IFieldValidationResult, VerifyEmailDto, ResendOtp, OtpInfo } from '@lyvely/common';
+import { ResendOtp, OtpInfo } from '@lyvely/otp-interface';
+import { VerifyEmailDto } from '@lyvely/user-accounts-interface';
+import { IFieldValidationResult } from '@lyvely/common';
 import { useAccountService } from '@/modules/account/services/account.service';
 import { useEmailVerificationStore } from '@/modules/account';
 

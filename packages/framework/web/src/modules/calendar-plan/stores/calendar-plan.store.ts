@@ -1,11 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
-import {
-  toTimingId,
-  CalendarPlan,
-  CalendarInterval,
-  isToday as isTodayUtil,
-  everyFullMinute,
-} from '@lyvely/common';
+import { toTimingId, isToday as isTodayUtil, everyFullMinute } from '@lyvely/dates';
+import { CalendarPlan, CalendarInterval } from '@lyvely/calendar-plan-interface';
 import { ref, computed } from 'vue';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 

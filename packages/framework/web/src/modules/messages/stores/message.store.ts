@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useMessageService } from '@/modules/messages/services/message.service';
-import { CreateMessage, MessageModel } from '@lyvely/common';
+import { CreateMessage, MessageModel } from '@lyvely/messages-interface';
 import { loadingStatus, useStatus } from '@/store';
 import { I18nModelValidator } from '@/modules/core';
 import { useContentStore } from '@/modules/content/stores/content.store';

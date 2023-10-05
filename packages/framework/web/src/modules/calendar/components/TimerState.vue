@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { TimerModel, formatTime, msToTime } from '@lyvely/common';
+import { formatTime, msToTime } from '@lyvely/dates';
+import { TimerModel } from '@lyvely/timers-interface';
 import { computed, ref, watch } from 'vue';
 
 export interface IProps {

@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import {
-  CalendarPlanFilter,
   MilestoneModel,
   MilestoneRelationModel,
   MilestoneRelationsStore,
-  toTimingId,
-} from '@lyvely/common';
+} from '@lyvely/milestones-interface';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { toTimingId } from '@lyvely/dates';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 import { computed, onBeforeMount, ref } from 'vue';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';

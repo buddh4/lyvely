@@ -5,7 +5,7 @@ import { computed } from 'vue';
 import Draggable from 'vuedraggable';
 import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
 import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
-import { HabitModel } from '@lyvely/common';
+import { HabitModel } from '@lyvely/habits-interface';
 
 export interface IProps {
   interval: number;

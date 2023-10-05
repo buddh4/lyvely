@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { MovingAverageCalculator, ITimeSeriesSummary, CalendarInterval } from '@lyvely/common';
-import { computed, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue';
+import { MovingAverageCalculator, ITimeSeriesSummary } from '@lyvely/time-series-interface';
+import { CalendarInterval } from '@lyvely/dates';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';

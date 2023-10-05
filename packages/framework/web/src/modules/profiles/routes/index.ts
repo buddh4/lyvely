@@ -1,5 +1,5 @@
 import { toProfileHome } from '@/modules/profiles';
-import { translation } from '@lyvely/i18n';
+import { translation } from '@/i18n';
 import { profileRoot, profileRoute } from '@/modules/profiles/routes/profile-route.util';
 import { ifIsMultiUserProfile, loadProfile } from '../guards';
 

@@ -2,13 +2,12 @@ import repository from '@/repository';
 import {
   UpdateTaskStateModel,
   UpdateTaskModel,
-  EndpointResult,
   ITasksEndpointService,
-  TimerValueUpdateModel,
-  CalendarPlanFilter,
   ENDPOINT_TASKS,
-  CalendarPlanSort,
-} from '@lyvely/common';
+} from '@lyvely/tasks-interface';
+import { EndpointResult } from '@lyvely/common';
+import { TimerValueUpdateModel } from '@lyvely/timers-interface';
+import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
 
 export default {
   async getByFilter(filter: CalendarPlanFilter) {

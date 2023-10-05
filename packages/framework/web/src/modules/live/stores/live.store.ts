@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { eventBus } from '@/modules/core/events/global.emitter';
-import { ILiveEvent } from '@lyvely/common';
+import { ILiveEvent } from '@lyvely/live-interface';
 
 const apiURL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8080';
 

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import ContentStreamFilterNavigation from '@/modules/content-stream/components/ContentStreamFilterNavigation.vue';
-import { ContentModel, ProfileType } from '@lyvely/common';
+import { ProfileType } from '@lyvely/profiles-interface';
+import { ContentModel } from '@lyvely/content-interface';
 import { useCreateMessageStore } from '@/modules/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';

@@ -1,5 +1,6 @@
 import { Component, defineAsyncComponent } from 'vue';
-import { ContentModel, Lazy, Type } from '@lyvely/common';
+import { Lazy, Type } from '@lyvely/common';
+import { ContentModel } from '@lyvely/content-interface';
 import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 import {
   ComponentRegistration,

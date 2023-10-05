@@ -1,7 +1,7 @@
 import { registerContentType } from '@/modules/content-stream/components/content-stream-entry.registry';
 import { IModule } from '@/modules/core/modules/interfaces/module.interface';
-import { SystemMessageModel } from '@lyvely/common';
-import { translation } from '@lyvely/i18n';
+import { SystemMessageModel } from '@lyvely/system-messages-interface';
+import { translation } from '@/i18n';
 
 export default () => {
   return {

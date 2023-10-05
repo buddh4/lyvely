@@ -1,16 +1,15 @@
+import { CalendarInterval, toTimingId } from '@lyvely/dates';
+import { SortResult } from '@lyvely/common';
+import { ContentFilter } from '@lyvely/content-interface';
 import {
-  CalendarInterval,
-  ContentFilter,
   LoadedTimingIdStore,
-  toTimingId,
   ICalendarPlanService,
   CalendarPlanSort,
   getCalendarIntervalArray,
   ICalendarPlanEntry,
   CalendarPlanStore,
   ICalendarPlanResponse,
-  SortResult,
-} from '@lyvely/common';
+} from '@lyvely/calendar-plan-interface';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';

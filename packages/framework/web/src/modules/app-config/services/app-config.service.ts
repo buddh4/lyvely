@@ -1,4 +1,4 @@
-import { IAppConfigService, AppConfig } from '@lyvely/common';
+import { IAppConfigService, AppConfig } from '@lyvely/app-config-interface';
 import appConfigRepository from '../repositories/app-config.repository';
 
 export class AppConfigService implements IAppConfigService {

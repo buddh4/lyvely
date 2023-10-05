@@ -1,5 +1,6 @@
 import repository from '@/repository';
-import { ENDPOINT_CAPTCHA, ICaptchaService, EndpointResult } from '@lyvely/common';
+import { EndpointResult } from '@lyvely/common';
+import { ENDPOINT_CAPTCHA, ICaptchaService } from '@lyvely/captchas-interface';
 
 const resource = ENDPOINT_CAPTCHA;
 
@@ -9,6 +10,8 @@ export default {
   },
 
   async refresh(identity: string) {
-    return repository.post<EndpointResult<ICaptchaService['refresh']>>(`${resource}/refresh`, { identity });
+    return repository.post<EndpointResult<ICaptchaService['refresh']>>(`${resource}/refresh`, {
+      identity,
+    });
   },
 };

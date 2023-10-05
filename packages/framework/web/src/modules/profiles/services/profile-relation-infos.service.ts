@@ -1,4 +1,5 @@
-import { IProfileRelationInfosService, ProfileRelationInfos, useSingleton } from '@lyvely/common';
+import { IProfileRelationInfosService, ProfileRelationInfos } from '@lyvely/profiles-interface';
+import { useSingleton } from '@lyvely/common';
 import profileRelationsRepository from '@/modules/profiles/repositories/profile-relations.repository';
 
 class ProfileRelationInfosService implements IProfileRelationInfosService {

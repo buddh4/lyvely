@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, onUnmounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { getRelativeTime } from '@lyvely/common';
+import { getRelativeTime } from '@lyvely/dates';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 
 export interface IProps {
