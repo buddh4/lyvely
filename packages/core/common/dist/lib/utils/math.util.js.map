@@ -1,1 +1,0 @@
-{"version":3,"file":"math.util.js","sourceRoot":"","sources":["../../../src/utils/math.util.ts"],"names":[],"mappings":"AAAA,MAAM,UAAU,gBAAgB,CAAC,WAAqB;IACpD,MAAM,GAAG,GAAG,WAAW,CAAC,MAAM,CAAC,CAAC,GAAG,EAAE,IAAI,EAAE,EAAE,CAAC,GAAG,GAAG,IAAI,EAAE,CAAC,CAAC,CAAC;IAC7D,OAAO,GAAG,GAAG,WAAW,CAAC,MAAM,CAAC;AAClC,CAAC"}
