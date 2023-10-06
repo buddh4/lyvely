@@ -16,7 +16,7 @@ import {
 import { CalendarInterval } from '@lyvely/dates';
 import { UserAssignmentStrategy, Gte, Lte } from '@lyvely/common';
 import { DataPointInputType, DataPointValueType } from '@lyvely/time-series-interface';
-import { CreateContentModel } from '@lyvely/content';
+import { CreateContentModel } from '@lyvely/content-interface';
 
 @Expose()
 export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {

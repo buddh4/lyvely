@@ -1,5 +1,6 @@
 import { locale } from 'dayjs';
-import { ILocale } from '@lyvely/common';
+import { ILocale } from '@lyvely/app-config-interface';
+// TODO: this interface should not be part of app-config
 
 import de from 'dayjs/locale/de';
 

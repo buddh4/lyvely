@@ -1,9 +1,6 @@
 import repository from '@/repository';
-import {
-  ENDPOINT_CONTENT_STREAM,
-  EndpointResult,
-  IContentStreamClient,
-} from '@lyvely/content-interface';
+import { ENDPOINT_CONTENT_STREAM, IContentStreamClient } from '@lyvely/content-interface';
+import { EndpointResult } from '@lyvely/common';
 import { IStreamRequest } from '@lyvely/streams-interface';
 
 export default {

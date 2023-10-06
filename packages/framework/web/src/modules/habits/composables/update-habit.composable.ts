@@ -8,12 +8,12 @@ export const useUpdateHabit = (model: HabitModel) => {
   const dataPoint = computed(() => getDataPoint(model));
 
   const selection = computed({
-    get: () => dataPoint.value.value,
+    get: () => dataPoint.value!.value,
     set: (selection: number) => {
-      const oldValue = dataPoint.value.value;
+      const oldValue = dataPoint.value!.value;
       // Visually update due to debounce delay
-      dataPoint.value.value = selection;
-      updateDataPoint(dataPoint.value, selection, oldValue);
+      dataPoint.value!.value = selection;
+      updateDataPoint(dataPoint.value!, selection, oldValue);
     },
   });
 
@@ -31,7 +31,7 @@ export const useUpdateHabit = (model: HabitModel) => {
     }
   }
 
-  const timer = computed(() => dataPoint.value.value.timer);
+  const timer = computed(() => dataPoint.value!.value.timer);
 
   return {
     selection,

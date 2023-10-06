@@ -5,7 +5,7 @@ import {
   CreateMilestoneModel,
   MilestoneListResponse,
 } from '../models';
-import { IContentTypeService } from '@lyvely/content';
+import { IContentTypeService } from '@lyvely/content-interface';
 
 export interface IMilestonesEndpointService
   extends IContentTypeService<MilestoneModel, CreateMilestoneModel, UpdateMilestoneModel> {

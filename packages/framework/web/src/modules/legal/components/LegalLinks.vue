@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
 import { useLegalService } from '@/modules/legal/services/legal.service';
 

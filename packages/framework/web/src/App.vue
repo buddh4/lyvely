@@ -5,7 +5,6 @@ import ProfileLayout from '@/modules/profiles/components/layout/ProfileLayout.vu
 import { useRouter } from 'vue-router';
 import { watch, ref, computed, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useAuthStore } from '@/modules/auth/store/auth.store';
 import ReloadPrompt from '@/modules/core/components/ReloadPrompt.vue';
 import { usePageStore } from '@/modules/core/store/page.store';
 

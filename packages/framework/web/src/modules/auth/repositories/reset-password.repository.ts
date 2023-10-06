@@ -2,11 +2,11 @@ import repository from '@/repository';
 import {
   ENDPOINT_RESET_PASSWORD,
   ENDPOINT_RESET_PASSWORD_SEND_MAIL,
-  EndpointResult,
   IResetPasswordService,
   SendResetPasswordMail,
   ResetPassword,
 } from '@lyvely/auth-interface';
+import { EndpointResult } from '@lyvely/common';
 
 const resource = ENDPOINT_RESET_PASSWORD;
 const SEND_MAIL_ENDPOINT = `${resource}/${ENDPOINT_RESET_PASSWORD_SEND_MAIL}`;

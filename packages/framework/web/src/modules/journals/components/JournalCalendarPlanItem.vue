@@ -33,15 +33,15 @@ onMounted(async () => {
 });
 
 const selection = computed({
-  get: () => dataPoint.value.value,
+  get: () => dataPoint.value!.value,
   set: (selection: any) => {
-    dataPoint.value.value = selection;
+    dataPoint.value!.value = selection;
     updateSelection(selection);
   },
 });
 
 const updateSelection = useDebounceFn((selection: any) => {
-  journalStore.updateDataPoint(dataPoint.value, selection);
+  journalStore.updateDataPoint(dataPoint.value!, selection);
 }, 600);
 </script>
 

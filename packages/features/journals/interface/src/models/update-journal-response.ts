@@ -1,7 +1,7 @@
 import { Expose, Type } from 'class-transformer';
-import { TagModel } from '@lyvely/profiles';
+import { TagModel } from '@lyvely/profiles-interface';
 import { PropertyType } from '@lyvely/common';
-import { ContentUpdateResponse } from '@lyvely/content';
+import { ContentUpdateResponse } from '@lyvely/content-interface';
 import { JournalModel } from './journal.model';
 
 export class UpdateJournalResponse extends ContentUpdateResponse<JournalModel> {

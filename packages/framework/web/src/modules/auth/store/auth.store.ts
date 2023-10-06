@@ -9,7 +9,7 @@ import { getDefaultLocale } from '@/util';
 import { AuthService } from '@/modules/auth/services/auth.service';
 import { ILoginResponse } from '@lyvely/auth-interface';
 import { queuePromise } from '@lyvely/common';
-import { ILoginResponse, UserModel, UserStatus } from '@lyvely/users-interface';
+import { UserModel, UserStatus } from '@lyvely/users-interface';
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
 import { usePageStore } from '@/modules/core/store/page.store';
 import { useLiveStore } from '@/modules/live/stores/live.store';

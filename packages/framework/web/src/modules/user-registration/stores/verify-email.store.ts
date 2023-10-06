@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { UserRegistrationService } from '../services/user-registration.service';
-import { VerifyEmailDto } from '@lyvely/user-accounts-interface-interface';
-import { ResendOtp, OtpInfo } from '@lyvely/otp-interface';
+import { VerifyEmailDto } from '@lyvely/user-accounts-interface';
+import { ResendOtp } from '@lyvely/otp-interface';
 import { useAuthStore } from '@/modules/auth/store/auth.store';
 import { useEmailVerificationStore } from '@/modules/account';
 

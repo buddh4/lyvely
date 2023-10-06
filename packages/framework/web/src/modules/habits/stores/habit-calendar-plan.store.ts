@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import { HabitModel, TimerUpdateModel, HabitFilter } from '@lyvely/habits-interface';
+import { HabitModel, HabitFilter } from '@lyvely/habits-interface';
+import { TimerUpdateModel } from '@lyvely/timers-interface';
 import { TimeSeriesStore } from '@lyvely/time-series-interface';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useCalendarPlanStore } from '@/modules/calendar-plan';

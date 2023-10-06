@@ -2,7 +2,7 @@ import { ScoreStatistics } from '@lyvely/statistics-interface';
 import { CalendarInterval } from '@lyvely/dates';
 
 export default {
-  getMonthly() {
+  async getMonthly() {
     //return repository.get(`${resource}/monthly`);
     return {
       data: new ScoreStatistics({
@@ -26,7 +26,7 @@ export default {
     };
   },
 
-  getDaily() {
+  async getDaily() {
     //return repository.get(`${resource}/monthly`);
     return {
       data: new ScoreStatistics({

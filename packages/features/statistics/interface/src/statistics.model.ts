@@ -1,5 +1,5 @@
 import { CalendarInterval, getLocalizedDays, getLocalizedMonths } from '@lyvely/dates';
-import { CalendarPlan } from '@lyvely/calendar-plan';
+import { CalendarPlan } from '@lyvely/calendar-plan-interface';
 
 abstract class Statistics {
   title: string;

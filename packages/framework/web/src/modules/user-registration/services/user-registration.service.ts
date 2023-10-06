@@ -1,8 +1,5 @@
-import {
-  IUserRegistrationService,
-  UserRegistration,
-  VerifyEmailDto,
-} from '@lyvely/user-registrations-interface';
+import { IUserRegistrationService, UserRegistration } from '@lyvely/user-registrations-interface';
+import { VerifyEmailDto } from '@lyvely/user-accounts-interface';
 import { ResendOtp, OtpInfo } from '@lyvely/otp-interface';
 import registerRepository from '../repositories/user-registration.repository';
 import { unwrapResponse } from '@/modules/core';

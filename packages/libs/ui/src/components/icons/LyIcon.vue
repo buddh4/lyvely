@@ -3,6 +3,7 @@ import { IconName, getIconByName } from './Icons';
 import { computed } from 'vue';
 import { IconOptionsIF } from '@/types';
 import { includesUtilityClass } from '@/helpers';
+import { t } from '../../i18n';
 
 export interface IProps {
   name?: IconName;

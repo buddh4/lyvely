@@ -2,11 +2,10 @@ import repository from '@/repository';
 import {
   AddEmailDto,
   VerifyEmailDto,
-  EndpointResult,
   IAccountService,
   ENDPOINT_ACCOUNT,
-  ResendOtp,
 } from '@lyvely/user-accounts-interface';
+import { ResendOtp } from '@lyvely/otp-interface';
 import { EndpointResult } from '@lyvely/common';
 
 const resource = ENDPOINT_ACCOUNT;

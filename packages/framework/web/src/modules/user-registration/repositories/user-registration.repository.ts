@@ -3,8 +3,8 @@ import {
   UserRegistration,
   ENDPOINT_USER_REGISTRATION,
   IUserRegistrationService,
-  VerifyEmailDto,
 } from '@lyvely/user-registrations-interface';
+import { VerifyEmailDto } from '@lyvely/user-accounts-interface';
 import { ResendOtp } from '@lyvely/otp-interface';
 import { EndpointResult } from '@lyvely/common';
 

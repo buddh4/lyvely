@@ -1,7 +1,6 @@
 import { __decorate, __metadata } from "tslib";
-import { BaseModel, PropertyType } from '@lyvely/common';
+import { BaseModel, PropertyType, Match } from '@lyvely/common';
 import { IsBoolean, IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-import { Match } from '@lyvely/common';
 export class SendResetPasswordMail extends BaseModel {
 }
 __decorate([

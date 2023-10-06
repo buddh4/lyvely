@@ -3,8 +3,8 @@ import { IEditableModel } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { UpdateMilestoneModel } from './update-milestone.model';
 import { IMilestoneConfig } from '../interfaces';
-import { ContentModel } from '@lyvely/content';
-import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
+import { ContentModel } from '@lyvely/content-interface';
+import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 
 @Exclude()
 export class MilestoneModel<TID = string>

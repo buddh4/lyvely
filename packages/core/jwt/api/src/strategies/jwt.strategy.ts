@@ -31,7 +31,7 @@ export function JwtStrategy<TPayload extends JwtTokenPayloadIF = JwtTokenPayload
     @Inject()
     protected usersService: UsersService;
 
-    protected constructor(protected configService: ConfigService<ConfigurationPath>) {
+    constructor(protected configService: ConfigService<ConfigurationPath>) {
       const defaultStrategyOptions: Partial<StrategyOptions> = {
         issuer: configService.get('auth.jwt.issuer'),
         algorithms: ['HS256', 'RS256'],

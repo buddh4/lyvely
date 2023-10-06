@@ -97,12 +97,12 @@ function onSwipeEnd(direction: UseSwipeDirection) {
 
 const appDrawerOverlay = ref<HTMLElement>() as Ref<HTMLElement>;
 const { direction } = useSwipe(appDrawer, {
-  onSwipeEnd(e: TouchEvent) {
+  onSwipeEnd() {
     onSwipeEnd(direction.value!);
   },
 });
 const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
-  onSwipeEnd(e: TouchEvent) {
+  onSwipeEnd() {
     onSwipeEnd(overlayDirection.value!);
   },
 });

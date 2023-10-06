@@ -1,10 +1,5 @@
-import {
-  IAccountService,
-  AddEmailDto,
-  VerifyEmailDto,
-  OtpInfo,
-  ResendOtp,
-} from '@lyvely/user-accounts-interface';
+import { IAccountService, AddEmailDto, VerifyEmailDto } from '@lyvely/user-accounts-interface';
+import { OtpInfo, ResendOtp } from '@lyvely/otp-interface';
 import { useSingleton } from '@lyvely/common';
 import accountRepository from '../repositories/account.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';

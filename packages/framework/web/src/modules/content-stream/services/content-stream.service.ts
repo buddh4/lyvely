@@ -29,7 +29,7 @@ export class ContentStreamService implements IContentStreamClient {
     state: IStreamState,
     options: IStreamOptions,
     filter?: ContentStreamFilter,
-  ): Promise<IStreamResponse<ContentModel, IStreamState>> {
+  ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(
       repositry.loadHead({
         state,

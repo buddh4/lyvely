@@ -4,7 +4,6 @@ import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';
 import { useUpdateProfileMembershipSettingsStore } from '@/modules/profiles/stores/profile-membership-settings.store';
 import { ModelValidator } from '@lyvely/common';
-import { StoreStatusPlugin } from '@/store';
 
 const profileStore = useProfileStore();
 const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();

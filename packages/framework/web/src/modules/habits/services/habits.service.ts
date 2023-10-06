@@ -1,7 +1,6 @@
 import {
   CreateHabitModel,
   IHabitsEndpointService,
-  TimerUpdateModel,
   UpdateHabitDataPointModel,
   UpdateHabitModel,
   UpdateHabitResponse,
@@ -9,6 +8,7 @@ import {
   HabitModel,
   UpdateHabitDataPointTimerResponse,
 } from '@lyvely/habits-interface';
+import { TimerUpdateModel } from '@lyvely/timers-interface';
 import { SortResponse, useSingleton } from '@lyvely/common';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { useDataPointStrategyFacade, TimerDataPointModel } from '@lyvely/time-series-interface';

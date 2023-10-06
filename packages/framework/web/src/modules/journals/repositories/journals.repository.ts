@@ -2,10 +2,10 @@ import repository from '@/repository';
 import {
   ENDPOINT_JOURNALS,
   IJournalsEndpointService,
-  UpdateDataPointModel,
   CreateJournalModel,
   UpdateJournalModel,
 } from '@lyvely/journals-interface';
+import { UpdateDataPointModel } from '@lyvely/time-series-interface';
 import { EndpointResult } from '@lyvely/common';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
 

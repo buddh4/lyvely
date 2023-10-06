@@ -1,4 +1,4 @@
-import { CalendarPlanFilter } from '@lyvely/calendar-plan';
+import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { Exclude } from 'class-transformer';
 import { IsBoolean, IsOptional } from 'class-validator';
 import { PropertyType } from '@lyvely/common';

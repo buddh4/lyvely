@@ -1,11 +1,10 @@
-import { CalendarInterval, toTimingId } from '@lyvely/dates';
+import { CalendarInterval, toTimingId, getCalendarIntervalArray } from '@lyvely/dates';
 import { SortResult } from '@lyvely/common';
 import { ContentFilter } from '@lyvely/content-interface';
+import { LoadedTimingIdStore } from '@lyvely/time-series-interface';
 import {
-  LoadedTimingIdStore,
   ICalendarPlanService,
   CalendarPlanSort,
-  getCalendarIntervalArray,
   ICalendarPlanEntry,
   CalendarPlanStore,
   ICalendarPlanResponse,
