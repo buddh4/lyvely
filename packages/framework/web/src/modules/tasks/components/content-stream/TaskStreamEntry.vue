@@ -3,7 +3,6 @@ import { TaskModel } from '@lyvely/tasks-interface';
 import { ContentModel } from '@lyvely/content-interface';
 import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
 import { IStream } from '@/modules/stream/composables/stream.composable';
-import { computed } from 'vue';
 
 export interface IProps {
   model: TaskModel;
@@ -12,7 +11,6 @@ export interface IProps {
 }
 
 const props = defineProps<IProps>();
-const done = computed(() => !!props.model.done);
 </script>
 
 <template>

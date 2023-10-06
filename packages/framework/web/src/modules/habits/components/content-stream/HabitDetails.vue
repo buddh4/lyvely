@@ -36,7 +36,6 @@ const {
   decrementTiming,
   showTodayIcon,
   switchToToday,
-  label,
   date,
 } = useCalendarPlanPlanNavigation(props.model.interval);
 

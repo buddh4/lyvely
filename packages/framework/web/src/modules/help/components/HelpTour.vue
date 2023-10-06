@@ -2,7 +2,6 @@
 import 'intro.js/minified/introjs.min.css';
 import { onMounted, watch, ref, unref, onUnmounted } from 'vue';
 import introJs from 'intro.js';
-import { translate } from '@/i18n';
 
 export interface IProps {
   modelValue: boolean;
@@ -10,11 +9,6 @@ export interface IProps {
 }
 
 const props = defineProps<IProps>();
-
-const steps = props.steps.map((step) => {
-  step.intro = `<div class="prose">${step.intro}</div>`;
-  return step;
-});
 
 const emit = defineEmits(['update:modelValue']);
 const tour = introJs().addSteps(props.steps);

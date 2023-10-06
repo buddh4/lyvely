@@ -7,7 +7,7 @@ const modulesImport = import.meta.glob<Promise<{ default: () => IModule }>>(
 
 const modules = [] as IModule[];
 
-interface ModuleImport {
+interface IModuleImport {
   default: () => IModule;
 }
 
@@ -29,7 +29,7 @@ async function loadModules(app: App): Promise<IModule[]> {
     const moduleImport = modulesImport[path];
     const importPromise = typeof moduleImport === 'function' ? moduleImport() : moduleImport;
     promises.push(
-      importPromise.then((moduleInitializer: ModuleImport) => {
+      importPromise.then((moduleInitializer: IModuleImport) => {
         return pushModule(app, moduleInitializer);
       }),
     );
@@ -37,7 +37,7 @@ async function loadModules(app: App): Promise<IModule[]> {
   return Promise.all(promises);
 }
 
-function pushModule(app: App, moduleImport: ModuleImport) {
+function pushModule(app: App, moduleImport: IModuleImport) {
   const module = moduleImport.default();
   if (module.init) {
     module.init(app);

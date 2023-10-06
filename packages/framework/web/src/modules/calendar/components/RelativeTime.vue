@@ -6,16 +6,14 @@ import { useAuthStore } from '@/modules/auth/store/auth.store';
 
 export interface IProps {
   ts: number;
-  locale?: string;
   style?: Intl.RelativeTimeFormatStyle;
 }
 
-const { locale } = storeToRefs(useAuthStore());
-
 const props = withDefaults(defineProps<IProps>(), {
-  locale: undefined,
   style: 'long',
 });
+
+const { locale } = storeToRefs(useAuthStore());
 
 const now = ref(Date.now());
 
@@ -29,7 +27,7 @@ if (diff < 86_400 /* Less than a day */) {
 }
 
 const relativeTime = computed(() =>
-  getRelativeTime(props.ts - now.value, props.locale || locale.value, props.style),
+  getRelativeTime(props.ts - now.value, locale.value, props.style),
 );
 </script>
 

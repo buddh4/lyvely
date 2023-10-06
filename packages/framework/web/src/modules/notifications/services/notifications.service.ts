@@ -1,7 +1,8 @@
-import { IWebNotification, INotificationsService, useSingleton } from '@lyvely/common';
+import { useSingleton } from '@lyvely/common';
+import { IWebNotification, INotificationsService } from '@lyvely/notifications-interface';
 import { IStreamState, IStreamOptions, IStreamResponse } from '@lyvely/streams-interface';
 import notificationRepository from '../repositories/notifications.repository';
-import { unwrapAndTransformResponse, unwrapResponse } from '@/modules/core';
+import { unwrapResponse } from '@/modules/core';
 
 export class NotificationsService implements INotificationsService {
   async loadTail(

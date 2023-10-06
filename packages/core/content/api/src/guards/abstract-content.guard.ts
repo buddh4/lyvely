@@ -30,12 +30,12 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
   protected contentService: ContentService;
 
   abstract canActivateContent(
-    profileContentContext: ProfileContentContext,
+    profileContentContext: ProfileContentContext<C>,
     context: ExecutionContext,
   ): Promise<boolean>;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest<ProfileContentRequest>();
+    const request = context.switchToHttp().getRequest<ProfileContentRequest<C>>();
     const contentId = getContentIdFromRequest(request, context, this.reflector);
     const { profile, context: profileContentContext } = request;
 
@@ -45,7 +45,7 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
 
     if (!content) return false;
 
-    request.content = profileContentContext.content = content;
+    request.content = profileContentContext.content = content as C;
 
     if (
       !validateContentTypeFromContext(content, context, this.reflector) ||

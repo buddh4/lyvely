@@ -6,7 +6,7 @@ export interface IProps {
   model: JournalModel;
 }
 
-const props = defineProps<IProps>();
+defineProps<IProps>();
 </script>
 
 <template>

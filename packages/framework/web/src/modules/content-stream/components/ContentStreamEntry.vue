@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<IProps>(), {
   index: 0,
 });
 
-const emit = defineEmits(['selectTag']);
+defineEmits(['selectTag']);
 
 const authorName = computed(
   // TODO: use props.model.meta.createdAs?.authorId and check type

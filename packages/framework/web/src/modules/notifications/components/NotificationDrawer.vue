@@ -26,9 +26,9 @@ async function loadTail() {
   notificationStore.loadTail();
 }
 
-function test() {
+/*function test() {
   notificationStore.test();
-}
+}*/
 </script>
 
 <template>

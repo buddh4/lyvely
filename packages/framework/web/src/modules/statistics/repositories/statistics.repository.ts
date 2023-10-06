@@ -1,8 +1,6 @@
 import { ScoreStatistics } from '@lyvely/statistics-interface';
 import { CalendarInterval } from '@lyvely/dates';
 
-const resource = 'statistics';
-
 export default {
   getMonthly() {
     //return repository.get(`${resource}/monthly`);

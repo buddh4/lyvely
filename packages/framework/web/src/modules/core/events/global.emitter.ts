@@ -1,4 +1,4 @@
-import mitt, { Emitter, Handler, WildcardHandler } from 'mitt';
+import mitt, { Emitter, Handler } from 'mitt';
 
 // Todo: We use any for app events to prevent circular dependencies
 

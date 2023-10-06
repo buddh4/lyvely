@@ -3,7 +3,6 @@ import {
   ILoadUserResponse,
   ILoginResponse,
   IRefreshTokenResponse,
-  ENDPOINT_AUTH,
   LoginModel,
   IAuthService,
 } from '@lyvely/auth-interface';

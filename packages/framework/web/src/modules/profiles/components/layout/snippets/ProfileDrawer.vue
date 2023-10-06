@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, Ref, ref, toRefs, watch } from 'vue';
+import { computed, Ref, ref, toRefs } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/modules/profiles/stores/profile.store';

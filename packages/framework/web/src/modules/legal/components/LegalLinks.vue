@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAppConfigStore } from '@/modules/app-config/store/app-config.store';
-import { computed, ref, watch } from 'vue';
+import { computed, ref } from 'vue';
 import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
 import { useLegalService } from '@/modules/legal/services/legal.service';
 
@@ -32,8 +32,6 @@ function setActiveSection(section: LegalSection) {
 
   showLegalModal.value = true;
 }
-
-const docUrl = computed(() => useAppConfigStore().get('docUrl', 'https://docs.lyvely.app'));
 </script>
 
 <template>

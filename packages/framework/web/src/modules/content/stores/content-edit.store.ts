@@ -10,7 +10,6 @@ export const useContentEditStore = defineStore('content-edit', () => {
   const showEditModal = ref(false);
 
   let activeResolve: ((res?: any) => void) | undefined;
-  let activeReject: ((err?: any) => void) | undefined;
 
   const resetOnClose = (newVal: boolean) => {
     if (!newVal) reset();
@@ -37,7 +36,7 @@ export const useContentEditStore = defineStore('content-edit', () => {
     editModel.value = content;
     showEditModal.value = true;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       activeResolve = resolve;
     });
   }

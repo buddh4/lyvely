@@ -35,13 +35,13 @@ const streamRoot = ref<HTMLElement>() as Ref<HTMLElement>;
 const { profile } = storeToRefs(useProfileStore());
 const live = useLiveStore();
 
-async function scrollToHead(attempt = 0): Promise<void> {
+async function doScrollToHead(attempt = 0): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(() => {
       nextTick(() => {
         scrollToBottom(streamRoot.value);
         if (attempt < 3 && streamRoot.value.scrollTop !== streamRoot.value.scrollHeight) {
-          scrollToHead(++attempt).then(resolve);
+          doScrollToHead(++attempt).then(resolve);
         } else {
           resolve();
         }
@@ -59,7 +59,7 @@ const stream = useStream<ContentModel, ContentStreamFilter>(
     direction: StreamDirection.BBT,
     scrollToHeadOnInit: props.scrollToHead,
     infiniteScroll: props.infiniteScroll ? { distance: 100 } : false,
-    scrollToHead,
+    scrollToHead: doScrollToHead,
   },
   useContentStreamService(),
 );

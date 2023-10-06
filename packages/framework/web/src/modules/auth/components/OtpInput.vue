@@ -3,7 +3,6 @@ import { ref, computed, watchEffect } from 'vue';
 
 export interface IProps {
   modelValue: string;
-  isValid?: boolean;
   hasError?: boolean;
   email?: string;
   type?: 'email';
@@ -11,7 +10,6 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   email: undefined,
-  isValid: undefined,
   hasError: false,
   type: 'email',
 });

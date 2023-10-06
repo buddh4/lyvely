@@ -26,6 +26,6 @@ export class NotificationService {
 
   async sendNotification(data: NotificationType, subscription: Subscription) {
     const notification = await this.notificationDao.save(new Notification(data, subscription));
-    this.notificationQueue.add(JOB_SEND_NOTIFICATION, { nid: notification.id });
+    return this.notificationQueue.add(JOB_SEND_NOTIFICATION, { nid: notification.id });
   }
 }

@@ -15,7 +15,6 @@ const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRe
 
 const layout = ref<string | undefined>();
 const router = useRouter();
-const { isAuthenticated } = storeToRefs(useAuthStore());
 const { showAppLoader } = storeToRefs(usePageStore());
 
 watch(router.currentRoute, (to) => {

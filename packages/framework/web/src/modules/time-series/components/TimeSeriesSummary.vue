@@ -45,8 +45,11 @@ watch(isDark, () => {
 const onResize = () => chart?.resize();
 
 function renderSummaryChart(summary: ITimeSeriesSummary) {
-  const { tids, values, movingAverages, differences } =
-    MovingAverageCalculator.calculateMovingAverage(summary, props.interval, locale.value!);
+  const { tids, values, movingAverages } = MovingAverageCalculator.calculateMovingAverage(
+    summary,
+    props.interval,
+    locale.value!,
+  );
 
   chart = echarts.init(chartRoot.value!);
 

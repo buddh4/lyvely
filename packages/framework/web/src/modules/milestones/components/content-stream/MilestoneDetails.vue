@@ -75,6 +75,7 @@ onBeforeMount(async () => {
         <tbody>
           <tr
             v-for="relation in relations"
+            :key="relation.cid"
             class="cursor-pointer hover:bg-highlight"
             @click="onRelationClick(relation)">
             <td class="px-4 py-2 pl-2 text-left">

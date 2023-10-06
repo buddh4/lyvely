@@ -14,7 +14,6 @@ const { model } = storeToRefs(updateProfileMembershipSettingsStore);
 const membership = computed(() => profileStore.profile!.getMembership());
 
 const validator = computed(() => updateProfileMembershipSettingsStore.validator as ModelValidator);
-const status = computed(() => updateProfileMembershipSettingsStore.status as StoreStatusPlugin);
 
 function updateSettings() {
   updateProfileMembershipSettingsStore.update();
