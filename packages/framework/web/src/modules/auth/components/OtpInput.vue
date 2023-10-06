@@ -20,7 +20,9 @@ const emit = defineEmits(['update:modelValue', 'update:isValid']);
 
 const otp = ref(Array.from({ length: 6 }, () => ''));
 
-const isValid = computed(() => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length);
+const isValid = computed(
+  () => otp.value.filter((f) => /^[0-9]$/.test(f)).length === otp.value.length,
+);
 
 watchEffect(() => {
   otp.value = Array.from({ length: 6 }, (_, i) => props.modelValue?.charAt(i) || '');
@@ -115,8 +117,7 @@ const text = computed(() => (props.email ? 'otp.email.text_with_address' : 'otp.
           @keydown.delete="onDelete(i - 1)"
           @keydown.right="focusNext"
           @keydown.left="focusPrev"
-          @input="onInput(i - 1, $event)"
-        />
+          @input="onInput(i - 1, $event)" />
         <div v-if="i === 3" class="flex items-center">
           <span class="font-bold">-</span>
         </div>

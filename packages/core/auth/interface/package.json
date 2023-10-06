@@ -7,7 +7,7 @@
   "module": "dist/esm/index.js",
   "types": "dist/lib/index.d.ts",
   "scripts": {
-    "lint": "eslint \"lib/**/*.ts\" --fix",
+    "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "clear": "rm -rf ./dist && rm -f ./tsconfig.tsbuildinfo",
     "build": "npm run clear && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c",

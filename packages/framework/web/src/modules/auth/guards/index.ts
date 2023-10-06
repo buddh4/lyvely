@@ -1,7 +1,12 @@
 import { useAuthStore } from '../store/auth.store';
-import { NavigationGuardWithThis, RouteLocationNormalized, NavigationGuardNext, RouteLocation } from 'vue-router';
+import {
+  NavigationGuardWithThis,
+  RouteLocationNormalized,
+  NavigationGuardNext,
+  RouteLocation,
+} from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/modules/user-registration/routes/paths';
-import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from '../routes/paths';
+import { PATH_LOGIN, PATH_LOGOUT } from '../routes/paths';
 
 const PATH_ROOT = '/';
 const publicRoutes = [PATH_ROOT, PATH_LOGIN];
@@ -14,7 +19,10 @@ export const authGuard: NavigationGuardWithThis<undefined> = (to, from, next) =>
   const promises: Promise<any>[] = [];
   const authStore = useAuthStore();
 
-  if (authStore.isAwaitingEmailVerification() && ![PATH_LOGIN, PATH_LOGOUT, PATH_VERIFY_EMAIL].includes(to.path)) {
+  if (
+    authStore.isAwaitingEmailVerification() &&
+    ![PATH_LOGIN, PATH_LOGOUT, PATH_VERIFY_EMAIL].includes(to.path)
+  ) {
     next(PATH_VERIFY_EMAIL);
     return;
   }
@@ -44,7 +52,11 @@ export const authGuard: NavigationGuardWithThis<undefined> = (to, from, next) =>
     });
 };
 
-export const ifNotAuthenticated = (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext): void => {
+export const ifNotAuthenticated = (
+  to: RouteLocation,
+  from: RouteLocation,
+  next: NavigationGuardNext,
+): void => {
   if (!useAuthStore().isAuthenticated) {
     next();
     return;

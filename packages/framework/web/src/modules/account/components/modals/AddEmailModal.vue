@@ -13,8 +13,7 @@ const { showModal, model, status, validator } = storeToRefs(addEmailStore);
       v-model="model"
       label-key="account.my_account.add_email.fields"
       :status="status"
-      :validator="validator"
-    >
+      :validator="validator">
       <ly-input-text type="email" property="email" />
     </ly-form-model>
   </ly-modal>

@@ -19,7 +19,9 @@ function validate() {
   return captchaStore.validate();
 }
 
-const borderColorClass = computed(() => (validator.value.getError('captcha') ? 'border-danger' : 'border-divide'));
+const borderColorClass = computed(() =>
+  validator.value.getError('captcha') ? 'border-danger' : 'border-divide',
+);
 
 defineExpose({ validate });
 </script>
@@ -31,7 +33,10 @@ defineExpose({ validate });
         {{ $t('captcha.label') }}
       </label>
 
-      <ly-icon name="refresh" class="ml-auto mx-3 opacity-70 cursor-pointer" @click="refresh"></ly-icon>
+      <ly-icon
+        name="refresh"
+        class="ml-auto mx-3 opacity-70 cursor-pointer"
+        @click="refresh"></ly-icon>
     </div>
     <div :class="['border border-b-0', borderColorClass]">
       <captcha-code></captcha-code>
@@ -41,8 +46,7 @@ defineExpose({ validate });
       v-model="captchaModel.captcha"
       :error="validator.getError('captcha')"
       input-class="rounded-t-none"
-      @focusout="validate"
-    />
+      @focusout="validate" />
   </div>
 </template>
 

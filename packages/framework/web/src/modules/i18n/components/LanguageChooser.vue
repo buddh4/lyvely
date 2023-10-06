@@ -7,7 +7,9 @@ const appConfigStore = useAppConfigStore();
 const enabledLocales = appConfigStore.get('locales');
 
 const activeLocale = ref(getLocale());
-const locale = computed(() => enabledLocales?.find((locale) => locale.locale === activeLocale.value)?.name);
+const locale = computed(
+  () => enabledLocales?.find((locale) => locale.locale === activeLocale.value)?.name,
+);
 
 const switchLocale = (locale: string) => {
   return setLocale(locale);
@@ -20,8 +22,7 @@ const switchLocale = (locale: string) => {
       v-for="enabledLocale in enabledLocales"
       :key="enabledLocale.locale"
       :label="enabledLocale.name"
-      @click="switchLocale(enabledLocale.locale)"
-    />
+      @click="switchLocale(enabledLocale.locale)" />
   </ly-dropdown>
 </template>
 

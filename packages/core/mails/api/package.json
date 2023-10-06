@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "eslint \"lib/**/*.ts\" --fix",
+    "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "copy-assets": "ncp src/templates dist/templates",
     "build": "rm -rf dist && tsc -p tsconfig.build.json && npm run copy-assets",
