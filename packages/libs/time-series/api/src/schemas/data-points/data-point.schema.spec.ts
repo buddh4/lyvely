@@ -1,7 +1,7 @@
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { Model } from 'mongoose';
 import { NumberDataPoint, NumberDataPointSchema } from '../index';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { profilesTestPlugin } from '@lyvely/profiles';
 
 const DataPointModelDefinition = [
   { name: NumberDataPoint.name, collection: 'testDataPoints', schema: NumberDataPointSchema },
@@ -9,7 +9,6 @@ const DataPointModelDefinition = [
 
 describe('NumberTimingDataPointSchema', () => {
   let testingModule: LyvelyTestingModule;
-  let testData: ProfileTestDataUtils;
   let TestNumberDataPointModel: Model<NumberDataPoint>;
 
   const TEST_KEY = 'NumberTimingDataPointSchema';
@@ -19,7 +18,6 @@ describe('NumberTimingDataPointSchema', () => {
       .plugins([profilesTestPlugin])
       .models(DataPointModelDefinition)
       .compile();
-    testData = testingModule.get(ProfileTestDataUtils);
     TestNumberDataPointModel = testingModule.get<Model<NumberDataPoint>>('NumberDataPointModel');
   });
 

@@ -61,11 +61,11 @@ img { -ms-interpolation-mode: bicubic; /* Allow smoother rendering of resized im
     }
 
     .p0-15-30 {
-        padding: 0px 15px 30px 15px !important;
+        padding: 0 15px 30px 15px !important;
     }
 
     .p0-15 {
-        padding: 0px 15px !important;
+        padding: 0 15px !important;
     }
 
     .mpb30 {

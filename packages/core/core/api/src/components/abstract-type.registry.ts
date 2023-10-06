@@ -1,4 +1,4 @@
-import { InjectionToken, Logger, ModuleMetadata, Type } from '@nestjs/common';
+import { InjectionToken, Logger, Type } from '@nestjs/common';
 import { EventEmitter2 } from 'eventemitter2';
 import { IModuleMetadata } from '../interfaces';
 

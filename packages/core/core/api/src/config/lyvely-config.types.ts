@@ -40,7 +40,7 @@ export type LyvelyHttpOptions = {
   };
 };
 
-export interface LyvelyMongoDBOptions extends MongooseModuleOptions {
+export interface ILyvelyMongoDBOptions extends MongooseModuleOptions {
   uri: string;
   debug?: boolean;
   replicaSet?: string;
@@ -92,29 +92,29 @@ export enum OperationMode {
   DISTRIBUTED = 'distributed',
 }
 
-export interface RedisConfig {
+export interface IRedisConfig {
   host: string;
   port: number;
 }
 
-export interface LyvelyCsrfOptions {
+export interface ILyvelyCsrfOptions {
   name?: string;
   secure?: boolean;
   httpOnly?: boolean;
   sameSite?: CookieSameSite;
 }
 
-export interface UserInviteOptions {
+export interface IUserInviteOptions {
   maxPerWeek?: number;
 }
 
-export type RegistrationModes = 'public' | 'invite' | 'none';
+export type IRegistrationModes = 'public' | 'invite' | 'none';
 
-export interface UserRegistrationOptions {
-  mode?: RegistrationModes;
+export interface IUserRegistrationOptions {
+  mode?: IRegistrationModes;
 }
 
-export interface LegalOptions {
+export interface ILegalOptions {
   sections: {
     [k: string]: {
       label: string;
@@ -139,21 +139,21 @@ export type LyvelyAppConfiguration = {
   appName: string;
   operationMode: OperationMode;
   docUrl?: string;
-  redis: RedisConfig;
-  csrf?: LyvelyCsrfOptions;
+  redis: IRedisConfig;
+  csrf?: ILyvelyCsrfOptions;
   contactMail: string;
   i18n?: I18NOptions;
   http?: LyvelyHttpOptions;
-  mongodb?: LyvelyMongoDBOptions;
+  mongodb?: ILyvelyMongoDBOptions;
   auth?: LyvelyAuthOptions;
   helmet?: HelmetOptions | false;
   file?: LyvelyFileOptions;
   mail?: LyvelyMailOptions;
   modules?: ModulesConfiguration;
-  legal?: LegalOptions;
+  legal?: ILegalOptions;
   'user-permissions'?: UserPermissionOptions;
-  invitations?: UserInviteOptions;
-  userRegistration?: UserRegistrationOptions;
+  invitations?: IUserInviteOptions;
+  userRegistration?: IUserRegistrationOptions;
   serveStatic?: ServeStaticModuleOptions;
 };
 

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { Type } from '@lyvely/common';
 import { IModuleMetadata } from '../interfaces';
-import { useModuleRegistry } from '../components/module.registry';
+import { useModuleRegistry } from '../components';
 
 export const LyvelyModule = (metadata: IModuleMetadata): ClassDecorator => {
   const { imports, controllers, providers, exports } = metadata;

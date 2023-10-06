@@ -20,7 +20,7 @@ export class FeatureGuard implements CanActivate {
     }
 
     return features.reduce(
-      (prev, current) => prev && !!this.featureRegistry.isEnabledFeature(current),
+      (prev, current) => prev && this.featureRegistry.isEnabledFeature(current),
       true,
     );
   }

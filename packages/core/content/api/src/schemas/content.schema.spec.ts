@@ -1,4 +1,3 @@
-import { TestingModule } from '@nestjs/testing';
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 import { User } from '@lyvely/users';

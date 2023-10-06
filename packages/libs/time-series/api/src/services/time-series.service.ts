@@ -13,7 +13,7 @@ import {
   TimeSeriesSummaryWindowEntry,
   useDataPointConfigHandler,
 } from '../schemas';
-import { DataPointService, DataPointUpdateResult } from './data-point.service';
+import { DataPointService, IDataPointUpdateResult } from './data-point.service';
 import { ITimeSeriesContentSearchResult } from './time-series-content-search.result';
 import { TimeSeriesContentDao } from '../daos';
 import { isEqual } from 'lodash';
@@ -67,7 +67,7 @@ export abstract class TimeSeriesService<
     model: TModel,
     date: CalendarDate,
     value: TValue,
-  ): Promise<DataPointUpdateResult<TDataPointModel>> {
+  ): Promise<IDataPointUpdateResult<TDataPointModel>> {
     const updateResult = await this.dataPointService.upsertDataPoint(
       profile,
       user,
@@ -82,7 +82,7 @@ export abstract class TimeSeriesService<
   protected async updateSummary(
     profile: Profile,
     model: TModel,
-    update: DataPointUpdateResult<TDataPointModel>,
+    update: IDataPointUpdateResult<TDataPointModel>,
   ) {
     const { dataPoint, oldValue } = update;
     const { tid } = dataPoint;

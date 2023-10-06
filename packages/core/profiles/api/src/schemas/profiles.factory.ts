@@ -33,11 +33,15 @@ export class ProfilesFactory {
     const ProfileTypeClass = getProfileConstructorByType(options.type);
 
     if (!ProfileTypeClass) {
-      throw new IntegrityException('Could not create profile, invalid profile due to invalid profile type');
+      throw new IntegrityException(
+        'Could not create profile, invalid profile due to invalid profile type',
+      );
     }
 
     if (options.organization && !(options.organization instanceof Organization)) {
-      throw new IntegrityException('Could not create a profile due to invalid organization profile type');
+      throw new IntegrityException(
+        'Could not create a profile due to invalid organization profile type',
+      );
     }
 
     return new ProfileTypeClass(owner, {

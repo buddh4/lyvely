@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   Profile,
@@ -10,8 +9,6 @@ import {
   UserProfileSchema,
   GroupProfileSchema,
   OrganizationSchema,
-  Tag,
-  TagSchema,
 } from './schemas';
 import {
   ProfilesService,

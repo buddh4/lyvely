@@ -40,15 +40,13 @@ export async function withTransaction<T>(
   handler: (transaction: Transaction) => Promise<T>,
   options?: TransactionOptions,
 ): Promise<T> {
-  return new Promise<T>(async (resolve, reject) => {
-    const transaction = await startTransaction(connection, options);
-    try {
-      const result = await handler(<Transaction>transaction);
-      await commitTransaction(transaction);
-      resolve(result);
-    } catch (e) {
-      await abortTransaction(transaction);
-      reject(e);
-    }
-  });
+  const transaction = await startTransaction(connection, options);
+  try {
+    const result = await handler(<Transaction>transaction);
+    await commitTransaction(transaction);
+    return result;
+  } catch (e) {
+    await abortTransaction(transaction);
+    throw e;
+  }
 }

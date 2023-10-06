@@ -2,12 +2,15 @@ import { ContentTypeDao } from '@lyvely/content';
 import { Milestone } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CalendarPlanDao } from '@lyvely/calendar-plan';
+import { ICalendarPlanDao } from '@lyvely/calendar-plan';
 import { Profile } from '@lyvely/profiles';
 import { CalendarInterval } from '@lyvely/dates';
 import { IFetchQueryOptions } from '@lyvely/core';
 
-export class MilestonesDao extends ContentTypeDao<Milestone> implements CalendarPlanDao<Milestone> {
+export class MilestonesDao
+  extends ContentTypeDao<Milestone>
+  implements ICalendarPlanDao<Milestone>
+{
   @InjectModel(Milestone.name)
   protected model: Model<Milestone>;
 

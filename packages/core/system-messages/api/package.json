@@ -26,6 +26,7 @@
     "@lyvely/profiles": "^0.1.0-alpha3",
     "@lyvely/users": "^0.1.0-alpha3",
     "@lyvely/system-messages-interface": "^0.1.0-alpha3",
+    "mongoose": "^7.1.0",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {

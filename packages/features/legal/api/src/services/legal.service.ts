@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath, LegalOptions } from '@lyvely/core';
+import { ConfigurationPath, ILegalOptions } from '@lyvely/core';
 import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class LegalService {
 
   async getSections(locale?: string): Promise<LegalSection[]> {
     const result = [] as LegalSection[];
-    const legal = this.configService.get<LegalOptions>('legal');
+    const legal = this.configService.get<ILegalOptions>('legal');
     if (!legal?.sections) return result;
 
     for (const sectionId in legal.sections) {
@@ -44,7 +44,7 @@ export class LegalService {
   }
 
   private getLocalizedSection(sectionId: string, locale?: string) {
-    const legal = this.configService.get<LegalOptions>('legal');
+    const legal = this.configService.get<ILegalOptions>('legal');
     const section = legal?.sections[sectionId] || null;
     return (locale && section?.locales?.[locale]) || section;
   }

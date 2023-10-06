@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Habit, HabitScore } from '../schemas';
 import {
   DataPointService,
-  DataPointUpdateResult,
+  IDataPointUpdateResult,
   NumberDataPoint,
   DataPointValueType,
 } from '@lyvely/time-series';
@@ -24,7 +24,7 @@ export class HabitDataPointService extends DataPointService<Habit> {
     profile: Profile,
     user: User,
     habit: Habit,
-    updateResult: DataPointUpdateResult<NumberDataPoint>,
+    updateResult: IDataPointUpdateResult<NumberDataPoint>,
   ) {
     const { dataPoint } = updateResult;
     const oldScore = HabitDataPointService.calculateDataPointScore(

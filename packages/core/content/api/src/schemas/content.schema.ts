@@ -121,7 +121,7 @@ export class Content<
   }
 
   setAuthor(author: Author) {
-    this.setAuthor(author);
+    this.meta.setAuthor(author);
   }
 
   toModel(user?: User): ContentModel<any> {

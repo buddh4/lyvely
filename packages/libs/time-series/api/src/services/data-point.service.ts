@@ -14,7 +14,7 @@ import { Inject } from '@nestjs/common';
 import { useDataPointStrategyRegistry } from '../strategies';
 import { isEqual } from 'lodash';
 
-export interface DataPointUpdateResult<TDataPointModel extends DataPoint> {
+export interface IDataPointUpdateResult<TDataPointModel extends DataPoint> {
   dataPoint: TDataPointModel;
   oldValue?: TDataPointModel['value'];
   isNew: boolean;
@@ -58,7 +58,7 @@ export abstract class DataPointService<
     model: TModel,
     date: CalendarDate,
     value: TValue,
-  ): Promise<DataPointUpdateResult<TDataPointModel>> {
+  ): Promise<IDataPointUpdateResult<TDataPointModel>> {
     // TODO: Use transaction
     const result = await this.findOrCreateDataPointByDate(profile, user, model, date, value);
     await this.updateDataPointValue(profile, user, result.dataPoint, model, value);
@@ -70,7 +70,7 @@ export abstract class DataPointService<
     profile: Profile,
     user: User,
     model: TModel,
-    updateResult: DataPointUpdateResult<TDataPointModel>,
+    updateResult: IDataPointUpdateResult<TDataPointModel>,
   ) {
     const { dataPoint } = updateResult;
     const strategy = this.getStrategy(dataPoint.valueType);
@@ -119,7 +119,7 @@ export abstract class DataPointService<
     content: TModel,
     date: CalendarDate,
     value?: TValue,
-  ): Promise<DataPointUpdateResult<TDataPointModel>> {
+  ): Promise<IDataPointUpdateResult<TDataPointModel>> {
     let dataPoint = await this.findDataPointByDate(profile, user, content, date);
 
     if (dataPoint) return { dataPoint, isNew: false, oldValue: dataPoint.value };

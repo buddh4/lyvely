@@ -30,6 +30,7 @@
     "@lyvely/time-series-interface": "^0.1.0-alpha3",
     "@lyvely/content": "^0.1.0-alpha3",
     "reflect-metadata": "0.1.13",
+    "mongoose": "^7.5.4",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

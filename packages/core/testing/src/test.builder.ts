@@ -3,7 +3,6 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { CoreModule, ModuleRegistry, globalEmitter } from '@lyvely/core';
@@ -37,7 +36,7 @@ export class EventTester {
 }
 
 export class LyvelyTestBuilder {
-  private id: string;
+  private readonly id: string;
   private _providers: Provider[] = [];
   private _models: ModelDefinition[] = [];
   private _imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [];

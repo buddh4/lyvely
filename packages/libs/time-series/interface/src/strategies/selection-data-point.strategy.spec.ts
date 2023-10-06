@@ -7,8 +7,7 @@ import {
   SelectionDataPointModel,
   useDataPointStrategyFacade,
 } from '../index';
-import { CalendarInterval, isToday } from '@lyvely/dates';
-import { toTimingId } from '@lyvely/dates';
+import { CalendarInterval, isToday, toTimingId } from '@lyvely/dates';
 
 describe('SelectionDataPointStrategy', () => {
   describe('validateValue', () => {

@@ -3,13 +3,13 @@ import { User } from '@lyvely/users';
 import { IntegrityException, SortResult } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { assureObjectId, EntityIdentity, QuerySort } from '@lyvely/core';
-import { CalendarPlanDao, CalendarPlanEntity } from '../interfaces';
+import { ICalendarPlanDao, CalendarPlanEntity } from '../interfaces';
 import { CalendarPlanService } from './calendar-plan.service';
 
 export abstract class SortableCalendarPlanService<
   TModel extends CalendarPlanEntity,
 > extends CalendarPlanService<TModel> {
-  protected abstract contentDao: CalendarPlanDao<TModel>;
+  protected abstract contentDao: ICalendarPlanDao<TModel>;
 
   protected abstract updateIntervalConfig(
     profile: Profile,

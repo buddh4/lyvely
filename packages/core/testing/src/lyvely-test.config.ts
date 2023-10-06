@@ -3,7 +3,7 @@ import { LyvelyAppConfiguration, OperationMode } from '@lyvely/core';
 const lyvelyTestConfig: LyvelyAppConfiguration = {
   appName: 'lyvely.test.app',
   operationMode: OperationMode.STANDALONE,
-  docUrl: 'http://docs.lyvely.app',
+  docUrl: 'https://docs.lyvely.app',
   contactMail: 'test@test.de',
   http: {
     baseUrl: 'https://api.test.com',

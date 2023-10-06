@@ -24,6 +24,7 @@
     "@lyvely/users": "^0.1.0-alpha3",
     "@lyvely/content": "^0.1.0-alpha3",
     "@lyvely/calendar-plan-interface": "^0.1.0-alpha3",
+    "mongoose": " ^7.0.0",
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {

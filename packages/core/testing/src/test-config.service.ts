@@ -4,7 +4,8 @@ import { CONFIGURATION_TOKEN } from '@nestjs/config/dist/config.constants';
 
 @Injectable()
 export class TestConfigService {
-  private initialConfig: Record<string, any>;
+  private readonly initialConfig: Record<string, any>;
+
   constructor(
     @Optional()
     @Inject(CONFIGURATION_TOKEN)

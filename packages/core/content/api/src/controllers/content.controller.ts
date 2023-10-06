@@ -3,7 +3,7 @@ import { Post, HttpCode, HttpStatus, Param, Request, Body } from '@nestjs/common
 import { Policies } from '@lyvely/policies';
 import { ContentService } from '../services';
 import { ContentWritePolicy } from '../policies';
-import { ProfileContentRequest, ProfileUserContentRequest } from '../types';
+import { ProfileUserContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
 
 @ContentTypeController(ENDPOINT_CONTENT)

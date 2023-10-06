@@ -19,10 +19,10 @@ export class ProfilePermissionsService extends PermissionsService<ProfileContext
   constructor(
     @Optional()
     @Inject(TOKEN_PROFILE_ROLES_DEFINITION)
-    private rolesDefinition: IProfileRoleDefinition[],
+    private readonly rolesDefinition: IProfileRoleDefinition[],
     @Optional()
     @Inject(TOKEN_DEFAULT_PROFILE_PERMISSIONS)
-    private defaultPermissions: IDefaultRolePermissions,
+    private readonly defaultPermissions: IDefaultRolePermissions,
   ) {
     super();
     this.rolesDefinition = this.rolesDefinition || defaultProfileRolesDefinition;

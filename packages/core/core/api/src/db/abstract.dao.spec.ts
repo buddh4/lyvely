@@ -329,7 +329,7 @@ describe('AbstractDao', () => {
     it('update discriminator value', async () => {
       const model = new SubTestEntity({ requiredField: '1', specialField: 'updated' });
       await dao.save(model, { discriminator: SubTestEntity.name });
-      const entity = await dao.updateOneSetById(
+      await dao.updateOneSetById(
         model,
         { specialValue: 'updated' },
         { discriminator: SubTestEntity.name },

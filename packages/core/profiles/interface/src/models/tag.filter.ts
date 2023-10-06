@@ -20,7 +20,9 @@ export class TagFilter {
   }
 
   isActive() {
-    return this.query?.length || this.nameSelection?.length || this.idSelection?.length || this.archived;
+    return (
+      this.query?.length || this.nameSelection?.length || this.idSelection?.length || this.archived
+    );
   }
 
   apply(tags?: TagModel[]) {

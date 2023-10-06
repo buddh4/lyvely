@@ -1,12 +1,6 @@
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { Content, ContentSchema } from './schemas';
-import {
-  contentTestPlugin,
-  TestContent,
-  TestContentB,
-  TestContentBSchema,
-  TestContentSchema,
-} from './testing';
+import { TestContent, TestContentB, TestContentBSchema, TestContentSchema } from './testing';
 import { INestApplication, Module } from '@nestjs/common';
 import { ContentCoreModule, ContentModule } from './content.module';
 import { ContentService } from './services';

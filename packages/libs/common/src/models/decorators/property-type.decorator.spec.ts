@@ -175,8 +175,6 @@ describe('PropertyType', () => {
       field: string;
     }
 
-    class SubModel extends MyModel {}
-
     class SubSubModel extends MyModel {}
 
     const model = new SubSubModel();

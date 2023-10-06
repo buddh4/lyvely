@@ -44,7 +44,7 @@ export abstract class Filter<
   protected abstract checkModel(model: TModel);
   abstract isEmpty();
 
-  constructor(options?: FilterConstructorOptions<TModel, TOptions>) {
+  protected constructor(options?: FilterConstructorOptions<TModel, TOptions>) {
     this.emitter = mitt<FilterEvents<TOptions>>();
 
     if (options) {

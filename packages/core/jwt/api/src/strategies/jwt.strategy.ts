@@ -26,12 +26,12 @@ export function JwtStrategy<TPayload extends JwtTokenPayloadIF = JwtTokenPayload
   options.purpose = options?.purpose || options.name;
 
   abstract class JwtVerifyMixinStrategy extends PassportStrategy(Strategy, options.name) {
-    abstract validateUser(user: User, req: Request, payload: TPayload);
+    abstract validateUser(user: User, req: Request, payload: TPayload): Promise<void>;
 
     @Inject()
     protected usersService: UsersService;
 
-    constructor(protected configService: ConfigService<ConfigurationPath>) {
+    protected constructor(protected configService: ConfigService<ConfigurationPath>) {
       const defaultStrategyOptions: Partial<StrategyOptions> = {
         issuer: configService.get('auth.jwt.issuer'),
         algorithms: ['HS256', 'RS256'],

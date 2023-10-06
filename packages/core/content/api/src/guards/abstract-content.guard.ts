@@ -47,14 +47,10 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
 
     request.content = profileContentContext.content = content as C;
 
-    if (
-      !validateContentTypeFromContext(content, context, this.reflector) ||
-      !(await this.canActivateContent(profileContentContext, context))
-    ) {
-      return false;
-    }
-
-    return true;
+    return (
+      validateContentTypeFromContext(content, context, this.reflector) &&
+      (await this.canActivateContent(profileContentContext, context))
+    );
   }
 }
 

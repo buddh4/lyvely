@@ -1,6 +1,5 @@
 import { DataPointInputType, DataPointValueType, SELECTION_OTHER_OPTION_KEY, SelectionDataPointModel, useDataPointStrategyFacade, } from '../index';
-import { CalendarInterval, isToday } from '@lyvely/dates';
-import { toTimingId } from '@lyvely/dates';
+import { CalendarInterval, isToday, toTimingId } from '@lyvely/dates';
 describe('SelectionDataPointStrategy', () => {
     describe('validateValue', () => {
         it('selection undefined should fail', async () => {

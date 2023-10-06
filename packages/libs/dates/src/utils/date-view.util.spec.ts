@@ -39,7 +39,7 @@ describe('date view util', function () {
     });
 
     it('1 day ago', () => {
-      expect(getRelativeTime(-(1 * 1000 * 60 * 60 * 24), 'en')).toEqual('1 day ago');
+      expect(getRelativeTime(-(1000 * 60 * 60 * 24), 'en')).toEqual('1 day ago');
     });
 
     it('get less than week ago', () => {
@@ -51,7 +51,7 @@ describe('date view util', function () {
     });
 
     it('1 week ago', () => {
-      expect(getRelativeTime(-(1 * 1000 * 60 * 60 * 24 * 7), 'en')).toEqual('1 week ago');
+      expect(getRelativeTime(-(1000 * 60 * 60 * 24 * 7), 'en')).toEqual('1 week ago');
     });
 
     it('get less than year ago', () => {
@@ -59,7 +59,7 @@ describe('date view util', function () {
     });
 
     it('more than a year ago', () => {
-      expect(getRelativeTime(-(1 * 1000 * 60 * 60 * 24 * 366), 'en')).toEqual('1 year ago');
+      expect(getRelativeTime(-(1000 * 60 * 60 * 24 * 366), 'en')).toEqual('1 year ago');
     });
   });
 });

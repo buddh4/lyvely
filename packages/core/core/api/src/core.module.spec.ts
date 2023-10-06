@@ -1,5 +1,5 @@
 import { ModuleRegistry } from './components';
-import { afterAllTests, afterEachTest, createCoreTestingModule } from './testing/core-test.util';
+import { afterAllTests, afterEachTest, createCoreTestingModule } from './testing';
 import { TestingModule } from '@nestjs/testing';
 
 describe('CoreModule', () => {

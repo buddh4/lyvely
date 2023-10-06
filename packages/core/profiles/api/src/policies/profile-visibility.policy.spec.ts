@@ -89,7 +89,7 @@ describe('ProfileVisibilityPolicy', () => {
 
     it('user can see protected profile', async () => {
       const user = await testData.createUser('guest');
-      const { member, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.User);
+      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.User);
       const context = await profilesService.findProfileContext(user, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);
@@ -117,7 +117,7 @@ describe('ProfileVisibilityPolicy', () => {
 
     it('user can see protected profile', async () => {
       const user = await testData.createUser('guest');
-      const { member, profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Visitor);
+      const { profile } = await testData.createSimpleGroup(ProfileVisibilityLevel.Visitor);
       const context = await profilesService.findProfileContext(user, profile);
       const canSee = await profileVisibilityPolicy.verify(context);
       expect(canSee).toEqual(true);

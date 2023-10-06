@@ -1,17 +1,3 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "declaration": true,
-        "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "allowSyntheticDefaultImports": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "target": "ES2021",
-        "sourceMap": false,
-        "skipLibCheck": true,
-        "strict": true,
-        "strictPropertyInitialization": false
-    }
+  "extends": "../../configs/typescript/api.tsconfig.json"
 }

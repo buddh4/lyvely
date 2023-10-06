@@ -4,7 +4,7 @@ import {
   CoreModule,
   setTransactionSupport,
   ConfigurationPath,
-  LyvelyMongoDBOptions,
+  ILyvelyMongoDBOptions,
 } from '@lyvely/core';
 import { loadConfig, AppConfigModule } from '@lyvely/app-config';
 import { AuthModule } from '@lyvely/auth';
@@ -187,7 +187,7 @@ export class AppModuleBuilder {
         imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath & any>) => {
-          const options = { ...configService.get<LyvelyMongoDBOptions>('mongodb') };
+          const options = { ...configService.get<ILyvelyMongoDBOptions>('mongodb') };
 
           setTransactionSupport(!!options.transactions);
           delete options.transactions;

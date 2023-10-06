@@ -176,7 +176,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
         Membership.create({
           user,
           profile: organization,
-          role: BaseMembershipRole.Member,
+          role,
         }),
       ],
     });

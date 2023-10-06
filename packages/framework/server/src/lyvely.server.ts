@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { AuthModule, JwtAuthGuard } from '@lyvely/auth';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { ConfigurationPath, LyvelyCsrfOptions } from '@lyvely/core';
+import { ConfigurationPath, ILyvelyCsrfOptions } from '@lyvely/core';
 import { ServiceExceptionsFilter } from '@lyvely/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from './app-module.builder';
 import helmet from 'helmet';
@@ -108,7 +108,7 @@ export class LyvelyServer {
   }
 
   private initCsrf() {
-    const cookie = this.configService.get<LyvelyCsrfOptions>('csrf', {});
+    const cookie = this.configService.get<ILyvelyCsrfOptions>('csrf', {});
     cookie.name ||= 'csrf-token';
     cookie.sameSite ||= 'lax';
     cookie.httpOnly = cookie.httpOnly !== false;

@@ -152,7 +152,7 @@ function getComputedCssClasses(
   });
 }
 
-function getComputedInputError(props: IBaseInputProps, formModelData?: IFormModelData<any>) {
+function getComputedInputError(props: IBaseInputProps, formModelData?: IFormModelData) {
   return computed(() =>
     formModelData?.validator && props.property
       ? formModelData.validator.getError(props.property)

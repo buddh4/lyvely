@@ -1,6 +1,6 @@
 import { Global } from '@nestjs/common';
 import { ModuleEventsService, UrlGenerator } from './services';
-import { LyvelyModule } from './decorators/lyvely-module.decorator';
+import { LyvelyModule } from './decorators';
 import { ModuleRegistry, useModuleRegistry } from './components';
 
 @Global()

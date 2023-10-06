@@ -113,13 +113,13 @@ describe('DataPointService', () => {
       const date = new Date();
 
       await service.upsertDataPoint(profile, user, content, date, 5);
-      const test = await service.findByIntervalLevel(profile, user, {
+      await service.findByIntervalLevel(profile, user, {
         date: formatDate(date),
         level: CalendarInterval.Unscheduled,
       });
       await service.upsertDataPoint(profile, user, content, date, 3);
 
-      const test2 = await service.findByIntervalLevel(profile, user, {
+      await service.findByIntervalLevel(profile, user, {
         date: formatDate(date),
         level: CalendarInterval.Unscheduled,
       });

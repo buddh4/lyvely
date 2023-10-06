@@ -5,7 +5,7 @@ export class TagFilter {
     }
     isActive() {
         var _a, _b, _c;
-        return ((_a = this.query) === null || _a === void 0 ? void 0 : _a.length) || ((_b = this.nameSelection) === null || _b === void 0 ? void 0 : _b.length) || ((_c = this.idSelection) === null || _c === void 0 ? void 0 : _c.length) || this.archived;
+        return (((_a = this.query) === null || _a === void 0 ? void 0 : _a.length) || ((_b = this.nameSelection) === null || _b === void 0 ? void 0 : _b.length) || ((_c = this.idSelection) === null || _c === void 0 ? void 0 : _c.length) || this.archived);
     }
     apply(tags) {
         if (!tags || !tags.length) {

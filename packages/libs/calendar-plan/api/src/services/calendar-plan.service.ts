@@ -1,10 +1,10 @@
 import { Profile } from '@lyvely/profiles';
 import { User } from '@lyvely/users';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
-import { CalendarPlanDao, CalendarPlanEntity } from '../interfaces';
+import { ICalendarPlanDao, CalendarPlanEntity } from '../interfaces';
 
 export abstract class CalendarPlanService<TModel extends CalendarPlanEntity> {
-  protected abstract contentDao: CalendarPlanDao<TModel>;
+  protected abstract contentDao: ICalendarPlanDao<TModel>;
 
   abstract findByFilter(
     profile: Profile,

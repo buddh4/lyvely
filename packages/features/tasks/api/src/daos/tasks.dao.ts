@@ -9,10 +9,10 @@ import { Timer } from '@lyvely/timers';
 import { UserAssignmentStrategy } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { ContentTypeDao } from '@lyvely/content';
-import { CalendarPlanDao } from '@lyvely/calendar-plan';
+import { ICalendarPlanDao } from '@lyvely/calendar-plan';
 
 @Injectable()
-export class TasksDao extends ContentTypeDao<Task> implements CalendarPlanDao<any> {
+export class TasksDao extends ContentTypeDao<Task> implements ICalendarPlanDao<any> {
   @InjectModel(Task.name)
   protected model: Model<Task>;
 

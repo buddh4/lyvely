@@ -32,10 +32,6 @@ type ContainsDot = `${string}.${string}`;
 export type UpdateQuerySet<T extends BaseEntity<T>> = UpdateQuery<T>['$set'];
 export type UpdateQueryUnset<T extends BaseEntity<T>> = UpdateQuery<T>['$unset'];
 
-type UpdateSubQuerySet<T extends BaseEntity<T>> = Partial<Omit<T, '_id' | '__v' | 'id'>> & {
-  [key: ContainsDot]: any;
-};
-
 type SortableRecord<T extends BaseEntity<T>> = Partial<Omit<T, '__v' | 'id'>> & {
   [key: ContainsDot]: any;
 };

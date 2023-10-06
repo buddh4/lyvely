@@ -45,10 +45,10 @@ export class ResetPasswordService {
                 the following button.</p>
                 <div style="padding:20px 0">
                 <!--[if mso]>
-                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://www.EXAMPLE.com/" style="height:40px;v-text-anchor:middle;width:300px;" arcsize="10%" stroke="f" fillcolor="#d62828">
+                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${resetUrl}" style="height:40px;v-text-anchor:middle;width:300px;" arcsize="10%" stroke="f" fillcolor="#d62828">
                     <w:anchorlock/>
                     <center style="color:#ffffff;font-family:sans-serif;font-size:16px;font-weight:bold;">
-                      Button Text Here!
+                       Reset your password    
                     </center>
                   </v:roundrect>
                   <![endif]-->

@@ -23,7 +23,6 @@ import { assureObjectId, assureStringId, EntityIdentity } from '@lyvely/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { I18n } from '@lyvely/i18n';
 import { LiveService } from '@lyvely/live';
-import { ProfileContext } from '@lyvely/profiles';
 
 @Injectable()
 export class UserNotificationsService extends AbstractStreamService<
