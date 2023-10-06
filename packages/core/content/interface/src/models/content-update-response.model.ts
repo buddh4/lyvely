@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { TagModel } from '@lyvely/profiles';
+import { TagModel } from '@lyvely/profiles-interface';
 import { IContent } from '../interfaces';
 
 @Expose()

@@ -1,4 +1,5 @@
-import { IAuthService, UserModel, LoginModel } from '@lyvely/auth-interface';
+import { IAuthService, LoginModel } from '@lyvely/auth-interface';
+import { UserModel } from '@lyvely/users-interface';
 
 import authRepository from '@/modules/auth/repositories/auth.repository';
 import { unwrapResponse } from '@/modules/core';

@@ -28,7 +28,7 @@ export abstract class TimeSeriesService<
 
   async findByFilter(
     profile: Profile,
-    user: User,
+    user: User | undefined,
     filter: CalendarPlanFilter,
   ): Promise<Array<TModel>> {
     return this.contentDao.findByProfileAndTimingIds(
@@ -40,7 +40,7 @@ export abstract class TimeSeriesService<
 
   async findTimeSeries(
     profile: Profile,
-    user: User,
+    user: User | undefined,
     filter: CalendarPlanFilter,
   ): Promise<ITimeSeriesContentSearchResult<TModel, TDataPointModel>> {
     const [models, dataPoints] = await Promise.all([
@@ -53,7 +53,7 @@ export abstract class TimeSeriesService<
 
   private async findDataPoints(
     profile: Profile,
-    user: User,
+    user: User | undefined,
     filter: CalendarPlanFilter,
   ): Promise<TDataPointModel[]> {
     return isInFuture(filter.date, true)

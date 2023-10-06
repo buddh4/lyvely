@@ -141,7 +141,7 @@ export abstract class DataPointService<
 
   async findByIntervalLevel(
     profile: Profile,
-    uid: EntityIdentity<User> | null,
+    uid: EntityIdentity<User> | null | undefined,
     filter: CalendarPlanFilter,
   ): Promise<TDataPointModel[]> {
     return await this.dataPointDao.findByIntervalLevel(profile, uid, filter);

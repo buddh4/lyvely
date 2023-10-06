@@ -6,15 +6,11 @@ import { nodeExternals } from 'rollup-plugin-node-externals'
 const production = !process.env.ROLLUP_WATCH;
 
 /**
- * Returns a rollup config suited for libraries consumed by web and server components.
+ * Returns a rollup config suited for common libraries consumed by web and server components.
  *
- * The config will by default add all dependencies and peer dependencies to the excludes. In case you want to bundle
- * an external dependency you need to explicitly define it in the options.includes options.
  *
  * @param {Object} [options] - Options
  * @param {Object} options.nodeExternals - NodeExternalsConfig.
- * @param {string[]} [options.externals] - An array of external dependencies to exclude (we exclude by default all dependencies of package.json.
- * @param {string[]} [options.includes] - An array of dependencies to explicitly include.
  * @returns {void}
  *
  * @example
@@ -29,7 +25,8 @@ const production = !process.env.ROLLUP_WATCH;
 export default async (options) => {
 
   options ||= {};
-  options.nodeExternals ||= { devDeps: true };
+  const nodeExternalsOptions = options.nodeExternals || { devDeps: true };
+  delete options.nodeExternals;
 
   return Object.assign( {
     input: './src/index.ts',
@@ -46,7 +43,7 @@ export default async (options) => {
       },
     ],
     plugins: [
-      nodeExternals(options.nodeExternals),
+      nodeExternals(nodeExternalsOptions),
       typescript({
         sourceMap: !production,
         inlineSources: !production,

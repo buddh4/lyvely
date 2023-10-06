@@ -3,7 +3,7 @@ import { Task } from '../schemas';
 import { Profile } from '@lyvely/profiles';
 import { CalendarInterval, getTimingIds } from '@lyvely/dates';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
-import { User } from '@lyvely/users';
+import { OptionalUser } from '@lyvely/users';
 import { TasksDao } from '../daos';
 
 @Injectable()
@@ -11,7 +11,11 @@ export class TaskCalendarPlanService extends SortableCalendarPlanService<Task> {
   @Inject()
   protected contentDao: TasksDao;
 
-  findByFilter(profile: Profile, user: User, filter: CalendarPlanFilter): Promise<Array<Task>> {
+  findByFilter(
+    profile: Profile,
+    user: OptionalUser,
+    filter: CalendarPlanFilter,
+  ): Promise<Array<Task>> {
     return this.contentDao.findByProfileAndTimingIds(
       profile,
       user,

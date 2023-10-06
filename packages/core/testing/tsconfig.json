@@ -12,6 +12,6 @@
         "sourceMap": false,
         "skipLibCheck": true,
         "strict": true,
-        "strictPropertyInitialization": false,
+        "strictPropertyInitialization": false
     }
 }

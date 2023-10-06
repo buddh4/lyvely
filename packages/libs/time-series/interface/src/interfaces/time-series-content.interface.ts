@@ -1,5 +1,5 @@
 import { IDataPointConfig } from './data-point.interface';
-import { IContent } from '@lyvely/content';
+import { IContent } from '@lyvely/content-interface';
 import { CalendarInterval } from '@lyvely/dates';
 
 export interface ITimeSeriesContentConfig<TDataPointConfig = IDataPointConfig> {

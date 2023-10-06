@@ -4,6 +4,7 @@ import {
   ContentTypeController,
   ContentWritePolicy,
   ProfileContentRequest,
+  ProfileUserContentRequest,
 } from '@lyvely/content';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import {
@@ -66,7 +67,7 @@ export class JournalsController
   @Policies(ContentWritePolicy)
   async sort(
     @Body() dto: CalendarPlanSort,
-    @Request() req: ProfileContentRequest<Journal>,
+    @Request() req: ProfileUserContentRequest<Journal>,
   ): Promise<SortResponse> {
     const { profile, user, content } = req;
     const sort = await this.timeSeriesService.sort(
@@ -83,7 +84,7 @@ export class JournalsController
   @Policies(ContentWritePolicy)
   async updateDataPoint(
     @Body() dto: UpdateDataPointModel,
-    @Request() req: ProfileContentRequest<Journal>,
+    @Request() req: ProfileUserContentRequest<Journal>,
   ): Promise<UpdateDataPointResponse> {
     const { profile, user, content } = req;
 

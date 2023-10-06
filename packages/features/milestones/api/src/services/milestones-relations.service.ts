@@ -15,7 +15,7 @@ export class MilestonesRelationsService {
   constructor(private contentDao: ContentDao, private eventEmitter: EventEmitter2) {}
   public async getRelationsByMilestones(
     profile: Profile,
-    user: User,
+    user: User | undefined,
     milestones: EntityIdentity<Milestone>[],
     date?: CalendarDateTime,
   ) {

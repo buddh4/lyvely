@@ -21,7 +21,7 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
 
   findByFilter(
     profile: Profile,
-    user: User,
+    user: User | undefined,
     filter: CalendarPlanFilter,
   ): Promise<Array<Milestone>> {
     const conditions: FilterQuery<Milestone>[] = [];
@@ -37,7 +37,11 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
     return this.contentDao.findAllByProfile(profile, DBQuery.and(conditions));
   }
 
-  async findMilestonesWithRelations(profile: Profile, user: User, filter: CalendarPlanFilter) {
+  async findMilestonesWithRelations(
+    profile: Profile,
+    user: User | undefined,
+    filter: CalendarPlanFilter,
+  ) {
     const models = await this.findByFilter(profile, user, filter);
     const relations = await this.relationsService.getRelationsByMilestones(
       profile,

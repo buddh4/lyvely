@@ -9,7 +9,7 @@ export class TaskMilestoneRelationsService {
   handleOrderCreatedEvent(payload: MilestoneRelationEvent<Task>) {
     payload.setResult(
       payload.data.contents.map((content) => {
-        const progress = content.getDoneBy(payload.data.user) ? 1 : 0;
+        const progress = payload.data.user && content.getDoneBy(payload.data.user) ? 1 : 0;
         return new MilestoneRelationModel(content, progress);
       }),
     );

@@ -1,18 +1,23 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "declaration": true,
-        "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "allowSyntheticDefaultImports": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "target": "ES2021",
-        "lib": ["ES2022"],
-        "skipLibCheck": true,
-        "strict": true,
-        "strictPropertyInitialization": false,
-        "sourceMap": false
+  "compilerOptions": {
+    "lib": ["esnext"],
+    "target": "es2017",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "importHelpers": false,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "strictPropertyInitialization": false,
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
     }
+  }
 }

@@ -1,11 +1,11 @@
 import repository from '@/repository';
 import {
-  UpdateTag,
+  UpdateTagModel,
   CreateTagModel,
   ENDPOINT_PROFILE_TAGS,
-  EndpointResult,
   IProfileTagsService,
 } from '@lyvely/profiles-interface';
+import { EndpointResult } from '@lyvely/common';
 
 export default {
   async create(model: CreateTagModel) {
@@ -15,7 +15,7 @@ export default {
     );
   },
 
-  async update(tagId: string, model: UpdateTag) {
+  async update(tagId: string, model: UpdateTagModel) {
     return repository.put<EndpointResult<IProfileTagsService['update']>>(
       `${ENDPOINT_PROFILE_TAGS}/${tagId}`,
       model,

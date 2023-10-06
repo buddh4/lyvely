@@ -7,7 +7,7 @@ import AppComponent from '@/App.vue';
 import { ModuleLoader } from '@/module.loader';
 import { setupI18n, translate } from '@/i18n';
 import { I18n } from 'vue-i18n';
-import { useDayJsDateTimeAdapter } from '@lyvely/common';
+import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 import { eventBus, AppEvents } from '@/modules/core/events/global.emitter';
 import { createLyvelyUi } from '@lyvely/ui';
 import { createApiUrl } from '@/repository';

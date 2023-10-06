@@ -8,7 +8,7 @@ import { Types } from 'mongoose';
 export interface IMilestoneRelationEventData<TContent extends Content = Content> {
   contents: TContent[];
   date?: CalendarDateTime;
-  user: User;
+  user?: User;
 }
 
 export class MilestoneRelationEvent<

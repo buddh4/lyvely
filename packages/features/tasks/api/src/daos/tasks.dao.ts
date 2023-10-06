@@ -3,7 +3,7 @@ import { Task, UserDone } from '../schemas';
 import { assureObjectId, EntityIdentity, IFetchQueryOptions } from '@lyvely/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from '@lyvely/users';
+import { OptionalUser, User } from '@lyvely/users';
 import { Profile, ProfileType } from '@lyvely/profiles';
 import { Timer } from '@lyvely/timers';
 import { UserAssignmentStrategy } from '@lyvely/common';
@@ -26,7 +26,7 @@ export class TasksDao extends ContentTypeDao<Task> implements CalendarPlanDao<an
 
   async findByProfileAndTimingIds(
     profile: Profile,
-    user: User,
+    user: OptionalUser,
     tIds: string[],
     options?: IFetchQueryOptions<Task>,
   ): Promise<Task[]> {
@@ -43,19 +43,20 @@ export class TasksDao extends ContentTypeDao<Task> implements CalendarPlanDao<an
       );
     }
 
-    const uid = assureObjectId(user);
+    const uid = assureObjectId(user, true);
 
     return this.findAllByProfile(
       profile,
       {
         $or: [
+          // Not done by any user
           { doneBy: [] },
-          // We ignore which user done the task on shared tasks
+          // Shared task done at within given tids
           {
             'config.userStrategy': UserAssignmentStrategy.Shared,
             doneBy: { $elemMatch: { tid: { $in: tIds } } },
           },
-          // On per user tasks we only include tasks not done by the given user or done by the given user within the given tid
+          // Per user task done by user within given tids
           {
             'config.userStrategy': UserAssignmentStrategy.PerUser,
             $or: [

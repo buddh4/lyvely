@@ -5,8 +5,7 @@ import {
   ContentEditModalEmits,
   useContentEditModal,
 } from '@/modules/content/composables/content-edit-modal.composable';
-import { TaskModel, UpdateTaskModel } from '@lyvely/tasks-interface';
-import { CreateTaskModel } from '@lyvely/content-interface';
+import { TaskModel, UpdateTaskModel, CreateTaskModel } from '@lyvely/tasks-interface';
 import { useTasksService } from '@/modules/tasks/services/tasks.service';
 import { getCalendarPlanOptions } from '@/modules/calendar-plan';
 import { isTouchScreen } from '@/util';

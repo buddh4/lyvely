@@ -40,8 +40,7 @@ export class LyvelyTestBuilder {
   private id: string;
   private _providers: Provider[] = [];
   private _models: ModelDefinition[] = [];
-  private _imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> =
-    [];
+  private _imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [];
   private _config: any = {};
   private _plugins: TestPlugin[] = [];
 
@@ -60,7 +59,7 @@ export class LyvelyTestBuilder {
     return this;
   }
 
-  imports(imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference>) {
+  imports(imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference>) {
     this._imports.push(...imports);
     return this;
   }
@@ -113,7 +112,7 @@ export function createCoreTestingModule(
   key: string,
   providers: Provider[] = [],
   models: ModelDefinition[] = [],
-  imports: Array<Type<any> | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
+  imports: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [],
   config = {},
 ): TestingModuleBuilder {
   return Test.createTestingModule({

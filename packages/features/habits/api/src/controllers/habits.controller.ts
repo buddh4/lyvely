@@ -21,10 +21,10 @@ import { SortResponse } from '@lyvely/common';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { HabitsService, HabitTimeSeriesService, HabitDataPointTimerService } from '../services';
 import {
-  ProfileContentRequest,
   ContentTypeController,
   ContentWritePolicy,
   AbstractContentTypeController,
+  ProfileUserContentRequest,
 } from '@lyvely/content';
 import { Policies } from '@lyvely/policies';
 import { UseClassSerializer } from '@lyvely/core';
@@ -73,7 +73,7 @@ export class HabitsController
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileContentRequest<Habit>) {
+  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileUserContentRequest<Habit>) {
     const { profile, user, content } = req;
     const sort = await this.timeSeriesService.sort(
       profile,
@@ -89,7 +89,7 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async updateDataPoint(
     @Body() dto: UpdateHabitDataPointModel,
-    @Request() req: ProfileContentRequest<Habit>,
+    @Request() req: ProfileUserContentRequest<Habit>,
   ) {
     const { profile, user, content } = req;
 
@@ -110,7 +110,10 @@ export class HabitsController
 
   @Post(':cid/start-timer')
   @Policies(ContentWritePolicy)
-  async startTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
+  async startTimer(
+    @Body() dto: TimerUpdateModel,
+    @Request() req: ProfileUserContentRequest<Habit>,
+  ) {
     const { profile, user, content } = req;
     const dataPoint = await this.timerService.startTimer(profile, user, content, dto.date);
     return DataPointModelConverter.toModel<TimerDataPointModel>(dataPoint);
@@ -118,7 +121,7 @@ export class HabitsController
 
   @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
-  async stopTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileContentRequest<Habit>) {
+  async stopTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileUserContentRequest<Habit>) {
     const { profile, user, content } = req;
 
     const dataPoint = await this.timerService.stopTimer(profile, user, content, dto.date);

@@ -18,7 +18,7 @@ export abstract class TimeSeriesContentDao<
    */
   async findByProfileAndTimingIds(
     profile: Profile,
-    user: User,
+    user: User | undefined,
     tIds: string[],
     options?: IFetchQueryOptions<TModel>,
   ): Promise<TModel[]> {

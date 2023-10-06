@@ -1,7 +1,13 @@
 import { Document, Types, UpdateQuery } from 'mongoose';
 import { BaseEntity, assignEntityData } from './base.entity';
-import { isValidObjectId, DeepPartial, Type, findByPath, IntegrityException } from '@lyvely/common';
-import { assignRawDataTo } from '@lyvely/common';
+import {
+  isValidObjectId,
+  DeepPartial,
+  Type,
+  findByPath,
+  IntegrityException,
+  assignRawDataTo,
+} from '@lyvely/common';
 
 export type EntityIdentity<T extends BaseEntity<any>> =
   | T
@@ -13,15 +19,15 @@ export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 
 // We use any here since we need to use this when defining sub documents
 export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
-  identity: EntityIdentity<T> | undefined,
+  identity: EntityIdentity<T> | undefined | null,
   optional?: false,
 ): Types.ObjectId;
 export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
-  identity: EntityIdentity<T> | undefined,
+  identity: EntityIdentity<T> | undefined | null,
   optional: true,
 ): Types.ObjectId | undefined;
 export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
-  identity: EntityIdentity<T> | undefined,
+  identity: EntityIdentity<T> | undefined | null,
   optional?: boolean,
 ): Types.ObjectId {
   if (!identity && optional) return undefined as any;

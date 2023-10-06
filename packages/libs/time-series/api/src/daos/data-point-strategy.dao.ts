@@ -69,7 +69,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
    */
   async findByIntervalLevel(
     profile: Profile,
-    uid: EntityIdentity<User> | null,
+    uid: EntityIdentity<User> | null | undefined,
     filter: CalendarPlanFilter,
   ) {
     // If no uid is given we assume visitor role

@@ -14,7 +14,7 @@ import { ProfileRequest } from '../types';
 import { assureObjectId, EntityIdentity, UseClassSerializer } from '@lyvely/core';
 import { ServiceException } from '@lyvely/common';
 import {
-  UpdateTag,
+  UpdateTagModel,
   TagModel,
   CreateTagModel,
   ENDPOINT_PROFILE_TAGS,
@@ -44,7 +44,11 @@ export class ProfileTagsController implements ProfileTagsEndpoint {
   }
 
   @Put(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateTag, @Request() req: ProfileRequest) {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateTagModel,
+    @Request() req: ProfileRequest,
+  ) {
     const profile = this._getMemberProfile(req);
     const tag = this._getTagById(profile, id);
 

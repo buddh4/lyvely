@@ -1,4 +1,9 @@
-import { ContentTypeController, ContentWritePolicy, ProfileContentRequest } from '@lyvely/content';
+import {
+  ContentTypeController,
+  ContentWritePolicy,
+  ProfileContentRequest,
+  ProfileUserContentRequest,
+} from '@lyvely/content';
 import { Milestone } from '../schemas';
 import {
   MilestoneModel,
@@ -43,7 +48,7 @@ export class MilestonePlanController implements MilestonePlanEndpoint {
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileContentRequest<Milestone>) {
+  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileUserContentRequest<Milestone>) {
     const { profile, user, content } = req;
 
     const sort = await this.calendarPlanService.sort(

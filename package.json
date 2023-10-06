@@ -6,6 +6,7 @@
   "workspaces": [
     "packages/configs",
     "packages/core/**/*",
+    "packages/libs/**/*",
     "packages/framework/**/*",
     "packages/features/**/*"
   ],
