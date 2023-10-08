@@ -5,7 +5,7 @@ import introJs from 'intro.js';
 
 export interface IProps {
   modelValue: boolean;
-  steps: Array<introJs.Step>;
+  steps: Array<any>;
 }
 
 const props = defineProps<IProps>();
@@ -23,7 +23,7 @@ watch(
     if (newValue) {
       introJs().addSteps(unref(props.steps)).start();
     } else {
-      introJs().exit();
+      introJs().exit(true);
     }
   },
 );

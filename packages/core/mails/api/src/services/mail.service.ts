@@ -3,7 +3,7 @@ import { MailerService, ISendMailOptions as MailerSendMailOptions } from '@nestj
 import { SentMessageInfo } from 'nodemailer';
 import { LyvelyAppConfiguration, LyvelyMailOptions, UrlGenerator } from '@lyvely/core';
 import { ConfigService } from '@nestjs/config';
-import fs from 'fs';
+import { createWriteStream, writeFile, existsSync, mkdirSync } from 'fs';
 import { Stream } from 'stream';
 import pug from 'pug';
 import { escapeHTML, UrlRoute } from '@lyvely/common';
@@ -144,7 +144,7 @@ export class MailService {
   private saveStreamMessageToFile(info: IStreamMessageInfo) {
     return new Promise((resolve, reject) => {
       info.message
-        .pipe(fs.createWriteStream(this.initMessageFilePath(info)))
+        .pipe(createWriteStream(this.initMessageFilePath(info)))
         .on('end', resolve)
         .on('error', reject);
     });
@@ -152,13 +152,13 @@ export class MailService {
 
   private saveJsonMessageToFile(info: SentMessageInfo) {
     return new Promise((resolve) => {
-      fs.writeFile(this.initMessageFilePath(info), info.message, 'utf8', resolve);
+      writeFile(this.initMessageFilePath(info), info.message, 'utf8', resolve);
     });
   }
 
   private initMessageFilePath(info: SentMessageInfo) {
     const messagePath = this.getMessageFileDir();
-    if (!fs.existsSync(messagePath)) fs.mkdirSync(messagePath, { recursive: true });
+    if (!existsSync(messagePath)) mkdirSync(messagePath, { recursive: true });
     return this.getMessageFilePath(info);
   }
 

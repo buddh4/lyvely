@@ -3,11 +3,13 @@ import { IContentPolicy } from '../interfaces';
 import { ProfileContentContext } from '../schemas';
 import { ModuleRef } from '@nestjs/core';
 import { getPolicyToken } from '@lyvely/policies';
+import { BaseContentDeletePolicy } from './base-content-delete.policy';
 import { BaseContentManagePolicy } from './base-content-manage.policy';
+import { ContentManagePolicy } from './content-manage.policy';
 import { EntityNotFoundException } from '@lyvely/common';
 
 @Injectable()
-export class ContentManagePolicy extends BaseContentManagePolicy {
+export class ContentDeletePolicy extends BaseContentDeletePolicy {
   constructor(private moduleRef: ModuleRef) {
     super();
   }
@@ -17,14 +19,20 @@ export class ContentManagePolicy extends BaseContentManagePolicy {
 
     if (!content) throw new EntityNotFoundException();
 
-    const contentManagePolicyType = content.getManagePolicy();
-    if (contentManagePolicyType) {
-      const contentManagePolicy = this.moduleRef.get<IContentPolicy>(
-        getPolicyToken(contentManagePolicyType.name),
+    const managePolicy = this.moduleRef.get<BaseContentManagePolicy>(
+      getPolicyToken(ContentManagePolicy.name),
+    );
+
+    if (await managePolicy.verify(context)) return true;
+
+    const contentDeletePolicyType = content.getDeletePolicy();
+    if (contentDeletePolicyType) {
+      const contentDeletePolicy = this.moduleRef.get<IContentPolicy>(
+        getPolicyToken(contentDeletePolicyType.name),
         { strict: false },
       );
 
-      if (content) return contentManagePolicy.verify(context);
+      if (content) return contentDeletePolicy.verify(context);
     }
 
     return super.verify(context);

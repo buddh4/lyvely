@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { ContentService } from '../services';
 import { ProfileContentRequest } from '../types';
-import { isValidObjectId, Type } from '@lyvely/common';
+import { EntityNotFoundException, isValidObjectId, Type } from '@lyvely/common';
 import { Content, ProfileContentContext } from '../schemas';
 import {
   CONTENT_TYPE_KEY,
@@ -29,6 +29,8 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
   @Inject()
   protected contentService: ContentService;
 
+  abstract isContentRequired(): boolean;
+
   abstract canActivateContent(
     profileContentContext: ProfileContentContext<C>,
     context: ExecutionContext,
@@ -39,13 +41,17 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
     const contentId = getContentIdFromRequest(request, context, this.reflector);
     const { profile, context: profileContentContext } = request;
 
-    if (!isValidObjectId(contentId)) return false;
+    if (!request.content && !contentId && this.isContentRequired())
+      throw new EntityNotFoundException();
+    if (!request.content && !contentId) return true;
+    if (!request.content && !isValidObjectId(contentId)) return false;
 
-    const content = await this.contentService.findContentByProfileAndId(profile, contentId);
+    const content =
+      request.content || (await this.contentService.findContentByProfileAndId(profile, contentId));
 
     if (!content) return false;
 
-    request.content = profileContentContext.content = content as C;
+    request.context.content = request.content = profileContentContext.content = content as C;
 
     return (
       validateContentTypeFromContext(content, context, this.reflector) &&

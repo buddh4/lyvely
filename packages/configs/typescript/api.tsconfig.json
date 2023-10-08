@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "target": "ES2021",
     "sourceMap": true,
     "skipLibCheck": true,

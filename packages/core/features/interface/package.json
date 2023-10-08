@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
-    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c",
+    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
@@ -22,7 +22,7 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@lyvely/core": "^0.1.0-alpha3",
+    "@lyvely/common": "^0.1.0-alpha3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "mitt": "^3.0.0",

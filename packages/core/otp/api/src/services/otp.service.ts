@@ -5,7 +5,7 @@ import { UserOtp } from '../schemas';
 import { UserOtpDao } from '../daos';
 import { generateOTP } from '../utils';
 import ms from 'ms';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { EntityIdentity } from '@lyvely/core';
 import { IntegrityException } from '@lyvely/common';
 

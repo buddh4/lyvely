@@ -12,9 +12,9 @@ export class ProfileVisibilityPolicy implements IProfilePolicy {
 
     switch (profile.visibility) {
       case ProfileVisibilityLevel.Member:
-        return context.isMember();
+        return context.isProfileMember();
       case ProfileVisibilityLevel.Organization:
-        return context.isMember() || !!context.getOrganizationContext()?.isMember();
+        return context.isProfileMember() || !!context.getOrganizationContext()?.isProfileMember();
       case ProfileVisibilityLevel.User:
         return context.isUser();
       case ProfileVisibilityLevel.Visitor:

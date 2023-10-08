@@ -5,12 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ContentScoreService, ContentService, ContentStreamService } from './services';
 import { ProfileScore, ProfilesModule } from '@lyvely/profiles';
 import { ContentDao, ContentScoreDao } from './daos';
-import { ContentReadPolicy, ContentWritePolicy } from './policies';
+import { ContentCreatePolicy, ContentReadPolicy, ContentWritePolicy } from './policies';
 import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { LiveModule } from '@lyvely/live';
 import { uniqueId } from 'lodash';
 import { ContentStreamController, ContentController } from './controllers';
+import { LyvelyModule } from '@lyvely/core';
+import { ContentManagePolicy } from './policies/content-manage.policy';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -28,7 +30,11 @@ const ContentScoreActionModel = MongooseModule.forFeature([
 ]);
 
 @Global()
-@Module({
+@LyvelyModule({
+  id: 'content',
+  name: 'Content',
+  path: __dirname,
+  policies: [ContentCreatePolicy, ContentReadPolicy, ContentWritePolicy, ContentManagePolicy],
   imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
   controllers: [ContentController, ContentStreamController],
   providers: [

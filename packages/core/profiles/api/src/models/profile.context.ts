@@ -51,11 +51,11 @@ export class ProfileContext<T extends Profile = Profile>
     return !this.user;
   }
 
-  isMember(): boolean {
+  isProfileMember(): boolean {
     return !!this.getMembership();
   }
 
-  isOwner(): boolean {
+  isProfileOwner(): boolean {
     return !!this.getRelationByRole(BaseProfileRelationRole.Owner);
   }
 
@@ -72,9 +72,16 @@ export class ProfileContext<T extends Profile = Profile>
     return BaseProfileRelationRole.Visitor;
   }
 
-  getMembership(): Membership | undefined {
+  getMembership(...roles: string[]): Membership | undefined {
     const membership = this.getRelationOfType(BaseUserProfileRelationType.Membership);
-    return membership ? new Membership(membership) : undefined;
+
+    if (!membership) return undefined;
+
+    const result = new Membership(membership);
+
+    if (roles.length && !roles.includes(result.role)) return undefined;
+
+    return result;
   }
 
   getRelationOfType(type: string): UserProfileRelation | undefined {

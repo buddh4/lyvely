@@ -144,6 +144,10 @@ export class Content<
     return null;
   }
 
+  getDeletePolicy(): Type<IPolicy<ProfileContentContext>> | null {
+    return null;
+  }
+
   getManagePolicy(): Type<IPolicy<ProfileContentContext>> | null {
     return null;
   }

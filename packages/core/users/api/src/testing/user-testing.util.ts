@@ -18,15 +18,4 @@ export function createUserTestingModule(
   return createCoreTestingModule(key, providers, models, imports)
     .overrideProvider(ConfigService)
     .useClass(TestConfigService);
-  /* .overrideProvider(getQueueToken(QUEUE_NOTIFICATIONS_SEND))
-    .useValue({
-      add: jest.fn(),
-      process: jest.fn(),
-      on: jest.fn(),
-    })
-      .overrideProvider(MailService)
-      .useClass(TestMailService)
-
-      .overrideProvider(OtpService)
-      .useClass(TestOtpService)*/
 }

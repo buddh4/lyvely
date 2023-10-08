@@ -1,6 +1,4 @@
-const colors = require('tailwindcss/colors');
 const svgToDataUri = require('mini-svg-data-uri');
-const path = require('path');
 
 module.exports = {
   darkMode: 'class',

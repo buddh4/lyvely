@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
+    "lib": ["es2022"],
     "baseUrl": "./",
     "outDir": "./dist",
     "declaration": true,

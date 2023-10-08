@@ -144,7 +144,7 @@ describe('ProfileGuard', () => {
       expect(request.context).toBeDefined();
       expect(request.context.profile).toBeDefined();
       expect(request.context.user).not.toBeDefined();
-      expect(request.context.isMember()).toEqual(false);
+      expect(request.context.isProfileMember()).toEqual(false);
       expect(request.context.isUser()).toEqual(false);
     });
 

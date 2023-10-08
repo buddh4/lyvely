@@ -116,3 +116,13 @@ npm web:build
 
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 ```
+
+### Test with Docker
+
+```
+docker pull mongo
+docker run --name test-mongodb --restart=always -d -p 27017:27017 -v /path/on/host:/data/db mongo
+
+docker pull redis
+docker run --name test-redis --restart=always -d -p 6379:6379 -v /path/on/host:/data redis
+```

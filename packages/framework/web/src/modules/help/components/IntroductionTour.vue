@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import 'intro.js/minified/introjs.min.css';
 import { storeToRefs } from 'pinia';
-import introJs from 'intro.js';
 import { translate } from '@/i18n';
 import { useIntroductionTourStore } from '@/modules/help/stores/introduction-tour.store';
 import HelpTour from '@/modules/help/components/HelpTour.vue';
@@ -37,7 +36,7 @@ const steps = [
     intro: `<p>${translate('help.intro.account_menu')}</p>`,
     position: 'bottom',
   },
-] as Array<introJs.Step>;
+] as Array<any>;
 </script>
 
 <template>

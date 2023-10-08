@@ -6,7 +6,7 @@ import {
   UniqueConstraintException,
   ForbiddenServiceException,
 } from '@lyvely/common';
-import { UserRegistration, RegistrationMode } from '@lyvely/user-registrations';
+import { UserRegistration, RegistrationMode } from '@lyvely/user-registrations-interface';
 import { VerifyEmailDto } from '@lyvely/user-accounts';
 import { OtpInfo, OtpService } from '@lyvely/otp';
 import { UserStatus, UserDao, User, UsersService } from '@lyvely/users';

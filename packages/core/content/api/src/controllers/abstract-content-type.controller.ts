@@ -2,7 +2,7 @@ import { Body, Param, Post, Put, Request } from '@nestjs/common';
 import { Content } from '../schemas';
 import { ContentTypeService } from '../services';
 import { ProfileUserContentRequest } from '../types';
-import { ContentWritePolicy } from '../policies';
+import { ContentCreatePolicy, ContentWritePolicy } from '../policies';
 import {
   Type,
   BaseModel,
@@ -34,8 +34,8 @@ export abstract class AbstractContentTypeController<
   protected abstract updateResponseType: Type<ContentUpdateResponse<TModel>>;
   protected abstract contentService: ContentTypeService<TContent, TCreateModel>;
 
-  //@ProfilePermissions(ActivityPermissions.CREATE)
   @Post()
+  @Policies(ContentCreatePolicy)
   async create(
     @Body() body: PropertiesOf<TCreateModel>,
     @Request() req: ProfileUserRequest,

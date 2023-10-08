@@ -9,6 +9,7 @@ import {
 import { loadConfig, AppConfigModule } from '@lyvely/app-config';
 import { AuthModule } from '@lyvely/auth';
 import { UsersModule } from '@lyvely/users';
+import { MessageModule } from '@lyvely/messages';
 import { UserRegistrationModule } from '@lyvely/user-registrations';
 import { ProfilesModule } from '@lyvely/profiles';
 import { PoliciesModule } from '@lyvely/policies';
@@ -23,7 +24,7 @@ import {
   UserPermissionsServiceInjectionToken,
   UserPermissionsServiceProvider,
 } from '@lyvely/permissions';
-import { I18nModule } from '@lyvely/i18n';
+import { I18nModule, I18nModuleLoader } from '@lyvely/i18n';
 import { I18nModule as NestjsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import { AccountModule } from '@lyvely/user-accounts';
 import { CaptchaModule } from '@lyvely/captchas';
@@ -130,9 +131,8 @@ export class AppModuleBuilder {
       AppConfigModule,
       NestjsI18nModule.forRoot({
         fallbackLanguage: 'en',
-        loaderOptions: {
-          path: path.join(__dirname, '/i18n/locales/'),
-        },
+        loader: I18nModuleLoader,
+        loaderOptions: {},
         resolvers: [AcceptLanguageResolver],
       }),
       I18nModule,
@@ -242,6 +242,7 @@ export class AppModuleBuilder {
       ProfilesModule,
       UserRegistrationModule,
       ContentCoreModule,
+      MessageModule,
       SystemMessagesModule,
       AccountModule,
       AvatarsModule,

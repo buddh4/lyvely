@@ -5,10 +5,11 @@ import {
   IRefreshTokenResponse,
   LoginModel,
   IAuthService,
+  ENDPOINT_AUTH,
 } from '@lyvely/auth-interface';
 import { Headers, EndpointResult } from '@lyvely/common';
 
-const resource = 'test';
+const resource = ENDPOINT_AUTH;
 
 export default {
   async loadUser() {

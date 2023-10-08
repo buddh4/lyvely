@@ -6,4 +6,8 @@ export class ContentGuard extends AbstractContentGuard {
   async canActivateContent() {
     return true;
   }
+
+  isContentRequired(): boolean {
+    return false;
+  }
 }

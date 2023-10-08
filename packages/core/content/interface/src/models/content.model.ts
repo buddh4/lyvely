@@ -15,7 +15,7 @@ import {
   IContentLog,
   IContentMetadata,
 } from '../interfaces';
-import { RoleVisibilityLevel } from '@lyvely/profiles';
+import { RoleVisibilityLevel } from '@lyvely/profiles-interface';
 
 export class ContentDataTypeModel<T extends IContentDataType = IContentDataType>
   extends BaseModel<T>

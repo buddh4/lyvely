@@ -4,7 +4,7 @@ export * from './policies';
 export * from './schemas';
 export * from './types';
 export * from './users.module';
-export * from './testing';
 export * from './services/users.service';
 export * from './decorators';
 export * from '@lyvely/users-interface';
+export * from './testing';

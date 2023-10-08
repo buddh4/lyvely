@@ -10,7 +10,7 @@
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "clear": "rm -rf ./dist && rm -f ./tsconfig.tsbuildinfo",
-    "build": "npm run clear && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c",
+    "build": "npm run clear && tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
     "prepublish:next": "npm run build",
@@ -30,7 +30,6 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@lyvely/testing": "^0.1.0-alpha3",
     "@lyvely/configs": "^0.1.0-alpha3",
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",

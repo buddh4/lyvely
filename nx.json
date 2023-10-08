@@ -15,7 +15,7 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["clear", "^build"]
+      "dependsOn": ["^build"]
     }
   },
   "affected": {
