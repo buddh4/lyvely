@@ -141,7 +141,7 @@ const bodyWrapperClass = computed(
                   :class="['mb-2', { 'mt-2': bodyStyle === 'message' }]"
                   :tag-ids="omitTags ? [] : model.tagIds"
                   @select="(tagId) => $emit('selectTag', tagId)">
-                  <template v-if="showType" #pre>
+                  <template v-if="showType && contentTypeName" #pre>
                     <ly-badge class="bg-secondary-dark" :translate="false">{{
                       contentTypeName
                     }}</ly-badge>

@@ -4,6 +4,7 @@ import authModule from './auth/module';
 import i18nModule from './i18n/module';
 import streamModule from './content-stream/module';
 import tagsModule from './tags/module';
+import messagesModule from './messages/module';
 import { registerModules } from '@/core';
 
 export const registerCoreModules = () => {
@@ -14,5 +15,6 @@ export const registerCoreModules = () => {
     profileModule(),
     streamModule(),
     tagsModule(),
+    messagesModule(),
   );
 };

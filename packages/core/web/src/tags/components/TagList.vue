@@ -23,7 +23,7 @@ const tags = computed(() =>
 </script>
 
 <template>
-  <div v-if="tagIds?.length || $slots.pre || $slots.post" class="flex gap-1">
+  <div v-if="tags?.length || $slots.pre || $slots.post" class="flex gap-1">
     <slot name="pre"></slot>
     <tag-badge v-for="tag in tags" :key="tag.id" :tag="tag" @click.prevent.stop="select(tag.id)" />
     <slot name="post"></slot>
