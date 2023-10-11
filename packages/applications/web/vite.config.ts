@@ -9,7 +9,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
   plugins: [
     vuePlugin(),
-    tsconfigPaths(),
+    tsconfigPaths({ ignoreConfigErrors: true }),
     VueI18nPlugin({
       /* options */
       // locale messages resource pre-compile option

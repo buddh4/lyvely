@@ -4,10 +4,10 @@ import {
   contentTestPlugin,
   getContentModelDefinition,
   getContentScoreDefinition,
-} from '@lyvely/content';
+  profilesTestPlugin,
+} from '@lyvely/core';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from '../schemas';
 import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-series';
-import { profilesTestPlugin } from '@lyvely/profiles';
 
 export const habitTestPlugin = {
   apply(builder) {

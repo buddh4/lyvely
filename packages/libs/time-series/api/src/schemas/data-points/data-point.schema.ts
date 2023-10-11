@@ -10,8 +10,7 @@ import {
 } from '@lyvely/common';
 import { DataPointModel } from '@lyvely/time-series-interface';
 import { TimeSeriesContent } from '../time-series-content.schema';
-import { User } from '@lyvely/users';
-import { Profile } from '@lyvely/profiles';
+import { User, Profile } from '@lyvely/core';
 
 export type DataPointEntity<T> = DataPointModel<Types.ObjectId> & BaseEntity<T>;
 

@@ -2,8 +2,7 @@ import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { TimerModel, TimeSpanModel } from '@lyvely/timers-interface';
 import { PropertyType, PropertiesOf } from '@lyvely/common';
-import { assureObjectId, EntityIdentity, NestedSchema, ObjectIdProp } from '@lyvely/core';
-import { User } from '@lyvely/users';
+import { User, assureObjectId, EntityIdentity, NestedSchema, ObjectIdProp } from '@lyvely/core';
 
 @NestedSchema()
 export class TimeSpan extends TimeSpanModel implements PropertiesOf<TimeSpanModel> {

@@ -1,10 +1,10 @@
 import { App } from 'vue';
-import { IModule, IModuleImport, installModule } from '@lyvely/core-web';
+import { IModule, IModuleImport, installModules } from '@lyvely/web';
 
-export const moduleLoader = () => {
+export const moduleInstaller = () => {
   return {
     install(app: App) {
-      installModule(app, import.meta.glob<Promise<IModuleImport>>('./modules/**/module.ts'));
+      installModules(app, import.meta.glob<Promise<IModuleImport>>('./modules/**/module.ts'));
     },
   };
 };

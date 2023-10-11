@@ -1,7 +1,7 @@
 import typescript from '@rollup/plugin-typescript';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import  commonjs from '@rollup/plugin-commonjs';
-import { nodeExternals } from 'rollup-plugin-node-externals'
+import { nodeExternals } from 'rollup-plugin-node-externals';
 
 const production = !process.env.ROLLUP_WATCH;
 

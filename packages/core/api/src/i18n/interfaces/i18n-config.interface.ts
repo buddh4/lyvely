@@ -1,4 +1,4 @@
-import { ConfigurationPath } from '@lyvely/core';
+import { ConfigurationPath } from '@/core';
 
 export interface I18nConfig {
   modules: {

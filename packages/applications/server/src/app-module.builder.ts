@@ -6,39 +6,41 @@ import {
   ConfigurationPath,
   ILyvelyMongoDBOptions,
 } from '@lyvely/core';
-import { loadConfig, AppConfigModule } from '@lyvely/app-config';
-import { AuthModule } from '@lyvely/auth';
-import { UsersModule } from '@lyvely/users';
-import { MessageModule } from '@lyvely/messages';
-import { UserRegistrationModule } from '@lyvely/user-registrations';
-import { ProfilesModule } from '@lyvely/profiles';
-import { PoliciesModule } from '@lyvely/policies';
-import { ContentCoreModule } from '@lyvely/content';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { MongooseModule } from '@nestjs/mongoose';
-import { MailsModule } from '@lyvely/mails';
-import path from 'path';
 import {
+  loadConfig,
+  AppConfigModule,
+  AuthModule,
+  UsersModule,
+  MessageModule,
+  UserRegistrationsModule,
+  ProfilesModule,
+  PoliciesModule,
+  ContentCoreModule,
+  MailsModule,
   ConfigUserPermissionsService,
   UserPermissionsServiceInjectionToken,
   UserPermissionsServiceProvider,
-} from '@lyvely/permissions';
-import { I18nModule, I18nModuleLoader } from '@lyvely/i18n';
+  I18nModule,
+  I18nModuleLoader,
+  UserAccountsModule,
+  CaptchaModule,
+  ReverseProxyThrottlerGuard,
+  AvatarsModule,
+  LiveModule,
+  NotificationsModule,
+  FeatureModule,
+  UserInvitationsModule,
+  SystemMessagesModule,
+} from '@lyvely/core';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { MongooseModule } from '@nestjs/mongoose';
+import path from 'path';
 import { I18nModule as NestjsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
-import { AccountModule } from '@lyvely/user-accounts';
-import { CaptchaModule } from '@lyvely/captchas';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { ReverseProxyThrottlerGuard } from '@lyvely/throttler';
 import { MulterModule } from '@nestjs/platform-express';
-import { AvatarsModule } from '@lyvely/avatars';
-import { LiveModule } from '@lyvely/live';
 import { BullModule } from '@nestjs/bullmq';
-import { NotificationsModule } from '@lyvely/notifications';
-import { FeatureModule } from '@lyvely/features';
-import { InvitationsModule } from '@lyvely/user-invitations';
-import { SystemMessagesModule } from '@lyvely/system-messages';
 
 type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -108,18 +110,6 @@ export class AppModuleBuilder {
       .initRecommendedModules();
   }
 
-  private initQueueModule() {
-    return this.importModules(
-      BullModule.forRootAsync({
-        imports: [ConfigModule],
-        inject: [ConfigService],
-        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
-          return { connection: configService.get('redis') };
-        },
-      }),
-    );
-  }
-
   private initCoreModules() {
     return this.importModules(
       EventEmitterModule.forRoot({ wildcard: true }),
@@ -143,6 +133,25 @@ export class AppModuleBuilder {
     );
   }
 
+  private initCoreProviders() {
+    const providers = Object.keys(defaultProviders)
+      .map((token) => getProvider(this.options, token))
+      .filter((provider) => !!provider);
+    return this.useProviders(...providers);
+  }
+
+  private initQueueModule() {
+    return this.importModules(
+      BullModule.forRootAsync({
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: async (configService: ConfigService<ConfigurationPath>) => {
+          return { connection: configService.get('redis') };
+        },
+      }),
+    );
+  }
+
   private initUploadModules() {
     return this.importModules(
       MulterModule.registerAsync({
@@ -157,13 +166,6 @@ export class AppModuleBuilder {
           },
       }),
     );
-  }
-
-  private initCoreProviders() {
-    const providers = Object.keys(defaultProviders)
-      .map((token) => getProvider(this.options, token))
-      .filter((provider) => !!provider);
-    return this.useProviders(...providers);
   }
 
   private initServeStaticModule() {
@@ -240,13 +242,13 @@ export class AppModuleBuilder {
 
     return this.importModules(
       ProfilesModule,
-      UserRegistrationModule,
+      UserRegistrationsModule,
       ContentCoreModule,
       MessageModule,
       SystemMessagesModule,
-      AccountModule,
+      UserAccountsModule,
       AvatarsModule,
-      InvitationsModule,
+      UserInvitationsModule,
     );
   }
 

@@ -3,7 +3,7 @@ import {
   ContentReadPolicy,
   ContentTypeController,
   ProfileContentRequest,
-} from '@lyvely/content';
+} from '@lyvely/core';
 import { Milestone } from '../schemas';
 import {
   CreateMilestoneModel,
@@ -16,8 +16,8 @@ import {
 } from '@lyvely/milestones-interface';
 import { MilestonesService, MilestonesCalendarPlanService } from '../services';
 import { Get, Inject, Request } from '@nestjs/common';
-import { Policies } from '@lyvely/policies';
-import { ProfileRequest } from '@lyvely/profiles';
+import { Policies } from '@lyvely/core';
+import { ProfileRequest } from '@lyvely/core';
 
 @ContentTypeController(ENDPOINT_MILESTONES, MilestoneModel.contentType)
 export class MilestonesController

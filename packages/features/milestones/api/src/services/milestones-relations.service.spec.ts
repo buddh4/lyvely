@@ -1,4 +1,4 @@
-import { ProfileTestDataUtils, profilesTestPlugin } from '@lyvely/profiles';
+import { ProfileTestDataUtils, profilesTestPlugin } from '@lyvely/core';
 import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import {
   Content,
@@ -7,11 +7,11 @@ import {
   ContentType,
   ContentModel,
   contentTestPlugin,
-} from '@lyvely/content';
+} from '@lyvely/core';
 import mongoose, { Model } from 'mongoose';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
-import { User } from '@lyvely/users';
+import { User } from '@lyvely/core';
 import { CalendarInterval, formatDate } from '@lyvely/dates';
 import { MilestoneRelationModel } from '@lyvely/milestones-interface';
 import { INestApplication, Injectable } from '@nestjs/common';

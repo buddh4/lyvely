@@ -1,6 +1,6 @@
 import { Global } from '@nestjs/common';
 import { I18n } from './components';
-import { LyvelyModule } from '@lyvely/core';
+import { LyvelyModule } from '@/core';
 
 @Global()
 @LyvelyModule({

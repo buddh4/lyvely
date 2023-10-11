@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "title": "Tasks",
+    "name": "Task",
+    "stream_entry": {
+      "text": "New task"
+    },
+    "create" : {
+      "title": "Create task"
+    },
+    "edit" : {
+      "title": "Edit task"
+    },
+    "buttons": {
+      "close": "Close task",
+      "open": "Reopen task"
+    }
+  }
+}

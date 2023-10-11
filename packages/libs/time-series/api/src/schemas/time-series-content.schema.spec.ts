@@ -1,6 +1,12 @@
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { INestApplication } from '@nestjs/common';
-import { Content, ContentSchema, contentTestPlugin } from '@lyvely/content';
+import {
+  Content,
+  ContentSchema,
+  contentTestPlugin,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+} from '@lyvely/core';
 import {
   TestTimeSeriesContent,
   TestTimeSeriesContentDocument,
@@ -15,7 +21,6 @@ import {
   DataPointConfigFactory,
   RangeNumberDataPointConfig,
 } from '../index';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 
 const ContentModels = [
   {

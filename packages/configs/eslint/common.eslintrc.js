@@ -30,13 +30,13 @@ module.exports = {
     },
   },
   rules: {
-    '@nx/enforce-module-boundaries': [
+    /*'@nx/enforce-module-boundaries': [
       'error',
       {
         allow: [],
         banTransitiveDependencies: true,
       },
-    ],
+    ],*/
     '@typescript-eslint/naming-convention': [
       'warn',
       {
@@ -62,5 +62,5 @@ module.exports = {
     'multiline-ternary': ['error', 'always-multiline'],
     'function-call-argument-newline': ['error', 'consistent'],
   },
-  ignorePatterns: ['.eslintrc.js', '*.d.ts'],
+  ignorePatterns: ['.eslintrc.js', '*.d.ts', 'gulp.js'],
 };

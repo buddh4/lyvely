@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { I18nService } from 'nestjs-i18n';
 import { I18nConfigPath, Translatable } from '../interfaces';
-import { User } from '@lyvely/users';
+import { User } from '@/users';
 
 const availableLocales = ['en-US', 'de-DE'];
 const localeNames = {

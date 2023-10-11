@@ -1,13 +1,13 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Task, TaskScore } from '../schemas';
-import { Profile } from '@lyvely/profiles';
+import { Profile } from '@lyvely/core';
 import { CalendarDate, toTimingId } from '@lyvely/dates';
 import { Timer } from '@lyvely/timers';
 import { CreateTaskModel, UpdateTaskModel } from '@lyvely/tasks-interface';
 import { UserAssignmentStrategy } from '@lyvely/common';
-import { User } from '@lyvely/users';
+import { User } from '@lyvely/core';
 import { TasksDao } from '../daos';
-import { ContentTypeService, ContentScoreService } from '@lyvely/content';
+import { ContentTypeService, ContentScoreService } from '@lyvely/core';
 import { assureObjectId, EntityIdentity } from '@lyvely/core';
 
 @Injectable()

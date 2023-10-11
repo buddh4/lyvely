@@ -4,7 +4,7 @@ import { CalendarInterval } from '@lyvely/dates';
 import { TimerModel } from '@lyvely/timers-interface';
 import { UpdateTaskModel } from './update-task.model';
 import { ITaskConfig } from '../interfaces';
-import { ContentModel } from '@lyvely/content-interface';
+import { ContentModel } from '@lyvely/core-interface';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 
 @Exclude()

@@ -9,10 +9,16 @@ import {
   TestTimeSeriesContentSchema,
   TestTimerDataPointService,
 } from '../testing';
-import { Content, ContentSchema, contentTestPlugin } from '@lyvely/content';
+import {
+  Profile,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+  User,
+  Content,
+  ContentSchema,
+  contentTestPlugin,
+} from '@lyvely/core';
 import { Model } from 'mongoose';
-import { User } from '@lyvely/users';
-import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 
 const Models = [
   {

@@ -3,7 +3,7 @@ import { IEditableModel } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { UpdateMilestoneModel } from './update-milestone.model';
 import { IMilestoneConfig } from '../interfaces';
-import { ContentModel } from '@lyvely/content-interface';
+import { ContentModel } from '@lyvely/core-interface';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 
 @Exclude()

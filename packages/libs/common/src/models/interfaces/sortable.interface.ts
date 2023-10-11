@@ -2,9 +2,11 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { PropertyType } from '../decorators';
 import { BaseModel } from '../base.model';
 
-export interface ISortable {
-  getSortOrder(): number | undefined;
-}
+export type ISortable =
+  | {
+      getSortOrder(): number | undefined;
+    }
+  | { sortOrder?: number };
 
 @Exclude()
 export class SortResult extends BaseModel<SortResult> {
@@ -22,9 +24,17 @@ export class SortResponse extends BaseModel<SortResponse> {
   sort: SortResult[];
 }
 
+export function getSortOrder(obj: any) {
+  if ('sortOrder' in obj) return obj.sortOrder;
+  if (typeof obj.getSortOrder === 'function') return obj.getSortOrder();
+  return Number.MAX_VALUE;
+}
+
 export function sortBySortOrder(a: ISortable, b: ISortable) {
-  if (a.getSortOrder() === b.getSortOrder()) return 0;
-  if (typeof a.getSortOrder() === 'undefined') return 1;
-  if (typeof b.getSortOrder() === 'undefined') return -1;
-  return (a.getSortOrder() || 0) - (b.getSortOrder() || 0);
+  const aSortOrder = getSortOrder(a);
+  const bSortOrder = getSortOrder(b);
+  if (aSortOrder === bSortOrder) return 0;
+  if (typeof aSortOrder === 'undefined') return 1;
+  if (typeof bSortOrder === 'undefined') return -1;
+  return (aSortOrder || 0) - (bSortOrder || 0);
 }

@@ -3,7 +3,7 @@ import {
   ContentWritePolicy,
   ProfileContentRequest,
   ProfileUserContentRequest,
-} from '@lyvely/content';
+} from '@lyvely/core';
 import { Milestone } from '../schemas';
 import {
   MilestoneModel,
@@ -16,8 +16,8 @@ import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-inte
 import { SortResponse } from '@lyvely/common';
 import { MilestonesService, MilestonesCalendarPlanService } from '../services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
-import { ProfileRequest } from '@lyvely/profiles';
-import { Policies } from '@lyvely/policies';
+import { ProfileRequest } from '@lyvely/core';
+import { Policies } from '@lyvely/core';
 
 @ContentTypeController(ENDPOINT_MILESTONE_PLAN, MilestoneModel.contentType)
 export class MilestonePlanController implements MilestonePlanEndpoint {

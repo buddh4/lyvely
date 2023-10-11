@@ -1,7 +1,7 @@
 {
-  "name": "@lyvely/app-config-interface",
+  "name": "@lyvely/core-interface",
   "version": "0.1.0-alpha3",
-  "description": "Lyvely app-config interface",
+  "description": "Lyvely core interface",
   "type": "commonjs",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",

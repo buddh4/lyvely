@@ -1,11 +1,11 @@
-import { ProfileRequest } from '@lyvely/profiles';
+import { ProfileRequest } from '@lyvely/core';
 import {
   AbstractContentTypeController,
   ContentTypeController,
   ContentWritePolicy,
   ProfileContentRequest,
   ProfileUserContentRequest,
-} from '@lyvely/content';
+} from '@lyvely/core';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import {
   ENDPOINT_JOURNALS,
@@ -24,7 +24,7 @@ import { SortResponse } from '@lyvely/common';
 import { UseClassSerializer } from '@lyvely/core';
 import { JournalTimeSeriesService, JournalDataPointService, JournalsService } from '../services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
-import { Policies } from '@lyvely/policies';
+import { Policies } from '@lyvely/core';
 import { Journal } from '../schemas';
 
 @ContentTypeController(ENDPOINT_JOURNALS, Journal)

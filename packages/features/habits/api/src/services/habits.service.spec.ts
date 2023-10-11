@@ -3,12 +3,10 @@ import { PropertiesOf, UserAssignmentStrategy } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { DataPointValueType, DataPointInputType } from '@lyvely/time-series';
 import { UpdateHabitModel, CreateHabitModel } from '@lyvely/habits-interface';
-import { Profile } from '@lyvely/profiles';
+import { User, Profile, assureStringId } from '@lyvely/core';
 import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
-import { User } from '@lyvely/users';
 import { Habit } from '../schemas';
-import { assureStringId } from '@lyvely/core';
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 
 describe('HabitService', () => {

@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from '@lyvely/users';
 import { HabitsController } from './controllers';
 import {
   HabitDataPointService,
@@ -9,14 +8,15 @@ import {
   HabitDataPointTimerService,
 } from './services';
 import {
+  UsersModule,
+  CoreModule,
   ContentModule,
   getContentModelDefinition,
   getContentScoreDefinition,
-} from '@lyvely/content';
-import { ProfilesModule } from '@lyvely/profiles';
-import { PoliciesModule } from '@lyvely/policies';
+  PoliciesModule,
+  ProfilesModule,
+} from '@lyvely/core';
 import { HabitDataPointDao, HabitsDao } from './daos';
-import { CoreModule } from '@lyvely/core';
 import { getDataPointModelDefinition, DataPointValueType } from '@lyvely/time-series';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from './schemas';
 

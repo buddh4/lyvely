@@ -3,12 +3,12 @@ import { Task, UserDone } from '../schemas';
 import { assureObjectId, EntityIdentity, IFetchQueryOptions } from '@lyvely/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { OptionalUser, User } from '@lyvely/users';
-import { Profile, ProfileType } from '@lyvely/profiles';
+import { OptionalUser, User } from '@lyvely/core';
+import { Profile, ProfileType } from '@lyvely/core';
 import { Timer } from '@lyvely/timers';
 import { UserAssignmentStrategy } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
-import { ContentTypeDao } from '@lyvely/content';
+import { ContentTypeDao } from '@lyvely/core';
 import { ICalendarPlanDao } from '@lyvely/calendar-plan';
 
 @Injectable()

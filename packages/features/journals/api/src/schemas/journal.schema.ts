@@ -17,11 +17,11 @@ import {
   ITimeSeriesContentConfig,
 } from '@lyvely/time-series';
 import { CreateJournalModel, JournalModel, UpdateJournalModel } from '@lyvely/journals-interface';
-import { User } from '@lyvely/users';
+import { User } from '@lyvely/core';
 import { PropertiesOf } from '@lyvely/common';
 import { assureObjectId, NestedSchema } from '@lyvely/core';
-import { Profile } from '@lyvely/profiles';
-import { ContentDataType } from '@lyvely/content';
+import { Profile } from '@lyvely/core';
+import { ContentDataType } from '@lyvely/core';
 import { Types } from 'mongoose';
 
 type JournalDataPointConfig =

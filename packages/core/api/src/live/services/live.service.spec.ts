@@ -1,9 +1,9 @@
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
+import { buildTest, LyvelyTestingModule } from '@/testing';
+import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
 import { LiveService } from './live.service';
-import { assureStringId } from '@lyvely/core';
+import { assureStringId } from '@/core';
 import { firstValueFrom } from 'rxjs';
-import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/live-interface';
+import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/core-interface';
 
 describe('LiveService', () => {
   let testingModule: LyvelyTestingModule;

@@ -29,6 +29,8 @@
   },
   "dependencies": {
     "@storybook/addon-controls": "^7.0.20",
+    "@lyvely/common": "^0.1.0-alpha3",
+    "@lyvely/dates": "^0.1.0-alpha3",
     "@vueuse/core": "^10.1.2",
     "randomcolor": "^0.6.2",
     "slugify": "^1.6.6",
@@ -46,7 +48,9 @@
     "@storybook/vue3": "^7.0.20",
     "@storybook/vue3-vite": "^7.0.20",
     "@types/zxcvbn": "^4.4.1",
+    "@tailwindcss/typography": "^0.5.10",
     "@vitejs/plugin-vue": "^4.2.3",
+    "@types/randomcolor": "^0.5.7",
     "@vue/compiler-sfc": "^3.3.4",
     "autoprefixer": "^10.4.14",
     "lodash": "^4.17.21",

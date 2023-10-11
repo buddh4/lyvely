@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Profile } from '@lyvely/profiles';
+import { Profile } from '@lyvely/core';
 import {
   UserAssignmentStrategy,
   PropertiesOf,
@@ -17,9 +17,9 @@ import {
   UserDoneModel,
 } from '@lyvely/tasks-interface';
 import { Types } from 'mongoose';
-import { User } from '@lyvely/users';
+import { User } from '@lyvely/core';
 import { assureObjectId, EntityIdentity, NestedSchema, ObjectIdProp } from '@lyvely/core';
-import { ContentDataType, ContentType } from '@lyvely/content';
+import { ContentDataType, ContentType } from '@lyvely/core';
 
 @Schema({ _id: false })
 export class UserDone implements UserDoneModel<Types.ObjectId> {

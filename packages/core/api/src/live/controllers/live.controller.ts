@@ -1,5 +1,5 @@
 import { Controller, Sse, Req } from '@nestjs/common';
-import { UserRequest } from '@lyvely/users';
+import { UserRequest } from '@/users';
 import { LiveService } from '../services';
 
 @Controller('/live')

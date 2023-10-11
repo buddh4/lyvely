@@ -1,6 +1,6 @@
 import { Endpoint } from '@lyvely/common';
 import { ITimeSeriesCalendarPlanService, TimerDataPointModel } from '@lyvely/time-series-interface';
-import { IContentTypeService } from '@lyvely/content-interface';
+import { IContentTypeService } from '@lyvely/core-interface';
 import {
   HabitModel,
   UpdateHabitModel,

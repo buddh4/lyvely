@@ -1,5 +1,5 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ContentScore } from '@lyvely/content';
+import { ContentScore } from '@lyvely/core';
 
 @Schema({ timestamps: true })
 export class TaskScore extends ContentScore {}

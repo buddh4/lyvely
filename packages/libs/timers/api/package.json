@@ -23,7 +23,6 @@
     "@lyvely/core": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3",
-    "@lyvely/users": "^0.1.0-alpha3",
     "mongoose": "^6.0.2 || ^7.0.0"
   },
   "devDependencies": {

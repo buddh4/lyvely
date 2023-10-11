@@ -15,10 +15,16 @@ import {
   TestTimeSeriesService,
   TestTimeSeriesContentDao,
 } from '../testing';
-import { Content, ContentSchema, contentTestPlugin } from '@lyvely/content';
+import {
+  User,
+  Content,
+  ContentSchema,
+  contentTestPlugin,
+  Profile,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+} from '@lyvely/core';
 import { Model } from 'mongoose';
-import { User } from '@lyvely/users';
-import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/profiles';
 
 const Models = [
   {

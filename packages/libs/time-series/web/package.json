@@ -1,0 +1,41 @@
+{
+  "name": "@lyvely/time-series-web",
+  "version": "0.1.0-alpha3",
+  "description": "time-series-web package",
+  "module": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "vite build && vue-tsc -p tsconfig.build.json -declaration --emitDeclarationOnly",
+    "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
+    "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
+    "format": "prettier .  --write"
+  },
+  "author": "Julian Harrer",
+  "dependencies": {
+    "vue": "^3.3.4",
+    "vue-i18n": "^9.2.2",
+    "@vueuse/core": "^10.1.2",
+    "pinia": "^2.0.35",
+    "mitt": "^3.0.0",
+    "@lyvely/core-interface": "^0.1.0-alpha3",
+    "@lyvely/ui": "^0.1.0-alpha3",
+    "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
+    "@lyvely/common": "^0.1.0-alpha3",
+    "@lyvely/dates": "^0.1.0-alpha3",
+    "nprogress": "^0.2.0",
+    "axios": "^1.4.0",
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "@intlify/unplugin-vue-i18n": "^0.10.0",
+    "@lyvely/configs": "^0.1.0-alpha3",
+    "rollup-plugin-node-externals": "^6.1.2",
+    "vite-plugin-externalize-deps": "^0.7.0",
+    "vite": "^4.3.9",
+    "vite-plugin-pwa": "^0.14.7",
+    "vite-tsconfig-paths": "^4.2.0",
+    "vue-tsc": "^1.6.5"
+  }
+}

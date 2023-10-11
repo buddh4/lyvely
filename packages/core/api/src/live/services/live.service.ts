@@ -2,10 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
-import { assureStringId, ConfigurationPath, EntityIdentity, OperationMode } from '@lyvely/core';
-import { User } from '@lyvely/users';
-import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/live-interface';
-import { Profile, ProfilesService } from '@lyvely/profiles';
+import { assureStringId, ConfigurationPath, EntityIdentity, OperationMode } from '@/core';
+import { User } from '@/users';
+import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/core-interface';
+import { Profile, ProfilesService } from '@/profiles';
 
 @Injectable()
 export class LiveService {

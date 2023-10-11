@@ -6,10 +6,9 @@ import {
   ITimeSeriesSummary,
   ITimeSeriesSummaryWindowEntry,
 } from '@lyvely/time-series-interface';
-import { ContentEntity, ContentType } from '@lyvely/content';
+import { ContentEntity, ContentType, NestedSchema } from '@lyvely/core';
 import { DataPointConfigFactory } from './data-point-config.factory';
 import { DataPointConfig, DefaultDataPointConfig } from './config/data-point-config.schema';
-import { NestedSchema } from '@lyvely/core';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 

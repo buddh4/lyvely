@@ -4,6 +4,7 @@ export * from './controllers';
 export * from './db';
 export * from './decorators';
 export * from './filters';
+export * from './guards';
 export * from './services';
 export * from './interfaces';
 export * from './core.module';

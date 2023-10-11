@@ -9,14 +9,12 @@ import {
   TimerDataPointConfig,
 } from '../';
 import mongoose from 'mongoose';
-import { ContentModel, IContent } from '@lyvely/content';
+import { NestedSchema, User, ContentModel, IContent } from '@lyvely/core';
 import {
   DataPointInputType,
   ITimeSeriesContentConfig,
   DataPointValueType,
 } from '@lyvely/time-series-interface';
-import { User } from '@lyvely/users';
-import { NestedSchema } from '@lyvely/core';
 
 type TestDataPointConfig =
   | CheckboxNumberDataPointConfig

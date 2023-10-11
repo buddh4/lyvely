@@ -1,4 +1,4 @@
-import { ContentFilter, IContentFilterOptions } from '@lyvely/content-interface';
+import { ContentFilter, IContentFilterOptions } from '@lyvely/core-interface';
 import { MilestoneModel } from './milestone.model';
 
 export interface IMilestoneFilterOptions extends IContentFilterOptions {}

@@ -4,8 +4,8 @@ import { UserAssignmentStrategy } from '@lyvely/common';
 import { TasksService } from './tasks.service';
 import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';
-import { Profile } from '@lyvely/profiles';
-import { User } from '@lyvely/users';
+import { Profile } from '@lyvely/core';
+import { User } from '@lyvely/core';
 import { Task } from '../schemas';
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 

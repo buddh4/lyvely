@@ -7,7 +7,7 @@ import {
   TimeSeriesContentModel,
 } from '../index';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
-import { IContentMetadata } from '@lyvely/content-interface';
+import { IContentMetadata } from '@lyvely/core-interface';
 
 describe('TimeSeriesStore', () => {
   describe('createDataPoint', () => {

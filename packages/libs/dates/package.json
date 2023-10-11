@@ -22,7 +22,6 @@
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
   "dependencies": {
-    "@lyvely/common": "^0.1.0-alpha3",
     "dayjs": "^1.11.10",
     "class-validator": "^0.14.0",
     "class-transformer": "^0.5.1"

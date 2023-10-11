@@ -1,9 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { User } from '@lyvely/users';
-import { PropertiesOf, PropertyType } from '@lyvely/common';
+import {
+  assureObjectId,
+  NestedSchema,
+  User,
+  PropertiesOf,
+  PropertyType,
+  Profile,
+  ContentDocument,
+  ContentDataType,
+} from '@lyvely/core';
 import { HabitModel, CreateHabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
-import { Profile } from '@lyvely/profiles';
-import { ContentDocument, ContentDataType } from '@lyvely/content';
 import {
   DataPointInputType,
   DataPointValueType,
@@ -18,7 +24,6 @@ import {
   TimeSeriesContent,
   TimerDataPointConfig,
 } from '@lyvely/time-series';
-import { assureObjectId, NestedSchema } from '@lyvely/core';
 import { Types } from 'mongoose';
 
 export type HabitDocument = Habit & ContentDocument;

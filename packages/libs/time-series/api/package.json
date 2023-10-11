@@ -22,13 +22,10 @@
     "@nestjs/mongoose": "^9.2.2",
     "@lyvely/core": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/users": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
-    "@lyvely/profiles": "^0.1.0-alpha3",
     "@lyvely/timers": "^0.1.0-alpha3",
     "@lyvely/calendar-plan": "^0.1.0-alpha3",
     "@lyvely/time-series-interface": "^0.1.0-alpha3",
-    "@lyvely/content": "^0.1.0-alpha3",
     "reflect-metadata": "0.1.13",
     "mongoose": "^7.5.4",
     "lodash": "^4.17.21"

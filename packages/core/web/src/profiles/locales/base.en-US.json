@@ -1,0 +1,76 @@
+{
+  "profiles": {
+    "labels": {
+      "organizations": "Organizations",
+      "profiles": "Profiles"
+    },
+    "roles": {
+      "owner": "owner",
+      "member": "member",
+      "moderator": "moderator",
+      "admin": "administrator"
+    },
+    "messages": {
+      "no-organization-relation": "You are not a member of any organization."
+    },
+    "users": {
+      "title": "Profile Users",
+      "label": "Users"
+    },
+    "settings": {
+      "membership": {
+        "title": "My membership",
+        "label": "Membership",
+        "displayName": "My display name in this profile",
+        "description": "My user description in this profile",
+        "archive": "Archive Membership",
+        "your_role": "You are {role} of this profile."
+      },
+      "general": {
+        "name": "Profile Name",
+        "label": "Profile"
+      },
+      "archive": {
+        "confirm": "Do you really want to archive this profile?"
+      },
+      "title": "Profile Settings",
+      "name": "Name",
+      "description": "Description",
+      "rename": "Rename",
+      "label": "Settings"
+    },
+    "usage": {
+      "private": "Private",
+      "family": "Family",
+      "business": "Business",
+      "school": "School",
+      "health": "Health",
+      "improvement": "Self-Improvement"
+    },
+    "invite": {
+      "title": "Send invites",
+      "email": "Add emails",
+      "email-invalid": "The given email is not valid.",
+      "email-empty": "Please select at least one email",
+      "email-help": "Add multiple comma seperated emails"
+    },
+    "create": {
+      "title": "Create Profile",
+      "placeholders": {
+        "usage": "What is the purpose of this profile?"
+      },
+      "properties": {
+        "name": "Name",
+        "description": "Description",
+        "user": "Just for me",
+        "group": "For me and invited users"
+      }
+    },
+    "aria": {
+      "sidebar": "Navigation of profile {profile}"
+    },
+    "intro": {
+      "private_first": "Great job! You've  successfully created your first private profile. In the stream section, you can easily jot down notes, links, and other types of content. When you click on a content entry, you'll be able to view more details and even create sub-entries for more organization and clarity."
+    }
+  }
+}

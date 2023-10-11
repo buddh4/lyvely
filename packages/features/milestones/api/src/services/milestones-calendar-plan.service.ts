@@ -1,11 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Milestone } from '../schemas';
-import { Profile } from '@lyvely/profiles';
+import { Profile } from '@lyvely/core';
 import { CalendarInterval } from '@lyvely/dates';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { MilestonesDao } from '../daos';
-import { User } from '@lyvely/users';
-import { ContentCondition } from '@lyvely/content';
+import { User } from '@lyvely/core';
+import { ContentCondition } from '@lyvely/core';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { isDefined } from 'class-validator';
 import { DBQuery } from '@lyvely/core';

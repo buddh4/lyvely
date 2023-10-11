@@ -1,0 +1,11 @@
+{
+  "invitations": {
+    "account": {
+      "title": "Send Invite",
+      "success": "Invitations sent!"
+    },
+    "errors": {
+      "email-invalid": "The email you just entered seems to be invalid."
+    }
+  }
+}

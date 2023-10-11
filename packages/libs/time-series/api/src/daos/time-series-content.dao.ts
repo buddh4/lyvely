@@ -1,8 +1,5 @@
-import { Profile } from '@lyvely/profiles';
-import { User } from '@lyvely/users';
-import { IFetchQueryOptions } from '@lyvely/core';
+import { Profile, User, ContentTypeDao, IFetchQueryOptions } from '@lyvely/core';
 import { TimeSeriesContent } from '../schemas';
-import { ContentTypeDao } from '@lyvely/content';
 import { CalendarInterval } from '@lyvely/dates';
 
 export abstract class TimeSeriesContentDao<

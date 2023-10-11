@@ -5,7 +5,7 @@ import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { merge } from 'lodash';
 import { OnEvent } from '@nestjs/event-emitter';
-import { EVENT_MODULE_REGISTRATION, IModuleMetadata, ModuleRegistry } from '@lyvely/core';
+import { EVENT_MODULE_REGISTRATION, IModuleMetadata, ModuleRegistry } from '@/core';
 import { ConfigService } from '@nestjs/config';
 import { I18nConfigPath } from '../interfaces';
 

@@ -1,8 +1,6 @@
-import { Profile } from '@lyvely/profiles';
-import { User } from '@lyvely/users';
 import { IntegrityException, SortResult } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
-import { assureObjectId, EntityIdentity, QuerySort } from '@lyvely/core';
+import { assureObjectId, EntityIdentity, QuerySort, Profile, User } from '@lyvely/core';
 import { ICalendarPlanDao, CalendarPlanEntity } from '../interfaces';
 import { CalendarPlanService } from './calendar-plan.service';
 

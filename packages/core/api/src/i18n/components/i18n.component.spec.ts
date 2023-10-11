@@ -1,4 +1,4 @@
-import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
+import { buildTest, LyvelyTestingModule } from '@/testing';
 import { I18n } from './';
 import { i18nTestPlugin } from '../testing';
 

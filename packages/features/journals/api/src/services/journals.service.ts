@@ -1,10 +1,10 @@
-import { ContentTypeService } from '@lyvely/content';
+import { ContentTypeService } from '@lyvely/core';
 import { Journal } from '../schemas';
 import { CreateJournalModel } from '@lyvely/journals-interface';
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { JournalsDao } from '../daos';
-import { Profile } from '@lyvely/profiles';
-import { User } from '@lyvely/users';
+import { Profile } from '@lyvely/core';
+import { User } from '@lyvely/core';
 import { UpdateQuerySet } from '@lyvely/core';
 
 @Injectable()

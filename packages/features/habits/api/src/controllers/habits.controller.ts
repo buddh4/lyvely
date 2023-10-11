@@ -21,14 +21,14 @@ import { SortResponse } from '@lyvely/common';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { HabitsService, HabitTimeSeriesService, HabitDataPointTimerService } from '../services';
 import {
+  Policies,
   ContentTypeController,
   ContentWritePolicy,
   AbstractContentTypeController,
   ProfileUserContentRequest,
-} from '@lyvely/content';
-import { Policies } from '@lyvely/policies';
-import { UseClassSerializer } from '@lyvely/core';
-import { ProfileRequest } from '@lyvely/profiles';
+  UseClassSerializer,
+  ProfileRequest,
+} from '@lyvely/core';
 
 @ContentTypeController('habits', Habit)
 // TODO: implement feature registration @Feature('habits')

@@ -1,4 +1,3 @@
-import { User } from '@lyvely/users';
 import { CalendarDate, toDate, toTimingId } from '@lyvely/dates';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import {
@@ -7,8 +6,7 @@ import {
 } from '@lyvely/time-series-interface';
 import { UserAssignmentStrategy } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
-import { Profile, ProfilesService } from '@lyvely/profiles';
-import { EntityIdentity } from '@lyvely/core';
+import { User, EntityIdentity, Profile, ProfilesService } from '@lyvely/core';
 import { DataPointStrategyDao } from '../daos';
 import { Inject } from '@nestjs/common';
 import { useDataPointStrategyRegistry } from '../strategies';

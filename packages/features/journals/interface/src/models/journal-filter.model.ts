@@ -1,5 +1,5 @@
 import { JournalModel } from './journal.model';
-import { ContentFilter, IContentFilterOptions } from '@lyvely/content-interface';
+import { ContentFilter, IContentFilterOptions } from '@lyvely/core-interface';
 
 export interface IJournalFilterOptions extends IContentFilterOptions {}
 

@@ -1,5 +1,5 @@
-import { ContentType } from '@lyvely/content';
-import { User } from '@lyvely/users';
+import { ContentType } from '@lyvely/core';
+import { User } from '@lyvely/core';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
 import { IMilestoneConfig, MilestoneModel } from '@lyvely/milestones-interface';

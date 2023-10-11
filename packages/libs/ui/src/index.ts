@@ -103,6 +103,8 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
 
 export type { IConfirmOptions } from './components/modals/interfaces';
 
+export * from './types';
+
 export {
   createLyvelyUi,
   Icons,

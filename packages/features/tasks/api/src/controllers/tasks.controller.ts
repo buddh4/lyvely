@@ -28,9 +28,9 @@ import {
   ContentTypeController,
   ContentWritePolicy,
   ProfileUserContentRequest,
-} from '@lyvely/content';
-import { Policies } from '@lyvely/policies';
-import { ProfileRequest } from '@lyvely/profiles';
+} from '@lyvely/core';
+import { Policies } from '@lyvely/core';
+import { ProfileRequest } from '@lyvely/core';
 
 @ContentTypeController('tasks', Task)
 // TODO: implement feature registration @Feature('tasks')

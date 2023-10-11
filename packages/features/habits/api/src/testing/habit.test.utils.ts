@@ -1,6 +1,5 @@
 import { Injectable, Provider } from '@nestjs/common';
-import { User } from '@lyvely/users';
-import { Profile, ProfileTestDataUtils } from '@lyvely/profiles';
+import { User, Profile, ProfileTestDataUtils } from '@lyvely/core';
 import { Habit, HabitDocument, HabitSchema, HabitScore, HabitScoreSchema } from '../schemas';
 import { toTimingId, CalendarDate, CalendarInterval, toDate } from '@lyvely/dates';
 import { CreateHabitModel } from '@lyvely/habits-interface';

@@ -1,9 +1,7 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Habit } from '../schemas';
-import { ContentTypeService } from '@lyvely/content';
+import { ContentTypeService, Profile, User } from '@lyvely/core';
 import { HabitsDao } from '../daos';
-import { Profile } from '@lyvely/profiles';
-import { User } from '@lyvely/users';
 import { CreateHabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
 
 @Injectable()

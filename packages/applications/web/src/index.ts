@@ -1,1 +1,1 @@
-export * from './lyvely.app';
+export * from './lyvely-web.app';

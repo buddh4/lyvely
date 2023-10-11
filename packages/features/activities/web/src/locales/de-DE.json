@@ -1,0 +1,16 @@
+{
+  "activities": {
+    "labels": {
+      "main_nav": "Activities"
+    },
+    "habits": {
+      "title": "Activities"
+    },
+    "tasks": {
+      "title": "Tasks"
+    },
+    "milestones": {
+      "title": "Milestones"
+    }
+  }
+}

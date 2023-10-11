@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import '@lyvely/ui/style.css';
-import { LyvelyApp } from '@/lyvely.app';
-import AppComponent from '@/App.vue';
-import { createApp } from 'vue';
+import { LyvelyWebApp } from '@lyvely/web';
 import { registerSW } from 'virtual:pwa-register';
-import { createLyvelyUi } from '@lyvely/ui';
 
-const app = new LyvelyApp();
+const app = new LyvelyWebApp({
+  // import: () => import.meta.glob<Promise<IModuleImport>>('../../../features/**/web/module.ts'),
+});
+
 app.init().then(() => app.mount('#app'));
 
 const updateSW = registerSW({
@@ -17,8 +17,3 @@ const updateSW = registerSW({
     app.events.emit('app.offline.ready');
   },
 });
-
-function justForWebstorm() {
-  const vueApp = createApp(AppComponent);
-  vueApp.use(createLyvelyUi());
-}

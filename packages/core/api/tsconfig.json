@@ -1,3 +1,9 @@
 {
-  "extends": "../../../configs/typescript/api.tsconfig.json"
+  "extends": "../../configs/typescript/api.tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "baseUrl": "./"
+  }
 }

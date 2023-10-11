@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from '@lyvely/users';
-import { ProfilesModule } from '@lyvely/profiles';
-import { ContentModule, getContentModelDefinition } from '@lyvely/content';
+import { UsersModule } from '@lyvely/core';
+import { ProfilesModule } from '@lyvely/core';
+import { ContentModule, getContentModelDefinition } from '@lyvely/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Journal, JournalSchema } from './schemas';
 import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-series';

@@ -1,0 +1,12 @@
+{
+  "activities": {
+    "labels": {
+      "main_nav": "Activities"
+    },
+    "fields": {
+      "title": "Title",
+      "interval": "Plan",
+      "text": "Description"
+    }
+  }
+}

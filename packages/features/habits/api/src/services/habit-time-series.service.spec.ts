@@ -1,10 +1,9 @@
 import { sortBySortOrder } from '@lyvely/common';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { CalendarInterval } from '@lyvely/dates';
-import { Profile } from '@lyvely/profiles';
+import { User, Profile } from '@lyvely/core';
 import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitDataPointDao, HabitsDao } from '../daos';
-import { User } from '@lyvely/users';
 import { HabitDataPointService } from './habit-data-point.service';
 import { HabitsService } from './habits.service';
 import { Habit } from '../schemas';

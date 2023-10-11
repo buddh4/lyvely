@@ -15,9 +15,7 @@ import {
   toTimingId,
 } from '@lyvely/dates';
 import { TestDataPointDao, TestTimeSeriesContent } from '../testing';
-import { Profile, profilesTestPlugin } from '@lyvely/profiles';
-import { User } from '@lyvely/users';
-import { contentTestPlugin } from '@lyvely/content';
+import { Profile, profilesTestPlugin, User, contentTestPlugin } from '@lyvely/core';
 
 const DataPointModelDefinition = [
   getDataPointModelDefinition(TestTimeSeriesContent.name, [DataPointValueType.Number]),

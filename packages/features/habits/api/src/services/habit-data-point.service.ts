@@ -7,10 +7,8 @@ import {
   DataPointValueType,
 } from '@lyvely/time-series';
 import { HabitDataPointDao } from '../daos';
-import { ContentScoreService } from '@lyvely/content';
+import { ContentScoreService, Profile, User } from '@lyvely/core';
 import { isDefined } from 'class-validator';
-import { User } from '@lyvely/users';
-import { Profile } from '@lyvely/profiles';
 
 @Injectable()
 export class HabitDataPointService extends DataPointService<Habit> {

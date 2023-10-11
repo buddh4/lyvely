@@ -1,7 +1,7 @@
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { Model } from 'mongoose';
 import { NumberDataPoint, NumberDataPointSchema } from '../index';
-import { profilesTestPlugin } from '@lyvely/profiles';
+import { profilesTestPlugin } from '@lyvely/core';
 
 const DataPointModelDefinition = [
   { name: NumberDataPoint.name, collection: 'testDataPoints', schema: NumberDataPointSchema },

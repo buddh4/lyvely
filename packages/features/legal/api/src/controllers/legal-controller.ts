@@ -2,7 +2,7 @@ import { Controller, Get, Param, Headers, Req, NotFoundException } from '@nestjs
 import { LegalEndpoint, LegalSectionDetails, ENDPOINT_LEGAL } from '@lyvely/legal-interface';
 import { LegalService } from '../services';
 import { Public } from '@lyvely/core';
-import { OptionalUserRequest } from '@lyvely/users/src';
+import { OptionalUserRequest } from '@lyvely/core';
 
 @Controller(ENDPOINT_LEGAL)
 export class LegalController implements LegalEndpoint {

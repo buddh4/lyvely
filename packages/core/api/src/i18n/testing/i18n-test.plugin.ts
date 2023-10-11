@@ -1,4 +1,4 @@
-import { TestPlugin } from '@lyvely/testing';
+import { TestPlugin } from '@/testing';
 import { I18nModule as NestJsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import { I18nModule } from '../i18n.module';
 import { I18nModuleLoader } from '../loaders/i18n.module.loader';

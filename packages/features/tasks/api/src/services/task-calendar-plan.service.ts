@@ -1,9 +1,9 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Task } from '../schemas';
-import { Profile } from '@lyvely/profiles';
+import { Profile } from '@lyvely/core';
 import { CalendarInterval, getTimingIds } from '@lyvely/dates';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
-import { OptionalUser } from '@lyvely/users';
+import { OptionalUser } from '@lyvely/core';
 import { TasksDao } from '../daos';
 
 @Injectable()
