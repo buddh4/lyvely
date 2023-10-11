@@ -5,10 +5,14 @@ import { registerMenuEntry } from '@/menus';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
 import { isMultiUserProfile } from '@lyvely/core-interface';
 import { useProfileStore } from '@/profiles/stores';
+import { IModule } from '@/core';
 
 export default () => {
   return {
     getId: () => 'profiles',
+    i18n: {
+      base: (locale: string) => import(`./locales/base.${locale}.json`),
+    },
     init: () => {
       registerRoutes(routes);
       registerGuards([profileLayoutGuard]);
@@ -24,5 +28,5 @@ export default () => {
         },
       });
     },
-  };
+  } as IModule;
 };

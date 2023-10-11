@@ -4,7 +4,14 @@ import { UserAvatar } from '@/users';
 import { ProfileAvatar } from '@/profiles';
 import { setupI18n, translate } from '@/i18n';
 import { router, registerRoutes } from './lyvely.router';
-import { resetStore, IModuleLoaderOptions, eventBus, AppEvents, createApiUrl } from '@/core';
+import {
+  resetStore,
+  IModuleLoaderOptions,
+  eventBus,
+  AppEvents,
+  createApiUrl,
+  installModules,
+} from '@/core';
 import { registerCoreModules } from './core.modules';
 import { markRaw, App as VueApp, createApp } from 'vue';
 import { createPinia, Pinia } from 'pinia';
@@ -83,6 +90,7 @@ export class LyvelyWebApp {
     this.setGlobalComponents();
     this.initDirectives();
     useDayJsDateTimeAdapter();
+    installModules(this.vueApp);
   }
 
   mount(selector: string) {

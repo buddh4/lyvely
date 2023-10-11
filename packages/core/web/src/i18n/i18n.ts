@@ -1,6 +1,6 @@
 import { nextTick } from 'vue';
 import { createI18n, I18n } from 'vue-i18n';
-import { onModulesInitialized, IModule, getModule, isDevelopEnvironment } from '@/core';
+import { IModule, getModule, isDevelopEnvironment, getModules } from '@/core';
 
 export const SUPPORT_LOCALES = ['en-US', 'de-DE'];
 
@@ -89,20 +89,18 @@ export async function loadModuleMessages(
   return Promise.all(promises);
 }
 
-export function loadModuleBaseMessages(locale: string) {
+export async function loadModuleBaseMessages(locale: string) {
   // TODO: here we assume all modules have base message files
 
-  return onModulesInitialized().then((modules: IModule[]) => {
-    const promises: Array<Promise<any>> = modules.map((module: IModule) => {
-      if (module.i18n?.['base'] || isModuleMessagesLoaded(locale, module.getId(), 'base')) {
-        return Promise.resolve();
-      }
+  const promises: Array<Promise<any>> = getModules().map((module: IModule) => {
+    if (!module.i18n?.['base'] || isModuleMessagesLoaded(locale, module.getId(), 'base')) {
+      return Promise.resolve();
+    }
 
-      return loadModuleMessages(locale, module.getId(), 'base');
-    });
-
-    return Promise.all(promises).then(() => baseModuleLocales.push(locale));
+    return loadModuleMessages(locale, module.getId(), 'base');
   });
+
+  return Promise.all(promises).then(() => baseModuleLocales.push(locale));
 }
 
 export function setMessages(locale: string, data: any) {
