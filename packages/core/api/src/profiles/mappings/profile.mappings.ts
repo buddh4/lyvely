@@ -31,16 +31,16 @@ export function useProfileMappings() {
     });
   });
 
-  registerMapping(ProfileRelations, ProfileWithRelationsModel, (relations) => {
-    return new ProfileWithRelationsModel({
+  registerMapping(ProfileRelations, ProfileWithRelationsModel<any>, (relations) => {
+    return new ProfileWithRelationsModel<any>({
       ...relations.profile,
       userRelations: relations.userRelations,
       profileRelations: relations.profileRelations,
     });
   });
 
-  registerMapping(ProfileUserContext, ProfileWithRelationsModel, (relations) => {
-    return new ProfileWithRelationsModel({
+  registerMapping(ProfileUserContext, ProfileWithRelationsModel<any>, (relations) => {
+    return new ProfileWithRelationsModel<any>({
       ...relations.profile,
       userRelations: relations.relations,
       profileRelations: relations.relations,

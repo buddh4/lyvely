@@ -5,6 +5,8 @@ export interface IProfileRelationUserInfo {
   description?: string;
 }
 
+export interface IProfile {}
+
 export interface IProfileRelation {
   oid: any;
   uid: any;

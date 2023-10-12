@@ -32,12 +32,12 @@ export class ProfilesController implements ProfilesEndpoint {
     // TODO: (profile visibility) currently only member profiles are supported
     if (!profileRelations.userRelations.length) throw new NotFoundException();
 
-    return mapType(ProfileRelations, ProfileWithRelationsModel, profileRelations);
+    return mapType(ProfileRelations, ProfileWithRelationsModel<any>, profileRelations);
   }
 
   private async getDefaultProfile(user: User): Promise<ProfileWithRelationsModel> {
     const profileRelations = await this.profilesService.findDefaultProfileMembershipByUser(user);
-    return mapType(ProfileUserContext, ProfileWithRelationsModel, profileRelations);
+    return mapType(ProfileUserContext, ProfileWithRelationsModel<any>, profileRelations);
   }
 
   @Post()
@@ -55,6 +55,6 @@ export class ProfilesController implements ProfilesEndpoint {
       profileRelations = await this.profilesService.createOrganization(req.user, dto);
     }
 
-    return mapType(ProfileUserContext, ProfileWithRelationsModel, profileRelations);
+    return mapType(ProfileUserContext, ProfileWithRelationsModel<any>, profileRelations);
   }
 }

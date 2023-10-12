@@ -1,3 +1,5 @@
+import { ProfileModel, ProfileType } from '@/profiles';
+
 const DEFAULT_SCOREING_LEVEL_SCALE = [
   [0, 10],
   [10, 40],
@@ -22,4 +24,11 @@ export function getScaledProgress(score: number, scale = DEFAULT_SCOREING_LEVEL_
 
   const result = ((score - applyScale[0]) % applyScale[1]) / applyScale[1];
   return result === applyScale[1] ? 0 : result;
+}
+
+const multiUserProfiles = [ProfileType.Group, ProfileType.Organization];
+
+export function isMultiUserProfile(modelOrType?: ProfileModel | ProfileType) {
+  const type = modelOrType instanceof ProfileModel ? modelOrType.type : modelOrType;
+  return type && multiUserProfiles.includes(type);
 }

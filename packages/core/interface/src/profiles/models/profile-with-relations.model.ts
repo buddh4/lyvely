@@ -5,7 +5,7 @@ import { BaseUserProfileRelationType, ProfileModel } from './profile.model';
 import { PropertyType, TransformTo } from '@lyvely/common';
 
 @Exclude()
-export class ProfileWithRelationsModel extends ProfileModel {
+export class ProfileWithRelationsModel<TID = string> extends ProfileModel<TID> {
   @Expose()
   @PropertyType([ProfileRelationDetailsModel])
   @TransformTo(ProfileRelationDetailsModel)
@@ -16,7 +16,7 @@ export class ProfileWithRelationsModel extends ProfileModel {
   @TransformTo(ProfileRelationModel)
   profileRelations: ProfileRelationModel[];
 
-  constructor(obj?: Partial<ProfileWithRelationsModel>) {
+  constructor(obj?: Partial<ProfileWithRelationsModel<any>>) {
     super(obj);
   }
 

@@ -33,12 +33,15 @@ class ProfileMetadata extends BaseModel<ProfileMetadata> {
 const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Profile extends BaseEntity<Profile> implements PropertiesOf<ProfileModel> {
+export class Profile
+  extends BaseEntity<Profile>
+  implements PropertiesOf<ProfileModel<Types.ObjectId>>
+{
   @ObjectIdProp({ required: true })
   ownerId: Types.ObjectId;
 
   @ObjectIdProp({ required: true })
-  oid?: Types.ObjectId;
+  oid: Types.ObjectId;
 
   @Prop({ min: MIN_PROFILE_NAME_LENGTH, max: MAX_PROFILE_NAME_LENGTH, required: true })
   name: string;
