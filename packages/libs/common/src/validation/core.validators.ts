@@ -126,7 +126,7 @@ export class GteConstraint implements ValidatorConstraintInterface {
 
 export const OBJECT_ID_REGEX = /^[a-f\d]{24}$/i;
 
-export function isValidObjectId(identity: string): boolean {
+export function isValidObjectId(identity?: string | null): boolean {
   return !!identity && OBJECT_ID_REGEX.test(identity);
 }
 

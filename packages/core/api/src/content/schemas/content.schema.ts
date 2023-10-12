@@ -7,7 +7,13 @@ import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
 import { User } from '@/users';
-import { Profile, BaseProfileModel, Tag, ProfileContext, ProfileUserContext } from '@/profiles';
+import {
+  Profile,
+  BaseProfileModel,
+  Tag,
+  ProfileContext,
+  ProtectedProfileContext,
+} from '@/profiles';
 import { ContentDataType, ContentDataTypeSchema } from './content-data-type.schema';
 import { IPolicy } from '@/policies';
 
@@ -18,10 +24,10 @@ export class ProfileContentContext<
   content: TContent;
 }
 
-export class ProfileUserContentContext<
+export class ProtectedProfileContentContext<
   TContent extends Content = Content,
   TProfile extends Profile = Profile,
-> extends ProfileUserContext<TProfile> {
+> extends ProtectedProfileContext<TProfile> {
   content: TContent;
 }
 

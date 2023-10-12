@@ -14,9 +14,12 @@ export default {
     return repository.post<ProfileWithRelationsModel>(`${ENDPOINT_PROFILES}`, model);
   },
 
-  async getProfile(id?: string | null) {
+  async getProfile(id?: string | null, oid?: string | null) {
     return id
-      ? repository.get<ProfileWithRelationsModel>(`${ENDPOINT_PROFILES}/${id}`)
+      ? repository.get<ProfileWithRelationsModel>(
+          `${ENDPOINT_PROFILES}/${id}`,
+          id !== oid ? { params: { oid } } : {},
+        )
       : this.getDefaultProfile();
   },
 };

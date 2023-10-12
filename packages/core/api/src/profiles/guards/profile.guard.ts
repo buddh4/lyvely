@@ -2,11 +2,11 @@ import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/commo
 import { ProfilesService, ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
-import { ProfileContext, ProfileUserContext } from '../models';
+import { ProfileContext } from '../models';
 import { ProfileVisibilityPolicy } from '../policies';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
-import { Profile } from '../schemas';
+import { InjectPolicy } from '@/policies';
 
 export const PROFILE_PERMISSIONS_KEY_STRICT = 'profile_permissions_strict';
 export const PROFILE_PERMISSIONS_KEY_SOME = 'profile_permissions_some';
@@ -27,7 +27,7 @@ export class ProfileGuard implements CanActivate {
   @Inject()
   protected profileService: ProfilesService;
 
-  @Inject()
+  @InjectPolicy(ProfileVisibilityPolicy.name)
   protected profileVisibilityPolicy: ProfileVisibilityPolicy;
 
   @Inject()
@@ -44,15 +44,11 @@ export class ProfileGuard implements CanActivate {
 
     if (!isValidObjectId(request.query.pid)) return false;
 
+    const oid = isValidObjectId(request.query.oid) ? request.query.oid : undefined;
     const user = request.user;
 
-    if (user) {
-      request.context = await this.profileService.findProfileContext(user, request.query.pid);
-      request.profile = request.context.profile;
-    } else {
-      request.profile = <Profile>await this.profileService.findProfileById(request.query.pid);
-      request.context = new ProfileUserContext({ profile: request.profile });
-    }
+    request.context = await this.profileService.findProfileContext(user, request.query.pid, oid);
+    request.profile = request.context.profile;
 
     if (!request.profile) return false;
 
@@ -60,7 +56,6 @@ export class ProfileGuard implements CanActivate {
       return false;
     }
 
-    // TODO: validate profile level features
     return this.validatePermissions(request.context, context);
   }
 

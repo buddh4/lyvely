@@ -1,11 +1,10 @@
-import { ProfileRequest } from '@lyvely/core';
-import {
+import { ProfileRequest ,
   AbstractContentTypeController,
   ContentTypeController,
   ContentWritePolicy,
   ProfileContentRequest,
-  ProfileUserContentRequest,
-} from '@lyvely/core';
+  ProtectedProfileContentRequest,
+, UseClassSerializer , Policies } from '@lyvely/core';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import {
   ENDPOINT_JOURNALS,
@@ -21,10 +20,8 @@ import {
   DataPointModelConverter,
 } from '@lyvely/time-series';
 import { SortResponse } from '@lyvely/common';
-import { UseClassSerializer } from '@lyvely/core';
 import { JournalTimeSeriesService, JournalDataPointService, JournalsService } from '../services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
-import { Policies } from '@lyvely/core';
 import { Journal } from '../schemas';
 
 @ContentTypeController(ENDPOINT_JOURNALS, Journal)
@@ -67,7 +64,7 @@ export class JournalsController
   @Policies(ContentWritePolicy)
   async sort(
     @Body() dto: CalendarPlanSort,
-    @Request() req: ProfileUserContentRequest<Journal>,
+    @Request() req: ProtectedProfileContentRequest<Journal>,
   ): Promise<SortResponse> {
     const { profile, user, content } = req;
     const sort = await this.timeSeriesService.sort(
@@ -84,7 +81,7 @@ export class JournalsController
   @Policies(ContentWritePolicy)
   async updateDataPoint(
     @Body() dto: UpdateDataPointModel,
-    @Request() req: ProfileUserContentRequest<Journal>,
+    @Request() req: ProtectedProfileContentRequest<Journal>,
   ): Promise<UpdateDataPointResponse> {
     const { profile, user, content } = req;
 

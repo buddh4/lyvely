@@ -1,4 +1,4 @@
-import { User, Profile } from '@lyvely/core';
+import { User, Profile, OptionalUser, OptionalUserIdentity } from '@lyvely/core';
 import { CalendarDate, CalendarInterval, getTimingIds, isInFuture } from '@lyvely/dates';
 import {
   CalendarPlanFilter,
@@ -27,7 +27,7 @@ export abstract class TimeSeriesService<
 
   async findByFilter(
     profile: Profile,
-    user: User | undefined,
+    user: OptionalUser,
     filter: CalendarPlanFilter,
   ): Promise<Array<TModel>> {
     return this.contentDao.findByProfileAndTimingIds(
@@ -39,7 +39,7 @@ export abstract class TimeSeriesService<
 
   async findTimeSeries(
     profile: Profile,
-    user: User | undefined,
+    user: OptionalUserIdentity,
     filter: CalendarPlanFilter,
   ): Promise<ITimeSeriesContentSearchResult<TModel, TDataPointModel>> {
     const [models, dataPoints] = await Promise.all([
@@ -52,7 +52,7 @@ export abstract class TimeSeriesService<
 
   private async findDataPoints(
     profile: Profile,
-    user: User | undefined,
+    user: OptionalUserIdentity,
     filter: CalendarPlanFilter,
   ): Promise<TDataPointModel[]> {
     return isInFuture(filter.date, true)

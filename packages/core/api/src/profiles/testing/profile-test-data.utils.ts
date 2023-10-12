@@ -1,5 +1,10 @@
 import { User, UserEmail, UserTestDataUtils } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
+import {
+  BaseMembershipRole,
+  ProfileType,
+  ProfileVisibilityLevel,
+  UserStatus,
+} from '@lyvely/core-interface';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   GroupProfile,
@@ -13,10 +18,9 @@ import {
   UserProfileRelation,
   UserProfileRelationDocument,
 } from '../schemas';
-import { ProfileUserContext } from '../models';
+import { ProtectedProfileContext } from '../models';
 import mongoose, { Model } from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { BaseMembershipRole, ProfileType, ProfileVisibilityLevel } from '@lyvely/core-interface';
 import { createBaseEntityInstance } from '@/core';
 
 export class ProfileTestDataUtils extends UserTestDataUtils {
@@ -33,10 +37,10 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     username = 'test',
     password = 'test',
     email?: string,
-  ): Promise<{ user: User; profile: UserProfile; context: ProfileUserContext }> {
+  ): Promise<{ user: User; profile: UserProfile; context: ProtectedProfileContext }> {
     const user = await this.createUser(username, { password, email });
     const profile = await this.createProfile(user);
-    const context = new ProfileUserContext({
+    const context = new ProtectedProfileContext({
       user,
       profile,
       relations: [
@@ -67,7 +71,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     );
     await this.addProfileMember(organization, member);
 
-    const ownerContext = new ProfileUserContext<Organization>({
+    const ownerContext = new ProtectedProfileContext<Organization>({
       user: owner,
       profile: organization,
       relations: [
@@ -79,7 +83,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       ],
     });
 
-    const memberContext = new ProfileUserContext<Organization>({
+    const memberContext = new ProtectedProfileContext<Organization>({
       user: member,
       profile: organization,
       relations: [
@@ -128,7 +132,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
 
     await this.addProfileMember(profile, member);
 
-    const ownerContext = new ProfileUserContext({
+    const ownerContext = new ProtectedProfileContext({
       user: owner,
       profile,
       organizationContext: organization
@@ -143,7 +147,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       ],
     });
 
-    const memberContext = new ProfileUserContext({
+    const memberContext = new ProtectedProfileContext({
       user: member,
       profile,
       organizationContext: organization
@@ -166,7 +170,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     organization: Organization,
     role: BaseMembershipRole = BaseMembershipRole.Member,
   ) {
-    return new ProfileUserContext<Organization>({
+    return new ProtectedProfileContext<Organization>({
       user,
       profile: organization,
       relations: [
@@ -201,6 +205,18 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
 
     return new Profile(owner, profile);
+  }
+
+  async createSubProfile(
+    owner: User,
+    organization: Organization,
+    type: ProfileType = ProfileType.User,
+    visibility: ProfileVisibilityLevel = ProfileVisibilityLevel.Member,
+    options: Partial<ICreateProfileOptions> = {},
+  ): Promise<Profile> {
+    return this.createProfile(owner, options.name || 'subProfile', type, visibility, {
+      organization,
+    });
   }
 
   async createProfile(

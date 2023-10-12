@@ -99,7 +99,7 @@ export class ProfileContext<T extends Profile = Profile>
   }
 }
 
-export class ProfileUserContext<T extends Profile = Profile>
+export class ProtectedProfileContext<T extends Profile = Profile>
   extends ProfileContext<T>
   implements IUserContext
 {

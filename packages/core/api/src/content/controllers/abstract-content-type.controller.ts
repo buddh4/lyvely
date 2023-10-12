@@ -1,7 +1,7 @@
 import { Body, Param, Post, Put, Request } from '@nestjs/common';
 import { Content } from '../schemas';
 import { ContentTypeService } from '../services';
-import { ProfileUserContentRequest } from '../types';
+import { ProtectedProfileContentRequest } from '../types';
 import { ContentCreatePolicy, ContentWritePolicy } from '../policies';
 import {
   Type,
@@ -15,9 +15,9 @@ import {
   ContentModel,
   CreateContentModel,
   ContentUpdateResponse,
+  TagModel,
 } from '@lyvely/core-interface';
-import { Profile, ProfileUserRequest } from '@/profiles';
-import { TagModel } from '@lyvely/core-interface';
+import { Profile, ProtectedProfileRequest } from '@/profiles';
 import { User } from '@/users';
 import { validate } from 'class-validator';
 import { Policies } from '@/policies';
@@ -39,7 +39,7 @@ export abstract class AbstractContentTypeController<
   @Policies(ContentCreatePolicy)
   async create(
     @Body() body: PropertiesOf<TCreateModel>,
-    @Request() req: ProfileUserRequest,
+    @Request() req: ProtectedProfileRequest,
   ): Promise<ContentUpdateResponse<TModel>> {
     // TODO: check content specific write permission
     const { user, profile } = req;
@@ -58,7 +58,7 @@ export abstract class AbstractContentTypeController<
   async update(
     @Param('cid') cid: string,
     @Body() body: PropertiesOf<TUpdateModel>,
-    @Request() req: ProfileUserContentRequest<TContent>,
+    @Request() req: ProtectedProfileContentRequest<TContent>,
   ): Promise<ContentUpdateResponse<TModel>> {
     const model = this.transformUpdateModel(body);
     await this.validateModel(model);

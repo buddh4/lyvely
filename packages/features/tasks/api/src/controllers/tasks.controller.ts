@@ -27,10 +27,10 @@ import {
   AbstractContentTypeController,
   ContentTypeController,
   ContentWritePolicy,
-  ProfileUserContentRequest,
+  ProtectedProfileContentRequest,
+  Policies,
+  ProfileRequest,
 } from '@lyvely/core';
-import { Policies } from '@lyvely/core';
-import { ProfileRequest } from '@lyvely/core';
 
 @ContentTypeController('tasks', Task)
 // TODO: implement feature registration @Feature('tasks')
@@ -63,7 +63,7 @@ export class TasksController
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileUserContentRequest<Task>) {
+  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Task>) {
     const { profile, user, content } = req;
     const sort = await this.calendarPlanService.sort(
       profile,
@@ -79,7 +79,7 @@ export class TasksController
   @Policies(ContentWritePolicy)
   async setDone(
     @Body() dto: UpdateTaskStateModel,
-    @Request() req: ProfileUserContentRequest<Task>,
+    @Request() req: ProtectedProfileContentRequest<Task>,
   ) {
     const { profile, user, content } = req;
 
@@ -94,7 +94,7 @@ export class TasksController
   @Policies(ContentWritePolicy)
   async setUndone(
     @Body() dto: UpdateTaskStateModel,
-    @Request() req: ProfileUserContentRequest<Task>,
+    @Request() req: ProtectedProfileContentRequest<Task>,
   ) {
     const { profile, user, content } = req;
 
@@ -104,7 +104,7 @@ export class TasksController
 
   @Post(':cid/start-timer')
   @Policies(ContentWritePolicy)
-  async startTimer(@Request() req: ProfileUserContentRequest<Task>): Promise<TimerModel> {
+  async startTimer(@Request() req: ProtectedProfileContentRequest<Task>): Promise<TimerModel> {
     const { profile, user, content } = req;
 
     const timer = await this.contentService.startTimer(profile, user, content);
@@ -113,7 +113,7 @@ export class TasksController
 
   @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
-  async stopTimer(@Request() req: ProfileUserContentRequest<Task>): Promise<TimerModel> {
+  async stopTimer(@Request() req: ProtectedProfileContentRequest<Task>): Promise<TimerModel> {
     const { profile, user, content } = req;
 
     const timer = await this.contentService.stopTimer(profile, user, content);
@@ -124,7 +124,7 @@ export class TasksController
   @Policies(ContentWritePolicy)
   async updateTimer(
     @Body() dto: TimerValueUpdateModel,
-    @Request() req: ProfileUserContentRequest<Task>,
+    @Request() req: ProtectedProfileContentRequest<Task>,
   ) {
     const { profile, user, content } = req;
 

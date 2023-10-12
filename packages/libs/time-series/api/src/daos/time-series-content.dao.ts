@@ -1,4 +1,4 @@
-import { Profile, User, ContentTypeDao, IFetchQueryOptions } from '@lyvely/core';
+import { Profile, ContentTypeDao, IFetchQueryOptions, OptionalUser } from '@lyvely/core';
 import { TimeSeriesContent } from '../schemas';
 import { CalendarInterval } from '@lyvely/dates';
 
@@ -15,7 +15,7 @@ export abstract class TimeSeriesContentDao<
    */
   async findByProfileAndTimingIds(
     profile: Profile,
-    user: User | undefined,
+    user: OptionalUser,
     tIds: string[],
     options?: IFetchQueryOptions<TModel>,
   ): Promise<TModel[]> {

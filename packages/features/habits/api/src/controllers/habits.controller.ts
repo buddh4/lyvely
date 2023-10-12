@@ -25,7 +25,7 @@ import {
   ContentTypeController,
   ContentWritePolicy,
   AbstractContentTypeController,
-  ProfileUserContentRequest,
+  ProtectedProfileContentRequest,
   UseClassSerializer,
   ProfileRequest,
 } from '@lyvely/core';
@@ -73,7 +73,7 @@ export class HabitsController
 
   @Post(':cid/sort')
   @Policies(ContentWritePolicy)
-  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProfileUserContentRequest<Habit>) {
+  async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
     const sort = await this.timeSeriesService.sort(
       profile,
@@ -89,7 +89,7 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async updateDataPoint(
     @Body() dto: UpdateHabitDataPointModel,
-    @Request() req: ProfileUserContentRequest<Habit>,
+    @Request() req: ProtectedProfileContentRequest<Habit>,
   ) {
     const { profile, user, content } = req;
 
@@ -112,7 +112,7 @@ export class HabitsController
   @Policies(ContentWritePolicy)
   async startTimer(
     @Body() dto: TimerUpdateModel,
-    @Request() req: ProfileUserContentRequest<Habit>,
+    @Request() req: ProtectedProfileContentRequest<Habit>,
   ) {
     const { profile, user, content } = req;
     const dataPoint = await this.timerService.startTimer(profile, user, content, dto.date);
@@ -121,7 +121,10 @@ export class HabitsController
 
   @Post(':cid/stop-timer')
   @Policies(ContentWritePolicy)
-  async stopTimer(@Body() dto: TimerUpdateModel, @Request() req: ProfileUserContentRequest<Habit>) {
+  async stopTimer(
+    @Body() dto: TimerUpdateModel,
+    @Request() req: ProtectedProfileContentRequest<Habit>,
+  ) {
     const { profile, user, content } = req;
 
     const dataPoint = await this.timerService.stopTimer(profile, user, content, dto.date);

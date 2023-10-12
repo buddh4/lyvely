@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserDao } from '../daos';
-import { RefreshToken, User, UserNotificationState } from '../schemas';
+import { OptionalUser, RefreshToken, User, UserNotificationState } from '../schemas';
 import { EntityIdentity, IBaseQueryOptions } from '@/core';
 import { IntegrityException } from '@lyvely/common';
 import { UserStatus, ProfileType } from '@lyvely/core-interface';
@@ -15,7 +15,7 @@ export class UsersService {
    * identity relevant operations.
    * @param email
    */
-  async findUserByMainEmail(email: string): Promise<User | null> {
+  async findUserByMainEmail(email: string): Promise<OptionalUser> {
     if (!email) return null;
 
     return this.userDao.findByMainEmail(email);
@@ -27,7 +27,7 @@ export class UsersService {
     return this.userDao.findByVerifiedEmails(emails);
   }
 
-  async findByVerifiedEmail(email: string): Promise<User | null> {
+  async findByVerifiedEmail(email: string): Promise<OptionalUser> {
     if (!email) return null;
 
     return this.userDao.findByVerifiedEmail(email);
@@ -37,7 +37,7 @@ export class UsersService {
    * Returns a single user with the given id or null.
    * @param id
    */
-  async findUserById(id: EntityIdentity<User>): Promise<User | null> {
+  async findUserById(id: EntityIdentity<User>): Promise<OptionalUser> {
     if (!id) {
       return null;
     }

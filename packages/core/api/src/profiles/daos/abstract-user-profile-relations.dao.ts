@@ -29,6 +29,33 @@ export abstract class AbstractUserProfileRelationsDao<
     return this.findAll({ uid: assureObjectId(user), pid: assureObjectId(profile) }, options);
   }
 
+  async findAllProfileAndOrganizationRelationsByUser(
+    user: EntityIdentity<User> | null | undefined,
+    profile: Profile,
+    options: IFetchQueryOptions<T> = defaultFetchOptions,
+  ): Promise<{ profileRelations: T[]; organizationRelations?: T[] }> {
+    if (!user) return { profileRelations: [], organizationRelations: [] };
+
+    if (!profile.hasOrganization()) {
+      return { profileRelations: await this.findAllByUserAndProfile(user, profile, options) };
+    }
+
+    const allRelations = this.findAll(
+      {
+        $or: [
+          { uid: assureObjectId(user), pid: assureObjectId(profile) },
+          { uid: assureObjectId(user), pid: assureObjectId(profile.oid) },
+        ],
+      },
+      options,
+    );
+
+    return {
+      profileRelations: (await allRelations).filter((rel) => rel.pid.equals(profile._id)),
+      organizationRelations: (await allRelations).filter((rel) => rel.pid.equals(profile.oid)),
+    };
+  }
+
   async findAllByProfile(profile: EntityIdentity<Profile>): Promise<T[]> {
     return this.findAll(
       { pid: assureObjectId(profile) },

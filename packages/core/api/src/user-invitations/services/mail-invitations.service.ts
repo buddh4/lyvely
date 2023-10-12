@@ -3,7 +3,7 @@ import { assureStringId, ConfigurationPath } from '@/core';
 import { MailInvitation } from '../schemas';
 import { MailInvitationInfo } from '@lyvely/core-interface';
 import { IMailInvitationContext } from '../interfaces';
-import { User, UsersService } from '@/users';
+import { OptionalUser, UsersService } from '@/users';
 import { Profile, ProfilesService } from '@/profiles';
 import jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
@@ -35,11 +35,12 @@ export class MailInvitationService extends AbstractInvitationsService<
 
     if (!invitation) return null;
 
-    const [invitee, host, profile]: [User | null, User | null, Profile | null] = await Promise.all([
-      this.userService.findByVerifiedEmail(invitation.email),
-      this.userService.findUserById(invitation.createdBy),
-      this.profileService.findProfileById(invitation.pid),
-    ]);
+    const [invitee, host, profile]: [OptionalUser, OptionalUser, Profile | null] =
+      await Promise.all([
+        this.userService.findByVerifiedEmail(invitation.email),
+        this.userService.findUserById(invitation.createdBy),
+        this.profileService.findProfileById(invitation.pid),
+      ]);
 
     if (!host) return null;
 

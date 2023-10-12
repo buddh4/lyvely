@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, UsersService } from '@/users';
+import { OptionalUser, User, UsersService } from '@/users';
 import {
   BaseMembershipRole,
   ProfileType,
@@ -8,7 +8,7 @@ import {
 } from '@lyvely/core-interface';
 import { EntityNotFoundException, UniqueConstraintException } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
-import { ProfileUserContext, ProfileRelations } from '../models';
+import { ProfileContext, ProfileRelations, ProtectedProfileContext } from '../models';
 import {
   assureObjectId,
   assureStringId,
@@ -19,6 +19,7 @@ import {
 import {
   ICreateProfileOptions,
   ICreateProfileTypeOptions,
+  Organization,
   Profile,
   ProfilesFactory,
   UserProfileRelation,
@@ -36,7 +37,7 @@ export class ProfilesService {
     @InjectConnection() private readonly connection: mongoose.Connection,
   ) {}
 
-  async createDefaultUserProfile(owner: User): Promise<ProfileUserContext> {
+  async createDefaultUserProfile(owner: User): Promise<ProtectedProfileContext> {
     const profile = await this.profileDao.findOneByOwnerAndName(owner, owner.username);
 
     if (profile) {
@@ -59,7 +60,7 @@ export class ProfilesService {
   async createUserProfile(
     owner: User,
     options: ICreateProfileOptions,
-  ): Promise<ProfileUserContext> {
+  ): Promise<ProtectedProfileContext> {
     await this.checkProfileNameUniqueness(owner, options);
     options.locale = options.locale || options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.User }));
@@ -68,7 +69,7 @@ export class ProfilesService {
   async createGroupProfile(
     owner: User,
     options: ICreateProfileOptions,
-  ): Promise<ProfileUserContext> {
+  ): Promise<ProtectedProfileContext> {
     await this.checkProfileNameUniqueness(owner, options);
     options.locale = options.locale || options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.Group }));
@@ -98,7 +99,7 @@ export class ProfilesService {
   async createOrganization(
     owner: User,
     options: Omit<ICreateProfileOptions, 'organization'>,
-  ): Promise<ProfileUserContext> {
+  ): Promise<ProtectedProfileContext> {
     if (await this.profileDao.findOneByOwnerOrOrganizationName(owner, options.name))
       throw new UniqueConstraintException(
         'name',
@@ -126,7 +127,7 @@ export class ProfilesService {
   protected async createProfile(
     owner: User,
     options: ICreateProfileTypeOptions,
-  ): Promise<ProfileUserContext> {
+  ): Promise<ProtectedProfileContext> {
     return withTransaction(this.connection, async (transaction) => {
       // TODO (profile visibility) implement max profile visibility in configuration (default member)
       options.visibility = ProfileVisibilityLevel.Member;
@@ -142,7 +143,7 @@ export class ProfilesService {
         transaction,
       );
 
-      return new ProfileUserContext({
+      return new ProtectedProfileContext({
         user: owner,
         profile: profile,
         relations: [membership],
@@ -178,13 +179,15 @@ export class ProfilesService {
   }
 
   async findProfileRelations(
-    user: User,
+    user: OptionalUser,
     identity: EntityIdentity<Profile>,
   ): Promise<ProfileRelations> {
     const profile =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
 
     if (!profile) throw new EntityNotFoundException();
+
+    if (!user) return new ProfileRelations({ profile });
 
     const profileRelations = await this.profileRelationsDao.findAllByProfile(identity);
     const userRelations = profileRelations.filter((relation) => relation.uid.equals(user._id));
@@ -193,27 +196,93 @@ export class ProfilesService {
 
   async findProfileContext(
     user: User,
-    identity: EntityIdentity<Profile>,
-  ): Promise<ProfileUserContext> {
-    const profile =
-      identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+    pid: EntityIdentity<Profile>,
+    oid?: EntityIdentity<Organization>,
+  ): Promise<ProtectedProfileContext>;
+  async findProfileContext(
+    user: OptionalUser,
+    pid: EntityIdentity<Profile>,
+    oid?: EntityIdentity<Organization>,
+  ): Promise<ProfileContext>;
+  async findProfileContext(
+    user: OptionalUser,
+    pid: EntityIdentity<Profile>,
+    oid?: EntityIdentity<Organization>,
+  ): Promise<ProfileContext> {
+    const { profile, organization } = await this.findProfileWithOrganization(pid, oid);
+
+    const { profileRelations, organizationRelations } =
+      await this.profileRelationsDao.findAllProfileAndOrganizationRelationsByUser(user, profile);
+
+    if (!user) {
+      const organizationContext = organization
+        ? new ProfileContext<Organization>({ organization })
+        : undefined;
+      return new ProfileContext({
+        profile,
+        organizationContext,
+      });
+    }
+
+    const organizationContext = organization
+      ? new ProtectedProfileContext<Organization>({
+          user,
+          profile: organization,
+          relations: organizationRelations,
+        })
+      : undefined;
+
+    return new ProtectedProfileContext({
+      user,
+      profile,
+      relations: profileRelations,
+      organizationContext,
+    });
+  }
+
+  async findProfileWithOrganization(
+    pid: EntityIdentity<Profile>,
+    oid?: EntityIdentity<Profile>,
+  ): Promise<{ profile: Profile; organization: Organization | null }> {
+    let profile: Profile | undefined | null = null;
+    let organization: Organization | undefined | null = null;
+
+    if (!(pid instanceof Profile) && oid && !(oid instanceof Profile)) {
+      // Both ids
+      const profiles = await this.profileDao.findAllByIds([pid, oid]);
+      profile = profiles.find((p) => p._id.equals(assureObjectId(pid)));
+      organization = profiles.find((p) => p._id.equals(assureObjectId(oid)));
+    } else if (pid instanceof Profile && oid instanceof Profile) {
+      // Both already instances
+      profile = pid;
+      organization = oid;
+    } else if (pid instanceof Profile && pid.hasOrganization()) {
+      // Pid is an instance, we ignore oid here since we trust the profiles pid more
+      profile = pid;
+      organization = <Organization | null>await this.profileDao.findById(profile.oid);
+    } else if (pid instanceof Profile) {
+      profile = pid;
+    } else {
+      profile = await this.profileDao.findById(pid);
+    }
 
     if (!profile) throw new EntityNotFoundException();
 
-    const relations = await this.profileRelationsDao.findAllByUserAndProfile(user, profile);
+    // Make sure we have the right organization here
+    if (profile.hasOrganization() && !profile.isProfileOfOrganization(organization)) {
+      organization = <Organization | null>await this.profileDao.findById(profile.oid);
+    }
 
-    return new ProfileUserContext({
-      user,
-      profile,
-      relations,
-    }) as ProfileUserContext;
+    if (!profile) throw new EntityNotFoundException();
+
+    return { profile, organization: organization || null };
   }
 
   async findProfileContextsByUsers(
     identity: EntityIdentity<Profile>,
     users: User[],
     skipEmptyRelations = false,
-  ): Promise<ProfileUserContext[]> {
+  ): Promise<ProtectedProfileContext[]> {
     if (!users?.length) return [];
 
     const profile =
@@ -221,11 +290,11 @@ export class ProfilesService {
 
     if (!profile) return [];
 
-    const profileContextMap = new Map<string, ProfileUserContext>();
+    const profileContextMap = new Map<string, ProtectedProfileContext>();
     const uids = users.map((user) => {
       profileContextMap.set(
         user.id,
-        new ProfileUserContext<Profile>({
+        new ProtectedProfileContext<Profile>({
           user,
           profile,
           relations: [] as UserProfileRelation[],
@@ -274,7 +343,7 @@ export class ProfilesService {
     return this.profileRelationsDao.findAllByUser(user);
   }
 
-  async findAllProfileContextsByUser(user: User): Promise<ProfileUserContext[]> {
+  async findAllProfileContextsByUser(user: User): Promise<ProtectedProfileContext[]> {
     const userRelations = await this.findAllProfileRelationsByUser(user);
 
     if (!userRelations.length) return [];
@@ -285,7 +354,7 @@ export class ProfilesService {
 
     return profiles.map(
       (profile) =>
-        new ProfileUserContext({
+        new ProtectedProfileContext({
           user,
           profile,
           relations: userRelations.filter((relation) => relation.pid.equals(profile._id)),
@@ -299,7 +368,7 @@ export class ProfilesService {
    *
    * @param user
    */
-  async findDefaultProfileMembershipByUser(user: User): Promise<ProfileUserContext> {
+  async findDefaultProfileMembershipByUser(user: User): Promise<ProtectedProfileContext> {
     // TODO: make sure not to return an archived profile
     const memberships = await this.membershipDao.findAllByUser(user);
 

@@ -5,8 +5,6 @@ import {
   setTransactionSupport,
   ConfigurationPath,
   ILyvelyMongoDBOptions,
-} from '@lyvely/core';
-import {
   loadConfig,
   AppConfigModule,
   AuthModule,
@@ -126,7 +124,7 @@ export class AppModuleBuilder {
         resolvers: [AcceptLanguageResolver],
       }),
       I18nModule,
-      PoliciesModule,
+      PoliciesModule.forRoot(),
       UsersModule,
       AuthModule,
       CaptchaModule,

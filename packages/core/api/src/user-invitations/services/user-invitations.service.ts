@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { assureStringId, EntityIdentity } from '@/core';
 import { UserInvitation } from '../schemas';
 import { UserInvitationInfo } from '@lyvely/core-interface';
-import { User, UsersService } from '@/users';
+import { OptionalUser, User, UsersService } from '@/users';
 import { Profile, ProfilesService } from '@/profiles';
 import { IUserInvitationContext } from '../interfaces';
 import { UserInvitationDao } from '../daos';
@@ -37,7 +37,7 @@ export class UserInvitationsService extends AbstractInvitationsService<
 
     if (!invitation) return null;
 
-    const [host, profile]: [User | null, Profile | null] = await Promise.all([
+    const [host, profile]: [OptionalUser, Profile | null] = await Promise.all([
       this.usersService.findUserById(invitation.createdBy),
       this.profilesService.findProfileById(invitation.pid),
     ]);

@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { Profile } from '../schemas';
-import { ProfileContext, ProfileUserContext } from '../models';
+import { ProfileContext, ProtectedProfileContext } from '../models';
 import { RequestAdditions } from '@/core';
 import { OptionalUserRequest, UserRequest } from '@/users';
 
@@ -8,7 +8,7 @@ export type ProfileRequest<TContext extends ProfileContext = ProfileContext> = R
   any,
   any,
   any,
-  { pid: string } & Record<string, string>
+  { pid: string; oid?: string } & Record<string, string>
 > & {
   profile: Profile;
   context: TContext;
@@ -16,12 +16,9 @@ export type ProfileRequest<TContext extends ProfileContext = ProfileContext> = R
 } & OptionalUserRequest &
   RequestAdditions;
 
-export type ProfileUserRequest<TContext extends ProfileUserContext = ProfileUserContext> = Request<
-  any,
-  any,
-  any,
-  { pid: string } & Record<string, string>
-> & {
+export type ProtectedProfileRequest<
+  TContext extends ProtectedProfileContext = ProtectedProfileContext,
+> = Request<any, any, any, { pid: string; oid?: string } & Record<string, string>> & {
   profile: Profile;
   context: TContext;
   csrfToken: () => string;

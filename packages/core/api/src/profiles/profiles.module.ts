@@ -65,7 +65,6 @@ useProfileMappings();
     ProfileMembershipService,
     ProfilesService,
     ProfileTagsService,
-    ProfileVisibilityPolicy,
     ProfileUrlGenerator,
   ],
   exports: [
@@ -75,7 +74,6 @@ useProfileMappings();
     ProfileModel,
     ProfilePermissionsService,
     UserProfileRelationsDao,
-    ProfileVisibilityPolicy,
     MembershipsDao,
   ],
   controllers: [

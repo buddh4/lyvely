@@ -6,11 +6,17 @@ import { PropertyType, TransformTo } from '@lyvely/common';
 
 @Exclude()
 export class ProfileWithRelationsModel<TID = string> extends ProfileModel<TID> {
+  /**
+   * Contains user specific relations of the profile
+   */
   @Expose()
   @PropertyType([ProfileRelationDetailsModel])
   @TransformTo(ProfileRelationDetailsModel)
   userRelations: ProfileRelationDetailsModel[];
 
+  /**
+   * Contains all relations of the profile
+   */
   @Expose()
   @PropertyType([ProfileRelationModel])
   @TransformTo(ProfileRelationModel)

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import { User, RefreshToken, UserEmail } from '../schemas';
+import { User, RefreshToken, UserEmail, OptionalUser } from '../schemas';
 import { AbstractDao, IBaseQueryOptions, EntityIdentity, UpdateQuerySet } from '@/core';
 import { Constructor } from '@lyvely/common';
 import { UserStatus, ProfileType } from '@lyvely/core-interface';
@@ -12,7 +12,7 @@ export class UserDao extends AbstractDao<User> {
     super();
   }
 
-  async findByMainEmail(email: string): Promise<User | null> {
+  async findByMainEmail(email: string): Promise<OptionalUser> {
     return this.findOne({ email: email.toLowerCase() });
   }
 
@@ -36,7 +36,7 @@ export class UserDao extends AbstractDao<User> {
     });
   }
 
-  async findByVerifiedEmail(email: string, includeUnverifiedMain = false): Promise<User | null> {
+  async findByVerifiedEmail(email: string, includeUnverifiedMain = false): Promise<OptionalUser> {
     const mainEmailCondition = { email: email.toLowerCase() };
     const statusCondition: FilterQuery<User> = {};
 

@@ -99,10 +99,16 @@ const userProfileRepositoryPlugin = () => {
   repository.interceptors.request.use(function (config) {
     const profileStore = useProfileStore();
     if (!config.skipProfileIdParam && profileStore.profile) {
+      const { profile } = profileStore;
       if (config.params) {
         config.params.pid = profileStore.profile.id;
       } else {
         config.params = { pid: profileStore.profile.id };
+      }
+
+      // We add the oid for organization sub profiles for server side optimization
+      if (profile.hasOrg) {
+        config.params.oid = profileStore.profile.oid;
       }
     }
     return config;

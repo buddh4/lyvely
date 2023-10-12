@@ -28,6 +28,78 @@ describe('ProfileService', () => {
     expect(profileService).toBeDefined();
   });
 
+  describe('findProfileWithOrganization()', () => {
+    it('find non sub profile by pid', async () => {
+      const { profile: userProfile } = await testData.createUserAndProfile();
+      const { profile, organization } = await profileService.findProfileWithOrganization(
+        userProfile._id,
+      );
+      expect(profile._id).toEqual(userProfile._id);
+      expect(organization).toBeNull();
+    });
+
+    it('find sub profile by pid', async () => {
+      const { owner, organization: myOrg } = await testData.createSimpleOrganization();
+      const subProfile = await testData.createSubProfile(owner, myOrg);
+      const { profile, organization } = await profileService.findProfileWithOrganization(
+        subProfile._id,
+      );
+      expect(profile._id).toEqual(subProfile._id);
+      expect(organization).toBeDefined();
+      expect(organization?._id).toEqual(myOrg._id);
+    });
+
+    it('find sub profile by instance', async () => {
+      const { owner, organization: myOrg } = await testData.createSimpleOrganization();
+      const subProfile = await testData.createSubProfile(owner, myOrg);
+      const { profile, organization } = await profileService.findProfileWithOrganization(
+        subProfile,
+      );
+      expect(profile._id).toEqual(subProfile._id);
+      expect(organization).toBeDefined();
+      expect(organization?._id).toEqual(myOrg._id);
+    });
+
+    it('use of invalid oid is ignored', async () => {
+      const { owner, organization: myOrg } = await testData.createSimpleOrganization();
+      const someProfile = await testData.createProfile(owner);
+      const subProfile = await testData.createSubProfile(owner, myOrg);
+      const { profile, organization } = await profileService.findProfileWithOrganization(
+        subProfile,
+        someProfile,
+      );
+      expect(profile._id).toEqual(subProfile._id);
+      expect(organization).toBeDefined();
+      expect(organization?._id).toEqual(myOrg._id);
+    });
+
+    it('use of invalid oid is ignored when using ids', async () => {
+      const { owner, organization: myOrg } = await testData.createSimpleOrganization();
+      const someProfile = await testData.createProfile(owner);
+      const subProfile = await testData.createSubProfile(owner, myOrg);
+      const { profile, organization } = await profileService.findProfileWithOrganization(
+        subProfile._id,
+        someProfile.id,
+      );
+      expect(profile._id).toEqual(subProfile._id);
+      expect(organization).toBeDefined();
+      expect(organization?._id).toEqual(myOrg._id);
+    });
+
+    it('use of invalid oid instance is ignored', async () => {
+      const { owner, organization: myOrg } = await testData.createSimpleOrganization();
+      const someProfile = await testData.createProfile(owner);
+      const subProfile = await testData.createSubProfile(owner, myOrg);
+      const { profile, organization } = await profileService.findProfileWithOrganization(
+        subProfile._id,
+        someProfile,
+      );
+      expect(profile._id).toEqual(subProfile._id);
+      expect(organization).toBeDefined();
+      expect(organization?._id).toEqual(myOrg._id);
+    });
+  });
+
   describe('findProfileContext()', () => {
     it('find owner membership', async () => {
       const { user, profile } = await testData.createUserAndProfile();

@@ -1,14 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Milestone } from '../schemas';
-import { Profile } from '@lyvely/core';
+import { Profile, User, ContentCondition, DBQuery, OptionalUser } from '@lyvely/core';
 import { CalendarInterval } from '@lyvely/dates';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { MilestonesDao } from '../daos';
-import { User } from '@lyvely/core';
-import { ContentCondition } from '@lyvely/core';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { isDefined } from 'class-validator';
-import { DBQuery } from '@lyvely/core';
 import { FilterQuery } from 'mongoose';
 
 @Injectable()
@@ -21,7 +18,7 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
 
   findByFilter(
     profile: Profile,
-    user: User | undefined,
+    user: OptionalUser,
     filter: CalendarPlanFilter,
   ): Promise<Array<Milestone>> {
     const conditions: FilterQuery<Milestone>[] = [];
@@ -39,7 +36,7 @@ export class MilestonesCalendarPlanService extends SortableCalendarPlanService<M
 
   async findMilestonesWithRelations(
     profile: Profile,
-    user: User | undefined,
+    user: OptionalUser,
     filter: CalendarPlanFilter,
   ) {
     const models = await this.findByFilter(profile, user, filter);

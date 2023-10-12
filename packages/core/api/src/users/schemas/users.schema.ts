@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import mongoose, { UpdateQuery } from 'mongoose';
-import { BaseEntity } from '@/core';
+import { BaseEntity, EntityIdentity } from '@/core';
 import { PropertiesOf, getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
@@ -230,3 +230,4 @@ export function getDefaultLocale() {
 }
 
 export type OptionalUser = User | null | undefined;
+export type OptionalUserIdentity = EntityIdentity<User> | null | undefined;

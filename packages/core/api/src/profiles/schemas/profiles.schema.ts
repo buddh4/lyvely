@@ -1,16 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { getDefaultLocale, User } from '@/users';
 import { Types } from 'mongoose';
-import { BaseEntity, assureObjectId, EntityIdentity, ObjectIdProp } from '@/core';
+import { assureObjectId, BaseEntity, EntityIdentity, ObjectIdProp } from '@/core';
 import { Tag, TagSchema } from './tags.schema';
 import {
-  ProfileVisibilityLevel,
-  ProfileModel,
-  MIN_PROFILE_NAME_LENGTH,
-  MAX_PROFILE_NAME_LENGTH,
   MAX_PROFILE_DESCRIPTION_LENGTH,
+  MAX_PROFILE_NAME_LENGTH,
+  MIN_PROFILE_NAME_LENGTH,
+  ProfileModel,
   ProfileType,
   ProfileUsage,
+  ProfileVisibilityLevel,
 } from '@lyvely/core-interface';
 import { BaseModel, getNumberEnumValues, PropertiesOf, PropertyType } from '@lyvely/common';
 import { Avatar, AvatarSchema } from '@/avatars';
@@ -111,6 +111,27 @@ export class Profile
 
   isOfType(type: ProfileType) {
     return this.type === type;
+  }
+
+  isOrganization() {
+    return this.isOfType(ProfileType.Organization);
+  }
+
+  /**
+   * Determines if this profile is part of an organization. Note this will return false for root organization profiles.
+   * @param oid
+   */
+  hasOrganization() {
+    return this.hasOrg && !this.isOrganization();
+  }
+
+  /**
+   * Determines if this profile is part of the given organization. Note this will return false for root organization profiles.
+   * @param oid
+   */
+  isProfileOfOrganization(oid: EntityIdentity<Profile> | null | undefined) {
+    if (!oid || this.isOrganization()) return false;
+    return assureObjectId(oid).equals(this.oid);
   }
 
   afterInit() {

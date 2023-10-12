@@ -1,13 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { Milestone } from '../schemas';
-import { assureObjectId, EntityIdentity, DBQuery } from '@lyvely/core';
+import {
+  assureObjectId,
+  EntityIdentity,
+  DBQuery,
+  Content,
+  ContentDao,
+  ContentCondition,
+  Profile,
+  OptionalUser,
+} from '@lyvely/core';
 import { MilestoneRelationEvent } from '../events';
 import { CalendarDateTime } from '@lyvely/dates';
 import { MilestoneRelationModel } from '@lyvely/milestones-interface';
-import { Content, ContentDao, ContentCondition } from '@lyvely/core';
-import { Profile } from '@lyvely/core';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { User } from '@lyvely/core';
 import { Types } from 'mongoose';
 
 @Injectable()
@@ -15,7 +21,7 @@ export class MilestonesRelationsService {
   constructor(private contentDao: ContentDao, private eventEmitter: EventEmitter2) {}
   public async getRelationsByMilestones(
     profile: Profile,
-    user: User | undefined,
+    user: OptionalUser,
     milestones: EntityIdentity<Milestone>[],
     date?: CalendarDateTime,
   ) {

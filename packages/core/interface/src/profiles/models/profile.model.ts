@@ -29,6 +29,9 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   name: string;
 
   @Expose()
+  hasOrg: boolean;
+
+  @Expose()
   description?: string;
 
   @Expose()

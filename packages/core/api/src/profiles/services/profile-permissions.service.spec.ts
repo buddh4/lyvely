@@ -6,7 +6,7 @@ import {
   ProfileRolePermission,
   profilesTestPlugin,
   ProfileTestDataUtils,
-  ProfileUserContext,
+  ProtectedProfileContext,
   ProfileVisibilityLevel,
   TOKEN_DEFAULT_PROFILE_PERMISSIONS,
   TOKEN_PROFILE_ROLES_DEFINITION,
@@ -146,7 +146,7 @@ describe('ProfilePermissionsService', () => {
 
   async function createMembership(role: BaseProfileRelationRole) {
     const { user, profile } = await testDataUtils.createUserAndProfile();
-    const context = new ProfileUserContext({
+    const context = new ProtectedProfileContext({
       user,
       profile,
       relations: [Membership.create({ user, profile, role: role })],
@@ -332,7 +332,7 @@ describe('ProfilePermissionsService', () => {
       const user = await testDataUtils.createUser();
       const { profile } = await testDataUtils.createSimpleGroup();
 
-      const userContext = new ProfileUserContext({
+      const userContext = new ProtectedProfileContext({
         user,
         profile,
         relations: [],

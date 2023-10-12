@@ -1,4 +1,4 @@
-import { User } from '@/users';
+import { OptionalUser, User } from '@/users';
 import { BaseMembershipRole } from '@lyvely/core-interface';
 import { Types } from 'mongoose';
 import { Profile } from '@/profiles';
@@ -27,7 +27,7 @@ export interface IUserInvitation extends InvitationIF {
 
 export interface InvitationContextIF<TInvitation extends InvitationIF = InvitationIF> {
   invitation: TInvitation;
-  invitee?: User | null;
+  invitee: OptionalUser;
   host: User;
   profile?: Profile | null;
 }
