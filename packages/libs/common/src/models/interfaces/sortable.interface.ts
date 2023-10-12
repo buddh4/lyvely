@@ -2,11 +2,10 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { PropertyType } from '../decorators';
 import { BaseModel } from '../base.model';
 
-export type ISortable =
-  | {
-      getSortOrder(): number | undefined;
-    }
-  | { sortOrder?: number };
+export interface ISortable {
+  getSortOrder?: () => number | undefined;
+  sortOrder?: number;
+}
 
 @Exclude()
 export class SortResult extends BaseModel<SortResult> {
