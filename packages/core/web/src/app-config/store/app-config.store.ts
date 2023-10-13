@@ -31,17 +31,27 @@ export const useAppConfigStore = defineStore('app-config', () => {
   }
 
   function getModuleConfig<
-    TConfig extends GenericObject = GenericObject,
+    TConfig,
     TResult = any,
     TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
   >(moduleId: string, path: TPath, defaultValue: TResult): TResult;
   function getModuleConfig<
-    TConfig extends GenericObject = GenericObject,
+    TConfig,
     TResult = any,
     TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
-  >(moduleId: string, path: TPath, defaultValue?: TResult): TResult | undefined;
+  >(moduleId: string, path?: TPath, defaultValue?: TResult): TResult | undefined;
   function getModuleConfig<
-    TConfig extends GenericObject = GenericObject,
+    TConfig,
+    TResult = any,
+    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+  >(moduleId: string, path: TPath, defaultValue: TResult): TResult;
+  function getModuleConfig<
+    TConfig,
+    TResult = any,
+    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+  >(moduleId: string, path?: TPath, defaultValue?: TResult): TResult | undefined;
+  function getModuleConfig<
+    TConfig,
     TResult = any,
     TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
   >(moduleId: string, path?: TPath, defaultValue?: TResult): TResult | undefined {

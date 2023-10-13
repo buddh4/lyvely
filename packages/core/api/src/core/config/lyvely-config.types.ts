@@ -7,6 +7,7 @@ import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import https from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
+import { IFeatureConfig } from '@lyvely/core-interface';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -135,7 +136,7 @@ export interface ILegalOptions {
   };
 }
 
-export type LyvelyAppConfiguration = {
+export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   appName: string;
   operationMode: OperationMode;
   docUrl?: string;
@@ -149,7 +150,8 @@ export type LyvelyAppConfiguration = {
   helmet?: HelmetOptions | false;
   file?: LyvelyFileOptions;
   mail?: LyvelyMailOptions;
-  modules?: ModulesConfiguration;
+  features?: IFeatureConfig;
+  modules?: ModuleView;
   legal?: ILegalOptions;
   'user-permissions'?: UserPermissionOptions;
   invitations?: IUserInviteOptions;
@@ -159,7 +161,7 @@ export type LyvelyAppConfiguration = {
 
 // TODO: This is not working for some types
 
-export type ConfigurationPath<C = LyvelyAppConfiguration> = {
+export type ConfigurationPath<C = ServerConfiguration> = {
   // @ts-ignore
   [key in NestedPaths<C>]: TypeFromPath<C, key>;
 } & any;

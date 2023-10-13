@@ -1,6 +1,6 @@
-import { LyvelyAppConfiguration, OperationMode } from '../config';
+import { ServerConfiguration, OperationMode } from '../config';
 
-const lyvelyTestConfig: LyvelyAppConfiguration = {
+const lyvelyTestConfig: ServerConfiguration = {
   appName: 'lyvely.test.app',
   operationMode: OperationMode.STANDALONE,
   docUrl: 'https://docs.lyvely.app',

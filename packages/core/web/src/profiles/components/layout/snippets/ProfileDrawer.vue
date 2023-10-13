@@ -1,20 +1,18 @@
 <script lang="ts" setup>
 import { computed, Ref, ref, toRefs } from 'vue';
-import { RouteLocationRaw } from 'vue-router';
 import { usePageStore, watchMaxSize, isMaxViewSize } from '@/core';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/profiles/stores/profile.store';
-import { isMultiUserProfile } from '@lyvely/core-interface';
 import imageUrl from '@/assets/logo_white_bold.svg';
 
 import { UseSwipeDirection, useSwipe } from '@vueuse/core';
 import { getMenuEntries, IMenuEntry } from '@/menus';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
 import { sortBySortOrder } from '@lyvely/common';
+import { isFeatureEnabledOnProfile } from '@/features';
 //import LegalLinks from '@/legal/components/LegalLinks.vue';
 
 const pageStore = usePageStore();
-const profileStore = useProfileStore();
 const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
 //const { activeView } = storeToRefs(useActivityStore());
 
@@ -22,38 +20,10 @@ const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
 
 const allMenuEntries = getMenuEntries(MENU_PROFILE_DRAWER);
 const filteredMenuEntries = computed(() => {
-  // Todo: filter out by profile features
-  return allMenuEntries.value.sort(sortBySortOrder);
+  return [...allMenuEntries.value]
+    .filter((entry) => !entry.feature || isFeatureEnabledOnProfile(entry.feature))
+    .sort(sortBySortOrder);
 });
-
-const oldmenuItems = computed(() => [
-  {
-    to: { name: 'stream' },
-    icon: 'stream',
-    label: 'stream.labels.main_nav',
-  },
-  /*{
-        to: { name: activeView.value },
-        icon: 'activity',
-        label: 'activities.labels.main_nav',
-      },*/
-  /* {
-        to: { name: 'Journals' },
-        icon: 'journal',
-        label: 'journals.labels.main_nav',
-      },*/
-  /*{
-        to: { name: 'Statistics' },
-        icon: 'statistics',
-        label: 'statistics.labels.main_nav',
-      },*/
-
-  /*{
-        to: { name: 'ProfileSettings' },
-        icon: 'settings',
-        label: 'profiles.settings.label',
-      },*/
-]);
 
 const { toggleSidebar } = pageStore;
 const { showSidebar } = toRefs(pageStore);

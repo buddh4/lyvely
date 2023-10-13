@@ -8,4 +8,4 @@ import { FeatureGuard } from './guards';
   providers: [FeatureRegistry, FeatureGuard],
   exports: [FeatureRegistry, FeatureGuard],
 })
-export class FeatureModule {}
+export class FeaturesModule {}

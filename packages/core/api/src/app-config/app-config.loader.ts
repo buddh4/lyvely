@@ -1,13 +1,11 @@
 import { readFileSync } from 'fs';
 import * as yaml from 'js-yaml';
 import { join } from 'path';
-import { LyvelyAppConfiguration } from '@/core';
+import { ServerConfiguration } from '@/core';
 
 const YAML_CONFIG_FILENAME = 'lyvely.ts';
 
-export const loadConfig = (
-  file = YAML_CONFIG_FILENAME,
-): (() => Promise<LyvelyAppConfiguration>) => {
+export const loadConfig = (file = YAML_CONFIG_FILENAME): (() => Promise<ServerConfiguration>) => {
   // Todo: switch to process.cwd()?
   const filePath = join(process.env.PWD!, 'dist/config', file);
   if (file.endsWith('.yml')) {

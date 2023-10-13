@@ -13,6 +13,7 @@ import { uniqueId } from 'lodash';
 import { ContentStreamController, ContentController } from './controllers';
 import { LyvelyModule } from '@/core';
 import { ContentManagePolicy } from './policies/content-manage.policy';
+import { ContentStreamFeature } from '@lyvely/core-interface';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -34,6 +35,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
   id: 'content',
   name: 'Content',
   path: __dirname,
+  features: [ContentStreamFeature],
   policies: [ContentCreatePolicy, ContentReadPolicy, ContentWritePolicy, ContentManagePolicy],
   imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
   controllers: [ContentController, ContentStreamController],

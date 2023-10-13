@@ -1,6 +1,6 @@
 import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@/testing';
 import { ExecutionContext } from '@nestjs/common';
-import { Feature, FeatureGuard, FeatureModule, FeatureRegistry } from '../';
+import { Feature, FeatureGuard, FeaturesModule, FeatureRegistry } from '../';
 
 @Feature('test')
 class TestController {
@@ -24,7 +24,7 @@ describe('ProfileGuard', () => {
   const TEST_KEY = 'feature-guard';
 
   beforeEach(async () => {
-    testingModule = await buildTest(TEST_KEY).imports([FeatureModule]).compile();
+    testingModule = await buildTest(TEST_KEY).imports([FeaturesModule]).compile();
     featureGuard = testingModule.get<FeatureGuard>(FeatureGuard);
     featureRegistry = testingModule.get<FeatureRegistry>(FeatureRegistry);
 

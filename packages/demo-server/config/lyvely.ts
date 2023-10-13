@@ -1,4 +1,4 @@
-import { LyvelyAppConfiguration } from '@lyvely/server/dist/src/modules/core';
+import { ServerConfiguration } from '@lyvely/server/dist/src/modules/core';
 
 export default {
   appName: 'demo',
@@ -33,4 +33,4 @@ export default {
       },
     },
   },
-} as LyvelyAppConfiguration;
+} as ServerConfiguration;
