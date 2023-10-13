@@ -7,9 +7,17 @@ import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/user-registration/routes/paths';
 import { isTouchScreen } from '@/core';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import {
+  IUserRegistrationAppConfig,
+  USER_REGISTRATION_MODULE_ID,
+  UserRegistrationMode,
+} from '@lyvely/core-interface';
 
 const userRegistrationStore = useUserRegistrationStore();
-const registrationMode = useAppConfigStore().config?.registrationMode;
+const registrationMode = useAppConfigStore().getModuleConfig<
+  IUserRegistrationAppConfig,
+  UserRegistrationMode
+>(USER_REGISTRATION_MODULE_ID, 'registrationMode');
 
 const router = useRouter();
 const { model, validator } = storeToRefs(userRegistrationStore);

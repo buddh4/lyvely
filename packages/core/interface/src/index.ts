@@ -4,6 +4,8 @@ export * from './avatars';
 export * from './captchas';
 export * from './content';
 export * from './features';
+export * from './files';
+export * from './i18n';
 export * from './live';
 export * from './messages';
 export * from './notifications';

@@ -1,4 +1,4 @@
-import { findByPath, isObjectId, Type } from '../../utils';
+import { findByPath, isBlacklistedProperty, isObjectId, Type } from '../../utils';
 import { initPropertyTypes } from './model-property-type.util';
 import { getPropertyTypeDefinition } from '../decorators';
 
@@ -35,8 +35,6 @@ export function assignRawDataTo<T extends Object>(
   return _assignRawDataTo(model, data, 0, { maxDepth, strict, transform });
 }
 
-const BLACKLISTED_PATH = ['__proto__', 'prototype', 'constructor'];
-
 function _assignRawDataTo<T extends Object>(
   model: T,
   data: { [key in keyof T]?: any } & any,
@@ -58,7 +56,7 @@ function _assignRawDataTo<T extends Object>(
       return;
     }
 
-    if (BLACKLISTED_PATH.includes(path)) return;
+    if (isBlacklistedProperty(path)) return;
     if (typeof model === 'object' && strict && !Object.hasOwn(model as object, path)) return;
 
     const transformed = transform ? transform(data[path], path) : undefined;

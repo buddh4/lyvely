@@ -6,10 +6,15 @@ import {
   UniqueConstraintException,
   ForbiddenServiceException,
 } from '@lyvely/common';
-import { UserRegistration, RegistrationMode } from '@lyvely/core-interface';
+import {
+  UserRegistration,
+  UserRegistrationMode,
+  UserStatus,
+  OtpInfo,
+  VerifyEmailDto,
+} from '@lyvely/core-interface';
 import { OtpService } from '@/otp';
 import { UserDao, User, UsersService } from '@/users';
-import { UserStatus, OtpInfo, VerifyEmailDto } from '@lyvely/core-interface';
 import { ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
@@ -98,7 +103,10 @@ export class UserRegistrationService {
   }
 
   private getRegistrationMode() {
-    return this.configService.get<RegistrationMode>('userRegistration.mode', 'public');
+    return this.configService.get<UserRegistrationMode>(
+      'userRegistration.mode',
+      UserRegistrationMode.PUBLIC,
+    );
   }
 
   private async getAndValidateInvitation(userRegistration: UserRegistration) {

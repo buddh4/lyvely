@@ -7,6 +7,11 @@ import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
 import { isTouchScreen } from '@/core';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import {
+  USER_REGISTRATION_MODULE_ID,
+  IUserRegistrationAppConfig,
+  UserRegistrationMode,
+} from '@lyvely/core-interface';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -14,7 +19,10 @@ const showRememberInfo = ref(false);
 
 const { loginModel, validator, stage } = storeToRefs(loginStore);
 
-const isPublicRegistration = useAppConfigStore().config?.registrationMode === 'public';
+const isPublicRegistration = useAppConfigStore().getModuleConfig<
+  IUserRegistrationAppConfig,
+  UserRegistrationMode
+>(USER_REGISTRATION_MODULE_ID, 'registrationMode');
 
 watch(stage, () => {
   // When moving between stages we want to clear the errors

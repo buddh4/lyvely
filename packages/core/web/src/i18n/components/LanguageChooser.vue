@@ -2,9 +2,12 @@
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import { getLocale, setLocale } from '@/i18n';
 import { computed, ref } from 'vue';
+import { I18N_MODULE_ID, I18nAppConfig, ILocale } from '@lyvely/core-interface';
 
-const appConfigStore = useAppConfigStore();
-const enabledLocales = appConfigStore.get('locales');
+const enabledLocales = useAppConfigStore().getModuleConfig<I18nAppConfig, ILocale[]>(
+  I18N_MODULE_ID,
+  'locales',
+);
 
 const activeLocale = ref(getLocale());
 const locale = computed(

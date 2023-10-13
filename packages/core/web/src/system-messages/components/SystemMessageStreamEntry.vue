@@ -12,7 +12,7 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 
-const appName = useAppConfigStore().config?.appName;
+const appName = useAppConfigStore().get('appName');
 </script>
 
 <template>

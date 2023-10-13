@@ -10,13 +10,13 @@ describe('object util', () => {
 
     it('find parent of field', () => {
       const model = { sub: { sub: { field: 'value' } } };
-      const value = findByPath(model, 'sub.sub.field', true);
+      const value = findByPath<{ field: string }>(model, 'sub.sub.field', true);
       expect(value.field).toEqual('value');
     });
 
     it('find by root path', () => {
       const model = { sub: { sub: { field: 'value' } } };
-      const value = findByPath(model, 'sub');
+      const value = findByPath<{ sub: { field: string } }>(model, 'sub');
       expect(value.sub.field).toEqual('value');
     });
 

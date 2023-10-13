@@ -1,10 +1,10 @@
 export interface IFeature {
   id: string;
-  category: string; //translatable category id
   title: string; //translatable
+  categories?: string[]; //translatable category id
   description?: string; // translatable
   installable?: boolean; // default false
-  activeByDefault?: boolean;
+  enabledByDefault?: boolean;
   global?: boolean; // default false which means it is a profile feature
-  dependsOn?: string[];
+  dependencies?: string[];
 }

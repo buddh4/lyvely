@@ -1,6 +1,6 @@
 type Primitive = string | number | symbol;
 
-export type GenericObject = Record<Primitive, unknown>;
+export type GenericObject<T = {}> = Record<Primitive, unknown> & T;
 
 type Join<L extends Primitive | undefined, R extends Primitive | undefined> = L extends undefined
   ? R

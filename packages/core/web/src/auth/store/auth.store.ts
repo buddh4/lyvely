@@ -10,7 +10,14 @@ import { setLocale, getDefaultLocale } from '@/i18n';
 import { ref, computed } from 'vue';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import { AuthService } from '@/auth/services/auth.service';
-import { ILoginResponse, UserModel, UserStatus } from '@lyvely/core-interface';
+import {
+  I18N_MODULE_ID,
+  ILoginResponse,
+  UserModel,
+  UserStatus,
+  I18nAppConfig,
+  ILocale,
+} from '@lyvely/core-interface';
 import { queuePromise } from '@lyvely/common';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import { useLiveStore } from '@/live/stores/live.store';
@@ -22,8 +29,14 @@ export const useAuthStore = defineStore('user-auth', () => {
   const appConfigStore = useAppConfigStore();
   const authService = new AuthService();
   const authTokenExpiration = ref(0);
+
   const locale = computed(() => {
-    return user.value?.locale || getDefaultLocale(appConfigStore.get('locales'));
+    return (
+      user.value?.locale ||
+      getDefaultLocale(
+        appConfigStore.getModuleConfig<I18nAppConfig, ILocale[]>(I18N_MODULE_ID, 'locales'),
+      )
+    );
   });
   const visitorId = ref<string | undefined>(<string | undefined>storedVid.getValue());
 

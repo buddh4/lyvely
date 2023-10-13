@@ -41,6 +41,12 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   type: ProfileType;
 
   @Expose()
+  enabledFeatures: string[];
+
+  @Expose()
+  disabledFeatures: string[];
+
+  @Expose()
   visibility: number;
 
   @Expose()

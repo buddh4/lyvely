@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { repository, loadingStatus, useStatus } from '@/core';
-import { AppConfig } from '@lyvely/core-interface';
+import { IAppConfig } from '@lyvely/core-interface';
 import { AppConfigService } from '@/app-config/services/app-config.service';
+import { findByPath, NestedPaths, TypeFromPath } from '@lyvely/common';
+import { GenericObject } from '@lyvely/common/src';
 
-type ConfigKey = keyof AppConfig;
-type ConfigValue<T extends ConfigKey> = AppConfig[T];
+type ConfigKey = keyof IAppConfig;
+type ConfigValue<T extends ConfigKey> = IAppConfig[T];
 
 export const useAppConfigStore = defineStore('app-config', () => {
-  const config = ref<AppConfig>();
+  const config = ref<IAppConfig>();
   const status = useStatus();
   const appConfigService = new AppConfigService();
 
@@ -16,7 +18,7 @@ export const useAppConfigStore = defineStore('app-config', () => {
     return loadingStatus(appConfigService.getConfig(), status).then(setConfig);
   }
 
-  function setConfig(cfg: AppConfig) {
+  function setConfig(cfg: IAppConfig) {
     config.value = cfg;
   }
 
@@ -28,10 +30,36 @@ export const useAppConfigStore = defineStore('app-config', () => {
     return config.value[cfg] ?? defaultValue;
   }
 
+  function getModuleConfig<
+    TConfig extends GenericObject = GenericObject,
+    TResult = any,
+    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+  >(moduleId: string, path: TPath, defaultValue: TResult): TResult;
+  function getModuleConfig<
+    TConfig extends GenericObject = GenericObject,
+    TResult = any,
+    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+  >(moduleId: string, path: TPath, defaultValue?: TResult): TResult | undefined;
+  function getModuleConfig<
+    TConfig extends GenericObject = GenericObject,
+    TResult = any,
+    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+  >(moduleId: string, path?: TPath, defaultValue?: TResult): TResult | undefined {
+    if (!config.value) return defaultValue;
+
+    const moduleConfig = config.value.modules[moduleId];
+
+    if (!moduleConfig) return defaultValue;
+    if (!path) return moduleConfig as TResult;
+
+    return findByPath<TResult>(moduleConfig, path as string) || defaultValue;
+  }
+
   return {
     get,
     config,
     loadConfig,
+    getModuleConfig,
     ...status,
   };
 });

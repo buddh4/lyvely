@@ -1,2 +1,3 @@
 export * from './user-registration.endpoint';
-export * from './registration.mode.type';
+export * from './user-registration-mode.enum';
+export * from './user-registration-app-config.interface';

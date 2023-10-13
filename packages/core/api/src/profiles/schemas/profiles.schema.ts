@@ -72,6 +72,12 @@ export class Profile
   @Prop({ type: [String] })
   usage: ProfileUsage[];
 
+  @Prop({ type: [String] })
+  enabledFeatures: string[];
+
+  @Prop({ type: [String] })
+  disabledFeatures: string[];
+
   type: ProfileType;
 
   @Prop({

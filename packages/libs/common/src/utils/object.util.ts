@@ -1,6 +1,25 @@
 import { Type } from './util.types';
 
-export function findByPath<T>(model: T, path: string, parent = false, create = true) {
+const BLACKLISTED_PATH = [
+  '__proto__',
+  'prototype',
+  'constructor',
+  'valueOf',
+  'toString',
+  'hasOwnProperty',
+];
+
+export function isBlacklistedProperty(prop: string) {
+  if (prop.startsWith('__') && prop.endsWith('__')) return true;
+  return BLACKLISTED_PATH.includes(prop);
+}
+
+export function findByPath<T>(
+  model: object,
+  path: string,
+  parent = false,
+  create = true,
+): T | undefined {
   if (!path.includes('.')) {
     return parent ? model : model[path];
   }
@@ -10,6 +29,8 @@ export function findByPath<T>(model: T, path: string, parent = false, create = t
   let result = model as T | undefined;
   const subPaths = path.split('.');
   subPaths.forEach((sub, index) => {
+    if (isBlacklistedProperty(sub)) throw new Error('Tried to access blacklisted property');
+
     if ((sub && sub.length && sub.charAt(0) === '$') || /^[0-9]+$/.test(sub)) {
       // we do not support mongodb special cases e.g. array etc.
       result = undefined;

@@ -4,7 +4,7 @@ import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import { MailInvitationInfo } from '@lyvely/core-interface';
 import { EntityNotFoundException } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
-import { useInvitationsService } from '../services/invitations.service';
+import { useInvitationsService } from '../services';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { storeToRefs } from 'pinia';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
@@ -13,7 +13,7 @@ const router = useRouter();
 
 const token = router.currentRoute.value.query.t as string;
 const mailInviteInfo = ref<MailInvitationInfo>();
-const appName = useAppConfigStore().config?.appName;
+const appName = useAppConfigStore().get('appName');
 const error = ref<string>();
 
 const authStore = useAuthStore();

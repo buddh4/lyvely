@@ -1,8 +1,8 @@
 import { StrictEndpoint } from '@lyvely/common';
-import { AppConfig } from './app-config.type';
+import { IAppConfig } from './app-config.interface';
 
 export interface IAppConfigService {
-  getConfig(): Promise<AppConfig>;
+  getConfig(): Promise<IAppConfig>;
 }
 
 export type AppConfigEndpoint = StrictEndpoint<IAppConfigService>;
