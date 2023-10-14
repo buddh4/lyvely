@@ -19,16 +19,16 @@ type FilterEvents<TOptions> = {
 
 export interface IFilter<TModel, TOptions> {
   option<T extends keyof TOptions>(key: T): TOptions[T];
-  setOption<T extends keyof TOptions>(key: T, value: TOptions[T]);
-  setOptions(update: Partial<TOptions>);
+  setOption<T extends keyof TOptions>(key: T, value: TOptions[T]): void;
+  setOptions(update: Partial<TOptions>): void;
   getOptions(): TOptions;
   getOptionsWithStringValues(): Record<string, string>;
   filter(models: TModel[]): TModel[];
-  check(model: TModel);
-  reset();
+  check(model: TModel): boolean;
+  reset(): void;
   isEmpty(): boolean;
-  onUpdate(handler: Handler<FilterEvents<TOptions>['update']>);
-  offUpdate(handler: Handler<FilterEvents<TOptions>['update']>);
+  onUpdate(handler: Handler<FilterEvents<TOptions>['update']>): void;
+  offUpdate(handler: Handler<FilterEvents<TOptions>['update']>): void;
 }
 
 export abstract class Filter<
@@ -41,7 +41,7 @@ export abstract class Filter<
   protected additions: FilterAddition<TModel, TOptions, TFilter>[] = [];
   protected emitter: Emitter<FilterEvents<TOptions>>;
 
-  protected abstract checkModel(model: TModel);
+  protected abstract checkModel(model: TModel): boolean;
   abstract isEmpty();
 
   protected constructor(options?: FilterConstructorOptions<TModel, TOptions>) {

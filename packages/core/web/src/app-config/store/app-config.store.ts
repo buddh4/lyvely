@@ -3,8 +3,7 @@ import { ref } from 'vue';
 import { repository, loadingStatus, useStatus } from '@/core';
 import { IAppConfig } from '@lyvely/core-interface';
 import { AppConfigService } from '@/app-config/services/app-config.service';
-import { findByPath, NestedPaths, TypeFromPath } from '@lyvely/common';
-import { GenericObject } from '@lyvely/common/src';
+import { findByPath, NestedPaths } from '@lyvely/common';
 
 type ConfigKey = keyof IAppConfig;
 type ConfigValue<T extends ConfigKey> = IAppConfig[T];

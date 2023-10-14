@@ -7,7 +7,9 @@ export default [
     name: 'Stream',
     path: profileRoute('/stream'),
     component: () => import('../views/ContentStreamLayout.vue'),
-    layout: 'profile-full',
+    meta: {
+      layout: 'profile-full',
+    },
     children: [
       {
         path: '',
