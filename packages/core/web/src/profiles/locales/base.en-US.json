@@ -28,7 +28,7 @@
       },
       "general": {
         "name": "Profile Name",
-        "label": "Profile"
+        "label": "General"
       },
       "archive": {
         "confirm": "Do you really want to archive this profile?"

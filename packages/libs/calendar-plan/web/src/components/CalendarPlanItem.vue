@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import TagList from '@/tags/components/TagList.vue';
 import { useCalendarPlanStore } from '../stores';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 import { computed, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
-import { toContentDetails } from '@/content-stream';
+import { toContentDetails, translate, TagList } from '@lyvely/web';
+import { LyIcon, LyBadge } from '@lyvely/ui';
 
 export interface IProps {
   model: ICalendarPlanEntry;
@@ -63,8 +63,8 @@ const { model } = toRefs(props);
                 <span>
                   {{ model.content.title }}
                 </span>
-                <ly-badge v-if="model.meta.archived" class="bg-danger ml-2" :translate="false">
-                  {{ $t('common.archived') }}
+                <ly-badge v-if="model.meta.archived" class="bg-danger ml-2">
+                  {{ translate('common.archived') }}
                 </ly-badge>
               </div>
             </slot>

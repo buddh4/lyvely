@@ -1,6 +1,7 @@
 import { nextTick } from 'vue';
 import { createI18n, I18n } from 'vue-i18n';
 import { IModule, getModule, isDevelopEnvironment, getModules } from '@/core';
+import { Translatable } from '@lyvely/ui';
 
 export const SUPPORT_LOCALES = ['en-US', 'de-DE'];
 
@@ -22,16 +23,27 @@ export type ITranslation = () => string;
 
 const DEFAULT_TRANSLATION_KEY = 'locale';
 
-export type Translatable = string | ((params?: any) => string);
-
 export function translation(key: string, options?: any) {
   return () => translate(key, options);
 }
 
-export function translate(key: Translatable, options?: any) {
+export function translationAdapter(t: Translatable) {
+  if (typeof t === 'string') return translate(t);
+  if (typeof t === 'object') return t.plain;
+  if (typeof t === 'function') return t();
+
+  return '';
+}
+
+export function translate(
+  key: Translatable | ((params?: Record<string, string>) => string),
+  options?: Record<string, string>,
+) {
   if (typeof key === 'function') return key(options);
   return (<any>getI18n().global).t(key, options);
 }
+
+export const t = translate;
 
 export function setupI18n() {
   i18n = createI18n({

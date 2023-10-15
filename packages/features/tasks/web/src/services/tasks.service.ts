@@ -14,7 +14,7 @@ import {
   CalendarPlanFilter,
   ICalendarPlanResponse,
   CalendarPlanSort,
-} from '@lyvely/calendar-plan-interface';
+} from '@lyvely/calendar-plan-web';
 
 import repository from '../repositories/tasks.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/web';

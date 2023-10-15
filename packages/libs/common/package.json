@@ -3,7 +3,6 @@
   "version": "0.1.0-alpha3",
   "description": "Common base library",
   "author": "Julian Harrer",
-  "type": "commonjs",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/lib/index.d.ts",

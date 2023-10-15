@@ -1,8 +1,8 @@
 import { registerGuards, registerRoutes } from '@/lyvely.router';
 import routes from './routes/profile.routes';
-import { profileLayoutGuard } from './guards/profile.guards';
-import { registerMenuEntries, registerMenuEntry } from '@/menus';
-import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
+import { profileLayoutGuard } from './guards';
+import { registerMenuEntries } from '@/menus';
+import { MENU_PROFILE_DRAWER, MENU_PROFILE_SETTINGS } from '@/profiles/profile.constants';
 import { isMultiUserProfile } from '@lyvely/core-interface';
 import { useProfileStore } from '@/profiles/stores';
 import { IModule } from '@/core';
@@ -24,6 +24,7 @@ export default () => {
           sortOrder: 3000,
           title: 'profiles.users.label',
           condition: () => {
+            // TODO: Permissions
             const { profile } = useProfileStore();
             return profile ? isMultiUserProfile(profile) : false;
           },
@@ -34,6 +35,22 @@ export default () => {
           icon: 'settings',
           sortOrder: 4000,
           title: 'profiles.settings.label',
+        },
+      ]);
+
+      // TODO: Permissions
+      registerMenuEntries(MENU_PROFILE_SETTINGS, [
+        {
+          id: 'ProfileMembership',
+          title: 'profiles.settings.membership.label',
+          sortOrder: 1000,
+          to: { name: 'ProfileMembershipSettings' },
+        },
+        {
+          id: 'GeneralProfileSettings',
+          title: 'profiles.settings.general.label',
+          sortOrder: 2000,
+          to: { name: 'GeneralProfileSettings' },
         },
       ]);
     },

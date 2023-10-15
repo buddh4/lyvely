@@ -1,5 +1,5 @@
 import { ModuleMetadata } from '@nestjs/common';
-import { IFeature } from '@/features';
+import { IFeature } from '@lyvely/core-interface';
 
 export type IModuleMetadata<T = any> = ModuleMetadata & {
   id: string;

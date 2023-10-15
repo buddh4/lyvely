@@ -2,7 +2,7 @@ import './styles/index.css';
 import AppComponent from './App.vue';
 import { UserAvatar } from '@/users';
 import { ProfileAvatar } from '@/profiles';
-import { setupI18n, translate } from '@/i18n';
+import { setupI18n, translationAdapter } from '@/i18n';
 import { router, registerRoutes } from './lyvely.router';
 import {
   resetStore,
@@ -11,6 +11,7 @@ import {
   AppEvents,
   createApiUrl,
   installModules,
+  importModules,
 } from '@/core';
 import { registerCoreModules } from './core.modules';
 import { markRaw, App as VueApp, createApp } from 'vue';
@@ -19,6 +20,8 @@ import { I18n } from 'vue-i18n';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 import { createLyvelyUi } from '@lyvely/ui';
 import { RouteRecordRaw } from 'vue-router';
+import { IWebConfig } from '@/web-config/web-config.interface';
+import { initWebConfig } from '@/web-config';
 
 export interface ILyvelyWebAppOptions extends IModuleLoaderOptions {}
 
@@ -28,16 +31,18 @@ export class LyvelyWebApp {
   i18n: I18n;
   events: AppEvents;
   options: ILyvelyWebAppOptions;
+  config: IWebConfig;
 
   constructor(options: ILyvelyWebAppOptions = {}) {
     this.options = options;
   }
 
   async init() {
+    this.config = await initWebConfig();
     this.events = eventBus;
     this.events.emit('app.init.pre');
     registerCoreModules();
-    this.registerRoutes();
+    await this.loadExternalModules();
     this.setupPinia();
     await this.setupI18n();
     this.createApp();
@@ -45,11 +50,13 @@ export class LyvelyWebApp {
     return this;
   }
 
-  private registerRoutes() {
-    this.loadModules();
-  }
+  private async loadExternalModules() {
+    if (!this.config.moduleImports) return;
 
-  private loadModules() {
+    this.config.moduleImports?.map((moduleImport) => importModules(moduleImport));
+
+    this.config.moduleImports.forEach((moduleGlobImport) => {});
+
     const moduleRoutes = <{ default: Array<RouteRecordRaw> }[]>(
       import.meta.glob('./modules/**/routes/index.ts', { eager: true })
     );
@@ -81,7 +88,7 @@ export class LyvelyWebApp {
     this.vueApp.use(this.i18n);
     this.vueApp.use(
       createLyvelyUi({
-        translationProvider: translate,
+        translationProvider: translationAdapter,
         env: import.meta.env.VITE_APP_ENV,
         avatarUrlProvider: (guid: string, v?: number) =>
           createApiUrl(`/avatars/${guid}`, v ? { v: v.toString() } : {}),

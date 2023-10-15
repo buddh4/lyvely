@@ -8,6 +8,17 @@ export function registerFeatures(featuresToAdd: IFeature[]) {
   featuresToAdd.forEach((f) => features.set(f.id, f));
 }
 
+export function getFeaturesWithSettings(profile: ProfileModel, config: IFeatureConfig): IFeature[] {
+  const result: IFeature[] = [];
+  const featureDefinition = mergeConfig(profile, config);
+  for (const feature of features.values()) {
+    if (feature.configurable || _isInstallableProfileFeature(feature, featureDefinition)) {
+      result.push(feature);
+    }
+  }
+  return result;
+}
+
 export function clearFeatures() {
   features.clear();
 }
@@ -71,14 +82,6 @@ function _isEnabledProfileFeature(
   return !!feature.enabledByDefault;
 }
 
-export function isInstallableProfileFeature(
-  featureId: string,
-  profile: ProfileModel,
-  config: IFeatureConfig,
-) {
-  return _isInstallableProfileFeature(featureId, mergeConfig(profile, config));
-}
-
 function _getProfileFeature(featureOrId: string | IFeature) {
   const featureId = typeof featureOrId === 'string' ? featureOrId : featureOrId.id;
   const feature = features.get(featureId);
@@ -94,6 +97,14 @@ function _getProfileFeature(featureOrId: string | IFeature) {
   }
 
   return feature;
+}
+
+export function isInstallableProfileFeature(
+  featureId: string,
+  profile: ProfileModel,
+  config: IFeatureConfig,
+) {
+  return _isInstallableProfileFeature(featureId, mergeConfig(profile, config));
 }
 
 function _isInstallableProfileFeature(

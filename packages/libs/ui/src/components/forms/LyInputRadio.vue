@@ -1,29 +1,28 @@
 <script lang="ts" setup>
 import { useBaseInputSetup } from './BaseInput';
-import { onMounted, ref } from 'vue';
-import { t } from '@/i18n';
+import { HTMLAttributes, onMounted, ref } from 'vue';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: any;
-  wrapperClass?: string;
+  inputClass?: HTMLAttributes['class'];
+  inputStyle?: HTMLAttributes['style'];
+  wrapperClass?: HTMLAttributes['class'];
   autofocus?: boolean;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
   error?: string;
   loading?: boolean;
   autoValidation?: boolean;
-  translate?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -33,7 +32,6 @@ const props = withDefaults(defineProps<IProps>(), {
   helpText: undefined,
   value: undefined,
   property: undefined,
-  placeholder: undefined,
   name: undefined,
   disabled: false,
   readonly: false,
@@ -44,9 +42,9 @@ const props = withDefaults(defineProps<IProps>(), {
   loading: false,
   ariaDescribedby: undefined,
   inputClass: undefined,
+  inputStyle: undefined,
   wrapperClass: undefined,
   error: undefined,
-  translate: true,
 });
 
 const emit = defineEmits(['change', 'update:modelValue']);
@@ -72,9 +70,10 @@ onMounted(() => {
           :disabled="disabled"
           :value="value"
           :class="inputClass"
+          :style="inputStyle"
           :readonly="readonly"
           @change="onChange" />
-        <span v-if="label" class="label ml-2">{{ translate ? t(label) : label }}</span>
+        <span v-if="label" class="label ml-2">{{ t(label) }}</span>
       </label>
     </div>
     <span v-if="showHelpText && helpText" class="text-sm text-dimmed">

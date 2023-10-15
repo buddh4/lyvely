@@ -1,22 +1,22 @@
 <script lang="ts" setup>
 import { useBaseInputSetup } from './BaseInput';
-import { computed, onMounted, ref } from 'vue';
-import { t } from '@/i18n';
+import { HTMLAttributes, computed, onMounted, ref } from 'vue';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: any;
-  wrapperClass?: string;
+  inputClass?: HTMLAttributes['class'];
+  inputStyle?: HTMLAttributes['style'];
+  wrapperClass?: HTMLAttributes['class'];
   autofocus?: boolean;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
@@ -26,7 +26,6 @@ export interface IProps {
   min: number;
   max: number;
   step?: number;
-  width?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -36,7 +35,6 @@ const props = withDefaults(defineProps<IProps>(), {
   helpText: undefined,
   value: undefined,
   property: undefined,
-  placeholder: undefined,
   name: undefined,
   disabled: false,
   readonly: false,
@@ -47,17 +45,17 @@ const props = withDefaults(defineProps<IProps>(), {
   loading: false,
   ariaDescribedby: undefined,
   inputClass: undefined,
+  inputStyle: undefined,
   wrapperClass: undefined,
   error: undefined,
   step: 1,
-  width: '',
 });
 
 const emit = defineEmits(['change', 'update:modelValue']);
 const input = ref<HTMLInputElement>();
 
 const baseInput = useBaseInputSetup<number>(props, emit);
-const { editable, hasFocus, label, inputClass } = baseInput;
+const { editable, hasFocus, label, inputClass, showHelpText } = baseInput;
 
 const baseInputValue = baseInput.inputValue;
 const inputValue = computed({
@@ -91,13 +89,6 @@ function getAllowedVal(val: number): number {
   return val;
 }
 
-function inputStyle() {
-  if (!props.width) {
-    return {};
-  }
-  return { width: props.width };
-}
-
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
 });
@@ -120,6 +111,9 @@ onMounted(() => {
       :max="max"
       type="range"
       @change="$emit('change')" />
+    <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
+      {{ t(helpText) }}
+    </span>
   </section>
 </template>
 

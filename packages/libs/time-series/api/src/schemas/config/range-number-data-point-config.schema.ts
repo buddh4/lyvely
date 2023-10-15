@@ -21,6 +21,9 @@ export class RangeNumberDataPointConfig extends NumberDataPointConfig {
   @Prop({ enum: [DataPointInputType.Range] })
   inputType: DataPointInputType;
 
+  @Prop({ required: true })
+  max: number;
+
   constructor(settings: Omit<INumberDataPointSettings, 'inputType'>) {
     super(DataPointInputType.Range, settings);
   }

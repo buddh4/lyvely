@@ -1,17 +1,15 @@
 <script lang="ts" setup>
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
-  title: string;
+  title: Translatable;
   ariaLabel?: string;
   icon?: string;
-  translate?: boolean;
 }
 
 withDefaults(defineProps<IProps>(), {
   icon: undefined,
   ariaLabel: undefined,
-  translate: true,
 });
 </script>
 
@@ -22,8 +20,8 @@ withDefaults(defineProps<IProps>(), {
       <h2
         class="list-page-headline inline-block font-medium m-0"
         tabindex="-1"
-        :aria-label="translate ? t(ariaLabel || title) : ariaLabel || title">
-        {{ translate ? t(title) : title }}
+        :aria-label="t(ariaLabel || title)">
+        {{ t(title) }}
       </h2>
       <div class="ml-auto inline-block">
         <slot name="header-right"></slot>

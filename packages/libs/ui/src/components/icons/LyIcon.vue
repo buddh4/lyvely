@@ -3,12 +3,11 @@ import { IconName, getIconByName } from './Icons';
 import { computed } from 'vue';
 import { IconOptionsIF } from '@/types';
 import { includesUtilityClass } from '@/helpers';
-import { t } from '../../i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   name?: IconName;
-  title?: string;
-  translate?: boolean;
+  title?: Translatable;
   options?: IconOptionsIF;
   scaleTo?: number;
   autoScale?: boolean;
@@ -19,7 +18,6 @@ const props = withDefaults(defineProps<IProps>(), {
   options: undefined,
   title: undefined,
   scaleTo: 0,
-  translate: true,
   autoScale: false,
 });
 
@@ -67,7 +65,7 @@ const transform = computed<string | undefined>(() => {
     :class="getClassNames($attrs.class)"
     :style="styleObject"
     :viewBox="definition.viewBox">
-    <title v-if="title">{{ translate ? t(title) : title }}</title>
+    <title v-if="title">{{ t(title) }}</title>
     <path v-for="path in definition.paths" :key="path" :d="path" :transform="transform"></path>
   </svg>
 </template>

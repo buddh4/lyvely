@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import { useRouter, isNavigationFailure } from 'vue-router';
 import { useCreateProfileStore } from '@/profiles/stores/create-profile.store';
 import { ProfileRelationInfo } from '@lyvely/core-interface';
+import LyProfileAvatar from '../ProfileAvatar.vue';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileStore = useProfileStore();
@@ -69,7 +70,7 @@ function getProfileIcon(relation: ProfileRelationInfo) {
               <p class="text-sm font-medium truncate">
                 {{ relation.name }}
               </p>
-              <ly-dimmed :text="relation.description" :translate="false" />
+              <ly-dimmed :text="{ plain: relation.description }" :truncate="true" />
             </div>
             <div>
               <ly-icon :name="getProfileIcon(relation)" />

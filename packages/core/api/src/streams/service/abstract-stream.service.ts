@@ -5,7 +5,7 @@ import {
   IStreamFilter,
   StreamResponse,
 } from '@lyvely/core-interface';
-import { findByPath, EntityNotFoundException } from '@lyvely/common';
+import { findByPath, EntityNotFoundException, SortValue } from '@lyvely/common';
 import { FilterQuery } from 'mongoose';
 import {
   AbstractDao,
@@ -103,8 +103,8 @@ export abstract class AbstractStreamService<
     return response;
   }
 
-  protected getSortValue(model: TModel) {
-    return findByPath(model, this.getSortField());
+  protected getSortValue(model: TModel): SortValue {
+    return findByPath<SortValue>(model, this.getSortField());
   }
 
   async loadHead(

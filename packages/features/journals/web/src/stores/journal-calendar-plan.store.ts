@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { JournalFilter, JournalModel, JournalDataPointStore } from '@lyvely/journals-interface';
-import { useJournalsService } from '@/journals/services/journals.service';
-import { useTimeSeriesCalendarPlan } from '@/time-series';
+import { useJournalsService } from '@/services/journals.service';
+import { useTimeSeriesCalendarPlan } from '@lyvely/time-series-web';
 
 export const useJournalPlanStore = defineStore('journal-calendar-plan', () => {
   return useTimeSeriesCalendarPlan<JournalModel, JournalFilter>({

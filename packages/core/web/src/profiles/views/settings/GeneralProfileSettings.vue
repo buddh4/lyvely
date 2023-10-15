@@ -10,7 +10,7 @@ const description = ref(profileStore.profile?.description);
 </script>
 
 <template>
-  <div class="bg-main flex flex-col p-4 rounded shadow-sm mb-2 border border-divide">
+  <ly-content-panel>
     <div class="flex items-center mb-2 flex-row items-stretch">
       <div class="w-full">
         <ly-input-text v-model="name" label="profiles.settings.general.name" />
@@ -30,9 +30,9 @@ const description = ref(profileStore.profile?.description);
         {{ $t('common.update') }}
       </ly-button>
     </div>
-  </div>
+  </ly-content-panel>
 
-  <div class="bg-main p-4 rounded shadow-sm mb-4 flex flex-col border border-divide">
+  <ly-content-panel>
     <div>
       <ly-button
         class="danger float-right"
@@ -40,7 +40,7 @@ const description = ref(profileStore.profile?.description);
         {{ $t('common.archive') }}
       </ly-button>
     </div>
-  </div>
+  </ly-content-panel>
 </template>
 
 <style scoped></style>

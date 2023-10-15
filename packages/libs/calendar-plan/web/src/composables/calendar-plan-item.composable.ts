@@ -2,9 +2,7 @@ import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 import { computed } from 'vue';
 import { useCalendarPlanStore } from '../stores';
 import { IMoveEntryEvent } from '../interfaces';
-import { useAccessibilityStore } from '@/accessibility';
-import { translate } from '@/i18n';
-import { IDragEvent } from '@/common';
+import { useAccessibilityStore, translate, IDragEvent } from '@lyvely/web';
 import { storeToRefs } from 'pinia';
 
 export interface ISortableStore {
@@ -75,8 +73,8 @@ export function useCalendarPlanPlanItem<TModel extends ICalendarPlanEntry>(
     );
     useAccessibilityStore().addMessage(
       translate('calendar-plan.aria.move-success', {
-        from: evt.oldIndex,
-        to: evt.newIndex,
+        from: `${evt.oldIndex}`,
+        to: `${evt.newIndex}`,
       }),
     );
   }

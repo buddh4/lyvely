@@ -13,6 +13,6 @@ export class FeaturesEvents {
 
   @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY)
   handleModuleConfigAssembly(event: ModuleAppConfigAssemblyEvent) {
-    event.setModuleConfig(FEATURE_MODULE_ID, this.configService.get('features'));
+    event.setModuleConfig(FEATURE_MODULE_ID, this.configService.get('features', {}));
   }
 }

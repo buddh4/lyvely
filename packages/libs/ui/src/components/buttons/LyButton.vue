@@ -10,13 +10,12 @@ import { includesUtilityClass } from '@/helpers';
 import { RouteLocationRaw } from 'vue-router';
 import { IConfirmOptions } from '../modals/interfaces';
 import { isDevelopmentEnvironment } from '@/config';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 import LyConfirmModal from '../modals/LyConfirmModal.vue';
 
 export interface IProps {
   submit?: boolean;
-  label?: string;
-  translate?: boolean;
+  label?: Translatable;
   active?: boolean;
   border?: boolean;
   disabled?: boolean;
@@ -33,7 +32,6 @@ const props = withDefaults(defineProps<IProps>(), {
   active: false,
   border: true,
   label: '',
-  translate: true,
   disabled: false,
   loading: false,
   rounded: true,
@@ -140,7 +138,7 @@ function getAriaPressed($attrs: any) {
     :disabled="disabled || loading"
     :data-loading="loading"
     @click.prevent="onClick">
-    <slot :active="active">{{ translate ? t(label) : label }}</slot>
+    <slot :active="active">{{ t(label) }}</slot>
   </button>
   <router-link v-if="route" v-slot="{ navigate, isExactActive }" :to="route" custom>
     <button
@@ -151,7 +149,7 @@ function getAriaPressed($attrs: any) {
       :type="buttonType"
       :disabled="disabled"
       @click="navigate">
-      <slot :active="isExactActive">{{ translate ? t(label) : label }}</slot>
+      <slot :active="isExactActive">{{ t(label) }}</slot>
     </button>
   </router-link>
 

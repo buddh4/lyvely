@@ -1,17 +1,15 @@
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
-  message?: string;
-  translate?: boolean;
+  message?: Translatable;
   hide?: boolean;
   type?: 'danger' | 'info' | 'warning' | 'secondary' | 'success';
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   message: undefined,
-  translate: true,
   hide: undefined,
   type: 'secondary',
 });
@@ -26,7 +24,7 @@ const cssClass = [
 ];
 
 const isActive = computed(() => {
-  return !!useSlots().default || props.message?.length;
+  return !!useSlots().default || t(props.message).length;
 });
 </script>
 
@@ -35,7 +33,7 @@ const isActive = computed(() => {
     <span class="text-sm">
       <slot>
         <template v-if="message">
-          {{ translate ? t(message) : message }}
+          {{ t(message) }}
         </template>
       </slot>
     </span>

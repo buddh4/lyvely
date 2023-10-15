@@ -44,6 +44,10 @@ export class NumberDataPointStrategy extends DataPointStrategy<
     if (config.max && config.inputType === DataPointInputType.Checkbox) {
       config.max = Math.min(8, config.max);
     }
+
+    if (!isDefined(config.max) && config.inputType === DataPointInputType.Range) {
+      config.max = 10;
+    }
   }
 
   getSettingKeys(): Array<keyof INumberDataPointConfig> {

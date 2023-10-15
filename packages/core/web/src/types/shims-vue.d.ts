@@ -22,8 +22,16 @@ export declare global {
     Cypress: any;
   }
 
+  interface ImportMetaOptions {
+    eager?: boolean;
+  }
+
   export interface ImportMeta {
-    glob: <T = any>(path: string, options?: { eager?: boolean }) => Record<string, (() => T) | T>;
+    glob<T = any>(path: string, options: { eager: true }): Record<string, T>;
+    glob<T = any, TOptions extends ImportMetaOptions = ImportMetaOptions>(
+      path: string,
+      options?: TOptions,
+    ): Record<string, Promise<T>>;
     env: {
       DEV: boolean;
       PROD: boolean;

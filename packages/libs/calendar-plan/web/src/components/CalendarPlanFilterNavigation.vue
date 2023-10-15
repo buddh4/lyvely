@@ -1,9 +1,17 @@
 <script lang="ts" setup>
 import { IContentFilter } from '@lyvely/core-interface';
-import { useContentFilter } from '@/content';
 import { LocationQuery, onBeforeRouteLeave, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { useCalendarPlanStore } from '@/calendar-plan';
+import { useContentFilter } from '@lyvely/web';
+import { useCalendarPlanStore } from '@/stores';
+import {
+  LyButton,
+  LyIcon,
+  LySliderMenu,
+  LyUpdateIndicator,
+  LyDrawer,
+  LyInputCheckbox,
+} from '@lyvely/ui';
 import { ref } from 'vue';
 
 export interface IProps {

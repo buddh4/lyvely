@@ -7,7 +7,9 @@ import { LyContentRoot } from '@lyvely/ui';
   <ly-content-root>
     <profile-settings-navigation />
     <div id="profile-settings-content">
-      <router-view></router-view>
+      <slot>
+        <router-view></router-view>
+      </slot>
     </div>
   </ly-content-root>
 </template>

@@ -5,11 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
-  label: string;
-  translate?: boolean;
+  label: Translatable;
   route?: string;
   icon?: string;
 }
@@ -17,7 +16,6 @@ export interface IProps {
 withDefaults(defineProps<IProps>(), {
   route: undefined,
   icon: undefined,
-  translate: true,
 });
 
 defineEmits(['click']);
@@ -36,13 +34,13 @@ const classNames =
     @click="$emit('click')">
     <ly-icon v-if="icon" :name="icon" class="align-middle"></ly-icon>
     <span class="align-middle">
-      <slot> {{ translate ? t(label) : label }}</slot>
+      <slot> {{ t(label) }}</slot>
     </span>
   </router-link>
   <a v-if="!route" v-bind="$attrs" :class="classNames" @click="$emit('click')">
     <ly-icon v-if="icon" :name="icon" class="align-middle"></ly-icon>
     <span class="align-middle">
-      <slot> {{ translate ? t(label) : label }}</slot>
+      <slot> {{ t(label) }}</slot>
     </span>
   </a>
 </template>

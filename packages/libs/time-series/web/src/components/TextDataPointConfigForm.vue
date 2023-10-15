@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ITextDataPointSettings } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
+import { LyInputCheckbox } from '@lyvely/ui';
 
 interface IProps {
   modelValue: Partial<ITextDataPointSettings>;

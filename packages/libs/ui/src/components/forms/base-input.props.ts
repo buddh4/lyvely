@@ -1,12 +1,15 @@
+import { Translatable } from '@/i18n';
+
 export interface IBaseInputProps {
   id?: string;
-  label?: string;
-  helpText?: string;
   name?: string;
+  label?: Translatable;
+  helpText?: Translatable;
+  placeholder?: Translatable;
+  error?: Translatable;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
@@ -14,7 +17,6 @@ export interface IBaseInputProps {
   wrapperClass?: string;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
-  error?: string;
   loading?: boolean;
   autoValidation?: boolean;
 }

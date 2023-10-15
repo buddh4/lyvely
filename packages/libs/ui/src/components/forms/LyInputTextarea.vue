@@ -1,26 +1,28 @@
 <script lang="ts" setup>
 import { useFloatingInputSetup } from './FloatingInput';
-import { onMounted, ref } from 'vue';
+import { HTMLAttributes, onMounted, ref } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
+  placeholder?: Translatable;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: any;
-  wrapperClass?: string;
+  inputClass?: HTMLAttributes['class'];
+  inputStyle?: HTMLAttributes['style'];
+  wrapperClass?: HTMLAttributes['class'];
   autofocus?: boolean;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
-  error?: string;
+  error?: Translatable;
   loading?: boolean;
   autoValidation?: boolean;
   rows: number;
@@ -45,6 +47,7 @@ const props = withDefaults(defineProps<IProps>(), {
   loading: false,
   ariaDescribedby: undefined,
   inputClass: undefined,
+  inputStyle: undefined,
   wrapperClass: undefined,
   error: undefined,
   rows: 3,
@@ -73,12 +76,13 @@ onMounted(() => {
       :id="inputId"
       ref="input"
       v-model="inputValue"
-      :placeholder="placeholder"
+      :placeholder="t(placeholder)"
       :aria-describedby="ariaDescribedby"
       :rows="rows"
       :disabled="disabled"
       :readonly="readonly"
       :class="inputClass"
+      :style="inputStyle"
       :maxlength="maxlength"></textarea>
   </ly-floating-input-layout>
 </template>

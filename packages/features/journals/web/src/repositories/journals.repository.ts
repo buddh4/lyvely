@@ -1,4 +1,4 @@
-import { repository } from '@/core';
+import { repository } from '@lyvely/web';
 import {
   ENDPOINT_JOURNALS,
   IJournalsEndpointService,

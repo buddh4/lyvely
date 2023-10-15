@@ -1,7 +1,7 @@
 import { CalendarInterval, toTimingId, getCalendarIntervalArray } from '@lyvely/dates';
 import { SortResult } from '@lyvely/common';
 import { ContentFilter } from '@lyvely/core-interface';
-import { LoadedTimingIdStore } from '@lyvely/time-series-interface';
+import { LoadedTimingIdStore } from '@/models';
 import {
   ICalendarPlanService,
   CalendarPlanSort,
@@ -9,21 +9,21 @@ import {
   CalendarPlanStore,
   ICalendarPlanResponse,
 } from '@lyvely/calendar-plan-interface';
-import { useProfileStore } from '@/profiles/stores/profile.store';
-import { ref, watch } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useCalendarPlanStore } from '../stores';
 import {
+  useProfileStore,
   loadingStatus,
   Status,
   useStatus,
   DialogExceptionHandler,
   useGlobalDialogStore,
-} from '@/core';
-import { dragEventToMoveEvent } from '../utils';
-import { IMoveEntryEvent } from '../interfaces';
-import { IDragEvent } from '@/common';
-import { useContentStore } from '@/content/stores/content.store';
+  IDragEvent,
+  useContentStore,
+} from '@lyvely/web';
+import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useCalendarPlanStore } from '@/stores';
+import { dragEventToMoveEvent } from '@/utils';
+import { IMoveEntryEvent } from '@/interfaces';
 
 export interface ICalendarPlanOptions<
   TModel extends ICalendarPlanEntry,

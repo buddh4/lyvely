@@ -1,10 +1,8 @@
 import { CalendarPlan } from '@lyvely/calendar-plan-interface';
 import { CalendarInterval, isToday as isTodayUtil } from '@lyvely/dates';
-import { translate, getDefaultLocale } from '@/i18n';
-import { useProfileStore } from '@/profiles/stores/profile.store';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { translate, getDefaultLocale, useProfileStore, useAuthStore } from '@lyvely/web';
 import { computed, toRefs } from 'vue';
-import { useCalendarPlanStore } from '@/calendar-plan';
+import { useCalendarPlanStore } from '../stores';
 
 export function useCalendarPlanPlanNavigation(interval: CalendarInterval) {
   const calendarPlanStore = useCalendarPlanStore();

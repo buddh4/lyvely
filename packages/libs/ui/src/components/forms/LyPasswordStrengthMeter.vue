@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, toRefs, watch } from 'vue';
+import { HTMLAttributes, computed, onMounted, ref, toRefs, watch } from 'vue';
 
 export interface IProps {
   modelValue: string;
   secureLength?: number;
-  cssClass?: string;
+  cssClass?: HTMLAttributes['class'];
   userInputs?: Array<string>;
 }
 

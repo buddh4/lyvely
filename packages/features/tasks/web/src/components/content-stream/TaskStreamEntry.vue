@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { TaskModel } from '@lyvely/tasks-interface';
 import { ContentModel } from '@lyvely/core-interface';
-import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
-import { IStream } from '@/modules/stream/composables/stream.composable';
+import { ContentStreamEntry, IStream } from '@lyvely/web';
+import { LyIcon } from '@lyvely/ui';
 
 export interface IProps {
   model: TaskModel;

@@ -53,7 +53,7 @@ const createMilestone = () =>
               <p class="text-sm font-medium truncate">
                 {{ milestone.content.title }}
               </p>
-              <ly-dimmed :text="milestone.content.text" :translate="false" />
+              <ly-dimmed :text="{ plain: milestone.content.text }" :truncate="true" />
             </div>
           </div>
         </ly-list-item>

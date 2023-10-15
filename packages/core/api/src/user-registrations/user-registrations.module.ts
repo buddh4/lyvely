@@ -13,6 +13,7 @@ import { UserRegistrationEvents } from './user-registration.events';
 @LyvelyModule({
   id: USER_REGISTRATION_MODULE_ID,
   name: 'User Registration',
+  path: __dirname,
   imports: [
     UsersModule,
     AuthModule,

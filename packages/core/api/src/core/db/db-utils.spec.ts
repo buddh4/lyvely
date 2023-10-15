@@ -67,6 +67,13 @@ describe('DbUtils', () => {
       expect(model.sub.sub.field).toEqual(1);
     });
 
+    it('apply multiple sub path inc', () => {
+      const model = { sub: { sub: { field1: 0, field2: 0 } } };
+      applyInc(model, { 'sub.sub.field1': 1, 'sub.sub.field2': 1 });
+      expect(model.sub.sub.field1).toEqual(1);
+      expect(model.sub.sub.field2).toEqual(1);
+    });
+
     it('apply negative sub path inc', () => {
       const model = { sub: { sub: { field: 0 } } };
       applyInc(model, { 'sub.sub.field': -1 });

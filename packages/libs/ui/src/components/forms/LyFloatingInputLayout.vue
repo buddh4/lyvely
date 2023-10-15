@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { useHelpText } from './help-text.util';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
-  label?: string;
-
+  label?: Translatable;
   inputId: string;
-  inputError?: string;
-  helpText?: string;
+  inputError?: Translatable;
+  helpText?: Translatable;
   wrapperClass?: string;
   required?: boolean;
 }
@@ -62,7 +61,7 @@ const wrapperClasses = [
     <slot name="error">
       <transition name="fade">
         <div v-if="inputError" class="text-danger text-sm pl-1 pt-1">
-          {{ inputError }}
+          {{ t(inputError) }}
         </div>
       </transition>
     </slot>

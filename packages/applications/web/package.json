@@ -3,7 +3,7 @@
   "version": "0.1.0-alpha3",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
-  "web-types": "../../node_modules/@lyvely/ui/dist/web-types.json",
+  "web-types": "../../../node_modules/@lyvely/ui/dist/web-types.json",
   "scripts": {
     "build": "vite build && vue-tsc --emitDeclarationOnly",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",

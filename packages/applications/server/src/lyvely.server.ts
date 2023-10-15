@@ -1,11 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger as NestLogger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AuthModule, JwtAuthGuard } from '@lyvely/core';
+import {
+  AuthModule,
+  JwtAuthGuard,
+  ConfigurationPath,
+  ILyvelyCsrfOptions,
+  ServiceExceptionsFilter,
+  FeaturesModule,
+  FeatureGuard,
+} from '@lyvely/core';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
-import { ConfigurationPath, ILyvelyCsrfOptions } from '@lyvely/core';
-import { ServiceExceptionsFilter } from '@lyvely/core';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from './app-module.builder';
 import helmet from 'helmet';
 import express from 'express';
@@ -14,7 +20,6 @@ import https from 'https';
 import csurf from 'csurf';
 import compression from 'compression';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
-import { FeatureModule, FeatureGuard } from '@lyvely/core';
 import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import fs from 'fs';
@@ -145,7 +150,7 @@ export class LyvelyServer {
 
   private initGuards() {
     const authGuard = this.nestApp.select(AuthModule).get(JwtAuthGuard);
-    const featureGuard = this.nestApp.select(FeatureModule).get(FeatureGuard);
+    const featureGuard = this.nestApp.select(FeaturesModule).get(FeatureGuard);
     this.nestApp.useGlobalGuards(authGuard, featureGuard);
   }
 

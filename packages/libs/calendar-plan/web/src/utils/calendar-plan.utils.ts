@@ -1,17 +1,16 @@
 import { CalendarInterval } from '@lyvely/dates';
-import { IDragEvent } from '@/common';
+import { IDragEvent } from '@lyvely/web';
+import { ISelectOptions } from '@lyvely/ui';
 import { IMoveEntryEvent } from '../interfaces';
 
-export function getCalendarPlanOptions(
-  mode: 'recurrent' | 'plural' = 'recurrent',
-): { value: CalendarInterval; label: string }[] {
+export function getCalendarPlanOptions(mode: 'recurrent' | 'plural' = 'recurrent'): ISelectOptions {
   return [
-    { value: CalendarInterval.Daily, label: `calendar-plan.interval.${mode}.5` },
-    { value: CalendarInterval.Weekly, label: `calendar-plan.interval.${mode}.4` },
-    { value: CalendarInterval.Monthly, label: `calendar-plan.interval.${mode}.3` },
-    { value: CalendarInterval.Quarterly, label: `calendar-plan.interval.${mode}.2` },
-    { value: CalendarInterval.Yearly, label: `calendar-plan.interval.${mode}.1` },
-    { value: CalendarInterval.Unscheduled, label: `calendar-plan.interval.${mode}.0` },
+    { value: `${CalendarInterval.Daily}`, label: `calendar-plan.interval.${mode}.5` },
+    { value: `${CalendarInterval.Weekly}`, label: `calendar-plan.interval.${mode}.4` },
+    { value: `${CalendarInterval.Monthly}`, label: `calendar-plan.interval.${mode}.3` },
+    { value: `${CalendarInterval.Quarterly}`, label: `calendar-plan.interval.${mode}.2` },
+    { value: `${CalendarInterval.Yearly}`, label: `calendar-plan.interval.${mode}.1` },
+    { value: `${CalendarInterval.Unscheduled}`, label: `calendar-plan.interval.${mode}.0` },
   ];
 }
 

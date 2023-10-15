@@ -1,10 +1,9 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { TaskModel, TaskFilter, TaskCalendarPlanStore } from '@lyvely/tasks-interface';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
-import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useCalendarPlan, useCalendarPlanStore } from '@/modules/calendar-plan';
-import { useTasksService } from '@/modules/tasks/services/tasks.service';
-import { useGlobalDialogStore } from '@lyvely/web';
+import { useProfileStore, useGlobalDialogStore } from '@lyvely/web';
+import { useCalendarPlan, useCalendarPlanStore } from '@lyvely/calendar-plan-web';
+import { useTasksService } from '@/services';
 import { ref } from 'vue';
 
 const MAX_DONE_TASKS = 2;

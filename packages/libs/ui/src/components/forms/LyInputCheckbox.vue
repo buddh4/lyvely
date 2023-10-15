@@ -2,29 +2,29 @@
 import { useBaseInputSetup } from '@/components/forms/BaseInput';
 import { onMounted, ref } from 'vue';
 import { useHelpText } from './help-text.util';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
+import { HTMLAttributes } from 'vue';
 
 export interface IProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: any;
-  wrapperClass?: string;
+  inputClass?: HTMLAttributes['class'];
+  inputStyle?: HTMLAttributes['style'];
+  wrapperClass?: HTMLAttributes['class'];
   autofocus?: boolean;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
-  error?: string;
+  error?: Translatable;
   loading?: boolean;
   autoValidation?: boolean;
-  translate?: boolean;
   checked?: boolean;
 }
 
@@ -34,7 +34,6 @@ const props = withDefaults(defineProps<IProps>(), {
   modelValue: undefined,
   helpText: undefined,
   property: undefined,
-  placeholder: undefined,
   name: undefined,
   disabled: false,
   readonly: false,
@@ -45,9 +44,9 @@ const props = withDefaults(defineProps<IProps>(), {
   loading: false,
   ariaDescribedby: undefined,
   inputClass: undefined,
+  inputStyle: undefined,
   wrapperClass: undefined,
   error: undefined,
-  translate: true,
   checked: undefined,
   value: '',
 });
@@ -92,10 +91,11 @@ onMounted(() => {
           :disabled="disabled"
           :value="value"
           :class="inputClass"
+          :style="inputStyle"
           :readonly="readonly"
           @change="onChange" />
         <span v-if="label" class="label ml-2">
-          {{ translate ? t(label) : label }}
+          {{ t(label) }}
         </span>
       </label>
       <ly-icon

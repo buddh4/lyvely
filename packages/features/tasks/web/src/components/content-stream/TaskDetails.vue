@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { TaskModel } from '@lyvely/tasks-interface';
-import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
 import { computed } from 'vue';
-import { useTaskCalendarPlanStore } from '@/modules/tasks/stores/task-calendar-plan.store';
-import TimerState from '@/modules/calendar/components/TimerState.vue';
+import { useTaskCalendarPlanStore } from '@/stores';
+import { TimerState, ContentDetails, t } from '@lyvely/web';
+import { LyIcon, LyButton } from '@lyvely/ui';
 
 export interface IProps {
   model: TaskModel;
@@ -55,14 +55,14 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
       <div class="flex justify-end">
         <ly-button v-if="isDone" class="secondary outlined text-xs" @click="openTask">
           <ly-icon name="loop" class="text-main-light w-3.5 h-3.5" />
-          {{ $t('tasks.buttons.open') }}
+          {{ t('tasks.buttons.open') }}
         </ly-button>
         <ly-button
           v-else
           class="secondary outlined text-xs inline-flex items-center gap-1"
           @click="closeTask">
           <ly-icon name="check" class="text-main-light w-3.5 h-3.5" />
-          {{ $t('tasks.buttons.close') }}
+          {{ t('tasks.buttons.close') }}
         </ly-button>
       </div>
     </template>

@@ -1,29 +1,30 @@
 <script lang="ts" setup>
-import { computed, onMounted, Ref, ref } from 'vue';
+import { computed, onMounted, Ref, ref, HTMLAttributes } from 'vue';
 import { useFloatingInputSetup } from './FloatingInput';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export type ITextInputType = 'text' | 'password';
 
 export interface IProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
+  placeholder?: Translatable;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: any;
-  wrapperClass?: string;
+  inputClass?: HTMLAttributes['class'];
+  inputStyle?: HTMLAttributes['style'];
+  wrapperClass?: HTMLAttributes['class'];
   autofocus?: boolean;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
-  error?: string;
+  error?: Translatable;
   loading?: boolean;
   autoValidation?: boolean;
   type?: ITextInputType;
@@ -48,6 +49,7 @@ const props = withDefaults(defineProps<IProps>(), {
   loading: false,
   ariaDescribedby: undefined,
   inputClass: undefined,
+  inputStyle: undefined,
   wrapperClass: undefined,
   error: undefined,
   type: 'text',
@@ -108,14 +110,15 @@ onMounted(() => {
       v-model="inputValue"
       :name="name"
       :disabled="disabled"
-      :placeholder="placeholder"
-      :aria-invalid="!!inputError?.length"
-      :aria-errormessage="inputError"
+      :placeholder="t(placeholder)"
+      :aria-invalid="!!t(inputError).length"
+      :aria-errormessage="t(inputError)"
       :aria-describedby="ariaDescribedby"
       :readonly="readonly"
       :autocomplete="autoCompleteValue"
       :type="internalType"
       :class="inputClass"
+      :style="inputStyle"
       @change="onChange"
       @focusout="onFocusOut" />
 

@@ -37,7 +37,7 @@ const showLabels = computed(() => showSidebar.value);
 
 const ariaLabel = computed(() =>
   translate('profiles.aria.sidebar', {
-    profile: useProfileStore()?.profile?.name,
+    profile: useProfileStore().profile!.name,
   }),
 );
 

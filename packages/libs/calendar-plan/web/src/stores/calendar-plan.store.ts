@@ -7,7 +7,7 @@ import {
 } from '@lyvely/dates';
 import { CalendarPlan } from '@lyvely/calendar-plan-interface';
 import { ref, computed } from 'vue';
-import { useProfileStore } from '@/profiles/stores/profile.store';
+import { useProfileStore } from '@lyvely/web';
 
 export const useCalendarPlanStore = defineStore('timing', () => {
   const now = ref(new Date());

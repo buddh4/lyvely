@@ -71,7 +71,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
         class="flex py-4 px-3 bg-main items-center border-divide">
         <div class="align-middle">
           <tag-badge :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
-          <ly-badge v-if="tag.archived" class="bg-danger ml-2" :translate="false">
+          <ly-badge v-if="tag.archived" class="bg-danger ml-2">
             {{ $t('common.archived') }}
           </ly-badge>
         </div>

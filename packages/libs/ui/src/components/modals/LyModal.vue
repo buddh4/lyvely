@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed, toRefs, ref, watch, nextTick } from 'vue';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 import LyButton from '@/components/buttons/LyButton.vue';
 import LyIcon from '@/components/icons/LyIcon.vue';
 
@@ -8,8 +8,7 @@ export interface IModalProps {
   modelValue: boolean;
   showFooter?: boolean;
   width?: 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | 'full';
-  title: string;
-  translate?: boolean;
+  title: Translatable;
   icon?: string;
   isLoading?: boolean;
   iconClass?: string;
@@ -17,14 +16,13 @@ export interface IModalProps {
   submitOnSave?: boolean;
   submitIcon?: string;
   cancelButton?: boolean;
-  cancelButtonText?: string;
+  cancelButtonText?: Translatable;
   cancelButtonClass?: string;
   submitButton?: boolean;
-  submitButtonText?: string;
+  submitButtonText?: Translatable;
 }
 
 const props = withDefaults(defineProps<IModalProps>(), {
-  translate: true,
   showFooter: true,
   icon: '',
   width: 'lg',
@@ -121,16 +119,16 @@ function onKeyDown(evt: KeyboardEvent) {
             <ly-icon name="arrow-left" class="w-3" />
           </ly-button>
           <h1
-            class="flex text-md md:text-lg focus-hidden inline-block align-middle justify-center md:justify-start align-items-center flex-grow"
+            class="flex text-md md:text-lg focus-hidden align-middle justify-center md:justify-start align-items-center flex-grow"
             tabindex="-1">
             <ly-icon v-if="icon" class="w-6 mr-2" :scale-to="24" :name="icon" :class="iconClass" />
             <slot name="title">
-              {{ translate ? t(title) : title }}
+              {{ t(title) }}
             </slot>
           </h1>
 
           <ly-button
-            class="float-right align-middle font-bold ml-auto inline-block px-2 py-0.5 border-none hidden md:inline"
+            class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none hidden md:inline"
             @click="cancel">
             x
           </ly-button>

@@ -1,11 +1,12 @@
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import vuePlugin from '@vitejs/plugin-vue';
+import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import { resolve } from 'path';
-import dts from 'vite-plugin-dts'
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  plugins: [dts(), vuePlugin(), tsconfigPaths()],
+  plugins: [dts(), vuePlugin(), externalizeDeps(), tsconfigPaths({ ignoreConfigErrors: true })],
   server: {
     port: 3000,
   },
@@ -18,16 +19,7 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'lyvelyUi',
       fileName: 'lyvely-ui',
-    },
-    rollupOptions: {
-      external: ['vue', 'vue-router', '@vueuse/core', 'lodash', 'randomcolor'],
-      output: {
-        globals: {
-          vue: 'Vue',
-          lodash: '_',
-          'vue-router': 'VueRouter'
-        },
-      },
+      formats: ['es'],
     },
   },
 });

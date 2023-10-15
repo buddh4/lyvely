@@ -1,4 +1,3 @@
-export * from './loaded-timing-id.store';
 export * from './time-series.store';
 export * from './time-series-content.model';
 export * from './data-point.model';

@@ -1,15 +1,23 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import {
+  TagChooser,
+  isTouchScreen,
   ContentEditModalEmits,
   useContentEditModal,
-} from '@/modules/content/composables/content-edit-modal.composable';
+  ICreateContentInitOptions,
+} from '@lyvely/web';
 import { TaskModel, UpdateTaskModel, CreateTaskModel } from '@lyvely/tasks-interface';
-import { useTasksService } from '@/modules/tasks/services/tasks.service';
-import { getCalendarPlanOptions } from '@/modules/calendar-plan';
-import { isTouchScreen } from '@lyvely/web';
-import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
+import { useTasksService } from '@/services';
+import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
+import {
+  LyModal,
+  LyFormModel,
+  LyInputText,
+  LyInputSelect,
+  LyInputTextarea,
+  LyInputNumber,
+} from '@lyvely/ui';
 
 export interface IProps {
   modelValue: boolean;

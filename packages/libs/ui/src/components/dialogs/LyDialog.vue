@@ -1,18 +1,16 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 import LyModal from '../modals/LyModal.vue';
 
 export interface IProps {
+  title: Translatable;
+  message: Translatable;
   icon?: string;
   iconColor?: string;
   iconClass?: string;
   modelValue: boolean;
   buttonType?: 'close' | 'reload';
-  title: string;
-  message: string;
-  translateTitle?: boolean;
-  translateMessage?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -20,8 +18,6 @@ const props = withDefaults(defineProps<IProps>(), {
   iconColor: undefined,
   buttonType: 'close',
   iconClass: undefined,
-  translateTitle: true,
-  translateMessage: true,
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -35,7 +31,6 @@ const modalBinds = computed(() => {
   return {
     icon: props.icon,
     title: props.title,
-    translate: props.translateTitle,
   };
 });
 
@@ -47,7 +42,7 @@ const reload = () => {
 <template>
   <ly-modal v-model="visible" v-bind="modalBinds">
     <template v-if="message">
-      {{ translateMessage ? t(message) : message }}
+      {{ t(message) }}
     </template>
 
     <template #footer>

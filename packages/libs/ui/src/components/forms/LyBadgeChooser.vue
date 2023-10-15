@@ -2,7 +2,7 @@
 import { computed, nextTick, ref, watch } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
 import { escapeRegExp, isArray, uniqueId } from 'lodash';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export type IChooserOption = { key: string; value?: any; label?: string; color?: string } | string;
 
@@ -14,7 +14,7 @@ export interface IProps {
   multiple?: boolean;
   addTextKey?: string;
   inputId?: string;
-  label: string;
+  label: Translatable;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -169,10 +169,9 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
       <template v-for="option in selection" :key="getOptionKey(option)">
         <ly-badge
           v-if="option"
-          :text="getLabel(option)"
+          :text="{ plain: getLabel(option) }"
           :color="getColor(option)"
-          :class="getBadgeClass(option)"
-          :translate="false" />
+          :class="getBadgeClass(option)" />
       </template>
     </div>
   </ly-floating-input-layout>
@@ -213,10 +212,9 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
             ><span class="text-primary text-xs">x</span></ly-button
           >
           <ly-badge
-            :text="getLabel(option)"
+            :text="{ plain: getLabel(option) }"
             :color="getColor(option)"
-            :class="getBadgeClass(option)"
-            :translate="false" />
+            :class="getBadgeClass(option)" />
         </div>
 
         <div
@@ -230,10 +228,9 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
           @keyup.down="focusNext"
           @keyup.up="focusPrev">
           <ly-badge
-            :text="getLabel(option)"
+            :text="{ plain: getLabel(option) }"
             :color="getColor(option)"
-            :class="getBadgeClass(option)"
-            :translate="false" />
+            :class="getBadgeClass(option)" />
         </div>
         <div
           v-if="showAddEntry"

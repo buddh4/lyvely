@@ -1,27 +1,28 @@
 <script lang="ts" setup>
 import { useFloatingInputSetup } from './FloatingInput';
-import { computed, ref, onMounted } from 'vue';
+import { HTMLAttributes, computed, ref, onMounted } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
 import { msToTime, timeToMs, padTime } from '@lyvely/dates';
+import { Translatable } from '@/i18n';
 
 export interface IProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: any;
-  wrapperClass?: string;
+  inputClass?: HTMLAttributes['class'];
+  inputStyle?: HTMLAttributes['style'];
+  wrapperClass?: HTMLAttributes['class'];
   autofocus?: boolean;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
-  error?: string;
+  error?: Translatable;
   loading?: boolean;
   autoValidation?: boolean;
   steps?: number;
@@ -36,7 +37,6 @@ const props = withDefaults(defineProps<IProps>(), {
   helpText: undefined,
   value: undefined,
   property: undefined,
-  placeholder: undefined,
   name: undefined,
   disabled: false,
   readonly: false,
@@ -47,6 +47,7 @@ const props = withDefaults(defineProps<IProps>(), {
   loading: false,
   ariaDescribedby: undefined,
   inputClass: undefined,
+  inputStyle: undefined,
   wrapperClass: undefined,
   error: undefined,
   steps: 1,
@@ -209,7 +210,8 @@ onMounted(() => {
             v-model="hourValue"
             data-timer-hours-input
             inputmode="numeric"
-            class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+            :class="`w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm ${inputClass}`"
+            :style="inputStyle"
             @focus="onFocus"
             @keyup.up="increment('hours')"
             @keyup.down="decrement('hours')"
@@ -224,7 +226,8 @@ onMounted(() => {
             v-model="minuteValue"
             data-timer-minutes-input
             inputmode="numeric"
-            class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+            :class="`w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm ${inputClass}`"
+            :style="inputStyle"
             @focus="onFocus"
             @keyup.up="increment('minutes')"
             @keyup.down="decrement('minutes')"
@@ -239,7 +242,8 @@ onMounted(() => {
             v-model="secondValue"
             data-timer-seconds-input
             inputmode="numeric"
-            class="w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm"
+            :class="`w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm ${inputClass}`"
+            :style="inputStyle"
             @focus="onFocus"
             @keyup.up="increment('seconds')"
             @keyup.down="decrement('seconds')"

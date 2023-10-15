@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { TaskModel } from '@lyvely/tasks-interface';
 import { computed } from 'vue';
-import CalendarPlanItem from '@/modules/calendar-plan/components/CalendarPlanItem.vue';
-import { useTaskCalendarPlanStore } from '@/modules/tasks/stores/task-calendar-plan.store';
-import TimerState from '@/modules/calendar/components/TimerState.vue';
-import ContentDropdown from '@/modules/content/components/ContentDropdown.vue';
-import { useCalendarPlanPlanItem } from '@/modules/calendar-plan/composables/calendar-plan-item.composable';
+import { CalendarPlanItem, useCalendarPlanPlanItem } from '@lyvely/calendar-plan-web';
+import { useTaskCalendarPlanStore } from '@/stores';
+import { TimerState, ContentDropdown } from '@lyvely/web';
+import { LyCheckboxRange } from '@lyvely/ui';
 
 export interface IProps {
   model: TaskModel;

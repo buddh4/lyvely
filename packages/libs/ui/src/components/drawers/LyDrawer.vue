@@ -4,13 +4,12 @@ import { uniqueId } from 'lodash';
 import { suggestFocusElement } from '@/helpers';
 import { useInfiniteScroll, useSwipe } from '@vueuse/core';
 import { useDrawerStore } from '@/components/drawers/drawer.store';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   modelValue: boolean;
   id?: string;
-  title?: string;
-  translateTitle?: boolean;
+  title?: Translatable;
   prevAutoFocus?: boolean;
 }
 
@@ -18,7 +17,6 @@ const props = withDefaults(defineProps<IProps>(), {
   id: undefined,
   title: undefined,
   prevAutoFocus: false,
-  translateTitle: true,
 });
 
 const drawerId = uniqueId('drawer');
@@ -81,7 +79,7 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
         <div class="max-h-full flex items-stretch top-0 left-0 flex-col">
           <div data-drawer-header class="pt-4 px-4 flex items-center pb-3 rounded-t-sm">
             <slot name="header">
-              <h1 v-if="title" class="font-bold">{{ translateTitle ? t(title) : title }}</h1>
+              <h1 v-if="title" class="font-bold">{{ t(title) }}</h1>
               <ly-button
                 class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
                 @click="close">

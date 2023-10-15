@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { computed, CSSProperties } from 'vue';
 import { getContrast, includesUtilityClass } from '@/helpers';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
-  text?: string;
-  translate?: boolean;
+  text?: Translatable;
   color?: string;
   textColor?: string;
   clickable?: boolean;
@@ -13,7 +12,6 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   text: '',
-  translate: true,
   color: undefined,
   clickable: true,
   textColor: undefined,
@@ -47,7 +45,7 @@ const styleObject = computed<CSSProperties>(() => {
 <template>
   <span :class="getClassNames($attrs.class)" :style="styleObject">
     <small class="text-xs">
-      <slot>{{ translate ? t(text) : text }}</slot>
+      <slot>{{ t(text) }}</slot>
     </small>
   </span>
 </template>

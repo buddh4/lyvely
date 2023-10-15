@@ -1,22 +1,20 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { IConfirmOptions } from './interfaces';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 import LyModal from './LyModal.vue';
 
 export interface IProps {
   modelValue: boolean;
-  title?: string;
-  translate?: boolean;
-  text?: string;
-  confirm?: string;
-  cancel?: string;
+  title?: Translatable;
+  text?: Translatable;
+  confirm?: Translatable;
+  cancel?: Translatable;
   options?: IConfirmOptions;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   title: 'modal.confirm.default.title',
-  translate: true,
   text: 'modal.confirm.default.text',
   confirm: 'modal.confirm.default.confirm',
   cancel: 'common.cancel',
@@ -50,12 +48,11 @@ function cancel() {
   <ly-modal
     v-model="showModal"
     :title="confirmTitle"
-    :translate="translate"
     :cancel-button-text="confirmCancel"
     :submit-button-text="confirmConfirm"
     @submit="confirm"
     @cancel="cancel">
-    <slot>{{ translate ? t(confirmText) : confirmText }}</slot>
+    <slot>{{ t(confirmText) }}</slot>
   </ly-modal>
 </template>
 

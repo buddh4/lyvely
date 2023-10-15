@@ -46,6 +46,7 @@ import LyPasswordStrengthMeter from './components/forms/LyPasswordStrengthMeter.
 import { App } from 'vue';
 import { Icons } from './components/icons/Icons';
 import { LyvelyUiOptions, setConfigOptions } from './config';
+import { Translatable, TranslationAdapter } from './i18n';
 
 const createLyvelyUi = (options?: LyvelyUiOptions) => {
   setConfigOptions(options);
@@ -102,9 +103,10 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
 };
 
 export type { IConfirmOptions } from './components/modals/interfaces';
-
 export * from './types';
+export * from './interfaces';
 
+export type { Translatable, TranslationAdapter };
 export {
   createLyvelyUi,
   Icons,

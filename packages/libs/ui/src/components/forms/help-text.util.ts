@@ -1,8 +1,8 @@
 import { uniqueId } from 'lodash';
 import { computed, ref } from 'vue';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
-export function useHelpText(helpText?: string) {
+export function useHelpText(helpText?: Translatable) {
   const translatedHelpText = helpText ? t(helpText) : undefined;
   const helpTextId = uniqueId('input-help');
   return {

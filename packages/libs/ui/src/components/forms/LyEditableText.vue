@@ -1,22 +1,23 @@
 <script lang="ts" setup>
-import { onMounted, Ref, ref } from 'vue';
+import { HTMLAttributes, onMounted, Ref, ref } from 'vue';
 import { useFloatingInputSetup } from './FloatingInput';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
+  placeholder?: Translatable;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: any;
-  wrapperClass?: string;
+  inputClass?: HTMLAttributes['class'];
+  inputStyle?: HTMLAttributes['style'];
+  wrapperClass?: HTMLAttributes['class'];
   autofocus?: boolean;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
@@ -44,6 +45,7 @@ const props = withDefaults(defineProps<IProps>(), {
   loading: false,
   ariaDescribedby: undefined,
   inputClass: undefined,
+  inputStyle: undefined,
   wrapperClass: undefined,
   error: undefined,
   value: undefined,
@@ -95,8 +97,8 @@ function cancel() {
         <template v-if="inputValue?.length">
           {{ inputValue }}
         </template>
-        <template v-else-if="placeholder?.length">
-          <span class="text-dimmed">{{ placeholder }}</span>
+        <template v-else-if="placeholder">
+          <span class="text-dimmed">{{ t(placeholder) }}</span>
         </template>
       </div>
       <div class="flex flex-col justify-end">
@@ -109,12 +111,13 @@ function cancel() {
           :id="inputId"
           ref="input"
           v-model="editValue"
-          :placeholder="placeholder"
+          :placeholder="t(placeholder)"
           :aria-describedby="ariaDescribedby"
           :rows="rows"
           :disabled="disabled"
           :readonly="readonly"
           :class="inputClass"
+          :style="inputStyle"
           :maxlength="maxlength"
           @keydown.ctrl="save"></textarea>
       </div>

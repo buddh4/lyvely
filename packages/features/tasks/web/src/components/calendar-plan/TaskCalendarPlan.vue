@@ -1,13 +1,12 @@
 <script lang="ts" setup>
-import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
+import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
 import { TaskModel } from '@lyvely/tasks-interface';
 import { getCalendarIntervalArray } from '@lyvely/dates';
-import { usePageStore, translate } from '@lyvely/web';
-import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import TaskCalendarPlanSection from '@/modules/tasks/components/calendar-plan/TaskCalendarPlanSection.vue';
-import { useTaskCalendarPlanStore } from '@/modules/tasks/stores/task-calendar-plan.store';
-import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/CalendarPlanFilterNavigation.vue';
+import { usePageStore, translate, useContentCreateStore } from '@lyvely/web';
+import TaskCalendarPlanSection from '@/components/calendar-plan/TaskCalendarPlanSection.vue';
+import { useTaskCalendarPlanStore } from '@/stores';
 import { onBeforeMount, onUnmounted } from 'vue';
+import { LyFloatingAddButton } from '@lyvely/ui';
 
 const { filter, loadModels, startWatch, reset } = useTaskCalendarPlanStore();
 const createEntry = () => useContentCreateStore().createContentType(TaskModel.contentType);
@@ -24,12 +23,12 @@ onUnmounted(() => {
 
 <template>
   <calendar-plan-filter-navigation :filter="filter" />
-  <calendar-plan>
+  <calendar-planner>
     <task-calendar-plan-section
       v-for="interval in getCalendarIntervalArray()"
       :key="interval"
       :interval="interval" />
-  </calendar-plan>
+  </calendar-planner>
 
   <ly-floating-add-button @click="createEntry" />
 </template>

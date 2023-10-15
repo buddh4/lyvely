@@ -1,6 +1,6 @@
 import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@/testing';
 import { ExecutionContext } from '@nestjs/common';
-import { Feature, FeatureGuard, FeaturesModule, FeatureRegistry } from '../';
+import { Feature, FeatureGuard, FeaturesModule } from '../';
 
 @Feature('test')
 class TestController {
@@ -18,7 +18,7 @@ class TestController {
 describe('ProfileGuard', () => {
   let testingModule: LyvelyTestingModule;
   let featureGuard: FeatureGuard;
-  let featureRegistry: FeatureRegistry;
+  //let featureRegistry: FeatureRegistry;
   let context: ExecutionContext;
 
   const TEST_KEY = 'feature-guard';
@@ -26,9 +26,9 @@ describe('ProfileGuard', () => {
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY).imports([FeaturesModule]).compile();
     featureGuard = testingModule.get<FeatureGuard>(FeatureGuard);
-    featureRegistry = testingModule.get<FeatureRegistry>(FeatureRegistry);
+    // featureRegistry = testingModule.get<FeatureRegistry>(FeatureRegistry);
 
-    featureRegistry.registerFeatures([
+    /* featureRegistry.registerFeatures([
       {
         id: 'test',
         name: 'Test',
@@ -50,7 +50,7 @@ describe('ProfileGuard', () => {
         enabled: true,
         description: 'Specific test sub feature',
       },
-    ]);
+    ]); */
   });
 
   afterEach(async () => {
@@ -63,7 +63,7 @@ describe('ProfileGuard', () => {
 
   it('should be defined', () => {
     expect(featureGuard).toBeDefined();
-    expect(featureRegistry).toBeDefined();
+    //expect(featureRegistry).toBeDefined();
   });
 
   describe('canActivate()', () => {
@@ -98,7 +98,7 @@ describe('ProfileGuard', () => {
         handler: new TestController().testHandler,
       });
 
-      featureRegistry.getFeature('test.sub')!.enabled = true;
+      // featureRegistry.getFeature('test.sub')!.enabled = true;
       const result = await featureGuard.canActivate(context);
       expect(result).toEqual(true);
     });

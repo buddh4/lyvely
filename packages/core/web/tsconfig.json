@@ -18,13 +18,16 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "vite": ["node_modules/vite"]
+      "vite": ["node_modules/vite"],
+      "@lyvely/web": ["src"],
+      "@lyvely/calendar-plan": ["../../libs/calendar-plan"],
     },
     "types": [
       "vue",
       "@vue/runtime-dom",
       "reflect-metadata",
-      "node"
+      "node",
+      "jest"
     ],
     "lib": [
       "esnext",
@@ -40,7 +43,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "vite.config.ts"
+    "vite.config.ts",
+    "config/lyvely-web.config.ts"
   ],
   "exclude": [
     "node_modules"

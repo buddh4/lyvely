@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
-  text?: string;
+  text?: Translatable;
   max: number;
 }
 
@@ -11,7 +12,7 @@ const props = withDefaults(defineProps<IProps>(), {
 });
 
 const trimmedText = computed(() => {
-  const text = props.text?.trim() || '';
+  const text = t(props.text).trim() || '';
   return text.trim().length >= props.max ? text.substring(0, props.max) + '...' : text;
 });
 </script>

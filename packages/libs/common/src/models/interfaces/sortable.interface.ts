@@ -2,6 +2,8 @@ import { Exclude, Expose, Type } from 'class-transformer';
 import { PropertyType } from '../decorators';
 import { BaseModel } from '../base.model';
 
+export type SortValue = number | undefined;
+
 export interface ISortable {
   getSortOrder?: () => number | undefined;
   sortOrder?: number;

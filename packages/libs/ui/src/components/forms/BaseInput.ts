@@ -1,7 +1,8 @@
-import { ComponentOptions, computed, ComputedRef, ref, inject } from 'vue';
+import { ComponentOptions, computed, ref, inject } from 'vue';
 import { merge, uniqueId } from 'lodash';
 import { ModelValidator } from '@lyvely/common';
 import slugify from 'slugify';
+import { t, Translatable } from '@/i18n';
 
 export type AllowedInputValueTypes = string | number | string[] | boolean | undefined;
 export interface IFormModelData<T extends object = any> {
@@ -14,13 +15,13 @@ export interface IFormModelData<T extends object = any> {
 
 export interface IBaseInputProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
+  placeholder?: Translatable;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
@@ -28,7 +29,7 @@ export interface IBaseInputProps {
   wrapperClass?: string;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
-  error?: string;
+  error?: Translatable;
   loading?: boolean;
   autoValidation?: boolean;
 }
@@ -54,7 +55,7 @@ export function useBaseInputProps() {
     id: { type: String },
     label: { type: String },
     helpText: { type: String },
-    placeholder: { type: String, default: undefined },
+    placeholder: { type: [Function, Object, String], default: undefined },
     name: { type: String, default: undefined },
     value: { type: String },
     property: { type: String },
@@ -121,12 +122,12 @@ function getComputedHelpText(props: IBaseInputProps, formModelData?: IFormModelD
 function getComputedCssClasses(
   props: IBaseInputProps,
   options: IBaseInputSetupOptions,
-  inputError: ComputedRef<string | undefined>,
+  inputError: string,
 ) {
   return computed(() => {
     let result: any = [];
 
-    result.push({ 'is-invalid': !!inputError.value?.length });
+    result.push({ 'is-invalid': !!inputError?.length });
 
     if (props.inputClass) {
       result = result.concat(
@@ -206,7 +207,7 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
     showHelpText: ref(false),
     inputId: getId(props, formModelData),
     inputValue: getComputedInputValue<T>(props, emit, formModelData),
-    inputClass: getComputedCssClasses(props, options, inputError),
+    inputClass: getComputedCssClasses(props, options, t(inputError.value)),
     autoCompleteValue: getComputedAutoCompleteValue(props),
     inputError: inputError,
     label: getComputedInputLabel(props, formModelData),

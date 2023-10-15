@@ -4,9 +4,7 @@ import { CalendarInterval } from '@lyvely/dates';
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import * as echarts from 'echarts/core';
 import { storeToRefs } from 'pinia';
-import { useProfileStore } from '@/profiles/stores/profile.store';
-import { translate } from '@/i18n';
-import { usePageStore } from '@/core';
+import { useProfileStore, t, usePageStore } from '@lyvely/web';
 
 export interface IProps {
   summary: ITimeSeriesSummary;
@@ -69,8 +67,8 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
     legend: {
       textStyle: textStyle.value,
       selected: {
-        [translate('time-series.chart.value')]: true,
-        [translate('time-series.chart.trend')]: false,
+        [t('time-series.chart.value')]: true,
+        [t('time-series.chart.trend')]: false,
       },
     },
     xAxis: {
@@ -82,14 +80,14 @@ function renderSummaryChart(summary: ITimeSeriesSummary) {
     },
     series: [
       {
-        name: translate('time-series.chart.value'),
+        name: t('time-series.chart.value'),
         data: values,
         type: 'line',
         smooth: true,
         areaStyle: {},
       },
       {
-        name: translate('time-series.chart.trend'),
+        name: t('time-series.chart.trend'),
         data: movingAverages,
         type: 'line',
         smooth: true,

@@ -142,9 +142,7 @@ const bodyWrapperClass = computed(
                   :tag-ids="omitTags ? [] : model.tagIds"
                   @select="(tagId) => $emit('selectTag', tagId)">
                   <template v-if="showType && contentTypeName" #pre>
-                    <ly-badge class="bg-secondary-dark" :translate="false">{{
-                      contentTypeName
-                    }}</ly-badge>
+                    <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
                   </template>
                   <template v-if="model.meta.archived" #post>
                     <ly-icon name="archive" class="w-3 text-warning ml-auto" />

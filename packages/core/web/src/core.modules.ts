@@ -5,11 +5,13 @@ import i18nModule from './i18n/module';
 import streamModule from './content-stream/module';
 import tagsModule from './tags/module';
 import messagesModule from './messages/module';
+import featureModule from './features/module';
 import { registerModules } from '@/core';
 
 export const registerCoreModules = () => {
   registerModules(
     i18nModule(),
+    featureModule(),
     appConfigModule(),
     authModule(),
     profileModule(),

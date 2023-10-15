@@ -1,7 +1,9 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { t } from '@lyvely/web';
+</script>
 
 <template>
-  <div id="calendar-plan" :aria-label="$t('calendar-plan.aria.root')">
+  <div id="calendar-plan" :aria-label="t('calendar-plan.aria.root')">
     <slot></slot>
   </div>
 </template>

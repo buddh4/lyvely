@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import TaskCalendarPlanItem from '@/modules/tasks/components/calendar-plan/TaskCalendarPlanItem.vue';
-import CalendarPlanSection from '@/modules/calendar-plan/components/CalendarPlanSection.vue';
-import { useTaskCalendarPlanStore } from '@/modules/tasks/stores/task-calendar-plan.store';
+import TaskCalendarPlanItem from './TaskCalendarPlanItem.vue';
+import { CalendarPlanSection } from '@lyvely/calendar-plan-web';
+import { useTaskCalendarPlanStore } from '@/stores';
 import { computed, ref } from 'vue';
 import Draggable from 'vuedraggable';
-import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
+import { useContentCreateStore } from '@lyvely/web';
 import { TaskModel } from '@lyvely/tasks-interface';
 
 export interface IProps {

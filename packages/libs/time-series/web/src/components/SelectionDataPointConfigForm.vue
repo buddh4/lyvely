@@ -2,6 +2,8 @@
 import { DataPointInputType, ISelectionDataPointSettings } from '@lyvely/time-series-interface';
 import { ref } from 'vue';
 import { isArray } from 'class-validator';
+import { LyButton, LyInputText, LyInputCheckbox, LyIcon } from '@lyvely/ui';
+import { t } from '@lyvely/web';
 
 interface IProps {
   modelValue: Partial<ISelectionDataPointSettings>;
@@ -46,21 +48,21 @@ function setInputType(inputType: DataPointInputType) {
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Checkbox"
         @click="setInputType(DataPointInputType.Checkbox)">
-        {{ $t('calendar-plan.input_types.checkbox') }}
+        {{ t('calendar-plan.input_types.checkbox') }}
       </ly-button>
 
       <ly-button
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Radio"
         @click="setInputType(DataPointInputType.Radio)">
-        {{ $t('calendar-plan.input_types.radio') }}
+        {{ t('calendar-plan.input_types.radio') }}
       </ly-button>
 
       <ly-button
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Dropdown"
         @click="setInputType(DataPointInputType.Dropdown)">
-        {{ $t('calendar-plan.input_types.dropdown') }}
+        {{ t('calendar-plan.input_types.dropdown') }}
       </ly-button>
     </div>
 

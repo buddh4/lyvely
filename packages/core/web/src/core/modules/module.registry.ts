@@ -1,37 +1,62 @@
 import { App } from 'vue';
 import { IModule } from './module.interface';
 
-export interface IModuleImport {
-  default: () => IModule;
-}
+export type IModuleInitializer = { default: () => IModule };
+
+export type IModuleImport<TEager extends boolean | undefined = undefined> = TEager extends true
+  ? IModuleInitializer
+  : TEager extends false
+  ? Promise<IModuleInitializer>
+  : IModuleInitializer | Promise<IModuleInitializer>;
+
+export type IModulesGlobImport<TEager extends boolean | undefined = undefined> = Record<
+  string,
+  IModuleImport<TEager>
+>;
 
 const modulesMap: Map<string, IModule> = new Map();
+
+function isModuleInitializer(obj: any): obj is IModuleInitializer {
+  if (typeof obj !== 'object') return false;
+  return 'default' in obj && typeof obj.default === 'function';
+}
 
 export interface IModuleLoaderOptions {
   import?: () => Record<string, Promise<IModuleImport> | (() => Promise<IModuleImport>)>;
 }
 
 export async function importModules(
-  modules: Record<string, Promise<IModuleImport> | (() => Promise<IModuleImport>)>,
+  moduleImport: IModulesGlobImport | IModuleImport,
 ): Promise<IModule[]> {
-  const promises: Promise<IModule>[] = [];
-  //const allImports = options.import ? [...modulesImport, ...options.import()] : modulesImport;
-  for (const path in modules) {
-    const moduleImport = modules[path];
-    const importPromise = typeof moduleImport === 'function' ? moduleImport() : moduleImport;
-    promises.push(
-      importPromise.then((moduleInitializer: IModuleImport) => {
-        return importModule(moduleInitializer);
-      }),
-    );
+  if (moduleImport instanceof Promise) {
+    moduleImport = await moduleImport;
   }
+
+  if (isModuleInitializer(moduleImport)) {
+    return [initializeModule(moduleImport)];
+  }
+
+  return handleGlobImport(moduleImport);
+}
+
+async function handleGlobImport(globImport: IModulesGlobImport) {
+  const promises: Promise<IModule>[] = [];
+
+  Object.keys(globImport).map((importPath) => {
+    let moduleImport = globImport[importPath];
+
+    if (!(moduleImport instanceof Promise)) {
+      moduleImport = Promise.resolve(moduleImport);
+    }
+
+    promises.push(moduleImport.then((module) => initializeModule(module)));
+  });
 
   return Promise.all(promises);
 }
 
-export function importModule(moduleImport: IModuleImport) {
-  const module = moduleImport.default();
-  return registerModule(module);
+export function initializeModule(moduleImport: IModuleInitializer) {
+  return registerModule(moduleImport.default());
 }
 
 export function registerModules(...modules: IModule[]) {
@@ -40,9 +65,15 @@ export function registerModules(...modules: IModule[]) {
 
 export function registerModule(module: IModule) {
   console.debug(`Register module ${module.getId()}`);
-  if (module.init) {
-    module.init();
+  if (modulesMap.has(module.getId())) {
+    console.warn(`Module with id ${module.getId} already registered`);
   }
+
+  module.dependencies?.forEach((dependency) => {
+    if (!modulesMap.has(dependency.getId())) registerModules(dependency);
+  });
+
+  if (module.init) module.init();
   modulesMap.set(module.getId(), module);
   return module;
 }

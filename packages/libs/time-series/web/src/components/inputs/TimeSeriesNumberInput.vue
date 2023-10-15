@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { DataPointInputType, INumberDataPointSettings } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
+import { LyCheckboxRange, LyInputNumber, LyInputRange } from '@lyvely/ui';
 
 interface IProps {
   modelValue: number;
@@ -34,18 +35,18 @@ const inputBorderColorClass = computed(() => {
 </script>
 
 <template>
-  <div class="calendar-plan-number-input">
+  <div style="max-width: 150px">
     <ly-checkbox-range
       v-if="config.inputType === DataPointInputType.Checkbox"
       v-model:selection="selection"
       :min="config.min"
-      :max="config.max"
+      :max="config.max || 1"
       :optimal="config.optimal"
       :disabled="disabled" />
     <ly-input-number
       v-else-if="config.inputType === DataPointInputType.Spinner"
       v-model="selection"
-      :input-class="['calendar-plan-spinner-input text-sm bg-main', inputBorderColorClass]"
+      :input-class="['text-sm bg-main', inputBorderColorClass]"
       :min="0"
       :max="config.max"
       :disabled="disabled" />
@@ -53,22 +54,13 @@ const inputBorderColorClass = computed(() => {
       <span class="text-sm">{{ selection }}</span>
       <ly-input-range
         v-model="selection"
-        :input-class="['calendar-plan-range-input', inputColorClass]"
+        :input-class="inputColorClass"
+        input-style="max-width: 130px; direction: rtl;"
         :min="0"
-        :max="config.max"
+        :max="config.max || 10"
         :disabled="disabled" />
     </div>
   </div>
 </template>
 
-<style>
-.calendar-plan-number-input {
-  max-width: 150px;
-}
-
-.calendar-plan-range-input {
-  max-width: 130px;
-  direction: rtl;
-  clear: both;
-}
-</style>
+<style scoped></style>

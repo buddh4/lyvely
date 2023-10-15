@@ -26,7 +26,7 @@ import {
   AvatarsModule,
   LiveModule,
   NotificationsModule,
-  FeatureModule,
+  FeaturesModule,
   UserInvitationsModule,
   SystemMessagesModule,
 } from '@lyvely/core';
@@ -115,7 +115,7 @@ export class AppModuleBuilder {
       MailsModule.fromConfig(),
       NotificationsModule,
       CoreModule,
-      FeatureModule,
+      FeaturesModule,
       AppConfigModule,
       NestjsI18nModule.forRoot({
         fallbackLanguage: 'en',

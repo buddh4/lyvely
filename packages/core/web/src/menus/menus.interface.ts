@@ -1,4 +1,4 @@
-import { Translatable } from '@/i18n';
+import { Translatable } from '@lyvely/ui';
 import { RouteLocationRaw } from 'vue-router';
 
 export interface IBaseMenuEntry {

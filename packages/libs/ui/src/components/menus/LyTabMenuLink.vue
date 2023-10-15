@@ -1,16 +1,14 @@
 <script lang="ts" setup>
 import { RouteLocationRaw } from 'vue-router';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   to: RouteLocationRaw;
   ariaControls: string;
-  label?: string;
-  translate?: boolean;
+  label?: Translatable;
 }
 
 withDefaults(defineProps<IProps>(), {
-  translate: true,
   label: undefined,
 });
 </script>
@@ -24,7 +22,7 @@ withDefaults(defineProps<IProps>(), {
     <template #default="{ active }">
       <slot :active="active">
         <template v-if="label">
-          {{ translate ? t(label) : label }}
+          {{ t(label) }}
         </template>
       </slot>
     </template>

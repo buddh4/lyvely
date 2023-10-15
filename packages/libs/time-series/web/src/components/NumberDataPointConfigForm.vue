@@ -5,6 +5,8 @@ import {
   INumberDataPointConfig,
   ITimerDataPointConfig,
 } from '@lyvely/time-series-interface';
+import { LyButton, LyInputNumber, LyInputTimeNumber, LyIcon } from '@lyvely/ui';
+import { t } from '@lyvely/web';
 
 interface IProps {
   modelValue: Partial<
@@ -48,21 +50,21 @@ function setInputType(inputType: DataPointInputType) {
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Checkbox"
         @click="setInputType(DataPointInputType.Checkbox)">
-        {{ $t('calendar-plan.input_types.checkbox') }}
+        {{ t('calendar-plan.input_types.checkbox') }}
       </ly-button>
 
       <ly-button
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Spinner"
         @click="setInputType(DataPointInputType.Spinner)">
-        {{ $t('calendar-plan.input_types.spinner') }}
+        {{ t('calendar-plan.input_types.spinner') }}
       </ly-button>
 
       <ly-button
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Range"
         @click="setInputType(DataPointInputType.Range)">
-        {{ $t('calendar-plan.input_types.range') }}
+        {{ t('calendar-plan.input_types.range') }}
       </ly-button>
 
       <ly-button
@@ -70,7 +72,7 @@ function setInputType(inputType: DataPointInputType) {
         class="text-xs secondary w-full"
         :active="modelValue.inputType === DataPointInputType.Timer"
         @click="setInputType(DataPointInputType.Timer)">
-        {{ $t('calendar-plan.input_types.timer') }}
+        {{ t('calendar-plan.input_types.timer') }}
       </ly-button>
     </div>
 

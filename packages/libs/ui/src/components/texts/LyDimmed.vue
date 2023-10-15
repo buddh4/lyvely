@@ -1,20 +1,23 @@
 <script lang="ts" setup>
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
+import { getTextSizeClass, TextSize } from '@/types';
 
 export interface IProps {
-  text?: string;
-  translate?: boolean;
+  text?: Translatable;
+  size: TextSize;
+  truncate?: boolean;
 }
 
 withDefaults(defineProps<IProps>(), {
   text: '',
-  translate: true,
+  size: TextSize.SM,
+  truncate: false,
 });
 </script>
 
 <template>
-  <p class="text-sm truncate text-dimmed">
-    <slot>{{ translate ? t(text) : text }}</slot>
+  <p :class="[getTextSizeClass(size), { truncate }, 'text-dimmed']">
+    <slot>{{ t(text) }}</slot>
   </p>
 </template>
 

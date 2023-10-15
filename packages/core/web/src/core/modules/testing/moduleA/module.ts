@@ -2,6 +2,7 @@ import { IModule } from '@/core';
 
 export default () => {
   return {
-    getId: () => 'calendar-plan',
+    getId: () => 'moduleA',
+    init: () => {},
   } as IModule;
 };

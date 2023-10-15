@@ -80,18 +80,27 @@ export function applyUpdateTo<T extends BaseEntity<any>>(
   }
 }
 
-export function applyInc<T>(model: T, incData: Record<string, number>) {
+/**
+ * Helper function to increment multiple integer values of an object by property path in place:
+ *
+ * Example usage:
+ *
+ * const model = { sub: { sub: { field1: 0, field2: 0 } } };
+ * applyInc(model, { 'sub.sub.field1': 1, 'sub.sub.field2': 1 });
+ *
+ * @param model
+ * @param incData
+ */
+export function applyInc<T extends object = object>(model: T, incData: Record<string, number>) {
   Object.keys(incData).forEach((path) => {
-    if (typeof incData[path] !== 'number') {
-      return;
-    }
+    if (typeof incData[path] !== 'number') return;
 
-    let modelToInc = model;
+    let modelToInc: T | undefined = model;
     let fieldToInc = path;
 
     if (path.includes('.') && path.lastIndexOf('.') !== path.length - 1) {
       fieldToInc = path.slice(path.lastIndexOf('.') + 1);
-      modelToInc = findByPath(model, path, true);
+      modelToInc = findByPath<T>(model, path, true);
     }
 
     if (modelToInc && typeof modelToInc[fieldToInc] === 'number') {

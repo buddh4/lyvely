@@ -50,7 +50,7 @@ const contentTypeName = computed(() =>
     <div class="flex w-full">
       <tag-list :tag-ids="model.tagIds" @select="selectTag">
         <template #pre>
-          <ly-badge class="bg-secondary-dark" :translate="false">{{ contentTypeName }}</ly-badge>
+          <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
         </template>
         <template v-if="model.meta.archived" #post>
           <ly-icon name="archive" class="w-3 text-warning ml-auto" />

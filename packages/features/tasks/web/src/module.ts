@@ -1,10 +1,11 @@
-import { IModule, translation } from '@lyvely/web';
-import { registerContentType } from '@/modules/content-stream/components/content-stream-entry.registry';
+import { IModule, translation, registerContentType } from '@lyvely/web';
 import { CreateTaskModel, TaskModel } from '@lyvely/tasks-interface';
+import { timeSeriesModule } from '@lyvely/time-series-web';
 
 export default () => {
   return {
     getId: () => 'tasks',
+    dependencies: [timeSeriesModule()],
     init: () => {
       registerContentType({
         type: TaskModel.contentType,

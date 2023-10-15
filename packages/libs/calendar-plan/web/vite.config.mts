@@ -1,23 +1,16 @@
 import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import vuePlugin from '@vitejs/plugin-vue';
-import { externalizeDeps } from 'vite-plugin-externalize-deps'
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import { resolve } from 'path';
 import { sync } from 'glob';
 
 export default defineConfig({
   plugins: [
-    externalizeDeps({ include: ['virtual:pwa-register/vue']}),
+    externalizeDeps(),
     vuePlugin(),
     tsconfigPaths({ ignoreConfigErrors: true }),
-    VueI18nPlugin({
-      /* options */
-      // locale messages resource pre-compile option
-      include: [
-          resolve(__dirname, './locales/**')
-      ],
-  }),],
+    ],
   server: {
     port: 3000,
   },
@@ -28,8 +21,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'LyvelyWeb',
-      fileName: 'lyvely-web',
+      name: 'lyvely-calendar-plan',
+      fileName: 'lyvely-calendar-plan',
       formats: ['es'],
     },
     rollupOptions: {

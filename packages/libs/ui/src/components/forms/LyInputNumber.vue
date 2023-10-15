@@ -1,29 +1,30 @@
 <script lang="ts" setup>
 import { useFloatingInputSetup } from '@/components/forms/FloatingInput';
-import { computed, onMounted, ref } from 'vue';
+import { HTMLAttributes, computed, onMounted, ref } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   id?: string;
-  label?: string;
-  helpText?: string;
+  label?: Translatable;
+  helpText?: Translatable;
   name?: string;
   modelValue?: any;
   value?: string;
   property?: string;
-  placeholder?: string;
+  placeholder?: Translatable;
   required?: boolean;
   disabled?: boolean;
   readonly?: boolean;
-  inputClass?: any;
-  wrapperClass?: string;
+  inputClass?: HTMLAttributes['class'];
+  inputStyle?: HTMLAttributes['style'];
+  wrapperClass?: HTMLAttributes['class'];
   autofocus?: boolean;
   autocomplete?: boolean | string;
   ariaDescribedby?: string;
   error?: string;
   loading?: boolean;
   autoValidation?: boolean;
-  translate?: boolean;
   steps?: number;
   slider?: boolean;
   min?: number;
@@ -48,6 +49,7 @@ const props = withDefaults(defineProps<IProps>(), {
   loading: false,
   ariaDescribedby: undefined,
   inputClass: undefined,
+  inputStyle: undefined,
   wrapperClass: undefined,
   error: undefined,
   steps: 1,
@@ -141,11 +143,12 @@ onMounted(() => {
       :id="inputId"
       ref="input"
       v-model.number="inputValue"
-      :placeholder="placeholder"
+      :placeholder="t(placeholder)"
       :aria-describedby="ariaDescribedby"
       :disabled="disabled"
       :readonly="readonly"
       :class="inputClass"
+      :style="inputStyle"
       type="text"
       inputmode="numeric"
       @blur="$emit('blur')"

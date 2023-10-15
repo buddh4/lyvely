@@ -7,13 +7,15 @@ import {
 } from '@lyvely/time-series-interface';
 import { formatDate, toTimingId } from '@lyvely/dates';
 import { ContentFilter } from '@lyvely/core-interface';
-import { ICalendarPlanOptions, useCalendarPlan, useCalendarPlanStore } from '@/calendar-plan';
+import {
+  ICalendarPlanOptions,
+  useCalendarPlan,
+  useCalendarPlanStore,
+} from '@lyvely/calendar-plan-web';
 import { storeToRefs } from 'pinia';
-import { useProfileStore } from '@/profiles/stores/profile.store';
+import { useProfileStore, useGlobalDialogStore, useContentStore } from '@lyvely/web';
 import { isDefined } from 'class-validator';
-import { useGlobalDialogStore } from '@/core';
 import { useDebounceFn } from '@vueuse/core';
-import { useContentStore } from '@/content/stores/content.store';
 
 export interface ITimeSeriesCalendarPlanOptions<
   TModel extends TimeSeriesContentModel,

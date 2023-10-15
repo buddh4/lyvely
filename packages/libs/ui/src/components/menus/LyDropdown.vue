@@ -2,11 +2,10 @@
 import { Ref, ref } from 'vue';
 import { uniqueId } from 'lodash';
 import { onClickOutside } from '@vueuse/core';
-import { t } from '@/i18n';
+import { t, Translatable } from '@/i18n';
 
 export interface IProps {
-  label?: string;
-  translate?: boolean;
+  label?: Translatable;
   icon?: string;
   position?: 'left' | 'right';
   buttonClass?: string;
@@ -15,7 +14,6 @@ export interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   icon: 'dropdown',
   label: '',
-  translate: true,
   position: 'left',
   buttonClass: '',
 });
@@ -80,7 +78,7 @@ function toggle() {
           :class="buttonClassName"
           :aria-expanded="open ? 'true' : 'false'"
           @click="toggle">
-          <span v-if="label" class="label text-sm">{{ translate ? t(label) : label }}</span>
+          <span v-if="label" class="label text-sm">{{ t(label) }}</span>
           <ly-icon v-if="icon" :name="icon" />
         </button>
       </slot>

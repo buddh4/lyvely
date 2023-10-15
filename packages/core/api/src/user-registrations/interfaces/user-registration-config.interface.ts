@@ -1,8 +1,4 @@
-export enum UserRegistrationMode {
-  Public = 'public',
-  Invite = 'invite',
-  None = 'none',
-}
+import { UserRegistrationMode } from '@lyvely/core-interface';
 
 export interface UserRegistrationConfig {
   mode: UserRegistrationMode;

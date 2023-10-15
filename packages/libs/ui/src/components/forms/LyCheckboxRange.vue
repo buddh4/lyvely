@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed } from 'vue';
+import { HTMLAttributes, computed } from 'vue';
 import { parseInt } from 'lodash';
 import LyInputCheckbox from './LyInputCheckbox.vue';
 
@@ -9,6 +9,7 @@ export interface IProps {
   min?: number;
   optimal?: number;
   disabled?: boolean;
+  inputStyle?: HTMLAttributes['style'];
   single?: boolean;
 }
 
@@ -69,6 +70,7 @@ function updateValue(checked: boolean, value: string) {
           v-model="values"
           :disabled="props.disabled"
           :input-class="cssClasses(unit)"
+          :input-style="inputStyle"
           :value="unit.toString()"
           @change="updateValue" />
       </div>
@@ -78,6 +80,7 @@ function updateValue(checked: boolean, value: string) {
         model-value="1"
         :checked="!!props.selection"
         :input-class="cssClasses(0)"
+        :input-style="inputStyle"
         @change="updateValue" />
     </template>
   </fieldset>
