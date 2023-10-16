@@ -1,7 +1,7 @@
 {
   "name": "@lyvely/activities-web",
   "version": "0.1.0-alpha3",
-  "description": "core-web package",
+  "description": "Lyvely activities web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -14,20 +14,10 @@
   "author": "Julian Harrer",
   "dependencies": {
     "vue": "^3.3.4",
-    "vue-i18n": "^9.2.2",
-    "@vueuse/core": "^10.1.2",
     "pinia": "^2.0.35",
-    "mitt": "^3.0.0",
-    "@lyvely/core-interface": "^0.1.0-alpha3",
-    "@lyvely/ui": "^0.1.0-alpha3",
-    "@lyvely/tasks-web": "^0.1.0-alpha3",
     "@lyvely/web": "^0.1.0-alpha3",
-    "js-cookie": "^3.0.5",
-    "lodash": "^4.17.21",
-    "@lyvely/common": "^0.1.0-alpha3",
+    "@lyvely/ui": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
-    "nprogress": "^0.2.0",
-    "axios": "^1.4.0",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

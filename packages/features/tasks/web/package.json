@@ -1,7 +1,7 @@
 {
   "name": "@lyvely/tasks-web",
   "version": "0.1.0-alpha3",
-  "description": "core-web package",
+  "description": "Lyvely Tasks Web Package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,6 @@
   "dependencies": {
     "vue": "^3.3.4",
     "pinia": "^2.0.35",
-    "@lyvely/core-interface": "^0.1.0-alpha3",
     "@lyvely/tasks-interface": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3",
     "@lyvely/calendar-plan-web": "^0.1.0-alpha3",

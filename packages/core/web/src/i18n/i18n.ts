@@ -40,6 +40,10 @@ export function translate(
   options?: Record<string, string>,
 ) {
   if (typeof key === 'function') return key(options);
+  if (!(<any>getI18n()?.global)) {
+    console.error(new Error('Translation attept before app intialization.'));
+    return 'error';
+  }
   return (<any>getI18n().global).t(key, options);
 }
 
@@ -105,11 +109,11 @@ export async function loadModuleBaseMessages(locale: string) {
   // TODO: here we assume all modules have base message files
 
   const promises: Array<Promise<any>> = getModules().map((module: IModule) => {
-    if (!module.i18n?.['base'] || isModuleMessagesLoaded(locale, module.getId(), 'base')) {
+    if (!module.i18n?.['base'] || isModuleMessagesLoaded(locale, module.id, 'base')) {
       return Promise.resolve();
     }
 
-    return loadModuleMessages(locale, module.getId(), 'base');
+    return loadModuleMessages(locale, module.id, 'base');
   });
 
   return Promise.all(promises).then(() => baseModuleLocales.push(locale));

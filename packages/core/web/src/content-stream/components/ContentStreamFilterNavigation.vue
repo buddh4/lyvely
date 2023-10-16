@@ -101,7 +101,7 @@ onBeforeRouteLeave(unwatchFilter);
         <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
       </div>
 
-      <ly-input-checkbox v-model="filter.archived" class="mb-4" label="common.filter.archive" />
+      <ly-checkbox v-model="filter.archived" class="mb-4" label="common.filter.archive" />
 
       <ly-button
         class="primary float-right text-xs"

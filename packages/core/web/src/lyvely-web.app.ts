@@ -12,6 +12,8 @@ import {
   createApiUrl,
   installModules,
   importModules,
+  registerModule,
+  registerModules,
 } from '@/core';
 import { registerCoreModules } from './core.modules';
 import { markRaw, App as VueApp, createApp } from 'vue';
@@ -42,12 +44,18 @@ export class LyvelyWebApp {
     this.events = eventBus;
     this.events.emit('app.init.pre');
     registerCoreModules();
+    this.registerModulesFromOptions();
     await this.loadExternalModules();
     this.setupPinia();
     await this.setupI18n();
     this.createApp();
     this.events.emit('app.init.post', this);
     return this;
+  }
+
+  private registerModulesFromOptions() {
+    if (!this.options.modules?.length) return;
+    registerModules(...this.options.modules);
   }
 
   private async loadExternalModules() {

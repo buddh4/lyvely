@@ -1,18 +1,17 @@
 <script lang="ts" setup>
-import CalendarPlan from '@/modules/calendar-plan/components/CalendarPlan.vue';
+import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
 import { HabitModel } from '@lyvely/habits-interface';
 import { getCalendarIntervalArray } from '@lyvely/dates';
-import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import CalendarPlanFilterNavigation from '@/modules/calendar-plan/components/CalendarPlanFilterNavigation.vue';
-import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
-import HabitCalendarPlanSection from '@/modules/habits/components/calendar-plan/HabitCalendarPlanSection.vue';
+import { useHabitCalendarPlanStore } from '@/stores';
+import HabitCalendarPlanSection from './HabitCalendarPlanSection.vue';
 import { onBeforeMount, onUnmounted } from 'vue';
-import { usePageStore, translate } from '@lyvely/web';
+import { usePageStore, t, useContentCreateStore } from '@lyvely/web';
+import { LyFloatingAddButton } from '@lyvely/ui';
 
 const { filter, loadModels, startWatch, reset } = useHabitCalendarPlanStore();
 const createEntry = () => useContentCreateStore().createContentType(HabitModel.contentType);
 
-usePageStore().setTitle([translate('habits.title')]);
+usePageStore().setTitle([t('habits.title')]);
 
 onBeforeMount(() => loadModels());
 const unwatch = startWatch();
@@ -24,12 +23,12 @@ onUnmounted(() => {
 
 <template>
   <calendar-plan-filter-navigation :filter="filter" />
-  <calendar-plan>
+  <calendar-planner>
     <habit-calendar-plan-section
       v-for="interval in getCalendarIntervalArray()"
       :key="interval"
       :interval="interval" />
-  </calendar-plan>
+  </calendar-planner>
 
   <ly-floating-add-button @click="createEntry" />
 </template>

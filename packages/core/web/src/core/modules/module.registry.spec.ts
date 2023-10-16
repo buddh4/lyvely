@@ -5,15 +5,15 @@ describe('module registry', () => {
     it('single module import', async () => {
       const modules = await importModules(import('./testing/moduleA/module'));
       expect(modules?.length).toEqual(1);
-      expect(modules[0].getId()).toEqual('moduleA');
-      expect(getModule('moduleA')?.getId()).toEqual('moduleA');
+      expect(modules[0].id).toEqual('moduleA');
+      expect(getModule('moduleA')?.id).toEqual('moduleA');
     });
 
     it('eager single module import', async () => {
       const modules = await importModules(await import('./testing/moduleA/module'));
       expect(modules?.length).toEqual(1);
-      expect(modules[0].getId()).toEqual('moduleA');
-      expect(getModule('moduleA')?.getId()).toEqual('moduleA');
+      expect(modules[0].id).toEqual('moduleA');
+      expect(getModule('moduleA')?.id).toEqual('moduleA');
     });
 
     it('glob import module', async () => {
@@ -22,8 +22,8 @@ describe('module registry', () => {
         './testing/moduleB/module.ts': import('./testing/moduleB/module'),
       });
       expect(modules?.length).toEqual(2);
-      expect(getModule('moduleA')?.getId()).toEqual('moduleA');
-      expect(getModule('moduleB')?.getId()).toEqual('moduleB');
+      expect(getModule('moduleA')?.id).toEqual('moduleA');
+      expect(getModule('moduleB')?.id).toEqual('moduleB');
     });
 
     it('eager glob import module', async () => {
@@ -32,8 +32,8 @@ describe('module registry', () => {
         './testing/moduleB/module.ts': await import('./testing/moduleB/module'),
       });
       expect(modules?.length).toEqual(2);
-      expect(getModule('moduleA')?.getId()).toEqual('moduleA');
-      expect(getModule('moduleB')?.getId()).toEqual('moduleB');
+      expect(getModule('moduleA')?.id).toEqual('moduleA');
+      expect(getModule('moduleB')?.id).toEqual('moduleB');
     });
   });
 });

@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from '@lyvely/core';
-import { ContentModule, getContentModelDefinition, getContentScoreDefinition } from '@lyvely/core';
-import { ProfilesModule } from '@lyvely/core';
-import { PoliciesModule } from '@lyvely/core';
-import { CoreModule } from '@lyvely/core';
+import {
+  UsersModule,
+  ContentModule,
+  getContentModelDefinition,
+  getContentScoreDefinition,
+  ProfilesModule,
+  PoliciesModule,
+  CoreModule,
+} from '@lyvely/core';
 import { Task, TaskSchema, TaskScore, TaskScoreSchema } from './schemas';
 import { TasksController } from './controllers';
 import { TasksDao } from './daos';

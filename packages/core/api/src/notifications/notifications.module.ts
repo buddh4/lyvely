@@ -22,6 +22,7 @@ import { ProfilesModule } from '@/profiles';
 import { UserSubscriptionsModule } from '@/user-subscriptions';
 import { LiveModule } from '@/live';
 import { LyvelyModule } from '@/core';
+import { NOTIFICATIONS_MODULE_ID } from '@lyvely/core-interface';
 
 const NotificationModels = MongooseModule.forFeature([
   {
@@ -37,7 +38,7 @@ const NotificationModels = MongooseModule.forFeature([
 const NotificationQueues = BullModule.registerQueue({ name: QUEUE_NOTIFICATIONS_SEND });
 
 @LyvelyModule({
-  id: 'notifications',
+  id: NOTIFICATIONS_MODULE_ID,
   name: 'Notifications',
   path: __dirname,
   imports: [

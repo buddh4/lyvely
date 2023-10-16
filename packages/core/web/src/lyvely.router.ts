@@ -22,17 +22,13 @@ import { usePageStore, closeMobileDrawerGuard, showMobileNavGuard } from '@/core
 import { messageLoaderGuard } from '@/i18n';
 //import { useAppConfigStore } from '@/core-app/dist/src/modules/app-config/store/app-config.store';
 //import { eventBus } from '../events';
-import { profileRoute } from '@/profiles';
 import NotFound from '@/ui/components/errors/NotFound.vue';
 
 const guards: NavigationGuard[] = [];
 const afterEffectGuards: NavigationGuard[] = [];
 
 export const router = createRouter({
-  routes: [
-    { path: '/', redirect: profileRoute() },
-    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
-  ],
+  routes: [{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }],
   history: createWebHistory(),
 });
 

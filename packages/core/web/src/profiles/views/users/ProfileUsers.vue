@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';
-import { useSendInviteUsersStore } from '@/invitations/stores/send-invitations.store';
+import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitations.store';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { computed } from 'vue';
 import { BaseMembershipRole, ProfileRelationModel } from '@lyvely/core-interface';

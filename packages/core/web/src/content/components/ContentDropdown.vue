@@ -4,7 +4,7 @@ import { useContentArchive } from '@/content/composables/content-archive.composa
 import { useContentEditStore } from '@/content/stores/content-edit.store';
 import { computed, ref } from 'vue';
 import { IConfirmOptions } from '@lyvely/ui';
-import { getContentTypeOptions } from '@/content-stream';
+import { getContentTypeOptions } from '@/content-stream/components/content-stream-entry.registry';
 
 export interface IProps {
   content: ContentModel;

@@ -13,7 +13,7 @@ const description = ref(profileStore.profile?.description);
   <ly-content-panel>
     <div class="flex items-center mb-2 flex-row items-stretch">
       <div class="w-full">
-        <ly-input-text v-model="name" label="profiles.settings.general.name" />
+        <ly-text-field v-model="name" label="profiles.settings.general.name" />
       </div>
       <div
         class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer">
@@ -22,7 +22,7 @@ const description = ref(profileStore.profile?.description);
     </div>
 
     <div class="w-full relative">
-      <ly-input-textarea v-model="description" label="profiles.settings.description" />
+      <ly-textarea v-model="description" label="profiles.settings.description" />
     </div>
 
     <div class="clear-both mt-4">

@@ -1,22 +1,15 @@
 <script lang="ts" setup>
-import { getMenuEntries } from '@/menus';
+import { useMenu } from '@/menus';
 import { MENU_PROFILE_SETTINGS } from '@/profiles/profile.constants';
-import { computed } from 'vue';
-import { isFeatureEnabledOnProfile } from '@/features';
-import { sortBySortOrder } from '@lyvely/common';
+import { LyTabMenuLink } from '@lyvely/ui';
 
-const allMenuEntries = getMenuEntries(MENU_PROFILE_SETTINGS);
-const filteredMenuEntries = computed(() => {
-  return [...allMenuEntries.value]
-    .filter((entry) => !entry.feature || isFeatureEnabledOnProfile(entry.feature))
-    .sort(sortBySortOrder);
-});
+const { enabledMenuEntries } = useMenu(MENU_PROFILE_SETTINGS);
 </script>
 
 <template>
   <ly-tab-menu id="sub-nav" class="flex justify-center md:mx-2 text-sm pb-2 md:pb-5">
     <ly-tab-menu-link
-      v-for="menuEntry in filteredMenuEntries"
+      v-for="menuEntry in enabledMenuEntries"
       :key="menuEntry.id"
       aria-controls="profile-settings-content"
       :to="menuEntry.to!"

@@ -10,11 +10,10 @@ import {
 } from '@lyvely/habits-interface';
 import { TimerUpdateModel } from '@lyvely/timers-interface';
 import { SortResponse, useSingleton } from '@lyvely/common';
-import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
-import { useDataPointStrategyFacade, TimerDataPointModel } from '@lyvely/time-series-interface';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-web';
+import { useDataPointStrategyFacade, TimerDataPointModel } from '@lyvely/time-series-web';
 import repository from '../repositories/habits.repository';
-import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/web';
-import { useProfileStore } from '@/modules/profiles/stores/profile.store';
+import { unwrapAndTransformResponse, unwrapResponse, useProfileStore } from '@lyvely/web';
 
 export class HabitsService implements IHabitsEndpointService {
   async getByFilter(filter: CalendarPlanFilter) {

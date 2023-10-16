@@ -28,7 +28,7 @@ import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '@/policies';
 import { CoreModule, LyvelyModule } from '@/core';
-import { ProfileType } from '@lyvely/core-interface';
+import { PROFILES_MODULE_ID, ProfileType } from '@lyvely/core-interface';
 import { useProfileMappings } from './mappings';
 import { ProfileMembershipController } from './controllers/profile-membership.controller';
 
@@ -52,7 +52,7 @@ const ProfileModel = MongooseModule.forFeature([
 useProfileMappings();
 
 @LyvelyModule({
-  id: 'profiles',
+  id: PROFILES_MODULE_ID,
   name: 'Profiles',
   path: __dirname,
   policies: [ProfileVisibilityPolicy],

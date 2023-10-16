@@ -4,7 +4,7 @@ import {
   ENDPOINT_MILESTONE_PLAN,
 } from '@lyvely/milestones-interface';
 import { EndpointResult } from '@lyvely/common';
-import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-web';
 
 export default {
   async getByFilter(filter: CalendarPlanFilter) {

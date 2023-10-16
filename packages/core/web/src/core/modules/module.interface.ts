@@ -1,8 +1,12 @@
 import { App } from 'vue';
 import type { LocaleMessage } from '@intlify/core-base';
+import { IFeature } from '@lyvely/core-interface';
+import { RouteRecordRaw } from 'vue-router';
 
 export interface IModule {
-  getId: () => string;
+  id: string;
+  features?: IFeature[] | (() => IFeature[]);
+  routes?: RouteRecordRaw[] | (() => RouteRecordRaw[]);
   init?: () => void;
   install?: (app: App) => void;
   dependencies?: Array<IModule>;

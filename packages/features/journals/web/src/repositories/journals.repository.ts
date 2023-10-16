@@ -5,9 +5,9 @@ import {
   CreateJournalModel,
   UpdateJournalModel,
 } from '@lyvely/journals-interface';
-import { UpdateDataPointModel } from '@lyvely/time-series-interface';
+import { UpdateDataPointModel } from '@lyvely/time-series-web';
 import { EndpointResult } from '@lyvely/common';
-import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
+import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-web';
 
 export default {
   async create(model: CreateJournalModel) {

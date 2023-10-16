@@ -1,6 +1,7 @@
 import { computed } from 'vue';
-import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
+import { useHabitCalendarPlanStore } from '@/stores';
 import { HabitModel } from '@lyvely/habits-interface';
+import { useCalendarPlanStore } from '@lyvely/calendar-plan-web';
 
 export const useUpdateHabit = (model: HabitModel) => {
   const habitStore = useHabitCalendarPlanStore();
@@ -33,9 +34,12 @@ export const useUpdateHabit = (model: HabitModel) => {
 
   const timer = computed(() => dataPoint.value!.value.timer);
 
+  const isTimerStartable = computed(() => useCalendarPlanStore().isPresentInterval(model.interval));
+
   return {
     selection,
     dataPoint,
+    isTimerStartable,
     startTimer,
     stopTimer,
     timer,

@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import MilestoneCalendarPlanItem from '@/modules/milestones/components/calendar-plan/MilestoneCalendarPlanItem.vue';
-import CalendarPlanSection from '@/modules/calendar-plan/components/CalendarPlanSection.vue';
-import { useMilestoneCalendarPlanStore } from '@/modules/milestones/stores/milestone-calendar-plan.store';
+import MilestoneCalendarPlanItem from './MilestoneCalendarPlanItem.vue';
+import { CalendarPlanSection } from '@lyvely/calendar-plan-web';
+import { useMilestoneCalendarPlanStore } from '@/stores';
 import { computed } from 'vue';
 import Draggable from 'vuedraggable';
-import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
+import { useContentCreateStore } from '@lyvely/web';
 import { MilestoneModel } from '@lyvely/milestones-interface';
 
 export interface IProps {

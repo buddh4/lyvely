@@ -101,7 +101,7 @@ syncTimerState(isStarted.value);
     </ly-button>
   </div>
   <ly-modal v-model="showTimerEdit" title="timer.edit.title" @submit="submitEditTimer">
-    <ly-input-time-number v-model="timerEditValue" :max="max || undefined" />
+    <ly-time-number-input v-model="timerEditValue" :max="max || undefined" />
   </ly-modal>
 </template>
 

@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { onBeforeMount, onUnmounted } from 'vue';
-import CalendarPlan from '@/calendar-plan/components/CalendarPlan.vue';
-import { useContentCreateStore } from '@/content/stores/content-create.store';
+import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
+import { useContentCreateStore } from '@lyvely/web';
 import { JournalModel } from '@lyvely/journals-interface';
-import { useJournalPlanStore } from '@/journals/stores/journal-calendar-plan.store';
-import JournalCalendarPlanSection from '@/journals/components/JournalCalendarPlanSection.vue';
-import CalendarPlanFilterNavigation from '@/calendar-plan/components/CalendarPlanFilterNavigation.vue';
-import JournalsNavigation from '@/journals/components/menus/JournalsNavigation.vue';
-import { LyContentRoot } from '@lyvely/ui';
+import { useJournalPlanStore } from '@/stores';
+import JournalCalendarPlanSection from '@/components/calendar-plan/JournalCalendarPlanSection.vue';
+import JournalsNavigation from '@/components/menus/JournalsNavigation.vue';
+import { LyContentRoot, LyFloatingAddButton } from '@lyvely/ui';
 
 const journalStore = useJournalPlanStore();
 const { intervals, filter } = journalStore;
@@ -24,12 +23,12 @@ onUnmounted(unwatch);
   <ly-content-root>
     <journals-navigation class="md:hidden" />
     <calendar-plan-filter-navigation :filter="filter" />
-    <calendar-plan>
+    <calendar-planner>
       <journal-calendar-plan-section
         v-for="interval in intervals"
         :key="interval"
         :interval="interval" />
-    </calendar-plan>
+    </calendar-planner>
 
     <ly-floating-add-button @click="createEntry" />
   </ly-content-root>

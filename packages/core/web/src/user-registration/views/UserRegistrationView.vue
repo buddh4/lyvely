@@ -67,17 +67,17 @@ onUnmounted(userRegistrationStore.reset);
         :status="status"
         label-key="user_registration.fields">
         <fieldset>
-          <ly-input-text
+          <ly-text-field
             autocomplete="username"
             property="username"
             :required="true"
             :autofocus="!isTouchScreen()" />
 
-          <ly-input-text autocomplete="email" property="email" type="email" :required="true" />
+          <ly-text-field autocomplete="email" property="email" type="email" :required="true" />
         </fieldset>
 
         <fieldset>
-          <ly-input-text
+          <ly-text-field
             name="new-password"
             autocomplete="new-password"
             property="password"
@@ -85,7 +85,7 @@ onUnmounted(userRegistrationStore.reset);
             :required="true"
             @toggle-type="repeatPasswordType = $event" />
 
-          <ly-input-text
+          <ly-text-field
             property="passwordRepeat"
             autocomplete="new-password"
             :type="repeatPasswordType"
@@ -97,10 +97,7 @@ onUnmounted(userRegistrationStore.reset);
 
         <fieldset class="my-5">
           <div class="flex flex-nowrap items-center">
-            <ly-input-checkbox
-              property="remember"
-              class="text-sm"
-              aria-describedby="remember-me-info" />
+            <ly-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
             <ly-icon
               name="info"
               class="ml-1 text-primary w-4 cursor-pointer"

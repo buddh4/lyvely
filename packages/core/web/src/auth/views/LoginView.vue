@@ -84,7 +84,7 @@ onUnmounted(loginStore.reset);
         label-key="auth.login.fields"
         @keydown.enter="next">
         <div v-if="stage === 'email'">
-          <ly-input-text
+          <ly-text-field
             property="email"
             autocomplete="username"
             :autofocus="!isTouchScreen()"
@@ -102,14 +102,14 @@ onUnmounted(loginStore.reset);
             </div>
           </div>
 
-          <ly-input-text
+          <ly-text-field
             autocomplete="username"
             wrapper-class="hidden"
             aria-hidden="true"
             property="email"
             :required="true" />
 
-          <ly-input-text
+          <ly-text-field
             name="current-password"
             property="password"
             type="password"
@@ -120,7 +120,7 @@ onUnmounted(loginStore.reset);
 
           <div class="flex items-center justify-between cursor-pointer">
             <div class="flex flex-nowrap items-center mt-1">
-              <ly-input-checkbox
+              <ly-checkbox
                 property="remember"
                 class="text-sm"
                 aria-describedby="remember-me-info" />

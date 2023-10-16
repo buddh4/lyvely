@@ -2,18 +2,22 @@ import { Global, Inject, Injectable, Module, OnModuleInit, Scope, Type } from '@
 import { UsersModule } from '@/users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ContentScoreService, ContentService, ContentStreamService } from './services';
+import { ContentScoreService, ContentService } from './services';
 import { ProfileScore, ProfilesModule } from '@/profiles';
 import { ContentDao, ContentScoreDao } from './daos';
-import { ContentCreatePolicy, ContentReadPolicy, ContentWritePolicy } from './policies';
+import {
+  ContentCreatePolicy,
+  ContentReadPolicy,
+  ContentWritePolicy,
+  ContentManagePolicy,
+} from './policies';
 import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { LiveModule } from '@/live';
 import { uniqueId } from 'lodash';
-import { ContentStreamController, ContentController } from './controllers';
+import { ContentController } from './controllers';
 import { LyvelyModule } from '@/core';
-import { ContentManagePolicy } from './policies/content-manage.policy';
-import { ContentStreamFeature } from '@lyvely/core-interface';
+import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/core-interface';
 
 const ContentModel = MongooseModule.forFeature([
   {
@@ -32,16 +36,15 @@ const ContentScoreActionModel = MongooseModule.forFeature([
 
 @Global()
 @LyvelyModule({
-  id: 'content',
+  id: CONTENT_MODULE_ID,
   name: 'Content',
   path: __dirname,
   features: [ContentStreamFeature],
   policies: [ContentCreatePolicy, ContentReadPolicy, ContentWritePolicy, ContentManagePolicy],
   imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
-  controllers: [ContentController, ContentStreamController],
+  controllers: [ContentController],
   providers: [
     ContentService,
-    ContentStreamService,
     ContentDao,
     ContentEventPublisher,
     ContentTypeRegistry,

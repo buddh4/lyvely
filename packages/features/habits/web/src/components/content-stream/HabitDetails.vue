@@ -1,18 +1,22 @@
 <script lang="ts" setup>
 import { HabitModel } from '@lyvely/habits-interface';
-import { isNumberDataPointConfig, isTimerDataPointConfig } from '@lyvely/time-series-interface';
-import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
-import CalendarPlanNumberInput from '@/modules/calendar-plan/components/inputs/CalendarPlanNumberInput.vue';
-import CalendarPlanTimerInput from '@/modules/calendar-plan/components/inputs/CalendarPlanTimerInput.vue';
-import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
+import {
+  isNumberDataPointConfig,
+  isTimerDataPointConfig,
+  TimeSeriesNumberInput,
+  TimeSeriesTimerInput,
+  TimeSeriesSummary,
+} from '@lyvely/time-series-web';
+import { ContentDetails } from '@lyvely/web';
+import { useHabitCalendarPlanStore } from '@/stores';
 import { onMounted, onUnmounted, ref, watch } from 'vue';
 import {
-  useCalendarPlanPlanItem,
+  useCalendarPlanItem,
   useCalendarPlanPlanNavigation,
   useCalendarPlanStore,
-} from '@/modules/calendar-plan';
-import { useUpdateHabit } from '@/modules/habits/composables';
-import TimeSeriesSummary from '@/modules/time-series/components/TimeSeriesSummary.vue';
+} from '@lyvely/calendar-plan-web';
+import { useUpdateHabit } from '@/composables';
+import { LyIcon, LyButton } from '@lyvely/ui';
 
 export interface IProps {
   model: HabitModel;
@@ -23,8 +27,8 @@ const props = defineProps<IProps>();
 const habitStore = useHabitCalendarPlanStore();
 const initialized = ref(false);
 const { getDataPoint, loadModel } = habitStore;
-const { isDisabled } = useCalendarPlanPlanItem(props.model, habitStore);
-const { selection, startTimer, stopTimer, timer } = useUpdateHabit(props.model);
+const { isDisabled } = useCalendarPlanItem(props.model, habitStore);
+const { selection, startTimer, stopTimer, timer, isTimerStartable } = useUpdateHabit(props.model);
 const {
   title,
   accessibleTitle,
@@ -102,16 +106,17 @@ onUnmounted(unwatchDate);
           </ly-button>
         </div>
         <div>
-          <calendar-plan-number-input
+          <time-series-number-input
             v-if="isNumberDataPointConfig(model.timeSeriesConfig)"
             v-model="selection"
             :disabled="isDisabled"
             :config="model.timeSeriesConfig" />
-          <calendar-plan-timer-input
+          <time-series-timer-input
             v-else-if="isTimerDataPointConfig(model.timeSeriesConfig)"
             v-model="timerSelection"
             :config="model.timeSeriesConfig"
             :timer="timer"
+            :startable="isTimerStartable"
             :disabled="isDisabled"
             @start-timer="startTimer"
             @stop-timer="stopTimer" />

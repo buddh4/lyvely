@@ -31,15 +31,15 @@ const usageLabel = (usage: string) => translate('profiles.usage.' + usage.toLowe
 <template>
   <ly-modal v-model="show" title="profiles.create.title" @cancel="reset" @submit="createProfile">
     <ly-form-model v-model="model" label-key="profiles.create.properties" :validator="validator">
-      <ly-input-text property="name" :required="true" />
-      <ly-input-textarea property="description" />
+      <ly-text-field property="name" :required="true" />
+      <ly-textarea property="description" />
       <ly-badge-chooser
         v-model="model.usage"
         label="profiles.create.placeholders.usage"
         :options="usageOptions"
         :labels="usageLabel" />
-      <ly-input-radio property="type" label="profiles.create.properties.user" :value="userType" />
-      <ly-input-radio property="type" label="profiles.create.properties.group" :value="groupType" />
+      <ly-radio property="type" label="profiles.create.properties.user" :value="userType" />
+      <ly-radio property="type" label="profiles.create.properties.group" :value="groupType" />
     </ly-form-model>
     <ly-alert type="danger" :message="error" class="mt-2" />
   </ly-modal>

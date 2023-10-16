@@ -41,7 +41,7 @@ defineExpose({ validate });
     <div :class="['border border-b-0', borderColorClass]">
       <captcha-code></captcha-code>
     </div>
-    <ly-input-text
+    <ly-text-field
       :id="inputId"
       v-model="captchaModel.captcha"
       :error="validator.getError('captcha')"

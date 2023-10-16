@@ -1,5 +1,5 @@
 import { Module, Global } from '@nestjs/common';
-import { AppConfigController } from './controllers/app-config.controller';
+import { AppConfigController } from './controllers';
 import { AppConfigService } from '@/app-config/services';
 
 @Global()

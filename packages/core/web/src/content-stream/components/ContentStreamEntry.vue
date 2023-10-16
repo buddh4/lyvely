@@ -8,7 +8,7 @@ import { isTextSelection } from '@/core';
 import { translate } from '@/i18n';
 import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/composables/stream.composable';
-import { getContentTypeOptions } from '@/content-stream';
+import { getContentTypeOptions } from './content-stream-entry.registry';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 
 export interface IProps {

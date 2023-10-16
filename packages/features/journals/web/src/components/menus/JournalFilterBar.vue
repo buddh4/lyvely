@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { useJournalPlanStore } from '@/journals/stores/journal-calendar-plan.store';
+import { useJournalPlanStore } from '@/stores';
+import { CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
 
 const { filter } = useJournalPlanStore();
 </script>

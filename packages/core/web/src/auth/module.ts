@@ -1,14 +1,16 @@
 import { IModule } from '@/core';
 import { authGuard } from './guards';
-import { registerGuards, registerRoutes } from '@/lyvely.router';
+import { registerGuards } from '@/lyvely.router';
 import authRoutes from './routes/auth.routes';
+import { AUTH_MODULE_ID } from '@lyvely/core-interface';
 
 export default () => {
   return {
-    getId: () => 'auth',
+    id: 'auth',
+    moduleId: AUTH_MODULE_ID,
+    routes: authRoutes,
     init: () => {
       registerGuards([authGuard]);
-      registerRoutes(authRoutes);
     },
   } as IModule;
 };

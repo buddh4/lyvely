@@ -1,19 +1,24 @@
 <script lang="ts" setup>
 import { CreateJournalModel, JournalModel, UpdateJournalModel } from '@lyvely/journals-interface';
-import { DataPointInputType, DataPointValueType } from '@lyvely/time-series-interface';
-import { computed } from 'vue';
-import TagChooser from '@/tags/components/TagChooser.vue';
 import {
+  DataPointInputType,
+  DataPointValueType,
+  NumberDataPointConfigForm,
+  TextDataPointConfigForm,
+  SelectionDataPointConfigForm,
+} from '@lyvely/time-series-web';
+import { computed } from 'vue';
+import {
+  TagChooser,
   ContentEditModalEmits,
+  ICreateContentInitOptions,
   useContentEditModal,
-} from '@/content/composables/content-edit-modal.composable';
-import { getCalendarPlanOptions } from '@/calendar-plan';
-import { isTouchScreen } from '@/core';
-import { ICreateContentInitOptions } from '@/content/interfaces/edit-content-modal-props.interface';
-import { useJournalsService } from '@/journals/services/journals.service';
-import NumberDataPointConfigForm from '@/time-series/components/NumberDataPointConfigForm.vue';
-import TextDataPointConfigForm from '@/time-series/components/TextDataPointConfigForm.vue';
-import SelectionDataPointConfigForm from '@/time-series/components/SelectionDataPointConfigForm.vue';
+  isTouchScreen,
+  t,
+} from '@lyvely/web';
+import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
+import { useJournalsService } from '@/services';
+import { LyModal, LyFormModel, LyTextField, LySelect, LyButton, LyTextarea } from '@lyvely/ui';
 
 export interface IProps {
   modelValue: boolean;
@@ -62,12 +67,12 @@ const modalTitle = computed(() => {
       :status="status"
       label-key="activities.fields">
       <fieldset>
-        <ly-input-text
+        <ly-text-field
           property="title"
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-input-select property="interval" :required="true" :options="calendarPlanOptions" />
+        <ly-select property="interval" :required="true" :options="calendarPlanOptions" />
       </fieldset>
 
       <fieldset>
@@ -77,21 +82,21 @@ const modalTitle = computed(() => {
               class="text-xs secondary w-full"
               :active="model.valueType === DataPointValueType.Number"
               @click="setValueType(DataPointValueType.Number)">
-              {{ $t('calendar-plan.value_types.number') }}
+              {{ t('calendar-plan.value_types.number') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
               :active="model.valueType === DataPointValueType.Text"
               @click="setValueType(DataPointValueType.Text)">
-              {{ $t('calendar-plan.value_types.text') }}
+              {{ t('calendar-plan.value_types.text') }}
             </ly-button>
 
             <ly-button
               class="text-xs secondary w-full"
               :active="model.valueType === DataPointValueType.Selection"
               @click="setValueType(DataPointValueType.Selection)">
-              {{ $t('calendar-plan.value_types.selection') }}
+              {{ t('calendar-plan.value_types.selection') }}
             </ly-button>
           </div>
 
@@ -110,7 +115,7 @@ const modalTitle = computed(() => {
 
       <fieldset>
         <tag-chooser v-model="model.tagNames" />
-        <ly-input-textarea property="text" />
+        <ly-textarea property="text" />
       </fieldset>
     </ly-form-model>
   </ly-modal>

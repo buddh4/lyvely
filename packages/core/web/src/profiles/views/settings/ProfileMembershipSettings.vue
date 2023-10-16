@@ -42,7 +42,7 @@ function updateSettings() {
         label-key="profiles.settings.membership">
         <div class="flex items-center mb-2 flex-row items-stretch">
           <div class="w-full relative">
-            <ly-input-text property="displayName" class="mb-0" />
+            <ly-text-field property="displayName" class="mb-0" />
           </div>
           <div
             class="ml-3 bg-highlight w-20 flex justify-center items-center rounded border border-divide cursor-pointer">
@@ -51,7 +51,7 @@ function updateSettings() {
         </div>
 
         <div class="w-full relative">
-          <ly-input-textarea property="description" />
+          <ly-textarea property="description" />
         </div>
       </ly-form-model>
 

@@ -4,17 +4,20 @@ import {
   MilestoneRelationModel,
   MilestoneRelationsStore,
 } from '@lyvely/milestones-interface';
-import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { CalendarPlanFilter, useCalendarPlanStore } from '@lyvely/calendar-plan-web';
 import { toTimingId } from '@lyvely/dates';
-import ContentDetails from '@/modules/content-stream/components/ContentDetails.vue';
+import {
+  ContentDetails,
+  useProfileStore,
+  contentRoute,
+  getContentTypeOptions,
+  t,
+} from '@lyvely/web';
 import { computed, onBeforeMount, ref } from 'vue';
-import { useCalendarPlanStore } from '@/modules/calendar-plan';
 import { storeToRefs } from 'pinia';
-import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { isDefined } from 'class-validator';
-import { useMilestonePlanService } from '@/modules/milestones/services/milestone-plan-service';
-import { contentRoute, getContentTypeOptions } from '@/modules/content-stream';
+import { useMilestonePlanService } from '@/services';
 import { useRouter } from 'vue-router';
+import { LyIcon, LyProgressBar, LyTrim } from '@lyvely/ui';
 
 export interface IProps {
   model: MilestoneModel;
@@ -89,14 +92,16 @@ onBeforeMount(async () => {
               </span>
             </td>
             <td class="w-40 px-4 py-2 pl-8 text-center">
-              <ly-progress-bar v-if="isDefined(relation.progress)" :progress="relation.progress" />
+              <ly-progress-bar
+                v-if="typeof relation.progress !== 'undefined'"
+                :progress="relation.progress" />
               <span v-else>-</span>
             </td>
           </tr>
         </tbody>
       </table>
       <div v-else class="w-fit">
-        <span class="text-xs">{{ $t('milestones.messages.no_relations') }}</span>
+        <span class="text-xs">{{ t('milestones.messages.no_relations') }}</span>
       </div>
     </template>
   </content-details>

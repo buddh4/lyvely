@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
+import { useMilestonesStore } from '@/stores';
 import { MilestoneModel, UpdateMilestoneResponse } from '@lyvely/milestones-interface';
-import { ContentModel } from '@lyvely/core-interface';
-import { useSetContentMilestone } from '@/modules/content/composables/set-content-milestone.composable';
-import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
+import { ContentModel, useSetContentMilestone, useContentCreateStore, t } from '@lyvely/web';
 import { storeToRefs } from 'pinia';
+import { LyAlert, LyAddButton, LyDividedList, LyListItem, LyDimmed } from '@lyvely/ui';
 
 export interface IProps {
   content: ContentModel;
@@ -36,7 +35,7 @@ const createMilestone = () =>
     <li class="py-3 px-4">
       <div class="flex items-center">
         <span class="text-sm font-bold">
-          {{ $t('milestones.title') }}
+          {{ t('milestones.title') }}
         </span>
         <ly-add-button class="m-auto" @click="createMilestone" />
       </div>
@@ -53,7 +52,10 @@ const createMilestone = () =>
               <p class="text-sm font-medium truncate">
                 {{ milestone.content.title }}
               </p>
-              <ly-dimmed :text="{ plain: milestone.content.text }" :truncate="true" />
+              <ly-dimmed
+                v-if="milestone.content.text"
+                :text="{ plain: milestone.content.text }"
+                :truncate="true" />
             </div>
           </div>
         </ly-list-item>

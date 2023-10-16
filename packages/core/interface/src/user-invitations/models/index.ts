@@ -1,1 +1,1 @@
-export * from './invitations.model';
+export * from './user-invitations.model';

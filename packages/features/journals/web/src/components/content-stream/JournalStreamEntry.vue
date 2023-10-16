@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { JournalModel } from '@lyvely/journals-interface';
 import { ContentModel } from '@lyvely/core-interface';
-import ContentStreamEntry from '@/content-stream/components/ContentStreamEntry.vue';
-import { IStream } from '@/stream/composables/stream.composable';
+import { IStream, ContentStreamEntry } from '@lyvely/web';
+import { LyIcon } from '@lyvely/ui';
 
 export interface IProps {
   model: JournalModel;

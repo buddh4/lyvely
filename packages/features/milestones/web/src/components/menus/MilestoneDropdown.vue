@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { computed, ref, watchEffect } from 'vue';
-import { useMilestonesStore } from '@/modules/milestones/stores/milestones.store';
+import { useMilestonesStore } from '@/stores';
 import { MilestoneModel } from '@lyvely/milestones-interface';
-import { ContentModel } from '@lyvely/core-interface';
-import MilestoneChooser from '@/modules/milestones/components/menus/MilestoneChooser.vue';
-import { translate } from '@lyvely/web';
+import { ContentModel, t } from '@lyvely/web';
+import MilestoneChooser from './MilestoneChooser.vue';
+import { LyDropdown, LyLoader, LyIcon } from '@lyvely/ui';
 
 interface IProps {
   content: ContentModel;
@@ -22,7 +22,7 @@ const milestone = ref<MilestoneModel | null>(null);
 const isMilestone = computed(() => props.content.type === MilestoneModel.contentType);
 
 const milestoneTitle = computed(() => {
-  return milestone.value ? milestone.value.getTitle() : translate('common.none');
+  return milestone.value ? milestone.value.getTitle() : t('common.none');
 });
 
 watchEffect(() => {
@@ -52,7 +52,7 @@ watchEffect(() => {
           { ' cursor-pointer': editable },
         ]"
         @click="toggle">
-        <span>{{ $t('milestones.name') }}: </span>
+        <span>{{ t('milestones.name') }}: </span>
         <span v-if="isLoaded" class="font-bold">{{ milestoneTitle }}</span>
         <ly-loader v-else size="1em" />
         <ly-icon v-if="isLoaded && editable" name="caret-down" />

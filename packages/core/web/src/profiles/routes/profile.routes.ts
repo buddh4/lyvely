@@ -4,6 +4,7 @@ import { profileRoot, profileRoute } from './profile-route.util';
 import { RouteRecordRaw } from 'vue-router';
 
 export default [
+  { path: '/', redirect: profileRoute() },
   {
     path: profileRoot(),
     name: 'ProfileRoot',

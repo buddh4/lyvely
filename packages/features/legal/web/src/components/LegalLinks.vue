@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { useAppConfigStore } from '@lyvely/web';
 import { ref } from 'vue';
-import { LegalSection, LegalSectionDetails } from '@lyvely/legal-interface';
-import { useLegalService } from '../services';
+import { LegalSection, LegalSectionDetails, ILegalAppConfig } from '@lyvely/legal-interface';
+import { useLegalService } from '@/services';
+import { LyLoader, LyModal } from '@lyvely/ui';
 
-const { get } = useAppConfigStore();
-
-const sections = useAppConfigStore().getModuleConfig('legal', 'sections');
+const sections = useAppConfigStore().getModuleConfig<ILegalAppConfig>('legal', 'sections');
 const showLegalModal = ref(false);
 const activeSection = ref<LegalSection>();
 const activeSectionDetails = ref<LegalSectionDetails>();

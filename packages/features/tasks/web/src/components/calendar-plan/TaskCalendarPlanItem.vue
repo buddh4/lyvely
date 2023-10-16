@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { TaskModel } from '@lyvely/tasks-interface';
 import { computed } from 'vue';
-import { CalendarPlanItem, useCalendarPlanPlanItem } from '@lyvely/calendar-plan-web';
+import { CalendarPlanItem, useCalendarPlanItem } from '@lyvely/calendar-plan-web';
 import { useTaskCalendarPlanStore } from '@/stores';
 import { TimerState, ContentDropdown } from '@lyvely/web';
 import { LyCheckboxRange } from '@lyvely/ui';
@@ -14,7 +14,7 @@ const props = defineProps<IProps>();
 const taskStore = useTaskCalendarPlanStore();
 const { selectTag } = taskStore;
 
-const { isDisabled, moveUp, moveDown } = useCalendarPlanPlanItem(props.model, taskStore);
+const { isDisabled, moveUp, moveDown } = useCalendarPlanItem(props.model, taskStore);
 
 const selection = computed({
   get: () => +!!props.model.done,

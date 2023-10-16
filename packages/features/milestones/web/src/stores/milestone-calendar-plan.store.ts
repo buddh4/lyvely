@@ -5,8 +5,8 @@ import {
   MilestoneRelationsStore,
   MilestoneSearchResponse,
 } from '@lyvely/milestones-interface';
-import { useCalendarPlan } from '@/modules/calendar-plan';
-import { useMilestonePlanService } from '../services/milestone-plan-service';
+import { useCalendarPlan } from '@lyvely/calendar-plan-web';
+import { useMilestonePlanService } from '@/services';
 
 export const useMilestoneCalendarPlanStore = defineStore('milestone-calendar-plan', () => {
   return useCalendarPlan<

@@ -5,7 +5,7 @@ import {
   ISelectionDataPointValue,
 } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
-import { LyInputCheckbox, LyInputSelect, LyInputRadio } from '@lyvely/ui';
+import { LyCheckbox, LySelect, LyRadio } from '@lyvely/ui';
 
 interface IProps {
   modelValue: ISelectionDataPointValue;
@@ -47,13 +47,13 @@ const dropDownOptions = computed(() =>
 <template>
   <div v-if="config.inputType === DataPointInputType.Checkbox" class="flex flex-col gap-2 ml-2">
     <div v-for="option in config.options" :key="option">
-      <ly-input-checkbox v-model="selection" :label="{ plain: option }" :value="option" />
+      <ly-checkbox v-model="selection" :label="{ plain: option }" :value="option" />
     </div>
   </div>
   <div
     v-else-if="config.inputType === DataPointInputType.Dropdown"
     class="flex w-full items-center gap-2">
-    <ly-input-select
+    <ly-select
       v-model="singleValueSelection"
       class="calendar-plan-dropdown"
       style="min-width: 33.333333%"
@@ -63,7 +63,7 @@ const dropDownOptions = computed(() =>
     v-for="option in config.options"
     v-else-if="config.inputType === DataPointInputType.Radio"
     :key="option">
-    <ly-input-radio v-model="singleValueSelection" :label="{ plain: option }" :value="option" />
+    <ly-radio v-model="singleValueSelection" :label="{ plain: option }" :value="option" />
   </div>
 </template>
 

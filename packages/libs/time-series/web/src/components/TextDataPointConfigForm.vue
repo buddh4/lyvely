@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ITextDataPointSettings } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
-import { LyInputCheckbox } from '@lyvely/ui';
+import { LyCheckbox } from '@lyvely/ui';
 
 interface IProps {
   modelValue: Partial<ITextDataPointSettings>;
@@ -19,7 +19,7 @@ const isRequired = computed({
 <template>
   <div class="flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3">
     <div class="text-xs">
-      <ly-input-checkbox v-model="isRequired" label="calendar-plan.fields.required" />
+      <ly-checkbox v-model="isRequired" label="calendar-plan.fields.required" />
     </div>
   </div>
 </template>

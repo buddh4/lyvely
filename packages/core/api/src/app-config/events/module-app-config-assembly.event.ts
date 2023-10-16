@@ -5,7 +5,10 @@ export class ModuleAppConfigAssemblyEvent {
     this.config = config;
   }
 
-  setModuleConfig(moduleId: string, config: object) {
+  setModuleConfig<T extends Record<string, unknown> = Record<string, unknown>>(
+    moduleId: string,
+    config: T,
+  ) {
     this.config[moduleId] = config;
   }
 }

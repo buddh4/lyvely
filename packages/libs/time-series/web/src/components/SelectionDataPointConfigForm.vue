@@ -2,7 +2,7 @@
 import { DataPointInputType, ISelectionDataPointSettings } from '@lyvely/time-series-interface';
 import { ref } from 'vue';
 import { isArray } from 'class-validator';
-import { LyButton, LyInputText, LyInputCheckbox, LyIcon } from '@lyvely/ui';
+import { LyButton, LyTextField, LyCheckbox, LyIcon } from '@lyvely/ui';
 import { t } from '@lyvely/web';
 
 interface IProps {
@@ -67,7 +67,7 @@ function setInputType(inputType: DataPointInputType) {
     </div>
 
     <div class="flex flex-row items-center items-stretch gap-0.5">
-      <ly-input-text
+      <ly-text-field
         v-model="newOption"
         class="mb-0 grow"
         input-class="attachment-r"
@@ -84,7 +84,7 @@ function setInputType(inputType: DataPointInputType) {
     </div>
 
     <div v-if="modelValue.inputType !== DataPointInputType.Dropdown" class="text-xs">
-      <ly-input-checkbox property="showOther" label="calendar-plan.labels.showOther" />
+      <ly-checkbox property="showOther" label="calendar-plan.labels.showOther" />
     </div>
   </div>
 </template>

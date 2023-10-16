@@ -53,29 +53,50 @@ async function generateWebTypes() {
 
 function transformComponentInfo(componentInfo) {
   const { displayName, props } = componentInfo;
+  const attributes = [];
+
+  props?.forEach((prop) => {
+    if (!prop?.type?.name) console.error(prop);
+    attributes.push(constructAttr(prop.name, prop));
+    const kebabCaseName = camelToKebab(prop.name);
+    if (kebabCaseName !== prop.name) {
+      attributes.push(constructAttr(kebabCaseName, prop));
+    }
+  });
+
   return {
     name: displayName,
     source: {
       symbol: displayName,
     },
-    attributes:
-      props?.map((prop) => {
-        if (!prop?.type?.name) console.error(prop);
-        const attr = {
-          name: '',
-          value: {
-            kind: 'expression',
-            type: prop.type.name,
-          },
-        };
-
-        if (props.defaultValue) {
-          attr.default = props.defaultValue.value;
-        }
-
-        return attr;
-      }) || [],
+    attributes,
   };
+}
+
+function constructAttr(name, prop) {
+  const attr = {
+    name,
+    value: {
+      kind: 'expression',
+      type: prop.type.name,
+    },
+  };
+
+  if (prop.defaultValue) {
+    attr.default = prop.defaultValue.value;
+  }
+
+  return attr;
+}
+
+function camelToKebab(string) {
+  return (
+    string
+      // Insert a hyphen between two consecutive characters where the first is lower and the second is upper case.
+      .replace(/([a-z])([A-Z])/g, '$1-$2')
+      // Convert all letters to lower case.
+      .toLowerCase()
+  );
 }
 
 generateWebTypes();

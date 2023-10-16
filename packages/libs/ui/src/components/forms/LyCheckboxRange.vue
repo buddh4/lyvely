@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { HTMLAttributes, computed } from 'vue';
 import { parseInt } from 'lodash';
-import LyInputCheckbox from './LyInputCheckbox.vue';
+import LyCheckbox from './LyCheckbox.vue';
 
 export interface IProps {
   max?: number;
@@ -66,7 +66,7 @@ function updateValue(checked: boolean, value: string) {
   <fieldset class="flex flex-row-reverse">
     <template v-if="!single">
       <div v-for="unit in count" :key="unit">
-        <ly-input-checkbox
+        <ly-checkbox
           v-model="values"
           :disabled="props.disabled"
           :input-class="cssClasses(unit)"
@@ -76,7 +76,7 @@ function updateValue(checked: boolean, value: string) {
       </div>
     </template>
     <template v-else>
-      <ly-input-checkbox
+      <ly-checkbox
         model-value="1"
         :checked="!!props.selection"
         :input-class="cssClasses(0)"

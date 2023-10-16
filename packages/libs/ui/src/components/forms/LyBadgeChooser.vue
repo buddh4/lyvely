@@ -184,7 +184,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
     @submit="visible = false">
     <div ref="chooser" class="flex flex-col max-h-full">
       <div>
-        <ly-input-text
+        <ly-text-field
           id="badge-chooser-search"
           v-model="query"
           :autofocus="true"

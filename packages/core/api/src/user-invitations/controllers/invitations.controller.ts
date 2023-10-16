@@ -6,16 +6,16 @@ import {
   InvitationsService,
 } from '../services';
 import {
-  InvitationsEndpoint,
-  ENDPOINT_INVITATIONS,
+  UserInvitationsEndpoint,
+  ENDPOINT_USER_INVITATIONS,
   InvitationRequest,
 } from '@lyvely/core-interface';
 import { Public, UseClassSerializer } from '@/core';
 import { UserRequest } from '@/users';
 
-@Controller(ENDPOINT_INVITATIONS)
+@Controller(ENDPOINT_USER_INVITATIONS)
 @UseClassSerializer()
-export class InvitationsController implements InvitationsEndpoint {
+export class InvitationsController implements UserInvitationsEndpoint {
   constructor(
     private invitationsService: InvitationsService,
     private sendInviteService: SendInvitationsService,

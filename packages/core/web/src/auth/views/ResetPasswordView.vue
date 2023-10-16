@@ -58,7 +58,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         :validator="sendMailValidator"
         :status="sendResetPasswordMailStore.status"
         label-key="auth.reset_password.fields">
-        <ly-input-text property="email" autocomplete="email" :autofocus="!isTouchScreen()" />
+        <ly-text-field property="email" autocomplete="email" :autofocus="!isTouchScreen()" />
         <captcha-input ref="captchaInput" />
       </ly-form-model>
     </template>
@@ -117,7 +117,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         :status="resetPasswordStore.status"
         label-key="auth.reset_password.fields">
         <fieldset>
-          <ly-input-text
+          <ly-text-field
             name="new-password"
             autocomplete="new-password"
             property="password"
@@ -125,7 +125,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
             :required="true"
             @toggle-type="repeatPasswordType = $event" />
 
-          <ly-input-text
+          <ly-text-field
             property="passwordRepeat"
             autocomplete="new-password"
             :type="repeatPasswordType"
@@ -134,7 +134,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
           <ly-password-strength-meter v-model="resetModel.password" />
         </fieldset>
 
-        <ly-input-checkbox property="resetSessions" />
+        <ly-checkbox property="resetSessions" />
       </ly-form-model>
     </template>
 

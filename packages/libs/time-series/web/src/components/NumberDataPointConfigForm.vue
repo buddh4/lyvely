@@ -5,7 +5,7 @@ import {
   INumberDataPointConfig,
   ITimerDataPointConfig,
 } from '@lyvely/time-series-interface';
-import { LyButton, LyInputNumber, LyInputTimeNumber, LyIcon } from '@lyvely/ui';
+import { LyButton, LyNumberField, LyTimeNumberInput, LyIcon } from '@lyvely/ui';
 import { t } from '@lyvely/web';
 
 interface IProps {
@@ -78,26 +78,26 @@ function setInputType(inputType: DataPointInputType) {
 
     <div class="grid grid-flow-col grid-cols-2 grid-rows-2 gap-2">
       <div>
-        <ly-input-number
+        <ly-number-field
           v-if="modelValue.inputType === DataPointInputType.Checkbox"
           property="max"
           label="calendar-plan.fields.max"
           :min="1"
           :max="8" />
-        <ly-input-time-number
+        <ly-time-number-input
           v-else-if="modelValue.inputType === DataPointInputType.Timer"
           property="max"
           label="calendar-plan.fields.max" />
-        <ly-input-number v-else property="max" label="calendar-plan.fields.max" :min="1" />
+        <ly-number-field v-else property="max" label="calendar-plan.fields.max" :min="1" />
       </div>
 
       <div>
-        <ly-input-time-number
+        <ly-time-number-input
           v-if="modelValue.inputType === DataPointInputType.Timer"
           property="min"
           label="calendar-plan.fields.min"
           :max="modelValue.max" />
-        <ly-input-number
+        <ly-number-field
           v-else
           property="min"
           label="calendar-plan.fields.min"
@@ -105,13 +105,13 @@ function setInputType(inputType: DataPointInputType) {
           :max="modelValue.max" />
       </div>
       <div>
-        <ly-input-time-number
+        <ly-time-number-input
           v-if="modelValue.inputType === DataPointInputType.Timer"
           property="optimal"
           label="calendar-plan.fields.optimal"
           :min="modelValue.min"
           :max="modelValue.max" />
-        <ly-input-number
+        <ly-number-field
           v-else
           property="optimal"
           label="calendar-plan.fields.optimal"
@@ -119,7 +119,7 @@ function setInputType(inputType: DataPointInputType) {
           :max="modelValue.max" />
       </div>
       <div v-if="score" class="flex flex-col">
-        <ly-input-number
+        <ly-number-field
           property="score"
           label="calendar-plan.fields.score"
           :mb="0"

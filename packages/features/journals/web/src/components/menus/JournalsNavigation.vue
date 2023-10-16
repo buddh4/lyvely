@@ -1,4 +1,6 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { LyTabMenu, LyTabMenuLink } from '@lyvely/ui';
+</script>
 
 <template>
   <ly-tab-menu>

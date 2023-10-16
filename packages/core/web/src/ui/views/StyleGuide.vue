@@ -194,27 +194,19 @@ const radioValue2 = ref('2');
 
         <h3>Checkboxes</h3>
         <div class="flex flex-col">
-          <ly-input-checkbox label="Checkbox with label" />
-          <ly-input-checkbox v-model="checkboxTrue" label="Disabled checked" :disabled="true" />
-          <ly-input-checkbox label="Disabled unchecked" :disabled="true" :checked="false" />
-          <ly-input-checkbox input-class="success" label="Success colored checkbox" />
+          <ly-checkbox label="Checkbox with label" />
+          <ly-checkbox v-model="checkboxTrue" label="Disabled checked" :disabled="true" />
+          <ly-checkbox label="Disabled unchecked" :disabled="true" :checked="false" />
+          <ly-checkbox input-class="success" label="Success colored checkbox" />
         </div>
 
         <h3>Radio</h3>
         <div class="flex flex-col">
-          <ly-input-radio v-model="radioValue" value="1" label="Checked" />
-          <ly-input-radio v-model="radioValue" value="2" label="Unchecked" />
-          <ly-input-radio
-            v-model="radioValue"
-            value="1"
-            label="Disabled checked"
-            :disabled="true" />
-          <ly-input-radio
-            v-model="radioValue2"
-            value="1"
-            label="Disabled unchecked"
-            :disabled="true" />
-          <ly-input-radio
+          <ly-radio v-model="radioValue" value="1" label="Checked" />
+          <ly-radio v-model="radioValue" value="2" label="Unchecked" />
+          <ly-radio v-model="radioValue" value="1" label="Disabled checked" :disabled="true" />
+          <ly-radio v-model="radioValue2" value="1" label="Disabled unchecked" :disabled="true" />
+          <ly-radio
             v-model="radioValue2"
             value="2"
             input-class="success"
@@ -224,60 +216,57 @@ const radioValue2 = ref('2');
         <h3>Text Input</h3>
         <div class="flex flex-col">
           <div class="flex flex-col">
-            <ly-input-text v-model="textInput1" label="Simple Text" wrapper-class="max-w-sm" />
-            <ly-input-text v-model="textInput2" label="With error" error="Error message..." />
-            <ly-input-text v-model="textInput3" label="Disabled" :disabled="true" />
-            <ly-input-text v-model="textInput4" label="Readonly" :readonly="true" />
+            <ly-text-field v-model="textInput1" label="Simple Text" wrapper-class="max-w-sm" />
+            <ly-text-field v-model="textInput2" label="With error" error="Error message..." />
+            <ly-text-field v-model="textInput3" label="Disabled" :disabled="true" />
+            <ly-text-field v-model="textInput4" label="Readonly" :readonly="true" />
           </div>
         </div>
 
         <h3>Textarea Input</h3>
         <div class="flex flex-col">
           <div class="flex flex-col">
-            <ly-input-textarea v-model="textareaInput1" label="Simple Textarea" />
-            <ly-input-textarea v-model="textareaInput2" :rows="6" label="With rows attribute" />
-            <ly-input-textarea v-model="textareaInput3" label="With error" error="Some error..." />
-            <ly-input-textarea v-model="textareaInput4" label="Disabled" :disabled="true" />
-            <ly-input-textarea v-model="textareaInput4" label="Readonly" :readonly="true" />
-            <ly-input-textarea
-              v-model="textareaInput4"
-              label="Not resizable"
-              input-class="resize-none" />
+            <ly-textarea v-model="textareaInput1" label="Simple Textarea" />
+            <ly-textarea v-model="textareaInput2" :rows="6" label="With rows attribute" />
+            <ly-textarea v-model="textareaInput3" label="With error" error="Some error..." />
+            <ly-textarea v-model="textareaInput4" label="Disabled" :disabled="true" />
+            <ly-textarea v-model="textareaInput4" label="Readonly" :readonly="true" />
+            <ly-textarea v-model="textareaInput4" label="Not resizable" input-class="resize-none" />
           </div>
         </div>
 
         <h3>Number Input</h3>
         <div class="flex flex-col">
-          <ly-input-number v-model="numberInput1" label="Simple Input" wrapper-class="max-w-sm" />
-          <ly-input-number
+          <ly-number-field v-model="numberInput1" label="Simple Input" wrapper-class="max-w-sm" />
+          <ly-number-field
             v-model="numberInput2"
             :min="3"
             :max="6"
             label="With Min/Max"
             wrapper-class="max-w-sm" />
-          <ly-input-number
+          <ly-number-field
             v-model="numberInput3"
             :steps="5"
             :min="0"
             label="Width steps"
             wrapper-class="max-w-sm" />
-          <ly-input-number v-model="numberInput7" wrapper-class="max-w-sm" />
-          <ly-input-number
+          <ly-number-field v-model="numberInput7" wrapper-class="max-w-sm" />
+          <ly-number-field
             v-model="numberInput4"
             label="No slider"
             :slider="false"
             wrapper-class="max-w-sm" />
-          <ly-input-number
+          <ly-number-field
             v-model="numberInput5"
             label="Error"
             error="Something went wrong?"
             wrapper-class="max-w-sm" />
-          <ly-input-number
+          <ly-number-field
             v-model="numberInput6"
             label="Disabled"
             :disabled="true"
             wrapper-class="max-w-sm" />
-          <ly-input-number
+          <ly-number-field
             v-model="numberInput7"
             label="Readonly"
             :readonly="true"
@@ -286,18 +275,18 @@ const radioValue2 = ref('2');
 
         <h3>Select</h3>
         <div class="flex flex-col">
-          <ly-input-select
+          <ly-select
             v-model="selectValue1"
             label="Simple select"
             :options="selectOptions"
             wrapper-class="max-w-sm" />
-          <ly-input-select
+          <ly-select
             v-model="selectValue2"
             label="With error"
             error="Invalid..."
             :options="selectOptions"
             wrapper-class="max-w-sm" />
-          <ly-input-select
+          <ly-select
             v-model="selectValue3"
             label="Disabled"
             :options="selectOptions"
@@ -307,13 +296,13 @@ const radioValue2 = ref('2');
 
         <h3>Range</h3>
         <div class="flex flex-col">
-          <ly-input-range v-model="rangeInput1" label="Simple range" />
+          <ly-range v-model="rangeInput1" label="Simple range" />
           <div class="text-right">{{ rangeInput1 }}</div>
-          <ly-input-range v-model="rangeInput2" :min="0" :max="5" label="Min/Max range" />
+          <ly-range v-model="rangeInput2" :min="0" :max="5" label="Min/Max range" />
           <div class="text-right">{{ rangeInput2 }}</div>
-          <ly-input-range v-model="rangeInput3" :min="0" :max="100" :step="5" label="Steps of 5" />
+          <ly-range v-model="rangeInput3" :min="0" :max="100" :step="5" label="Steps of 5" />
           <div class="text-right">{{ rangeInput3 }}</div>
-          <ly-input-range
+          <ly-range
             v-model="rangeInput4"
             :disabled="true"
             :min="0"

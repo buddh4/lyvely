@@ -45,7 +45,7 @@ const sortedFeatures = customSort(props.features);
 
 const enabledStates = sortedFeatures.reduce((state, feature) => {
   state[feature.id] = computed({
-    get: () => isFeatureEnabledOnProfile(feature.id),
+    get: () => isFeatureEnabledOnProfile(feature.id).value,
     set: (isEnabled: boolean) =>
       isEnabled
         ? profile!.enabledFeatures.push(feature.id)
@@ -68,7 +68,7 @@ const enabledStates = sortedFeatures.reduce((state, feature) => {
       </thead>
       <tbody>
         <tr v-for="feature in sortedFeatures" :key="feature.id">
-          <td><ly-input-checkbox v-model="enabledStates[feature.id]" /></td>
+          <td><ly-checkbox v-model="enabledStates[feature.id]" /></td>
           <td>{{ $t(feature.title) }}</td>
         </tr>
       </tbody>

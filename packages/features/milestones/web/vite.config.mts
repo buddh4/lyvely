@@ -8,7 +8,7 @@ import { sync } from 'glob';
 
 export default defineConfig({
   plugins: [
-    externalizeDeps({ include: ['virtual:pwa-register/vue']}),
+    externalizeDeps(),
     vuePlugin(),
     tsconfigPaths({ ignoreConfigErrors: true }),
     VueI18nPlugin({

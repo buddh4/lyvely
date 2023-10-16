@@ -6,11 +6,11 @@ import {
   UpdateJournalResponse,
   UpdateJournalDataPointResponse,
 } from '@lyvely/journals-interface';
-import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
-import { useDataPointStrategyFacade, UpdateDataPointModel } from '@lyvely/time-series-interface';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-web';
+import { useDataPointStrategyFacade, UpdateDataPointModel } from '@lyvely/time-series-web';
 import { SortResponse, useSingleton } from '@lyvely/common';
 import repository from '../repositories/journals.repository';
-import { unwrapAndTransformResponse, unwrapResponse } from '@/core';
+import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/web';
 
 const dataPointService = useDataPointStrategyFacade();
 

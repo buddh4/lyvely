@@ -39,7 +39,7 @@ export abstract class TimeSeriesService<
 
   async findTimeSeries(
     profile: Profile,
-    user: OptionalUserIdentity,
+    user: OptionalUser,
     filter: CalendarPlanFilter,
   ): Promise<ITimeSeriesContentSearchResult<TModel, TDataPointModel>> {
     const [models, dataPoints] = await Promise.all([
@@ -52,7 +52,7 @@ export abstract class TimeSeriesService<
 
   private async findDataPoints(
     profile: Profile,
-    user: OptionalUserIdentity,
+    user: OptionalUser,
     filter: CalendarPlanFilter,
   ): Promise<TDataPointModel[]> {
     return isInFuture(filter.date, true)

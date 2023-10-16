@@ -1,15 +1,38 @@
-import { translation } from '@/i18n';
-import { IModule } from '@/core';
-import { registerContentType } from '@/content-stream';
-import { JournalModel, CreateJournalModel } from '@lyvely/journals-interface';
+import {
+  IModule,
+  translation,
+  registerContentType,
+  registerMenuEntries,
+  MENU_PROFILE_DRAWER,
+} from '@lyvely/web';
+import {
+  JournalModel,
+  CreateJournalModel,
+  JournalsFeature,
+  JOURNALS_MODULE_ID,
+} from '@lyvely/journals-interface';
+import { journalRoutes } from './routes';
 
 export default () => {
   return {
-    getId: () => 'journals',
+    id: JOURNALS_MODULE_ID,
+    features: [JournalsFeature],
+    routes: journalRoutes,
     init: () => {
+      registerMenuEntries(MENU_PROFILE_DRAWER, [
+        {
+          id: 'journals',
+          moduleId: JOURNALS_MODULE_ID,
+          title: 'journals.profile_drawer.title',
+          feature: JournalsFeature.id,
+          icon: 'journal',
+          to: { name: 'Journals' },
+        },
+      ]);
       registerContentType({
         type: JournalModel.contentType,
         modelClass: JournalModel,
+        moduleId: JOURNALS_MODULE_ID,
         name: translation('journals.name'),
         icon: 'journal',
         feature: 'journals',

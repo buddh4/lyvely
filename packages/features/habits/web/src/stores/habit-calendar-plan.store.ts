@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia';
 import { HabitModel, HabitFilter } from '@lyvely/habits-interface';
 import { TimerUpdateModel } from '@lyvely/timers-interface';
-import { TimeSeriesStore } from '@lyvely/time-series-interface';
-import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useCalendarPlanStore } from '@/modules/calendar-plan';
-import { useHabitsService } from '@/modules/habits/services/habits.service';
-import { useGlobalDialogStore } from '@lyvely/web';
-import { useTimeSeriesCalendarPlan } from '@/modules/time-series';
+import { TimeSeriesStore, useTimeSeriesCalendarPlan } from '@lyvely/time-series-web';
+import { useProfileStore, useGlobalDialogStore } from '@lyvely/web';
+import { useCalendarPlanStore } from '@lyvely/calendar-plan-web';
+import { useHabitsService } from '@/services';
 
 export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => {
   const calendarPlanStore = useCalendarPlanStore();

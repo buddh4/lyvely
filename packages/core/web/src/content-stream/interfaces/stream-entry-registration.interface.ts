@@ -41,6 +41,7 @@ export interface IContentTypeStreamOptions {
 
 export interface IContentTypeOptions {
   type: string;
+  moduleId: string;
   name: string | (() => string);
   feature: string;
   icon?: string;

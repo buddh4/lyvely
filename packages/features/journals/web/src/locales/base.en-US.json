@@ -1,7 +1,7 @@
 {
   "journals": {
-    "labels": {
-      "main_nav": "Journals"
+    "profile_drawer": {
+      "title": "Journals"
     },
     "title": "Journals",
     "name": "Journal",

@@ -1,10 +1,12 @@
-import { ProfileRequest ,
+import {
+  ProfileRequest,
   AbstractContentTypeController,
   ContentTypeController,
   ContentWritePolicy,
-  ProfileContentRequest,
   ProtectedProfileContentRequest,
-, UseClassSerializer , Policies } from '@lyvely/core';
+  UseClassSerializer,
+  Policies,
+} from '@lyvely/core';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import {
   ENDPOINT_JOURNALS,

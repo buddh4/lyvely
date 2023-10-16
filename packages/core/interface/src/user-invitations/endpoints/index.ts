@@ -1,1 +1,1 @@
-export * from './invitations.endpoint';
+export * from './user-invitations.endpoint';

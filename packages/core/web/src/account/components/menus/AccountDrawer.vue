@@ -7,8 +7,9 @@ import { usePageStore, isMaxViewSize } from '@/core';
 import { useHelpStore } from '@/help/stores/help.store';
 import { useNotificationStore } from '@/notifications/stores/notifications.store';
 import NotificationDrawer from '@/notifications/components/NotificationDrawer.vue';
-import { useSendInviteUsersStore } from '@/invitations/stores/send-invitations.store';
-import InviteUsersModal from '@/invitations/components/modals/InviteUsersModal.vue';
+import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitations.store';
+import InviteUsersModal from '@/user-invitations/components/modals/InviteUsersModal.vue';
+import { UserAvatar } from '@/users';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();
@@ -67,7 +68,7 @@ function onMenuItemClick() {
       <ly-update-indicator v-if="hasNotificationUpdates" />
     </ly-button>
     <div :class="accountDrawerButtonClass" @click="showAccountDrawer = !showAccountDrawer">
-      <ly-user-avatar />
+      <user-avatar />
     </div>
   </div>
 

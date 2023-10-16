@@ -30,29 +30,39 @@ export const useAppConfigStore = defineStore('app-config', () => {
   }
 
   function getModuleConfig<
-    TConfig,
+    TConfig = undefined,
     TResult = any,
-    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+    TPath extends NestedPaths<TConfig> | string = TConfig extends undefined
+      ? 'string'
+      : NestedPaths<TConfig>,
   >(moduleId: string, path: TPath, defaultValue: TResult): TResult;
   function getModuleConfig<
-    TConfig,
+    TConfig = undefined,
     TResult = any,
-    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+    TPath extends NestedPaths<TConfig> | string = TConfig extends undefined
+      ? 'string'
+      : NestedPaths<TConfig>,
   >(moduleId: string, path?: TPath, defaultValue?: TResult): TResult | undefined;
   function getModuleConfig<
-    TConfig,
+    TConfig = undefined,
     TResult = any,
-    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+    TPath extends NestedPaths<TConfig> | string = TConfig extends undefined
+      ? 'string'
+      : NestedPaths<TConfig>,
   >(moduleId: string, path: TPath, defaultValue: TResult): TResult;
   function getModuleConfig<
-    TConfig,
+    TConfig = undefined,
     TResult = any,
-    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+    TPath extends NestedPaths<TConfig> | string = TConfig extends undefined
+      ? 'string'
+      : NestedPaths<TConfig>,
   >(moduleId: string, path?: TPath, defaultValue?: TResult): TResult | undefined;
   function getModuleConfig<
-    TConfig,
+    TConfig = any,
     TResult = any,
-    TPath extends NestedPaths<TConfig> = NestedPaths<TConfig>,
+    TPath extends NestedPaths<TConfig> | string = TConfig extends undefined
+      ? 'string'
+      : NestedPaths<TConfig>,
   >(moduleId: string, path?: TPath, defaultValue?: TResult): TResult | undefined {
     if (!config.value) return defaultValue;
 

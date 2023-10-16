@@ -4,7 +4,6 @@ import { t, Translatable } from '@/i18n';
 
 export interface IProps {
   to: RouteLocationRaw;
-  ariaControls: string;
   label?: Translatable;
 }
 
@@ -14,11 +13,7 @@ withDefaults(defineProps<IProps>(), {
 </script>
 
 <template>
-  <ly-button
-    :route="to"
-    role="tab"
-    class="secondary outlined grow px-1 py-1"
-    :aria-controls="ariaControls">
+  <ly-button :route="to" role="tab" class="secondary outlined grow px-1 py-1">
     <template #default="{ active }">
       <slot :active="active">
         <template v-if="label">

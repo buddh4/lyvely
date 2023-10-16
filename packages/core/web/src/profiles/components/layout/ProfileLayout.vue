@@ -5,7 +5,7 @@ import MainProfileContainer from './MainProfileContainer.vue';
 import { computed, defineAsyncComponent, Ref, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import CreateProfileModal from '../modals/CreateProfileModal.vue';
-import InviteUsersModal from '../../../invitations/components/modals/InviteUsersModal.vue';
+import InviteUsersModal from '@/user-invitations/components/modals/InviteUsersModal.vue';
 import { useIntroductionTourStore } from '@/help/stores/introduction-tour.store';
 import HelpModal from '@/help/components/HelpModal.vue';
 
@@ -90,15 +90,14 @@ const IntroductionTour = defineAsyncComponent(
     </div>
   </div>
 
-  <introduction-tour v-if="showIntroductionTour" />
-
-  <help-modal />
-
   <create-profile-modal />
 
   <create-or-edit-content-modal />
 
+  <!-- Todo: We should not depend on user-invitation and other modules here, maybe add a component stack widget here ProfileLayoutAdditions -->
   <invite-users-modal />
+  <introduction-tour v-if="showIntroductionTour" />
+  <help-modal />
 </template>
 
 <style scoped></style>

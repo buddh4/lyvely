@@ -1,14 +1,15 @@
 import { registerContentType } from '@/content-stream/components/content-stream-entry.registry';
 import { translation } from '@/i18n';
 import { IModule } from '@/core';
-import { SystemMessageModel } from '@lyvely/core-interface';
+import { SYSTEM_MESSAGES_MODULE_ID, SystemMessageModel } from '@lyvely/core-interface';
 
 export default () => {
   return {
-    getId: () => 'messages',
+    id: SYSTEM_MESSAGES_MODULE_ID,
     init: () => {
       registerContentType({
         type: SystemMessageModel.contentType,
+        moduleId: SYSTEM_MESSAGES_MODULE_ID,
         name: translation('system-messages.content.name'),
         icon: 'lyvely',
         feature: 'system-messages',

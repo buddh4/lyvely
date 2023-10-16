@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { uniqueId } from 'lodash';
-import { translate } from '@/i18n';
+import { translation } from '@/i18n';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { TagModel } from '@lyvely/core-interface';
 import { storeToRefs } from 'pinia';
@@ -14,7 +14,7 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   inputId: uniqueId('tag-chooser'),
-  label: translate('tags.chooser.label'),
+  label: translation('tags.chooser.label'),
 });
 
 const { profile } = storeToRefs(useProfileStore());

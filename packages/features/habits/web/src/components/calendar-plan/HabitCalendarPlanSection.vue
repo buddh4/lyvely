@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import HabitCalendarPlanItem from '@/modules/habits/components/calendar-plan/HabitCalendarPlanItem.vue';
-import CalendarPlanSection from '@/modules/calendar-plan/components/CalendarPlanSection.vue';
+import HabitCalendarPlanItem from './HabitCalendarPlanItem.vue';
+import { CalendarPlanSection } from '@lyvely/calendar-plan-web';
+import { useHabitCalendarPlanStore } from '@/stores';
 import { computed } from 'vue';
 import Draggable from 'vuedraggable';
-import { useContentCreateStore } from '@/modules/content/stores/content-create.store';
-import { useHabitCalendarPlanStore } from '@/modules/habits/stores/habit-calendar-plan.store';
+import { useContentCreateStore } from '@lyvely/web';
 import { HabitModel } from '@lyvely/habits-interface';
 
 export interface IProps {

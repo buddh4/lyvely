@@ -10,14 +10,7 @@ import {
 import { TaskModel, UpdateTaskModel, CreateTaskModel } from '@lyvely/tasks-interface';
 import { useTasksService } from '@/services';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
-import {
-  LyModal,
-  LyFormModel,
-  LyInputText,
-  LyInputSelect,
-  LyInputTextarea,
-  LyInputNumber,
-} from '@lyvely/ui';
+import { LyModal, LyFormModel, LyTextField, LySelect, LyTextarea, LyNumberField } from '@lyvely/ui';
 
 export interface IProps {
   modelValue: boolean;
@@ -48,12 +41,12 @@ const modalTitle = computed(() => {
       :status="status"
       label-key="common.fields">
       <fieldset>
-        <ly-input-text
+        <ly-text-field
           property="title"
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-input-select
+        <ly-select
           property="interval"
           label="common.fields.interval_plural"
           :required="true"
@@ -63,8 +56,8 @@ const modalTitle = computed(() => {
         <tag-chooser v-model="model.tagNames" />
       </fieldset>
       <fieldset>
-        <ly-input-number property="score" :mb="0" :steps="2" :max="100" :min="-100" />
-        <ly-input-textarea property="text" />
+        <ly-number-field property="score" :mb="0" :steps="2" :max="100" :min="-100" />
+        <ly-textarea property="text" />
       </fieldset>
     </ly-form-model>
   </ly-modal>

@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { MilestoneModel } from '@lyvely/milestones-interface';
-import { ContentModel } from '@lyvely/core-interface';
-import ContentStreamEntry from '@/modules/content-stream/components/ContentStreamEntry.vue';
-import { IStream } from '@/modules/stream/composables/stream.composable';
+import { ContentModel, IStream, ContentStreamEntry } from '@lyvely/web';
+import { LyIcon } from '@lyvely/ui';
 
 export interface IProps {
   model: MilestoneModel;

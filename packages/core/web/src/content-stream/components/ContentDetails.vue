@@ -6,7 +6,7 @@ import TagList from '@/tags/components/TagList.vue';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 import { translate } from '@/i18n';
-import { getContentTypeOptions } from '@/content-stream';
+import { getContentTypeOptions } from './content-stream-entry.registry';
 
 export interface IProps {
   model: ContentModel;

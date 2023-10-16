@@ -58,18 +58,18 @@ const { validator } = storeToRefs(tagEditStore);
         <div>{{ color }}</div>
       </div>
 
-      <ly-input-text
+      <ly-text-field
         v-model="model.name"
         :autofocus="isCreate || !isTouchScreen()"
         label="tags.fields.name"
         :error="validator.getError('name')" />
 
-      <ly-input-textarea
+      <ly-textarea
         v-model="model.description"
         label="tags.fields.description"
         :error="validator.getError('description')" />
 
-      <ly-input-checkbox
+      <ly-checkbox
         v-model="model.includeOnFilter"
         label="tags.fields.includeOnFilter"
         help-text="tags.help.includeOnFilter" />

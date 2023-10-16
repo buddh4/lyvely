@@ -34,14 +34,14 @@ import LyCheckboxRange from './components/forms/LyCheckboxRange.vue';
 import LyEditableText from './components/forms/LyEditableText.vue';
 import LyFloatingInputLayout from './components/forms/LyFloatingInputLayout.vue';
 import LyFormModel from './components/forms/LyFormModel.vue';
-import LyInputCheckbox from './components/forms/LyInputCheckbox.vue';
-import LyInputNumber from './components/forms/LyInputNumber.vue';
-import LyInputRadio from './components/forms/LyInputRadio.vue';
-import LyInputRange from './components/forms/LyInputRange.vue';
-import LyInputSelect from './components/forms/LyInputSelect.vue';
-import LyInputText from './components/forms/LyInputText.vue';
-import LyInputTextarea from './components/forms/LyInputTextarea.vue';
-import LyInputTimeNumber from './components/forms/LyInputTimeNumber.vue';
+import LyCheckbox from './components/forms/LyCheckbox.vue';
+import LyNumberField from './components/forms/LyNumberField.vue';
+import LyRadio from './components/forms/LyRadio.vue';
+import LyRange from './components/forms/LyRange.vue';
+import LySelect from './components/forms/LySelect.vue';
+import LyTextField from './components/forms/LyTextField.vue';
+import LyTextarea from './components/forms/LyTextarea.vue';
+import LyTimeNumberInput from './components/forms/LyTimeNumberInput.vue';
 import LyPasswordStrengthMeter from './components/forms/LyPasswordStrengthMeter.vue';
 import { App } from 'vue';
 import { Icons } from './components/icons/Icons';
@@ -89,14 +89,14 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyEditableText', LyEditableText);
       Vue.component('LyFloatingInputLayout', LyFloatingInputLayout);
       Vue.component('LyFormModel', LyFormModel);
-      Vue.component('LyInputCheckbox', LyInputCheckbox);
-      Vue.component('LyInputNumber', LyInputNumber);
-      Vue.component('LyInputRadio', LyInputRadio);
-      Vue.component('LyInputRange', LyInputRange);
-      Vue.component('LyInputSelect', LyInputSelect);
-      Vue.component('LyInputText', LyInputText);
-      Vue.component('LyInputTextarea', LyInputTextarea);
-      Vue.component('LyInputTimeNumber', LyInputTimeNumber);
+      Vue.component('LyCheckbox', LyCheckbox);
+      Vue.component('LyNumberField', LyNumberField);
+      Vue.component('LyRadio', LyRadio);
+      Vue.component('LyRange', LyRange);
+      Vue.component('LySelect', LySelect);
+      Vue.component('LyTextField', LyTextField);
+      Vue.component('LyTextarea', LyTextarea);
+      Vue.component('LyTimeNumberInput', LyTimeNumberInput);
       Vue.component('LyPasswordStrengthMeter', LyPasswordStrengthMeter);
     },
   };
@@ -111,14 +111,14 @@ export {
   createLyvelyUi,
   Icons,
   LyPasswordStrengthMeter,
-  LyInputTimeNumber,
-  LyInputTextarea,
-  LyInputText,
-  LyInputSelect,
-  LyInputRange,
-  LyInputCheckbox,
-  LyInputRadio,
-  LyInputNumber,
+  LyTimeNumberInput,
+  LyTextarea,
+  LyTextField,
+  LySelect,
+  LyRange,
+  LyCheckbox,
+  LyRadio,
+  LyNumberField,
   LyFormModel,
   LyFloatingInputLayout,
   LyBadgeChooser,

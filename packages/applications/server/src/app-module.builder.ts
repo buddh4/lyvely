@@ -29,6 +29,7 @@ import {
   FeaturesModule,
   UserInvitationsModule,
   SystemMessagesModule,
+  ContentStreamModule,
 } from '@lyvely/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -40,7 +41,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { MulterModule } from '@nestjs/platform-express';
 import { BullModule } from '@nestjs/bullmq';
 
-type Import = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
+type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
 export interface IAppModuleBuilderOptions {
   useRecommended?: boolean;
@@ -48,6 +49,7 @@ export interface IAppModuleBuilderOptions {
   configFiles?: Array<string>;
   providers?: LyvelyProviderOptions;
   serveStatic?: boolean;
+  modules?: TModule[];
 }
 
 type ProviderOption<T = any> = { useClass: Type<T> } | { useValue: T } | Provider<T>;
@@ -89,13 +91,14 @@ export function buildApp(options: IAppModuleBuilderOptions = {}) {
 }
 
 export class AppModuleBuilder {
-  private readonly imports: Array<Import> = [];
+  private readonly imports: Array<TModule> = [];
   private readonly providers: Array<Provider> = [];
   private options: IAppModuleBuilderOptions;
 
   constructor(options: IAppModuleBuilderOptions = {}) {
     this.imports = [];
     this.options = options;
+    this.options.modules ??= [];
 
     this.initCoreModules()
       .initCoreProviders()
@@ -105,7 +108,8 @@ export class AppModuleBuilder {
       .initRateLimitModule()
       .initServeStaticModule()
       .initMongooseModule()
-      .initRecommendedModules();
+      .initRecommendedModules()
+      .importModules(...this.options.modules);
   }
 
   private initCoreModules() {
@@ -242,6 +246,7 @@ export class AppModuleBuilder {
       ProfilesModule,
       UserRegistrationsModule,
       ContentCoreModule,
+      ContentStreamModule,
       MessageModule,
       SystemMessagesModule,
       UserAccountsModule,
@@ -250,7 +255,7 @@ export class AppModuleBuilder {
     );
   }
 
-  public importModules(...module: Array<Import>) {
+  public importModules(...module: Array<TModule>) {
     this.imports.push(...module);
     return this;
   }

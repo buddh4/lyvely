@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import { CreateHabitModel, HabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
-import { useDataPointStrategyFacade } from '@lyvely/time-series-interface';
+import { NumberDataPointConfigForm, useDataPointStrategyFacade } from '@lyvely/time-series-web';
 import { computed } from 'vue';
-import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import {
+  TagChooser,
+  isTouchScreen,
   ContentEditModalEmits,
   useContentEditModal,
-} from '@/modules/content/composables/content-edit-modal.composable';
-import { useHabitsService } from '@/modules/habits/services/habits.service';
-import { getCalendarPlanOptions } from '@/modules/calendar-plan';
-import { isTouchScreen } from '@lyvely/web';
-import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
-import NumberDataPointConfigForm from '@/modules/time-series/components/NumberDataPointConfigForm.vue';
+  ICreateContentInitOptions,
+} from '@lyvely/web';
+import { useHabitsService } from '@/services';
+import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
+import { LyModal, LyFormModel, LyTextField, LySelect, LyTextarea } from '@lyvely/ui';
 
 export interface IProps {
   modelValue: boolean;
@@ -56,12 +56,12 @@ const modalTitle = computed(() => {
       :status="status"
       label-key="common.fields">
       <fieldset>
-        <ly-input-text
+        <ly-text-field
           property="title"
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-input-select property="interval" :required="true" :options="calendarPlanOptions" />
+        <ly-select property="interval" :required="true" :options="calendarPlanOptions" />
       </fieldset>
 
       <fieldset>
@@ -74,7 +74,7 @@ const modalTitle = computed(() => {
 
       <fieldset>
         <tag-chooser v-model="model.tagNames" />
-        <ly-input-textarea property="text" />
+        <ly-textarea property="text" />
       </fieldset>
     </ly-form-model>
   </ly-modal>

@@ -1,6 +1,7 @@
 export interface IFeature {
   id: string;
   title: string; //translatable
+  moduleId: string;
   categories?: string[]; //translatable category id
   description?: string; // translatable
   installable?: boolean; // default false

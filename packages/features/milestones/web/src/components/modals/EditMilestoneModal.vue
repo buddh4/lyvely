@@ -1,19 +1,19 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import TagChooser from '@/modules/tags/components/TagChooser.vue';
 import {
+  TagChooser,
+  isTouchScreen,
   ContentEditModalEmits,
   useContentEditModal,
-} from '@/modules/content/composables/content-edit-modal.composable';
+  ICreateContentInitOptions,
+} from '@lyvely/web';
 import {
   CreateMilestoneModel,
   MilestoneModel,
   UpdateMilestoneModel,
 } from '@lyvely/milestones-interface';
-import { getCalendarPlanOptions } from '@/modules/calendar-plan';
-import { isTouchScreen } from '@lyvely/web';
-import { ICreateContentInitOptions } from '@/modules/content/interfaces/edit-content-modal-props.interface';
-import { useMilestonesService } from '@/modules/milestones/services/milestones.service';
+import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
+import { useMilestonesService } from '@/services';
 
 export interface IProps {
   modelValue: boolean;
@@ -48,12 +48,12 @@ const modalTitle = computed(() => {
       :status="status"
       label-key="activities.fields">
       <fieldset>
-        <ly-input-text
+        <ly-text-field
           property="title"
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-input-select
+        <ly-select
           property="interval"
           label="common.fields.interval_plural"
           :required="true"
@@ -63,7 +63,7 @@ const modalTitle = computed(() => {
         <tag-chooser v-model="model.tagNames" />
       </fieldset>
       <fieldset>
-        <ly-input-textarea property="text" />
+        <ly-textarea property="text" />
       </fieldset>
     </ly-form-model>
   </ly-modal>

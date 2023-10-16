@@ -3,7 +3,7 @@ import {
   MilestoneSearchResponse,
 } from '@lyvely/milestones-interface';
 import { SortResponse, useSingleton } from '@lyvely/common';
-import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
+import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-web';
 
 import repository from '../repositories/milestone-plan.repository';
 import { unwrapAndTransformResponse } from '@lyvely/web';

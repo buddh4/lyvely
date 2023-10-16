@@ -1,13 +1,17 @@
-import { IModule, translation } from '@lyvely/web';
-import { registerContentType } from '@/modules/content-stream/components/content-stream-entry.registry';
-import { CreateHabitModel, HabitModel } from '@lyvely/habits-interface';
+import { IModule, registerContentType, translation } from '@lyvely/web';
+import { CreateHabitModel, HabitModel, HABIT_MODULE_ID } from '@lyvely/habits-interface';
 
 export default () => {
   return {
-    getId: () => 'habits',
+    id: HABIT_MODULE_ID,
+    i18n: {
+      base: (locale: string) => import(`./locales/base.${locale}.json`),
+      locale: (locale: string) => import(`./locales/${locale}.json`),
+    },
     init: () => {
       registerContentType({
         type: HabitModel.contentType,
+        moduleId: HABIT_MODULE_ID,
         name: translation('habits.name'),
         icon: 'activity',
         feature: 'habits',

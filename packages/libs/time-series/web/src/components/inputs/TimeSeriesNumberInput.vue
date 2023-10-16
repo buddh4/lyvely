@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { DataPointInputType, INumberDataPointSettings } from '@lyvely/time-series-interface';
 import { computed } from 'vue';
-import { LyCheckboxRange, LyInputNumber, LyInputRange } from '@lyvely/ui';
+import { LyCheckboxRange, LyNumberField, LyRange } from '@lyvely/ui';
 
 interface IProps {
   modelValue: number;
@@ -43,7 +43,7 @@ const inputBorderColorClass = computed(() => {
       :max="config.max || 1"
       :optimal="config.optimal"
       :disabled="disabled" />
-    <ly-input-number
+    <ly-number-field
       v-else-if="config.inputType === DataPointInputType.Spinner"
       v-model="selection"
       :input-class="['text-sm bg-main', inputBorderColorClass]"
@@ -52,7 +52,7 @@ const inputBorderColorClass = computed(() => {
       :disabled="disabled" />
     <div v-else-if="config.inputType === DataPointInputType.Range" class="flex items-center gap-2">
       <span class="text-sm">{{ selection }}</span>
-      <ly-input-range
+      <ly-range
         v-model="selection"
         :input-class="inputColorClass"
         input-style="max-width: 130px; direction: rtl;"

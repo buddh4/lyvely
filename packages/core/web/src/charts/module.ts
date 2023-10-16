@@ -24,7 +24,8 @@ import { IModule } from '@/core';
 
 export default () => {
   return {
-    getId: () => 'charts',
+    id: 'charts',
+    moduleId: 'charts',
     init: () => {
       echarts.use([
         BarChart,

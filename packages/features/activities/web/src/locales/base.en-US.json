@@ -1,7 +1,7 @@
 {
   "activities": {
-    "labels": {
-      "main_nav": "Activities"
+    "profile-drawer": {
+      "title": "Activities"
     },
     "fields": {
       "title": "Title",

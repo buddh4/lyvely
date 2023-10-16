@@ -20,6 +20,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         enabledByDefault: true,
         global: true,
@@ -36,6 +37,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         enabledByDefault: true,
       },
@@ -51,6 +53,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         enabledByDefault: false,
       },
@@ -65,10 +68,12 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
       },
       {
         id: 'test.sub',
+        moduleId: 'test',
         title: 'test.sub.feature',
         dependencies: ['test'],
         enabledByDefault: true,
@@ -85,11 +90,13 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         enabledByDefault: true,
       },
       {
         id: 'test.sub',
+        moduleId: 'test',
         title: 'test.sub.feature',
         dependencies: ['test'],
         enabledByDefault: true,
@@ -105,6 +112,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         enabledByDefault: true,
       },
@@ -122,6 +130,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         enabledByDefault: true,
         installable: true,
@@ -138,6 +147,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         installable: true,
         enabledByDefault: false,
@@ -154,6 +164,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         installable: false,
         enabledByDefault: false,
@@ -173,6 +184,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         installable: true,
         enabledByDefault: false,
@@ -192,6 +204,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         enabledByDefault: true,
       },
@@ -209,6 +222,7 @@ describe('isEnabledProfileFeature', function () {
     registerFeatures([
       {
         id: 'test',
+        moduleId: 'test',
         title: 'test.feature',
         enabledByDefault: false,
       },

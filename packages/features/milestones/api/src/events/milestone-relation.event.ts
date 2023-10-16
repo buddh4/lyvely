@@ -1,14 +1,13 @@
 import { BaseModel } from '@lyvely/common';
 import { MilestoneRelationModel } from '@lyvely/milestones-interface';
 import { CalendarDateTime, formatDate } from '@lyvely/dates';
-import { Content } from '@lyvely/core';
-import { User } from '@lyvely/core';
+import { Content, User } from '@lyvely/core';
 import { Types } from 'mongoose';
 
 export interface IMilestoneRelationEventData<TContent extends Content = Content> {
   contents: TContent[];
   date?: CalendarDateTime;
-  user?: User;
+  user?: User | null;
 }
 
 export class MilestoneRelationEvent<

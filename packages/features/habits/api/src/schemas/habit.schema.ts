@@ -3,12 +3,11 @@ import {
   assureObjectId,
   NestedSchema,
   User,
-  PropertiesOf,
-  PropertyType,
   Profile,
   ContentDocument,
   ContentDataType,
 } from '@lyvely/core';
+import { PropertiesOf, PropertyType } from '@lyvely/common';
 import { HabitModel, CreateHabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
 import {
   DataPointInputType,

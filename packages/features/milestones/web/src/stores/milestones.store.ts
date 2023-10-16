@@ -1,10 +1,8 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { MilestoneModel } from '@lyvely/milestones-interface';
-import { useMilestonesService } from '@/modules/milestones/services/milestones.service';
+import { useMilestonesService } from '@/services';
 import { ref, watch } from 'vue';
-import { loadingStatus, useStatus } from '@lyvely/web';
-import { useProfileStore } from '@/modules/profiles/stores/profile.store';
-import { useContentStore } from '@/modules/content/stores/content.store';
+import { loadingStatus, useStatus, useProfileStore, useContentStore } from '@lyvely/web';
 
 export const useMilestonesStore = defineStore('milestones', () => {
   let milestones = new Map<string, MilestoneModel>();

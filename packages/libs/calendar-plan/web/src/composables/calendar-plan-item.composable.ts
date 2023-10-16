@@ -1,7 +1,7 @@
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 import { computed } from 'vue';
-import { useCalendarPlanStore } from '../stores';
-import { IMoveEntryEvent } from '../interfaces';
+import { useCalendarPlanStore } from '@/stores';
+import { IMoveEntryEvent } from '@/interfaces';
 import { useAccessibilityStore, translate, IDragEvent } from '@lyvely/web';
 import { storeToRefs } from 'pinia';
 
@@ -9,7 +9,7 @@ export interface ISortableStore {
   sort(evt: IDragEvent | IMoveEntryEvent): Promise<void>;
 }
 
-export function useCalendarPlanPlanItem<TModel extends ICalendarPlanEntry>(
+export function useCalendarPlanItem<TModel extends ICalendarPlanEntry>(
   model: TModel,
   store: ISortableStore,
 ) {

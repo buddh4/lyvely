@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { TaskModel } from '@lyvely/tasks-interface';
-import { ContentModel } from '@lyvely/core-interface';
-import { ContentStreamEntry, IStream } from '@lyvely/web';
+import { ContentModel, ContentStreamEntry, IStream } from '@lyvely/web';
 import { LyIcon } from '@lyvely/ui';
 
 export interface IProps {

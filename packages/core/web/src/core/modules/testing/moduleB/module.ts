@@ -2,7 +2,7 @@ import { IModule } from '@/core';
 
 export default () => {
   return {
-    getId: () => 'moduleB',
+    id: 'moduleB',
     init: () => {},
   } as IModule;
 };

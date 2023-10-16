@@ -1,10 +1,9 @@
-import { IModule, translation } from '@lyvely/web';
-import { registerContentType } from '@/modules/content-stream';
+import { IModule, translation, registerContentType } from '@lyvely/web';
 import { MilestoneModel, CreateMilestoneModel } from '@lyvely/milestones-interface';
 
 export default () => {
   return {
-    getId: () => 'milestones',
+    id: 'milestones',
     init: () => {
       registerContentType({
         type: MilestoneModel.contentType,

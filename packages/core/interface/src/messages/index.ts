@@ -1,3 +1,3 @@
 export * from './models';
 export * from './endpoints';
-export * from './message.constants';
+export * from './messages.constants';

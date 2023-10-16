@@ -1,5 +1,7 @@
 import { App } from 'vue';
 import { IModule } from './module.interface';
+import { registerRoutes } from '@/lyvely.router';
+import { registerFeatures } from '@lyvely/core-interface';
 
 export type IModuleInitializer = { default: () => IModule };
 
@@ -23,6 +25,7 @@ function isModuleInitializer(obj: any): obj is IModuleInitializer {
 
 export interface IModuleLoaderOptions {
   import?: () => Record<string, Promise<IModuleImport> | (() => Promise<IModuleImport>)>;
+  modules?: IModule[];
 }
 
 export async function importModules(
@@ -64,17 +67,23 @@ export function registerModules(...modules: IModule[]) {
 }
 
 export function registerModule(module: IModule) {
-  console.debug(`Register module ${module.getId()}`);
-  if (modulesMap.has(module.getId())) {
-    console.warn(`Module with id ${module.getId} already registered`);
+  console.debug(`Register module ${module.id}`);
+  if (modulesMap.has(module.id)) {
+    console.warn(`Module with id ${module.id} already registered`);
   }
 
   module.dependencies?.forEach((dependency) => {
-    if (!modulesMap.has(dependency.getId())) registerModules(dependency);
+    if (!modulesMap.has(dependency.id)) registerModules(dependency);
   });
 
+  modulesMap.set(module.id, module);
+
   if (module.init) module.init();
-  modulesMap.set(module.getId(), module);
+  if (module.routes)
+    registerRoutes(typeof module.routes === 'function' ? module.routes() : module.routes);
+  if (module.features)
+    registerFeatures(typeof module.features === 'function' ? module.features() : module.features);
+
   return module;
 }
 
@@ -83,7 +92,7 @@ export function installModules(app: App) {
 }
 
 function installModule(app: App, module: IModule) {
-  console.debug(`Install module ${module.getId()}`);
+  console.debug(`Install module ${module.id}`);
   if (module.install) {
     module.install(app);
   }

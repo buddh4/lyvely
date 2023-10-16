@@ -6,10 +6,8 @@ import { useProfileStore } from '@/profiles/stores/profile.store';
 import imageUrl from '@/assets/logo_white_bold.svg';
 
 import { UseSwipeDirection, useSwipe } from '@vueuse/core';
-import { getMenuEntries, IMenuEntry } from '@/menus';
+import { IMenuEntry, useMenu } from '@/menus';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
-import { sortBySortOrder } from '@lyvely/common';
-import { isFeatureEnabledOnProfile } from '@/features';
 //import LegalLinks from '@/legal/components/LegalLinks.vue';
 
 const pageStore = usePageStore();
@@ -18,12 +16,7 @@ const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
 
 // TODO: make modules register menu items here...
 
-const allMenuEntries = getMenuEntries(MENU_PROFILE_DRAWER);
-const filteredMenuEntries = computed(() => {
-  return [...allMenuEntries.value]
-    .filter((entry) => !entry.feature || isFeatureEnabledOnProfile(entry.feature))
-    .sort(sortBySortOrder);
-});
+const { enabledMenuEntries } = useMenu(MENU_PROFILE_DRAWER);
 
 const { toggleSidebar } = pageStore;
 const { showSidebar } = toRefs(pageStore);
@@ -81,32 +74,30 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
       <div class="flex-grow">
         <ul id="profile-navigation" class="nav flex-column">
           <li>
-            <template v-for="menuEntry in filteredMenuEntries" :key="menuEntry.id">
-              <template v-if="!menuEntry.condition || menuEntry.condition()">
-                <a
-                  v-if="menuEntry.click"
-                  class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
-                  @click="onMenuItemClick(menuEntry)">
-                  <ly-icon :name="menuEntry.icon" class="w-5" />
-                  <transition name="fade">
-                    <span v-if="showLabels" class="menu-item">
-                      {{ translate(menuEntry.title) }}
-                    </span>
-                  </transition>
-                </a>
-                <router-link
-                  v-if="menuEntry.to"
-                  class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
-                  :to="menuEntry.to"
-                  @click="onMenuItemClick(menuEntry)">
-                  <ly-icon :name="menuEntry.icon" class="w-5" />
-                  <transition name="fade">
-                    <span v-if="showLabels" class="menu-item">
-                      {{ translate(menuEntry.title) }}
-                    </span>
-                  </transition>
-                </router-link>
-              </template>
+            <template v-for="menuEntry in enabledMenuEntries" :key="menuEntry.id">
+              <a
+                v-if="menuEntry.click"
+                class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
+                @click="onMenuItemClick(menuEntry)">
+                <ly-icon :name="menuEntry.icon" class="w-5" />
+                <transition name="fade">
+                  <span v-if="showLabels" class="menu-item">
+                    {{ translate(menuEntry.title) }}
+                  </span>
+                </transition>
+              </a>
+              <router-link
+                v-if="menuEntry.to"
+                class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
+                :to="menuEntry.to"
+                @click="onMenuItemClick(menuEntry)">
+                <ly-icon :name="menuEntry.icon" class="w-5" />
+                <transition name="fade">
+                  <span v-if="showLabels" class="menu-item">
+                    {{ translate(menuEntry.title) }}
+                  </span>
+                </transition>
+              </router-link>
             </template>
           </li>
         </ul>

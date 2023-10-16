@@ -1,11 +1,13 @@
 import { Translatable } from '@lyvely/ui';
 import { RouteLocationRaw } from 'vue-router';
+import { ComputedRef, Ref } from 'vue';
 
 export interface IBaseMenuEntry {
   id: string;
   icon?: string;
+  moduleId: string;
   title: Translatable;
-  condition?: () => boolean;
+  condition?: Ref<boolean> | ComputedRef<boolean>;
   to?: RouteLocationRaw;
   feature?: string;
   sortOrder?: number;
