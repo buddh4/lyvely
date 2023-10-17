@@ -8,12 +8,13 @@ import {
   PROFILE_LAYOUT,
   PROFILE_LAYOUT_FULL,
   PROFILE_LAYOUT_XL,
+  STACK_PROFILE_LAYOUT,
 } from '@/profiles/profile.constants';
 import { isMultiUserProfile, PROFILES_MODULE_ID } from '@lyvely/core-interface';
 import { useProfileStore } from '@/profiles/stores';
 import { IModule } from '@/core';
 import { computed } from 'vue';
-import { registerLayouts } from '@/ui';
+import { registerComponentStackEntries, registerLayouts } from '@/ui';
 
 export default () => {
   return {
@@ -40,6 +41,14 @@ export default () => {
           props: { containerWidth: 'full' },
         },
       ]);
+
+      registerComponentStackEntries(STACK_PROFILE_LAYOUT, [
+        {
+          id: 'CreateProfileModal',
+          component: () => import('./components/modals/CreateProfileModal.vue'),
+        },
+      ]);
+
       registerGuards([loadProfileGuard]);
       registerMenuEntries(MENU_PROFILE_DRAWER, [
         {

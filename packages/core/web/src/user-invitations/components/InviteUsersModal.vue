@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
-import { useSendInviteUsersStore } from '../../stores/send-invitations.store';
+import { useSendInviteUsersStore } from '../stores';
 
 const inviteUserStore = useSendInviteUsersStore();
 

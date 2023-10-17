@@ -2,15 +2,9 @@
 import { Size } from '@lyvely/ui';
 import ProfileDrawer from '../components/menus/ProfileDrawer.vue';
 import MainProfileContainer from '../components/MainProfileContainer.vue';
-import CreateProfileModal from '../components/modals/CreateProfileModal.vue';
 import MobileFooterMenu from '../components/menus/MobileFooterMenu.vue';
-import { computed, defineAsyncComponent, Ref, ref } from 'vue';
+import { computed, Ref, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import InviteUsersModal from '@/user-invitations/components/modals/InviteUsersModal.vue';
-import { useIntroductionTourStore } from '@/help/stores/introduction-tour.store';
-
-import HelpModal from '@/help/components/HelpModal.vue';
-import { CreateOrEditContentModal } from '@/content';
 import { usePageStore, isFormField } from '@/ui';
 import { useSwipe } from '@vueuse/core';
 import { useAccountStore } from '@/account';
@@ -39,8 +33,6 @@ const props = withDefaults(defineProps<IProps>(), {
   padding: undefined,
   margin: undefined,
 });
-
-const { active: showIntroductionTour } = storeToRefs(useIntroductionTourStore());
 
 const containerProps = computed(() => ({ width: props.containerWidth }));
 
@@ -72,10 +64,6 @@ const { direction } = useSwipe(root, {
     if (direction.value === 'left') showAccountDrawer.value = true;
   },
 });
-
-const IntroductionTour = defineAsyncComponent(
-  () => import('@/help/components/IntroductionTour.vue'),
-);
 </script>
 
 <template>
@@ -91,14 +79,7 @@ const IntroductionTour = defineAsyncComponent(
     </div>
   </div>
 
-  <create-profile-modal />
-
-  <create-or-edit-content-modal />
-
-  <!-- Todo: We should not depend on user-invitation and other modules here, maybe add a component stack widget here ProfileLayoutAdditions -->
-  <invite-users-modal />
-  <introduction-tour v-if="showIntroductionTour" />
-  <help-modal />
+  <component-stack :id="STACK_PROFILE_LAYOUT" />
 </template>
 
 <style scoped></style>

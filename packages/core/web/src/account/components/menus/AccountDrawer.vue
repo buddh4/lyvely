@@ -8,7 +8,6 @@ import { useHelpStore } from '@/help/stores/help.store';
 import { useNotificationStore } from '@/notifications/stores/notifications.store';
 import NotificationDrawer from '@/notifications/components/NotificationDrawer.vue';
 import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitations.store';
-import InviteUsersModal from '@/user-invitations/components/modals/InviteUsersModal.vue';
 import { UserAvatar } from '@/users';
 
 const accountStore = useAccountStore();
@@ -129,7 +128,6 @@ function onMenuItemClick() {
             ">
             <ly-icon name="paper-plane" :auto-scale="true" />
             <span>{{ $t('invitations.account.title') }}</span>
-            <invite-users-modal />
           </a>
         </li>
         <li>

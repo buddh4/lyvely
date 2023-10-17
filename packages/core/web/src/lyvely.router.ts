@@ -117,17 +117,6 @@ router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuard
 router.beforeEach(moduleGuards(guards));
 
 router.beforeEach(moduleGuards(afterNavigate));
-/*router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
-  if (to.query.help === '1') {
-    useHelpStore().setShowModal(true);
-  }
-
-  if (to.meta?.layout?.startsWith('profile')) {
-    return loadProfile(to, from, next);
-  }
-
-  next();
-});*/
 
 router.afterEach((to, from, failure) => {
   navigationHooksAfter.forEach((hook) => hook(to, from, failure));

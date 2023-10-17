@@ -6,6 +6,7 @@ import contentModule from './content/module';
 import tagsModule from './tags/module';
 import messagesModule from './messages/module';
 import uiModule from './ui/module';
+import helpModule from './help/module';
 import { registerModules } from '@/core';
 
 export const registerCoreModules = () => {
@@ -18,5 +19,6 @@ export const registerCoreModules = () => {
     contentModule(),
     tagsModule(),
     messagesModule(),
+    helpModule(),
   );
 };

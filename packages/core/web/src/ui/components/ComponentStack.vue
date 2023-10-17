@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { resolveComponentRegistration } from '@/ui/helpers';
 import { getComponentStackEntries } from '@/ui/component-stack';
-import { computed } from 'vue';
+import { computed, ComputedRef, Ref } from 'vue';
 
 interface IProps {
   id: string;
@@ -9,7 +9,14 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-const components = computed<{ id: string; component: any; props: any }[]>(() => {
+const componentDefinitions = computed<
+  {
+    id: string;
+    component: any;
+    props: any;
+    condition?: Ref<boolean> | ComputedRef<boolean> | boolean;
+  }[]
+>(() => {
   const definitions = getComponentStackEntries(props.id);
   const result = [];
   for (const definition of definitions.value) {
@@ -17,17 +24,20 @@ const components = computed<{ id: string; component: any; props: any }[]>(() => 
       id: definition.id,
       component: resolveComponentRegistration(definition.component),
       props: definition.props || {},
+      condition: typeof definition.condition === 'undefined' ? true : definition.condition,
     });
   }
-
   return result;
 });
 </script>
 
 <template>
   <div>
-    <template v-for="component in components" :key="component.id">
-      <Component :is="component" v-bind="component.props"></Component>
+    <template v-for="definition in componentDefinitions" :key="definition.id">
+      <Component
+        :is="definition.component"
+        v-if="definition.condition"
+        v-bind="definition.props"></Component>
     </template>
   </div>
 </template>

@@ -1,3 +1,3 @@
-import InviteUsersModal from './modals/InviteUsersModal.vue';
+import InviteUsersModal from './InviteUsersModal.vue';
 
 export { InviteUsersModal };

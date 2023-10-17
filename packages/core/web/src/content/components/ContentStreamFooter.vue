@@ -29,7 +29,6 @@ async function submitMessage() {
 
 async function openCreateContentModal() {
   const tagNames = useProfileStore().tagIdsToNames(useContentStreamFilterStore().filter.tagIds);
-  debugger;
   useContentCreateStore().createAnyContent({
     title: model.value.text,
     tagNames,
