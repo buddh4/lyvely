@@ -1,5 +1,5 @@
 import tagRoutes from './routes/tag.routes';
-import { registerMenuEntry } from '@/menus';
+import { registerMenuEntry } from '@/ui/menus';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
 
 export default () => {

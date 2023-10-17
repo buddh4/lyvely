@@ -1,4 +1,5 @@
 export * from './components';
+export * from './composables';
 export * from './layouts';
 export * from './stores';
 export * from './services';

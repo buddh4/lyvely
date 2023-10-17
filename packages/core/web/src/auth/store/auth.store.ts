@@ -1,11 +1,6 @@
 import { defineStore } from 'pinia';
-import {
-  repository,
-  localStorageManager,
-  sessionStorageManager,
-  eventBus,
-  usePageStore,
-} from '@/core';
+import { repository, localStorageManager, sessionStorageManager, eventBus } from '@/core';
+import { usePageStore } from '@/ui';
 import { setLocale, getDefaultLocale } from '@/i18n';
 import { ref, computed } from 'vue';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';

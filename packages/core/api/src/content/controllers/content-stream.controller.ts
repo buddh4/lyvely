@@ -2,7 +2,7 @@ import { ContentModel, ContentStreamFilter, ENDPOINT_CONTENT_STREAM } from '@lyv
 import { Inject } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { AbstractStreamController } from '@/streams';
-import { Content } from '@/content';
+import { Content } from '../schemas';
 import { ContentStreamService } from '../services';
 import { ProfileController, ProfileContext } from '@/profiles';
 

@@ -1,7 +1,7 @@
 import { ifDevelopEnvironment } from '@/core';
 import StyleGuide from '@/ui/views/StyleGuide.vue';
 
-export default [
+export const uiRoutes = [
   {
     path: '/style',
     name: 'StyleGuide',

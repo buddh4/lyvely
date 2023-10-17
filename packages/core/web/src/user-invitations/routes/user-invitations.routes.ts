@@ -8,6 +8,7 @@ export default [
       i18n: { module: 'invitations' },
       title: () => translate('invitations.title'),
       isPublic: true,
+      profileView: false,
     },
     component: () => import('../views/MailInvitationView.vue'),
   },

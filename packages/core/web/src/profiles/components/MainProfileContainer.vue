@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { Size } from '@lyvely/ui';
 import ProfileTopNavigation from '../components/menus/ProfileTopNavigation.vue';
 import { useProfileStore } from '@/profiles/stores';
 import { storeToRefs } from 'pinia';
@@ -9,7 +8,7 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  width: Size.LG,
+  width: 'lg',
 });
 
 const { profile } = storeToRefs(useProfileStore());

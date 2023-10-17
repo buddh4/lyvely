@@ -1,6 +1,5 @@
-import { getMenuEntries } from '@/menus/menus.registry';
+import { getMenuEntries } from './menus.registry';
 import { computed } from 'vue';
-import { isFeatureEnabledOnProfile } from '@/profiles/helpers';
 import { sortBySortOrder } from '@lyvely/common';
 
 export const useMenu = (menuId: string) => {
@@ -8,10 +7,7 @@ export const useMenu = (menuId: string) => {
   const enabledMenuEntries = computed(() => {
     return allMenuEntries.value
       .filter((entry) => {
-        return (
-          (!entry.feature || isFeatureEnabledOnProfile(entry.feature).value) &&
-          (typeof entry.condition === 'undefined' || entry.condition)
-        );
+        return typeof entry.condition === 'undefined' || entry.condition;
       })
       .sort(sortBySortOrder);
   });

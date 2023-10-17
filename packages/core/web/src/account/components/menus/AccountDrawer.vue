@@ -3,7 +3,7 @@ import { useAccountStore } from '@/account/stores/account.store';
 import { storeToRefs } from 'pinia';
 import { computed, toRefs } from 'vue';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { usePageStore, isMaxViewSize } from '@/core';
+import { usePageStore, isMaxViewSize } from '@/ui';
 import { useHelpStore } from '@/help/stores/help.store';
 import { useNotificationStore } from '@/notifications/stores/notifications.store';
 import NotificationDrawer from '@/notifications/components/NotificationDrawer.vue';

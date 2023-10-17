@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { isDevelopEnvironment } from '@/core';
-import { findFocusable } from '@/ui/utils';
+import { findFocusable } from '@/ui';
 
 export const useAccessibilityStore = defineStore('accessibility', () => {
   const messages = ref<string[]>([]);

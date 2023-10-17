@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { LyTabMenu, LyIcon, LyTabMenuLink } from '@lyvely/ui';
-import { useMenu, t } from '@lyvely/web';
+import { useProfileMenu, t } from '@lyvely/web';
 import { ACTIVITIES_MENU } from '@/activities.constants';
 
-const { enabledMenuEntries } = useMenu(ACTIVITIES_MENU);
+const { enabledMenuEntries } = useProfileMenu(ACTIVITIES_MENU);
 </script>
 
 <template>

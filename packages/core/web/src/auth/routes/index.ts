@@ -21,6 +21,7 @@ export default [
     meta: {
       title: () => translate('auth.reset_password.title'),
       isPublic: true,
+      profileView: false,
     },
     component: () => import('../views/ResetPasswordView.vue'),
     beforeEnter: [

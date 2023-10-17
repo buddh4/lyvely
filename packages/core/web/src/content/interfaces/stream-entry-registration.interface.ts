@@ -1,15 +1,14 @@
 import { Component } from 'vue';
 import { IStreamEntryProps } from './stream-entry-props.interface';
 import { IContentDetailsProps } from './content-details-props.interface';
-import { Lazy, Type } from '@lyvely/common';
+import { Type } from '@lyvely/common';
 import { ContentModel, CreateContentModel } from '@lyvely/core-interface';
 import { RouteLocationRaw } from 'vue-router';
 import {
   ICreateContentModalProps,
   IEditContentModalProps,
 } from '@/content/interfaces/edit-content-modal-props.interface';
-
-export type ComponentRegistration<Props> = Component<Props> | Lazy<Component<Props>>;
+import { ComponentRegistration } from '@/ui';
 
 export type ModalEdit = {
   mode: 'modal';

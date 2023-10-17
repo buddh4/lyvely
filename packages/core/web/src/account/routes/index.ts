@@ -14,7 +14,7 @@ export default [
         path: '',
         meta: {
           title: translation('account.myAccountInfo.title'),
-          nonProfileView: true,
+          profileView: false,
         },
         component: () => import('../views/my-account/MyAccountInfoView.vue'),
       },

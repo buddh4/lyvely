@@ -4,31 +4,20 @@ import {
   RouteRecordRaw,
   RouteLocation,
   NavigationGuardNext,
-  NavigationGuardWithThis,
   NavigationGuard,
   RouteLocationNormalized,
-  LocationQueryRaw,
-  RouteLocationRaw,
+  NavigationHookAfter,
 } from 'vue-router';
 
-//import { messageLoaderGuard } from '@/i18n';
-//import { authGuard } from '@/auth';
-import NProgress from 'nprogress';
-//import { appConfigGuard } from '@/app-config';
-//import { profileRoute } from '@/profiles/routes/profile-route.util';
-import { usePageStore, closeMobileDrawerGuard, showMobileNavGuard } from '@/core';
-//import { loadProfile } from '@/profiles';
 //import { useHelpStore } from '@/help/stores/help.store';
-import { messageLoaderGuard } from '@/i18n';
-//import { useAppConfigStore } from '@/core-app/dist/src/modules/app-config/store/app-config.store';
-//import { eventBus } from '../events';
-import NotFound from '@/ui/components/errors/NotFound.vue';
 
+const beforeNavigate: NavigationGuard[] = [];
 const guards: NavigationGuard[] = [];
-const afterEffectGuards: NavigationGuard[] = [];
+const afterNavigate: NavigationGuard[] = [];
+const navigationHooksAfter: NavigationHookAfter[] = [];
 
 export const router = createRouter({
-  routes: [{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }],
+  routes: [],
   history: createWebHistory(),
 });
 
@@ -37,15 +26,21 @@ export function registerRoutes(registerRoutes: Array<RouteRecordRaw>) {
 }
 
 export type GuardRegistration = Array<
-  NavigationGuard | { on: 'afterEffects' | 'beforeView'; guards: Array<NavigationGuard> }
+  | NavigationGuard
+  | { on: 'beforeNavigate' | 'guard' | 'afterNavigate'; guards: Array<NavigationGuard> }
 >;
 
 export function registerGuards(navGuards: GuardRegistration) {
   navGuards.forEach((guard) => {
     if (typeof guard === 'function') guards.push(guard);
-    else if (guard.on === 'beforeView') guards.push(...guard.guards);
-    else afterEffectGuards.push(...guard.guards);
+    else if (guard.on === 'guard') guards.push(...guard.guards);
+    else if (guard.on === 'beforeNavigate') beforeNavigate.push(...guard.guards);
+    else if (guard.on === 'afterNavigate') afterNavigate.push(...guard.guards);
   });
+}
+
+export function registerAfterNavigationHooks(hooks: NavigationHookAfter[]) {
+  navigationHooksAfter.push(...hooks);
 }
 
 function moduleGuards(guards: Array<NavigationGuard>) {
@@ -74,14 +69,7 @@ function moduleGuards(guards: Array<NavigationGuard>) {
   };
 }
 
-router.beforeResolve((to, from, next) => {
-  // If this isn't an initial page load.
-  if (to.name) {
-    // Start the route progress bar.
-    NProgress.start();
-  }
-  next();
-});
+router.beforeEach(moduleGuards(beforeNavigate));
 
 router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
   const doc = window.document;
@@ -126,12 +114,9 @@ router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuard
   next();
 });
 
-router.beforeEach(messageLoaderGuard);
-
 router.beforeEach(moduleGuards(guards));
 
-router.beforeEach(showMobileNavGuard);
-router.beforeEach(closeMobileDrawerGuard);
+router.beforeEach(moduleGuards(afterNavigate));
 /*router.beforeEach((to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
   if (to.query.help === '1') {
     useHelpStore().setShowModal(true);
@@ -144,14 +129,6 @@ router.beforeEach(closeMobileDrawerGuard);
   next();
 });*/
 
-router.afterEach(() => usePageStore().setShowAppLoader(false));
-router.afterEach((to: RouteLocation) => {
-  if (to.meta?.title) usePageStore().setTitle(to.meta?.title());
+router.afterEach((to, from, failure) => {
+  navigationHooksAfter.forEach((hook) => hook(to, from, failure));
 });
-
-router.afterEach(() => {
-  // Complete the animation of the route progress bar.
-  NProgress.done();
-});
-
-router.beforeEach(moduleGuards(afterEffectGuards));

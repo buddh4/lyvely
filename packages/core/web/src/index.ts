@@ -22,7 +22,6 @@ export * from './stream';
 export * from './system-messages';
 export * from './tags';
 export * from './ui';
-export * from './menus';
 export * from './user-invitations';
 export * from './user-registration';
 export * from './users';

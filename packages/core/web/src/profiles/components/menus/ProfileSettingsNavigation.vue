@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useMenu } from '@/menus';
+import { useProfileMenu } from '@/profiles/composables';
 import { MENU_PROFILE_SETTINGS } from '@/profiles/profile.constants';
 import { LyTabMenuLink } from '@lyvely/ui';
 
-const { enabledMenuEntries } = useMenu(MENU_PROFILE_SETTINGS);
+const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_SETTINGS);
 </script>
 
 <template>

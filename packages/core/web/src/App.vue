@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { ReloadPrompt, useGlobalDialogStore, usePageStore } from '@/core';
+import { ReloadPrompt, usePageStore, getLayout, resolveComponentRegistration } from '@/ui';
+import { useGlobalDialogStore } from '@/core';
 import AriaLiveStatus from '@/accessibility/components/AriaLiveStatus.vue';
-import { ProfileLayout } from '@/profiles';
 import { LyAppLoader, LyDialog } from '@lyvely/ui';
 import { useRouter } from 'vue-router';
 import { watch, ref, computed, toRefs } from 'vue';
@@ -19,19 +19,14 @@ watch(router.currentRoute, (to) => {
   layout.value = to.meta?.layout;
 });
 
-const layoutMap = new Map<string, { component: any; props: any }>();
-layoutMap.set('profile', { component: ProfileLayout, props: {} });
-layoutMap.set('profile-xl', { component: ProfileLayout, props: { containerWidth: 'xl' } });
-layoutMap.set('profile-full', { component: ProfileLayout, props: { containerWidth: 'full' } });
-
 const layoutDefinition = computed<{ component: any; props: any } | undefined>(() => {
   if (!layout.value) return undefined;
-  const layoutDefinition = layoutMap.get(layout.value?.toLowerCase());
+  const layoutDefinition = getLayout(layout.value?.toLowerCase());
   if (!layoutDefinition) return undefined;
 
   return {
-    component: layoutDefinition.component,
-    props: layoutDefinition.props,
+    component: resolveComponentRegistration(layoutDefinition.component),
+    props: layoutDefinition.props || {},
   };
 });
 </script>

@@ -1,4 +1,4 @@
-import { useProfileStore } from '@/profiles';
+import { useProfileStore } from '../stores';
 import { useAppConfigStore } from '@/app-config';
 import {
   FEATURE_MODULE_ID,

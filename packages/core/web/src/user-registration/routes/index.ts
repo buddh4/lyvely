@@ -9,6 +9,7 @@ export default [
     component: () => import('../views/UserRegistrationView.vue'),
     meta: {
       isPublic: true,
+      profileView: false,
       title: translation('user_registration.title'),
     },
     beforeEnter: [ifNotAuthenticated],
@@ -19,6 +20,7 @@ export default [
     component: () => import('../views/VerifyEmailView.vue'),
     meta: {
       isPublic: true,
+      profileView: false,
       title: translation('user_registration.verify_email.title'),
     },
     beforeEnter: [ifNotAuthenticated],

@@ -5,7 +5,7 @@ import {
   loadModuleMessages,
   setLocale,
 } from './i18n';
-import { usePageStore } from '@/core';
+import { usePageStore } from '@/ui';
 import { useI18nStore } from './i18n.store';
 
 export const messageLoaderGuard: NavigationGuardWithThis<undefined> = async (to, from, next) => {

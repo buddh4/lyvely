@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { usePageStore } from '@/core';
+import { usePageStore } from '@/ui';
 import { computed } from 'vue';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';

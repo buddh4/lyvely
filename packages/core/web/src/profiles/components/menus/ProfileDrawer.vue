@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import { computed, Ref, ref, toRefs } from 'vue';
-import { usePageStore, watchMaxSize, isMaxViewSize } from '@/core';
+import { usePageStore, watchMaxSize, isMaxViewSize, IMenuEntry } from '@/ui';
 import { translate } from '@/i18n';
-import { useProfileStore } from '@/profiles/stores/profile.store';
+import { useProfileStore } from '@/profiles/stores';
 import imageUrl from '@/assets/logo_white_bold.svg';
-
 import { UseSwipeDirection, useSwipe } from '@vueuse/core';
-import { IMenuEntry, useMenu } from '@/menus';
+import { useProfileMenu } from '@/profiles/composables';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
 //import LegalLinks from '@/legal/components/LegalLinks.vue';
 
@@ -16,7 +15,7 @@ const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
 
 // TODO: make modules register menu items here...
 
-const { enabledMenuEntries } = useMenu(MENU_PROFILE_DRAWER);
+const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_DRAWER);
 
 const { toggleSidebar } = pageStore;
 const { showSidebar } = toRefs(pageStore);

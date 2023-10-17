@@ -44,7 +44,7 @@ declare module 'vue-router' {
     layout?: string;
     showMobileFooter?: boolean;
     baseName?: string;
-    nonProfileView?: boolean;
+    profileView?: boolean;
     title?: () => string;
   }
 }

@@ -1,14 +1,14 @@
-import { Component, defineAsyncComponent } from 'vue';
-import { Lazy, Type } from '@lyvely/common';
+import { Component } from 'vue';
+import { Type } from '@lyvely/common';
 import { ContentModel } from '@lyvely/core-interface';
 import {
-  ComponentRegistration,
   IContentTypeOptions,
   IStreamEntryProps,
   IContentDetailsProps,
   ICreateContentModalProps,
   IEditContentModalProps,
 } from '../interfaces';
+import { resolveComponentRegistration, ComponentRegistration } from '@/ui';
 
 const contentTypeRegistry = new Map<string, Type<ContentModel>>();
 const streamEntryRegistry = new Map<string, Component<IStreamEntryProps>>();
@@ -74,7 +74,7 @@ export function registerCreateContentModalComponent(
   component: ComponentRegistration<ICreateContentModalProps>,
 ) {
   console.debug(`Register create content component ${contentType}`);
-  createContentModalRegistry.set(contentType, _getComponent(component));
+  createContentModalRegistry.set(contentType, resolveComponentRegistration(component));
 }
 
 export function getCreateContentTypes() {
@@ -95,7 +95,7 @@ export function registerEditContentModalComponent(
   component: ComponentRegistration<IEditContentModalProps>,
 ) {
   console.debug(`Register edit content component ${contentType}`);
-  editContentModalRegistry.set(contentType, _getComponent(component));
+  editContentModalRegistry.set(contentType, resolveComponentRegistration(component));
 }
 
 export function getEditContentModalComponent(
@@ -110,7 +110,7 @@ export function registerContentStreamEntryComponent(
   component: ComponentRegistration<IStreamEntryProps>,
 ) {
   console.debug(`Register content component ${contentType}`);
-  streamEntryRegistry.set(contentType, _getComponent(component));
+  streamEntryRegistry.set(contentType, resolveComponentRegistration(component));
 }
 
 export function getContentStreamEntryComponent(
@@ -125,13 +125,7 @@ export function registerContentDetailsComponent(
   component: ComponentRegistration<IContentDetailsProps>,
 ) {
   console.debug(`Register content detail component ${contentType}`);
-  contentDetailRegistry.set(contentType, _getComponent(component));
-}
-
-function _getComponent(component: ComponentRegistration<any>) {
-  return typeof component === 'function'
-    ? defineAsyncComponent(component as Lazy<Component>)
-    : component;
+  contentDetailRegistry.set(contentType, resolveComponentRegistration(component));
 }
 
 export function getContentDetailsComponent(

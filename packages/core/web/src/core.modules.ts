@@ -5,6 +5,7 @@ import i18nModule from './i18n/module';
 import contentModule from './content/module';
 import tagsModule from './tags/module';
 import messagesModule from './messages/module';
+import uiModule from './ui/module';
 import { registerModules } from '@/core';
 
 export const registerCoreModules = () => {
@@ -12,6 +13,7 @@ export const registerCoreModules = () => {
     i18nModule(),
     appConfigModule(),
     authModule(),
+    uiModule(),
     profileModule(),
     contentModule(),
     tagsModule(),

@@ -1,11 +1,13 @@
 import { AbstractStreamService } from '@/streams';
 import { ContentStreamFilter } from '@lyvely/core-interface';
-import { Inject, Logger } from '@nestjs/common';
-import { ContentDao, Content } from '@/content';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ContentDao } from '../daos';
+import { Content } from '../schemas';
 import { ProfileContext } from '@/profiles';
 import { FilterQuery } from 'mongoose';
 import { assureObjectId } from '@/core';
 
+@Injectable()
 export class ContentStreamService extends AbstractStreamService<
   Content,
   ContentStreamFilter,

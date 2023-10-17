@@ -3,8 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
 import { EventEmitter2 } from 'eventemitter2';
 import { IAppConfig } from '@lyvely/core-interface';
-import { EVENT_MODULE_APP_CONFIG_ASSEMBLY } from '@/app-config';
-import { ModuleAppConfigAssemblyEvent } from '@/app-config/events/module-app-config-assembly.event';
+import { EVENT_MODULE_APP_CONFIG_ASSEMBLY } from '../app-config.constants';
+import { ModuleAppConfigAssemblyEvent } from '../events';
 
 @Injectable()
 export class AppConfigService {

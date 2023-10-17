@@ -41,12 +41,12 @@ export const loadProfile = async (
   next();
 };
 
-export const profileLayoutGuard = (
+export const loadProfileGuard = (
   to: RouteLocation,
   from: RouteLocation,
   next: NavigationGuardNext,
 ) => {
-  if (to.meta?.layout?.startsWith('profile')) {
+  if (to.meta?.profileView !== false) {
     return loadProfile(to, from, next);
   }
 

@@ -1,5 +1,8 @@
 {
-  "stream": {
-
+  "content": {
+    "stream": {
+      "title": "Stream",
+      "initError": "Something went wrong, please try again later!"
+    }
   }
 }

@@ -1,4 +1,3 @@
-export * from './components';
 export * from './endpoints';
 export * from './events';
 export * from './guards';

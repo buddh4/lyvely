@@ -1,12 +1,19 @@
 import { registerGuards } from '@/lyvely.router';
 import routes from './routes/profile.routes';
-import { profileLayoutGuard } from './guards';
-import { registerMenuEntries } from '@/menus';
-import { MENU_PROFILE_DRAWER, MENU_PROFILE_SETTINGS } from '@/profiles/profile.constants';
+import { loadProfileGuard } from './guards';
+import { registerMenuEntries } from '@/ui/menus';
+import {
+  MENU_PROFILE_DRAWER,
+  MENU_PROFILE_SETTINGS,
+  PROFILE_LAYOUT,
+  PROFILE_LAYOUT_FULL,
+  PROFILE_LAYOUT_XL,
+} from '@/profiles/profile.constants';
 import { isMultiUserProfile, PROFILES_MODULE_ID } from '@lyvely/core-interface';
 import { useProfileStore } from '@/profiles/stores';
 import { IModule } from '@/core';
 import { computed } from 'vue';
+import { registerLayouts } from '@/ui';
 
 export default () => {
   return {
@@ -16,7 +23,24 @@ export default () => {
     },
     routes,
     init: () => {
-      registerGuards([profileLayoutGuard]);
+      registerLayouts([
+        {
+          id: PROFILE_LAYOUT,
+          component: () => import('./layouts/ProfileLayout.vue'),
+          props: {},
+        },
+        {
+          id: PROFILE_LAYOUT_XL,
+          component: () => import('./layouts/ProfileLayout.vue'),
+          props: { containerWidth: 'xl' },
+        },
+        {
+          id: PROFILE_LAYOUT_FULL,
+          component: () => import('./layouts/ProfileLayout.vue'),
+          props: { containerWidth: 'full' },
+        },
+      ]);
+      registerGuards([loadProfileGuard]);
       registerMenuEntries(MENU_PROFILE_DRAWER, [
         {
           id: 'profileUsers',

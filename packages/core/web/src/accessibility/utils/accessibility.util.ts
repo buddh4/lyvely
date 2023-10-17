@@ -1,4 +1,4 @@
-import { SELECTOR_FORM_FIELD } from '@/ui/utils';
+import { SELECTOR_FORM_FIELD } from '@/ui';
 
 export function accessibilityFocus(elem?: string | HTMLElement | null) {
   if (!elem) {

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { getContentStreamEntryComponent, useContentStreamService } from '../services';
+import { t } from '@/i18n';
 import { nextTick, onMounted, onUnmounted, ref, Ref, watch, WatchStopHandle } from 'vue';
 import {
   ContentModel,
@@ -68,14 +69,25 @@ const stream = useStream<ContentModel, ContentStreamFilter>(
 
 const { models, isInitialized } = stream;
 
+const error = ref<string>();
+
 async function initOrRestore() {
-  const history = getHistoryState(filter.value.parentId);
-  if (history) {
-    await stream.restore(history);
-    removeHistoryState(filter.value.parentId);
-  } else {
-    await stream.init();
+  try {
+    const history = getHistoryState(filter.value.parentId);
+    if (history) {
+      await stream.restore(history);
+      removeHistoryState(filter.value.parentId);
+    } else {
+      await stream.init();
+    }
+  } catch (e) {
+    error.value = 'content.stream.initError';
+    console.error(e);
   }
+}
+
+function reload() {
+  location.reload();
 }
 
 function getStreamEntryComponent(content: ContentModel) {
@@ -136,6 +148,7 @@ onUnmounted(() => {
 
 <template>
   <div
+    v-if="isInitialized"
     id="contentStreamRoot"
     ref="streamRoot"
     v-mobile-scrollbar
@@ -152,7 +165,15 @@ onUnmounted(() => {
       </template>
     </div>
   </div>
-  <div v-if="!isInitialized" class="absolute bg-body w-full h-full bg-body z-50">
+  <div v-else-if="error" class="absolute bg-body w-full h-full bg-body z-50 p-5">
+    <ly-alert type="danger" class="justify-center">
+      <div class="flex flex-col gap-2 items-center justify-center">
+        <div>{{ t(error) }}</div>
+        <ly-button class="primary text-xs" label="common.reload" @click="reload" />
+      </div>
+    </ly-alert>
+  </div>
+  <div v-else class="absolute bg-body w-full h-full bg-body z-50">
     <div class="flex items-center w-full h-full justify-center">
       <ly-loader />
     </div>

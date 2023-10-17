@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 //import { useProfileStore } from '@/profiles/stores/profile.store';
 import { useDark, useToggle, useOnline } from '@vueuse/core';
 import { ref } from 'vue';
-import { isMaxViewSize } from '../util';
+import { isMaxViewSize } from '../helpers';
 
 export const usePageStore = defineStore('page', () => {
   const showSidebar = ref(!isMaxViewSize('sm'));

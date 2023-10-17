@@ -11,10 +11,10 @@ import { useIntroductionTourStore } from '@/help/stores/introduction-tour.store'
 
 import HelpModal from '@/help/components/HelpModal.vue';
 import { CreateOrEditContentModal } from '@/content';
-import { usePageStore } from '@/core';
+import { usePageStore, isFormField } from '@/ui';
 import { useSwipe } from '@vueuse/core';
 import { useAccountStore } from '@/account';
-import { isFormField } from '@/ui';
+import ComponentStack from '@/ui/components/ComponentStack.vue';
 
 const pageStore = usePageStore();
 const accountStore = useAccountStore();

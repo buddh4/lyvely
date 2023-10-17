@@ -55,13 +55,10 @@ const ContentScoreActionModel = MongooseModule.forFeature([
     ContentStreamService,
   ],
   exports: [
-    ContentDao,
-    ContentModel,
     ContentService,
+    ContentDao,
     ContentScoreService,
     ContentTypeRegistry,
-    ContentReadPolicy,
-    ContentWritePolicy,
     ContentEventPublisher,
   ],
 })
