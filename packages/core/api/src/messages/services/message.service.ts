@@ -4,26 +4,27 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { MessageDao } from '../daos';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { CreateMessage } from '@lyvely/core-interface';
+import { CreateMessageModel } from '@lyvely/core-interface';
 import { UpdateQuerySet } from '@/core';
 
 @Injectable()
-export class MessageService extends ContentTypeService<Message, CreateMessage> {
+export class MessageService extends ContentTypeService<Message, CreateMessageModel> {
   @Inject()
   protected contentDao: MessageDao;
 
   protected logger = new Logger(MessageService.name);
 
-  protected async createInstance(profile: Profile, user: User, model: CreateMessage) {
+  protected async createInstance(profile: Profile, user: User, model: CreateMessageModel) {
     return new Message(profile, user, model.text);
   }
 
-  protected createUpdate(
+  protected async createUpdate(
     profile: Profile,
     user: User,
     content: Message,
-    model: Partial<CreateMessage>,
+    model: Partial<CreateMessageModel>,
   ): Promise<UpdateQuerySet<Message>> {
-    return Promise.resolve(undefined);
+    content.content.text = model.text;
+    return content;
   }
 }

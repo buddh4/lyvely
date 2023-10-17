@@ -4,9 +4,13 @@ import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
 import { Types } from 'mongoose';
+import { PropertiesOf } from '@lyvely/common';
 
 @Schema()
-export class Message extends ContentType<Message> implements MessageModel<Types.ObjectId> {
+export class Message
+  extends ContentType<Message>
+  implements PropertiesOf<MessageModel<Types.ObjectId>>
+{
   constructor(profile: Profile, user: User, text: string) {
     super(profile, user, {
       content: { text },

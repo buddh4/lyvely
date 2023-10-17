@@ -22,7 +22,7 @@ const {
   editModel,
   initOptions: editInitOptions,
   editModalComponent,
-} = storeToRefs(useContentEditStore());
+} = storeToRefs(contentEditStore);
 
 const { onUpdated, onCanceled: onUpdateCanceled } = contentEditStore;
 

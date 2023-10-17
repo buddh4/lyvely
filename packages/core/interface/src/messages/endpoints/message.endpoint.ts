@@ -1,8 +1,8 @@
 import { StrictEndpoint } from '@lyvely/common';
 import { IContentTypeService } from '@/content';
-import { CreateMessage, MessageModel } from '../models';
+import { CreateMessageModel, MessageModel } from '../models';
 
-export interface IMessageClient extends IContentTypeService<MessageModel, CreateMessage> {}
+export interface IMessageClient extends IContentTypeService<MessageModel, CreateMessageModel> {}
 
 export type MessageEndpoint = StrictEndpoint<IMessageClient>;
 

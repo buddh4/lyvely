@@ -7,7 +7,7 @@ import { useRouter, RouteLocationRaw } from 'vue-router';
 import { PATH_LOGIN } from '@/auth';
 import { onUnmounted, ref } from 'vue';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
-import { isTouchScreen } from '@/core';
+import { isTouchScreen } from '@/ui';
 
 const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();

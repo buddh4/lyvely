@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { ProfileContext } from '../models';
-import minimatch from 'minimatch';
+import { minimatch } from 'minimatch';
 import { BaseMembershipRole, RoleVisibilityLevel } from '@lyvely/core-interface';
 import {
   defaultProfileRolesDefinition,

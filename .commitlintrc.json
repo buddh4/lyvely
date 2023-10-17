@@ -51,6 +51,7 @@
         "time-series",
         "system-messages",
         "invitations",
+        "messages",
         "milestones",
         "activities",
         "stream",

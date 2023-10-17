@@ -93,7 +93,7 @@ export class MailService {
   }
 
   private handleSentMessageInfo(info: SentMessageInfo & { messageFile?: Promise<void> }) {
-    if (!this.isCreateMessageFile()) return info;
+    if (!this.isCreateMessageModelFile()) return info;
 
     const result: SentMessageInfo & { messageFile?: Promise<void> } = info;
 
@@ -111,7 +111,7 @@ export class MailService {
     return result;
   }
 
-  private isCreateMessageFile() {
+  private isCreateMessageModelFile() {
     return this.configService.get<LyvelyMailOptions>('mail')?.createMessageFiles;
   }
 

@@ -6,21 +6,21 @@ import { UseClassSerializer } from '@/core';
 import {
   MessageEndpoint,
   ENDPOINT_MESSAGE,
-  CreateMessage,
+  CreateMessageModel,
   MessageUpdateResponse,
+  UpdateMessageModel,
 } from '@lyvely/core-interface';
 
 @ContentTypeController(ENDPOINT_MESSAGE, Message)
-// TODO: implement feature registration @Feature('activities')
 @UseClassSerializer()
 export class MessageController
-  extends AbstractContentTypeController<Message, CreateMessage>
+  extends AbstractContentTypeController<Message, CreateMessageModel>
   implements MessageEndpoint
 {
   @Inject()
   protected contentService: MessageService;
 
   protected updateResponseType = MessageUpdateResponse;
-  protected createModelType = CreateMessage;
-  protected updateModelType = CreateMessage;
+  protected createModelType = CreateMessageModel;
+  protected updateModelType = UpdateMessageModel;
 }

@@ -1,10 +1,11 @@
 import { contentRoutes } from './routes';
 import { registerMenuEntry } from '@/ui/menus';
-import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
+import { MENU_PROFILE_DRAWER, STACK_PROFILE_LAYOUT } from '@/profiles/profile.constants';
 import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/core-interface';
 import { IModule } from '@/core';
 import { registerRoutes } from '@/lyvely.router';
-import { NotFound } from '@/ui';
+import { NotFound, registerComponentStackEntries } from '@/ui';
+//import CreateOrEditContentModal from '@/content/components/CreateOrEditContentModal.vue';
 
 export default () => {
   return {
@@ -15,6 +16,12 @@ export default () => {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
     },
     init: () => {
+      /* registerComponentStackEntries(STACK_PROFILE_LAYOUT, [
+        {
+          id: 'CreateOrEditContentModal',
+          component: CreateOrEditContentModal,
+        },
+      ]);*/
       registerRoutes([{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }]);
       registerMenuEntry(MENU_PROFILE_DRAWER, {
         id: 'stream',

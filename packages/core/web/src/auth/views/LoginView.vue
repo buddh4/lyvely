@@ -5,7 +5,7 @@ import { watch, onUnmounted, ref } from 'vue';
 import { useLoginStore } from '@/auth/store/login.store';
 import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
-import { isTouchScreen } from '@/core';
+import { isTouchScreen } from '@/ui';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import {
   USER_REGISTRATION_MODULE_ID,

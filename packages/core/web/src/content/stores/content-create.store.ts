@@ -1,13 +1,18 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
-import { getCreateContentModalComponent } from '../services';
+import {
+  getContentTypeOptions,
+  getCreateContentModalComponent,
+  getCreateContentTypes,
+} from '../services';
 import { ICreateContentInitOptions } from '../interfaces';
+import { isFeatureEnabledOnProfile } from '@/profiles';
 
 export const useContentCreateStore = defineStore('content-create', () => {
   const contentType = ref<string>();
   const initOptions = ref<ICreateContentInitOptions>();
   const showContentTypeMenu = ref(false);
-  let latestContentType: string;
+  let latestContentType: string | undefined;
 
   const showCreateModal = ref(false);
 
@@ -26,9 +31,7 @@ export const useContentCreateStore = defineStore('content-create', () => {
     showContentTypeMenu.value = false;
 
     // The resolve handler was not called
-    if (activeResolve) {
-      activeResolve();
-    }
+    if (activeResolve) activeResolve();
 
     activeResolve = undefined;
   }
@@ -68,11 +71,25 @@ export const useContentCreateStore = defineStore('content-create', () => {
     createContentType(contentType, options, true);
   }
 
-  function selectContentType() {
-    // content type filter active?
-    // latest type selected
-    // default selected
-    return latestContentType || 'Task';
+  function selectContentType(): string {
+    const contentType = latestContentType;
+
+    if (checkContentType(contentType)) return contentType;
+
+    for (const contentTypeOptions of getCreateContentTypes()) {
+      const type = contentTypeOptions.type;
+      if (type !== 'Message' && checkContentType(type)) return type;
+    }
+
+    return 'Message';
+  }
+
+  function checkContentType(type: string | undefined): type is string {
+    if (!type) return false;
+    const options = getContentTypeOptions(type);
+    if (!options) return false;
+    if (options.feature && !isFeatureEnabledOnProfile(options.feature)) return false;
+    return true;
   }
 
   const createModalComponent = computed(() => {

@@ -5,7 +5,7 @@ import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/user-registration/routes/paths';
-import { isTouchScreen } from '@/core';
+import { isTouchScreen } from '@/ui';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import {
   IUserRegistrationAppConfig,

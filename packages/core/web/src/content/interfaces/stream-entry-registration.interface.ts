@@ -42,7 +42,7 @@ export interface IContentTypeOptions {
   type: string;
   moduleId: string;
   name: string | (() => string);
-  feature: string;
+  feature?: string;
   icon?: string;
   modelClass: Type<ContentModel>;
   meta?: IContentTypeMeta;

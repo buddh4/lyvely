@@ -21,6 +21,7 @@ export class HabitsService extends ContentTypeService<Habit, CreateHabitModel> {
     content: Habit,
     model: UpdateHabitModel,
   ) {
+    content.te;
     return content.applyUpdate(model);
   }
 }

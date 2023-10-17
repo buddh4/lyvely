@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { Sketch } from '@ckpack/vue-color';
 import { onClickOutside } from '@vueuse/core';
 import { useEditTagStore } from '@/tags/stores/edit-tag.store';
-import { isTouchScreen } from '@/core';
+import { isTouchScreen } from '@/ui';
 
 const tagEditStore = useEditTagStore();
 
