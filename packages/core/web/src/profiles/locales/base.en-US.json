@@ -27,8 +27,17 @@
         "your_role": "You are {role} of this profile."
       },
       "general": {
+        "title": "General Settings",
         "name": "Profile Name",
         "label": "General"
+      },
+      "features": {
+        "title": "Feature Settings",
+        "label": "Features",
+        "actions": "actions",
+        "name": "Name",
+        "enable": "Enable",
+        "disable": "Disable"
       },
       "archive": {
         "confirm": "Do you really want to archive this profile?"

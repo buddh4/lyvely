@@ -24,7 +24,7 @@ export default [
     meta: {
       layout: 'profile',
     },
-    component: () => import('../views/users/ProfileUsers.vue'),
+    component: () => import('../views/ProfileUsers.vue'),
     beforeEnter: [loadProfile, ifIsMultiUserProfile],
   },
   {
@@ -34,7 +34,7 @@ export default [
       layout: 'profile',
     },
     redirect: { name: 'ProfileMembershipSettings' },
-    component: () => import('../views/settings/ProfileSettings.vue'),
+    component: () => import('../layouts/ProfileSettingsLayout.vue'),
     beforeEnter: [loadProfile],
     children: [
       {
@@ -44,7 +44,16 @@ export default [
           title: translation('profile.settings.membership.title'),
         },
         beforeEnter: [loadProfile],
-        component: () => import('../views/settings/ProfileMembershipSettings.vue'),
+        component: () => import('../views/ProfileMembershipSettings.vue'),
+      },
+      {
+        path: profileRoute('/settings/features'),
+        name: 'ProfileFeaturesSettings',
+        meta: {
+          title: translation('features.settings.features.title'),
+        },
+        beforeEnter: [loadProfile],
+        component: () => import('../views/ProfileFeaturesSettings.vue'),
       },
       {
         name: 'GeneralProfileSettings',
@@ -53,7 +62,7 @@ export default [
           title: translation('profile.settings.general.title'),
         },
         beforeEnter: [loadProfile],
-        component: () => import('../views/settings/GeneralProfileSettings.vue'),
+        component: () => import('../views/GeneralProfileSettings.vue'),
       },
     ],
   },

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { SystemMessageModel } from '@lyvely/core-interface';
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
-import ContentDetails from '@/content-stream/components/ContentDetails.vue';
-import RelativeTime from '@/calendar/components/RelativeTime.vue';
+import { useAppConfigStore } from '@/app-config';
+import { ContentDetails } from '@/content';
+import { RelativeTime } from '@/calendar';
 
 export interface IProps {
   model: SystemMessageModel;

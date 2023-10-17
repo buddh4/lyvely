@@ -77,7 +77,7 @@ function onMenuItemClick() {
   <ly-drawer id="account-drawer" v-model="showAccountDrawer" title="account.drawer.title">
     <nav>
       <ul>
-        <li>
+        <!--li>
           <router-link
             :to="{ name: 'MyAccountInfo' }"
             :class="menuItemClass"
@@ -86,7 +86,7 @@ function onMenuItemClick() {
             <ly-icon name="account" />
             {{ $t('account.drawer.myAccount') }}
           </router-link>
-        </li>
+        </li -->
         <!--li>
           <router-link to="/" :class="menuItemClass" draggable="false" @click="onMenuItemClick">
             <ly-icon name="security" />

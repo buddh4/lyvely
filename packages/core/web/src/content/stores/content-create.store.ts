@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref, watch } from 'vue';
-import { getCreateContentModalComponent } from '@/content-stream/components/content-stream-entry.registry';
-import { ICreateContentInitOptions } from '@/content/interfaces/edit-content-modal-props.interface';
+import { getCreateContentModalComponent } from '../services';
+import { ICreateContentInitOptions } from '../interfaces';
 
 export const useContentCreateStore = defineStore('content-create', () => {
   const contentType = ref<string>();

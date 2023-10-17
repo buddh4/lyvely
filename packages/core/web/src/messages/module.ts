@@ -1,4 +1,4 @@
-import { registerContentType } from '@/content-stream/components/content-stream-entry.registry';
+import { registerContentType } from '@/content';
 import { translation } from '@/i18n';
 import { IModule } from '@/core';
 import { MessageModel, MESSAGES_MODULE_ID } from '@lyvely/core-interface';

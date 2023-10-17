@@ -56,6 +56,13 @@ export default () => {
           sortOrder: 2000,
           to: { name: 'GeneralProfileSettings' },
         },
+        {
+          id: 'ProfileFeatureSettings',
+          moduleId: PROFILES_MODULE_ID,
+          title: 'profiles.settings.features.label',
+          sortOrder: 1000,
+          to: { name: 'ProfileFeaturesSettings' },
+        },
       ]);
     },
   } as IModule;

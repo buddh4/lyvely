@@ -29,7 +29,6 @@ import {
   FeaturesModule,
   UserInvitationsModule,
   SystemMessagesModule,
-  ContentStreamModule,
 } from '@lyvely/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -246,7 +245,6 @@ export class AppModuleBuilder {
       ProfilesModule,
       UserRegistrationsModule,
       ContentCoreModule,
-      ContentStreamModule,
       MessageModule,
       SystemMessagesModule,
       UserAccountsModule,

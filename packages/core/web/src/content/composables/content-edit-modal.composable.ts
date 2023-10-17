@@ -4,10 +4,10 @@ import { ContentModel, CreateContentModel, ContentUpdateResponse } from '@lyvely
 import { IEditOrCreateModalProps } from '@/content/interfaces/edit-content-modal-props.interface';
 import { IEditModelStoreOptions, useUpdateModelStore } from '@/common';
 import { useProfileStore } from '@/profiles/stores/profile.store';
-import { getContentTypeOptions } from '@/content-stream/components/content-stream-entry.registry';
-import { ModalCreate } from '@/content-stream/interfaces/stream-entry-registration.interface';
+import { getContentTypeOptions } from '../services';
+import { ModalCreate } from '../interfaces';
 import { StoreStatusPlugin } from '@/core';
-import { useContentStore } from '@/content/stores/content.store';
+import { useContentStore } from '../stores';
 
 export const ContentEditModalEmits = ['update:modelValue', 'success', 'cancel'];
 type TContentEditModalEmits = 'update:modelValue' | 'success';

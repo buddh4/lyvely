@@ -43,6 +43,8 @@ import LyTextField from './components/forms/LyTextField.vue';
 import LyTextarea from './components/forms/LyTextarea.vue';
 import LyTimeNumberInput from './components/forms/LyTimeNumberInput.vue';
 import LyPasswordStrengthMeter from './components/forms/LyPasswordStrengthMeter.vue';
+import LyResponsive from './components/helpers/LyResponsive.vue';
+import LyTable from './components/tables/LyTable.vue';
 import { App } from 'vue';
 import { Icons } from './components/icons/Icons';
 import { LyvelyUiOptions, setConfigOptions } from './config';
@@ -53,7 +55,8 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
 
   return {
     install(Vue: App) {
-      Vue.component('LyCenteredLayout', LyCenteredLayout);
+      Vue.component('LyResponsive', LyResponsive);
+      Vue.component('LyTable', LyTable);
       Vue.component('LyContentRoot', LyContentRoot);
       Vue.component('LyListPage', LyListPage);
       Vue.component('LyMainContainer', LyMainContainer);

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ReloadPrompt, useGlobalDialogStore, usePageStore } from '@/core';
 import AriaLiveStatus from '@/accessibility/components/AriaLiveStatus.vue';
-import ProfileLayout from '@/profiles/components/layout/ProfileLayout.vue';
+import { ProfileLayout } from '@/profiles';
 import { LyAppLoader, LyDialog } from '@lyvely/ui';
 import { useRouter } from 'vue-router';
 import { watch, ref, computed, toRefs } from 'vue';

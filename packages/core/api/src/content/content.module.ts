@@ -2,7 +2,7 @@ import { Global, Inject, Injectable, Module, OnModuleInit, Scope, Type } from '@
 import { UsersModule } from '@/users';
 import { Content, ContentSchema, ContentScore, ContentScoreSchema } from './schemas';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ContentScoreService, ContentService } from './services';
+import { ContentScoreService, ContentService, ContentStreamService } from './services';
 import { ProfileScore, ProfilesModule } from '@/profiles';
 import { ContentDao, ContentScoreDao } from './daos';
 import {
@@ -15,7 +15,7 @@ import { ContentEventPublisher, ContentTypeRegistry } from './components';
 import { DynamicModule } from '@nestjs/common/interfaces/modules/dynamic-module.interface';
 import { LiveModule } from '@/live';
 import { uniqueId } from 'lodash';
-import { ContentController } from './controllers';
+import { ContentController, ContentStreamController } from './controllers';
 import { LyvelyModule } from '@/core';
 import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/core-interface';
 
@@ -42,7 +42,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
   features: [ContentStreamFeature],
   policies: [ContentCreatePolicy, ContentReadPolicy, ContentWritePolicy, ContentManagePolicy],
   imports: [UsersModule, ProfilesModule, ContentModel, ContentScoreActionModel, LiveModule],
-  controllers: [ContentController],
+  controllers: [ContentController, ContentStreamController],
   providers: [
     ContentService,
     ContentDao,
@@ -52,6 +52,7 @@ const ContentScoreActionModel = MongooseModule.forFeature([
     ContentWritePolicy,
     ContentScoreService,
     ContentScoreDao,
+    ContentStreamService,
   ],
   exports: [
     ContentDao,
