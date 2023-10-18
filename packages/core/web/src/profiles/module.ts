@@ -5,9 +5,10 @@ import { registerMenuEntries } from '@/ui/menus';
 import {
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_SETTINGS,
-  PROFILE_LAYOUT,
-  PROFILE_LAYOUT_FULL,
-  PROFILE_LAYOUT_XL,
+  LAYOUT_PROFILE,
+  LAYOUT_PROFILE_FULL,
+  LAYOUT_PROFILE_XL,
+  LAYOUT_PROFILE_SETTINGS,
   STACK_PROFILE_LAYOUT,
 } from '@/profiles/profile.constants';
 import { isMultiUserProfile, PROFILES_MODULE_ID } from '@lyvely/core-interface';
@@ -24,32 +25,34 @@ export default () => {
     },
     routes,
     init: () => {
+      registerGuards([loadProfileGuard]);
       registerLayouts([
         {
-          id: PROFILE_LAYOUT,
+          id: LAYOUT_PROFILE,
           component: () => import('./layouts/ProfileLayout.vue'),
           props: {},
         },
         {
-          id: PROFILE_LAYOUT_XL,
+          id: LAYOUT_PROFILE_XL,
           component: () => import('./layouts/ProfileLayout.vue'),
           props: { containerWidth: 'xl' },
         },
         {
-          id: PROFILE_LAYOUT_FULL,
+          id: LAYOUT_PROFILE_FULL,
           component: () => import('./layouts/ProfileLayout.vue'),
           props: { containerWidth: 'full' },
         },
+        {
+          id: LAYOUT_PROFILE_SETTINGS,
+          component: () => import('./layouts/ProfileSettingsLayout.vue'),
+        },
       ]);
-
       registerComponentStackEntries(STACK_PROFILE_LAYOUT, [
         {
           id: 'CreateProfileModal',
           component: () => import('./components/modals/CreateProfileModal.vue'),
         },
       ]);
-
-      registerGuards([loadProfileGuard]);
       registerMenuEntries(MENU_PROFILE_DRAWER, [
         {
           id: 'profileUsers',
@@ -57,7 +60,7 @@ export default () => {
           to: { name: 'ProfileUsers' },
           icon: 'users',
           sortOrder: 3000,
-          title: 'profiles.users.label',
+          text: 'profiles.users.label',
           condition: computed(() => {
             const { profile } = useProfileStore();
             return !!profile && isMultiUserProfile(profile);
@@ -69,7 +72,7 @@ export default () => {
           to: { name: 'ProfileSettings' },
           icon: 'settings',
           sortOrder: 4000,
-          title: 'profiles.settings.label',
+          text: 'profiles.settings.label',
         },
       ]);
 
@@ -78,21 +81,21 @@ export default () => {
         {
           id: 'ProfileMembership',
           moduleId: PROFILES_MODULE_ID,
-          title: 'profiles.settings.membership.label',
+          text: 'profiles.settings.membership.label',
           sortOrder: 1000,
           to: { name: 'ProfileMembershipSettings' },
         },
         {
           id: 'GeneralProfileSettings',
           moduleId: PROFILES_MODULE_ID,
-          title: 'profiles.settings.general.label',
+          text: 'profiles.settings.general.label',
           sortOrder: 2000,
           to: { name: 'GeneralProfileSettings' },
         },
         {
           id: 'ProfileFeatureSettings',
           moduleId: PROFILES_MODULE_ID,
-          title: 'profiles.settings.features.label',
+          text: 'profiles.settings.features.label',
           sortOrder: 1000,
           to: { name: 'ProfileFeaturesSettings' },
         },

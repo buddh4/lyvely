@@ -8,7 +8,7 @@ export default () => {
     id: 'app-config',
     moduleId: APP_CONFIG_MODULE_ID,
     init: () => {
-      registerGuards([appConfigGuard]);
+      registerGuards([{ guard: appConfigGuard, sortOrder: 1000 }]);
     },
   } as IModule;
 };

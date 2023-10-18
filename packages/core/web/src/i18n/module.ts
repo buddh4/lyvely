@@ -7,7 +7,7 @@ export default () => {
   return {
     id: I18N_MODULE_ID,
     init: () => {
-      registerGuards([messageLoaderGuard]);
+      registerGuards([{ sortOrder: 100, guard: messageLoaderGuard }]);
     },
   } as IModule;
 };

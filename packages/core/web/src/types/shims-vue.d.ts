@@ -48,7 +48,7 @@ export declare global {
 declare module 'vue-router' {
   interface RouteMeta {
     // is optional
-    i18n?: { module?: string | string[] };
+    i18n?: { load?: Array<{ module: string; section?: string } | string> };
     layout?: string;
     showMobileFooter?: boolean;
     baseName?: string;

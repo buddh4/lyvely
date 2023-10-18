@@ -7,12 +7,14 @@ import tagsModule from './tags/module';
 import messagesModule from './messages/module';
 import uiModule from './ui/module';
 import helpModule from './help/module';
+import userAccountModule from './user-accounts/module';
+import userInvitationsModule from './user-invitations/module';
 import { registerModules } from '@/core';
 
 export const registerCoreModules = () => {
   registerModules(
-    i18nModule(),
     appConfigModule(),
+    i18nModule(),
     authModule(),
     uiModule(),
     profileModule(),
@@ -20,5 +22,7 @@ export const registerCoreModules = () => {
     tagsModule(),
     messagesModule(),
     helpModule(),
+    userAccountModule(),
+    userInvitationsModule(),
   );
 };

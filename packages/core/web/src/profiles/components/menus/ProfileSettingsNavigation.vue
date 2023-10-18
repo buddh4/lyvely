@@ -13,7 +13,7 @@ const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_SETTINGS);
       :key="menuEntry.id"
       aria-controls="profile-settings-content"
       :to="menuEntry.to!"
-      :label="menuEntry.title" />
+      :label="menuEntry.text" />
   </ly-tab-menu>
 </template>
 

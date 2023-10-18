@@ -2,6 +2,7 @@ import { nextTick } from 'vue';
 import { createI18n, I18n } from 'vue-i18n';
 import { IModule, getModule, isDevelopEnvironment, getModules } from '@/core';
 import { Translatable } from '@lyvely/ui';
+import { useI18nStore } from '@/i18n/i18n.store';
 
 export const SUPPORT_LOCALES = ['en-US', 'de-DE'];
 
@@ -21,7 +22,8 @@ export function getI18n() {
 
 export type ITranslation = () => string;
 
-const DEFAULT_TRANSLATION_KEY = 'locale';
+const DEFAULT_TRANSLATION_SECTION = 'locale';
+const BASE_TRANSLATION_SECTION = 'base';
 
 export function translation(key: string, options?: any) {
   return () => translate(key, options);
@@ -60,42 +62,53 @@ export function setupI18n() {
 
 const loadedModules: Record<string, Record<string, boolean>> = {};
 const loadedCoreLocales: string[] = [];
-const baseModuleLocales: string[] = [];
-
 export function isModuleMessagesLoaded(
-  locale: string,
-  module: string,
-  key = DEFAULT_TRANSLATION_KEY,
+  moduleId: string,
+  section = DEFAULT_TRANSLATION_SECTION,
+  locale?: string,
 ) {
-  key ??= DEFAULT_TRANSLATION_KEY;
-  return loadedModules[module] && loadedModules[module][key ? key + '.' + locale : locale];
+  section ??= DEFAULT_TRANSLATION_SECTION;
+  locale ??= useI18nStore().locale || fallBackLocale;
+  return (
+    loadedModules[moduleId] && loadedModules[moduleId][section ? section + '.' + locale : locale]
+  );
 }
 
-function setModuleMessagesLoaded(locale: string, module: string, key = DEFAULT_TRANSLATION_KEY) {
-  key ??= DEFAULT_TRANSLATION_KEY;
+const baseModuleLocales: string[] = [];
+
+function setModuleMessagesLoaded(
+  module: string,
+  section = DEFAULT_TRANSLATION_SECTION,
+  locale?: string,
+) {
+  section ??= DEFAULT_TRANSLATION_SECTION;
+  locale ??= useI18nStore().locale || fallBackLocale;
+
   loadedModules[module] = loadedModules[module] || {};
-  loadedModules[module][key ? key + '.' + locale : locale] = true;
+  loadedModules[module][section ? section + '.' + locale : locale] = true;
 }
 
 export async function loadModuleMessages(
-  locale: string,
   moduleId: string,
-  key = DEFAULT_TRANSLATION_KEY,
+  section = DEFAULT_TRANSLATION_SECTION,
+  locale?: string,
 ): Promise<any> {
-  key ??= DEFAULT_TRANSLATION_KEY;
+  section ??= DEFAULT_TRANSLATION_SECTION;
+  locale ??= useI18nStore().locale || fallBackLocale;
+
   const promises = [];
-  if (locale !== fallBackLocale && !isModuleMessagesLoaded(fallBackLocale, moduleId)) {
-    promises.push(loadModuleMessages(fallBackLocale, moduleId));
+  if (locale !== fallBackLocale && !isModuleMessagesLoaded(moduleId, section, fallBackLocale)) {
+    promises.push(loadModuleMessages(moduleId, section, fallBackLocale));
   }
 
   const module = getModule(moduleId);
 
-  if (!module?.i18n?.[key]) return Promise.resolve();
+  if (!module?.i18n?.[section]) return Promise.resolve();
 
   promises.push(
-    module.i18n[key](locale)
-      .then((data) => mergeMessages(locale, data))
-      .then(() => setModuleMessagesLoaded(locale, moduleId, key))
+    module.i18n[section](locale)
+      .then((data) => mergeMessages(locale!, data))
+      .then(() => setModuleMessagesLoaded(moduleId, section, locale))
       .then(() => nextTick())
       .catch((e) => {
         console.error(`Error loading module message file: ${module} for locale ${locale}`, e);
@@ -109,11 +122,14 @@ export async function loadModuleBaseMessages(locale: string) {
   // TODO: here we assume all modules have base message files
 
   const promises: Array<Promise<any>> = getModules().map((module: IModule) => {
-    if (!module.i18n?.['base'] || isModuleMessagesLoaded(locale, module.id, 'base')) {
+    if (
+      !module.i18n?.[BASE_TRANSLATION_SECTION] ||
+      isModuleMessagesLoaded(module.id, BASE_TRANSLATION_SECTION, locale)
+    ) {
       return Promise.resolve();
     }
 
-    return loadModuleMessages(locale, module.id, 'base');
+    return loadModuleMessages(module.id, BASE_TRANSLATION_SECTION, locale);
   });
 
   return Promise.all(promises).then(() => baseModuleLocales.push(locale));

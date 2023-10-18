@@ -10,11 +10,10 @@ export default () => {
       registerMenuEntry(MENU_PROFILE_DRAWER, {
         id: 'tags',
         moduleId: 'tags',
-        feature: 'tags',
         to: { name: 'Tags' },
         sortOrder: 2000,
         icon: 'tags',
-        title: 'tags.labels.main_nav',
+        text: 'tags.labels.main_nav',
       });
     },
   };

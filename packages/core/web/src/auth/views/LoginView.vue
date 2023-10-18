@@ -12,6 +12,7 @@ import {
   IUserRegistrationAppConfig,
   UserRegistrationMode,
 } from '@lyvely/core-interface';
+import { LyCenteredLayout } from '@lyvely/ui';
 
 const loginStore = useLoginStore();
 const router = useRouter();

@@ -1,0 +1,9 @@
+{
+  "user-accounts": {
+    "menus": {
+      "title": "Account Menu",
+      "myAccount": "My Account",
+      "security": "Security"
+    }
+  }
+}

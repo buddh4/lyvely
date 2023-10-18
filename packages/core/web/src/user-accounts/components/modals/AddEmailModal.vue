@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAddEmailStore } from '@/user-account/stores/add-email.store';
+import { useAddEmailStore } from '@/user-accounts/stores/add-email.store';
 import { storeToRefs } from 'pinia';
 
 const addEmailStore = useAddEmailStore();
@@ -8,10 +8,10 @@ const { showModal, model, status, validator } = storeToRefs(addEmailStore);
 </script>
 
 <template>
-  <ly-modal v-model="showModal" title="account.my_account.add_email.title" @submit="addEmail">
+  <ly-modal v-model="showModal" title="user-accounts.my-account.add_email.title" @submit="addEmail">
     <ly-form-model
       v-model="model"
-      label-key="account.my_account.add_email.fields"
+      label-key="user-accounts.my-account.add_email.fields"
       :status="status"
       :validator="validator">
       <ly-text-field type="email" property="email" />

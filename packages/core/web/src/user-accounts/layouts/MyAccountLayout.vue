@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import MyAccountHeader from '@/user-account/components/MyAccountHeader.vue';
-import { useAccountStore } from '@/user-account/stores/account.store';
+import MyAccountHeader from '@/user-accounts/components/MyAccountHeader.vue';
+import { useAccountStore } from '@/user-accounts/stores/account.store';
 import { isMaxViewSize } from '@/ui';
 
 const accountStore = useAccountStore();

@@ -1,6 +1,10 @@
 {
   "content": {
     "stream": {
+      "feature": {
+        "title": "Stream",
+        "description": "If disabled will hide the main profile stream."
+      },
       "title": "Stream",
       "initError": "Something went wrong, please try again later!"
     }

@@ -1,23 +1,20 @@
 <script lang="ts" setup>
-import { useAccountStore } from '@/user-account/stores/account.store';
+import { useAccountStore } from '@/user-accounts/stores/account.store';
 import { storeToRefs } from 'pinia';
-import { computed, toRefs } from 'vue';
+import { computed } from 'vue';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { usePageStore, isMaxViewSize, useMenu } from '@/ui';
-import { useHelpStore } from '@/help/stores/help.store';
+import { isMaxViewSize, useMenu } from '@/ui';
 import { useNotificationStore } from '@/notifications/stores/notifications.store';
 import NotificationDrawer from '@/notifications/components/NotificationDrawer.vue';
 import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitations.store';
 import { UserAvatar } from '@/users';
-import { MENU_ACCOUNT_DRAWER } from '@/user-account';
-import { t } from '@/i18n';
+import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import MenuEntry from '@/ui/components/MenuEntry.vue';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();
 
 const authStore = useAuthStore();
-const pageStore = usePageStore();
 
 function logout() {
   authStore.logout().then(() => location.reload());
@@ -49,13 +46,6 @@ function onInvite() {
   useSendInviteUsersStore().showModal = true;
 }
 
-function showHelp() {
-  useHelpStore().setShowModal(true);
-}
-
-const { toggleDark } = pageStore;
-const { isDark } = toRefs(pageStore);
-
 function onMenuItemClick() {
   if (isMaxViewSize('sm')) {
     showAccountDrawer.value = false;
@@ -78,7 +68,7 @@ function onMenuItemClick() {
 
   <notification-drawer />
 
-  <ly-drawer id="account-drawer" v-model="showAccountDrawer" title="account.drawer.title">
+  <ly-drawer id="account-drawer" v-model="showAccountDrawer" title="user-accounts.drawer.title">
     <nav>
       <ul>
         <li v-for="menuEntry in enabledMenuEntries" :key="menuEntry.id">
@@ -87,66 +77,6 @@ function onMenuItemClick() {
             :class="menuItemClass"
             icon-class="mr-2 opacity-80"
             @click="onMenuItemClick" />
-        </li>
-        <!--li>
-          <router-link
-            :to="{ name: 'MyAccountInfo' }"
-            :class="menuItemClass"
-            draggable="false"
-            @click="onMenuItemClick">
-            <ly-icon name="account" />
-            {{ $t('account.drawer.myAccount') }}
-          </router-link>
-        </li -->
-        <!--li>
-          <router-link to="/" :class="menuItemClass" draggable="false" @click="onMenuItemClick">
-            <ly-icon name="security" />
-            {{ $t('account.drawer.security') }}
-          </router-link>
-        </li -->
-        <li>
-          <a
-            :class="menuItemClass"
-            draggable="false"
-            @click="
-              showHelp();
-              onMenuItemClick();
-            ">
-            <ly-icon name="help" />
-            {{ $t('help.label') }}
-          </a>
-        </li>
-        <li>
-          <a
-            :class="menuItemClass"
-            draggable="false"
-            @click="
-              toggleDark();
-              onMenuItemClick();
-            ">
-            <ly-icon v-if="isDark" name="light-mode" />
-            <ly-icon v-else name="dark-mode" />
-            <span v-if="isDark">{{ $t('page.toLightMode') }}</span>
-            <span v-else>{{ $t('page.toDarkMode') }}</span>
-          </a>
-        </li>
-        <li>
-          <a
-            :class="menuItemClass"
-            draggable="false"
-            @click="
-              onInvite();
-              onMenuItemClick();
-            ">
-            <ly-icon name="paper-plane" :auto-scale="true" />
-            <span>{{ $t('invitations.account.title') }}</span>
-          </a>
-        </li>
-        <li>
-          <a :class="menuItemClass" draggable="false" @click="logout">
-            <ly-icon name="logout" :auto-scale="true" />
-            {{ $t('auth.logout') }}
-          </a>
         </li>
       </ul>
     </nav>

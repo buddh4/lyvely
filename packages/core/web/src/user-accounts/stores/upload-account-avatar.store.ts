@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { useAccountService } from '@/user-account/services/account.service';
+import { useAccountService } from '@/user-accounts/services/account.service';
 import { loadingStatus, useStatus } from '@/core';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { nextTick, ref, watch } from 'vue';

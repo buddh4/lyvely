@@ -1,12 +1,22 @@
-import { Translatable } from '@lyvely/ui';
+import { IconOptionsIF, Translatable } from '@lyvely/ui';
 import { RouteLocationRaw } from 'vue-router';
 import { ComputedRef, Ref } from 'vue';
 
+type MenuIcon =
+  | {
+      name?: string;
+      title?: Translatable;
+      options?: IconOptionsIF;
+      scaleTo?: number;
+      autoScale?: boolean;
+    }
+  | string;
+
 export interface IBaseMenuEntry {
   id: string;
-  icon?: string;
+  icon?: MenuIcon | Ref<MenuIcon> | ComputedRef<MenuIcon>;
   moduleId: string;
-  title: Translatable;
+  text: Translatable | Ref<Translatable> | ComputedRef<Translatable>;
   condition?: Ref<boolean> | ComputedRef<boolean>;
   to?: RouteLocationRaw;
   feature?: string;

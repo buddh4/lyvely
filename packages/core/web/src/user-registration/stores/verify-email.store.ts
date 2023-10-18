@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { UserRegistrationService } from '../services/user-registration.service';
 import { VerifyEmailDto, ResendOtp } from '@lyvely/core-interface';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { useEmailVerificationStore } from '@/account';
+import { useEmailVerificationStore } from '@/user-accounts';
 
 export const useVerifyRegistrationEmailStore = defineStore('verify-user-registration-email', () => {
   const userRegistrationService = new UserRegistrationService();

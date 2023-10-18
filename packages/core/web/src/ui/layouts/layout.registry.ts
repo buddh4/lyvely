@@ -3,7 +3,7 @@ import { ComponentRegistration } from '@/ui/interfaces';
 export interface ILayout<IProps = any> {
   id: string;
   component: ComponentRegistration<IProps>;
-  props: IProps;
+  props?: IProps;
 }
 
 const layoutMap = new Map<string, ILayout>();

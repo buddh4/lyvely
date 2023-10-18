@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import 'cropperjs/dist/cropper.min.css';
 import { ProfileType } from '@lyvely/core-interface';
-import { useAccountAvatarStore } from '@/user-account/stores/upload-account-avatar.store';
+import { useAccountAvatarStore } from '@/user-accounts/stores/upload-account-avatar.store';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);

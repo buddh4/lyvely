@@ -5,7 +5,7 @@ export default [
     path: profileRoute('/journals'),
     name: 'Journals',
     meta: {
-      i18n: { module: 'journals' },
+      i18n: { load: ['journals'] },
       layout: 'profile',
       title: translation('journals.title'),
     },

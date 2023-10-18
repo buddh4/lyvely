@@ -5,8 +5,8 @@ import { IFieldValidationResult, ModelValidator } from '@lyvely/common';
 import { AddEmailDto, UserEmailModel, OtpInfo } from '@lyvely/core-interface';
 import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
-import { useAccountService } from '@/user-account/services/account.service';
-import { useVerifyEmailStore } from '@/user-account/stores/verify-email.store';
+import { useAccountService } from '@/user-accounts/services/account.service';
+import { useVerifyEmailStore } from '@/user-accounts/stores/verify-email.store';
 
 export const useAddEmailStore = defineStore('add-email', () => {
   const { user } = storeToRefs(useAuthStore());
@@ -18,7 +18,7 @@ export const useAddEmailStore = defineStore('add-email', () => {
 
   const validator = ref(
     new I18nModelValidator(model.value, {
-      translationKey: 'account.my_account.add_email.errors',
+      translationKey: 'user-accounts.my-account.add_email.errors',
       rules: {
         email: [
           (value: string, result: IFieldValidationResult) => {

@@ -5,7 +5,9 @@ export default [
     path: '/mail-invitation',
     name: 'MailInvite',
     meta: {
-      i18n: { module: 'invitations' },
+      i18n: {
+        load: ['user-invitations'],
+      },
       title: () => translate('invitations.title'),
       isPublic: true,
       profileView: false,
@@ -16,7 +18,9 @@ export default [
     path: '/accept-invitation',
     name: 'AcceptInvitation',
     meta: {
-      i18n: { module: 'invitations' },
+      i18n: {
+        load: ['user-invitations'],
+      },
       title: () => translate('invitations.accept.title'),
     },
     component: () => import('../views/AcceptInvitationView.vue'),

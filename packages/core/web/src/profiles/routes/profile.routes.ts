@@ -1,41 +1,43 @@
-import { toProfileHome, ifIsMultiUserProfile, loadProfile } from '../guards';
+import { toProfileHome, ifIsMultiUserProfile } from '../guards';
 import { translation } from '@/i18n';
 import { profileRoot, profileRoute } from './profile-route.util';
 import { RouteRecordRaw } from 'vue-router';
+import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles';
 
 export default [
   { path: '/', redirect: profileRoute() },
   {
     path: profileRoot(),
     name: 'ProfileRoot',
-    beforeEnter: [loadProfile, toProfileHome],
+    meta: {
+      layout: 'profile',
+    },
+    beforeEnter: [toProfileHome],
   },
   {
     path: profileRoute(),
     name: 'ProfileHome',
     meta: {
-      layout: 'profile',
+      layout: LAYOUT_PROFILE,
     },
-    beforeEnter: [loadProfile, toProfileHome],
+    beforeEnter: [toProfileHome],
   },
   {
     path: profileRoute('/users'),
     name: 'ProfileUsers',
     meta: {
-      layout: 'profile',
+      layout: LAYOUT_PROFILE,
     },
     component: () => import('../views/ProfileUsers.vue'),
-    beforeEnter: [loadProfile, ifIsMultiUserProfile],
+    beforeEnter: [ifIsMultiUserProfile],
   },
   {
     path: profileRoute('/settings'),
     name: 'ProfileSettings',
     meta: {
-      layout: 'profile',
+      layout: LAYOUT_PROFILE_SETTINGS,
     },
     redirect: { name: 'ProfileMembershipSettings' },
-    component: () => import('../layouts/ProfileSettingsLayout.vue'),
-    beforeEnter: [loadProfile],
     children: [
       {
         name: 'ProfileMembershipSettings',
@@ -43,7 +45,6 @@ export default [
         meta: {
           title: translation('profile.settings.membership.title'),
         },
-        beforeEnter: [loadProfile],
         component: () => import('../views/ProfileMembershipSettings.vue'),
       },
       {
@@ -52,7 +53,6 @@ export default [
         meta: {
           title: translation('features.settings.features.title'),
         },
-        beforeEnter: [loadProfile],
         component: () => import('../views/ProfileFeaturesSettings.vue'),
       },
       {
@@ -61,7 +61,6 @@ export default [
         meta: {
           title: translation('profile.settings.general.title'),
         },
-        beforeEnter: [loadProfile],
         component: () => import('../views/GeneralProfileSettings.vue'),
       },
     ],

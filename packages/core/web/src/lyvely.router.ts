@@ -8,12 +8,13 @@ import {
   RouteLocationNormalized,
   NavigationHookAfter,
 } from 'vue-router';
+import { sortBySortOrder } from '@lyvely/common/src';
 
 //import { useHelpStore } from '@/help/stores/help.store';
 
-const beforeNavigate: NavigationGuard[] = [];
-const guards: NavigationGuard[] = [];
-const afterNavigate: NavigationGuard[] = [];
+const beforeNavigate: GuardDefinition[] = [];
+const guards: GuardDefinition[] = [];
+const afterNavigate: GuardDefinition[] = [];
 const navigationHooksAfter: NavigationHookAfter[] = [];
 
 export const router = createRouter({
@@ -25,17 +26,31 @@ export function registerRoutes(registerRoutes: Array<RouteRecordRaw>) {
   registerRoutes.forEach((route) => router.addRoute(route));
 }
 
-export type GuardRegistration = Array<
-  | NavigationGuard
-  | { on: 'beforeNavigate' | 'guard' | 'afterNavigate'; guards: Array<NavigationGuard> }
->;
+export type GuardDefinition = {
+  id?: string;
+  on?: 'beforeNavigate' | 'guard' | 'afterNavigate';
+  sortOrder?: number;
+  guard: NavigationGuard;
+};
 
-export function registerGuards(navGuards: GuardRegistration) {
+export function registerGuards(navGuards: Array<NavigationGuard | GuardDefinition>) {
   navGuards.forEach((guard) => {
-    if (typeof guard === 'function') guards.push(guard);
-    else if (guard.on === 'guard') guards.push(...guard.guards);
-    else if (guard.on === 'beforeNavigate') beforeNavigate.push(...guard.guards);
-    else if (guard.on === 'afterNavigate') afterNavigate.push(...guard.guards);
+    const definition =
+      typeof guard === 'function' ? ({ on: 'guard', guard: guard } as GuardDefinition) : guard;
+
+    definition.on ??= 'guard';
+    definition.id ??= definition.guard.name;
+
+    if (definition.on === 'guard') {
+      guards.push(definition);
+      guards.sort(sortBySortOrder);
+    } else if (definition.on === 'beforeNavigate') {
+      beforeNavigate.push(definition);
+      beforeNavigate.sort(sortBySortOrder);
+    } else if (definition.on === 'afterNavigate') {
+      afterNavigate.push(definition);
+      afterNavigate.sort(sortBySortOrder);
+    }
   });
 }
 
@@ -43,7 +58,7 @@ export function registerAfterNavigationHooks(hooks: NavigationHookAfter[]) {
   navigationHooksAfter.push(...hooks);
 }
 
-function moduleGuards(guards: Array<NavigationGuard>) {
+function moduleGuards(guards: Array<GuardDefinition>) {
   return (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
@@ -53,8 +68,8 @@ function moduleGuards(guards: Array<NavigationGuard>) {
     function applyGuard(index: number) {
       if (index < guards.length) {
         const guard = guards[index];
-        console.debug('Run module guard: ' + guard.name);
-        guard(to, from, (n?: any) => {
+        console.debug('Run module guard: ' + guard.guard.name);
+        guard.guard(to, from, (n?: any) => {
           if (n) next(n);
           else applyGuard(index + 1);
         });

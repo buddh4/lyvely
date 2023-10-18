@@ -6,7 +6,7 @@ import {
   getCreateContentTypes,
 } from '../services';
 import { ICreateContentInitOptions } from '../interfaces';
-import { isFeatureEnabledOnProfile } from '@/profiles';
+import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
 
 export const useContentCreateStore = defineStore('content-create', () => {
   const contentType = ref<string>();
@@ -86,9 +86,14 @@ export const useContentCreateStore = defineStore('content-create', () => {
 
   function checkContentType(type: string | undefined): type is string {
     if (!type) return false;
+
     const options = getContentTypeOptions(type);
     if (!options) return false;
-    if (options.feature && !isFeatureEnabledOnProfile(options.feature)) return false;
+
+    if (options.feature && !useProfileFeatureStore().isFeatureEnabled(options.feature).value) {
+      return false;
+    }
+
     return true;
   }
 

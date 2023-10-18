@@ -2,10 +2,10 @@
 import { useAuthStore } from '@/auth/store/auth.store';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useAddEmailStore } from '@/user-account/stores/add-email.store';
-import AddEmailModal from '@/user-account/components/modals/AddEmailModal.vue';
-import VerifyEmailModal from '@/user-account/components/modals/VerifyEmailModal.vue';
-import { useVerifyEmailStore } from '@/user-account/stores/verify-email.store';
+import { useAddEmailStore } from '@/user-accounts/stores/add-email.store';
+import AddEmailModal from '@/user-accounts/components/modals/AddEmailModal.vue';
+import VerifyEmailModal from '@/user-accounts/components/modals/VerifyEmailModal.vue';
+import { useVerifyEmailStore } from '@/user-accounts/stores/verify-email.store';
 
 const { user } = storeToRefs(useAuthStore());
 const addEmailStore = useAddEmailStore();
@@ -29,11 +29,11 @@ const verifyEmail = (email: string) => {
 </script>
 
 <template>
-  <ly-list-page v-if="user" title="account.my_account.info.label" class="mb-2" icon="info">
+  <ly-list-page v-if="user" title="user-accounts.my-account.info.label" class="mb-2" icon="info">
     <table class="border-collapse text-sm w-full bg-main rounded">
       <tr>
         <th class="p-3 text-left border-b border-divide">
-          {{ $t('account.my_account.info.username') }}
+          {{ $t('user-accounts.my-account.info.username') }}
         </th>
         <td class="p-3 text-left border-b border-divide">
           {{ user.username }}
@@ -41,7 +41,7 @@ const verifyEmail = (email: string) => {
       </tr>
       <tr>
         <th class="p-3 text-left border-b border-divide">
-          {{ $t('account.my_account.info.member_since') }}
+          {{ $t('user-accounts.my-account.info.member-since') }}
         </th>
         <td class="p-3 text-left border-b border-divide">
           <ly-formatted-date :date="user.createdAt" />
@@ -49,7 +49,7 @@ const verifyEmail = (email: string) => {
       </tr>
       <tr>
         <th class="p-3 text-left">
-          {{ $t('account.my_account.info.locale') }}
+          {{ $t('user-accounts.my-account.info.locale') }}
         </th>
         <td class="bg-main p-3 text-left">
           {{ user.locale }}
@@ -58,7 +58,7 @@ const verifyEmail = (email: string) => {
     </table>
   </ly-list-page>
 
-  <ly-list-page v-if="user" title="account.my_account.info.emails" icon="email">
+  <ly-list-page v-if="user" title="user-accounts.my-account.info.emails" icon="email">
     <template #header-right>
       <ly-add-button @click="showAddEmailModal = true" />
     </template>
@@ -70,19 +70,19 @@ const verifyEmail = (email: string) => {
         v-if="userEmail.email === user.email"
         name="star"
         class="mr-1 text-pop"
-        title="account.my_account.info.main_email"
+        title="user-accounts.my-account.info.main_email"
         tabindex="0" />
       <ly-icon
         v-else-if="!userEmail.verified"
         name="warning"
         class="mr-1 text-warning"
-        title="account.my_account.info.unverified_email"
+        title="user-accounts.my-account.info.unverified_email"
         tabindex="0" />
       <ly-icon
         v-else
         name="success"
         class="mr-1 text-success-light"
-        title="account.my_account.info.verified_email"
+        title="user-accounts.my-account.info.verified_email"
         tabindex="0" />
 
       {{ userEmail.email }}

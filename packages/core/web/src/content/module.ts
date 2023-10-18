@@ -29,7 +29,7 @@ export default () => {
         feature: ContentStreamFeature.id,
         sortOrder: 1000,
         icon: 'stream',
-        title: 'content.stream.title',
+        text: 'content.stream.title',
       });
     },
   } as IModule;

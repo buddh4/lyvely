@@ -1,18 +1,19 @@
 <script lang="ts" setup>
-import { getSettingFeaturesOfProfile } from '@/profiles/helpers';
 import { t } from '@/i18n';
-import { IFeature } from '@lyvely/core-interface';
-import { cloneDeep } from 'lodash';
-import { computed } from 'vue';
+import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
+import ProfileFeatureSettingsEntry from '@/profiles/components/features/ProfileFeatureSettingsEntry.vue';
+import { storeToRefs } from 'pinia';
+import { useProfileStore } from '@/profiles';
 
-const installableFeatures = getSettingFeaturesOfProfile();
+const { profile } = storeToRefs(useProfileStore());
+const installableFeatures = useProfileFeatureStore().getSettingFeaturesOfProfile();
 </script>
 
 <template>
   <ly-content-panel>
     <div class="">
       <div class="p-5">
-        <ly-dimmed size="xs">
+        <ly-dimmed class="text-xs">
           Here you can enable or disable certain profile features. Note that in most cases disabling
           a feature will not remove any of the data related with a feature but rather hide features
           in menus and and other parts of the application. If disabling or enabling a certain
@@ -34,25 +35,10 @@ const installableFeatures = getSettingFeaturesOfProfile();
             </tr>
           </template>
           <template #body>
-            <tr
+            <profile-feature-settings-entry
               v-for="feature in installableFeatures"
               :key="feature.id"
-              class="border-b border-divide hover:bg-gray-50 dark:hover:bg-gray-600">
-              <th scope="row" class="px-3 py-2 md:px-5 md:py-4 font-medium whitespace-nowrap">
-                {{ t(feature.title) }}
-                <ly-dimmed v-if="feature.description" :text="feature.description" />
-              </th>
-              <td class="flex items-center px-3 py-2 md:px-5 md:py-4 space-x-3">
-                <ly-button class="primary text-xs" title="profiles.settings.features.configure">
-                  <ly-icon name="settings" class="w-3.5" />
-                </ly-button>
-              </td>
-              <td class="w-4 p-4">
-                <div class="flex items-center">
-                  <ly-checkbox />
-                </div>
-              </td>
-            </tr>
+              :feature="feature" />
           </template>
         </ly-table>
       </ly-responsive>

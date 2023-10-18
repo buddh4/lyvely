@@ -11,6 +11,7 @@ export default [
     name: 'Login',
     meta: {
       title: () => translate('auth.login.title'),
+      profileView: false,
     },
     component: () => import('../views/LoginView.vue'),
     beforeEnter: [ifNotAuthenticated],
@@ -35,6 +36,7 @@ export default [
   {
     path: PATH_LOGOUT,
     name: 'Logout',
+    profileView: false,
     beforeEnter: [() => useAuthStore().logout()],
   },
 ] as Array<RouteRecordRaw>;

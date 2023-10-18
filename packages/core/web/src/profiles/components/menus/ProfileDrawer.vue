@@ -7,6 +7,7 @@ import imageUrl from '@/assets/logo_white_bold.svg';
 import { UseSwipeDirection, useSwipe } from '@vueuse/core';
 import { useProfileMenu } from '@/profiles/composables';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
+import MenuEntry from '@/ui/components/MenuEntry.vue';
 //import LegalLinks from '@/legal/components/LegalLinks.vue';
 
 const pageStore = usePageStore();
@@ -33,8 +34,7 @@ const ariaLabel = computed(() =>
   }),
 );
 
-function onMenuItemClick(item: IMenuEntry) {
-  if (item.click) item.click();
+function onMenuItemClick() {
   if (isMaxViewSize('sm')) showSidebar.value = true;
 }
 
@@ -73,31 +73,14 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
       <div class="flex-grow">
         <ul id="profile-navigation" class="nav flex-column">
           <li>
-            <template v-for="menuEntry in enabledMenuEntries" :key="menuEntry.id">
-              <a
-                v-if="menuEntry.click"
-                class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
-                @click="onMenuItemClick(menuEntry)">
-                <ly-icon :name="menuEntry.icon" class="w-5" />
-                <transition name="fade">
-                  <span v-if="showLabels" class="menu-item">
-                    {{ translate(menuEntry.title) }}
-                  </span>
-                </transition>
-              </a>
-              <router-link
-                v-if="menuEntry.to"
-                class="flex no-wrap items-center h-12 select-none block py-3 px-3 no-underline cursor-pointer"
-                :to="menuEntry.to"
-                @click="onMenuItemClick(menuEntry)">
-                <ly-icon :name="menuEntry.icon" class="w-5" />
-                <transition name="fade">
-                  <span v-if="showLabels" class="menu-item">
-                    {{ translate(menuEntry.title) }}
-                  </span>
-                </transition>
-              </router-link>
-            </template>
+            <menu-entry
+              v-for="menuEntry in enabledMenuEntries"
+              :key="menuEntry.id"
+              :entry="menuEntry"
+              :show-labels="showLabels"
+              icon-class="w-5"
+              class="flex no-wrap items-center h-12 select-none py-3 px-3 no-underline cursor-pointer"
+              @click="onMenuItemClick" />
           </li>
         </ul>
       </div>

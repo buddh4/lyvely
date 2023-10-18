@@ -1,7 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { BaseModel, DocumentModel, TransformObjectId } from '@lyvely/common';
-import { ProfileType, ProfileVisibilityLevel } from '../interfaces';
-import { IsArray, IsEnum, IsInt, IsOptional, IsString, Length, Min } from 'class-validator';
+import { BaseModel, DocumentModel, TransformObjectId, PropertyType } from '@lyvely/common';
+import { ProfileType } from '../interfaces';
 import { TagModel } from './tag.model';
 
 export const MIN_PROFILE_NAME_LENGTH = 1;
@@ -41,9 +40,11 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   type: ProfileType;
 
   @Expose()
+  @PropertyType([String])
   enabledFeatures: string[];
 
   @Expose()
+  @PropertyType([String])
   disabledFeatures: string[];
 
   @Expose()

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { useVerifyEmailStore } from '@/user-account/stores/verify-email.store';
+import { useVerifyEmailStore } from '@/user-accounts/stores/verify-email.store';
 import OtpInput from '@/auth/components/OtpInput.vue';
 import { onUnmounted } from 'vue';
 
@@ -12,7 +12,10 @@ onUnmounted(reset);
 </script>
 
 <template>
-  <ly-modal v-model="showModal" title="account.my_account.verify_email.title" @submit="verifyEmail">
+  <ly-modal
+    v-model="showModal"
+    title="user-accounts.my-account.verify_email.title"
+    @submit="verifyEmail">
     <otp-input
       v-model="model.otp"
       :has-error="!!validator.getError('otp') || !!errorMsg"

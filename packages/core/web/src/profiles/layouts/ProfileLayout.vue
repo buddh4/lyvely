@@ -7,7 +7,7 @@ import { computed, Ref, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePageStore, isFormField } from '@/ui';
 import { useSwipe } from '@vueuse/core';
-import { useAccountStore } from '@/account';
+import { useAccountStore } from '@/user-accounts';
 import ComponentStack from '@/ui/components/ComponentStack.vue';
 import { STACK_PROFILE_LAYOUT } from '@/profiles/profile.constants';
 
