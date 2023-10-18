@@ -5,8 +5,8 @@ import { IFieldValidationResult, ModelValidator } from '@lyvely/common';
 import { AddEmailDto, UserEmailModel, OtpInfo } from '@lyvely/core-interface';
 import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
-import { useAccountService } from '@/account/services/account.service';
-import { useVerifyEmailStore } from '@/account/stores/verify-email.store';
+import { useAccountService } from '@/user-account/services/account.service';
+import { useVerifyEmailStore } from '@/user-account/stores/verify-email.store';
 
 export const useAddEmailStore = defineStore('add-email', () => {
   const { user } = storeToRefs(useAuthStore());

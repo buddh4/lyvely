@@ -3,8 +3,8 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { ResendOtp, OtpInfo, VerifyEmailDto } from '@lyvely/core-interface';
 import { IFieldValidationResult } from '@lyvely/common';
-import { useAccountService } from '@/account/services/account.service';
-import { useEmailVerificationStore } from '@/account';
+import { useAccountService } from '@/user-account/services/account.service';
+import { useEmailVerificationStore } from '@/user-account';
 
 export const useVerifyEmailStore = defineStore('verify-email', () => {
   const { user } = storeToRefs(useAuthStore());

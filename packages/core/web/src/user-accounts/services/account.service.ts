@@ -6,7 +6,7 @@ import {
   ResendOtp,
 } from '@lyvely/core-interface';
 import { useSingleton } from '@lyvely/common';
-import accountRepository from '../repositories/account.repository';
+import { accountRepository } from '../repositories';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/core';
 
 export class AccountService implements IAccountService {

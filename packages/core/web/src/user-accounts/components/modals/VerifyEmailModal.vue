@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { useVerifyEmailStore } from '@/account/stores/verify-email.store';
+import { useVerifyEmailStore } from '@/user-account/stores/verify-email.store';
 import OtpInput from '@/auth/components/OtpInput.vue';
 import { onUnmounted } from 'vue';
 

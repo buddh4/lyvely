@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAddEmailStore } from '@/account/stores/add-email.store';
+import { useAddEmailStore } from '@/user-account/stores/add-email.store';
 import { storeToRefs } from 'pinia';
 
 const addEmailStore = useAddEmailStore();

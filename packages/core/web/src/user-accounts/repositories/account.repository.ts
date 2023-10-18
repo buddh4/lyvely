@@ -10,7 +10,7 @@ import { EndpointResult } from '@lyvely/common';
 
 const resource = ENDPOINT_ACCOUNT;
 
-export default {
+export const accountRepository = {
   async addEmail(model: AddEmailDto) {
     return repository.post<EndpointResult<IAccountService['addEmail']>>(
       `${resource}/add-email`,

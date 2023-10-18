@@ -2,10 +2,10 @@
 import { useAuthStore } from '@/auth/store/auth.store';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useAddEmailStore } from '@/account/stores/add-email.store';
-import AddEmailModal from '@/account/components/modals/AddEmailModal.vue';
-import VerifyEmailModal from '@/account/components/modals/VerifyEmailModal.vue';
-import { useVerifyEmailStore } from '@/account/stores/verify-email.store';
+import { useAddEmailStore } from '@/user-account/stores/add-email.store';
+import AddEmailModal from '@/user-account/components/modals/AddEmailModal.vue';
+import VerifyEmailModal from '@/user-account/components/modals/VerifyEmailModal.vue';
+import { useVerifyEmailStore } from '@/user-account/stores/verify-email.store';
 
 const { user } = storeToRefs(useAuthStore());
 const addEmailStore = useAddEmailStore();

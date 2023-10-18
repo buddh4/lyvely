@@ -1,14 +1,17 @@
 <script lang="ts" setup>
-import { useAccountStore } from '@/account/stores/account.store';
+import { useAccountStore } from '@/user-account/stores/account.store';
 import { storeToRefs } from 'pinia';
 import { computed, toRefs } from 'vue';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { usePageStore, isMaxViewSize } from '@/ui';
+import { usePageStore, isMaxViewSize, useMenu } from '@/ui';
 import { useHelpStore } from '@/help/stores/help.store';
 import { useNotificationStore } from '@/notifications/stores/notifications.store';
 import NotificationDrawer from '@/notifications/components/NotificationDrawer.vue';
 import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitations.store';
 import { UserAvatar } from '@/users';
+import { MENU_ACCOUNT_DRAWER } from '@/user-account';
+import { t } from '@/i18n';
+import MenuEntry from '@/ui/components/MenuEntry.vue';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();
@@ -23,6 +26,8 @@ function logout() {
 const { showAccountDrawer } = storeToRefs(accountStore);
 const { showNotificationDrawer, hasUpdates: hasNotificationUpdates } =
   storeToRefs(notificationStore);
+
+const { enabledMenuEntries } = useMenu(MENU_ACCOUNT_DRAWER);
 
 const menuItemClass =
   'block py-3 px-3 no-underline cursor-pointer flex no-wrap items-center h-12 menu-item text-main';
@@ -76,6 +81,13 @@ function onMenuItemClick() {
   <ly-drawer id="account-drawer" v-model="showAccountDrawer" title="account.drawer.title">
     <nav>
       <ul>
+        <li v-for="menuEntry in enabledMenuEntries" :key="menuEntry.id">
+          <menu-entry
+            :entry="menuEntry"
+            :class="menuItemClass"
+            icon-class="mr-2 opacity-80"
+            @click="onMenuItemClick" />
+        </li>
         <!--li>
           <router-link
             :to="{ name: 'MyAccountInfo' }"
@@ -148,10 +160,6 @@ nav a {
 
 nav a:hover:not(.router-link-active) {
   @apply border-l-4 border-slate-200 dark:border-slate-600 text-highlight;
-}
-
-nav a .icon {
-  @apply mr-2 opacity-80;
 }
 
 nav a.router-link-active {
