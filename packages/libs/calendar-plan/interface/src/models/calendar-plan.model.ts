@@ -40,16 +40,16 @@ export abstract class CalendarPlan {
   }
 
   public static getInstance(interval: CalendarInterval): CalendarPlan {
-    if (!CalendarPlan._instances[interval]) {
+    if (!CalendarPlan._instances.get(interval)) {
       const planClass = PlanFactory[interval];
       if (!planClass) {
         throw new Error('Plan not found!');
       }
 
-      CalendarPlan._instances[interval] = new planClass();
+      CalendarPlan._instances.set(interval, new planClass());
     }
 
-    return CalendarPlan._instances[interval];
+    return CalendarPlan._instances.get(interval)!;
   }
 }
 

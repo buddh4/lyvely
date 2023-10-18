@@ -30,7 +30,8 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
 
   if (model && typeof model === 'object') {
     const propertyDefinitions = getPropertyTypeDefinitions(model.constructor as Type);
-    Object.keys(propertyDefinitions).forEach((propertyKey) => {
+    Object.keys(propertyDefinitions).forEach((key) => {
+      const propertyKey = key as keyof T & string;
       const propertyDefinition = propertyDefinitions[propertyKey];
       // Instantiate empty non optional properties or if the type does not match the configured type
       if (!model[propertyKey] && !propertyDefinition.optional) {
@@ -42,9 +43,9 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
         } else if (!propertyDefinition.type) {
           model[propertyKey] = propertyDefinition.type; //null, undefined etc
         } else if (Array.isArray(propertyDefinition.type)) {
-          model[propertyKey] = [];
+          model[propertyKey] = [] as any;
         } else if (propertyDefinition.type === Date) {
-          model[propertyKey] = new Date();
+          model[propertyKey] = new Date() as any;
         } else if (!primitivePrototypes.includes(propertyDefinition.type.prototype)) {
           model[propertyKey] = Object.assign(
             Object.create(propertyDefinition.type.prototype),
@@ -52,10 +53,10 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
           );
           if (
             !propertyDefinition.default &&
-            'afterInit' in model[propertyKey] &&
-            typeof model[propertyKey]['afterInit'] === 'function'
+            'afterInit' in (<any>model)[propertyKey] &&
+            typeof (<any>model)[propertyKey]['afterInit'] === 'function'
           ) {
-            model[propertyKey].afterInit();
+            (<any>model)[propertyKey].afterInit();
           }
         } else {
           model[propertyKey] = primitiveDefaults.get(propertyDefinition.type);

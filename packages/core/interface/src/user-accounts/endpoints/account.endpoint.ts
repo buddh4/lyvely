@@ -5,7 +5,7 @@ import { ResendOtp, OtpInfo } from '@/otp';
 
 export interface IAccountService {
   addEmail(dto: AddEmailDto): Promise<OtpInfo>;
-  verifyEmail(dto: VerifyEmailDto);
+  verifyEmail(dto: VerifyEmailDto): void;
   resendOtp(dto: ResendOtp): Promise<OtpInfo | null>;
   updateAvatar(file: any): Promise<AvatarModel>;
   updateGravatar(): Promise<AvatarModel>;

@@ -28,7 +28,7 @@ export interface IValidationOptions<T extends object = object> extends Validator
 export class ModelValidator<T extends object = object> {
   protected errors: { [k in keyof T]?: string };
   protected model?: T;
-  protected readonly fieldValidator;
+  protected readonly fieldValidator: ModelValidator<T>;
   protected options: IValidatorOptions<T>;
 
   constructor(model?: T, options?: IValidatorOptions<T>) {
@@ -76,14 +76,14 @@ export class ModelValidator<T extends object = object> {
   getValidationResult(): IFieldValidationResult[] {
     return Object.keys(this.errors).map((property) => ({
       property: property,
-      errors: [this.errors[property]],
+      errors: [this.errors[property as keyof T]!],
     }));
   }
 
   setErrors(errors: IFieldValidationResult[]) {
     for (const error of errors) {
       if (error.errors?.length) {
-        this.errors[error.property] = error.errors[0];
+        this.errors[error.property as keyof T] = error.errors[0];
       }
     }
   }
@@ -112,9 +112,10 @@ export class ModelValidator<T extends object = object> {
       const propRules = this.options.rules[property] || [];
       for (const rule of propRules) {
         const injectedResult: IFieldValidationResult = { property, errors: [] };
-        const result = (await rule(this.model[property], injectedResult)) || injectedResult;
+        const result =
+          (await rule(this.model[property as keyof T], injectedResult)) || injectedResult;
         if (result.errors?.length) {
-          this.errors[property] = result.errors[0];
+          this.errors[property as keyof T] = result.errors[0];
           break;
         }
       }
@@ -145,7 +146,7 @@ export class ModelValidator<T extends object = object> {
 
     const firstErrorMessage = constraints[firstRule];
     if (firstErrorMessage) {
-      this.errors[error.property] = this.options.translate
+      this.errors[error.property as keyof T] = this.options.translate
         ? this.options.translate({
             model: error.target as T,
             value: error.value,

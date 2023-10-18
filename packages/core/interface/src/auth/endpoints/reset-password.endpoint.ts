@@ -2,8 +2,8 @@ import { Endpoint } from '@lyvely/common';
 import { ResetPassword, SendResetPasswordMail } from '../models';
 
 export interface IResetPasswordService {
-  sendMail(model: SendResetPasswordMail);
-  resetPassword(model: ResetPassword);
+  sendMail(model: SendResetPasswordMail): void;
+  resetPassword(model: ResetPassword): void;
 }
 
 export type ResetPasswordEndpoint = Endpoint<IResetPasswordService>;

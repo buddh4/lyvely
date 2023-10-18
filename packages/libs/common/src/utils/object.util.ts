@@ -15,7 +15,7 @@ export function isBlacklistedProperty(prop: string) {
 }
 
 export function findByPath<T>(
-  model: object,
+  model: any,
   path: string,
   parent = false,
   create = true,
@@ -34,10 +34,10 @@ export function findByPath<T>(
     if ((sub && sub.length && sub.charAt(0) === '$') || /^[0-9]+$/.test(sub)) {
       // we do not support mongodb special cases e.g. array etc.
       result = undefined;
-    } else if (result && !result[sub] && create && index !== subPaths.length) {
-      result[sub] = {};
+    } else if (result && !(<any>result)[sub] && create && index !== subPaths.length) {
+      (<any>result)[sub] = {};
     }
-    result = result && result[sub] ? result[sub] : undefined;
+    result = result && (<any>result)[sub] ? (<any>result)[sub] : undefined;
   });
   return result;
 }

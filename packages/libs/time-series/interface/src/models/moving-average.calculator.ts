@@ -13,7 +13,7 @@ export class MovingAverageCalculator {
   windowSize: number;
   values: number[];
 
-  constructor(windowSize) {
+  constructor(windowSize: number) {
     this.windowSize = windowSize;
     this.values = [];
   }

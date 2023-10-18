@@ -2,7 +2,6 @@ import App from './App.vue';
 
 export { App };
 export * from './accessibility';
-export * from './account';
 export * from './app';
 export * from './app-config';
 export * from './auth';
@@ -22,6 +21,7 @@ export * from './stream';
 export * from './system-messages';
 export * from './tags';
 export * from './ui';
+export * from './user-accounts';
 export * from './user-invitations';
 export * from './user-registration';
 export * from './users';

@@ -22,10 +22,6 @@ export class ProfileWithRelationsModel<TID = string> extends ProfileModel<TID> {
   @TransformTo(ProfileRelationModel)
   profileRelations: ProfileRelationModel[];
 
-  constructor(obj?: Partial<ProfileWithRelationsModel<any>>) {
-    super(obj);
-  }
-
   getMembership(): MembershipModel | null {
     return <MembershipModel | null>(
       this.userRelations.find(

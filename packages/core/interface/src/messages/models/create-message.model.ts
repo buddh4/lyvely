@@ -14,8 +14,8 @@ export class CreateMessageModel extends CreateContentModel<CreateMessageModel> {
   constructor(obj?: Partial<PropertiesOf<CreateMessageModel>>) {
     // When initialized in the stream we get a title automatically
     // TODO: Find a better way of handling content entries which do not support a title field
-    if ((<any>obj).title && !obj.text) {
-      obj.text = (<any>obj).title;
+    if ((<any>obj).title && !obj!.text) {
+      obj!.text = (<any>obj).title;
       delete (<any>obj).title;
     }
     super(obj);

@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import '@lyvely/ui/style.css';
-import { LyvelyWebApp } from '@/lyvely-web.app';
+import '@lyvely/web/style.css';
+import './index.css';
+import { LyvelyWebApp } from '@lyvely/web';
 
 const app = new LyvelyWebApp({
   modules: [],

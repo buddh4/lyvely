@@ -28,7 +28,7 @@ export function getScaledProgress(score: number, scale = DEFAULT_SCOREING_LEVEL_
 
 const multiUserProfiles = [ProfileType.Group, ProfileType.Organization];
 
-export function isMultiUserProfile(modelOrType?: ProfileModel | ProfileType) {
+export function isMultiUserProfile(modelOrType?: ProfileModel | ProfileType): boolean {
   const type = modelOrType instanceof ProfileModel ? modelOrType.type : modelOrType;
-  return type && multiUserProfiles.includes(type);
+  return !!type && multiUserProfiles.includes(type);
 }

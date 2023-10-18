@@ -46,6 +46,7 @@
         "milestones",
         "tags",
         "tasks",
+        "features",
         "i18n",
         "deps",
         "time-series",

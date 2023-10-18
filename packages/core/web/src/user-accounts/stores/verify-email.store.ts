@@ -23,7 +23,7 @@ export const useVerifyEmailStore = defineStore('verify-email', () => {
   } = useEmailVerificationStore({
     verify: async (dto: VerifyEmailDto) => {
       await accountService.verifyEmail(dto);
-      user.value!.findEmail(dto.email).verified = true;
+      user.value!.findEmail(dto.email)!.verified = true;
       showModal.value = false;
       return true;
     },

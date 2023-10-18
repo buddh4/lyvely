@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
       "vite": ["node_modules/vite"]

@@ -17,7 +17,7 @@ export interface IContentFilter<
   TModel extends IContent<string> = IContent<string>,
   TOptions extends IContentFilterOptions = IContentFilterOptions,
 > extends IFilter<TModel, TOptions> {
-  setTagProvider(provider: TagProvider);
+  setTagProvider(provider: TagProvider): void;
   tagProvider?: () => TagModel[];
 }
 

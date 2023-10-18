@@ -11,13 +11,14 @@ export function applyValidationProperties<T>(
 
   const validationFields = getValidationFields(model);
 
-  Object.keys(data).forEach((property) => {
+  Object.keys(data).forEach((key) => {
+    const property = key as keyof T;
     if (!Array.isArray(model) && !validationFields.has(property)) {
       return;
     }
 
     if (Array.isArray(data[property])) {
-      model[property] = applyValidationProperties([], data[property], level + 1, { maxDepth });
+      model[property] = applyValidationProperties<any>([], data[property], level + 1, { maxDepth });
     } else if (
       data[property] &&
       typeof data[property] === 'object' &&

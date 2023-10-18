@@ -52,21 +52,21 @@ export function toWeekTimingId(
     firstDayOfWeek = date.isoWeekday(1); // Monday
   }
 
-  let month = firstDayOfWeek.month() + 1;
-  let quarter = firstDayOfWeek.quarter();
+  let month = firstDayOfWeek!.month() + 1;
+  let quarter = firstDayOfWeek!.quarter();
 
-  if (date.year() < weekYear || firstDayOfWeek.year() < weekYear) {
+  if (date.year() < weekYear! || firstDayOfWeek!.year() < weekYear!) {
     month = 1;
     quarter = 1;
-  } else if (date.year() > weekYear) {
+  } else if (date.year() > weekYear!) {
     month = 12;
     quarter = 4;
   }
 
-  return `Y:${weekYear};Q:${quarter};M:${pad(month)};W:${pad(weekOfYear)}`;
+  return `Y:${weekYear};Q:${quarter};M:${pad(month)};W:${pad(weekOfYear!)}`;
 }
 
-function pad(num) {
+function pad(num: number): string {
   const s = '0' + num;
   return s.substring(s.length - 2);
 }

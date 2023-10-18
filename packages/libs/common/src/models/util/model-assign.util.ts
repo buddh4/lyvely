@@ -2,7 +2,7 @@ import { findByPath, isBlacklistedProperty, isObjectId, Type } from '../../utils
 import { initPropertyTypes } from './model-property-type.util';
 import { getPropertyTypeDefinition } from '../decorators';
 
-type WithTransformation = ((any, string) => undefined | any) | undefined;
+type WithTransformation = ((model: any, field: string) => undefined | any) | undefined;
 interface IAssignOptions {
   maxDepth?: number;
   strict?: boolean;
@@ -45,7 +45,8 @@ function _assignRawDataTo<T extends Object>(
     return model;
   }
 
-  Object.keys(data).forEach((path) => {
+  Object.keys(data).forEach((key) => {
+    const path = key as keyof T & string;
     if (path.includes('.')) {
       const subPathRoot = findByPath(model, path, true, !strict);
       if (subPathRoot) {
@@ -59,17 +60,19 @@ function _assignRawDataTo<T extends Object>(
     if (isBlacklistedProperty(path)) return;
     if (typeof model === 'object' && strict && !Object.hasOwn(model as object, path)) return;
 
-    const transformed = transform ? transform(data[path], path) : undefined;
+    const transformed: any = transform ? transform(data[path], path) : undefined;
 
     if (transformed !== undefined) {
-      model[path] = transformed;
+      model[<keyof T>path] = transformed;
     } else if (Array.isArray(data[path])) {
       let arrayData = data[path];
       const arrayType = getPropertyTypeDefinition(model.constructor as Type, path)?.type;
       if (arrayType && Array.isArray(arrayType) && arrayType.length) {
-        arrayData = data[path].map((entry) => _transformType(entry, arrayType[0]));
+        arrayData = data[path].map((entry: any) => _transformType(entry, arrayType[0]));
       }
-      model[path] = _assignRawDataTo([], arrayData, level + 1, { maxDepth, strict, transform });
+      model[path] = <T[keyof T & string]>(
+        _assignRawDataTo([], arrayData, level + 1, { maxDepth, strict, transform })
+      );
     } else if (isObjectId(data[path])) {
       // Todo: We can not clone an ObjectId by Object.create, maybe implement another clone method in the future.
       model[path] = data[path];
@@ -87,7 +90,7 @@ function _assignRawDataTo<T extends Object>(
       if (_isOfType(data[path], propertyType)) {
         model[path] = data[path];
       } else if (PRIMITIVE_TYPES.includes(propertyType)) {
-        model[path] = null; // We do not want to convert objects to primitives
+        model[path] = <T[keyof T & string]>null; // We do not want to convert objects to primitives
       } else {
         model[path] = _assignRawDataTo(
           Object.assign(Object.create(propertyType.prototype), model[path]),
@@ -100,17 +103,17 @@ function _assignRawDataTo<T extends Object>(
       if (
         model[path] &&
         typeof model[path] === 'object' &&
-        'afterInit' in model[path] &&
-        typeof model[path]['afterInit'] === 'function'
+        'afterInit' in (<any>model)[path] &&
+        typeof (<any>model)[path]['afterInit'] === 'function'
       ) {
-        model[path].afterInit();
+        (<any>model)[path].afterInit();
       }
     } else if (typeof data[path] !== 'function') {
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
       const propertyType = propertyTypeDefinition?.type;
       if (typeof data[path] === 'string' && propertyType === Date) {
         try {
-          model[path] = new Date(data[path]);
+          (<any>model)[path] = new Date(data[path]);
         } catch (err) {
           console.warn(err, 'Tried to assign invalid string date to model property');
           model[path] = data[path];

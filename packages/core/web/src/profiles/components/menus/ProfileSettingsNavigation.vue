@@ -2,6 +2,7 @@
 import { useProfileMenu } from '@/profiles/composables';
 import { MENU_PROFILE_SETTINGS } from '@/profiles/profile.constants';
 import { LyTabMenuLink } from '@lyvely/ui';
+import { unref } from 'vue';
 
 const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_SETTINGS);
 </script>
@@ -13,7 +14,7 @@ const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_SETTINGS);
       :key="menuEntry.id"
       aria-controls="profile-settings-content"
       :to="menuEntry.to!"
-      :label="menuEntry.text" />
+      :label="unref(menuEntry.text) as string" />
   </ly-tab-menu>
 </template>
 

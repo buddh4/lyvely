@@ -7,13 +7,13 @@ import { loadingStatus, useStatus } from '@/core';
 import { useContentStore } from '@/content/stores/content.store';
 
 export const useCreateMessageStore = defineStore('create-message', () => {
-  const model = ref(new CreateMessageModel(''));
+  const model = ref(new CreateMessageModel({ text: '' }));
   const validator = ref(new I18nModelValidator(model.value));
   const messageService = useMessageService();
   const status = useStatus();
 
   function reset() {
-    model.value = new CreateMessageModel('');
+    model.value = new CreateMessageModel({ text: '' });
     validator.value.setModel(model.value);
     status.resetStatus();
   }
@@ -21,7 +21,7 @@ export const useCreateMessageStore = defineStore('create-message', () => {
   async function submit(parentId?: string) {
     // TODO: Error handling
     if (!(await validator.value.validate())) return;
-    const message = new CreateMessageModel(model.value.text, parentId);
+    const message = new CreateMessageModel({ text: model.value.text, parentId: parentId });
     const response = await loadingStatus(messageService.create(message), status);
     reset();
     useContentStore().emitPostContentEvent(MessageModel.contentType, 'created', response.model);

@@ -3,7 +3,7 @@ import { StrictEndpoint } from '@lyvely/common';
 
 export interface ICaptchaService {
   challenge(): Promise<CaptchaChallenge>;
-  refresh(identity: string);
+  refresh(identity: string): void;
 }
 
 export const ENDPOINT_CAPTCHA = 'captcha';

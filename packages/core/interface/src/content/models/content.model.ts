@@ -117,7 +117,9 @@ export class ContentModel<TID = string, T extends IContent = IContent, TConfig e
   meta: ContentMetadataModel<TID>;
 
   @Expose()
-  @Transform(({ obj }) => obj.tagIds?.map((id) => id.toString()) || [])
+  @Transform(
+    ({ obj }) => obj.tagIds?.map((id: { toString: () => string }) => id.toString?.()) || [],
+  )
   tagIds: Array<TID>;
 
   @Expose()

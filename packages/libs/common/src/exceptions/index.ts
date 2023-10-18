@@ -1,9 +1,9 @@
 import { IModelValidationResult, IFieldValidationResult } from '../validation';
 
-export class ServiceException extends Error {
+export class ServiceException<TData = any> extends Error {
   protected defaultMessage = 'Unknown service error';
   protected defaultStatus = 500;
-  public readonly data?: any;
+  public readonly data?: TData;
   public status?: number;
 
   constructor(msgOrData?: string | any, msg?: string) {
@@ -35,9 +35,9 @@ export class EntityNotFoundException extends ServiceException {
   }
 }
 
-export class FieldValidationException extends ServiceException {
-  public readonly data?: { fields: IFieldValidationResult[] };
-
+export class FieldValidationException extends ServiceException<{
+  fields: IFieldValidationResult[];
+}> {
   constructor(msgOrFields: IFieldValidationResult[] | string, msg = 'Field validation failed.') {
     super(typeof msgOrFields === 'string' ? msgOrFields : { fields: msgOrFields || [] }, msg);
     this.status = 400;

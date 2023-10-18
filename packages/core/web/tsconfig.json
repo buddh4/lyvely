@@ -18,9 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "vite": ["node_modules/vite"],
-      "@lyvely/web": ["src"],
-      "@lyvely/calendar-plan": ["../../libs/calendar-plan"],
+      "vite": ["node_modules/vite"]
     },
     "types": [
       "vue",
@@ -47,6 +45,6 @@
     "config/lyvely-web.config.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules", "dist"
   ]
 }

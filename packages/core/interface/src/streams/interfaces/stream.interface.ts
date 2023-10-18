@@ -44,7 +44,7 @@ export interface IStreamRequest<
 }
 
 export interface IStreamFilter {
-  reset();
+  reset(): void;
 }
 
 export interface IStreamService<

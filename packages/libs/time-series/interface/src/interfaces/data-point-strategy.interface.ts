@@ -56,7 +56,7 @@ export interface IDataPointStrategy<
    * @param target
    * @param config
    */
-  populateDataPointTypeSettings(target: Partial<TConfig>, config: TConfig);
+  populateDataPointTypeSettings(target: Partial<TConfig>, config: TConfig): void;
 
   /**
    * Populates the whole configuration into the target. If history is set to true, also the history will
@@ -65,5 +65,5 @@ export interface IDataPointStrategy<
    * @param config
    * @param history
    */
-  populateDataPointConfig(target: Partial<TConfig>, config: TConfig, history?: boolean);
+  populateDataPointConfig(target: Partial<TConfig>, config: TConfig, history?: boolean): void;
 }

@@ -1,4 +1,4 @@
-import * as he from 'he';
+import he from 'he';
 
 export function encodeHtml(str: string) {
   return he.encode(str);

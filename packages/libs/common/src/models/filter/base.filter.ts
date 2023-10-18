@@ -42,7 +42,7 @@ export abstract class Filter<
   protected emitter: Emitter<FilterEvents<TOptions>>;
 
   protected abstract checkModel(model: TModel): boolean;
-  abstract isEmpty();
+  abstract isEmpty(): boolean;
 
   protected constructor(options?: FilterConstructorOptions<TModel, TOptions>) {
     this.emitter = mitt<FilterEvents<TOptions>>();

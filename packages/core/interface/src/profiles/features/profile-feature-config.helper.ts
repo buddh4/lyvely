@@ -19,15 +19,15 @@ type IMergePipeEntry = {
 // TODO: Here we should rather test against the subscription of the organization instead of the profile itself
 
 const findOrganizationProfileTypeSubscription = (c: IFeatureConfig, p: IProfileInfo) =>
-  c?.profiles?.[ProfileType.Organization]?.[p.type]?.subscription?.[p.subscription];
+  (<any>c?.profiles?.[ProfileType.Organization])?.[p.type]?.subscription?.[p.subscription as any];
 const findProfileTypeSubscription = (c: IFeatureConfig, p: IProfileInfo) =>
-  c?.profiles?.[p.type]?.subscription?.[p.subscription];
+  (<any>c?.profiles)?.[p.type]?.subscription?.[p.subscription as any];
 const findSubscription = (c: IFeatureConfig, p: IProfileInfo) =>
-  c?.profiles?.subscription?.[p.subscription];
+  c?.profiles?.subscription?.[p.subscription as any];
 const findOrganizationProfileType = (c: IFeatureConfig, p: IProfileInfo) =>
-  c?.profiles?.[ProfileType.Organization]?.[p.type]?.default;
+  (<any>c?.profiles?.[ProfileType.Organization])?.[p.type]?.default;
 const findProfileTypeDefaults = (c: IFeatureConfig, p: IProfileInfo) =>
-  c?.profiles?.[p.type]?.default;
+  (<any>c?.profiles)?.[p.type]?.default;
 const findDefaults = (c: IFeatureConfig) => c?.profiles?.default;
 
 const isOrganizationProfileType = (p: IProfileInfo) => !eq(p.oid, p.id);
@@ -98,10 +98,10 @@ function mergeDefinition(
   config: IFeatureConfig,
   match: IFeatureConfigDefinition,
 ) {
-  const result = {};
+  const result: Partial<IFeatureConfigDefinition> = {};
   ['installable', 'nonInstallable', 'enabled', 'disabled', 'fixed', 'suggested'].forEach((key) => {
-    const merged = mergeProp(profile, config, entry, match, key);
-    if (merged) result[key] = merged;
+    const merged = mergeProp(profile, config, entry, match, key as keyof IFeatureConfigDefinition);
+    if (merged) result[key as keyof IFeatureConfigDefinition] = merged;
   });
   return result;
 }
@@ -111,17 +111,17 @@ function mergeProp(
   config: IFeatureConfig,
   entry: IMergePipeEntry,
   match: IFeatureConfigDefinition,
-  prop: string,
+  prop: keyof IFeatureConfigDefinition,
 ): string[] | undefined {
-  let currentEntry = entry;
-  let currentMatch = match;
+  let currentEntry: IMergePipeEntry | undefined = entry;
+  let currentMatch: IFeatureConfigDefinition | undefined = match;
   const resultSet = new Set<string>();
   let found = false;
 
   // Iterate up the feature definition tree
   while (currentEntry) {
     // Get the feature definitions of the given prop and merge it with current result
-    const features: string[] = currentMatch?.[prop];
+    const features: Array<string> | undefined = currentMatch?.[prop];
     features?.forEach((feature) => {
       if (feature !== '^') resultSet.add(feature);
     });
