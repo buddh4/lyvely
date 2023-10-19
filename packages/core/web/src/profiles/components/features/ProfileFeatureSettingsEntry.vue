@@ -24,7 +24,10 @@ const isEnabled = computed({
       <ly-dimmed v-if="feature.description" class="text-xs" :text="feature.description" />
     </th>
     <td class="flex items-center px-3 py-2 md:px-5 md:py-4 space-x-3">
-      <ly-button class="primary text-xs" title="profiles.settings.features.configure">
+      <ly-button
+        v-if="feature.configurable"
+        class="primary text-xs"
+        title="profiles.settings.features.configure">
         <ly-icon name="settings" class="w-3.5" />
       </ly-button>
     </td>

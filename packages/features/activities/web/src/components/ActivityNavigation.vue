@@ -17,7 +17,7 @@ const { enabledMenuEntries } = useProfileMenu(ACTIVITIES_MENU);
         <div class="flex gap-1 items-center justify-center">
           <ly-icon name="activity" :class="[{ hidden: active }, 'md:hidden h-3']" />
           <span :class="!active ? 'hidden md:inline' : ''">
-            {{ t(menuEntry.title) }}
+            {{ t(menuEntry.text) }}
           </span>
         </div>
       </template>

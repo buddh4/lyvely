@@ -3,6 +3,7 @@ import {
   closeMobileDrawerGuard,
   hideAppLoader,
   hideLoaderProgress,
+  resolveLayoutGuard,
   setPageTitle,
   showLoaderProgress,
   showMobileNavGuard,
@@ -14,6 +15,7 @@ import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import { usePageStore } from './stores';
 import { computed } from 'vue';
 import { UI_MODULE_ID } from './ui.constants';
+import { resolveLayoutComponent } from '@/ui/layouts';
 
 export default () => {
   return {
@@ -25,6 +27,7 @@ export default () => {
           on: 'beforeNavigate',
           guard: showLoaderProgress,
         },
+        resolveLayoutGuard,
       ]);
       registerAfterNavigationHooks([
         showMobileNavGuard,

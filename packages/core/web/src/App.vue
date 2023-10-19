@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ReloadPrompt, usePageStore, getLayout, resolveComponentRegistration } from '@/ui';
+import { usePageStore, getLayout, resolveComponentRegistration } from '@/ui';
 import { useGlobalDialogStore } from '@/core';
 import AriaLiveStatus from '@/accessibility/components/AriaLiveStatus.vue';
 import { LyAppLoader, LyDialog } from '@lyvely/ui';
@@ -51,5 +51,4 @@ const layoutDefinition = computed<{ component: any; props: any } | undefined>(()
     :title="title"
     :button-type="buttonType"
     :message="message" />
-  <reload-prompt />
 </template>

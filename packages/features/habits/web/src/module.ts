@@ -1,5 +1,19 @@
-import { IModule, registerContentType, translation } from '@lyvely/web';
-import { CreateHabitModel, HabitModel, HABIT_MODULE_ID } from '@lyvely/habits-interface';
+import {
+  IModule,
+  registerContentType,
+  registerFeatures,
+  registerMenuEntries,
+  registerRoutes,
+  translation,
+} from '@lyvely/web';
+import {
+  CreateHabitModel,
+  HabitModel,
+  HABIT_MODULE_ID,
+  HabitsFeature,
+} from '@lyvely/habits-interface';
+import { ACTIVITIES_MENU } from '@lyvely/activities-web';
+import { habitRoutes } from '@/routes';
 
 export default () => {
   return {
@@ -9,12 +23,24 @@ export default () => {
       locale: (locale: string) => import(`./locales/${locale}.json`),
     },
     init: () => {
+      registerRoutes(habitRoutes);
+      registerFeatures([HabitsFeature]);
+      registerMenuEntries(ACTIVITIES_MENU, [
+        {
+          id: 'activities-habits',
+          text: 'habits.menu.title',
+          moduleId: HABIT_MODULE_ID,
+          icon: 'activity',
+          feature: HabitsFeature.id,
+          to: { name: 'Habits' },
+        },
+      ]);
       registerContentType({
         type: HabitModel.contentType,
         moduleId: HABIT_MODULE_ID,
         name: translation('habits.name'),
         icon: 'activity',
-        feature: 'habits',
+        feature: HabitsFeature.id,
         modelClass: HabitModel,
         interfaces: {
           create: {

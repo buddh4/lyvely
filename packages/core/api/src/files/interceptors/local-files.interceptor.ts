@@ -5,7 +5,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 import { diskStorage } from 'multer';
 import { ConfigurationPath } from '@/core';
 import { Request } from 'express';
-import { getLocalFilePath } from '../file-path.utils';
+import { getLocalUploadFilePath } from '../file-path.utils';
 
 interface LocalFilesInterceptorOptions {
   dir?: string;
@@ -26,7 +26,7 @@ export function LocalFilesInterceptor(
             req: Request,
             file: Express.Multer.File,
             callback: (error: Error | null, destination: string) => void,
-          ) => callback(null, getLocalFilePath(configService, options.dir || '')),
+          ) => callback(null, getLocalUploadFilePath(configService, options.dir || '')),
           filename: options.filename
             ? (
                 req: Request,

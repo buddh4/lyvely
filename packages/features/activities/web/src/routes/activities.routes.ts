@@ -1,54 +1,20 @@
-import { t, profileRoute } from '@lyvely/web';
-import { useActivityStore } from '@/store';
+import { profileRoute, useProfileMenu } from '@lyvely/web';
+import { useActivityStore } from '@/stores';
 import { RouteRecordRaw } from 'vue-router';
+import { ACTIVITIES_MENU } from '@/activities.constants';
 
-export default [];
-/*
+export const activitiesRoutes = [
   {
     name: 'Activities',
     path: profileRoute('/activities'),
-    component: () => import('../views/ActivityLayout.vue'),
-    meta: {
-      layout: 'profile',
-    },
-    children: [
-      {
-        name: 'Habits',
-        path: '',
-        meta: {
-          i18n: { module: ['activities', 'habits'] },
-          layout: 'profile',
-          title: () => t('habits.title'),
-        },
-        component: () =>
-          new Promise((resolve, reject) => {
+    redirect() {
+      const activitiesMenu = useProfileMenu(ACTIVITIES_MENU);
+      if (!activitiesMenu.hasEnabledEntries.value) return '/404';
 
-              .catch(reject);
-          }),
-        beforeEnter: [() => useActivityStore().setActiveView('Habits')],
-      },
-      {
-        name: 'Tasks',
-        path: 'tasks',
-        meta: {
-          i18n: { module: ['activities', 'habits'] },
-          layout: 'profile',
-          title: () => t('tasks.title'),
-        },
-        beforeEnter: [() => useActivityStore().setActiveView('Tasks')],
-      },
-      {
-        name: 'Milestones',
-        path: 'milestones',
-        meta: {
-          i18n: { module: ['activities', 'milestones'] },
-          layout: 'profile',
-          title: () => t('milestones.title'),
-        },
-        component: () =>
-        beforeEnter: [() => useActivityStore().setActiveView('Milestones')],
-      },
-    ],
+      const viewName = useActivityStore().activeView;
+      if (viewName) return { name: viewName };
+
+      return activitiesMenu.enabledMenuEntries.value[0].to;
+    },
   },
 ] as RouteRecordRaw[];
-*/

@@ -3,13 +3,12 @@ import { useAccountStore } from '@/user-accounts/stores/account.store';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { isMaxViewSize, useMenu } from '@/ui';
+import { MenuEntry, isMaxViewSize, useMenu } from '@/ui';
 import { useNotificationStore } from '@/notifications/stores/notifications.store';
 import NotificationDrawer from '@/notifications/components/NotificationDrawer.vue';
 import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitations.store';
 import { UserAvatar } from '@/users';
 import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
-import MenuEntry from '@/ui/components/MenuEntry.vue';
 
 const accountStore = useAccountStore();
 const notificationStore = useNotificationStore();

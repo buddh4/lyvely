@@ -3,7 +3,7 @@ import { BaseModel, TransformObjectId } from '@lyvely/common';
 import { IProfileRelation, IProfileRelationUserInfo } from '../interfaces';
 
 @Exclude()
-export class ProfileRelationUserInfoDto implements IProfileRelationUserInfo {
+export class ProfileRelationUserInfoModel implements IProfileRelationUserInfo {
   @Expose()
   displayName: string;
 
@@ -18,31 +18,34 @@ export class ProfileRelationUserInfoDto implements IProfileRelationUserInfo {
 }
 
 @Exclude()
-export class ProfileRelationModel<T extends IProfileRelation = IProfileRelation>
-  extends BaseModel<T & { pid: any; oid: any; uid: any }>
-  implements IProfileRelation
+export class ProfileRelationModel<
+    TID = string,
+    T extends IProfileRelation<TID> = IProfileRelation<TID>,
+  >
+  extends BaseModel<T & { pid: TID; oid: TID; uid: TID }>
+  implements IProfileRelation<TID>
 {
   @Expose()
   id: string;
 
   @Expose()
   @TransformObjectId()
-  oid: any;
+  oid: TID;
 
   @Expose()
   @TransformObjectId()
-  pid: any;
+  pid: TID;
 
   @Expose()
   @TransformObjectId()
-  uid: any;
+  uid: TID;
 
   @Expose()
   type: string;
 
   @Expose()
-  @Type(() => ProfileRelationUserInfoDto)
-  userInfo: ProfileRelationUserInfoDto;
+  @Type(() => ProfileRelationUserInfoModel)
+  userInfo: ProfileRelationUserInfoModel;
 
   @Expose()
   role?: string;
@@ -50,5 +53,6 @@ export class ProfileRelationModel<T extends IProfileRelation = IProfileRelation>
 
 @Exclude()
 export class ProfileRelationDetailsModel<
-  T extends IProfileRelation = IProfileRelation,
-> extends ProfileRelationModel<T> {}
+  TID = string,
+  T extends IProfileRelation<TID> = IProfileRelation<TID>,
+> extends ProfileRelationModel<TID, T> {}

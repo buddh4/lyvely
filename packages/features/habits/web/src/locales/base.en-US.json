@@ -1,6 +1,13 @@
 {
   "habits": {
     "title": "Activities",
+    "menu": {
+      "title": "Activities"
+    },
+    "feature": {
+      "title": "Activities",
+      "description": "If it is disabled, the content type 'Activities' will be removed."
+    },
     "name": "Activity",
     "stream_entry": {
       "text": "New activity"

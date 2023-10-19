@@ -40,4 +40,4 @@ lerna-debug.log*
 .env
 /screenshots
 
-src/test-lyvely.config.ts
+src/lyvely-dev.config.ts

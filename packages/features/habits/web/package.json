@@ -2,6 +2,7 @@
   "name": "@lyvely/habits-web",
   "version": "0.1.0-alpha3",
   "description": "core-web package",
+  "type": "module",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {

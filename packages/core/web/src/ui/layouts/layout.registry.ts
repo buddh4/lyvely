@@ -1,4 +1,5 @@
 import { ComponentRegistration } from '@/ui/interfaces';
+import { isLazyComponentRegistration, loadComponentRegistration } from '@/ui';
 
 export interface ILayout<IProps = any> {
   id: string;
@@ -7,6 +8,14 @@ export interface ILayout<IProps = any> {
 }
 
 const layoutMap = new Map<string, ILayout>();
+
+export async function resolveLayoutComponent(id: string) {
+  const layout = getLayout(id);
+  if (!layout) return;
+  if (isLazyComponentRegistration(layout.component)) {
+    layout.component = await loadComponentRegistration(layout.component);
+  }
+}
 
 export function registerLayouts(layouts: ILayout[]) {
   layouts.forEach((l) => registerLayout(l));

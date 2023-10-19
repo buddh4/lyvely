@@ -1,1 +1,1 @@
-export { default as activitiyRoutes } from './activities.routes';
+export * from './activities.routes';

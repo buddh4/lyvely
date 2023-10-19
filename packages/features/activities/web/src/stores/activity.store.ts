@@ -15,11 +15,11 @@ const DEFAULT_ACTIVITY_VIEW = 'latest_activity_view';
 export const latestActivityView = localStorageManager.getStoredValue(DEFAULT_ACTIVITY_VIEW);
 
 export const useActivityStore = defineStore('activities', () => {
-  const activeView = ref<string>(latestActivityView.getValue() || 'Habits');
+  const activeView = ref<string | null | undefined>(latestActivityView.getValue());
 
-  function setActiveView(view: 'Habits' | 'Tasks' | 'Milestones') {
-    activeView.value = view;
-    latestActivityView.setValue(view);
+  function setActiveView(viewName: string) {
+    activeView.value = viewName;
+    latestActivityView.setValue(viewName);
   }
 
   return {

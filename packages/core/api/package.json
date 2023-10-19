@@ -7,12 +7,7 @@
   "scripts": {
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
-    "start": "nest start",
-    "start:e2e": "cross-env NODE_ENV=e2e npm run start",
-    "start:e2e:debug": "cross-env NODE_ENV=e2e npm run start:debug",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/src/main",
+    "dev": "nest start",
     "build": "gulp clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && gulp copyAssets",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",

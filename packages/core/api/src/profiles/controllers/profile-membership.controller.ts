@@ -23,6 +23,6 @@ export class ProfileMembershipController implements ProfileMembershipEndpoint {
   ): Promise<MembershipModel> {
     const membership = req.context.getMembership();
     await this.membershipService.updateMembershipInfo(membership!, update);
-    return new MembershipModel(membership);
+    return new MembershipModel<any>(membership);
   }
 }

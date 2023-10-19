@@ -1,7 +1,7 @@
 import { Get, Controller, Res, Param, NotFoundException, Header } from '@nestjs/common';
 import { Public, UseClassSerializer } from '@/core';
 import { isGuid } from '@lyvely/common';
-import { getLocalFilePath } from '@/files';
+import { getLocalUploadFilePath } from '@/files';
 import fs from 'fs';
 import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
@@ -17,7 +17,7 @@ export class AvatarsController {
   public async loadAvatar(@Param('guid') guid, @Res() res: Response) {
     if (!isGuid(guid)) throw new NotFoundException();
 
-    const path = getLocalFilePath(this.configService, 'avatars', guid);
+    const path = getLocalUploadFilePath(this.configService, 'avatars', guid);
     if (!fs.existsSync(path)) throw new NotFoundException();
     const file = fs.createReadStream(path);
 

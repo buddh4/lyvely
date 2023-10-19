@@ -46,7 +46,8 @@ type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 export interface IAppModuleBuilderOptions {
   useRecommended?: boolean;
   useFeatures?: boolean;
-  configFiles?: Array<string>;
+  configFiles?: Array<string> | false;
+  config?: ServerConfiguration;
   providers?: LyvelyProviderOptions;
   serveStatic?: boolean;
   modules?: TModule[];
@@ -208,10 +209,16 @@ export class AppModuleBuilder {
   }
 
   private initConfigModule() {
-    this.options.configFiles ??= ['config/lyvely.ts'];
     const loader: Array<() => Promise<ServerConfiguration>> = [];
-    if (this.options.configFiles) {
-      loader.push(...this.options.configFiles.map((file) => loadConfig(file)));
+    if (this.options.configFiles !== false) {
+      this.options.configFiles ??= ['config/lyvely.ts'];
+      if (this.options.configFiles) {
+        loader.push(...this.options.configFiles.map((file) => loadConfig(file)));
+      }
+    }
+
+    if (this.options.config) {
+      loader.push(() => Promise.resolve(this.options.config!));
     }
 
     return this.importModules(

@@ -3,7 +3,7 @@
     "stream": {
       "feature": {
         "title": "Stream",
-        "description": "If disabled will hide the main profile stream."
+        "description": "If disabled, the main profile stream will be hidden."
       },
       "title": "Stream",
       "initError": "Something went wrong, please try again later!"

@@ -7,16 +7,16 @@ export interface IProfileRelationUserInfo {
 
 export interface IProfile {}
 
-export interface IProfileRelation {
-  oid: any;
-  uid: any;
-  pid: any;
+export interface IProfileRelation<TID = string> {
+  oid: TID;
+  uid: TID;
+  pid: TID;
   userInfo: IProfileRelationUserInfo;
   type: string;
   role?: string;
 }
 
-export interface IMembership extends IProfileRelation {
+export interface IMembership<TID = string> extends IProfileRelation<TID> {
   role: string;
 }
 

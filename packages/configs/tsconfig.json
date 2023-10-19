@@ -1,0 +1,7 @@
+{
+  "extends": "./typescript/lib.tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./"
+  },
+  "exclude": ["node_modules", "dist", "src/**/tests/**/*", "**/*.spec.ts"]
+}

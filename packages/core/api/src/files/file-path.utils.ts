@@ -2,7 +2,7 @@ import { join } from 'path';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/core';
 
-export function getLocalFilePath(
+export function getLocalUploadFilePath(
   configService: ConfigService<ConfigurationPath>,
   ...path: Array<string>
 ) {

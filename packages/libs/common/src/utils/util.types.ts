@@ -14,4 +14,4 @@ export type FunctionsOf<T> = Pick<T, FunctionPropertyNames<T>>;
 
 export type Constructor<T> = new (...args: any[]) => T;
 
-export type Lazy<T> = () => Promise<T>;
+export type Lazy<T> = () => Promise<{ default: T }>;

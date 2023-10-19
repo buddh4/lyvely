@@ -12,7 +12,7 @@ export class ProfileWithRelationsModel<TID = string> extends ProfileModel<TID> {
   @Expose()
   @PropertyType([ProfileRelationDetailsModel])
   @TransformTo(ProfileRelationDetailsModel)
-  userRelations: ProfileRelationDetailsModel[];
+  userRelations: ProfileRelationDetailsModel<TID>[];
 
   /**
    * Contains all relations of the profile
@@ -20,7 +20,11 @@ export class ProfileWithRelationsModel<TID = string> extends ProfileModel<TID> {
   @Expose()
   @PropertyType([ProfileRelationModel])
   @TransformTo(ProfileRelationModel)
-  profileRelations: ProfileRelationModel[];
+  profileRelations: ProfileRelationModel<TID>[];
+
+  constructor(obj?: Partial<ProfileWithRelationsModel<TID>>) {
+    super(obj as Partial<ProfileModel<TID>>);
+  }
 
   getMembership(): MembershipModel | null {
     return <MembershipModel | null>(

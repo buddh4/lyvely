@@ -87,12 +87,6 @@ export type UserPermissionOptions = Record<string, string[]>;
 
 export type ModulesConfiguration = {} & { [k: string]: object };
 
-export enum OperationMode {
-  STANDALONE = 'standalone',
-  STANDALONE_CLUSTER = 'standalone-cluster',
-  DISTRIBUTED = 'distributed',
-}
-
 export interface IRedisConfig {
   host: string;
   port: number;
@@ -136,9 +130,15 @@ export interface ILegalOptions {
   };
 }
 
+export enum OperationMode {
+  STANDALONE = 'standalone',
+  STANDALONE_CLUSTER = 'standalone-cluster',
+  DISTRIBUTED = 'distributed',
+}
+
 export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   appName: string;
-  operationMode: OperationMode;
+  operationMode: 'standalone' | 'standalone-cluster' | 'distributed';
   docUrl?: string;
   redis: IRedisConfig;
   csrf?: ILyvelyCsrfOptions;

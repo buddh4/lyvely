@@ -3,9 +3,9 @@ import { User, UserDao } from '@/users';
 import { Avatar } from '@/avatars';
 import { ConfigService } from '@nestjs/config';
 import fs from 'fs/promises';
-import { createWriteStream } from 'fs';
+import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import crypto from 'crypto';
-import { getLocalFilePath } from '@/files';
+import { getLocalUploadFilePath } from '@/files';
 import client from 'https';
 import { ConfigurationPath } from '@/core';
 import { isGuid, IntegrityException } from '@lyvely/common';
@@ -45,6 +45,14 @@ export class AccountAvatarService {
 
   private getAccountAvatarFilePath(user: User) {
     // TODO: Move to avatar module
-    return getLocalFilePath(this.configService, 'avatars', user.guid);
+    this.ensureAvatarDirExists();
+    return getLocalUploadFilePath(this.configService, 'avatars', user.guid);
+  }
+
+  private ensureAvatarDirExists(): void {
+    const avatarDirPath = getLocalUploadFilePath(this.configService, 'avatars');
+    if (!existsSync(avatarDirPath)) {
+      mkdirSync(avatarDirPath, { recursive: true });
+    }
   }
 }

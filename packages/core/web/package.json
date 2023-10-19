@@ -118,7 +118,6 @@
     "@vitejs/plugin-vue": "^4.4.0",
     "vite-plugin-externalize-deps": "^0.7.0",
     "dependency-cruiser": "^14.1.0",
-    "vite-plugin-pwa": "^0.14.7",
     "vite-tsconfig-paths": "^4.2.0",
     "vue-tsc": "^1.6.5"
   }

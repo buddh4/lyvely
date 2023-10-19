@@ -2,6 +2,7 @@ import { NavigationGuardNext, RouteLocation } from 'vue-router';
 import { usePageStore } from '../stores';
 import { isMaxViewSize } from '../helpers';
 import NProgress from 'nprogress';
+import { resolveLayoutComponent } from '@/ui';
 
 export const showLoaderProgress = (
   to: RouteLocation,
@@ -10,6 +11,17 @@ export const showLoaderProgress = (
 ) => {
   if (to.name) NProgress.start();
 
+  next();
+};
+
+export const resolveLayoutGuard = async (
+  to: RouteLocation,
+  from: RouteLocation,
+  next: NavigationGuardNext,
+) => {
+  if (to.meta.layout) {
+    await resolveLayoutComponent(to.meta.layout);
+  }
   next();
 };
 

@@ -23,5 +23,6 @@ export * from './user-registrations';
 export * from './user-accounts';
 export * from './user-invitations';
 export * from './user-subscriptions';
+export * from './lyvely.server';
 export * from './testing/test.builder';
 export * from '@lyvely/core-interface';
