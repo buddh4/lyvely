@@ -12,6 +12,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - MainContainer does not have full width and scrollbar is not at the right page
 - Profile layout swipe handler not active on form elements
 - Drawer stack not working as expected
+- Major refactoring and modularization of core and feature modules
+- Added back to stream button
+- Implementation of Menu API
+- Implementation of Feature API
+- Implementation of Policy API
+- Added a standalone mode for Tasks, Habits and Milestone module
+- Added an initial view for Tasks, Habits and Milestone module
+- Major improvements of backend and frontend module system
+- Router can now be extended by modules
+- Messages can be now be edited
+
 
 ### Changed
 - Mobile profile drawer is closed on route change
