@@ -395,7 +395,7 @@ function getAriaPressed($attrs: any) {
 }
 
 .button.danger {
-  @apply border-danger bg-danger text-inverted;
+  @apply border-danger bg-danger;
 }
 
 .button.danger.outlined {

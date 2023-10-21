@@ -40,7 +40,7 @@ function updateSettings() {
         :validator="validator"
         :status="updateProfileMembershipSettingsStore.status"
         label-key="profiles.settings.membership">
-        <div class="flex items-center mb-2 flex-row items-stretch">
+        <div class="flex mb-2 flex-row items-stretch">
           <div class="w-full relative">
             <ly-text-field property="displayName" class="mb-0" />
           </div>
@@ -56,7 +56,7 @@ function updateSettings() {
       </ly-form-model>
 
       <div class="clear-both mt-4">
-        <ly-button class="primary float-right" @click="updateSettings">
+        <ly-button class="primary float-right text-xs" @click="updateSettings">
           {{ $t('common.update') }}
         </ly-button>
       </div>
@@ -65,7 +65,7 @@ function updateSettings() {
     <ly-content-panel>
       <div>
         <ly-button
-          class="danger float-right"
+          class="danger float-right text-xs"
           :confirm="{ text: 'profiles.settings.archive.confirm' }">
           {{ $t('profiles.settings.membership.archive') }}
         </ly-button>

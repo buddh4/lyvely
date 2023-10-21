@@ -13,7 +13,7 @@ withDefaults(defineProps<IProps>(), {
 </script>
 
 <template>
-  <p :class="[{ truncate }, 'text-dimmed']">
+  <p :class="[{ truncate }, 'text-dimmed hover:text-main cursor-help']">
     <slot>{{ t(text) }}</slot>
   </p>
 </template>

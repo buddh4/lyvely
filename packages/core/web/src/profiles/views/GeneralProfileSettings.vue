@@ -11,7 +11,7 @@ const description = ref(profileStore.profile?.description);
 
 <template>
   <ly-content-panel>
-    <div class="flex items-center mb-2 flex-row items-stretch">
+    <div class="flex mb-2 flex-row items-stretch">
       <div class="w-full">
         <ly-text-field v-model="name" label="profiles.settings.general.name" />
       </div>
@@ -26,7 +26,7 @@ const description = ref(profileStore.profile?.description);
     </div>
 
     <div class="clear-both mt-4">
-      <ly-button class="primary float-right">
+      <ly-button class="primary float-right text-xs">
         {{ $t('common.update') }}
       </ly-button>
     </div>
@@ -35,7 +35,7 @@ const description = ref(profileStore.profile?.description);
   <ly-content-panel>
     <div>
       <ly-button
-        class="danger float-right"
+        class="danger float-right text-xs"
         :confirm="{ text: 'profiles.settings.archive.confirm' }">
         {{ $t('common.archive') }}
       </ly-button>

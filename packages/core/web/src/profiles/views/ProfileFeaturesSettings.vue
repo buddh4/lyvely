@@ -32,38 +32,38 @@ const hasSub = (feature: IFeature) => {
 
 <template>
   <ly-content-panel>
-    <div class="">
-      <div class="p-5">
-        <ly-dimmed class="text-xs">
-          {{ t('profiles.features.settings.info') }}
-        </ly-dimmed>
-      </div>
-
-      <ly-responsive>
-        <ly-table class="border-collapse">
-          <template #head>
-            <tr>
-              <th scope="col" class="px-3 py-2 md:px-5 md:py-3">
-                {{ t('profiles.settings.features.name') }}
-              </th>
-              <th scope="col" class="px-3 py-2 md:px-5 md:py-3">
-                <!-- {{ t('profiles.settings.features.actions') }} -->
-              </th>
-              <th scope="col" class="px-3 py-2 md:p-4"></th>
-            </tr>
-          </template>
-          <template #body>
-            <profile-feature-settings-entry
-              v-for="feature in displayFeatures"
-              :key="feature.id"
-              :feature="feature"
-              :has-sub-features="hasSub(feature)"
-              :is-selected="feature.id === selectedMainFeature"
-              @toggle="toggleSelectedFeature" />
-          </template>
-        </ly-table>
-      </ly-responsive>
+    <div class="flex items-start gap-2">
+      <ly-icon name="info" class="info w-6" />
+      <ly-dimmed class="text-xs">
+        {{ t('profiles.features.settings.info') }}
+      </ly-dimmed>
     </div>
+  </ly-content-panel>
+  <ly-content-panel>
+    <ly-responsive>
+      <ly-table class="border-collapse">
+        <template #head>
+          <tr>
+            <th scope="col" class="px-3 py-2 md:px-5 md:py-3">
+              {{ t('profiles.settings.features.name') }}
+            </th>
+            <th scope="col" class="px-3 py-2 md:px-5 md:py-3">
+              <!-- {{ t('profiles.settings.features.actions') }} -->
+            </th>
+            <th scope="col" class="px-3 py-2 md:p-4"></th>
+          </tr>
+        </template>
+        <template #body>
+          <profile-feature-settings-entry
+            v-for="feature in displayFeatures"
+            :key="feature.id"
+            :feature="feature"
+            :has-sub-features="hasSub(feature)"
+            :is-selected="feature.id === selectedMainFeature"
+            @toggle="toggleSelectedFeature" />
+        </template>
+      </ly-table>
+    </ly-responsive>
   </ly-content-panel>
 </template>
 

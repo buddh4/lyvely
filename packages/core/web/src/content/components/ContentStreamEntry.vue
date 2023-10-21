@@ -111,6 +111,9 @@ const bodyWrapperClass = computed(
         'relative inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block',
     }[props.bodyStyle]),
 );
+
+// Just experimental
+const maxWidth = false;
 </script>
 
 <template>
@@ -133,7 +136,7 @@ const bodyWrapperClass = computed(
           </span>
           <relative-time :ts="model.meta.streamSort"></relative-time>
         </div>
-        <div :class="{ 'md:w-2/3': bodyStyle === 'message' }">
+        <div :class="{ 'md:w-2/3': maxWidth && bodyStyle === 'message' }">
           <div :class="bodyWrapperClass">
             <div class="cursor-pointer inline-block" @click="onContentClick">
               <div class="flex gap-1">
@@ -149,7 +152,7 @@ const bodyWrapperClass = computed(
                   </template>
                 </tag-list>
               </div>
-              <div>
+              <div class="text-sm">
                 <slot></slot>
               </div>
               <div v-if="model.meta.childCount" class="flex mt-2 justify-end">

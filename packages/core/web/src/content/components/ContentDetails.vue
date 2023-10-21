@@ -32,7 +32,7 @@ const contentTypeName = computed(() =>
       <slot name="image">
         <user-avatar class="w-8 h-8" />
       </slot>
-      <div class="flex flex-col">
+      <div class="flex flex-col text-sm">
         <slot name="title">
           <ly-trim class="font-bold" :max="130" :text="model.getTitle()" />
           <relative-time :ts="model.meta.createdAt.getTime()"></relative-time>
@@ -59,7 +59,7 @@ const contentTypeName = computed(() =>
       </tag-list>
     </div>
   </div>
-  <div class="p-2.5 md:px-4 bg-main border-divide rounded-b">
+  <div class="p-2.5 md:px-4 bg-main border-divide rounded-b text-sm">
     <slot name="body">
       {{ model.content.text }}
     </slot>
