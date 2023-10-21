@@ -3,6 +3,7 @@ import { translation } from '@/i18n';
 import { profileRoot, profileRoute } from './profile-route.util';
 import { RouteRecordRaw } from 'vue-router';
 import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles';
+import { PROFILES_MODULE_ID } from '@lyvely/core-interface';
 
 export default [
   { path: '/', redirect: profileRoute() },
@@ -52,6 +53,9 @@ export default [
         name: 'ProfileFeaturesSettings',
         meta: {
           title: translation('features.settings.features.title'),
+          i18n: {
+            load: [{ module: PROFILES_MODULE_ID, section: 'features' }],
+          },
         },
         component: () => import('../views/ProfileFeaturesSettings.vue'),
       },

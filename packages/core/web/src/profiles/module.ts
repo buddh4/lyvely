@@ -22,6 +22,7 @@ export default () => {
     id: PROFILES_MODULE_ID,
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
+      features: (locale: string) => import(`./locales/features.${locale}.json`),
     },
     routes,
     init: () => {

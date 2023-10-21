@@ -35,10 +35,7 @@ const hasSub = (feature: IFeature) => {
     <div class="">
       <div class="p-5">
         <ly-dimmed class="text-xs">
-          Here you can enable or disable certain profile features. Note that in most cases disabling
-          a feature will not remove any of the data related with a feature but rather hide features
-          in menus and and other parts of the application. If disabling or enabling a certain
-          feature has any side effects, you will be asked for confirmation.
+          {{ t('profiles.features.settings.info') }}
         </ly-dimmed>
       </div>
 

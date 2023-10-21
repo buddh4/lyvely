@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "features": {
+      "settings": {
+        "info": "In this section, you can toggle specific profile features. Disabling a feature typically hides it within menus and other areas of the app without erasing its associated data. Should a feature's activation or deactivation have any implications, we'll prompt you for confirmation."
+      }
+    }
+  }
+}

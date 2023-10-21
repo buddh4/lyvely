@@ -22,6 +22,8 @@ const isEnabled = computed({
   get: () => profileFeatureStore.isFeatureEnabled(props.feature.id).value,
   set: (enabled: boolean) => profileFeatureStore.setFeatureEnabled(props.feature.id, enabled),
 });
+
+const isMainFeature = !props.feature.dependencies?.length;
 </script>
 
 <template>
@@ -29,20 +31,23 @@ const isEnabled = computed({
     :class="[
       { 'border-b border-divide': !isSelected },
       { 'bg-gray-50 dark:bg-gray-700': isSelected },
-      { 'border-r border-gray-60 dark:border-gray-700': !!feature.dependencies?.length },
+      { 'border-r border-gray-60 dark:border-gray-700': !isMainFeature },
     ]">
-    <th scope="row" class="whitespace-nowrap p-0">
+    <th
+      scope="row"
+      :class="['whitespace-nowrap p-0', { 'cursor-pointer': hasSubFeatures }]"
+      @click="hasSubFeatures ? $emit('toggle', feature) : ''">
       <div
         :class="[
           'px-3 py-2 md:px-5 md:py-4 border-divide',
-          { 'border-gray-60 dark:border-gray-700': !!feature.dependencies?.length },
+          { 'border-gray-60 dark:border-gray-700': !isMainFeature },
         ]"
-        :style="{ 'border-left-width': !!feature.dependencies?.length ? '20px' : '0px' }">
+        :style="{ 'border-left-width': !isMainFeature ? '20px' : '0px' }">
         <div class="flex items-center">
-          <div :class="{ 'cursor-pointer': hasSubFeatures }" @click="$emit('toggle', feature)">
+          <div :class="{ 'cursor-pointer': hasSubFeatures }">
             {{ t(feature.title) }}
           </div>
-          <button v-if="hasSubFeatures" class="" @click="$emit('toggle', feature)">
+          <button v-if="hasSubFeatures">
             <ly-icon :name="isSelected ? 'caret-down' : 'caret-right'" />
           </button>
         </div>
