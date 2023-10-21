@@ -12,6 +12,8 @@ export const usePageStore = defineStore('page', () => {
   const isOnline = useOnline();
   const showMobileFooter = ref(true);
   const noSwipe = ref(false);
+  let hasHistory = false;
+  const fromView = ref<string>(null);
 
   function setTitle(title: Array<string> | string) {
     setPageTitle(title);
@@ -40,6 +42,13 @@ export const usePageStore = defineStore('page', () => {
     showAppLoader.value = !!show;
   }
 
+  function setFromView(name: string) {
+    if (name) {
+      fromView.value = name;
+      hasHistory = true;
+    }
+  }
+
   return {
     isDark,
     showSidebar,
@@ -51,6 +60,8 @@ export const usePageStore = defineStore('page', () => {
     setTitle,
     isOnline,
     showMobileFooter,
+    hasHistory,
+    fromView,
   };
 });
 

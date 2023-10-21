@@ -154,15 +154,18 @@ onUnmounted(() => {
     v-mobile-scrollbar
     class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
     <slot name="before" :stream="stream"></slot>
-    <div class="px-2 md:px-6">
-      <template v-for="(model, index) in models" :key="model.id">
-        <Component
-          :is="getStreamEntryComponent(model)"
-          :model="model"
-          :stream="stream"
-          :index="index"
-          @select-tag="selectTag" />
-      </template>
+    <div class="relative">
+      <slot name="stream-begin" :stream="stream"></slot>
+      <div class="px-2 md:px-6">
+        <template v-for="(model, index) in models" :key="model.id">
+          <Component
+            :is="getStreamEntryComponent(model)"
+            :model="model"
+            :stream="stream"
+            :index="index"
+            @select-tag="selectTag" />
+        </template>
+      </div>
     </div>
   </div>
   <div v-else-if="error" class="absolute bg-body w-full h-full bg-body z-50 p-5">

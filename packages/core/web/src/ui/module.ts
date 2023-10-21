@@ -4,6 +4,7 @@ import {
   hideAppLoader,
   hideLoaderProgress,
   resolveLayoutGuard,
+  setHasHistory,
   setPageTitle,
   showLoaderProgress,
   showMobileNavGuard,
@@ -15,7 +16,6 @@ import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import { usePageStore } from './stores';
 import { computed } from 'vue';
 import { UI_MODULE_ID } from './ui.constants';
-import { resolveLayoutComponent } from '@/ui/layouts';
 
 export default () => {
   return {
@@ -35,6 +35,7 @@ export default () => {
         hideAppLoader,
         setPageTitle,
         hideLoaderProgress,
+        setHasHistory,
       ]);
       registerMenuEntries(MENU_ACCOUNT_DRAWER, [
         {

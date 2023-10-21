@@ -25,8 +25,14 @@ export const resolveLayoutGuard = async (
   next();
 };
 
-export const hideLoaderProgress = (to: RouteLocation): void => {
+export const hideLoaderProgress = (): void => {
   NProgress.done();
+};
+
+export const setHasHistory = (to: RouteLocation, from): void => {
+  if (from.name) {
+    usePageStore().hasHistory = true;
+  }
 };
 
 export const showMobileNavGuard = (to: RouteLocation): void => {

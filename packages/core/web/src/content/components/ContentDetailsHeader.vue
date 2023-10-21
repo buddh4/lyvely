@@ -2,6 +2,7 @@
 import { contentRoute } from '../routes/content-route.helper';
 import { ContentModel } from '@lyvely/core-interface';
 import { useRouter } from 'vue-router';
+import { usePageStore } from '@/ui';
 //import MilestoneChooser from '@/milestones/components/menus/MilestoneDropdown.vue';
 
 interface IProps {
@@ -12,19 +13,18 @@ const props = defineProps<IProps>();
 
 const router = useRouter();
 
-function back() {
-  if (props.content.meta.parentId) {
-    router.push(contentRoute(props.content.pid, props.content.meta.parentId));
-  } else {
-    router.push({ name: 'stream' });
-  }
+function historyBack() {
+  if (!hasHistory) return;
+  router.go(-1);
 }
+
+const hasHistory = usePageStore().hasHistory;
 </script>
 
 <template>
   <div class="p-2.5 md:px-4 bg-main border-divide rounded-t w-full">
     <div class="flex items-center">
-      <ly-button class="text-sm pl-0" @click="back">
+      <ly-button v-if="hasHistory" class="text-sm pl-0" @click="historyBack">
         <ly-icon name="arrow-left" class="w-3 mr-2" /><span>{{ $t('common.back') }}</span>
       </ly-button>
       <div class="px-2 md:px-4 ml-auto inline">
