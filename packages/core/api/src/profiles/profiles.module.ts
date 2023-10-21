@@ -21,6 +21,7 @@ import {
   ProfilesController,
   ProfileTagsController,
   ProfileRelationInfosController,
+  ProfileMembershipController,
 } from './controllers';
 import { UsersModule } from '@/users';
 import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
@@ -30,7 +31,8 @@ import { PoliciesModule } from '@/policies';
 import { CoreModule, LyvelyModule } from '@/core';
 import { PROFILES_MODULE_ID, ProfileType } from '@lyvely/core-interface';
 import { useProfileMappings } from './mappings';
-import { ProfileMembershipController } from './controllers/profile-membership.controller';
+import { ProfileFeaturesController } from '@/profiles/controllers/profile-features.controller';
+import { ProfileFeaturesService } from '@/profiles/services/profile-features.service';
 
 const ProfileModel = MongooseModule.forFeature([
   {
@@ -66,6 +68,7 @@ useProfileMappings();
     ProfilesService,
     ProfileTagsService,
     ProfileUrlGenerator,
+    ProfileFeaturesService,
   ],
   exports: [
     ProfilesService,
@@ -81,6 +84,7 @@ useProfileMappings();
     ProfileTagsController,
     ProfileRelationInfosController,
     ProfileMembershipController,
+    ProfileFeaturesController,
   ],
 })
 export class ProfilesModule {}

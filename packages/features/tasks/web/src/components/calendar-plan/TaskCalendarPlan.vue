@@ -2,18 +2,23 @@
 import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
 import { TaskModel } from '@lyvely/tasks-interface';
 import { getCalendarIntervalArray } from '@lyvely/dates';
-import { usePageStore, translate, useContentCreateStore } from '@lyvely/web';
+import { usePageStore, t, useContentCreateStore } from '@lyvely/web';
 import TaskCalendarPlanSection from '@/components/calendar-plan/TaskCalendarPlanSection.vue';
 import { useTaskCalendarPlanStore } from '@/stores';
-import { onBeforeMount, onUnmounted } from 'vue';
-import { LyFloatingAddButton } from '@lyvely/ui';
+import { onBeforeMount, onUnmounted, ref } from 'vue';
+import { LyAlert, LyButton, LyContentPanel, LyFloatingAddButton, LyIcon } from '@lyvely/ui';
 
-const { filter, loadModels, startWatch, reset } = useTaskCalendarPlanStore();
+const calendarPlanStore = useTaskCalendarPlanStore();
+const { filter, loadModels, startWatch, reset } = calendarPlanStore;
 const createEntry = () => useContentCreateStore().createContentType(TaskModel.contentType);
 
-usePageStore().setTitle([translate('tasks.title')]);
+const { isEmpty } = calendarPlanStore;
 
-onBeforeMount(() => loadModels());
+usePageStore().setTitle([t('tasks.title')]);
+
+const loaded = ref(false);
+
+onBeforeMount(() => loadModels().then(() => (loaded.value = true)));
 const unwatch = startWatch();
 onUnmounted(() => {
   unwatch();
@@ -23,12 +28,22 @@ onUnmounted(() => {
 
 <template>
   <calendar-plan-filter-navigation :filter="filter" />
-  <calendar-planner>
+  <calendar-planner v-if="!isEmpty()">
     <task-calendar-plan-section
       v-for="interval in getCalendarIntervalArray()"
       :key="interval"
       :interval="interval" />
   </calendar-planner>
+  <ly-content-panel v-else-if="loaded">
+    <ly-alert class="justify-center cursor-pointer" @click="createEntry">
+      <div class="flex flex-col justify-center items-center">
+        <ly-icon name="task" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
+        <ly-button class="font-semibold">
+          {{ t('tasks.calendar-plan.empty') }}
+        </ly-button>
+      </div>
+    </ly-alert>
+  </ly-content-panel>
 
   <ly-floating-add-button @click="createEntry" />
 </template>

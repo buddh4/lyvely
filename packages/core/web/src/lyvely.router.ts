@@ -68,7 +68,6 @@ function moduleGuards(guards: Array<GuardDefinition>) {
     function applyGuard(index: number) {
       if (index < guards.length) {
         const guard = guards[index];
-        console.debug('Run module guard: ' + guard.guard.name);
         guard.guard(to, from, (n?: any) => {
           if (n) next(n);
           else applyGuard(index + 1);

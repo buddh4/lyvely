@@ -1,18 +1,51 @@
-import { IModule, translation, registerContentType } from '@lyvely/web';
-import { CreateTaskModel, TaskModel, TASKS_MODULE_ID } from '@lyvely/tasks-interface';
-import { timeSeriesModule } from '@lyvely/time-series-web';
+import {
+  IModule,
+  registerContentType,
+  registerMenuEntries,
+  MENU_PROFILE_DRAWER,
+  useProfileFeatureStore,
+} from '@lyvely/web';
+import {
+  ActivityTasksFeature,
+  CreateTaskModel,
+  TaskModel,
+  TASKS_MODULE_ID,
+  TasksFeature,
+} from '@lyvely/tasks-interface';
+import { calendarPlanModule } from '@lyvely/calendar-plan-web';
+import { tasksRoutes } from '@/routes';
+import { computed } from 'vue';
 
 export default () => {
   return {
     id: TASKS_MODULE_ID,
-    dependencies: [timeSeriesModule()],
+    dependencies: [calendarPlanModule()],
+    routes: tasksRoutes,
+    features: [TasksFeature, ActivityTasksFeature],
+    i18n: {
+      base: (locale: string) => import(`./locales/base.${locale}.json`),
+    },
     init: () => {
+      registerMenuEntries(MENU_PROFILE_DRAWER, [
+        {
+          id: 'profile-tasks',
+          moduleId: TASKS_MODULE_ID,
+          text: 'tasks.title',
+          feature: TasksFeature.id,
+          sortOrder: 1502,
+          icon: { name: 'task', class: 'w-6' },
+          condition: computed(() => {
+            return !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id).value;
+          }),
+          to: { name: 'Tasks' },
+        },
+      ]);
       registerContentType({
         type: TaskModel.contentType,
         moduleId: TASKS_MODULE_ID,
-        name: translation('tasks.name'),
+        name: 'tasks.title',
         icon: 'task',
-        feature: 'tasks',
+        feature: TasksFeature.id,
         modelClass: TaskModel,
         interfaces: {
           create: {

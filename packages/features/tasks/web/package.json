@@ -4,7 +4,17 @@
   "description": "Lyvely Tasks Web Package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./style.css": {
+      "import": "./dist/style.css",
+      "require": "./dist/style.css"
+    }
+  },
   "scripts": {
+    "dev": "vite",
     "build": "vite build && vue-tsc -p tsconfig.build.json -declaration --emitDeclarationOnly",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
@@ -18,13 +28,13 @@
     "@lyvely/tasks-interface": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3",
     "@lyvely/calendar-plan-web": "^0.1.0-alpha3",
-    "@lyvely/time-series-web": "^0.1.0-alpha3",
     "@lyvely/web": "^0.1.0-alpha3",
     "@lyvely/ui": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "vuedraggable": "^4.1.0",
+    "vue-router": "^4.1.6",
     "@lyvely/common": "^0.1.0-alpha3"
   },
   "devDependencies": {

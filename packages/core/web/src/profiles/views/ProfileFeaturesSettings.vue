@@ -2,11 +2,32 @@
 import { t } from '@/i18n';
 import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
 import ProfileFeatureSettingsEntry from '@/profiles/components/features/ProfileFeatureSettingsEntry.vue';
-import { storeToRefs } from 'pinia';
-import { useProfileStore } from '@/profiles';
+import { computed, ref } from 'vue';
+import { IFeature, hasDependency, hasSubFeatures } from '@lyvely/core-interface';
 
-const { profile } = storeToRefs(useProfileStore());
-const installableFeatures = useProfileFeatureStore().getSettingFeaturesOfProfile();
+const allFeatures = useProfileFeatureStore().getSettingFeaturesOfProfile();
+const mainFeatures = allFeatures.filter((feature) => !feature.dependencies?.length);
+
+const selectedMainFeature = ref<string>();
+const displayFeatures = computed(() => {
+  if (!selectedMainFeature.value) return mainFeatures;
+  return allFeatures.filter(
+    (feature) =>
+      !feature.dependencies?.length || hasDependency(feature, selectedMainFeature.value!),
+  );
+});
+
+const toggleSelectedFeature = (feature: IFeature) => {
+  if (selectedMainFeature.value === feature.id) {
+    selectedMainFeature.value = undefined;
+  } else {
+    selectedMainFeature.value = feature.id;
+  }
+};
+
+const hasSub = (feature: IFeature) => {
+  return hasSubFeatures(feature, allFeatures);
+};
 </script>
 
 <template>
@@ -22,76 +43,30 @@ const installableFeatures = useProfileFeatureStore().getSettingFeaturesOfProfile
       </div>
 
       <ly-responsive>
-        <ly-table>
+        <ly-table class="border-collapse">
           <template #head>
             <tr>
               <th scope="col" class="px-3 py-2 md:px-5 md:py-3">
                 {{ t('profiles.settings.features.name') }}
               </th>
               <th scope="col" class="px-3 py-2 md:px-5 md:py-3">
-                {{ t('profiles.settings.features.actions') }}
+                <!-- {{ t('profiles.settings.features.actions') }} -->
               </th>
               <th scope="col" class="px-3 py-2 md:p-4"></th>
             </tr>
           </template>
           <template #body>
             <profile-feature-settings-entry
-              v-for="feature in installableFeatures"
+              v-for="feature in displayFeatures"
               :key="feature.id"
-              :feature="feature" />
+              :feature="feature"
+              :has-sub-features="hasSub(feature)"
+              :is-selected="feature.id === selectedMainFeature"
+              @toggle="toggleSelectedFeature" />
           </template>
         </ly-table>
       </ly-responsive>
     </div>
-
-    <!-- div class="m-2 divide-y">
-          <div class="flex justify-between hover:bg-slate-50">
-            <label for="f1" class="p-2 text-sm">Stream</label>
-            <div class="p-2 ml-auto">
-              <input name="f1" class="p-2" type="checkbox" />
-            </div>
-          </div>
-          <div class="flex justify-between hover:bg-slate-50">
-            <label for="f1" class="p-2">Activities</label>
-            <div class="p-2 ml-auto">
-              <input name="f1" class="p-2" type="checkbox" />
-            </div>
-          </div>
-          <div class="flex gap-1 hover:bg-slate-50">
-            <div class="w-2 bg-slate-200"></div>
-            <label for="f1" class="p-2">Activities</label>
-            <div class="p-2 ml-auto">
-              <input name="f1" class="p-2" type="checkbox" />
-            </div>
-          </div>
-          <div class="flex gap-1 hover:bg-slate-50">
-            <div class="w-2 bg-slate-200"></div>
-            <label for="f1" class="p-2">Tasks</label>
-            <div class="p-2 ml-auto">
-              <input name="f1" class="p-2" type="checkbox" />
-            </div>
-          </div>
-          <div class="flex gap-1 hover:bg-slate-50">
-            <div class="w-2 bg-slate-200"></div>
-            <label for="f1" class="p-2">Milestones</label>
-            <div class="p-2 ml-auto">
-              <input name="f1" class="p-2" type="checkbox" />
-            </div>
-          </div>
-          <div class="flex justify-between hover:bg-slate-50">
-            <label for="f1" class="p-2">Journals</label>
-            <div class="p-2 ml-auto">
-              <input name="f1" class="p-2" type="checkbox" />
-            </div>
-          </div>
-          <div class="flex justify-between hover:bg-slate-50">
-            <label for="f1" class="p-2">Statistics</label>
-            <div class="p-2 ml-auto">
-              <input name="f1" class="p-2" type="checkbox" />
-            </div>
-          </div>
-        </div>
-      </div -->
   </ly-content-panel>
 </template>
 

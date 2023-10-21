@@ -1,43 +1,52 @@
 import {
   IModule,
+  MENU_PROFILE_DRAWER,
   registerContentType,
-  registerFeatures,
   registerMenuEntries,
   registerRoutes,
   translation,
+  useProfileFeatureStore,
 } from '@lyvely/web';
 import {
   CreateHabitModel,
   HabitModel,
-  HABIT_MODULE_ID,
+  HABITS_MODULE_ID,
   HabitsFeature,
+  ActivityHabitsFeature,
 } from '@lyvely/habits-interface';
-import { ACTIVITIES_MENU } from '@lyvely/activities-web';
 import { habitRoutes } from '@/routes';
+import { calendarPlanModule } from '@lyvely/calendar-plan-web';
+import { timeSeriesModule } from '@lyvely/time-series-web';
+import { computed } from 'vue';
 
 export default () => {
   return {
-    id: HABIT_MODULE_ID,
+    id: HABITS_MODULE_ID,
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       locale: (locale: string) => import(`./locales/${locale}.json`),
     },
+    dependencies: [calendarPlanModule(), timeSeriesModule()],
+    features: [HabitsFeature, ActivityHabitsFeature],
     init: () => {
-      registerRoutes(habitRoutes);
-      registerFeatures([HabitsFeature]);
-      registerMenuEntries(ACTIVITIES_MENU, [
+      registerMenuEntries(MENU_PROFILE_DRAWER, [
         {
-          id: 'activities-habits',
-          text: 'habits.menu.title',
-          moduleId: HABIT_MODULE_ID,
-          icon: 'activity',
+          id: 'profile-habits',
+          moduleId: HABITS_MODULE_ID,
+          text: 'habits.title',
+          sortOrder: 1501,
           feature: HabitsFeature.id,
+          icon: { name: 'activity' },
+          condition: computed(() => {
+            return !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id).value;
+          }),
           to: { name: 'Habits' },
         },
       ]);
+      registerRoutes(habitRoutes);
       registerContentType({
         type: HabitModel.contentType,
-        moduleId: HABIT_MODULE_ID,
+        moduleId: HABITS_MODULE_ID,
         name: translation('habits.name'),
         icon: 'activity',
         feature: HabitsFeature.id,

@@ -1,17 +1,30 @@
-import { t, profileRoute } from '@lyvely/web';
-import { LAYOUT_ACTIVITIES, useActivityStore } from '@lyvely/activities-web';
+import {
+  t,
+  profileRoute,
+  LAYOUT_PROFILE,
+  useProfileFeatureStore,
+  useProfileStore,
+} from '@lyvely/web';
 import { RouteRecordRaw } from 'vue-router';
+import { ActivityHabitsFeature } from '@lyvely/habits-interface';
 
 export const habitRoutes = [
   {
     name: 'Habits',
-    path: profileRoute('/activities/habits'),
+    path: profileRoute('/habits'),
+    beforeEnter: [
+      (to, from, next) => {
+        if (useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id).value) {
+          next(profileRoute('/activities/habits', useProfileStore().profile!.id));
+        }
+        next();
+      },
+    ],
     meta: {
-      i18n: { module: ['activities', 'habits'] },
-      layout: LAYOUT_ACTIVITIES,
+      i18n: { load: ['habits'] },
+      layout: LAYOUT_PROFILE,
       title: () => t('habits.title'),
     },
     component: () => import('../views/HabitsView.vue'),
-    beforeEnter: [() => useActivityStore().setActiveView('Habits')],
   },
 ] as RouteRecordRaw[];

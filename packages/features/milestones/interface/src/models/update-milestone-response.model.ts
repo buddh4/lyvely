@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { TagModel, ContentUpdateResponse } from '@lyvely/core-interface';
+import { ContentUpdateResponse } from '@lyvely/core-interface';
 import { PropertyType } from '@lyvely/common';
 import { MilestoneModel } from './milestone.model';
 
@@ -9,8 +9,4 @@ export class UpdateMilestoneResponse extends ContentUpdateResponse<MilestoneMode
   @Type(() => MilestoneModel)
   @PropertyType(MilestoneModel)
   model: MilestoneModel;
-
-  @Expose()
-  @Type(() => TagModel)
-  tags: TagModel[];
 }

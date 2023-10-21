@@ -18,6 +18,13 @@ const props = withDefaults(defineProps<IProps>(), {
 function onMenuItemClick() {
   if (props.entry.click) props.entry.click();
 }
+
+function getIconClass() {
+  if(typeof props.entry.icon === 'object') {
+    return unref(<any>props.entry.icon).class || props.iconClass;
+  }
+  return props.iconClass;
+}
 </script>
 
 <template>
@@ -27,7 +34,7 @@ function onMenuItemClick() {
     :data-menu-entry-id="entry.id"
     @click="onMenuItemClick">
     <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" :class="iconClass" />
-    <ly-icon v-else-if="typeof entry.icon === 'object'" v-bind="entry.icon" :class="iconClass" />
+    <ly-icon v-else-if="typeof entry.icon === 'object'" v-bind="entry.icon" :class="getIconClass()" />
     <transition name="fade">
       <span v-if="showLabels">
         {{ t(unref<Translatable>(entry.text)) }}

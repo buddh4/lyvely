@@ -8,6 +8,7 @@ type MenuIcon =
       title?: Translatable;
       options?: IconOptionsIF;
       scaleTo?: number;
+      class?: string;
       autoScale?: boolean;
     }
   | string;

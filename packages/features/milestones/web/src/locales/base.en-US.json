@@ -6,6 +6,17 @@
       "relation": "Relation",
       "progress": "Progress"
     },
+    "feature": {
+      "title": "Milestones",
+      "description": "If disabled, the Milestones view and content type will be unavailable.",
+      "activities": {
+        "title": "Activity Milestones",
+        "description": "If disabled, adds a dedicated tasks menu entry."
+      }
+    },
+    "calendar-plan": {
+      "empty": "Create Your First Milestone!"
+    },
     "create": {
       "title": "Create Milestone"
     },

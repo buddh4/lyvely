@@ -5,24 +5,28 @@ import {
   IFeatureConfig,
   IFeatureConfigDefinition,
 } from '@/features';
-import { ProfileModel } from '../models';
-import { mergeFeatureConfig } from './profile-feature-config.helper';
+import { mergeFeatureConfig, IProfileFeatureInfo } from './profile-feature-config.helper';
 
+/**
+ * Returns all profile features which are either configurable or installable.
+ * @param profile
+ * @param config
+ */
 export function getProfileFeaturesWithSettings(
-  profile: ProfileModel,
+  profile: IProfileFeatureInfo,
   config: IFeatureConfig,
 ): IFeature[] {
-  const result: IFeature[] = [];
   const featureDefinition = mergeFeatureConfig(profile, config);
-  for (const feature of getAllFeatures()) {
-    if (
-      !feature.global &&
-      (feature.configurable || _isInstallableProfileFeature(feature, featureDefinition))
-    ) {
-      result.push(feature);
-    }
-  }
-  return result;
+  return getProfileFeatures().filter(
+    (feature) => feature.configurable || _isInstallableProfileFeature(feature, featureDefinition),
+  );
+}
+
+/**
+ * Returns all non global features.
+ */
+export function getProfileFeatures(): IFeature[] {
+  return getAllFeatures().filter((feature) => !feature.global);
 }
 
 /**
@@ -34,7 +38,7 @@ export function getProfileFeaturesWithSettings(
  */
 export function isEnabledProfileFeature(
   featureOrId: string | IFeature,
-  profile: ProfileModel,
+  profile: IProfileFeatureInfo,
   config: IFeatureConfig = {},
 ) {
   return _isEnabledProfileFeature(featureOrId, profile, mergeFeatureConfig(profile, config));
@@ -42,7 +46,7 @@ export function isEnabledProfileFeature(
 
 function _isEnabledProfileFeature(
   featureOrId: string | IFeature,
-  profile: ProfileModel,
+  profile: IProfileFeatureInfo,
   featureDefinition: IFeatureConfigDefinition,
 ) {
   const feature = getProfileFeature(featureOrId);
@@ -84,11 +88,16 @@ function _isEnabledProfileFeature(
   return !!feature.enabledByDefault;
 }
 
+/**
+ * Searches and returns a registered profile feature by id.
+ * @param featureOrId
+ */
 export function getProfileFeature(featureOrId: string | IFeature) {
   const featureId = typeof featureOrId === 'string' ? featureOrId : featureOrId.id;
   const feature = typeof featureOrId === 'string' ? getFeature(featureId) : featureOrId;
 
-  if (!feature) {
+  // We call getFeature again in case the function was called wit IFeature argument
+  if (!feature || !getFeature(feature.id)) {
     console.warn(`Feature ${featureId} is not registered.`);
     return null;
   }
@@ -101,10 +110,19 @@ export function getProfileFeature(featureOrId: string | IFeature) {
   return feature;
 }
 
+/**
+ * Checks that the given profile
+ *  - exists
+ *  - is a profile feature
+ *  - is installable
+ * @param featureId
+ * @param profile
+ * @param config
+ */
 export function isInstallableProfileFeature(
   featureId: string,
-  profile: ProfileModel,
-  config: IFeatureConfig,
+  profile: IProfileFeatureInfo,
+  config?: IFeatureConfig,
 ) {
   return _isInstallableProfileFeature(featureId, mergeFeatureConfig(profile, config));
 }

@@ -1,1 +1,1 @@
-export const HABIT_MODULE_ID = 'habits';
+export const HABITS_MODULE_ID = 'habits';

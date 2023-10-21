@@ -54,6 +54,6 @@
       "root": "Calendar plan accordion",
       "header": "Calendar plan for {time}",
       "drag-toggle-button": "Activates draggable buttons in calendar plan list items"
-    },
+    }
   }
 }

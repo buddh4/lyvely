@@ -207,7 +207,7 @@ export class AppModuleBuilder {
   }
 
   private initConfigModule() {
-    const configs = [loadConfig()];
+    const configs = [loadConfig('./config/lyvely.ts')];
     if (this.options.configFiles) {
       configs.push(...this.options.configFiles.map((file) => loadConfig(file)));
     }

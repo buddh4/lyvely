@@ -8,13 +8,19 @@ import {
   ProfilesModule,
   PoliciesModule,
   CoreModule,
+  LyvelyModule,
 } from '@lyvely/core';
 import { Task, TaskSchema, TaskScore, TaskScoreSchema } from './schemas';
 import { TasksController } from './controllers';
 import { TasksDao } from './daos';
 import { TaskCalendarPlanService, TaskMilestoneRelationsService, TasksService } from './services';
+import { TASKS_MODULE_ID, TasksFeature, ActivityTasksFeature } from '@lyvely/tasks-interface';
 
-@Module({
+@LyvelyModule({
+  id: TASKS_MODULE_ID,
+  name: 'Tasks',
+  path: __dirname,
+  features: [TasksFeature, ActivityTasksFeature],
   imports: [
     CoreModule,
     UsersModule,

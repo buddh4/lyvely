@@ -5,9 +5,7 @@ import { usePolicyRegistry } from './components';
 @Module({})
 export class PoliciesModule {
   static forRoot(): DynamicModule {
-    const logger = new Logger('PoliciesModule');
     const providers = usePolicyRegistry().getProviders();
-    logger.log(providers);
     return {
       module: PoliciesModule,
       global: true,

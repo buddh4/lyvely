@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { LyTabMenu, LyIcon, LyTabMenuLink } from '@lyvely/ui';
 import { useProfileMenu, t } from '@lyvely/web';
-import { ACTIVITIES_MENU } from '@/activities.constants';
+import { MENU_ACTIVITIES } from '@/activities.constants';
 
-const { enabledMenuEntries } = useProfileMenu(ACTIVITIES_MENU);
+const { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
 </script>
 
 <template>
@@ -15,7 +15,7 @@ const { enabledMenuEntries } = useProfileMenu(ACTIVITIES_MENU);
       :to="menuEntry.to">
       <template #default="{ active }">
         <div class="flex gap-1 items-center justify-center">
-          <ly-icon name="activity" :class="[{ hidden: active }, 'md:hidden h-3']" />
+          <ly-icon :name="menuEntry.icon" :class="[{ hidden: active }, 'md:hidden h-3']" />
           <span :class="!active ? 'hidden md:inline' : ''">
             {{ t(menuEntry.text) }}
           </span>

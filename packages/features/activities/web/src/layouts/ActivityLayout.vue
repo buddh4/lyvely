@@ -2,10 +2,10 @@
 import { LyContentRoot } from '@lyvely/ui';
 import ActivityNavigation from '../components/ActivityNavigation.vue';
 import { ProfileLayout, useProfileMenu } from '@lyvely/web';
-import { ACTIVITIES_MENU } from '@/activities.constants';
+import { MENU_ACTIVITIES } from '@/activities.constants';
 import { computed } from 'vue';
 
-const activitiesMenu = useProfileMenu(ACTIVITIES_MENU);
+const activitiesMenu = useProfileMenu(MENU_ACTIVITIES);
 
 const showMenu = computed(() => activitiesMenu.enabledMenuEntries.value.length > 1);
 </script>

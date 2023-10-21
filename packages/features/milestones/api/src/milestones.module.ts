@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from '@lyvely/core';
-import { ContentModule, getContentModelDefinition } from '@lyvely/core';
-import { ProfilesModule } from '@lyvely/core';
-import { PoliciesModule } from '@lyvely/core';
-import { CoreModule } from '@lyvely/core';
+import {
+  UsersModule,
+  ContentModule,
+  getContentModelDefinition,
+  ProfilesModule,
+  PoliciesModule,
+  CoreModule,
+  LyvelyModule,
+} from '@lyvely/core';
 import { Milestone, MilestoneSchema } from './schemas';
 import { MilestonePlanController, MilestonesController } from './controllers';
 import { MilestonesDao } from './daos';
@@ -13,8 +17,17 @@ import {
   MilestonesRelationsService,
   MilestonesCalendarPlanService,
 } from './services';
+import {
+  ActivityMilestonesFeature,
+  MILESTONES_MODULE_ID,
+  MilestonesFeature,
+} from '@lyvely/milestones-interface';
 
-@Module({
+@LyvelyModule({
+  id: MILESTONES_MODULE_ID,
+  name: 'Milestones',
+  path: __dirname,
+  features: [MilestonesFeature, ActivityMilestonesFeature],
   imports: [
     CoreModule,
     UsersModule,

@@ -10,3 +10,5 @@ export * from './tag.filter';
 export * from './tag.model';
 export * from './create-tag.model';
 export * from './update-tag.model';
+export * from './update-feature-response.model';
+export * from './update-feature.model';

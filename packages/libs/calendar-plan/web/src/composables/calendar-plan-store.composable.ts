@@ -144,6 +144,10 @@ export function useCalendarPlan<
     filter.value.setOption('tagId', tagId);
   }
 
+  function isEmpty() {
+    return cache.value.isEmpty();
+  }
+
   async function sort(evt: IDragEvent | IMoveEntryEvent, to?: TModel[]) {
     const moveEvent = dragEventToMoveEvent(evt);
 
@@ -196,6 +200,7 @@ export function useCalendarPlan<
     selectTag,
     sort,
     startWatch,
+    isEmpty,
     service,
     intervals: getCalendarIntervalArray(),
   };

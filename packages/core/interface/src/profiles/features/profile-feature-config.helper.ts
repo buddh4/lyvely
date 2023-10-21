@@ -2,35 +2,40 @@ import { ProfileType } from '@/profiles';
 import { IFeatureConfig, IFeatureConfigDefinition } from '@/features/interfaces';
 import { isEmpty, eq } from 'lodash';
 
-interface IProfileInfo {
+export interface IProfileFeatureInfo {
   subscription?: string;
+  disabledFeatures?: string[];
+  enabledFeatures?: string[];
   type: string;
   oid: any;
   id: any;
 }
 
-type IFindDefinition = (c: IFeatureConfig, p: IProfileInfo) => IFeatureConfigDefinition | undefined;
+type IFindDefinition = (
+  c: IFeatureConfig,
+  p: IProfileFeatureInfo,
+) => IFeatureConfigDefinition | undefined;
 type IMergePipeEntry = {
   find: IFindDefinition;
-  condition?: (p: IProfileInfo) => boolean;
+  condition?: (p: IProfileFeatureInfo) => boolean;
   parent?: () => IMergePipeEntry;
 };
 
 // TODO: Here we should rather test against the subscription of the organization instead of the profile itself
 
-const findOrganizationProfileTypeSubscription = (c: IFeatureConfig, p: IProfileInfo) =>
+const findOrganizationProfileTypeSubscription = (c: IFeatureConfig, p: IProfileFeatureInfo) =>
   (<any>c?.profiles?.[ProfileType.Organization])?.[p.type]?.subscription?.[p.subscription as any];
-const findProfileTypeSubscription = (c: IFeatureConfig, p: IProfileInfo) =>
+const findProfileTypeSubscription = (c: IFeatureConfig, p: IProfileFeatureInfo) =>
   (<any>c?.profiles)?.[p.type]?.subscription?.[p.subscription as any];
-const findSubscription = (c: IFeatureConfig, p: IProfileInfo) =>
+const findSubscription = (c: IFeatureConfig, p: IProfileFeatureInfo) =>
   c?.profiles?.subscription?.[p.subscription as any];
-const findOrganizationProfileType = (c: IFeatureConfig, p: IProfileInfo) =>
+const findOrganizationProfileType = (c: IFeatureConfig, p: IProfileFeatureInfo) =>
   (<any>c?.profiles?.[ProfileType.Organization])?.[p.type]?.default;
-const findProfileTypeDefaults = (c: IFeatureConfig, p: IProfileInfo) =>
+const findProfileTypeDefaults = (c: IFeatureConfig, p: IProfileFeatureInfo) =>
   (<any>c?.profiles)?.[p.type]?.default;
 const findDefaults = (c: IFeatureConfig) => c?.profiles?.default;
 
-const isOrganizationProfileType = (p: IProfileInfo) => !eq(p.oid, p.id);
+const isOrganizationProfileType = (p: IProfileFeatureInfo) => !eq(p.oid, p.id);
 
 /*const test = {
   features: {
@@ -73,12 +78,12 @@ const pipe: IMergePipeEntry[] = [
   {
     find: findOrganizationProfileTypeSubscription,
     parent: () => pipe[4],
-    condition: (p: IProfileInfo) => !!p.subscription && isOrganizationProfileType(p),
+    condition: (p: IProfileFeatureInfo) => !!p.subscription && isOrganizationProfileType(p),
   },
 ];
 
 export function mergeFeatureConfig(
-  profile: IProfileInfo,
+  profile: IProfileFeatureInfo,
   config: IFeatureConfig | undefined,
 ): IFeatureConfigDefinition {
   if (!config || isEmpty(config)) return {};
@@ -93,7 +98,7 @@ export function mergeFeatureConfig(
 }
 
 function mergeDefinition(
-  profile: IProfileInfo,
+  profile: IProfileFeatureInfo,
   entry: IMergePipeEntry,
   config: IFeatureConfig,
   match: IFeatureConfigDefinition,
@@ -107,7 +112,7 @@ function mergeDefinition(
 }
 
 function mergeProp(
-  profile: IProfileInfo,
+  profile: IProfileFeatureInfo,
   config: IFeatureConfig,
   entry: IMergePipeEntry,
   match: IFeatureConfigDefinition,

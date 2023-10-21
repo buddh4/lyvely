@@ -57,6 +57,10 @@ export class CalendarPlanStore<
     return Array.from(this.models.values());
   }
 
+  isEmpty() {
+    return !this.models.size;
+  }
+
   hasModel(model: TimeSeriesContentIdentity) {
     return this.models.has(this.getId(model));
   }

@@ -14,6 +14,7 @@ import {
   closeInMongodConnections,
   rootMongooseTestModule,
 } from './mongoose-test.utils';
+import { PoliciesModule } from '@/policies';
 
 export type Type<T = any> = new (...args: any[]) => T;
 
@@ -135,6 +136,7 @@ export function createCoreTestingModule(
         isGlobal: true,
       }),
       CoreModule,
+      PoliciesModule.forRoot(),
       ...imports,
     ],
     providers: [EventTester, ...providers],

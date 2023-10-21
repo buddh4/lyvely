@@ -4,6 +4,18 @@ export function profileRoot() {
   return '/p';
 }
 
+type PID = ':pid';
+
+export function profileRoute(
+  subPath: string | undefined,
+  pid?: PID,
+  query?: LocationQueryRaw,
+): string;
+export function profileRoute(
+  subPath?: string,
+  pid?: string,
+  query?: LocationQueryRaw,
+): RouteLocationRaw;
 export function profileRoute(
   subPath = '/',
   pid = ':pid',

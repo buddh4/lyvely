@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref, Ref, watch } from 'vue';
-import { useProfileStore } from '@/profiles';
+import { useProfileFeaturesService, useProfileService, useProfileStore } from '@/profiles';
 import { useAppConfigStore } from '@/app-config';
 import {
   IFeature,
@@ -8,7 +8,13 @@ import {
   FEATURE_MODULE_ID,
   isEnabledProfileFeature,
   getProfileFeaturesWithSettings,
+  getFeature,
+  getSubFeatures,
+  getAffectedFeatures,
+  UpdateFeatureModel,
 } from '@lyvely/core-interface';
+import { usePageStore } from '@/ui';
+import { useGlobalDialogStore } from '@/core';
 
 export const useProfileFeatureStore = defineStore('profile-feature-store', () => {
   const featureStateMap = new Map<string, Ref<boolean>>();
@@ -30,10 +36,37 @@ export const useProfileFeatureStore = defineStore('profile-feature-store', () =>
     return state;
   }
 
-  function setFeatureEnabled(featureId: string, enabledState: boolean): void {
+  async function setFeatureState(featureId: string, state: boolean): Promise<void> {
+    const feature = getFeature(featureId);
+
+    if (!feature) return;
+
+    const currentState = isFeatureEnabled(featureId);
+    currentState.value = state;
+
+    const affectedModules = getAffectedFeatures(feature, state);
+    affectedModules.forEach((feature) => _setState(feature.id, state));
+
+    try {
+      const { disabled, enabled } = await useProfileFeaturesService().updateState(
+        new UpdateFeatureModel({ featureId, state }),
+      );
+
+      disabled.forEach((featureId) => _setState(featureId, false));
+      enabled.forEach((featureId) => _setState(featureId, true));
+
+      profile.value!.disabledFeatures = disabled;
+      profile.value!.enabledFeatures = enabled;
+    } catch (e) {
+      currentState.value = !state;
+      affectedModules.forEach((feature) => _setState(feature.id, !state));
+      useGlobalDialogStore().showUnknownError();
+    }
+  }
+
+  function _setState(featureId: string, enabled: boolean) {
     const state = isFeatureEnabled(featureId);
-    state.value = enabledState;
-    profile.value!.disabledFeatures.push(featureId);
+    state.value = enabled;
   }
 
   function getSettingFeaturesOfProfile(): IFeature[] {
@@ -43,7 +76,7 @@ export const useProfileFeatureStore = defineStore('profile-feature-store', () =>
 
   return {
     isFeatureEnabled,
-    setFeatureEnabled,
+    setFeatureEnabled: setFeatureState,
     getSettingFeaturesOfProfile,
   };
 });

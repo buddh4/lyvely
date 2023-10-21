@@ -1,4 +1,4 @@
-import { Get, Controller, Res, Param, NotFoundException, Header } from '@nestjs/common';
+import { Get, Controller, Res, Param, NotFoundException, Header, Logger } from '@nestjs/common';
 import { Public, UseClassSerializer } from '@/core';
 import { isGuid } from '@lyvely/common';
 import { getLocalUploadFilePath } from '@/files';
@@ -9,6 +9,8 @@ import { ConfigService } from '@nestjs/config';
 @Controller('avatars')
 @UseClassSerializer()
 export class AvatarsController {
+  private logger = new Logger(AvatarsController.name);
+
   constructor(private readonly configService: ConfigService) {}
 
   @Get(':guid')
@@ -18,9 +20,10 @@ export class AvatarsController {
     if (!isGuid(guid)) throw new NotFoundException();
 
     const path = getLocalUploadFilePath(this.configService, 'avatars', guid);
-    if (!fs.existsSync(path)) throw new NotFoundException();
-    const file = fs.createReadStream(path);
 
+    if (!fs.existsSync(path)) throw new NotFoundException();
+
+    const file = fs.createReadStream(path);
     res.set({ 'Content-Type': 'image/jpeg' });
     file.pipe(res);
   }

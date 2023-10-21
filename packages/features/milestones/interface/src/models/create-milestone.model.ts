@@ -1,13 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsString,
-  Length,
-  IsEnum,
-  IsOptional,
-  IsArray,
-  MaxLength,
-} from 'class-validator';
+import { IsNotEmpty, IsString, Length, IsEnum, IsOptional } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
 import { CreateContentModel } from '@lyvely/core-interface';
 
@@ -28,12 +20,6 @@ export class CreateMilestoneModel extends CreateContentModel<CreateMilestoneMode
   @Expose()
   @IsEnum(CalendarInterval)
   interval: CalendarInterval;
-
-  @Expose()
-  @IsArray()
-  @MaxLength(20, { each: true })
-  @IsOptional()
-  tagNames?: string[];
 
   getDefaults() {
     return {
