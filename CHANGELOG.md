@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Major improvements of backend and frontend module system
 - Router can now be extended by modules
 - Messages can be now be edited
+- Implementation of Permission API
 
 
 ### Changed

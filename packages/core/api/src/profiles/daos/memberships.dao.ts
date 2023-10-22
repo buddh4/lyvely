@@ -5,7 +5,7 @@ import { Membership, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
 import { assureObjectId, EntityIdentity, IBaseQueryOptions, SaveOptions } from '@/core';
-import { BaseMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/core-interface';
 import { Constructor } from '@lyvely/common';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class MembershipsDao extends AbstractUserProfileRelationsDao<Membership> 
   async addMembership(
     profile: Profile,
     user: User,
-    role: string = BaseMembershipRole.Member,
+    role: ProfileMembershipRole = ProfileMembershipRole.Member,
     options?: SaveOptions,
   ): Promise<Membership> {
     return this.save(Membership.create({ profile, user, role }), options);

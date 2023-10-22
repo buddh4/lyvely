@@ -1,1 +1,1 @@
-export * from './config-user-permissions.service';
+export * from './global-permissions.service';

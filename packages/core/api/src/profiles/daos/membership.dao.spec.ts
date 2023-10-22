@@ -2,7 +2,7 @@ import { MembershipsDao } from './index';
 import { ProfileRelationUserInfo } from '../schemas';
 import {
   ProfileType,
-  BaseMembershipRole,
+  ProfileMembershipRole,
   BaseUserProfileRelationType,
 } from '@lyvely/core-interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
@@ -47,7 +47,7 @@ describe('MembershipDao', () => {
       expect(membership.oid).toEqual(profile.oid);
       expect(membership.pid).toEqual(profile._id);
       expect(membership.type).toEqual(BaseUserProfileRelationType.Membership);
-      expect(membership.role).toEqual(BaseMembershipRole.Member);
+      expect(membership.role).toEqual(ProfileMembershipRole.Member);
     });
 
     it('add membership with custom role', async () => {

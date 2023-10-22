@@ -1,5 +1,5 @@
-import { ProfileModel, ProfileType } from '@/profiles';
-import { clearFeatures, registerFeatures } from '@/features';
+import { ProfileModel, ProfileType } from '../index';
+import { clearFeatures, registerFeatures } from '../../features';
 import { isEnabledProfileFeature } from './profile-feature.helper';
 
 describe('isEnabledProfileFeature', function () {

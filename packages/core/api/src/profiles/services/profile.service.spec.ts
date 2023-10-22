@@ -1,5 +1,5 @@
 import { ProfilesService } from './index';
-import { BaseMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/core-interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 
@@ -106,7 +106,7 @@ describe('ProfileService', () => {
       const relations = await profileService.findProfileContext(user, profile);
       const membership = relations.getMembership();
       expect(membership).toBeDefined();
-      expect(membership?.role).toEqual(BaseMembershipRole.Owner);
+      expect(membership?.role).toEqual(ProfileMembershipRole.Owner);
       expect(membership?.pid).toEqual(profile._id);
       expect(membership?.uid).toEqual(user._id);
     });

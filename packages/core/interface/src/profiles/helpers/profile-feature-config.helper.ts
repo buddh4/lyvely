@@ -1,4 +1,4 @@
-import { ProfileType } from '@/profiles';
+import { ProfileType } from '../interfaces';
 import { IFeatureConfig, IFeatureConfigDefinition } from '@/features/interfaces';
 import { isEmpty, eq } from 'lodash';
 

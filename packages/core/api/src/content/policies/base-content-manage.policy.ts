@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IContentPolicy } from '../interfaces';
 import { ProfileContentContext } from '../schemas';
-import { BaseMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/core-interface';
 
 @Injectable()
 export abstract class BaseContentManagePolicy implements IContentPolicy {
@@ -12,7 +12,7 @@ export abstract class BaseContentManagePolicy implements IContentPolicy {
 
     return (
       content.meta.createdBy._id.equals(user!._id) ||
-      !!context.getMembership(BaseMembershipRole.Owner, BaseMembershipRole.Admin)
+      !!context.getMembership(ProfileMembershipRole.Owner, ProfileMembershipRole.Admin)
     );
   }
 }

@@ -1,8 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel, PropertyType } from '@lyvely/common';
-import { ProfileType } from '../interfaces';
-import { BaseUserProfileRelationType } from './profile.model';
-import { isMultiUserProfile } from '../utils';
+import { ProfileType, BaseUserProfileRelationType } from '../interfaces';
+import { ProfileModel } from './profile.model';
 
 @Exclude()
 export class ProfileRelationSummary {
@@ -54,4 +53,11 @@ export class ProfileRelationInfos extends BaseModel<ProfileRelationInfos> {
   @Expose()
   @PropertyType([ProfileRelationInfo])
   profiles: ProfileRelationInfo[];
+}
+
+const multiUserProfiles = [ProfileType.Group, ProfileType.Organization];
+
+export function isMultiUserProfile(modelOrType?: ProfileModel | ProfileType): boolean {
+  const type = modelOrType instanceof ProfileModel ? modelOrType.type : modelOrType;
+  return !!type && multiUserProfiles.includes(type);
 }

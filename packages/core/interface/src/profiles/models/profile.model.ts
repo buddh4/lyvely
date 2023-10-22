@@ -1,18 +1,20 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { BaseModel, DocumentModel, TransformObjectId, PropertyType } from '@lyvely/common';
-import { ProfileType } from '../interfaces';
+import { ProfileType, ProfileRelationRole } from '../interfaces';
+import { IPermissionSetting } from '@/permissions';
 import { TagModel } from './tag.model';
-
-export const MIN_PROFILE_NAME_LENGTH = 1;
-export const MAX_PROFILE_NAME_LENGTH = 100;
-
-export const MAX_PROFILE_DESCRIPTION_LENGTH = 200;
 
 @Expose()
 export class ProfileInfoModel extends BaseModel<ProfileInfoModel> {
   pid: string;
   imageGuid?: string;
   name: string;
+}
+
+@Expose()
+export class ProfilePermissionSetting implements IPermissionSetting {
+  id: string;
+  role: ProfileRelationRole;
 }
 
 @Exclude()
@@ -48,6 +50,10 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   disabledFeatures: string[];
 
   @Expose()
+  @PropertyType([ProfilePermissionSetting])
+  permissions: ProfilePermissionSetting[];
+
+  @Expose()
   visibility: number;
 
   @Expose()
@@ -59,45 +65,4 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   @Expose()
   @Type(() => TagModel)
   tags: TagModel[];
-}
-
-export enum ProfileUsage {
-  Business = 'Business',
-  Private = 'Private',
-  Health = 'Health',
-  School = 'School',
-  Family = 'Family',
-  Improvement = 'Improvement',
-}
-
-export enum BaseUserProfileRelationType {
-  Membership = 'Membership',
-}
-
-/**
- * Defines the role a profile member can have.
- */
-export enum BaseMembershipRole {
-  Owner = 'owner',
-  Admin = 'admin',
-  Moderator = 'moderator',
-  Member = 'member',
-  Guest = 'guest',
-}
-
-/**
- * Defines the possible relations a user or visitor can have with a profile.
- */
-export enum BaseProfileRelationRole {
-  Owner = 'owner',
-  Admin = 'admin',
-  Moderator = 'moderator',
-  Member = 'member',
-  Guest = 'guest',
-  Organization = 'organization',
-  InvitedMember = 'member_invited',
-  RequestedMember = 'member_requested',
-  Follower = 'follower',
-  User = 'user',
-  Visitor = 'visitor',
 }

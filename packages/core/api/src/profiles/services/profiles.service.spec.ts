@@ -2,13 +2,13 @@ import { ProfilesService } from './index';
 import { UniqueConstraintException } from '@lyvely/common';
 import {
   ProfileType,
-  BaseMembershipRole,
+  ProfileMembershipRole,
   BaseUserProfileRelationType,
 } from '@lyvely/core-interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
-import { ProtectedProfileContext } from '@/profiles';
+import { ProtectedProfileContext } from '../models';
 
 describe('ProfileService', () => {
   let testingModule: LyvelyTestingModule;
@@ -327,6 +327,6 @@ describe('ProfileService', () => {
   function expectOwnerRelationship(relations: UserProfileRelation[]) {
     expect(relations.length).toEqual(1);
     expect(relations[0].type).toEqual(BaseUserProfileRelationType.Membership);
-    expect(relations[0].role).toEqual(BaseMembershipRole.Owner);
+    expect(relations[0].role).toEqual(ProfileMembershipRole.Owner);
   }
 });

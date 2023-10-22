@@ -7,7 +7,7 @@ import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import https from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
-import { IFeatureConfig } from '@lyvely/core-interface';
+import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/core-interface';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -83,7 +83,7 @@ export type LyvelyFileOptions = {
   };
 };
 
-export type UserPermissionOptions = Record<string, string[]>;
+export type GlobalUserPermissionRoleConfiguration = Record<string, GlobalPermissionRole>;
 
 export type ModulesConfiguration = {} & { [k: string]: object };
 
@@ -151,9 +151,10 @@ export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   file?: LyvelyFileOptions;
   mail?: LyvelyMailOptions;
   features?: IFeatureConfig;
+  permissions?: IPermissionConfig;
+  userRoles?: GlobalUserPermissionRoleConfiguration;
   modules?: ModuleView;
   legal?: ILegalOptions;
-  'user-permissions'?: UserPermissionOptions;
   invitations?: IUserInviteOptions;
   userRegistration?: IUserRegistrationOptions;
   serveStatic?: ServeStaticModuleOptions;

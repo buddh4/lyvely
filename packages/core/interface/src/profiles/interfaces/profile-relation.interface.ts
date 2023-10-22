@@ -1,3 +1,5 @@
+import { UserStatus } from '@/users';
+
 export interface IProfileRelationUserInfo {
   displayName: string;
   guid?: string;
@@ -12,6 +14,7 @@ export interface IProfileRelation<TID = string> {
   uid: TID;
   pid: TID;
   userInfo: IProfileRelationUserInfo;
+  relationStatus: UserStatus;
   type: string;
   role?: string;
 }

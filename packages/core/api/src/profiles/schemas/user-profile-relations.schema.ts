@@ -3,8 +3,8 @@ import mongoose from 'mongoose';
 import { assignEntityData, BaseEntity, assureObjectId } from '@/core';
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
-import { PropertyType, validateEmail } from '@lyvely/common';
-import { IProfileRelationUserInfo } from '@lyvely/core-interface';
+import { getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
+import { IProfileRelationUserInfo, UserStatus } from '@lyvely/core-interface';
 
 export interface ICreateProfileRelation {
   profile: Profile;
@@ -74,6 +74,10 @@ export class UserProfileRelation<C extends UserRelation = UserRelation> extends 
   @Prop({ type: UserProfileRelationInfoSchema })
   @PropertyType(ProfileRelationUserInfo)
   userInfo: ProfileRelationUserInfo;
+
+  @PropertyType(Number, { default: UserStatus.Active })
+  @Prop({ enum: getNumberEnumValues(UserStatus), required: true })
+  relationStatus: UserStatus;
 
   type: string;
 

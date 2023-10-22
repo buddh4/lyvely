@@ -15,11 +15,6 @@ import { UsersModule } from './users';
 import { MessageModule } from './messages';
 import { UserRegistrationsModule } from './user-registrations';
 import { ProfilesModule } from './profiles';
-import {
-  ConfigUserPermissionsService,
-  UserPermissionsServiceInjectionToken,
-  UserPermissionsServiceProvider,
-} from './permissions';
 import { PoliciesModule } from './policies';
 import { ContentCoreModule } from './content';
 import { MailsModule } from './mails';
@@ -34,12 +29,13 @@ import { SystemMessagesModule } from './system-messages';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
-import path, { join } from 'path';
+import path from 'path';
 import { I18nModule as NestjsI18nModule, AcceptLanguageResolver } from 'nestjs-i18n';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { MulterModule } from '@nestjs/platform-express';
 import { BullModule } from '@nestjs/bullmq';
+import { PermissionsModule } from '@/permissions/permissions.module';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -48,43 +44,8 @@ export interface IAppModuleBuilderOptions {
   useFeatures?: boolean;
   configFiles?: Array<string> | false;
   config?: ServerConfiguration;
-  providers?: LyvelyProviderOptions;
   serveStatic?: boolean;
   modules?: TModule[];
-}
-
-type ProviderOption<T = any> = { useClass: Type<T> } | { useValue: T } | Provider<T>;
-type ProviderToken = string | symbol;
-
-interface ICoreLyvelyProviderOptions {
-  [UserPermissionsServiceInjectionToken]?: ProviderOption<UserPermissionsServiceProvider>;
-}
-
-const defaultProviders: Required<ICoreLyvelyProviderOptions> = {
-  [UserPermissionsServiceInjectionToken]: {
-    useClass: ConfigUserPermissionsService,
-  },
-};
-
-export type LyvelyProviderOptions = ICoreLyvelyProviderOptions &
-  Record<ProviderToken, ProviderOption>;
-
-function getDefaultProvider<T>(token: ProviderToken): Provider<T> | undefined {
-  return defaultProviders[token];
-}
-
-function getProvider<T>(
-  options: IAppModuleBuilderOptions,
-  token: ProviderToken,
-): Provider<T> | undefined {
-  options.providers = options.providers || {};
-  const providerOption = options.providers[token] || getDefaultProvider(token);
-  if (!providerOption) return undefined;
-  return getProviderFromOption(token, providerOption);
-}
-
-function getProviderFromOption<T>(token: ProviderToken, option: ProviderOption): Provider<T> {
-  return 'provide' in option ? option : Object.assign({ provide: token }, option);
 }
 
 export function buildApp(options: IAppModuleBuilderOptions = {}) {
@@ -102,7 +63,6 @@ export class AppModuleBuilder {
     this.options.modules ??= [];
 
     this.initCoreModules()
-      .initCoreProviders()
       .initConfigModule()
       .initQueueModule()
       .initUploadModules()
@@ -121,6 +81,7 @@ export class AppModuleBuilder {
       NotificationsModule,
       CoreModule,
       FeaturesModule,
+      PermissionsModule,
       AppConfigModule,
       NestjsI18nModule.forRoot({
         fallbackLanguage: 'en',
@@ -134,13 +95,6 @@ export class AppModuleBuilder {
       AuthModule,
       CaptchaModule,
     );
-  }
-
-  private initCoreProviders() {
-    const providers = Object.keys(defaultProviders)
-      .map((token) => getProvider(this.options, token))
-      .filter((provider) => !!provider) as Provider[];
-    return this.useProviders(...providers);
   }
 
   private initQueueModule() {

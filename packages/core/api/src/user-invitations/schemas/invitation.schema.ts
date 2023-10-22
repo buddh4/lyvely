@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, ObjectIdProp } from '@/core';
-import { BaseMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/core-interface';
 import { InvitationIF } from '../interfaces';
 import { Types } from 'mongoose';
 
@@ -18,8 +18,8 @@ export class Invitation<T extends Invitation = any> extends BaseEntity<T> implem
   @Prop()
   token?: string;
 
-  @Prop({ enum: [BaseMembershipRole.Member, BaseMembershipRole.Guest] })
-  role?: BaseMembershipRole.Member | BaseMembershipRole.Guest;
+  @Prop({ enum: [ProfileMembershipRole.Member, ProfileMembershipRole.Guest] })
+  role?: ProfileMembershipRole.Member | ProfileMembershipRole.Guest;
 
   type: string;
 
@@ -28,7 +28,9 @@ export class Invitation<T extends Invitation = any> extends BaseEntity<T> implem
 
   afterInit() {
     this.role =
-      this.role === BaseMembershipRole.Guest ? BaseMembershipRole.Guest : BaseMembershipRole.Member;
+      this.role === ProfileMembershipRole.Guest
+        ? ProfileMembershipRole.Guest
+        : ProfileMembershipRole.Member;
   }
 }
 

@@ -8,7 +8,7 @@ import {
   ENDPOINT_PROFILE_FEATURES,
   ProfileFeaturesEndpoint,
 } from '@lyvely/core-interface';
-import { ProfileFeaturesService } from '@/profiles/services/profile-features.service';
+import { ProfileFeaturesService } from '../services';
 
 @ProfileController(ENDPOINT_PROFILE_FEATURES)
 @UseClassSerializer()

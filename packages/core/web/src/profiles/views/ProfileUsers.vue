@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useSendInviteUsersStore } from '@/user-invitations/stores/send-invitations.store';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { computed } from 'vue';
-import { BaseMembershipRole, ProfileRelationModel } from '@lyvely/core-interface';
+import { ProfileMembershipRole, ProfileRelationModel } from '@lyvely/core-interface';
 
 const sendInviteStore = useSendInviteUsersStore();
 const profileStore = useProfileStore();
@@ -12,19 +12,19 @@ const { profile } = storeToRefs(profileStore);
 const { user } = storeToRefs(useAuthStore());
 
 const order = [
-  BaseMembershipRole.Owner,
-  BaseMembershipRole.Admin,
-  BaseMembershipRole.Moderator,
-  BaseMembershipRole.Member,
-  BaseMembershipRole.Guest,
+  ProfileMembershipRole.Owner,
+  ProfileMembershipRole.Admin,
+  ProfileMembershipRole.Moderator,
+  ProfileMembershipRole.Member,
+  ProfileMembershipRole.Guest,
 ];
 
 const profileRelations = computed(() => {
   const profileRelations = profile.value?.profileRelations || [];
   return [...profileRelations].sort((a: ProfileRelationModel, b: ProfileRelationModel) => {
     return (
-      order.indexOf((a.role as BaseMembershipRole) || BaseMembershipRole.Guest) -
-      order.indexOf((b.role as BaseMembershipRole) || BaseMembershipRole.Guest)
+      order.indexOf((a.role as ProfileMembershipRole) || ProfileMembershipRole.Guest) -
+      order.indexOf((b.role as ProfileMembershipRole) || ProfileMembershipRole.Guest)
     );
   });
 });

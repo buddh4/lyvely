@@ -11,6 +11,7 @@ export * from './messages';
 export * from './notifications';
 export * from './otp';
 export * from './profiles';
+export * from './permissions';
 export * from './streams';
 export * from './system-messages';
 export * from './user-accounts';

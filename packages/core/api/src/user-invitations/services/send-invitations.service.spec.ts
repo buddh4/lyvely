@@ -1,5 +1,5 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
-import { BaseProfileRelationRole, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
+import { ProfileRelationRole, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
 import { SendInvitationsService } from './send-invitations.service';
 import { JwtModule } from '@nestjs/jwt';
 import {
@@ -71,7 +71,7 @@ describe('SendInvitations', () => {
       expect(result.length).toEqual(1);
       expect(result[0] instanceof MailInvitation).toEqual(true);
       expect((<MailInvitation>result[0]).email).toEqual('invited@mail.de');
-      expect(result[0].role).toEqual(BaseProfileRelationRole.Member);
+      expect(result[0].role).toEqual(ProfileRelationRole.Member);
       expect(result[0].pid).toEqual(profile._id);
       expect(result[0].token).toBeDefined();
       expect(result[0].createdBy).toEqual(owner._id);
@@ -152,7 +152,7 @@ describe('SendInvitations', () => {
       expect(result.length).toEqual(1);
       expect(result[0] instanceof MailInvitation).toEqual(true);
       expect((<MailInvitation>result[0]).email).toEqual('invited@mail.de');
-      expect(result[0].role).toEqual(BaseProfileRelationRole.Member);
+      expect(result[0].role).toEqual(ProfileRelationRole.Member);
       expect(result[0].pid).toBeUndefined();
       expect(result[0].token).toBeDefined();
       expect(result[0].createdBy).toEqual(user._id);
@@ -300,7 +300,7 @@ describe('SendInvitations', () => {
 
       expect(result.length).toEqual(1);
       expect((<MailInvitation>result[0]).email).toEqual('test@mail.de');
-      expect(result[0].role).toEqual(BaseProfileRelationRole.Member);
+      expect(result[0].role).toEqual(ProfileRelationRole.Member);
       expect(result[0].pid).toEqual(profile._id);
       expect(result[0].token).toBeDefined();
       expect(result[0].createdBy).toEqual(owner._id);

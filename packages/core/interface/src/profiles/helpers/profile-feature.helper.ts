@@ -108,18 +108,17 @@ function _isEnabledProfileFeature(
  * @param featureOrId
  */
 export function getProfileFeature(featureOrId: string | IFeature) {
-  const featureId = typeof featureOrId === 'string' ? featureOrId : featureOrId.id;
-  const feature = typeof featureOrId === 'string' ? getFeature(featureId) : featureOrId;
+  const feature = getFeature(featureOrId);
 
   // We call getFeature again in case the function was called wit IFeature argument
-  if (!feature || !getFeature(feature.id)) {
-    console.warn(`Feature ${featureId} is not registered.`);
-    return null;
+  if (!feature) {
+    console.warn(`Feature '${featureOrId}' is not registered.`);
+    return undefined;
   }
 
   if (feature.global) {
     console.warn(`Global feature ${feature.id} can not be enabled on profiles.`);
-    return null;
+    return undefined;
   }
 
   return feature;

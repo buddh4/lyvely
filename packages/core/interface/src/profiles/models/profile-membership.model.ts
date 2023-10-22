@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IMembership } from '../interfaces';
+import { IMembership, ProfileMembershipRole } from '../interfaces';
 import { ProfileRelationModel } from './profile-relation.model';
 
 @Exclude()
@@ -8,5 +8,5 @@ export class MembershipModel<TID = string>
   implements IMembership<TID>
 {
   @Expose()
-  readonly role: string;
+  readonly role: ProfileMembershipRole;
 }

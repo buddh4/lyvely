@@ -1,4 +1,4 @@
-import { getScaledProgress } from './profiles.util';
+import { getScaledProgress } from './profiles.helper';
 
 describe('ProfileUtil', () => {
   describe('getProgress', () => {

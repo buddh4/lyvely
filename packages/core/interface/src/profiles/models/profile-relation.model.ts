@@ -1,6 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { BaseModel, TransformObjectId } from '@lyvely/common';
 import { IProfileRelation, IProfileRelationUserInfo } from '../interfaces';
+import { UserStatus } from '@/users';
 
 @Exclude()
 export class ProfileRelationUserInfoModel implements IProfileRelationUserInfo {
@@ -46,6 +47,9 @@ export class ProfileRelationModel<
   @Expose()
   @Type(() => ProfileRelationUserInfoModel)
   userInfo: ProfileRelationUserInfoModel;
+
+  @Expose()
+  relationStatus: UserStatus;
 
   @Expose()
   role?: string;

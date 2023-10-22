@@ -1,5 +1,5 @@
 import { mergeFeatureConfig } from './profile-feature-config.helper';
-import { ProfileModel, ProfileType } from '@/profiles';
+import { ProfileModel, ProfileType } from '../index';
 
 describe('mergeFeatureConfig', function () {
   it('undefined config merge', () => {

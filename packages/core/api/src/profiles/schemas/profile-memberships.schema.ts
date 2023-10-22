@@ -6,18 +6,18 @@ import {
   ProfileRelationUserInfo,
 } from './user-profile-relations.schema';
 import { assureObjectId } from '@/core';
-import { BaseMembershipRole, BaseUserProfileRelationType } from '@lyvely/core-interface';
+import { ProfileMembershipRole, BaseUserProfileRelationType } from '@lyvely/core-interface';
 
 export interface ICreateMembership extends ICreateProfileRelation {
-  role: string;
+  role: ProfileMembershipRole;
 }
 
 export type MembershipDocument = Membership & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class Membership extends UserProfileRelation<Membership> {
-  @Prop({ required: true, default: BaseMembershipRole.Member })
-  role: string;
+  @Prop({ required: true, default: ProfileMembershipRole.Member })
+  role: ProfileMembershipRole;
 
   static create(data: ICreateMembership): Membership {
     return new Membership({

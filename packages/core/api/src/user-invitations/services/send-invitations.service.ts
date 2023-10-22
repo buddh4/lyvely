@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Profile, ProfilesService } from '@/profiles';
-import { isMultiUserProfile } from '@lyvely/core-interface';
+import { isMultiUserProfile, InvitationRequest, MaxInvitationError } from '@lyvely/core-interface';
 
 import { MailService } from '@/mails';
 import {
@@ -9,7 +9,6 @@ import {
   FieldValidationException,
   EntityNotFoundException,
 } from '@lyvely/common';
-import { InvitationRequest, MaxInvitationError } from '@lyvely/core-interface';
 import { User, UsersService } from '@/users';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JwtService } from '@nestjs/jwt';
@@ -229,7 +228,7 @@ export class SendInvitationsService {
     if (!profileContext.getMembership()) throw new ForbiddenServiceException();
     /*
     const permissions = ['invite.member'];
-    if (inviteRequest.invites.find((invite) => invite.role === BaseProfileRelationRole.Guest)) {
+    if (inviteRequest.invites.find((invite) => invite.role === ProfileRelationRole.Guest)) {
       permissions.push('invite.guest');
     }
 

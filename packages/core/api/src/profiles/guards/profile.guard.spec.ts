@@ -1,7 +1,7 @@
 import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@/testing';
 import { ProfileGuard } from './index';
 import { ProfileRequest } from '../types';
-import { ProfileVisibilityLevel, BaseMembershipRole } from '@lyvely/core-interface';
+import { ProfileVisibilityLevel, ProfileMembershipRole } from '@lyvely/core-interface';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 
 describe('ProfileGuard', () => {
@@ -52,7 +52,7 @@ describe('ProfileGuard', () => {
       expect(request.context.user).toBeDefined();
       expect(request.context.user?._id).toEqual(owner._id);
       expect(request.context.getMembership()).toBeDefined();
-      expect(request.context.getMembership()?.role).toEqual(BaseMembershipRole.Owner);
+      expect(request.context.getMembership()?.role).toEqual(ProfileMembershipRole.Owner);
     });
 
     it('member can access group profile', async () => {
@@ -75,7 +75,7 @@ describe('ProfileGuard', () => {
       expect(request.context.user).toBeDefined();
       expect(request.context.user?._id).toEqual(member._id);
       expect(request.context.getMembership()).toBeDefined();
-      expect(request.context.getMembership()?.role).toEqual(BaseMembershipRole.Member);
+      expect(request.context.getMembership()?.role).toEqual(ProfileMembershipRole.Member);
     });
 
     it('non member user can access protected profile', async () => {

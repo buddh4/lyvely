@@ -1,6 +1,6 @@
 import { User, UserEmail, UserTestDataUtils } from '@/users';
 import {
-  BaseMembershipRole,
+  ProfileMembershipRole,
   ProfileType,
   ProfileVisibilityLevel,
   UserStatus,
@@ -47,7 +47,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
         Membership.create({
           user,
           profile,
-          role: BaseMembershipRole.Owner,
+          role: ProfileMembershipRole.Owner,
         }),
       ],
     });
@@ -78,7 +78,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
         Membership.create({
           user: owner,
           profile: organization,
-          role: BaseMembershipRole.Owner,
+          role: ProfileMembershipRole.Owner,
         }),
       ],
     });
@@ -90,7 +90,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
         Membership.create({
           user: member,
           profile: organization,
-          role: BaseMembershipRole.Member,
+          role: ProfileMembershipRole.Member,
         }),
       ],
     });
@@ -136,13 +136,13 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       user: owner,
       profile,
       organizationContext: organization
-        ? this.createOrganizationContet(owner, organization, BaseMembershipRole.Owner)
+        ? this.createOrganizationContet(owner, organization, ProfileMembershipRole.Owner)
         : undefined,
       relations: [
         Membership.create({
           user: owner,
           profile,
-          role: BaseMembershipRole.Owner,
+          role: ProfileMembershipRole.Owner,
         }),
       ],
     });
@@ -151,13 +151,13 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       user: member,
       profile,
       organizationContext: organization
-        ? this.createOrganizationContet(member, organization, BaseMembershipRole.Member)
+        ? this.createOrganizationContet(member, organization, ProfileMembershipRole.Member)
         : undefined,
       relations: [
         Membership.create({
           user: member,
           profile,
-          role: BaseMembershipRole.Member,
+          role: ProfileMembershipRole.Member,
         }),
       ],
     });
@@ -168,7 +168,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   createOrganizationContet(
     user: User,
     organization: Organization,
-    role: BaseMembershipRole = BaseMembershipRole.Member,
+    role: ProfileMembershipRole = ProfileMembershipRole.Member,
   ) {
     return new ProtectedProfileContext<Organization>({
       user,
@@ -202,7 +202,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   ): Promise<Profile> {
     const profile = await this.createProfile(owner, name, ProfileType.Group, visibility, options);
 
-    await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
+    await this.addProfileMember(profile, owner, ProfileMembershipRole.Owner);
 
     return new Profile(owner, profile);
   }
@@ -237,7 +237,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
       ),
     );
 
-    await this.addProfileMember(profile, owner, BaseMembershipRole.Owner);
+    await this.addProfileMember(profile, owner, ProfileMembershipRole.Owner);
 
     switch (type) {
       case ProfileType.User:
@@ -274,7 +274,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   async addProfileMember(
     profile: Profile,
     user: User,
-    role: string = BaseMembershipRole.Member,
+    role: ProfileMembershipRole = ProfileMembershipRole.Member,
   ): Promise<Membership> {
     return new this.MembershipModel(
       Membership.create({

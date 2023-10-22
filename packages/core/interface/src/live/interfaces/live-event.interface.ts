@@ -1,4 +1,4 @@
-import { BaseMembershipRole } from '@/profiles';
+import { ProfileMembershipRole } from '@/profiles';
 
 export interface ILiveEvent {
   name: string;
@@ -7,7 +7,7 @@ export interface ILiveEvent {
 
 export interface ILiveProfileEvent extends ILiveEvent {
   pid: string;
-  roles?: BaseMembershipRole[];
+  roles?: ProfileMembershipRole[];
 }
 
 export interface ILiveUserEvent extends ILiveEvent {

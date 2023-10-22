@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OptionalUser, User, UsersService } from '@/users';
 import {
-  BaseMembershipRole,
+  ProfileMembershipRole,
   ProfileType,
   ProfileUsage,
   ProfileVisibilityLevel,
@@ -139,7 +139,7 @@ export class ProfilesService {
       const membership = await this.createMembership(
         profile,
         owner,
-        BaseMembershipRole.Owner,
+        ProfileMembershipRole.Owner,
         transaction,
       );
 
@@ -154,7 +154,7 @@ export class ProfilesService {
   async createMembership(
     profile: Profile,
     member: User,
-    role: BaseMembershipRole = BaseMembershipRole.Member,
+    role: ProfileMembershipRole = ProfileMembershipRole.Member,
     transaction?: Transaction,
   ) {
     const existingMembership = await this.membershipDao.findByProfileAndUser(

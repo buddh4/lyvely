@@ -1,5 +1,5 @@
 import { OptionalUser, User } from '@/users';
-import { BaseMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/core-interface';
 import { Types } from 'mongoose';
 import { Profile } from '@/profiles';
 
@@ -10,7 +10,7 @@ export interface InvitationIF {
   uid?: Types.ObjectId;
   pid?: Types.ObjectId;
   token?: string;
-  role?: BaseMembershipRole.Member | BaseMembershipRole.Guest;
+  role?: ProfileMembershipRole.Member | ProfileMembershipRole.Guest;
   type: string;
   createdAt: Date;
   updatedAt: Date;

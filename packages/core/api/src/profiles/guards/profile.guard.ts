@@ -8,9 +8,6 @@ import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
 import { InjectPolicy } from '@/policies';
 
-export const PROFILE_PERMISSIONS_KEY_STRICT = 'profile_permissions_strict';
-export const PROFILE_PERMISSIONS_KEY_SOME = 'profile_permissions_some';
-
 /**
  * This guard is responsible for setting the `request.profile` and `request.context` fields for a given profile id.
  * The profile id needs to be provided as request query param with the name `pid` and requires a valid ObjectId string.
@@ -52,21 +49,17 @@ export class ProfileGuard implements CanActivate {
 
     if (!request.profile) return false;
 
-    if (!(await this.profileVisibilityPolicy.verify(request.context))) {
-      return false;
-    }
-
-    return this.validatePermissions(request.context, context);
+    return this.profileVisibilityPolicy.verify(request.context);
   }
 
-  private validatePermissions(profileContext: ProfileContext, context: ExecutionContext) {
+  /*private validatePermissions(profileContext: ProfileContext, context: ExecutionContext) {
     const strictPermissions = this.getPermissionsFromContext(
       context,
       PROFILE_PERMISSIONS_KEY_STRICT,
     );
 
     if (strictPermissions?.length) {
-      return this.profilePermissionService.checkEveryPermission(
+      return this.profilePermissionService.verifyEveryPermission(
         profileContext,
         ...strictPermissions,
       );
@@ -75,7 +68,7 @@ export class ProfileGuard implements CanActivate {
     const anyPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_SOME);
 
     return anyPermissions?.length
-      ? this.profilePermissionService.checkSomePermission(profileContext, ...anyPermissions)
+      ? this.profilePermissionService.verifySomePermission(profileContext, ...anyPermissions)
       : true;
   }
 
@@ -84,5 +77,5 @@ export class ProfileGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-  }
+  }*/
 }

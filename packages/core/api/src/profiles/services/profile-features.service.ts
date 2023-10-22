@@ -8,7 +8,7 @@ import {
   isInstallableProfileFeature,
 } from '@lyvely/core-interface';
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
-import { Profile } from '@/profiles';
+import { Profile } from '../schemas';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/core';
 

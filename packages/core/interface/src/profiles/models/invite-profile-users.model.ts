@@ -1,7 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { IsArray, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { BaseModel, PropertyType } from '@lyvely/common';
-import { BaseMembershipRole } from './profile.model';
+import { ProfileMembershipRole } from '../interfaces';
 
 @Exclude()
 export class ProfileMemberMailInvite extends BaseModel<ProfileMemberMailInvite> {
@@ -12,7 +12,7 @@ export class ProfileMemberMailInvite extends BaseModel<ProfileMemberMailInvite> 
   @Expose()
   @IsString()
   @IsOptional()
-  @PropertyType(String, { default: BaseMembershipRole.Member })
+  @PropertyType(String, { default: ProfileMembershipRole.Member })
   role?: string;
 }
 

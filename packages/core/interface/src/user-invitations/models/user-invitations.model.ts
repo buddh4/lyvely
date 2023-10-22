@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { BaseModel, PropertyType } from '@lyvely/common';
-import { BaseMembershipRole } from '@/profiles';
+import { ProfileMembershipRole } from '@/profiles';
 
 @Exclude()
 export class MailInvite extends BaseModel<MailInvite> {
@@ -20,9 +20,9 @@ export class MailInvite extends BaseModel<MailInvite> {
   email: string;
 
   @Expose()
-  @IsEnum([BaseMembershipRole.Member, BaseMembershipRole.Guest])
+  @IsEnum([ProfileMembershipRole.Member, ProfileMembershipRole.Guest])
   @IsOptional()
-  role?: BaseMembershipRole.Member | BaseMembershipRole.Guest;
+  role?: ProfileMembershipRole.Member | ProfileMembershipRole.Guest;
 }
 
 @Exclude()
