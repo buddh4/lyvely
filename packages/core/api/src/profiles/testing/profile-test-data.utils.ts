@@ -285,9 +285,12 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     ).save();
   }
 
-  static createDummyUserAndProfile(userData: Partial<User> = {}) {
+  static createDummyUserAndProfile(
+    userData: Partial<User> = {},
+    profileData: Partial<Profile> = {},
+  ) {
     const user = this.createDummyUser(userData);
-    const profile = this.createDummyProfile(user);
+    const profile = this.createDummyProfile(user, profileData);
     return { user, profile };
   }
 

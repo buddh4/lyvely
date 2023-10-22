@@ -1,4 +1,11 @@
-export interface IFeatureConfigDefinition {
+export interface IGlobalFeatureConfigDefinition {
+  installable?: string[];
+  nonInstallable?: string[];
+  enabled?: string[];
+  disabled?: string[];
+}
+
+export interface IFeatureConfigDefinition extends IGlobalFeatureConfigDefinition {
   installable?: string[];
   nonInstallable?: string[];
   enabled?: string[];
@@ -12,6 +19,7 @@ export type IFeatureUsageDefinition = { [k: string]: Pick<IFeatureConfigDefiniti
 export type ISubscriptionDefinition = { [k: string]: IFeatureConfigDefinition };
 
 export interface IFeatureConfig {
+  global?: IGlobalFeatureConfigDefinition;
   profiles?: {
     default?: IFeatureConfigDefinition;
     usage?: IFeatureUsageDefinition;

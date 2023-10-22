@@ -19,11 +19,11 @@ export function clearFeatures() {
 }
 
 /**
- * Searches for a feature by id
- * @param id feature id
+ * Searches for a feature by id or instance. In case an instance is given this function assures it is registered.
+ * @param featureOrId feature id or IFeature instance
  */
-export function getFeature(id: string) {
-  return features.get(id);
+export function getFeature(featureOrId: string | IFeature) {
+  return features.get(typeof featureOrId === 'string' ? featureOrId : featureOrId.id);
 }
 
 /**

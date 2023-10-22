@@ -1,19 +1,8 @@
 import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { Feature, FeatureGuard, FeaturesModule } from '../';
-
-@Feature('test')
-class TestController {
-  @Feature('test.sub')
-  testHandler() {
-    return null;
-  }
-
-  @Feature('test.sub.specific')
-  specificHandler() {
-    return null;
-  }
-}
+import { clearFeatures, registerFeatures } from '@lyvely/core-interface';
+import { ProfileTestDataUtils } from '../../profiles';
 
 describe('ProfileGuard', () => {
   let testingModule: LyvelyTestingModule;
@@ -26,79 +15,176 @@ describe('ProfileGuard', () => {
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY).imports([FeaturesModule]).compile();
     featureGuard = testingModule.get<FeatureGuard>(FeatureGuard);
-    // featureRegistry = testingModule.get<FeatureRegistry>(FeatureRegistry);
-
-    /* featureRegistry.registerFeatures([
-      {
-        id: 'test',
-        name: 'Test',
-        moduleId: 'test',
-        enabled: true,
-        description: 'Some test feature',
-      },
-      {
-        id: 'test.sub',
-        name: 'Test sub feature',
-        moduleId: 'test',
-        enabled: false,
-        description: 'Some test sub feature',
-      },
-      {
-        id: 'test.sub.specific',
-        name: 'Test specific sub feature',
-        moduleId: 'test',
-        enabled: true,
-        description: 'Specific test sub feature',
-      },
-    ]); */
   });
 
   afterEach(async () => {
+    clearFeatures();
     return testingModule.afterEach();
   });
 
   afterAll(async () => {
     return testingModule.afterAll();
   });
-
-  it('should be defined', () => {
-    expect(featureGuard).toBeDefined();
-    //expect(featureRegistry).toBeDefined();
-  });
-
   describe('canActivate()', () => {
-    it('can access enabled feature', async () => {
+    it('enabled class level global feature', async () => {
+      registerFeatures([
+        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: true, global: true },
+      ]);
+
+      @Feature('test')
+      class TestController {}
+
       context = createTestExecutionContext({ class: TestController });
       const result = await featureGuard.canActivate(context);
       expect(result).toEqual(true);
     });
 
-    it('can not access disabled feature', async () => {
+    it('disabled class level global feature', async () => {
+      registerFeatures([
+        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: false, global: true },
+      ]);
+
+      @Feature('test')
+      class TestController {}
+
+      context = createTestExecutionContext({ class: TestController });
+      const result = await featureGuard.canActivate(context);
+      expect(result).toEqual(false);
+    });
+
+    it('enabled profile level feature', async () => {
+      const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(
+        {},
+        { enabledFeatures: ['test'] },
+      );
+
+      registerFeatures([{ id: 'test', moduleId: 'test', title: 'Test', installable: true }]);
+
+      @Feature('test')
+      class TestController {}
+
+      context = createTestExecutionContext({ class: TestController, profile });
+      const result = await featureGuard.canActivate(context);
+      expect(result).toEqual(true);
+    });
+
+    it('disabled profile level feature', async () => {
+      const { profile } = ProfileTestDataUtils.createDummyUserAndProfile(
+        {},
+        { disabledFeatures: ['test'] },
+      );
+
+      registerFeatures([
+        { id: 'test', moduleId: 'test', title: 'Test', enabledByDefault: true, installable: true },
+      ]);
+
+      @Feature('test')
+      class TestController {}
+
+      context = createTestExecutionContext({ class: TestController, profile });
+      const result = await featureGuard.canActivate(context);
+      expect(result).toEqual(false);
+    });
+
+    it('multiple enabled features', async () => {
+      const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
+
+      registerFeatures([
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true },
+      ]);
+
+      @Feature('t1', 't2')
+      class TestController {}
+
+      context = createTestExecutionContext({ class: TestController, profile });
+      const result = await featureGuard.canActivate(context);
+      expect(result).toEqual(true);
+    });
+
+    it('enabled and disabled features', async () => {
+      const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
+
+      registerFeatures([
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: false },
+      ]);
+
+      @Feature('t1', 't2')
+      class TestController {}
+
+      context = createTestExecutionContext({ class: TestController, profile });
+      const result = await featureGuard.canActivate(context);
+      expect(result).toEqual(false);
+    });
+
+    it('mixed global and profile features', async () => {
+      const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
+
+      registerFeatures([
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true, global: true },
+      ]);
+
+      @Feature('t1', 't2')
+      class TestController {}
+
+      context = createTestExecutionContext({ class: TestController, profile });
+      const result = await featureGuard.canActivate(context);
+      expect(result).toEqual(true);
+    });
+
+    it('profile feature without profile context fails', async () => {
+      registerFeatures([{ id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true }]);
+
+      @Feature('t1')
+      class TestController {}
+
+      context = createTestExecutionContext({ class: TestController });
+      const result = await featureGuard.canActivate(context);
+      expect(result).toEqual(false);
+    });
+
+    it('enabled class level feature with disabled function level feature', async () => {
+      const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
+      registerFeatures([
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: false },
+      ]);
+
+      @Feature('t1')
+      class TestController {
+        @Feature('t2')
+        test() {}
+      }
+
       context = createTestExecutionContext({
         class: TestController,
-        handler: new TestController().testHandler,
+        profile,
+        handler: new TestController().test,
       });
       const result = await featureGuard.canActivate(context);
       expect(result).toEqual(false);
     });
 
-    it('can not access sub feature if main feature is disabled', async () => {
+    it('enabled class level feature with enabled function level feature', async () => {
+      const { profile } = ProfileTestDataUtils.createDummyUserAndProfile();
+      registerFeatures([
+        { id: 't1', moduleId: 'test', title: 'Test', enabledByDefault: true },
+        { id: 't2', moduleId: 'test', title: 'Test2', enabledByDefault: true },
+      ]);
+
+      @Feature('t1')
+      class TestController {
+        @Feature('t2')
+        test() {}
+      }
+
       context = createTestExecutionContext({
         class: TestController,
-        handler: new TestController().specificHandler,
+        profile,
+        handler: new TestController().test,
       });
-
-      const result = await featureGuard.canActivate(context);
-      expect(result).toEqual(false);
-    });
-
-    it('can access manually enabled feature', async () => {
-      context = createTestExecutionContext({
-        class: TestController,
-        handler: new TestController().testHandler,
-      });
-
-      // featureRegistry.getFeature('test.sub')!.enabled = true;
       const result = await featureGuard.canActivate(context);
       expect(result).toEqual(true);
     });

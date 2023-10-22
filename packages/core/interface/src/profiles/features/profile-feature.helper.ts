@@ -4,6 +4,7 @@ import {
   IFeature,
   IFeatureConfig,
   IFeatureConfigDefinition,
+  isEnabledGlobalFeature,
 } from '@/features';
 import { mergeFeatureConfig, IProfileFeatureInfo } from './profile-feature-config.helper';
 
@@ -29,6 +30,18 @@ export function getProfileFeatures(): IFeature[] {
   return getAllFeatures().filter((feature) => !feature.global);
 }
 
+export function isEnabledProfileOrGlobalFeature(
+  featureOrId: string | IFeature,
+  profile?: IProfileFeatureInfo,
+  config: IFeatureConfig = {},
+) {
+  const feature = getFeature(featureOrId);
+  if (!feature) return false;
+  return feature.global
+    ? isEnabledGlobalFeature(feature, config)
+    : isEnabledProfileFeature(featureOrId, profile, config);
+}
+
 /**
  * Checks if a given feature is enabled, respecting the given feature configuration as well as installed profile
  * features and feature defaults and dependent features.
@@ -38,17 +51,19 @@ export function getProfileFeatures(): IFeature[] {
  */
 export function isEnabledProfileFeature(
   featureOrId: string | IFeature,
-  profile: IProfileFeatureInfo,
+  profile?: IProfileFeatureInfo,
   config: IFeatureConfig = {},
 ) {
+  if (!profile) return false;
   return _isEnabledProfileFeature(featureOrId, profile, mergeFeatureConfig(profile, config));
 }
 
 function _isEnabledProfileFeature(
   featureOrId: string | IFeature,
-  profile: IProfileFeatureInfo,
-  featureDefinition: IFeatureConfigDefinition,
+  profile?: IProfileFeatureInfo,
+  featureDefinition: IFeatureConfigDefinition = {},
 ) {
+  if (!profile) return false;
   const feature = getProfileFeature(featureOrId);
 
   if (!feature) return false;

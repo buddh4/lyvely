@@ -106,7 +106,7 @@ const bodyWrapperClass = computed(
     ({
       none: 'relative',
       message:
-        'relative message-bubble inline-block hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5',
+        'relative message-bubble inline-block transition duration-200 hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5',
       block:
         'relative inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block',
     }[props.bodyStyle]),

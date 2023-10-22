@@ -1,6 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref, Ref, watch } from 'vue';
-import { useProfileFeaturesService, useProfileService, useProfileStore } from '@/profiles';
+import { useProfileFeaturesService, useProfileStore } from '@/profiles';
 import { useAppConfigStore } from '@/app-config';
 import {
   IFeature,
@@ -9,11 +9,9 @@ import {
   isEnabledProfileFeature,
   getProfileFeaturesWithSettings,
   getFeature,
-  getSubFeatures,
   getAffectedFeatures,
   UpdateFeatureModel,
 } from '@lyvely/core-interface';
-import { usePageStore } from '@/ui';
 import { useGlobalDialogStore } from '@/core';
 
 export const useProfileFeatureStore = defineStore('profile-feature-store', () => {

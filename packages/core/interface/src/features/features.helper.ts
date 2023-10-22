@@ -1,44 +1,82 @@
-import { IFeature } from './interfaces';
+import { IFeature, IFeatureConfig } from './interfaces';
 import { getAllFeatures, getFeature } from './feature.registry';
+
+export const isEnabledGlobalFeature = (
+  featureOrId: string | IFeature,
+  config: IFeatureConfig = {},
+) => {
+  const feature = getFeature(featureOrId);
+
+  if (!feature?.global) return false;
+
+  const featureId = feature.id;
+
+  const featureDefinition = config.global || {};
+
+  // Check all feature dependencies
+  const dependenciesEnabled = !feature.dependencies?.length
+    ? true
+    : feature.dependencies.reduce(
+        (result, dependency) => result && isEnabledGlobalFeature(dependency, config),
+        true,
+      );
+
+  if (!dependenciesEnabled) return false;
+
+  // Check if the feature was disabled or enabled by configuration
+  if (featureDefinition.disabled?.includes(featureId)) return false;
+  if (featureDefinition.enabled?.includes(featureId)) return true;
+
+  // Return default
+  return !!feature.enabledByDefault;
+};
 
 /**
  * Checks if the given feature has any sub features within the given alLFeatures array or within all registered features
  * if allFeatures was not set.
- * @param feature
+ * @param featureOrId
  * @param allFeatures
  */
-export const hasSubFeatures = (feature: IFeature, allFeatures?: IFeature[]) => {
-  return !!getSubFeatures(feature, allFeatures).length;
+export const hasSubFeatures = (featureOrId: string | IFeature, allFeatures?: IFeature[]) => {
+  return !!getSubFeatures(featureOrId, allFeatures).length;
 };
 
 /**
  * Gets all sub features of the given features within the given allFeatures or all registered features if no allFeatures
  * was not set.
- * @param feature
+ * @param featureOrId
  * @param allFeatures
  */
-export const getSubFeatures = (feature: IFeature, allFeatures?: IFeature[]) => {
+export const getSubFeatures = (featureOrId: string | IFeature, allFeatures?: IFeature[]) => {
+  const feature = getFeature(featureOrId);
+  if (!feature) return [];
   allFeatures ||= getAllFeatures();
   return allFeatures.filter((testFeature) => hasDependency(testFeature, feature.id));
 };
 
 /**
  * Checks if the subFeature has a dependency to featureId.
- * @param subFeature
- * @param featureId
+ * @param subFeatureOrId
+ * @param featureOrId
  */
-export const hasDependency = (subFeature: IFeature, featureId: string) =>
-  !!subFeature.dependencies?.reduce((result, dependencyId) => {
-    return result || isDependencyOf(dependencyId, featureId);
+export const hasDependency = (subFeatureOrId: string | IFeature, featureOrId: string | IFeature) =>
+  !!getFeature(subFeatureOrId)?.dependencies?.reduce((result, dependencyId) => {
+    return result || isDependencyOf(dependencyId, featureOrId);
   }, false);
 
 /**
  * Checks if dependencyId is a dependency of the given featureId.
- * @param dependencyId
- * @param featureId
+ * @param dependencyFeatureOrId
+ * @param featureOrId
  */
-export const isDependencyOf = (dependencyId: string, featureId: string) => {
-  return dependencyId === featureId || dependencyId.startsWith(featureId + '.');
+export const isDependencyOf = (
+  dependencyFeatureOrId: string | IFeature,
+  featureOrId: string | IFeature,
+) => {
+  const dependency = getFeature(dependencyFeatureOrId);
+  const feature = getFeature(featureOrId);
+  if (!dependency || !feature) return false;
+  return dependency.id === feature.id || dependency.id.startsWith(feature.id + '.');
 };
 
 /**
@@ -47,21 +85,23 @@ export const isDependencyOf = (dependencyId: string, featureId: string) => {
  * If a feature was disabled, we disable all sub features.
  *
  * If a feature was enabled, we enable all dependencies as well as sub features with enabledByDefault.
+ *
+ * This function returns an empty array in case the given feature is not registered.
  * @param featureOrId
  * @param updatedState
+ * @param excludeIds
  */
 export function getAffectedFeatures(
   featureOrId: string | IFeature,
   updatedState: boolean,
   excludeIds: string[] = [],
 ): IFeature[] {
-  const featureId = typeof featureOrId === 'string' ? featureOrId : featureOrId.id;
-  const feature = typeof featureOrId === 'string' ? getFeature(featureId) : featureOrId;
+  const feature = getFeature(featureOrId);
 
   if (!feature) return [];
 
   const toUpdate = [feature];
-  excludeIds = [...excludeIds, featureId];
+  excludeIds = [...excludeIds, feature.id];
   if (!updatedState) {
     // If we disable a feature we disable all sub features
     getSubFeatures(feature, getAllFeatures()).forEach((subFeature) => {
