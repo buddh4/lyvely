@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-//import { useProfileStore } from '@/profiles/stores/profile.store';
 import { useDark, useToggle, useOnline } from '@vueuse/core';
 import { ref } from 'vue';
 import { isMaxViewSize } from '../helpers';
@@ -12,8 +11,7 @@ export const usePageStore = defineStore('page', () => {
   const isOnline = useOnline();
   const showMobileFooter = ref(true);
   const noSwipe = ref(false);
-  let hasHistory = false;
-  const fromView = ref<string>(null);
+  const hasHistory = false;
 
   function setTitle(title: Array<string> | string) {
     setPageTitle(title);
@@ -42,13 +40,6 @@ export const usePageStore = defineStore('page', () => {
     showAppLoader.value = !!show;
   }
 
-  function setFromView(name: string) {
-    if (name) {
-      fromView.value = name;
-      hasHistory = true;
-    }
-  }
-
   return {
     isDark,
     showSidebar,
@@ -61,22 +52,11 @@ export const usePageStore = defineStore('page', () => {
     isOnline,
     showMobileFooter,
     hasHistory,
-    fromView,
   };
 });
 
 export function setPageTitle(title: Array<string> | string) {
-  /*const profile = useProfileStore().profile;
-
   title = Array.isArray(title) ? title : [title];
-  let pageTitle = title.join(' - ');
-
-  if (pageTitle.length && profile) pageTitle += ' - ';
-
-  if (profile) {
-    pageTitle += profile.name;
-  }
-
+  const pageTitle = title.join(' - ');
   document.title = pageTitle;
-   */
 }

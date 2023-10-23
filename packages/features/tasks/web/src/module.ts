@@ -40,6 +40,22 @@ export default () => {
           to: { name: 'Tasks' },
         },
       ]);
+
+      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
+        {
+          id: 'profile-tasks-footer',
+          moduleId: TASKS_MODULE_ID,
+          text: 'tasks.title',
+          feature: TasksFeature.id,
+          sortOrder: 1502,
+          icon: { name: 'task', class: 'w-6' },
+          condition: computed(() => {
+            return !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id).value;
+          }),
+          to: { name: 'Tasks' },
+        },
+      ]);
+
       registerContentType({
         type: TaskModel.contentType,
         moduleId: TASKS_MODULE_ID,

@@ -4,6 +4,7 @@ import {
   registerContentType,
   registerMenuEntries,
   MENU_PROFILE_DRAWER,
+  MENU_PROFILE_MOBILE_FOOTER,
 } from '@lyvely/web';
 import {
   JournalModel,
@@ -23,7 +24,17 @@ export default () => {
         {
           id: 'journals',
           moduleId: JOURNALS_MODULE_ID,
-          title: 'journals.profile_drawer.title',
+          text: 'journals.profile_drawer.title',
+          feature: JournalsFeature.id,
+          icon: 'journal',
+          to: { name: 'Journals' },
+        },
+      ]);
+      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
+        {
+          id: 'journals-footer',
+          moduleId: JOURNALS_MODULE_ID,
+          text: 'journals.profile_drawer.title',
           feature: JournalsFeature.id,
           icon: 'journal',
           to: { name: 'Journals' },

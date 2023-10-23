@@ -4,6 +4,7 @@ import {
   registerContentType,
   registerMenuEntries,
   MENU_PROFILE_DRAWER,
+  MENU_PROFILE_MOBILE_FOOTER,
   useProfileFeatureStore,
 } from '@lyvely/web';
 import {
@@ -40,6 +41,22 @@ export default () => {
           to: { name: 'Milestones' },
         },
       ]);
+
+      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
+        {
+          id: 'profile-milestones-footer',
+          moduleId: MILESTONES_MODULE_ID,
+          text: 'milestones.title',
+          sortOrder: 1503,
+          feature: MilestonesFeature.id,
+          icon: 'target',
+          condition: computed(() => {
+            return !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id).value;
+          }),
+          to: { name: 'Milestones' },
+        },
+      ]);
+
       registerContentType({
         type: MilestoneModel.contentType,
         name: translation('milestones.name'),

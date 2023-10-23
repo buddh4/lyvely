@@ -50,7 +50,7 @@ function getDetailsComponent(content: ContentModel) {
 }
 
 const backButtonText = computed(() => {
-  if (content.value.meta.parentId) {
+  if (content.value?.meta.parentId) {
     return t('content.stream.back-to-parent');
   } else {
     return t('content.stream.back-to-stream');
@@ -58,7 +58,7 @@ const backButtonText = computed(() => {
 });
 
 function backToStream() {
-  if (content.value.meta.parentId) {
+  if (content.value?.meta.parentId) {
     router.push(contentRoute(content.value.pid, content.value.meta.parentId));
   } else {
     router.push({ name: 'stream' });

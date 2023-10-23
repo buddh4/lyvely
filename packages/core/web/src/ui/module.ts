@@ -5,7 +5,6 @@ import {
   hideLoaderProgress,
   resolveLayoutGuard,
   setHasHistory,
-  setPageTitle,
   showLoaderProgress,
   showMobileNavGuard,
 } from './guards';
@@ -34,7 +33,6 @@ export default () => {
         showMobileNavGuard,
         closeMobileDrawerGuard,
         hideAppLoader,
-        setPageTitle,
         hideLoaderProgress,
         setHasHistory,
       ]);

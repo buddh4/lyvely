@@ -1,6 +1,7 @@
 import {
   IModule,
   MENU_PROFILE_DRAWER,
+  MENU_PROFILE_MOBILE_FOOTER,
   registerContentType,
   registerMenuEntries,
   registerRoutes,
@@ -32,6 +33,20 @@ export default () => {
       registerMenuEntries(MENU_PROFILE_DRAWER, [
         {
           id: 'profile-habits',
+          moduleId: HABITS_MODULE_ID,
+          text: 'habits.title',
+          sortOrder: 1501,
+          feature: HabitsFeature.id,
+          icon: { name: 'activity' },
+          condition: computed(() => {
+            return !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id).value;
+          }),
+          to: { name: 'Habits' },
+        },
+      ]);
+      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
+        {
+          id: 'profile-habits-footer',
           moduleId: HABITS_MODULE_ID,
           text: 'habits.title',
           sortOrder: 1501,

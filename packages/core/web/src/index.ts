@@ -2,7 +2,6 @@ import App from './App.vue';
 
 export { App };
 export * from './accessibility';
-export * from './app';
 export * from './app-config';
 export * from './auth';
 export * from './calendar';

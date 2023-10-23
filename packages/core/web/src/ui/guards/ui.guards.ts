@@ -3,6 +3,7 @@ import { usePageStore } from '../stores';
 import { isMaxViewSize } from '../helpers';
 import NProgress from 'nprogress';
 import { resolveLayoutComponent } from '@/ui';
+import { useProfileStore } from '@/profiles';
 
 export const showLoaderProgress = (
   to: RouteLocation,
@@ -29,8 +30,8 @@ export const hideLoaderProgress = (): void => {
   NProgress.done();
 };
 
-export const setHasHistory = (to: RouteLocation, from): void => {
-  if (from.name) {
+export const setHasHistory = (to: RouteLocation, from: RouteLocation): void => {
+  if (from?.name) {
     usePageStore().hasHistory = true;
   }
 };
@@ -47,8 +48,4 @@ export const closeMobileDrawerGuard = (): void => {
 
 export const hideAppLoader = (): void => {
   usePageStore().setShowAppLoader(false);
-};
-
-export const setPageTitle = (to: RouteLocation): void => {
-  if (to.meta?.title) usePageStore().setTitle(to.meta?.title());
 };

@@ -1,6 +1,10 @@
 import { contentRoutes } from './routes';
 import { registerMenuEntry } from '@/ui/menus';
-import { MENU_PROFILE_DRAWER, STACK_PROFILE_LAYOUT } from '@/profiles/profile.constants';
+import {
+  MENU_PROFILE_DRAWER,
+  MENU_PROFILE_MOBILE_FOOTER,
+  STACK_PROFILE_LAYOUT,
+} from '@/profiles/profile.constants';
 import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/core-interface';
 import { IModule } from '@/core';
 import { registerRoutes } from '@/lyvely.router';
@@ -24,6 +28,15 @@ export default () => {
       registerRoutes([{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }]);
       registerMenuEntry(MENU_PROFILE_DRAWER, {
         id: 'stream',
+        moduleId: CONTENT_MODULE_ID,
+        to: { name: 'stream' },
+        feature: ContentStreamFeature.id,
+        sortOrder: 1000,
+        icon: 'stream',
+        text: 'content.stream.title',
+      });
+      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, {
+        id: 'stream-footer',
         moduleId: CONTENT_MODULE_ID,
         to: { name: 'stream' },
         feature: ContentStreamFeature.id,

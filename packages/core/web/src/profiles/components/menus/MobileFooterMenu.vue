@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
+import { MENU_PROFILE_MOBILE_FOOTER } from '@/profiles/profile.constants';
+import { useProfileMenu } from '@/profiles/composables';
+import MenuEntry from '@/ui/components/MenuEntry.vue';
 //import { useActivityStore } from '@/activities/store/activity.store';
 
 export interface IProps {
@@ -7,6 +10,8 @@ export interface IProps {
 }
 
 defineProps<IProps>();
+
+const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_MOBILE_FOOTER);
 
 //const { activeView } = storeToRefs(useActivityStore());
 </script>
@@ -19,9 +24,12 @@ defineProps<IProps>();
       class="footer shrink-0 shadow overflow-hidden w-full py-1 bg-main md:hidden">
       <div class="flex justify-center">
         <div class="navbar-nav flex flex-row justify-content-center">
-          <router-link class="nav-link" :to="{ name: 'stream' }">
-            <ly-icon name="stream" class="text-main" />
-          </router-link>
+          <menu-entry
+            v-for="entry in enabledMenuEntries"
+            :key="entry.id"
+            :entry="entry"
+            :show-labels="false"
+            class="nav-link" />
 
           <!-- router-link class="nav-link" :to="{ name: activeView }">
             <ly-icon name="activity" class="text-main" />

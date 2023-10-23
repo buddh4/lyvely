@@ -68,3 +68,7 @@ export const toProfileHome = async (
   // TODO: Use profile setting default route
   next(profileRoute('/stream', profileStore.profile.id));
 };
+
+export const setPageTitle = (to: RouteLocation): void => {
+  if (to.meta?.title) useProfileStore().setPageTitle(to.meta?.title());
+};

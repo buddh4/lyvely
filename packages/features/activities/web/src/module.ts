@@ -1,6 +1,7 @@
 import {
   IModule,
   MENU_PROFILE_DRAWER,
+  MENU_PROFILE_MOBILE_FOOTER,
   registerLayouts,
   registerMenuEntries,
   registerRoutes,
@@ -8,7 +9,7 @@ import {
 } from '@lyvely/web';
 import { MENU_ACTIVITIES, ACTIVITIES_MODULE_ID, LAYOUT_ACTIVITIES } from '@/activities.constants';
 import { activitiesRoutes } from '@/routes';
-import { ActivityHabitsFeature, HabitsFeature } from '@lyvely/habits-web';
+import { ActivityHabitsFeature } from '@lyvely/habits-web';
 import { ActivityTasksFeature } from '@lyvely/tasks-interface';
 import { ActivitiesFeature } from '@/activities.features';
 import { ActivityMilestonesFeature } from '@lyvely/milestones-interface';
@@ -34,6 +35,25 @@ export default () => {
       registerMenuEntries(MENU_PROFILE_DRAWER, [
         {
           id: 'activities',
+          text: 'activities.profile-drawer.title',
+          icon: 'activity',
+          sortOrder: 1500,
+          moduleId: ACTIVITIES_MODULE_ID,
+          condition: computed(() => {
+            const featureStore = useProfileFeatureStore();
+            return (
+              featureStore.isFeatureEnabled(ActivityMilestonesFeature.id).value ||
+              featureStore.isFeatureEnabled(ActivityTasksFeature.id).value ||
+              featureStore.isFeatureEnabled(ActivityHabitsFeature.id).value
+            );
+          }),
+          to: { name: 'Activities' }, // TODO: maybe implement router which saves last activity route
+        },
+      ]);
+
+      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
+        {
+          id: 'activities-footer',
           text: 'activities.profile-drawer.title',
           icon: 'activity',
           sortOrder: 1500,

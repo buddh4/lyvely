@@ -1,5 +1,6 @@
 export const MENU_PROFILE_DRAWER = 'profile-drawer-menu';
 export const MENU_PROFILE_SETTINGS = 'profile-settings-menu';
+export const MENU_PROFILE_MOBILE_FOOTER = 'profile-mobile-footer-menu';
 
 export const LAYOUT_PROFILE = 'profile';
 export const LAYOUT_PROFILE_XL = 'profile-xl';

@@ -4,6 +4,7 @@ import { ProfileWithRelationsModel, TagModel } from '@lyvely/core-interface';
 
 import { computed, ref } from 'vue';
 import { useProfileService } from '@/profiles/services/profiles.service';
+import { usePageStore } from '@/ui';
 
 const DEFAULT_PROFILE_ID = 'latest_profile_id';
 export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_ID);
@@ -81,6 +82,16 @@ export const useProfileStore = defineStore('profile', () => {
     return relation?.userInfo;
   }
 
+  function setPageTitle(title: Array<string> | string) {
+    title = Array.isArray(title) ? title : [title];
+
+    if (profile.value) {
+      title.push(profile.value.name);
+    }
+
+    usePageStore().setTitle(title);
+  }
+
   return {
     profile,
     locale,
@@ -91,6 +102,7 @@ export const useProfileStore = defineStore('profile', () => {
     updateTags,
     tagIdsToNames,
     getUserInfo,
+    setPageTitle,
     ...status,
   };
 });
