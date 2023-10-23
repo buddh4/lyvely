@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { useUserRegistrationStore } from '@/user-registration/stores/user-registration.store';
 import { storeToRefs } from 'pinia';
-import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { PATH_VERIFY_EMAIL } from '@/user-registration/routes/paths';
+import { PATH_VERIFY_EMAIL } from '../user-registration.constants';
 import { isTouchScreen } from '@/ui';
+import { LyCenteredPanel } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import {
   IUserRegistrationAppConfig,
@@ -47,11 +47,7 @@ onUnmounted(userRegistrationStore.reset);
 </script>
 
 <template>
-  <div class="w-full absolute px-2">
-    <LanguageChooser class="float-right" />
-  </div>
-
-  <ly-centered-layout>
+  <ly-centered-panel>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -132,7 +128,7 @@ onUnmounted(userRegistrationStore.reset);
         </small>
       </div>
     </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 </template>
 
 <style scoped></style>

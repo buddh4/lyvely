@@ -3,6 +3,7 @@ import { useVerifyRegistrationEmailStore } from '@/user-registration/stores/veri
 import { storeToRefs } from 'pinia';
 import { onUnmounted } from 'vue';
 import OtpInput from '@/auth/components/OtpInput.vue';
+import { LyCenteredPanel } from '@lyvely/ui';
 
 const verifyEmailStore = useVerifyRegistrationEmailStore();
 const { model, errorMsg, validator, otpInfo } = storeToRefs(verifyEmailStore);
@@ -24,7 +25,7 @@ onUnmounted(verifyEmailStore.reset);
 </script>
 
 <template>
-  <ly-centered-layout>
+  <ly-centered-panel>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       {{ $t('user_registration.verify_email.title') }}
@@ -48,7 +49,7 @@ onUnmounted(verifyEmailStore.reset);
           @click="verifyEmail" />
       </div>
     </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 </template>
 
 <style scoped></style>

@@ -5,6 +5,7 @@ import { EntityNotFoundException } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
 import { useUserInvitationsService } from '../services/user-invitations.service';
 import { profileRoute } from '@/profiles/routes/profile-route.util';
+import { LyCenteredPanel } from '@lyvely/ui';
 
 const router = useRouter();
 
@@ -52,7 +53,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ly-centered-layout>
+  <ly-centered-panel>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span v-if="error?.length" class="text-base font-bold">{{ $t('error.title') }}</span>
@@ -93,5 +94,5 @@ onMounted(async () => {
         <ly-button class="primary" label="common.accept" @click="accept" />
       </div>
     </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 //import LegalLinks from '@/legal/components/LegalLinks.vue';
+import { LyCenteredPanel } from '@lyvely/ui';
 
 export interface IProps {
   title?: string;
@@ -13,7 +14,7 @@ const props = withDefaults(defineProps<IProps>(), {
 </script>
 
 <template>
-  <ly-centered-layout v-bind="props">
+  <ly-centered-panel v-bind="props">
     <template #header>
       <slot name="header">
         <h1 class="text-center text-xl">
@@ -34,7 +35,7 @@ const props = withDefaults(defineProps<IProps>(), {
       <!-- legal-links / -->
       <slot name="links" />
     </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 </template>
 
 <style scoped></style>

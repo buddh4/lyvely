@@ -8,6 +8,7 @@ import { useUserInvitationsService } from '../services';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { storeToRefs } from 'pinia';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import { LyCenteredPanel } from '@lyvely/ui';
 
 const router = useRouter();
 
@@ -52,7 +53,7 @@ onMounted(async () => {
     <language-chooser class="float-right" />
   </div>
 
-  <ly-centered-layout>
+  <ly-centered-panel>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">{{ $t('invitations.headline') }}</span>
@@ -154,5 +155,5 @@ onMounted(async () => {
     </template>
 
     <template #footer> </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 </template>

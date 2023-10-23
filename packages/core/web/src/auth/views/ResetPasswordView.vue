@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import CaptchaInput from '@/captcha/components/CaptchaInput.vue';
+import { LyCenteredPanel } from '@lyvely/ui';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
 import { storeToRefs } from 'pinia';
 import { useRouter, RouteLocationRaw } from 'vue-router';
@@ -44,7 +45,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     <LanguageChooser class="float-right" />
   </div>
 
-  <ly-centered-layout v-if="stage === 'init'" width="lg">
+  <ly-centered-panel v-if="stage === 'init'" width="lg">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -78,9 +79,9 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         </router-link>
       </div>
     </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 
-  <ly-centered-layout v-if="stage === 'sent'" width="sm">
+  <ly-centered-panel v-if="stage === 'sent'" width="sm">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -100,9 +101,9 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         label="auth.reset_password.to_login"
         @click="toLogin" />
     </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 
-  <ly-centered-layout v-if="stage === 'reset'" width="sm">
+  <ly-centered-panel v-if="stage === 'reset'" width="sm">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
@@ -153,5 +154,5 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         </router-link>
       </div>
     </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 </template>
