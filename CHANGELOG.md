@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementation of Menu API
 - Implementation of Feature API
 - Implementation of Policy API
+- Implemented Layout web API for registering layouts which can be used in routes
 - Added a standalone mode for Tasks, Habits and Milestone module
 - Added an initial view for Tasks, Habits and Milestone module
 - Major improvements of backend and frontend module system
