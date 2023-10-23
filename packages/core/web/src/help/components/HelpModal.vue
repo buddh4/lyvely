@@ -2,6 +2,7 @@
 import { useAuthStore } from '@/auth/store/auth.store';
 import { useHelpStore } from '@/help/stores/help.store';
 import { storeToRefs } from 'pinia';
+import { t } from '@/i18n';
 import { isToday } from '@lyvely/dates';
 import ms from 'ms';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
@@ -37,7 +38,7 @@ function toDocs() {
 <template>
   <ly-modal v-model="showModal" icon="help" icon-class="text-info-dark" title="help.modal.title">
     <template #title>
-      {{ $t(title, { appName }) }}
+      {{ t(title, { appName: appName || 'lyvely' }) }}
     </template>
 
     <i18n-t

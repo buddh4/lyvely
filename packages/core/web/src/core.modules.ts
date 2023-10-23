@@ -8,7 +8,9 @@ import messagesModule from './messages/module';
 import uiModule from './ui/module';
 import helpModule from './help/module';
 import userAccountModule from './user-accounts/module';
+import userRegistrationModule from './user-registration/module';
 import userInvitationsModule from './user-invitations/module';
+import systemMessagesModule from './system-messages/module';
 import { registerModules } from '@/core';
 
 export const registerCoreModules = () => {
@@ -21,8 +23,10 @@ export const registerCoreModules = () => {
     contentModule(),
     tagsModule(),
     messagesModule(),
+    systemMessagesModule(),
     helpModule(),
     userAccountModule(),
     userInvitationsModule(),
+    userRegistrationModule(),
   );
 };

@@ -3,7 +3,6 @@ import { useRouter, RouteLocationRaw } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { watch, onUnmounted, ref } from 'vue';
 import { useLoginStore } from '@/auth/store/login.store';
-import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
 import { isTouchScreen } from '@/ui';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
@@ -12,7 +11,7 @@ import {
   IUserRegistrationAppConfig,
   UserRegistrationMode,
 } from '@lyvely/core-interface';
-import { LyCenteredLayout } from '@lyvely/ui';
+import { LyCenteredPanel } from '@lyvely/ui';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -64,11 +63,7 @@ onUnmounted(loginStore.reset);
 </script>
 
 <template>
-  <div class="w-full absolute px-2">
-    <LanguageChooser class="float-right" />
-  </div>
-
-  <ly-centered-layout>
+  <ly-centered-panel>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">{{ $t('auth.login.sign_in') }}</span>
@@ -177,5 +172,5 @@ onUnmounted(loginStore.reset);
         {{ $t('auth.login.sign_in') }}
       </ly-button>
     </template>
-  </ly-centered-layout>
+  </ly-centered-panel>
 </template>

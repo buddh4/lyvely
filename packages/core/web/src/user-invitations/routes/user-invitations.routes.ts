@@ -1,4 +1,5 @@
 import { translate } from '@/i18n';
+import { LAYOUT_INTRO } from '@/ui';
 
 export default [
   {
@@ -11,6 +12,7 @@ export default [
       title: () => translate('invitations.title'),
       isPublic: true,
       profileView: false,
+      layout: LAYOUT_INTRO,
     },
     component: () => import('../views/MailInvitationView.vue'),
   },

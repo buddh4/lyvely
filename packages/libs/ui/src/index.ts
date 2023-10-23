@@ -1,4 +1,4 @@
-import LyCenteredLayout from './components/layouts/LyCenteredLayout.vue';
+import LyCenteredPanel from './components/layouts/LyCenteredPanel.vue';
 import LyContentRoot from './components/layouts/LyContentRoot.vue';
 import LyListPage from './components/layouts/LyListPage.vue';
 import LyAlert from './components/alerts/LyAlert.vue';
@@ -149,7 +149,7 @@ export {
   LyUpdateIndicator,
   LyFloatingAddButton,
   LyAddButton,
-  LyCenteredLayout,
+  LyCenteredPanel,
   LyContentRoot,
   LyListPage,
   LyMainContainer,

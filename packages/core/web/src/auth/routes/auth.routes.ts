@@ -4,6 +4,7 @@ import { RouteLocation, RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from './paths';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
+import { LAYOUT_INTRO } from '@/ui';
 
 export default [
   {
@@ -12,6 +13,7 @@ export default [
     meta: {
       title: () => translate('auth.login.title'),
       profileView: false,
+      layout: LAYOUT_INTRO,
     },
     component: () => import('../views/LoginView.vue'),
     beforeEnter: [ifNotAuthenticated],
@@ -23,6 +25,7 @@ export default [
       title: () => translate('auth.reset_password.title'),
       isPublic: true,
       profileView: false,
+      layout: LAYOUT_INTRO,
     },
     component: () => import('../views/ResetPasswordView.vue'),
     beforeEnter: [

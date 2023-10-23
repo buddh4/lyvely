@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import { MailInvitationInfo } from '@lyvely/core-interface';
 import { EntityNotFoundException } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
@@ -49,10 +48,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-full absolute px-2">
-    <language-chooser class="float-right" />
-  </div>
-
   <ly-centered-panel>
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />

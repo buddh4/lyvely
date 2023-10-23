@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import LanguageChooser from '@/i18n/components/LanguageChooser.vue';
 import CaptchaInput from '@/captcha/components/CaptchaInput.vue';
 import { LyCenteredPanel } from '@lyvely/ui';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
@@ -41,10 +40,6 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
 </script>
 
 <template>
-  <div class="w-full absolute px-2">
-    <LanguageChooser class="float-right" />
-  </div>
-
   <ly-centered-panel v-if="stage === 'init'" width="lg">
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />

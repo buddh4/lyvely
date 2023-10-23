@@ -15,7 +15,8 @@ import { registerMenuEntries } from '@/ui/menus';
 import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import { usePageStore } from './stores';
 import { computed } from 'vue';
-import { UI_MODULE_ID } from './ui.constants';
+import { LAYOUT_INTRO, UI_MODULE_ID } from './ui.constants';
+import { registerLayouts } from './layouts';
 
 export default () => {
   return {
@@ -45,6 +46,12 @@ export default () => {
           icon: computed(() => (usePageStore().isDark ? 'light-mode' : 'dark-mode')),
           click: () => usePageStore().toggleDark(),
           text: computed(() => (usePageStore().isDark ? 'page.toLightMode' : 'page.toDarkMode')),
+        },
+      ]);
+      registerLayouts([
+        {
+          id: LAYOUT_INTRO,
+          component: () => import('./layouts/IntroLayout.vue'),
         },
       ]);
     },

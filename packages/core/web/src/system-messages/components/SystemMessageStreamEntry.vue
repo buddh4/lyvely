@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { SystemMessageModel, ContentModel } from '@lyvely/core-interface';
 import { ContentStreamEntry } from '@/content';
+import { t } from '@/i18n';
 import { IStream } from '@/stream/composables/stream.composable';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 
@@ -33,9 +34,9 @@ const appName = useAppConfigStore().get('appName');
     </template>
 
     <template #default>
-      <h1 v-if="model.content.title">{{ $t(model.content.title, model.content.params || {}) }}</h1>
+      <h1 v-if="model.content.title">{{ t(model.content.title, model.content.params || {}) }}</h1>
       <span v-if="model.content.text">
-        {{ $t(model.content.text, model.content.params || {}) }}
+        {{ t(model.content.text, model.content.params || {}) }}
       </span>
     </template>
   </content-stream-entry>
