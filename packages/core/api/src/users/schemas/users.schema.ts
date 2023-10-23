@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
-import mongoose, { UpdateQuery } from 'mongoose';
-import { BaseEntity, EntityIdentity } from '@/core';
+import { UpdateQuery, Document } from 'mongoose';
+import { BaseEntity, createObjectId, EntityIdentity } from '@/core';
 import { PropertiesOf, getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
@@ -13,8 +13,6 @@ import {
   UserNotificationState,
   UserNotificationStateSchema,
 } from './user-notification-state.schema';
-
-export type UserDocument = User & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
@@ -88,7 +86,7 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
 
     if (!this.guid) {
       this.guid = createHash('sha256')
-        .update(new mongoose.Types.ObjectId().toString() + this.email)
+        .update(createObjectId().toString() + this.email)
         .digest('hex');
     }
   }
@@ -149,7 +147,7 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
 export const UserSchema = SchemaFactory.createForClass(User);
 
 UserSchema.method('toJSON', function () {
-  const userDoc = <UserDocument>this;
+  const userDoc = <User & Document>this;
   const user = <Partial<PropertiesOf<User>>>userDoc.toObject();
   delete user.password;
   delete user.refreshTokens;
@@ -158,7 +156,7 @@ UserSchema.method('toJSON', function () {
 
 // NOTE: Arrow functions are not used here as we do not want to use lexical scope for 'this'
 UserSchema.pre('validate', function (next) {
-  const user = <UserDocument>this;
+  const user = <User & Document>this;
 
   this.email = this.email?.toLowerCase();
 
@@ -212,7 +210,7 @@ function preUpdateQuery(update: UpdateQuery<User>, next) {
   }
 }
 
-function preUpdateModel(update: UserDocument, next) {
+function preUpdateModel(update: User, next) {
   if (update?.password) {
     hash(update.password, 10, (err, hash) => {
       if (err) return next(err);

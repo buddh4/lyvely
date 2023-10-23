@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, DocumentType } from '@/core';
+import { BaseEntity } from '@/core';
 import { addMilliSeconds } from '@lyvely/dates';
 import ms from 'ms';
 
@@ -22,4 +22,3 @@ export class Captcha extends BaseEntity<Captcha> {
 }
 
 export const CaptchaSchema = SchemaFactory.createForClass(Captcha);
-export type CaptchaDocument = DocumentType<Captcha>;

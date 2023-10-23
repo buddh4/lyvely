@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
 import { NotificationType, NotificationTypeSchema } from './notification-type.schema';
-import { BaseEntity, ObjectIdProp } from '@/core';
+import { BaseEntity, ObjectIdProp, TObjectId } from '@/core';
 
 import {
   UserSubscriptionSchema,
@@ -18,7 +17,7 @@ export class Notification<
   subscription: TSubscription;
 
   @ObjectIdProp()
-  pid?: mongoose.Types.ObjectId;
+  pid?: TObjectId;
 
   @Prop({ type: NotificationTypeSchema, required: true })
   data: T;
@@ -29,7 +28,7 @@ export class Notification<
   @Prop({ required: true })
   category: string;
 
-  constructor(data: T, subscription: Subscription, pid?: mongoose.Types.ObjectId) {
+  constructor(data: T, subscription: Subscription, pid?: TObjectId) {
     super({
       data,
       subscription,

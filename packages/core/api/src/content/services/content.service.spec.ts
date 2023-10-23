@@ -1,7 +1,7 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { Content, ContentSchema } from '../schemas';
-import { TestContent, TestContentDocument, TestContentSchema, contentTestPlugin } from '../testing';
-import { Model } from 'mongoose';
+import { TestContent, TestContentSchema, contentTestPlugin } from '../testing';
+import { Model } from '@/core';
 import { User } from '@/users';
 import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
 import { ContentService } from './content.service';
@@ -9,7 +9,7 @@ import { ContentService } from './content.service';
 describe('content dao', () => {
   let testingModule: LyvelyTestingModule;
   let contentService: ContentService;
-  let testContentModel: Model<TestContentDocument>;
+  let testContentModel: Model<TestContent>;
   let testData: ProfileTestDataUtils;
 
   const TEST_KEY = 'content_service';
@@ -29,7 +29,7 @@ describe('content dao', () => {
       .models(ContentModel)
       .compile();
     contentService = testingModule.get(ContentService);
-    testContentModel = testingModule.get<Model<TestContentDocument>>('TestContentModel');
+    testContentModel = testingModule.get('TestContentModel');
     testData = testingModule.get(ProfileTestDataUtils);
   });
 

@@ -1,4 +1,4 @@
-import { FilterQuery } from 'mongoose';
+import { FilterQuery } from './db.type';
 
 export class DBQuery {
   static or<T = any>(conditions: FilterQuery<T>[]): FilterQuery<T> {

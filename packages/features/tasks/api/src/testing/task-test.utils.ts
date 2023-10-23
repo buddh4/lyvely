@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@lyvely/core';
-import { Profile, ProfileTestDataUtils } from '@lyvely/core';
+import {
+  User,
+  Profile,
+  ProfileTestDataUtils,
+  Model,
+  assureObjectId,
+  EntityIdentity,
+  createBaseEntityInstance,
+} from '@lyvely/core';
 import { CreateTaskModel } from '@lyvely/tasks-interface';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@lyvely/core';
 import { Task } from '../schemas';
 
 @Injectable()

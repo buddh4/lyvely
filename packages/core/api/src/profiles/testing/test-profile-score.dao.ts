@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TestProfileScore } from './test-profile-score.schema';
 import { ProfileScoreDao } from '../daos';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model } from '@/core';
 import { Constructor } from '@lyvely/common';
 
 @Injectable()

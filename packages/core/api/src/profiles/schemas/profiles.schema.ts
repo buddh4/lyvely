@@ -1,7 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { getDefaultLocale, User } from '@/users';
-import { Types } from 'mongoose';
-import { assureObjectId, BaseEntity, EntityIdentity, ObjectIdProp } from '@/core';
+import {
+  assureObjectId,
+  BaseEntity,
+  createObjectId,
+  EntityIdentity,
+  ObjectIdProp,
+  TObjectId,
+} from '@/core';
 import { Tag, TagSchema } from './tags.schema';
 import {
   MAX_PROFILE_DESCRIPTION_LENGTH,
@@ -33,15 +39,12 @@ class ProfileMetadata extends BaseModel<ProfileMetadata> {
 const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Profile
-  extends BaseEntity<Profile>
-  implements PropertiesOf<ProfileModel<Types.ObjectId>>
-{
+export class Profile extends BaseEntity<Profile> implements PropertiesOf<ProfileModel<TObjectId>> {
   @ObjectIdProp({ required: true })
-  ownerId: Types.ObjectId;
+  ownerId: TObjectId;
 
   @ObjectIdProp({ required: true })
-  oid: Types.ObjectId;
+  oid: TObjectId;
 
   @Prop({ min: MIN_PROFILE_NAME_LENGTH, max: MAX_PROFILE_NAME_LENGTH, required: true })
   name: string;
@@ -106,7 +109,7 @@ export class Profile
     // We need to assign an oid even if this profile is not connected to an organizations for sharding and query index.
     // This OID can later be used to create an organization out of this profile
     if (!this.oid) {
-      this.oid = new Types.ObjectId();
+      this.oid = createObjectId();
       this.hasOrg = false;
     } else {
       this.hasOrg = true;
@@ -157,11 +160,11 @@ export class Profile
     return this.getTagsByName(tagNames).map((tag) => assureObjectId(tag.id));
   }
 
-  getTagById(id: Types.ObjectId) {
+  getTagById(id: TObjectId) {
     return this.tags.find((tag) => tag._id.equals(id));
   }
 
-  getTagsById(tagIds: Types.ObjectId[]) {
+  getTagsById(tagIds: TObjectId[]) {
     return this.tags.filter((tag) => tagIds.includes(tag._id));
   }
 

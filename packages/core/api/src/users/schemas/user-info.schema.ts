@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
 import { assureObjectId, assureStringId, ObjectIdProp, TObjectId } from '@/core';
 import { BaseModel, PropertiesOf } from '@lyvely/common';
 import { UserInfoModel } from '@lyvely/core-interface';
@@ -10,7 +9,6 @@ export class UserInfo
   extends BaseModel<UserInfo>
   implements PropertiesOf<Omit<UserInfoModel, 'uid'>>
 {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   @ObjectIdProp({ required: true })
   uid: TObjectId;
 

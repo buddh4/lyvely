@@ -1,8 +1,7 @@
 import { ContentDataType, ContentType } from '@/content';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { MixedProp, NestedSchema } from '@/core';
+import { MixedProp, NestedSchema, TObjectId } from '@/core';
 import { SystemMessageModel, SystemMessageContentModel } from '@lyvely/core-interface';
-import { Types } from 'mongoose';
 
 @NestedSchema()
 export class SystemMessageContent extends ContentDataType implements SystemMessageContentModel {
@@ -15,7 +14,7 @@ const SystemMessageContentSchema = SchemaFactory.createForClass(SystemMessageCon
 @Schema()
 export class SystemMessage
   extends ContentType<SystemMessage>
-  implements SystemMessageModel<Types.ObjectId>
+  implements SystemMessageModel<TObjectId>
 {
   @Prop({ type: SystemMessageContentSchema })
   content: SystemMessageContent;

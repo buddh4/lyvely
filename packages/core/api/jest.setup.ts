@@ -1,5 +1,4 @@
 import 'reflect-metadata';
+import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 
-afterEach(async () => {
-  //await closeInMongodConnections();
-});
+useDayJsDateTimeAdapter();

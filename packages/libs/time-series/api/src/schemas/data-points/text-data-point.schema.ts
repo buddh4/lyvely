@@ -1,14 +1,14 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
 import { PropertiesOf } from '@lyvely/common';
+import { TObjectId } from '@lyvely/core';
 import { DataPointValueType, TextDataPointModel } from '@lyvely/time-series-interface';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
-import { Types } from 'mongoose';
 
 @Schema()
 export class TextDataPoint
   extends DataPoint<TextDataPoint>
-  implements PropertiesOf<TextDataPointModel<Types.ObjectId>>
+  implements PropertiesOf<TextDataPointModel<TObjectId>>
 {
   @Prop({ required: true })
   value: string;

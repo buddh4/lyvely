@@ -1,8 +1,7 @@
 import { Content } from '../schemas';
-import { assureObjectId, EntityIdentity, UpdateQuerySet } from '@/core';
+import { assureObjectId, EntityIdentity, UpdateQuerySet, UpdateQuery } from '@/core';
 import { BaseProfileModelDao, Profile } from '@/profiles';
 import { User } from '@/users';
-import { UpdateQuery } from 'mongoose';
 import { SortResult } from '@lyvely/common';
 
 export abstract class ContentTypeDao<T extends Content> extends BaseProfileModelDao<T> {

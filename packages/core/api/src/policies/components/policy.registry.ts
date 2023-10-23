@@ -52,7 +52,3 @@ export class PolicyRegistry extends AbstractTypeRegistry<IPolicy<any>> {
 }
 
 export const usePolicyRegistry = useSingleton(() => new PolicyRegistry());
-
-/**
- * LyvelyModules are loaded in app builder
- */

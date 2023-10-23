@@ -1,4 +1,4 @@
-import { Document, Types, UpdateQuery } from 'mongoose';
+import { UpdateQuery, createObjectId, isObjectId, TObjectId } from './db.type';
 import { BaseEntity, assignEntityData } from './base.entity';
 import {
   isValidObjectId,
@@ -9,11 +9,7 @@ import {
   assignRawDataTo,
 } from '@lyvely/common';
 
-export type EntityIdentity<T extends BaseEntity<any>> =
-  | T
-  | Types.ObjectId
-  | string
-  | (Document & T);
+export type EntityIdentity<T extends BaseEntity<any>> = T | TObjectId | string;
 
 export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 
@@ -21,33 +17,33 @@ export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
   identity: EntityIdentity<T> | undefined | null,
   optional?: false,
-): Types.ObjectId;
+): TObjectId;
 export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
   identity: EntityIdentity<T> | undefined | null,
   optional: true,
-): Types.ObjectId | undefined;
+): TObjectId | undefined;
 export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
   identity: EntityIdentity<T> | undefined | null,
   optional?: boolean,
-): Types.ObjectId {
+): TObjectId {
   if (!identity && optional) return undefined as any;
 
   if (typeof identity === 'string') {
     if (isValidObjectId(identity)) {
-      return new Types.ObjectId(identity as string);
+      return createObjectId(identity);
     }
     throw new IntegrityException('Use of invalid object id detected.');
   }
 
-  if (identity instanceof Types.ObjectId) {
+  if (isObjectId(identity)) {
     // Somehow type guards are not working here...
-    return identity as Types.ObjectId;
+    return identity as TObjectId;
   }
 
   if (
     identity &&
     '_id' in identity &&
-    (typeof identity['_id'] === 'string' || identity['_id'] instanceof Types.ObjectId)
+    (typeof identity['_id'] === 'string' || isObjectId(identity['_id']))
   ) {
     return assureObjectId(identity['_id']);
   }
@@ -153,7 +149,7 @@ export function assureStringId(obj: any | undefined, optional?: boolean): string
     return obj;
   }
 
-  if (obj instanceof Types.ObjectId) {
+  if (isObjectId(obj)) {
     return obj.toString();
   }
 

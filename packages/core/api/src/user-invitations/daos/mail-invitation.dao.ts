@@ -1,6 +1,5 @@
-import { AbstractDao } from '@/core';
+import { AbstractDao, Model } from '@/core';
 import { MailInvitation } from '../schemas';
-import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 export class MailInvitationDao extends AbstractDao<MailInvitation> {

@@ -1,6 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema, ObjectIdProp } from '@/core';
-import mongoose from 'mongoose';
+import { BaseEntity, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
 import { Author, ContentAuthorSchema, CreatedAs } from './content-author.schema';
 import { getNumberEnumValues, PropertyType } from '@lyvely/common';
 import { IContentMetadata, RoleVisibilityLevel } from '@lyvely/core-interface';
@@ -8,16 +7,16 @@ import { IContentMetadata, RoleVisibilityLevel } from '@lyvely/core-interface';
 @NestedSchema()
 export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {
   @ObjectIdProp()
-  mid?: mongoose.Types.ObjectId;
+  mid?: TObjectId;
 
   @ObjectIdProp()
-  parentId?: mongoose.Types.ObjectId;
+  parentId?: TObjectId;
 
   @Prop()
   parentPath?: string;
 
   @ObjectIdProp({ required: true })
-  createdBy: mongoose.Types.ObjectId;
+  createdBy: TObjectId;
 
   @Prop({ type: ContentAuthorSchema, required: true })
   createdAs?: CreatedAs;
@@ -35,7 +34,7 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   updatedAt: Date;
 
   @ObjectIdProp()
-  updatedBy: mongoose.Types.ObjectId;
+  updatedBy: TObjectId;
 
   @Prop({ required: true })
   streamSort: number;

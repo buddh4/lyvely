@@ -1,8 +1,10 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
 import { EntityNotFoundException, IntegrityException } from '@lyvely/common';
 import { AbstractStreamService } from '@/streams';
-import { IStreamResponse, StreamRequest, StreamResponse } from '@lyvely/core-interface';
 import {
+  IStreamResponse,
+  StreamRequest,
+  StreamResponse,
   WebNotification,
   NotificationSeenStateLiveEvent,
   NotificationUpdateStateLiveEvent,
@@ -13,9 +15,8 @@ import {
   UserNotification,
   NotificationDeliveryStatus,
 } from '../schemas';
-import mongoose, { FilterQuery } from 'mongoose';
+import { FilterQuery, assureObjectId, assureStringId, EntityIdentity, TObjectId } from '@/core';
 import { IUserContext, User, UsersService } from '@/users';
-import { assureObjectId, assureStringId, EntityIdentity } from '@/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { I18n } from '@/i18n';
 import { LiveService } from '@/live';
@@ -126,7 +127,7 @@ export class UserNotificationsService extends AbstractStreamService<
       throw new IntegrityException('Can not load notifications without user identity');
 
     const models: WebNotification[] = [];
-    const toDelete: mongoose.Types.ObjectId[] = [];
+    const toDelete: TObjectId[] = [];
     const { user } = context;
 
     userNotifications.forEach((userNotification) => {

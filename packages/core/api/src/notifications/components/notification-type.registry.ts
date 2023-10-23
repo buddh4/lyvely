@@ -1,9 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { NotificationType, Notification, TNotificationType } from '../schemas';
-import { AbstractTypeRegistry, globalEmitter } from '@/core';
+import { AbstractTypeRegistry, globalEmitter, Model, Schema, SubDocument } from '@/core';
 import { EVENT_REGISTER_NOTIFICATION_TYPE } from '../notification.constants';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema } from 'mongoose';
 import { Listener } from 'eventemitter2';
 
 // This workaround is required since the notifications are registered before the registry is available
@@ -40,16 +39,13 @@ export class NotificationTypeRegistry extends AbstractTypeRegistry<NotificationT
     type: TNotificationType,
     schema: Schema<NotificationType>,
   ) {
-    const notificationTypePath =
-      this.notificationModel.schema.path<Schema.Types.Subdocument>('data');
+    const notificationTypePath = this.notificationModel.schema.path<SubDocument>('data');
 
     if (
       !notificationTypePath.schema.discriminators ||
       !notificationTypePath.schema.discriminators[type.typeName]
     ) {
-      this.notificationModel.schema
-        .path<Schema.Types.Subdocument>('data')
-        .discriminator(type.typeName, schema);
+      this.notificationModel.schema.path<SubDocument>('data').discriminator(type.typeName, schema);
     }
 
     this.registerType(type, type.typeName);

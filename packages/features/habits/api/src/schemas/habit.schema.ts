@@ -4,8 +4,8 @@ import {
   NestedSchema,
   User,
   Profile,
-  ContentDocument,
   ContentDataType,
+  TObjectId,
 } from '@lyvely/core';
 import { PropertiesOf, PropertyType } from '@lyvely/common';
 import { HabitModel, CreateHabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
@@ -23,9 +23,6 @@ import {
   TimeSeriesContent,
   TimerDataPointConfig,
 } from '@lyvely/time-series';
-import { Types } from 'mongoose';
-
-export type HabitDocument = Habit & ContentDocument;
 
 type HabitDataPointConfig =
   | CheckboxNumberDataPointConfig
@@ -58,7 +55,7 @@ export const HabitConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(Ha
 @Schema()
 export class Habit
   extends TimeSeriesContent<Habit, HabitDataPointConfig>
-  implements PropertiesOf<HabitModel<Types.ObjectId>>
+  implements PropertiesOf<HabitModel<TObjectId>>
 {
   @Prop({ type: HabitConfigSchema, required: true })
   @PropertyType(HabitConfig)

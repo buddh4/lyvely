@@ -1,6 +1,5 @@
-import { AbstractDao, EntityIdentity } from '@/core';
+import { AbstractDao, EntityIdentity, Model } from '@/core';
 import { Invitation, MailInvitation, UserInvitation } from '../schemas';
-import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '@/users';
 import { subtractDays } from '@lyvely/dates';

@@ -1,6 +1,5 @@
 import { Post, Req, Body } from '@nestjs/common';
 import { ProfileController } from '../decorators';
-import { ProfileMembershipGuard } from '../guards';
 import { ProfileRequest } from '../types';
 import { UseClassSerializer } from '@/core';
 import {
@@ -11,7 +10,7 @@ import {
 } from '@lyvely/core-interface';
 import { ProfileMembershipService } from '../services';
 
-@ProfileController(ENDPOINT_PROFILE_MEMBERSHIP, ProfileMembershipGuard)
+@ProfileController(ENDPOINT_PROFILE_MEMBERSHIP)
 @UseClassSerializer()
 export class ProfileMembershipController implements ProfileMembershipEndpoint {
   constructor(private readonly membershipService: ProfileMembershipService) {}

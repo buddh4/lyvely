@@ -18,7 +18,7 @@ describe('CoreModule', () => {
   });
 
   afterAll(async () => {
-    await afterAllTests(TEST_KEY);
+    await afterAllTests();
   });
 
   it('registry is defined', () => {

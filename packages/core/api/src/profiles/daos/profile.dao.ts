@@ -1,8 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Organization, Profile, getProfileConstructorByType, Tag } from '../schemas';
-import mongoose, { Model } from 'mongoose';
-import { applyRawDataTo, assureObjectId, EntityIdentity, AbstractDao } from '@/core';
+import {
+  Model,
+  applyRawDataTo,
+  assureObjectId,
+  EntityIdentity,
+  AbstractDao,
+  createObjectId,
+} from '@/core';
 import { User } from '@/users';
 import { Constructor, DeepPartial, IntegrityException } from '@lyvely/common';
 import { ProfileType } from '@lyvely/core-interface';
@@ -34,7 +40,7 @@ export class ProfileDao extends AbstractDao<Profile> {
 
   async addTags(profile: Profile, tags: Tag[]) {
     tags.forEach((tag) => {
-      tag._id = tag._id || new mongoose.Types.ObjectId();
+      tag._id = tag._id || createObjectId();
     });
     return this.updateOneById(profile, { $push: { tags: { $each: tags } } });
   }

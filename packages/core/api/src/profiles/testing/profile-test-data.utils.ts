@@ -10,28 +10,25 @@ import {
   GroupProfile,
   ICreateProfileOptions,
   Membership,
-  MembershipDocument,
   Organization,
   Profile,
   ProfilesFactory,
   UserProfile,
   UserProfileRelation,
-  UserProfileRelationDocument,
 } from '../schemas';
 import { ProtectedProfileContext } from '../models';
-import mongoose, { Model } from 'mongoose';
+import { Model, createBaseEntityInstance, createObjectId } from '@/core';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { createBaseEntityInstance } from '@/core';
 
 export class ProfileTestDataUtils extends UserTestDataUtils {
   @InjectModel(Profile.name)
   protected ProfileModel: Model<Profile>;
 
   @InjectModel(UserProfileRelation.name)
-  protected UserProfileRelationModel: Model<UserProfileRelationDocument>;
+  protected UserProfileRelationModel: Model<UserProfileRelation>;
 
   @InjectModel(Membership.name)
-  protected MembershipModel: Model<MembershipDocument>;
+  protected MembershipModel: Model<Membership>;
 
   async createUserAndProfile(
     username = 'test',
@@ -311,6 +308,6 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   }
 }
 // We use this to prevent circular dependency
-function getObjectId(id: string) {
-  return new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
+function getObjectId(seed: string) {
+  return createObjectId(mongoSeedingGetObjectId(seed).toString());
 }

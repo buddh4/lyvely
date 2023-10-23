@@ -4,8 +4,7 @@ import { HabitDataPointDao } from '../daos';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
 import { UserAssignmentStrategy } from '@lyvely/common';
-import { ContentScoreDao, ContentScoreService } from '@lyvely/core';
-import { Model } from 'mongoose';
+import { ContentScoreDao, ContentScoreService, Model } from '@lyvely/core';
 import { DataPoint } from '@lyvely/time-series';
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 

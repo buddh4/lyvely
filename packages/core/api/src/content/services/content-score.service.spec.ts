@@ -3,14 +3,12 @@ import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
 import { ContentScore, ContentScoreSchema } from '../schemas';
 import {
   ExtendedTestContentScore,
-  ExtendedTestContentScoreDocument,
   ExtendedTestContentScoreSchema,
   TestContentScore,
-  TestContentScoreDocument,
   TestContentScoreSchema,
   TestContent,
 } from '../testing';
-import { Model } from 'mongoose';
+import { Model } from '@/core';
 import { ContentScoreService } from './index';
 import { ContentScoreDao } from '../daos';
 import { toTimingId } from '@lyvely/dates';
@@ -19,8 +17,8 @@ import { UserAssignmentStrategy } from '@lyvely/common';
 describe('ContentScoreService', () => {
   let testingModule: LyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
-  let TestContentScoreModel: Model<TestContentScoreDocument>;
-  let ExtendedTestContentScoreModel: Model<ExtendedTestContentScoreDocument>;
+  let TestContentScoreModel: Model<TestContentScore>;
+  let ExtendedTestContentScoreModel: Model<ExtendedTestContentScore>;
   let contentScoreService: ContentScoreService;
 
   const TEST_KEY = 'ContentScoreService';
@@ -45,11 +43,8 @@ describe('ContentScoreService', () => {
       .compile();
     contentScoreService = testingModule.get<ContentScoreService>(ContentScoreService);
     testDataUtils = testingModule.get(ProfileTestDataUtils);
-    TestContentScoreModel =
-      testingModule.get<Model<TestContentScoreDocument>>('TestContentScoreModel');
-    ExtendedTestContentScoreModel = testingModule.get<Model<ExtendedTestContentScoreDocument>>(
-      'ExtendedTestContentScoreModel',
-    );
+    TestContentScoreModel = testingModule.get('TestContentScoreModel');
+    ExtendedTestContentScoreModel = testingModule.get('ExtendedTestContentScoreModel');
   });
 
   afterEach(async () => {

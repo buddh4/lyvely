@@ -2,7 +2,7 @@ import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
 import { ModelSaveEvent } from './dao.events';
 import { BaseEntity } from './base.entity';
-import { Model } from 'mongoose';
+import { Model } from './db.type';
 import {
   createCoreTestingModule,
   EventTester,
@@ -82,7 +82,7 @@ describe('AbstractDao', () => {
   });
 
   afterAll(async () => {
-    await afterAllTests(TEST_KEY);
+    await afterAllTests();
   });
 
   it('should be defined', () => {

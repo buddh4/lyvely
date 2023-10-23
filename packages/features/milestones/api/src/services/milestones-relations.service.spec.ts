@@ -1,28 +1,29 @@
-import { ProfileTestDataUtils, profilesTestPlugin } from '@lyvely/core';
-import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import {
+  ProfileTestDataUtils,
+  profilesTestPlugin,
   Content,
   ContentMetadata,
   ContentSchema,
   ContentType,
   ContentModel,
   contentTestPlugin,
+  EntityIdentity,
+  TObjectId,
+  Model,
 } from '@lyvely/core';
-import mongoose, { Model } from 'mongoose';
+import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
-import { User } from '@lyvely/core';
 import { CalendarInterval, formatDate } from '@lyvely/dates';
 import { MilestoneRelationModel } from '@lyvely/milestones-interface';
 import { INestApplication, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { MilestoneRelationEvent } from '../';
 import { Milestone } from '../schemas';
-import { EntityIdentity } from '@lyvely/core';
 
 @Schema()
 class TestContent extends ContentType<TestContent> {
-  toModel(user?: User): ContentModel<TestContent> {
+  toModel(): ContentModel<TestContent> {
     return new ContentModel(this);
   }
 }
@@ -55,7 +56,7 @@ class TestMilestoneRelationProvider {
           contentType: TestContent.name,
           progress: 0.4,
           title: 'Test content',
-        } as MilestoneRelationModel<mongoose.Types.ObjectId>;
+        } as MilestoneRelationModel<TObjectId>;
       }),
     );
   }

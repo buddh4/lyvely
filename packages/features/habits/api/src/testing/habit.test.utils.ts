@@ -1,24 +1,29 @@
-import { Injectable, Provider } from '@nestjs/common';
-import { User, Profile, ProfileTestDataUtils } from '@lyvely/core';
-import { Habit, HabitDocument, HabitSchema, HabitScore, HabitScoreSchema } from '../schemas';
+import { Injectable } from '@nestjs/common';
+import {
+  User,
+  Profile,
+  ProfileTestDataUtils,
+  assureObjectId,
+  EntityIdentity,
+  createBaseEntityInstance,
+  Model,
+} from '@lyvely/core';
+import { Habit } from '../schemas';
 import { toTimingId, CalendarDate, CalendarInterval, toDate } from '@lyvely/dates';
 import { CreateHabitModel } from '@lyvely/habits-interface';
 import {
   DataPointValueType,
   DataPointInputType,
   DataPoint,
-  getDataPointModelDefinition,
   NumberDataPoint,
   InjectDataPointModel,
 } from '@lyvely/time-series';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { assureObjectId, EntityIdentity, createBaseEntityInstance } from '@lyvely/core';
 
 @Injectable()
 export class HabitTestDataUtil extends ProfileTestDataUtils {
   @InjectModel(Habit.name)
-  protected HabitModel: Model<HabitDocument>;
+  protected HabitModel: Model<Habit>;
 
   @InjectDataPointModel(Habit.name)
   protected HabitDataPointModel: Model<DataPoint>;

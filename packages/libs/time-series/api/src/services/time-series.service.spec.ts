@@ -22,8 +22,8 @@ import {
   Content,
   ContentSchema,
   contentTestPlugin,
+  Model,
 } from '@lyvely/core';
-import { Model } from 'mongoose';
 
 const Models = [
   {

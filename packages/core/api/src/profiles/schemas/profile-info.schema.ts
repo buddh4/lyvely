@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
 import { BaseModel, PropertiesOf } from '@lyvely/common';
 import { ProfileInfoModel } from '@lyvely/core-interface';
-import { assureObjectId, assureStringId } from '@/core';
+import { assureObjectId, assureStringId, ObjectIdProp, TObjectId } from '@/core';
 import { Profile } from './profiles.schema';
 
 @Schema({ _id: false })
@@ -10,8 +9,8 @@ export class ProfileInfo
   extends BaseModel<ProfileInfo>
   implements PropertiesOf<Omit<ProfileInfoModel, 'pid'>>
 {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: mongoose.Types.ObjectId;
+  @ObjectIdProp({ required: true })
+  pid: TObjectId;
 
   @Prop()
   imageGuid?: string;

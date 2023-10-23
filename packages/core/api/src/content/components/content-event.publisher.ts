@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Content, ContentDocument } from '../schemas';
+import { Content } from '../schemas';
 import { ConfigService } from '@nestjs/config';
 import { LiveService } from '@/live';
-import { assureStringId, ConfigurationPath } from '@/core';
+import { assureStringId, ConfigurationPath, Model } from '@/core';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { ChangeStreamInsertDocument } from 'mongodb';
 import { ContentUpdateStateLiveEvent } from '@lyvely/core-interface';
 
@@ -15,11 +14,11 @@ export class ContentEventPublisher {
   constructor(
     private readonly configService: ConfigService<ConfigurationPath>,
     private readonly liveService: LiveService,
-    @InjectModel(Content.name) private readonly contentModel: Model<ContentDocument>,
+    @InjectModel(Content.name) private readonly contentModel: Model<Content>,
   ) {
     if (configService.get('mongodb.replicaSet')) {
       const changeStream = contentModel.watch([{ $match: { operationType: 'insert' } }]);
-      changeStream.on('change', (doc: ChangeStreamInsertDocument<ContentDocument>) => {
+      changeStream.on('change', (doc: ChangeStreamInsertDocument<Content>) => {
         /* liveService.emit(LIVE_EVENT_CONTENT_NEW, {
           id: assureStringId(doc.fullDocument._id),
           type: doc.fullDocument.type,

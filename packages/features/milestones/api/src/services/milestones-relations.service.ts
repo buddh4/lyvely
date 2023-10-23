@@ -9,12 +9,12 @@ import {
   ContentCondition,
   Profile,
   OptionalUser,
+  TObjectId,
 } from '@lyvely/core';
 import { MilestoneRelationEvent } from '../events';
 import { CalendarDateTime } from '@lyvely/dates';
 import { MilestoneRelationModel } from '@lyvely/milestones-interface';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Types } from 'mongoose';
 
 @Injectable()
 export class MilestonesRelationsService {
@@ -43,7 +43,7 @@ export class MilestonesRelationsService {
       return map;
     }, new Map<string, Content[]>());
 
-    const relations = [] as MilestoneRelationModel<Types.ObjectId>[];
+    const relations = [] as MilestoneRelationModel<TObjectId>[];
     for (const contents of contentTypeMap.values()) {
       const event = new MilestoneRelationEvent({
         user,
@@ -58,7 +58,7 @@ export class MilestonesRelationsService {
 
       if (!event.getResult()?.length) {
         contents.forEach((content) =>
-          relations.push(new MilestoneRelationModel<Types.ObjectId>(content)),
+          relations.push(new MilestoneRelationModel<TObjectId>(content)),
         );
       } else {
         event.getResult().forEach((relation) => relations.push(relation));

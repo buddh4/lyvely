@@ -1,14 +1,14 @@
 import { OptionalUser, User } from '@/users';
 import { ProfileMembershipRole } from '@lyvely/core-interface';
-import { Types } from 'mongoose';
 import { Profile } from '@/profiles';
+import { TObjectId } from '@/core';
 
 export interface InvitationIF {
-  _id: Types.ObjectId;
+  _id: TObjectId;
   id: string;
-  createdBy: Types.ObjectId;
-  uid?: Types.ObjectId;
-  pid?: Types.ObjectId;
+  createdBy: TObjectId;
+  uid?: TObjectId;
+  pid?: TObjectId;
   token?: string;
   role?: ProfileMembershipRole.Member | ProfileMembershipRole.Guest;
   type: string;
@@ -21,8 +21,8 @@ export interface IMailInvitation extends InvitationIF {
 }
 
 export interface IUserInvitation extends InvitationIF {
-  uid: Types.ObjectId;
-  pid: Types.ObjectId;
+  uid: TObjectId;
+  pid: TObjectId;
 }
 
 export interface InvitationContextIF<TInvitation extends InvitationIF = InvitationIF> {

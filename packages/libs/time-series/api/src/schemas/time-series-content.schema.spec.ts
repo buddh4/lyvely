@@ -6,13 +6,9 @@ import {
   contentTestPlugin,
   profilesTestPlugin,
   ProfileTestDataUtils,
+  Model,
 } from '@lyvely/core';
-import {
-  TestTimeSeriesContent,
-  TestTimeSeriesContentDocument,
-  TestTimeSeriesContentSchema,
-} from '../testing';
-import { Model } from 'mongoose';
+import { TestTimeSeriesContent, TestTimeSeriesContentSchema } from '../testing';
 import { CalendarInterval } from '@lyvely/dates';
 import {
   DataPointValueType,
@@ -35,7 +31,7 @@ describe('TimeSeriesContentSchema', () => {
   let testingModule: LyvelyTestingModule;
   let testData: ProfileTestDataUtils;
   let app: INestApplication;
-  let TestTimeSeriesContentModel: Model<TestTimeSeriesContentDocument>;
+  let TestTimeSeriesContentModel: Model<TestTimeSeriesContent>;
 
   const TEST_KEY = 'TimeSeriesContentSchema';
 
@@ -45,9 +41,7 @@ describe('TimeSeriesContentSchema', () => {
       .models(ContentModels)
       .compile();
     testData = testingModule.get(ProfileTestDataUtils);
-    TestTimeSeriesContentModel = testingModule.get<Model<TestTimeSeriesContentDocument>>(
-      'TestTimeSeriesContentModel',
-    );
+    TestTimeSeriesContentModel = testingModule.get('TestTimeSeriesContentModel');
     app = testingModule.createNestApplication();
     await app.init();
   });

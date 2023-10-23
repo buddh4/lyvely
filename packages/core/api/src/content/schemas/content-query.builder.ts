@@ -1,6 +1,5 @@
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, assureObjectId, EntityIdentity } from '@/core';
 import { Content } from './content.schema';
-import { assureObjectId, EntityIdentity } from '@/core';
 
 export class ContentCondition {
   static ARCHIVED: FilterQuery<Content> = { 'meta.archived': true };

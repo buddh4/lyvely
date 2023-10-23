@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, assureObjectId, EntityIdentity, IBaseQueryOptions, SaveOptions } from '@/core';
 import { Membership, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
-import { assureObjectId, EntityIdentity, IBaseQueryOptions, SaveOptions } from '@/core';
 import { ProfileMembershipRole } from '@lyvely/core-interface';
 import { Constructor } from '@lyvely/common';
 

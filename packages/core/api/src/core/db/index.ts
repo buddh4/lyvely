@@ -7,3 +7,4 @@ export * from './transaction.util';
 export * from './mixed-prop.decorator';
 export * from './object-id-prop.decorator';
 export * from './nested-schema.decorator';
+export * from './db.type';

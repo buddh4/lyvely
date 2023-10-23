@@ -8,8 +8,7 @@ import {
   TextareaTextDataPointConfig,
   TimerDataPointConfig,
 } from '../';
-import mongoose from 'mongoose';
-import { NestedSchema, User, ContentModel, IContent } from '@lyvely/core';
+import { NestedSchema, ContentModel, IContent } from '@lyvely/core';
 import {
   DataPointInputType,
   ITimeSeriesContentConfig,
@@ -44,10 +43,9 @@ export class TestTimeSeriesContent extends TimeSeriesContent<TestTimeSeriesConte
   @Prop()
   someTestField: string;
 
-  toModel(user?: User): ContentModel<string, IContent<any, any>, any> {
+  toModel(): ContentModel<string, IContent<any, any>, any> {
     throw new Error('Method not implemented.');
   }
 }
 
-export type TestTimeSeriesContentDocument = TestTimeSeriesContent & mongoose.Document;
 export const TestTimeSeriesContentSchema = SchemaFactory.createForClass(TestTimeSeriesContent);

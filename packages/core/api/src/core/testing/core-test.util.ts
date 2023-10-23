@@ -6,12 +6,13 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose, { disconnect } from 'mongoose';
+import { disconnect } from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { CoreModule } from '../core.module';
 import { ModuleRegistry } from '../components';
 import { EventEmitter2 } from 'eventemitter2';
 import { globalEmitter } from '../global.emitter';
+import { createObjectId } from '@/core';
 
 const mongods = new Map<string, MongoMemoryServer>();
 
@@ -75,10 +76,10 @@ export async function afterEachTest(key: string, testingModule: TestingModule) {
   await closeInMongodConnection(key);
 }
 
-export async function afterAllTests(key: string) {
+export async function afterAllTests() {
   await closeInMongodConnections();
 }
 
-export function getObjectId(id: string) {
-  return new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
+export function getObjectId(seed: string) {
+  return createObjectId(mongoSeedingGetObjectId(seed).toString());
 }

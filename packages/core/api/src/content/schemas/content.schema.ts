@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
-import mongoose, { Types } from 'mongoose';
 import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '@lyvely/common';
 import { IContent, ContentModel } from '@lyvely/core-interface';
-import { BaseEntity, ObjectIdArrayProp } from '@/core';
+import { BaseEntity, ObjectIdArrayProp, TObjectId } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
@@ -31,8 +30,6 @@ export class ProtectedProfileContentContext<
   content: TContent;
 }
 
-export type ContentDocument = Content & mongoose.Document;
-
 type IGetModelConstructor = {
   getModelConstructor: () => any;
 };
@@ -41,7 +38,7 @@ function implementsGetModelConstructor(model: any): model is IGetModelConstructo
   return typeof (model as IGetModelConstructor).getModelConstructor === 'function';
 }
 
-export type ContentEntity<T, TConfig extends Object = any> = IContent<Types.ObjectId, TConfig> &
+export type ContentEntity<T, TConfig extends Object = any> = IContent<TObjectId, TConfig> &
   BaseEntity<T>;
 
 @Schema({ discriminatorKey: 'type' })
@@ -51,7 +48,7 @@ export class Content<
     TData extends ContentDataType = ContentDataType,
   >
   extends BaseProfileModel<T>
-  implements IContent<Types.ObjectId, TConfig>
+  implements IContent<TObjectId, TConfig>
 {
   @Prop({ type: ContentDataTypeSchema })
   @PropertyType(ContentDataType)
@@ -66,7 +63,7 @@ export class Content<
   logs: ContentLog[];
 
   @ObjectIdArrayProp({ default: [] })
-  tagIds: Types.ObjectId[];
+  tagIds: TObjectId[];
 
   config: any;
 

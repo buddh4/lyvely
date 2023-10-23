@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
 import {
   UserProfileRelation,
   ICreateProfileRelation,
@@ -11,8 +10,6 @@ import { ProfileMembershipRole, BaseUserProfileRelationType } from '@lyvely/core
 export interface ICreateMembership extends ICreateProfileRelation {
   role: ProfileMembershipRole;
 }
-
-export type MembershipDocument = Membership & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class Membership extends UserProfileRelation<Membership> {

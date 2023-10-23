@@ -45,7 +45,7 @@ export class UserRegistrationService {
    *
    * @param {UserRegistration} userRegistration username, email, and password. Email must be
    * unique, will throw an email with a description if either are duplicates
-   * @returns {Promise<UserDocument>} or throws an error
+   * @returns {Promise<OtpInfo>} or throws an error
    * @memberof UsersService
    */
   async register(userRegistration: UserRegistration): Promise<OtpInfo> {

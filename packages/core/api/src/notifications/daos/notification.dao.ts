@@ -1,6 +1,5 @@
-import { AbstractDao, createBaseEntityInstance } from '@/core';
+import { AbstractDao, createBaseEntityInstance, Model } from '@/core';
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Notification } from '../schemas';
 import { DeepPartial, Type } from '@lyvely/common';

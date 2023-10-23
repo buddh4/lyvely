@@ -6,9 +6,8 @@ import {
   ISelectionDataPointValue,
   SelectionDataPointModel,
 } from '@lyvely/time-series-interface';
-import { NestedSchema } from '@lyvely/core';
+import { NestedSchema, TObjectId } from '@lyvely/core';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
-import { Types } from 'mongoose';
 
 @NestedSchema()
 export class SelectionDataPointValue
@@ -28,7 +27,7 @@ const SelectionDataPointValueSchema = SchemaFactory.createForClass(SelectionData
 @Schema()
 export class SelectionDataPoint
   extends DataPoint<SelectionDataPoint>
-  implements PropertiesOf<SelectionDataPointModel<Types.ObjectId>>
+  implements PropertiesOf<SelectionDataPointModel<TObjectId>>
 {
   @Prop({ type: SelectionDataPointValueSchema, required: true })
   @PropertyType(SelectionDataPointValue)

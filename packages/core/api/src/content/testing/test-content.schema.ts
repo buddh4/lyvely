@@ -1,4 +1,3 @@
-import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Content, ContentDataType } from '../schemas';
 
@@ -17,7 +16,6 @@ export class TestContent extends Content<TestContent> {
 }
 
 export const TestContentSchema = SchemaFactory.createForClass(TestContent);
-export type TestContentDocument = TestContent & Document;
 
 @Schema()
 export class TestContentDataB extends ContentDataType {
@@ -34,4 +32,3 @@ export class TestContentB extends Content<TestContent> {
 }
 
 export const TestContentBSchema = SchemaFactory.createForClass(TestContentB);
-export type TestContentBDocument = TestContentB & Document;

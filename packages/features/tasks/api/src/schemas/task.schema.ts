@@ -1,5 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Profile } from '@lyvely/core';
+import {
+  Profile,
+  User,
+  assureObjectId,
+  EntityIdentity,
+  NestedSchema,
+  ObjectIdProp,
+  ContentDataType,
+  ContentType,
+  TObjectId,
+} from '@lyvely/core';
 import {
   UserAssignmentStrategy,
   PropertiesOf,
@@ -16,15 +26,11 @@ import {
   ITaskConfig,
   UserDoneModel,
 } from '@lyvely/tasks-interface';
-import { Types } from 'mongoose';
-import { User } from '@lyvely/core';
-import { assureObjectId, EntityIdentity, NestedSchema, ObjectIdProp } from '@lyvely/core';
-import { ContentDataType, ContentType } from '@lyvely/core';
 
 @Schema({ _id: false })
-export class UserDone implements UserDoneModel<Types.ObjectId> {
+export class UserDone implements UserDoneModel<TObjectId> {
   @ObjectIdProp({ required: true })
-  uid: Types.ObjectId;
+  uid: TObjectId;
 
   @Prop({ type: String, required: true })
   tid: string;
@@ -63,7 +69,7 @@ const TaskConfigSchema = SchemaFactory.createForClass(TaskConfig);
 @Schema()
 export class Task
   extends ContentType<Task, TaskConfig>
-  implements PropertiesOf<TaskWithUsersModel<Types.ObjectId>>
+  implements PropertiesOf<TaskWithUsersModel<TObjectId>>
 {
   @Prop({ type: TaskConfigSchema, required: true })
   @PropertyType(TaskConfig)
@@ -86,7 +92,7 @@ export class Task
   }
 
   toModel(user?: User): TaskModel<any> {
-    const model = new TaskModel<Types.ObjectId>(this);
+    const model = new TaskModel<TObjectId>(this);
     if (user) {
       model.done = this.getDoneBy(user)?.tid;
       model.timer = this.getTimer(user) as TimerModel;

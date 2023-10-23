@@ -10,10 +10,13 @@ import {
   assureObjectId,
   EntityIdentity,
   IBulkBaseQueryOptions,
+  TObjectId,
+  FilterQuery,
+  QueryOptions,
+  UpdateQuery,
 } from '@/core';
 import { BaseProfileModel } from './base-profile-model.schema';
 import { Profile } from '../schemas';
-import { FilterQuery, QueryOptions, UpdateQuery, Types } from 'mongoose';
 
 /**
  * This type is used as compound type for different kinds of profile relation on DAO level.
@@ -22,7 +25,7 @@ import { FilterQuery, QueryOptions, UpdateQuery, Types } from 'mongoose';
 export type ProfileShard =
   | Profile
   | BaseProfileModel<any>
-  | { oid: Types.ObjectId; location: string; pid: Types.ObjectId };
+  | { oid: TObjectId; location: string; pid: TObjectId };
 
 /**
  * This Dao class serves as base class for profile related models.

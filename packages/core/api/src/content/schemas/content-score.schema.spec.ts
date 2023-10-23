@@ -3,18 +3,17 @@ import { getObjectId, buildTest, LyvelyTestingModule } from '@/testing';
 import { ContentScore, ContentScoreSchema } from './index';
 import {
   ExtendedTestContentScore,
-  ExtendedTestContentScoreDocument,
   ExtendedTestContentScoreSchema,
   contentTestPlugin,
   TestContent,
 } from '../testing';
-import { Model } from 'mongoose';
+import { Model } from '@/core';
 import { toTimingId } from '@lyvely/dates';
 
 describe('ContentScore', () => {
   let testingModule: LyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
-  let ExtendedTestContentScoreModel: Model<ExtendedTestContentScoreDocument>;
+  let ExtendedTestContentScoreModel: Model<ExtendedTestContentScore>;
 
   const TEST_KEY = 'ContentScore';
 
@@ -34,9 +33,7 @@ describe('ContentScore', () => {
       .plugins([contentTestPlugin, profilesTestPlugin])
       .models(Models)
       .compile();
-    ExtendedTestContentScoreModel = testingModule.get<Model<ExtendedTestContentScoreDocument>>(
-      'ExtendedTestContentScoreModel',
-    );
+    ExtendedTestContentScoreModel = testingModule.get('ExtendedTestContentScoreModel');
     testDataUtils = testingModule.get(ProfileTestDataUtils);
   });
 

@@ -2,11 +2,10 @@ import { Content } from '../schemas';
 import { Injectable } from '@nestjs/common';
 import { ContentTypeRegistry } from '../components';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, EntityIdentity } from '@/core';
 import { DeepPartial } from '@lyvely/common';
 import { ContentTypeDao } from './content-type.dao';
 import { ProfileShard } from '@/profiles';
-import { EntityIdentity } from '@/core';
 
 @Injectable()
 export class ContentDao extends ContentTypeDao<Content> {

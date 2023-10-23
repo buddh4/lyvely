@@ -1,16 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
-import { Document, Types } from 'mongoose';
+import { Document, TObjectId } from './db.type';
 import { DeepPartial, assignRawDataToAndInitProps, implementsGetDefaults } from '@lyvely/common';
-
-export type TObjectId = Types.ObjectId;
 
 export type EntityType<C, ID = TObjectId> = C & IEntity<ID>;
 
 export interface IEntity<ID = TObjectId> {
   _id: ID;
 }
-
-export type DocumentType<T> = T & Document;
 
 export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
   constructor(obj?: DeepPartial<C> | false) {

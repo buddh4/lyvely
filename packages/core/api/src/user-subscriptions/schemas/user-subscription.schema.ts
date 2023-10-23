@@ -6,14 +6,14 @@ import {
   NestedSchema,
   ObjectIdArrayProp,
   ObjectIdProp,
+  TObjectId,
 } from '@/core';
 import { User } from '@/users';
-import { Types } from 'mongoose';
 
 @NestedSchema({ discriminatorKey: 'type' })
 export class UserSubscription extends BaseModel<UserSubscription> {
   @ObjectIdProp()
-  pid?: Types.ObjectId;
+  pid?: TObjectId;
 
   type: string;
 }
@@ -32,7 +32,7 @@ export class MultiUserSubscription extends UserSubscription {
   type = MultiUserSubscription.typeName;
 
   @ObjectIdArrayProp()
-  uids?: Types.ObjectId[];
+  uids?: TObjectId[];
 
   constructor(identities: EntityIdentity<User>[]) {
     super();
@@ -46,7 +46,7 @@ export class SingleUserSubscription extends UserSubscription {
   type = SingleUserSubscription.typeName;
 
   @ObjectIdProp()
-  uid?: Types.ObjectId;
+  uid?: TObjectId;
 
   constructor(identity: EntityIdentity<User>) {
     super();

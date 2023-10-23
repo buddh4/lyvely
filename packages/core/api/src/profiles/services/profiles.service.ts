@@ -15,6 +15,8 @@ import {
   EntityIdentity,
   Transaction,
   withTransaction,
+  InjectConnection,
+  Connection,
 } from '@/core';
 import {
   ICreateProfileOptions,
@@ -24,8 +26,6 @@ import {
   ProfilesFactory,
   UserProfileRelation,
 } from '../schemas';
-import { InjectConnection } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
 
 @Injectable()
 export class ProfilesService {
@@ -34,7 +34,7 @@ export class ProfilesService {
     private usersService: UsersService,
     private membershipDao: MembershipsDao,
     private profileRelationsDao: UserProfileRelationsDao,
-    @InjectConnection() private readonly connection: mongoose.Connection,
+    @InjectConnection() private readonly connection: Connection,
   ) {}
 
   async createDefaultUserProfile(owner: User): Promise<ProtectedProfileContext> {

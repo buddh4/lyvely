@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User, UserDocument, UserEmail } from '../schemas';
+import { Model } from '@/core';
+import { User, UserEmail } from '../schemas';
 import { UserStatus } from '@lyvely/core-interface';
 
 @Injectable()
 export class UserTestDataUtils {
   @InjectModel(User.name)
-  protected UserModel: Model<UserDocument>;
+  protected UserModel: Model<User>;
 
   async createUser(username = 'test', userData: Partial<User> = {}): Promise<User> {
     userData.username = username;

@@ -17,12 +17,9 @@ import {
   ITimeSeriesContentConfig,
 } from '@lyvely/time-series';
 import { CreateJournalModel, JournalModel, UpdateJournalModel } from '@lyvely/journals-interface';
-import { User } from '@lyvely/core';
+import { User, assureObjectId, NestedSchema, Profile, ContentDataType } from '@lyvely/core';
 import { PropertiesOf } from '@lyvely/common';
-import { assureObjectId, NestedSchema } from '@lyvely/core';
-import { Profile } from '@lyvely/core';
-import { ContentDataType } from '@lyvely/core';
-import { Types } from 'mongoose';
+import { TObjectId } from '@lyvely/core/src';
 
 type JournalDataPointConfig =
   | TextareaTextDataPointConfig
@@ -59,7 +56,7 @@ export const JournalConfigSchema = TimeSeriesConfigSchemaFactory.createForClass(
 @Schema()
 export class Journal
   extends TimeSeriesContent<Journal, JournalDataPointConfig>
-  implements PropertiesOf<JournalModel<Types.ObjectId>>
+  implements PropertiesOf<JournalModel<TObjectId>>
 {
   @Prop({ type: JournalConfigSchema, required: true })
   config: JournalConfig;

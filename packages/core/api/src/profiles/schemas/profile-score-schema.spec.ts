@@ -1,9 +1,8 @@
 import { ProfileScore, ProfileScoreSchema } from './index';
 import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
-import { Model } from 'mongoose';
+import { Model } from '@/core';
 import {
   TestProfileScore,
-  TestProfileScoreDocument,
   TestProfileScoreSchema,
   profilesTestPlugin,
   ProfileTestDataUtils,
@@ -14,7 +13,7 @@ import { UserAssignmentStrategy } from '@lyvely/common';
 describe('ProfileScore', () => {
   let testingModule: LyvelyTestingModule;
   let testDataUtils: ProfileTestDataUtils;
-  let TestProfileScoreModel: Model<TestProfileScoreDocument>;
+  let TestProfileScoreModel: Model<TestProfileScore>;
 
   const TEST_KEY = 'ProfileScore';
 
@@ -31,8 +30,7 @@ describe('ProfileScore', () => {
       .plugins([profilesTestPlugin])
       .models(Models)
       .compile();
-    TestProfileScoreModel =
-      testingModule.get<Model<TestProfileScoreDocument>>('TestProfileScoreModel');
+    TestProfileScoreModel = testingModule.get('TestProfileScoreModel');
     testDataUtils = testingModule.get(ProfileTestDataUtils);
   });
 

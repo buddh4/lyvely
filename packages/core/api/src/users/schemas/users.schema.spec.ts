@@ -1,5 +1,5 @@
-import { getDefaultLocale, RefreshToken, User, UserDocument } from './index';
-import { Model } from 'mongoose';
+import { getDefaultLocale, RefreshToken, User } from './index';
+import { Model } from '@/core';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { addDays } from '@lyvely/dates';
 import { compare } from 'bcrypt';
@@ -8,14 +8,14 @@ import { usersTestPlugin, UserTestDataUtils } from '../testing';
 describe('Users schema', () => {
   let testingModule: LyvelyTestingModule;
   let testData: UserTestDataUtils;
-  let UserModel: Model<UserDocument>;
+  let UserModel: Model<User>;
 
   const TEST_KEY = 'user_schema';
 
   beforeEach(async () => {
     testingModule = await buildTest(TEST_KEY).plugins([usersTestPlugin]).compile();
     testData = testingModule.get(UserTestDataUtils);
-    UserModel = testingModule.get<Model<UserDocument>>('UserModel');
+    UserModel = testingModule.get('UserModel');
   });
 
   afterEach(async () => {

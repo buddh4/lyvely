@@ -3,12 +3,12 @@ import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
-import mongoose from 'mongoose';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 import { CoreModule, LyvelyTestBuilder } from '@lyvely/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TestConfigService } from './test-config.service';
 import { rootMongooseTestModule } from './mongoose-test.utils';
+import { createObjectId } from '@lyvely/core/src';
 
 export type Type<T = any> = new (...args: any[]) => T;
 
@@ -70,6 +70,6 @@ export function createCoreTestingModule(
     .useClass(TestConfigService);
 }
 
-export function getObjectId(id: string) {
-  return new mongoose.Types.ObjectId(mongoSeedingGetObjectId(id).toString());
+export function getObjectId(seed: string) {
+  return createObjectId(mongoSeedingGetObjectId(seed).toString());
 }

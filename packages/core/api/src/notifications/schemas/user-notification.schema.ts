@@ -1,6 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { assureObjectId, BaseEntity, EntityIdentity, NestedSchema, ObjectIdProp } from '@/core';
-import mongoose from 'mongoose';
+import {
+  assureObjectId,
+  BaseEntity,
+  EntityIdentity,
+  NestedSchema,
+  ObjectIdProp,
+  TObjectId,
+} from '@/core';
 import { BaseModel, PropertyType } from '@lyvely/common';
 import { User } from '@/users';
 import { Notification } from './notification.schema';
@@ -96,10 +102,10 @@ const NotificationDeliveryStatusSchema = SchemaFactory.createForClass(Notificati
 @Schema()
 export class UserNotification extends BaseEntity<UserNotification> {
   @ObjectIdProp({ required: true })
-  uid: mongoose.Types.ObjectId;
+  uid: TObjectId;
 
   @ObjectIdProp({ required: true })
-  nid: mongoose.Types.ObjectId;
+  nid: TObjectId;
 
   @Prop()
   @PropertyType(Boolean, { default: false })

@@ -1,12 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Milestone } from '../schemas';
-import { Profile, User, ContentCondition, DBQuery, OptionalUser } from '@lyvely/core';
+import { Profile, User, ContentCondition, DBQuery, OptionalUser, FilterQuery } from '@lyvely/core';
 import { CalendarInterval } from '@lyvely/dates';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { MilestonesDao } from '../daos';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { isDefined } from 'class-validator';
-import { FilterQuery } from 'mongoose';
 
 @Injectable()
 export class MilestonesCalendarPlanService extends SortableCalendarPlanService<Milestone> {

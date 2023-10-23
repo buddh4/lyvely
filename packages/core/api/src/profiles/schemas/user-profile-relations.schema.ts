@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
-import { assignEntityData, BaseEntity, assureObjectId } from '@/core';
+import { assignEntityData, BaseEntity, assureObjectId, TObjectId, ObjectIdProp } from '@/core';
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
 import { getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
@@ -48,10 +47,10 @@ export class ProfileRelationUserInfo implements IProfileRelationUserInfo {
 export const UserProfileRelationInfoSchema = SchemaFactory.createForClass(ProfileRelationUserInfo);
 
 type UserRelation = {
-  _id: mongoose.Types.ObjectId;
-  uid: mongoose.Types.ObjectId;
-  oid: mongoose.Types.ObjectId;
-  pid: mongoose.Types.ObjectId;
+  _id: TObjectId;
+  uid: TObjectId;
+  oid: TObjectId;
+  pid: TObjectId;
   userInfo: ProfileRelationUserInfo;
   type: string;
   role: string;
@@ -62,14 +61,14 @@ type UserRelation = {
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class UserProfileRelation<C extends UserRelation = UserRelation> extends BaseEntity<C> {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  uid: mongoose.Types.ObjectId;
+  @ObjectIdProp({ required: true })
+  uid: TObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  oid: mongoose.Types.ObjectId;
+  @ObjectIdProp({ required: true })
+  oid: TObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: mongoose.Types.ObjectId;
+  @ObjectIdProp({ required: true })
+  pid: TObjectId;
 
   @Prop({ type: UserProfileRelationInfoSchema })
   @PropertyType(ProfileRelationUserInfo)
@@ -101,4 +100,3 @@ export class UserProfileRelation<C extends UserRelation = UserRelation> extends 
 }
 
 export const UserProfileRelationSchema = SchemaFactory.createForClass(UserProfileRelation);
-export type UserProfileRelationDocument = UserProfileRelation & mongoose.Document;

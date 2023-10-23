@@ -1,8 +1,7 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema } from '@/core';
+import { BaseEntity, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
 import { DeepPartial, getStringEnumValues } from '@lyvely/common';
 import { CreatedAsType } from '@lyvely/core-interface';
-import mongoose from 'mongoose';
 import { User } from '@/users';
 import { Organization, Profile } from '@/profiles';
 
@@ -25,8 +24,8 @@ export class CreatedAs extends BaseEntity<CreatedAs> {
   @Prop({ enum: getStringEnumValues(CreatedAsType), required: true })
   type: CreatedAsType;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  authorId: mongoose.Types.ObjectId;
+  @ObjectIdProp({ required: true })
+  authorId: TObjectId;
 }
 
 export const ContentAuthorSchema = SchemaFactory.createForClass(CreatedAs);

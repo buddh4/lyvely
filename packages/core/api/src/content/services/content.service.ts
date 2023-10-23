@@ -3,9 +3,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { EntityNotFoundException } from '@lyvely/common';
 import { ProfileShard } from '@/profiles';
-import { assureObjectId, EntityIdentity } from '@/core';
+import { assureObjectId, EntityIdentity, TObjectId } from '@/core';
 import { User } from '@/users';
-import mongoose from 'mongoose';
 
 @Injectable()
 export class ContentService {
@@ -74,7 +73,7 @@ export class ContentService {
     profileRelation: ProfileShard,
     user: User,
     cid: EntityIdentity<Content>,
-    mid: mongoose.Types.ObjectId | string,
+    mid: TObjectId | string,
   ): Promise<boolean> {
     mid = assureObjectId(mid);
     const milestone = this.contentDao.findByProfileAndId(profileRelation, mid);

@@ -1,14 +1,13 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from './profiles.schema';
-import { EntityIdentity } from '@/core';
+import { EntityIdentity, ObjectIdProp, TObjectId } from '@/core';
 import { User } from '@/users';
 import { ProfileType } from '@lyvely/core-interface';
-import mongoose from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Organization extends Profile {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  oid: mongoose.Types.ObjectId;
+  @ObjectIdProp({ required: true })
+  oid: TObjectId;
 
   constructor(owner: EntityIdentity<User>, obj?: Partial<Organization>) {
     super(owner, obj);

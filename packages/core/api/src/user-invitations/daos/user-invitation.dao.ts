@@ -1,6 +1,5 @@
-import { AbstractDao, assureObjectId, EntityIdentity } from '@/core';
+import { AbstractDao, assureObjectId, EntityIdentity, Model } from '@/core';
 import { UserInvitation } from '../schemas';
-import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from '@/users';
 import { Profile } from '@/profiles';

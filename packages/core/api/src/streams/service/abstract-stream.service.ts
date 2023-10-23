@@ -6,8 +6,8 @@ import {
   StreamResponse,
 } from '@lyvely/core-interface';
 import { findByPath, EntityNotFoundException, SortValue } from '@lyvely/common';
-import { FilterQuery } from 'mongoose';
 import {
+  FilterQuery,
   AbstractDao,
   assureStringId,
   BaseEntity,

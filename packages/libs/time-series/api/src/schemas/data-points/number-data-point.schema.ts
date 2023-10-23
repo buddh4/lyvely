@@ -4,12 +4,12 @@ import { DataPointValueType, NumberDataPointModel } from '@lyvely/time-series-in
 import { PropertiesOf, PropertyType } from '@lyvely/common';
 import { Timer, TimerSchema } from '@lyvely/timers';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
-import { Types } from 'mongoose';
+import { TObjectId } from '@lyvely/core';
 
 @Schema()
 export class NumberDataPoint
   extends DataPoint<NumberDataPoint>
-  implements PropertiesOf<NumberDataPointModel<Types.ObjectId>>
+  implements PropertiesOf<NumberDataPointModel<TObjectId>>
 {
   @Prop({ type: Number, required: true, default: 0 })
   value: number;

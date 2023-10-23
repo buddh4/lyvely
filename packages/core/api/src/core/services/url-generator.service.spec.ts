@@ -18,7 +18,7 @@ describe('UrlGenerator', () => {
   });
 
   afterAll(async () => {
-    await afterAllTests(TEST_KEY);
+    await afterAllTests();
   });
 
   it('should be defined', () => {

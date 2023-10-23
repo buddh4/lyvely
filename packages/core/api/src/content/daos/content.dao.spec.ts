@@ -1,8 +1,8 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { ContentDao } from './index';
 import { Content, ContentSchema } from '../schemas';
-import { TestContent, TestContentDocument, TestContentSchema } from '../testing';
-import { Model } from 'mongoose';
+import { TestContent, TestContentSchema } from '../testing';
+import { Model } from '@/core';
 import { User } from '@/users';
 import { Profile, ProfileTestDataUtils } from '@/profiles';
 import { ContentTypeRegistry } from '../components';
@@ -11,7 +11,7 @@ describe('content dao', () => {
   let testingModule: LyvelyTestingModule;
   let contentDao: ContentDao;
   let contentTypeRegistry: ContentTypeRegistry;
-  let testContentModel: Model<TestContentDocument>;
+  let testContentModel: Model<TestContent>;
 
   const TEST_KEY = 'content_dao';
 
@@ -31,7 +31,7 @@ describe('content dao', () => {
       .compile();
     contentDao = testingModule.get<ContentDao>(ContentDao);
     contentTypeRegistry = testingModule.get<ContentTypeRegistry>(ContentTypeRegistry);
-    testContentModel = testingModule.get<Model<TestContentDocument>>('TestContentModel');
+    testContentModel = testingModule.get('TestContentModel');
   });
 
   afterEach(async () => {

@@ -3,9 +3,8 @@ import { DataPoint } from './data-point.schema';
 import { BaseModel, PropertiesOf, PropertyType } from '@lyvely/common';
 import { DataPointValueType, TimerDataPointModel } from '@lyvely/time-series-interface';
 import { Timer, TimerSchema } from '@lyvely/timers';
-import { User, EntityIdentity, NestedSchema } from '@lyvely/core';
+import { User, EntityIdentity, NestedSchema, TObjectId } from '@lyvely/core';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
-import { Types } from 'mongoose';
 
 @NestedSchema()
 export class TimerDataPointValue extends BaseModel<TimerDataPointValue> {
@@ -23,7 +22,7 @@ const TimerDataPointValueSchema = SchemaFactory.createForClass(TimerDataPointVal
 @Schema()
 export class TimerDataPoint
   extends DataPoint<TimerDataPoint>
-  implements PropertiesOf<TimerDataPointModel<Types.ObjectId>>
+  implements PropertiesOf<TimerDataPointModel<TObjectId>>
 {
   @Prop({ type: TimerDataPointValueSchema, required: true })
   @PropertyType(TimerDataPointValue)

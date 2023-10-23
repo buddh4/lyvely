@@ -1,6 +1,5 @@
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
-import { Content, BaseEntity } from '@lyvely/core';
-import { Types } from 'mongoose';
+import { Content, BaseEntity, TObjectId } from '@lyvely/core';
 
-export type CalendarPlanEntity = ICalendarPlanEntry<Types.ObjectId> &
-  Content<ICalendarPlanEntry<Types.ObjectId> & BaseEntity<ICalendarPlanEntry<Types.ObjectId>>>;
+export type CalendarPlanEntity = ICalendarPlanEntry<TObjectId> &
+  Content<ICalendarPlanEntry<TObjectId> & BaseEntity<ICalendarPlanEntry<TObjectId>>>;

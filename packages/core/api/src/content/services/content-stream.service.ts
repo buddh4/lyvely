@@ -4,8 +4,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { Content } from '../schemas';
 import { ProfileContext } from '@/profiles';
-import { FilterQuery } from 'mongoose';
-import { assureObjectId } from '@/core';
+import { FilterQuery, assureObjectId } from '@/core';
 
 @Injectable()
 export class ContentStreamService extends AbstractStreamService<

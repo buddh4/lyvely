@@ -10,16 +10,15 @@ import {
 } from '../index';
 import { Profile, ProfileInfo, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
 import { User, UserInfo } from '@/users';
-import { assureObjectId } from '@/core';
+import { assureObjectId, TObjectId } from '@/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
 import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
-import { StreamRequest } from '@/streams';
+import { StreamRequest } from '@lyvely/core-interface';
 import { Prop } from '@nestjs/mongoose';
 import { Notification as BaseNotification } from '../schemas';
 import { Translatable } from '@/i18n';
 import { TestNotificationCategory } from '../notifications';
 import { notificationTestPlugin } from '../testing';
-import mongoose from 'mongoose';
 
 const TEST_KEY = 'UserNotificationsService';
 
@@ -86,7 +85,7 @@ describe('UserNotificationsService', () => {
   async function createTestNotification(
     user: User,
     profile: Profile,
-    uids: mongoose.Types.ObjectId[],
+    uids: TObjectId[],
     sortOrder?: number,
   ) {
     const notification = new BaseNotification(

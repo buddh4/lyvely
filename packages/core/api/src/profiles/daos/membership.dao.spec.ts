@@ -1,12 +1,12 @@
 import { MembershipsDao } from './index';
 import { ProfileRelationUserInfo } from '../schemas';
 import {
-  ProfileType,
-  ProfileMembershipRole,
   BaseUserProfileRelationType,
+  ProfileMembershipRole,
+  ProfileType,
 } from '@lyvely/core-interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
-import { ProfileTestDataUtils, profilesTestPlugin } from '../testing';
+import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 
 describe('MembershipDao', () => {
   let testingModule: LyvelyTestingModule;
@@ -48,16 +48,6 @@ describe('MembershipDao', () => {
       expect(membership.pid).toEqual(profile._id);
       expect(membership.type).toEqual(BaseUserProfileRelationType.Membership);
       expect(membership.role).toEqual(ProfileMembershipRole.Member);
-    });
-
-    it('add membership with custom role', async () => {
-      const owner = await testData.createUser('owner');
-      const member = await testData.createUser('member');
-      const profile = await testData.createProfile(owner, 'group', ProfileType.Group);
-
-      const membership = await membershipDao.addMembership(profile, member, 'superUser');
-      expect(membership).toBeDefined();
-      expect(membership.role).toEqual('superUser');
     });
   });
 

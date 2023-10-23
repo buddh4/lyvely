@@ -1,5 +1,4 @@
 import { Type } from '@nestjs/common';
-import * as mongoose from 'mongoose';
 import { SchemaFactory } from '@nestjs/mongoose';
 import {
   MultiUserSubscription,
@@ -8,7 +7,7 @@ import {
   UserSubscription,
   Subscription,
 } from './user-subscription.schema';
-import { createBaseEntityInstance } from '@/core';
+import { createBaseEntityInstance, Schema, SubDocument } from '@/core';
 import { PropertiesOf } from '@lyvely/common';
 
 const SubscriptionTypes = {
@@ -19,15 +18,15 @@ const SubscriptionTypes = {
 
 export class UserSubscriptionSchemaAddition {
   static addSubscriptionsSchemas<TClass = any>(
-    Schema: mongoose.Schema<TClass>,
+    Schema: Schema<TClass>,
     path: string,
     types?: Array<Type<UserSubscription> & { typeName: string }>,
-  ): mongoose.Schema<TClass> {
+  ): Schema<TClass> {
     types ||= [ProfileSubscription, MultiUserSubscription, SingleUserSubscription];
     types.forEach((SubscriptionType) => {
       SubscriptionTypes[SubscriptionType.typeName] ||= SubscriptionType;
       const SubscriptionTypeSchema = SchemaFactory.createForClass(SubscriptionType);
-      Schema.path<mongoose.Schema.Types.Subdocument>(path).discriminator(
+      Schema.path<SubDocument>(path).discriminator(
         SubscriptionType.typeName,
         SubscriptionTypeSchema,
       );

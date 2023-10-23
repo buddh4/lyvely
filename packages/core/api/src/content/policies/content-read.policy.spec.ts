@@ -62,22 +62,23 @@ describe('ContentReadPolicy', () => {
     class TestContent extends Content<TestContent> {
       value: string;
       getReadPolicy(): Type<IPolicy<ProfileContentContext>> {
+        // This policy only grants read access if value === 'test'
         return TestContentReadPolicy;
       }
     }
 
-    const { user, profile, context } = await testData.createUserAndProfile();
+    const { owner, profile, memberContext } = await testData.createSimpleGroup();
 
-    const content1 = new TestContent(profile, user, { value: 'shouldFail' });
-    const content2 = new TestContent(profile, user, { value: 'test' });
+    const content1 = new TestContent(profile, owner, { value: 'shouldFail' });
+    const content2 = new TestContent(profile, owner, { value: 'test' });
 
-    (<ProfileContentContext>context).content = content1;
+    (<ProfileContentContext>memberContext).content = content1;
 
-    expect(await readPolicy.verify(context as ProfileContentContext)).toEqual(false);
+    expect(await readPolicy.verify(memberContext as ProfileContentContext)).toEqual(false);
 
-    (<ProfileContentContext>context).content = content2;
+    (<ProfileContentContext>memberContext).content = content2;
 
-    expect(await readPolicy.verify(context as ProfileContentContext)).toEqual(true);
+    expect(await readPolicy.verify(memberContext as ProfileContentContext)).toEqual(true);
   });
 
   it('test profile owner can read content', async () => {

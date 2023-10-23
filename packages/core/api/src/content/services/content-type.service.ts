@@ -1,14 +1,19 @@
 import { ProfilesService, Profile, ProfileTagsService } from '@/profiles';
 import { ContentTypeDao, ContentDao } from '../daos';
 import { User } from '@/users';
-import { assureObjectId, EntityIdentity, IBaseQueryOptions, UpdateQuerySet } from '@/core';
+import {
+  assureObjectId,
+  EntityIdentity,
+  IBaseQueryOptions,
+  UpdateQuerySet,
+  FilterQuery,
+} from '@/core';
 import { Content, ContentCondition } from '../schemas';
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 import { CreateContentModel } from '@lyvely/core-interface';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
 import { isDefined } from 'class-validator';
-import { FilterQuery } from 'mongoose';
 
 export interface IContentUpdateOptions extends IBaseQueryOptions {
   streamSort?: boolean;

@@ -22,8 +22,7 @@
     "reflect-metadata": "0.1.13",
     "@lyvely/core": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/timers-interface": "^0.1.0-alpha3",
-    "mongoose": "^6.0.2 || ^7.0.0"
+    "@lyvely/timers-interface": "^0.1.0-alpha3"
   },
   "devDependencies": {
     "@nestjs/testing": "^9.4.0",

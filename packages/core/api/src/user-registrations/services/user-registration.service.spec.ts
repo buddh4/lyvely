@@ -4,9 +4,8 @@ import {
   ForbiddenServiceException,
   UniqueConstraintException,
 } from '@lyvely/common';
-import { UserStatus, User, UsersService, UserTestDataUtils, usersTestPlugin } from '@/users';
-import { VerifyEmailDto } from '@/user-accounts';
-import { UserRegistration } from '@lyvely/core-interface';
+import { User, UsersService, UserTestDataUtils, usersTestPlugin } from '@/users';
+import { UserStatus, UserRegistration, VerifyEmailDto } from '@lyvely/core-interface';
 import { TestConfigService, LyvelyTestingModule, buildTest } from '@/testing';
 import { UserRegistrationsModule } from '../user-registrations.module';
 import { ConfigService } from '@nestjs/config';

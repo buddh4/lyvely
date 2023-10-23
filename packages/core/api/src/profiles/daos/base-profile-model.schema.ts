@@ -1,14 +1,13 @@
-import { BaseEntity } from '@/core';
-import mongoose from 'mongoose';
+import { BaseEntity, ObjectIdProp, TObjectId } from '@/core';
 import { Prop } from '@nestjs/mongoose';
 
 export class BaseProfileModel<C extends BaseEntity<C>> extends BaseEntity<C> {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  oid: mongoose.Types.ObjectId;
+  @ObjectIdProp({ required: true })
+  oid: TObjectId;
 
   @Prop({ required: true, default: 'default' })
   location: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  pid: mongoose.Types.ObjectId;
+  @ObjectIdProp({ required: true })
+  pid: TObjectId;
 }
