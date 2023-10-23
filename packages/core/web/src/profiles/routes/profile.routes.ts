@@ -44,7 +44,7 @@ export default [
         name: 'ProfileMembershipSettings',
         path: profileRoute('/settings/membership'),
         meta: {
-          title: translation('profile.settings.membership.title'),
+          title: translation('profiles.settings.membership.title'),
         },
         component: () => import('../views/ProfileMembershipSettings.vue'),
       },
@@ -63,7 +63,10 @@ export default [
         name: 'GeneralProfileSettings',
         path: profileRoute('/settings/general'),
         meta: {
-          title: translation('profile.settings.general.title'),
+          title: translation('profiles.settings.general.title'),
+          i18n: {
+            load: [{ module: PROFILES_MODULE_ID, section: 'general-settings' }],
+          },
         },
         component: () => import('../views/GeneralProfileSettings.vue'),
       },

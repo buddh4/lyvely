@@ -1,10 +1,10 @@
-import { CreateProfileModel, ProfileWithRelationsModel } from '../models';
-import { StrictEndpoint } from '@lyvely/common';
+import { CreateProfileModel, ProfileWithRelationsModel, UpdateProfileModel } from '../models';
+import { Endpoint, IEditModelService } from '@lyvely/common';
 
-export interface IProfilesService {
+export interface IProfilesService
+  extends IEditModelService<ProfileWithRelationsModel, CreateProfileModel, UpdateProfileModel> {
   getProfile(id: string): Promise<ProfileWithRelationsModel>;
-  create(dto: CreateProfileModel): Promise<ProfileWithRelationsModel>;
 }
 
-export type ProfilesEndpoint = StrictEndpoint<IProfilesService>;
+export type ProfilesEndpoint = Endpoint<IProfilesService>;
 export const ENDPOINT_PROFILES = 'profiles';

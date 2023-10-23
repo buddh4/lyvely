@@ -3,10 +3,14 @@ import { MembershipModel } from './profile-membership.model';
 import { ProfileRelationDetailsModel, ProfileRelationModel } from './profile-relation.model';
 import { ProfileModel } from './profile.model';
 import { BaseUserProfileRelationType } from '../interfaces';
-import { PropertyType, TransformTo } from '@lyvely/common';
+import { IEditableModel, PropertyType, TransformTo } from '@lyvely/common';
+import { UpdateProfileModel } from './update-profile.model';
 
 @Exclude()
-export class ProfileWithRelationsModel<TID = string> extends ProfileModel<TID> {
+export class ProfileWithRelationsModel<TID = string>
+  extends ProfileModel<TID>
+  implements IEditableModel<UpdateProfileModel>
+{
   /**
    * Contains user specific relations of the profile
    */
@@ -33,5 +37,15 @@ export class ProfileWithRelationsModel<TID = string> extends ProfileModel<TID> {
         (relation) => relation.type === BaseUserProfileRelationType.Membership,
       )
     );
+  }
+
+  toEditModel(): UpdateProfileModel {
+    return new UpdateProfileModel({
+      name: this.name,
+      description: this.description,
+      usage: this.usage,
+      visibility: this.visibility,
+      type: this.type,
+    });
   }
 }

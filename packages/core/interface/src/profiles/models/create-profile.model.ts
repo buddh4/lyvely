@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { BaseModel, PropertyType } from '@lyvely/common';
-import { IsEnum, IsString, IsOptional, IsArray, Length } from 'class-validator';
-import { ProfileType, ProfileUsage } from '../interfaces';
+import { IsEnum, IsString, IsOptional, IsArray, Length, IsNumber } from 'class-validator';
+import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '../interfaces';
 import {
   MAX_PROFILE_DESCRIPTION_LENGTH,
   MAX_PROFILE_NAME_LENGTH,
@@ -26,11 +26,11 @@ export class CreateProfileModel extends BaseModel<CreateProfileModel> {
   @IsEnum(ProfileUsage, { each: true })
   usage: ProfileUsage[] = [];
 
-  /*@Expose()
-  @IsString()
+  @Expose()
+  @IsNumber()
   @IsEnum(ProfileVisibilityLevel)
   @PropertyType(Number, { default: ProfileVisibilityLevel.Member })
-  visibility: ProfileVisibilityLevel;*/
+  visibility: ProfileVisibilityLevel;
 
   @Expose()
   @IsEnum(ProfileType)

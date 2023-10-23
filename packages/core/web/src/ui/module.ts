@@ -12,10 +12,12 @@ import { IModule } from '@/core';
 import { uiRoutes } from '@/ui/routes';
 import { registerMenuEntries } from '@/ui/menus';
 import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
-import { usePageStore } from './stores';
-import { computed } from 'vue';
-import { LAYOUT_INTRO, UI_MODULE_ID } from './ui.constants';
+import { useFlashStore, usePageStore } from './stores';
+import { computed, shallowRef } from 'vue';
+import { LAYOUT_INTRO, STACK_MAIN, UI_MODULE_ID } from './ui.constants';
 import { registerLayouts } from './layouts';
+import { registerComponentStackEntries } from '@/ui/component-stack';
+import LyFlashMessage from '@/ui/components/LyFlashMessage.vue';
 
 export default () => {
   return {
@@ -28,6 +30,22 @@ export default () => {
           guard: showLoaderProgress,
         },
         resolveLayoutGuard,
+      ]);
+
+      registerComponentStackEntries(STACK_MAIN, [
+        {
+          id: 'ui-flash',
+          component: LyFlashMessage,
+          props: {
+            modelValue: computed({
+              get: () => useFlashStore().show,
+              set: (val: boolean) => (useFlashStore().show = val),
+            }),
+            message: computed(() => useFlashStore().message),
+            type: computed(() => useFlashStore().type),
+            manual: computed(() => useFlashStore().isManual),
+          },
+        },
       ]);
       registerAfterNavigationHooks([
         showMobileNavGuard,

@@ -5,6 +5,7 @@ import { ProfileWithRelationsModel, TagModel } from '@lyvely/core-interface';
 import { computed, ref } from 'vue';
 import { useProfileService } from '@/profiles/services/profiles.service';
 import { usePageStore } from '@/ui';
+import { t } from '@/i18n';
 
 const DEFAULT_PROFILE_ID = 'latest_profile_id';
 export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_ID);

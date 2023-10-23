@@ -2,7 +2,7 @@ import { computed, ref, Ref } from 'vue';
 import { ModelValidator, IEditableModel } from '@lyvely/common';
 import { ContentModel, CreateContentModel, ContentUpdateResponse } from '@lyvely/core-interface';
 import { IEditOrCreateModalProps } from '@/content/interfaces/edit-content-modal-props.interface';
-import { IEditModelStoreOptions, useUpdateModelStore } from '@/common';
+import { IUpdateModelStoreOptions, useUpdateModelStore } from '@/common';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { getContentTypeOptions } from '../services';
 import { ModalCreate } from '../interfaces';
@@ -20,7 +20,7 @@ export function useContentEditModal<
 >(
   props: IEditOrCreateModalProps<TModel>,
   emit: (emit: TContentEditModalEmits, val?: any) => void,
-  options: IEditModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse>,
+  options: IUpdateModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse>,
 ) {
   const { content, type } = props;
   const contentStore = useContentStore();
@@ -51,7 +51,7 @@ export function useContentEditModal<
   if (content) {
     const editModel = content.toEditModel();
     editModel.tagNames = useProfileStore().tagIdsToNames(content.tagIds);
-    updateStore.setEditModel(content.id, editModel);
+    updateStore.setUpdateModel(content.id, editModel);
   } else {
     const CreateType = (<ModalCreate>getContentTypeOptions(type)?.interfaces?.create)?.modelClass;
 

@@ -11,11 +11,11 @@ const filter = ref(new TagFilter({ archived: false }));
 
 const profileStore = useProfileStore();
 const editTagStore = useEditTagStore();
-const { setEditModel, setCreateModel } = editTagStore;
+const { setUpdateModel, setCreateModel } = editTagStore;
 const tags = computed(() => filter.value.apply(profileStore.profile?.tags));
 
 const setEditTag = (tag: TagModel) => {
-  setEditModel(tag.id, new UpdateTagModel(tag));
+  setUpdateModel(tag.id, new UpdateTagModel(tag));
 };
 
 const setCreateTag = () => {
@@ -101,7 +101,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
           </ly-button>
         </div>
       </div>
-      <div v-if="!tags.length" class="p-5 border-divide">
+      <div v-if="!tags.length" class="p-5 border-divide bg-main">
         <span v-if="filter.isActive()">{{ $t('filter.empty') }}</span>
         <span v-else>{{ $t('list.empty') }}</span>
       </div>

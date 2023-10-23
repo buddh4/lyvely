@@ -17,9 +17,15 @@ import {
   ITimeSeriesContentConfig,
 } from '@lyvely/time-series';
 import { CreateJournalModel, JournalModel, UpdateJournalModel } from '@lyvely/journals-interface';
-import { User, assureObjectId, NestedSchema, Profile, ContentDataType } from '@lyvely/core';
+import {
+  User,
+  assureObjectId,
+  NestedSchema,
+  Profile,
+  ContentDataType,
+  TObjectId,
+} from '@lyvely/core';
 import { PropertiesOf } from '@lyvely/common';
-import { TObjectId } from '@lyvely/core/src';
 
 type JournalDataPointConfig =
   | TextareaTextDataPointConfig

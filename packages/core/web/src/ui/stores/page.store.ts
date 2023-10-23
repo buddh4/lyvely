@@ -3,7 +3,7 @@ import { useDark, useToggle, useOnline } from '@vueuse/core';
 import { ref } from 'vue';
 import { isMaxViewSize } from '../helpers';
 
-export const usePageStore = defineStore('page', () => {
+export const usePageStore = defineStore('ui-page', () => {
   const showSidebar = ref(!isMaxViewSize('sm'));
   const isDark = useDark();
   const toggleDark = useToggle(isDark);

@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'animate.css/animate.css';
 import '@lyvely/ui/style.css';
 import { LyvelyWebApp } from '@/lyvely-web.app';
 

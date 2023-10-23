@@ -5,6 +5,7 @@ import {
   ProfileType,
   ProfileUsage,
   ProfileVisibilityLevel,
+  UpdateProfileModel,
 } from '@lyvely/core-interface';
 import { EntityNotFoundException, UniqueConstraintException } from '@lyvely/common';
 import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
@@ -149,6 +150,15 @@ export class ProfilesService {
         relations: [membership],
       });
     });
+  }
+
+  async updateProfile(profile: Profile, update: UpdateProfileModel): Promise<boolean> {
+    const updateData = { ...update };
+
+    // Currently we ignore profile type changes
+    delete updateData.type;
+
+    return this.profileDao.updateOneSetById(profile, updateData);
   }
 
   async createMembership(

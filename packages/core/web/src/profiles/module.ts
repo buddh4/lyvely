@@ -23,6 +23,7 @@ export default () => {
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       features: (locale: string) => import(`./locales/features.${locale}.json`),
+      'general-settings': (locale: string) => import(`./locales/general-settings.${locale}.json`),
     },
     routes,
     init: () => {
@@ -98,7 +99,7 @@ export default () => {
           id: 'ProfileFeatureSettings',
           moduleId: PROFILES_MODULE_ID,
           text: 'profiles.settings.features.label',
-          sortOrder: 1000,
+          sortOrder: 3000,
           to: { name: 'ProfileFeaturesSettings' },
         },
       ]);

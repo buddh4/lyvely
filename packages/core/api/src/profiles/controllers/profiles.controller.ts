@@ -5,23 +5,29 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { mapType } from '@lyvely/common';
 import {
   CreateProfileModel,
   ENDPOINT_PROFILES,
+  ProfileMembershipRole,
   ProfilesEndpoint,
   ProfileType,
   ProfileWithRelationsModel,
+  UpdateProfileModel,
 } from '@lyvely/core-interface';
 import { ProfilesService } from '../services';
 import { ProfileRelations, ProtectedProfileContext } from '../models';
 import { OptionalUser, OptionalUserRequest, UserRequest } from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
+import { ProtectedProfileRequest } from '../types';
+import { ProfileGuard } from '../guards';
 
 @Controller(ENDPOINT_PROFILES)
 @UseClassSerializer()
@@ -58,7 +64,7 @@ export class ProfilesController implements ProfilesEndpoint {
 
   @Post()
   async create(
-    @Body() dto: CreateProfileModel,
+    @Body() model: CreateProfileModel,
     @Request() req: UserRequest,
   ): Promise<ProfileWithRelationsModel> {
     const { user } = req;
@@ -67,14 +73,31 @@ export class ProfilesController implements ProfilesEndpoint {
 
     // TODO: (Permissions) check if user is allowed to create profiles
     let profileRelations;
-    if (dto.type === ProfileType.User) {
-      profileRelations = await this.profilesService.createUserProfile(user, dto);
-    } else if (dto.type === ProfileType.Group) {
-      profileRelations = await this.profilesService.createGroupProfile(user, dto);
-    } else if (dto.type === ProfileType.Organization) {
-      profileRelations = await this.profilesService.createOrganization(user, dto);
+    if (model.type === ProfileType.User) {
+      profileRelations = await this.profilesService.createUserProfile(user, model);
+    } else if (model.type === ProfileType.Group) {
+      profileRelations = await this.profilesService.createGroupProfile(user, model);
+    } else if (model.type === ProfileType.Organization) {
+      profileRelations = await this.profilesService.createOrganization(user, model);
     }
 
     return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, profileRelations);
+  }
+
+  @Put()
+  @UseGuards(ProfileGuard)
+  async update(
+    @Body() model: UpdateProfileModel,
+    @Request() req: ProtectedProfileRequest,
+  ): Promise<ProfileWithRelationsModel> {
+    const { profile, context } = req;
+
+    // TODO: Use ACL
+    if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner))
+      throw new ForbiddenException();
+
+    await this.profilesService.updateProfile(profile, model);
+
+    return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, context);
   }
 }

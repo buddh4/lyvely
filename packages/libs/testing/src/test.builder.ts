@@ -4,11 +4,10 @@ import { EventEmitter2, EventEmitterModule } from '@nestjs/event-emitter';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Test, TestingModule, TestingModuleBuilder } from '@nestjs/testing';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
-import { CoreModule, LyvelyTestBuilder } from '@lyvely/core';
+import { CoreModule, LyvelyTestBuilder, createObjectId } from '@lyvely/core';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { TestConfigService } from './test-config.service';
 import { rootMongooseTestModule } from './mongoose-test.utils';
-import { createObjectId } from '@lyvely/core/src';
 
 export type Type<T = any> = new (...args: any[]) => T;
 

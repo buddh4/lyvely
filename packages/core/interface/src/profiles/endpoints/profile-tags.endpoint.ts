@@ -1,9 +1,8 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint, IEditModelService } from '@lyvely/common';
 import { CreateTagModel, TagModel, UpdateTagModel } from '../models';
 
-export interface IProfileTagsService {
-  create(model: CreateTagModel): Promise<TagModel>;
-  update(id: string, model: UpdateTagModel): Promise<TagModel>;
+export interface IProfileTagsService
+  extends IEditModelService<TagModel, CreateTagModel, UpdateTagModel> {
   archive(id: string): Promise<boolean>;
   unarchive(id: string): Promise<boolean>;
 }

@@ -3,29 +3,79 @@ import { ModelValidator, IEditModelService } from '@lyvely/common';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus, eventBus } from '@/core';
 
-export interface IEditModelStoreOptions<
+/**
+ * Defines options used when creating an update model store.
+ */
+export interface IUpdateModelStoreOptions<
   TModel,
   TCreateModel,
   TUpdateModel = Partial<TCreateModel>,
   TResponse = TModel,
   TID = string,
 > {
+  /**
+   * Allow partial update
+   * @default true
+   **/
   partialUpdate?: boolean;
+
+  /**
+   * Reset the model once submit succeeded
+   * @default true
+   */
+  resetOnSuccess?: boolean;
+
+  /**
+   * The service responsible for updating the model
+   */
   service:
     | IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>
     | ((
         editModel: TCreateModel | TUpdateModel,
       ) => IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>);
+
+  /**
+   * Hook called after a successful submit
+   */
   onSubmitSuccess?: (response?: TResponse) => void;
+
+  /**
+   * Hook called after an error while submit
+   */
   onSubmitError?: ((err: any) => void) | false;
 }
+
+/**
+ * Can be used to create an edit store.
+ *
+ * @example
+ *
+ * <script lang="ts" setup>
+ * const updateStore = useUpdateModelStore({
+ *   service: useMyModelService()
+ * });
+ *
+ * const { setUpdateModel, submit, status } = updateStore;
+ * const { model, validator } = storeToRefs(updateStore);
+ *
+ * setUpdateModel(myUpdateModel);
+ * </script>
+ *
+ * <template>
+ *  <ly-form-model v-model="model" :validator="validator">
+ *    <!-- Insert Form -->
+ *    <ly-button @click="submit" :loading="status.isLoading()">
+ *  </ly-form-model>
+ * </template>
+ * @param options
+ */
 export function useUpdateModelStore<
   TModel,
   TCreateModel extends object,
   TUpdateModel extends object = Partial<TCreateModel>,
   TResponse = TModel,
   TID = string,
->(options: IEditModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse, TID>) {
+>(options: IUpdateModelStoreOptions<TModel, TCreateModel, TUpdateModel, TResponse, TID>) {
   type TEditModel = TUpdateModel | TCreateModel;
   const model = ref<TEditModel>();
   let original: TEditModel | undefined = undefined;
@@ -35,9 +85,10 @@ export function useUpdateModelStore<
   const isCreate = ref(false);
   const status = useStatus();
 
-  options.partialUpdate = options.partialUpdate ?? true;
+  options.partialUpdate ??= true;
+  options.resetOnSuccess ??= true;
 
-  function setEditModel(id: TID, model: TUpdateModel) {
+  function setUpdateModel(id: TID, model: TUpdateModel) {
     isCreate.value = false;
     _setModel(model, id);
   }
@@ -83,7 +134,7 @@ export function useUpdateModelStore<
         options.onSubmitSuccess(<TResponse>response);
       }
 
-      reset();
+      if (options.resetOnSuccess) reset();
       return response;
     } catch (err) {
       if (typeof options.onSubmitError === 'function') {
@@ -146,7 +197,7 @@ export function useUpdateModelStore<
     status,
     isActive,
     isCreate,
-    setEditModel,
+    setUpdateModel,
     setCreateModel,
     submit,
     reset,

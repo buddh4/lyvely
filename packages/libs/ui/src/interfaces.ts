@@ -7,7 +7,7 @@ export interface AvatarData {
 
 export interface ISelectOption {
   label: Translatable;
-  value: string;
+  value: string | number;
 }
 
 export type ISelectOptions = Array<ISelectOption>;

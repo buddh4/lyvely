@@ -2,6 +2,7 @@ import {
   CreateProfileModel,
   IProfilesService,
   ProfileWithRelationsModel,
+  UpdateProfileModel,
 } from '@lyvely/core-interface';
 import { useSingleton } from '@lyvely/common';
 import profileRepository from '@/profiles/repositories/profile.repository';
@@ -20,8 +21,13 @@ class ProfilesService implements IProfilesService {
     return profile;
   }
 
-  async create(dto: CreateProfileModel): Promise<ProfileWithRelationsModel> {
-    const { data: relation } = await profileRepository.createProfile(dto);
+  async create(update: CreateProfileModel): Promise<ProfileWithRelationsModel> {
+    const { data: relation } = await profileRepository.createProfile(update);
+    return new ProfileWithRelationsModel(relation);
+  }
+
+  async update(id: string, model: UpdateProfileModel): Promise<ProfileWithRelationsModel> {
+    const { data: relation } = await profileRepository.updateProfile(model);
     return new ProfileWithRelationsModel(relation);
   }
 }

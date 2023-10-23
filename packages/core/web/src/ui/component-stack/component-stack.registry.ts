@@ -1,5 +1,6 @@
 import { IComponentStackEntry } from './component-stack.interface';
-import { ref, Ref } from 'vue';
+import { ref, Ref, shallowRef } from 'vue';
+import { isVueComponent } from '@/ui';
 
 const stackMap = new Map<string, Ref<IComponentStackEntry[]>>();
 
@@ -8,6 +9,10 @@ export const registerComponentStackEntries = (id: string, entry: IComponentStack
 };
 
 export const registerComponentStackEntry = (id: string, entry: IComponentStackEntry) => {
+  entry = { ...entry };
+  if (isVueComponent(entry.component)) {
+    entry.component = shallowRef(entry.component);
+  }
   if (!stackMap.has(id)) stackMap.set(id, ref([]));
   const entries = stackMap.get(id)!;
   if (entries.value.find((e) => e.id === entry.id)) return;

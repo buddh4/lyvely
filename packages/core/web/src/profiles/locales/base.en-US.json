@@ -26,11 +26,6 @@
         "archive": "Archive Membership",
         "your_role": "You are {role} of this profile."
       },
-      "general": {
-        "title": "General Settings",
-        "name": "Profile Name",
-        "label": "General"
-      },
       "features": {
         "title": "Feature Settings",
         "label": "Features",
@@ -74,6 +69,13 @@
         "user": "Just for me",
         "group": "For me and invited users"
       }
+    },
+    "visibility": {
+      "me": "Private",
+      "member": "Profile Members",
+      "user": "All Users",
+      "organization": "Organization",
+      "visitors": "Users and Guests"
     },
     "aria": {
       "sidebar": "Navigation of profile {profile}"

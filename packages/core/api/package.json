@@ -8,6 +8,7 @@
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "dev": "nest start",
+    "debug": "nest start --debug --watch",
     "build": "gulp clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && gulp copyAssets",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",

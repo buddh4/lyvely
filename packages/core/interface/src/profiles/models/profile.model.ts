@@ -1,6 +1,6 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { BaseModel, DocumentModel, TransformObjectId, PropertyType } from '@lyvely/common';
-import { ProfileType, ProfileRelationRole } from '../interfaces';
+import { ProfileType, ProfileRelationRole, ProfileUsage } from '../interfaces';
 import { IPermissionSetting } from '@/permissions';
 import { TagModel } from './tag.model';
 
@@ -44,6 +44,9 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   @Expose()
   @PropertyType([String])
   enabledFeatures: string[];
+
+  @Expose()
+  usage: ProfileUsage[];
 
   @Expose()
   @PropertyType([String])

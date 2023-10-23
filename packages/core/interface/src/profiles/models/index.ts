@@ -3,6 +3,7 @@ export * from './profile-with-relations.model';
 export * from './profile-membership.model';
 export * from './profile-relation.model';
 export * from './create-profile.model';
+export * from './update-profile.model';
 export * from './invite-profile-users.model';
 export * from './profile-relation-info.model';
 export * from './update-profile-membership-settings.model';
