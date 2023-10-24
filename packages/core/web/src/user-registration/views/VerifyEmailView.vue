@@ -45,7 +45,7 @@ onUnmounted(verifyEmailStore.reset);
         <ly-button
           v-if="!otpInfo?.requiresRefresh()"
           class="primary"
-          label="common.submit"
+          text="common.submit"
           @click="verifyEmail" />
       </div>
     </template>

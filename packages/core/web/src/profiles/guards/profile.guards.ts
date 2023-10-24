@@ -23,6 +23,8 @@ export const loadProfile = async (
 ) => {
   const profileStore = useProfileStore();
 
+  debugger;
+
   // params.pid === ':pid: when profile root or main root path is accessed
   if ((!to.params.pid && to.path === '/') || to.params.pid === ':pid') {
     // TODO: (stability) Handle error case if no profile was found

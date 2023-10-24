@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Translatable } from '@lyvely/ui';
-import { t } from '@/i18n';
+import { Translatable, t } from '@/i18n';
 import { computed } from 'vue';
+import LyIcon from '@/components/icons/LyIcon.vue';
+import LyButton from '@/components/buttons/LyButton.vue';
 
 export interface IProps {
   modelValue: boolean;
@@ -12,7 +13,6 @@ export interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
   message: undefined,
-  hide: undefined,
   type: 'info',
   manual: false,
 });

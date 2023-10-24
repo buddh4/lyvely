@@ -74,12 +74,12 @@ onMounted(async () => {
                 </template>
               </i18n-t>
             </ly-button>
-            <ly-button label="invitations.buttons.switch_account" class="primary" />
+            <ly-button text="invitations.buttons.switch_account" class="primary" />
             <ly-button
-              label="invitations.buttons.to_register"
+              text="invitations.buttons.to_register"
               class="primary"
               @click="logoutAndRegister" />
-            <ly-button label="invitations.buttons.ignore" class="primary" />
+            <ly-button text="invitations.buttons.ignore" class="primary" />
           </div>
         </div>
 
@@ -93,8 +93,8 @@ onMounted(async () => {
             </template>
           </i18n-t>
           <div class="flex flex-col space-y-1">
-            <ly-button label="invitations.buttons.to_register" class="primary" />
-            <ly-button label="invitations.buttons.login_and_join" class="primary" />
+            <ly-button text="invitations.buttons.to_register" class="primary" />
+            <ly-button text="invitations.buttons.login_and_join" class="primary" />
           </div>
         </div>
 
@@ -112,10 +112,10 @@ onMounted(async () => {
           </i18n-t>
           <div class="flex flex-col space-y-1">
             <ly-button
-              label="invitations.buttons.to_register"
+              text="invitations.buttons.to_register"
               class="primary"
               @click="logoutAndRegister" />
-            <ly-button route="/" label="common.back_to_home" class="secondary" />
+            <ly-button route="/" text="common.back_to_home" class="secondary" />
           </div>
         </div>
 
@@ -129,19 +129,16 @@ onMounted(async () => {
             </template>
           </i18n-t>
           <div class="flex flex-col space-y-1">
-            <ly-button
-              label="invitations.buttons.to_register"
-              class="primary"
-              @click="register()" />
-            <ly-button label="invitations.buttons.to_login" route="/login" class="secondary" />
+            <ly-button text="invitations.buttons.to_register" class="primary" @click="register()" />
+            <ly-button text="invitations.buttons.to_login" route="/login" class="secondary" />
           </div>
         </div>
       </div>
 
       <div v-else-if="error?.length" class="flex flex-col justify-center">
         <ly-alert type="danger" :message="error" />
-        <ly-button v-if="isAuthenticated" route="/" label="common.back_to_home" class="primary" />
-        <ly-button v-else route="/login" label="invitations.buttons.to_login" class="primary" />
+        <ly-button v-if="isAuthenticated" route="/" text="common.back_to_home" class="primary" />
+        <ly-button v-else route="/login" text="invitations.buttons.to_login" class="primary" />
       </div>
 
       <div v-else>

@@ -87,11 +87,11 @@ onMounted(async () => {
 
     <template #footer>
       <div v-if="error?.length" class="flex justify-center items-center gap-1">
-        <ly-button class="primary" label="common.back_to_home" @click="toHome" />
+        <ly-button class="primary" text="common.back_to_home" @click="toHome" />
       </div>
       <div v-else class="flex justify-center items-center gap-1">
-        <ly-button class="secondary" label="common.decline" @click="decline" />
-        <ly-button class="primary" label="common.accept" @click="accept" />
+        <ly-button class="secondary" text="common.decline" @click="decline" />
+        <ly-button class="primary" text="common.accept" @click="accept" />
       </div>
     </template>
   </ly-centered-panel>

@@ -5,7 +5,6 @@ import { useUpdateProfileStore } from '../stores';
 import { storeToRefs } from 'pinia';
 import { ISelectOptions } from '@lyvely/ui';
 import { getProfileVisibilityOptions } from '../helpers';
-import LyFlashMessage from '@/ui/components/LyFlashMessage.vue';
 import { ref } from 'vue';
 
 const { profile } = useProfileStore();

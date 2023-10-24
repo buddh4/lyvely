@@ -83,7 +83,7 @@ const { validator } = storeToRefs(tagEditStore);
       <sketch v-model="color" :disable-alpha="true" />
       <ly-button
         class="primary px-1 py-0.5 m-1 float-right"
-        label="common.close"
+        text="common.close"
         @click="showColorPicker = false" />
     </div>
   </ly-modal>

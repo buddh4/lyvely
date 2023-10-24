@@ -60,7 +60,7 @@ function toDocs() {
     </i18n-t>
 
     <div class="flex flex-col space-y-1">
-      <ly-button label="help.modal.buttons.intro" class="primary" @click="startIntroTour" />
+      <ly-button text="help.modal.buttons.intro" class="primary" @click="startIntroTour" />
       <ly-button class="primary flex items-center justify-center" @click="toDocs">
         {{ $t('help.modal.buttons.to_docs') }}
         <ly-icon name="external_link" class="ml-1" />

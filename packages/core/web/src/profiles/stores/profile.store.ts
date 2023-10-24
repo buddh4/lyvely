@@ -26,8 +26,10 @@ export const useProfileStore = defineStore('profile', () => {
     try {
       await setActiveProfile(await profileService.getProfile(id));
       status.setStatus(Status.SUCCESS);
-    } catch (err) {
+    } catch (err: any) {
       status.setStatus(Status.ERROR);
+      if (err?.response?.status === 403) {
+      }
       DialogExceptionHandler('Profile could not be loaded...', this)(err);
     }
 
