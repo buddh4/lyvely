@@ -48,6 +48,7 @@
         "settings",
         "tags",
         "tasks",
+        "live",
         "features",
         "i18n",
         "deps",
