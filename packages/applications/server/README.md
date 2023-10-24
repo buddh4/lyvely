@@ -101,21 +101,6 @@ npm run start:debug
 
 ![](docs/img/4f6a6bd9.png)
 
-### Installation
-
-```shell
-sudo adduser lyvely
-sudo mkdir -p /var/www/lyvely
-sudo chown lyvely: /var/www/lyvely
-sudo -u myappuser -H bash -l
-sudo git clone git@github.com:buddh4/lyvely-app.git code
-npm install --no-save
-npm common:build
-npm server:build
-npm web:build
-
-sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
-```
 
 ### Test with Docker
 
