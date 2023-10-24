@@ -2,6 +2,8 @@ import { useProfileStore } from '@/profiles/stores';
 import { profileRoute } from '@/profiles/routes/profile-route.util';
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
 import { isMultiUserProfile } from '@lyvely/core-interface';
+import { DialogExceptionHandler } from '@/core';
+import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 
 export const ifIsMultiUserProfile = async (
   to: RouteLocation,
@@ -23,24 +25,26 @@ export const loadProfile = async (
 ) => {
   const profileStore = useProfileStore();
 
-  debugger;
+  try {
+    // params.pid === ':pid: when profile root or main root path is accessed
+    if ((!to.params.pid && to.path === '/') || to.params.pid === ':pid') {
+      // TODO: (stability) Handle error case if no profile was found
 
-  // params.pid === ':pid: when profile root or main root path is accessed
-  if ((!to.params.pid && to.path === '/') || to.params.pid === ':pid') {
-    // TODO: (stability) Handle error case if no profile was found
-    const profile = await profileStore.loadProfile();
-    if (!profile) throw new Error('Profile could not be loaded');
+      const profile = await profileStore.loadProfile();
+      return next(profileRoute('/', profile.id));
+    } else if (!to.params.pid) {
+      const profile = await profileStore.loadProfile();
+      if (!profile) throw new Error('Profile could not be loaded');
+      to.params.pid = profile.id;
+    }
 
-    next(profileRoute('/', profile.id));
-    return;
-  } else if (!to.params.pid) {
-    const profile = await profileStore.loadProfile();
-    if (!profile) throw new Error('Profile could not be loaded');
-    to.params.pid = profile.id;
+    await useProfileStore().loadProfile(<string>to.params.pid);
+    next();
+  } catch (e) {
+    if (e instanceof EntityNotFoundException) return next('/404');
+    if (e instanceof ForbiddenServiceException) return next('/403');
+    else return next('/500');
   }
-
-  await useProfileStore().loadProfile(<string>to.params.pid);
-  next();
 };
 
 export const loadProfileGuard = (

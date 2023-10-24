@@ -1,14 +1,23 @@
 import { defineStore } from 'pinia';
-import { repository, Status, useStatus, DialogExceptionHandler, localStorageManager } from '@/core';
+import {
+  repository,
+  Status,
+  useStatus,
+  localStorageManager,
+  loadingState,
+  loadingStatus,
+} from '@/core';
 import { ProfileWithRelationsModel, TagModel } from '@lyvely/core-interface';
 
 import { computed, ref } from 'vue';
 import { useProfileService } from '@/profiles/services/profiles.service';
 import { usePageStore } from '@/ui';
-import { t } from '@/i18n';
+import { EntityNotFoundException, ServiceException } from '@lyvely/common';
+import { useLiveStore } from '@/live';
 
-const DEFAULT_PROFILE_ID = 'latest_profile_id';
-export const latestProfileId = localStorageManager.getStoredValue(DEFAULT_PROFILE_ID);
+const LATEST_PROFILE_ID = 'latest_profile_id';
+const DEFAULT_PROFILE_ID = 'default';
+export const latestProfileId = localStorageManager.getStoredValue(LATEST_PROFILE_ID);
 
 export const useProfileStore = defineStore('profile', () => {
   const profile = ref<ProfileWithRelationsModel>();
@@ -16,29 +25,37 @@ export const useProfileStore = defineStore('profile', () => {
   const status = useStatus();
   const profileService = useProfileService();
 
-  async function loadProfile(id?: string) {
+  async function loadProfile(pid?: string): Promise<ProfileWithRelationsModel> {
     status.setStatus(Status.LOADING);
 
-    id = id || latestProfileId.getValue() || 'default';
+    const searchPid = pid || latestProfileId.getValue() || DEFAULT_PROFILE_ID;
 
-    if (profile.value?.id === id) return Promise.resolve(profile.value);
+    if (profile.value?.id === searchPid) return Promise.resolve(profile.value);
 
     try {
-      await setActiveProfile(await profileService.getProfile(id));
+      const profile = await loadingStatus(profileService.getProfile(searchPid), status);
+      await setActiveProfile(profile);
       status.setStatus(Status.SUCCESS);
     } catch (err: any) {
-      status.setStatus(Status.ERROR);
-      if (err?.response?.status === 403) {
-      }
-      DialogExceptionHandler('Profile could not be loaded...', this)(err);
+      // Probably an error with latestProfileId
+      if (!pid && searchPid !== DEFAULT_PROFILE_ID) return loadProfile(DEFAULT_PROFILE_ID);
+      else throw err;
     }
+
+    if (!profile.value) throw new EntityNotFoundException();
 
     return profile.value;
   }
 
   async function setActiveProfile(activeProfile: ProfileWithRelationsModel) {
+    debugger;
     profile.value = activeProfile;
     latestProfileId.setValue(activeProfile.id);
+    if (!profile.value.getMembership()) {
+      useLiveStore().connectProfileGuest(profile.value.id);
+    } else {
+      useLiveStore().closeGuestConnection();
+    }
     status.setStatus(Status.SUCCESS);
   }
 

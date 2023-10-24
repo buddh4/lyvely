@@ -1,6 +1,6 @@
 import { Ref, ref } from 'vue';
 import { ModelValidator, FieldValidationException } from '@lyvely/common';
-import { isFieldValidationError } from '../util';
+import { isFieldValidationError, throwServiceException } from '../util';
 
 export enum Status {
   INIT,
@@ -121,7 +121,7 @@ export async function loadingStatus<T = any, R = T | void>(
         reject(e);
       } else {
         handleError(e, status, validator);
-        throw e;
+        throw throwServiceException(e);
       }
     }) as Promise<R extends void | undefined ? T : R>;
 }

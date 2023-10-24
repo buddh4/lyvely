@@ -4,7 +4,6 @@
       "general": {
         "title": "General Settings",
         "name": "Profile Name",
-        "label": "General",
         "description": "Description",
         "visibility": "Visibility"
       }

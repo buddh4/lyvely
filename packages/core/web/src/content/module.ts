@@ -25,7 +25,6 @@ export default () => {
           component: () => import('./components/CreateOrEditContentModal.vue'),
         },
       ]);
-      registerRoutes([{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }]);
       registerMenuEntry(MENU_PROFILE_DRAWER, {
         id: 'stream',
         moduleId: CONTENT_MODULE_ID,

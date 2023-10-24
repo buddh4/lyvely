@@ -15,7 +15,7 @@ import LyConfirmModal from '../modals/LyConfirmModal.vue';
 
 export interface IProps {
   submit?: boolean;
-  label?: Translatable;
+  text?: Translatable;
   active?: boolean;
   border?: boolean;
   disabled?: boolean;
@@ -31,7 +31,7 @@ const props = withDefaults(defineProps<IProps>(), {
   submit: false,
   active: false,
   border: true,
-  label: '',
+  text: '',
   disabled: false,
   loading: false,
   rounded: true,
@@ -138,7 +138,7 @@ function getAriaPressed($attrs: any) {
     :disabled="disabled || loading"
     :data-loading="loading"
     @click.prevent="onClick">
-    <slot :active="active">{{ t(label) }}</slot>
+    <slot :active="active">{{ t(text) }}</slot>
   </button>
   <router-link v-if="route" v-slot="{ navigate, isExactActive }" :to="route" custom>
     <button
@@ -149,7 +149,7 @@ function getAriaPressed($attrs: any) {
       :type="buttonType"
       :disabled="disabled"
       @click="navigate">
-      <slot :active="isExactActive">{{ t(label) }}</slot>
+      <slot :active="isExactActive">{{ t(text) }}</slot>
     </button>
   </router-link>
 

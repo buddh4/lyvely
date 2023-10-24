@@ -3,9 +3,11 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent, merge } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { assureStringId, ConfigurationPath, EntityIdentity, OperationMode } from '@/core';
-import { User } from '@/users';
+import { OptionalUser, User } from '@/users';
 import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/core-interface';
-import { Profile, ProfilesService } from '@/profiles';
+import { Profile, ProfilesService, ProfileVisibilityPolicy } from '@/profiles';
+import { ForbiddenServiceException } from '@lyvely/common';
+import { InjectPolicy } from '@/policies';
 
 @Injectable()
 export class LiveService {
@@ -15,6 +17,8 @@ export class LiveService {
     private eventEmitter: EventEmitter2,
     private readonly configService: ConfigService<ConfigurationPath>,
     private profilesService: ProfilesService,
+    @InjectPolicy(ProfileVisibilityPolicy.name)
+    private profileVisibilityPolicy: ProfileVisibilityPolicy,
   ) {}
 
   emitProfileEvent(event: ILiveProfileEvent) {
@@ -44,6 +48,8 @@ export class LiveService {
   }
 
   async subscribeUser(user: User): Promise<Observable<any>> {
+    // TODO: filter by visibility or permission
+    // TODO: reconnect on visibility change
     if (this.isStandaloneServer()) {
       const observables = new Set(
         (await this.profilesService.findAllProfileRelationsByUser(user)).map((relation) =>
@@ -52,8 +58,24 @@ export class LiveService {
       );
 
       observables.add(fromEvent(this.eventEmitter, this.buildLiveUserEventName(user)));
-      this.logger.debug(`Subscribe user to ${this.buildLiveUserEventName(user)}`);
       return merge(...observables);
+    } else {
+      return undefined as any;
+      // TODO: redis subscription
+    }
+  }
+
+  async subscribeGuest(user: OptionalUser, pid: string, oid?: string): Promise<Observable<any>> {
+    // TODO: filter by visibility or permission
+    // TODO: reconnect on visibility change
+    if (this.isStandaloneServer()) {
+      const context = await this.profilesService.findProfileContext(user, pid, oid);
+
+      if (!(await this.profileVisibilityPolicy.verify(context))) {
+        throw new ForbiddenServiceException();
+      }
+
+      return fromEvent(this.eventEmitter, this.buildLiveProfileEventName(context.pid!));
     } else {
       return undefined as any;
       // TODO: redis subscription

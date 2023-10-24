@@ -1,5 +1,8 @@
 {
   "profiles": {
+    "errors": {
+      "loading": "This profile could not be loaded."
+    },
     "labels": {
       "organizations": "Organizations",
       "profiles": "Profiles"
@@ -18,6 +21,9 @@
       "label": "Users"
     },
     "settings": {
+      "general": {
+        "label": "General"
+      },
       "membership": {
         "title": "My membership",
         "label": "Membership",

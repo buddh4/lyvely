@@ -84,6 +84,11 @@
     "back_to_home": "Take me back home",
     "none": "none",
     "unarchive": "Add from archive",
+    "status": {
+      "404": "Page not found!",
+      "403": "You are not allowed to view this page!",
+      "500": "An unknown error occurred!"
+    },
     "fields": {
       "title": "Title",
       "tags": "Tags",

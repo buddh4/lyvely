@@ -26,41 +26,41 @@ type Story = StoryObj<typeof meta & { outlined?: boolean }>;
 export const Primary: Story = {
   args: {
     class: 'primary',
-    label: 'Primary',
+    text: 'Primary',
   },
 };
 
 export const Secondary: Story = {
   args: {
     class: 'secondary',
-    label: 'Secondary',
+    text: 'Secondary',
   },
 };
 
 export const Info: Story = {
   args: {
     class: 'info',
-    label: 'Info',
+    text: 'Info',
   },
 };
 
 export const Success: Story = {
   args: {
     class: 'success',
-    label: 'Success',
+    text: 'Success',
   },
 };
 
 export const Warning: Story = {
   args: {
     class: 'warning',
-    label: 'Warning',
+    text: 'Warning',
   },
 };
 
 export const Danger: Story = {
   args: {
     class: 'danger',
-    label: 'Danger',
+    text: 'Danger',
   },
 };

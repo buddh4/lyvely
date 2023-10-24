@@ -1,4 +1,4 @@
-import { Controller, Sse, Req } from '@nestjs/common';
+import { Controller, Sse, Req, Param } from '@nestjs/common';
 import { UserRequest } from '@/users';
 import { LiveService } from '../services';
 
@@ -9,5 +9,10 @@ export class LiveController {
   @Sse('/user')
   async userUpdates(@Req() request: UserRequest) {
     return this.liveService.subscribeUser(request.user);
+  }
+
+  @Sse('/:pid/guest')
+  async profileUpdates(@Param('pid') pid, @Req() request: UserRequest) {
+    return this.liveService.subscribeGuest(request.user, pid);
   }
 }

@@ -27,6 +27,7 @@ export const useLiveStore = defineStore('live', () => {
         'live_master',
         async () =>
           new Promise((resolve) => {
+            console.debug(`Connect to user event source`);
             connectUserEventSource();
             window.addEventListener('beforeunload', resolve);
           }),
@@ -36,14 +37,59 @@ export const useLiveStore = defineStore('live', () => {
     }
   }
 
+  let releaseGuestLock: ((v: any) => void) | undefined;
+  function connectProfileGuest(pid: string) {
+    if (isBroadcastEventsEnabled()) {
+      navigator.locks.request(
+        `live_${pid}_master`,
+        async () =>
+          new Promise((resolve) => {
+            console.debug(`Connect to ${pid} as guest`);
+            releaseGuestLock = resolve;
+            connectProfileGuestEventSource(pid, resolve);
+            window.addEventListener('beforeunload', resolve);
+          }),
+      );
+    } else {
+      connectProfileGuestEventSource(pid);
+    }
+  }
+
   function connectUserEventSource() {
     const eventSource = new EventSource(`${apiURL}/live/user`, { withCredentials: true });
-    eventSource.onerror = (err) => console.error(err);
+    eventSource.onerror = (error) => console.error(error);
     eventSource.onopen = () => console.debug('Live connection onopen');
     eventSource.onmessage = ({ data }) => {
       const event = JSON.parse(data) as ILiveEvent;
       broadCastLiveEvent(event);
     };
+    return eventSource;
+  }
+
+  let guestSource: EventSource | undefined;
+  let guestPid: string | undefined;
+  function connectProfileGuestEventSource(pid: string, release?: (v: any) => void) {
+    if (guestSource && guestPid === pid) return;
+
+    if (guestSource && guestPid !== pid) guestSource.close();
+
+    guestPid = pid;
+
+    guestSource = new EventSource(`${apiURL}/live/${pid}/guest`, { withCredentials: true });
+    guestSource.onerror = (error) => console.error(error);
+    guestSource.onopen = () => console.debug('Live connection onopen');
+    guestSource.onmessage = ({ data }) => {
+      const event = JSON.parse(data) as ILiveEvent;
+      broadCastLiveEvent(event);
+    };
+  }
+
+  function closeGuestConnection() {
+    if (guestSource) guestSource.close();
+    if (releaseGuestLock) releaseGuestLock(undefined);
+    releaseGuestLock = undefined;
+    guestSource = undefined;
+    guestPid = undefined;
   }
 
   function broadCastLiveEvent(event: ILiveEvent) {
@@ -80,6 +126,8 @@ export const useLiveStore = defineStore('live', () => {
 
   return {
     connectUser,
+    connectProfileGuest,
+    closeGuestConnection,
     on,
     off,
   };

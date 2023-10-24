@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import imgUrl from '@/assets/403.png';
 import { LyCenteredPanel, LyButton } from '@lyvely/ui';
 import { t } from '@/i18n';
-import imgUrl from '@/assets/404.png';
 </script>
 
 <template>
@@ -9,13 +9,13 @@ import imgUrl from '@/assets/404.png';
     <template #header>
       <div class="flex items-center justify-center">
         <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-        <span class="text-base font-bold"> {{ t('common.status.404') }}</span>
+        <span class="text-base font-bold"> {{ t('common.status.403') }}</span>
       </div>
     </template>
 
     <template #body>
       <div class="card error-page">
-        <img alt="Page Not Found" :src="imgUrl" />
+        <img alt="Forbidden" :src="imgUrl" />
       </div>
     </template>
 
