@@ -1,0 +1,76 @@
+{
+  "name": "@lyvely/core-interface",
+  "version": "0.1.0-alpha3",
+  "description": "Lyvely core interface",
+  "type": "commonjs",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/lib/index.d.ts",
+  "scripts": {
+    "lint": "eslint --fix",
+    "deps": "npx depcruise --config .dependency-cruiser.js src",
+    "format": "prettier \"lib/**/*.ts\" --write",
+    "build": "tsc -p tsconfig.build.json --outDir dist/lib --declarationDir dist/lib --declaration true && tscpaths -p tsconfig.build.json -s ./src -o dist/lib && rollup -c && rm -f tsconfig.tsbuildinfo",
+    "prepublish:npm": "npm run build",
+    "publish:npm": "npm publish --access public",
+    "prepublish:next": "npm run build",
+    "publish:next": "npm publish --access public --tag next",
+    "prerelease": "npm run build",
+     "test": "jest --passWithNoTests",
+  "clear": "rm -rf ./dist && rm -f ./tsconfig.tsbuildinfo",
+    "test:cov": "jest --coverage --no-cache"
+  },
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@lyvely/common": "^0.1.0-alpha3",
+    "@lyvely/dates": "^0.1.0-alpha3",
+    "@buddh4/mapped-types": "^1.1.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "randomcolor": "^0.6.2",
+    "lodash": "^4.17.21",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "rollup": "^3.21.3",
+    "ts-jest": "29.1.0",
+    "ts-node": "10.9.1",
+    "dependency-cruiser": "^14.1.0",
+    "typescript": "^5.2.2"
+  },
+  "jest": {
+    "rootDir": ".",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
+    "testRegex": "[^cypress]*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "compilerOptions": {
+            "sourceMap": true,
+            "inlineSourceMap": true
+          }
+        }
+      ]
+    },
+    "modulePathIgnorePatterns": [
+      "cypress"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
+  }
+}

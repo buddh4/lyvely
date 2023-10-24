@@ -1,0 +1,12 @@
+{
+  "activities": {
+    "profile-drawer": {
+      "title": "Activities"
+    },
+    "fields": {
+      "title": "Title",
+      "interval": "Plan",
+      "text": "Description"
+    }
+  }
+}

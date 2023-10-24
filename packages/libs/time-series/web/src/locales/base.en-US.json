@@ -1,0 +1,22 @@
+{
+  "time-series": {
+    "input_types": {
+      "checkbox": "Checkboxes",
+      "range": "Range",
+      "spinner": "Spinner",
+      "timer": "Timer",
+      "dropdown": "Dropdown",
+      "radio": "Radio"
+    },
+    "value_types": {
+      "number": "Number",
+      "text": "Text",
+      "selection": "Selection"
+    },
+    "chart": {
+      "value": "Value",
+      "trend": "Trend"
+    },
+    "timer_score_info": "The score is awarded for each achieved min, optimal, max result."
+  }
+}

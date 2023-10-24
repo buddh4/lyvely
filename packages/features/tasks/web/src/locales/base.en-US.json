@@ -1,0 +1,30 @@
+{
+  "tasks": {
+    "title": "Tasks",
+    "name": "Task",
+    "feature": {
+      "title": "Tasks",
+      "description": "If disabled, the Tasks view and content type will be unavailable.",
+      "activities": {
+        "title": "Activity Tasks",
+        "description": "If disabled, adds a dedicated tasks menu entry."
+      }
+    },
+    "calendar-plan": {
+      "empty": "Create Your First Task!"
+    },
+    "stream_entry": {
+      "text": "New task"
+    },
+    "create" : {
+      "title": "Create task"
+    },
+    "edit" : {
+      "title": "Edit task"
+    },
+    "buttons": {
+      "close": "Close task",
+      "open": "Reopen task"
+    }
+  }
+}

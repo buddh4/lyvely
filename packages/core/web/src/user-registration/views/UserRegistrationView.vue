@@ -1,0 +1,134 @@
+<script lang="ts" setup>
+import { useUserRegistrationStore } from '@/user-registration/stores/user-registration.store';
+import { storeToRefs } from 'pinia';
+import { onUnmounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { PATH_VERIFY_EMAIL } from '../user-registration.constants';
+import { isTouchScreen } from '@/ui';
+import { LyCenteredPanel } from '@lyvely/ui';
+import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import {
+  IUserRegistrationAppConfig,
+  USER_REGISTRATION_MODULE_ID,
+  UserRegistrationMode,
+} from '@lyvely/core-interface';
+
+const userRegistrationStore = useUserRegistrationStore();
+const registrationMode = useAppConfigStore().getModuleConfig<
+  IUserRegistrationAppConfig,
+  UserRegistrationMode
+>(USER_REGISTRATION_MODULE_ID, 'registrationMode');
+
+const router = useRouter();
+const { model, validator } = storeToRefs(userRegistrationStore);
+model.value.inviteToken = router.currentRoute.value.query?.invite as string;
+model.value.email = router.currentRoute.value.query?.email as string;
+const { status } = userRegistrationStore;
+const showRememberInfo = ref(false);
+const repeatPasswordType = ref('password');
+
+if (
+  !registrationMode ||
+  registrationMode === 'none' ||
+  (registrationMode === 'invite' && !model.value.inviteToken)
+) {
+  router.push('/login');
+}
+
+async function register() {
+  return userRegistrationStore.register().then((success) => {
+    if (success) {
+      router.push(PATH_VERIFY_EMAIL);
+    }
+  });
+}
+
+onUnmounted(userRegistrationStore.reset);
+</script>
+
+<template>
+  <ly-centered-panel>
+    <template #title>
+      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
+      <span class="text-base font-bold">
+        {{ $t('user_registration.sign_up') }}
+      </span>
+    </template>
+
+    <template #body>
+      <ly-form-model
+        id="user-registration"
+        v-model="model"
+        :validator="validator"
+        :status="status"
+        label-key="user_registration.fields">
+        <fieldset>
+          <ly-text-field
+            autocomplete="username"
+            property="username"
+            :required="true"
+            :autofocus="!isTouchScreen()" />
+
+          <ly-text-field autocomplete="email" property="email" type="email" :required="true" />
+        </fieldset>
+
+        <fieldset>
+          <ly-text-field
+            name="new-password"
+            autocomplete="new-password"
+            property="password"
+            type="password"
+            :required="true"
+            @toggle-type="repeatPasswordType = $event" />
+
+          <ly-text-field
+            property="passwordRepeat"
+            autocomplete="new-password"
+            :type="repeatPasswordType"
+            :password-toggle="false"
+            :required="true" />
+
+          <ly-password-strength-meter v-model="model.password" />
+        </fieldset>
+
+        <fieldset class="my-5">
+          <div class="flex flex-nowrap items-center">
+            <ly-checkbox property="remember" class="text-sm" aria-describedby="remember-me-info" />
+            <ly-icon
+              name="info"
+              class="ml-1 text-primary w-4 cursor-pointer"
+              aria-hidden="true"
+              @click="showRememberInfo = !showRememberInfo" />
+          </div>
+          <ly-alert
+            v-show="showRememberInfo"
+            id="remember-me-info"
+            class="mt-2 text-xs"
+            type="info">
+            <p class="mb-1">{{ $t('auth.login.remember_me_info.p1') }}</p>
+            <p>{{ $t('auth.login.remember_me_info.p2') }}</p>
+          </ly-alert>
+        </fieldset>
+      </ly-form-model>
+    </template>
+
+    <template #footer>
+      <ly-button
+        class="primary w-full mb-4 float-right"
+        label="user_registration.create_account"
+        :disabled="status.isStatusLoading()"
+        @click="register" />
+
+      <div class="text-center pt-4">
+        <small>
+          {{ $t('user_registration.is_member') }}
+          <router-link to="/login" class="no-underline font-bold">
+            {{ $t('auth.login.sign_in') }}
+          </router-link>
+        </small>
+      </div>
+    </template>
+  </ly-centered-panel>
+</template>
+
+<style scoped></style>

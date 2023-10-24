@@ -1,0 +1,325 @@
+{
+  "avatar": {
+    "title": "Update your avatar",
+    "upload": "Upload new avatar",
+    "gravatar": "Use my gravatar"
+  },
+  "cropper": {
+    "title": "Edit Image"
+  },
+  "help": {
+    "label": "Help",
+    "modal": {
+      "title": "How can we help you?",
+      "title_new": "Welcome to {appName}!",
+      "text_intro": "It seems this is your first day using {appName}. If you wish we can give you a short {introductionLink}. For an in-depth documentation please visit {docLink}.",
+      "introductionLinkText": "introduction tour",
+      "buttons": {
+        "intro": "Start introduction tour",
+        "to_docs": "Read the documentation"
+      }
+    },
+    "intro": {
+      "profile_combo_button_title": "Profile chooser",
+      "profile_combo_button1": "The profile chooser menu indicates the currently active profile. The dropdown menu can be used to create or choose other profiles and organizations.",
+      "profile_combo_button2": "The dropdown menu can be used to create or choose other profiles and organizations.",
+      "profile_combo_button3": "You can create multiple private, group or organization profiles depending on your permissions",
+      "profile_sidebar_title": "Profile navigation",
+      "profile_sidebar1": "The profile sidebar is used to navigate to various features and settings of the currently active profile.",
+      "profile_sidebar2": "The available features may differ depending on profile settings and user permissions.",
+      "profile_breadcrumb_title": "Active feature",
+      "profile_breadcrumb": "Here you can see which feature is currently active.",
+      "account_menu_title": "Account menu",
+      "account_menu": "The account menu provides access for account specific features as account and security settings as well as your personal notifications."
+    }
+  },
+  "modal": {
+    "aria": {
+      "root": "This is a modal window. To close this window use the cancel button or press escape or submit the modal by using the submit button."
+    },
+    "confirm": {
+      "aria": {
+        "root": "This is a confirm modal. You can either confirm or cancel your last action."
+      },
+      "default": {
+        "title": "Confirm action",
+        "text": "Are you sure you want to perform this action?",
+        "confirm": "Confirm"
+      }
+    }
+  },
+  "filter": {
+    "all": "All",
+    "archive": "Show archived entries",
+    "empty": "No entries found for given filter."
+  },
+  "message": {
+    "hello": "hello world"
+  },
+  "list": {
+    "empty": "No entries found."
+  },
+  "common": {
+    "create-new": "Create new",
+    "empty_result": "No entries available.",
+    "empty_result_filter": "No entries found for the given filter.",
+    "close": "Close",
+    "reload": "Reload",
+    "cancel": "Cancel",
+    "load_more": "Load more",
+    "next": "Next",
+    "add_option": "Add: '{option}'",
+    "show_password": "Show password as plain text. Warning: this will display your password on the screen.",
+    "hide_password": "Hide password",
+    "back": "Back",
+    "submit": "Submit",
+    "select": "Select",
+    "resend": "Resend",
+    "update": "Update",
+    "archived": "Archived",
+    "accept": "Accept",
+    "decline": "Decline",
+    "restore": "Restore default",
+    "archive": "Archive",
+    "back_to_home": "Take me back home",
+    "none": "none",
+    "unarchive": "Add from archive",
+    "fields": {
+      "title": "Title",
+      "tags": "Tags",
+      "text": "Description",
+      "score": "Scroe",
+      "interval": "Plan",
+      "interval_plural": "Planned within",
+      "max": "Max",
+      "optimal": "Optimal",
+      "min": "Min"
+    },
+    "filter": {
+      "search": "Search",
+      "clear": "Reset",
+      "title": "Filter view",
+      "archive": "Archived items"
+    },
+    "edit": "Edit",
+    "save": "Save",
+    "saved": "Saved",
+  },
+  "journals": {
+    "labels": {
+      "main_nav": "Journals"
+    }
+  },
+  "tags": {
+    "title": "Tags",
+    "chooser": {
+      "label": "Tags",
+      "submit": "Close",
+      "add": "Add tag: {tag}",
+      "query": "Search or add tags"
+    },
+    "archive": {
+      "confirm": {
+        "text": "Are you sure you want to archive this tag?"
+      }
+    },
+    "unarchive": {
+      "confirm": {
+        "text": "Are you sure you want to add this tag from archive?"
+      }
+    },
+    "view": {
+      "title": "Tags",
+      "aria": {
+        "title": "Tag overview list"
+      },
+      "search": "Search tags"
+    },
+    "labels": {
+      "main_nav": "Tags"
+    },
+    "create": {
+      "title": "Create Tag"
+    },
+    "edit": {
+      "title": "Edit Tag"
+    },
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "includeOnFilter": "Only include items on filter"
+    },
+    "help": {
+      "includeOnFilter": "This option will hide tagged items in some views unless a matching filter is selected."
+    }
+  },
+  "statistics": {
+    "labels": {
+      "main_nav": "Statistics"
+    }
+  },
+  "otp": {
+    "email": {
+      "text": "Please enter the verification code sent to your email address. The code is only valid for a short time, so please enter it soon.",
+      "text_with_address": "Please enter the verification code sent to {email}. The code is only valid for a short time, so please enter it soon."
+    },
+    "errors": {
+      "invalid": "The given verification code is invalid, please try again.",
+      "maxAttempts": "You have exceeded the maximum number of attempts, please use the resend button to generate a new verification code."
+    },
+    "aria": {
+      "input_label": "digit {i} of {n}"
+    }
+  },
+  "captcha": {
+    "errors": {
+      "invalid": "The code is not valid"
+    },
+    "label": "Please enter the code below"
+  },
+  "auth": {
+    "logout": "Logout",
+    "reset_password": {
+      "title": "Reset your password",
+      "sent": {
+        "title": "Reset your password",
+        "text": "Check your email for a link to reset your password. If it does not appear within a few minutes check your spam folder."
+      },
+      "to_login": "Return to sign in",
+      "submit_send": "Send password reset email",
+      "submit_reset": "Reset password",
+      "fields": {
+        "email": "Enter the main email address of your account",
+        "password": "New password",
+        "passwordRepeat": "Repeat new password",
+        "resetSessions": "Invalidate active sessions",
+        "help": {
+          "resetSessions": "Choosing this option will invalidate all of your active login sessions. This is recommended in case you suspect your password has been compromised."
+        }
+      }
+    },
+    "login": {
+      "title": "Login",
+      "sign_in": "Sign in",
+      "not_a_member": "Not a member?",
+      "reset_password": "Forgot password?",
+      "remember_me": "Keep me signed in.",
+      "remember_me_info": {
+        "p1": "Choosing this option reduces the number of times you're asked to Sign-In on this device.",
+        "p2": "To keep your account secure, use this option only on your personal devices."
+      },
+      "fields": {
+        "password": "Password",
+        "email": "Email",
+        "remember": "Keep me signed in."
+      },
+      "errors": {
+        "invalid_input": "Invalid email or password"
+      }
+    }
+  },
+  "validation": {
+    "isNotEmpty": "{property} can not be empty",
+    "isCaptcha": "Please enter 5 alphanumeric characters",
+    "isEmail": "{property} must be an email",
+    "matches": "{property} does not match the expected format",
+    "match": "{property} does not match {c1}"
+  },
+  "user_registration": {
+    "title": "Sign up",
+    "sign_up": "Sign up",
+    "create_account": "Create an account",
+    "is_member": "Already have an account?",
+    "verify_email": {
+      "title": "Verify your email",
+      "text": "We've sent a verification email to: {email}",
+      "subtext": "Click the link in your email to activate your account."
+    },
+    "errors": {
+      "email_unique": "asdf"
+    },
+    "fields": {
+      "username": "Username",
+      "password": "Password",
+      "passwordRepeat": "Repeat password",
+      "email": "Email",
+      "remember": "Remember this device."
+    }
+  },
+  "layout": {
+    "aria": {
+      "top-nav": "Top navigation",
+      "toggle-sidebar": "Hides the sidebar if pressed"
+    }
+  },
+  "page": {
+    "toDarkMode": "Switch to dark mode",
+    "toLightMode": "Switch to light mode"
+  },
+  "status": {
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info",
+    "success": "Success"
+  },
+  "error":{
+    "title": "Error",
+    "unknown": {
+      "title": "Error",
+      "message": "An unexpected error occurred, please try again later."
+    },
+    "500": "A problem occurred while handling your request, please try again later.",
+    "403": "Your access to the requested service was denied.",
+    "404": "The requested service could not be found.",
+    "429": "Too many requests. Please wait for a few seconds before submitting another request.",
+    "network": {
+      "title": "Network Error",
+      "message": "There seems to be an issue with your network connection, please make sure you are connected to the internet."
+    },
+    "csrf": {
+      "title": "Invalid application state",
+      "message": "Please reload this site, otherwise some parts of the application may not work as expected."
+    }
+  },
+  "timer": {
+    "edit": {
+      "title": "Edit time"
+    }
+  },
+  "notifications": {
+    "drawer": {
+      "title": "Notifications"
+    }
+  },
+  "content": {
+    "actions": {
+      "edit": "Edit",
+      "archive": "Archive",
+      "restore": "Restore",
+      "confirm": {
+        "archive": "Are you sure you want to archive this content",
+        "unarchive": "Are you sure you want to restore this content from the archive"
+      }
+    }
+  },
+  "stream": {
+    "title": "stream",
+    "labels":  {
+      "main_nav": "Stream"
+    },
+    "breadcrumb": {
+      "content_details": "content",
+      "stream": "stream"
+    },
+    "editor": {
+      "placeholder_single_user": "Write some notes",
+      "placeholder_multi_user": "Write a message"
+    }
+  },
+  "updater": {
+    "message": "New content available, click on reload button to update."
+  },
+  "offline": {
+    "message": "App ready to work offline"
+  }
+}

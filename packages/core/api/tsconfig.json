@@ -1,0 +1,10 @@
+{
+  "extends": "../../configs/typescript/api.tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "baseUrl": "./"
+  },
+  "exclude": ["node_modules", "tests", "dist", "**/*spec.ts"]
+}

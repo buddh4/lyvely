@@ -1,0 +1,14 @@
+{
+  "content": {
+    "stream": {
+      "feature": {
+        "title": "Stream",
+        "description": "If disabled, the main profile stream will be hidden."
+      },
+      "title": "Stream",
+      "initError": "Something went wrong, please try again later!",
+      "back-to-stream": "Back to Stream",
+      "back-to-parent": "View Parent Content"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "messages": {
+    "content": {
+      "name": "Message"
+    },
+    "create": {
+      "title": "Create Message"
+    },
+    "update": {
+      "title": "Edit Message"
+    }
+  }
+}

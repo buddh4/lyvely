@@ -1,0 +1,116 @@
+{
+  "name": "@lyvely/core",
+  "version": "0.1.0-alpha3",
+  "description": "Lyvely server core",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "eslint --fix",
+    "format": "prettier \"lib/**/*.ts\" --write",
+    "dev": "nest start",
+    "debug": "nest start --debug --watch",
+    "build": "gulp clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && gulp copyAssets",
+    "prepublish:npm": "npm run build",
+    "publish:npm": "npm publish --access public",
+    "prepublish:next": "npm run build",
+    "publish:next": "npm publish --access public --tag next",
+    "prerelease": "npm run build",
+    "deps": "npx depcruise --config .dependency-cruiser.js src",
+    "test": "jest --passWithNoTests"
+  },
+  "author": "Julian Harrer",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@nestjs-modules/mailer": "^1.8.1",
+    "@nestjs/common": "^9.4.0",
+    "@nestjs/config": "^2.3.1",
+    "@nestjs/core": "^9.4.0",
+    "@nestjs/event-emitter": "^2.0.0",
+    "@nestjs/mongoose": "^9.2.2",
+    "@nestjs/platform-express": "^9.4.0",
+    "@nestjs/serve-static": "^4.0.0",
+    "@nestjs/testing": "^9.4.0",
+    "@nestjs/throttler": "^4.0.0",
+    "@lyvely/dates": "^0.1.0-alpha3",
+    "@lyvely/common": "^0.1.0-alpha3",
+    "@lyvely/core-interface": "^0.1.0-alpha3",
+    "express": "^4.18.2",
+    "mongoose": "^7.1.0",
+    "mongodb": "^4.13.0",
+    "class-transformer": "^0.5.1",
+    "helmet": "^6.1.5",
+    "lodash": "^4.17.21",
+    "eventemitter2": "^6.4.9",
+    "nodemailer": "^6.9.1",
+    "reflect-metadata": "0.1.13",
+    "@nestjs/jwt": "^10.0.3",
+    "@nestjs/passport": "^9.0.3",
+    "ms": "^2.1.3",
+    "uuid": "^9.0.0",
+    "bcrypt": "^5.1.0",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "canvas": "^2.11.2",
+    "class-validator": "^0.14.0",
+    "rxjs": "^7.8.1",
+    "nestjs-i18n": "^10.2.6",
+    "pug": "^3.0.2",
+    "bullmq": "^3.12.0",
+    "jsonwebtoken": "^9.0.0",
+    "minimatch": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "randomcolor": "^0.6.2",
+    "@nestjs/bullmq": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.16.18",
+    "@types/minimatch": "^5.1.2",
+    "ts-jest": "29.1.0",
+    "tsc-alias": "^1.8.8",
+    "ts-node": "10.9.1",
+    "typescript": "^5.2.2",
+    "mongo-seeding": "^3.7.2",
+    "mongodb-memory-server": "^8.13.0",
+    "release-it": "15.11.0",
+    "@nestjs/testing": "^9.4.0",
+    "dependency-cruiser": "^14.1.0",
+    "ncp": "^2.0.0",
+    "@types/pug": "2.0.6",
+    "del": "^6.1.1"
+  },
+  "jest": {
+    "rootDir": ".",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
+    "testRegex": "[^cypress]*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "compilerOptions": {
+            "sourceMap": true,
+            "inlineSourceMap": true
+          }
+        }
+      ]
+    },
+    "modulePathIgnorePatterns": [
+      "cypress"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node"
+  }
+}

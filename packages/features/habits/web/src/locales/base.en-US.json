@@ -1,0 +1,26 @@
+{
+  "habits": {
+    "name": "Habits",
+    "title": "Habits",
+    "feature": {
+      "title": "Habits",
+      "description": "If disabled, the Habits view and content type will be unavailable.",
+      "activities": {
+        "title": "Activity Habits",
+        "description": "If disabled, adds a dedicated tasks menu entry."
+      }
+    },
+    "calendar-plan": {
+      "empty": "Create Your First Habit!"
+    },
+    "stream_entry": {
+      "text": "New Habit"
+    },
+    "create" : {
+      "title": "Create Habit"
+    },
+    "edit" : {
+      "title": "Edit Habit"
+    }
+  }
+}

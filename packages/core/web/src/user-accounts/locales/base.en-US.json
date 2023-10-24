@@ -1,0 +1,9 @@
+{
+  "user-accounts": {
+    "drawer": {
+      "title": "Account Menu",
+      "my-account": "My Account",
+      "security": "Security"
+    }
+  }
+}
