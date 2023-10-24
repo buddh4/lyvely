@@ -16,6 +16,7 @@ export * from './otp';
 export * from './permissions';
 export * from './policies';
 export * from './profiles';
+export * from './settings';
 export * from './streams';
 export * from './system-messages';
 export * from './users';

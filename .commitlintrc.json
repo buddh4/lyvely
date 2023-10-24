@@ -45,6 +45,7 @@
         "docker",
         "milestones",
         "permissions",
+        "settings",
         "tags",
         "tasks",
         "features",

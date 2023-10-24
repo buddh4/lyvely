@@ -37,6 +37,14 @@ export const useFlashStore = defineStore('ui-flash', () => {
     if (!isProcessing) next();
   }
 
+  function addSavedFlash(message?: string) {
+    addFlash({
+      message: message || 'common.saved',
+      type: 'success',
+      duration: 'medium',
+    });
+  }
+
   function next() {
     if (isProcessing || !queue.length) return;
     isProcessing = true;
@@ -58,5 +66,7 @@ export const useFlashStore = defineStore('ui-flash', () => {
     type,
     show,
     isManual,
+    addFlash,
+    addSavedFlash,
   };
 });

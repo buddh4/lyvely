@@ -102,7 +102,8 @@
       "archive": "Archived items"
     },
     "edit": "Edit",
-    "save": "Save"
+    "save": "Save",
+    "saved": "Saved",
   },
   "journals": {
     "labels": {

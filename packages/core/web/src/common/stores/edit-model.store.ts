@@ -93,7 +93,7 @@ export function useUpdateModelStore<
     _setModel(model, id);
   }
 
-  function setCreateModel(model: TUpdateModel) {
+  function setCreateModel(model: TCreateModel) {
     isCreate.value = true;
     _setModel(model);
   }
@@ -102,7 +102,7 @@ export function useUpdateModelStore<
     _setModel(undefined);
   }
 
-  function _setModel(newModel?: TUpdateModel, id?: TID) {
+  function _setModel(newModel?: TUpdateModel | TCreateModel, id?: TID) {
     if (newModel) {
       model.value = newModel;
       original = cloneDeep(newModel);
@@ -134,7 +134,17 @@ export function useUpdateModelStore<
         options.onSubmitSuccess(<TResponse>response);
       }
 
-      if (options.resetOnSuccess) reset();
+      if (!isCreate.value && response === false && typeof options.onSubmitSuccess === 'function') {
+        options.onSubmitSuccess();
+      }
+
+      if (options.resetOnSuccess) {
+        reset();
+      } else if (isCreate.value) {
+        setCreateModel(model.value as TCreateModel);
+      } else {
+        setUpdateModel(modelId.value!, model.value as TUpdateModel);
+      }
       return response;
     } catch (err) {
       if (typeof options.onSubmitError === 'function') {

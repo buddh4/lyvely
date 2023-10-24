@@ -378,7 +378,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     id: EntityIdentity<T>,
     update: UpdateQuery<T>,
     options?: IUpdateQueryOptions,
-  ) {
+  ): Promise<boolean> {
     return this.updateOneByFilter(id, update, {}, options);
   }
 

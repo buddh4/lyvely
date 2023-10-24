@@ -5,6 +5,7 @@ import {
   BaseEntity,
   createObjectId,
   EntityIdentity,
+  MixedProp,
   ObjectIdProp,
   TObjectId,
 } from '@/core';
@@ -74,6 +75,9 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
 
   @Prop({ type: [String] })
   usage: ProfileUsage[];
+
+  @MixedProp({ default: {} })
+  settings: Record<string, any>;
 
   @Prop({ type: [String] })
   enabledFeatures: string[];

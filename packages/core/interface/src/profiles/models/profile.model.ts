@@ -53,6 +53,9 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   disabledFeatures: string[];
 
   @Expose()
+  settings: Record<string, any>;
+
+  @Expose()
   @PropertyType([ProfilePermissionSetting])
   permissions: ProfilePermissionSetting[];
 

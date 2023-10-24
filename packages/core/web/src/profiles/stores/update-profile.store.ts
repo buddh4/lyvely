@@ -7,6 +7,7 @@ import {
 import { useUpdateModelStore } from '@/common';
 import { useProfileStore } from './profile.store';
 import { useProfileService } from '../services';
+import { useFlashStore } from '@/ui';
 
 export const useUpdateProfileStore = defineStore('update-profile', () => {
   const editStore = useUpdateModelStore<
@@ -20,6 +21,7 @@ export const useUpdateProfileStore = defineStore('update-profile', () => {
       if (profile) {
         useProfileStore().profile = profile;
       }
+      useFlashStore().addSavedFlash();
     },
   });
 
