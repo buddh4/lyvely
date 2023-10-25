@@ -1,6 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Organization, Profile, getProfileConstructorByType, Tag } from '../schemas';
+import {
+  Organization,
+  Profile,
+  getProfileConstructorByType,
+  Tag,
+  UserProfile,
+  GroupProfile,
+} from '../schemas';
 import {
   Model,
   applyRawDataTo,
@@ -8,6 +15,7 @@ import {
   EntityIdentity,
   AbstractDao,
   createObjectId,
+  IBaseFetchQueryOptions,
 } from '@/core';
 import { User } from '@/users';
 import { Constructor, DeepPartial, IntegrityException } from '@lyvely/common';
@@ -36,6 +44,35 @@ export class ProfileDao extends AbstractDao<Profile> {
         { type: ProfileType.Organization, name },
       ],
     });
+  }
+
+  /**
+   * Finds an entity by given Identity and type.
+   * Returns the entity with the search id and type or null if no entity with the given identity was found.
+   * @param identity
+   * @param options
+   */
+  async findByTypeAndId(
+    identity: EntityIdentity<Profile>,
+    type: ProfileType.User,
+    options?: IBaseFetchQueryOptions<Profile>,
+  ): Promise<UserProfile>;
+  async findByTypeAndId(
+    identity: EntityIdentity<Profile>,
+    type: ProfileType.Group,
+    options?: IBaseFetchQueryOptions<Profile>,
+  ): Promise<GroupProfile>;
+  async findByTypeAndId(
+    identity: EntityIdentity<Profile>,
+    type: ProfileType.Organization,
+    options?: IBaseFetchQueryOptions<Profile>,
+  ): Promise<Organization>;
+  async findByTypeAndId(
+    identity: EntityIdentity<Profile>,
+    type: ProfileType,
+    options?: IBaseFetchQueryOptions<Profile>,
+  ): Promise<Profile | null> {
+    return this.findByIdAndFilter(identity, { type: type }, options);
   }
 
   async addTags(profile: Profile, tags: Tag[]) {

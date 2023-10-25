@@ -9,7 +9,7 @@ import { ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
 import { getPermission } from '@lyvely/core-interface';
 import { IntegrityException } from '@lyvely/common';
-import { ProfileContext } from '@/profiles';
+import { ProfileContext } from '../models';
 import { User } from '@/users';
 
 @Injectable()

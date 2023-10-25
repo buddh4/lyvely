@@ -198,9 +198,6 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
     options: Partial<ICreateProfileOptions> = {},
   ): Promise<Profile> {
     const profile = await this.createProfile(owner, name, ProfileType.Group, visibility, options);
-
-    await this.addProfileMember(profile, owner, ProfileMembershipRole.Owner);
-
     return new Profile(owner, profile);
   }
 

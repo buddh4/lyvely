@@ -1,19 +1,13 @@
 import { defineStore } from 'pinia';
-import {
-  repository,
-  Status,
-  useStatus,
-  localStorageManager,
-  loadingState,
-  loadingStatus,
-} from '@/core';
+import { repository, Status, useStatus, localStorageManager, loadingStatus } from '@/core';
 import { ProfileWithRelationsModel, TagModel } from '@lyvely/core-interface';
 
 import { computed, ref } from 'vue';
 import { useProfileService } from '@/profiles/services/profiles.service';
 import { usePageStore } from '@/ui';
-import { EntityNotFoundException, ServiceException } from '@lyvely/common';
+import { EntityNotFoundException } from '@lyvely/common';
 import { useLiveStore } from '@/live';
+import { useProfileRelationInfosService } from '../services';
 
 const LATEST_PROFILE_ID = 'latest_profile_id';
 const DEFAULT_PROFILE_ID = 'default';
@@ -48,7 +42,6 @@ export const useProfileStore = defineStore('profile', () => {
   }
 
   async function setActiveProfile(activeProfile: ProfileWithRelationsModel) {
-    debugger;
     profile.value = activeProfile;
     latestProfileId.setValue(activeProfile.id);
     if (!profile.value.getMembership()) {
@@ -97,8 +90,11 @@ export const useProfileStore = defineStore('profile', () => {
       .map((tag) => tag.name);
   }
 
-  function getUserInfo(uid: string) {
+  async function getUserInfo(uid: string) {
     const relation = profile.value?.profileRelations.find((realtion) => realtion.uid === uid);
+    if (!relation) {
+      return useProfileRelationInfosService().getProfileRelationUserInfo(profile.value!.id, uid);
+    }
     return relation?.userInfo;
   }
 

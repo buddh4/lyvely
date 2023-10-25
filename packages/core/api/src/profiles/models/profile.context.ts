@@ -1,11 +1,13 @@
 import { UserProfileRelation, Profile, Membership, Organization } from '../schemas';
 import { User, IOptionalUserContext, IUserContext } from '@/users';
+import { useUserProfileRelationHelper } from '../helpers';
 import { BaseModel, PropertyType } from '@lyvely/common';
 import {
   ProfileRelationRole,
-  BaseUserProfileRelationType,
-  membershipToRelationRole,
+  ProfileMembershipRole,
+  getProfileRelationRole,
 } from '@lyvely/core-interface';
+import { IUserWithProfileRelation } from '../interfaces';
 
 /**
  * This composite class holds information about the relation between a user and a profile and provides some utility
@@ -60,7 +62,7 @@ export class ProfileContext<T extends Profile = Profile>
   }
 
   isProfileOwner(): boolean {
-    return !!this.getRelationByRole(ProfileRelationRole.Owner);
+    return !!this.getMembership(ProfileMembershipRole.Owner);
   }
 
   hasRelation() {
@@ -68,47 +70,22 @@ export class ProfileContext<T extends Profile = Profile>
   }
 
   getRole(): ProfileRelationRole {
-    // TODO: Currently we only respect memberships since its the only relation type at the moment.
-    const membership = this.getMembership();
-    if (membership) return membershipToRelationRole[membership.role];
-    const organizationMembership = this.getOrganizationContext()?.getMembership();
-    if (organizationMembership) return ProfileRelationRole.Organization;
-    if (this.isUser()) return ProfileRelationRole.User;
-    return ProfileRelationRole.Visitor;
+    return getProfileRelationRole(
+      this.user,
+      this.relations,
+      this.getOrganizationContext()?.relations,
+    );
   }
 
-  getMembership(...roles: string[]): Membership | undefined {
-    const membership = this.getRelationOfType<Membership>(BaseUserProfileRelationType.Membership);
-
-    if (!membership) return undefined;
-
-    const result = new Membership(membership);
-
-    if (roles.length && !roles.includes(result.role)) return undefined;
-
-    return result;
-  }
-
-  getRelationOfType<T extends UserProfileRelation = UserProfileRelation>(
-    type: string,
-  ): T | undefined {
-    const relations = this.getAllRelationsOfType(type);
-    return relations.length ? (relations[0] as T) : undefined;
-  }
-
-  getRelationByRole(role: string): UserProfileRelation | undefined {
-    const relations = this.relations.filter((r) => r.role === role);
-    return relations.length ? relations[0] : undefined;
-  }
-
-  getAllRelationsOfType(type: string): UserProfileRelation[] {
-    return this.relations.filter((r) => r.type === type);
+  getMembership(...roles: ProfileMembershipRole[]): Membership | undefined {
+    const membership = useUserProfileRelationHelper(this.relations).getMembership(...roles);
+    if (membership) return new Membership(membership);
   }
 }
 
 export class ProtectedProfileContext<T extends Profile = Profile>
   extends ProfileContext<T>
-  implements IUserContext
+  implements IUserContext, IUserWithProfileRelation
 {
   user: User;
 }

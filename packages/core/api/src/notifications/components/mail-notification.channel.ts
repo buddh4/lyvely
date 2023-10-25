@@ -16,6 +16,7 @@ import { CalendarTimeInterval } from '@lyvely/dates';
 import { I18n, Translatable } from '@/i18n';
 import { NotificationChannelRegistry } from './notification-channel.registry';
 import { UrlGenerator } from '@/core';
+import { useUserProfileRelationHelper } from '@/profiles/helpers';
 
 @Injectable()
 export class MailNotificationChannel implements INotificationChannel {
@@ -127,9 +128,9 @@ export class MailNotificationChannel implements INotificationChannel {
   }
 
   private getEmail(context: UserSubscriptionContext) {
-    const membershipMail = context.relations?.find(
-      (relation) => relation.type === BaseUserProfileRelationType.Membership,
-    )?.userInfo.email;
+    const membershipMail = useUserProfileRelationHelper(
+      context.profileRelations || [],
+    ).getMembership()?.userInfo.email;
     return membershipMail || context.user.email;
   }
 }

@@ -8,6 +8,8 @@ import { computed } from 'vue';
 import { translate } from '@/i18n';
 import { UserAvatar } from '@/users';
 import { getContentTypeOptions } from '../services';
+import { computedAsync } from '@vueuse/core';
+import { useProfileStore } from '@/profiles';
 
 export interface IProps {
   model: ContentModel;
@@ -24,13 +26,21 @@ function selectTag(tagId: string) {
 const contentTypeName = computed(() =>
   translate(getContentTypeOptions(props.model.type)?.name || ''),
 );
+
+const userInfo = computedAsync(async () =>
+  useProfileStore().getUserInfo(props.model.meta.createdBy),
+);
 </script>
 
 <template>
   <div class="p-2.5 md:px-4 bg-shadow border-divide w-full">
     <div class="flex items-center justify-items-stretch gap-2">
       <slot name="image">
-        <user-avatar class="w-8 h-8" />
+        <ly-avatar
+          v-if="userInfo"
+          class="w-8 h-8"
+          :name="userInfo.displayName"
+          :guid="userInfo.guid" />
       </slot>
       <div class="flex flex-col text-sm">
         <slot name="title">

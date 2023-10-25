@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OptionalUser, User, UsersService } from '@/users';
+import { OptionalUser, User } from '@/users';
 import {
   ProfileMembershipRole,
   ProfileType,
@@ -8,16 +8,15 @@ import {
   UpdateProfileModel,
 } from '@lyvely/core-interface';
 import { EntityNotFoundException, UniqueConstraintException } from '@lyvely/common';
-import { MembershipsDao, ProfileDao, UserProfileRelationsDao } from '../daos';
-import { ProfileContext, ProfileRelations, ProtectedProfileContext } from '../models';
+import { MembershipsDao, ProfileDao } from '../daos';
+import { ProfileContext, ProtectedProfileContext } from '../models';
 import {
   assureObjectId,
   assureStringId,
-  EntityIdentity,
-  Transaction,
-  withTransaction,
-  InjectConnection,
   Connection,
+  EntityIdentity,
+  InjectConnection,
+  withTransaction,
 } from '@/core';
 import {
   ICreateProfileOptions,
@@ -27,17 +26,27 @@ import {
   ProfilesFactory,
   UserProfileRelation,
 } from '../schemas';
+import { ProfileMembershipService } from './profile-membership.service';
+import { ProfileRelationsService } from './profile-relations.service';
 
 @Injectable()
 export class ProfilesService {
   constructor(
     private profileDao: ProfileDao,
-    private usersService: UsersService,
     private membershipDao: MembershipsDao,
-    private profileRelationsDao: UserProfileRelationsDao,
+    private membershipService: ProfileMembershipService,
+    private relationsService: ProfileRelationsService,
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
+  /**
+   * Creates a default user profile based on the given user's information.
+   * If a profile with the same name already exists for the user, it returns the existing profile.
+   * Otherwise, it creates a new profile using the user's username and locale and other information.
+   * This function is usually called after the registration or first visit of a user.
+   * @param owner The user for whom the profile is being created.
+   * @returns A Promise resolving to the protected profile context of the created or found profile.
+   */
   async createDefaultUserProfile(owner: User): Promise<ProtectedProfileContext> {
     const profile = await this.profileDao.findOneByOwnerAndName(owner, owner.username);
 
@@ -54,9 +63,13 @@ export class ProfilesService {
   }
 
   /**
-   * @param owner
-   * @param options
-   * @throws UniqueConstraintException
+   * Creates a new user profile with the provided options.
+   * Ensures that the profile name is unique for the organization (if any) or the owner.
+   * If a locale is not provided, it uses the locale of the organization (if any) or the user.
+   * @param owner The user who will own the profile.
+   * @param options Options for creating the profile.
+   * @returns A Promise resolving to the protected profile context of the created profile.
+   * @throws UniqueConstraintException If a profile with the same name already exists for the owner.
    */
   async createUserProfile(
     owner: User,
@@ -67,6 +80,15 @@ export class ProfilesService {
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.User }));
   }
 
+  /**
+   * Creates a new group profile with the provided options.
+   * Ensures that the profile name is unique for the organization (if any) or the owner.
+   * If a locale is not provided, it uses the locale of the organization (if any) or the user.
+   * @param owner The user who will own the profile.
+   * @param options Options for creating the profile.
+   * @returns A Promise resolving to the protected profile context of the created profile.
+   * @throws UniqueConstraintException If a profile with the same name already exists for the owner.
+   */
   async createGroupProfile(
     owner: User,
     options: ICreateProfileOptions,
@@ -76,27 +98,42 @@ export class ProfilesService {
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.Group }));
   }
 
+  /**
+   * Checks if the name of the given profile is unique either within the organization (if any) or the owner of the profile
+   * if it is not an organization profile.
+   * @param owner The user who will own the profile.
+   * @param options Options for creating the profile.
+   * @throws UniqueConstraintException in case the profile name is already used by the organization or owner.
+   * @private
+   */
   private async checkProfileNameUniqueness(owner: User, options: ICreateProfileOptions) {
     const profile = options.organization
       ? await this.profileDao.findOneByOrganizationAndName(options.organization, options.name)
       : await this.profileDao.findOneByOwnerAndName(owner, options.name);
 
-    if (profile) this.throwUniqueConstraintExceptionOnCreate(options);
-  }
-
-  private throwUniqueConstraintExceptionOnCreate(options: ICreateProfileOptions) {
-    if (options.organization) {
+    if (profile) {
+      if (options.organization) {
+        throw new UniqueConstraintException(
+          'name',
+          'Can not create user profile, profile name already exists in organization',
+        );
+      }
       throw new UniqueConstraintException(
         'name',
-        'Can not create user profile, profile name already exists in organization',
+        'Can not create user profile, user already owns a profile with this name',
       );
     }
-    throw new UniqueConstraintException(
-      'name',
-      'Can not create user profile, user already owns a profile with this name',
-    );
   }
 
+  /**
+   * Creates a new organization profile with the provided options.
+   * Ensures that the organization name not already in use.
+   * If a locale is not provided, it uses the locale of the organization (if any) or the user.
+   * @param owner The user who will own the profile.
+   * @param options Options for creating the profile.
+   * @returns A Promise resolving to the protected profile context of the created profile.
+   * @throws UniqueConstraintException If a profile with the same name already exists for the owner.
+   */
   async createOrganization(
     owner: User,
     options: Omit<ICreateProfileOptions, 'organization'>,
@@ -137,7 +174,7 @@ export class ProfilesService {
         transaction,
       );
 
-      const membership = await this.createMembership(
+      const membership = await this.membershipService.createMembership(
         profile,
         owner,
         ProfileMembershipRole.Owner,
@@ -152,6 +189,58 @@ export class ProfilesService {
     });
   }
 
+  /**
+   * Returns the default profile of the given user. Which profile is chosen depends on the default profile strategy,
+   * this could for example be a static configured profile, the latest visited profile or a profile marked as default.
+   *
+   * @param user
+   */
+  async findDefaultProfile(user: User): Promise<ProtectedProfileContext> {
+    const membership = await this.membershipDao.findOldestRelation(user);
+
+    // TODO: check if profile is archived etc.
+    if (!membership) {
+      return this.createDefaultUserProfile(user);
+    }
+
+    const relation = await this.findProfileContext(user, membership.pid);
+
+    // TODO: handle integrity issue if !relation, at least do some logging here...
+    return relation ? relation : this.createDefaultUserProfile(user);
+  }
+
+  /**
+   * Returns a profile with the given id or null if the profile could not be found.
+   * If `throwsException` is set to true, this function will throw a EntityNotFoundException in case the profile
+   * could not be found.
+   * @param identity the identity of the profile.
+   * @param throwsException if set to true, throws an exception in case the profile could not be found.
+   * @throws EntityNotFoundException if throwsExceptio is set to true and the profile could not be found.
+   */
+  async findProfileById(
+    identity: EntityIdentity<Profile> | null | undefined,
+    throwsException = false,
+  ): Promise<Profile | null> {
+    if (!identity && throwsException) throw new EntityNotFoundException('Profile not found.');
+    if (!identity) return null;
+
+    const result =
+      identity instanceof Profile ? identity : await this.profileDao.findById(identity);
+
+    if (!result && throwsException) {
+      throw new EntityNotFoundException('Profile not found.');
+    }
+
+    return result;
+  }
+
+  /**
+   * Updates the profile details with the provided update data.
+   * Note: Changes to the profile type are currently ignored.
+   * @param profile The profile to be updated.
+   * @param update The update data containing the fields to be updated.
+   * @returns A Promise resolving to a boolean value indicating whether the update was successful.
+   */
   async updateProfile(profile: Profile, update: UpdateProfileModel): Promise<boolean> {
     const updateData = { ...update };
 
@@ -161,49 +250,13 @@ export class ProfilesService {
     return this.profileDao.updateOneSetById(profile, updateData);
   }
 
-  async createMembership(
-    profile: Profile,
-    member: User,
-    role: ProfileMembershipRole = ProfileMembershipRole.Member,
-    transaction?: Transaction,
-  ) {
-    const existingMembership = await this.membershipDao.findByProfileAndUser(
-      profile,
-      member,
-      transaction,
-    );
-
-    if (existingMembership) {
-      if (existingMembership.role !== role) {
-        await this.membershipDao.updateOneSetById(existingMembership, { role }, transaction);
-      }
-      return existingMembership;
-    }
-
-    const [membership] = await Promise.all([
-      this.membershipDao.addMembership(profile, member, role, transaction),
-      this.usersService.incrementProfileCount(member, profile.type, transaction),
-    ]);
-
-    return membership;
-  }
-
-  async findProfileRelations(
-    user: OptionalUser,
-    identity: EntityIdentity<Profile>,
-  ): Promise<ProfileRelations> {
-    const profile =
-      identity instanceof Profile ? identity : await this.profileDao.findById(identity);
-
-    if (!profile) throw new EntityNotFoundException();
-
-    if (!user) return new ProfileRelations({ profile });
-
-    const profileRelations = await this.profileRelationsDao.findAllByProfile(identity);
-    const userRelations = profileRelations.filter((relation) => relation.uid.equals(user._id));
-    return new ProfileRelations({ user, profile, profileRelations, userRelations });
-  }
-
+  /**
+   * Returns a ProfileContext object, which describes the relation of the given user with the given profile in detail.
+   * The ProfileContext is usually used for other services and permission checks.
+   * @param user The user of the relation
+   * @param pid The profile of the relation
+   * @param oid An optional objectId which can be used to optimize the db call if known
+   */
   async findProfileContext(
     user: User,
     pid: EntityIdentity<Profile>,
@@ -222,7 +275,7 @@ export class ProfilesService {
     const { profile, organization } = await this.findProfileWithOrganization(pid, oid);
 
     const { profileRelations, organizationRelations } =
-      await this.profileRelationsDao.findAllProfileAndOrganizationRelationsByUser(user, profile);
+      await this.relationsService.findAllProfileAndOrganizationRelationsByUser(profile, user);
 
     if (!user) {
       const organizationContext = organization
@@ -250,6 +303,18 @@ export class ProfilesService {
     });
   }
 
+  /**
+   * Finds a profile and its associated organization (if any) based on provided profile and organization identities.
+   * - If both profile and organization identities are provided and they are not instances of Profile, it will fetch them from the database.
+   * - If they are instances of Profile, it will use them directly.
+   * - If only the profile is provided and it has an associated organization, it will fetch the organization.
+   * - If only the profile identity is provided, it will fetch the profile.
+   * It ensures that the fetched organization actually belongs to the profile.
+   * @param pid The identity (or instance) of the profile. Could be an ObjectId, string, or a Profile instance.
+   * @param oid Optional identity (or instance) of the organization. Could be an ObjectId, string, or a Profile instance.
+   * @returns A Promise resolving to an object containing the profile and its organization (or null if there isn’t any).
+   * @throws EntityNotFoundException if the profile cannot be found.
+   */
   async findProfileWithOrganization(
     pid: EntityIdentity<Profile>,
     oid?: EntityIdentity<Profile>,
@@ -261,7 +326,9 @@ export class ProfilesService {
       // Both ids
       const profiles = await this.profileDao.findAllByIds([pid, oid]);
       profile = profiles.find((p) => p._id.equals(assureObjectId(pid)));
-      organization = profiles.find((p) => p._id.equals(assureObjectId(oid)));
+      organization = profiles.find(
+        (p) => p.type === ProfileType.Organization && p._id.equals(assureObjectId(oid)),
+      );
     } else if (pid instanceof Profile && oid instanceof Profile) {
       // Both already instances
       profile = pid;
@@ -269,7 +336,7 @@ export class ProfilesService {
     } else if (pid instanceof Profile && pid.hasOrganization()) {
       // Pid is an instance, we ignore oid here since we trust the profiles pid more
       profile = pid;
-      organization = <Organization | null>await this.profileDao.findById(profile.oid);
+      organization = await this.profileDao.findByTypeAndId(profile.oid, ProfileType.Organization);
     } else if (pid instanceof Profile) {
       profile = pid;
     } else {
@@ -280,7 +347,7 @@ export class ProfilesService {
 
     // Make sure we have the right organization here
     if (profile.hasOrganization() && !profile.isProfileOfOrganization(organization)) {
-      organization = <Organization | null>await this.profileDao.findById(profile.oid);
+      organization = await this.profileDao.findByTypeAndId(profile.oid, ProfileType.Organization);
     }
 
     if (!profile) throw new EntityNotFoundException();
@@ -288,6 +355,12 @@ export class ProfilesService {
     return { profile, organization: organization || null };
   }
 
+  /**
+   * Returns a profile context array describing the profile context between the given profile and the given users.
+   * @param identity The profile of the contexts
+   * @param users The users of the contexts
+   * @param skipEmptyRelations If set to true will exclude contexts without existing user relations
+   */
   async findProfileContextsByUsers(
     identity: EntityIdentity<Profile>,
     users: User[],
@@ -313,10 +386,10 @@ export class ProfilesService {
       return user._id;
     });
 
-    const relations = await this.profileRelationsDao.findAll({
-      pid: assureObjectId(profile),
-      uid: { $in: uids },
-    });
+    const relations = await this.relationsService.findAllProfileRelationsByUsers(
+      assureObjectId(profile),
+      uids,
+    );
 
     relations.forEach((relation) => {
       profileContextMap.get(assureStringId(relation.uid)!)?.relations.push(relation);
@@ -328,33 +401,12 @@ export class ProfilesService {
       : result;
   }
 
-  async findAllUserProfileRelations(identity: EntityIdentity<Profile>) {
-    const profile =
-      identity instanceof Profile ? identity : await this.profileDao.findById(identity);
-
-    if (!profile) return [];
-
-    const userRelations = await this.profileRelationsDao.findAll({
-      pid: assureObjectId(identity),
-    });
-
-    const result: { user: User; profile: Profile; relations: UserProfileRelation[] }[] = [];
-    const uids = userRelations.map((relation) => relation.uid);
-    const users = await this.usersService.findUsersById(uids);
-    users.forEach((user) => {
-      const relations = userRelations.filter((relation) => relation.uid.equals(user._id));
-      result.push({ user, profile, relations });
-    });
-
-    return result;
-  }
-
-  async findAllProfileRelationsByUser(user: User): Promise<UserProfileRelation[]> {
-    return this.profileRelationsDao.findAllByUser(user);
-  }
-
+  /**
+   * Finds all profile contexts of the given user.
+   * @param user
+   */
   async findAllProfileContextsByUser(user: User): Promise<ProtectedProfileContext[]> {
-    const userRelations = await this.findAllProfileRelationsByUser(user);
+    const userRelations = await this.relationsService.findAllProfileRelationsByUser(user);
 
     if (!userRelations.length) return [];
 
@@ -373,25 +425,10 @@ export class ProfilesService {
   }
 
   /**
-   * Returns a single profile for the given user. Which profile is chosen depends on the default profile strategy,
-   * this could for example be a static configured profile, the latest visited profile or a profile marked as default.
-   *
-   * @param user
+   * Increments the score of the given profile.
+   * @param identity The identity (or instance) of the profile. Could be an ObjectId, string, or a Profile instance.
+   * @param inc The amount to increment.
    */
-  async findDefaultProfileMembershipByUser(user: User): Promise<ProtectedProfileContext> {
-    // TODO: make sure not to return an archived profile
-    const memberships = await this.membershipDao.findAllByUser(user);
-
-    if (!memberships.length) {
-      return this.createDefaultUserProfile(user);
-    }
-
-    const relation = await this.findProfileContext(user, memberships[0].pid);
-
-    // TODO: handle integrity issue if !relation, at least do some logging here...
-    return relation ? relation : this.createDefaultUserProfile(user);
-  }
-
   async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {
     const profile = await this.findProfileById(identity, true);
 
@@ -402,22 +439,5 @@ export class ProfilesService {
     const newScore = Math.max(profile.score + inc, 0);
     await this.profileDao.updateOneSetById(profile, { score: newScore });
     return newScore;
-  }
-
-  async findProfileById(
-    identity: EntityIdentity<Profile> | null | undefined,
-    throwsException = false,
-  ): Promise<Profile | null> {
-    if (!identity && throwsException) throw new EntityNotFoundException('Profile not found.');
-    if (!identity) return null;
-
-    const result =
-      identity instanceof Profile ? identity : await this.profileDao.findById(identity);
-
-    if (!result && throwsException) {
-      throw new EntityNotFoundException('Profile not found.');
-    }
-
-    return result;
   }
 }

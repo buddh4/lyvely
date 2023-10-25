@@ -21,8 +21,8 @@ import {
   ProfileWithRelationsModel,
   UpdateProfileModel,
 } from '@lyvely/core-interface';
-import { ProfilesService } from '../services';
-import { ProfileRelations, ProtectedProfileContext } from '../models';
+import { ProfilesService, ProfileRelationsService } from '../services';
+import { UserAndProfileRelations, ProtectedProfileContext } from '../models';
 import { OptionalUser, OptionalUserRequest, UserRequest } from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
@@ -34,6 +34,7 @@ import { ProfileGuard } from '../guards';
 export class ProfilesController implements ProfilesEndpoint {
   constructor(
     private profilesService: ProfilesService,
+    private profilesRelationsService: ProfileRelationsService,
     @InjectPolicy(ProfileVisibilityPolicy.name)
     private profileVisibilityPolicy: ProfileVisibilityPolicy,
   ) {}
@@ -49,16 +50,19 @@ export class ProfilesController implements ProfilesEndpoint {
 
     // TODO: Here we could potentially save one db call when fetching user relations
     const context = await this.profilesService.findProfileContext(user, pid, oid);
-    const profileRelations = await this.profilesService.findProfileRelations(user, context.profile);
+    const profileRelations = await this.profilesRelationsService.findProfileRelations(
+      context.profile,
+      user,
+    );
 
     if (!(await this.profileVisibilityPolicy.verify(context))) throw new ForbiddenException();
 
-    return mapType(ProfileRelations, ProfileWithRelationsModel<any>, profileRelations);
+    return mapType(UserAndProfileRelations, ProfileWithRelationsModel<any>, profileRelations);
   }
 
   private async getDefaultProfile(user: OptionalUser): Promise<ProfileWithRelationsModel> {
     if (!user) throw new ForbiddenException();
-    const profileRelations = await this.profilesService.findDefaultProfileMembershipByUser(user);
+    const profileRelations = await this.profilesService.findDefaultProfile(user);
     return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, profileRelations);
   }
 

@@ -5,7 +5,12 @@ import { ConfigService } from '@nestjs/config';
 import { assureStringId, ConfigurationPath, EntityIdentity, OperationMode } from '@/core';
 import { OptionalUser, User } from '@/users';
 import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/core-interface';
-import { Profile, ProfilesService, ProfileVisibilityPolicy } from '@/profiles';
+import {
+  Profile,
+  ProfileRelationsService,
+  ProfilesService,
+  ProfileVisibilityPolicy,
+} from '@/profiles';
 import { ForbiddenServiceException } from '@lyvely/common';
 import { InjectPolicy } from '@/policies';
 
@@ -17,6 +22,7 @@ export class LiveService {
     private eventEmitter: EventEmitter2,
     private readonly configService: ConfigService<ConfigurationPath>,
     private profilesService: ProfilesService,
+    private profileRelationsService: ProfileRelationsService,
     @InjectPolicy(ProfileVisibilityPolicy.name)
     private profileVisibilityPolicy: ProfileVisibilityPolicy,
   ) {}
@@ -52,7 +58,7 @@ export class LiveService {
     // TODO: reconnect on visibility change
     if (this.isStandaloneServer()) {
       const observables = new Set(
-        (await this.profilesService.findAllProfileRelationsByUser(user)).map((relation) =>
+        (await this.profileRelationsService.findAllProfileRelationsByUser(user)).map((relation) =>
           fromEvent(this.eventEmitter, this.buildLiveProfileEventName(relation.pid!)),
         ),
       );

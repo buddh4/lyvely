@@ -7,13 +7,22 @@ import {
   MultiUserSubscription,
 } from '../schemas';
 import { UserSubscriptionContext } from '../interfaces';
-import { Profile, ProfilesService } from '@/profiles';
+import {
+  IUserWithProfileRelation,
+  Profile,
+  ProfileRelationsService,
+  ProfilesService,
+} from '@/profiles';
 import { EntityIdentity } from '@/core';
 import { IntegrityException } from '@lyvely/common';
 
 @Injectable()
 export class UserSubscriptionService {
-  constructor(private userService: UsersService, private profileService: ProfilesService) {}
+  constructor(
+    private usersService: UsersService,
+    private profilesService: ProfilesService,
+    private profileRelationsService: ProfileRelationsService,
+  ) {}
 
   async getSubscriptionContext(
     subscription: UserSubscription,
@@ -38,12 +47,14 @@ export class UserSubscriptionService {
   ): Promise<UserSubscriptionContext[]> {
     if (!subscription.uid)
       throw new IntegrityException('SingleUserSubscription without uid requested.');
-    const user = await this.userService.findUserById(subscription.uid);
+    const user = await this.usersService.findUserById(subscription.uid);
 
     if (!user) return [];
     if (!pid) return [{ user }];
 
-    return [await this.profileService.findProfileContext(user, pid)];
+    const context = await this.profilesService.findProfileContext(user, pid);
+
+    return [this.profileContextToSubscriptionContext(context)];
   }
 
   private async getMultiUserSubscriptionContext(
@@ -52,21 +63,31 @@ export class UserSubscriptionService {
   ): Promise<UserSubscriptionContext[]> {
     if (!subscription?.uids?.length) return [];
 
-    const users = await this.userService.findUsersById(subscription.uids);
+    const users = await this.usersService.findUsersById(subscription.uids);
 
     if (!users?.length) return [];
     if (!pid) {
       return users.map((user) => ({ user }));
     }
 
-    return this.profileService.findProfileContextsByUsers(pid, users);
+    const contexts = await this.profilesService.findProfileContextsByUsers(pid, users);
+    return contexts.map((c) => this.profileContextToSubscriptionContext(c));
+  }
+
+  private profileContextToSubscriptionContext(
+    ctx: IUserWithProfileRelation,
+  ): UserSubscriptionContext {
+    const { user, profile, relations } = ctx;
+    return { user, profile, profileRelations: relations };
   }
 
   private async getProfileSubscriptionContext(
     pid: EntityIdentity<Profile>,
   ): Promise<UserSubscriptionContext[]> {
     if (!pid) return [];
+
     // TODO: This is currently not scalable for profiles with many users, we should split this in batches
-    return this.profileService.findAllUserProfileRelations(pid);
+    const contexts = await this.profileRelationsService.findAllUserProfileRelations(pid);
+    return contexts.map((c) => this.profileContextToSubscriptionContext(c));
   }
 }

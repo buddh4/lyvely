@@ -9,6 +9,7 @@ export * from './models';
 export * from './permissions';
 export * from './policies';
 export * from './types';
+export * from './helpers';
 export * from './testing';
 export * from './services';
 export * from './profiles.module';

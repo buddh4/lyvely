@@ -15,7 +15,7 @@ export const useProfileRelationInfosStore = defineStore('profile-relation-infos'
 
   async function loadRelations() {
     return loadingStatus(
-      profilesRelationInfosService.getUserProfileInfos(),
+      profilesRelationInfosService.getAllProfileRelationInfos(),
       status,
       undefined,
       (result) => {

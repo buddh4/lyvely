@@ -1,4 +1,4 @@
-import { ProtectedProfileContext, ProfileRelations } from '../models';
+import { ProtectedProfileContext, UserAndProfileRelations } from '../models';
 import {
   ProfileRelationInfo,
   ProfileRelationInfos,
@@ -31,7 +31,7 @@ export function useProfileMappings() {
     });
   });
 
-  registerMapping(ProfileRelations, ProfileWithRelationsModel<any>, (relations) => {
+  registerMapping(UserAndProfileRelations, ProfileWithRelationsModel<any>, (relations) => {
     return new ProfileWithRelationsModel<any>({
       ...relations.profile,
       userRelations: relations.userRelations,

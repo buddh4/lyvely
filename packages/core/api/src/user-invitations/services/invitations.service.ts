@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Membership, Profile, ProfilesService } from '@/profiles';
+import { Membership, Profile, ProfileMembershipService, ProfilesService } from '@/profiles';
 import { User } from '@/users';
 import { InvitationDao } from '../daos';
 import { MailInvitation, UserInvitation } from '../schemas';
@@ -13,6 +13,7 @@ import { EntityNotFoundException } from '@lyvely/common';
 export class InvitationsService {
   constructor(
     private profileService: ProfilesService,
+    private membershipService: ProfileMembershipService,
     private inviteDao: InvitationDao,
     private mailInvitationsService: MailInvitationService,
     private userInvitationsService: UserInvitationsService,
@@ -66,7 +67,7 @@ export class InvitationsService {
     if (!invitation.pid) return;
     const profile = await this.profileService.findProfileById(invitation.pid);
     if (!profile) throw new EntityNotFoundException();
-    return this.profileService.createMembership(profile, user, invitation.role);
+    return this.membershipService.createMembership(profile, user, invitation.role);
   }
 
   private async invalidateOtherInvitations(invitation: InvitationIF) {

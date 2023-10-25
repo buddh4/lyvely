@@ -3,7 +3,7 @@ import { assignEntityData, BaseEntity, assureObjectId, TObjectId, ObjectIdProp }
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
 import { getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
-import { IProfileRelationUserInfo, UserStatus } from '@lyvely/core-interface';
+import { IProfileRelationUserInfo, UserStatus, ProfileRelationModel } from '@lyvely/core-interface';
 
 export interface ICreateProfileRelation {
   profile: Profile;
@@ -60,7 +60,10 @@ type UserRelation = {
  * TODO: also include oid? Only problematic if we move a profile from one orga to another...
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class UserProfileRelation<C extends UserRelation = UserRelation> extends BaseEntity<C> {
+export class UserProfileRelation<C extends UserRelation = UserRelation>
+  extends BaseEntity<C>
+  implements ProfileRelationModel<TObjectId>
+{
   @ObjectIdProp({ required: true })
   uid: TObjectId;
 

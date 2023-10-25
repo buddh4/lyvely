@@ -1,10 +1,6 @@
 import { MembershipsDao } from './index';
 import { ProfileRelationUserInfo } from '../schemas';
-import {
-  BaseUserProfileRelationType,
-  ProfileMembershipRole,
-  ProfileType,
-} from '@lyvely/core-interface';
+import { BaseUserProfileRelationType, ProfileMembershipRole } from '@lyvely/core-interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 
@@ -105,8 +101,8 @@ describe('MembershipDao', () => {
       const { user, profile } = await testData.createUserAndProfile();
       const membership = await membershipDao.findByUserAndProfile(user, profile);
       expect(membership).toBeDefined();
-      expect(membership?.uid).toEqual(user._id);
-      expect(membership?.pid).toEqual(profile._id);
+      expect(membership[0].uid).toEqual(user._id);
+      expect(membership[0].pid).toEqual(profile._id);
     });
 
     it('do not find non related membership', async () => {

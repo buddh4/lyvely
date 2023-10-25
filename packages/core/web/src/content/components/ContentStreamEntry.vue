@@ -10,6 +10,7 @@ import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/composables/stream.composable';
 import { getContentTypeOptions } from '../services';
 import { useProfileStore } from '@/profiles/stores/profile.store';
+import { computedAsync } from '@vueuse/core';
 
 export interface IProps {
   model: ContentModel;
@@ -31,16 +32,9 @@ const props = withDefaults(defineProps<IProps>(), {
 
 defineEmits(['selectTag']);
 
-const authorName = computed(
-  // TODO: use props.model.meta.createdAs?.authorId and check type
-  () => useProfileStore().getUserInfo(props.model.meta.createdBy)?.displayName || '',
+const userInfo = computedAsync(async () =>
+  useProfileStore().getUserInfo(props.model.meta.createdBy),
 );
-
-const avatar = computed(() => {
-  return {
-    guid: useProfileStore().getUserInfo(props.model.meta.createdBy)?.guid || '',
-  };
-});
 
 const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1));
 const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
@@ -124,14 +118,20 @@ const maxWidth = false;
     <div class="flex items-stretch w-full gap-1">
       <div class="flex justify-center flex-shrink-0 w-9 pt-1">
         <slot v-if="!mergeWithPrev" name="image">
-          <ly-avatar class="w-8 h-8" :name="authorName" :avatar="avatar" />
+          <ly-avatar
+            v-if="userInfo"
+            class="w-8 h-8"
+            :name="userInfo.displayName"
+            :guid="userInfo.guid" />
         </slot>
       </div>
       <div class="mx-3 my-0.5 w-full">
         <div v-if="!mergeWithPrev" class="text-sm mb-2">
           <span class="font-bold mr-1">
             <slot name="authorName">
-              {{ authorName }}
+              <template v-if="userInfo">
+                {{ userInfo.displayName }}
+              </template>
             </slot>
           </span>
           <relative-time :ts="model.meta.streamSort"></relative-time>

@@ -4,7 +4,10 @@ import { IProfileRelation, IProfileRelationUserInfo } from '../interfaces';
 import { UserStatus } from '@/users';
 
 @Exclude()
-export class ProfileRelationUserInfoModel implements IProfileRelationUserInfo {
+export class ProfileRelationUserInfoModel
+  extends BaseModel<ProfileRelationUserInfoModel>
+  implements IProfileRelationUserInfo
+{
   @Expose()
   displayName: string;
 
