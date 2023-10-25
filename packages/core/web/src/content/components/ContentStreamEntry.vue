@@ -9,8 +9,7 @@ import { translate } from '@/i18n';
 import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/composables/stream.composable';
 import { getContentTypeOptions } from '../services';
-import { useProfileStore } from '@/profiles/stores/profile.store';
-import { computedAsync } from '@vueuse/core';
+import { useUserInfo } from '@/profiles/composables';
 
 export interface IProps {
   model: ContentModel;
@@ -32,9 +31,11 @@ const props = withDefaults(defineProps<IProps>(), {
 
 defineEmits(['selectTag']);
 
-const userInfo = computedAsync(async () =>
+/*const userInfo = computedAsync(async () =>
   useProfileStore().getUserInfo(props.model.meta.createdBy),
-);
+);*/
+
+const userInfo = useUserInfo(props.model.meta.createdBy);
 
 const prevEntry = computed(() => props.stream?.getStreamEntryAt(props.index - 1));
 const nextEntry = computed(() => props.stream?.getStreamEntryAt(props.index + 1));
@@ -118,11 +119,13 @@ const maxWidth = false;
     <div class="flex items-stretch w-full gap-1">
       <div class="flex justify-center flex-shrink-0 w-9 pt-1">
         <slot v-if="!mergeWithPrev" name="image">
-          <ly-avatar
-            v-if="userInfo"
-            class="w-8 h-8"
-            :name="userInfo.displayName"
-            :guid="userInfo.guid" />
+          <template v-if="userInfo">
+            <ly-avatar
+              v-if="userInfo"
+              class="w-8 h-8"
+              :name="userInfo.displayName"
+              :guid="userInfo.guid" />
+          </template>
         </slot>
       </div>
       <div class="mx-3 my-0.5 w-full">

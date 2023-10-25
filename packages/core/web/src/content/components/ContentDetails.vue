@@ -6,10 +6,8 @@ import TagList from '@/tags/components/TagList.vue';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
 import { translate } from '@/i18n';
-import { UserAvatar } from '@/users';
 import { getContentTypeOptions } from '../services';
-import { computedAsync } from '@vueuse/core';
-import { useProfileStore } from '@/profiles';
+import { useUserInfo } from '@/profiles/composables';
 
 export interface IProps {
   model: ContentModel;
@@ -27,9 +25,7 @@ const contentTypeName = computed(() =>
   translate(getContentTypeOptions(props.model.type)?.name || ''),
 );
 
-const userInfo = computedAsync(async () =>
-  useProfileStore().getUserInfo(props.model.meta.createdBy),
-);
+const userInfo = useUserInfo(props.model.meta.createdBy);
 </script>
 
 <template>

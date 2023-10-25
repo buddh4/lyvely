@@ -90,12 +90,16 @@ export const useProfileStore = defineStore('profile', () => {
       .map((tag) => tag.name);
   }
 
-  async function getUserInfo(uid: string) {
+  function getMemberUserInfo(uid: string) {
     const relation = profile.value?.profileRelations.find((realtion) => realtion.uid === uid);
-    if (!relation) {
-      return useProfileRelationInfosService().getProfileRelationUserInfo(profile.value!.id, uid);
-    }
     return relation?.userInfo;
+  }
+
+  async function getUserInfo(uid: string) {
+    const userInfo = getMemberUserInfo(uid);
+    return userInfo
+      ? userInfo
+      : useProfileRelationInfosService().getProfileRelationUserInfo(profile.value!.id, uid);
   }
 
   function setPageTitle(title: Array<string> | string) {
@@ -119,6 +123,7 @@ export const useProfileStore = defineStore('profile', () => {
     tagIdsToNames,
     getUserInfo,
     setPageTitle,
+    getMemberUserInfo,
     ...status,
   };
 });
