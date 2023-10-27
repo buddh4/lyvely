@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useVerifyEmailStore } from '@/user-accounts/stores/verify-email.store';
 import OtpInput from '@/user-accounts/components/OtpInput.vue';
 import { onUnmounted } from 'vue';
+import { useFlashStore } from '@/ui';
 
 const verifyEmailStore = useVerifyEmailStore();
 const { verifyEmail, resendOtp, reset } = verifyEmailStore;
@@ -24,11 +25,11 @@ onUnmounted(reset);
 
     <template #footer>
       <div class="flex justify-center space-x-1">
-        <ly-button class="secondary" label="common.resend" @click="resendOtp" />
+        <ly-button class="secondary" text="common.resend" @click="resendOtp" />
         <ly-button
           v-if="!otpInfo?.requiresRefresh()"
           class="primary"
-          label="common.submit"
+          text="common.submit"
           @click="verifyEmail" />
       </div>
     </template>

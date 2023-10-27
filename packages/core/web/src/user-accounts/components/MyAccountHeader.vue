@@ -82,8 +82,8 @@ function updateGravatar() {
 
   <ly-modal v-model="showUpdateAvatarModal" title="avatar.title" :show-footer="false">
     <div class="flex flex-col items-stretch space-y-1">
-      <ly-button class="primary" label="avatar.upload" @click="selectNewAvatar" />
-      <ly-button class="primary" label="avatar.gravatar" @click="updateGravatar" />
+      <ly-button class="primary" text="avatar.upload" @click="selectNewAvatar" />
+      <ly-button class="primary" text="avatar.gravatar" @click="updateGravatar" />
     </div>
   </ly-modal>
 

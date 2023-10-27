@@ -17,7 +17,7 @@ export const userAccountsRoutes = [
           i18n: {
             load: [{ module: USER_ACCOUNTS_MODULE_ID, section: 'my-account' }, 'otp'],
           },
-          title: translation('user-accounts.myAccountInfo.title'),
+          title: translation('user-accounts.my-account.title'),
         },
         component: () => import('../views/MyAccountInfoView.vue'),
       },

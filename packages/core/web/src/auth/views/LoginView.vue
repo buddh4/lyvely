@@ -122,7 +122,7 @@ onUnmounted(loginStore.reset);
                 aria-describedby="remember-me-info" />
               <ly-icon
                 name="info"
-                class="ml-1 text-info-dark w-4 cursor-pointer"
+                class="ml-1 text-primary w-4 cursor-pointer"
                 aria-hidden="true"
                 @click="showRememberInfo = !showRememberInfo" />
             </div>
@@ -160,6 +160,24 @@ onUnmounted(loginStore.reset);
               {{ $t('auth.login.to_sign_up') }}
             </router-link>
           </small>
+        </div>
+
+        <div class="flex relative flex-col gap-2 pt-4 mt-5 border-t border-divide">
+          <div class="flex justify-center top-0 absolute w-full" style="margin-top: -0.5em">
+            <div class="inline-block bg-main px-2 font-bold text-dimmed uppercase text-xs">or</div>
+          </div>
+          <ly-button class="bg-red-500 w-full text-white flex items-center justify-center gap-2">
+            <ly-icon name="google" />
+            <div class="inline-block w-20">Google</div>
+          </ly-button>
+          <ly-button class="bg-gray-600 text-white w-full flex items-center justify-center gap-2">
+            <ly-icon name="github" />
+            <div class="inline-block w-20">Github</div>
+          </ly-button>
+          <ly-button class="bg-blue-700 text-white w-full flex items-center justify-center gap-2">
+            <ly-icon name="facebook" />
+            <div class="inline-block w-20">Facebook</div>
+          </ly-button>
         </div>
       </div>
 

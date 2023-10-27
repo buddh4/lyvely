@@ -30,17 +30,6 @@ export const useVerifyEmailStore = defineStore('verify-email', () => {
     resend: async (dto: ResendOtp) => {
       return await accountService.resendOtp(dto);
     },
-    validatorOptions: {
-      rules: {
-        email: [
-          (value: string, result: IFieldValidationResult) => {
-            if (!user.value?.findEmail(value)) {
-              result.errors!.push('not_exist');
-            }
-          },
-        ],
-      },
-    },
   });
 
   async function startVerificationOf(email: string, otpInfo?: OtpInfo) {

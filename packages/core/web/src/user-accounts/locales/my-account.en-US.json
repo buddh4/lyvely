@@ -1,6 +1,7 @@
 {
   "user-accounts": {
     "my-account": {
+      "title": "My account",
       "info": {
         "title": "My account info",
         "label": "Info",

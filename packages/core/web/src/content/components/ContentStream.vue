@@ -172,7 +172,7 @@ onUnmounted(() => {
     <ly-alert type="danger" class="justify-center">
       <div class="flex flex-col gap-2 items-center justify-center">
         <div>{{ t(error) }}</div>
-        <ly-button class="primary text-xs" label="common.reload" @click="reload" />
+        <ly-button class="primary text-xs" text="common.reload" @click="reload" />
       </div>
     </ly-alert>
   </div>
