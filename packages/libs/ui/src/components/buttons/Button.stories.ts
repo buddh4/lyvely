@@ -6,7 +6,7 @@ const meta = {
   title: 'Example/Button',
   component: LyButton,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
-  tags: ['autodocs'],
+  tags: [],
   argTypes: {
     outlined: { control: 'boolean' },
     disabled: { control: 'boolean' },

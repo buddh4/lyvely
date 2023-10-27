@@ -2,6 +2,9 @@
 import { useHelpText } from './help-text.util';
 import { t, Translatable } from '@/i18n';
 import LyLoader from '../loaders/LyLoader.vue';
+import LyIcon from '@/components/icons/LyIcon.vue';
+import LyAlert from '@/components/alerts/LyAlert.vue';
+import { computed } from 'vue';
 
 export interface IProps {
   label?: Translatable;
@@ -26,11 +29,9 @@ const { helpTextId, showHelpText, translatedHelpText, hasHelpText, ariaDescribed
   props.helpText,
 );
 
-const wrapperClasses = [
-  'form-input relative no-swipe',
-  { required: props.required },
-  props.wrapperClass,
-];
+const wrapperClasses = computed(() => {
+  return ['form-input relative no-swipe', { required: props.required }, props.wrapperClass];
+});
 </script>
 
 <template>
@@ -44,9 +45,9 @@ const wrapperClasses = [
         {{ t(label) }}
       </label>
       <ly-icon
-        v-if="hasHelpText"
+        v-if="!loading && hasHelpText"
         name="info"
-        class="absolute text-info-dark w-4 cursor-pointer top-2 right-3"
+        class="absolute text-info-dark w-4 cursor-pointer top-2 right-3 z-10"
         aria-hidden="true"
         @click="showHelpText = !showHelpText" />
 
@@ -65,7 +66,7 @@ const wrapperClasses = [
 
     <slot name="error">
       <transition name="fade">
-        <div v-if="inputError" class="text-danger text-sm pl-1 pt-1">
+        <div v-if="inputError" class="text-danger text-sm pl-1 pt-1 overflow-hidden">
           {{ t(inputError) }}
         </div>
       </transition>
@@ -79,16 +80,20 @@ const wrapperClasses = [
   left: 1px;
 }
 
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
+.fade-leave-active,
 .fade-enter-active {
-  transition: opacity 0.5s ease;
+  transition: all 0.5s ease, max-height 0.5s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  max-height: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  max-height: 24px;
 }
 </style>
