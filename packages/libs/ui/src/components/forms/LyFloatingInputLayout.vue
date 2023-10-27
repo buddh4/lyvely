@@ -53,6 +53,7 @@ const wrapperClasses = computed(() => {
 
       <ly-loader v-if="loading" size="10px" icon-class="absolute right-[10px] top-[10px] z-10" />
     </slot>
+
     <slot></slot>
 
     <ly-alert

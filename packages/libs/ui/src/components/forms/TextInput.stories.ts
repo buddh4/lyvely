@@ -20,7 +20,6 @@ const argTypes = {
       category: 'props'
     }
   },
-  helpText: { controls: 'string' },
   required: { controls: 'boolean' },
   id: { table: { disable: true } },
   name: { table: { disable: true } },
@@ -36,6 +35,8 @@ const argTypes = {
   autoValidation: { table: { disable: true } },
   type: { table: { disable: true } },
   passwordToggle: { table: { disable: true } },
+  loading: { table: { disable: true } },
+  helpText: { table: { disable: true } },
 }
 
 const meta = {
@@ -51,9 +52,23 @@ type Story = StoryObj<typeof meta>;
 
 export const Text: Story = {
   args: {
-    label: 'Primary',
+    label: 'Label',
     helpText: 'This is a help text.',
     placeholder: 'Write something...',
+    required: true,
+    disabled: false,
+    readonly: false,
+    autocomplete: true,
+    error: '',
+    loading: false
+  },
+};
+
+export const Password: Story = {
+  args: {
+    label: 'Label',
+    placeholder: 'Write something...',
+    type: 'password',
     required: true,
     disabled: false,
     readonly: false,

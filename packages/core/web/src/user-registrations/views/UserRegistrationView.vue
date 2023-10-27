@@ -88,6 +88,8 @@ const validateEmailDebounced = useDebounceFn(() => {
     })
     .finally(() => (emailLoading.value = false));
 }, 800);
+
+const hidePassword = ref(true);
 </script>
 
 <template>
@@ -130,6 +132,7 @@ const validateEmailDebounced = useDebounceFn(() => {
 
         <fieldset>
           <ly-text-field
+            v-model:hide="hidePassword"
             name="new-password"
             autocomplete="new-password"
             property="password"
@@ -138,6 +141,7 @@ const validateEmailDebounced = useDebounceFn(() => {
             @toggle-type="repeatPasswordType = $event" />
 
           <ly-text-field
+            v-model:hide="hidePassword"
             property="passwordRepeat"
             autocomplete="new-password"
             :type="repeatPasswordType"

@@ -9,7 +9,7 @@ export function useHelpText(helpText?: Translatable) {
     showHelpText: ref(false),
     helpTextId,
     translatedHelpText,
-    hasHelpText: !!translatedHelpText,
+    hasHelpText: !!translatedHelpText?.length,
     ariaDescribedBy: computed(() => (translatedHelpText?.length ? undefined : helpTextId)),
   };
 }

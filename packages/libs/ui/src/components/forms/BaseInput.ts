@@ -16,7 +16,7 @@ export interface IFormModelData<T extends object = any> {
 export interface IBaseInputProps {
   id?: string;
   label?: Translatable;
-  helpText?: Translatable;
+  helpText?: Translatable | boolean;
   name?: string;
   modelValue?: any;
   value?: string;
@@ -54,7 +54,7 @@ export function useBaseInputProps() {
   return {
     id: { type: String },
     label: { type: String },
-    helpText: { type: String },
+    helpText: { type: [String, Boolean] },
     placeholder: { type: [Function, Object, String], default: undefined },
     name: { type: String, default: undefined },
     value: { type: String },
@@ -113,8 +113,9 @@ function getComputedHelpText(props: IBaseInputProps, formModelData?: IFormModelD
   const property = props.property;
 
   return computed(() => {
-    if (props.helpText) return props.helpText;
-    if (labelKey && props.property) return labelKey + '.help.' + property;
+    if (typeof props.helpText === 'string') return props.helpText;
+    if (props.helpText === true && labelKey && props.property)
+      return labelKey + '.help.' + property;
     return '';
   });
 }

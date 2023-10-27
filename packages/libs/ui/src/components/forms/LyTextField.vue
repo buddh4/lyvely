@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { computed, onMounted, Ref, ref, HTMLAttributes } from 'vue';
+import { computed, onMounted, ref, HTMLAttributes, watch } from 'vue';
 import { useFloatingInputSetup } from './FloatingInput';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
+import LyIcon from '@/components/icons/LyIcon.vue';
 import { t, Translatable } from '@/i18n';
 
 export type ITextInputType = 'text' | 'password';
@@ -28,7 +29,8 @@ export interface IProps {
   loading?: boolean;
   autoValidation?: boolean;
   type?: ITextInputType;
-  passwordToggle?: boolean;
+  hide?: boolean | undefined;
+  passwordToggle: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -53,13 +55,26 @@ const props = withDefaults(defineProps<IProps>(), {
   wrapperClass: undefined,
   error: undefined,
   type: 'text',
+  hide: undefined,
   passwordToggle: true,
 });
 
-const emit = defineEmits(['update:modelValue', 'toggleType']);
+const emit = defineEmits(['update:modelValue', 'update:hide']);
 
-const internalType = ref(props.type) as Ref<ITextInputType>;
 const input = ref<HTMLInputElement>();
+
+const hiddenState = ref<boolean>(props.hide ?? props.type === 'password');
+
+watch(
+  () => props.hide,
+  (val) => {
+    hiddenState.value = val;
+  },
+);
+
+const internalType = computed(() => {
+  return hiddenState.value ? 'password' : props.type === 'password' ? 'text' : props.type;
+});
 
 const togglePasswordIcon = computed(() => {
   return internalType.value === 'password' ? 'eye' : 'eye-slash';
@@ -69,11 +84,12 @@ const togglePasswordAriaLabel = computed(() => {
   return internalType.value === 'password' ? 'common.show_password' : 'common.hide_password';
 });
 
-const isPassword = computed(() => props.type === 'password');
-
 function togglePassword() {
-  internalType.value = internalType.value === 'password' ? 'text' : 'password';
-  emit('toggleType', internalType.value);
+  if (typeof props.hide === 'boolean') {
+    emit('update:hide', !hiddenState.value);
+  } else {
+    hiddenState.value = !hiddenState.value;
+  }
 }
 
 const {
@@ -124,7 +140,7 @@ onMounted(() => {
       @focusout="onFocusOut" />
 
     <div
-      v-if="isPassword && passwordToggle"
+      v-if="passwordToggle && type === 'password'"
       role="button"
       class="absolute flex top-1 right-2 cursor-pointer"
       :aria-label="t(togglePasswordAriaLabel)"

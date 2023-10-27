@@ -104,14 +104,12 @@ onMounted(() => {
           :readonly="readonly"
           @change="onChange"
           @focusout="onFocusOut" />
-        <span v-if="label" class="label ml-2">
-          {{ t(label) }}
-        </span>
+        <span v-if="label" class="label ml-2"> {{ t(label) }}</span>
       </label>
       <ly-icon
         v-if="hasHelpText"
         name="info"
-        class="text-info-dark ml-1 cursor-pointer select-none"
+        class="ml-1 text-info-dark w-4 cursor-pointer"
         @click="showHelpText = !showHelpText" />
     </div>
     <ly-alert
