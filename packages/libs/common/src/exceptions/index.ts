@@ -46,6 +46,11 @@ export class FieldValidationException extends ServiceException<{
   public getFields() {
     return this.data?.fields || [];
   }
+
+  public getFirstError(defaultMessage: string): string;
+  public getFirstError(defaultMessage?: string): string | undefined {
+    return this.data?.fields[0]?.errors?.[0];
+  }
 }
 
 export class ModelValidationException extends ServiceException {
@@ -107,7 +112,6 @@ export class UniqueConstraintException extends FieldValidationException {
       [{ property: field, errors: ['unique'] }],
       msg || `Unique constraint violation for field ${field}`,
     );
-    this.status = 500;
   }
 }
 

@@ -11,8 +11,8 @@
     "label": "Help",
     "modal": {
       "title": "How can we help you?",
-      "title_new": "Welcome to {appName}?",
-      "text_intro": "It seems this is your first day using {appName}. If you wish we can give you a short {introductionLink}, for an in-depth documentation please visit {docLink}.",
+      "title_new": "Welcome to {appName}!",
+      "text_intro": "It seems this is your first day using {appName}. If you wish we can give you a short {introductionLink}. For an in-depth documentation please visit {docLink}.",
       "introductionLinkText": "introduction tour",
       "buttons": {
         "intro": "Start introduction tour",
@@ -48,30 +48,6 @@
       }
     }
   },
-  "calendar": {
-    "today": "Today",
-    "interval": {
-      "0": "Unscheduled",
-      "1": "Yearly",
-      "2": "Quarterly",
-      "3": "Monthly",
-      "4": "Weekly",
-      "5": "Daily"
-    },
-    "plan": {
-      "nav-today": "Switch to today",
-      "aria": {
-        "move-success": "Item was successfully moved from index {from} to {to}",
-        "move-boundary": "Item cannot be moved further",
-        "drag-button": "Change order of current item {title}",
-        "nav-back": "Navigate back to {time}",
-        "nav-next": "Navigate forward to {time}",
-        "root": "Calendar plan accordion",
-        "header": "Calendar plan for {time}",
-        "drag-toggle-button": "Activates draggable buttons in calendar plan list items"
-      }
-    }
-  },
   "filter": {
     "all": "All",
     "archive": "Show archived entries",
@@ -97,12 +73,33 @@
     "hide_password": "Hide password",
     "back": "Back",
     "submit": "Submit",
+    "select": "Select",
     "resend": "Resend",
     "update": "Update",
     "archived": "Archived",
+    "accept": "Accept",
+    "decline": "Decline",
     "restore": "Restore default",
     "archive": "Archive",
+    "back_to_home": "Take me back home",
+    "none": "none",
     "unarchive": "Add from archive",
+    "status": {
+      "404": "Page not found!",
+      "403": "You are not allowed to view this page!",
+      "500": "An unknown error occurred!"
+    },
+    "fields": {
+      "title": "Title",
+      "tags": "Tags",
+      "text": "Description",
+      "score": "Scroe",
+      "interval": "Plan",
+      "interval_plural": "Planned within",
+      "max": "Max",
+      "optimal": "Optimal",
+      "min": "Min"
+    },
     "filter": {
       "search": "Search",
       "clear": "Reset",
@@ -110,7 +107,8 @@
       "archive": "Archived items"
     },
     "edit": "Edit",
-    "save": "Save"
+    "save": "Save",
+    "saved": "Saved",
   },
   "journals": {
     "labels": {
@@ -165,93 +163,20 @@
       "main_nav": "Statistics"
     }
   },
-  "otp": {
-    "email": {
-      "text": "Please enter the verification code sent to your email address. The code is only valid for a short time, so please enter it soon.",
-      "text_with_address": "Please enter the verification code sent to {email}. The code is only valid for a short time, so please enter it soon."
-    },
-    "errors": {
-      "invalid": "The given verification code is invalid, please try again.",
-      "maxAttempts": "You have exceeded the maximum number of attempts, please use the resend button to generate a new verification code."
-    },
-    "aria": {
-      "input_label": "digit {i} of {n}"
-    }
-  },
   "captcha": {
     "errors": {
       "invalid": "The code is not valid"
     },
     "label": "Please enter the code below"
   },
-  "auth": {
-    "logout": "Logout",
-    "reset_password": {
-      "title": "Reset your password",
-      "sent": {
-        "title": "Reset your password",
-        "text": "Check your email for a link to reset your password. If it does not appear within a few minutes check your spam folder."
-      },
-      "to_login": "Return to sign in",
-      "submit_send": "Send password reset email",
-      "submit_reset": "Reset password",
-      "fields": {
-        "email": "Enter the main email address of your account",
-        "password": "New password",
-        "passwordRepeat": "Repeat new password",
-        "resetSessions": "Invalidate active sessions",
-        "help": {
-          "resetSessions": "Choosing this option will invalidate all of your active login sessions. This is recommended in case you suspect your password has been compromised."
-        }
-      }
-    },
-    "login": {
-      "title": "Login",
-      "sign_in": "Sign in",
-      "not_a_member": "Not a member?",
-      "reset_password": "Forgot password?",
-      "remember_me": "Keep me signed in.",
-      "remember_me_info": {
-        "p1": "Choosing this option reduces the number of times you're asked to Sign-In on this device.",
-        "p2": "To keep your account secure, use this option only on your personal devices."
-      },
-      "fields": {
-        "password": "Password",
-        "email": "Email",
-        "remember": "Keep me signed in."
-      },
-      "errors": {
-        "invalid_input": "Invalid email or password"
-      }
-    }
-  },
   "validation": {
     "isNotEmpty": "{property} can not be empty",
+    "maxLength": "{property} must be at least {c1} characters of fewer",
+    "isLength": "{property} must be between {c1} and {c2} characters",
     "isCaptcha": "Please enter 5 alphanumeric characters",
     "isEmail": "{property} must be an email",
     "matches": "{property} does not match the expected format",
     "match": "{property} does not match {c1}"
-  },
-  "user_registration": {
-    "title": "Sign up",
-    "sign_up": "Sign up",
-    "create_account": "Create an account",
-    "is_member": "Already have an account?",
-    "verify_email": {
-      "title": "Verify your email",
-      "text": "We've sent a verification email to: {email}",
-      "subtext": "Click the link in your email to activate your account."
-    },
-    "errors": {
-      "email_unique": "asdf"
-    },
-    "fields": {
-      "username": "Username",
-      "password": "Password",
-      "passwordRepeat": "Repeat password",
-      "email": "Email",
-      "remember": "Remember this device."
-    }
   },
   "layout": {
     "aria": {
@@ -259,122 +184,18 @@
       "toggle-sidebar": "Hides the sidebar if pressed"
     }
   },
-  "profile": {
-    "labels": {
-      "organizations": "Organizations",
-      "profiles": "Profiles"
-    },
-    "roles": {
-      "owner": "owner",
-      "member": "member",
-      "moderator": "moderator",
-      "admin": "administrator"
-    },
-    "messages": {
-      "no-organization-relation": "You are not a member of any organization."
-    },
-    "users": {
-      "title": "Profile Users",
-      "label": "Users"
-    },
-    "settings": {
-      "membership": {
-        "title": "My membership",
-        "label": "Membership",
-        "displayName": "My display name in this profile",
-        "description": "My user description in this profile",
-        "archive": "Archive Membership",
-        "your_role": "You are {role} of this profile."
-      },
-      "general": {
-        "name": "Profile Name",
-        "label": "Profile"
-      },
-      "archive": {
-        "confirm": "Do you really want to archive this profile?"
-      },
-      "title": "Profile Settings",
-      "name": "Name",
-      "description": "Description",
-      "rename": "Rename",
-      "label": "Settings"
-    },
-    "usage": {
-      "private": "Private",
-      "family": "Family",
-      "business": "Business",
-      "school": "School",
-      "health": "Health",
-      "improvement": "Self-Improvement"
-    },
-    "invite": {
-      "title": "Invite Users",
-      "email": "Add emails",
-      "email-invalid": "The given email is not valid.",
-      "email-empty": "Please select at least one email",
-      "email-help": "Add multiple comma seperated emails"
-    },
-    "create": {
-      "title": "Create Profile",
-      "placeholders": {
-        "usage": "What is the purpose of this profile?"
-      },
-      "properties": {
-        "name": "Name",
-        "description": "Description",
-        "user": "Just for me",
-        "group": "For me and invited users"
-      }
-    },
-    "aria": {
-      "sidebar": "Navigation of profile {profile}"
-    }
-  },
-  "account": {
-    "drawer": {
-      "title": "Account Menu",
-      "myAccount": "My Account",
-      "security": "Security"
-    },
-    "my_account": {
-      "info": {
-        "title": "My account info",
-        "label": "Info",
-        "username": "Username",
-        "member_since": "Member since",
-        "locale": "Locale",
-        "emails": "Emails",
-        "main_email": "Main email address",
-        "verified_email": "Verified email address",
-        "unverified_email": "Unverified email address",
-        "add_mail": "Add email address"
-      },
-      "add_email": {
-        "title":  "Add email address",
-        "fields": {
-          "email": "New email address"
-        }
-      },
-      "verify_email": {
-        "title": "Verify email address"
-      },
-      "profiles": {
-        "title": "My account profiles",
-        "label": "Profiles"
-      }
-    }
-  },
   "page": {
     "toDarkMode": "Switch to dark mode",
-    "toLightMode": "Switch to light mode",
+    "toLightMode": "Switch to light mode"
   },
   "status": {
     "error": "Error",
     "warning": "Warning",
     "info": "Info",
-    "success": "Success",
+    "success": "Success"
   },
   "error":{
+    "title": "Error",
     "unknown": {
       "title": "Error",
       "message": "An unexpected error occurred, please try again later."
@@ -409,9 +230,9 @@
       "restore": "Restore",
       "confirm": {
         "archive": "Are you sure you want to archive this content",
-        "unarchive": "Are you sure you want to restore this content from the archive",
+        "unarchive": "Are you sure you want to restore this content from the archive"
       }
-    },
+    }
   },
   "stream": {
     "title": "stream",
@@ -432,19 +253,5 @@
   },
   "offline": {
     "message": "App ready to work offline"
-  },
-  "activities": {
-    "habits": {
-      "title": "Activities",
-      "stream_entry": {
-        "text": "New activity"
-      }
-    },
-    "tasks": {
-      "title": "Tasks",
-      "stream_entry": {
-        "text": "New task"
-      }
-    }
   }
 }

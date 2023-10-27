@@ -50,7 +50,10 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['change', 'update:modelValue']);
 
 const input = ref<HTMLInputElement>();
-const { inputValue, onChange, showHelpText, label, inputClass } = useBaseInputSetup(props, emit);
+const { inputValue, onChange, onFocusOut, showHelpText, label, inputClass } = useBaseInputSetup(
+  props,
+  emit,
+);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
@@ -72,7 +75,8 @@ onMounted(() => {
           :class="inputClass"
           :style="inputStyle"
           :readonly="readonly"
-          @change="onChange" />
+          @change="onChange"
+          @focusout="onFocusOut" />
         <span v-if="label" class="label ml-2">{{ t(label) }}</span>
       </label>
     </div>

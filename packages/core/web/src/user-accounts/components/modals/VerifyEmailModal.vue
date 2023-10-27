@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useVerifyEmailStore } from '@/user-accounts/stores/verify-email.store';
-import OtpInput from '@/auth/components/OtpInput.vue';
+import OtpInput from '@/user-accounts/components/OtpInput.vue';
 import { onUnmounted } from 'vue';
 
 const verifyEmailStore = useVerifyEmailStore();
@@ -19,7 +19,7 @@ onUnmounted(reset);
     <otp-input
       v-model="model.otp"
       :has-error="!!validator.getError('otp') || !!errorMsg"
-      :email="model.email" />
+      :email="model.emailOrUsername" />
     <ly-alert type="danger" :message="errorMsg" />
 
     <template #footer>

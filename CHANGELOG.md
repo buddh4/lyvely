@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Router can now be extended by modules
 - Messages can be now be edited
 - Implementation of Permission API
+- Access by username or email
+- Use of unique usernames + displayName
 
 
 ### Changed

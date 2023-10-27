@@ -59,7 +59,10 @@ const input = ref<HTMLInputElement>() as Ref<HTMLInputElement>;
 const isEdit = ref(false);
 const editValue = ref('');
 
-const { inputId, inputValue, inputClass } = useFloatingInputSetup(props, emit);
+const { inputId, inputValue, inputClass, onChange, onFocusOut } = useFloatingInputSetup(
+  props,
+  emit,
+);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
@@ -119,7 +122,9 @@ function cancel() {
           :class="inputClass"
           :style="inputStyle"
           :maxlength="maxlength"
-          @keydown.ctrl="save"></textarea>
+          @keydown.ctrl="save"
+          @change="onChange"
+          @focusout="onFocusOut"></textarea>
       </div>
       <div class="flex gap-1 justify-end">
         <ly-button class="secondary text-xs" @click="cancel">{{ t('common.cancel') }}</ly-button>

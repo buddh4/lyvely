@@ -7,7 +7,7 @@ import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-
 import { isTouchScreen } from '@/ui';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import {
-  USER_REGISTRATION_MODULE_ID,
+  USER_REGISTRATIONS_MODULE_ID,
   IUserRegistrationAppConfig,
   UserRegistrationMode,
 } from '@lyvely/core-interface';
@@ -22,7 +22,7 @@ const { loginModel, validator, stage } = storeToRefs(loginStore);
 const isPublicRegistration = useAppConfigStore().getModuleConfig<
   IUserRegistrationAppConfig,
   UserRegistrationMode
->(USER_REGISTRATION_MODULE_ID, 'registrationMode');
+>(USER_REGISTRATIONS_MODULE_ID, 'registrationMode');
 
 watch(stage, () => {
   // When moving between stages we want to clear the errors
@@ -30,7 +30,7 @@ watch(stage, () => {
 });
 
 async function next() {
-  if (stage.value === 'email') {
+  if (stage.value === 'usernameOrEmail') {
     return toPasswordStage();
   } else {
     return submit();
@@ -46,13 +46,13 @@ async function submit() {
 }
 
 async function toPasswordStage() {
-  if (await validator.value.validateField('email')) {
+  if (await validator.value.validateField('usernameOrEmail')) {
     stage.value = 'password';
   }
 }
 
 function setResetPassword() {
-  useSendResetPasswordMailStore().setEmail(loginModel.value.email);
+  useSendResetPasswordMailStore().setEmail(loginModel.value.usernameOrEmail);
 }
 
 onUnmounted(loginStore.reset);
@@ -79,9 +79,9 @@ onUnmounted(loginStore.reset);
         :show-alert="false"
         label-key="auth.login.fields"
         @keydown.enter="next">
-        <div v-if="stage === 'email'">
+        <div v-if="stage === 'usernameOrEmail'">
           <ly-text-field
-            property="email"
+            property="usernameOrEmail"
             autocomplete="username"
             :autofocus="!isTouchScreen()"
             :required="true" />
@@ -92,9 +92,9 @@ onUnmounted(loginStore.reset);
           <div class="flex items-center justify-center mb-5">
             <div
               class="flex items-center border border-divide rounded-full px-2 py-1 text-sm font-bold cursor-pointer"
-              @click="stage = 'email'">
+              @click="stage = 'usernameOrEmail'">
               <ly-icon name="user" class="mr-1" />
-              <span>{{ loginModel.email }}</span>
+              <span>{{ loginModel.usernameOrEmail }}</span>
             </div>
           </div>
 
@@ -102,7 +102,7 @@ onUnmounted(loginStore.reset);
             autocomplete="username"
             wrapper-class="hidden"
             aria-hidden="true"
-            property="email"
+            property="usernameOrEmail"
             :required="true" />
 
           <ly-text-field
@@ -140,15 +140,15 @@ onUnmounted(loginStore.reset);
             id="remember-me-info"
             class="mt-2 text-xs"
             type="info">
-            <p class="mb-1">{{ $t('auth.login.remember_me_info.p1') }}</p>
-            <p>{{ $t('auth.login.remember_me_info.p2') }}</p>
+            <p class="mb-1">{{ $t('auth.remember_me_info.p1') }}</p>
+            <p>{{ $t('auth.remember_me_info.p2') }}</p>
           </ly-alert>
         </div>
       </ly-form-model>
     </template>
 
     <template #footer>
-      <div v-if="stage === 'email'">
+      <div v-if="stage === 'usernameOrEmail'">
         <ly-button class="primary w-full" @click="toPasswordStage">
           {{ $t('common.next') }}
         </ly-button>
@@ -157,7 +157,7 @@ onUnmounted(loginStore.reset);
           <small>
             {{ $t('auth.login.not_a_member') }}
             <router-link to="/register" class="no-underline font-bold">
-              {{ $t('user_registration.sign_up') }}
+              {{ $t('auth.login.to_sign_up') }}
             </router-link>
           </small>
         </div>

@@ -4,12 +4,12 @@ import { loadingStatus, useStatus } from '@/core';
 import { UserRegistration } from '@lyvely/core-interface';
 import { ModelValidator } from '@lyvely/common';
 import { ref } from 'vue';
-import { UserRegistrationService } from '../services/user-registration.service';
+import { useUserRegistrationService } from '../services';
 import { useVerifyRegistrationEmailStore } from './verify-email.store';
 
-export const useUserRegistrationStore = defineStore('user-registration', () => {
+export const useUserRegistrationStore = defineStore('user-registrations', () => {
   const status = useStatus();
-  const userRegistrationService = new UserRegistrationService();
+  const userRegistrationService = useUserRegistrationService();
   const verifyEmailStore = useVerifyRegistrationEmailStore();
   const model = ref(new UserRegistration());
   const validator = ref(new I18nModelValidator<UserRegistration>(model.value));
@@ -27,6 +27,20 @@ export const useUserRegistrationStore = defineStore('user-registration', () => {
     });
   }
 
+  async function validateUsername() {
+    const isValid = await validator.value.validateField('username');
+    if (!isValid) return;
+    await userRegistrationService.checkUserNameValidity({ value: model.value.username });
+    validator.value.deleteError('username');
+  }
+
+  async function validateEmail() {
+    const isValid = await validator.value.validateField('email');
+    if (!isValid) return;
+    await userRegistrationService.checkUserEmailValidity({ value: model.value.email });
+    validator.value.deleteError('email');
+  }
+
   function reset() {
     status.resetStatus();
     model.value = new UserRegistration();
@@ -39,5 +53,7 @@ export const useUserRegistrationStore = defineStore('user-registration', () => {
     validator,
     register,
     reset,
+    validateUsername,
+    validateEmail,
   };
 });

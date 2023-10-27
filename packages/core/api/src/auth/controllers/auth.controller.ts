@@ -4,13 +4,18 @@ import {
   JwtRefreshGuard,
   clearAccessCookies,
   clearRefreshCookies,
-  EmailBodyThrottlerGuard,
+  LoginThrottlerGuard,
 } from '../guards';
 import { AbstractJwtAuthController } from './abstract-jwt-auth.controller';
 import { JwtAuthService } from '../services';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
-import { UserStatus, UserModel } from '@lyvely/core-interface';
-import { ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/core-interface';
+import {
+  UserStatus,
+  UserModel,
+  ENDPOINT_AUTH,
+  AuthEndpoint,
+  LoginModel,
+} from '@lyvely/core-interface';
 import { Headers } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
@@ -27,7 +32,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   }
 
   @Public()
-  @UseGuards(EmailBodyThrottlerGuard, LocalAuthGuard)
+  @UseGuards(LoginThrottlerGuard, LocalAuthGuard)
   @Post('login')
   async login(@Body() loginModel: LoginModel, @Req() req: UserRequest) {
     const { user } = req;

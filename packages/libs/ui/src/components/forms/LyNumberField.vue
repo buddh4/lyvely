@@ -68,7 +68,7 @@ const emit = defineEmits([
   'input',
 ]);
 let baseInput = useFloatingInputSetup<number>(props, emit);
-const { editable, inputId, inputError, label, inputClass } = baseInput;
+const { editable, inputId, inputError, label, inputClass, onChange, onFocusOut } = baseInput;
 
 const baseInputValue = baseInput.inputValue;
 const input = ref<HTMLInputElement>();
@@ -138,6 +138,7 @@ onMounted(() => {
     :label="label"
     :required="required"
     :help-text="helpText"
+    :loading="loading"
     :input-error="inputError">
     <input
       :id="inputId"
@@ -152,6 +153,8 @@ onMounted(() => {
       type="text"
       inputmode="numeric"
       @blur="$emit('blur')"
+      @change="onChange"
+      @focusout="onFocusOut"
       @input="onInput" />
     <div v-if="slider && editable" class="number-slider">
       <ly-button :class="buttonClass" @click="increment">+</ly-button>

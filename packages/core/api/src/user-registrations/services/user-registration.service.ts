@@ -1,11 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import {
-  FieldValidationException,
-  isValidEmail,
-  escapeHTML,
-  UniqueConstraintException,
-  ForbiddenServiceException,
-} from '@lyvely/common';
+import { FieldValidationException, escapeHTML, ForbiddenServiceException } from '@lyvely/common';
 import {
   UserRegistration,
   UserRegistrationMode,
@@ -18,9 +12,11 @@ import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
-import { UrlGenerator, ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@/core';
 import { InvitationsService, IMailInvitation } from '@/user-invitations';
 import { SystemMessagesService } from '@/system-messages';
+import { validate } from 'class-validator';
+import { I18n } from '@/i18n';
 
 const OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL = 'verify-registration-email';
 
@@ -32,10 +28,10 @@ export class UserRegistrationService {
     private userService: UsersService,
     private mailerService: MailService,
     private configService: ConfigService<ConfigurationPath & any>,
-    private urlGenerator: UrlGenerator,
     private userOtpService: OtpService,
     private invitationsService: InvitationsService,
     private systemMessageService: SystemMessagesService,
+    private i18n: I18n,
   ) {}
 
   /**
@@ -65,6 +61,11 @@ export class UserRegistrationService {
     return otpModel.getOtpClientInfo();
   }
 
+  /**
+   * Creates a default user profile for the given user and adds a greeting system message content entry.
+   * @param user
+   * @private
+   */
   private async createDefaultUserProfile(user: User) {
     const { profile } = await this.profileService.createDefaultUserProfile(user);
     return this.systemMessageService.createContent(profile, user, {
@@ -72,36 +73,104 @@ export class UserRegistrationService {
     });
   }
 
+  /**
+   * In case the registration happened due to an invitation, we mark the invitation as accepted.
+   * @param user
+   * @param invitation
+   * @private
+   */
   private async handleInvitation(user, invitation?: IMailInvitation) {
     if (!invitation) return;
     return this.invitationsService.acceptInvitation(user, invitation);
   }
 
+  /**
+   * This function checks if registrations are allowed based on the configuration.
+   * @private
+   */
   private validateRegistrationMode() {
     const registrationMode = this.getRegistrationMode();
     if (registrationMode === 'none') throw new ForbiddenServiceException();
   }
 
+  /**
+   * Creates a user instance in case the data in the user registration is valid.
+   * The validation includes validating the email and username for correctness and uniqueness.
+   * The created user will have a status of `EmailVerification`.
+   * @param userRegistration
+   * @private
+   */
   private async createAndValidateUser(userRegistration: UserRegistration) {
-    try {
-      await this.validateEmail(userRegistration.email);
-      return this.userDao.save(
-        new User({
-          username: userRegistration.username,
-          email: userRegistration.email,
-          status: UserStatus.EmailVerification,
-          locale: userRegistration.locale,
-          password: userRegistration.password,
-        }),
-      );
-    } catch (err: any) {
-      if (err instanceof UniqueConstraintException) {
-        await this.sendEmailAlreadyExistsMail(userRegistration.email);
-      }
-      throw err;
-    }
+    await Promise.all([
+      this.validateUserName(userRegistration.username),
+      this.validateEmail(userRegistration.email),
+    ]);
+    return this.userDao.save(
+      new User({
+        username: userRegistration.username,
+        email: userRegistration.email,
+        status: UserStatus.EmailVerification,
+        locale: userRegistration.locale,
+        password: userRegistration.password,
+      }),
+    );
   }
 
+  /**
+   * Returns true in case the username is valid and does not already exist, otherwise throws an FieldValidationException.
+   * @param username
+   * @throws FieldValidationException if user is invalid or does already exist
+   */
+  async validateUserName(username: string): Promise<boolean> {
+    const model = new UserRegistration({ username });
+    const errors = await validate(model, { skipMissingProperties: true });
+
+    if (errors.length) {
+      throw new FieldValidationException([
+        { property: 'username', errors: ['user-registrations.username.invalid'] },
+      ]);
+    }
+
+    const user = await this.userDao.findByUsername(username);
+    if (user) {
+      throw new FieldValidationException([
+        { property: 'username', errors: ['user-registrations.username.taken'] },
+      ]);
+    }
+
+    return true;
+  }
+
+  /**
+   * Returns true in case the email is valid and does not already exist, otherwise throws an FieldValidationException.
+   * @param email
+   * @throws FieldValidationException if user is invalid or does already exist
+   */
+  async validateEmail(email: string): Promise<boolean> {
+    const model = new UserRegistration({ email });
+    const errors = await validate(model, { skipMissingProperties: true });
+
+    if (errors.length) {
+      throw new FieldValidationException([
+        { property: 'email', errors: ['user-registrations.email.invalid'] },
+      ]);
+    }
+
+    const user = await this.userDao.findByVerifiedEmail(email, true);
+    if (user) {
+      throw new FieldValidationException([
+        { property: 'email', errors: ['user-registrations.email.taken'] },
+      ]);
+    }
+
+    return true;
+  }
+
+  /**
+   * Returns the configured registration mode, which is PUBLIC by default, which means users can register without an
+   * invitation.
+   * @private
+   */
   private getRegistrationMode() {
     return this.configService.get<UserRegistrationMode>(
       'userRegistration.mode',
@@ -109,6 +178,14 @@ export class UserRegistrationService {
     );
   }
 
+  /**
+   * Checks if there is an existing invitation for this registration request and also validates if invitations are not
+   * disabled by configuration.
+   * If the registration mode equals 'invite' it only accepts the registration if we find an existing invite related
+   * to the registration.
+   * @param userRegistration
+   * @private
+   */
   private async getAndValidateInvitation(userRegistration: UserRegistration) {
     const invitationContext = await this.invitationsService.getMailInvitationContext(
       userRegistration.inviteToken!,
@@ -124,25 +201,12 @@ export class UserRegistrationService {
     return invitationContext?.invitation;
   }
 
-  private async sendEmailAlreadyExistsMail(email: string) {
-    // TODO: (i18n) missing translation
-    const appName = escapeHTML(this.configService.get('appName')!);
-    const forgotPasswordUrl = escapeHTML(
-      encodeURI(this.urlGenerator.getAppUrl({ path: '/reset-password' }).href),
-    );
-    return this.mailerService.sendMail({
-      to: email,
-      subject: `Attempt to register an already existing email`,
-      partials: {
-        headline: 'Forgot your password?',
-        body: `<p>An attempt has been made to register a new account on ${appName} with this already registered email address.
-          In case you tried to access your account, but forgot your password, please use the 
-          <a href="${forgotPasswordUrl}">Forgot password</a> feature.
-          Otherwise, just ignore this email.</p>`,
-      },
-    });
-  }
-
+  /**
+   * Sends out the OTP email verification mail to the given user.
+   * @param user
+   * @param otp
+   * @private
+   */
   private async sendEmailVerificationMail(user: User, otp: string) {
     const appName = escapeHTML(this.configService.get('appName')!);
     const contactMailHref = escapeHTML(
@@ -150,45 +214,50 @@ export class UserRegistrationService {
     );
     const contactMail = escapeHTML(this.configService.get('contactMail')!);
 
-    // TODO: (i18n) missing translation
+    const i18n = this.i18n.translation('user-registrations', user);
+
     return this.mailerService.sendMail({
       to: user.email,
-      subject: 'Email verification',
+      subject: i18n.t('email-verification.subject'),
       partials: {
-        headline: 'Confirm your email address',
-        body: `<p>Please enter the confirmation code below in the browser window where you've started to sign up for ${appName}</p>
+        headline: i18n.t('email-verification.headline'),
+        body: `<p>${i18n.t('email-verification.guide', { appName })}</p>
            <p>
              <div style="margin-left:50px;margin-right:50px;margin-bottom:30px">
                <div style="text-align:center;vertical-align:middle;font-size:30px">${otp}</div>
              </div>
            </p>
            <p>
-             <small>If you did not sign up to ${appName}, please ignore this email.</small>
+             <small>${i18n.t('email-verification.disclaimer', { appName })}</small>
            </p>
            <p>
-             <small>In case you have any questions about setting up ${appName}, contact us at <a href="${contactMailHref}">${contactMail}</a></small>
+             <small>${i18n.t('email-verification.contact', {
+               appName,
+               contactLink: `<a href="${contactMailHref}">${contactMail}</a>`,
+             })}</small>
            </p>`,
       },
     });
   }
 
-  private async validateEmail(email: string) {
-    if (!isValidEmail(email)) {
-      throw new FieldValidationException([{ property: 'email', errors: ['validation.isEmail'] }]);
-    }
-
-    if (await this.userDao.findByVerifiedEmail(email, true)) {
-      throw new UniqueConstraintException('email', 'Email already in use');
-    }
-  }
-
-  async resendOtp(email: string, remember?: boolean) {
-    const user = await this.findEmailVerificationUserByEmail(email);
+  /**
+   * This function is used to regenerate a new otp.
+   * @param emailOrUsername
+   * @param remember defines if the user session should be renewed automatically
+   */
+  async resendOtp(emailOrUsername: string, remember?: boolean) {
+    const user = await this.findUserByEmailOrUsername(emailOrUsername);
     const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user, remember);
     await this.sendEmailVerificationMail(user, otp);
     return otpModel.getOtpClientInfo();
   }
 
+  /**
+   * Creates or overwrites an existing otp entity for the given user with the given remember setting.
+   * @param user
+   * @param remember defines if the user session should be renewed automatically
+   * @private
+   */
   private async createOrUpdateEmailVerificationOtp(user: User, remember?: boolean) {
     return this.userOtpService.createOrUpdateUserOtp(user, {
       purpose: OTP_PURPOSE_VERIFY_REGISTRATION_EMAIL,
@@ -196,8 +265,12 @@ export class UserRegistrationService {
     });
   }
 
+  /**
+   * Verifies the given OTP verification request against an existing otp in the database.
+   * @param verifyEmail
+   */
   async verifyEmail(verifyEmail: VerifyEmailDto) {
-    const user = await this.findEmailVerificationUserByEmail(verifyEmail.email);
+    const user = await this.findUserByEmailOrUsername(verifyEmail.emailOrUsername);
 
     const { isValid, remember } = await this.userOtpService.runValidation(
       user,
@@ -209,14 +282,20 @@ export class UserRegistrationService {
 
     await Promise.all([
       this.userService.setUserStatus(user, UserStatus.Active),
-      this.userDao.setEmailVerification(user, verifyEmail.email, true),
+      this.userDao.setEmailVerification(user, user.email, true),
     ]);
 
     return { user, remember };
   }
 
-  private async findEmailVerificationUserByEmail(email: string) {
-    const user = await this.userService.findUserByMainEmail(email);
+  /**
+   * Finds a user by email or username and if not found throws an `UnauthorizedException`.
+   * @param emailOrUsername
+   * @throws UnauthorizedException in case the user could not be found
+   * @private
+   */
+  private async findUserByEmailOrUsername(emailOrUsername: string) {
+    const user = await this.userService.findUserByUsernameOrMainEmail(emailOrUsername);
 
     if (!user) throw new UnauthorizedException();
 

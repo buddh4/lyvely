@@ -4,9 +4,11 @@ import {
   VerifyEmailDto,
   ResendOtp,
   OtpInfo,
+  StringFieldValidityRequest,
 } from '@lyvely/core-interface';
 import registerRepository from '../repositories/user-registration.repository';
 import { unwrapResponse } from '@/core';
+import { useSingleton } from '@lyvely/common';
 
 export class UserRegistrationService implements IUserRegistrationService {
   async register(model: UserRegistration): Promise<OtpInfo> {
@@ -24,4 +26,14 @@ export class UserRegistrationService implements IUserRegistrationService {
       (otpInfo) => new OtpInfo(otpInfo),
     );
   }
+
+  async checkUserEmailValidity(model: StringFieldValidityRequest): Promise<void> {
+    return unwrapResponse(registerRepository.checkUserEmailValidity(model));
+  }
+
+  async checkUserNameValidity(model: StringFieldValidityRequest): Promise<void> {
+    return unwrapResponse(registerRepository.checkUserNameValidity(model));
+  }
 }
+
+export const useUserRegistrationService = useSingleton(() => new UserRegistrationService());

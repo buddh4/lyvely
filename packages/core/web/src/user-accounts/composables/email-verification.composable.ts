@@ -18,8 +18,11 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
   const errorMsg = ref<undefined | string>();
   const otpInfo = ref(new OtpInfo());
 
-  const startVerificationOf = async (email: string, otpOrRemember?: OtpInfo | boolean) => {
-    model.value.email = email;
+  const startVerificationOf = async (
+    emailOrUsername: string,
+    otpOrRemember?: OtpInfo | boolean,
+  ) => {
+    model.value.emailOrUsername = emailOrUsername;
     if (otpOrRemember instanceof OtpInfo) {
       otpInfo.value = otpOrRemember;
     } else {
@@ -79,7 +82,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
     try {
       softReset();
       otpInfo.value = await options.resend(
-        new ResendOtp({ email: model.value.email, remember: remember }),
+        new ResendOtp({ emailOrUsername: model.value.emailOrUsername, remember: remember }),
       );
     } catch (e: any) {
       handleError(e);

@@ -56,7 +56,7 @@ const props = withDefaults(defineProps<IProps>(), {
   passwordToggle: true,
 });
 
-const emit = defineEmits(['change', 'update:modelValue', 'toggleType']);
+const emit = defineEmits(['update:modelValue', 'toggleType']);
 
 const internalType = ref(props.type) as Ref<ITextInputType>;
 const input = ref<HTMLInputElement>();
@@ -99,6 +99,7 @@ onMounted(() => {
     :label="label"
     :required="required"
     :help-text="helpText"
+    :loading="loading"
     :input-error="inputError">
     <template #label>
       <slot name="label"></slot>

@@ -4,3 +4,4 @@ export * from './user-info.schema';
 export * from './user-notification-state.schema';
 export * from './user-email.schema';
 export * from './profiles-count.schema';
+export * from './users.types';

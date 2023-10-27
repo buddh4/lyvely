@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { getDefaultLocale, User } from '@/users';
 import {
+  getDefaultLocale,
   assureObjectId,
   BaseEntity,
   createObjectId,
@@ -9,6 +9,7 @@ import {
   ObjectIdProp,
   TObjectId,
 } from '@/core';
+import { User } from '@/users';
 import { Tag, TagSchema } from './tags.schema';
 import {
   MAX_PROFILE_DESCRIPTION_LENGTH,

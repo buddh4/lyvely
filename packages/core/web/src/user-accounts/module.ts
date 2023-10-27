@@ -10,6 +10,7 @@ export default () => {
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       'my-account': (locale: string) => import(`./locales/my-account.${locale}.json`),
+      otp: (locale: string) => import(`./locales/otp.${locale}.json`),
     },
     routes: userAccountsRoutes,
     init: () => {

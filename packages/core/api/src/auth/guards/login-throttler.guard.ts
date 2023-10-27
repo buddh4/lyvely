@@ -1,8 +1,9 @@
 import { LyvelyRequest, ReverseProxyThrottlerGuard } from '@/core';
 import { ExecutionContext } from '@nestjs/common';
 import { USER_THROTTLER_LIMIT, USER_THROTTLER_TTL } from '@/users';
+import { LoginModel } from '@lyvely/core-interface';
 
-export class EmailBodyThrottlerGuard extends ReverseProxyThrottlerGuard {
+export class LoginThrottlerGuard extends ReverseProxyThrottlerGuard {
   protected override async handleRequest(
     context: ExecutionContext,
     limit: number,
@@ -10,7 +11,7 @@ export class EmailBodyThrottlerGuard extends ReverseProxyThrottlerGuard {
   ): Promise<boolean> {
     const { req } = this.getRequestResponse(context);
 
-    if (!req.body.email) return true;
+    if (!(<LoginModel>req.body).usernameOrEmail) return true;
 
     const handler = context.getHandler();
     const classRef = context.getClass();

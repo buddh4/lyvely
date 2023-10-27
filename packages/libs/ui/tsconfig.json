@@ -17,6 +17,7 @@
     "noEmit": true,
     "outDir": "dist",
     "jsx": "preserve",
+    "rootDir": "./src",
 
     /* Linting */
     "strict": true,

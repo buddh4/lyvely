@@ -1,10 +1,10 @@
-import { CalendarInterval } from '../models/calendar-interval.enum';
-import { dateTime, CalendarDateTime } from '../interfaces/calendar-date.interface';
+import { CalendarInterval } from '../models';
+import { dateTime, CalendarDateTime } from '../interfaces';
 
 export function toTimingId(
   cd: CalendarDateTime,
   level = CalendarInterval.Daily,
-  locale = 'de',
+  locale = 'en',
   weekStrategy = WeekStrategy.LOCALE,
 ) {
   // TODO: dayJs locale support

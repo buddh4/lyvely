@@ -4,6 +4,7 @@ import { OptionalUser, RefreshToken, User, UserNotificationState } from '../sche
 import { EntityIdentity, IBaseQueryOptions } from '@/core';
 import { IntegrityException } from '@lyvely/common';
 import { UserStatus, ProfileType } from '@lyvely/core-interface';
+import { isEmail } from 'class-validator';
 
 @Injectable()
 export class UsersService {
@@ -21,15 +22,24 @@ export class UsersService {
     return this.userDao.findByMainEmail(email);
   }
 
-  async findUsersByVerifiedEmails(emails: string[]): Promise<User[]> {
-    if (!emails?.length) return [];
+  /**
+   * Returns a user by username or email. Note if an email is given this function only searches for the main email addresses
+   * and does not respect secondary email addresses. Therefor this can be used for authentication and other
+   * identity relevant operations.
+   * @param usernameOrEmail Either a username or an email
+   */
+  async findUserByUsernameOrMainEmail(usernameOrEmail: string): Promise<OptionalUser> {
+    if (!usernameOrEmail) return null;
 
+    if (isEmail(usernameOrEmail)) return this.findUserByMainEmail(usernameOrEmail);
+    else return this.userDao.findByUsername(usernameOrEmail);
+  }
+
+  async findUsersByVerifiedEmails(emails: string[]): Promise<User[]> {
     return this.userDao.findByVerifiedEmails(emails);
   }
 
   async findByVerifiedEmail(email: string): Promise<OptionalUser> {
-    if (!email) return null;
-
     return this.userDao.findByVerifiedEmail(email);
   }
 
@@ -42,7 +52,7 @@ export class UsersService {
       return null;
     }
 
-    return this.userDao.findById(id);
+    return await this.userDao.findById(id);
   }
 
   async findUsersById(ids: EntityIdentity<User>[]): Promise<User[]> {

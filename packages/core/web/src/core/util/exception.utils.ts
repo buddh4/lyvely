@@ -87,9 +87,11 @@ export function throwServiceException(error: any) {
 }
 
 export function errorToServiceException(error: any, throws = false): ServiceException {
-  let result = new ServiceException(error?.message);
+  let result: ServiceException = new ServiceException(error?.message);
 
-  if (isAxiosErrorWithoutResponseData(error)) {
+  if (error instanceof ServiceException) {
+    result = error;
+  } else if (isAxiosErrorWithoutResponseData(error)) {
     result = new NetworkException();
   } else if (isForbiddenError(error)) {
     result = new ForbiddenServiceException(error.response?.data);

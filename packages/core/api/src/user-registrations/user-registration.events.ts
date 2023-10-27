@@ -3,7 +3,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@/app-config';
 import {
   IUserRegistrationAppConfig,
-  USER_REGISTRATION_MODULE_ID,
+  USER_REGISTRATIONS_MODULE_ID,
   UserRegistrationMode,
 } from '@lyvely/core-interface';
 import { ConfigService } from '@nestjs/config';
@@ -14,7 +14,7 @@ export class UserRegistrationEvents {
 
   @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY)
   handleModuleConfigAssembly(event: ModuleAppConfigAssemblyEvent) {
-    event.setModuleConfig<IUserRegistrationAppConfig>(USER_REGISTRATION_MODULE_ID, {
+    event.setModuleConfig<IUserRegistrationAppConfig>(USER_REGISTRATIONS_MODULE_ID, {
       registrationMode: this.configService.get(
         'userRegistration.mode',
         UserRegistrationMode.PUBLIC,

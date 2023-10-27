@@ -1,5 +1,5 @@
-import { getDefaultLocale, RefreshToken, User } from './index';
-import { Model } from '@/core';
+import { RefreshToken, User } from './index';
+import { Model, getDefaultLocale } from '@/core';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { addDays } from '@lyvely/dates';
 import { compare } from 'bcrypt';
@@ -44,7 +44,6 @@ describe('Users schema', () => {
       expect(user.locale).toEqual(getDefaultLocale());
 
       expect(user.emails).toBeDefined();
-      expect(user.emails[0].lowercaseEmail).toEqual(user.email);
       expect(user.emails[0].email).toEqual('Tester@test.de');
       expect(user.emails[0].verified).toEqual(false);
     });

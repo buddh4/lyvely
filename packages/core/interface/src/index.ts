@@ -19,3 +19,4 @@ export * from './user-accounts';
 export * from './user-invitations';
 export * from './user-registrations';
 export * from './users';
+export * from './validation';

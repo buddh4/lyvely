@@ -6,13 +6,15 @@ export class ServiceExceptionsFilter implements ExceptionFilter {
   private logger = new Logger(ServiceExceptionsFilter.name);
 
   catch(exception: ServiceException, host: ArgumentsHost) {
-    this.logger.error(exception.message, exception.stack);
-
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
 
     const responseData = exception.getResponse();
     const status = exception.status;
+
+    if (status && status >= 500) {
+      this.logger.error(exception.message, exception.stack);
+    }
 
     if (!responseData) {
       response.status(status).json({

@@ -55,7 +55,8 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['change', 'update:modelValue']);
 const input = ref<HTMLInputElement>();
 
-const { inputId, inputClass, inputError, inputValue, label } = useFloatingInputSetup(props, emit);
+const { inputId, inputClass, inputError, inputValue, label, onChange, onFocusOut } =
+  useFloatingInputSetup(props, emit);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
@@ -69,6 +70,7 @@ onMounted(() => {
     :label="label"
     :required="required"
     :help-text="helpText"
+    :loading="loading"
     :input-error="inputError">
     <select
       :id="inputId"
@@ -77,7 +79,9 @@ onMounted(() => {
       :aria-describedby="ariaDescribedby"
       :disabled="disabled"
       :class="inputClass"
-      :style="inputStyle">
+      :style="inputStyle"
+      @change="onChange"
+      @focusout="onFocusOut">
       <option v-if="placeholder" value="" disabled selected hidden>{{ t(placeholder) }}</option>
       <option v-for="option in options" :key="option.value" :value="option.value">
         {{ t(option.label) }}

@@ -1,21 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { UserEmailModel } from '@lyvely/core-interface';
 import { PropertiesOf, validateEmail } from '@lyvely/common';
+import { NestedSchema } from '@/core';
 
-@Schema({ _id: false })
+@NestedSchema()
 export class UserEmail implements PropertiesOf<UserEmailModel> {
   @Prop({ required: true, validate: { validator: validateEmail } })
   email: string;
 
-  @Prop({ required: true, validate: { validator: validateEmail } })
-  lowercaseEmail: string;
-
-  @Prop({ type: Boolean })
+  @Prop({ type: Boolean, default: false })
   verified: boolean;
 
   constructor(email: string, verified = false) {
     this.email = email;
-    this.lowercaseEmail = email.toLowerCase();
     this.verified = verified;
   }
 }

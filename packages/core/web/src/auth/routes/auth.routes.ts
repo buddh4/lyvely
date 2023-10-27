@@ -14,6 +14,7 @@ export default [
       title: () => translate('auth.login.title'),
       profileView: false,
       layout: LAYOUT_INTRO,
+      i18n: { load: [{ module: 'auth', section: 'login' }] },
     },
     component: () => import('../views/LoginView.vue'),
     beforeEnter: [ifNotAuthenticated],
@@ -26,6 +27,7 @@ export default [
       isPublic: true,
       profileView: false,
       layout: LAYOUT_INTRO,
+      i18n: { load: [{ module: 'auth', section: 'reset-password' }] },
     },
     component: () => import('../views/ResetPasswordView.vue'),
     beforeEnter: [

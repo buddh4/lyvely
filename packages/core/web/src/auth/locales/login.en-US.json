@@ -1,0 +1,20 @@
+{
+  "auth": {
+    "login": {
+      "title": "Login",
+      "sign_in": "Sign in",
+      "to_sign_up": "Sign up",
+      "not_a_member": "Not a member?",
+      "reset_password": "Forgot password?",
+      "remember_me": "Keep me signed in.",
+      "fields": {
+        "password": "Password",
+        "usernameOrEmail": "Username or Email",
+        "remember": "Keep me signed in."
+      },
+      "errors": {
+        "invalid_input": "Invalid email or password"
+      }
+    }
+  }
+}

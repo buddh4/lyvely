@@ -1,10 +1,10 @@
 import { Expose } from 'class-transformer';
-import { IsBoolean, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @Expose()
 export class LoginModel {
-  @IsEmail()
-  email: string;
+  @IsString()
+  usernameOrEmail: string;
 
   @IsNotEmpty()
   password: string;

@@ -12,6 +12,11 @@ export default () => {
     id: 'auth',
     moduleId: AUTH_MODULE_ID,
     routes: authRoutes,
+    i18n: {
+      base: (locale: string) => import(`./locales/base.${locale}.json`),
+      login: (locale: string) => import(`./locales/login.${locale}.json`),
+      'reset-password': (locale: string) => import(`./locales/reset-password.${locale}.json`),
+    },
     init: () => {
       registerGuards([{ guard: authGuard, sortOrder: 2000 }]);
       registerMenuEntries(MENU_ACCOUNT_DRAWER, [

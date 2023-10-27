@@ -1,11 +1,11 @@
-import { useAuthStore } from '../store/auth.store';
+import { useAuthStore } from '../store';
 import {
   NavigationGuardWithThis,
   RouteLocationNormalized,
   NavigationGuardNext,
   RouteLocation,
 } from 'vue-router';
-import { PATH_VERIFY_EMAIL } from '@/user-registration';
+import { PATH_VERIFY_EMAIL } from '@/user-registrations';
 import { PATH_LOGIN, PATH_LOGOUT } from '../routes/paths';
 
 const PATH_ROOT = '/';

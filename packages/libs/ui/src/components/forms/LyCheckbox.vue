@@ -55,7 +55,14 @@ const emit = defineEmits(['change', 'update:modelValue']);
 
 const checkbox = ref<HTMLInputElement>();
 
-const { inputValue, helpText, label, inputClass } = useBaseInputSetup<boolean>(props, emit, {
+const {
+  inputValue,
+  helpText,
+  label,
+  inputClass,
+  onFocusOut,
+  onChange: baseOnChange,
+} = useBaseInputSetup<boolean>(props, emit, {
   inputClass: 'border rounded ring-0',
 });
 
@@ -63,6 +70,8 @@ const { hasHelpText, helpTextId, translatedHelpText, showHelpText } = useHelpTex
 
 function onChange(evt: any, toggle = false) {
   if (props.readonly || props.disabled) return;
+
+  baseOnChange(evt);
   emit('change', toggle ? !evt.target.checked : evt.target.checked, evt.target.value);
 }
 
@@ -93,7 +102,8 @@ onMounted(() => {
           :class="inputClass"
           :style="inputStyle"
           :readonly="readonly"
-          @change="onChange" />
+          @change="onChange"
+          @focusout="onFocusOut" />
         <span v-if="label" class="label ml-2">
           {{ t(label) }}
         </span>

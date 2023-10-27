@@ -55,7 +55,7 @@ const emit = defineEmits(['change', 'update:modelValue']);
 const input = ref<HTMLInputElement>();
 
 const baseInput = useBaseInputSetup<number>(props, emit);
-const { editable, hasFocus, label, inputClass, showHelpText } = baseInput;
+const { editable, hasFocus, label, inputClass, showHelpText, onChange, onFocusOut } = baseInput;
 
 const baseInputValue = baseInput.inputValue;
 const inputValue = computed({
@@ -110,7 +110,8 @@ onMounted(() => {
       :min="min"
       :max="max"
       type="range"
-      @change="$emit('change')" />
+      @change="onChange"
+      @focusout="onFocusOut" />
     <span v-if="showHelpText && helpText" class="text-sm text-dimmed">
       {{ t(helpText) }}
     </span>

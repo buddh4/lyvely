@@ -12,9 +12,10 @@ import {
   AddEmailDto,
   ENDPOINT_ACCOUNT,
   VerifyEmailDto,
+  AvatarModel,
+  ResendOtp,
 } from '@lyvely/core-interface';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
-import { AvatarModel, ResendOtp } from '@lyvely/core-interface';
 import { UseClassSerializer } from '@/core';
 import { AccountService, AccountAvatarService } from '../services';
 import { ParseFilePipeBuilder, MimeTypeValidator } from '@/files';
@@ -46,7 +47,7 @@ export class AccountController implements AccountEndpoint {
 
   @Post('resend-otp')
   async resendOtp(@Body() dto: ResendOtp, @Req() req: UserRequest) {
-    return this.accountService.resendOtp(req.user, dto.email);
+    return this.accountService.resendOtp(req.user, dto.emailOrUsername);
   }
 
   @Post('update-avatar')

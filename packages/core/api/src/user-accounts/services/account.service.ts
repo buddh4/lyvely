@@ -86,14 +86,19 @@ export class AccountService {
     });
   }
 
-  async resendOtp(user: User, email: string): Promise<OtpInfo | null> {
+  async resendOtp(user: User, emailOrUsername: string): Promise<OtpInfo | null> {
+    const email = isValidEmail(emailOrUsername) ? emailOrUsername : user.email;
     const { otp, otpModel } = await this.createOrUpdateEmailVerificationOtp(user, email);
     await this.sendEmailVerificationMail(user, otp);
     return otpModel?.getOtpClientInfo() || null;
   }
 
   async verifyEmail(user: User, verifyEmail: VerifyEmailDto) {
-    if (!user.getUnverifiedUserEmail(verifyEmail.email)) {
+    const email = isValidEmail(verifyEmail.emailOrUsername)
+      ? verifyEmail.emailOrUsername
+      : user.email;
+
+    if (!user.getUnverifiedUserEmail(email)) {
       // Should not happen...
       throw new FieldValidationException([{ property: 'email', errors: ['not_exist'] }]);
     }
@@ -102,12 +107,12 @@ export class AccountService {
       user,
       OTP_PURPOSE_VERIFY_SECONDARY_EMAIL,
       verifyEmail.otp,
-      { contextValidator: async (context) => context!.email === verifyEmail.email },
+      { contextValidator: async (context) => context!.email === email },
     );
 
     if (!isValid) throw new InvalidOtpException();
 
-    return this.userDao.setEmailVerification(user, verifyEmail.email, true);
+    return this.userDao.setEmailVerification(user, email, true);
   }
 
   async updateAvatar(user: User) {

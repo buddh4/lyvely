@@ -1,0 +1,24 @@
+{
+  "auth": {
+    "login": {
+      "title": "Login",
+      "sign_in": "Sign in",
+      "to_sign_up": "Sign up",
+      "not_a_member": "Not a member?",
+      "reset_password": "Forgot password?",
+      "remember_me": "Keep me signed in.",
+      "remember_me_info": {
+        "p1": "Choosing this option reduces the number of times you're asked to Sign-In on this device.",
+        "p2": "To keep your account secure, use this option only on your personal devices."
+      },
+      "fields": {
+        "password": "Password",
+        "email": "Email",
+        "remember": "Keep me signed in."
+      },
+      "errors": {
+        "invalid_input": "Invalid email or password"
+      }
+    }
+  }
+}

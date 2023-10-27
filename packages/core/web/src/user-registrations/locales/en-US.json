@@ -1,0 +1,32 @@
+{
+  "user-registrations": {
+    "title": "Sign up",
+    "sign_up": "Sign up",
+    "to_sign_in": "Sign in",
+    "create_account": "Create an account",
+    "is_member": "Already have an account?",
+    "verify_email": {
+      "title": "Verify your email",
+      "text": "We've sent a verification email to: {email}",
+      "subtext": "Click the link in your email to activate your account."
+    },
+    "errors": {
+      "email_unique": "asdf"
+    },
+    "fields": {
+      "username": "Username",
+      "password": "Password",
+      "passwordRepeat": "Repeat password",
+      "email": "Email",
+      "remember": "Remember this device."
+    },
+    "email": {
+      "taken": "email is already taken",
+      "invalid": "email is invalid"
+    },
+    "username": {
+      "taken": "username is already taken",
+      "invalid": "username is invalid"
+    }
+  }
+}

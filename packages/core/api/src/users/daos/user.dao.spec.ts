@@ -28,11 +28,11 @@ describe('UserDao', () => {
     expect(userDao).toBeDefined();
   });
 
-  async function createTestUser(email = 'test@test.de') {
+  async function createTestUser(email = 'test@test.de', username = 'Test') {
     return await userDao.save(
       new User({
-        username: 'Test',
-        email: email,
+        username,
+        email,
         status: UserStatus.Active,
         locale: 'de',
         password: 'testPasswort',
@@ -65,7 +65,6 @@ describe('UserDao', () => {
       expect(user.password).not.toEqual('testPasswort');
 
       expect(user.emails).toBeDefined();
-      expect(user.emails[0].lowercaseEmail).toEqual(user.email);
       expect(user.emails[0].email).toEqual('test@test.de');
       expect(user.emails[0].verified).toEqual(true);
     });
@@ -86,6 +85,26 @@ describe('UserDao', () => {
         expect(e.errors.password).toBeDefined();
         expect(e.errors.password.kind).toEqual('required');
       }
+    });
+  });
+
+  describe('findByUsername()', () => {
+    it('find user by username', async () => {
+      await createTestUser('test@test.de', 'testuser');
+      const searchUser = await userDao.findByUsername('testuser');
+      expect(searchUser).toBeDefined();
+    });
+
+    it('find user by case insensitive username', async () => {
+      await createTestUser('test@test.de', 'testuser');
+      const searchUser = await userDao.findByUsername('TestUser');
+      expect(searchUser).toBeDefined();
+    });
+
+    it('do not find wrong', async () => {
+      await createTestUser('test@test.de', 'testuser');
+      const searchUser = await userDao.findByUsername('testuser_');
+      expect(searchUser).toBeNull();
     });
   });
 
@@ -139,6 +158,7 @@ describe('UserDao', () => {
       await testData.createUser('test', {
         status: UserStatus.EmailVerification,
         email: 'test@test.de',
+        emails: [new UserEmail('test@test.de', false)],
       });
       const search = await userDao.findByVerifiedEmail('test@test.de');
       expect(search).toBeNull();
@@ -182,22 +202,14 @@ describe('UserDao', () => {
       await testData.createUser('test', {
         status: UserStatus.EmailVerification,
         email: 'test@test.de',
+        emails: [new UserEmail('test@test.de', false)],
       });
       const search = await userDao.findByVerifiedEmails(['test@test.de']);
       expect(search.length).toEqual(0);
     });
 
-    it('do include users with unverified main email if flag is set', async () => {
-      await testData.createUser('test', {
-        status: UserStatus.EmailVerification,
-        email: 'test@test.de',
-      });
-      const search = await userDao.findByVerifiedEmails(['test@test.de'], true);
-      expect(search.length).toEqual(1);
-    });
-
     it('do include main email', async () => {
-      const user = await testData.createUser('test', {
+      await testData.createUser('test', {
         email: 'test@test.de',
       });
       const search = await userDao.findByVerifiedEmails(['test@test.de']);
@@ -281,6 +293,85 @@ describe('UserDao', () => {
     });
   });
 
+  describe('setEmailVerification()', () => {
+    it('verify main email', async () => {
+      const user = await testData.createUser('tester', {
+        email: 'test@test.de',
+        emails: [new UserEmail(`tester@test.de`, false)],
+      });
+      expect(user.getUnverifiedUserEmail('tester@test.de')).toBeDefined();
+      await userDao.setEmailVerification(user, 'tester@test.de');
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser?.emails.length).toEqual(2);
+      expect(persistedUser?.getVerifiedUserEmail('tester@test.de')).toBeDefined();
+    });
+
+    it('set unverified email to verified', async () => {
+      const user = await testData.createUser('tester', {
+        emails: [new UserEmail('secondary@test.de', false)],
+      });
+      expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
+      await userDao.setEmailVerification(user, 'secondary@test.de');
+      expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser?.emails.length).toEqual(2);
+      expect(persistedUser?.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
+    });
+
+    it('set verified email to unverified', async () => {
+      const user = await testData.createUser('tester', {
+        emails: [new UserEmail('secondary@test.de', true)],
+      });
+      expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
+      await userDao.setEmailVerification(user, 'secondary@test.de', false);
+      expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser?.emails.length).toEqual(2);
+      expect(persistedUser?.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
+    });
+
+    it('set verified case insensitive email to unverified', async () => {
+      const user = await testData.createUser('tester', {
+        emails: [new UserEmail('secondary@test.de', true)],
+      });
+      expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
+      await userDao.setEmailVerification(user, 'SECONDARY@test.de', false);
+      expect(user.getUnverifiedUserEmail('SECONDARY@test.de')).toBeDefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser?.emails.length).toEqual(2);
+      expect(persistedUser?.getUnverifiedUserEmail('SECONDARY@test.de')).toBeDefined();
+    });
+
+    it('set unknown email to verified does not alter user email', async () => {
+      const user = await testData.createUser('tester');
+      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
+      await userDao.setEmailVerification(user, 'secondary@test.de', true);
+      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser?.getUserEmail('secondary@test.de')).toBeUndefined();
+    });
+  });
+
+  describe('removeEmail()', () => {
+    it('remove existing email', async () => {
+      const user = await testData.createUser('tester', {
+        emails: [new UserEmail('secondary@test.de')],
+      });
+      await userDao.removeEmail(user, 'secondary@test.de');
+      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser?.getUserEmail('secondary@test.de')).toBeUndefined();
+    });
+
+    it('remove non existing email', async () => {
+      const user = await testData.createUser('tester');
+      await userDao.removeEmail(user, 'secondary@test.de');
+      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
+      const persistedUser = await userDao.reload(user);
+      expect(persistedUser?.getUserEmail('secondary@test.de')).toBeUndefined();
+    });
+  });
+
   describe('incrementProfileCount()', () => {
     it('increment user profile count', async () => {
       const user = await createTestUser();
@@ -332,70 +423,6 @@ describe('UserDao', () => {
       expect(reloaded?.profilesCount.user).toEqual(0);
       expect(reloaded?.profilesCount.group).toEqual(0);
       expect(reloaded?.profilesCount.organization).toEqual(0);
-    });
-  });
-
-  describe('setEmailVerification()', () => {
-    it('verify main email', async () => {
-      const user = await testData.createUser('tester', {
-        email: 'test@test.de',
-        emails: [new UserEmail(`tester@test.de`, false)],
-      });
-      expect(user.getUnverifiedUserEmail('tester@test.de')).toBeDefined();
-      await userDao.setEmailVerification(user, 'tester@test.de');
-      const persistedUser = await userDao.reload(user);
-      expect(persistedUser?.getVerifiedUserEmail('tester@test.de')).toBeDefined();
-    });
-
-    it('set unverified email to verified', async () => {
-      const user = await testData.createUser('tester', {
-        emails: [new UserEmail('secondary@test.de', false)],
-      });
-      expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
-      await userDao.setEmailVerification(user, 'secondary@test.de');
-      expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
-      const persistedUser = await userDao.reload(user);
-      expect(persistedUser?.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
-    });
-
-    it('set verified email to unverified', async () => {
-      const user = await testData.createUser('tester', {
-        emails: [new UserEmail('secondary@test.de', true)],
-      });
-      expect(user.getVerifiedUserEmail('secondary@test.de')).toBeDefined();
-      await userDao.setEmailVerification(user, 'secondary@test.de', false);
-      expect(user.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
-      const persistedUser = await userDao.reload(user);
-      expect(persistedUser?.getUnverifiedUserEmail('secondary@test.de')).toBeDefined();
-    });
-
-    it('set unknown email to verified does not alter user email', async () => {
-      const user = await testData.createUser('tester');
-      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
-      await userDao.setEmailVerification(user, 'secondary@test.de', true);
-      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
-      const persistedUser = await userDao.reload(user);
-      expect(persistedUser?.getUserEmail('secondary@test.de')).toBeUndefined();
-    });
-  });
-
-  describe('removeEmail()', () => {
-    it('remove existing email', async () => {
-      const user = await testData.createUser('tester', {
-        emails: [new UserEmail('secondary@test.de')],
-      });
-      await userDao.removeEmail(user, 'secondary@test.de');
-      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
-      const persistedUser = await userDao.reload(user);
-      expect(persistedUser?.getUserEmail('secondary@test.de')).toBeUndefined();
-    });
-
-    it('remove non existing email', async () => {
-      const user = await testData.createUser('tester');
-      await userDao.removeEmail(user, 'secondary@test.de');
-      expect(user.getUserEmail('secondary@test.de')).toBeUndefined();
-      const persistedUser = await userDao.reload(user);
-      expect(persistedUser?.getUserEmail('secondary@test.de')).toBeUndefined();
     });
   });
 

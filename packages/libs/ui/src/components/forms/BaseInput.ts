@@ -145,9 +145,11 @@ function getComputedCssClasses(
       result.push('no-label');
     }
 
-    if (props.loading) {
+    // This was deactivated since most loading durations are too quick for the animation to look good
+    // Was replaced with loader animation in right top corner in LyFloatingInputLayout
+    /*if (props.loading) {
       result.push('loading');
-    }
+    }*/
 
     return result;
   });

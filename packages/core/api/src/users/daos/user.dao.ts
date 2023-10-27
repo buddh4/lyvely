@@ -1,118 +1,185 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import {
-  FilterQuery,
-  Model,
   AbstractDao,
-  IBaseQueryOptions,
   EntityIdentity,
+  FilterQuery,
+  IBaseQueryOptions,
+  Model,
   UpdateQuerySet,
 } from '@/core';
-import { User, RefreshToken, UserEmail, OptionalUser } from '../schemas';
+import { RefreshToken, User, UserEmail } from '../schemas';
 import { Constructor } from '@lyvely/common';
-import { UserStatus, ProfileType } from '@lyvely/core-interface';
+import { ProfileType, UserStatus } from '@lyvely/core-interface';
 
+/**
+ * Data Access Object for accessing user entities.
+ */
 @Injectable()
 export class UserDao extends AbstractDao<User> {
   constructor(@InjectModel(User.name) protected model: Model<User>) {
     super();
   }
 
-  async findByMainEmail(email: string): Promise<OptionalUser> {
-    return this.findOne({ email: email.toLowerCase() });
+  /**
+   * Finds a user by their username in a case-insensitive manner.
+   * @param username
+   */
+  async findByUsername(username: string): Promise<User | null> {
+    return this.findOne(
+      { username: username.toLowerCase() },
+      {
+        collation: {
+          locale: 'en',
+          strength: 1,
+        },
+      },
+    );
   }
 
   /**
-   * Note a secondary email may be part of multiple user accounts, but is only verified
+   * Finds a user by their main email address, considering case-insensitivity.
+   * @param email
+   */
+  async findByMainEmail(email: string): Promise<User | null> {
+    const matches = await this.findByAnyEmail(email);
+    return matches.reduce((result: User | null, user) => {
+      if (result) return result;
+      if (user.email.toLowerCase() === email.toLowerCase()) return user;
+      else return null;
+    }, null);
+  }
+
+  /**
+   * Finds all users with a certain secondary or primary email, considering case-insensitivity.
+   * Note, a secondary email may be part of multiple user accounts, but can only be verified by one account.
    * @param email
    */
   async findByAnyEmail(email: string): Promise<User[]> {
-    return this.findAll({
-      $or: [{ email: email.toLowerCase() }, { 'emails.lowercaseEmail': email.toLowerCase() }],
-    });
+    return this.findAll(
+      { 'emails.email': email },
+      {
+        collation: {
+          locale: 'en',
+          strength: 1,
+        },
+      },
+    );
   }
 
+  /**
+   * Finds all users related with one of the given emails either as secondary or primary email, considering case-insensitivity.
+   * @param emails
+   */
   async findByAnyEmails(emails: string[]): Promise<User[]> {
-    const lowerCaseEmails = emails.map((email) => email.toLowerCase());
-    return this.findAll({
-      $or: [
-        { email: { $in: lowerCaseEmails } },
-        { 'emails.lowercaseEmail': { $in: lowerCaseEmails } },
-      ],
+    return this.findAll(
+      { 'emails.email': { $in: emails } },
+      {
+        collation: {
+          locale: 'en',
+          strength: 1,
+        },
+      },
+    );
+  }
+
+  /**
+   * Finds a user with the given verified email address, considering case-insensitivity.
+   * @param email
+   * @param includeUnverifiedMain
+   */
+  async findByVerifiedEmail(email: string, includeUnverifiedMain = false): Promise<User | null> {
+    const query: FilterQuery<User> = { 'emails.email': email };
+
+    const users = await this.findAll(query, {
+      collation: {
+        locale: 'en',
+        strength: 1,
+      },
+    });
+
+    return users.reduce((result: null | User, user) => {
+      if (result) return result;
+      if (user.getVerifiedUserEmail(email)) return user;
+      if (includeUnverifiedMain && user.email.toLowerCase() === email.toLowerCase()) return user;
+      return null;
+    }, null);
+  }
+
+  /**
+   * Finds all users with the given verified email addresses, considering case-insensitivity.
+   * @param emails
+   */
+  async findByVerifiedEmails(emails: string[]): Promise<User[]> {
+    if (!emails.length) return [];
+
+    const query: FilterQuery<User> = {
+      'emails.email': { $in: emails },
+      'emails.verified': true,
+    };
+
+    return this.findAll(query, {
+      collation: {
+        locale: 'en',
+        strength: 1,
+      },
     });
   }
 
-  async findByVerifiedEmail(email: string, includeUnverifiedMain = false): Promise<OptionalUser> {
-    const mainEmailCondition = { email: email.toLowerCase() };
-    const statusCondition: FilterQuery<User> = {};
-
-    if (!includeUnverifiedMain) {
-      statusCondition['status'] = { $ne: UserStatus.EmailVerification };
-    }
-
-    return this.findOne({
-      ...statusCondition,
-      $or: [
-        mainEmailCondition,
-        { 'emails.lowercaseEmail': email.toLowerCase(), 'emails.verified': true },
-      ],
-    });
-  }
-
-  async findByVerifiedEmails(emails: string[], includeUnverifiedMain = false): Promise<User[]> {
-    const lowerCaseEmails = emails
-      .filter((email) => !!email?.length)
-      .map((email) => email.toLowerCase());
-
-    const statusCondition: FilterQuery<User> = {};
-
-    if (!lowerCaseEmails.length) return [];
-
-    const mainEmailCondition = { email: { $in: lowerCaseEmails } };
-
-    if (!includeUnverifiedMain) {
-      statusCondition['status'] = { $ne: UserStatus.EmailVerification };
-    }
-
-    return this.findAll({
-      ...statusCondition,
-      $or: [
-        mainEmailCondition,
-        { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': true },
-      ],
-    });
-  }
-
+  /**
+   * Finds users with the given unverified email. Note that an unverified emails may be attached to multiple accounts,
+   * considering case-insensitivity.
+   * Note, this does not check if the email is verified for another account.
+   * @param email
+   */
   async findByUnverifiedEmail(email: string): Promise<User[]> {
-    return this.findAll({
-      $or: [
-        { email: email.toLowerCase(), status: UserStatus.EmailVerification },
-        { 'emails.lowercaseEmail': email.toLowerCase(), 'emails.verified': false },
-      ],
-    });
+    return this.findAll(
+      { 'emails.email': email, 'emails.verified': false },
+      {
+        collation: {
+          locale: 'en',
+          strength: 1,
+        },
+      },
+    );
   }
 
+  /**
+   * Find all users which are related to one of the given unverified emails, considering case-insensitivity.
+   * Note, this does not check if the emails are verified for another account.
+   * @param emails
+   */
   async findByUnverifiedEmails(emails: string[]): Promise<User[]> {
-    const lowerCaseEmails = emails
-      .filter((email) => !!email?.length)
-      .map((email) => email.toLowerCase());
+    if (!emails.length) return [];
 
-    if (!lowerCaseEmails.length) return [];
-    return this.findAll({
-      $or: [
-        { email: { $in: lowerCaseEmails }, status: UserStatus.EmailVerification },
-        { 'emails.lowercaseEmail': { $in: lowerCaseEmails }, 'emails.verified': false },
-      ],
-    });
+    return this.findAll(
+      { 'emails.email': { $in: emails }, 'emails.verified': false },
+      {
+        collation: {
+          locale: 'en',
+          strength: 1,
+        },
+      },
+    );
   }
 
+  /**
+   * Sets the verification status of an already registered email for the given user, considering case-insensitivity.
+   * @param user
+   * @param email
+   * @param verification
+   */
   async setEmailVerification(user: EntityIdentity<User>, email: string, verification = true) {
     const result = await this.updateOneByFilter(
       user,
       { $set: { 'emails.$[userEmail]': new UserEmail(email, verification) } },
       {},
       {
-        arrayFilters: [{ 'userEmail.lowercaseEmail': email.toLowerCase() }],
+        arrayFilters: [{ 'userEmail.email': email }],
+        collation: {
+          locale: 'en',
+          strength: 1,
+        },
       },
     );
 
@@ -123,14 +190,28 @@ export class UserDao extends AbstractDao<User> {
     return result;
   }
 
+  /**
+   * Removes an email from the given user, considering case-insensitivity.
+   * @param user
+   * @param email
+   */
   async removeEmail(user: EntityIdentity<User>, email: string) {
-    const result = await this.updateOneById(user, {
-      $pull: { emails: { lowercaseEmail: email.toLowerCase() } },
-    });
+    const result = await this.updateOneById(
+      user,
+      {
+        $pull: { emails: { email: email } },
+      },
+      {
+        collation: {
+          locale: 'en',
+          strength: 1,
+        },
+      },
+    );
 
     if (user instanceof User) {
       user.emails = user.emails.filter(
-        (userEmail) => userEmail.lowercaseEmail !== email.toLowerCase(),
+        (userEmail) => userEmail.email.toLowerCase() !== email.toLowerCase(),
       );
     }
 

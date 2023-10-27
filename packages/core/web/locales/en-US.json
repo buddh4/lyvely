@@ -163,93 +163,20 @@
       "main_nav": "Statistics"
     }
   },
-  "otp": {
-    "email": {
-      "text": "Please enter the verification code sent to your email address. The code is only valid for a short time, so please enter it soon.",
-      "text_with_address": "Please enter the verification code sent to {email}. The code is only valid for a short time, so please enter it soon."
-    },
-    "errors": {
-      "invalid": "The given verification code is invalid, please try again.",
-      "maxAttempts": "You have exceeded the maximum number of attempts, please use the resend button to generate a new verification code."
-    },
-    "aria": {
-      "input_label": "digit {i} of {n}"
-    }
-  },
   "captcha": {
     "errors": {
       "invalid": "The code is not valid"
     },
     "label": "Please enter the code below"
   },
-  "auth": {
-    "logout": "Logout",
-    "reset_password": {
-      "title": "Reset your password",
-      "sent": {
-        "title": "Reset your password",
-        "text": "Check your email for a link to reset your password. If it does not appear within a few minutes check your spam folder."
-      },
-      "to_login": "Return to sign in",
-      "submit_send": "Send password reset email",
-      "submit_reset": "Reset password",
-      "fields": {
-        "email": "Enter the main email address of your account",
-        "password": "New password",
-        "passwordRepeat": "Repeat new password",
-        "resetSessions": "Invalidate active sessions",
-        "help": {
-          "resetSessions": "Choosing this option will invalidate all of your active login sessions. This is recommended in case you suspect your password has been compromised."
-        }
-      }
-    },
-    "login": {
-      "title": "Login",
-      "sign_in": "Sign in",
-      "not_a_member": "Not a member?",
-      "reset_password": "Forgot password?",
-      "remember_me": "Keep me signed in.",
-      "remember_me_info": {
-        "p1": "Choosing this option reduces the number of times you're asked to Sign-In on this device.",
-        "p2": "To keep your account secure, use this option only on your personal devices."
-      },
-      "fields": {
-        "password": "Password",
-        "email": "Email",
-        "remember": "Keep me signed in."
-      },
-      "errors": {
-        "invalid_input": "Invalid email or password"
-      }
-    }
-  },
   "validation": {
     "isNotEmpty": "{property} can not be empty",
+    "maxLength": "{property} must be at least {c1} characters of fewer",
+    "isLength": "{property} must be between {c1} and {c2} characters",
     "isCaptcha": "Please enter 5 alphanumeric characters",
     "isEmail": "{property} must be an email",
     "matches": "{property} does not match the expected format",
     "match": "{property} does not match {c1}"
-  },
-  "user_registration": {
-    "title": "Sign up",
-    "sign_up": "Sign up",
-    "create_account": "Create an account",
-    "is_member": "Already have an account?",
-    "verify_email": {
-      "title": "Verify your email",
-      "text": "We've sent a verification email to: {email}",
-      "subtext": "Click the link in your email to activate your account."
-    },
-    "errors": {
-      "email_unique": "asdf"
-    },
-    "fields": {
-      "username": "Username",
-      "password": "Password",
-      "passwordRepeat": "Repeat password",
-      "email": "Email",
-      "remember": "Remember this device."
-    }
   },
   "layout": {
     "aria": {

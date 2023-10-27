@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useHelpText } from './help-text.util';
 import { t, Translatable } from '@/i18n';
+import LyLoader from '../loaders/LyLoader.vue';
 
 export interface IProps {
   label?: Translatable;
@@ -8,6 +9,7 @@ export interface IProps {
   inputError?: Translatable;
   helpText?: Translatable;
   wrapperClass?: string;
+  loading?: boolean;
   required?: boolean;
 }
 
@@ -16,6 +18,7 @@ const props = withDefaults(defineProps<IProps>(), {
   helpText: undefined,
   inputError: undefined,
   wrapperClass: undefined,
+  loading: false,
   required: false,
 });
 
@@ -36,7 +39,7 @@ const wrapperClasses = [
       <label
         v-if="label"
         :for="inputId"
-        class="absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none"
+        class="absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none z-10"
         :aria-describedby="ariaDescribedBy">
         {{ t(label) }}
       </label>
@@ -46,6 +49,8 @@ const wrapperClasses = [
         class="absolute text-info-dark w-4 cursor-pointer top-2 right-3"
         aria-hidden="true"
         @click="showHelpText = !showHelpText" />
+
+      <ly-loader v-if="loading" size="10px" icon-class="absolute right-[10px] top-[10px] z-10" />
     </slot>
     <slot></slot>
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { formatDate, isToday, formatDateWithTime } from '@lyvely/dates';
 import { ContentModel } from '@lyvely/core-interface';
-import { computed } from 'vue';
+import { computed, unref } from 'vue';
 import RelativeTime from '@/calendar/components/RelativeTime.vue';
 import { useRouter } from 'vue-router';
 import { isTextSelection } from '@/core';
@@ -30,10 +30,6 @@ const props = withDefaults(defineProps<IProps>(), {
 });
 
 defineEmits(['selectTag']);
-
-/*const userInfo = computedAsync(async () =>
-  useProfileStore().getUserInfo(props.model.meta.createdBy),
-);*/
 
 const userInfo = useUserInfo(props.model.meta.createdBy);
 
@@ -123,8 +119,8 @@ const maxWidth = false;
             <ly-avatar
               v-if="userInfo"
               class="w-8 h-8"
-              :name="userInfo.displayName"
-              :guid="userInfo.guid" />
+              :name="unref(userInfo).displayName"
+              :guid="unref(userInfo).guid" />
           </template>
         </slot>
       </div>
@@ -133,7 +129,7 @@ const maxWidth = false;
           <span class="font-bold mr-1">
             <slot name="authorName">
               <template v-if="userInfo">
-                {{ userInfo.displayName }}
+                {{ unref(userInfo).displayName }}
               </template>
             </slot>
           </span>

@@ -25,6 +25,13 @@ export class I18n {
     return availableLocales;
   }
 
+  public translation(module: string, optionsOrUser: TranslationOptions | User) {
+    return {
+      t: (key: string, params?: Record<string, any>) =>
+        this.t({ key: `${module}.${key}`, params }, optionsOrUser),
+    };
+  }
+
   public t(translatable: Translatable, optionsOrUser: TranslationOptions | User): string {
     const options =
       optionsOrUser instanceof User ? { locale: optionsOrUser.locale } : optionsOrUser;

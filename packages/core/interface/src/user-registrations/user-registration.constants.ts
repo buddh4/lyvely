@@ -1,1 +1,1 @@
-export const USER_REGISTRATION_MODULE_ID = 'user-registration';
+export const USER_REGISTRATIONS_MODULE_ID = 'user-registrations';

@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import { UpdateQuery, Document } from 'mongoose';
-import { BaseEntity, createObjectId, EntityIdentity } from '@/core';
+import { BaseEntity, createObjectId, getDefaultLocale } from '@/core';
 import { PropertiesOf, getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
-import { UserModel, UserStatus } from '@lyvely/core-interface';
+import { USER_DISPLAY_NAME_REGEX, UserModel, UserStatus } from '@lyvely/core-interface';
 import { Avatar, AvatarSchema } from '@/avatars';
 import { UserEmail, UserEmailSchema } from './user-email.schema';
 import { ProfilesCount, ProfilesCountSchema } from './profiles-count.schema';
@@ -43,6 +43,9 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
 
   @Prop({ required: true })
   username: string;
+
+  @Prop({ required: true, validate: USER_DISPLAY_NAME_REGEX })
+  displayName: string;
 
   @Prop({ required: true })
   password: string;
@@ -84,6 +87,11 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
 
     this.email = this.email?.toLowerCase();
 
+    // Patch for prior 0.1.0.alpha4 where displayName did not exist
+    if (!this.displayName) {
+      this.displayName = this.username;
+    }
+
     if (!this.guid) {
       this.guid = createHash('sha256')
         .update(createObjectId().toString() + this.email)
@@ -92,18 +100,18 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   }
 
   getUserEmail(email: string) {
-    return this.emails.find((userEmail) => userEmail.lowercaseEmail === email.toLowerCase());
+    return this.emails.find((userEmail) => userEmail.email.toLowerCase() === email.toLowerCase());
   }
 
   getVerifiedUserEmail(email: string) {
     return this.emails.find(
-      (userEmail) => userEmail.verified && userEmail.lowercaseEmail === email.toLowerCase(),
+      (userEmail) => userEmail.verified && userEmail.email.toLowerCase() === email.toLowerCase(),
     );
   }
 
   getUnverifiedUserEmail(email: string) {
     return this.emails.find(
-      (userEmail) => !userEmail.verified && userEmail.lowercaseEmail === email.toLowerCase(),
+      (userEmail) => !userEmail.verified && userEmail.email.toLowerCase() === email.toLowerCase(),
     );
   }
 
@@ -124,7 +132,7 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   }
 
   getDisplayName() {
-    return this.username;
+    return this.displayName;
   }
 
   getRefreshTokenByVisitorId(vid: string): RefreshToken | undefined {
@@ -192,6 +200,15 @@ UserSchema.pre('updateMany', function (next) {
   next();
 });
 
+UserSchema.index(
+  { username: 1 },
+  { unique: true, collation: { locale: 'en', strength: 1 }, name: 'UniqueUsernameIndex' },
+);
+UserSchema.index(
+  { 'emails.email': 1 },
+  { collation: { locale: 'en', strength: 1 }, name: 'UserEmailIndex' },
+);
+
 function preUpdateQuery(update: UpdateQuery<User>, next) {
   if (update?.password) {
     hash(update.password, 10, (err, hash) => {
@@ -221,11 +238,3 @@ function preUpdateModel(update: User, next) {
     next();
   }
 }
-
-export function getDefaultLocale() {
-  return Intl.DateTimeFormat().resolvedOptions().locale;
-  //return process.env.LC_ALL || process.env.LC_MESSAGES || process.env.LANG || process.env.LANGUAGE;
-}
-
-export type OptionalUser = User | null | undefined;
-export type OptionalUserIdentity = EntityIdentity<User> | null | undefined;

@@ -16,7 +16,11 @@
     "publish:next": "npm publish --access public --tag next",
     "prerelease": "npm run build",
     "deps": "npx depcruise --config .dependency-cruiser.js src",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "migrate:create": "sh -c 'ts-node ../../../node_modules/migrate-mongo/bin/migrate-mongo create $0 -f migrate-mongo-config.ts' ",
+    "migrate:status": "ts-node../../../ node_modules/migrate-mongo/bin/migrate-mongo status -f migrate-mongo-config.ts",
+    "migrate:undo-last": "ts-node ../../../node_modules/migrate-mongo/bin/migrate-mongo down -f migrate-mongo-config.ts && npm run migrate:status",
+    "migrate:up": "ts-node ../../../node_modules/migrate-mongo/bin/migrate-mongo up -f migrate-mongo-config.ts"
   },
   "author": "Julian Harrer",
   "license": "AGPL-3.0",
@@ -54,7 +58,7 @@
     "canvas": "^2.11.2",
     "class-validator": "^0.14.0",
     "rxjs": "^7.8.1",
-    "nestjs-i18n": "^10.2.6",
+    "nestjs-i18n": "^10.3.7",
     "pug": "^3.0.2",
     "bullmq": "^3.12.0",
     "jsonwebtoken": "^9.0.0",
@@ -76,6 +80,7 @@
     "@nestjs/testing": "^9.4.0",
     "dependency-cruiser": "^14.1.0",
     "ncp": "^2.0.0",
+    "migrate-mongo": "^10.0.0",
     "@types/pug": "2.0.6",
     "del": "^6.1.1"
   },

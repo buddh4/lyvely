@@ -1,5 +1,6 @@
 import { validate, ValidationError, ValidatorOptions } from 'class-validator';
 import { IFieldValidationResult } from './interfaces/validation-result.interface';
+import { getFirstValidationError } from './validation.utils';
 
 interface ITranslationError<T> {
   model: T;
@@ -88,6 +89,14 @@ export class ModelValidator<T extends object = object> {
     }
   }
 
+  setError(property: keyof T, message: string) {
+    this.errors[property] = message;
+  }
+
+  deleteError(property: keyof T) {
+    delete this.errors[property];
+  }
+
   getError(field: keyof T) {
     return this.errors[field];
   }
@@ -133,29 +142,18 @@ export class ModelValidator<T extends object = object> {
   }
 
   private setFirstError(error: ValidationError) {
-    const constraints = error.constraints as Record<string, string>;
-    const rules = Object.keys(constraints);
-
-    if (!rules.length) return;
-
-    const firstRule = constraints?.isNotEmpty
-      ? 'isNotEmpty'
-      : constraints?.isDefined
-      ? 'isDefined'
-      : rules[0];
-
-    const firstErrorMessage = constraints[firstRule];
-    if (firstErrorMessage) {
+    const { message, rule } = getFirstValidationError(error);
+    if (message) {
       this.errors[error.property as keyof T] = this.options.translate
         ? this.options.translate({
             model: error.target as T,
             value: error.value,
             property: error.property as keyof T & string,
-            message: firstErrorMessage,
-            rule: firstRule,
+            message: message,
+            rule: rule,
             context: error.contexts,
-          }) || firstErrorMessage
-        : firstErrorMessage;
+          }) || message
+        : message;
     }
   }
 

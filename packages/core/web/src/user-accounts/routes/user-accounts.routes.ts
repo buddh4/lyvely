@@ -15,7 +15,7 @@ export const userAccountsRoutes = [
         path: '',
         meta: {
           i18n: {
-            load: [{ module: USER_ACCOUNTS_MODULE_ID, section: 'my-account' }],
+            load: [{ module: USER_ACCOUNTS_MODULE_ID, section: 'my-account' }, 'otp'],
           },
           title: translation('user-accounts.myAccountInfo.title'),
         },

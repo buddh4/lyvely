@@ -17,6 +17,7 @@ import {
   MongooseBulkWriteOptions,
 } from 'mongoose';
 import { BaseEntity } from './base.entity';
+import { CollationOptions } from 'mongodb';
 import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
 import { EventEmitter2 } from '@nestjs/event-emitter';
@@ -61,15 +62,18 @@ export interface IBulkBaseQueryOptions {
 
 export interface IUpsertQueryOptions extends IBaseQueryOptions {
   new?: boolean;
+  collation?: CollationOptions;
 }
 
 export interface IUpdateQueryOptions extends IBaseQueryOptions {
   apply?: boolean;
+  collation?: CollationOptions;
 }
 
 export interface IBaseFetchQueryOptions<T extends BaseEntity<T>> extends IBaseQueryOptions {
   projection?: ProjectionType<T>;
   sort?: QuerySort<T>;
+  collation?: CollationOptions;
 }
 
 export interface IFindAndUpdateQueryOptions<T extends BaseEntity<T>>
@@ -93,29 +97,90 @@ export interface IFetchQueryOptions<T extends BaseEntity<T>> extends IFetchQuery
   limit?: number;
 }
 
+export const DEFAULT_FETCH_LIMIT = 200;
+
 export const defaultFetchOptions = {
   pagination: {
     page: 1,
-    limit: 100,
+    limit: DEFAULT_FETCH_LIMIT,
   },
 };
 
 export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
 
+/**
+ * Abstract Data Access Object provides basic data access features for sub classes.
+ * This class will hardly use the mongoose Model API but instead mainly utilizes the mongoose Query API, which means
+ * we hardly interact with mongoose Models and mainly facilitate the `lean` function and do partial document updates like `$set`
+ * manually. This class provides many helper functions to support writing fetch and update queries.
+ * The advantage of this is that you can directly work with your model class instances and enables a better abstraction
+ * by only using mongoose for data access and schema validation.
+ *
+ * Sub classes may extend this feature for complex queries or updates of a certain model.
+ *
+ * @example
+ *
+ * class MyModelDao extends AbstractDao<MyModel> {
+ *   @InjectModel(MyModel.name)
+ *   protected model: Model<MyModel>;
+ *
+ *   // This function is used to instantiate your model, you can return other constructors if required.
+ *   getModelConstructor(model: DeepPartial<T>) {
+ *     return model.type === 'special' ? MySpecialModel : MyModel;
+ *   }
+ *
+ *   getModuleId() {
+ *     return MY_MODULE_ID;
+ *   }
+ * }
+ */
 export abstract class AbstractDao<T extends BaseEntity<T>> {
+  /**
+   * The mongoose model, which is usually injected with @InjectModel()
+   * @protected
+   */
   protected abstract model: Model<T>;
+
+  /**
+   * Logger for logging error and debug information.
+   * @protected
+   */
   protected logger: Logger;
 
+  /**
+   * Base constructor, sets up the logger by default.
+   */
   constructor() {
     this.logger = new Logger(this.constructor.name);
   }
 
+  /**
+   * Event emitter used to emit model related events when creating or updating a model.
+   * @private
+   */
   @Inject()
   private eventEmitter: EventEmitter2;
 
-  abstract getModelConstructor(model: DeepPartial<T>): Constructor<T>;
+  /**
+   * Subclasses need to return a model constructor which is used to instantiate model instances when
+   * fetching models from the database.
+   * Subclasses may return different constructor types e.g. by discriminator field of the given lean model.
+   * This function is called by `constructModel`, if you have a more complex model creation scenario you may
+   * want to overwrite `constructModel` instead, otherwise it is recommended to only overwrite this function.
+   * @param leanModel
+   */
+  abstract getModelConstructor(leanModel: DeepPartial<T>): Constructor<T>;
+
+  /**
+   * Subclasses should return the related module id used for logging and potentially restrictions and policies.
+   */
   abstract getModuleId(): string;
 
+  /**
+   * Builds an event name for this type of model used when emitting data access related events.
+   * @param event
+   * @protected
+   */
   protected createEventName(event: string) {
     const type = this.getModelType() ? `${this.getModelType()}.` : '';
     return `model.${type}${this.getModelName().toLowerCase()}.${event}`;
@@ -131,22 +196,52 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return null;
   }
 
+  /**
+   * Returns the name of this model.
+   * @protected
+   */
   protected getModelName() {
     return this.getModel().modelName;
   }
 
+  /**
+   * This function is used to create model instances from lean objects by facilitating the `getModelConstructor` function.
+   * This function may be overwritten by subclasses in rare cases where the `getModelConstructor` is not sufficient e.g.
+   * in cases we need to create the model by a factory.
+   * @param lean
+   * @protected
+   */
   protected constructModel(lean: DeepPartial<T>): T {
     return createBaseEntityInstance(this.getModelConstructor(lean), lean);
   }
 
+  /**
+   * This function is used to create multiple model instances from lean objects by facilitating the `constructModel` function
+   * and is usually called by fetch queries.
+   * @param lean
+   * @protected
+   */
   protected constructModels(leanArr: Partial<T>[]): T[] {
     return leanArr.map((lean) => this.constructModel(lean)) || [];
   }
 
+  /**
+   * Used to emit dao related events.
+   * @param event
+   * @param data
+   * @protected
+   */
   protected emit(event: string, data: any) {
     return this.eventEmitter.emit(this.createEventName(event), data);
   }
 
+  /**
+   * Saves an entity and triggers and `save.pre` in which the entity data could potentially be manipulated
+   * and a `save.post` in which a save result may be manipulated.
+   *
+   * @param entityData
+   * @param options
+   */
   async save(entityData: T, options?: SaveOptions): Promise<T> {
     await this.beforeSave(entityData);
     this.emit('save.pre', new ModelSaveEvent(this, entityData, this.getModelName()));
@@ -161,6 +256,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return await this.afterSave(model);
   }
 
+  /**
+   * Saves multiple entities and triggers and `save.pre` in which the entity data could potentially be manipulated
+   * and a `save.post` in which a save result may be manipulated.
+   * @param entityDataArr
+   * @param options
+   */
   async saveMany(entityDataArr: T[], options?: SaveOptions): Promise<T[]> {
     for (const entityData of entityDataArr) {
       await this.beforeSave(entityData);
@@ -210,14 +311,27 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     identity: EntityIdentity<T>,
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
-    // TODO: trigger events
-    const model = await this.getModel(options)
-      .findById(this.assureEntityId(identity), options?.projection, options)
-      .lean();
+    const query = this.getModel(options).findById(
+      this.assureEntityId(identity),
+      options?.projection,
+      options,
+    );
 
+    if (options?.collation) {
+      query.collation(options.collation);
+    }
+
+    const model = await query.lean();
     return model ? this.constructModel(model) : null;
   }
 
+  /**
+   * Finds an entity by id but only if it matches a given additional filter query.
+   * This function can be applied if we want to make sure an entity with a known id matches certain constraints.
+   * @param identity
+   * @param filter
+   * @param options
+   */
   async findByIdAndFilter(
     identity: EntityIdentity<T>,
     filter?: FilterQuery<T>,
@@ -228,53 +342,101 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.findOne(filter, options);
   }
 
+  /**
+   * Finds multiple entities by id.
+   * Note that by default a `DEFAULT_FETCH_LIMIT` is used, which can be overwritten by option.
+   * @param ids
+   * @param options
+   */
   async findAllByIds(ids: EntityIdentity<T>[], options?: IFetchQueryOptions<T>): Promise<T[]> {
     return this.findAll({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
 
+  /**
+   * Finds all entities by given filter.
+   * Note that by default a `DEFAULT_FETCH_LIMIT` is used, which can be overwritten by option.
+   * @param filter
+   * @param options
+   */
   async findAll(filter: FilterQuery<T>, options?: IFetchQueryOptions<T>): Promise<T[]> {
     options ??= {};
 
     const query = this.getModel(options).find(filter, options?.projection, options);
     const fetchFilter = this.getFetchQueryFilter(options);
+
     if (fetchFilter) {
       query.where(fetchFilter);
+    }
+
+    if (options?.collation) {
+      query.collation(options.collation);
     }
 
     return this.constructModels(await this.applyFetchQueryOptions(query, options).lean());
   }
 
+  /**
+   * Assures that the given object is an entity-id an if possible transforms it to one.
+   * @param identity
+   * @protected
+   */
   protected assureEntityId(identity: EntityIdentity<T>): T['_id'] {
     return assureObjectId(identity);
   }
 
+  /**
+   * Finds the first entity which matches the given filter.
+   * @param filter
+   * @param options
+   */
   async findOne<C = T>(
     filter: FilterQuery<C>,
     options?: IBaseFetchQueryOptions<T>,
   ): Promise<T | null> {
-    // TODO: trigger events
-    const model = await this.getModel(options).findOne(filter, options?.projection, options).lean();
+    const query = this.getModel(options).findOne(filter, options?.projection, options);
+
+    if (options?.collation) {
+      query.collation(options.collation);
+    }
+
+    const model = await query.lean();
     return model ? this.constructModel(model) : null;
   }
 
+  /**
+   * Upserts all documents matching the given filter.
+   * @param filter
+   * @param update
+   * @param options
+   */
   async upsert(
     filter: FilterQuery<T>,
     update: UpdateQuery<T>,
     options: IUpsertQueryOptions = {},
   ): Promise<T | null> {
     options.new ??= true;
-    const model = await this.getModel(options)
-      .findOneAndUpdate(filter, update, { upsert: true, ...options })
-      .lean();
+    const query = this.getModel(options).findOneAndUpdate(filter, update, {
+      upsert: true,
+      ...options,
+    });
+
+    if (options?.collation) {
+      query.collation(options.collation);
+    }
+
+    const model = await query.lean();
     return model ? this.constructModel(model) : null;
   }
 
+  /**
+   * Applies some default filters to the query based on the given options.
+   * @param options
+   * @protected
+   */
   protected getFetchQueryFilter(options: IFetchQueryFilterOptions<T>): FilterQuery<any> | null {
     const { excludeIds } = options;
 
-    if (!excludeIds) {
-      return null;
-    }
+    if (!excludeIds) return null;
 
     return {
       _id: Array.isArray(excludeIds)
@@ -283,6 +445,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     };
   }
 
+  /**
+   * Applies default query settings based on the given options.
+   * @param query
+   * @param options
+   * @protected
+   */
   protected applyFetchQueryOptions(
     query: EntityQuery<T>,
     options: IFetchQueryOptions<T>,
@@ -301,6 +469,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return query;
   }
 
+  /**
+   * Finds a document by id and sets the given updateSet data which automatically translates into a `{ $set: updateSet }` update.
+   * @param id
+   * @param updateSet
+   * @param options
+   */
   async findOneAndSetById(
     id: EntityIdentity<T>,
     updateSet: UpdateQuerySet<T>,
@@ -309,6 +483,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.findOneAndUpdateById(id, { $set: updateSet }, options);
   }
 
+  /**
+   * Finds a document by id and applies the given update.
+   * @param id
+   * @param update
+   * @param options
+   */
   async findOneAndUpdateById(
     id: EntityIdentity<T>,
     update: UpdateQuery<T>,
@@ -317,6 +497,14 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.findOneAndUpdateByFilter(id, update, {}, options);
   }
 
+  /**
+   * Finds the first document which matches the given filters and sets the given updateSet data which automatically
+   * translates into a `{ $set: updateSet }` update.
+   * @param id
+   * @param update
+   * @param filter
+   * @param options
+   */
   async findOneAndUpdateSetByFilter(
     id: EntityIdentity<T>,
     update: UpdateQuerySet<T>,
@@ -326,6 +514,13 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.findOneAndUpdateByFilter(id, { $set: update }, filter, options);
   }
 
+  /**
+   * Finds the first document which matches the given filters and applies the given update.
+   * @param id
+   * @param update
+   * @param filter
+   * @param options
+   */
   async findOneAndUpdateByFilter(
     id: EntityIdentity<T>,
     update: UpdateQuery<T>,
@@ -343,21 +538,30 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     filter = filter || {};
     filter._id = this.assureEntityId(id);
 
-    const data = await this.getModel(options)
-      .findOneAndUpdate(filter, cloneDeep(update), options)
-      .lean();
+    const query = this.getModel(options).findOneAndUpdate(filter, cloneDeep(update), options);
 
-    if (!data) {
-      return null;
+    if (options?.collation) {
+      query.collation(options.collation);
     }
+
+    const result = await query.lean();
+
+    if (!result) return null;
 
     if (!options || options.apply !== false) {
       applyUpdateTo(id, update);
     }
 
-    return this.constructModel(data);
+    return this.constructModel(result);
   }
 
+  /**
+   * Updates one document by given id and sets the given updateSet data which automatically
+   * translates into a `{ $set: updateSet }` update.
+   * @param id
+   * @param updateSet
+   * @param options
+   */
   async updateOneSetById(
     id: EntityIdentity<T>,
     updateSet: UpdateQuerySet<T>,
@@ -366,6 +570,13 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.updateOneById(id, { $set: updateSet }, options);
   }
 
+  /**
+   * Updates one document by given id and unsets the given updateUnset data which automatically
+   * translates into a `{ $unset: updateUnset }` update.
+   * @param id
+   * @param updateUnset
+   * @param options
+   */
   async updateOneUnsetById(
     id: EntityIdentity<T>,
     updateUnset: UpdateQueryUnset<T>,
@@ -374,6 +585,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.updateOneById(id, { $unset: updateUnset }, options);
   }
 
+  /**
+   * Updates one document by given id and applies the given update.
+   * @param id
+   * @param update
+   * @param options
+   */
   async updateOneById(
     id: EntityIdentity<T>,
     update: UpdateQuery<T>,
@@ -382,6 +599,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return this.updateOneByFilter(id, update, {}, options);
   }
 
+  /**
+   * Updates the first document which matches the given filter and applies the given update.
+   * @param id
+   * @param update
+   * @param options
+   */
   protected async updateOneByFilter(
     identity: EntityIdentity<T>,
     update: UpdateQuery<T>,
@@ -397,6 +620,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     filter._id = this.assureEntityId(identity);
 
     const query = this.getModel(options).updateOne(filter, clonedUpdate, options);
+
+    if (options?.collation) {
+      query.collation(options.collation);
+    }
+
     const modifiedCount = (await query.exec()).modifiedCount;
 
     if (modifiedCount && (!options || options.apply !== false)) {
@@ -410,6 +638,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return !!modifiedCount;
   }
 
+  /**
+   * This function will try to determine the actual discriminator model from the schema in case the options discriminator property is set.
+   * @param options
+   * @protected
+   */
   protected getModel(options?: IBaseQueryOptions) {
     let model = this.model;
 
@@ -427,7 +660,12 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return model || this.model;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  /**
+   * This function may be overwritten by subclasses to intercept model updates before they are send to the database.
+   * @param id
+   * @param update
+   * @protected
+   */
   protected async beforeUpdate(
     id: EntityIdentity<T>,
     update: UpdateQuery<T>,
@@ -435,6 +673,11 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     return Promise.resolve(true);
   }
 
+  /**
+   * Updates the given set data by bulkWrite.
+   * @param updates
+   * @param options
+   */
   async updateSetBulk(
     updates: { id: EntityIdentity<T>; update: UpdateQuerySet<T> }[],
     options?: IBaseQueryOptions,
@@ -450,18 +693,37 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
     );
   }
 
+  /**
+   * Reloads a given entity by id or instance.
+   * @param id
+   */
   async reload(id: EntityIdentity<T>): Promise<T | null> {
     return this.findById(id);
   }
 
+  /**
+   * Deletes many documents by id.
+   * @param ids
+   * @param options
+   */
   async deleteManyByIds(ids: EntityIdentity<T>[], options?: DeleteOptions): Promise<number> {
     return this.deleteMany({ _id: { $in: ids.map((id) => this.assureEntityId(id)) } }, options);
   }
 
+  /**
+   * Deletes many documents by filter.
+   * @param filter
+   * @param options
+   */
   async deleteMany(filter: FilterQuery<T>, options?: DeleteOptions): Promise<number> {
     return (await this.getModel(options).deleteMany(filter, options)).deletedCount;
   }
 
+  /**
+   * Deletes the first document which matches the given filter.
+   * @param filter
+   * @param options
+   */
   async deleteOne(filter: FilterQuery<T>, options?: DeleteOptions): Promise<boolean> {
     return (await this.getModel(options).deleteOne(filter, options)).deletedCount === 1;
   }

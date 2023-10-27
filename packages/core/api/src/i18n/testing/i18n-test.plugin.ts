@@ -20,7 +20,7 @@ export const i18nTestPlugin = {
       .config({
         modules: {
           i18n: {
-            locales: ['en', 'de'],
+            locales: ['en-US', 'de-DE'],
           },
         },
       });

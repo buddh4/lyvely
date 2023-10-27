@@ -4,7 +4,7 @@ import { ContentModel } from '@lyvely/core-interface';
 import ContentDropdown from '@/content/components/ContentDropdown.vue';
 import TagList from '@/tags/components/TagList.vue';
 import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { computed, unref } from 'vue';
 import { translate } from '@/i18n';
 import { getContentTypeOptions } from '../services';
 import { useUserInfo } from '@/profiles/composables';
@@ -35,8 +35,8 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
         <ly-avatar
           v-if="userInfo"
           class="w-8 h-8"
-          :name="userInfo.displayName"
-          :guid="userInfo.guid" />
+          :name="unref(userInfo).displayName"
+          :guid="unref(userInfo).guid" />
       </slot>
       <div class="flex flex-col text-sm">
         <slot name="title">

@@ -5,9 +5,13 @@ import {
   UserRegistrationEndpoint,
   UserRegistration,
   ENDPOINT_USER_REGISTRATION,
+  ResendOtp,
+  OtpInfo,
+  VerifyEmailDto,
+  UserModel,
+  StringFieldValidityRequest,
 } from '@lyvely/core-interface';
 import {} from '@/user-accounts';
-import { ResendOtp, OtpInfo, VerifyEmailDto, UserModel } from '@lyvely/core-interface';
 import { UniqueConstraintException } from '@lyvely/common';
 import { AbstractJwtAuthController, JwtAuthService } from '@/auth';
 import { ConfigService } from '@nestjs/config';
@@ -44,17 +48,21 @@ export class UserRegistrationController
   }
 
   @Public()
+  @Post('check-user-name')
+  async checkUserNameValidity(@Body() userData: StringFieldValidityRequest): Promise<void> {
+    await this.registerService.validateUserName(userData.value || '');
+  }
+
+  @Public()
+  @Post('check-user-email')
+  async checkUserEmailValidity(@Body() userData: StringFieldValidityRequest): Promise<void> {
+    await this.registerService.validateEmail(userData.value || '');
+  }
+
+  @Public()
   @Post('resend-verify-email')
   async resendVerifyEmail(@Body() dto: ResendOtp): Promise<OtpInfo> {
-    try {
-      return await this.registerService.resendOtp(dto.email);
-    } catch (err: any) {
-      if (err instanceof UnauthorizedException) {
-        return new OtpInfo({ issuedAt: new Date(), expiresIn: ms('2m') });
-      }
-
-      throw err;
-    }
+    return await this.registerService.resendOtp(dto.emailOrUsername);
   }
 
   @Public()

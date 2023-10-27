@@ -7,14 +7,14 @@ import { AuthService } from '@/auth/services/auth.service';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { UnauthenticatedServiceException } from '@lyvely/common';
 import { UserStatus, LoginModel } from '@lyvely/core-interface';
-import { useVerifyRegistrationEmailStore } from '@/user-registration/stores/verify-email.store';
+import { useVerifyRegistrationEmailStore } from '@/user-registrations/stores';
 
 export const useLoginStore = defineStore('user-login', () => {
   const status = useStatus();
   const authStore = useAuthStore();
   const authService = new AuthService();
   const loginModel = ref(new LoginModel());
-  const stage = ref<'email' | 'password'>('email');
+  const stage = ref<'usernameOrEmail' | 'password'>('usernameOrEmail');
   const validator = ref(
     new I18nModelValidator(loginModel.value, { translationKey: 'auth.login.fields' }),
   );
@@ -30,7 +30,7 @@ export const useLoginStore = defineStore('user-login', () => {
 
   function reset() {
     loginModel.value = new LoginModel();
-    stage.value = 'email';
+    stage.value = 'usernameOrEmail';
     validator.value.setModel(loginModel.value);
     status.resetStatus();
   }
@@ -46,7 +46,7 @@ export const useLoginStore = defineStore('user-login', () => {
     }
 
     // This may happen if the user intercepts the registration process
-    useVerifyRegistrationEmailStore().startVerificationOf(loginModel.value.email);
+    useVerifyRegistrationEmailStore().startVerificationOf(loginModel.value.usernameOrEmail);
 
     return { name: 'VerifyEmail' };
   };

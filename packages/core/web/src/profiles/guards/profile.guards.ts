@@ -75,6 +75,6 @@ export const toProfileHome = async (
   next(profileRoute('/stream', profileStore.profile.id));
 };
 
-export const setPageTitle = (to: RouteLocation): void => {
+export const setProfilePageTitleGuard = (to: RouteLocation): void => {
   if (to.meta?.title) useProfileStore().setPageTitle(to.meta?.title());
 };

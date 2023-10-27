@@ -1,17 +1,16 @@
 <script lang="ts" setup>
 import { ref, computed, watchEffect } from 'vue';
+import { isEmail } from 'class-validator';
 
 export interface IProps {
   modelValue: string;
   hasError?: boolean;
-  email?: string;
-  type?: 'email';
+  subject?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  email: undefined,
+  subject: undefined,
   hasError: false,
-  type: 'email',
 });
 
 const emit = defineEmits(['update:modelValue', 'update:isValid']);
@@ -84,14 +83,16 @@ function getValueToSet(val?: string | null) {
   return typeof val === 'string' && /^[0-9]$/.test(val) ? val : '';
 }
 
-const text = computed(() => (props.email ? 'otp.email.text_with_address' : 'otp.email.text'));
+const text = computed(() =>
+  isEmail(props.subject) ? 'otp.email.text_with_address' : 'otp.email.text',
+);
 </script>
 
 <template>
   <fieldset>
     <i18n-t :keypath="text" tag="p" class="text-center text-dimmed text-sm mb-5">
       <template #email>
-        <b>{{ email }}</b>
+        <b>{{ subject }}</b>
       </template>
     </i18n-t>
 

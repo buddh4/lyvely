@@ -59,7 +59,7 @@ export function useContentEditModal<
       throw new Error(`Content type ${type} is missing a create model class definition`);
     }
 
-    const createModel = new CreateType(props.initOptions) as TUpdateModel;
+    const createModel = new CreateType(props.initOptions) as TCreateModel;
     updateStore.setCreateModel(createModel);
   }
 

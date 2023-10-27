@@ -64,7 +64,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         <ly-button
           class="primary ml-auto"
           :loading="sendResetPasswordMailStore.status.isStatusLoading()"
-          label="auth.reset_password.submit_send"
+          text="auth.reset_password.submit_send"
           @click="sendMail" />
       </div>
 
@@ -91,10 +91,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     </template>
 
     <template #footer>
-      <ly-button
-        class="primary float-right"
-        label="auth.reset_password.to_login"
-        @click="toLogin" />
+      <ly-button class="primary float-right" text="auth.reset_password.to_login" @click="toLogin" />
     </template>
   </ly-centered-panel>
 
@@ -139,7 +136,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         <ly-button
           class="primary ml-auto"
           :loading="resetPasswordStore.status.isStatusLoading()"
-          label="auth.reset_password.submit_reset"
+          text="auth.reset_password.submit_reset"
           @click="resetPassword" />
       </div>
 

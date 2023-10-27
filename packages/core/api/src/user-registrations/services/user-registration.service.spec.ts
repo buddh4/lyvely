@@ -69,6 +69,80 @@ describe('UserRegistrationService', () => {
 
   const validRegistration = createUserRegistrationInstance();
 
+  describe('checkUserNameValidity', () => {
+    it('valid username does not exist', async () => {
+      expect(await registerService.validateUserName('test')).toEqual(true);
+    });
+
+    it('username does exist', async () => {
+      await testData.createUser('test');
+
+      try {
+        await registerService.validateUserName('test');
+      } catch (e) {
+        expect(e instanceof FieldValidationException).toEqual(true);
+        expect((<any>e).getFirstError()).toEqual('user-registrations.username.taken');
+      }
+    });
+
+    it('lowercase username does exist', async () => {
+      await testData.createUser('test');
+
+      try {
+        await registerService.validateUserName('TEST');
+      } catch (e) {
+        expect(e instanceof FieldValidationException).toEqual(true);
+        expect((<any>e).getFirstError()).toEqual('user-registrations.username.taken');
+      }
+    });
+
+    it('invalid username', async () => {
+      try {
+        await registerService.validateUserName('__test');
+      } catch (e) {
+        expect(e instanceof FieldValidationException).toEqual(true);
+        expect((<any>e).getFirstError()).toEqual('user-registrations.username.invalid');
+      }
+    });
+  });
+
+  describe('checkUserEmailValidity', () => {
+    it('valid email does not exist', async () => {
+      const result = await registerService.validateEmail('test@test.de');
+      expect(result).toEqual(true);
+    });
+
+    it('email does exist', async () => {
+      await testData.createUser('test');
+      try {
+        await registerService.validateEmail('test@test.de');
+      } catch (e) {
+        expect(e instanceof FieldValidationException).toEqual(true);
+        expect((<any>e).getFirstError()).toEqual('user-registrations.email.taken');
+      }
+    });
+
+    it('lowercase email does exist', async () => {
+      await testData.createUser('test');
+      try {
+        await registerService.validateEmail('TEST@TEST.de');
+      } catch (e) {
+        expect(e instanceof FieldValidationException).toEqual(true);
+        expect((<any>e).getFirstError()).toEqual('user-registrations.email.taken');
+      }
+    });
+
+    it('username invalid', async () => {
+      await testData.createUser('test');
+      try {
+        await registerService.validateEmail('test@');
+      } catch (e) {
+        expect(e instanceof FieldValidationException).toEqual(true);
+        expect((<any>e).getFirstError()).toEqual('user-registrations.email.invalid');
+      }
+    });
+  });
+
   describe('register', () => {
     it('register valid user', async () => {
       await registerService.register(validRegistration);
@@ -105,9 +179,23 @@ describe('UserRegistrationService', () => {
       await registerService.register(validRegistration);
 
       try {
+        await registerService.register({ ...validRegistration, ...{ username: 'Another' } });
+      } catch (err) {
+        expect((<FieldValidationException>err).getFields()[0].property).toEqual('email');
+      }
+    });
+
+    it('register already existing username', async () => {
+      expect.assertions(1);
+
+      const newRegistration = { ...validRegistration, ...{ email: 'another@test.de' } };
+
+      await registerService.register(validRegistration);
+
+      try {
         await registerService.register(validRegistration);
       } catch (err) {
-        expect(err instanceof UniqueConstraintException).toEqual(true);
+        expect(err instanceof FieldValidationException).toEqual(true);
       }
     });
 

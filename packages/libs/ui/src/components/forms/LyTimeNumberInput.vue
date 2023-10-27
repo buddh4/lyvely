@@ -201,6 +201,7 @@ onMounted(() => {
     :label="label"
     :required="required"
     :help-text="helpText"
+    :loading="loading"
     :input-error="inputError">
     <div ref="root" data-timer-input class="floating-input h-auto border border-divide">
       <div class="flex justify-center items-center gap-0.5 md:gap-2">

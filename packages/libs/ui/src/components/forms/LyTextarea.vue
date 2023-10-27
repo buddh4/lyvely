@@ -54,10 +54,11 @@ const props = withDefaults(defineProps<IProps>(), {
   maxlength: undefined,
 });
 
-const emit = defineEmits(['change', 'update:modelValue']);
+const emit = defineEmits(['update:modelValue']);
 const input = ref<HTMLInputElement>();
 
-const { inputId, inputClass, inputError, inputValue, label } = useFloatingInputSetup(props, emit);
+const { inputId, inputClass, inputError, inputValue, label, onChange, onFocusOut } =
+  useFloatingInputSetup(props, emit);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
@@ -71,6 +72,7 @@ onMounted(() => {
     :label="label"
     :required="required"
     :help-text="helpText"
+    :loading="loading"
     :input-error="inputError">
     <textarea
       :id="inputId"
@@ -83,7 +85,10 @@ onMounted(() => {
       :readonly="readonly"
       :class="inputClass"
       :style="inputStyle"
-      :maxlength="maxlength"></textarea>
+      :maxlength="maxlength"
+      @change="onChange"
+      @focusout="onFocusOut">
+    </textarea>
   </ly-floating-input-layout>
 </template>
 

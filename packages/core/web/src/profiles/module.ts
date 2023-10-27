@@ -1,6 +1,6 @@
 import { registerAfterNavigationHooks, registerGuards } from '@/lyvely.router';
 import routes from './routes/profile.routes';
-import { loadProfileGuard, setPageTitle } from './guards';
+import { loadProfileGuard, setProfilePageTitleGuard } from './guards';
 import { registerMenuEntries } from '@/ui/menus';
 import {
   MENU_PROFILE_DRAWER,
@@ -28,7 +28,7 @@ export default () => {
     routes,
     init: () => {
       registerGuards([loadProfileGuard]);
-      registerAfterNavigationHooks([setPageTitle]);
+      registerAfterNavigationHooks([setProfilePageTitleGuard]);
       registerLayouts([
         {
           id: LAYOUT_PROFILE,

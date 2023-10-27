@@ -1,0 +1,12 @@
+{
+  "user-registrations": {
+    "email": {
+      "taken": "Email is already taken",
+      "invalid": "Email is invalid"
+    },
+    "username": {
+      "taken": "Username is already taken",
+      "invalid": "Username is invalid"
+    }
+  }
+}

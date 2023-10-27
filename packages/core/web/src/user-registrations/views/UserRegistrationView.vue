@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useUserRegistrationStore } from '@/user-registration/stores/user-registration.store';
+import { useUserRegistrationStore } from '../stores';
 import { storeToRefs } from 'pinia';
 import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -7,17 +7,19 @@ import { PATH_VERIFY_EMAIL } from '../user-registration.constants';
 import { isTouchScreen } from '@/ui';
 import { LyCenteredPanel } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import { useDebounceFn } from '@vueuse/core';
 import {
   IUserRegistrationAppConfig,
-  USER_REGISTRATION_MODULE_ID,
+  USER_REGISTRATIONS_MODULE_ID,
   UserRegistrationMode,
 } from '@lyvely/core-interface';
+import { FieldValidationException } from '@lyvely/common';
 
 const userRegistrationStore = useUserRegistrationStore();
 const registrationMode = useAppConfigStore().getModuleConfig<
   IUserRegistrationAppConfig,
   UserRegistrationMode
->(USER_REGISTRATION_MODULE_ID, 'registrationMode');
+>(USER_REGISTRATIONS_MODULE_ID, 'registrationMode');
 
 const router = useRouter();
 const { model, validator } = storeToRefs(userRegistrationStore);
@@ -44,6 +46,48 @@ async function register() {
 }
 
 onUnmounted(userRegistrationStore.reset);
+
+const usernameLoading = ref(false);
+const validateUserName = () => {
+  usernameLoading.value = true;
+  validateUserDebounced();
+};
+
+const validateUserDebounced = useDebounceFn(() => {
+  usernameLoading.value = true;
+  userRegistrationStore
+    .validateUsername()
+    .catch((err) => {
+      if (err instanceof FieldValidationException) {
+        validator.value.setError(
+          'username',
+          err.getFirstError('user-registrations.username.invalid'),
+        );
+      } else {
+        validator.value.setError('username', 'user-registrations.username.invalid');
+      }
+    })
+    .finally(() => (usernameLoading.value = false));
+}, 800);
+
+const emailLoading = ref(false);
+const validateEmail = () => {
+  emailLoading.value = true;
+  validateEmailDebounced();
+};
+
+const validateEmailDebounced = useDebounceFn(() => {
+  userRegistrationStore
+    .validateEmail()
+    .catch((err) => {
+      if (err instanceof FieldValidationException) {
+        validator.value.setError('email', err.getFirstError('user-registrations.email.invalid'));
+      } else {
+        validator.value.setError('email', 'user-registrations.email.invalid');
+      }
+    })
+    .finally(() => (emailLoading.value = false));
+}, 800);
 </script>
 
 <template>
@@ -51,7 +95,7 @@ onUnmounted(userRegistrationStore.reset);
     <template #title>
       <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
       <span class="text-base font-bold">
-        {{ $t('user_registration.sign_up') }}
+        {{ $t('user-registrations.sign_up') }}
       </span>
     </template>
 
@@ -61,15 +105,27 @@ onUnmounted(userRegistrationStore.reset);
         v-model="model"
         :validator="validator"
         :status="status"
-        label-key="user_registration.fields">
+        label-key="user-registrations.fields">
         <fieldset>
           <ly-text-field
             autocomplete="username"
             property="username"
+            :auto-validation="false"
             :required="true"
-            :autofocus="!isTouchScreen()" />
+            :autofocus="!isTouchScreen()"
+            :loading="usernameLoading"
+            @input="validateUserName"
+            @focusout="validateUserName" />
 
-          <ly-text-field autocomplete="email" property="email" type="email" :required="true" />
+          <ly-text-field
+            autocomplete="email"
+            :auto-validation="false"
+            property="email"
+            type="email"
+            :required="true"
+            :loading="emailLoading"
+            @input="validateEmail"
+            @focusout="validateEmail" />
         </fieldset>
 
         <fieldset>
@@ -105,8 +161,8 @@ onUnmounted(userRegistrationStore.reset);
             id="remember-me-info"
             class="mt-2 text-xs"
             type="info">
-            <p class="mb-1">{{ $t('auth.login.remember_me_info.p1') }}</p>
-            <p>{{ $t('auth.login.remember_me_info.p2') }}</p>
+            <p class="mb-1">{{ $t('auth.remember_me_info.p1') }}</p>
+            <p>{{ $t('auth.remember_me_info.p2') }}</p>
           </ly-alert>
         </fieldset>
       </ly-form-model>
@@ -115,15 +171,15 @@ onUnmounted(userRegistrationStore.reset);
     <template #footer>
       <ly-button
         class="primary w-full mb-4 float-right"
-        text="user_registration.create_account"
+        text="user-registrations.create_account"
         :disabled="status.isStatusLoading()"
         @click="register" />
 
       <div class="text-center pt-4">
         <small>
-          {{ $t('user_registration.is_member') }}
+          {{ $t('user-registrations.is_member') }}
           <router-link to="/login" class="no-underline font-bold">
-            {{ $t('auth.login.sign_in') }}
+            {{ $t('user-registrations.to_sign_in') }}
           </router-link>
         </small>
       </div>

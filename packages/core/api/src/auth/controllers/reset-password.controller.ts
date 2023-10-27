@@ -7,7 +7,7 @@ import {
 } from '@lyvely/core-interface';
 import { Public, UseClassSerializer } from '@/core';
 import { ResetPasswordService } from '../services';
-import { JwtResetPasswordGuard, EmailBodyThrottlerGuard } from '../guards';
+import { JwtResetPasswordGuard, LoginThrottlerGuard } from '../guards';
 import { CaptchaGuard } from '@/captchas';
 import { UserRequest, UserThrottle } from '@/users';
 
@@ -25,7 +25,7 @@ export class ResetPasswordController implements ResetPasswordEndpoint {
 
   @Public()
   @Post('send-mail')
-  @UseGuards(EmailBodyThrottlerGuard, CaptchaGuard)
+  @UseGuards(LoginThrottlerGuard, CaptchaGuard)
   @UserThrottle(2, 60)
   async sendMail(@Body() model: SendResetPasswordMail) {
     await this.resetPasswordService.sendMail(model.email);
