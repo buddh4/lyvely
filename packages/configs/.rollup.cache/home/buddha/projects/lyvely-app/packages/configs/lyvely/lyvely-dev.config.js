@@ -63,4 +63,3 @@ export const lyvelyDevConfig = {
         },
     },
 };
-//# sourceMappingURL=lyvely-dev.config.js.map

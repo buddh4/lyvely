@@ -1,4 +1,4 @@
-import { IFeature } from '@lyvely/web';
+import { IFeature } from '@lyvely/core-interface';
 import { JOURNALS_MODULE_ID } from './journals.constants';
 
 export const JournalsFeature: IFeature = {

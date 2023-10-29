@@ -7,7 +7,7 @@ import {
   UserSubscription,
   Subscription,
 } from './user-subscription.schema';
-import { createBaseEntityInstance, Schema, SubDocument } from '@/core';
+import { createBaseEntityInstance, Schema, Subdocument } from '@/core';
 import { PropertiesOf } from '@lyvely/common';
 
 const SubscriptionTypes = {
@@ -26,7 +26,7 @@ export class UserSubscriptionSchemaAddition {
     types.forEach((SubscriptionType) => {
       SubscriptionTypes[SubscriptionType.typeName] ||= SubscriptionType;
       const SubscriptionTypeSchema = SchemaFactory.createForClass(SubscriptionType);
-      Schema.path<SubDocument>(path).discriminator(
+      Schema.path<Subdocument>(path).discriminator(
         SubscriptionType.typeName,
         SubscriptionTypeSchema,
       );

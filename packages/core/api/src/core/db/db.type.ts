@@ -8,10 +8,10 @@ export type FilterQuery<T> = mongoose.FilterQuery<T>;
 export type QueryOptions<DocType = unknown> = mongoose.QueryOptions<DocType>;
 export type UpdateQuery<T> = mongoose.UpdateQuery<T>;
 
-export type Schema<T> = mongoose.Schema<T>;
+export type Schema<T = any> = mongoose.Schema<T>;
 
 export const Document = mongoose.Document;
-export type SubDocument = mongoose.Schema.Types.Subdocument;
+export type Subdocument = mongoose.Schema.Types.Subdocument;
 
 export const InjectConnection = NestInjectConnection;
 export type Connection = mongoose.Connection;

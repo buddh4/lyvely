@@ -1,6 +1,6 @@
 import { Type } from '@nestjs/common';
 import { SchemaFactory } from '@nestjs/mongoose';
-import { Schema, NestedSchema } from '@lyvely/core';
+import { Schema, NestedSchema, Subdocument } from '@lyvely/core';
 import { DataPointConfig } from './data-point-config.schema';
 
 const SchemaMapping = {};
@@ -19,7 +19,7 @@ export class TimeSeriesConfigSchemaFactory {
     valueConfigStrategies.forEach((configStrategy) => {
       const schema = SchemaMapping[configStrategy];
       if (schema) {
-        Schema.path<Schema.Types.Subdocument>('timeSeries').discriminator(
+        Schema.path<Subdocument>('timeSeries').discriminator(
           configStrategy,
           SchemaMapping[configStrategy],
         );
