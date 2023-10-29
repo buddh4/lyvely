@@ -2,6 +2,7 @@
 import { ContentModel } from '@lyvely/core-interface';
 import ContentStreamEntry from './ContentStreamEntry.vue';
 import { IStream } from '@/stream/composables/stream.composable';
+import { LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: ContentModel;
@@ -16,7 +17,7 @@ const props = defineProps<IProps>();
   <content-stream-entry v-bind="props" body-style="message" :merge="true" :message-width="true">
     <div>
       <span>
-        {{ model.content.text }}
+        <ly-markdown-view :md="model.content.text" />
       </span>
     </div>
   </content-stream-entry>

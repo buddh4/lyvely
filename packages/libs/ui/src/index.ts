@@ -46,6 +46,7 @@ import LyTimeNumberInput from './components/forms/LyTimeNumberInput.vue';
 import LyPasswordStrengthMeter from './components/forms/LyPasswordStrengthMeter.vue';
 import LyResponsive from './components/helpers/LyResponsive.vue';
 import LyTable from './components/tables/LyTable.vue';
+import LyMarkdownView from "@/components/markdown/LyMarkdownView.vue";
 import { App } from 'vue';
 import { Icons } from './components/icons/Icons';
 import { LyvelyUiOptions, setConfigOptions } from './config';
@@ -103,6 +104,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyTextarea', LyTextarea);
       Vue.component('LyTimeNumberInput', LyTimeNumberInput);
       Vue.component('LyPasswordStrengthMeter', LyPasswordStrengthMeter);
+      Vue.component('LyMarkdownView', LyMarkdownView);
     },
   };
 };
@@ -161,4 +163,5 @@ export {
   LyModal,
   LyConfirmModal,
   LyAvatar,
+  LyMarkdownView
 };

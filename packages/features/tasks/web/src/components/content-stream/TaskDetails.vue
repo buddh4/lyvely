@@ -3,7 +3,7 @@ import { TaskModel } from '@lyvely/tasks-interface';
 import { computed } from 'vue';
 import { useTaskCalendarPlanStore } from '@/stores';
 import { TimerState, ContentDetails, t } from '@lyvely/web';
-import { LyIcon, LyButton } from '@lyvely/ui';
+import { LyIcon, LyButton, LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: TaskModel;
@@ -38,7 +38,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
     </template>
     <template #body>
       <div v-if="model.content.text?.length" class="text-sm mb-2">
-        {{ model.content.text }}
+        <ly-markdown-view :md="model.content.text" />
       </div>
       <div class="flex justify-end">
         <timer-state

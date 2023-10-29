@@ -16,7 +16,7 @@ import {
   useCalendarPlanStore,
 } from '@lyvely/calendar-plan-web';
 import { useUpdateHabit } from '@/composables';
-import { LyIcon, LyButton } from '@lyvely/ui';
+import { LyIcon, LyButton, LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: HabitModel;
@@ -68,7 +68,7 @@ onUnmounted(unwatchDate);
     </template>
     <template #body>
       <div v-if="model.content.text?.length" class="mb-4">
-        {{ model.content.text }}
+        <ly-markdown-view :md="model.content.text" />
       </div>
       <div>
         <time-series-summary

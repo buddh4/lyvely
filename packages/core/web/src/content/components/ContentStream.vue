@@ -42,6 +42,7 @@ async function doScrollToHead(attempt = 0): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(() => {
       nextTick(() => {
+        if (!streamRoot.value) return;
         scrollToBottom(streamRoot.value);
         if (attempt < 3 && streamRoot.value.scrollTop !== streamRoot.value.scrollHeight) {
           doScrollToHead(++attempt).then(resolve);
@@ -67,7 +68,7 @@ const stream = useStream<ContentModel, ContentStreamFilter>(
   useContentStreamService(),
 );
 
-const { models, isInitialized } = stream;
+const { models, isReady, isInitialized } = stream;
 
 const error = ref<string>();
 
@@ -147,40 +148,41 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    v-if="isInitialized"
-    id="contentStreamRoot"
-    ref="streamRoot"
-    v-mobile-scrollbar
-    class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
-    <slot name="before" :stream="stream"></slot>
-    <div class="relative">
-      <slot name="stream-begin" :stream="stream"></slot>
-      <div class="px-2 md:px-6">
-        <template v-for="(model, index) in models" :key="model.id">
-          <Component
-            :is="getStreamEntryComponent(model)"
-            :model="model"
-            :stream="stream"
-            :index="index"
-            @select-tag="selectTag" />
-        </template>
-      </div>
-    </div>
-  </div>
-  <div v-else-if="error" class="absolute bg-body w-full h-full bg-body z-50 p-5">
-    <ly-alert type="danger" class="justify-center">
-      <div class="flex flex-col gap-2 items-center justify-center">
-        <div>{{ t(error) }}</div>
-        <ly-button class="primary text-xs" text="common.reload" @click="reload" />
-      </div>
-    </ly-alert>
-  </div>
-  <div v-else class="absolute bg-body w-full h-full bg-body z-50">
+  <div v-if="!isReady" class="absolute w-full h-full bg-body z-50">
     <div class="flex items-center w-full h-full justify-center">
       <ly-loader />
     </div>
   </div>
+  <div
+    id="contentStreamRoot"
+    ref="streamRoot"
+    v-mobile-scrollbar
+    class="overflow-auto scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
+    <div v-if="isInitialized">
+      <slot name="before" :stream="stream"></slot>
+      <div class="relative">
+        <slot name="stream-begin" :stream="stream"></slot>
+        <div class="px-2 md:px-6">
+          <template v-for="(model, index) in models" :key="model.id">
+            <Component
+              :is="getStreamEntryComponent(model)"
+              :model="model"
+              :stream="stream"
+              :index="index"
+              @select-tag="selectTag" />
+          </template>
+        </div>
+      </div>
+    </div>
+    <div v-else-if="error" class="absolute w-full h-full bg-body z-50 p-5">
+      <ly-alert type="danger" class="justify-center">
+        <div class="flex flex-col gap-2 items-center justify-center">
+          <div>{{ t(error) }}</div>
+          <ly-button class="primary text-xs" text="common.reload" @click="reload" />
+        </div>
+      </ly-alert>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<style></style>

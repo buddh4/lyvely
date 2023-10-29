@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ContentModel } from '@lyvely/core-interface';
 import { ContentStreamEntry } from '@/content';
+import { LyMarkdownView } from '@lyvely/ui';
 import { IStream } from '@/stream';
 
 export interface IProps {
@@ -21,7 +22,7 @@ const props = defineProps<IProps>();
     :show-type="false">
     <div>
       <span>
-        {{ model.content.text }}
+        <ly-markdown-view :md="model.content.text!" />
       </span>
     </div>
   </content-stream-entry>

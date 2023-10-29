@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { JournalModel } from '@lyvely/journals-interface';
 import { ContentDetails } from '@lyvely/web';
-import { LyIcon } from '@lyvely/ui';
+import { LyIcon, LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: JournalModel;
@@ -20,7 +20,7 @@ defineProps<IProps>();
       </div>
     </template>
     <template #body>
-      {{ model.content.text }}
+      <ly-markdown-view :md="model.content.text" />
     </template>
   </content-details>
 </template>

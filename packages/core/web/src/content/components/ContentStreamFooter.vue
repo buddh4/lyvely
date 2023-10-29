@@ -55,18 +55,19 @@ const onInputKeydown = (evt: KeyboardEvent) => {
   }
 };
 
-const autoHeight = (textarea: HTMLTextAreaElement) => {
-  textarea.addEventListener('input', () => {
-    if (textarea.scrollHeight < 300) {
+function autoAlignHeight() {
+  setTimeout(() => {
+    const textarea = messageInput.value!;
+    if (textarea.offsetHeight < 350 || textarea.offsetHeight > textarea.scrollHeight) {
       textarea.style.height = 'auto';
       textarea.style.height = textarea.scrollHeight + 'px';
     }
   });
-};
+}
 
 onMounted(() => {
   focusIfNotTouchScreen(messageInput.value);
-  autoHeight(messageInput.value!);
+  messageInput.value?.addEventListener('input', () => autoAlignHeight());
 });
 </script>
 
@@ -91,7 +92,8 @@ onMounted(() => {
           class="resize-none overflow-auto"
           :placeholder="$t(placeholderKey)"
           @keyup.enter="submitMessage"
-          @keydown="onInputKeydown" />
+          @keydown="onInputKeydown"
+          @paste="autoAlignHeight" />
 
         <ly-button class="primary rounded-full w-10 h-10 flex items-center" @click="submitMessage">
           <ly-icon name="send"></ly-icon>

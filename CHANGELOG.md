@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementation of Permission API
 - Access by username or email
 - Use of unique usernames + displayName
+- Added Markdown support
 
 
 ### Changed

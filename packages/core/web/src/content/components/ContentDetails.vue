@@ -8,6 +8,7 @@ import { computed, unref } from 'vue';
 import { translate } from '@/i18n';
 import { getContentTypeOptions } from '../services';
 import { useUserInfo } from '@/profiles/composables';
+import { LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: ContentModel;
@@ -67,7 +68,7 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
   </div>
   <div class="p-2.5 md:px-4 bg-main border-divide rounded-b text-sm">
     <slot name="body">
-      {{ model.content.text }}
+      <ly-markdown-view :md="model.content.text" />
     </slot>
   </div>
   <div v-if="$slots.footer" class="bg-main rounded-b p-2.5 md:p-4 border-t border-divide">

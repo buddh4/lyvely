@@ -17,7 +17,7 @@ import { computed, onBeforeMount, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useMilestonePlanService } from '@/services';
 import { useRouter } from 'vue-router';
-import { LyIcon, LyProgressBar, LyTrim } from '@lyvely/ui';
+import { LyIcon, LyProgressBar, LyTrim, LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: MilestoneModel;
@@ -72,7 +72,7 @@ onBeforeMount(async () => {
     <template #body>
       <ly-progress-bar :progress="progress" />
       <p class="my-4 text-sm">
-        {{ model.content.text }}
+        <ly-markdown-view :md="model.content.text" />
       </p>
       <table v-if="relations.length" class="border-collapse table-auto text-xs">
         <tbody>

@@ -75,7 +75,8 @@ const cssClass = computed(() => {
 
 const router = useRouter();
 
-function onContentClick() {
+function onContentClick(evt: MouseEvent) {
+  if (evt.target instanceof HTMLAnchorElement) return;
   if (isTextSelection()) return;
   router.push({ name: 'content-details', params: { pid: props.model.pid, cid: props.model.id } });
 }
@@ -104,7 +105,7 @@ const bodyWrapperClass = computed(
 );
 
 // Just experimental
-const maxWidth = false;
+const maxWidth = true;
 </script>
 
 <template>
@@ -151,7 +152,7 @@ const maxWidth = false;
                   </template>
                 </tag-list>
               </div>
-              <div class="text-sm">
+              <div class="content-stream-entry-body text-sm">
                 <slot></slot>
               </div>
               <div v-if="model.meta.childCount" class="flex mt-2 justify-end">
@@ -172,5 +173,33 @@ const maxWidth = false;
 <style>
 .message-bubble {
   border-radius: 18px;
+}
+
+.content-stream-entry-body {
+  color: var(--text-main);
+}
+
+.content-stream-entry-body a[target^='_blank'] {
+  display: flex;
+  align-items: center;
+}
+
+.content-stream-entry-body a[target^='_blank']::after {
+  --svg: url('data:image/svg+xml,\
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">\
+            <path d="M17 13v6c0 0.276-0.111 0.525-0.293 0.707s-0.431 0.293-0.707 0.293h-11c-0.276 0-0.525-0.111-0.707-0.293s-0.293-0.431-0.293-0.707v-11c0-0.276 0.111-0.525 0.293-0.707s0.431-0.293 0.707-0.293h6c0.552 0 1-0.448 1-1s-0.448-1-1-1h-6c-0.828 0-1.58 0.337-2.121 0.879s-0.879 1.293-0.879 2.121v11c0 0.828 0.337 1.58 0.879 2.121s1.293 0.879 2.121 0.879h11c0.828 0 1.58-0.337 2.121-0.879s0.879-1.293 0.879-2.121v-6c0-0.552-0.448-1-1-1s-1 0.448-1 1zM10.707 14.707l9.293-9.293v3.586c0 0.552 0.448 1 1 1s1-0.448 1-1v-6c0-0.136-0.027-0.265-0.076-0.383s-0.121-0.228-0.216-0.323c-0.001-0.001-0.001-0.001-0.002-0.002-0.092-0.092-0.202-0.166-0.323-0.216-0.118-0.049-0.247-0.076-0.383-0.076h-6c-0.552 0-1 0.448-1 1s0.448 1 1 1h3.586l-9.293 9.293c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0z"></path>\
+        </svg>');
+
+  content: '';
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  mask: var(--svg);
+  -webkit-mask: var(--svg);
+  background-color: white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: inline-block;
 }
 </style>

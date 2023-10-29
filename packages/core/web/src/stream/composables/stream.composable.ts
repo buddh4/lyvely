@@ -63,6 +63,7 @@ export function useStream<
   const events = mitt<StreamEvents<TModel>>();
   const filter = options.filter || ref(new MockFilter());
   const isInitialized = ref(false);
+  const isReady = ref(false);
 
   function reset(hard = true) {
     state.value = {};
@@ -99,6 +100,7 @@ export function useStream<
 
   async function init() {
     isInitialized.value = false;
+    isReady.value = false;
 
     reset(false);
 
@@ -108,9 +110,12 @@ export function useStream<
 
     options.scrollToHeadOnInit = initOptions?.scrollToHeadOnInit || options.scrollToHeadOnInit;
 
-    await _initialScroll();
+    isInitialized.value = true;
+
     return new Promise((resolve) => {
-      setTimeout(() => resolve((isInitialized.value = true)), 50);
+      setTimeout(() => {
+        _initialScroll().then(() => resolve((isReady.value = true)));
+      });
     });
   }
 
@@ -118,19 +123,27 @@ export function useStream<
     history: IStreamHistory<TModel, TRestoreState, TFilter, TState, TOptions>,
   ) {
     isInitialized.value = false;
+    isReady.value = false;
     models.value = history.models;
     filter.value = history.filter;
     state.value = history.state;
     _initInfiniteScroll();
 
-    nextTick(() => {
+    isInitialized.value = true;
+    isReady.value = true;
+
+    setTimeout(() => {
       if (options.root?.value && history.restoreState.scrollTop) {
         options.root!.value!.scrollTop = history.restoreState.scrollTop;
       }
-    });
+    }, 50);
 
     return new Promise((resolve) => {
-      setTimeout(() => resolve((isInitialized.value = true)), 50);
+      setTimeout(() => {
+        isInitialized.value = true;
+        isReady.value = true;
+        resolve(true);
+      }, 50);
     });
   }
 
@@ -151,40 +164,38 @@ export function useStream<
   }
 
   async function scrollToHead() {
+    if (options.scrollToHead) return options.scrollToHead();
     if (!options.root?.value) return;
 
-    return options.scrollToHead
-      ? options.scrollToHead()
-      : new Promise((resolve) => {
-          setTimeout(() => {
-            nextTick(() => {
-              if (options.direction === StreamDirection.BBT) {
-                scrollToBottom(options.root!.value!);
-              } else {
-                scrollToTop(options.root!.value!);
-              }
-              resolve(true);
-            });
-          }, 100);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        nextTick(() => {
+          if (options.direction === StreamDirection.BBT) {
+            scrollToBottom(options.root!.value!);
+          } else {
+            scrollToTop(options.root!.value!);
+          }
+          resolve(true);
         });
+      });
+    });
   }
 
   async function scrollToTail() {
+    if (options.scrollToTail) return options.scrollToTail();
     if (!options.root?.value) return;
-    return options.scrollToTail
-      ? options.scrollToTail()
-      : new Promise((resolve) => {
-          setTimeout(() => {
-            nextTick(() => {
-              if (options.direction === StreamDirection.BBT) {
-                scrollToTop(options.root!.value!);
-              } else {
-                scrollToBottom(options.root!.value!);
-              }
-              resolve(true);
-            });
-          });
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        nextTick(() => {
+          if (options.direction === StreamDirection.BBT) {
+            scrollToTop(options.root!.value!);
+          } else {
+            scrollToBottom(options.root!.value!);
+          }
+          resolve(true);
         });
+      });
+    });
   }
 
   function _initInfiniteScroll() {
@@ -320,6 +331,7 @@ export function useStream<
     loadTailStatus,
     loadHeadStatus,
     isInitialized,
+    isReady,
     getStreamEntryAt,
     getStreamEntryById,
     filter,

@@ -3,6 +3,8 @@ import { SystemMessageModel } from '@lyvely/core-interface';
 import { useAppConfigStore } from '@/app-config';
 import { ContentDetails } from '@/content';
 import { RelativeTime } from '@/calendar';
+import { LyMarkdownView } from '@lyvely/ui';
+import { t } from '@/i18n';
 
 export interface IProps {
   model: SystemMessageModel;
@@ -30,7 +32,7 @@ const appName = useAppConfigStore().get('appName');
     </template>
     <template #body>
       <p v-if="model.content.text" class="my-4 text-sm">
-        {{ $t(model.content.text, model.content.params || {}) }}
+        <ly-markdown-view :md="t(model.content.text, model.content.params || {})" />
       </p>
     </template>
   </content-details>
