@@ -168,7 +168,7 @@ export class LyvelyServer {
       return;
     }
 
-    this.logger.log('Using cors origin', cors);
+    this.logger.log(`Using cors origin ${cors.origin}`);
 
     cors.credentials = cors.credentials !== false;
     cors.methods ||= ['GET', 'POST', 'PUT'];
