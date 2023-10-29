@@ -21,7 +21,7 @@ import { t } from '@/i18n';
 
     <template #footer>
       <div class="flex justify-center items-center">
-        <ly-button :route="'/'" class="primary" text="common.back_to_home" />
+        <ly-button :route="{ path: '/' }" class="primary" text="common.back_to_home" />
       </div>
     </template>
   </ly-centered-panel>
