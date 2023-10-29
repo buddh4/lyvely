@@ -27,7 +27,6 @@
       1,
       "always",
       [
-        "accounts",
         "activities",
         "mixed",
         "docs",
@@ -54,7 +53,6 @@
         "deps",
         "time-series",
         "system-messages",
-        "invitations",
         "messages",
         "milestones",
         "activities",
@@ -62,6 +60,8 @@
         "journals",
         "legal",
         "user-registrations",
+        "user-accounts",
+        "user-invitations",
         "release"
       ]
     ]
