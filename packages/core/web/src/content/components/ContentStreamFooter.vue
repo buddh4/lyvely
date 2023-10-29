@@ -17,14 +17,17 @@ const props = defineProps<IProps>();
 const { filter } = storeToRefs(useContentStreamFilterStore());
 const emits = defineEmits(['contentCreated']);
 
-const messageInput = ref<HTMLElement>();
+const messageInput = ref<HTMLTextAreaElement>();
 
 const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
 
-async function submitMessage() {
-  const newMessage = await createMessageStore.submit(filter.value.parentId);
-  emits('contentCreated', newMessage);
+async function submitMessage(evt: KeyboardEvent) {
+  if (!evt.shiftKey) {
+    const newMessage = await createMessageStore.submit(filter.value.parentId);
+    emits('contentCreated', newMessage);
+    messageInput.value!.style.height = 'auto';
+  }
 }
 
 async function openCreateContentModal() {
@@ -47,10 +50,24 @@ const onInputKeydown = (evt: KeyboardEvent) => {
   if (evt.ctrlKey && evt.key === '+') {
     evt.preventDefault();
     openCreateContentModal();
+  } else if (evt.key === 'Enter' && !evt.shiftKey) {
+    evt.preventDefault();
   }
 };
 
-onMounted(() => focusIfNotTouchScreen(messageInput.value));
+const autoHeight = (textarea: HTMLTextAreaElement) => {
+  textarea.addEventListener('input', () => {
+    if (textarea.scrollHeight < 300) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    }
+  });
+};
+
+onMounted(() => {
+  focusIfNotTouchScreen(messageInput.value);
+  autoHeight(messageInput.value!);
+});
 </script>
 
 <template>
@@ -65,14 +82,17 @@ onMounted(() => focusIfNotTouchScreen(messageInput.value));
           @click="openCreateContentModal">
           <ly-icon name="plus"></ly-icon>
         </ly-button>
-        <input
+
+        <textarea
           ref="messageInput"
           v-model="model.text"
+          rows="1"
           type="text"
-          class="rounded-full"
+          class="resize-none overflow-auto"
           :placeholder="$t(placeholderKey)"
           @keyup.enter="submitMessage"
           @keydown="onInputKeydown" />
+
         <ly-button class="primary rounded-full w-10 h-10 flex items-center" @click="submitMessage">
           <ly-icon name="send"></ly-icon>
         </ly-button>
