@@ -12,7 +12,9 @@ export class AppConfigController implements AppConfigEndpoint {
   @Get()
   async getConfig(@Req() req: LyvelyRequest): Promise<IAppConfig> {
     const config = this.appConfigService.getAppConfig();
-    config.csrf_token = req.csrfToken();
+    if (req.csrfToken) {
+      config.csrf_token = req.csrfToken();
+    }
     return config;
   }
 }
