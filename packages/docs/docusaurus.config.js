@@ -123,6 +123,7 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Lyvely.`,
       },
       prism: {
+        additionalLanguages: ['typescript'],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
