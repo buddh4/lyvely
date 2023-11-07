@@ -13,7 +13,7 @@ const { reset, submit } = createProfileStore;
 const router = useRouter();
 
 const createProfile = () =>
-  submit().then((profile) => router.push(profileRoute('/stream', profile.id)));
+  submit().then((profile) => router.push(profileRoute('/stream', profile.handle)));
 
 const userType = ProfileType.User;
 const groupType = ProfileType.Group;

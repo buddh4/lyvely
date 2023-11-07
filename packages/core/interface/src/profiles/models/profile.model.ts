@@ -30,6 +30,9 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   name: string;
 
   @Expose()
+  handle: string;
+
+  @Expose()
   hasOrg: boolean;
 
   @Expose()

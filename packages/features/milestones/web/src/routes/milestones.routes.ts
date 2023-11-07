@@ -15,7 +15,7 @@ export const milestoneRoutes = [
     beforeEnter: [
       (to, from, next) => {
         if (useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id).value) {
-          next(profileRoute('/activities/milestones', useProfileStore().profile!.id));
+          next(profileRoute('/activities/milestones', useProfileStore().profile!.handle));
         }
         next();
       },

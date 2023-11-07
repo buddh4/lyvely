@@ -37,7 +37,17 @@ export class ProfileDao extends AbstractDao<Profile> {
     return this.findOne({ type: ProfileType.Organization, name });
   }
 
-  async findOneByOwnerOrOrganizationName(owner: EntityIdentity<User>, name: string) {
+  /**
+   * This function searches for a profile which meets any of the following conditions:
+   *
+   * - A profile with the given owner and name.
+   * - Any organization with the given name.
+   *
+   * This is usually used to check in case an organization name is available.
+   * @param owner
+   * @param name
+   */
+  async findExistingProfileByOrganizationName(owner: EntityIdentity<User>, name: string) {
     return this.findOne({
       $or: [
         { ownerId: assureObjectId(owner), name },
@@ -72,7 +82,29 @@ export class ProfileDao extends AbstractDao<Profile> {
     type: ProfileType,
     options?: IBaseFetchQueryOptions<Profile>,
   ): Promise<Profile | null> {
-    return this.findByIdAndFilter(identity, { type: type }, options);
+    return this.findByIdAndFilter(identity, { type }, options);
+  }
+
+  async findByTypeAndHandle(
+    handle: string,
+    type: ProfileType,
+    options?: IBaseFetchQueryOptions<Profile>,
+  ): Promise<Profile | null> {
+    return this.findOne({ type, handle }, options);
+  }
+
+  async findByHandle(
+    handle: string,
+    options?: IBaseFetchQueryOptions<Profile>,
+  ): Promise<Profile | null> {
+    return this.findOne({ handle }, options);
+  }
+
+  async findByHandles(
+    handles: string[],
+    options?: IBaseFetchQueryOptions<Profile>,
+  ): Promise<Profile[]> {
+    return this.findAll({ handle: { $in: handles } }, options);
   }
 
   async addTags(profile: Profile, tags: Tag[]) {

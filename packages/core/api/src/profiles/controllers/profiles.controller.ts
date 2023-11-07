@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Put,
-  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -23,7 +22,7 @@ import {
 } from '@lyvely/core-interface';
 import { ProfilesService, ProfileRelationsService } from '../services';
 import { UserAndProfileRelations, ProtectedProfileContext } from '../models';
-import { OptionalUser, OptionalUserRequest, UserRequest } from '@/users';
+import { OptionalUserRequest, UserRequest } from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
 import { ProtectedProfileRequest } from '../types';
@@ -39,17 +38,23 @@ export class ProfilesController implements ProfilesEndpoint {
     private profileVisibilityPolicy: ProfileVisibilityPolicy,
   ) {}
 
-  @Get(':id')
-  async getProfile(
-    @Param('id') pid: string,
+  @Get()
+  async getDefaultProfile(@Request() req: OptionalUserRequest): Promise<ProfileWithRelationsModel> {
+    const { user } = req;
+
+    if (!user) throw new ForbiddenException();
+    const profileRelations = await this.profilesService.findDefaultProfile(user);
+    return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, profileRelations);
+  }
+
+  @Get('by-handle/:handle')
+  async getProfileByHandle(
+    @Param('handle') handle: string,
     @Request() req: OptionalUserRequest,
-    @Query('oid') oid?: string,
   ): Promise<ProfileWithRelationsModel> {
     const { user } = req;
-    if (pid === 'default') return this.getDefaultProfile(user);
 
-    // TODO: Here we could potentially save one db call when fetching user relations
-    const context = await this.profilesService.findProfileContext(user, pid, oid);
+    const context = await this.profilesService.findProfileContextByHandle(user, handle);
     const profileRelations = await this.profilesRelationsService.findProfileRelations(
       context.profile,
       user,
@@ -60,10 +65,22 @@ export class ProfilesController implements ProfilesEndpoint {
     return mapType(UserAndProfileRelations, ProfileWithRelationsModel<any>, profileRelations);
   }
 
-  private async getDefaultProfile(user: OptionalUser): Promise<ProfileWithRelationsModel> {
-    if (!user) throw new ForbiddenException();
-    const profileRelations = await this.profilesService.findDefaultProfile(user);
-    return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, profileRelations);
+  @Get(':pid')
+  async getProfileById(
+    @Param('pid') pid: string,
+    @Request() req: OptionalUserRequest,
+  ): Promise<ProfileWithRelationsModel> {
+    const { user } = req;
+
+    const context = await this.profilesService.findProfileContext(user, pid);
+    const profileRelations = await this.profilesRelationsService.findProfileRelations(
+      context.profile,
+      user,
+    );
+
+    if (!(await this.profileVisibilityPolicy.verify(context))) throw new ForbiddenException();
+
+    return mapType(UserAndProfileRelations, ProfileWithRelationsModel<any>, profileRelations);
   }
 
   @Post()

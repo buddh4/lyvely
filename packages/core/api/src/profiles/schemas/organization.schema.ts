@@ -1,6 +1,6 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from './profiles.schema';
-import { EntityIdentity, ObjectIdProp, TObjectId } from '@/core';
+import { ObjectIdProp, TObjectId } from '@/core';
 import { User } from '@/users';
 import { ProfileType } from '@lyvely/core-interface';
 
@@ -9,7 +9,7 @@ export class Organization extends Profile {
   @ObjectIdProp({ required: true })
   oid: TObjectId;
 
-  constructor(owner: EntityIdentity<User>, obj?: Partial<Organization>) {
+  constructor(owner: User, obj?: Partial<Organization>) {
     super(owner, obj);
     this.type = ProfileType.Organization;
     // OID is set in super constructor

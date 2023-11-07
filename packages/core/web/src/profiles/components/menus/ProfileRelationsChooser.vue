@@ -22,13 +22,15 @@ const router = useRouter();
 async function setProfile(pid: string) {
   const currentRoute = router.currentRoute.value;
   const paramKeys = Object.keys(currentRoute.params);
-  // TODO: check if feature is enabled on target profile
-  const useDefaultName =
-    currentRoute.meta.nonProfileView || paramKeys.length > 1 || !paramKeys.includes('pid');
-  const name = useDefaultName
-    ? 'stream'
-    : currentRoute.meta.baseName || currentRoute.name || 'stream';
-  const result = await router.push({ name, params: { pid } });
+
+  const isProfileView = currentRoute.meta.profileView !== false;
+
+  // TODO: check if feature is enabled on target profile + better default feature handling
+  const name = isProfileView ? currentRoute.meta.baseName || currentRoute.name : undefined;
+  const result = await router.push({
+    name: 'PID',
+    params: { pid, name: name as string | undefined },
+  });
   if (isNavigationFailure(result)) console.error(result);
 }
 

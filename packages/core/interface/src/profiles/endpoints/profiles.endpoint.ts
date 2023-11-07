@@ -3,7 +3,9 @@ import { Endpoint, IEditModelService } from '@lyvely/common';
 
 export interface IProfilesService
   extends IEditModelService<ProfileWithRelationsModel, CreateProfileModel, UpdateProfileModel> {
-  getProfile(id: string): Promise<ProfileWithRelationsModel>;
+  getProfileByHandle(handle: string): Promise<ProfileWithRelationsModel>;
+  getProfileById(id: string): Promise<ProfileWithRelationsModel>;
+  getDefaultProfile(): Promise<ProfileWithRelationsModel>;
 }
 
 export type ProfilesEndpoint = Endpoint<IProfilesService>;

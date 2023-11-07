@@ -9,14 +9,29 @@ import profileRepository from '@/profiles/repositories/profile.repository';
 import { localStorageManager } from '@/core';
 
 class ProfilesService implements IProfilesService {
-  async getProfile(id: string): Promise<ProfileWithRelationsModel> {
-    const { data } = await profileRepository.getProfile(
-      id,
-      localStorageManager.get(`profile_oid_${id}`),
-    );
+  async getProfileByHandle(handle: string): Promise<ProfileWithRelationsModel> {
+    const { data } = await profileRepository.getProfileByHandle(handle);
+    const profile = new ProfileWithRelationsModel(data);
+    if (profile.hasOrg) {
+      localStorageManager.set(`profile_oid_${profile.id}`, profile.oid);
+    }
+    return profile;
+  }
+
+  async getProfileById(id: string): Promise<ProfileWithRelationsModel> {
+    const { data } = await profileRepository.getProfileById(id);
     const profile = new ProfileWithRelationsModel(data);
     if (profile.hasOrg) {
       localStorageManager.set(`profile_oid_${id}`, profile.oid);
+    }
+    return profile;
+  }
+
+  async getDefaultProfile(): Promise<ProfileWithRelationsModel> {
+    const { data } = await profileRepository.getDefaultProfile();
+    const profile = new ProfileWithRelationsModel(data);
+    if (profile.hasOrg) {
+      localStorageManager.set(`profile_oid_${profile.id}`, profile.oid);
     }
     return profile;
   }

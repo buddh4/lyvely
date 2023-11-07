@@ -27,7 +27,7 @@ const path = computed(() => {
     }
 
     if (!isProfileRoute.value || i > 1) {
-      // We ignore /p/:pid
+      // We ignore /p/:handle
       result.push({ path: curr, name: subPathName });
     }
   });

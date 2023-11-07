@@ -5,7 +5,12 @@ import { BaseEntity, createObjectId, getDefaultLocale } from '@/core';
 import { PropertiesOf, getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
-import { USER_DISPLAY_NAME_REGEX, UserModel, UserStatus } from '@lyvely/core-interface';
+import {
+  UserModel,
+  UserStatus,
+  VALID_HANDLE_REGEX,
+  VALID_DISPLAY_NAME_REGEX,
+} from '@lyvely/core-interface';
 import { Avatar, AvatarSchema } from '@/avatars';
 import { UserEmail, UserEmailSchema } from './user-email.schema';
 import { ProfilesCount, ProfilesCountSchema } from './profiles-count.schema';
@@ -14,8 +19,12 @@ import {
   UserNotificationStateSchema,
 } from './user-notification-state.schema';
 
+/**
+ * This class defines the user schema of user documents.
+ */
 @Schema({ timestamps: true })
 export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
+  /** The main email of this user. **/
   @Prop({
     unique: true,
     required: true,
@@ -23,56 +32,66 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   })
   email: string;
 
-  @Prop()
+  /** The guid of this user used in the frontend. **/
+  @Prop({ unique: true })
   guid: string;
 
+  /** The avatar model of this user. **/
   @Prop({ type: AvatarSchema })
-  //@PropertyType(Avatar, { default: undefined })
   avatar?: Avatar;
 
   /**
-   * The main email address of the user used for authentication and default email address.
-   * Note: This email address is saved in lower case, the original email is available in the emails array.
+   * Contains all emails registered by this user.
+   * User emails should only be actively used once confirmed.
    */
   @Prop({ type: [UserEmailSchema], required: true })
   @PropertyType([UserEmail])
   emails: UserEmail[];
 
+  /** Whether the user is enabled. **/
   @Prop({ default: true })
   enabled: boolean;
 
-  @Prop({ required: true })
+  /** The unique username of this user. **/
+  @Prop({ required: true, validate: VALID_HANDLE_REGEX })
   username: string;
 
-  @Prop({ required: true, validate: USER_DISPLAY_NAME_REGEX })
+  /** The non-unique display name of this user. **/
+  @Prop({ required: true, validate: VALID_DISPLAY_NAME_REGEX })
   displayName: string;
 
+  /** The hashed password of this user. **/
   @Prop({ required: true })
   password: string;
 
-  @Prop({ default: Date.now })
-  lastSeenAt: Date;
-
+  // TODO: Proper validation.
+  /** The locale of this user. **/
   @Prop({ default: getDefaultLocale() })
   locale: string;
 
+  /** Known refresh tokens of this user. **/
   @Prop({ type: [RefreshTokenSchema], default: [] })
   refreshTokens: RefreshToken[];
 
+  /** The status of this user. **/
   @PropertyType(Number, { default: UserStatus.Disabled })
   @Prop({ enum: getNumberEnumValues(UserStatus), required: true })
   status: UserStatus;
 
+  /** Keeps track of profile membership counts by profile type. **/
   @PropertyType(ProfilesCount, { default: () => new ProfilesCount() })
   @Prop({ type: ProfilesCountSchema, required: true })
   profilesCount: ProfilesCount;
 
+  /** Can be used to reset all active tokens. **/
   @Prop({ type: Date })
   sessionResetAt?: Date;
 
+  /** Keeps track of the date of the latest password reset. **/
   @Prop({ type: Date })
   passwordResetAt?: Date;
 
+  /** Used for balanced notifications in order to not annoy users. **/
   @Prop({ type: UserNotificationStateSchema })
   @PropertyType(UserNotificationState)
   notification: UserNotificationState;
@@ -80,6 +99,12 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   createdAt: Date;
   updatedAt: Date;
 
+  /**
+   * Hook, which runs after initialization. used for certain defaults as:
+   *
+   * - Pushes the main email to the emails array, if it does not exist.
+   * - Creates a guid
+   */
   afterInit() {
     if (this.email && !this.getUserEmail(this.email)) {
       this.emails.push(new UserEmail(this.email));
@@ -99,42 +124,74 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
     }
   }
 
+  /**
+   * Returns a UserEmail instance if the given email is connected with this user in a case-insensitive manner.
+   * @param email the email.
+   */
   getUserEmail(email: string) {
     return this.emails.find((userEmail) => userEmail.email.toLowerCase() === email.toLowerCase());
   }
 
+  /**
+   * Returns a UserEmail instance if the given email is connected and verified by this user in a case-insensitive manner.
+   * @param email the email.
+   */
   getVerifiedUserEmail(email: string) {
     return this.emails.find(
       (userEmail) => userEmail.verified && userEmail.email.toLowerCase() === email.toLowerCase(),
     );
   }
 
+  /**
+   * Returns a UserEmail instance if the given email is connected and not yet verified by this user in a case-insensitive manner.
+   * @param email the email.
+   */
   getUnverifiedUserEmail(email: string) {
     return this.emails.find(
       (userEmail) => !userEmail.verified && userEmail.email.toLowerCase() === email.toLowerCase(),
     );
   }
 
+  /**
+   * Returns all UserEmail instances of unverified emails connected to this user.
+   */
   getUnverifiedUserEmails() {
     return this.emails.filter((userEmail) => !userEmail.verified);
   }
 
+  /**
+   * Returns all UserEmail instances of verified emails connected to this user.
+   */
   getVerifiedUserEmails() {
     return this.emails.filter((userEmail) => userEmail.verified);
   }
 
+  /**
+   * Checks if this user has an active state.
+   */
   isAcitve() {
     return this.hasStatus(UserStatus.Active);
   }
 
+  /**
+   * Checks if this user has a specific state.
+   * @param status The state to check against.
+   */
   hasStatus(status: UserStatus) {
     return this.status === status;
   }
 
+  /**
+   * Returns the display name of this user.
+   */
   getDisplayName() {
     return this.displayName;
   }
 
+  /**
+   * Returns a refresh token connected with the given visitor-id.
+   * @param vid The visitor-id to search for.
+   */
   getRefreshTokenByVisitorId(vid: string): RefreshToken | undefined {
     if (!vid) {
       return undefined;
@@ -143,6 +200,9 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
     return this.refreshTokens?.find((token) => token.vid === vid);
   }
 
+  /**
+   * Returns the locale of this user or a default locale in case no locale was set.
+   */
   getLocale() {
     if (!this.locale) {
       this.locale = getDefaultLocale();
@@ -176,39 +236,39 @@ UserSchema.pre('validate', function (next) {
   }
 });
 
+// Make sure we hash the password in case it is part of an findOneAndUpdate query.
 UserSchema.pre('findOneAndUpdate', function (next) {
   preUpdateQuery(this.getUpdate() as UpdateQuery<User>, next);
 });
 
+// Make sure we hash the password in case it is part of an findOneAndReplace query.
 UserSchema.pre('findOneAndReplace', function (next) {
   preUpdateQuery(this.getUpdate() as UpdateQuery<User>, next);
 });
 
+// Make sure we hash the password in case it is part of an updateOne query.
 UserSchema.pre('updateOne', function (next) {
   preUpdateQuery((<UpdateQuery<User>>this).getUpdate(), next);
 });
 
+// Make sure we hash the password in case it is part of an replaceOne query.
 UserSchema.pre('replaceOne', function (next) {
   preUpdateQuery((<UpdateQuery<User>>this).getUpdate(), next);
 });
 
+// We do not support multi password updates, so we remove it from any updateMany query.
 UserSchema.pre('updateMany', function (next) {
-  // Prevent multi password updates
   const update = (<UpdateQuery<User>>this).getUpdate();
   if (update.password) delete update.password;
   if (update.$set.password) delete update.$set.password;
   next();
 });
 
-UserSchema.index(
-  { username: 1 },
-  { unique: true, collation: { locale: 'en', strength: 1 }, name: 'UniqueUsernameIndex' },
-);
-UserSchema.index(
-  { 'emails.email': 1 },
-  { collation: { locale: 'en', strength: 1 }, name: 'UserEmailIndex' },
-);
-
+/**
+ * Assure we hash passwords if part of an update query.
+ * @param update The update query.
+ * @param next Mongoose next hook.
+ */
 function preUpdateQuery(update: UpdateQuery<User>, next) {
   if (update?.password) {
     hash(update.password, 10, (err, hash) => {
@@ -227,6 +287,11 @@ function preUpdateQuery(update: UpdateQuery<User>, next) {
   }
 }
 
+/**
+ * Assure we hash passwords if part of a document update.
+ * @param update The document to update.
+ * @param next Mongoose next hook.
+ */
 function preUpdateModel(update: User, next) {
   if (update?.password) {
     hash(update.password, 10, (err, hash) => {
@@ -238,3 +303,13 @@ function preUpdateModel(update: User, next) {
     next();
   }
 }
+
+UserSchema.index(
+  { username: 1 },
+  { unique: true, collation: { locale: 'en', strength: 1 }, name: 'UniqueUsernameIndex' },
+);
+
+UserSchema.index(
+  { 'emails.email': 1 },
+  { collation: { locale: 'en', strength: 1 }, name: 'UserEmailIndex' },
+);

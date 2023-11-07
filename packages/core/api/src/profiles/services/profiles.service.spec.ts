@@ -1,9 +1,10 @@
 import { ProfilesService } from './index';
 import { UniqueConstraintException } from '@lyvely/common';
 import {
-  ProfileType,
-  ProfileMembershipRole,
   BaseUserProfileRelationType,
+  ProfileMembershipRole,
+  ProfileType,
+  ProfileVisibilityLevel,
 } from '@lyvely/core-interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
@@ -83,7 +84,7 @@ describe('ProfileService', () => {
       });
     });
 
-    describe('createGroupProfile()', () => {
+    describe('createOrganization()', () => {
       it('create organization', async () => {
         const user = await testData.createUser('User1');
         const { profile, relations } = await profileService.createOrganization(user, {
@@ -120,7 +121,7 @@ describe('ProfileService', () => {
         expectOwnerRelationship(relations);
       });
 
-      it('PRO_PO07: organization name is globally unique', async () => {
+      it('organization name is globally unique', async () => {
         const user = await testData.createUser('User1');
         await profileService.createOrganization(user, { name: 'SomeOrganization' });
 
@@ -132,7 +133,7 @@ describe('ProfileService', () => {
         });
       });
 
-      it('PRO_PO08: organization name is unique per owner', async () => {
+      it('organization name is unique per owner', async () => {
         const user = await testData.createUser('User1');
         await profileService.createUserProfile(user, { name: 'SomeOrganization' });
 
@@ -145,7 +146,7 @@ describe('ProfileService', () => {
     });
   });
 
-  describe('Group Profile', () => {
+  describe('createGroupProfile', () => {
     it('create named group profile', async () => {
       const user = await testData.createUser('User1');
       const { profile, relations } = await profileService.createGroupProfile(user, {
@@ -257,6 +258,7 @@ describe('ProfileService', () => {
         });
 
         expect(profile.name).toEqual('OwnerProfile');
+        expect(profile.handle).toEqual('OwnerProfile');
         expect(profile.locale).toEqual(organization.locale);
         expect(profile.ownerId).toEqual(owner._id);
         expect(profile.type).toEqual(ProfileType.User);
@@ -267,6 +269,22 @@ describe('ProfileService', () => {
         expect(profile.meta.archivable).toEqual(true);
         expect(profile.meta.deletable).toEqual(true);
         expectOwnerRelationship(relations);
+      });
+
+      it('fallback handle is available', async () => {
+        await testData.createSimpleGroup(ProfileVisibilityLevel.Member, {
+          name: 'test',
+          handle: 'test',
+        });
+        const { profile } = await profileService.createUserProfile(
+          ProfileTestDataUtils.createDummyUser(),
+          {
+            name: 'test',
+          },
+        );
+
+        expect(profile.handle).not.toEqual('test');
+        expect(profile.handle.startsWith('test')).toEqual(true);
       });
 
       it('create named user profile', async () => {

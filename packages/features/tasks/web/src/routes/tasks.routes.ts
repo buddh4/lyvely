@@ -9,7 +9,7 @@ export const tasksRoutes: RouteRecordRaw[] = [
     beforeEnter: [
       (to, from, next) => {
         if (useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id).value) {
-          next(profileRoute('/activities/tasks', useProfileStore().profile!.id));
+          next(profileRoute('/activities/tasks', useProfileStore().profile!.handle));
         }
         next();
       },

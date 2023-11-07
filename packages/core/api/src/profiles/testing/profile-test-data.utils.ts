@@ -125,7 +125,12 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   ) {
     owner ??= await this.createUser('owner');
     member ??= await this.createUser('member');
-    const profile = await this.createGroupProfile(owner, 'TestGroup', visibility, options);
+    const profile = await this.createGroupProfile(
+      owner,
+      options.name || 'TestGroup',
+      visibility,
+      options,
+    );
 
     await this.addProfileMember(profile, member);
 
@@ -226,6 +231,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
         Object.assign({}, options, {
           type,
           name: name || owner.username,
+          handle: name || owner.username,
           visibility: visibility,
         }),
       ),
@@ -298,7 +304,8 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
 
   static createDummyProfile(owner: User, data: Partial<Profile> = {}) {
     data.ownerId = owner._id;
-    data.name = data.name || `${owner.username}Profile`;
+    data.name ??= `${owner.username}Profile`;
+    data.handle ??= data.name;
     data._id = getObjectId(data.name);
     data.type = data.type ?? ProfileType.User;
     return new Profile(owner, data);

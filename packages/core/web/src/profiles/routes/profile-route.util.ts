@@ -4,35 +4,58 @@ export function profileRoot() {
   return '/p';
 }
 
-type PID = ':pid';
+export function profileIdRoute(pid?: ':pid', name?: string, query?: LocationQueryRaw): string;
+export function profileIdRoute(
+  pid?: string,
+  name?: string,
+  query?: LocationQueryRaw,
+): RouteLocationRaw;
+export function profileIdRoute(
+  pid = ':pid',
+  name = ':name',
+  query?: LocationQueryRaw,
+): RouteLocationRaw {
+  const path = `/pid/${pid}${name}`;
+
+  return pid === ':pid' ? path : { path: path, params: { pid, name }, query };
+}
 
 export function profileRoute(
   subPath: string | undefined,
-  pid?: PID,
+  handle?: ':handle',
   query?: LocationQueryRaw,
 ): string;
 export function profileRoute(
   subPath?: string,
-  pid?: string,
+  handle?: string,
   query?: LocationQueryRaw,
 ): RouteLocationRaw;
 export function profileRoute(
   subPath = '/',
-  pid = ':pid',
+  handle = ':handle',
   query?: LocationQueryRaw,
 ): RouteLocationRaw {
   if (subPath.charAt(0) !== '/') {
     subPath = '/' + subPath;
   }
 
-  const path = `/p/${pid}${subPath}`;
+  const path = `/p/${handle}${subPath}`;
+  handle ??= ':handle';
 
-  return pid === ':pid' ? path : { path: path, params: { pid: pid }, query };
+  return handle === ':handle' ? path : { path: path, params: { handle }, query };
+}
+
+export function namedProfileRoute(
+  name: string,
+  handle: string,
+  query?: LocationQueryRaw,
+): RouteLocationRaw {
+  return { name, params: { handle }, query };
 }
 
 export function toVueRoute(route: UrlRoute): RouteLocationRaw {
-  if ('pid' in route) {
-    return profileRoute(route.path, route.pid, route.query);
+  if ('handle' in route) {
+    return profileRoute(route.path, route.handle as string, route.query);
   }
 
   return { path: route.path, query: route.query };

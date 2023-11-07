@@ -10,6 +10,7 @@ export interface ICreateProfileOptions {
   usage?: ProfileUsage[];
   visibility?: ProfileVisibilityLevel;
   name: string;
+  handle?: string;
   description?: string;
   locale?: string;
 }
@@ -38,7 +39,7 @@ export class ProfilesFactory {
       );
     }
 
-    if (options.organization && !(options.organization instanceof Organization)) {
+    if (options.organization && !options.organization.isOrganization()) {
       throw new IntegrityException(
         'Could not create a profile due to invalid organization profile type',
       );
@@ -46,6 +47,7 @@ export class ProfilesFactory {
 
     return new ProfileTypeClass(owner, {
       name: options.name,
+      handle: options.handle,
       locale: options.locale,
       visibility: options.visibility || ProfileVisibilityLevel.Member,
       description: options.description,

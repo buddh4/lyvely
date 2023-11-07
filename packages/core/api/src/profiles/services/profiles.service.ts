@@ -6,6 +6,7 @@ import {
   ProfileUsage,
   ProfileVisibilityLevel,
   UpdateProfileModel,
+  VALID_HANDLE_REGEX,
 } from '@lyvely/core-interface';
 import { EntityNotFoundException, UniqueConstraintException } from '@lyvely/common';
 import { MembershipsDao, ProfileDao } from '../daos';
@@ -76,7 +77,7 @@ export class ProfilesService {
     options: ICreateProfileOptions,
   ): Promise<ProtectedProfileContext> {
     await this.checkProfileNameUniqueness(owner, options);
-    options.locale = options.locale || options.organization?.locale || owner.locale;
+    options.locale ??= options.organization?.locale || owner.locale;
     return this.createProfile(owner, Object.assign({}, options, { type: ProfileType.User }));
   }
 
@@ -138,11 +139,12 @@ export class ProfilesService {
     owner: User,
     options: Omit<ICreateProfileOptions, 'organization'>,
   ): Promise<ProtectedProfileContext> {
-    if (await this.profileDao.findOneByOwnerOrOrganizationName(owner, options.name))
+    if (await this.profileDao.findExistingProfileByOrganizationName(owner, options.name)) {
       throw new UniqueConstraintException(
         'name',
         'Can not create organization, name is already in use',
       );
+    }
 
     options.locale = options.locale || owner.locale;
     return this.createProfile(
@@ -169,10 +171,11 @@ export class ProfilesService {
     return withTransaction(this.connection, async (transaction) => {
       // TODO (profile visibility) implement max profile visibility in configuration (default member)
       options.visibility = ProfileVisibilityLevel.Member;
-      const profile = await this.profileDao.save(
-        ProfilesFactory.createProfile(owner, options),
-        transaction,
-      );
+
+      let profile = ProfilesFactory.createProfile(owner, options);
+      profile.handle = await this.findUniqueHandle(profile);
+
+      profile = await this.profileDao.save(profile, transaction);
 
       const membership = await this.membershipService.createMembership(
         profile,
@@ -187,6 +190,42 @@ export class ProfilesService {
         relations: [membership],
       });
     });
+  }
+
+  /**
+   * Finds a unique handle for the given profile by following the following preferences:
+   *
+   * - If a handle was assigned to the profile which does not exist, we use the already assigned handle.
+   * - If the profile name does not exist as handle, we use the already assigned handle.
+   * - If the profile name with a timestamp does not exist, we use the timestamped profile name.
+   * - Otherwise we simply use the guid.
+   *
+   * Note, this function does not set the handle.
+   * @param profile The profile to create a new handle for.
+   * @private
+   */
+  private async findUniqueHandle(profile: Profile): Promise<string> {
+    const { name, guid, handle } = profile;
+
+    const fallBackHandle = profile.name + Date.now();
+    const handles = [name, fallBackHandle];
+    if (handle) handles.push(handle);
+
+    const profiles = await this.profileDao.findByHandles(handles);
+
+    if (handle?.match(VALID_HANDLE_REGEX) && !profiles.find((p) => p.handle === handle)) {
+      return handle;
+    }
+
+    if (name?.match(VALID_HANDLE_REGEX) && !profiles.find((p) => p.handle === name)) {
+      return name;
+    }
+
+    if (name?.match(VALID_HANDLE_REGEX) && !profiles.find((p) => p.handle === fallBackHandle)) {
+      return fallBackHandle;
+    }
+
+    return guid;
   }
 
   /**
@@ -235,6 +274,27 @@ export class ProfilesService {
   }
 
   /**
+   * Returns a profile with the given handle or null if the profile could not be found.
+   * If `throwsException` is set to true, this function will throw a EntityNotFoundException in case the profile
+   * could not be found.
+   * @param handle the unique profile handle.
+   * @param throwsException if set to true, throws an exception in case the profile could not be found.
+   * @throws EntityNotFoundException if throwsExceptio is set to true and the profile could not be found.
+   */
+  async findProfileByHandle(handle: string, throwsException = false): Promise<Profile | null> {
+    if (!handle && throwsException) throw new EntityNotFoundException('Profile not found.');
+    if (!handle) return null;
+
+    const result = await this.profileDao.findByHandle(handle);
+
+    if (!result && throwsException) {
+      throw new EntityNotFoundException('Profile not found.');
+    }
+
+    return result;
+  }
+
+  /**
    * Updates the profile details with the provided update data.
    * Note: Changes to the profile type are currently ignored.
    * @param profile The profile to be updated.
@@ -273,7 +333,43 @@ export class ProfilesService {
     oid?: EntityIdentity<Organization>,
   ): Promise<ProfileContext> {
     const { profile, organization } = await this.findProfileWithOrganization(pid, oid);
+    return this._createProfileContext(user, profile, organization);
+  }
 
+  /**
+   * Returns a ProfileContext object, which describes the relation of the given user with the given profile in detail.
+   * The ProfileContext is usually used for other services and permission checks.
+   * @param user The user of the relation.
+   * @param handle The profile of the relation.
+   */
+  async findProfileContextByHandle(user: User, handle: string): Promise<ProtectedProfileContext>;
+  async findProfileContextByHandle(user: OptionalUser, handle: string): Promise<ProfileContext>;
+  async findProfileContextByHandle(user: OptionalUser, handle: string): Promise<ProfileContext> {
+    const { profile, organization } = await this.findProfileWithOrganizationByHandle(handle);
+    return this._createProfileContext(user, profile, organization);
+  }
+
+  /**
+   * Creates a profile context with relation and organization relation.
+   * @param user
+   * @param profile
+   * @param organization
+   */
+  private async _createProfileContext(
+    user: User,
+    profile: Profile,
+    organization?: Organization | null,
+  ): Promise<ProtectedProfileContext>;
+  private async _createProfileContext(
+    user: OptionalUser,
+    profile: Profile,
+    organization?: Organization | null,
+  ): Promise<ProfileContext>;
+  private async _createProfileContext(
+    user: OptionalUser,
+    profile: Profile,
+    organization?: Organization | null,
+  ): Promise<ProfileContext> {
     const { profileRelations, organizationRelations } =
       await this.relationsService.findAllProfileAndOrganizationRelationsByUser(profile, user);
 
@@ -301,6 +397,24 @@ export class ProfilesService {
       relations: profileRelations,
       organizationContext,
     });
+  }
+
+  /**
+   * Finds a profile and related organization (if any) by given handle.
+   * @param handle The profile handle.
+   */
+  async findProfileWithOrganizationByHandle(
+    handle: string,
+  ): Promise<{ profile: Profile; organization: Organization | null }> {
+    const profile = await this.profileDao.findByHandle(handle);
+    let organization: Organization | null = null;
+    if (!profile) throw new EntityNotFoundException();
+
+    if (profile.hasOrg) {
+      organization = await this.profileDao.findById(profile.oid);
+    }
+
+    return { profile, organization: organization };
   }
 
   /**

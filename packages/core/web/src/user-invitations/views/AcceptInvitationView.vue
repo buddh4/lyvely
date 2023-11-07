@@ -6,6 +6,7 @@ import { onMounted, ref } from 'vue';
 import { useUserInvitationsService } from '../services/user-invitations.service';
 import { profileRoute } from '@/profiles/routes/profile-route.util';
 import { LyCenteredPanel } from '@lyvely/ui';
+import { useProfileService } from '@/profiles';
 
 const router = useRouter();
 

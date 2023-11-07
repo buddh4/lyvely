@@ -1,12 +1,16 @@
 import { toProfileHome, ifIsMultiUserProfile } from '../guards';
 import { translation } from '@/i18n';
-import { profileRoot, profileRoute } from './profile-route.util';
+import { profileIdRoute, profileRoot, profileRoute } from './profile-route.util';
 import { RouteRecordRaw } from 'vue-router';
 import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles';
 import { PROFILES_MODULE_ID } from '@lyvely/core-interface';
 
 export default [
   { path: '/', redirect: profileRoute() },
+  {
+    path: profileIdRoute(),
+    name: 'PID',
+  },
   {
     path: profileRoot(),
     name: 'ProfileRoot',

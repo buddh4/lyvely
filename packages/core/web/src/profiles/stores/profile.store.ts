@@ -9,9 +9,8 @@ import { EntityNotFoundException } from '@lyvely/common';
 import { useLiveStore } from '@/live';
 import { useProfileRelationInfosService } from '../services';
 
-const LATEST_PROFILE_ID = 'latest_profile_id';
-const DEFAULT_PROFILE_ID = 'default';
-export const latestProfileId = localStorageManager.getStoredValue(LATEST_PROFILE_ID);
+const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
+export const latestProfileHandle = localStorageManager.getStoredValue(LATEST_PROFILE_HANDLE);
 
 export const useProfileStore = defineStore('profile', () => {
   const profile = ref<ProfileWithRelationsModel>();
@@ -19,20 +18,40 @@ export const useProfileStore = defineStore('profile', () => {
   const status = useStatus();
   const profileService = useProfileService();
 
-  async function loadProfile(pid?: string): Promise<ProfileWithRelationsModel> {
+  async function loadProfileById(pid: string): Promise<ProfileWithRelationsModel> {
+    status.setStatus(Status.LOADING);
+    if (isCurrentProfileId(pid)) return Promise.resolve(profile.value!);
+
+    const result = await loadingStatus(profileService.getProfileById(pid), status);
+    await setActiveProfile(result);
+    status.setStatus(Status.SUCCESS);
+
+    if (!profile.value) throw new EntityNotFoundException();
+
+    return profile.value;
+  }
+
+  async function loadProfile(handle?: string | false): Promise<ProfileWithRelationsModel> {
     status.setStatus(Status.LOADING);
 
-    const searchPid = pid || latestProfileId.getValue() || DEFAULT_PROFILE_ID;
+    if (handle !== false) {
+      handle ??= latestProfileHandle.getValue() || undefined;
+    } else {
+      handle = undefined;
+    }
 
-    if (profile.value?.id === searchPid) return Promise.resolve(profile.value);
+    if (isCurrentProfileHandle(handle)) return Promise.resolve(profile.value!);
 
     try {
-      const profile = await loadingStatus(profileService.getProfile(searchPid), status);
+      const profile = await loadingStatus(
+        handle ? profileService.getProfileByHandle(handle) : profileService.getDefaultProfile(),
+        status,
+      );
       await setActiveProfile(profile);
       status.setStatus(Status.SUCCESS);
     } catch (err: any) {
-      // Probably an error with latestProfileId
-      if (!pid && searchPid !== DEFAULT_PROFILE_ID) return loadProfile(DEFAULT_PROFILE_ID);
+      // Probably an error with latestProfileHandle e.g. profile got deleted
+      if (handle) return loadProfile(false);
       else throw err;
     }
 
@@ -41,9 +60,17 @@ export const useProfileStore = defineStore('profile', () => {
     return profile.value;
   }
 
+  function isCurrentProfileHandle(handle?: string) {
+    return handle && profile.value?.handle === handle;
+  }
+
+  function isCurrentProfileId(id?: string) {
+    return id && profile.value?.id === id;
+  }
+
   async function setActiveProfile(activeProfile: ProfileWithRelationsModel) {
     profile.value = activeProfile;
-    latestProfileId.setValue(activeProfile.id);
+    latestProfileHandle.setValue(activeProfile.id);
     if (!profile.value.getMembership()) {
       useLiveStore().connectProfileGuest(profile.value.id);
     } else {
@@ -116,6 +143,7 @@ export const useProfileStore = defineStore('profile', () => {
     profile,
     locale,
     loadProfile,
+    loadProfileById,
     updateScore,
     getTags,
     getTagsByName,
