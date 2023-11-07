@@ -4,32 +4,18 @@ export function profileRoot() {
   return '/p';
 }
 
-export function profileIdRoute(pid?: ':pid', name?: string, query?: LocationQueryRaw): string;
-export function profileIdRoute(
-  pid?: string,
-  name?: string,
-  query?: LocationQueryRaw,
-): RouteLocationRaw;
-export function profileIdRoute(
-  pid = ':pid',
-  name = ':name',
-  query?: LocationQueryRaw,
-): RouteLocationRaw {
-  const path = `/pid/${pid}${name}`;
-
-  return pid === ':pid' ? path : { path: path, params: { pid, name }, query };
+export function profileIdPath(pid: string, name?: string): string {
+  return name ? `/pid/${pid}/${name}` : `/pid/${pid}`;
 }
 
-export function profileRoute(
-  subPath: string | undefined,
-  handle?: ':handle',
+export function profileIdRoute(
+  pid: string,
+  viewName?: string,
   query?: LocationQueryRaw,
-): string;
-export function profileRoute(
-  subPath?: string,
-  handle?: string,
-  query?: LocationQueryRaw,
-): RouteLocationRaw;
+): RouteLocationRaw {
+  return { path: profileIdPath(pid, viewName), query };
+}
+
 export function profileRoute(
   subPath = '/',
   handle = ':handle',
@@ -39,10 +25,25 @@ export function profileRoute(
     subPath = '/' + subPath;
   }
 
-  const path = `/p/${handle}${subPath}`;
-  handle ??= ':handle';
+  const path = profilePath(subPath, handle);
 
-  return handle === ':handle' ? path : { path: path, params: { handle }, query };
+  if (handle === ':handle') {
+    return { path, query };
+  }
+
+  return { path, params: { handle }, query };
+}
+
+export function profilePath(subPath?: string, handle = ':handle'): string {
+  const profilePath = `/p/${handle}`;
+
+  if (!subPath) return profilePath;
+
+  if (subPath.charAt(0) !== '/') {
+    subPath = '/' + subPath;
+  }
+
+  return profilePath + subPath;
 }
 
 export function namedProfileRoute(

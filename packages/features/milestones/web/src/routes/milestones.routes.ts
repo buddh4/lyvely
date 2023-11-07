@@ -1,6 +1,7 @@
 import {
   t,
   profileRoute,
+  profilePath,
   LAYOUT_PROFILE,
   useProfileFeatureStore,
   useProfileStore,
@@ -11,7 +12,7 @@ import { ActivityMilestonesFeature } from '@lyvely/milestones-interface';
 export const milestoneRoutes = [
   {
     name: 'Milestones',
-    path: profileRoute('/milestones'),
+    path: profilePath('/milestones'),
     beforeEnter: [
       (to, from, next) => {
         if (useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id).value) {

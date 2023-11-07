@@ -7,6 +7,7 @@ import { useRouter, isNavigationFailure } from 'vue-router';
 import { useCreateProfileStore } from '@/profiles/stores/create-profile.store';
 import { ProfileRelationInfo } from '@lyvely/core-interface';
 import LyProfileAvatar from '../ProfileAvatar.vue';
+import { profileIdRoute } from '@/profiles/routes';
 
 const profileRelationInfosStore = useProfileRelationInfosStore();
 const profileStore = useProfileStore();
@@ -21,16 +22,10 @@ const router = useRouter();
 
 async function setProfile(pid: string) {
   const currentRoute = router.currentRoute.value;
-  const paramKeys = Object.keys(currentRoute.params);
-
   const isProfileView = currentRoute.meta.profileView !== false;
 
-  // TODO: check if feature is enabled on target profile + better default feature handling
-  const name = isProfileView ? currentRoute.meta.baseName || currentRoute.name : undefined;
-  const result = await router.push({
-    name: 'PID',
-    params: { pid, name: name as string | undefined },
-  });
+  const viewName = isProfileView ? currentRoute.meta.baseName || currentRoute.name : undefined;
+  const result = await router.push(profileIdRoute(pid, viewName as string | undefined));
   if (isNavigationFailure(result)) console.error(result);
 }
 

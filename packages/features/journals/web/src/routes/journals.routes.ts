@@ -1,8 +1,8 @@
-import { translation, profileRoute } from '@lyvely/web';
+import { translation, profilePath } from '@lyvely/web';
 
 export default [
   {
-    path: profileRoute('/journals'),
+    path: profilePath('/journals'),
     name: 'Journals',
     meta: {
       i18n: { load: ['journals'] },

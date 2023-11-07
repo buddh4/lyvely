@@ -1,6 +1,7 @@
 import {
   t,
   profileRoute,
+  profilePath,
   LAYOUT_PROFILE,
   useProfileFeatureStore,
   useProfileStore,
@@ -11,7 +12,7 @@ import { ActivityHabitsFeature } from '@lyvely/habits-interface';
 export const habitRoutes = [
   {
     name: 'Habits',
-    path: profileRoute('/habits'),
+    path: profilePath('/habits'),
     beforeEnter: [
       (to, from, next) => {
         if (useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id).value) {

@@ -3,10 +3,9 @@ import { useRouter } from 'vue-router';
 import { UserInvitationInfo } from '@lyvely/core-interface';
 import { EntityNotFoundException } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
-import { useUserInvitationsService } from '../services/user-invitations.service';
-import { profileRoute } from '@/profiles/routes/profile-route.util';
+import { useUserInvitationsService } from '../services';
+import { profileIdRoute, profileRoute } from '@/profiles/routes/profile-route.util';
 import { LyCenteredPanel } from '@lyvely/ui';
-import { useProfileService } from '@/profiles';
 
 const router = useRouter();
 
@@ -19,12 +18,12 @@ async function accept() {
   if (!userInviteInfo.value) return;
   const pid = userInviteInfo.value!.pid;
   await invitationsService.accept(pid);
-  await router.push(profileRoute('/', pid));
+  await router.push(profileIdRoute(pid));
 }
 
 function decline() {
   if (!userInviteInfo.value) return;
-  // TODO: as long as the notification is not invalidated we should not invalidate the invitation
+  // TODO: as long as the notification is not invalidated we should not invalidate the invitation here
   //invitationsService.decline(userInviteInfo.value!.pid);
   if (window.history.length) {
     router.back();

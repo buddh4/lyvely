@@ -1,10 +1,16 @@
-import { LAYOUT_PROFILE, profileRoute, useProfileFeatureStore, useProfileStore } from '@lyvely/web';
+import {
+  LAYOUT_PROFILE,
+  profilePath,
+  profileRoute,
+  useProfileFeatureStore,
+  useProfileStore,
+} from '@lyvely/web';
 import { RouteRecordRaw } from 'vue-router';
 import { ActivityTasksFeature } from '@lyvely/tasks-interface';
 
 export const tasksRoutes: RouteRecordRaw[] = [
   {
-    path: profileRoute('/tasks'),
+    path: profilePath('/tasks'),
     name: 'Tasks',
     beforeEnter: [
       (to, from, next) => {

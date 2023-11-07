@@ -1,10 +1,10 @@
 import { translation } from '@/i18n';
-import { profileRoute } from '@/profiles/routes/profile-route.util';
+import { profilePath } from '@/profiles';
 import { RouteRecordRaw } from 'vue-router';
 
 export default [
   {
-    path: profileRoute('/tags'),
+    path: profilePath('/tags'),
     name: 'Tags',
     meta: {
       layout: 'profile',

@@ -1,6 +1,6 @@
 import { toProfileHome, ifIsMultiUserProfile } from '../guards';
 import { translation } from '@/i18n';
-import { profileIdRoute, profileRoot, profileRoute } from './profile-route.util';
+import { profileIdRoute, profileRoot, profileRoute, profilePath } from './profile-route.util';
 import { RouteRecordRaw } from 'vue-router';
 import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles';
 import { PROFILES_MODULE_ID } from '@lyvely/core-interface';
@@ -8,7 +8,7 @@ import { PROFILES_MODULE_ID } from '@lyvely/core-interface';
 export default [
   { path: '/', redirect: profileRoute() },
   {
-    path: profileIdRoute(),
+    path: '/pid/:pid/:view?',
     name: 'PID',
   },
   {
@@ -20,7 +20,7 @@ export default [
     beforeEnter: [toProfileHome],
   },
   {
-    path: profileRoute(),
+    path: profilePath(),
     name: 'ProfileHome',
     meta: {
       layout: LAYOUT_PROFILE,
@@ -28,7 +28,7 @@ export default [
     beforeEnter: [toProfileHome],
   },
   {
-    path: profileRoute('/users'),
+    path: profilePath('/users'),
     name: 'ProfileUsers',
     meta: {
       layout: LAYOUT_PROFILE,
@@ -37,7 +37,7 @@ export default [
     beforeEnter: [ifIsMultiUserProfile],
   },
   {
-    path: profileRoute('/settings'),
+    path: profilePath('/settings'),
     name: 'ProfileSettings',
     meta: {
       layout: LAYOUT_PROFILE_SETTINGS,
@@ -46,14 +46,14 @@ export default [
     children: [
       {
         name: 'ProfileMembershipSettings',
-        path: profileRoute('/settings/membership'),
+        path: profilePath('/settings/membership'),
         meta: {
           title: translation('profiles.settings.membership.title'),
         },
         component: () => import('../views/ProfileMembershipSettings.vue'),
       },
       {
-        path: profileRoute('/settings/features'),
+        path: profilePath('/settings/features'),
         name: 'ProfileFeaturesSettings',
         meta: {
           title: translation('features.settings.features.title'),
@@ -65,7 +65,7 @@ export default [
       },
       {
         name: 'GeneralProfileSettings',
-        path: profileRoute('/settings/general'),
+        path: profilePath('/settings/general'),
         meta: {
           title: translation('profiles.settings.general.title'),
           i18n: {

@@ -1,4 +1,4 @@
-import { profileRoute, t, useProfileMenu, PATH_404 } from '@lyvely/web';
+import { profilePath, t, useProfileMenu, PATH_404 } from '@lyvely/web';
 import { useActivityStore } from '@/stores';
 import { RouteRecordRaw } from 'vue-router';
 import { LAYOUT_ACTIVITIES, MENU_ACTIVITIES } from '@/activities.constants';
@@ -6,7 +6,7 @@ import { LAYOUT_ACTIVITIES, MENU_ACTIVITIES } from '@/activities.constants';
 export const activitiesRoutes = [
   {
     name: 'Activities',
-    path: profileRoute('/activities'),
+    path: profilePath('/activities'),
     redirect: { name: 'ActivitiesRoot' },
     children: [
       {

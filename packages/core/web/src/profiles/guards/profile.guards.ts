@@ -2,7 +2,6 @@ import { useProfileStore } from '@/profiles/stores';
 import { namedProfileRoute, profileRoute } from '@/profiles/routes/profile-route.util';
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
 import { isMultiUserProfile } from '@lyvely/core-interface';
-import { DialogExceptionHandler } from '@/core';
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 
 export const ifIsMultiUserProfile = async (
@@ -23,7 +22,6 @@ export const loadProfileGuard = (
   from: RouteLocation,
   next: NavigationGuardNext,
 ) => {
-  debugger;
   if (to.params.pid) {
     return loadProfileById(to, from, next);
   }
@@ -72,8 +70,10 @@ const loadProfileById = async (
     const profile = await profileStore.loadProfileById(to.params.pid as string);
     if (!profile) throw new Error('Profile could not be loaded');
 
-    if (to.params.name) {
-      next(namedProfileRoute(to.params.name as string, profile.handle));
+    // TODO: check if feature is enabled on target profile + better default feature handling
+    // Feature restrictions should probably be defined as route meta
+    if (to.params.view) {
+      next(namedProfileRoute(to.params.view as string, profile.handle));
     } else {
       next(profileRoute('/', profile.handle));
     }

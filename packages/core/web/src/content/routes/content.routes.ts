@@ -1,11 +1,11 @@
 import { translation } from '@/i18n';
-import { profileRoute } from '@/profiles/routes/profile-route.util';
+import { profilePath } from '@/profiles/routes/profile-route.util';
 import { RouteRecordRaw } from 'vue-router';
 
 export const contentRoutes = [
   {
     name: 'Stream',
-    path: profileRoute('/stream'),
+    path: profilePath('/stream'),
     component: () => import('../views/ContentStreamLayout.vue'),
     meta: {
       layout: 'profile-full',
