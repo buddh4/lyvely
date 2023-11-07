@@ -41,19 +41,19 @@ repository.interceptors.response.use(undefined, (error) => {
           message: 'error.network.message',
           buttonType: 'reload',
         });
-      }
 
-      if (!pingInterval) {
-        pingInterval = setInterval(() => {
-          usePingService()
-            .ping()
-            .then((result) => {
-              if (result) {
-                clearInterval(pingInterval);
-                document.location.reload();
-              }
-            });
-        }, 2000) as any;
+        if (!pingInterval) {
+          pingInterval = setInterval(() => {
+            usePingService()
+              .ping()
+              .then((result) => {
+                if (result) {
+                  clearInterval(pingInterval);
+                  document.location.reload();
+                }
+              });
+          }, 2000) as any;
+        }
       }
     } else if (
       error.response.status === 403 &&
