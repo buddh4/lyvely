@@ -50,6 +50,9 @@ export class ContentMetadata extends BaseEntity<ContentMetadata> implements ICon
   archived?: boolean;
 
   @Prop()
+  deleted?: boolean;
+
+  @Prop()
   locked?: boolean;
 
   afterInit() {

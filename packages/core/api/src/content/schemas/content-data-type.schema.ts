@@ -1,10 +1,11 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema } from '@/core';
+import { NestedSchema } from '@/core';
 import { IContentDataType, IRenderable } from '@lyvely/core-interface';
+import { BaseModel } from '@lyvely/common';
 
 @NestedSchema()
 export class ContentDataType<T extends IContentDataType = any>
-  extends BaseEntity<T>
+  extends BaseModel<T>
   implements IContentDataType, IRenderable
 {
   @Prop()

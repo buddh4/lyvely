@@ -1,5 +1,4 @@
 ---
-sidebar_position: 2
 ---
 
 # Installation
@@ -8,11 +7,11 @@ Depending on your specific use case and requirements, there are several methods 
 
 ## Requirements
 
-1. Install MongoDB
+### Install MongoDB
 
 Either install MongoDB by following the [MongoDB Installation Guide](https://www.mongodb.com/docs/manual/administration/install-community/)
-or use a [MongoDB Docker Image][https://hub.docker.com/_/mongo](https://www.mongodb.com/docs/manual/administration/install-community/) which
-is recommended for developers.
+or use the [MongoDB Docker Image](https://hub.docker.com/_/mongo) which
+is recommended especially for developers.
 
 **Example:**
 
@@ -28,7 +27,7 @@ docker run --name lyvely-mongodb --restart=always -d -p 27017:27017 -v /path/on/
 > Note: Some features as transactions are only available when using a [replica set](https://www.mongodb.com/docs/manual/replication/). 
 > For testing and development this won't be necessary but is recommended for production use.
 
-2. Install Redis
+### Install Redis
 
 Similar to the MongoDB installation you can either install [Redis on your system](https://redis.io/docs/install/install-redis/)
 or use [Docker](https://hub.docker.com/_/redis) instead.
@@ -44,7 +43,7 @@ docker pull redis
 docker run --name lyvely-redis --restart=always -d -p 6379:6379 -v /path/on/host:/data redis
 ```
 
-## Git Installation (For Contributors)
+## Git Installation
 
 1. Clone the Lyvely repository from GitHub using the following command:
 
@@ -125,7 +124,11 @@ npx nx run @lyvely/pwa:dev
 
 ## Docker Installation
 
-Comming Soon!
+**Comming Soon!**
 
-The `docker` directory includes an `docker-compose` example of how to setup a lyvely environment with nginx, redis and mongodb
+:::info
+
+The `docker` directory includes an `docker-compose` example of how to set up a Lyvely environment with nginx, redis and mongodb
 with a local replica-set.
+
+:::

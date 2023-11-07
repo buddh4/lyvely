@@ -32,19 +32,19 @@ import {CreateContentModel} from '@lyvely/core-interfaces';
 import {PropertiesOf} from '@lyvely/common';
 
 export class CreatePollModel extends CreateContentModel<CreatePollModel> {
-  @IsBoolean()
-  isAnonymous: boolean;
-
   @IsString()
   @MaxLength(200)
   title: string;
 
-  @IsDate()
-  expiresAt: Date;
-
   @IsString()
   @MaxLength(10_000)
   text: string;
+  
+  @IsDate()
+  expiresAt: Date;
+
+  @IsBoolean()
+  isAnonymous: boolean;
 
   @Length(1, 1024, {each: true})
   @IsString({each: true})
@@ -60,17 +60,17 @@ creating a content instance within a sub-content discussion.
 
 #### Update Content Model
 
-When handling update requests, it's often advantageous to permit partial updates. This approach enables us to modify
-specific fields of our model, reducing network traffic overhead, especially when updating only a single field. 
-The update model typically takes the form of a partial type derived from our create model class and is employed for
-updating existing content instances.
+When handling updates, it's often advantageous to allow partial updates. This approach enables us to modify
+specific fields of our document, reducing network traffic overhead, especially when updating only a single field. 
+Therefore, the update model typically takes the form of a partial type derived from our create model class as in the
+following example:
 
 ```typescript title=polls/packages/interface/src/models/update-poll.model.ts
 import { Exclude } from 'class-transformer';
 import { PartialType } from '@buddh4/mapped-types';
 import { CreatePollModel } from './create-poll.model';
 
-@Exclude()
+@Expose()
 export class UpdatePollModel extends PartialType(CreatePollModel) {
   constructor(model?: Partial<UpdateMessageModel>) {
     super(model, false);
@@ -78,15 +78,21 @@ export class UpdatePollModel extends PartialType(CreatePollModel) {
 }
 ```
 
-> Note: When implementing your update model by extending the create model, make sure that you do not carry over any default
-> value initialization of your create model logic.
+:::note
 
+ When implementing your update model by extending the create model, make sure that you do not carry over any default
+ value initialization of your create model logic.
+
+:::
 #### Content Model
 
 The `ContentModel` class acts as the base class for content type models in our frontend and interface layer. 
-While this class mostly mirrors the structure of a content type, it may have some differences. For example, it uses string IDs
-instead of ObjectId fields and may hold data specific to a single user while the schema type may contains data
-for multiple users. Let's use our Poll content type as an example:
+While this class mostly mirrors the structure of the backend schema, it may have some differences. 
+For example, it uses string IDs instead of ObjectIds and may hold data specific to a single user while the 
+schema type may contain data for multiple users. The details of the structure of a content type schema is discussed
+in the [Content Type Schema](#content-type-schema) section.
+
+Let's use our Poll content type as an example:
 
 ```typescript title=polls/packages/interface/src/models/poll.model.ts
 import {ContentModel} from '@lyvely/core-interface';
@@ -94,17 +100,26 @@ import {Type} from 'class-transformer';
 import {BaseModel, IEditableModel, PropertyType, TransformObjectId} from '@lyvely/common';
 import {UpdatePollModel} from './update-poll.model';
 
+/**
+ * This model class represents a single, sortable poll option.
+ */
 export class PollOption extends BaseModel<PollOption> {
   text: string;
   sortOrder: number;
 }
 
+/**
+ * This class stores the poll data.
+ */
 export class PollContentDataType extends ContentDataTypeModel {
   @Type(() => PollOption)
   @PropertyType([PollOption])
   options: PollOption[];
 }
 
+/**
+ * This model stores a single user vote.
+ */
 export class PollVoteModel<TID = string> {
   // This will translate ObjectId fields into string fields in the transformer middleware of our controllers
   @TransformObjectId()
@@ -113,19 +128,28 @@ export class PollVoteModel<TID = string> {
   optionId: TID;
 }
 
+/**
+ * This model holds the state of a poll instance including votes.
+ */
 export class PollStateModel<TID = string> {
   @Type(() => PollStateModel)
   @PropertyType([PollStateModel])
   votes: PollVoteModel[];
 }
 
+/**
+ * This model holds the configuration of a poll.
+ */
 export class PollConfigModel<TID = string> {
   isAnonymous: boolean;
   expiresAs: Date;
 }
 
+/**
+ * This will be our base model for poll content, which we'l mainly use in the frontend and interfaces.
+ */
 @Expose()
-export class PollModel<TID = string> extends ContentModel<TID, PollModel<TID>, >
+export class PollModel<TID = string> extends ContentModel<TID, PollModel<TID>>
         implements IEditableModel<UpdatePollModel> {
   static contentType = 'Poll';
 
@@ -161,8 +185,12 @@ metadata about our models.
 The `@PropertyType` decorator is used when deserializing our models in the frontend and
 the `@Type` decorator is used for serializing the models in the backend.
 
+:::info
+
 In the example above we use generic types for our id fields in order to use those models as interfaces in
 our backend, which uses ObjectIds instead of string ids.
+
+:::
 
 ### Content Endpoints
 
@@ -448,6 +476,7 @@ export class PollsDao extends ContentTypeDao<Poll> {
   @InjectModel(Poll.name)
   protected model: Model<Poll>;
 
+  // The constructor will be used for constructing model instances.
   getModelConstructor() {
     return Poll;
   }
@@ -457,6 +486,13 @@ export class PollsDao extends ContentTypeDao<Poll> {
   }
 }
 ```
+
+:::tip
+
+In most cases you should not use the `model` field directly, but rather use the built-in DAO functions for fetching and
+updating documents.
+
+:::
 
 ### Content Type Service
 
@@ -607,11 +643,253 @@ module can register multiple content types by adding other content types to the 
 
 ## Frontend Implementation
 
+Currently, only our backend knows about the existence of the Poll content type. Let's integrate it into the frontend.
+
+### Client Service
+
+To request our backend API we first need to implement our poll repository and service:
+
+```typescript title=polls/packages/web/repositories/polls.repository.ts
+import { repository } from '@lyvely/web';
+import { ENDPOINT_POLLS, CreatePollModel, IPollClient } from 'lyvely-polls-interface';
+import { EndpointResult } from '@lyvely/common';
+
+export default {
+  create(model: CreateMessageModel) {
+    return repository.post<EndpointResult<IPollClient['create']>>(`${ENDPOINT_POLLS}`, model);
+  },
+
+  update(id: string, model: Partial<CreatePollModel>) {
+    return repository.put<EndpointResult<IPollClient['update']>>(
+      `${ENDPOINT_POLLS}/${id}`,
+      model,
+    );
+  }
+};
+```
+
+```typescript title=polls/packages/web/services/polls.service.ts
+import { IPollClient, CreatePollModel, PollUpdateResponse } from 'lyvely-polls-interface';
+import { useSingleton } from '@lyvely/common';
+import repository from '../repositories';
+import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/web';
+
+export class PollsService implements IPollClient {
+    async create(model: CreatePollModel) {
+        return unwrapAndTransformResponse(repository.create(model), PollUpdateResponse);
+    }
+
+    async update(id: string, model: Partial<CreatePollModel>) {
+        return unwrapAndTransformResponse(repository.update(id, model), PollUpdateResponse);
+    }
+}
+
+export const usePollsService = useSingleton(() => new PollsService());
+
+```
+
+### Content CRUD Modal
+
+Lyvely offers a convenient method for registering modals used in the creation and updating of content types. 
+This functionality allows you to create various content types across different sections of your application, such as 
+within the content-stream or dedicated content type views.
+
+With this feature, you can seamlessly integrate and manage different content types in various parts of your application, 
+enhancing the overall user experience and flexibility.
+
+For the purpose of this documentation, we will walk through the implementation of such a modal. 
+Please note that certain aspects have been simplified to facilitate understanding.
+
+```html
+<script lang="ts" setup>
+import { CreatePollModel, PollModel, UpdatePollModel } from 'lyvely-polls-interface';
+import { computed } from 'vue';
+import { TagChooser, isTouchScreen, ContentEditModalEmits, useContentEditModal, ICreateContentInitOptions } from '@lyvely/web';
+import { usePollService } from '../services';
+import { LyModal, LyFormModel, LyTextField } from '@lyvely/ui';
+
+interface IProps {
+  modelValue: boolean;
+  content?: PollModel;
+  type: string;
+  initOptions?: ICreateContentInitOptions;
+}
+
+const props = defineProps<IProps>();
+const emit = defineEmits(ContentEditModalEmits);
+const service = usePollService();
+
+const { isCreate, showModal, model, validator, submit, status } = useContentEditModal<
+    PollModel,
+    CreatePollModel,
+    UpdatePollModel
+>(props, emit, { service });
+
+const modalTitle = computed(() => {
+  return isCreate.value ? `polls.create.title` : `polls.update.title`;
+});
+</script>
+
+<template>
+  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit" @cancel="$emit('cancel')">
+    <template #preHeader><slot name="navigation"></slot></template>
+    <ly-form-model
+      v-model="model"
+      :validator="validator"
+      :status="status"
+      label-key="polls.fields">
+      <fieldset>
+        <ly-text-field property="title" :required="true"/>
+        <ly-textarea property="text" />
+        <ly-textarea property="options" />
+      </fieldset>
+
+      <fieldset>
+        <tag-chooser v-model="model.tagNames" />
+      </fieldset>
+    </ly-form-model>
+  </ly-modal>
+</template>
+```
+
+:::info
+
+The `navigation` slot is required to enable multi-content type CRUD modals. 
+It serves as the space where a content type selection is dynamically injected.
+
+:::
+
 ### Content Stream Entry
+
+To create a custom stream view for our Poll content, we can implement and register a `ContentStreamEntry` component.
+
+```html
+<script lang="ts" setup>
+import { PollModel } from 'lyvely-polls-interface';
+import { ContentModel, ContentStreamEntry, IStream } from '@lyvely/web';
+import { LyIcon } from '@lyvely/ui';
+
+export interface IProps {
+  model: PollModel;
+  stream: IStream<PollModel>;
+  index: number;
+}
+
+const props = defineProps<IProps>();
+</script>
+
+<template>
+  <content-stream-entry v-bind="props" :merge="true">
+    <template #image>
+      <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
+        <router-link :to="{ name: 'Polls' }">
+          <ly-icon name="polls" class="text-main" />
+        </router-link>
+      </div>
+    </template>
+
+    <template #default>
+      <div>
+        <div class="flex items-center gap-1">
+          <span>{{ model.content.title }}</span>
+        </div>
+        
+        <ly-markdown-view :md="model.content.text" />
+        
+        <!-- Add some poll options and/or results -->
+        
+      </div>
+    </template>
+  </content-stream-entry>
+</template>
+```
+
+> The [Content Registration](#content-registration) section will describe how to register this component.
 
 ### Content Details View
 
-### Content CRUD Modal
+Just like our stream entry, you can also create a custom content detail component as follows:
+
+```html
+<script lang="ts" setup>
+import { PollModel } from 'lyvely-polls-interface';
+import { ContentDetails } from '@lyvely/web';
+import { LyIcon, LyMarkdownView } from '@lyvely/ui';
+
+export interface IProps {
+  model: PollModel;
+}
+
+const props = defineProps<IProps>();
+</script>
+
+<template>
+  <content-details :model="model">
+    <template #image>
+      <div class="flex justify-center rounded-full border border-divide w-8 h-8 bg-main">
+        <router-link :to="{ name: 'Polls' }">
+          <ly-icon name="polls" class="text-main" />
+        </router-link>
+      </div>
+    </template>
+    <template #body>
+      <ly-markdown-view :md="model.content.text" />
+      <!-- Add some fancy poll options here -->
+    </template>
+    <template #footer>
+      <!-- Here we could add some special poll features and buttons -->
+    </template>
+  </content-details>
+</template>
+```
+
+> The [Content Registration](#content-registration) section will describe how to register this component.
+
+### Content Registration
+
+Finally, we need to register our content type and components:
+
+```typescript
+import { IModule, registerContentType } from '@lyvely/web';
+import {
+  PollModel,
+  CreatePollModel,
+  POLLS_MODULE_ID, 
+  PollsFeature
+} from 'lyvely-polls-interface';
+
+export default () => {
+  return {
+    id: POLLS_MODULE_ID,
+    init: () => {
+      registerContentType({
+        type: PollModel.contentType,
+        moduleId: POLLS_MODULE_ID,
+        name: 'polls.title',
+        icon: 'polls',
+        feature: PollsFeature.id,
+        modelClass: PollsModel,
+        interfaces: {
+          create: {
+            mode: 'modal',
+            modelClass: CreatePollModel,
+            component: () => import('./components/modals/EditPollModal.vue'),
+          },
+          edit: {
+            mode: 'modal',
+            component: () => import('./components/modals/EditPollModal.vue'),
+          },
+          stream: {
+            details: () => import('./components/content-stream/PollDetails.vue'),
+            entry: () => import('./components/content-stream/PollStreamEntry.vue'),
+          },
+        },
+      });
+    },
+  } as IModule;
+};
+```
+
 
 ## Planned content features
 

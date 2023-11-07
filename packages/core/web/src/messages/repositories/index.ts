@@ -13,12 +13,4 @@ export default {
       model,
     );
   },
-
-  archive(messageId: string) {
-    return repository.post<EndpointResult<any>>(`${ENDPOINT_MESSAGE}/${messageId}/archive`);
-  },
-
-  unarchive(messageId: string) {
-    return repository.post<EndpointResult<any>>(`${ENDPOINT_MESSAGE}/${messageId}/unarchive`);
-  },
 };
