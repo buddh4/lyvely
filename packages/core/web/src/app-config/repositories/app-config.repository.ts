@@ -1,11 +1,8 @@
 import { repository } from '@/core';
-import { IAppConfig } from '@lyvely/core-interface';
-
-// TODO: change to config endpoint
-const resource = 'app-config';
+import { ENDPOINT_APP_CONFIG, IAppConfig } from '@lyvely/core-interface';
 
 export default {
   async loadConfig() {
-    return repository.get<IAppConfig>(`${resource}`);
+    return repository.get<IAppConfig>(ENDPOINT_APP_CONFIG);
   },
 };

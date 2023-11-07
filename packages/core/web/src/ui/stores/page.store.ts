@@ -12,6 +12,7 @@ export const usePageStore = defineStore('ui-page', () => {
   const showMobileFooter = ref(true);
   const noSwipe = ref(false);
   const hasHistory = false;
+  const loaded = ref(false);
 
   function setTitle(title: Array<string> | string) {
     setPageTitle(title);
@@ -52,6 +53,7 @@ export const usePageStore = defineStore('ui-page', () => {
     isOnline,
     showMobileFooter,
     hasHistory,
+    loaded,
   };
 });
 

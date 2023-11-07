@@ -3,7 +3,6 @@ import { usePageStore } from '../stores';
 import { isMaxViewSize } from '../helpers';
 import NProgress from 'nprogress';
 import { resolveLayoutComponent } from '@/ui';
-import { useProfileStore } from '@/profiles';
 
 export const showLoaderProgress = (
   to: RouteLocation,
@@ -11,6 +10,8 @@ export const showLoaderProgress = (
   next: NavigationGuardNext,
 ) => {
   if (to.name) NProgress.start();
+
+  usePageStore().loaded = false;
 
   next();
 };
@@ -28,6 +29,7 @@ export const resolveLayoutGuard = async (
 
 export const hideLoaderProgress = (): void => {
   NProgress.done();
+  usePageStore().loaded = true;
 };
 
 export const setHasHistory = (to: RouteLocation, from: RouteLocation): void => {

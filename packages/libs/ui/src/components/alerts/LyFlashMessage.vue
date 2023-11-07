@@ -48,7 +48,9 @@ const show = computed({
       name="flash"
       enter-active-class="animate__animated animate__faster animate__fadeInLeft"
       leave-active-class="animate__animated animate__faster animate__fadeOutLeft">
-      <div v-if="show" class="flash-message flex items-center justify-start left-6 fixed bottom-12">
+      <div
+        v-if="show"
+        class="flash-message flex items-center justify-start left-0 md:left-6 fixed bottom-12">
         <div
           class="flex items-center border border-divide px-4 py-3 rounded mb-1 bg-main text-sm gap-2">
           <ly-icon :name="iconName" :class="iconTextClass" />

@@ -24,14 +24,6 @@ export default () => {
     id: UI_MODULE_ID,
     routes: uiRoutes,
     init: () => {
-      registerGuards([
-        {
-          on: 'beforeNavigate',
-          guard: showLoaderProgress,
-        },
-        resolveLayoutGuard,
-      ]);
-
       registerComponentStackEntries(STACK_MAIN, [
         {
           id: 'ui-flash',
@@ -46,6 +38,17 @@ export default () => {
             manual: computed(() => useFlashStore().isManual),
           },
         },
+      ]);
+      registerGuards([
+        {
+          on: 'beforeNavigate',
+          guard: showLoaderProgress,
+        },
+        {
+          on: 'beforeNavigate',
+          guard: showLoaderProgress,
+        },
+        resolveLayoutGuard,
       ]);
       registerAfterNavigationHooks([
         showMobileNavGuard,

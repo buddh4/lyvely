@@ -37,11 +37,21 @@ export const useFlashStore = defineStore('ui-flash', () => {
     if (!isProcessing) next();
   }
 
-  function addSavedFlash(message?: string) {
+  function addSavedFlash(message = 'common.saved', options: Partial<IFlashMessage> = {}) {
     addFlash({
       message: message || 'common.saved',
       type: 'success',
       duration: 'medium',
+      ...options,
+    });
+  }
+
+  function addErrorFlash(message: string, options: Partial<IFlashMessage> = {}) {
+    addFlash({
+      message: message,
+      type: 'danger',
+      duration: 'medium',
+      ...options,
     });
   }
 
@@ -68,5 +78,6 @@ export const useFlashStore = defineStore('ui-flash', () => {
     isManual,
     addFlash,
     addSavedFlash,
+    addErrorFlash,
   };
 });

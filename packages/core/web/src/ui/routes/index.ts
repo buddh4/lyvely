@@ -1,14 +1,6 @@
-import { ifDevelopEnvironment } from '@/core';
-import StyleGuide from '@/ui/views/StyleGuide.vue';
 import { Forbidden, NotFound, Error } from '../components';
 
 export const uiRoutes = [
-  {
-    path: '/style',
-    name: 'StyleGuide',
-    component: StyleGuide,
-    beforeEnter: ifDevelopEnvironment,
-  },
   {
     path: '/403',
     name: 'Forbidden',

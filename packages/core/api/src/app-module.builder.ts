@@ -36,6 +36,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { MulterModule } from '@nestjs/platform-express';
 import { BullModule } from '@nestjs/bullmq';
 import { PermissionsModule } from '@/permissions/permissions.module';
+import { PingModule } from '@/ping';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
@@ -77,6 +78,7 @@ export class AppModuleBuilder {
     return this.importModules(
       EventEmitterModule.forRoot({ wildcard: true }),
       LiveModule,
+      PingModule,
       MailsModule.fromConfig(),
       NotificationsModule,
       CoreModule,
