@@ -74,6 +74,8 @@ const loadProfileById = async (
     // Feature restrictions should probably be defined as route meta
     if (to.params.view) {
       next(namedProfileRoute(to.params.view as string, profile.handle));
+    } else if (to.query.path) {
+      next(profileRoute(to.query.path as string, profile.handle));
     } else {
       next(profileRoute('/', profile.handle));
     }

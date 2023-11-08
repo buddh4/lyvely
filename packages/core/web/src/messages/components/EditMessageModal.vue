@@ -39,7 +39,7 @@ const modalTitle = computed(() => {
       :status="status"
       label-key="messages.fields">
       <fieldset>
-        <ly-text-field
+        <ly-textarea
           property="text"
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"

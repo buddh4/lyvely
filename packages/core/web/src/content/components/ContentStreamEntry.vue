@@ -98,7 +98,7 @@ const bodyWrapperClass = computed(
   () =>
     ({
       none: 'relative',
-      message: `relative message-bubble ${bgClass} inline-block transition duration-200 hover:bg-highlight dark:hover:bg-highlight border border-divide px-4 py-1.5`,
+      message: `relative message-bubble ${bgClass} inline-block transition duration-100 cursor-pointer hover:bg-highlight dark:hover:bg-highlight border border-divide px-4 py-1.5`,
       block: `relative inline-flex flex-col border border-divide p-4 rounded-xl ${bgClass} inline-block`,
     }[props.bodyStyle]),
 );
@@ -136,8 +136,8 @@ const maxWidth = true;
           <relative-time :ts="model.meta.streamSort"></relative-time>
         </div>
         <div :class="{ 'md:w-2/3': maxWidth && bodyStyle === 'message' }">
-          <div :class="bodyWrapperClass">
-            <div class="cursor-pointer inline-block" @click="onContentClick">
+          <div :class="bodyWrapperClass" @click="onContentClick">
+            <div class="cursor-pointer inline-block">
               <div class="flex gap-1">
                 <tag-list
                   :class="['mb-2', { 'mt-2': bodyStyle === 'message' }]"

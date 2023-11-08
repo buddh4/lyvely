@@ -24,8 +24,10 @@ async function setProfile(pid: string) {
   const currentRoute = router.currentRoute.value;
   const isProfileView = currentRoute.meta.profileView !== false;
 
-  const viewName = isProfileView ? currentRoute.meta.baseName || currentRoute.name : undefined;
-  const result = await router.push(profileIdRoute(pid, viewName as string | undefined));
+  const viewName = isProfileView
+    ? currentRoute.meta.baseName || <string>currentRoute.name
+    : undefined;
+  const result = await router.push(profileIdRoute(pid, { viewName }));
   if (isNavigationFailure(result)) console.error(result);
 }
 

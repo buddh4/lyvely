@@ -12,9 +12,12 @@ import { LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: ContentModel;
+  showType?: boolean;
 }
 
-const props = defineProps<IProps>();
+const props = withDefaults(defineProps<IProps>(), {
+  showType: true,
+});
 
 const router = useRouter();
 
@@ -54,18 +57,17 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
       </div>
     </div>
   </div>
-  <div v-if="model.tagIds?.length" class="bg-main px-2.5 pt-2.5 md:px-4 md:pt-4">
-    <div class="flex w-full">
-      <tag-list :tag-ids="model.tagIds" @select="selectTag">
-        <template #pre>
-          <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
-        </template>
-        <template v-if="model.meta.archived" #post>
-          <ly-icon name="archive" class="w-3 text-warning ml-auto" />
-        </template>
-      </tag-list>
-    </div>
-  </div>
+  <tag-list
+    :tag-ids="model.tagIds"
+    class="flex w-full px-2.5 pt-2.5 md:px-4 md:pt-4 bg-main"
+    @select="selectTag">
+    <template v-if="showType && contentTypeName" #pre>
+      <ly-badge class="bg-secondary-dark">{{ contentTypeName }}</ly-badge>
+    </template>
+    <template v-if="model.meta.archived" #post>
+      <ly-icon name="archive" class="w-3 text-warning ml-auto" />
+    </template>
+  </tag-list>
   <div class="p-2.5 md:px-4 bg-main border-divide rounded-b text-sm">
     <slot name="body">
       <ly-markdown-view :md="model.content.text" class="text-sm" />

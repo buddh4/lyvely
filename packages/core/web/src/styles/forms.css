@@ -91,7 +91,7 @@
 
     [type="text"]:not(.plain),
     textarea:not(.plain) {
-        @apply bg-main border-divide w-full rounded-md border-divide shadow-sm bg-white focus:ring focus:ring-blue-200 focus:ring-opacity-50
+        @apply w-full rounded-md border-divide bg-main dark:bg-highlight shadow-sm focus:ring focus:ring-blue-200 focus:ring-opacity-50
     }
 
     [type="text"]:not(.bg-main),

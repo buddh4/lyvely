@@ -14,8 +14,8 @@ withDefaults(defineProps<IProps>(), {
 </script>
 
 <template>
-  <div class="list-page-root border border-divide rounded divide-y">
-    <div class="flex items-center max-w-none py-2 px-3 bg-shadow">
+  <div class="list-page-root border border-divide rounded divide-y overflow-hidden">
+    <div class="flex items-center max-w-none py-2 px-3 bg-main">
       <ly-icon v-if="icon" :name="icon" :auto-scale="false" class="mr-1.5" />
       <h2
         class="list-page-headline inline-block font-medium m-0"

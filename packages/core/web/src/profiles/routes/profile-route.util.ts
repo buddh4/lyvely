@@ -10,10 +10,13 @@ export function profileIdPath(pid: string, name?: string): string {
 
 export function profileIdRoute(
   pid: string,
-  viewName?: string,
-  query?: LocationQueryRaw,
+  options?: { viewName?: string; path?: string },
+  query: LocationQueryRaw = {},
 ): RouteLocationRaw {
-  return { path: profileIdPath(pid, viewName), query };
+  if (options?.path) {
+    query.path = options.path;
+  }
+  return { path: profileIdPath(pid, options?.viewName), query };
 }
 
 export function profileRoute(

@@ -28,6 +28,7 @@ export default () => {
           },
           stream: {
             entry: () => import('./components/MessageStreamEntry.vue'),
+            details: () => import('./components/MessageDetails.vue'),
           },
         },
       });

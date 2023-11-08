@@ -179,7 +179,12 @@ export abstract class ContentTypeService<
     update: UpdateQuerySet<T>,
     tagNames?: string[],
   ) {
-    if (!tagNames?.length || !update) return;
+    if (!tagNames || !update) return;
+
+    if (!tagNames.length) {
+      update.tagIds = [];
+      return;
+    }
 
     await this.profileTagsService.mergeTags(profile, tagNames);
     update.tagIds = [];

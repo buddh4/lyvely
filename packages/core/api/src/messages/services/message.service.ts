@@ -21,10 +21,12 @@ export class MessageService extends ContentTypeService<Message, CreateMessageMod
   protected async createUpdate(
     profile: Profile,
     user: User,
-    content: Message,
+    message: Message,
     model: Partial<CreateMessageModel>,
   ): Promise<UpdateQuerySet<Message>> {
-    content.content.text = model.text;
-    return content;
+    if (model.text) {
+      message.content.text = model.text;
+    }
+    return message;
   }
 }

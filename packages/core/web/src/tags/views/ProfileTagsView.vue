@@ -45,14 +45,14 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
       <template #header-right>
         <ly-add-button @click="setCreateTag" />
       </template>
-      <div class="py-3 pr-3 border-divide bg-highlight dark:bg-main">
+      <div class="py-3 pr-3 border-divide bg-main">
         <div class="relative inline-block">
           <input
             ref="search"
             v-model="filter.query"
             type="text"
             :placeholder="$t('tags.view.search')"
-            class="search pl-2 ml-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main dark:bg-highlight" />
+            class="search pl-2 ml-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
           <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
         </div>
         <div class="float-right">
@@ -101,7 +101,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
           </ly-button>
         </div>
       </div>
-      <div v-if="!tags.length" class="p-5 border-divide bg-main">
+      <div v-if="!tags.length" class="p-5 border-divide bg-main text-xs">
         <span v-if="filter.isActive()">{{ $t('filter.empty') }}</span>
         <span v-else>{{ $t('list.empty') }}</span>
       </div>
