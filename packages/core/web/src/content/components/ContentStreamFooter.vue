@@ -85,7 +85,7 @@ onMounted(() => {
         </ly-button>
 
         <div
-          class="flex flex-grow relative bg-slate-100 dark:bg-highlight rounded-3xl px-3.5 py-2 overflow-hidden">
+          class="flex flex-grow relative bg-gray-100 dark:bg-highlight rounded-3xl px-3.5 py-2 overflow-hidden">
           <textarea
             ref="messageInput"
             v-model="model.text"
