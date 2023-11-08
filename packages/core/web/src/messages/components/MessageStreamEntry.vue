@@ -22,7 +22,7 @@ const props = defineProps<IProps>();
     :show-type="false">
     <div>
       <span>
-        <ly-markdown-view :md="model.content.text!" />
+        <ly-markdown-view :md="model.content.text!" class="text-sm" />
       </span>
     </div>
   </content-stream-entry>

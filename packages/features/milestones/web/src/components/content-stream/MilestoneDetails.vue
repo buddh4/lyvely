@@ -72,7 +72,7 @@ onBeforeMount(async () => {
     <template #body>
       <ly-progress-bar :progress="progress" />
       <p class="my-4 text-sm">
-        <ly-markdown-view :md="model.content.text" />
+        <ly-markdown-view :md="model.content.text" class="text-sm" />
       </p>
       <table v-if="relations.length" class="border-collapse table-auto text-xs">
         <tbody>

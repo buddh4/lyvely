@@ -32,7 +32,7 @@ const appName = useAppConfigStore().get('appName');
     </template>
     <template #body>
       <p v-if="model.content.text" class="my-4 text-sm">
-        <ly-markdown-view :md="t(model.content.text, model.content.params || {})" />
+        <ly-markdown-view :md="t(model.content.text, model.content.params || {})" class="text-sm" />
       </p>
     </template>
   </content-details>

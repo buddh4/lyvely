@@ -68,7 +68,7 @@ onUnmounted(unwatchDate);
     </template>
     <template #body>
       <div v-if="model.content.text?.length" class="mb-4">
-        <ly-markdown-view :md="model.content.text" />
+        <ly-markdown-view :md="model.content.text" class="text-sm" />
       </div>
       <div>
         <time-series-summary

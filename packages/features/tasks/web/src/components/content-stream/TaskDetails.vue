@@ -38,7 +38,7 @@ const updateTimer = async (value: number) => taskStore.updateTimer(props.model, 
     </template>
     <template #body>
       <div v-if="model.content.text?.length" class="text-sm mb-2">
-        <ly-markdown-view :md="model.content.text" />
+        <ly-markdown-view :md="model.content.text" class="text-sm" />
       </div>
       <div class="flex justify-end">
         <timer-state

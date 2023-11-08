@@ -20,7 +20,7 @@ defineProps<IProps>();
       </div>
     </template>
     <template #body>
-      <ly-markdown-view :md="model.content.text" />
+      <ly-markdown-view :md="model.content.text" class="text-sm" />
     </template>
   </content-details>
 </template>

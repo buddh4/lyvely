@@ -93,14 +93,13 @@ const childCount = computed(() => {
   }).format(props.model.meta.childCount);
 });
 
+const bgClass = 'bg-main';
 const bodyWrapperClass = computed(
   () =>
     ({
       none: 'relative',
-      message:
-        'relative message-bubble inline-block transition duration-200 hover:bg-highlight dark:hover:bg-highlight bg-main border border-divide px-4 py-1.5',
-      block:
-        'relative inline-flex flex-col border border-divide p-4 rounded-xl bg-main inline-block',
+      message: `relative message-bubble ${bgClass} inline-block transition duration-200 hover:bg-highlight dark:hover:bg-highlight border border-divide px-4 py-1.5`,
+      block: `relative inline-flex flex-col border border-divide p-4 rounded-xl ${bgClass} inline-block`,
     }[props.bodyStyle]),
 );
 

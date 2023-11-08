@@ -68,7 +68,7 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
   </div>
   <div class="p-2.5 md:px-4 bg-main border-divide rounded-b text-sm">
     <slot name="body">
-      <ly-markdown-view :md="model.content.text" />
+      <ly-markdown-view :md="model.content.text" class="text-sm" />
     </slot>
   </div>
   <div v-if="$slots.footer" class="bg-main rounded-b p-2.5 md:p-4 border-t border-divide">

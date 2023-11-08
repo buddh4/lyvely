@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use of unique usernames + displayName
 - Added Markdown support
 - Use of unique profile handle
-- Improved profile route handling
+- Improved profile route handlingn
 - Improved network error handling with auto reload
 
 

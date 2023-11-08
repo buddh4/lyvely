@@ -23,7 +23,7 @@ const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
 
 async function submitMessage(evt: KeyboardEvent) {
-  if (!evt.shiftKey) {
+  if (!evt?.shiftKey) {
     const newMessage = await createMessageStore.submit(filter.value.parentId);
     emits('contentCreated', newMessage);
     messageInput.value!.style.height = 'auto';
@@ -72,28 +72,31 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="p-2 md:p-4 bg-main border-t border-divide">
+  <div class="p-2 md:p-4 bg-main">
     <div class="mb-2 md:mb-4">
       <content-stream-filter-navigation />
     </div>
     <div class="flex flex-col">
-      <div class="flex gap-1 md:gap-3">
+      <div class="flex gap-1 md:gap-3 items-end">
         <ly-button
           class="primary rounded-full w-10 h-10 flex items-center"
           @click="openCreateContentModal">
           <ly-icon name="plus"></ly-icon>
         </ly-button>
 
-        <textarea
-          ref="messageInput"
-          v-model="model.text"
-          rows="1"
-          type="text"
-          class="resize-none overflow-auto"
-          :placeholder="$t(placeholderKey)"
-          @keyup.enter="submitMessage"
-          @keydown="onInputKeydown"
-          @paste="autoAlignHeight" />
+        <div
+          class="flex flex-grow relative bg-slate-100 dark:bg-highlight rounded-3xl px-3.5 py-2 overflow-hidden">
+          <textarea
+            ref="messageInput"
+            v-model="model.text"
+            rows="1"
+            type="text"
+            class="plain w-full bg-transparent resize-none overflow-auto scrollbar-thin border-0 p-0 focus-hidden focus:ring-none focus:outline-none focus:shadow-none"
+            :placeholder="$t(placeholderKey)"
+            @keyup.enter="submitMessage"
+            @keydown="onInputKeydown"
+            @paste="autoAlignHeight" />
+        </div>
 
         <ly-button class="primary rounded-full w-10 h-10 flex items-center" @click="submitMessage">
           <ly-icon name="send"></ly-icon>
@@ -103,4 +106,8 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.chat-input {
+  box-shadow: none;
+}
+</style>

@@ -67,8 +67,8 @@ const hiddenState = ref<boolean>(props.hide ?? props.type === 'password');
 
 watch(
   () => props.hide,
-  (val) => {
-    hiddenState.value = val;
+  (val?: boolean) => {
+    hiddenState.value = !!val;
   },
 );
 
