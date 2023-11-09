@@ -2,19 +2,10 @@ import { nextTick } from 'vue';
 import { createI18n, I18n } from 'vue-i18n';
 import { IModule, getModule, isDevelopEnvironment, getModules } from '@/core';
 import { Translatable } from '@lyvely/ui';
-import { useI18nStore } from '@/i18n/i18n.store';
-
-export const SUPPORT_LOCALES = ['en-US', 'de-DE'];
+import { DEFAULT_FALLBACK_LOCALE, LOCALES_SUPPORTED } from '@lyvely/core-interface';
+import { loadDateTimeLocale, isDateTimeLocaleLoaded } from '@lyvely/dates';
 
 let i18n: I18n;
-
-// TODO: make this configurable
-const fallBackLocale = 'en-US';
-
-export const LOCALES_AVAILABLE = {
-  'en-US': 'English',
-  'de-DE': 'Deutsch',
-};
 
 export function getI18n() {
   return i18n;
@@ -24,6 +15,15 @@ export type ITranslation = () => string;
 
 const DEFAULT_TRANSLATION_SECTION = 'locale';
 const BASE_TRANSLATION_SECTION = 'base';
+
+// Note that at this time, we can not access app config from the backend.
+let fallBackLocale = import.meta.env.VITE_FALLBACK_LOCALE || DEFAULT_FALLBACK_LOCALE;
+
+if (!LOCALES_SUPPORTED.includes(fallBackLocale)) {
+  fallBackLocale = DEFAULT_FALLBACK_LOCALE;
+}
+
+let activeLocale = fallBackLocale;
 
 export function translation(key: string, options?: any) {
   return () => translate(key, options);
@@ -43,7 +43,7 @@ export function translate(
 ) {
   if (typeof key === 'function') return key(options);
   if (!(<any>getI18n()?.global)) {
-    console.error(new Error('Translation attept before app intialization.'));
+    console.error(new Error('Translation attempt before app initialization.'));
     return 'error';
   }
   return (<any>getI18n().global).t(key, options);
@@ -68,7 +68,7 @@ export function isModuleMessagesLoaded(
   locale?: string,
 ) {
   section ??= DEFAULT_TRANSLATION_SECTION;
-  locale ??= useI18nStore().locale || fallBackLocale;
+  locale ??= activeLocale;
   return (
     loadedModules[moduleId] && loadedModules[moduleId][section ? section + '.' + locale : locale]
   );
@@ -82,7 +82,7 @@ function setModuleMessagesLoaded(
   locale?: string,
 ) {
   section ??= DEFAULT_TRANSLATION_SECTION;
-  locale ??= useI18nStore().locale || fallBackLocale;
+  locale ??= activeLocale;
 
   loadedModules[module] = loadedModules[module] || {};
   loadedModules[module][section ? section + '.' + locale : locale] = true;
@@ -94,7 +94,7 @@ export async function loadModuleMessages(
   locale?: string,
 ): Promise<any> {
   section ??= DEFAULT_TRANSLATION_SECTION;
-  locale ??= useI18nStore().locale || fallBackLocale;
+  locale ??= activeLocale;
 
   const promises = [];
   if (locale !== fallBackLocale && !isModuleMessagesLoaded(moduleId, section, fallBackLocale)) {
@@ -111,7 +111,7 @@ export async function loadModuleMessages(
       .then(() => setModuleMessagesLoaded(moduleId, section, locale))
       .then(() => nextTick())
       .catch((e) => {
-        console.error(`Error loading module message file: ${module} for locale ${locale}`, e);
+        console.error(`Error loading module message file: ${moduleId} for locale ${locale}`, e);
       }),
   );
 
@@ -151,6 +151,12 @@ export function isBaseModuleMessagesLoaded(locale: string) {
   return baseModuleLocales.includes(locale);
 }
 
+/**
+ * Sets the locale used for translations and loads base translations.
+ * This function should not be called directly, otherwise we are out of sync with stored.
+ * Note, this function will not load any non-base translation files.
+ * @param locale
+ */
 export async function setLocale(locale: string) {
   const promises = [];
 
@@ -166,6 +172,14 @@ export async function setLocale(locale: string) {
     promises.push(loadModuleBaseMessages(locale));
   }
 
+  if (!isDateTimeLocaleLoaded(fallBackLocale)) {
+    promises.push(loadDateTimeLocale(fallBackLocale));
+  }
+
+  if (!isDateTimeLocaleLoaded(locale)) {
+    promises.push(loadDateTimeLocale(locale));
+  }
+
   await Promise.all(promises);
 
   if (i18n.mode === 'legacy' || typeof i18n.global.locale === 'string') {
@@ -173,6 +187,8 @@ export async function setLocale(locale: string) {
   } else {
     i18n.global.locale.value = locale;
   }
+
+  activeLocale = locale;
 
   /**
    * NOTE:
@@ -184,8 +200,8 @@ export async function setLocale(locale: string) {
   document.querySelector('html')?.setAttribute('lang', locale);
 }
 
-export function getLocale() {
-  return i18n.global.locale;
+export function getFallbackLocale() {
+  return fallBackLocale;
 }
 
 export async function loadLocaleMessages(locale: string) {

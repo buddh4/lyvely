@@ -1,3 +1,5 @@
+import { ILocaleManager } from './locale-loader.interface';
+
 export type CalendarDate = string | number | Date;
 export type CalendarDateTime = CalendarDate | IDateTime;
 
@@ -74,6 +76,62 @@ let dateTimeFactory: DateTimeFactory;
 
 export function setDateTimeFactory(factory: DateTimeFactory) {
   dateTimeFactory = factory;
+}
+
+let localeManager: ILocaleManager;
+
+export function setLocaleManager(loader: ILocaleManager) {
+  localeManager = loader;
+}
+
+/**
+ * Asynchronously loads a locale module based on the provided locale string.
+ * @param locale The locale string in the format 'language' or 'language-COUNTRY'.
+ */
+export async function loadDateTimeLocale(locale: string): Promise<void> {
+  if (!localeManager) {
+    throw new Error('No locale manager set');
+  }
+
+  return localeManager.loadLocale(locale);
+}
+
+/**
+ * Sets the given locale as global locale.
+ * Note, the given locale needs to be loaded.
+ * @param locale The locale string in the format 'language' or 'language-COUNTRY'.
+ */
+export function setGlobalDateTimeLocale(locale: string): void {
+  if (!localeManager) {
+    throw new Error('No locale manager set');
+  }
+
+  return localeManager.setGlobalLocale(locale);
+}
+
+/**
+ * Checks if a specific locale is already loaded.
+ * @param locale The locale string in the format 'language' or 'language-COUNTRY'.
+ */
+export function isDateTimeLocaleLoaded(locale: string): boolean {
+  if (!localeManager) {
+    throw new Error('No locale manager set');
+  }
+
+  return localeManager.isLoaded(locale);
+}
+
+/**
+ * Returns an already loaded locale or undefined in case it was not loaded or does not exist.
+ * Note, the format will depend on adapter.
+ * @param locale The locale string in the format 'language' or 'language-COUNTRY'.
+ */
+export function getDateTimeLocale<TLocale = any>(locale: string): TLocale | undefined {
+  if (!localeManager) {
+    throw new Error('No locale manager set');
+  }
+
+  return localeManager.getLocale(locale);
 }
 
 export function dateTime(

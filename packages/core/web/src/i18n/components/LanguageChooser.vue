@@ -1,21 +1,16 @@
 <script lang="ts" setup>
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
-import { getLocale, setLocale } from '@/i18n';
-import { computed, ref } from 'vue';
-import { I18N_MODULE_ID, I18nAppConfig, ILocale } from '@lyvely/core-interface';
+import { useI18nStore } from '@/i18n';
+import { useAuthStore } from '@/auth';
+import { computed } from 'vue';
 
-const enabledLocales = useAppConfigStore().getModuleConfig<I18nAppConfig, ILocale[]>(
-  I18N_MODULE_ID,
-  'locales',
-);
+const i18nStore = useI18nStore();
+const authStore = useAuthStore();
+const enabledLocales = i18nStore.getEnabledLocales();
 
-const activeLocale = ref(getLocale());
-const locale = computed(
-  () => enabledLocales?.find((locale) => locale.locale === activeLocale.value)?.name,
-);
+const locale = computed(() => i18nStore.getLocaleName(i18nStore.locale));
 
 const switchLocale = (locale: string) => {
-  return setLocale(locale);
+  return authStore.setUserLocale(locale);
 };
 </script>
 

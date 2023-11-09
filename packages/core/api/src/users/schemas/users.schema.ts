@@ -65,7 +65,7 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   password: string;
 
   // TODO: Proper validation.
-  /** The locale of this user. **/
+  /** The locale of this user used for translation and default locale related formats. **/
   @Prop({ default: getDefaultLocale() })
   locale: string;
 
@@ -121,6 +121,10 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
       this.guid = createHash('sha256')
         .update(createObjectId().toString() + this.email)
         .digest('hex');
+    }
+
+    if (!this.locale) {
+      this.locale = getDefaultLocale();
     }
   }
 

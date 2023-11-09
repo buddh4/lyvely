@@ -3,7 +3,8 @@ import { ConfigurationPath } from '@/core';
 export interface I18nConfig {
   modules: {
     i18n: {
-      locales: string[];
+      locales?: string[];
+      fallback?: string;
     };
   };
 }

@@ -6,10 +6,15 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { CalendarDate, IDateTime, setDateTimeFactory, UnitType } from '../interfaces';
+import {
+  CalendarDate,
+  IDateTime,
+  setDateTimeFactory,
+  setLocaleManager,
+  UnitType,
+} from '../../interfaces';
 import { isDefined } from 'class-validator';
-import 'dayjs/locale/de';
-import 'dayjs/locale/en';
+import { useDayJsLocaleLoader } from './dayjs-locale.manager';
 
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
@@ -162,4 +167,5 @@ export function dateTimeFactory(
 
 export function useDayJsDateTimeAdapter() {
   setDateTimeFactory(dateTimeFactory);
+  setLocaleManager(useDayJsLocaleLoader());
 }

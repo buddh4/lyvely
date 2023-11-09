@@ -1,10 +1,5 @@
 import { NavigationGuardWithThis } from 'vue-router';
-import {
-  isGlobalMessagesLoaded,
-  isModuleMessagesLoaded,
-  loadModuleMessages,
-  setLocale,
-} from './i18n';
+import { isGlobalMessagesLoaded, isModuleMessagesLoaded, loadModuleMessages } from './i18n';
 import { usePageStore } from '@/ui';
 import { useI18nStore } from './i18n.store';
 
@@ -16,7 +11,7 @@ export const messageLoaderGuard: NavigationGuardWithThis<undefined> = async (to,
 
   if (!isGlobalMessagesLoaded(locale)) {
     setShowAppLoader(true);
-    promises.push(setLocale(locale));
+    promises.push(useI18nStore().setActiveLocale(locale));
   }
 
   if (to.meta?.i18n?.load?.length) {

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { I18nModelValidator } from '@/i18n';
+import { I18nModelValidator, useI18nStore } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { UserRegistration } from '@lyvely/core-interface';
 import { ModelValidator } from '@lyvely/common';
@@ -16,6 +16,8 @@ export const useUserRegistrationStore = defineStore('user-registrations', () => 
 
   async function register() {
     if (!(await this.validator.validate())) return false;
+
+    model.value.locale = useI18nStore().locale;
 
     return loadingStatus(
       userRegistrationService.register(model.value),

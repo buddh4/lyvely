@@ -2,7 +2,7 @@
 import { computed, onUnmounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { getRelativeTime } from '@lyvely/dates';
-import { useAuthStore } from '@/auth/store/auth.store';
+import { useI18nStore } from '@/i18n';
 
 export interface IProps {
   ts: number;
@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<IProps>(), {
   style: 'long',
 });
 
-const { locale } = storeToRefs(useAuthStore());
+const { locale } = storeToRefs(useI18nStore());
 
 const now = ref(Date.now());
 

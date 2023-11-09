@@ -1,39 +1,22 @@
 import { defineStore } from 'pinia';
 import { repository, localStorageManager, sessionStorageManager, eventBus } from '@/core';
 import { usePageStore } from '@/ui';
-import { setLocale, getDefaultLocale } from '@/i18n';
+import { useI18nStore } from '@/i18n';
 import { ref, computed } from 'vue';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import { AuthService } from '@/auth/services/auth.service';
-import {
-  I18N_MODULE_ID,
-  ILoginResponse,
-  UserModel,
-  UserStatus,
-  I18nAppConfig,
-  ILocale,
-} from '@lyvely/core-interface';
+import { ILoginResponse, UserModel, UserStatus } from '@lyvely/core-interface';
 import { queuePromise } from '@lyvely/common';
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import { useLiveStore } from '@/live/stores/live.store';
 
 export const storedVid = localStorageManager.getStoredValue('visitorId');
 
 export const useAuthStore = defineStore('user-auth', () => {
   const user = ref<UserModel>();
-  const appConfigStore = useAppConfigStore();
   const authService = new AuthService();
   const authTokenExpiration = ref(0);
-
-  const locale = computed(() => {
-    return (
-      user.value?.locale ||
-      getDefaultLocale(
-        appConfigStore.getModuleConfig<I18nAppConfig, ILocale[]>(I18N_MODULE_ID, 'locales'),
-      )
-    );
-  });
   const visitorId = ref<string | undefined>(<string | undefined>storedVid.getValue());
+  const i18nStore = useI18nStore();
 
   const isAuthenticated = computed(() => !!visitorId.value);
 
@@ -89,10 +72,22 @@ export const useAuthStore = defineStore('user-auth', () => {
 
   async function setUser(authUser: UserModel) {
     user.value = authUser;
+
     if (user.value.locale) {
-      await setLocale(user.value.locale);
+      await i18nStore.setActiveLocale(user.value.locale);
+    } else {
+      user.value.locale = i18nStore.locale;
     }
+
     useLiveStore().connectUser();
+  }
+
+  async function setUserLocale(locale: string) {
+    if (user.value) {
+      user.value.locale = locale;
+    }
+
+    return i18nStore.setActiveLocale(locale);
   }
 
   async function refreshToken() {
@@ -107,8 +102,8 @@ export const useAuthStore = defineStore('user-auth', () => {
 
   return {
     user,
-    locale,
     getVid,
+    setUserLocale,
     authTokenExpiration,
     isAuthenticated,
     isAwaitingEmailVerification,

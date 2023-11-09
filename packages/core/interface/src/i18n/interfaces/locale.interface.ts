@@ -1,4 +1,4 @@
-export interface ILocale {
+export interface ILocaleDefinition {
   locale: string;
   name: string;
 }

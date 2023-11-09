@@ -38,6 +38,7 @@ export declare global {
       BASE_URL: string;
       SSR: false;
       VITE_APP_API_URL: string;
+      VITE_FALLBACK_LOCALE: string;
       VITE_APP_ENV: 'development' | 'production';
       VITE_APP_BASEURL: string;
       MODE: 'development' | 'production';

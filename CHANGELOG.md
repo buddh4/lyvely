@@ -5,32 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0-alpha4] - WIP
+## [0.2.0-alpha4] - WIP
 
 ### Fixed
 - Profile layout swipe handler should be prevented in case of active scroll
 - MainContainer does not have full width and scrollbar is not at the right page
 - Profile layout swipe handler not active on form elements
 - Drawer stack not working as expected
-- Major refactoring and modularization of core and feature modules
-- Added back to stream button
-- Implementation of Menu API
-- Implementation of Feature API
-- Implementation of Policy API
-- Implemented Layout web API for registering layouts which can be used in routes
-- Added a standalone mode for Tasks, Habits and Milestone module
-- Added an initial view for Tasks, Habits and Milestone module
-- Major improvements of backend and frontend module system
-- Router can now be extended by modules
-- Messages can be now be edited
-- Implementation of Permission API
-- Access by username or email
-- Use of unique usernames + displayName
-- Added Markdown support
-- Use of unique profile handle
-- Improved profile route handlingn
 - Improved network error handling with auto reload
-
 
 ### Changed
 - Mobile profile drawer is closed on route change
@@ -38,10 +20,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Major modularization refactoring
 - Use of nx monorepo
 - Updated to vue v3.3.0
+- Improved profile route handling
+- Major refactoring and modularization of core and feature modules
+- Access by username or email
+- Use of unique usernames + displayName
+- Use of unique profile handle
+- Many style improvements
 
 
 ### Added
 - Implemented basic legal module
+- Added Markdown support
+- Implementation of Permission API
+- Chat messages can be now be edited
+- Router can now be extended by modules
+- Major improvements of backend and frontend module system
+- Added an initial view for Tasks, Habits and Milestone module
+- Added a standalone mode for Tasks, Habits and Milestone module
+- Added a standalone mode for Tasks, Habits and Milestone module
+- Implemented Layout web API for registering layouts which can be used in routes
+- Implementation of Policy API
+- Implementation of Menu API
+- Implementation of Feature API
+- Added back to stream button
+- Proper locale handling and configuration
 
 ## [0.1.0-alpha4] - 2023-06-06
 

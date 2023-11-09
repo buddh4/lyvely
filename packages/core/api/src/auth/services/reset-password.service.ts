@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { FieldValidationException, isValidEmail, escapeHTML } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { UserStatus } from '@lyvely/core-interface';
@@ -11,6 +11,8 @@ import { JWT_RESET_PASSWORD_TOKEN } from '../guards';
 
 @Injectable()
 export class ResetPasswordService {
+  private logger = new Logger(ResetPasswordService.name);
+
   constructor(
     private userService: UsersService,
     private mailService: MailService,
@@ -19,14 +21,15 @@ export class ResetPasswordService {
     private urlGenerator: UrlGenerator,
   ) {}
 
-  async sendMail(email: string) {
-    if (!isValidEmail(email)) {
+  async sendMail(usernameOrEmail: string) {
+    if (!isValidEmail(usernameOrEmail)) {
       throw new FieldValidationException([{ property: 'email', errors: ['validation.isEmail'] }]);
     }
 
-    const user = await this.userService.findUserByMainEmail(email);
+    const user = await this.userService.findUserByUsernameOrMainEmail(usernameOrEmail);
     if (!user || user.status === UserStatus.Disabled) {
       // Do not throw any error due to enumeration attacks
+      this.logger.error('Reset password called with wrong username or email');
       return;
     }
 
@@ -38,7 +41,7 @@ export class ResetPasswordService {
     const resetUrl = this.urlGenerator.getAppUrl({ path: '/reset-password/', query: { t: token } });
 
     await this.mailService.sendMail({
-      to: email,
+      to: usernameOrEmail,
       subject: `Attempt to register an already existing email`,
       partials: {
         headline: appName + ' password reset',

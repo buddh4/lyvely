@@ -1,5 +1,5 @@
-import { ILocale } from './locale.interface';
+import { ILocaleDefinition } from './locale.interface';
 
 export type I18nAppConfig = {
-  locales: ILocale[];
+  locales: ILocaleDefinition[];
 };

@@ -1,5 +1,6 @@
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
+import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -18,7 +19,7 @@ export default [
         format: 'cjs',
       },
     ],
-    external: [
+   external: [
       'class-validator',
       'class-transformer',
       'dayjs',
@@ -38,6 +39,7 @@ export default [
           '@/*': ['src/*'],
         },
       }),
+      dynamicImportVars(),
       commonjs({}),
     ],
     watch: {
