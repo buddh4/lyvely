@@ -16,8 +16,9 @@ import LyDialog from './components/dialogs/LyDialog.vue';
 import LyDrawer from './components/drawers/LyDrawer.vue';
 import LyDropdown from './components/menus/LyDropdown.vue';
 import LyDropdownLink from './components/menus/LyDropdownLink.vue';
+import LyMenuEntry from './components/menus/LyMenuEntry.vue';
 import LyTabMenu from './components/menus/LyTabMenu.vue';
-import LyTabMenuLink from './components/menus/LyTabMenuLink.vue';
+import LyTabMenuEntry from './components/menus/LyTabMenuEntry.vue';
 import LySliderMenu from './components/menus/LySliderMenu.vue';
 import LyAvatar from './components/avatars/LyAvatar.vue';
 import LyFormattedDate from './components/intl/LyFormattedDate.vue';
@@ -46,11 +47,12 @@ import LyTimeNumberInput from './components/forms/LyTimeNumberInput.vue';
 import LyPasswordStrengthMeter from './components/forms/LyPasswordStrengthMeter.vue';
 import LyResponsive from './components/helpers/LyResponsive.vue';
 import LyTable from './components/tables/LyTable.vue';
-import LyMarkdownView from "@/components/markdown/LyMarkdownView.vue";
+import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
 import { App } from 'vue';
 import { Icons } from './components/icons/Icons';
 import { LyvelyUiOptions, setConfigOptions } from './config';
 import { Translatable, TranslationAdapter } from './i18n';
+import LyComponentStack from '@/components/stack/LyComponentStack.vue';
 
 const createLyvelyUi = (options?: LyvelyUiOptions) => {
   setConfigOptions(options);
@@ -76,8 +78,9 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyIcon', LyIcon);
       Vue.component('LyDropdown', LyDropdown);
       Vue.component('LyDropdownLink', LyDropdownLink);
+      Vue.component('LyMenuEntry', LyMenuEntry);
       Vue.component('LyTabMenu', LyTabMenu);
-      Vue.component('LyTabMenuLink', LyTabMenuLink);
+      Vue.component('LyTabMenuEntry', LyTabMenuEntry);
       Vue.component('LyAvatar', LyAvatar);
       Vue.component('LyFormattedDate', LyFormattedDate);
       Vue.component('LyListItem', LyListItem);
@@ -105,13 +108,18 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyTimeNumberInput', LyTimeNumberInput);
       Vue.component('LyPasswordStrengthMeter', LyPasswordStrengthMeter);
       Vue.component('LyMarkdownView', LyMarkdownView);
+      Vue.component('LyComponentStack', LyComponentStack);
     },
   };
 };
 
 export type { IConfirmOptions } from './components/modals/interfaces';
+export * from './components/stack/interfaces';
+export * from './helpers';
 export * from './types';
+export * from './components/layouts/interfaces';
 export * from './interfaces';
+export * from './components/menus/interfaces';
 
 export type { Translatable, TranslationAdapter };
 export {
@@ -139,7 +147,8 @@ export {
   LyProgressBar,
   LyContentPanel,
   LyAppLoader,
-  LyTabMenuLink,
+  LyTabMenuEntry,
+  LyMenuEntry,
   LyLoader,
   LyFormattedDate,
   LyDividedList,
@@ -163,5 +172,6 @@ export {
   LyModal,
   LyConfirmModal,
   LyAvatar,
-  LyMarkdownView
+  LyMarkdownView,
+  LyComponentStack,
 };

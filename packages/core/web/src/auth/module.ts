@@ -3,7 +3,7 @@ import { authGuard } from './guards';
 import { registerGuards } from '@/lyvely.router';
 import authRoutes from './routes/auth.routes';
 import { AUTH_MODULE_ID } from '@lyvely/core-interface';
-import { registerMenuEntries } from '@/ui';
+import { registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import { useAuthStore } from '@/auth/store/auth.store';
 

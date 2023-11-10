@@ -1,6 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref, Ref, watch } from 'vue';
-import { useProfileFeaturesService, useProfileStore } from '@/profiles';
+import { useProfileStore } from './profile.store';
+import { useProfileFeaturesService } from '@/profiles/services';
 import { useAppConfigStore } from '@/app-config';
 import {
   IFeature,

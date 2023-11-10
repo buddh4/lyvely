@@ -6,7 +6,7 @@ import {
 } from '@lyvely/core-interface';
 import { ISelectOptions } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config';
-import { useProfileStore } from '@/profiles';
+import { useProfileStore } from '@/profiles/stores';
 
 export interface IProfileVisibilityOptions {
   type?: ProfileType;

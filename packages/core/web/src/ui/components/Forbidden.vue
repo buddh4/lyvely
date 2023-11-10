@@ -1,18 +1,10 @@
 <script lang="ts" setup>
 import imgUrl from '@/assets/403.png';
 import { LyCenteredPanel, LyButton } from '@lyvely/ui';
-import { t } from '@/i18n';
 </script>
 
 <template>
-  <ly-centered-panel>
-    <template #header>
-      <div class="flex items-center justify-center">
-        <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-        <span class="text-base font-bold"> {{ t('common.status.403') }}</span>
-      </div>
-    </template>
-
+  <ly-centered-panel title="common.status.403">
     <template #body>
       <div class="card error-page">
         <img alt="Forbidden" :src="imgUrl" />

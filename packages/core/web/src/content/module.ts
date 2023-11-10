@@ -1,5 +1,5 @@
 import { contentRoutes } from './routes';
-import { registerMenuEntry } from '@/ui/menus';
+import { registerMenuEntry, registerComponentStackEntries } from '@lyvely/ui';
 import {
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_MOBILE_FOOTER,
@@ -7,8 +7,6 @@ import {
 } from '@/profiles/profile.constants';
 import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/core-interface';
 import { IModule } from '@/core';
-import { registerRoutes } from '@/lyvely.router';
-import { NotFound, registerComponentStackEntries } from '@/ui';
 
 export default () => {
   return {

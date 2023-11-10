@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import ProfileBreadcrumb from '@/profiles/components/menus/ProfileBreadcrumb.vue';
 import ProfileComboButton from '@/profiles/components/menus/ProfileComboButton.vue';
-import AccountDrawer from '@/user-accounts/components/menus/AccountDrawer.vue';
+import { STACK_PROFILE_TOP_RIGHT_NAVIGATION } from '@/profiles/profile.constants';
+import { LyComponentStack } from '@lyvely/ui';
 </script>
 
 <template>
@@ -18,7 +19,9 @@ import AccountDrawer from '@/user-accounts/components/menus/AccountDrawer.vue';
     </div>
 
     <div class="w-1/3">
-      <account-drawer />
+      <ly-component-stack
+        :id="STACK_PROFILE_TOP_RIGHT_NAVIGATION"
+        class="flex flex-row-reverse items-center justify-end score float-right gap-1" />
     </div>
   </nav>
 </template>

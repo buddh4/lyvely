@@ -8,6 +8,7 @@ import messagesModule from './messages/module';
 import uiModule from './ui/module';
 import helpModule from './help/module';
 import otpModule from './otp/module';
+import notificationsModule from './notifications/module';
 import userAccountModule from './user-accounts/module';
 import userRegistrationsModule from './user-registrations/module';
 import userInvitationsModule from './user-invitations/module';
@@ -28,6 +29,7 @@ export const registerCoreModules = () => {
     helpModule(),
     otpModule(),
     userAccountModule(),
+    notificationsModule(),
     userInvitationsModule(),
     userRegistrationsModule(),
   );

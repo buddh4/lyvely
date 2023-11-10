@@ -8,7 +8,7 @@ import {
   ICreateContentModalProps,
   IEditContentModalProps,
 } from '@/content/interfaces/edit-content-modal-props.interface';
-import { ComponentRegistration } from '@/ui';
+import { ComponentRegistration } from '@lyvely/ui';
 
 export type ModalEdit = {
   mode: 'modal';

@@ -1,12 +1,12 @@
 import { toProfileHome, ifIsMultiUserProfile } from '../guards';
 import { translation } from '@/i18n';
-import { profileIdRoute, profileRoot, profileRoute, profilePath } from './profile-route.util';
+import { profileRoot, profilePath, profileRoute, profilePathRoute } from './profile-route.helper';
 import { RouteRecordRaw } from 'vue-router';
-import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles';
+import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles/profile.constants';
 import { PROFILES_MODULE_ID } from '@lyvely/core-interface';
 
 export default [
-  { path: '/', redirect: profileRoute() },
+  { path: '/', redirect: profilePathRoute() },
   {
     path: '/pid/:pid/:view?',
     name: 'PID',
@@ -14,17 +14,11 @@ export default [
   {
     path: profileRoot(),
     name: 'ProfileRoot',
-    meta: {
-      layout: 'profile',
-    },
     beforeEnter: [toProfileHome],
   },
   {
     path: profilePath(),
     name: 'ProfileHome',
-    meta: {
-      layout: LAYOUT_PROFILE,
-    },
     beforeEnter: [toProfileHome],
   },
   {

@@ -1,4 +1,6 @@
 import { IconDefinitionIF, IconName } from './components/icons/Icons';
+import { Component } from 'vue';
+import { Lazy } from '@lyvely/common';
 
 export enum Color {
   Primary = 'primary',
@@ -9,6 +11,8 @@ export enum Color {
   Danger = 'danger',
   Success = 'success',
 }
+
+export type ComponentRegistration<Props = any> = Component<Props> | Lazy<Component<Props>>;
 
 export interface IconOptionsIF {
   color?: Omit<Color, 'inverted'>;

@@ -8,6 +8,8 @@ import { usePageStore } from '@/ui';
 import { EntityNotFoundException } from '@lyvely/common';
 import { useLiveStore } from '@/live';
 import { useProfileRelationInfosService } from '../services';
+import { profileRoute } from '@/profiles/routes/profile-route.helper';
+import { LocationQueryRaw } from 'vue-router';
 
 const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
 export const latestProfileHandle = localStorageManager.getStoredValue(LATEST_PROFILE_HANDLE);
@@ -139,6 +141,27 @@ export const useProfileStore = defineStore('profile', () => {
     usePageStore().setTitle(title);
   }
 
+  /**
+   * Builds a route to the given route name and handle.
+   * If no route name is provided the resulting route navigates to the home of the profile.
+   * If no handle is provided this function uses the currently active profile.
+   * If no profile is active, a route to the default profile is returned.
+   * @param name
+   * @param handle
+   * @param query
+   */
+  function getRoute(name?: string | null, handle?: string, query?: LocationQueryRaw) {
+    return profileRoute(name || getProfileHome(), handle || profile.value?.handle, query);
+  }
+
+  /**
+   * Returns the route name of the initial profile route.
+   * This may be configurable in the future.
+   */
+  function getProfileHome() {
+    return 'stream';
+  }
+
   return {
     profile,
     locale,
@@ -152,6 +175,7 @@ export const useProfileStore = defineStore('profile', () => {
     getUserInfo,
     setPageTitle,
     getMemberUserInfo,
+    getRoute,
     ...status,
   };
 });

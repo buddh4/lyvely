@@ -2,7 +2,7 @@ import { registerAfterNavigationHooks } from '@/lyvely.router';
 
 import { IModule } from '@/core';
 import { showHelpAfterNavigationHook } from '@/help/guards';
-import { registerComponentStackEntries, registerMenuEntries } from '@/ui';
+import { registerMenuEntries, registerComponentStackEntries } from '@lyvely/ui';
 import { STACK_PROFILE_LAYOUT } from '@/profiles';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';

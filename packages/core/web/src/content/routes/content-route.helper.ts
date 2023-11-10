@@ -1,4 +1,4 @@
-import { profileIdRoute } from '@/profiles/routes/profile-route.util';
+import { profileIdRoute } from '@/profiles/routes/profile-route.helper';
 
 export function contentRoute(pid: string, cid: string) {
   return profileIdRoute(pid, { path: `/stream/${cid}` });

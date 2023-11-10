@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import MyAccountHeader from '@/user-accounts/components/MyAccountHeader.vue';
 import { useAccountStore } from '@/user-accounts/stores/account.store';
-import { isMaxViewSize } from '@/ui';
+import { isMaxViewSize } from '@lyvely/ui';
 
 const accountStore = useAccountStore();
 if (!isMaxViewSize('sm')) {

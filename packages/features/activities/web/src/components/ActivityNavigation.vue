@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { LyTabMenu, LyIcon, LyTabMenuLink } from '@lyvely/ui';
+import { LyTabMenu, LyIcon, LyTabMenuEntry } from '@lyvely/ui';
 import { useProfileMenu, t } from '@lyvely/web';
 import { MENU_ACTIVITIES } from '@/activities.constants';
 
@@ -8,7 +8,7 @@ const { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
 
 <template>
   <ly-tab-menu>
-    <ly-tab-menu-link
+    <ly-tab-menu-entry
       v-for="menuEntry in enabledMenuEntries"
       :key="menuEntry.id"
       aria-controls="calendar-plan"

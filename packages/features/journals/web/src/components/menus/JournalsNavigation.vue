@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { LyTabMenu, LyTabMenuLink } from '@lyvely/ui';
+import { LyTabMenu, LyTabMenuEntry } from '@lyvely/ui';
 </script>
 
 <template>
   <ly-tab-menu>
-    <ly-tab-menu-link aria-controls="calendar-plan" :to="{ name: 'Journals' }">
+    <ly-tab-menu-entry aria-controls="calendar-plan" :to="{ name: 'Journals' }">
       <div class="flex items-center justify-center">
         {{ $t('journals.title') }}
       </div>

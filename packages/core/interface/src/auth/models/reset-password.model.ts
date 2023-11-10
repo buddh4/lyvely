@@ -1,4 +1,4 @@
-import { BaseModel, PropertyType, Match } from '@lyvely/common';
+import { BaseModel, PropertyType, SameAs } from '@lyvely/common';
 import { IsBoolean, IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class SendResetPasswordMail extends BaseModel<SendResetPasswordMail> {
@@ -13,7 +13,7 @@ export class ResetPassword extends BaseModel<ResetPassword> {
   password: string;
 
   @IsNotEmpty()
-  @Match('password')
+  @SameAs('password')
   passwordRepeat: string;
 
   @IsString()

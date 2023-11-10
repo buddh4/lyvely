@@ -10,14 +10,16 @@ import {
 } from './guards';
 import { IModule } from '@/core';
 import { uiRoutes } from '@/ui/routes';
-import { registerMenuEntries } from '@/ui/menus';
+import {
+  registerMenuEntries,
+  LyFlashMessage,
+  registerComponentStackEntries,
+  registerLayouts,
+} from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import { useFlashStore, usePageStore } from './stores';
 import { computed } from 'vue';
 import { LAYOUT_INTRO, STACK_MAIN, UI_MODULE_ID } from './ui.constants';
-import { registerLayouts } from './layouts';
-import { registerComponentStackEntries } from '@/ui/component-stack';
-import { LyFlashMessage } from '@lyvely/ui';
 
 export default () => {
   return {

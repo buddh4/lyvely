@@ -2,7 +2,7 @@ import { ifNotAuthenticated } from '../guards';
 import { translate } from '@/i18n';
 import { RouteLocation, RouteRecordRaw } from 'vue-router';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from './paths';
+import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from '../auth.constants';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
 import { LAYOUT_INTRO } from '@/ui';
 

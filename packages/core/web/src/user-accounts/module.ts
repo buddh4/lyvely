@@ -1,8 +1,10 @@
 import { userAccountsRoutes } from './routes';
 import { USER_ACCOUNTS_MODULE_ID } from '@lyvely/core-interface';
 import { IModule } from '@/core';
-import { registerMenuEntries } from '@/ui';
+import { registerComponentStackEntries, registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER } from '@/user-accounts/user-accounts.constants';
+import { STACK_PROFILE_TOP_RIGHT_NAVIGATION } from '@/profiles';
+import AccountDrawer from './components/menus/AccountDrawer.vue';
 
 export default () => {
   return {
@@ -14,6 +16,13 @@ export default () => {
     },
     routes: userAccountsRoutes,
     init: () => {
+      registerComponentStackEntries(STACK_PROFILE_TOP_RIGHT_NAVIGATION, [
+        {
+          id: 'account-drawer',
+          component: AccountDrawer,
+          sortOrder: 100,
+        },
+      ]);
       registerMenuEntries(MENU_ACCOUNT_DRAWER, [
         {
           id: 'my-account',
@@ -24,8 +33,6 @@ export default () => {
           to: { name: 'MyAccountInfo' },
         },
       ]);
-
-      setInterval(() => {}, 1000);
     },
   } as IModule;
 };

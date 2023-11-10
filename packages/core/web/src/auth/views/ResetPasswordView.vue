@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import CaptchaInput from '@/captcha/components/CaptchaInput.vue';
-import { LyCenteredPanel } from '@lyvely/ui';
+import { LyCenteredPanel, isTouchScreen } from '@lyvely/ui';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
 import { storeToRefs } from 'pinia';
 import { useRouter, RouteLocationRaw } from 'vue-router';
 import { PATH_LOGIN } from '@/auth';
 import { onUnmounted, ref } from 'vue';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
-import { isTouchScreen } from '@/ui';
 
 const resetPasswordStore = useResetPasswordStore();
 const sendResetPasswordMailStore = useSendResetPasswordMailStore();

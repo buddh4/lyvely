@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import { usePageStore, getLayout, resolveComponentRegistration, STACK_MAIN } from '@/ui';
+import { usePageStore, STACK_MAIN } from '@/ui';
+import {
+  getLayout,
+  resolveComponentRegistration,
+  LyAppLoader,
+  LyDialog,
+  LyComponentStack,
+} from '@lyvely/ui';
 import { useGlobalDialogStore } from '@/core';
 import AriaLiveStatus from '@/accessibility/components/AriaLiveStatus.vue';
-import { LyAppLoader, LyDialog } from '@lyvely/ui';
 import { useRouter } from 'vue-router';
 import { watch, ref, computed, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
-import ComponentStack from '@/ui/components/ComponentStack.vue';
 
 const { visible, icon, iconColor, iconClass, title, message, buttonType } = toRefs(
   useGlobalDialogStore(),
@@ -43,7 +48,7 @@ const layoutDefinition = computed<{ component: any; props: any } | undefined>(()
     </template>
   </div>
 
-  <component-stack :id="STACK_MAIN" />
+  <ly-component-stack :id="STACK_MAIN" />
 
   <ly-app-loader v-model="showAppLoader" />
   <aria-live-status />

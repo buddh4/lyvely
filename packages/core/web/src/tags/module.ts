@@ -1,5 +1,5 @@
 import tagRoutes from './routes/tag.routes';
-import { registerMenuEntry } from '@/ui/menus';
+import { registerMenuEntry } from '@lyvely/ui';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
 
 export default () => {

@@ -1,16 +1,19 @@
 import { defineStore } from 'pinia';
 import { readonly, ref } from 'vue';
-import { getDefaultLocale } from './locale.util';
+import { getDefaultLocale } from './locale.helper';
 import {
   I18N_MODULE_ID,
   I18nAppConfig,
   ILocaleDefinition,
   DEFAULT_ENABLED_LOCALES,
   LOCALES_SUPPORTED,
-  DEFAULT_LOCALE_NAMES,
+  getLocaleDefinitions,
+  getLocaleName,
 } from '@lyvely/core-interface';
-import { useAppConfigStore } from '@/app-config';
-import { getFallbackLocale, setLocale } from '../i18n';
+import { EVENT_APP_CONFIG_LOADED, useAppConfigStore } from '@/app-config';
+import { getFallbackLocale, setLocale } from './i18n';
+import { eventBus } from '@/core';
+import { setEnabledLocales, setGlobalDateTimeLocale } from '@lyvely/dates';
 
 /**
  * This store provides translation state and helper functions.
@@ -19,16 +22,31 @@ export const useI18nStore = defineStore('i18n', () => {
   const locale = ref(getDefaultLocale(getEnabledLocales(), getFallbackLocale()));
 
   /**
-   * Returns all supported and enabled locales by configuration.
+   * Here we sync the enabled locales setting with our date time adapter.
+   * This is e.g. required for locale validation in models.
    */
-  function getEnabledLocales(): ILocaleDefinition[] {
+  eventBus.on(EVENT_APP_CONFIG_LOADED, () => {
+    setEnabledLocales(getEnabledLocales());
+  });
+
+  /**
+   * Returns all supported and enabled locales definitions by configuration.
+   */
+  function getEnabledLocaleDefinitions(): ILocaleDefinition[] {
     return useAppConfigStore()
       .getModuleConfig<I18nAppConfig, ILocaleDefinition[]>(
         I18N_MODULE_ID,
         'locales',
-        DEFAULT_ENABLED_LOCALES,
+        getLocaleDefinitions(DEFAULT_ENABLED_LOCALES),
       )
       .filter(({ locale }) => LOCALES_SUPPORTED.includes(locale));
+  }
+
+  /**
+   * Returns all supported and enabled locales by configuration.
+   */
+  function getEnabledLocales(): string[] {
+    return getEnabledLocaleDefinitions().map(({ locale }) => locale);
   }
 
   /**
@@ -36,7 +54,7 @@ export const useI18nStore = defineStore('i18n', () => {
    * @param locale
    */
   function isEnabledLocale(locale: string) {
-    return !!getEnabledLocales().find((l) => l.locale === locale);
+    return !!getEnabledLocaleDefinitions().find(({ locale: l }) => l === locale);
   }
 
   /**
@@ -45,30 +63,20 @@ export const useI18nStore = defineStore('i18n', () => {
    */
   async function setActiveLocale(localeUpdate: string) {
     if (!isEnabledLocale(localeUpdate)) {
-      /**
-       *  This call assures that we call setLocale in any case, which is required to load initial translations,
-       *  even if the locale did not change.
-       */
+      //This call assures that we call setLocale to load initial translations.
       return setActiveLocale(locale.value);
     }
 
     locale.value = localeUpdate;
+    setGlobalDateTimeLocale(localeUpdate);
     return setLocale(localeUpdate);
-  }
-
-  function getLocaleName(locale: string): string {
-    if (Object.hasOwn(DEFAULT_LOCALE_NAMES, locale)) {
-      return DEFAULT_LOCALE_NAMES[locale as keyof typeof DEFAULT_LOCALE_NAMES] as string;
-    }
-
-    return '';
   }
 
   return {
     locale: readonly(locale),
     setActiveLocale,
     getEnabledLocales,
+    getEnabledLocaleDefinitions,
     getLocaleName,
-    isEnabledLocale,
   };
 });

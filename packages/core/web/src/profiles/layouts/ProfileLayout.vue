@@ -1,14 +1,13 @@
 <script lang="ts" setup>
-import { Size } from '@lyvely/ui';
+import { Size, LyComponentStack, isFormField } from '@lyvely/ui';
 import ProfileDrawer from '../components/menus/ProfileDrawer.vue';
 import MainProfileContainer from '../components/MainProfileContainer.vue';
 import MobileFooterMenu from '../components/menus/MobileFooterMenu.vue';
 import { computed, Ref, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { usePageStore, isFormField } from '@/ui';
+import { usePageStore } from '@/ui';
 import { useSwipe } from '@vueuse/core';
 import { useAccountStore } from '@/user-accounts';
-import ComponentStack from '@/ui/components/ComponentStack.vue';
 import { STACK_PROFILE_LAYOUT } from '@/profiles/profile.constants';
 
 const pageStore = usePageStore();
@@ -79,7 +78,7 @@ const { direction } = useSwipe(root, {
     </div>
   </div>
 
-  <component-stack :id="STACK_PROFILE_LAYOUT" />
+  <ly-component-stack :id="STACK_PROFILE_LAYOUT" />
 </template>
 
 <style scoped></style>

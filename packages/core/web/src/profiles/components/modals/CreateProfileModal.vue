@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { ProfileUsage, ProfileType } from '@lyvely/core-interface';
 import { translate } from '@/i18n';
 import { useRouter } from 'vue-router';
-import { profileRoute } from '@/profiles/routes/profile-route.util';
+import { profileRoute } from '@/profiles/routes/profile-route.helper';
 
 const createProfileStore = useCreateProfileStore();
 const { show, model, validator, error } = storeToRefs(createProfileStore);
@@ -13,7 +13,7 @@ const { reset, submit } = createProfileStore;
 const router = useRouter();
 
 const createProfile = () =>
-  submit().then((profile) => router.push(profileRoute('/stream', profile.handle)));
+  submit().then((profile) => router.push(profileRoute('stream', profile.handle)));
 
 const userType = ProfileType.User;
 const groupType = ProfileType.Group;

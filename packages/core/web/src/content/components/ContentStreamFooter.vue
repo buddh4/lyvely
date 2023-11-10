@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { onMounted, ref } from 'vue';
 import { useContentStreamFilterStore, useContentCreateStore } from '../stores';
-import { focusIfNotTouchScreen } from '@/ui';
+import { focusIfNotTouchScreen } from '@lyvely/ui';
 
 export interface IProps {
   parent?: ContentModel;

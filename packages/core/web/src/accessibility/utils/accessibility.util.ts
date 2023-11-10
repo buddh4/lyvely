@@ -1,4 +1,4 @@
-import { SELECTOR_FORM_FIELD } from '@/ui';
+import { SELECTOR_FORM_FIELD } from '@lyvely/ui';
 
 export function accessibilityFocus(elem?: string | HTMLElement | null) {
   if (!elem) {

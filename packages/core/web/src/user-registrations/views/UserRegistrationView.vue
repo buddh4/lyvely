@@ -4,8 +4,7 @@ import { storeToRefs } from 'pinia';
 import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '../user-registration.constants';
-import { isTouchScreen } from '@/ui';
-import { LyCenteredPanel } from '@lyvely/ui';
+import { isTouchScreen, LyCenteredPanel } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import { useDebounceFn } from '@vueuse/core';
 import {

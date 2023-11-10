@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia';
 import { MENU_PROFILE_MOBILE_FOOTER } from '@/profiles/profile.constants';
 import { useProfileMenu } from '@/profiles/composables';
-import MenuEntry from '@/ui/components/MenuEntry.vue';
-//import { useActivityStore } from '@/activities/store/activity.store';
+import { LyMenuEntry, useMenu } from '@lyvely/ui';
 
 export interface IProps {
   state: boolean;
@@ -24,7 +22,7 @@ const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_MOBILE_FOOTER);
       class="footer shrink-0 shadow overflow-hidden w-full py-1 bg-main md:hidden">
       <div class="flex justify-center">
         <div class="navbar-nav flex flex-row justify-content-center">
-          <menu-entry
+          <ly-menu-entry
             v-for="entry in enabledMenuEntries"
             :key="entry.id"
             :entry="entry"

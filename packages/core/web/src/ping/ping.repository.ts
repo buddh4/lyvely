@@ -1,4 +1,4 @@
-import { repository } from '@/core';
+import { repository } from '@/core/repository';
 
 export default {
   async ping() {

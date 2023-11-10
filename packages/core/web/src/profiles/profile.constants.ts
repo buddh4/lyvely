@@ -9,3 +9,4 @@ export const LAYOUT_PROFILE_FULL = 'profile-full';
 export const LAYOUT_PROFILE_SETTINGS = 'profile-settings';
 
 export const STACK_PROFILE_LAYOUT = 'profile-layout';
+export const STACK_PROFILE_TOP_RIGHT_NAVIGATION = 'profile-top-right-navigation';

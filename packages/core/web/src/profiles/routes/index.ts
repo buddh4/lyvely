@@ -1,2 +1,2 @@
 export * from './profile.routes';
-export * from './profile-route.util';
+export * from './profile-route.helper';

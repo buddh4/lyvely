@@ -24,7 +24,8 @@
     "build:types": "node bin/generate-types.js",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "deps": "npx depcruise --config .dependency-cruiser.cjs src"
   },
   "dependencies": {
     "@lyvely/common": "^0.1.0-alpha3",
@@ -37,6 +38,7 @@
     "rehype-raw": "^7.0.0",
     "rehype-sanitize": "^6.0.0",
     "rehype-stringify": "^10.0.0",
+    "rehype-external-links": "^3.0.0",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.0",
     "remark-parse": "^11.0.0",
@@ -46,6 +48,7 @@
     "unified": "^11.0.4",
     "unist-util-visit": "^5.0.0",
     "vue": "^3.3.4",
+    "lodash": "^4.17.21",
     "vue-router": "^4.1.6",
     "zxcvbn": "^4.4.2"
   },
@@ -67,7 +70,6 @@
     "@vue/runtime-dom": "^3.3.4",
     "autoprefixer": "^10.4.14",
     "glob": "^10.3.10",
-    "lodash": "^4.17.21",
     "postcss": "^8.4.23",
     "postcss-import": "^15.1.0",
     "react": "^18.2.0",
@@ -81,6 +83,7 @@
     "vite-plugin-externalize-deps": "^0.7.0",
     "vite-tsconfig-paths": "^4.2.1",
     "vue-docgen-api": "^4.74.2",
-    "vue-tsc": "^1.8.19"
+    "vue-tsc": "^1.8.19",
+    "dependency-cruiser": "^14.1.0"
   }
 }

@@ -1,7 +1,7 @@
 import {
   t,
-  profileRoute,
   profilePath,
+  profilePathRoute,
   LAYOUT_PROFILE,
   useProfileFeatureStore,
   useProfileStore,
@@ -16,7 +16,7 @@ export const habitRoutes = [
     beforeEnter: [
       (to, from, next) => {
         if (useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id).value) {
-          next(profileRoute('/activities/habits', useProfileStore().profile!.handle));
+          next(profilePathRoute('/activities/habits', useProfileStore().profile!.handle));
         }
         next();
       },

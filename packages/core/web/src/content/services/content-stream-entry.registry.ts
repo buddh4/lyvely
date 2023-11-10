@@ -8,7 +8,7 @@ import {
   ICreateContentModalProps,
   IEditContentModalProps,
 } from '../interfaces';
-import { resolveComponentRegistration, ComponentRegistration } from '@/ui';
+import { resolveComponentRegistration, ComponentRegistration } from '@lyvely/ui';
 
 const contentTypeRegistry = new Map<string, Type<ContentModel>>();
 const streamEntryRegistry = new Map<string, Component<IStreamEntryProps>>();

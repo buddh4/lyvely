@@ -1,4 +1,4 @@
-import { getMenuEntries } from '@/ui';
+import { getMenuEntries } from '@lyvely/ui';
 import { computed } from 'vue';
 import { sortBySortOrder } from '@lyvely/common';
 import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';

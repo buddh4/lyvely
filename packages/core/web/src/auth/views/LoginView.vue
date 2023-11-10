@@ -4,14 +4,13 @@ import { storeToRefs } from 'pinia';
 import { watch, onUnmounted, ref } from 'vue';
 import { useLoginStore } from '@/auth/store/login.store';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
-import { isTouchScreen } from '@/ui';
+import { isTouchScreen, LyCenteredPanel } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config/store/app-config.store';
 import {
   USER_REGISTRATIONS_MODULE_ID,
   IUserRegistrationAppConfig,
   UserRegistrationMode,
 } from '@lyvely/core-interface';
-import { LyCenteredPanel } from '@lyvely/ui';
 
 const loginStore = useLoginStore();
 const router = useRouter();

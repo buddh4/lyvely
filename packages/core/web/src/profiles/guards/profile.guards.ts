@@ -1,5 +1,5 @@
 import { useProfileStore } from '@/profiles/stores';
-import { namedProfileRoute, profileRoute } from '@/profiles/routes/profile-route.util';
+import { profilePathRoute } from '@/profiles/routes/profile-route.helper';
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
 import { isMultiUserProfile } from '@lyvely/core-interface';
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
@@ -10,7 +10,8 @@ export const ifIsMultiUserProfile = async (
   next: NavigationGuardNext,
 ) => {
   if (!isMultiUserProfile(useProfileStore().profile)) {
-    next(profileRoute());
+    // TODO: Maybe use a profile internal 404 page here
+    next('404');
     return;
   }
 
@@ -43,14 +44,15 @@ const loadProfileByHandle = async (
   try {
     if ((!to.params.handle && to.path === '/') || to.params.handle === ':handle') {
       const profile = await profileStore.loadProfile();
-      return next(profileRoute('/', profile.handle));
+      return next(profileStore.getRoute(null, profile.handle));
     } else if (!to.params.handle) {
       const profile = await profileStore.loadProfile();
       if (!profile) throw new Error('Profile could not be loaded');
       to.params.handle = profile.handle;
+    } else {
+      await useProfileStore().loadProfile(<string>to.params.handle);
     }
 
-    await useProfileStore().loadProfile(<string>to.params.handle);
     next();
   } catch (e) {
     if (e instanceof EntityNotFoundException) return next('/404');
@@ -59,6 +61,14 @@ const loadProfileByHandle = async (
   }
 };
 
+/**
+ * This is used for profile id path navigations like /pid/:pid?view=ViewName.
+ * This is mainly used if the caller does not know the handle of the profile and don't want to manually load the profile,
+ * e.g. in notifications or navigating from profile relations.
+ * @param to
+ * @param from
+ * @param next
+ */
 const loadProfileById = async (
   to: RouteLocation,
   from: RouteLocation,
@@ -70,14 +80,19 @@ const loadProfileById = async (
     const profile = await profileStore.loadProfileById(to.params.pid as string);
     if (!profile) throw new Error('Profile could not be loaded');
 
-    // TODO: check if feature is enabled on target profile + better default feature handling
-    // Feature restrictions should probably be defined as route meta
-    if (to.params.view) {
-      next(namedProfileRoute(to.params.view as string, profile.handle));
-    } else if (to.query.path) {
-      next(profileRoute(to.query.path as string, profile.handle));
+    const query = { ...to.query };
+    delete query['path'];
+
+    /**
+     * TODO: check if feature is enabled on target profile + better default feature handling
+     * Feature restrictions should probably be defined as route meta
+     */
+    if (typeof to.params.view === 'string') {
+      next(profileStore.getRoute(to.params.view, profile.handle, query));
+    } else if (typeof to.query.path === 'string') {
+      next(profilePathRoute(to.query.path, profile.handle));
     } else {
-      next(profileRoute('/', profile.handle));
+      next(profileStore.getRoute(null, profile.handle, query));
     }
   } catch (e) {
     if (e instanceof EntityNotFoundException) return next('/404');
@@ -91,15 +106,7 @@ export const toProfileHome = async (
   from: RouteLocation,
   next: NavigationGuardNext,
 ) => {
-  const profileStore = useProfileStore();
-
-  if (!profileStore.profile) {
-    next('404');
-    return;
-  }
-
-  // TODO: Use profile setting default route
-  next(profileRoute('/stream', profileStore.profile.handle));
+  next(useProfileStore().getRoute());
 };
 
 export const setProfilePageTitleGuard = (to: RouteLocation): void => {

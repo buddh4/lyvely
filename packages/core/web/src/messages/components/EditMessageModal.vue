@@ -3,9 +3,8 @@ import { CreateMessageModel, MessageModel, UpdateMessageModel } from '@lyvely/co
 import { computed } from 'vue';
 import { ContentEditModalEmits, useContentEditModal, ICreateContentInitOptions } from '@/content';
 import { TagChooser } from '@/tags';
-import { isTouchScreen } from '@/ui';
+import { isTouchScreen, LyModal, LyFormModel } from '@lyvely/ui';
 import { useMessageService } from '../services';
-import { LyModal, LyFormModel, LyTextField } from '@lyvely/ui';
 
 export interface IProps {
   modelValue: boolean;

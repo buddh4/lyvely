@@ -4,7 +4,7 @@ import { UserInvitationInfo } from '@lyvely/core-interface';
 import { EntityNotFoundException } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
 import { useUserInvitationsService } from '../services';
-import { profileIdRoute, profileRoute } from '@/profiles/routes/profile-route.util';
+import { profileIdRoute, profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LyCenteredPanel } from '@lyvely/ui';
 
 const router = useRouter();

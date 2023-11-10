@@ -6,7 +6,7 @@ import {
   RouteLocation,
 } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/user-registrations';
-import { PATH_LOGIN, PATH_LOGOUT } from '../routes/paths';
+import { PATH_LOGIN, PATH_LOGOUT } from '../auth.constants';
 
 const PATH_ROOT = '/';
 const publicRoutes = [PATH_ROOT, PATH_LOGIN];

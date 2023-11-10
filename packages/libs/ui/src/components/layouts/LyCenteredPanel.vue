@@ -1,16 +1,22 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { Size } from '@/types';
+import LyIcon from '../icons/LyIcon.vue';
 import { t, Translatable } from '@/i18n';
+import { twMerge } from 'tailwind-merge';
 
 export interface IProps {
   title?: Translatable;
   width?: 'xs' | 'sm' | 'lg' | 'xl' | 'full';
+  icon?: string;
+  iconClass?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   title: '',
   width: 'sm',
+  icon: 'lyvely',
+  iconClass: '',
 });
 
 const widthClass = computed(
@@ -25,6 +31,10 @@ const widthClass = computed(
       } as Record<string, string>
     )[props.width] || 'max-w-sm'),
 );
+
+const computedIconClass = computed(() =>
+  twMerge(props.iconClass, 'fill-current text-lyvely mr-2 w-6'),
+);
 </script>
 
 <template>
@@ -33,9 +43,12 @@ const widthClass = computed(
       <div
         class="bg-main main h-screen-s md:h-auto border-divide md:border p-4 shadow-xl md:rounded">
         <slot name="header">
-          <h1 class="text-center text-xl">
-            <slot name="title">{{ t(title) }}</slot>
-          </h1>
+          <div class="flex items-center justify-center">
+            <ly-icon v-if="icon?.length" :class="computedIconClass" :name="icon" />
+            <h1 class="text-base font-bold">
+              <slot name="title">{{ t(title) }}</slot>
+            </h1>
+          </div>
         </slot>
 
         <div class="my-5">

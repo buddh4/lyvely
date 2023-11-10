@@ -1,8 +1,7 @@
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
 import { usePageStore } from '../stores';
-import { isMaxViewSize } from '../helpers';
+import { isMaxViewSize, resolveLayoutComponent } from '@lyvely/ui';
 import NProgress from 'nprogress';
-import { resolveLayoutComponent } from '@/ui';
 
 export const showLoaderProgress = (
   to: RouteLocation,

@@ -8,8 +8,9 @@ import {
   DEFAULT_FALLBACK_LOCALE,
   ILocaleDefinition,
   LOCALES_SUPPORTED,
-  DEFAULT_LOCALE_NAMES,
+  getLocaleDefinitions,
 } from '@lyvely/core-interface';
+import { setEnabledLocales } from '@lyvely/dates';
 
 export interface TranslationOptions {
   locale: string;
@@ -25,7 +26,9 @@ export class I18n {
   constructor(
     private readonly configService: ConfigService<I18nConfigPath>,
     private readonly i18nService: I18nService,
-  ) {}
+  ) {
+    setEnabledLocales(this.getEnabledLocales());
+  }
 
   /**
    * Creates a translatable object with pre-defined settings. This can be used as convenient function in case
@@ -73,10 +76,7 @@ export class I18n {
    */
   public getEnabledLocales(): string[] {
     return this.configService
-      .get(
-        'modules.i18n.locales',
-        DEFAULT_ENABLED_LOCALES.map((l) => l.locale),
-      )
+      .get('modules.i18n.locales', DEFAULT_ENABLED_LOCALES)
       .filter((locale) => LOCALES_SUPPORTED.includes(locale));
   }
 
@@ -98,9 +98,6 @@ export class I18n {
    * Returns the enabled locale definitions which include the locale and a locale name.
    */
   public getEnabledLocaleDefinitions(): ILocaleDefinition[] {
-    return this.getEnabledLocales().map((locale) => ({
-      locale: locale,
-      name: DEFAULT_LOCALE_NAMES[locale],
-    }));
+    return getLocaleDefinitions(this.getEnabledLocales());
   }
 }

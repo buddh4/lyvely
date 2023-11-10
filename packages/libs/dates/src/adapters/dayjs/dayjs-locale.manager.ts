@@ -178,6 +178,12 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
   loadedLocales = new Map();
 
   /**
+   * Stores explicitly enabled locales.
+   * If not set all supported locales are enabled.
+   **/
+  enabledLocales: Array<string> | undefined;
+
+  /**
    * Asynchronously loads a locale module based on the provided locale string.
    * The locale string is expected to be in the format 'language' or 'language-COUNTRY'.
    * @param locale
@@ -223,6 +229,25 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
    */
   setGlobalLocale(locale: string) {
     dayjs.locale(locale.split('-')[0]);
+  }
+
+  /**
+   * Sets the enabled locales.
+   * @param locales Array of locale strings in the format 'language' or 'language-COUNTRY'.
+   */
+  setEnabledLocales(locales: string[]) {
+    this.enabledLocales = locales.filter((locale) => {
+      const localeCode = supportedLocales.includes(locale) ? locale : locale.split('-')[0];
+      return supportedLocales.includes(localeCode);
+    });
+  }
+
+  /**
+   * Returns the enabled locales.
+   * If not restricted, this function will return all supported locales of the adapter.
+   */
+  getEnabledLocales(): Array<string> {
+    return this.enabledLocales?.length ? this.enabledLocales : supportedLocales;
   }
 }
 

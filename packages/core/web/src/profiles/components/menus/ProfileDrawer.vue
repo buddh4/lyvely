@@ -1,18 +1,17 @@
 <script lang="ts" setup>
 import { computed, Ref, ref, toRefs } from 'vue';
-import { usePageStore, watchMaxSize, isMaxViewSize, IMenuEntry } from '@/ui';
+import { watchMaxSize, isMaxViewSize, LyMenuEntry } from '@lyvely/ui';
+import { usePageStore } from '@/ui';
 import { translate } from '@/i18n';
 import { useProfileStore } from '@/profiles/stores';
 import imageUrl from '@/assets/logo_white_bold.svg';
 import { UseSwipeDirection, useSwipe } from '@vueuse/core';
 import { useProfileMenu } from '@/profiles/composables';
 import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
-import MenuEntry from '@/ui/components/MenuEntry.vue';
 //import LegalLinks from '@/legal/components/LegalLinks.vue';
 
 const pageStore = usePageStore();
 const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
-//const { activeView } = storeToRefs(useActivityStore());
 
 // TODO: make modules register menu items here...
 
@@ -73,7 +72,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
       <div class="flex-grow">
         <ul id="profile-navigation" class="nav flex-column">
           <li>
-            <menu-entry
+            <ly-menu-entry
               v-for="menuEntry in enabledMenuEntries"
               :key="menuEntry.id"
               :entry="menuEntry"

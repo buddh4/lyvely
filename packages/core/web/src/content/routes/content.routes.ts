@@ -1,5 +1,5 @@
 import { translation } from '@/i18n';
-import { profilePath } from '@/profiles/routes/profile-route.util';
+import { profilePath } from '@/profiles/routes/profile-route.helper';
 import { RouteRecordRaw } from 'vue-router';
 
 export const contentRoutes = [

@@ -11,7 +11,7 @@ import { useRouter } from 'vue-router';
 import { computed, ref, watch } from 'vue';
 import { useContentStreamFilterStore, useContentStore } from '../stores';
 import { storeToRefs } from 'pinia';
-import { contentRoute } from '../routes';
+import { contentRoute } from '../routes/content-route.helper';
 import { t } from '@/i18n';
 
 const router = useRouter();

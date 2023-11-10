@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { repository, loadingStatus, useStatus } from '@/core';
+import { repository, loadingStatus, useStatus, eventBus } from '@/core';
 import { IAppConfig } from '@lyvely/core-interface';
-import { AppConfigService } from '@/app-config/services/app-config.service';
+import { AppConfigService } from '../services';
 import { findByPath, NestedPaths } from '@lyvely/common';
+import { EVENT_APP_CONFIG_LOADED } from '../app-config.events';
 
 type ConfigKey = keyof IAppConfig;
 type ConfigValue<T extends ConfigKey> = IAppConfig[T];
@@ -19,6 +20,7 @@ export const useAppConfigStore = defineStore('app-config', () => {
 
   function setConfig(cfg: IAppConfig) {
     config.value = cfg;
+    eventBus.emit(EVENT_APP_CONFIG_LOADED, cfg);
   }
 
   function get<T extends ConfigKey>(

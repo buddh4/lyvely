@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { Translatable } from '@lyvely/ui';
 import { ref, watch } from 'vue';
-import { t } from '@/i18n';
 
 export interface IFlashMessage {
   message: Translatable;
@@ -59,7 +58,7 @@ export const useFlashStore = defineStore('ui-flash', () => {
     if (isProcessing || !queue.length) return;
     isProcessing = true;
     const nextMessage = queue.pop()!;
-    message.value = t(nextMessage.message);
+    message.value = nextMessage.message;
     type.value = nextMessage.type || 'info';
     show.value = true;
     isManual.value = nextMessage.duration === 'manual';

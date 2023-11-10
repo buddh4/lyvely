@@ -1,7 +1,7 @@
 import { registerAfterNavigationHooks, registerGuards } from '@/lyvely.router';
 import routes from './routes/profile.routes';
 import { loadProfileGuard, setProfilePageTitleGuard } from './guards';
-import { registerMenuEntries } from '@/ui/menus';
+import { registerMenuEntries, registerComponentStackEntries, registerLayouts } from '@lyvely/ui';
 import {
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_SETTINGS,
@@ -15,7 +15,6 @@ import { isMultiUserProfile, PROFILES_MODULE_ID } from '@lyvely/core-interface';
 import { useProfileStore } from '@/profiles/stores';
 import { IModule } from '@/core';
 import { computed } from 'vue';
-import { registerComponentStackEntries, registerLayouts } from '@/ui';
 
 export default () => {
   return {

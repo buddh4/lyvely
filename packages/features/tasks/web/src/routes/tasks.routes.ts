@@ -1,7 +1,7 @@
 import {
   LAYOUT_PROFILE,
   profilePath,
-  profileRoute,
+  profilePathRoute,
   useProfileFeatureStore,
   useProfileStore,
 } from '@lyvely/web';
@@ -15,7 +15,7 @@ export const tasksRoutes: RouteRecordRaw[] = [
     beforeEnter: [
       (to, from, next) => {
         if (useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id).value) {
-          next(profileRoute('/activities/tasks', useProfileStore().profile!.handle));
+          next(profilePathRoute('/activities/tasks', useProfileStore().profile!.handle));
         }
         next();
       },

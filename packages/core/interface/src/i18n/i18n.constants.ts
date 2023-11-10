@@ -1,13 +1,31 @@
-import { ILocaleDefinition } from './interfaces/locale.interface';
-
 export const I18N_MODULE_ID = 'i18n';
+
+/**
+ * This array contains an array of locales supported by the core, which means
+ * there are actually translations available for those languages.
+ * This is used to restrict enabled locales.
+ * Furthermore, the locales defined here should be supported by the used date-time adapter.
+ */
 export const LOCALES_SUPPORTED = ['en-US', 'de-DE'];
+
+/**
+ * This contains the default enabled locales.
+ * Enabled locales need to be a subset of supported locales and are used for locale validation and language selection.
+ * Furthermore, the locales defined here should be supported by the used date-time adapter.
+ */
+export const DEFAULT_ENABLED_LOCALES: string[] = ['en-US', 'de-DE'];
+
+/**
+ * This contains the default fallback locale of the platform.
+ * This can be overwritten by VITE_FALLBACK_LOCALE env variable in the frontend + i18n configuration in the backend.
+ */
 export const DEFAULT_FALLBACK_LOCALE = 'en-US';
-export const DEFAULT_ENABLED_LOCALES: ILocaleDefinition[] = [
-  { locale: 'en-US', name: 'English' },
-  { locale: 'de-DE', name: 'Deutsch' },
-];
-export const DEFAULT_LOCALE_NAMES = {
+
+/**
+ * Defines all known locales with names.
+ * This array needs to be extended in case additional locales need to be supported.
+ */
+export const LOCALE_NAMES = {
   'en-US': 'English (US)',
   'en-GB': 'English (UK)',
   'de-DE': 'Deutsch',

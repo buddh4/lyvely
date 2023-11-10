@@ -5,7 +5,7 @@ import { loadingStatus, useStatus } from '@/core';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
 import { ModelValidator } from '@lyvely/common';
 import { ResetPassword } from '@lyvely/core-interface';
-import { PATH_LOGIN } from '@/auth';
+import { PATH_LOGIN } from '../auth.constants';
 
 type ResetPasswordStage = 'init' | 'sent' | 'reset';
 

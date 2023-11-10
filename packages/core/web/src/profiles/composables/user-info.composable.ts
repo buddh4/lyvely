@@ -1,4 +1,4 @@
-import { useProfileStore } from '@/profiles';
+import { useProfileStore } from '@/profiles/stores';
 import { computedAsync } from '@vueuse/core';
 
 export const useUserInfo = (uid: string) => {
