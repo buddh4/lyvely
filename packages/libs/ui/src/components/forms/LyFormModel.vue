@@ -34,7 +34,7 @@ provide('formModelData', {
   <div :id="id" class="form-model">
     <slot></slot>
     <ly-screen-reader-validation-error v-if="validator" :errors="validator.getErrorSummary()" />
-    <ly-alert v-if="showAlert" type="danger" :message="status?.statusError" />
+    <ly-alert v-if="showAlert" type="danger" :text="status?.statusError" />
   </div>
 </template>
 

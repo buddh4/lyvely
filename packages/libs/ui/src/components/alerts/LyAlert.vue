@@ -3,13 +3,13 @@ import { computed, useSlots } from 'vue';
 import { t, Translatable } from '@/i18n';
 
 export interface IProps {
-  message?: Translatable;
+  text?: Translatable;
   hide?: boolean;
   type?: 'danger' | 'info' | 'warning' | 'secondary' | 'success';
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  message: undefined,
+  text: undefined,
   hide: undefined,
   type: 'secondary',
 });
@@ -33,7 +33,7 @@ const isActive = computed(() => {
     <span class="text-sm">
       <slot>
         <template v-if="message">
-          {{ t(message) }}
+          {{ t(text) }}
         </template>
       </slot>
     </span>

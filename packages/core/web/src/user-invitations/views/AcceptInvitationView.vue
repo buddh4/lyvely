@@ -77,7 +77,7 @@ onMounted(async () => {
       </div>
 
       <div v-else-if="error?.length" class="flex flex-col justify-center">
-        <ly-alert :message="error" type="danger" />
+        <ly-alert :text="error" type="danger" />
       </div>
 
       <div v-else>

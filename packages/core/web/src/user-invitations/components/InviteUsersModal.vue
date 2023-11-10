@@ -33,7 +33,7 @@ watch(emailInput, (value) => {
           label="profiles.invite.email-help" />
         <ly-button class="primary rounded-r w-12" @click="addEmails"> + </ly-button>
       </div>
-      <ly-alert type="danger" :message="statusError" />
+      <ly-alert type="danger" :text="statusError" />
       <div v-for="email in emails" :key="email" class="flex mb-2">
         <div class="bg-highlight border border-divide p-2 rounded-l clearfix grow attachment-r">
           {{ email }}
@@ -50,7 +50,7 @@ watch(emailInput, (value) => {
       </div>
     </div>
     <div v-if="stage === 'success'">
-      <ly-alert type="success" message="invitations.account.success" />
+      <ly-alert type="success" text="invitations.account.success" />
     </div>
   </ly-modal>
 </template>

@@ -21,7 +21,7 @@ onUnmounted(reset);
       v-model="model.otp"
       :has-error="!!validator.getError('otp') || !!errorMsg"
       :email="model.emailOrUsername" />
-    <ly-alert type="danger" :message="errorMsg" />
+    <ly-alert type="danger" :text="errorMsg" />
 
     <template #footer>
       <div class="flex justify-center space-x-1">

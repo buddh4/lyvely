@@ -136,7 +136,7 @@ onMounted(async () => {
       </div>
 
       <div v-else-if="error?.length" class="flex flex-col justify-center">
-        <ly-alert type="danger" :message="error" />
+        <ly-alert type="danger" :text="error" />
         <ly-button v-if="isAuthenticated" route="/" text="common.back_to_home" class="primary" />
         <ly-button v-else route="/login" text="invitations.buttons.to_login" class="primary" />
       </div>
