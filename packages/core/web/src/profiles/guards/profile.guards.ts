@@ -81,16 +81,17 @@ const loadProfileById = async (
     if (!profile) throw new Error('Profile could not be loaded');
 
     const query = { ...to.query };
+    const path = query.path;
     delete query['path'];
 
     /**
      * TODO: check if feature is enabled on target profile + better default feature handling
      * Feature restrictions should probably be defined as route meta
      */
-    if (typeof to.params.view === 'string') {
+    if (typeof to.params.view === 'string' && to.params.view.length) {
       next(profileStore.getRoute(to.params.view, profile.handle, query));
-    } else if (typeof to.query.path === 'string') {
-      next(profilePathRoute(to.query.path, profile.handle));
+    } else if (typeof path === 'string') {
+      next(profilePathRoute(profile.handle, path));
     } else {
       next(profileStore.getRoute(null, profile.handle, query));
     }
