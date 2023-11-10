@@ -60,7 +60,7 @@ function autoAlignHeight() {
     const textarea = messageInput.value!;
     if (textarea.offsetHeight < 350 || textarea.offsetHeight > textarea.scrollHeight) {
       textarea.style.height = 'auto';
-      textarea.style.height = textarea.scrollHeight + 'px';
+      textarea.style.height = Math.min(textarea.scrollHeight, 350) + 'px';
     }
   });
 }

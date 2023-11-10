@@ -6,6 +6,9 @@ import { SYSTEM_MESSAGES_MODULE_ID, SystemMessageModel } from '@lyvely/core-inte
 export default () => {
   return {
     id: SYSTEM_MESSAGES_MODULE_ID,
+    i18n: {
+      base: (locale: string) => import(`./locales/base.${locale}.json`),
+    },
     init: () => {
       registerContentType({
         type: SystemMessageModel.contentType,

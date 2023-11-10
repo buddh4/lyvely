@@ -5,14 +5,21 @@ import {
   ContentDetails,
   ContentDetailsHeader,
 } from '../components';
-import { ContentModel, ContentStreamFilter } from '@lyvely/core-interface';
+import {
+  ContentModel,
+  ContentStreamFilter,
+  MessageModel,
+  ProfileType,
+} from '@lyvely/core-interface';
 import { useContentStreamService, getContentDetailsComponent } from '../services';
 import { useRouter } from 'vue-router';
 import { computed, ref, watch } from 'vue';
-import { useContentStreamFilterStore, useContentStore } from '../stores';
+import { useContentStreamFilterStore, useContentStore, useContentCreateStore } from '../stores';
 import { storeToRefs } from 'pinia';
 import { contentRoute } from '../routes/content-route.helper';
 import { t } from '@/i18n';
+import emptyImageUrl from '@/assets/empty.png';
+import { useProfileStore } from '@/profiles';
 
 const router = useRouter();
 const streamService = useContentStreamService();

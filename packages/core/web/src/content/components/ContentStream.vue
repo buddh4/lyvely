@@ -158,11 +158,11 @@ onUnmounted(() => {
     ref="streamRoot"
     v-mobile-scrollbar
     class="overflow-auto bg-body scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
-    <div v-if="isInitialized">
+    <div v-if="isInitialized" class="h-full">
       <slot name="before" :stream="stream"></slot>
       <div class="relative">
         <slot name="stream-begin" :stream="stream"></slot>
-        <div class="px-2 md:px-6">
+        <div v-if="models.length" class="px-2 md:px-6">
           <template v-for="(model, index) in models" :key="model.id">
             <Component
               :is="getStreamEntryComponent(model)"
@@ -172,6 +172,7 @@ onUnmounted(() => {
               @select-tag="selectTag" />
           </template>
         </div>
+        <slot v-else name="stream-empty" :stream="stream"></slot>
       </div>
     </div>
     <div v-else-if="error" class="absolute w-full h-full bg-body z-50 p-5">
