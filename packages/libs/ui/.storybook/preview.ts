@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/vue3';
 import '../src/styles/index.css';
+import 'animate.css/animate.css';
 
 const preview: Preview = {
   parameters: {

@@ -32,24 +32,28 @@ export function includesUtilityClass(classNames: string, prefix: string) {
   return new RegExp(`^.*${escapeRegExp(prefix)}-[a-z0-9]`).test(classNames);
 }
 
-export function getContrast(hexColor: string): 'black' | 'white' {
+export function getContrast(hexColor: string): 'dark' | 'light' {
   hexColor = hexColor.replace('#', '');
 
   if (hexColor.length === 3) {
     hexColor = hexColor
-      .split('')
-      .map(function (hex) {
-        return hex + hex;
-      })
-      .join('');
+        .split('')
+        .map(function (hex) {
+          return hex + hex;
+        })
+        .join('');
   }
 
   const r = parseInt(hexColor.substring(0, 2), 16);
-  const g = parseInt(hexColor.substring(2, 2), 16);
-  const b = parseInt(hexColor.substring(4, 2), 16);
-  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-  return yiq >= 128 ? 'black' : 'white';
+  const g = parseInt(hexColor.substring(2, 4), 16);
+  const b = parseInt(hexColor.substring(4, 6), 16);
+
+  // Adjusted YIQ formula for RGB color space
+  const yiq = (r * 0.299 + g * 0.587 + b * 0.114);
+
+  return yiq >= 128 ? 'dark' : 'light';
 }
+
 
 export type VIEW_SIZE = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 

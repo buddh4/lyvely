@@ -1,27 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-import LyAlert from './LyAlert.vue';
+import LyFlashMessage from './LyFlashMessage.vue';
 
 const meta = {
   title: 'Example/Alerts',
-  component: LyAlert,
+  component: LyFlashMessage,
   tags: [],
   argTypes: {
-    type: {options: ['danger', 'info', 'warning', 'secondary', 'success'], control: {type: 'radio'}},
-    icon: {control: 'boolean'},
-    closable: {control: 'boolean'}
+    modelValue: {control: 'boolean'},
+    type: {options: ['danger', 'info', 'warning', 'success'], control: {type: 'radio'}},
   },
   args: {
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus libero, vestibulum quis libero a, pulvinar feugiat massa. Nam ipsum ante, vehicula id lorem in, posuere malesuada velit. ',
-    type: 'info',
-    icon: false,
     modelValue: true,
-    closable: false,
+    manual: true
   }
 
-} satisfies Meta<typeof LyAlert>;
+} satisfies Meta<typeof LyFlashMessage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Alert: Story = {};
+export const FlashMessage: Story = {};

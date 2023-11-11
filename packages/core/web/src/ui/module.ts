@@ -35,7 +35,7 @@ export default () => {
               get: () => useFlashStore().show,
               set: (val: boolean) => (useFlashStore().show = val),
             }),
-            message: computed(() => useFlashStore().message),
+            text: computed(() => useFlashStore().message),
             type: computed(() => useFlashStore().type),
             manual: computed(() => useFlashStore().isManual),
           },

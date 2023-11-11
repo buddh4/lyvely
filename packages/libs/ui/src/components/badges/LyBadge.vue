@@ -1,38 +1,50 @@
 <script lang="ts" setup>
 import { computed, CSSProperties } from 'vue';
-import { getContrast, includesUtilityClass } from '@/helpers';
+import { getContrast } from '@/helpers';
 import { t, Translatable } from '@/i18n';
+import {twMerge} from "tailwind-merge";
+import LyIcon from "@/components/icons/LyIcon.vue";
+import LyButton from "@/components/buttons/LyButton.vue";
 
 export interface IProps {
+  modelValue?: boolean,
   text?: Translatable;
   color?: string;
   textColor?: string;
   clickable?: boolean;
+  enterActiveClass?: string;
+  leaveActiveClass?: string;
+  closable?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  modelValue: true,
   text: '',
   color: undefined,
   clickable: true,
+  enterActiveClass: 'animate__animated animate__faster animate__fadeIn',
+  leaveActiveClass: 'animate__animated animate__faster animate__fadeOut',
+  closable: false,
   textColor: undefined,
 });
 
-function getClassNames(attrClasses: any) {
-  const textContrast = props.color ? getContrast(props.color) : 'white';
+const emit = defineEmits(['update:modelValue']);
 
-  return [
-    'badge inline-block leading-3 overflow-hidden rounded select-none',
-    {
-      'cursor-pointer': props.clickable,
-      [textContrast]: true,
-      'text-slate-900': textContrast === 'black',
-      'text-slate-100': textContrast === 'white',
-      'py-0.5': !includesUtilityClass(attrClasses, 'py'),
-      'px-1.5': !includesUtilityClass(attrClasses, 'px'),
-      'text-xs': !includesUtilityClass(attrClasses, 'text'),
-    },
-  ];
+function getClassNames(attrClasses: any, color: string, clickable: boolean) {
+
+  return twMerge(
+      `badge inline-block leading-3 overflow-hidden rounded select-none py-0.5 px-1.5 text-xs`,
+      textClass.value,
+      clickable && 'cursor-pointer',
+      attrClasses
+  );
 }
+
+const textClass = computed(() => {
+  const textContrast = props.color ? getContrast(props.color) : 'light';
+  return textContrast === 'dark' ? 'text-slate-900' : 'text-slate-100';
+
+});
 
 const styleObject = computed<CSSProperties>(() => {
   let result: CSSProperties = {};
@@ -40,14 +52,30 @@ const styleObject = computed<CSSProperties>(() => {
   if (props.textColor) result['color'] = props.textColor;
   return result;
 });
+
+const show = computed({
+  get: () => props.modelValue,
+  set: (val: boolean) => emit('update:modelValue', val),
+});
 </script>
 
 <template>
-  <span :class="getClassNames($attrs.class)" :style="styleObject">
+  <transition
+      :enter-active-class="enterActiveClass"
+      :leave-active-class="leaveActiveClass">
+  <span v-if="modelValue" :class="getClassNames($attrs.class, color, clickable)" :style="styleObject">
     <small class="text-xs">
-      <slot>{{ t(text) }}</slot>
+      <slot>
+        <div class="inline-flex items-center gap-1">
+          <span>{{ t(text) }}</span>
+          <ly-button v-if="closable" class="px-0 py-1" @click="show = false">
+            <ly-icon name="close" class="w-2.5" :class="textClass" />
+          </ly-button>
+        </div>
+      </slot>
     </small>
   </span>
+  </transition>
 </template>
 
 <style lang="postcss">

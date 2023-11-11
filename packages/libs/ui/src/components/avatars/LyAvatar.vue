@@ -5,8 +5,6 @@ import randomColor from 'randomcolor';
 import { AvatarData } from '@/interfaces';
 import { createAvatarUrl } from '@/config';
 
-//TODO: Make this configurable
-
 export interface IProps {
   avatar?: AvatarData;
   name: string;
@@ -38,7 +36,7 @@ const color = computed(() =>
 );
 const textClass = computed(() =>
   !url.value && color.value
-    ? getContrast(color.value!) === 'black'
+    ? getContrast(color.value!) === 'dark'
       ? 'text-slate-900'
       : 'text-slate-100'
     : '',

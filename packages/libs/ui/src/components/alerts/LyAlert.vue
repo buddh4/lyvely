@@ -1,43 +1,90 @@
 <script lang="ts" setup>
 import { computed, useSlots } from 'vue';
 import { t, Translatable } from '@/i18n';
+import LyIcon from "@/components/icons/LyIcon.vue";
+import LyButton from "@/components/buttons/LyButton.vue";
 
 export interface IProps {
+  modelValue?: boolean,
   text?: Translatable;
-  hide?: boolean;
   type?: 'danger' | 'info' | 'warning' | 'secondary' | 'success';
+  icon?: boolean;
+  enterActiveClass?: string;
+  leaveActiveClass?: string;
+  closable?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  modelValue: true,
   text: undefined,
-  hide: undefined,
   type: 'secondary',
+  icon: false,
+  enterActiveClass: 'animate__animated animate__faster animate__fadeIn',
+  leaveActiveClass: 'animate__animated animate__faster animate__fadeOut',
+  closable: false
 });
 
-const cssClass = [
-  'flex items-center border px-4 py-3 rounded relative mb-1',
-  { 'border-danger text-danger': props.type === 'danger' },
-  { 'border-info text-dimmed': props.type === 'info' },
-  { 'border-warning text-warning': props.type === 'warning' },
-  { 'border-divide text-dimmed': props.type === 'secondary' },
-  { 'border-success text-dimmed': props.type === 'success' },
-];
+const emit = defineEmits(['update:modelValue']);
+
+const cssClass = computed(() => [
+  'inline-block items-center border px-4 py-3 rounded mb-1',
+  { 'border-danger text-danger bg-red-50': props.type === 'danger' },
+  { 'border-info text-blue-900 bg-blue-50 text-dimmed': props.type === 'info' },
+  { 'border-warning text-orange-600 bg-orange-50': props.type === 'warning' },
+  { 'border-divide text-gray-600 bg-gray-200': props.type === 'secondary' },
+  { 'border-success text-green-800 bg-green-50': props.type === 'success' },
+]);
+
+const show = computed({
+  get: () => props.modelValue,
+  set: (val: boolean) => emit('update:modelValue', val),
+});
 
 const isActive = computed(() => {
-  return !!useSlots().default || t(props.message).length;
+  return !!useSlots().default || t(props.text).length;
+});
+
+const iconMap = {
+  danger: { icon: 'error', textClass: 'text-danger' },
+  warning: { icon: 'warning', textClass: 'text-warning' },
+  info: { icon: 'info', textClass: 'text-blue-400' },
+  success: { icon: 'check', textClass: 'text-gray-400' },
+  secondary: { icon: 'info', textClass: 'text-base' },
+};
+
+const iconTextClass = computed(() => {
+  return iconMap[props.type]?.textClass;
+});
+
+const iconName = computed(() => {
+  return typeof props.icon === 'string' ? props.icon : iconMap[props.type].icon;
 });
 </script>
 
 <template>
-  <div v-if="isActive" :class="cssClass">
-    <span class="text-sm">
+  <transition
+      :enter-active-class="enterActiveClass"
+      :leave-active-class="leaveActiveClass">
+  <div v-if="show && isActive" :class="cssClass" role="alert">
+    <div class="text-sm relative">
       <slot>
-        <template v-if="message">
-          {{ t(text) }}
-        </template>
+        <div class="flex items-center gap-1">
+          <slot name="icon">
+            <ly-icon v-if="icon" :name="iconName" class="w-5 mr-1 flex-shrink-0" :class="iconTextClass" />
+          </slot>
+
+          <div class="inline-block flex-grow" v-if="text">
+            {{ t(text) }}
+          </div>
+
+          <ly-button v-if="closable" class="px-1 py-1 flex-shrink-0" @click="show = false">
+            <ly-icon name="close" class="w-4" :class="iconTextClass" />
+          </ly-button>
+        </div>
       </slot>
-    </span>
+    </div>
   </div>
+  </transition>
 </template>
 
 <style lang="postcss">
