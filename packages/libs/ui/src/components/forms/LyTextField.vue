@@ -30,7 +30,7 @@ export interface IProps {
   autoValidation?: boolean;
   type?: ITextInputType;
   hide?: boolean | undefined;
-  passwordToggle: boolean;
+  passwordToggle?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {

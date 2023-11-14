@@ -2,21 +2,22 @@
 import { computed } from 'vue';
 import { t, Translatable } from '@/i18n';
 import LyModal from '../modals/LyModal.vue';
+import LyButton from '../buttons/LyButton.vue';
 
 export interface IProps {
   title: Translatable;
   message: Translatable;
   icon?: string;
-  iconColor?: string;
   iconClass?: string;
   modelValue: boolean;
+  buttonText?: string;
   buttonType?: 'close' | 'reload';
 }
 
 const props = withDefaults(defineProps<IProps>(), {
   icon: undefined,
-  iconColor: undefined,
   buttonType: 'close',
+  buttonText: undefined,
   iconClass: undefined,
 });
 
@@ -31,6 +32,7 @@ const modalBinds = computed(() => {
   return {
     icon: props.icon,
     title: props.title,
+    iconClass: props.iconClass
   };
 });
 
@@ -49,12 +51,12 @@ const reload = () => {
       <ly-button
         v-if="buttonType === 'reload'"
         class="danger"
-        text="common.reload"
+        :text="buttonText || 'common.reload'"
         @click="reload" />
       <ly-button
         v-if="buttonType === 'close'"
         class="primary"
-        text="common.close"
+        :text="buttonText || 'common.close'"
         @click="visible = false" />
     </template>
   </ly-modal>

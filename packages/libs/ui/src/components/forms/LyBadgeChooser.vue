@@ -3,6 +3,10 @@ import { computed, nextTick, ref, watch } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
 import { escapeRegExp, isArray, uniqueId } from 'lodash';
 import { t, Translatable } from '@/i18n';
+import LyModal from "@/components/modals/LyModal.vue";
+import LyTextField from "@/components/forms/LyTextField.vue";
+import LyBadge from "@/components/badges/LyBadge.vue";
+import LyButton from "@/components/buttons/LyButton.vue";
 
 export type IChooserOption = { key: string; value?: any; label?: string; color?: string } | string;
 

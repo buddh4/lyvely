@@ -89,7 +89,7 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div :class="['cursor-pointer', wrapperClass]" @keydown.space.prevent.stop="toggle">
+  <div :class="['cursor-pointer text-main', wrapperClass]" @keydown.space.prevent.stop="toggle">
     <div class="flex">
       <label :class="['inline-flex items-center', { 'cursor-pointer': !readonly && !disabled }]">
         <input

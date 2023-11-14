@@ -95,7 +95,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section :class="wrapperClass">
+  <section class="text-main" :class="wrapperClass">
     <label v-if="label" :for="id" class="form-label">{{ t(label) }}</label>
     <input
       :id="id"

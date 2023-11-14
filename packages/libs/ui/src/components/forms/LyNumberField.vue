@@ -2,6 +2,7 @@
 import { useFloatingInputSetup } from '@/components/forms/FloatingInput';
 import { HTMLAttributes, computed, onMounted, ref } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
+import LyButton from "@/components/buttons/LyButton.vue";
 import { t, Translatable } from '@/i18n';
 
 export interface IProps {
@@ -115,7 +116,7 @@ function decrement() {
 }
 
 const buttonClass =
-  'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-sm px-0 py-0';
+  'w-5 h-5 mr-2 bg-main border border-divide rounded-full flex justify-center items-center text-main text-sm px-0 py-0';
 
 const leadingZerosRegex = new RegExp(/^0+[0-9]+/);
 
@@ -157,8 +158,8 @@ onMounted(() => {
       @focusout="onFocusOut"
       @input="onInput" />
     <div v-if="slider && editable" class="number-slider">
-      <ly-button :class="buttonClass" @click="increment">+</ly-button>
-      <ly-button :class="buttonClass" @click="decrement">-</ly-button>
+      <button :class="buttonClass" @click="increment">+</button>
+      <button :class="buttonClass" @click="decrement">-</button>
     </div>
   </ly-floating-input-layout>
 </template>

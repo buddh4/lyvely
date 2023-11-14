@@ -5,6 +5,8 @@ import { suggestFocusElement } from '@/helpers';
 import { useInfiniteScroll, useSwipe } from '@vueuse/core';
 import { useDrawerStore } from '@/components/drawers/drawer.store';
 import { t, Translatable } from '@/i18n';
+import LyButton from "@/components/buttons/LyButton.vue";
+import LyIcon from "@/components/icons/LyIcon.vue";
 
 export interface IProps {
   modelValue: boolean;
@@ -83,7 +85,7 @@ const style = computed<any>(() => ({ 'z-index': zIndex.value }));
               <ly-button
                 class="float-right align-middle font-bold ml-auto px-2 py-0.5 border-none"
                 @click="close">
-                x
+                <ly-icon name="arrow-right" class="text-main" />
               </ly-button>
             </slot>
           </div>

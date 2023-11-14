@@ -2,6 +2,8 @@
 import { HTMLAttributes, onMounted, Ref, ref } from 'vue';
 import { useFloatingInputSetup } from './FloatingInput';
 import { t, Translatable } from '@/i18n';
+import LyButton from "@/components/buttons/LyButton.vue";
+import LyMarkdownView from "@/components/markdown/LyMarkdownView.vue";
 
 export interface IProps {
   id?: string;
@@ -94,11 +96,11 @@ function cancel() {
 }
 </script>
 <template>
-  <div class="cursor-pointer">
+  <div class="cursor-pointer text-main">
     <div v-if="!isEdit" class="flex gap-2 justify-between" @click="edit">
       <div class="flex-grow">
         <template v-if="inputValue?.length">
-          {{ inputValue }}
+          <ly-markdown-view :md="inputValue" />
         </template>
         <template v-else-if="placeholder">
           <span class="text-dimmed">{{ t(placeholder) }}</span>

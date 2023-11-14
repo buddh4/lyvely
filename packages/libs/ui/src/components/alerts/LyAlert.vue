@@ -29,7 +29,7 @@ const emit = defineEmits(['update:modelValue']);
 const cssClass = computed(() => [
   'inline-block items-center border px-4 py-3 rounded mb-1',
   { 'border-danger text-danger bg-red-50': props.type === 'danger' },
-  { 'border-info text-blue-900 bg-blue-50 text-dimmed': props.type === 'info' },
+  { 'border-info text-blue-900 bg-blue-50': props.type === 'info' },
   { 'border-warning text-orange-600 bg-orange-50': props.type === 'warning' },
   { 'border-divide text-gray-600 bg-gray-200': props.type === 'secondary' },
   { 'border-success text-green-800 bg-green-50': props.type === 'success' },
