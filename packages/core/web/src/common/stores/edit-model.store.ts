@@ -1,7 +1,9 @@
-import { Ref, ref } from 'vue';
+import { Ref, ref, toValue } from 'vue';
 import { ModelValidator, IEditModelService } from '@lyvely/common';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus, eventBus } from '@/core';
+import { useProfileStore } from '@/profiles/stores/profile.store';
+import { watchDebounced } from '@vueuse/core';
 
 /**
  * Defines options used when creating an update model store.
@@ -18,6 +20,13 @@ export interface IUpdateModelStoreOptions<
    * @default true
    **/
   partialUpdate?: boolean;
+
+  /**
+   * Used for automatic backups of the create model.
+   * If not set the constructor name of persistId is used.
+   * If set to false, auto-persist is disabled.
+   */
+  persistId?: string | false;
 
   /**
    * Reset the model once submit succeeded
@@ -84,6 +93,7 @@ export function useUpdateModelStore<
   const isActive = ref(false);
   const isCreate = ref(false);
   const status = useStatus();
+  let unwatchModel: Function | undefined = undefined;
 
   options.partialUpdate ??= true;
   options.resetOnSuccess ??= true;
@@ -93,9 +103,57 @@ export function useUpdateModelStore<
     _setModel(model, id);
   }
 
-  function setCreateModel(model: TCreateModel) {
+  function setCreateModel(model: TCreateModel, ignoreBackup = false) {
     isCreate.value = true;
+    if (options.persistId !== false) {
+      options.persistId ??= model.constructor.name;
+    }
+    if (!ignoreBackup) applyBackup(model);
     _setModel(model);
+    runBackup();
+  }
+
+  function applyBackup(model: TCreateModel | TUpdateModel) {
+    if (!options.persistId) return;
+    const backupStr = localStorage.getItem(getBackupKey());
+    if (!backupStr) return;
+
+    try {
+      const backup = JSON.parse(backupStr);
+      for (const field of Object.keys(backup)) {
+        if (applyBackupField(model[field], backup[field])) {
+          model[field] = backup[field];
+        }
+      }
+    } catch (e) {
+      console.log('Could not apply backup', e);
+      localStorage.removeItem(getBackupKey());
+    }
+  }
+
+  function applyBackupField(modelValue: unknown, backupValue: unknown) {
+    if (isEqual(modelValue, backupValue)) return false;
+    if (typeof modelValue === 'string' && modelValue.length) return false;
+    return true;
+  }
+
+  function runBackup() {
+    if (!options.persistId) return;
+
+    unwatchModel = watchDebounced(
+      () => model.value,
+      () => {
+        localStorage.setItem(getBackupKey(), JSON.stringify(toValue(model.value)));
+      },
+      { deep: true },
+    );
+  }
+
+  function getBackupKey() {
+    const { profile } = useProfileStore();
+    const prefix = isCreate.value ? 'create' : 'edit';
+    const suffix = isCreate.value ? '' : `:${modelId.value}`;
+    return `${prefix}:${options.persistId}${profile?.id}${suffix}`;
   }
 
   function reset() {
@@ -103,8 +161,12 @@ export function useUpdateModelStore<
   }
 
   function _setModel(newModel?: TUpdateModel | TCreateModel, id?: TID) {
+    if (unwatchModel) unwatchModel();
+    unwatchModel = undefined;
+
     if (newModel) {
-      model.value = newModel;
+      newModel = toValue(newModel);
+      model.value = toValue(newModel);
       original = cloneDeep(newModel);
       modelId.value = id;
       validator.value = new ModelValidator<TEditModel>(model.value);
@@ -131,17 +193,20 @@ export function useUpdateModelStore<
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
         const event = isCreate.value ? 'created' : 'updated';
         eventBus.emit(`model.${event}.post`, response);
+        localStorage.removeItem(getBackupKey());
         options.onSubmitSuccess(<TResponse>response);
       }
 
+      // No changes in partial update is considered as success.
       if (!isCreate.value && response === false && typeof options.onSubmitSuccess === 'function') {
+        localStorage.removeItem(getBackupKey());
         options.onSubmitSuccess();
       }
 
       if (options.resetOnSuccess) {
         reset();
       } else if (isCreate.value) {
-        setCreateModel(model.value as TCreateModel);
+        setCreateModel(model.value as TCreateModel, true);
       } else {
         setUpdateModel(modelId.value!, model.value as TUpdateModel);
       }
@@ -174,9 +239,9 @@ export function useUpdateModelStore<
     let update: Partial<typeof model> = {};
 
     if (options.partialUpdate) {
-      for (const field in model.value) {
-        if (!isEqual(model.value[<keyof TEditModel>field], original[<keyof TEditModel>field])) {
-          update[<keyof typeof model>field] = (<any>model).value[field];
+      for (const field of Object.keys(model.value)) {
+        if (!isEqual(model.value[field], original[field])) {
+          update[field] = model.value[field];
         }
       }
 

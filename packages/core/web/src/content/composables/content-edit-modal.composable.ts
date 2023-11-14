@@ -27,7 +27,10 @@ export function useContentEditModal<
 
   const showModal = computed({
     get: () => props.modelValue,
-    set: (val: boolean) => emit('update:modelValue', val),
+    set: (val: boolean) => {
+      emit('update:modelValue', val);
+      if (!val) updateStore.reset();
+    },
   });
 
   const originalOnSubmitSuccess = options.onSubmitSuccess;

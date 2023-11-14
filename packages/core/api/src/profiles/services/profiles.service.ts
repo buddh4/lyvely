@@ -333,6 +333,13 @@ export class ProfilesService {
     oid?: EntityIdentity<Organization>,
   ): Promise<ProfileContext> {
     const { profile, organization } = await this.findProfileWithOrganization(pid, oid);
+
+    // Patch for < v0.2.0
+    if (!profile.handle) {
+      const handle = await this.findUniqueHandle(profile);
+      await this.profileDao.updateOneSetById(profile, { handle });
+    }
+
     return this._createProfileContext(user, profile, organization);
   }
 

@@ -29,13 +29,9 @@ export function profilePathRoute(
 
 export function profileRoute(
   name: string,
-  handle?: string,
+  handle = ':handle',
   query?: LocationQueryRaw,
 ): RouteLocationRaw {
-  if (!handle || handle === ':handle') {
-    return { name, query };
-  }
-
   return { name, params: { handle }, query };
 }
 

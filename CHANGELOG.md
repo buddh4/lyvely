@@ -44,6 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implementation of Feature API
 - Added back to stream button
 - Proper locale handling and configuration
+- Automatic backup of edit store models
 
 ## [0.1.0-alpha4] - 2023-06-06
 
