@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const emit = defineEmits(['update:modelValue']);
 
-function getClassNames(attrClasses: any, color: string, clickable: boolean) {
+function getClassNames(attrClasses: any, clickable: boolean) {
 
   return twMerge(
       `badge inline-block leading-3 overflow-hidden rounded select-none py-0.5 px-1.5 text-xs`,
@@ -63,7 +63,7 @@ const show = computed({
   <transition
       :enter-active-class="enterActiveClass"
       :leave-active-class="leaveActiveClass">
-  <span v-if="modelValue" :class="getClassNames($attrs.class, color, clickable)" :style="styleObject">
+  <span v-if="modelValue" :class="getClassNames($attrs.class, clickable)" :style="styleObject">
     <small class="text-xs">
       <slot>
         <div class="inline-flex items-center gap-1">

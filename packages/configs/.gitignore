@@ -40,4 +40,4 @@ lerna-debug.log*
 # custom
 .env
 /screenshots
-.rollup-cache
+.rollup.cache

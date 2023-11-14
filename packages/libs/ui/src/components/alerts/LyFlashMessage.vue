@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Translatable, t } from '@/i18n';
+import { Translatable } from '@/i18n';
 import { computed } from 'vue';
 import LyAlert from './LyAlert.vue';
 
