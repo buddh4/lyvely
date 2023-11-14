@@ -39,14 +39,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
 </script>
 
 <template>
-  <ly-centered-panel v-if="stage === 'init'" width="lg">
-    <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">
-        {{ $t('auth.reset_password.title') }}
-      </span>
-    </template>
-
+  <ly-centered-panel v-if="stage === 'init'" title="auth.reset_password.title" width="lg">
     <template #body>
       <ly-form-model
         v-model="sendMailModel"
@@ -75,14 +68,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     </template>
   </ly-centered-panel>
 
-  <ly-centered-panel v-if="stage === 'sent'" width="sm">
-    <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">
-        {{ $t('auth.reset_password.sent.title') }}
-      </span>
-    </template>
-
+  <ly-centered-panel v-if="stage === 'sent'" title="auth.reset_password.sent.title" width="sm">
     <template #body>
       <p class="text-sm">
         {{ $t('auth.reset_password.sent.text') }}
@@ -94,14 +80,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     </template>
   </ly-centered-panel>
 
-  <ly-centered-panel v-if="stage === 'reset'" width="sm">
-    <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">
-        {{ $t('auth.reset_password.title') }}
-      </span>
-    </template>
-
+  <ly-centered-panel v-if="stage === 'reset'" title="auth.reset_password.title" width="sm">
     <template #body>
       <ly-form-model
         v-model="resetModel"

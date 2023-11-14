@@ -48,12 +48,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ly-centered-panel>
-    <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">{{ $t('invitations.headline') }}</span>
-    </template>
-
+  <ly-centered-panel title="invitations.headline">
     <template #body>
       <div v-if="mailInviteInfo">
         <div v-if="mailInviteInfo.pid && isAuthenticated">

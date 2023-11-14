@@ -62,12 +62,7 @@ onUnmounted(loginStore.reset);
 </script>
 
 <template>
-  <ly-centered-panel>
-    <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">{{ $t('auth.login.sign_in') }}</span>
-    </template>
-
+  <ly-centered-panel title="auth.login.sign_in">
     <template #body>
       <ly-form-model
         id="login"

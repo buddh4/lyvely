@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useUserRegistrationStore } from '../stores';
 import { storeToRefs } from 'pinia';
+import { t } from '@/i18n';
 import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '../user-registration.constants';
@@ -92,14 +93,7 @@ const hidePassword = ref(true);
 </script>
 
 <template>
-  <ly-centered-panel>
-    <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span class="text-base font-bold">
-        {{ $t('user-registrations.sign_up') }}
-      </span>
-    </template>
-
+  <ly-centered-panel title="user-registrations.sign_up">
     <template #body>
       <ly-form-model
         id="user-registration"
@@ -164,8 +158,8 @@ const hidePassword = ref(true);
             id="remember-me-info"
             class="mt-2 text-xs"
             type="info">
-            <p class="mb-1">{{ $t('auth.remember_me_info.p1') }}</p>
-            <p>{{ $t('auth.remember_me_info.p2') }}</p>
+            <p class="mb-1">{{ t('auth.remember_me_info.p1') }}</p>
+            <p>{{ t('auth.remember_me_info.p2') }}</p>
           </ly-alert>
         </fieldset>
       </ly-form-model>
@@ -180,9 +174,9 @@ const hidePassword = ref(true);
 
       <div class="text-center pt-4">
         <small>
-          {{ $t('user-registrations.is_member') }}
+          {{ t('user-registrations.is_member') }}
           <router-link to="/login" class="no-underline font-bold">
-            {{ $t('user-registrations.to_sign_in') }}
+            {{ t('user-registrations.to_sign_in') }}
           </router-link>
         </small>
       </div>

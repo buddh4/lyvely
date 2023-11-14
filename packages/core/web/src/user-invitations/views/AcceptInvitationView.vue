@@ -2,9 +2,9 @@
 import { useRouter } from 'vue-router';
 import { UserInvitationInfo } from '@lyvely/core-interface';
 import { EntityNotFoundException } from '@lyvely/common';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useUserInvitationsService } from '../services';
-import { profileIdRoute, profileRoute } from '@/profiles/routes/profile-route.helper';
+import { profileIdRoute } from '@/profiles/routes/profile-route.helper';
 import { LyCenteredPanel } from '@lyvely/ui';
 
 const router = useRouter();
@@ -50,16 +50,12 @@ onMounted(async () => {
       }
     });
 });
+
+const title = computed(() => (error.value?.length ? 'error.title' : 'invitations.accept.headline'));
 </script>
 
 <template>
-  <ly-centered-panel>
-    <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      <span v-if="error?.length" class="text-base font-bold">{{ $t('error.title') }}</span>
-      <span v-else class="text-base font-bold">{{ $t('invitations.accept.headline') }}</span>
-    </template>
-
+  <ly-centered-panel :title="title">
     <template #body>
       <div v-if="userInviteInfo" class="flex flex-col">
         <div class="flex justify-center items-center gap-1">

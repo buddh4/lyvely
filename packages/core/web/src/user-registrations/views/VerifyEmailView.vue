@@ -25,12 +25,7 @@ onUnmounted(verifyEmailStore.reset);
 </script>
 
 <template>
-  <ly-centered-panel>
-    <template #title>
-      <ly-icon name="lyvely" class="fill-current text-lyvely mr-2 w-6" />
-      {{ $t('user-registrations.verify_email.title') }}
-    </template>
-
+  <ly-centered-panel title="user-registrations.verify_email.title">
     <template #body>
       <otp-input
         v-model="model.otp"
