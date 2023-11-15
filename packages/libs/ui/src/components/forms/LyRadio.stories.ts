@@ -23,7 +23,6 @@ const argTypes = {
   required: { controls: 'boolean' },
   id: { table: { disable: true } },
   name: { table: { disable: true } },
-  required: { table: { disable: true } },
   modelValue: { table: { disable: true } },
   value: { table: { disable: true } },
   property: { table: { disable: true } },

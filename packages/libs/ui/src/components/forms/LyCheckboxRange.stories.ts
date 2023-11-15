@@ -26,7 +26,6 @@ const argTypes = {
   required: { controls: 'boolean' },
   id: { table: { disable: true } },
   name: { table: { disable: true } },
-  required: { table: { disable: true } },
   value: { table: { disable: true } },
   property: { table: { disable: true } },
   error: { table: { disable: true } },
@@ -58,9 +57,7 @@ type Story = StoryObj<typeof meta>;
 
 export const CheckboxRange: Story = {
   args: {
-    label: 'Label',
     disabled: false,
-    readonly: false,
     min: 2,
     optimal: 3,
     max: 5

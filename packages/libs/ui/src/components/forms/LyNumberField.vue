@@ -2,7 +2,6 @@
 import { useFloatingInputSetup } from '@/components/forms/FloatingInput';
 import { HTMLAttributes, computed, onMounted, ref } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
-import LyButton from "@/components/buttons/LyButton.vue";
 import { t, Translatable } from '@/i18n';
 
 export interface IProps {

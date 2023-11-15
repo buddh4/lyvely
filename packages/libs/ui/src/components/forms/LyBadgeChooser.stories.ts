@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import LyBadgeChooser from "@/components/forms/LyBadgeChooser.vue";
 import { setTranslationProvider } from "@/i18n";
 
-setTranslationProvider((test) => {
+setTranslationProvider((test: any) => {
   if(test.plain) return test.plain;
   if(test === 'common.filter.search') return 'Search';
   if(test === 'common.select') return 'Select';
@@ -29,8 +29,6 @@ type Story = StoryObj<typeof meta>;
 export const BadgeChooser: Story = {
   args: {
     label: 'Badges',
-    disabled: false,
-    readonly: false,
     modelValue: ['BadgeA'],
     options: ['BadgeA', 'BadgeB']
   },

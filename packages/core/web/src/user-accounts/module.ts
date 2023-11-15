@@ -43,14 +43,21 @@ export default () => {
           moduleId: USER_ACCOUNTS_MODULE_ID,
           icon: 'settings',
           text: 'user-accounts.drawer.settings',
-          to: { name: 'LanguageAndRegionSettings' },
+          to: { name: 'AccountSettings' },
         },
       ]);
 
       registerMenuEntries(MENU_ACCOUNT_SETTINGS, [
         {
-          id: 'account-i18n-settings',
+          id: 'account-general-settings',
           sortOrder: 1000,
+          moduleId: USER_ACCOUNTS_MODULE_ID,
+          text: 'user-accounts.settings.general',
+          to: { name: 'GeneralAccountSettings' },
+        },
+        {
+          id: 'account-i18n-settings',
+          sortOrder: 2000,
           moduleId: USER_ACCOUNTS_MODULE_ID,
           text: 'user-accounts.settings.i18n',
           to: { name: 'LanguageAndRegionSettings' },

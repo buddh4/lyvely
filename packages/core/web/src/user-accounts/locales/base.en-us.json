@@ -1,7 +1,8 @@
 {
   "user-accounts": {
     "settings": {
-      "i18n": "Language & Region"
+      "i18n": "Language & Region",
+      "general": "General"
     },
     "drawer": {
       "title": "Account Menu",

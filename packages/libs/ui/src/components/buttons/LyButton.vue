@@ -140,16 +140,16 @@ function getAriaPressed($attrs: any) {
     @click.prevent="onClick">
     <slot :active="active">{{ t(text) }}</slot>
   </button>
-  <router-link v-if="route" v-slot="{ navigate, isExactActive }" :to="route" custom>
+  <router-link v-if="route" v-slot="{ navigate, isActive }" :to="route" custom>
     <button
       ref="button"
-      :class="getClassNames($attrs.class, isExactActive)"
-      :aria-selected="isExactActive ? 'true' : 'false'"
+      :class="getClassNames($attrs.class, isActive)"
+      :aria-selected="isActive ? 'true' : 'false'"
       v-bind="$attrs"
       :type="buttonType"
       :disabled="disabled"
       @click="navigate">
-      <slot :active="isExactActive">{{ t(text) }}</slot>
+      <slot :active="isActive">{{ t(text) }}</slot>
     </button>
   </router-link>
 
@@ -257,8 +257,7 @@ function getAriaPressed($attrs: any) {
 .button.info.outlined:hover,
 .button.success.outlined:hover,
 .button.warning.outlined:hover,
-.button.danger.outlined:hover
-{
+.button.danger.outlined:hover {
   @apply text-gray-100;
 }
 

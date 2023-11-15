@@ -54,6 +54,7 @@ type Story = StoryObj<typeof meta>;
 export const Range: Story = {
   args: {
     label: 'Label',
-    disabled: false,
+    min: 0,
+    max: 10
   },
 };

@@ -26,14 +26,26 @@ export const userAccountsRoutes = [
   {
     name: 'AccountSettings',
     path: '/account-settings',
+    redirect: { name: 'GeneralAccountSettings' },
     component: () => import('../layouts/AccountSettingsLayout.vue'),
     meta: {
       layout: 'profile',
     },
     children: [
       {
+        name: 'GeneralAccountSettings',
+        path: 'general',
+        meta: {
+          i18n: {
+            load: [{ module: USER_ACCOUNTS_MODULE_ID, section: 'i18n' }],
+          },
+          title: translation('user-accounts.settings.i18n'),
+        },
+        component: () => import('../views/GeneralSettings.vue'),
+      },
+      {
         name: 'LanguageAndRegionSettings',
-        path: '/account-settings/language',
+        path: 'language',
         meta: {
           i18n: {
             load: [{ module: USER_ACCOUNTS_MODULE_ID, section: 'i18n' }],

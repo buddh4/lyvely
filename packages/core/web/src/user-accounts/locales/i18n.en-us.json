@@ -2,6 +2,7 @@
   "user-accounts": {
     "i18n": {
       "general": "General",
+      "settings": "Settings",
       "language": "Language",
       "preferences": "Preferences",
       "timezone": "Timezone",

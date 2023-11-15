@@ -40,7 +40,7 @@ const timezones = computed(() =>
 </script>
 
 <template>
-  <ly-list-page title="user-accounts.i18n.general" class="mb-2">
+  <ly-list-page title="user-accounts.i18n.settings" class="mb-2">
     <table class="border-collapse text-sm w-full bg-main rounded">
       <tr>
         <th class="p-3 text-left w-3/4">
