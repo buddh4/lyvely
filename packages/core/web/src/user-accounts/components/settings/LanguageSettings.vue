@@ -67,7 +67,7 @@ const timezones = computed(() =>
 
   <ly-modal
     v-model="showSetLanguageModal"
-    title="user-accounts.i18n.chooser.title"
+    title="user-accounts.i18n.language"
     @submit="setLanguage"
     @cancel="resetUpdateLocale">
     <div class="flex flex-col gap-2">
@@ -87,7 +87,7 @@ const timezones = computed(() =>
 
   <ly-modal
     v-model="showSetTimezoneModal"
-    title="user-accounts.i18n.chooser.title"
+    title="user-accounts.i18n.timezone"
     @submit="setTimezone"
     @cancel="resetUpdateTimezone">
     <div class="relative inline-block w-full mb-2">
