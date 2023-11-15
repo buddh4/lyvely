@@ -3,6 +3,7 @@ export * from './guards';
 export * from './policies';
 export * from './schemas';
 export * from './types';
+export * from './services';
 export * from './users.module';
 export * from './services/users.service';
 export * from './decorators';

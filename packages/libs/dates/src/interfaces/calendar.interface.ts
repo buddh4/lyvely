@@ -66,3 +66,11 @@ export type CalendarUnitType =
   | CalendarUnitTypeLong
   | CalendarUnitTypeLongPlural
   | CalendarUnitTypeShort;
+
+export type WeekStrategy = 'iso' | 'locale';
+export const DEFAULT_WEEK_STRATEGY = 'locale';
+
+export interface ICalendarPreferences {
+  weekStart?: number;
+  weekStrategy?: WeekStrategy;
+}

@@ -2,7 +2,10 @@ import { userAccountsRoutes } from './routes';
 import { USER_ACCOUNTS_MODULE_ID } from '@lyvely/core-interface';
 import { IModule } from '@/core';
 import { registerComponentStackEntries, registerMenuEntries } from '@lyvely/ui';
-import { MENU_ACCOUNT_DRAWER } from '@/user-accounts/user-accounts.constants';
+import {
+  MENU_ACCOUNT_DRAWER,
+  MENU_ACCOUNT_SETTINGS,
+} from '@/user-accounts/user-accounts.constants';
 import { STACK_PROFILE_TOP_RIGHT_NAVIGATION } from '@/profiles';
 import AccountDrawer from './components/menus/AccountDrawer.vue';
 
@@ -12,7 +15,7 @@ export default () => {
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       'my-account': (locale: string) => import(`./locales/my-account.${locale}.json`),
-      otp: (locale: string) => import(`./locales/otp.${locale}.json`),
+      i18n: (locale: string) => import(`./locales/i18n.${locale}.json`),
     },
     routes: userAccountsRoutes,
     init: () => {
@@ -31,6 +34,26 @@ export default () => {
           icon: 'account',
           text: 'user-accounts.drawer.my-account',
           to: { name: 'MyAccountInfo' },
+        },
+      ]);
+      registerMenuEntries(MENU_ACCOUNT_DRAWER, [
+        {
+          id: 'account-settings',
+          sortOrder: 1500,
+          moduleId: USER_ACCOUNTS_MODULE_ID,
+          icon: 'settings',
+          text: 'user-accounts.drawer.settings',
+          to: { name: 'LanguageAndRegionSettings' },
+        },
+      ]);
+
+      registerMenuEntries(MENU_ACCOUNT_SETTINGS, [
+        {
+          id: 'account-i18n-settings',
+          sortOrder: 1000,
+          moduleId: USER_ACCOUNTS_MODULE_ID,
+          text: 'user-accounts.settings.i18n',
+          to: { name: 'LanguageAndRegionSettings' },
         },
       ]);
     },

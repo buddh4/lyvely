@@ -4,12 +4,15 @@ export function getMonthNameByIndex(id: number, short = false) {
   return short ? Months[id] : Months[id].substring(0, 3);
 }
 
-export function getLocalizedDays(format: 'long' | 'short' | 'narrow' | undefined = 'long') {
+export function getLocalizedDays(
+  format: 'long' | 'short' | 'narrow' | undefined = 'long',
+  locale?: string,
+) {
   const days: string[] = [];
 
   for (let i = 0; i < 7; i++) {
     const date = new Date(Date.UTC(2022, 0, i + 3));
-    days.push(date.toLocaleDateString(undefined, { weekday: format }));
+    days.push(date.toLocaleDateString(locale, { weekday: format }));
   }
 
   return days;
@@ -17,15 +20,28 @@ export function getLocalizedDays(format: 'long' | 'short' | 'narrow' | undefined
 
 export function getLocalizedMonths(
   format: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow' | undefined = 'long',
+  locale?: string,
 ) {
   const months: string[] = [];
 
   for (let i = 0; i < 12; i++) {
     const date = new Date(Date.UTC(2022, i, 1));
-    months.push(date.toLocaleDateString(undefined, { month: format }));
+    months.push(date.toLocaleDateString(locale, { month: format }));
   }
 
   return months;
+}
+
+export function getLocalizedDayName(
+  dayNumber: number,
+  format: 'long' | 'short' | 'narrow' | undefined = 'long',
+  locale?: string,
+) {
+  // Create a new date - let's start with Sunday (day 0)
+  const date = new Date(Date.UTC(2021, 0, 3 + dayNumber)); // January 3, 2021, is a Sunday
+
+  // Intl.DateTimeFormat to get the localized day name
+  return new Intl.DateTimeFormat(locale, { weekday: format }).format(date);
 }
 
 export function getMonthNames() {

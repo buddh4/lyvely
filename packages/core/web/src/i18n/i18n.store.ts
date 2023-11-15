@@ -13,13 +13,19 @@ import {
 import { EVENT_APP_CONFIG_LOADED, useAppConfigStore } from '@/app-config';
 import { getFallbackLocale, setLocale } from './i18n';
 import { eventBus } from '@/core';
-import { setEnabledLocales, setGlobalDateTimeLocale } from '@lyvely/dates';
+import {
+  setEnabledLocales,
+  setGlobalDateTimeLocale,
+  getTimezone,
+  getTimezones,
+} from '@lyvely/dates';
 
 /**
  * This store provides translation state and helper functions.
  */
 export const useI18nStore = defineStore('i18n', () => {
   const locale = ref(getDefaultLocale(getEnabledLocales(), getFallbackLocale()));
+  const timezone = ref(getTimezone());
 
   /**
    * Here we sync the enabled locales setting with our date time adapter.
@@ -72,8 +78,20 @@ export const useI18nStore = defineStore('i18n', () => {
     return setLocale(localeUpdate);
   }
 
+  /**
+   * Sets the active timezone for this session.
+   * @param tz A valid timezone-identifier.
+   */
+  function setTimezone(tz: string) {
+    if (getTimezones().includes(tz)) {
+      timezone.value = tz;
+    }
+  }
+
   return {
     locale: readonly(locale),
+    timezone: readonly(timezone),
+    setTimezone,
     setActiveLocale,
     getEnabledLocales,
     getEnabledLocaleDefinitions,

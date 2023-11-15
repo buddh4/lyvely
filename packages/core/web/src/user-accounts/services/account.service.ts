@@ -4,6 +4,10 @@ import {
   VerifyEmailDto,
   OtpInfo,
   ResendOtp,
+  SetLanguageDto,
+  SetTimezoneDto,
+  CalendarPreferences,
+  SettingsUpdateResponse,
 } from '@lyvely/core-interface';
 import { useSingleton } from '@lyvely/common';
 import { accountRepository } from '../repositories';
@@ -28,6 +32,21 @@ export class AccountService implements IAccountService {
 
   updateGravatar() {
     return unwrapResponse(accountRepository.updateGravatar());
+  }
+
+  setLanguage(dto: SetLanguageDto): Promise<void> {
+    return unwrapResponse(accountRepository.setLanguage(dto));
+  }
+
+  setTimezone(dto: SetTimezoneDto): Promise<void> {
+    return unwrapResponse(accountRepository.setTimezone(dto));
+  }
+
+  setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse> {
+    return unwrapAndTransformResponse(
+      accountRepository.setCalendarPreferences(dto),
+      SettingsUpdateResponse,
+    );
   }
 }
 

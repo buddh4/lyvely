@@ -14,7 +14,7 @@ const score = computed(() => profileStore.profile?.score ?? 0);
 const formattedScore = computed(() => {
   if (!score.value) return 0;
 
-  return Intl.NumberFormat('en-US', {
+  return Intl.NumberFormat('en-us', {
     notation: 'compact',
     maximumFractionDigits: 1,
   }).format(score.value);

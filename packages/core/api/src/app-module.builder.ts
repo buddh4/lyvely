@@ -86,7 +86,7 @@ export class AppModuleBuilder {
       PermissionsModule,
       AppConfigModule,
       NestjsI18nModule.forRoot({
-        fallbackLanguage: 'en',
+        fallbackLanguage: 'en-us',
         loader: I18nModuleLoader,
         loaderOptions: {},
         resolvers: [AcceptLanguageResolver],

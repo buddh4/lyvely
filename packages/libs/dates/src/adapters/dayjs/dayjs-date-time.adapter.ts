@@ -5,6 +5,7 @@ import weekday from 'dayjs/plugin/weekday';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
+import localeData from 'dayjs/plugin/localeData';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import {
   CalendarDate,
@@ -21,6 +22,7 @@ dayjs.extend(weekYear);
 dayjs.extend(weekday);
 dayjs.extend(utc);
 dayjs.extend(timezone);
+dayjs.extend(localeData);
 dayjs.extend(quarterOfYear);
 dayjs.extend(isoWeek);
 

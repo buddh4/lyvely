@@ -48,6 +48,12 @@ export class UserModel extends DocumentModel<UserModel> {
   locale: string;
 
   @Expose()
+  timezone: string;
+
+  @Expose()
+  settings: Record<string, any>;
+
+  @Expose()
   @Type(() => UserEmailModel)
   @PropertyType([UserEmailModel])
   emails: UserEmailModel[];

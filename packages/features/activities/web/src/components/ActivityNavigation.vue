@@ -21,7 +21,7 @@ const { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
           </span>
         </div>
       </template>
-    </ly-tab-menu-link>
+    </ly-tab-menu-entry>
   </ly-tab-menu>
 </template>
 

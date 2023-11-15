@@ -8,7 +8,7 @@
         "label": "Imprint",
         "content": "## Imprint bla bla bla",
         "locales": {
-          "de-DE": {
+          "de": {
             "label": "Impressum",
             "content": "## Impressum"
           }

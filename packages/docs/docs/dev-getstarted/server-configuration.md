@@ -120,7 +120,7 @@ The I18n configuration can be used to restrict the supported locales.
 ```typescript
 {
   i18n: {
-    locales: ['en-US']
+    locales: ['en-us']
   }
 }
 ```

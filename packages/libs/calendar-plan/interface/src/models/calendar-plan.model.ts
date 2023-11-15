@@ -35,7 +35,7 @@ export abstract class CalendarPlan {
     return this.id;
   }
 
-  getTimingId(date: CalendarDate, locale = 'de', weekStrategy = WeekStrategy.LOCALE): string {
+  getTimingId(date: CalendarDate, locale = 'de', weekStrategy: WeekStrategy = 'locale'): string {
     return toTimingId(date, this.getInterval(), locale, weekStrategy);
   }
 
@@ -264,7 +264,7 @@ export function getTidWindow(
   interval: CalendarInterval,
   locale: string,
   windowSize?: number,
-  weekStrategy = WeekStrategy.LOCALE,
+  weekStrategy: WeekStrategy = 'locale',
 ) {
   const calendarPlan = CalendarPlan.getInstance(interval);
   windowSize ||= calendarPlan.getDefaultWindowSize();

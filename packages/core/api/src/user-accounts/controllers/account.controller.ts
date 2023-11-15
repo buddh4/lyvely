@@ -14,6 +14,10 @@ import {
   VerifyEmailDto,
   AvatarModel,
   ResendOtp,
+  SetLanguageDto,
+  SetTimezoneDto,
+  CalendarPreferences,
+  SettingsUpdateResponse,
 } from '@lyvely/core-interface';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { UseClassSerializer } from '@/core';
@@ -38,6 +42,25 @@ export class AccountController implements AccountEndpoint {
   @Post('add-email')
   async addEmail(@Body() dto: AddEmailDto, @Req() req: UserRequest) {
     return this.accountService.addEmail(req.user, dto.email);
+  }
+
+  @Post('set-language')
+  async setLanguage(@Body() dto: SetLanguageDto, @Req() req: UserRequest) {
+    return this.accountService.setLanguage(req.user, dto.locale);
+  }
+
+  @Post('set-timezone')
+  async setTimezone(@Body() dto: SetTimezoneDto, @Req() req: UserRequest) {
+    return this.accountService.setTimezone(req.user, dto.timezone);
+  }
+
+  @Post('set-calendar-preferences')
+  async setCalendarPreferences(
+    @Body() model: CalendarPreferences,
+    @Req() req: UserRequest,
+  ): Promise<SettingsUpdateResponse> {
+    const settings = await this.accountService.setCalendarPreferences(req.user, model);
+    return new SettingsUpdateResponse({ settings });
   }
 
   @Post('verify-email')

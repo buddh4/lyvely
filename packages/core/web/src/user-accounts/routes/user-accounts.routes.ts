@@ -23,4 +23,25 @@ export const userAccountsRoutes = [
       },
     ],
   },
+  {
+    name: 'AccountSettings',
+    path: '/account-settings',
+    component: () => import('../layouts/AccountSettingsLayout.vue'),
+    meta: {
+      layout: 'profile',
+    },
+    children: [
+      {
+        name: 'LanguageAndRegionSettings',
+        path: '/account-settings/language',
+        meta: {
+          i18n: {
+            load: [{ module: USER_ACCOUNTS_MODULE_ID, section: 'i18n' }],
+          },
+          title: translation('user-accounts.settings.i18n'),
+        },
+        component: () => import('../views/LanguageAndRegionSettings.vue'),
+      },
+    ],
+  },
 ];

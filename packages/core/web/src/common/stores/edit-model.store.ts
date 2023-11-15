@@ -120,7 +120,7 @@ export function useUpdateModelStore<
 
     try {
       const backup = JSON.parse(backupStr);
-      for (const field of Object.keys(backup)) {
+      for (const field of Object.keys(backup) as Array<keyof TEditModel>) {
         if (applyBackupField(model[field], backup[field])) {
           model[field] = backup[field];
         }
@@ -239,9 +239,9 @@ export function useUpdateModelStore<
     let update: Partial<typeof model> = {};
 
     if (options.partialUpdate) {
-      for (const field of Object.keys(model.value)) {
+      for (const field of Object.keys(model.value) as Array<keyof TEditModel>) {
         if (!isEqual(model.value[field], original[field])) {
-          update[field] = model.value[field];
+          update[<keyof typeof model>field] = (<any>model).value[field];
         }
       }
 

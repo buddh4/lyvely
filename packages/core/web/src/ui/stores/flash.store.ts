@@ -10,7 +10,7 @@ export interface IFlashMessage {
 
 export const useFlashStore = defineStore('ui-flash', () => {
   const queue: IFlashMessage[] = [];
-  const message = ref('');
+  const message = ref<Translatable>('');
   const type = ref<'info' | 'warning' | 'danger' | 'success'>('info');
   const show = ref(false);
   const isManual = ref(false);

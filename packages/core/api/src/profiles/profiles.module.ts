@@ -19,6 +19,7 @@ import {
   ProfileFeaturesService,
   ProfileSettingsService,
   ProfileRelationsService,
+  ProfileSettingsRegistry,
 } from './services';
 import {
   ProfilesController,
@@ -27,7 +28,7 @@ import {
   ProfileMembershipController,
   ProfileFeaturesController,
 } from './controllers';
-import { UsersModule } from '@/users';
+import { UserSettingsService, UsersModule } from '@/users';
 import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
 
 import { ProfileVisibilityPolicy } from './policies';
@@ -73,6 +74,8 @@ useProfileMappings();
     ProfileFeaturesService,
     ProfileSettingsService,
     ProfileRelationsService,
+    UserSettingsService,
+    ProfileSettingsRegistry,
   ],
   exports: [
     ProfilesService,
@@ -85,6 +88,8 @@ useProfileMappings();
     ProfileSettingsService,
     ProfileMembershipService,
     ProfileRelationsService,
+    UserSettingsService,
+    ProfileSettingsRegistry,
   ],
   controllers: [
     ProfilesController,

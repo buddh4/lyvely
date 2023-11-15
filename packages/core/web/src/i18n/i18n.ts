@@ -96,6 +96,8 @@ export async function loadModuleMessages(
   section ??= DEFAULT_TRANSLATION_SECTION;
   locale ??= activeLocale;
 
+  locale = locale.toLowerCase();
+
   const promises = [];
   if (locale !== fallBackLocale && !isModuleMessagesLoaded(moduleId, section, fallBackLocale)) {
     promises.push(loadModuleMessages(moduleId, section, fallBackLocale));
@@ -136,19 +138,19 @@ export async function loadModuleBaseMessages(locale: string) {
 }
 
 export function setMessages(locale: string, data: any) {
-  i18n.global.mergeLocaleMessage(locale, data);
+  i18n.global.mergeLocaleMessage(locale.toLowerCase(), data);
 }
 
 export function mergeMessages(locale: string, data: any) {
-  i18n.global.mergeLocaleMessage(locale, data.default ? data.default : data);
+  i18n.global.mergeLocaleMessage(locale.toLowerCase(), data.default ? data.default : data);
 }
 
 export function isGlobalMessagesLoaded(locale: string) {
-  return loadedCoreLocales.includes(locale);
+  return loadedCoreLocales.includes(locale.toLowerCase());
 }
 
 export function isBaseModuleMessagesLoaded(locale: string) {
-  return baseModuleLocales.includes(locale);
+  return baseModuleLocales.includes(locale.toLowerCase());
 }
 
 /**
@@ -161,11 +163,11 @@ export async function setLocale(locale: string) {
   const promises = [];
 
   if (!isGlobalMessagesLoaded(locale)) {
-    promises.push(loadLocaleMessages(locale));
+    promises.push(loadRootLocaleMessages(locale));
   }
 
   if (!isGlobalMessagesLoaded(fallBackLocale)) {
-    promises.push(loadLocaleMessages(fallBackLocale));
+    promises.push(loadRootLocaleMessages(fallBackLocale));
   }
 
   if (!isBaseModuleMessagesLoaded(locale)) {
@@ -204,8 +206,8 @@ export function getFallbackLocale() {
   return fallBackLocale;
 }
 
-export async function loadLocaleMessages(locale: string) {
-  // load locale content-stream with dynamic import
+export async function loadRootLocaleMessages(locale: string) {
+  locale = locale.toLowerCase();
   return import(`../../locales/${locale}.json`)
     .then((data) => mergeMessages(locale, data))
     .then(() => loadedCoreLocales.push(locale))

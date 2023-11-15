@@ -5,6 +5,9 @@ import {
   IAccountService,
   ENDPOINT_ACCOUNT,
   ResendOtp,
+  SetLanguageDto,
+  CalendarPreferences,
+  SetTimezoneDto,
 } from '@lyvely/core-interface';
 import { EndpointResult } from '@lyvely/common';
 
@@ -21,6 +24,27 @@ export const accountRepository = {
   async verifyEmail(model: VerifyEmailDto) {
     return repository.post<EndpointResult<IAccountService['verifyEmail']>>(
       `${resource}/verify-email`,
+      model,
+    );
+  },
+
+  async setLanguage(model: SetLanguageDto) {
+    return repository.post<EndpointResult<IAccountService['setLanguage']>>(
+      `${resource}/set-language`,
+      model,
+    );
+  },
+
+  async setTimezone(model: SetTimezoneDto) {
+    return repository.post<EndpointResult<IAccountService['setLanguage']>>(
+      `${resource}/set-timezone`,
+      model,
+    );
+  },
+
+  async setCalendarPreferences(model: CalendarPreferences) {
+    return repository.post<EndpointResult<IAccountService['setCalendarPreferences']>>(
+      `${resource}/set-calendar-preferences`,
       model,
     );
   },

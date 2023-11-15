@@ -1,0 +1,14 @@
+{
+  "user-accounts": {
+    "i18n": {
+      "general": "General",
+      "language": "Language",
+      "preferences": "Preferences",
+      "timezone": "Timezone",
+      "select-language":  "Select language",
+      "select-timezone":  "Select timezone",
+      "week-start": "First day of week",
+      "week-strategy": "First week of year"
+    }
+  }
+}

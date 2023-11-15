@@ -1,12 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { User, UserDao, UserEmail } from '@/users';
+import { User, UserDao, UserEmail, UserSettingsService } from '@/users';
 import { Avatar } from '@/avatars';
-import { VerifyEmailDto, OtpInfo } from '@lyvely/core-interface';
+import { VerifyEmailDto, OtpInfo, CalendarPreferences } from '@lyvely/core-interface';
 import { InvalidOtpException, OtpService } from '@/otp';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath, EntityIdentity } from '@/core';
 import { escapeHTML, FieldValidationException, isValidEmail } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import { MailService } from '@/mails';
+import { getEnabledLocales, getTimezones } from '@lyvely/dates';
+import { ISettingUpdate } from '@/settings';
+import {
+  USER_SETTING_CALENDAR_PREFERENCE_WEEKSTRATEGY,
+  USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
+} from '@/user-accounts/user-accounts.constants';
+import { isDefined } from 'class-validator';
 
 const OTP_PURPOSE_VERIFY_SECONDARY_EMAIL = 'verify-secondary-email';
 
@@ -14,15 +21,26 @@ interface IOtpEmailVerificationContext {
   email: string;
 }
 
+/**
+ * Service responsible for account management and settings.
+ */
 @Injectable()
 export class AccountService {
   constructor(
     private userDao: UserDao,
     private configService: ConfigService<ConfigurationPath>,
+    private userSettingsService: UserSettingsService,
     private mailService: MailService,
     private userOtpService: OtpService<IOtpEmailVerificationContext>,
   ) {}
 
+  /**
+   * Adds an email to the user account.
+   * If the email already exist, we inform the user per email.
+   * @param user
+   * @param email
+   * @throws FieldValidationException If the email is not valid.
+   */
   async addEmail(user: User, email: string) {
     if (!isValidEmail(email)) {
       throw new FieldValidationException([{ property: 'email', errors: ['isEmail'] }]);
@@ -115,9 +133,68 @@ export class AccountService {
     return this.userDao.setEmailVerification(user, email, true);
   }
 
+  /**
+   * Updates the avatar of the given user.
+   * @param user The user
+   */
   async updateAvatar(user: User) {
     const avatar = new Avatar(user.guid);
     await this.userDao.updateOneSetById(user, { avatar: new Avatar(user.guid) });
     return avatar;
+  }
+
+  /**
+   * Updates the locale of the given user.
+   * This function will throw a FieldValidationException in case the locale is not enabled or supported.
+   * @param user The user
+   * @param locale A valid and enabled locale.
+   * @throws FieldValidationException If locale is not valid, supported or enabled.
+   */
+  async setLanguage(user: EntityIdentity<User>, locale: string): Promise<void> {
+    locale = locale.toLowerCase();
+    if (!getEnabledLocales().includes(locale)) {
+      throw new FieldValidationException([{ property: 'locale', errors: ['invalid'] }]);
+    }
+
+    await this.userDao.updateOneSetById(user, { locale });
+  }
+
+  /**
+   * Updates the timezone of the given user.
+   * This function will throw a FieldValidationException in case the timezone is not valid.
+   * @param user The user
+   * @param timezone A valid timezone identifier.
+   * @throws FieldValidationException If timezone is not valid.
+   */
+  async setTimezone(user: EntityIdentity<User>, timezone: string): Promise<void> {
+    if (!getTimezones().includes(timezone)) {
+      throw new FieldValidationException([{ property: 'timezone', errors: ['invalid'] }]);
+    }
+    await this.userDao.updateOneSetById(user, { timezone });
+  }
+
+  /**
+   * Sets calendar preference settings of this user.
+   * @param user
+   * @param preferences
+   */
+  async setCalendarPreferences(
+    user: User,
+    preferences: CalendarPreferences,
+  ): Promise<Record<string, any>> {
+    const update: ISettingUpdate = [];
+
+    const { weekStart, weekStrategy } = preferences;
+
+    if (isDefined(weekStart)) {
+      update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART, value: weekStart });
+    }
+
+    if (isDefined(weekStrategy)) {
+      update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_WEEKSTRATEGY, value: weekStrategy });
+    }
+
+    await this.userSettingsService.updateSettings(user, update);
+    return user.settings;
   }
 }

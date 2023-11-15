@@ -1,4 +1,4 @@
-import { ILocaleManager } from '../../interfaces';
+import { ICalendarPreferences, ILocaleManager } from '../../interfaces';
 import dayjs from 'dayjs';
 
 export interface IDayJsLocale {
@@ -37,17 +37,22 @@ export interface IDayJsLocale {
 
 const supportedLocales: string[] = [
   'af',
+  'am',
   'ar',
   'ar-dz',
+  'ar-iq',
   'ar-kw',
   'ar-ly',
+  'ar-ma',
   'ar-sa',
+  'ar-tn',
   'az',
   'be',
   'bg',
   'bi',
   'bm',
   'bn',
+  'bn-bd',
   'bo',
   'br',
   'bs',
@@ -71,7 +76,6 @@ const supportedLocales: string[] = [
   'en-nz',
   'en-sg',
   'en-tt',
-  'en-us',
   'eo',
   'es',
   'es-do',
@@ -175,7 +179,7 @@ const supportedLocales: string[] = [
  */
 class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
   /** A map to store loaded locale modules, preventing redundant imports. **/
-  loadedLocales = new Map();
+  loadedLocales = new Map<string, IDayJsLocale>();
 
   /**
    * Stores explicitly enabled locales.
@@ -185,34 +189,37 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
 
   /**
    * Asynchronously loads a locale module based on the provided locale string.
-   * The locale string is expected to be in the format 'language' or 'language-COUNTRY'.
+   * The locale string is expected to be in the format 'language' or 'language-country'.
    * @param locale
    */
   async loadLocale(locale: string) {
-    const localeCode = this.resolveLocaleString(locale);
+    const resolveLocale = this.resolveLocaleString(locale);
 
-    if (!this.loadedLocales.has(localeCode)) {
+    if (!resolveLocale) throw new Error(`Locale ${locale} is not supported.`);
+
+    if (!this.loadedLocales.has(resolveLocale)) {
       try {
         // Dynamically import the locale data module
-        const localeModule = await import(`./locales/${localeCode}.js`);
-        this.loadedLocales.set(localeCode, localeModule.default); // Cache the imported locale module
-        console.log(`Locale ${localeCode} has been loaded.`);
+        const localeModule = await import(`./locales/${resolveLocale}.js`);
+        this.loadedLocales.set(resolveLocale, localeModule.default); // Cache the imported locale module
+        console.log(`Locale ${locale} has been loaded.`);
       } catch (error) {
-        console.error(`Error loading the locale '${localeCode}':`, error);
+        console.error(`Error loading the locale '${locale}':`, error);
       }
     }
   }
 
-  isLoaded(locale: string): boolean {
-    return this.loadedLocales.has(locale) || this.loadedLocales.has(locale.split('-')[0]);
+  private resolveLocaleString(locale: string) {
+    locale = locale.toLowerCase();
+    const localeCode = supportedLocales.includes(locale) ? locale : locale.split('-')[0];
+    if (!supportedLocales.includes(localeCode)) return null;
+    return localeCode;
   }
 
-  private resolveLocaleString(locale: string) {
-    const localeCode = supportedLocales.includes(locale) ? locale : locale.split('-')[0];
-    if (!supportedLocales.includes(localeCode)) {
-      throw new Error(`Locale ${locale} is not supported.`);
-    }
-    return localeCode;
+  isLoaded(locale: string): boolean {
+    const resolveLocale = this.resolveLocaleString(locale);
+    if (!resolveLocale) return false;
+    return this.loadedLocales.has(resolveLocale);
   }
 
   /**
@@ -220,7 +227,11 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
    * @param locale
    */
   getLocale(locale: string): IDayJsLocale | undefined {
-    return this.loadedLocales.get(locale.split('-')[0]);
+    const resolveLocale = this.resolveLocaleString(locale);
+
+    if (!resolveLocale) return undefined;
+
+    return this.loadedLocales.get(resolveLocale);
   }
 
   /**
@@ -228,18 +239,17 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
    * @param locale
    */
   setGlobalLocale(locale: string) {
-    dayjs.locale(locale.split('-')[0]);
+    dayjs.locale(locale.toLowerCase());
   }
 
   /**
    * Sets the enabled locales.
-   * @param locales Array of locale strings in the format 'language' or 'language-COUNTRY'.
+   * @param locales Array of locale strings in the format 'language' or 'language-country'.
    */
   setEnabledLocales(locales: string[]) {
-    this.enabledLocales = locales.filter((locale) => {
-      const localeCode = supportedLocales.includes(locale) ? locale : locale.split('-')[0];
-      return supportedLocales.includes(localeCode);
-    });
+    this.enabledLocales = locales
+      .filter((locale) => !!this.resolveLocaleString(locale))
+      .map((locale) => locale.toLowerCase());
   }
 
   /**
@@ -248,6 +258,40 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
    */
   getEnabledLocales(): Array<string> {
     return this.enabledLocales?.length ? this.enabledLocales : supportedLocales;
+  }
+
+  /**
+   * Returns the default calendar-preferences for a given locale.
+   * Note, the locale should already be loaded for this to work properly.
+   * @param locale The targeted locale.
+   */
+  getDefaultPreferences(locale: string): ICalendarPreferences {
+    const resolvedLocale = this.resolveLocaleString(locale);
+
+    if (!resolvedLocale) {
+      return {
+        weekStart: 0,
+        weekStrategy: 'locale',
+      };
+    }
+
+    if (!this.isLoaded(resolvedLocale)) {
+      console.warn('Tried to get default calendar-preferences of non loaded locale');
+    }
+
+    const d = dayjs();
+    const localeData = d.locale(resolvedLocale).localeData();
+    return {
+      weekStart: localeData.firstDayOfWeek(),
+      weekStrategy: 'locale',
+    };
+  }
+
+  /**
+   * Resets enabled locales.
+   */
+  reset(): void {
+    this.enabledLocales = undefined;
   }
 }
 

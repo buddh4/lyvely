@@ -3,8 +3,10 @@ import { buildTest, LyvelyTestingModule } from '@/testing';
 import { SettingsService } from './settings.service';
 import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { clearSettings, registerSettings } from './settings.registry';
+import { SettingsRegistry } from './settings.registry';
 import { Constructor, DeepPartial, FieldValidationException } from '@lyvely/common';
+
+const settingRegistry = new SettingsRegistry();
 
 @Schema()
 class TestSettingTarget extends BaseEntity<TestSettingTarget> {
@@ -31,6 +33,7 @@ class TestSettingTargetDao extends AbstractDao<TestSettingTarget> {
 @Injectable()
 class TestSettingsService extends SettingsService<TestSettingTarget> {
   protected logger = new Logger(TestSettingsService.name);
+  protected settingsRegistry = settingRegistry;
 
   @Inject()
   protected settingsDao: TestSettingTargetDao;
@@ -57,7 +60,7 @@ describe('SettingsService', () => {
   });
 
   afterEach(async () => {
-    clearSettings();
+    settingRegistry.clearSettings();
     return testingModule.afterEach();
   });
 
@@ -67,7 +70,7 @@ describe('SettingsService', () => {
 
   describe('updateSettings', () => {
     it('update valid setting', async () => {
-      registerSettings([{ key: 'test.key', type: String }]);
+      settingRegistry.registerSettings([{ key: 'test.key', type: String }]);
       const model = await settingsService.save(new TestSettingTarget());
       const result = await settingsService.updateSettings(model, [
         { key: 'test.key', value: 'testValue' },
@@ -81,7 +84,7 @@ describe('SettingsService', () => {
     });
 
     it('try update invalid setting type', async () => {
-      registerSettings([{ key: 'test.key', type: String }]);
+      settingRegistry.registerSettings([{ key: 'test.key', type: String }]);
       const model = await settingsService.save(new TestSettingTarget());
 
       expect.assertions(2);
@@ -95,7 +98,7 @@ describe('SettingsService', () => {
     });
 
     it('try update invalid setting by validator', async () => {
-      registerSettings([
+      settingRegistry.registerSettings([
         {
           key: 'test.key',
           type: String,
@@ -115,7 +118,7 @@ describe('SettingsService', () => {
     });
 
     it('try update valid setting with validator', async () => {
-      registerSettings([
+      settingRegistry.registerSettings([
         {
           key: 'test.key',
           type: String,

@@ -1,25 +1,25 @@
-import { AbstractDao, BaseEntity } from '@/core';
-import { getSetting } from '@/settings/settings.registry';
-import {
-  EntityNotFoundException,
-  FieldValidationException,
-  IFieldValidationResult,
-} from '@lyvely/common';
+import { AbstractDao, BaseEntity, EntityIdentity } from '@/core';
+import { SettingsRegistry } from '@/settings/settings.registry';
+import { FieldValidationException, IFieldValidationResult } from '@lyvely/common';
 import { ISetting } from '@lyvely/core-interface';
-import { validateSettingValue } from '@/settings/settings.helper';
 import { Logger } from '@nestjs/common';
+import { ISettingUpdate } from '@/settings/settings.interface';
+import { isBoolean, isNumber, isString } from 'class-validator';
 
 export abstract class SettingsService<TModel extends BaseEntity<TModel> & { settings: any }> {
   protected abstract logger: Logger;
   protected abstract settingsDao: AbstractDao<TModel>;
+  protected abstract settingsRegistry: SettingsRegistry;
 
-  async updateSettings(target: TModel, updates: [{ key: string; value: any }]) {
+  async updateSettings(target: EntityIdentity<TModel>, updates: ISettingUpdate) {
     const validationErrors: IFieldValidationResult[] = [];
+    if (!updates.length) return true;
+
     const updateQuery = updates.reduce((result, update) => {
       const { key, value } = update;
-      const setting = getSetting(key);
+      const setting = this.settingsRegistry.getSetting(key);
 
-      if (setting && validateSettingValue(setting, value)) {
+      if (setting && this.validateSettingValue(setting, value)) {
         result[`settings.${setting.key}`] = value;
       } else {
         validationErrors.push({ property: key });
@@ -33,8 +33,21 @@ export abstract class SettingsService<TModel extends BaseEntity<TModel> & { sett
     return this.settingsDao.updateOneSetById(target, updateQuery);
   }
 
+  protected validateSettingValue(settingOrKey: ISetting | string, value: any): boolean {
+    const setting = this.getSetting(settingOrKey);
+    if (!setting) return false;
+
+    if (setting.type === String && !isString(value)) return false;
+    if (setting.type === Boolean && !isBoolean(value)) return false;
+    if (setting.type === Number && !isNumber(value)) return false;
+
+    if (setting.validator && !setting.validator(value)) return false;
+
+    return !setting.validator || setting.validator(value);
+  }
+
   protected getSetting(settingOrKey: ISetting | string): ISetting | undefined {
-    const setting = getSetting(settingOrKey);
+    const setting = this.settingsRegistry.getSetting(settingOrKey);
 
     if (!setting) {
       this.logger.warn(`Invalid setting ${settingOrKey}`);

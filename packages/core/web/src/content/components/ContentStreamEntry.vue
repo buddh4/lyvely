@@ -87,7 +87,7 @@ const contentTypeName = computed(() =>
 
 const childCount = computed(() => {
   if (!props.model.meta.childCount) return 0;
-  return Intl.NumberFormat('en-US', {
+  return Intl.NumberFormat('en-us', {
     notation: 'compact',
     maximumFractionDigits: 1,
   }).format(props.model.meta.childCount);

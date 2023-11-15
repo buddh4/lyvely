@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import { UpdateQuery, Document } from 'mongoose';
-import { BaseEntity, createObjectId, getDefaultLocale } from '@/core';
+import { BaseEntity, createObjectId, getDefaultLocale, MixedProp } from '@/core';
 import { PropertiesOf, getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
@@ -68,6 +68,13 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   /** The locale of this user used for translation and default locale related formats. **/
   @Prop({ default: getDefaultLocale() })
   locale: string;
+
+  @Prop()
+  timezone: string;
+
+  /** Module and other settings. **/
+  @MixedProp({ default: {} })
+  settings: Record<string, any>;
 
   /** Known refresh tokens of this user. **/
   @Prop({ type: [RefreshTokenSchema], default: [] })

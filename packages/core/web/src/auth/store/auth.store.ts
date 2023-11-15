@@ -79,6 +79,10 @@ export const useAuthStore = defineStore('user-auth', () => {
       user.value.locale = i18nStore.locale;
     }
 
+    if (user.value.timezone) {
+      i18nStore.setTimezone(user.value.timezone);
+    }
+
     useLiveStore().connectUser();
   }
 

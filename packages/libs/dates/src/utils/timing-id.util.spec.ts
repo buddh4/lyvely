@@ -25,21 +25,21 @@ describe('time series utils', () => {
     interval: CalendarInterval,
     expected: string,
     locale = 'de',
-    strategy = WeekStrategy.LOCALE,
+    strategy: WeekStrategy = 'locale',
   ) {
     expect(toTimingId(date, interval, locale, strategy)).toEqual(expected);
   }
 
   function expectWeeklyENTid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarInterval.Weekly, expected, 'en', WeekStrategy.LOCALE);
+    expectTid(date, CalendarInterval.Weekly, expected, 'en', 'locale');
   }
 
   function expectWeeklyDETid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarInterval.Weekly, expected, 'de', WeekStrategy.LOCALE);
+    expectTid(date, CalendarInterval.Weekly, expected, 'de', 'locale');
   }
 
   function expectWeeklyIsoTid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarInterval.Weekly, expected, 'de', WeekStrategy.ISO);
+    expectTid(date, CalendarInterval.Weekly, expected, 'de', 'iso');
   }
 
   describe('toTimingId', () => {
@@ -118,7 +118,7 @@ describe('time series utils', () => {
       });
 
       it('overlapping last week of year', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarInterval.Weekly, 'de', WeekStrategy.ISO);
+        const timingId = toTimingId('2021-01-01', CalendarInterval.Weekly, 'de', 'iso');
         expect(timingId).toEqual('Y:2020;Q:4;M:12;W:53');
       });
 

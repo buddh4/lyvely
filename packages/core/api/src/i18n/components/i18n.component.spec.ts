@@ -27,11 +27,11 @@ describe('I18n', () => {
 
   describe('translate()', () => {
     it('translate with string key and locale', async () => {
-      expect(i18n.t('i18n.test.testKey', { locale: 'en' })).toEqual('Test Value');
+      expect(i18n.t('i18n.test.testKey', { locale: 'en-us' })).toEqual('Test Value');
     });
 
     it('translate with translatable and locale', async () => {
-      expect(i18n.t({ key: 'i18n.test.testKey' }, { locale: 'en' })).toEqual('Test Value');
+      expect(i18n.t({ key: 'i18n.test.testKey' }, { locale: 'en-us' })).toEqual('Test Value');
     });
 
     it('translate with fallback', async () => {
@@ -43,17 +43,20 @@ describe('I18n', () => {
     });
 
     it('translate locale with region', async () => {
-      expect(i18n.t('i18n.test.testKey', { locale: 'de-DE' })).toEqual('Test Wert');
+      expect(i18n.t('i18n.test.testKey', { locale: 'de' })).toEqual('Test Wert');
     });
 
     it('translate with param', async () => {
       expect(
-        i18n.t({ key: 'i18n.test.testWithParams', params: { value: 'VALUE' } }, { locale: 'en' }),
+        i18n.t(
+          { key: 'i18n.test.testWithParams', params: { value: 'VALUE' } },
+          { locale: 'en-us' },
+        ),
       ).toEqual('Test VALUE');
     });
 
     it('translate nested', async () => {
-      expect(i18n.t({ key: 'i18n.test.nested.test.key' }, { locale: 'en' })).toEqual(
+      expect(i18n.t({ key: 'i18n.test.nested.test.key' }, { locale: 'en-us' })).toEqual(
         'Nested Value',
       );
     });

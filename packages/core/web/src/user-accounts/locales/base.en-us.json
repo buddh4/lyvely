@@ -1,8 +1,12 @@
 {
   "user-accounts": {
+    "settings": {
+      "i18n": "Language & Region"
+    },
     "drawer": {
       "title": "Account Menu",
       "my-account": "My Account",
+      "settings": "Settings",
       "security": "Security"
     }
   }

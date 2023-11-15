@@ -5,6 +5,6 @@ module.exports = {
   username: 'Jan',
   password: '$2a$12$n3wKMI9QyBOaA7kr9XtvlOTb5n61vG.OF2JPfu5H2FcugYIqDBWMW',
   email: 'jan@test.com',
-  locale: 'de-DE',
+  locale: 'de',
   enabled: true,
 };

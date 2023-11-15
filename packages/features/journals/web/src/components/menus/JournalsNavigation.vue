@@ -8,7 +8,7 @@ import { LyTabMenu, LyTabMenuEntry } from '@lyvely/ui';
       <div class="flex items-center justify-center">
         {{ $t('journals.title') }}
       </div>
-    </ly-tab-menu-link>
+    </ly-tab-menu-entry>
   </ly-tab-menu>
 </template>
 

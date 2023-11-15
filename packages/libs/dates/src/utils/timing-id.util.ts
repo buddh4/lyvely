@@ -1,11 +1,11 @@
 import { CalendarInterval } from '../models';
-import { dateTime, CalendarDateTime } from '../interfaces';
+import { dateTime, CalendarDateTime, WeekStrategy } from '../interfaces';
 
 export function toTimingId(
   cd: CalendarDateTime,
   level = CalendarInterval.Daily,
   locale = 'en',
-  weekStrategy = WeekStrategy.LOCALE,
+  weekStrategy: WeekStrategy = 'locale',
 ) {
   // TODO: dayJs locale support
   locale = locale.split('-')[0];
@@ -29,24 +29,19 @@ export function toTimingId(
   return result + `;D:${pad(d.getDate())}`;
 }
 
-export enum WeekStrategy {
-  ISO,
-  LOCALE,
-}
-
 export function toWeekTimingId(
   cd: CalendarDateTime,
   locale: string,
-  weekStrategy = WeekStrategy.LOCALE,
+  weekStrategy: WeekStrategy = 'locale',
 ) {
   const date = dateTime(cd, false, locale);
   let weekYear, weekOfYear, firstDayOfWeek;
 
-  if (weekStrategy === WeekStrategy.LOCALE) {
+  if (weekStrategy === 'locale') {
     weekYear = date.weekYear();
     weekOfYear = date.week();
     firstDayOfWeek = date.weekday(0);
-  } else if (weekStrategy === WeekStrategy.ISO) {
+  } else if (weekStrategy === 'iso') {
     weekYear = date.isoWeekYear();
     weekOfYear = date.isoWeek();
     firstDayOfWeek = date.isoWeekday(1); // Monday
@@ -75,7 +70,7 @@ export function getTimingIds(
   d: CalendarDateTime,
   locale: string,
   level = CalendarInterval.Unscheduled,
-  weekStrategy = WeekStrategy.LOCALE,
+  weekStrategy: WeekStrategy = 'locale',
 ) {
   const dayId = toTimingId(d, CalendarInterval.Daily, locale);
   const weekId = toWeekTimingId(d, locale, weekStrategy);

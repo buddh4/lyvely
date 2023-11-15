@@ -6,6 +6,7 @@ import { ref } from 'vue';
 import 'cropperjs/dist/cropper.min.css';
 import { ProfileType } from '@lyvely/core-interface';
 import { useAccountAvatarStore } from '@/user-accounts/stores/upload-account-avatar.store';
+import { UserAvatar } from '@/users';
 
 const authStore = useAuthStore();
 const { user } = storeToRefs(authStore);
@@ -49,7 +50,7 @@ function updateGravatar() {
 <template>
   <div v-if="user" class="flex items-center justify-center">
     <div class="m-5 relative cursor-pointer" @click="showUpdateAvatarModal = true">
-      <ly-user-avatar class="w-16 h-16 text-xl border border-main" />
+      <user-avatar class="w-16 h-16 text-xl border border-main" />
       <div
         class="w-6 h-6 absolute flex justify-center bg-shadow bottom-0 right-0 border border-main rounded-full">
         <ly-icon name="camera" class="p-0.5 color-main" />

@@ -11,7 +11,7 @@ import {
 import { BaseModel, IsIn, SameAs, NotSameAs } from '@lyvely/common';
 import { MAX_USER_NAME_LENGTH, MIN_USER_NAME_LENGTH, USER_NAME_REGEX } from '@/users';
 import { Exclude, Expose } from 'class-transformer';
-import { getEnabledLocales } from '@lyvely/dates';
+import { getEnabledLocales, getTimezones } from '@lyvely/dates';
 
 @Exclude()
 export class UserRegistration extends BaseModel<UserRegistration> {
@@ -30,10 +30,14 @@ export class UserRegistration extends BaseModel<UserRegistration> {
   email: string;
 
   @Expose()
-  @IsOptional()
   @IsIn(() => getEnabledLocales())
   @IsString()
-  locale?: string;
+  locale: string;
+
+  @Expose()
+  @IsIn(() => getTimezones())
+  @IsString()
+  timezone: string;
 
   @Expose()
   @IsOptional()

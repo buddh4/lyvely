@@ -7,7 +7,9 @@ const i18nStore = useI18nStore();
 const authStore = useAuthStore();
 const enabledLocales = i18nStore.getEnabledLocales();
 
-const locale = computed(() => i18nStore.getLocaleName(i18nStore.locale));
+const { getLocaleName } = i18nStore;
+
+const locale = computed(() => getLocaleName(i18nStore.locale));
 
 const switchLocale = (locale: string) => {
   return authStore.setUserLocale(locale);
@@ -18,9 +20,9 @@ const switchLocale = (locale: string) => {
   <ly-dropdown icon="language" :label="locale">
     <ly-dropdown-link
       v-for="enabledLocale in enabledLocales"
-      :key="enabledLocale.locale"
-      :label="enabledLocale.name"
-      @click="switchLocale(enabledLocale.locale)" />
+      :key="enabledLocale"
+      :label="getLocaleName(enabledLocale)"
+      @click="switchLocale(enabledLocale)" />
   </ly-dropdown>
 </template>
 

@@ -7,3 +7,4 @@ export * from './profile-url-generator.service';
 export * from './profile-features.service';
 export * from './profile-relations.service';
 export * from './profile-settings.service';
+export * from './profile-settings.registry';

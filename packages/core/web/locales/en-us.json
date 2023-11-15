@@ -83,6 +83,7 @@
     "archive": "Archive",
     "back_to_home": "Take me back home",
     "none": "none",
+    "not-set": "Not set",
     "unarchive": "Add from archive",
     "status": {
       "404": "Page not found!",

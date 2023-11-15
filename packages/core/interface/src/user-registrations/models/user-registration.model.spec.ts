@@ -1,7 +1,12 @@
 import { UserRegistration } from './user-registration.model';
 import { validate } from 'class-validator';
+import { setEnabledLocales, resetLocales } from '@lyvely/dates';
 
 describe('RegisterDto', () => {
+  afterEach(() => {
+    resetLocales();
+  });
+
   describe('validation', function () {
     it('initialization', async () => {
       const model = new UserRegistration({
@@ -55,6 +60,21 @@ describe('RegisterDto', () => {
 
       const errors = await validate(model);
       expect(errors.length).toEqual(0);
+    });
+
+    it('locale is not enabled', async () => {
+      setEnabledLocales(['en-us']);
+      const model = new UserRegistration({
+        username: 'MyUser',
+        email: 'test@mail.de',
+        password: 'password',
+        locale: 'de',
+        passwordRepeat: 'password',
+      });
+
+      const errors = await validate(model);
+      expect(errors.length).toEqual(1);
+      expect(errors[0].property).toEqual('locale');
     });
 
     it('validation fails due to empty username', async () => {

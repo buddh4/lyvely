@@ -1,4 +1,5 @@
 import { ILocaleManager } from './locale-manager.interface';
+import { ICalendarPreferences } from './calendar.interface';
 
 let localeManager: ILocaleManager;
 
@@ -8,7 +9,7 @@ export function setLocaleManager(loader: ILocaleManager) {
 
 /**
  * Asynchronously loads a locale module based on the provided locale string.
- * @param locale The locale string in the format 'language' or 'language-COUNTRY'.
+ * @param locale The locale string in the format 'language' or 'language-country'.
  */
 export async function loadDateTimeLocale(locale: string): Promise<void> {
   if (!localeManager) {
@@ -21,7 +22,7 @@ export async function loadDateTimeLocale(locale: string): Promise<void> {
 /**
  * Sets the given locale as global locale.
  * Note, the given locale needs to be loaded.
- * @param locale The locale string in the format 'language' or 'language-COUNTRY'.
+ * @param locale The locale string in the format 'language' or 'language-country'.
  */
 export function setGlobalDateTimeLocale(locale: string): void {
   if (!localeManager) {
@@ -33,7 +34,7 @@ export function setGlobalDateTimeLocale(locale: string): void {
 
 /**
  * Checks if a specific locale is already loaded.
- * @param locale The locale string in the format 'language' or 'language-COUNTRY'.
+ * @param locale The locale string in the format 'language' or 'language-country'.
  */
 export function isDateTimeLocaleLoaded(locale: string): boolean {
   if (!localeManager) {
@@ -46,7 +47,7 @@ export function isDateTimeLocaleLoaded(locale: string): boolean {
 /**
  * Returns an already loaded locale or undefined in case it was not loaded or does not exist.
  * Note, the format will depend on adapter.
- * @param locale The locale string in the format 'language' or 'language-COUNTRY'.
+ * @param locale The locale string in the format 'language' or 'language-country'.
  */
 export function getDateTimeLocale<TLocale = any>(locale: string): TLocale | undefined {
   if (!localeManager) {
@@ -58,7 +59,7 @@ export function getDateTimeLocale<TLocale = any>(locale: string): TLocale | unde
 
 /**
  * Sets the enabled locales.
- * @param locales Array of locale strings in the format 'language' or 'language-COUNTRY'.
+ * @param locales Array of locale strings in the format 'language' or 'language-country'.
  */
 export function setEnabledLocales(locales: string[]): void {
   if (!localeManager) {
@@ -78,4 +79,28 @@ export function getEnabledLocales(): string[] {
   }
 
   return localeManager.getEnabledLocales();
+}
+
+/**
+ * Returns the default calendar-preferences for a given locale.
+ * Note, the locale should already be loaded for this to work properly.
+ * @param locale The targeted locale.
+ */
+export function getDefaultCalendarPreferences(locale: string): ICalendarPreferences {
+  if (!localeManager) {
+    throw new Error('No locale manager set');
+  }
+
+  return localeManager.getDefaultPreferences(locale);
+}
+
+/**
+ * Resets enabled locale state.
+ */
+export function resetLocales(): void {
+  if (!localeManager) {
+    throw new Error('No locale manager set');
+  }
+
+  localeManager.reset();
 }

@@ -152,7 +152,7 @@ describe('UserRegistrationService', () => {
       expect(user instanceof User).toEqual(true);
       expect(user!.username).toEqual('Tester');
       expect(user!.email).toEqual('tester@test.de');
-      expect(user!.locale).toEqual('de-DE');
+      expect(user!.locale).toEqual('de');
       expect(user!.status).toEqual(UserStatus.EmailVerification);
     });
 
@@ -312,7 +312,7 @@ describe('UserRegistrationService', () => {
           email: 'tester@test.de',
           password: 'testpw',
           remember: true,
-          locale: 'de-DE',
+          locale: 'de',
         },
         raw,
       ),
