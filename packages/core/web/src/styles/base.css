@@ -1,25 +1,23 @@
-@tailwind base;
 
-@layer base {
-    html {
-        overflow: hidden;
-        overscroll-behavior-y: none;
-        height: 100%;
-    }
 
-    body {
-        @apply bg-body text-main;
-        overflow: auto;
-        height: 100%;
-        min-height: 540px;
-    }
+html {
+    overflow: hidden;
+    overscroll-behavior-y: none;
+    height: 100%;
+}
 
-    body[orient="portrait"] { min-height: 540px}
-    body[orient="landscape"] { min-height: 400px}
+body {
+    @apply bg-body text-main;
+    overflow: auto;
+    height: 100%;
+    min-height: 540px;
+}
 
-    a {
-        text-decoration: none;
-        color: var(--color-primary)
-    }
+body[orient="portrait"] { min-height: 540px}
+body[orient="landscape"] { min-height: 400px}
+
+a {
+    text-decoration: none;
+    color: var(--color-primary)
 }
 

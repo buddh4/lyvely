@@ -89,9 +89,9 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div :class="['cursor-pointer text-main', wrapperClass]" @keydown.space.prevent.stop="toggle">
+  <div :class="['text-main', wrapperClass]" @keydown.space.prevent.stop="toggle">
     <div class="flex">
-      <label :class="['inline-flex items-center', { 'cursor-pointer': !readonly && !disabled }]">
+      <label class="inline-flex items-center">
         <input
           ref="checkbox"
           v-model="inputValue"
@@ -109,7 +109,7 @@ onMounted(() => {
       <ly-icon
         v-if="hasHelpText"
         name="info"
-        class="ml-1 text-info-dark w-4 cursor-pointer"
+        class="ml-1 text-info-dark w-4s"
         @click="showHelpText = !showHelpText" />
     </div>
     <ly-alert

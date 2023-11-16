@@ -171,6 +171,15 @@ function getAriaPressed($attrs: any) {
   cursor: not-allowed;
 }
 
+.button.primary,
+.button.secondary,
+.button.warning,
+.button.info,
+.button.secondary,
+.button.danger {
+  @apply border text-inverted;
+}
+
 .button.loading {
   animation-duration: 1.8s;
   animation-fill-mode: forwards;
@@ -250,15 +259,8 @@ function getAriaPressed($attrs: any) {
   position: relative;
 }
 
-.button,
-.button.loading,
-.button.primary.outlined:hover,
-.button.secondary.outlined:hover,
-.button.info.outlined:hover,
-.button.success.outlined:hover,
-.button.warning.outlined:hover,
-.button.danger.outlined:hover {
-  @apply text-gray-100;
+.dark .button {
+  @apply text-main;
 }
 
 .button.attachment-l {

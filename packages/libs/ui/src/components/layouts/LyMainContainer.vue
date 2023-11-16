@@ -24,7 +24,7 @@ const widthClass = computed(
 );
 
 const classNames = computed(() => {
-  return ['container main-container mx-auto', widthClass.value];
+  return ['w-full main-container mx-auto', widthClass.value];
 });
 </script>
 

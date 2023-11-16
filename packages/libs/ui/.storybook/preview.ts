@@ -1,16 +1,15 @@
 import type { Preview } from '@storybook/vue3';
-import '../src/styles/index.css';
-import 'animate.css/animate.css';
+//import '../../../core/web/src/styles/index.css';
 import './storybook.css';
 
 const preview: Preview = {
   globalTypes: {
     darkMode: {},
-    className: {}
+    className: {},
   },
   parameters: {
     darkMode: {
-      darkClass: "dark",
+      darkClass: 'dark',
       stylePreview: true,
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
