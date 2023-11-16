@@ -2,15 +2,22 @@
 import { computed } from 'vue';
 import {
   TagChooser,
-  isTouchScreen,
   ContentEditModalEmits,
   useContentEditModal,
   ICreateContentInitOptions,
 } from '@lyvely/web';
+import {
+  isTouchScreen,
+  LyModal,
+  LyFormModel,
+  LyTextField,
+  LySelect,
+  LyTextarea,
+  LyNumberField,
+} from '@lyvely/ui';
 import { TaskModel, UpdateTaskModel, CreateTaskModel } from '@lyvely/tasks-interface';
 import { useTasksService } from '@/services';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
-import { LyModal, LyFormModel, LyTextField, LySelect, LyTextarea, LyNumberField } from '@lyvely/ui';
 
 export interface IProps {
   modelValue: boolean;

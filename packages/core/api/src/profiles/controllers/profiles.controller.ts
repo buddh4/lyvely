@@ -6,18 +6,21 @@ import {
   Param,
   Post,
   Put,
+  Req,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { mapType } from '@lyvely/common';
 import {
+  CalendarPreferences,
   CreateProfileModel,
   ENDPOINT_PROFILES,
   ProfileMembershipRole,
   ProfilesEndpoint,
   ProfileType,
   ProfileWithRelationsModel,
+  SettingsUpdateResponse,
   UpdateProfileModel,
 } from '@lyvely/core-interface';
 import { ProfilesService, ProfileRelationsService } from '../services';
@@ -120,5 +123,19 @@ export class ProfilesController implements ProfilesEndpoint {
     await this.profilesService.updateProfile(profile, model);
 
     return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, context);
+  }
+
+  @Post('set-calendar-preferences')
+  @UseGuards(ProfileGuard)
+  async setCalendarPreferences(
+    @Body() model: CalendarPreferences,
+    @Req() req: ProtectedProfileRequest,
+  ): Promise<SettingsUpdateResponse> {
+    const { profile, context } = req;
+    // TODO: Use ACL
+    if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner))
+      throw new ForbiddenException();
+    const settings = await this.profilesService.setCalendarPreferences(profile, model);
+    return new SettingsUpdateResponse({ settings });
   }
 }

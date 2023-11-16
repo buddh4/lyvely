@@ -6,7 +6,7 @@ import { ref, computed } from 'vue';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import { AuthService } from '@/auth/services/auth.service';
 import { ILoginResponse, UserModel, UserStatus } from '@lyvely/core-interface';
-import { queuePromise } from '@lyvely/common';
+import { findByPath, queuePromise } from '@lyvely/common';
 import { useLiveStore } from '@/live/stores/live.store';
 
 export const storedVid = localStorageManager.getStoredValue('visitorId');
@@ -48,6 +48,12 @@ export const useAuthStore = defineStore('user-auth', () => {
       // We use document.location instead of router here in order to force stores to be cleared
       document.location = '/';
     }
+  }
+
+  function getSetting<TResult = any>(key: string, defaultValue: TResult): TResult;
+  function getSetting<TResult = any>(key: string, defaultValue?: undefined): TResult | undefined;
+  function getSetting<TResult = any>(key: string, defaultValue?: TResult): TResult | undefined {
+    return findByPath(user.value?.settings || {}, key, false, false) ?? defaultValue;
   }
 
   function isAwaitingEmailVerification() {
@@ -108,6 +114,7 @@ export const useAuthStore = defineStore('user-auth', () => {
     user,
     getVid,
     setUserLocale,
+    getSetting,
     authTokenExpiration,
     isAuthenticated,
     isAwaitingEmailVerification,

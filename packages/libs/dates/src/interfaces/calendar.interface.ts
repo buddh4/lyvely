@@ -67,10 +67,18 @@ export type CalendarUnitType =
   | CalendarUnitTypeLongPlural
   | CalendarUnitTypeShort;
 
-export type WeekStrategy = 'iso' | 'locale';
-export const DEFAULT_WEEK_STRATEGY = 'locale';
-
+/**
+ * This interface defines calendar preferences, which can be used to overwrite locale specific behavior.
+ */
 export interface ICalendarPreferences {
+  /**
+   * Defines the start of a week. If the value is 1, Monday will be the start of week instead of Sunday
+   */
   weekStart?: number;
-  weekStrategy?: WeekStrategy;
+
+  /**
+   * Defines the start of the year, e.g. 4 means the week that contains Jan 4th is the first week of the year.
+   * The value should be between 0 and 7 where 0 means the calculation of the first week is done by ISO standard.
+   */
+  yearStart?: number;
 }

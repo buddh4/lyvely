@@ -38,7 +38,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
     const allTasks = cache.value.getModelsByIntervalFilter(
       interval,
       filter.value as TaskFilter,
-      toTimingId(date.value, interval, locale.value),
+      toTimingId(date.value, interval, locale.value, profileStore.getSetting('calendar')),
     );
 
     const tasks: TaskModel[] = [];

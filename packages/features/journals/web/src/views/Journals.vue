@@ -1,15 +1,24 @@
 <script lang="ts" setup>
 import { onBeforeMount, onUnmounted } from 'vue';
 import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
-import { useContentCreateStore } from '@lyvely/web';
+import { t, useContentCreateStore } from '@lyvely/web';
 import { JournalModel } from '@lyvely/journals-interface';
 import { useJournalPlanStore } from '@/stores';
 import JournalCalendarPlanSection from '@/components/calendar-plan/JournalCalendarPlanSection.vue';
 import JournalsNavigation from '@/components/menus/JournalsNavigation.vue';
-import { LyContentRoot, LyFloatingAddButton } from '@lyvely/ui';
+import {
+  LyAlert,
+  LyButton,
+  LyContentPanel,
+  LyContentRoot,
+  LyFloatingAddButton,
+  LyIcon,
+} from '@lyvely/ui';
 
 const journalStore = useJournalPlanStore();
 const { intervals, filter } = journalStore;
+
+const { isEmpty } = journalStore;
 
 onBeforeMount(() => journalStore.loadModels());
 //onMounted(() => accessibilityFocus('#activity-navigation > button.active'));
@@ -23,12 +32,22 @@ onUnmounted(unwatch);
   <ly-content-root>
     <journals-navigation class="md:hidden" />
     <calendar-plan-filter-navigation :filter="filter" />
-    <calendar-planner>
+    <calendar-planner v-if="!isEmpty()">
       <journal-calendar-plan-section
         v-for="interval in intervals"
         :key="interval"
         :interval="interval" />
     </calendar-planner>
+    <ly-content-panel v-else-if="loaded">
+      <ly-alert class="justify-center cursor-pointer bg-main" @click="createEntry">
+        <div class="flex flex-col justify-center items-center">
+          <ly-icon name="target" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
+          <ly-button class="font-semibold">
+            {{ t('journals.calendar-plan.empty') }}
+          </ly-button>
+        </div>
+      </ly-alert>
+    </ly-content-panel>
 
     <ly-floating-add-button @click="createEntry" />
   </ly-content-root>

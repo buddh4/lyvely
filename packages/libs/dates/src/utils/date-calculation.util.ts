@@ -5,29 +5,28 @@ export function subtractByInterval(
   date: CalendarDate,
   interval: CalendarTimeInterval,
   count: number,
-  utc = true,
 ): Date {
   switch (interval) {
     case CalendarTimeInterval.Unscheduled:
-      return dateTime(date, utc).toDate();
+      return dateTime(date).toDate();
     case CalendarTimeInterval.Yearly:
-      return subtractYear(date, count, utc);
+      return subtractYear(date, count);
     case CalendarTimeInterval.Quarterly:
-      return subtractQuarter(date, count, utc);
+      return subtractQuarter(date, count);
     case CalendarTimeInterval.Monthly:
-      return subtractMonth(date, count, utc);
+      return subtractMonth(date, count);
     case CalendarTimeInterval.Weekly:
-      return subtractWeek(date, count, utc);
+      return subtractWeek(date, count);
     case CalendarTimeInterval.Daily:
-      return subtractDays(date, count, utc);
+      return subtractDays(date, count);
     case CalendarTimeInterval.Hourly:
-      return subtractHours(date, count, utc);
+      return subtractHours(date, count);
     case CalendarTimeInterval.Minutely:
-      return subtractMinutes(date, count, utc);
+      return subtractMinutes(date, count);
     case CalendarTimeInterval.Secondly:
-      return subtractSeconds(date, count, utc);
+      return subtractSeconds(date, count);
     case CalendarTimeInterval.Millisecondly:
-      return subtractMilliSeconds(date, count, utc);
+      return subtractMilliSeconds(date, count);
   }
 }
 
@@ -35,102 +34,101 @@ export function addByInterval(
   date: CalendarDate,
   interval: CalendarTimeInterval,
   count: number,
-  utc = true,
 ): Date {
   switch (interval) {
     case CalendarTimeInterval.Unscheduled:
-      return dateTime(date, utc).toDate();
+      return dateTime(date).toDate();
     case CalendarTimeInterval.Yearly:
-      return addYear(date, count, utc);
+      return addYear(date, count);
     case CalendarTimeInterval.Quarterly:
-      return addQuarter(date, count, utc);
+      return addQuarter(date, count);
     case CalendarTimeInterval.Monthly:
-      return addMonth(date, count, utc);
+      return addMonth(date, count);
     case CalendarTimeInterval.Weekly:
-      return addWeek(date, count, utc);
+      return addWeek(date, count);
     case CalendarTimeInterval.Daily:
-      return addDays(date, count, utc);
+      return addDays(date, count);
     case CalendarTimeInterval.Hourly:
-      return addHours(date, count, utc);
+      return addHours(date, count);
     case CalendarTimeInterval.Minutely:
-      return addMinutes(date, count, utc);
+      return addMinutes(date, count);
     case CalendarTimeInterval.Secondly:
-      return addSeconds(date, count, utc);
+      return addSeconds(date, count);
     case CalendarTimeInterval.Millisecondly:
-      return addMilliSeconds(date, count, utc);
+      return addMilliSeconds(date, count);
   }
 }
 
-export function subtractMilliSeconds(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'milliseconds').toDate();
+export function subtractMilliSeconds(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'milliseconds').toDate();
 }
 
-export function addMilliSeconds(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'milliseconds').toDate();
+export function addMilliSeconds(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'milliseconds').toDate();
 }
 
-export function subtractSeconds(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'seconds').toDate();
+export function subtractSeconds(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'seconds').toDate();
 }
 
-export function addSeconds(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'seconds').toDate();
+export function addSeconds(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'seconds').toDate();
 }
 
-export function subtractMinutes(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'minutes').toDate();
+export function subtractMinutes(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'minutes').toDate();
 }
 
-export function addMinutes(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'minutes').toDate();
+export function addMinutes(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'minutes').toDate();
 }
 
-export function subtractHours(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'hours').toDate();
+export function subtractHours(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'hours').toDate();
 }
 
-export function addHours(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'hours').toDate();
+export function addHours(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'hours').toDate();
 }
 
-export function subtractDays(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'days').toDate();
+export function subtractDays(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'days').toDate();
 }
 
-export function addDays(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'days').toDate();
+export function addDays(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'days').toDate();
 }
 
-export function addWeek(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'week').toDate();
+export function addWeek(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'week').toDate();
 }
 
-export function subtractWeek(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'week').toDate();
+export function subtractWeek(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'week').toDate();
 }
 
-export function addMonth(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'month').toDate();
+export function addMonth(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'month').toDate();
 }
 
-export function subtractMonth(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'month').toDate();
+export function subtractMonth(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'month').toDate();
 }
 
-export function addQuarter(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'quarter').toDate();
+export function addQuarter(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'quarter').toDate();
 }
 
-export function subtractQuarter(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'quarter').toDate();
+export function subtractQuarter(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'quarter').toDate();
 }
 
-export function addYear(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).add(count, 'year').toDate();
+export function addYear(date: CalendarDate, count: number): Date {
+  return dateTime(date).add(count, 'year').toDate();
 }
 
-export function subtractYear(date: CalendarDate, count: number, utc = true): Date {
-  return dateTime(date, utc).subtract(count, 'year').toDate();
+export function subtractYear(date: CalendarDate, count: number): Date {
+  return dateTime(date).subtract(count, 'year').toDate();
 }
 
 export function isSameDay(date1: CalendarDate, date2: CalendarDate) {

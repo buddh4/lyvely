@@ -1,12 +1,14 @@
 import {
+  CalendarPreferences,
   CreateProfileModel,
   IProfilesService,
   ProfileWithRelationsModel,
+  SettingsUpdateResponse,
   UpdateProfileModel,
 } from '@lyvely/core-interface';
 import { useSingleton } from '@lyvely/common';
 import profileRepository from '@/profiles/repositories/profile.repository';
-import { localStorageManager } from '@/core';
+import { localStorageManager, unwrapAndTransformResponse } from '@/core';
 
 class ProfilesService implements IProfilesService {
   async getProfileByHandle(handle: string): Promise<ProfileWithRelationsModel> {
@@ -44,6 +46,13 @@ class ProfilesService implements IProfilesService {
   async update(id: string, model: UpdateProfileModel): Promise<ProfileWithRelationsModel> {
     const { data: relation } = await profileRepository.updateProfile(model);
     return new ProfileWithRelationsModel(relation);
+  }
+
+  async setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse> {
+    return unwrapAndTransformResponse(
+      profileRepository.setCalendarPreferences(dto),
+      SettingsUpdateResponse,
+    );
   }
 }
 

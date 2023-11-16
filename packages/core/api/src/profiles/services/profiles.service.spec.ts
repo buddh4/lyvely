@@ -298,6 +298,17 @@ describe('ProfileService', () => {
         expectOwnerRelationship(relations);
       });
 
+      it('adopt owner calendar preferences', async () => {
+        const user = await testData.createUser('User1');
+        user.settings = { calendar: { weekStart: 2, yearStart: 3 } };
+        const { profile } = await profileService.createUserProfile(user, {
+          name: 'SomeProfile',
+        });
+        expect(profile.settings.calendar).toBeDefined();
+        expect(profile.settings.calendar.weekStart).toEqual(2);
+        expect(profile.settings.calendar.yearStart).toEqual(3);
+      });
+
       it('user profile name is unique per user', async () => {
         const user = await testData.createUser('User1');
         await profileService.createUserProfile(user, { name: 'Some Profile' });

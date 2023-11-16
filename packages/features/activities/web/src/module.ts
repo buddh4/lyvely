@@ -2,11 +2,10 @@ import {
   IModule,
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_MOBILE_FOOTER,
-  registerLayouts,
-  registerMenuEntries,
   registerRoutes,
   useProfileFeatureStore,
 } from '@lyvely/web';
+import { registerLayouts, registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACTIVITIES, ACTIVITIES_MODULE_ID, LAYOUT_ACTIVITIES } from '@/activities.constants';
 import { activitiesRoutes } from '@/routes';
 import { ActivityHabitsFeature } from '@lyvely/habits-web';

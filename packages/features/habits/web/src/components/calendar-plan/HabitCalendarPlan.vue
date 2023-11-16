@@ -35,7 +35,7 @@ onUnmounted(() => {
       :interval="interval" />
   </calendar-planner>
   <ly-content-panel v-else-if="loaded">
-    <ly-alert class="justify-center cursor-pointer" @click="createEntry">
+    <ly-alert class="justify-center cursor-pointer bg-main" @click="createEntry">
       <div class="flex flex-col justify-center items-center">
         <ly-icon name="activity" class="w-20 cursor-pointer text-gray-300 dark:text-gray-500" />
         <ly-button class="font-semibold">

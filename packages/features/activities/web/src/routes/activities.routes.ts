@@ -1,6 +1,6 @@
 import { profilePath, t, useProfileMenu, PATH_404 } from '@lyvely/web';
 import { useActivityStore } from '@/stores';
-import { RouteRecordRaw } from 'vue-router';
+import { RouteLocationNamedRaw, RouteRecordRaw } from 'vue-router';
 import { LAYOUT_ACTIVITIES, MENU_ACTIVITIES } from '@/activities.constants';
 
 export const activitiesRoutes = [
@@ -31,7 +31,7 @@ export const activitiesRoutes = [
               to.name = activityStore.activeView;
               return to;
             } else {
-              to.name = activitiesMenu.enabledMenuEntries.value[0].to.name;
+              to.name = (<RouteLocationNamedRaw>activitiesMenu.enabledMenuEntries.value[0].to).name;
               return to;
             }
           },

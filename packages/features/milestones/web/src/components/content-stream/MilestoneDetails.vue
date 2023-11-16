@@ -25,18 +25,29 @@ export interface IProps {
 
 const props = defineProps<IProps>();
 
+const profileStore = useProfileStore();
 const milestoneStore = ref(new MilestoneRelationsStore());
 const calendarPlanStore = useCalendarPlanStore();
-const { locale } = storeToRefs(useProfileStore());
+const { locale } = storeToRefs(profileStore);
 const router = useRouter();
 
 const progress = computed(() => {
-  const tid = toTimingId(calendarPlanStore.date, props.model.interval, locale.value);
+  const tid = toTimingId(
+    calendarPlanStore.date,
+    props.model.interval,
+    locale.value,
+    profileStore.getSetting('calendar'),
+  );
   return milestoneStore.value.calculateProgress(props.model, tid);
 });
 
 const relations = computed(() => {
-  const tid = toTimingId(calendarPlanStore.date, props.model.interval, locale.value);
+  const tid = toTimingId(
+    calendarPlanStore.date,
+    props.model.interval,
+    locale.value,
+    profileStore.getSetting('calendar'),
+  );
   return milestoneStore.value.getRelations(props.model, tid);
 });
 

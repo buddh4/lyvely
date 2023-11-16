@@ -1,20 +1,18 @@
 import { CalendarInterval } from '../models';
-import { dateTime, CalendarDateTime, WeekStrategy } from '../interfaces';
+import { dateTime, CalendarDateTime, ICalendarPreferences, IDateTime } from '../interfaces';
 
 export function toTimingId(
   cd: CalendarDateTime,
   level = CalendarInterval.Daily,
   locale = 'en',
-  weekStrategy: WeekStrategy = 'locale',
+  preferences?: ICalendarPreferences,
 ) {
-  // TODO: dayJs locale support
-  locale = locale.split('-')[0];
   if (level <= CalendarInterval.Unscheduled) return 'U';
-  if (level === CalendarInterval.Weekly) return toWeekTimingId(cd, locale, weekStrategy);
+  if (level === CalendarInterval.Weekly) return toWeekTimingId(cd, locale, preferences);
 
-  const dt = dateTime(cd, false, locale);
+  const dt = dateTime(cd, locale);
   const d = dt.toDate();
-  let result = `Y:${d.getUTCFullYear()}`;
+  let result = `Y:${d.getFullYear()}`;
 
   if (level <= CalendarInterval.Yearly) return result;
 
@@ -22,7 +20,7 @@ export function toTimingId(
 
   if (level <= CalendarInterval.Quarterly) return result;
 
-  result += `;M:${pad(d.getUTCMonth() + 1)}`;
+  result += `;M:${pad(d.getMonth() + 1)}`;
 
   if (level <= CalendarInterval.Monthly) return result;
 
@@ -32,48 +30,56 @@ export function toTimingId(
 export function toWeekTimingId(
   cd: CalendarDateTime,
   locale: string,
-  weekStrategy: WeekStrategy = 'locale',
-) {
-  const date = dateTime(cd, false, locale);
-  let weekYear, weekOfYear, firstDayOfWeek;
+  preferences?: ICalendarPreferences,
+): string {
+  const date = dateTime(cd, locale, preferences);
+  let weekYear: number,
+    weekOfYear: number,
+    month: number,
+    quarter: number,
+    firstDayOfWeek: IDateTime;
 
-  if (weekStrategy === 'locale') {
-    weekYear = date.weekYear();
-    weekOfYear = date.week();
-    firstDayOfWeek = date.weekday(0);
-  } else if (weekStrategy === 'iso') {
+  // Use ISO week date calculations if yearStart === 0
+  if (preferences?.yearStart === 0) {
     weekYear = date.isoWeekYear();
     weekOfYear = date.isoWeek();
-    firstDayOfWeek = date.isoWeekday(1); // Monday
+    // Monday
+    firstDayOfWeek = date.isoWeekday(1);
+  } else {
+    weekYear = date.weekYear();
+    weekOfYear = date.week();
+    // Locale aware first day of week
+    firstDayOfWeek = date.weekday(0);
   }
 
-  let month = firstDayOfWeek!.month() + 1;
-  let quarter = firstDayOfWeek!.quarter();
-
-  if (date.year() < weekYear! || firstDayOfWeek!.year() < weekYear!) {
+  // Consider edge cases
+  if (weekOfYear === 1) {
     month = 1;
     quarter = 1;
-  } else if (date.year() > weekYear!) {
+  } else if (weekYear !== date.year()) {
     month = 12;
     quarter = 4;
+  } else {
+    month = firstDayOfWeek.month() + 1;
+    quarter = firstDayOfWeek.quarter();
   }
 
-  return `Y:${weekYear};Q:${quarter};M:${pad(month)};W:${pad(weekOfYear!)}`;
+  return `Y:${weekYear};Q:${quarter};M:${pad(month)};W:${pad(weekOfYear)}`;
 }
 
-function pad(num: number): string {
-  const s = '0' + num;
-  return s.substring(s.length - 2);
+// Helper function to ensure numbers are zero-padded to two digits
+function pad(number: number): string {
+  return number.toString().padStart(2, '0');
 }
 
 export function getTimingIds(
   d: CalendarDateTime,
   locale: string,
   level = CalendarInterval.Unscheduled,
-  weekStrategy: WeekStrategy = 'locale',
+  preferences?: ICalendarPreferences,
 ) {
   const dayId = toTimingId(d, CalendarInterval.Daily, locale);
-  const weekId = toWeekTimingId(d, locale, weekStrategy);
+  const weekId = toWeekTimingId(d, locale, preferences);
   const monthId = dayId.substring(0, dayId.lastIndexOf(';'));
   const quarterId = monthId.substring(0, monthId.lastIndexOf(';'));
   const yearId = quarterId.substring(0, quarterId.lastIndexOf(';'));

@@ -159,8 +159,7 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
   z-index: 99;
 }
 #app-drawer {
-  @apply bg-slate-900;
-  z-index: 100;
+  @apply bg-slate-900 z-40;
 }
 
 @media (max-width: 767px) {

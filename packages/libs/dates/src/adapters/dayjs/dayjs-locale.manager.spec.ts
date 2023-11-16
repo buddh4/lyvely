@@ -1,7 +1,7 @@
-import { useDayJsLocaleLoader } from './dayjs-locale.manager';
+import { useDayJsLocaleManager } from './dayjs-locale.manager';
 
 describe('DayJsLocaleManager', () => {
-  const localeManager = useDayJsLocaleLoader();
+  const localeManager = useDayJsLocaleManager();
 
   afterEach(async () => localeManager.reset());
 

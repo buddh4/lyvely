@@ -5,7 +5,7 @@ import { ProfileWithRelationsModel, TagModel } from '@lyvely/core-interface';
 import { computed, ref } from 'vue';
 import { useProfileService } from '@/profiles/services/profiles.service';
 import { usePageStore } from '@/ui';
-import { EntityNotFoundException } from '@lyvely/common';
+import { EntityNotFoundException, findByPath } from '@lyvely/common';
 import { useLiveStore } from '@/live';
 import { useProfileRelationInfosService } from '../services';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
@@ -141,6 +141,12 @@ export const useProfileStore = defineStore('profile', () => {
     usePageStore().setTitle(title);
   }
 
+  function getSetting<TResult = any>(key: string, defaultValue: TResult): TResult;
+  function getSetting<TResult = any>(key: string, defaultValue?: undefined): TResult | undefined;
+  function getSetting<TResult = any>(key: string, defaultValue?: TResult): TResult | undefined {
+    return findByPath(profile.value?.settings || {}, key, false, false) ?? defaultValue;
+  }
+
   /**
    * Builds a route to the given route name and handle.
    * If no route name is provided the resulting route navigates to the home of the profile.
@@ -166,6 +172,7 @@ export const useProfileStore = defineStore('profile', () => {
     profile,
     locale,
     loadProfile,
+    getSetting,
     loadProfileById,
     updateScore,
     getTags,

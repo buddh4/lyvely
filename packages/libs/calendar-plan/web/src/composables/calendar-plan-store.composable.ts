@@ -1,4 +1,9 @@
-import { CalendarInterval, toTimingId, getCalendarIntervalArray } from '@lyvely/dates';
+import {
+  CalendarInterval,
+  toTimingId,
+  getCalendarIntervalArray,
+  ICalendarPreferences,
+} from '@lyvely/dates';
 import { SortResult } from '@lyvely/common';
 import { ContentFilter } from '@lyvely/core-interface';
 import { LoadedTimingIdStore } from '@/models';
@@ -45,7 +50,8 @@ export function useCalendarPlan<
   TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
   TService extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
 >(options: ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TService>) {
-  const { profile, locale } = storeToRefs(useProfileStore());
+  const profileStore = useProfileStore();
+  const { profile, locale } = storeToRefs(profileStore);
   const calendarPlanStore = useCalendarPlanStore();
 
   options.contentTypes ??= [];
@@ -132,7 +138,7 @@ export function useCalendarPlan<
   }
 
   function getModels(interval: CalendarInterval): TModel[] {
-    const tid = toTimingId(date.value, interval, locale.value);
+    const tid = toTimingId(date.value, interval, locale.value, profileStore.getSetting('calendar'));
     return cache.value.getModelsByIntervalFilter(interval, filter.value as TFilter, tid);
   }
 

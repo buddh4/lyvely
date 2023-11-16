@@ -86,4 +86,59 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style>
+[type='radio'].primary {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-primary);
+}
+
+[type='radio'].primary:checked {
+  background-color: var(--color-primary);
+}
+
+[type='radio'].secondary {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-secondary);
+}
+
+[type='radio'].secondary:checked {
+  background-color: var(--color-secondary);
+}
+
+[type='radio'].success {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-success);
+}
+
+[type='radio'].success:checked {
+  background-color: var(--color-success);
+  opacity: 1;
+}
+
+[type='radio'].info {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-info);
+}
+
+[type='radio'].info:checked {
+  background-color: var(--color-info);
+}
+
+[type='radio'].warning {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-warning);
+}
+
+[type='radio'].warning:checked {
+  background-color: var(--color-warning);
+}
+
+[type='radio'].danger {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-danger);
+}
+
+[type='radio'].danger:checked {
+  background-color: var(--color-danger);
+}
+</style>

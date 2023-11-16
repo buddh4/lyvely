@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OptionalUser, User } from '@/users';
 import {
+  CalendarPreferences,
   ProfileMembershipRole,
   ProfileType,
   ProfileUsage,
@@ -29,6 +30,13 @@ import {
 } from '../schemas';
 import { ProfileMembershipService } from './profile-membership.service';
 import { ProfileRelationsService } from './profile-relations.service';
+import { ISettingUpdate } from '@/settings';
+import { isDefined } from 'class-validator';
+import {
+  USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
+  USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
+} from '@/user-accounts/user-accounts.constants';
+import { ProfileSettingsService } from './profile-settings.service';
 
 @Injectable()
 export class ProfilesService {
@@ -37,6 +45,7 @@ export class ProfilesService {
     private membershipDao: MembershipsDao,
     private membershipService: ProfileMembershipService,
     private relationsService: ProfileRelationsService,
+    private profileSettingsService: ProfileSettingsService,
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
@@ -174,6 +183,10 @@ export class ProfilesService {
 
       let profile = ProfilesFactory.createProfile(owner, options);
       profile.handle = await this.findUniqueHandle(profile);
+
+      if (owner.settings?.calendar) {
+        profile.settings.calendar = owner.settings.calendar;
+      }
 
       profile = await this.profileDao.save(profile, transaction);
 
@@ -560,5 +573,30 @@ export class ProfilesService {
     const newScore = Math.max(profile.score + inc, 0);
     await this.profileDao.updateOneSetById(profile, { score: newScore });
     return newScore;
+  }
+
+  /**
+   * Sets calendar preference settings of this profile.
+   * @param profile
+   * @param preferences
+   */
+  async setCalendarPreferences(
+    profile: Profile,
+    preferences: CalendarPreferences,
+  ): Promise<Record<string, any>> {
+    const update: ISettingUpdate = [];
+
+    const { weekStart, yearStart } = preferences;
+
+    if (isDefined(weekStart)) {
+      update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART, value: weekStart });
+    }
+
+    if (isDefined(yearStart)) {
+      update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_YEARSTART, value: yearStart });
+    }
+
+    await this.profileSettingsService.updateSettings(profile, update);
+    return profile.settings;
   }
 }

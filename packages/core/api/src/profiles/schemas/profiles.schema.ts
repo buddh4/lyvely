@@ -81,7 +81,10 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
   meta: ProfileMetadata;
 
   // TODO: (integrity) validate locale!
-  /** The default locale used by this profile. **/
+  /**
+   * This locale is used as fallback in case not calendar preferences were set
+   * and usually contains the locale of the initial author.
+   **/
   @Prop({ default: getDefaultLocale() })
   locale: string;
 
@@ -171,6 +174,8 @@ export class Profile extends BaseEntity<Profile> implements PropertiesOf<Profile
     if (!this.guid) {
       this.guid = createHash('sha256').update(createObjectId().toString()).digest('hex');
     }
+
+    this.settings ||= {};
 
     this.locale ??= owner.locale || getDefaultLocale();
   }

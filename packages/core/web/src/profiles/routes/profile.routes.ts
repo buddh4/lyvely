@@ -40,7 +40,7 @@ export default [
     children: [
       {
         name: 'ProfileMembershipSettings',
-        path: profilePath('/settings/membership'),
+        path: profilePath('membership'),
         meta: {
           title: translation('profiles.settings.membership.title'),
         },
@@ -59,7 +59,7 @@ export default [
       },
       {
         name: 'GeneralProfileSettings',
-        path: profilePath('/settings/general'),
+        path: profilePath('general'),
         meta: {
           title: translation('profiles.settings.general.title'),
           i18n: {
@@ -67,6 +67,17 @@ export default [
           },
         },
         component: () => import('../views/GeneralProfileSettings.vue'),
+      },
+      {
+        name: 'ProfilePreferences',
+        path: profilePath('preferences'),
+        meta: {
+          title: translation('profiles.settings.preferences.title'),
+          i18n: {
+            load: [{ module: PROFILES_MODULE_ID, section: 'i18n' }],
+          },
+        },
+        component: () => import('../views/ProfilePreferences.vue'),
       },
     ],
   },

@@ -87,7 +87,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
   }
 
   private buildTimingIntervalFilter(profile: Profile, filter: CalendarPlanFilter) {
-    const timingIds = getTimingIds(filter.date, profile.locale);
+    const timingIds = getTimingIds(filter.date, profile.locale, profile.settings?.calendar);
     const relevantTids: string[] = [];
 
     for (let i = CalendarInterval.Daily; i >= 0; i--) {
@@ -108,7 +108,7 @@ export abstract class DataPointStrategyDao<T extends DataPoint = DataPoint> exte
    * @private
    */
   private buildTimingRegexIntervalFilter(profile: Profile, filter: CalendarPlanFilter) {
-    const timingIds = getTimingIds(filter.date, profile.locale);
+    const timingIds = getTimingIds(filter.date, profile.locale, profile.settings?.calendar);
     const dailyFilter = {
       interval: CalendarInterval.Daily,
       tid: timingIds[CalendarInterval.Daily],

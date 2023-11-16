@@ -225,7 +225,6 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
           emit('change', evt);
         });
       } else {
-        emit('change', evt);
       }
     },
     onFocusOut: () => {

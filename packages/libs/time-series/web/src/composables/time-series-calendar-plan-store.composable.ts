@@ -58,7 +58,8 @@ export function useTimeSeriesCalendarPlan<
 >(
   options: ITimeSeriesCalendarPlanOptions<TModel, TFilter, TDataPoint, TResponse, TStore, TService>,
 ) {
-  const { locale } = storeToRefs(useProfileStore());
+  const profileStore = useProfileStore();
+  const { locale } = storeToRefs(profileStore);
   const calendarPlanStore = useCalendarPlanStore();
   const calendarPlan = useCalendarPlan<TModel, TFilter, TResponse, TStore, TService>(options);
   const dialog = useGlobalDialogStore();
@@ -70,6 +71,7 @@ export function useTimeSeriesCalendarPlan<
       calendarPlanStore.date,
       model.timeSeriesConfig.interval,
       locale.value,
+      profileStore.getSetting('calendar'),
     );
     return cache.value.getDataPoint(model, timingId, true);
   }

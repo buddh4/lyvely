@@ -13,9 +13,10 @@ import {
   setDateTimeFactory,
   setLocaleManager,
   CalendarUnitType,
+  ICalendarPreferences,
 } from '../../interfaces';
 import { isDefined } from 'class-validator';
-import { useDayJsLocaleLoader } from './dayjs-locale.manager';
+import { useDayJsLocaleManager } from './dayjs-locale.manager';
 
 dayjs.extend(weekOfYear);
 dayjs.extend(weekYear);
@@ -31,18 +32,22 @@ export class DayJsDateTime implements IDateTime {
 
   isDateTime = true;
 
-  constructor(date: CalendarDate | dayjs.Dayjs, locale?: string, timezone?: string) {
+  constructor(
+    date: CalendarDate | dayjs.Dayjs,
+    locale?: string,
+    preferences?: ICalendarPreferences,
+  ) {
     if (dayjs.isDayjs(date)) {
       this.instance = date;
     } else {
       this.instance = dayjs(date);
 
-      if (locale) {
-        this.instance = this.instance.locale(locale);
+      if (preferences) {
+        locale = useDayJsLocaleManager().extendLocale(locale, preferences);
       }
 
-      if (timezone) {
-        this.instance = this.instance.tz(timezone);
+      if (locale) {
+        this.instance = this.instance.locale(locale);
       }
     }
   }
@@ -158,16 +163,14 @@ export class DayJsDateTime implements IDateTime {
 
 export function dateTimeFactory(
   date?: CalendarDate,
-  utc = false,
   locale?: string,
-  timezone?: string,
+  preferences?: ICalendarPreferences,
 ): IDateTime {
   date = date || new Date();
-  const dateTime = new DayJsDateTime(date, locale, timezone);
-  return utc ? dateTime.utc() : dateTime;
+  return new DayJsDateTime(date, locale, preferences);
 }
 
 export function useDayJsDateTimeAdapter() {
   setDateTimeFactory(dateTimeFactory);
-  setLocaleManager(useDayJsLocaleLoader());
+  setLocaleManager(useDayJsLocaleManager());
 }

@@ -13,12 +13,19 @@ import {
   ContentEditModalEmits,
   ICreateContentInitOptions,
   useContentEditModal,
-  isTouchScreen,
   t,
 } from '@lyvely/web';
+import {
+  isTouchScreen,
+  LyModal,
+  LyFormModel,
+  LyTextField,
+  LySelect,
+  LyButton,
+  LyTextarea,
+} from '@lyvely/ui';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
 import { useJournalsService } from '@/services';
-import { LyModal, LyFormModel, LyTextField, LySelect, LyButton, LyTextarea } from '@lyvely/ui';
 
 export interface IProps {
   modelValue: boolean;

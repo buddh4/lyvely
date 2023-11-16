@@ -4,22 +4,24 @@ import {
   isToday as isTodayUtil,
   everyFullMinute,
   CalendarInterval,
+  ICalendarPreferences,
 } from '@lyvely/dates';
 import { CalendarPlan } from '@lyvely/calendar-plan-interface';
 import { ref, computed } from 'vue';
 import { useProfileStore } from '@lyvely/web';
 
 export const useCalendarPlanStore = defineStore('timing', () => {
+  const profileStore = useProfileStore();
   const now = ref(new Date());
   const date = ref(now.value);
 
   const dragActive = ref(false);
-  const { locale } = storeToRefs(useProfileStore());
+  const { locale } = storeToRefs(profileStore);
 
   everyFullMinute(() => (now.value = new Date()));
 
   function getTimingId(interval: CalendarInterval) {
-    return toTimingId(date.value, interval, locale.value);
+    return toTimingId(date.value, interval, locale.value, profileStore.getSetting('calendar'));
   }
 
   function switchToToday() {
@@ -27,7 +29,10 @@ export const useCalendarPlanStore = defineStore('timing', () => {
   }
 
   function isPresentInterval(interval: CalendarInterval) {
-    return toTimingId(new Date(), interval) === toTimingId(date.value, interval, locale.value);
+    return (
+      toTimingId(new Date(), interval) ===
+      toTimingId(date.value, interval, locale.value, profileStore.getSetting('calendar'))
+    );
   }
 
   function _setCurrentDate(d: Date) {

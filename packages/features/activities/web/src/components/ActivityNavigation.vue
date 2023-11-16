@@ -2,22 +2,24 @@
 import { LyTabMenu, LyIcon, LyTabMenuEntry } from '@lyvely/ui';
 import { useProfileMenu, t } from '@lyvely/web';
 import { MENU_ACTIVITIES } from '@/activities.constants';
+import { toValue } from 'vue';
 
-const { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
+let { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
 </script>
 
 <template>
   <ly-tab-menu>
     <ly-tab-menu-entry
-      v-for="menuEntry in enabledMenuEntries"
-      :key="menuEntry.id"
+      v-for="entry in enabledMenuEntries"
+      :key="entry.id"
       aria-controls="calendar-plan"
-      :to="menuEntry.to">
+      :to="entry.to!">
       <template #default="{ active }">
         <div class="flex gap-1 items-center justify-center">
-          <ly-icon :name="menuEntry.icon" :class="[{ hidden: active }, 'md:hidden h-3']" />
+          <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" />
+          <ly-icon v-else-if="typeof entry.icon === 'object'" v-bind="entry.icon" />
           <span :class="!active ? 'hidden md:inline' : ''">
-            {{ t(menuEntry.text) }}
+            {{ t(toValue(entry.text)) }}
           </span>
         </div>
       </template>

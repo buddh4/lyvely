@@ -3,11 +3,11 @@ import {
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_MOBILE_FOOTER,
   registerContentType,
-  registerMenuEntries,
   registerRoutes,
   translation,
   useProfileFeatureStore,
 } from '@lyvely/web';
+import { registerMenuEntries } from '@lyvely/ui';
 import {
   CreateHabitModel,
   HabitModel,

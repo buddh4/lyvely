@@ -24,6 +24,9 @@
       "general": {
         "label": "General"
       },
+      "preferences": {
+        "label": "Preferences"
+      },
       "membership": {
         "title": "My membership",
         "label": "Membership",

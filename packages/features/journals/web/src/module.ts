@@ -2,10 +2,10 @@ import {
   IModule,
   translation,
   registerContentType,
-  registerMenuEntries,
   MENU_PROFILE_DRAWER,
   MENU_PROFILE_MOBILE_FOOTER,
 } from '@lyvely/web';
+import { registerMenuEntries } from '@lyvely/ui';
 import {
   JournalModel,
   CreateJournalModel,

@@ -10,7 +10,7 @@ import { MailService } from '@/mails';
 import { getEnabledLocales, getTimezones } from '@lyvely/dates';
 import { ISettingUpdate } from '@/settings';
 import {
-  USER_SETTING_CALENDAR_PREFERENCE_WEEKSTRATEGY,
+  USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
   USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
 } from '@/user-accounts/user-accounts.constants';
 import { isDefined } from 'class-validator';
@@ -184,14 +184,14 @@ export class AccountService {
   ): Promise<Record<string, any>> {
     const update: ISettingUpdate = [];
 
-    const { weekStart, weekStrategy } = preferences;
+    const { weekStart, yearStart } = preferences;
 
     if (isDefined(weekStart)) {
       update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART, value: weekStart });
     }
 
-    if (isDefined(weekStrategy)) {
-      update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_WEEKSTRATEGY, value: weekStrategy });
+    if (isDefined(yearStart)) {
+      update.push({ key: USER_SETTING_CALENDAR_PREFERENCE_YEARSTART, value: yearStart });
     }
 
     await this.userSettingsService.updateSettings(user, update);

@@ -1,4 +1,5 @@
 import { Type } from './util.types';
+import { isDefined } from 'class-validator';
 
 const BLACKLISTED_PATH = [
   '__proto__',
@@ -26,7 +27,7 @@ export function findByPath<T>(
 
   path = parent ? path.replace(/\.[^/.]+$/, '') : path;
 
-  let result = model as T | undefined;
+  let result = model as any | undefined;
   const subPaths = path.split('.');
   subPaths.forEach((sub, index) => {
     if (isBlacklistedProperty(sub)) throw new Error('Tried to access blacklisted property');
@@ -34,10 +35,10 @@ export function findByPath<T>(
     if ((sub && sub.length && sub.charAt(0) === '$') || /^[0-9]+$/.test(sub)) {
       // we do not support mongodb special cases e.g. array etc.
       result = undefined;
-    } else if (result && !(<any>result)[sub] && create && index !== subPaths.length) {
-      (<any>result)[sub] = {};
+    } else if (result && !result[sub] && create && index !== subPaths.length) {
+      result[sub] = {};
     }
-    result = result && (<any>result)[sub] ? (<any>result)[sub] : undefined;
+    result = isDefined(result?.[sub]) ? result[sub] : undefined;
   });
   return result;
 }

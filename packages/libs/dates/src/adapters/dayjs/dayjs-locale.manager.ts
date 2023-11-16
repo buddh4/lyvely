@@ -209,6 +209,13 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
     }
   }
 
+  /**
+   * This function is responsible for translating platform locale names to dayjs locale names.
+   * Some locale names used in the platform may differ from the internal name used by dayjs.
+   * E.g. the platform uses en-us while dayjs only knows en.
+   * @param locale
+   * @private
+   */
   private resolveLocaleString(locale: string) {
     locale = locale.toLowerCase();
     const localeCode = supportedLocales.includes(locale) ? locale : locale.split('-')[0];
@@ -216,10 +223,65 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
     return localeCode;
   }
 
-  isLoaded(locale: string): boolean {
-    const resolveLocale = this.resolveLocaleString(locale);
+  /**
+   * Checks if a given locale is already loaded.
+   * @param locale
+   */
+  isLoaded(locale: string, strict = false): boolean {
+    const resolveLocale = strict ? locale : this.resolveLocaleString(locale);
     if (!resolveLocale) return false;
     return this.loadedLocales.has(resolveLocale);
+  }
+
+  /**
+   * This function can be used to create custom locales based on a baseLocale and calendar-preferences.
+   * This function will create and register a custom locales.
+   * @param baseLocale
+   * @param preferences
+   */
+  extendLocale(baseLocale: string | undefined | null, preferences: ICalendarPreferences): string {
+    baseLocale ||= 'en';
+
+    if (!this.isLoaded(baseLocale)) throw new Error('Can not extend locale which is not loaded.');
+
+    const localeName = this.getPreferenceLocale(baseLocale, preferences);
+    if (this.isLoaded(localeName, true)) return localeName;
+
+    const { weekStart, yearStart } = preferences;
+
+    const customLocale = { ...dayjs.Ls.en };
+
+    customLocale.name = localeName;
+
+    if (typeof weekStart !== 'undefined') {
+      customLocale.weekStart = weekStart;
+    }
+
+    // yearStart = 0 === iso for us, but not for dayjs
+    if (typeof yearStart !== 'undefined' && yearStart !== 0) {
+      (<any>customLocale).yearStart = yearStart;
+    }
+
+    dayjs.locale(customLocale, undefined, true);
+    this.loadedLocales.set(localeName, customLocale);
+
+    return localeName;
+  }
+
+  private getPreferenceLocale(baseLocale: string, preferences: ICalendarPreferences): string {
+    const { weekStart, yearStart } = preferences;
+
+    let result = this.resolveLocaleString(baseLocale) || 'en';
+
+    if (typeof weekStart !== 'undefined') {
+      result += `-ws-${weekStart}`;
+    }
+
+    if (typeof yearStart !== 'undefined' && yearStart !== 0) {
+      result += `-ys-${yearStart}`;
+    }
+
+    return result;
   }
 
   /**
@@ -265,13 +327,13 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
    * Note, the locale should already be loaded for this to work properly.
    * @param locale The targeted locale.
    */
-  getDefaultPreferences(locale: string): ICalendarPreferences {
+  getDefaultPreferences(locale: string): Required<ICalendarPreferences> {
     const resolvedLocale = this.resolveLocaleString(locale);
 
     if (!resolvedLocale) {
       return {
         weekStart: 0,
-        weekStrategy: 'locale',
+        yearStart: 4,
       };
     }
 
@@ -279,11 +341,11 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
       console.warn('Tried to get default calendar-preferences of non loaded locale');
     }
 
-    const d = dayjs();
-    const localeData = d.locale(resolvedLocale).localeData();
+    // https://github.com/iamkun/dayjs/issues/2506
+    const localeObj = dayjs.Ls[resolvedLocale];
     return {
-      weekStart: localeData.firstDayOfWeek(),
-      weekStrategy: 'locale',
+      weekStart: localeObj?.weekStart || 1,
+      yearStart: (<any>localeObj)?.yearStart || 1,
     };
   }
 
@@ -295,5 +357,5 @@ class DayjsLocaleManager implements ILocaleManager<IDayJsLocale> {
   }
 }
 
-const loaderInstance = new DayjsLocaleManager();
-export const useDayJsLocaleLoader = () => loaderInstance;
+const instance = new DayjsLocaleManager();
+export const useDayJsLocaleManager = () => instance;

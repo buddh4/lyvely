@@ -1,14 +1,18 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { Task, TaskScore } from '../schemas';
-import { Profile } from '@lyvely/core';
+import {
+  Profile,
+  User,
+  ContentTypeService,
+  ContentScoreService,
+  assureObjectId,
+  EntityIdentity,
+} from '@lyvely/core';
 import { CalendarDate, toTimingId } from '@lyvely/dates';
 import { Timer } from '@lyvely/timers';
 import { CreateTaskModel, UpdateTaskModel } from '@lyvely/tasks-interface';
 import { UserAssignmentStrategy } from '@lyvely/common';
-import { User } from '@lyvely/core';
 import { TasksDao } from '../daos';
-import { ContentTypeService, ContentScoreService } from '@lyvely/core';
-import { assureObjectId, EntityIdentity } from '@lyvely/core';
 
 @Injectable()
 export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
@@ -45,7 +49,12 @@ export class TasksService extends ContentTypeService<Task, CreateTaskModel> {
   async setDone(profile: Profile, user: User, task: Task, date: CalendarDate): Promise<Task> {
     const wasDone = task.isDone(user);
 
-    const timingId = toTimingId(date, task.config.interval, profile.locale);
+    const timingId = toTimingId(
+      date,
+      task.config.interval,
+      profile.locale,
+      profile.settings?.calendar,
+    );
     const doneBy = { uid: assureObjectId(user), tid: timingId, date: new Date() };
     const isDoneByUser = task.isDoneByUser(user);
 

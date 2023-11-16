@@ -29,7 +29,7 @@ export abstract class AbstractJwtAuthController {
       sameSite: this.configService.get('auth.jwt.access.sameSite', DEFAULT_SAME_SITE),
       httpOnly: true,
       secure: secure,
-      expires: addMilliSeconds(new Date(), expirationMS, false),
+      expires: addMilliSeconds(new Date(), expirationMS),
     });
   }
 
@@ -43,7 +43,7 @@ export abstract class AbstractJwtAuthController {
       httpOnly: true,
       path: '/api/auth/refresh',
       secure: secure,
-      expires: addMilliSeconds(new Date(), ms(expiresIn!), false),
+      expires: addMilliSeconds(new Date(), ms(expiresIn!)),
     });
   }
 

@@ -20,14 +20,20 @@ export interface IProps {
 const props = defineProps<IProps>();
 const calendarPlanStore = useCalendarPlanStore();
 const milestoneStore = useMilestoneCalendarPlanStore();
+const profileStore = useProfileStore();
 const { selectTag } = milestoneStore;
-const { locale } = storeToRefs(useProfileStore());
+const { locale } = storeToRefs(profileStore);
 const router = useRouter();
 
 const { moveUp, moveDown } = useCalendarPlanItem(props.model, milestoneStore);
 
 const progress = computed(() => {
-  const tid = toTimingId(calendarPlanStore.date, props.model.interval, locale.value);
+  const tid = toTimingId(
+    calendarPlanStore.date,
+    props.model.interval,
+    locale.value,
+    profileStore.getSetting('calendar'),
+  );
   return milestoneStore.cache.calculateProgress(props.model, tid);
 });
 

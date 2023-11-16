@@ -16,16 +16,21 @@ import {
   dateTime,
   CalendarInterval,
   toTimingId,
-  WeekStrategy,
+  ICalendarPreferences,
 } from '@lyvely/dates';
+import { ITranslatable } from '@lyvely/core-interface';
 
 export abstract class CalendarPlan {
   protected abstract id: CalendarInterval;
   private static _instances: Map<CalendarInterval, CalendarPlan> = new Map();
 
   abstract getLabel(): string;
-  abstract getTitle(date: Date, locale: string): string;
-  abstract getAccessibleTitle(date: Date, locale: string): string;
+  abstract getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable;
+  abstract getAccessibleTitle(
+    date: Date,
+    locale: string,
+    preferences?: ICalendarPreferences,
+  ): ITranslatable;
   abstract getLabelById(id: any): string;
   abstract increment(date: Date, amount?: number): Date;
   abstract decrement(date: Date, amount?: number): Date;
@@ -35,8 +40,8 @@ export abstract class CalendarPlan {
     return this.id;
   }
 
-  getTimingId(date: CalendarDate, locale = 'de', weekStrategy: WeekStrategy = 'locale'): string {
-    return toTimingId(date, this.getInterval(), locale, weekStrategy);
+  getTimingId(date: CalendarDate, locale = 'de', preferences?: ICalendarPreferences): string {
+    return toTimingId(date, this.getInterval(), locale, preferences);
   }
 
   public static getInstance(interval: CalendarInterval): CalendarPlan {
@@ -61,12 +66,16 @@ export class UnscheduledPlan extends CalendarPlan {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string): string {
-    return 'Unscheduled';
+  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
+    return 'calendar-plan.interval.recurrent.0';
   }
 
-  getAccessibleTitle(date: Date, locale: string): string {
-    return this.getTitle(date, locale);
+  getAccessibleTitle(
+    date: Date,
+    locale: string,
+    preferences?: ICalendarPreferences,
+  ): ITranslatable {
+    return this.getTitle(date, locale, preferences);
   }
 
   increment(date: Date, amount?: number): Date {
@@ -94,12 +103,16 @@ export class YearlyPlan extends UnscheduledPlan {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string): string {
+  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     return dateTime(date).format('YYYY');
   }
 
-  getAccessibleTitle(date: Date, locale: string): string {
-    return this.getTitle(date, locale);
+  getAccessibleTitle(
+    date: Date,
+    locale: string,
+    preferences?: ICalendarPreferences,
+  ): ITranslatable {
+    return this.getTitle(date, locale, preferences);
   }
 
   increment(date: Date, amount = 1): Date {
@@ -123,13 +136,19 @@ export class QuarterlyPlan extends YearlyPlan {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string): string {
+  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const momentDate = dateTime(date);
-    return 'Q' + momentDate.quarter() + (!isCurrentYear(date) ? momentDate.format(' · YYYY') : '');
+    const quarter =
+      momentDate.quarter() + (!isCurrentYear(date) ? momentDate.format(' · YYYY') : '');
+    return { key: 'calendar-plan.titles.quarterly', params: { quarter } };
   }
 
-  getAccessibleTitle(date: Date, locale: string): string {
-    return this.getTitle(date, locale);
+  getAccessibleTitle(
+    date: Date,
+    locale: string,
+    preferences?: ICalendarPreferences,
+  ): ITranslatable {
+    return this.getTitle(date, locale, preferences);
   }
 
   increment(date: Date, amount = 1): Date {
@@ -157,13 +176,17 @@ export class MonthlyPlan extends QuarterlyPlan {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string): string {
+  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const format = isCurrentYear(date) ? 'MMMM' : 'MMM · YYYY';
     return dateTime(date).format(format);
   }
 
-  getAccessibleTitle(date: Date, locale: string): string {
-    return this.getTitle(date, locale);
+  getAccessibleTitle(
+    date: Date,
+    locale: string,
+    preferences?: ICalendarPreferences,
+  ): ITranslatable {
+    return this.getTitle(date, locale, preferences);
   }
 
   increment(date: Date, amount = 1): Date {
@@ -186,19 +209,24 @@ export class WeeklyPlan extends MonthlyPlan {
     return 'Weekly';
   }
 
-  getTitle(date: Date, locale: string): string {
-    const tid = this.getTimingId(date, locale);
+  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
+    const tid = this.getTimingId(date, locale, preferences);
     const splitTid = tid.split(';');
     const weekOfYear = parseInt(splitTid.at(-1)!.split(':')[1]);
     const yearOfWeek = parseInt(splitTid.at(0)!.split(':')[1]);
     const year = date.getFullYear();
 
     const showYear = year !== new Date().getFullYear() || year !== yearOfWeek;
-    return `Week ${weekOfYear}` + (showYear ? ` · ${yearOfWeek}` : '');
+    const week = `${weekOfYear}` + (showYear ? ` · ${yearOfWeek}` : '');
+    return { key: 'calendar-plan.titles.weekly', params: { week } };
   }
 
-  getAccessibleTitle(date: Date, locale: string): string {
-    return this.getTitle(date, locale);
+  getAccessibleTitle(
+    date: Date,
+    locale: string,
+    preferences?: ICalendarPreferences,
+  ): ITranslatable {
+    return this.getTitle(date, locale, preferences);
   }
 
   increment(date: Date, amount = 1): Date {
@@ -226,13 +254,17 @@ export class DailyPlan extends WeeklyPlan {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTitle(date: Date, locale: string): string {
+  getTitle(date: Date, locale: string, preferences?: ICalendarPreferences): ITranslatable {
     const format = isCurrentYear(date) ? 'ddd D MMM ' : 'ddd D MMM  · YYYY';
     return dateTime(date).format(format);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getAccessibleTitle(date: Date, locale: string): string {
+  getAccessibleTitle(
+    date: Date,
+    locale: string,
+    preferences?: ICalendarPreferences,
+  ): ITranslatable {
     const format = isCurrentYear(date) ? 'dddd D MMMM ' : 'dddd D MMMM  · YYYY';
     return dateTime(date).format(format);
   }
@@ -259,19 +291,18 @@ const PlanFactory = {
   [CalendarInterval.Daily]: DailyPlan,
 };
 
-// TODO: Implement proper weekStrategyOption iso vs locale
 export function getTidWindow(
   interval: CalendarInterval,
   locale: string,
   windowSize?: number,
-  weekStrategy: WeekStrategy = 'locale',
+  preferences?: ICalendarPreferences,
 ) {
   const calendarPlan = CalendarPlan.getInstance(interval);
   windowSize ||= calendarPlan.getDefaultWindowSize();
   const now = new Date();
   const tids: string[] = [];
   for (let i = windowSize - 1; i >= 0; i--) {
-    tids.push(toTimingId(calendarPlan.decrement(now, i), interval, locale, weekStrategy));
+    tids.push(toTimingId(calendarPlan.decrement(now, i), interval, locale, preferences));
   }
   return tids;
 }

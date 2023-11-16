@@ -26,23 +26,23 @@ export class AccountService implements IAccountService {
     return unwrapAndTransformResponse(accountRepository.resendOtp(dto), OtpInfo);
   }
 
-  updateAvatar(file: Blob) {
+  async updateAvatar(file: Blob) {
     return unwrapResponse(accountRepository.updateAvatar(file));
   }
 
-  updateGravatar() {
+  async updateGravatar() {
     return unwrapResponse(accountRepository.updateGravatar());
   }
 
-  setLanguage(dto: SetLanguageDto): Promise<void> {
+  async setLanguage(dto: SetLanguageDto): Promise<void> {
     return unwrapResponse(accountRepository.setLanguage(dto));
   }
 
-  setTimezone(dto: SetTimezoneDto): Promise<void> {
+  async setTimezone(dto: SetTimezoneDto): Promise<void> {
     return unwrapResponse(accountRepository.setTimezone(dto));
   }
 
-  setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse> {
+  async setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse> {
     return unwrapAndTransformResponse(
       accountRepository.setCalendarPreferences(dto),
       SettingsUpdateResponse,

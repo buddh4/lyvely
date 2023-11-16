@@ -1,12 +1,18 @@
 import {
   getTimingIds,
   toTimingId,
-  WeekStrategy,
   CalendarDateTime,
   CalendarInterval,
+  ICalendarPreferences,
+  useDayJsLocaleManager,
 } from '../index';
 
 describe('time series utils', () => {
+  beforeEach(async () => {
+    await useDayJsLocaleManager().loadLocale('de');
+    await useDayJsLocaleManager().loadLocale('en');
+  });
+
   describe('getTimingIds', () => {
     it('get calendar ids', () => {
       const date = new Date('2022-02-20');
@@ -25,21 +31,22 @@ describe('time series utils', () => {
     interval: CalendarInterval,
     expected: string,
     locale = 'de',
-    strategy: WeekStrategy = 'locale',
+    preferences?: ICalendarPreferences,
   ) {
-    expect(toTimingId(date, interval, locale, strategy)).toEqual(expected);
+    expect(toTimingId(date, interval, locale, preferences)).toEqual(expected);
   }
 
   function expectWeeklyENTid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarInterval.Weekly, expected, 'en', 'locale');
+    expectTid(date, CalendarInterval.Weekly, expected, 'en');
   }
 
   function expectWeeklyDETid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarInterval.Weekly, expected, 'de', 'locale');
+    expectTid(date, CalendarInterval.Weekly, expected, 'de');
   }
 
   function expectWeeklyIsoTid(date: CalendarDateTime, expected: string) {
-    expectTid(date, CalendarInterval.Weekly, expected, 'de', 'iso');
+    // yearStart: 0 === iso
+    expectTid(date, CalendarInterval.Weekly, expected, 'de', { yearStart: 0 });
   }
 
   describe('toTimingId', () => {
@@ -118,12 +125,17 @@ describe('time series utils', () => {
       });
 
       it('overlapping last week of year', async () => {
-        const timingId = toTimingId('2021-01-01', CalendarInterval.Weekly, 'de', 'iso');
+        const timingId = toTimingId('2021-01-01', CalendarInterval.Weekly, 'de', { yearStart: 0 });
         expect(timingId).toEqual('Y:2020;Q:4;M:12;W:53');
       });
 
-      it('last day of 2021', async () => {
+      it('last day of 2021 yearStart = 1', async () => {
         const timingId = toTimingId('2021-12-31', CalendarInterval.Weekly);
+        expect(timingId).toEqual('Y:2022;Q:1;M:01;W:01');
+      });
+
+      it('last day of 2021 yearStart = 4', async () => {
+        const timingId = toTimingId('2021-12-31', CalendarInterval.Weekly, 'en', { yearStart: 4 });
         expect(timingId).toEqual('Y:2021;Q:4;M:12;W:52');
       });
 

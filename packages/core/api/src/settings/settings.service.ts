@@ -4,7 +4,7 @@ import { FieldValidationException, IFieldValidationResult } from '@lyvely/common
 import { ISetting } from '@lyvely/core-interface';
 import { Logger } from '@nestjs/common';
 import { ISettingUpdate } from '@/settings/settings.interface';
-import { isBoolean, isNumber, isString } from 'class-validator';
+import { isBoolean, isDefined, isNumber, isString } from 'class-validator';
 
 export abstract class SettingsService<TModel extends BaseEntity<TModel> & { settings: any }> {
   protected abstract logger: Logger;
@@ -19,8 +19,8 @@ export abstract class SettingsService<TModel extends BaseEntity<TModel> & { sett
       const { key, value } = update;
       const setting = this.settingsRegistry.getSetting(key);
 
-      if (setting && this.validateSettingValue(setting, value)) {
-        result[`settings.${setting.key}`] = value;
+      if (isDefined(setting) && this.validateSettingValue(setting!, value)) {
+        result[`settings.${setting!.key}`] = value;
       } else {
         validationErrors.push({ property: key });
       }
@@ -35,7 +35,7 @@ export abstract class SettingsService<TModel extends BaseEntity<TModel> & { sett
 
   protected validateSettingValue(settingOrKey: ISetting | string, value: any): boolean {
     const setting = this.getSetting(settingOrKey);
-    if (!setting) return false;
+    if (typeof setting === 'undefined') return false;
 
     if (setting.type === String && !isString(value)) return false;
     if (setting.type === Boolean && !isBoolean(value)) return false;

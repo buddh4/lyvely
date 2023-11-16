@@ -81,7 +81,7 @@ export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
     }
 
     this.date = getFullDayDate(this.date);
-    this.tid = toTimingId(this.date, this.interval, profile.locale);
+    this.tid = toTimingId(this.date, this.interval, profile.locale, profile.settings?.calendar);
 
     this.afterInit();
   }

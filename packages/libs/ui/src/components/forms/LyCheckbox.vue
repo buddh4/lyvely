@@ -123,4 +123,60 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped></style>
+<style>
+[type='checkbox'].primary {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-primary);
+}
+
+[type='checkbox'].primary:checked {
+  background-color: var(--color-primary);
+}
+
+[type='checkbox'].secondary {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-secondary);
+}
+
+[type='checkbox'].secondary:checked {
+  background-color: var(--color-secondary);
+}
+
+[type='checkbox'].success,
+[type='checkbox'].success:hover {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-success);
+}
+
+[type='checkbox'].success:checked {
+  background-color: var(--color-success);
+  opacity: 1;
+}
+
+[type='checkbox'].info {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-info);
+}
+
+[type='checkbox'].info:checked {
+  background-color: var(--color-info);
+}
+
+[type='checkbox'].warning {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-warning);
+}
+
+[type='checkbox'].warning:checked {
+  background-color: var(--color-warning);
+}
+
+[type='checkbox'].danger {
+  --tw-ring-offset-shadow: none;
+  border-color: var(--color-danger);
+}
+
+[type='checkbox'].danger:checked {
+  background-color: var(--color-danger);
+}
+</style>

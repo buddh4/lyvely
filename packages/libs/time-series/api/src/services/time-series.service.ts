@@ -1,4 +1,4 @@
-import { User, Profile, OptionalUser, OptionalUserIdentity } from '@lyvely/core';
+import { User, Profile, OptionalUser } from '@lyvely/core';
 import { CalendarDate, CalendarInterval, getTimingIds, isInFuture } from '@lyvely/dates';
 import {
   CalendarPlanFilter,
@@ -33,7 +33,7 @@ export abstract class TimeSeriesService<
     return this.contentDao.findByProfileAndTimingIds(
       profile,
       user,
-      getTimingIds(filter.date, profile.locale, filter.level),
+      getTimingIds(filter.date, profile.locale, filter.level, profile.settings?.calendar),
     );
   }
 

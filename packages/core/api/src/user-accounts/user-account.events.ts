@@ -1,5 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { UserSettingsRegistry } from '@/users';
+import {
+  USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
+  USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
+} from '@lyvely/core-interface';
 
 @Injectable()
 export class UserAccountEvents implements OnModuleInit {
@@ -8,14 +12,14 @@ export class UserAccountEvents implements OnModuleInit {
   onModuleInit(): any {
     this.settingsRegistry.registerSettings([
       {
-        key: 'calendar.weekStart',
+        key: USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
         type: Number,
         validator: (val: number) => val >= 0 && val <= 6,
       },
       {
-        key: 'calendar.weekStrategy',
-        type: String,
-        validator: (val: string) => ['iso', 'locale'].includes(val),
+        key: USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
+        type: Number,
+        validator: (val: number) => val >= 0 && val <= 6,
       },
     ]);
   }

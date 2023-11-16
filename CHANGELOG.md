@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use of unique usernames + displayName
 - Use of unique profile handle
 - Many style improvements
+- Refactored date time API
 
 
 ### Added
@@ -45,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added back to stream button
 - Proper locale handling and configuration
 - Automatic backup of edit store models
-- Implemented Language & Region settings
+- Implemented Language & Region settings with calendar preferences
 
 ## [0.1.0-alpha4] - 2023-06-06
 

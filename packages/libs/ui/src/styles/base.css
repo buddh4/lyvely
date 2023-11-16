@@ -1,5 +1,3 @@
-@tailwind base;
-
 @layer base {
     html {
         overflow: hidden;

@@ -8,6 +8,7 @@ import { ISelectOptions } from '@/interfaces';
 export interface IProps {
   id?: string;
   label?: Translatable;
+  type?: 'text' | 'number';
   helpText?: Translatable;
   name?: string;
   modelValue?: any;
@@ -32,6 +33,7 @@ export interface IProps {
 const props = withDefaults(defineProps<IProps>(), {
   id: undefined,
   label: undefined,
+  type: 'text',
   modelValue: undefined,
   helpText: undefined,
   value: undefined,
@@ -73,6 +75,23 @@ onMounted(() => {
     :loading="loading"
     :input-error="inputError">
     <select
+      v-if="type === 'number'"
+      :id="inputId"
+      ref="input"
+      v-model.number="inputValue"
+      :aria-describedby="ariaDescribedby"
+      :disabled="disabled"
+      :class="inputClass"
+      :style="inputStyle"
+      @change="onChange"
+      @focusout="onFocusOut">
+      <option v-if="placeholder" value="" disabled selected hidden>{{ t(placeholder) }}</option>
+      <option v-for="option in options" :key="option.value" :value="option.value">
+        {{ t(option.label) }}
+      </option>
+    </select>
+    <select
+      v-else
       :id="inputId"
       ref="input"
       v-model="inputValue"

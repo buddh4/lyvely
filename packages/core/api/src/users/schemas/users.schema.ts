@@ -130,6 +130,8 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
         .digest('hex');
     }
 
+    this.settings ||= {};
+
     if (!this.locale) {
       this.locale = getDefaultLocale();
     }

@@ -1,3 +1,4 @@
+import './index.css';
 import { IModule } from '@lyvely/web';
 import { CALENDAR_PLAN_MODULE_ID } from '@/calendar-plan.constants';
 export default () => {

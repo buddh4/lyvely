@@ -2,11 +2,11 @@
 import { computed } from 'vue';
 import {
   TagChooser,
-  isTouchScreen,
   ContentEditModalEmits,
   useContentEditModal,
   ICreateContentInitOptions,
 } from '@lyvely/web';
+import { isTouchScreen } from '@lyvely/ui';
 import {
   CreateMilestoneModel,
   MilestoneModel,

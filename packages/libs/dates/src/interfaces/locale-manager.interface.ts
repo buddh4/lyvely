@@ -53,5 +53,5 @@ export interface ILocaleManager<TLocale = any> {
    * Note, the locale should already be loaded for this to work properly.
    * @param locale The targeted locale.
    */
-  getDefaultPreferences(locale: string): ICalendarPreferences;
+  getDefaultPreferences(locale: string): Required<ICalendarPreferences>;
 }

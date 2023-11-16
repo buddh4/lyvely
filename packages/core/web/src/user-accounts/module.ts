@@ -48,13 +48,13 @@ export default () => {
       ]);
 
       registerMenuEntries(MENU_ACCOUNT_SETTINGS, [
-        {
+        /*{
           id: 'account-general-settings',
           sortOrder: 1000,
           moduleId: USER_ACCOUNTS_MODULE_ID,
           text: 'user-accounts.settings.general',
           to: { name: 'GeneralAccountSettings' },
-        },
+        },*/
         {
           id: 'account-i18n-settings',
           sortOrder: 2000,

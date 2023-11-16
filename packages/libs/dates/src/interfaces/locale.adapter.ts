@@ -86,7 +86,7 @@ export function getEnabledLocales(): string[] {
  * Note, the locale should already be loaded for this to work properly.
  * @param locale The targeted locale.
  */
-export function getDefaultCalendarPreferences(locale: string): ICalendarPreferences {
+export function getDefaultCalendarPreferences(locale: string): Required<ICalendarPreferences> {
   if (!localeManager) {
     throw new Error('No locale manager set');
   }

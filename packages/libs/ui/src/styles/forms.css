@@ -91,7 +91,7 @@
 
     [type="text"],
     textarea {
-        @apply bg-main border-divide w-full rounded-md border-divide shadow-sm bg-white  focus:ring focus:ring-blue-200 focus:ring-opacity-50
+        @apply bg-main border-divide w-full rounded-md border-divide shadow-sm bg-white focus:ring focus:ring-blue-200 focus:ring-opacity-50
     }
 
     textarea::placeholder {
@@ -381,7 +381,8 @@
         line-height: 1.25em;
     }
 
-    .floating-input {
+    .floating-input,
+    [type="text"].floating-input {
         padding: 1.625rem 0.75rem 0.625rem;
         height: calc(3.5rem + 6px);
         transition: border-color 0.5s;

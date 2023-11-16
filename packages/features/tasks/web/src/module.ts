@@ -1,10 +1,11 @@
 import {
   IModule,
   registerContentType,
-  registerMenuEntries,
   MENU_PROFILE_DRAWER,
   useProfileFeatureStore,
+  MENU_PROFILE_MOBILE_FOOTER,
 } from '@lyvely/web';
+import { registerMenuEntries } from '@lyvely/ui';
 import {
   ActivityTasksFeature,
   CreateTaskModel,

@@ -94,7 +94,7 @@ class StorageWrapper extends DelegateEmitter<StorageEvents> {
     }
 
     // If there is no storage support we get a StoredValue and use the value cache.
-    return this.getStoredValue(key).getValue() || defaultValue;
+    return this.getStoredValue(key).getValue() ?? defaultValue;
   }
 
   set(key: string, value: string): string {

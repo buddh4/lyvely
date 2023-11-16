@@ -22,6 +22,7 @@ export default () => {
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       features: (locale: string) => import(`./locales/features.${locale}.json`),
+      i18n: (locale: string) => import(`./locales/i18n.${locale}.json`),
       'general-settings': (locale: string) => import(`./locales/general-settings.${locale}.json`),
     },
     routes,
@@ -100,6 +101,13 @@ export default () => {
           text: 'profiles.settings.features.label',
           sortOrder: 3000,
           to: { name: 'ProfileFeaturesSettings' },
+        },
+        {
+          id: 'ProfilePreferences',
+          moduleId: PROFILES_MODULE_ID,
+          text: 'profiles.settings.preferences.label',
+          sortOrder: 4000,
+          to: { name: 'ProfilePreferences' },
         },
       ]);
     },

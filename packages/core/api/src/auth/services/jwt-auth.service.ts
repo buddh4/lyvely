@@ -70,7 +70,7 @@ export class JwtAuthService {
       user,
       visitorId,
       token,
-      addMilliSeconds(new Date(), ms(expiresIn!), false),
+      addMilliSeconds(new Date(), ms(expiresIn!)),
       remember,
     );
 

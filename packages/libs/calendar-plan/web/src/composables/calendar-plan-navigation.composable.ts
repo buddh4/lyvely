@@ -1,15 +1,15 @@
 import { CalendarPlan } from '@lyvely/calendar-plan-interface';
 import { CalendarInterval, isToday as isTodayUtil } from '@lyvely/dates';
-import { translate, getDefaultLocale, useProfileStore, useAuthStore } from '@lyvely/web';
+import { useProfileStore, useI18nStore, getFallbackLocale, t } from '@lyvely/web';
 import { computed, toRefs } from 'vue';
 import { useCalendarPlanStore } from '../stores';
 
 export function useCalendarPlanPlanNavigation(interval: CalendarInterval) {
+  const profileStore = useProfileStore();
   const calendarPlanStore = useCalendarPlanStore();
   const { date, isToday } = toRefs(calendarPlanStore);
   const calendarPlan = CalendarPlan.getInstance(interval);
-  const { locale: userLocale } = useAuthStore();
-  const { locale: profileLocale } = useProfileStore();
+  const { locale } = useI18nStore();
   const { switchToToday, getNextDate, getPreviousDate } = calendarPlanStore;
 
   const isDaily = interval === CalendarInterval.Daily;
@@ -17,31 +17,29 @@ export function useCalendarPlanPlanNavigation(interval: CalendarInterval) {
   const isUnscheduled = interval === CalendarInterval.Unscheduled;
 
   function getAccessibleTitle(d: Date) {
-    let title = calendarPlan.getAccessibleTitle(
-      d,
-      (isWeekly ? profileLocale : userLocale) || getDefaultLocale(),
+    // For weekly
+    const localeValue = (isWeekly ? profileStore.locale : locale) || getFallbackLocale();
+    let title = t(
+      calendarPlan.getAccessibleTitle(d, localeValue, profileStore.getSetting('calendar')),
     );
 
     if (isDaily && isTodayUtil(d)) {
-      title = translate('calendar-plan.today') + ' ' + title;
+      title = t('calendar-plan.today') + ' ' + title;
     }
 
     return title;
   }
 
   const title = computed(() =>
-    calendarPlan.getTitle(
-      date.value,
-      (isWeekly ? profileLocale : userLocale) || getDefaultLocale(),
-    ),
+    t(calendarPlan.getTitle(date.value, locale, profileStore.getSetting('calendar'))),
   );
 
-  const accessibleTitle = computed(() => getAccessibleTitle(date.value));
+  const accessibleTitle = computed(() => t(getAccessibleTitle(date.value)));
   const showTodayIcon = computed(() => isDaily && !isToday.value);
   const rightCaret = computed(() => (isUnscheduled ? false : '▸'));
   const leftCaret = computed(() => (isUnscheduled ? false : '◂'));
-  const nextTitle = computed(() => getAccessibleTitle(getNextDate(calendarPlan)));
-  const prevTitle = computed(() => getAccessibleTitle(getPreviousDate(calendarPlan)));
+  const nextTitle = computed(() => t(getAccessibleTitle(getNextDate(calendarPlan))));
+  const prevTitle = computed(() => t(getAccessibleTitle(getPreviousDate(calendarPlan))));
   const label = CalendarPlan.getInstance(interval).getLabel().toLocaleLowerCase();
 
   function incrementTiming() {

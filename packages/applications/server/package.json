@@ -15,6 +15,7 @@
     "start:e2e": "cross-env NODE_ENV=e2e npm run start",
     "start:e2e:debug": "cross-env NODE_ENV=e2e npm run start:debug",
     "start:dev": "nest start --watch",
+    "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main",
     "test_disabled": "jest --forceExit",

@@ -109,73 +109,6 @@
         }
     }
 
-    [type="checkbox"].primary,
-    [type="radio"].primary {
-        --tw-ring-offset-shadow: none;
-        border-color: var(--color-primary);
-    }
-
-    [type="checkbox"].primary:checked,
-    [type="radio"].primary:checked {
-        background-color: var(--color-primary);
-    }
-
-    [type="checkbox"].secondary,
-    [type="radio"].secondary {
-        --tw-ring-offset-shadow: none;
-        border-color: var(--color-secondary);
-    }
-
-    [type="checkbox"].secondary:checked,
-    [type="radio"].secondary:checked {
-        background-color: var(--color-secondary);
-    }
-
-    [type="checkbox"].success,
-    [type="radio"].success {
-        --tw-ring-offset-shadow: none;
-        border-color: var(--color-success);
-    }
-
-    [type="checkbox"].success:checked,
-    [type="radio"].success:checked {
-        background-color: var(--color-success);
-        opacity: 1;
-    }
-
-    [type="checkbox"].info,
-    [type="radio"].info {
-        --tw-ring-offset-shadow: none;
-        border-color: var(--color-info);
-    }
-
-    [type="checkbox"].info:checked,
-    [type="radio"].info:checked {
-        background-color: var(--color-info);
-    }
-
-    [type="checkbox"].warning,
-    [type="radio"].warning {
-        --tw-ring-offset-shadow: none;
-        border-color: var(--color-warning);
-    }
-
-    [type="checkbox"].warning:checked,
-    [type="radio"].warning:checked {
-        background-color: var(--color-warning);
-    }
-
-    [type="checkbox"].danger,
-    [type="radio"].danger {
-        --tw-ring-offset-shadow: none;
-        border-color: var(--color-danger);
-    }
-
-    [type="checkbox"].danger:checked,
-    [type="radio"].danger:checked {
-        background-color: var(--color-danger);
-    }
-
     [type="number"].plain:focus,
     [type="password"].plain:focus,
     [type="text"].plain:focus,
@@ -385,6 +318,23 @@
         line-height: 1.25em;
     }
 
+    [type='text'].floating-input,
+    input:where(:not([type])).floating-input,
+    [type='email'].floating-input,
+    [type='url'].floating-input,
+    [type='password'].floating-input,
+    [type='number'].floating-input,
+    [type='date'].floating-input,
+    [type='datetime-local'].floating-input,
+    [type='month'].floating-input,
+    [type='search'].floating-input,
+    [type='tel'].floating-input,
+    [type='time'].floating-input,
+    [type='week'].floating-input,
+    [multiple].floating-input,
+    textarea.floating-input,
+    select.floating-input
+    [type="text"].floating-input,
     .floating-input {
         padding: 1.625rem 0.75rem 0.625rem;
         height: calc(3.5rem + 6px);

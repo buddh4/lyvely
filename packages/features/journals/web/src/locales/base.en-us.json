@@ -3,6 +3,9 @@
     "profile_drawer": {
       "title": "Journals"
     },
+    "calendar-plan": {
+      "empty": "Create Your First Habit!"
+    },
     "title": "Journals",
     "name": "Journal",
     "stream_entry": {

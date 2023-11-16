@@ -2,7 +2,7 @@ import { nextTick } from 'vue';
 import { createI18n, I18n } from 'vue-i18n';
 import { IModule, getModule, isDevelopEnvironment, getModules } from '@/core';
 import { Translatable } from '@lyvely/ui';
-import { DEFAULT_FALLBACK_LOCALE, LOCALES_SUPPORTED } from '@lyvely/core-interface';
+import { DEFAULT_FALLBACK_LOCALE, LOCALES_SUPPORTED, ITranslatable } from '@lyvely/core-interface';
 import { loadDateTimeLocale, isDateTimeLocaleLoaded } from '@lyvely/dates';
 
 let i18n: I18n;
@@ -37,16 +37,28 @@ export function translationAdapter(t: Translatable) {
   return '';
 }
 
-export function translate(
-  key: Translatable | ((params?: Record<string, string>) => string),
-  options?: Record<string, string>,
-) {
+export function translate(key: ITranslatable, options?: Record<string, string>): string {
   if (typeof key === 'function') return key(options);
   if (!(<any>getI18n()?.global)) {
     console.error(new Error('Translation attempt before app initialization.'));
     return 'error';
   }
-  return (<any>getI18n().global).t(key, options);
+
+  if (typeof key === 'object' && 'key' in key) {
+    return (<any>getI18n().global).t(key.key, key.params || options);
+  }
+
+  if (typeof key === 'object' && 'plain' in key) {
+    return key.plain;
+  }
+
+  if (typeof key === 'string') {
+    return (<any>getI18n().global).t(key, options);
+  }
+
+  console.error('Invalid translation', key);
+
+  return '';
 }
 
 export const t = translate;

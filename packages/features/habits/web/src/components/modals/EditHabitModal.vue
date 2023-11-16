@@ -4,14 +4,13 @@ import { NumberDataPointConfigForm, useDataPointStrategyFacade } from '@lyvely/t
 import { computed } from 'vue';
 import {
   TagChooser,
-  isTouchScreen,
   ContentEditModalEmits,
   useContentEditModal,
   ICreateContentInitOptions,
 } from '@lyvely/web';
 import { useHabitsService } from '@/services';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
-import { LyModal, LyFormModel, LyTextField, LySelect, LyTextarea } from '@lyvely/ui';
+import { LyModal, LyFormModel, LyTextField, LySelect, LyTextarea, isTouchScreen } from '@lyvely/ui';
 
 export interface IProps {
   modelValue: boolean;
@@ -61,7 +60,11 @@ const modalTitle = computed(() => {
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-select property="interval" :required="true" :options="calendarPlanOptions" />
+        <ly-select
+          property="interval"
+          type="number"
+          :required="true"
+          :options="calendarPlanOptions" />
       </fieldset>
 
       <fieldset>

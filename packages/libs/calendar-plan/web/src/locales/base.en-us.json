@@ -19,6 +19,11 @@
         "5": "Days"
       }
     },
+    "titles": {
+      "unscheduled": "Unscheduled",
+      "quarterly": "Q {quarter}",
+      "weekly": "Week {week}"
+    },
     "input_types": {
       "checkbox": "Checkboxes",
       "range": "Range",

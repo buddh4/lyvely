@@ -36,7 +36,12 @@ export abstract class DataPointService<
     content: TModel,
     date: CalendarDate,
   ): Promise<TDataPointModel | null> {
-    const tid = toTimingId(date, content.timeSeriesConfig.interval, profile.locale);
+    const tid = toTimingId(
+      date,
+      content.timeSeriesConfig.interval,
+      profile.locale,
+      profile.settings?.calendar,
+    );
     return content.timeSeriesConfig.userStrategy === UserAssignmentStrategy.PerUser
       ? await this.dataPointDao.findUserDataPointByTid(content, user, tid)
       : await this.dataPointDao.findDataPointByTid(content, tid);
