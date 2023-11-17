@@ -53,19 +53,24 @@ const modalTitle = computed(() => {
           :required="true"
           :autofocus="isCreate || !isTouchScreen()"
           :auto-validation="false" />
-        <ly-select
-          property="interval"
-          label="common.fields.interval_plural"
-          :required="true"
-          :options="getCalendarPlanOptions('plural')" />
+        <ly-textarea property="text" />
       </fieldset>
+
+      <fieldset>
+        <div class="grid grid-flow-row grid-cols-2 gap-2">
+          <ly-select
+            property="interval"
+            label="common.fields.interval_plural"
+            :required="true"
+            :options="getCalendarPlanOptions('plural')" />
+          <ly-number-field property="score" :mb="0" :steps="2" :max="100" :min="-100" />
+        </div>
+      </fieldset>
+
       <fieldset>
         <tag-chooser v-model="model.tagNames" />
       </fieldset>
-      <fieldset>
-        <ly-number-field property="score" :mb="0" :steps="2" :max="100" :min="-100" />
-        <ly-textarea property="text" />
-      </fieldset>
+      <fieldset></fieldset>
     </ly-form-model>
   </ly-modal>
 </template>
