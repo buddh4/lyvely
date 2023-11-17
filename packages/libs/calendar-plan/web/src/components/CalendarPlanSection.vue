@@ -60,7 +60,7 @@ function open() {
     tabindex="0"
     :aria-label="$t('calendar-plan.aria.header', { time: accessibleTitle })"
     :data-count="count"
-    class="calendar-plan-item calendar-plan-header-item first:rounded-t bg-secondary dark:bg-shadow text-inverted dark:text-main text-center relative"
+    class="calendar-plan-item calendar-plan-header-item first:rounded-t border-divide bg-shadow text-center border-b-0 border relative"
     @dragenter="open"
     @focusin="showCreateButton = true">
     <button

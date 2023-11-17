@@ -18,7 +18,7 @@ import { t } from '@lyvely/web';
 }
 
 #calendar-plan-unscheduled[data-count='0'] {
-  @apply rounded-b;
+  @apply rounded-b border-b;
 }
 
 #calendar-plan-unscheduled[data-count='0']
