@@ -14,11 +14,5 @@ const props = defineProps<IProps>();
 </script>
 
 <template>
-  <content-stream-entry v-bind="props" body-style="message" :merge="true" :message-width="true">
-    <div>
-      <span>
-        <ly-markdown-view :md="model.content.text" class="text-sm" />
-      </span>
-    </div>
-  </content-stream-entry>
+  <content-stream-entry v-bind="props" body-style="message" :merge="true" :message-width="true" />
 </template>

@@ -5,7 +5,7 @@ import { computed, unref } from 'vue';
 import RelativeTime from '@/calendar/components/RelativeTime.vue';
 import { useRouter } from 'vue-router';
 import { isTextSelection } from '@/core';
-import { translate } from '@/i18n';
+import { t } from '@/i18n';
 import TagList from '@/tags/components/TagList.vue';
 import { IStream } from '@/stream/composables/stream.composable';
 import { getContentTypeOptions } from '../services';
@@ -81,9 +81,7 @@ function onContentClick(evt: MouseEvent) {
   router.push({ name: 'content-details', params: { pid: props.model.pid, cid: props.model.id } });
 }
 
-const contentTypeName = computed(() =>
-  translate(getContentTypeOptions(props.model.type)?.name || ''),
-);
+const contentTypeName = computed(() => t(getContentTypeOptions(props.model.type)?.name || ''));
 
 const childCount = computed(() => {
   if (!props.model.meta.childCount) return 0;
@@ -152,7 +150,21 @@ const maxWidth = true;
                 </tag-list>
               </div>
               <div class="content-stream-entry-body text-sm">
-                <slot></slot>
+                <slot>
+                  <div>
+                    <div v-if="model.content.title?.length" class="flex items-center gap-1">
+                      <span>{{ model.content.title }}</span>
+                    </div>
+                    <p v-if="model.content.text?.length" class="text-sm text-dimmed">
+                      {{ model.content.text }}
+                    </p>
+                    <p
+                      v-if="!model.content.text?.length && !model.content.title?.length"
+                      class="text-sm text-dimmed">
+                      {{ t('content.stream.empty') }};
+                    </p>
+                  </div>
+                </slot>
               </div>
               <div v-if="model.meta.childCount" class="flex mt-2 justify-end">
                 <div
