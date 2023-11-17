@@ -1,6 +1,7 @@
 {
   "content": {
     "stream": {
+      "empty": "No Content",
       "feature": {
         "title": "Stream",
         "description": "If disabled, the main profile stream will be hidden."
