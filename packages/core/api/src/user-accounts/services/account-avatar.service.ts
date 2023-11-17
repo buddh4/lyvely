@@ -7,7 +7,7 @@ import { createWriteStream, existsSync, mkdirSync } from 'fs';
 import crypto from 'crypto';
 import { getLocalUploadFilePath } from '@/files';
 import client from 'https';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@/config';
 import { isGuid, IntegrityException } from '@lyvely/common';
 
 @Injectable()

@@ -1,4 +1,4 @@
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@/config';
 
 export interface I18nConfig {
   modules: {

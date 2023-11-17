@@ -110,6 +110,7 @@ export interface IUserRegistrationOptions {
 }
 
 export interface ILegalOptions {
+  poweredBy: boolean;
   sections: {
     [k: string]: {
       label: string;

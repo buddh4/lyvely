@@ -12,7 +12,7 @@ import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@/config';
 import { InvitationsService, IMailInvitation } from '@/user-invitations';
 import { SystemMessagesService } from '@/system-messages';
 import { validate } from 'class-validator';

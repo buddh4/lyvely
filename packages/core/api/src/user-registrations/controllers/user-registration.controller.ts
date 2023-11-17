@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Req, UnauthorizedException } from '@nestjs/common';
 import { UserRegistrationService } from '../services';
-import { Public, UseClassSerializer, ConfigurationPath } from '@/core';
+import { Public, UseClassSerializer } from '@/core';
+import { ConfigurationPath } from '@/config';
 import {
   UserRegistrationEndpoint,
   UserRegistration,

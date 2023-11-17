@@ -1,4 +1,4 @@
-import { ServerConfiguration } from '@/core';
+import { ServerConfiguration } from '@/config';
 
 export default {
   appName: 'lyvely.app',
@@ -45,22 +45,6 @@ export default {
       verify: {
         secret: 'd660cef7e949e6935a0fc86c073a41363b539542883b18f2e74874ef09dc4482',
         expiresIn: '1d',
-      },
-    },
-  },
-  helmet: {
-    contentSecurityPolicy: {
-      directives: {
-        'img-src': ["'self'", 'lyvely.app'],
-      },
-    },
-  },
-  legal: {
-    sections: {
-      poweredBy: {
-        label: 'Powered by lyvely',
-        url: 'https://www.lyvely.app',
-        version: '1.0',
       },
     },
   },

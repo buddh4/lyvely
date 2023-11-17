@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { MailerService, ISendMailOptions as MailerSendMailOptions } from '@nestjs-modules/mailer';
 import { SentMessageInfo } from 'nodemailer';
-import { ServerConfiguration, LyvelyMailOptions, UrlGenerator } from '@/core';
+import { ServerConfiguration, LyvelyMailOptions } from '@/config';
+import { UrlGenerator } from '@/core';
 import { ConfigService } from '@nestjs/config';
 import { createWriteStream, writeFile, existsSync, mkdirSync } from 'fs';
 import { Stream } from 'stream';

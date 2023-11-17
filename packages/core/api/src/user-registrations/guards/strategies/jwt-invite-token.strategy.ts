@@ -2,7 +2,7 @@ import { ExtractJwt } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtStrategy, JwtTokenPayloadIF, getIssuedAt } from '@/jwt';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@/config';
 import { UserStatus } from '@lyvely/core-interface';
 
 export const JWT_REGISTRATION_INVITE_TOKEN = 'user-registration-invitation';

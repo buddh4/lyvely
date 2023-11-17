@@ -1,31 +1,38 @@
-import { Type, DynamicModule, ForwardReference, Provider, Global, Module } from '@nestjs/common';
-import { EventEmitterModule } from '@nestjs/event-emitter';
-import { I18nModule, I18nModuleLoader } from './i18n';
 import {
-  CoreModule,
-  ReverseProxyThrottlerGuard,
-  setTransactionSupport,
+  Type,
+  DynamicModule,
+  ForwardReference,
+  Provider,
+  Global,
+  Module,
+  Logger,
+} from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { I18nModule, I18nModuleLoader } from '@/i18n';
+import { CoreModule, ReverseProxyThrottlerGuard, setTransactionSupport } from '@/core';
+import {
   ConfigurationPath,
   ILyvelyMongoDBOptions,
   ServerConfiguration,
-} from './core';
-import { AppConfigModule, loadConfig } from './app-config';
-import { AuthModule } from './auth';
-import { UsersModule } from './users';
-import { MessageModule } from './messages';
-import { UserRegistrationsModule } from './user-registrations';
-import { ProfilesModule } from './profiles';
-import { PoliciesModule } from './policies';
-import { ContentCoreModule } from './content';
-import { MailsModule } from './mails';
-import { UserAccountsModule } from './user-accounts';
-import { CaptchaModule } from './captchas';
-import { AvatarsModule } from './avatars';
-import { LiveModule } from './live';
-import { NotificationsModule } from './notifications';
-import { FeaturesModule } from './features';
-import { UserInvitationsModule } from './user-invitations';
-import { SystemMessagesModule } from './system-messages';
+  loadConfigs,
+} from '@/config';
+import { AppConfigModule } from '@/app-config';
+import { AuthModule } from '@/auth';
+import { UsersModule } from '@/users';
+import { MessageModule } from '@/messages';
+import { UserRegistrationsModule } from '@/user-registrations';
+import { ProfilesModule } from '@/profiles';
+import { PoliciesModule } from '@/policies';
+import { ContentCoreModule } from '@/content';
+import { MailsModule } from '@/mails';
+import { UserAccountsModule } from '@/user-accounts';
+import { CaptchaModule } from '@/captchas';
+import { AvatarsModule } from '@/avatars';
+import { LiveModule } from '@/live';
+import { NotificationsModule } from '@/notifications';
+import { FeaturesModule } from '@/features';
+import { UserInvitationsModule } from '@/user-invitations';
+import { SystemMessagesModule } from '@/system-messages';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -37,61 +44,70 @@ import { MulterModule } from '@nestjs/platform-express';
 import { BullModule } from '@nestjs/bullmq';
 import { PermissionsModule } from '@/permissions/permissions.module';
 import { PingModule } from '@/ping';
+import { DeepPartial } from '@lyvely/common';
+import defaultConfig from '@/config/lyvely.default.config';
 
 type TModule = Type | DynamicModule | Promise<DynamicModule> | ForwardReference;
 
 export interface IAppModuleBuilderOptions {
   useRecommended?: boolean;
-  useFeatures?: boolean;
   configFiles?: Array<string> | false;
-  config?: ServerConfiguration;
+  loadDefaultConfig?: boolean;
+  config?: DeepPartial<ServerConfiguration> | null;
   serveStatic?: boolean;
+  manual?: boolean;
   modules?: TModule[];
 }
 
-export function buildApp(options: IAppModuleBuilderOptions = {}) {
-  return new AppModuleBuilder(options);
-}
+const defaultOptions: Required<IAppModuleBuilderOptions> = {
+  useRecommended: true,
+  configFiles: ['lyvely.js'],
+  loadDefaultConfig: true,
+  config: null,
+  serveStatic: false,
+  manual: false,
+  modules: [],
+};
 
 export class AppModuleBuilder {
   private readonly imports: Array<TModule> = [];
   private readonly providers: Array<Provider> = [];
-  private options: IAppModuleBuilderOptions;
+  private options: Required<IAppModuleBuilderOptions>;
+  private logger = new Logger(AppModuleBuilder.name);
 
   constructor(options: IAppModuleBuilderOptions = {}) {
     this.imports = [];
-    this.options = options;
-    this.options.modules ??= [];
+    this.options = { ...defaultOptions, ...options };
 
-    this.initCoreModules()
-      .initConfigModule()
-      .initQueueModule()
-      .initUploadModules()
-      .initRateLimitModule()
-      .initServeStaticModule()
-      .initMongooseModule()
-      .initRecommendedModules()
-      .importModules(...this.options.modules);
+    if (!this.options.manual) {
+      this.importConfigModule()
+        .importCoreModules()
+        .importEventEmitterModule()
+        .importI18nModule()
+        .importQueueModule()
+        .importUploadModules()
+        .importRateLimitModule()
+        .importServeStaticModule()
+        .importMongooseModule()
+        .importRecommendedModules()
+        .importModules(...this.options.modules);
+    }
   }
 
-  private initCoreModules() {
+  public importCoreModules() {
     return this.importModules(
-      EventEmitterModule.forRoot({ wildcard: true }),
+      CoreModule,
       LiveModule,
       PingModule,
       MailsModule.fromConfig(),
+      ProfilesModule,
+      ContentCoreModule,
+      SystemMessagesModule,
+      UserAccountsModule,
       NotificationsModule,
-      CoreModule,
       FeaturesModule,
       PermissionsModule,
       AppConfigModule,
-      NestjsI18nModule.forRoot({
-        fallbackLanguage: 'en-us',
-        loader: I18nModuleLoader,
-        loaderOptions: {},
-        resolvers: [AcceptLanguageResolver],
-      }),
-      I18nModule,
       PoliciesModule.forRoot(),
       UsersModule,
       AuthModule,
@@ -99,7 +115,23 @@ export class AppModuleBuilder {
     );
   }
 
-  private initQueueModule() {
+  public importEventEmitterModule() {
+    return this.importModules(EventEmitterModule.forRoot({ wildcard: true }));
+  }
+
+  public importI18nModule() {
+    return this.importModules(
+      NestjsI18nModule.forRoot({
+        fallbackLanguage: 'en-us',
+        loader: I18nModuleLoader,
+        loaderOptions: {},
+        resolvers: [AcceptLanguageResolver],
+      }),
+      I18nModule,
+    );
+  }
+
+  public importQueueModule() {
     return this.importModules(
       BullModule.forRootAsync({
         imports: [ConfigModule],
@@ -111,7 +143,7 @@ export class AppModuleBuilder {
     );
   }
 
-  private initUploadModules() {
+  public importUploadModules() {
     return this.importModules(
       MulterModule.registerAsync({
         imports: [ConfigModule],
@@ -127,7 +159,7 @@ export class AppModuleBuilder {
     );
   }
 
-  private initServeStaticModule() {
+  public importServeStaticModule() {
     if (!this.options.serveStatic) return this;
 
     return this.importModules(
@@ -142,10 +174,9 @@ export class AppModuleBuilder {
     );
   }
 
-  private initMongooseModule() {
+  public importMongooseModule() {
     return this.importModules(
       MongooseModule.forRootAsync({
-        imports: [ConfigModule],
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath & any>) => {
           const options = { ...configService.get<ILyvelyMongoDBOptions>('mongodb') };
@@ -164,28 +195,30 @@ export class AppModuleBuilder {
     );
   }
 
-  private initConfigModule() {
-    const loader: Array<() => Promise<ServerConfiguration>> = [];
-    if (this.options.configFiles !== false) {
-      this.options.configFiles ??= ['config/lyvely.ts'];
-      if (this.options.configFiles) {
-        loader.push(...this.options.configFiles.map((file) => loadConfig(file)));
-      }
+  public importConfigModule() {
+    const configs: Array<string | Partial<ServerConfiguration>> = [];
+
+    if (this.options.loadDefaultConfig !== false) {
+      configs.push(defaultConfig);
+    }
+
+    if (Array.isArray(this.options.configFiles)) {
+      configs.push(...this.options.configFiles);
     }
 
     if (this.options.config) {
-      loader.push(() => Promise.resolve(this.options.config!));
+      configs.push(this.options.config as Partial<ServerConfiguration>);
     }
 
     return this.importModules(
       ConfigModule.forRoot({
-        load: loader,
+        load: [loadConfigs(configs)],
         isGlobal: true,
       }),
     );
   }
 
-  private initRateLimitModule() {
+  public importRateLimitModule() {
     return this.importModules(
       ThrottlerModule.forRootAsync({
         imports: [ConfigModule],
@@ -201,19 +234,15 @@ export class AppModuleBuilder {
     });
   }
 
-  private initRecommendedModules() {
+  public importRecommendedModules() {
     if (this.options.useRecommended === false) {
       return this;
     }
 
     return this.importModules(
-      ProfilesModule,
-      UserRegistrationsModule,
-      ContentCoreModule,
-      MessageModule,
-      SystemMessagesModule,
-      UserAccountsModule,
       AvatarsModule,
+      MessageModule,
+      UserRegistrationsModule,
       UserInvitationsModule,
     );
   }

@@ -2,7 +2,7 @@ import { Module, Global, DynamicModule } from '@nestjs/common';
 import { MailService } from './services';
 import { MailerModule, MailerOptions } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@/config';
 import { ConfigService } from '@nestjs/config';
 
 const DEFAULT_MAIL_CONFIG: MailerOptions = {

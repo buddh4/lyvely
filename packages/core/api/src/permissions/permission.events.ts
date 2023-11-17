@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/core';
+import { ServerConfiguration } from '@/config';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@/app-config';
 import { PERMISSIONS_MODULE_ID } from '@lyvely/core-interface';

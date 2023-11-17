@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { assureStringId, UrlGenerator, ConfigurationPath } from '@/core';
+import { assureStringId, UrlGenerator } from '@/core';
+import { ConfigurationPath } from '@/config';
 import { UrlRoute } from '@lyvely/common';
 
 @Injectable()

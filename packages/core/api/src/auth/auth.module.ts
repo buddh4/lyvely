@@ -12,7 +12,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController, ResetPasswordController } from './controllers';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@/config';
 import { CaptchaModule } from '@/captchas';
 
 @Module({

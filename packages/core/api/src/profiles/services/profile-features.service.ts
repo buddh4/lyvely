@@ -10,7 +10,7 @@ import {
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 import { Profile } from '../schemas';
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/core';
+import { ServerConfiguration } from '@/config';
 
 @Injectable()
 export class ProfileFeaturesService {

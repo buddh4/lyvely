@@ -1,5 +1,4 @@
 export * from './components';
-export * from './config';
 export * from './controllers';
 export * from './db';
 export * from './decorators';

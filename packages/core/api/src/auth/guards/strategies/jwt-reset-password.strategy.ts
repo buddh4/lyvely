@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtStrategy, JwtTokenPayloadIF, getIssuedAt } from '@/jwt';
 import { UserStatus } from '@lyvely/core-interface';
 import { ConfigService } from '@nestjs/config';
-import { ConfigurationPath } from '@/core';
+import { ConfigurationPath } from '@/config';
 
 export const JWT_RESET_PASSWORD_TOKEN = 'password-reset';
 

@@ -7,6 +7,7 @@ export * from './core';
 export * from './features';
 export * from './files';
 export * from './i18n';
+export * from './config';
 export * from './jwt';
 export * from './live';
 export * from './mails';

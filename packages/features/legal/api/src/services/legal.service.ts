@@ -9,8 +9,8 @@ export class LegalService {
 
   async getSections(locale?: string): Promise<LegalSection[]> {
     const result = [] as LegalSection[];
-    const legal = this.configService.get<ILegalOptions>('legal');
-    if (!legal?.sections) return result;
+    const legal = this.configService.get<ILegalOptions>('modules.legal');
+    if (!legal?.sections) return this.attachPoweredBy(result);
 
     for (const sectionId in legal.sections) {
       const localizedSection = this.getLocalizedSection(sectionId, locale);
@@ -26,6 +26,18 @@ export class LegalService {
       );
     }
 
+    return this.attachPoweredBy(result);
+  }
+
+  private attachPoweredBy(result: LegalSection[]) {
+    if (this.configService.get<boolean>('modules.legal.poweredBy', true)) {
+      result.push({
+        id: 'poweredBy',
+        label: 'Powered by lyvely',
+        url: 'https://www.lyvely.app',
+        version: '1.0',
+      });
+    }
     return result;
   }
 

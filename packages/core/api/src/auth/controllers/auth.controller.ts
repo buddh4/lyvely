@@ -19,7 +19,8 @@ import {
 import { Headers } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { Public, UseClassSerializer, ConfigurationPath } from '@/core';
+import { Public, UseClassSerializer } from '@/core';
+import { ConfigurationPath } from '@/config';
 
 @Controller(ENDPOINT_AUTH)
 @UseClassSerializer()
