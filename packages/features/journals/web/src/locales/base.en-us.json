@@ -17,6 +17,9 @@
     "edit" : {
       "title": "Edit Journal Item"
     },
+    "feature": {
+      "title": "Journals"
+    },
     "fields": {
       "title": "Title",
       "interval": "Plan",

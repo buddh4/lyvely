@@ -45,28 +45,28 @@ function setInputType(inputType: DataPointInputType) {
   <div class="flex flex-col gap-2 border border-divide rounded bg-highlight dark:bg-main p-3">
     <div class="flex gap-2 justify-between items-stretch">
       <ly-button
-        class="text-xs secondary w-full"
+        class="text-xs secondary w-full outlined"
         :active="modelValue.inputType === DataPointInputType.Checkbox"
         @click="setInputType(DataPointInputType.Checkbox)">
         {{ t('calendar-plan.input_types.checkbox') }}
       </ly-button>
 
       <ly-button
-        class="text-xs secondary w-full"
+        class="text-xs secondary w-full outlined"
         :active="modelValue.inputType === DataPointInputType.Radio"
         @click="setInputType(DataPointInputType.Radio)">
         {{ t('calendar-plan.input_types.radio') }}
       </ly-button>
 
       <ly-button
-        class="text-xs secondary w-full"
+        class="text-xs secondary w-full outlined"
         :active="modelValue.inputType === DataPointInputType.Dropdown"
         @click="setInputType(DataPointInputType.Dropdown)">
         {{ t('calendar-plan.input_types.dropdown') }}
       </ly-button>
     </div>
 
-    <div class="flex flex-row items-center items-stretch gap-0.5">
+    <div class="flex flex-row items-stretch gap-0.5">
       <ly-text-field
         v-model="newOption"
         class="mb-0 grow"

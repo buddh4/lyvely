@@ -13,12 +13,19 @@ import {
   JOURNALS_MODULE_ID,
 } from '@lyvely/journals-interface';
 import { journalRoutes } from './routes';
+import { calendarPlanModule } from '@lyvely/calendar-plan-web';
+import { timeSeriesModule } from '@lyvely/time-series-web';
 
 export default () => {
   return {
     id: JOURNALS_MODULE_ID,
     features: [JournalsFeature],
     routes: journalRoutes,
+    dependencies: [calendarPlanModule(), timeSeriesModule()],
+    i18n: {
+      base: (locale: string) => import(`./locales/base.${locale}.json`),
+      locale: (locale: string) => import(`./locales/${locale}.json`),
+    },
     init: () => {
       registerMenuEntries(MENU_PROFILE_DRAWER, [
         {

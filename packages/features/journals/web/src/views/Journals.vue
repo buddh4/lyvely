@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onBeforeMount, onUnmounted } from 'vue';
+import { onBeforeMount, onUnmounted, ref } from 'vue';
 import { CalendarPlanner, CalendarPlanFilterNavigation } from '@lyvely/calendar-plan-web';
 import { t, useContentCreateStore } from '@lyvely/web';
 import { JournalModel } from '@lyvely/journals-interface';
@@ -20,8 +20,9 @@ const { intervals, filter } = journalStore;
 
 const { isEmpty } = journalStore;
 
-onBeforeMount(() => journalStore.loadModels());
-//onMounted(() => accessibilityFocus('#activity-navigation > button.active'));
+const loaded = ref(false);
+
+onBeforeMount(() => journalStore.loadModels().then(() => (loaded.value = true)));
 
 const createEntry = () => useContentCreateStore().createContentType(JournalModel.contentType);
 const unwatch = journalStore.startWatch();

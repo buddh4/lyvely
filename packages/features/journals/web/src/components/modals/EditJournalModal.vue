@@ -72,7 +72,7 @@ const modalTitle = computed(() => {
       v-model="model"
       :validator="validator"
       :status="status"
-      label-key="activities.fields">
+      label-key="common.fields">
       <fieldset>
         <ly-text-field
           property="title"
@@ -86,21 +86,21 @@ const modalTitle = computed(() => {
         <div class="flex flex-col gap-2">
           <div class="flex gap-2 justify-between items-stretch">
             <ly-button
-              class="text-xs secondary w-full"
+              class="text-xs secondary w-full outlined"
               :active="model.valueType === DataPointValueType.Number"
               @click="setValueType(DataPointValueType.Number)">
               {{ t('calendar-plan.value_types.number') }}
             </ly-button>
 
             <ly-button
-              class="text-xs secondary w-full"
+              class="text-xs secondary w-full outlined"
               :active="model.valueType === DataPointValueType.Text"
               @click="setValueType(DataPointValueType.Text)">
               {{ t('calendar-plan.value_types.text') }}
             </ly-button>
 
             <ly-button
-              class="text-xs secondary w-full"
+              class="text-xs secondary w-full outlined"
               :active="model.valueType === DataPointValueType.Selection"
               @click="setValueType(DataPointValueType.Selection)">
               {{ t('calendar-plan.value_types.selection') }}

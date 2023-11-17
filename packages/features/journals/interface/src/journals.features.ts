@@ -6,4 +6,5 @@ export const JournalsFeature: IFeature = {
   moduleId: JOURNALS_MODULE_ID,
   title: 'journals.feature.title',
   installable: true,
+  enabledByDefault: true,
 };
