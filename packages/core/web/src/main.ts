@@ -1,4 +1,5 @@
 import './styles/index.css';
+import '@lyvely/ui/style.css';
 import 'reflect-metadata';
 import 'animate.css/animate.css';
 
