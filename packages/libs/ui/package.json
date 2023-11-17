@@ -10,7 +10,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/lyvely-ui.js"
+      "import": "./dist/lyvely-ui.js",
+      "require": "./dist/lyvely-ui.js"
     },
     "./style.css": {
       "import": "./dist/style.css",
@@ -71,8 +72,9 @@
     "autoprefixer": "^10.4.14",
     "dependency-cruiser": "^14.1.0",
     "glob": "^10.3.10",
-    "postcss": "^8.4.23",
+    "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
+    "postcss-prefixer": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "storybook": "^7.5.1",
