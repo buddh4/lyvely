@@ -5,6 +5,7 @@
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "dev": "vite",
     "build": "vite build && vue-tsc -p tsconfig.build.json -declaration --emitDeclarationOnly",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",

@@ -5,10 +5,10 @@ import '@lyvely/web/style.css';
 import '@lyvely/calendar-plan-web/style.css';
 
 import { LyvelyWebApp } from '@lyvely/web';
-import habitsModule from './module';
+import journalsModule from './module';
 
 const app = new LyvelyWebApp({
-  modules: [habitsModule()],
+  modules: [journalsModule()],
 });
 
 app.init().then(() => app.mount('#app'));
