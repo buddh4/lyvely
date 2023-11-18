@@ -1,5 +1,5 @@
 import { Exclude, Type, Expose } from 'class-transformer';
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import {
   DataPointModel,
   ITimeSeriesCalendarPlanResponse,
@@ -13,10 +13,10 @@ export class HabitSearchResponse
   implements ITimeSeriesCalendarPlanResponse<HabitModel>
 {
   @Expose()
-  @Type(() => HabitModel)
+  @PropertyType([HabitModel])
   models: HabitModel[];
 
   @Expose()
-  @Type(() => NumberDataPointModel)
+  @PropertyType([NumberDataPointModel])
   dataPoints: DataPointModel[];
 }

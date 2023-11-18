@@ -74,8 +74,10 @@ function _assignRawDataTo<T extends Object>(
         _assignRawDataTo([], arrayData, level + 1, { maxDepth, strict, transform })
       );
     } else if (isObjectId(data[path])) {
-      // Todo: We can not clone an ObjectId by Object.create, maybe implement another clone method in the future.
-      model[path] = data[path];
+      // TODO: Handle cases in which propertyType is not String && != ObjectId
+      const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
+      const propertyType = propertyTypeDefinition?.type;
+      model[path] = propertyType === String ? data[path].toString() : model[path];
     } else if (data[path] && typeof data[path] === 'object' && !(data[path] instanceof Date)) {
       // Try to get model type by ModelType decorator, or otherwise try to determine the type from model or data
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
@@ -144,7 +146,7 @@ function _isOfType(value: any, type: any) {
 }
 
 const PRIMITIVE_TYPES = [null, undefined, String, Number, Boolean, BigInt, Symbol];
-const PRIMITIVE_TYPES_WITH_TOSTRING = ['number', 'boolean', 'bigint', 'symbol'];
+const TYPES_WITH_TOSTRING = ['number', 'boolean', 'bigint', 'symbol', 'object'];
 
 function _isPrimitiveType(type: any) {
   return PRIMITIVE_TYPES.includes(type);
@@ -155,7 +157,7 @@ function _transformType(value: any, type: any) {
   if (type === null || type === undefined) return type;
   if (_isPrimitiveType(type)) {
     if (type === String) {
-      return PRIMITIVE_TYPES_WITH_TOSTRING.includes(typeof value) ? value.toString() : null;
+      return TYPES_WITH_TOSTRING.includes(typeof value) ? value.toString() : null;
     }
 
     if (type === Number) {

@@ -26,7 +26,6 @@ export class SelectionDataPointModel<TID = string> extends DataPointModel<
   TID,
   SelectionDataPointModel<TID>
 > {
-  @Type(() => SelectionDataPointValueModel)
   @PropertyType(SelectionDataPointValueModel)
   value: ISelectionDataPointValue;
 

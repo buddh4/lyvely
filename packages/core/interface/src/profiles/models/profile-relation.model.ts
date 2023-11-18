@@ -1,5 +1,5 @@
-import { Exclude, Expose, Type } from 'class-transformer';
-import { BaseModel, TransformObjectId } from '@lyvely/common';
+import { Exclude, Expose } from 'class-transformer';
+import { BaseModel, PropertyType, TransformObjectId } from '@lyvely/common';
 import { IProfileRelation, IProfileRelationUserInfo } from '../interfaces';
 import { UserStatus } from '@/users';
 
@@ -48,7 +48,7 @@ export class ProfileRelationModel<
   type: string;
 
   @Expose()
-  @Type(() => ProfileRelationUserInfoModel)
+  @PropertyType(ProfileRelationUserInfoModel)
   userInfo: ProfileRelationUserInfoModel;
 
   @Expose()

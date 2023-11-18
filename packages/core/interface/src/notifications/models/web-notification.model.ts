@@ -1,6 +1,6 @@
 import { IWebNotification } from '../interfaces';
-import { Expose, Type } from 'class-transformer';
-import { BaseModel, UrlRoute } from '@lyvely/common';
+import { Expose } from 'class-transformer';
+import { BaseModel, PropertyType, UrlRoute } from '@lyvely/common';
 import { ProfileInfoModel } from '@/profiles';
 import { UserInfoModel } from '@/users';
 
@@ -13,12 +13,12 @@ export class WebNotification extends BaseModel<WebNotification> implements IWebN
   title: string;
   sortOrder: number;
 
-  @Type(() => UrlRoute)
+  @PropertyType(UrlRoute, { optional: true })
   route?: UrlRoute | null;
 
-  @Type(() => ProfileInfoModel)
+  @PropertyType(ProfileInfoModel, { optional: true })
   profileInfo?: ProfileInfoModel;
 
-  @Type(() => UserInfoModel)
+  @PropertyType(UserInfoModel, { optional: true })
   userInfo?: UserInfoModel;
 }

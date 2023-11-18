@@ -1,6 +1,6 @@
 import { BaseModel, DocumentModel, PropertyType } from '@lyvely/common';
 import { AvatarModel } from '@/avatars';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { UserNotificationStateModel } from './user-notification-state.model';
 
 @Exclude()
@@ -41,7 +41,7 @@ export class UserModel extends DocumentModel<UserModel> {
   guid: string;
 
   @Expose()
-  @Type(() => AvatarModel)
+  @PropertyType(AvatarModel, { optional: true })
   avatar?: AvatarModel;
 
   @Expose()
@@ -53,13 +53,12 @@ export class UserModel extends DocumentModel<UserModel> {
   @Expose()
   settings: Record<string, any>;
 
+  // TODO: This should not be part of the main user model, but rather accessible by extra endpoint.
   @Expose()
-  @Type(() => UserEmailModel)
   @PropertyType([UserEmailModel])
   emails: UserEmailModel[];
 
   @Expose()
-  @Type(() => UserNotificationStateModel)
   @PropertyType(UserNotificationStateModel)
   notification: UserNotificationStateModel;
 

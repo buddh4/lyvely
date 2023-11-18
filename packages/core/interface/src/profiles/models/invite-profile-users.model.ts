@@ -20,7 +20,6 @@ export class ProfileMemberMailInvite extends BaseModel<ProfileMemberMailInvite> 
 export class InviteProfileMembers {
   @Expose()
   @IsArray()
-  @Type(() => ProfileMemberMailInvite)
   @PropertyType([ProfileMemberMailInvite])
   @ValidateNested()
   invites: ProfileMemberMailInvite[];

@@ -1,5 +1,5 @@
 import { IsNumber, validate } from 'class-validator';
-import { Lte } from '../core.validators';
+import { Lte } from './lte.validator';
 
 class LteModel {
   @IsNumber()

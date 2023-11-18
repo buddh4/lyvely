@@ -1,19 +1,30 @@
-import { getPrototypeTree, Type } from '../../utils';
+import { Type, getPrototypeTree } from '../../utils';
+import { Type as TransformType } from 'class-transformer';
 
 const modelPropertyTypes: Map<Type, Record<string, IPropertyDefinition>> = new Map();
 
 export type DefaultValue<TValue> = TValue | (() => TValue);
 
-export interface IPropertyDefinitionOption<TValue> {
+/**
+ * This interface defines the type of a property type definition options.
+ */
+export interface IPropertyDefinitionOptions<TValue> {
   default?: DefaultValue<TValue>;
   optional?: boolean;
 }
 
+/**
+ * This interface defines the type of a property type definition.
+ */
 export interface IPropertyDefinition<TTarget = any, TValue = any>
-  extends IPropertyDefinitionOption<TValue> {
+  extends IPropertyDefinitionOptions<TValue> {
   type: TTarget;
 }
 
+/**
+ * Returns all registered property type definitions of a type.
+ * @param type
+ */
 export function getPropertyTypeDefinitions(type: Type): Record<string, IPropertyDefinition> {
   // TODO: (performance) maybe cache the result
   return getPrototypeTree(type)
@@ -24,18 +35,45 @@ export function getPropertyTypeDefinitions(type: Type): Record<string, IProperty
     }, {} as Record<string, IPropertyDefinition>);
 }
 
+/**
+ * Returns the property type of a specific property of the given type.
+ * @param type
+ */
 export function getPropertyTypeDefinition(type: Type, propertyKey: string) {
   const typeDefinition = getPropertyTypeDefinitions(type);
   return typeDefinition ? typeDefinition[propertyKey] : undefined;
 }
 
+/**
+ * Decorator used to transform or instantiate values of a class property.
+ * This decorator works for class-transformer transformations as well as automatic constructor based transformation
+ * of BaseModels.
+ *
+ * A value defined by the `default` option will be set in case no value was provided e.g. in a constructor .
+ * Note, this does not work with class-validator plainToInstance.
+ *
+ * Unless a property is explicitly marked as `optional`, it will either automatically create an instance of the
+ * specified type or use a type specific default value:
+ *
+ * - `string`: `''`
+ * - `number`: `0`
+ * - `symbol`: `null`
+ * - `boolean`: `false`
+ * - `Array`: `[]`
+ *
+ * Note, this does not work with class-validator plainToInstance.
+ *
+ * @param options IPropertyDefinitionOption passed to PropertyType decorator.
+ * @see assignRawDataToAndInitProps for the actual implementation.
+ * @constructor
+ */
 export function PropertyType<
   TTarget extends Object,
   TProperty extends Extract<keyof TTarget, string>,
   TValue = TTarget[TProperty],
 >(
   type: Type<TValue> | Array<Type<TValue>> | null | undefined,
-  options: IPropertyDefinitionOption<TValue> = {},
+  options: IPropertyDefinitionOptions<TValue> = {},
 ): PropertyDecorator {
   return function (target: Object, propertyKey: string | symbol) {
     const targetConstructor = target.constructor as Type;
@@ -44,5 +82,17 @@ export function PropertyType<
       { type },
       options,
     );
+
+    const RawType = Array.isArray(type) ? type[0] : type;
+
+    if (
+      RawType &&
+      typeof RawType === 'function' &&
+      RawType.prototype &&
+      !Array.isArray(RawType) &&
+      ![String, Number, Boolean, BigInt, Symbol].includes(<any>RawType)
+    ) {
+      TransformType(() => RawType)(target, propertyKey);
+    }
   };
 }

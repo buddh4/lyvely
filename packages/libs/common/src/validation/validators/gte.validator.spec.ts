@@ -1,5 +1,5 @@
 import { IsNumber, validate } from 'class-validator';
-import { Gte } from '../core.validators';
+import { Gte } from './gte.validator';
 
 class GteModel {
   @IsNumber()

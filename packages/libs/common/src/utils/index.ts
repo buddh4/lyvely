@@ -6,6 +6,5 @@ export * from './validation.util';
 export * from './object.util';
 export * from './function.util';
 export * from './promise.util';
-export * from './transformation.util';
 export * from './nested.path.type';
 export * from './math.util';

@@ -20,7 +20,6 @@ export class SortResult extends BaseModel<SortResult> {
 
 @Expose()
 export class SortResponse extends BaseModel<SortResponse> {
-  @Type(() => SortResult)
   @PropertyType([SortResult])
   sort: SortResult[];
 }

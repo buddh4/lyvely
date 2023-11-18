@@ -1,4 +1,4 @@
-import { Type } from '../../utils';
+import { Type } from '../../utils/util.types';
 import { getPropertyTypeDefinitions } from '../decorators';
 
 interface InitPropertiesOptionsIF {

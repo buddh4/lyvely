@@ -4,8 +4,9 @@ import {
   PropertyType,
   TransformObjectId,
   PropertiesOf,
+  TransformObjectIds,
 } from '@lyvely/common';
-import { Exclude, Expose, Transform, Type } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
 import { IsString, Length, IsOptional } from 'class-validator';
 import {
   CreatedAsType,
@@ -54,7 +55,7 @@ export class ContentMetadataModel<TID = string>
   @TransformObjectId()
   createdBy: TID;
 
-  @Type(() => ContentAuthor)
+  @PropertyType(ContentAuthor, { optional: true })
   createdAs?: ContentAuthor<TID>;
 
   @PropertyType(Date)
@@ -107,23 +108,19 @@ export class ContentModel<TID = string, T extends IContent = IContent, TConfig e
   type: string;
 
   @Expose()
-  @Type(() => ContentDataTypeModel)
   @PropertyType(ContentDataTypeModel)
   content: ContentDataTypeModel;
 
   @Expose()
-  @Type(() => ContentMetadataModel)
   @PropertyType(ContentMetadataModel)
   meta: ContentMetadataModel<TID>;
 
   @Expose()
-  @Transform(
-    ({ obj }) => obj.tagIds?.map((id: { toString: () => string }) => id.toString?.()) || [],
-  )
+  @TransformObjectIds()
   tagIds: Array<TID>;
 
   @Expose()
-  @Type(() => ContentLogModel)
+  @PropertyType([ContentModel])
   logs: Array<ContentLogModel<any, TID>>;
 
   @Expose()

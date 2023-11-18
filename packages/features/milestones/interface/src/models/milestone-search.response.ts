@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { MilestoneModel } from './milestone.model';
-import { BaseModel, PropertyType, TransformTo } from '@lyvely/common';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { ICalendarPlanResponse } from '@lyvely/calendar-plan-interface';
 import { MilestoneRelationModel } from './milestone-relation.model';
 
@@ -10,12 +10,10 @@ export class MilestoneSearchResponse
   implements ICalendarPlanResponse<MilestoneModel>
 {
   @Expose()
-  @TransformTo(MilestoneModel)
   @PropertyType([MilestoneModel])
   models: MilestoneModel[];
 
   @Expose()
-  @TransformTo(MilestoneRelationModel)
   @PropertyType([MilestoneRelationModel])
   relations: MilestoneRelationModel[];
 }

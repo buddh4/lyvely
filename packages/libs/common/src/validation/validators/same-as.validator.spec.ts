@@ -1,5 +1,5 @@
 import { IsString, validate } from 'class-validator';
-import { SameAs } from '../core.validators';
+import { SameAs } from './same-as.validator';
 
 class PasswordModel {
   @IsString()

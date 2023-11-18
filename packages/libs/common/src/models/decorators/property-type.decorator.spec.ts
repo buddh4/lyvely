@@ -1,5 +1,6 @@
 import { PropertyType } from './property-type.decorator';
 import { BaseModel } from '../base.model';
+import { plainToClass } from 'class-transformer';
 
 describe('PropertyType', () => {
   it('test primitive value', async () => {
@@ -413,5 +414,39 @@ describe('PropertyType', () => {
 
     const model = new TestModel({ val: <any>'1,2' });
     expect(model.val).toEqual(null);
+  });
+
+  it('class transformer type', async () => {
+    class NestedModel extends BaseModel<NestedModel> {
+      nested?: number;
+    }
+
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType(NestedModel)
+      val: NestedModel;
+    }
+
+    const model = plainToClass(TestModel, { val: { nested: 3 } });
+
+    expect(model instanceof TestModel).toEqual(true);
+    expect(model.val instanceof NestedModel).toEqual(true);
+  });
+
+  it('class transformer array type', async () => {
+    class NestedModel extends BaseModel<NestedModel> {
+      nested?: number;
+    }
+
+    class TestModel extends BaseModel<TestModel> {
+      @PropertyType([NestedModel])
+      val: NestedModel[];
+    }
+
+    const model = plainToClass(TestModel, { val: [{ nested: 1 }, { nested: 2 }] });
+
+    expect(model instanceof TestModel).toEqual(true);
+    expect(Array.isArray(model.val)).toEqual(true);
+    expect(model.val[0] instanceof NestedModel).toEqual(true);
+    expect(model.val[1] instanceof NestedModel).toEqual(true);
   });
 });

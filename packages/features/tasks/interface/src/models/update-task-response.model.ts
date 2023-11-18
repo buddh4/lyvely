@@ -6,11 +6,10 @@ import { TaskModel } from './task.model';
 @Exclude()
 export class UpdateTaskResponse extends ContentUpdateResponse<TaskModel> {
   @Expose()
-  @Type(() => TaskModel)
   @PropertyType(TaskModel)
   model: TaskModel;
 
   @Expose()
-  @Type(() => TagModel)
+  @PropertyType([TagModel])
   tags: TagModel[];
 }

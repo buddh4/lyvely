@@ -8,7 +8,6 @@ export abstract class ContentUpdateResponse<TModel extends IContent> {
   abstract model: TModel;
 
   @Expose()
-  @Type(() => TagModel)
   @PropertyType([TagModel])
   tags: TagModel[];
 }

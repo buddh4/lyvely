@@ -1,5 +1,5 @@
 import { IsEmail, IsString, validate } from 'class-validator';
-import { NotSameAs } from '../core.validators';
+import { NotSameAs } from './not-same-as.validator';
 
 class EmailModel {
   @IsString()

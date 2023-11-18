@@ -1,6 +1,6 @@
-import { Exclude, Type, Expose } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { TaskModel } from './task.model';
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { ICalendarPlanResponse } from '@lyvely/calendar-plan-interface';
 
 @Exclude()
@@ -9,6 +9,6 @@ export class TaskSearchResponse
   implements ICalendarPlanResponse<TaskModel>
 {
   @Expose()
-  @Type(() => TaskModel)
+  @PropertyType([TaskModel])
   models: TaskModel[];
 }

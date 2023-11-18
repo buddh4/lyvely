@@ -1,4 +1,4 @@
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { IStreamFilter, IStreamRequest, IStreamState } from '../interfaces';
 import { StreamState } from './stream-state.model';
 import { Expose, Type } from 'class-transformer';
@@ -12,7 +12,7 @@ export class StreamRequest<
   extends BaseModel<StreamRequest<TFilter, TState>>
   implements IStreamRequest<TFilter, TState>
 {
-  @Type(() => StreamState)
+  @PropertyType(StreamState, { optional: true })
   state?: TState;
 
   @IsNumber()

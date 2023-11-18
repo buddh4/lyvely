@@ -72,6 +72,6 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   guid?: string;
 
   @Expose()
-  @Type(() => TagModel)
+  @PropertyType([TagModel])
   tags: TagModel[];
 }

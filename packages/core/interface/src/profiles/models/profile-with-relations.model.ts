@@ -3,7 +3,7 @@ import { MembershipModel } from './profile-membership.model';
 import { ProfileRelationDetailsModel, ProfileRelationModel } from './profile-relation.model';
 import { ProfileModel } from './profile.model';
 import { BaseUserProfileRelationType, ProfileRelationRole } from '../interfaces';
-import { IEditableModel, PropertyType, TransformTo } from '@lyvely/common';
+import { IEditableModel, PropertyType } from '@lyvely/common';
 import { UpdateProfileModel } from './update-profile.model';
 
 /**
@@ -20,7 +20,6 @@ export class ProfileWithRelationsModel<TID = string>
    */
   @Expose()
   @PropertyType([ProfileRelationDetailsModel])
-  @TransformTo(ProfileRelationDetailsModel)
   userRelations: ProfileRelationDetailsModel<TID>[];
 
   /**
@@ -34,7 +33,6 @@ export class ProfileWithRelationsModel<TID = string>
    */
   @Expose()
   @PropertyType([ProfileRelationDetailsModel])
-  @TransformTo(ProfileRelationDetailsModel)
   userOrganizationRelations: ProfileRelationDetailsModel<TID>[];
 
   /**
@@ -42,7 +40,6 @@ export class ProfileWithRelationsModel<TID = string>
    */
   @Expose()
   @PropertyType([ProfileRelationModel])
-  @TransformTo(ProfileRelationModel)
   profileRelations: ProfileRelationModel<TID>[];
 
   constructor(obj?: Partial<ProfileWithRelationsModel<TID>>) {

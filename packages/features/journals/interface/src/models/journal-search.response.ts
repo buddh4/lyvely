@@ -9,7 +9,6 @@ export class JournalSearchResponse
   implements ITimeSeriesCalendarPlanResponse<JournalModel>
 {
   @Expose()
-  @Type(() => JournalModel)
   @PropertyType([JournalModel])
   models: JournalModel[];
 

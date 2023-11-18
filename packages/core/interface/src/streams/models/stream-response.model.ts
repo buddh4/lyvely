@@ -1,7 +1,7 @@
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { IStreamResponse, IStreamState } from '../interfaces';
 import { StreamState } from './stream-state.model';
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
 export class StreamResponse<TModel, TState extends IStreamState = IStreamState>
@@ -12,7 +12,7 @@ export class StreamResponse<TModel, TState extends IStreamState = IStreamState>
   models: TModel[];
 
   @Expose()
-  @Type(() => StreamState)
+  @PropertyType(StreamState)
   state: TState;
 
   @Expose()

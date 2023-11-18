@@ -14,7 +14,6 @@ export class TimerDataPointValueModel<TID = string> extends BaseModel<
   TimerDataPointValueModel<TID>
 > {
   @Expose()
-  @Type(() => TimerModel)
   @PropertyType(TimerModel)
   @ValidateNested()
   timer: TimerModel<TID>;
@@ -31,7 +30,6 @@ export class TimerDataPointModel<TID = string>
   implements NumericDataPointInterface
 {
   @Expose()
-  @Type(() => TimerDataPointValueModel)
   @PropertyType(TimerDataPointValueModel)
   value: TimerDataPointValueModel<TID>;
 

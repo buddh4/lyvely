@@ -43,7 +43,7 @@ export function findByPath<T>(
   return result;
 }
 
-export function isObjectId(value: any) {
+export function isObjectId(value: any): value is object {
   return value && typeof value === 'object' && value._bsontype && value._bsontype === 'ObjectID';
 }
 

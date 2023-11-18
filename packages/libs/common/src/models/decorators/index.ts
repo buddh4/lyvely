@@ -1,2 +1,2 @@
 export * from './property-type.decorator';
-export * from './transform.decorator';
+export * from './transform-object-id.decorator';

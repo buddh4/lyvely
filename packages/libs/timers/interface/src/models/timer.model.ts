@@ -32,7 +32,6 @@ export class TimerModel<TID = string> extends BaseModel<TimerModel<TID>> {
   @TransformObjectId()
   uid?: TID;
 
-  @Type(() => TimeSpanModel)
   @PropertyType([TimeSpanModel])
   @ValidateNested()
   spans: TimeSpanModel[];

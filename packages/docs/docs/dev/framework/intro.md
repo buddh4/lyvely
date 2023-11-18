@@ -1,7 +1,7 @@
 ---
 ---
 
-# Module development
+# Introduction
 
 Custom feature modules are usually organized into a monorepo with **web**, **interface**, and **api** packages. 
 While the interface package is not mandatory, we strongly recommend its use. This recommendation aims to prevent code 

@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IEditableModel, PropertyType, TransformTo } from '@lyvely/common';
+import { IEditableModel, PropertyType } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { TimerModel } from '@lyvely/timers-interface';
 import { UpdateTaskModel } from './update-task.model';
@@ -21,7 +21,6 @@ export class TaskModel<TID = string>
   done?: string;
 
   @Expose()
-  @TransformTo(TimerModel)
   @PropertyType(TimerModel)
   timer: TimerModel;
 
@@ -58,12 +57,10 @@ export class TaskWithUsersModel<TID = string> extends ContentModel<
   ITaskConfig
 > {
   @Expose()
-  @TransformTo(UserDoneModel)
   @PropertyType([UserDoneModel])
   doneBy?: UserDoneModel<TID>[];
 
   @Expose()
-  @TransformTo(TaskModel)
   @PropertyType([TaskModel])
   timers?: TimerModel<TID>[];
 

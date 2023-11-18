@@ -30,7 +30,6 @@ export class InvitationRequest extends BaseModel<InvitationRequest> {
   @Expose()
   @IsArray()
   @ArrayNotEmpty()
-  @Type(() => MailInvite)
   @PropertyType(MailInvite)
   @ValidateNested()
   invites: MailInvite[];

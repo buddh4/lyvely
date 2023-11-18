@@ -1,6 +1,4 @@
-/** @type {import('dependency-cruiser').IConfiguration} */
-
-const preset = require('../../.dependency-cruiser.preset');
+const preset = require('@lyvely/configs/dependency-cruiser/.dependency-cruiser.preset');
 
 function getModulePath(name) {
   return `^(@|src)/${name}`;
@@ -52,6 +50,7 @@ function createModuleDeps(name, allowedDeps, extendDefaultDeps) {
   };
 }
 
+/** @type {import('dependency-cruiser').IConfiguration} */
 module.exports = {
   forbidden: [
     ...preset.forbidden,
