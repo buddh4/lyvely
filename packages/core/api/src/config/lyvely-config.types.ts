@@ -93,6 +93,7 @@ export interface IRedisConfig {
 }
 
 export interface ILyvelyCsrfOptions {
+  enabled?: boolean;
   name?: string;
   secure?: boolean;
   httpOnly?: boolean;
@@ -110,7 +111,7 @@ export interface IUserRegistrationOptions {
 }
 
 export interface ILegalOptions {
-  poweredBy: boolean;
+  poweredBy?: boolean;
   sections: {
     [k: string]: {
       label: string;

@@ -12,7 +12,6 @@ import {
   createApiUrl,
   installModules,
   importModules,
-  registerModule,
   registerModules,
 } from '@/core';
 import { registerCoreModules } from './core.modules';

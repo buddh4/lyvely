@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useBaseInputSetup } from './BaseInput';
+import { useBaseInputSetup} from './BaseInput';
 import { HTMLAttributes, computed, onMounted, ref } from 'vue';
 import { t, Translatable } from '@/i18n';
 
@@ -58,6 +58,7 @@ const baseInput = useBaseInputSetup<number>(props, emit);
 const { editable, hasFocus, label, inputClass, showHelpText, onChange, onFocusOut } = baseInput;
 
 const baseInputValue = baseInput.inputValue;
+
 const inputValue = computed({
   get: () => {
     let allowed = getAllowedVal(baseInputValue.value);
@@ -92,13 +93,17 @@ function getAllowedVal(val: number): number {
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
 });
+
+const { inputId } = useBaseInputSetup(props, emit)
+
 </script>
 
 <template>
   <section class="text-main" :class="wrapperClass">
-    <label v-if="label" :for="id" class="form-label">{{ t(label) }}</label>
+    <label v-if="label" :for="inputId" class="form-label">{{ t(label) }}</label>
     <input
-      :id="id"
+      :id="inputId"
+      :data-id="inputId"
       ref="input"
       v-model="inputValue"
       :disabled="disabled"

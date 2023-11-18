@@ -123,6 +123,7 @@ onMounted(() => {
 
     <input
       :id="inputId"
+      :data-id="inputId"
       ref="input"
       v-model="inputValue"
       :name="name"

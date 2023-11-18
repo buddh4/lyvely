@@ -58,7 +58,7 @@ function _assignRawDataTo<T extends Object>(
     }
 
     if (isBlacklistedProperty(path)) return;
-    if (typeof model === 'object' && strict && !Object.hasOwn(model as object, path)) return;
+    if (model && typeof model === 'object' && strict && !Object.hasOwn(model, path)) return;
 
     const transformed: any = transform ? transform(data[path], path) : undefined;
 

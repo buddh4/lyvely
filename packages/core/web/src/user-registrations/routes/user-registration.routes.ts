@@ -1,11 +1,11 @@
 import { ifNotAuthenticated } from '@/auth';
 import { translation } from '@/i18n';
-import { PATH_REGISTER, PATH_VERIFY_EMAIL } from '../user-registration.constants';
+import { PATH_SIGN_UP, PATH_VERIFY_EMAIL } from '../user-registration.constants';
 import { LAYOUT_INTRO } from '@/ui';
 
 export const userRegistrationRoutes = [
   {
-    path: PATH_REGISTER,
+    path: PATH_SIGN_UP,
     name: 'Register',
     meta: {
       isPublic: true,
@@ -14,7 +14,7 @@ export const userRegistrationRoutes = [
       title: translation('user-registrations.title'),
       i18n: { load: ['user-registrations'] },
     },
-    component: () => import('../views/UserRegistrationView.vue'),
+    component: () => import('../views/SignUpView.vue'),
     beforeEnter: [ifNotAuthenticated],
   },
   {

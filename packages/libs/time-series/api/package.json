@@ -30,11 +30,7 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@lyvely/testing": "^0.1.0-alpha3",
-    "@nestjs/testing": "^9.4.0",
-    "ts-jest": "29.1.0",
-    "ts-node": "10.9.1",
-    "typescript": "^5.2.2"
+    "@lyvely/testing": "^0.1.0-alpha3"
   },
   "jest": {
     "rootDir": ".",

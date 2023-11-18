@@ -143,7 +143,7 @@ onUnmounted(loginStore.reset);
 
     <template #footer>
       <div v-if="stage === 'usernameOrEmail'">
-        <ly-button class="primary w-full" @click="toPasswordStage">
+        <ly-button data-id="btn-to-password" class="primary w-full" @click="toPasswordStage">
           {{ $t('common.next') }}
         </ly-button>
 
@@ -177,6 +177,7 @@ onUnmounted(loginStore.reset);
 
       <ly-button
         v-if="stage === 'password'"
+        data-id="btn-login"
         class="primary w-full"
         form="login"
         :loading="loginStore.status.isStatusLoading()"

@@ -142,6 +142,7 @@ onMounted(() => {
     :input-error="inputError">
     <input
       :id="inputId"
+      :data-id="inputId"
       ref="input"
       v-model.number="inputValue"
       :placeholder="t(placeholder)"

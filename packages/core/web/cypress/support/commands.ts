@@ -23,8 +23,6 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import { Cookies } from '../../src/modules/core/web';
-
 // eslint-disable-next-line @typescript-eslint/no-namespace
 declare namespace Cypress {
   interface Chainable {
@@ -71,13 +69,13 @@ Cypress.Commands.add('login', () => {
   cy.get('#login-password').type('test');
   cy.get('[type="submit"]').click();
   cy.url().should('include', '/activities/habits');
-  cy.getCookie(Cookies.AUTHENTICATION).should('exist');
+  cy.getCookie('Authentication').should('exist');
 });
 
 Cypress.Commands.add('logout', () => {
   cy.visit('/auth/logout');
   cy.url().should('include', '/auth/login');
-  cy.getCookie(Cookies.AUTHENTICATION).should('not.exist');
+  cy.getCookie('Authentication').should('not.exist');
 });
 
 const ACTIVITY_GROUP_ITEM_SELECTOR = '#activity-overview [data-cid]';

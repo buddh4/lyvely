@@ -44,4 +44,4 @@ export function TransformObjectIds(
 }
 
 const transformObjectId = (value: any) =>
-  typeof value === 'object' && 'toString' in value ? value.toString() : value;
+  value && typeof value === 'object' && 'toString' in value ? value.toString() : value;

@@ -3,7 +3,7 @@ import { useFloatingInputSetup } from './FloatingInput';
 import { HTMLAttributes, computed, ref, onMounted } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
 import { msToTime, timeToMs, padTime } from '@lyvely/dates';
-import { Translatable } from '@/i18n';
+import { Translatable, t } from '@/i18n';
 
 export interface IProps {
   id?: string;
@@ -208,6 +208,9 @@ onMounted(() => {
         <div class="flex flex-col">
           <ly-button @click="increment('hours')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
+            :id="inputId"
+            :aria-label="t('ui.accessibility.forms.hours')"
+            :data-id="inputId+'-hours'"
             v-model="hourValue"
             data-timer-hours-input
             inputmode="numeric"
@@ -225,6 +228,8 @@ onMounted(() => {
           <ly-button @click="increment('minutes')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
             v-model="minuteValue"
+            :data-id="inputId+'-minutes'"
+            :aria-label="t('ui.accessibility.forms.minutes')"
             data-timer-minutes-input
             inputmode="numeric"
             :class="`w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm ${inputClass}`"
@@ -241,6 +246,8 @@ onMounted(() => {
           <ly-button @click="increment('seconds')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
             v-model="secondValue"
+            :data-id="inputId+'-seconds'"
+            :aria-label="t('ui.accessibility.forms.seconds')"
             data-timer-seconds-input
             inputmode="numeric"
             :class="`w-10 bg-highlight border border-divide rounded px-2.5 py-0.5 text-sm ${inputClass}`"

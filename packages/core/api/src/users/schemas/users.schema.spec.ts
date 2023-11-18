@@ -40,7 +40,6 @@ describe('Users schema', () => {
       expect(user.password).toBeDefined();
       expect(user.password).not.toEqual('Password');
       expect(user.email).toEqual('tester@test.de');
-      expect(user.enabled).toEqual(true);
       expect(user.locale).toEqual(getDefaultLocale());
 
       expect(user.emails).toBeDefined();

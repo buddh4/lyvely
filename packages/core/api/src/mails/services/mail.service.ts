@@ -119,6 +119,7 @@ export class MailService {
   private isStreamTransport(info: SentMessageInfo): info is IStreamMessageInfo {
     const mailConfig = this.configService.get<LyvelyMailOptions>('mail');
     return (
+      !!mailConfig?.transport &&
       typeof mailConfig?.transport === 'object' &&
       'streamTransport' in mailConfig.transport &&
       mailConfig?.transport?.streamTransport &&
@@ -129,6 +130,7 @@ export class MailService {
   private isJsonTransport(info: SentMessageInfo) {
     const mailConfig = this.configService.get<LyvelyMailOptions>('mail');
     return (
+      !!mailConfig?.transport &&
       typeof mailConfig?.transport === 'object' &&
       'jsonTransport' in mailConfig.transport &&
       mailConfig?.transport?.jsonTransport &&

@@ -50,7 +50,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['change', 'update:modelValue']);
 
 const input = ref<HTMLInputElement>();
-const { inputValue, onChange, onFocusOut, showHelpText, label, inputClass } = useBaseInputSetup(
+const { inputValue, inputId, onChange, onFocusOut, showHelpText, label, inputClass } = useBaseInputSetup(
   props,
   emit,
 );
@@ -63,9 +63,10 @@ onMounted(() => {
 <template>
   <div :class="wrapperClass">
     <div class="flex">
-      <label class="inline-flex items-center">
+      <label :for="inputId" class="inline-flex items-center">
         <input
-          :id="id"
+          :id="inputId"
+          :data-id="inputId"
           ref="input"
           v-model="inputValue"
           :aria-describedby="ariaDescribedby"

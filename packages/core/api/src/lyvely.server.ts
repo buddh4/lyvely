@@ -108,12 +108,24 @@ export class LyvelyServer {
   }
 
   private initCsrf() {
-    const cookie = this.configService.get<ILyvelyCsrfOptions>('csrf', {});
-    cookie.name ||= 'csrf-token';
-    cookie.sameSite ||= 'lax';
-    cookie.httpOnly = cookie.httpOnly !== false;
-    cookie.secure =
-      typeof cookie.secure === 'boolean' ? cookie.secure : !!this.configService.get('http.tls');
+    const csrfConfig = this.configService.get<ILyvelyCsrfOptions>('csrf', {});
+
+    if (csrfConfig.enabled === false) {
+      this.logger.warn('Csrf is disabled');
+      return;
+    }
+
+    const cookie = {
+      name: 'csrf-token',
+      sameSite: 'lax',
+      httpOnly: true,
+      secure: !!this.configService.get('http.tls'),
+      ...csrfConfig,
+    };
+
+    this.logger.log('Use csrf cookie:');
+    this.logger.log(cookie);
+
     this.nestApp.use(csurf({ cookie }));
   }
 

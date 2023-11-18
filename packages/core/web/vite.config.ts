@@ -18,6 +18,7 @@ export default defineConfig({
     }),
   ],
   server: {
+    host: process.env.NODE_ENV === 'e2e' ? '127.0.0.1' : 'localhost',
     port: 3000,
   },
   assetsInclude: ['**/*.svg'],

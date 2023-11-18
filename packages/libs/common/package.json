@@ -39,15 +39,9 @@
     "@rollup/plugin-typescript": "^11.1.0",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
-    "@types/jest": "^29.5.1",
-    "@types/lodash": "^4.14.194",
     "@types/he": "^1.2.2",
     "npm-watch": "^0.11.0",
-    "rimraf": "^5.0.0",
-    "rollup": "^3.21.3",
-    "ts-jest": "^29.1.0",
-    "tscpaths": "^0.0.9",
-    "typescript": "^5.0.4"
+    "rimraf": "^5.0.0"
   },
   "jest": {
     "rootDir": "./",

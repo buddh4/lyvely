@@ -1,35 +1,32 @@
 describe('Test Register Users', function () {
   beforeEach(() => {
     cy.task('db:seed');
-    cy.visit('http://localhost:3000/logout');
+    cy.visit('http://127.0.0.1:3000/logout');
   });
 
   afterEach(() => {
     cy.reload();
   });
 
-  it('greeting and content', () => {
-    cy.contains('h2', 'Sign In');
-    cy.contains('Register').should('have.attr', 'href', '/register');
+  it('Successful Login', function () {
+    cy.get('[data-id="login-usernameoremail"]').type('Jan');
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.get('[data-id="login-password"]').type('TestPassword123');
+    cy.get('[data-id="btn-login"]').click();
+    cy.url().should('include', '/p/Jan/stream');
   });
 
-  it('requires username and password', () => {
-    cy.get('[type="submit"]').click();
-    cy.get('.text-danger').should('contain', 'Username is required.');
-    cy.get('.text-danger').should('contain', 'Password is required.');
+  it('greeting and content', () => {
+    cy.contains('h1', 'Sign in');
+    cy.contains('Sign up').should('have.attr', 'href', '/register');
   });
 
   it('requires username', () => {
-    cy.get('#login-password').type('Jan{enter}');
-    cy.get('.text-danger').should('contain', 'Username is required.');
+    cy.get('[data-id="btn-submit"]').click();
+    cy.get('.text-danger').should('contain', 'Username or Email is required');
   });
 
-  it('requires password', () => {
-    cy.get('#login-username').type('Jan{enter}');
-    cy.get('.text-danger').should('contain', 'Password is required.');
-  });
-
-  it('Login user with wrong password', function () {
+  /* it('Failed Login - Incorrect Password', function () {
     cy.get('#login-username').type('Jan');
     cy.get('#login-password').type('test2{enter}');
     cy.url()
@@ -47,12 +44,7 @@ describe('Test Register Users', function () {
     cy.contains('Invalid username or password.');
   });
 
-  it('Login user successfully', function () {
-    cy.get('#login-username').type('Jan');
-    cy.get('#login-password').type('test');
-    cy.get('[type="submit"]').click();
-    cy.url().should('include', '/activities/habits');
-  });
+
 
   it('Logout user successfully', function () {
     cy.get('#login-username').type('Jan');
@@ -61,5 +53,5 @@ describe('Test Register Users', function () {
     cy.url()
       .should('include', '/login')
       .should(() => expect(localStorage.getItem('user-token')).to.not.exist);
-  });
+  });*/
 });

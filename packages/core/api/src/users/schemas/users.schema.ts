@@ -48,10 +48,6 @@ export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
   @PropertyType([UserEmail])
   emails: UserEmail[];
 
-  /** Whether the user is enabled. **/
-  @Prop({ default: true })
-  enabled: boolean;
-
   /** The unique username of this user. **/
   @Prop({ required: true, validate: VALID_HANDLE_REGEX })
   username: string;

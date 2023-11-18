@@ -164,7 +164,7 @@ function getComputedInputError(props: IBaseInputProps, formModelData?: IFormMode
   );
 }
 
-function getId(props: IBaseInputProps, formModelData?: IFormModelData) {
+function getId(props: IBaseInputProps, formModelData?: IFormModelData): string | undefined {
   if (props.id) {
     return props.id;
   }

@@ -30,6 +30,7 @@ export function translation(key: string, options?: any) {
 }
 
 export function translationAdapter(t: Translatable) {
+  if (!t) return '';
   if (typeof t === 'string') return translate(t);
   if (typeof t === 'object') return t.plain;
   if (typeof t === 'function') return t();
@@ -44,11 +45,11 @@ export function translate(key: ITranslatable, options?: Record<string, string>):
     return 'error';
   }
 
-  if (typeof key === 'object' && 'key' in key) {
+  if (key && typeof key === 'object' && 'key' in key) {
     return (<any>getI18n().global).t(key.key, key.params || options);
   }
 
-  if (typeof key === 'object' && 'plain' in key) {
+  if (key && typeof key === 'object' && 'plain' in key) {
     return key.plain;
   }
 

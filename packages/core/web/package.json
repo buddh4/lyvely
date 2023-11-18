@@ -21,12 +21,14 @@
   "web-types": "../../../node_modules/@lyvely/ui/dist/web-types.json",
   "scripts": {
     "test": "jest --passWithNoTests",
+    "cypress:open": "cypress open",
     "build": "vite build && vue-tsc -p tsconfig.build.json -declaration --emitDeclarationOnly",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write",
     "dev": "vite",
+    "dev:e2e": "cross-env NODE_ENV=e2e npm run dev",
     "deps": "npx depcruise --config .dependency-cruiser.js src"
   },
   "jest": {
@@ -114,12 +116,6 @@
     "@swc/jest": "^0.2.29",
     "@types/jest": "^29.5.5",
     "@vitejs/plugin-vue": "^4.4.0",
-    "@vue/vue3-jest": "^29.2.6",
-    "dependency-cruiser": "^14.1.0",
-    "ts-jest": "29.1.0",
-    "vite": "^4.3.9",
-    "vite-plugin-externalize-deps": "^0.7.0",
-    "vite-tsconfig-paths": "^4.2.0",
-    "vue-tsc": "^1.6.5"
+    "@vue/vue3-jest": "^29.2.6"
   }
 }

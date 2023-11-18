@@ -114,6 +114,7 @@ function cancel() {
       <div class="flex-grow">
         <textarea
           :id="inputId"
+          :data-id="inputId"
           ref="input"
           v-model="editValue"
           :placeholder="t(placeholder)"

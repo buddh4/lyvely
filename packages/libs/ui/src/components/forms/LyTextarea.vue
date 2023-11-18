@@ -76,6 +76,7 @@ onMounted(() => {
     :input-error="inputError">
     <textarea
       :id="inputId"
+      :data-id="inputId"
       ref="input"
       v-model="inputValue"
       :placeholder="t(placeholder)"

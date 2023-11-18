@@ -2,6 +2,7 @@
 import { HTMLAttributes, computed } from 'vue';
 import { parseInt } from 'lodash';
 import LyCheckbox from './LyCheckbox.vue';
+import {useBaseInputSetup} from "@/components/forms/BaseInput";
 
 export interface IProps {
   max?: number;
@@ -56,6 +57,8 @@ const values = computed(() => {
   return result;
 });
 
+const { inputId } = useBaseInputSetup(props, emit);
+
 function updateValue(checked: boolean, value: string) {
   let intValue = parseInt(value);
   emit('update:selection', checked ? intValue : --intValue);
@@ -68,6 +71,7 @@ function updateValue(checked: boolean, value: string) {
       <div v-for="unit in count" :key="unit">
         <ly-checkbox
           v-model="values"
+          :data-id="inputId + '-' + unit"
           :disabled="props.disabled"
           :input-class="cssClasses(unit)"
           :input-style="inputStyle"
@@ -78,6 +82,7 @@ function updateValue(checked: boolean, value: string) {
     <template v-else>
       <ly-checkbox
         model-value="1"
+        :data-id="inputId"
         :checked="!!props.selection"
         :input-class="cssClasses(0)"
         :input-style="inputStyle"

@@ -1,4 +1,13 @@
 {
+  "ui": {
+    "accessibility": {
+      "forms": {
+        "hours": "Hour input",
+        "minutes": "Minutes input",
+        "seconds": "Seconds input"
+      }
+    }
+  },
   "avatar": {
     "title": "Update your avatar",
     "upload": "Upload new avatar",
@@ -171,7 +180,8 @@
     "label": "Please enter the code below"
   },
   "validation": {
-    "isNotEmpty": "{property} can not be empty",
+    "isString": "{property} is required",
+    "isNotEmpty": "{property} is required",
     "maxLength": "{property} must be at least {c1} characters of fewer",
     "isLength": "{property} must be between {c1} and {c2} characters",
     "isCaptcha": "Please enter 5 alphanumeric characters",

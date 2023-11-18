@@ -170,6 +170,7 @@ const hidePassword = ref(true);
         class="primary w-full mb-4 float-right"
         text="user-registrations.create_account"
         :disabled="status.isStatusLoading()"
+        data-id="submit-sign-up"
         @click="register" />
 
       <div class="text-center pt-4">

@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['update:modelValue']);
 
 const cssClass = computed(() => [
-  'inline-block items-center border px-4 py-3 rounded mb-1',
+  'inline-block items-center border px-4 py-3 rounded mb-1 w-full',
   { 'border-danger text-danger bg-red-50': props.type === 'danger' },
   { 'border-info text-blue-900 bg-blue-50': props.type === 'info' },
   { 'border-warning text-orange-600 bg-orange-50': props.type === 'warning' },

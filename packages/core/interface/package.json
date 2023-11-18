@@ -32,13 +32,6 @@
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13"
   },
-  "devDependencies": {
-    "rollup": "^3.21.3",
-    "ts-jest": "29.1.0",
-    "ts-node": "10.9.1",
-    "dependency-cruiser": "^14.1.0",
-    "typescript": "^5.2.2"
-  },
   "jest": {
     "rootDir": ".",
     "setupFilesAfterEnv": [

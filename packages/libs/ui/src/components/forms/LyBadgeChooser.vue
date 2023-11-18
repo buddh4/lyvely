@@ -11,18 +11,18 @@ import LyButton from "@/components/buttons/LyButton.vue";
 export type IChooserOption = { key: string; value?: any; label?: string; color?: string } | string;
 
 export interface IProps {
+  id?: string,
   modelValue: Array<string>;
   options: Array<IChooserOption>;
   labels?: Record<string, string> | ((key: string) => string);
   add: boolean;
   multiple?: boolean;
   addTextKey?: string;
-  inputId?: string;
   label: Translatable;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-  inputId: uniqueId('tag-chooser'),
+  id: uniqueId('tag-chooser'),
   labels: undefined,
   add: false,
   multiple: true,
@@ -163,8 +163,8 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
 
 <template>
   <ly-floating-input-layout
+    :id="id"
     tabindex="0"
-    :input-id="inputId"
     class="floating-input cursor-pointer h-auto"
     :label="label"
     @click="visible = true"
@@ -189,7 +189,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
     <div ref="chooser" class="flex flex-col max-h-full">
       <div>
         <ly-text-field
-          id="badge-chooser-search"
+          :id="id + '-search'"
           v-model="query"
           :autofocus="true"
           :placeholder="t('common.filter.search')"

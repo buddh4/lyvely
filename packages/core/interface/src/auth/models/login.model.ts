@@ -4,6 +4,7 @@ import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 @Expose()
 export class LoginModel {
   @IsString()
+  @IsNotEmpty()
   usernameOrEmail: string;
 
   @IsNotEmpty()

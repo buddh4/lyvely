@@ -7,8 +7,9 @@ import LyAlert from '@/components/alerts/LyAlert.vue';
 import { computed } from 'vue';
 
 export interface IProps {
+  id?: string;
   label?: Translatable;
-  inputId: string;
+  inputId?: string;
   inputError?: Translatable;
   helpText?: Translatable;
   wrapperClass?: string;
@@ -17,7 +18,9 @@ export interface IProps {
 }
 
 const props = withDefaults(defineProps<IProps>(), {
+  id: undefined,
   label: undefined,
+  inputId: undefined,
   helpText: undefined,
   inputError: undefined,
   wrapperClass: undefined,
@@ -39,11 +42,12 @@ const wrapperClasses = computed(() => {
 </script>
 
 <template>
-  <section :class="wrapperClasses">
+  <section :id="id" :class="wrapperClasses">
     <slot name="label">
       <label
         v-if="label"
         :for="inputId"
+        :id="inputId+'label'"
         class="absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none z-10"
         :aria-describedby="ariaDescribedBy">
         {{ t(label) }}
