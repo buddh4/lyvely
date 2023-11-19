@@ -13,7 +13,7 @@
         "remember": "Keep me signed in."
       },
       "errors": {
-        "invalid_input": "Invalid email or password"
+        "invalid_input": "Invalid username/email or password. Please try again."
       }
     }
   }

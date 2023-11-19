@@ -18,7 +18,7 @@ export const useAddEmailStore = defineStore('add-email', () => {
 
   const validator = ref(
     new I18nModelValidator(model.value, {
-      translationKey: 'user-accounts.my-account.add_email.errors',
+      labelKey: 'user-accounts.my-account.add_email.errors',
       rules: {
         email: [
           (value: string, result: IFieldValidationResult) => {

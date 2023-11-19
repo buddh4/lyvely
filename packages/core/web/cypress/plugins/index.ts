@@ -12,6 +12,8 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
+import fs from 'fs';
+
 require('dotenv').config({ path: '.e2e.env' });
 const path = require('path');
 const { Seeder } = require('mongo-seeding');
@@ -37,6 +39,35 @@ async function seed(cfg) {
   return true;
 }
 
+async function deleteMails() {
+  // Specify the relative path to the directory
+  const relativeDirectoryPath = '../../../api/mail/messages/test';
+
+  // Resolve the absolute path to the directory
+  const absoluteDirectoryPath = path.resolve(__dirname, relativeDirectoryPath);
+
+  try {
+    // Create the directory if it doesn't exist
+    if (!fs.existsSync(absoluteDirectoryPath)) {
+      fs.mkdirSync(absoluteDirectoryPath, { recursive: true });
+    }
+
+    // Use Node.js fs.readdir to get a list of files and subdirectories
+    fs.readdirSync(absoluteDirectoryPath).forEach((file) => {
+      const filePath = path.join(absoluteDirectoryPath, file);
+
+      // Check if the file is an HTML file and delete it
+      if (filePath.endsWith('.html')) {
+        fs.unlinkSync(filePath);
+      }
+    });
+
+    return true;
+  } catch (err) {
+    throw err;
+  }
+}
+
 /**
  * @type {Cypress.PluginConfig}
  */
@@ -47,6 +78,7 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   on('task', {
     'db:seed': () => seed(config),
+    'api:deleteMails': () => deleteMails(),
   });
 
   return config;

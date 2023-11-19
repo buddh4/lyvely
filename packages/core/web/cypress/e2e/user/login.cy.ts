@@ -1,4 +1,4 @@
-describe('Test Register Users', function () {
+describe('Test User Login/Logout', function () {
   beforeEach(() => {
     cy.task('db:seed');
     cy.visit('http://127.0.0.1:3000/logout');
@@ -8,50 +8,64 @@ describe('Test Register Users', function () {
     cy.reload();
   });
 
-  it('Successful Login', function () {
+  it('Welcome - Greeting & Content', () => {
+    cy.contains('h1', 'Sign in');
+    cy.contains('Sign up').should('have.attr', 'href', '/register');
+  });
+
+  it('Failed Login - Username Or Password required', () => {
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.contains('Username or Email is required');
+  });
+
+  it('Failed Login - Password required', () => {
+    cy.get('[data-id="login-usernameoremail"]').type('Jan');
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.get('[data-id="btn-login"]').click();
+    cy.contains('Password is required');
+  });
+
+  it('Failed Login - Incorrect Password', function () {
+    cy.get('[data-id="login-usernameoremail"]').type('Jan');
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.get('[data-id="login-password"]').type('TestPassword1234');
+    cy.get('[data-id="btn-login"]').click();
+    cy.contains('Invalid username/email or password. Please try again.');
+  });
+
+  it('Failed Login - Nonexisting user', function () {
+    cy.get('[data-id="login-usernameoremail"]').type('DoesNotExist');
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.get('[data-id="login-password"]').type('TestPassword1234');
+    cy.get('[data-id="btn-login"]').click();
+    cy.contains('Invalid username/email or password. Please try again.');
+  });
+
+  it('Successful Login - username', function () {
     cy.get('[data-id="login-usernameoremail"]').type('Jan');
     cy.get('[data-id="btn-to-password"]').click();
     cy.get('[data-id="login-password"]').type('TestPassword123');
     cy.get('[data-id="btn-login"]').click();
     cy.url().should('include', '/p/Jan/stream');
+    cy.getCookie('Authentication').should('exist');
+    cy.getCookie('Refresh').should('exist');
   });
 
-  it('greeting and content', () => {
-    cy.contains('h1', 'Sign in');
-    cy.contains('Sign up').should('have.attr', 'href', '/register');
+  it('Successful Login - email', function () {
+    cy.get('[data-id="login-usernameoremail"]').type('jan@test.com');
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.get('[data-id="login-password"]').type('TestPassword123');
+    cy.get('[data-id="btn-login"]').click();
+    cy.url().should('include', '/p/Jan/stream');
+    cy.getCookie('Authentication').should('exist');
+    cy.getCookie('Refresh').should('exist');
   });
 
-  it('requires username', () => {
-    cy.get('[data-id="btn-submit"]').click();
-    cy.get('.text-danger').should('contain', 'Username or Email is required');
+  it('Successful Login - enter', function () {
+    cy.get('[data-id="login-usernameoremail"]').type('jan@test.com{enter}');
+    cy.get('[data-id="login-password"]').type('TestPassword123{enter}');
+    cy.url().should('include', '/p/Jan/stream');
+    cy.getCookie('Authentication').should('exist');
+    cy.getCookie('Refresh').should('exist');
   });
-
-  /* it('Failed Login - Incorrect Password', function () {
-    cy.get('#login-username').type('Jan');
-    cy.get('#login-password').type('test2{enter}');
-    cy.url()
-      .should('include', '/login')
-      .should(() => expect(localStorage.getItem('user-token')).to.not.exist);
-    cy.contains('Invalid username or password.');
-  });
-
-  it('Login unknown user', function () {
-    cy.get('#login-username').type('NotExisting');
-    cy.get('#login-password').type('test{enter}');
-    cy.url()
-      .should('include', '/login')
-      .should(() => expect(localStorage.getItem('user-token')).to.not.exist);
-    cy.contains('Invalid username or password.');
-  });
-
-
-
-  it('Logout user successfully', function () {
-    cy.get('#login-username').type('Jan');
-    cy.get('#login-password').type('test{enter}');
-    cy.visit('http://localhost:3000/logout');
-    cy.url()
-      .should('include', '/login')
-      .should(() => expect(localStorage.getItem('user-token')).to.not.exist);
-  });*/
 });

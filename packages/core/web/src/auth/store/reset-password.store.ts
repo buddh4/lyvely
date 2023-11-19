@@ -15,9 +15,7 @@ export const useResetPasswordStore = defineStore('reset-password', () => {
   const resetPasswordService = new ResetPasswordService();
 
   const model = ref(new ResetPassword());
-  const validator = ref(
-    new I18nModelValidator(model, { translationKey: 'auth.reset_password.fields' }),
-  );
+  const validator = ref(new I18nModelValidator(model, { labelKey: 'auth.reset_password.fields' }));
 
   function reset() {
     setStage('init');

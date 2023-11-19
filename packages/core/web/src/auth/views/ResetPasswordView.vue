@@ -14,6 +14,7 @@ const { model: resetModel, validator: resetValidator, stage } = storeToRefs(rese
 const { model: sendMailModel, validator: sendMailValidator } = storeToRefs(
   sendResetPasswordMailStore,
 );
+
 const router = useRouter();
 const loginRoute = { path: PATH_LOGIN };
 const captchaInput = ref();
@@ -42,12 +43,17 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
   <ly-centered-panel v-if="stage === 'init'" title="auth.reset_password.title" width="lg">
     <template #body>
       <ly-form-model
+        id="send-mail"
         v-model="sendMailModel"
         :validator="sendMailValidator"
         :status="sendResetPasswordMailStore.status"
-        label-key="auth.reset_password.fields">
-        <ly-text-field property="email" autocomplete="email" :autofocus="!isTouchScreen()" />
-        <captcha-input ref="captchaInput" />
+        @keydown.enter="sendMail">
+        <ly-text-field
+          property="usernameOrEmail"
+          autocomplete="email"
+          :required="true"
+          :autofocus="!isTouchScreen()" />
+        <captcha-input id="reset-password-captcha" ref="captchaInput" />
       </ly-form-model>
     </template>
 
@@ -61,7 +67,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
       </div>
 
       <div class="text-right mt-4">
-        <router-link :to="loginRoute" class="items-center text-xs">
+        <router-link :to="loginRoute" data-id="to-login" class="items-center text-xs">
           {{ $t('auth.reset_password.to_login') }}
         </router-link>
       </div>
@@ -76,7 +82,11 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     </template>
 
     <template #footer>
-      <ly-button class="primary float-right" text="auth.reset_password.to_login" @click="toLogin" />
+      <ly-button
+        class="primary float-right"
+        data-id="to-login"
+        text="auth.reset_password.to_login"
+        @click="toLogin" />
     </template>
   </ly-centered-panel>
 

@@ -1,6 +1,6 @@
 import { Ref, ref } from 'vue';
 import { ModelValidator, FieldValidationException } from '@lyvely/common';
-import { isFieldValidationError, throwServiceException } from '../util';
+import { errorToServiceException, isFieldValidationError, throwServiceException } from '../util';
 
 export enum Status {
   INIT,
@@ -95,6 +95,19 @@ export async function loadingState<T = any, R = T | void>(
     }) as Promise<R extends void | undefined ? T : R>;
 }
 
+/**
+ * This helper can be used to automatically manage a state object in combination with an asynchronous operation,
+ * in most cases an api call.
+ * The first argument is an either a promise or a function returning a promise. If you want to facilitate the validator
+ * parameter, the first argument needs to be a function, otherwise we can not prevent the promise from running if the
+ * validation fails.
+ * This function automatically translates exceptions into service exceptions.
+ * @param promise
+ * @param status
+ * @param validator
+ * @param resolve
+ * @param reject
+ */
 export async function loadingStatus<T = any, R = T | void>(
   promise: (() => Promise<T>) | Promise<T>,
   status: StoreStatusPlugin,

@@ -9,8 +9,10 @@ import bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 
-const COOKIE_REFRESH = 'Refresh';
-const COOKIE_REFRESH_SECURE = '__Secure-Refresh';
+export const COOKIE_REFRESH = 'Refresh';
+// TODO: this should not be hardcoded since the /api path is optional also when using versioning the path differs
+export const COOKIE_REFRESH_PATH = '/api/auth/refresh';
+export const COOKIE_REFRESH_SECURE = '__Secure-Refresh';
 export const JWT_REFRESH_TOKEN = 'jwt-refresh-token';
 
 export interface JwtRefreshTokenPayloadIF extends JwtTokenPayloadIF {
@@ -38,7 +40,9 @@ export function getRefreshCookieExpiresIn(remember: boolean, configService: Conf
 
 export function clearRefreshCookies(res: Response) {
   res.clearCookie(COOKIE_REFRESH);
+  res.clearCookie(COOKIE_REFRESH, { path: COOKIE_REFRESH_PATH });
   res.clearCookie(COOKIE_REFRESH_SECURE);
+  res.clearCookie(COOKIE_REFRESH_SECURE, { path: COOKIE_REFRESH_PATH });
 }
 
 @Injectable()

@@ -3,27 +3,35 @@ import { translate } from './i18n';
 
 export interface I18nModelValidatorOptionsIF<T extends object = object>
   extends IValidatorOptions<T> {
-  translationKey?: string;
+  labelKey?: string;
 }
 
-export class I18nModelValidator<T extends object = object> extends ModelValidator<T> {
+export class I18nModelValidator<
+  T extends object = object,
+  TOptions extends I18nModelValidatorOptionsIF = I18nModelValidatorOptionsIF,
+> extends ModelValidator<T, TOptions> {
   constructor(model?: T, options?: I18nModelValidatorOptionsIF<T>) {
     options = options || {};
-    options.translate =
-      options.translate ||
-      ((error) => {
-        const constraints = getPropertyConstraints(error.model, <any>error.property);
-        const translationVars = constraints.reduce((result, value, index) => {
-          result[`c${index + 1}`] = value;
-          return result;
-        }, {});
-        const translationKey = `validation.${error.rule}`;
-        translationVars['property'] = options?.translationKey
-          ? translate(`${options.translationKey}.${error.property}`)
-          : error.property;
-        return translate(translationKey, translationVars);
-        //return translated !== translationKey ? translated : error.message;
-      });
     super(model, options);
+    this.options.translate ||= (error) => {
+      const constraints = getPropertyConstraints(error.model, <any>error.property);
+      const translationVars = constraints.reduce((result, value, index) => {
+        result[`c${index + 1}`] = value;
+        return result;
+      }, {});
+      const translationKey = `validation.${error.rule}`;
+      translationVars['property'] = this.labelKey
+        ? translate(`${this.labelKey}.${error.property}`)
+        : error.property;
+      return translate(translationKey, translationVars);
+    };
+  }
+
+  get labelKey(): string | undefined {
+    return this.options.labelKey;
+  }
+
+  set labelKey(labelKey: string | undefined) {
+    this.options.labelKey = labelKey;
   }
 }

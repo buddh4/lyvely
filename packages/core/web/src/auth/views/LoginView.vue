@@ -51,7 +51,7 @@ async function toPasswordStage() {
 }
 
 function setResetPassword() {
-  useSendResetPasswordMailStore().setEmail(loginModel.value.usernameOrEmail);
+  useSendResetPasswordMailStore().setUsernameOrEmail(loginModel.value.usernameOrEmail);
 }
 
 onUnmounted(loginStore.reset);
@@ -123,6 +123,7 @@ onUnmounted(loginStore.reset);
             <router-link
               v-if="stage === 'password'"
               :to="{ name: 'ResetPassword' }"
+              data-id="reset-password"
               class="no-underline font-bold text-xs cursor-pointer"
               @click="setResetPassword">
               {{ $t('auth.login.reset_password') }}

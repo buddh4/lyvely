@@ -1,4 +1,3 @@
-import { Module } from '@nestjs/common';
 import { JwtAuthService, ResetPasswordService } from './services';
 import {
   LocalStrategy,
@@ -14,8 +13,13 @@ import { AuthController, ResetPasswordController } from './controllers';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 import { CaptchaModule } from '@/captchas';
+import { AUTH_MODULE_ID } from '@lyvely/core-interface';
+import { LyvelyModule } from '@/core';
 
-@Module({
+@LyvelyModule({
+  id: AUTH_MODULE_ID,
+  name: 'Auth',
+  path: __dirname,
   imports: [
     UsersModule,
     CaptchaModule,

@@ -7,6 +7,11 @@ export default {
   http: {
     host: '127.0.0.1',
     appUrl: 'http://127.0.0.1:3000',
+    // Maybe we should use a mock instead
+    rateLimit: {
+      limit: Number.MAX_VALUE,
+      ttl: Number.MAX_VALUE,
+    },
   },
   mongodb: {
     uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/lyvely-e2e',

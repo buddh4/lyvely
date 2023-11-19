@@ -42,6 +42,6 @@ export default [
     path: PATH_LOGOUT,
     name: 'Logout',
     profileView: false,
-    beforeEnter: [() => useAuthStore().logout()],
+    beforeEnter: [async () => await useAuthStore().logout()],
   },
 ] as Array<RouteRecordRaw>;

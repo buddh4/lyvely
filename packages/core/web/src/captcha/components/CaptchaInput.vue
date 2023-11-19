@@ -5,9 +5,16 @@ import { uniqueId } from 'lodash';
 import { computed } from 'vue';
 import { useCaptchaStore } from '@/captcha/stores/captcha.store';
 
+interface IProps {
+  id?: string;
+}
+
+const props = withDefaults(defineProps<IProps>(), {
+  id: uniqueId('captcha'),
+});
+
 const captchaStore = useCaptchaStore();
 const { captchaModel, validator } = storeToRefs(captchaStore);
-const inputId = uniqueId('captcha');
 
 captchaStore.createChallenge();
 
@@ -42,7 +49,7 @@ defineExpose({ validate });
       <captcha-code></captcha-code>
     </div>
     <ly-text-field
-      :id="inputId"
+      :id="id"
       v-model="captchaModel.captcha"
       :error="validator.getError('captcha')"
       input-class="rounded-t-none"

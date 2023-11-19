@@ -15,7 +15,7 @@ function isPublicRoue(route: RouteLocationNormalized) {
   return route.meta?.isPublic || publicRoutes.includes(route.path);
 }
 
-export const authGuard: NavigationGuardWithThis<undefined> = (to, from, next) => {
+export const authGuard: NavigationGuardWithThis<undefined> = async (to, from, next) => {
   const promises: Promise<any>[] = [];
   const authStore = useAuthStore();
 
@@ -43,13 +43,14 @@ export const authGuard: NavigationGuardWithThis<undefined> = (to, from, next) =>
     promises.push(authStore.loadUser());
   }
 
-  Promise.all(promises)
-    .then(() => next())
-    .catch((err) => {
-      if (err?.response?.status === 401) {
-        authStore.logout();
-      }
-    });
+  try {
+    await Promise.all(promises);
+    next();
+  } catch (err) {
+    if ((<any>err)?.response?.status === 401) {
+      await authStore.logout();
+    }
+  }
 };
 
 export const ifNotAuthenticated = (

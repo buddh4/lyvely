@@ -87,6 +87,11 @@ export function throwServiceException(error: any) {
 }
 
 export function errorToServiceException(error: any, throws = false): ServiceException {
+  if (error instanceof ServiceException) {
+    if (throws) throw error;
+    return error;
+  }
+
   let result: ServiceException = new ServiceException(error?.message);
 
   if (error instanceof ServiceException) {

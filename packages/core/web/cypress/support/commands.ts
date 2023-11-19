@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from 'path';
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -64,18 +67,14 @@ type CheckboxType = 'optimal' | 'min' | 'danger' | 'none';
  */
 
 Cypress.Commands.add('login', () => {
-  cy.visit('/auth/login');
-  cy.get('#login-username').type('Jan');
-  cy.get('#login-password').type('test');
-  cy.get('[type="submit"]').click();
-  cy.url().should('include', '/activities/habits');
-  cy.getCookie('Authentication').should('exist');
+  cy.visit('/logout');
+  cy.get('[data-id="login-usernameoremail"]').type('Jan{enter}');
+  cy.get('[data-id="login-password"]').type('TestPassword123{enter}');
 });
 
 Cypress.Commands.add('logout', () => {
-  cy.visit('/auth/logout');
-  cy.url().should('include', '/auth/login');
-  cy.getCookie('Authentication').should('not.exist');
+  cy.visit('/logout');
+  cy.url().should('include', '/login');
 });
 
 const ACTIVITY_GROUP_ITEM_SELECTOR = '#activity-overview [data-cid]';

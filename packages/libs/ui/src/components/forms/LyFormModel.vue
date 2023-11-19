@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { provide } from 'vue';
+import { provide} from 'vue';
 import { IFormModelData } from './BaseInput';
 
 export interface IProps {
@@ -21,10 +21,13 @@ const props = withDefaults(defineProps<IProps>(), {
   showAlert: true,
 });
 
+const validator = props.validator as any;
+const computedLabelKey = validator?.labelKey && !props.labelKey ? validator.labelKey : props.labelKey;
+
 provide('formModelData', {
   id: props.id,
   model: props.modelValue,
-  labelKey: props.labelKey,
+  labelKey: computedLabelKey,
   validator: props.validator,
   autoValidation: props.autoValidation,
 } as IFormModelData);

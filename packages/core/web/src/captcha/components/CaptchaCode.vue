@@ -7,7 +7,7 @@ const { imageUrl } = storeToRefs(captchaStore);
 </script>
 
 <template>
-  <img v-if="imageUrl" :src="imageUrl" class="w-full" />
+  <img v-if="imageUrl" alt="Captcha code" :src="imageUrl" class="w-full" />
 </template>
 
 <style scoped></style>

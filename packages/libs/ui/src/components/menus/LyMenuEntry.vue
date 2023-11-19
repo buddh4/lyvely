@@ -31,7 +31,7 @@ function getIconClass() {
   <router-link
     v-if="entry.to"
     :to="entry.to"
-    :data-menu-entry-id="entry.id"
+    :data-id="entry.id"
     @click="onMenuItemClick">
     <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" :class="iconClass" />
     <ly-icon
@@ -44,7 +44,7 @@ function getIconClass() {
       </span>
     </transition>
   </router-link>
-  <a v-else-if="entry.click" :data-menu-entry-id="entry.id" @click="onMenuItemClick">
+  <a v-else-if="entry.click" :data-id="entry.id" @click="onMenuItemClick">
     <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" :class="iconClass" />
     <ly-icon v-else-if="typeof entry.icon === 'object'" v-bind="entry.icon" :class="iconClass" />
     <transition name="fade">

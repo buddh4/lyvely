@@ -29,9 +29,13 @@ function onMenuItemClick() {
 
 <template>
   <div class="flex items-center justify-end">
-    <div :class="accountDrawerButtonClass" @click="showAccountDrawer = !showAccountDrawer">
+    <button
+      :class="accountDrawerButtonClass"
+      data-id="btn-account-drawer"
+      aria-controls="btn-account-drawer"
+      @click="showAccountDrawer = !showAccountDrawer">
       <user-avatar />
-    </div>
+    </button>
   </div>
 
   <ly-drawer id="account-drawer" v-model="showAccountDrawer" title="user-accounts.drawer.title">

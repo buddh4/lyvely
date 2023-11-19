@@ -1,6 +1,7 @@
 import { validate, ValidationError, ValidatorOptions } from 'class-validator';
 import { IFieldValidationResult } from './interfaces/validation-result.interface';
 import { getFirstValidationError } from './validation.utils';
+import { Type } from '../utils';
 
 interface ITranslationError<T> {
   model: T;
@@ -26,23 +27,32 @@ export interface IValidationOptions<T extends object = object> extends Validator
   validationField?: keyof T;
 }
 
-export class ModelValidator<T extends object = object> {
+export class ModelValidator<
+  T extends object = object,
+  TOptions extends IValidatorOptions<T> = IValidatorOptions<T>,
+> {
   protected errors: { [k in keyof T]?: string };
   protected model?: T;
-  protected readonly fieldValidator: ModelValidator<T>;
-  protected options: IValidatorOptions<T>;
+  protected fieldValidator: ModelValidator<T, TOptions>;
+  protected options: TOptions;
 
-  constructor(model?: T, options?: IValidatorOptions<T>) {
-    this.options = options || {};
+  constructor(model?: T, options?: TOptions) {
+    this.options = options || ({} as TOptions);
     this.errors = {};
     this.options.rules = this.options.rules || <any>{};
     this.model = model as T | undefined;
-    if (!this.options.isFieldValidator) {
-      this.fieldValidator = new ModelValidator<T>(
-        model,
-        Object.assign({}, options, { isFieldValidator: true }),
+  }
+
+  getFieldValidator(): ModelValidator<T> | null {
+    if (this.options.isFieldValidator) return null;
+    if (!this.fieldValidator) {
+      const ValidatorType = this.constructor as Type<ModelValidator<T, TOptions>>;
+      this.fieldValidator = new ValidatorType(
+        this.model,
+        Object.assign({}, this.options, { isFieldValidator: true }),
       );
     }
+    return this.fieldValidator;
   }
 
   addRule(
@@ -59,7 +69,7 @@ export class ModelValidator<T extends object = object> {
   setModel(model: T) {
     this.reset();
     this.model = model;
-    this.fieldValidator?.setModel(model);
+    this.getFieldValidator()?.setModel(model);
   }
 
   hasErrors(): boolean {
@@ -158,21 +168,22 @@ export class ModelValidator<T extends object = object> {
   }
 
   async validateField(field: keyof T, options?: IValidationOptions<T>): Promise<boolean> {
-    if (this.options.isFieldValidator || !this.fieldValidator) {
+    const fieldValidator = this.getFieldValidator();
+    if (this.options.isFieldValidator || !fieldValidator) {
       throw new Error('Call of validateField is not supported for this validator type');
     }
 
     options = options || {};
     options.validationField = field;
 
-    await this.fieldValidator.validate(options);
-    const error = this.fieldValidator.getError(field);
+    await fieldValidator.validate(options);
+    const error = fieldValidator.getError(field);
     if (error) {
       this.errors[field] = error;
     } else {
       delete this.errors[field];
     }
-    this.fieldValidator.reset();
+    fieldValidator.reset();
     return typeof error !== 'string';
   }
 }

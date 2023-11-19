@@ -14,7 +14,7 @@ export class I18nEvents implements OnModuleInit {
   }
 
   @OnEvent(EVENT_MODULE_APP_CONFIG_ASSEMBLY)
-  handleModuleConfigAssembly(event: ModuleAppConfigAssemblyEvent) {
+  handleModuleAppConfigAssembly(event: ModuleAppConfigAssemblyEvent) {
     event.setModuleConfig<I18nAppConfig>(I18N_MODULE_ID, {
       locales: this.i18n.getEnabledLocaleDefinitions(),
     });

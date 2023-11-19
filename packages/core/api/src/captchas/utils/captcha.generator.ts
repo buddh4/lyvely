@@ -55,6 +55,7 @@ function getBackgroundColor(options: CaptchaOptions) {
 }
 
 export function generateCaptchaToken(options = {} as CaptchaOptions) {
+  if (process.env.NODE_ENV === 'e2e') return '01234';
   options.length = options.length || DEFAULT_LENGTH;
   return Array.from({ length: options.length }, (v, i) =>
     DEFAULT_CAPTCHA_CHARS.charAt(randomInt(0, DEFAULT_CAPTCHA_CHARS.length - 1)),

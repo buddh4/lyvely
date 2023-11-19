@@ -5,7 +5,7 @@ import { ref } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { AuthService } from '@/auth/services/auth.service';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { UnauthenticatedServiceException } from '@lyvely/common';
+import { ModelValidator, UnauthenticatedServiceException } from '@lyvely/common';
 import { UserStatus, LoginModel } from '@lyvely/core-interface';
 import { useVerifyRegistrationEmailStore } from '@/user-registrations/stores';
 
@@ -16,13 +16,15 @@ export const useLoginStore = defineStore('user-login', () => {
   const loginModel = ref(new LoginModel());
   const stage = ref<'usernameOrEmail' | 'password'>('usernameOrEmail');
   const validator = ref(
-    new I18nModelValidator(loginModel.value, { translationKey: 'auth.login.fields' }),
+    new I18nModelValidator(loginModel.value, { labelKey: 'auth.login.fields' }),
   );
 
   async function login(): Promise<RouteLocationRaw | false> {
-    if (!(await validator.value.validate())) return false;
-
-    return loadingStatus(authService.login(loginModel.value), status)
+    return loadingStatus(
+      () => authService.login(loginModel.value),
+      status,
+      validator.value as ModelValidator,
+    )
       .then(authStore.handleLogin)
       .then(() => ({ path: '/' }))
       .catch(handleLoginError);

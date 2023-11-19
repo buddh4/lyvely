@@ -15,10 +15,11 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
   const captchaStore = useCaptchaStore();
 
   const model = ref(new SendResetPasswordMail());
-  const validator = ref(new I18nModelValidator(model));
 
-  function setEmail(email: string) {
-    model.value.email = email;
+  const validator = ref(new I18nModelValidator(model, { labelKey: 'auth.reset_password.fields' }));
+
+  function setUsernameOrEmail(usernameOrEmail: string) {
+    model.value.usernameOrEmail = usernameOrEmail;
   }
 
   function reset() {
@@ -30,8 +31,8 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
 
   async function sendResetPasswordMail() {
     if (!(await validate())) return;
-    loadingStatus(
-      resetPasswordService.sendMail(model.value),
+    return loadingStatus(
+      () => resetPasswordService.sendMail(model.value),
       status,
       validator.value as ModelValidator,
     ).then(() => resetPasswordStore.setStage('sent'));
@@ -46,7 +47,7 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
     model,
     validator,
     reset,
-    setEmail,
+    setUsernameOrEmail,
     sendResetPasswordMail,
   };
 });

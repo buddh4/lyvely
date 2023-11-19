@@ -122,7 +122,7 @@ export class AppModuleBuilder {
   public importI18nModule() {
     return this.importModules(
       NestjsI18nModule.forRoot({
-        fallbackLanguage: 'en-us',
+        fallbackLanguage: 'en',
         loader: I18nModuleLoader,
         loaderOptions: {},
         resolvers: [AcceptLanguageResolver],
@@ -180,6 +180,14 @@ export class AppModuleBuilder {
         inject: [ConfigService],
         useFactory: async (configService: ConfigService<ConfigurationPath & any>) => {
           const options = { ...configService.get<ILyvelyMongoDBOptions>('mongodb') };
+
+          // Just to assure we do not kill another db with our e2e tests.
+          if (process.env.NODE_ENV === 'e2e' && !options.uri) {
+            throw new Error('e2e test can not fallback to the default mongodb uri.');
+          } else if (process.env.NODE_ENV === 'e2e' && !options.uri!.endsWith('e2e')) {
+            this.logger.log('Added e2e suffix to mongo uri.');
+            options.uri += 'e2e';
+          }
 
           setTransactionSupport(!!options.transactions);
           delete options.transactions;
