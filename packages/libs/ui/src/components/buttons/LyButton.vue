@@ -175,6 +175,7 @@ function getAriaPressed($attrs: any) {
 .button.secondary,
 .button.warning,
 .button.info,
+.button.success,
 .button.secondary,
 .button.danger {
   @apply border text-inverted;

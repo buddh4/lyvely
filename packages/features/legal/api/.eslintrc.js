@@ -1,1 +1,1 @@
-module.exports = require('@lyvely/configs/eslint/common.eslintrc');
+module.exports = require('@lyvely/devtools/eslint/common.eslintrc');

@@ -33,7 +33,7 @@ const addEntry = () =>
     <draggable
       :list="habits"
       tag="div"
-      class="calendar-plan-items divide-y divide-divide border-x border-divide"
+      class="divide-y divide-divide"
       :data-calendar-interval="interval"
       group="habits"
       handle=".icon-drag"

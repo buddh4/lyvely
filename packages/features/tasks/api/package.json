@@ -7,6 +7,7 @@
   "scripts": {
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
+    "dev": "nest start",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",

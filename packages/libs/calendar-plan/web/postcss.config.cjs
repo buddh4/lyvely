@@ -1,15 +1,3 @@
-module.exports = {
-  plugins: {
-    'postcss-import': {},
-    'tailwindcss/nesting': {},
-    tailwindcss: {},
-    autoprefixer: {},
-  },
+const postCssConfig = require('@lyvely/devtools/tailwind/postcss.config.js');
 
-  /*[
-    require('postcss-import'),
-    require('tailwindcss/nesting'),
-    require('tailwindcss'),
-    require('autoprefixer'),
-  ]*/
-};
+module.exports = postCssConfig;

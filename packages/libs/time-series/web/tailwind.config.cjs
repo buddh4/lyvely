@@ -1,10 +1,3 @@
-const baseConfig = require('@lyvely/configs/tailwind/tailwind.config');
-const path = require('path');
+const baseConfig = require('@lyvely/devtools/tailwind/tailwind.config');
 
-module.exports = {
-  ...baseConfig,
-  content: [
-    './index.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}',
-  ],
-};
+module.exports = baseConfig;

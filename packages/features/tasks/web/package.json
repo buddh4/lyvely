@@ -8,16 +8,16 @@
     ".": {
       "import": "./dist/index.js"
     },
-    "./style.css": {
-      "import": "./dist/style.css",
-      "require": "./dist/style.css"
+    "./tailwind.css": {
+      "import": "./dist/tailwind.css",
+      "require": "./dist/tailwind.css"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vue-tsc -p tsconfig.build.json -declaration --emitDeclarationOnly",
-    "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
-    "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
+    "build": "lyvely-dev build:web",
+    "build:staging": "lyvely-dev build:web:staging",
+    "build:dev": "lyvely-dev build:web:development",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write"
   },
@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.10.0",
-    "@lyvely/configs": "^0.1.0-alpha3",
+    "@lyvely/devtools": "^0.1.0-alpha3",
     "postcss": "^8.4.31",
     "vite": "^4.3.9",
     "vite-plugin-externalize-deps": "^0.7.0",

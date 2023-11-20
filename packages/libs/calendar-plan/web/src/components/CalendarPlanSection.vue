@@ -3,7 +3,7 @@ import { CalendarInterval } from '@lyvely/dates';
 import { computed, ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useCalendarPlanPlanNavigation } from '../composables';
-import { LyIcon, LyButton, LyAddButton } from '@lyvely/ui';
+import { LyAddButton, LyButton, LyIcon } from '@lyvely/ui';
 
 export interface IProps {
   interval: CalendarInterval;
@@ -50,22 +50,31 @@ function toggleContent() {
 function open() {
   return (collapsed.value = !isEmpty.value && false);
 }
+
+// Unscheduled is the last section and needs some style alignments.
+const isEmptyUnscheduled = computed(
+  () => props.interval === CalendarInterval.Unscheduled && props.count === 0,
+);
 </script>
 
 <template>
   <div
-    :id="headerId"
     ref="header"
-    data-calendar-plan-header
+    :data-id="headerId"
     tabindex="0"
     :aria-label="$t('calendar-plan.aria.header', { time: accessibleTitle })"
     :data-count="count"
-    class="calendar-plan-item calendar-plan-header-item first:rounded-t border-divide bg-shadow text-center border-b-0 border relative"
+    :class="[
+      'relative py-2 px-3 bg-shadow text-center',
+      'first:rounded-t border-divide border ',
+      { 'border-b-0': !isEmptyUnscheduled },
+      { 'rounded-b border-b': isEmptyUnscheduled },
+    ]"
     @dragenter="open"
     @focusin="showCreateButton = true">
     <button
       v-if="showTodayIcon"
-      class="today-button"
+      class="today-button absolute left-2.5"
       :title="$t('calendar-plan.nav-today')"
       :aria-controls="itemsId"
       @click="switchToToday">
@@ -76,17 +85,18 @@ function open() {
       v-if="leftCaret"
       tabindex="0"
       :aria-label="$t('calendar-plan.aria.nav-back', { time: prevTitle })"
-      class="switch-timing no-underline py-0"
+      class="inline-block py-0 select-none"
       :aria-controls="itemsId"
       @click="decrementTiming">
       {{ leftCaret }}
     </ly-button>
 
     <button
-      class="calendar-plan-title text-body select-none"
+      class="inline-block my-0 cursor-pointer text-body select-none"
       :aria-controls="itemsId"
       :aria-label="accessibleTitle"
       :aria-expanded="collapsed ? 'false' : 'true'"
+      style="min-width: 110px"
       @click="toggleContent">
       <span aria-hidden="true">
         {{ title }}
@@ -98,7 +108,7 @@ function open() {
       v-if="rightCaret"
       tabindex="0"
       :aria-label="$t('calendar-plan.aria.nav-next', { time: nextTitle })"
-      class="switch-timing no-underline py-0"
+      class="inline-block py-0 select-none"
       :aria-controls="itemsId"
       @click="incrementTiming">
       {{ rightCaret }}
@@ -120,50 +130,13 @@ function open() {
     :id="itemsId"
     role="list"
     data-calendar-plan-item-container
-    :class="['p-0 border-0', { hidden: collapsed }]">
+    :class="[
+      'p-0 border-x border-divide overflow-hidden',
+      { 'last:border-b last:rounded-b': count !== 0 },
+      { hidden: collapsed },
+    ]">
     <slot></slot>
   </div>
 </template>
 
-<style scoped>
-.switch-timing {
-  @apply inline shadow-md border border-gray-200 cursor-pointer;
-  display: inline-block;
-  width: 24px;
-  border-radius: 50%;
-  /*box-shadow: 1px 1px 3px 1px rgba(182, 182, 182, 0.66);
-  -webkit-box-shadow: 1px 1px 3px 1px rgba(182, 182, 182, 0.66);
-  -moz-box-shadow: 1px 1px 3px 1px rgba(182, 182, 182, 0.66);*/
-  user-select: none;
-}
-
-.calendar-plan-entry-root ul .list-group-item:first-child {
-  border-top: 0;
-}
-
-.today-button {
-  position: absolute;
-  left: 10px;
-  float: left;
-  cursor: pointer;
-}
-
-.today-button svg {
-  margin-top: 3px;
-  width: 20px;
-  fill: var(--color-secondary);
-}
-
-.calendar-plan-item:not(.calendar-plan-header-item) {
-  animation: fade-1 500ms 1;
-}
-
-@keyframes fade-1 {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-</style>
+<style scoped></style>

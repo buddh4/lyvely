@@ -1,5 +1,5 @@
 {
-  "name": "@lyvely/configs",
+  "name": "@lyvely/devtools",
   "version": "0.1.0-alpha3",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -7,7 +7,12 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json --outDir dist --declarationDir dist --declaration true && tscpaths -p tsconfig.build.json -s ./ -o dist && rollup -c && rm -f tsconfig.tsbuildinfo"
   },
-  "dependencies": {},
+  "bin": {
+    "lyvely-dev": "bin/lyvely-dev.cli.js"
+  },
+  "dependencies": {
+    "vite-tsconfig-paths": "^4.2.0"
+  },
   "devDependencies": {
     "mini-svg-data-uri": "^1.4.4",
     "@rollup/plugin-typescript": "^11.1.0",

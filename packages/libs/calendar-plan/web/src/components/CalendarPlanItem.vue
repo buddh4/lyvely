@@ -41,7 +41,7 @@ const { model } = toRefs(props);
 
 <template>
   <div
-    class="calendar-plan-item bg-main"
+    class="bg-main py-2 px-3"
     role="listitem"
     :data-cid="model.id"
     :data-sort-order="model.meta.sortOrder">
@@ -88,20 +88,3 @@ const { model } = toRefs(props);
     <slot name="footer"></slot>
   </div>
 </template>
-
-<style scoped>
-/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,000000+100&0+0,1+100 */
-.overflow-item {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 32px;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0) 0%,
-    var(--elements-main) 72%,
-    var(--elements-main) 100%
-  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-}
-</style>

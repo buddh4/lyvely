@@ -2,16 +2,12 @@
 @import "nprogress/nprogress.css";
 @import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 
-@tailwind components;
-
-@layer components {
-    #main {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        margin-top: 60px;
-    }
+#main {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    margin-top: 60px;
 }
 
 #nprogress .bar {

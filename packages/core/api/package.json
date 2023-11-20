@@ -6,8 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "gulp clean && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && gulp copyAssets",
-    "dev": "nest start",
-    "dev:debug": "nest start --debug --watch",
+    "dev": "cross-env NODE_ENV=development nest start",
+    "dev:debug": "cross-env NODE_ENV=development  nest start --debug --watch",
     "dev:e2e": "cross-env NODE_ENV=e2e npm run dev",
     "dev:e2e:debug": "cross-env NODE_ENV=e2e npm run dev:debug",
     "lint": "eslint --fix",

@@ -89,6 +89,6 @@
     "vite-tsconfig-paths": "^4.2.0",
     "vue-tsc": "^1.6.5",
     "mini-svg-data-uri": "^1.4.4",
-    "@lyvely/configs": "^0.1.0-alpha3"
+    "@lyvely/devtools": "^0.1.0-alpha3"
   }
 }

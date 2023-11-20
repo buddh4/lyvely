@@ -16,12 +16,16 @@
     "./style.css": {
       "import": "./dist/style.css",
       "require": "./dist/style.css"
+    },
+    "./tailwind.css": {
+      "import": "./dist/tailwind.css",
+      "require": "./dist/tailwind.css"
     }
   },
   "web-types": "./dist/web-types.json",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build && node bin/generate-types.js",
+    "build": "lyvely-dev build:web && node bin/generate-types.js",
     "build:types": "node bin/generate-types.js",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",

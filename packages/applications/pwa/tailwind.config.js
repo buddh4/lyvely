@@ -1,4 +1,4 @@
-const baseConfig = require('@lyvely/configs/tailwind/tailwind.config');
+const baseConfig = require('@lyvely/devtools/tailwind/tailwind.config');
 const path = require('path');
 
 module.exports = {

@@ -1,112 +1,108 @@
-@tailwind utilities;
 
-@layer utilities {
+.focus-hidden {
+    outline: none;
+}
 
-    .focus-hidden {
-        outline: none;
+:focus:not(.focus-hidden), :focus-visible:not(.focus-hidden) {
+    @apply outline-1 outline-blue-400;
+}
+
+.attachment-r {
+    @apply rounded-r-none;
+}
+
+.attachment-b {
+    @apply rounded-b-none;
+}
+
+.attachment-t {
+    @apply rounded-t-none;
+}
+
+.attachment-l {
+    @apply rounded-r-none;
+}
+
+@media screen and (pointer: fine) {
+    .scrollbar-thin {
+        scrollbar-width: thin;
     }
 
-    :focus:not(.focus-hidden), :focus-visible:not(.focus-hidden) {
-        @apply outline-1 outline-blue-400;
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 5px;
     }
 
-    .attachment-r {
-        @apply rounded-r-none;
+    .scrollbar-thin::-webkit-scrollbar-track {
+        background: transparent;
     }
 
-    .attachment-b {
-        @apply rounded-b-none;
+    .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: var(--color-secondary-light);
+        border-radius: 5px;
     }
 
-    .attachment-t {
-        @apply rounded-t-none;
+    .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+        background: var(--color-secondary-dark);
+        transition: background-color 0.3s ease;
+    }
+}
+
+@media (max-width: 768px) {
+    .scrollbar-hidden {
+        scrollbar-width: none;
+        scrollbar-color: transparent transparent !important;
     }
 
-    .attachment-l {
-        @apply rounded-r-none;
+    .scrollbar-hidden::-webkit-scrollbar-track {
+        background: transparent !important;
     }
 
-    @media screen and (pointer: fine) {
-        .scrollbar-thin {
-            scrollbar-width: thin;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: var(--color-secondary-light);
-            border-radius: 5px;
-        }
-
-        .dark .scrollbar-thin::-webkit-scrollbar-thumb {
-            background: var(--color-secondary-dark);
-            transition: background-color 0.3s ease;
-        }
+    .scrollbar-hidden::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        background-color: transparent !important;
     }
 
-    @media (max-width: 768px) {
-        .scrollbar-hidden {
-            scrollbar-width: none;
-            scrollbar-color: transparent transparent !important;
-        }
-
-        .scrollbar-hidden::-webkit-scrollbar-track {
-            background: transparent !important;
-        }
-
-        .scrollbar-hidden::-webkit-scrollbar {
-            display: none;
-            width: 0;
-            background-color: transparent !important;
-        }
-
-        .scrollbar-hidden::-webkit-scrollbar-thumb {
-            background-color: transparent !important;
-        }
+    .scrollbar-hidden::-webkit-scrollbar-thumb {
+        background-color: transparent !important;
     }
+}
 
-    .line-clamp-1 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-    }
+.line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
 
-    .line-clamp-2 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-    }
+.line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
 
-    .line-clamp-3 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;
-    }
+.line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
 
-    .line-clamp-4 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 4;
-    }
+.line-clamp-4 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+}
 
-    .line-clamp-5 {
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 5;
-    }
+.line-clamp-5 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+}
 
-    .line-clamp-none {
-        -webkit-line-clamp: unset;
-    }
+.line-clamp-none {
+    -webkit-line-clamp: unset;
 }

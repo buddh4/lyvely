@@ -1,4 +1,4 @@
-import libConfig from '@lyvely/configs/rollup/lib.rollup.config.mjs';
+import libConfig from '@lyvely/devtools/rollup/lib.rollup.config.mjs';
 
 const config = libConfig()
 

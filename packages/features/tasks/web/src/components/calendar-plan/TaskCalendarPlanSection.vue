@@ -37,7 +37,7 @@ const showMore = (value: boolean) => (showAll.value = value);
     <draggable
       :list="tasks"
       tag="div"
-      class="calendar-plan-items divide-y divide-divide border-x border-divide"
+      class="divide-y divide-divide"
       :data-calendar-interval="interval"
       group="tasks"
       handle=".icon-drag"

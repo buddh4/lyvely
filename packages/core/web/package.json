@@ -16,15 +16,17 @@
     "./style.css": {
       "import": "./dist/style.css",
       "require": "./dist/style.css"
+    },
+    "./tailwind.css": {
+      "import": "./dist/tailwind.css",
+      "require": "./dist/tailwind.css"
     }
   },
   "web-types": "../../../node_modules/@lyvely/ui/dist/web-types.json",
   "scripts": {
     "test": "jest --passWithNoTests",
     "cypress:open": "cypress open",
-    "build": "vite build && vue-tsc -p tsconfig.build.json -declaration --emitDeclarationOnly",
-    "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
-    "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
+    "build": "lyvely-web build",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write",
     "dev": "vite",
@@ -111,7 +113,7 @@
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.10.0",
-    "@lyvely/configs": "^0.1.0-alpha3",
+    "@lyvely/devtools": "^0.1.0-alpha3",
     "@swc/core": "^1.3.93",
     "@swc/jest": "^0.2.29",
     "@types/jest": "^29.5.5",

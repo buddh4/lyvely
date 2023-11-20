@@ -1,6 +1,6 @@
 /** @type {import('dependency-cruiser').IConfiguration} */
 
-const preset = require('@lyvely/configs/dependency-cruiser/.dependency-cruiser.preset');
+const preset = require('@lyvely/devtools/dependency-cruiser/.dependency-cruiser.preset');
 
 function getModulePath(name) {
   return `^src/${name}`;

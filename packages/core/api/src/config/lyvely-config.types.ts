@@ -5,7 +5,7 @@ import { NestedPaths, TypeFromPath } from '@lyvely/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-import https from 'https';
+import { ServerOptions } from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/core-interface';
 
@@ -33,7 +33,7 @@ export type LyvelyHttpOptions = {
   host: string;
   port: number;
   cors?: CorsOptions;
-  tls?: https.ServerOptions;
+  tls?: ServerOptions;
   trustProxy?: boolean | string | number | ((ip: string) => boolean);
   rateLimit?: {
     ttl: number;

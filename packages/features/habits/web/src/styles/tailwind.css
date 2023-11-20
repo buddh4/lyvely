@@ -1,0 +1,4 @@
+@import '@lyvely/calendar-plan-web/tailwind.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

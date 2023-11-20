@@ -9,6 +9,12 @@ export interface IEntity<ID = TObjectId> {
 }
 
 export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
+  @Exclude()
+  _id: ID;
+
+  @Expose()
+  id: string;
+
   constructor(obj?: DeepPartial<C> | false) {
     if (obj !== false) {
       this.init(obj);
@@ -30,12 +36,6 @@ export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
   afterInit() {
     /* Nothing todo */
   }
-
-  @Exclude()
-  _id: ID;
-
-  @Expose()
-  id: string;
 }
 
 // Note: We do not use db.utils.ts to prevent circular dependency...

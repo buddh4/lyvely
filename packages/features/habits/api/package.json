@@ -31,7 +31,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@lyvely/configs": "^0.1.0-alpha3",
+    "@lyvely/devtools": "^0.1.0-alpha3",
     "@lyvely/testing": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3"
   },
