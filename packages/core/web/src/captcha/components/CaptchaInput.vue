@@ -36,7 +36,7 @@ defineExpose({ validate });
 <template>
   <div class="rounded">
     <div :class="['flex border border-b-0 rounded-t', borderColorClass]">
-      <label :for="inputId" class="text-sm opacity-70 px-3 py-2">
+      <label :for="id" class="text-sm opacity-70 px-3 py-2">
         {{ $t('captcha.label') }}
       </label>
 

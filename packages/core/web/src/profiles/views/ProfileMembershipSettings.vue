@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProfileStore, useUpdateProfileMembershipSettingsStore } from '@/profiles/stores';
-import { ModelValidator } from '@lyvely/common';
+import { I18nModelValidator } from '@/i18n';
 
 const profileStore = useProfileStore();
 const updateProfileMembershipSettingsStore = useUpdateProfileMembershipSettingsStore();
@@ -11,7 +11,9 @@ const { model } = storeToRefs(updateProfileMembershipSettingsStore);
 
 const membership = computed(() => profileStore.profile!.getMembership());
 
-const validator = computed(() => updateProfileMembershipSettingsStore.validator as ModelValidator);
+const validator = computed(
+  () => updateProfileMembershipSettingsStore.validator as I18nModelValidator,
+);
 
 function updateSettings() {
   updateProfileMembershipSettingsStore.update();

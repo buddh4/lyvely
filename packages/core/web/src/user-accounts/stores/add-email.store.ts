@@ -17,7 +17,7 @@ export const useAddEmailStore = defineStore('add-email', () => {
   const showModal = ref(false);
 
   const validator = ref(
-    new I18nModelValidator(model.value, {
+    new I18nModelValidator<AddEmailDto>(model.value, {
       labelKey: 'user-accounts.my-account.add_email.errors',
       rules: {
         email: [
@@ -36,7 +36,7 @@ export const useAddEmailStore = defineStore('add-email', () => {
       await loadingStatus(
         () => accountService.addEmail(model.value),
         status,
-        validator.value as ModelValidator,
+        validator.value as I18nModelValidator<AddEmailDto>,
       ),
     );
   }

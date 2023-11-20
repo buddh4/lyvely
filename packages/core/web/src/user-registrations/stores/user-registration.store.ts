@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { I18nModelValidator, useI18nStore } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { UserRegistration } from '@lyvely/core-interface';
-import { ModelValidator } from '@lyvely/common';
 import { ref } from 'vue';
 import { useUserRegistrationService } from '../services';
 import { useVerifyRegistrationEmailStore } from './verify-email.store';
@@ -22,7 +21,7 @@ export const useUserRegistrationStore = defineStore('user-registrations', () => 
     return loadingStatus(
       userRegistrationService.register(model.value),
       status,
-      validator.value as ModelValidator,
+      validator.value as I18nModelValidator<UserRegistration>,
     ).then(async (otp) => {
       await verifyEmailStore.startVerificationOf(model.value.email, otp);
       return true;

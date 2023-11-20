@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
-import { ModelValidator } from '@lyvely/common';
 import { SendResetPasswordMail } from '@lyvely/core-interface';
 import { useCaptchaStore } from '@/captcha/stores/captcha.store';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
@@ -16,7 +15,11 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
 
   const model = ref(new SendResetPasswordMail());
 
-  const validator = ref(new I18nModelValidator(model, { labelKey: 'auth.reset_password.fields' }));
+  const validator = ref(
+    new I18nModelValidator<SendResetPasswordMail>(model.value, {
+      labelKey: 'auth.reset_password.fields',
+    }),
+  );
 
   function setUsernameOrEmail(usernameOrEmail: string) {
     model.value.usernameOrEmail = usernameOrEmail;
@@ -26,7 +29,7 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
     status.resetStatus();
     resetPasswordStore.reset();
     model.value = new SendResetPasswordMail();
-    validator.value.setModel(model);
+    validator.value.setModel(model.value);
   }
 
   async function sendResetPasswordMail() {
@@ -34,7 +37,7 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
     return loadingStatus(
       () => resetPasswordService.sendMail(model.value),
       status,
-      validator.value as ModelValidator,
+      validator.value as I18nModelValidator<SendResetPasswordMail>,
     ).then(() => resetPasswordStore.setStage('sent'));
   }
 

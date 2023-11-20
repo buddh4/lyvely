@@ -8,10 +8,10 @@ export interface I18nModelValidatorOptionsIF<T extends object = object>
 
 export class I18nModelValidator<
   T extends object = object,
-  TOptions extends I18nModelValidatorOptionsIF = I18nModelValidatorOptionsIF,
+  TOptions extends I18nModelValidatorOptionsIF<T> = I18nModelValidatorOptionsIF<T>,
 > extends ModelValidator<T, TOptions> {
-  constructor(model?: T, options?: I18nModelValidatorOptionsIF<T>) {
-    options = options || {};
+  constructor(model?: T, options?: TOptions) {
+    options = options || <any>{};
     super(model, options);
     this.options.translate ||= (error) => {
       const constraints = getPropertyConstraints(error.model, <any>error.property);
