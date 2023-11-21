@@ -1,4 +1,3 @@
-import './styles/index.css';
 import AppComponent from './App.vue';
 import { UserAvatar } from '@/users';
 import { ProfileAvatar } from '@/profiles';

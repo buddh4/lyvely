@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 import '@lyvely/ui/style.css';
 import '@lyvely/web/style.css';
 

@@ -112,6 +112,7 @@ const maxWidth = true;
     </div>
     <div class="flex items-stretch w-full gap-1">
       <div class="flex justify-center flex-shrink-0 w-9 pt-1">
+        {{ userInfo }}
         <slot v-if="!mergeWithPrev" name="image">
           <template v-if="userInfo">
             <ly-avatar

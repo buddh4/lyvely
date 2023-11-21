@@ -26,7 +26,7 @@
   "scripts": {
     "test": "jest --passWithNoTests",
     "cypress:open": "cypress open",
-    "build": "lyvely-web build",
+    "build": "lyvely-dev build:web",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write",
     "dev": "vite",
