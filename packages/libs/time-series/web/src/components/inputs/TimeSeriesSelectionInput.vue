@@ -55,7 +55,6 @@ const dropDownOptions = computed(() =>
     class="flex w-full items-center gap-2">
     <ly-select
       v-model="singleValueSelection"
-      class="calendar-plan-dropdown"
       style="min-width: 33.333333%"
       :options="dropDownOptions" />
   </div>

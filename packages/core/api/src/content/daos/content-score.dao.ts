@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from '@/core';
 import { ContentScore } from '../schemas';
-import meta from '../content.meta';
+import { CONTENT_MODULE_ID } from '@lyvely/core-interface';
 
 @Injectable()
 export class ContentScoreDao extends ProfileScoreDao<ContentScore> {
@@ -15,6 +15,6 @@ export class ContentScoreDao extends ProfileScoreDao<ContentScore> {
   }
 
   getModuleId(): string {
-    return meta.id;
+    return CONTENT_MODULE_ID;
   }
 }

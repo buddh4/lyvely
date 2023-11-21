@@ -32,8 +32,8 @@ describe('TransformObjectIdDecorator', () => {
 
     const model = new TestModel({
       ids: [
-        <any>{ _bsontype: 'ObjectID', toString: () => 'test1' },
-        <any>{ _bsontype: 'ObjectID', toString: () => 'test2' },
+        <any>{ _bsontype: 'ObjectId', toString: () => 'test1' },
+        <any>{ _bsontype: 'ObjectId', toString: () => 'test2' },
       ],
     });
     expect(model.ids[0]).toEqual('test1');
@@ -48,8 +48,8 @@ describe('TransformObjectIdDecorator', () => {
 
     const model = new TestModel();
     model.ids = [
-      <any>{ _bsontype: 'ObjectID', toString: () => 'test1' },
-      <any>{ _bsontype: 'ObjectID', toString: () => 'test2' },
+      <any>{ _bsontype: 'ObjectId', toString: () => 'test1' },
+      <any>{ _bsontype: 'ObjectId', toString: () => 'test2' },
     ];
     const serialized = instanceToPlain(model);
     expect(serialized.ids[0]).toEqual('test1');

@@ -24,31 +24,6 @@
       "quarterly": "Q {quarter}",
       "weekly": "Week {week}"
     },
-    "input_types": {
-      "checkbox": "Checkboxes",
-      "range": "Range",
-      "spinner": "Spinner",
-      "timer": "Timer",
-      "dropdown": "Dropdown",
-      "radio": "Radio"
-    },
-    "value_types": {
-      "number": "Number",
-      "text": "Text",
-      "selection": "Selection"
-    },
-    "fields": {
-      "max": "Max",
-      "min": "Min",
-      "optimal": "Optimal",
-      "score": "Score ★",
-      "required": "Is required?"
-    },
-    "labels": {
-      "showOther": "Add \"Other\"",
-      "add_option": "Add Option"
-    },
-    "timer_score_info": "The score is awarded for each achieved min, optimal, max result.",
     "nav-today": "Switch to today",
     "aria": {
       "move-success": "Item was successfully moved from index {from} to {to}",

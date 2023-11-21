@@ -32,7 +32,7 @@ describe('TransformObjectIdDecorator', () => {
 
     const model = new TestModel({
       id: <any>{
-        _bsontype: 'ObjectID',
+        _bsontype: 'ObjectId',
         toString: () => 'test',
       },
     });

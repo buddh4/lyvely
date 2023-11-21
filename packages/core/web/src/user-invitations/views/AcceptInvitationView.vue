@@ -46,7 +46,7 @@ onMounted(async () => {
       if (err instanceof EntityNotFoundException) {
         error.value = 'invitations.errors.invalid';
       } else {
-        error.value = 'error.unknown.message';
+        error.value = 'error.unknown';
       }
     });
 });

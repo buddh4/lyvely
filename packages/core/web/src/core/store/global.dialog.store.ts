@@ -59,8 +59,8 @@ export const useGlobalDialogStore = defineStore('global.dialog', {
     },
 
     showUnknownError(options = {} as IShowAlertOptions) {
-      options.title = options.title || 'error.unknown.title';
-      options.message = options.message || 'error.unknown.message';
+      options.title = options.title || 'error.title';
+      options.message = options.message || 'error.unknown';
       this.show(DialogType.Error, options);
     },
 

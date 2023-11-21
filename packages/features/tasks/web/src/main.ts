@@ -4,8 +4,8 @@ import '@lyvely/web/style.css';
 import { LyvelyWebApp } from '@lyvely/web';
 import tasksModule from './module';
 
-const app = new LyvelyWebApp({
+new LyvelyWebApp({
   modules: [tasksModule()],
-});
-
-app.init().then(() => app.mount('#app'));
+})
+  .init('#app')
+  .catch((err) => console.error(err));

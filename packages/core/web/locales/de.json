@@ -196,10 +196,7 @@
   },
   "error":{
     "title": "Error",
-    "unknown": {
-      "title": "Error",
-      "message": "An unexpected error occurred, please try again later."
-    },
+    "unknown": "An unexpected error occurred, please try again later.",
     "500": "A problem occurred while handling your request, please try again later.",
     "403": "Your access to the requested service was denied.",
     "404": "The requested service could not be found.",

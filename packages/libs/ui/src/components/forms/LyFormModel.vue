@@ -1,33 +1,38 @@
-<script lang="ts" setup>
-import { provide} from 'vue';
+<script lang="ts" setup generic="TModel extends object = object">
+import { provide } from 'vue';
 import { IFormModelData } from './BaseInput';
+import { ModelValidator } from '@lyvely/common';
 
-export interface IProps {
-  id?: string;
-  modelValue: object;
-  validator?: { getErrorSummary: () => string[] };
-  labelKey?: string;
-  status?: { statusError?: string };
-  autoValidation?: boolean;
-  showAlert?: boolean;
+const props = withDefaults(
+  defineProps<{
+    id?: string;
+    modelValue: TModel;
+    validator?: ModelValidator<TModel>;
+    labelKey?: string;
+    status?: { statusError?: string };
+    autoValidation?: boolean;
+    showAlert?: boolean;
+  }>(),
+  {
+    id: undefined,
+    validator: undefined,
+    labelKey: undefined,
+    status: undefined,
+    autoValidation: true,
+    showAlert: true,
+  },
+);
+
+const validator = props.validator;
+
+if (props.validator && !props.validator.getLabelKey() && props.labelKey) {
+  props.validator.setLabelKey(props.labelKey);
 }
-
-const props = withDefaults(defineProps<IProps>(), {
-  id: undefined,
-  validator: undefined,
-  labelKey: undefined,
-  status: undefined,
-  autoValidation: true,
-  showAlert: true,
-});
-
-const validator = props.validator as any;
-const computedLabelKey = validator?.labelKey && !props.labelKey ? validator.labelKey : props.labelKey;
 
 provide('formModelData', {
   id: props.id,
   model: props.modelValue,
-  labelKey: computedLabelKey,
+  labelKey: props.labelKey,
   validator: props.validator,
   autoValidation: props.autoValidation,
 } as IFormModelData);

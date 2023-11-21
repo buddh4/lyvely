@@ -11,11 +11,11 @@ import {
   IUserRegistrationAppConfig,
   UserRegistrationMode,
 } from '@lyvely/core-interface';
+import { PATH_SIGN_UP } from '@/user-registrations/user-registration.constants';
 
 const loginStore = useLoginStore();
 const router = useRouter();
 const showRememberInfo = ref(false);
-
 const { loginModel, validator, stage } = storeToRefs(loginStore);
 
 const isPublicRegistration = useAppConfigStore().getModuleConfig<
@@ -151,7 +151,7 @@ onUnmounted(loginStore.reset);
         <div v-if="isPublicRegistration" class="text-center mt-4">
           <small>
             {{ $t('auth.login.not_a_member') }}
-            <router-link to="/register" class="no-underline font-bold">
+            <router-link :to="PATH_SIGN_UP" class="no-underline font-bold">
               {{ $t('auth.login.to_sign_up') }}
             </router-link>
           </small>

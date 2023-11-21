@@ -12,7 +12,14 @@ interface ITranslationError<T> {
   context: any;
 }
 
+type IPropertyKeys<T extends object = object> = { [k in keyof T]?: string };
+type IValidationErrors<T extends object = object> = IPropertyKeys<T>;
+
+/**
+ * Validator options used for translations and adding custom validation rules.
+ */
 export interface IValidatorOptions<T extends object = object> {
+  /** This field is used to identify field validators and is usually not set manually **/
   isFieldValidator?: boolean;
   rules?:
     | Record<
@@ -21,9 +28,15 @@ export interface IValidatorOptions<T extends object = object> {
       >
     | any;
   translate?: (error: ITranslationError<T>) => string | undefined;
+  labelKey?: string;
+  propertyLabels?: IPropertyKeys<T>;
 }
 
+/**
+ * Option used when calling validate or validateField.
+ */
 export interface IValidationOptions<T extends object = object> extends ValidatorOptions {
+  /** Used for single field validations. **/
   validationField?: keyof T;
 }
 
@@ -31,15 +44,16 @@ export class ModelValidator<
   T extends object = object,
   TOptions extends IValidatorOptions<T> = IValidatorOptions<T>,
 > {
-  protected errors: { [k in keyof T]?: string };
+  private errors: IValidationErrors<T>;
   protected model?: T;
   protected fieldValidator: ModelValidator<T, TOptions>;
   protected options: TOptions;
 
   constructor(model?: T, options?: TOptions) {
-    this.options = options || ({} as TOptions);
+    this.options = options ? { ...options } : ({} as TOptions);
     this.errors = {};
-    this.options.rules = this.options.rules || <any>{};
+    this.options.rules ??= {};
+    this.options.propertyLabels ??= {};
     this.model = model as T | undefined;
   }
 
@@ -66,6 +80,42 @@ export class ModelValidator<
     }
   }
 
+  getLabelKey(): string | null {
+    return this.options.labelKey || null;
+  }
+
+  /**
+   * Sets a default prefix for all properties except those overwritten by `setPropertyLabel()`.
+   * For example a prefix could be something like 'auth.login.fields'.
+   * This can be used for translation purposes.
+   * @param labelKey
+   */
+  setLabelKey(labelKey: string): void {
+    this.options.labelKey = labelKey;
+  }
+
+  /**
+   * Sets the label for a single property.
+   * This is used to define custom property labels in case the property is not included in the translation
+   * related to `labelKey`.
+   * @param property
+   * @param label
+   */
+  setPropertyLabel(property: keyof T, label: string): void {
+    this.options.propertyLabels![property] = label;
+  }
+
+  /**
+   * Gets the label for a single property.
+   * Note, this will only return labels for property labels explicitly defined by `setPropertyLabel()` if not set
+   * the translation should fall back to using `labelKey`.
+   * @param property
+   */
+  getPropertyLabel(property: keyof T): string | null {
+    const propertyKeys: IPropertyKeys<T> = this.options.propertyLabels || {};
+    return Object.hasOwn(propertyKeys, property) ? propertyKeys[property] || null : null;
+  }
+
   setModel(model: T) {
     this.reset();
     this.model = model;
@@ -77,7 +127,7 @@ export class ModelValidator<
   }
 
   reset() {
-    this.errors = {} as Record<keyof T, string>;
+    this.errors = {};
   }
 
   getErrorSummary(): string[] {

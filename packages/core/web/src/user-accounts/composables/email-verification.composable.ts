@@ -1,12 +1,16 @@
 import { ref } from 'vue';
-import { UnauthenticatedServiceException, FieldValidationException } from '@lyvely/common';
+import {
+  UnauthenticatedServiceException,
+  FieldValidationException,
+  IValidatorOptions,
+} from '@lyvely/common';
 import { VerifyEmailDto, ResendOtp, OtpInfo } from '@lyvely/core-interface';
-import { I18nModelValidator, I18nModelValidatorOptionsIF } from '@/i18n';
+import { I18nModelValidator } from '@/i18n';
 
 interface IEmailVerificationOptions {
   verify: (dto: VerifyEmailDto) => Promise<boolean>;
   resend: (dto: ResendOtp) => Promise<OtpInfo>;
-  validatorOptions?: I18nModelValidatorOptionsIF<VerifyEmailDto>;
+  validatorOptions?: IValidatorOptions<VerifyEmailDto>;
 }
 
 export function useEmailVerificationStore(options: IEmailVerificationOptions) {
@@ -97,7 +101,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
         ? 'otp.errors.expired'
         : 'otp.errors.invalid';
     } else {
-      errorMsg.value = e?.message || 'error.unknown.message';
+      errorMsg.value = e?.message || 'error.unknown';
     }
   }
 

@@ -172,6 +172,6 @@ function getErrorMessageByStatusCode(status: number) {
     case 429:
       return 'error.429';
     default:
-      return 'error.unknown.message';
+      return 'error.unknown';
   }
 }

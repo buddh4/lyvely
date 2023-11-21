@@ -10,7 +10,7 @@ describe('Test User Login/Logout', function () {
 
   it('Welcome - Greeting & Content', () => {
     cy.contains('h1', 'Sign in');
-    cy.contains('Sign up').should('have.attr', 'href', '/register');
+    cy.contains('Sign up').should('have.attr', 'href', '/sign-up');
   });
 
   it('Failed Login - Username Or Password required', () => {

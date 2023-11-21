@@ -198,6 +198,16 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
   const root = ref<HTMLElement | null>(null);
   const formModelData = inject<IFormModelData | undefined>('formModelData', undefined);
   const validator = formModelData?.validator;
+
+  if (
+    props.property &&
+    typeof props.label === 'string' &&
+    validator &&
+    !validator.getPropertyLabel(props.property)
+  ) {
+    validator.setPropertyLabel(props.property, props.label);
+  }
+
   const useAutoValidation =
     formModelData?.autoValidation !== false &&
     props.autoValidation &&

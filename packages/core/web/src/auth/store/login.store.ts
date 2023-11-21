@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { AuthService } from '@/auth/services/auth.service';
 import { useAuthStore } from '@/auth/store/auth.store';
@@ -15,15 +15,13 @@ export const useLoginStore = defineStore('user-login', () => {
   const authService = new AuthService();
   const loginModel = ref(new LoginModel());
   const stage = ref<'usernameOrEmail' | 'password'>('usernameOrEmail');
-  const validator = ref<I18nModelValidator<LoginModel>>(
-    new I18nModelValidator(loginModel.value, { labelKey: 'auth.login.fields' }),
-  );
+  const validator = reactive(new I18nModelValidator(loginModel.value));
 
   async function login(): Promise<RouteLocationRaw | false> {
     return loadingStatus(
       () => authService.login(loginModel.value),
       status,
-      validator.value as I18nModelValidator<LoginModel>,
+      validator as I18nModelValidator<LoginModel>,
     )
       .then(authStore.handleLogin)
       .then(() => ({ path: '/' }))
@@ -33,7 +31,7 @@ export const useLoginStore = defineStore('user-login', () => {
   function reset() {
     loginModel.value = new LoginModel();
     stage.value = 'usernameOrEmail';
-    validator.value.setModel(loginModel.value);
+    validator.setModel(loginModel.value);
     status.resetStatus();
   }
 

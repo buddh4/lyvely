@@ -37,7 +37,7 @@ export class LyvelyWebApp {
     this.options = options;
   }
 
-  async init() {
+  async init(selector?: string) {
     this.config = await initWebConfig();
     this.events = eventBus;
     this.events.emit('app.init.pre');
@@ -48,6 +48,11 @@ export class LyvelyWebApp {
     await this.setupI18n();
     this.createApp();
     this.events.emit('app.init.post', this);
+
+    if (selector) {
+      this.mount(selector);
+    }
+
     return this;
   }
 

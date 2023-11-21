@@ -9,7 +9,7 @@ describe('Test Register Users', function () {
   });
 
   it('Register user username taken', function () {
-    cy.visit('http://localhost:3000/register');
+    cy.visit('http://localhost:3000/sign-up');
     cy.get('#registerUsername').type('Jan');
     cy.get('#registerEmail').type('jansOtherMail@test.de');
     cy.get('#registerPassword').type('testPassword{enter}');
@@ -17,7 +17,7 @@ describe('Test Register Users', function () {
   });
 
   it('Register user username taken (case sensitive)', function () {
-    cy.visit('http://localhost:3000/register');
+    cy.visit('http://localhost:3000/sign-up');
     cy.get('#registerUsername').type('jan');
     cy.get('#registerEmail').type('jansOtherMail@test.de');
     cy.get('#registerPassword').type('testPassword{enter}');
@@ -25,7 +25,7 @@ describe('Test Register Users', function () {
   });
 
   it('Register user email taken', function () {
-    cy.visit('http://localhost:3000/register');
+    cy.visit('http://localhost:3000/sign-up');
     cy.get('#registerUsername').type('Janxy');
     cy.get('#registerEmail').type('jan@test.com');
     cy.get('#registerPassword').type('testPassword{enter}');
@@ -33,7 +33,7 @@ describe('Test Register Users', function () {
   });
 
   it('Register user email taken (case sensitive)', function () {
-    cy.visit('http://localhost:3000/register');
+    cy.visit('http://localhost:3000/sign-up');
     cy.get('#registerUsername').type('Janxy');
     cy.get('#registerEmail').type('Jan@test.com');
     cy.get('#registerPassword').type('testPassword{enter}');

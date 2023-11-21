@@ -48,21 +48,21 @@ function setInputType(inputType: DataPointInputType) {
         class="text-xs secondary w-full outlined"
         :active="modelValue.inputType === DataPointInputType.Checkbox"
         @click="setInputType(DataPointInputType.Checkbox)">
-        {{ t('calendar-plan.input_types.checkbox') }}
+        {{ t('time-series.input_types.checkbox') }}
       </ly-button>
 
       <ly-button
         class="text-xs secondary w-full outlined"
         :active="modelValue.inputType === DataPointInputType.Radio"
         @click="setInputType(DataPointInputType.Radio)">
-        {{ t('calendar-plan.input_types.radio') }}
+        {{ t('time-series.input_types.radio') }}
       </ly-button>
 
       <ly-button
         class="text-xs secondary w-full outlined"
         :active="modelValue.inputType === DataPointInputType.Dropdown"
         @click="setInputType(DataPointInputType.Dropdown)">
-        {{ t('calendar-plan.input_types.dropdown') }}
+        {{ t('time-series.input_types.dropdown') }}
       </ly-button>
     </div>
 
@@ -71,7 +71,7 @@ function setInputType(inputType: DataPointInputType) {
         v-model="newOption"
         class="mb-0 grow"
         input-class="attachment-r"
-        label="calendar-plan.labels.add_option" />
+        label="time-series.labels.add_option" />
       <ly-button class="primary rounded-r w-12" @click="addOption"> + </ly-button>
     </div>
     <div v-for="option in modelValue.options" :key="option" class="flex">
@@ -84,7 +84,7 @@ function setInputType(inputType: DataPointInputType) {
     </div>
 
     <div v-if="modelValue.inputType !== DataPointInputType.Dropdown" class="text-xs">
-      <ly-checkbox property="showOther" label="calendar-plan.labels.showOther" />
+      <ly-checkbox property="showOther" label="time-series.labels.showOther" />
     </div>
   </div>
 </template>

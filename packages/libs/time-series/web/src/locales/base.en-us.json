@@ -13,6 +13,17 @@
       "text": "Text",
       "selection": "Selection"
     },
+    "fields": {
+      "max": "Max",
+      "min": "Min",
+      "optimal": "Optimal",
+      "score": "Score ★",
+      "required": "Is required?"
+    },
+    "labels": {
+      "showOther": "Add \"Other\"",
+      "add_option": "Add Option"
+    },
     "chart": {
       "value": "Value",
       "trend": "Trend"

@@ -11,24 +11,28 @@ import { milestonesModule } from '@lyvely/milestones-web';
 import { legalModule } from '@lyvely/legal-web';
 import { registerSW } from 'virtual:pwa-register';
 
-const app = new LyvelyWebApp({
-  modules: [
-    pwaModule(),
-    activitiesModule(),
-    tasksModule(),
-    habitsModule(),
-    milestonesModule(),
-    legalModule(),
-  ],
-});
+try {
+  const app = new LyvelyWebApp({
+    modules: [
+      pwaModule(),
+      activitiesModule(),
+      tasksModule(),
+      habitsModule(),
+      milestonesModule(),
+      legalModule(),
+    ],
+  }).init('#app');
 
-app.init().then(() => app.mount('#app'));
+  app.init().then(() => app.mount('#app'));
 
-const updateSW = registerSW({
-  onNeedRefresh() {
-    app.events.emit('app.need.refresh', updateSW);
-  },
-  onOfflineReady() {
-    app.events.emit('app.offline.ready');
-  },
-});
+  const updateSW = registerSW({
+    onNeedRefresh() {
+      app.events.emit('app.need.refresh', updateSW);
+    },
+    onOfflineReady() {
+      app.events.emit('app.offline.ready');
+    },
+  });
+} catch (e) {
+  console.error(e);
+}

@@ -3,7 +3,7 @@ import {
   ProfileRelationInfos,
   ProfileRelationUserInfoModel,
 } from '@lyvely/core-interface';
-import { useSingleton } from '@lyvely/common';
+import { EntityNotFoundException, IntegrityException, useSingleton } from '@lyvely/common';
 import profileRelationsRepository from '@/profiles/repositories/profile-relations.repository';
 import { unwrapAndTransformResponse } from '@/core';
 
@@ -25,6 +25,8 @@ class ProfileRelationInfosService implements IProfileRelationInfosService {
     const cacheKey = pid + '_' + uid;
     const cached = userInfoCache.get(cacheKey);
     if (cached) return cached;
+
+    if (!uid) throw new IntegrityException();
 
     const pending = pendingCache.get(cacheKey);
     if (pending) {

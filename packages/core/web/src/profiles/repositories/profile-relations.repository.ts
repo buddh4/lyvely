@@ -1,6 +1,5 @@
 import { repository } from '@/core';
 import {
-  ProfileRelationInfos,
   ENDPOINT_PROFILE_RELATION_INFOS,
   IProfileRelationInfosService,
 } from '@lyvely/core-interface';

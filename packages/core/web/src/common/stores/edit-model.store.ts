@@ -4,6 +4,7 @@ import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus, eventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { watchDebounced } from '@vueuse/core';
+import { I18nModelValidator } from '@/i18n';
 
 /**
  * Defines options used when creating an update model store.
@@ -16,7 +17,7 @@ export interface IUpdateModelStoreOptions<
   TID = string,
 > {
   /**
-   * Allow partial update
+   * Allow partial update.
    * @default true
    **/
   partialUpdate?: boolean;
@@ -29,13 +30,13 @@ export interface IUpdateModelStoreOptions<
   persistId?: string | false;
 
   /**
-   * Reset the model once submit succeeded
+   * Reset the model once submit succeeded.
    * @default true
    */
   resetOnSuccess?: boolean;
 
   /**
-   * The service responsible for updating the model
+   * The service responsible for updating the model.
    */
   service:
     | IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>
@@ -44,14 +45,19 @@ export interface IUpdateModelStoreOptions<
       ) => IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>);
 
   /**
-   * Hook called after a successful submit
+   * Hook called after a successful submit.
    */
   onSubmitSuccess?: (response?: TResponse) => void;
 
   /**
-   * Hook called after an error while submit
+   * Hook called after an error while submit.
    */
   onSubmitError?: ((err: any) => void) | false;
+
+  /**
+   * Used for the validator field translations.
+   */
+  labelKey?: string;
 }
 
 /**
@@ -89,7 +95,7 @@ export function useUpdateModelStore<
   const model = ref<TEditModel>();
   let original: TEditModel | undefined = undefined;
   const modelId = ref<TID>();
-  const validator = ref<ModelValidator<TEditModel>>();
+  const validator = ref<I18nModelValidator<TEditModel>>();
   const isActive = ref(false);
   const isCreate = ref(false);
   const status = useStatus();
@@ -97,6 +103,7 @@ export function useUpdateModelStore<
 
   options.partialUpdate ??= true;
   options.resetOnSuccess ??= true;
+  options.labelKey ??= 'common.fields';
 
   function setUpdateModel(id: TID, model: TUpdateModel) {
     isCreate.value = false;
@@ -169,7 +176,9 @@ export function useUpdateModelStore<
       model.value = toValue(newModel);
       original = cloneDeep(newModel);
       modelId.value = id;
-      validator.value = new ModelValidator<TEditModel>(model.value);
+      validator.value = new I18nModelValidator<TEditModel>(model.value, {
+        labelKey: options.labelKey,
+      });
       isActive.value = true;
     } else {
       original = undefined;
@@ -268,7 +277,7 @@ export function useUpdateModelStore<
   return {
     model: <Ref<TEditModel>>model,
     modelId,
-    validator: <Ref<ModelValidator<TEditModel>>>validator,
+    validator: <Ref<I18nModelValidator<TEditModel>>>validator,
     status,
     isActive,
     isCreate,

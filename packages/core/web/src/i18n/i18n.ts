@@ -38,15 +38,15 @@ export function translationAdapter(t: Translatable) {
   return '';
 }
 
-export function translate(key: ITranslatable, options?: Record<string, string>): string {
-  if (typeof key === 'function') return key(options);
+export function translate(key: ITranslatable, params?: Record<string, string>): string {
+  if (typeof key === 'function') return key(params);
   if (!(<any>getI18n()?.global)) {
     console.error(new Error('Translation attempt before app initialization.'));
     return 'error';
   }
 
   if (key && typeof key === 'object' && 'key' in key) {
-    return (<any>getI18n().global).t(key.key, key.params || options);
+    return (<any>getI18n().global).t(key.key, key.params || params);
   }
 
   if (key && typeof key === 'object' && 'plain' in key) {
@@ -54,7 +54,7 @@ export function translate(key: ITranslatable, options?: Record<string, string>):
   }
 
   if (typeof key === 'string') {
-    return (<any>getI18n().global).t(key, options);
+    return (<any>getI18n().global).t(key, params);
   }
 
   console.error('Invalid translation', key);

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { I18nModelValidator, useI18nStore } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { UserRegistration } from '@lyvely/core-interface';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useUserRegistrationService } from '../services';
 import { useVerifyRegistrationEmailStore } from './verify-email.store';
 
@@ -11,7 +11,7 @@ export const useUserRegistrationStore = defineStore('user-registrations', () => 
   const userRegistrationService = useUserRegistrationService();
   const verifyEmailStore = useVerifyRegistrationEmailStore();
   const model = ref(new UserRegistration());
-  const validator = ref(new I18nModelValidator<UserRegistration>(model.value));
+  const validator = reactive(new I18nModelValidator<UserRegistration>(model.value));
 
   async function register() {
     if (!(await this.validator.validate())) return false;
@@ -21,7 +21,7 @@ export const useUserRegistrationStore = defineStore('user-registrations', () => 
     return loadingStatus(
       userRegistrationService.register(model.value),
       status,
-      validator.value as I18nModelValidator<UserRegistration>,
+      validator as I18nModelValidator<UserRegistration>,
     ).then(async (otp) => {
       await verifyEmailStore.startVerificationOf(model.value.email, otp);
       return true;
@@ -29,23 +29,23 @@ export const useUserRegistrationStore = defineStore('user-registrations', () => 
   }
 
   async function validateUsername() {
-    const isValid = await validator.value.validateField('username');
+    const isValid = await validator.validateField('username');
     if (!isValid) return;
     await userRegistrationService.checkUserNameValidity({ value: model.value.username });
-    validator.value.deleteError('username');
+    validator.deleteError('username');
   }
 
   async function validateEmail() {
-    const isValid = await validator.value.validateField('email');
+    const isValid = await validator.validateField('email');
     if (!isValid) return;
     await userRegistrationService.checkUserEmailValidity({ value: model.value.email });
-    validator.value.deleteError('email');
+    validator.deleteError('email');
   }
 
   function reset() {
     status.resetStatus();
     model.value = new UserRegistration();
-    validator.value.setModel(model.value);
+    validator.setModel(model.value);
   }
 
   return {

@@ -77,7 +77,7 @@ function _assignRawDataTo<T extends Object>(
       // TODO: Handle cases in which propertyType is not String && != ObjectId
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
       const propertyType = propertyTypeDefinition?.type;
-      model[path] = propertyType === String ? data[path].toString() : model[path];
+      model[path] = propertyType === String ? data[path].toString() : data[path];
     } else if (data[path] && typeof data[path] === 'object' && !(data[path] instanceof Date)) {
       // Try to get model type by ModelType decorator, or otherwise try to determine the type from model or data
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);

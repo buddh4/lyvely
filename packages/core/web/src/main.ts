@@ -1,12 +1,12 @@
+import 'reflect-metadata';
+import './styles/tailwind.css';
 import './styles/index.css';
 import '@lyvely/ui/style.css';
-import 'reflect-metadata';
-import 'animate.css/animate.css';
 
 import { LyvelyWebApp } from '@/lyvely-web.app';
 
-const app = new LyvelyWebApp({
+new LyvelyWebApp({
   modules: [],
-});
-
-app.init().then(() => app.mount('#app'));
+})
+  .init('#app')
+  .catch((err) => console.error(err));

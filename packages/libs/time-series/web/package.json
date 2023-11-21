@@ -8,9 +8,9 @@
     ".": {
       "import": "./dist/index.js"
     },
-    "./tailwind.css": {
-      "import": "./dist/tailwind.css",
-      "require": "./dist/tailwind.css"
+    "./tailwind.txt": {
+      "import": "./dist/tailwind.txt",
+      "require": "./dist/tailwind.txt"
     }
   },
   "scripts": {

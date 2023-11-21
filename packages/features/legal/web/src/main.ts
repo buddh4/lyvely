@@ -2,13 +2,10 @@ import 'reflect-metadata';
 
 import '@lyvely/ui/style.css';
 import '@lyvely/web/style.css';
-import '@lyvely/calendar-plan-web/style.css';
 
 import { LyvelyWebApp } from '@lyvely/web';
 import legalModule from './module';
 
-const app = new LyvelyWebApp({
+new LyvelyWebApp({
   modules: [legalModule()],
-});
-
-app.init().then(() => app.mount('#app'));
+}).init('#app');

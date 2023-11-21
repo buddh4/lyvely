@@ -1,5 +1,4 @@
 import App from './App.vue';
-
 export { App };
 export * from './accessibility';
 export * from './app-config';

@@ -44,7 +44,7 @@ export function findByPath<T>(
 }
 
 export function isObjectId(value: any): value is object {
-  return value && typeof value === 'object' && value._bsontype && value._bsontype === 'ObjectID';
+  return value && typeof value === 'object' && value._bsontype && value._bsontype === 'ObjectId';
 }
 
 export function getPrototypeTree(type: Type): Array<Type> {

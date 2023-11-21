@@ -10,7 +10,7 @@ import {
   IFieldValidationResult,
 } from '@lyvely/common';
 import { CaptchaChallenge } from '@lyvely/core-interface';
-import { repository, isFieldValidationError } from '@/core';
+import { repository, isFieldValidationError, useStatus, loadingStatus } from '@/core';
 import { I18nModelValidator, translate, translation } from '@/i18n';
 
 class CaptchaModel extends BaseModel<CaptchaModel> {
@@ -26,6 +26,7 @@ export const useCaptchaStore = defineStore('captcha', () => {
   const challenge = ref<CaptchaChallenge>();
   const imageUrl = ref();
   const captchaService = useCaptchaService();
+  const status = useStatus();
 
   function reset() {
     captchaModel.value = new CaptchaModel();
@@ -36,7 +37,7 @@ export const useCaptchaStore = defineStore('captcha', () => {
 
   async function createChallenge() {
     reset();
-    challenge.value = await captchaService.challenge();
+    challenge.value = await loadingStatus(() => captchaService.challenge(), status);
     updateImageUrl();
   }
 
@@ -75,6 +76,7 @@ export const useCaptchaStore = defineStore('captcha', () => {
   }
 
   return {
+    status,
     captchaModel,
     validator,
     getCaptchaValue,

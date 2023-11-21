@@ -38,10 +38,15 @@ export const useViteWebConfig = (options: IOptions) => {
     );
   }
 
+  console.log(process.env.NODE_ENV);
+
+  const ignore =
+    process.env.NODE_ENV !== 'development' ? ['src/styles/tailwind.css', 'src/main.ts'] : [];
+
   const input =
     options.input ||
     sync(resolve(dirname, 'src/**/*.{ts,css,svg,png}'), {
-      ignore: 'src/styles/tailwind.css',
+      ignore,
     });
 
   return {

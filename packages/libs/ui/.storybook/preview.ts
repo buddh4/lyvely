@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/vue3';
 import '../src/styles/tailwind.css';
-import '../../../core/web/src/styles/variables.css';
+import './variables.css';
 import '../dist/style.css';
 import './storybook.css';
 

@@ -47,6 +47,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
         v-model="sendMailModel"
         :validator="sendMailValidator"
         :status="sendResetPasswordMailStore.status"
+        label-key="auth.reset_password.fields"
         @keydown.enter="sendMail">
         <ly-text-field
           property="usernameOrEmail"

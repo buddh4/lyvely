@@ -1,5 +1,6 @@
 {
   "calendar-plan": {
+    "today": "Today",
     "interval": {
       "recurrent" : {
         "0": "Unscheduled",
@@ -17,6 +18,22 @@
         "4": "Weeks",
         "5": "Days"
       }
+    },
+    "titles": {
+      "unscheduled": "Unscheduled",
+      "quarterly": "Q {quarter}",
+      "weekly": "Week {week}"
+    },
+    "nav-today": "Switch to today",
+    "aria": {
+      "move-success": "Item was successfully moved from index {from} to {to}",
+      "move-boundary": "Item cannot be moved further",
+      "drag-button": "Change order of current item {title}",
+      "nav-back": "Navigate back to {time}",
+      "nav-next": "Navigate forward to {time}",
+      "root": "Calendar plan accordion",
+      "header": "Calendar plan for {time}",
+      "drag-toggle-button": "Activates draggable buttons in calendar plan list items"
     }
   }
 }

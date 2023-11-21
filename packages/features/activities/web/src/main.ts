@@ -11,8 +11,8 @@ import { tasksModule } from '@lyvely/tasks-web';
 import { milestonesModule } from '@lyvely/milestones-web';
 import activitiesModule from './module';
 
-const app = new LyvelyWebApp({
+new LyvelyWebApp({
   modules: [activitiesModule(), habitsModule(), tasksModule(), milestonesModule()],
-});
-
-app.init().then(() => app.mount('#app'));
+})
+  .init('#app')
+  .catch((err) => console.error(err));

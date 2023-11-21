@@ -52,7 +52,7 @@ defineExpose({ validate });
       :id="id"
       v-model="captchaModel.captcha"
       :error="validator.getError('captcha')"
-      input-class="rounded-t-none"
+      input-style="border-top-left-radius: 0;border-top-right-radius: 0"
       @focusout="validate" />
   </div>
 </template>

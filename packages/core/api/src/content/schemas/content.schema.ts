@@ -3,7 +3,7 @@ import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '
 import { IContent, ContentModel } from '@lyvely/core-interface';
 import { BaseEntity, ObjectIdArrayProp, TObjectId } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
-import { ContentMetadata, ContentMetadataSchema } from './content.metadata.schema';
+import { ContentMetadata, ContentMetadataSchema } from './content-metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
 import { User } from '@/users';
 import {
