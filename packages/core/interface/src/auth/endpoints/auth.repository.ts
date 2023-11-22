@@ -1,8 +1,7 @@
 import { LoginModel } from '../models';
-import { ENDPOINT_AUTH } from '../endpoints';
+import { ENDPOINT_AUTH, AuthEndpointPaths, IAuthClient } from './auth.endpoint';
 import { Headers } from '@lyvely/common';
 import { useApi } from '@/repository';
-import { AuthEndpointPaths, IAuthClient } from '@/auth';
 
 const api = useApi<IAuthClient>(ENDPOINT_AUTH);
 

@@ -1,17 +1,12 @@
-import {
-  ContentModel,
-  ContentStreamFilter,
-  IContentStreamClient,
-  IStreamOptions,
-  IStreamResponse,
-  IStreamState,
-} from '@lyvely/interface';
+import { ContentModel, ContentStreamFilter } from '../models';
+import { IContentStreamClient } from './content-stream.endpoint';
+import { IStreamOptions, IStreamResponse, IStreamState } from '@/streams';
 import { useSingleton, PropertiesOf } from '@lyvely/common';
-import repositry from '../repositories/content-stream.repository';
-import { unwrapResponse } from '@/core';
-import { getContentType } from './content-stream-entry.registry';
+import repositry from './content-stream.repository';
+import { unwrapResponse } from '@/endpoints';
+import { getContentModelType } from '../registries';
 
-export class ContentStreamService implements IContentStreamClient {
+export class ContentStreamClient implements IContentStreamClient {
   async loadEntry(id: string, filter?: ContentStreamFilter): Promise<ContentModel> {
     return this.createModel(await unwrapResponse(repositry.loadEntry(id)));
   }
@@ -59,8 +54,8 @@ export class ContentStreamService implements IContentStreamClient {
   }
 
   private getModelClass(type: string) {
-    return getContentType(type) || ContentModel;
+    return getContentModelType(type) || ContentModel;
   }
 }
 
-export const useContentStreamService = useSingleton(() => new ContentStreamService());
+export const useContentStreamClient = useSingleton(() => new ContentStreamClient());

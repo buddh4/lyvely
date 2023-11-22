@@ -4,7 +4,7 @@ import { useContentArchive } from '@/content/composables/content-archive.composa
 import { useContentEditStore } from '@/content/stores/content-edit.store';
 import { computed, ref } from 'vue';
 import { IConfirmOptions } from '@lyvely/ui';
-import { getContentTypeOptions } from '../services';
+import { getContentTypeOptions } from '../registries';
 
 export interface IProps {
   content: ContentModel;
@@ -22,7 +22,7 @@ function onClickArchive() {
   confirmAction.value = toggleArchive;
   confirm.value = {
     text: props.content.meta.archived
-      ? 'content.actions.confirm.unarchive'
+      ? 'content.actions.confirm.restore'
       : 'content.actions.confirm.archive',
   };
   showConfirm.value = true;

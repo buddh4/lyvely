@@ -2,7 +2,7 @@ import { defineStore, storeToRefs } from 'pinia';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { watch } from 'vue';
 import { ContentModel, ContentStreamFilter, IStreamHistory } from '@lyvely/interface';
-import { IStream } from '@/stream/composables/stream.composable';
+import { IStream } from '@/stream/stream.composable';
 
 export interface IContentStreamHistory extends IStreamHistory<ContentModel> {}
 

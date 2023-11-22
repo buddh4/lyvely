@@ -18,8 +18,8 @@ export class TagsService
     return unwrapResponse(repository.archive(id));
   }
 
-  async unarchive(id: string) {
-    return unwrapResponse(repository.unarchive(id));
+  async restore(id: string) {
+    return unwrapResponse(repository.restore(id));
   }
 }
 

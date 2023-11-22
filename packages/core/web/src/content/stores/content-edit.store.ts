@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ContentModel } from '@lyvely/interface';
 import { computed, ref, watch } from 'vue';
-import { getEditContentModalComponent } from '../services';
+import { getEditContentModalComponent } from '../registries';
 
 export const useContentEditStore = defineStore('content-edit', () => {
   const editModel = ref<ContentModel>();

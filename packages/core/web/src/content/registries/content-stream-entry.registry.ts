@@ -1,6 +1,5 @@
 import { Component } from 'vue';
-import { Type } from '@lyvely/common';
-import { ContentModel } from '@lyvely/interface';
+import { ContentModel, registerContentModelType } from '@lyvely/interface';
 import {
   IContentTypeOptions,
   IStreamEntryProps,
@@ -10,7 +9,6 @@ import {
 } from '../interfaces';
 import { resolveComponentRegistration, ComponentRegistration } from '@lyvely/ui';
 
-const contentTypeRegistry = new Map<string, Type<ContentModel>>();
 const streamEntryRegistry = new Map<string, Component<IStreamEntryProps>>();
 const contentDetailRegistry = new Map<string, Component<IContentDetailsProps>>();
 const createContentModalRegistry = new Map<string, Component<ICreateContentModalProps>>();
@@ -23,7 +21,7 @@ export function registerContentType(options: IContentTypeOptions) {
   _registerInterfaces(options.type, interfaces);
 
   if (options.modelClass) {
-    _registerContentType(options.type, options.modelClass);
+    registerContentModelType(options.type, options.modelClass);
   }
 
   _registerContentTypeOptions(options.type, options);
@@ -59,14 +57,6 @@ function _registerContentTypeOptions(contentType: string, options: IContentTypeO
 
 export function getContentTypeOptions(contentType: string) {
   return contentTypeOptionsRegistry.get(contentType);
-}
-
-function _registerContentType(type: string, modelType: Type<ContentModel>) {
-  contentTypeRegistry.set(type, modelType);
-}
-
-export function getContentType(type: string) {
-  return contentTypeRegistry.get(type);
 }
 
 export function registerCreateContentModalComponent(

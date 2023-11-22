@@ -9,7 +9,7 @@ import { IContentLog } from '@lyvely/interface';
  *  - Updated by, at, revId
  *  - Added/Removed tags
  *  - Changed Visibility
- *  - Archived/Unarchived
+ *  - Archived/Restored
  *  - Deleted
  *  - Shared
  *  - Moved

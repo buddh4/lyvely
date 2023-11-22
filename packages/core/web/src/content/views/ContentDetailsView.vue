@@ -5,19 +5,17 @@ import {
   ContentDetails,
   ContentDetailsHeader,
 } from '../components';
-import { ContentModel, ContentStreamFilter, MessageModel, ProfileType } from '@lyvely/interface';
-import { useContentStreamService, getContentDetailsComponent } from '../services';
+import { ContentModel, ContentStreamFilter, useContentStreamClient } from '@lyvely/interface';
+import { getContentDetailsComponent } from '../registries';
 import { useRouter } from 'vue-router';
 import { computed, ref, watch } from 'vue';
-import { useContentStreamFilterStore, useContentStore, useContentCreateStore } from '../stores';
+import { useContentStreamFilterStore, useContentStore } from '../stores';
 import { storeToRefs } from 'pinia';
 import { contentRoute } from '../routes/content-route.helper';
 import { t } from '@/i18n';
-import emptyImageUrl from '@/assets/empty.png';
-import { useProfileStore } from '@/profiles';
 
 const router = useRouter();
-const streamService = useContentStreamService();
+const streamClient = useContentStreamClient();
 const content = ref<ContentModel>();
 const { filter } = storeToRefs(useContentStreamFilterStore());
 const contentStore = useContentStore();
@@ -38,7 +36,7 @@ watch(
     if (to.name === 'content-details' && to.params.cid) {
       const cid = to.params.cid as string;
       if (content.value?.id !== cid) {
-        content.value = await streamService.loadEntry(cid);
+        content.value = await streamClient.loadEntry(cid);
         filter.value = new ContentStreamFilter({ parentId: cid });
         contentStore.onContentUpdated('*', onContentUpdated);
       }

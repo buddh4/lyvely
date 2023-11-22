@@ -1,5 +1,11 @@
 import { Post, Body, Req, Param, Get, NotFoundException } from '@nestjs/common';
-import { IStreamFilter, IStreamResponse, StreamRequest, StreamResponse } from '@lyvely/interface';
+import {
+  IStreamFilter,
+  IStreamResponse,
+  StreamEndpointPaths,
+  StreamRequest,
+  StreamResponse,
+} from '@lyvely/interface';
 import { AbstractStreamService } from '../service';
 import { BaseEntity } from '@/core';
 import { PropertiesOf } from '@lyvely/common';
@@ -14,7 +20,7 @@ export abstract class AbstractStreamController<
 
   protected abstract mapToResultModel(models: TModel[], context: TContext): Promise<TResult[]>;
 
-  @Post('load-next')
+  @Post(StreamEndpointPaths.TAIL)
   async loadTail(
     @Body() streamRequest: StreamRequest<TFilter>,
     @Req() req: { context: TContext },
@@ -39,7 +45,7 @@ export abstract class AbstractStreamController<
     });
   }
 
-  @Post('load-head')
+  @Post(StreamEndpointPaths.HEAD)
   async loadHead(
     @Body() streamRequest: StreamRequest,
     @Req() req: { context: TContext },

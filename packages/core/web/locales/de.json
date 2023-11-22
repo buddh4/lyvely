@@ -83,7 +83,7 @@
     "archive": "Archive",
     "back_to_home": "Take me back home",
     "none": "none",
-    "unarchive": "Add from archive",
+    "restore": "Add from archive",
     "status": {
       "404": "Page not found!",
       "403": "You are not allowed to view this page!",
@@ -128,7 +128,7 @@
         "text": "Are you sure you want to archive this tag?"
       }
     },
-    "unarchive": {
+    "restore": {
       "confirm": {
         "text": "Are you sure you want to add this tag from archive?"
       }
@@ -227,7 +227,7 @@
       "restore": "Restore",
       "confirm": {
         "archive": "Are you sure you want to archive this content",
-        "unarchive": "Are you sure you want to restore this content from the archive"
+        "restore": "Are you sure you want to restore this content from the archive"
       }
     }
   },

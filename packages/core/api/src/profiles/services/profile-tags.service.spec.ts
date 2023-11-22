@@ -42,14 +42,14 @@ describe('ProfileTagsService', () => {
     });
   });
 
-  describe('unarchiveTag', () => {
+  describe('restoreTag', () => {
     it('archive tag', async () => {
       const { profile } = await testData.createUserAndProfile();
       await profileTagsService.mergeTags(profile, ['health']);
       let tag = profile.getTagByName('health')!;
       expect(await profileTagsService.archiveTag(profile, tag!)).toEqual(true);
       expect(tag!.archived).toEqual(true);
-      expect(await profileTagsService.unarchive(profile, tag!)).toEqual(true);
+      expect(await profileTagsService.restore(profile, tag!)).toEqual(true);
       expect(tag!.archived).toEqual(false);
       tag = profile.getTagByName('health')!;
       expect(tag!.archived).toEqual(false);

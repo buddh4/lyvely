@@ -1,4 +1,9 @@
-import { ENDPOINT_CONTENT, ContentEndpoint, SetMilestoneModel } from '@lyvely/interface';
+import {
+  ENDPOINT_CONTENT,
+  ContentEndpoint,
+  SetMilestoneModel,
+  ContentEndpointPaths,
+} from '@lyvely/interface';
 import { Post, HttpCode, HttpStatus, Param, Request, Body } from '@nestjs/common';
 import { Policies } from '@/policies';
 import { ContentService } from '../services';
@@ -10,7 +15,7 @@ import { ContentTypeController } from '../decorators';
 export class ContentController implements ContentEndpoint {
   constructor(private contentService: ContentService) {}
 
-  @Post(':cid/archive')
+  @Post(ContentEndpointPaths.ARCHIVE(':cid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Policies(ContentWritePolicy)
   async archive(@Param('cid') cid: string, @Request() req: ProtectedProfileContentRequest) {
@@ -18,15 +23,15 @@ export class ContentController implements ContentEndpoint {
     await this.contentService.archive(user, content);
   }
 
-  @Post(':cid/unarchive')
+  @Post(ContentEndpointPaths.RESTORE(':cid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Policies(ContentWritePolicy)
-  async unarchive(@Param('cid') cid: string, @Request() req: ProtectedProfileContentRequest) {
+  async restore(@Param('cid') cid: string, @Request() req: ProtectedProfileContentRequest) {
     const { user, content } = req;
-    await this.contentService.unarchive(user, content);
+    await this.contentService.restore(user, content);
   }
 
-  @Post(':cid/set-milestone')
+  @Post(ContentEndpointPaths.SET_MILESTONE(':cid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Policies(ContentWritePolicy)
   async setMilestone(

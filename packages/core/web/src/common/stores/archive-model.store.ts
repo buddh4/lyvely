@@ -3,7 +3,7 @@ import { IArchivable } from '@lyvely/common';
 
 interface IArchiveModelRepository<TID = string> {
   archive: (id: TID) => Promise<AxiosResponse<boolean>>;
-  unarchive: (id: TID) => Promise<AxiosResponse<boolean>>;
+  restore: (id: TID) => Promise<AxiosResponse<boolean>>;
 }
 
 export interface IArchiveModelStoreOptions<TModel extends IArchivable, TID = string> {
@@ -18,14 +18,14 @@ export function useArchiveModelStore<TModel extends IArchivable, TID = string>(
     return _handleUpdate(modelId, model, true);
   }
 
-  async function unarchiveModel(modelId: TID, model: TModel) {
+  async function restoreModel(modelId: TID, model: TModel) {
     return _handleUpdate(modelId, model, false);
   }
 
   async function _handleUpdate(modelId: TID, model: TModel, archive: boolean) {
     const { data } = archive
       ? await _getRepository(model).archive(modelId)
-      : await _getRepository(model).unarchive(modelId);
+      : await _getRepository(model).restore(modelId);
 
     if (data === true) {
       model.archived = archive;
@@ -47,6 +47,6 @@ export function useArchiveModelStore<TModel extends IArchivable, TID = string>(
 
   return {
     archiveModel,
-    unarchiveModel,
+    restoreModel,
   };
 }

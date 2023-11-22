@@ -1,1 +1,1 @@
-export * from './composables/stream.composable';
+export * from './stream.composable';

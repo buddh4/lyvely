@@ -4,5 +4,5 @@ export * from './stores/content-create.store';
 export * from './interfaces';
 export * from './routes/content-route.helper';
 export * from './components';
-export * from './services';
+export * from './registries';
 export { default as contentModule } from './module';

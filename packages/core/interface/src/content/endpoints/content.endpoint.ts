@@ -2,14 +2,16 @@ import { Endpoint } from '@lyvely/common';
 
 export const ENDPOINT_CONTENT = 'content';
 
-export interface IContentService {
-  //reactTo: (id: string, toType: string) => Promise<IContent>;
-  //convertTo: (id: string, toType: string) => Promise<IContent>;
-  //bookMark: (id: string) => Promise<void>;
-  //delete: (id: string) => Promise<void>;
+export interface IContentClient {
   archive: (id: string) => Promise<void>;
-  unarchive: (id: string) => Promise<void>;
+  restore: (id: string) => Promise<void>;
   setMilestone: (id: string, mid: string) => Promise<void>;
 }
 
-export type ContentEndpoint = Endpoint<IContentService>;
+export type ContentEndpoint = Endpoint<IContentClient>;
+
+export const ContentEndpointPaths = {
+  ARCHIVE: (cid: string) => `${cid}/archive`,
+  RESTORE: (cid: string) => `${cid}/restore`,
+  SET_MILESTONE: (cid: string) => `${cid}/set-milestone`,
+};

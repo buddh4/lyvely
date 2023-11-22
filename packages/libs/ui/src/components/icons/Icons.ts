@@ -275,8 +275,8 @@ export const Icons: { [n: string]: IconDefinitionIF } = {
       'M27 13v15h-23v-15h23zM29 12v-7h-27v7h27zM12.997 18c-1.103 0-1.997 0.888-1.997 2 0 1.105 0.896 2 1.997 2h5.005c1.103 0 1.997-0.888 1.997-2 0-1.105-0.896-2-1.997-2h-5.005z',
     ],
   },
-  unarchive: {
-    name: 'unarchive',
+  restore: {
+    name: 'restore',
     viewBox: '0 0 32 32',
     paths: ['M18 8l-4-4h-14v26h32v-22h-14zM22 22h-4v4h-4v-4h-4v-4h4v-4h4v4h4v4z'],
   },

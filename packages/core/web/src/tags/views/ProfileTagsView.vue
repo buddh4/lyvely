@@ -26,13 +26,13 @@ function archive(tag: TagModel) {
   editTagStore.archiveModel(tag.id, tag);
 }
 
-function unarchive(tag: TagModel) {
-  editTagStore.unarchiveModel(tag.id, tag);
+function restore(tag: TagModel) {
+  editTagStore.restoreModel(tag.id, tag);
 }
 
 function confirmArchive(tag: TagModel) {
   return tag.archived
-    ? { text: 'tags.unarchive.confirm.text' }
+    ? { text: 'tags.restore.confirm.text' }
     : { text: 'tags.archive.confirm.text' };
 }
 
@@ -87,9 +87,9 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
             v-if="tag.archived"
             class="secondary outlined"
             :confirm="confirmArchive(tag)"
-            :title="$t('common.unarchive')"
-            @click="unarchive(tag)">
-            <ly-icon name="unarchive" />
+            :title="$t('common.restore')"
+            @click="restore(tag)">
+            <ly-icon name="restore" />
           </ly-button>
           <ly-button
             v-else

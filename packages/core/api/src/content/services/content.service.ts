@@ -59,8 +59,8 @@ export class ContentService {
    * @param content
    * @throws EntityNotFoundException
    */
-  async unarchive(user: User, content: Content): Promise<Content> {
-    await this.contentDao.unarchive(user, content);
+  async restore(user: User, content: Content): Promise<Content> {
+    await this.contentDao.restore(user, content);
     if (content.meta.parentId) {
       this.contentDao.incrementChildCount(content, content.meta.parentId).catch((e) => {
         this.logger.error(e);

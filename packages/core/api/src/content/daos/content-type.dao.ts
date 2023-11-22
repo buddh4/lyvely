@@ -19,12 +19,13 @@ export abstract class ContentTypeDao<T extends Content> extends BaseProfileModel
     );
   }
 
-  async unarchive(user: User, content: T): Promise<boolean> {
+  async restore(user: User, content: T): Promise<boolean> {
     return this.updateOneByProfileAndIdSet(
       content,
       content,
       this.createUserUpdateQuerySet(user, {
         'meta.archived': false,
+        'meta.deleted': false,
       }),
     );
   }

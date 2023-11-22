@@ -4,7 +4,7 @@ import { ContentModel, CreateContentModel, ContentUpdateResponse } from '@lyvely
 import { IEditOrCreateModalProps } from '@/content/interfaces/edit-content-modal-props.interface';
 import { IUpdateModelStoreOptions, useUpdateModelStore } from '@/common';
 import { useProfileStore } from '@/profiles/stores/profile.store';
-import { getContentTypeOptions } from '../services';
+import { getContentTypeOptions } from '../registries';
 import { ModalCreate } from '../interfaces';
 import { StoreStatusPlugin } from '@/core';
 import { useContentStore } from '../stores';

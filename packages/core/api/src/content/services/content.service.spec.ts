@@ -69,13 +69,13 @@ describe('content dao', () => {
     });
   });
 
-  describe('unarchive', () => {
-    it('unarchive content', async () => {
+  describe('restore', () => {
+    it('restore content', async () => {
       const { owner, member, profile } = await testData.createSimpleGroup();
       const content = await createTestContent(member, profile, true);
       expect(content.meta.archived).toEqual(true);
       const updatedAt = content.meta.updatedAt;
-      await contentService.unarchive(owner, content);
+      await contentService.restore(owner, content);
       expect(content.meta.archived).toEqual(false);
       const persisted = await contentService.findContentByProfileAndId(profile, content);
       expect(persisted?.meta.archived).toEqual(false);

@@ -7,8 +7,8 @@ import { useRouter } from 'vue-router';
 import { isTextSelection } from '@/core';
 import { t } from '@/i18n';
 import TagList from '@/tags/components/TagList.vue';
-import { IStream } from '@/stream/composables/stream.composable';
-import { getContentTypeOptions } from '../services';
+import { IStream } from '@/stream/stream.composable';
+import { getContentTypeOptions } from '../registries';
 import { useUserInfo } from '@/profiles/composables';
 
 export interface IProps {

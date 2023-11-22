@@ -1,22 +1,21 @@
 import { defineStore } from 'pinia';
-import { ContentModel, ContentUpdateResponse, IContent } from '@lyvely/interface';
-import { useContentService } from '@/content/services/content.service';
+import { ContentModel, ContentUpdateResponse, IContent, useContentClient } from '@lyvely/interface';
 import { useGlobalDialogStore, eventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 
-type ContentEventType = 'archived' | 'unarchived' | 'created' | 'updated' | 'set-milestone';
+type ContentEventType = 'archived' | 'restored' | 'created' | 'updated' | 'set-milestone';
 
 export const useContentStore = defineStore('content', () => {
-  const contentService = useContentService();
+  const contentClient = useContentClient();
   const globalDialog = useGlobalDialogStore();
 
   async function toggleArchive(content: ContentModel) {
-    return content.meta.archived ? unarchive(content) : archive(content);
+    return content.meta.archived ? restore(content) : archive(content);
   }
 
   async function setMilestone(content: ContentModel, mid: string) {
     if (content.meta.mid === mid) return;
-    return contentService
+    return contentClient
       .setMilestone(content.id, mid)
       .then(() => {
         content.meta.mid = mid;
@@ -27,7 +26,7 @@ export const useContentStore = defineStore('content', () => {
   }
 
   async function archive(content: ContentModel) {
-    return contentService
+    return contentClient
       .archive(content.id)
       .then(() => {
         content.meta.archived = true;
@@ -37,12 +36,12 @@ export const useContentStore = defineStore('content', () => {
       .catch(globalDialog.showUnknownError);
   }
 
-  async function unarchive(content: ContentModel) {
-    return contentService
-      .unarchive(content.id)
+  async function restore(content: ContentModel) {
+    return contentClient
+      .restore(content.id)
       .then(() => {
         content.meta.archived = false;
-        emitPostContentEvent(content.type, 'unarchived', content);
+        emitPostContentEvent(content.type, 'restored', content);
         emitPostContentUpdateEvent(content.type, content);
       })
       .catch(globalDialog.showUnknownError);
@@ -114,7 +113,7 @@ export const useContentStore = defineStore('content', () => {
 
   return {
     archive,
-    unarchive,
+    restore,
     toggleArchive,
     handleCreateContent,
     handleUpdateContent,

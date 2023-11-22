@@ -1,8 +1,8 @@
-import { IStreamService } from '@/streams';
+import { IStreamClient } from '@/streams';
 import { IWebNotification } from '../interfaces';
 import { Endpoint } from '@lyvely/common';
 
-export interface INotificationsService extends IStreamService<IWebNotification> {
+export interface INotificationsService extends IStreamClient<IWebNotification> {
   markAsSeen(nid: string): Promise<void>;
 }
 

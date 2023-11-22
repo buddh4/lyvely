@@ -47,7 +47,7 @@ export interface IStreamFilter {
   reset(): void;
 }
 
-export interface IStreamService<
+export interface IStreamClient<
   TModel,
   TFilter extends IStreamFilter = any,
   TState extends IStreamState = IStreamState,
@@ -83,3 +83,8 @@ export interface IStreamHistory<
   filter: TFilter;
   restoreState: TRestoreState;
 }
+
+export const StreamEndpointPaths = {
+  HEAD: 'head',
+  TAIL: 'tail',
+};

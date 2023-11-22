@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { getContentStreamEntryComponent, useContentStreamService } from '../services';
+import { getContentStreamEntryComponent } from '../registries';
 import { t } from '@/i18n';
 import { nextTick, onMounted, onUnmounted, ref, Ref, watch, WatchStopHandle } from 'vue';
 import {
@@ -7,6 +7,7 @@ import {
   ContentStreamFilter,
   ContentUpdateStateLiveEvent,
   StreamDirection,
+  useContentStreamClient,
 } from '@lyvely/interface';
 import { useLiveStore } from '@/live/stores/live.store';
 import { useProfileStore } from '@/profiles/stores/profile.store';
@@ -17,7 +18,7 @@ import {
   useContentStore,
 } from '../stores';
 import { onBeforeRouteLeave } from 'vue-router';
-import { useStream } from '@/stream/composables/stream.composable';
+import { useStream } from '@/stream/stream.composable';
 import { scrollToBottom } from '@/core';
 import DefaultStreamEntry from './DefaultStreamEntry.vue';
 
@@ -65,7 +66,7 @@ const stream = useStream<ContentModel, ContentStreamFilter>(
     infiniteScroll: props.infiniteScroll ? { distance: 100 } : false,
     scrollToHead: doScrollToHead,
   },
-  useContentStreamService(),
+  useContentStreamClient(),
 );
 
 const { models, isReady, isInitialized } = stream;

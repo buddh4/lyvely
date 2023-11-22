@@ -54,7 +54,7 @@ export class ProfileTagsService {
     return this.updateTag(profile, identity, { archived: true });
   }
 
-  async unarchive(profile: Profile, identity: EntityIdentity<Tag>) {
+  async restore(profile: Profile, identity: EntityIdentity<Tag>) {
     return this.updateTag(profile, identity, { archived: false });
   }
 }

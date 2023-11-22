@@ -4,7 +4,7 @@ import {
   getContentTypeOptions,
   getCreateContentModalComponent,
   getCreateContentTypes,
-} from '../services';
+} from '../registries';
 import { ICreateContentInitOptions } from '../interfaces';
 import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
 

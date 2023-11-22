@@ -6,7 +6,7 @@ import TagList from '@/tags/components/TagList.vue';
 import { useRouter } from 'vue-router';
 import { computed, unref } from 'vue';
 import { translate } from '@/i18n';
-import { getContentTypeOptions } from '../services';
+import { getContentTypeOptions } from '../registries';
 import { useUserInfo } from '@/profiles/composables';
 import { LyMarkdownView } from '@lyvely/ui';
 

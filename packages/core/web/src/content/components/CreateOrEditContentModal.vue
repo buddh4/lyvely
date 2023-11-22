@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useContentCreateStore } from '@/content/stores/content-create.store';
 import { useContentEditStore } from '@/content/stores/content-edit.store';
-import { getCreateContentTypes } from '../services';
+import { getCreateContentTypes } from '../registries';
 import { translate } from '@/i18n';
 
 const contentCreateStore = useContentCreateStore();

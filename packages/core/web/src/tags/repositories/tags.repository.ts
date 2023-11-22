@@ -28,9 +28,9 @@ export default {
     );
   },
 
-  async unarchive(tagId: string) {
-    return useApiRepository().post<EndpointResult<IProfileTagsService['unarchive']>>(
-      `${ENDPOINT_PROFILE_TAGS}/${tagId}/unarchive`,
+  async restore(tagId: string) {
+    return useApiRepository().post<EndpointResult<IProfileTagsService['restore']>>(
+      `${ENDPOINT_PROFILE_TAGS}/${tagId}/restore`,
     );
   },
 };

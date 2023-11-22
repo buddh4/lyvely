@@ -2,7 +2,7 @@ import {
   IStreamFilter,
   IStreamHistory,
   IStreamOptions,
-  IStreamService,
+  IStreamClient,
   IStreamState,
   StreamDirection,
   IStreamRestoreState,
@@ -54,7 +54,7 @@ export function useStream<
   TRestoreState extends IStreamRestoreState = IStreamRestoreState,
   TState extends IStreamState = IStreamState,
   TOptions extends IStreamViewOptions = IStreamViewOptions,
->(initOptions: TOptions, service: IStreamService<TModel, TFilter, IStreamState, TOptions>) {
+>(initOptions: TOptions, service: IStreamClient<TModel, TFilter, IStreamState, TOptions>) {
   const options = initOptions;
   const state = ref<IStreamState>({});
   const loadTailStatus = useStatus();

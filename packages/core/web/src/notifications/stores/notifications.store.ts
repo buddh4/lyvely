@@ -7,7 +7,7 @@ import {
   StreamDirection,
 } from '@lyvely/interface';
 import { useNotificationService } from '@/notifications/services/notifications.service';
-import { useStream } from '@/stream/composables/stream.composable';
+import { useStream } from '@/stream/stream.composable';
 import { useLiveStore } from '@/live/stores/live.store';
 
 export const useNotificationStore = defineStore('notifications', () => {
