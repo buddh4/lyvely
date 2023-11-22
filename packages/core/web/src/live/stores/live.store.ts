@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { eventBus } from '@/core';
-import { ILiveEvent } from '@lyvely/interface';
+import { createApiUrl, ILiveEvent } from '@lyvely/interface';
 
 const apiURL = import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api';
 
@@ -56,7 +56,7 @@ export const useLiveStore = defineStore('live', () => {
   }
 
   function connectUserEventSource() {
-    const eventSource = new EventSource(`${apiURL}/live/user`, { withCredentials: true });
+    const eventSource = new EventSource(createApiUrl('/live/user'), { withCredentials: true });
     eventSource.onerror = (error) => console.error(error);
     eventSource.onopen = () => console.debug('Live connection onopen');
     eventSource.onmessage = ({ data }) => {
@@ -68,14 +68,14 @@ export const useLiveStore = defineStore('live', () => {
 
   let guestSource: EventSource | undefined;
   let guestPid: string | undefined;
-  function connectProfileGuestEventSource(pid: string, release?: (v: any) => void) {
+  function connectProfileGuestEventSource(pid: string) {
     if (guestSource && guestPid === pid) return;
 
     if (guestSource && guestPid !== pid) guestSource.close();
 
     guestPid = pid;
 
-    guestSource = new EventSource(`${apiURL}/live/${pid}/guest`, { withCredentials: true });
+    guestSource = new EventSource(createApiUrl(`/live/${pid}/guest`), { withCredentials: true });
     guestSource.onerror = (error) => console.error(error);
     guestSource.onopen = () => console.debug('Live connection onopen');
     guestSource.onmessage = ({ data }) => {

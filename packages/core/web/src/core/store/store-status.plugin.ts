@@ -1,6 +1,6 @@
 import { Ref, ref } from 'vue';
 import { ModelValidator, FieldValidationException } from '@lyvely/common';
-import { errorToServiceException, isFieldValidationError, throwServiceException } from '../util';
+import { isFieldValidationError, throwServiceException } from '@lyvely/interface';
 
 export enum Status {
   INIT,

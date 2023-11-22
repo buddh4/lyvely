@@ -8,6 +8,14 @@ declare module '*.vue' {
   export default component;
 }
 
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    skipAuthRefresh?: boolean;
+    withCaptcha?: boolean;
+    skipProfileIdParam?: boolean;
+  }
+}
+
 export declare global {
   interface Window {
     app: any;

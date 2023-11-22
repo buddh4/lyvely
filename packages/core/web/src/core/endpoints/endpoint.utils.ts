@@ -1,4 +1,4 @@
-import { errorToServiceException } from '../util';
+import { errorToServiceException } from '@lyvely/interface';
 import { AxiosResponse } from 'axios';
 import { assignRawDataToAndInitProps, Type } from '@lyvely/common';
 
