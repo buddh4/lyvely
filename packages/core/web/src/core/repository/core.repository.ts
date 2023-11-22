@@ -1,24 +1,9 @@
-import axios from 'axios';
+import { useApiRepository, createApiUrl as createApiRepositoryUrl } from '@lyvely/core-interface';
 
-// TODO: abstract this away in config or something..
-const apiURL = import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api';
-export const repository = axios.create({ baseURL: apiURL });
+// Only used for compatibility
+export const createApiUrl = createApiRepositoryUrl;
 
-export function createApiUrl(path: string, queryParameters: Record<string, string> = {}) {
-  const url = new URL(apiURL);
-  path = path.charAt(0) === '/' ? path : '/' + path;
-  url.pathname = path;
-
-  Object.keys(queryParameters).forEach((key) => {
-    url.searchParams.append(key, queryParameters[key]);
-  });
-
-  return url.toString();
-}
-
+// TODO (file) this is just a dummy implementation, and does not work at the moment...
 export function createFileUrl(hash: string) {
-  // TODO (file) this is just a dummy implementation, and does not work at the moment...
   return createApiUrl('/files/' + hash);
 }
-
-repository.defaults.withCredentials = true;

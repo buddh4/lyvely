@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { t } from '@/i18n';
 import { isToday } from '@lyvely/dates';
 import ms from 'ms';
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import { useAppConfigStore } from '@/app-config/app-config.store';
 import { useIntroductionTourStore } from '@/help/stores/introduction-tour.store';
 import { computed } from 'vue';
 

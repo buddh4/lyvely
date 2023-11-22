@@ -1,4 +1,3 @@
-import { repository } from '@lyvely/web';
 import {
   ENDPOINT_JOURNALS,
   IJournalsEndpointService,
@@ -8,24 +7,25 @@ import {
 import { UpdateDataPointModel } from '@lyvely/time-series-web';
 import { EndpointResult } from '@lyvely/common';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-web';
+import { useApiRepository } from '@lyvely/core-interface';
 
 export default {
   async create(model: CreateJournalModel) {
-    return repository.post<EndpointResult<IJournalsEndpointService['create']>>(
+    return useApiRepository().post<EndpointResult<IJournalsEndpointService['create']>>(
       `${ENDPOINT_JOURNALS}`,
       model,
     );
   },
 
   async update(habitId: string, model: Partial<UpdateJournalModel>) {
-    return repository.put<EndpointResult<IJournalsEndpointService['update']>>(
+    return useApiRepository().put<EndpointResult<IJournalsEndpointService['update']>>(
       `${ENDPOINT_JOURNALS}/${habitId}`,
       model,
     );
   },
 
   async getByFilter(filter: CalendarPlanFilter) {
-    return repository.get<EndpointResult<IJournalsEndpointService['getByFilter']>>(
+    return useApiRepository().get<EndpointResult<IJournalsEndpointService['getByFilter']>>(
       `${ENDPOINT_JOURNALS}`,
       {
         params: filter,
@@ -34,14 +34,14 @@ export default {
   },
 
   async sort(cid: string, sort: CalendarPlanSort) {
-    return repository.post<EndpointResult<IJournalsEndpointService['sort']>>(
+    return useApiRepository().post<EndpointResult<IJournalsEndpointService['sort']>>(
       `${ENDPOINT_JOURNALS}/${cid}/sort`,
       sort,
     );
   },
 
   async updateDataPoint(cid: string, dto: UpdateDataPointModel) {
-    return repository.post<EndpointResult<IJournalsEndpointService['updateDataPoint']>>(
+    return useApiRepository().post<EndpointResult<IJournalsEndpointService['updateDataPoint']>>(
       `${ENDPOINT_JOURNALS}/${cid}/update-data-point`,
       dto,
     );

@@ -1,14 +1,21 @@
-import { repository } from '@/core';
-import { ENDPOINT_MESSAGE, CreateMessageModel, IMessageClient } from '@lyvely/core-interface';
+import {
+  ENDPOINT_MESSAGE,
+  CreateMessageModel,
+  IMessageClient,
+  useApiRepository,
+} from '@lyvely/core-interface';
 import { EndpointResult } from '@lyvely/common';
 
 export default {
   create(model: CreateMessageModel) {
-    return repository.post<EndpointResult<IMessageClient['create']>>(`${ENDPOINT_MESSAGE}`, model);
+    return useApiRepository().post<EndpointResult<IMessageClient['create']>>(
+      `${ENDPOINT_MESSAGE}`,
+      model,
+    );
   },
 
   update(id: string, model: Partial<CreateMessageModel>) {
-    return repository.put<EndpointResult<IMessageClient['update']>>(
+    return useApiRepository().put<EndpointResult<IMessageClient['update']>>(
       `${ENDPOINT_MESSAGE}/${id}`,
       model,
     );

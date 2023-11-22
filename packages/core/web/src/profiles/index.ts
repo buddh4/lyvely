@@ -5,4 +5,5 @@ export * from './stores';
 export * from './services';
 export * from './routes';
 export * from './guards';
+export * from './profiles.module';
 export * from './profile.constants';

@@ -2,6 +2,7 @@ import { IAuthService, LoginModel, UserModel } from '@lyvely/core-interface';
 
 import authRepository from '@/auth/repositories/auth.repository';
 import { unwrapResponse } from '@/core';
+import { useSingleton } from '@lyvely/common';
 
 export class AuthService implements IAuthService {
   async login(loginModel: LoginModel) {
@@ -26,3 +27,5 @@ export class AuthService implements IAuthService {
     return result;
   }
 }
+
+export const useAuthService = useSingleton(() => new AuthService());

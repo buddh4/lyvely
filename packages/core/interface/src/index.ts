@@ -1,7 +1,7 @@
 export * from './app-config';
 export * from './auth';
 export * from './avatars';
-export * from './captchas';
+export * from './captcha';
 export * from './content';
 export * from './features';
 export * from './files';
@@ -13,6 +13,7 @@ export * from './otp';
 export * from './common';
 export * from './profiles';
 export * from './permissions';
+export * from './repository';
 export * from './settings';
 export * from './streams';
 export * from './system-messages';

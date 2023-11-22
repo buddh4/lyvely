@@ -5,7 +5,7 @@ import { watch, onUnmounted, ref } from 'vue';
 import { useLoginStore } from '@/auth/store/login.store';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
 import { isTouchScreen, LyCenteredPanel } from '@lyvely/ui';
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import { useAppConfigStore } from '@/app-config/app-config.store';
 import {
   USER_REGISTRATIONS_MODULE_ID,
   IUserRegistrationAppConfig,

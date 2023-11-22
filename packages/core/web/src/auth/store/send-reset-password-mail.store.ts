@@ -4,7 +4,7 @@ import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
 import { SendResetPasswordMail } from '@lyvely/core-interface';
-import { useCaptchaStore } from '@/captcha/stores/captcha.store';
+import { useCaptchaStore } from '@/captcha/captcha.store';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
 
 export const useSendResetPasswordMailStore = defineStore('send-reset-password-mail', () => {

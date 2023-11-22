@@ -24,7 +24,6 @@ function isModuleInitializer(obj: any): obj is IModuleInitializer {
 }
 
 export interface IModuleLoaderOptions {
-  import?: () => Record<string, Promise<IModuleImport> | (() => Promise<IModuleImport>)>;
   modules?: IModule[];
 }
 

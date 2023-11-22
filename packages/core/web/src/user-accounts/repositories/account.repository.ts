@@ -1,4 +1,3 @@
-import { repository } from '@/core';
 import {
   AddEmailDto,
   VerifyEmailDto,
@@ -8,6 +7,7 @@ import {
   SetLanguageDto,
   CalendarPreferences,
   SetTimezoneDto,
+  useApiRepository,
 } from '@lyvely/core-interface';
 import { EndpointResult } from '@lyvely/common';
 
@@ -15,42 +15,42 @@ const resource = ENDPOINT_ACCOUNT;
 
 export const accountRepository = {
   async addEmail(model: AddEmailDto) {
-    return repository.post<EndpointResult<IAccountService['addEmail']>>(
+    return useApiRepository().post<EndpointResult<IAccountService['addEmail']>>(
       `${resource}/add-email`,
       model,
     );
   },
 
   async verifyEmail(model: VerifyEmailDto) {
-    return repository.post<EndpointResult<IAccountService['verifyEmail']>>(
+    return useApiRepository().post<EndpointResult<IAccountService['verifyEmail']>>(
       `${resource}/verify-email`,
       model,
     );
   },
 
   async setLanguage(model: SetLanguageDto) {
-    return repository.post<EndpointResult<IAccountService['setLanguage']>>(
+    return useApiRepository().post<EndpointResult<IAccountService['setLanguage']>>(
       `${resource}/set-language`,
       model,
     );
   },
 
   async setTimezone(model: SetTimezoneDto) {
-    return repository.post<EndpointResult<IAccountService['setLanguage']>>(
+    return useApiRepository().post<EndpointResult<IAccountService['setLanguage']>>(
       `${resource}/set-timezone`,
       model,
     );
   },
 
   async setCalendarPreferences(model: CalendarPreferences) {
-    return repository.post<EndpointResult<IAccountService['setCalendarPreferences']>>(
+    return useApiRepository().post<EndpointResult<IAccountService['setCalendarPreferences']>>(
       `${resource}/set-calendar-preferences`,
       model,
     );
   },
 
   async resendOtp(model: ResendOtp) {
-    return repository.post<EndpointResult<IAccountService['resendOtp']>>(
+    return useApiRepository().post<EndpointResult<IAccountService['resendOtp']>>(
       `${resource}/resend-otp`,
       model,
     );
@@ -60,7 +60,7 @@ export const accountRepository = {
     const file = new File([fileData], 'avatar.jpeg', { type: 'image/jpeg' });
     const formData = new FormData();
     formData.append('file', file, 'avatar.jpeg');
-    return repository.post<EndpointResult<IAccountService['updateAvatar']>>(
+    return useApiRepository().post<EndpointResult<IAccountService['updateAvatar']>>(
       `${resource}/update-avatar`,
       formData,
       {
@@ -70,7 +70,7 @@ export const accountRepository = {
   },
 
   async updateGravatar() {
-    return repository.post<EndpointResult<IAccountService['updateGravatar']>>(
+    return useApiRepository().post<EndpointResult<IAccountService['updateGravatar']>>(
       `${resource}/update-gravatar`,
     );
   },

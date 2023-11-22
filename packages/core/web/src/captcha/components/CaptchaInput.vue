@@ -3,7 +3,7 @@ import CaptchaCode from '@/captcha/components/CaptchaCode.vue';
 import { storeToRefs } from 'pinia';
 import { uniqueId } from 'lodash';
 import { computed } from 'vue';
-import { useCaptchaStore } from '@/captcha/stores/captcha.store';
+import { useCaptchaStore } from '@/captcha/captcha.store';
 
 interface IProps {
   id?: string;

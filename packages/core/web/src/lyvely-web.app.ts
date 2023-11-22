@@ -17,9 +17,12 @@ import { markRaw, App as VueApp, createApp } from 'vue';
 import { createPinia, Pinia } from 'pinia';
 import { I18n } from 'vue-i18n';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
+import { initApiRepository } from '@lyvely/core-interface';
 import { createLyvelyUi } from '@lyvely/ui';
 
-export interface ILyvelyWebAppOptions extends IModuleLoaderOptions {}
+export interface ILyvelyWebAppOptions extends IModuleLoaderOptions {
+  apiUrl?: string;
+}
 
 export class LyvelyWebApp {
   vueApp: VueApp;
@@ -33,6 +36,7 @@ export class LyvelyWebApp {
   }
 
   async init(selector?: string) {
+    this.initApiRepository();
     this.events = eventBus;
     this.events.emit('app.init.pre');
     registerCoreModules();
@@ -47,6 +51,12 @@ export class LyvelyWebApp {
     }
 
     return this;
+  }
+
+  private initApiRepository() {
+    initApiRepository({
+      apiUrl: import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api',
+    });
   }
 
   private registerModulesFromOptions() {

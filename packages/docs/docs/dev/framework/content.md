@@ -650,17 +650,17 @@ Currently, only our backend knows about the existence of the Poll content type. 
 To request our backend API we first need to implement our poll repository and service:
 
 ```typescript title=polls/packages/web/repositories/polls.repository.ts
-import { repository } from '@lyvely/web';
+import { useApiRepository } from '@lyvely/core-interface';
 import { ENDPOINT_POLLS, CreatePollModel, IPollClient } from 'lyvely-polls-interface';
 import { EndpointResult } from '@lyvely/common';
 
 export default {
   create(model: CreateMessageModel) {
-    return repository.post<EndpointResult<IPollClient['create']>>(`${ENDPOINT_POLLS}`, model);
+    return useApiRepository().post<EndpointResult<IPollClient['create']>>(`${ENDPOINT_POLLS}`, model);
   },
 
   update(id: string, model: Partial<CreatePollModel>) {
-    return repository.put<EndpointResult<IPollClient['update']>>(
+    return useApiRepository().put<EndpointResult<IPollClient['update']>>(
       `${ENDPOINT_POLLS}/${id}`,
       model,
     );

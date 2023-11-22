@@ -6,7 +6,7 @@ import { onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '../user-registration.constants';
 import { isTouchScreen, LyCenteredPanel } from '@lyvely/ui';
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import { useAppConfigStore } from '@/app-config/app-config.store';
 import { useDebounceFn } from '@vueuse/core';
 import {
   IUserRegistrationAppConfig,

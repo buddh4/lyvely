@@ -26,7 +26,7 @@ import { PoliciesModule } from '@/policies';
 import { ContentCoreModule } from '@/content';
 import { MailsModule } from '@/mails';
 import { UserAccountsModule } from '@/user-accounts';
-import { CaptchaModule } from '@/captchas';
+import { CaptchaModule } from '@/captcha';
 import { AvatarsModule } from '@/avatars';
 import { LiveModule } from '@/live';
 import { NotificationsModule } from '@/notifications';

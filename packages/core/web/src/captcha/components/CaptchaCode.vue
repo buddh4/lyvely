@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { useCaptchaStore } from '@/captcha/stores/captcha.store';
+import { useCaptchaStore } from '@/captcha/captcha.store';
 import { t } from '@/i18n';
 
 const captchaStore = useCaptchaStore();

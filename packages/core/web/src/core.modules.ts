@@ -1,11 +1,12 @@
-import profileModule from './profiles/module';
-import appConfigModule from './app-config/module';
-import authModule from './auth/module';
+import { profilesModule } from './profiles';
+import { appConfigModule } from './app-config';
+import { authModule } from './auth';
+import { captchaModule } from './captcha';
 import i18nModule from './i18n/module';
 import contentModule from './content/module';
 import tagsModule from './tags/module';
 import messagesModule from './messages/module';
-import uiModule from './ui/module';
+import { uiModule } from './ui/module';
 import chartsModule from './charts/module';
 import helpModule from './help/module';
 import otpModule from './otp/module';
@@ -22,7 +23,7 @@ export const registerCoreModules = () => {
     i18nModule(),
     authModule(),
     uiModule(),
-    profileModule(),
+    profilesModule(),
     contentModule(),
     tagsModule(),
     messagesModule(),
@@ -34,5 +35,6 @@ export const registerCoreModules = () => {
     userInvitationsModule(),
     userRegistrationsModule(),
     chartsModule(),
+    captchaModule(),
   );
 };

@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
-import { repository, localStorageManager, sessionStorageManager, eventBus } from '@/core';
+import { localStorageManager, sessionStorageManager, eventBus } from '@/core';
 import { usePageStore } from '@/ui';
 import { useI18nStore } from '@/i18n';
 import { ref, computed } from 'vue';
-import createAuthRefreshInterceptor from 'axios-auth-refresh';
-import { AuthService } from '@/auth/services/auth.service';
-import { ILoginResponse, UserModel, UserStatus } from '@lyvely/core-interface';
+import { AuthService, useAuthService } from '@/auth/services/auth.service';
+import { ILoginResponse, useApiRepository, UserModel, UserStatus } from '@lyvely/core-interface';
 import { findByPath, queuePromise } from '@lyvely/common';
 import { useLiveStore } from '@/live/stores/live.store';
 
@@ -101,81 +100,29 @@ export const useAuthStore = defineStore('user-auth', () => {
   }
 
   async function refreshToken() {
-    if (!isAuthenticated.value || !visitorId.value) return Promise.reject();
+    const authStore = useAuthStore();
+    const { isAuthenticated, visitorId } = useAuthStore();
+    if (!isAuthenticated || !visitorId) return Promise.reject();
 
-    return queuePromise('auth-store-refresh', () => authService.refresh(visitorId.value!)).then(
+    return queuePromise('auth-store-refresh', () => useAuthService().refresh(visitorId!)).then(
       ({ token_expiration }) => {
-        authTokenExpiration.value = token_expiration;
+        authStore.authTokenExpiration = token_expiration;
       },
     );
   }
 
   return {
     user,
+    visitorId,
     getVid,
     setUserLocale,
     getSetting,
     authTokenExpiration,
     isAuthenticated,
+    refreshToken,
     isAwaitingEmailVerification,
     handleLogin,
     logout,
-    refreshToken,
     loadUser,
   };
 });
-
-const authRepositoryPlugin = () => {
-  let lastRefresh = Date.now();
-  // default expiration, this will be overwritten after login/refresh/initial state loading
-  let authTokenExpiration = 30_000;
-
-  const requestToken = () => {
-    return useAuthStore()
-      .refreshToken()
-      .then(() => {
-        lastRefresh = Date.now();
-      });
-  };
-
-  const autoRefreshTokenInterval = () => {
-    const authStore = useAuthStore();
-    authTokenExpiration = authStore.authTokenExpiration || authTokenExpiration;
-
-    // This is unstable if authTokenExpiration <= 5s which should not be the case anyways
-    const refreshInterval =
-      authTokenExpiration < 30_000
-        ? Math.max(authTokenExpiration - 5_000, 5_000)
-        : Math.max(authTokenExpiration - 30_000, 30_000);
-
-    if (authStore.isAuthenticated && Date.now() - lastRefresh > refreshInterval) {
-      requestToken().then(() => setTimeout(autoRefreshTokenInterval, refreshInterval));
-    } else {
-      setTimeout(autoRefreshTokenInterval, refreshInterval);
-    }
-  };
-
-  repository.interceptors.request.use(function (config) {
-    if (typeof config.skipAuthRefresh !== 'boolean') {
-      config.skipAuthRefresh = !useAuthStore().isAuthenticated;
-    }
-    return config;
-  });
-
-  // Automatic refresh token call on failed request (401)
-  createAuthRefreshInterceptor(repository, (options) => {
-    const visitorId = useAuthStore().getVid();
-
-    if (!visitorId || options?.config?.skipAuthRefresh) {
-      return Promise.reject();
-    }
-
-    return requestToken();
-  });
-
-  eventBus.on('app.mount.post', () => {
-    setTimeout(autoRefreshTokenInterval, authTokenExpiration);
-  });
-};
-
-authRepositoryPlugin();

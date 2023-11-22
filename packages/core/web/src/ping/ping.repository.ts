@@ -1,7 +1,7 @@
-import { repository } from '@/core/repository';
+import { useApiRepository } from '@lyvely/core-interface';
 
 export default {
   async ping() {
-    return repository.get<{ ts: number }>('ping');
+    return useApiRepository().get<{ ts: number }>('ping');
   },
 };

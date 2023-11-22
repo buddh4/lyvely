@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { useCaptchaService } from '@/captcha/services/captcha.service';
+import { useCaptchaService } from './captcha.service';
 import { IsNotEmpty, Matches } from 'class-validator';
 import {
   BaseModel,
@@ -9,8 +9,8 @@ import {
   IFieldValidationResponse,
   IFieldValidationResult,
 } from '@lyvely/common';
-import { CaptchaChallenge } from '@lyvely/core-interface';
-import { repository, isFieldValidationError, useStatus, loadingStatus } from '@/core';
+import { CaptchaChallenge, useApiRepository } from '@lyvely/core-interface';
+import { isFieldValidationError, useStatus, loadingStatus } from '@/core';
 import { I18nModelValidator, translate, translation } from '@/i18n';
 
 class CaptchaModel extends BaseModel<CaptchaModel> {
@@ -89,33 +89,3 @@ export const useCaptchaStore = defineStore('captcha', () => {
     reset,
   };
 });
-
-const authRepositoryPlugin = () => {
-  repository.interceptors.request.use(function (config) {
-    if (config.withCaptcha) {
-      config.headers = config.headers || {};
-      config.headers[Headers.X_CAPTCHA_TOKEN] = useCaptchaStore().getCaptchaValue();
-      config.headers[Headers.X_CAPTCHA_ID] = useCaptchaStore().getCaptchaIdentity();
-    }
-    return config;
-  });
-
-  repository.interceptors.response.use(undefined, (error) => {
-    if (!error.config.withCaptcha || !isFieldValidationError(error)) {
-      return Promise.reject(error);
-    }
-
-    const validation = error.response.data as IFieldValidationResponse;
-
-    const captchaError = validation.fields.find((field) => field.property === 'captcha');
-    if (captchaError)
-      useCaptchaStore().setCaptchaError({
-        property: 'captcha',
-        errors: [translate('captcha.errors.invalid')],
-      });
-
-    return Promise.reject(error);
-  });
-};
-
-authRepositoryPlugin();

@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { repository, loadingStatus, useStatus, eventBus } from '@/core';
-import { IAppConfig } from '@lyvely/core-interface';
-import { AppConfigService } from '../services';
+import { loadingStatus, useStatus, eventBus } from '@/core';
+import { IAppConfig, useApiRepository } from '@lyvely/core-interface';
+import { AppConfigService } from './app-config.service';
 import { findByPath, NestedPaths } from '@lyvely/common';
-import { EVENT_APP_CONFIG_LOADED } from '../app-config.events';
+import { EVENT_APP_CONFIG_LOADED } from './app-config.constants';
 
 type ConfigKey = keyof IAppConfig;
 type ConfigValue<T extends ConfigKey> = IAppConfig[T];
@@ -84,14 +84,3 @@ export const useAppConfigStore = defineStore('app-config', () => {
     ...status,
   };
 });
-
-const configRepositoryPlugin = () => {
-  repository.interceptors.request.use(function (config) {
-    const appConfigStore = useAppConfigStore();
-    config.headers = config.headers || {};
-    config.headers['csrf-token'] = appConfigStore.get('csrf_token') || '';
-    return config;
-  });
-};
-
-configRepositoryPlugin();

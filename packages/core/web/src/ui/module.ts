@@ -1,4 +1,5 @@
 import { registerAfterNavigationHooks, registerGuards } from '@/lyvely.router';
+import { errorDialogErrorInterceptor } from './interceptors';
 import {
   closeMobileDrawerGuard,
   hideAppLoader,
@@ -20,12 +21,14 @@ import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import { useFlashStore, usePageStore } from './stores';
 import { computed } from 'vue';
 import { LAYOUT_INTRO, STACK_MAIN, UI_MODULE_ID } from './ui.constants';
+import { useApiResponseInterceptor } from '@lyvely/core-interface';
 
-export default () => {
+export const uiModule = () => {
   return {
     id: UI_MODULE_ID,
     routes: uiRoutes,
     init: () => {
+      useApiResponseInterceptor(undefined, errorDialogErrorInterceptor);
       registerComponentStackEntries(STACK_MAIN, [
         {
           id: 'ui-flash',

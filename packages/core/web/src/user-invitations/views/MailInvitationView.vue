@@ -6,7 +6,7 @@ import { onMounted, ref } from 'vue';
 import { useUserInvitationsService } from '../services';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { storeToRefs } from 'pinia';
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import { useAppConfigStore } from '@/app-config/app-config.store';
 import { LyCenteredPanel } from '@lyvely/ui';
 
 const router = useRouter();

@@ -12,7 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthController, ResetPasswordController } from './controllers';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
-import { CaptchaModule } from '@/captchas';
+import { CaptchaModule } from '@/captcha';
 import { AUTH_MODULE_ID } from '@lyvely/core-interface';
 import { LyvelyModule } from '@/core';
 

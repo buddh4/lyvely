@@ -1,3 +1,3 @@
-export * from './guards';
-export * from './store';
-export * from './app-config.events';
+export * from './app-config.constants';
+export * from './app-config.store';
+export * from './app-config.module';

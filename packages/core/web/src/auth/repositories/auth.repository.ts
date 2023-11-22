@@ -1,4 +1,3 @@
-import { repository } from '@/core';
 import {
   ILoadUserResponse,
   ILoginResponse,
@@ -6,6 +5,7 @@ import {
   LoginModel,
   IAuthService,
   ENDPOINT_AUTH,
+  useApiRepository,
 } from '@lyvely/core-interface';
 import { Headers, EndpointResult } from '@lyvely/common';
 
@@ -13,18 +13,21 @@ const resource = ENDPOINT_AUTH;
 
 export default {
   async loadUser() {
-    return repository.get<ILoadUserResponse>(`${resource}/user`, {
+    return useApiRepository().get<ILoadUserResponse>(`${resource}/user`, {
       withCredentials: true,
     });
   },
   async loadConfig() {
-    return repository.get<any>(`${resource}/config`);
+    return useApiRepository().get<any>(`${resource}/config`);
   },
   async login(loginModel: LoginModel) {
-    return repository.post<EndpointResult<IAuthService['login']>>(`${resource}/login`, loginModel);
+    return useApiRepository().post<EndpointResult<IAuthService['login']>>(
+      `${resource}/login`,
+      loginModel,
+    );
   },
   async refresh(visitorId?: string | null) {
-    return repository.post<IRefreshTokenResponse>(
+    return useApiRepository().post<IRefreshTokenResponse>(
       `${resource}/refresh`,
       {},
       {
@@ -34,7 +37,7 @@ export default {
     );
   },
   async logout(visitorId?: string | null) {
-    return repository.post<ILoginResponse>(
+    return useApiRepository().post<ILoginResponse>(
       `${resource}/logout`,
       {},
       {

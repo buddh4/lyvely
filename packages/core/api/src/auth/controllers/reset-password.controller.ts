@@ -8,7 +8,7 @@ import {
 import { Public, UseClassSerializer } from '@/core';
 import { ResetPasswordService } from '../services';
 import { JwtResetPasswordGuard, LoginThrottlerGuard } from '../guards';
-import { CaptchaGuard } from '@/captchas';
+import { CaptchaGuard } from '@/captcha';
 import { UserRequest, UserThrottle } from '@/users';
 
 @Controller(ENDPOINT_RESET_PASSWORD)

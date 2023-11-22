@@ -3,7 +3,7 @@ import { SystemMessageModel, ContentModel } from '@lyvely/core-interface';
 import { ContentStreamEntry } from '@/content';
 import { t } from '@/i18n';
 import { IStream } from '@/stream/composables/stream.composable';
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import { useAppConfigStore } from '@/app-config/app-config.store';
 
 export interface IProps {
   model: SystemMessageModel;

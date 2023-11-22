@@ -11,12 +11,17 @@ import {
   LAYOUT_PROFILE_SETTINGS,
   STACK_PROFILE_LAYOUT,
 } from '@/profiles/profile.constants';
-import { isMultiUserProfile, PROFILES_MODULE_ID } from '@lyvely/core-interface';
+import {
+  isMultiUserProfile,
+  PROFILES_MODULE_ID,
+  useApiRequestInterceptor,
+} from '@lyvely/core-interface';
 import { useProfileStore } from '@/profiles/stores';
 import { IModule } from '@/core';
 import { computed } from 'vue';
+import { profileIdInterceptor } from './interceptors';
 
-export default () => {
+export const profilesModule = () => {
   return {
     id: PROFILES_MODULE_ID,
     i18n: {
@@ -27,6 +32,7 @@ export default () => {
     },
     routes,
     init: () => {
+      useApiRequestInterceptor(profileIdInterceptor);
       registerGuards([loadProfileGuard]);
       registerAfterNavigationHooks([setProfilePageTitleGuard]);
       registerLayouts([

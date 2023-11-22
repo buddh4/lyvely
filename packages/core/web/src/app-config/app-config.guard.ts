@@ -1,5 +1,5 @@
 import { NavigationGuardWithThis } from 'vue-router';
-import { useAppConfigStore } from '@/app-config/store/app-config.store';
+import { useAppConfigStore } from './app-config.store';
 import { Status } from '@/core';
 
 export const appConfigGuard: NavigationGuardWithThis<undefined> = async (to, from, next) => {
