@@ -5,14 +5,14 @@ import {
   NotificationUpdateStateLiveEvent,
   NotificationSeenStateLiveEvent,
   StreamDirection,
+  useNotificationClient,
 } from '@lyvely/interface';
-import { useNotificationService } from '@/notifications/services/notifications.service';
 import { useStream } from '@/stream/stream.composable';
 import { useLiveStore } from '@/live/stores/live.store';
 
 export const useNotificationStore = defineStore('notifications', () => {
   const live = useLiveStore();
-  const notificationService = useNotificationService();
+  const notificationClient = useNotificationClient();
   const showNotificationDrawer = ref(false);
   const hasUpdates = ref(false);
   const moduleId = 'notifications';
@@ -22,7 +22,7 @@ export const useNotificationStore = defineStore('notifications', () => {
       batchSize: 15,
       direction: StreamDirection.TTB,
     },
-    notificationService,
+    notificationClient,
   );
 
   live.on(moduleId, NotificationUpdateStateLiveEvent.eventName, handleNotificationUpdateStateEvent);
@@ -73,13 +73,13 @@ export const useNotificationStore = defineStore('notifications', () => {
     if (notification.seen) return;
 
     notification.seen = true;
-    return notificationService.markAsSeen(notification.id);
+    return notificationClient.markAsSeen(notification.id);
   }
 
   const notifications = ref<IWebNotification[]>([]);
 
   async function test() {
-    const result = useNotificationService().test();
+    const result = notificationClient.test();
     console.log(result);
   }
 

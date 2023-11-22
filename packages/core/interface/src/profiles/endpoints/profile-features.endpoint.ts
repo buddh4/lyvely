@@ -1,9 +1,9 @@
 import { StrictEndpoint } from '@lyvely/common';
 import { UpdateFeatureResponseModel, UpdateFeatureModel } from '../models';
 
-export interface IProfileFeaturesService {
+export interface IProfileFeaturesClient {
   updateState(model: UpdateFeatureModel): Promise<UpdateFeatureResponseModel>;
 }
 
-export type ProfileFeaturesEndpoint = StrictEndpoint<IProfileFeaturesService>;
+export type ProfileFeaturesEndpoint = StrictEndpoint<IProfileFeaturesClient>;
 export const ENDPOINT_PROFILE_FEATURES = 'profile-features';

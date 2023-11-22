@@ -4,7 +4,7 @@ import { registerGuards } from '@/lyvely.router';
 import { authRoutes } from './routes';
 import { AUTH_MODULE_ID, useApiRequestInterceptor } from '@lyvely/interface';
 import { registerMenuEntries } from '@lyvely/ui';
-import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
+import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { useAutoTokenRefresh } from './interceptors';
 

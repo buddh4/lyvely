@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { UserInvitationInfo } from '@lyvely/interface';
+import { UserInvitationInfo, useUserInvitationsClient } from '@lyvely/interface';
 import { EntityNotFoundException } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
-import { useUserInvitationsService } from '../services';
 import { profileIdRoute } from '@/profiles/routes/profile-route.helper';
 import { LyCenteredPanel } from '@lyvely/ui';
 
@@ -11,13 +10,13 @@ const router = useRouter();
 
 const token = router.currentRoute.value.query.pid as string;
 const userInviteInfo = ref<UserInvitationInfo>();
-const invitationsService = useUserInvitationsService();
+const userInvitationsClient = useUserInvitationsClient();
 const error = ref<string>();
 
 async function accept() {
   if (!userInviteInfo.value) return;
   const pid = userInviteInfo.value!.pid;
-  await invitationsService.accept(pid);
+  await userInvitationsClient.accept(pid);
   await router.push(profileIdRoute(pid));
 }
 
@@ -37,7 +36,7 @@ function toHome() {
 }
 
 onMounted(async () => {
-  useUserInvitationsService()
+  userInvitationsClient
     .getUserInvitationInfo(token as string)
     .then((info) => {
       userInviteInfo.value = info;

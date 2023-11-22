@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-import { CreateMessageModel, MessageModel, UpdateMessageModel } from '@lyvely/interface';
+import {
+  CreateMessageModel,
+  MessageModel,
+  UpdateMessageModel,
+  useMessageClient,
+} from '@lyvely/interface';
 import { computed } from 'vue';
 import { ContentEditModalEmits, useContentEditModal, ICreateContentInitOptions } from '@/content';
 import { TagChooser } from '@/tags';
 import { isTouchScreen, LyModal, LyFormModel } from '@lyvely/ui';
-import { useMessageService } from '../services';
 
 export interface IProps {
   modelValue: boolean;
@@ -21,7 +25,7 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
   CreateMessageModel,
   UpdateMessageModel
 >(props, emit, {
-  service: useMessageService(),
+  client: useMessageClient(),
 });
 
 const modalTitle = computed(() => {

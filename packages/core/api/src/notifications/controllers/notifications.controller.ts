@@ -1,5 +1,10 @@
 import { Controller, Post, Req, Param, Inject } from '@nestjs/common';
-import { ENDPOINT_NOTIFICATIONS, NotificationsEndpoint, IWebNotification } from '@lyvely/interface';
+import {
+  ENDPOINT_NOTIFICATIONS,
+  NotificationsEndpoint,
+  IWebNotification,
+  NotificationEndpointPaths,
+} from '@lyvely/interface';
 import { UserNotificationsService, NotificationService } from '../services';
 import { IUserContext, UserInfo, UserRequest } from '@/users';
 import { UserNotification } from '../schemas';
@@ -22,12 +27,12 @@ export class NotificationsController
     return this.streamEntryService.mapToResultModel(userNotifications, context);
   }
 
-  @Post(':nid/mark-as-seen')
+  @Post(NotificationEndpointPaths.MARK_AS_SEEN(':nid'))
   async markAsSeen(@Param('nid') nid: string, @Req() req: UserRequest): Promise<void> {
     await this.streamEntryService.markAsSeen(req.user, nid);
   }
 
-  @Post('test')
+  @Post(NotificationEndpointPaths.TEST)
   async test(@Req() req: UserRequest): Promise<boolean> {
     await this.notificationsService.sendNotification(
       new TestNotification({ testValue: 'Test', userInfo: new UserInfo(req.user) }),

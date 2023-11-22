@@ -9,6 +9,7 @@ import {
   UserInvitationsEndpoint,
   ENDPOINT_USER_INVITATIONS,
   InvitationRequest,
+  UserInvitationsEndpointPaths,
 } from '@lyvely/interface';
 import { Public, UseClassSerializer } from '@/core';
 import { UserRequest } from '@/users';
@@ -30,24 +31,24 @@ export class InvitationsController implements UserInvitationsEndpoint {
   }
 
   @Public()
-  @Get('mail/:t')
+  @Get(UserInvitationsEndpointPaths.MAIL(':t'))
   async getMailInvitationInfo(@Param('t') token: string) {
     return await this.mailInviteService.getInvitationInfo(token);
   }
 
-  @Get('user/:pid')
+  @Get(UserInvitationsEndpointPaths.USER(':pid'))
   async getUserInvitationInfo(@Param('pid') profile: string, @Req() req: UserRequest) {
     const { user } = req;
     return await this.userInviteService.getInvitationInfo({ user, profile });
   }
 
-  @Post('accept/:pid')
+  @Post(UserInvitationsEndpointPaths.ACCEPT(':pid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   async accept(@Param('pid') pid: string, @Req() req: UserRequest) {
     await this.invitationsService.acceptUserInvitation(req.user, pid);
   }
 
-  @Post('decline/:pid')
+  @Post(UserInvitationsEndpointPaths.DECLINE(':pid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   async decline(@Param('pid') pid: string, @Req() req: UserRequest) {
     await this.invitationsService.declineUserInvitation(req.user, pid);

@@ -1,5 +1,5 @@
 import { Ref, ref, toValue } from 'vue';
-import { ModelValidator, IEditModelService } from '@lyvely/common';
+import { IEditModelService } from '@lyvely/common';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus, eventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
@@ -36,9 +36,9 @@ export interface IUpdateModelStoreOptions<
   resetOnSuccess?: boolean;
 
   /**
-   * The service responsible for updating the model.
+   * The client responsible for updating the model.
    */
-  service:
+  client:
     | IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>
     | ((
         editModel: TCreateModel | TUpdateModel,
@@ -67,7 +67,7 @@ export interface IUpdateModelStoreOptions<
  *
  * <script lang="ts" setup>
  * const updateStore = useUpdateModelStore({
- *   service: useMyModelService()
+ *   client: useMyModelClient()
  * });
  *
  * const { setUpdateModel, submit, status } = updateStore;
@@ -267,11 +267,11 @@ export function useUpdateModelStore<
   }
 
   function _getService(m: TEditModel) {
-    if (typeof options.service === 'function') {
-      return options.service(m);
+    if (typeof options.client === 'function') {
+      return options.client(m);
     }
 
-    return options.service;
+    return options.client;
   }
 
   return {

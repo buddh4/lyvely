@@ -20,12 +20,12 @@ import { AppConfigModule } from '@/app-config';
 import { AuthModule } from '@/auth';
 import { UsersModule } from '@/users';
 import { MessageModule } from '@/messages';
-import { UserRegistrationsModule } from '@/user-registrations';
+import { UserRegistrationModule } from '@/user-registration';
 import { ProfilesModule } from '@/profiles';
 import { PoliciesModule } from '@/policies';
 import { ContentCoreModule } from '@/content';
 import { MailsModule } from '@/mails';
-import { UserAccountsModule } from '@/user-accounts';
+import { UserAccountModule } from '@/user-account';
 import { CaptchaModule } from '@/captcha';
 import { AvatarsModule } from '@/avatars';
 import { LiveModule } from '@/live';
@@ -126,7 +126,7 @@ export class AppModuleBuilder {
       ProfilesModule,
       ContentCoreModule,
       SystemMessagesModule,
-      UserAccountsModule,
+      UserAccountModule,
       NotificationsModule,
       FeaturesModule,
       PermissionsModule,
@@ -250,7 +250,7 @@ export class AppModuleBuilder {
     return this.importModules(
       AvatarsModule,
       MessageModule,
-      UserRegistrationsModule,
+      UserRegistrationModule,
       UserInvitationsModule,
     );
   }

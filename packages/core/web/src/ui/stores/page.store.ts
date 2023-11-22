@@ -1,11 +1,7 @@
 import { defineStore } from 'pinia';
 import { useDark, useToggle, useOnline } from '@vueuse/core';
 import { ref } from 'vue';
-import { isMaxViewSize, Icons } from '@lyvely/ui';
-import { useGlobalDialogStore } from '@/core';
-import { usePingService } from '@/ping';
-import { useFlashStore } from './flash.store';
-import { useApiRepository } from '@lyvely/interface';
+import { isMaxViewSize } from '@lyvely/ui';
 
 export const usePageStore = defineStore('ui-page', () => {
   const showSidebar = ref(!isMaxViewSize('sm'));

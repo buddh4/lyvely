@@ -6,7 +6,7 @@ import { RouteLocationRaw } from 'vue-router';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { UnauthenticatedServiceException } from '@lyvely/common';
 import { UserStatus, LoginModel, useAuthClient } from '@lyvely/interface';
-import { useVerifyRegistrationEmailStore } from '@/user-registrations/stores';
+import { useVerifyRegistrationEmailStore } from '@/user-registration/stores';
 
 export const useLoginStore = defineStore('user-login', () => {
   const status = useStatus();

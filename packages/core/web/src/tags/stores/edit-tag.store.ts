@@ -1,14 +1,12 @@
 import { defineStore } from 'pinia';
-import { TagModel, UpdateTagModel, CreateTagModel } from '@lyvely/interface';
+import { TagModel, UpdateTagModel, CreateTagModel, useProfileTagsClient } from '@lyvely/interface';
 import { computed } from 'vue';
-import tagsRepository from '@/tags/repositories/tags.repository';
 import { useUpdateModelStore, useArchiveModelStore } from '@/common';
 import { useProfileStore } from '@/profiles/stores/profile.store';
-import { useTagsService } from '@/tags/services/tags.service';
 
 export const useEditTagStore = defineStore('tagEdit', () => {
   const editState = useUpdateModelStore<TagModel, CreateTagModel, UpdateTagModel>({
-    service: useTagsService(),
+    client: useProfileTagsClient(),
     onSubmitSuccess: (tag?: TagModel) => {
       if (tag) {
         useProfileStore().updateTags([tag]);
@@ -21,7 +19,7 @@ export const useEditTagStore = defineStore('tagEdit', () => {
   );
 
   const archiveState = useArchiveModelStore<TagModel>({
-    repository: tagsRepository,
+    client: useProfileTagsClient(),
     onSubmitSuccess: (tag) => {
       useProfileStore().updateTags([tag]);
     },

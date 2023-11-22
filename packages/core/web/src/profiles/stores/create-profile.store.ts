@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { CreateProfileModel, ProfileRelationInfo } from '@lyvely/interface';
+import { CreateProfileModel, ProfileRelationInfo, useProfilesClient } from '@lyvely/interface';
 import { ModelValidator } from '@lyvely/common';
-import profileRepository from '@/profiles/repositories/profile.repository';
 import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation-infos.store';
 
 export const useCreateProfileStore = defineStore('create-profile', () => {
@@ -10,6 +9,7 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
   const model = ref(new CreateProfileModel());
   const validator = ref(new ModelValidator(model.value));
   const error = ref('');
+  const profilesClient = useProfilesClient();
 
   function reset() {
     model.value = new CreateProfileModel();
@@ -18,7 +18,7 @@ export const useCreateProfileStore = defineStore('create-profile', () => {
 
   async function submit() {
     if (await validator.value.validate()) {
-      const { data: relation } = await profileRepository.createProfile(model.value);
+      const relation = await profilesClient.create(model.value);
       useProfileRelationInfosStore().addRelation(new ProfileRelationInfo(relation));
       show.value = false;
       return relation;

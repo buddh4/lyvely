@@ -7,11 +7,11 @@ import { computed, Ref, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePageStore } from '@/ui';
 import { useSwipe } from '@vueuse/core';
-import { useAccountStore } from '@/user-accounts';
+import { useUserAccountStore } from '@/user-account';
 import { STACK_PROFILE_LAYOUT } from '@/profiles/profile.constants';
 
 const pageStore = usePageStore();
-const accountStore = useAccountStore();
+const accountStore = useUserAccountStore();
 
 const { toggleSidebar } = pageStore;
 const { showAccountDrawer } = storeToRefs(accountStore);

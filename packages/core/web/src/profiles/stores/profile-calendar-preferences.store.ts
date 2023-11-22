@@ -1,8 +1,7 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { useProfileService } from '../services';
-import { ICalendarPreferences } from '@lyvely/dates';
 import { useCalendarPreferences } from '@/common';
 import { useProfileStore } from '@/profiles';
+import { useProfilesClient } from '@lyvely/interface';
 
 export const useProfileCalendarPreferencesStore = defineStore(
   'profile-calendar-preferences',
@@ -11,7 +10,7 @@ export const useProfileCalendarPreferencesStore = defineStore(
     const { locale } = storeToRefs(profileStore);
     return useCalendarPreferences({
       locale,
-      service: useProfileService(),
+      client: useProfilesClient(),
       getPreferences: () => profileStore.getSetting('calendar'),
       setSettings: (settings: any) => {
         profileStore.profile!.settings = settings;

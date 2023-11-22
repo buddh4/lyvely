@@ -7,11 +7,11 @@ import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-
 import { isTouchScreen, LyCenteredPanel } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config/app-config.store';
 import {
-  USER_REGISTRATIONS_MODULE_ID,
+  USER_REGISTRATION_MODULE_ID,
   IUserRegistrationAppConfig,
   UserRegistrationMode,
 } from '@lyvely/interface';
-import { PATH_SIGN_UP } from '@/user-registrations/user-registration.constants';
+import { PATH_SIGN_UP } from '@/user-registration/user-registration.constants';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -21,7 +21,7 @@ const { loginModel, validator, stage } = storeToRefs(loginStore);
 const isPublicRegistration = useAppConfigStore().getModuleConfig<
   IUserRegistrationAppConfig,
   UserRegistrationMode
->(USER_REGISTRATIONS_MODULE_ID, 'registrationMode');
+>(USER_REGISTRATION_MODULE_ID, 'registrationMode');
 
 watch(stage, () => {
   // When moving between stages we want to clear the errors

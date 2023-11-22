@@ -57,7 +57,7 @@ export const useApi = <TClient>(resource: string) => {
      * @param config
      */
     delete: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
-      path?: string,
+      path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
       config = isObject(path) ? path : config;
@@ -79,7 +79,7 @@ export const useApi = <TClient>(resource: string) => {
      * @param config
      */
     head: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
-      path?: string,
+      path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
       config = isObject(path) ? path : config;
@@ -101,7 +101,7 @@ export const useApi = <TClient>(resource: string) => {
      * @param config
      */
     options: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
-      path?: string,
+      path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
       config = isObject(path) ? path : config;
@@ -156,8 +156,8 @@ export const useApi = <TClient>(resource: string) => {
      * @param config
      */
     put: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
-      path?: string,
-      data?: D,
+      path?: string | D,
+      data?: D | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
       const {
@@ -187,8 +187,8 @@ export const useApi = <TClient>(resource: string) => {
      * @param config
      */
     patch: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
-      path?: string,
-      data?: D,
+      path?: string | D,
+      data?: D | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
       const {

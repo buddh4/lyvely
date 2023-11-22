@@ -11,8 +11,8 @@ import chartsModule from './charts/module';
 import helpModule from './help/module';
 import otpModule from './otp/module';
 import notificationsModule from './notifications/module';
-import userAccountModule from './user-accounts/module';
-import userRegistrationsModule from './user-registrations/module';
+import userAccountModule from './user-account/module';
+import userRegistrationModule from './user-registration/module';
 import userInvitationsModule from './user-invitations/module';
 import systemMessagesModule from './system-messages/module';
 import { registerModules } from '@/core';
@@ -33,7 +33,7 @@ export const registerCoreModules = () => {
     userAccountModule(),
     notificationsModule(),
     userInvitationsModule(),
-    userRegistrationsModule(),
+    userRegistrationModule(),
     chartsModule(),
     captchaModule(),
   );

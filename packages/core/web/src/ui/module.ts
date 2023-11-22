@@ -17,7 +17,7 @@ import {
   registerComponentStackEntries,
   registerLayouts,
 } from '@lyvely/ui';
-import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
+import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { useFlashStore, usePageStore } from './stores';
 import { computed } from 'vue';
 import { LAYOUT_INTRO, STACK_MAIN, UI_MODULE_ID } from './ui.constants';

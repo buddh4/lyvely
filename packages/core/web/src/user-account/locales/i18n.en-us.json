@@ -1,0 +1,26 @@
+{
+  "user-account": {
+    "i18n": {
+      "general": "General",
+      "settings": "Settings",
+      "language": "Language",
+      "preferences": "Preferences",
+      "timezone": "Timezone",
+      "select-language":  "Select language",
+      "select-timezone":  "Select timezone",
+      "week-start": "First day of week",
+      "year-start": "First day of year",
+      "year-start-info": "The year's opening week is defined to include this specific day.",
+      "week-strategy": {
+        "0": "ISO",
+        "1": "Jan 1st",
+        "2": "Jan 2nd",
+        "3": "Jan 3rd",
+        "4": "Jan 4th",
+        "5": "Jan 5th",
+        "6": "Jan 6th",
+        "7": "Jan 7th"
+      }
+    }
+  }
+}

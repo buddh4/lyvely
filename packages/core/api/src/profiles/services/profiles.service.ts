@@ -35,7 +35,7 @@ import { isDefined } from 'class-validator';
 import {
   USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
   USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
-} from '@/user-accounts/user-accounts.constants';
+} from '@/user-account/user-account.constants';
 import { ProfileSettingsService } from './profile-settings.service';
 
 @Injectable()

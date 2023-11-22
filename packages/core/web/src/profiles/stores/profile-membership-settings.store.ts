@@ -2,9 +2,8 @@ import { defineStore } from 'pinia';
 import { useStatus } from '@/core';
 import { I18nModelValidator } from '@/i18n';
 import { ref } from 'vue';
-import { UpdateProfileMembershipSettings } from '@lyvely/interface';
+import { UpdateProfileMembershipSettings, useProfileMembershipClient } from '@lyvely/interface';
 import { useProfileStore } from '@/profiles/stores/profile.store';
-import { useProfileMembershipService } from '@/profiles/services/profile-membership.service';
 
 export const useUpdateProfileMembershipSettingsStore = defineStore(
   'update-profile-membership-settings',
@@ -22,7 +21,7 @@ export const useUpdateProfileMembershipSettingsStore = defineStore(
     const validator = new I18nModelValidator(model.value);
 
     async function update() {
-      await useProfileMembershipService().update(model.value);
+      await useProfileMembershipClient().update(model.value);
       membership!.userInfo.description = model.value.description;
       membership!.userInfo.displayName =
         model.value.displayName || membership!.userInfo.displayName;

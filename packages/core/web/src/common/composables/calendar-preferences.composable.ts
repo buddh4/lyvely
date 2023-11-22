@@ -5,18 +5,18 @@ import { validate } from 'class-validator';
 import { useGlobalDialogStore } from '@/core';
 import { getFallbackLocale } from '@/i18n';
 
-export interface ICalendarPreferenceService {
+export interface ICalendarPreferenceClient {
   setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse>;
 }
 
 interface ICalendarPreferencesOptions {
-  service: ICalendarPreferenceService;
+  client: ICalendarPreferenceClient;
   locale: Ref<string | undefined> | ComputedRef<string | undefined>;
   getPreferences(): ICalendarPreferences | undefined;
   setSettings(settings: any): void;
 }
 export const useCalendarPreferences = (options: ICalendarPreferencesOptions) => {
-  const { locale, getPreferences, service, setSettings } = options;
+  const { locale, getPreferences, client, setSettings } = options;
   let defaults = getDefaultCalendarPreferences(locale.value || getFallbackLocale());
 
   watch(locale, () => {
@@ -53,7 +53,7 @@ export const useCalendarPreferences = (options: ICalendarPreferencesOptions) => 
     }
 
     try {
-      const response = await service.setCalendarPreferences(dto);
+      const response = await client.setCalendarPreferences(dto);
       setSettings(response.settings);
     } catch (e) {
       showError();

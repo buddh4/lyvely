@@ -1,12 +1,15 @@
 import { defineStore } from 'pinia';
-import { ProfileRelationInfo, ProfileRelationInfos } from '@lyvely/interface';
+import {
+  ProfileRelationInfo,
+  ProfileRelationInfos,
+  useProfileRelationInfosClient,
+} from '@lyvely/interface';
 import { ref } from 'vue';
 import { loadingStatus, useStatus } from '@/core';
-import { useProfileRelationInfosService } from '@/profiles/services/profile-relation-infos.service';
 
 export const useProfileRelationInfosStore = defineStore('profile-relation-infos', () => {
   const relations = ref<ProfileRelationInfos>({ profiles: [] });
-  const profilesRelationInfosService = useProfileRelationInfosService();
+  const profilesRelationInfosClient = useProfileRelationInfosClient();
   const status = useStatus();
 
   async function getRelations(): Promise<ProfileRelationInfos> {
@@ -15,7 +18,7 @@ export const useProfileRelationInfosStore = defineStore('profile-relation-infos'
 
   async function loadRelations() {
     return loadingStatus(
-      profilesRelationInfosService.getAllProfileRelationInfos(),
+      profilesRelationInfosClient.getAllProfileRelationInfos(),
       status,
       undefined,
       (result) => {

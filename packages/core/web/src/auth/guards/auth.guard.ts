@@ -5,7 +5,7 @@ import {
   NavigationGuardNext,
   RouteLocation,
 } from 'vue-router';
-import { PATH_VERIFY_EMAIL } from '@/user-registrations';
+import { PATH_VERIFY_EMAIL } from '@/user-registration';
 import { PATH_LOGIN, PATH_LOGOUT } from '../auth.constants';
 
 const PATH_ROOT = '/';

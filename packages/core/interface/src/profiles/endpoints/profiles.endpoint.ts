@@ -3,7 +3,7 @@ import { Endpoint, IEditModelService } from '@lyvely/common';
 import { CalendarPreferences } from '@/common';
 import { SettingsUpdateResponse } from '@/settings';
 
-export interface IProfilesService
+export interface IProfilesClient
   extends IEditModelService<ProfileWithRelationsModel, CreateProfileModel, UpdateProfileModel> {
   getProfileByHandle(handle: string): Promise<ProfileWithRelationsModel>;
   getProfileById(id: string): Promise<ProfileWithRelationsModel>;
@@ -11,5 +11,10 @@ export interface IProfilesService
   setCalendarPreferences(dto: CalendarPreferences): Promise<SettingsUpdateResponse>;
 }
 
-export type ProfilesEndpoint = Endpoint<IProfilesService>;
+export type ProfilesEndpoint = Endpoint<IProfilesClient>;
 export const ENDPOINT_PROFILES = 'profiles';
+
+export const ProfilesEndpointPaths = {
+  BY_HANDLE: (handle: string) => `by-handle/${handle}`,
+  SET_CALENDAR_PREFERENCES: 'set-calendar-preferences',
+};

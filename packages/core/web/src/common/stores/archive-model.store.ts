@@ -1,13 +1,12 @@
-import { AxiosResponse } from 'axios';
 import { IArchivable } from '@lyvely/common';
 
-interface IArchiveModelRepository<TID = string> {
-  archive: (id: TID) => Promise<AxiosResponse<boolean>>;
-  restore: (id: TID) => Promise<AxiosResponse<boolean>>;
+interface IArchiveModelClient<TID = string> {
+  archive: (id: TID) => Promise<boolean>;
+  restore: (id: TID) => Promise<boolean>;
 }
 
 export interface IArchiveModelStoreOptions<TModel extends IArchivable, TID = string> {
-  repository: IArchiveModelRepository<TID> | ((editModel: TModel) => IArchiveModelRepository<TID>);
+  client: IArchiveModelClient<TID> | ((editModel: TModel) => IArchiveModelClient<TID>);
   onSubmitSuccess?: (model: TModel, val: boolean) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
@@ -23,26 +22,26 @@ export function useArchiveModelStore<TModel extends IArchivable, TID = string>(
   }
 
   async function _handleUpdate(modelId: TID, model: TModel, archive: boolean) {
-    const { data } = archive
+    const result = archive
       ? await _getRepository(model).archive(modelId)
       : await _getRepository(model).restore(modelId);
 
-    if (data === true) {
+    if (result === true) {
       model.archived = archive;
       if (typeof options.onSubmitSuccess === 'function') {
-        options.onSubmitSuccess(model, data);
+        options.onSubmitSuccess(model, result);
       }
     }
 
-    return data;
+    return result;
   }
 
   function _getRepository(m: TModel) {
-    if (typeof options.repository === 'function') {
-      return options.repository(m);
+    if (typeof options.client === 'function') {
+      return options.client(m);
     }
 
-    return options.repository;
+    return options.client;
   }
 
   return {

@@ -1,7 +1,6 @@
 import { defineStore, storeToRefs } from 'pinia';
 import { ref, Ref, watch } from 'vue';
 import { useProfileStore } from './profile.store';
-import { useProfileFeaturesService } from '@/profiles/services';
 import { useAppConfigStore } from '@/app-config';
 import {
   IFeature,
@@ -12,6 +11,7 @@ import {
   getFeature,
   getAffectedFeatures,
   UpdateFeatureModel,
+  useProfileFeaturesClient,
 } from '@lyvely/interface';
 import { useGlobalDialogStore } from '@/core';
 
@@ -47,7 +47,7 @@ export const useProfileFeatureStore = defineStore('profile-feature-store', () =>
     affectedModules.forEach((feature) => _setState(feature.id, state));
 
     try {
-      const { disabled, enabled } = await useProfileFeaturesService().updateState(
+      const { disabled, enabled } = await useProfileFeaturesClient().updateState(
         new UpdateFeatureModel({ featureId, state }),
       );
 

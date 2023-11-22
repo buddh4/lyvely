@@ -2,8 +2,6 @@ import { defineStore } from 'pinia';
 import { eventBus } from '@/core';
 import { createApiUrl, ILiveEvent } from '@lyvely/interface';
 
-const apiURL = import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api';
-
 export const useLiveStore = defineStore('live', () => {
   const channel = initBroadcastChannel();
 
@@ -46,7 +44,7 @@ export const useLiveStore = defineStore('live', () => {
           new Promise((resolve) => {
             console.debug(`Connect to ${pid} as guest`);
             releaseGuestLock = resolve;
-            connectProfileGuestEventSource(pid, resolve);
+            connectProfileGuestEventSource(pid);
             window.addEventListener('beforeunload', resolve);
           }),
       );

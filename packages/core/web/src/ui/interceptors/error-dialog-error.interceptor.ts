@@ -1,7 +1,7 @@
 import { useFlashStore, usePageStore } from '@/ui';
 import { useGlobalDialogStore } from '@/core';
 import { Icons } from '@lyvely/ui';
-import { usePingService } from '@/ping';
+import { usePingClient } from '@lyvely/interface';
 
 let pingInterval: number | undefined = undefined;
 
@@ -20,7 +20,7 @@ export const errorDialogErrorInterceptor = (error: any) => {
 
         if (!pingInterval) {
           pingInterval = setInterval(() => {
-            usePingService()
+            usePingClient()
               .ping()
               .then((result) => {
                 if (result) {

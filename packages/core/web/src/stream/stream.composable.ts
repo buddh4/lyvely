@@ -54,7 +54,7 @@ export function useStream<
   TRestoreState extends IStreamRestoreState = IStreamRestoreState,
   TState extends IStreamState = IStreamState,
   TOptions extends IStreamViewOptions = IStreamViewOptions,
->(initOptions: TOptions, service: IStreamClient<TModel, TFilter, IStreamState, TOptions>) {
+>(initOptions: TOptions, client: IStreamClient<TModel, TFilter, IStreamState, TOptions>) {
   const options = initOptions;
   const state = ref<IStreamState>({});
   const loadTailStatus = useStatus();
@@ -87,7 +87,7 @@ export function useStream<
     if (loadTailStatus.isStatusLoading()) return nextPromise;
 
     nextPromise = loadingStatus(
-      service.loadTail(state.value, options, <any>filter.value),
+      client.loadTail(state.value, options, <any>filter.value),
       loadTailStatus,
     );
 
@@ -256,7 +256,7 @@ export function useStream<
     if (loadHeadStatus.isStatusLoading()) return;
 
     const response = await loadingStatus(
-      service.loadHead(state.value, options, <any>filter.value),
+      client.loadHead(state.value, options, <any>filter.value),
       loadHeadStatus,
     );
 
@@ -299,7 +299,7 @@ export function useStream<
   }
 
   async function loadEntry(id: string) {
-    const model = await service.loadEntry(id, filter.value);
+    const model = await client.loadEntry(id, filter.value);
     if (!model) return null;
 
     const index = models.value.findIndex((model) => model.id === id);

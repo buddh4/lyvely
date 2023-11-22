@@ -14,6 +14,7 @@ import {
   ENDPOINT_PROFILE_RELATION_INFOS,
   ProfileRelationInfosEndpoint,
   ProfileRelationUserInfoModel,
+  ProfileRelationInfosEndpointPaths,
 } from '@lyvely/interface';
 import { EntityNotFoundException, mapType } from '@lyvely/common';
 import { ProtectedProfileContext } from '../models';
@@ -29,7 +30,7 @@ export class ProfileRelationInfosController implements ProfileRelationInfosEndpo
     return mapType([ProtectedProfileContext], ProfileRelationInfos, relations);
   }
 
-  @Get(':pid/:uid')
+  @Get(ProfileRelationInfosEndpointPaths.PROFILE_RELATION_INFO(':pid', ':uid'))
   async getProfileRelationUserInfo(
     @Param('pid') pid,
     @Param('uid') uid,

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { MailInvitationInfo } from '@lyvely/interface';
+import { MailInvitationInfo, useUserInvitationsClient } from '@lyvely/interface';
 import { EntityNotFoundException } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
-import { useUserInvitationsService } from '../services';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { storeToRefs } from 'pinia';
 import { useAppConfigStore } from '@/app-config/app-config.store';
@@ -32,7 +31,7 @@ function register() {
 
 onMounted(async () => {
   authStore.loadUser();
-  useUserInvitationsService()
+  useUserInvitationsClient()
     .getMailInvitationInfo(token as string)
     .then((info) => {
       mailInviteInfo.value = info;

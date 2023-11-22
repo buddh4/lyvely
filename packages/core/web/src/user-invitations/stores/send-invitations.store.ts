@@ -2,8 +2,7 @@ import { defineStore } from 'pinia';
 import { loadingStatus, useStatus } from '@/core';
 import { ref } from 'vue';
 import { isValidEmail } from '@lyvely/common';
-import { InvitationRequest, MailInvite } from '@lyvely/interface';
-import { useUserInvitationsService } from '../services';
+import { InvitationRequest, MailInvite, useUserInvitationsClient } from '@lyvely/interface';
 
 type InviteStages = 'users' | 'profile' | 'loading' | 'success';
 
@@ -14,6 +13,7 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
   const emailInput = ref('');
   const stage = ref<InviteStages>('users');
   const profileId = ref<string | null>(null);
+  const userInvitationsClient = useUserInvitationsClient();
 
   function addEmails() {
     const emailsArr = emailInput.value
@@ -56,7 +56,7 @@ export const useSendInviteUsersStore = defineStore('send-invitations', () => {
     if (validateUserSelection()) {
       stage.value = 'loading';
       return loadingStatus(
-        useUserInvitationsService().sendInvitations(
+        userInvitationsClient.sendInvitations(
           new InvitationRequest({
             invites: emails.value.map((email) => new MailInvite({ email })),
             pid: profileId.value || undefined,

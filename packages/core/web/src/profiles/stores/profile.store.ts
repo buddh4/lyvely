@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus, localStorageManager, loadingStatus } from '@/core';
-import { ProfileWithRelationsModel, TagModel, useApiRepository } from '@lyvely/interface';
-
+import {
+  ProfileWithRelationsModel,
+  TagModel,
+  useProfileRelationInfosClient,
+  useProfilesClient,
+} from '@lyvely/interface';
 import { computed, ref } from 'vue';
-import { useProfileService } from '@/profiles/services/profiles.service';
 import { usePageStore } from '@/ui';
 import { EntityNotFoundException, findByPath } from '@lyvely/common';
 import { useLiveStore } from '@/live';
-import { useProfileRelationInfosService } from '../services';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';
 
@@ -18,13 +20,13 @@ export const useProfileStore = defineStore('profile', () => {
   const profile = ref<ProfileWithRelationsModel>();
   const locale = computed(() => profile.value?.locale);
   const status = useStatus();
-  const profileService = useProfileService();
+  const profileClient = useProfilesClient();
 
   async function loadProfileById(pid: string): Promise<ProfileWithRelationsModel> {
     status.setStatus(Status.LOADING);
     if (isCurrentProfileId(pid)) return Promise.resolve(profile.value!);
 
-    const result = await loadingStatus(profileService.getProfileById(pid), status);
+    const result = await loadingStatus(profileClient.getProfileById(pid), status);
     await setActiveProfile(result);
     status.setStatus(Status.SUCCESS);
 
@@ -46,7 +48,7 @@ export const useProfileStore = defineStore('profile', () => {
 
     try {
       const profile = await loadingStatus(
-        handle ? profileService.getProfileByHandle(handle) : profileService.getDefaultProfile(),
+        handle ? profileClient.getProfileByHandle(handle) : profileClient.getDefaultProfile(),
         status,
       );
       await setActiveProfile(profile);
@@ -128,7 +130,7 @@ export const useProfileStore = defineStore('profile', () => {
     const userInfo = getMemberUserInfo(uid);
     return userInfo
       ? userInfo
-      : useProfileRelationInfosService().getProfileRelationUserInfo(profile.value!.id, uid);
+      : useProfileRelationInfosClient().getProfileRelationUserInfo(profile.value!.id, uid);
   }
 
   function setPageTitle(title: Array<string> | string) {

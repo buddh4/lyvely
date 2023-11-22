@@ -7,7 +7,7 @@ import { STACK_PROFILE_LAYOUT } from '@/profiles';
 import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useHelpStore, useIntroductionTourStore } from '@/help/stores';
-import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
+import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { HELP_MODULE_ID } from '@/help/help.constants';
 
 export default () => {

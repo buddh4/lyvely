@@ -22,6 +22,7 @@ import {
   ProfileWithRelationsModel,
   SettingsUpdateResponse,
   UpdateProfileModel,
+  ProfilesEndpointPaths,
 } from '@lyvely/interface';
 import { ProfilesService, ProfileRelationsService } from '../services';
 import { UserAndProfileRelations, ProtectedProfileContext } from '../models';
@@ -50,7 +51,7 @@ export class ProfilesController implements ProfilesEndpoint {
     return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, profileRelations);
   }
 
-  @Get('by-handle/:handle')
+  @Get(ProfilesEndpointPaths.BY_HANDLE(':handle'))
   async getProfileByHandle(
     @Param('handle') handle: string,
     @Request() req: OptionalUserRequest,
@@ -125,7 +126,7 @@ export class ProfilesController implements ProfilesEndpoint {
     return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, context);
   }
 
-  @Post('set-calendar-preferences')
+  @Post(ProfilesEndpointPaths.SET_CALENDAR_PREFERENCES)
   @UseGuards(ProfileGuard)
   async setCalendarPreferences(
     @Body() model: CalendarPreferences,
