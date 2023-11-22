@@ -31,6 +31,13 @@ const sidebars = {
                 'dev/framework/content',
             ],
         },
+        {
+            type: 'category',
+            label: 'UI',
+            items: [
+                'dev/ui/styles',
+            ],
+        },
     ],
 };
 

@@ -52,6 +52,7 @@ export const useViteWebConfig = (options: IOptions) => {
   return {
     plugins,
     server: {
+      host: '127.0.0.1',
       port: 3000,
     },
     assetsInclude: ['**/*.svg'],

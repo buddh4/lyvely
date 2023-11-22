@@ -94,6 +94,29 @@ export class AppModuleBuilder {
     }
   }
 
+  public importConfigModule() {
+    const configs: Array<string | Partial<ServerConfiguration>> = [];
+
+    if (this.options.loadDefaultConfig !== false) {
+      configs.push(defaultConfig);
+    }
+
+    if (Array.isArray(this.options.configFiles)) {
+      configs.push(...this.options.configFiles);
+    }
+
+    if (this.options.config) {
+      configs.push(this.options.config as Partial<ServerConfiguration>);
+    }
+
+    return this.importModules(
+      ConfigModule.forRoot({
+        load: [loadConfigs(configs)],
+        isGlobal: true,
+      }),
+    );
+  }
+
   public importCoreModules() {
     return this.importModules(
       CoreModule,
@@ -199,29 +222,6 @@ export class AppModuleBuilder {
 
           return options;
         },
-      }),
-    );
-  }
-
-  public importConfigModule() {
-    const configs: Array<string | Partial<ServerConfiguration>> = [];
-
-    if (this.options.loadDefaultConfig !== false) {
-      configs.push(defaultConfig);
-    }
-
-    if (Array.isArray(this.options.configFiles)) {
-      configs.push(...this.options.configFiles);
-    }
-
-    if (this.options.config) {
-      configs.push(this.options.config as Partial<ServerConfiguration>);
-    }
-
-    return this.importModules(
-      ConfigModule.forRoot({
-        load: [loadConfigs(configs)],
-        isGlobal: true,
       }),
     );
   }

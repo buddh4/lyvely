@@ -2,7 +2,7 @@ import AppComponent from './App.vue';
 import { UserAvatar } from '@/users';
 import { ProfileAvatar } from '@/profiles';
 import { setupI18n, translationAdapter } from '@/i18n';
-import { router, registerRoutes } from './lyvely.router';
+import { router } from './lyvely.router';
 import {
   resetStore,
   IModuleLoaderOptions,
@@ -10,7 +10,6 @@ import {
   AppEvents,
   createApiUrl,
   installModules,
-  importModules,
   registerModules,
 } from '@/core';
 import { registerCoreModules } from './core.modules';
@@ -19,9 +18,6 @@ import { createPinia, Pinia } from 'pinia';
 import { I18n } from 'vue-i18n';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
 import { createLyvelyUi } from '@lyvely/ui';
-import { RouteRecordRaw } from 'vue-router';
-import { IWebConfig } from '@/web-config/web-config.interface';
-import { initWebConfig } from '@/web-config';
 
 export interface ILyvelyWebAppOptions extends IModuleLoaderOptions {}
 
@@ -31,19 +27,16 @@ export class LyvelyWebApp {
   i18n: I18n;
   events: AppEvents;
   options: ILyvelyWebAppOptions;
-  config: IWebConfig;
 
   constructor(options: ILyvelyWebAppOptions = {}) {
     this.options = options;
   }
 
   async init(selector?: string) {
-    this.config = await initWebConfig();
     this.events = eventBus;
     this.events.emit('app.init.pre');
     registerCoreModules();
     this.registerModulesFromOptions();
-    await this.loadExternalModules();
     this.setupPinia();
     await this.setupI18n();
     this.createApp();
@@ -59,25 +52,6 @@ export class LyvelyWebApp {
   private registerModulesFromOptions() {
     if (!this.options.modules?.length) return;
     registerModules(...this.options.modules);
-  }
-
-  private async loadExternalModules() {
-    if (!this.config.moduleImports) return;
-
-    this.config.moduleImports?.map((moduleImport) => importModules(moduleImport));
-
-    this.config.moduleImports.forEach((moduleGlobImport) => {});
-
-    const moduleRoutes = <{ default: Array<RouteRecordRaw> }[]>(
-      import.meta.glob('./modules/**/routes/index.ts', { eager: true })
-    );
-
-    for (const path in moduleRoutes) {
-      const route = moduleRoutes[path];
-      if (route.default) {
-        registerRoutes(route.default);
-      }
-    }
   }
 
   private setupPinia() {

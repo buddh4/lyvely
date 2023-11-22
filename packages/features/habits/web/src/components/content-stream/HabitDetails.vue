@@ -124,7 +124,6 @@ onUnmounted(unwatchDate);
         <div>
           <button
             v-if="showTodayIcon"
-            class="today-button"
             :title="$t('calendar-plan.nav-today')"
             @click="switchToToday">
             <ly-icon role="button" name="today" />
@@ -135,10 +134,4 @@ onUnmounted(unwatchDate);
   </content-details>
 </template>
 
-<style scoped>
-.today-button {
-  left: 10px;
-  float: left;
-  cursor: pointer;
-}
-</style>
+<style scoped></style>

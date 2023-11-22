@@ -8,10 +8,10 @@ export const lyvelyDevConfig = {
     port: 6379,
   },
   http: {
-    host: 'localhost',
+    host: '127.0.0.1',
     port: 8080,
-    baseUrl: 'http://localhost:8080/api',
-    appUrl: 'http://localhost:3000',
+    baseUrl: 'http://127.0.0.1:8080/api',
+    appUrl: 'http://127.0.0.1:3000',
   },
   mongodb: {
     uri: 'mongodb://localhost:27017/lyvely',

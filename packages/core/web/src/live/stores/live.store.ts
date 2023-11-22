@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { eventBus } from '@/core';
 import { ILiveEvent } from '@lyvely/core-interface';
 
-const apiURL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8080';
+const apiURL = import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api';
 
 export const useLiveStore = defineStore('live', () => {
   const channel = initBroadcastChannel();

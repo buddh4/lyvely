@@ -9,9 +9,9 @@ import { registerLayouts, registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACTIVITIES, ACTIVITIES_MODULE_ID, LAYOUT_ACTIVITIES } from '@/activities.constants';
 import { activitiesRoutes } from '@/routes';
 import { ActivityHabitsFeature } from '@lyvely/habits-web';
-import { ActivityTasksFeature } from '@lyvely/tasks-interface';
+import { ActivityTasksFeature } from '@lyvely/tasks-web';
 import { ActivitiesFeature } from '@/activities.features';
-import { ActivityMilestonesFeature } from '@lyvely/milestones-interface';
+import { ActivityMilestonesFeature } from '@lyvely/milestones-web';
 import { computed } from 'vue';
 
 export default () => {

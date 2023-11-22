@@ -7,7 +7,7 @@ const lyvelyTestConfig: ServerConfiguration = {
   contactMail: 'test@test.de',
   http: {
     baseUrl: 'https://api.test.com',
-    host: 'localhost',
+    host: '127.0.0.1',
     port: 8080,
     appUrl: 'https://test.com',
   },

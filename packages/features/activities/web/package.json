@@ -8,14 +8,14 @@
     ".": {
       "import": "./dist/index.js"
     },
-    "./style.css": {
-      "import": "./dist/style.css",
-      "require": "./dist/style.css"
+    "./tailwind.txt": {
+      "import": "./dist/tailwind.txt",
+      "require": "./dist/tailwind.txt"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vue-tsc -p tsconfig.build.json -declaration --emitDeclarationOnly",
+    "build": "lyvely-dev build:web",
     "build:staging": "vite build --mode staging && vue-tsc --emitDeclarationOnly",
     "build:dev": "vite build --mode development && vue-tsc --emitDeclarationOnly",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
@@ -26,6 +26,7 @@
     "vue": "^3.3.4",
     "pinia": "^2.0.35",
     "@lyvely/web": "^0.1.0-alpha3",
+    "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/ui": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
     "@lyvely/tasks-web": "^0.1.0-alpha3",

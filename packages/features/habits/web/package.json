@@ -9,13 +9,9 @@
     ".": {
       "import": "./dist/index.js"
     },
-    "./style.css": {
-      "import": "./dist/style.css",
-      "require": "./dist/style.css"
-    },
-    "./tailwind.css": {
-      "import": "./dist/tailwind.css",
-      "require": "./dist/tailwind.css"
+    "./tailwind.txt": {
+      "import": "./dist/tailwind.txt",
+      "require": "./dist/tailwind.txt"
     }
   },
   "scripts": {

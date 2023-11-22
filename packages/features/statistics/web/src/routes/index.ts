@@ -1,9 +1,8 @@
 import Statistics from '@/statistics/views/StatisticsView.vue';
-import { translation } from '@/i18n';
-import { loadProfile } from '@/profiles';
+//import { translation, loadProfile } from '@lyvely/web';
 
 export default [
-  {
+  /* {
     path: '/statistics',
     name: 'Statistics',
     component: Statistics,
@@ -12,5 +11,5 @@ export default [
       layout: 'profile-xl',
     },
     beforeEnter: [loadProfile],
-  },
+  },*/
 ];

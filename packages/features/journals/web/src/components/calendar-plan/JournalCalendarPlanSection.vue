@@ -33,7 +33,7 @@ const createEntry = () =>
       tag="div"
       class="divide-y divide-divide"
       :data-calendar-interval="interval"
-      group="habits"
+      group="journals"
       handle=".icon-drag"
       item-key="id"
       @end="sort">

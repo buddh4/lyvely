@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 
+import './styles/tailwind.css';
 import '@lyvely/ui/style.css';
 import '@lyvely/web/style.css';
 
@@ -8,4 +9,6 @@ import legalModule from './module';
 
 new LyvelyWebApp({
   modules: [legalModule()],
-}).init('#app');
+})
+  .init('#app')
+  .catch((err) => console.error(err));

@@ -37,9 +37,9 @@ function cssClasses(unitIndex: number) {
   } else if (isChecked(unitIndex) && props.selection < props.min) {
     result.push('warning');
   } else if (!isChecked(unitIndex) && unitIndex <= props.optimal) {
-    result.push('success bg-success hover:bg-success');
+    result.push('success');
   } else if (isChecked(unitIndex) && props.selection >= props.optimal) {
-    result.push('success bg-success hover:bg-success');
+    result.push('success');
   }
 
   return result;

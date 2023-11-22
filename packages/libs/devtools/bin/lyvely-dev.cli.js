@@ -14,7 +14,13 @@ const runCommand = (command) => {
 };
 
 const unescapeCssSelectors = (cssContent) => {
-  return cssContent.replace(/\\/g, '');
+  return cssContent
+      // Remove all definitions
+      .replace(/{[^}]*}/g, ' ')
+      // Remove pseudo classes (which are unescaped)
+      .replace(/(?<!\\):[^ ]+/g, ' ')
+      // Remove escapes
+      .replace(/\\/g, '');
 };
 
 const unescapeCssFile = (inputFilePath, outputFilePath) => {

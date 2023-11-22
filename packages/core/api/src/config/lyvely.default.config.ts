@@ -37,10 +37,10 @@ export default {
     port: process.env.REDIS_PORT || 6379,
   },
   http: {
-    host: process.env.API_HOST || 'localhost',
+    host: process.env.API_HOST || '127.0.0.1',
     port: process.env.API_PORT || 8080,
-    baseUrl: process.env.BASE_URL || 'http://localhost:8080/api',
-    appUrl: process.env.APP_URL || 'http://localhost:3000',
+    baseUrl: process.env.BASE_URL || 'http://127.0.0.1:8080/api',
+    appUrl: process.env.APP_URL || 'http://127.0.0.1:3000',
   },
   mongodb: {
     uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/lyvely',

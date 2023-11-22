@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // TODO: abstract this away in config or something..
-const apiURL = import.meta.env.VITE_APP_API_URL || 'http://localhost:8080/api';
+const apiURL = import.meta.env.VITE_APP_API_URL || 'http://127.0.0.1:8080/api';
 export const repository = axios.create({ baseURL: apiURL });
 
 export function createApiUrl(path: string, queryParameters: Record<string, string> = {}) {

@@ -4,6 +4,15 @@
   "description": "Lyvely Milestones web package",
   "module": "dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./tailwind.txt": {
+      "import": "./dist/tailwind.txt",
+      "require": "./dist/tailwind.txt"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "lyvely-dev build:web",

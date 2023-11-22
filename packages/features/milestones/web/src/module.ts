@@ -16,12 +16,14 @@ import {
 } from '@lyvely/milestones-interface';
 import { computed } from 'vue';
 import { milestoneRoutes } from '@/routes';
+import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 
 export default () => {
   return {
     id: 'milestones',
     features: [MilestonesFeature, ActivityMilestonesFeature],
     routes: milestoneRoutes,
+    dependencies: [calendarPlanModule()],
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
       locale: (locale: string) => import(`./locales/${locale}.json`),

@@ -22,7 +22,7 @@ export const milestoneRoutes = [
       },
     ],
     meta: {
-      i18n: { load: ['milestones'] },
+      i18n: { load: ['milestones', 'calendar-plan'] },
       layout: LAYOUT_PROFILE,
       title: () => t('milestones.title'),
     },
