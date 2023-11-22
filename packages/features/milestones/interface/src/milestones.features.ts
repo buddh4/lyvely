@@ -1,4 +1,4 @@
-import { IFeature } from '@lyvely/core-interface';
+import { IFeature } from '@lyvely/interface';
 import { MILESTONES_MODULE_ID } from './milestones.constants';
 
 export const MilestonesFeature: IFeature = {

@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { assureStringId, EntityIdentity } from '@/core';
 import { ConfigurationPath, OperationMode } from '@/config';
 import { OptionalUser, User } from '@/users';
-import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/core-interface';
+import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/interface';
 import {
   Profile,
   ProfileRelationsService,

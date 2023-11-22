@@ -1,4 +1,4 @@
-import { ContentFilter, IContentFilterOptions } from '@lyvely/core-interface';
+import { ContentFilter, IContentFilterOptions } from '@lyvely/interface';
 import { HabitModel } from './habit.model';
 
 export interface IHabitFilterOptions extends IContentFilterOptions {}

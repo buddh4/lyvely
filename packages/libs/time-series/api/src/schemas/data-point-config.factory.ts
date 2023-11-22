@@ -1,5 +1,5 @@
 import { DataPointConfig } from './config/data-point-config.schema';
-import { assignEntityData } from '@lyvely/core';
+import { assignEntityData } from '@lyvely/api';
 import { useDataPointStrategyFacade } from '@lyvely/time-series-interface';
 import { Type, IntegrityException, PropertiesOf } from '@lyvely/common';
 

@@ -3,7 +3,7 @@ import { useProfileStore } from '@/profiles/stores/profile.store';
 import { computed, ref, onMounted } from 'vue';
 import EditTagModal from '@/tags/components/EditTagModal.vue';
 import { useEditTagStore } from '@/tags/stores/edit-tag.store';
-import { TagModel, UpdateTagModel, CreateTagModel, TagFilter } from '@lyvely/core-interface';
+import { TagModel, UpdateTagModel, CreateTagModel, TagFilter } from '@lyvely/interface';
 import { accessibilityFocus } from '@/accessibility';
 import TagBadge from '../components/TagBadge.vue';
 

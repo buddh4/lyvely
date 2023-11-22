@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IContentPolicy } from '../interfaces';
 import { ProfileContentContext } from '../schemas';
-import { ProfileMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/interface';
 
 @Injectable()
 export abstract class BaseContentManagePolicy implements IContentPolicy {

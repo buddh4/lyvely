@@ -6,7 +6,7 @@ import { assureStringId, Model } from '@/core';
 import { ConfigurationPath } from '@/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { ChangeStreamInsertDocument } from 'mongodb';
-import { ContentUpdateStateLiveEvent } from '@lyvely/core-interface';
+import { ContentUpdateStateLiveEvent } from '@lyvely/interface';
 
 @Injectable()
 export class ContentEventPublisher {

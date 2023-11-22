@@ -1,4 +1,4 @@
-import { ENDPOINT_CONTENT, SetMilestoneModel, useApiRepository } from '@lyvely/core-interface';
+import { ENDPOINT_CONTENT, SetMilestoneModel, useApiRepository } from '@lyvely/interface';
 
 export default {
   setMilestone(cid: string, mid: string) {

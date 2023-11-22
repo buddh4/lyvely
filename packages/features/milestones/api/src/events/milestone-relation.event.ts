@@ -1,7 +1,7 @@
 import { BaseModel } from '@lyvely/common';
 import { MilestoneRelationModel } from '@lyvely/milestones-interface';
 import { CalendarDateTime, formatDate } from '@lyvely/dates';
-import { Content, User, TObjectId } from '@lyvely/core';
+import { Content, User, TObjectId } from '@lyvely/api';
 
 export interface IMilestoneRelationEventData<TContent extends Content = Content> {
   contents: TContent[];

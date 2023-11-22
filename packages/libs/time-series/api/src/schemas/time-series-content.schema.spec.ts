@@ -7,7 +7,7 @@ import {
   profilesTestPlugin,
   ProfileTestDataUtils,
   Model,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { TestTimeSeriesContent, TestTimeSeriesContentSchema } from '../testing';
 import { CalendarInterval } from '@lyvely/dates';
 import {

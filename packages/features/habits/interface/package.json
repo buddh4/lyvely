@@ -23,7 +23,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/core-interface": "^0.1.0-alpha3",
+    "@lyvely/interface": "^0.1.0-alpha3",
     "@lyvely/time-series-interface": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3",
     "@buddh4/mapped-types": "^1.1.0",

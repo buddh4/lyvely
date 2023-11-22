@@ -5,7 +5,7 @@ import {
   IStreamState,
   IStreamOptions,
   IStreamResponse,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import notificationRepository from '../repositories/notifications.repository';
 import { unwrapResponse } from '@/core';
 

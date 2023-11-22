@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { t } from '@/i18n';
-import { IFeature } from '@lyvely/core-interface';
+import { IFeature } from '@lyvely/interface';
 import { computed } from 'vue';
 import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
 

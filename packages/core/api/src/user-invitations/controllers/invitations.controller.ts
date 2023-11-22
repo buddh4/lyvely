@@ -9,7 +9,7 @@ import {
   UserInvitationsEndpoint,
   ENDPOINT_USER_INVITATIONS,
   InvitationRequest,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { Public, UseClassSerializer } from '@/core';
 import { UserRequest } from '@/users';
 

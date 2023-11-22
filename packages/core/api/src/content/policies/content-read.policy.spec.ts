@@ -2,7 +2,7 @@ import { buildTest, LyvelyTestingModule } from '@/testing';
 import { Content, ContentSchema, ProfileContentContext } from '../schemas';
 import { TestContent, TestContentSchema } from '../testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
-import { RoleVisibilityLevel } from '@lyvely/core-interface';
+import { RoleVisibilityLevel } from '@lyvely/interface';
 import { getPolicyToken, IPolicy, policyTestPlugin } from '@/policies';
 import { BaseContentReadPolicy } from './base-content-read.policy';
 import { Type } from '@lyvely/common';

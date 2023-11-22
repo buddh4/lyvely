@@ -1,4 +1,4 @@
-import { User, Profile, AbstractDao, assureObjectId, EntityIdentity } from '@lyvely/core';
+import { User, Profile, AbstractDao, assureObjectId, EntityIdentity } from '@lyvely/api';
 import { buildDiscriminatorName, DataPoint, TimeSeriesContent } from '../schemas';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { getTimingIds, CalendarInterval } from '@lyvely/dates';

@@ -1,7 +1,7 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
 import { DeepPartial, getStringEnumValues } from '@lyvely/common';
-import { CreatedAsType } from '@lyvely/core-interface';
+import { CreatedAsType } from '@lyvely/interface';
 import { User } from '@/users';
 import { Organization, Profile } from '@/profiles';
 

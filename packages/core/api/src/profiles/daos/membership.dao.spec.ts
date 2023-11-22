@@ -1,6 +1,6 @@
 import { MembershipsDao } from './index';
 import { ProfileRelationUserInfo } from '../schemas';
-import { BaseUserProfileRelationType, ProfileMembershipRole } from '@lyvely/core-interface';
+import { BaseUserProfileRelationType, ProfileMembershipRole } from '@lyvely/interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 

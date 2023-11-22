@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { getFallbackLocale } from '@/i18n';
 import { useAuthStore } from '@/auth';
 import { useAccountService } from '../services';
-import { SetLanguageDto } from '@lyvely/core-interface';
+import { SetLanguageDto } from '@lyvely/interface';
 import { validate } from 'class-validator';
 import { useGlobalDialogStore } from '@/core';
 

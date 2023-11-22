@@ -50,6 +50,7 @@
         "live",
         "features",
         "i18n",
+        "interface",
         "deps",
         "time-series",
         "system-messages",

@@ -1,4 +1,4 @@
-import { User, Profile, OptionalUser } from '@lyvely/core';
+import { User, Profile, OptionalUser } from '@lyvely/api';
 import { CalendarDate, CalendarInterval, getTimingIds, isInFuture } from '@lyvely/dates';
 import {
   CalendarPlanFilter,

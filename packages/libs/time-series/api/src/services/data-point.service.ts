@@ -6,7 +6,7 @@ import {
 } from '@lyvely/time-series-interface';
 import { UserAssignmentStrategy } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
-import { User, EntityIdentity, Profile, ProfilesService } from '@lyvely/core';
+import { User, EntityIdentity, Profile, ProfilesService } from '@lyvely/api';
 import { DataPointStrategyDao } from '../daos';
 import { Inject } from '@nestjs/common';
 import { useDataPointStrategyRegistry } from '../strategies';

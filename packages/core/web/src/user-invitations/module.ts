@@ -1,5 +1,5 @@
 import { IModule } from '@/core';
-import { USER_INVITATIONS_MODULE_ID } from '@lyvely/core-interface';
+import { USER_INVITATIONS_MODULE_ID } from '@lyvely/interface';
 import { registerMenuEntries, registerComponentStackEntries } from '@lyvely/ui';
 import { STACK_PROFILE_LAYOUT } from '@/profiles';
 import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';

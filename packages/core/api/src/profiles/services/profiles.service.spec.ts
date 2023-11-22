@@ -5,7 +5,7 @@ import {
   ProfileMembershipRole,
   ProfileType,
   ProfileVisibilityLevel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';

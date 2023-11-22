@@ -22,7 +22,7 @@
     "@nestjs/core": "^9.4.0"
   },
   "devDependencies": {
-    "@lyvely/core": "^0.1.0-alpha3",
+    "@lyvely/api": "^0.1.0-alpha3",
     "@lyvely/testing": "^0.1.0-alpha3"
   },
   "jest": {

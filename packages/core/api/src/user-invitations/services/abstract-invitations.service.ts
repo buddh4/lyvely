@@ -1,6 +1,6 @@
 import { InvitationContextIF } from '../interfaces';
 import { EntityNotFoundException } from '@lyvely/common';
-import { UserStatus } from '@lyvely/core-interface';
+import { UserStatus } from '@lyvely/interface';
 import { Invitation } from '../schemas';
 
 export abstract class AbstractInvitationsService<

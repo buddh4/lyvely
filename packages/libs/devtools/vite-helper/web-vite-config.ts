@@ -38,8 +38,6 @@ export const useViteWebConfig = (options: IOptions) => {
     );
   }
 
-  console.log(process.env.NODE_ENV);
-
   const ignore =
     process.env.NODE_ENV !== 'development' ? ['src/styles/tailwind.css', 'src/main.ts'] : [];
 

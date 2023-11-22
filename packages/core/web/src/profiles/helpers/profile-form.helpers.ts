@@ -3,7 +3,7 @@ import {
   PERMISSIONS_MODULE_ID,
   ProfileType,
   ProfileVisibilityLevel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { ISelectOptions } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config';
 import { useProfileStore } from '@/profiles/stores';

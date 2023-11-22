@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { SystemMessageModel } from '@lyvely/core-interface';
+import { SystemMessageModel } from '@lyvely/interface';
 import { useAppConfigStore } from '@/app-config';
 import { ContentDetails } from '@/content';
 import { RelativeTime } from '@/calendar';

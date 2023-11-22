@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ContentModel, ContentUpdateResponse, IContent } from '@lyvely/core-interface';
+import { ContentModel, ContentUpdateResponse, IContent } from '@lyvely/interface';
 import { useContentService } from '@/content/services/content.service';
 import { useGlobalDialogStore, eventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';

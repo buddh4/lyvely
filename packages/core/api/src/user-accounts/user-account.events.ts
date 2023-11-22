@@ -3,7 +3,7 @@ import { UserSettingsRegistry } from '@/users';
 import {
   USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
   USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 
 @Injectable()
 export class UserAccountEvents implements OnModuleInit {

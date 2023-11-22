@@ -4,7 +4,7 @@ import {
   ProfileType,
   ProfileVisibilityLevel,
   UserStatus,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   GroupProfile,

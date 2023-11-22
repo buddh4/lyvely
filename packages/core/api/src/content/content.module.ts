@@ -17,7 +17,7 @@ import { LiveModule } from '@/live';
 import { uniqueId } from 'lodash';
 import { ContentController, ContentStreamController } from './controllers';
 import { LyvelyModule } from '@/core';
-import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/core-interface';
+import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/interface';
 
 const ContentModel = MongooseModule.forFeature([
   {

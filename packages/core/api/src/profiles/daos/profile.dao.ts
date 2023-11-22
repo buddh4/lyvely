@@ -19,7 +19,7 @@ import {
 } from '@/core';
 import { User } from '@/users';
 import { Constructor, DeepPartial, IntegrityException } from '@lyvely/common';
-import { ProfileType } from '@lyvely/core-interface';
+import { ProfileType } from '@lyvely/interface';
 
 @Injectable()
 export class ProfileDao extends AbstractDao<Profile> {

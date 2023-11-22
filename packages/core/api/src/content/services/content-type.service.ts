@@ -10,7 +10,7 @@ import {
 } from '@/core';
 import { Content, ContentCondition } from '../schemas';
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
-import { CreateContentModel } from '@lyvely/core-interface';
+import { CreateContentModel } from '@lyvely/interface';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
 import { isDefined } from 'class-validator';

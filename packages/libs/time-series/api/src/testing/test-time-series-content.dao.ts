@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from '@lyvely/core';
+import { Model } from '@lyvely/api';
 import { TimeSeriesContentDao } from '../daos';
 import { TestTimeSeriesContent } from './test-time-series-content.schema';
 

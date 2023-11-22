@@ -7,7 +7,7 @@ import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ServerOptions } from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
-import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/core-interface';
+import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/interface';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;

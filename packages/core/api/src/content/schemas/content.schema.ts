@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
 import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '@lyvely/common';
-import { IContent, ContentModel } from '@lyvely/core-interface';
+import { IContent, ContentModel } from '@lyvely/interface';
 import { BaseEntity, ObjectIdArrayProp, TObjectId } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content-metadata.schema';

@@ -11,7 +11,7 @@ import {
   VerifyEmailDto,
   UserModel,
   StringFieldValidityRequest,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import {} from '@/user-accounts';
 import { UniqueConstraintException } from '@lyvely/common';
 import { AbstractJwtAuthController, JwtAuthService } from '@/auth';

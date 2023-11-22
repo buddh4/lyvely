@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
-import { DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/core-interface';
+import { UserStatus, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/interface';
 import { UserOtp } from '../schemas';
 import { UserOtpDao } from '../daos';
 import { generateOTP } from '../utils';

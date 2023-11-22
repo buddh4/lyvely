@@ -1,7 +1,7 @@
 import { ProfilesCount, RefreshToken, UserEmail, UsersService } from '../index';
 import { buildTest, getObjectId, LyvelyTestingModule } from '@/testing';
 import { addDays, addMinutes } from '@lyvely/dates';
-import { ProfileType } from '@lyvely/core-interface';
+import { ProfileType } from '@lyvely/interface';
 import { compare } from 'bcrypt';
 import { usersTestPlugin, UserTestDataUtils } from '../testing';
 

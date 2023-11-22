@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Habit } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from '@lyvely/core';
+import { Model } from '@lyvely/api';
 import { TimeSeriesContentDao } from '@lyvely/time-series';
 
 @Injectable()

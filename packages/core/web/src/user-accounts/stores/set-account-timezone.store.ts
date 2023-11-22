@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useI18nStore } from '@/i18n';
 import { useAuthStore } from '@/auth';
 import { useAccountService } from '../services';
-import { SetTimezoneDto } from '@lyvely/core-interface';
+import { SetTimezoneDto } from '@lyvely/interface';
 import { validate } from 'class-validator';
 import { useGlobalDialogStore } from '@/core';
 import { getTimezone } from '@lyvely/dates';

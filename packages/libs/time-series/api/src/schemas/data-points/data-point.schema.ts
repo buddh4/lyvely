@@ -6,7 +6,7 @@ import {
   TObjectId,
   User,
   Profile,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CalendarInterval, getFullDayDate, toTimingId } from '@lyvely/dates';
 import {

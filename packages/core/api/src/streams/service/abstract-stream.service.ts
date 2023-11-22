@@ -1,10 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  IStreamResponse,
-  StreamRequest,
-  IStreamFilter,
-  StreamResponse,
-} from '@lyvely/core-interface';
+import { IStreamResponse, StreamRequest, IStreamFilter, StreamResponse } from '@lyvely/interface';
 import { findByPath, EntityNotFoundException, SortValue } from '@lyvely/common';
 import {
   FilterQuery,

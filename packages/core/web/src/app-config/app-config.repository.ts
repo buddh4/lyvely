@@ -1,4 +1,4 @@
-import { ENDPOINT_APP_CONFIG, IAppConfig, useApiRepository } from '@lyvely/core-interface';
+import { ENDPOINT_APP_CONFIG, IAppConfig, useApiRepository } from '@lyvely/interface';
 
 export default {
   async loadConfig() {

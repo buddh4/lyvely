@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { escapeHTML } from '@lyvely/common';
 import { User, UsersService } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
+import { UserStatus } from '@lyvely/interface';
 import { MailService } from '@/mails';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';

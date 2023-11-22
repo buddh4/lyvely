@@ -1,4 +1,4 @@
-import { IContentFilter, TagFilter } from '@lyvely/core-interface';
+import { IContentFilter, TagFilter } from '@lyvely/interface';
 import { computed, watch } from 'vue';
 import { LocationQuery, Router } from 'vue-router';
 import { useFilterOption } from '@/core';

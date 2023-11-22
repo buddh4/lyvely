@@ -5,7 +5,7 @@ import {
   ProfileWithRelationsModel,
   SettingsUpdateResponse,
   UpdateProfileModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
 import profileRepository from '@/profiles/repositories/profile.repository';
 import { localStorageManager, unwrapAndTransformResponse } from '@/core';

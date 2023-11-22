@@ -7,7 +7,7 @@ import {
   UpdateProfileMembershipSettings,
   ENDPOINT_PROFILE_MEMBERSHIP,
   ProfileMembershipEndpoint,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { ProfileMembershipService } from '../services';
 
 @ProfileController(ENDPOINT_PROFILE_MEMBERSHIP)

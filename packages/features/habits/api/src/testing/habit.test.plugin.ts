@@ -5,7 +5,7 @@ import {
   getContentModelDefinition,
   getContentScoreDefinition,
   profilesTestPlugin,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from '../schemas';
 import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-series';
 

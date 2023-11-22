@@ -4,7 +4,7 @@ import { usePageStore } from '@/ui';
 import { useI18nStore } from '@/i18n';
 import { ref, computed } from 'vue';
 import { AuthService, useAuthService } from '@/auth/services/auth.service';
-import { ILoginResponse, useApiRepository, UserModel, UserStatus } from '@lyvely/core-interface';
+import { ILoginResponse, useApiRepository, UserModel, UserStatus } from '@lyvely/interface';
 import { findByPath, queuePromise } from '@lyvely/common';
 import { useLiveStore } from '@/live/stores/live.store';
 

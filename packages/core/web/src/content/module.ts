@@ -5,7 +5,7 @@ import {
   MENU_PROFILE_MOBILE_FOOTER,
   STACK_PROFILE_LAYOUT,
 } from '@/profiles/profile.constants';
-import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/core-interface';
+import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/interface';
 import { IModule } from '@/core';
 
 export default () => {

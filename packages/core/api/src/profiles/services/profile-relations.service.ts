@@ -5,7 +5,7 @@ import { EntityNotFoundException } from '@lyvely/common';
 import { Profile, UserProfileRelation } from '../schemas';
 import { UserAndProfileRelations } from '../models';
 import { ProfileDao, UserProfileRelationsDao } from '../daos';
-import { getProfileRelationRole } from '@lyvely/core-interface';
+import { getProfileRelationRole } from '@lyvely/interface';
 import { IUserWithProfileRelation } from '../interfaces';
 
 @Injectable()

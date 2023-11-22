@@ -10,7 +10,7 @@ import {
 } from '@/core';
 import { RefreshToken, User, UserEmail } from '../schemas';
 import { Constructor } from '@lyvely/common';
-import { ProfileType, UserStatus } from '@lyvely/core-interface';
+import { ProfileType, UserStatus } from '@lyvely/interface';
 
 /**
  * Data Access Object for accessing user entities.

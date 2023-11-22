@@ -1,7 +1,7 @@
 import { OptionalUser } from '@/users';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
-import { GlobalPermissionRole, verifyGlobalPermission } from '@lyvely/core-interface';
+import { GlobalPermissionRole, verifyGlobalPermission } from '@lyvely/interface';
 import { IGlobalPermissionsService } from '../interfaces';
 import { Injectable } from '@nestjs/common';
 

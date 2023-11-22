@@ -1,7 +1,7 @@
 import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@/testing';
 import { ProfileGuard } from './index';
 import { ProfileRequest } from '../types';
-import { ProfileVisibilityLevel, ProfileMembershipRole } from '@lyvely/core-interface';
+import { ProfileVisibilityLevel, ProfileMembershipRole } from '@lyvely/interface';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 
 describe('ProfileGuard', () => {

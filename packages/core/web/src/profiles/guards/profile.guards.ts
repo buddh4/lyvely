@@ -1,7 +1,7 @@
 import { useProfileStore } from '@/profiles/stores';
 import { profilePathRoute } from '@/profiles/routes/profile-route.helper';
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
-import { isMultiUserProfile } from '@lyvely/core-interface';
+import { isMultiUserProfile } from '@lyvely/interface';
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 
 export const ifIsMultiUserProfile = async (

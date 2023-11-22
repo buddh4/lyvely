@@ -16,7 +16,7 @@ import {
   CreateContentModel,
   ContentUpdateResponse,
   TagModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { Profile, ProtectedProfileRequest } from '@/profiles';
 import { User } from '@/users';
 import { validate } from 'class-validator';

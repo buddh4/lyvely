@@ -1,4 +1,4 @@
-import { ServerConfiguration, OperationMode } from '@lyvely/core';
+import { ServerConfiguration, OperationMode } from '@lyvely/api';
 
 const lyvelyTestConfig: ServerConfiguration = {
   appName: 'lyvely.test.app',

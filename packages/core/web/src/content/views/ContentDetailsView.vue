@@ -5,12 +5,7 @@ import {
   ContentDetails,
   ContentDetailsHeader,
 } from '../components';
-import {
-  ContentModel,
-  ContentStreamFilter,
-  MessageModel,
-  ProfileType,
-} from '@lyvely/core-interface';
+import { ContentModel, ContentStreamFilter, MessageModel, ProfileType } from '@lyvely/interface';
 import { useContentStreamService, getContentDetailsComponent } from '../services';
 import { useRouter } from 'vue-router';
 import { computed, ref, watch } from 'vue';

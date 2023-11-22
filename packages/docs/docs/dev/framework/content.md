@@ -16,7 +16,7 @@ The interface package will enable the sharing of typesafe interfaces and models 
 reuse models, validation and even domain logic.
 
 For custom content types, the Lyvely framework provides you with a template for creating and updating your custom content types in the
-`@lyvely/core-interface` package. In the following sections we will create models and interfaces for a custom poll content type.
+`@lyvely/interface` package. In the following sections we will create models and interfaces for a custom poll content type.
 
 ### Content CRUD Models
 
@@ -28,7 +28,7 @@ the base `CreateContentModel` class, which defines properties and validation rul
 ```typescript title=polls/packages/interface/src/models/create-poll.model.ts
 import {Exclude, Expose} from 'class-transformer';
 import {IsBoolean, IsDate, IsString, Length, MaxLength} from 'class-validator';
-import {CreateContentModel} from '@lyvely/core-interfaces';
+import {CreateContentModel} from '@lyvely/interfaces';
 import {PropertiesOf} from '@lyvely/common';
 
 export class CreatePollModel extends CreateContentModel<CreatePollModel> {
@@ -95,7 +95,7 @@ in the [Content Type Schema](#content-type-schema) section.
 Let's use our Poll content type as an example:
 
 ```typescript title=polls/packages/interface/src/models/poll.model.ts
-import {ContentModel} from '@lyvely/core-interface';
+import {ContentModel} from '@lyvely/interface';
 import {Type} from 'class-transformer';
 import {BaseModel, IEditableModel, PropertyType, TransformObjectId} from '@lyvely/common';
 import {UpdatePollModel} from './update-poll.model';
@@ -257,7 +257,7 @@ More complex content types can extend this schema by implementing a custom schem
 `ContentDataType` schema class. For instance, let's consider our Poll content type:
 
 ```typescript title=polls/packages/api/src/schemas/poll.schema.ts
-import {BaseEntity, ContentDataType, NestedSchema, ObjectIdProp, TObjectId} from "@lyvely/core";
+import {BaseEntity, ContentDataType, NestedSchema, ObjectIdProp, TObjectId} from "@lyvely/api";
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {BaseModel} from "@lyvely/common";
 
@@ -466,7 +466,7 @@ When dealing with `ContentType` entities, you can take advantage of a specialize
 To use this class with your custom content types, follow the example below::
 
 ```typescript title=polls/packages/api/src/daos/polls.dao.ts
-import {ContentTypeDao} from "@lyvely/core";
+import {ContentTypeDao} from "@lyvely/api";
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/mongoose";
 import { POLLS_MODULE_ID } from 'lyvely-polls-interface';
@@ -502,7 +502,7 @@ entries while adhering to default behaviors such as triggering certain events an
 how to extend and implement a content type service for our poll content.
 
 ```typescript title=polls/packages/api/src/services/polls.service.ts
-import {UpdateQuerySet} from "@lyvely/core";
+import {UpdateQuerySet} from "@lyvely/api";
 
 @Injectable()
 export class PollsService extends ContentTypeService<Poll, CreatePollModel> {
@@ -566,10 +566,10 @@ The base `ContentTypeController` class is used to implement our endpoint as in t
 
 ```typescript title=polls/packages/api/src/controllers/polls.controller.ts
 import { Inject } from '@nestjs/common';
-import { AbstractContentTypeController, ContentTypeController } from '@lyvely/core';
+import { AbstractContentTypeController, ContentTypeController } from '@lyvely/api';
 import { Poll } from '../schemas';
 import { PollService } from '../services';
-import { UseClassSerializer } from '@lyvely/core';
+import { UseClassSerializer } from '@lyvely/api';
 import {
   PollsEndpoint,
   ENDPOINT_POLLS,
@@ -602,7 +602,7 @@ The final step of our backend implementation, includes creating our module class
 content type as follows:
 
 ```typescript title=polls/packages/api/src/polls.module.ts
-import { LyvelyModule } from '@lyvely/core';
+import { LyvelyModule } from '@lyvely/api';
 import { PollsController } from './controllers';
 import { PollsService } from './services';
 import { PollsDao } from './daos';
@@ -650,7 +650,7 @@ Currently, only our backend knows about the existence of the Poll content type. 
 To request our backend API we first need to implement our poll repository and service:
 
 ```typescript title=polls/packages/web/repositories/polls.repository.ts
-import { useApiRepository } from '@lyvely/core-interface';
+import { useApiRepository } from '@lyvely/interface';
 import { ENDPOINT_POLLS, CreatePollModel, IPollClient } from 'lyvely-polls-interface';
 import { EndpointResult } from '@lyvely/common';
 

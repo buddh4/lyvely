@@ -9,7 +9,7 @@ import {
   ContentDataType,
   ContentType,
   TObjectId,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import {
   UserAssignmentStrategy,
   PropertiesOf,

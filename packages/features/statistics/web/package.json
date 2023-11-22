@@ -18,7 +18,7 @@
     "@vueuse/core": "^10.1.2",
     "pinia": "^2.0.35",
     "mitt": "^3.0.0",
-    "@lyvely/core-interface": "^0.1.0-alpha3",
+    "@lyvely/interface": "^0.1.0-alpha3",
     "@lyvely/ui": "^0.1.0-alpha3",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",

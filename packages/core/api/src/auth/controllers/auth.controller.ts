@@ -9,13 +9,7 @@ import {
 import { AbstractJwtAuthController } from './abstract-jwt-auth.controller';
 import { JwtAuthService } from '../services';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
-import {
-  UserStatus,
-  UserModel,
-  ENDPOINT_AUTH,
-  AuthEndpoint,
-  LoginModel,
-} from '@lyvely/core-interface';
+import { UserStatus, UserModel, ENDPOINT_AUTH, AuthEndpoint, LoginModel } from '@lyvely/interface';
 import { Headers } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';

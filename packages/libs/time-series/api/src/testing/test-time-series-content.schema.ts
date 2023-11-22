@@ -8,7 +8,7 @@ import {
   TextareaTextDataPointConfig,
   TimerDataPointConfig,
 } from '../';
-import { NestedSchema, ContentModel, IContent } from '@lyvely/core';
+import { NestedSchema, ContentModel, IContent } from '@lyvely/api';
 import {
   DataPointInputType,
   ITimeSeriesContentConfig,

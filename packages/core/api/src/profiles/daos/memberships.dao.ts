@@ -4,7 +4,7 @@ import { Model, assureObjectId, EntityIdentity, IBaseQueryOptions, SaveOptions }
 import { Membership, Profile } from '../schemas';
 import { User } from '@/users';
 import { AbstractUserProfileRelationsDao } from './abstract-user-profile-relations.dao';
-import { ProfileMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/interface';
 import { Constructor } from '@lyvely/common';
 
 @Injectable()

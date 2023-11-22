@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { uniqueId } from 'lodash';
 import { translation } from '@/i18n';
 import { useProfileStore } from '@/profiles/stores/profile.store';
-import { TagModel } from '@lyvely/core-interface';
+import { TagModel } from '@lyvely/interface';
 import { storeToRefs } from 'pinia';
 
 export interface IProps {

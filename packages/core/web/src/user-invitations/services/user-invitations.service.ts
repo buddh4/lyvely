@@ -3,7 +3,7 @@ import {
   MailInvitationInfo,
   InvitationRequest,
   UserInvitationInfo,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
 import repository from '../repositories/invitations.repository';
 import { unwrapAndTransformResponse } from '@/core';

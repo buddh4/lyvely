@@ -1,4 +1,4 @@
-import { LyvelyServer } from '@lyvely/core';
+import { LyvelyServer } from '@lyvely/api';
 import { TasksModule } from '@lyvely/tasks';
 import { JournalsModule } from '@lyvely/journals';
 import { HabitsModule } from '@lyvely/habits';

@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { I18n } from './components';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@/app-config';
-import { I18N_MODULE_ID, I18nAppConfig } from '@lyvely/core-interface';
+import { I18N_MODULE_ID, I18nAppConfig } from '@lyvely/interface';
 import { loadDateTimeLocale } from '@lyvely/dates';
 
 @Injectable()

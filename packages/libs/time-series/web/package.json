@@ -25,7 +25,7 @@
     "vue": "^3.3.4",
     "@vueuse/core": "^10.1.2",
     "pinia": "^2.0.35",
-    "@lyvely/core-interface": "^0.1.0-alpha3",
+    "@lyvely/interface": "^0.1.0-alpha3",
     "@lyvely/time-series-interface": "^0.1.0-alpha3",
     "@lyvely/ui": "^0.1.0-alpha3",
     "@lyvely/web": "^0.1.0-alpha3",

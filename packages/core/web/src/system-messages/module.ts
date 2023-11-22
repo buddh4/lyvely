@@ -1,7 +1,7 @@
 import { registerContentType } from '@/content';
 import { translation } from '@/i18n';
 import { IModule } from '@/core';
-import { SYSTEM_MESSAGES_MODULE_ID, SystemMessageModel } from '@lyvely/core-interface';
+import { SYSTEM_MESSAGES_MODULE_ID, SystemMessageModel } from '@lyvely/interface';
 
 export default () => {
   return {

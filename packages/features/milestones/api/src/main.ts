@@ -1,4 +1,4 @@
-import { LyvelyServer } from '@lyvely/core';
+import { LyvelyServer } from '@lyvely/api';
 import { MilestonesModule } from './milestones.module';
 import { lyvelyDevConfig } from '@lyvely/devtools';
 

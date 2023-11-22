@@ -1,4 +1,4 @@
-import { IFeature } from '@lyvely/core-interface';
+import { IFeature } from '@lyvely/interface';
 import { HABITS_MODULE_ID } from './habits.constants';
 
 export const HabitsFeature: IFeature = {

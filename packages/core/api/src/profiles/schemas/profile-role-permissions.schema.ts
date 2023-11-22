@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity } from '@/core';
-import { IPermissionSetting, ProfileRelationRole } from '@lyvely/core-interface';
+import { IPermissionSetting, ProfileRelationRole } from '@lyvely/interface';
 import { getStringEnumValues } from '@lyvely/common';
 
 @Schema({ timestamps: true })

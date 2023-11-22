@@ -1,4 +1,4 @@
-import { Profile, User } from '@lyvely/core';
+import { Profile, User } from '@lyvely/api';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { ICalendarPlanDao, CalendarPlanEntity } from '../interfaces';
 

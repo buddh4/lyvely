@@ -1,6 +1,6 @@
 import { Component } from 'vue';
 import { Type } from '@lyvely/common';
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 import {
   IContentTypeOptions,
   IStreamEntryProps,

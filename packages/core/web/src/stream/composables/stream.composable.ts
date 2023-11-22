@@ -6,7 +6,7 @@ import {
   IStreamState,
   StreamDirection,
   IStreamRestoreState,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { nextTick, ref, Ref } from 'vue';
 import {
   loadingStatus,

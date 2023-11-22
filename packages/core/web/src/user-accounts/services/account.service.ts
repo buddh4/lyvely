@@ -8,7 +8,7 @@ import {
   SetTimezoneDto,
   CalendarPreferences,
   SettingsUpdateResponse,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
 import { accountRepository } from '../repositories';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/core';

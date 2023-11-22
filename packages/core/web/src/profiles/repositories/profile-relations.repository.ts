@@ -2,7 +2,7 @@ import {
   ENDPOINT_PROFILE_RELATION_INFOS,
   IProfileRelationInfosService,
   useApiRepository,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EndpointResult } from '@lyvely/common';
 
 export default {

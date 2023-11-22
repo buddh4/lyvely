@@ -2,7 +2,7 @@ import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User, UsersService } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
+import { UserStatus } from '@lyvely/interface';
 import bcrypt from 'bcrypt';
 
 @Injectable()

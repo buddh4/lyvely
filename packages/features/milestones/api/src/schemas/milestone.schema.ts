@@ -1,4 +1,4 @@
-import { ContentType, User, NestedSchema, TObjectId } from '@lyvely/core';
+import { ContentType, User, NestedSchema, TObjectId } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan';
 import { IMilestoneConfig, MilestoneModel } from '@lyvely/milestones-interface';

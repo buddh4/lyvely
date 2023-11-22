@@ -1,4 +1,4 @@
-import { useApiRepository } from '@lyvely/core-interface';
+import { useApiRepository } from '@lyvely/interface';
 
 export default {
   async ping() {

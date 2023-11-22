@@ -1,6 +1,6 @@
 import { App } from 'vue';
 import type { LocaleMessage } from '@intlify/core-base';
-import { IFeature } from '@lyvely/core-interface';
+import { IFeature } from '@lyvely/interface';
 import { RouteRecordRaw } from 'vue-router';
 
 export interface IModule {

@@ -1,7 +1,7 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, MixedProp, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
 import { PropertyType } from '@lyvely/common';
-import { IContentLog } from '@lyvely/core-interface';
+import { IContentLog } from '@lyvely/interface';
 
 /**
  * Examples:

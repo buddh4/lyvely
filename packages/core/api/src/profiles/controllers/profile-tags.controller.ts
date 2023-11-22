@@ -19,7 +19,7 @@ import {
   CreateTagModel,
   ENDPOINT_PROFILE_TAGS,
   ProfileTagsEndpoint,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { Tag } from '../schemas';
 
 // TODO feature check

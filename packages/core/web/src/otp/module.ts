@@ -1,5 +1,5 @@
 import { IModule } from '@/core';
-import { OTP_MODULE_ID } from '@lyvely/core-interface';
+import { OTP_MODULE_ID } from '@lyvely/interface';
 
 export default (): IModule => {
   return {

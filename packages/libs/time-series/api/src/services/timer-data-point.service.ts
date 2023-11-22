@@ -1,4 +1,4 @@
-import { Profile, User } from '@lyvely/core';
+import { Profile, User } from '@lyvely/api';
 import { CalendarDate } from '@lyvely/dates';
 import { isTimerDataPointConfig } from '@lyvely/time-series-interface';
 import { EntityNotFoundException, IntegrityException } from '@lyvely/common';

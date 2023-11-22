@@ -2,7 +2,7 @@ import { buildTest, LyvelyTestingModule } from '@/testing';
 import { Profile, profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
 import { User } from '@/users';
 import { Content, ContentLog, ContentMetadata, CreatedAs, ContentDataType } from '../schemas';
-import { CreatedAsType } from '@lyvely/core-interface';
+import { CreatedAsType } from '@lyvely/interface';
 import { contentTestPlugin } from '../testing';
 
 describe('Content Model', () => {

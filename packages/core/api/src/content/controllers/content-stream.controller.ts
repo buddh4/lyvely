@@ -1,4 +1,4 @@
-import { ContentModel, ContentStreamFilter, ENDPOINT_CONTENT_STREAM } from '@lyvely/core-interface';
+import { ContentModel, ContentStreamFilter, ENDPOINT_CONTENT_STREAM } from '@lyvely/interface';
 import { Inject } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { AbstractStreamController } from '@/streams';

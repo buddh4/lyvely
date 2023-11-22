@@ -4,7 +4,7 @@ import { DataPointValueType, NumberDataPointModel } from '@lyvely/time-series-in
 import { PropertiesOf, PropertyType } from '@lyvely/common';
 import { Timer, TimerSchema } from '@lyvely/timers';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
-import { TObjectId } from '@lyvely/core';
+import { TObjectId } from '@lyvely/api';
 
 @Schema()
 export class NumberDataPoint

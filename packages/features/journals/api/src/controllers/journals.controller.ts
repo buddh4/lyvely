@@ -6,7 +6,7 @@ import {
   ProtectedProfileContentRequest,
   UseClassSerializer,
   Policies,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import {
   ENDPOINT_JOURNALS,

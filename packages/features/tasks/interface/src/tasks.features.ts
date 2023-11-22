@@ -1,4 +1,4 @@
-import { IFeature } from '@lyvely/core-interface';
+import { IFeature } from '@lyvely/interface';
 import { TASKS_MODULE_ID } from './tasks.constants';
 
 export const TasksFeature: IFeature = {

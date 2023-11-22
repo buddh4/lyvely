@@ -8,7 +8,7 @@ import {
   ProfileVisibilityLevel,
   UpdateProfileModel,
   VALID_HANDLE_REGEX,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EntityNotFoundException, UniqueConstraintException } from '@lyvely/common';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';

@@ -5,7 +5,7 @@ import {
   ResendOtp,
   OtpInfo,
   StringFieldValidityRequest,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import registerRepository from '../repositories/user-registration.repository';
 import { unwrapResponse } from '@/core';
 import { useSingleton } from '@lyvely/common';

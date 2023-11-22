@@ -6,7 +6,7 @@ import {
   UpdateFeatureResponseModel,
   getProfileFeature,
   isInstallableProfileFeature,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 import { Profile } from '../schemas';
 import { ConfigService } from '@nestjs/config';

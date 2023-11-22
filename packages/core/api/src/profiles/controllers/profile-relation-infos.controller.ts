@@ -14,7 +14,7 @@ import {
   ENDPOINT_PROFILE_RELATION_INFOS,
   ProfileRelationInfosEndpoint,
   ProfileRelationUserInfoModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EntityNotFoundException, mapType } from '@lyvely/common';
 import { ProtectedProfileContext } from '../models';
 

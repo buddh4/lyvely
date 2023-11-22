@@ -1,11 +1,8 @@
-import { ContentTypeService } from '@lyvely/core';
+import { ContentTypeService, Profile, User, UpdateQuerySet } from '@lyvely/api';
 import { Journal } from '../schemas';
 import { CreateJournalModel } from '@lyvely/journals-interface';
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import { JournalsDao } from '../daos';
-import { Profile } from '@lyvely/core';
-import { User } from '@lyvely/core';
-import { UpdateQuerySet } from '@lyvely/core';
 
 @Injectable()
 export class JournalsService extends ContentTypeService<Journal, CreateJournalModel> {

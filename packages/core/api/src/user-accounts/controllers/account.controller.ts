@@ -18,7 +18,7 @@ import {
   SetTimezoneDto,
   CalendarPreferences,
   SettingsUpdateResponse,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { UseClassSerializer } from '@/core';
 import { AccountService, AccountAvatarService } from '../services';

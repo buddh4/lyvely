@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CreateMessageModel, MessageModel, UpdateMessageModel } from '@lyvely/core-interface';
+import { CreateMessageModel, MessageModel, UpdateMessageModel } from '@lyvely/interface';
 import { computed } from 'vue';
 import { ContentEditModalEmits, useContentEditModal, ICreateContentInitOptions } from '@/content';
 import { TagChooser } from '@/tags';

@@ -7,7 +7,7 @@ import {
   ContentStreamFilter,
   ContentUpdateStateLiveEvent,
   StreamDirection,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useLiveStore } from '@/live/stores/live.store';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { storeToRefs } from 'pinia';

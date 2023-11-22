@@ -14,8 +14,7 @@ import { IntegrityException, UserAssignmentStrategy } from '@lyvely/common';
 import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
-import { profilesTestPlugin, ProfileTestDataUtils } from '@lyvely/core';
-import { Content, contentTestPlugin } from '@lyvely/core';
+import { profilesTestPlugin, ProfileTestDataUtils, Content, contentTestPlugin } from '@lyvely/api';
 import { Journal, JournalSchema } from '../schemas';
 
 const Models = [

@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from 'class-transformer';
-import { TagModel, ContentUpdateResponse } from '@lyvely/core-interface';
+import { TagModel, ContentUpdateResponse } from '@lyvely/interface';
 import { PropertyType } from '@lyvely/common';
 import { TaskModel } from './task.model';
 

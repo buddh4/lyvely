@@ -8,7 +8,7 @@ import {
   PoliciesModule,
   CoreModule,
   LyvelyModule,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { Milestone, MilestoneSchema } from './schemas';
 import { MilestonePlanController, MilestonesController } from './controllers';
 import { MilestonesDao } from './daos';

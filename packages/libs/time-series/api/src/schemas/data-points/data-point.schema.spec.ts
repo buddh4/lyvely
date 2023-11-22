@@ -1,5 +1,5 @@
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
-import { Model, profilesTestPlugin } from '@lyvely/core';
+import { Model, profilesTestPlugin } from '@lyvely/api';
 import { NumberDataPoint, NumberDataPointSchema } from '../index';
 
 const DataPointModelDefinition = [

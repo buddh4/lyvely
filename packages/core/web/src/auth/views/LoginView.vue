@@ -10,7 +10,7 @@ import {
   USER_REGISTRATIONS_MODULE_ID,
   IUserRegistrationAppConfig,
   UserRegistrationMode,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { PATH_SIGN_UP } from '@/user-registrations/user-registration.constants';
 
 const loginStore = useLoginStore();

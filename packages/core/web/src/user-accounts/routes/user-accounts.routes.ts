@@ -1,5 +1,5 @@
 import { translation } from '@/i18n';
-import { USER_ACCOUNTS_MODULE_ID } from '@lyvely/core-interface';
+import { USER_ACCOUNTS_MODULE_ID } from '@lyvely/interface';
 
 export const userAccountsRoutes = [
   {

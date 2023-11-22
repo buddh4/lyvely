@@ -1,5 +1,5 @@
 import { LyvelyModule } from '@/core';
-import { PERMISSIONS_MODULE_ID } from '@lyvely/core-interface';
+import { PERMISSIONS_MODULE_ID } from '@lyvely/interface';
 import { Global } from '@nestjs/common';
 import { GlobalPermissionsService } from './services';
 import { PermissionEvents } from './permission.events';

@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
-import { ResetPassword } from '@lyvely/core-interface';
+import { ResetPassword } from '@lyvely/interface';
 import { PATH_LOGIN } from '../auth.constants';
 
 type ResetPasswordStage = 'init' | 'sent' | 'reset';

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseModel, PropertiesOf } from '@lyvely/common';
-import { ProfileInfoModel } from '@lyvely/core-interface';
+import { ProfileInfoModel } from '@lyvely/interface';
 import { assureObjectId, assureStringId, ObjectIdProp, TObjectId } from '@/core';
 import { Profile } from './profiles.schema';
 

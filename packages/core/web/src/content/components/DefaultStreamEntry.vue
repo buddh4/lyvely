@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 import ContentStreamEntry from './ContentStreamEntry.vue';
 import { IStream } from '@/stream/composables/stream.composable';
 import { LyMarkdownView } from '@lyvely/ui';

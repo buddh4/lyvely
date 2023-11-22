@@ -1,4 +1,4 @@
-import { CalendarPreferences, SettingsUpdateResponse } from '@lyvely/core-interface';
+import { CalendarPreferences, SettingsUpdateResponse } from '@lyvely/interface';
 import { getDefaultCalendarPreferences, ICalendarPreferences } from '@lyvely/dates';
 import { ref, ComputedRef, Ref, watch } from 'vue';
 import { validate } from 'class-validator';

@@ -7,7 +7,7 @@ import { LyModal } from '@lyvely/ui';
 import {
   USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
   USER_SETTING_CALENDAR_PREFERENCE_WEEKSTART,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useProfileCalendarPreferencesStore, useProfileStore } from '@/profiles/stores';
 
 const profileStore = useProfileStore();

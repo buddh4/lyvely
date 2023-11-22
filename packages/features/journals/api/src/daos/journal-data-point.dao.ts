@@ -1,7 +1,7 @@
 import { DataPoint, DataPointDao, InjectDataPointModel } from '@lyvely/time-series';
 import { Injectable } from '@nestjs/common';
 import { Journal } from '../schemas';
-import { Model } from '@lyvely/core';
+import { Model } from '@lyvely/api';
 
 @Injectable()
 export class JournalDataPointDao extends DataPointDao {

@@ -6,7 +6,7 @@ import {
   IAuthService,
   ENDPOINT_AUTH,
   useApiRepository,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { Headers, EndpointResult } from '@lyvely/common';
 
 const resource = ENDPOINT_AUTH;

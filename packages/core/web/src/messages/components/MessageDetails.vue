@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { MessageModel } from '@lyvely/core-interface';
+import { MessageModel } from '@lyvely/interface';
 import { ContentDetails } from '@/content';
 
 export interface IProps {

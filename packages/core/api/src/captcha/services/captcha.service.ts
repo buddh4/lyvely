@@ -4,7 +4,7 @@ import { generateCaptcha, generateCaptchaToken } from '../utils';
 import { Captcha, TOKEN_EXPIRES_IN } from '../schemas';
 import bcrypt from 'bcrypt';
 import { randomUUID } from 'crypto';
-import { CaptchaChallenge } from '@lyvely/core-interface';
+import { CaptchaChallenge } from '@lyvely/interface';
 import ms from 'ms';
 import { UrlGenerator } from '@/core';
 

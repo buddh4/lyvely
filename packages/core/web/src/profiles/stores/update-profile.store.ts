@@ -3,7 +3,7 @@ import {
   CreateProfileModel,
   ProfileWithRelationsModel,
   UpdateProfileModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useUpdateModelStore } from '@/common';
 import { useProfileStore } from './profile.store';
 import { useProfileService } from '../services';

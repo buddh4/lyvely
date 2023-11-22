@@ -2,7 +2,7 @@ import { defineStore, storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { IFieldValidationResult, ModelValidator } from '@lyvely/common';
-import { AddEmailDto, UserEmailModel, OtpInfo } from '@lyvely/core-interface';
+import { AddEmailDto, UserEmailModel, OtpInfo } from '@lyvely/interface';
 import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { useAccountService } from '@/user-accounts/services/account.service';

@@ -1,5 +1,5 @@
 import { TimeSeriesContent, DataPoint } from '../schemas';
-import { User, UpdateQuerySet } from '@lyvely/core';
+import { User, UpdateQuerySet } from '@lyvely/api';
 
 export interface IDataPointProcessorStrategy<
   TModel extends TimeSeriesContent<TModel> = TimeSeriesContent<any>,

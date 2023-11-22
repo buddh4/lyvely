@@ -1,6 +1,6 @@
 import { Type } from '@nestjs/common';
 import { SchemaFactory } from '@nestjs/mongoose';
-import { Schema, NestedSchema, Subdocument } from '@lyvely/core';
+import { Schema, NestedSchema, Subdocument } from '@lyvely/api';
 import { DataPointConfig } from './data-point-config.schema';
 
 const SchemaMapping = {};

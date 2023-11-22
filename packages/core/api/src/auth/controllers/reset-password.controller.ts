@@ -4,7 +4,7 @@ import {
   ResetPasswordEndpoint,
   SendResetPasswordMail,
   ResetPassword,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { Public, UseClassSerializer } from '@/core';
 import { ResetPasswordService } from '../services';
 import { JwtResetPasswordGuard, LoginThrottlerGuard } from '../guards';

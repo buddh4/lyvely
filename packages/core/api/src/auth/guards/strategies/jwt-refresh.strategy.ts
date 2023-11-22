@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { JwtStrategy, JwtTokenPayloadIF } from '@/jwt';
 import { Headers } from '@lyvely/common';
 import { User } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
+import { UserStatus } from '@lyvely/interface';
 import bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';

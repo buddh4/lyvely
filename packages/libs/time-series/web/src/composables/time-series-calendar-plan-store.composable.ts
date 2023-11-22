@@ -6,7 +6,7 @@ import {
   ITimeSeriesCalendarPlanService,
 } from '@lyvely/time-series-interface';
 import { formatDate, toTimingId } from '@lyvely/dates';
-import { ContentFilter } from '@lyvely/core-interface';
+import { ContentFilter } from '@lyvely/interface';
 import {
   ICalendarPlanOptions,
   useCalendarPlan,

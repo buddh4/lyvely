@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Task } from '../schemas';
-import { Profile, OptionalUser } from '@lyvely/core';
+import { Profile, OptionalUser } from '@lyvely/api';
 import { CalendarInterval, getTimingIds } from '@lyvely/dates';
 import { CalendarPlanFilter, SortableCalendarPlanService } from '@lyvely/calendar-plan';
 import { TasksDao } from '../daos';

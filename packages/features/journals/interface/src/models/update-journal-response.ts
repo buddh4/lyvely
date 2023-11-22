@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-import { TagModel, ContentUpdateResponse } from '@lyvely/core-interface';
+import { TagModel, ContentUpdateResponse } from '@lyvely/interface';
 import { PropertyType } from '@lyvely/common';
 import { JournalModel } from './journal.model';
 

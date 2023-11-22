@@ -1,4 +1,4 @@
-import { ISetting } from '@lyvely/core-interface';
+import { ISetting } from '@lyvely/interface';
 
 export class SettingsRegistry {
   /**

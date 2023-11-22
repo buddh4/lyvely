@@ -5,7 +5,7 @@ import {
   IProfilesService,
   UpdateProfileModel,
   useApiRepository,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EndpointResult } from '@lyvely/common';
 
 export default {

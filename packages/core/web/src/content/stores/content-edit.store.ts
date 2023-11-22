@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 import { computed, ref, watch } from 'vue';
 import { getEditContentModalComponent } from '../services';
 

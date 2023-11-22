@@ -4,7 +4,7 @@ import {
   ENDPOINT_MILESTONES,
 } from '@lyvely/milestones-interface';
 import { EndpointResult } from '@lyvely/common';
-import { useApiRepository } from '@lyvely/core-interface';
+import { useApiRepository } from '@lyvely/interface';
 
 export default {
   async getAll() {

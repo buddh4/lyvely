@@ -6,7 +6,7 @@ import {
   UserStatus,
   OtpInfo,
   VerifyEmailDto,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { OtpService } from '@/otp';
 import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';

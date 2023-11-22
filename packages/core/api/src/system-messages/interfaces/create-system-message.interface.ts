@@ -1,4 +1,4 @@
-import { CreateContentModel } from '@lyvely/core-interface';
+import { CreateContentModel } from '@lyvely/interface';
 
 export interface ICreateSystemMessage extends CreateContentModel {
   text: string;

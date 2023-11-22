@@ -1,4 +1,4 @@
-import { USER_REGISTRATIONS_MODULE_ID } from '@lyvely/core-interface';
+import { USER_REGISTRATIONS_MODULE_ID } from '@lyvely/interface';
 import { userRegistrationRoutes } from './routes';
 
 export default () => {

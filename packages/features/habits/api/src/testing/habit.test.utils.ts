@@ -7,7 +7,7 @@ import {
   EntityIdentity,
   createBaseEntityInstance,
   Model,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { Habit } from '../schemas';
 import { toTimingId, CalendarDate, CalendarInterval, toDate } from '@lyvely/dates';
 import { CreateHabitModel } from '@lyvely/habits-interface';

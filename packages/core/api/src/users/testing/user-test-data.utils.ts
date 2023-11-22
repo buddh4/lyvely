@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from '@/core';
 import { User, UserEmail } from '../schemas';
-import { UserStatus } from '@lyvely/core-interface';
+import { UserStatus } from '@lyvely/interface';
 
 @Injectable()
 export class UserTestDataUtils {

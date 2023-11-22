@@ -1,11 +1,15 @@
-import { ContentDataType, ContentService, ContentTypeService } from '@lyvely/core';
+import {
+  ContentDataType,
+  ContentService,
+  ContentTypeService,
+  Profile,
+  User,
+  UpdateQuerySet,
+} from '@lyvely/api';
 import { Milestone, MilestoneConfig } from '../schemas';
 import { CreateMilestoneModel, UpdateMilestoneModel } from '@lyvely/milestones-interface';
 import { Inject, Logger } from '@nestjs/common';
 import { MilestonesDao } from '../daos';
-import { Profile } from '@lyvely/core';
-import { User } from '@lyvely/core';
-import { UpdateQuerySet } from '@lyvely/core';
 
 export class MilestonesService extends ContentTypeService<
   Milestone,

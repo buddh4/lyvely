@@ -1,6 +1,6 @@
 import { EndpointResult } from '@lyvely/common';
 import { ILegalClient, ENDPOINT_LEGAL } from '@lyvely/legal-interface';
-import { useApiRepository } from '@lyvely/core-interface';
+import { useApiRepository } from '@lyvely/interface';
 
 export default {
   async getSectionDetails(sectionId: string) {

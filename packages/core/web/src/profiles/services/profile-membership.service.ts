@@ -2,7 +2,7 @@ import {
   IProfileMembershipService,
   MembershipModel,
   UpdateProfileMembershipSettings,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
 import profileMembershipRepository from '@/profiles/repositories/profile-membership.repository';
 import { unwrapResponse } from '@/core';

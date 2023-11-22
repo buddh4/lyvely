@@ -6,7 +6,7 @@ import {
   ProfileRelationRole,
   ProfileMembershipRole,
   getProfileRelationRole,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { IUserWithProfileRelation } from '../interfaces';
 
 /**

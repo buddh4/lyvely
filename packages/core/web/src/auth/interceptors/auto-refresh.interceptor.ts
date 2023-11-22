@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/auth';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
-import { useApiRepository, useApiRequestInterceptor } from '@lyvely/core-interface';
+import { useApiRepository, useApiRequestInterceptor } from '@lyvely/interface';
 import { InternalAxiosRequestConfig } from 'axios';
 import { eventBus } from '@/core';
 

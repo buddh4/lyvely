@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { Status, useStatus, localStorageManager, loadingStatus } from '@/core';
-import { ProfileWithRelationsModel, TagModel, useApiRepository } from '@lyvely/core-interface';
+import { ProfileWithRelationsModel, TagModel, useApiRepository } from '@lyvely/interface';
 
 import { computed, ref } from 'vue';
 import { useProfileService } from '@/profiles/services/profiles.service';

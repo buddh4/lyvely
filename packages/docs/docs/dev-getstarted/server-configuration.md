@@ -10,7 +10,7 @@ However, at present, you have the flexibility to modify server options by specif
 below:
 
 ```typescript
-import { LyvelyServer } from '@lyvely/core';
+import { LyvelyServer } from '@lyvely/api';
 
 new LyvelyServer().bootstrap({
   configFiles: ['lyvely-dev.config.ts'],
@@ -336,7 +336,7 @@ The following configuration will overwrite the default permission level of a per
 and also enable access for non-authenticated visitors.
 
 ```typescript
-import {ProfileRelationRole} from "@lyvely/core-interface";
+import {ProfileRelationRole} from "@lyvely/interface";
 
 {
   permissions: {

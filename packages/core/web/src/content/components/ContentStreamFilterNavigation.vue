@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import { computed, ref, watch } from 'vue';
-import { TagFilter } from '@lyvely/core-interface';
+import { TagFilter } from '@lyvely/interface';
 import { onBeforeRouteLeave, useRouter } from 'vue-router';
 import { useDebounceFn } from '@vueuse/core';
 import { useContentStreamFilterStore } from '../stores';

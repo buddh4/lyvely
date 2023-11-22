@@ -28,7 +28,7 @@ import {
   ProtectedProfileContentRequest,
   UseClassSerializer,
   ProfileRequest,
-} from '@lyvely/core';
+} from '@lyvely/api';
 
 @ContentTypeController('habits', Habit)
 // TODO: implement feature registration @Feature('habits')

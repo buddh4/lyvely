@@ -1,7 +1,7 @@
 import { App } from 'vue';
 import { IModule } from './module.interface';
 import { registerRoutes } from '@/lyvely.router';
-import { registerFeatures } from '@lyvely/core-interface';
+import { registerFeatures } from '@lyvely/interface';
 
 export type IModuleInitializer = { default: () => IModule };
 

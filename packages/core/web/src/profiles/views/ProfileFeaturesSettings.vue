@@ -3,7 +3,7 @@ import { t } from '@/i18n';
 import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
 import ProfileFeatureSettingsEntry from '@/profiles/components/features/ProfileFeatureSettingsEntry.vue';
 import { computed, ref } from 'vue';
-import { IFeature, hasDependency, hasSubFeatures } from '@lyvely/core-interface';
+import { IFeature, hasDependency, hasSubFeatures } from '@lyvely/interface';
 
 const allFeatures = useProfileFeatureStore().getSettingFeaturesOfProfile();
 const mainFeatures = allFeatures.filter((feature) => !feature.dependencies?.length);

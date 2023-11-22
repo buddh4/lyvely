@@ -1,5 +1,5 @@
 import { OptionalUser } from '@/users';
-import { GlobalPermissionRole } from '@lyvely/core-interface';
+import { GlobalPermissionRole } from '@lyvely/interface';
 
 export interface IGlobalPermissionsService {
   verifyPermission(user: OptionalUser, permissionId: string): boolean;

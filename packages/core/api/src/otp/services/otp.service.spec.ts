@@ -3,9 +3,8 @@ import { OtpModule, OtpService } from '../';
 import { UserOtp } from '../schemas';
 import ms from 'ms';
 import { subtractSeconds } from '@lyvely/dates';
-import { DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/core-interface';
+import { DEFAULT_MAX_OTP_ATTEMPTS, UserStatus } from '@lyvely/interface';
 import { User } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
 
 let testingModule: LyvelyTestingModule;
 let userOtpService: OtpService;

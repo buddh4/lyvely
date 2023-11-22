@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { useUserRegistrationService } from '../services';
-import { VerifyEmailDto, ResendOtp } from '@lyvely/core-interface';
+import { VerifyEmailDto, ResendOtp } from '@lyvely/interface';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { useEmailVerificationStore } from '@/user-accounts';
 

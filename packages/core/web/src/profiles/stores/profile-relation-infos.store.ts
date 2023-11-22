@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ProfileRelationInfo, ProfileRelationInfos } from '@lyvely/core-interface';
+import { ProfileRelationInfo, ProfileRelationInfos } from '@lyvely/interface';
 import { ref } from 'vue';
 import { loadingStatus, useStatus } from '@/core';
 import { useProfileRelationInfosService } from '@/profiles/services/profile-relation-infos.service';

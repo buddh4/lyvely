@@ -6,7 +6,7 @@ import {
   UserSubscriptionService,
 } from '../index';
 import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
-import { BaseUserProfileRelationType } from '@lyvely/core-interface';
+import { BaseUserProfileRelationType } from '@lyvely/interface';
 
 describe('UserSubscriptionService', () => {
   let testingModule: LyvelyTestingModule;

@@ -4,7 +4,7 @@ import { loadingStatus, useStatus } from '@/core';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { nextTick, ref, watch } from 'vue';
 import Cropper from 'cropperjs';
-import { AvatarModel } from '@lyvely/core-interface';
+import { AvatarModel } from '@lyvely/interface';
 
 export const useAccountAvatarStore = defineStore('upload-account-avatar', () => {
   const status = useStatus();

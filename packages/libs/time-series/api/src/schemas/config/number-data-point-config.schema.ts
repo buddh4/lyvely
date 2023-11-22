@@ -8,7 +8,7 @@ import {
 } from '@lyvely/time-series-interface';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
 import { pick } from 'lodash';
-import { NestedSchema } from '@lyvely/core';
+import { NestedSchema } from '@lyvely/api';
 
 @NestedSchema()
 export class NumberDataPointConfigRevision

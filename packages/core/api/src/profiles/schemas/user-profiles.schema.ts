@@ -1,6 +1,6 @@
 import { Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Profile } from './profiles.schema';
-import { ProfileType } from '@lyvely/core-interface';
+import { ProfileType } from '@lyvely/interface';
 import { User } from '@/users';
 
 @Schema({ timestamps: true })

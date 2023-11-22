@@ -11,7 +11,7 @@ import {
 import { CaptchaService } from '../services';
 import { Readable } from 'stream';
 import { Public } from '@/core';
-import { ENDPOINT_CAPTCHA, CaptchaChallenge, CaptchaEndpoint } from '@lyvely/core-interface';
+import { ENDPOINT_CAPTCHA, CaptchaChallenge, CaptchaEndpoint } from '@lyvely/interface';
 
 @Controller(ENDPOINT_CAPTCHA)
 export class CaptchaController implements CaptchaEndpoint {

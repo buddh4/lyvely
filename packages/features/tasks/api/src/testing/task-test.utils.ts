@@ -7,7 +7,7 @@ import {
   assureObjectId,
   EntityIdentity,
   createBaseEntityInstance,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { CreateTaskModel } from '@lyvely/tasks-interface';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { InjectModel } from '@nestjs/mongoose';

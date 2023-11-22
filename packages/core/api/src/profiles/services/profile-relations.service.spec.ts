@@ -1,6 +1,6 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
-import { ProfileRelationRole, ProfileType, ProfileVisibilityLevel } from '@lyvely/core-interface';
+import { ProfileRelationRole, ProfileType, ProfileVisibilityLevel } from '@lyvely/interface';
 import { ProfileRelationsService } from './profile-relations.service';
 
 describe('ProfileRelationsService', () => {

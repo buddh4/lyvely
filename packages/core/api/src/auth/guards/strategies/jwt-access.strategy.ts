@@ -3,7 +3,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtStrategy, JwtTokenPayloadIF } from '@/jwt';
 import { User } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
+import { UserStatus } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 

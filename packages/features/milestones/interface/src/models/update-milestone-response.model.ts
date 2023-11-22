@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { ContentUpdateResponse } from '@lyvely/core-interface';
+import { ContentUpdateResponse } from '@lyvely/interface';
 import { PropertyType } from '@lyvely/common';
 import { MilestoneModel } from './milestone.model';
 

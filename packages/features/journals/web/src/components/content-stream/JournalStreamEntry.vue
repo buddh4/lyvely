@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { JournalModel } from '@lyvely/journals-interface';
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 import { IStream, ContentStreamEntry } from '@lyvely/web';
 import { LyIcon } from '@lyvely/ui';
 

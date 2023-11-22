@@ -5,7 +5,7 @@ import {
   UniqueConstraintException,
 } from '@lyvely/common';
 import { User, UsersService, UserTestDataUtils, usersTestPlugin } from '@/users';
-import { UserStatus, UserRegistration, VerifyEmailDto } from '@lyvely/core-interface';
+import { UserStatus, UserRegistration, VerifyEmailDto } from '@lyvely/interface';
 import { TestConfigService, LyvelyTestingModule, buildTest } from '@/testing';
 import { UserRegistrationsModule } from '../user-registrations.module';
 import { ConfigService } from '@nestjs/config';

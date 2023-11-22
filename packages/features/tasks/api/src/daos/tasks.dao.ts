@@ -10,7 +10,7 @@ import {
   Profile,
   ProfileType,
   ContentTypeDao,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { InjectModel } from '@nestjs/mongoose';
 import { Timer } from '@lyvely/timers';
 import { UserAssignmentStrategy } from '@lyvely/common';

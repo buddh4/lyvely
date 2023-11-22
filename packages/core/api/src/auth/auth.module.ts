@@ -13,7 +13,7 @@ import { AuthController, ResetPasswordController } from './controllers';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationPath } from '@/config';
 import { CaptchaModule } from '@/captcha';
-import { AUTH_MODULE_ID } from '@lyvely/core-interface';
+import { AUTH_MODULE_ID } from '@lyvely/interface';
 import { LyvelyModule } from '@/core';
 
 @LyvelyModule({

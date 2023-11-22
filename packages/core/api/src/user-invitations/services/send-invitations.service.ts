@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Profile, ProfilesService } from '@/profiles';
-import { isMultiUserProfile, InvitationRequest, MaxInvitationError } from '@lyvely/core-interface';
+import { isMultiUserProfile, InvitationRequest, MaxInvitationError } from '@lyvely/interface';
 
 import { MailService } from '@/mails';
 import {

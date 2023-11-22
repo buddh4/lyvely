@@ -23,7 +23,7 @@ import {
   ContentSchema,
   contentTestPlugin,
   Model,
-} from '@lyvely/core';
+} from '@lyvely/api';
 
 const Models = [
   {

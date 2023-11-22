@@ -10,7 +10,7 @@ import {
   EntityIdentity,
   TObjectId,
   Model,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { MilestonesRelationsService } from './milestones-relations.service';
 import { Schema, SchemaFactory } from '@nestjs/mongoose';

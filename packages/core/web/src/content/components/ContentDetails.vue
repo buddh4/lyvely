@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import RelativeTime from '@/calendar/components/RelativeTime.vue';
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 import ContentDropdown from '@/content/components/ContentDropdown.vue';
 import TagList from '@/tags/components/TagList.vue';
 import { useRouter } from 'vue-router';

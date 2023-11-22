@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { loadingStatus, useStatus, eventBus } from '@/core';
-import { IAppConfig, useApiRepository } from '@lyvely/core-interface';
+import { IAppConfig, useApiRepository } from '@lyvely/interface';
 import { AppConfigService } from './app-config.service';
 import { findByPath, NestedPaths } from '@lyvely/common';
 import { EVENT_APP_CONFIG_LOADED } from './app-config.constants';

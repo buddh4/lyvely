@@ -26,7 +26,7 @@
     "@lyvely/dates": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3",
     "@lyvely/calendar-plan-interface": "^0.1.0-alpha3",
-    "@lyvely/core-interface": "^0.1.0-alpha3",
+    "@lyvely/interface": "^0.1.0-alpha3",
     "@buddh4/mapped-types": "^1.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

@@ -1,4 +1,4 @@
-import { ICaptchaService, CaptchaChallenge } from '@lyvely/core-interface';
+import { ICaptchaService, CaptchaChallenge } from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
 import captchaRepository from './captcha.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/core';

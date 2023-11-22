@@ -1,4 +1,4 @@
-import { IFetchQueryOptions, Profile, ContentTypeDao } from '@lyvely/core';
+import { IFetchQueryOptions, Profile, ContentTypeDao } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { CalendarPlanEntity } from './calendar-plan-entitiy.interface';
 

@@ -21,7 +21,7 @@ import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import { useFlashStore, usePageStore } from './stores';
 import { computed } from 'vue';
 import { LAYOUT_INTRO, STACK_MAIN, UI_MODULE_ID } from './ui.constants';
-import { useApiResponseInterceptor } from '@lyvely/core-interface';
+import { useApiResponseInterceptor } from '@lyvely/interface';
 
 export const uiModule = () => {
   return {

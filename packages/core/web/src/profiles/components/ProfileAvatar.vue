@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useProfileStore } from '@/profiles/stores';
 import { computed } from 'vue';
-import { ProfileModel } from '@lyvely/core-interface';
+import { ProfileModel } from '@lyvely/interface';
 
 export interface IProps {
   profile?: Pick<ProfileModel, 'id' | 'guid' | 'name'>;

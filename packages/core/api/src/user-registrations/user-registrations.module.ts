@@ -7,7 +7,7 @@ import { OtpModule } from '@/otp';
 import { UserInvitationsModule } from '@/user-invitations';
 import { SystemMessagesModule } from '@/system-messages';
 import { LyvelyModule } from '@/core';
-import { USER_REGISTRATIONS_MODULE_ID } from '@lyvely/core-interface';
+import { USER_REGISTRATIONS_MODULE_ID } from '@lyvely/interface';
 import { UserRegistrationEvents } from './user-registration.events';
 
 @LyvelyModule({

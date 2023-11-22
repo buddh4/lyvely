@@ -19,7 +19,7 @@ import {
   ProfileVisibilityLevel,
   VALID_DISPLAY_NAME_REGEX,
   VALID_HANDLE_REGEX,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { BaseModel, getNumberEnumValues, PropertiesOf, PropertyType } from '@lyvely/common';
 import { Avatar, AvatarSchema } from '@/avatars';
 import {

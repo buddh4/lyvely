@@ -1,7 +1,7 @@
 import { Prop, Schema } from '@nestjs/mongoose';
 import { DataPoint } from './data-point.schema';
 import { PropertiesOf } from '@lyvely/common';
-import { TObjectId } from '@lyvely/core';
+import { TObjectId } from '@lyvely/api';
 import { DataPointValueType, TextDataPointModel } from '@lyvely/time-series-interface';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 

@@ -10,7 +10,7 @@ import {
   Profile,
   OptionalUser,
   TObjectId,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { MilestoneRelationEvent } from '../events';
 import { CalendarDateTime } from '@lyvely/dates';
 import { MilestoneRelationModel } from '@lyvely/milestones-interface';

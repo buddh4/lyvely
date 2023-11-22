@@ -1,4 +1,4 @@
-import { Profile, ContentTypeDao, IFetchQueryOptions, OptionalUser } from '@lyvely/core';
+import { Profile, ContentTypeDao, IFetchQueryOptions, OptionalUser } from '@lyvely/api';
 import { TimeSeriesContent } from '../schemas';
 import { CalendarInterval } from '@lyvely/dates';
 

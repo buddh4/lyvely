@@ -10,7 +10,7 @@ import {
   UserStatus,
   VALID_HANDLE_REGEX,
   VALID_DISPLAY_NAME_REGEX,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { Avatar, AvatarSchema } from '@/avatars';
 import { UserEmail, UserEmailSchema } from './user-email.schema';
 import { ProfilesCount, ProfilesCountSchema } from './profiles-count.schema';

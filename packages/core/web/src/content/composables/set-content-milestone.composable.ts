@@ -1,5 +1,5 @@
 import { useContentStore } from '@/content/stores/content.store';
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 
 export const useSetContentMilestone = (content: ContentModel) => {
   const contentStore = useContentStore();

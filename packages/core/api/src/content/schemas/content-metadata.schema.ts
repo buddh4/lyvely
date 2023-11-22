@@ -2,7 +2,7 @@ import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
 import { Author, ContentAuthorSchema, CreatedAs } from './content-author.schema';
 import { getNumberEnumValues, PropertyType } from '@lyvely/common';
-import { IContentMetadata, RoleVisibilityLevel } from '@lyvely/core-interface';
+import { IContentMetadata, RoleVisibilityLevel } from '@lyvely/interface';
 
 @NestedSchema()
 export class ContentMetadata extends BaseEntity<ContentMetadata> implements IContentMetadata {

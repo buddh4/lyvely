@@ -12,7 +12,7 @@ import {
   getFeature,
   getAffectedFeatures,
   UpdateFeatureModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useGlobalDialogStore } from '@/core';
 
 export const useProfileFeatureStore = defineStore('profile-feature-store', () => {

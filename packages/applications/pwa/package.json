@@ -18,7 +18,7 @@
   "dependencies": {
     "@ckpack/vue-color": "^1.4.1",
     "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/core-interface": "^0.1.0-alpha3",
+    "@lyvely/interface": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
     "@lyvely/ui": "^0.1.0-alpha3",

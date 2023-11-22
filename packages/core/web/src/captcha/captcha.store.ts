@@ -9,7 +9,7 @@ import {
   IFieldValidationResponse,
   IFieldValidationResult,
 } from '@lyvely/common';
-import { CaptchaChallenge, useApiRepository } from '@lyvely/core-interface';
+import { CaptchaChallenge, useApiRepository } from '@lyvely/interface';
 import { isFieldValidationError, useStatus, loadingStatus } from '@/core';
 import { I18nModelValidator, translate, translation } from '@/i18n';
 

@@ -1,6 +1,6 @@
 import { User } from '@/users';
 import { IntegrityException } from '@lyvely/common';
-import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '@lyvely/core-interface';
+import { ProfileType, ProfileUsage, ProfileVisibilityLevel } from '@lyvely/interface';
 import { UserProfile } from './user-profiles.schema';
 import { GroupProfile } from './group-profiles.schema';
 import { Organization } from './organization.schema';

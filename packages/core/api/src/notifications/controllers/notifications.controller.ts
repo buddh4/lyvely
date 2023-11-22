@@ -1,9 +1,5 @@
 import { Controller, Post, Req, Param, Inject } from '@nestjs/common';
-import {
-  ENDPOINT_NOTIFICATIONS,
-  NotificationsEndpoint,
-  IWebNotification,
-} from '@lyvely/core-interface';
+import { ENDPOINT_NOTIFICATIONS, NotificationsEndpoint, IWebNotification } from '@lyvely/interface';
 import { UserNotificationsService, NotificationService } from '../services';
 import { IUserContext, UserInfo, UserRequest } from '@/users';
 import { UserNotification } from '../schemas';

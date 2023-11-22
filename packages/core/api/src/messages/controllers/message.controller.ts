@@ -9,7 +9,7 @@ import {
   CreateMessageModel,
   MessageUpdateResponse,
   UpdateMessageModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 
 @ContentTypeController(ENDPOINT_MESSAGE, Message)
 @UseClassSerializer()

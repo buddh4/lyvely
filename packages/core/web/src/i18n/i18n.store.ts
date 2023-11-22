@@ -9,7 +9,7 @@ import {
   LOCALES_SUPPORTED,
   getLocaleDefinitions,
   getLocaleName,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EVENT_APP_CONFIG_LOADED, useAppConfigStore } from '@/app-config';
 import { getFallbackLocale, setLocale } from './i18n';
 import { eventBus } from '@/core';

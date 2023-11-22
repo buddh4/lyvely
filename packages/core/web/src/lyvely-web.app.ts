@@ -8,7 +8,6 @@ import {
   IModuleLoaderOptions,
   eventBus,
   AppEvents,
-  createApiUrl,
   installModules,
   registerModules,
 } from '@/core';
@@ -17,7 +16,7 @@ import { markRaw, App as VueApp, createApp } from 'vue';
 import { createPinia, Pinia } from 'pinia';
 import { I18n } from 'vue-i18n';
 import { useDayJsDateTimeAdapter } from '@lyvely/dates';
-import { initApiRepository } from '@lyvely/core-interface';
+import { initApiRepository, createApiUrl } from '@lyvely/interface';
 import { createLyvelyUi } from '@lyvely/ui';
 
 export interface ILyvelyWebAppOptions extends IModuleLoaderOptions {

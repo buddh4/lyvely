@@ -70,7 +70,7 @@
     "@intlify/core-base": "9.5.0",
     "@lyvely/calendar-plan-interface": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/core-interface": "^0.1.0-alpha3",
+    "@lyvely/interface": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
     "@lyvely/time-series-interface": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3",

@@ -7,7 +7,7 @@ import {
 } from '@lyvely/time-series-interface';
 import { DataPointConfigFactory } from '../data-point-config.factory';
 import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
-import { NestedSchema } from '@lyvely/core';
+import { NestedSchema } from '@lyvely/api';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Number,

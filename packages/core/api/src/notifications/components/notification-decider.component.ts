@@ -3,7 +3,7 @@ import { INotificationChannel } from '../interfaces';
 import { UserSubscriptionContext } from '@/user-subscriptions';
 import { UserNotification, Notification } from '../schemas';
 import { User } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
+import { UserStatus } from '@lyvely/interface';
 import { NotificationCategoryRegistry } from './notification-category.registry';
 
 @Injectable()

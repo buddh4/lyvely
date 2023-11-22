@@ -1,11 +1,10 @@
-import { repository } from '@/core';
 import {
   UpdateTagModel,
   CreateTagModel,
   ENDPOINT_PROFILE_TAGS,
   IProfileTagsService,
   useApiRepository,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EndpointResult } from '@lyvely/common';
 
 export default {

@@ -1,5 +1,5 @@
 import { OptionalUser, User } from '@/users';
-import { ProfileMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/interface';
 import { Profile } from '@/profiles';
 import { TObjectId } from '@/core';
 

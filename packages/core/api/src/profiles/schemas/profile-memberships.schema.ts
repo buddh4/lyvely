@@ -5,7 +5,7 @@ import {
   ProfileRelationUserInfo,
 } from './user-profile-relations.schema';
 import { assureObjectId } from '@/core';
-import { ProfileMembershipRole, BaseUserProfileRelationType } from '@lyvely/core-interface';
+import { ProfileMembershipRole, BaseUserProfileRelationType } from '@lyvely/interface';
 
 export interface ICreateMembership extends ICreateProfileRelation {
   role: ProfileMembershipRole;

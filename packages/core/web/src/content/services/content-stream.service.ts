@@ -5,7 +5,7 @@ import {
   IStreamOptions,
   IStreamResponse,
   IStreamState,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useSingleton, PropertiesOf } from '@lyvely/common';
 import repositry from '../repositories/content-stream.repository';
 import { unwrapResponse } from '@/core';

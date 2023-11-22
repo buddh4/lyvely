@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User, UserDao, UserEmail, UserSettingsService } from '@/users';
 import { Avatar } from '@/avatars';
-import { VerifyEmailDto, OtpInfo, CalendarPreferences } from '@lyvely/core-interface';
+import { VerifyEmailDto, OtpInfo, CalendarPreferences } from '@lyvely/interface';
 import { InvalidOtpException, OtpService } from '@/otp';
 import { EntityIdentity } from '@/core';
 import { ConfigurationPath } from '@/config';

@@ -5,7 +5,7 @@ import { isMaxViewSize, Icons } from '@lyvely/ui';
 import { useGlobalDialogStore } from '@/core';
 import { usePingService } from '@/ping';
 import { useFlashStore } from './flash.store';
-import { useApiRepository } from '@lyvely/core-interface';
+import { useApiRepository } from '@lyvely/interface';
 
 export const usePageStore = defineStore('ui-page', () => {
   const showSidebar = ref(!isMaxViewSize('sm'));

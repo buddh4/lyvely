@@ -5,7 +5,7 @@ import {
   ICalendarPreferences,
 } from '@lyvely/dates';
 import { SortResult } from '@lyvely/common';
-import { ContentFilter } from '@lyvely/core-interface';
+import { ContentFilter } from '@lyvely/interface';
 import { LoadedTimingIdStore } from '@/models';
 import {
   ICalendarPlanService,

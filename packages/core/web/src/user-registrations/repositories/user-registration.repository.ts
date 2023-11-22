@@ -6,7 +6,7 @@ import {
   ResendOtp,
   StringFieldValidityRequest,
   useApiRepository,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EndpointResult } from '@lyvely/common';
 
 const endpoint = ENDPOINT_USER_REGISTRATION;

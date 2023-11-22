@@ -3,7 +3,7 @@ import { assignEntityData, BaseEntity, assureObjectId, TObjectId, ObjectIdProp }
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
 import { getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
-import { IProfileRelationUserInfo, UserStatus, ProfileRelationModel } from '@lyvely/core-interface';
+import { IProfileRelationUserInfo, UserStatus, ProfileRelationModel } from '@lyvely/interface';
 
 export interface ICreateProfileRelation {
   profile: Profile;

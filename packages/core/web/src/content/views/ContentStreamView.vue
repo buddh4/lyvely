@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import ContentStreamFooter from '../components/ContentStreamFooter.vue';
 import ContentStream from '../components/ContentStream.vue';
-import { ContentStreamFilter, MessageModel, ProfileType } from '@lyvely/core-interface';
+import { ContentStreamFilter, MessageModel, ProfileType } from '@lyvely/interface';
 import { useRouter } from 'vue-router';
 import { useContentCreateStore, useContentStreamFilterStore } from '../stores';
 import { storeToRefs } from 'pinia';

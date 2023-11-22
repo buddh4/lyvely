@@ -7,7 +7,7 @@ import {
 import { EndpointResult } from '@lyvely/common';
 import { TimerValueUpdateModel } from '@lyvely/timers-interface';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-web';
-import { useApiRepository } from '@lyvely/core-interface';
+import { useApiRepository } from '@lyvely/interface';
 
 export default {
   async getByFilter(filter: CalendarPlanFilter) {

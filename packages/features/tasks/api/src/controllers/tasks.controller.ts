@@ -30,7 +30,7 @@ import {
   ProtectedProfileContentRequest,
   Policies,
   ProfileRequest,
-} from '@lyvely/core';
+} from '@lyvely/api';
 
 @ContentTypeController('tasks', Task)
 // TODO: implement feature registration @Feature('tasks')

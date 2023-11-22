@@ -2,7 +2,7 @@ import {
   IProfileRelationInfosService,
   ProfileRelationInfos,
   ProfileRelationUserInfoModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EntityNotFoundException, IntegrityException, useSingleton } from '@lyvely/common';
 import profileRelationsRepository from '@/profiles/repositories/profile-relations.repository';
 import { unwrapAndTransformResponse } from '@/core';

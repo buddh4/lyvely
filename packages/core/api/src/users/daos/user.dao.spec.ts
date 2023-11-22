@@ -1,7 +1,7 @@
 import { usersTestPlugin, UserTestDataUtils } from '../testing';
 import { UserDao } from '../daos';
 import { RefreshToken, User, UserEmail } from '../schemas';
-import { UserStatus, ProfileType } from '@lyvely/core-interface';
+import { UserStatus, ProfileType } from '@lyvely/interface';
 import { addMinutes } from '@lyvely/dates';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 

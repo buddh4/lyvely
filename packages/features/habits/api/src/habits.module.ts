@@ -15,7 +15,7 @@ import {
   PoliciesModule,
   ProfilesModule,
   LyvelyModule,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { HabitDataPointDao, HabitsDao } from './daos';
 import { getDataPointModelDefinition, DataPointValueType } from '@lyvely/time-series';
 import { Habit, HabitSchema, HabitScore, HabitScoreSchema } from './schemas';

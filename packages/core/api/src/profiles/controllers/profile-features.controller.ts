@@ -7,7 +7,7 @@ import {
   UpdateFeatureResponseModel,
   ENDPOINT_PROFILE_FEATURES,
   ProfileFeaturesEndpoint,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { ProfileFeaturesService } from '../services';
 
 @ProfileController(ENDPOINT_PROFILE_FEATURES)

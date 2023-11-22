@@ -2,7 +2,7 @@ import {
   IProfileFeaturesService,
   UpdateFeatureModel,
   UpdateFeatureResponseModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
 import profileFeaturesRepository from '@/profiles/repositories/profile-features.repository';
 import { unwrapAndTransformResponse } from '@/core';

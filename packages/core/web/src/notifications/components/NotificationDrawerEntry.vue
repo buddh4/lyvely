@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { IWebNotification } from '@lyvely/core-interface';
+import { IWebNotification } from '@lyvely/interface';
 import { computed } from 'vue';
 import RelativeTime from '@/calendar/components/RelativeTime.vue';
 

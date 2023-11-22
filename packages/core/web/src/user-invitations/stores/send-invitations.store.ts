@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { loadingStatus, useStatus } from '@/core';
 import { ref } from 'vue';
 import { isValidEmail } from '@lyvely/common';
-import { InvitationRequest, MailInvite } from '@lyvely/core-interface';
+import { InvitationRequest, MailInvite } from '@lyvely/interface';
 import { useUserInvitationsService } from '../services';
 
 type InviteStages = 'users' | 'profile' | 'loading' | 'success';

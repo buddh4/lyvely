@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { ResetPasswordService } from '@/auth/services/reset-password.service';
-import { SendResetPasswordMail } from '@lyvely/core-interface';
+import { SendResetPasswordMail } from '@lyvely/interface';
 import { useCaptchaStore } from '@/captcha/captcha.store';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
 

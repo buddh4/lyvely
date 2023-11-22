@@ -2,7 +2,7 @@ import { IModule } from '@/core';
 import { authGuard } from './guards';
 import { registerGuards } from '@/lyvely.router';
 import { authRoutes } from './routes';
-import { AUTH_MODULE_ID, useApiRequestInterceptor } from '@lyvely/core-interface';
+import { AUTH_MODULE_ID, useApiRequestInterceptor } from '@lyvely/interface';
 import { registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER } from '@/user-accounts';
 import { useAuthStore } from '@/auth/store/auth.store';

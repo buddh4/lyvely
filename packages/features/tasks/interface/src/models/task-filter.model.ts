@@ -1,4 +1,4 @@
-import { ContentFilter, IContentFilterOptions } from '@lyvely/core-interface';
+import { ContentFilter, IContentFilterOptions } from '@lyvely/interface';
 import { TaskModel } from './task.model';
 
 export interface ITaskFilterOptions extends IContentFilterOptions {}

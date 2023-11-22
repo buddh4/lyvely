@@ -1,4 +1,4 @@
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 import { IStream } from '@/stream/composables/stream.composable';
 
 export interface IStreamEntryProps {

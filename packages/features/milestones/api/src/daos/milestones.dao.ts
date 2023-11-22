@@ -1,4 +1,4 @@
-import { ContentTypeDao, Model, Profile, IFetchQueryOptions } from '@lyvely/core';
+import { ContentTypeDao, Model, Profile, IFetchQueryOptions } from '@lyvely/api';
 import { Milestone } from '../schemas';
 import { InjectModel } from '@nestjs/mongoose';
 import { ICalendarPlanDao } from '@lyvely/calendar-plan';

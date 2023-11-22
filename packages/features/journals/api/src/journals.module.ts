@@ -5,7 +5,7 @@ import {
   ProfilesModule,
   ContentModule,
   getContentModelDefinition,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Journal, JournalSchema } from './schemas';
 import { DataPointValueType, getDataPointModelDefinition } from '@lyvely/time-series';

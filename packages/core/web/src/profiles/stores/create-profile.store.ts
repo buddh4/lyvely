@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { CreateProfileModel, ProfileRelationInfo } from '@lyvely/core-interface';
+import { CreateProfileModel, ProfileRelationInfo } from '@lyvely/interface';
 import { ModelValidator } from '@lyvely/common';
 import profileRepository from '@/profiles/repositories/profile.repository';
 import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation-infos.store';

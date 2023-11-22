@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { TagModel } from '@lyvely/core-interface';
+import { TagModel } from '@lyvely/interface';
 import { LyBadge } from '@lyvely/ui';
 
 export interface IProps {

@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtTokenPayloadIF } from '../interfaces';
 import { ConfigurationPath } from '@/config';
 import { User, UsersService } from '@/users';
-import { UserStatus } from '@lyvely/core-interface';
+import { UserStatus } from '@lyvely/interface';
 import { getIssuedAt } from '../utils';
 
 export interface JwtStrategyOptionsIF {

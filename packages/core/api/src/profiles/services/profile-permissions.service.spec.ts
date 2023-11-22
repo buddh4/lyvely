@@ -1,6 +1,6 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { ProfilePermissionsService, profilesTestPlugin, ProfileTestDataUtils } from '../index';
-import { ProfileMembershipRole, ProfileRelationRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole, ProfileRelationRole } from '@lyvely/interface';
 
 describe('ProfilePermissionsService', () => {
   let testingModule: LyvelyTestingModule;

@@ -3,7 +3,7 @@ import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
 import { LiveService } from './live.service';
 import { assureStringId } from '@/core';
 import { firstValueFrom } from 'rxjs';
-import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/core-interface';
+import { ILiveProfileEvent, ILiveUserEvent } from '@lyvely/interface';
 
 describe('LiveService', () => {
   let testingModule: LyvelyTestingModule;

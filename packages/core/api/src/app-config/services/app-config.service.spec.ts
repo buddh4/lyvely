@@ -3,7 +3,7 @@ import { INestApplication, Injectable, Module } from '@nestjs/common';
 import { AppConfigService } from '@/app-config/services/app-config.service';
 import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@/app-config';
-import { IAppConfig } from '@lyvely/core-interface';
+import { IAppConfig } from '@lyvely/interface';
 
 describe('AppConfigService', () => {
   let testingModule: LyvelyTestingModule;

@@ -1,5 +1,5 @@
 import { AbstractStreamService } from '@/streams';
-import { ContentStreamFilter } from '@lyvely/core-interface';
+import { ContentStreamFilter } from '@lyvely/interface';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
 import { Content } from '../schemas';

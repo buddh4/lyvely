@@ -1,4 +1,4 @@
-import { UserRegistrationMode } from '@lyvely/core-interface';
+import { UserRegistrationMode } from '@lyvely/interface';
 
 export interface UserRegistrationConfig {
   mode: UserRegistrationMode;

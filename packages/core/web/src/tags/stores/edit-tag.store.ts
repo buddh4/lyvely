@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { TagModel, UpdateTagModel, CreateTagModel } from '@lyvely/core-interface';
+import { TagModel, UpdateTagModel, CreateTagModel } from '@lyvely/interface';
 import { computed } from 'vue';
 import tagsRepository from '@/tags/repositories/tags.repository';
 import { useUpdateModelStore, useArchiveModelStore } from '@/common';

@@ -24,7 +24,7 @@ import {
   Profile,
   ContentDataType,
   TObjectId,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { PropertiesOf } from '@lyvely/common';
 
 type JournalDataPointConfig =

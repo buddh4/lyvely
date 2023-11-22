@@ -1,7 +1,7 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { ProfileFeaturesService } from './index';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
-import { clearFeatures, registerFeatures, UpdateFeatureModel } from '@lyvely/core-interface';
+import { clearFeatures, registerFeatures, UpdateFeatureModel } from '@lyvely/interface';
 import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 
 describe('ProfileFeaturesService', () => {

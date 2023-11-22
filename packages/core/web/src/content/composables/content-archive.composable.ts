@@ -1,6 +1,6 @@
 import { useContentStore } from '@/content/stores/content.store';
 import { computed } from 'vue';
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 
 export const useContentArchive = (content: ContentModel) => {
   const contentStore = useContentStore();

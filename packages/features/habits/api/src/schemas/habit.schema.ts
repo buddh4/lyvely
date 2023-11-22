@@ -6,7 +6,7 @@ import {
   Profile,
   ContentDataType,
   TObjectId,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { PropertiesOf, PropertyType } from '@lyvely/common';
 import { HabitModel, CreateHabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
 import {

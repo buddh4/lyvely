@@ -20,7 +20,7 @@
   "dependencies": {
     "@nestjs/mongoose": "^9.2.2",
     "reflect-metadata": "0.1.13",
-    "@lyvely/core": "^0.1.0-alpha3",
+    "@lyvely/api": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3"
   },

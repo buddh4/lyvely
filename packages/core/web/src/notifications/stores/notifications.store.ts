@@ -5,7 +5,7 @@ import {
   NotificationUpdateStateLiveEvent,
   NotificationSeenStateLiveEvent,
   StreamDirection,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useNotificationService } from '@/notifications/services/notifications.service';
 import { useStream } from '@/stream/composables/stream.composable';
 import { useLiveStore } from '@/live/stores/live.store';

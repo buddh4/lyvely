@@ -3,7 +3,7 @@ import {
   ProfileRelationInfo,
   ProfileRelationInfos,
   ProfileWithRelationsModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { registerMapping } from '@lyvely/common';
 
 export function useProfileMappings() {

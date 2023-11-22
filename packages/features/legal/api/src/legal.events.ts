@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@lyvely/core';
+import { EVENT_MODULE_APP_CONFIG_ASSEMBLY, ModuleAppConfigAssemblyEvent } from '@lyvely/api';
 import { LegalService } from './services';
 import { ILegalAppConfig } from '@lyvely/legal-interface';
 import { LEGAL_MODULE_ID } from './legal.constants';

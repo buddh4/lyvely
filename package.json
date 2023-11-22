@@ -48,7 +48,7 @@
     "lint": "eslint -c .eslintrc.js \"packages/*/src/**/*.{ts,vue}\"",
     "lint:fix": "eslint -c .eslintrc.js \"packages/*/src/**/*.{ts,vue}\" --fix",
     "test": "npm run test -w @lyvely/common && npm run test -w @lyvely/server",
-    "core:build": "npm run build -w @lyvely/core-interface && concurrently \"npm run build -w @lyvely/web\" \"npm run build -w @lyvely/core\"",
+    "core:build": "npm run build -w @lyvely/interface && concurrently \"npm run build -w @lyvely/web\" \"npm run build -w @lyvely/api\"",
     "ui:build": "npm run build -w @lyvely/ui",
     "timers:timers": "npm run build -w @lyvely/timers-interface && npm run build -w @lyvely/timers",
     "time-series:build": "npm run build -w @lyvely/time-series-interface && concurrently \"npm run build -w @lyvely/time-series-web\" \"npm run build -w @lyvely/time-series\"",

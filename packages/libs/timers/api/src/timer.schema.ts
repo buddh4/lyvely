@@ -8,7 +8,7 @@ import {
   NestedSchema,
   ObjectIdProp,
   TObjectId,
-} from '@lyvely/core';
+} from '@lyvely/api';
 
 @NestedSchema()
 export class TimeSpan extends TimeSpanModel implements PropertiesOf<TimeSpanModel> {

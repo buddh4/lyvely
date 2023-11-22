@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
 import { Injectable } from '@nestjs/common';
-import { verifyProfilePermission } from '@lyvely/core-interface';
+import { verifyProfilePermission } from '@lyvely/interface';
 import { ProfileContext } from '../models';
 
 /**

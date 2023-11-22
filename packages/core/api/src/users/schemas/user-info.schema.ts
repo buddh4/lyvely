@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { assureObjectId, assureStringId, ObjectIdProp, TObjectId } from '@/core';
 import { BaseModel, PropertiesOf } from '@lyvely/common';
-import { UserInfoModel } from '@lyvely/core-interface';
+import { UserInfoModel } from '@lyvely/interface';
 import { User } from './users.schema';
 
 @Schema({ _id: false })

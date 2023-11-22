@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseEntity, ObjectIdProp, TObjectId } from '@/core';
-import { ProfileMembershipRole } from '@lyvely/core-interface';
+import { ProfileMembershipRole } from '@lyvely/interface';
 import { InvitationIF } from '../interfaces';
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })

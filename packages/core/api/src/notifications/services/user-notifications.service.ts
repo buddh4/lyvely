@@ -8,7 +8,7 @@ import {
   WebNotification,
   NotificationSeenStateLiveEvent,
   NotificationUpdateStateLiveEvent,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import {
   RenderFormat,
   Notification,

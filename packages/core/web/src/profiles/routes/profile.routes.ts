@@ -3,7 +3,7 @@ import { translation } from '@/i18n';
 import { profileRoot, profilePath, profileRoute, profilePathRoute } from './profile-route.helper';
 import { RouteRecordRaw } from 'vue-router';
 import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles/profile.constants';
-import { PROFILES_MODULE_ID } from '@lyvely/core-interface';
+import { PROFILES_MODULE_ID } from '@lyvely/interface';
 
 export default [
   { path: '/', redirect: profilePathRoute() },

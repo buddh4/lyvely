@@ -1,5 +1,5 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
-import { ProfileVisibilityLevel } from '@lyvely/core-interface';
+import { ProfileVisibilityLevel } from '@lyvely/interface';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 import { LyvelyModule } from '@/core';
 import { ProfileVisibilityPolicy } from './profile-visibility.policy';

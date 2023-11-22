@@ -9,7 +9,7 @@ import {
   PoliciesModule,
   CoreModule,
   LyvelyModule,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { Task, TaskSchema, TaskScore, TaskScoreSchema } from './schemas';
 import { TasksController } from './controllers';
 import { TasksDao } from './daos';

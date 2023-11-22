@@ -1,7 +1,7 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmpty, IsString, Length, IsEnum, IsOptional } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
-import { CreateContentModel } from '@lyvely/core-interface';
+import { CreateContentModel } from '@lyvely/interface';
 
 @Exclude()
 export class CreateMilestoneModel extends CreateContentModel<CreateMilestoneModel> {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 //import { HabitDataPointDocument } from '../activities/schemas';
-//import { Model } from '@lyvely/core';
+//import { Model } from '@lyvely/api';
 //import { User } from '../users/schemas/users.schema';
 
 @Injectable()

@@ -111,11 +111,11 @@ npx nx run @lyvely/server:start:dev
 npx nx run @lyvely/pwa:dev
 ```
 
-> Note: The `@lyvely/server` and `@lyvely/pwa` applications internally depend on `@lyvely/core` and `@lyvely/web` and automatically
+> Note: The `@lyvely/server` and `@lyvely/pwa` applications internally depend on `@lyvely/api` and `@lyvely/web` and automatically
 > install some feature modules as Habits, Tasks, Milestones.
 > During core development, you can directly run the core packages using the following commands:
 > 
-> - `npx nx run @lyvely/core:dev`
+> - `npx nx run @lyvely/api:dev`
 > - `npx nx run @lyvely/web:dev`
 > 
 > These commands enable hot reloading, eliminating the need to redeploy the projects on every change. 

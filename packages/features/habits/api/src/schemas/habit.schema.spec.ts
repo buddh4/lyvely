@@ -1,4 +1,4 @@
-import { User, CreatedAsType, Profile, Tag } from '@lyvely/core';
+import { User, CreatedAsType, Profile, Tag } from '@lyvely/api';
 import { Habit } from './index';
 import { CalendarInterval } from '@lyvely/dates';
 import { CreateHabitModel, HabitModel } from '@lyvely/habits-interface';

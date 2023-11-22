@@ -1,5 +1,5 @@
 import { EndpointResult } from '@lyvely/common';
-import { ENDPOINT_CAPTCHA, ICaptchaService, useApiRepository } from '@lyvely/core-interface';
+import { ENDPOINT_CAPTCHA, ICaptchaService, useApiRepository } from '@lyvely/interface';
 
 const resource = ENDPOINT_CAPTCHA;
 

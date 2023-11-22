@@ -2,7 +2,7 @@ import { Component } from 'vue';
 import { IStreamEntryProps } from './stream-entry-props.interface';
 import { IContentDetailsProps } from './content-details-props.interface';
 import { Type } from '@lyvely/common';
-import { ContentModel, CreateContentModel } from '@lyvely/core-interface';
+import { ContentModel, CreateContentModel } from '@lyvely/interface';
 import { RouteLocationRaw } from 'vue-router';
 import {
   ICreateContentModalProps,

@@ -34,7 +34,7 @@ import { ProfileDao, MembershipsDao, UserProfileRelationsDao } from './daos';
 import { ProfileVisibilityPolicy } from './policies';
 import { PoliciesModule } from '@/policies';
 import { CoreModule, LyvelyModule } from '@/core';
-import { PROFILES_MODULE_ID, ProfileType } from '@lyvely/core-interface';
+import { PROFILES_MODULE_ID, ProfileType } from '@lyvely/interface';
 import { useProfileMappings } from './mappings';
 import { ProfilesEvents } from './profiles.events';
 

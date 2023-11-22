@@ -1,5 +1,5 @@
 import { userAccountsRoutes } from './routes';
-import { USER_ACCOUNTS_MODULE_ID } from '@lyvely/core-interface';
+import { USER_ACCOUNTS_MODULE_ID } from '@lyvely/interface';
 import { IModule } from '@/core';
 import { registerComponentStackEntries, registerMenuEntries } from '@lyvely/ui';
 import {

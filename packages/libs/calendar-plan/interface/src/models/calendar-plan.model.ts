@@ -18,7 +18,7 @@ import {
   toTimingId,
   ICalendarPreferences,
 } from '@lyvely/dates';
-import { ITranslatable } from '@lyvely/core-interface';
+import { ITranslatable } from '@lyvely/interface';
 
 export abstract class CalendarPlan {
   protected abstract id: CalendarInterval;

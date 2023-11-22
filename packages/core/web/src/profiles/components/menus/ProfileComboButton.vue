@@ -3,7 +3,7 @@ import { usePageStore } from '@/ui';
 import { computed } from 'vue';
 import { useProfileStore } from '@/profiles/stores/profile.store';
 import ProfileRelationsChooser from './ProfileRelationsChooser.vue';
-import { getScaledProgress } from '@lyvely/core-interface';
+import { getScaledProgress } from '@lyvely/interface';
 import ProfileAvatar from '@/profiles/components/ProfileAvatar.vue';
 
 const profileStore = useProfileStore();

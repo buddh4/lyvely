@@ -4,7 +4,7 @@ import { useProfileRelationInfosStore } from '@/profiles/stores/profile-relation
 import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import 'cropperjs/dist/cropper.min.css';
-import { ProfileType } from '@lyvely/core-interface';
+import { ProfileType } from '@lyvely/interface';
 import { useAccountAvatarStore } from '@/user-accounts/stores/upload-account-avatar.store';
 import { UserAvatar } from '@/users';
 

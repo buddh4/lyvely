@@ -8,7 +8,7 @@ import {
 } from '@lyvely/time-series-interface';
 import { PropertyType } from '@lyvely/common';
 import { DataPointConfig, DataPointConfigRevision } from './data-point-config.schema';
-import { NestedSchema } from '@lyvely/core';
+import { NestedSchema } from '@lyvely/api';
 import { pick } from 'lodash';
 
 const SupportedTextDataPointInputTypes = [DataPointInputType.Textarea];

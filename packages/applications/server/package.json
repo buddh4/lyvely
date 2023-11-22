@@ -31,7 +31,7 @@
     "@automapper/classes": "^8.7.7",
     "@automapper/core": "^8.7.7",
     "@automapper/nestjs": "^8.7.7",
-    "@lyvely/core": "0.1.0-alpha3",
+    "@lyvely/api": "0.1.0-alpha3",
     "@lyvely/common": "0.1.0-alpha3",
     "@lyvely/tasks":  "0.1.0-alpha3",
     "@lyvely/milestones":  "0.1.0-alpha3",

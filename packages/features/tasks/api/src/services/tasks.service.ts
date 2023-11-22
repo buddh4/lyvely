@@ -7,7 +7,7 @@ import {
   ContentScoreService,
   assureObjectId,
   EntityIdentity,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { CalendarDate, toTimingId } from '@lyvely/dates';
 import { Timer } from '@lyvely/timers';
 import { CreateTaskModel, UpdateTaskModel } from '@lyvely/tasks-interface';

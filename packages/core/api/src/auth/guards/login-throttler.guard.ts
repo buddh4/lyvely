@@ -1,7 +1,7 @@
 import { LyvelyRequest, ReverseProxyThrottlerGuard } from '@/core';
 import { ExecutionContext } from '@nestjs/common';
 import { USER_THROTTLER_LIMIT, USER_THROTTLER_TTL } from '@/users';
-import { LoginModel } from '@lyvely/core-interface';
+import { LoginModel } from '@lyvely/interface';
 
 export class LoginThrottlerGuard extends ReverseProxyThrottlerGuard {
   protected override async handleRequest(

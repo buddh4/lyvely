@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 import { useRouter } from 'vue-router';
 import { usePageStore } from '@/ui';
 //import MilestoneChooser from '@/milestones/components/menus/MilestoneDropdown.vue';

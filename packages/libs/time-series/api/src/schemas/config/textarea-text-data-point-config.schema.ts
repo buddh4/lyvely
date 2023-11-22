@@ -7,7 +7,7 @@ import {
 import { DataPointConfigFactory } from '../data-point-config.factory';
 import { DataPointConfigSchemaFactory } from '../data-point-config-schema.factory';
 import { TextDataPointConfig } from './text-data-point-config.schema';
-import { NestedSchema } from '@lyvely/core';
+import { NestedSchema } from '@lyvely/api';
 
 const strategy = DataPointConfigFactory.getStrategyName(
   DataPointValueType.Text,

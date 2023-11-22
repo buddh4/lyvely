@@ -4,7 +4,7 @@ import {
   FieldValidationException,
   IValidatorOptions,
 } from '@lyvely/common';
-import { VerifyEmailDto, ResendOtp, OtpInfo } from '@lyvely/core-interface';
+import { VerifyEmailDto, ResendOtp, OtpInfo } from '@lyvely/interface';
 import { I18nModelValidator } from '@/i18n';
 
 interface IEmailVerificationOptions {

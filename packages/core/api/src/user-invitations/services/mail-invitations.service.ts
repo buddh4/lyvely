@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { assureStringId } from '@/core';
 import { ConfigurationPath } from '@/config';
 import { MailInvitation } from '../schemas';
-import { MailInvitationInfo } from '@lyvely/core-interface';
+import { MailInvitationInfo } from '@lyvely/interface';
 import { IMailInvitationContext } from '../interfaces';
 import { OptionalUser, UsersService } from '@/users';
 import { Profile, ProfilesService } from '@/profiles';

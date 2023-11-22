@@ -1,7 +1,7 @@
 import { buildTest, createTestExecutionContext, LyvelyTestingModule } from '@/testing';
 import { ExecutionContext } from '@nestjs/common';
 import { Feature, FeatureGuard, FeaturesModule } from '../';
-import { clearFeatures, registerFeatures } from '@lyvely/core-interface';
+import { clearFeatures, registerFeatures } from '@lyvely/interface';
 import { ProfileTestDataUtils } from '../../profiles';
 
 describe('ProfileGuard', () => {

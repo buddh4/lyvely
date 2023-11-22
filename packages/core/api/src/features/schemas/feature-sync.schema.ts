@@ -1,6 +1,6 @@
 import { NestedSchema } from '@/core';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { FeatureSyncModel } from '@lyvely/core-interface';
+import { FeatureSyncModel } from '@lyvely/interface';
 
 @NestedSchema()
 export class FeatureSync extends FeatureSyncModel {

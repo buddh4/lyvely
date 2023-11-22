@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ContentModel } from '@lyvely/core-interface';
+import { ContentModel } from '@lyvely/interface';
 import { useContentArchive } from '@/content/composables/content-archive.composable';
 import { useContentEditStore } from '@/content/stores/content-edit.store';
 import { computed, ref } from 'vue';

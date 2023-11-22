@@ -1,10 +1,5 @@
 import { Post, Body, Req, Param, Get, NotFoundException } from '@nestjs/common';
-import {
-  IStreamFilter,
-  IStreamResponse,
-  StreamRequest,
-  StreamResponse,
-} from '@lyvely/core-interface';
+import { IStreamFilter, IStreamResponse, StreamRequest, StreamResponse } from '@lyvely/interface';
 import { AbstractStreamService } from '../service';
 import { BaseEntity } from '@/core';
 import { PropertiesOf } from '@lyvely/common';

@@ -1,4 +1,4 @@
-import { NOTIFICATIONS_MODULE_ID } from '@lyvely/core-interface';
+import { NOTIFICATIONS_MODULE_ID } from '@lyvely/interface';
 import { IModule } from '@/core';
 import { registerComponentStackEntries } from '@lyvely/ui';
 import { STACK_PROFILE_TOP_RIGHT_NAVIGATION } from '@/profiles';

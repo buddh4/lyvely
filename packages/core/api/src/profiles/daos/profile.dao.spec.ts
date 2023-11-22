@@ -2,7 +2,7 @@ import { Profile, Tag, UserProfile } from '../schemas';
 import { ProfileDao } from './index';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 import { buildTest, LyvelyTestingModule } from '@/testing';
-import { ProfileType } from '@lyvely/core-interface';
+import { ProfileType } from '@lyvely/interface';
 
 describe('ProfileDao', () => {
   let testingModule: LyvelyTestingModule;

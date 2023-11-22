@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { I18nModelValidator, useI18nStore } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
-import { UserRegistration } from '@lyvely/core-interface';
+import { UserRegistration } from '@lyvely/interface';
 import { reactive, ref } from 'vue';
 import { useUserRegistrationService } from '../services';
 import { useVerifyRegistrationEmailStore } from './verify-email.store';

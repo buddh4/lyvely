@@ -8,7 +8,7 @@ import {
   CalendarPreferences,
   SetTimezoneDto,
   useApiRepository,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { EndpointResult } from '@lyvely/common';
 
 const resource = ENDPOINT_ACCOUNT;

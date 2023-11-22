@@ -1,7 +1,7 @@
 import { Profile, UserProfileRelation } from '../schemas';
 import { BaseModel, PropertyType } from '@lyvely/common';
 import { OptionalUser } from '@/users';
-import { ProfileRelationRole } from '@lyvely/core-interface';
+import { ProfileRelationRole } from '@lyvely/interface';
 import { ProfileRelations } from './profile-relations.model';
 
 export class UserAndProfileRelations

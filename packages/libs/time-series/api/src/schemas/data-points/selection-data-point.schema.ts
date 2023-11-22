@@ -6,7 +6,7 @@ import {
   ISelectionDataPointValue,
   SelectionDataPointModel,
 } from '@lyvely/time-series-interface';
-import { NestedSchema, TObjectId } from '@lyvely/core';
+import { NestedSchema, TObjectId } from '@lyvely/api';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 
 @NestedSchema()

@@ -15,7 +15,7 @@ import {
   isMultiUserProfile,
   PROFILES_MODULE_ID,
   useApiRequestInterceptor,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { useProfileStore } from '@/profiles/stores';
 import { IModule } from '@/core';
 import { computed } from 'vue';

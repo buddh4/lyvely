@@ -22,7 +22,7 @@ import {
   ProfileWithRelationsModel,
   SettingsUpdateResponse,
   UpdateProfileModel,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { ProfilesService, ProfileRelationsService } from '../services';
 import { UserAndProfileRelations, ProtectedProfileContext } from '../models';
 import { OptionalUserRequest, UserRequest } from '@/users';

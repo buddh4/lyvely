@@ -1,5 +1,5 @@
 {
-  "name": "@lyvely/core-interface",
+  "name": "@lyvely/interface",
   "version": "0.1.0-alpha3",
   "description": "Lyvely core interface",
   "type": "commonjs",

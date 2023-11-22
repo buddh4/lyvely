@@ -3,7 +3,7 @@ import {
   CAPTCHA_MODULE_ID,
   useApiRequestInterceptor,
   useApiResponseInterceptor,
-} from '@lyvely/core-interface';
+} from '@lyvely/interface';
 import { captchaInterceptor, captchaResponseErrorInterceptor } from './captcha.interceptor';
 
 export const captchaModule = () => {

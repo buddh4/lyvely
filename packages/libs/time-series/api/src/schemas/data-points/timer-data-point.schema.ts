@@ -3,7 +3,7 @@ import { DataPoint } from './data-point.schema';
 import { BaseModel, PropertiesOf, PropertyType } from '@lyvely/common';
 import { DataPointValueType, TimerDataPointModel } from '@lyvely/time-series-interface';
 import { Timer, TimerSchema } from '@lyvely/timers';
-import { User, EntityIdentity, NestedSchema, TObjectId } from '@lyvely/core';
+import { User, EntityIdentity, NestedSchema, TObjectId } from '@lyvely/api';
 import { DataPointSchemaFactory } from './data-point-schema.factory';
 
 @NestedSchema()

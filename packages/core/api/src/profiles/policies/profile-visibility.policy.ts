@@ -1,5 +1,5 @@
 import { IProfilePolicy } from '../interfaces';
-import { ProfileVisibilityLevel } from '@lyvely/core-interface';
+import { ProfileVisibilityLevel } from '@lyvely/interface';
 import { Injectable } from '@nestjs/common';
 import { ProfileContext } from '../models';
 

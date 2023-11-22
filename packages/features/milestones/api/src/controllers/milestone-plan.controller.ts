@@ -5,7 +5,7 @@ import {
   ProtectedProfileContentRequest,
   ProfileRequest,
   Policies,
-} from '@lyvely/core';
+} from '@lyvely/api';
 import { Milestone } from '../schemas';
 import {
   MilestoneModel,
