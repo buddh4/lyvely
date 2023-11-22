@@ -1,17 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { useCaptchaService } from './captcha.service';
+import { useCaptchaClient, CaptchaChallenge } from '@lyvely/interface';
 import { IsNotEmpty, Matches } from 'class-validator';
-import {
-  BaseModel,
-  PropertyType,
-  Headers,
-  IFieldValidationResponse,
-  IFieldValidationResult,
-} from '@lyvely/common';
-import { CaptchaChallenge, useApiRepository } from '@lyvely/interface';
-import { isFieldValidationError, useStatus, loadingStatus } from '@/core';
-import { I18nModelValidator, translate, translation } from '@/i18n';
+import { BaseModel, PropertyType, IFieldValidationResult } from '@lyvely/common';
+import { useStatus, loadingStatus } from '@/core';
+import { I18nModelValidator, translation } from '@/i18n';
 
 class CaptchaModel extends BaseModel<CaptchaModel> {
   @IsNotEmpty()
@@ -25,7 +18,7 @@ export const useCaptchaStore = defineStore('captcha', () => {
   const validator = ref(new I18nModelValidator(captchaModel.value));
   const challenge = ref<CaptchaChallenge>();
   const imageUrl = ref();
-  const captchaService = useCaptchaService();
+  const captchaClient = useCaptchaClient();
   const status = useStatus();
 
   function reset() {
@@ -37,7 +30,7 @@ export const useCaptchaStore = defineStore('captcha', () => {
 
   async function createChallenge() {
     reset();
-    challenge.value = await loadingStatus(() => captchaService.challenge(), status);
+    challenge.value = await loadingStatus(() => captchaClient.challenge(), status);
     updateImageUrl();
   }
 
@@ -46,7 +39,7 @@ export const useCaptchaStore = defineStore('captcha', () => {
       return createChallenge();
     }
 
-    await captchaService.refresh(challenge.value.identity);
+    await captchaClient.refresh(challenge.value.identity);
     updateImageUrl();
   }
 

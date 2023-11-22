@@ -9,7 +9,7 @@ interface IProps {
   id?: string;
 }
 
-const props = withDefaults(defineProps<IProps>(), {
+withDefaults(defineProps<IProps>(), {
   id: uniqueId('captcha'),
 });
 
@@ -51,6 +51,7 @@ defineExpose({ validate });
     <ly-text-field
       :id="id"
       v-model="captchaModel.captcha"
+      :auto-validation="false"
       :error="validator.getError('captcha')"
       input-style="border-top-left-radius: 0;border-top-right-radius: 0"
       @focusout="validate" />

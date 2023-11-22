@@ -11,7 +11,12 @@ import {
 import { CaptchaService } from '../services';
 import { Readable } from 'stream';
 import { Public } from '@/core';
-import { ENDPOINT_CAPTCHA, CaptchaChallenge, CaptchaEndpoint } from '@lyvely/interface';
+import {
+  ENDPOINT_CAPTCHA,
+  CaptchaChallenge,
+  CaptchaEndpoint,
+  CaptchaEndpointPaths,
+} from '@lyvely/interface';
 
 @Controller(ENDPOINT_CAPTCHA)
 export class CaptchaController implements CaptchaEndpoint {
@@ -24,7 +29,7 @@ export class CaptchaController implements CaptchaEndpoint {
   }
 
   @Public()
-  @Post('refresh')
+  @Post(CaptchaEndpointPaths.REFRESH)
   @HttpCode(204)
   async refresh(@Body('identity') identity: string) {
     return this.captchaService.refresh(identity);

@@ -3,6 +3,8 @@ export * from './auth';
 export * from './avatars';
 export * from './captcha';
 export * from './content';
+export * from './endpoints';
+export * from './exceptions';
 export * from './features';
 export * from './files';
 export * from './i18n';

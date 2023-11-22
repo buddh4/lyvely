@@ -1,9 +1,10 @@
-import { ICaptchaService, CaptchaChallenge } from '@lyvely/interface';
+import { ICaptchaService } from './captcha.endpoint';
+import { CaptchaChallenge } from '../models';
 import { useSingleton } from '@lyvely/common';
 import captchaRepository from './captcha.repository';
-import { unwrapAndTransformResponse, unwrapResponse } from '@/core';
+import { unwrapAndTransformResponse, unwrapResponse } from '@/endpoints';
 
-export class CaptchaService implements ICaptchaService {
+export class CaptchaClient implements ICaptchaService {
   async challenge() {
     return unwrapAndTransformResponse(captchaRepository.createChallenge(), CaptchaChallenge);
   }
@@ -13,4 +14,4 @@ export class CaptchaService implements ICaptchaService {
   }
 }
 
-export const useCaptchaService = useSingleton(() => new CaptchaService());
+export const useCaptchaClient = useSingleton(() => new CaptchaClient());

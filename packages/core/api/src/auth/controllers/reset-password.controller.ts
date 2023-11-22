@@ -4,6 +4,7 @@ import {
   ResetPasswordEndpoint,
   SendResetPasswordMail,
   ResetPassword,
+  ResetPasswordEndpointPaths,
 } from '@lyvely/interface';
 import { Public, UseClassSerializer } from '@/core';
 import { ResetPasswordService } from '../services';
@@ -24,7 +25,7 @@ export class ResetPasswordController implements ResetPasswordEndpoint {
   }
 
   @Public()
-  @Post('send-mail')
+  @Post(ResetPasswordEndpointPaths.SEND_MAIL)
   @UseGuards(LoginThrottlerGuard, CaptchaGuard)
   @UserThrottle(2, 60)
   async sendMail(@Body() model: SendResetPasswordMail) {

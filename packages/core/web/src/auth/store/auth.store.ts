@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia';
-import { localStorageManager, sessionStorageManager, eventBus } from '@/core';
+import { localStorageManager, sessionStorageManager } from '@/core';
 import { usePageStore } from '@/ui';
 import { useI18nStore } from '@/i18n';
 import { ref, computed } from 'vue';
-import { AuthService, useAuthService } from '@/auth/services/auth.service';
-import { ILoginResponse, useApiRepository, UserModel, UserStatus } from '@lyvely/interface';
+import { ILoginResponse, UserModel, UserStatus, useAuthClient } from '@lyvely/interface';
 import { findByPath, queuePromise } from '@lyvely/common';
 import { useLiveStore } from '@/live/stores/live.store';
 
@@ -12,7 +11,7 @@ export const storedVid = localStorageManager.getStoredValue('visitorId');
 
 export const useAuthStore = defineStore('user-auth', () => {
   const user = ref<UserModel>();
-  const authService = new AuthService();
+  const authClient = useAuthClient();
   const authTokenExpiration = ref(0);
   const visitorId = ref<string | undefined>(<string | undefined>storedVid.getValue());
   const i18nStore = useI18nStore();
@@ -31,7 +30,7 @@ export const useAuthStore = defineStore('user-auth', () => {
   }
 
   async function loadUser() {
-    const { user, token_expiration } = await authService.loadUser();
+    const { user, token_expiration } = await authClient.loadUser();
     await setUser(user);
     authTokenExpiration.value = token_expiration;
     return user;
@@ -39,7 +38,7 @@ export const useAuthStore = defineStore('user-auth', () => {
 
   async function logout(redirect = true) {
     if (redirect) usePageStore().setShowAppLoader(true);
-    await authService.logout(visitorId.value).catch(console.error);
+    await authClient.logout(visitorId.value).catch(console.error);
     // TODO: If logout request fails we should set an additional header assuring to logout on next valid request
     clear();
 
@@ -104,7 +103,7 @@ export const useAuthStore = defineStore('user-auth', () => {
     const { isAuthenticated, visitorId } = useAuthStore();
     if (!isAuthenticated || !visitorId) return Promise.reject();
 
-    return queuePromise('auth-store-refresh', () => useAuthService().refresh(visitorId!)).then(
+    return queuePromise('auth-store-refresh', () => authClient.refresh(visitorId!)).then(
       ({ token_expiration }) => {
         authStore.authTokenExpiration = token_expiration;
       },

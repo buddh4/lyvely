@@ -3,23 +3,22 @@ import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
 import { reactive, ref } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
-import { AuthService } from '@/auth/services/auth.service';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { UnauthenticatedServiceException } from '@lyvely/common';
-import { UserStatus, LoginModel } from '@lyvely/interface';
+import { UserStatus, LoginModel, useAuthClient } from '@lyvely/interface';
 import { useVerifyRegistrationEmailStore } from '@/user-registrations/stores';
 
 export const useLoginStore = defineStore('user-login', () => {
   const status = useStatus();
   const authStore = useAuthStore();
-  const authService = new AuthService();
+  const authClient = useAuthClient();
   const loginModel = ref(new LoginModel());
   const stage = ref<'usernameOrEmail' | 'password'>('usernameOrEmail');
   const validator = reactive(new I18nModelValidator(loginModel.value));
 
   async function login(): Promise<RouteLocationRaw | false> {
     return loadingStatus(
-      () => authService.login(loginModel.value),
+      () => authClient.login(loginModel.value),
       status,
       validator as I18nModelValidator<LoginModel>,
     )

@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { MisconfigurationException } from '@lyvely/common';
+import { IntegrityException, MisconfigurationException } from '@lyvely/common';
 import { AxiosInterceptorOptions } from 'axios/index';
 
-let _repository: AxiosInstance;
+let _repository: AxiosInstance | undefined;
 let _options: IRepositoryOptions = {
   apiUrl: 'http://127.0.0.1:8080/api',
 };
@@ -15,8 +15,11 @@ export interface IRepositoryOptions {
 }
 
 export function initApiRepository(options: IRepositoryOptions) {
+  if (_repository) throw new IntegrityException('Can not overwrite api repository');
   _options = options;
-  _repository = axios.create({ baseURL: options.apiUrl, withCredentials: true });
+  const baseURL = options.apiUrl || 'http://127.0.0.1:8080/api';
+  console.debug(`Use api url ${baseURL}`);
+  _repository = axios.create({ baseURL, withCredentials: true });
 }
 
 export function useApiRepository() {
@@ -32,6 +35,9 @@ export function useApiRequestInterceptor(
   onRejected?: AxiosInterceptorOnRejected,
   options?: AxiosInterceptorOptions,
 ): number {
+  if (!_repository) {
+    throw new MisconfigurationException('getRepository called before useApiRequestInterceptor.');
+  }
   return _repository.interceptors.request.use(onFulfilled, onRejected, options);
 }
 
@@ -40,6 +46,9 @@ export function useApiResponseInterceptor(
   onRejected?: AxiosInterceptorOnRejected,
   options?: AxiosInterceptorOptions,
 ): number {
+  if (!_repository) {
+    throw new MisconfigurationException('getRepository called before useApiResponseInterceptor.');
+  }
   return _repository.interceptors.response.use(onFulfilled, onRejected, options);
 }
 

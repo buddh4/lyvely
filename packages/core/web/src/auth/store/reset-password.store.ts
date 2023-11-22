@@ -2,8 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { I18nModelValidator } from '@/i18n';
 import { loadingStatus, useStatus } from '@/core';
-import { ResetPasswordService } from '@/auth/services/reset-password.service';
-import { ResetPassword } from '@lyvely/interface';
+import { ResetPassword, useResetPasswordClient } from '@lyvely/interface';
 import { PATH_LOGIN } from '../auth.constants';
 
 type ResetPasswordStage = 'init' | 'sent' | 'reset';
@@ -11,7 +10,7 @@ type ResetPasswordStage = 'init' | 'sent' | 'reset';
 export const useResetPasswordStore = defineStore('reset-password', () => {
   const status = useStatus();
   const stage = ref<ResetPasswordStage>('init');
-  const resetPasswordService = new ResetPasswordService();
+  const resetPasswordClient = useResetPasswordClient();
 
   const model = ref(new ResetPassword());
   const validator = ref(
@@ -29,7 +28,7 @@ export const useResetPasswordStore = defineStore('reset-password', () => {
     if (!(await validator.value.validate())) return;
 
     return loadingStatus(
-      resetPasswordService.resetPassword(model.value),
+      resetPasswordClient.resetPassword(model.value),
       status,
       validator.value as I18nModelValidator<ResetPassword>,
     ).then(() => ({ path: PATH_LOGIN }));
