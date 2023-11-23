@@ -1,17 +1,16 @@
 import {
-  IMilestonesEndpointService,
   UpdateMilestoneResponse,
   CreateMilestoneModel,
   UpdateMilestoneModel,
   MilestoneModel,
   MilestoneListResponse,
-} from '@lyvely/milestones-interface';
+} from '../models';
+import { IMilestonesClient } from './milestones.endpoint';
 import { useSingleton } from '@lyvely/common';
+import repository from './milestones.repository';
+import { unwrapAndTransformResponse } from '@lyvely/interface';
 
-import repository from '../repositories/milestones.repository';
-import { unwrapAndTransformResponse } from '@lyvely/web';
-
-export class MilestoneService implements IMilestonesEndpointService {
+export class MilestonesClient implements IMilestonesClient {
   async getAll(): Promise<MilestoneListResponse> {
     return unwrapAndTransformResponse(repository.getAll(), MilestoneListResponse);
   }
@@ -29,4 +28,4 @@ export class MilestoneService implements IMilestonesEndpointService {
   }
 }
 
-export const useMilestonesService = useSingleton(() => new MilestoneService());
+export const useMilestonesClient = useSingleton(() => new MilestonesClient());

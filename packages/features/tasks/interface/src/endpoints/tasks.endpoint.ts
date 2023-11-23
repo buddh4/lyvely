@@ -9,11 +9,11 @@ import {
   CreateTaskModel,
 } from '../models';
 import { IContentTypeClient } from '@lyvely/interface';
-import { ICalendarPlanService } from '@lyvely/calendar-plan-interface';
+import { ICalendarPlanClient } from '@lyvely/calendar-plan-interface';
 
 export interface ITasksEndpointService
   extends IContentTypeClient<TaskModel, CreateTaskModel, UpdateTaskModel>,
-    ICalendarPlanService<TaskModel> {
+    ICalendarPlanClient<TaskModel> {
   create(dto: CreateTaskModel): Promise<UpdateTaskResponse>;
   update(id: string, update: UpdateTaskModel): Promise<UpdateTaskResponse>;
   setDone(id: string, date: CalendarDate): Promise<UpdateTaskStateResponse>;

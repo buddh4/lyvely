@@ -73,7 +73,7 @@ export class ModelValidationException extends ServiceException {
   }
 }
 
-export class UnauthenticatedServiceException extends ServiceException {
+export class UnauthorizedServiceException extends ServiceException {
   constructor(msgOrData?: string | any, msg = 'Service action forbidden.') {
     super(msgOrData, msg);
     this.status = 401;

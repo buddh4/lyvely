@@ -29,7 +29,7 @@ export interface IProps {
 const props = defineProps<IProps>();
 const emit = defineEmits(ContentEditModalEmits);
 const store = useContentEditModal<TaskModel, CreateTaskModel, UpdateTaskModel>(props, emit, {
-  service: useTasksService(),
+  client: useTasksService(),
 });
 
 const { showModal, isCreate, model, validator, submit, status } = store;

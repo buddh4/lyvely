@@ -3,6 +3,7 @@ import {
   MilestoneModel,
   MilestoneRelationModel,
   MilestoneRelationsStore,
+  useMilestonePlanClient,
 } from '@lyvely/milestones-interface';
 import { CalendarPlanFilter, useCalendarPlanStore } from '@lyvely/calendar-plan-web';
 import { toTimingId } from '@lyvely/dates';
@@ -15,7 +16,6 @@ import {
 } from '@lyvely/web';
 import { computed, onBeforeMount, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useMilestonePlanService } from '@/services';
 import { useRouter } from 'vue-router';
 import { LyIcon, LyProgressBar, LyTrim, LyMarkdownView } from '@lyvely/ui';
 
@@ -60,7 +60,7 @@ function getIcon(model: MilestoneRelationModel) {
 }
 
 onBeforeMount(async () => {
-  const result = await useMilestonePlanService().getByFilter(
+  const result = await useMilestonePlanClient().getByFilter(
     new CalendarPlanFilter(new Date(), props.model.interval, {
       cid: props.model.id,
     }),

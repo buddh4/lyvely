@@ -1,5 +1,5 @@
 import { ITimeSeriesContent } from './time-series-content.interface';
-import { ICalendarPlanService } from '@lyvely/calendar-plan-interface';
+import { ICalendarPlanClient } from '@lyvely/calendar-plan-interface';
 import { IDataPoint } from './data-point.interface';
 import { IUpdateDataPoint, IUpdateDataPointResponse } from './update-data-point.interface';
 
@@ -18,6 +18,6 @@ export interface ITimeSeriesCalendarPlanClient<
     TModel,
     TDataModel
   > = ITimeSeriesCalendarPlanResponse<TModel, TDataModel>,
-> extends ICalendarPlanService<TModel, TResponse> {
+> extends ICalendarPlanClient<TModel, TResponse> {
   updateDataPoint(cid: string, update: IUpdateDataPoint): Promise<IUpdateDataPointResponse>;
 }

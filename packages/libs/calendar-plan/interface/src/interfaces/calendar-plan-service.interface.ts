@@ -16,7 +16,7 @@ export interface ICalendarPlanFilter {
   level: CalendarInterval;
 }
 
-export interface ICalendarPlanService<
+export interface ICalendarPlanClient<
   TModel extends ICalendarPlanEntry,
   TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
 > {

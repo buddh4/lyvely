@@ -4,9 +4,9 @@ import {
   MilestoneFilter,
   MilestoneRelationsStore,
   MilestoneSearchResponse,
+  useMilestonePlanClient,
 } from '@lyvely/milestones-interface';
 import { useCalendarPlan } from '@lyvely/calendar-plan-web';
-import { useMilestonePlanService } from '@/services';
 
 export const useMilestoneCalendarPlanStore = defineStore('milestone-calendar-plan', () => {
   return useCalendarPlan<
@@ -18,6 +18,6 @@ export const useMilestoneCalendarPlanStore = defineStore('milestone-calendar-pla
     filter: new MilestoneFilter(),
     cache: new MilestoneRelationsStore(),
     contentTypes: [MilestoneModel.contentType],
-    service: useMilestonePlanService(),
+    client: useMilestonePlanClient(),
   });
 });

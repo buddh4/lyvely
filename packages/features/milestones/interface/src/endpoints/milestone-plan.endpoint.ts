@@ -1,8 +1,12 @@
 import { Endpoint } from '@lyvely/common';
 import { MilestoneModel } from '../models';
-import { ICalendarPlanService } from '@lyvely/calendar-plan-interface';
+import { ICalendarPlanClient } from '@lyvely/calendar-plan-interface';
 
-export interface IMilestonePlanEndpointService extends ICalendarPlanService<MilestoneModel> {}
+export interface IMilestonePlanClient extends ICalendarPlanClient<MilestoneModel> {}
 
-export type MilestonePlanEndpoint = Endpoint<IMilestonePlanEndpointService>;
+export type MilestonePlanEndpoint = Endpoint<IMilestonePlanClient>;
 export const ENDPOINT_MILESTONE_PLAN = 'milestone-plan';
+
+export const MilestonePlanEndpointPaths = {
+  SORT: (cid: string) => `${cid}/sort`,
+};

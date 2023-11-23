@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import {
-  UnauthenticatedServiceException,
+  UnauthorizedServiceException,
   FieldValidationException,
   IValidatorOptions,
 } from '@lyvely/common';
@@ -94,7 +94,7 @@ export function useEmailVerificationStore(options: IEmailVerificationOptions) {
   }
 
   function handleError(e: any) {
-    if (e instanceof UnauthenticatedServiceException || FieldValidationException) {
+    if (e instanceof UnauthorizedServiceException || FieldValidationException) {
       errorMsg.value = !otpInfo.value.hasAttemptsLeft()
         ? 'otp.errors.maxAttempts'
         : otpInfo.value.isExpired()

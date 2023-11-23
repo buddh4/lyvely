@@ -11,9 +11,9 @@ import {
   CreateMilestoneModel,
   MilestoneModel,
   UpdateMilestoneModel,
+  useMilestonesClient,
 } from '@lyvely/milestones-interface';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
-import { useMilestonesService } from '@/services';
 
 export interface IProps {
   modelValue: boolean;
@@ -28,7 +28,7 @@ const store = useContentEditModal<MilestoneModel, CreateMilestoneModel, UpdateMi
   props,
   emit,
   {
-    service: useMilestonesService(),
+    client: useMilestonesClient(),
   },
 );
 

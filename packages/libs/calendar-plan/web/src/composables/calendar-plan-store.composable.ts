@@ -3,7 +3,7 @@ import { SortResult } from '@lyvely/common';
 import { ContentFilter } from '@lyvely/interface';
 import { LoadedTimingIdStore } from '@/models';
 import {
-  ICalendarPlanService,
+  ICalendarPlanClient,
   CalendarPlanSort,
   ICalendarPlanEntry,
   CalendarPlanStore,
@@ -30,7 +30,7 @@ export function useCalendarPlan<
   TFilter extends ContentFilter<TModel>,
   TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
   TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
-  TClient extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
+  TClient extends ICalendarPlanClient<TModel> = ICalendarPlanClient<TModel>,
 >(options: ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TClient>) {
   const profileStore = useProfileStore();
   const { profile, locale } = storeToRefs(profileStore);
@@ -199,7 +199,7 @@ export interface ICalendarPlanOptions<
   TFilter extends ContentFilter<TModel>,
   TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
   TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
-  TClient extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
+  TClient extends ICalendarPlanClient<TModel> = ICalendarPlanClient<TModel>,
 > {
   filter: TFilter;
   cache: TStore;

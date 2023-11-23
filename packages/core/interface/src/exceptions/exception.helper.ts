@@ -7,7 +7,7 @@ import {
   ModelValidationException,
   NetworkException,
   ForbiddenServiceException,
-  UnauthenticatedServiceException,
+  UnauthorizedServiceException,
   RateLimitException,
   EntityNotFoundException,
 } from '@lyvely/common';
@@ -101,7 +101,7 @@ export function errorToServiceException(error: any, throws = false): ServiceExce
   } else if (isForbiddenError(error)) {
     result = new ForbiddenServiceException(error.response?.data);
   } else if (isUnauthorizedForbidden(error)) {
-    result = new UnauthenticatedServiceException(error.response?.data);
+    result = new UnauthorizedServiceException(error.response?.data);
   } else if (isFieldValidationError(error)) {
     result = new FieldValidationException(error.response.data.fields);
   } else if (isModelValidationError(error)) {

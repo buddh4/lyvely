@@ -7,6 +7,8 @@ import {
 } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/user-registration';
 import { PATH_LOGIN, PATH_LOGOUT } from '../auth.constants';
+import { UnauthorizedServiceException } from '@lyvely/common';
+import { PATH_500 } from '@/ui';
 
 const PATH_ROOT = '/';
 const publicRoutes = [PATH_ROOT, PATH_LOGIN];
@@ -47,8 +49,10 @@ export const authGuard: NavigationGuardWithThis<undefined> = async (to, from, ne
     await Promise.all(promises);
     next();
   } catch (err) {
-    if ((<any>err)?.response?.status === 401) {
+    if (err instanceof UnauthorizedServiceException) {
       await authStore.logout();
+    } else {
+      next(PATH_500);
     }
   }
 };

@@ -31,7 +31,7 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
   CreateHabitModel,
   UpdateHabitModel
 >(props, emit, {
-  service: useHabitsClient(),
+  client: useHabitsClient(),
 });
 
 function adjustAndSubmit() {
