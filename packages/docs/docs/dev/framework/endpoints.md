@@ -1,8 +1,8 @@
 # Endpoints
 
-In Lyvely, endpoint interfaces play a crucial role in defining the interactions between the web and api layer. 
-These interfaces are part of the interface layer and encompass both the client interface used by the web layer
-and endpoint interfaces used by controllers in the API layer.
+In Lyvely, endpoint interfaces play a crucial role in defining the interactions between the web and API layer. 
+These interfaces are part of the interface layer of a feature and encompass both the client interface used by the web layer
+and endpoint interfaces implemented by controllers in the API layer.
 
 Lyvely offers a set of helper functions designed to facilitate the creation of type-safe interface definitions, 
 as detailed in this section.
@@ -10,7 +10,7 @@ as detailed in this section.
 ## Client Interface & Endpoint Definition
 
 To create an endpoint, we start with our client interface. In the example below, we demonstrate the use of 
-the `StrictEndpoint` from the `@lyvely/interface` package. The `StrictEndpoint` enforces that the controller implements 
+the `StrictEndpoint` from the `@lyvely/interface` package. The `StrictEndpoint` enforces the controller implementation to implement 
 the first argument of each interface function. Typically, this argument is either a path parameter, such as the id of a 
 document, or the request body.
 
@@ -40,7 +40,7 @@ import { useApi } from '@lyvely/interface';
 import { ENDPOINT_PINT, IPingClient } from './ping.endpoint.ts';
 
 /**
- * The api object wraps an axio client and automatically attaches the given path to each request.
+ * The API object wraps an axio client and automatically attaches the given path to each request.
  * The generic type is used for the purpose of type-safety.
  */
 const api = useApi<IPingClient>(ENDPOINT_PING);
@@ -52,13 +52,15 @@ export default {
 ```
 
 :::note
-If you prefer, you can also directly utilize the API within your client. However, it is advisable, especially for more 
-intricate endpoints or when you need to configure specific request settings.
-::::
+If you prefer, you can also omit the repository and directly utilize the `useApi` helper within your client. 
+However, it is advisable to use this abstraction, especially for more intricate endpoints or when you need to configure
+specific request settings.
+:::
 
 ## Client Implementation
 
-The client is primarily used by the web layer in the following manner:
+It is the responsibility of the client to call the API and transform the response to the expected result types, this
+may include transforming the raw response to a model instance as in the following example:
 
 ```typescript title=interface/src/endpoints/ping.client.ts
 import repository from './ping.repository.ts';
@@ -67,7 +69,7 @@ import { unwrapAndTransformResponse } from '@lyvely/interface';
 import { useSingleton } from '@lyvely/common';
 import { PingResponse } from '../models';
 
-export class PingClient implements IPingClient {
+class PingClient implements IPingClient {
     async ping(): Promise<PingReponse> {
         // Here we unwrap the axios response and transform it to an instance of our model class.
         // If the request fails a ServiceException is thrown e.g. an UnauthorizedServiceException.
@@ -79,20 +81,20 @@ export const usePingClient = useSingleton(() => new PingClient());
 ```
 
 :::info
-The `unwrapAndTransformResponse` is a helpful function that allows you to convert Axios responses into your model instances.
+The `unwrapAndTransformResponse` is a helper function that allows you to convert Axios responses into model instances.
 However, if your goal is to solely extract the response without performing any transformation, you can utilize the
-`unwrapResponse`  function from the `@lyvely/interface` package. This can be particularly useful when working with interfaces 
-instead of actual model classes.
+`unwrapResponse`  function from the `@lyvely/interface` package. This can be useful when working with interfaces 
+instead of model classes.
 :::
 
 :::info
-Your interface package should, at a minimum, export the client and endpoint interfaces for both the API and web layers.
+Your interface package should, at a minimum, **export the client and endpoint** interfaces for both the API and web layers.
 :::
 
 ## Controller Implementation
 
-The controller implements the `PingEndpoint`. In this example, our endpoint function does not have any arguments. 
-However, if the endpoint function were to require an argument, you would need to define and provide the first argument when
+The controller implements the `PingEndpoint` we defined in the interface layer. In this example, our endpoint function does not have any arguments. 
+However, if the endpoint function were to require an argument, you would need to define the first argument when
 implementing the function since we used the `StrictEndpoint` instead of the less restrictive `Endpoint` type.
 
 ```typescript
@@ -110,9 +112,14 @@ export class PingController implements PingEndpoint {
 }
 ```
 
-## Web Store
+:::info
+Please refer to the [NestJS Documentation](https://docs.nestjs.com/controllers) for more information about the implementation of
+controller classes.
+:::
 
-You can utilize our API client in various parts of your application, including views, components, composables, or stores,
+## Client Usage
+
+You can utilize the API client in various parts of your application, including views, components, composables, or stores,
 in the following manner:
 
 ```typescript
@@ -120,16 +127,14 @@ import { defineStore } from "pinia";
 import { usePingClient } from "my-ping-interface";
 
 export const pingStore = defineStore('ping', () => {
-    async function ping() {
-        try {
-            return await usePingClient().ping()
-        } catch(e) {
-            // Handle error
-        }
+  async function ping() {
+    try {
+      return await usePingClient().ping()
+    } catch(e) {
+      // Handle error
     }
+  }
     
-    return {
-        ping
-    }
+  return { ping };
 })
 ```
