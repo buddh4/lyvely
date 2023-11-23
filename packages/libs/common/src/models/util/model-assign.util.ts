@@ -1,14 +1,7 @@
-import {
-  findByPath,
-  hasOwnNonNullableProperty,
-  isBlacklistedProperty,
-  isObjectId,
-  isPlainObject,
-  Type,
-} from '../../utils';
+import { findByPath, isBlacklistedProperty, isObjectId, isPlainObject, Type } from '../../utils';
 import { initPropertyTypes } from './model-property-type.util';
 import { getPropertyTypeDefinition } from '../decorators';
-import { implementsAfterInit } from '../base.model';
+import { implementsAfterInit } from './model-interfaces.helper';
 
 type WithTransformation = ((model: any, field: string) => undefined | any) | undefined;
 interface IAssignOptions {
