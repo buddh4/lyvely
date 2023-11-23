@@ -16,7 +16,7 @@ import { journalRoutes } from './routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { timeSeriesModule } from '@lyvely/time-series-web';
 
-export default () => {
+export const journalsModule = () => {
   return {
     id: JOURNALS_MODULE_ID,
     features: [JournalsFeature],

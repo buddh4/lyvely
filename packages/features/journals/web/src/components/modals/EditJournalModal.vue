@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { CreateJournalModel, JournalModel, UpdateJournalModel } from '@lyvely/journals-interface';
+import {
+  CreateJournalModel,
+  JournalModel,
+  UpdateJournalModel,
+  useJournalsClient,
+} from '@lyvely/journals-interface';
 import {
   DataPointInputType,
   DataPointValueType,
@@ -25,7 +30,6 @@ import {
   LyTextarea,
 } from '@lyvely/ui';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
-import { useJournalsService } from '@/services';
 
 export interface IProps {
   modelValue: boolean;
@@ -42,7 +46,7 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
   CreateJournalModel,
   UpdateJournalModel
 >(props, emit, {
-  service: useJournalsService(),
+  client: useJournalsClient(),
 });
 
 function setValueType(valueType: CreateJournalModel['valueType']) {

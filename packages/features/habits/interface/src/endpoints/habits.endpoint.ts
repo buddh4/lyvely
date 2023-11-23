@@ -1,5 +1,5 @@
 import { Endpoint } from '@lyvely/common';
-import { ITimeSeriesCalendarPlanService, TimerDataPointModel } from '@lyvely/time-series-interface';
+import { ITimeSeriesCalendarPlanClient, TimerDataPointModel } from '@lyvely/time-series-interface';
 import { IContentTypeClient } from '@lyvely/interface';
 import {
   HabitModel,
@@ -12,7 +12,7 @@ import { TimerUpdateModel } from '@lyvely/timers-interface';
 
 export interface IHabitsEndpointClient
   extends IContentTypeClient<HabitModel, CreateHabitModel, UpdateHabitModel>,
-    ITimeSeriesCalendarPlanService<HabitModel> {
+    ITimeSeriesCalendarPlanClient<HabitModel> {
   updateDataPoint(
     cid: string,
     update: UpdateHabitDataPointModel,
@@ -24,7 +24,7 @@ export interface IHabitsEndpointClient
 export type HabitsEndpoint = Endpoint<IHabitsEndpointClient>;
 export const ENDPOINT_HABITS = 'habits';
 
-export const HabitEndpointPaths = {
+export const HabitsEndpointPaths = {
   SORT: (cid: string) => `${cid}/sort`,
   UPDATE_DATA_POINT: (cid: string) => `${cid}/update-data-point`,
   START_TIMER: (cid: string) => `${cid}/start-timer`,

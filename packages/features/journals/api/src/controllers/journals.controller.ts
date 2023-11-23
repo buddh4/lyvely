@@ -15,6 +15,7 @@ import {
   UpdateJournalResponse,
   UpdateJournalModel,
   CreateJournalModel,
+  JournalsEndpointPaths,
 } from '@lyvely/journals-interface';
 import {
   UpdateDataPointModel,
@@ -62,7 +63,7 @@ export class JournalsController
     });
   }
 
-  @Post(':cid/sort')
+  @Post(JournalsEndpointPaths.SORT(':cid'))
   @Policies(ContentWritePolicy)
   async sort(
     @Body() dto: CalendarPlanSort,
@@ -79,7 +80,7 @@ export class JournalsController
     return new SortResponse({ sort });
   }
 
-  @Post(':cid/update-data-point')
+  @Post(JournalsEndpointPaths.UPDATE_DATA_POINT(':cid'))
   @Policies(ContentWritePolicy)
   async updateDataPoint(
     @Body() dto: UpdateDataPointModel,

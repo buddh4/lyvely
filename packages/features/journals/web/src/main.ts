@@ -5,7 +5,7 @@ import '@lyvely/ui/style.css';
 import '@lyvely/web/style.css';
 
 import { LyvelyWebApp } from '@lyvely/web';
-import journalsModule from './module';
+import { journalsModule } from './journals.module';
 
 new LyvelyWebApp({
   modules: [journalsModule()],

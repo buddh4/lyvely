@@ -3,7 +3,7 @@ import {
   TimeSeriesContentModel,
   TimeSeriesStore,
   ITimeSeriesCalendarPlanResponse,
-  ITimeSeriesCalendarPlanService,
+  ITimeSeriesCalendarPlanClient,
 } from '@lyvely/time-series-interface';
 import { formatDate, toTimingId } from '@lyvely/dates';
 import { ContentFilter } from '@lyvely/interface';
@@ -30,11 +30,11 @@ export interface ITimeSeriesCalendarPlanOptions<
     TDataPoint,
     TResponse
   >,
-  TClient extends ITimeSeriesCalendarPlanService<
+  TClient extends ITimeSeriesCalendarPlanClient<
     TModel,
     TDataPoint,
     TResponse
-  > = ITimeSeriesCalendarPlanService<TModel, TDataPoint, TResponse>,
+  > = ITimeSeriesCalendarPlanClient<TModel, TDataPoint, TResponse>,
 > extends ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TClient> {
   onDataPointUpdated?: (response: Awaited<ReturnType<TClient['updateDataPoint']>>) => void;
 }
@@ -52,11 +52,11 @@ export function useTimeSeriesCalendarPlan<
     TDataPoint,
     TResponse
   >,
-  TClient extends ITimeSeriesCalendarPlanService<
+  TClient extends ITimeSeriesCalendarPlanClient<
     TModel,
     TDataPoint,
     TResponse
-  > = ITimeSeriesCalendarPlanService<TModel, TDataPoint, TResponse>,
+  > = ITimeSeriesCalendarPlanClient<TModel, TDataPoint, TResponse>,
 >(
   options: ITimeSeriesCalendarPlanOptions<TModel, TFilter, TDataPoint, TResponse, TStore, TClient>,
 ) {

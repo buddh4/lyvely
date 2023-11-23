@@ -29,6 +29,7 @@
     "@lyvely/web": "^0.1.0-alpha3",
     "@lyvely/ui": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
+    "@lyvely/journals-interface": "^0.1.0-alpha3",
     "@lyvely/calendar-plan-web": "^0.1.0-alpha3",
     "@lyvely/time-series-web": "^0.1.0-alpha3"
   },

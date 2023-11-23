@@ -1,20 +1,20 @@
 import {
-  IJournalsEndpointService,
-  JournalModel,
   CreateJournalModel,
+  JournalModel,
+  UpdateJournalDataPointResponse,
   UpdateJournalModel,
   UpdateJournalResponse,
-  UpdateJournalDataPointResponse,
-} from '@lyvely/journals-interface';
-import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-web';
-import { useDataPointStrategyFacade, UpdateDataPointModel } from '@lyvely/time-series-web';
+} from '../models';
+import { IJournalsEndpointService } from './journals.endpoint';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { useDataPointStrategyFacade, UpdateDataPointModel } from '@lyvely/time-series-interface';
 import { SortResponse, useSingleton } from '@lyvely/common';
-import repository from '../repositories/journals.repository';
-import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/web';
+import repository from './journals.repository';
+import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/interface';
 
 const dataPointService = useDataPointStrategyFacade();
 
-export class JournalsService implements IJournalsEndpointService {
+export class JournalsClient implements IJournalsEndpointService {
   create(model: CreateJournalModel): Promise<UpdateJournalResponse> {
     return unwrapAndTransformResponse(repository.create(model), UpdateJournalResponse);
   }
@@ -46,4 +46,4 @@ export class JournalsService implements IJournalsEndpointService {
   }
 }
 
-export const useJournalsService = useSingleton(() => new JournalsService());
+export const useJournalsClient = useSingleton(() => new JournalsClient());

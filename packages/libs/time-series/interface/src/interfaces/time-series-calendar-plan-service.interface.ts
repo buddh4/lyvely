@@ -11,7 +11,7 @@ export interface ITimeSeriesCalendarPlanResponse<
   dataPoints: Array<TDataModel>;
 }
 
-export interface ITimeSeriesCalendarPlanService<
+export interface ITimeSeriesCalendarPlanClient<
   TModel extends ITimeSeriesContent,
   TDataModel extends IDataPoint = IDataPoint,
   TResponse extends ITimeSeriesCalendarPlanResponse<
