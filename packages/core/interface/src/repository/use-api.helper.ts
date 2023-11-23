@@ -2,6 +2,7 @@ import { useApiRepository } from './api.repository';
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { EndpointResult } from '@/endpoints';
 import { isPlainObject } from '@lyvely/common';
+import { errorToServiceException } from '@/exceptions';
 
 type ApiResponse<T, TClient> = T extends (...args: any) => any
   ? EndpointResult<T>
@@ -33,14 +34,19 @@ export const useApi = <TClient>(resource: string) => {
      *
      * @param path
      * @param config
+     * @throws ServiceException
      */
-    get: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
+    get: async <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
       path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      config = isPlainObject(path) ? path : config;
-      path = typeof path === 'string' ? path : undefined;
-      return useApiRepository().get<T, R, D>(createPath(resource, path), config);
+      try {
+        config = isPlainObject(path) ? path : config;
+        path = typeof path === 'string' ? path : undefined;
+        return await useApiRepository().get<T, R, D>(createPath(resource, path), config);
+      } catch (e) {
+        throw errorToServiceException(e);
+      }
     },
 
     /**
@@ -55,14 +61,23 @@ export const useApi = <TClient>(resource: string) => {
      *
      * @param path
      * @param config
+     * @throws ServiceException
      */
-    delete: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
+    delete: async <
+      T extends ResultType<TClient>,
+      R = AxiosResponse<ApiResponse<T, TClient>>,
+      D = any,
+    >(
       path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      config = isPlainObject(path) ? path : config;
-      path = typeof path === 'string' ? path : undefined;
-      return useApiRepository().delete<T, R, D>(createPath(resource, path), config);
+      try {
+        config = isPlainObject(path) ? path : config;
+        path = typeof path === 'string' ? path : undefined;
+        return await useApiRepository().delete<T, R, D>(createPath(resource, path), config);
+      } catch (e) {
+        throw errorToServiceException(e);
+      }
     },
 
     /**
@@ -77,14 +92,23 @@ export const useApi = <TClient>(resource: string) => {
      *
      * @param path
      * @param config
+     * @throws ServiceException
      */
-    head: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
+    head: async <
+      T extends ResultType<TClient>,
+      R = AxiosResponse<ApiResponse<T, TClient>>,
+      D = any,
+    >(
       path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      config = isPlainObject(path) ? path : config;
-      path = typeof path === 'string' ? path : undefined;
-      return useApiRepository().head<T, R, D>(createPath(resource, path), config);
+      try {
+        config = isPlainObject(path) ? path : config;
+        path = typeof path === 'string' ? path : undefined;
+        return await useApiRepository().head<T, R, D>(createPath(resource, path), config);
+      } catch (e) {
+        throw errorToServiceException(e);
+      }
     },
 
     /**
@@ -99,14 +123,23 @@ export const useApi = <TClient>(resource: string) => {
      *
      * @param path
      * @param config
+     * @throws ServiceException
      */
-    options: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
+    options: async <
+      T extends ResultType<TClient>,
+      R = AxiosResponse<ApiResponse<T, TClient>>,
+      D = any,
+    >(
       path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      config = isPlainObject(path) ? path : config;
-      path = typeof path === 'string' ? path : undefined;
-      return useApiRepository().options<T, R, D>(createPath(resource, path), config);
+      try {
+        config = isPlainObject(path) ? path : config;
+        path = typeof path === 'string' ? path : undefined;
+        return await useApiRepository().options<T, R, D>(createPath(resource, path), config);
+      } catch (e) {
+        throw errorToServiceException(e);
+      }
     },
 
     /**
@@ -123,22 +156,31 @@ export const useApi = <TClient>(resource: string) => {
      * @param path
      * @param data
      * @param config
+     * @throws ServiceException
      */
-    post: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
+    post: async <
+      T extends ResultType<TClient>,
+      R = AxiosResponse<ApiResponse<T, TClient>>,
+      D = any,
+    >(
       path?: string | D,
       data?: D | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      const {
-        path: pathArg,
-        data: dataArg,
-        config: configArg,
-      } = getArgsWithData<D>(path, data, config);
-      return useApiRepository().post<T, ApiResponse<R, TClient>, D>(
-        createPath(resource, pathArg),
-        dataArg,
-        configArg,
-      );
+      try {
+        const {
+          path: pathArg,
+          data: dataArg,
+          config: configArg,
+        } = getArgsWithData<D>(path, data, config);
+        return await useApiRepository().post<T, ApiResponse<R, TClient>, D>(
+          createPath(resource, pathArg),
+          dataArg,
+          configArg,
+        );
+      } catch (e) {
+        throw errorToServiceException(e);
+      }
     },
 
     /**
@@ -154,22 +196,27 @@ export const useApi = <TClient>(resource: string) => {
      * @param path
      * @param data
      * @param config
+     * @throws ServiceException
      */
-    put: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
+    put: async <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
       path?: string | D,
       data?: D | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      const {
-        path: pathArg,
-        data: dataArg,
-        config: configArg,
-      } = getArgsWithData<D>(path, data, config);
-      return useApiRepository().put<T, ApiResponse<R, TClient>, D>(
-        createPath(resource, pathArg),
-        dataArg,
-        configArg,
-      );
+      try {
+        const {
+          path: pathArg,
+          data: dataArg,
+          config: configArg,
+        } = getArgsWithData<D>(path, data, config);
+        return await useApiRepository().put<T, ApiResponse<R, TClient>, D>(
+          createPath(resource, pathArg),
+          dataArg,
+          configArg,
+        );
+      } catch (e) {
+        throw errorToServiceException(e);
+      }
     },
 
     /**
@@ -185,22 +232,31 @@ export const useApi = <TClient>(resource: string) => {
      * @param path
      * @param data
      * @param config
+     * @throws ServiceException
      */
-    patch: <T extends ResultType<TClient>, R = AxiosResponse<ApiResponse<T, TClient>>, D = any>(
+    patch: async <
+      T extends ResultType<TClient>,
+      R = AxiosResponse<ApiResponse<T, TClient>>,
+      D = any,
+    >(
       path?: string | D,
       data?: D | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      const {
-        path: pathArg,
-        data: dataArg,
-        config: configArg,
-      } = getArgsWithData<D>(path, data, config);
-      return useApiRepository().patch<T, ApiResponse<R, TClient>, D>(
-        createPath(resource, pathArg),
-        dataArg,
-        configArg,
-      );
+      try {
+        const {
+          path: pathArg,
+          data: dataArg,
+          config: configArg,
+        } = getArgsWithData<D>(path, data, config);
+        return await useApiRepository().patch<T, ApiResponse<R, TClient>, D>(
+          createPath(resource, pathArg),
+          dataArg,
+          configArg,
+        );
+      } catch (e) {
+        throw errorToServiceException(e);
+      }
     },
   };
 };

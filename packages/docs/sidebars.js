@@ -20,6 +20,7 @@ const sidebars = {
             items: [
                 'dev/intro/overview',
                 'dev/intro/installation',
+                'dev/intro/server-configuration',
             ],
         },
         {
@@ -28,6 +29,7 @@ const sidebars = {
             items: [
                 'dev/framework/intro',
                 'dev/framework/models',
+                'dev/framework/endpoints',
                 'dev/framework/content',
             ],
         },

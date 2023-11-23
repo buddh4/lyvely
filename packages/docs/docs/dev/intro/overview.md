@@ -70,18 +70,18 @@ technologies and frameworks that power Lyvely:
 Lyvely extends its functionality through a set of additional libraries, commonly employed for core and feature development.
 These libraries enhance various aspects of the application:
 
+- **@lyvely/common** The common library serves as a repository for frequently used features shared between the frontend
+  and backend.
+- **@lyvely/ui** The UI component library provides a collection of core user interface components.
+  These components are extensively utilized in both the core application and various feature modules. @lyvely/ui ensures
+  consistency in design and user experience across Lyvely's interface.
+- **@lyvely/dates** The dates library simplifies date and time-related operations, offering a range of useful features
+  for managing time-sensitive data. It enhances Lyvely's capability to work with timestamps, schedules, and event-related
+  functionalities.
 - **@lyvely/calendar-plan** This library is essential for feature modules like activities and journals. It offers
   interfaces and components to create customized calendar plan features. With @lyvely/calendar-plan, you can efficiently
   manage and visualize schedules and events within your collaboration environment.
 - **@lyvely/time-series** The time series module is a versatile tool for tracking and analyzing data over time. It plays
   a vital role in the journals and activities feature, enabling you to monitor trends, patterns, and historical data within Lyvely.
-- **@lyvely/ui** The UI component library provides a collection of core user interface components.
-  These components are extensively utilized in both the core application and various feature modules. @lyvely/ui ensures
-  consistency in design and user experience across Lyvely's interface.
-- **@lyvely/common** The common library serves as a repository for frequently used features shared between the frontend
-  and backend.
-- **@lyvely/dates** The dates library simplifies date and time-related operations, offering a range of useful features
-  for managing time-sensitive data. It enhances Lyvely's capability to work with timestamps, schedules, and event-related
-  functionalities.
 
 
