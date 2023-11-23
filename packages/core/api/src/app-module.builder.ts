@@ -61,7 +61,7 @@ export interface IAppModuleBuilderOptions {
 
 const defaultOptions: Required<IAppModuleBuilderOptions> = {
   useRecommended: true,
-  configFiles: ['lyvely.js'],
+  configFiles: false,
   loadDefaultConfig: true,
   config: null,
   serveStatic: false,
@@ -81,8 +81,8 @@ export class AppModuleBuilder {
 
     if (!this.options.manual) {
       this.importConfigModule()
-        .importCoreModules()
         .importEventEmitterModule()
+        .importCoreModules()
         .importI18nModule()
         .importQueueModule()
         .importUploadModules()
