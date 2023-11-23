@@ -7,7 +7,7 @@ import {
   UserSubscription,
   Subscription,
 } from './user-subscription.schema';
-import { createBaseEntityInstance, Schema, Subdocument } from '@/core';
+import { createBaseDocumentInstance, Schema, Subdocument } from '@/core';
 import { PropertiesOf } from '@lyvely/common';
 
 const SubscriptionTypes = {
@@ -37,7 +37,7 @@ export class UserSubscriptionSchemaAddition {
   static assureInstance(subscription?: PropertiesOf<Subscription>) {
     if (subscription && !(subscription instanceof UserSubscription)) {
       const SubscriptionType = SubscriptionTypes[subscription.type];
-      return createBaseEntityInstance(SubscriptionType, subscription);
+      return createBaseDocumentInstance(SubscriptionType, subscription);
     }
 
     return subscription;

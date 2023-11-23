@@ -1,21 +1,21 @@
 import {
-  CreateHabitModel,
-  IHabitsEndpointService,
-  UpdateHabitDataPointModel,
   UpdateHabitModel,
+  UpdateHabitDataPointModel,
+  CreateHabitModel,
+  HabitModel,
   UpdateHabitResponse,
   UpdateHabitDataPointResponse,
-  HabitModel,
   UpdateHabitDataPointTimerResponse,
-} from '@lyvely/habits-interface';
+} from '../models';
+import { IHabitsEndpointClient } from './habits.endpoint';
 import { TimerUpdateModel } from '@lyvely/timers-interface';
 import { SortResponse, useSingleton } from '@lyvely/common';
-import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-web';
-import { useDataPointStrategyFacade, TimerDataPointModel } from '@lyvely/time-series-web';
-import repository from '../repositories/habits.repository';
-import { unwrapAndTransformResponse, unwrapResponse, useProfileStore } from '@lyvely/web';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
+import { useDataPointStrategyFacade, TimerDataPointModel } from '@lyvely/time-series-interface';
+import repository from './habits.repository';
+import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/interface';
 
-export class HabitsService implements IHabitsEndpointService {
+export class HabitsClient implements IHabitsEndpointClient {
   async getByFilter(filter: CalendarPlanFilter) {
     const { models, dataPoints } = await unwrapResponse(repository.getByFilter(filter));
     return {
@@ -45,8 +45,6 @@ export class HabitsService implements IHabitsEndpointService {
     const result = await unwrapResponse(repository.updateDataPoint(cid, update));
     result.dataPoint = useDataPointStrategyFacade().createDataPoint(result.dataPoint);
     result.model = new HabitModel(result.model);
-    useProfileStore().updateScore(result.score);
-
     return result;
   }
 
@@ -62,4 +60,4 @@ export class HabitsService implements IHabitsEndpointService {
   }
 }
 
-export const useHabitsService = useSingleton(() => new HabitsService());
+export const useHabitsClient = useSingleton(() => new HabitsClient());

@@ -1,29 +1,43 @@
 import { defineStore } from 'pinia';
-import { HabitModel, HabitFilter } from '@lyvely/habits-interface';
+import {
+  HabitModel,
+  HabitFilter,
+  useHabitsClient,
+  UpdateHabitDataPointResponse,
+} from '@lyvely/habits-interface';
 import { TimerUpdateModel } from '@lyvely/timers-interface';
-import { TimeSeriesStore, useTimeSeriesCalendarPlan } from '@lyvely/time-series-web';
+import {
+  IUpdateDataPointResponse,
+  TimeSeriesStore,
+  useTimeSeriesCalendarPlan,
+} from '@lyvely/time-series-web';
 import { useProfileStore, useGlobalDialogStore } from '@lyvely/web';
 import { useCalendarPlanStore } from '@lyvely/calendar-plan-web';
-import { useHabitsService } from '@/services';
+import { hasOwnNonNullableProperty } from '@lyvely/common';
 
 export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => {
   const calendarPlanStore = useCalendarPlanStore();
   const profileStore = useProfileStore();
-  const habitsService = useHabitsService();
+  const habitsClient = useHabitsClient();
   const dialog = useGlobalDialogStore();
 
   const habitPlan = useTimeSeriesCalendarPlan<HabitModel, HabitFilter>({
     filter: new HabitFilter(),
     cache: new TimeSeriesStore<HabitModel>(),
     contentTypes: [HabitModel.contentType],
-    service: useHabitsService(),
+    client: habitsClient,
+    onDataPointUpdated: (result: IUpdateDataPointResponse) => {
+      if (hasOwnNonNullableProperty<UpdateHabitDataPointResponse>(result, 'score')) {
+        profileStore.updateScore(result.score);
+      }
+    },
   });
 
   const { cache } = habitPlan;
 
   async function startTimer(habit: HabitModel) {
     try {
-      const updatedDataPoint = await habitsService.startTimer(
+      const updatedDataPoint = await habitsClient.startTimer(
         habit.id,
         new TimerUpdateModel(calendarPlanStore.date),
       );
@@ -35,7 +49,7 @@ export const useHabitCalendarPlanStore = defineStore('habitCalendarPlan', () => 
 
   async function stopTimer(habit: HabitModel) {
     try {
-      const result = await habitsService.stopTimer(
+      const result = await habitsClient.stopTimer(
         habit.id,
         new TimerUpdateModel(calendarPlanStore.date),
       );

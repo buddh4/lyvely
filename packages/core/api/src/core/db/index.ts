@@ -1,5 +1,5 @@
 export * from './abstract.dao';
-export * from './base.entity';
+export * from './base.document';
 export * from './dao.events';
 export * from './db-query.util';
 export * from './db.utils';

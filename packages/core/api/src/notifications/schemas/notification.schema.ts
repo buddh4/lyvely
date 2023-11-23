@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { NotificationType, NotificationTypeSchema } from './notification-type.schema';
-import { BaseEntity, ObjectIdProp, TObjectId } from '@/core';
+import { BaseDocument, ObjectIdProp, TObjectId } from '@/core';
 
 import {
   UserSubscriptionSchema,
@@ -12,7 +12,7 @@ import {
 export class Notification<
   T extends NotificationType = NotificationType,
   TSubscription extends Subscription = Subscription,
-> extends BaseEntity<Notification> {
+> extends BaseDocument<Notification> {
   @Prop({ type: UserSubscriptionSchema, required: true })
   subscription: TSubscription;
 

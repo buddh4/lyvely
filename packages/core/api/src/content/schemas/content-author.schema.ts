@@ -1,5 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
+import { BaseDocument, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
 import { DeepPartial, getStringEnumValues } from '@lyvely/common';
 import { CreatedAsType } from '@lyvely/interface';
 import { User } from '@/users';
@@ -8,7 +8,7 @@ import { Organization, Profile } from '@/profiles';
 export type Author = Profile | User;
 
 @NestedSchema()
-export class CreatedAs extends BaseEntity<CreatedAs> {
+export class CreatedAs extends BaseDocument<CreatedAs> {
   constructor(obj?: Author | DeepPartial<CreatedAs>) {
     if (obj instanceof User) {
       super(createUserAuthor(obj));

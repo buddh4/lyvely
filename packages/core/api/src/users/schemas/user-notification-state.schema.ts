@@ -1,4 +1,4 @@
-import { BaseEntity, NestedSchema } from '@/core';
+import { BaseDocument, NestedSchema } from '@/core';
 import { PropertyType } from '@lyvely/common';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { addByInterval, CalendarTimeInterval } from '@lyvely/dates';
@@ -11,7 +11,7 @@ export interface INotificationRateLimit {
 }
 
 @NestedSchema()
-export class NotificationRateLimit extends BaseEntity<NotificationRateLimit> {
+export class NotificationRateLimit extends BaseDocument<NotificationRateLimit> {
   @Prop({ type: Date })
   firstDelivery?: Date;
 

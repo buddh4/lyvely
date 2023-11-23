@@ -1,7 +1,7 @@
-import { BaseEntity, ObjectIdProp, TObjectId } from '@/core';
+import { BaseDocument, ObjectIdProp, TObjectId } from '@/core';
 import { Prop } from '@nestjs/mongoose';
 
-export class BaseProfileModel<C extends BaseEntity<C>> extends BaseEntity<C> {
+export class BaseProfileModel<C extends BaseDocument<C>> extends BaseDocument<C> {
   @ObjectIdProp({ required: true })
   oid: TObjectId;
 

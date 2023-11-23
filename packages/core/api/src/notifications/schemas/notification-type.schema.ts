@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '@/core';
+import { BaseDocument } from '@/core';
 import { PropertyType, Type, UrlRoute } from '@lyvely/common';
 import { Translatable } from '@/i18n';
 import { ProfileInfo, ProfileInfoSchema } from '@/profiles';
@@ -29,7 +29,7 @@ export interface INotificationType {
 export type TNotificationType = Type<NotificationType> & { typeName: string };
 
 export abstract class NotificationType<T extends INotificationType = INotificationType>
-  extends BaseEntity<T>
+  extends BaseDocument<T>
   implements INotificationType
 {
   static typeName: string;

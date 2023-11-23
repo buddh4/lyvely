@@ -3,7 +3,7 @@ import {
   assureObjectId,
   EntityData,
   EntityIdentity,
-  createBaseEntityInstance,
+  createBaseDocumentInstance,
 } from './db.utils';
 import {
   FilterQuery,
@@ -16,7 +16,7 @@ import {
   ProjectionType,
   MongooseBulkWriteOptions,
 } from 'mongoose';
-import { BaseEntity } from './base.entity';
+import { BaseDocument } from './base.document';
 import { CollationOptions } from 'mongodb';
 import { Inject, Logger } from '@nestjs/common';
 import { ModelSaveEvent } from './dao.events';
@@ -30,18 +30,18 @@ interface IPagination {
 }
 type ContainsDot = `${string}.${string}`;
 
-export type UpdateQuerySet<T extends BaseEntity<T>> = UpdateQuery<T>['$set'];
-export type UpdateQueryUnset<T extends BaseEntity<T>> = UpdateQuery<T>['$unset'];
+export type UpdateQuerySet<T extends BaseDocument<T>> = UpdateQuery<T>['$set'];
+export type UpdateQueryUnset<T extends BaseDocument<T>> = UpdateQuery<T>['$unset'];
 
-type SortableRecord<T extends BaseEntity<T>> = Partial<Omit<T, '__v' | 'id'>> & {
+type SortableRecord<T extends BaseDocument<T>> = Partial<Omit<T, '__v' | 'id'>> & {
   [key: ContainsDot]: any;
 };
 
-export type QuerySort<T extends BaseEntity<T>> = {
+export type QuerySort<T extends BaseDocument<T>> = {
   [P in keyof SortableRecord<T>]: 1 | -1 | 'asc' | 'desc';
 };
 
-type EntityQuery<T extends BaseEntity<T>> = QueryWithHelpers<
+type EntityQuery<T extends BaseDocument<T>> = QueryWithHelpers<
   // eslint-disable-next-line @typescript-eslint/ban-types
   Array<HydratedDocument<T, any, any>>,
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -70,13 +70,13 @@ export interface IUpdateQueryOptions extends IBaseQueryOptions {
   collation?: CollationOptions;
 }
 
-export interface IBaseFetchQueryOptions<T extends BaseEntity<T>> extends IBaseQueryOptions {
+export interface IBaseFetchQueryOptions<T extends BaseDocument<T>> extends IBaseQueryOptions {
   projection?: ProjectionType<T>;
   sort?: QuerySort<T>;
   collation?: CollationOptions;
 }
 
-export interface IFindAndUpdateQueryOptions<T extends BaseEntity<T>>
+export interface IFindAndUpdateQueryOptions<T extends BaseDocument<T>>
   extends IBaseFetchQueryOptions<T>,
     IUpdateQueryOptions {
   new?: boolean;
@@ -87,12 +87,12 @@ export interface IFindAndUpdateQueryOptions<T extends BaseEntity<T>>
 export type SaveOptions = IBaseQueryOptions;
 export type DeleteOptions = IBaseQueryOptions;
 
-export interface IFetchQueryFilterOptions<T extends BaseEntity<T>>
+export interface IFetchQueryFilterOptions<T extends BaseDocument<T>>
   extends IBaseFetchQueryOptions<T> {
   excludeIds?: EntityIdentity<T>[] | EntityIdentity<T>;
 }
 
-export interface IFetchQueryOptions<T extends BaseEntity<T>> extends IFetchQueryFilterOptions<T> {
+export interface IFetchQueryOptions<T extends BaseDocument<T>> extends IFetchQueryFilterOptions<T> {
   pagination?: IPagination;
   limit?: number;
 }
@@ -106,7 +106,7 @@ export const defaultFetchOptions = {
   },
 };
 
-export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
+export type PartialEntityData<T extends BaseDocument<T>> = Partial<EntityData<T>>;
 
 /**
  * Abstract Data Access Object provides basic data access features for sub classes.
@@ -134,7 +134,7 @@ export type PartialEntityData<T extends BaseEntity<T>> = Partial<EntityData<T>>;
  *   }
  * }
  */
-export abstract class AbstractDao<T extends BaseEntity<T>> {
+export abstract class AbstractDao<T extends BaseDocument<T>> {
   /**
    * The mongoose model, which is usually injected with @InjectModel()
    * @protected
@@ -212,7 +212,7 @@ export abstract class AbstractDao<T extends BaseEntity<T>> {
    * @protected
    */
   protected constructModel(lean: DeepPartial<T>): T {
-    return createBaseEntityInstance(this.getModelConstructor(lean), lean);
+    return createBaseDocumentInstance(this.getModelConstructor(lean), lean);
   }
 
   /**

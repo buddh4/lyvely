@@ -1,7 +1,7 @@
 import { InjectModel, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AbstractDao } from './abstract.dao';
 import { ModelSaveEvent } from './dao.events';
-import { BaseEntity } from './base.entity';
+import { BaseDocument } from './base.document';
 import { Model } from './db.type';
 import {
   createCoreTestingModule,
@@ -21,7 +21,7 @@ interface ITestEntity {
 }
 
 @Schema({ discriminatorKey: 'type' })
-class TestEntity<T extends ITestEntity = ITestEntity> extends BaseEntity<T> {
+class TestEntity<T extends ITestEntity = ITestEntity> extends BaseDocument<T> {
   @Prop({ required: true })
   requiredField: string;
 

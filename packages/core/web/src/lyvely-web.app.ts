@@ -10,6 +10,7 @@ import {
   AppEvents,
   installModules,
   registerModules,
+  IModule,
 } from '@/core';
 import { registerCoreModules } from './core.modules';
 import { markRaw, App as VueApp, createApp } from 'vue';
@@ -20,6 +21,7 @@ import { initApiRepository, createApiUrl } from '@lyvely/interface';
 import { createLyvelyUi } from '@lyvely/ui';
 
 export interface ILyvelyWebAppOptions extends IModuleLoaderOptions {
+  modules?: IModule[];
   apiUrl?: string;
 }
 

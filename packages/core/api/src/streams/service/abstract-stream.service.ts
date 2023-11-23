@@ -5,7 +5,7 @@ import {
   FilterQuery,
   AbstractDao,
   assureStringId,
-  BaseEntity,
+  BaseDocument,
   EntityIdentity,
   IFetchQueryOptions,
 } from '@/core';
@@ -14,7 +14,7 @@ import { DEFAULT_BATCH_SIZE } from '../stream.constants';
 
 @Injectable()
 export abstract class AbstractStreamService<
-  TModel extends BaseEntity<TModel>,
+  TModel extends BaseDocument<TModel>,
   TFilter extends IStreamFilter = any,
   TContext = any,
 > {

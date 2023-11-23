@@ -1,4 +1,4 @@
-import { TransformObjectId, BaseModel } from '@lyvely/common';
+import { TransformObjectId, BaseModel, hasOwnNonNullableProperty } from '@lyvely/common';
 import { Exclude, Expose } from 'class-transformer';
 import type { IContent } from '@lyvely/interface';
 
@@ -40,7 +40,9 @@ export class MilestoneRelationModel<TID = string> extends BaseModel<MilestoneRel
       text: content.getText()?.substring(0, 150),
       contentType: content.type,
       progress: typeof progress === 'number' ? progress : progress?.progress,
-      tid: typeof progress === 'object' ? progress?.tid : undefined,
+      tid: hasOwnNonNullableProperty<{ progress: number; tid?: string }, 'tid'>(progress, 'tid')
+        ? progress?.tid
+        : undefined,
     });
   }
 }

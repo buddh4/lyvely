@@ -1,5 +1,5 @@
 import { UpdateQuery, createObjectId, isObjectId, TObjectId } from './db.type';
-import { BaseEntity, assignEntityData } from './base.entity';
+import { BaseDocument, assignEntityData } from './base.document';
 import {
   isValidObjectId,
   DeepPartial,
@@ -7,22 +7,24 @@ import {
   findByPath,
   IntegrityException,
   assignRawDataTo,
+  isPlainObject,
 } from '@lyvely/common';
+import { hasOwnNonNullableProperty } from '@lyvely/common';
 
-export type EntityIdentity<T extends BaseEntity<any>> = T | TObjectId | string;
+export type EntityIdentity<T extends BaseDocument<any>> = T | TObjectId | string;
 
 export type EntityData<T> = Omit<T, '_id' | 'id' | '__v'>;
 
 // We use any here since we need to use this when defining sub documents
-export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
+export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
   identity: EntityIdentity<T> | undefined | null,
   optional?: false,
 ): TObjectId;
-export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
+export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
   identity: EntityIdentity<T> | undefined | null,
   optional: true,
 ): TObjectId | undefined;
-export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
+export function assureObjectId<T extends BaseDocument<any> = BaseDocument<any>>(
   identity: EntityIdentity<T> | undefined | null,
   optional?: boolean,
 ): TObjectId {
@@ -55,7 +57,7 @@ export function assureObjectId<T extends BaseEntity<any> = BaseEntity<any>>(
   throw new IntegrityException('Use of invalid object id detected.');
 }
 
-export function applyUpdateTo<T extends BaseEntity<any>>(
+export function applyUpdateTo<T extends BaseDocument<any>>(
   identity: EntityIdentity<T>,
   update: UpdateQuery<T>,
 ) {
@@ -113,9 +115,7 @@ export function applyPush<T>(model: T, pushData: { [key in keyof T]?: any }): T 
     }
 
     if (
-      pushData[key] &&
-      typeof pushData[key] === 'object' &&
-      '$each' in pushData[key] &&
+      hasOwnNonNullableProperty(pushData[key], '$each') &&
       Array.isArray(pushData[key][`$each`])
     ) {
       model[key] = [...model[key], ...pushData[key][`$each`]];
@@ -162,7 +162,7 @@ export function assureStringId(obj: any | undefined, optional?: boolean): string
   throw new IntegrityException('Use of invalid object id detected.');
 }
 
-export function createBaseEntityInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {
+export function createBaseDocumentInstance<T>(constructor: Type<T>, data: DeepPartial<T>) {
   const model = Object.create(constructor.prototype);
   if (typeof model.init === 'function') {
     model.init(data);

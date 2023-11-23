@@ -67,7 +67,7 @@ export class UsersResponse<TID = string> extends BaseModel<UserRepsonse<any>> {
 In this example our backend schema implements the model properties as follows:
 
 ```typescript
-export class User extends BaseEntity<User> implements PropertiesOf<UserModel<TObjectId>> {
+export class User extends BaseDocument<User> implements PropertiesOf<UserModel<TObjectId>> {
     /** Implementation of User schema **/
 }
 ```

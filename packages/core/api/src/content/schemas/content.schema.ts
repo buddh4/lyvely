@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory, ModelDefinition } from '@nestjs/mongoose';
 import { DeepPartial, PropertyType, assignRawDataTo, Type, PropertiesOf } from '@lyvely/common';
 import { IContent, ContentModel } from '@lyvely/interface';
-import { BaseEntity, ObjectIdArrayProp, TObjectId } from '@/core';
+import { BaseDocument, ObjectIdArrayProp, TObjectId } from '@/core';
 import { ContentLog, ContentLogSchema } from './content-log.schema';
 import { ContentMetadata, ContentMetadataSchema } from './content-metadata.schema';
 import { CreatedAs, Author } from './content-author.schema';
@@ -39,7 +39,7 @@ function implementsGetModelConstructor(model: any): model is IGetModelConstructo
 }
 
 export type ContentEntity<T, TConfig extends Object = any> = IContent<TObjectId, TConfig> &
-  BaseEntity<T>;
+  BaseDocument<T>;
 
 /**
  * This class implements the base schema of all content types. Subclasses may overwrite the `content`, `config` or

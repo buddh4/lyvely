@@ -17,7 +17,7 @@ import {
   UserProfileRelation,
 } from '../schemas';
 import { ProtectedProfileContext } from '../models';
-import { Model, createBaseEntityInstance, createObjectId } from '@/core';
+import { Model, createBaseDocumentInstance, createObjectId } from '@/core';
 import { getObjectId as mongoSeedingGetObjectId } from 'mongo-seeding';
 
 export class ProfileTestDataUtils extends UserTestDataUtils {
@@ -252,7 +252,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   }
 
   private async _createProfile(profile: Profile) {
-    return createBaseEntityInstance(Profile, await new this.ProfileModel(profile).save());
+    return createBaseDocumentInstance(Profile, await new this.ProfileModel(profile).save());
   }
 
   async addProfileRelation(

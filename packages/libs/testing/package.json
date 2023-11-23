@@ -24,7 +24,7 @@
     "@nestjs/common": "^9.4.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/mongoose": "^9.2.2",
-    "@nestjs/event-emitter": "^1.4.1",
+    "@nestjs/event-emitter": "^2.0.0",
     "@nestjs/throttler": "^4.0.0",
     "@nestjs/testing": "^9.4.0",
     "bullmq": "^3.12.0",

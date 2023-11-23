@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { createWriteStream, writeFile, existsSync, mkdirSync } from 'fs';
 import { Stream } from 'stream';
 import pug from 'pug';
-import { escapeHTML, UrlRoute } from '@lyvely/common';
+import { escapeHTML, hasOwnNonNullableProperty, UrlRoute } from '@lyvely/common';
 
 export interface IMessageInfo {
   messageId: string;
@@ -118,22 +118,18 @@ export class MailService {
 
   private isStreamTransport(info: SentMessageInfo): info is IStreamMessageInfo {
     const mailConfig = this.configService.get<LyvelyMailOptions>('mail');
+    const transport = mailConfig?.transport;
     return (
-      !!mailConfig?.transport &&
-      typeof mailConfig?.transport === 'object' &&
-      'streamTransport' in mailConfig.transport &&
-      mailConfig?.transport?.streamTransport &&
-      info.message instanceof Stream
+      hasOwnNonNullableProperty(transport, 'streamTransport') && info.message instanceof Stream
     );
   }
 
   private isJsonTransport(info: SentMessageInfo) {
     const mailConfig = this.configService.get<LyvelyMailOptions>('mail');
+    const transport = mailConfig?.transport;
     return (
-      !!mailConfig?.transport &&
-      typeof mailConfig?.transport === 'object' &&
-      'jsonTransport' in mailConfig.transport &&
-      mailConfig?.transport?.jsonTransport &&
+      hasOwnNonNullableProperty(transport, 'jsonTransport') &&
+      transport.jsonTransport &&
       typeof info.message === 'string'
     );
   }

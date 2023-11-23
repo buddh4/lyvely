@@ -2,7 +2,7 @@ import { Endpoint, IEditModelService } from '@lyvely/common';
 import { ContentUpdateResponse, CreateContentModel } from '../models';
 import { IContent } from '../interfaces';
 
-export interface IContentTypeService<
+export interface IContentTypeClient<
   TModel extends IContent,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
@@ -16,4 +16,4 @@ export type ContentTypeEndpoint<
   TModel extends IContent,
   TCreateModel extends CreateContentModel,
   TUpdateModel extends Partial<CreateContentModel> = Partial<TCreateModel>,
-> = Endpoint<IContentTypeService<TModel, TCreateModel, TUpdateModel>>;
+> = Endpoint<IContentTypeClient<TModel, TCreateModel, TUpdateModel>>;

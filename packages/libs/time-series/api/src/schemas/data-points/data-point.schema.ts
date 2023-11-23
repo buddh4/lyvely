@@ -2,7 +2,7 @@ import {
   assureObjectId,
   ObjectIdProp,
   assignEntityData,
-  BaseEntity,
+  BaseDocument,
   TObjectId,
   User,
   Profile,
@@ -18,14 +18,14 @@ import {
 import { DataPointModel } from '@lyvely/time-series-interface';
 import { TimeSeriesContent } from '../time-series-content.schema';
 
-export type DataPointEntity<T> = DataPointModel<TObjectId> & BaseEntity<T>;
+export type DataPointEntity<T> = DataPointModel<TObjectId> & BaseDocument<T>;
 
 /**
  * This represents a datapoint bucket of given interval.
  */
 @Schema({ timestamps: true, discriminatorKey: 'valueType' })
 export class DataPoint<T extends DataPointEntity<T> = DataPointEntity<any>>
-  extends BaseEntity<T>
+  extends BaseDocument<T>
   implements PropertiesOf<DataPointModel<TObjectId, T>>
 {
   meta: any;

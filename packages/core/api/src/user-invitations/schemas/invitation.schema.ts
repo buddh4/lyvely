@@ -1,10 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, ObjectIdProp, TObjectId } from '@/core';
+import { BaseDocument, ObjectIdProp, TObjectId } from '@/core';
 import { ProfileMembershipRole } from '@lyvely/interface';
 import { InvitationIF } from '../interfaces';
 
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Invitation<T extends Invitation = any> extends BaseEntity<T> implements InvitationIF {
+export class Invitation<T extends Invitation = any>
+  extends BaseDocument<T>
+  implements InvitationIF
+{
   @ObjectIdProp({ required: true })
   createdBy: TObjectId;
 

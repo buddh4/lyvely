@@ -1,5 +1,6 @@
 import { Type } from '../../utils/util.types';
 import { getPropertyTypeDefinitions } from '../decorators';
+import { isPlainObject } from '../../utils';
 
 interface InitPropertiesOptionsIF {
   maxDepth?: number;
@@ -28,7 +29,7 @@ function _initPropertyTypes<T>(model: T, level = 0, { maxDepth = 100 } = {}) {
     return model;
   }
 
-  if (model && typeof model === 'object') {
+  if (isPlainObject(model)) {
     const propertyDefinitions = getPropertyTypeDefinitions(model.constructor as Type);
     Object.keys(propertyDefinitions).forEach((key) => {
       const propertyKey = key as keyof T & string;

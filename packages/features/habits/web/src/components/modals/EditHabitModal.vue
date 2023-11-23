@@ -1,5 +1,10 @@
 <script lang="ts" setup>
-import { CreateHabitModel, HabitModel, UpdateHabitModel } from '@lyvely/habits-interface';
+import {
+  CreateHabitModel,
+  HabitModel,
+  UpdateHabitModel,
+  useHabitsClient,
+} from '@lyvely/habits-interface';
 import { NumberDataPointConfigForm, useDataPointStrategyFacade } from '@lyvely/time-series-web';
 import { computed } from 'vue';
 import {
@@ -8,7 +13,6 @@ import {
   useContentEditModal,
   ICreateContentInitOptions,
 } from '@lyvely/web';
-import { useHabitsService } from '@/services';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
 import { LyModal, LyFormModel, LyTextField, LySelect, LyTextarea, isTouchScreen } from '@lyvely/ui';
 
@@ -27,7 +31,7 @@ const { isCreate, showModal, model, validator, submit, status } = useContentEdit
   CreateHabitModel,
   UpdateHabitModel
 >(props, emit, {
-  service: useHabitsService(),
+  service: useHabitsClient(),
 });
 
 function adjustAndSubmit() {

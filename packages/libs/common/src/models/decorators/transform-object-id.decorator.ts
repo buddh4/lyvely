@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IPropertyDefinitionOptions, PropertyType } from './property-type.decorator';
+import { isPlainObject } from '../../utils';
 
 /**
  * Decorator used to transform ObjectId values to string.
@@ -44,4 +45,4 @@ export function TransformObjectIds(
 }
 
 const transformObjectId = (value: any) =>
-  value && typeof value === 'object' && 'toString' in value ? value.toString() : value;
+  isPlainObject(value) && value.toString ? value.toString() : value;

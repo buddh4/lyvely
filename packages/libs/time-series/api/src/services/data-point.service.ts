@@ -4,7 +4,7 @@ import {
   useDataPointStrategyFacade,
   InvalidDataPointValueTypeException,
 } from '@lyvely/time-series-interface';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import { isPlainObject, UserAssignmentStrategy } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
 import { User, EntityIdentity, Profile, ProfilesService } from '@lyvely/api';
 import { DataPointStrategyDao } from '../daos';
@@ -79,7 +79,7 @@ export abstract class DataPointService<
     const strategy = this.getStrategy(dataPoint.valueType);
     if (strategy) {
       const update = strategy.postProcess(user, model, dataPoint);
-      if (typeof update === 'object') {
+      if (isPlainObject(update)) {
         await this.dataPointDao.updateOneSetById(dataPoint._id, update);
       }
     }

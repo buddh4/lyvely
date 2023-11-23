@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '@/core';
+import { BaseDocument } from '@/core';
 import { IPermissionSetting, ProfileRelationRole } from '@lyvely/interface';
 import { getStringEnumValues } from '@lyvely/common';
 
 @Schema({ timestamps: true })
 export class ProfileRolePermission
-  extends BaseEntity<ProfileRolePermission>
+  extends BaseDocument<ProfileRolePermission>
   implements IPermissionSetting
 {
   @Prop({ required: true })

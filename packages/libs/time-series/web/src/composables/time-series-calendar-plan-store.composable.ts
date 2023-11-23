@@ -30,12 +30,14 @@ export interface ITimeSeriesCalendarPlanOptions<
     TDataPoint,
     TResponse
   >,
-  TService extends ITimeSeriesCalendarPlanService<
+  TClient extends ITimeSeriesCalendarPlanService<
     TModel,
     TDataPoint,
     TResponse
   > = ITimeSeriesCalendarPlanService<TModel, TDataPoint, TResponse>,
-> extends ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TService> {}
+> extends ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TClient> {
+  onDataPointUpdated?: (response: Awaited<ReturnType<TClient['updateDataPoint']>>) => void;
+}
 
 export function useTimeSeriesCalendarPlan<
   TModel extends TimeSeriesContentModel,
@@ -50,21 +52,21 @@ export function useTimeSeriesCalendarPlan<
     TDataPoint,
     TResponse
   >,
-  TService extends ITimeSeriesCalendarPlanService<
+  TClient extends ITimeSeriesCalendarPlanService<
     TModel,
     TDataPoint,
     TResponse
   > = ITimeSeriesCalendarPlanService<TModel, TDataPoint, TResponse>,
 >(
-  options: ITimeSeriesCalendarPlanOptions<TModel, TFilter, TDataPoint, TResponse, TStore, TService>,
+  options: ITimeSeriesCalendarPlanOptions<TModel, TFilter, TDataPoint, TResponse, TStore, TClient>,
 ) {
   const profileStore = useProfileStore();
   const { locale } = storeToRefs(profileStore);
   const calendarPlanStore = useCalendarPlanStore();
-  const calendarPlan = useCalendarPlan<TModel, TFilter, TResponse, TStore, TService>(options);
+  const calendarPlan = useCalendarPlan<TModel, TFilter, TResponse, TStore, TClient>(options);
   const dialog = useGlobalDialogStore();
 
-  const { cache, service } = calendarPlan;
+  const { cache, client } = calendarPlan;
 
   function getDataPoint(model: TimeSeriesContentModel) {
     const timingId = toTimingId(
@@ -89,7 +91,7 @@ export function useTimeSeriesCalendarPlan<
 
     try {
       dataPoint.value = value;
-      const result = await service.updateDataPoint(dataPoint.cid, {
+      const result = await client.updateDataPoint(dataPoint.cid, {
         date: formatDate(calendarPlanStore.date),
         value: value,
       });
@@ -97,6 +99,9 @@ export function useTimeSeriesCalendarPlan<
       cache.value.setModel(result.model as TModel);
       useContentStore().emitPostContentUpdateEvent(result.model.type, result.model);
       cache.value.setDataPoint(result.dataPoint as TDataPoint);
+
+      if (options.onDataPointUpdated)
+        options.onDataPointUpdated(result as Awaited<ReturnType<TClient['updateDataPoint']>>);
     } catch (e) {
       if (isDefined(oldValue)) {
         dataPoint.value = oldValue!;

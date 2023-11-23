@@ -3,17 +3,19 @@ import { computed, nextTick, ref, watch } from 'vue';
 import LyFloatingInputLayout from './LyFloatingInputLayout.vue';
 import { escapeRegExp, isArray, uniqueId } from 'lodash';
 import { t, Translatable } from '@/i18n';
-import LyModal from "@/components/modals/LyModal.vue";
-import LyTextField from "@/components/forms/LyTextField.vue";
-import LyBadge from "@/components/badges/LyBadge.vue";
-import LyButton from "@/components/buttons/LyButton.vue";
+import LyModal from '@/components/modals/LyModal.vue';
+import LyTextField from '@/components/forms/LyTextField.vue';
+import LyBadge from '@/components/badges/LyBadge.vue';
+import LyButton from '@/components/buttons/LyButton.vue';
+import { getOwnNonNullableProperty } from '@lyvely/common';
 
-export type IChooserOption = { key: string; value?: any; label?: string; color?: string } | string;
+type IChooserConfig = { key: string; value?: any; label?: string; color?: string };
+export type IChooserOptions = IChooserConfig | string;
 
 export interface IProps {
-  id?: string,
+  id?: string;
   modelValue: Array<string>;
-  options: Array<IChooserOption>;
+  options: Array<IChooserOptions>;
   labels?: Record<string, string> | ((key: string) => string);
   add: boolean;
   multiple?: boolean;
@@ -44,11 +46,11 @@ const optionsToAdd = computed(
     ) || [],
 );
 
-function getOptionKey(option: IChooserOption): string {
+function getOptionKey(option: IChooserOptions): string {
   return typeof option === 'string' ? option : option.key;
 }
 
-function getLabel(option: IChooserOption): string {
+function getLabel(option: IChooserOptions): string {
   let result;
 
   const key = getOptionKey(option);
@@ -66,13 +68,13 @@ function getLabel(option: IChooserOption): string {
   return result;
 }
 
-function filterOption(option?: IChooserOption) {
+function filterOption(option?: IChooserOptions) {
   return (
     option && (!query.value || getLabel(option).match(new RegExp(escapeRegExp(query.value), 'i')))
   );
 }
 
-function getOption(key: string): IChooserOption | undefined {
+function getOption(key: string): IChooserOptions | undefined {
   return props.options.find((option: any) => getOptionKey(option) === key) || key;
 }
 const model = computed(() => (isArray(props.modelValue) ? props.modelValue : []));
@@ -80,10 +82,10 @@ const selection = computed(() => model.value.map(getOption));
 
 const selectedOptions = computed(
   () =>
-    model.value.map((key: string) => getOption(key)).filter(filterOption) as Array<IChooserOption>,
+    model.value.map((key: string) => getOption(key)).filter(filterOption) as Array<IChooserOptions>,
 );
 
-function addSelection(option: IChooserOption) {
+function addSelection(option: IChooserOptions) {
   if (isSelected(option)) return;
   query.value = '';
   const newValue = props.multiple ? [...model.value, getOptionKey(option)] : [getOptionKey(option)];
@@ -91,7 +93,7 @@ function addSelection(option: IChooserOption) {
   focusOption(option);
 }
 
-function removeSelection(option: IChooserOption) {
+function removeSelection(option: IChooserOptions) {
   query.value = '';
   emit(
     'update:modelValue',
@@ -100,7 +102,7 @@ function removeSelection(option: IChooserOption) {
   focusOption(option);
 }
 
-function focusOption(option: IChooserOption) {
+function focusOption(option: IChooserOptions) {
   const optionKey = getOptionKey(option);
   nextTick(() => {
     const entry = chooser.value?.querySelector(
@@ -110,12 +112,12 @@ function focusOption(option: IChooserOption) {
   });
 }
 
-function isSelected(option: IChooserOption) {
+function isSelected(option: IChooserOptions) {
   return model.value.includes(getOptionKey(option));
 }
 
 function isExistingOption(key: string) {
-  return !!optionsToAdd.value.find((option: IChooserOption) => getOptionKey(option) === key);
+  return !!optionsToAdd.value.find((option: IChooserOptions) => getOptionKey(option) === key);
 }
 
 function focusFirst() {
@@ -142,7 +144,7 @@ function focusPrev(evt: KeyboardEvent) {
 const entryClass =
   'flex items-center gap-2 border-divide bg-main p-2 md:p-4 cursor-pointer p-2 md:p-4 focus:outline-none hover:bg-highlight focus:bg-highlight';
 
-function getBadgeClass(option: IChooserOption) {
+function getBadgeClass(option: IChooserOptions) {
   return [
     'mr-0.5 border',
     { 'border-transparent': !!getColor(option) },
@@ -151,8 +153,8 @@ function getBadgeClass(option: IChooserOption) {
   ];
 }
 
-function getColor(option: IChooserOption) {
-  return typeof option === 'object' ? option.color : undefined;
+function getColor(options: IChooserOptions) {
+  return getOwnNonNullableProperty<IChooserConfig>(options, 'color');
 }
 
 const showAddEntry = computed(

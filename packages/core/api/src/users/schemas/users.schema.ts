@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import { UpdateQuery, Document } from 'mongoose';
-import { BaseEntity, createObjectId, getDefaultLocale, MixedProp } from '@/core';
+import { BaseDocument, createObjectId, getDefaultLocale, MixedProp } from '@/core';
 import { PropertiesOf, getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
@@ -23,7 +23,7 @@ import {
  * This class defines the user schema of user documents.
  */
 @Schema({ timestamps: true })
-export class User extends BaseEntity<User> implements PropertiesOf<UserModel> {
+export class User extends BaseDocument<User> implements PropertiesOf<UserModel> {
   /** The main email of this user. **/
   @Prop({
     unique: true,

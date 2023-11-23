@@ -199,7 +199,7 @@ An endpoint is defined within the interface package and can be implemented as fo
 
 ```typescript title=polls/packages/interface/src/endpoints/poll.endpoint.ts
 // This interface will be implemented by our frontend service
-export interface IPollClient extends IContentTypeService<PollModel, CreatePollModel> {}
+export interface IPollClient extends IContentTypeClient<PollModel, CreatePollModel> {}
 
 // The endpoint interface will be implemented by our controller in the backend.
 export type PollEndpoint = StrictEndpoint<IPollClient>;
@@ -209,7 +209,7 @@ export const ENDPOINT_POLLS = 'polls';
 ```
 
 While not mandatory, this practice is recommended to ensure type safety between our frontend service/repository and 
-the backend API endpoint. The base `IContentTypeService` provides interfaces for the create and update endpoints of
+the backend API endpoint. The base `IContentTypeClient` provides interfaces for the create and update endpoints of
 our content type and can be extended with content type specific endpoint functions.
 
 ## Content Backend API
@@ -257,7 +257,7 @@ More complex content types can extend this schema by implementing a custom schem
 `ContentDataType` schema class. For instance, let's consider our Poll content type:
 
 ```typescript title=polls/packages/api/src/schemas/poll.schema.ts
-import {BaseEntity, ContentDataType, NestedSchema, ObjectIdProp, TObjectId} from "@lyvely/api";
+import {BaseDocument, ContentDataType, NestedSchema, ObjectIdProp, TObjectId} from "@lyvely/api";
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import {BaseModel} from "@lyvely/common";
 
@@ -265,7 +265,7 @@ import {BaseModel} from "@lyvely/common";
  * This class will represent a single poll option.
  */
 @Schema()
-export class PollOption extends BaseEntity<PollOption> {
+export class PollOption extends BaseDocument<PollOption> {
     @Prop({required: true})
     text: string;
 

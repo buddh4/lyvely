@@ -1,9 +1,4 @@
-import {
-  CalendarInterval,
-  toTimingId,
-  getCalendarIntervalArray,
-  ICalendarPreferences,
-} from '@lyvely/dates';
+import { CalendarInterval, toTimingId, getCalendarIntervalArray } from '@lyvely/dates';
 import { SortResult } from '@lyvely/common';
 import { ContentFilter } from '@lyvely/interface';
 import { LoadedTimingIdStore } from '@/models';
@@ -30,26 +25,13 @@ import { useCalendarPlanStore } from '@/stores';
 import { dragEventToMoveEvent } from '@/utils';
 import { IMoveEntryEvent } from '@/interfaces';
 
-export interface ICalendarPlanOptions<
-  TModel extends ICalendarPlanEntry,
-  TFilter extends ContentFilter<TModel>,
-  TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
-  TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
-  TService extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
-> {
-  filter: TFilter;
-  cache: TStore;
-  contentTypes?: string[];
-  service: TService;
-}
-
 export function useCalendarPlan<
   TModel extends ICalendarPlanEntry,
   TFilter extends ContentFilter<TModel>,
   TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
   TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
-  TService extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
->(options: ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TService>) {
+  TClient extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
+>(options: ICalendarPlanOptions<TModel, TFilter, TResponse, TStore, TClient>) {
   const profileStore = useProfileStore();
   const { profile, locale } = storeToRefs(profileStore);
   const calendarPlanStore = useCalendarPlanStore();
@@ -58,7 +40,7 @@ export function useCalendarPlan<
   options.filter.setTagProvider(() => profile.value?.tags || []);
   const filter = ref(options.filter);
   const cache = ref(options.cache);
-  const service = options.service;
+  const client = options.client;
   const { date } = storeToRefs(calendarPlanStore);
   const tidCache = ref(new LoadedTimingIdStore());
   const status = useStatus();
@@ -108,7 +90,7 @@ export function useCalendarPlan<
     // TODO: Check if date already loaded + implement interval level query
 
     try {
-      const result = await loadingStatus(service.getByFilter(intervalFilter), status);
+      const result = await loadingStatus(client.getByFilter(intervalFilter), status);
       cache.value.handleResponse(result as TResponse);
     } catch (e) {
       DialogExceptionHandler('An unknown error occurred while loading models.', this)(e);
@@ -130,7 +112,7 @@ export function useCalendarPlan<
     // TODO: Check if date already loaded + implement interval level query
 
     try {
-      const result = await loadingStatus(service.getByFilter(intervalFilter), status);
+      const result = await loadingStatus(client.getByFilter(intervalFilter), status);
       cache.value.handleResponse(result as TResponse);
     } catch (e) {
       DialogExceptionHandler('An unknown error occurred while loading models.', this)(e);
@@ -176,7 +158,7 @@ export function useCalendarPlan<
     model.meta.sortOrder = attachTo ? (attachTo.meta.sortOrder || 0) + 0.1 : 0;
 
     try {
-      const sortResult = await service.sort(
+      const sortResult = await client.sort(
         model.id,
         new CalendarPlanSort({ interval: moveEvent.toInterval, attachToId: attachTo?.id }),
       );
@@ -207,7 +189,20 @@ export function useCalendarPlan<
     sort,
     startWatch,
     isEmpty,
-    service,
+    client,
     intervals: getCalendarIntervalArray(),
   };
+}
+
+export interface ICalendarPlanOptions<
+  TModel extends ICalendarPlanEntry,
+  TFilter extends ContentFilter<TModel>,
+  TResponse extends ICalendarPlanResponse<TModel> = ICalendarPlanResponse<TModel>,
+  TStore extends CalendarPlanStore<TModel, TResponse> = CalendarPlanStore<TModel, TResponse>,
+  TClient extends ICalendarPlanService<TModel> = ICalendarPlanService<TModel>,
+> {
+  filter: TFilter;
+  cache: TStore;
+  contentTypes?: string[];
+  client: TClient;
 }

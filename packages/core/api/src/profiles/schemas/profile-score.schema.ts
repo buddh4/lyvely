@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, ObjectIdProp, TObjectId } from '@/core';
+import { BaseDocument, ObjectIdProp, TObjectId } from '@/core';
 import { DeepPartial, UserAssignmentStrategy } from '@lyvely/common';
 import { User } from '@/users';
 import { Profile } from './profiles.schema';
@@ -31,7 +31,7 @@ export interface ICreateProfileScore {
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class ProfileScore<
   C extends IProfileScoreAction = IProfileScoreAction,
-> extends BaseEntity<C> {
+> extends BaseDocument<C> {
   constructor(options: ICreateProfileScore, data: DeepPartial<C> = {}) {
     const { user, profile } = options;
     data.createdBy = data.createdBy || user._id;

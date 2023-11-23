@@ -5,10 +5,10 @@ import {
   CreateMilestoneModel,
   MilestoneListResponse,
 } from '../models';
-import { IContentTypeService } from '@lyvely/interface';
+import { IContentTypeClient } from '@lyvely/interface';
 
 export interface IMilestonesEndpointService
-  extends IContentTypeService<MilestoneModel, CreateMilestoneModel, UpdateMilestoneModel> {
+  extends IContentTypeClient<MilestoneModel, CreateMilestoneModel, UpdateMilestoneModel> {
   getById(mid: string): Promise<MilestoneModel>;
   getAll(): Promise<MilestoneListResponse>;
 }

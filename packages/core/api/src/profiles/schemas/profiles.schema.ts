@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   getDefaultLocale,
   assureObjectId,
-  BaseEntity,
+  BaseDocument,
   createObjectId,
   EntityIdentity,
   MixedProp,
@@ -46,7 +46,10 @@ const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
  * Note, it is not intended to create custom profile types beside the types defined in ProfileTypes.
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
-export class Profile extends BaseEntity<Profile> implements PropertiesOf<ProfileModel<TObjectId>> {
+export class Profile
+  extends BaseDocument<Profile>
+  implements PropertiesOf<ProfileModel<TObjectId>>
+{
   /** The main owner of this profile, note that there may be additional owners registered as profile relation. **/
   @ObjectIdProp({ required: true })
   ownerId: TObjectId;

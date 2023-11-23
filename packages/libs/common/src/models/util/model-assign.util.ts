@@ -1,6 +1,14 @@
-import { findByPath, isBlacklistedProperty, isObjectId, Type } from '../../utils';
+import {
+  findByPath,
+  hasOwnNonNullableProperty,
+  isBlacklistedProperty,
+  isObjectId,
+  isPlainObject,
+  Type,
+} from '../../utils';
 import { initPropertyTypes } from './model-property-type.util';
 import { getPropertyTypeDefinition } from '../decorators';
+import { implementsAfterInit } from '../base.model';
 
 type WithTransformation = ((model: any, field: string) => undefined | any) | undefined;
 interface IAssignOptions {
@@ -58,7 +66,7 @@ function _assignRawDataTo<T extends Object>(
     }
 
     if (isBlacklistedProperty(path)) return;
-    if (model && typeof model === 'object' && strict && !Object.hasOwn(model, path)) return;
+    if (isPlainObject(model) && strict && !Object.hasOwn(model, path)) return;
 
     const transformed: any = transform ? transform(data[path], path) : undefined;
 
@@ -78,7 +86,7 @@ function _assignRawDataTo<T extends Object>(
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
       const propertyType = propertyTypeDefinition?.type;
       model[path] = propertyType === String ? data[path].toString() : data[path];
-    } else if (data[path] && typeof data[path] === 'object' && !(data[path] instanceof Date)) {
+    } else if (isPlainObject(data[path])) {
       // Try to get model type by ModelType decorator, or otherwise try to determine the type from model or data
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
       let propertyType = propertyTypeDefinition?.type;
@@ -101,14 +109,9 @@ function _assignRawDataTo<T extends Object>(
           { maxDepth, strict, transform },
         );
       }
-
-      if (
-        model[path] &&
-        typeof model[path] === 'object' &&
-        'afterInit' in (<any>model)[path] &&
-        typeof (<any>model)[path]['afterInit'] === 'function'
-      ) {
-        (<any>model)[path].afterInit();
+      const modelValue = model[path];
+      if (implementsAfterInit(modelValue)) {
+        modelValue.afterInit();
       }
     } else if (typeof data[path] !== 'function') {
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);

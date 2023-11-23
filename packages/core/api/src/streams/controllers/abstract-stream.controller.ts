@@ -7,11 +7,11 @@ import {
   StreamResponse,
 } from '@lyvely/interface';
 import { AbstractStreamService } from '../service';
-import { BaseEntity } from '@/core';
+import { BaseDocument } from '@/core';
 import { PropertiesOf } from '@lyvely/common';
 
 export abstract class AbstractStreamController<
-  TModel extends BaseEntity<TModel>,
+  TModel extends BaseDocument<TModel>,
   TResult,
   TFilter extends IStreamFilter = any,
   TContext = any,

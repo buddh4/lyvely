@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { assignEntityData, BaseEntity, assureObjectId, TObjectId, ObjectIdProp } from '@/core';
+import { assignEntityData, BaseDocument, assureObjectId, TObjectId, ObjectIdProp } from '@/core';
 import { Profile } from './profiles.schema';
 import { User } from '@/users';
 import { getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
@@ -61,7 +61,7 @@ type UserRelation = {
  */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class UserProfileRelation<C extends UserRelation = UserRelation>
-  extends BaseEntity<C>
+  extends BaseDocument<C>
   implements ProfileRelationModel<TObjectId>
 {
   @ObjectIdProp({ required: true })

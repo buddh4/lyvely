@@ -4,6 +4,7 @@ import { IModule, getModule, isDevelopEnvironment, getModules } from '@/core';
 import { Translatable } from '@lyvely/ui';
 import { DEFAULT_FALLBACK_LOCALE, LOCALES_SUPPORTED, ITranslatable } from '@lyvely/interface';
 import { loadDateTimeLocale, isDateTimeLocaleLoaded } from '@lyvely/dates';
+import { hasOwnNonNullableProperty } from '@lyvely/common';
 
 let i18n: I18n;
 
@@ -32,7 +33,7 @@ export function translation(key: string, options?: any) {
 export function translationAdapter(t: Translatable) {
   if (!t) return '';
   if (typeof t === 'string') return translate(t);
-  if (typeof t === 'object') return t.plain;
+  if (hasOwnNonNullableProperty(t, 'plain')) return t.plain;
   if (typeof t === 'function') return t();
 
   return '';
@@ -45,11 +46,11 @@ export function translate(key: ITranslatable, params?: Record<string, string>): 
     return 'error';
   }
 
-  if (key && typeof key === 'object' && 'key' in key) {
+  if (hasOwnNonNullableProperty(key, 'key')) {
     return (<any>getI18n().global).t(key.key, key.params || params);
   }
 
-  if (key && typeof key === 'object' && 'plain' in key) {
+  if (hasOwnNonNullableProperty(key, 'plain')) {
     return key.plain;
   }
 

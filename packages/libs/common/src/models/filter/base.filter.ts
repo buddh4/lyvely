@@ -1,4 +1,5 @@
 import mitt, { Emitter, Handler } from 'mitt';
+import { isPlainObject } from '../../utils';
 
 export type FilterAddition<
   TModel,
@@ -77,7 +78,7 @@ export abstract class Filter<
     const result: Record<string, string> = {};
     for (const option in this.options) {
       const value = this.options[option];
-      if (value && typeof value === 'object' && 'toString' in value) {
+      if (isPlainObject(value) && value.toString) {
         result[option] = value.toString();
       } else if (value) {
         result[option] = `${value}`;

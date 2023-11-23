@@ -1,7 +1,7 @@
 import { useApiRepository } from './api.repository';
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { EndpointResult } from '@/endpoints';
-import { isObject } from 'lodash';
+import { isPlainObject } from '@lyvely/common';
 
 type ApiResponse<T, TClient> = T extends (...args: any) => any
   ? EndpointResult<T>
@@ -38,7 +38,7 @@ export const useApi = <TClient>(resource: string) => {
       path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      config = isObject(path) ? path : config;
+      config = isPlainObject(path) ? path : config;
       path = typeof path === 'string' ? path : undefined;
       return useApiRepository().get<T, R, D>(createPath(resource, path), config);
     },
@@ -60,7 +60,7 @@ export const useApi = <TClient>(resource: string) => {
       path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      config = isObject(path) ? path : config;
+      config = isPlainObject(path) ? path : config;
       path = typeof path === 'string' ? path : undefined;
       return useApiRepository().delete<T, R, D>(createPath(resource, path), config);
     },
@@ -82,7 +82,7 @@ export const useApi = <TClient>(resource: string) => {
       path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      config = isObject(path) ? path : config;
+      config = isPlainObject(path) ? path : config;
       path = typeof path === 'string' ? path : undefined;
       return useApiRepository().head<T, R, D>(createPath(resource, path), config);
     },
@@ -104,7 +104,7 @@ export const useApi = <TClient>(resource: string) => {
       path?: string | ApiRequestConfig<D>,
       config?: ApiRequestConfig<D>,
     ) => {
-      config = isObject(path) ? path : config;
+      config = isPlainObject(path) ? path : config;
       path = typeof path === 'string' ? path : undefined;
       return useApiRepository().options<T, R, D>(createPath(resource, path), config);
     },
@@ -218,7 +218,7 @@ function getArgsWithData<D = any>(
     };
   }
 
-  if (isObject(path)) {
+  if (isPlainObject(path)) {
     return {
       path: undefined,
       data: path,

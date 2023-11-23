@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   assureObjectId,
-  BaseEntity,
+  BaseDocument,
   EntityIdentity,
   NestedSchema,
   ObjectIdProp,
@@ -100,7 +100,7 @@ export class NotificationDeliveryStatus extends BaseModel<NotificationDeliverySt
 const NotificationDeliveryStatusSchema = SchemaFactory.createForClass(NotificationDeliveryStatus);
 
 @Schema()
-export class UserNotification extends BaseEntity<UserNotification> {
+export class UserNotification extends BaseDocument<UserNotification> {
   @ObjectIdProp({ required: true })
   uid: TObjectId;
 

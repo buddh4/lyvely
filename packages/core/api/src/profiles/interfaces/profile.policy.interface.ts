@@ -1,5 +1,5 @@
-import { IPolicy } from '@/policies';
-import { ProfileContext, ProtectedProfileContext } from '../models';
+import { IPolicy } from '@/policies/interfaces';
+import { ProfileContext, ProtectedProfileContext } from '../models/profile.context';
 
 export interface IProfilePolicy<T extends ProfileContext = ProfileContext> extends IPolicy<T> {}
 export interface IProfileUserPolicy<T extends ProtectedProfileContext = ProtectedProfileContext>

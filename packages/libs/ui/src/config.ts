@@ -1,5 +1,6 @@
 import { setTranslationProvider, TranslationAdapter } from '@/i18n';
 import { AvatarData } from '@/interfaces';
+import { isPlainObject } from '@lyvely/common';
 
 export type ENV = 'development' | 'production';
 export type AvatarUrlProvider = (guid: string, ts?: number) => string;
@@ -27,7 +28,7 @@ export function getAvatarUrl(guid: string, ts?: number) {
 export function createAvatarUrl(avatar: AvatarData): string;
 export function createAvatarUrl(guid: string, timestamp?: number): string;
 export function createAvatarUrl(guid: string | AvatarData, timestamp?: number): string {
-  if (typeof guid === 'object') {
+  if (isPlainObject<AvatarData>(guid)) {
     timestamp = guid.timestamp;
     guid = guid.guid;
   }

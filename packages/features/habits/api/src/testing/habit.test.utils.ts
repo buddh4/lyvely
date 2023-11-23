@@ -5,7 +5,7 @@ import {
   ProfileTestDataUtils,
   assureObjectId,
   EntityIdentity,
-  createBaseEntityInstance,
+  createBaseDocumentInstance,
   Model,
 } from '@lyvely/api';
 import { Habit } from '../schemas';
@@ -57,7 +57,7 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
 
     if (!model) return null;
 
-    return createBaseEntityInstance(Habit, model);
+    return createBaseDocumentInstance(Habit, model);
   }
 
   async createDataPoint(
@@ -70,7 +70,7 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
       new NumberDataPoint(profile, user, habit, { date: toDate(date) }),
     );
     await log.save();
-    return createBaseEntityInstance(NumberDataPoint, log.toObject());
+    return createBaseDocumentInstance(NumberDataPoint, log.toObject());
   }
 
   async createHabit(
@@ -94,7 +94,7 @@ export class HabitTestDataUtil extends ProfileTestDataUtils {
     const habit = new this.HabitModel(model);
     Object.assign(habit, overwrite);
     await habit.save();
-    return createBaseEntityInstance(Habit, habit.toObject());
+    return createBaseDocumentInstance(Habit, habit.toObject());
   }
 
   async delete() {

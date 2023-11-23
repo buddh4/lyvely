@@ -1,5 +1,5 @@
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, MixedProp, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
+import { BaseDocument, MixedProp, NestedSchema, ObjectIdProp, TObjectId } from '@/core';
 import { PropertyType } from '@lyvely/common';
 import { IContentLog } from '@lyvely/interface';
 
@@ -31,7 +31,7 @@ export enum BaseContentLogTypes {
 }
 
 @NestedSchema()
-export class ContentLog<TData = undefined> extends BaseEntity<IContentLog<TData>> {
+export class ContentLog<TData = undefined> extends BaseDocument<IContentLog<TData>> {
   @ObjectIdProp({ required: true })
   updatedBy?: TObjectId;
 

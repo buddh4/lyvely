@@ -1,4 +1,4 @@
-import { AbstractDao, BaseEntity, EntityIdentity } from '@/core';
+import { AbstractDao, BaseDocument, EntityIdentity } from '@/core';
 import { SettingsRegistry } from '@/settings/settings.registry';
 import { FieldValidationException, IFieldValidationResult } from '@lyvely/common';
 import { ISetting } from '@lyvely/interface';
@@ -6,7 +6,7 @@ import { Logger } from '@nestjs/common';
 import { ISettingUpdate } from '@/settings/settings.interface';
 import { isBoolean, isDefined, isNumber, isString } from 'class-validator';
 
-export abstract class SettingsService<TModel extends BaseEntity<TModel> & { settings: any }> {
+export abstract class SettingsService<TModel extends BaseDocument<TModel> & { settings: any }> {
   protected abstract logger: Logger;
   protected abstract settingsDao: AbstractDao<TModel>;
   protected abstract settingsRegistry: SettingsRegistry;

@@ -2,6 +2,7 @@
 import { IMenuEntry } from './interfaces';
 import { t } from '@/i18n';
 import { toValue } from 'vue';
+import { isPlainObject } from '@lyvely/common';
 
 interface IProps {
   entry: IMenuEntry;
@@ -19,7 +20,7 @@ function onMenuItemClick() {
 }
 
 function getIconClass() {
-  if (typeof props.entry.icon === 'object') {
+  if (isPlainObject(props.entry.icon)) {
     const icon = toValue(props.entry.icon) as any;
     return icon.class || props.iconClass;
   }
@@ -28,16 +29,9 @@ function getIconClass() {
 </script>
 
 <template>
-  <router-link
-    v-if="entry.to"
-    :to="entry.to"
-    :data-id="entry.id"
-    @click="onMenuItemClick">
+  <router-link v-if="entry.to" :to="entry.to" :data-id="entry.id" @click="onMenuItemClick">
     <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" :class="iconClass" />
-    <ly-icon
-      v-else-if="typeof entry.icon === 'object'"
-      v-bind="entry.icon"
-      :class="getIconClass()" />
+    <ly-icon v-else-if="isPlainObject(entry.icon)" v-bind="entry.icon" :class="getIconClass()" />
     <transition name="fade">
       <span v-if="showLabels">
         {{ t(toValue(entry.text)) }}
@@ -46,7 +40,7 @@ function getIconClass() {
   </router-link>
   <a v-else-if="entry.click" :data-id="entry.id" @click="onMenuItemClick">
     <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" :class="iconClass" />
-    <ly-icon v-else-if="typeof entry.icon === 'object'" v-bind="entry.icon" :class="iconClass" />
+    <ly-icon v-else-if="isPlainObject(entry.icon)" v-bind="entry.icon" :class="iconClass" />
     <transition name="fade">
       <span v-if="showLabels">
         {{ t(toValue(entry.text)) }}

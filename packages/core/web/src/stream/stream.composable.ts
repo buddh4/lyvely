@@ -19,6 +19,7 @@ import {
 } from '@/core';
 import mitt from 'mitt';
 import { useInfiniteScroll } from '@vueuse/core';
+import { isPlainObject } from '@lyvely/common';
 
 type StreamEvents<TModel> = {
   'post.more': TModel[];
@@ -201,8 +202,9 @@ export function useStream<
   function _initInfiniteScroll() {
     if (!options.root || !options.infiniteScroll) return;
 
-    const infiniteScrollOptions =
-      typeof options.infiniteScroll === 'object' ? options.infiniteScroll : {};
+    const infiniteScrollOptions = isPlainObject(options.infiniteScroll)
+      ? options.infiniteScroll
+      : {};
 
     useInfiniteScroll(
       options.root,

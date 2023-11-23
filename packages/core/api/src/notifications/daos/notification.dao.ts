@@ -1,4 +1,4 @@
-import { AbstractDao, createBaseEntityInstance, Model } from '@/core';
+import { AbstractDao, createBaseDocumentInstance, Model } from '@/core';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Notification } from '../schemas';
@@ -24,7 +24,7 @@ export class NotificationDao extends AbstractDao<Notification> {
   protected constructModel(lean: DeepPartial<Notification>): Notification {
     const result = super.constructModel(lean);
     if (result.data?.type) {
-      result.data = createBaseEntityInstance(
+      result.data = createBaseDocumentInstance(
         this.notificationTypeRegistry.getTypeConstructor(result.data.type)!,
         lean.data!,
       );

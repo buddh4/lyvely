@@ -7,7 +7,7 @@ import {
   ProfileMembershipRole,
   getProfileRelationRole,
 } from '@lyvely/interface';
-import { IUserWithProfileRelation } from '../interfaces';
+import { IUserWithProfileRelation } from '../interfaces/user-with-profile-relation.interface';
 
 /**
  * This composite class holds information about the relation between a user and a profile and provides some utility

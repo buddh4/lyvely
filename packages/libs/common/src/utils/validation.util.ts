@@ -1,3 +1,5 @@
+import { isPlainObject } from './object.util';
+
 export const REGEX_HEX_COLOR = /^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/;
 import { getMetadataStorage, isEmail } from 'class-validator';
 
@@ -19,12 +21,7 @@ export function applyValidationProperties<T>(
 
     if (Array.isArray(data[property])) {
       model[property] = applyValidationProperties<any>([], data[property], level + 1, { maxDepth });
-    } else if (
-      data[property] &&
-      typeof data[property] === 'object' &&
-      model[property] &&
-      typeof model[property] === 'object'
-    ) {
+    } else if (isPlainObject(model[property]) && isPlainObject(data[property])) {
       model[property] = applyValidationProperties(model[property], data[property], level + 1, {
         maxDepth,
       });

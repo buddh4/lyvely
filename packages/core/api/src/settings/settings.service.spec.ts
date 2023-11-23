@@ -1,4 +1,4 @@
-import { AbstractDao, BaseEntity, EntityIdentity, MixedProp, Model } from '@/core';
+import { AbstractDao, BaseDocument, EntityIdentity, MixedProp, Model } from '@/core';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { SettingsService } from './settings.service';
 import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -9,7 +9,7 @@ import { Constructor, DeepPartial, FieldValidationException } from '@lyvely/comm
 const settingRegistry = new SettingsRegistry();
 
 @Schema()
-class TestSettingTarget extends BaseEntity<TestSettingTarget> {
+class TestSettingTarget extends BaseDocument<TestSettingTarget> {
   @MixedProp({ default: {} })
   settings: Record<string, any>;
 }

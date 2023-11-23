@@ -7,7 +7,7 @@ gulp.task('clean', function () {
 
 // Define your first task
 function copyFonts() {
-  return gulp.src('./src/captchas/utils/*.ttf').pipe(gulp.dest('./dist/captchas/utils/'));
+  return gulp.src('./src/captcha/utils/*.ttf').pipe(gulp.dest('./dist/captcha/utils/'));
 }
 
 // Define your second task

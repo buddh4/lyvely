@@ -8,7 +8,7 @@ export interface IEntity<ID = TObjectId> {
   _id: ID;
 }
 
-export abstract class BaseEntity<C, ID = TObjectId> implements IEntity<ID> {
+export abstract class BaseDocument<C, ID = TObjectId> implements IEntity<ID> {
   @Exclude()
   _id: ID;
 
@@ -50,7 +50,7 @@ export function assignEntityData<T extends Record<string, any>, U>(instance: T, 
     assignRawDataToAndInitProps(instance);
   }
 
-  if (instance instanceof BaseEntity && instance._id && !instance.id) {
+  if (instance instanceof BaseDocument && instance._id && !instance.id) {
     instance.id = instance._id.toString();
   }
 

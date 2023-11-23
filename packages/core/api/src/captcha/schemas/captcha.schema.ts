@@ -1,12 +1,12 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity } from '@/core';
+import { BaseDocument } from '@/core';
 import { addMilliSeconds } from '@lyvely/dates';
 import ms from 'ms';
 
 export const TOKEN_EXPIRES_IN = '2m';
 
 @Schema()
-export class Captcha extends BaseEntity<Captcha> {
+export class Captcha extends BaseDocument<Captcha> {
   @Prop({ required: true })
   identity: string;
 

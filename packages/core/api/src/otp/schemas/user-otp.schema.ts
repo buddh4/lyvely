@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseEntity, MixedProp, ObjectIdProp, TObjectId } from '@/core';
+import { BaseDocument, MixedProp, ObjectIdProp, TObjectId } from '@/core';
 import { addMilliSeconds } from '@lyvely/dates';
 import { OtpInfo, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/interface';
 
 @Schema()
-export class UserOtp<TContext = any> extends BaseEntity<UserOtp> {
+export class UserOtp<TContext = any> extends BaseDocument<UserOtp> {
   @ObjectIdProp({ required: true })
   uid: TObjectId;
 

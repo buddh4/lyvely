@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
-import { BaseEntity } from '@/core';
+import { BaseDocument } from '@/core';
 
 @Exclude()
 @Schema({ timestamps: true })
-export class RefreshToken extends BaseEntity<RefreshToken> {
+export class RefreshToken extends BaseDocument<RefreshToken> {
   @Prop({ required: true })
   vid: string;
 
