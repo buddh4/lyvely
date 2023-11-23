@@ -27,6 +27,7 @@
       1,
       "always",
       [
+        "api",
         "activities",
         "mixed",
         "docs",
