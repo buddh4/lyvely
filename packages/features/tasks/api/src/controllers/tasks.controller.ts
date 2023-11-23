@@ -18,6 +18,8 @@ import {
   TasksEndpoint,
   TaskSearchResponse,
   CreateTaskModel,
+  ENDPOINT_TASKS,
+  TasksEndpointPaths,
 } from '@lyvely/tasks-interface';
 import { TimerModel, TimerValueUpdateModel } from '@lyvely/timers';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
@@ -32,8 +34,7 @@ import {
   ProfileRequest,
 } from '@lyvely/api';
 
-@ContentTypeController('tasks', Task)
-// TODO: implement feature registration @Feature('tasks')
+@ContentTypeController(ENDPOINT_TASKS, Task)
 @UseInterceptors(ClassSerializerInterceptor)
 export class TasksController
   extends AbstractContentTypeController<Task, CreateTaskModel, UpdateTaskModel>
@@ -61,7 +62,7 @@ export class TasksController
     });
   }
 
-  @Post(':cid/sort')
+  @Post(TasksEndpointPaths.SORT(':cid'))
   @Policies(ContentWritePolicy)
   async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Task>) {
     const { profile, user, content } = req;
@@ -75,7 +76,7 @@ export class TasksController
     return new SortResponse({ sort });
   }
 
-  @Post(':cid/done')
+  @Post(TasksEndpointPaths.SET_DONE(':cid'))
   @Policies(ContentWritePolicy)
   async setDone(
     @Body() dto: UpdateTaskStateModel,
@@ -90,7 +91,7 @@ export class TasksController
     });
   }
 
-  @Post(':cid/undone')
+  @Post(TasksEndpointPaths.SET_UNDONE(':cid'))
   @Policies(ContentWritePolicy)
   async setUndone(
     @Body() dto: UpdateTaskStateModel,
@@ -102,7 +103,7 @@ export class TasksController
     return new UpdateTaskStateResponse({ score: profile.score, done: undefined });
   }
 
-  @Post(':cid/start-timer')
+  @Post(TasksEndpointPaths.START_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async startTimer(@Request() req: ProtectedProfileContentRequest<Task>): Promise<TimerModel> {
     const { profile, user, content } = req;
@@ -111,7 +112,7 @@ export class TasksController
     return new TimerModel<any>(timer);
   }
 
-  @Post(':cid/stop-timer')
+  @Post(TasksEndpointPaths.STOP_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async stopTimer(@Request() req: ProtectedProfileContentRequest<Task>): Promise<TimerModel> {
     const { profile, user, content } = req;
@@ -120,7 +121,7 @@ export class TasksController
     return new TimerModel<any>(timer);
   }
 
-  @Post(':cid/update-timer')
+  @Post(TasksEndpointPaths.UPDATE_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async updateTimer(
     @Body() dto: TimerValueUpdateModel,

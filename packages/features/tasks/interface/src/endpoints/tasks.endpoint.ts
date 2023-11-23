@@ -11,7 +11,7 @@ import {
 import { IContentTypeClient } from '@lyvely/interface';
 import { ICalendarPlanClient } from '@lyvely/calendar-plan-interface';
 
-export interface ITasksEndpointService
+export interface ITasksClient
   extends IContentTypeClient<TaskModel, CreateTaskModel, UpdateTaskModel>,
     ICalendarPlanClient<TaskModel> {
   create(dto: CreateTaskModel): Promise<UpdateTaskResponse>;
@@ -23,5 +23,15 @@ export interface ITasksEndpointService
   updateTimer(id: string, value: number): Promise<TimerModel>;
 }
 
-export type TasksEndpoint = Endpoint<ITasksEndpointService>;
+export type TasksEndpoint = Endpoint<ITasksClient>;
 export const ENDPOINT_TASKS = 'tasks';
+
+export const TasksEndpointPaths = {
+  SORT: (cid: string) => `${cid}/sort`,
+  CREATE: (cid: string) => `${cid}/create`,
+  SET_DONE: (cid: string) => `${cid}/done`,
+  SET_UNDONE: (cid: string) => `${cid}/undone`,
+  START_TIMER: (cid: string) => `${cid}/start-timer`,
+  STOP_TIMER: (cid: string) => `${cid}/stop-timer`,
+  UPDATE_TIMER: (cid: string) => `${cid}/update-timer`,
+};

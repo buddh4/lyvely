@@ -1,9 +1,13 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { TaskModel, TaskFilter, TaskCalendarPlanStore } from '@lyvely/tasks-interface';
+import {
+  TaskModel,
+  TaskFilter,
+  TaskCalendarPlanStore,
+  useTasksClient,
+} from '@lyvely/tasks-interface';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { useProfileStore, useGlobalDialogStore } from '@lyvely/web';
 import { useCalendarPlan, useCalendarPlanStore } from '@lyvely/calendar-plan-web';
-import { useTasksService } from '@/services';
 import { ref } from 'vue';
 
 const MAX_DONE_TASKS = 2;
@@ -12,14 +16,14 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
   const { locale } = storeToRefs(useProfileStore());
   const calendarPlanStore = useCalendarPlanStore();
   const profileStore = useProfileStore();
-  const tasksService = useTasksService();
+  const client = useTasksClient();
   const dialog = useGlobalDialogStore();
 
   const taskPlan = useCalendarPlan<TaskModel, TaskFilter>({
     filter: new TaskFilter(),
     cache: new TaskCalendarPlanStore(),
     contentTypes: [TaskModel.contentType],
-    service: useTasksService(),
+    client: useTasksClient(),
   });
 
   const { filter, cache, date } = taskPlan;
@@ -60,7 +64,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   async function setTaskDone(task: TaskModel) {
     try {
-      const result = await tasksService.setDone(task.id, calendarPlanStore.date);
+      const result = await client.setDone(task.id, calendarPlanStore.date);
       task.done = result.done;
       task.meta.updatedAt = new Date();
       profileStore.updateScore(result.score);
@@ -71,7 +75,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   async function setTaskUndone(task: TaskModel) {
     try {
-      const result = await tasksService.setUndone(task.id, calendarPlanStore.date);
+      const result = await client.setUndone(task.id, calendarPlanStore.date);
       task.done = undefined;
       task.meta.updatedAt = new Date();
       profileStore.updateScore(result.score);
@@ -82,7 +86,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   async function startTimer(task: TaskModel) {
     try {
-      task.timer = await tasksService.startTimer(task.id);
+      task.timer = await client.startTimer(task.id);
     } catch (e) {
       dialog.showUnknownError();
     }
@@ -90,7 +94,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   async function stopTimer(task: TaskModel) {
     try {
-      task.timer = await tasksService.stopTimer(task.id);
+      task.timer = await client.stopTimer(task.id);
     } catch (e) {
       dialog.showUnknownError();
     }
@@ -98,7 +102,7 @@ export const useTaskCalendarPlanStore = defineStore('taskCalendarPlan', () => {
 
   async function updateTimer(task: TaskModel, value: number) {
     try {
-      task.timer = await tasksService.updateTimer(task.id, value);
+      task.timer = await client.updateTimer(task.id, value);
     } catch (e) {
       dialog.showUnknownError();
     }

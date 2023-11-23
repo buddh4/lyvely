@@ -1,12 +1,12 @@
 import {
-  ITasksEndpointService,
   CreateTaskModel,
   UpdateTaskResponse,
   UpdateTaskModel,
   UpdateTaskStateModel,
   UpdateTaskStateResponse,
   TaskModel,
-} from '@lyvely/tasks-interface';
+} from '../models';
+import { ITasksClient } from './tasks.endpoint';
 import { SortResponse, useSingleton } from '@lyvely/common';
 import { TimerModel, TimerValueUpdateModel } from '@lyvely/timers-interface';
 import { formatDate, CalendarDate } from '@lyvely/dates';
@@ -16,10 +16,10 @@ import {
   CalendarPlanSort,
 } from '@lyvely/calendar-plan-web';
 
-import repository from '../repositories/tasks.repository';
-import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/web';
+import repository from './tasks.repository';
+import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/interface';
 
-export class TasksService implements ITasksEndpointService {
+export class TasksClient implements ITasksClient {
   async getByFilter(filter: CalendarPlanFilter): Promise<ICalendarPlanResponse<TaskModel>> {
     const { models } = await unwrapResponse(repository.getByFilter(filter));
     return {
@@ -63,4 +63,4 @@ export class TasksService implements ITasksEndpointService {
   }
 }
 
-export const useTasksService = useSingleton(() => new TasksService());
+export const useTasksClient = useSingleton(() => new TasksClient());

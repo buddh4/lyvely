@@ -15,8 +15,12 @@ import {
   LyTextarea,
   LyNumberField,
 } from '@lyvely/ui';
-import { TaskModel, UpdateTaskModel, CreateTaskModel } from '@lyvely/tasks-interface';
-import { useTasksService } from '@/services';
+import {
+  TaskModel,
+  UpdateTaskModel,
+  CreateTaskModel,
+  useTasksClient,
+} from '@lyvely/tasks-interface';
 import { getCalendarPlanOptions } from '@lyvely/calendar-plan-web';
 
 export interface IProps {
@@ -29,7 +33,7 @@ export interface IProps {
 const props = defineProps<IProps>();
 const emit = defineEmits(ContentEditModalEmits);
 const store = useContentEditModal<TaskModel, CreateTaskModel, UpdateTaskModel>(props, emit, {
-  client: useTasksService(),
+  client: useTasksClient(),
 });
 
 const { showModal, isCreate, model, validator, submit, status } = store;
