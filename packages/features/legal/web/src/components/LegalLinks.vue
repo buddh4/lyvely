@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { useAppConfigStore } from '@lyvely/web';
 import { ref } from 'vue';
-import { LegalSection, LegalSectionDetails, ILegalAppConfig } from '@lyvely/legal-interface';
-import { useLegalService } from '@/services';
+import {
+  LegalSection,
+  LegalSectionDetails,
+  ILegalAppConfig,
+  useLegalClient,
+} from '@lyvely/legal-interface';
 import { LyLoader, LyModal } from '@lyvely/ui';
 
 const sections = useAppConfigStore().getModuleConfig<ILegalAppConfig>('legal', 'sections');
@@ -11,7 +15,7 @@ const activeSection = ref<LegalSection>();
 const activeSectionDetails = ref<LegalSectionDetails>();
 const details = {} as { [id: string]: LegalSectionDetails };
 const loading = ref(false);
-const legalService = useLegalService();
+const client = useLegalClient();
 
 function setActiveSection(section: LegalSection) {
   if (!section) return;
@@ -23,7 +27,7 @@ function setActiveSection(section: LegalSection) {
   } else {
     loading.value = true;
     showLegalModal.value = true;
-    legalService.getLegalDetails(section.id).then((sectionDetails) => {
+    client.getLegalDetails(section.id).then((sectionDetails) => {
       activeSectionDetails.value = details[section.id] = sectionDetails;
       loading.value = false;
     });
