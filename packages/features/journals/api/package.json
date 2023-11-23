@@ -6,7 +6,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "nest start",
-    "debug": "nest start:debug",
     "dev:debug": "nest start --debug --watch",
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",

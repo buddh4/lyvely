@@ -6,6 +6,8 @@ import { HabitModel } from './habit.model';
 @Expose()
 export class UpdateHabitDataPointResponse extends UpdateDataPointResponse<UpdateHabitDataPointResponse> {
   score: number;
+
+  @PropertyType(HabitModel)
   model: HabitModel;
 }
 

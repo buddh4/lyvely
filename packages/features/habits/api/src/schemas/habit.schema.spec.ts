@@ -96,6 +96,14 @@ describe('Habit', () => {
     return <Habit>await habitsDao.findByProfileAndId(profile, content._id);
   }
 
+  describe('toModel', () => {
+    it('object id translation', async () => {
+      const habit = await createHabit();
+      const model = habit.toModel();
+      expect(model.meta.createdBy).toEqual(habit.meta.createdBy.toString());
+    });
+  });
+
   describe('model transformation', () => {
     it('object id translation', async () => {
       const search = await createHabit();

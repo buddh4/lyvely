@@ -37,7 +37,7 @@ function getToStringType(value: any): string {
 
 /**
  * Type guard function to check if a given value is a plain object and if the specified property
- * exists as a non-null and non-undefined value. This also acts as a type guard for the value being
+ * exists as an own non-null and non-undefined value. This also acts as a type guard for the value being
  * a plain object with a known property.
  * @param obj - The value to check.
  * @param property - The property name to check for.
@@ -51,19 +51,50 @@ export function hasOwnNonNullableProperty<
 }
 
 /**
- * Returns the given property from obj in case obj is a plain object owning the given property or a default value or
- * null if those conditions are not met.
+ * Type guard function to check if a given value is a plain object and if the specified property
+ * exists as a non-null and non-undefined value. This also acts as a type guard for the value being
+ * a plain object with a known property.
  * @param obj - The value to check.
  * @param property - The property name to check for.
- * @param defaultValue A default value returned if the conditions ar enot met
  * @returns True if the value is a plain object and the property exists with a non-null and non-undefined value.
  */
+export function hasNonNullableProperty<
+  T extends object = Record<PropertyKey, unknown>,
+  K extends keyof T = keyof T,
+>(obj: any, property: K): obj is T & { [P in K]: unknown } {
+  return isPlainObject(obj) && !!obj[property];
+}
+
+/**
+ * Returns the given property from value in case obj is a plain object owning the given property or a default value or
+ * null if those conditions are not met.
+ * @param value - The value to check.
+ * @param property - The property name to check for.
+ * @param defaultValue A default value returned if the conditions are not met.
+ * @returns True if the object is a plain object and the property exists and is owned by the object with a non-null and non-undefined value.
+ */
 export function getOwnNonNullableProperty<T extends object = any, K extends keyof T = keyof T>(
-  obj: any,
+  value: any,
   property: K,
   defaultValue?: T[K],
 ): T[K] | null {
-  return hasOwnNonNullableProperty<T, K>(obj, property) ? obj[property] : defaultValue || null;
+  return hasOwnNonNullableProperty<T, K>(value, property) ? value[property] : defaultValue || null;
+}
+
+/**
+ * Returns the given property from obj in case value is a plain object with existing (not owning) the given property
+ * or a default value or null if those conditions are not met.
+ * @param value - The value to check.
+ * @param property - The property name to check for.
+ * @param defaultValue A default value returned if the conditions are not met.
+ * @returns True if the value is a plain object and the property exists with a non-null and non-undefined value.
+ */
+export function getNonNullableProperty<T extends object = any, K extends keyof T = keyof T>(
+  value: any,
+  property: K,
+  defaultValue?: T[K],
+): T[K] | null {
+  return hasNonNullableProperty<T, K>(value, property) ? value[property] : defaultValue || null;
 }
 
 export function findByPath<T>(
@@ -95,7 +126,7 @@ export function findByPath<T>(
 }
 
 export function isObjectId(value: any): value is object {
-  return getOwnNonNullableProperty(value, '_bsontype') === 'ObjectId';
+  return getNonNullableProperty(value, '_bsontype') === 'ObjectId';
 }
 
 export function getPrototypeTree(type: Type): Array<Type> {

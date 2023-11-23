@@ -8,6 +8,7 @@
     "lint": "eslint --fix",
     "format": "prettier \"lib/**/*.ts\" --write",
     "dev": "nest start",
+    "dev:debug": "nest start --debug --watch",
     "build": "rm -rf ./dist/* && tsc -p tsconfig.build.json",
     "prepublish:npm": "npm run build",
     "publish:npm": "npm publish --access public",
