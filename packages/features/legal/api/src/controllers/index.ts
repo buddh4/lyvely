@@ -1,1 +1,1 @@
-export * from './legal-controller';
+export * from './legal.controller';

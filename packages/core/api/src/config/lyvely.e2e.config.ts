@@ -1,5 +1,6 @@
 import { ServerConfiguration } from '@/config';
 import { DeepPartial } from '@lyvely/common';
+import path from 'path';
 
 export default {
   appName: 'Lyvely e2e',
@@ -25,7 +26,7 @@ export default {
       streamTransport: true,
     },
     preview: {
-      dir: `${process.cwd()}/mail/messages/test`,
+      dir: path.resolve(process.cwd(), '../web/cypress/mails'),
       open: false,
     },
   },

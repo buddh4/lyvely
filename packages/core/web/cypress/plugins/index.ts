@@ -41,10 +41,7 @@ async function seed(cfg) {
 
 async function deleteMails() {
   // Specify the relative path to the directory
-  const relativeDirectoryPath = '../../../api/mail/messages/test';
-
-  // Resolve the absolute path to the directory
-  const absoluteDirectoryPath = path.resolve(__dirname, relativeDirectoryPath);
+  const absoluteDirectoryPath = path.resolve(__dirname, '../mails/messages/test');
 
   try {
     // Create the directory if it doesn't exist
