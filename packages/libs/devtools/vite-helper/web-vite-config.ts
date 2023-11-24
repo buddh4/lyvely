@@ -52,6 +52,7 @@ export const useViteWebConfig = (options: IOptions) => {
     server: {
       host: '127.0.0.1',
       port: 3000,
+      hmr: process.env.NODE_ENV !== 'e2e'
     },
     assetsInclude: ['**/*.svg'],
     resolve: {

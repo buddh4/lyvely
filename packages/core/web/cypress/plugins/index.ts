@@ -12,7 +12,7 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-import fs from 'fs';
+import fs, { readdirSync } from 'fs';
 
 require('dotenv').config({ path: '.e2e.env' });
 const path = require('path');
@@ -41,7 +41,7 @@ async function seed(cfg) {
 
 async function deleteMails() {
   // Specify the relative path to the directory
-  const absoluteDirectoryPath = path.resolve(__dirname, '../mails/messages/test');
+  const absoluteDirectoryPath = path.resolve(__dirname, '../mails');
 
   try {
     // Create the directory if it doesn't exist
@@ -65,6 +65,61 @@ async function deleteMails() {
   }
 }
 
+function getLatestMailContent(): string {
+  try {
+    const mailDir = path.resolve(__dirname, '../mails');
+    const files = fs.readdirSync(mailDir);
+
+    if (files.length === 0) {
+      return '';
+    }
+
+    // Sort files by modification time in descending order
+    const fileStats = files
+      .filter((file) => file.endsWith('.html'))
+      .map((file) => {
+        const filePath = path.join(mailDir, file);
+        const stat = fs.statSync(filePath);
+        return { filePath, mtime: stat.mtime };
+      });
+
+    if (fileStats.length === 0) {
+      return '';
+    }
+
+    fileStats.sort((a, b) => b.mtime - a.mtime);
+
+    // Read the content of the latest file
+    const latestFilePath = fileStats[0].filePath;
+    return fs.readFileSync(latestFilePath, 'utf-8');
+  } catch (error) {
+    return error.message;
+    console.error(`Error: ${error.message}`);
+  }
+}
+
+function extractFromLatestMail(regex: string): string[] {
+  try {
+    const content = getLatestMailContent();
+    if (!content) return null;
+
+    const matches: string[] = [];
+    let match: string[];
+
+    // Create a regular expression object
+    const regexObj = new RegExp(regex, 'g');
+
+    while ((match = regexObj.exec(content)) !== null) {
+      matches.push(match[1] || match[0]); // Capture group 1 or full match
+    }
+
+    return matches;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
 /**
  * @type {Cypress.PluginConfig}
  */
@@ -75,7 +130,9 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   on('task', {
     'db:seed': () => seed(config),
-    'api:deleteMails': () => deleteMails(),
+    'mails:delete': () => deleteMails(),
+    'mails:latest': () => getLatestMailContent(),
+    'mails:extract': (regex: string) => extractFromLatestMail(regex),
   });
 
   return config;

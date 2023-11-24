@@ -94,6 +94,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
   <ly-centered-panel v-if="stage === 'reset'" title="auth.reset_password.title" width="sm">
     <template #body>
       <ly-form-model
+        id="reset-password"
         v-model="resetModel"
         :validator="resetValidator"
         :status="resetPasswordStore.status"
@@ -123,6 +124,7 @@ onUnmounted(() => sendResetPasswordMailStore.reset());
     <template #footer>
       <div class="flex items-center">
         <ly-button
+          data-id="btn-submit"
           class="primary ml-auto"
           :loading="resetPasswordStore.status.isStatusLoading()"
           text="auth.reset_password.submit_reset"

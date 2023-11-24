@@ -13,6 +13,7 @@
         "remember": "Keep me signed in."
       },
       "errors": {
+        "disabled": "This user account was disabled.",
         "invalid_input": "Invalid username/email or password. Please try again."
       }
     }

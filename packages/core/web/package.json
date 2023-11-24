@@ -70,8 +70,8 @@
     "@intlify/core-base": "9.5.0",
     "@lyvely/calendar-plan-interface": "^0.1.0-alpha3",
     "@lyvely/common": "^0.1.0-alpha3",
-    "@lyvely/interface": "^0.1.0-alpha3",
     "@lyvely/dates": "^0.1.0-alpha3",
+    "@lyvely/interface": "^0.1.0-alpha3",
     "@lyvely/time-series-interface": "^0.1.0-alpha3",
     "@lyvely/timers-interface": "^0.1.0-alpha3",
     "@lyvely/ui": "^0.1.0-alpha3",
@@ -118,6 +118,7 @@
     "@swc/jest": "^0.2.29",
     "@types/jest": "^29.5.5",
     "@vitejs/plugin-vue": "^4.4.0",
-    "@vue/vue3-jest": "^29.2.6"
+    "@vue/vue3-jest": "^29.2.6",
+    "cypress": "^13.6.0"
   }
 }

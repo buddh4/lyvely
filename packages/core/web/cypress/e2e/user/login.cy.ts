@@ -1,11 +1,7 @@
 describe('Test User Login/Logout', function () {
   beforeEach(() => {
     cy.task('db:seed');
-    cy.visit('http://127.0.0.1:3000/logout');
-  });
-
-  afterEach(() => {
-    cy.reload();
+    cy.visit('http://127.0.0.1:3000');
   });
 
   it('Welcome - Greeting & Content', () => {
@@ -36,9 +32,17 @@ describe('Test User Login/Logout', function () {
   it('Failed Login - Nonexisting user', function () {
     cy.get('[data-id="login-usernameoremail"]').type('DoesNotExist');
     cy.get('[data-id="btn-to-password"]').click();
-    cy.get('[data-id="login-password"]').type('TestPassword1234');
+    cy.get('[data-id="login-password"]').type('TestPassword123');
     cy.get('[data-id="btn-login"]').click();
     cy.contains('Invalid username/email or password. Please try again.');
+  });
+
+  it('Failed Login - User disabled', function () {
+    cy.get('[data-id="login-usernameoremail"]').type('Disabled');
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.get('[data-id="login-password"]').type('TestPassword123');
+    cy.get('[data-id="btn-login"]').click();
+    cy.contains('This user account was disabled.');
   });
 
   it('Successful Login - username', function () {

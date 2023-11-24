@@ -5,6 +5,7 @@ import { loadingStatus, useStatus } from '@/core';
 import { SendResetPasswordMail, useResetPasswordClient } from '@lyvely/interface';
 import { useCaptchaStore } from '@/captcha/captcha.store';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
+import { FieldValidationException } from '@lyvely/common';
 
 export const useSendResetPasswordMailStore = defineStore('send-reset-password-mail', () => {
   const status = useStatus();
@@ -37,7 +38,9 @@ export const useSendResetPasswordMailStore = defineStore('send-reset-password-ma
       () => resetPasswordClient.sendMail(model.value),
       status,
       validator.value as I18nModelValidator<SendResetPasswordMail>,
-    ).then(() => resetPasswordStore.setStage('sent'));
+    )
+      .then(() => resetPasswordStore.setStage('sent'))
+      .catch((e) => console.log(e));
   }
 
   async function validate() {

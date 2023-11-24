@@ -14,7 +14,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   async validate(usernameOrEmail: string, password: string): Promise<any> {
     const user = await this.usersService.findUserByUsernameOrMainEmail(usernameOrEmail);
 
-    if (!user || user.status === UserStatus.Disabled) throw new UnauthorizedException();
+    if (!user) throw new UnauthorizedException();
+    if (user.status === UserStatus.Disabled) {
+      throw new UnauthorizedException({ userStatus: UserStatus.Disabled });
+    }
 
     return (await this.validatePassword(user, password)) ? user : false;
   }
