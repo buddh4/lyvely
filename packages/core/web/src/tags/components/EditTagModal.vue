@@ -43,8 +43,7 @@ const color = computed({
   set: (val: any) => (model.value!.color = val.hex),
 });
 
-const { modalTitle } = tagEditStore;
-const { validator } = storeToRefs(tagEditStore);
+const { validator, modalTitle } = storeToRefs(tagEditStore);
 </script>
 
 <template>

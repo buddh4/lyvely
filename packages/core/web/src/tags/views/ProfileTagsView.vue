@@ -107,7 +107,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
       </div>
     </ly-list-page>
     <edit-tag-modal />
-    <ly-floating-add-button @click="setCreateTag" />
+    <ly-floating-add-button data-id="btn-floating-add" @click="setCreateTag" />
   </ly-content-root>
 </template>
 

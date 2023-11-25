@@ -13,6 +13,8 @@
 // the project's config changing)
 
 import fs, { readdirSync } from 'fs';
+import { getObjectId } from 'mongo-seeding';
+import { sign } from 'jsonwebtoken';
 
 require('dotenv').config({ path: '.e2e.env' });
 const path = require('path');
@@ -120,6 +122,14 @@ function extractFromLatestMail(regex: string): string[] {
   }
 }
 
+function createAuthToken(username: string): string {
+  const payload = { sub: getObjectId(username).toString(), purpose: 'jwt-access-token' };
+  return sign(payload, 'e5d2ece45d3b7919fc7b6a8f19abc0cb7916c71bef385ca11f27a0a3b324e3d2', {
+    expiresIn: '30m',
+    algorithm: 'HS256',
+  });
+}
+
 /**
  * @type {Cypress.PluginConfig}
  */
@@ -130,6 +140,7 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   on('task', {
     'db:seed': () => seed(config),
+    'auth:createAuthToken': (username: string) => createAuthToken(username),
     'mails:delete': () => deleteMails(),
     'mails:latest': () => getLatestMailContent(),
     'mails:extract': (regex: string) => extractFromLatestMail(regex),
