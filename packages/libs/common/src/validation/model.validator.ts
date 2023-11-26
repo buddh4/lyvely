@@ -1,7 +1,7 @@
 import { validate, ValidationError, ValidatorOptions } from 'class-validator';
 import { IFieldValidationResult } from './interfaces/validation-result.interface';
 import { getFirstValidationError } from './validation.utils';
-import { Type } from '../utils';
+import { getNonNullableProperty, Type } from '../utils';
 
 interface ITranslationError<T> {
   model: T;
@@ -144,9 +144,31 @@ export class ModelValidator<
   setErrors(errors: IFieldValidationResult[]) {
     for (const error of errors) {
       if (error.errors?.length) {
-        this.errors[error.property as keyof T] = error.errors[0];
+        this.errors[error.property as keyof T] = this._translate(
+          error.errors[0],
+          error.property as keyof T & string,
+          error.errors[0],
+        );
       }
     }
+  }
+
+  private _translate(
+    message: string,
+    property: keyof T & string,
+    rule: string,
+    context?: ValidationError['contexts'],
+  ) {
+    return this.options.translate
+      ? this.options.translate({
+          model: this.model!,
+          value: getNonNullableProperty(this.model, property),
+          property: property,
+          message: message,
+          rule: rule,
+          context: context || {},
+        }) || message
+      : message;
   }
 
   setError(property: keyof T, message: string) {
@@ -166,6 +188,7 @@ export class ModelValidator<
 
     options.forbidUnknownValues = options.forbidUnknownValues !== false;
     options.validationError = { target: true, value: true };
+    this.reset();
     this.setValidationErrors(await validate(this.model, options));
     await this.validateRules(options);
     return !this.hasErrors();
@@ -192,8 +215,6 @@ export class ModelValidator<
   }
 
   private setValidationErrors(errors?: ValidationError[]) {
-    this.reset();
-
     if (!errors?.length) return;
 
     for (const error of errors) {
@@ -204,16 +225,12 @@ export class ModelValidator<
   private setFirstError(error: ValidationError) {
     const { message, rule } = getFirstValidationError(error);
     if (message) {
-      this.errors[error.property as keyof T] = this.options.translate
-        ? this.options.translate({
-            model: error.target as T,
-            value: error.value,
-            property: error.property as keyof T & string,
-            message: message,
-            rule: rule,
-            context: error.contexts,
-          }) || message
-        : message;
+      this.errors[error.property as keyof T] = this._translate(
+        message,
+        error.property as keyof T & string,
+        rule,
+        error.contexts,
+      );
     }
   }
 

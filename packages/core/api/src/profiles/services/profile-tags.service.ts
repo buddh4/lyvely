@@ -36,10 +36,10 @@ export class ProfileTagsService {
     const tag = profile.getTagByName(data.name!);
 
     if (tag) {
-      throw new FieldValidationException('A tag with the same name already exists');
+      throw new FieldValidationException([{ property: 'name', errors: ['unique'] }]);
     }
 
-    return !!(await this.profileDao.addTags(profile, [Tag.create(data)]));
+    return this.profileDao.addTags(profile, [Tag.create(data)]);
   }
 
   async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {

@@ -1,4 +1,4 @@
-import { Ref, ref, toValue } from 'vue';
+import { reactive, Ref, ref, toValue } from 'vue';
 import { IEditModelService } from '@lyvely/common';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus, eventBus } from '@/core';
@@ -95,7 +95,9 @@ export function useUpdateModelStore<
   const model = ref<TEditModel>();
   let original: TEditModel | undefined = undefined;
   const modelId = ref<TID>();
-  const validator = ref<I18nModelValidator<TEditModel>>();
+  const validator = reactive(
+    new I18nModelValidator<TEditModel>(),
+  ) as I18nModelValidator<TEditModel>;
   const isActive = ref(false);
   const isCreate = ref(false);
   const status = useStatus();
@@ -176,28 +178,23 @@ export function useUpdateModelStore<
       model.value = toValue(newModel);
       original = cloneDeep(newModel);
       modelId.value = id;
-      validator.value = new I18nModelValidator<TEditModel>(model.value, {
-        labelKey: options.labelKey,
-      });
+      validator.setModel(model.value);
       isActive.value = true;
     } else {
       original = undefined;
       model.value = undefined;
       modelId.value = undefined;
-      validator.value = undefined;
+      validator.reset();
       isActive.value = false;
     }
   }
 
   async function submit() {
-    if (!validator.value || !(await validator.value.validate())) return Promise.reject();
+    if (!(await validator.validate())) return Promise.reject();
 
     try {
-      const response = await loadingStatus<TResponse | false>(
-        isCreate.value ? _createModel() : _editModel(),
-        status,
-        validator.value,
-      );
+      const request = isCreate.value ? _createModel() : _editModel();
+      const response = await request;
 
       if (response !== false && typeof options.onSubmitSuccess === 'function') {
         const event = isCreate.value ? 'created' : 'updated';
@@ -223,8 +220,9 @@ export function useUpdateModelStore<
     } catch (err) {
       if (typeof options.onSubmitError === 'function') {
         options.onSubmitError(err);
+      } else {
+        throw err;
       }
-      throw err;
     }
   }
 
@@ -234,9 +232,9 @@ export function useUpdateModelStore<
     }
 
     return loadingStatus(
-      _getService(model.value).create(<TCreateModel>model.value),
+      _getClient(model.value).create(<TCreateModel>model.value),
       status,
-      validator.value,
+      validator,
     );
   }
 
@@ -260,13 +258,13 @@ export function useUpdateModelStore<
     }
 
     return loadingStatus(
-      _getService(model.value).update(modelId.value, update as TUpdateModel),
+      _getClient(model.value).update(modelId.value, update as TUpdateModel),
       status,
-      validator.value,
+      validator,
     );
   }
 
-  function _getService(m: TEditModel) {
+  function _getClient(m: TEditModel) {
     if (typeof options.client === 'function') {
       return options.client(m);
     }
@@ -277,7 +275,7 @@ export function useUpdateModelStore<
   return {
     model: <Ref<TEditModel>>model,
     modelId,
-    validator: <Ref<I18nModelValidator<TEditModel>>>validator,
+    validator,
     status,
     isActive,
     isCreate,

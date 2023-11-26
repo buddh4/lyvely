@@ -153,6 +153,7 @@ function onKeyDown(evt: KeyboardEvent) {
         <slot name="footer">
           <ly-button
             v-if="cancelButton"
+            data-id="btn-modal-cancel"
             :loading="isLoading"
             :class="cancelButtonClass"
             @click="cancel">
@@ -161,6 +162,7 @@ function onKeyDown(evt: KeyboardEvent) {
 
           <ly-button
             v-if="submitButton"
+            data-id="btn-modal-submit"
             :disabled="isLoading"
             :loading="isLoading"
             data-modal-submit

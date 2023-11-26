@@ -52,7 +52,6 @@
     "@nestjs/throttler": "^4.0.0",
     "bcrypt": "^5.1.0",
     "bullmq": "^3.12.0",
-    "canvas": "^2.11.2",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "compression": "^1.7.4",

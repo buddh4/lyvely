@@ -47,12 +47,17 @@ export const useViteWebConfig = (options: IOptions) => {
       ignore,
     });
 
+  /// <reference types="vitest" />
   return {
     plugins,
     server: {
       host: '127.0.0.1',
       port: 3000,
       //  hmr: process.env.NODE_ENV !== 'e2e'
+    },
+    test: {
+      setupFiles: ['vitest.setup.ts'],
+      environment: "jsdom"
     },
     assetsInclude: ['**/*.svg'],
     resolve: {

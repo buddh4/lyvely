@@ -125,49 +125,6 @@
       "main_nav": "Journals"
     }
   },
-  "tags": {
-    "title": "Tags",
-    "chooser": {
-      "label": "Tags",
-      "submit": "Close",
-      "add": "Add tag: {tag}",
-      "query": "Search or add tags"
-    },
-    "archive": {
-      "confirm": {
-        "text": "Are you sure you want to archive this tag?"
-      }
-    },
-    "restore": {
-      "confirm": {
-        "text": "Are you sure you want to add this tag from archive?"
-      }
-    },
-    "view": {
-      "title": "Tags",
-      "aria": {
-        "title": "Tag overview list"
-      },
-      "search": "Search tags"
-    },
-    "labels": {
-      "main_nav": "Tags"
-    },
-    "create": {
-      "title": "Create Tag"
-    },
-    "edit": {
-      "title": "Edit Tag"
-    },
-    "fields": {
-      "name": "Name",
-      "description": "Description",
-      "includeOnFilter": "Only include items on filter"
-    },
-    "help": {
-      "includeOnFilter": "This option will hide tagged items in some views unless a matching filter is selected."
-    }
-  },
   "statistics": {
     "labels": {
       "main_nav": "Statistics"
@@ -188,7 +145,8 @@
     "isCaptcha": "Please enter 5 alphanumeric characters",
     "isEmail": "{property} must be an email",
     "matches": "{property} does not match the expected format",
-    "match": "{property} does not match {c1}"
+    "match": "{property} does not match {c1}",
+    "unique": "{property} already exists"
   },
   "layout": {
     "aria": {

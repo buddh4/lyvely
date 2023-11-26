@@ -1,5 +1,5 @@
 import { computed, ref, Ref } from 'vue';
-import { ModelValidator, IEditableModel } from '@lyvely/common';
+import { IEditableModel } from '@lyvely/common';
 import { ContentModel, CreateContentModel, ContentUpdateResponse } from '@lyvely/interface';
 import { IEditOrCreateModalProps } from '@/content/interfaces/edit-content-modal-props.interface';
 import { IUpdateModelStoreOptions, useUpdateModelStore } from '@/common';
@@ -8,6 +8,7 @@ import { getContentTypeOptions } from '../registries';
 import { ModalCreate } from '../interfaces';
 import { StoreStatusPlugin } from '@/core';
 import { useContentStore } from '../stores';
+import { I18nModelValidator } from '@/i18n';
 
 export const ContentEditModalEmits = ['update:modelValue', 'success', 'cancel'];
 type TContentEditModalEmits = 'update:modelValue' | 'success';
@@ -73,7 +74,7 @@ export function useContentEditModal<
     isCreate,
   }: {
     model: Ref<TCreateModel | TUpdateModel>;
-    validator: Ref<ModelValidator<TCreateModel | TUpdateModel>>;
+    validator: I18nModelValidator<TCreateModel | TUpdateModel>;
     status: StoreStatusPlugin;
     isCreate: Ref<boolean>;
   } = updateStore;

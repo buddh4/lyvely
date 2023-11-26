@@ -27,19 +27,12 @@ import { Tag } from '../schemas';
 @UseClassSerializer()
 export class ProfileTagsController implements ProfileTagsEndpoint {
   @Inject()
-  private profilesService: ProfilesService;
-
-  @Inject()
   private tagService: ProfileTagsService;
 
   @Post()
   async create(@Body() dto: CreateTagModel, @Request() req: ProfileRequest) {
     const profile = this._getMemberProfile(req);
-
-    if (!(await this.tagService.addTag(profile, dto))) {
-      throw new ServiceException();
-    }
-
+    await this.tagService.addTag(profile, dto);
     return new TagModel(profile.getTagByName(dto.name));
   }
 

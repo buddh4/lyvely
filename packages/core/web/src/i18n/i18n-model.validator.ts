@@ -1,5 +1,6 @@
 import { ModelValidator, IValidatorOptions, getPropertyConstraints } from '@lyvely/common';
 import { translate } from './i18n';
+import { property } from 'lodash';
 
 export class I18nModelValidator<
   T extends object = object,

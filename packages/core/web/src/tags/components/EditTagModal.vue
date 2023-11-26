@@ -4,7 +4,8 @@ import { storeToRefs } from 'pinia';
 import { Sketch } from '@ckpack/vue-color';
 import { onClickOutside } from '@vueuse/core';
 import { useEditTagStore } from '@/tags/stores/edit-tag.store';
-import { isTouchScreen } from '@lyvely/ui';
+import { isTouchScreen, LyFormModel } from '@lyvely/ui';
+import { I18nModelValidator } from '@/i18n';
 
 const tagEditStore = useEditTagStore();
 
@@ -43,11 +44,13 @@ const color = computed({
   set: (val: any) => (model.value!.color = val.hex),
 });
 
-const { validator, modalTitle } = storeToRefs(tagEditStore);
+const { reset } = tagEditStore;
+const validator = tagEditStore.validator as I18nModelValidator;
+const { modalTitle, status } = storeToRefs(tagEditStore);
 </script>
 
 <template>
-  <ly-modal v-if="model && validator" v-model="showModal" :title="modalTitle" @submit="submit">
+  <ly-modal v-model="showModal" :title="modalTitle" @submit="submit" @close="reset">
     <div>
       <div
         ref="colorInput"
@@ -56,22 +59,18 @@ const { validator, modalTitle } = storeToRefs(tagEditStore);
         <div class="inline-block rounded" :style="colorStyle">&nbsp;</div>
         <div>{{ color }}</div>
       </div>
+      <ly-form-model
+        id="edit-task"
+        v-model="model"
+        :validator="validator"
+        :status="status"
+        label-key="tags.fields">
+        <ly-text-field property="name" :autofocus="isCreate || !isTouchScreen()" />
 
-      <ly-text-field
-        v-model="model.name"
-        :autofocus="isCreate || !isTouchScreen()"
-        label="tags.fields.name"
-        :error="validator.getError('name')" />
+        <ly-textarea property="description" />
 
-      <ly-textarea
-        v-model="model.description"
-        label="tags.fields.description"
-        :error="validator.getError('description')" />
-
-      <ly-checkbox
-        v-model="model.includeOnFilter"
-        label="tags.fields.includeOnFilter"
-        help-text="tags.help.includeOnFilter" />
+        <ly-checkbox property="includeOnFilter" :help-text="true" />
+      </ly-form-model>
     </div>
 
     <div

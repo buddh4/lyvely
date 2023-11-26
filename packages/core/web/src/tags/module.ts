@@ -6,6 +6,9 @@ export default () => {
   return {
     id: 'tags',
     routes: tagRoutes,
+    i18n: {
+      base: (locale: string) => import(`./locals/base.${locale}.json`),
+    },
     init: () => {
       registerMenuEntry(MENU_PROFILE_DRAWER, {
         id: 'tags',

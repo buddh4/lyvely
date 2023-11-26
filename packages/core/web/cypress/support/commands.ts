@@ -25,11 +25,15 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 // eslint-disable-next-line @typescript-eslint/no-namespace
 import { v4 as uuidv4 } from 'uuid';
+import Loggable = Cypress.Loggable;
+import Timeoutable = Cypress.Timeoutable;
+import Withinable = Cypress.Withinable;
+import Shadow = Cypress.Shadow;
 
 type Username = 'Jan' | 'Disabled';
 
-Cypress.Commands.add('login', (username: Username) => {
-  cy.task('auth:createAuthToken', username).then((token: string) => {
+Cypress.Commands.add('authenticatedAs', (username: Username) => {
+  return cy.task('auth:createAuthToken', username).then((token: string) => {
     cy.setCookie('Authentication', token, {
       sameSite: 'lax',
       httpOnly: true,
@@ -38,3 +42,10 @@ Cypress.Commands.add('login', (username: Username) => {
     window.localStorage.setItem('visitorId', uuidv4());
   });
 });
+
+Cypress.Commands.add(
+  'getId',
+  (dataId: string, options?: Partial<Loggable & Timeoutable & Withinable & Shadow>) => {
+    return cy.get(`[data-id="${dataId}"]`, options);
+  },
+);
