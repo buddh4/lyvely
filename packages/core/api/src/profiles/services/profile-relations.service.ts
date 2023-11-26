@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { OptionalUser, User, UsersService } from '@/users';
-import { EntityNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/common';
 import { Profile, UserProfileRelation } from '../schemas';
 import { UserAndProfileRelations } from '../models';
 import { ProfileDao, UserProfileRelationsDao } from '../daos';
@@ -21,7 +21,7 @@ export class ProfileRelationsService {
    * the given user.
    * @param user The user whose relations with the profile are to be emphasized.
    * @param identity The identity of the profile.
-   * @throws EntityNotFoundException if profile does not exist
+   * @throws DocumentNotFoundException if profile does not exist
    * @returns A Promise resolving to an object containing all relations of the profile.
    */
   async findProfileRelations(
@@ -94,7 +94,7 @@ export class ProfileRelationsService {
   /**
    * Finds all user relations of a profile entity.
    *
-   * @throws EntityNotFoundException if profile does not exist
+   * @throws DocumentNotFoundException if profile does not exist
    * @param identity
    */
   async findAllUserProfileRelations(
@@ -118,7 +118,7 @@ export class ProfileRelationsService {
   private async findProfileByIdentity(identity: EntityIdentity<Profile>) {
     const profile =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
-    if (!profile) throw new EntityNotFoundException();
+    if (!profile) throw new DocumentNotFoundException();
     return profile;
   }
 }

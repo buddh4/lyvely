@@ -7,7 +7,7 @@ import {
   getProfileFeature,
   isInstallableProfileFeature,
 } from '@lyvely/interface';
-import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
+import { DocumentNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 import { Profile } from '../schemas';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
@@ -26,7 +26,7 @@ export class ProfileFeaturesService {
     const { featureId, state } = update;
     const feature = getProfileFeature(featureId);
 
-    if (!feature) throw new EntityNotFoundException();
+    if (!feature) throw new DocumentNotFoundException();
     if (!isInstallableProfileFeature(feature.id, profile, this.configService.get('features'))) {
       throw new ForbiddenServiceException();
     }

@@ -16,7 +16,7 @@ import {
   ProfileRelationUserInfoModel,
   ProfileRelationInfosEndpointPaths,
 } from '@lyvely/interface';
-import { EntityNotFoundException, mapType } from '@lyvely/common';
+import { DocumentNotFoundException, mapType } from '@lyvely/common';
 import { ProtectedProfileContext } from '../models';
 
 @Controller(ENDPOINT_PROFILE_RELATION_INFOS)
@@ -37,7 +37,7 @@ export class ProfileRelationInfosController implements ProfileRelationInfosEndpo
   ): Promise<ProfileRelationUserInfoModel> {
     const user = await this.usersService.findUserById(uid);
 
-    if (!user) throw new EntityNotFoundException();
+    if (!user) throw new DocumentNotFoundException();
 
     const context = await this.profilesService.findProfileContext(user, pid);
     const membership = context.getMembership();

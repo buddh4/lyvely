@@ -6,7 +6,7 @@ import { getPolicyToken } from '@/policies';
 import { BaseContentWritePolicy } from './base-content-write.policy';
 import { ContentManagePolicy } from './content-manage.policy';
 import { BaseContentManagePolicy } from './base-content-manage.policy';
-import { EntityNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/common';
 
 @Injectable()
 export class ContentWritePolicy extends BaseContentWritePolicy {
@@ -17,7 +17,7 @@ export class ContentWritePolicy extends BaseContentWritePolicy {
   async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 
-    if (!content) throw new EntityNotFoundException();
+    if (!content) throw new DocumentNotFoundException();
 
     const managePolicy = this.moduleRef.get<BaseContentManagePolicy>(
       getPolicyToken(ContentManagePolicy.name),

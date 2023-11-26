@@ -1,5 +1,5 @@
 import { InvitationContextIF } from '../interfaces';
-import { EntityNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/common';
 import { UserStatus } from '@lyvely/interface';
 import { Invitation } from '../schemas';
 
@@ -20,7 +20,7 @@ export abstract class AbstractInvitationsService<
     const invitationContext = await this.getInvitationContext(search);
 
     if (!(await this.validateInvitationContext(invitationContext))) {
-      throw new EntityNotFoundException('invitations.errors.invalid');
+      throw new DocumentNotFoundException('invitations.errors.invalid');
     }
 
     return this.createInfoModel(invitationContext!);

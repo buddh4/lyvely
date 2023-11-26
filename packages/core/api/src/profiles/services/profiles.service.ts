@@ -9,7 +9,7 @@ import {
   UpdateProfileModel,
   VALID_HANDLE_REGEX,
 } from '@lyvely/interface';
-import { EntityNotFoundException, UniqueConstraintException } from '@lyvely/common';
+import { DocumentNotFoundException, UniqueConstraintException } from '@lyvely/common';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';
 import {
@@ -263,24 +263,24 @@ export class ProfilesService {
 
   /**
    * Returns a profile with the given id or null if the profile could not be found.
-   * If `throwsException` is set to true, this function will throw a EntityNotFoundException in case the profile
+   * If `throwsException` is set to true, this function will throw a DocumentNotFoundException in case the profile
    * could not be found.
    * @param identity the identity of the profile.
    * @param throwsException if set to true, throws an exception in case the profile could not be found.
-   * @throws EntityNotFoundException if throwsExceptio is set to true and the profile could not be found.
+   * @throws DocumentNotFoundException if throwsExceptio is set to true and the profile could not be found.
    */
   async findProfileById(
     identity: EntityIdentity<Profile> | null | undefined,
     throwsException = false,
   ): Promise<Profile | null> {
-    if (!identity && throwsException) throw new EntityNotFoundException('Profile not found.');
+    if (!identity && throwsException) throw new DocumentNotFoundException('Profile not found.');
     if (!identity) return null;
 
     const result =
       identity instanceof Profile ? identity : await this.profileDao.findById(identity);
 
     if (!result && throwsException) {
-      throw new EntityNotFoundException('Profile not found.');
+      throw new DocumentNotFoundException('Profile not found.');
     }
 
     return result;
@@ -288,20 +288,20 @@ export class ProfilesService {
 
   /**
    * Returns a profile with the given handle or null if the profile could not be found.
-   * If `throwsException` is set to true, this function will throw a EntityNotFoundException in case the profile
+   * If `throwsException` is set to true, this function will throw a DocumentNotFoundException in case the profile
    * could not be found.
    * @param handle the unique profile handle.
    * @param throwsException if set to true, throws an exception in case the profile could not be found.
-   * @throws EntityNotFoundException if throwsExceptio is set to true and the profile could not be found.
+   * @throws DocumentNotFoundException if throwsExceptio is set to true and the profile could not be found.
    */
   async findProfileByHandle(handle: string, throwsException = false): Promise<Profile | null> {
-    if (!handle && throwsException) throw new EntityNotFoundException('Profile not found.');
+    if (!handle && throwsException) throw new DocumentNotFoundException('Profile not found.');
     if (!handle) return null;
 
     const result = await this.profileDao.findByHandle(handle);
 
     if (!result && throwsException) {
-      throw new EntityNotFoundException('Profile not found.');
+      throw new DocumentNotFoundException('Profile not found.');
     }
 
     return result;
@@ -428,7 +428,7 @@ export class ProfilesService {
   ): Promise<{ profile: Profile; organization: Organization | null }> {
     const profile = await this.profileDao.findByHandle(handle);
     let organization: Organization | null = null;
-    if (!profile) throw new EntityNotFoundException();
+    if (!profile) throw new DocumentNotFoundException();
 
     if (profile.hasOrg) {
       organization = await this.profileDao.findById(profile.oid);
@@ -447,7 +447,7 @@ export class ProfilesService {
    * @param pid The identity (or instance) of the profile. Could be an ObjectId, string, or a Profile instance.
    * @param oid Optional identity (or instance) of the organization. Could be an ObjectId, string, or a Profile instance.
    * @returns A Promise resolving to an object containing the profile and its organization (or null if there isn’t any).
-   * @throws EntityNotFoundException if the profile cannot be found.
+   * @throws DocumentNotFoundException if the profile cannot be found.
    */
   async findProfileWithOrganization(
     pid: EntityIdentity<Profile>,
@@ -477,14 +477,14 @@ export class ProfilesService {
       profile = await this.profileDao.findById(pid);
     }
 
-    if (!profile) throw new EntityNotFoundException();
+    if (!profile) throw new DocumentNotFoundException();
 
     // Make sure we have the right organization here
     if (profile.hasOrganization() && !profile.isProfileOfOrganization(organization)) {
       organization = await this.profileDao.findByTypeAndId(profile.oid, ProfileType.Organization);
     }
 
-    if (!profile) throw new EntityNotFoundException();
+    if (!profile) throw new DocumentNotFoundException();
 
     return { profile, organization: organization || null };
   }
@@ -566,7 +566,7 @@ export class ProfilesService {
   async incrementScore(identity: EntityIdentity<Profile>, inc: number): Promise<number> {
     const profile = await this.findProfileById(identity, true);
 
-    if (!profile) throw new EntityNotFoundException();
+    if (!profile) throw new DocumentNotFoundException();
 
     if (inc === 0) return profile.score;
 

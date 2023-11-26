@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import { MailInvitationInfo, useUserInvitationsClient } from '@lyvely/interface';
-import { EntityNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/common';
 import { onMounted, ref } from 'vue';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { storeToRefs } from 'pinia';
@@ -37,7 +37,7 @@ onMounted(async () => {
       mailInviteInfo.value = info;
     })
     .catch((err: unknown) => {
-      if (err instanceof EntityNotFoundException) {
+      if (err instanceof DocumentNotFoundException) {
         error.value = 'invitations.errors.invalid';
       } else {
         error.value = 'error.unknown';

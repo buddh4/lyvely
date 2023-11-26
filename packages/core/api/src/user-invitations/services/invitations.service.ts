@@ -7,7 +7,7 @@ import { MailInvitationService } from './mail-invitations.service';
 import { IMailInvitationContext, InvitationIF } from '../interfaces';
 import { UserInvitationsService } from './user-invitations.service';
 import { assureObjectId, EntityIdentity } from '@/core';
-import { EntityNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/common';
 
 @Injectable()
 export class InvitationsService {
@@ -37,7 +37,7 @@ export class InvitationsService {
   ): Promise<Membership | undefined> {
     // TODO: invalidate notification
     const invitation = await this.userInvitationsService.getInvitation({ user, profile });
-    if (!invitation) throw new EntityNotFoundException();
+    if (!invitation) throw new DocumentNotFoundException();
     return this.acceptInvitation(user, invitation);
   }
 
@@ -51,7 +51,7 @@ export class InvitationsService {
 
   public async acceptMailInvitation(user: User, token: string): Promise<Membership | undefined> {
     const invitation = await this.mailInvitationsService.getInvitation(token);
-    if (!invitation) throw new EntityNotFoundException();
+    if (!invitation) throw new DocumentNotFoundException();
     return this.acceptInvitation(user, invitation);
   }
 
@@ -66,7 +66,7 @@ export class InvitationsService {
   private async handleProfileInvitation(user: User, invitation: InvitationIF) {
     if (!invitation.pid) return;
     const profile = await this.profileService.findProfileById(invitation.pid);
-    if (!profile) throw new EntityNotFoundException();
+    if (!profile) throw new DocumentNotFoundException();
     return this.membershipService.createMembership(profile, user, invitation.role);
   }
 

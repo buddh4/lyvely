@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import { UserInvitationInfo, useUserInvitationsClient } from '@lyvely/interface';
-import { EntityNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/common';
 import { computed, onMounted, ref } from 'vue';
 import { profileIdRoute } from '@/profiles/routes/profile-route.helper';
 import { LyCenteredPanel } from '@lyvely/ui';
@@ -42,7 +42,7 @@ onMounted(async () => {
       userInviteInfo.value = info;
     })
     .catch((err: unknown) => {
-      if (err instanceof EntityNotFoundException) {
+      if (err instanceof DocumentNotFoundException) {
         error.value = 'invitations.errors.invalid';
       } else {
         error.value = 'error.unknown';

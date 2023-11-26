@@ -1,7 +1,7 @@
 import { Content } from '../schemas';
 import { Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
-import { EntityNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/common';
 import { ProfileShard } from '@/profiles';
 import { assureObjectId, EntityIdentity, TObjectId } from '@/core';
 import { User } from '@/users';
@@ -13,13 +13,13 @@ export class ContentService {
   constructor(private contentDao: ContentDao) {}
 
   /**
-   * Finds a single content by id related to the given profile and throws a EntityNotFoundException in case the content was not found.
+   * Finds a single content by id related to the given profile and throws a DocumentNotFoundException in case the content was not found.
    *
    * @param profileRelation
    * @param id
    * @param throwException
    * @private
-   * @throws EntityNotFoundException
+   * @throws DocumentNotFoundException
    */
   public async findContentByProfileAndId<
     B extends boolean | undefined | null = boolean | undefined | null,
@@ -30,7 +30,7 @@ export class ContentService {
   ): Promise<B extends false | undefined | null ? Content | undefined : Content> {
     const content = await this.contentDao.findByProfileAndId(profileRelation, id);
 
-    if (!content && throwException) throw new EntityNotFoundException();
+    if (!content && throwException) throw new DocumentNotFoundException();
 
     return content as Content;
   }
@@ -40,7 +40,7 @@ export class ContentService {
    *
    * @param user
    * @param content
-   * @throws EntityNotFoundException
+   * @throws DocumentNotFoundException
    */
   async archive(user: User, content: Content): Promise<Content> {
     await this.contentDao.archive(user, content);
@@ -57,7 +57,7 @@ export class ContentService {
    *
    * @param user
    * @param content
-   * @throws EntityNotFoundException
+   * @throws DocumentNotFoundException
    */
   async restore(user: User, content: Content): Promise<Content> {
     await this.contentDao.restore(user, content);
@@ -78,7 +78,7 @@ export class ContentService {
     mid = assureObjectId(mid);
     const milestone = this.contentDao.findByProfileAndId(profileRelation, mid);
 
-    if (!milestone) throw new EntityNotFoundException();
+    if (!milestone) throw new DocumentNotFoundException();
 
     return this.contentDao.updateOneByProfileAndIdSet(profileRelation, cid, { 'meta.mid': mid });
   }

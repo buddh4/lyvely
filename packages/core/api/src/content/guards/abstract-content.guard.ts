@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { ContentService } from '../services';
 import { ProfileContentRequest } from '../types';
-import { EntityNotFoundException, isValidObjectId, Type } from '@lyvely/common';
+import { DocumentNotFoundException, isValidObjectId, Type } from '@lyvely/common';
 import { Content, ProfileContentContext } from '../schemas';
 import {
   CONTENT_TYPE_KEY,
@@ -42,7 +42,7 @@ export abstract class AbstractContentGuard<C extends Content = Content> implemen
     const { profile, context: profileContentContext } = request;
 
     if (!request.content && !contentId && this.isContentRequired())
-      throw new EntityNotFoundException();
+      throw new DocumentNotFoundException();
     if (!request.content && !contentId) return true;
     if (!request.content && !isValidObjectId(contentId)) return false;
 

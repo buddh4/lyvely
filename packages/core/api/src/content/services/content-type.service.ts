@@ -9,7 +9,7 @@ import {
   FilterQuery,
 } from '@/core';
 import { Content, ContentCondition } from '../schemas';
-import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
+import { DocumentNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 import { CreateContentModel } from '@lyvely/interface';
 import { Inject, Logger } from '@nestjs/common';
 import { ContentEventPublisher } from '../components';
@@ -162,8 +162,8 @@ export abstract class ContentTypeService<
     if (!model.parentId) return;
 
     const parent = await this.baseContentDao.findByProfileAndId(profile, model.parentId);
-    if (!parent) throw new EntityNotFoundException();
-    if (!parent.pid.equals(profile._id)) throw new EntityNotFoundException();
+    if (!parent) throw new DocumentNotFoundException();
+    if (!parent.pid.equals(profile._id)) throw new DocumentNotFoundException();
     if (parent.meta.archived || parent.meta.locked) throw new ForbiddenServiceException();
 
     instance.meta.parentId = parent._id;

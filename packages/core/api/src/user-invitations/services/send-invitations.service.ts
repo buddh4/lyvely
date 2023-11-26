@@ -7,7 +7,7 @@ import {
   ForbiddenServiceException,
   isValidEmail,
   FieldValidationException,
-  EntityNotFoundException,
+  DocumentNotFoundException,
 } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
@@ -43,7 +43,7 @@ export class SendInvitationsService {
       : null;
 
     if (inviteRequest.pid && !profile)
-      throw new EntityNotFoundException('Could not send profile invitation due to invalid pid.');
+      throw new DocumentNotFoundException('Could not send profile invitation due to invalid pid.');
 
     return inviteRequest.pid
       ? await this.sendProfileInvites(host, inviteRequest, profile!)
@@ -92,7 +92,7 @@ export class SendInvitationsService {
   ) {
     const { pid, invites } = inviteRequest;
 
-    if (!profile || !pid) throw new EntityNotFoundException();
+    if (!profile || !pid) throw new DocumentNotFoundException();
     if (!isMultiUserProfile(profile.type)) throw new ForbiddenServiceException();
 
     const emails = invites.map((invite) => invite.email);

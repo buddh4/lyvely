@@ -2,7 +2,7 @@ import { useProfileStore } from '@/profiles/stores';
 import { profilePathRoute } from '@/profiles/routes/profile-route.helper';
 import { NavigationGuardNext, RouteLocation } from 'vue-router';
 import { isMultiUserProfile } from '@lyvely/interface';
-import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
+import { DocumentNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 
 export const ifIsMultiUserProfile = async (
   to: RouteLocation,
@@ -55,7 +55,7 @@ const loadProfileByHandle = async (
 
     next();
   } catch (e) {
-    if (e instanceof EntityNotFoundException) return next('/404');
+    if (e instanceof DocumentNotFoundException) return next('/404');
     if (e instanceof ForbiddenServiceException) return next('/403');
     else return next('/500');
   }
@@ -95,7 +95,7 @@ const loadProfileById = async (
       next(profileStore.getRoute(null, profile.handle, query));
     }
   } catch (e) {
-    if (e instanceof EntityNotFoundException) return next('/404');
+    if (e instanceof DocumentNotFoundException) return next('/404');
     if (e instanceof ForbiddenServiceException) return next('/403');
     else return next('/500');
   }

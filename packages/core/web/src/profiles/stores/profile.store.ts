@@ -8,7 +8,7 @@ import {
 } from '@lyvely/interface';
 import { computed, ref } from 'vue';
 import { usePageStore } from '@/ui';
-import { EntityNotFoundException, findByPath } from '@lyvely/common';
+import { DocumentNotFoundException, findByPath } from '@lyvely/common';
 import { useLiveStore } from '@/live';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';
@@ -30,7 +30,7 @@ export const useProfileStore = defineStore('profile', () => {
     await setActiveProfile(result);
     status.setStatus(Status.SUCCESS);
 
-    if (!profile.value) throw new EntityNotFoundException();
+    if (!profile.value) throw new DocumentNotFoundException();
 
     return profile.value;
   }
@@ -59,7 +59,7 @@ export const useProfileStore = defineStore('profile', () => {
       else throw err;
     }
 
-    if (!profile.value) throw new EntityNotFoundException();
+    if (!profile.value) throw new DocumentNotFoundException();
 
     return profile.value;
   }

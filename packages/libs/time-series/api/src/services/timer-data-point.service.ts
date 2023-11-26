@@ -1,7 +1,7 @@
 import { Profile, User } from '@lyvely/api';
 import { CalendarDate } from '@lyvely/dates';
 import { isTimerDataPointConfig } from '@lyvely/time-series-interface';
-import { EntityNotFoundException, IntegrityException } from '@lyvely/common';
+import { DocumentNotFoundException, IntegrityException } from '@lyvely/common';
 import { DataPointService } from './data-point.service';
 import { DataPoint, TimerDataPoint, TimeSeriesContent } from '../schemas';
 
@@ -79,7 +79,7 @@ export abstract class TimerDataPointService<
   }
 
   private isTimerDataPoint(dataPoint: DataPoint): dataPoint is TimerDataPoint {
-    if (!dataPoint) throw new EntityNotFoundException();
+    if (!dataPoint) throw new DocumentNotFoundException();
     if (!(dataPoint instanceof TimerDataPoint))
       throw new IntegrityException('Can not start timer of non timer data point.');
 

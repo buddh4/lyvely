@@ -2,7 +2,7 @@ import { buildTest, LyvelyTestingModule } from '@/testing';
 import { ProfileFeaturesService } from './index';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
 import { clearFeatures, registerFeatures, UpdateFeatureModel } from '@lyvely/interface';
-import { EntityNotFoundException, ForbiddenServiceException } from '@lyvely/common';
+import { DocumentNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 
 describe('ProfileFeaturesService', () => {
   let testingModule: LyvelyTestingModule;
@@ -265,7 +265,7 @@ describe('ProfileFeaturesService', () => {
           new UpdateFeatureModel({ featureId: 'test', state: true }),
         );
       } catch (e) {
-        expect(e instanceof EntityNotFoundException).toEqual(true);
+        expect(e instanceof DocumentNotFoundException).toEqual(true);
       }
     });
   });

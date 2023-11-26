@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { IStreamResponse, StreamRequest, IStreamFilter, StreamResponse } from '@lyvely/interface';
-import { findByPath, EntityNotFoundException, SortValue } from '@lyvely/common';
+import { findByPath, DocumentNotFoundException, SortValue } from '@lyvely/common';
 import {
   FilterQuery,
   AbstractDao,
@@ -41,7 +41,7 @@ export abstract class AbstractStreamService<
       this.createLoadEntryQueryFilter(context, filter),
     );
 
-    if (!streamEntry) throw new EntityNotFoundException();
+    if (!streamEntry) throw new DocumentNotFoundException();
 
     return streamEntry;
   }

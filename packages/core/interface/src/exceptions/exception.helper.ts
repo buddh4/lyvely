@@ -9,7 +9,7 @@ import {
   ForbiddenServiceException,
   UnauthorizedServiceException,
   RateLimitException,
-  EntityNotFoundException,
+  DocumentNotFoundException,
 } from '@lyvely/common';
 
 export function isAxiosError(error: any): error is AxiosError {
@@ -109,7 +109,7 @@ export function errorToServiceException(error: any, throws = false): ServiceExce
   } else if (isRateLimitError(error)) {
     result = new RateLimitException(error, parseInt(error.response.headers['Retry-After'] || '20'));
   } else if (isNotFoundError(error)) {
-    result = new EntityNotFoundException(error.response?.data);
+    result = new DocumentNotFoundException(error.response?.data);
   }
 
   if (throws) throw result;

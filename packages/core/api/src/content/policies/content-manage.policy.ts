@@ -4,7 +4,7 @@ import { ProfileContentContext } from '../schemas';
 import { ModuleRef } from '@nestjs/core';
 import { getPolicyToken } from '@/policies';
 import { BaseContentManagePolicy } from './base-content-manage.policy';
-import { EntityNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/common';
 
 @Injectable()
 export class ContentManagePolicy extends BaseContentManagePolicy {
@@ -15,7 +15,7 @@ export class ContentManagePolicy extends BaseContentManagePolicy {
   async verify(context: ProfileContentContext): Promise<boolean> {
     const { content } = context;
 
-    if (!content) throw new EntityNotFoundException();
+    if (!content) throw new DocumentNotFoundException();
 
     const contentManagePolicyType = content.getManagePolicy();
     if (contentManagePolicyType) {

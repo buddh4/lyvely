@@ -1,5 +1,5 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
-import { EntityNotFoundException, IntegrityException } from '@lyvely/common';
+import { DocumentNotFoundException, IntegrityException } from '@lyvely/common';
 import { AbstractStreamService } from '@/streams';
 import {
   IStreamResponse,
@@ -63,7 +63,7 @@ export class UserNotificationsService extends AbstractStreamService<
       },
     );
 
-    if (!userNotification) throw new EntityNotFoundException();
+    if (!userNotification) throw new DocumentNotFoundException();
 
     return userNotification;
   }
@@ -219,7 +219,7 @@ export class UserNotificationsService extends AbstractStreamService<
       oldState = notification.seen;
     }
 
-    if (!notification) throw new EntityNotFoundException();
+    if (!notification) throw new DocumentNotFoundException();
 
     if (oldState !== seen) {
       this.liveService.emitUserEvent(
