@@ -1,5 +1,5 @@
 import { reactive, Ref, ref, toValue } from 'vue';
-import { IEditModelService } from '@lyvely/common';
+import { FieldValidationException, IEditModelService } from '@lyvely/common';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus, eventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
@@ -220,7 +220,7 @@ export function useUpdateModelStore<
     } catch (err) {
       if (typeof options.onSubmitError === 'function') {
         options.onSubmitError(err);
-      } else {
+      } else if (!(err instanceof FieldValidationException)) {
         throw err;
       }
     }

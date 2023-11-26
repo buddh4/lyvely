@@ -57,6 +57,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
         </div>
         <div class="float-right">
           <ly-button
+            data-id="btn-toggle-archived"
             :active="filter.archived"
             class="secondary outlined text-xs px-0.5 py-0.5"
             :title="$t('filter.archive')"
@@ -79,12 +80,14 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
         <div class="align-middle">
           <ly-button
             class="secondary outlined mr-1"
+            :data-id="`btn-edit-${tag.id}`"
             :title="$t('common.edit')"
             @click="setEditTag(tag)">
             <ly-icon name="edit" />
           </ly-button>
           <ly-button
             v-if="tag.archived"
+            :data-id="`btn-restore-${tag.id}`"
             class="secondary outlined"
             :confirm="confirmArchive(tag)"
             :title="$t('common.restore')"
@@ -93,6 +96,7 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
           </ly-button>
           <ly-button
             v-else
+            :data-id="`btn-archive-${tag.id}`"
             class="secondary outlined"
             :confirm="confirmArchive(tag)"
             :title="$t('common.archive')"

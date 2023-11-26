@@ -8,7 +8,7 @@ defineProps<IProps>();
 
 <template>
   <transition name="fade">
-    <div v-if="modelValue" class="overlay bg-main">
+    <div v-if="modelValue" class="app-loader overlay bg-main">
       <div class="overlay__inner">
         <div class="overlay__content">
           <span class="spinner border-divide border-t-pop"></span>

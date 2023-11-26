@@ -45,7 +45,13 @@ export class ProfileTagsService {
   async updateTag(profile: Profile, identity: EntityIdentity<Tag>, update: Partial<Tag>) {
     const tag = profile.getTagById(assureObjectId(identity));
 
-    if (!tag) return false;
+    if (!tag) throw new DocumentNotFoundException();
+
+    const tagByName = update.name ? profile.getTagByName(update.name) : null;
+
+    if (tagByName && !tag._id.equals(tagByName._id)) {
+      throw new FieldValidationException([{ property: 'name', errors: ['unique'] }]);
+    }
 
     return !!(await this.profileDao.updateTag(profile, identity, update));
   }

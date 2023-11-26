@@ -28,12 +28,14 @@ import { v4 as uuidv4 } from 'uuid';
 import Loggable = Cypress.Loggable;
 import Timeoutable = Cypress.Timeoutable;
 import Withinable = Cypress.Withinable;
+import VisitOptions = Cypress.VisitOptions;
 import Shadow = Cypress.Shadow;
 
 type Username = 'Jan' | 'Disabled';
 
 Cypress.Commands.add('authenticatedAs', (username: Username) => {
-  return cy.task('auth:createAuthToken', username).then((token: string) => {
+  cy.task('auth:createAuthToken', username).then((token: string) => {
+    console.log('test');
     cy.setCookie('Authentication', token, {
       sameSite: 'lax',
       httpOnly: true,
@@ -49,3 +51,22 @@ Cypress.Commands.add(
     return cy.get(`[data-id="${dataId}"]`, options);
   },
 );
+
+Cypress.Commands.add(
+  'getByObjectId',
+  (
+    seed: string,
+    prefix: string,
+    options?: Partial<Loggable & Timeoutable & Withinable & Shadow>,
+  ) => {
+    cy.task('db:getObjectId', seed).then((objectId: string) => {
+      prefix = prefix ? prefix + '-' : '';
+      cy.getId(prefix + objectId);
+    });
+  },
+);
+
+Cypress.Commands.add('load', (path: string, options?: Partial<VisitOptions>) => {
+  path = path.startsWith('/') ? path : '/' + path;
+  cy.visit(`http://127.0.0.1:3000${path}`, options);
+});

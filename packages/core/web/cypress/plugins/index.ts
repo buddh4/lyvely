@@ -13,9 +13,10 @@
 // the project's config changing)
 
 import fs, { readdirSync } from 'fs';
-import { getObjectId } from 'mongo-seeding';
 import { sign, decode, JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
+
+const { getObjectId } = require('mongo-seeding');
 
 dotenv.config({ path: '.e2e.env' });
 const path = require('path');
@@ -136,6 +137,10 @@ function decodeJwt(token: string): JwtPayload {
   return decode(token, { json: true }) as JwtPayload;
 }
 
+function _getObjectId(seed: string): string {
+  return getObjectId(seed);
+}
+
 /**
  * @type {Cypress.PluginConfig}
  */
@@ -146,6 +151,7 @@ module.exports = (on, config) => {
   // `on` is used to hook into various events Cypress emits
   on('task', {
     'db:seed': () => seed(),
+    'db:getObjectId': (seed: string) => _getObjectId(seed),
     'auth:createAuthToken': (username: string) => createAuthToken(username),
     'jwt:decode': (token: string) => decodeJwt(token),
     'mails:delete': () => deleteMails(),

@@ -60,7 +60,7 @@ const { modalTitle, status } = storeToRefs(tagEditStore);
         <div>{{ color }}</div>
       </div>
       <ly-form-model
-        id="edit-task"
+        id="edit-tag"
         v-model="model"
         :validator="validator"
         :status="status"
