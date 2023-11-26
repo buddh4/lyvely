@@ -72,4 +72,27 @@ describe('Test User Login/Logout', function () {
     cy.getCookie('Authentication').should('exist');
     cy.getCookie('Refresh').should('exist');
   });
+
+  it('Successful Login - do remember', function () {
+    cy.get('[data-id="login-usernameoremail"]').type('jan@test.com');
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.get('[data-id="login-password"]').type('TestPassword123');
+    cy.get('[data-id="login-remember"]').click();
+    cy.get('[data-id="btn-login"]').click();
+    cy.url().should('include', '/p/Jan/stream');
+    cy.getCookie('Refresh')
+      .then((cookie) => cy.task('jwt:decode', cookie.value))
+      .then((payLoad: any) => cy.wrap(payLoad.remember).should('equal', true));
+  });
+
+  it('Successful Login - do not remember', function () {
+    cy.get('[data-id="login-usernameoremail"]').type('jan@test.com');
+    cy.get('[data-id="btn-to-password"]').click();
+    cy.get('[data-id="login-password"]').type('TestPassword123');
+    cy.get('[data-id="btn-login"]').click();
+    cy.url().should('include', '/p/Jan/stream');
+    cy.getCookie('Refresh')
+      .then((cookie) => cy.task('jwt:decode', cookie.value))
+      .then((payLoad: any) => cy.wrap(payLoad.remember).should('equal', false));
+  });
 });

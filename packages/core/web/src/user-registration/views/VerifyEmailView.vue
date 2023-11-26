@@ -36,9 +36,10 @@ onUnmounted(verifyEmailStore.reset);
 
     <template #footer>
       <div class="flex justify-center space-x-1">
-        <ly-button class="secondary" text="common.resend" @click="resendOtp" />
+        <ly-button class="secondary" data-id="btn-resend" text="common.resend" @click="resendOtp" />
         <ly-button
           v-if="!otpInfo?.requiresRefresh()"
+          data-id="btn-submit"
           class="primary"
           text="common.submit"
           @click="verifyEmail" />

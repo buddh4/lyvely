@@ -57,7 +57,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['change', 'update:modelValue']);
 const input = ref<HTMLInputElement>();
 
-const { inputId, inputClass, inputError, inputValue, label, onChange, onFocusOut } =
+const { inputId, dataId, inputClass, inputError, inputValue, label, onChange, onFocusOut } =
   useFloatingInputSetup(props, emit);
 
 onMounted(() => {
@@ -77,7 +77,7 @@ onMounted(() => {
     <select
       v-if="type === 'number'"
       :id="inputId"
-      :data-id="inputId"
+      :data-id="dataId"
       ref="input"
       v-model.number="inputValue"
       :aria-describedby="ariaDescribedby"
@@ -94,7 +94,7 @@ onMounted(() => {
     <select
       v-else
       :id="inputId"
-      :data-id="inputId"
+      :data-id="dataId"
       ref="input"
       v-model="inputValue"
       :aria-describedby="ariaDescribedby"

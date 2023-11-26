@@ -1,5 +1,5 @@
 export const USERS_MODULE_ID = 'users';
-export const MIN_USER_NAME_LENGTH = 3;
+export const MIN_USER_NAME_LENGTH = 2;
 export const MAX_USER_NAME_LENGTH = 29;
 
 /**
@@ -23,7 +23,7 @@ export const USER_DISPLAY_NAME_REGEX = /^[^\W_](?:(?!(?:__|--))[\p{L}\p{N}\p{Pd}
  * - ^[^\W_]: Ensures that the username starts with a character that is not a non-word character (\W) or an underscore (_).
  * - (?:(?!(__|--|-_|_-))[a-zA-Z0-9_-]): Matches the middle part of the username, allowing letters (uppercase and lowercase), digits, hyphens (-), and underscores (_).
  *    - (?!(__|--|-_|_-)): This part uses negative lookahead to disallow consecutive underscores, consecutive hyphens, combinations of hyphen and underscore, or underscore followed by hyphen.
- * - {2,29}: Enforces a minimum length of 3 characters and a maximum length of 30 characters for the entire username.
+ * - {1,29}: Enforces a minimum length of 3 characters and a maximum length of 30 characters for the entire username.
  * - [^\W_]: Ensures that the username ends with a character that is not a non-word character (\W) or an underscore (_).
  *
  * Username Constraints:
@@ -33,4 +33,4 @@ export const USER_DISPLAY_NAME_REGEX = /^[^\W_](?:(?!(?:__|--))[\p{L}\p{N}\p{Pd}
  *
  * These usernames should be compatible for use within URLs while maintaining a reasonable format.
  */
-export const USER_NAME_REGEX = /^[^\W_](?:(?!(__|--|-_|_-))[a-zA-Z0-9_-]){2,29}[^\W_]$/;
+export const USER_NAME_REGEX = /^[^\W_](?:(?!(__|--|-_|_-))[a-zA-Z0-9_-]){1,29}[^\W_]$/;

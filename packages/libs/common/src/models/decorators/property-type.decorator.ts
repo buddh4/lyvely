@@ -10,6 +10,7 @@ export type DefaultValue<TValue> = TValue | (() => TValue);
  */
 export interface IPropertyDefinitionOptions<TValue> {
   default?: DefaultValue<TValue>;
+  noTransform?: boolean;
   optional?: boolean;
 }
 
@@ -86,6 +87,7 @@ export function PropertyType<
     const RawType = Array.isArray(type) ? type[0] : type;
 
     if (
+      !options.noTransform &&
       RawType &&
       typeof RawType === 'function' &&
       RawType.prototype &&

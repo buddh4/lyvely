@@ -102,6 +102,7 @@ const text = computed(() =>
           v-model="otp[i - 1]"
           type="text"
           :data-otp="i - 1"
+          :data-id="'otp-' + (i - 1)"
           inputmode="numeric"
           :aria-label="$t('otp.aria.input_label')"
           aria-invlaid="false"

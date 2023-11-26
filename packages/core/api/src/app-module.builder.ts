@@ -208,7 +208,7 @@ export class AppModuleBuilder {
           if (process.env.NODE_ENV === 'e2e' && !options.uri) {
             throw new Error('e2e test can not fallback to the default mongodb uri.');
           } else if (process.env.NODE_ENV === 'e2e' && !options.uri!.endsWith('e2e')) {
-            this.logger.log('Added e2e suffix to mongo uri.');
+            this.logger.warn('Added e2e suffix to mongo uri.');
             options.uri += 'e2e';
           }
 

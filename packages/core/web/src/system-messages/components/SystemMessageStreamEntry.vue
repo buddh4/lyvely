@@ -4,6 +4,7 @@ import { ContentStreamEntry } from '@/content';
 import { t } from '@/i18n';
 import { IStream } from '@/stream/stream.composable';
 import { useAppConfigStore } from '@/app-config/app-config.store';
+import { LyMarkdownView } from '@lyvely/ui';
 
 export interface IProps {
   model: SystemMessageModel;
@@ -36,7 +37,7 @@ const appName = useAppConfigStore().get('appName');
     <template #default>
       <h1 v-if="model.content.title">{{ t(model.content.title, model.content.params || {}) }}</h1>
       <span v-if="model.content.text">
-        {{ t(model.content.text, model.content.params || {}) }}
+        <ly-markdown-view :md="t(model.content.text, model.content.params || {})" />
       </span>
     </template>
   </content-stream-entry>

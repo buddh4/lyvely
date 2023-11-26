@@ -37,7 +37,6 @@ export function profileRoute(
 
 export function profilePath(subPath?: string, handle = ':handle'): string {
   const profilePath = `/p/${handle}`;
-
   if (!subPath) return profilePath;
 
   if (subPath.charAt(0) !== '/') {

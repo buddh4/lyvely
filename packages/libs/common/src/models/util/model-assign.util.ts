@@ -80,7 +80,7 @@ function _assignRawDataTo<T extends Object>(
       const propertyType = propertyTypeDefinition?.type;
       model[path] = propertyType === String ? data[path].toString() : data[path];
     } else if (isPlainObject(data[path])) {
-      // Try to get model type by ModelType decorator, or otherwise try to determine the type from model or data
+      // Try to get model type by PropertyType decorator, or otherwise try to determine the type from model or data
       const propertyTypeDefinition = getPropertyTypeDefinition(model.constructor as Type, path);
       let propertyType = propertyTypeDefinition?.type;
       if (!propertyTypeDefinition) {

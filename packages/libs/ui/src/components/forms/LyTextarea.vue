@@ -57,7 +57,7 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['update:modelValue']);
 const input = ref<HTMLInputElement>();
 
-const { inputId, inputClass, inputError, inputValue, label, onChange, onFocusOut } =
+const { inputId, dataId, inputClass, inputError, inputValue, label, onChange, onFocusOut } =
   useFloatingInputSetup(props, emit);
 
 onMounted(() => {
@@ -76,7 +76,7 @@ onMounted(() => {
     :input-error="inputError">
     <textarea
       :id="inputId"
-      :data-id="inputId"
+      :data-id="dataId"
       ref="input"
       v-model="inputValue"
       :placeholder="t(placeholder)"

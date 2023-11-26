@@ -6,7 +6,6 @@ import { LAYOUT_PROFILE, LAYOUT_PROFILE_SETTINGS } from '@/profiles/profile.cons
 import { PROFILES_MODULE_ID } from '@lyvely/interface';
 
 export default [
-  { path: '/', redirect: profilePathRoute() },
   {
     path: '/pid/:pid/:view?',
     name: 'PID',

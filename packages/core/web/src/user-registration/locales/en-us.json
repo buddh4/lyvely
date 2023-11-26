@@ -21,12 +21,12 @@
       "remember": "Remember this device."
     },
     "email": {
-      "taken": "email is already taken",
-      "invalid": "email is invalid"
+      "taken": "Email is already taken",
+      "invalid": "Email is invalid"
     },
     "username": {
-      "taken": "username is already taken",
-      "invalid": "username is invalid"
+      "taken": "Username is already taken",
+      "invalid": "Username is invalid"
     }
   }
 }

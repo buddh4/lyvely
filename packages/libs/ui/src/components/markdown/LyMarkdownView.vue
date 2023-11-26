@@ -42,7 +42,7 @@ const html = computedAsync(async () => {
 </script>
 
 <template>
-  <div class="prose dark:prose-invert max-w-none" v-html="html" />
+  <div v-html="html" />
 </template>
 
 <style scoped></style>

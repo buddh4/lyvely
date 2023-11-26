@@ -17,7 +17,9 @@ export class LoginThrottlerGuard extends ReverseProxyThrottlerGuard {
     const classRef = context.getClass();
 
     limit =
-      this.reflector.getAllAndOverride<number>(USER_THROTTLER_LIMIT, [handler, classRef]) || 20;
+      process.env.NODE_ENV === 'e2e'
+        ? Number.MAX_VALUE
+        : this.reflector.getAllAndOverride<number>(USER_THROTTLER_LIMIT, [handler, classRef]) || 20;
     ttl = this.reflector.getAllAndOverride<number>(USER_THROTTLER_TTL, [handler, classRef]) || 60;
 
     return await super.handleRequest(context, limit, ttl);

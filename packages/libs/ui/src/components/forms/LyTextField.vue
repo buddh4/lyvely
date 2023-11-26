@@ -94,6 +94,7 @@ function togglePassword() {
 
 const {
   inputId,
+  dataId,
   inputClass,
   inputError,
   inputValue,
@@ -123,7 +124,7 @@ onMounted(() => {
 
     <input
       :id="inputId"
-      :data-id="inputId"
+      :data-id="dataId"
       ref="input"
       v-model="inputValue"
       :name="name"

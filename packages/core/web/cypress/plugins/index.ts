@@ -14,15 +14,17 @@
 
 import fs, { readdirSync } from 'fs';
 import { getObjectId } from 'mongo-seeding';
-import { sign } from 'jsonwebtoken';
+import { sign, decode, JwtPayload } from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-require('dotenv').config({ path: '.e2e.env' });
+dotenv.config({ path: '.e2e.env' });
 const path = require('path');
 const { Seeder } = require('mongo-seeding');
 
-async function seed(cfg) {
+async function seed() {
+  console.log('Seeding ' + process.env.MONGODB_URI_E2E);
   const config = {
-    database: cfg.env.MONGODB_URI,
+    database: process.env.MONGODB_URI_E2E,
     dropDatabase: false,
     dropCollections: false,
     removeAllDocuments: true,
@@ -100,7 +102,7 @@ function getLatestMailContent(): string {
   }
 }
 
-function extractFromLatestMail(regex: string): string[] {
+function extractFromLatestMail(regex: string, flags: string): string[] {
   try {
     const content = getLatestMailContent();
     if (!content) return null;
@@ -109,7 +111,7 @@ function extractFromLatestMail(regex: string): string[] {
     let match: string[];
 
     // Create a regular expression object
-    const regexObj = new RegExp(regex, 'g');
+    const regexObj = new RegExp(regex, flags || 'gm');
 
     while ((match = regexObj.exec(content)) !== null) {
       matches.push(match[1] || match[0]); // Capture group 1 or full match
@@ -130,6 +132,10 @@ function createAuthToken(username: string): string {
   });
 }
 
+function decodeJwt(token: string): JwtPayload {
+  return decode(token, { json: true }) as JwtPayload;
+}
+
 /**
  * @type {Cypress.PluginConfig}
  */
@@ -139,11 +145,12 @@ module.exports = (on, config) => {
 
   // `on` is used to hook into various events Cypress emits
   on('task', {
-    'db:seed': () => seed(config),
+    'db:seed': () => seed(),
     'auth:createAuthToken': (username: string) => createAuthToken(username),
+    'jwt:decode': (token: string) => decodeJwt(token),
     'mails:delete': () => deleteMails(),
     'mails:latest': () => getLatestMailContent(),
-    'mails:extract': (regex: string) => extractFromLatestMail(regex),
+    'mails:extract': (regex: string, flags: string) => extractFromLatestMail(regex, flags),
   });
 
   return config;

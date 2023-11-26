@@ -5,8 +5,23 @@ import { useAuthStore } from '@/auth/store/auth.store';
 import { PATH_RESET_PASSWORD, PATH_LOGIN, PATH_LOGOUT } from '../auth.constants';
 import { useResetPasswordStore } from '@/auth/store/reset-password.store';
 import { LAYOUT_INTRO } from '@/ui';
+import { profilePath } from '@/profiles';
 
 export default [
+  {
+    path: '/',
+    name: 'Root',
+    redirect: profilePath(),
+    beforeEnter: [
+      (to, from, next) => {
+        if (!useAuthStore().isAuthenticated) {
+          next({ name: 'Login' });
+        } else {
+          next();
+        }
+      },
+    ],
+  },
   {
     path: PATH_LOGIN,
     name: 'Login',

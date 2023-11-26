@@ -1,4 +1,4 @@
-import { NavigationGuardNext, RouteLocation } from 'vue-router';
+import { RouteLocation } from 'vue-router';
 import { useHelpStore } from '../stores';
 
 export const showHelpAfterNavigationHook = (to: RouteLocation) => {

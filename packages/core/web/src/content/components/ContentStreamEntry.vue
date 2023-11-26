@@ -158,11 +158,12 @@ const maxWidth = true;
                     <p v-if="model.content.text?.length" class="text-sm text-dimmed">
                       {{ model.content.text }}
                     </p>
-                    <p
+                    <div
                       v-if="!model.content.text?.length && !model.content.title?.length"
-                      class="text-sm text-dimmed">
-                      {{ t('content.stream.empty') }};
-                    </p>
+                      class="flex items-center gap-1 text-sm text-dimmed">
+                      <ly-icon name="warning" class="text-warning" />
+                      {{ t('content.stream.empty') }}
+                    </div>
                   </div>
                 </slot>
               </div>

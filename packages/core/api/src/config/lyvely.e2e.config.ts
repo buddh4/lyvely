@@ -15,7 +15,7 @@ export default {
     },
   },
   mongodb: {
-    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/lyvely-e2e',
+    uri: process.env.MONGODB_URI_E2E || 'mongodb://localhost:27017/lyvely-e2e',
   },
   csrf: {
     // Browsers have trouble with cookies on non https sites...

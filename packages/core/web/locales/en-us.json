@@ -20,7 +20,7 @@
     "label": "Help",
     "modal": {
       "title": "How can we help you?",
-      "title_new": "Welcome to {appName}!",
+      "title_new": "Welcome to {appName}",
       "text_intro": "It seems this is your first day using {appName}. If you wish we can give you a short {introductionLink}. For an in-depth documentation please visit {docLink}.",
       "introductionLinkText": "introduction tour",
       "buttons": {
@@ -181,6 +181,7 @@
   },
   "validation": {
     "isString": "{property} is required",
+    "sameAs": "{property} must equal {c1}",
     "isNotEmpty": "{property} is required",
     "maxLength": "{property} must be at least {c1} characters of fewer",
     "isLength": "{property} must be between {c1} and {c2} characters",

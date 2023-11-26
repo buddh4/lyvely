@@ -176,6 +176,18 @@ function getId(props: IBaseInputProps, formModelData?: IFormModelData): string |
   return uniqueId('input');
 }
 
+function getDataId(
+  props: IBaseInputProps,
+  inputId?: string,
+  formModelData?: IFormModelData,
+): string | undefined {
+  if (formModelData?.id && props.property) {
+    return slugify(`${formModelData.id}-${props.property}`, { lower: true });
+  }
+
+  return inputId || uniqueId('input');
+}
+
 function getComputedAutoCompleteValue(props: IBaseInputProps) {
   return computed(() => {
     if (!props.autocomplete || props.autocomplete === 'false') {
@@ -215,10 +227,11 @@ export function useBaseInputSetup<T extends AllowedInputValueTypes = any>(
     props.property?.length;
 
   const inputError = getComputedInputError(props, formModelData);
-
+  const inputId = getId(props, formModelData);
   return {
     showHelpText: ref(false),
-    inputId: getId(props, formModelData),
+    inputId: inputId,
+    dataId: getDataId(props, inputId, formModelData),
     inputValue: getComputedInputValue<T>(props, emit, formModelData),
     inputClass: getComputedCssClasses(props, options, t(inputError.value)),
     autoCompleteValue: getComputedAutoCompleteValue(props),

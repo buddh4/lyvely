@@ -2,9 +2,8 @@ import { ContentDataTypeModel, ContentModel } from '@/content';
 import { Exclude, Expose } from 'class-transformer';
 import { PropertyType } from '@lyvely/common';
 
-@Exclude()
+@Expose()
 export class SystemMessageContentModel extends ContentDataTypeModel {
-  @Expose()
   params?: Record<string, string>;
 }
 

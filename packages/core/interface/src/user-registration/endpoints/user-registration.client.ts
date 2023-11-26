@@ -25,7 +25,7 @@ export class UserRegistrationClient implements IUserRegistrationClient {
   }
 
   async checkUserEmail(model: StringFieldValidityRequest): Promise<void> {
-    return unwrapResponse(registerRepository.checkUsername(model));
+    return unwrapResponse(registerRepository.checkUserEmail(model));
   }
 
   async checkUsername(model: StringFieldValidityRequest): Promise<void> {

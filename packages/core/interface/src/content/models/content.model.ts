@@ -108,7 +108,7 @@ export class ContentModel<TID = string, T extends IContent = IContent, TConfig e
   type: string;
 
   @Expose()
-  @PropertyType(ContentDataTypeModel)
+  @PropertyType(ContentDataTypeModel, {})
   content: ContentDataTypeModel;
 
   @Expose()

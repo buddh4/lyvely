@@ -13,18 +13,19 @@ export const useUserRegistrationStore = defineStore('user-registration', () => {
   const validator = reactive(new I18nModelValidator<UserRegistration>(model.value));
 
   async function register() {
-    if (!(await this.validator.validate())) return false;
-
     model.value.locale = useI18nStore().locale;
+    model.value.timezone = useI18nStore().timezone;
+
+    if (!(await this.validator.validate())) return false;
 
     return loadingStatus(
       userRegistrationClient.register(model.value),
       status,
       validator as I18nModelValidator<UserRegistration>,
-    ).then(async (otp) => {
-      await verifyEmailStore.startVerificationOf(model.value.email, otp);
-      return true;
-    });
+    )
+      .then((otp) => verifyEmailStore.startVerificationOf(model.value.email, otp))
+      .then(() => true)
+      .catch(() => false);
   }
 
   async function validateUsername() {

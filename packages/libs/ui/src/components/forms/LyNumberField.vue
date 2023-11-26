@@ -68,7 +68,8 @@ const emit = defineEmits([
   'input',
 ]);
 let baseInput = useFloatingInputSetup<number>(props, emit);
-const { editable, inputId, inputError, label, inputClass, onChange, onFocusOut } = baseInput;
+const { editable, inputId, dataId, inputError, label, inputClass, onChange, onFocusOut } =
+  baseInput;
 
 const baseInputValue = baseInput.inputValue;
 const input = ref<HTMLInputElement>();
@@ -142,7 +143,7 @@ onMounted(() => {
     :input-error="inputError">
     <input
       :id="inputId"
-      :data-id="inputId"
+      :data-id="dataId"
       ref="input"
       v-model.number="inputValue"
       :placeholder="t(placeholder)"

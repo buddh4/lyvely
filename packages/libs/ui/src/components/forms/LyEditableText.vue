@@ -2,8 +2,8 @@
 import { HTMLAttributes, onMounted, Ref, ref } from 'vue';
 import { useFloatingInputSetup } from './FloatingInput';
 import { t, Translatable } from '@/i18n';
-import LyButton from "@/components/buttons/LyButton.vue";
-import LyMarkdownView from "@/components/markdown/LyMarkdownView.vue";
+import LyButton from '@/components/buttons/LyButton.vue';
+import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
 
 export interface IProps {
   id?: string;
@@ -61,7 +61,7 @@ const input = ref<HTMLInputElement>() as Ref<HTMLInputElement>;
 const isEdit = ref(false);
 const editValue = ref('');
 
-const { inputId, inputValue, inputClass, onChange, onFocusOut } = useFloatingInputSetup(
+const { inputId, dataId, inputValue, inputClass, onChange, onFocusOut } = useFloatingInputSetup(
   props,
   emit,
 );
@@ -114,7 +114,7 @@ function cancel() {
       <div class="flex-grow">
         <textarea
           :id="inputId"
-          :data-id="inputId"
+          :data-id="dataId"
           ref="input"
           v-model="editValue"
           :placeholder="t(placeholder)"

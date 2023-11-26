@@ -50,10 +50,8 @@ const props = withDefaults(defineProps<IProps>(), {
 const emit = defineEmits(['change', 'update:modelValue']);
 
 const input = ref<HTMLInputElement>();
-const { inputValue, inputId, onChange, onFocusOut, showHelpText, label, inputClass } = useBaseInputSetup(
-  props,
-  emit,
-);
+const { inputValue, inputId, dataId, onChange, onFocusOut, showHelpText, label, inputClass } =
+  useBaseInputSetup(props, emit);
 
 onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
@@ -66,7 +64,7 @@ onMounted(() => {
       <label :for="inputId" class="inline-flex items-center">
         <input
           :id="inputId"
-          :data-id="inputId"
+          :data-id="dataId"
           ref="input"
           v-model="inputValue"
           :aria-describedby="ariaDescribedby"

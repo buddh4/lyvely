@@ -61,7 +61,7 @@ const emit = defineEmits(['change', 'update:modelValue']);
 const input = ref<HTMLInputElement>();
 
 const baseInput = useFloatingInputSetup<number>(props, emit);
-const { hasFocus, editable, inputId, inputError } = baseInput;
+const { hasFocus, editable, inputId, dataId, inputError } = baseInput;
 
 const baseInputValue = baseInput.inputValue;
 const inputValue = computed({
@@ -210,7 +210,7 @@ onMounted(() => {
           <input
             :id="inputId"
             :aria-label="t('ui.accessibility.forms.hours')"
-            :data-id="inputId+'-hours'"
+            :data-id="dataId + '-hours'"
             v-model="hourValue"
             data-timer-hours-input
             inputmode="numeric"
@@ -228,7 +228,7 @@ onMounted(() => {
           <ly-button @click="increment('minutes')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
             v-model="minuteValue"
-            :data-id="inputId+'-minutes'"
+            :data-id="dataId + '-minutes'"
             :aria-label="t('ui.accessibility.forms.minutes')"
             data-timer-minutes-input
             inputmode="numeric"
@@ -246,7 +246,7 @@ onMounted(() => {
           <ly-button @click="increment('seconds')"><ly-icon name="caret-up"></ly-icon></ly-button>
           <input
             v-model="secondValue"
-            :data-id="inputId+'-seconds'"
+            :data-id="dataId + '-seconds'"
             :aria-label="t('ui.accessibility.forms.seconds')"
             data-timer-seconds-input
             inputmode="numeric"

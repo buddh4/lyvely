@@ -58,6 +58,7 @@ const checkbox = ref<HTMLInputElement>();
 const {
   inputValue,
   inputId,
+  dataId,
   helpText,
   label,
   inputClass,
@@ -96,7 +97,7 @@ onMounted(() => {
         <input
           ref="checkbox"
           :id="inputId"
-          :data-id="inputId"
+          :data-id="dataId"
           v-model="inputValue"
           :aria-describedby="ariaDescribedby"
           type="checkbox"

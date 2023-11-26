@@ -40,11 +40,11 @@ const loadProfileByHandle = async (
   next: NavigationGuardNext,
 ) => {
   const profileStore = useProfileStore();
-
   try {
     if ((!to.params.handle && to.path === '/') || to.params.handle === ':handle') {
       const profile = await profileStore.loadProfile();
-      return next(profileStore.getRoute(null, profile.handle));
+      const { help } = to.query;
+      return next(profileStore.getRoute(null, profile.handle, { help }));
     } else if (!to.params.handle) {
       const profile = await profileStore.loadProfile();
       if (!profile) throw new Error('Profile could not be loaded');
@@ -75,7 +75,6 @@ const loadProfileById = async (
   next: NavigationGuardNext,
 ) => {
   const profileStore = useProfileStore();
-
   try {
     const profile = await profileStore.loadProfileById(to.params.pid as string);
     if (!profile) throw new Error('Profile could not be loaded');

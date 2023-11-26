@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useBaseInputSetup} from './BaseInput';
+import { useBaseInputSetup } from './BaseInput';
 import { HTMLAttributes, computed, onMounted, ref } from 'vue';
 import { t, Translatable } from '@/i18n';
 
@@ -94,8 +94,7 @@ onMounted(() => {
   if (props.autofocus) setTimeout(() => input.value?.focus());
 });
 
-const { inputId } = useBaseInputSetup(props, emit)
-
+const { inputId, dataId } = useBaseInputSetup(props, emit);
 </script>
 
 <template>
@@ -103,7 +102,7 @@ const { inputId } = useBaseInputSetup(props, emit)
     <label v-if="label" :for="inputId" class="form-label">{{ t(label) }}</label>
     <input
       :id="inputId"
-      :data-id="inputId"
+      :data-id="dataId"
       ref="input"
       v-model="inputValue"
       :disabled="disabled"

@@ -192,6 +192,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
       <div>
         <ly-text-field
           :id="id + '-search'"
+          :data-id="id + '-search'"
           v-model="query"
           :autofocus="true"
           :placeholder="t('common.filter.search')"
@@ -204,6 +205,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
         <div
           v-for="option in selectedOptions"
           :key="getOptionKey(option)"
+          :data-id="id + '-' + getOptionKey(option)"
           :data-badge-selection="getOptionKey(option)"
           :class="entryClass"
           tabindex="0"

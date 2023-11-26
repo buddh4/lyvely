@@ -25,7 +25,7 @@
   "web-types": "../../../node_modules/@lyvely/ui/dist/web-types.json",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "cypress:open": "cypress open",
+    "cypress:open": "cross-env NODE_ENV=e2e cypress open",
     "build": "lyvely-dev build:web",
     "lint": "eslint \"{src,apps,libs,test}/**/*.{ts,vue}\" --fix",
     "format": "prettier .  --write",
