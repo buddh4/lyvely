@@ -56,7 +56,11 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
 </script>
 
 <template>
-  <nav id="app-drawer" ref="appDrawer" :class="[{ toggled: !showSidebar }]" :aria-label="ariaLabel">
+  <nav
+    id="app-drawer"
+    ref="appDrawer"
+    :class="['will-change-transform', { toggled: !showSidebar }]"
+    :aria-label="ariaLabel">
     <div class="flex flex-col flex-wrap items-stretch content-start h-screen-s">
       <div class="py-2">
         <a

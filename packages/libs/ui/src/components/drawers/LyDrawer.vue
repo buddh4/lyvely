@@ -115,7 +115,6 @@ h1 {
   min-width: 280px;
   max-width: 280px;
   background: var(--elements-main);
-  border-left: 1px solid var(--color-divide);
 
   will-change: transform;
   contain: paint;
