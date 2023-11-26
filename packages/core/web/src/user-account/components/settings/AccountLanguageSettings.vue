@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getFallbackLocale, t, useI18nStore } from '@/i18n';
-import { LyModal } from '@lyvely/ui';
+import { isTouchScreen, LyModal } from '@lyvely/ui';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/auth';
 import { computed, ref } from 'vue';
@@ -35,7 +35,11 @@ const timezones = computed(() =>
       if (b === getTimezone()) return 1;
       return 0;
     })
-    .filter((tz) => !timezoneSearch.value.length || tz.includes(timezoneSearch.value)),
+    .filter(
+      (tz) =>
+        !timezoneSearch.value.length ||
+        tz.toLowerCase().includes(timezoneSearch.value.toLowerCase()),
+    ),
 );
 </script>
 
@@ -94,6 +98,7 @@ const timezones = computed(() =>
       <input
         ref="search"
         v-model="timezoneSearch"
+        :autofocus="!isTouchScreen()"
         type="text"
         :placeholder="$t('tags.view.search')"
         class="search pl-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main w-full" />
