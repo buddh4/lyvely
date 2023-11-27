@@ -27,7 +27,7 @@ const sidebars = {
             type: 'category',
             label: 'Framework',
             items: [
-                'dev/framework/intro',
+                'dev/framework/modules',
                 'dev/framework/models',
                 'dev/framework/endpoints',
                 'dev/framework/content',

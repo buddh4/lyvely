@@ -71,8 +71,10 @@ import { PingResponse } from '../models';
 
 class PingClient implements IPingClient {
     async ping(): Promise<PingReponse> {
-        // Here we unwrap the axios response and transform it to an instance of our model class.
-        // If the request fails a ServiceException is thrown e.g. an UnauthorizedServiceException.
+        /**
+         * Here we unwrap the axios response and transform it to an instance of our model class.
+         * If the request fails a ServiceException is thrown e.g. an UnauthorizedServiceException.
+         */
         return unwrapAndTransformResponse(repository.ping(), PingResponse);
     }   
 }
@@ -97,7 +99,7 @@ The controller implements the `PingEndpoint` we defined in the interface layer. 
 However, if the endpoint function were to require an argument, you would need to define the first argument when
 implementing the function since we used the `StrictEndpoint` instead of the less restrictive `Endpoint` type.
 
-```typescript
+```typescript title=api/src/controllers/ping.controller.ts
 import { Controller, Get } from '@nestjs/common';
 import { Public } from '@/core';
 import { ENDPOINT_PING, PingResponse, PingEndpoint } from 'my-ping-interface';
@@ -122,7 +124,7 @@ controller classes.
 You can utilize the API client in various parts of your application, including views, components, composables, or stores,
 in the following manner:
 
-```typescript
+```typescript title=web/src/stores/ping.store.ts
 import { defineStore } from "pinia";
 import { usePingClient } from "my-ping-interface";
 
@@ -138,3 +140,149 @@ export const pingStore = defineStore('ping', () => {
   return { ping };
 })
 ```
+
+## Profile Endpoints
+
+Endpoint paths for profile features will most likely start with a `profiles/:pid` prefix. 
+This prefix is essential when working with APIs on profile level especially when using the profile access control layer.
+To define an endpoint path with this prefix, you can utilize the `profileApiPrefix` helper function, as demonstrated below:
+
+```typescript title=interface/src/endpoints/ping.endpoint.ts
+import {profileApiPrefix} from "@lyvely/interface";
+
+export const ENDPOINT_POLLS = profileApiPrefix('polls');
+//...
+```
+
+The example above defines an endpoint prefix as `profiles/:pid/polls`.
+In our web application, there is an interceptor that automatically sets the `pid` of the currently active profile by 
+default. However, users of the client can also manually set a `pid` when calling the client with an option of
+type `IProfileApiRequestOption`. You can see an example of this manual pid setting in the following code snippets:
+
+
+```typescript title=interface/src/endpoints/polls.client.ts
+import repository from './ping.repository.ts';
+import { IPollsClient } from './polls.endpoint.ts';
+import { unwrapAndTransformResponse } from '@lyvely/interface';
+import { useSingleton } from '@lyvely/common';
+import { PollsResponse } from '../models';
+import { IProfileApiRequestOptions } from '@/endpoints';
+
+class PollsClient implements IPollsClient {
+    async getPolls(options?: IProfileApiRequestOptions): Promise<PollsResponse> {
+        return unwrapAndTransformResponse(repository.ping(options), PollsResponse);
+    }   
+    //...
+}
+
+export const usePollsClient = useSingleton(() => new PollsClient());
+```
+
+```typescript title=interface/src/endpoints/polls.repository.ts
+import { useApi } from '@lyvely/interface';
+import { ENDPOINT_POLLS, IPollsClient } from './polls.endpoint.ts';
+import { IProfileApiRequestOptions } from '@/endpoints';
+
+const api = useApi<IPollsClient>(ENDPOINT_POLLS);
+
+export default {
+    // With the generic type set to a function name of our client, we assure type-safety of the result.
+    getPolls: async (options?: IProfileApiRequestOptions) => api.get<'getPolls'>(options)
+}
+```
+
+```typescript title=web/src/endpoints/polls.store.ts
+import { defineStore } from "pinia";
+import { usePolls } from "polls-interface";
+
+export const pingStore = defineStore('polls', () => {
+    async function getPolls(pid: string) {
+        try {
+            return await usePollsClient().getPolls({ pid });
+        } catch(e) {
+            // Handle error
+        }
+    }
+
+    return { getPolls };
+})
+```
+
+:::note
+Manually setting the `pid` of an api request is only required for cross profile requests or when using the client 
+outside the web application.
+:::
+
+## API Versioning
+
+Lyvely employs a robust API versioning strategy to ensure backward compatibility and a seamless evolution of services.
+To manage the versions of APIs, we utilize 
+a [custom request header](https://docs.nestjs.com/techniques/versioning#header-versioning-type): `x-api-version`.
+
+When making API requests, clients should specify the desired API version using the `x-api-version` header.
+This header accepts a version string that indicates the version of the API you wish to interact with.
+
+:::info
+The version of an api client is defined when calling the `useApi` helper in the interface layer as described 
+in a section below. Therefore, consumer of api clients in the web layer do not have to care about the api version.
+:::
+
+#### Modular API Versioning
+
+Lyvely’s API architecture is designed with modularity in mind, where each module, or even individual endpoints within a 
+module, may have its own versioning lifecycle. This design allows for targeted updates and granular control over the 
+API’s evolution.
+
+#### Versioning Strategy:
+
+We adhere to [Semantic Versioning (SemVer)](https://semver.org/) principles, ensuring that version increments 
+signal the nature of changes to clients. A major version must be incremented when there are changes that could 
+potentially break backward compatibility with the existing client integrations. 
+
+Examples of such changes include:
+
+  - Introducing new required fields in API requests or responses.
+  - Modifying the existing schema of your Data Transfer Objects (DTOs).
+  - Removing or renaming existing API endpoints or fields.
+
+
+#### Example:
+
+The following example illustrates the implementation of a versioned endpoint.
+
+```typescript title=interface/src/endpoints/polls.repository.ts
+import { useApi } from '@lyvely/interface';
+import { ENDPOINT_POLLS, IPollsClient } from './polls.endpoint.ts';
+import { IProfileApiRequestOptions } from '@/endpoints';
+
+const api = useApi<IPollsClient>(ENDPOINT_POLLS, '2');
+
+export default {
+    // With the generic type set to a function name of our client, we assure type-safety of the result.
+    getPolls: async (options?: IProfileApiRequestOptions) => api.get<'getPolls'>(options)
+}
+```
+
+```typescript title=api/src/controllers/polls.controller.ts
+import { Controller, Get } from '@nestjs/common';
+import { ENDPOINT_POLLS, PollsResponse, PollsEndpoint } from 'polls-interface';
+
+@Controller({
+    path: ENDPOINT_POLLS,
+    version: '2'
+})
+export class PollsController implements PingEndpoint {
+  //...
+}
+```
+
+:::note
+The NestJS versioning enables a controller to support multiple version. Please refer to the
+[NestJs Versioning Guide](https://docs.nestjs.com/techniques/versioning#versioning) for more examples.
+:::
+
+:::info
+Lyvely uses the NestJS `NEUTRAL_VERSION` as default version for its controllers, which means you are not required to
+define a version for your controller.
+:::
+
