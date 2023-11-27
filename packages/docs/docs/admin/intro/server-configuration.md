@@ -1,8 +1,4 @@
----
-sidebar_position: 3
----
-
-# Server Configuration
+# API Configuration
 
 This section provides an overview of common configuration options for the Lyvely backend server. 
 Typically, backend configuration is managed within the `config/lyvely.ts` file. 

@@ -13,16 +13,12 @@
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
 const sidebars = {
+    Administration: [
+        'admin/intro/installation',
+        'admin/intro/server-configuration',
+    ],
     Development: [
-        {
-            type: 'category',
-            label: 'Getting Started',
-            items: [
-                'dev/intro/overview',
-                'dev/intro/installation',
-                'dev/intro/server-configuration',
-            ],
-        },
+        'dev/intro/overview',
         {
             type: 'category',
             label: 'Framework',

@@ -71,6 +71,12 @@ const config = {
           },
           {
             type: 'doc',
+            docId: 'admin/intro/installation',
+            position: 'left',
+            label: 'Administration',
+          },
+          {
+            type: 'doc',
             docId: 'dev/intro/overview',
             position: 'left',
             label: 'Development',
