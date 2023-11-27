@@ -1,15 +1,6 @@
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
-import { UserAssignmentStrategy } from '@lyvely/common';
-import { DataPointValueType, getDataPointModelDefinition, TimerDataPointConfig } from '../index';
-import { CalendarInterval } from '@lyvely/dates';
 import {
-  TestDataPointDao,
-  TestDataPointService,
-  TestTimeSeriesContent,
-  TestTimeSeriesContentSchema,
-  TestTimerDataPointService,
-} from '../testing';
-import {
+  UserAssignmentStrategy,
   Profile,
   profilesTestPlugin,
   ProfileTestDataUtils,
@@ -19,6 +10,15 @@ import {
   contentTestPlugin,
   Model,
 } from '@lyvely/api';
+import { DataPointValueType, getDataPointModelDefinition, TimerDataPointConfig } from '../index';
+import { CalendarInterval } from '@lyvely/dates';
+import {
+  TestDataPointDao,
+  TestDataPointService,
+  TestTimeSeriesContent,
+  TestTimeSeriesContentSchema,
+  TestTimerDataPointService,
+} from '../testing';
 
 const Models = [
   {

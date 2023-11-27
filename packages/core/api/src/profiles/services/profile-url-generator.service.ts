@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { assureStringId, UrlGenerator } from '@/core';
 import { ConfigurationPath } from '@/config';
-import { UrlRoute } from '@lyvely/common';
+import { UrlRoute } from '@lyvely/interface';
 
 @Injectable()
 export class ProfileUrlGenerator extends UrlGenerator {

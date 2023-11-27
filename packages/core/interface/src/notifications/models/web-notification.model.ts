@@ -1,6 +1,7 @@
 import { IWebNotification } from '../interfaces';
 import { Expose } from 'class-transformer';
-import { BaseModel, PropertyType, UrlRoute } from '@lyvely/common';
+import { UrlRoute } from '@/common';
+import { BaseModel, PropertyType } from '@lyvely/common';
 import { ProfileInfoModel } from '@/profiles';
 import { UserInfoModel } from '@/users';
 

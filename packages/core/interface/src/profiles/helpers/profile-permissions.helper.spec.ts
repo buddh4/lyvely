@@ -1,9 +1,9 @@
-import { clearPermissions, IPermissionConfig, registerPermissions } from '../../permissions';
+import { clearPermissions, IPermissionConfig, registerPermissions } from '@/permissions';
 import { ProfileRelationRole } from '../interfaces';
 import { verifyProfilePermission } from './profile-permissions.helper';
 import { ProfileModel } from '../models';
-import { IntegrityException } from '@lyvely/common';
-import { UserStatus } from '../../users';
+import { IntegrityException } from '@/exceptions';
+import { UserStatus } from '@/users';
 
 describe('verifyProfilePermission', function () {
   afterEach(clearPermissions);

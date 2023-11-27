@@ -1,4 +1,4 @@
-export interface IEditModelService<
+export interface IEditModelClient<
   TResponse,
   TCreateModel,
   TUpdateModel = Partial<TCreateModel>,

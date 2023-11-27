@@ -15,8 +15,9 @@ import {
   ProfileRelationInfosEndpoint,
   ProfileRelationUserInfoModel,
   ProfileRelationInfosEndpointPaths,
+  DocumentNotFoundException,
 } from '@lyvely/interface';
-import { DocumentNotFoundException, mapType } from '@lyvely/common';
+import { mapType } from '@lyvely/common';
 import { ProtectedProfileContext } from '../models';
 
 @Controller(ENDPOINT_PROFILE_RELATION_INFOS)

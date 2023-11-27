@@ -4,9 +4,15 @@ import {
   useDataPointStrategyFacade,
   InvalidDataPointValueTypeException,
 } from '@lyvely/time-series-interface';
-import { isPlainObject, UserAssignmentStrategy } from '@lyvely/common';
+import {
+  UserAssignmentStrategy,
+  User,
+  EntityIdentity,
+  Profile,
+  ProfilesService,
+} from '@lyvely/api';
+import { isPlainObject } from '@lyvely/common';
 import { DataPoint, TimeSeriesContent } from '../schemas';
-import { User, EntityIdentity, Profile, ProfilesService } from '@lyvely/api';
 import { DataPointStrategyDao } from '../daos';
 import { Inject } from '@nestjs/common';
 import { useDataPointStrategyRegistry } from '../strategies';
@@ -74,7 +80,7 @@ export abstract class DataPointService<
     user: User,
     model: TModel,
     updateResult: IDataPointUpdateResult<TDataPointModel>,
-  ) {
+  ): Promise<void> {
     const { dataPoint } = updateResult;
     const strategy = this.getStrategy(dataPoint.valueType);
     if (strategy) {
@@ -91,7 +97,7 @@ export abstract class DataPointService<
     dataPoint: TDataPointModel,
     model: TModel,
     newValue: TValue,
-  ) {
+  ): Promise<void> {
     newValue = await this.prepareAndValidateValue(model, dataPoint, newValue);
     if (isEqual(dataPoint.value, newValue)) return;
     await this.dataPointDao.updateDataPointValue(user, dataPoint, newValue);

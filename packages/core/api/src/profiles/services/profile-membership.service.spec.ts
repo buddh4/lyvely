@@ -6,8 +6,8 @@ import {
   ProfileMembershipRole,
   ProfileType,
   UserStatus,
+  ForbiddenServiceException,
 } from '@lyvely/interface';
-import { ForbiddenServiceException } from '@lyvely/common';
 
 describe('ProfileMembershipService', () => {
   let testingModule: LyvelyTestingModule;

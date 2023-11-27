@@ -1,4 +1,4 @@
-import { Endpoint } from '@lyvely/common';
+import { Endpoint } from '@/endpoints';
 import { ResetPassword, SendResetPasswordMail } from '../models';
 
 export interface IResetPasswordService {

@@ -1,6 +1,6 @@
-import { Endpoint } from '@lyvely/common';
+import { Endpoint, profileApiPrefix } from '@/endpoints';
 
-export const ENDPOINT_CONTENT = 'content';
+export const ENDPOINT_CONTENT = profileApiPrefix('content');
 
 export interface IContentClient {
   archive: (id: string) => Promise<void>;

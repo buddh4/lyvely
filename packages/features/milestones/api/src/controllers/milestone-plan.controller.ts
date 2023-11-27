@@ -1,10 +1,10 @@
 import {
   ContentTypeController,
   ContentWritePolicy,
-  ProfileContentRequest,
   ProtectedProfileContentRequest,
   ProfileRequest,
   Policies,
+  SortResponse,
 } from '@lyvely/api';
 import { Milestone } from '../schemas';
 import {
@@ -15,7 +15,6 @@ import {
   MilestoneRelationModel,
 } from '@lyvely/milestones-interface';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
-import { SortResponse } from '@lyvely/common';
 import { MilestonesService, MilestonesCalendarPlanService } from '../services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 

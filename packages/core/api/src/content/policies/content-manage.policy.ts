@@ -4,7 +4,7 @@ import { ProfileContentContext } from '../schemas';
 import { ModuleRef } from '@nestjs/core';
 import { getPolicyToken } from '@/policies';
 import { BaseContentManagePolicy } from './base-content-manage.policy';
-import { DocumentNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/interface';
 
 @Injectable()
 export class ContentManagePolicy extends BaseContentManagePolicy {

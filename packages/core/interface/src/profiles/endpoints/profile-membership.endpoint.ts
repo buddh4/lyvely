@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint, profileApiPrefix } from '@/endpoints';
 import { UpdateProfileMembershipSettings, MembershipModel } from '../models';
 
 export interface IProfileMembershipClient {
@@ -6,4 +6,4 @@ export interface IProfileMembershipClient {
 }
 
 export type ProfileMembershipEndpoint = StrictEndpoint<IProfileMembershipClient>;
-export const ENDPOINT_PROFILE_MEMBERSHIP = 'profile-membership';
+export const ENDPOINT_PROFILE_MEMBERSHIP = profileApiPrefix('profile-membership');

@@ -1,4 +1,4 @@
-import { FieldValidationException } from '@lyvely/common';
+import { FieldValidationException } from '@lyvely/interface';
 
 export class InvalidOtpException extends FieldValidationException {
   constructor() {

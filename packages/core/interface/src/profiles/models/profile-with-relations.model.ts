@@ -3,7 +3,8 @@ import { MembershipModel } from './profile-membership.model';
 import { ProfileRelationDetailsModel, ProfileRelationModel } from './profile-relation.model';
 import { ProfileModel } from './profile.model';
 import { BaseUserProfileRelationType, ProfileRelationRole } from '../interfaces';
-import { IEditableModel, PropertyType } from '@lyvely/common';
+import { IEditableModel } from '@/common';
+import { PropertyType } from '@lyvely/common';
 import { UpdateProfileModel } from './update-profile.model';
 
 /**

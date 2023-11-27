@@ -1,7 +1,7 @@
 import { NotificationContext, NotificationType } from '../schemas';
 import { Notification } from '../decorators';
 import { Translatable } from '@/i18n';
-import { UrlRoute } from '@lyvely/common';
+import { UrlRoute } from '@lyvely/interface';
 import { formatDateWithTime } from '@lyvely/dates';
 import { Prop } from '@nestjs/mongoose';
 import { TestNotificationCategory } from './test.notification-category';

@@ -1,6 +1,6 @@
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 import { CalendarInterval, toTimingId, addDays } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy } from '@lyvely/api';
 import { Task, UserDone } from '../schemas';
 import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';

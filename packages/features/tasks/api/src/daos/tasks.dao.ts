@@ -10,10 +10,10 @@ import {
   Profile,
   ProfileType,
   ContentTypeDao,
+  UserAssignmentStrategy,
 } from '@lyvely/api';
 import { InjectModel } from '@nestjs/mongoose';
 import { Timer } from '@lyvely/timers';
-import { UserAssignmentStrategy } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { ICalendarPlanDao } from '@lyvely/calendar-plan';
 

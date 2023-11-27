@@ -1,4 +1,5 @@
 import {
+  UserAssignmentStrategy,
   assureObjectId,
   ObjectIdProp,
   assignEntityData,
@@ -9,12 +10,7 @@ import {
 } from '@lyvely/api';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { CalendarInterval, getFullDayDate, toTimingId } from '@lyvely/dates';
-import {
-  getNumberEnumValues,
-  UserAssignmentStrategy,
-  DeepPartial,
-  PropertiesOf,
-} from '@lyvely/common';
+import { getNumberEnumValues, DeepPartial, PropertiesOf } from '@lyvely/common';
 import { DataPointModel } from '@lyvely/time-series-interface';
 import { TimeSeriesContent } from '../time-series-content.schema';
 

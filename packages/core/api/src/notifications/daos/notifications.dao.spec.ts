@@ -7,7 +7,8 @@ import { UserInfo } from '@/users';
 import { NotificationDao } from './notification.dao';
 import { Prop } from '@nestjs/mongoose';
 import { Translatable } from '@/i18n';
-import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
+import { escapeHtmlIf } from '@lyvely/common';
+import { UrlRoute } from '@lyvely/interface';
 import { TestNotificationCategory } from '../notifications';
 import { notificationTestPlugin } from '../testing';
 

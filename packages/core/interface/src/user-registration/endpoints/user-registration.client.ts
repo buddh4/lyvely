@@ -1,7 +1,7 @@
 import { IUserRegistrationClient } from './user-registration.endpoint';
 import { UserRegistration } from '../models';
 import registerRepository from './user-registration.repository';
-import { unwrapResponse } from '@/endpoints';
+import { unwrapAndTransformResponse, unwrapResponse } from '@/endpoints';
 import { useSingleton } from '@lyvely/common';
 import { OtpInfo, ResendOtp } from '@/otp';
 import { VerifyEmailDto } from '@/user-account';
@@ -9,9 +9,7 @@ import { StringFieldValidityRequest } from '@/validation';
 
 export class UserRegistrationClient implements IUserRegistrationClient {
   async register(model: UserRegistration): Promise<OtpInfo> {
-    return unwrapResponse(registerRepository.register(model)).then(
-      (otpInfo) => new OtpInfo(otpInfo),
-    );
+    return unwrapAndTransformResponse(registerRepository.register(model), OtpInfo);
   }
 
   async verifyEmail(verifyEmail: VerifyEmailDto) {
@@ -19,9 +17,7 @@ export class UserRegistrationClient implements IUserRegistrationClient {
   }
 
   async resendVerifyEmail(dto: ResendOtp): Promise<OtpInfo> {
-    return unwrapResponse(registerRepository.resendVerifyEmail(dto)).then(
-      (otpInfo) => new OtpInfo(otpInfo),
-    );
+    return unwrapAndTransformResponse(registerRepository.resendVerifyEmail(dto), OtpInfo);
   }
 
   async checkUserEmail(model: StringFieldValidityRequest): Promise<void> {

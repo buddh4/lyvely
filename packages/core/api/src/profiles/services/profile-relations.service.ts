@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { assureObjectId, EntityIdentity } from '@/core';
 import { OptionalUser, User, UsersService } from '@/users';
-import { DocumentNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException, getProfileRelationRole } from '@lyvely/interface';
 import { Profile, UserProfileRelation } from '../schemas';
 import { UserAndProfileRelations } from '../models';
 import { ProfileDao, UserProfileRelationsDao } from '../daos';
-import { getProfileRelationRole } from '@lyvely/interface';
 import { IUserWithProfileRelation } from '../interfaces';
 
 @Injectable()

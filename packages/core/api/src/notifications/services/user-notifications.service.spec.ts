@@ -12,8 +12,8 @@ import { Profile, ProfileInfo, profilesTestPlugin, ProfileTestDataUtils } from '
 import { User, UserInfo } from '@/users';
 import { assureObjectId, TObjectId } from '@/core';
 import { NotificationDao, UserNotificationDao } from '../daos';
-import { escapeHtmlIf, UrlRoute } from '@lyvely/common';
-import { StreamRequest } from '@lyvely/interface';
+import { UrlRoute, StreamRequest } from '@lyvely/interface';
+import { escapeHtmlIf } from '@lyvely/common';
 import { Prop } from '@nestjs/mongoose';
 import { Notification as BaseNotification } from '../schemas';
 import { Translatable } from '@/i18n';

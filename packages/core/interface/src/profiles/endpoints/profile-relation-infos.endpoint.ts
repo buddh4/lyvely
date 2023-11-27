@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint, profileApiPrefix } from '@/endpoints';
 import { ProfileRelationInfos, ProfileRelationUserInfoModel } from '../models';
 
 /**
@@ -19,7 +19,7 @@ export interface IProfileRelationInfosClient {
 }
 
 export type ProfileRelationInfosEndpoint = StrictEndpoint<IProfileRelationInfosClient>;
-export const ENDPOINT_PROFILE_RELATION_INFOS = 'profile-relation-infos';
+export const ENDPOINT_PROFILE_RELATION_INFOS = profileApiPrefix('profile-relation-infos');
 
 export const ProfileRelationInfosEndpointPaths = {
   PROFILE_RELATION_INFO: (pid: string, uid: string) => `${pid}/${uid}`,

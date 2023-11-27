@@ -1,16 +1,19 @@
 import { ProfileRelationInfos, ProfileRelationUserInfoModel } from '../models';
 import { IProfileRelationInfosClient } from './profile-relation-infos.endpoint';
-import { IntegrityException, useSingleton } from '@lyvely/common';
+import { IntegrityException } from '@/exceptions';
+import { useSingleton } from '@lyvely/common';
 import profileRelationsRepository from './profile-relations.repository';
-import { unwrapAndTransformResponse } from '@/endpoints';
+import { IProfileApiRequestOptions, unwrapAndTransformResponse } from '@/endpoints';
 
 const userInfoCache = new Map<string, ProfileRelationUserInfoModel>();
 const pendingCache = new Map<string, Promise<ProfileRelationUserInfoModel>>();
 
 class ProfileRelationInfosClient implements IProfileRelationInfosClient {
-  async getAllProfileRelationInfos(): Promise<ProfileRelationInfos> {
+  async getAllProfileRelationInfos(
+    options?: IProfileApiRequestOptions,
+  ): Promise<ProfileRelationInfos> {
     return unwrapAndTransformResponse(
-      profileRelationsRepository.getRelations(),
+      profileRelationsRepository.getRelations(options),
       ProfileRelationInfos,
     );
   }
@@ -18,6 +21,7 @@ class ProfileRelationInfosClient implements IProfileRelationInfosClient {
   async getProfileRelationUserInfo(
     pid: string,
     uid: string,
+    options?: IProfileApiRequestOptions,
   ): Promise<ProfileRelationUserInfoModel> {
     const cacheKey = pid + '_' + uid;
     const cached = userInfoCache.get(cacheKey);
@@ -33,7 +37,7 @@ class ProfileRelationInfosClient implements IProfileRelationInfosClient {
     }
 
     const promise = unwrapAndTransformResponse(
-      profileRelationsRepository.getProfileRelationUserInfo(pid, uid),
+      profileRelationsRepository.getProfileRelationUserInfo(pid, uid, options),
       ProfileRelationUserInfoModel,
     );
 

@@ -1,6 +1,11 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { profilesTestPlugin, ProfileTestDataUtils } from '@/profiles';
-import { ProfileRelationRole, MailInvite, InvitationRequest } from '@lyvely/interface';
+import {
+  ProfileRelationRole,
+  MailInvite,
+  InvitationRequest,
+  ForbiddenServiceException,
+} from '@lyvely/interface';
 import { SendInvitationsService } from './send-invitations.service';
 import { JwtModule } from '@nestjs/jwt';
 import {
@@ -12,7 +17,6 @@ import {
   UserInvitation,
   UserInvitationSchema,
 } from '../index';
-import { ForbiddenServiceException } from '@lyvely/common';
 import { mailTestPlugin, TestMailService } from '@/mails';
 import { NotificationQueueTester, notificationTestPlugin } from '@/notifications';
 

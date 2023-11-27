@@ -1,6 +1,5 @@
 import { InvitationContextIF } from '../interfaces';
-import { DocumentNotFoundException } from '@lyvely/common';
-import { UserStatus } from '@lyvely/interface';
+import { DocumentNotFoundException, UserStatus } from '@lyvely/interface';
 import { Invitation } from '../schemas';
 
 export abstract class AbstractInvitationsService<

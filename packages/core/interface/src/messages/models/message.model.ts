@@ -1,6 +1,6 @@
 import { ContentModel } from '@/content';
 import { Exclude, Expose } from 'class-transformer';
-import { IEditableModel } from '@lyvely/common';
+import { IEditableModel } from '@/common';
 import { UpdateMessageModel } from './update-message.model';
 
 @Exclude()

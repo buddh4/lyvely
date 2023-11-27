@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { BaseDocument } from '@/core';
-import { PropertyType, Type, UrlRoute } from '@lyvely/common';
+import { PropertyType, Type } from '@lyvely/common';
+import { UrlRoute } from '@lyvely/interface';
 import { Translatable } from '@/i18n';
 import { ProfileInfo, ProfileInfoSchema } from '@/profiles';
 import { User, UserInfo, UserInfoSchema } from '@/users';

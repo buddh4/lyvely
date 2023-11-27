@@ -1,7 +1,8 @@
 import { ICreateProfileScore, IProfileScoreAction, ProfileScore } from '@/profiles';
 import { ModelDefinition, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Content } from './content.schema';
-import { DeepPartial, IntegrityException } from '@lyvely/common';
+import { DeepPartial } from '@lyvely/common';
+import { IntegrityException } from '@lyvely/interface';
 import { ObjectIdProp, TObjectId } from '@/core';
 
 interface ICreateContentScore extends ICreateProfileScore {

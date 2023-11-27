@@ -3,7 +3,8 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { ContentService } from '../services';
 import { ProfileContentRequest } from '../types';
-import { DocumentNotFoundException, isValidObjectId, Type } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/interface';
+import { isValidObjectId, Type } from '@lyvely/common';
 import { Content, ProfileContentContext } from '../schemas';
 import {
   CONTENT_TYPE_KEY,

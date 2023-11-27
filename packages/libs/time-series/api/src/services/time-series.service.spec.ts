@@ -1,5 +1,15 @@
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import {
+  UserAssignmentStrategy,
+  Profile,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+  User,
+  Content,
+  ContentSchema,
+  contentTestPlugin,
+  Model,
+} from '@lyvely/api';
 import {
   DataPointValueType,
   CheckboxNumberDataPointConfig,
@@ -14,16 +24,6 @@ import {
   TestTimeSeriesService,
   TestTimeSeriesContentDao,
 } from '../testing';
-import {
-  Profile,
-  profilesTestPlugin,
-  ProfileTestDataUtils,
-  User,
-  Content,
-  ContentSchema,
-  contentTestPlugin,
-  Model,
-} from '@lyvely/api';
 
 const Models = [
   {

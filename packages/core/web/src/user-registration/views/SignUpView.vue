@@ -12,8 +12,8 @@ import {
   IUserRegistrationAppConfig,
   USER_REGISTRATION_MODULE_ID,
   UserRegistrationMode,
+  FieldValidationException,
 } from '@lyvely/interface';
-import { FieldValidationException } from '@lyvely/common';
 
 const userRegistrationStore = useUserRegistrationStore();
 const registrationMode = useAppConfigStore().getModuleConfig<

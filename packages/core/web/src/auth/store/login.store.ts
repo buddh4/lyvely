@@ -4,8 +4,12 @@ import { loadingStatus, useStatus } from '@/core';
 import { reactive, ref } from 'vue';
 import { RouteLocationRaw } from 'vue-router';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { UnauthorizedServiceException } from '@lyvely/common';
-import { LoginModel, useAuthClient, UserStatus } from '@lyvely/interface';
+import {
+  UnauthorizedServiceException,
+  LoginModel,
+  useAuthClient,
+  UserStatus,
+} from '@lyvely/interface';
 import { useVerifyRegistrationEmailStore } from '@/user-registration/stores';
 
 export const useLoginStore = defineStore('user-login', () => {

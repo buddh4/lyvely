@@ -8,8 +8,9 @@ import {
   ProfileVisibilityLevel,
   UpdateProfileModel,
   VALID_HANDLE_REGEX,
+  DocumentNotFoundException,
+  UniqueConstraintException,
 } from '@lyvely/interface';
-import { DocumentNotFoundException, UniqueConstraintException } from '@lyvely/common';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';
 import {

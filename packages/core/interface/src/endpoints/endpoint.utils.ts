@@ -26,3 +26,14 @@ export function unwrapAndTransformResponse<
     return assignRawDataToAndInitProps(Object.create(type.prototype), rawResponse);
   });
 }
+
+export function profileApiPrefix(prefix: string) {
+  prefix = prefix.startsWith('/') ? prefix : `/${prefix}`;
+  return `profiles/:pid${prefix}`;
+}
+
+export function setProfileApiPrefix(path: string, pid?: string) {
+  return pid && path.startsWith('profiles/:pid')
+    ? path.replace('profiles/:pid', `profiles/${pid}`)
+    : path;
+}

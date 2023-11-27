@@ -1,11 +1,12 @@
 import { TagModel, UpdateTagModel, CreateTagModel } from '../models';
 import { IProfileTagsClient } from './profile-tags.endpoint';
-import { useSingleton, IEditModelService } from '@lyvely/common';
+import { useSingleton } from '@lyvely/common';
+import { IEditModelClient } from '@/common';
 import repository from './profile-tags.repository';
 import { unwrapAndTransformResponse, unwrapResponse } from '@/endpoints';
 
 export class ProfileTagsClient
-  implements IEditModelService<UpdateTagModel, TagModel>, IProfileTagsClient
+  implements IEditModelClient<UpdateTagModel, TagModel>, IProfileTagsClient
 {
   async create(model: CreateTagModel): Promise<TagModel> {
     return unwrapAndTransformResponse(repository.create(model), TagModel);

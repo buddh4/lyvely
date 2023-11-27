@@ -1,7 +1,12 @@
 import { UserRegistrationService } from './user-registration.service';
-import { FieldValidationException, ForbiddenServiceException } from '@lyvely/common';
+import {
+  FieldValidationException,
+  ForbiddenServiceException,
+  UserStatus,
+  UserRegistration,
+  VerifyEmailDto,
+} from '@lyvely/interface';
 import { User, UsersService, UserTestDataUtils, usersTestPlugin } from '@/users';
-import { UserStatus, UserRegistration, VerifyEmailDto } from '@lyvely/interface';
 import { TestConfigService, LyvelyTestingModule, buildTest } from '@/testing';
 import { UserRegistrationModule } from '../user-registration.module';
 import { ConfigService } from '@nestjs/config';

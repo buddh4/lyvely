@@ -1,15 +1,6 @@
 import { CalendarInterval, toTimingId, getCalendarIntervalArray } from '@lyvely/dates';
-import { SortResult } from '@lyvely/common';
-import { ContentFilter } from '@lyvely/interface';
-import { LoadedTimingIdStore } from '@/models';
 import {
-  ICalendarPlanClient,
-  CalendarPlanSort,
-  ICalendarPlanEntry,
-  CalendarPlanStore,
-  ICalendarPlanResponse,
-} from '@lyvely/calendar-plan-interface';
-import {
+  SortResult,
   useProfileStore,
   loadingStatus,
   Status,
@@ -18,7 +9,16 @@ import {
   useGlobalDialogStore,
   IDragEvent,
   useContentStore,
+  ContentFilter,
 } from '@lyvely/web';
+import { LoadedTimingIdStore } from '@/models';
+import {
+  ICalendarPlanClient,
+  CalendarPlanSort,
+  ICalendarPlanEntry,
+  CalendarPlanStore,
+  ICalendarPlanResponse,
+} from '@lyvely/calendar-plan-interface';
 import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useCalendarPlanStore } from '@/stores';

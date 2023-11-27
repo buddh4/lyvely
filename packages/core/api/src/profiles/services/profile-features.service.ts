@@ -6,8 +6,9 @@ import {
   UpdateFeatureResponseModel,
   getProfileFeature,
   isInstallableProfileFeature,
+  DocumentNotFoundException,
+  ForbiddenServiceException,
 } from '@lyvely/interface';
-import { DocumentNotFoundException, ForbiddenServiceException } from '@lyvely/common';
 import { Profile } from '../schemas';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';

@@ -1,8 +1,13 @@
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { ProfileFeaturesService } from './index';
 import { profilesTestPlugin, ProfileTestDataUtils } from '../testing';
-import { clearFeatures, registerFeatures, UpdateFeatureModel } from '@lyvely/interface';
-import { DocumentNotFoundException, ForbiddenServiceException } from '@lyvely/common';
+import {
+  clearFeatures,
+  registerFeatures,
+  UpdateFeatureModel,
+  DocumentNotFoundException,
+  ForbiddenServiceException,
+} from '@lyvely/interface';
 
 describe('ProfileFeaturesService', () => {
   let testingModule: LyvelyTestingModule;

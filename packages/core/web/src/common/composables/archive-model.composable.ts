@@ -1,16 +1,11 @@
-import { IArchivable } from '@lyvely/common';
-
-interface IArchiveModelClient<TID = string> {
-  archive: (id: TID) => Promise<boolean>;
-  restore: (id: TID) => Promise<boolean>;
-}
+import { IArchivable, IArchiveModelClient } from '@lyvely/interface';
 
 export interface IArchiveModelStoreOptions<TModel extends IArchivable, TID = string> {
   client: IArchiveModelClient<TID> | ((editModel: TModel) => IArchiveModelClient<TID>);
   onSubmitSuccess?: (model: TModel, val: boolean) => void;
   onSubmitError?: ((err: any) => void) | false;
 }
-export function useArchiveModelStore<TModel extends IArchivable, TID = string>(
+export function useArchiveModel<TModel extends IArchivable, TID = string>(
   options: IArchiveModelStoreOptions<TModel, TID>,
 ) {
   async function archiveModel(modelId: TID, model: TModel) {
@@ -23,8 +18,8 @@ export function useArchiveModelStore<TModel extends IArchivable, TID = string>(
 
   async function _handleUpdate(modelId: TID, model: TModel, archive: boolean) {
     const result = archive
-      ? await _getRepository(model).archive(modelId)
-      : await _getRepository(model).restore(modelId);
+      ? await _getClient(model).archive(modelId)
+      : await _getClient(model).restore(modelId);
 
     if (result === true) {
       model.archived = archive;
@@ -36,7 +31,7 @@ export function useArchiveModelStore<TModel extends IArchivable, TID = string>(
     return result;
   }
 
-  function _getRepository(m: TModel) {
+  function _getClient(m: TModel) {
     if (typeof options.client === 'function') {
       return options.client(m);
     }

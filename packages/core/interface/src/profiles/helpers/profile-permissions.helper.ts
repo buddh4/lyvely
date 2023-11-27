@@ -11,7 +11,7 @@ import {
   validateUserStatusAccess,
   validateVisitorAccess,
 } from '@/permissions';
-import { IntegrityException } from '@lyvely/common';
+import { IntegrityException } from '@/exceptions';
 
 /**
  * Verifies if a specific role is granted a given permission.

@@ -4,7 +4,7 @@ import {
   UpdateJournalModel,
   UpdateJournalResponse,
 } from '../models';
-import { Endpoint, IEditModelService } from '@lyvely/common';
+import { IEditModelClient, profileApiPrefix, Endpoint } from '@lyvely/interface';
 import {
   UpdateDataPointModel,
   UpdateDataPointResponse,
@@ -13,11 +13,11 @@ import {
 
 export interface IJournalsEndpointService
   extends ITimeSeriesCalendarPlanClient<JournalModel>,
-    IEditModelService<UpdateJournalResponse, CreateJournalModel, UpdateJournalModel> {
+    IEditModelClient<UpdateJournalResponse, CreateJournalModel, UpdateJournalModel> {
   updateDataPoint(cid: string, update: UpdateDataPointModel): Promise<UpdateDataPointResponse>;
 }
 export type JournalsEndpoint = Endpoint<IJournalsEndpointService>;
-export const ENDPOINT_JOURNALS = 'journals';
+export const ENDPOINT_JOURNALS = profileApiPrefix('journals');
 
 export const JournalsEndpointPaths = {
   SORT: (cid: string) => `${cid}/sort`,

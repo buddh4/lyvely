@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint } from '@/endpoints';
 import { UserRegistration } from '../models';
 import { ResendOtp, OtpInfo } from '@/otp';
 import { VerifyEmailDto } from '@/user-account';

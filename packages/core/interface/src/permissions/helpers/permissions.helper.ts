@@ -7,7 +7,8 @@ import {
   IPermissionConfig,
 } from '../interfaces';
 import { getPermission } from '../permissions.registry';
-import { clamp, IntegrityException } from '@lyvely/common';
+import { IntegrityException } from '@/exceptions';
+import { clamp } from '@lyvely/common';
 import { UserStatus } from '@/users';
 import { isDefined } from 'class-validator';
 
@@ -17,9 +18,7 @@ import { isDefined } from 'class-validator';
  * The verification is based on the hierarchical positioning of the role in the `globalPermissionRoleHierarchy` array.
  *
  * @param permissionOrId - Either a permission ID as a string or an instance of `IGlobalPermission`.
- * @param role - The role of the user or visitor.
- *
- * @param userStatus - The user status of the user or undefined if visitor
+ * @param subject - The subject (e.g. a user)
  * @param config - The global permission config, can be used to overwrite default permissions
  * @returns `true` if the role matches the required permissions, otherwise `false`.
  *

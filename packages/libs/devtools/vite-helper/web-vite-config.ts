@@ -1,10 +1,11 @@
-import { Plugin } from 'vite';
+import { LogLevel, Plugin } from 'vite';
 import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import vuePlugin from '@vitejs/plugin-vue';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import { resolve } from 'path';
 import { sync } from 'glob';
+import dts from 'vite-plugin-dts';
 
 interface IOptions {
   locales?: string | boolean;
@@ -21,8 +22,11 @@ export const useViteWebConfig = (options: IOptions) => {
   options = { locales: true, ...options };
 
   const plugins = [
-    externalizeDeps(),
+    externalizeDeps({ devDeps: true }),
     vuePlugin(),
+    dts({
+      tsconfigPath: './tsconfig.build.json',
+    }),
     tsconfigPathDefault({ ignoreConfigErrors: true }),
   ];
 
@@ -57,7 +61,7 @@ export const useViteWebConfig = (options: IOptions) => {
     },
     test: {
       setupFiles: ['vitest.setup.ts'],
-      environment: "jsdom"
+      environment: 'jsdom',
     },
     assetsInclude: ['**/*.svg'],
     resolve: {

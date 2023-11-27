@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserDao } from '../daos';
 import { OptionalUser, RefreshToken, User, UserNotificationState } from '../schemas';
 import { EntityIdentity, IBaseQueryOptions } from '@/core';
-import { IntegrityException } from '@lyvely/common';
-import { UserStatus, ProfileType } from '@lyvely/interface';
+import { IntegrityException, UserStatus, ProfileType } from '@lyvely/interface';
 import { isEmail } from 'class-validator';
 
 @Injectable()

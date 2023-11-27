@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 import { UpdateHabitModel } from './update-habit.model';
-import { IEditableModel, UserAssignmentStrategy } from '@lyvely/common';
+import { IEditableModel, UserAssignmentStrategy } from '@lyvely/interface';
 import { CalendarInterval } from '@lyvely/dates';
 import {
   DataPointInputType,

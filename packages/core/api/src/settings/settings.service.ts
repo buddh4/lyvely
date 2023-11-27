@@ -1,7 +1,7 @@
 import { AbstractDao, BaseDocument, EntityIdentity } from '@/core';
 import { SettingsRegistry } from '@/settings/settings.registry';
-import { FieldValidationException, IFieldValidationResult } from '@lyvely/common';
-import { ISetting } from '@lyvely/interface';
+import { FieldValidationException, ISetting } from '@lyvely/interface';
+import { IFieldValidationResult } from '@lyvely/common';
 import { Logger } from '@nestjs/common';
 import { ISettingUpdate } from '@/settings/settings.interface';
 import { isBoolean, isDefined, isNumber, isString } from 'class-validator';

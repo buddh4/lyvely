@@ -6,6 +6,7 @@ import {
   ProtectedProfileContentRequest,
   UseClassSerializer,
   Policies,
+  SortResponse,
 } from '@lyvely/api';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
 import {
@@ -22,7 +23,6 @@ import {
   UpdateDataPointResponse,
   DataPointModelConverter,
 } from '@lyvely/time-series';
-import { SortResponse } from '@lyvely/common';
 import { JournalTimeSeriesService, JournalDataPointService, JournalsService } from '../services';
 import { Body, Get, Inject, Post, Query, Request, ValidationPipe } from '@nestjs/common';
 import { Journal } from '../schemas';

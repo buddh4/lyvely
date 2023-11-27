@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { IntegrityException, MisconfigurationException } from '@lyvely/common';
+import { IntegrityException, MisconfigurationException } from '@/exceptions';
 import { AxiosInterceptorOptions } from 'axios/index';
 
 let _repository: AxiosInstance | undefined;

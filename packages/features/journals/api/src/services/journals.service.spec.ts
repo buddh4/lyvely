@@ -10,11 +10,17 @@ import {
   RadioSelectionDataPointConfig,
   TextareaTextDataPointConfig,
 } from '@lyvely/time-series';
-import { IntegrityException, UserAssignmentStrategy } from '@lyvely/common';
+import {
+  IntegrityException,
+  UserAssignmentStrategy,
+  profilesTestPlugin,
+  ProfileTestDataUtils,
+  Content,
+  contentTestPlugin,
+} from '@lyvely/api';
 import { JournalsService } from '../services';
 import { JournalsDao } from '../daos';
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
-import { profilesTestPlugin, ProfileTestDataUtils, Content, contentTestPlugin } from '@lyvely/api';
 import { Journal, JournalSchema } from '../schemas';
 
 const Models = [

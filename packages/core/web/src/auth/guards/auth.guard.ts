@@ -7,7 +7,7 @@ import {
 } from 'vue-router';
 import { PATH_VERIFY_EMAIL } from '@/user-registration';
 import { PATH_LOGIN, PATH_LOGOUT } from '../auth.constants';
-import { UnauthorizedServiceException } from '@lyvely/common';
+import { UnauthorizedServiceException } from '@lyvely/interface';
 import { PATH_500 } from '@/ui';
 
 const PATH_ROOT = '/';

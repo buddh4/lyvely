@@ -1,4 +1,4 @@
-import { Endpoint } from '@lyvely/common';
+import { Endpoint, IContentTypeClient, profileApiPrefix } from '@lyvely/interface';
 import { CalendarDate } from '@lyvely/dates';
 import { TimerModel } from '@lyvely/timers-interface';
 import {
@@ -8,7 +8,6 @@ import {
   UpdateTaskModel,
   CreateTaskModel,
 } from '../models';
-import { IContentTypeClient } from '@lyvely/interface';
 import { ICalendarPlanClient } from '@lyvely/calendar-plan-interface';
 
 export interface ITasksClient
@@ -24,7 +23,7 @@ export interface ITasksClient
 }
 
 export type TasksEndpoint = Endpoint<ITasksClient>;
-export const ENDPOINT_TASKS = 'tasks';
+export const ENDPOINT_TASKS = profileApiPrefix('tasks');
 
 export const TasksEndpointPaths = {
   SORT: (cid: string) => `${cid}/sort`,

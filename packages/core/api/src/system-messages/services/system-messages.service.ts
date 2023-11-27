@@ -4,7 +4,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SystemMessagesDao } from '../daos';
 import { Profile } from '@/profiles';
 import { User } from '@/users';
-import { UnsupportedOperationException } from '@lyvely/common';
+import { UnsupportedOperationException } from '@lyvely/interface';
 import { SystemMessage } from '../schemas';
 import { UpdateQuerySet } from '@/core';
 import { ICreateSystemMessage } from '../interfaces';

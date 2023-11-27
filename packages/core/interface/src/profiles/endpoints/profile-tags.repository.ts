@@ -5,23 +5,24 @@ import {
   ProfileTagsEndpointPaths,
 } from './profile-tags.endpoint';
 import { useApi } from '@/repository';
+import { IProfileApiRequestOptions } from '@/endpoints';
 
 const api = useApi<IProfileTagsClient>(ENDPOINT_PROFILE_TAGS);
 
 export default {
-  async create(model: CreateTagModel) {
-    return api.post<'create'>(model);
+  async create(model: CreateTagModel, options?: IProfileApiRequestOptions) {
+    return api.post<'create'>(model, {}, options);
   },
 
-  async update(tagId: string, model: UpdateTagModel) {
-    return api.put<'update'>(tagId, model);
+  async update(tagId: string, model: UpdateTagModel, options?: IProfileApiRequestOptions) {
+    return api.put<'update'>(tagId, model, options);
   },
 
-  async archive(tagId: string) {
-    return api.post<'archive'>(ProfileTagsEndpointPaths.ARCHIVE(tagId));
+  async archive(tagId: string, options?: IProfileApiRequestOptions) {
+    return api.post<'archive'>(ProfileTagsEndpointPaths.ARCHIVE(tagId), {}, options);
   },
 
-  async restore(tagId: string) {
-    return api.post<'restore'>(ProfileTagsEndpointPaths.RESTORE(tagId));
+  async restore(tagId: string, options?: IProfileApiRequestOptions) {
+    return api.post<'restore'>(ProfileTagsEndpointPaths.RESTORE(tagId), {}, options);
   },
 };

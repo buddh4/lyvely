@@ -1,6 +1,6 @@
 import { ProfilesService } from './index';
-import { UniqueConstraintException } from '@lyvely/common';
 import {
+  UniqueConstraintException,
   BaseUserProfileRelationType,
   ProfileMembershipRole,
   ProfileType,

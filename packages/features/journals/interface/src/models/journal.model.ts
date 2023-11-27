@@ -9,7 +9,7 @@ import {
   useDataPointStrategyFacade,
 } from '@lyvely/time-series-interface';
 import { CalendarInterval } from '@lyvely/dates';
-import { UserAssignmentStrategy, IEditableModel } from '@lyvely/common';
+import { UserAssignmentStrategy, IEditableModel } from '@lyvely/interface';
 import { UpdateJournalModel } from './update-journal.model';
 
 export interface IJournalConfig {

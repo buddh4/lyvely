@@ -5,11 +5,10 @@ import {
   DeepPartial,
   Type,
   findByPath,
-  IntegrityException,
   assignRawDataTo,
-  isPlainObject,
+  hasOwnNonNullableProperty,
 } from '@lyvely/common';
-import { hasOwnNonNullableProperty } from '@lyvely/common';
+import { IntegrityException } from '@lyvely/interface';
 
 export type EntityIdentity<T extends BaseDocument<any>> = T | TObjectId | string;
 

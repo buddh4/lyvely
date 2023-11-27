@@ -1,6 +1,5 @@
-import { Endpoint } from '@lyvely/common';
 import { ITimeSeriesCalendarPlanClient, TimerDataPointModel } from '@lyvely/time-series-interface';
-import { IContentTypeClient } from '@lyvely/interface';
+import { IContentTypeClient, profileApiPrefix, Endpoint } from '@lyvely/interface';
 import {
   HabitModel,
   UpdateHabitModel,
@@ -22,7 +21,7 @@ export interface IHabitsEndpointClient
 }
 
 export type HabitsEndpoint = Endpoint<IHabitsEndpointClient>;
-export const ENDPOINT_HABITS = 'habits';
+export const ENDPOINT_HABITS = profileApiPrefix('habits');
 
 export const HabitsEndpointPaths = {
   SORT: (cid: string) => `${cid}/sort`,

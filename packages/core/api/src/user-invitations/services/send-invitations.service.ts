@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Profile, ProfilesService } from '@/profiles';
-import { isMultiUserProfile, InvitationRequest, MaxInvitationError } from '@lyvely/interface';
-
-import { MailService } from '@/mails';
 import {
+  isMultiUserProfile,
+  InvitationRequest,
+  MaxInvitationError,
   ForbiddenServiceException,
-  isValidEmail,
   FieldValidationException,
   DocumentNotFoundException,
-} from '@lyvely/common';
+} from '@lyvely/interface';
+import { MailService } from '@/mails';
+import { isValidEmail } from '@lyvely/common';
 import { User, UsersService } from '@/users';
 import { JwtSignOptions } from '@nestjs/jwt/dist/interfaces';
 import { JwtService } from '@nestjs/jwt';

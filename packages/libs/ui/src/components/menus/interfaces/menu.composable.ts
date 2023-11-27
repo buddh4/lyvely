@@ -1,6 +1,6 @@
 import { getMenuEntries } from './menus.registry';
 import { computed } from 'vue';
-import { sortBySortOrder } from '@lyvely/common';
+import { sortBySortOrder } from '@/helpers';
 
 export const useMenu = (menuId: string) => {
   const allMenuEntries = getMenuEntries(menuId);

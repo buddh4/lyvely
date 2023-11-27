@@ -8,7 +8,7 @@ import {
   ProfileTestDataUtils,
 } from '../testing';
 import { addDays, toTimingId } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy } from '@lyvely/interface';
 
 describe('ProfileScore', () => {
   let testingModule: LyvelyTestingModule;

@@ -1,8 +1,7 @@
 import { TaskModel } from './task.model';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { TaskCalendarPlanStore } from './task-calendar-plan.store';
-import { ContentMetadataModel } from '@lyvely/interface';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import { ContentMetadataModel, UserAssignmentStrategy } from '@lyvely/interface';
 
 describe('ActivityDataPointStore', () => {
   let store: TaskCalendarPlanStore;

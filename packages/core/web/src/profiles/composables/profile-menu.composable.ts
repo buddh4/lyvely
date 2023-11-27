@@ -1,6 +1,6 @@
 import { getMenuEntries } from '@lyvely/ui';
 import { computed } from 'vue';
-import { sortBySortOrder } from '@lyvely/common';
+import { sortBySortOrder } from '@lyvely/interface';
 import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
 
 export const useProfileMenu = (menuId: string) => {

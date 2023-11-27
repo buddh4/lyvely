@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint } from '@/endpoints';
 import { IAppConfig } from './app-config.interface';
 
 export interface IAppConfigClient {

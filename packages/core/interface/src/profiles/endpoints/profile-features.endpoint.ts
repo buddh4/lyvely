@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint, profileApiPrefix } from '@/endpoints';
 import { UpdateFeatureResponseModel, UpdateFeatureModel } from '../models';
 
 export interface IProfileFeaturesClient {
@@ -6,4 +6,4 @@ export interface IProfileFeaturesClient {
 }
 
 export type ProfileFeaturesEndpoint = StrictEndpoint<IProfileFeaturesClient>;
-export const ENDPOINT_PROFILE_FEATURES = 'profile-features';
+export const ENDPOINT_PROFILE_FEATURES = profileApiPrefix('profile-features');

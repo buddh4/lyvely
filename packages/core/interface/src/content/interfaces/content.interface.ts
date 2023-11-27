@@ -1,4 +1,4 @@
-import { ISortable } from '@lyvely/common';
+import { ISortable } from '@/common';
 import { RoleVisibilityLevel } from '@/profiles';
 
 export interface IContentDataType {

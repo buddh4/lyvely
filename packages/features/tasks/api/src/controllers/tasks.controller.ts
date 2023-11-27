@@ -23,9 +23,8 @@ import {
 } from '@lyvely/tasks-interface';
 import { TimerModel, TimerValueUpdateModel } from '@lyvely/timers';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan';
-import { SortResponse } from '@lyvely/common';
-import { TasksService, TaskCalendarPlanService } from '../services';
 import {
+  SortResponse,
   AbstractContentTypeController,
   ContentTypeController,
   ContentWritePolicy,
@@ -33,6 +32,7 @@ import {
   Policies,
   ProfileRequest,
 } from '@lyvely/api';
+import { TasksService, TaskCalendarPlanService } from '../services';
 
 @ContentTypeController(ENDPOINT_TASKS, Task)
 @UseInterceptors(ClassSerializerInterceptor)

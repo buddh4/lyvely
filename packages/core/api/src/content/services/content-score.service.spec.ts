@@ -12,7 +12,7 @@ import { Model } from '@/core';
 import { ContentScoreService } from './index';
 import { ContentScoreDao } from '../daos';
 import { toTimingId } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy } from '@lyvely/api';
 
 describe('ContentScoreService', () => {
   let testingModule: LyvelyTestingModule;

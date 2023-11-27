@@ -6,7 +6,7 @@ import { getPolicyToken } from '@/policies';
 import { BaseContentDeletePolicy } from './base-content-delete.policy';
 import { BaseContentManagePolicy } from './base-content-manage.policy';
 import { ContentManagePolicy } from './content-manage.policy';
-import { DocumentNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/interface';
 
 @Injectable()
 export class ContentDeletePolicy extends BaseContentDeletePolicy {

@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { UserInvitationInfo, useUserInvitationsClient } from '@lyvely/interface';
-import { DocumentNotFoundException } from '@lyvely/common';
+import {
+  UserInvitationInfo,
+  useUserInvitationsClient,
+  DocumentNotFoundException,
+} from '@lyvely/interface';
 import { computed, onMounted, ref } from 'vue';
 import { profileIdRoute } from '@/profiles/routes/profile-route.helper';
 import { LyCenteredPanel } from '@lyvely/ui';

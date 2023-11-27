@@ -12,9 +12,9 @@ import {
   UserModel,
   StringFieldValidityRequest,
   UserRegistrationEndpointPaths,
+  UniqueConstraintException,
 } from '@lyvely/interface';
 import {} from '@/user-account';
-import { UniqueConstraintException } from '@lyvely/common';
 import { AbstractJwtAuthController, JwtAuthService } from '@/auth';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';

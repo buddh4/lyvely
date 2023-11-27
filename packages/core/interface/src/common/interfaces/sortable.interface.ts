@@ -1,6 +1,5 @@
-import { Exclude, Expose, Type } from 'class-transformer';
-import { PropertyType } from '../decorators';
-import { BaseModel } from '../base.model';
+import { Exclude, Expose } from 'class-transformer';
+import { PropertyType, BaseModel } from '@lyvely/common';
 
 export type SortValue = number | undefined;
 

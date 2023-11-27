@@ -3,25 +3,33 @@ import { IContentStreamClient } from './content-stream.endpoint';
 import { IStreamOptions, IStreamResponse, IStreamState } from '@/streams';
 import { useSingleton, PropertiesOf } from '@lyvely/common';
 import repositry from './content-stream.repository';
-import { unwrapResponse } from '@/endpoints';
+import { IProfileApiRequestOptions, unwrapResponse } from '@/endpoints';
 import { getContentModelType } from '../registries';
 
 export class ContentStreamClient implements IContentStreamClient {
-  async loadEntry(id: string, filter?: ContentStreamFilter): Promise<ContentModel> {
-    return this.createModel(await unwrapResponse(repositry.loadEntry(id)));
+  async loadEntry(
+    id: string,
+    filter?: ContentStreamFilter,
+    options?: IProfileApiRequestOptions,
+  ): Promise<ContentModel> {
+    return this.createModel(await unwrapResponse(repositry.loadEntry(id, options)));
   }
 
   async loadTail(
     state: IStreamState,
     options: IStreamOptions,
     filter?: ContentStreamFilter,
+    requestOptions?: IProfileApiRequestOptions,
   ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(
-      repositry.loadTail({
-        state,
-        filter,
-        batchSize: options.batchSize,
-      }),
+      repositry.loadTail(
+        {
+          state,
+          filter,
+          batchSize: options.batchSize,
+        },
+        requestOptions,
+      ),
     );
     return this.createModels(response);
   }
@@ -30,13 +38,17 @@ export class ContentStreamClient implements IContentStreamClient {
     state: IStreamState,
     options: IStreamOptions,
     filter?: ContentStreamFilter,
+    requestOptions?: IProfileApiRequestOptions,
   ): Promise<IStreamResponse<ContentModel>> {
     const response = await unwrapResponse(
-      repositry.loadHead({
-        state,
-        filter,
-        batchSize: options.batchSize,
-      }),
+      repositry.loadHead(
+        {
+          state,
+          filter,
+          batchSize: options.batchSize,
+        },
+        requestOptions,
+      ),
     );
 
     return this.createModels(response);

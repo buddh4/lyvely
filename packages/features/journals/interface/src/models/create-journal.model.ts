@@ -14,9 +14,9 @@ import {
   ValidateIf,
 } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
-import { UserAssignmentStrategy, Gte, Lte } from '@lyvely/common';
+import { UserAssignmentStrategy, CreateContentModel } from '@lyvely/interface';
+import { Gte, Lte } from '@lyvely/common';
 import { DataPointInputType, DataPointValueType } from '@lyvely/time-series-interface';
-import { CreateContentModel } from '@lyvely/interface';
 
 @Expose()
 export class CreateJournalModel extends CreateContentModel<CreateJournalModel> {

@@ -7,7 +7,7 @@ import { MailInvitationService } from './mail-invitations.service';
 import { IMailInvitationContext, InvitationIF } from '../interfaces';
 import { UserInvitationsService } from './user-invitations.service';
 import { assureObjectId, EntityIdentity } from '@/core';
-import { DocumentNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/interface';
 
 @Injectable()
 export class InvitationsService {

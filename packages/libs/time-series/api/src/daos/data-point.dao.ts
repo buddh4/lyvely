@@ -1,6 +1,6 @@
 import { DataPointStrategyDao } from './data-point-strategy.dao';
 import { DataPoint } from '../schemas';
-import { IntegrityException } from '@lyvely/common';
+import { IntegrityException } from '@lyvely/api';
 import { DataPointSchemaFactory } from '../schemas/data-points/data-point-schema.factory';
 
 export abstract class DataPointDao extends DataPointStrategyDao {

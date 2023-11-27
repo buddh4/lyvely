@@ -14,7 +14,7 @@ import {
   ProfilesService,
 } from '@/profiles';
 import { EntityIdentity } from '@/core';
-import { IntegrityException } from '@lyvely/common';
+import { IntegrityException } from '@lyvely/interface';
 
 @Injectable()
 export class UserSubscriptionService {

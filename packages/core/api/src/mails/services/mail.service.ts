@@ -7,7 +7,8 @@ import { ConfigService } from '@nestjs/config';
 import { createWriteStream, writeFile, existsSync, mkdirSync } from 'fs';
 import { Stream } from 'stream';
 import pug from 'pug';
-import { escapeHTML, hasOwnNonNullableProperty, UrlRoute } from '@lyvely/common';
+import { escapeHTML, hasOwnNonNullableProperty } from '@lyvely/common';
+import { UrlRoute } from '@lyvely/interface';
 
 export interface IMessageInfo {
   messageId: string;

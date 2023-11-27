@@ -14,13 +14,15 @@ const runCommand = (command) => {
 };
 
 const unescapeCssSelectors = (cssContent) => {
-  return cssContent
+  return (
+    cssContent
       // Remove all definitions
       .replace(/{[^}]*}/g, ' ')
       // Remove pseudo classes (which are unescaped)
       .replace(/(?<!\\):[^ ]+/g, ' ')
       // Remove escapes
-      .replace(/\\/g, '');
+      .replace(/\\/g, '')
+  );
 };
 
 const unescapeCssFile = (inputFilePath, outputFilePath) => {
@@ -48,11 +50,11 @@ const unescapeCssFile = (inputFilePath, outputFilePath) => {
 const buildModuleWeb = (options) => {
   options = options || {};
   const viteCommand = `vite build` + (options.mode ? ` --mode ${options.mode}` : '');
-  const vueTscCommand = 'vue-tsc -p tsconfig.build.json --declaration --emitDeclarationOnly';
+  // const vueTscCommand = 'vue-tsc -p tsconfig.build.json --declaration --emitDeclarationOnly';
   const tailwindCommand = 'npx postcss ./src/styles/tailwind.css -o ./dist/tailwind.css';
 
   runCommand(viteCommand);
-  runCommand(vueTscCommand);
+  // runCommand(vueTscCommand);
   runCommand(tailwindCommand);
 
   // Add your CSS file paths here

@@ -1,5 +1,5 @@
 import { CalendarInterval } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy } from '@lyvely/interface';
 
 export const DataPointValueType = {
   Number: 'number',

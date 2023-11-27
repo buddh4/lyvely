@@ -8,7 +8,7 @@ import { NotificationChannelRegistry, NotificationDecider } from '../components'
 import { Logger } from '@nestjs/common';
 import { EntityIdentity } from '@/core';
 import { UsersService } from '@/users';
-import { ServiceException } from '@lyvely/common';
+import { ServiceException } from '@lyvely/interface';
 import { NotificationService, UserNotificationsService } from '../services';
 
 @Processor(QUEUE_NOTIFICATIONS_SEND)

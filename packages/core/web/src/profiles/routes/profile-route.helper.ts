@@ -1,5 +1,5 @@
 import { RouteLocationRaw, LocationQueryRaw } from 'vue-router';
-import { UrlRoute } from '@lyvely/common';
+import { UrlRoute } from '@lyvely/interface';
 export function profileRoot() {
   return '/p';
 }

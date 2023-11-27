@@ -1,9 +1,9 @@
 import { IMilestonePlanClient } from './milestone-plan.endpoint';
 import { MilestoneSearchResponse } from '../models';
-import { SortResponse, useSingleton } from '@lyvely/common';
+import { useSingleton } from '@lyvely/common';
+import { SortResponse, unwrapAndTransformResponse } from '@lyvely/interface';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
 import repository from './milestone-plan.repository';
-import { unwrapAndTransformResponse } from '@lyvely/interface';
 
 export class MilestonePlanClient implements IMilestonePlanClient {
   async getByFilter(filter: CalendarPlanFilter): Promise<MilestoneSearchResponse> {

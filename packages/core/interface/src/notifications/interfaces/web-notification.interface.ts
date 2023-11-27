@@ -1,4 +1,4 @@
-import { IUrlRoute } from '@lyvely/common';
+import { IUrlRoute } from '@/common';
 import { UserInfoModel } from '@/users';
 import { ProfileInfoModel } from '@/profiles';
 

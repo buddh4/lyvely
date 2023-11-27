@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { assureObjectId, EntityIdentity } from '@/core';
-import { DocumentNotFoundException, FieldValidationException } from '@lyvely/common';
+import { DocumentNotFoundException, FieldValidationException } from '@lyvely/interface';
 import { ProfileDao } from '../daos';
 import { Profile, Tag } from '../schemas';
 

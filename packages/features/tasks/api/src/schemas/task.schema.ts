@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import {
   Profile,
   User,
+  UserAssignmentStrategy,
   assureObjectId,
   EntityIdentity,
   NestedSchema,
@@ -10,13 +11,7 @@ import {
   ContentType,
   TObjectId,
 } from '@lyvely/api';
-import {
-  UserAssignmentStrategy,
-  PropertiesOf,
-  PropertyType,
-  getNumberEnumValues,
-  BaseModel,
-} from '@lyvely/common';
+import { PropertiesOf, PropertyType, getNumberEnumValues, BaseModel } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { Timer, TimerModel, TimerSchema } from '@lyvely/timers';
 import {

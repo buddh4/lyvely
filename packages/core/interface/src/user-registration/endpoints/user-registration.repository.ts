@@ -8,6 +8,7 @@ import { useApi } from '@/repository';
 import { VerifyEmailDto } from '@/user-account';
 import { ResendOtp } from '@/otp';
 import { StringFieldValidityRequest } from '@/validation';
+import { IProfileApiRequestOptions } from '@/endpoints';
 
 const api = useApi<IUserRegistrationClient>(ENDPOINT_USER_REGISTRATION);
 

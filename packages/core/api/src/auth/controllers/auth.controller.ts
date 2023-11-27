@@ -16,8 +16,8 @@ import {
   AuthEndpoint,
   LoginModel,
   AuthEndpointPaths,
+  Headers,
 } from '@lyvely/interface';
-import { Headers } from '@lyvely/common';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { Public, UseClassSerializer } from '@/core';

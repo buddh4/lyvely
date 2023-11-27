@@ -1,5 +1,5 @@
-import { ContentModel } from '@lyvely/interface';
-import { ISortable, PropertyType } from '@lyvely/common';
+import { ContentModel, ISortable } from '@lyvely/interface';
+import { PropertyType } from '@lyvely/common';
 import { ITimeSeriesContentConfig, ITimeSeriesContent } from '../interfaces';
 import { Expose } from 'class-transformer';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';

@@ -1,10 +1,9 @@
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { Timer, TimeSpan } from '@lyvely/timers';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy, Profile, User } from '@lyvely/api';
 import { TasksService } from './tasks.service';
 import { TaskTestDataUtil, taskTestPlugin } from '../testing';
 import { TasksDao } from '../daos';
-import { Profile, User } from '@lyvely/api';
 import { Task } from '../schemas';
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 

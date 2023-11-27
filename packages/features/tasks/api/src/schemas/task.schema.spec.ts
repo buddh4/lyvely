@@ -1,8 +1,7 @@
 import { getObjectId } from '@lyvely/testing';
 import { Task } from './index';
-import { UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy, User, Profile } from '@lyvely/api';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
-import { User, Profile } from '@lyvely/api';
 
 describe('Task', () => {
   describe('setDoneBy', () => {

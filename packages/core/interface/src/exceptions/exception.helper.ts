@@ -1,7 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import {
-  IFieldValidationResponse,
-  IModelValidationResponse,
   ServiceException,
   FieldValidationException,
   ModelValidationException,
@@ -10,10 +8,19 @@ import {
   UnauthorizedServiceException,
   RateLimitException,
   DocumentNotFoundException,
-} from '@lyvely/common';
+} from './exceptions';
+import { IFieldValidationResult, IModelValidationResult } from '@lyvely/common';
+
+export interface IFieldValidationResponse {
+  fields: IFieldValidationResult[];
+}
+
+export interface IModelValidationResponse {
+  result: IModelValidationResult[];
+}
 
 export function isAxiosError(error: any): error is AxiosError {
-  return error.isAxiosError;
+  return !!error?.isAxiosError;
 }
 
 export function isAxiosErrorWithResponse<T = any>(
@@ -66,15 +73,11 @@ export function isModelValidationError(
   );
 }
 
-export function isRateLimitError(error: any): error is AxiosError<IModelValidationResponse> & {
-  response: AxiosResponse<IModelValidationResponse>;
-} {
+export function isRateLimitError(error: any): error is AxiosError {
   return isAxiosErrorWithResponse(error) && error.response.status === 429;
 }
 
-export function isNotFoundError(error: any): error is AxiosError<IModelValidationResponse> & {
-  response: AxiosResponse<IModelValidationResponse>;
-} {
+export function isNotFoundError(error: any): error is AxiosError {
   return isAxiosErrorWithResponse(error) && error.response.status === 404;
 }
 
@@ -107,7 +110,10 @@ export function errorToServiceException(error: any, throws = false): ServiceExce
   } else if (isModelValidationError(error)) {
     result = new ModelValidationException(error.response.data.result);
   } else if (isRateLimitError(error)) {
-    result = new RateLimitException(error, parseInt(error.response.headers['Retry-After'] || '20'));
+    result = new RateLimitException(
+      error,
+      parseInt(error.response?.headers['Retry-After'] || '20'),
+    );
   } else if (isNotFoundError(error)) {
     result = new DocumentNotFoundException(error.response?.data);
   }

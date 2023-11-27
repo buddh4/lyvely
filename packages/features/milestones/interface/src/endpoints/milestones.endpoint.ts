@@ -1,11 +1,10 @@
-import { Endpoint } from '@lyvely/common';
+import { Endpoint, IContentTypeClient, profileApiPrefix } from '@lyvely/interface';
 import {
   MilestoneModel,
   UpdateMilestoneModel,
   CreateMilestoneModel,
   MilestoneListResponse,
 } from '../models';
-import { IContentTypeClient } from '@lyvely/interface';
 
 export interface IMilestonesClient
   extends IContentTypeClient<MilestoneModel, CreateMilestoneModel, UpdateMilestoneModel> {
@@ -14,4 +13,4 @@ export interface IMilestonesClient
 }
 
 export type MilestonesEndpoint = Endpoint<IMilestonesClient>;
-export const ENDPOINT_MILESTONES = 'milestones';
+export const ENDPOINT_MILESTONES = profileApiPrefix('milestones');

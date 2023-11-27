@@ -1,7 +1,7 @@
 import { Content } from '../schemas';
 import { Injectable, Logger } from '@nestjs/common';
 import { ContentDao } from '../daos';
-import { DocumentNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/interface';
 import { ProfileShard } from '@/profiles';
 import { assureObjectId, EntityIdentity, TObjectId } from '@/core';
 import { User } from '@/users';

@@ -1,4 +1,4 @@
-import Statistics from '@/statistics/views/StatisticsView.vue';
+//import Statistics from '@/statistics/views/StatisticsView.vue';
 //import { translation, loadProfile } from '@lyvely/web';
 
 export default [

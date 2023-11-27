@@ -1,7 +1,6 @@
 import { IComponentStackEntry } from './component-stack.interface';
 import { ref, Ref, shallowRef } from 'vue';
-import { isVueComponent } from '@/helpers';
-import { sortBySortOrder } from '@lyvely/common';
+import { isVueComponent, sortBySortOrder } from '@/helpers';
 
 const stackMap = new Map<string, Ref<IComponentStackEntry[]>>();
 

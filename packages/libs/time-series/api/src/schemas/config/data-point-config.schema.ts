@@ -6,7 +6,8 @@ import {
   IDataPointConfigRevision,
   IDataPointSettings,
 } from '@lyvely/time-series-interface';
-import { getStringEnumValues, getNumberEnumValues, UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy } from '@lyvely/api';
+import { getStringEnumValues, getNumberEnumValues } from '@lyvely/common';
 import { CalendarInterval } from '@lyvely/dates';
 import { isEqual } from 'lodash';
 

@@ -18,7 +18,8 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import { BaseModel, Gte, Lte, UserAssignmentStrategy } from '@lyvely/common';
+import { UserAssignmentStrategy } from '@lyvely/interface';
+import { BaseModel, Gte, Lte } from '@lyvely/common';
 
 @Expose()
 export class CreateHabitModel

@@ -3,8 +3,7 @@ import { HabitDataPointService } from './habit-data-point.service';
 import { HabitDataPointDao } from '../daos';
 import { CalendarInterval, toTimingId } from '@lyvely/dates';
 import { CalendarPlanFilter } from '@lyvely/calendar-plan';
-import { UserAssignmentStrategy } from '@lyvely/common';
-import { ContentScoreDao, ContentScoreService, Model } from '@lyvely/api';
+import { UserAssignmentStrategy, ContentScoreDao, ContentScoreService, Model } from '@lyvely/api';
 import { DataPoint } from '@lyvely/time-series';
 import { buildTest, LyvelyTestingModule } from '@lyvely/testing';
 

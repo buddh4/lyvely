@@ -6,7 +6,7 @@ import { getPolicyToken } from '@/policies';
 import { BaseContentWritePolicy } from './base-content-write.policy';
 import { ContentManagePolicy } from './content-manage.policy';
 import { BaseContentManagePolicy } from './base-content-manage.policy';
-import { DocumentNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/interface';
 
 @Injectable()
 export class ContentWritePolicy extends BaseContentWritePolicy {

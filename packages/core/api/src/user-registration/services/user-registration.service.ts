@@ -1,12 +1,14 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { FieldValidationException, escapeHTML, ForbiddenServiceException } from '@lyvely/common';
 import {
+  FieldValidationException,
+  ForbiddenServiceException,
   UserRegistration,
   UserRegistrationMode,
   UserStatus,
   OtpInfo,
   VerifyEmailDto,
 } from '@lyvely/interface';
+import { escapeHTML } from '@lyvely/common';
 import { OtpService } from '@/otp';
 import { UserDao, User, UsersService } from '@/users';
 import { ProfilesService } from '@/profiles';

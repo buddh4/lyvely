@@ -5,7 +5,7 @@ import {
   registerPermissions,
 } from '../index';
 import { verifyGlobalPermission } from './permissions.helper';
-import { IntegrityException } from '@lyvely/common';
+import { IntegrityException } from '@lyvely/interface';
 import { UserStatus } from '../../users';
 
 describe('verifyGlobalPermission', function () {

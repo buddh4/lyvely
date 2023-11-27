@@ -8,7 +8,7 @@ import {
   RouteLocationNormalized,
   NavigationHookAfter,
 } from 'vue-router';
-import { sortBySortOrder } from '@lyvely/common';
+import { sortBySortOrder } from '@lyvely/interface';
 
 //import { useHelpStore } from '@/help/stores/help.store';
 

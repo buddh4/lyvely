@@ -4,7 +4,8 @@ import { SettingsService } from './settings.service';
 import { InjectModel, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { SettingsRegistry } from './settings.registry';
-import { Constructor, DeepPartial, FieldValidationException } from '@lyvely/common';
+import { Constructor, DeepPartial } from '@lyvely/common';
+import { FieldValidationException } from '@lyvely/interface';
 
 const settingRegistry = new SettingsRegistry();
 

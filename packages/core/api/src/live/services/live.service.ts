@@ -5,14 +5,18 @@ import { ConfigService } from '@nestjs/config';
 import { assureStringId, EntityIdentity } from '@/core';
 import { ConfigurationPath, OperationMode } from '@/config';
 import { OptionalUser, User } from '@/users';
-import { ILiveEvent, ILiveProfileEvent, ILiveUserEvent } from '@lyvely/interface';
+import {
+  ILiveEvent,
+  ILiveProfileEvent,
+  ILiveUserEvent,
+  ForbiddenServiceException,
+} from '@lyvely/interface';
 import {
   Profile,
   ProfileRelationsService,
   ProfilesService,
   ProfileVisibilityPolicy,
 } from '@/profiles';
-import { ForbiddenServiceException } from '@lyvely/common';
 import { InjectPolicy } from '@/policies';
 
 @Injectable()

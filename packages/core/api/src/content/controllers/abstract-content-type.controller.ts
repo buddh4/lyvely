@@ -3,18 +3,13 @@ import { Content } from '../schemas';
 import { ContentTypeService } from '../services';
 import { ProtectedProfileContentRequest } from '../types';
 import { ContentCreatePolicy, ContentWritePolicy } from '../policies';
-import {
-  Type,
-  BaseModel,
-  PropertiesOf,
-  createAndAssign,
-  FieldValidationException,
-} from '@lyvely/common';
+import { Type, BaseModel, PropertiesOf, createAndAssign } from '@lyvely/common';
 import {
   ContentTypeEndpoint,
   ContentModel,
   CreateContentModel,
   ContentUpdateResponse,
+  FieldValidationException,
   TagModel,
 } from '@lyvely/interface';
 import { Profile, ProtectedProfileRequest } from '@/profiles';

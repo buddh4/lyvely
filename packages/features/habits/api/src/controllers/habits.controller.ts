@@ -19,10 +19,8 @@ import {
   NumberDataPointModel,
   DataPointModelConverter,
 } from '@lyvely/time-series';
-import { SortResponse } from '@lyvely/common';
-import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
-import { HabitsService, HabitTimeSeriesService, HabitDataPointTimerService } from '../services';
 import {
+  SortResponse,
   Policies,
   ContentTypeController,
   ContentWritePolicy,
@@ -31,6 +29,8 @@ import {
   UseClassSerializer,
   ProfileRequest,
 } from '@lyvely/api';
+import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan';
+import { HabitsService, HabitTimeSeriesService, HabitDataPointTimerService } from '../services';
 
 @ContentTypeController(ENDPOINT_HABITS, Habit)
 // TODO: implement feature registration @Feature('habits')

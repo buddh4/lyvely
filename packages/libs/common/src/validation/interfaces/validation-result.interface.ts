@@ -3,15 +3,7 @@ export interface IFieldValidationResult {
   errors?: string[];
 }
 
-export interface IFieldValidationResponse {
-  fields: IFieldValidationResult[];
-}
-
 export interface IModelValidationResult {
   model: string;
   fields: IFieldValidationResult[];
-}
-
-export interface IModelValidationResponse {
-  result: IModelValidationResult[];
 }

@@ -1,13 +1,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { User } from '@/users';
-import { UserStatus, DEFAULT_MAX_OTP_ATTEMPTS } from '@lyvely/interface';
+import { UserStatus, DEFAULT_MAX_OTP_ATTEMPTS, IntegrityException } from '@lyvely/interface';
 import { UserOtp } from '../schemas';
 import { UserOtpDao } from '../daos';
 import { generateOTP } from '../utils';
 import ms from 'ms';
 import * as bcrypt from 'bcrypt';
 import { EntityIdentity } from '@/core';
-import { IntegrityException } from '@lyvely/common';
 
 export interface IGenerateOtpOptions<TContext = any> {
   purpose: string;

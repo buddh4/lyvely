@@ -8,23 +8,33 @@ import {
 import { IMilestonesClient } from './milestones.endpoint';
 import { useSingleton } from '@lyvely/common';
 import repository from './milestones.repository';
-import { unwrapAndTransformResponse } from '@lyvely/interface';
+import { IProfileApiRequestOptions, unwrapAndTransformResponse } from '@lyvely/interface';
 
 export class MilestonesClient implements IMilestonesClient {
-  async getAll(): Promise<MilestoneListResponse> {
-    return unwrapAndTransformResponse(repository.getAll(), MilestoneListResponse);
+  async getAll(options?: IProfileApiRequestOptions): Promise<MilestoneListResponse> {
+    return unwrapAndTransformResponse(repository.getAll(options), MilestoneListResponse);
   }
 
-  async getById(mid: string): Promise<MilestoneModel> {
-    return unwrapAndTransformResponse(repository.getById(mid), MilestoneModel);
+  async getById(mid: string, options?: IProfileApiRequestOptions): Promise<MilestoneModel> {
+    return unwrapAndTransformResponse(repository.getById(mid, options), MilestoneModel);
   }
 
-  async create(dto: CreateMilestoneModel): Promise<UpdateMilestoneResponse> {
-    return unwrapAndTransformResponse(repository.create(dto), UpdateMilestoneResponse);
+  async create(
+    dto: CreateMilestoneModel,
+    options?: IProfileApiRequestOptions,
+  ): Promise<UpdateMilestoneResponse> {
+    return unwrapAndTransformResponse(repository.create(dto, options), UpdateMilestoneResponse);
   }
 
-  async update(id: string, update: UpdateMilestoneModel): Promise<UpdateMilestoneResponse> {
-    return unwrapAndTransformResponse(repository.update(id, update), UpdateMilestoneResponse);
+  async update(
+    id: string,
+    update: UpdateMilestoneModel,
+    options?: IProfileApiRequestOptions,
+  ): Promise<UpdateMilestoneResponse> {
+    return unwrapAndTransformResponse(
+      repository.update(id, update, options),
+      UpdateMilestoneResponse,
+    );
   }
 }
 

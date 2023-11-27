@@ -1,9 +1,9 @@
 import { HabitsService } from './habits.service';
-import { PropertiesOf, UserAssignmentStrategy } from '@lyvely/common';
+import { PropertiesOf } from '@lyvely/common';
+import { UserAssignmentStrategy, User, Profile, assureStringId } from '@lyvely/api';
 import { CalendarInterval } from '@lyvely/dates';
 import { DataPointValueType, DataPointInputType } from '@lyvely/time-series';
 import { UpdateHabitModel, CreateHabitModel } from '@lyvely/habits-interface';
-import { User, Profile, assureStringId } from '@lyvely/api';
 import { HabitTestDataUtil, habitTestPlugin } from '../testing';
 import { HabitsDao } from '../daos';
 import { Habit } from '../schemas';

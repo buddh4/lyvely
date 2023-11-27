@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint } from '@/endpoints';
 import { AvatarModel } from '@/avatars';
 import { AddEmailDto, VerifyEmailDto } from '../dtos';
 import { CalendarPreferences, SetLanguageDto, SetTimezoneDto } from '@/common';

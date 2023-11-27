@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { ProfileRequest } from '../types';
 import { assureObjectId, EntityIdentity, UseClassSerializer } from '@/core';
-import { ServiceException } from '@lyvely/common';
 import {
   UpdateTagModel,
   TagModel,

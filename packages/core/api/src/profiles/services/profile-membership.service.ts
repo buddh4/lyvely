@@ -3,8 +3,7 @@ import { Membership, Profile, ProfileRelationUserInfo } from '../schemas';
 import { MembershipsDao } from '../daos';
 import { EntityIdentity, Transaction } from '@/core';
 import { User, UsersService } from '@/users';
-import { ProfileMembershipRole, ProfileType } from '@lyvely/interface';
-import { ForbiddenServiceException } from '@lyvely/common';
+import { ProfileMembershipRole, ProfileType, ForbiddenServiceException } from '@lyvely/interface';
 
 @Injectable()
 export class ProfileMembershipService {

@@ -1,4 +1,4 @@
-import { Endpoint } from '@lyvely/common';
+import { Endpoint } from '@/endpoints';
 import { UserModel } from '@/users';
 import { LoginModel } from '../models';
 
@@ -30,5 +30,3 @@ export const AuthEndpointPaths = {
   REFRESH: 'refresh',
   USER: 'user',
 };
-
-export const ENDPOINT_AUTH_PATH_USER = 'user';

@@ -1,7 +1,7 @@
 import { test, expect, beforeAll } from 'vitest';
 import { BaseModel } from '@lyvely/common';
-import { I18nModelValidator } from '@/i18n/i18n-model.validator';
-import { setMessages } from '@/i18n/i18n';
+import { I18nModelValidator } from './i18n-model.validator';
+import { setMessages } from './i18n';
 import { Length } from 'class-validator';
 
 beforeAll(() => {

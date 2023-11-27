@@ -1,4 +1,4 @@
-import { User, CreatedAsType, Profile, Tag } from '@lyvely/api';
+import { User, CreatedAsType, Profile, Tag, UserAssignmentStrategy } from '@lyvely/api';
 import { Habit } from './index';
 import { CalendarInterval } from '@lyvely/dates';
 import { CreateHabitModel, HabitModel } from '@lyvely/habits-interface';
@@ -9,7 +9,7 @@ import {
   DataPointConfigFactory,
   NumberDataPointConfig,
 } from '@lyvely/time-series';
-import { PropertiesOf, UserAssignmentStrategy } from '@lyvely/common';
+import { PropertiesOf } from '@lyvely/common';
 import { buildTest, getObjectId, LyvelyTestingModule } from '@lyvely/testing';
 import { instanceToPlain } from 'class-transformer';
 import { HabitTestDataUtil, habitTestPlugin } from '../testing';

@@ -1,4 +1,4 @@
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint } from '@/endpoints';
 import { InvitationRequest, MailInvitationInfo, UserInvitationInfo } from '../models';
 
 export interface IUserInvitationsClient {

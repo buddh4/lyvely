@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import statisticsRepository from '@/statistics/repositories/statistics.repository';
+import statisticsRepository from '../repositories/statistics.repository';
 import { ScoreStatistics } from '@lyvely/statistics-interface';
 import { ref } from 'vue';
 

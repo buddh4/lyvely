@@ -5,7 +5,7 @@ import { getPolicyToken } from '@/policies';
 import { BaseContentReadPolicy } from './base-content-read.policy';
 import { BaseContentManagePolicy } from './base-content-manage.policy';
 import { ContentManagePolicy } from './content-manage.policy';
-import { DocumentNotFoundException } from '@lyvely/common';
+import { DocumentNotFoundException } from '@lyvely/interface';
 
 @Injectable()
 export class ContentReadPolicy extends BaseContentReadPolicy {

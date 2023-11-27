@@ -1,7 +1,6 @@
-import { Headers, IFieldValidationResponse } from '@lyvely/common';
+import { Headers, IFieldValidationResponse, isFieldValidationError } from '@lyvely/interface';
 import { useCaptchaStore } from './captcha.store';
 import { InternalAxiosRequestConfig } from 'axios';
-import { isFieldValidationError } from '@lyvely/interface';
 import { translate } from '@/i18n';
 
 export const captchaInterceptor = (config: InternalAxiosRequestConfig) => {

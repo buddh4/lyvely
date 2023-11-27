@@ -1,7 +1,7 @@
 import { NotificationContext, NotificationType } from '../schemas';
 import { Notification } from './notification.decorator';
 import { Translatable } from '@/i18n';
-import { UrlRoute } from '@lyvely/common';
+import { UrlRoute } from '@lyvely/interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { NotificationTypeRegistry } from '../components';
 import { notificationTestPlugin } from '../testing';

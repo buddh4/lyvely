@@ -1,5 +1,5 @@
 import { LegalSectionDetails } from '../models';
-import { StrictEndpoint } from '@lyvely/common';
+import { StrictEndpoint } from '@lyvely/interface';
 
 export interface ILegalClient {
   getLegalDetails(sectionId: string): Promise<LegalSectionDetails>;

@@ -1,4 +1,5 @@
-import { PropertiesOf, useSingleton, IntegrityException } from '@lyvely/common';
+import { IntegrityException } from '@lyvely/interface';
+import { PropertiesOf, useSingleton } from '@lyvely/common';
 import { IDataPoint, IDataPointConfig, IDataPointStrategy } from '../interfaces';
 
 export class DataPointStrategyFacade {

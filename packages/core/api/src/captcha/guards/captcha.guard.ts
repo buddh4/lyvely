@@ -1,7 +1,7 @@
 import { BadRequestException, CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { CaptchaService } from '../services';
 import { Request } from 'express';
-import { FieldValidationException, Headers } from '@lyvely/common';
+import { Headers, FieldValidationException } from '@lyvely/interface';
 
 @Injectable()
 export class CaptchaGuard implements CanActivate {

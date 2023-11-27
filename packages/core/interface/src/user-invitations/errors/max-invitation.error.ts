@@ -1,4 +1,4 @@
-import { ServiceException } from '@lyvely/common';
+import { ServiceException } from '@/exceptions';
 
 export class MaxInvitationError extends ServiceException {
   constructor(allowed: number) {

@@ -18,8 +18,8 @@ import {
   IBaseFetchQueryOptions,
 } from '@/core';
 import { User } from '@/users';
-import { Constructor, DeepPartial, IntegrityException } from '@lyvely/common';
-import { ProfileType } from '@lyvely/interface';
+import { Constructor, DeepPartial } from '@lyvely/common';
+import { IntegrityException, ProfileType } from '@lyvely/interface';
 
 @Injectable()
 export class ProfileDao extends AbstractDao<Profile> {

@@ -44,7 +44,9 @@ export class ProfileGuard implements CanActivate {
     const oid = isValidObjectId(request.query.oid) ? request.query.oid : undefined;
     const user = request.user;
 
-    request.context = await this.profileService.findProfileContext(user, request.query.pid, oid);
+    // TODO: Request query pid is used for compatibility with pre alpha version. Can be removed as soon as all clients are merged.
+    const pid = request.params.pid || request.query.pid;
+    request.context = await this.profileService.findProfileContext(user, pid, oid);
     request.profile = request.context.profile;
 
     if (!request.profile) return false;

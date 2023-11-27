@@ -1,6 +1,6 @@
 import { useApiRepository } from './api.repository';
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { EndpointResult } from '@/endpoints';
+import { EndpointResult, setProfileApiPrefix } from '@/endpoints';
 import { isPlainObject } from '@lyvely/common';
 import { errorToServiceException } from '@/exceptions';
 
@@ -18,6 +18,7 @@ type ApiRequestConfig<D = any> = AxiosRequestConfig<D> & {
   skipAuthRefresh?: boolean;
   withCaptcha?: boolean;
   skipProfileIdParam?: boolean;
+  pid?: string;
 };
 
 export const useApi = <TClient>(resource: string) => {
@@ -43,7 +44,7 @@ export const useApi = <TClient>(resource: string) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
-        return await useApiRepository().get<T, R, D>(createPath(resource, path), config);
+        return await useApiRepository().get<T, R, D>(createPath(resource, path, config), config);
       } catch (e) {
         throw errorToServiceException(e);
       }
@@ -74,7 +75,7 @@ export const useApi = <TClient>(resource: string) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
-        return await useApiRepository().delete<T, R, D>(createPath(resource, path), config);
+        return await useApiRepository().delete<T, R, D>(createPath(resource, path, config), config);
       } catch (e) {
         throw errorToServiceException(e);
       }
@@ -105,7 +106,7 @@ export const useApi = <TClient>(resource: string) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
-        return await useApiRepository().head<T, R, D>(createPath(resource, path), config);
+        return await useApiRepository().head<T, R, D>(createPath(resource, path, config), config);
       } catch (e) {
         throw errorToServiceException(e);
       }
@@ -136,7 +137,10 @@ export const useApi = <TClient>(resource: string) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
-        return await useApiRepository().options<T, R, D>(createPath(resource, path), config);
+        return await useApiRepository().options<T, R, D>(
+          createPath(resource, path, config),
+          config,
+        );
       } catch (e) {
         throw errorToServiceException(e);
       }
@@ -174,7 +178,7 @@ export const useApi = <TClient>(resource: string) => {
           config: configArg,
         } = getArgsWithData<D>(path, data, config);
         return await useApiRepository().post<T, ApiResponse<R, TClient>, D>(
-          createPath(resource, pathArg),
+          createPath(resource, pathArg, config),
           dataArg,
           configArg,
         );
@@ -210,7 +214,7 @@ export const useApi = <TClient>(resource: string) => {
           config: configArg,
         } = getArgsWithData<D>(path, data, config);
         return await useApiRepository().put<T, ApiResponse<R, TClient>, D>(
-          createPath(resource, pathArg),
+          createPath(resource, pathArg, config),
           dataArg,
           configArg,
         );
@@ -250,7 +254,7 @@ export const useApi = <TClient>(resource: string) => {
           config: configArg,
         } = getArgsWithData<D>(path, data, config);
         return await useApiRepository().patch<T, ApiResponse<R, TClient>, D>(
-          createPath(resource, pathArg),
+          createPath(resource, pathArg, config),
           dataArg,
           configArg,
         );
@@ -298,9 +302,12 @@ function getArgsWithData<D = any>(
   };
 }
 
-function createPath(resource: string, path?: string) {
+function createPath(resource: string, path?: string, config?: ApiRequestConfig) {
   resource = toRelative(resource);
-  return path?.length ? resource + '/' + toRelative(path) : resource;
+  return setProfileApiPrefix(
+    path?.length ? resource + '/' + toRelative(path) : resource,
+    config?.pid,
+  );
 }
 
 function toRelative(path: string) {

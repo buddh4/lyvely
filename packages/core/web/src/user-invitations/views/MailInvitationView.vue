@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
-import { MailInvitationInfo, useUserInvitationsClient } from '@lyvely/interface';
-import { DocumentNotFoundException } from '@lyvely/common';
+import {
+  MailInvitationInfo,
+  useUserInvitationsClient,
+  DocumentNotFoundException,
+} from '@lyvely/interface';
 import { onMounted, ref } from 'vue';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { storeToRefs } from 'pinia';

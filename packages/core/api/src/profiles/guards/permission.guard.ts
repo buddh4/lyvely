@@ -7,8 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
-import { getPermission } from '@lyvely/interface';
-import { IntegrityException } from '@lyvely/common';
+import { getPermission, IntegrityException } from '@lyvely/interface';
 import { ProfileContext } from '../models';
 import { User } from '@/users';
 

@@ -1,9 +1,8 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IEditableModel } from '@lyvely/common';
+import { IEditableModel, ContentModel } from '@lyvely/interface';
 import { CalendarInterval } from '@lyvely/dates';
 import { UpdateMilestoneModel } from './update-milestone.model';
 import { IMilestoneConfig } from '../interfaces';
-import { ContentModel } from '@lyvely/interface';
 import { ICalendarPlanEntry } from '@lyvely/calendar-plan-interface';
 
 @Exclude()

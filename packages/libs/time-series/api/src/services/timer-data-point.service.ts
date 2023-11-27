@@ -1,7 +1,6 @@
-import { Profile, User } from '@lyvely/api';
+import { Profile, User, DocumentNotFoundException, IntegrityException } from '@lyvely/api';
 import { CalendarDate } from '@lyvely/dates';
 import { isTimerDataPointConfig } from '@lyvely/time-series-interface';
-import { DocumentNotFoundException, IntegrityException } from '@lyvely/common';
 import { DataPointService } from './data-point.service';
 import { DataPoint, TimerDataPoint, TimeSeriesContent } from '../schemas';
 

@@ -1,6 +1,7 @@
 import { Notification, NotificationContext, NotificationType, RenderFormat } from '@/notifications';
 import { Translatable } from '@/i18n';
-import { escapeHtmlIf, PropertyType, UrlRoute } from '@lyvely/common';
+import { escapeHtmlIf, PropertyType } from '@lyvely/common';
+import { UrlRoute } from '@lyvely/interface';
 import { Prop } from '@nestjs/mongoose';
 import { User, UserInfo, UserInfoSchema } from '@/users';
 import { ProfileInfo, ProfileInfoSchema, Profile } from '@/profiles';

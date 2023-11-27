@@ -5,10 +5,11 @@ import {
   TagModel,
   useProfileRelationInfosClient,
   useProfilesClient,
+  DocumentNotFoundException,
 } from '@lyvely/interface';
 import { computed, ref } from 'vue';
 import { usePageStore } from '@/ui';
-import { DocumentNotFoundException, findByPath } from '@lyvely/common';
+import { findByPath } from '@lyvely/common';
 import { useLiveStore } from '@/live';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';

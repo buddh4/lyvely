@@ -1,5 +1,5 @@
 import { reactive, Ref, ref, toValue } from 'vue';
-import { FieldValidationException, IEditModelService } from '@lyvely/common';
+import { IEditModelClient, FieldValidationException } from '@lyvely/interface';
 import { cloneDeep, isEqual } from 'lodash';
 import { loadingStatus, useStatus, eventBus } from '@/core';
 import { useProfileStore } from '@/profiles/stores/profile.store';
@@ -39,10 +39,10 @@ export interface IUpdateModelStoreOptions<
    * The client responsible for updating the model.
    */
   client:
-    | IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>
+    | IEditModelClient<TResponse, TCreateModel, TUpdateModel, TID>
     | ((
         editModel: TCreateModel | TUpdateModel,
-      ) => IEditModelService<TResponse, TCreateModel, TUpdateModel, TID>);
+      ) => IEditModelClient<TResponse, TCreateModel, TUpdateModel, TID>);
 
   /**
    * Hook called after a successful submit.

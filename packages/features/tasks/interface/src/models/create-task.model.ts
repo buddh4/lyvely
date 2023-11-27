@@ -12,8 +12,7 @@ import {
   MaxLength,
 } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
-import { UserAssignmentStrategy } from '@lyvely/common';
-import { CreateContentModel } from '@lyvely/interface';
+import { UserAssignmentStrategy, CreateContentModel } from '@lyvely/interface';
 
 @Exclude()
 export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {

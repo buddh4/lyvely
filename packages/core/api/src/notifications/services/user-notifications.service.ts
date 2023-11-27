@@ -1,7 +1,7 @@
 import { Injectable, Logger, Inject } from '@nestjs/common';
-import { DocumentNotFoundException, IntegrityException } from '@lyvely/common';
-import { AbstractStreamService } from '@/streams';
 import {
+  DocumentNotFoundException,
+  IntegrityException,
   IStreamResponse,
   StreamRequest,
   StreamResponse,
@@ -9,6 +9,7 @@ import {
   NotificationSeenStateLiveEvent,
   NotificationUpdateStateLiveEvent,
 } from '@lyvely/interface';
+import { AbstractStreamService } from '@/streams';
 import {
   RenderFormat,
   Notification,
