@@ -3,6 +3,9 @@ import { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { EndpointResult, setProfileApiPrefix } from '@/endpoints';
 import { isPlainObject } from '@lyvely/common';
 import { errorToServiceException } from '@/exceptions';
+import { Headers } from '@/common';
+
+export const DEFAULT_API_VERSION = '1';
 
 type ApiResponse<T, TClient> = T extends (...args: any) => any
   ? EndpointResult<T>
@@ -21,7 +24,7 @@ type ApiRequestConfig<D = any> = AxiosRequestConfig<D> & {
   pid?: string;
 };
 
-export const useApi = <TClient>(resource: string) => {
+export const useApi = <TClient>(resource: string, version?: string) => {
   return {
     /**
      * Sends a get request to the endpoint.
@@ -42,9 +45,12 @@ export const useApi = <TClient>(resource: string) => {
       config?: ApiRequestConfig<D>,
     ) => {
       try {
-        config = isPlainObject(path) ? path : config;
+        config = (isPlainObject(path) ? path : config) || {};
         path = typeof path === 'string' ? path : undefined;
-        return await useApiRepository().get<T, R, D>(createPath(resource, path, config), config);
+        return await useApiRepository().get<T, R, D>(
+          createPath(resource, path, config),
+          prepareConfig(config, version),
+        );
       } catch (e) {
         throw errorToServiceException(e);
       }
@@ -75,7 +81,10 @@ export const useApi = <TClient>(resource: string) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
-        return await useApiRepository().delete<T, R, D>(createPath(resource, path, config), config);
+        return await useApiRepository().delete<T, R, D>(
+          createPath(resource, path, config),
+          prepareConfig(config, version),
+        );
       } catch (e) {
         throw errorToServiceException(e);
       }
@@ -106,7 +115,10 @@ export const useApi = <TClient>(resource: string) => {
       try {
         config = isPlainObject(path) ? path : config;
         path = typeof path === 'string' ? path : undefined;
-        return await useApiRepository().head<T, R, D>(createPath(resource, path, config), config);
+        return await useApiRepository().head<T, R, D>(
+          createPath(resource, path, config),
+          prepareConfig(config, version),
+        );
       } catch (e) {
         throw errorToServiceException(e);
       }
@@ -139,7 +151,7 @@ export const useApi = <TClient>(resource: string) => {
         path = typeof path === 'string' ? path : undefined;
         return await useApiRepository().options<T, R, D>(
           createPath(resource, path, config),
-          config,
+          prepareConfig(config, version),
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -180,7 +192,7 @@ export const useApi = <TClient>(resource: string) => {
         return await useApiRepository().post<T, ApiResponse<R, TClient>, D>(
           createPath(resource, pathArg, config),
           dataArg,
-          configArg,
+          prepareConfig(configArg, version),
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -216,7 +228,7 @@ export const useApi = <TClient>(resource: string) => {
         return await useApiRepository().put<T, ApiResponse<R, TClient>, D>(
           createPath(resource, pathArg, config),
           dataArg,
-          configArg,
+          prepareConfig(configArg, version),
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -256,7 +268,7 @@ export const useApi = <TClient>(resource: string) => {
         return await useApiRepository().patch<T, ApiResponse<R, TClient>, D>(
           createPath(resource, pathArg, config),
           dataArg,
-          configArg,
+          prepareConfig(configArg, version),
         );
       } catch (e) {
         throw errorToServiceException(e);
@@ -264,6 +276,13 @@ export const useApi = <TClient>(resource: string) => {
     },
   };
 };
+
+function prepareConfig(config?: ApiRequestConfig, version = DEFAULT_API_VERSION) {
+  config ??= {};
+  config.headers ??= {};
+  config.headers[Headers.X_API_VERSION] = version;
+  return config;
+}
 
 function getArgsWithData<D = any>(
   path?: string | D,

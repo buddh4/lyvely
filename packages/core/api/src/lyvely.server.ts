@@ -1,10 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe, Logger as NestLogger } from '@nestjs/common';
+import {
+  Logger as NestLogger,
+  ValidationPipe,
+  VersioningType,
+  VERSION_NEUTRAL,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Headers } from '@lyvely/interface';
 import { AuthModule, JwtAuthGuard } from './auth';
 import { ServiceExceptionsFilter } from '@/core';
 import { ConfigurationPath, ILyvelyCsrfOptions } from '@/config';
-import { FeaturesModule, FeatureGuard } from './features';
+import { FeatureGuard, FeaturesModule } from './features';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import { AppModuleBuilder, IAppModuleBuilderOptions } from './app-module.builder';
@@ -38,6 +44,7 @@ export class LyvelyServer {
     this.logger = new NestLogger('main');
     this.configService = this.nestApp.get(ConfigService);
 
+    this.initVersioning();
     this.initExpress();
     this.initHelmet();
     this.logInitConfig();
@@ -50,6 +57,14 @@ export class LyvelyServer {
     this.initGlobalPipes();
     this.initGlobalFilters();
     await this.initServer();
+  }
+
+  private initVersioning() {
+    this.nestApp.enableVersioning({
+      defaultVersion: VERSION_NEUTRAL,
+      type: VersioningType.HEADER,
+      header: Headers.X_API_VERSION,
+    });
   }
 
   private initExpress() {
@@ -191,6 +206,7 @@ export class LyvelyServer {
     cors.allowedHeaders ||= [
       'Accept-Language',
       'x-visitor-id',
+      'x-api-version',
       'x-captcha-identity',
       'x-captcha-token',
       'csrf-token',

@@ -47,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Proper locale handling and configuration
 - Automatic backup of edit store models
 - Implemented Language & Region settings with calendar preferences
+- API versioning capabilities
 
 ## [0.1.0-alpha4] - 2023-06-06
 
