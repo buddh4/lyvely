@@ -212,7 +212,7 @@ While not mandatory, this practice is recommended to ensure type safety between 
 the backend API endpoint. The base `IContentTypeClient` provides interfaces for the create and update endpoints of
 our content type and can be extended with content type specific endpoint functions.
 
-## Content Backend API
+## Content API
 
 ### Content Type Schema
 
@@ -641,7 +641,7 @@ module can register multiple content types by adding other content types to the 
 
 :::
 
-## Frontend Implementation
+## Content Web
 
 Currently, only our backend knows about the existence of the Poll content type. Let's integrate it into the frontend.
 
