@@ -1,6 +1,8 @@
 import { ServerConfiguration } from '@/config';
 import { DeepPartial } from '@lyvely/common';
 import path from 'path';
+import { VisitorMode } from '@lyvely/interface';
+import { getObjectId } from 'mongo-seeding';
 
 export default {
   appName: 'Lyvely e2e',
@@ -13,6 +15,10 @@ export default {
       limit: Number.MAX_VALUE,
       ttl: Number.MAX_VALUE,
     },
+  },
+  visitors: {
+    mode: VisitorMode.Enabled,
+    handles: [getObjectId('profile-public-group').toString()],
   },
   mongodb: {
     uri: process.env.MONGODB_URI_E2E || 'mongodb://localhost:27017/lyvely-e2e',

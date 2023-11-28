@@ -7,5 +7,7 @@ export enum ProfileUsage {
   Health = 'Health',
   School = 'School',
   Family = 'Family',
+  Project = 'Project',
+  Communication = 'Communication',
   Improvement = 'Improvement',
 }

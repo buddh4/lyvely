@@ -7,7 +7,13 @@ import { Request, Response } from 'express';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ServerOptions } from 'https';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
-import { IFeatureConfig, GlobalPermissionRole, IPermissionConfig } from '@lyvely/interface';
+import {
+  IFeatureConfig,
+  GlobalPermissionRole,
+  IPermissionConfig,
+  VisitorsEnabledStrategy,
+  VisitorsDisabledStrategy,
+} from '@lyvely/interface';
 
 export type LyvelyMailOptions = MailerOptions & {
   createMessageFiles?: boolean;
@@ -142,6 +148,7 @@ export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   appName: string;
   operationMode: 'standalone' | 'standalone-cluster' | 'distributed';
   docUrl?: string;
+  visitors?: VisitorsEnabledStrategy | VisitorsDisabledStrategy;
   redis: IRedisConfig;
   csrf?: ILyvelyCsrfOptions;
   contactMail: string;
