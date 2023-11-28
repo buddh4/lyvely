@@ -24,6 +24,7 @@ const sidebars = {
             label: 'Framework',
             items: [
                 'dev/framework/modules',
+                'dev/framework/acl',
                 'dev/framework/models',
                 'dev/framework/endpoints',
                 'dev/framework/content',

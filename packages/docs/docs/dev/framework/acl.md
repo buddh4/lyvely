@@ -51,9 +51,14 @@ Public endpoints are endpoints that never require any kind of authentication, ev
 such as the login or app-config endpoint. Public routes are marked with the `@Public` decorator at
 Controller or Controller Function level.
 
+:::warning
+Endpoints decorated with `@Public` will skip the visitor mode configuration check.
+:::
+
 ### The `@Visibility` Decorator
 
-The `@Visibility` decorator can be used to manage the access to an endpoint by defining one of the following visibility levels:
+The `@Visibility` decorator can be used to restrict the access to an endpoint by defining one of the following 
+visibility level restrictions:
 
 | Level            | Description                                                                                    |
 |------------------|------------------------------------------------------------------------------------------------|
@@ -63,21 +68,38 @@ The `@Visibility` decorator can be used to manage the access to an endpoint by d
 | 4 (Visitors)     | Adds access for non-authenticated visitors, in case the visitor mode configuration is enabled. |
 
 
-### The `@Permissions` Decorator
+### `@Permissions` Decorator
 
 The `@Permissions` decorator can be used to restrict controller access by permissions.
 
-### The `@Feature` Decorator
+:::info
+Please refer to the [Permissions Section](permissions.md) for more information.
+:::
+
+### `@Feature` Decorator
 
 The `@Feature` decorator can be used to restrict controller access by feature switch.
 
-### The `@Policy` Decorator
+:::info
+Please refer to the [Features Section](features.md) for more information.
+:::
+
+### `@Policy` Decorator
 
 The `@Policy` decorator can be used to restrict controller access by policies.
+
+:::info
+Please refer to the [Policies Section](policies.md) for more information.
+:::
 
 ### Custom guards
 
 If you have a specific use-case not covered by the decorators above you can also implement your own guards.
+
+:::info
+Please refer to the [NestJS Guards Guide](https://docs.nestjs.com/guards) for detailed information about implementing
+custom access guards.
+:::
 
 ## Web ACL
 
@@ -93,3 +115,5 @@ accessible without requiring authentication by using the `isPublic` route metada
 
 Similar to the `@Visibility` decorator in the backend you can restrict routes by defining a the visibility level of
 a route.
+
+## JWT guards
