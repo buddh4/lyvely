@@ -1,9 +1,12 @@
-import { IProfilePolicy, IProfileUserPolicy } from '@/profiles';
-import { ProfileContentContext, ProtectedProfileContentContext } from '../schemas';
+import { IProfilePolicy, IProfileUserPolicy, Profile } from '@/profiles';
+import { Content, ProfileContentContext, ProtectedProfileContentContext } from '../schemas';
 
-export interface IContentPolicy<T extends ProfileContentContext = ProfileContentContext>
-  extends IProfilePolicy<T> {}
+export interface IContentPolicy<
+  TContent extends Content = Content,
+  TProfile extends Profile = Profile,
+  T extends ProfileContentContext<TContent, TProfile> = ProfileContentContext<TContent, TProfile>,
+> extends IProfilePolicy<T> {}
 
-export interface IUserContentPolicy<
+export interface IContentUserPolicy<
   T extends ProtectedProfileContentContext = ProtectedProfileContentContext,
 > extends IProfileUserPolicy<T> {}

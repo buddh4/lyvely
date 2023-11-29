@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Content
 
-The Content API is a fundamental part of the Lyvely platform, empowering the creation of custom content types through a fine-tuned 
+The Content API is a fundamental part of Lyvely, empowering the creation of custom content types through a fine-tuned 
 API and schema model. Details of this essential component will be explained in the following sections by implementing
 a new poll content type, which we will integrate into our platform.
 
@@ -18,34 +18,34 @@ reuse models, validation and even domain logic.
 For custom content types, the Lyvely framework provides you with a template for creating and updating your custom content types in the
 `@lyvely/interface` package. In the following sections we will create models and interfaces for a custom poll content type.
 
-### Content CRUD Models
-
-#### Create Content Model
+### Create Content Model
 
 Let's start our Poll example by implementing model classes used for CRUD operations by extending
-the base `CreateContentModel` class, which defines properties and validation rules required to create new poll instances.
+the base `CreateContentModel` class, which defines properties and validation rules required to create new poll instances
+within our interface package.
 
 ```typescript title=polls/packages/interface/src/models/create-poll.model.ts
-import {Exclude, Expose} from 'class-transformer';
-import {IsBoolean, IsDate, IsString, Length, MaxLength} from 'class-validator';
-import {CreateContentModel} from '@lyvely/interfaces';
-import {PropertiesOf} from '@lyvely/common';
-
+@Exclude()
 export class CreatePollModel extends CreateContentModel<CreatePollModel> {
+  @Expose()  
   @IsString()
   @MaxLength(200)
   title: string;
 
+  @Expose()
   @IsString()
   @MaxLength(10_000)
   text: string;
-  
+
+  @Expose() 
   @IsDate()
   expiresAt: Date;
-
+    
+  @Expose()
   @IsBoolean()
   isAnonymous: boolean;
 
+  @Expose()
   @Length(1, 1024, {each: true})
   @IsString({each: true})
   options: string[];
@@ -56,21 +56,17 @@ The `CreateContentModel` class comes with default support for the following fiel
 
 - `tagNames`: Allows attaching tag names to a content instance.
 - `parentId`: Used to specify the parent ID of a content instance. This field is typically populated by default when 
-creating a content instance within a sub-content discussion.
+creating a content instance within a content-details discussion.
 
-#### Update Content Model
+### Update Content Model
 
-When handling updates, it's often advantageous to allow partial updates. This approach enables us to modify
-specific fields of our document, reducing network traffic overhead, especially when updating only a single field. 
-Therefore, the update model typically takes the form of a partial type derived from our create model class as in the
+When handling updates, it's often preferred to allow partial updates. This approach enables us to modify
+specific fields or parts of our document, reducing network traffic overhead, especially when updating only a single field. 
+Therefore, the update model typically takes the form of a partial type derived from our `CreatePollModel` class as in the
 following example:
 
 ```typescript title=polls/packages/interface/src/models/update-poll.model.ts
-import { Exclude } from 'class-transformer';
-import { PartialType } from '@buddh4/mapped-types';
-import { CreatePollModel } from './create-poll.model';
-
-@Expose()
+@Exclude()
 export class UpdatePollModel extends PartialType(CreatePollModel) {
   constructor(model?: Partial<UpdateMessageModel>) {
     super(model, false);
@@ -79,12 +75,11 @@ export class UpdatePollModel extends PartialType(CreatePollModel) {
 ```
 
 :::note
-
- When implementing your update model by extending the create model, make sure that you do not carry over any default
- value initialization of your create model logic.
-
+ When implementing your update model by extending the create-model, make sure that you do not carry over any default
+ value initialization of your create-model logic.
 :::
-#### Content Model
+
+### Content Model
 
 The `ContentModel` class acts as the base class for content type models in our frontend and interface layer. 
 While this class mostly mirrors the structure of the backend schema, it may have some differences. 
@@ -92,14 +87,9 @@ For example, it uses string IDs instead of ObjectIds and may hold data specific 
 schema type may contain data for multiple users. The details of the structure of a content type schema is discussed
 in the [Content Type Schema](#content-type-schema) section.
 
-Let's use our Poll content type as an example:
+Let's implement a content model for our Poll content type:
 
 ```typescript title=polls/packages/interface/src/models/poll.model.ts
-import {ContentModel} from '@lyvely/interface';
-import {Type} from 'class-transformer';
-import {BaseModel, IEditableModel, PropertyType, TransformObjectId} from '@lyvely/common';
-import {UpdatePollModel} from './update-poll.model';
-
 /**
  * This model class represents a single, sortable poll option.
  */
@@ -149,21 +139,17 @@ export class PollConfigModel<TID = string> {
  * This will be our base model for poll content, which we'l mainly use in the frontend and interfaces.
  */
 @Expose()
-export class PollModel<TID = string> extends ContentModel<TID, PollModel<TID>>
-        implements IEditableModel<UpdatePollModel> {
+export class PollModel<TID = string> extends ContentModel<TID, PollModel<TID>> implements IEditableModel<UpdatePollModel> {
   static contentType = 'Poll';
 
   type = PollModel.contentType;
 
-  @Type(() => PollContentDataType)
   @PropertyType(PollContentDataType)
   content: PollContentDataType;
 
-  @Type(() => PollStateModel)
   @PropertyType(PollStateModel)
   state: PollStateModel<TID>;
 
-  @Type(() => PollConfigModel)
   @PropertyType(PollConfigModel)
   config: PollConfigModel;
 
@@ -178,18 +164,18 @@ export class PollModel<TID = string> extends ContentModel<TID, PollModel<TID>>
 }
 ```
 
-In this example we implemented the model classes for the poll content type. 
+In this example we implemented the model classes for the poll content type.
 Those classes are used within our frontend and interfaces and therefore contain validation and transformation
-metadata about our models. 
+metadata about our models.
 
-The `@PropertyType` decorator is used when deserializing our models in the frontend and
-the `@Type` decorator is used for serializing the models in the backend.
+The `PollModel` implements the `IEditableModel` which requires the `toEditModel` function to be implemented. This is
+used in the frontend by a composable responsible for updating content entries. 
+
+The `@PropertyType` decorator is used when deserializing our models in the frontend.
 
 :::info
-
-In the example above we use generic types for our id fields in order to use those models as interfaces in
-our backend, which uses ObjectIds instead of string ids.
-
+In the example above we use generic types for our id fields. This is a good practice which enables us to use such
+model classes as interfaces in our backend, which use ObjectIds instead of string ids.
 :::
 
 ### Content Endpoints
@@ -208,36 +194,78 @@ export type PollEndpoint = StrictEndpoint<IPollClient>;
 export const ENDPOINT_POLLS = 'polls';
 ```
 
-While not mandatory, this practice is recommended to ensure type safety between our frontend service/repository and 
-the backend API endpoint. The base `IContentTypeClient` provides interfaces for the create and update endpoints of
-our content type and can be extended with content type specific endpoint functions.
+
+### Client Service
+
+To request our backend API we first need to implement our poll repository and client:
+
+```typescript title=polls/packages/interface/endpoints/polls.repository.ts
+const api = useApi<IPollClient>(ENDPOINT_POLLS);
+
+export default {
+  create(model: CreateMessageModel) {
+    return api.post<'create'>(model);
+  },
+
+  update(id: string, model: Partial<CreatePollModel>) {
+    return api.put<'update'>(id, model);
+  }
+};
+```
+
+```typescript title=polls/packages/interface/endpoints/polls.client.ts
+import { IPollClient, CreatePollModel, PollUpdateResponse } from 'lyvely-polls-interface';
+import { useSingleton } from '@lyvely/common';
+import repository from '../repositories';
+import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/web';
+
+export class PollsClient implements IPollClient {
+    async create(model: CreatePollModel) {
+        return unwrapAndTransformResponse(repository.create(model), PollUpdateResponse);
+    }
+
+    async update(id: string, model: Partial<CreatePollModel>) {
+        return unwrapAndTransformResponse(repository.update(id, model), PollUpdateResponse);
+    }
+}
+
+export const usePollsClient = useSingleton(() => new PollsService());
+
+```
+
+:::info
+Please refer to the [Endpoints Section](endpoints.md) for further information about the use and implementation
+of endpoints and endpoint interfaces.
+:::
 
 ## Content API
+
+This section covers the implementation of custom content types within the API layer. The API layer is responsible for 
+managing access control and encompasses the majority of the business logic, encapsulated within service classes. 
+Additionally, it provides an intermediary data access layer, facilitating communication between services and the database.
 
 ### Content Type Schema
 
 A custom content type schema derives from the abstract `ContentType` class and comprises several nested schema elements, 
 each serving a distinct purpose:
 
-- `ContentType.content`: This section stores the actual content data representing the core content of a content type.
-- `ContentType.config`: Contains optional, content type-specific configurations.
-- `ContentType.state`: This field is also optional and is used to represent content type-specific state information.
-- `ContentType.meta`: This section houses content metadata, such as author information and creation dates.
-- `ContentType.logs`: Content logs store information related to specific activities associated with this content.
-- `ContentType.reactions`: User reactions related to this content (coming soon).
+| Property    | Description                                                                                                                   |
+|-------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `content`   | This section stores the actual content data representing the core content. By default it supports a `title` and `text` field. |
+| `config`    | Contains content type-specific configurations. (optional)                                                                     |
+| `state`     | This field is used to represent content type-specific state information. (optional)                                           |
+| `meta`      | This section houses content metadata, such as author information and creation dates.                                          |
+| `logs`      | Content logs store information related to specific activities associated with this content.                                   |
 
-When creating custom content types, it is highly advisable to extend these sub-schemas whenever possible,
+When creating custom content types, it is highly advisable to extend these sub-schemas,
 rather than modifying the main content type schema. This approach offers several benefits:
 
 - **Uniform Schema Format**: Separating content data from configuration and metadata ensures a consistent content schema format.
   Most content types for example use the default content data fields `title` or `text`, which are commonly used in the frontend.
-
 - **Ease of Duplication**: With this separation, you can easily duplicate, move or even transform content instances
   without needing intricate knowledge of the internal workings of a specific content type.
-
 - **Versioning**: The provided content schema has been thoughtfully designed to potentially support versioning, enabling
   straightforward creation and reverting of content revisions when necessary.
-
 - **Future Compatibility**: By avoiding direct modifications to the main content type schema, you minimize the risk of
   compatibility issues and interference with potential future changes or additions to the core content schema.
 
@@ -248,10 +276,10 @@ Lyvely platform while maintaining flexibility and ensuring compatibility with fu
 
 :::
 
-#### Content Data Type
+#### `ContentType.content`:
 
-The nested schema of our **content** property encompasses the actual content part of a content type.
-By default, this schema supports an optional **title** and **text** field.
+The nested schema of our **content** property encompasses the content data of a content type.
+By default, this schema supports an optional `title` and `text` field.
 
 More complex content types can extend this schema by implementing a custom schema derived from the main
 `ContentDataType` schema class. For instance, let's consider our Poll content type:
@@ -307,19 +335,19 @@ export const PollSchema = SchemaFactory.createForClass(Poll);
 ```
 
 In the previous example, we introduced our `PollContentData` schema, responsible for storing poll options.
-This schema extends the base `ContentDataType` schema, which already includes fields for **text** and **title**.
+This schema extends the base `ContentDataType` schema, which already includes fields for `title` and `text`.
 If required we could overwrite those default fields and mark them as required.
 
 :::tip
 
-If you're uncertain about whether to place specific data in the _content_ field of a particular content type, consider
+If you're uncertain about whether to place specific data in the `content` field of a particular content type, consider
 this: Imagine you want to duplicate an instance of your content type. Ask yourself whether this data should be included
-in the duplicated version. This can help you determine whether the _content_ field is the right choice for storing that
+in the duplicated version. This can help you determine whether the `content` field is the right choice for storing that
 data.
 
 :::
 
-#### Content Configuration
+#### `ContentType.config`:
 
 Many content types offer support for various configurations. Take our Poll content type, for instance; we may wish to
 enable the creation of anonymous polls and set an expiration date for a poll. In the following example we extend our
@@ -359,7 +387,7 @@ export class Poll extends ContentType<Poll> {
 export const PollSchema = SchemaFactory.createForClass(Poll);
 ```
 
-#### Content State
+#### `ContentType.state`:
 
 Some content types may require the persistence of a specific state. For instance, our Poll content type needs to keep
 track of user votes. To accommodate this, we will introduce a nested schema for our **state** field.
@@ -414,14 +442,12 @@ export const PollSchema = SchemaFactory.createForClass(Poll);
 ```
 
 :::info
-
 The optional **state** property of a content type is typically reserved for data that frequently changes over time and is specific
 to a particular content instance. This data is usually not a candidate for duplication or transformation,
 unlike the **content** field.
-
 :::
 
-#### Content Metadata
+#### `ContentType.meta`:
 
 The **meta** property within a content type encompasses metadata related to the content.
 Unlike the properties discussed earlier, it is less frequently extended. The meta field is of type `ContentMetadata`
@@ -446,7 +472,7 @@ and includes the following data:
 | `locked`      | Indicates whether this content instance is marked as locked. **(optional)**                        |
 
 
-#### Content Logs
+#### `ContentType.logs`:
 
 At the time of writing, this concept is still in the conceptual phase. However, in the future, the **logs** field within
 the content type schema could serve as a repository for event data associated with a content instance. This data might
@@ -455,6 +481,11 @@ potentially be incorporated into the content detail view once the feature is rea
 ### Content Policies
 
 **TBD**
+
+:::info
+Please refer to the [Policies Section](policies.md) for further information regarding the implementation and usage
+of policies.
+:::
 
 ### Content Type DAO
 
@@ -502,8 +533,6 @@ entries while adhering to default behaviors such as triggering certain events an
 how to extend and implement a content type service for our poll content.
 
 ```typescript title=polls/packages/api/src/services/polls.service.ts
-import {UpdateQuerySet} from "@lyvely/api";
-
 @Injectable()
 export class PollsService extends ContentTypeService<Poll, CreatePollModel> {
   @Inject()
@@ -565,19 +594,6 @@ can be used as mongodb `$set` update for performance optimization.
 The base `ContentTypeController` class is used to implement our endpoint as in the following example:
 
 ```typescript title=polls/packages/api/src/controllers/polls.controller.ts
-import { Inject } from '@nestjs/common';
-import { AbstractContentTypeController, ContentTypeController } from '@lyvely/api';
-import { Poll } from '../schemas';
-import { PollService } from '../services';
-import { UseClassSerializer } from '@lyvely/api';
-import {
-  PollsEndpoint,
-  ENDPOINT_POLLS,
-  PollModel,
-  CreatePollModel,
-  UpdatePollModel,
-} from 'lyvely-polls-interface';
-
 @ContentTypeController(ENDPOINT_POLLS, Poll)
 @UseClassSerializer()
 export class PollsController
@@ -644,49 +660,6 @@ module can register multiple content types by adding other content types to the 
 ## Content Web
 
 Currently, only our backend knows about the existence of the Poll content type. Let's integrate it into the frontend.
-
-### Client Service
-
-To request our backend API we first need to implement our poll repository and service:
-
-```typescript title=polls/packages/web/repositories/polls.repository.ts
-import { useApiRepository } from '@lyvely/interface';
-import { ENDPOINT_POLLS, CreatePollModel, IPollClient } from 'lyvely-polls-interface';
-import { EndpointResult } from '@lyvely/common';
-
-export default {
-  create(model: CreateMessageModel) {
-    return useApiRepository().post<EndpointResult<IPollClient['create']>>(`${ENDPOINT_POLLS}`, model);
-  },
-
-  update(id: string, model: Partial<CreatePollModel>) {
-    return useApiRepository().put<EndpointResult<IPollClient['update']>>(
-      `${ENDPOINT_POLLS}/${id}`,
-      model,
-    );
-  }
-};
-```
-
-```typescript title=polls/packages/web/services/polls.service.ts
-import { IPollClient, CreatePollModel, PollUpdateResponse } from 'lyvely-polls-interface';
-import { useSingleton } from '@lyvely/common';
-import repository from '../repositories';
-import { unwrapAndTransformResponse, unwrapResponse } from '@lyvely/web';
-
-export class PollsService implements IPollClient {
-    async create(model: CreatePollModel) {
-        return unwrapAndTransformResponse(repository.create(model), PollUpdateResponse);
-    }
-
-    async update(id: string, model: Partial<CreatePollModel>) {
-        return unwrapAndTransformResponse(repository.update(id, model), PollUpdateResponse);
-    }
-}
-
-export const usePollsService = useSingleton(() => new PollsService());
-
-```
 
 ### Content CRUD Modal
 
@@ -893,12 +866,12 @@ export default () => {
 
 ## Planned content features
 
-A well-thought-out content schema and API open the door to a range of extended interconnected features, including::
+A well-thought-out content schema and API opens the door to a range of extended interconnected features, including:
 
 - **Additional Content Types**: Such as issues and events, expanding the variety of content your platform can handle.
 - **Content Versioning**: The segregation of our schema into different fields lays the foundation for a future content 
 versioning feature.
-- **Assigning Content to Users**: This core content feature enables the assignment of any content type to a user.
+- **User Assignments**: This core content feature enables the assignment of any content type to a user.
 - **Scheduling**: Adding an optional scheduling feature to all content types, facilitating the inclusion of any content within a calendar.
 - **Content Duplication**: Allowing users to duplicate any kind of content for ease of use and replication.
 - **Content Transformation**: Easily transforming content types, such as converting simple messages into tasks, issues, or events.
