@@ -2,13 +2,13 @@ import './styles/forms.css';
 import LyCenteredPanel from './components/layouts/LyCenteredPanel.vue';
 import LyContentRoot from './components/layouts/LyContentRoot.vue';
 import LyListPage from './components/layouts/LyListPage.vue';
-import LyAlert from './components/alerts/LyAlert.vue';
-import LyFlashMessage from './components/alerts/LyFlashMessage.vue';
+import LyAlert from './components/dialogs/LyAlert.vue';
+import LyFlashMessage from './components/dialogs/LyFlashMessage.vue';
 import LyIcon from './components/icons/LyIcon.vue';
 import LyMainContainer from './components/layouts/LyMainContainer.vue';
 import LyBadge from './components/badges/LyBadge.vue';
-import LyModal from './components/modals/LyModal.vue';
-import LyConfirmModal from './components/modals/LyConfirmModal.vue';
+import LyModal from './components/dialogs/LyModal.vue';
+import LyConfirmModal from './components/dialogs/LyConfirmModal.vue';
 import LyAddButton from './components/buttons/LyAddButton.vue';
 import LyButton from './components/buttons/LyButton.vue';
 import LyUpdateIndicator from './components/buttons/LyUpdateIndicator.vue';
@@ -47,6 +47,7 @@ import LyTextarea from './components/forms/LyTextarea.vue';
 import LyTimeNumberInput from './components/forms/LyTimeNumberInput.vue';
 import LyPasswordStrengthMeter from './components/forms/LyPasswordStrengthMeter.vue';
 import LyResponsive from './components/helpers/LyResponsive.vue';
+import LyConditionalWrapper from './components/helpers/LyConditionalWrapper.vue';
 import LyTable from './components/tables/LyTable.vue';
 import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
 import { App } from 'vue';
@@ -60,6 +61,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
 
   return {
     install(Vue: App) {
+      Vue.component('LyConditionalWrapper', LyConditionalWrapper);
       Vue.component('LyResponsive', LyResponsive);
       Vue.component('LyTable', LyTable);
       Vue.component('LyContentRoot', LyContentRoot);
@@ -114,7 +116,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
   };
 };
 
-export type { IConfirmOptions } from './components/modals/interfaces';
+export type { IConfirmOptions } from './components/dialogs/confirm-options.interface';
 export * from './components/stack/interfaces';
 export * from './helpers';
 export * from './types';
@@ -175,4 +177,5 @@ export {
   LyAvatar,
   LyMarkdownView,
   LyComponentStack,
+  LyConditionalWrapper,
 };

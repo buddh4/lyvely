@@ -40,7 +40,7 @@ const argTypes = {
 }
 
 const meta = {
-  title: 'Example/Inputs',
+  title: 'Forms/TextField',
   component: LyTextField,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
@@ -50,7 +50,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Text: Story = {
+export const TextField: Story = {
   args: {
     label: 'Label',
     helpText: 'This is a help text.',

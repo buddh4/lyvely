@@ -40,7 +40,7 @@ const argTypes = {
 }
 
 const meta = {
-  title: 'Example/Inputs',
+  title: 'Forms/Textarea',
   component: LyTextarea,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],

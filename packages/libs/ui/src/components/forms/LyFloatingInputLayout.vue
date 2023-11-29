@@ -3,7 +3,7 @@ import { useHelpText } from './help-text.util';
 import { t, Translatable } from '@/i18n';
 import LyLoader from '../loaders/LyLoader.vue';
 import LyIcon from '@/components/icons/LyIcon.vue';
-import LyAlert from '@/components/alerts/LyAlert.vue';
+import LyAlert from '@/components/dialogs/LyAlert.vue';
 import { computed } from 'vue';
 
 export interface IProps {
@@ -47,7 +47,7 @@ const wrapperClasses = computed(() => {
       <label
         v-if="label"
         :for="inputId"
-        :id="inputId+'label'"
+        :id="inputId + 'label'"
         class="absolute inline-block inset-0 opacity-70 text-xs px-3 py-2 pointer-events-none z-10"
         :aria-describedby="ariaDescribedBy">
         {{ t(label) }}

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { IConfirmOptions } from './interfaces';
+import { IConfirmOptions } from './confirm-options.interface';
 import { t, Translatable } from '@/i18n';
 import LyModal from './LyModal.vue';
 

@@ -8,10 +8,10 @@ export default {
 import { ref, onMounted, Ref } from 'vue';
 import { includesUtilityClass } from '@/helpers';
 import { RouteLocationRaw } from 'vue-router';
-import { IConfirmOptions } from '../modals/interfaces';
+import { IConfirmOptions } from '../dialogs/confirm-options.interface';
 import { isDevelopmentEnvironment } from '@/config';
 import { t, Translatable } from '@/i18n';
-import LyConfirmModal from '../modals/LyConfirmModal.vue';
+import LyConfirmModal from '../dialogs/LyConfirmModal.vue';
 
 export interface IProps {
   submit?: boolean;

@@ -40,7 +40,7 @@ const argTypes = {
 }
 
 const meta = {
-  title: 'Example/Inputs',
+  title: 'Forms/Select',
   component: LySelect,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],

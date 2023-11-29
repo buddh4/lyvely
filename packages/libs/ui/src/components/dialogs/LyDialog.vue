@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { t, Translatable } from '@/i18n';
-import LyModal from '../modals/LyModal.vue';
+import LyModal from './LyModal.vue';
 import LyButton from '../buttons/LyButton.vue';
 
 export interface IProps {
@@ -32,7 +32,7 @@ const modalBinds = computed(() => {
   return {
     icon: props.icon,
     title: props.title,
-    iconClass: props.iconClass
+    iconClass: props.iconClass,
   };
 });
 

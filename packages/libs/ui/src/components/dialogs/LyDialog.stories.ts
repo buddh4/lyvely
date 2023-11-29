@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 import LyDialog from "./LyDialog.vue";
 
 const meta = {
-  title: 'Example/Dialog',
+  title: 'Dialogs/Dialog',
   component: LyDialog,
   // This component will have an automatically generated docsPage entry: https://storybook.js.org/docs/vue/writing-docs/autodocs
   tags: [],
