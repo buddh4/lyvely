@@ -1,7 +1,7 @@
 import { App } from 'vue';
 import { IModule } from './module.interface';
 import { registerRoutes } from '@/lyvely.router';
-import { registerFeatures } from '@lyvely/interface';
+import { registerFeatures, registerPermissions } from '@lyvely/interface';
 
 export type IModuleInitializer = { default: () => IModule };
 
@@ -82,6 +82,11 @@ export function registerModule(module: IModule) {
     registerRoutes(typeof module.routes === 'function' ? module.routes() : module.routes);
   if (module.features)
     registerFeatures(typeof module.features === 'function' ? module.features() : module.features);
+  if (module.permissions) {
+    registerPermissions(
+      typeof module.permissions === 'function' ? module.permissions() : module.permissions,
+    );
+  }
 
   return module;
 }

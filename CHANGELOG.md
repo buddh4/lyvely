@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use of unique profile handle
 - Many style improvements
 - Refactored date time API
+- Renamed ProfileType.Organization from 'Organization' to 'organization'
+- Renamed ProfileType.Group from 'GroupProfile' to 'group'
+- Renamed ProfileType.User from 'UserProfile' to 'user'
 
 
 ### Added

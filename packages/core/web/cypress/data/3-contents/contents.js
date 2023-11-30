@@ -1,36 +1,22 @@
 const { getObjectId } = require('mongo-seeding');
+const { RoleVisibilityLevel } = require('@lyvely/interface');
 
 module.exports = [
   {
-    uid: getObjectId('Jan'),
-    pid: getObjectId('Jan-profile'),
-    title: 'Test Habit',
-    description: 'A Test Habit',
-    plan: 5,
-    rating: {
-      value: 2,
-      optimal: 3,
-      min: 2,
-      max: 5,
+    _id: getObjectId('jan-profile-message1'),
+    pid: getObjectId('jan-profile'),
+    content: {
+      message: 'First profile message!',
     },
-    archived: false,
-    categories: [],
-    type: 'Habit',
-  },
-  {
-    uid: getObjectId('Jan'),
-    pid: getObjectId('Jan-profile'),
-    title: 'Archived Habit',
-    description: 'An Archived Test Habit',
-    plan: 5,
-    rating: {
-      value: 2,
-      optimal: 3,
-      min: 2,
-      max: 5,
+    meta: {
+      createdBy: getObjectId('Jan'),
+      updatedBy: getObjectId('Jan'),
+      streamSort: Date.now(),
+      visibility: RoleVisibilityLevel.Member,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      childCount: 0,
     },
-    archived: true,
-    categories: [],
-    type: 'Habit',
+    type: 'Message',
   },
 ];

@@ -11,8 +11,7 @@ import {
   IFeatureConfig,
   GlobalPermissionRole,
   IPermissionConfig,
-  VisitorsEnabledStrategy,
-  VisitorsDisabledStrategy,
+  VisitorStrategy,
 } from '@lyvely/interface';
 
 export type LyvelyMailOptions = MailerOptions & {
@@ -140,15 +139,15 @@ export interface ILegalOptions {
 
 export enum OperationMode {
   STANDALONE = 'standalone',
-  STANDALONE_CLUSTER = 'standalone-cluster',
-  DISTRIBUTED = 'distributed',
+  // STANDALONE_CLUSTER = 'standalone-cluster',
+  // DISTRIBUTED = 'distributed',
 }
 
 export type ServerConfiguration<ModuleView = Record<string, unknown>> = {
   appName: string;
   operationMode: 'standalone' | 'standalone-cluster' | 'distributed';
   docUrl?: string;
-  visitors?: VisitorsEnabledStrategy | VisitorsDisabledStrategy;
+  visitorStrategy?: VisitorStrategy;
   redis: IRedisConfig;
   csrf?: ILyvelyCsrfOptions;
   contactMail: string;

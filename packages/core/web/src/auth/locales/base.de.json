@@ -1,6 +1,7 @@
 {
   "auth": {
     "logout": "Logout",
+    "login": "Login",
     "remember_me_info": {
       "p1": "Choosing this option reduces the number of times you're asked to Sign-In on this device.",
       "p2": "To keep your account secure, use this option only on your personal devices."

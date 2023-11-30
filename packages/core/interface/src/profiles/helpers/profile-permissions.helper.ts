@@ -1,17 +1,16 @@
 import {
   profileRelationRoleHierarchy,
   IProfilePermission,
-  IProfilePermissionSubject,
+  IProfilePermissionContext,
   ProfileRelationRole,
 } from '../interfaces';
 import {
   getPermission,
-  IPermissionConfig,
+  IPermissionOptions,
   validatePermissionLevel,
   validateUserStatusAccess,
   validateVisitorAccess,
 } from '@/permissions';
-import { IntegrityException } from '@/exceptions';
 
 /**
  * Verifies if a specific role is granted a given permission.
@@ -19,7 +18,7 @@ import { IntegrityException } from '@/exceptions';
  * The verification is based on the hierarchical positioning of the role in the `profileRelationRoleHierarchy` array.
  *
  * @param permissionOrId - Either a permission ID as a string or an instance of `IProfilePermission`.
- * @param subject - The permission subject we want to test against
+ * @param context - The permission subject we want to test against
  * @param config - Global configuration, which can be used to overwrite permission defaults
  *
  * @returns `true` if the role matches the required permissions, otherwise `false`.
@@ -29,19 +28,19 @@ import { IntegrityException } from '@/exceptions';
  */
 export const verifyProfilePermission = (
   permissionOrId: string | IProfilePermission,
-  subject: IProfilePermissionSubject,
-  config: IPermissionConfig = {},
+  context: IProfilePermissionContext,
+  config: IPermissionOptions,
 ) => {
-  if (!validateVisitorAccess(subject.role, config)) return false;
+  if (!validateVisitorAccess(context.role, config)) return false;
 
   const permission = getProfilePermission(permissionOrId);
 
-  if (!permission || !subject.role) return false;
+  if (!permission || !context.role) return false;
 
-  if (!validateUserStatusAccess(permission, subject.userStatus)) return false;
-  if (!validateUserStatusAccess(permission, subject.relationStatus)) return false;
+  if (!validateUserStatusAccess(permission, context.userStatus)) return false;
+  if (!validateUserStatusAccess(permission, context.relationStatus)) return false;
 
-  const profileSettings = subject.settings?.find((setting) => setting.id === permission.id);
+  const profileSettings = context.settings?.find((setting) => setting.id === permission.id);
   const configuredSettings = config.defaults?.find((setting) => setting.id === permission.id);
 
   const settingLevel = profileRelationRoleHierarchy.indexOf(
@@ -51,8 +50,27 @@ export const verifyProfilePermission = (
   return validatePermissionLevel(
     permission,
     settingLevel,
-    subject.role,
+    context.role,
     profileRelationRoleHierarchy,
+  );
+};
+
+/**
+ * Verifies if all given permissions are granted for a user.
+ * @param permissionsOrIds
+ * @param context
+ * @param config
+ */
+export const verifyEachProfilePermission = (
+  permissionsOrIds: Array<string | IProfilePermission>,
+  context: IProfilePermissionContext,
+  config: IPermissionOptions,
+) => {
+  if (!permissionsOrIds?.length) return true;
+  return permissionsOrIds.reduce(
+    (result, permissionsOrId) =>
+      result && verifyProfilePermission(permissionsOrId, context, config),
+    true,
   );
 };
 

@@ -1,6 +1,6 @@
 import AppComponent from './App.vue';
 import { UserAvatar } from '@/users';
-import { ProfileAvatar } from '@/profiles';
+import { ProfileAvatar, vIfPermissions } from '@/profiles';
 import { setupI18n, translationAdapter } from '@/i18n';
 import { router } from './lyvely.router';
 import {
@@ -103,22 +103,7 @@ export class LyvelyWebApp {
   }
 
   private initDirectives() {
-    this.vueApp.directive('mobile-scrollbar', {
-      mounted: (el) => {
-        const isInitialized = false;
-
-        const hide = (timeout = 0) =>
-          window.setTimeout(() => el.classList.add('scrollbar-hidden'), timeout);
-
-        hide();
-        // ContentStream requires this
-        hide(500);
-
-        el.addEventListener('scroll', function () {
-          if (!isInitialized) el.classList.remove('scrollbar-hidden');
-        });
-      },
-    });
+    this.vueApp.directive('if-permissions', vIfPermissions);
   }
 
   private setGlobalComponents() {

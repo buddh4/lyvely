@@ -22,7 +22,7 @@ const router = useRouter();
 
 async function setProfile(pid: string) {
   const currentRoute = router.currentRoute.value;
-  const isProfileView = currentRoute.meta.profileView !== false;
+  const isProfileView = !!currentRoute.meta.isPublic;
 
   const viewName = isProfileView
     ? currentRoute.meta.baseName || <string>currentRoute.name

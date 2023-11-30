@@ -1,4 +1,4 @@
 export * from './interfaces';
-export * from './components';
+export * from './views';
 export * from './stores';
 export * from './ui.constants';

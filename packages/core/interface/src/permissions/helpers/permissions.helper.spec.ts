@@ -1,7 +1,7 @@
 import {
   clearPermissions,
   GlobalPermissionRole,
-  IPermissionConfig,
+  IPermissionOptions,
   registerPermissions,
 } from '../index';
 import { verifyGlobalPermission } from './permissions.helper';
@@ -23,18 +23,32 @@ describe('verifyGlobalPermission', function () {
       },
     ]);
     expect(
-      verifyGlobalPermission('test', {
-        role: GlobalPermissionRole.Support,
-        userStatus: UserStatus.Active,
-      }),
+      verifyGlobalPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.Support,
+          userStatus: UserStatus.Active,
+        },
+        { visitorsAllowed: false },
+      ),
     ).toEqual(true);
     expect(
-      verifyGlobalPermission('test', {
-        role: GlobalPermissionRole.User,
-        userStatus: UserStatus.Active,
-      }),
+      verifyGlobalPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.User,
+          userStatus: UserStatus.Active,
+        },
+        { visitorsAllowed: false },
+      ),
     ).toEqual(true);
-    expect(verifyGlobalPermission('test', { role: GlobalPermissionRole.Visitor })).toEqual(false);
+    expect(
+      verifyGlobalPermission(
+        'test',
+        { role: GlobalPermissionRole.Visitor },
+        { visitorsAllowed: false },
+      ),
+    ).toEqual(false);
   });
 
   it('assure min role is respected', () => {
@@ -49,10 +63,14 @@ describe('verifyGlobalPermission', function () {
       },
     ]);
     expect(
-      verifyGlobalPermission('test', {
-        role: GlobalPermissionRole.User,
-        userStatus: UserStatus.Active,
-      }),
+      verifyGlobalPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.User,
+          userStatus: UserStatus.Active,
+        },
+        { visitorsAllowed: false },
+      ),
     ).toEqual(true);
   });
 
@@ -68,10 +86,14 @@ describe('verifyGlobalPermission', function () {
     ]);
 
     expect(
-      verifyGlobalPermission('test', {
-        role: GlobalPermissionRole.User,
-        userStatus: UserStatus.Active,
-      }),
+      verifyGlobalPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.User,
+          userStatus: UserStatus.Active,
+        },
+        { visitorsAllowed: false },
+      ),
     ).toEqual(false);
   });
 
@@ -87,8 +109,9 @@ describe('verifyGlobalPermission', function () {
       },
     ]);
 
-    const config: IPermissionConfig = {
+    const config: IPermissionOptions = {
       defaults: [{ id: 'test', role: GlobalPermissionRole.Admin }],
+      visitorsAllowed: false,
     };
 
     expect(
@@ -117,8 +140,9 @@ describe('verifyGlobalPermission', function () {
         default: GlobalPermissionRole.Visitor,
       },
     ]);
-    const config: IPermissionConfig = {
+    const config: IPermissionOptions = {
       defaults: [{ id: 'test', role: GlobalPermissionRole.Visitor }],
+      visitorsAllowed: false,
     };
     expect(
       verifyGlobalPermission(
@@ -140,9 +164,9 @@ describe('verifyGlobalPermission', function () {
         global: true,
       },
     ]);
-    const config: IPermissionConfig = {
+    const config: IPermissionOptions = {
       defaults: [{ id: 'test', role: GlobalPermissionRole.Visitor }],
-      allowVisitors: true,
+      visitorsAllowed: true,
     };
     expect(
       verifyGlobalPermission(
@@ -165,10 +189,14 @@ describe('verifyGlobalPermission', function () {
       },
     ]);
     expect(
-      verifyGlobalPermission('test', {
-        role: GlobalPermissionRole.User,
-        userStatus: UserStatus.Active,
-      }),
+      verifyGlobalPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.User,
+          userStatus: UserStatus.Active,
+        },
+        { visitorsAllowed: false },
+      ),
     ).toEqual(false);
   });
 
@@ -187,10 +215,14 @@ describe('verifyGlobalPermission', function () {
     expect.assertions(1);
 
     try {
-      verifyGlobalPermission('test', {
-        role: GlobalPermissionRole.User,
-        userStatus: UserStatus.Active,
-      });
+      verifyGlobalPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.User,
+          userStatus: UserStatus.Active,
+        },
+        { visitorsAllowed: false },
+      );
     } catch (e) {
       expect(e instanceof IntegrityException).toEqual(true);
     }
@@ -209,10 +241,14 @@ describe('verifyGlobalPermission', function () {
     ]);
 
     expect(
-      verifyGlobalPermission('test', {
-        role: GlobalPermissionRole.User,
-        userStatus: UserStatus.Disabled,
-      }),
+      verifyGlobalPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.User,
+          userStatus: UserStatus.Disabled,
+        },
+        { visitorsAllowed: false },
+      ),
     ).toEqual(false);
   });
 
@@ -230,10 +266,14 @@ describe('verifyGlobalPermission', function () {
     ]);
 
     expect(
-      verifyGlobalPermission('test', {
-        role: GlobalPermissionRole.User,
-        userStatus: UserStatus.EmailVerification,
-      }),
+      verifyGlobalPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.User,
+          userStatus: UserStatus.EmailVerification,
+        },
+        { visitorsAllowed: false },
+      ),
     ).toEqual(true);
   });
 });

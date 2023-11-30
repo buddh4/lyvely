@@ -4,7 +4,7 @@ import { useApiRepository, useApiRequestInterceptor } from '@lyvely/interface';
 import { InternalAxiosRequestConfig } from 'axios';
 import { eventBus } from '@/core';
 
-const autoRefreshInterceptor = function (config: InternalAxiosRequestConfig) {
+const skipAutoRefreshInterceptor = function (config: InternalAxiosRequestConfig) {
   if (typeof config.skipAuthRefresh !== 'boolean') {
     config.skipAuthRefresh = !useAuthStore().isAuthenticated;
   }
@@ -43,7 +43,7 @@ export const useAutoTokenRefresh = () => {
     }
   };
 
-  useApiRequestInterceptor(autoRefreshInterceptor);
+  useApiRequestInterceptor(skipAutoRefreshInterceptor);
 
   // Automatic refresh token call on failed request (401)
   createAuthRefreshInterceptor(repository, (options) => {

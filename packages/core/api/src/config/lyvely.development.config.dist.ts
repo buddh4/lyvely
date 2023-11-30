@@ -1,4 +1,5 @@
 import { ServerConfiguration } from '@/config';
+import { VisitorMode } from '@lyvely/interface';
 
 export default {
   appName: 'lyvely.app',
@@ -14,6 +15,10 @@ export default {
     port: 8080,
     baseUrl: 'http://127.0.0.1:8080/api',
     appUrl: 'http://127.0.0.1:3000',
+  },
+  visitorStrategy: {
+    mode: VisitorMode.Enabled,
+    handles: ['welcome'],
   },
   mongodb: {
     uri: 'mongodb://localhost:27017/lyvely',

@@ -1,10 +1,10 @@
 import { ProfilesService } from './index';
 import {
-  UniqueConstraintException,
   BaseUserProfileRelationType,
   ProfileMembershipRole,
   ProfileType,
   ProfileVisibilityLevel,
+  UniqueConstraintException,
 } from '@lyvely/interface';
 import { buildTest, LyvelyTestingModule } from '@/testing';
 import { GroupProfile, Organization, UserProfile, UserProfileRelation } from '../schemas';
@@ -37,6 +37,62 @@ describe('ProfileService', () => {
   });
 
   describe('Organization Profile', () => {
+    describe('findProfileContextByHandle()', () => {
+      it('find sub profile context for owner', async () => {
+        const { owner, organization } = await testData.createSimpleOrganization();
+        const subProfile = await testData.createSubProfile(
+          owner,
+          organization,
+          ProfileType.Group,
+          ProfileVisibilityLevel.Member,
+          { handle: 'SubProfile' },
+        );
+        const context = await profileService.findProfileContextByHandle(owner, 'SubProfile');
+
+        expect(context instanceof ProtectedProfileContext).toEqual(true);
+        expect(context.profile._id).toEqual(subProfile._id);
+        expect(context.user._id).toEqual(owner._id);
+        expect(context.getOrganizationContext() instanceof ProtectedProfileContext).toEqual(true);
+        expect(context.organization instanceof Organization).toEqual(true);
+        expect(context.organization!._id).toEqual(organization._id);
+        expect(context.getOrganizationContext()?.isProfileOwner()).toEqual(true);
+      });
+
+      it('find sub profile context for member', async () => {
+        const { owner, organization, member } = await testData.createSimpleOrganization();
+        const subProfile = await testData.createSubProfile(
+          owner,
+          organization,
+          ProfileType.Group,
+          ProfileVisibilityLevel.Member,
+          { handle: 'SubProfile' },
+        );
+        const context = await profileService.findProfileContextByHandle(member, 'SubProfile');
+
+        expect(context instanceof ProtectedProfileContext).toEqual(true);
+        expect(context.profile._id).toEqual(subProfile._id);
+        expect(context.user._id).toEqual(member._id);
+        expect(context.getOrganizationContext() instanceof ProtectedProfileContext).toEqual(true);
+        expect(context.organization instanceof Organization).toEqual(true);
+        expect(context.organization!._id).toEqual(organization._id);
+        expect(context.getOrganizationContext()?.isProfileOwner()).toEqual(false);
+        expect(context.getOrganizationContext()?.isProfileMember()).toEqual(true);
+      });
+
+      it('find organization profile context', async () => {
+        const { owner, organization } = await testData.createSimpleOrganization({
+          handle: 'TestOrg',
+        });
+        const context = await profileService.findProfileContextByHandle(owner, 'TestOrg');
+
+        expect(context instanceof ProtectedProfileContext).toEqual(true);
+        expect(context.profile._id).toEqual(organization._id);
+        expect(context.user._id).toEqual(owner._id);
+        expect(context.getOrganizationContext() instanceof ProtectedProfileContext).toEqual(true);
+        expect(context.organization instanceof Organization).toEqual(true);
+        expect(context.organization?._id).toEqual(organization._id);
+      });
+    });
     describe('findProfileContext()', () => {
       it('find sub profile context for owner', async () => {
         const { owner, organization } = await testData.createSimpleOrganization();

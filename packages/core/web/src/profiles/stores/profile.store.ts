@@ -6,6 +6,10 @@ import {
   useProfileRelationInfosClient,
   useProfilesClient,
   DocumentNotFoundException,
+  IntegrityException,
+  getProfileRelationRole,
+  IProfilePermission,
+  verifyEachProfilePermission,
 } from '@lyvely/interface';
 import { computed, ref } from 'vue';
 import { usePageStore } from '@/ui';
@@ -13,6 +17,7 @@ import { findByPath } from '@lyvely/common';
 import { useLiveStore } from '@/live';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';
+import { useAuthStore } from '@/auth';
 
 const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
 export const latestProfileHandle = localStorageManager.getStoredValue(LATEST_PROFILE_HANDLE);
@@ -28,12 +33,44 @@ export const useProfileStore = defineStore('profile', () => {
     if (isCurrentProfileId(pid)) return Promise.resolve(profile.value!);
 
     const result = await loadingStatus(profileClient.getProfileById(pid), status);
+
+    if (!result) throw new DocumentNotFoundException();
+
     await setActiveProfile(result);
     status.setStatus(Status.SUCCESS);
 
-    if (!profile.value) throw new DocumentNotFoundException();
+    return profile.value!;
+  }
 
-    return profile.value;
+  function verifyPermissions(...permissions: Array<string | IProfilePermission>) {
+    const currentProfile = profile.value;
+
+    if (!currentProfile) {
+      console.error('checkPermissions called without existing profile');
+      return false;
+    }
+
+    const authStore = useAuthStore();
+    const { user } = authStore;
+    const {
+      userRelations,
+      userOrganizationRelations,
+      permissions: permissionSettings,
+    } = currentProfile;
+
+    // TODO: How to handle different kinds of relation?
+    return verifyEachProfilePermission(
+      permissions,
+      {
+        settings: permissionSettings || [],
+        relationStatus: currentProfile.getMembership()?.relationStatus,
+        userStatus: user?.status,
+        role: getProfileRelationRole(user, userRelations, userOrganizationRelations),
+      },
+      {
+        visitorsAllowed: authStore.isVisitorModeEnabled(),
+      },
+    );
   }
 
   async function loadProfile(handle?: string | false): Promise<ProfileWithRelationsModel> {
@@ -56,7 +93,7 @@ export const useProfileStore = defineStore('profile', () => {
       status.setStatus(Status.SUCCESS);
     } catch (err: any) {
       // Probably an error with latestProfileHandle e.g. profile got deleted
-      if (handle) return loadProfile(false);
+      if (handle && handle === latestProfileHandle.getValue()) return loadProfile(false);
       else throw err;
     }
 
@@ -186,6 +223,7 @@ export const useProfileStore = defineStore('profile', () => {
     setPageTitle,
     getMemberUserInfo,
     getRoute,
+    verifyPermissions,
     ...status,
   };
 });

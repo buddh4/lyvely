@@ -1,8 +1,13 @@
 import { IModelValidationResult, IFieldValidationResult } from '@lyvely/common';
+import { Exclude } from 'class-transformer';
 
 export class ServiceException<TData = any> extends Error {
+  @Exclude()
   protected defaultMessage = 'Unknown service error';
+
+  @Exclude()
   protected defaultStatus = 500;
+
   public readonly data?: TData;
   public status?: number;
 
@@ -90,19 +95,21 @@ export class ForbiddenServiceException extends ServiceException {
 export class IntegrityException extends ServiceException {
   constructor(msgOrData?: string | any, msg = 'An integrity exception occurred.') {
     super(msgOrData, msg);
-    this.status = 400;
+    this.status = 500;
   }
 }
 
 export class MisconfigurationException extends ServiceException {
   constructor(msgOrData?: string | any, msg = 'An error due to misconfiguration occurred.') {
     super(msgOrData, msg);
+    this.status = 500;
   }
 }
 
 export class NetworkException extends ServiceException {
   constructor(msgOrData?: string | any, msg = 'An error due to network issues.') {
     super(msgOrData, msg);
+    this.status = 500;
   }
 }
 

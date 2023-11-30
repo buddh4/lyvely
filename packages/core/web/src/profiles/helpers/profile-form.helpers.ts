@@ -1,12 +1,7 @@
-import {
-  IPermissionConfig,
-  PERMISSIONS_MODULE_ID,
-  ProfileType,
-  ProfileVisibilityLevel,
-} from '@lyvely/interface';
+import { ProfileType, ProfileVisibilityLevel } from '@lyvely/interface';
 import { ISelectOptions } from '@lyvely/ui';
-import { useAppConfigStore } from '@/app-config';
 import { useProfileStore } from '@/profiles/stores';
+import { useAuthStore } from '@/auth';
 
 export interface IProfileVisibilityOptions {
   type?: ProfileType;
@@ -15,7 +10,7 @@ export interface IProfileVisibilityOptions {
 
 /**
  * Returns profile visibility options
- * @param profile
+ * @param options
  */
 export function getProfileVisibilityOptions(options?: IProfileVisibilityOptions): ISelectOptions {
   const profile = useProfileStore().profile;
@@ -38,13 +33,9 @@ export function getProfileVisibilityOptions(options?: IProfileVisibilityOptions)
     });
   }
 
-  const allowVisitors = useAppConfigStore().getModuleConfig<IPermissionConfig>(
-    PERMISSIONS_MODULE_ID,
-    'allowVisitors',
-    false,
-  );
+  const visitorsAllowed = useAuthStore().isVisitorModeEnabled();
 
-  if (allowVisitors) {
+  if (visitorsAllowed) {
     visibilityOptions.push({
       label: 'profiles.visibility.visitor',
       value: ProfileVisibilityLevel.Visitor,

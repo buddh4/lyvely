@@ -189,10 +189,10 @@ describe('mergeFeatureConfig', function () {
     const definition = mergeFeatureConfig(profile, {
       profiles: {
         default: { installable: ['default'] },
-        UserProfile: { default: { installable: ['^', 'userprofile'] } },
+        user: { default: { installable: ['^', 'userprofile'] } },
         subscription: { prime: { installable: ['^', 'subscription'] } },
-        Organization: {
-          UserProfile: {
+        organization: {
+          user: {
             subscription: { prime: { installable: ['^', 'org_subscription'] } },
           },
         },

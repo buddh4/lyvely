@@ -5,7 +5,10 @@ import {
   isMultiUserProfile,
   DocumentNotFoundException,
   ForbiddenServiceException,
+  UnauthorizedServiceException,
 } from '@lyvely/interface';
+import { PATH_LOGIN, PATH_LOGOUT, useAuthStore } from '@/auth';
+import { PATH_403, PATH_404, PATH_500 } from '@/ui';
 
 export const ifIsMultiUserProfile = async (
   to: RouteLocation,
@@ -21,20 +24,27 @@ export const ifIsMultiUserProfile = async (
   next();
 };
 
-export const loadProfileGuard = (
+export const loadProfileGuard = async (
   to: RouteLocation,
   from: RouteLocation,
   next: NavigationGuardNext,
 ) => {
-  if (to.params.pid) {
-    return loadProfileById(to, from, next);
-  }
+  // Ignore routes not related to profiles
+  if (to.meta?.isPublic) return next();
 
-  if (to.meta?.profileView !== false) {
-    return loadProfileByHandle(to, from, next);
+  try {
+    // Load profile by id or handle
+    if (to.params.pid) {
+      await loadProfileById(to, from, next);
+    } else {
+      await loadProfileByHandle(to, from, next);
+    }
+  } catch (e) {
+    if (e instanceof UnauthorizedServiceException) return next(PATH_LOGOUT);
+    if (e instanceof DocumentNotFoundException) return next(PATH_404);
+    if (e instanceof ForbiddenServiceException) return next(PATH_403);
+    else return next(PATH_500);
   }
-
-  next();
 };
 
 const loadProfileByHandle = async (
@@ -43,25 +53,15 @@ const loadProfileByHandle = async (
   next: NavigationGuardNext,
 ) => {
   const profileStore = useProfileStore();
-  try {
-    if ((!to.params.handle && to.path === '/') || to.params.handle === ':handle') {
-      const profile = await profileStore.loadProfile();
-      const { help } = to.query;
-      return next(profileStore.getRoute(null, profile.handle, { help }));
-    } else if (!to.params.handle) {
-      const profile = await profileStore.loadProfile();
-      if (!profile) throw new Error('Profile could not be loaded');
-      to.params.handle = profile.handle;
-    } else {
-      await useProfileStore().loadProfile(<string>to.params.handle);
-    }
-
-    next();
-  } catch (e) {
-    if (e instanceof DocumentNotFoundException) return next('/404');
-    if (e instanceof ForbiddenServiceException) return next('/403');
-    else return next('/500');
+  if ((!to.params.handle && to.path === '/') || to.params.handle === ':handle') {
+    const profile = await profileStore.loadProfile();
+    const { help } = to.query;
+    return next(profileStore.getRoute(null, profile.handle, { help }));
   }
+
+  const handle: string = typeof to.params.handle === 'string' ? to.params.handle : undefined;
+  await profileStore.loadProfile(handle);
+  next();
 };
 
 /**
@@ -78,29 +78,23 @@ const loadProfileById = async (
   next: NavigationGuardNext,
 ) => {
   const profileStore = useProfileStore();
-  try {
-    const profile = await profileStore.loadProfileById(to.params.pid as string);
-    if (!profile) throw new Error('Profile could not be loaded');
+  const profile = await profileStore.loadProfileById(to.params.pid as string);
+  if (!profile) throw new Error('Profile could not be loaded');
 
-    const query = { ...to.query };
-    const path = query.path;
-    delete query['path'];
+  const query = { ...to.query };
+  const path = query.path;
+  delete query['path'];
 
-    /**
-     * TODO: check if feature is enabled on target profile + better default feature handling
-     * Feature restrictions should probably be defined as route meta
-     */
-    if (typeof to.params.view === 'string' && to.params.view.length) {
-      next(profileStore.getRoute(to.params.view, profile.handle, query));
-    } else if (typeof path === 'string') {
-      next(profilePathRoute(profile.handle, path));
-    } else {
-      next(profileStore.getRoute(null, profile.handle, query));
-    }
-  } catch (e) {
-    if (e instanceof DocumentNotFoundException) return next('/404');
-    if (e instanceof ForbiddenServiceException) return next('/403');
-    else return next('/500');
+  /**
+   * TODO: check if feature is enabled on target profile + better default feature handling
+   * Feature restrictions should probably be defined as route meta
+   */
+  if (typeof to.params.view === 'string' && to.params.view.length) {
+    next(profileStore.getRoute(to.params.view, profile.handle, query));
+  } else if (typeof path === 'string') {
+    next(profilePathRoute(profile.handle, path));
+  } else {
+    next(profileStore.getRoute(null, profile.handle, query));
   }
 };
 

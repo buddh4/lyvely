@@ -4,7 +4,7 @@ import {
   JwtAccessStrategy,
   JwtRefreshStrategy,
   JwtResetPasswordStrategy,
-  JwtAuthGuard,
+  RootAuthGuard,
 } from './guards';
 import { UsersModule } from '@/users';
 import { PassportModule } from '@nestjs/passport';
@@ -38,10 +38,10 @@ import { LyvelyModule } from '@/core';
     JwtAccessStrategy,
     JwtRefreshStrategy,
     JwtResetPasswordStrategy,
-    JwtAuthGuard,
+    RootAuthGuard,
     ResetPasswordService,
   ],
   controllers: [AuthController, ResetPasswordController],
-  exports: [JwtAuthService, JwtAuthGuard],
+  exports: [JwtAuthService, RootAuthGuard],
 })
 export class AuthModule {}

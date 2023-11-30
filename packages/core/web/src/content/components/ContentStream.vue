@@ -158,6 +158,7 @@ onUnmounted(() => {
     id="contentStreamRoot"
     ref="streamRoot"
     v-mobile-scrollbar
+    data-id="content-stream-root"
     class="overflow-auto bg-body scrollbar-thin pt-2 md:pt-4 md:p-1 flex-grow">
     <div v-if="isInitialized" class="h-full">
       <slot name="before" :stream="stream"></slot>

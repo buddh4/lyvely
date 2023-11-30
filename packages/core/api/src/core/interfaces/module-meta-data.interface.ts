@@ -4,7 +4,7 @@ import { IFeature, IPermission } from '@lyvely/interface';
 export type IModuleMetadata<T = any> = ModuleMetadata & {
   id: string;
   path: string;
-  name: string;
+  name?: string;
   description?: string;
   features?: IFeature[];
   permissions?: IPermission<any>[];

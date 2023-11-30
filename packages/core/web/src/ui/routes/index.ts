@@ -1,4 +1,4 @@
-import { Forbidden, NotFound, Error } from '../components';
+import { Forbidden, NotFound, Error } from '../views';
 
 export const uiRoutes = [
   {
@@ -7,7 +7,6 @@ export const uiRoutes = [
     component: Forbidden,
     meta: {
       isPublic: true,
-      profileView: false,
     },
   },
   {
@@ -16,7 +15,6 @@ export const uiRoutes = [
     component: Error,
     meta: {
       isPublic: true,
-      profileView: false,
     },
   },
   {

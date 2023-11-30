@@ -215,6 +215,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
   ): Promise<Profile> {
     return this.createProfile(owner, options.name || 'subProfile', type, visibility, {
       organization,
+      ...options,
     });
   }
 
@@ -231,7 +232,7 @@ export class ProfileTestDataUtils extends UserTestDataUtils {
         Object.assign({}, options, {
           type,
           name: name || owner.username,
-          handle: name || owner.username,
+          handle: options.handle || name || owner.username,
           visibility: visibility,
         }),
       ),

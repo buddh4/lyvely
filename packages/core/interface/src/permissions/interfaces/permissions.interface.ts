@@ -39,17 +39,17 @@ export interface IGlobalPermission extends IPermission<GlobalPermissionRole> {
 }
 
 /**
- * This interface defines permission subject information required to verify a global user permission.
+ * This interface defines permission context information required to verify a global user permission.
  */
-export interface IPermissionSubject<IRole> {
+export interface IPermissionContext<IRole> {
   role: IRole;
   userStatus?: UserStatus;
 }
 
 /**
- * This interface defines permission subject information required to verify a global permissions.
+ * This interface defines permission context information required to verify a global permissions.
  */
-export interface IGlobalPermissionSubject extends IPermissionSubject<GlobalPermissionRole> {}
+export interface IGlobalPermissionContext extends IPermissionContext<GlobalPermissionRole> {}
 
 /**
  * Defines global roles of a user or visitor.

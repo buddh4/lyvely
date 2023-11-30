@@ -55,12 +55,14 @@ import { Icons } from './components/icons/Icons';
 import { LyvelyUiOptions, setConfigOptions } from './config';
 import { Translatable, TranslationAdapter } from './i18n';
 import LyComponentStack from '@/components/stack/LyComponentStack.vue';
+import { vMobileScrollbar } from '@/directives';
 
 const createLyvelyUi = (options?: LyvelyUiOptions) => {
   setConfigOptions(options);
 
   return {
     install(Vue: App) {
+      Vue.directive('mobile-scrollbar', vMobileScrollbar);
       Vue.component('LyConditionalWrapper', LyConditionalWrapper);
       Vue.component('LyResponsive', LyResponsive);
       Vue.component('LyTable', LyTable);
@@ -126,6 +128,7 @@ export * from './components/menus/interfaces';
 
 export type { Translatable, TranslationAdapter };
 export {
+  vMobileScrollbar,
   createLyvelyUi,
   Icons,
   LyPasswordStrengthMeter,

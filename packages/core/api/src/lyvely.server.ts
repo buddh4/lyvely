@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Headers } from '@lyvely/interface';
-import { AuthModule, JwtAuthGuard } from './auth';
+import { AuthModule, RootAuthGuard } from './auth';
 import { ServiceExceptionsFilter } from '@/core';
 import { ConfigurationPath, ILyvelyCsrfOptions } from '@/config';
 import { FeatureGuard, FeaturesModule } from './features';
@@ -72,7 +72,7 @@ export class LyvelyServer {
 
     //this.nestApp.useLogger(this.nestApp.get(Logger));
     this.nestApp.use((req, res, next) => {
-      const clientIP = req.headers['x-real-ip'] || req.ip;
+      const clientIP = req.header('x-real-ip') || req.ip;
 
       if (!net.isIP(clientIP)) {
         // handle invalid IP address
@@ -173,7 +173,7 @@ export class LyvelyServer {
   }
 
   private initGuards() {
-    const authGuard = this.nestApp.select(AuthModule).get(JwtAuthGuard);
+    const authGuard = this.nestApp.select(AuthModule).get(RootAuthGuard);
     const featureGuard = this.nestApp.select(FeaturesModule).get(FeatureGuard);
     this.nestApp.useGlobalGuards(authGuard, featureGuard);
   }
@@ -203,17 +203,19 @@ export class LyvelyServer {
     cors.credentials = cors.credentials !== false;
     cors.methods ||= ['GET', 'POST', 'PUT'];
     cors.exposedHeaders ||= ['set-cookie'];
+
     cors.allowedHeaders ||= [
       'Accept-Language',
-      'x-visitor-id',
-      'x-api-version',
-      'x-captcha-identity',
-      'x-captcha-token',
       'csrf-token',
       'access-control-allow-origin',
       'content-type',
       'cookie',
     ];
+
+    Object.keys(Headers).forEach((key) => (<string[]>cors!.allowedHeaders).push(Headers[key]));
+
+    this.logger.log('Allow headers:');
+    this.logger.log(cors.allowedHeaders);
     //allowedHeaders: 'access-control-allow-originaccept,Accept-Language,Content-Language,Content-Type,Authorization,Cookie,X-Requested-With,Origin,Host'
 
     this.nestApp.enableCors(cors);

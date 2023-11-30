@@ -70,3 +70,19 @@ Cypress.Commands.add('load', (path: string, options?: Partial<VisitOptions>) => 
   path = path.startsWith('/') ? path : '/' + path;
   cy.visit(`http://127.0.0.1:3000${path}`, options);
 });
+
+Cypress.Commands.add(
+  'loadProfile',
+  (handle: string, path?: string, options?: Partial<VisitOptions>) => {
+    path = path && path.startsWith('/') ? path : '/' + (path || '');
+    cy.visit(`http://127.0.0.1:3000/p/${handle}${path}`, options);
+  },
+);
+
+Cypress.Commands.add('isForbidden', (path?: string, options?: Partial<VisitOptions>) => {
+  if (path) {
+    cy.load(path, options);
+  }
+  cy.getId('layout-profile').should('not.exist');
+  return cy.url().should('eq', 'http://127.0.0.1:3000/403');
+});

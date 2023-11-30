@@ -1,17 +1,20 @@
 <script lang="ts" setup>
-import { useRouter, RouteLocationRaw } from 'vue-router';
+import { RouteLocationRaw, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
-import { watch, onUnmounted, ref } from 'vue';
+import { onUnmounted, ref, watch } from 'vue';
 import { useLoginStore } from '@/auth/store/login.store';
 import { useSendResetPasswordMailStore } from '@/auth/store/send-reset-password-mail.store';
 import { isTouchScreen, LyCenteredPanel } from '@lyvely/ui';
 import { useAppConfigStore } from '@/app-config/app-config.store';
 import {
-  USER_REGISTRATION_MODULE_ID,
   IUserRegistrationAppConfig,
+  USER_REGISTRATION_MODULE_ID,
   UserRegistrationMode,
 } from '@lyvely/interface';
 import { PATH_SIGN_UP } from '@/user-registration/user-registration.constants';
+import { t } from '@/i18n';
+import { useAuthStore } from '@/auth';
+import { profileRoot } from '@/profiles';
 
 const loginStore = useLoginStore();
 const router = useRouter();
@@ -53,6 +56,11 @@ async function toPasswordStage() {
 function setResetPassword() {
   useSendResetPasswordMailStore().setUsernameOrEmail(loginModel.value.usernameOrEmail);
 }
+
+const isVisitorModeEnabled = useAuthStore().isVisitorModeEnabled();
+const accessAsVisitor = () => {
+  router.push(profileRoot());
+};
 
 onUnmounted(loginStore.reset);
 
@@ -161,17 +169,24 @@ onUnmounted(loginStore.reset);
           <div class="flex justify-center top-0 absolute w-full" style="margin-top: -0.5em">
             <div class="inline-block bg-main px-2 font-bold text-dimmed uppercase text-xs">or</div>
           </div>
+          <ly-button
+            v-if="isVisitorModeEnabled"
+            class="secondary w-full text-white flex items-center justify-center gap-2"
+            @click="accessAsVisitor()">
+            <ly-icon name="guest" />
+            <div class="inline-block min-w-[6rem]">{{ t('auth.login.visitor') }}</div>
+          </ly-button>
           <ly-button class="bg-red-500 w-full text-white flex items-center justify-center gap-2">
             <ly-icon name="google" />
-            <div class="inline-block w-20">Google</div>
+            <div class="inline-block min-w-[6rem]">Google</div>
           </ly-button>
           <ly-button class="bg-gray-600 text-white w-full flex items-center justify-center gap-2">
             <ly-icon name="github" />
-            <div class="inline-block w-20">Github</div>
+            <div class="inline-block min-w-[6rem]">Github</div>
           </ly-button>
           <ly-button class="bg-blue-700 text-white w-full flex items-center justify-center gap-2">
             <ly-icon name="facebook" />
-            <div class="inline-block w-20">Facebook</div>
+            <div class="inline-block min-w-[6rem]">Facebook</div>
           </ly-button>
         </div>
       </div>

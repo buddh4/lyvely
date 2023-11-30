@@ -1,7 +1,12 @@
 <script lang="ts" setup>
 import ContentStreamFooter from '../components/ContentStreamFooter.vue';
 import ContentStream from '../components/ContentStream.vue';
-import { ContentStreamFilter, MessageModel, ProfileType } from '@lyvely/interface';
+import {
+  ContentStreamFilter,
+  CreateMessagePermission,
+  MessageModel,
+  ProfileType,
+} from '@lyvely/interface';
 import { useRouter } from 'vue-router';
 import { useContentCreateStore, useContentStreamFilterStore } from '../stores';
 import { storeToRefs } from 'pinia';
@@ -17,6 +22,8 @@ const addButtonText =
     ? 'stream.editor.placeholder_single_user'
     : 'stream.editor.placeholder_multi_user';
 
+const canCreateMessage = useProfileStore().verifyPermissions(CreateMessagePermission.id);
+
 async function openCreateContentModal() {
   useContentCreateStore().createContentType(MessageModel.contentType);
 }
@@ -31,7 +38,7 @@ async function openCreateContentModal() {
           @click="openCreateContentModal">
           <img :src="emptyImageUrl" :alt="addButtonText" class="h-72 md:rounded" />
           <h1 class="text-sm font-bold">No content has been added yet</h1>
-          <ly-button class="primary text-sm" :text="addButtonText" />
+          <ly-button v-if="canCreateMessage" class="primary text-sm" :text="addButtonText" />
         </div>
       </div>
     </template>

@@ -1,5 +1,5 @@
 import { ProfileRelationRole } from './profile-relation-role.enum';
-import { IPermission, IPermissionSubject, IPermissionSetting } from '@/permissions';
+import { IPermission, IPermissionContext, IPermissionSetting } from '@/permissions';
 import { UserStatus } from '@/users';
 
 /**
@@ -8,9 +8,9 @@ import { UserStatus } from '@/users';
 export interface IProfilePermission extends IPermission<ProfileRelationRole> {}
 
 /**
- * This interface defines permission subject information required to verify profile level permission.
+ * This interface defines permission context information required to verify profile level permission.
  */
-export interface IProfilePermissionSubject extends IPermissionSubject<ProfileRelationRole> {
-  settings?: IPermissionSetting[];
+export interface IProfilePermissionContext extends IPermissionContext<ProfileRelationRole> {
+  settings: IPermissionSetting[];
   relationStatus?: UserStatus;
 }

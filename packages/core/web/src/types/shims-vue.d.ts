@@ -1,6 +1,7 @@
 /* eslint-disable */
 import 'vue-router';
 import { Router } from 'vue-router';
+import { ProfileVisibilityLevel } from '@lyvely/interface';
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue';
@@ -53,7 +54,7 @@ declare module 'vue-router' {
     layout?: string;
     showMobileFooter?: boolean;
     baseName?: string;
-    profileView?: boolean;
+    visibility?: ProfileVisibilityLevel;
     isPublic?: boolean;
     title?: () => string;
   }

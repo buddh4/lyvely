@@ -29,26 +29,21 @@ export interface IFeatureConfig {
       usage?: IFeatureUsageDefinition;
       subscription?: ISubscriptionDefinition;
     };
-    GroupProfile?: {
+    user?: {
       default?: IFeatureConfigDefinition;
       usage?: IFeatureUsageDefinition;
       subscription?: ISubscriptionDefinition;
     };
-    UserProfile?: {
+    organization?: {
       default?: IFeatureConfigDefinition;
       usage?: IFeatureUsageDefinition;
       subscription?: ISubscriptionDefinition;
-    };
-    Organization?: {
-      default?: IFeatureConfigDefinition;
-      usage?: IFeatureUsageDefinition;
-      subscription?: ISubscriptionDefinition;
-      GroupProfile?: {
+      group?: {
         default?: IFeatureConfigDefinition;
         usage?: IFeatureUsageDefinition;
         subscription?: ISubscriptionDefinition;
       };
-      UserProfile?: {
+      user?: {
         default?: IFeatureConfigDefinition;
         usage?: IFeatureUsageDefinition;
         subscription?: ISubscriptionDefinition;

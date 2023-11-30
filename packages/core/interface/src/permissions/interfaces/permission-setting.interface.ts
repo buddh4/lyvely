@@ -1,5 +1,5 @@
 /**
- * Define a permission setting state e.g. in profile settings or configuration.
+ * Defines a permission setting state e.g. in profile settings or configuration.
  */
 export interface IPermissionSetting<IRole = string> {
   id: string;

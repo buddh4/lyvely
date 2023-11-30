@@ -1,7 +1,7 @@
 export enum ProfileType {
-  User = 'UserProfile',
-  Group = 'GroupProfile',
-  Organization = 'Organization',
+  User = 'user',
+  Group = 'group',
+  Organization = 'organization',
 }
 
 /**

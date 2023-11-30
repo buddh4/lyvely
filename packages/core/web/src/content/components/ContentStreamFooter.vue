@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import ContentStreamFilterNavigation from './ContentStreamFilterNavigation.vue';
-import { ProfileType, ContentModel } from '@lyvely/interface';
+import { ProfileType, ContentModel, CreateMessagePermission } from '@lyvely/interface';
 import { useCreateMessageStore } from '@/messages/stores/message.store';
 import { storeToRefs } from 'pinia';
 import { useProfileStore } from '@/profiles/stores/profile.store';
@@ -21,6 +21,8 @@ const messageInput = ref<HTMLTextAreaElement>();
 
 const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
+
+const canCreateMessage = useProfileStore().verifyPermissions(CreateMessagePermission.id);
 
 async function submitMessage(evt: KeyboardEvent) {
   if (!evt?.shiftKey) {
@@ -73,12 +75,13 @@ onMounted(() => {
 
 <template>
   <div class="p-2 md:p-4 bg-main">
-    <div class="mb-2 md:mb-4">
+    <div>
       <content-stream-filter-navigation />
     </div>
-    <div class="flex flex-col">
+    <div v-if="canCreateMessage" class="flex flex-col mt-2 md:mt-4">
       <div class="flex gap-1 md:gap-3 items-end">
         <ly-button
+          data-id="btn-stream-add"
           class="primary rounded-full w-10 h-10 flex items-center"
           @click="openCreateContentModal">
           <ly-icon name="plus"></ly-icon>
@@ -89,16 +92,20 @@ onMounted(() => {
           <textarea
             ref="messageInput"
             v-model="model.text"
+            data-id="stream-input"
             rows="1"
             type="text"
-            class="plain w-full bg-transparent resize-none overflow-auto scrollbar-thin border-0 p-0 focus-hidden focus:ring-none focus:outline-none focus:shadow-none"
+            class="plain w-full bg-transparent resize-none overflow-auto disabled:cursor-pointer scrollbar-thin border-0 p-0 focus-hidden focus:ring-none focus:outline-none focus:shadow-none"
             :placeholder="$t(placeholderKey)"
             @keyup.enter="submitMessage"
             @keydown="onInputKeydown"
             @paste="autoAlignHeight" />
         </div>
 
-        <ly-button class="primary rounded-full w-10 h-10 flex items-center" @click="submitMessage">
+        <ly-button
+          class="primary rounded-full w-10 h-10 flex items-center"
+          data-id="btn-stream-submit"
+          @click="submitMessage">
           <ly-icon name="send"></ly-icon>
         </ly-button>
       </div>

@@ -1,10 +1,11 @@
 import { App } from 'vue';
 import type { LocaleMessage } from '@intlify/core-base';
-import { IFeature } from '@lyvely/interface';
+import { IFeature, IPermission } from '@lyvely/interface';
 import { RouteRecordRaw } from 'vue-router';
 
 export interface IModule {
   id: string;
+  permissions?: IPermission<any>[] | (() => IPermission<any>[]);
   features?: IFeature[] | (() => IFeature[]);
   routes?: RouteRecordRaw[] | (() => RouteRecordRaw[]);
   init?: () => void;

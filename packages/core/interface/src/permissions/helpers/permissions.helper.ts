@@ -2,9 +2,9 @@ import {
   GlobalPermissionRole,
   globalPermissionRoleHierarchy,
   IGlobalPermission,
-  IGlobalPermissionSubject,
+  IGlobalPermissionContext,
   IPermission,
-  IPermissionConfig,
+  IPermissionOptions,
 } from '../interfaces';
 import { getPermission } from '../permissions.registry';
 import { IntegrityException } from '@/exceptions';
@@ -27,8 +27,8 @@ import { isDefined } from 'class-validator';
  */
 export const verifyGlobalPermission = (
   permissionOrId: string | IGlobalPermission,
-  subject: IGlobalPermissionSubject,
-  config: IPermissionConfig = {},
+  subject: IGlobalPermissionContext,
+  config: IPermissionOptions,
 ) => {
   if (!validateVisitorAccess(subject, config)) return false;
 
@@ -86,8 +86,8 @@ export const validateUserStatusAccess = (
   return !isDefined(userStatus) || userStatusRequirement.includes(userStatus!);
 };
 
-export function validateVisitorAccess<TRole>(role: TRole, config: IPermissionConfig = {}) {
-  const allowGuests = config.allowVisitors ?? false;
+export function validateVisitorAccess<TRole>(role: TRole, config: IPermissionOptions) {
+  const allowGuests = config.visitorsAllowed ?? false;
   return role !== GlobalPermissionRole.Visitor || allowGuests;
 }
 

@@ -67,7 +67,7 @@ const { direction } = useSwipe(root, {
 
 <template>
   <profile-drawer />
-  <div ref="root" class="overflow-hidden flex w-full h-screen-s flex-col">
+  <div ref="root" data-id="layout-profile" class="overflow-hidden flex w-full h-screen-s flex-col">
     <div class="flex items-stretch flex-col h-screen-s">
       <main-profile-container v-bind="containerProps">
         <slot>

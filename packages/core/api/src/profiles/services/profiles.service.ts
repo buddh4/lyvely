@@ -10,6 +10,8 @@ import {
   VALID_HANDLE_REGEX,
   DocumentNotFoundException,
   UniqueConstraintException,
+  VisitorStrategy,
+  MisconfigurationException,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';
@@ -38,11 +40,14 @@ import {
   USER_SETTING_CALENDAR_PREFERENCE_YEARSTART,
 } from '@/user-account/user-account.constants';
 import { ProfileSettingsService } from './profile-settings.service';
+import { ConfigService } from '@nestjs/config';
+import { ServerConfiguration } from '@/config';
 
 @Injectable()
 export class ProfilesService {
   constructor(
     private profileDao: ProfileDao,
+    private configService: ConfigService<ServerConfiguration>,
     private membershipDao: MembershipsDao,
     private membershipService: ProfileMembershipService,
     private relationsService: ProfileRelationsService,
@@ -248,7 +253,11 @@ export class ProfilesService {
    *
    * @param user
    */
-  async findDefaultProfile(user: User): Promise<ProtectedProfileContext> {
+  async findDefaultProfile(user: OptionalUser): Promise<ProfileContext> {
+    if (!user) {
+      return this.findDefaultVisitorProfile();
+    }
+
     const membership = await this.membershipDao.findOldestRelation(user);
 
     // TODO: check if profile is archived etc.
@@ -256,10 +265,19 @@ export class ProfilesService {
       return this.createDefaultUserProfile(user);
     }
 
-    const relation = await this.findProfileContext(user, membership.pid);
+    const profileContext = await this.findProfileContext(user, membership.pid);
 
     // TODO: handle integrity issue if !relation, at least do some logging here...
-    return relation ? relation : this.createDefaultUserProfile(user);
+    return profileContext ? profileContext : this.createDefaultUserProfile(user);
+  }
+
+  async findDefaultVisitorProfile(): Promise<ProfileContext> {
+    const visitorStrategy = this.configService.get<VisitorStrategy>('visitorStrategy');
+    if (!visitorStrategy?.handles?.length) {
+      throw new MisconfigurationException('No visitor profile set.');
+    }
+
+    return this.findProfileContextByHandle(null, visitorStrategy.handles[0]);
   }
 
   /**
@@ -396,7 +414,7 @@ export class ProfilesService {
 
     if (!user) {
       const organizationContext = organization
-        ? new ProfileContext<Organization>({ organization })
+        ? new ProfileContext<Organization>({ profile: organization })
         : undefined;
       return new ProfileContext({
         profile,
@@ -435,7 +453,7 @@ export class ProfilesService {
       organization = await this.profileDao.findById(profile.oid);
     }
 
-    return { profile, organization: organization };
+    return { profile, organization };
   }
 
   /**

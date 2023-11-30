@@ -6,7 +6,8 @@ import { AUTH_MODULE_ID } from '@lyvely/interface';
 import { registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { useAutoTokenRefresh } from './interceptors';
+import { useAPIVisitorInterceptor, useAutoTokenRefresh } from './interceptors';
+import { computed } from 'vue';
 
 export const authModule = () => {
   return {
@@ -26,14 +27,25 @@ export const authModule = () => {
           sortOrder: 5000,
           moduleId: AUTH_MODULE_ID,
           icon: { name: 'logout', autoScale: true },
+          condition: computed(() => useAuthStore().isAuthenticated),
           click: () =>
             useAuthStore()
               .logout()
               .then(() => location.reload()),
-          text: 'auth.logout',
+          text: 'auth.account.logout',
+        },
+        {
+          id: 'account-login',
+          sortOrder: 5000,
+          moduleId: AUTH_MODULE_ID,
+          icon: { name: 'logout', autoScale: true },
+          condition: computed(() => !useAuthStore().isAuthenticated),
+          to: { name: 'Login' },
+          text: 'auth.account.login',
         },
       ]);
       useAutoTokenRefresh();
+      useAPIVisitorInterceptor();
     },
   } as IModule;
 };

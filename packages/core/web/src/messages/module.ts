@@ -1,11 +1,17 @@
 import { registerContentType } from '@/content';
 import { translation } from '@/i18n';
 import { IModule } from '@/core';
-import { MessageModel, CreateMessageModel, MESSAGES_MODULE_ID } from '@lyvely/interface';
+import {
+  MessageModel,
+  CreateMessageModel,
+  MESSAGES_MODULE_ID,
+  CreateMessagePermission,
+} from '@lyvely/interface';
 
 export default () => {
   return {
     id: MESSAGES_MODULE_ID,
+    permissions: [CreateMessagePermission],
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
     },

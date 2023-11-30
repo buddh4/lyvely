@@ -7,6 +7,7 @@
       "not_a_member": "Not a member?",
       "reset_password": "Forgot password?",
       "remember_me": "Keep me signed in.",
+      "visitor": "Just visiting",
       "fields": {
         "password": "Password",
         "usernameOrEmail": "Username or Email",

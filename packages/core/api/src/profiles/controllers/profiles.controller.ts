@@ -25,7 +25,7 @@ import {
   ProfilesEndpointPaths,
 } from '@lyvely/interface';
 import { ProfilesService, ProfileRelationsService } from '../services';
-import { UserAndProfileRelations, ProtectedProfileContext } from '../models';
+import { UserAndProfileRelations, ProtectedProfileContext, ProfileContext } from '../models';
 import { OptionalUserRequest, UserRequest } from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
@@ -46,9 +46,8 @@ export class ProfilesController implements ProfilesEndpoint {
   async getDefaultProfile(@Request() req: OptionalUserRequest): Promise<ProfileWithRelationsModel> {
     const { user } = req;
 
-    if (!user) throw new ForbiddenException();
     const profileRelations = await this.profilesService.findDefaultProfile(user);
-    return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, profileRelations);
+    return mapType(ProfileContext, ProfileWithRelationsModel<any>, profileRelations);
   }
 
   @Get(ProfilesEndpointPaths.BY_HANDLE(':handle'))

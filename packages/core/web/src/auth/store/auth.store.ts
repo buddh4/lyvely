@@ -2,17 +2,28 @@ import { defineStore } from 'pinia';
 import { localStorageManager, sessionStorageManager } from '@/core';
 import { usePageStore } from '@/ui';
 import { useI18nStore } from '@/i18n';
-import { ref, computed } from 'vue';
-import { ILoginResponse, UserModel, UserStatus, useAuthClient } from '@lyvely/interface';
+import { computed, ref } from 'vue';
+import {
+  ILoginResponse,
+  useAuthClient,
+  UserModel,
+  UserStatus,
+  VisitorMode,
+} from '@lyvely/interface';
 import { findByPath, queuePromise } from '@lyvely/common';
 import { useLiveStore } from '@/live/stores/live.store';
+import { useAppConfigStore } from '@/app-config';
+import { PATH_LOGIN } from '@/auth';
 
 export const storedVid = localStorageManager.getStoredValue('visitorId');
+export const logoutToken = localStorageManager.getStoredValue('logoutToken');
 
 export const useAuthStore = defineStore('user-auth', () => {
   const user = ref<UserModel>();
   const authClient = useAuthClient();
   const authTokenExpiration = ref(0);
+  // Unfortunately this is a bit misleading, since visitors are considered as non-authenticated users
+  // But per definition all users are visitors
   const visitorId = ref<string | undefined>(<string | undefined>storedVid.getValue());
   const i18nStore = useI18nStore();
 
@@ -37,14 +48,20 @@ export const useAuthStore = defineStore('user-auth', () => {
   }
 
   async function logout(redirect = true) {
-    if (redirect) usePageStore().setShowAppLoader(true);
-    await authClient.logout(visitorId.value).catch(console.error);
-    // TODO: If logout request fails we should set an additional header assuring to logout on next valid request
-    clear();
+    try {
+      if (redirect) usePageStore().setShowAppLoader(true);
+      // TODO: If logout request fails we should set an additional header assuring to logout on next valid request
+      await authClient.logout(visitorId.value);
+      clear();
+    } catch (e) {
+      console.error(e);
+      clear();
+      logoutToken.setValue('1');
+    }
 
     if (redirect) {
-      // We use document.location instead of router here in order to force stores to be cleared
-      document.location = '/';
+      // We use document.location instead of router here in order to force all stores to be cleared
+      document.location = PATH_LOGIN;
     }
   }
 
@@ -61,8 +78,13 @@ export const useAuthStore = defineStore('user-auth', () => {
   function clear() {
     useAuthStore().$reset();
     setVid(undefined);
+    logoutToken.setValue(undefined);
     localStorageManager.clear();
     sessionStorageManager.clear();
+  }
+
+  function hasLogoutToken() {
+    return logoutToken.getValue() === '1';
   }
 
   function setVid(vid?: string) {
@@ -110,14 +132,20 @@ export const useAuthStore = defineStore('user-auth', () => {
     );
   }
 
+  function isVisitorModeEnabled() {
+    return useAppConfigStore().get('visitorStrategy')?.mode === VisitorMode.Enabled;
+  }
+
   return {
     user,
     visitorId,
     getVid,
     setUserLocale,
+    hasLogoutToken,
     getSetting,
     authTokenExpiration,
     isAuthenticated,
+    isVisitorModeEnabled,
     refreshToken,
     isAwaitingEmailVerification,
     handleLogin,
