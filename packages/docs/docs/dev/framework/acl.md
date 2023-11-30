@@ -163,6 +163,12 @@ The `v-if-permission` directive is designed to dynamically display or hide UI el
 When it comes to profile permissions, this directive verifies the permission settings associated with the currently
 active profile.
 
+:::warning
+This directive currently should only be used for plain html elements and not component due to the fact that components
+with multiple root elements do not support custom directives in vue. Therefore, its currently not supported
+on components  like `<ly-button>`.  In such cases use `useProfileStore().verifyPermissions()` instead.
+:::
+
 ## Custom JWT strategies
 
 In certain cases, security requirements may demand the implementation of custom JWT-based access guards. To address 
