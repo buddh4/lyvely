@@ -12,6 +12,7 @@ import { useContentCreateStore, useContentStreamFilterStore } from '../stores';
 import { storeToRefs } from 'pinia';
 import emptyImageUrl from '@/assets/empty.png';
 import { useProfileStore } from '@/profiles';
+import { usePermissions } from '@/common';
 
 const { filter } = storeToRefs(useContentStreamFilterStore());
 filter.value = new ContentStreamFilter();
@@ -22,10 +23,10 @@ const addButtonText =
     ? 'stream.editor.placeholder_single_user'
     : 'stream.editor.placeholder_multi_user';
 
-const canCreateMessage = useProfileStore().verifyPermissions(CreateMessagePermission.id);
+const { isAllowed: canCreateMessage } = usePermissions(CreateMessagePermission);
 
 async function openCreateContentModal() {
-  useContentCreateStore().createContentType(MessageModel.contentType);
+  return useContentCreateStore().createContentType(MessageModel.contentType);
 }
 </script>
 

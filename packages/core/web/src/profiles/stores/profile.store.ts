@@ -42,7 +42,7 @@ export const useProfileStore = defineStore('profile', () => {
     return profile.value!;
   }
 
-  function verifyPermissions(...permissions: Array<string | IProfilePermission>) {
+  function verifyEachPermission(...permissions: Array<string | IProfilePermission>) {
     const currentProfile = profile.value;
 
     if (!currentProfile) {
@@ -223,7 +223,7 @@ export const useProfileStore = defineStore('profile', () => {
     setPageTitle,
     getMemberUserInfo,
     getRoute,
-    verifyPermissions,
+    verifyEachPermission,
     ...status,
   };
 });

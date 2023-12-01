@@ -7,6 +7,7 @@ import { useProfileStore } from '@/profiles/stores/profile.store';
 import { onMounted, ref } from 'vue';
 import { useContentStreamFilterStore, useContentCreateStore } from '../stores';
 import { focusIfNotTouchScreen } from '@lyvely/ui';
+import { usePermissions } from '@/common';
 
 export interface IProps {
   parent?: ContentModel;
@@ -22,7 +23,7 @@ const messageInput = ref<HTMLTextAreaElement>();
 const createMessageStore = useCreateMessageStore();
 const { model } = storeToRefs(createMessageStore);
 
-const canCreateMessage = useProfileStore().verifyPermissions(CreateMessagePermission.id);
+const { isAllowed: canCreateMessage } = usePermissions(CreateMessagePermission);
 
 async function submitMessage(evt: KeyboardEvent) {
   if (!evt?.shiftKey) {
