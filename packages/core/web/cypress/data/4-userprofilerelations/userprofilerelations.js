@@ -21,6 +21,7 @@ const createProfileRelationData = (userSeed, profileSeed, options) => {
 
 module.exports = [
   createProfileRelationData('Jan', 'jan-profile', { role: 'owner' }),
+  createProfileRelationData('Jan', 'public-group', { role: 'owner' }),
   createProfileRelationData('Jan', 'member-group', { role: 'owner' }),
   createProfileRelationData('Peter', 'member-group'),
   createProfileRelationData('Peter', 'public-organization'),

@@ -2,7 +2,7 @@ import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/commo
 import { ProfilesService, ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
-import { ProfileContext } from '../models';
+import { DocumentNotFoundException } from '@lyvely/interface';
 import { ProfileVisibilityPolicy } from '../policies';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
@@ -39,7 +39,7 @@ export class ProfileGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<ProfileRequest>();
 
-    if (!isValidObjectId(request.query.pid)) return false;
+    if (!isValidObjectId(request.params.pid)) throw new DocumentNotFoundException();
 
     const oid = isValidObjectId(request.query.oid) ? request.query.oid : undefined;
     const user = request.user;

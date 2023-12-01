@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRef, Reflector } from '@nestjs/core';
-import { IPolicy, PolicyHandler } from '../interfaces';
+import { getPolicyToken, IPolicy, PolicyHandler } from '../interfaces';
 
 @Injectable()
 export class PolicyService {
@@ -22,7 +22,9 @@ export class PolicyService {
 
   private async runHandler<T = any>(handler: PolicyHandler<T>, context: T): Promise<boolean> {
     const policy = <IPolicy<T>>(
-      (handler instanceof Function ? this.moduleRef.get(handler, { strict: false }) : handler)
+      (handler instanceof Function
+        ? this.moduleRef.get(getPolicyToken(handler), { strict: false })
+        : handler)
     );
     return policy.verify(context);
   }

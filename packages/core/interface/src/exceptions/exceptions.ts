@@ -34,7 +34,7 @@ export class UnsupportedOperationException extends ServiceException {
 }
 
 export class DocumentNotFoundException extends ServiceException {
-  constructor(msgOrData?: string | any, msg = 'Entity not found') {
+  constructor(msgOrData?: string | any, msg = 'Document not found') {
     super(msgOrData, msg);
     this.status = 404;
   }

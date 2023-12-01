@@ -5,6 +5,7 @@ import { StrictContentType } from './strict-content-type.decorator';
 import { Content } from '../schemas';
 import { ContentGuard } from '../guards';
 import { Type } from '@lyvely/common';
+import { PolicyGuard } from '@/policies/guards';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const ContentTypeController = (
@@ -13,7 +14,7 @@ export const ContentTypeController = (
   ...guards: (CanActivate | Function)[]
 ) => {
   const controller = Controller(prefix);
-  const profileGuard = UseGuards(ProfileGuard, ContentGuard, ...guards);
+  const profileGuard = UseGuards(ProfileGuard, ContentGuard, PolicyGuard, ...guards);
   const contentTypeGuard = contentType ? StrictContentType(contentType) : false;
 
   return function (target: any) {

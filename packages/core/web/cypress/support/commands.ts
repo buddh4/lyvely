@@ -30,6 +30,8 @@ import Timeoutable = Cypress.Timeoutable;
 import Withinable = Cypress.Withinable;
 import VisitOptions = Cypress.VisitOptions;
 import Shadow = Cypress.Shadow;
+import RequestOptions = Cypress.RequestOptions;
+import RequestBody = Cypress.RequestBody;
 
 type Username = 'Jan' | 'Disabled';
 
@@ -76,6 +78,121 @@ Cypress.Commands.add(
   (handle: string, path?: string, options?: Partial<VisitOptions>) => {
     path = path && path.startsWith('/') ? path : '/' + (path || '');
     cy.visit(`http://127.0.0.1:3000/p/${handle}${path}`, options);
+  },
+);
+
+Cypress.Commands.add(
+  'apiPost',
+  (path?: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
+    options ||= {};
+    options.method = 'POST';
+    return cy.apiRequest(path, body, options);
+  },
+);
+
+Cypress.Commands.add(
+  'apiPatch',
+  (path?: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
+    options ||= {};
+    options.method = 'PATCH';
+    return cy.apiRequest(path, body, options);
+  },
+);
+
+Cypress.Commands.add(
+  'apiPut',
+  (path?: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
+    options ||= {};
+    options.method = 'PUT';
+    return cy.apiRequest(path, body, options);
+  },
+);
+
+Cypress.Commands.add('apiGet', (path?: string, options?: Partial<APIRequestOptions>) => {
+  options ||= {};
+  options.method = 'GET';
+  return cy.apiRequest(path, undefined, options);
+});
+
+Cypress.Commands.add('apiDelete', (path?: string, options?: Partial<APIRequestOptions>) => {
+  options ||= {};
+  options.method = 'DELETE';
+  return cy.apiRequest(path, undefined, options);
+});
+
+Cypress.Commands.add(
+  'profileApiPost',
+  (handle: string, path?: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
+    options ||= {};
+    options.method = 'POST';
+    return cy.profileApiRequest(handle, path, body, options);
+  },
+);
+
+Cypress.Commands.add(
+  'profileApiPatch',
+  (handle: string, path?: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
+    options ||= {};
+    options.method = 'PATCH';
+    return cy.profileApiRequest(handle, path, body, options);
+  },
+);
+
+Cypress.Commands.add(
+  'profileApiPut',
+  (handle: string, path?: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
+    options ||= {};
+    options.method = 'PUT';
+    return cy.profileApiRequest(handle, path, body, options);
+  },
+);
+
+Cypress.Commands.add(
+  'profileApiGet',
+  (handle: string, path?: string, options?: Partial<APIRequestOptions>) => {
+    options ||= {};
+    options.method = 'GET';
+    return cy.profileApiRequest(handle, path, undefined, options);
+  },
+);
+
+Cypress.Commands.add(
+  'profileApiDelete',
+  (handle: string, path?: string, options?: Partial<APIRequestOptions>) => {
+    options ||= {};
+    options.method = 'DELETE';
+    return cy.profileApiRequest(handle, path, undefined, options);
+  },
+);
+
+Cypress.Commands.add(
+  'profileApiRequest',
+  (handle: string, path?: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
+    return cy.task('db:getObjectId', handle).then((objectId: string) => {
+      path = path && path.startsWith('/') ? path : '/' + (path || '');
+      return cy.apiRequest(`profiles/${objectId}${path}`, body, options);
+    });
+  },
+);
+
+Cypress.Commands.add(
+  'apiRequest',
+  (path: string, body?: RequestBody, options?: Partial<APIRequestOptions>) => {
+    path = path && path.startsWith('/') ? path : '/' + (path || '');
+    options = { ...options };
+    options.url = `http://127.0.0.1:8080/api${path}`;
+    options.body = body;
+    options.headers ||= {};
+    options.headers['x-api-version'] ??= '1';
+    options.failOnStatusCode = false;
+
+    if (!options.as) {
+      options.headers['x-visitor-access'] = '1';
+    } else {
+      cy.authenticatedAs(options.as);
+    }
+
+    return cy.request(options);
   },
 );
 
