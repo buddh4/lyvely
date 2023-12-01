@@ -4,7 +4,7 @@ import { join, dirname, isAbsolute } from 'path';
 import _ from 'lodash';
 import { Logger } from '@nestjs/common';
 import { MongoClient } from 'mongodb';
-import { COLLECTION_CONFIG } from './config.constatns';
+import { COLLECTION_CONFIG } from './config.constants';
 
 const logger = new Logger('loadConfigs');
 
