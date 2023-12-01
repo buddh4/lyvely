@@ -6,7 +6,6 @@ import {
   useProfileRelationInfosClient,
   useProfilesClient,
   DocumentNotFoundException,
-  IntegrityException,
   getProfileRelationRole,
   IProfilePermission,
   verifyEachProfilePermission,
