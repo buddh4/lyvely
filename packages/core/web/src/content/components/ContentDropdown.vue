@@ -39,9 +39,10 @@ const isEditable = computed(
 </script>
 
 <template>
-  <ly-dropdown button-class="item-menu-button">
+  <ly-dropdown button-class="item-menu-button" :data-id="'menu-' + content.id">
     <ly-dropdown-link
       v-if="isEditable"
+      data-id="content-edit"
       icon="edit"
       label="content.actions.edit"
       @click="onClickEdit"></ly-dropdown-link>
@@ -54,6 +55,7 @@ const isEditable = computed(
   <ly-confirm-modal
     v-if="showConfirm"
     v-model="showConfirm"
+    data-id="content-archive"
     :options="confirm"
     @submit="confirmAction">
     <slot name="confirmBody"></slot>

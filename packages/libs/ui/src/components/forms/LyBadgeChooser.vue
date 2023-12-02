@@ -166,6 +166,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
 <template>
   <ly-floating-input-layout
     :id="id"
+    :data-id="id"
     tabindex="0"
     class="floating-input cursor-pointer h-auto"
     :label="label"
@@ -183,6 +184,7 @@ const showEmptyEntry = computed(() => !showAddEntry.value && !props.options.leng
   </ly-floating-input-layout>
   <ly-modal
     v-model="visible"
+    :data-id="id + '-modal'"
     :title="label"
     :cancel-button="false"
     submit-button-text="common.select"

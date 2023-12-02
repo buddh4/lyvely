@@ -106,7 +106,7 @@ const maxWidth = true;
 </script>
 
 <template>
-  <div data-stream-entry :class="cssClass">
+  <div data-stream-entry :class="cssClass" :data-id="model.id">
     <div v-if="showTimeSeparator" class="flex items-center justify-center text-dimmed text-xs">
       {{ timeSeparator }}
     </div>
@@ -134,7 +134,7 @@ const maxWidth = true;
           <relative-time :ts="model.meta.streamSort"></relative-time>
         </div>
         <div :class="{ 'md:w-2/3': maxWidth && bodyStyle === 'message' }">
-          <div :class="bodyWrapperClass" @click="onContentClick">
+          <div :class="bodyWrapperClass" :data-id="'body-' + model.id" @click="onContentClick">
             <div class="cursor-pointer inline-block">
               <div class="flex gap-1">
                 <tag-list

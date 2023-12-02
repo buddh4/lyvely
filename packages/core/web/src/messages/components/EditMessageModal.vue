@@ -37,6 +37,7 @@ const modalTitle = computed(() => {
   <ly-modal v-model="showModal" :title="modalTitle" @submit="submit" @cancel="$emit('cancel')">
     <template #preHeader><slot name="navigation"></slot></template>
     <ly-form-model
+      id="edit-message"
       v-model="model"
       :validator="validator"
       :status="status"
@@ -50,7 +51,7 @@ const modalTitle = computed(() => {
       </fieldset>
 
       <fieldset>
-        <tag-chooser v-model="model.tagNames" />
+        <tag-chooser id="edit-message-tag-chooser" v-model="model.tagNames" />
       </fieldset>
     </ly-form-model>
   </ly-modal>

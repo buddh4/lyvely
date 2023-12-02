@@ -5,8 +5,10 @@ module.exports = [
   {
     _id: getObjectId('jan-profile-message1'),
     pid: getObjectId('jan-profile'),
+    oid: getObjectId('jan-profile-oid'),
+    location: 'default',
     content: {
-      message: 'First profile message!',
+      text: 'First profile message!',
     },
     meta: {
       createdBy: getObjectId('Jan'),

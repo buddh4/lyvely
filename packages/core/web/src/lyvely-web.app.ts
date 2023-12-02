@@ -1,6 +1,6 @@
 import AppComponent from './App.vue';
 import { UserAvatar } from '@/users';
-import { ProfileAvatar, vIfPermissions } from '@/profiles';
+import { ProfileAvatar } from '@/profiles';
 import { setupI18n, translationAdapter } from '@/i18n';
 import { router } from './lyvely.router';
 import {
@@ -102,9 +102,7 @@ export class LyvelyWebApp {
     this.events.emit('app.mount.post', this);
   }
 
-  private initDirectives() {
-    this.vueApp.directive('if-permissions', vIfPermissions);
-  }
+  private initDirectives() {}
 
   private setGlobalComponents() {
     this.vueApp.component('LyProfileAvatar', ProfileAvatar);
