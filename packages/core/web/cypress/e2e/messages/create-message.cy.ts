@@ -3,6 +3,15 @@ describe('User can send messages', function () {
     cy.task('db:seed');
   });
 
+  it('Can not create empty message', () => {
+    cy.authenticatedAs('Jan');
+    cy.loadProfile(`public-group/stream`);
+    cy.getId('stream-input').type(' ');
+    cy.getId('btn-stream-submit').click();
+    cy.wait(100);
+    cy.getId('empty-stream').should('exist');
+  });
+
   it('Visitor can not create message (ACL)', () => {
     cy.profileApiPost('public-group', '/messages', { text: 'Visitor Message' }).then((response) => {
       expect(response.status).to.eq(403);

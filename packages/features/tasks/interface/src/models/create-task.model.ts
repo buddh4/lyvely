@@ -13,18 +13,21 @@ import {
 } from 'class-validator';
 import { CalendarInterval } from '@lyvely/dates';
 import { UserAssignmentStrategy, CreateContentModel } from '@lyvely/interface';
+import { Trim } from '@lyvely/common';
 
 @Exclude()
 export class CreateTaskModel extends CreateContentModel<CreateTaskModel> {
   @Expose()
   @IsString()
   @IsNotEmpty()
+  @Trim()
   @Length(0, 100)
   title: string;
 
   @Expose()
   @IsOptional()
   @IsString()
+  @Trim()
   @Length(0, 2000)
   text?: string;
 

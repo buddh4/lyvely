@@ -92,7 +92,7 @@ onMounted(() => {
           class="flex flex-grow relative bg-gray-100 dark:bg-highlight rounded-3xl px-3.5 py-2 overflow-hidden">
           <textarea
             ref="messageInput"
-            v-model="model.text"
+            v-model.trim="model.text"
             data-id="stream-input"
             rows="1"
             type="text"

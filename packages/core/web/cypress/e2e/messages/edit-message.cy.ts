@@ -3,6 +3,16 @@ describe('User can send messages', function () {
     cy.task('db:seed');
   });
 
+  it('Visitor can not edit message (API)', () => {
+    cy.task('db:getObjectId', 'jan-profile-message1').then((objectId: string) => {
+      cy.profileApiPut('jan-profile', '/messages/' + objectId, { text: 'Visitor Message' }).then(
+        (response) => {
+          expect(response.status).to.eq(403);
+        },
+      );
+    });
+  });
+
   it('Success edit message', () => {
     cy.authenticatedAs('Jan');
     cy.loadProfile(`jan-profile/stream`);
@@ -19,13 +29,6 @@ describe('User can send messages', function () {
   });
 
   /*
-
-  it('Visitor can not create message (ACL)', () => {
-    cy.profileApiPost('public-group', '/messages', { text: 'Visitor Message' }).then((response) => {
-      expect(response.status).to.eq(403);
-    });
-  });
-
   it('Member can create message per api (ACL)', () => {
     cy.profileApiPost('public-group', '/messages', { text: 'Visitor Message' }, { as: 'Jan' }).then(
       (response) => {

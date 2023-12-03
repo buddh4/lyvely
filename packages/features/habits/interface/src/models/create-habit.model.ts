@@ -19,7 +19,7 @@ import {
   Min,
 } from 'class-validator';
 import { UserAssignmentStrategy } from '@lyvely/interface';
-import { BaseModel, Gte, Lte } from '@lyvely/common';
+import { BaseModel, Gte, Lte, Trim } from '@lyvely/common';
 
 @Expose()
 export class CreateHabitModel
@@ -28,11 +28,13 @@ export class CreateHabitModel
 {
   @IsString()
   @IsNotEmpty()
+  @Trim()
   @MaxLength(250)
   title: string;
 
   @IsString()
   @IsOptional()
+  @Trim()
   @Length(0, 2500)
   text?: string;
 

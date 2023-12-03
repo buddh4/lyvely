@@ -52,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented Language & Region settings with calendar preferences
 - API versioning capabilities
 - Configuration by db
+- Added `@Trim` transformer decorator as well as trim input property
 
 ## [0.2.1] - 2023-06-06
 

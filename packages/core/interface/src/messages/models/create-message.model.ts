@@ -1,13 +1,15 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsString, Length } from 'class-validator';
+import { IsString, Length, IsNotEmpty } from 'class-validator';
 import { MESSAGE_MAX_LENGTH } from '../messages.constants';
 import { CreateContentModel } from '@/content';
-import { PropertiesOf } from '@lyvely/common';
+import { PropertiesOf, Trim } from '@lyvely/common';
 
 @Exclude()
 export class CreateMessageModel extends CreateContentModel<CreateMessageModel> {
   @Expose()
   @IsString()
+  @IsNotEmpty()
+  @Trim()
   @Length(1, MESSAGE_MAX_LENGTH)
   text: string;
 

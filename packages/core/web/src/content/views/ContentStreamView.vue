@@ -35,6 +35,7 @@ async function openCreateContentModal() {
     <template #stream-empty>
       <div class="flex w-full h-full items-center justify-center">
         <div
+          data-id="empty-stream"
           class="flex flex-col gap-3 items-center justify-center bg-main main border-divide md:border md:shadow-lg rounded p-5 cursor-pointer"
           @click="openCreateContentModal">
           <img :src="emptyImageUrl" :alt="addButtonText" class="h-72 md:rounded" />

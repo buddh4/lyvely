@@ -9,6 +9,7 @@ export interface IProps {
   label?: Translatable;
   helpText?: Translatable;
   name?: string;
+  trim?: boolean;
   modelValue?: any;
   value?: string;
   property?: string;
@@ -33,6 +34,7 @@ const props = withDefaults(defineProps<IProps>(), {
   id: undefined,
   label: undefined,
   modelValue: undefined,
+  trim: true,
   helpText: undefined,
   value: undefined,
   property: undefined,

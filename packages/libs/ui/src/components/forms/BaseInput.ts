@@ -18,6 +18,7 @@ export interface IBaseInputProps {
   label?: Translatable;
   helpText?: Translatable | boolean;
   name?: string;
+  trim?: boolean;
   modelValue?: any;
   value?: string;
   property?: string;
@@ -32,46 +33,6 @@ export interface IBaseInputProps {
   error?: Translatable;
   loading?: boolean;
   autoValidation?: boolean;
-}
-
-export const baseInputDefaults = {
-  placeholder: undefined,
-  name: undefined,
-  disabled: false,
-  readonly: false,
-  required: false,
-  autocomplete: false,
-  autofocus: false,
-  autoValidation: true,
-  loading: false,
-  ariaDescribedby: undefined,
-  inputClass: undefined,
-  wrapperClass: undefined,
-  error: undefined,
-};
-
-export function useBaseInputProps() {
-  return {
-    id: { type: String },
-    label: { type: String },
-    helpText: { type: [String, Boolean] },
-    placeholder: { type: [Function, Object, String], default: undefined },
-    name: { type: String, default: undefined },
-    value: { type: String },
-    property: { type: String },
-    disabled: { type: Boolean, default: false },
-    readonly: { type: Boolean, default: false },
-    required: { type: Boolean, default: false },
-    autocomplete: { type: [Boolean, String], default: false },
-    autofocus: { type: Boolean, default: undefined },
-    autoValidation: { type: Boolean, default: true },
-    loading: { type: Boolean, default: false },
-    ariaDescribedby: { type: String, default: undefined },
-    modelValue: {},
-    inputClass: { type: [Object, Array, String], default: undefined },
-    wrapperClass: { type: String, default: undefined },
-    error: { type: String, default: undefined },
-  };
 }
 
 export interface IBaseInputSetupOptions {
@@ -89,11 +50,11 @@ function getComputedInputValue<T extends AllowedInputValueTypes = any>(
   return model && property
     ? computed<T>({
         get: () => model[property],
-        set: (val: T) => setTimeout(() => (model[property] = val)),
+        set: (val: T) => setTimeout(() => (model[property] = typeof val === 'string' && props.trim ? val.trim() : val)),
       })
     : computed<T>({
         get: () => props.modelValue,
-        set: (val: T) => emit('update:modelValue', val),
+        set: (val: T) => emit('update:modelValue', typeof val === 'string' && props.trim ? val.trim() : val),
       });
 }
 

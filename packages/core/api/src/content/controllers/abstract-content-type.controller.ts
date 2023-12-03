@@ -16,6 +16,7 @@ import { Profile, ProtectedProfileRequest } from '@/profiles';
 import { User } from '@/users';
 import { validate } from 'class-validator';
 import { Policies } from '@/policies';
+import { plainToInstance } from 'class-transformer';
 
 export abstract class AbstractContentTypeController<
   TContent extends Content,
@@ -45,7 +46,8 @@ export abstract class AbstractContentTypeController<
   }
 
   private transformCreateModel(raw: PropertiesOf<TCreateModel>): TCreateModel {
-    return createAndAssign(this.createModelType, raw);
+    const test = plainToInstance(this.createModelType, raw);
+    return createAndAssign(this.createModelType, test);
   }
 
   @Put(':cid')

@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import { HTMLAttributes, onMounted, Ref, ref } from 'vue';
-import { useFloatingInputSetup } from './FloatingInput';
 import { t, Translatable } from '@/i18n';
 import LyButton from '@/components/buttons/LyButton.vue';
 import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
+import {useBaseInputSetup} from "@/components/forms/BaseInput";
 
 export interface IProps {
   id?: string;
   label?: Translatable;
   helpText?: Translatable;
   name?: string;
+  trim?: boolean;
   modelValue?: any;
   value?: string;
   property?: string;
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<IProps>(), {
   label: undefined,
   modelValue: undefined,
   helpText: undefined,
+  trim: true,
   property: undefined,
   placeholder: undefined,
   name: undefined,
@@ -61,7 +63,7 @@ const input = ref<HTMLInputElement>() as Ref<HTMLInputElement>;
 const isEdit = ref(false);
 const editValue = ref('');
 
-const { inputId, dataId, inputValue, inputClass, onChange, onFocusOut } = useFloatingInputSetup(
+const { inputId, dataId, inputValue, inputClass, onChange, onFocusOut } = useBaseInputSetup(
   props,
   emit,
 );
