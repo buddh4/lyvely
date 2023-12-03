@@ -24,7 +24,9 @@ const hasHistory = usePageStore().hasHistory;
   <div class="p-2.5 md:px-4 bg-main border-divide rounded-t w-full">
     <div class="flex items-center">
       <ly-button v-if="hasHistory" class="text-sm pl-0" @click="historyBack">
-        <ly-icon name="arrow-left" class="w-3 mr-2" /><span>{{ $t('common.back') }}</span>
+        <ly-icon name="arrow-left" data-id="btn-back" class="w-3 mr-2" /><span>{{
+          $t('common.back')
+        }}</span>
       </ly-button>
       <div class="px-2 md:px-4 ml-auto inline">
         <ly-icon

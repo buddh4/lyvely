@@ -40,6 +40,7 @@ export function useContentEditModal<
 
   const originalOnSubmitSuccess = options.onSubmitSuccess;
   options.onSubmitSuccess = (response?: TResponse) => {
+    debugger;
     if (isCreate.value) {
       contentStore.handleCreateContent(response);
     } else {

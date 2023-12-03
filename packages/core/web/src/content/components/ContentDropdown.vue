@@ -47,6 +47,7 @@ const isEditable = computed(
       label="content.actions.edit"
       @click="onClickEdit"></ly-dropdown-link>
     <ly-dropdown-link
+      data-id="content-archive"
       :label="archiveLabel"
       :icon="archiveIcon"
       @click="onClickArchive"></ly-dropdown-link>

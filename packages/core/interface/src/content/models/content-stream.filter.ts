@@ -1,10 +1,14 @@
 import { Expose } from 'class-transformer';
-import { BaseModel } from '@lyvely/common';
+import { BaseModel, hasIntersection } from '@lyvely/common';
 import { IsBoolean, IsMongoId, IsOptional, IsString } from 'class-validator';
 import { IStreamFilter } from '@/streams';
+import { ContentModel } from '@/content';
 
 @Expose()
-export class ContentStreamFilter extends BaseModel<ContentStreamFilter> implements IStreamFilter {
+export class ContentStreamFilter
+  extends BaseModel<ContentStreamFilter>
+  implements IStreamFilter<ContentModel>
+{
   @IsMongoId()
   @IsOptional()
   parentId?: string;
@@ -66,6 +70,25 @@ export class ContentStreamFilter extends BaseModel<ContentStreamFilter> implemen
     if (this.query?.length) query['query'] = this.query;
     if (this.tagIds?.length) query['tagIds'] = this.tagIds;
     return query;
+  }
+
+  apply(items: ContentModel[]): ContentModel[] {
+    return items.filter((item) => this.test(item));
+  }
+
+  test(item: ContentModel): boolean {
+    if (this.parentId && item.meta.parentId !== this.parentId) return false;
+    if (this.tagIds && !hasIntersection(this.tagIds, item.tagIds)) return false;
+    if (this.archived && !item.meta.archived) return false;
+    if (!this.archived && item.meta.archived) return false;
+    if (
+      this.query?.length &&
+      !(item.getText()?.indexOf(this.query) || item.getText()?.indexOf(this.query))
+    ) {
+      return false;
+    }
+
+    return true;
   }
 
   mergeQuery(query: Record<string, any>) {

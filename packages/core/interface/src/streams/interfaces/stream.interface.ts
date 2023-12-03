@@ -43,8 +43,10 @@ export interface IStreamRequest<
   filter?: TFilter;
 }
 
-export interface IStreamFilter {
+export interface IStreamFilter<T = any> {
   reset(): void;
+  apply(items: T[]): T[];
+  test(item: T): boolean;
 }
 
 export interface IStreamClient<

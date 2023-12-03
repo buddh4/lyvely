@@ -113,6 +113,7 @@ export function useUpdateModelStore<
   }
 
   function setCreateModel(model: TCreateModel, ignoreBackup = false) {
+    debugger;
     isCreate.value = true;
     if (options.persistId !== false) {
       options.persistId ??= model.constructor.name;
@@ -190,7 +191,7 @@ export function useUpdateModelStore<
   }
 
   async function submit() {
-    if (!(await validator.validate())) return Promise.reject();
+    if (!(await validator.validate())) return false;
 
     try {
       const request = isCreate.value ? _createModel() : _editModel();
@@ -222,6 +223,8 @@ export function useUpdateModelStore<
         options.onSubmitError(err);
       } else if (!(err instanceof FieldValidationException)) {
         throw err;
+      } else {
+        return false;
       }
     }
   }
