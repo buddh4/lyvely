@@ -14,10 +14,6 @@ export const useContentStreamHistoryStore = defineStore('content-stream-history'
 
   watch(profile, resetHistory);
 
-  /**
-   * TODO: Note, this will not filter the stream, so it will for example show previously archived content.
-   * Not sure if this is too bad but maybe we should somehow run the stream filter again.
-   */
   useContentStore().onContentUpdated('*', (content: ContentModel) => {
     for (const history of stack.values()) {
       if (history.filter.test(content)) {
