@@ -36,6 +36,7 @@ const sidebars = {
             label: 'UI',
             items: [
                 'dev/ui/styles',
+                'dev/ui/menus',
             ],
         },
     ],

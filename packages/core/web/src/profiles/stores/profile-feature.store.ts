@@ -25,7 +25,7 @@ export const useProfileFeatureStore = defineStore('profile-feature-store', () =>
     featureStateMap.clear();
   }
 
-  function isFeatureEnabled(featureId: string): Ref<boolean> {
+  function getFeatureState(featureId: string): Ref<boolean> {
     let state = featureStateMap.get(featureId);
     if (state) return state;
 
@@ -35,12 +35,21 @@ export const useProfileFeatureStore = defineStore('profile-feature-store', () =>
     return state;
   }
 
+  function isFeatureEnabled(featureId: string): boolean {
+    return getFeatureState(featureId).value;
+  }
+
+  function isFeaturesEnabled(featureIds: string | string[]): boolean {
+    const ids = Array.isArray(featureIds) ? featureIds : [featureIds];
+    return ids.reduce((result, featureId) => result && isFeatureEnabled(featureId), true);
+  }
+
   async function setFeatureState(featureId: string, state: boolean): Promise<void> {
     const feature = getFeature(featureId);
 
     if (!feature) return;
 
-    const currentState = isFeatureEnabled(featureId);
+    const currentState = getFeatureState(featureId);
     currentState.value = state;
 
     const affectedModules = getAffectedFeatures(feature, state);
@@ -64,7 +73,7 @@ export const useProfileFeatureStore = defineStore('profile-feature-store', () =>
   }
 
   function _setState(featureId: string, enabled: boolean) {
-    const state = isFeatureEnabled(featureId);
+    const state = getFeatureState(featureId);
     state.value = enabled;
   }
 
@@ -75,6 +84,7 @@ export const useProfileFeatureStore = defineStore('profile-feature-store', () =>
 
   return {
     isFeatureEnabled,
+    isFeaturesEnabled,
     setFeatureEnabled: setFeatureState,
     getSettingFeaturesOfProfile,
   };

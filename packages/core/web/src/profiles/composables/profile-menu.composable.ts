@@ -3,13 +3,13 @@ import { computed } from 'vue';
 import { sortBySortOrder } from '@lyvely/interface';
 import { useProfileFeatureStore } from '@/profiles/stores/profile-feature.store';
 
-export const useProfileMenu = (menuId: string) => {
-  const allMenuEntries = getMenuEntries(menuId);
+export const useProfileMenu = <TContext = any>(menuId: string, context?: TContext) => {
+  const allMenuEntries = computed(() => getMenuEntries<TContext>(menuId, context));
   const enabledMenuEntries = computed(() => {
     return allMenuEntries.value
       .filter((entry) => {
         return (
-          (!entry.feature || useProfileFeatureStore().isFeatureEnabled(entry.feature).value) &&
+          (!entry.features?.length || useProfileFeatureStore().isFeaturesEnabled(entry.features)) &&
           (typeof entry.condition === 'undefined' || entry.condition)
         );
       })

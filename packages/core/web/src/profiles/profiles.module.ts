@@ -11,14 +11,9 @@ import {
   LAYOUT_PROFILE_SETTINGS,
   STACK_PROFILE_LAYOUT,
 } from '@/profiles/profile.constants';
-import {
-  isMultiUserProfile,
-  PROFILES_MODULE_ID,
-  useApiRequestInterceptor,
-} from '@lyvely/interface';
+import { PROFILES_MODULE_ID, useApiRequestInterceptor } from '@lyvely/interface';
 import { useProfileStore } from '@/profiles/stores';
 import { IModule } from '@/core';
-import { computed } from 'vue';
 import { profileIdInterceptor } from './interceptors';
 
 export const profilesModule = () => {
@@ -63,18 +58,15 @@ export const profilesModule = () => {
         },
       ]);
       registerMenuEntries(MENU_PROFILE_DRAWER, [
-        {
+        () => ({
           id: 'profileUsers',
           moduleId: PROFILES_MODULE_ID,
           to: { name: 'ProfileUsers' },
           icon: 'users',
           sortOrder: 3000,
           text: 'profiles.users.label',
-          condition: computed(() => {
-            const { profile } = useProfileStore();
-            return !!profile && isMultiUserProfile(profile);
-          }),
-        },
+          condition: useProfileStore().isMultiUserProfile(),
+        }),
         {
           id: 'profileSettings',
           moduleId: PROFILES_MODULE_ID,

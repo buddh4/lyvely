@@ -5,6 +5,8 @@ import { useContentEditStore } from '@/content/stores/content-edit.store';
 import { computed, ref } from 'vue';
 import { IConfirmOptions } from '@lyvely/ui';
 import { getContentTypeOptions } from '../registries';
+import { useProfileMenu } from '@/profiles';
+import { MENU_CONTENT_DROPDOWN } from '@/content/content.constants';
 
 export interface IProps {
   content: ContentModel;
@@ -16,7 +18,11 @@ const showConfirm = ref(false);
 const confirm = ref<IConfirmOptions>();
 const confirmAction = ref<() => void>();
 
-const { archiveIcon, archiveLabel, toggleArchive } = useContentArchive(props.content);
+const { toggleArchive } = useContentArchive(props.content);
+
+const menuEntries = computed(
+  () => useProfileMenu(MENU_CONTENT_DROPDOWN, props.content).enabledMenuEntries,
+);
 
 function onClickArchive() {
   confirmAction.value = toggleArchive;
@@ -41,26 +47,15 @@ const isEditable = computed(
 <template>
   <ly-dropdown button-class="item-menu-button" :data-id="'menu-' + content.id">
     <ly-dropdown-link
-      v-if="isEditable"
-      data-id="content-edit"
-      icon="edit"
-      label="content.actions.edit"
-      @click="onClickEdit"></ly-dropdown-link>
-    <ly-dropdown-link
-      data-id="content-archive"
-      :label="archiveLabel"
-      :icon="archiveIcon"
-      @click="onClickArchive"></ly-dropdown-link>
+      v-for="menuEntry in menuEntries"
+      :key="menuEntry.id"
+      :data-id="menuEntry.id"
+      :icon="menuEntry.icon"
+      :label="menuEntry.text"
+      :route="menuEntry.route"
+      @click="menuEntry?.click" />
     <slot></slot>
   </ly-dropdown>
-  <ly-confirm-modal
-    v-if="showConfirm"
-    v-model="showConfirm"
-    data-id="content-archive"
-    :options="confirm"
-    @submit="confirmAction">
-    <slot name="confirmBody"></slot>
-  </ly-confirm-modal>
 </template>
 
 <style scoped>

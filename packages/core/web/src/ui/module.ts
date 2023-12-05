@@ -12,10 +12,10 @@ import {
 import { IModule } from '@/core';
 import { uiRoutes } from '@/ui/routes';
 import {
-  registerMenuEntries,
   LyFlashMessage,
   registerComponentStackEntries,
   registerLayouts,
+  registerMenuEntry,
 } from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { useFlashStore, usePageStore } from './stores';
@@ -62,16 +62,14 @@ export const uiModule = () => {
         hideLoaderProgress,
         setHasHistory,
       ]);
-      registerMenuEntries(MENU_ACCOUNT_DRAWER, [
-        {
-          id: 'dark-mode-toggle',
-          sortOrder: 3000,
-          moduleId: UI_MODULE_ID,
-          icon: computed(() => (usePageStore().isDark ? 'light-mode' : 'dark-mode')),
-          click: () => usePageStore().toggleDark(),
-          text: computed(() => (usePageStore().isDark ? 'page.toLightMode' : 'page.toDarkMode')),
-        },
-      ]);
+      registerMenuEntry(MENU_ACCOUNT_DRAWER, () => ({
+        id: 'dark-mode-toggle',
+        sortOrder: 3000,
+        moduleId: UI_MODULE_ID,
+        icon: usePageStore().isDark ? 'light-mode' : 'dark-mode',
+        click: () => usePageStore().toggleDark(),
+        text: usePageStore().isDark ? 'page.toLightMode' : 'page.toDarkMode',
+      }));
       registerLayouts([
         {
           id: LAYOUT_INTRO,

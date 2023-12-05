@@ -124,7 +124,7 @@ export * from './helpers';
 export * from './types';
 export * from './components/layouts/interfaces';
 export * from './interfaces';
-export * from './components/menus/interfaces';
+export * from './components/menus';
 
 export type { Translatable, TranslationAdapter };
 export {

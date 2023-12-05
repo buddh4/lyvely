@@ -40,8 +40,8 @@ const userInfo = useUserInfo(props.model.meta.createdBy);
           <ly-avatar
             v-if="userInfo"
             class="w-8 h-8"
-            :name="unref(userInfo).displayName"
-            :guid="unref(userInfo).guid" />
+            :name="userInfo.displayName"
+            :guid="userInfo.guid" />
         </slot>
         <div class="flex flex-col text-sm">
           <slot name="title">

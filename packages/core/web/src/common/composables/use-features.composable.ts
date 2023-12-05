@@ -10,7 +10,7 @@ export const useFeatures = (...features: Array<string>) => {
   const profileFeatureStore = useProfileFeatureStore();
   const isEnabled = computed(() =>
     features.reduce(
-      (result, featureId) => result && profileFeatureStore.isFeatureEnabled(featureId).value,
+      (result, featureId) => result && profileFeatureStore.isFeatureEnabled(featureId),
       true,
     ),
   );

@@ -24,6 +24,7 @@
   },
   "web-types": "./dist/web-types.json",
   "scripts": {
+    "test": "vitest",
     "dev": "vite",
     "build": "lyvely-dev build:web && node bin/generate-types.js",
     "build:types": "node bin/generate-types.js",
@@ -73,9 +74,11 @@
     "@vitejs/plugin-vue": "^4.4.0",
     "@vue/compiler-sfc": "^3.3.4",
     "@vue/runtime-dom": "^3.3.4",
+    "@vue/test-utils": "^2.4.3",
     "autoprefixer": "^10.4.14",
     "dependency-cruiser": "^14.1.0",
     "glob": "^10.3.10",
+    "jsdom": "^23.0.1",
     "postcss": "^8.4.31",
     "postcss-import": "^15.1.0",
     "postcss-prefixer": "^3.0.0",
@@ -90,6 +93,7 @@
     "vite-plugin-dts": "^3.6.0",
     "vite-plugin-externalize-deps": "^0.7.0",
     "vite-tsconfig-paths": "^4.2.1",
+    "vitest": "^1.0.1",
     "vue-docgen-api": "^4.74.2",
     "vue-tsc": "^1.8.19"
   }

@@ -2,7 +2,6 @@
 import { LyTabMenu, LyIcon, LyTabMenuEntry } from '@lyvely/ui';
 import { useProfileMenu, t } from '@lyvely/web';
 import { MENU_ACTIVITIES } from '@/activities.constants';
-import { toValue } from 'vue';
 import { isPlainObject } from '@lyvely/common';
 
 let { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
@@ -20,7 +19,7 @@ let { enabledMenuEntries } = useProfileMenu(MENU_ACTIVITIES);
           <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" />
           <ly-icon v-else-if="isPlainObject(entry.icon)" v-bind="entry.icon" />
           <span :class="!active ? 'hidden md:inline' : ''">
-            {{ t(toValue(entry.text)) }}
+            {{ t(entry.text) }}
           </span>
         </div>
       </template>

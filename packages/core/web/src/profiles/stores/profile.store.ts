@@ -9,6 +9,7 @@ import {
   getProfileRelationRole,
   IProfilePermission,
   verifyEachProfilePermission,
+  isMultiUserProfile as _isMultiUserProfile,
 } from '@lyvely/interface';
 import { computed, ref } from 'vue';
 import { usePageStore } from '@/ui';
@@ -207,6 +208,10 @@ export const useProfileStore = defineStore('profile', () => {
     return 'stream';
   }
 
+  function isMultiUserProfile() {
+    return profile.value && _isMultiUserProfile(profile.value);
+  }
+
   return {
     profile,
     locale,
@@ -222,6 +227,7 @@ export const useProfileStore = defineStore('profile', () => {
     setPageTitle,
     getMemberUserInfo,
     getRoute,
+    isMultiUserProfile,
     verifyEachPermission,
     ...status,
   };

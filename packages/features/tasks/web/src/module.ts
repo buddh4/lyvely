@@ -5,7 +5,7 @@ import {
   useProfileFeatureStore,
   MENU_PROFILE_MOBILE_FOOTER,
 } from '@lyvely/web';
-import { registerMenuEntries } from '@lyvely/ui';
+import { registerMenuEntry } from '@lyvely/ui';
 import {
   ActivityTasksFeature,
   CreateTaskModel,
@@ -15,7 +15,6 @@ import {
 } from '@lyvely/tasks-interface';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { tasksRoutes } from '@/routes';
-import { computed } from 'vue';
 
 export default () => {
   return {
@@ -27,35 +26,30 @@ export default () => {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
     },
     init: () => {
-      registerMenuEntries(MENU_PROFILE_DRAWER, [
-        {
-          id: 'profile-tasks',
-          moduleId: TASKS_MODULE_ID,
-          text: 'tasks.title',
-          feature: TasksFeature.id,
-          sortOrder: 1502,
-          icon: { name: 'task', class: 'w-6' },
-          condition: computed(() => {
-            return !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id).value;
-          }),
-          to: { name: 'Tasks' },
-        },
-      ]);
+      const { isFeatureEnabled } = useProfileFeatureStore();
+      registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
+        id: 'profile-tasks',
+        moduleId: TASKS_MODULE_ID,
+        text: 'tasks.title',
+        features: TasksFeature.id,
+        sortOrder: 1502,
+        icon: 'task',
+        iconBindings: { class: 'w-6' },
+        condition: !isFeatureEnabled(ActivityTasksFeature.id),
+        to: { name: 'Tasks' },
+      }));
 
-      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
-        {
-          id: 'profile-tasks-footer',
-          moduleId: TASKS_MODULE_ID,
-          text: 'tasks.title',
-          feature: TasksFeature.id,
-          sortOrder: 1502,
-          icon: { name: 'task', class: 'w-6' },
-          condition: computed(() => {
-            return !useProfileFeatureStore().isFeatureEnabled(ActivityTasksFeature.id).value;
-          }),
-          to: { name: 'Tasks' },
-        },
-      ]);
+      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => ({
+        id: 'profile-tasks-footer',
+        moduleId: TASKS_MODULE_ID,
+        text: 'tasks.title',
+        features: TasksFeature.id,
+        sortOrder: 1502,
+        icon: 'task',
+        iconBindings: { class: 'w-6' },
+        condition: !isFeatureEnabled(ActivityTasksFeature.id),
+        to: { name: 'Tasks' },
+      }));
 
       registerContentType({
         type: TaskModel.contentType,

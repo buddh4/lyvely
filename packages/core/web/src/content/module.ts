@@ -6,7 +6,11 @@ import {
   STACK_PROFILE_LAYOUT,
 } from '@/profiles/profile.constants';
 import { CONTENT_MODULE_ID, ContentStreamFeature } from '@lyvely/interface';
+import type { ContentModel } from '@lyvely/interface';
 import { IModule } from '@/core';
+import { MENU_CONTENT_DROPDOWN } from '@/content/content.constants';
+import { useContentEditStore } from '@/content/stores';
+import { getContentTypeOptions } from '@/content/registries';
 
 export default () => {
   return {
@@ -27,16 +31,38 @@ export default () => {
         id: 'stream',
         moduleId: CONTENT_MODULE_ID,
         to: { name: 'stream' },
-        feature: ContentStreamFeature.id,
+        features: ContentStreamFeature.id,
         sortOrder: 1000,
         icon: 'stream',
         text: 'content.stream.title',
       });
+      registerMenuEntry<ContentModel>(MENU_CONTENT_DROPDOWN, (content: ContentModel) => ({
+        id: 'content-edit',
+        moduleId: CONTENT_MODULE_ID,
+        click: () => useContentEditStore().editContent(content),
+        condition:
+          getContentTypeOptions(content.type)?.interfaces?.edit !== false && !content.meta.archived,
+        features: ContentStreamFeature.id,
+        sortOrder: 1000,
+        icon: 'stream',
+        text: 'content.stream.title',
+      }));
+      registerMenuEntry<ContentModel>(MENU_CONTENT_DROPDOWN, (content: ContentModel) => ({
+        id: 'content-archive',
+        moduleId: CONTENT_MODULE_ID,
+        click: () => useContentEditStore().editContent(content),
+        condition:
+          getContentTypeOptions(content.type)?.interfaces?.edit !== false && !content.meta.archived,
+        features: ContentStreamFeature.id,
+        sortOrder: 1000,
+        icon: 'stream',
+        text: 'content.stream.title',
+      }));
       registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, {
         id: 'stream-footer',
         moduleId: CONTENT_MODULE_ID,
         to: { name: 'stream' },
-        feature: ContentStreamFeature.id,
+        features: ContentStreamFeature.id,
         sortOrder: 1000,
         icon: 'stream',
         text: 'content.stream.title',

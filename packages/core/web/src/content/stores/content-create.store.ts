@@ -90,7 +90,7 @@ export const useContentCreateStore = defineStore('content-create', () => {
     const options = getContentTypeOptions(type);
     if (!options) return false;
 
-    if (options.feature && !useProfileFeatureStore().isFeatureEnabled(options.feature).value) {
+    if (options.feature && !useProfileFeatureStore().isFeatureEnabled(options.feature)) {
       return false;
     }
 

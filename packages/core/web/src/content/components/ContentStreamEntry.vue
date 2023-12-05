@@ -117,8 +117,8 @@ const maxWidth = true;
             <ly-avatar
               v-if="userInfo"
               class="w-8 h-8"
-              :name="unref(userInfo).displayName"
-              :guid="unref(userInfo).guid" />
+              :name="userInfo.displayName"
+              :guid="userInfo.guid" />
           </template>
         </slot>
       </div>
@@ -127,7 +127,7 @@ const maxWidth = true;
           <span class="font-bold mr-1">
             <slot name="authorName">
               <template v-if="userInfo">
-                {{ unref(userInfo).displayName }}
+                {{ userInfo.displayName }}
               </template>
             </slot>
           </span>

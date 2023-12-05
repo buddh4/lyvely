@@ -5,14 +5,13 @@ import {
   registerRoutes,
   useProfileFeatureStore,
 } from '@lyvely/web';
-import { registerLayouts, registerMenuEntries } from '@lyvely/ui';
+import { registerLayouts, registerMenuEntries, registerMenuEntry } from '@lyvely/ui';
 import { MENU_ACTIVITIES, ACTIVITIES_MODULE_ID, LAYOUT_ACTIVITIES } from '@/activities.constants';
 import { activitiesRoutes } from '@/routes';
 import { ActivityHabitsFeature } from '@lyvely/habits-web';
 import { ActivityTasksFeature } from '@lyvely/tasks-web';
 import { ActivitiesFeature } from '@/activities.features';
 import { ActivityMilestonesFeature } from '@lyvely/milestones-web';
-import { computed } from 'vue';
 
 export default () => {
   return {
@@ -31,43 +30,33 @@ export default () => {
         },
       ]);
 
-      registerMenuEntries(MENU_PROFILE_DRAWER, [
-        {
-          id: 'activities',
-          text: 'activities.profile-drawer.title',
-          icon: 'activity',
-          sortOrder: 1500,
-          moduleId: ACTIVITIES_MODULE_ID,
-          condition: computed(() => {
-            const featureStore = useProfileFeatureStore();
-            return (
-              featureStore.isFeatureEnabled(ActivityMilestonesFeature.id).value ||
-              featureStore.isFeatureEnabled(ActivityTasksFeature.id).value ||
-              featureStore.isFeatureEnabled(ActivityHabitsFeature.id).value
-            );
-          }),
-          to: { name: 'Activities' }, // TODO: maybe implement router which saves last activity route
-        },
-      ]);
+      const { isFeatureEnabled } = useProfileFeatureStore();
 
-      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
-        {
-          id: 'activities-footer',
-          text: 'activities.profile-drawer.title',
-          icon: 'activity',
-          sortOrder: 1500,
-          moduleId: ACTIVITIES_MODULE_ID,
-          condition: computed(() => {
-            const featureStore = useProfileFeatureStore();
-            return (
-              featureStore.isFeatureEnabled(ActivityMilestonesFeature.id).value ||
-              featureStore.isFeatureEnabled(ActivityTasksFeature.id).value ||
-              featureStore.isFeatureEnabled(ActivityHabitsFeature.id).value
-            );
-          }),
-          to: { name: 'Activities' }, // TODO: maybe implement router which saves last activity route
-        },
-      ]);
+      registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
+        id: 'activities',
+        text: 'activities.profile-drawer.title',
+        icon: 'activity',
+        sortOrder: 1500,
+        moduleId: ACTIVITIES_MODULE_ID,
+        condition:
+          isFeatureEnabled(ActivityMilestonesFeature.id) ||
+          isFeatureEnabled(ActivityTasksFeature.id) ||
+          isFeatureEnabled(ActivityHabitsFeature.id),
+        to: { name: 'Activities' },
+      }));
+
+      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => ({
+        id: 'activities-footer',
+        text: 'activities.profile-drawer.title',
+        icon: 'activity',
+        sortOrder: 1500,
+        moduleId: ACTIVITIES_MODULE_ID,
+        condition:
+          isFeatureEnabled(ActivityMilestonesFeature.id) ||
+          isFeatureEnabled(ActivityTasksFeature.id) ||
+          isFeatureEnabled(ActivityHabitsFeature.id),
+        to: { name: 'Activities' },
+      }));
 
       registerMenuEntries(MENU_ACTIVITIES, [
         {
@@ -75,7 +64,7 @@ export default () => {
           text: 'habits.name',
           moduleId: ACTIVITIES_MODULE_ID,
           icon: 'activity',
-          feature: ActivityHabitsFeature.id,
+          features: ActivityHabitsFeature.id,
           to: { name: 'ActivityHabits' },
         },
         {
@@ -83,7 +72,7 @@ export default () => {
           text: 'tasks.title',
           moduleId: ACTIVITIES_MODULE_ID,
           icon: 'task',
-          feature: ActivityTasksFeature.id,
+          features: ActivityTasksFeature.id,
           to: { name: 'ActivityTasks' },
         },
         {
@@ -91,7 +80,7 @@ export default () => {
           text: 'milestones.title',
           moduleId: ACTIVITIES_MODULE_ID,
           icon: 'target',
-          feature: ActivityMilestonesFeature.id,
+          features: ActivityMilestonesFeature.id,
           to: { name: 'ActivityMilestones' },
         },
       ]);

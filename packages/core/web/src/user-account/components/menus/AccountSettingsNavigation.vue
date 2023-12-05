@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { LyTabMenu, LyTabMenuEntry, useMenu } from '@lyvely/ui';
 import { MENU_ACCOUNT_SETTINGS } from '@/user-account';
-import { toValue } from 'vue';
 
 const { enabledMenuEntries } = useMenu(MENU_ACCOUNT_SETTINGS);
 </script>
@@ -12,7 +11,7 @@ const { enabledMenuEntries } = useMenu(MENU_ACCOUNT_SETTINGS);
       v-for="menuEntry in enabledMenuEntries"
       :key="menuEntry.id"
       aria-controls="calendar-plan"
-      :label="toValue(menuEntry.text)"
+      :label="menuEntry.text"
       :to="menuEntry.to!" />
   </ly-tab-menu>
 </template>

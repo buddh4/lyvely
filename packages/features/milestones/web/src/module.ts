@@ -6,7 +6,7 @@ import {
   MENU_PROFILE_MOBILE_FOOTER,
   useProfileFeatureStore,
 } from '@lyvely/web';
-import { registerMenuEntries } from '@lyvely/ui';
+import { registerMenuEntry } from '@lyvely/ui';
 import {
   MilestoneModel,
   CreateMilestoneModel,
@@ -14,7 +14,6 @@ import {
   ActivityMilestonesFeature,
   MilestonesFeature,
 } from '@lyvely/milestones-interface';
-import { computed } from 'vue';
 import { milestoneRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 
@@ -29,42 +28,35 @@ export default () => {
       locale: (locale: string) => import(`./locales/${locale}.json`),
     },
     init: () => {
-      registerMenuEntries(MENU_PROFILE_DRAWER, [
-        {
-          id: 'profile-milestones',
-          moduleId: MILESTONES_MODULE_ID,
-          text: 'milestones.title',
-          sortOrder: 1503,
-          feature: MilestonesFeature.id,
-          icon: 'target',
-          condition: computed(() => {
-            return !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id).value;
-          }),
-          to: { name: 'Milestones' },
-        },
-      ]);
+      const { isFeatureEnabled } = useProfileFeatureStore();
+      registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
+        id: 'profile-milestones',
+        moduleId: MILESTONES_MODULE_ID,
+        text: 'milestones.title',
+        sortOrder: 1503,
+        features: MilestonesFeature.id,
+        icon: 'target',
+        condition: !isFeatureEnabled(ActivityMilestonesFeature.id),
+        to: { name: 'Milestones' },
+      }));
 
-      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
-        {
-          id: 'profile-milestones-footer',
-          moduleId: MILESTONES_MODULE_ID,
-          text: 'milestones.title',
-          sortOrder: 1503,
-          feature: MilestonesFeature.id,
-          icon: 'target',
-          condition: computed(() => {
-            return !useProfileFeatureStore().isFeatureEnabled(ActivityMilestonesFeature.id).value;
-          }),
-          to: { name: 'Milestones' },
-        },
-      ]);
+      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => ({
+        id: 'profile-milestones-footer',
+        moduleId: MILESTONES_MODULE_ID,
+        text: 'milestones.title',
+        sortOrder: 1503,
+        features: MilestonesFeature.id,
+        icon: 'target',
+        condition: !isFeatureEnabled(ActivityMilestonesFeature.id),
+        to: { name: 'Milestones' },
+      }));
 
       registerContentType({
         type: MilestoneModel.contentType,
         name: translation('milestones.name'),
         icon: 'target',
         moduleId: MILESTONES_MODULE_ID,
-        feature: 'milestones',
+        feature: MilestonesFeature.id,
         modelClass: MilestoneModel,
         interfaces: {
           create: {

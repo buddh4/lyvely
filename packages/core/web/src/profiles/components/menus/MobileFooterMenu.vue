@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { MENU_PROFILE_MOBILE_FOOTER } from '@/profiles/profile.constants';
 import { useProfileMenu } from '@/profiles/composables';
-import { LyMenuEntry, useMenu } from '@lyvely/ui';
+import { LyMenuEntry } from '@lyvely/ui';
 
 export interface IProps {
   state: boolean;
@@ -10,8 +10,6 @@ export interface IProps {
 defineProps<IProps>();
 
 const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_MOBILE_FOOTER);
-
-//const { activeView } = storeToRefs(useActivityStore());
 </script>
 
 <template>
@@ -28,14 +26,6 @@ const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_MOBILE_FOOTER);
             :entry="entry"
             :show-labels="false"
             class="nav-link" />
-
-          <!-- router-link class="nav-link" :to="{ name: activeView }">
-            <ly-icon name="activity" class="text-main" />
-          </router-link -->
-
-          <!-- router-link class="nav-link" :to="{ name: 'Journals' }">
-            <ly-icon name="journal" class="text-main" />
-          </router-link -->
         </div>
       </div>
     </nav>

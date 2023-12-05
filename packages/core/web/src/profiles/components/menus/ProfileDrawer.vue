@@ -13,8 +13,6 @@ import { MENU_PROFILE_DRAWER } from '@/profiles/profile.constants';
 const pageStore = usePageStore();
 const appDrawer = ref<HTMLElement>() as Ref<HTMLElement>;
 
-// TODO: make modules register menu items here...
-
 const { enabledMenuEntries } = useProfileMenu(MENU_PROFILE_DRAWER);
 
 const { toggleSidebar } = pageStore;

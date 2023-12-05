@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { IMenuEntry } from './interfaces';
+import {IconBindingsIf, IMenuEntry} from './interfaces';
 import { t } from '@/i18n';
-import { toValue } from 'vue';
+import {computed} from 'vue';
 import { isPlainObject } from '@lyvely/common';
+import { twMerge } from 'tailwind-merge';
 
 interface IProps {
   entry: IMenuEntry;
@@ -19,31 +20,31 @@ function onMenuItemClick() {
   if (props.entry.click) props.entry.click();
 }
 
-function getIconClass() {
-  if (isPlainObject(props.entry.icon)) {
-    const icon = toValue(props.entry.icon) as any;
-    return icon.class || props.iconClass;
+const iconBindings = computed(() => {
+  if (isPlainObject(props.entry.iconBindings)) {
+    const iconBindings = { ...props.entry.iconBindings } as IconBindingsIf;
+    iconBindings.class ??= '';
+    iconBindings.class = twMerge(iconBindings.class, props.iconClass);
+    return iconBindings;
   }
-  return props.iconClass;
-}
+  return { class: props.iconClass };
+});
 </script>
 
 <template>
   <router-link v-if="entry.to" :to="entry.to" :data-id="entry.id" @click="onMenuItemClick">
-    <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" :class="iconClass" />
-    <ly-icon v-else-if="isPlainObject(entry.icon)" v-bind="entry.icon" :class="getIconClass()" />
+    <ly-icon v-if="entry.icon" :name="entry.icon" v-bind="iconBindings" :class="iconClass" />
     <transition name="fade">
       <span v-if="showLabels">
-        {{ t(toValue(entry.text)) }}
+        {{ t(entry.text) }}
       </span>
     </transition>
   </router-link>
   <a v-else-if="entry.click" :data-id="entry.id" @click="onMenuItemClick">
-    <ly-icon v-if="typeof entry.icon === 'string'" :name="entry.icon" :class="iconClass" />
-    <ly-icon v-else-if="isPlainObject(entry.icon)" v-bind="entry.icon" :class="iconClass" />
+    <ly-icon v-if="entry.icon" :name="entry.icon" v-bind="iconBindings" :class="iconClass" />
     <transition name="fade">
       <span v-if="showLabels">
-        {{ t(toValue(entry.text)) }}
+        {{ t(entry.text) }}
       </span>
     </transition>
   </a>

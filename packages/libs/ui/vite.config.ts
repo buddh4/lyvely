@@ -15,6 +15,10 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  test: {
+    setupFiles: ['vitest.setup.ts'],
+    environment: 'jsdom',
+  },
   assetsInclude: ['**/*.svg'],
   resolve: {
     alias: [{ find: /^@(?=\/)/, replacement: resolve(__dirname, './src') }],

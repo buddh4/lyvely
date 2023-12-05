@@ -1,6 +1,6 @@
 import { IModule } from '@/core';
 import { USER_INVITATIONS_MODULE_ID } from '@lyvely/interface';
-import { registerMenuEntries, registerComponentStackEntries } from '@lyvely/ui';
+import { registerComponentStackEntries, registerMenuEntry } from '@lyvely/ui';
 import { STACK_PROFILE_LAYOUT } from '@/profiles';
 import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { useSendInviteUsersStore } from '@/user-invitations/stores';
@@ -19,16 +19,15 @@ export default () => {
           component: () => import('./components/InviteUsersModal.vue'),
         },
       ]);
-      registerMenuEntries(MENU_ACCOUNT_DRAWER, [
-        {
-          id: 'account-user-invite',
-          sortOrder: 4000,
-          moduleId: USER_INVITATIONS_MODULE_ID,
-          icon: { name: 'paper-plane', autoScale: true },
-          click: () => (useSendInviteUsersStore().showModal = true),
-          text: 'invitations.account.title',
-        },
-      ]);
+      registerMenuEntry(MENU_ACCOUNT_DRAWER, {
+        id: 'account-user-invite',
+        sortOrder: 4000,
+        moduleId: USER_INVITATIONS_MODULE_ID,
+        icon: 'paper-plane',
+        iconBindings: { autoScale: true },
+        click: () => (useSendInviteUsersStore().showModal = true),
+        text: 'invitations.account.title',
+      });
     },
   } as IModule;
 };

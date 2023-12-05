@@ -1,27 +1,24 @@
 import { Translatable } from '@/i18n';
 import { IconOptionsIF } from '@/types';
 import { RouteLocationRaw } from 'vue-router';
-import { ComputedRef, Ref } from 'vue';
 
-type MenuIcon =
-  | {
-      name?: string;
-      title?: Translatable;
-      options?: IconOptionsIF;
-      scaleTo?: number;
-      class?: string;
-      autoScale?: boolean;
-    }
-  | string;
+export interface IconBindingsIf {
+    title?: Translatable;
+    options?: IconOptionsIF;
+    scaleTo?: number;
+    class?: string;
+    autoScale?: boolean;
+}
 
 export interface IBaseMenuEntry {
   id: string;
-  icon?: MenuIcon | Ref<MenuIcon> | ComputedRef<MenuIcon>;
+  icon?: string;
+  iconBindings?: IconBindingsIf;
   moduleId: string;
-  text: Translatable | Ref<Translatable> | ComputedRef<Translatable>;
-  condition?: Ref<boolean> | ComputedRef<boolean>;
+  text: Translatable;
+  condition?: boolean;
   to?: RouteLocationRaw;
-  feature?: string;
+  features?: string[] | string;
   sortOrder?: number;
   click?: { (): void };
 }
@@ -34,4 +31,4 @@ export interface IClickMenuEntry extends IBaseMenuEntry {
   click: { (): void };
 }
 
-export type IMenuEntry = IRouteMenuEntry | IClickMenuEntry;
+export type IMenuEntry = IRouteMenuEntry | IClickMenuEntry

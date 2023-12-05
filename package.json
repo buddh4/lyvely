@@ -82,6 +82,7 @@
     "@types/node": "18.16.18",
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
+    "@vue/test-utils": "^2.4.3",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "cypress": "^12.11.0",
@@ -119,6 +120,7 @@
     "vite": "^4.3.9",
     "vite-plugin-externalize-deps": "^0.7.0",
     "vite-tsconfig-paths": "^4.2.0",
+    "vitest": "^1.0.1",
     "vue-tsc": "^1.6.5"
   }
 }

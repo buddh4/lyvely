@@ -21,7 +21,7 @@ watch(
   () => ref(props),
   (newValue) => {
     if (newValue) {
-      introJs().addSteps(unref(props.steps)).start();
+      introJs().addSteps(props.steps).start();
     } else {
       introJs().exit(true);
     }

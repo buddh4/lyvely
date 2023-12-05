@@ -7,7 +7,6 @@ import { registerMenuEntries } from '@lyvely/ui';
 import { MENU_ACCOUNT_DRAWER } from '@/user-account';
 import { useAuthStore } from '@/auth/store/auth.store';
 import { useAPIVisitorInterceptor, useAutoTokenRefresh } from './interceptors';
-import { computed } from 'vue';
 
 export const authModule = () => {
   return {
@@ -22,27 +21,29 @@ export const authModule = () => {
     init: () => {
       registerGuards([{ guard: authGuard, sortOrder: 2000 }]);
       registerMenuEntries(MENU_ACCOUNT_DRAWER, [
-        {
+        () => ({
           id: 'account-logout',
           sortOrder: 5000,
           moduleId: AUTH_MODULE_ID,
-          icon: { name: 'logout', autoScale: true },
-          condition: computed(() => useAuthStore().isAuthenticated),
+          icon: 'logout',
+          iconBindings: { autoScale: true },
+          condition: useAuthStore().isAuthenticated,
           click: () =>
             useAuthStore()
               .logout()
               .then(() => location.reload()),
           text: 'auth.account.logout',
-        },
-        {
+        }),
+        () => ({
           id: 'account-login',
           sortOrder: 5000,
           moduleId: AUTH_MODULE_ID,
-          icon: { name: 'logout', autoScale: true },
-          condition: computed(() => !useAuthStore().isAuthenticated),
+          icon: 'logout',
+          iconBindings: { autoScale: true },
+          condition: !useAuthStore().isAuthenticated,
           to: { name: 'Login' },
           text: 'auth.account.login',
-        },
+        }),
       ]);
       useAutoTokenRefresh();
       useAPIVisitorInterceptor();

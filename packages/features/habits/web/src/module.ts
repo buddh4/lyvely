@@ -7,7 +7,7 @@ import {
   translation,
   useProfileFeatureStore,
 } from '@lyvely/web';
-import { registerMenuEntries } from '@lyvely/ui';
+import { registerMenuEntry } from '@lyvely/ui';
 import {
   CreateHabitModel,
   HabitModel,
@@ -18,7 +18,6 @@ import {
 import { habitRoutes } from '@/routes';
 import { calendarPlanModule } from '@lyvely/calendar-plan-web';
 import { timeSeriesModule } from '@lyvely/time-series-web';
-import { computed } from 'vue';
 
 export default () => {
   return {
@@ -30,34 +29,27 @@ export default () => {
     dependencies: [calendarPlanModule(), timeSeriesModule()],
     features: [HabitsFeature, ActivityHabitsFeature],
     init: () => {
-      registerMenuEntries(MENU_PROFILE_DRAWER, [
-        {
-          id: 'profile-habits',
-          moduleId: HABITS_MODULE_ID,
-          text: 'habits.title',
-          sortOrder: 1501,
-          feature: HabitsFeature.id,
-          icon: { name: 'activity' },
-          condition: computed(() => {
-            return !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id).value;
-          }),
-          to: { name: 'Habits' },
-        },
-      ]);
-      registerMenuEntries(MENU_PROFILE_MOBILE_FOOTER, [
-        {
-          id: 'profile-habits-footer',
-          moduleId: HABITS_MODULE_ID,
-          text: 'habits.title',
-          sortOrder: 1501,
-          feature: HabitsFeature.id,
-          icon: { name: 'activity' },
-          condition: computed(() => {
-            return !useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id).value;
-          }),
-          to: { name: 'Habits' },
-        },
-      ]);
+      const { isFeatureEnabled } = useProfileFeatureStore();
+      registerMenuEntry(MENU_PROFILE_DRAWER, () => ({
+        id: 'profile-habits',
+        moduleId: HABITS_MODULE_ID,
+        text: 'habits.title',
+        sortOrder: 1501,
+        features: HabitsFeature.id,
+        icon: 'activity',
+        condition: isFeatureEnabled(ActivityHabitsFeature.id),
+        to: { name: 'Habits' },
+      }));
+      registerMenuEntry(MENU_PROFILE_MOBILE_FOOTER, () => ({
+        id: 'profile-habits-footer',
+        moduleId: HABITS_MODULE_ID,
+        text: 'habits.title',
+        sortOrder: 1501,
+        features: HabitsFeature.id,
+        icon: 'activity',
+        condition: isFeatureEnabled(ActivityHabitsFeature.id),
+        to: { name: 'Habits' },
+      }));
       registerRoutes(habitRoutes);
       registerContentType({
         type: HabitModel.contentType,

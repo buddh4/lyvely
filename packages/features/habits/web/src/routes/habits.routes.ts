@@ -15,7 +15,7 @@ export const habitRoutes = [
     path: profilePath('/habits'),
     beforeEnter: [
       (to, from, next) => {
-        if (useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id).value) {
+        if (useProfileFeatureStore().isFeatureEnabled(ActivityHabitsFeature.id)) {
           next(profilePathRoute('/activities/habits', useProfileStore().profile!.handle));
         }
         next();
