@@ -183,11 +183,15 @@ export class PollsService {
 
 ### Feature Configuration
 
-A feature switch check consists of three stages. First, the settings (e.g., profile settings) are checked to determine 
-if a feature is enabled or disabled. If there are no profile settings, the configuration is checked, which can be used 
-to overwrite the default settings of a feature. If no configuration is present for a feature, the defaults are used to 
+A feature switch check consists of three stages. 
+
+1. First, the settings (e.g., profile settings) are checked to determine 
+if a feature is enabled or disabled. 
+2. If there are no profile settings, the configuration is checked, which can be used 
+to overwrite the default settings of a feature. 
+3. If no configuration is present for a feature, the defaults are used to 
 determine whether a feature is enabled.
 
 :::tip
-For more information, please refer to the [Server Configuration Guide](../../admin/intro/server-configuration.md).
+For more information, please refer to the [Server Configuration Guide](../../admin/intro/server-configuration.md#features).
 :::
