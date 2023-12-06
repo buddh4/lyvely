@@ -20,6 +20,8 @@ export class ProfileFeaturesService {
     private configService: ConfigService<ServerConfiguration>,
   ) {}
 
+  async isFeaturesEnabled();
+
   async setFeatureState(
     profile: Profile,
     update: UpdateFeatureModel,

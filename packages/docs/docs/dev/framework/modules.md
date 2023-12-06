@@ -54,6 +54,13 @@ A minimal `interface` package, excluding configuration files, typically takes on
 │   │   ├── index.ts
 ```
 
+The interface package is responsible for:
+
+- Defining shared models and interfaces
+- Defining endpoint interfaces and clients
+- Defining [permissions](permissions.md)
+- Defining [features](features.md)
+
 ## The API Package
 
 The `api` package is responsible for implementing the backend API and other backend services, such as queues, 

@@ -28,6 +28,7 @@ const sidebars = {
                 'dev/framework/endpoints',
                 'dev/framework/acl',
                 'dev/framework/policies',
+                'dev/framework/features',
                 'dev/framework/content',
             ],
         },
