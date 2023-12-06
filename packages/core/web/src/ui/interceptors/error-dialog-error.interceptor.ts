@@ -1,6 +1,6 @@
 import { useFlashStore, usePageStore } from '@/ui';
 import { useGlobalDialogStore } from '@/core';
-import { Icons } from '@lyvely/ui';
+import { LySvgIcons } from '@lyvely/ui';
 import { usePingClient } from '@lyvely/interface';
 
 let pingInterval: number | undefined = undefined;
@@ -12,7 +12,7 @@ export const errorDialogErrorInterceptor = (error: any) => {
         useFlashStore().addErrorFlash('error.network.message');
       } else {
         useGlobalDialogStore().showError({
-          icon: Icons.error_network.name,
+          icon: LySvgIcons.error_network.name,
           title: 'error.network.title',
           message: 'error.network.message',
           buttonType: 'reload',
@@ -36,7 +36,7 @@ export const errorDialogErrorInterceptor = (error: any) => {
       error.response.data.message === 'invalid csrf token'
     ) {
       useGlobalDialogStore().showError({
-        icon: Icons.error_network.name,
+        icon: LyIconLibrary.error_network.name,
         title: 'error.csrf.title',
         message: 'error.csrf.message',
         buttonType: 'reload',

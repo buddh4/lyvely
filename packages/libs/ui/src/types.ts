@@ -1,4 +1,4 @@
-import { IconDefinitionIF, IconName } from './components/icons/Icons';
+import { IconDefinitionIF, IconName } from './components/icons/ly-icon.library';
 import { Component } from 'vue';
 import { Lazy } from '@lyvely/common';
 

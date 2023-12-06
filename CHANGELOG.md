@@ -31,7 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed ProfileType.Group from 'GroupProfile' to 'group'
 - Renamed ProfileType.User from 'UserProfile' to 'user'
 
-
 ### Added
 - Implemented basic legal module
 - Added Markdown support
@@ -53,6 +52,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API versioning capabilities
 - Configuration by db
 - Added `@Trim` transformer decorator as well as trim input property
+- Added icon library registry
 
 ## [0.2.1] - 2023-06-06
 

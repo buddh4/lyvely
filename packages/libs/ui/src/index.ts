@@ -51,11 +51,16 @@ import LyConditionalWrapper from './components/helpers/LyConditionalWrapper.vue'
 import LyTable from './components/tables/LyTable.vue';
 import LyMarkdownView from '@/components/markdown/LyMarkdownView.vue';
 import { App } from 'vue';
-import { Icons } from './components/icons/Icons';
+import { LyvelySvgIconLibrary } from "@/components/icons/libraries/ly-svg-icon.library";
+import { registerSvgIcon } from "@/components/icons/registries";
 import { LyvelyUiOptions, setConfigOptions } from './config';
 import { Translatable, TranslationAdapter } from './i18n';
 import LyComponentStack from '@/components/stack/LyComponentStack.vue';
 import { vMobileScrollbar } from '@/directives';
+import { registerIconLibrary } from "@/components/icons/registries";
+import { LySvgIcons} from "@/components/icons/registries";
+
+registerIconLibrary(LyvelySvgIconLibrary);
 
 const createLyvelyUi = (options?: LyvelyUiOptions) => {
   setConfigOptions(options);
@@ -130,7 +135,6 @@ export type { Translatable, TranslationAdapter };
 export {
   vMobileScrollbar,
   createLyvelyUi,
-  Icons,
   LyPasswordStrengthMeter,
   LyTimeNumberInput,
   LyTextarea,
@@ -181,4 +185,7 @@ export {
   LyMarkdownView,
   LyComponentStack,
   LyConditionalWrapper,
+  registerSvgIcon,
+  registerIconLibrary,
+  LySvgIcons
 };

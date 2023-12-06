@@ -1,4 +1,3 @@
-import { Component } from 'vue';
 import { IStreamEntryProps } from './stream-entry-props.interface';
 import { IContentDetailsProps } from './content-details-props.interface';
 import { Type } from '@lyvely/common';

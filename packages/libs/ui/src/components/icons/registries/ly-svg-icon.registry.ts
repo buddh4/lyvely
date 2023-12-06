@@ -1,11 +1,11 @@
-export interface IconDefinitionIF {
+export interface LySvgIconDefinitionIF {
   name: string;
   alias?: string[];
   viewBox: string;
   paths: string[];
 }
 
-export const Icons: { [n: string]: IconDefinitionIF } = {
+export const LySvgIcons: { [n: string]: LySvgIconDefinitionIF } = {
   play: {
     name: 'play',
     viewBox: '0 0 24 24',
@@ -507,17 +507,21 @@ export const Icons: { [n: string]: IconDefinitionIF } = {
   },
 };
 
-export type IconName = keyof typeof Icons & string;
+export type IconName = keyof typeof LySvgIcons & string;
 
-export function getIconByName(name: IconName): IconDefinitionIF | undefined {
-  const icon = Icons[name];
+export function registerSvgIcon(name: string, definition: LySvgIconDefinitionIF) {
+  LySvgIcons[name] = definition;
+}
+
+export function getSvgIconByName(name: IconName): LySvgIconDefinitionIF | undefined {
+  const icon = LySvgIcons[name];
   if (icon) {
     return icon;
   }
 
-  for (const iconName in Icons) {
-    if (Icons[iconName].alias?.includes(name)) {
-      return Icons[iconName];
+  for (const iconName in LySvgIcons) {
+    if (LySvgIcons[iconName].alias?.includes(name)) {
+      return LySvgIcons[iconName];
     }
   }
 }

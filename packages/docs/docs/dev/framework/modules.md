@@ -35,7 +35,7 @@ The `interface` package is essentially a TypeScript library built using `rollup`
 
 In most cases, the `interface` package relies on two key dependencies:
 
-- `@lyvely/interface`: This core package is essential for endpoint definitions and includes other common interfaces.
+- `@lyvely/interface`: This core package is essential for endpoint definitions and includes other core interfaces.
 - `@lyvely/common`: This package is used for model definitions and various helper functions.
 
 A minimal `interface` package, excluding configuration files, typically takes on this structure:
@@ -63,7 +63,7 @@ test environment.
 In most cases, the interface package relies on three key dependencies:
 
 - The modules own `interface` package, which provides endpoint interfaces, models, and helper functions.
-- `@lyvely/api`: This is used to access core APIs, including **Profiles**, **Users**, **Permissions** or **Policies**.
+- `@lyvely/api`: This is used to access core services and modules, including **Profiles**, **Users**, **Permissions** or **Policies**.
 - `@lyvely/common`: This package is utilized for various utility functions.
 
 A minimal `api` package, excluding configuration files, typically adheres to this structure:
@@ -87,12 +87,12 @@ explicit imports of the core `interface` package within a modules `api` package.
 
 :::info
 If your module becomes more complex as it evolves, it is advisable to organize your files into directories based on 
-their specific types.
+their specific types, e.g. `controllers`, `schemas`, `daos`, `services`.
 :::
 
 ### API Testing
 
-To initiate the test environment for an `api` package, run the `npm run api:dev` command. 
+To initiate the test environment for an `api` package, run the `npm run dev -w my-module-api` command. 
 This will launch a Lyvely API server with the default test configuration on `127.0.0.1:8080`.
 
 ## The Web Package

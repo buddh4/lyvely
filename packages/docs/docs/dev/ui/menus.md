@@ -28,7 +28,7 @@ a dropdown menu with the ID `MY_MENU_ID`.
 </template>
 ```
 
-### Menu Context
+#### Menu Context
 
 Some menus may provide additional context to their menu entries. For example, a content dropdown may provide a content
 model as context. You can achieve this by using the `context` argument of the `useProfileMenu` function:
@@ -40,7 +40,7 @@ const { enabledMenuEntries } = useProfileMenu(MY_MENU_ID, props.content);
 ## Registering Menu Entries
 
 You can register menu entries to a menu using the `registerMenuEntries` and `registerMenuEntry` functions. This typically
-occurs within the `init` function.
+occurs within a modules `init` function.
 
 **Simple Menu Entry Registration:**
 
@@ -63,6 +63,8 @@ export default () => {
   }
 }
 ```
+
+**Registering a Reactive Menu Entry:**
 
 If your menu entry contains conditional values that depend on reactive state, you need to wrap the result in a function
 instead of providing a plain object, as shown below:
@@ -88,7 +90,7 @@ export default () => {
 **Registering Menu Entry with a Condition:**
 
 You can add a condition to your menu entry, which determines whether the menu entry will be rendered or not. In most cases, you want
-your condition to be reactive, so you wrap the menu entry in a function:
+your condition to be reactive, so we wrap the menu entry in a function:
 
 ```typescript
 export default () => {
@@ -114,15 +116,10 @@ export default () => {
   return {
     id: MY_MODULE_ID,
     init: () => {
-      registerMenuEntry(MY_MENU_ID, {
-        id: 'my-module',
-        icon: 'my-icon',
+      registerMenuEntry(MY_MENU_ID, () => ({
+        // Other options
         features: MyModuleFeature.id,
-        moduleId: MY_MODULE_ID,
-        to: { name: 'MyModule' },
-        sortOrder: 2000,
-        text: 'my-module.labels.main_nav',
-      });
+      }))
     }
   }
 }

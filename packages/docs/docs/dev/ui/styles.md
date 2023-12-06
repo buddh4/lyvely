@@ -22,7 +22,7 @@ When building a module's web package, it generates the following resources relat
 - `tailwind.css`: This file includes all tailwind styles used by your module. 
 Typically, it's only used in the module's development and end-to-end (e2e) environments.
 - `tailwind.txt`: This file includes all tailwind selectors extracted from `tailwind.css`.
-Consuming packages use these files for scanning for dependent tailwind selectors.
+Consuming modules or applications use these files for scanning for dependent tailwind selectors.
 - `styles.css`: (optional) This file contains custom classes defined in `<style>` blocks within your components and imported styles. 
 These styles are exported by the modules `package.json` and must be imported by consuming applications. 
 
@@ -37,8 +37,8 @@ disrupting the order of selectors from another import.
 
 ### Including Dependent Tailwind Selectors
 
-To ensure that our consuming module or application includes dependent tailwind selectors, you must add the `tailwind.txt`
-file to the `tailwind.config.cjs` file of the consuming module or application, as shown below:
+To ensure that our consuming module or application includes all dependent tailwind selectors used by dependent modules, 
+you must add the `tailwind.txt` file to the `tailwind.config.cjs` file of the consuming module or application, as shown below:
 
 ```javascript title=tailwind.config.cjs
 const baseConfig = require('@lyvely/devtools/tailwind/tailwind.config');
@@ -58,7 +58,7 @@ module.exports = {
 
 :::info
 The `tailwind.config.cjs` is used to generate the `tailwind.txt` file for consumption by other modules or applications 
-and `tailwind.css` which is used in test environments.
+as well as `tailwind.css` which is used in test environments.
 :::
 
 ### Export of `style.css` and `tailwind.txt`
@@ -128,7 +128,7 @@ const postCssConfig = require('@lyvely/devtools/tailwind/postcss.config.js');
 module.exports = postCssConfig;
 ```
 
-The `main.ts` is used to run a test environments and needs to include all dependent styles and the `style/tailwind.css`:
+The `main.ts` is used to run a test environment and needs to include all dependent styles and the `style/tailwind.css`:
 
 ```javascript title=main.ts
 import 'reflect-metadata';

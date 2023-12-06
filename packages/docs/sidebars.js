@@ -24,10 +24,10 @@ const sidebars = {
             label: 'Framework',
             items: [
                 'dev/framework/modules',
-                'dev/framework/acl',
-                'dev/framework/policies',
                 'dev/framework/models',
                 'dev/framework/endpoints',
+                'dev/framework/acl',
+                'dev/framework/policies',
                 'dev/framework/content',
             ],
         },
@@ -37,6 +37,7 @@ const sidebars = {
             items: [
                 'dev/ui/styles',
                 'dev/ui/menus',
+                'dev/ui/icons',
             ],
         },
     ],
