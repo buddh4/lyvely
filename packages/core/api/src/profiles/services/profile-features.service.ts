@@ -8,11 +8,18 @@ import {
   isInstallableProfileFeature,
   DocumentNotFoundException,
   ForbiddenServiceException,
+  isEnabledProfileFeature,
 } from '@lyvely/interface';
 import { Profile } from '../schemas';
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
 
+/**
+ * A service for managing profile level features.
+ * @constructor
+ * @param {ProfileDao} profileDao - The profile DAO to access profile data.
+ * @param {ConfigService<ServerConfiguration>} configService - The service for retrieving server configuration.
+ */
 @Injectable()
 export class ProfileFeaturesService {
   constructor(
@@ -20,8 +27,26 @@ export class ProfileFeaturesService {
     private configService: ConfigService<ServerConfiguration>,
   ) {}
 
-  async isFeaturesEnabled();
+  /**
+   * Determines if a specific feature is enabled for a given profile.
+   *
+   * @param {Profile} profile - The profile object.
+   * @param {string} featureId - The ID of the feature to check.
+   * @return {Promise<boolean>} - A promise that resolves to a boolean indicating if the feature is enabled.
+   */
+  isFeaturesEnabled(profile: Profile, featureId: string): boolean {
+    return isEnabledProfileFeature(featureId, profile, this.configService.get('features', {}));
+  }
 
+  /**
+   * Sets the state of a feature for a given profile.
+   *
+   * @param {Profile} profile - The profile to update.
+   * @param {UpdateFeatureModel} update - The update object containing the featureId and state.
+   * @returns {Promise<UpdateFeatureResponseModel>} - The response model containing the updated enabled and disabled features.
+   * @throws {DocumentNotFoundException} - If the feature is not found.
+   * @throws {ForbiddenServiceException} - If the feature cannot be installed for the profile.
+   */
   async setFeatureState(
     profile: Profile,
     update: UpdateFeatureModel,

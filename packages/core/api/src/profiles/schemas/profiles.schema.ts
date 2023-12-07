@@ -12,8 +12,11 @@ import {
 import { User } from '@/users';
 import { Tag, TagSchema } from './tags.schema';
 import {
+  IPermissionObject,
+  IPermissionSetting,
   MAX_PROFILE_DESCRIPTION_LENGTH,
   ProfileModel,
+  ProfileRelationRole,
   ProfileType,
   ProfileUsage,
   ProfileVisibilityLevel,
@@ -48,7 +51,7 @@ const ProfileMetadataSchema = SchemaFactory.createForClass(ProfileMetadata);
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class Profile
   extends BaseDocument<Profile>
-  implements PropertiesOf<ProfileModel<TObjectId>>
+  implements PropertiesOf<ProfileModel<TObjectId>>, IPermissionObject<ProfileRelationRole>
 {
   /** The main owner of this profile, note that there may be additional owners registered as profile relation. **/
   @ObjectIdProp({ required: true })
@@ -147,6 +150,15 @@ export class Profile
 
   /** Profile discriminator type **/
   type: ProfileType;
+
+  /**
+   * Retrieves the permission settings.
+   *
+   * @return {IPermissionSetting<ProfileRelationRole>[]} The array of permission settings.
+   */
+  getPermissionSettings(): IPermissionSetting<ProfileRelationRole>[] {
+    return this.permissions || [];
+  }
 
   /**
    * Crates a profile for the given initial owner user.

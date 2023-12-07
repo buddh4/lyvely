@@ -15,9 +15,11 @@ export default {
       ttl: Number.MAX_VALUE,
     },
   },
-  visitorStrategy: {
-    mode: VisitorMode.Enabled,
-    handles: ['public-group'],
+  permissions: {
+    visitorStrategy: {
+      mode: VisitorMode.Enabled,
+      handles: ['public-group'],
+    },
   },
   mongodb: {
     uri: process.env.MONGODB_URI_E2E || 'mongodb://localhost:27017/lyvely-e2e',

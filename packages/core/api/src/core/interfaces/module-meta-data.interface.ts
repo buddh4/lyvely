@@ -7,7 +7,7 @@ export type IModuleMetadata<T = any> = ModuleMetadata & {
   name?: string;
   description?: string;
   features?: IFeature[];
-  permissions?: IPermission<any>[];
+  permissions?: IPermission<any, any>[];
   options?: Record<string, any>;
 } & {
   [K in keyof T]: T[K];

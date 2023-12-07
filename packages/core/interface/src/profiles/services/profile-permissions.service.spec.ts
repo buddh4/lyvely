@@ -1,17 +1,19 @@
 import {
+  BasePermissionType,
   clearPermissions,
   IPermissionConfig,
-  IPermissionOptions,
   registerPermissions,
-} from '@/permissions';
+} from '../../permissions';
 import { ProfileRelationRole } from '../interfaces';
-import { verifyProfilePermission } from './profile-permissions.helper';
 import { ProfileModel } from '../models';
-import { IntegrityException } from '@/exceptions';
-import { UserStatus } from '@/users';
+import { IntegrityException } from '../../exceptions';
+import { UserStatus, VisitorMode } from '../../users';
+import { useProfilePermissionsService } from './profile-permissions.service';
 
-describe('verifyProfilePermission', function () {
+describe('ProfilePermissionsService', function () {
   afterEach(clearPermissions);
+
+  const service = useProfilePermissionsService();
 
   it('profile permission defaults', () => {
     registerPermissions([
@@ -21,43 +23,44 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Admin,
         max: ProfileRelationRole.Member,
         default: ProfileRelationRole.Member,
+        type: BasePermissionType.Profile,
       },
     ]);
     const profile = new ProfileModel();
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Moderator,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Member,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Guest,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(false);
   });
@@ -70,21 +73,22 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Admin,
         max: ProfileRelationRole.Member,
         default: ProfileRelationRole.Member,
+        type: BasePermissionType.Profile,
       },
     ]);
     const profile = new ProfileModel({
       permissions: [{ id: 'test', role: ProfileRelationRole.Owner }],
     });
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Admin,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
   });
@@ -97,21 +101,22 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Admin,
         max: ProfileRelationRole.Member,
         default: ProfileRelationRole.Member,
+        type: BasePermissionType.Profile,
       },
     ]);
     const profile = new ProfileModel({
       permissions: [{ id: 'test', role: ProfileRelationRole.Guest }],
     });
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Guest,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(false);
   });
@@ -124,45 +129,46 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Admin,
         max: ProfileRelationRole.Member,
         default: ProfileRelationRole.Member,
+        type: BasePermissionType.Profile,
       },
     ]);
     const profile = new ProfileModel({
       permissions: [{ id: 'test', role: ProfileRelationRole.Moderator }],
     });
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Admin,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Moderator,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Member,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(false);
   });
@@ -175,47 +181,48 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Admin,
         max: ProfileRelationRole.Member,
         default: ProfileRelationRole.Member,
+        type: BasePermissionType.Profile,
       },
     ]);
 
-    const config: IPermissionOptions = {
+    const config: IPermissionConfig = {
       defaults: [{ id: 'test', role: ProfileRelationRole.Moderator }],
-      visitorsAllowed: false,
+      visitorStrategy: { mode: VisitorMode.Disabled },
     };
     const profile = new ProfileModel();
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Admin,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
+        profile,
         config,
       ),
     ).toEqual(true);
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Moderator,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
+        profile,
         config,
       ),
     ).toEqual(true);
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Member,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
+        profile,
         config,
       ),
     ).toEqual(false);
@@ -229,20 +236,21 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Member,
         max: ProfileRelationRole.Visitor,
         default: ProfileRelationRole.Visitor,
+        type: BasePermissionType.Profile,
       },
     ]);
-    const config: IPermissionOptions = {
+    const config: IPermissionConfig = {
       defaults: [{ id: 'test', role: ProfileRelationRole.Visitor }],
-      visitorsAllowed: false,
+      visitorStrategy: { mode: VisitorMode.Disabled },
     };
     const profile = new ProfileModel();
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Visitor,
         },
+        profile,
         config,
       ),
     ).toEqual(false);
@@ -255,20 +263,21 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Member,
         max: ProfileRelationRole.Visitor,
         default: ProfileRelationRole.Visitor,
+        type: BasePermissionType.Profile,
       },
     ]);
-    const config: IPermissionOptions = {
+    const config: IPermissionConfig = {
       defaults: [{ id: 'test', role: ProfileRelationRole.Visitor }],
-      visitorsAllowed: true,
+      visitorStrategy: { mode: VisitorMode.Enabled, handles: [''] },
     };
     const profile = new ProfileModel();
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.Member,
         },
+        profile,
         config,
       ),
     ).toEqual(true);
@@ -282,19 +291,20 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Moderator,
         max: ProfileRelationRole.Member,
         default: ProfileRelationRole.User,
+        type: BasePermissionType.Profile,
       },
     ]);
     const profile = new ProfileModel();
     expect(
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.User,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(false);
   });
@@ -307,6 +317,7 @@ describe('verifyProfilePermission', function () {
         min: ProfileRelationRole.Member,
         max: ProfileRelationRole.Moderator,
         default: ProfileRelationRole.User,
+        type: BasePermissionType.Profile,
       },
     ]);
     const profile = new ProfileModel();
@@ -314,15 +325,15 @@ describe('verifyProfilePermission', function () {
     expect.assertions(1);
 
     try {
-      verifyProfilePermission(
+      service.verifyPermission(
         'test',
         {
-          settings: profile.permissions,
           role: ProfileRelationRole.User,
           userStatus: UserStatus.Active,
           relationStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        profile,
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       );
     } catch (e) {
       expect(e instanceof IntegrityException).toEqual(true);

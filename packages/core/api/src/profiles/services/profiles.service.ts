@@ -10,8 +10,8 @@ import {
   VALID_HANDLE_REGEX,
   DocumentNotFoundException,
   UniqueConstraintException,
-  VisitorStrategy,
   MisconfigurationException,
+  IPermissionConfig,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';
@@ -41,13 +41,13 @@ import {
 } from '@/user-account/user-account.constants';
 import { ProfileSettingsService } from './profile-settings.service';
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/config';
+import { ConfigurationPath } from '@/config';
 
 @Injectable()
 export class ProfilesService {
   constructor(
     private profileDao: ProfileDao,
-    private configService: ConfigService<ServerConfiguration>,
+    private configService: ConfigService<ConfigurationPath>,
     private membershipDao: MembershipsDao,
     private membershipService: ProfileMembershipService,
     private relationsService: ProfileRelationsService,
@@ -272,7 +272,7 @@ export class ProfilesService {
   }
 
   async findDefaultVisitorProfile(): Promise<ProfileContext> {
-    const visitorStrategy = this.configService.get<VisitorStrategy>('visitorStrategy');
+    const visitorStrategy = this.configService.get('permissions.visitorStrategy');
     if (!visitorStrategy?.handles?.length) {
       throw new MisconfigurationException('No visitor profile set.');
     }

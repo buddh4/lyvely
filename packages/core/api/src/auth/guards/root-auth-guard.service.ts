@@ -9,16 +9,21 @@ import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '@/core';
 import { extractAuthCookie, JWT_ACCESS_TOKEN } from './strategies';
 import { ConfigService } from '@nestjs/config';
-import { ServerConfiguration } from '@/config';
 import { firstValueFrom } from 'rxjs';
-import { VisitorMode, Headers, ForbiddenServiceException } from '@lyvely/interface';
+import {
+  VisitorMode,
+  Headers,
+  ForbiddenServiceException,
+  VisitorStrategy,
+} from '@lyvely/interface';
 import { Request } from 'express';
+import { ConfigurationPath } from '@/config';
 
 @Injectable()
 export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
   constructor(
     private reflector: Reflector,
-    private configService: ConfigService<ServerConfiguration>,
+    private configService: ConfigService<ConfigurationPath>,
   ) {
     super();
   }
@@ -74,7 +79,7 @@ export class RootAuthGuard extends AuthGuard(JWT_ACCESS_TOKEN) {
   }
 
   async handleGuestAccess() {
-    const visitorStrategy = this.configService.get('visitorStrategy');
+    const visitorStrategy = this.configService.get<VisitorStrategy>('permissions.visitorStrategy');
     if (visitorStrategy?.mode !== VisitorMode.Enabled) throw new UnauthorizedException();
     return true;
   }

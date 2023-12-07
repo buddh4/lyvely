@@ -16,9 +16,11 @@ export default {
     baseUrl: 'http://127.0.0.1:8080/api',
     appUrl: 'http://127.0.0.1:3000',
   },
-  visitorStrategy: {
-    mode: VisitorMode.Enabled,
-    handles: ['welcome'],
+  permissions: {
+    visitorStrategy: {
+      mode: VisitorMode.Enabled,
+      handles: ['welcome'],
+    },
   },
   mongodb: {
     uri: 'mongodb://localhost:27017/lyvely',

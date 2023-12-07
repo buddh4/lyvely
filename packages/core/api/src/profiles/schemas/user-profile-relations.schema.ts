@@ -56,9 +56,6 @@ type UserRelation = {
   role: string;
 };
 
-/**
- * TODO: also include oid? Only problematic if we move a profile from one orga to another...
- */
 @Schema({ timestamps: true, discriminatorKey: 'type' })
 export class UserProfileRelation<C extends UserRelation = UserRelation>
   extends BaseDocument<C>

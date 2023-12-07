@@ -1,11 +1,11 @@
-import { UserStatus } from '@/users';
+import { UserStatus, VisitorStrategy } from '@/users';
 
 /**
  * Used to define a global or profile permission in a network.
  *
  * A permission is
  */
-export interface IPermission<IRole> {
+export interface IPermission<TRole, TType extends string> {
   /** Unique permission id **/
   id: string;
 
@@ -13,13 +13,13 @@ export interface IPermission<IRole> {
   moduleId: string;
 
   /** Minimum role level this permission needs to be assigned to e.g. admin would mean admin and owner are always permitted **/
-  min: IRole;
+  min: TRole;
 
   /** Maximum role level this permission can be assigned to e.g. member means no guest or non-member role is permitted **/
-  max: IRole;
+  max: TRole;
 
   /** The default role this permission is assigned to, needs to respect the min/max range **/
-  default: IRole;
+  default: TRole;
 
   /** If this permission depends on other permissions **/
   dependencies?: string[];
@@ -27,47 +27,69 @@ export interface IPermission<IRole> {
   /** Can be used to allow other user statuses beside UserStatus.Active which is the default **/
   userStatuses?: UserStatus[];
 
-  /** If false or undefined means the permission is a profile level permission **/
-  global?: boolean;
+  /** Defines a type of permission, e.g. profile, user, global **/
+  type: TType;
 }
 
 /**
- * A global permission is not related to any profile.
+ * This interface defines the data of a permission subject which access against a permission object is verified e.g. a user.
+ * @template TRole Representing the type of roles allowed.
  */
-export interface IGlobalPermission extends IPermission<GlobalPermissionRole> {
-  global: true;
-}
-
-/**
- * This interface defines permission context information required to verify a global user permission.
- */
-export interface IPermissionContext<IRole> {
-  role: IRole;
+export interface IPermissionSubject<TRole> {
+  /** Defines the role of the subject in relation to the permission object **/
+  role: TRole;
+  /** Defines the groups the subject is part of **/
+  groups?: string[];
+  /** Defines the status of the subject in relation to the object. **/
   userStatus?: UserStatus;
 }
 
 /**
- * This interface defines permission context information required to verify a global permissions.
+ * Represents a permission object which is accessed by the permission subject.
+ * @template TRole Representing the type of roles allowed.
  */
-export interface IGlobalPermissionContext extends IPermissionContext<GlobalPermissionRole> {}
+export interface IPermissionObject<TRole> {
+  getPermissionSettings(): IPermissionSetting<TRole>[];
+}
 
 /**
- * Defines global roles of a user or visitor.
+ * Defines a permission setting state e.g. in profile settings or configuration.
+ * @template TRole Representing the type of roles allowed.
  */
-export enum GlobalPermissionRole {
-  Admin = 'admin',
-  Support = 'support',
+export interface IPermissionSetting<IRole = string> {
+  id: string;
+  role: IRole;
+  groups?: string[];
+}
+
+/**
+ * Permission config used in app- and server-configuration.
+ *
+ * @example
+ *
+ * {
+ *   defaults: [{ id: 'some-permission', role: GlobalPermissionRole.Admin }]
+ * }
+ */
+export interface IPermissionConfig {
+  /** Can be used to overwrite default permission roles **/
+  defaults?: IPermissionSetting<any>[];
+  visitorStrategy: VisitorStrategy;
+}
+
+/**
+ * Enum representing the base permission roles.
+ *
+ * @enum {string}
+ * @readonly
+ */
+export enum BasePermissionRole {
   User = 'user',
   Visitor = 'visitor',
 }
 
-/**
- * Defines a flat hierarchy of global user roles. This is used for permissions and access rules in which a
- * role with a lower level e.g. an admin includes permissions and access rights of higher levels e.g. user.
- */
-export const globalPermissionRoleHierarchy = [
-  GlobalPermissionRole.Admin,
-  GlobalPermissionRole.Support,
-  GlobalPermissionRole.User,
-  GlobalPermissionRole.Visitor,
-];
+export enum BasePermissionType {
+  Global = 'global',
+  Profile = 'profile',
+  User = 'user',
+}

@@ -1,7 +1,7 @@
-import { Exclude, Expose, Type } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 import { BaseModel, DocumentModel, TransformObjectId, PropertyType } from '@lyvely/common';
 import { ProfileType, ProfileRelationRole, ProfileUsage } from '../interfaces';
-import { IPermissionSetting } from '@/permissions';
+import { IPermissionObject, IPermissionSetting } from '@/permissions';
 import { TagModel } from './tag.model';
 
 @Expose()
@@ -12,13 +12,17 @@ export class ProfileInfoModel extends BaseModel<ProfileInfoModel> {
 }
 
 @Expose()
-export class ProfilePermissionSetting implements IPermissionSetting {
+export class ProfilePermissionSetting implements IPermissionSetting<ProfileRelationRole> {
   id: string;
   role: ProfileRelationRole;
+  groups?: string[];
 }
 
 @Exclude()
-export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>> {
+export class ProfileModel<TID = string>
+  extends DocumentModel<ProfileModel<TID>>
+  implements IPermissionObject<ProfileRelationRole>
+{
   @Expose()
   subscription?: string;
 
@@ -74,4 +78,8 @@ export class ProfileModel<TID = string> extends DocumentModel<ProfileModel<TID>>
   @Expose()
   @PropertyType([TagModel])
   tags: TagModel[];
+
+  getPermissionSettings(): IPermissionSetting<ProfileRelationRole>[] {
+    return this.permissions || [];
+  }
 }

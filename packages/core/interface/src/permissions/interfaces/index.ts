@@ -1,3 +1,3 @@
 export * from './permissions.interface';
-export * from './permission-setting.interface';
-export * from './permissions-config.interface';
+export * from './permissions-service.interface';
+export * from './global-permissions.interface';

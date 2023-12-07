@@ -1,13 +1,13 @@
 import { IPermission } from './interfaces/permissions.interface';
 
 /** permission registration **/
-const permissions = new Map<string, IPermission<any>>();
+const permissions = new Map<string, IPermission<any, any>>();
 
 /**
  * Registers an array of permissions.
  * @param permissionsToAdd
  */
-export function registerPermissions(permissionsToAdd: IPermission<any>[]) {
+export function registerPermissions(permissionsToAdd: IPermission<any, any>[]) {
   permissionsToAdd.forEach((permission) => permissions.set(permission.id, permission));
 }
 
@@ -19,16 +19,36 @@ export function clearPermissions() {
 }
 
 /**
- * Searches for a permission by id or instance. In case an instance is given this function assures it is registered.
- * @param permissionOrId permission id or IPermission instance
+ * Retrieves a permission based on the provided permission ID or permission object.
+ *
+ * @param {string | IPermission<any, any>} permissionOrId - The ID of the permission to retrieve or the permission object itself.
+ * @param {string} [type] - Optional. The type of permission to filter by.
+ *
+ * @return {TPermission | undefined} The retrieved permission object if found, undefined otherwise.
  */
-export function getPermission(permissionOrId: string | IPermission<any>) {
-  return permissions.get(typeof permissionOrId === 'string' ? permissionOrId : permissionOrId.id);
+export function getPermission<TPermission extends IPermission<any, any> = IPermission<any, any>>(
+  permissionOrId: string | IPermission<any, any>,
+  type?: string,
+): TPermission | undefined {
+  const permission = permissions.get(
+    typeof permissionOrId === 'string' ? permissionOrId : permissionOrId.id,
+  );
+
+  if (permission && type) return permission.type === type ? <TPermission>permission : undefined;
+
+  return permission as TPermission;
 }
 
 /**
- * Returns all registered permissions
+ * Retrieves all permissions or filtered permissions of a given type.
+ *
+ * @param {string} [type] - Optional. The type of permissions to retrieve. If provided, only permissions of this type will be returned.
+ *
+ * @returns {TPermission[]} - An array of permissions that match the specified type, or all permissions if no type is provided.
  */
-export function getAllPermissions(): IPermission<any>[] {
-  return Array.from(permissions.values());
+export function getAllPermissions<
+  TPermission extends IPermission<any, any> = IPermission<any, any>,
+>(type?: string): TPermission[] {
+  const result = Array.from(permissions.values()) as TPermission[];
+  return type ? result.filter((p) => p.type === type) : result;
 }

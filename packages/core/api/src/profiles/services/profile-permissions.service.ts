@@ -1,8 +1,8 @@
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
 import { Injectable } from '@nestjs/common';
-import { verifyProfilePermission } from '@lyvely/interface';
 import { ProfileContext } from '../models';
+import { useProfilePermissionsService } from '@lyvely/interface';
 
 /**
  * Service for handling profile level permissions within the application.
@@ -66,14 +66,14 @@ export class ProfilePermissionsService {
     const role = context.getRole();
     const membership = context.getMembership();
     const config = this.configService.get('permissions', {});
-    return verifyProfilePermission(
+    return useProfilePermissionsService().verifyPermission(
       permissionId,
       {
         role,
         userStatus: user?.status,
-        settings: profile.permissions,
         relationStatus: membership?.relationStatus,
       },
+      profile,
       config,
     );
   }

@@ -1,15 +1,18 @@
 import {
+  BasePermissionType,
   clearPermissions,
   GlobalPermissionRole,
-  IPermissionOptions,
+  IPermissionConfig,
   registerPermissions,
 } from '../index';
-import { verifyGlobalPermission } from './permissions.helper';
-import { IntegrityException } from '@lyvely/interface';
-import { UserStatus } from '../../users';
+import { IntegrityException } from '../../exceptions';
+import { UserStatus, VisitorMode } from '../../users';
+import { useGlobalPermissionsService } from './global-permissions.service';
 
-describe('verifyGlobalPermission', function () {
+describe('GlobalPermissionsService', function () {
   afterEach(clearPermissions);
+
+  const service = useGlobalPermissionsService();
 
   it('profile permission defaults', () => {
     registerPermissions([
@@ -19,34 +22,40 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.Admin,
         max: GlobalPermissionRole.User,
         default: GlobalPermissionRole.User,
-        global: true,
+        type: BasePermissionType.Global,
       },
     ]);
+
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         {
           role: GlobalPermissionRole.Support,
           userStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        {
+          getPermissionSettings: () => [],
+        },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         {
           role: GlobalPermissionRole.User,
           userStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         { role: GlobalPermissionRole.Visitor },
-        { visitorsAllowed: false },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(false);
   });
@@ -59,17 +68,18 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.User,
         max: GlobalPermissionRole.Visitor,
         default: GlobalPermissionRole.Admin,
-        global: true,
+        type: BasePermissionType.Global,
       },
     ]);
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         {
           role: GlobalPermissionRole.User,
           userStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
   });
@@ -82,17 +92,19 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.Admin,
         max: GlobalPermissionRole.Support,
         default: GlobalPermissionRole.User,
+        type: BasePermissionType.Global,
       },
     ]);
 
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         {
           role: GlobalPermissionRole.User,
           userStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(false);
   });
@@ -105,26 +117,28 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.Admin,
         max: GlobalPermissionRole.User,
         default: GlobalPermissionRole.User,
-        global: true,
+        type: BasePermissionType.Global,
       },
     ]);
 
-    const config: IPermissionOptions = {
+    const config: IPermissionConfig = {
       defaults: [{ id: 'test', role: GlobalPermissionRole.Admin }],
-      visitorsAllowed: false,
+      visitorStrategy: { mode: VisitorMode.Disabled },
     };
 
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         { role: GlobalPermissionRole.Admin, userStatus: UserStatus.Active },
+        { getPermissionSettings: () => [] },
         config,
       ),
     ).toEqual(true);
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         { role: GlobalPermissionRole.User, userStatus: UserStatus.Active },
+        { getPermissionSettings: () => [] },
         config,
       ),
     ).toEqual(false);
@@ -138,16 +152,18 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.User,
         max: GlobalPermissionRole.Visitor,
         default: GlobalPermissionRole.Visitor,
+        type: BasePermissionType.Global,
       },
     ]);
-    const config: IPermissionOptions = {
+    const config: IPermissionConfig = {
       defaults: [{ id: 'test', role: GlobalPermissionRole.Visitor }],
-      visitorsAllowed: false,
+      visitorStrategy: { mode: VisitorMode.Disabled },
     };
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         { role: GlobalPermissionRole.Visitor, userStatus: UserStatus.Active },
+        { getPermissionSettings: () => [] },
         config,
       ),
     ).toEqual(false);
@@ -161,17 +177,18 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.User,
         max: GlobalPermissionRole.Visitor,
         default: GlobalPermissionRole.Visitor,
-        global: true,
+        type: BasePermissionType.Global,
       },
     ]);
-    const config: IPermissionOptions = {
+    const config: IPermissionConfig = {
       defaults: [{ id: 'test', role: GlobalPermissionRole.Visitor }],
-      visitorsAllowed: true,
+      visitorStrategy: { mode: VisitorMode.Enabled, handles: [''] },
     };
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         { role: GlobalPermissionRole.Visitor, userStatus: UserStatus.Active },
+        { getPermissionSettings: () => [] },
         config,
       ),
     ).toEqual(true);
@@ -185,17 +202,18 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.Admin,
         max: GlobalPermissionRole.Support,
         default: GlobalPermissionRole.User,
-        global: true,
+        type: BasePermissionType.Global,
       },
     ]);
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         {
           role: GlobalPermissionRole.User,
           userStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(false);
   });
@@ -208,20 +226,21 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.User,
         max: GlobalPermissionRole.Admin,
         default: GlobalPermissionRole.User,
-        global: true,
+        type: BasePermissionType.Global,
       },
     ]);
 
     expect.assertions(1);
 
     try {
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         {
           role: GlobalPermissionRole.User,
           userStatus: UserStatus.Active,
         },
-        { visitorsAllowed: false },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       );
     } catch (e) {
       expect(e instanceof IntegrityException).toEqual(true);
@@ -236,20 +255,51 @@ describe('verifyGlobalPermission', function () {
         min: GlobalPermissionRole.Admin,
         max: GlobalPermissionRole.User,
         default: GlobalPermissionRole.User,
-        global: true,
+        type: BasePermissionType.Global,
       },
     ]);
 
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         {
           role: GlobalPermissionRole.User,
           userStatus: UserStatus.Disabled,
         },
-        { visitorsAllowed: false },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(false);
+  });
+
+  it('check invalid permission type', () => {
+    registerPermissions([
+      {
+        id: 'test',
+        moduleId: 'test',
+        min: GlobalPermissionRole.Admin,
+        max: GlobalPermissionRole.User,
+        default: GlobalPermissionRole.User,
+        userStatuses: [UserStatus.EmailVerification],
+        type: BasePermissionType.Profile,
+      },
+    ]);
+
+    expect.assertions(1);
+
+    try {
+      service.verifyPermission(
+        'test',
+        {
+          role: GlobalPermissionRole.User,
+          userStatus: UserStatus.EmailVerification,
+        },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
+      );
+    } catch (e) {
+      expect(e instanceof IntegrityException).toEqual(true);
+    }
   });
 
   it('check overwrite default user status requirement', () => {
@@ -261,18 +311,19 @@ describe('verifyGlobalPermission', function () {
         max: GlobalPermissionRole.User,
         default: GlobalPermissionRole.User,
         userStatuses: [UserStatus.EmailVerification],
-        global: true,
+        type: BasePermissionType.Global,
       },
     ]);
 
     expect(
-      verifyGlobalPermission(
+      service.verifyPermission(
         'test',
         {
           role: GlobalPermissionRole.User,
           userStatus: UserStatus.EmailVerification,
         },
-        { visitorsAllowed: false },
+        { getPermissionSettings: () => [] },
+        { visitorStrategy: { mode: VisitorMode.Disabled } },
       ),
     ).toEqual(true);
   });

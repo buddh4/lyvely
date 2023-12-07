@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
-import { getPermission, IntegrityException } from '@lyvely/interface';
+import { BasePermissionType, getPermission, IntegrityException } from '@lyvely/interface';
 import { ProfileContext } from '../models';
 import { User } from '@/users';
 
@@ -55,8 +55,13 @@ export class PermissionGuard implements CanActivate {
   private verifyPermission(context: ProfileContext, user: User | undefined, permissionId: string) {
     const permission = getPermission(permissionId);
     if (!permission) throw new IntegrityException('Could not find permission ' + permissionId);
-    return permission.global
-      ? this.globalPermissionsService.verifyPermission(context.user, permission.id)
-      : this.profilePermissionsService.verifyPermission(context, permission.id);
+    switch (permission.type) {
+      case BasePermissionType.Profile:
+        return this.profilePermissionsService.verifyPermission(context, permission.id);
+      case BasePermissionType.Global:
+        return this.globalPermissionsService.verifyPermission(context.user, permission.id);
+    }
+    // TODO: Support of user permissions
+    return false;
   }
 }

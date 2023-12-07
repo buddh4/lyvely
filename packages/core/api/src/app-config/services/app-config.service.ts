@@ -18,7 +18,9 @@ export class AppConfigService {
    */
   getAppConfig(): IAppConfig<any> {
     const config: IAppConfig<any> = {
-      visitorStrategy: this.configService.get('visitorStrategy', { mode: VisitorMode.Disabled }),
+      visitorStrategy: this.configService.get('permissions.visitorStrategy', {
+        mode: VisitorMode.Disabled,
+      }),
       appName: this.configService.get('appName', 'lyvely'),
       docUrl: this.configService.get('docUrl') || 'https://docs.lyvely.app',
       modules: {},
