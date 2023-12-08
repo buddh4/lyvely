@@ -1,5 +1,5 @@
 import { SendResetPasswordMail, ResetPassword } from '../models';
-import { IResetPasswordService } from '../endpoints';
+import { IResetPasswordService } from './reset-password.endpoint';
 import resetPasswordRepository from './reset-password.repository';
 import { unwrapResponse } from '@/endpoints';
 import { useSingleton } from '@lyvely/common';

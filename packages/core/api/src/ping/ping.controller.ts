@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
 import { Public } from '@/core';
-import { ENDPOINT_PING, IPingResponse, PingEndpoint } from '@lyvely/interface';
+import { API_PING, IPingResponse, PingEndpoint } from '@lyvely/interface';
 
-@Controller(ENDPOINT_PING)
+@Controller(API_PING)
 export class PingController implements PingEndpoint {
   @Public()
   @Get()

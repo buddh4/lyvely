@@ -1,4 +1,10 @@
-import { chunkArray, findAndRemove, findAndReplace } from './array.util';
+import {
+  chunkArray,
+  findAndRemove,
+  findAndReplace,
+  getIntersection,
+  hasIntersection,
+} from './array.util';
 
 describe('array util', () => {
   describe('findAndReplace', () => {
@@ -120,6 +126,72 @@ describe('array util', () => {
         { id: 2, name: 'Jane' },
         { id: 3, name: 'Doe' },
       ]);
+    });
+  });
+
+  describe('getIntersection function', () => {
+    it('returns empty array when one of the input arrays is empty', () => {
+      const array1: string[] = ['a', 'b', 'c'];
+      const array2: string[] = [];
+      const result = getIntersection(array1, array2);
+      expect(result).toEqual([]);
+    });
+
+    it('returns correct intersection for two string arrays', () => {
+      const array1: string[] = ['a', 'b', 'c'];
+      const array2: string[] = ['b', 'c', 'd'];
+      const result = getIntersection(array1, array2);
+      expect(result).toEqual(['b', 'c']);
+    });
+
+    it('returns correct intersection for two number arrays', () => {
+      const array1: number[] = [1, 2, 3];
+      const array2: number[] = [2, 3, 4];
+      const result = getIntersection(array1, array2);
+      expect(result).toEqual([2, 3]);
+    });
+
+    it('returns correct intersection with comparison function', () => {
+      const array1: any[] = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+      const array2: any[] = [{ id: 'a' }, { id: 'c' }, { id: 'x' }];
+
+      const result = getIntersection(array1, array2, (a: any, b: any) => a.id === b.id);
+      expect(result).toEqual([{ id: 'a' }, { id: 'c' }]);
+    });
+  });
+
+  describe('hasIntersection function', () => {
+    it('should return false if either of the input arrays has no elements', () => {
+      expect(hasIntersection([], ['element'])).toBeFalsy();
+      expect(hasIntersection(['element'], [])).toBeFalsy();
+    });
+
+    it('should return true if there is at least one common element between the arrays', () => {
+      expect(hasIntersection(['common', 'unique1'], ['common', 'unique2'])).toBeTruthy();
+    });
+
+    it('should return false if there is no common element between the arrays', () => {
+      expect(hasIntersection(['unique1'], ['unique2'])).toBeFalsy();
+    });
+
+    it('should return false if there is no common element between the arrays', () => {
+      expect(hasIntersection(['unique1'], ['unique2'])).toBeFalsy();
+    });
+
+    it('should return true if intersection with comparison function', () => {
+      const array1: any[] = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+      const array2: any[] = [{ id: 'a' }, { id: 'c' }, { id: 'x' }];
+
+      const result = hasIntersection(array1, array2, (a: any, b: any) => a.id === b.id);
+      expect(result).toEqual(true);
+    });
+
+    it('should return false if no intersection with comparison function', () => {
+      const array1: any[] = [{ id: 'a' }, { id: 'b' }, { id: 'c' }];
+      const array2: any[] = [{ id: 'x' }];
+
+      const result = hasIntersection(array1, array2, (a: any, b: any) => a.id === b.id);
+      expect(result).toEqual(false);
     });
   });
 

@@ -1,24 +1,24 @@
 import { IStreamRequest } from '@/streams';
 import {
-  ENDPOINT_NOTIFICATIONS,
+  API_NOTIFICATIONS,
   INotificationsClient,
-  NotificationEndpointPaths,
+  NotificationEndpoints,
 } from './notification.endpoint';
 import { useApi } from '@/repository';
 
-const api = useApi<INotificationsClient>(ENDPOINT_NOTIFICATIONS);
+const api = useApi<INotificationsClient>(API_NOTIFICATIONS);
 
 export default {
   async loadTail(request: IStreamRequest) {
-    return api.post<'loadTail'>(NotificationEndpointPaths.TAIL, request);
+    return api.post<'loadTail'>(NotificationEndpoints.TAIL, request);
   },
 
   async loadHead(request: IStreamRequest) {
-    return api.post<'loadHead'>(NotificationEndpointPaths.HEAD, request);
+    return api.post<'loadHead'>(NotificationEndpoints.HEAD, request);
   },
 
   async markAsSeen(nid: string) {
-    return api.post<'markAsSeen'>(NotificationEndpointPaths.MARK_AS_SEEN(nid));
+    return api.post<'markAsSeen'>(NotificationEndpoints.MARK_AS_SEEN(nid));
   },
 
   async loadEntry(nid: string) {
@@ -26,6 +26,6 @@ export default {
   },
 
   async test() {
-    return api.post<'test'>(NotificationEndpointPaths.TEST);
+    return api.post<'test'>(NotificationEndpoints.TEST);
   },
 };

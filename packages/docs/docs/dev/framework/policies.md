@@ -105,12 +105,12 @@ endpoint. This approach is effective because the `@ContentTypeController` is res
 request context.
 
 ```typescript
-@ContentTypeController(ENDPOINT_POLLS, Poll)
+@ContentTypeController(API_POLLS, Poll)
 export class PollsController {
     constructor(private pollsService: PollsService) {}
     
     @Policies(ClosePollPolicy)
-    @Post(PollsEndpointPaths.close(':cid'))
+    @Post(PollsEndpoints.close(':cid'))
     closePoll(request: ProfileContentRequest<Poll>) {
         const { context } = request;
         this.pollsService.close(context);

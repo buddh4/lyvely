@@ -37,7 +37,7 @@ export function useRelationHelper<
 }
 
 export function getProfileRelationRole(
-  user: PropertiesOf<UserModel> | null | undefined,
+  user: PropertiesOf<UserModel<any>> | null | undefined,
   relations: ProfileRelationModel<any>[],
   orgRelations?: ProfileRelationModel<any>[],
 ) {

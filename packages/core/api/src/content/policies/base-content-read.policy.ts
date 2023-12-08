@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IContentPolicy } from '../interfaces';
 import { ProfileContentContext } from '../schemas';
 import { ModuleRef } from '@nestjs/core';
-import { getProfileRoleVisibilityLevel } from '@lyvely/interface';
+import { getProfileRoleLevel } from '@lyvely/interface';
 
 @Injectable()
 export abstract class BaseContentReadPolicy implements IContentPolicy {
@@ -10,6 +10,6 @@ export abstract class BaseContentReadPolicy implements IContentPolicy {
   protected moduleRef: ModuleRef;
 
   async verify(context: ProfileContentContext): Promise<boolean> {
-    return getProfileRoleVisibilityLevel(context.getRole()) <= context.content.meta.visibility;
+    return getProfileRoleLevel(context.getRole()) <= context.content.meta.visibility;
   }
 }

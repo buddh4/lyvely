@@ -6,4 +6,4 @@ export interface IContentStreamClient extends IStreamClient<ContentModel, Conten
 
 export type ContentStreamEndpoint = Endpoint<IContentStreamClient>;
 
-export const ENDPOINT_CONTENT_STREAM = profileApiPrefix('stream');
+export const API_CONTENT_STREAM = profileApiPrefix('stream');

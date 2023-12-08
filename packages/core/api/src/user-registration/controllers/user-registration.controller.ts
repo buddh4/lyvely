@@ -5,13 +5,13 @@ import { ConfigurationPath } from '@/config';
 import {
   UserRegistrationEndpoint,
   UserRegistration,
-  ENDPOINT_USER_REGISTRATION,
+  API_USER_REGISTRATION,
   ResendOtp,
   OtpInfo,
   VerifyEmailDto,
   UserModel,
   StringFieldValidityRequest,
-  UserRegistrationEndpointPaths,
+  UserRegistrationEndpoints,
   UniqueConstraintException,
 } from '@lyvely/interface';
 import {} from '@/user-account';
@@ -20,7 +20,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import ms from 'ms';
 
-@Controller(ENDPOINT_USER_REGISTRATION)
+@Controller(API_USER_REGISTRATION)
 @UseClassSerializer()
 export class UserRegistrationController
   extends AbstractJwtAuthController
@@ -50,25 +50,25 @@ export class UserRegistrationController
   }
 
   @Public()
-  @Post(UserRegistrationEndpointPaths.CHECK_USERNAME)
+  @Post(UserRegistrationEndpoints.CHECK_USERNAME)
   async checkUsername(@Body() userData: StringFieldValidityRequest): Promise<void> {
     await this.registerService.validateUserName(userData.value || '');
   }
 
   @Public()
-  @Post(UserRegistrationEndpointPaths.CHECK_USER_EMAIL)
+  @Post(UserRegistrationEndpoints.CHECK_USER_EMAIL)
   async checkUserEmail(@Body() userData: StringFieldValidityRequest): Promise<void> {
     await this.registerService.validateEmail(userData.value || '');
   }
 
   @Public()
-  @Post(UserRegistrationEndpointPaths.RESENT_VERIFY_EMAIL)
+  @Post(UserRegistrationEndpoints.RESENT_VERIFY_EMAIL)
   async resendVerifyEmail(@Body() dto: ResendOtp): Promise<OtpInfo> {
     return await this.registerService.resendOtp(dto.emailOrUsername);
   }
 
   @Public()
-  @Post(UserRegistrationEndpointPaths.VERIFY_EMAIL)
+  @Post(UserRegistrationEndpoints.VERIFY_EMAIL)
   async verifyEmail(@Body() verifyEmail: VerifyEmailDto, @Req() req: Request) {
     const { user, remember } = await this.registerService.verifyEmail(verifyEmail);
     if (!user) throw new UnauthorizedException();

@@ -12,10 +12,19 @@ export class ProfileInfoModel extends BaseModel<ProfileInfoModel> {
 }
 
 @Expose()
-export class ProfilePermissionSetting implements IPermissionSetting<ProfileRelationRole> {
+export class ProfilePermissionSettingModel<TID = string>
+  implements IPermissionSetting<TID, ProfileRelationRole>
+{
   id: string;
   role: ProfileRelationRole;
-  groups?: string[];
+  groups?: TID[];
+}
+
+@Expose()
+export class ProfileMemberGroupModel {
+  id: string;
+  name: string;
+  description?: string;
 }
 
 @Exclude()
@@ -63,8 +72,12 @@ export class ProfileModel<TID = string>
   settings: Record<string, any>;
 
   @Expose()
-  @PropertyType([ProfilePermissionSetting])
-  permissions: ProfilePermissionSetting[];
+  @PropertyType([ProfilePermissionSettingModel<TID>])
+  permissions: ProfilePermissionSettingModel<TID>[];
+
+  @Expose()
+  @PropertyType([ProfileMemberGroupModel])
+  groups: ProfileMemberGroupModel[];
 
   @Expose()
   visibility: number;
@@ -79,7 +92,11 @@ export class ProfileModel<TID = string>
   @PropertyType([TagModel])
   tags: TagModel[];
 
-  getPermissionSettings(): IPermissionSetting<ProfileRelationRole>[] {
+  getPermissionSettings(): IPermissionSetting<any, ProfileRelationRole>[] {
     return this.permissions || [];
+  }
+
+  getPermissionGroups(): string[] {
+    return this.groups.map((g) => g.id);
   }
 }

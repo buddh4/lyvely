@@ -80,7 +80,6 @@ export class UserProfileRelation<C extends UserRelation = UserRelation>
 
   type: string;
 
-  @Prop({ type: String })
   role?: string;
 
   createdAt: Date;

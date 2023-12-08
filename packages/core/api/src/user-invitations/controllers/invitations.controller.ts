@@ -7,14 +7,14 @@ import {
 } from '../services';
 import {
   UserInvitationsEndpoint,
-  ENDPOINT_USER_INVITATIONS,
+  API_USER_INVITATIONS,
   InvitationRequest,
-  UserInvitationsEndpointPaths,
+  UserInvitationsEndpoints,
 } from '@lyvely/interface';
 import { Public, UseClassSerializer } from '@/core';
 import { UserRequest } from '@/users';
 
-@Controller(ENDPOINT_USER_INVITATIONS)
+@Controller(API_USER_INVITATIONS)
 @UseClassSerializer()
 export class InvitationsController implements UserInvitationsEndpoint {
   constructor(
@@ -31,24 +31,24 @@ export class InvitationsController implements UserInvitationsEndpoint {
   }
 
   @Public()
-  @Get(UserInvitationsEndpointPaths.MAIL(':t'))
+  @Get(UserInvitationsEndpoints.MAIL(':t'))
   async getMailInvitationInfo(@Param('t') token: string) {
     return await this.mailInviteService.getInvitationInfo(token);
   }
 
-  @Get(UserInvitationsEndpointPaths.USER(':pid'))
+  @Get(UserInvitationsEndpoints.USER(':pid'))
   async getUserInvitationInfo(@Param('pid') profile: string, @Req() req: UserRequest) {
     const { user } = req;
     return await this.userInviteService.getInvitationInfo({ user, profile });
   }
 
-  @Post(UserInvitationsEndpointPaths.ACCEPT(':pid'))
+  @Post(UserInvitationsEndpoints.ACCEPT(':pid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   async accept(@Param('pid') pid: string, @Req() req: UserRequest) {
     await this.invitationsService.acceptUserInvitation(req.user, pid);
   }
 
-  @Post(UserInvitationsEndpointPaths.DECLINE(':pid'))
+  @Post(UserInvitationsEndpoints.DECLINE(':pid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   async decline(@Param('pid') pid: string, @Req() req: UserRequest) {
     await this.invitationsService.declineUserInvitation(req.user, pid);

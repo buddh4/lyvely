@@ -160,7 +160,7 @@ controller or controller endpoint level, as shown below:
 
 ```typescript
 @Features(PollsFeature.id)
-@ProfileController(ENDPOINT_POLLS)
+@ProfileController(API_POLLS)
 class PollsController {}
 ```
 

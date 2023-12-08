@@ -1,21 +1,19 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { BaseDocument } from '@/core';
-import { IPermissionSetting, ProfileRelationRole } from '@lyvely/interface';
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { BaseDocument, NestedSchema, ObjectIdArrayProp, TObjectId } from '@/core';
+import { ProfileRelationRole, IProfilePermissionSetting } from '@lyvely/interface';
 import { getStringEnumValues } from '@lyvely/common';
 
-@Schema({ timestamps: true })
-export class ProfileRolePermission
-  extends BaseDocument<ProfileRolePermission>
-  implements IPermissionSetting<ProfileRelationRole>
+@NestedSchema()
+export class ProfilePermissionSetting
+  extends BaseDocument<ProfilePermissionSetting>
+  implements IProfilePermissionSetting<TObjectId>
 {
-  @Prop({ required: true })
-  id: string;
-
   @Prop({ enum: getStringEnumValues(ProfileRelationRole), required: true })
   role: ProfileRelationRole;
 
-  @Prop()
-  groups?: string[];
+  @ObjectIdArrayProp()
+  groups?: TObjectId[];
 }
 
-export const ProfileRolePermissionSchema = SchemaFactory.createForClass(ProfileRolePermission);
+export const ProfilePermissionSettingSchema =
+  SchemaFactory.createForClass(ProfilePermissionSetting);

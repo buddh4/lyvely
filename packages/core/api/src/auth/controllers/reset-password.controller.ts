@@ -1,10 +1,10 @@
 import { Controller, Body, Post, UseGuards, Req } from '@nestjs/common';
 import {
-  ENDPOINT_RESET_PASSWORD,
+  API_RESET_PASSWORD,
   ResetPasswordEndpoint,
   SendResetPasswordMail,
   ResetPassword,
-  ResetPasswordEndpointPaths,
+  ResetPasswordEndpoints,
 } from '@lyvely/interface';
 import { Public, UseClassSerializer } from '@/core';
 import { ResetPasswordService } from '../services';
@@ -12,7 +12,7 @@ import { JwtResetPasswordGuard, LoginThrottlerGuard } from '../guards';
 import { CaptchaGuard } from '@/captcha';
 import { UserRequest, UserThrottle } from '@/users';
 
-@Controller(ENDPOINT_RESET_PASSWORD)
+@Controller(API_RESET_PASSWORD)
 @UseClassSerializer()
 export class ResetPasswordController implements ResetPasswordEndpoint {
   constructor(private resetPasswordService: ResetPasswordService) {}
@@ -25,7 +25,7 @@ export class ResetPasswordController implements ResetPasswordEndpoint {
   }
 
   @Public()
-  @Post(ResetPasswordEndpointPaths.SEND_MAIL)
+  @Post(ResetPasswordEndpoints.SEND_MAIL)
   @UseGuards(LoginThrottlerGuard, CaptchaGuard)
   @UserThrottle(2, 60)
   async sendMail(@Body() model: SendResetPasswordMail) {

@@ -1,5 +1,7 @@
 export * from './refresh.tokens.schema';
 export * from './users.schema';
+export * from './user-permissions.schema';
+export * from './user-relation-group.schema';
 export * from './user-info.schema';
 export * from './user-notification-state.schema';
 export * from './user-email.schema';

@@ -10,9 +10,9 @@ export interface IUserInvitationsClient {
 }
 
 export type UserInvitationsEndpoint = StrictEndpoint<IUserInvitationsClient>;
-export const ENDPOINT_USER_INVITATIONS = 'user-invitations';
+export const API_USER_INVITATIONS = 'user-invitations';
 
-export const UserInvitationsEndpointPaths = {
+export const UserInvitationsEndpoints = {
   MAIL: (token: string) => `mail/${token}`,
   USER: (pid: string) => `user/${pid}`,
   ACCEPT: (pid: string) => `accept/${pid}`,

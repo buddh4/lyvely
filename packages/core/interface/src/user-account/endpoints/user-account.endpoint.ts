@@ -16,10 +16,10 @@ export interface IUserAccountClient {
   updateGravatar(): Promise<AvatarModel>;
 }
 
-export const ENDPOINT_USER_ACCOUNT = 'account';
+export const API_USER_ACCOUNT = 'account';
 export type UserAccountEndpoint = StrictEndpoint<IUserAccountClient>;
 
-export const UserAccountEndpointPaths = {
+export const UserAccountEndpoints = {
   ADD_EMAIL: 'add-email',
   VERIFY_EMAIL: 'verify-email',
   SET_LANGUAGE: 'set-language',

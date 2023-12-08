@@ -7,12 +7,22 @@ import { PolicyGuard } from '@/policies/guards';
 export const ProfileController = (
   prefix: string | string[],
   ...guards: (CanActivate | Function)[]
-) => {
+): ClassDecorator => {
   const controller = Controller(prefix);
-  const profileGuard = UseGuards(ProfileGuard, PolicyGuard, ...guards);
+  const profileGuard = ProfileEndpoint(...guards);
 
   return function (target: any) {
     controller(target);
+    profileGuard(target);
+  };
+};
+
+export const ProfileEndpoint = (
+  ...guards: (CanActivate | Function)[]
+): MethodDecorator & ClassDecorator => {
+  const profileGuard = UseGuards(ProfileGuard, PolicyGuard, ...guards);
+
+  return function (target: any) {
     profileGuard(target);
   };
 };

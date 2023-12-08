@@ -235,7 +235,7 @@ Now, we can assign our newly created guard to a controller, or as shown in the f
 function:
 
 ```typescript
-@Controller(ENDPOINT_RESET_PASSWORD)
+@Controller(API_RESET_PASSWORD)
 @UseClassSerializer()
 export class ResetPasswordController implements ResetPasswordEndpoint {
     constructor(private resetPasswordService: ResetPasswordService) {}

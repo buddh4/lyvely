@@ -6,4 +6,4 @@ export interface IAppConfigClient {
 }
 
 export type AppConfigEndpoint = StrictEndpoint<IAppConfigClient>;
-export const ENDPOINT_APP_CONFIG = 'app-config';
+export const API_APP_CONFIG = 'app-config';

@@ -12,10 +12,10 @@ import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import {
   UserStatus,
   UserModel,
-  ENDPOINT_AUTH,
+  API_AUTH,
   AuthEndpoint,
   LoginModel,
-  AuthEndpointPaths,
+  AuthEndpoints,
   Headers,
 } from '@lyvely/interface';
 import { ConfigService } from '@nestjs/config';
@@ -23,7 +23,7 @@ import ms from 'ms';
 import { Public, UseClassSerializer } from '@/core';
 import { ConfigurationPath } from '@/config';
 
-@Controller(ENDPOINT_AUTH)
+@Controller(API_AUTH)
 @UseClassSerializer()
 export class AuthController extends AbstractJwtAuthController implements AuthEndpoint {
   constructor(
@@ -35,7 +35,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
 
   @Public()
   @UseGuards(LoginThrottlerGuard, LocalAuthGuard)
-  @Post(AuthEndpointPaths.LOGIN)
+  @Post(AuthEndpoints.LOGIN)
   async login(@Body() loginModel: LoginModel, @Req() req: UserRequest) {
     const { user } = req;
     loginModel.remember ??= false;
@@ -63,7 +63,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   @Public()
   @UseGuards(UserThrottlerGuard, JwtRefreshGuard)
   @UserThrottle(6, 60)
-  @Post(AuthEndpointPaths.REFRESH)
+  @Post(AuthEndpoints.REFRESH)
   async refresh(@Req() req: UserRequest) {
     const { user } = req;
     const vid = this.getVisitorIdHeader(req);
@@ -88,7 +88,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
   }
 
   @Public()
-  @Post(AuthEndpointPaths.LOGOUT)
+  @Post(AuthEndpoints.LOGOUT)
   async logout(@Req() req: UserRequest) {
     const { user, res } = req;
     const vid = this.getVisitorIdHeader(req);
@@ -106,7 +106,7 @@ export class AuthController extends AbstractJwtAuthController implements AuthEnd
     return Array.isArray(vid) ? vid[0] : vid;
   }
 
-  @Get(AuthEndpointPaths.USER)
+  @Get(AuthEndpoints.USER)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(30, 60)
   async loadUser(@Req() req: UserRequest) {

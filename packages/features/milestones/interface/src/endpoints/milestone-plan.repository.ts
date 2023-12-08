@@ -1,7 +1,7 @@
 import {
   IMilestonePlanClient,
   ENDPOINT_MILESTONE_PLAN,
-  MilestonePlanEndpointPaths,
+  MilestonePlanEndpoints,
 } from './milestone-plan.endpoint';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-interface';
 import { IProfileApiRequestOptions, useApi } from '@lyvely/interface';
@@ -17,6 +17,6 @@ export default {
   },
 
   async sort(cid: string, moveAction: CalendarPlanSort, options?: IProfileApiRequestOptions) {
-    return api.post<'sort'>(MilestonePlanEndpointPaths.SORT(cid), moveAction, options);
+    return api.post<'sort'>(MilestonePlanEndpoints.SORT(cid), moveAction, options);
   },
 };

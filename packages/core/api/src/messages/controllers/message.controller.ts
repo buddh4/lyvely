@@ -5,13 +5,13 @@ import { MessageService } from '../services';
 import { UseClassSerializer } from '@/core';
 import {
   MessageEndpoint,
-  ENDPOINT_MESSAGE,
+  API_MESSAGE,
   CreateMessageModel,
   MessageUpdateResponse,
   UpdateMessageModel,
 } from '@lyvely/interface';
 
-@ContentTypeController(ENDPOINT_MESSAGE, Message)
+@ContentTypeController(API_MESSAGE, Message)
 @UseClassSerializer()
 export class MessageController
   extends AbstractContentTypeController<Message, CreateMessageModel>

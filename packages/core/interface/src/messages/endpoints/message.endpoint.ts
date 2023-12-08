@@ -6,4 +6,4 @@ export interface IMessageClient extends IContentTypeClient<MessageModel, CreateM
 
 export type MessageEndpoint = StrictEndpoint<IMessageClient>;
 
-export const ENDPOINT_MESSAGE = profileApiPrefix('messages');
+export const API_MESSAGE = profileApiPrefix('messages');

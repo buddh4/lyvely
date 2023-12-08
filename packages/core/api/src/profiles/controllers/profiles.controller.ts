@@ -8,31 +8,39 @@ import {
   Put,
   Req,
   Request,
-  UseGuards,
 } from '@nestjs/common';
 import { UseClassSerializer } from '@/core';
 import { mapType } from '@lyvely/common';
 import {
+  API_PROFILES,
   CalendarPreferences,
   CreateProfileModel,
-  ENDPOINT_PROFILES,
   ProfileMembershipRole,
   ProfilesEndpoint,
+  ProfilesEndpoints,
   ProfileType,
   ProfileWithRelationsModel,
   SettingsUpdateResponse,
   UpdateProfileModel,
-  ProfilesEndpointPaths,
 } from '@lyvely/interface';
-import { ProfilesService, ProfileRelationsService } from '../services';
-import { UserAndProfileRelations, ProtectedProfileContext, ProfileContext } from '../models';
+import { ProfileRelationsService, ProfilesService } from '../services';
+import { ProfileContext, ProtectedProfileContext } from '../models';
 import { OptionalUserRequest, UserRequest } from '@/users';
 import { ProfileVisibilityPolicy } from '../policies';
 import { InjectPolicy } from '@/policies';
-import { ProtectedProfileRequest } from '../types';
-import { ProfileGuard } from '../guards';
+import { ProfileRequest, ProtectedProfileRequest } from '../types';
+import { ProfileEndpoint } from '../decorators';
 
-@Controller(ENDPOINT_PROFILES)
+/**
+ * Implementation of the ProfilesEndpoint service
+ * @class
+ * @public
+ * @constructs ProfilesController
+ * @param {ProfilesService} profilesService - The profiles service.
+ * @param {ProfileRelationsService} profilesRelationsService - The profile relations service.
+ * @param {ProfileVisibilityPolicy} profileVisibilityPolicy - The profile visibility policy.
+ */
+@Controller(API_PROFILES)
 @UseClassSerializer()
 export class ProfilesController implements ProfilesEndpoint {
   constructor(
@@ -41,50 +49,6 @@ export class ProfilesController implements ProfilesEndpoint {
     @InjectPolicy(ProfileVisibilityPolicy.name)
     private profileVisibilityPolicy: ProfileVisibilityPolicy,
   ) {}
-
-  @Get()
-  async getDefaultProfile(@Request() req: OptionalUserRequest): Promise<ProfileWithRelationsModel> {
-    const { user } = req;
-
-    const profileRelations = await this.profilesService.findDefaultProfile(user);
-    return mapType(ProfileContext, ProfileWithRelationsModel<any>, profileRelations);
-  }
-
-  @Get(ProfilesEndpointPaths.BY_HANDLE(':handle'))
-  async getProfileByHandle(
-    @Param('handle') handle: string,
-    @Request() req: OptionalUserRequest,
-  ): Promise<ProfileWithRelationsModel> {
-    const { user } = req;
-
-    const context = await this.profilesService.findProfileContextByHandle(user, handle);
-    const profileRelations = await this.profilesRelationsService.findProfileRelations(
-      context.profile,
-      user,
-    );
-
-    if (!(await this.profileVisibilityPolicy.verify(context))) throw new ForbiddenException();
-
-    return mapType(UserAndProfileRelations, ProfileWithRelationsModel<any>, profileRelations);
-  }
-
-  @Get(':pid')
-  async getProfileById(
-    @Param('pid') pid: string,
-    @Request() req: OptionalUserRequest,
-  ): Promise<ProfileWithRelationsModel> {
-    const { user } = req;
-
-    const context = await this.profilesService.findProfileContext(user, pid);
-    const profileRelations = await this.profilesRelationsService.findProfileRelations(
-      context.profile,
-      user,
-    );
-
-    if (!(await this.profileVisibilityPolicy.verify(context))) throw new ForbiddenException();
-
-    return mapType(UserAndProfileRelations, ProfileWithRelationsModel<any>, profileRelations);
-  }
 
   @Post()
   async create(
@@ -95,21 +59,51 @@ export class ProfilesController implements ProfilesEndpoint {
 
     if (!user) throw new ForbiddenException();
 
-    // TODO: (Permissions) check if user is allowed to create profiles
+    // TODO: (ACL) check if user is allowed to create profiles
     let profileRelations;
-    if (model.type === ProfileType.User) {
-      profileRelations = await this.profilesService.createUserProfile(user, model);
-    } else if (model.type === ProfileType.Group) {
-      profileRelations = await this.profilesService.createGroupProfile(user, model);
-    } else if (model.type === ProfileType.Organization) {
-      profileRelations = await this.profilesService.createOrganization(user, model);
+
+    switch (model.type) {
+      case ProfileType.User:
+        profileRelations = await this.profilesService.createUserProfile(user, model);
+        break;
+      case ProfileType.Group:
+        profileRelations = await this.profilesService.createUserProfile(user, model);
+        break;
+      case ProfileType.Organization:
+        profileRelations = await this.profilesService.createOrganization(user, model);
+        break;
     }
 
     return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, profileRelations);
   }
 
+  @Get()
+  async getDefaultProfile(@Request() req: OptionalUserRequest): Promise<ProfileWithRelationsModel> {
+    const { user } = req;
+    const context = await this.profilesService.findDefaultProfile(user);
+    if (!(await this.profileVisibilityPolicy.verify(context))) throw new ForbiddenException();
+    return this.mapAndPopulateProfileWithRelations(context);
+  }
+
+  @ProfileEndpoint()
+  @Get(ProfilesEndpoints.BY_HANDLE(':handle'))
+  async getProfileByHandle(
+    @Param('handle') handle: string,
+    @Request() req: ProfileRequest,
+  ): Promise<ProfileWithRelationsModel> {
+    const { context } = req;
+    return this.mapAndPopulateProfileWithRelations(context);
+  }
+
+  @ProfileEndpoint()
+  @Get(':pid')
+  async getProfileById(@Request() req: ProfileRequest): Promise<ProfileWithRelationsModel> {
+    const { context } = req;
+    return this.mapAndPopulateProfileWithRelations(context);
+  }
+
+  @ProfileEndpoint()
   @Put()
-  @UseGuards(ProfileGuard)
   async update(
     @Body() model: UpdateProfileModel,
     @Request() req: ProtectedProfileRequest,
@@ -117,25 +111,34 @@ export class ProfilesController implements ProfilesEndpoint {
     const { profile, context } = req;
 
     // TODO: Use ACL
-    if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner))
+    if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner)) {
       throw new ForbiddenException();
+    }
 
     await this.profilesService.updateProfile(profile, model);
-
-    return mapType(ProtectedProfileContext, ProfileWithRelationsModel<any>, context);
+    return this.mapAndPopulateProfileWithRelations(context);
   }
 
-  @Post(ProfilesEndpointPaths.SET_CALENDAR_PREFERENCES)
-  @UseGuards(ProfileGuard)
+  @ProfileEndpoint()
+  @Post(ProfilesEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
     @Body() model: CalendarPreferences,
     @Req() req: ProtectedProfileRequest,
   ): Promise<SettingsUpdateResponse> {
     const { profile, context } = req;
     // TODO: Use ACL
-    if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner))
+    if (!context.getMembership(ProfileMembershipRole.Admin, ProfileMembershipRole.Owner)) {
       throw new ForbiddenException();
+    }
+
     const settings = await this.profilesService.setCalendarPreferences(profile, model);
     return new SettingsUpdateResponse({ settings });
+  }
+
+  private async mapAndPopulateProfileWithRelations(context: ProfileContext) {
+    const profileWithRelations = mapType(ProfileContext, ProfileWithRelationsModel<any>, context);
+    profileWithRelations.profileRelations =
+      await this.profilesRelationsService.findProfileRelations(context.profile);
+    return profileWithRelations;
   }
 }

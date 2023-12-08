@@ -191,7 +191,7 @@ export interface IPollClient extends IContentTypeClient<PollModel, CreatePollMod
 export type PollEndpoint = StrictEndpoint<IPollClient>;
 
 // This ensures we use the same api path
-export const ENDPOINT_POLLS = 'polls';
+export const API_POLLS = 'polls';
 ```
 
 
@@ -200,7 +200,7 @@ export const ENDPOINT_POLLS = 'polls';
 To request our backend API we first need to implement our poll repository and client:
 
 ```typescript title=polls/packages/interface/endpoints/polls.repository.ts
-const api = useApi<IPollClient>(ENDPOINT_POLLS);
+const api = useApi<IPollClient>(API_POLLS);
 
 export default {
   create(model: CreateMessageModel) {
@@ -594,7 +594,7 @@ can be used as mongodb `$set` update for performance optimization.
 The base `ContentTypeController` class is used to implement our endpoint as in the following example:
 
 ```typescript title=polls/packages/api/src/controllers/polls.controller.ts
-@ContentTypeController(ENDPOINT_POLLS, Poll)
+@ContentTypeController(API_POLLS, Poll)
 @UseClassSerializer()
 export class PollsController
   extends AbstractContentTypeController<Poll, CreatePollModel>

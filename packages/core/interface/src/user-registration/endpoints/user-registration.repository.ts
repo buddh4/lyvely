@@ -1,7 +1,7 @@
 import {
-  ENDPOINT_USER_REGISTRATION,
+  API_USER_REGISTRATION,
   IUserRegistrationClient,
-  UserRegistrationEndpointPaths,
+  UserRegistrationEndpoints,
 } from './user-registration.endpoint';
 import { UserRegistration } from '../models';
 import { useApi } from '@/repository';
@@ -9,7 +9,7 @@ import { VerifyEmailDto } from '@/user-account';
 import { ResendOtp } from '@/otp';
 import { StringFieldValidityRequest } from '@/validation';
 
-const api = useApi<IUserRegistrationClient>(ENDPOINT_USER_REGISTRATION);
+const api = useApi<IUserRegistrationClient>(API_USER_REGISTRATION);
 
 export default {
   register(data: UserRegistration) {
@@ -17,18 +17,18 @@ export default {
   },
 
   verifyEmail(data: VerifyEmailDto) {
-    return api.post<'verifyEmail'>(UserRegistrationEndpointPaths.VERIFY_EMAIL, data);
+    return api.post<'verifyEmail'>(UserRegistrationEndpoints.VERIFY_EMAIL, data);
   },
 
   resendVerifyEmail(data: ResendOtp) {
-    return api.post<'resendVerifyEmail'>(UserRegistrationEndpointPaths.RESENT_VERIFY_EMAIL, data);
+    return api.post<'resendVerifyEmail'>(UserRegistrationEndpoints.RESENT_VERIFY_EMAIL, data);
   },
 
   checkUserEmail(data: StringFieldValidityRequest) {
-    return api.post<'checkUserEmail'>(UserRegistrationEndpointPaths.CHECK_USER_EMAIL, data);
+    return api.post<'checkUserEmail'>(UserRegistrationEndpoints.CHECK_USER_EMAIL, data);
   },
 
   checkUsername(data: StringFieldValidityRequest) {
-    return api.post<'checkUsername'>(UserRegistrationEndpointPaths.CHECK_USERNAME, data);
+    return api.post<'checkUsername'>(UserRegistrationEndpoints.CHECK_USERNAME, data);
   },
 };

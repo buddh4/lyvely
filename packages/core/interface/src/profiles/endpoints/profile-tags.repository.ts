@@ -1,13 +1,13 @@
 import { UpdateTagModel, CreateTagModel } from '../models';
 import {
-  ENDPOINT_PROFILE_TAGS,
+  API_PROFILE_TAGS,
   IProfileTagsClient,
-  ProfileTagsEndpointPaths,
+  ProfileTagsEndpoints,
 } from './profile-tags.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
 
-const api = useApi<IProfileTagsClient>(ENDPOINT_PROFILE_TAGS);
+const api = useApi<IProfileTagsClient>(API_PROFILE_TAGS);
 
 export default {
   async create(model: CreateTagModel, options?: IProfileApiRequestOptions) {
@@ -19,10 +19,10 @@ export default {
   },
 
   async archive(tagId: string, options?: IProfileApiRequestOptions) {
-    return api.post<'archive'>(ProfileTagsEndpointPaths.ARCHIVE(tagId), {}, options);
+    return api.post<'archive'>(ProfileTagsEndpoints.ARCHIVE(tagId), {}, options);
   },
 
   async restore(tagId: string, options?: IProfileApiRequestOptions) {
-    return api.post<'restore'>(ProfileTagsEndpointPaths.RESTORE(tagId), {}, options);
+    return api.post<'restore'>(ProfileTagsEndpoints.RESTORE(tagId), {}, options);
   },
 };

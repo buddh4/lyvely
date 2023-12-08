@@ -53,9 +53,6 @@ export class ProfileRelationModel<
 
   @Expose()
   relationStatus: UserStatus;
-
-  @Expose()
-  role?: string;
 }
 
 @Exclude()

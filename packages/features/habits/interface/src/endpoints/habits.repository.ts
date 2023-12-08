@@ -1,5 +1,5 @@
 import { UpdateHabitModel, UpdateHabitDataPointModel, CreateHabitModel } from '../models';
-import { ENDPOINT_HABITS, HabitsEndpointPaths, IHabitsEndpointClient } from './habits.endpoint';
+import { ENDPOINT_HABITS, HabitsEndpoints, IHabitsEndpointClient } from './habits.endpoint';
 import { TimerUpdateModel } from '@lyvely/timers-interface';
 import { CalendarPlanSort, CalendarPlanFilter } from '@lyvely/calendar-plan-web';
 import { useApi, IProfileApiRequestOptions } from '@lyvely/interface';
@@ -27,22 +27,18 @@ export default {
     model: UpdateHabitDataPointModel,
     options?: IProfileApiRequestOptions,
   ) {
-    return api.post<'updateDataPoint'>(
-      HabitsEndpointPaths.UPDATE_DATA_POINT(habitId),
-      model,
-      options,
-    );
+    return api.post<'updateDataPoint'>(HabitsEndpoints.UPDATE_DATA_POINT(habitId), model, options);
   },
 
   async sort(cid: string, moveAction: CalendarPlanSort, options?: IProfileApiRequestOptions) {
-    return api.post<'sort'>(HabitsEndpointPaths.SORT(cid), moveAction, options);
+    return api.post<'sort'>(HabitsEndpoints.SORT(cid), moveAction, options);
   },
 
   async startTimer(cid: string, model: TimerUpdateModel, options?: IProfileApiRequestOptions) {
-    return api.post<'startTimer'>(HabitsEndpointPaths.START_TIMER(cid), model, options);
+    return api.post<'startTimer'>(HabitsEndpoints.START_TIMER(cid), model, options);
   },
 
   async stopTimer(cid: string, model: TimerUpdateModel, options?: IProfileApiRequestOptions) {
-    return api.post<'stopTimer'>(HabitsEndpointPaths.STOP_TIMER(cid), model, options);
+    return api.post<'stopTimer'>(HabitsEndpoints.STOP_TIMER(cid), model, options);
   },
 };

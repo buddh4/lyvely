@@ -6,4 +6,4 @@ export interface IProfileFeaturesClient {
 }
 
 export type ProfileFeaturesEndpoint = StrictEndpoint<IProfileFeaturesClient>;
-export const ENDPOINT_PROFILE_FEATURES = profileApiPrefix('profile-features');
+export const API_PROFILE_FEATURES = profileApiPrefix('profile-features');

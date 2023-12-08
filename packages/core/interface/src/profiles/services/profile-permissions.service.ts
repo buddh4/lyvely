@@ -6,9 +6,8 @@ import {
   ProfileRelationRole,
   profileRelationRoleHierarchy,
 } from '../interfaces';
-import { getProfilePermission } from '@/profiles';
-import { UserStatus } from '@/users';
 import { useSingleton } from '@lyvely/common';
+import { BasePermissionType, getPermission } from '@/permissions';
 
 /**
  * A service for managing profile user permissions.
@@ -27,7 +26,7 @@ class ProfilePermissionsService extends AbstractPermissionsService<
   override getPermission(
     permissionOrId: string | IProfilePermission,
   ): IProfilePermission | undefined {
-    return getProfilePermission(permissionOrId);
+    return getPermission<IProfilePermission>(permissionOrId, BasePermissionType.Profile);
   }
 
   /**
@@ -39,33 +38,14 @@ class ProfilePermissionsService extends AbstractPermissionsService<
   override getRoleLevel(role: ProfileRelationRole): number {
     return profileRelationRoleHierarchy.indexOf(role);
   }
-
-  /**
-   * Verifies the user status against the permission and subject or status.
-   *
-   * If a role is not associated with a status e.g. in case of a visitor role, this function
-   * assumes an active status by default.
-   *
-   * @param {TPermission} permission - The permission object.
-   * @param {TSubject | UserStatus} subjectOrStatus - The subject or user status.
-   * @protected
-   * @returns {boolean} - Returns true if the user status meets the requirement, otherwise returns false.
-   */
-  protected override verifyUserStatus(
-    permission: IProfilePermission,
-    subjectOrStatus?: IProfilePermissionSubject | UserStatus,
-  ): boolean {
-    if (!subjectOrStatus) return true;
-
-    if (typeof subjectOrStatus === 'number') {
-      return super.verifyUserStatus(permission, subjectOrStatus);
-    }
-
-    return (
-      super.verifyUserStatus(permission, subjectOrStatus.userStatus) &&
-      super.verifyUserStatus(permission, subjectOrStatus.relationStatus)
-    );
-  }
 }
 
+/**
+ * Returns an instance of the ProfilePermissionsService.
+ * The useProfilePermissionsService function utilizes the useSingleton higher-order function
+ * to ensure that only one instance of the ProfilePermissionsService is created and shared
+ * across multiple components or modules.
+ *
+ * @returns {ProfilePermissionsService} The instance of ProfilePermissionsService.
+ */
 export const useProfilePermissionsService = useSingleton(() => new ProfilePermissionsService());

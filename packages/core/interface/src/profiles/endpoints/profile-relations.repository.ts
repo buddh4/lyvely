@@ -1,12 +1,12 @@
 import {
-  ENDPOINT_PROFILE_RELATION_INFOS,
+  API_PROFILE_RELATION_INFOS,
   IProfileRelationInfosClient,
-  ProfileRelationInfosEndpointPaths,
+  ProfileRelationInfosEndpoints,
 } from './profile-relation-infos.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
 
-const api = useApi<IProfileRelationInfosClient>(ENDPOINT_PROFILE_RELATION_INFOS);
+const api = useApi<IProfileRelationInfosClient>(API_PROFILE_RELATION_INFOS);
 
 export default {
   async getRelations(options?: IProfileApiRequestOptions) {
@@ -15,7 +15,7 @@ export default {
 
   async getProfileRelationUserInfo(pid: string, uid: string, options?: IProfileApiRequestOptions) {
     return api.get<'getProfileRelationUserInfo'>(
-      ProfileRelationInfosEndpointPaths.PROFILE_RELATION_INFO(pid, uid),
+      ProfileRelationInfosEndpoints.PROFILE_RELATION_INFO(pid, uid),
       options,
     );
   },

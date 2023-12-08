@@ -1,8 +1,8 @@
 import {
-  ENDPOINT_CONTENT,
+  API_CONTENT,
   ContentEndpoint,
   SetMilestoneModel,
-  ContentEndpointPaths,
+  ContentEndpoints,
 } from '@lyvely/interface';
 import { Post, HttpCode, HttpStatus, Param, Request, Body } from '@nestjs/common';
 import { Policies } from '@/policies';
@@ -11,11 +11,11 @@ import { ContentWritePolicy } from '../policies';
 import { ProtectedProfileContentRequest } from '../types';
 import { ContentTypeController } from '../decorators';
 
-@ContentTypeController(ENDPOINT_CONTENT)
+@ContentTypeController(API_CONTENT)
 export class ContentController implements ContentEndpoint {
   constructor(private contentService: ContentService) {}
 
-  @Post(ContentEndpointPaths.ARCHIVE(':cid'))
+  @Post(ContentEndpoints.ARCHIVE(':cid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Policies(ContentWritePolicy)
   async archive(@Param('cid') cid: string, @Request() req: ProtectedProfileContentRequest) {
@@ -23,7 +23,7 @@ export class ContentController implements ContentEndpoint {
     await this.contentService.archive(user, content);
   }
 
-  @Post(ContentEndpointPaths.RESTORE(':cid'))
+  @Post(ContentEndpoints.RESTORE(':cid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Policies(ContentWritePolicy)
   async restore(@Param('cid') cid: string, @Request() req: ProtectedProfileContentRequest) {
@@ -31,7 +31,7 @@ export class ContentController implements ContentEndpoint {
     await this.contentService.restore(user, content);
   }
 
-  @Post(ContentEndpointPaths.SET_MILESTONE(':cid'))
+  @Post(ContentEndpoints.SET_MILESTONE(':cid'))
   @HttpCode(HttpStatus.NO_CONTENT)
   @Policies(ContentWritePolicy)
   async setMilestone(

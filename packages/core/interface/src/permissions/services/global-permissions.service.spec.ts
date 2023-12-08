@@ -2,329 +2,272 @@ import {
   BasePermissionType,
   clearPermissions,
   GlobalPermissionRole,
+  IGlobalPermissionObject,
+  IPermission,
   IPermissionConfig,
   registerPermissions,
-} from '../index';
+  useGlobalPermissionsService,
+} from '../../permissions';
 import { IntegrityException } from '../../exceptions';
 import { UserStatus, VisitorMode } from '../../users';
-import { useGlobalPermissionsService } from './global-permissions.service';
+import { ProfileRelationRole } from '../../profiles';
 
 describe('GlobalPermissionsService', function () {
   afterEach(clearPermissions);
 
   const service = useGlobalPermissionsService();
 
-  it('profile permission defaults', () => {
+  const registerTestPermission = (data?: Partial<IPermission<any, any>>) => {
     registerPermissions([
       {
         id: 'test',
         moduleId: 'test',
         min: GlobalPermissionRole.Admin,
-        max: GlobalPermissionRole.User,
-        default: GlobalPermissionRole.User,
+        max: GlobalPermissionRole.Moderator,
+        default: GlobalPermissionRole.Moderator,
         type: BasePermissionType.Global,
+        ...data,
       },
     ]);
+  };
 
-    expect(
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.Support,
-          userStatus: UserStatus.Active,
-        },
-        {
-          getPermissionSettings: () => [],
-        },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      ),
-    ).toEqual(true);
-    expect(
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.User,
-          userStatus: UserStatus.Active,
-        },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      ),
-    ).toEqual(true);
-    expect(
-      service.verifyPermission(
-        'test',
-        { role: GlobalPermissionRole.Visitor },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      ),
-    ).toEqual(false);
+  const verifyTestPermission = (
+    role: GlobalPermissionRole,
+    settings?: IGlobalPermissionObject | null,
+    options?: {
+      config?: IPermissionConfig;
+      userStatus?: UserStatus;
+      relationStatus?: UserStatus;
+      groups?: string[];
+    },
+  ) => {
+    settings ||= {
+      getPermissionGroups: () => [],
+      getPermissionSettings: () => [],
+    };
+    return service.verifyPermission(
+      'test',
+      {
+        role: role,
+        userStatus: options?.userStatus ?? UserStatus.Active,
+        relationStatus: options?.relationStatus ?? UserStatus.Active,
+        groups: options?.groups || [],
+      },
+      settings,
+      options?.config || { visitorStrategy: { mode: VisitorMode.Disabled } },
+    );
+  };
+
+  it('profile permission defaults', () => {
+    registerTestPermission({
+      min: GlobalPermissionRole.Admin,
+      max: GlobalPermissionRole.Moderator,
+      default: GlobalPermissionRole.Moderator,
+    });
+
+    expect(verifyTestPermission(GlobalPermissionRole.Admin)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Moderator)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.User)).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.Visitor)).toEqual(false);
   });
 
   it('assure min role is respected', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.User,
-        max: GlobalPermissionRole.Visitor,
-        default: GlobalPermissionRole.Admin,
-        type: BasePermissionType.Global,
-      },
-    ]);
-    expect(
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.User,
-          userStatus: UserStatus.Active,
-        },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      ),
-    ).toEqual(true);
+    registerTestPermission({
+      min: GlobalPermissionRole.Moderator,
+    });
+
+    const settings: IGlobalPermissionObject = {
+      getPermissionSettings: () => [{ id: 'test', role: GlobalPermissionRole.Admin }],
+      getPermissionGroups: () => [],
+    };
+
+    expect(verifyTestPermission(GlobalPermissionRole.Admin, settings)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Moderator, settings)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.User, settings)).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.Visitor, settings)).toEqual(false);
   });
 
   it('assure max role is respected', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.Admin,
-        max: GlobalPermissionRole.Support,
-        default: GlobalPermissionRole.User,
-        type: BasePermissionType.Global,
-      },
-    ]);
+    registerTestPermission({
+      max: GlobalPermissionRole.Moderator,
+    });
 
-    expect(
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.User,
-          userStatus: UserStatus.Active,
-        },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      ),
-    ).toEqual(false);
+    const settings: IGlobalPermissionObject = {
+      getPermissionSettings: () => [{ id: 'test', role: GlobalPermissionRole.User }],
+      getPermissionGroups: () => [],
+    };
+
+    expect(verifyTestPermission(GlobalPermissionRole.Admin, settings)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Moderator, settings)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.User, settings)).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.Visitor, settings)).toEqual(false);
+  });
+
+  it('profile permission overwritten by profile settings', () => {
+    registerTestPermission({
+      default: GlobalPermissionRole.Moderator,
+    });
+
+    const settings: IGlobalPermissionObject = {
+      getPermissionSettings: () => [{ id: 'test', role: GlobalPermissionRole.Admin }],
+      getPermissionGroups: () => [],
+    };
+
+    expect(verifyTestPermission(GlobalPermissionRole.Admin, settings)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Moderator, settings)).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.User, settings)).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.Visitor, settings)).toEqual(false);
   });
 
   it('profile permission overwritten by configuration', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.Admin,
-        max: GlobalPermissionRole.User,
-        default: GlobalPermissionRole.User,
-        type: BasePermissionType.Global,
-      },
-    ]);
+    registerTestPermission({
+      default: GlobalPermissionRole.Moderator,
+    });
 
     const config: IPermissionConfig = {
       defaults: [{ id: 'test', role: GlobalPermissionRole.Admin }],
       visitorStrategy: { mode: VisitorMode.Disabled },
     };
 
-    expect(
-      service.verifyPermission(
-        'test',
-        { role: GlobalPermissionRole.Admin, userStatus: UserStatus.Active },
-        { getPermissionSettings: () => [] },
-        config,
-      ),
-    ).toEqual(true);
-    expect(
-      service.verifyPermission(
-        'test',
-        { role: GlobalPermissionRole.User, userStatus: UserStatus.Active },
-        { getPermissionSettings: () => [] },
-        config,
-      ),
-    ).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.Admin, null, { config })).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Moderator, null, { config })).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.User, null, { config })).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.Visitor, null, { config })).toEqual(false);
   });
 
   it('do not allow visitors if not configured', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.User,
-        max: GlobalPermissionRole.Visitor,
-        default: GlobalPermissionRole.Visitor,
-        type: BasePermissionType.Global,
-      },
-    ]);
+    registerTestPermission({
+      max: GlobalPermissionRole.Visitor,
+      default: GlobalPermissionRole.Visitor,
+    });
+
     const config: IPermissionConfig = {
-      defaults: [{ id: 'test', role: GlobalPermissionRole.Visitor }],
       visitorStrategy: { mode: VisitorMode.Disabled },
     };
-    expect(
-      service.verifyPermission(
-        'test',
-        { role: GlobalPermissionRole.Visitor, userStatus: UserStatus.Active },
-        { getPermissionSettings: () => [] },
-        config,
-      ),
-    ).toEqual(false);
+
+    expect(verifyTestPermission(GlobalPermissionRole.Admin, null, { config })).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Moderator, null, { config })).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.User, null, { config })).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Visitor, null, { config })).toEqual(false);
   });
 
   it('allow visitors if configured', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.User,
-        max: GlobalPermissionRole.Visitor,
-        default: GlobalPermissionRole.Visitor,
-        type: BasePermissionType.Global,
-      },
-    ]);
+    registerTestPermission({
+      max: GlobalPermissionRole.Visitor,
+      default: GlobalPermissionRole.Visitor,
+    });
+
     const config: IPermissionConfig = {
-      defaults: [{ id: 'test', role: GlobalPermissionRole.Visitor }],
       visitorStrategy: { mode: VisitorMode.Enabled, handles: [''] },
     };
-    expect(
-      service.verifyPermission(
-        'test',
-        { role: GlobalPermissionRole.Visitor, userStatus: UserStatus.Active },
-        { getPermissionSettings: () => [] },
-        config,
-      ),
-    ).toEqual(true);
+
+    expect(verifyTestPermission(GlobalPermissionRole.Admin, null, { config })).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Moderator, null, { config })).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.User, null, { config })).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Visitor, null, { config })).toEqual(true);
   });
 
   it('invalid permission default will fallback to max', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.Admin,
-        max: GlobalPermissionRole.Support,
-        default: GlobalPermissionRole.User,
-        type: BasePermissionType.Global,
-      },
-    ]);
-    expect(
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.User,
-          userStatus: UserStatus.Active,
-        },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      ),
-    ).toEqual(false);
+    registerTestPermission({
+      min: GlobalPermissionRole.Admin,
+      max: GlobalPermissionRole.Moderator,
+      default: ProfileRelationRole.User,
+    });
+
+    expect(verifyTestPermission(GlobalPermissionRole.Admin)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.Moderator)).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.User)).toEqual(false);
+    expect(verifyTestPermission(GlobalPermissionRole.Visitor)).toEqual(false);
   });
 
   it('invalid min/max throws error', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.User,
-        max: GlobalPermissionRole.Admin,
-        default: GlobalPermissionRole.User,
-        type: BasePermissionType.Global,
-      },
-    ]);
+    registerTestPermission({
+      min: GlobalPermissionRole.User,
+      max: GlobalPermissionRole.Admin,
+    });
 
     expect.assertions(1);
 
     try {
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.User,
-          userStatus: UserStatus.Active,
-        },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      );
+      verifyTestPermission(GlobalPermissionRole.Admin);
     } catch (e) {
       expect(e instanceof IntegrityException).toEqual(true);
     }
   });
 
-  it('check default user status = Active', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.Admin,
-        max: GlobalPermissionRole.User,
-        default: GlobalPermissionRole.User,
-        type: BasePermissionType.Global,
-      },
-    ]);
+  it('test user access through group assignment', () => {
+    registerTestPermission({
+      min: GlobalPermissionRole.Moderator,
+      max: GlobalPermissionRole.Moderator,
+      default: GlobalPermissionRole.Moderator,
+    });
+
+    const testGroup = 'testGroup';
+
+    const settings: IGlobalPermissionObject = {
+      getPermissionSettings: () => [
+        { id: 'test', role: GlobalPermissionRole.Moderator, groups: [testGroup] },
+      ],
+      getPermissionGroups: () => [testGroup],
+    };
 
     expect(
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.User,
-          userStatus: UserStatus.Disabled,
-        },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      ),
+      verifyTestPermission(GlobalPermissionRole.User, settings, { groups: [testGroup] }),
+    ).toEqual(true);
+    expect(verifyTestPermission(GlobalPermissionRole.User, settings)).toEqual(false);
+  });
+
+  it('test non existing group will be ignored', () => {
+    registerTestPermission({
+      min: GlobalPermissionRole.Moderator,
+      max: GlobalPermissionRole.Moderator,
+      default: GlobalPermissionRole.Moderator,
+    });
+
+    const testGroup = 'testGroup';
+
+    const settings: IGlobalPermissionObject = {
+      getPermissionSettings: () => [
+        { id: 'test', role: GlobalPermissionRole.Moderator, groups: [testGroup] },
+      ],
+      getPermissionGroups: () => [],
+    };
+
+    expect(
+      verifyTestPermission(GlobalPermissionRole.User, settings, { groups: [testGroup] }),
     ).toEqual(false);
   });
 
-  it('check invalid permission type', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.Admin,
-        max: GlobalPermissionRole.User,
-        default: GlobalPermissionRole.User,
-        userStatuses: [UserStatus.EmailVerification],
-        type: BasePermissionType.Profile,
-      },
-    ]);
+  it('test circular dependency check', () => {
+    registerTestPermission({
+      id: 'test1',
+      dependencies: ['test2'],
+    });
+    registerTestPermission({
+      id: 'test2',
+      dependencies: ['test1'],
+    });
 
     expect.assertions(1);
 
     try {
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.User,
-          userStatus: UserStatus.EmailVerification,
-        },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      );
+      verifyTestPermission(GlobalPermissionRole.User);
     } catch (e) {
       expect(e instanceof IntegrityException).toEqual(true);
     }
   });
 
-  it('check overwrite default user status requirement', () => {
-    registerPermissions([
-      {
-        id: 'test',
-        moduleId: 'test',
-        min: GlobalPermissionRole.Admin,
-        max: GlobalPermissionRole.User,
-        default: GlobalPermissionRole.User,
-        userStatuses: [UserStatus.EmailVerification],
-        type: BasePermissionType.Global,
-      },
-    ]);
+  it('test invalid permission type', () => {
+    registerTestPermission({
+      type: BasePermissionType.Profile,
+    });
 
-    expect(
-      service.verifyPermission(
-        'test',
-        {
-          role: GlobalPermissionRole.User,
-          userStatus: UserStatus.EmailVerification,
-        },
-        { getPermissionSettings: () => [] },
-        { visitorStrategy: { mode: VisitorMode.Disabled } },
-      ),
-    ).toEqual(true);
+    expect.assertions(1);
+
+    try {
+      verifyTestPermission(GlobalPermissionRole.User);
+    } catch (e) {
+      expect(e instanceof IntegrityException).toEqual(true);
+    }
   });
 });

@@ -10,7 +10,7 @@ import {
   HabitSearchResponse,
   UpdateHabitDataPointTimerResponse,
   HabitModel,
-  HabitsEndpointPaths,
+  HabitsEndpoints,
   ENDPOINT_HABITS,
 } from '@lyvely/habits-interface';
 import { TimerUpdateModel } from '@lyvely/timers';
@@ -73,7 +73,7 @@ export class HabitsController
     });
   }
 
-  @Post(HabitsEndpointPaths.SORT(':cid'))
+  @Post(HabitsEndpoints.SORT(':cid'))
   @Policies(ContentWritePolicy)
   async sort(@Body() dto: CalendarPlanSort, @Request() req: ProtectedProfileContentRequest<Habit>) {
     const { profile, user, content } = req;
@@ -87,7 +87,7 @@ export class HabitsController
     return new SortResponse({ sort });
   }
 
-  @Post(HabitsEndpointPaths.UPDATE_DATA_POINT(':cid'))
+  @Post(HabitsEndpoints.UPDATE_DATA_POINT(':cid'))
   @Policies(ContentWritePolicy)
   async updateDataPoint(
     @Body() dto: UpdateHabitDataPointModel,
@@ -110,7 +110,7 @@ export class HabitsController
     });
   }
 
-  @Post(HabitsEndpointPaths.START_TIMER(':cid'))
+  @Post(HabitsEndpoints.START_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async startTimer(
     @Body() dto: TimerUpdateModel,
@@ -121,7 +121,7 @@ export class HabitsController
     return DataPointModelConverter.toModel<TimerDataPointModel>(dataPoint);
   }
 
-  @Post(HabitsEndpointPaths.STOP_TIMER(':cid'))
+  @Post(HabitsEndpoints.STOP_TIMER(':cid'))
   @Policies(ContentWritePolicy)
   async stopTimer(
     @Body() dto: TimerUpdateModel,

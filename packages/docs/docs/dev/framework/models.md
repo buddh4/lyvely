@@ -236,7 +236,7 @@ which can (and in most cases should) be applied to controller classes or control
 
 
 ```typescript
-@Controller(ENDPOINT_USER_INVITATIONS)
+@Controller(API_USER_INVITATIONS)
 @UseClassSerializer()
 export class InvitationsController implements UserInvitationsEndpoint {
   constructor(private sendInviteService: SendInvitationsService) {}

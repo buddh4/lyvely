@@ -18,10 +18,10 @@ export interface IUserRegistrationClient {
 }
 
 export type UserRegistrationEndpoint = StrictEndpoint<IUserRegistrationClient>;
-export const ENDPOINT_USER_REGISTRATION = 'user-registration';
-export const ENDPOINT_USER_REGISTRATION_VALIDATE_USERNAME = 'check-user-name';
+export const API_USER_REGISTRATION = 'user-registration';
+export const API_USER_REGISTRATION_VALIDATE_USERNAME = 'check-user-name';
 
-export const UserRegistrationEndpointPaths = {
+export const UserRegistrationEndpoints = {
   VERIFY_EMAIL: 'verify-email',
   RESENT_VERIFY_EMAIL: 'resend-verify-email',
   CHECK_USER_EMAIL: 'check-user-email',

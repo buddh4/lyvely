@@ -1,4 +1,5 @@
-import { UserStatus, VisitorStrategy } from '@/users';
+import { UserStatus } from '@/users/interfaces/user-status.enum';
+import { VisitorStrategy } from '@/users/interfaces/visitor-strategy.interface';
 
 /**
  * Used to define a global or profile permission in a network.
@@ -42,6 +43,8 @@ export interface IPermissionSubject<TRole> {
   groups?: string[];
   /** Defines the status of the subject in relation to the object. **/
   userStatus?: UserStatus;
+  /** Defines the status of the user relation. **/
+  relationStatus?: UserStatus;
 }
 
 /**
@@ -49,17 +52,29 @@ export interface IPermissionSubject<TRole> {
  * @template TRole Representing the type of roles allowed.
  */
 export interface IPermissionObject<TRole> {
-  getPermissionSettings(): IPermissionSetting<TRole>[];
+  /**
+   * Returns an array of permission settings configured for this permission object.
+   *
+   * @return {IPermissionSetting<TRole>[]} An array of permission settings for the role.
+   */
+  getPermissionSettings(): IPermissionSetting<string, TRole>[];
+
+  /**
+   * Retrieves an array of permission groups.
+   *
+   * @return {string[]} An array of strings representing the permission groups.
+   */
+  getPermissionGroups(): string[];
 }
 
 /**
  * Defines a permission setting state e.g. in profile settings or configuration.
  * @template TRole Representing the type of roles allowed.
  */
-export interface IPermissionSetting<IRole = string> {
+export interface IPermissionSetting<TID = string, TRole = string> {
   id: string;
-  role: IRole;
-  groups?: string[];
+  role: TRole;
+  groups?: TID[];
 }
 
 /**

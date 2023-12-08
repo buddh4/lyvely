@@ -12,9 +12,9 @@ export interface IProfilesClient
 }
 
 export type ProfilesEndpoint = Endpoint<IProfilesClient>;
-export const ENDPOINT_PROFILES = 'profiles';
+export const API_PROFILES = 'profiles';
 
-export const ProfilesEndpointPaths = {
+export const ProfilesEndpoints = {
   BY_HANDLE: (handle: string) => `by-handle/${handle}`,
   SET_CALENDAR_PREFERENCES: 'set-calendar-preferences',
 };

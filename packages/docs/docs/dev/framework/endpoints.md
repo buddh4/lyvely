@@ -27,7 +27,7 @@ export interface IPingClient {
 }
 
 export type PingEndpoint = StrictEndpoint<IPingClient>;
-export const ENDPOINT_PING = 'ping';
+export const API_PING = 'ping';
 ```
 
 ## Repository Implementation
@@ -37,13 +37,13 @@ request method, headers, or any other request-related settings.
 
 ```typescript title=interface/src/endpoints/ping.repository.ts
 import { useApi } from '@lyvely/interface';
-import { ENDPOINT_PINT, IPingClient } from './ping.endpoint.ts';
+import { API_PINT, IPingClient } from './ping.endpoint.ts';
 
 /**
  * The API object wraps an axio client and automatically attaches the given path to each request.
  * The generic type is used for the purpose of type-safety.
  */
-const api = useApi<IPingClient>(ENDPOINT_PING);
+const api = useApi<IPingClient>(API_PING);
 
 export default {
     // With the generic type set to a function name of our client, we assure type-safety of the result.
@@ -102,9 +102,9 @@ implementing the function since we used the `StrictEndpoint` instead of the less
 ```typescript title=api/src/controllers/ping.controller.ts
 import { Controller, Get } from '@nestjs/common';
 import { Public } from '@/core';
-import { ENDPOINT_PING, PingResponse, PingEndpoint } from 'my-ping-interface';
+import { API_PING, PingResponse, PingEndpoint } from 'my-ping-interface';
 
-@Controller(ENDPOINT_PING)
+@Controller(API_PING)
 export class PingController implements PingEndpoint {
   @Public()
   @Get()
@@ -150,7 +150,7 @@ To define an endpoint path with this prefix, you can utilize the `profileApiPref
 ```typescript title=interface/src/endpoints/ping.endpoint.ts
 import {profileApiPrefix} from "@lyvely/interface";
 
-export const ENDPOINT_POLLS = profileApiPrefix('polls');
+export const API_POLLS = profileApiPrefix('polls');
 //...
 ```
 
@@ -180,7 +180,7 @@ export const usePollsClient = useSingleton(() => new PollsClient());
 
 ```typescript title=interface/src/endpoints/polls.repository.ts
 import { useApi } from '@lyvely/interface';
-import { ENDPOINT_POLLS, IPollsClient } from './polls.endpoint.ts';
+import { API_POLLS, IPollsClient } from './polls.endpoint.ts';
 import { IProfileApiRequestOptions } from '@/endpoints';
 
 const api = useApi<IPollsClient>(ENDPOINT_POLLS);

@@ -5,7 +5,7 @@ import { UseClassSerializer } from '@/core';
 import {
   UpdateFeatureModel,
   UpdateFeatureResponseModel,
-  ENDPOINT_PROFILE_FEATURES,
+  API_PROFILE_FEATURES,
   ProfileFeaturesEndpoint,
 } from '@lyvely/interface';
 import { ProfileFeaturesService } from '../services';

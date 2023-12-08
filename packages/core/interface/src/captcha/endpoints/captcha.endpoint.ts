@@ -6,9 +6,9 @@ export interface ICaptchaService {
   refresh(identity: string): void;
 }
 
-export const ENDPOINT_CAPTCHA = 'captcha';
+export const API_CAPTCHA = 'captcha';
 export type CaptchaEndpoint = StrictEndpoint<ICaptchaService>;
 
-export const CaptchaEndpointPaths = {
+export const CaptchaEndpoints = {
   REFRESH: 'refresh',
 };

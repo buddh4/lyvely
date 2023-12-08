@@ -86,7 +86,7 @@ export interface IStreamHistory<
   restoreState: TRestoreState;
 }
 
-export const StreamEndpointPaths = {
+export const StreamEndpoints = {
   HEAD: 'head',
   TAIL: 'tail',
 };

@@ -1,4 +1,4 @@
-import { ITasksClient, ENDPOINT_TASKS, TasksEndpointPaths } from './tasks.endpoint';
+import { ITasksClient, ENDPOINT_TASKS, TasksEndpoints } from './tasks.endpoint';
 import { UpdateTaskStateModel, UpdateTaskModel } from '../models';
 import { TimerValueUpdateModel } from '@lyvely/timers-interface';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
@@ -27,23 +27,23 @@ export default {
   },
 
   async sort(cid: string, moveAction: CalendarPlanSort, options?: IProfileApiRequestOptions) {
-    return api.post<'sort'>(TasksEndpointPaths.SORT(cid), moveAction, options);
+    return api.post<'sort'>(TasksEndpoints.SORT(cid), moveAction, options);
   },
 
   async setDone(cid: string, dto: UpdateTaskStateModel, options?: IProfileApiRequestOptions) {
-    return api.post<'setDone'>(TasksEndpointPaths.SET_DONE(cid), dto, options);
+    return api.post<'setDone'>(TasksEndpoints.SET_DONE(cid), dto, options);
   },
 
   async setUndone(cid: string, dto: UpdateTaskStateModel, options?: IProfileApiRequestOptions) {
-    return api.post<'setUndone'>(TasksEndpointPaths.SET_UNDONE(cid), dto, options);
+    return api.post<'setUndone'>(TasksEndpoints.SET_UNDONE(cid), dto, options);
   },
 
   async startTimer(cid: string, options?: IProfileApiRequestOptions) {
-    return api.post<'startTimer'>(TasksEndpointPaths.START_TIMER(cid), {}, options);
+    return api.post<'startTimer'>(TasksEndpoints.START_TIMER(cid), {}, options);
   },
 
   async stopTimer(cid: string, options?: IProfileApiRequestOptions) {
-    return api.post<'stopTimer'>(TasksEndpointPaths.STOP_TIMER(cid), {}, options);
+    return api.post<'stopTimer'>(TasksEndpoints.STOP_TIMER(cid), {}, options);
   },
 
   async updateTimer(
@@ -51,6 +51,6 @@ export default {
     model: TimerValueUpdateModel,
     options?: IProfileApiRequestOptions,
   ) {
-    return api.post<'stopTimer'>(TasksEndpointPaths.UPDATE_TIMER(cid), model, options);
+    return api.post<'stopTimer'>(TasksEndpoints.UPDATE_TIMER(cid), model, options);
   },
 };

@@ -1,12 +1,12 @@
 import {
-  ENDPOINT_USER_INVITATIONS,
+  API_USER_INVITATIONS,
   IUserInvitationsClient,
-  UserInvitationsEndpointPaths,
+  UserInvitationsEndpoints,
 } from './user-invitations.endpoint';
 import { InvitationRequest } from '../models';
 import { useApi } from '@/repository';
 
-const api = useApi<IUserInvitationsClient>(ENDPOINT_USER_INVITATIONS);
+const api = useApi<IUserInvitationsClient>(API_USER_INVITATIONS);
 
 export default {
   async sendInvitations(invite: InvitationRequest) {
@@ -14,18 +14,18 @@ export default {
   },
 
   async getMailInvitationInfo(token: string) {
-    return api.get<'getMailInvitationInfo'>(UserInvitationsEndpointPaths.MAIL(token));
+    return api.get<'getMailInvitationInfo'>(UserInvitationsEndpoints.MAIL(token));
   },
 
   async getUserInvitationInfo(pid: string) {
-    return api.get<'getUserInvitationInfo'>(UserInvitationsEndpointPaths.USER(pid));
+    return api.get<'getUserInvitationInfo'>(UserInvitationsEndpoints.USER(pid));
   },
 
   async accept(pid: string) {
-    return api.post<'accept'>(UserInvitationsEndpointPaths.ACCEPT(pid));
+    return api.post<'accept'>(UserInvitationsEndpoints.ACCEPT(pid));
   },
 
   async decline(pid: string) {
-    return api.post<'decline'>(UserInvitationsEndpointPaths.DECLINE(pid));
+    return api.post<'decline'>(UserInvitationsEndpoints.DECLINE(pid));
   },
 };

@@ -1,20 +1,20 @@
 import { LoginModel } from '../models';
-import { ENDPOINT_AUTH, AuthEndpointPaths, IAuthClient } from './auth.endpoint';
+import { API_AUTH, AuthEndpoints, IAuthClient } from './auth.endpoint';
 import { Headers } from '@/common';
 import { useApi } from '@/repository';
 
-const api = useApi<IAuthClient>(ENDPOINT_AUTH);
+const api = useApi<IAuthClient>(API_AUTH);
 
 export default {
   async loadUser() {
-    return api.get<'loadUser'>(AuthEndpointPaths.USER);
+    return api.get<'loadUser'>(AuthEndpoints.USER);
   },
   async login(loginModel: LoginModel) {
-    return api.post<'login'>(AuthEndpointPaths.LOGIN, loginModel);
+    return api.post<'login'>(AuthEndpoints.LOGIN, loginModel);
   },
   async refresh(visitorId?: string | null) {
     return api.post<'refresh'>(
-      AuthEndpointPaths.REFRESH,
+      AuthEndpoints.REFRESH,
       {},
       {
         skipAuthRefresh: true,
@@ -24,7 +24,7 @@ export default {
   },
   async logout(visitorId?: string | null) {
     return api.post<'logout'>(
-      AuthEndpointPaths.LOGOUT,
+      AuthEndpoints.LOGOUT,
       {},
       {
         skipAuthRefresh: true,

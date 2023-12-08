@@ -7,4 +7,4 @@ export interface IPingClient {
 
 export type PingEndpoint = StrictEndpoint<IPingClient>;
 
-export const ENDPOINT_PING = 'ping';
+export const API_PING = 'ping';

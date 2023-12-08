@@ -7,6 +7,6 @@ export interface IMilestonePlanClient extends ICalendarPlanClient<MilestoneModel
 export type MilestonePlanEndpoint = Endpoint<IMilestonePlanClient>;
 export const ENDPOINT_MILESTONE_PLAN = profileApiPrefix('milestone-plan');
 
-export const MilestonePlanEndpointPaths = {
+export const MilestonePlanEndpoints = {
   SORT: (cid: string) => `${cid}/sort`,
 };

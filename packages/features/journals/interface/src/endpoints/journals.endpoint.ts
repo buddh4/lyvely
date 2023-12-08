@@ -19,7 +19,7 @@ export interface IJournalsEndpointService
 export type JournalsEndpoint = Endpoint<IJournalsEndpointService>;
 export const ENDPOINT_JOURNALS = profileApiPrefix('journals');
 
-export const JournalsEndpointPaths = {
+export const JournalsEndpoints = {
   SORT: (cid: string) => `${cid}/sort`,
   UPDATE_DATA_POINT: (cid: string) => `${cid}/update-data-point`,
 };

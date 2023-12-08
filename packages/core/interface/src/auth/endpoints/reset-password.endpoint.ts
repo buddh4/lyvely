@@ -7,8 +7,8 @@ export interface IResetPasswordService {
 }
 
 export type ResetPasswordEndpoint = Endpoint<IResetPasswordService>;
-export const ENDPOINT_RESET_PASSWORD = 'reset-password';
+export const API_RESET_PASSWORD = 'reset-password';
 
-export const ResetPasswordEndpointPaths = {
+export const ResetPasswordEndpoints = {
   SEND_MAIL: 'send-mail',
 };

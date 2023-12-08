@@ -1,4 +1,4 @@
-import { IStreamClient, StreamEndpointPaths } from '@/streams';
+import { IStreamClient, StreamEndpoints } from '@/streams';
 import { IWebNotification } from '../interfaces';
 import { Endpoint } from '@/endpoints';
 
@@ -9,10 +9,10 @@ export interface INotificationsClient extends IStreamClient<IWebNotification> {
 
 export type NotificationsEndpoint = Endpoint<INotificationsClient>;
 
-export const ENDPOINT_NOTIFICATIONS = 'notifications';
+export const API_NOTIFICATIONS = 'notifications';
 
-export const NotificationEndpointPaths = {
-  ...StreamEndpointPaths,
+export const NotificationEndpoints = {
+  ...StreamEndpoints,
   MARK_AS_SEEN: (nid: string) => `${nid}/mark-as-seen`,
   TEST: 'test',
 };

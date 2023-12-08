@@ -23,7 +23,7 @@ export interface IHabitsEndpointClient
 export type HabitsEndpoint = Endpoint<IHabitsEndpointClient>;
 export const ENDPOINT_HABITS = profileApiPrefix('habits');
 
-export const HabitsEndpointPaths = {
+export const HabitsEndpoints = {
   SORT: (cid: string) => `${cid}/sort`,
   UPDATE_DATA_POINT: (cid: string) => `${cid}/update-data-point`,
   START_TIMER: (cid: string) => `${cid}/start-timer`,

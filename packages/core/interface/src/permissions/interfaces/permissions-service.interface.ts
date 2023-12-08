@@ -1,5 +1,9 @@
-import { IPermission, IPermissionObject, IPermissionSubject } from './permissions.interface';
-import { IPermissionConfig } from '@/permissions';
+import {
+  IPermission,
+  IPermissionObject,
+  IPermissionSubject,
+  IPermissionConfig,
+} from './permissions.interface';
 
 export interface IPermissionsService<
   TPermission extends IPermission<any, any>,

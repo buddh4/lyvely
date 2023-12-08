@@ -1,7 +1,7 @@
 import { useApi } from '@/repository';
-import { ENDPOINT_PING, IPingClient } from './ping.endpoint';
+import { API_PING, IPingClient } from './ping.endpoint';
 
-const api = useApi<IPingClient>(ENDPOINT_PING);
+const api = useApi<IPingClient>(API_PING);
 
 export default {
   ping: async () => api.get<'ping'>(),

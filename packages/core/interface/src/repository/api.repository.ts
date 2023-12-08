@@ -1,6 +1,10 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+  AxiosInterceptorOptions,
+} from 'axios';
 import { IntegrityException, MisconfigurationException } from '@/exceptions';
-import { AxiosInterceptorOptions } from 'axios/index';
 
 let _repository: AxiosInstance | undefined;
 let _options: IRepositoryOptions = {

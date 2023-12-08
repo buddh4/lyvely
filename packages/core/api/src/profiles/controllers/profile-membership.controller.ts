@@ -5,12 +5,12 @@ import { UseClassSerializer } from '@/core';
 import {
   MembershipModel,
   UpdateProfileMembershipSettings,
-  ENDPOINT_PROFILE_MEMBERSHIP,
+  API_PROFILE_MEMBERSHIP,
   ProfileMembershipEndpoint,
 } from '@lyvely/interface';
 import { ProfileMembershipService } from '../services';
 
-@ProfileController(ENDPOINT_PROFILE_MEMBERSHIP)
+@ProfileController(API_PROFILE_MEMBERSHIP)
 @UseClassSerializer()
 export class ProfileMembershipController implements ProfileMembershipEndpoint {
   constructor(private readonly membershipService: ProfileMembershipService) {}

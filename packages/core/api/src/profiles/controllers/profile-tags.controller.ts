@@ -16,13 +16,13 @@ import {
   UpdateTagModel,
   TagModel,
   CreateTagModel,
-  ENDPOINT_PROFILE_TAGS,
+  API_PROFILE_TAGS,
   ProfileTagsEndpoint,
 } from '@lyvely/interface';
 import { Tag } from '../schemas';
 
 // TODO feature check
-@ProfileController(ENDPOINT_PROFILE_TAGS)
+@ProfileController(API_PROFILE_TAGS)
 @UseClassSerializer()
 export class ProfileTagsController implements ProfileTagsEndpoint {
   @Inject()

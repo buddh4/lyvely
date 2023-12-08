@@ -11,16 +11,16 @@ import { ProfilesService } from '../services';
 import { UserRequest, UsersService } from '@/users';
 import {
   ProfileRelationInfos,
-  ENDPOINT_PROFILE_RELATION_INFOS,
+  API_PROFILE_RELATION_INFOS,
   ProfileRelationInfosEndpoint,
   ProfileRelationUserInfoModel,
-  ProfileRelationInfosEndpointPaths,
+  ProfileRelationInfosEndpoints,
   DocumentNotFoundException,
 } from '@lyvely/interface';
 import { mapType } from '@lyvely/common';
 import { ProtectedProfileContext } from '../models';
 
-@Controller(ENDPOINT_PROFILE_RELATION_INFOS)
+@Controller(API_PROFILE_RELATION_INFOS)
 @UseInterceptors(ClassSerializerInterceptor)
 export class ProfileRelationInfosController implements ProfileRelationInfosEndpoint {
   constructor(private profilesService: ProfilesService, private usersService: UsersService) {}
@@ -31,7 +31,7 @@ export class ProfileRelationInfosController implements ProfileRelationInfosEndpo
     return mapType([ProtectedProfileContext], ProfileRelationInfos, relations);
   }
 
-  @Get(ProfileRelationInfosEndpointPaths.PROFILE_RELATION_INFO(':pid', ':uid'))
+  @Get(ProfileRelationInfosEndpoints.PROFILE_RELATION_INFO(':pid', ':uid'))
   async getProfileRelationUserInfo(
     @Param('pid') pid,
     @Param('uid') uid,

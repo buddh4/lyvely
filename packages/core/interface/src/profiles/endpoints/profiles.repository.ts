@@ -1,9 +1,9 @@
-import { ENDPOINT_PROFILES, IProfilesClient, ProfilesEndpointPaths } from './profiles.endpoint';
+import { API_PROFILES, IProfilesClient, ProfilesEndpoints } from './profiles.endpoint';
 import { useApi } from '@/repository';
 import { CreateProfileModel, UpdateProfileModel } from '../models';
 import { CalendarPreferences } from '@/common';
 
-const api = useApi<IProfilesClient>(ENDPOINT_PROFILES);
+const api = useApi<IProfilesClient>(API_PROFILES);
 
 export default {
   async createProfile(model: CreateProfileModel) {
@@ -19,7 +19,7 @@ export default {
   },
 
   async getProfileByHandle(handle: string) {
-    return api.get<'getProfileByHandle'>(ProfilesEndpointPaths.BY_HANDLE(handle));
+    return api.get<'getProfileByHandle'>(ProfilesEndpoints.BY_HANDLE(handle));
   },
 
   async getDefaultProfile() {
@@ -27,9 +27,6 @@ export default {
   },
 
   async setCalendarPreferences(model: CalendarPreferences) {
-    return api.post<'setCalendarPreferences'>(
-      ProfilesEndpointPaths.SET_CALENDAR_PREFERENCES,
-      model,
-    );
+    return api.post<'setCalendarPreferences'>(ProfilesEndpoints.SET_CALENDAR_PREFERENCES, model);
   },
 };

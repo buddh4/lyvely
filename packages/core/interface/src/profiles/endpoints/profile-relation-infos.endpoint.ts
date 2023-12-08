@@ -19,8 +19,8 @@ export interface IProfileRelationInfosClient {
 }
 
 export type ProfileRelationInfosEndpoint = StrictEndpoint<IProfileRelationInfosClient>;
-export const ENDPOINT_PROFILE_RELATION_INFOS = profileApiPrefix('profile-relation-infos');
+export const API_PROFILE_RELATION_INFOS = profileApiPrefix('profile-relation-infos');
 
-export const ProfileRelationInfosEndpointPaths = {
+export const ProfileRelationInfosEndpoints = {
   PROFILE_RELATION_INFO: (pid: string, uid: string) => `${pid}/${uid}`,
 };

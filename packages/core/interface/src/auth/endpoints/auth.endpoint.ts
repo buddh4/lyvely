@@ -22,9 +22,9 @@ export interface IAuthClient {
 }
 
 export type AuthEndpoint = Endpoint<IAuthClient>;
-export const ENDPOINT_AUTH = 'auth';
+export const API_AUTH = 'auth';
 
-export const AuthEndpointPaths = {
+export const AuthEndpoints = {
   LOGIN: 'login',
   LOGOUT: 'logout',
   REFRESH: 'refresh',

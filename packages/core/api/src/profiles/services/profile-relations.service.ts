@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { assureObjectId, EntityIdentity } from '@/core';
-import { OptionalUser, User, UsersService } from '@/users';
-import { DocumentNotFoundException, getProfileRelationRole } from '@lyvely/interface';
+import { User, UsersService } from '@/users';
+import { DocumentNotFoundException } from '@lyvely/interface';
 import { Profile, UserProfileRelation } from '../schemas';
-import { UserAndProfileRelations } from '../models';
 import { ProfileDao, UserProfileRelationsDao } from '../daos';
 import { IUserWithProfileRelation } from '../interfaces';
 
@@ -16,39 +15,13 @@ export class ProfileRelationsService {
   ) {}
 
   /**
-   * Returns all existing relations between a profile and users, while emphasizing the relation between the profile and
-   * the given user.
-   * @param user The user whose relations with the profile are to be emphasized.
+   * Returns all existing relations between a profile and users.
    * @param identity The identity of the profile.
    * @throws DocumentNotFoundException if profile does not exist
-   * @returns A Promise resolving to an object containing all relations of the profile.
+   * @returns A Promise resolving to an object containing profile relations.
    */
-  async findProfileRelations(
-    identity: EntityIdentity<Profile>,
-    user: OptionalUser,
-  ): Promise<UserAndProfileRelations> {
-    const profile = await this.findProfileByIdentity(identity);
-
-    const profileRelations = await this.profileRelationsDao.findAllByProfile(identity);
-    const userRelations = user
-      ? profileRelations.filter((relation) => relation.uid.equals(user._id))
-      : [];
-
-    const userOrganizationRelations =
-      user && profile.hasOrg
-        ? await this.profileRelationsDao.findByUserAndProfile(user, profile.oid)
-        : [];
-
-    const role = getProfileRelationRole(user, profileRelations, userOrganizationRelations);
-
-    return new UserAndProfileRelations({
-      user,
-      role,
-      profile,
-      profileRelations,
-      userRelations,
-      userOrganizationRelations,
-    });
+  async findProfileRelations(identity: EntityIdentity<Profile>): Promise<UserProfileRelation[]> {
+    return this.profileRelationsDao.findAllByProfile(identity);
   }
 
   /**

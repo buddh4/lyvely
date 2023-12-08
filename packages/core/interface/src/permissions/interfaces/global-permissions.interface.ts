@@ -26,7 +26,7 @@ export interface IGlobalPermissionObject extends IPermissionObject<GlobalPermiss
  */
 export enum GlobalPermissionRole {
   Admin = 'admin',
-  Support = 'support',
+  Moderator = 'moderator',
   User = 'user',
   Visitor = 'visitor',
 }
@@ -37,7 +37,7 @@ export enum GlobalPermissionRole {
  */
 export const globalPermissionRoleHierarchy = [
   GlobalPermissionRole.Admin,
-  GlobalPermissionRole.Support,
+  GlobalPermissionRole.Moderator,
   GlobalPermissionRole.User,
   GlobalPermissionRole.Visitor,
 ];

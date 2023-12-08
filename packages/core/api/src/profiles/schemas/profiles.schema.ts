@@ -13,7 +13,6 @@ import { User } from '@/users';
 import { Tag, TagSchema } from './tags.schema';
 import {
   IPermissionObject,
-  IPermissionSetting,
   MAX_PROFILE_DESCRIPTION_LENGTH,
   ProfileModel,
   ProfileRelationRole,
@@ -22,14 +21,16 @@ import {
   ProfileVisibilityLevel,
   VALID_DISPLAY_NAME_REGEX,
   VALID_HANDLE_REGEX,
+  IProfilePermissionSetting,
 } from '@lyvely/interface';
 import { BaseModel, getNumberEnumValues, PropertiesOf, PropertyType } from '@lyvely/common';
 import { Avatar, AvatarSchema } from '@/avatars';
 import {
-  ProfileRolePermission,
-  ProfileRolePermissionSchema,
+  ProfilePermissionSetting,
+  ProfilePermissionSettingSchema,
 } from './profile-role-permissions.schema';
 import { createHash } from 'crypto';
+import { ProfileMemberGroup, ProfileMemberGroupSchema } from './profile-member-group.schema';
 
 @Schema({ _id: false })
 class ProfileMetadata extends BaseModel<ProfileMetadata> {
@@ -136,8 +137,12 @@ export class Profile
   visibility: ProfileVisibilityLevel;
 
   /** Profile role permission settings. **/
-  @Prop({ type: [ProfileRolePermissionSchema], default: [] })
-  permissions: ProfileRolePermission[];
+  @Prop({ type: [ProfilePermissionSettingSchema], default: [] })
+  permissions: ProfilePermissionSetting[];
+
+  @Prop({ type: [ProfileMemberGroupSchema], default: [] })
+  @PropertyType([ProfileMemberGroup])
+  groups: ProfileMemberGroup[];
 
   /** Stores all tags created by this profile. **/
   @Prop({ type: [TagSchema], default: [] })
@@ -153,11 +158,24 @@ export class Profile
 
   /**
    * Retrieves the permission settings.
+   * This function is part of the IPermissionObject interface.
    *
-   * @return {IPermissionSetting<ProfileRelationRole>[]} The array of permission settings.
+   * @return {IProfilePermissionSetting<TObjectId>[]} The array of permission settings.
    */
-  getPermissionSettings(): IPermissionSetting<ProfileRelationRole>[] {
-    return this.permissions || [];
+  getPermissionSettings(): IProfilePermissionSetting[] {
+    return (
+      this.permissions?.map((p) => ({ ...p, groups: p.groups?.map((g) => g.toString()) })) || []
+    );
+  }
+
+  /**
+   * Retrieves an array of permission groups.
+   * This function is part of the IPermissionObject interface.
+   *
+   * @returns {string[]} The array of permission groups' IDs.
+   */
+  getPermissionGroups(): string[] {
+    return this.groups?.map((g) => g._id.toString()) || [];
   }
 
   /**

@@ -6,4 +6,4 @@ export interface IProfileMembershipClient {
 }
 
 export type ProfileMembershipEndpoint = StrictEndpoint<IProfileMembershipClient>;
-export const ENDPOINT_PROFILE_MEMBERSHIP = profileApiPrefix('profile-membership');
+export const API_PROFILE_MEMBERSHIP = profileApiPrefix('profile-membership');

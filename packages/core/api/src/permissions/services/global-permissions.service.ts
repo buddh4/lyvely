@@ -68,6 +68,7 @@ export class GlobalPermissionsService implements IGlobalPermissionsService {
       { role, userStatus: user?.status },
       {
         getPermissionSettings: () => [],
+        getPermissionGroups: () => [],
       },
       config,
     );

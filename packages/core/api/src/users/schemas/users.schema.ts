@@ -1,8 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { hash } from 'bcrypt';
 import { UpdateQuery, Document } from 'mongoose';
-import { BaseDocument, createObjectId, getDefaultLocale, MixedProp } from '@/core';
-import { PropertiesOf, getNumberEnumValues, PropertyType, validateEmail } from '@lyvely/common';
+import { BaseDocument, createObjectId, getDefaultLocale, MixedProp, TObjectId } from '@/core';
+import {
+  PropertiesOf,
+  getNumberEnumValues,
+  PropertyType,
+  validateEmail,
+  getStringEnumValues,
+} from '@lyvely/common';
 import { RefreshToken, RefreshTokenSchema } from './refresh.tokens.schema';
 import { createHash } from 'crypto';
 import {
@@ -10,6 +16,10 @@ import {
   UserStatus,
   VALID_HANDLE_REGEX,
   VALID_DISPLAY_NAME_REGEX,
+  IPermissionObject,
+  UserRelationRole,
+  GlobalPermissionRole,
+  IUserRelationPermissionSetting,
 } from '@lyvely/interface';
 import { Avatar, AvatarSchema } from '@/avatars';
 import { UserEmail, UserEmailSchema } from './user-email.schema';
@@ -18,12 +28,20 @@ import {
   UserNotificationState,
   UserNotificationStateSchema,
 } from './user-notification-state.schema';
+import {
+  UserRolePermission,
+  UserRolePermissionSchema,
+} from '@/users/schemas/user-permissions.schema';
+import { UserRelationGroup, UserRelationGroupSchema } from './user-relation-group.schema';
 
 /**
  * This class defines the user schema of user documents.
  */
 @Schema({ timestamps: true })
-export class User extends BaseDocument<User> implements PropertiesOf<UserModel> {
+export class User
+  extends BaseDocument<User>
+  implements PropertiesOf<UserModel<TObjectId>>, IPermissionObject<UserRelationRole>
+{
   /** The main email of this user. **/
   @Prop({
     unique: true,
@@ -81,6 +99,15 @@ export class User extends BaseDocument<User> implements PropertiesOf<UserModel> 
   @Prop({ enum: getNumberEnumValues(UserStatus), required: true })
   status: UserStatus;
 
+  /** Represents the global permission role. **/
+  @Prop({
+    required: true,
+    enum: getStringEnumValues(GlobalPermissionRole),
+    default: GlobalPermissionRole.User,
+  })
+  @PropertyType(String, { default: GlobalPermissionRole.User })
+  role: GlobalPermissionRole;
+
   /** Keeps track of profile membership counts by profile type. **/
   @PropertyType(ProfilesCount, { default: () => new ProfilesCount() })
   @Prop({ type: ProfilesCountSchema, required: true })
@@ -98,6 +125,15 @@ export class User extends BaseDocument<User> implements PropertiesOf<UserModel> 
   @Prop({ type: UserNotificationStateSchema })
   @PropertyType(UserNotificationState)
   notification: UserNotificationState;
+
+  /** User relation role permission settings. **/
+  @Prop({ type: [UserRolePermissionSchema], default: [] })
+  @PropertyType([UserRolePermission])
+  permissions: UserRolePermission[];
+
+  @Prop({ type: [UserRelationGroupSchema], default: [] })
+  @PropertyType([UserRelationGroup])
+  groups: UserRelationGroup[];
 
   createdAt: Date;
   updatedAt: Date;
@@ -131,6 +167,28 @@ export class User extends BaseDocument<User> implements PropertiesOf<UserModel> 
     if (!this.locale) {
       this.locale = getDefaultLocale();
     }
+  }
+
+  /**
+   * Retrieves the permission settings.
+   * This function is part of the IPermissionObject interface.
+   *
+   * @return {IUserRelationPermissionSetting[]} The array of permission settings.
+   */
+  getPermissionSettings(): IUserRelationPermissionSetting[] {
+    return (
+      this.permissions?.map((p) => ({ ...p, groups: p.groups?.map((g) => g.toString()) })) || []
+    );
+  }
+
+  /**
+   * Retrieves an array of permission groups.
+   * This function is part of the IPermissionObject interface.
+   *
+   * @returns {string[]} The array of permission groups' IDs.
+   */
+  getPermissionGroups(): string[] {
+    return this.groups.map((g) => g.id);
   }
 
   /**

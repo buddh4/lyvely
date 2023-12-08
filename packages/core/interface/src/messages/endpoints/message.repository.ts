@@ -1,9 +1,9 @@
 import { CreateMessageModel } from '../models';
-import { ENDPOINT_MESSAGE, IMessageClient } from './message.endpoint';
+import { API_MESSAGE, IMessageClient } from './message.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
 
-const api = useApi<IMessageClient>(ENDPOINT_MESSAGE);
+const api = useApi<IMessageClient>(API_MESSAGE);
 
 export default {
   create: (model: CreateMessageModel, options?: IProfileApiRequestOptions) =>

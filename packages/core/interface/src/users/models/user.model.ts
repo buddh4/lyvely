@@ -2,6 +2,12 @@ import { BaseModel, DocumentModel, PropertyType } from '@lyvely/common';
 import { AvatarModel } from '@/avatars';
 import { Exclude, Expose } from 'class-transformer';
 import { UserNotificationStateModel } from './user-notification-state.model';
+import { UserRelationRole, UserStatus } from '../interfaces';
+import {
+  GlobalPermissionRole,
+  IPermissionObject,
+  IPermissionSetting,
+} from '@/permissions/interfaces';
 
 @Exclude()
 export class UserEmailModel extends BaseModel<UserEmailModel> {
@@ -19,13 +25,35 @@ export class UserInfoModel extends BaseModel<UserInfoModel> {
   name: string;
 }
 
+@Expose()
+export class UserPermissionSetting<TID = string>
+  implements IPermissionSetting<TID, UserRelationRole>
+{
+  id: string;
+  role: UserRelationRole;
+  groups?: TID[];
+}
+
+@Expose()
+export class UserRelationGroupModel {
+  id: string;
+  name: string;
+  description?: string;
+}
+
 @Exclude()
-export class UserModel extends DocumentModel<UserModel> {
+export class UserModel<TID = string>
+  extends DocumentModel<UserModel<any>>
+  implements IPermissionObject<UserRelationRole>
+{
   @Expose()
   id: string;
 
   @Expose()
   status: UserStatus;
+
+  @Expose()
+  role: GlobalPermissionRole;
 
   @Expose()
   username: string;
@@ -62,14 +90,23 @@ export class UserModel extends DocumentModel<UserModel> {
   @PropertyType(UserNotificationStateModel)
   notification: UserNotificationStateModel;
 
+  @Expose()
+  @PropertyType([UserPermissionSetting])
+  permissions: UserPermissionSetting<TID>[];
+
+  @Expose()
+  @PropertyType([UserRelationGroupModel])
+  groups: UserRelationGroupModel[];
+
+  getPermissionSettings(): IPermissionSetting<any, UserRelationRole>[] {
+    return this.permissions;
+  }
+
+  getPermissionGroups(): string[] {
+    return this.groups.map((g) => g.id);
+  }
+
   findEmail(email: string) {
     return this.emails.find((userEmail) => userEmail.email.toLowerCase() === email);
   }
-}
-
-export enum UserStatus {
-  Disabled, // Manually disabled by system or admin
-  Active, // Active state, after successful registration
-  EmailVerification, // Email verification required
-  Locked, // User is temporarily locked
 }

@@ -11,7 +11,6 @@ import {
   DocumentNotFoundException,
   UniqueConstraintException,
   MisconfigurationException,
-  IPermissionConfig,
 } from '@lyvely/interface';
 import { MembershipsDao, ProfileDao } from '../daos';
 import { ProfileContext, ProtectedProfileContext } from '../models';

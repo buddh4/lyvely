@@ -25,7 +25,7 @@ export interface ITasksClient
 export type TasksEndpoint = Endpoint<ITasksClient>;
 export const ENDPOINT_TASKS = profileApiPrefix('tasks');
 
-export const TasksEndpointPaths = {
+export const TasksEndpoints = {
   SORT: (cid: string) => `${cid}/sort`,
   CREATE: (cid: string) => `${cid}/create`,
   SET_DONE: (cid: string) => `${cid}/done`,

@@ -6,7 +6,8 @@ import {
   IPermissionsService,
   IPermissionSubject,
 } from '../interfaces';
-import { UserStatus, VisitorMode } from '@/users';
+import { UserStatus } from '@/users/interfaces/user-status.enum';
+import { VisitorMode } from '@/users/interfaces/visitor-strategy.interface';
 import { IntegrityException } from '@/exceptions';
 import { isDefined } from 'class-validator';
 import { clamp, hasIntersection } from '@lyvely/common';
@@ -180,18 +181,29 @@ export abstract class AbstractPermissionsService<
    * assumes an active status by default.
    *
    * @param {TPermission} permission - The permission object.
-   * @param {TSubject | UserStatus} subjectOrStatus - The subject or user status.
+   * @param {TSubject} subjectOrStatus - The subject or user status.
    * @protected
    * @returns {boolean} - Returns true if the user status meets the requirement, otherwise returns false.
    */
-  protected verifyUserStatus(
-    permission: TPermission,
-    subjectOrStatus?: TSubject | UserStatus,
-  ): boolean {
+  protected verifyUserStatus(permission: TPermission, subject: TSubject): boolean {
+    return (
+      this._verifyUserStatus(permission, subject.userStatus) &&
+      this._verifyUserStatus(permission, subject.relationStatus)
+    );
+  }
+
+  /**
+   * Verifies if the user status meets the required permission.
+   *
+   * @param {TPermission} permission - The permission object to check against.
+   * @param {UserStatus} [userStatus] - The user's current status.
+   * @private
+   *
+   * @return {boolean} - Returns true if the user status meets the permission requirements, false otherwise.
+   */
+  private _verifyUserStatus(permission: TPermission, userStatus?: UserStatus) {
     // If the role is not associated with a status we assume its active by default e.g. visitors.
-    if (!subjectOrStatus) return true;
-    const userStatus =
-      typeof subjectOrStatus === 'number' ? subjectOrStatus : subjectOrStatus.userStatus;
+    if (!userStatus) return true;
     const userStatusRequirement = permission.userStatuses || [UserStatus.Active];
     return !isDefined(userStatus) || userStatusRequirement.includes(userStatus!);
   }
@@ -307,13 +319,19 @@ export abstract class AbstractPermissionsService<
   ): boolean {
     if (!subject.groups?.length) return false;
     const permissionSettings = this.getPermissionSettings(permission, object);
+
+    const allowedGroups = object.getPermissionGroups();
+    const subjectGroups = subject.groups.filter((g) => allowedGroups.includes(g));
+
     if (permissionSettings?.groups?.length) {
-      return hasIntersection(permissionSettings?.groups, subject.groups);
+      const settingGroups = permissionSettings.groups.filter((g) => allowedGroups.includes(g));
+      return hasIntersection(settingGroups, subjectGroups);
     }
 
     const permissionConfig = this.getPermissionConfig(permission, config);
     if (permissionConfig?.groups?.length) {
-      return hasIntersection(permissionConfig?.groups, subject.groups);
+      const configGroups = permissionConfig.groups.filter((g) => allowedGroups.includes(g));
+      return hasIntersection(configGroups, subjectGroups);
     }
 
     return false;

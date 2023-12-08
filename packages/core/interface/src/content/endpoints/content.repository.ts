@@ -1,24 +1,24 @@
 import { SetMilestoneModel } from '../models';
-import { ENDPOINT_CONTENT, ContentEndpointPaths, IContentClient } from './content.endpoint';
+import { API_CONTENT, ContentEndpoints, IContentClient } from './content.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
 
-const api = useApi<IContentClient>(ENDPOINT_CONTENT);
+const api = useApi<IContentClient>(API_CONTENT);
 
 export default {
   setMilestone(cid: string, mid: string, options?: IProfileApiRequestOptions) {
     return api.post<'setMilestone'>(
-      ContentEndpointPaths.SET_MILESTONE(cid),
+      ContentEndpoints.SET_MILESTONE(cid),
       new SetMilestoneModel({ mid }),
       options,
     );
   },
 
   archive(cid: string, options?: IProfileApiRequestOptions) {
-    return api.post<'archive'>(ContentEndpointPaths.ARCHIVE(cid), {}, options);
+    return api.post<'archive'>(ContentEndpoints.ARCHIVE(cid), {}, options);
   },
 
   restore(cid: string, options?: IProfileApiRequestOptions) {
-    return api.post<'restore'>(ContentEndpointPaths.RESTORE(cid), {}, options);
+    return api.post<'restore'>(ContentEndpoints.RESTORE(cid), {}, options);
   },
 };

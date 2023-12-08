@@ -1,4 +1,4 @@
-import { ProfileRelationRole } from './profile-relation-role.enum';
+import { ProfileRelationRole } from './profile-permission.interface';
 
 /**
  * Defines the role a profile member can have.

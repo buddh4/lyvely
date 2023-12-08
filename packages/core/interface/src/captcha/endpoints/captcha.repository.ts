@@ -1,8 +1,8 @@
-import { CaptchaEndpointPaths, ENDPOINT_CAPTCHA, ICaptchaService } from './captcha.endpoint';
+import { CaptchaEndpoints, API_CAPTCHA, ICaptchaService } from './captcha.endpoint';
 import { useApi } from '@/repository';
 import { IProfileApiRequestOptions } from '@/endpoints';
 
-const api = useApi<ICaptchaService>(ENDPOINT_CAPTCHA);
+const api = useApi<ICaptchaService>(API_CAPTCHA);
 
 export default {
   async createChallenge(options?: IProfileApiRequestOptions) {
@@ -11,7 +11,7 @@ export default {
 
   async refresh(identity: string, options?: IProfileApiRequestOptions) {
     return api.post<'refresh'>(
-      CaptchaEndpointPaths.REFRESH,
+      CaptchaEndpoints.REFRESH,
       {
         identity,
       },

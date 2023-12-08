@@ -2,7 +2,7 @@ import { CreateJournalModel, UpdateJournalModel } from '../models';
 import {
   ENDPOINT_JOURNALS,
   IJournalsEndpointService,
-  JournalsEndpointPaths,
+  JournalsEndpoints,
 } from './journals.endpoint';
 import { UpdateDataPointModel } from '@lyvely/time-series-interface';
 import { CalendarPlanFilter, CalendarPlanSort } from '@lyvely/calendar-plan-interface';
@@ -28,7 +28,7 @@ export default {
   },
 
   async sort(cid: string, sort: CalendarPlanSort, options?: IProfileApiRequestOptions) {
-    return api.post<'sort'>(JournalsEndpointPaths.SORT(cid), sort, options);
+    return api.post<'sort'>(JournalsEndpoints.SORT(cid), sort, options);
   },
 
   async updateDataPoint(
@@ -36,6 +36,6 @@ export default {
     dto: UpdateDataPointModel,
     options?: IProfileApiRequestOptions,
   ) {
-    return api.post<'updateDataPoint'>(JournalsEndpointPaths.UPDATE_DATA_POINT(cid), dto, options);
+    return api.post<'updateDataPoint'>(JournalsEndpoints.UPDATE_DATA_POINT(cid), dto, options);
   },
 };

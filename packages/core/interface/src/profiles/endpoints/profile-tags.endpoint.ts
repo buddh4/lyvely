@@ -9,9 +9,9 @@ export interface IProfileTagsClient
 }
 
 export type ProfileTagsEndpoint = StrictEndpoint<IProfileTagsClient>;
-export const ENDPOINT_PROFILE_TAGS = profileApiPrefix('profile-tags');
+export const API_PROFILE_TAGS = profileApiPrefix('profile-tags');
 
-export const ProfileTagsEndpointPaths = {
+export const ProfileTagsEndpoints = {
   ARCHIVE: (id: string) => `${id}/archive`,
   RESTORE: (id: string) => `${id}/restore`,
 };

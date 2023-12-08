@@ -1,6 +1,6 @@
 import { Endpoint, profileApiPrefix } from '@/endpoints';
 
-export const ENDPOINT_CONTENT = profileApiPrefix('content');
+export const API_CONTENT = profileApiPrefix('content');
 
 export interface IContentClient {
   archive: (id: string) => Promise<void>;
@@ -10,7 +10,7 @@ export interface IContentClient {
 
 export type ContentEndpoint = Endpoint<IContentClient>;
 
-export const ContentEndpointPaths = {
+export const ContentEndpoints = {
   ARCHIVE: (cid: string) => `${cid}/archive`,
   RESTORE: (cid: string) => `${cid}/restore`,
   SET_MILESTONE: (cid: string) => `${cid}/set-milestone`,

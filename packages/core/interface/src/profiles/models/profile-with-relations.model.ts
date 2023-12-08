@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { MembershipModel } from './profile-membership.model';
+import { isMembershipRelation, MembershipModel } from './profile-membership.model';
 import { ProfileRelationDetailsModel, ProfileRelationModel } from './profile-relation.model';
 import { ProfileModel } from './profile.model';
 import { BaseUserProfileRelationType, ProfileRelationRole } from '../interfaces';
@@ -48,11 +48,9 @@ export class ProfileWithRelationsModel<TID = string>
   }
 
   getMembership(): MembershipModel | null {
-    return <MembershipModel | null>(
-      this.userRelations.find(
-        (relation) => relation.type === BaseUserProfileRelationType.Membership,
-      )
-    );
+    const result = this.userRelations.find((relation) => isMembershipRelation(relation));
+    if (!result) return null;
+    return isMembershipRelation(result) ? result : null;
   }
 
   toEditModel(): UpdateProfileModel {

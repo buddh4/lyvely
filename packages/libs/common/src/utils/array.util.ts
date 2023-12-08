@@ -67,12 +67,52 @@ export function findAndRemove<T>(
 }
 
 /**
- * Checks if there is an intersection between array1 and array2
- * @param arr1
- * @param arr2
+ * Checks if two arrays have any common elements.
+ *
+ * @param {Array} arr1 - The first array.
+ * @param {Array} arr2 - The second array.
+ * @param {Function} [compare] - Optional comparison function.
+ * @returns {boolean} - True if there is at least one common element, false otherwise.
  */
-export function hasIntersection<T>(arr1: T[], arr2: T[]): boolean {
+export function hasIntersection<T>(
+  arr1: T[],
+  arr2: T[],
+  compare?: (a: T, b: T) => boolean,
+): boolean {
   if (!arr1?.length || !arr2?.length) return false;
+
+  if (compare) {
+    // Use the provided comparison function
+    return arr1.some((a1) => arr2.some((a2) => compare(a1, a2)));
+  } else {
+    // Default to reference/value comparison
+    const set1 = new Set(arr1);
+    return arr2.some((element) => set1.has(element));
+  }
+}
+
+/**
+ * Returns an array of elements that are present in both arr1 and arr2.
+ *
+ * @param {Array} arr1 - The first array to compare.
+ * @param {Array} arr2 - The second array to compare.
+ * @param {Function} [compare] - An optional comparison function used to determine equality.
+ *                               If not provided, reference/value comparison will be used.
+ * @returns {Array} - An array of elements present in both arr1 and arr2.
+ */
+export function getIntersection<T>(arr1: T[], arr2: T[], compare?: (a: T, b: T) => boolean): T[] {
+  if (!arr1?.length || !arr2?.length) return [];
+
   const set1 = new Set(arr1);
-  return arr2.some((element) => set1.has(element));
+  const intersection = arr2.filter((element) => {
+    if (compare) {
+      // Use the provided comparison function
+      return arr1.some((e) => compare(e, element));
+    } else {
+      // Default to reference/value comparison
+      return set1.has(element);
+    }
+  });
+
+  return intersection;
 }

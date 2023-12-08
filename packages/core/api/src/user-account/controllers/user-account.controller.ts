@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import {
   AddEmailDto,
-  ENDPOINT_USER_ACCOUNT,
+  API_USER_ACCOUNT,
   VerifyEmailDto,
   AvatarModel,
   ResendOtp,
@@ -18,7 +18,7 @@ import {
   CalendarPreferences,
   SettingsUpdateResponse,
   UserAccountEndpoint,
-  UserAccountEndpointPaths,
+  UserAccountEndpoints,
 } from '@lyvely/interface';
 import { UserRequest, UserThrottle, UserThrottlerGuard } from '@/users';
 import { UseClassSerializer } from '@/core';
@@ -32,7 +32,7 @@ const avatarPipe = new ParseFilePipeBuilder()
   .addValidator(new MimeTypeValidator({ type: ['image/jpeg'] }))
   .build();
 
-@Controller(ENDPOINT_USER_ACCOUNT)
+@Controller(API_USER_ACCOUNT)
 @UseClassSerializer()
 export class UserAccountController implements UserAccountEndpoint {
   constructor(
@@ -40,22 +40,22 @@ export class UserAccountController implements UserAccountEndpoint {
     private accountAvatarService: AccountAvatarService,
   ) {}
 
-  @Post(UserAccountEndpointPaths.ADD_EMAIL)
+  @Post(UserAccountEndpoints.ADD_EMAIL)
   async addEmail(@Body() dto: AddEmailDto, @Req() req: UserRequest) {
     return this.userAccountService.addEmail(req.user, dto.email);
   }
 
-  @Post(UserAccountEndpointPaths.SET_LANGUAGE)
+  @Post(UserAccountEndpoints.SET_LANGUAGE)
   async setLanguage(@Body() dto: SetLanguageDto, @Req() req: UserRequest) {
     return this.userAccountService.setLanguage(req.user, dto.locale);
   }
 
-  @Post(UserAccountEndpointPaths.SET_TIMEZONE)
+  @Post(UserAccountEndpoints.SET_TIMEZONE)
   async setTimezone(@Body() dto: SetTimezoneDto, @Req() req: UserRequest) {
     return this.userAccountService.setTimezone(req.user, dto.timezone);
   }
 
-  @Post(UserAccountEndpointPaths.SET_CALENDAR_PREFERENCES)
+  @Post(UserAccountEndpoints.SET_CALENDAR_PREFERENCES)
   async setCalendarPreferences(
     @Body() model: CalendarPreferences,
     @Req() req: UserRequest,
@@ -64,17 +64,17 @@ export class UserAccountController implements UserAccountEndpoint {
     return new SettingsUpdateResponse({ settings });
   }
 
-  @Post(UserAccountEndpointPaths.VERIFY_EMAIL)
+  @Post(UserAccountEndpoints.VERIFY_EMAIL)
   async verifyEmail(@Body() dto: VerifyEmailDto, @Req() req: UserRequest) {
     await this.userAccountService.verifyEmail(req.user, dto);
   }
 
-  @Post(UserAccountEndpointPaths.RESEND_OTP)
+  @Post(UserAccountEndpoints.RESEND_OTP)
   async resendOtp(@Body() dto: ResendOtp, @Req() req: UserRequest) {
     return this.userAccountService.resendOtp(req.user, dto.emailOrUsername);
   }
 
-  @Post(UserAccountEndpointPaths.UPDATE_AVATAR)
+  @Post(UserAccountEndpoints.UPDATE_AVATAR)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60)
   @UseInterceptors(FileInterceptor('file'))
@@ -83,7 +83,7 @@ export class UserAccountController implements UserAccountEndpoint {
     return new AvatarModel(avatar);
   }
 
-  @Post(UserAccountEndpointPaths.UPDATE_GAVATAR)
+  @Post(UserAccountEndpoints.UPDATE_GAVATAR)
   @UseGuards(UserThrottlerGuard)
   @UserThrottle(20, 60)
   async updateGravatar(@Req() req: UserRequest) {
