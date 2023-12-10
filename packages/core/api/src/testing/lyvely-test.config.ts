@@ -1,4 +1,5 @@
-import { ServerConfiguration, OperationMode } from '@/config';
+import { OperationMode, ServerConfiguration } from '@/config';
+import { VisitorMode } from '@lyvely/interface';
 
 const lyvelyTestConfig: ServerConfiguration = {
   appName: 'lyvely.test.app',
@@ -14,6 +15,9 @@ const lyvelyTestConfig: ServerConfiguration = {
   redis: {
     host: '0.0.0.0',
     port: 6379,
+  },
+  permissions: {
+    visitorStrategy: { mode: VisitorMode.Enabled, handles: [''] },
   },
   auth: {
     jwt: {

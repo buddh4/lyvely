@@ -1,8 +1,21 @@
 import { ConfigService } from '@nestjs/config';
 import { ServerConfiguration } from '@/config';
 import { Injectable } from '@nestjs/common';
+import { Profile, ProfilePermissionSetting } from '../schemas';
 import { ProfileContext } from '../models';
-import { useProfilePermissionsService } from '@lyvely/interface';
+import {
+  BasePermissionType,
+  FieldValidationException,
+  getPermission,
+  getProfileRoleLevel,
+  IProfilePermissionSetting,
+  useProfilePermissionsService,
+  VisitorMode,
+  getProfileRoleLevelByProfileVisibility,
+} from '@lyvely/interface';
+import { findAndReplace } from '@lyvely/common';
+import { assureObjectId } from '@/core';
+import { ProfileDao } from '../daos';
 
 /**
  * Service for handling profile level permissions within the application.
@@ -17,7 +30,57 @@ export class ProfilePermissionsService {
    *
    * @param configService - The service used to fetch configuration related to permissions.
    */
-  constructor(private readonly configService: ConfigService<ServerConfiguration>) {}
+  constructor(
+    private readonly profileDao: ProfileDao,
+    private readonly configService: ConfigService<ServerConfiguration>,
+  ) {}
+
+  /**
+   * Sets a permission for a given profile.
+   *
+   * @param {Profile} profile - The profile to set permissions for.
+   * @param {IProfilePermissionSetting} setting - The permission setting to apply.
+   * @throws {FieldValidationException} - If the ID is invalid.
+   * @returns {Promise<Profile>} - The updated profile with new permissions.
+   */
+  async setPermission(
+    profile: Profile,
+    setting: IProfilePermissionSetting<any>,
+  ): Promise<ProfilePermissionSetting> {
+    const { id, groups } = setting;
+    const { role } = setting;
+
+    const permission = getPermission(id, BasePermissionType.Profile);
+
+    if (!permission) {
+      throw new FieldValidationException([{ property: 'id', errors: ['invalid'] }]);
+    }
+
+    const groupIds = groups
+      ?.map((group) => assureObjectId(group))
+      .filter((gid) => profile.groups.find((profileGroup) => profileGroup._id.equals(gid)));
+
+    if (getProfileRoleLevel(role) < getProfileRoleLevel(permission.min)) {
+      throw new FieldValidationException([{ property: 'role', errors: ['min'] }]);
+    }
+
+    const maxLevel = Math.min(
+      getProfileRoleLevel(permission.max),
+      getProfileRoleLevelByProfileVisibility(profile.visibility),
+    );
+
+    if (getProfileRoleLevel(role) > maxLevel) {
+      throw new FieldValidationException([{ property: 'role', errors: ['max'] }]);
+    }
+
+    const { permissions } = profile;
+    const updatedSetting = new ProfilePermissionSetting({ id, groups: groupIds, role });
+
+    findAndReplace(permissions, updatedSetting, 'id', true);
+
+    await this.profileDao.updateOneSetById(profile, { permissions });
+    return updatedSetting;
+  }
 
   /**
    * Verifies if the profile context meets all the specified permissions.
@@ -65,7 +128,9 @@ export class ProfilePermissionsService {
     const { profile, user } = context;
     const role = context.getRole();
     const membership = context.getMembership();
-    const config = this.configService.get('permissions', {});
+    const config = this.configService.get('permissions', {
+      visitorStrategy: { mode: VisitorMode.Disabled },
+    });
     return useProfilePermissionsService().verifyPermission(
       permissionId,
       {

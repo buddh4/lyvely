@@ -14,6 +14,8 @@ import { BasePermissionType } from '@/permissions';
 export const CreateMessagePermission: IProfilePermission = {
   id: 'messages.create-message',
   moduleId: MESSAGES_MODULE_ID,
+  name: 'messsages.permissions.create.name',
+  description: 'messsages.permissions.create.description',
   type: BasePermissionType.Profile,
   default: ProfileRelationRole.Member,
   min: ProfileRelationRole.Moderator,

@@ -2,11 +2,13 @@ import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/commo
 import { ProfilesService, ProfilePermissionsService } from '../services';
 import { ProfileRequest } from '../types';
 import { isValidObjectId } from '@lyvely/common';
-import { DocumentNotFoundException } from '@lyvely/interface';
+import { DocumentNotFoundException, verifyRoleLevel } from '@lyvely/interface';
 import { ProfileVisibilityPolicy } from '../policies';
 import { ProfileDao } from '../daos';
 import { Reflector } from '@nestjs/core';
 import { InjectPolicy } from '@/policies';
+import { ProfileContext } from '../models';
+import { getProfileRoleFromContext } from '../decorators';
 
 /**
  * This guard is responsible for setting the `request.profile` and `request.context` fields for a given profile id.
@@ -59,33 +61,15 @@ export class ProfileGuard implements CanActivate {
 
     if (!request.profile) return false;
 
-    return this.profileVisibilityPolicy.verify(request.context);
-  }
-
-  /*private validatePermissions(profileContext: ProfileContext, context: ExecutionContext) {
-    const strictPermissions = this.getPermissionsFromContext(
-      context,
-      PROFILE_PERMISSIONS_KEY_STRICT,
+    return (
+      this.verifyProfileRoleLevel(request.context, context) &&
+      this.profileVisibilityPolicy.verify(request.context)
     );
-
-    if (strictPermissions?.length) {
-      return this.profilePermissionService.verifyEveryPermission(
-        profileContext,
-        ...strictPermissions,
-      );
-    }
-
-    const anyPermissions = this.getPermissionsFromContext(context, PROFILE_PERMISSIONS_KEY_SOME);
-
-    return anyPermissions?.length
-      ? this.profilePermissionService.verifySomePermission(profileContext, ...anyPermissions)
-      : true;
   }
 
-  private getPermissionsFromContext(context: ExecutionContext, key: string) {
-    return this.reflector.getAllAndOverride<string[]>(key, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
-  }*/
+  private verifyProfileRoleLevel(profileContext: ProfileContext, context: ExecutionContext) {
+    const roleRestriction = getProfileRoleFromContext(context, this.reflector);
+    if (!roleRestriction) return true;
+    return verifyRoleLevel(profileContext.getRole(), roleRestriction);
+  }
 }

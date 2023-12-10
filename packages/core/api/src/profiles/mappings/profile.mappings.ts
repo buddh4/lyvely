@@ -6,6 +6,7 @@ import {
   ProfileRelationInfos,
   ProfileRelationRole,
   ProfileWithRelationsModel,
+  verifyRoleLevel,
 } from '@lyvely/interface';
 import { getIntersection, registerMapping } from '@lyvely/common';
 
@@ -24,16 +25,14 @@ export function sanitizePermissionSettings(context: ProfileContext): IProfilePer
   if (!settings?.length) return [];
 
   const result: IProfilePermissionSetting[] = [];
-  const role = context.getRole();
-
-  const userRoleLevel = getProfileRoleLevel(role);
+  const userRole = context.getRole();
 
   // Do not sanitize any settings for admin and owner roles
   // TODO: If we want to enable moderators to manage users and permissions this needs to be aligned or replaced with a permission check
-  if (userRoleLevel <= getProfileRoleLevel(ProfileRelationRole.Admin)) return result;
+  if (verifyRoleLevel(userRole, ProfileRelationRole.Admin)) return result;
 
   for (const setting of settings) {
-    result.push(sanitizePermissionSetting(setting, context, role));
+    result.push(sanitizePermissionSetting(setting, context, userRole));
   }
 
   return result;

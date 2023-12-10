@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useRouter, isNavigationFailure } from 'vue-router';
 import { useCreateProfileStore } from '@/profiles/stores/create-profile.store';
-import { ProfileRelationInfo } from '@lyvely/interface';
+import { isMultiUserProfile, ProfileRelationInfo } from '@lyvely/interface';
 import LyProfileAvatar from '../ProfileAvatar.vue';
 import { profileIdRoute } from '@/profiles/routes';
 
@@ -32,7 +32,7 @@ async function setProfile(pid: string) {
 }
 
 function getProfileIcon(relation: ProfileRelationInfo) {
-  return relation.isMultiUserProfile() ? 'group' : 'private';
+  return isMultiUserProfile(relation.type) ? 'group' : 'private';
 }
 
 // TODO: A user might have multiple relations with a single profile...

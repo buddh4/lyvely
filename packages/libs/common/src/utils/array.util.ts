@@ -17,11 +17,13 @@ export function chunkArray(array: Array<any>, size: number) {
  * @param arr
  * @param replacement
  * @param condition
+ * @param pushIfNotExist
  */
 export function findAndReplace<T>(
   arr: T[],
   replacement: T,
   condition: keyof T | ((element: T) => boolean),
+  pushIfNotExist = false,
 ): boolean {
   const check =
     typeof condition === 'function'
@@ -31,6 +33,8 @@ export function findAndReplace<T>(
   if (index !== -1) {
     arr[index] = replacement;
     return true;
+  } else if (pushIfNotExist) {
+    arr.push(replacement);
   }
 
   return false;

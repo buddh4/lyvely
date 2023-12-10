@@ -10,6 +10,12 @@ export interface IPermission<TRole, TType extends string> {
   /** Unique permission id **/
   id: string;
 
+  /** Translatable permission name used in permission settings. **/
+  name: string;
+
+  /** Translatable permission description used in permission settings. **/
+  description: string;
+
   /** Module id this permission is related to **/
   moduleId: string;
 
