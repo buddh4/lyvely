@@ -1,4 +1,4 @@
-import { ProfileController } from '@/common';
+import { ProfileController, ProfileRoleLevel } from '../decorators';
 import {
   API_PROFILE_PERMISSIONS,
   ProfilePermissionsEndpoint,
@@ -6,9 +6,8 @@ import {
   ProfilePermissionSettingModel,
 } from '@lyvely/interface';
 import { UseClassSerializer } from '@/core';
-import { Put } from '@nestjs/common';
-import { ProfileRoleLevel } from '../decorators';
-import { ProfilePermissionsService } from '@/profiles';
+import { Put, Body, Req } from '@nestjs/common';
+import { ProfilePermissionsService, ProtectedProfileRequest } from '@/profiles';
 
 @ProfileController(API_PROFILE_PERMISSIONS)
 @UseClassSerializer()
@@ -18,9 +17,11 @@ export class ProfilePermissionsController implements ProfilePermissionsEndpoint 
 
   @Put()
   async updateProfilePermission(
-    update: ProfilePermissionSettingModel,
+    @Body() update: ProfilePermissionSettingModel,
+    @Req() request: ProtectedProfileRequest,
   ): Promise<ProfilePermissionSettingModel> {
-    const result = await this.profilePermissionsService.setPermission(update);
+    const { profile } = request;
+    const result = await this.profilePermissionsService.setPermission(profile, update);
     return new ProfilePermissionSettingModel(result);
   }
 }
