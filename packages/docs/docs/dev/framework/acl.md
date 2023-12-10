@@ -171,7 +171,7 @@ with multiple root elements do not support custom directives in vue. Therefore, 
 on components  like `<ly-button>`.  In such cases use `useProfileStore().verifyPermissions()` instead.
 :::
 
-## Custom JWT strategies
+## JWT
 
 In certain cases, security requirements may demand the implementation of custom JWT-based access guards. To address 
 this need, Lyvely provides support for a basic `JwtStrategy` within the `@lyvely/api` package.

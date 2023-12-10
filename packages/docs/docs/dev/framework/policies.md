@@ -2,8 +2,8 @@
 
 Through the use of Policies, you can establish configurable rules to govern your platform. Much like Permissions, 
 Policies serve as a means of access control, allowing you to restrict access to specific features or endpoints. However,
-while Permissions primarily focus on determining whether a user has permission for certain actions, Policies can perform
-more intricate checks, including interactions with other services or server configurations.
+while Permissions primarily focus on determining whether a user has permission for certain actions based on one or multiple
+permissions, Policies can perform more intricate checks, including interactions with other services or server configurations.
 
 To illustrate, consider the example of write access to content documents. This access cannot rely solely on permission 
 checks. For instance, content should be writable by its author, but not if it is locked or archived. Some content types

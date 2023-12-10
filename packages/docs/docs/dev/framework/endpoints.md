@@ -1,8 +1,8 @@
 # Endpoints
 
-In Lyvely, endpoint interfaces play a crucial role in defining the interactions between the web and API layer. 
-These interfaces are part of the interface layer of a feature and encompass both the client interface used by the web layer
-and endpoint interfaces implemented by controllers in the API layer.
+In Lyvely, endpoint interfaces play a crucial role in defining the interactions between the web and API layer.
+These interfaces are part of the interface layer of a module and encompass both the API client used by the web layer 
+and the endpoint interfaces implemented by controllers in the API layer, allowing for type-safe API calls.
 
 Lyvely offers a set of helper functions designed to facilitate the creation of type-safe interface definitions, 
 as detailed in this section.
