@@ -27,7 +27,7 @@ const filterModuleId = (moduleId: string) => (search.value = moduleId);
       <input
         v-model="search"
         type="text"
-        :placeholder="$t('tags.view.search')"
+        :placeholder="$t('profiles.settings.permissions.search')"
         class="search w-full pl-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
       <ly-icon
         :name="!search.length ? 'search' : 'close'"
@@ -42,13 +42,13 @@ const filterModuleId = (moduleId: string) => (search.value = moduleId);
             <td></td>
           </tr>
           <tr>
-            <th class="pt-2 md:pt-4 px-1 md:px-5 text-secondary">
+            <th class="pt-2 md:pt-4 text-secondary">
               {{ t('profiles.settings.permissions.header.permission') }}
             </th>
-            <th class="pt-2 md:pt-4 px-1 md:px-5 hidden md:table-cell text-secondary">
+            <th class="pt-2 md:pt-4 hidden md:table-cell text-secondary">
               {{ t('profiles.settings.permissions.header.module') }}
             </th>
-            <th class="pt-2 md:pt-4 px-1 md:px-5 text-secondary">
+            <th class="pt-2 md:pt-4 text-secondary">
               {{ t('profiles.settings.permissions.header.level') }}
             </th>
           </tr>

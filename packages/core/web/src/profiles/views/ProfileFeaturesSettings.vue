@@ -32,14 +32,6 @@ const hasSub = (feature: IFeature) => {
 
 <template>
   <ly-content-panel>
-    <div class="flex items-start gap-2">
-      <ly-icon name="info" class="info w-4 md:w-6 shrink-0" />
-      <ly-dimmed class="text-xs">
-        {{ t('profiles.features.settings.info') }}
-      </ly-dimmed>
-    </div>
-  </ly-content-panel>
-  <ly-content-panel>
     <ly-responsive>
       <ly-table class="border-collapse">
         <template #body>

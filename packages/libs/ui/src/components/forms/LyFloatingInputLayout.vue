@@ -34,7 +34,7 @@ const { helpTextId, showHelpText, translatedHelpText, hasHelpText, ariaDescribed
 
 const wrapperClasses = computed(() => {
   return [
-    'form-input relative no-swipe text-main',
+    'form-input relative no-swipe text-main text-sm',
     { required: props.required },
     props.wrapperClass,
   ];

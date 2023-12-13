@@ -50,11 +50,15 @@ function getComputedInputValue<T extends AllowedInputValueTypes = any>(
   return model && property
     ? computed<T>({
         get: () => model[property],
-        set: (val: T) => setTimeout(() => (model[property] = typeof val === 'string' && props.trim ? val.trim() : val)),
+        set: (val: T) =>
+          setTimeout(
+            () => (model[property] = typeof val === 'string' && props.trim ? val.trim() : val),
+          ),
       })
     : computed<T>({
         get: () => props.modelValue,
-        set: (val: T) => emit('update:modelValue', typeof val === 'string' && props.trim ? val.trim() : val),
+        set: (val: T) =>
+          emit('update:modelValue', typeof val === 'string' && props.trim ? val.trim() : val),
       });
 }
 
@@ -106,6 +110,8 @@ function getComputedCssClasses(
     if (!props.label && !props.property) {
       result.push('no-label');
     }
+
+    result.push('text-sm');
 
     // This was deactivated since most loading durations are too quick for the animation to look good
     // Was replaced with loader animation in right top corner in LyFloatingInputLayout

@@ -47,7 +47,7 @@ const yearStartName = computed(() => {
   return weekStrategy[yearStart];
 });
 
-const padding = 'py-2 md:py-4 px-3 md:px-5';
+const padding = 'py-2 md:py-4';
 </script>
 
 <template>
@@ -59,7 +59,7 @@ const padding = 'py-2 md:py-4 px-3 md:px-5';
             <th :class="['text-left w-3/4', padding]">
               {{ t('profiles.i18n.week-start') }}
             </th>
-            <td class="bg-main p-3 text-left">
+            <td :class="padding">
               <ly-button class="secondary text-xs md:text-sm" @click="showWeekStartModal = true">
                 {{ weekStartName }}
               </ly-button>
@@ -76,7 +76,7 @@ const padding = 'py-2 md:py-4 px-3 md:px-5';
                 </ly-dimmed>
               </div>
             </th>
-            <td :class="['bg-main p-3 text-left', padding]">
+            <td :class="padding">
               <ly-button class="secondary text-xs md:text-sm" @click="showYearStartModal = true">
                 {{ t(yearStartName) }}
               </ly-button>

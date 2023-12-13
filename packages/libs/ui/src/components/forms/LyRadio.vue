@@ -76,7 +76,7 @@ onMounted(() => {
           :readonly="readonly"
           @change="onChange"
           @focusout="onFocusOut" />
-        <span v-if="label" class="label ml-2">{{ t(label) }}</span>
+        <span v-if="label" class="label ml-2 text-sm">{{ t(label) }}</span>
       </label>
     </div>
     <span v-if="showHelpText && helpText" class="text-sm text-dimmed">

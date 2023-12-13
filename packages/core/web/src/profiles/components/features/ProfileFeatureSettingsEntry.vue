@@ -25,7 +25,7 @@ const isEnabled = computed({
 
 const isMainFeature = !props.feature.dependencies?.length;
 
-const padding = 'py-2 md:py-4 px-3 md:px-5';
+const padding = 'py-2 md:py-4';
 </script>
 
 <template>

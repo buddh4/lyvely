@@ -21,7 +21,7 @@ const activeRole = computed({
   set: (value: string) => setActiveRole(props.permission, value),
 });
 
-const padding = 'py-1 md:py-4 px-1 md:px-5';
+const padding = 'py-1 md:py-4';
 </script>
 
 <template>

@@ -5,7 +5,7 @@
         "title": "General Settings",
         "name": "Profile Name",
         "label": "General",
-        "description": "Description",
+        "description": "Profile Description",
         "visibility": "Visibility"
       }
     }

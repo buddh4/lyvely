@@ -4,10 +4,11 @@
       "general": {
         "title": "General Settings",
         "name": "Profile Name",
-        "description": "Description",
+        "description": "Profile Description",
         "visibility": "Visibility"
       },
       "permissions": {
+        "search": "Search",
         "header": {
           "permission": "Permission",
           "module": "Module",
