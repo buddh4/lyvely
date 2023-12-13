@@ -61,6 +61,7 @@ const loadProfileByHandle = async (
 
   const handle: string = typeof to.params.handle === 'string' ? to.params.handle : undefined;
   await profileStore.loadProfile(handle);
+  to.params['handle'] = handle || ':handle';
   next();
 };
 

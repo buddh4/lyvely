@@ -42,73 +42,75 @@ onMounted(() => accessibilityFocus('.list-page-headline'));
 <template>
   <ly-content-root>
     <ly-list-page title="tags.view.title" aria-label="tags.view.aria.title" icon="tags">
-      <template #header-right>
-        <ly-add-button @click="setCreateTag" />
-      </template>
-      <div class="py-3 pr-3 border-divide bg-main">
-        <div class="relative inline-block">
-          <input
-            ref="search"
-            v-model="filter.query"
-            type="text"
-            :placeholder="$t('tags.view.search')"
-            class="search pl-2 ml-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
-          <ly-icon name="search" class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
-        </div>
-        <div class="float-right">
+      <ly-list-page-section>
+        <div class="flex gap-1">
+          <div class="relative w-full md:w-1/3 inline-block">
+            <input
+              ref="search"
+              v-model="filter.query"
+              type="text"
+              :placeholder="$t('tags.view.search')"
+              class="search pl-2 w-full border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
+            <ly-icon
+              name="search"
+              class="absolute right-2.5 top-2 text-dimmed pointer-events-none" />
+          </div>
           <ly-button
             data-id="btn-toggle-archived"
             :active="filter.archived"
-            class="secondary outlined text-xs px-0.5 py-0.5"
+            class="secondary outlined text-xs px-1.5 py-1 ml-auto"
             :title="$t('filter.archive')"
             @click="filter.archived = !filter.archived">
             <ly-icon name="archive" class="p-0.5"></ly-icon>
           </ly-button>
         </div>
-      </div>
-      <div
-        v-for="tag in tags"
-        :key="tag.id"
-        class="flex py-4 px-3 bg-main items-center border-divide">
-        <div class="align-middle">
-          <tag-badge :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
-          <ly-badge v-if="tag.archived" class="bg-danger ml-2">
-            {{ $t('common.archived') }}
-          </ly-badge>
+      </ly-list-page-section>
+
+      <ly-list-page-section>
+        <div
+          v-for="tag in tags"
+          :key="tag.id"
+          class="flex py-4 px-3 bg-main items-center border-divide">
+          <div class="align-middle">
+            <tag-badge :tag="tag" class="px-3 py-2 text-base" @click="setEditTag(tag)" />
+            <ly-badge v-if="tag.archived" class="bg-danger ml-2">
+              {{ $t('common.archived') }}
+            </ly-badge>
+          </div>
+          <div class="mr-auto"></div>
+          <div class="flex gap-2 align-middle">
+            <ly-button
+              v-if="tag.archived"
+              :data-id="`btn-restore-${tag.id}`"
+              class="secondary outlined"
+              :confirm="confirmArchive(tag)"
+              :title="$t('common.restore')"
+              @click="restore(tag)">
+              <ly-icon name="restore" />
+            </ly-button>
+            <ly-button
+              v-else
+              :data-id="`btn-archive-${tag.id}`"
+              class="secondary outlined"
+              :confirm="confirmArchive(tag)"
+              :title="$t('common.archive')"
+              @click="archive(tag)">
+              <ly-icon name="archive" />
+            </ly-button>
+            <ly-button
+              class="secondary outlined mr-1"
+              :data-id="`btn-edit-${tag.id}`"
+              :title="$t('common.edit')"
+              @click="setEditTag(tag)">
+              <ly-icon name="edit" />
+            </ly-button>
+          </div>
         </div>
-        <div class="mr-auto"></div>
-        <div class="align-middle">
-          <ly-button
-            class="secondary outlined mr-1"
-            :data-id="`btn-edit-${tag.id}`"
-            :title="$t('common.edit')"
-            @click="setEditTag(tag)">
-            <ly-icon name="edit" />
-          </ly-button>
-          <ly-button
-            v-if="tag.archived"
-            :data-id="`btn-restore-${tag.id}`"
-            class="secondary outlined"
-            :confirm="confirmArchive(tag)"
-            :title="$t('common.restore')"
-            @click="restore(tag)">
-            <ly-icon name="restore" />
-          </ly-button>
-          <ly-button
-            v-else
-            :data-id="`btn-archive-${tag.id}`"
-            class="secondary outlined"
-            :confirm="confirmArchive(tag)"
-            :title="$t('common.archive')"
-            @click="archive(tag)">
-            <ly-icon name="archive" />
-          </ly-button>
+        <div v-if="!tags.length" class="p-5 border-divide bg-main text-xs">
+          <span v-if="filter.isActive()">{{ $t('filter.empty') }}</span>
+          <span v-else>{{ $t('list.empty') }}</span>
         </div>
-      </div>
-      <div v-if="!tags.length" class="p-5 border-divide bg-main text-xs">
-        <span v-if="filter.isActive()">{{ $t('filter.empty') }}</span>
-        <span v-else>{{ $t('list.empty') }}</span>
-      </div>
+      </ly-list-page-section>
     </ly-list-page>
     <edit-tag-modal />
     <ly-floating-add-button data-id="btn-floating-add" @click="setCreateTag" />

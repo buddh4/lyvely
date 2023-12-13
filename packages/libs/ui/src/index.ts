@@ -2,6 +2,7 @@ import './styles/forms.css';
 import LyCenteredPanel from './components/layouts/LyCenteredPanel.vue';
 import LyContentRoot from './components/layouts/LyContentRoot.vue';
 import LyListPage from './components/layouts/LyListPage.vue';
+import LyListPageSection from './components/layouts/LyListPageSection.vue';
 import LyAlert from './components/dialogs/LyAlert.vue';
 import LyFlashMessage from './components/dialogs/LyFlashMessage.vue';
 import LyIcon from './components/icons/LyIcon.vue';
@@ -73,6 +74,7 @@ const createLyvelyUi = (options?: LyvelyUiOptions) => {
       Vue.component('LyTable', LyTable);
       Vue.component('LyContentRoot', LyContentRoot);
       Vue.component('LyListPage', LyListPage);
+      Vue.component('LyListPageSection', LyListPageSection);
       Vue.component('LyMainContainer', LyMainContainer);
       Vue.component('LyAlert', LyAlert);
       Vue.component('LyFlashMessage', LyFlashMessage);
@@ -176,6 +178,7 @@ export {
   LyCenteredPanel,
   LyContentRoot,
   LyListPage,
+  LyListPageSection,
   LyMainContainer,
   LyAlert,
   LyFlashMessage,

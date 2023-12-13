@@ -20,11 +20,7 @@
     "settings": {
       "membership": {
         "title": "My membership",
-        "label": "Membership",
-        "displayName": "Your Display Name",
-        "description": "Your Description",
-        "archive": "Archive Membership",
-        "your_role": "You are {role} of this profile."
+        "label": "Membership"
       },
       "general": {
         "title": "General Settings",

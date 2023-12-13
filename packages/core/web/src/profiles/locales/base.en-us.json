@@ -32,11 +32,7 @@
       },
       "membership": {
         "title": "My membership",
-        "label": "Membership",
-        "displayName": "My display name in this profile",
-        "description": "My user description in this profile",
-        "archive": "Archive Membership",
-        "your_role": "You are {role} of this profile."
+        "label": "Membership"
       },
       "features": {
         "title": "Feature Settings",

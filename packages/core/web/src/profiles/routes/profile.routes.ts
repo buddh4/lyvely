@@ -34,6 +34,9 @@ export default [
     name: 'ProfileSettings',
     meta: {
       layout: LAYOUT_PROFILE_SETTINGS,
+      i18n: {
+        load: [{ module: PROFILES_MODULE_ID, section: 'settings' }],
+      },
     },
     redirect: { name: 'ProfileMembershipSettings' },
     children: [
@@ -50,9 +53,6 @@ export default [
         name: 'ProfileFeaturesSettings',
         meta: {
           title: translation('features.settings.features.title'),
-          i18n: {
-            load: [{ module: PROFILES_MODULE_ID, section: 'features' }],
-          },
         },
         component: () => import('../views/ProfileFeaturesSettings.vue'),
       },
@@ -61,9 +61,6 @@ export default [
         name: 'ProfilePermissionsSettings',
         meta: {
           title: translation('profiles.settings.permissions.title'),
-          i18n: {
-            load: [{ module: PROFILES_MODULE_ID, section: 'settings' }],
-          },
         },
         component: () => import('../views/ProfilePermissionSettings.vue'),
       },
@@ -72,9 +69,6 @@ export default [
         path: profilePath('general'),
         meta: {
           title: translation('profiles.settings.general.title'),
-          i18n: {
-            load: [{ module: PROFILES_MODULE_ID, section: 'settings' }],
-          },
         },
         component: () => import('../views/GeneralProfileSettings.vue'),
       },
@@ -84,7 +78,10 @@ export default [
         meta: {
           title: translation('profiles.settings.preferences.title'),
           i18n: {
-            load: [{ module: PROFILES_MODULE_ID, section: 'i18n' }],
+            load: [
+              { module: PROFILES_MODULE_ID, section: 'settings' },
+              { module: PROFILES_MODULE_ID, section: 'i18n' },
+            ],
           },
         },
         component: () => import('../views/ProfilePreferences.vue'),

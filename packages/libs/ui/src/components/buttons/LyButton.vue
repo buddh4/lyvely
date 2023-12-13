@@ -318,7 +318,7 @@ function getAriaPressed($attrs: any) {
 
 .button.secondary.outlined:hover,
 .button.secondary.outlined.active {
-  @apply border-secondary-light bg-secondary dark:border-gray-700 dark:bg-gray-700;
+  @apply border-secondary-light bg-secondary dark:border-gray-600 dark:bg-gray-700;
 }
 
 .button.info {

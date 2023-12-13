@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import ProfilePermissionsSettingsEntry from '@/profiles/components/permissions/ProfilePermissionsSettingsEntry.vue';
+import { LyListPageSection } from '@lyvely/ui';
 import { useProfilePermissionsStore } from '@/profiles/stores';
 import { computed, ref } from 'vue';
 import { t } from '@/i18n';
@@ -22,45 +23,36 @@ const filterModuleId = (moduleId: string) => (search.value = moduleId);
 </script>
 
 <template>
-  <ly-content-panel>
-    <div class="relative inline-block my-1 w-full md:w-1/3">
-      <input
-        v-model="search"
-        type="text"
-        :placeholder="$t('profiles.settings.permissions.search')"
-        class="search w-full pl-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
-      <ly-icon
-        :name="!search.length ? 'search' : 'close'"
-        class="absolute right-2.5 top-2 text-dimmed cursor-pointer"
-        @click="search = ''" />
-    </div>
-    <ly-responsive>
-      <ly-table class="border-collapse">
-        <template #body>
-          <tr>
-            <td colspan="2"></td>
-            <td></td>
-          </tr>
-          <tr>
-            <th class="pt-2 md:pt-4 text-secondary">
-              {{ t('profiles.settings.permissions.header.permission') }}
-            </th>
-            <th class="pt-2 md:pt-4 hidden md:table-cell text-secondary">
-              {{ t('profiles.settings.permissions.header.module') }}
-            </th>
-            <th class="pt-2 md:pt-4 text-secondary">
-              {{ t('profiles.settings.permissions.header.level') }}
-            </th>
-          </tr>
-          <profile-permissions-settings-entry
-            v-for="permission in filteredPermissions"
-            :key="permission.id"
-            :permission="permission"
-            @select-module-id="filterModuleId" />
-        </template>
-      </ly-table>
-    </ly-responsive>
-  </ly-content-panel>
+  <ly-list-page title="profiles.settings.permissions.headline" aria-label="tags.view.aria.title">
+    <ly-list-page-section>
+      <div class="flex items-center">
+        <div class="relative inline-block my-1 w-full md:w-1/3">
+          <input
+            v-model="search"
+            type="text"
+            :placeholder="$t('profiles.settings.permissions.search')"
+            class="search w-full pl-2 border-divide text-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 rounded-r-3xl p-1 bg-main" />
+          <ly-icon
+            :name="!search.length ? 'search' : 'close'"
+            class="absolute right-2.5 top-2 text-dimmed cursor-pointer"
+            @click="search = ''" />
+        </div>
+      </div>
+    </ly-list-page-section>
+    <ly-list-page-section>
+      <ly-responsive>
+        <ly-table class="border-collapse">
+          <template #body>
+            <profile-permissions-settings-entry
+              v-for="permission in filteredPermissions"
+              :key="permission.id"
+              :permission="permission"
+              @select-module-id="filterModuleId" />
+          </template>
+        </ly-table>
+      </ly-responsive>
+    </ly-list-page-section>
+  </ly-list-page>
 </template>
 
 <style scoped></style>

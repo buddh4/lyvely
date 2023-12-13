@@ -3,11 +3,27 @@
     "settings": {
       "general": {
         "title": "General Settings",
+        "headline": "General Profile Settings",
         "name": "Profile Name",
         "description": "Profile Description",
         "visibility": "Visibility"
       },
+      "features": {
+        "headline": "Profile Features",
+        "info": "In this section, you can toggle specific profile features. Disabling a feature typically hides it within menus and other areas of the app without erasing its associated data. Should a feature's activation or deactivation have any implications, we'll prompt you for confirmation."
+      },
+      "preferences": {
+        "headline": "Profile Preferences"
+      },
+      "membership": {
+        "headline": "Your Membership",
+        "displayName": "Your Display Name",
+        "description": "Your Description",
+        "archive": "Archive Membership",
+        "your_role": "You are {role} of this profile."
+      },
       "permissions": {
+        "headline": "Profile Permissions",
         "search": "Search",
         "header": {
           "permission": "Permission",

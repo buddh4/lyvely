@@ -51,41 +51,43 @@ const padding = 'py-2 md:py-4';
 </script>
 
 <template>
-  <ly-content-panel>
-    <ly-responsive>
-      <ly-table class="border-collapse">
-        <template #body>
-          <tr class="border-b border-divide">
-            <th :class="['text-left w-3/4', padding]">
-              {{ t('profiles.i18n.week-start') }}
-            </th>
-            <td :class="padding">
-              <ly-button class="secondary text-xs md:text-sm" @click="showWeekStartModal = true">
-                {{ weekStartName }}
-              </ly-button>
-            </td>
-          </tr>
-          <tr>
-            <th :class="['text-left w-3/4', padding]">
-              <div class="flex flex-col">
-                <div>
-                  {{ t('profiles.i18n.year-start') }}
+  <ly-list-page title="profiles.settings.preferences.headline" aria-label="tags.view.aria.title">
+    <ly-list-page-section>
+      <ly-responsive>
+        <ly-table class="border-collapse">
+          <template #body>
+            <tr class="border-b border-divide">
+              <th :class="['text-left w-3/4', padding]">
+                {{ t('profiles.i18n.week-start') }}
+              </th>
+              <td :class="padding">
+                <ly-button class="secondary text-xs md:text-sm" @click="showWeekStartModal = true">
+                  {{ weekStartName }}
+                </ly-button>
+              </td>
+            </tr>
+            <tr>
+              <th :class="['text-left w-3/4', padding]">
+                <div class="flex flex-col">
+                  <div>
+                    {{ t('profiles.i18n.year-start') }}
+                  </div>
+                  <ly-dimmed class="text-xs">
+                    {{ t('profiles.i18n.year-start-info') }}
+                  </ly-dimmed>
                 </div>
-                <ly-dimmed class="text-xs">
-                  {{ t('profiles.i18n.year-start-info') }}
-                </ly-dimmed>
-              </div>
-            </th>
-            <td :class="padding">
-              <ly-button class="secondary text-xs md:text-sm" @click="showYearStartModal = true">
-                {{ t(yearStartName) }}
-              </ly-button>
-            </td>
-          </tr>
-        </template>
-      </ly-table>
-    </ly-responsive>
-  </ly-content-panel>
+              </th>
+              <td :class="padding">
+                <ly-button class="secondary text-xs md:text-sm" @click="showYearStartModal = true">
+                  {{ t(yearStartName) }}
+                </ly-button>
+              </td>
+            </tr>
+          </template>
+        </ly-table>
+      </ly-responsive>
+    </ly-list-page-section>
+  </ly-list-page>
 
   <ly-modal
     v-model="showWeekStartModal"

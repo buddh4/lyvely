@@ -54,10 +54,18 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
 </script>
 
 <template>
+  <transition name="fade-fast">
+    <div
+      v-if="showSidebar"
+      id="app-drawer-overlay"
+      ref="appDrawerOverlay"
+      class="fixed md:hidden bg-black opacity-50 inset-0 z-40"
+      @click="toggleSidebar"></div>
+  </transition>
   <nav
     id="app-drawer"
     ref="appDrawer"
-    :class="['will-change-transform', { toggled: !showSidebar }]"
+    :class="['will-change-transform z-50', { toggled: !showSidebar }]"
     :aria-label="ariaLabel">
     <div class="flex flex-col flex-wrap items-stretch content-start h-screen-s">
       <div class="py-2">
@@ -93,14 +101,6 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
       </transition>
     </div>
   </nav>
-  <transition name="fade-fast">
-    <div
-      v-if="showSidebar"
-      id="app-drawer-overlay"
-      ref="appDrawerOverlay"
-      class="fixed md:hidden bg-black opacity-50 inset-0 z-0"
-      @click="toggleSidebar"></div>
-  </transition>
 </template>
 
 <style lang="postcss">
@@ -157,9 +157,6 @@ const { direction: overlayDirection } = useSwipe(appDrawerOverlay, {
   max-width: 60px;
 }
 
-#app-drawer-overlay {
-  z-index: 99;
-}
 #app-drawer {
   @apply bg-slate-900 z-40;
 }

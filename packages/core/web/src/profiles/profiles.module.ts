@@ -21,7 +21,6 @@ export const profilesModule = () => {
     id: PROFILES_MODULE_ID,
     i18n: {
       base: (locale: string) => import(`./locales/base.${locale}.json`),
-      features: (locale: string) => import(`./locales/features.${locale}.json`),
       i18n: (locale: string) => import(`./locales/i18n.${locale}.json`),
       settings: (locale: string) => import(`./locales/settings.${locale}.json`),
     },

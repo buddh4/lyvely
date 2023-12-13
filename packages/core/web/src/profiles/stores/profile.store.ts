@@ -6,11 +6,7 @@ import {
   useProfileRelationInfosClient,
   useProfilesClient,
   DocumentNotFoundException,
-  getProfileRelationRole,
-  IProfilePermission,
   isMultiUserProfile as _isMultiUserProfile,
-  useProfilePermissionsManager,
-  IPermissionObject,
 } from '@lyvely/interface';
 import { computed, ref } from 'vue';
 import { usePageStore } from '@/ui';
@@ -18,8 +14,6 @@ import { findByPath } from '@lyvely/common';
 import { useLiveStore } from '@/live';
 import { profileRoute } from '@/profiles/routes/profile-route.helper';
 import { LocationQueryRaw } from 'vue-router';
-import { useAuthStore } from '@/auth';
-import { useAppConfigStore } from '@/app-config';
 
 const LATEST_PROFILE_HANDLE = 'latest_profile_handle';
 export const latestProfileHandle = localStorageManager.getStoredValue(LATEST_PROFILE_HANDLE);
@@ -83,7 +77,7 @@ export const useProfileStore = defineStore('profile', () => {
 
   async function setActiveProfile(activeProfile: ProfileWithRelationsModel) {
     profile.value = activeProfile;
-    latestProfileHandle.setValue(activeProfile.id);
+    latestProfileHandle.setValue(activeProfile.handle);
     if (!profile.value.getMembership()) {
       useLiveStore().connectProfileGuest(profile.value.id);
     } else {

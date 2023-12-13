@@ -21,8 +21,8 @@ function updateSettings() {
 </script>
 
 <template>
-  <div v-if="membership">
-    <ly-content-panel>
+  <ly-list-page title="profiles.settings.membership.headline" aria-label="tags.view.aria.title">
+    <ly-list-page-section>
       <div class="flex items-center">
         <ly-icon name="info" class="info mr-1" />
         <i18n-t
@@ -34,9 +34,9 @@ function updateSettings() {
           </template>
         </i18n-t>
       </div>
-    </ly-content-panel>
+    </ly-list-page-section>
 
-    <ly-content-panel>
+    <ly-list-page-section>
       <ly-form-model
         v-model="model"
         :validator="validator"
@@ -57,23 +57,23 @@ function updateSettings() {
         </div>
       </ly-form-model>
 
-      <div class="clear-both mt-2 md:mt-4">
-        <ly-button class="primary float-right text-xs" @click="updateSettings">
+      <div class="flex mt-2 md:mt-4">
+        <ly-button class="primary text-xs ml-auto" @click="updateSettings">
           {{ $t('common.update') }}
         </ly-button>
       </div>
-    </ly-content-panel>
+    </ly-list-page-section>
 
-    <ly-content-panel>
-      <div>
+    <ly-list-page-section class="bg-red-200 dark:bg-red-950">
+      <div class="flex">
         <ly-button
-          class="danger float-right text-xs"
+          class="danger text-xs ml-auto"
           :confirm="{ text: 'profiles.settings.archive.confirm' }">
           {{ $t('profiles.settings.membership.archive') }}
         </ly-button>
       </div>
-    </ly-content-panel>
-  </div>
+    </ly-list-page-section>
+  </ly-list-page>
 </template>
 
 <style scoped></style>

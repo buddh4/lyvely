@@ -8,7 +8,7 @@ import { LyComponentStack } from '@lyvely/ui';
 <template>
   <nav
     id="top-navigation"
-    class="flex items-center justify-between no-wrap bg-main p-0.5 px-2 z-40 overflow-visible"
+    class="flex items-center justify-between no-wrap bg-main p-0.5 px-2 z-30 overflow-visible"
     :aria-label="$t('layout.aria.top-nav')">
     <div class="w-1/3">
       <profile-combo-button />
